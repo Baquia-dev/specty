@@ -37,7 +37,18 @@ const COLORS: readonly Token[] = [
   token("--color-text-muted", "color", "Texto secundario", "Secondary text"),
   token("--color-accent", "color", "Acción primaria", "Primary action"),
   token("--color-on-accent", "color", "Texto sobre el acento", "Text on the accent"),
-  token("--color-focus", "color", "Anillo de foco", "Focus ring"),
+  token(
+    "--color-focus",
+    "color",
+    "Foco, sobre el borde del componente",
+    "Focus, over the component's border",
+  ),
+  token(
+    "--color-focus-on-accent",
+    "color",
+    "Foco sobre el acento (botón primario)",
+    "Focus on the accent (primary button)",
+  ),
 ];
 
 const PHASE_COLORS: readonly Token[] = PHASES.flatMap((phase) => [
@@ -116,6 +127,9 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     { fg: "--color-focus", bg, min: 3 } as const,
   ]),
   { fg: "--color-on-accent", bg: "--color-accent", min: 4.5 },
+  // Focus is drawn over the border, so it must stand out from it; inverted on the accent.
+  { fg: "--color-focus", bg: "--color-border", min: 3 },
+  { fg: "--color-focus-on-accent", bg: "--color-accent", min: 3 },
   ...PHASES.map((phase) => ({
     fg: `--color-phase-${phase}` as const,
     bg: `--color-phase-${phase}-bg` as const,

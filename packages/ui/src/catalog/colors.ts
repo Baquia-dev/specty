@@ -60,7 +60,7 @@ export function useTokenValues() {
       <a href="#accent">{{ t()('Enlace subrayado', 'Underlined link') }}</a>
       <span
         id="accent"
-        class="rounded-lg border border-border px-3 py-1 text-sm outline-2 outline-offset-2 outline-focus"
+        class="rounded-lg border border-border px-3 py-1 text-sm outline-2 -outline-offset-2 outline-focus"
       >
         {{ t()('Foco visible', 'Visible focus') }}
       </span>

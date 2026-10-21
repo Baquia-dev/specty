@@ -15,7 +15,9 @@
   --color-text-muted: #52525b;
   --color-accent: #18181b;
   --color-on-accent: #fafafa;
-  --color-focus: #18181b;
+  /* Matte, greyed ink: as clear as the accent without its hardness. */
+  --color-focus: #3f3f46;
+  --color-focus-on-accent: #d4d4d8;
 
   --color-phase-draft: #52525b;
   --color-phase-draft-bg: #f1f1f2;
@@ -94,7 +96,8 @@
   --color-text-muted: #a1a1aa;
   --color-accent: #f4f4f5;
   --color-on-accent: #0b0b0c;
-  --color-focus: #f4f4f5;
+  --color-focus: #d4d4d8;
+  --color-focus-on-accent: #3f3f46;
 
   --color-phase-draft: #b4b4bc;
   --color-phase-draft-bg: #222226;
@@ -127,15 +130,27 @@
     line-height: var(--text-base--line-height);
   }
 
-  /* The accent has no hue: links are underlined and focus is a separated ring. */
+  /* The accent has no hue: links are underlined. */
   a {
     color: inherit;
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
+  /* Focus is drawn inward, over the component's own border, never around it. */
   :focus-visible {
     outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+  }
+
+  /* On the accent (the primary button), the focus color is inverted, like its text. */
+  .bg-accent:focus-visible {
+    outline-color: var(--color-focus-on-accent);
+  }
+
+  /* A link inside text keeps its distance, so the outline does not cover the letters. */
+  a:not([class]):focus-visible {
     outline-offset: 2px;
+    border-radius: var(--radius-sm);
   }
 }

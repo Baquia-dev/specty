@@ -71,6 +71,15 @@
       "doneAt": "2026-10-21T20:39:22.144Z",
       "summary": "sp-field con label, hint, error, placeholder y multiline sobre un <input> o <textarea> nativo, value como model() para [(value)], aria-describedby y aria-invalid enlazados y error con icono y texto. Página /catalog/components con botones (variantes, tamaños, deshabilitado con motivo, de icono), insignias, Kbd, tarjetas, tooltip, campos y esqueletos, enlazada en la navegación. 36 tests; build: 82 kB transferidos",
       "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "702262f64017aa44ed225c57c41a7af3fda0bbab",
+      "startedAt": "2026-10-21T21:11:25.953Z",
+      "doneAt": "2026-10-21T21:12:48.189Z",
+      "summary": "Foco mate agrisado (#3F3F46 en claro, #D4D4D8 en oscuro) dibujado hacia dentro (outline-offset -2px) sobre el borde del componente; token --color-focus-on-accent invierte el foco sobre .bg-accent (12:1 y 9,5:1); los enlaces sin clase dentro de texto conservan la separación. Tarjeta seleccionada, muestra de Colores y radios del catálogo usan el contorno hacia dentro. Pares de contraste nuevos: foco/borde y foco invertido/acento. docs/ui.md actualizado"
     }
   },
   "pending": {

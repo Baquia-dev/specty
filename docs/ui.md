@@ -93,7 +93,8 @@ Punto de partida para el sistema de diseño:
 **Dirección elegida: Tinta** (2026-10-21, entre cuatro propuestas). Los valores viven solo en `packages/ui/src/styles.css`, y el catálogo (`pnpm --filter @baquia-dev/specty-ui exec ng serve`, en `/catalog`) los muestra en vivo.
 
 - Neutros fríos de la escala zinc: fondo `#FAFAFA` / `#0B0B0C`, superficie `#FFFFFF` / `#141416`, texto `#18181B` / `#F4F4F5`.
-- El acento es la propia tinta, sin tono (`#18181B` / `#F4F4F5`): el único color de la pantalla es el de las fases y los riesgos. Por eso los enlaces van subrayados y el foco es un anillo de 2 px con separación.
+- El acento es la propia tinta, sin tono (`#18181B` / `#F4F4F5`): el único color de la pantalla es el de las fases y los riesgos. Por eso los enlaces van subrayados.
+- El foco se dibuja hacia dentro, sobre el borde del propio componente, con tonos mate agrisados: negro mate `#3F3F46` en claro y blanco mate `#D4D4D8` en oscuro. Sobre el acento (el botón primario) se invierte. Los enlaces dentro de un texto mantienen la separación para no tapar las letras.
 - Geist para la interfaz y Geist Mono para rutas, comandos, ids y código, autoalojadas (sin red).
 - Las ocho fases: `adjusting` comparte el azul de implementación y `closing` el violeta de aceptación; se distinguen por icono y nombre.
 - Todos los pares de texto cumplen 4,5:1 en claro y en oscuro (lo comprueba un test).

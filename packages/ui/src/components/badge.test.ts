@@ -64,6 +64,8 @@ describe("Card", () => {
     await fixture.whenStable();
     expect(card?.getAttribute("aria-current")).toBe("true");
     expect(card?.classList).toContain("outline-focus");
+    // Drawn over the card's own border, not around it.
+    expect(card?.classList).toContain("-outline-offset-2");
   });
 });
 

@@ -44,7 +44,7 @@ const THEME_ICONS = { light: LucideSun, dark: LucideMoon, system: LucideMonitor 
             <legend class="sr-only">{{ t()('Tema', 'Theme') }}</legend>
             @for (choice of themes; track choice) {
               <label
-                class="flex h-8 cursor-pointer items-center gap-2 rounded-lg px-3 text-sm has-checked:bg-surface has-checked:shadow-sm has-focus-visible:outline-2 has-focus-visible:outline-focus"
+                class="flex h-8 cursor-pointer items-center gap-2 rounded-lg px-3 text-sm has-checked:bg-surface has-checked:shadow-sm has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-focus"
               >
                 <input
                   class="sr-only"
@@ -63,7 +63,7 @@ const THEME_ICONS = { light: LucideSun, dark: LucideMoon, system: LucideMonitor 
             <legend class="sr-only">{{ t()('Idioma', 'Language') }}</legend>
             @for (lang of langs; track lang) {
               <label
-                class="flex h-8 cursor-pointer items-center rounded-lg px-3 font-mono text-sm uppercase has-checked:bg-surface has-checked:shadow-sm has-focus-visible:outline-2 has-focus-visible:outline-focus"
+                class="flex h-8 cursor-pointer items-center rounded-lg px-3 font-mono text-sm uppercase has-checked:bg-surface has-checked:shadow-sm has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-focus"
               >
                 <input
                   class="sr-only"
