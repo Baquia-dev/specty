@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/core";
-import { RouterLink, RouterLinkActive, RouterOutlet, type Routes } from "@angular/router";
+import { Router, RouterLink, RouterLinkActive, RouterOutlet, type Routes } from "@angular/router";
 import { LANGS } from "@baquia-dev/specty-core";
 import {
   LucideComponent,
   LucideDynamicIcon,
+  LucideLayers,
   LucideLayoutGrid,
   LucideMonitor,
   LucideMoon,
@@ -12,17 +13,37 @@ import {
   LucideSun,
   LucideType,
 } from "@lucide/angular";
+import { Commands } from "../components/command-palette";
+import { Toaster } from "../components/toast";
 import { Preferences, THEME_CHOICES, type ThemeChoice } from "../theme/preferences";
-import { Colors } from "./colors";
-import { Components } from "./components";
-import { Foundations, Typography } from "./foundations";
-
+/** Each page loads on demand, so the first load carries only the shell. */
 export const CATALOG_ROUTES: Routes = [
   { path: "", pathMatch: "full", redirectTo: "catalog/colors" },
-  { path: "catalog/colors", component: Colors, title: "Specty · Colores" },
-  { path: "catalog/typography", component: Typography, title: "Specty · Tipografía" },
-  { path: "catalog/foundations", component: Foundations, title: "Specty · Fundamentos" },
-  { path: "catalog/components", component: Components, title: "Specty · Componentes" },
+  {
+    path: "catalog/colors",
+    loadComponent: () => import("./colors").then((page) => page.Colors),
+    title: "Specty · Colores",
+  },
+  {
+    path: "catalog/typography",
+    loadComponent: () => import("./foundations").then((page) => page.Typography),
+    title: "Specty · Tipografía",
+  },
+  {
+    path: "catalog/foundations",
+    loadComponent: () => import("./foundations").then((page) => page.Foundations),
+    title: "Specty · Fundamentos",
+  },
+  {
+    path: "catalog/components",
+    loadComponent: () => import("./components").then((page) => page.Components),
+    title: "Specty · Componentes",
+  },
+  {
+    path: "catalog/overlays",
+    loadComponent: () => import("./overlays").then((page) => page.Overlays),
+    title: "Specty · Superposiciones y teclado",
+  },
   { path: "**", redirectTo: "catalog/colors" },
 ];
 
@@ -30,7 +51,7 @@ const THEME_ICONS = { light: LucideSun, dark: LucideMoon, system: LucideMonitor 
 
 @Component({
   selector: "sp-root",
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideDynamicIcon],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideDynamicIcon, Toaster],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-screen bg-bg text-text">
@@ -101,6 +122,7 @@ const THEME_ICONS = { light: LucideSun, dark: LucideMoon, system: LucideMonitor 
           <router-outlet />
         </main>
       </div>
+      <sp-toaster />
     </div>
   `,
 })
@@ -121,8 +143,38 @@ export class Catalog {
         label: t("Fundamentos", "Foundations"),
       },
       { path: "/catalog/components", icon: LucideComponent, label: t("Componentes", "Components") },
+      {
+        path: "/catalog/overlays",
+        icon: LucideLayers,
+        label: t("Superposiciones y teclado", "Overlays and keyboard"),
+      },
     ];
   });
+
+  constructor() {
+    const commands = inject(Commands);
+    const router = inject(Router);
+    const go = (path: string, es: string, en: string) =>
+      commands.register({
+        id: `go:${path}`,
+        label: { es: `Ir a ${es}`, en: `Go to ${en}` },
+        run: () => void router.navigateByUrl(path),
+      });
+    go("/catalog/colors", "Colores", "Colors");
+    go("/catalog/typography", "Tipografía", "Typography");
+    go("/catalog/foundations", "Fundamentos", "Foundations");
+    go("/catalog/components", "Componentes", "Components");
+    go("/catalog/overlays", "Superposiciones y teclado", "Overlays and keyboard");
+    const set = (id: string, es: string, en: string, run: () => void) =>
+      commands.register({ id, label: { es, en }, run });
+    set("theme:light", "Tema claro", "Light theme", () => this.preferences.theme.set("light"));
+    set("theme:dark", "Tema oscuro", "Dark theme", () => this.preferences.theme.set("dark"));
+    set("theme:system", "Tema del sistema", "System theme", () =>
+      this.preferences.theme.set("system"),
+    );
+    set("lang:es", "Idioma: español", "Language: Spanish", () => this.preferences.lang.set("es"));
+    set("lang:en", "Idioma: inglés", "Language: English", () => this.preferences.lang.set("en"));
+  }
 
   protected themeLabel(choice: ThemeChoice): string {
     const t = this.t();

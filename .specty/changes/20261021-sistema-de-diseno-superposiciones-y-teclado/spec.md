@@ -93,7 +93,7 @@ Completar el sistema de diseño con las piezas que flotan sobre la página o res
   - files: packages/ui/src/components/toast.ts, packages/ui/src/keyboard/shortcuts.ts, packages/ui/src/components/command-palette.ts
   - ac: AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T4: Página Superposiciones y teclado, y ⌘K en el catálogo
+- [x] T4: Página Superposiciones y teclado, y ⌘K en el catálogo
   - files: packages/ui/src/catalog/overlays.ts, packages/ui/src/catalog/catalog.ts
   - ac: AC9
   - verify: pnpm check

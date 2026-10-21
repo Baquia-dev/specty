@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261021-sistema-de-diseno-superposiciones-y-teclado",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261021-sistema-de-diseno-superposiciones-y-teclado",
   "baseCommit": "e06145d176229086dc278878d9f3faeb15061b9e",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e3cc503efb8e9b3f376520fa7d7094bfc997aa16",
+      "attempts": 1,
       "startedAt": "2026-10-21T21:58:29.797Z",
       "doneAt": "2026-10-21T22:05:18.625Z",
-      "summary": "Toasts (servicio) y sp-toaster/sp-toast: regiones vivas polite y assertive siempre presentes, icono y tipo leído (nunca solo color), 5 s salvo puntero o foco encima, errores persistentes, máximo 3. Shortcuts: un solo keydown en document, normalización (mod = ⌘/Ctrl; Shift solo cuenta en letras y teclas no impresas), ignora campos salvo mod+k y Escape, el último registro gana, se libera con el DestroyRef de quien registra; ? abre ShortcutsHelp. Commands y sp-command-palette: mod+k, combobox alwaysExpanded y listbox de Aria con selectionMode explicit (follow ejecutaba el primer comando al abrir), cdkFocusInitial en el campo, filtro con fold de core, atajos visibles y registrados"
+      "summary": "Toasts (servicio) y sp-toaster/sp-toast: regiones vivas polite y assertive siempre presentes, icono y tipo leído (nunca solo color), 5 s salvo puntero o foco encima, errores persistentes, máximo 3. Shortcuts: un solo keydown en document, normalización (mod = ⌘/Ctrl; Shift solo cuenta en letras y teclas no impresas), ignora campos salvo mod+k y Escape, el último registro gana, se libera con el DestroyRef de quien registra; ? abre ShortcutsHelp. Commands y sp-command-palette: mod+k, combobox alwaysExpanded y listbox de Aria con selectionMode explicit (follow ejecutaba el primer comando al abrir), cdkFocusInitial en el campo, filtro con fold de core, atajos visibles y registrados",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c265cb929d2151e885b529fd1302afec70260264",
+      "startedAt": "2026-10-21T22:05:18.880Z",
+      "doneAt": "2026-10-21T22:08:43.548Z",
+      "summary": "Página /catalog/overlays: diálogo de ejemplo (rechazar supuesto con motivo obligatorio), menú Exportar con aviso de éxito, avisos de los cuatro tipos, pestañas, plegable y lista de tarjetas con j/k registrados por la página. El armazón coloca sp-toaster y registra en la paleta (mod+k) ir a cada página, tema claro/oscuro/sistema e idioma. Páginas cargadas bajo demanda (loadComponent). ng build: 511 kB sin comprimir / 112 kB transferidos, con aviso del umbral propio de 500 kB (el límite de ui.md, 300 KB gzip, se cumple); ng serve sirve la página sin errores de pre-empaquetado. 67 tests"
     }
   },
   "pending": {
