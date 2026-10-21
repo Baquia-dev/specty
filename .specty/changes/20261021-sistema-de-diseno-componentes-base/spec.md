@@ -71,7 +71,7 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
 
 ## Tareas
 
-- [ ] T1: Botón, tooltip y Kbd
+- [x] T1: Botón, tooltip y Kbd
   - files: packages/ui/src/components/button.ts, packages/ui/src/components/tooltip.ts, packages/ui/src/components/kbd.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui test

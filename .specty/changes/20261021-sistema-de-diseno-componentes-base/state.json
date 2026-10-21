@@ -6,6 +6,13 @@
   "branch": "specty/20261021-sistema-de-diseno-componentes-base",
   "baseCommit": "d62e8d188e3cc7f9b97c1109dcda57d9d7fc7ed5",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ab77cfcf3bdd5ffc709010cd30863a56554aa3b71d18ad2afb160d28269a6d9d",
+    "at": "2026-10-21T20:32:38.297Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -36,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "236763e6b7d54c1c0aaf40f0575950f1512ed2ff",
+      "startedAt": "2026-10-21T20:32:48.290Z",
+      "doneAt": "2026-10-21T20:35:19.193Z",
+      "summary": "sp-button (primaria, secundaria, fantasma; sm y md; salida pressed) y sp-icon-button (label e icon obligatorios) sobre un <button> nativo; con disabledReason, disabled + aria-disabled, sin foco ni acción, y el motivo en un sp-tooltip que envuelve el botón (el anfitrión recibe el puntero). sp-tooltip: aria-describedby en el primer elemento enfocable, foco/puntero, Escape global, arriba o abajo según el espacio. sp-kbd: una tecla por <kbd>, mod como ⌘ o Ctrl, lectura completa es/en. 12 tests nuevos"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,12 +63,5 @@
     "AC": 9,
     "T": 3,
     "R": 4
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:ab77cfcf3bdd5ffc709010cd30863a56554aa3b71d18ad2afb160d28269a6d9d",
-    "at": "2026-10-21T20:32:38.297Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
