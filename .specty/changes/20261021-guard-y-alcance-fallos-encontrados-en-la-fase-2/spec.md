@@ -68,7 +68,7 @@ Corregir cinco fallos de Specty encontrados al construir el sistema de diseño. 
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core test
   - type: fix
-- [ ] T2: El análisis de shell sigue `cd` y marca lo que no puede resolver
+- [x] T2: El análisis de shell sigue `cd` y marca lo que no puede resolver
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core test

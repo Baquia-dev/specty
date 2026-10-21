@@ -40,12 +40,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5d47236f06868cac98854eb10adf6d44f7cd7c23",
+      "attempts": 1,
       "startedAt": "2026-10-21T18:53:53.890Z",
       "doneAt": "2026-10-21T18:54:21.259Z",
-      "summary": "subjectDirectories busca el segmento espejo (test, tests, spec…) a cualquier profundidad y conserva el prefijo: packages/x/test/a → packages/x/src/a, lib/a, app/a. Casos de monorepo en scope.test.ts, incluidos los que deben seguir fuera de alcance (otro paquete u otro módulo)"
+      "summary": "subjectDirectories busca el segmento espejo (test, tests, spec…) a cualquier profundidad y conserva el prefijo: packages/x/test/a → packages/x/src/a, lib/a, app/a. Casos de monorepo en scope.test.ts, incluidos los que deben seguir fuera de alcance (otro paquete u otro módulo)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3960e67f074fd149f69b31a1c69e147ec12baa92",
+      "startedAt": "2026-10-21T18:54:21.500Z",
+      "doneAt": "2026-10-21T18:55:20.822Z",
+      "summary": "analyzeShell recorre los segmentos llevando el directorio: cd relativo o absoluto actualiza las rutas escritas o borradas; cd sin argumento, cd - o destinos con $, ~ o comillas invertidas lo vuelven desconocido. Las rutas que no puede ubicar van al campo nuevo unresolved (en lugar del { path, base } del diseño, para no cambiar writes/deletes). Los heredocs y here-strings ya no cuentan como escrituras"
     }
   },
   "pending": {

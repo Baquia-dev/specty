@@ -17,7 +17,12 @@ export interface ShellAnalysis {
   readonly writes: readonly string[];
   /** Paths removed through `rm`, `rmdir` or `mv`. */
   readonly deletes: readonly string[];
+  /** Written or removed paths it cannot place: shell variables, `~`, or after `cd` to an unknown directory. */
+  readonly unresolved: readonly string[];
 }
+
+/** Directory relative to where the command starts (`""`), absolute, or unknown (`undefined`). */
+type Directory = string | undefined;
 
 const WRAPPERS: ReadonlySet<string> = new Set(["sudo", "env", "command", "exec", "time", "nohup"]);
 const RUNNERS: ReadonlySet<string> = new Set(["node", "bun", "deno"]);
@@ -33,13 +38,52 @@ const EMPTY: ShellAnalysis = {
   bypass: false,
   writes: [],
   deletes: [],
+  unresolved: [],
 };
 
+/** Paths are relative to where the command starts, following its `cd`s, or absolute. */
 export function analyzeShell(command: string): ShellAnalysis {
-  return tokenize(command).map(analyzeSegment).reduce(merge, EMPTY);
+  let directory: Directory = "";
+  let result = EMPTY;
+  for (const tokens of tokenize(command)) {
+    const segment = analyzeSegment(tokens);
+    const place = (paths: readonly string[]) => paths.map((path) => locate(directory, path));
+    const writes = place(segment.writes);
+    const deletes = place(segment.deletes);
+    const unresolved = [...writes, ...deletes].filter((item) => item.path === undefined);
+    result = merge(result, {
+      ...segment,
+      writes: writes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
+      deletes: deletes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
+      unresolved: unresolved.map((item) => item.raw),
+    });
+    directory = changeDirectory(directory, tokens);
+  }
+  return result;
 }
 
-function analyzeSegment(tokens: readonly Token[]): ShellAnalysis {
+const UNRESOLVABLE = /[$`]|^~/;
+
+function locate(directory: Directory, raw: string): { raw: string; path: string | undefined } {
+  if (UNRESOLVABLE.test(raw)) return { raw, path: undefined };
+  if (raw.startsWith("/")) return { raw, path: raw };
+  if (directory === undefined) return { raw, path: undefined };
+  return { raw, path: directory === "" ? raw : `${directory}/${raw}` };
+}
+
+/** The directory after this segment: it only changes on `cd`. */
+function changeDirectory(directory: Directory, tokens: readonly Token[]): Directory {
+  const words = tokens.filter((token) => !token.operator).map((token) => token.text);
+  if (words[0] !== "cd") return directory;
+  const target = words.slice(1).find((word) => !word.startsWith("-") || word === "-");
+  if (target === undefined || target === "-" || UNRESOLVABLE.test(target)) return undefined;
+  if (target.startsWith("/")) return target.replace(/\/+$/, "") || "/";
+  if (directory === undefined) return undefined;
+  const joined = directory === "" ? target : `${directory}/${target}`;
+  return joined.replace(/\/+$/, "");
+}
+
+function analyzeSegment(tokens: readonly Token[]): Omit<ShellAnalysis, "unresolved"> {
   const { words, redirected } = splitRedirections(tokens);
   const assignments = words.filter(
     (word, index) => isAssignment(word) && words.slice(0, index).every(isAssignment),
@@ -72,6 +116,7 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     bypass: a.bypass || b.bypass,
     writes: [...a.writes, ...b.writes],
     deletes: [...a.deletes, ...b.deletes],
+    unresolved: [...a.unresolved, ...b.unresolved],
   };
 }
 
@@ -87,7 +132,8 @@ function splitRedirections(tokens: readonly Token[]): { words: string[]; redirec
     }
     const target = tokens[index + 1];
     index++;
-    if (token.text === "<" || target === undefined || target.operator) continue;
+    // Input only: `<`, a heredoc delimiter (`<<`, `<<-`) or a here-string (`<<<`).
+    if (token.text.startsWith("<") || target === undefined || target.operator) continue;
     if (target.text === "/dev/null" || /^&\d$/.test(target.text)) continue;
     redirected.push(target.text);
   }

@@ -68,4 +68,31 @@ describe("analyzeShell", () => {
     expect(analyzeShell("cp src/a.ts src/copy.ts").writes).toEqual(["src/copy.ts"]);
     expect(analyzeShell("pnpm test").writes).toEqual([]);
   });
+
+  it("does not take a heredoc delimiter or a here-string for a file", () => {
+    const heredoc = analyzeShell("cat > src/a.ts <<'EOF'\nx\nEOF");
+    expect(heredoc.writes).toEqual(["src/a.ts"]);
+    expect(analyzeShell("wc -l <<< 'text'").writes).toEqual([]);
+  });
+
+  it("places relative paths after `cd` (AC2)", () => {
+    const edit = analyzeShell("cd packages/ui && sed -i '' 's/a/b/' src/catalog/catalog.ts");
+    expect(edit.writes).toEqual(["packages/ui/src/catalog/catalog.ts"]);
+    expect(analyzeShell("cd /tmp/x/ && rm -rf foo").deletes).toEqual(["/tmp/x/foo"]);
+    expect(analyzeShell("cd .. && rm x").deletes).toEqual(["../x"]);
+    expect(analyzeShell("cd a; cd b && touch c").writes).toEqual(["a/b/c"]);
+    expect(analyzeShell("cd -P src && mv a.ts b.ts").deletes).toEqual(["src/a.ts"]);
+    expect(analyzeShell("echo x > /abs/path").writes).toEqual(["/abs/path"]);
+  });
+
+  it("reports what it cannot place instead of guessing (AC3)", () => {
+    const scratch = analyzeShell("S=/tmp/x && mkdir -p $S/biome && cd $S/biome && cat > a.css");
+    expect(scratch.writes).toEqual([]);
+    expect(scratch.unresolved).toEqual(["a.css"]);
+    expect(analyzeShell('echo > "$HOME/a" && rm ~/b').unresolved).toEqual(["$HOME/a", "~/b"]);
+    expect(analyzeShell("cd - && rm a").unresolved).toEqual(["a"]);
+    expect(analyzeShell("cd && rm a").unresolved).toEqual(["a"]);
+    const absolute = analyzeShell("cd $X && cd /repo && rm a");
+    expect([absolute.deletes, absolute.unresolved]).toEqual([["/repo/a"], []]);
+  });
 });
