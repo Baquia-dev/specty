@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261021-guard-y-alcance-fallos-encontrados-en-la-fase-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261021-guard-y-alcance-fallos-encontrados-en-la-fase-2",
   "baseCommit": "e1f5478471bf70bae854737944ad13ffd1793761",
   "revision": 1,
@@ -58,12 +58,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9513d96ec325d5f4041533393bef9fede6293c02",
+      "attempts": 1,
       "startedAt": "2026-10-21T18:55:21.073Z",
       "doneAt": "2026-10-21T18:57:05.697Z",
-      "summary": "El guard resuelve las rutas que ya vienen ubicadas tras los cd (relativas al cwd del evento o absolutas), descarta las de fuera del repo y las que git ignora (Git.ignored con git check-ignore -z --stdin, una sola llamada) y no juzga las que el análisis no puede ubicar. Tests end-to-end de cd, scratchpad, heredoc, variables y rutas ignoradas. Nota en ARCHITECTURE §10. rm -rf . no se bloqueaba antes ni ahora: queda como pendiente"
+      "summary": "El guard resuelve las rutas que ya vienen ubicadas tras los cd (relativas al cwd del evento o absolutas), descarta las de fuera del repo y las que git ignora (Git.ignored con git check-ignore -z --stdin, una sola llamada) y no juzga las que el análisis no puede ubicar. Tests end-to-end de cd, scratchpad, heredoc, variables y rutas ignoradas. Nota en ARCHITECTURE §10. rm -rf . no se bloqueaba antes ni ahora: queda como pendiente",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e412192f44f1179ee3b8bd850f6925e86a7d7f93",
+      "startedAt": "2026-10-21T18:57:07.222Z",
+      "doneAt": "2026-10-21T18:58:14.929Z",
+      "summary": "detect/formatters.ts detecta Biome (biome.json/jsonc) y Prettier (.prettierrc*, prettier.config.*, clave prettier en package.json) y si excluyen .specty; doctor lo comprueba y, si falta, dice la línea exacta y dónde va. Tests de aviso y de exclusión correcta. Nota en formats.md §6"
     }
   },
   "pending": {

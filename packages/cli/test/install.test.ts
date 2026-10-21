@@ -43,6 +43,29 @@ describe("hook managers", () => {
     expect((await cli(root, ["doctor"])).out).toContain("Hooks de git instalados.");
   });
 
+  it("warns when a formatter would check .specty/ (AC5)", async () => {
+    const root = await tempRepo({
+      "biome.json": JSON.stringify({ files: { includes: ["**"] } }),
+      "package.json": JSON.stringify({ name: "x", prettier: {} }),
+    });
+    await cli(root, ["init", "--language", "es"]);
+    const warned = await cli(root, ["doctor"]);
+    expect(warned.code).toBe(1);
+    expect(warned.out).toContain(
+      'Biome también revisa .specty/, que escribe Specty: añade "!.specty" en biome.json (files.includes).',
+    );
+    expect(warned.out).toContain("Prettier también revisa .specty/");
+
+    await writeFiles(root, {
+      "biome.json": JSON.stringify({ files: { includes: ["**", "!.specty"] } }),
+      ".prettierignore": "dist\n.specty/\n",
+    });
+    const fixed = await cli(root, ["doctor"]);
+    expect(fixed.out).toContain("Biome excluye .specty/.");
+    expect(fixed.out).toContain("Prettier excluye .specty/.");
+    expect(fixed.out).not.toContain("también revisa .specty/");
+  });
+
   it("explains what to add for simple-git-hooks", async () => {
     const root = await tempRepo({
       "package.json": JSON.stringify({ name: "x", "simple-git-hooks": {} }),

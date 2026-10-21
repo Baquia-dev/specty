@@ -79,7 +79,7 @@ Corregir cinco fallos de Specty encontrados al construir el sistema de diseño. 
   - verify: pnpm --filter @baquia-dev/specty test
   - type: fix
   - notes: Incluye la nota de ARCHITECTURE §10.
-- [ ] T4: doctor avisa si el formateador revisa .specty/
+- [x] T4: doctor avisa si el formateador revisa .specty/
   - files: packages/cli/src/detect/formatters.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/install.test.ts
   - ac: AC5
   - verify: pnpm check

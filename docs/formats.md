@@ -276,6 +276,8 @@ ui:
   requireUserPresence: false      # WebAuthn (fase 4)
 ```
 
+Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
+
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
 
 ## 7. Trailers de commit

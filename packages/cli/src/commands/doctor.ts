@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import { hasBlock, headerOf, type Output, section, translator } from "@baquia-dev/specty-core";
+import { formatterExclusions } from "../detect/formatters";
 import { detectProject } from "../detect/project";
 import { hasGuard } from "../install/agents";
 import { gitHooksInstalled } from "../install/git-hooks";
@@ -53,6 +54,16 @@ export async function doctor(session: Session): Promise<Output> {
       t(
         `Cursor: falta el guard; ejecuta \`${COMMAND} init --tools cursor\`.`,
         `Cursor: the guard is missing; run \`${COMMAND} init --tools cursor\`.`,
+      ),
+    );
+  }
+  for (const formatter of await formatterExclusions(root)) {
+    check(
+      formatter.excluded,
+      t(`${formatter.name} excluye .specty/.`, `${formatter.name} excludes .specty/.`),
+      t(
+        `${formatter.name} también revisa .specty/, que escribe Specty: añade ${formatter.add} en ${formatter.file}.`,
+        `${formatter.name} also checks .specty/, which Specty writes: add ${formatter.add} to ${formatter.file}.`,
       ),
     );
   }
