@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261021-guard-y-alcance-fallos-encontrados-en-la-fase-2",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261021-guard-y-alcance-fallos-encontrados-en-la-fase-2",
+  "baseCommit": "e1f5478471bf70bae854737944ad13ffd1793761",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:af2ca6323def435b60093eeecc19167f483f8767ea73a4ac79c16cdee542506d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3e506c37a8304507a6c783c09a974a2a38f5616334e2e8ff4746054f535e2d4a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9080cc1ebff5d50765152e609602f567d3250dda60a898f627f176098b4e3df2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4f8429ee4b07d89e6f41cd2f420c7e4e70861aa0778622f67d82ddc575b988d6",
+    "at": "2026-10-21T18:53:36.584Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

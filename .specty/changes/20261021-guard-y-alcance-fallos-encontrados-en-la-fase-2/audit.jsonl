@@ -1,0 +1,3 @@
+{"ts":"2026-10-21T18:30:14.816Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261021-guard-y-alcance-fallos-encontrados-en-la-fase-2"}}
+{"ts":"2026-10-21T18:30:42.668Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:4f8429ee4b07d89e6f41cd2f420c7e4e70861aa0778622f67d82ddc575b988d6","size":"L","warnings":0}}
+{"ts":"2026-10-21T18:53:36.607Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:4f8429ee4b07d89e6f41cd2f420c7e4e70861aa0778622f67d82ddc575b988d6","channel":"tty"}}
