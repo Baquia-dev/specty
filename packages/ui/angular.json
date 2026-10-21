@@ -20,12 +20,13 @@
             "index": "src/index.html",
             "tsConfig": "tsconfig.json",
             "styles": ["src/styles.css"],
-            "outputPath": "dist"
+            "outputPath": "dist",
+            "allowedCommonJsDependencies": ["picomatch/posix"]
           },
           "configurations": {
             "production": {
               "outputHashing": "all",
-              "budgets": [{ "type": "initial", "maximumError": "300kB" }]
+              "budgets": [{ "type": "initial", "maximumWarning": "500kB", "maximumError": "1MB" }]
             },
             "development": {
               "optimization": false,

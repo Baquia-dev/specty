@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261021-sistema-de-diseno-tokens-y-catalogo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261021-sistema-de-diseno-tokens-y-catalogo",
   "baseCommit": "a1a5d7344e6f589071948d54c18f3c6ee5bab137",
   "revision": 1,
@@ -69,15 +69,26 @@
     },
     "T2": {
       "status": "done",
+      "baseCommit": "c08f3c6198014dabb7b74d7684540daaa4064ff9",
+      "attempts": 1,
+      "startedAt": "2026-10-21T08:01:38.211Z",
+      "doneAt": "2026-10-21T08:20:41.436Z",
+      "summary": "Tokens de Tinta en styles.css (@theme static de Tailwind 4, tema oscuro con data-theme, movimiento ≤ 200 ms y 0 con reduced-motion); inventario de tokens es/en y contraste WCAG en tokens.ts; Preferences con signals (tema claro/oscuro/sistema, idioma, localStorage tolerante a fallos); tests de contraste y preferencias. Alcance ampliado: .postcssrc.json (S1) y biome.json con directivas de Tailwind e ignorando .specty (S2)",
       "scopeExtra": [
         "packages/ui/.postcssrc.json",
         "biome.json"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/angular.json"
       ],
-      "attempts": 1,
-      "baseCommit": "c08f3c6198014dabb7b74d7684540daaa4064ff9",
-      "startedAt": "2026-10-21T08:01:38.211Z",
-      "doneAt": "2026-10-21T08:20:41.436Z",
-      "summary": "Tokens de Tinta en styles.css (@theme static de Tailwind 4, tema oscuro con data-theme, movimiento ≤ 200 ms y 0 con reduced-motion); inventario de tokens es/en y contraste WCAG en tokens.ts; Preferences con signals (tema claro/oscuro/sistema, idioma, localStorage tolerante a fallos); tests de contraste y preferencias. Alcance ampliado: .postcssrc.json (S1) y biome.json con directivas de Tailwind e ignorando .specty (S2)"
+      "attempts": 2,
+      "baseCommit": "e021569d290100375ccce877215e77751c99c699",
+      "startedAt": "2026-10-21T08:20:41.696Z",
+      "doneAt": "2026-10-21T16:45:51.534Z",
+      "summary": "Catálogo Angular en /catalog: armazón con navegación accesible (radios nativos para tema e idioma, aria-current), páginas Colores (base, usos del acento, ocho fases con icono y nombre), Tipografía y Fundamentos con valores en vivo; 19 tests (100 % líneas). Build sin recursos externos (Geist y Geist Mono en dist/media, 75 kB transferidos). Presupuesto en angular.json alineado con ui.md y picomatch/posix permitido (S3). Docs: dirección Tinta en ui.md y packages/ui en AGENTS.md"
     }
   },
   "pending": {
@@ -89,6 +100,6 @@
     "AC": 8,
     "T": 3,
     "R": 4,
-    "S": 2
+    "S": 3
   }
 }

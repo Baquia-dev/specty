@@ -1,0 +1,94 @@
+// SPDX-License-Identifier: Apache-2.0
+import { TestBed } from "@angular/core/testing";
+import { provideRouter, Router } from "@angular/router";
+import { PHASES } from "@baquia-dev/specty-core";
+import { PHASE_LABELS, TOKENS } from "../theme/tokens";
+import { CATALOG_ROUTES, Catalog } from "./catalog";
+
+async function open(path: string) {
+  TestBed.configureTestingModule({ providers: [provideRouter(CATALOG_ROUTES)] });
+  const fixture = TestBed.createComponent(Catalog);
+  await TestBed.inject(Router).navigateByUrl(path);
+  await fixture.whenStable();
+  const element: HTMLElement = fixture.nativeElement;
+  return { fixture, element };
+}
+
+const text = (element: HTMLElement) => element.textContent?.replace(/\s+/g, " ") ?? "";
+
+describe("Catalog", () => {
+  beforeEach(() => {
+    window.matchMedia = (() => ({
+      matches: false,
+      addEventListener: () => undefined,
+    })) as unknown as typeof window.matchMedia;
+    localStorage.clear();
+    localStorage.setItem("specty.lang", "es");
+    TestBed.resetTestingModule();
+  });
+
+  it("opens on Colors and links every page, marking the current one (AC3)", async () => {
+    const { element } = await open("/");
+    const links = [...element.querySelectorAll<HTMLAnchorElement>("nav a")];
+    expect(links.map((link) => link.getAttribute("href"))).toEqual([
+      "/catalog/colors",
+      "/catalog/typography",
+      "/catalog/foundations",
+    ]);
+    expect(links[0]?.getAttribute("aria-current")).toBe("page");
+    expect(element.querySelector("h1")?.textContent).toContain("Colores");
+  });
+
+  it("shows the eight phases with icon and name, and the accent uses (AC4)", async () => {
+    const { element } = await open("/catalog/colors");
+    const phases = [...element.querySelectorAll<HTMLElement>("[data-phase]")];
+    expect(phases.map((item) => item.dataset.phase)).toEqual([...PHASES]);
+    for (const [index, phase] of PHASES.entries()) {
+      const item = phases[index];
+      expect(item?.querySelector("svg")).not.toBeNull();
+      expect(text(item ?? element)).toContain(PHASE_LABELS[phase].es);
+    }
+    expect(text(element)).toContain("Acción primaria");
+    expect(element.querySelector("button")).not.toBeNull();
+    expect(element.querySelector("main a[href]")).not.toBeNull();
+  });
+
+  it("lists every token by name across the three pages (AC3)", async () => {
+    const shown = new Set<string>();
+    for (const path of ["/catalog/colors", "/catalog/typography", "/catalog/foundations"]) {
+      TestBed.resetTestingModule();
+      const { element } = await open(path);
+      for (const code of element.querySelectorAll("code"))
+        shown.add(code.textContent?.trim() ?? "");
+    }
+    const phaseTokens = PHASES.flatMap((phase) => [
+      `--color-phase-${phase}`,
+      `--color-phase-${phase}-bg`,
+    ]);
+    const missing = TOKENS.map((token) => token.name).filter(
+      (name) => !phaseTokens.includes(name) && !shown.has(name),
+    );
+    expect(missing).toEqual([]);
+  });
+
+  it("switches theme and language without reloading (AC5)", async () => {
+    const { fixture, element } = await open("/catalog/colors");
+    const radio = (name: string, value: string) =>
+      element.querySelector<HTMLInputElement>(`input[name="${name}"][value="${value}"]`);
+
+    radio("theme", "dark")?.click();
+    radio("lang", "en")?.click();
+    await fixture.whenStable();
+
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(document.documentElement.lang).toBe("en");
+    expect(element.querySelector("h1")?.textContent).toContain("Colors");
+    expect(text(element)).toContain("Dark");
+    expect(localStorage.getItem("specty.theme")).toBe("dark");
+  });
+
+  it("redirects unknown paths to Colors", async () => {
+    const { element } = await open("/nowhere");
+    expect(element.querySelector("h1")?.textContent).toContain("Colores");
+  });
+});

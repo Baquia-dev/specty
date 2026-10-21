@@ -23,7 +23,7 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 
 Herramienta que hace cumplir el desarrollo guiado por especificaciones con cualquier agente de IA. Producto: [PRODUCT.md](PRODUCT.md). Diseño: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-dev/specty-core`, puro) y `packages/cli` (`@baquia-dev/specty`, el comando `specty`).
+Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-dev/specty-core`, puro) `packages/cli` (`@baquia-dev/specty`, el comando `specty`) y `packages/ui` (`@baquia-dev/specty-ui`, la UI web en Angular 22, que usa TypeScript 6.0 porque Angular aún no admite la 7; ver [ADR 0009](docs/decisions/0009-angular-para-la-ui.md)).
 
 ## Comandos
 
@@ -31,6 +31,7 @@ Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-de
 - Todo (lint, tipos, cabeceras y tamaño de archivos, tests con cobertura): `pnpm check`
 - Formatear y corregir lint: `pnpm format`
 - Construir el CLI: `pnpm --filter @baquia-dev/specty build` (genera `packages/cli/dist/specty.mjs`)
+- Catálogo del sistema de diseño: `pnpm --filter @baquia-dev/specty-ui exec ng serve` (abre `/catalog`)
 - Un archivo de test: `pnpm --filter @baquia-dev/specty-core exec vitest run test/spec/parse.test.ts`
 
 ## Mapa
@@ -40,6 +41,7 @@ Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-de
 - `packages/core/src/flow/`: máquina de estados y permisos por fase.
 - `packages/core/src/guard/`: análisis de comandos de shell y decisión del guard.
 - `packages/core/src/cards/`: textos que ve el agente (salida de cada comando).
+- `packages/ui/src/styles.css`: tokens del sistema de diseño (única fuente de valores); `theme/`: inventario de tokens y preferencias; `catalog/`: catálogo navegable. Los tests van junto a cada fuente (`*.test.ts`).
 - `packages/cli/src/commands/`: un archivo por comando; `enforce/`: hooks de git y guard; `install/`: lo que escribe `init`.
 - `packages/*/test/fixtures/`: specs de ejemplo; las canónicas deben seguir siéndolo.
 
@@ -54,4 +56,4 @@ Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-de
 
 ## Terminado
 
-`pnpm check` en verde. La cobertura no baja del 90 % en el core ni del 80 % en el CLI.
+`pnpm check` en verde. La cobertura no baja del 90 % en el core ni del 80 % en el CLI y en la UI.

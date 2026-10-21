@@ -92,7 +92,7 @@ Crear `packages/ui` con Angular 22 y los tokens del sistema de diseño en la dir
   - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.ts, packages/ui/src/theme/preferences.ts
   - ac: AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T3: Catálogo navegable
+- [x] T3: Catálogo navegable
   - files: packages/ui/src/index.html, packages/ui/src/main.ts, packages/ui/src/catalog/catalog.ts, packages/ui/src/catalog/colors.ts, packages/ui/src/catalog/foundations.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm check
