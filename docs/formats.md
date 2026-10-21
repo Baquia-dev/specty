@@ -191,7 +191,8 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 
   Si el texto de un ítem cambia, su decisión vuelve a `pending`.
 - `tasks[].status` puede ser `pending`, `active` o `done`. `scopeExtra` guarda las ampliaciones aprobadas.
-- `maxIds` guarda el número más alto usado por cada prefijo, para que un id borrado nunca se reutilice con otro significado.
+- `items[].comment` (opcional) guarda por qué la persona rechazó un supuesto; el agente lo lee en `specty next`.
+- `maxIds` guarda el número más alto usado por cada prefijo (también `S`, las solicitudes de alcance), para que un id borrado nunca se reutilice con otro significado.
 - `closingSubmittedAt` (opcional) indica que el cierre ya se envió y espera la confirmación de la persona.
 
 ## 4. `audit.jsonl`
@@ -300,7 +301,12 @@ Specty-Agent: claude-code
 
 ```markdown
 <!-- specty:begin id=project -->
-…hechos del proyecto generados por `specty init`: stack, comandos verificados, mapa, convenciones…
+## Proyecto (detectado por Specty)
+- Stack: TypeScript (pnpm)
+- Paquetes: packages/cli, packages/core
+- Comandos:
+  - Tests: `pnpm test`
+  - Check: `pnpm check`
 <!-- specty:end id=project -->
 
 <!-- specty:begin id=flow -->
@@ -309,12 +315,12 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 - Si el usuario pide un cambio y no hay uno activo, `specty next` te indica cómo crear la spec.
 - Completa cada tarea con `specty task done <id>`; no ejecutes `git commit` tú mismo.
 - Si necesitas un archivo fuera del alcance de la tarea, pídelo con `specty scope add`.
-- Aprobar, aceptar y cerrar lo hace el usuario en la UI de Specty; si te lo pide, dale el enlace.
+- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno.
 - Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.
 <!-- specty:end id=flow -->
 ```
 
-Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modifica.
+Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modifica. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas para completarlas a mano. Cuando exista la UI (fase 2), la línea de aprobación remitirá también a ella.
 
 ## 9. Salida de los comandos
 

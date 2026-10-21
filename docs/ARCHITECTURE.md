@@ -111,7 +111,9 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty adjust "<petición literal>"` | acceptance | Registra la petición y devuelve el protocolo de clasificación |
 | `specty retro [--into <id>]` | Cualquiera | Devuelve el protocolo para documentar cambios ya hechos |
 
-Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve`, `accept` y `cancel`, que exigen TTY y sirven como alternativa a la UI.
+Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve [--scope <S>]`, `reject --scope <S>`, `accept`, `close` y `cancel`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir.
+
+Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, que se registra como retro aparte) y `init`, `status`, `doctor`, `approve`, `reject`, `accept`, `close` y `cancel`. `ui`, `why`, `audit`, `export`, `ci` y `next --wait` llegan en fases posteriores.
 
 **Contrato de salida** (igual en CLI y MCP):
 
@@ -209,13 +211,13 @@ Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audi
 
 Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escriben archivos, `--no-verify`, `core.hooksPath`, acciones humanas) son de mejor esfuerzo, porque un comando siempre se puede ofuscar. Para eso existe la capa 3. El guard también bloquea `npx specty`, `npm i specty` y sus equivalentes sin scope, porque `specty` en npm es un paquete ajeno ([ADR 0007](decisions/0007-nombre-y-organizacion.md)), y responde con el comando correcto.
 
-**Soporte de hooks por herramienta** (revisado el 2026-10-20; se vuelve a verificar al implementar cada adaptador):
+**Soporte de hooks por herramienta** (revisado el 2026-10-21; se vuelve a verificar al implementar cada adaptador):
 
 | Herramienta | Evento previo a la acción | Configuración | Estado |
 | --- | --- | --- | --- |
-| Claude Code | `PreToolUse` | `.claude/settings.json` | Soportado; el legacy ya lo instala |
+| Claude Code | `PreToolUse` (`matcher` + `hooks: [{ type: "command" }]`; salida 2 bloquea) | `.claude/settings.json`, o `settings.local.json` si el comando lleva una ruta local | Implementado (F1) |
 | Antigravity | `PreToolUse` | `.agents/hooks.json` | El legacy lo instala; verificar |
-| Cursor | `preToolUse`, `beforeShellExecution` | `.cursor/hooks.json` | Documentado |
+| Cursor | `preToolUse` (`Write`, `Delete`, `Shell`) y `beforeShellExecution`; responde JSON con `permission` | `.cursor/hooks.json` (`version: 1`) | Implementado (F1). No existe un evento previo a editar: `Write` cubre las escrituras del agente |
 | Windsurf | `pre_write_code`, `pre_run_command` | `.windsurf/hooks.json` | Documentado |
 | Gemini CLI | `BeforeTool` | `.gemini/settings.json` | Experimental; hay que activarlo |
 | GitHub Copilot | `preToolUse` | `.github/hooks/*.json` | Parcial; verificar |
@@ -347,9 +349,9 @@ Mide violaciones, bloqueos y rondas. Se ejecuta antes de cada versión, y es lo 
 
 | Módulo | Tamaño | Acoplamiento | Plan |
 | --- | --- | --- | --- |
-| `src/detect` | ~1,7k líneas | Solo sus propios tipos | Casi íntegro. Se añade la detección de herramientas de IA y de comandos de CI |
-| `src/governance/hook-managers` | ~0,8k | `core/git` | Íntegro. Los hooks nuevos implementan recibos y cambios manuales |
-| `src/adapters` (21) | ~1,5k | `generate/types`, `i18n`, `config` | Se portan el registro y la escritura JSONC. Cambia lo que generan: puntero mínimo, hooks y MCP, y por defecto solo para las herramientas detectadas. Se añaden hooks a más herramientas: hoy solo 2 de los 21 adaptadores los instalan |
+| `src/detect` | ~1,7k líneas | Solo sus propios tipos | Reescrito en la fase 1 de forma compacta (~450 líneas, sin clases ni casts), con las mismas pilas y frameworks, el gestor de paquetes en los comandos y la detección de herramientas de IA. Falta leer los comandos del CI (F3) |
+| `src/governance/hook-managers` | ~0,8k | `core/git` | Reescrito en la fase 1 con la misma idea (bloque marcado e idempotente) para `pre-commit` y `prepare-commit-msg`, respetando `core.hooksPath`, husky y lefthook; simple-git-hooks se indica a mano |
+| `src/adapters` (21) | ~1,5k | `generate/types`, `i18n`, `config` | La fase 1 cubre Claude Code y Cursor. Al portarlo se vio que el legacy escribía los hooks de Claude Code sin la lista `hooks: [{ type: "command" }]` que exige su formato, así que probablemente nunca se ejecutaban. Solo 2 de los 21 adaptadores instalaban hooks |
 | `src/ui/server.ts`, `src/ui/sse.ts` | ~250 | Bajo | Se portan con la seguridad nueva. `router`, `dispatcher` y los servicios (~1,4k) no se portan, porque dependen de la gobernanza legacy |
 
 Se reescribe:
@@ -367,8 +369,8 @@ Se elimina:
 
 | Fase | Contenido | Criterio de salida |
 | --- | --- | --- |
-| F0 · Fundaciones | Monorepo. En core: spec (parser, serializador, hash, delta, validación), máquina de estados, alcance y tamaño | Pruebas de ida y vuelta y de transiciones en verde |
-| F1 · Flujo por CLI | `init` (detección), los 7 comandos del agente, git (ramas, recibos, trailers), hooks de git, bloques de AGENTS.md, guard con adaptadores de Claude Code y Cursor, aprobación por TTY | Desde aquí, Specty se construye usándose a sí mismo |
+| F0 · Fundaciones ✓ | Monorepo. En core: spec (parser, serializador, hash, delta, validación), máquina de estados, alcance y tamaño | Pruebas de ida y vuelta y de transiciones en verde |
+| F1 · Flujo por CLI ✓ | `init` (detección), los 7 comandos del agente, git (ramas, recibos, trailers), hooks de git, bloques de AGENTS.md, guard con adaptadores de Claude Code y Cursor, aprobación por TTY | Desde aquí, Specty se construye usándose a sí mismo |
 | F2 · UI | Primero el sistema de diseño y un prototipo navegable; después las pantallas de revisión, delta, progreso, aceptación y cierre en vivo | Un cambio completo sin abrir el Markdown |
 | F3 · Auditoría y ecosistema | `why`, `audit`, flujo retro completo, `specty ci` y GitHub Action, exportadores, importador desde OpenSpec y el legacy, servidor MCP, más adaptadores con hooks, suite de cumplimiento con ≥ 4 agentes | La suite de cumplimiento es estable con cada agente |
 | F4 · Escala y equipos | Épicas y worktrees en paralelo, modo equipo (aprobadores, revisión de PR), WebAuthn, extensión de VS Code (mismo bundle de UI), MCP Apps en el chat | — |
