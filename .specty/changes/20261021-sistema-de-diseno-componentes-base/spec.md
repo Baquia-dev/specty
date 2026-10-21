@@ -98,7 +98,7 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-ui test
   - notes: Ajuste pedido en aceptación. Actualiza la descripción del foco de Tinta en docs/ui.md.
-- [ ] T5: Ripple al pulsar los botones
+- [x] T5: Ripple al pulsar los botones
   - files: packages/ui/src/components/button.ts
   - ac: AC1
   - verify: pnpm check

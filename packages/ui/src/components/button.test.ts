@@ -61,6 +61,58 @@ describe("Button", () => {
     expect(tooltip?.classList).not.toContain("invisible");
   });
 
+  it("ripples from the pressed point while held, and fades on release (AC1)", async () => {
+    window.matchMedia = (() => ({ matches: false })) as unknown as typeof window.matchMedia;
+    const { button } = await render();
+    vi.spyOn(button, "getBoundingClientRect").mockReturnValue({
+      left: 0,
+      top: 0,
+      width: 100,
+      height: 40,
+    } as DOMRect);
+    const press = (type: string) =>
+      button.dispatchEvent(new MouseEvent(type, { clientX: 10, clientY: 20, bubbles: true }));
+
+    press("pointerdown");
+    const wave = button.querySelector<HTMLElement>("[data-ripple]");
+    expect(wave?.getAttribute("aria-hidden")).toBe("true");
+    // Radius to the farthest corner: hypot(90, 20).
+    expect(Number.parseFloat(wave?.style.width ?? "")).toBeCloseTo(2 * Math.hypot(90, 20));
+    expect(wave?.style.left).toBe(`${10 - Math.hypot(90, 20)}px`);
+
+    press("pointerup");
+    expect(button.querySelector("[data-ripple]")).toBeNull();
+  });
+
+  it("animates within the motion tokens when the browser can", async () => {
+    window.matchMedia = (() => ({ matches: false })) as unknown as typeof window.matchMedia;
+    const { button } = await render();
+    const finished: { onfinish: (() => void) | null } = { onfinish: null };
+    const animate = vi.fn(() => finished as unknown as Animation);
+    HTMLElement.prototype.animate = animate;
+    button.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
+    expect(animate).toHaveBeenCalledWith(
+      [{ transform: "scale(0)" }, { transform: "scale(1)" }],
+      expect.objectContaining({ duration: 200 }),
+    );
+    button.dispatchEvent(new MouseEvent("pointerleave"));
+    expect(animate).toHaveBeenLastCalledWith(
+      [{ opacity: 0.2 }, { opacity: 0 }],
+      expect.objectContaining({ duration: 120 }),
+    );
+    expect(button.querySelector("[data-ripple]")).not.toBeNull();
+    finished.onfinish?.();
+    expect(button.querySelector("[data-ripple]")).toBeNull();
+    Reflect.deleteProperty(HTMLElement.prototype, "animate");
+  });
+
+  it("does not ripple when the system asks for reduced motion (AC1)", async () => {
+    window.matchMedia = (() => ({ matches: true })) as unknown as typeof window.matchMedia;
+    const { button } = await render();
+    button.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
+    expect(button.querySelector("[data-ripple]")).toBeNull();
+  });
+
   it("names an icon button with its label, without repeating it as a description (AC1)", async () => {
     const { element, host } = await render();
     const icon = element.querySelector<HTMLButtonElement>("#icon button");
