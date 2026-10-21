@@ -1,0 +1,3 @@
+{"ts":"2026-10-21T07:42:57.486Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261021-sistema-de-diseno-tokens-y-catalogo"}}
+{"ts":"2026-10-21T07:48:13.539Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:97afc7189c1151fc0c0a610f70be75a9857f04b82915c9bbfa71222ad460b861","size":"L","warnings":3}}
+{"ts":"2026-10-21T07:58:35.522Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:97afc7189c1151fc0c0a610f70be75a9857f04b82915c9bbfa71222ad460b861","channel":"tty"}}

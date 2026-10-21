@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "20261021-sistema-de-diseno-tokens-y-catalogo",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261021-sistema-de-diseno-tokens-y-catalogo",
+  "baseCommit": "a1a5d7344e6f589071948d54c18f3c6ee5bab137",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ee0c0385f0599c1d3c37f755c4b66f46472d0f13bcd9bd32de86fe476df12dd9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4bd2b5f85527bdd8d07bac7dc8139a39271caafd4ca4e29b00593138d91c1832",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:63461717d61f979ab21267698bbf74c3129b6120ff597f8c4304ce9525d6a046",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:de2acdd352f3324ae328895cadfc0fc495b40be0a5caec01733b74c1c2bdb5eb",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:a6f9866f844426a210d99f78409b54d947ece856ee1f77ee7fa0653d265356f5",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:cc93ba9ecccd090bf2d115ebaf440bad047d2a9f630cec0628a2798cfe1c093c",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:95ddfba16ab4d8e3efc1fbf5da1f3aa6b2d9299f1ecee6ddca82728a68afd470",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:5cae5f22f276e1469918f13dccf77aa332aa4aa6a20c2888c0fcfd681ce9c8a2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 8,
+    "T": 3,
+    "R": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:97afc7189c1151fc0c0a610f70be75a9857f04b82915c9bbfa71222ad460b861",
+    "at": "2026-10-21T07:58:35.503Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
