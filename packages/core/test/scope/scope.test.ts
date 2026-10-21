@@ -48,6 +48,23 @@ describe("evaluateTaskScope", () => {
     ]);
   });
 
+  it("allows tests mirroring the scope inside a monorepo package (AC1)", () => {
+    const core = ["packages/core/src/spec/parse.ts"];
+    expect(outOfScope(core, modified("packages/core/test/spec/parse.test.ts"))).toEqual([]);
+    expect(
+      outOfScope(["packages/web/lib/a/b.dart"], modified("packages/web/test/a/b_test.dart")),
+    ).toEqual([]);
+    expect(
+      outOfScope(["packages/core/src/**"], modified("packages/core/test/guard/x.test.ts")),
+    ).toEqual([]);
+    expect(outOfScope(core, modified("packages/cli/test/spec/parse.test.ts"))).toEqual([
+      "packages/cli/test/spec/parse.test.ts",
+    ]);
+    expect(outOfScope(core, modified("packages/core/test/flow/machine.test.ts"))).toEqual([
+      "packages/core/test/flow/machine.test.ts",
+    ]);
+  });
+
   it("can disable implicit tests", () => {
     const rules = { ...RULES, implicitTests: false };
     expect(outOfScope(["src/a/b.ts"], modified("src/a/b.test.ts"), rules)).toEqual([

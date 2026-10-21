@@ -6,6 +6,13 @@
   "branch": "specty/20261021-guard-y-alcance-fallos-encontrados-en-la-fase-2",
   "baseCommit": "e1f5478471bf70bae854737944ad13ffd1793761",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4f8429ee4b07d89e6f41cd2f420c7e4e70861aa0778622f67d82ddc575b988d6",
+    "at": "2026-10-21T18:53:36.584Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -30,7 +37,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5d47236f06868cac98854eb10adf6d44f7cd7c23",
+      "startedAt": "2026-10-21T18:53:53.890Z",
+      "doneAt": "2026-10-21T18:54:21.259Z",
+      "summary": "subjectDirectories busca el segmento espejo (test, tests, spec…) a cualquier profundidad y conserva el prefijo: packages/x/test/a → packages/x/src/a, lib/a, app/a. Casos de monorepo en scope.test.ts, incluidos los que deben seguir fuera de alcance (otro paquete u otro módulo)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -40,12 +57,5 @@
     "AC": 5,
     "T": 4,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4f8429ee4b07d89e6f41cd2f420c7e4e70861aa0778622f67d82ddc575b988d6",
-    "at": "2026-10-21T18:53:36.584Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

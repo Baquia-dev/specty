@@ -58,9 +58,14 @@ function subjectDirectories(path: string): string[] {
     .filter((segment) => segment.length > 0);
   const trimmed = dropTrailing(segments, new Set(["__tests__", "__snapshots__"]));
   const own = trimmed.join("/");
-  const [root, ...rest] = trimmed;
-  if (root === undefined || !MIRROR_ROOTS.has(root)) return [own];
-  const mirrored = SOURCE_ROOTS.map((source) => [source, ...rest].filter(Boolean).join("/"));
+  // The mirror root may be nested, as in a monorepo package: `packages/x/test/a` → `packages/x/src/a`.
+  const mirror = trimmed.findIndex((segment) => MIRROR_ROOTS.has(segment));
+  if (mirror < 0) return [own];
+  const prefix = trimmed.slice(0, mirror);
+  const rest = trimmed.slice(mirror + 1);
+  const mirrored = SOURCE_ROOTS.map((source) =>
+    [...prefix, source, ...rest].filter(Boolean).join("/"),
+  );
   return [own, ...mirrored];
 }
 

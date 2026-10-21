@@ -63,7 +63,7 @@ Corregir cinco fallos de Specty encontrados al construir el sistema de diseño. 
 
 ## Tareas
 
-- [ ] T1: Tests implícitos en monorepos
+- [x] T1: Tests implícitos en monorepos
   - files: packages/core/src/scope/tests.ts, packages/core/test/scope/scope.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core test
