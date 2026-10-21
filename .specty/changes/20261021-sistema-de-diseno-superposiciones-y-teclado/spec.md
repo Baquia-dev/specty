@@ -89,7 +89,7 @@ Completar el sistema de diseño con las piezas que flotan sobre la página o res
   - files: packages/ui/src/components/tabs.ts, packages/ui/src/components/collapsible.ts, packages/ui/src/components/menu.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T3: Avisos, atajos y paleta de comandos
+- [x] T3: Avisos, atajos y paleta de comandos
   - files: packages/ui/src/components/toast.ts, packages/ui/src/keyboard/shortcuts.ts, packages/ui/src/components/command-palette.ts
   - ac: AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui test
