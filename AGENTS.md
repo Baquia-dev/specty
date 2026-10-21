@@ -1,5 +1,26 @@
 # Specty
 
+<!-- specty:begin id=project -->
+## Proyecto (detectado por Specty)
+- Stack: TypeScript (pnpm)
+- Paquetes: packages/cli, packages/core
+- Comandos:
+  - Tests: `pnpm test`
+  - Lint: `pnpm lint`
+  - Typecheck: `pnpm typecheck`
+  - Check: `pnpm check`
+<!-- specty:end id=project -->
+
+<!-- specty:begin id=flow -->
+## Flujo de trabajo (Specty)
+Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta `specty next` y sigue su salida hasta la línea `SIGUIENTE:`.
+- Si el usuario pide un cambio y no hay uno activo, `specty next` te indica cómo crear la spec.
+- Completa cada tarea con `specty task done <id>`; no ejecutes `git commit` tú mismo.
+- Si necesitas un archivo fuera del alcance de la tarea, pídelo con `specty scope add`.
+- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno.
+- Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.
+<!-- specty:end id=flow -->
+
 Herramienta que hace cumplir el desarrollo guiado por especificaciones con cualquier agente de IA. Producto: [PRODUCT.md](PRODUCT.md). Diseño: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-dev/specty-core`, puro) y `packages/cli` (`@baquia-dev/specty`, el comando `specty`).

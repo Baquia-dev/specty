@@ -1,0 +1,24 @@
+# Configuración de Specty. Referencia: docs/formats.md §6
+version: 1
+language: es
+mode: individual
+# Rutas donde rige el flujo: código que necesita una spec aprobada.
+governed: ["**"]
+# Rutas libres: documentación y archivos que no son código.
+ignored: ["**/*.md","docs/**"]
+# Rutas que nunca se aprueban solas y que pesan en el tamaño.
+sensitive: ["**/migrations/**","**/auth/**",".github/**","**/.env*","**/infra/**"]
+verify:
+  default: "pnpm test"
+  full: "pnpm check"
+  timeoutSec: 600
+scope:
+  implicitTests: true
+  generated: []
+  autoApprove: tests-and-generated
+policy:
+  tests: recommended
+retro:
+  mode: agent
+git:
+  branchPerChange: true
