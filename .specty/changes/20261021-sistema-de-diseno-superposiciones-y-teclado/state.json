@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "28faa8fbf9c0460ad86424cffe042d19fd9757d2",
+      "attempts": 1,
       "startedAt": "2026-10-21T21:51:07.361Z",
       "doneAt": "2026-10-21T21:54:19.526Z",
-      "summary": "Dependencias @angular/aria, @angular/cdk y @angular/forms 22.2.3. Servicio Dialogs sobre el Dialog del CDK (aria-modal, aria-labelledby con el título vía DIALOG_TITLE_ID, foco al primer control, fondo negro al 40 %, Escape y devolución del foco) y marco sp-dialog (título, descripción, contenido, acciones y botón de cerrar, entrada con @starting-style ≤ 200 ms). sp-tooltip: descripción siempre presente en un role=tooltip oculto y burbuja visible en un overlay conectado del CDK con posiciones de respaldo (arriba, abajo, derecha, izquierda), margen de 8 px y 100 ms de gracia para pasar a la burbuja"
+      "summary": "Dependencias @angular/aria, @angular/cdk y @angular/forms 22.2.3. Servicio Dialogs sobre el Dialog del CDK (aria-modal, aria-labelledby con el título vía DIALOG_TITLE_ID, foco al primer control, fondo negro al 40 %, Escape y devolución del foco) y marco sp-dialog (título, descripción, contenido, acciones y botón de cerrar, entrada con @starting-style ≤ 200 ms). sp-tooltip: descripción siempre presente en un role=tooltip oculto y burbuja visible en un overlay conectado del CDK con posiciones de respaldo (arriba, abajo, derecha, izquierda), margen de 8 px y 100 ms de gracia para pasar a la burbuja",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bed7411954177d926ba0843b708d38ac172ce383",
+      "startedAt": "2026-10-21T21:54:19.788Z",
+      "doneAt": "2026-10-21T21:58:29.544Z",
+      "summary": "sp-tabs/sp-tab-panel con el patrón WAI-ARIA propio (Aria TabPanel exige ng-template ngTabContent en el contenido del anfitrión y no encaja con paneles proyectados: R3/A3): flechas, Inicio/Fin, activación automática, roving tabindex, aria-controls/labelledby y [(selected)]. sp-collapsible: disclosure con aria-expanded, contenido inert al plegar y altura animada con grid-template-rows y --duration-base. sp-menu sobre Angular Aria (MenuTrigger, Menu, MenuItem con searchTerm para typeahead) en un overlay conectado del CDK con posiciones abajo/arriba; emite el id elegido y devuelve el foco con Escape"
     }
   },
   "pending": {

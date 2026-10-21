@@ -85,7 +85,7 @@ Completar el sistema de diseño con las piezas que flotan sobre la página o res
   - files: packages/ui/package.json, packages/ui/src/components/dialog.ts, packages/ui/src/components/tooltip.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T2: Pestañas, plegable y menú
+- [x] T2: Pestañas, plegable y menú
   - files: packages/ui/src/components/tabs.ts, packages/ui/src/components/collapsible.ts, packages/ui/src/components/menu.ts
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui test
