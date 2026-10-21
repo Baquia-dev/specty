@@ -2,23 +2,24 @@
   "schema": 1,
   "id": "20261021-sistema-de-diseno-componentes-base",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261021-sistema-de-diseno-componentes-base",
   "baseCommit": "d62e8d188e3cc7f9b97c1109dcda57d9d7fc7ed5",
-  "revision": 2,
+  "revision": 4,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:ab77cfcf3bdd5ffc709010cd30863a56554aa3b71d18ad2afb160d28269a6d9d",
-    "at": "2026-10-21T20:32:38.297Z",
+    "revision": 4,
+    "hash": "sha256:71d0558edd760e821a0b6196a1e25c3c328ad94df98d0072db71dbc4a5880fdf",
+    "at": "2026-10-21T21:11:02.129Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
-    "level": "M",
-    "score": 10,
+    "level": "L",
+    "score": 14,
     "adjust": 0,
     "reasons": [
-      "10 archivos"
+      "12 archivos",
+      "5 tareas"
     ]
   },
   "items": {
@@ -64,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "60298efb2a5400d2c78b3ab4e9310f0d7c90a45e",
+      "attempts": 1,
       "startedAt": "2026-10-21T20:37:05.659Z",
       "doneAt": "2026-10-21T20:39:22.144Z",
-      "summary": "sp-field con label, hint, error, placeholder y multiline sobre un <input> o <textarea> nativo, value como model() para [(value)], aria-describedby y aria-invalid enlazados y error con icono y texto. Página /catalog/components con botones (variantes, tamaños, deshabilitado con motivo, de icono), insignias, Kbd, tarjetas, tooltip, campos y esqueletos, enlazada en la navegación. 36 tests; build: 82 kB transferidos"
+      "summary": "sp-field con label, hint, error, placeholder y multiline sobre un <input> o <textarea> nativo, value como model() para [(value)], aria-describedby y aria-invalid enlazados y error con icono y texto. Página /catalog/components con botones (variantes, tamaños, deshabilitado con motivo, de icono), insignias, Kbd, tarjetas, tooltip, campos y esqueletos, enlazada en la navegación. 36 tests; build: 82 kB transferidos",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -79,7 +80,7 @@
   "maxIds": {
     "A": 5,
     "AC": 9,
-    "T": 3,
+    "T": 5,
     "R": 4
   }
 }

@@ -27,12 +27,12 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
 
 ## Criterios de aceptación
 
-- AC1: CUANDO se usa `sp-button` ENTONCES dibuja un `<button>` nativo con las variantes primaria, secundaria y fantasma, los tamaños `sm` y `md` y los tokens de Tinta, y emite su acción al activarlo con clic, Enter o Espacio; `sp-icon-button` exige una etiqueta accesible, y sin ella la plantilla no compila.
+- AC1: CUANDO se usa `sp-button` ENTONCES dibuja un `<button>` nativo con las variantes primaria, secundaria y fantasma, los tamaños `sm` y `md` y los tokens de Tinta, y emite su acción al activarlo con clic, Enter o Espacio; al pulsarlo con el puntero (clic o mantener presionado) muestra una onda (ripple) desde el punto de contacto, que crece mientras se mantiene y se desvanece al soltar, en 200 ms como máximo y sin animación si el sistema pide movimiento reducido; `sp-icon-button` exige una etiqueta accesible, y sin ella la plantilla no compila.
 - AC2: CUANDO un botón está deshabilitado con un motivo ENTONCES su `<button>` lleva `disabled` y `aria-disabled="true"`, se ve deshabilitado, no se puede enfocar ni activar, y al pasar el cursor sobre él aparece un tooltip con el motivo, que además queda como su descripción accesible (`aria-describedby`).
 - AC3: CUANDO el puntero o el foco llegan al contenido de un `sp-tooltip` ENTONCES el tooltip aparece asociado por `aria-describedby` a su elemento enfocable, se mantiene mientras el puntero esté sobre el contenido o sobre el propio tooltip, y Escape lo cierra (WCAG 1.4.13).
 - AC4: CUANDO se muestra una insignia de fase ENTONCES lleva el icono, el nombre de la fase en el idioma actual y sus colores, para las ocho fases; la insignia neutra sirve para tamaños y conteos.
 - AC5: CUANDO se muestra un atajo con Kbd ENTONCES cada tecla aparece por separado, con `mod` adaptado a la plataforma, y el lector de pantalla lee el atajo completo.
-- AC6: CUANDO una tarjeta está seleccionada ENTONCES muestra el anillo de foco del acento y lo anuncia con `aria-current`.
+- AC6: CUANDO un componente tiene el foco del teclado (botón, campo, enlace de navegación…) o una tarjeta está seleccionada ENTONCES el indicador se dibuja sobre el borde original del componente, nunca por fuera, con el color de foco: un negro mate agrisado en claro y un blanco mate agrisado en oscuro, ni blanco ni negro puros, invertido sobre el acento (botón primario), que contrasta al menos 3:1 con el fondo, la superficie y el borde, y su versión invertida con el acento, en claro y en oscuro; la tarjeta seleccionada además lo anuncia con `aria-current`.
 - AC7: CUANDO se usa `sp-field` con etiqueta, ayuda o error ENTONCES dibuja un `<input>` o un `<textarea>` nativo con su valor enlazable en dos sentidos; la etiqueta se asocia al control, la ayuda y el error quedan en `aria-describedby`, el control lleva `aria-invalid` si hay error, y el error se muestra con icono y texto, no solo con color.
 - AC8: CUANDO algo está cargando ENTONCES el esqueleto ocupa el tamaño indicado, se anuncia una sola vez como "cargando" y no se anima si el sistema pide movimiento reducido.
 - AC9: CUANDO se abre la página Componentes del catálogo ENTONCES muestra cada componente con sus variantes y estados (normal, foco, deshabilitado con motivo, error, seleccionado, cargando), en el tema y el idioma elegidos.
@@ -55,6 +55,14 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
 - **Campo** (`field.ts`): `<sp-field>` con las entradas `label`, `hint`, `error`, `multiline` y `placeholder`, y `value` como `model()` para el enlace en dos sentidos. Dibuja la etiqueta y un `<input>` o un `<textarea>` nativo, con el id y las descripciones ya enlazados. Más adelante puede implementar la interfaz de controles de los formularios de signals sin cambiar su API.
 - **Esqueleto** (`skeleton.ts`): `sp-skeleton` con `width`, `height` y `lines`. Es `aria-hidden`, y un único texto oculto anuncia "Cargando…". El brillo usa `--duration-base` y se desactiva con `motion-reduce`.
 - **Catálogo**: página `catalog/components.ts` en `/catalog/components` y enlace en la navegación.
+- **Ajuste en aceptación** (petición de la persona; refina AC1 y AC6):
+  - **Foco:** `--color-focus` pasa de la tinta pura a tonos mate agrisados: en claro, negro mate `#3F3F46` (10:1 frente al fondo, 8,2:1 frente al borde); en oscuro, blanco mate `#D4D4D8` (13:1 frente al fondo, 10:1 frente al borde). Así se acerca al acento sin su dureza.
+    - Sobre el acento (botón primario), esos tonos apenas contrastan (1,7:1 y 1,3:1). Por eso el token nuevo `--color-focus-on-accent` invierte el foco, como hace el texto del botón: `#D4D4D8` en claro (12:1) y `#3F3F46` en oscuro (9,5:1).
+    - El `:focus-visible` global dibuja el contorno hacia dentro (`outline-offset: -2px`), así queda sobre el borde del componente.
+    - Los enlaces dentro de un texto mantienen la separación, para no tapar las letras.
+    - La tarjeta seleccionada usa el mismo contorno hacia dentro.
+    - Los pares de contraste añaden el foco frente al borde y el foco invertido frente al acento.
+  - **Ripple:** al hacer `pointerdown` en el `<button>` se añade una onda (`currentColor` al 20 %) en el punto de contacto, que crece con `--duration-base` mientras se mantiene y se desvanece con `--duration-fast` al soltar, salir o cancelar. Usa la Web Animations API y no se crea si `prefers-reduced-motion: reduce`. Un botón deshabilitado no recibe el puntero, así que no hace onda.
 
 ## Archivos
 
@@ -68,6 +76,8 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
 - crear packages/ui/src/catalog/components.ts — página Componentes
 - modificar packages/ui/src/catalog/catalog.ts — ruta y enlace de Componentes
 - modificar packages/ui/src/catalog/colors.ts — usar sp-phase-badge y su mapa de iconos
+- modificar packages/ui/src/styles.css — foco mate agrisado, invertido sobre el acento y dibujado hacia dentro
+- modificar packages/ui/src/theme/tokens.ts — token del foco sobre el acento y sus pares de contraste
 
 ## Tareas
 
@@ -83,6 +93,16 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
   - files: packages/ui/src/components/field.ts, packages/ui/src/catalog/components.ts, packages/ui/src/catalog/catalog.ts
   - ac: AC7, AC9
   - verify: pnpm check
+- [ ] T4: Foco sobre el borde del componente, con un color suave
+  - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.ts, packages/ui/src/components/card.ts, packages/ui/src/catalog/colors.ts, packages/ui/src/catalog/catalog.ts
+  - ac: AC6
+  - verify: pnpm --filter @baquia-dev/specty-ui test
+  - notes: Ajuste pedido en aceptación. Actualiza la descripción del foco de Tinta en docs/ui.md.
+- [ ] T5: Ripple al pulsar los botones
+  - files: packages/ui/src/components/button.ts
+  - ac: AC1
+  - verify: pnpm check
+  - notes: Ajuste pedido en aceptación.
 
 ## Riesgos
 
