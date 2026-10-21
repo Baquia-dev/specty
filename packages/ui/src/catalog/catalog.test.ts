@@ -34,6 +34,7 @@ describe("Catalog", () => {
       "/catalog/colors",
       "/catalog/typography",
       "/catalog/foundations",
+      "/catalog/components",
     ]);
     expect(links[0]?.getAttribute("aria-current")).toBe("page");
     expect(element.querySelector("h1")?.textContent).toContain("Colores");

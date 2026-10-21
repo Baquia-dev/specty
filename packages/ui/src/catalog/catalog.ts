@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/c
 import { RouterLink, RouterLinkActive, RouterOutlet, type Routes } from "@angular/router";
 import { LANGS } from "@baquia-dev/specty-core";
 import {
+  LucideComponent,
   LucideDynamicIcon,
   LucideLayoutGrid,
   LucideMonitor,
@@ -13,6 +14,7 @@ import {
 } from "@lucide/angular";
 import { Preferences, THEME_CHOICES, type ThemeChoice } from "../theme/preferences";
 import { Colors } from "./colors";
+import { Components } from "./components";
 import { Foundations, Typography } from "./foundations";
 
 export const CATALOG_ROUTES: Routes = [
@@ -20,6 +22,7 @@ export const CATALOG_ROUTES: Routes = [
   { path: "catalog/colors", component: Colors, title: "Specty · Colores" },
   { path: "catalog/typography", component: Typography, title: "Specty · Tipografía" },
   { path: "catalog/foundations", component: Foundations, title: "Specty · Fundamentos" },
+  { path: "catalog/components", component: Components, title: "Specty · Componentes" },
   { path: "**", redirectTo: "catalog/colors" },
 ];
 
@@ -117,6 +120,7 @@ export class Catalog {
         icon: LucideLayoutGrid,
         label: t("Fundamentos", "Foundations"),
       },
+      { path: "/catalog/components", icon: LucideComponent, label: t("Componentes", "Components") },
     ];
   });
 

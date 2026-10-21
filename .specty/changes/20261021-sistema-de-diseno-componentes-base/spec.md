@@ -79,7 +79,7 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
   - files: packages/ui/src/components/badge.ts, packages/ui/src/components/card.ts, packages/ui/src/components/skeleton.ts, packages/ui/src/catalog/colors.ts
   - ac: AC4, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T3: Campo y página Componentes del catálogo
+- [x] T3: Campo y página Componentes del catálogo
   - files: packages/ui/src/components/field.ts, packages/ui/src/catalog/components.ts, packages/ui/src/catalog/catalog.ts
   - ac: AC7, AC9
   - verify: pnpm check
