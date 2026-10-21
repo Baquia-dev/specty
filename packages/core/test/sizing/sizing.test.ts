@@ -1,0 +1,80 @@
+// SPDX-License-Identifier: Apache-2.0
+import { describe, expect, it } from "vitest";
+import {
+  computeSize,
+  DEFAULT_CONFIG,
+  formatSizeReason,
+  recommendEffort,
+  recommendTaskEffort,
+  type Task,
+} from "../../src";
+import { fixture, specOf } from "../helpers";
+
+const STANDARD = fixture("standard.es.md");
+
+describe("computeSize", () => {
+  it("sizes the standard example as M", () => {
+    const size = computeSize(specOf(STANDARD), DEFAULT_CONFIG);
+    expect(size).toMatchObject({ level: "M", baseLevel: "M", score: 5, adjust: 0 });
+    expect(size.signals.modules).toEqual(["analytics", "home"]);
+    expect(size.reasons.map((reason) => formatSizeReason(reason, "es"))).toEqual([
+      "3 archivos",
+      "2 módulos",
+    ]);
+  });
+
+  it("uses repository signals when the CLI provides them", () => {
+    const size = computeSize(specOf(STANDARD), DEFAULT_CONFIG, {
+      modulesWithoutTests: ["analytics", "auth"],
+    });
+    expect(size.score).toBe(7);
+    expect(size.reasons.map((reason) => formatSizeReason(reason, "en"))).toEqual([
+      "3 files",
+      "2 modules",
+      "no tests in analytics",
+    ]);
+  });
+
+  it("lets the model shift one level, with a visible reason", () => {
+    const text = STANDARD.replace(
+      "kind: standard",
+      "kind: standard\nestimate:\n  adjust: 1\n  reason: Fechas ambiguas",
+    );
+    const size = computeSize(specOf(text), DEFAULT_CONFIG);
+    expect(size).toMatchObject({ level: "L", baseLevel: "M", adjust: 1 });
+    expect(formatSizeReason(size.reasons.at(-1) ?? { code: "dependencies" }, "es")).toBe(
+      "ajuste del modelo (+1): Fechas ambiguas",
+    );
+  });
+
+  it("weighs sensitive paths and dependency changes", () => {
+    const text = STANDARD.replace(
+      "\n## Tareas",
+      "- modificar lib/core/auth/session.dart — sesión\n- modificar pubspec.yaml — dependencia\n\n## Tareas",
+    );
+    const size = computeSize(specOf(text), DEFAULT_CONFIG);
+    expect(size.signals.modules).toEqual(["analytics", "core", "home"]);
+    // 5 files + 2 per extra module + 3 per sensitive path + 2 for dependencies.
+    expect(size.score).toBe(5 + 2 * 2 + 3 + 2);
+    expect(size.reasons.map((reason) => reason.code)).toEqual([
+      "files",
+      "modules",
+      "sensitive",
+      "dependencies",
+    ]);
+  });
+});
+
+describe("effort", () => {
+  it("recommends more effort for planning than for implementing", () => {
+    expect(recommendEffort("M")).toEqual({ plan: "high", implement: "medium" });
+    expect(recommendEffort("XL")).toEqual({ plan: "max", implement: "high" });
+  });
+
+  it("scales task effort with files and sensitive paths", () => {
+    const task = (files: string[]): Task => ({ id: "T1", title: "x", done: false, files });
+    expect(recommendTaskEffort(task(["lib/a.dart"]), DEFAULT_CONFIG)).toBe("low");
+    expect(recommendTaskEffort(task(["lib/a.dart", "lib/b.dart"]), DEFAULT_CONFIG)).toBe("medium");
+    expect(recommendTaskEffort(task(["lib/auth/a.dart"]), DEFAULT_CONFIG)).toBe("high");
+  });
+});

@@ -1,0 +1,25 @@
+{
+  "name": "@baquia-dev/specty-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pure core of Specty: spec model, canonical form, validation, flow, scope and sizing.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.4.0",
+    "picomatch": "4.0.7",
+    "yaml": "2.9.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/picomatch": "^4.0.3"
+  }
+}

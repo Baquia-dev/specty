@@ -1,0 +1,116 @@
+// SPDX-License-Identifier: Apache-2.0
+
+import { describe, expect, it } from "vitest";
+import { parse } from "yaml";
+import { DEFAULT_CONFIG, parseChangeState, resolveConfig } from "../../src";
+
+/** The example of docs/formats.md §6. */
+const CONFIG_EXAMPLE = `
+version: 1
+language: es
+mode: individual
+governed: ["lib/**", "test/**"]
+ignored: ["**/*.md", "docs/**", "assets/**"]
+sensitive: ["lib/core/auth/**", "**/migrations/**", ".github/**"]
+verify:
+  default: flutter test
+  full: flutter analyze && flutter test
+  timeoutSec: 600
+scope:
+  implicitTests: true
+  generated: ["**/*.g.dart", "**/*.freezed.dart"]
+  autoApprove: tests-and-generated
+lanes:
+  quick: { maxFiles: 3 }
+split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 }
+size: { S: 4, M: 10, L: 18 }
+policy:
+  tests: recommended
+retro:
+  mode: agent
+git:
+  branchPerChange: true
+team:
+  approvers: []
+  requirePrReview: true
+ui:
+  port: auto
+  requireUserPresence: false
+`;
+
+const HASH = `sha256:${"a".repeat(64)}`;
+
+describe("resolveConfig", () => {
+  it("accepts the documented example", () => {
+    const result = resolveConfig(parse(CONFIG_EXAMPLE));
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.config.verify.default).toBe("flutter test");
+  });
+
+  it("fills in defaults", () => {
+    const result = resolveConfig({ version: 1, split: { maxTasks: 5 } });
+    expect(result).toEqual({
+      ok: true,
+      config: { ...DEFAULT_CONFIG, split: { ...DEFAULT_CONFIG.split, maxTasks: 5 } },
+    });
+  });
+
+  it("reports unknown keys, bad values and inconsistent thresholds", () => {
+    const issues = (input: unknown) => (resolveConfig(input).ok ? [] : ["invalid"]);
+    expect(issues({ version: 1, colour: "blue" })).toEqual(["invalid"]);
+    expect(issues({ version: 1, policy: { tests: "sometimes" } })).toEqual(["invalid"]);
+    expect(issues({ version: 2 })).toEqual(["invalid"]);
+    expect(resolveConfig({ version: 1, size: { S: 12 } })).toEqual({
+      ok: false,
+      issues: [{ path: "size", message: "Thresholds must grow: S < M < L." }],
+    });
+  });
+});
+
+describe("parseChangeState", () => {
+  const state = {
+    schema: 1,
+    id: "20261020-evolucion-academica",
+    kind: "standard",
+    phase: "implementing",
+    branch: "specty/20261020-evolucion-academica",
+    baseCommit: "9f1c2e7",
+    revision: 3,
+    approved: {
+      revision: 3,
+      hash: HASH,
+      at: "2026-10-20T15:02:11Z",
+      by: "Jorge Palacio",
+      channel: "ui",
+    },
+    size: {
+      level: "M",
+      score: 7,
+      adjust: 0,
+      reasons: ["3 archivos", "2 módulos", "sin tests en analytics"],
+    },
+    items: { A1: { hash: HASH, decision: "confirmed" }, A2: { hash: HASH, decision: "implicit" } },
+    tasks: {
+      T1: { status: "done", baseCommit: "9f1c2e7", commit: "a1b2c3d", attempts: 1, scopeExtra: [] },
+      T2: { status: "active", baseCommit: "a1b2c3d", attempts: 0, scopeExtra: [] },
+    },
+    pending: {
+      scopeRequests: [
+        { id: "S1", task: "T2", paths: ["lib/core/theme/ca_colors.dart"], reason: "Tokens" },
+      ],
+      adjustment: null,
+    },
+    maxIds: { A: 2, AC: 2, T: 2, R: 1 },
+  };
+
+  it("accepts a valid state", () => {
+    expect(parseChangeState(state).ok).toBe(true);
+  });
+
+  it("rejects malformed states with readable issues", () => {
+    const result = parseChangeState({ ...state, phase: "testing", revision: -1 });
+    expect(result.ok).toBe(false);
+    if (!result.ok)
+      expect(result.issues.map((issue) => issue.split(":")[0])).toEqual(["phase", "revision"]);
+  });
+});
