@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261021-sistema-de-diseno-tokens-y-catalogo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261021-sistema-de-diseno-tokens-y-catalogo",
   "baseCommit": "a1a5d7344e6f589071948d54c18f3c6ee5bab137",
   "revision": 2,
@@ -90,6 +90,15 @@
       "scopeExtra": [
         "packages/ui/angular.json"
       ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e91e11f6e53bc327ff08e3cc4c163a1a6028d97f",
+      "startedAt": "2026-10-21T17:58:49.318Z",
+      "doneAt": "2026-10-21T17:59:37.011Z",
+      "summary": "prebundle.exclude de @baquia-dev/specty-core en el dev-server de angular.json: Vite ya no intenta pre-empaquetar el fuente TypeScript de core. Comprobado con ng serve: /catalog/colors y main.js responden 200 y el pre-empaquetado de Angular y Lucide se genera sin errores"
     }
   },
   "pending": {

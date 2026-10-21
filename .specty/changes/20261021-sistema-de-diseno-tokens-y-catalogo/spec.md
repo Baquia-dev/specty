@@ -97,7 +97,7 @@ Crear `packages/ui` con Angular 22 y los tokens del sistema de diseño en la dir
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm check
   - notes: Incluye la dirección Tinta en docs/ui.md y packages/ui en AGENTS.md.
-- [ ] T4: El servidor de desarrollo no pre-empaqueta core
+- [x] T4: El servidor de desarrollo no pre-empaqueta core
   - files: packages/ui/angular.json
   - ac: AC3
   - verify: pnpm check

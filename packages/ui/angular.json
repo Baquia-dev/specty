@@ -37,6 +37,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "prebundle": { "exclude": ["@baquia-dev/specty-core"] }
+          },
           "configurations": {
             "development": { "buildTarget": "specty-ui:build:development" }
           },
