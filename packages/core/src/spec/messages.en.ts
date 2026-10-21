@@ -28,7 +28,9 @@ export const MESSAGES_EN: MessageCatalog = {
   "section-not-allowed": (p) =>
     `The "${v(p, "section")}" section is not used in the ${v(p, "kind")} lane; remove it.`,
   "section-empty": (p) =>
-    `The "${v(p, "section")}" section is empty; write its content, or \`- None\` if it does not apply.`,
+    v(p, "optional") === "yes"
+      ? `The "${v(p, "section")}" section is empty; write it, or remove it if it does not apply.`
+      : `The "${v(p, "section")}" section is empty; write its content, or \`- None\` if it does not apply.`,
   "line-invalid": (p) =>
     `Invalid line in "${v(p, "section")}": each item starts with \`- \` and its fields are indented below it.`,
   "fence-not-allowed": (p) =>

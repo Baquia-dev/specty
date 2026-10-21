@@ -67,6 +67,8 @@ export const ChangeStateSchema = z.strictObject({
     z.strictObject({
       hash: Hash,
       decision: z.enum(["pending", "confirmed", "rejected", "implicit"]),
+      /** Why a person rejected the item, shown to the agent. */
+      comment: z.string().min(1).optional(),
     }),
   ),
   tasks: z.record(z.string().regex(/^T[1-9]\d*$/), TaskStateSchema),
@@ -74,8 +76,8 @@ export const ChangeStateSchema = z.strictObject({
     scopeRequests: z.array(ScopeRequestSchema),
     adjustment: z.strictObject({ request: z.string().min(1), at: Timestamp }).nullable(),
   }),
-  /** Highest number ever used per item prefix, so deleted ids are never reused. */
-  maxIds: z.partialRecord(z.enum(["A", "AC", "T", "R", "C"]), Count),
+  /** Highest number ever used per prefix (items and `S` scope requests): ids are never reused. */
+  maxIds: z.partialRecord(z.enum(["A", "AC", "T", "R", "C", "S"]), Count),
   closingSubmittedAt: Timestamp.optional(),
 });
 

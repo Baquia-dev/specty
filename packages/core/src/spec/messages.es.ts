@@ -29,7 +29,9 @@ export const MESSAGES_ES: MessageCatalog = {
   "section-not-allowed": (p) =>
     `La sección «${v(p, "section")}» no se usa en el carril ${v(p, "kind")}; elimínala.`,
   "section-empty": (p) =>
-    `La sección «${v(p, "section")}» está vacía; escribe su contenido o \`- Ninguno\` si no aplica.`,
+    v(p, "optional") === "yes"
+      ? `La sección «${v(p, "section")}» está vacía; escríbela o bórrala si no aplica.`
+      : `La sección «${v(p, "section")}» está vacía; escribe su contenido o \`- Ninguno\` si no aplica.`,
   "line-invalid": (p) =>
     `Línea no válida en «${v(p, "section")}»: cada elemento empieza con \`- \` y sus campos van sangrados debajo.`,
   "fence-not-allowed": (p) =>

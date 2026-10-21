@@ -1,7 +1,54 @@
 // SPDX-License-Identifier: Apache-2.0
 // Public API of the Specty core. Pure: no file system, network or Node APIs.
 
+export {
+  AGENT_NAMES,
+  type AgentTool,
+  detectAgentTool,
+  effortName,
+  isAgentTool,
+} from "./agents";
+export {
+  flowBlock,
+  hasBlock,
+  humanSections,
+  type ProjectFacts,
+  projectBlock,
+  upsertBlock,
+} from "./agents-md";
 export { type Analysis, analyzeSpec } from "./analyze";
+export {
+  blockedCard,
+  changeHeader,
+  deltaLine,
+  invalidSpecCard,
+  outOfScopeCard,
+  type ProposedView,
+  proposedCard,
+  retroCreatedCard,
+  scopeRequestedCard,
+  verifyFailedCard,
+  withLead,
+} from "./cards/flow";
+export { type BlockedCommitView, blockedCommitMessage } from "./cards/hooks";
+export {
+  closedCard,
+  decisionCard,
+  nothingPendingCard,
+  notInteractiveCard,
+  type StatusEntry,
+  statusCard,
+} from "./cards/human";
+export { type NextView, nextCard, notInitializedCard, taskCard } from "./cards/next";
+export { effortLabel, effortLine, translator } from "./cards/text";
+export type {
+  CardContext,
+  ChangeView,
+  CriterionView,
+  RejectedView,
+  ScopeRequestView,
+  TaskView,
+} from "./cards/view";
 export {
   type Actor,
   EVENT_RULES,
@@ -24,6 +71,16 @@ export {
   type WaitingFor,
 } from "./flow/phases";
 export { globBase, isGlob, matchesAny, matchesPattern } from "./glob";
+export {
+  decideGuard,
+  type GuardAction,
+  type GuardChange,
+  type GuardContext,
+  type GuardDecision,
+  HUMAN_COMMANDS,
+  type ShellFacts,
+} from "./guard/decide";
+export { analyzeShell, type ShellAnalysis } from "./guard/shell";
 export { hashText, type Sha256Hash, shortHash } from "./hash";
 export { fold, LANGS, type Lang } from "./i18n";
 export {
@@ -35,6 +92,15 @@ export {
   parseItemId,
   slugify,
 } from "./ids";
+export {
+  EXIT_CODES,
+  headerOf,
+  type Output,
+  type OutputBlock,
+  type OutputStatus,
+  renderText,
+  section,
+} from "./output";
 export { basename, dirname, moduleOf, normalizePath, type PathProblem, pathProblem } from "./paths";
 export {
   type ConfigInput,
@@ -110,4 +176,5 @@ export * from "./spec/model";
 export { type ParseOptions, type ParseResult, parseSpec } from "./spec/parse";
 export { hashUnits, serializeSpec } from "./spec/serialize";
 export { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
+export { specTemplate, type TemplateOptions } from "./templates";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";

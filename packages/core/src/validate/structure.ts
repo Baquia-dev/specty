@@ -52,7 +52,7 @@ export const checkSections: Rule = (spec, ctx, lang) => {
     .map((key) =>
       report(lang, {
         code: "section-empty",
-        params: { section: name(key) },
+        params: { section: name(key), optional: rules.optional.includes(key) ? "yes" : "no" },
         line: sectionLine(ctx, key),
         target: `section:${key}`,
       }),

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { lookup } from "../lookup";
 import { basename, dirname, isWithin } from "../paths";
 
 const LOCKFILES_BY_MANIFEST: Readonly<Record<string, readonly string[]>> = {
@@ -33,7 +34,7 @@ const OTHER_MANIFESTS = [
 /** True for files that declare dependencies (`package.json`, `pubspec.yaml`, `*.csproj`…). */
 export function isManifest(path: string): boolean {
   return (
-    basename(path) in LOCKFILES_BY_MANIFEST ||
+    lookup(LOCKFILES_BY_MANIFEST, basename(path)) !== undefined ||
     DOTNET_PROJECT.test(path) ||
     OTHER_MANIFESTS.some((pattern) => pattern.test(path))
   );
@@ -49,7 +50,7 @@ export function isLockfileFor(path: string, manifests: readonly string[]): boole
   return manifests.some((manifest) => {
     const lockfiles = DOTNET_PROJECT.test(manifest)
       ? ["packages.lock.json"]
-      : (LOCKFILES_BY_MANIFEST[basename(manifest)] ?? []);
+      : (lookup(LOCKFILES_BY_MANIFEST, basename(manifest)) ?? []);
     return lockfiles.includes(name) && isWithin(dirname(manifest), directory);
   });
 }

@@ -175,7 +175,8 @@ function sliceLines(slice: Slice): string[] {
   ];
 }
 
-function fileLine(entry: FileEntry, lang: Lang): string {
+/** One `- action path — reason` line of the Files section. */
+export function fileLine(entry: FileEntry, lang: Lang): string {
   const source =
     entry.action === "rename" && entry.from !== undefined ? `${pathToken(entry.from)} -> ` : "";
   const reason = entry.reason === undefined ? "" : ` — ${entry.reason}`;

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { fold, LANGS, type Lang } from "../i18n";
+import { lookup } from "../lookup";
 import {
   type ChangeKind,
   COMMIT_TYPES,
@@ -114,7 +115,7 @@ export const FILE_ACTION_WORDS: Readonly<Record<Lang, Readonly<Record<FileAction
 };
 
 export function fileActionFrom(word: string): FileAction | undefined {
-  return FILE_ACTION_ALIASES[fold(word)];
+  return lookup(FILE_ACTION_ALIASES, fold(word));
 }
 
 const IMPACT_ALIASES: Readonly<Record<string, Impact>> = {
@@ -137,7 +138,7 @@ export const IMPACT_WORDS: Readonly<Record<Lang, Readonly<Record<Impact, string>
 };
 
 export function impactFrom(word: string): Impact | undefined {
-  return IMPACT_ALIASES[fold(word)];
+  return lookup(IMPACT_ALIASES, fold(word));
 }
 
 export function isImpactKey(key: string): boolean {
@@ -178,5 +179,5 @@ export const TASK_FIELDS: readonly string[] = ["files", "ac", "verify", "type", 
 export const SLICE_FIELDS: readonly string[] = ["ac", "depends"];
 
 function isSectionKey(key: string): key is SectionKey {
-  return key in SECTION_TITLES.en;
+  return Object.hasOwn(SECTION_TITLES.en, key);
 }
