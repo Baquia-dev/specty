@@ -1,20 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DOCUMENT } from "@angular/common";
 import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/core";
-import { PHASES, type Phase } from "@baquia-dev/specty-core";
-import {
-  LucideArchive,
-  LucideBan,
-  LucideCircleCheck,
-  LucideCode,
-  LucideDynamicIcon,
-  LucideEye,
-  LucideListChecks,
-  LucidePencilLine,
-  LucideWrench,
-} from "@lucide/angular";
+import { PHASES } from "@baquia-dev/specty-core";
+import { PhaseBadge } from "../components/badge";
 import { Preferences } from "../theme/preferences";
-import { PHASE_LABELS, tokensOf } from "../theme/tokens";
+import { tokensOf } from "../theme/tokens";
 
 /** Current value of each token in the active theme; recomputed when the theme changes. */
 export function useTokenValues() {
@@ -27,21 +17,9 @@ export function useTokenValues() {
   });
 }
 
-/** Phases are never told apart by color alone: each one has its icon and its name. */
-export const PHASE_ICONS = {
-  draft: LucidePencilLine,
-  review: LucideEye,
-  implementing: LucideCode,
-  adjusting: LucideWrench,
-  acceptance: LucideListChecks,
-  closing: LucideArchive,
-  done: LucideCircleCheck,
-  cancelled: LucideBan,
-} as const satisfies Record<Phase, unknown>;
-
 @Component({
   selector: "sp-colors",
-  imports: [LucideDynamicIcon],
+  imports: [PhaseBadge],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h1 class="mt-0 mb-2 text-xl font-semibold">{{ t()('Colores', 'Colors') }}</h1>
@@ -90,16 +68,9 @@ export const PHASE_ICONS = {
 
     <h2 class="mb-4 text-lg font-semibold">{{ t()('Fases', 'Phases') }}</h2>
     <ul class="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-3 p-0">
-      @for (phase of phases(); track phase.id) {
-        <li class="flex flex-col gap-2 rounded-xl border border-border bg-surface p-3" [attr.data-phase]="phase.id">
-          <span
-            class="inline-flex h-6 items-center gap-1.5 self-start rounded-md px-2 text-xs font-medium"
-            [style.color]="'var(' + phase.fg + ')'"
-            [style.background]="'var(' + phase.bg + ')'"
-          >
-            <svg [lucideIcon]="phase.icon" size="13" aria-hidden="true"></svg>
-            {{ phase.label }}
-          </span>
+      @for (phase of phases; track phase.id) {
+        <li class="flex flex-col items-start gap-2 rounded-xl border border-border bg-surface p-3">
+          <sp-phase-badge [phase]="phase.id" />
           <code class="font-mono text-xs text-text-muted">{{ phase.fg }}: {{ value()(phase.fg) }}</code>
           <code class="font-mono text-xs text-text-muted">{{ phase.bg }}: {{ value()(phase.bg) }}</code>
         </li>
@@ -113,13 +84,9 @@ export class Colors {
   protected readonly lang = this.preferences.lang;
   protected readonly value = useTokenValues();
   protected readonly base = tokensOf("color");
-  protected readonly phases = computed(() =>
-    PHASES.map((id) => ({
-      id,
-      icon: PHASE_ICONS[id],
-      label: PHASE_LABELS[id][this.lang()],
-      fg: `--color-phase-${id}`,
-      bg: `--color-phase-${id}-bg`,
-    })),
-  );
+  protected readonly phases = PHASES.map((id) => ({
+    id,
+    fg: `--color-phase-${id}`,
+    bg: `--color-phase-${id}-bg`,
+  }));
 }

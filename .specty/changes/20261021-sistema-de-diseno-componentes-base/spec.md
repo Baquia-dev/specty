@@ -75,7 +75,7 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
   - files: packages/ui/src/components/button.ts, packages/ui/src/components/tooltip.ts, packages/ui/src/components/kbd.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T2: Insignias, tarjeta y esqueleto
+- [x] T2: Insignias, tarjeta y esqueleto
   - files: packages/ui/src/components/badge.ts, packages/ui/src/components/card.ts, packages/ui/src/components/skeleton.ts, packages/ui/src/catalog/colors.ts
   - ac: AC4, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui test

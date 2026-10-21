@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "236763e6b7d54c1c0aaf40f0575950f1512ed2ff",
+      "attempts": 1,
       "startedAt": "2026-10-21T20:32:48.290Z",
       "doneAt": "2026-10-21T20:35:19.193Z",
-      "summary": "sp-button (primaria, secundaria, fantasma; sm y md; salida pressed) y sp-icon-button (label e icon obligatorios) sobre un <button> nativo; con disabledReason, disabled + aria-disabled, sin foco ni acción, y el motivo en un sp-tooltip que envuelve el botón (el anfitrión recibe el puntero). sp-tooltip: aria-describedby en el primer elemento enfocable, foco/puntero, Escape global, arriba o abajo según el espacio. sp-kbd: una tecla por <kbd>, mod como ⌘ o Ctrl, lectura completa es/en. 12 tests nuevos"
+      "summary": "sp-button (primaria, secundaria, fantasma; sm y md; salida pressed) y sp-icon-button (label e icon obligatorios) sobre un <button> nativo; con disabledReason, disabled + aria-disabled, sin foco ni acción, y el motivo en un sp-tooltip que envuelve el botón (el anfitrión recibe el puntero). sp-tooltip: aria-describedby en el primer elemento enfocable, foco/puntero, Escape global, arriba o abajo según el espacio. sp-kbd: una tecla por <kbd>, mod como ⌘ o Ctrl, lectura completa es/en. 12 tests nuevos",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9ae8fe5f73db9c4efc039046f9c70cf6f2292348",
+      "startedAt": "2026-10-21T20:35:19.447Z",
+      "doneAt": "2026-10-21T20:37:05.395Z",
+      "summary": "sp-badge neutra; sp-phase-badge con icono, nombre en el idioma actual y colores de fase (PHASE_ICONS movido desde catalog/colors.ts, que ahora usa el componente); sp-card con selected (anillo de foco y aria-current); sp-skeleton con ancho, alto y líneas, formas aria-hidden, un único role=status «Cargando…» (announce desactivable) y pulso desactivado con motion-reduce. Tests en badge.test.ts"
     }
   },
   "pending": {
