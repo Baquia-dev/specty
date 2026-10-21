@@ -2,25 +2,26 @@
   "schema": 1,
   "id": "20261021-sistema-de-diseno-tokens-y-catalogo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261021-sistema-de-diseno-tokens-y-catalogo",
   "baseCommit": "a1a5d7344e6f589071948d54c18f3c6ee5bab137",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:97afc7189c1151fc0c0a610f70be75a9857f04b82915c9bbfa71222ad460b861",
-    "at": "2026-10-21T07:58:35.503Z",
+    "revision": 2,
+    "hash": "sha256:ac47ba9367f070f389c70672c22de81d14430e14ad056e1480a336bbfe1cbb5b",
+    "at": "2026-10-21T17:58:30.147Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
     "level": "L",
-    "score": 16,
+    "score": 17,
     "adjust": 0,
     "reasons": [
       "12 archivos",
       "2 módulos",
-      "cambia dependencias"
+      "cambia dependencias",
+      "4 tareas"
     ]
   },
   "items": {
@@ -81,14 +82,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/angular.json"
-      ],
-      "attempts": 2,
       "baseCommit": "e021569d290100375ccce877215e77751c99c699",
+      "attempts": 2,
       "startedAt": "2026-10-21T08:20:41.696Z",
       "doneAt": "2026-10-21T16:45:51.534Z",
-      "summary": "Catálogo Angular en /catalog: armazón con navegación accesible (radios nativos para tema e idioma, aria-current), páginas Colores (base, usos del acento, ocho fases con icono y nombre), Tipografía y Fundamentos con valores en vivo; 19 tests (100 % líneas). Build sin recursos externos (Geist y Geist Mono en dist/media, 75 kB transferidos). Presupuesto en angular.json alineado con ui.md y picomatch/posix permitido (S3). Docs: dirección Tinta en ui.md y packages/ui en AGENTS.md"
+      "summary": "Catálogo Angular en /catalog: armazón con navegación accesible (radios nativos para tema e idioma, aria-current), páginas Colores (base, usos del acento, ocho fases con icono y nombre), Tipografía y Fundamentos con valores en vivo; 19 tests (100 % líneas). Build sin recursos externos (Geist y Geist Mono en dist/media, 75 kB transferidos). Presupuesto en angular.json alineado con ui.md y picomatch/posix permitido (S3). Docs: dirección Tinta en ui.md y packages/ui en AGENTS.md",
+      "scopeExtra": [
+        "packages/ui/angular.json"
+      ]
     }
   },
   "pending": {
@@ -98,7 +99,7 @@
   "maxIds": {
     "A": 8,
     "AC": 8,
-    "T": 3,
+    "T": 4,
     "R": 4,
     "S": 3
   }
