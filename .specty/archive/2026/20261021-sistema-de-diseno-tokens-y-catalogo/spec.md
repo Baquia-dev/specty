@@ -110,3 +110,42 @@ Crear `packages/ui` con Angular 22 y los tokens del sistema de diseño en la dir
 - R2: Core se compila con TypeScript 6 al importarlo desde la UI. Si usa algo exclusivo de TypeScript 7, falla el build. Mitigación: comprobarlo en T1; si falla, se replantea A1 antes de seguir.
 - R3: Biome puede marcar `@theme` como regla desconocida en CSS. Mitigación: un `biome-ignore` en `styles.css`; si no basta, se pide `biome.json` con `specty scope add` para activar las directivas de Tailwind.
 - R4: Con TypeScript 6 y 7 en el mismo repositorio, el editor puede usar la versión equivocada en `packages/ui`. Mitigación: `typecheck` propio del paquete y nota en AGENTS.md.
+
+## Cierre
+
+### Resumen
+
+- `packages/ui` (`@baquia-dev/specty-ui`): app Angular 22.2.3 standalone, sin zone.js, con su propio TypeScript 6.0.3. Está integrada en `pnpm check` con cobertura mínima del 80 %.
+- Tokens de la dirección Tinta en `packages/ui/src/styles.css`, la única fuente de valores. Usan Tailwind 4 con `@theme static`, un tema oscuro con `data-theme` y movimiento de 200 ms como máximo, que vale 0 con movimiento reducido. Un test comprueba el contraste WCAG AA de todos los pares en claro y en oscuro.
+- `Preferences` gestiona tema (claro, oscuro o sistema) e idioma con signals, los guarda en `localStorage` y funciona aunque no esté disponible.
+- Catálogo navegable en `/catalog`, con las páginas Colores (incluidas las ocho fases con icono y nombre), Tipografía y Fundamentos. Muestra los valores en vivo y se maneja con el teclado.
+- 19 tests con 100 % de líneas cubiertas. El build no carga nada de otro origen: Geist y Geist Mono van en `dist/media`, y el bundle inicial transfiere 75 kB.
+
+### Desviaciones
+
+- Tres archivos se añadieron al alcance con aprobación:
+  - S1, `packages/ui/.postcssrc.json`: el builder de Angular solo integra Tailwind directamente en la versión 3.
+  - S2, `biome.json`: activa las directivas de Tailwind (se cumplió R3) e ignora `.specty/`, porque Biome rechazaba el formato de `state.json`.
+  - S3, `packages/ui/angular.json`: el presupuesto de T1 medía el tamaño sin comprimir, pero ui.md lo fija comprimido. Además permite `picomatch/posix`.
+- `@lucide/angular` se fijó en 1.55.0 en lugar de 1.61.0, que se publicó el mismo día y no cumplía la antigüedad mínima de pnpm.
+- Ajuste en aceptación (T4, defecto de AC3): `ng serve` fallaba al pre-empaquetar el fuente TypeScript de core. Se excluyó core del pre-empaquetado de Vite.
+- R1 y R2 no se materializaron: el builder admite umbrales de cobertura y core compila con TypeScript 6.
+
+### Decisiones
+
+- Angular 22 en lugar de React (ADR 0009, que actualiza el ADR 0003). TypeScript 6.0 solo en `packages/ui`.
+- Dirección visual Tinta: base zinc y acento de tinta sin tono, con Geist y Geist Mono. Por eso los enlaces van subrayados y el foco es un anillo separado.
+- `adjusting` comparte el azul de implementación y `closing` el violeta de aceptación; se distinguen por icono y nombre (A2).
+- Los tests de la UI van junto a cada fuente (`*.test.ts`), y las plantillas van en línea para que `pnpm sources` las cubra.
+- El tema "sistema" se resuelve en `Preferences`, que siempre fija `data-theme`, así que el CSS no duplica el tema oscuro.
+
+### Pendientes
+
+- La UI incluye todo core (zod, yaml, picomatch) aunque solo usa `translator`, `PHASES` y `LANGS`. Conviene exponer un punto de entrada ligero de core antes de que crezca el bundle.
+- Cambio aparte para cinco fallos de Specty encontrados aquí:
+  - el guard bloquea escrituras fuera del repositorio;
+  - el guard resuelve rutas relativas ignorando el `cd` del propio comando;
+  - el guard gobierna rutas que git ignora (`node_modules/.cache`);
+  - los tests de `packages/*/test/` no cuentan como implícitos;
+  - `state.json` no pasa el formateador del repositorio.
+- Siguiente cambio de la fase 2: "Sistema de diseño: componentes base", con `--follows` a este.

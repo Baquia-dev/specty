@@ -23,3 +23,6 @@
 {"ts":"2026-10-21T17:58:49.319Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"e91e11f6e53bc327ff08e3cc4c163a1a6028d97f"}}
 {"ts":"2026-10-21T17:59:37.010Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":18946}}
 {"ts":"2026-10-21T17:59:37.012Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"prebundle.exclude de @baquia-dev/specty-core en el dev-server de angular.json: Vite ya no intenta pre-empaquetar el fuente TypeScript de core. Comprobado con ng serve: /catalog/colors y main.js responden 200 y el pre-empaquetado de Angular y Lucide se genera sin errores"}}
+{"ts":"2026-10-21T18:12:37.877Z","actor":"human","event":"change.accepted","data":{"revision":2}}
+{"ts":"2026-10-21T18:13:11.390Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:157d5de108fe05113f7d7a40c300f47cf40d08862195ee17caf5b29cd5a66fd6","size":"L","warnings":4}}
+{"ts":"2026-10-21T18:17:44.872Z","actor":"human","event":"change.closed","data":{}}
