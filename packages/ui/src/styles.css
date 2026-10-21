@@ -1,0 +1,141 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Design tokens of the "Tinta" direction (docs/ui.md). This file is the only source of their values. */
+
+@import "tailwindcss";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+/* Light theme. `static` keeps every token in the output: the catalog reads them all. */
+@theme static {
+  --color-*: initial;
+  --color-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-border: #e4e4e7;
+  --color-text: #18181b;
+  --color-text-muted: #52525b;
+  --color-accent: #18181b;
+  --color-on-accent: #fafafa;
+  --color-focus: #18181b;
+
+  --color-phase-draft: #52525b;
+  --color-phase-draft-bg: #f1f1f2;
+  --color-phase-review: #92400e;
+  --color-phase-review-bg: #fef3c7;
+  --color-phase-implementing: #1d4ed8;
+  --color-phase-implementing-bg: #dbeafe;
+  --color-phase-adjusting: #1d4ed8;
+  --color-phase-adjusting-bg: #dbeafe;
+  --color-phase-acceptance: #6d28d9;
+  --color-phase-acceptance-bg: #ede9fe;
+  --color-phase-closing: #6d28d9;
+  --color-phase-closing-bg: #ede9fe;
+  --color-phase-done: #166534;
+  --color-phase-done-bg: #dcfce7;
+  --color-phase-cancelled: #9b3b3b;
+  --color-phase-cancelled-bg: #f8e8e8;
+
+  --font-*: initial;
+  --font-sans: "Geist Variable", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --text-*: initial;
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 13px;
+  --text-sm--line-height: 18px;
+  --text-base: 14px;
+  --text-base--line-height: 20px;
+  --text-md: 16px;
+  --text-md--line-height: 24px;
+  --text-lg: 18px;
+  --text-lg--line-height: 26px;
+  --text-xl: 24px;
+  --text-xl--line-height: 32px;
+  --text-2xl: 32px;
+  --text-2xl--line-height: 40px;
+
+  --spacing: 4px;
+
+  --radius-*: initial;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  --shadow-*: initial;
+  --shadow-sm: 0 1px 2px rgb(24 24 27 / 0.06);
+  --shadow-md: 0 4px 12px rgb(24 24 27 / 0.08);
+
+  --ease-*: initial;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Motion: short and purposeful; nothing moves when the system asks for reduced motion. */
+:root {
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+  }
+}
+
+/* Dark theme. `Preferences` resolves "system" and always sets `data-theme`. */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #0b0b0c;
+  --color-surface: #141416;
+  --color-border: #27272a;
+  --color-text: #f4f4f5;
+  --color-text-muted: #a1a1aa;
+  --color-accent: #f4f4f5;
+  --color-on-accent: #0b0b0c;
+  --color-focus: #f4f4f5;
+
+  --color-phase-draft: #b4b4bc;
+  --color-phase-draft-bg: #222226;
+  --color-phase-review: #fbbf24;
+  --color-phase-review-bg: #2b2414;
+  --color-phase-implementing: #93c5fd;
+  --color-phase-implementing-bg: #172238;
+  --color-phase-adjusting: #93c5fd;
+  --color-phase-adjusting-bg: #172238;
+  --color-phase-acceptance: #c4b5fd;
+  --color-phase-acceptance-bg: #241c3a;
+  --color-phase-closing: #c4b5fd;
+  --color-phase-closing-bg: #241c3a;
+  --color-phase-done: #86efac;
+  --color-phase-done-bg: #142a1c;
+  --color-phase-cancelled: #e3a3a3;
+  --color-phase-cancelled-bg: #2e1c1c;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5);
+}
+
+@layer base {
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  /* The accent has no hue: links are underlined and focus is a separated ring. */
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+}

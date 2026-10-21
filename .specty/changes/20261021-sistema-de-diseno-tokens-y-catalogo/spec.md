@@ -88,7 +88,7 @@ Crear `packages/ui` con Angular 22 y los tokens del sistema de diseño en la dir
   - verify: pnpm install --frozen-lockfile
   - type: chore
   - notes: Incluye el ADR 0009 y el stack de docs/ui.md.
-- [ ] T2: Tokens de Tinta y preferencias de tema e idioma
+- [x] T2: Tokens de Tinta y preferencias de tema e idioma
   - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.ts, packages/ui/src/theme/preferences.ts
   - ac: AC5, AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui test

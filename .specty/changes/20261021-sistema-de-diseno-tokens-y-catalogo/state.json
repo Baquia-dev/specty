@@ -60,12 +60,24 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "918357bb0901a94a3b3be4fa0a8f78f31e4bb6a7",
+      "attempts": 1,
       "startedAt": "2026-10-21T07:59:18.554Z",
       "doneAt": "2026-10-21T08:01:37.926Z",
-      "summary": "packages/ui con Angular 22.2.3 y TypeScript 6.0.3 propio (core compila con TS6); angular.json con build, serve y unit-test (Vitest 5, umbrales de cobertura 80 %); decisiones de scripts de instalación en pnpm-workspace.yaml; @lucide/angular fijado en 1.55.0 por la política de antigüedad mínima; ADR 0009 y stack de docs/ui.md"
+      "summary": "packages/ui con Angular 22.2.3 y TypeScript 6.0.3 propio (core compila con TS6); angular.json con build, serve y unit-test (Vitest 5, umbrales de cobertura 80 %); decisiones de scripts de instalación en pnpm-workspace.yaml; @lucide/angular fijado en 1.55.0 por la política de antigüedad mínima; ADR 0009 y stack de docs/ui.md",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/.postcssrc.json",
+        "biome.json"
+      ],
+      "attempts": 1,
+      "baseCommit": "c08f3c6198014dabb7b74d7684540daaa4064ff9",
+      "startedAt": "2026-10-21T08:01:38.211Z",
+      "doneAt": "2026-10-21T08:20:41.436Z",
+      "summary": "Tokens de Tinta en styles.css (@theme static de Tailwind 4, tema oscuro con data-theme, movimiento ≤ 200 ms y 0 con reduced-motion); inventario de tokens es/en y contraste WCAG en tokens.ts; Preferences con signals (tema claro/oscuro/sistema, idioma, localStorage tolerante a fallos); tests de contraste y preferencias. Alcance ampliado: .postcssrc.json (S1) y biome.json con directivas de Tailwind e ignorando .specty (S2)"
     }
   },
   "pending": {
@@ -76,6 +88,7 @@
     "A": 8,
     "AC": 8,
     "T": 3,
-    "R": 4
+    "R": 4,
+    "S": 2
   }
 }
