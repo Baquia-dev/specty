@@ -110,18 +110,25 @@ function strings(value: unknown): string[] {
   return typeof value === "string" && value.length > 0 ? [value] : [];
 }
 
-/** Turns tool paths into repository-relative ones; paths outside the repository are dropped. */
-function inRepo(session: Session, cwd: string, paths: readonly string[]): string[] {
-  return paths.flatMap((path) => {
+/**
+ * Turns tool paths into repository-relative ones. Paths outside the repository and paths git
+ * ignores (`node_modules/`, caches, builds) are not governed code, so they are dropped.
+ */
+async function inRepo(session: Session, cwd: string, paths: readonly string[]): Promise<string[]> {
+  const inside = paths.flatMap((path) => {
     const relativePath = relative(session.root, resolve(cwd, path));
     if (relativePath.startsWith("..") || isAbsolute(relativePath)) return [];
     return [relativePath.split(sep).join("/")];
   });
+  // The root itself (`rm -rf .`) is never ignored, and git rejects an empty pathspec.
+  const ignored = new Set(await session.git.ignored(inside.filter((path) => path !== "")));
+  return inside.filter((path) => !ignored.has(path));
 }
 
 async function resolveAction(session: Session, raw: RawAction, cwd: string): Promise<GuardAction> {
   if (raw.kind === "other") return raw;
-  if (raw.kind !== "shell") return { kind: raw.kind, paths: inRepo(session, cwd, raw.paths) };
+  if (raw.kind !== "shell") return { kind: raw.kind, paths: await inRepo(session, cwd, raw.paths) };
+  // Paths the analysis cannot place (shell variables, `cd` to an unknown place) are not judged.
   const analysis = analyzeShell(raw.command);
   const committedGoverned =
     analysis.commits.length === 0
@@ -137,8 +144,8 @@ async function resolveAction(session: Session, raw: RawAction, cwd: string): Pro
       unscopedNpx: analysis.unscopedNpx,
       bypass: analysis.bypass,
       committedGoverned,
-      writes: inRepo(session, cwd, analysis.writes),
-      deletes: inRepo(session, cwd, analysis.deletes),
+      writes: await inRepo(session, cwd, analysis.writes),
+      deletes: await inRepo(session, cwd, analysis.deletes),
     },
   };
 }

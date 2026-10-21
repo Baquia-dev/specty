@@ -73,7 +73,7 @@ Corregir cinco fallos de Specty encontrados al construir el sistema de diseño. 
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core test
   - type: fix
-- [ ] T3: El guard resuelve cada ruta con su directorio y respeta lo que git ignora
+- [x] T3: El guard resuelve cada ruta con su directorio y respeta lo que git ignora
   - files: packages/cli/src/enforce/guard.ts, packages/cli/src/io/git.ts, packages/cli/test/enforce.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty test

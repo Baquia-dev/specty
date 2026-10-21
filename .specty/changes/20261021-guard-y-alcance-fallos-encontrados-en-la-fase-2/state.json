@@ -49,12 +49,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3960e67f074fd149f69b31a1c69e147ec12baa92",
+      "attempts": 1,
       "startedAt": "2026-10-21T18:54:21.500Z",
       "doneAt": "2026-10-21T18:55:20.822Z",
-      "summary": "analyzeShell recorre los segmentos llevando el directorio: cd relativo o absoluto actualiza las rutas escritas o borradas; cd sin argumento, cd - o destinos con $, ~ o comillas invertidas lo vuelven desconocido. Las rutas que no puede ubicar van al campo nuevo unresolved (en lugar del { path, base } del diseño, para no cambiar writes/deletes). Los heredocs y here-strings ya no cuentan como escrituras"
+      "summary": "analyzeShell recorre los segmentos llevando el directorio: cd relativo o absoluto actualiza las rutas escritas o borradas; cd sin argumento, cd - o destinos con $, ~ o comillas invertidas lo vuelven desconocido. Las rutas que no puede ubicar van al campo nuevo unresolved (en lugar del { path, base } del diseño, para no cambiar writes/deletes). Los heredocs y here-strings ya no cuentan como escrituras",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9513d96ec325d5f4041533393bef9fede6293c02",
+      "startedAt": "2026-10-21T18:55:21.073Z",
+      "doneAt": "2026-10-21T18:57:05.697Z",
+      "summary": "El guard resuelve las rutas que ya vienen ubicadas tras los cd (relativas al cwd del evento o absolutas), descarta las de fuera del repo y las que git ignora (Git.ignored con git check-ignore -z --stdin, una sola llamada) y no juzga las que el análisis no puede ubicar. Tests end-to-end de cd, scratchpad, heredoc, variables y rutas ignoradas. Nota en ARCHITECTURE §10. rm -rf . no se bloqueaba antes ni ahora: queda como pendiente"
     }
   },
   "pending": {

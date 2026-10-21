@@ -127,6 +127,26 @@ describe("agent guard", () => {
     expect(commit.err).toContain("specty task done T1");
   });
 
+  it("places paths after `cd` and leaves alone what it cannot place (AC2, AC3)", async () => {
+    const root = await initialized();
+    const bash = (command: string) => claude(root, "Bash", { command });
+    const inside = await bash("cd src && echo hi > app.ts");
+    expect(inside.code).toBe(2);
+    expect(inside.err).toContain("src/app.ts");
+    expect((await bash("cd /tmp && echo hi > app.ts")).code).toBe(0);
+    expect((await bash(`cd src && echo hi > ${root}/../outside.ts`)).code).toBe(0);
+    expect((await bash("S=/tmp/x && cd $S && cat > a.css <<'EOF'\nx\nEOF")).code).toBe(0);
+    expect((await bash('echo hi > "$TMPDIR/a.ts"')).code).toBe(0);
+  });
+
+  it("never blocks paths git ignores (AC4)", async () => {
+    const root = await initialized();
+    await writeFiles(root, { ".gitignore": "node_modules/\ndist/\n" });
+    expect((await claude(root, "Bash", { command: "rm -rf node_modules/.cache/x" })).code).toBe(0);
+    expect((await claude(root, "Write", { file_path: `${root}/dist/app.js` })).code).toBe(0);
+    expect((await claude(root, "Bash", { command: "rm -rf src/app.ts dist" })).code).toBe(2);
+  });
+
   it("answers Cursor in JSON and fails open on bad input", async () => {
     const root = await initialized();
     const ask = (event: Record<string, unknown>) =>

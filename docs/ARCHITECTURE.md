@@ -209,6 +209,8 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 3. Core decide.
 4. El adaptador responde en el formato de la herramienta: normalmente, código de salida 2 con el motivo y el siguiente paso.
 
+El guard solo juzga rutas que puede ubicar dentro del repositorio y que git no ignora. El análisis de shell sigue los `cd` de cada comando. Una ruta con variables sin expandir, o una ruta relativa tras un `cd` a un destino desconocido, no se bloquea por alcance: la cubren los hooks de git y el CI.
+
 Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escriben archivos, `--no-verify`, `core.hooksPath`, acciones humanas) son de mejor esfuerzo, porque un comando siempre se puede ofuscar. Para eso existe la capa 3. El guard también bloquea `npx specty`, `npm i specty` y sus equivalentes sin scope, porque `specty` en npm es un paquete ajeno ([ADR 0007](decisions/0007-nombre-y-organizacion.md)), y responde con el comando correcto.
 
 **Soporte de hooks por herramienta** (revisado el 2026-10-21; se vuelve a verificar al implementar cada adaptador):
