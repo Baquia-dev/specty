@@ -1,0 +1,106 @@
+// SPDX-License-Identifier: Apache-2.0
+
+import { isRecord, parseJson, readText, remove, writeText } from "../io/files";
+import type { Git } from "../io/git";
+
+/**
+ * Local, never-versioned state under the git directory (docs/formats.md §1): commit
+ * receipts, markers between hooks and pointers to the change in progress.
+ */
+
+export type ReceiptKind = "spec" | "task" | "close" | "retro";
+
+export interface Receipt {
+  readonly tree: string;
+  readonly change: string;
+  readonly kind: ReceiptKind;
+  readonly task?: string;
+  readonly createdAt: string;
+}
+
+const RECEIPT_TTL_MS = 24 * 60 * 60 * 1000;
+
+export async function addReceipt(git: Git, receipt: Receipt): Promise<void> {
+  const receipts = await readReceipts(git);
+  await writeReceipts(git, [...receipts.filter((entry) => entry.tree !== receipt.tree), receipt]);
+}
+
+/** Removes and returns the receipt for `tree`, dropping expired ones on the way. */
+export async function takeReceipt(git: Git, tree: string, now: Date): Promise<Receipt | undefined> {
+  const fresh = (await readReceipts(git)).filter(
+    (entry) => now.getTime() - Date.parse(entry.createdAt) < RECEIPT_TTL_MS,
+  );
+  const match = fresh.find((entry) => entry.tree === tree);
+  await writeReceipts(
+    git,
+    fresh.filter((entry) => entry !== match),
+  );
+  return match;
+}
+
+/** A marker passes information from `pre-commit` to `prepare-commit-msg`. */
+export interface CommitMarker {
+  readonly tree: string;
+  readonly change: string;
+  readonly kind: ReceiptKind | "manual";
+}
+
+export async function writeMarker(git: Git, marker: CommitMarker): Promise<void> {
+  await writeText(await git.gitPath("specty/commit-marker.json"), JSON.stringify(marker));
+}
+
+export async function takeMarker(git: Git): Promise<CommitMarker | undefined> {
+  const path = await git.gitPath("specty/commit-marker.json");
+  const value = parseJson(await readText(path));
+  await remove(path);
+  if (!isRecord(value)) return undefined;
+  const { tree, change, kind } = value;
+  if (typeof tree !== "string" || typeof change !== "string" || typeof kind !== "string")
+    return undefined;
+  const known = ["spec", "task", "close", "retro", "manual"] as const;
+  const markerKind = known.find((candidate) => candidate === kind);
+  return markerKind === undefined ? undefined : { tree, change, kind: markerKind };
+}
+
+export type Pointer = "retro" | "active";
+
+/** The retro in progress, or the active change when branches are not used. */
+export async function readPointer(git: Git, pointer: Pointer): Promise<string | undefined> {
+  const value = (await readText(await git.gitPath(`specty/${pointer}`)))?.trim();
+  return value === undefined || value.length === 0 ? undefined : value;
+}
+
+export async function writePointer(
+  git: Git,
+  pointer: Pointer,
+  id: string | undefined,
+): Promise<void> {
+  const path = await git.gitPath(`specty/${pointer}`);
+  if (id === undefined) await remove(path);
+  else await writeText(path, `${id}\n`);
+}
+
+async function readReceipts(git: Git): Promise<Receipt[]> {
+  const value = parseJson(await readText(await git.gitPath("specty/receipts.json")));
+  if (!Array.isArray(value)) return [];
+  return value.flatMap((entry: unknown): Receipt[] => {
+    if (!isRecord(entry)) return [];
+    const { tree, change, kind, task, createdAt } = entry;
+    const receiptKind = (["spec", "task", "close", "retro"] as const).find(
+      (candidate) => candidate === kind,
+    );
+    if (typeof tree !== "string" || typeof change !== "string" || typeof createdAt !== "string")
+      return [];
+    if (receiptKind === undefined) return [];
+    return [
+      { tree, change, kind: receiptKind, createdAt, ...(typeof task === "string" ? { task } : {}) },
+    ];
+  });
+}
+
+async function writeReceipts(git: Git, receipts: readonly Receipt[]): Promise<void> {
+  await writeText(
+    await git.gitPath("specty/receipts.json"),
+    `${JSON.stringify(receipts, null, 2)}\n`,
+  );
+}

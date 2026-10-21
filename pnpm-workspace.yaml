@@ -1,2 +1,6 @@
 packages:
   - "packages/*"
+
+# esbuild works through its platform package; its install script is not needed.
+allowBuilds:
+  esbuild: false

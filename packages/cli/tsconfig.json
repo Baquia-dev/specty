@@ -1,0 +1,8 @@
+{
+  // The CLI runs on Node: it may use Node's APIs.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["src"]
+}

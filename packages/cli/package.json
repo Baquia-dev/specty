@@ -1,0 +1,35 @@
+{
+  "name": "@baquia-dev/specty",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Spec-driven development, enforced, for any AI coding agent.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Baquia-dev/specty.git",
+    "directory": "packages/cli"
+  },
+  "type": "module",
+  "bin": {
+    "specty": "./dist/specty.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json"
+  },
+  "devDependencies": {
+    "@baquia-dev/specty-core": "workspace:*",
+    "@clack/prompts": "1.8.1",
+    "commander": "15.0.0",
+    "esbuild": "0.28.2",
+    "jsonc-parser": "3.3.1",
+    "yaml": "2.9.1"
+  }
+}
