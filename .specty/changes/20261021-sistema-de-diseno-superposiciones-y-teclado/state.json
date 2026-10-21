@@ -6,6 +6,13 @@
   "branch": "specty/20261021-sistema-de-diseno-superposiciones-y-teclado",
   "baseCommit": "e06145d176229086dc278878d9f3faeb15061b9e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:079f43128c2d60511f2ba69ce9a178388c0def94b2b039aed7c8a7ca1688c34a",
+    "at": "2026-10-21T21:50:56.329Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "28faa8fbf9c0460ad86424cffe042d19fd9757d2",
+      "startedAt": "2026-10-21T21:51:07.361Z",
+      "doneAt": "2026-10-21T21:54:19.526Z",
+      "summary": "Dependencias @angular/aria, @angular/cdk y @angular/forms 22.2.3. Servicio Dialogs sobre el Dialog del CDK (aria-modal, aria-labelledby con el título vía DIALOG_TITLE_ID, foco al primer control, fondo negro al 40 %, Escape y devolución del foco) y marco sp-dialog (título, descripción, contenido, acciones y botón de cerrar, entrada con @starting-style ≤ 200 ms). sp-tooltip: descripción siempre presente en un role=tooltip oculto y burbuja visible en un overlay conectado del CDK con posiciones de respaldo (arriba, abajo, derecha, izquierda), margen de 8 px y 100 ms de gracia para pasar a la burbuja"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 9,
     "T": 4,
     "R": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:079f43128c2d60511f2ba69ce9a178388c0def94b2b039aed7c8a7ca1688c34a",
-    "at": "2026-10-21T21:50:56.329Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

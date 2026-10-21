@@ -58,7 +58,7 @@ describe("Button", () => {
     expect(button.getAttribute("aria-describedby")).toBe(tooltip?.id);
     element.querySelector("#save sp-tooltip")?.dispatchEvent(new Event("pointerenter"));
     await fixture.whenStable();
-    expect(tooltip?.classList).not.toContain("invisible");
+    expect(document.querySelector("[data-tooltip]")?.textContent).toContain("Faltan 2 supuestos");
   });
 
   it("ripples from the pressed point while held, and fades on release (AC1)", async () => {

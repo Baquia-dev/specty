@@ -81,7 +81,7 @@ Completar el sistema de diseño con las piezas que flotan sobre la página o res
 
 ## Tareas
 
-- [ ] T1: Diálogo y tooltip sobre el CDK
+- [x] T1: Diálogo y tooltip sobre el CDK
   - files: packages/ui/package.json, packages/ui/src/components/dialog.ts, packages/ui/src/components/tooltip.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui test
