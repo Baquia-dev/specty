@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261021-sistema-de-diseno-componentes-base",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261021-sistema-de-diseno-componentes-base",
   "baseCommit": "d62e8d188e3cc7f9b97c1109dcda57d9d7fc7ed5",
-  "revision": 4,
+  "revision": 5,
   "approved": {
     "revision": 4,
     "hash": "sha256:71d0558edd760e821a0b6196a1e25c3c328ad94df98d0072db71dbc4a5880fdf",
@@ -83,12 +83,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b640dfb4f4fcf6a731e63788ff59e6cd861ad2e9",
+      "attempts": 1,
       "startedAt": "2026-10-21T21:12:48.470Z",
       "doneAt": "2026-10-21T21:14:32.026Z",
-      "summary": "Ripple en sp-button y sp-icon-button: en pointerdown, una onda (currentColor al 20 %) desde el punto de contacto con radio hasta la esquina más lejana, que crece con --duration-base mientras se mantiene y se desvanece con --duration-fast al soltar, salir o cancelar (Web Animations API, y se retira sin animar si no existe). Sin onda con prefers-reduced-motion ni en botones deshabilitados. 3 tests nuevos"
+      "summary": "Ripple en sp-button y sp-icon-button: en pointerdown, una onda (currentColor al 20 %) desde el punto de contacto con radio hasta la esquina más lejana, que crece con --duration-base mientras se mantiene y se desvanece con --duration-fast al soltar, salir o cancelar (Web Animations API, y se retira sin animar si no existe). Sin onda con prefers-reduced-motion ni en botones deshabilitados. 3 tests nuevos",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -100,5 +100,6 @@
     "AC": 9,
     "T": 5,
     "R": 4
-  }
+  },
+  "closingSubmittedAt": "2026-10-21T21:29:08.639Z"
 }

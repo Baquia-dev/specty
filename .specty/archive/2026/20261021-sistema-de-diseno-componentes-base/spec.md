@@ -110,3 +110,38 @@ Añadir a `packages/ui` los componentes base de la dirección Tinta: botón, ins
 - R4: Si la acción se enlaza con `(click)` en `<sp-button>`, también se dispararía al hacer clic en el anfitrión. Mitigación: la acción se expone como la salida `pressed`, emitida solo desde el `<button>` nativo, y un test comprueba que no se emite deshabilitado.
 - R2: Sin el CDK, el tooltip puede salirse del viewport en los bordes. Mitigación: aceptable para el catálogo; el cambio siguiente lo pasa al overlay del CDK.
 - R3: La página Componentes puede superar las 300 líneas. Mitigación: secciones con datos y bucles, o dividirla si hace falta pidiendo el archivo con `specty scope add`.
+
+## Cierre
+
+### Resumen
+
+- Componentes base en `packages/ui/src/components/`, todos componentes de elemento sobre controles nativos:
+  - `sp-button` (primario, secundario y fantasma; `sm` y `md`; salida `pressed`) y `sp-icon-button` (etiqueta obligatoria);
+  - `sp-tooltip`, `sp-kbd`, `sp-badge`, `sp-phase-badge`, `sp-card`, `sp-field` y `sp-skeleton`.
+- Botón deshabilitado: solo puede deshabilitarse con un motivo. Lleva `disabled` y `aria-disabled`, y el motivo aparece en un tooltip y como su descripción.
+- Foco: se dibuja hacia dentro, sobre el borde del componente, en negro mate `#3F3F46` (claro) o blanco mate `#D4D4D8` (oscuro), invertido sobre el acento.
+- Ripple: los botones muestran una onda al pulsar, de 200 ms como máximo y desactivada con movimiento reducido.
+- Página `/catalog/components` con todas las variantes y estados.
+- 39 tests con 100 % de líneas; el bundle inicial transfiere 82 kB.
+
+### Desviaciones
+
+- Revisión 2: la persona decidió que el botón deshabilitado use `disabled` además de `aria-disabled` (no enfocable), y que los interactivos sean componentes y no directivas.
+- Ajuste en aceptación (revisiones 3 y 4, T4 y T5):
+  - foco sobre el borde original y en tonos mate en lugar de tinta pura, con el token nuevo `--color-focus-on-accent`;
+  - ripple en los botones.
+
+  Tocó `styles.css` y `tokens.ts` del cambio anterior.
+- El esqueleto usa el pulso de Tailwind, un bucle de unos 2 s, en lugar de `--duration-base`: un bucle de 200 ms parpadearía. Se desactiva con movimiento reducido.
+
+### Decisiones
+
+- Las acciones de los botones se exponen como `(pressed)`, emitida solo por el `<button>` nativo, y no como `(click)` sobre el anfitrión.
+- El tooltip envuelve su contenido: su anfitrión recibe el puntero aunque el botón esté deshabilitado.
+- El foco sobre superficies con acento se invierte, igual que su texto, para mantener al menos 3:1.
+
+### Pendientes
+
+- Quien navega solo con teclado no llega al motivo de un botón deshabilitado (R1). Las pantallas deben mostrarlo también como texto donde importe, empezando por la barra de acción de la revisión.
+- El tooltip no evita los bordes del viewport (R2): pasará al overlay del CDK en el cambio siguiente.
+- Siguiente cambio de la fase 2: "Sistema de diseño: superposiciones y teclado", con `--follows` a este.
