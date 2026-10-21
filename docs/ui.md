@@ -90,13 +90,16 @@ Punto de partida para el sistema de diseño:
 - Tipografía sans para la interfaz y monoespaciada para rutas, comandos y código.
 - Escala de espaciado de 4 px, radios moderados, sombras mínimas e iconos de trazo (Lucide).
 
-## Stack propuesto
+## Stack
 
-- React + TypeScript + Vite.
-- Tailwind CSS con tokens propios.
-- Componentes propios, al estilo de shadcn/ui, sobre primitivas accesibles de Radix.
-- Motion para el movimiento y TanStack Query para el estado del servidor.
-- CodeMirror 6 para el modo fuente, Shiki para el resaltado, cmdk para la paleta de comandos y un visor de diffs por evaluar.
+Decidido en el [ADR 0009](decisions/0009-angular-para-la-ui.md):
+
+- Angular 22 standalone, sin zone.js, con signals y plantillas estrictas; TypeScript 6.0 solo en `packages/ui`.
+- Tailwind CSS 4 con tokens propios.
+- Componentes propios sobre las primitivas accesibles de Angular Aria y el CDK.
+- `animate.enter`/`animate.leave` y transiciones CSS para el movimiento; `resource()` y signals para el estado del servidor.
+- CodeMirror 6 para el modo fuente, Shiki para el resaltado, combobox de Angular Aria para la paleta de comandos, `@lucide/angular` para los iconos y un visor de diffs por evaluar.
+- Tests con el builder de tests de Angular y Vitest.
 - Presupuesto: menos de 300 KB gzip en la carga inicial; el resto, bajo demanda.
 
 **Requisito de arquitectura:** la capa de datos se abstrae del transporte: `fetch` + SSE hoy; `postMessage` en la webview de VS Code y MCP Apps después. Así, el mismo bundle sirve a los tres anfitriones.

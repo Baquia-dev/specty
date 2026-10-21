@@ -6,6 +6,13 @@
   "branch": "specty/20261021-sistema-de-diseno-tokens-y-catalogo",
   "baseCommit": "a1a5d7344e6f589071948d54c18f3c6ee5bab137",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:97afc7189c1151fc0c0a610f70be75a9857f04b82915c9bbfa71222ad460b861",
+    "at": "2026-10-21T07:58:35.503Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -50,7 +57,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "918357bb0901a94a3b3be4fa0a8f78f31e4bb6a7",
+      "startedAt": "2026-10-21T07:59:18.554Z",
+      "doneAt": "2026-10-21T08:01:37.926Z",
+      "summary": "packages/ui con Angular 22.2.3 y TypeScript 6.0.3 propio (core compila con TS6); angular.json con build, serve y unit-test (Vitest 5, umbrales de cobertura 80 %); decisiones de scripts de instalación en pnpm-workspace.yaml; @lucide/angular fijado en 1.55.0 por la política de antigüedad mínima; ADR 0009 y stack de docs/ui.md"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -60,12 +77,5 @@
     "AC": 8,
     "T": 3,
     "R": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:97afc7189c1151fc0c0a610f70be75a9857f04b82915c9bbfa71222ad460b861",
-    "at": "2026-10-21T07:58:35.503Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

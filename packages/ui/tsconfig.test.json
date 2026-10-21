@@ -1,0 +1,10 @@
+{
+  // Tests may use Node APIs (for example, to read styles.css) and Vitest's globals.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node", "vitest/globals"]
+  },
+  "files": [],
+  "include": ["src/**/*.ts"],
+  "exclude": []
+}

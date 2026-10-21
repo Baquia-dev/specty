@@ -82,7 +82,7 @@ Crear `packages/ui` con Angular 22 y los tokens del sistema de diseño en la dir
 
 ## Tareas
 
-- [ ] T1: Paquete Angular de la UI en el monorepo
+- [x] T1: Paquete Angular de la UI en el monorepo
   - files: pnpm-workspace.yaml, packages/ui/package.json, packages/ui/angular.json, packages/ui/tsconfig.json
   - ac: —
   - verify: pnpm install --frozen-lockfile

@@ -1,6 +1,6 @@
 # 0003 · UI web local primero, con rediseño completo
 
-- Estado: aceptada
+- Estado: aceptada; el framework lo actualiza el [ADR 0009](0009-angular-para-la-ui.md) (Angular en lugar de React)
 - Fecha: 2026-10-20
 
 ## Contexto

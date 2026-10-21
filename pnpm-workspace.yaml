@@ -1,6 +1,10 @@
 packages:
   - "packages/*"
 
-# esbuild works through its platform package; its install script is not needed.
+# esbuild, @parcel/watcher, lmdb and msgpackr-extract ship prebuilt binaries
+# (platform packages or prebuilds); their install scripts are not needed.
 allowBuilds:
   esbuild: false
+  "@parcel/watcher": false
+  lmdb: false
+  msgpackr-extract: false
