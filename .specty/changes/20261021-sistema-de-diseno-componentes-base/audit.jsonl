@@ -1,0 +1,4 @@
+{"ts":"2026-10-21T20:15:58.129Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261021-sistema-de-diseno-componentes-base","follows":["20261021-sistema-de-diseno-tokens-y-catalogo"]}}
+{"ts":"2026-10-21T20:16:53.808Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:d40f1a4d79b4b0c71aa8af5b4dab27f352c70bb38ccf55d62d453fafacec8a06","size":"M","warnings":3}}
+{"ts":"2026-10-21T20:28:43.310Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ab77cfcf3bdd5ffc709010cd30863a56554aa3b71d18ad2afb160d28269a6d9d","size":"M","warnings":3}}
+{"ts":"2026-10-21T20:32:38.321Z","actor":"human","event":"spec.approved","data":{"revision":2,"hash":"sha256:ab77cfcf3bdd5ffc709010cd30863a56554aa3b71d18ad2afb160d28269a6d9d","channel":"tty"}}

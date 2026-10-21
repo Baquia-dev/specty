@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261021-sistema-de-diseno-componentes-base",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261021-sistema-de-diseno-componentes-base",
+  "baseCommit": "d62e8d188e3cc7f9b97c1109dcda57d9d7fc7ed5",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4777cf0c6cad96c0503d14f3fd308e1647bdb41e3abcf0b65e6fcd66bf25cabd",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f561c568be5a279540cb9d103bdb9fe0bc9c1f2eb67d4c7a4666a6aa85336f84",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7fbd92239776d93770c0cb6c785fab98571ca83e8082d7f2c5ada4c70fb7b841",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:bb28bbb3f4dfbb34e4f2b3566a0cbc7566af0931320739a40434190944d87538",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:2d4ca2fe8b25fcd405b51ecadac80dbec8d60e429882f2884dfae86c463b35d2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 9,
+    "T": 3,
+    "R": 4
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ab77cfcf3bdd5ffc709010cd30863a56554aa3b71d18ad2afb160d28269a6d9d",
+    "at": "2026-10-21T20:32:38.297Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
