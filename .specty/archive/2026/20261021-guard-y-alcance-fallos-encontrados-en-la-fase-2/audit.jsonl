@@ -13,3 +13,6 @@
 {"ts":"2026-10-21T18:57:07.223Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"e412192f44f1179ee3b8bd850f6925e86a7d7f93"}}
 {"ts":"2026-10-21T18:58:14.928Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":18327}}
 {"ts":"2026-10-21T18:58:14.930Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"detect/formatters.ts detecta Biome (biome.json/jsonc) y Prettier (.prettierrc*, prettier.config.*, clave prettier en package.json) y si excluyen .specty; doctor lo comprueba y, si falta, dice la línea exacta y dónde va. Tests de aviso y de exclusión correcta. Nota en formats.md §6"}}
+{"ts":"2026-10-21T19:42:55.012Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-21T19:43:30.858Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:3777a7fdfa34e6249e25f43e07cd3814f58def7230af527adcbbaf3c8518b52b","size":"L","warnings":0}}
+{"ts":"2026-10-21T20:15:00.798Z","actor":"human","event":"change.closed","data":{}}

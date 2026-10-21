@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261021-guard-y-alcance-fallos-encontrados-en-la-fase-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261021-guard-y-alcance-fallos-encontrados-en-la-fase-2",
   "baseCommit": "e1f5478471bf70bae854737944ad13ffd1793761",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4f8429ee4b07d89e6f41cd2f420c7e4e70861aa0778622f67d82ddc575b988d6",
@@ -67,12 +67,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e412192f44f1179ee3b8bd850f6925e86a7d7f93",
+      "attempts": 1,
       "startedAt": "2026-10-21T18:57:07.222Z",
       "doneAt": "2026-10-21T18:58:14.929Z",
-      "summary": "detect/formatters.ts detecta Biome (biome.json/jsonc) y Prettier (.prettierrc*, prettier.config.*, clave prettier en package.json) y si excluyen .specty; doctor lo comprueba y, si falta, dice la línea exacta y dónde va. Tests de aviso y de exclusión correcta. Nota en formats.md §6"
+      "summary": "detect/formatters.ts detecta Biome (biome.json/jsonc) y Prettier (.prettierrc*, prettier.config.*, clave prettier en package.json) y si excluyen .specty; doctor lo comprueba y, si falta, dice la línea exacta y dónde va. Tests de aviso y de exclusión correcta. Nota en formats.md §6",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -84,5 +84,6 @@
     "AC": 5,
     "T": 4,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-21T19:43:30.857Z"
 }

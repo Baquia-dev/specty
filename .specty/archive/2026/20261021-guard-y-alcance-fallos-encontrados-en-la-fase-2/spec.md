@@ -90,3 +90,29 @@ Corregir cinco fallos de Specty encontrados al construir el sistema de diseño. 
 - R1: Permitir lo que no se puede resolver (A1) abre un hueco: `cd "$X" && echo > archivo`. Mitigación: es mejor esfuerzo, como el resto del análisis de shell, y la capa 3 y el CI siguen bloqueando el commit sin recibo.
 - R2: `git check-ignore` añade una llamada a git en cada acción que escribe, y el objetivo de rendimiento del guard es p95 < 200 ms. Mitigación: una sola llamada con todas las rutas por `--stdin`, y solo cuando hay rutas.
 - R3: El guard en uso es `packages/cli/dist/specty.mjs`; hasta reconstruirlo, sigue con los fallos durante este cambio. Mitigación: los tests de las tareas van listados en Archivos, sin depender del alcance implícito.
+
+## Cierre
+
+### Resumen
+
+- Alcance implícito: el espejo `test/` → `src/` se reconoce a cualquier profundidad, así que `packages/x/test/a/b.test.ts` cuenta como test de `packages/x/src/a/b.ts`.
+- Análisis de shell: sigue los `cd` de cada comando. Las rutas con variables, con `~` o tras un `cd` a un destino desconocido van a `unresolved`, y los heredocs y here-strings ya no cuentan como escrituras.
+- Guard: ubica cada ruta según su `cd`, no juzga lo que no puede ubicar y descarta lo que git ignora (`Git.ignored`, una sola llamada a `git check-ignore`).
+- `doctor`: avisa si Biome o Prettier revisan `.specty/` y da la línea exacta que hay que añadir.
+- Documentación: ARCHITECTURE §10 y formats.md §6.
+
+### Desviaciones
+
+- El diseño proponía `{ path, base }` por ruta. Se mantuvieron `writes` y `deletes` como rutas ya ubicadas, relativas al directorio del evento o absolutas, y se añadió `unresolved`, porque cambia menos la interfaz de core.
+- Se corrigió además un fallo que no estaba previsto: el delimitador de un heredoc (`<<'EOF'`) se tomaba por un archivo escrito.
+
+### Decisiones
+
+- Lo que el guard no puede ubicar no se bloquea por alcance (A1). Los hooks de git y el CI lo cubren.
+- Lo que git ignora no es código gobernado, igual que en `task done`.
+- Specty no imita a los formateadores: el repositorio excluye `.specty/` y `doctor` lo comprueba.
+
+### Pendientes
+
+- `rm -rf .` (la raíz del repositorio) no se bloquea: la ruta vacía no coincide con ningún glob. Ya pasaba antes de este cambio.
+- El guard en uso es `packages/cli/dist/specty.mjs`: hay que reconstruirlo (`pnpm --filter @baquia-dev/specty build`) para que los arreglos se apliquen. Ya está reconstruido en esta máquina.
