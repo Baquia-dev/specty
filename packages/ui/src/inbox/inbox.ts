@@ -4,64 +4,56 @@ import {
   Component,
   computed,
   DestroyRef,
-  ElementRef,
   inject,
   signal,
+  viewChildren,
 } from "@angular/core";
-import { RouterLink } from "@angular/router";
-import { PHASES } from "@baquia-dev/specty-core";
-import { LucideClock, LucideDynamicIcon, LucideTriangleAlert } from "@lucide/angular";
-import { Badge, PhaseBadge } from "../components/badge";
+import {
+  LucideDynamicIcon,
+  LucideInbox,
+  LucideSearchX,
+  LucideTriangleAlert,
+} from "@lucide/angular";
 import { Button } from "../components/button";
-import { Card } from "../components/card";
+import { LIST, PAGE, SectionDivider } from "../components/document";
+import { EmptyState } from "../components/empty-state";
 import { Kbd } from "../components/kbd";
 import { Skeleton } from "../components/skeleton";
 import { ChangesStore } from "../data/changes-store";
-import { type ChangeView, type DecisionKind, relativeTime } from "../data/records";
+import type { ChangeView } from "../data/records";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
-
-const DECISIONS: Readonly<
-  Record<DecisionKind, { es: string; en: string; actionEs: string; actionEn: string }>
-> = {
-  review: {
-    es: "Spec por revisar",
-    en: "Spec to review",
-    actionEs: "Revisar spec",
-    actionEn: "Review spec",
-  },
-  scope: {
-    es: "Solicitud de alcance",
-    en: "Scope request",
-    actionEs: "Decidir alcance",
-    actionEn: "Decide scope",
-  },
-  acceptance: {
-    es: "Resultado por aceptar",
-    en: "Result to accept",
-    actionEs: "Revisar resultado",
-    actionEn: "Review result",
-  },
-  closing: {
-    es: "Cierre por confirmar",
-    en: "Closing to confirm",
-    actionEs: "Revisar cierre",
-    actionEn: "Review closing",
-  },
-};
+import { InboxRow } from "./inbox-row";
+import { InboxState } from "./inbox-state";
+import { InboxToolbar } from "./inbox-toolbar";
+import { inboxSections, phaseCounts, stateOf } from "./inbox-view";
 
 const TICK_MS = 30_000;
 
-/** What waits for the person first, then work in progress by phase, then recent changes. */
+/** Every change as a document row: what waits for the person first, searchable and sortable. */
 @Component({
   selector: "sp-inbox",
-  imports: [RouterLink, LucideDynamicIcon, Badge, PhaseBadge, Button, Card, Kbd, Skeleton],
+  imports: [
+    LucideDynamicIcon,
+    Button,
+    SectionDivider,
+    EmptyState,
+    Kbd,
+    Skeleton,
+    InboxRow,
+    InboxToolbar,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto flex max-w-4xl flex-col gap-10 px-6 pt-8">
-      <header class="flex flex-wrap items-baseline justify-between gap-3">
-        <h1 class="m-0 text-xl font-semibold">{{ t()('Bandeja', 'Inbox') }}</h1>
-        <span class="flex items-center gap-1 text-xs text-text-muted">
+    <div [class]="page + ' flex flex-col gap-8 pt-10'">
+      <header class="flex flex-wrap items-end justify-between gap-4">
+        <div class="flex flex-col gap-1.5">
+          <h1 class="m-0 text-[2rem] leading-tight font-semibold tracking-[-0.025em]">{{ t()('Bandeja', 'Inbox') }}</h1>
+          @if (summary(); as line) {
+            <p class="m-0 text-sm text-text-muted" data-summary>{{ line }}</p>
+          }
+        </div>
+        <span class="hidden items-center gap-1 text-xs text-text-muted sm:flex">
           <sp-kbd keys="j" /> <sp-kbd keys="k" /> {{ t()('moverte', 'move') }} ·
           <sp-kbd keys="enter" /> {{ t()('abrir', 'open') }}
         </span>
@@ -77,97 +69,38 @@ const TICK_MS = 30_000;
         </div>
       } @else if (!store.views.hasValue()) {
         <div class="flex flex-col gap-3">
-          <sp-skeleton height="7rem" />
-          <sp-skeleton height="7rem" [announce]="false" />
-          <sp-skeleton height="3rem" [announce]="false" />
+          <sp-skeleton height="2.5rem" />
+          <sp-skeleton height="4.5rem" [announce]="false" />
+          <sp-skeleton height="4.5rem" [announce]="false" />
         </div>
       } @else {
-        <section class="flex flex-col gap-3" aria-labelledby="decisions">
-          <h2 id="decisions" class="m-0 flex items-center gap-2 text-lg font-semibold">
-            {{ t()('Esperan tu decisión', 'Waiting for your decision') }}
-            <sp-badge>{{ store.decisions().length }}</sp-badge>
-          </h2>
-          @for (change of store.decisions(); track change.id; let index = $index) {
-            <sp-card [selected]="index === selected()" [attr.data-id]="change.id">
-              <div class="flex flex-wrap items-center justify-between gap-2">
-                <span class="flex items-center gap-2">
-                  <sp-phase-badge [phase]="change.phase" />
-                  <span class="text-sm font-medium" data-decision>{{ decisionLabel(change) }}</span>
-                </span>
-                <span class="flex items-center gap-1 text-xs text-text-muted">
-                  <svg [lucideIcon]="clock" size="13" aria-hidden="true"></svg>{{ since(change) }}
-                </span>
-              </div>
-              <a class="text-md font-semibold no-underline hover:underline" [routerLink]="['/changes', change.id]" [queryParams]="{ tab: change.tab }" (focus)="selected.set(index)">{{ change.title }}</a>
-              <p class="m-0 flex flex-wrap items-center gap-2 text-sm text-text-muted">
-                @if (change.size; as size) {
-                  <sp-badge>{{ size.level }}</sp-badge> {{ reasons(change) }}
-                }
-                <code class="font-mono text-xs">{{ change.id }}</code>
-              </p>
-              @if (change.highImpactPending > 0) {
-                <p class="m-0 flex items-center gap-2 text-sm">
-                  <svg [lucideIcon]="warning" size="14" aria-hidden="true" style="color: var(--color-phase-review)"></svg>
-                  {{ pendingText(change.highImpactPending) }}
-                </p>
-              }
-              @for (request of change.scopeRequests; track request.id) {
-                <p class="m-0 text-sm text-text-muted">
-                  {{ request.task }} {{ t()('pide', 'asks for') }}
-                  @for (path of request.paths; track path) {
-                    <code class="font-mono text-xs text-text">{{ path }}</code>
-                  }
-                  : «{{ request.reason }}»
-                </p>
-              }
-              <div>
-                <sp-button size="sm" [variant]="index === selected() ? 'primary' : 'secondary'" (pressed)="open(change)">
-                  {{ t()(decisions[change.decision ?? 'review'].actionEs, decisions[change.decision ?? 'review'].actionEn) }}
-                </sp-button>
-              </div>
-            </sp-card>
-          } @empty {
-            <p class="m-0 text-sm text-text-muted">{{ t()('Nada espera tu decisión.', 'Nothing waits for your decision.') }}</p>
-          }
-        </section>
-
-        <section class="flex flex-col gap-4" aria-labelledby="active">
-          <h2 id="active" class="m-0 text-lg font-semibold">{{ t()('En curso', 'In progress') }}</h2>
-          @for (group of groups(); track group.phase) {
-            <div class="flex flex-col gap-2">
-              <sp-phase-badge class="self-start" [phase]="group.phase" />
-              @for (change of group.changes; track change.id) {
-                <sp-card [selected]="offset(change) === selected()" [attr.data-id]="change.id">
-                  <div class="flex flex-wrap items-center justify-between gap-2">
-                    <a class="font-medium no-underline hover:underline" [routerLink]="['/changes', change.id]" [queryParams]="{ tab: change.tab }" (focus)="selected.set(offset(change))">{{ change.title }}</a>
-                    <span class="text-xs text-text-muted">
-                      @if (change.tasks.total > 0) {
-                        {{ change.tasks.done }}/{{ change.tasks.total }} {{ t()('tareas', 'tasks') }} ·
-                      }
-                      {{ since(change) }}
-                    </span>
-                  </div>
-                </sp-card>
+        <sp-inbox-toolbar [counts]="counts()" />
+        @if (state.filtered()) {
+          <p class="-mt-4 mb-0 flex items-center gap-2 text-[13px] text-text-muted" data-shown>
+            {{ t()(shown() + ' de ' + store.all().length + ' cambios', shown() + ' of ' + store.all().length + ' changes') }} ·
+            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-sans text-[13px] text-text underline" (click)="state.clear()">{{ t()('Limpiar filtros', 'Clear filters') }}</button>
+          </p>
+        }
+        @for (section of sections(); track section.key) {
+          <section [attr.aria-labelledby]="'inbox-' + section.key" [attr.data-section]="section.key">
+            <sp-section-divider [heading]="t()(section.label.es, section.label.en)" [headingId]="'inbox-' + section.key" [meta]="section.changes.length" [level]="2" />
+            <div role="list" [class]="list + ' mt-2'">
+              @for (change of section.changes; track change.id) {
+                <sp-inbox-row [change]="change" [current]="isSelected(change)" [now]="now()" (picked)="selectedId.set(change.id)" />
               }
             </div>
-          } @empty {
-            <p class="m-0 text-sm text-text-muted">{{ t()('Ningún cambio en curso.', 'No change in progress.') }}</p>
-          }
-        </section>
-
-        @if (store.recent().length > 0) {
-          <section class="flex flex-col gap-2" aria-labelledby="recent">
-            <h2 id="recent" class="m-0 text-lg font-semibold">{{ t()('Recientes', 'Recent') }}</h2>
-            <ul class="m-0 flex list-none flex-col gap-1 p-0">
-              @for (change of store.recent(); track change.id) {
-                <li class="flex flex-wrap items-center gap-2 text-sm">
-                  <sp-phase-badge [phase]="change.phase" />
-                  <a [routerLink]="['/changes', change.id]">{{ change.title }}</a>
-                  <span class="text-xs text-text-muted">{{ since(change) }}</span>
-                </li>
-              }
-            </ul>
           </section>
+        } @empty {
+          @if (state.filtered()) {
+            <sp-empty-state [heading]="t()('Ningún cambio coincide', 'No change matches')" [icon]="noMatch">
+              <p class="m-0">{{ t()('Prueba con otro texto u otra fase.', 'Try another text or phase.') }}</p>
+              <sp-button size="sm" (pressed)="state.clear()">{{ t()('Limpiar filtros', 'Clear filters') }}</sp-button>
+            </sp-empty-state>
+          } @else {
+            <sp-empty-state [heading]="t()('Aún no hay cambios', 'No changes yet')" [icon]="empty">
+              <p class="m-0">{{ t()('Crea el primero desde la terminal con specty new.', 'Create the first one in the terminal with specty new.') }}</p>
+            </sp-empty-state>
+          }
         }
       }
     </div>
@@ -175,36 +108,59 @@ const TICK_MS = 30_000;
 })
 export class Inbox {
   protected readonly store = inject(ChangesStore);
+  protected readonly state = inject(InboxState);
   private readonly preferences = inject(Preferences);
-  private readonly host: HTMLElement = inject(ElementRef).nativeElement;
   protected readonly t = this.preferences.t;
-  protected readonly decisions = DECISIONS;
-  protected readonly clock = LucideClock;
+  protected readonly page = PAGE;
+  protected readonly list = LIST;
   protected readonly warning = LucideTriangleAlert;
-  protected readonly selected = signal(0);
-  private readonly now = signal(Date.now());
+  protected readonly noMatch = LucideSearchX;
+  protected readonly empty = LucideInbox;
+  protected readonly now = signal(Date.now());
+  private readonly rows = viewChildren(InboxRow);
 
-  /** In progress, by phase in flow order. */
-  protected readonly groups = computed(() =>
-    PHASES.map((phase) => ({
-      phase,
-      changes: this.store.active().filter((change) => change.phase === phase),
-    })).filter((group) => group.changes.length > 0),
+  protected readonly sections = computed(() =>
+    inboxSections(this.store.all(), this.state.filters(), this.preferences.lang()),
   );
-  /** Everything j/k can select: decisions first, then work in progress. */
-  private readonly selectable = computed(() => [
-    ...this.store.decisions(),
-    ...this.groups().flatMap((group) => group.changes),
-  ]);
+  protected readonly counts = computed(() => phaseCounts(this.store.all(), this.state.query()));
+  /** The rows j/k walk through, in the order they are shown. */
+  private readonly order = computed(() => this.sections().flatMap((section) => section.changes));
+  protected readonly shown = computed(() => this.order().length);
+  /** The row picked with j/k: the first one until the person moves. */
+  protected readonly selectedId = signal<string | undefined>(undefined);
+  private readonly selected = computed(() => {
+    const id = this.selectedId();
+    return this.order().some((change) => change.id === id) ? id : this.order()[0]?.id;
+  });
+
+  /** "5 decisiones · 2 en curso · 2 recientes". */
+  protected readonly summary = computed(() => {
+    const t = this.t();
+    const count = (state: string) =>
+      this.store.all().filter((change) => stateOf(change) === state).length;
+    const parts = [
+      [count("decision"), t("decisión", "decision"), t("decisiones", "decisions")],
+      [count("active"), t("en curso", "in progress"), t("en curso", "in progress")],
+      [count("recent"), t("reciente", "recent"), t("recientes", "recent")],
+    ] as const;
+    return parts
+      .filter(([n]) => n > 0)
+      .map(([n, one, many]) => `${n} ${n === 1 ? one : many}`)
+      .join(" · ");
+  });
 
   constructor() {
     const shortcuts = inject(Shortcuts);
     const move = (step: number) => () => {
-      const last = this.selectable().length - 1;
-      if (last < 0) return;
-      this.selected.update((index) => Math.min(Math.max(index + step, 0), last));
-      const id = this.selectable()[this.selected()]?.id ?? "";
-      this.host.querySelector<HTMLElement>(`sp-card[data-id="${id}"] a`)?.focus();
+      const order = this.order();
+      if (order.length === 0) return;
+      const at = order.findIndex((change) => change.id === this.selected());
+      const next = order[Math.min(Math.max(at + step, 0), order.length - 1)];
+      if (next === undefined) return;
+      this.selectedId.set(next.id);
+      this.rows()
+        .find((row) => row.change().id === next.id)
+        ?.focus();
     };
     shortcuts.register({
       keys: "j",
@@ -220,37 +176,8 @@ export class Inbox {
     inject(DestroyRef).onDestroy(() => clearInterval(timer));
   }
 
-  protected offset(change: ChangeView): number {
-    return this.selectable().findIndex((item) => item.id === change.id);
-  }
-
-  protected open(change: ChangeView): void {
-    this.host.querySelector<HTMLAnchorElement>(`sp-card[data-id="${change.id}"] a`)?.click();
-  }
-
-  protected since(change: ChangeView): string {
-    return relativeTime(change.phaseSince, this.now(), this.preferences.lang());
-  }
-
-  protected decisionLabel(change: ChangeView): string {
-    const label = DECISIONS[change.decision ?? "review"];
-    return this.t()(label.es, label.en);
-  }
-
-  protected reasons(change: ChangeView): string {
-    const lang = this.preferences.lang();
-    return (change.size?.reasons ?? []).map((reason) => reason[lang]).join(" · ");
-  }
-
-  protected pendingText(count: number): string {
-    return this.t()(
-      count === 1
-        ? "1 supuesto de alto impacto por confirmar"
-        : `${count} supuestos de alto impacto por confirmar`,
-      count === 1
-        ? "1 high-impact assumption to confirm"
-        : `${count} high-impact assumptions to confirm`,
-    );
+  protected isSelected(change: ChangeView): boolean {
+    return this.selected() === change.id;
   }
 
   protected message(error: unknown): string {

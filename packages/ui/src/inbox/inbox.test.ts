@@ -42,16 +42,32 @@ async function open() {
   await router.navigateByUrl("/");
   await settle();
   const fixtures = TestBed.inject(SpectyData) as FixtureData;
-  const cards = () => [...element.querySelectorAll<HTMLElement>("sp-inbox sp-card")];
+  const rows = () => [...element.querySelectorAll<HTMLElement>("sp-inbox sp-inbox-row")];
+  const row = (id: string) => rows().find((item) => item.dataset.id === id);
+  const sections = () =>
+    [...element.querySelectorAll<HTMLElement>("sp-inbox section")].map(
+      (section) =>
+        `${text(section.querySelector("h2"))} ${text(section.querySelector("[data-meta]"))}`,
+    );
+  const search = () => element.querySelector<HTMLInputElement>("sp-inbox-toolbar input");
   const press = (key: string) =>
     document.body.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
-  return { fixture, element, router, settle, fixtures, cards, press };
+  const typeIn = async (value: string) => {
+    const input = search();
+    if (input === null) throw new Error("no search");
+    input.value = value;
+    input.dispatchEvent(new Event("input"));
+    await settle();
+  };
+  return { fixture, element, router, settle, fixtures, rows, row, sections, search, press, typeIn };
 }
 
-const text = (element: Element | undefined) => element?.textContent?.replace(/\s+/g, " ") ?? "";
+const text = (element: Element | null | undefined) =>
+  element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+const short = (id: string | undefined) => id?.replace(/^\d+-/, "");
 
 describe("Inbox while loading", () => {
-  it("shows skeletons with the final shape, announced once (AC6)", async () => {
+  it("shows skeletons with the final shape, announced once", async () => {
     class Pending extends SpectyData {
       changes(): Promise<readonly ChangeRecord[]> {
         return new Promise(() => undefined);
@@ -85,82 +101,180 @@ describe("Inbox while loading", () => {
 describe("Inbox", () => {
   afterEach(() => TestBed.resetTestingModule());
 
-  it("shows skeletons first, then decisions, work in progress and recent changes (AC1, AC6)", async () => {
-    const { element } = await open();
-    // The room below the content comes from the shell, as on every page.
-    expect(element.querySelector("sp-inbox > div")?.className).not.toMatch(/\b(pb|py)-\d/);
-    const headings = [...element.querySelectorAll("sp-inbox h2")].map((heading) =>
-      text(heading).trim(),
+  it("shows every change as a document row, by state and longest wait first (AC1)", async () => {
+    const { element, rows, row, sections } = await open();
+    expect(text(element.querySelector("sp-inbox h1"))).toBe("Bandeja");
+    expect(text(element.querySelector("[data-summary]"))).toBe(
+      "5 decisiones · 2 en curso · 2 recientes",
     );
-    expect(headings).toEqual(["Esperan tu decisión 5", "En curso", "Recientes"]);
-    const decisions = [...element.querySelectorAll("section[aria-labelledby=decisions] sp-card")];
-    expect(
-      decisions.map((card) => text(card.querySelector("[data-decision]") ?? undefined)),
-    ).toEqual([
-      "Resultado por aceptar",
-      "Cierre por confirmar",
-      "Spec por revisar",
-      "Spec por revisar",
-      "Solicitud de alcance",
+    expect(sections()).toEqual(["Esperan tu decisión 5", "En curso 2", "Recientes 2"]);
+    expect(rows().map((item) => short(item.dataset.id))).toEqual([
+      "asistencia-curso",
+      "recordatorios-correo",
+      "justificar-faltas",
+      "evolucion-trimestre",
+      "boletines-pdf",
+      "login-google",
+      "modo-oscuro",
+      "chat-docentes",
+      "redondeo-promedios",
     ]);
-    const first = decisions[0];
-    expect(first?.querySelector("sp-phase-badge")).not.toBeNull();
-    expect(text(first)).toMatch(/hace 1 h|hace 95 min|hace 2 h/);
-    expect(first?.querySelector("sp-badge")).not.toBeNull();
-    expect(first?.querySelector("sp-button")).not.toBeNull();
-    expect(text(element.querySelector("section[aria-labelledby=recent]") ?? undefined)).toContain(
-      "Corregir el redondeo de promedios",
+    // No cards: rows under a divider, indented, lighting up on hover.
+    expect(element.querySelector("sp-inbox sp-card")).toBeNull();
+    expect(element.querySelector("sp-inbox [role=list]")?.className).toContain("pl-6");
+    const first = rows()[0];
+    expect(first?.getAttribute("aria-current")).toBe("true");
+    expect(first?.className).toContain("hover:bg-text/4");
+    expect(first?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("acceptance");
+    expect(text(first?.querySelector("[data-waits]"))).toMatch(/^Resultado por aceptar · S/);
+    expect(text(first?.querySelector("sp-button"))).toBe("Revisar resultado");
+    expect(first?.querySelector("sp-button button")?.className).toContain("bg-accent");
+    expect(text(row("20261016-justificar-faltas")?.querySelector("[data-waits]"))).toContain(
+      "Spec por revisar · r3 frente a r2",
     );
+    expect(text(row("20261020-evolucion-trimestre")?.querySelector("[data-note]"))).toBe(
+      "1 supuesto de alto impacto por confirmar",
+    );
+    expect(text(row("20261019-boletines-pdf")?.querySelector("[data-note]"))).toBe(
+      "T3 pide lib/shared/pdf/layout.dart: «La firma necesita el maquetador compartido.»",
+    );
+    expect(text(row("20261021-login-google")?.querySelector("[data-progress]"))).toBe(
+      "1 de 2 tareas",
+    );
+    expect(row("20261021-login-google")?.querySelector("sp-button")).toBeNull();
   });
 
-  it("tells how many high-impact assumptions wait, and what scope is asked (AC2)", async () => {
-    const { cards } = await open();
-    const review = cards().find((card) => card.dataset.id === "20261020-evolucion-trimestre");
-    expect(text(review)).toContain("1 supuesto de alto impacto por confirmar");
-    const scope = cards().find((card) => card.dataset.id === "20261019-boletines-pdf");
-    expect(text(scope)).toContain("T3 pide lib/shared/pdf/layout.dart");
-    expect(text(scope)).toContain("«La firma necesita el maquetador compartido.»");
-  });
-
-  it("moves with j/k, focusing the change so Enter opens it (AC3)", async () => {
-    const { fixture, cards, press } = await open();
-    expect(cards()[0]?.getAttribute("aria-current")).toBe("true");
+  it("moves with j/k, focusing the change so Enter opens it (AC1)", async () => {
+    const { fixture, rows, press } = await open();
     press("j");
     press("j");
     await fixture.whenStable();
-    expect(cards()[2]?.getAttribute("aria-current")).toBe("true");
-    expect(document.activeElement).toBe(cards()[2]?.querySelector("a"));
-    for (let step = 0; step < 10; step++) press("j");
+    expect(rows()[2]?.getAttribute("aria-current")).toBe("true");
+    expect(document.activeElement).toBe(rows()[2]?.querySelector("a"));
+    for (let step = 0; step < 12; step++) press("j");
     await fixture.whenStable();
-    expect(cards().at(-1)?.getAttribute("aria-current")).toBe("true");
+    expect(rows().at(-1)?.getAttribute("aria-current")).toBe("true");
     press("k");
     await fixture.whenStable();
-    expect(cards().at(-2)?.getAttribute("aria-current")).toBe("true");
+    expect(rows().at(-2)?.getAttribute("aria-current")).toBe("true");
   });
 
-  it("opens a change on the tab its decision needs (AC1)", async () => {
-    const { cards, router, settle } = await open();
-    const scope = cards().find((card) => card.dataset.id === "20261019-boletines-pdf");
-    scope?.querySelector<HTMLButtonElement>("sp-button button")?.click();
+  it("finds by title or id, ignoring case and accents; / to search and Escape to clear (AC2)", async () => {
+    const { fixture, rows, search, press, typeIn } = await open();
+    press("/");
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(search());
+    await typeIn("EVOLUCION");
+    expect(rows().map((item) => short(item.dataset.id))).toEqual(["evolucion-trimestre"]);
+    search()?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    await fixture.whenStable();
+    expect(search()?.value).toBe("");
+    expect(rows()).toHaveLength(9);
+  });
+
+  it("filters by phase, each with its count; the chosen one again shows them all (AC3)", async () => {
+    const { element, rows, settle } = await open();
+    const chips = () => [...element.querySelectorAll<HTMLButtonElement>("[data-phases] button")];
+    expect(chips().map(text)).toEqual([
+      "Todas 9",
+      "Borrador 1",
+      "Revisión 2",
+      "Implementación 2",
+      "Aceptación 1",
+      "Cierre 1",
+      "Terminado 1",
+      "Cancelado 1",
+    ]);
+    chips()[2]?.click();
+    await settle();
+    expect(rows().map((item) => short(item.dataset.id))).toEqual([
+      "justificar-faltas",
+      "evolucion-trimestre",
+    ]);
+    expect(chips()[2]?.getAttribute("aria-pressed")).toBe("true");
+    chips()[2]?.click();
+    await settle();
+    expect(rows()).toHaveLength(9);
+  });
+
+  it("groups by phase or not at all, and sorts by title (AC4)", async () => {
+    const { element, sections, rows, settle } = await open();
+    const groups = () => [...element.querySelectorAll<HTMLButtonElement>("[data-group] button")];
+    groups()[1]?.click();
+    await settle();
+    expect(sections()).toEqual([
+      "Borrador 1",
+      "Revisión 2",
+      "Implementación 2",
+      "Aceptación 1",
+      "Cierre 1",
+      "Terminado 1",
+      "Cancelado 1",
+    ]);
+    groups()[2]?.click();
+    const sort = element.querySelector<HTMLSelectElement>("[data-sort]");
+    if (sort === null) throw new Error("no sort");
+    sort.value = "title";
+    sort.dispatchEvent(new Event("change"));
+    await settle();
+    expect(sections()).toEqual(["Todos los cambios 9"]);
+    const titles = rows().map((item) => text(item.querySelector("a")));
+    expect(titles).toEqual(titles.toSorted((a, b) => a.localeCompare(b, "es")));
+  });
+
+  it("says when nothing matches, how many are shown, and clears the filters (AC5)", async () => {
+    const { element, rows, settle, typeIn } = await open();
+    await typeIn("correo");
+    expect(text(element.querySelector("[data-shown]"))).toBe("1 de 9 cambios · Limpiar filtros");
+    await typeIn("nada parecido");
+    const empty = element.querySelector("sp-inbox sp-empty-state");
+    expect(text(empty?.querySelector("h2"))).toBe("Ningún cambio coincide");
+    empty?.querySelector<HTMLButtonElement>("sp-button button")?.click();
+    await settle();
+    expect(rows()).toHaveLength(9);
+    expect(element.querySelector("[data-shown]")).toBeNull();
+  });
+
+  it("keeps the view when coming back from a change, with a clean URL (AC6)", async () => {
+    const { element, router, rows, settle, search, typeIn } = await open();
+    await typeIn("pdf");
+    element.querySelector<HTMLButtonElement>("[data-group] button:nth-child(2)")?.click();
+    await settle();
+    expect(router.url).toBe("/");
+    rows()[0]?.querySelector<HTMLAnchorElement>("a")?.click();
+    await settle();
+    expect(router.url).toBe("/changes/20261019-boletines-pdf?tab=progress");
+    await router.navigateByUrl("/");
+    await settle();
+    expect(router.url).toBe("/");
+    expect(search()?.value).toBe("pdf");
+    expect(rows().map((item) => short(item.dataset.id))).toEqual(["boletines-pdf"]);
+    expect(
+      element.querySelector("[data-group] button[aria-pressed=true]")?.textContent?.trim(),
+    ).toBe("Fase");
+    expect(localStorage.getItem("specty.inbox.group")).toBe("phase");
+  });
+
+  it("opens a change on the tab its decision needs", async () => {
+    const { row, router, settle } = await open();
+    row("20261019-boletines-pdf")?.querySelector<HTMLButtonElement>("sp-button button")?.click();
     await settle();
     expect(router.url).toBe("/changes/20261019-boletines-pdf?tab=progress");
   });
 
-  it("updates live and explains a failing source, with retry (AC5, AC6)", async () => {
-    const { element, fixtures, settle, cards } = await open();
+  it("updates live and explains a failing source, with retry", async () => {
+    const { element, fixtures, settle, row } = await open();
     fixtures.approveSpec();
     await settle();
     expect(
-      cards().some(
-        (card) =>
-          card.dataset.id === "20261020-evolucion-trimestre" &&
-          text(card).includes("Spec por revisar"),
-      ),
-    ).toBe(false);
+      row("20261020-evolucion-trimestre")
+        ?.querySelector("sp-phase-badge")
+        ?.getAttribute("data-phase"),
+    ).toBe("implementing");
     fixtures.toggleOutage();
     await settle();
     const alert = element.querySelector("sp-inbox [role=alert]");
-    expect(text(alert ?? undefined)).toContain("No se pudieron leer los cambios");
+    expect(text(alert)).toContain("No se pudieron leer los cambios");
     fixtures.toggleOutage();
     alert?.querySelector<HTMLButtonElement>("sp-button button")?.click();
     await settle();

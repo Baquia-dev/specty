@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-prototipo-bandeja-en-filas-con-buscador-filtros",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-prototipo-bandeja-en-filas-con-buscador-filtros",
   "baseCommit": "a40c1d5566d49ad1f3aa79c57f9c68aef2763a43",
   "revision": 2,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e5661278b74e3e84547dea7aaa72537c6417e0bc",
+      "attempts": 1,
       "startedAt": "2026-10-22T18:12:17.154Z",
       "doneAt": "2026-10-22T18:13:43.381Z",
-      "summary": "inbox/inbox-view.ts (puro): estado de cada cambio (espera decisión, en curso, reciente), búsqueda por título o id sin mayúsculas ni tildes, filtro por fase con contadores dentro de la búsqueda, orden (lo que más espera, lo más reciente, título, tamaño) y secciones por estado, por fase o sin agrupar. inbox/inbox-state.ts: búsqueda y fase en memoria; agrupación y orden guardados en el navegador con lectura y escritura protegidas; clear() limpia los filtros. Tests de los dos."
+      "summary": "inbox/inbox-view.ts (puro): estado de cada cambio (espera decisión, en curso, reciente), búsqueda por título o id sin mayúsculas ni tildes, filtro por fase con contadores dentro de la búsqueda, orden (lo que más espera, lo más reciente, título, tamaño) y secciones por estado, por fase o sin agrupar. inbox/inbox-state.ts: búsqueda y fase en memoria; agrupación y orden guardados en el navegador con lectura y escritura protegidas; clear() limpia los filtros. Tests de los dos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dcc28b2bf70591837afa793487691c08b95834ca",
+      "startedAt": "2026-10-22T18:13:43.638Z",
+      "doneAt": "2026-10-22T18:20:55.252Z",
+      "summary": "Bandeja en filas de documento (sp-inbox-row) bajo divisores de sección, sin tarjetas ni líneas entre filas; buscador por título o id (/ para enfocar, Escape para limpiar), filtros por fase con su número, agrupar por estado, fase o sin agrupar y ordenar por espera, recencia, título o tamaño; 'X de N cambios · Limpiar filtros' y estado vacío; j/k recorren el orden visible; URL limpia: agrupar y ordenar se guardan como preferencia, búsqueda y fase viven en la sesión; en el teléfono la fila se apila. docs/ui.md actualizado."
     }
   },
   "pending": {

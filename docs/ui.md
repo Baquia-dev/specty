@@ -33,7 +33,13 @@ Brief de diseño de la UI web local. Objetivo: que la persona revise **decisione
 
 ### Bandeja
 
-Arriba, tarjetas "Esperan tu decisión": spec por revisar, solicitud de alcance, resultado por aceptar y cierre por confirmar. Cada tarjeta muestra el cambio, la fase, el tamaño, cuánto tiempo lleva esperando y la acción directa. Debajo, los cambios activos agrupados por fase.
+Todos los cambios en filas de documento, sin tarjetas: por defecto, "Esperan tu decisión" (spec por revisar, solicitud de alcance, resultado por aceptar y cierre por confirmar), "En curso" y "Recientes", lo que más espera primero. Cada fila muestra la fase, el título, qué espera con su tamaño, las notas que piden atención (supuestos de alto impacto, solicitud de alcance), el avance de las tareas en curso, cuánto lleva y, si espera a la persona, la acción directa; la fila elegida con j/k se resalta y su acción es la principal.
+
+- **Buscador** por título o id, sin distinguir mayúsculas ni tildes; `/` lo enfoca y Escape lo vacía.
+- **Filtros por fase**, cada una con su número; elegir otra vez la fase activa vuelve a "Todas".
+- **Agrupar** por estado, por fase o sin agrupar, y **ordenar** por lo que más espera, lo más reciente, título o tamaño.
+- Con un filtro activo se ve cuántos cambios se muestran de cuántos; si ninguno coincide, un estado vacío con "Limpiar filtros".
+- La URL siempre queda limpia: agrupar y ordenar se recuerdan en el navegador, como el tema; la búsqueda y la fase duran la sesión (siguen al entrar a un cambio y volver).
 
 ### Revisión de spec
 

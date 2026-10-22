@@ -57,7 +57,7 @@ La Bandeja deja las tarjetas altas y se lee como el resto de la app, en filas de
   - files: packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox-view.test.ts, packages/ui/src/inbox/inbox-state.ts
   - ac: AC2, AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-view.test.ts --include src/inbox/inbox-state.test.ts
-- [ ] T2: Bandeja en filas, con buscador, filtros, agrupar y ordenar
+- [x] T2: Bandeja en filas, con buscador, filtros, agrupar y ordenar
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm check
