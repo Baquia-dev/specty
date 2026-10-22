@@ -125,6 +125,7 @@ Punto de partida para el sistema de diseño:
 - Todos los pares de texto cumplen 4,5:1 en claro y en oscuro (lo comprueba un test).
 - Patrones de documento (`components/document.ts`, página "Patrones" del catálogo): divisor de sección con título en versalitas, línea fina y contador; listas con sangría bajo su sección y filas sin líneas que se iluminan al pasar el puntero o con el foco y revelan sus acciones; un ancho de página común (72 rem). Y un estado vacío (`components/empty-state.ts`) con icono, título, qué pasó y cómo seguir.
 - El catálogo usa ese mismo ancho, con su menú a la izquierda, fijo al desplazarse; en el teléfono, el menú es una línea que se desplaza de lado. Sus colores siguen el lenguaje de documento: filas sin tarjetas (muestra, token, uso y valor) bajo divisores de sección.
+- Select propio (`components/select.ts`, en «Componentes» del catálogo): un desplegable con el estilo de la UI en lugar del del sistema. Está hecho sobre Angular Aria (un combobox sobre un listbox), con el teclado de un select nativo: clic, Enter, Espacio, ↓ o Alt+↓ lo abren; las flechas, Inicio/Fin o escribir mueven; Enter o clic eligen; Escape o salir lo cierran sin cambiar. El foco se queda en el disparador y la opción activa se anuncia. La lista es un panel como el de los menús, con una marca en la opción elegida; se abre debajo, o encima si no cabe, y es al menos tan ancha como el disparador.
 
 ## Stack
 

@@ -39,6 +39,23 @@ describe("Components page", () => {
     expect(element.textContent).toContain("Pulsaciones: 1");
   });
 
+  it("shows the select with an example and its description, choosing for real (AC4)", async () => {
+    const { fixture, element } = await render("es");
+    const section = element.querySelector<HTMLElement>("[aria-labelledby=select]");
+    expect(section?.querySelector("h2")?.textContent?.trim()).toBe("Select");
+    expect(section?.querySelector("p")?.textContent).toContain("no el del sistema");
+    const trigger = section?.querySelector<HTMLElement>("sp-select [data-select]");
+    expect(trigger?.textContent?.trim()).toBe("Lo que más espera primero");
+    trigger?.click();
+    await fixture.whenStable();
+    document.querySelectorAll<HTMLElement>("[role=option]")[1]?.click();
+    await fixture.whenStable();
+    expect(section?.querySelector("[data-chosen]")?.textContent?.trim()).toBe(
+      "Elegido: Lo más reciente primero",
+    );
+    TestBed.resetTestingModule();
+  });
+
   it("follows the language (AC9)", async () => {
     const { element } = await render("en");
     expect(element.querySelector("h1")?.textContent).toContain("Components");

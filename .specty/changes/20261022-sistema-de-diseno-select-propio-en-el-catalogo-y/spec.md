@@ -53,7 +53,7 @@ La Bandeja ordena con un `<select>` nativo, cuyo desplegable dibuja el sistema y
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/select.test.ts
   - notes: Comprobar en el navegador, en claro y oscuro, el teclado y que la lista se abre encima cuando no cabe debajo.
-- [ ] T2: El select en el catálogo
+- [x] T2: El select en el catálogo
   - files: packages/ui/src/catalog/components.ts, packages/ui/src/catalog/components.test.ts, docs/ui.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/catalog/components.test.ts

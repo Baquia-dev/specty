@@ -2,12 +2,15 @@
 import { Combobox, ComboboxPopup, ComboboxWidget } from "@angular/aria/combobox";
 import { Listbox, Option } from "@angular/aria/listbox";
 import { CdkConnectedOverlay, CdkOverlayOrigin } from "@angular/cdk/overlay";
+import { DOCUMENT } from "@angular/common";
 import {
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
   effect,
+  inject,
   input,
   model,
   signal,
@@ -62,7 +65,7 @@ const OPTION =
       #combobox="ngCombobox"
       cdkOverlayOrigin
       #origin="cdkOverlayOrigin"
-      #trigger
+      #field
       [class]="trigger"
       [(expanded)]="expanded"
       [attr.aria-labelledby]="hideLabel() ? null : labelId"
@@ -127,11 +130,29 @@ export class Select {
   protected readonly current = computed(() =>
     this.options().find((option) => option.value === this.value()),
   );
-  private readonly triggerRef = viewChild.required("trigger", { read: ElementRef<HTMLElement> });
+  private readonly field = viewChild.required("field", { read: ElementRef<HTMLElement> });
+  private readonly overlay = viewChild.required(CdkConnectedOverlay);
 
   constructor() {
+    const document = inject(DOCUMENT);
     effect(() => {
-      if (this.expanded()) this.width.set(this.triggerRef().nativeElement.offsetWidth);
+      if (this.expanded()) this.width.set(this.field().nativeElement.offsetWidth);
+    });
+    // The overlay stays attached while closed: placed again once the list has its size (Aria
+    // renders it on the first opening, after this runs), it opens above when it does not fit
+    // below, and it follows any scroll while open.
+    afterRenderEffect((onCleanup) => {
+      if (!this.expanded()) return;
+      const overlay = this.overlay().overlayRef;
+      const follow = () => overlay.updatePosition();
+      follow();
+      const resize = typeof ResizeObserver === "undefined" ? undefined : new ResizeObserver(follow);
+      resize?.observe(overlay.overlayElement);
+      document.addEventListener("scroll", follow, { capture: true, passive: true });
+      onCleanup(() => {
+        resize?.disconnect();
+        document.removeEventListener("scroll", follow, { capture: true });
+      });
     });
   }
 

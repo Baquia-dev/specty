@@ -39,12 +39,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8dde85d2db1e703ffa8c8d07cc5e5c94c28ec289",
+      "attempts": 1,
       "startedAt": "2026-10-22T21:33:30.467Z",
       "doneAt": "2026-10-22T21:35:03.529Z",
-      "summary": "sp-select sobre Angular Aria: disparador con ngCombobox no editable (role combobox, aria-haspopup listbox, nombre por aria-labelledby a su etiqueta visible o aria-label con hideLabel) y lista ngListbox en un ngComboboxPopup dentro de una superposición del CDK con las posiciones de los menús, al menos tan ancha como el disparador. focusMode activedescendant para que el foco quede en el disparador y se anuncie la opción activa. Enter, Espacio, ↓ y Alt+↓ abren; flechas, Inicio/Fin y escribir mueven; Enter o clic eligen y cierran; Escape cierra sin cambiar. mousedown en la lista evita que el clic se pierda al cerrar por foco. Estilo de los menús, marca en la elegida y chevrón que gira. 6 tests."
+      "summary": "sp-select sobre Angular Aria: disparador con ngCombobox no editable (role combobox, aria-haspopup listbox, nombre por aria-labelledby a su etiqueta visible o aria-label con hideLabel) y lista ngListbox en un ngComboboxPopup dentro de una superposición del CDK con las posiciones de los menús, al menos tan ancha como el disparador. focusMode activedescendant para que el foco quede en el disparador y se anuncie la opción activa. Enter, Espacio, ↓ y Alt+↓ abren; flechas, Inicio/Fin y escribir mueven; Enter o clic eligen y cierran; Escape cierra sin cambiar. mousedown en la lista evita que el clic se pierda al cerrar por foco. Estilo de los menús, marca en la elegida y chevrón que gira. 6 tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/components/select.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "4ede45dd2991148abcd23c9197f0bf603985cb26",
+      "startedAt": "2026-10-22T21:35:03.783Z",
+      "doneAt": "2026-10-22T21:51:03.514Z",
+      "summary": "Catálogo: sección «Select» en «Componentes» con un ejemplo vivo (Ordenar), su descripción y lo elegido; test que elige de verdad. docs/ui.md: el select en el sistema de diseño. S1 (select.ts, visto al probar en el navegador): el disparador no tenía estilos porque la referencia #trigger tapaba su propiedad de clases (renombrada a #field); la lista conservaba la posición de la carga: ahora se recoloca al abrir, cuando cambia de tamaño (ResizeObserver: Aria la dibuja tras abrir la primera vez) y con cada desplazamiento mientras está abierta, así que se abre encima si no cabe debajo. Comprobado a 390 y 1280 px, en claro y oscuro: teclado, Enter, Escape y apertura hacia arriba."
     }
   },
   "pending": {
@@ -54,6 +65,7 @@
   "maxIds": {
     "A": 3,
     "AC": 5,
-    "T": 3
+    "T": 3,
+    "S": 1
   }
 }
