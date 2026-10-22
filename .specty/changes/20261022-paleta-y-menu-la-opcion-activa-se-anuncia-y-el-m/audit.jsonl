@@ -1,0 +1,5 @@
+{"ts":"2026-10-22T22:09:44.045Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-paleta-y-menu-la-opcion-activa-se-anuncia-y-el-m","follows":["20261022-sistema-de-diseno-select-propio-en-el-catalogo-y"]}}
+{"ts":"2026-10-22T22:10:02.045Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:98a87058b05d2a576a9616fd65bd5df2a5013e70fb096d682dfd6419f4f149ae","size":"M","warnings":1}}
+{"ts":"2026-10-22T22:10:13.391Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:4b503e38aaade2af3e802fdaade9cd1ba86348bdf16f8191ec45f3debe8de4d6","size":"M","warnings":1}}
+{"ts":"2026-10-22T22:10:25.125Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:30392a8cb5fcd4f79ced1e2291bbfa4dae026d34e37808b9da3ced78605d9baf","size":"L","warnings":0}}
+{"ts":"2026-10-22T22:14:40.341Z","actor":"human","event":"spec.approved","data":{"revision":3,"hash":"sha256:30392a8cb5fcd4f79ced1e2291bbfa4dae026d34e37808b9da3ced78605d9baf","channel":"tty"}}
