@@ -89,35 +89,37 @@
 /* Dark theme. `Preferences` resolves "system" and always sets `data-theme`. */
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-bg: #0b0b0c;
-  --color-surface: #141416;
-  --color-border: #27272a;
-  --color-text: #f4f4f5;
-  --color-text-muted: #a1a1aa;
-  --color-accent: #f4f4f5;
-  --color-on-accent: #0b0b0c;
-  --color-focus: #d4d4d8;
-  --color-focus-on-accent: #3f3f46;
+  /* Matte grays as in Taiga UI, text at 90 %: less glare than near-black and white. */
+  --color-bg: #222222;
+  --color-surface: #292929;
+  --color-border: #3a3a3a;
+  --color-text: #e8e8e8;
+  --color-text-muted: #a6a6a6;
+  --color-accent: #e8e8e8;
+  --color-on-accent: #222222;
+  --color-focus: #c8c8c8;
+  --color-focus-on-accent: #4a4a4a;
 
-  --color-phase-draft: #b4b4bc;
-  --color-phase-draft-bg: #222226;
-  --color-phase-review: #fbbf24;
-  --color-phase-review-bg: #2b2414;
-  --color-phase-implementing: #93c5fd;
-  --color-phase-implementing-bg: #172238;
-  --color-phase-adjusting: #93c5fd;
-  --color-phase-adjusting-bg: #172238;
-  --color-phase-acceptance: #c4b5fd;
-  --color-phase-acceptance-bg: #241c3a;
-  --color-phase-closing: #c4b5fd;
-  --color-phase-closing-bg: #241c3a;
-  --color-phase-done: #86efac;
-  --color-phase-done-bg: #142a1c;
-  --color-phase-cancelled: #e3a3a3;
-  --color-phase-cancelled-bg: #2e1c1c;
+  /* Desaturated phase colors. */
+  --color-phase-draft: #b8b8b8;
+  --color-phase-draft-bg: #333333;
+  --color-phase-review: #e2c07d;
+  --color-phase-review-bg: #3a3426;
+  --color-phase-implementing: #9fb9e6;
+  --color-phase-implementing-bg: #2d3442;
+  --color-phase-adjusting: #9fb9e6;
+  --color-phase-adjusting-bg: #2d3442;
+  --color-phase-acceptance: #bba8e3;
+  --color-phase-acceptance-bg: #352f42;
+  --color-phase-closing: #bba8e3;
+  --color-phase-closing-bg: #352f42;
+  --color-phase-done: #8fcaa8;
+  --color-phase-done-bg: #2c3a31;
+  --color-phase-cancelled: #dfa29a;
+  --color-phase-cancelled-bg: #3d2f2c;
 
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.35);
 }
 
 @layer base {

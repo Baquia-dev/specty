@@ -54,6 +54,17 @@ describe("tokens", () => {
     expect(failures).toEqual([]);
   });
 
+  it("keeps the dark theme matte: legible, but never glaring", () => {
+    const text = (fg: string) => contrastRatio(dark.get(fg) ?? "", dark.get("--color-bg") ?? "");
+    // Near-black with near-white text reached 17.8:1 and tired the eyes.
+    expect(text("--color-text")).toBeLessThanOrEqual(14);
+    expect(text("--color-text")).toBeGreaterThanOrEqual(7);
+    // No near-black surfaces: the page and the panels are matte grays.
+    for (const name of ["--color-bg", "--color-surface"]) {
+      expect(contrastRatio(dark.get(name) ?? "", "#000000"), name).toBeGreaterThanOrEqual(1.3);
+    }
+  });
+
   it("keeps motion at 200 ms at most, and at 0 with reduced motion (AC8)", () => {
     const durations = [...light].filter(([name]) => name.startsWith("--duration-"));
     expect(durations.length).toBeGreaterThan(0);

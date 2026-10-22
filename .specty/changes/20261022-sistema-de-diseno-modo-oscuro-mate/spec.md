@@ -18,7 +18,7 @@ El modo oscuro deja de cansar la vista: pasa de casi negro (`#0B0B0C`) y texto c
 
 ## Tareas
 
-- [ ] T1: Tema oscuro mate
+- [x] T1: Tema oscuro mate
   - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.test.ts, docs/ui.md
   - verify: pnpm check
   - notes: Valores: fondo #222222, superficie #292929, borde #3a3a3a, texto #e8e8e8, secundario #a6a6a6, acento #e8e8e8 sobre #222222, foco #c8c8c8 y #4a4a4a sobre el acento; fases (texto / fondo) borrador #b8b8b8 / #333333, revisión #e2c07d / #3a3426, implementación y ajustes #9fb9e6 / #2d3442, aceptación y cierre #bba8e3 / #352f42, terminado #8fcaa8 / #2c3a31, cancelado #dfa29a / #3d2f2c; sombras más suaves. El test de contraste existente (AA) los cubre; el nuevo pone un techo de 14:1 al texto sobre el fondo en oscuro. Comprobar en el navegador la Bandeja, una revisión y su delta en oscuro.
