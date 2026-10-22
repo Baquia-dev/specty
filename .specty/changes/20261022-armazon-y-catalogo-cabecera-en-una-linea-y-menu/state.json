@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-armazon-y-catalogo-cabecera-en-una-linea-y-menu",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-armazon-y-catalogo-cabecera-en-una-linea-y-menu",
   "baseCommit": "2c5b9b89c27debccb518e14d517c0aa604a90f08",
   "revision": 1,
@@ -43,14 +43,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/components/tooltip.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "e5dcbcecbc19dde913f1496e7b9ce2f7506aa47a",
+      "attempts": 1,
       "startedAt": "2026-10-22T18:47:34.556Z",
       "doneAt": "2026-10-22T19:22:09.939Z",
-      "summary": "Cabecera en una sola línea (57 px) en cualquier ancho desde 360 px: specty, Bandeja, Catálogo y, a la derecha, el buscador (en el teléfono un sp-icon-button con nombre 'Buscar o ejecutar'; desde 640 px con texto y ⌘K) y sp-preferences-menu: botón con popover nativo fijo bajo la cabecera, con Tema (Claro, Oscuro, Sistema) e Idioma (Español, English); elegir aplica sin cerrar, Escape, pulsar fuera o el botón lo cierran y el foco vuelve al botón; el botón queda realzado mientras está abierto. S1: el tooltip se oculta cuando su texto queda vacío mientras se ve (sin píldora vacía). Tests del shell y del tooltip; docs/ui.md con la sección Armazón."
+      "summary": "Cabecera en una sola línea (57 px) en cualquier ancho desde 360 px: specty, Bandeja, Catálogo y, a la derecha, el buscador (en el teléfono un sp-icon-button con nombre 'Buscar o ejecutar'; desde 640 px con texto y ⌘K) y sp-preferences-menu: botón con popover nativo fijo bajo la cabecera, con Tema (Claro, Oscuro, Sistema) e Idioma (Español, English); elegir aplica sin cerrar, Escape, pulsar fuera o el botón lo cierran y el foco vuelve al botón; el botón queda realzado mientras está abierto. S1: el tooltip se oculta cuando su texto queda vacío mientras se ve (sin píldora vacía). Tests del shell y del tooltip; docs/ui.md con la sección Armazón.",
+      "scopeExtra": [
+        "packages/ui/src/components/tooltip.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f03db221aa350337488b4d6868dc11d171cd78fd",
+      "startedAt": "2026-10-22T19:22:12.372Z",
+      "doneAt": "2026-10-22T19:25:37.500Z",
+      "summary": "Catálogo con el ancho de página común (PAGE): menú lateral de 15 rem, sin saltos de línea y fijo al desplazarse; en el teléfono, una línea que se desplaza de lado. «Colores» en filas de documento bajo sp-section-divider (Base y acento 9, Usos del acento, Fases 8): muestra, token, uso y valor, apiladas en el teléfono; las fases con un punto de color por token; los usos del acento sin recuadro. Tests del ancho, el menú y las filas; docs/ui.md."
     }
   },
   "pending": {

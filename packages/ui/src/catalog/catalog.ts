@@ -11,6 +11,7 @@ import {
   LucideType,
 } from "@lucide/angular";
 import { Commands } from "../components/command-palette";
+import { PAGE } from "../components/document";
 import { Preferences } from "../theme/preferences";
 
 /** Pages of the catalog, under `/catalog`; each loads on demand. */
@@ -55,13 +56,15 @@ export const CATALOG_ROUTES: Routes = [
   imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex flex-wrap">
-      <nav class="flex-[1_1_200px] px-4 pt-6" [attr.aria-label]="t()('Catálogo', 'Catalog')">
-        <ul class="m-0 flex list-none flex-col gap-1 p-0">
+    <!-- The common page width; the menu stays in view beside the page, or on a phone above it. -->
+    <div [class]="page + ' flex flex-col gap-6 pt-6 md:flex-row md:gap-10 md:pt-10'">
+      <nav class="md:w-60 md:shrink-0" [attr.aria-label]="t()('Catálogo', 'Catalog')">
+        <!-- On a phone, one line that scrolls sideways, like the Inbox phases. -->
+        <ul class="-mx-6 my-0 flex list-none gap-1 overflow-x-auto px-6 py-0 scrollbar-none md:sticky md:top-10 md:mx-0 md:flex-col md:overflow-visible md:px-0">
           @for (page of pages(); track page.path) {
-            <li>
+            <li class="shrink-0">
               <a
-                class="flex h-9 items-center gap-3 rounded-lg px-3 text-text-muted no-underline aria-[current=page]:bg-surface aria-[current=page]:text-text aria-[current=page]:shadow-sm"
+                class="flex h-9 items-center gap-3 rounded-lg px-3 whitespace-nowrap text-text-muted no-underline aria-[current=page]:bg-surface aria-[current=page]:text-text aria-[current=page]:shadow-sm"
                 [routerLink]="page.path"
                 routerLinkActive
                 ariaCurrentWhenActive="page"
@@ -73,7 +76,7 @@ export const CATALOG_ROUTES: Routes = [
           }
         </ul>
       </nav>
-      <div class="min-w-0 flex-[999_1_560px] px-6 pt-6">
+      <div class="min-w-0 flex-1">
         <router-outlet />
       </div>
     </div>
@@ -81,6 +84,7 @@ export const CATALOG_ROUTES: Routes = [
 })
 export class Catalog {
   protected readonly t = inject(Preferences).t;
+  protected readonly page = PAGE;
   protected readonly pages = computed(() => {
     const t = this.t();
     return [

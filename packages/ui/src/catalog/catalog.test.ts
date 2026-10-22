@@ -61,6 +61,41 @@ describe("Catalog", () => {
     expect(element.querySelector("h1")?.textContent).toContain("Colores");
   });
 
+  it("keeps the common page width, with a menu that never wraps and scrolls sideways on a phone", async () => {
+    const { element } = await open("/catalog/colors");
+    expect(element.querySelector("sp-catalog > div")?.className).toContain("max-w-6xl");
+    const list = element.querySelector("sp-catalog nav ul");
+    expect(list?.className.split(" ")).toEqual(
+      expect.arrayContaining(["overflow-x-auto", "md:flex-col", "md:sticky"]),
+    );
+    for (const link of element.querySelectorAll("sp-catalog nav a")) {
+      expect(link.className).toContain("whitespace-nowrap");
+    }
+  });
+
+  it("shows the colors as document rows under section dividers, without cards", async () => {
+    const { element } = await open("/catalog/colors");
+    const page = element.querySelector<HTMLElement>("sp-colors");
+    const dividers = [...(page?.querySelectorAll<HTMLElement>("sp-section-divider") ?? [])];
+    const label = (divider: HTMLElement) => {
+      const meta = divider.querySelector<HTMLElement>("[data-meta]");
+      return [divider.querySelector<HTMLElement>("h2"), meta]
+        .map((part) => (part === null ? "" : text(part).trim()))
+        .join(" ")
+        .trim();
+    };
+    expect(dividers.map(label)).toEqual([
+      `Base y acento ${TOKENS.filter((token) => token.group === "color").length}`,
+      "Usos del acento",
+      "Fases 8",
+    ]);
+    expect(page?.querySelector(".rounded-xl")).toBeNull();
+    const first = page?.querySelector<HTMLElement>("[aria-labelledby=colors-base] li");
+    expect(text(first ?? element)).toContain("--color-bg");
+    expect(text(first ?? element)).toContain("Fondo de la página");
+    expect(first?.className).not.toContain("border");
+  });
+
   it("shows the eight phases with icon and name, and the accent uses (AC4)", async () => {
     const { element } = await open("/catalog/colors");
     const phases = [...element.querySelectorAll<HTMLElement>("[data-phase]")];

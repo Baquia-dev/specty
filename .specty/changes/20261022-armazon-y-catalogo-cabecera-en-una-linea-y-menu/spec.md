@@ -56,7 +56,7 @@ En el teléfono la cabecera de la app ocupa tres líneas (unos 145 px) y, sumada
   - ac: AC1, AC2, AC3
   - verify: pnpm check
   - notes: Comprobar en el navegador, en claro y oscuro, a 360, 390 y 1280 px: una sola línea, el menú bajo la cabecera, Escape y pulsar fuera lo cierran, y el foco se ve.
-- [ ] T2: Catálogo con el ancho común y colores en filas
+- [x] T2: Catálogo con el ancho común y colores en filas
   - files: packages/ui/src/catalog/catalog.ts, packages/ui/src/catalog/colors.ts, packages/ui/src/catalog/catalog.test.ts, docs/ui.md
   - ac: AC4, AC5
   - verify: pnpm check

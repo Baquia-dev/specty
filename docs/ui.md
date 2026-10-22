@@ -118,6 +118,7 @@ Punto de partida para el sistema de diseño:
 - Las ocho fases: `adjusting` comparte el azul de implementación y `closing` el violeta de aceptación; se distinguen por icono y nombre.
 - Todos los pares de texto cumplen 4,5:1 en claro y en oscuro (lo comprueba un test).
 - Patrones de documento (`components/document.ts`, página "Patrones" del catálogo): divisor de sección con título en versalitas, línea fina y contador; listas con sangría bajo su sección y filas sin líneas que se iluminan al pasar el puntero o con el foco y revelan sus acciones; un ancho de página común (72 rem). Y un estado vacío (`components/empty-state.ts`) con icono, título, qué pasó y cómo seguir.
+- El catálogo usa ese mismo ancho, con su menú a la izquierda, fijo al desplazarse; en el teléfono, el menú es una línea que se desplaza de lado. Sus colores siguen el lenguaje de documento: filas sin tarjetas (muestra, token, uso y valor) bajo divisores de sección.
 
 ## Stack
 
