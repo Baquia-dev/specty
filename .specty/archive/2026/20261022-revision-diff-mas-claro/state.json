@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-revision-diff-mas-claro",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-revision-diff-mas-claro",
   "baseCommit": "642c62d30383248c90ef3015552de01b6adce276",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:98b52e915253202eb6f68c99f23548e04aeec530b675b375cc02c44c4cb1c590",
@@ -51,16 +51,16 @@
     },
     "T2": {
       "status": "done",
+      "baseCommit": "079f36e2d9efd166f52e907e589a28721fe1f887",
+      "attempts": 1,
+      "startedAt": "2026-10-22T16:58:12.845Z",
+      "doneAt": "2026-10-22T17:07:14.396Z",
+      "summary": "Vista del delta: filtros Todo/Añadidos/Modificados/Eliminados con su número, leyenda, marca de cambio a la derecha (con hueco reservado para que se alineen), texto final con lo añadido en fondo tenue y subrayado fino, línea «Antes» (sp-before-line, también en sp-assumption-row) solo con palabras quitadas, eliminados atenuados y tachados, tareas con chips (añadido, quitado, posible alcance nuevo en ámbar con icono) y detalles aparte. S2: el diff pasa a data/word-diff.ts; los espacios ya no puntúan, así una frase cambiada no marca como nuevo lo que ya estaba. docs/ui.md actualizado. Comprobado en el navegador en claro y oscuro.",
       "scopeExtra": [
         "packages/ui/src/data/word-diff.ts",
         "packages/ui/src/data/delta.ts",
         "packages/ui/src/data/delta.test.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "079f36e2d9efd166f52e907e589a28721fe1f887",
-      "startedAt": "2026-10-22T16:58:12.845Z",
-      "doneAt": "2026-10-22T17:07:14.396Z",
-      "summary": "Vista del delta: filtros Todo/Añadidos/Modificados/Eliminados con su número, leyenda, marca de cambio a la derecha (con hueco reservado para que se alineen), texto final con lo añadido en fondo tenue y subrayado fino, línea «Antes» (sp-before-line, también en sp-assumption-row) solo con palabras quitadas, eliminados atenuados y tachados, tareas con chips (añadido, quitado, posible alcance nuevo en ámbar con icono) y detalles aparte. S2: el diff pasa a data/word-diff.ts; los espacios ya no puntúan, así una frase cambiada no marca como nuevo lo que ya estaba. docs/ui.md actualizado. Comprobado en el navegador en claro y oscuro."
+      ]
     }
   },
   "pending": {
@@ -73,5 +73,6 @@
     "T": 2,
     "R": 1,
     "S": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T17:13:16.730Z"
 }

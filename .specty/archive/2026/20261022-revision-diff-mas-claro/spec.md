@@ -63,3 +63,30 @@ El delta ("Qué cambió desde que aprobaste") se lee sin esfuerzo, como en la ma
 ## Riesgos
 
 - R1: Las tareas hechas aparecen en el delta solo si cambian, y no deberían cambiar en un ajuste. Mitigación: se muestran igual que cualquier tarea modificada; `propose` ya rechaza modificar tareas hechas.
+
+## Cierre
+
+### Resumen
+
+- El delta muestra cada ítem con su texto final limpio y lo nuevo resaltado con suavidad; una línea «Antes» solo cuando se quitaron palabras; añadidos como texto normal y eliminados atenuados y tachados.
+- Las tareas aparecen con título y chips (añadidos, quitados y posible alcance nuevo en ámbar con icono), y lo que cambia sin texto propio (impacto, verificación, tipo) en una línea aparte.
+- Filtros Todo, Añadidos, Modificados y Eliminados con su número, y una leyenda breve.
+- 170 tests en la UI; comprobado en Chrome sin interfaz, en claro y oscuro.
+
+### Desviaciones
+
+- S1 (T1): la vista del delta se adaptó a los campos nuevos ya en T1, porque sin ello no compilaba; el rediseño siguió en T2.
+- S2 (T2): `delta.ts` pasó de 300 líneas y el diff por palabras salió a `data/word-diff.ts`, con sus tests.
+- Los tests cazaron dos causas del diff caótico, no previstas en la spec: los tramos cambiados se partían en trozos (ahora se agrupan, lo quitado antes que lo añadido) y los espacios contaban como coincidencias (ahora solo puntúan palabras y puntuación).
+- Las marcas de cambio reservan el hueco del botón «Comentar» para alinearse en todas las filas.
+
+### Decisiones
+
+- El delta compara los campos de cada ítem, no el texto de la spec; `specDelta` sigue decidiendo qué cambió.
+- El chip de "posible alcance nuevo" se deduce del aviso de la regla del core (que nombra el archivo), para que la UI y el CLI coincidan.
+- "Aceptado con la spec" y los supuestos con solo cambio de impacto se muestran con su detalle, sin «Antes».
+
+### Pendientes
+
+- Acciones de decisión en la cabecera y en la barra compacta, sin barra inferior.
+- Patrones de página en el sistema de diseño y Bandeja con buscador, filtros, agrupar y ordenar.
