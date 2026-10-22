@@ -95,3 +95,34 @@ Cuando una spec vuelve a revisión después de haber sido aprobada (por ejemplo,
 
 - R1: El diff por subsecuencia común crece con el producto de las longitudes. Mitigación: se calcula en el worker, sobre ítems y secciones sueltos; si un texto supera un umbral, se muestra entero como eliminado y añadido.
 - R2: Un diff solo visual no lo entiende un lector de pantalla. Mitigación: texto oculto antes de cada parte añadida o eliminada, comprobado en los tests.
+
+## Cierre
+
+### Resumen
+
+- Cuando una spec vuelve a revisión tras haber sido aprobada, la pestaña Spec empieza por "Qué cambió desde que aprobaste rN": resumen de añadidos, modificados y eliminados, cambios agrupados por sección con su marca (color, icono y texto), diff por palabras legible para lectores de pantalla y la marca "Posible alcance nuevo" con la regla del core. "Ver spec completa" y "Ver solo los cambios desde rN" alternan las dos vistas.
+- Los supuestos cambiados se deciden desde los cambios; "Aprobar" sigue esperando por los de alto impacto.
+- Contrato: `ChangeRecord.approvedSpec` y `ReviewView.delta`, derivados en el worker con `specDelta` y `hashUnits`.
+- Datos de ejemplo: "Justificar faltas desde la app", en r3 con r2 aprobada.
+- En aceptación: la página ya no se desplaza entera al ver el diff, y la barra de decisión ocupa todo el ancho, fija abajo.
+- 159 tests en la UI; comprobado en Chrome sin interfaz, en claro y oscuro.
+
+### Desviaciones
+
+- T4: los tests del modo cambios van en `spec-review-modes.test.ts` (test implícito, misma carpeta) para no pasar de 300 líneas en `spec-review.test.ts`. El test cazó un defecto: una actualización en vivo devolvía la vista a los cambios; `linkedSignal` conserva ahora la elección.
+- T5 (defecto en aceptación): el texto `sr-only` del diff (absoluto) se salía de `main`, que no está posicionado, y hacía crecer el documento. Se arregló localmente (`relative` en la revisión y el delta).
+- T5, ampliación aprobada por la política de tests: `pnpm check` fallaba desde el 2026-10-22 a las 10:00 UTC por una bomba de tiempo en los tests del CLI (reloj de los comandos fijo, hook de git con la hora real, recibo de 24 h). El reloj de los tests pasa a ser hoy a las 10:00 UTC, y el id del cambio y la carpeta del archivo se derivan de él.
+- T6 (refinamiento de AC4 en aceptación): la barra se fija al área que se desplaza midiéndola, porque llevarla a la página del cambio superaba el máximo de 15 archivos.
+
+### Decisiones
+
+- El delta se compara con la última revisión aprobada, como `specty propose`; las revisiones nunca aprobadas muestran la spec completa.
+- Diff por palabras propio (subsecuencia común con límite de 600 tokens), sin dependencias nuevas.
+- "Posible alcance nuevo" reutiliza la regla del core en contexto de ajuste, para que la UI y el CLI digan lo mismo.
+
+### Pendientes
+
+- Separar la puntuación en el diff ("justificada." frente a "justificada y…" hoy se ve como palabra eliminada y añadida).
+- Valorar mostrar los ítems añadidos sin el fondo verde completo, y quitar la línea "impacto: alto" repetida en los supuestos.
+- Armazón común: `main` como `relative` (arreglo de raíz del scroll de `html`) y el margen inferior de las páginas.
+- Mejoras de Specty anotadas: esfuerzo ajustado por el modelo, recomendar revisar la spec con un modelo más capaz y el guard que lee el cuerpo de los heredoc como comandos.

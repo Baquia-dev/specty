@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-prototipo-delta-de-la-revision",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-prototipo-delta-de-la-revision",
   "baseCommit": "39342c99c049d945803a8f45a4d4ae99d95dd96d",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:838d1e83b4877e36a201054874fd4062659f685cca9c0832dcbe5aa0fb9e1b4d",
@@ -97,12 +97,12 @@
     },
     "T6": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d8ffd89be234365f85c49a71e880a1cf91d3e69b",
+      "attempts": 1,
       "startedAt": "2026-10-22T10:10:33.930Z",
       "doneAt": "2026-10-22T10:13:13.222Z",
-      "summary": "La barra de 'Pedir cambios' y 'Aprobar' queda fija abajo, a todo el ancho del área que se desplaza, con borde superior y fondo translúcido como la barra de navegación, y su contenido alineado con la columna de la página (max-w-6xl). Mide el contenedor que se desplaza (izquierda y clientWidth, con ResizeObserver) para no tapar su scrollbar; sin contenedor propio usa todo el ancho de la ventana. La revisión reserva pb-12 en revisión para que no tape el final. scrollParent pasa a review-actions.ts. Comprobado en el navegador: barra de 1265 px (main sin scrollbar), pegada abajo, y html sin scroll."
+      "summary": "La barra de 'Pedir cambios' y 'Aprobar' queda fija abajo, a todo el ancho del área que se desplaza, con borde superior y fondo translúcido como la barra de navegación, y su contenido alineado con la columna de la página (max-w-6xl). Mide el contenedor que se desplaza (izquierda y clientWidth, con ResizeObserver) para no tapar su scrollbar; sin contenedor propio usa todo el ancho de la ventana. La revisión reserva pb-12 en revisión para que no tape el final. scrollParent pasa a review-actions.ts. Comprobado en el navegador: barra de 1265 px (main sin scrollbar), pegada abajo, y html sin scroll.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -114,5 +114,6 @@
     "AC": 5,
     "T": 6,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T10:20:39.302Z"
 }
