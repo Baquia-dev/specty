@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-cambio-y-revision-en-el-telefono-cabecera-franja",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-cambio-y-revision-en-el-telefono-cabecera-franja",
   "baseCommit": "95048852afc39dce0a2468a53683b4f862d9ba64",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:123a53cd63c613b0b66acb72dc64cb524f2063b58bea855135687be6a1ce8002",
@@ -59,12 +59,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2ba1544e167db2b327a4fc4f4d168583562ca881",
+      "attempts": 1,
       "startedAt": "2026-10-22T19:52:12.967Z",
       "doneAt": "2026-10-22T19:56:12.047Z",
-      "summary": "Cabecera del cambio en el teléfono: título a 28 px (38 px desde 640), el tiempo en su propia línea sin «·» suelto y las acciones de revisión alineadas al borde del título mientras van debajo (max-lg:items-start). Franja de datos en 2 columnas (3 desde 640 px) sin líneas verticales y, desde 1024 px, una fila con líneas finas. «Esfuerzo» con «Implementar» y «Revisar» («Planificar» en borrador), sin partir la etiqueta. Tests de la cabecera y del esfuerzo; docs/ui.md."
+      "summary": "Cabecera del cambio en el teléfono: título a 28 px (38 px desde 640), el tiempo en su propia línea sin «·» suelto y las acciones de revisión alineadas al borde del título mientras van debajo (max-lg:items-start). Franja de datos en 2 columnas (3 desde 640 px) sin líneas verticales y, desde 1024 px, una fila con líneas finas. «Esfuerzo» con «Implementar» y «Revisar» («Planificar» en borrador), sin partir la etiqueta. Tests de la cabecera y del esfuerzo; docs/ui.md.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -76,5 +76,6 @@
     "AC": 6,
     "T": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T20:03:52.250Z"
 }

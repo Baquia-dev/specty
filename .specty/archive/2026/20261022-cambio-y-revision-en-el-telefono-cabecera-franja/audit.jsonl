@@ -9,3 +9,6 @@
 {"ts":"2026-10-22T19:52:12.967Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"2ba1544e167db2b327a4fc4f4d168583562ca881"}}
 {"ts":"2026-10-22T19:56:12.045Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":31023}}
 {"ts":"2026-10-22T19:56:12.053Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Cabecera del cambio en el teléfono: título a 28 px (38 px desde 640), el tiempo en su propia línea sin «·» suelto y las acciones de revisión alineadas al borde del título mientras van debajo (max-lg:items-start). Franja de datos en 2 columnas (3 desde 640 px) sin líneas verticales y, desde 1024 px, una fila con líneas finas. «Esfuerzo» con «Implementar» y «Revisar» («Planificar» en borrador), sin partir la etiqueta. Tests de la cabecera y del esfuerzo; docs/ui.md."}}
+{"ts":"2026-10-22T20:03:23.651Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-22T20:03:52.251Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:21365aa18ca00dd512ea5d1757e3f44dda8b4716d9e0b73a3c57c19d48e38c41","size":"M","warnings":0}}
+{"ts":"2026-10-22T20:05:00.808Z","actor":"human","event":"change.closed","data":{}}

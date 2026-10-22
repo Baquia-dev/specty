@@ -76,3 +76,35 @@ Este cambio deja la página legible en cualquier ancho y aclara el esfuerzo.
   - ac: AC1, AC2, AC3
   - verify: pnpm check
   - notes: Comprobar en el navegador a 390, 768 y 1280 px un cambio en revisión, uno en implementación y uno en borrador.
+
+## Cierre
+
+### Resumen
+
+La página del cambio y su revisión se leen bien en el teléfono:
+
+- **Cabecera:** el título baja a 28 px, el tiempo va en su propia línea y la franja de datos se ordena en dos o tres columnas sin líneas verticales hasta que cabe en una fila.
+- **Esfuerzo:** se lee «Implementar» y «Revisar» («Planificar» en borrador).
+- **Ítems:** en la revisión y el delta, el id y las marcas van en la primera línea y el texto ocupa todo el ancho.
+- **Índice «Contenido»:** solo se fija cuando queda al lado del documento.
+- **«Comentar»:** se ve siempre en pantallas táctiles.
+- **Ancho:** nada ensancha la página.
+
+### Desviaciones
+
+- **S1 (T1):** entraron `review/spec-sections.ts` y `review/delta-review.ts`. Al comprobar a 390 px, la página del cambio se desplazaba de lado, ya desde antes de este cambio. Las rutas largas de «Archivos» ahora se parten (`wrap-anywhere`) y los filtros del delta se desplazan dentro de su grupo.
+- **Acciones de revisión:** al ir bajo el título quedaban desplazadas unos 19 px, porque se alineaban al borde derecho de su línea más ancha (el motivo del bloqueo). Ahora empiezan en el borde del título hasta `lg`. Se arregló desde `change-page.ts`, sin tocar el componente.
+- **Incidencia de verificación:** un script de comprobación lanzado sin carpeta de salida dejó dos perfiles de Chrome en `undefined/`. El guard impidió borrarlos fuera del alcance y los borró el usuario; el script ya tiene una carpeta por defecto.
+
+### Decisiones
+
+- **Filas en el teléfono:** se resuelven en `ROW`, no en cada fila. Todas tienen la forma «id, contenido, marcas o acciones», así que el contenido (el segundo hijo) pasa a la segunda línea a todo el ancho y el id y las marcas comparten la primera. La página «Patrones» del catálogo lo muestra igual.
+- **«Comentar» táctil:** se basa en `pointer-coarse` y no en el ancho, porque lo que falta en una pantalla táctil es el puntero que lo revela.
+- **Esfuerzo:** son pares etiqueta-nivel en dos líneas, en lugar de una frase que se parte. Las separaciones habladas (`&ngsp;`) mantienen la lectura «Implementar medio, Revisar alto» sin mostrarse en la rejilla.
+
+### Pendientes
+
+- **Degradado en los bordes:** falta en las líneas que se desplazan de lado (fases de la Bandeja, menú del catálogo, filtros del delta), para indicar que hay más.
+- **Menú del catálogo en el teléfono:** no se desplaza hasta la página activa al entrar directamente a una del final.
+- **Esfuerzo en el CLI:** sigue diciendo «planificación · implementación». Se alinea en el cambio pendiente sobre el esfuerzo recomendado por el modelo.
+- **Fase 2:** quedan las pestañas Progreso, Aceptación e Historial como pantallas nuevas.
