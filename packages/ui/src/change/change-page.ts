@@ -2,7 +2,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   DestroyRef,
   ElementRef,
   effect,
@@ -13,11 +12,12 @@ import {
   viewChild,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
-import type { EffortLevel } from "@baquia-dev/specty-core";
+import type { EffortLevel, Phase } from "@baquia-dev/specty-core";
 import {
   LucideArrowLeft,
   LucideDynamicIcon,
   LucideFileQuestion,
+  LucideLightbulb,
   LucideTriangleAlert,
 } from "@lucide/angular";
 import { PhaseBadge } from "../components/badge";
@@ -36,6 +36,7 @@ import { ReviewActions } from "../review/review-actions";
 import { SpecReview } from "../review/spec-review";
 import { Preferences } from "../theme/preferences";
 import { ChangeBar } from "./change-bar";
+import { ChangeFacts } from "./change-facts";
 
 const TABS: readonly ChangeTab[] = ["spec", "progress", "acceptance", "history"];
 
@@ -53,16 +54,6 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
   closing: { es: "Espera que confirmes el cierre", en: "Waiting for you to confirm the closing" },
 };
 
-/**
- * A fact of the wide header: a small-caps label over its value. In a grid of two or three
- * columns (phone, tablet) they stand apart by space; in one row (from lg), split by hairlines.
- */
-const FACT =
-  "flex min-w-0 flex-col gap-1 py-3 lg:border-l lg:border-border lg:px-5 lg:py-3.5 lg:first:border-l-0 lg:first:pl-0";
-const FACTS =
-  "mt-8 mb-0 grid grid-cols-2 gap-x-6 border-t border-border sm:grid-cols-3 lg:grid-flow-col lg:auto-cols-fr lg:grid-cols-none lg:gap-x-0";
-const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
-
 /** One change: a wide header, a compact bar while scrolling, and the tabs Spec · Progress · Acceptance · History. */
 @Component({
   selector: "sp-change-page",
@@ -77,6 +68,7 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
     SpecReview,
     ReviewActions,
     ChangeBar,
+    ChangeFacts,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -108,45 +100,25 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
               </div>
               <h1 class="mt-3 mb-0 max-w-4xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.028em] sm:text-[2.375rem]">{{ change.title }}</h1>
             </div>
-            <!-- The decision on the spec, next to its title; in review only. Under the title, it starts at its edge. -->
-            @if (change.phase === 'review') {
-              <sp-review-actions class="mt-1 max-lg:items-start" [change]="change" />
+            <!--
+              Beside the title: the decision on the spec (in review) and, as a suggestion rather
+              than a fact of the change, the effort for the agent. Under the title, at its edge.
+            -->
+            @if (change.phase === 'review' || change.effort) {
+              <div class="mt-1 flex flex-col items-end gap-3 max-lg:items-start">
+                @if (change.phase === 'review') {
+                  <sp-review-actions class="max-lg:items-start" [change]="change" />
+                }
+                @if (change.effort; as effort) {
+                  <p class="m-0 flex max-w-80 items-start gap-2 text-[13px] text-text-muted" data-effort>
+                    <svg class="mt-0.5 shrink-0" [lucideIcon]="suggestion" size="14" aria-hidden="true"></svg>
+                    <span><span class="font-medium">{{ t()('Sugerencia para el agente:', 'Suggestion for the agent:') }}</span>&ngsp;{{ effortHint(change.phase, effort) }}</span>
+                  </p>
+                }
+              </div>
             }
           </div>
-          <dl [class]="facts">
-            <div [class]="fact">
-              <dt [class]="factLabel">{{ t()('Revisión', 'Revision') }}</dt>
-              <dd class="m-0 font-mono text-sm">r{{ change.revision }}</dd>
-            </div>
-            @if (change.branch; as branch) {
-              <div [class]="fact">
-                <dt [class]="factLabel">{{ t()('Rama', 'Branch') }}</dt>
-                <dd class="m-0 truncate font-mono text-[13px]" [title]="branch">{{ branch }}</dd>
-              </div>
-            }
-            @if (change.size; as size) {
-              <div [class]="fact">
-                <dt [class]="factLabel">{{ t()('Tamaño', 'Size') }}</dt>
-                <dd class="m-0 text-sm">{{ size.level }} · {{ reasons() }}</dd>
-              </div>
-            }
-            @if (change.effort; as effort) {
-              <div [class]="fact">
-                <dt [class]="factLabel">{{ t()('Esfuerzo', 'Effort') }}</dt>
-                <!-- Once the spec is written, the planning level serves to adjust it and decide scope. -->
-                <dd class="m-0 grid grid-cols-[auto_1fr] gap-x-2 text-sm" data-effort>
-                  <span class="text-text-muted">{{ t()('Implementar', 'Implement') }}&ngsp;</span><span>{{ effortName(effort.implement) }}&ngsp;</span>
-                  <span class="text-text-muted">{{ change.phase === 'draft' ? t()('Planificar', 'Plan') : t()('Revisar', 'Review') }}&ngsp;</span><span>{{ effortName(effort.plan) }}</span>
-                </dd>
-              </div>
-            }
-            @if (change.phase === 'review') {
-              <div [class]="fact">
-                <dt [class]="factLabel">{{ t()('Por decidir', 'To decide') }}</dt>
-                <dd class="m-0 text-sm" [style.color]="change.highImpactPending ? 'var(--color-phase-review)' : 'var(--color-phase-done)'" data-to-decide>{{ toDecide() }}</dd>
-              </div>
-            }
-          </dl>
+          <sp-change-facts [change]="change" />
           @for (problem of change.problems; track problem) {
             <p class="m-0 mt-2 flex items-center gap-2 text-sm" role="note">
               <svg [lucideIcon]="warning" size="14" aria-hidden="true" style="color: var(--color-phase-review)"></svg>
@@ -206,9 +178,7 @@ export class ChangePage {
   protected readonly missing = LucideFileQuestion;
   protected readonly page = PAGE;
   protected readonly waiting = WAITING;
-  protected readonly fact = FACT;
-  protected readonly facts = FACTS;
-  protected readonly factLabel = FACT_LABEL;
+  protected readonly suggestion = LucideLightbulb;
   protected readonly change = this.store.byId(this.id);
   /** The wide header is out of view: show the compact bar. */
   protected readonly compact = signal(false);
@@ -253,22 +223,26 @@ export class ChangePage {
     return asked ?? this.change()?.tab ?? "spec";
   });
 
-  protected readonly reasons = computed(() => {
+  /**
+   * «implementar con esfuerzo medio y revisar con alto»: once the spec is written, the planning
+   * level serves to adjust it and decide scope; in a draft, to write it.
+   */
+  protected effortHint(
+    phase: Phase,
+    effort: { plan: EffortLevel; implement: EffortLevel },
+  ): string {
     const lang = this.preferences.lang();
-    return (this.change()?.size?.reasons ?? []).map((reason) => reason[lang]).join(" · ");
-  });
-
-  protected readonly toDecide = computed(() => {
-    const t = this.t();
-    const pending = this.change()?.highImpactPending ?? 0;
-    if (pending === 0) return t("Nada pendiente", "Nothing pending");
-    return pending === 1
-      ? t("1 supuesto de alto impacto", "1 high-impact assumption")
-      : t(`${pending} supuestos de alto impacto`, `${pending} high-impact assumptions`);
-  });
-
-  protected effortName(level: EffortLevel): string {
-    return EFFORT[level][this.preferences.lang()];
+    const [plan, implement] = [EFFORT[effort.plan][lang], EFFORT[effort.implement][lang]];
+    if (phase === "draft") {
+      return this.t()(
+        `planificar con esfuerzo ${plan} e implementar con ${implement}.`,
+        `plan at ${plan} effort and implement at ${implement}.`,
+      );
+    }
+    return this.t()(
+      `implementar con esfuerzo ${implement} y revisar con ${plan}.`,
+      `implement at ${implement} effort and review at ${plan}.`,
+    );
   }
 
   protected since(iso: string): string {

@@ -59,7 +59,7 @@ La cabecera del cambio dice «r3» sin explicar si esa revisión está aprobada 
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/ui/src/data/revision.ts, packages/ui/src/data/revision.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/revision.test.ts --include src/data/views.test.ts
-- [ ] T2: Franja según su contenido, rama completa y esfuerzo como sugerencia
+- [x] T2: Franja según su contenido, rama completa y esfuerzo como sugerencia
   - files: packages/ui/src/change/change-facts.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check

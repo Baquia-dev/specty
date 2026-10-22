@@ -72,11 +72,12 @@ describe("ChangePage", () => {
     const facts = [...(hero?.querySelectorAll("dl > div") ?? [])].map(
       (fact) => `${text(fact.querySelector("dt"))}: ${text(fact.querySelector("dd"))}`,
     );
-    expect(facts[0]).toBe("Revisión: r2");
-    expect(facts[1]).toBe("Rama: specty/20261020-evolucion-trimestre");
-    expect(facts[2]).toMatch(/^Tamaño: \S+ · .*3 archivos/);
-    expect(facts[3]).toMatch(/^Esfuerzo: Implementar \S+ Revisar \S+$/);
-    expect(facts[4]).toBe("Por decidir: 1 supuesto de alto impacto");
+    expect(facts).toEqual([
+      "Revisión: Revisión 2 · por aprobar",
+      "Rama: specty/20261020-evolucion-trimestre",
+      expect.stringMatching(/^Tamaño: \S+ · .*3 archivos/),
+      "Por decidir: 1 supuesto de alto impacto",
+    ]);
     expect(element.querySelector("sp-change-page [role=tablist]")).not.toBeNull();
   });
 
@@ -91,29 +92,53 @@ describe("ChangePage", () => {
     );
     // Wrapped under the title, the decision starts at the title's edge.
     expect(classes("sp-review-actions")).toContain("max-lg:items-start");
-    // Two or three columns with no vertical lines; one row with hairlines from lg.
+    // Two or three columns with no vertical lines; from lg, one row sized by its content.
     expect(classes("dl")).toEqual(
-      expect.arrayContaining(["grid-cols-2", "sm:grid-cols-3", "lg:grid-flow-col"]),
+      expect.arrayContaining(["grid-cols-2", "sm:grid-cols-3", "lg:flex"]),
     );
     const fact = classes("dl > div");
     expect(fact).not.toContain("border-l");
-    expect(fact).toEqual(expect.arrayContaining(["lg:border-l", "lg:first:border-l-0"]));
+    expect(fact).toEqual(
+      expect.arrayContaining(["lg:border-l", "lg:first:border-l-0", "lg:flex-none"]),
+    );
   });
 
-  it("names the effort to implement and to review; in a draft, to plan (AC3)", async () => {
+  it("names the revision with its state and the approved one; the branch is never cut (AC1, AC2, AC3)", async () => {
+    const { element } = await open("/changes/20261016-justificar-faltas");
+    const hero = element.querySelector<HTMLElement>("sp-change-page [data-hero]");
+    const revision = hero?.querySelector("[data-revision] dd");
+    expect(text(revision?.querySelector("span"))).toBe("Revisión 3 · por aprobar");
+    expect(text(revision?.querySelector("[data-approved]"))).toMatch(
+      /^La 2 está aprobada · .+ · Ana Gómez$/,
+    );
+    // The only fact that gives way, breaking over lines; a whole row at the end when narrow.
+    const branch = hero?.querySelector<HTMLElement>("[data-branch]");
+    expect(branch?.className.split(" ")).toEqual(
+      expect.arrayContaining(["col-span-full", "max-lg:order-last", "lg:flex-[0_1_auto]"]),
+    );
+    const name = branch?.querySelector("dd");
+    expect(name?.className).toContain("wrap-anywhere");
+    expect(name?.className).not.toContain("truncate");
+  });
+
+  it("suggests the effort beside the decision, not among the facts; in a draft, to plan (AC4)", async () => {
     const effort = async (id: string) => {
       const { element } = await open(`/changes/${id}`);
-      const value = element.querySelector("sp-change-page [data-effort]");
-      return [...(value?.children ?? [])].map((part) => part.textContent?.trim());
+      const hero = element.querySelector<HTMLElement>("sp-change-page [data-hero]");
+      expect(hero?.querySelector("dl [data-effort]")).toBeNull();
+      const hint = hero?.querySelector("[data-effort]");
+      expect(hint?.querySelector("svg")).not.toBeNull();
+      return { hint: text(hint), column: hint?.parentElement };
     };
-    expect(await effort("20261020-evolucion-trimestre")).toEqual([
-      "Implementar",
-      expect.any(String),
-      "Revisar",
-      expect.any(String),
-    ]);
+    const review = await effort("20261020-evolucion-trimestre");
+    expect(review.hint).toMatch(
+      /^Sugerencia para el agente: implementar con esfuerzo \S+ y revisar con \S+\.$/,
+    );
+    expect(review.column?.querySelector("sp-review-actions")).not.toBeNull();
     TestBed.resetTestingModule();
-    expect((await effort("20261021-modo-oscuro"))[2]).toBe("Planificar");
+    expect((await effort("20261021-modo-oscuro")).hint).toMatch(
+      /^Sugerencia para el agente: planificar con esfuerzo \S+ e implementar con \S+\.$/,
+    );
   });
 
   it("slides in a compact bar, without actions, once the wide header leaves the view (AC4)", async () => {

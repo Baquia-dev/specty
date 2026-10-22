@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5d9fe29a03ad75d495194ffff58402f2f0e1279b",
+      "attempts": 1,
       "startedAt": "2026-10-22T20:23:36.290Z",
       "doneAt": "2026-10-22T20:25:01.336Z",
-      "summary": "ChangeView.approved (revisión, fecha y quién) copiado de state.approved. data/revision.ts, puro: revisionName («Revisión 3 · por aprobar»; «Sin proponer» en la 0), revisionState con un estado por fase y approvedNote («La 2 está aprobada · 21 oct · Ana Gómez» o «Aprobada el 21 oct · …», con el año si es otro), bilingües. Tests de la vista y del nombre."
+      "summary": "ChangeView.approved (revisión, fecha y quién) copiado de state.approved. data/revision.ts, puro: revisionName («Revisión 3 · por aprobar»; «Sin proponer» en la 0), revisionState con un estado por fase y approvedNote («La 2 está aprobada · 21 oct · Ana Gómez» o «Aprobada el 21 oct · …», con el año si es otro), bilingües. Tests de la vista y del nombre.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "18f6808dc8392d40ca55c6443793ef4f0d94a09c",
+      "startedAt": "2026-10-22T20:25:01.586Z",
+      "doneAt": "2026-10-22T20:29:49.337Z",
+      "summary": "sp-change-facts (extraída de la página): revisión con nombre y estado («Revisión 3 · por aprobar») y la aprobada con fecha y quién; desde lg una fila flexible donde cada dato ocupa su contenido con líneas finas y solo la rama encoge partiéndose (wrap-anywhere, nunca recortada); más estrecha, rejilla de 2 o 3 columnas con la rama al final a todo el ancho. El esfuerzo sale de la franja: «Sugerencia para el agente: implementar con esfuerzo X y revisar con Y» (planificar en borrador), atenuada con bombilla en la columna de las acciones. Tests de la cabecera; docs/ui.md."
     }
   },
   "pending": {
