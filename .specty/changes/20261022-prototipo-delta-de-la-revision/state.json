@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-prototipo-delta-de-la-revision",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-prototipo-delta-de-la-revision",
   "baseCommit": "39342c99c049d945803a8f45a4d4ae99d95dd96d",
   "revision": 1,
@@ -65,12 +65,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d23349688e87476f2464acc231c9d9c4e29d66f9",
+      "attempts": 1,
       "startedAt": "2026-10-22T09:41:15.893Z",
       "doneAt": "2026-10-22T09:45:10.384Z",
-      "summary": "review/delta-review.ts: sp-review-delta con cabecera 'Qué cambió desde que aprobaste rN', resumen de añadidos, modificados y eliminados, 'Ver spec completa', grupos por sección en el orden del documento y filas con id, marca de cambio (sp-change-mark: color, icono y texto), diff y avisos de posible alcance nuevo; comentar ítems no eliminados. sp-word-diff en spec-sections.ts: <ins>/<del> con colores de fase y texto para lectores de pantalla. sp-assumption-row admite un diff y una marca proyectada, para decidir los supuestos cambiados en el delta."
+      "summary": "review/delta-review.ts: sp-review-delta con cabecera 'Qué cambió desde que aprobaste rN', resumen de añadidos, modificados y eliminados, 'Ver spec completa', grupos por sección en el orden del documento y filas con id, marca de cambio (sp-change-mark: color, icono y texto), diff y avisos de posible alcance nuevo; comentar ítems no eliminados. sp-word-diff en spec-sections.ts: <ins>/<del> con colores de fase y texto para lectores de pantalla. sp-assumption-row admite un diff y una marca proyectada, para decidir los supuestos cambiados en el delta.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "578f79fd6d1669604b396df3ea7a8eb2b244750a",
+      "startedAt": "2026-10-22T09:45:10.649Z",
+      "doneAt": "2026-10-22T09:52:10.006Z",
+      "summary": "La revisión empieza por los cambios cuando hay delta (sin índice), con 'Ver spec completa' y, desde la spec completa, 'Ver solo los cambios desde rN'; al cambiar de vista lleva arriba y enfoca el conmutador. El modo es un linkedSignal que conserva la elección en las actualizaciones en vivo del mismo cambio (el test lo cazó: sin 'previous' volvía a los cambios). La barra de decisión sale a review-actions.ts. Tests del modo en spec-review-modes.test.ts (test implícito, mismo directorio) para no pasar de 300 líneas."
     }
   },
   "pending": {

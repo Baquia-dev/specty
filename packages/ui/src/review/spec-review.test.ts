@@ -20,11 +20,16 @@ class ReadOnly extends SpectyData {
   }
 }
 
-async function open(id: string, source: new () => SpectyData = FixtureData) {
+/** Whether the system asks for reduced motion. Test files share globals: keep it complete. */
+function motion(reduced: boolean): void {
   window.matchMedia = (() => ({
-    matches: false,
+    matches: reduced,
     addEventListener: () => undefined,
   })) as unknown as typeof window.matchMedia;
+}
+
+async function open(id: string, source: new () => SpectyData = FixtureData) {
+  motion(false);
   localStorage.clear();
   localStorage.setItem("specty.lang", "es");
   TestBed.resetTestingModule();
@@ -151,17 +156,11 @@ describe("SpecReview", () => {
     await settle();
     expect(flashed()).toEqual([]);
 
-    window.matchMedia = (() => ({
-      matches: true,
-      addEventListener: () => undefined,
-    })) as unknown as typeof window.matchMedia;
+    motion(true);
     criteria()?.click();
     expect(calls.at(-1)).toEqual({ behavior: "auto", block: "start" });
     // Test files share globals: leave matchMedia and scrollIntoView as other files expect them.
-    window.matchMedia = (() => ({
-      matches: false,
-      addEventListener: () => undefined,
-    })) as unknown as typeof window.matchMedia;
+    motion(false);
     Reflect.deleteProperty(Element.prototype, "scrollIntoView");
   });
 
@@ -252,6 +251,7 @@ describe("SpecReview", () => {
 
   it("is read-only outside review, with comments still visible (AC8)", async () => {
     const { review } = await open("20261021-login-google");
+    expect(review()?.querySelector("sp-review-delta")).toBeNull();
     expect(review()?.querySelector("[role=region]")).toBeNull();
     expect(review()?.querySelector("sp-assumption-row sp-button")).toBeNull();
     expect(review()?.querySelector("aside form")).toBeNull();

@@ -75,7 +75,7 @@ Cuando una spec vuelve a revisión después de haber sido aprobada (por ejemplo,
   - files: packages/ui/src/review/spec-sections.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/delta-review.ts, packages/ui/src/review/delta-review.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T4: La revisión empieza por los cambios
+- [x] T4: La revisión empieza por los cambios
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts
   - ac: AC1, AC4, AC5
   - verify: pnpm check
