@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261022-cambio-y-revision-en-el-telefono-cabecera-franja",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-cambio-y-revision-en-el-telefono-cabecera-franja",
+  "baseCommit": "95048852afc39dce0a2468a53683b4f862d9ba64",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b47c7fc683e70c6c50ae0e9b5fefdc0f4ce7ad4075f5e721b3fd58ced2f72484",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f0df1ce5a000547af8781b1d3300c22884134f0723118a16b189a6e1e9b97c0b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:0440144e561953cca9047539a8d90aeb536d4b96cc0f3e48fb5ae720d4032aa4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5e05accfee73277b294f9290c0a31c255bf787e831aaf201a02c20b10f1a8c55",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:9e2d45ba5b6bb0224bf6afc7e292fa33e7b1e66de021190a38ebd5f4061790fa",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:123a53cd63c613b0b66acb72dc64cb524f2063b58bea855135687be6a1ce8002",
+    "at": "2026-10-22T19:36:05.364Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

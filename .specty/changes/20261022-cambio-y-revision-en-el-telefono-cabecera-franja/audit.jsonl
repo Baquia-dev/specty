@@ -1,0 +1,3 @@
+{"ts":"2026-10-22T19:33:59.210Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-cambio-y-revision-en-el-telefono-cabecera-franja","follows":["20261022-armazon-y-catalogo-cabecera-en-una-linea-y-menu"]}}
+{"ts":"2026-10-22T19:34:36.754Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:123a53cd63c613b0b66acb72dc64cb524f2063b58bea855135687be6a1ce8002","size":"M","warnings":0}}
+{"ts":"2026-10-22T19:36:05.384Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:123a53cd63c613b0b66acb72dc64cb524f2063b58bea855135687be6a1ce8002","channel":"tty"}}
