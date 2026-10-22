@@ -94,7 +94,7 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/derive.worker.ts
   - ac: AC2, AC4, AC7, AC10
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T2: Datos de ejemplo y almacén reactivo
+- [x] T2: Datos de ejemplo y almacén reactivo
   - files: packages/ui/src/data/sample-specs.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/changes-store.ts
   - ac: AC5, AC6, AC9
   - verify: pnpm --filter @baquia-dev/specty-ui test

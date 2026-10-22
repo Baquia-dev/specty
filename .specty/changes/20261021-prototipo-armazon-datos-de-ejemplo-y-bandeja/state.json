@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ee5487807e318357863cbf0988665ad9d97e747a",
+      "attempts": 1,
       "startedAt": "2026-10-22T04:47:12.654Z",
       "doneAt": "2026-10-22T04:48:59.596Z",
-      "summary": "Contrato en data/records.ts (ChangeRecord: texto de spec.md, state.json y phaseSince; SpectyData abstracto; ChangeView como datos planos con textos bilingües; mensajes del worker; relativeTime con Intl) importando solo tipos de core. Derivación en data/views.ts con parseSpec, computeSize, formatSizeReason, recommendEffort y parseChangeState: decisión pendiente, supuestos de alto impacto sin decidir, solicitudes de alcance, tareas, pestaña inicial por fase y problemas de lectura. data/derive.worker.ts responde con las vistas; un test comprueba que coinciden con la vía bajo demanda y que sobreviven a structuredClone"
+      "summary": "Contrato en data/records.ts (ChangeRecord: texto de spec.md, state.json y phaseSince; SpectyData abstracto; ChangeView como datos planos con textos bilingües; mensajes del worker; relativeTime con Intl) importando solo tipos de core. Derivación en data/views.ts con parseSpec, computeSize, formatSizeReason, recommendEffort y parseChangeState: decisión pendiente, supuestos de alto impacto sin decidir, solicitudes de alcance, tareas, pestaña inicial por fase y problemas de lectura. data/derive.worker.ts responde con las vistas; un test comprueba que coinciden con la vía bajo demanda y que sobreviven a structuredClone",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "464fc3598fd2d2aadba176bfd762d91bf783432e",
+      "startedAt": "2026-10-22T04:48:59.866Z",
+      "doneAt": "2026-10-22T04:53:19.598Z",
+      "summary": "Ocho cambios de ejemplo de «Mi colegio» (specs reales en sample-specs.ts; estados validados por parseChangeState) que cubren las cuatro decisiones, trabajo en curso y recientes, con tiempos relativos al arranque. FixtureData implementa SpectyData y registra los comandos Simular: aprobar la spec, aprobar el alcance, terminar una tarea y cortar o recuperar la conexión (cada uno busca el cambio que le corresponde). ChangesStore: resource() que deriva por un Worker (new URL de derive.worker) o, sin workers, con import() bajo demanda; recarga con subscribe conservando la vista anterior; decisions (las más antiguas primero), active, recent y byId. Tests de validez de las muestras, directo, fallo y recuperación, vía worker y fuente alternativa"
     }
   },
   "pending": {
