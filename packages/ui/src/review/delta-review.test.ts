@@ -184,6 +184,8 @@ describe("ReviewDelta", () => {
     const filters = () => [...element.querySelectorAll<HTMLButtonElement>("[data-filters] button")];
     expect(filters().map(text)).toEqual(["Todo 10", "Añadidos 5", "Modificados 4", "Eliminados 1"]);
     expect(filters()[0]?.getAttribute("aria-pressed")).toBe("true");
+    // Too wide for a phone, they scroll sideways inside their group, not the page.
+    expect(element.querySelector("[data-filters]")?.className).toContain("overflow-x-auto");
     const shown = () =>
       [...element.querySelectorAll<HTMLElement>("[data-delta-section]")].map(
         (section) => section.dataset.deltaSection,

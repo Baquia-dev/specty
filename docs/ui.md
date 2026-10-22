@@ -65,6 +65,7 @@ Se lee como un documento bien maquetado, no como un tablero de tarjetas.
 - **Comentarios**: al seleccionar texto o pasar el cursor sobre un ítem aparece "Comentar". Cada comentario se ancla al ítem o a la cita, y llega al agente en `specty next`.
 - **Acciones**: "Pedir cambios" (envía los comentarios) y "Aprobar", en la cabecera amplia, a la derecha del título, y en la barra compacta al desplazarse; no hay barra en el pie. "Aprobar" queda deshabilitado mientras haya supuestos de alto impacto sin decidir o errores de validación, con el motivo como texto debajo de los botones de la cabecera y en el tooltip. Se muestran en cualquier pestaña mientras el cambio está en revisión.
 - **Modo fuente** (CodeMirror), para quien prefiera editar el Markdown. El contenido es el mismo.
+- **En el teléfono**: el índice va encima del documento y se desplaza con él (solo se fija desde 768 px, cuando queda al lado). Cada ítem lleva su id y sus marcas en la primera línea y el texto a todo el ancho debajo, en la revisión y en el delta. En pantallas táctiles «Comentar» se ve siempre, porque no hay puntero que lo revele. Nada ensancha la página: las rutas largas se parten y los filtros del delta se desplazan de lado dentro de su grupo.
 
 ### Revisión del delta
 

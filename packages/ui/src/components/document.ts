@@ -6,14 +6,20 @@ import { ChangeDetectionStrategy, Component, input } from "@angular/core";
 export const PAGE = "mx-auto w-full max-w-6xl px-6";
 
 /**
- * A document row: an id in a fixed column, the content, and its actions on the right. No lines
- * between rows: the one under the pointer, or with focus inside, lights up softly instead.
+ * A document row: an id in a fixed column, the content, and its marks or actions on the right.
+ * No lines between rows: the one under the pointer, or with focus inside, lights up softly
+ * instead. On a phone the id and the marks share the first line and the content (always the
+ * second child) takes the full width below, instead of a narrow column between them.
  */
 export const ROW =
-  "group -mx-3 grid grid-cols-[2.75rem_minmax(0,1fr)_auto] gap-x-3 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none";
+  "group -mx-3 grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1.5 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none max-sm:items-center max-sm:[&>:nth-child(2)]:col-span-2 max-sm:[&>:nth-child(2)]:row-start-2 sm:grid-cols-[2.75rem_minmax(0,1fr)_auto]";
 
-/** A row's actions show with the pointer over the row or focus inside it. */
-export const REVEAL = "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100";
+/**
+ * A row's actions show with the pointer over the row or focus inside it; on a touch screen,
+ * with no pointer to reveal them, always.
+ */
+export const REVEAL =
+  "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100";
 
 /** The rows of a section, indented under its title; the section's divider is the only line. */
 export const LIST = "m-0 flex list-none flex-col gap-0.5 p-0 pl-6";

@@ -66,7 +66,7 @@ Este cambio deja la página legible en cualquier ancho y aclara el esfuerzo.
 
 ## Tareas
 
-- [ ] T1: Filas e índice de la revisión en el teléfono
+- [x] T1: Filas e índice de la revisión en el teléfono
   - files: packages/ui/src/components/document.ts, packages/ui/src/components/document.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts, docs/ui.md
   - ac: AC4, AC5, AC6
   - verify: pnpm check

@@ -111,7 +111,7 @@ const STATUS = {
                   <svg [lucideIcon]="actions[file.action].icon" size="13" aria-hidden="true"></svg>{{ actionLabel(file) }}
                 </span>
                 <span class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
-                  <code class="font-mono text-[13px]">{{ file.from ? file.from + ' → ' : '' }}{{ file.path }}</code>
+                  <code class="font-mono text-[13px] wrap-anywhere">{{ file.from ? file.from + ' → ' : '' }}{{ file.path }}</code>
                   @if (file.sensitive) {
                     <span class="flex items-center gap-1 text-xs font-medium" style="color: var(--color-phase-review)" data-sensitive>
                       <svg [lucideIcon]="sensitiveIcon" size="13" aria-hidden="true"></svg>{{ t()('Ruta sensible', 'Sensitive path') }}

@@ -87,6 +87,14 @@ describe("SpecReview", () => {
     expect(index).toContain("04 Criterios 2 por revisar,");
     expect(index).toContain("06 Tareas 1 por revisar,");
     expect(index).toContain("07 Diseño 1 comentarios");
+    // Pinned only beside the document: stacked above it on a phone, it scrolls with it.
+    const nav = review()?.querySelector("nav")?.className.split(" ") ?? [];
+    expect(nav).toContain("md:sticky");
+    expect(nav).not.toContain("sticky");
+    // Long paths break instead of widening the page on a phone.
+    expect(review()?.querySelector("[data-section=files] code")?.className).toContain(
+      "wrap-anywhere",
+    );
     // Every warning counted in the index is visible in its section.
     expect(review()?.querySelectorAll("[data-section=tasks] [role=note]").length).toBe(1);
     expect(review()?.querySelectorAll("[data-section=criteria] [role=note]").length).toBe(2);

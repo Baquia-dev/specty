@@ -6,6 +6,13 @@
   "branch": "specty/20261022-cambio-y-revision-en-el-telefono-cabecera-franja",
   "baseCommit": "95048852afc39dce0a2468a53683b4f862d9ba64",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:123a53cd63c613b0b66acb72dc64cb524f2063b58bea855135687be6a1ce8002",
+    "at": "2026-10-22T19:36:05.364Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -37,7 +44,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/spec-sections.ts",
+        "packages/ui/src/review/delta-review.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "c5f2d0281f845ef4939892dfff7d013263c35069",
+      "startedAt": "2026-10-22T19:36:40.196Z",
+      "doneAt": "2026-10-22T19:52:10.419Z",
+      "summary": "ROW en el teléfono: el id y las marcas o acciones comparten la primera línea y el contenido (segundo hijo) ocupa todo el ancho debajo; desde 640 px, las columnas de siempre. REVEAL muestra «Comentar» siempre con puntero grueso. El índice «Contenido» solo se fija desde md (768 px). S1: sin desplazamiento lateral en el teléfono: rutas de «Archivos» con wrap-anywhere y filtros del delta que se desplazan de lado en su grupo. Tests del patrón, de la revisión y del delta; docs/ui.md."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -45,13 +65,7 @@
   "maxIds": {
     "A": 5,
     "AC": 6,
-    "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:123a53cd63c613b0b66acb72dc64cb524f2063b58bea855135687be6a1ce8002",
-    "at": "2026-10-22T19:36:05.364Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
+    "T": 2,
+    "S": 1
   }
 }

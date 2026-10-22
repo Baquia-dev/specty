@@ -46,6 +46,21 @@ describe("document patterns", () => {
     expect(REVEAL).toContain("group-focus-within:opacity-100");
   });
 
+  it("on a phone, rows put the id and marks on one line and the content below (AC5)", () => {
+    expect(ROW.split(" ")).toEqual(
+      expect.arrayContaining([
+        "grid-cols-[minmax(0,1fr)_auto]",
+        "max-sm:[&>:nth-child(2)]:col-span-2",
+        "max-sm:[&>:nth-child(2)]:row-start-2",
+        "sm:grid-cols-[2.75rem_minmax(0,1fr)_auto]",
+      ]),
+    );
+  });
+
+  it("on a touch screen, a row's actions always show (AC6)", () => {
+    expect(REVEAL.split(" ")).toContain("pointer-coarse:opacity-100");
+  });
+
   it("lists are indented under their section, and pages share one width (AC1)", () => {
     expect(LIST.split(" ")).toContain("pl-6");
     expect(LIST).not.toMatch(/\bborder\b/);

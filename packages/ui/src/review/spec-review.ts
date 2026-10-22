@@ -72,7 +72,7 @@ const SECTION =
   template: `
     <div class="flex flex-wrap items-start gap-x-12 gap-y-6">
       @if (mode() === 'full') {
-        <nav class="sticky top-[calc(var(--sp-sticky-top,0px)+1rem)] flex flex-[1_1_170px] flex-col" [attr.aria-label]="t()('Secciones de la spec', 'Spec sections')">
+        <nav class="flex flex-[1_1_170px] flex-col md:sticky md:top-[calc(var(--sp-sticky-top,0px)+1rem)]" [attr.aria-label]="t()('Secciones de la spec', 'Spec sections')">
           <p class="m-0 mb-2 px-2 text-xs font-medium tracking-[0.12em] text-text-muted uppercase" aria-hidden="true">{{ t()('Contenido', 'Contents') }}</p>
           @for (entry of index(); track entry.key; let i = $index) {
             <button type="button" class="flex cursor-pointer items-baseline gap-2.5 rounded-md border-0 bg-transparent px-2 py-1.5 text-left font-sans text-sm text-text-muted transition-colors hover:text-text aria-current:font-semibold aria-current:text-text" [attr.aria-current]="reading() === entry.key || null" (click)="go(entry.key)">
