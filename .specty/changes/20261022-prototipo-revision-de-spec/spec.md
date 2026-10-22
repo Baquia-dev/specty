@@ -80,7 +80,7 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
 
 ## Tareas
 
-- [ ] T1: Contrato y derivación de la revisión
+- [x] T1: Contrato y derivación de la revisión
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/review.ts, packages/ui/src/data/views.ts
   - ac: AC1, AC3, AC4, AC9
   - verify: pnpm --filter @baquia-dev/specty-ui test

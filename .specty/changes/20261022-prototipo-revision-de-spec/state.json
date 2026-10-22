@@ -6,6 +6,13 @@
   "branch": "specty/20261022-prototipo-revision-de-spec",
   "baseCommit": "f081fac8a754d519823cbd159ad81cc5af891bbb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:80ef44f7bb86ea2b0108d4680ffdd5878f58f824ff9a92caa1d87d74938bf683",
+    "at": "2026-10-22T06:27:21.674Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -38,7 +45,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/components/button.test.ts",
+        "packages/ui/src/components/toast.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "a310161b6e02c2076979088ad7f7d1550795c265",
+      "startedAt": "2026-10-22T06:27:34.479Z",
+      "doneAt": "2026-10-22T06:36:06.919Z",
+      "summary": "Contrato: CommentRecord y CommentAnchor (formats.md §5) en ChangeRecord.comments; acciones decideAssumption, addComment, requestChanges y approve (por revisión) en SpectyData que, por defecto, fallan con ActionError bilingüe de solo lectura; ReviewView plana dentro de ChangeView. data/review.ts deriva la revisión en el worker: avisos por ítem y errores en los dos idiomas (validateSpec por idioma), supuestos con decisión y motivo, archivos por módulo (moduleOf) con isSensitive, tareas con estado y chips, comentarios (sin resolver primero) con su sección e índice con pendientes, comentarios y avisos. Arreglado además un test intermitente: el builder no aísla archivos y button.test dejaba window.matchMedia sin addEventListener; toast.test ahora define el suyo"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +68,5 @@
     "AC": 9,
     "T": 5,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:80ef44f7bb86ea2b0108d4680ffdd5878f58f824ff9a92caa1d87d74938bf683",
-    "at": "2026-10-22T06:27:21.674Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

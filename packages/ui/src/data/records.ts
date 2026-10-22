@@ -16,19 +16,143 @@ export interface ChangeRecord {
   readonly state: ChangeState;
   /** ISO time when the change entered its current phase. */
   readonly phaseSince: string;
+  /** `comments.json` (formats.md §5); none when absent. */
+  readonly comments?: readonly CommentRecord[];
 }
+
+/** Where a comment points: an item (`A1`) or a quote inside a section. */
+export type CommentAnchor =
+  | { readonly item: string }
+  | { readonly section: ReviewSection; readonly quote: string };
+
+export interface CommentRecord {
+  readonly id: string;
+  readonly revision: number;
+  readonly anchor: CommentAnchor;
+  readonly author: string;
+  readonly body: string;
+  readonly createdAt: string;
+  readonly resolvedInRevision?: number;
+}
+
+export type Bilingual = Readonly<Record<Lang, string>>;
+
+/** An action the source could not do, explained in both languages. */
+export class ActionError extends Error {
+  constructor(readonly text: Bilingual) {
+    super(text.en);
+  }
+}
+
+const READ_ONLY: Bilingual = {
+  es: "Esta fuente de datos es de solo lectura: no admite acciones.",
+  en: "This data source is read-only: it takes no actions.",
+};
 
 /**
  * Any data source the UI can run on: fetch + SSE from the local server, `postMessage` in an
- * editor webview, fixtures in the prototype. Screens depend only on this.
+ * editor webview, fixtures in the prototype. Screens depend only on this. Reading is required;
+ * actions are optional and fail as read-only unless the source implements them.
  */
 export abstract class SpectyData {
   abstract changes(): Promise<readonly ChangeRecord[]>;
   /** Calls `listener` whenever the data may have changed; returns how to stop. */
   abstract subscribe(listener: () => void): () => void;
+
+  decideAssumption(
+    _change: string,
+    _item: string,
+    _decision: "confirmed" | "rejected",
+    _comment?: string,
+  ): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  addComment(_change: string, _anchor: CommentAnchor, _body: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** Sends the unresolved comments to the agent. */
+  requestChanges(_change: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** Approves exactly `revision`: if the spec changed meanwhile, the source refuses. */
+  approve(_change: string, _revision: number): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
 }
 
-export type Bilingual = Readonly<Record<Lang, string>>;
+export type ReviewSection =
+  | "goal"
+  | "outOfScope"
+  | "assumptions"
+  | "criteria"
+  | "files"
+  | "tasks"
+  | "risks"
+  | "design";
+
+export interface AssumptionView {
+  readonly id: string;
+  readonly text: string;
+  readonly impact?: "high" | "medium" | "low";
+  readonly decision: "pending" | "confirmed" | "rejected" | "implicit";
+  readonly comment?: string;
+}
+
+export interface CriterionView {
+  readonly id: string;
+  readonly text: string;
+  readonly warnings: readonly Bilingual[];
+}
+
+export interface FileView {
+  readonly path: string;
+  readonly action: "create" | "modify" | "delete" | "rename";
+  readonly from?: string;
+  readonly reason?: string;
+  readonly sensitive: boolean;
+}
+
+export interface TaskItemView {
+  readonly id: string;
+  readonly title: string;
+  readonly status: "pending" | "active" | "done";
+  readonly ac: readonly string[];
+  readonly files: readonly string[];
+}
+
+export interface CommentView extends CommentRecord {
+  readonly section: ReviewSection;
+  readonly resolved: boolean;
+}
+
+export interface SectionIndexView {
+  readonly key: ReviewSection;
+  readonly present: boolean;
+  /** High-impact assumptions still undecided. */
+  readonly pending: number;
+  readonly comments: number;
+  readonly warnings: number;
+}
+
+/** Everything the spec review shows, as plain data. */
+export interface ReviewView {
+  readonly goal: string;
+  readonly outOfScope: string;
+  readonly design: string;
+  readonly assumptions: readonly AssumptionView[];
+  readonly criteria: readonly CriterionView[];
+  readonly files: readonly { readonly module: string; readonly files: readonly FileView[] }[];
+  readonly tasks: readonly TaskItemView[];
+  readonly risks: readonly { readonly id: string; readonly text: string }[];
+  /** Unresolved first, then oldest first. */
+  readonly comments: readonly CommentView[];
+  readonly index: readonly SectionIndexView[];
+  /** Validation errors: approving waits for them. */
+  readonly errors: readonly Bilingual[];
+}
 
 /** What a change waits for from the person, if anything. */
 export type DecisionKind = "review" | "scope" | "acceptance" | "closing";
@@ -63,6 +187,7 @@ export interface ChangeView {
   readonly tab: ChangeTab;
   /** Why the record could not be read in full (invalid state or spec errors). */
   readonly problems: readonly string[];
+  readonly review: ReviewView;
 }
 
 /** Messages to and from the derivation worker. */

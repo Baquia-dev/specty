@@ -62,7 +62,10 @@ describe("Button", () => {
   });
 
   it("ripples from the pressed point while held, and fades on release (AC1)", async () => {
-    window.matchMedia = (() => ({ matches: false })) as unknown as typeof window.matchMedia;
+    window.matchMedia = (() => ({
+      matches: false,
+      addEventListener: () => undefined,
+    })) as unknown as typeof window.matchMedia;
     const { button } = await render();
     vi.spyOn(button, "getBoundingClientRect").mockReturnValue({
       left: 0,
@@ -85,7 +88,10 @@ describe("Button", () => {
   });
 
   it("animates within the motion tokens when the browser can", async () => {
-    window.matchMedia = (() => ({ matches: false })) as unknown as typeof window.matchMedia;
+    window.matchMedia = (() => ({
+      matches: false,
+      addEventListener: () => undefined,
+    })) as unknown as typeof window.matchMedia;
     const { button } = await render();
     const finished: { onfinish: (() => void) | null } = { onfinish: null };
     const animate = vi.fn(() => finished as unknown as Animation);
@@ -107,7 +113,10 @@ describe("Button", () => {
   });
 
   it("does not ripple when the system asks for reduced motion (AC1)", async () => {
-    window.matchMedia = (() => ({ matches: true })) as unknown as typeof window.matchMedia;
+    window.matchMedia = (() => ({
+      matches: true,
+      addEventListener: () => undefined,
+    })) as unknown as typeof window.matchMedia;
     const { button } = await render();
     button.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
     expect(button.querySelector("[data-ripple]")).toBeNull();

@@ -13,6 +13,7 @@ import {
   type Spec,
 } from "@baquia-dev/specty-core";
 import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind } from "./records";
+import { deriveReview } from "./review";
 
 const TABS: Readonly<Record<Phase, ChangeTab>> = {
   draft: "spec",
@@ -93,6 +94,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
     },
     tab: initialTab(state.phase),
     problems,
+    review: deriveReview(spec, state, record.comments ?? []),
   };
 }
 

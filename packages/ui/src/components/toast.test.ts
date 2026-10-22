@@ -3,6 +3,11 @@ import { TestBed } from "@angular/core/testing";
 import { MAX_TOASTS, TOAST_MS, Toaster, Toasts } from "./toast";
 
 async function render() {
+  // Test files share globals: never rely on what another file left in matchMedia.
+  window.matchMedia = (() => ({
+    matches: false,
+    addEventListener: () => undefined,
+  })) as unknown as typeof window.matchMedia;
   localStorage.setItem("specty.lang", "es");
   TestBed.resetTestingModule();
   const fixture = TestBed.createComponent(Toaster);
