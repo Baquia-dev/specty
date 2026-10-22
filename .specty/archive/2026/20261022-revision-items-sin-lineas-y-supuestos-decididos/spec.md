@@ -46,3 +46,27 @@ Los ítems de cada sección de la revisión (spec completa y delta) se leen como
   - ac: AC2
   - verify: pnpm check
   - notes: Comprobar en el navegador, en claro y en oscuro, la spec completa y el delta: sin líneas entre ítems y con resalte al pasar el puntero.
+
+## Cierre
+
+### Resumen
+
+- Los ítems de cada sección, en la spec completa y en el delta, van con sangría bajo el título de la sección y sin líneas; el ítem bajo el puntero o con el foco se ilumina con un fondo suave (el texto al 4 %) y muestra «Comentar». El divisor de la sección es la única línea.
+- Un supuesto decidido muestra "Cambiar decisión" en lugar de Confirmar y Rechazar; al pulsarlo vuelven, con el foco en Confirmar, y se pliegan al decidir de nuevo.
+- 162 tests en la UI; comprobado en Chrome sin interfaz, en claro y oscuro, con el puntero sobre un ítem.
+
+### Desviaciones
+
+- Ninguna respecto al plan. La clase del resalte usa la forma canónica de Tailwind (`bg-text/4`).
+
+### Decisiones
+
+- El resalte usa el color del texto con transparencia, sin token nuevo, para que valga en claro y en oscuro.
+- "Aceptado con la spec" cuenta como decidido: también muestra "Cambiar decisión".
+- La elección de cambiar una decisión se conserva en las actualizaciones en vivo con la misma decisión (`linkedSignal` con el valor anterior).
+
+### Pendientes
+
+- Cambio 2b: diff más claro en el delta (texto final limpio, «Antes», filtros, tareas con chips, puntuación separada).
+- Acciones de decisión en la cabecera y en la barra compacta, sin barra inferior.
+- Patrones de página y Bandeja con buscador, filtros, agrupar y ordenar.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-revision-items-sin-lineas-y-supuestos-decididos",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-revision-items-sin-lineas-y-supuestos-decididos",
   "baseCommit": "3a65efe17778442ebb87e084410a27c9f6ea995d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:06969955f1113448b73ab3267e777ef5631d8dfcc387e04b747a01d323ec0608",
@@ -44,12 +44,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a77a5b60be5ce61f1ae587e811c8d6fdacda31b4",
+      "attempts": 1,
       "startedAt": "2026-10-22T16:27:12.515Z",
       "doneAt": "2026-10-22T16:29:54.629Z",
-      "summary": "Supuesto decidido (confirmado, rechazado o aceptado con la spec) muestra 'Cambiar decisión' en lugar de Confirmar y Rechazar; al pulsarlo vuelven y el foco pasa a Confirmar. Un linkedSignal conserva la elección en las actualizaciones en vivo con la misma decisión y la pliega al cambiar de decisión; fuera de revisión no se muestra nada. La fila del supuesto usa ROW directamente. Comprobado en el navegador en claro y en oscuro, en la spec completa y el delta."
+      "summary": "Supuesto decidido (confirmado, rechazado o aceptado con la spec) muestra 'Cambiar decisión' en lugar de Confirmar y Rechazar; al pulsarlo vuelven y el foco pasa a Confirmar. Un linkedSignal conserva la elección en las actualizaciones en vivo con la misma decisión y la pliega al cambiar de decisión; fuera de revisión no se muestra nada. La fila del supuesto usa ROW directamente. Comprobado en el navegador en claro y en oscuro, en la spec completa y el delta.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -60,5 +60,6 @@
     "A": 2,
     "AC": 2,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T16:47:42.200Z"
 }

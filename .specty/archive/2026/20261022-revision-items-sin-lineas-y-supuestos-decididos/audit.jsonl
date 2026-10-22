@@ -7,3 +7,6 @@
 {"ts":"2026-10-22T16:27:12.515Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"a77a5b60be5ce61f1ae587e811c8d6fdacda31b4"}}
 {"ts":"2026-10-22T16:29:54.628Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":30252}}
 {"ts":"2026-10-22T16:29:54.631Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Supuesto decidido (confirmado, rechazado o aceptado con la spec) muestra 'Cambiar decisión' en lugar de Confirmar y Rechazar; al pulsarlo vuelven y el foco pasa a Confirmar. Un linkedSignal conserva la elección en las actualizaciones en vivo con la misma decisión y la pliega al cambiar de decisión; fuera de revisión no se muestra nada. La fila del supuesto usa ROW directamente. Comprobado en el navegador en claro y en oscuro, en la spec completa y el delta."}}
+{"ts":"2026-10-22T16:47:19.290Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-22T16:47:42.202Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ca24def3b20bfe97a5fe1aaca4e5c39ac84a36e3de27323887401700fb988166","size":"M","warnings":0}}
+{"ts":"2026-10-22T16:48:02.420Z","actor":"human","event":"change.closed","data":{}}
