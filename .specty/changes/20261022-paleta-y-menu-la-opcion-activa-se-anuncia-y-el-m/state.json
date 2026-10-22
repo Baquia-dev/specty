@@ -6,6 +6,13 @@
   "branch": "specty/20261022-paleta-y-menu-la-opcion-activa-se-anuncia-y-el-m",
   "baseCommit": "fc4b4e897225d4b40448ae27de0b5b565335404a",
   "revision": 3,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:30392a8cb5fcd4f79ced1e2291bbfa4dae026d34e37808b9da3ced78605d9baf",
+    "at": "2026-10-22T22:14:40.323Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "20f0c039af8308e8bd6916d99e740cde639b8aff",
+      "startedAt": "2026-10-22T22:14:51.411Z",
+      "doneAt": "2026-10-22T22:15:43.427Z",
+      "summary": "Paleta: focusMode activedescendant en su listbox. El foco se queda en el buscador al recorrer con las flechas (antes saltaba a las opciones y lo escrito dejaba de filtrar) y la opción activa se anuncia por aria-activedescendant. Test y comprobación en el navegador."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 3,
-    "hash": "sha256:30392a8cb5fcd4f79ced1e2291bbfa4dae026d34e37808b9da3ced78605d9baf",
-    "at": "2026-10-22T22:14:40.323Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

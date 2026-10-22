@@ -99,6 +99,19 @@ describe("Command palette", () => {
     expect(document.querySelector("[role=dialog]")).toBeNull();
   });
 
+  it("keeps the focus in the search while the arrows move, announcing the active command", async () => {
+    const { input, options, key, type } = await open();
+    await key("ArrowDown");
+    await key("ArrowDown");
+    const active = options().find((option) => option.dataset.active === "true");
+    expect(active).toBeDefined();
+    expect(document.activeElement).toBe(input);
+    expect(input?.getAttribute("aria-activedescendant")).toBe(active?.id);
+    // Still in the search: typing goes on filtering.
+    await type("idioma");
+    expect(options()).toHaveLength(1);
+  });
+
   it("registers a command's keys as a shortcut", async () => {
     const { fixture, host } = await open();
     document

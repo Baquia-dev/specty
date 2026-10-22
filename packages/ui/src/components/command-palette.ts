@@ -93,6 +93,7 @@ export class Commands {
           #listbox="ngListbox"
           class="flex max-h-80 flex-col gap-0.5 overflow-y-auto"
           selectionMode="explicit"
+          focusMode="activedescendant"
           [activeDescendant]="listbox.activeDescendant()"
           [value]="[]"
           (valueChange)="run($event)"

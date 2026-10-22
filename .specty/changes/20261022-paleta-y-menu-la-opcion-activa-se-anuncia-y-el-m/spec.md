@@ -52,7 +52,7 @@ Este cambio arregla los dos problemas y comparte con el select la forma de coloc
 
 ## Tareas
 
-- [ ] T1: La paleta anuncia la opción activa y el foco se queda en el buscador
+- [x] T1: La paleta anuncia la opción activa y el foco se queda en el buscador
   - files: packages/ui/src/components/command-palette.ts, packages/ui/src/components/command-palette.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/command-palette.test.ts
