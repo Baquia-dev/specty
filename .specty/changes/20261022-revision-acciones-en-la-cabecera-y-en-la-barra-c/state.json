@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261022-revision-acciones-en-la-cabecera-y-en-la-barra-c",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-revision-acciones-en-la-cabecera-y-en-la-barra-c",
+  "baseCommit": "d7336d86b431b04ec1d4122fff06909e38076d68",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3154403186e24614d947542815f029c4b32bb9ead735f9c958c67b884397bd6c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f399d0ecee85cd1259c196436b27ae153b0346675d98d0e5f4595a7dd1d5f6f2",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e5e7f12b09fb4f31072bba00ad0f6ab87693268497d1afaad4d89b4b19163022",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f9cd28313de1a8462c30b95328d116a39e22c00ed950ac68bf0fa06dfc89c027",
+    "at": "2026-10-22T17:16:23.260Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
