@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4b90a061e50fb19bccca5d692e60f7e206091e22",
+      "attempts": 1,
       "startedAt": "2026-10-22T23:18:28.363Z",
       "doneAt": "2026-10-22T23:21:48.253Z",
-      "summary": "data/sample-run.ts: la simulación del trabajo del agente. RunSimulation imprime una verificación línea a línea (una cada 350 ms) a quien la sigue con watch y, al terminar, entrega el resultado; runTarget elige la tarea en curso del primer cambio en implementación, con el comando de su audit, y la hace fallar mientras espera el archivo que pidió en una solicitud de alcance; verifiedIn deja un intento más y su task.verified (con outputTail si falló); canFinishTask y finishTaskIn salen de fixtures.ts. fixtures.ts: comando «Simular: verificar la tarea en curso», startRun y watchRun (292 líneas). Tests en sample-run.test.ts."
+      "summary": "data/sample-run.ts: la simulación del trabajo del agente. RunSimulation imprime una verificación línea a línea (una cada 350 ms) a quien la sigue con watch y, al terminar, entrega el resultado; runTarget elige la tarea en curso del primer cambio en implementación, con el comando de su audit, y la hace fallar mientras espera el archivo que pidió en una solicitud de alcance; verifiedIn deja un intento más y su task.verified (con outputTail si falló); canFinishTask y finishTaskIn salen de fixtures.ts. fixtures.ts: comando «Simular: verificar la tarea en curso», startRun y watchRun (292 líneas). Tests en sample-run.test.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f61fa476352c7a1a8e793cc8cce409632ffbf799",
+      "startedAt": "2026-10-22T23:21:48.531Z",
+      "doneAt": "2026-10-22T23:24:40.604Z",
+      "summary": "progress/live-output.ts: sp-live-output. Con una verificación en curso muestra «Verificando · 0:42» (reloj de un segundo), el comando y las líneas coloreadas con outputSegments en una región desplazable que sigue la última línea salvo que la persona suba; entonces aparece «Ir al final», que vuelve y mueve el foco a la salida. Se oculta y se muestra (abierta por defecto); guarda las últimas 500 líneas y cuenta las anteriores. Siempre montada en la tarea en curso, su región de estado anuncia el inicio, el fin y el resultado, no cada línea. Exporta OUTPUT_TONES y MAX_LINES. 5 tests."
     }
   },
   "pending": {

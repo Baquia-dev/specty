@@ -66,7 +66,7 @@ Mientras Specty verifica una tarea (al ejecutar `specty task done`, que puede ta
   - files: packages/ui/src/data/sample-run.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts
-- [ ] T3: El bloque de salida en vivo
+- [x] T3: El bloque de salida en vivo
   - files: packages/ui/src/progress/live-output.ts, packages/ui/src/progress/live-output.test.ts
   - ac: AC1, AC2, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/live-output.test.ts
