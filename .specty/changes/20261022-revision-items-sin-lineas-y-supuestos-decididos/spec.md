@@ -37,7 +37,7 @@ Los ítems de cada sección de la revisión (spec completa y delta) se leen como
 
 ## Tareas
 
-- [ ] T1: Ítems sin líneas, con sangría y resalte
+- [x] T1: Ítems sin líneas, con sangría y resalte
   - files: packages/ui/src/review/spec-sections.ts, packages/ui/src/review/spec-sections.test.ts, packages/ui/src/review/spec-review.test.ts, docs/ui.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui test

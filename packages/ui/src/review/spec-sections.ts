@@ -33,15 +33,18 @@ export function reportFailure(toasts: Toasts, preferences: Preferences) {
   };
 }
 
-/** A document row: its id in a fixed column, the content, and its actions on the right. */
+/**
+ * A document row: its id in a fixed column, the content, and its actions on the right. No lines
+ * between rows: the one under the pointer, or with focus inside, lights up softly instead.
+ */
 export const ROW =
-  "group grid grid-cols-[2.75rem_minmax(0,1fr)_auto] gap-x-3 border-b border-border py-3.5";
+  "group -mx-3 grid grid-cols-[2.75rem_minmax(0,1fr)_auto] gap-x-3 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none";
 
 /** The comment button of an item shows with the pointer over the item or focus inside it. */
 export const REVEAL = "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100";
 
-/** The rows of a section start under a hairline, like the rows between them. */
-export const LIST = "m-0 list-none border-t border-border p-0";
+/** The rows of a section, indented under its title; its divider is the only line. */
+export const LIST = "m-0 flex list-none flex-col gap-0.5 p-0 pl-6";
 
 /**
  * A word diff: added words highlighted, removed ones struck out. Color and line are not enough
@@ -98,10 +101,10 @@ const STATUS = {
       }
       @case ('files') {
         @for (group of review().files; track group.module) {
-          <h3 class="mt-0 mb-2 font-mono text-xs font-medium text-text-muted">{{ group.module }}/</h3>
-          <ul [class]="list + ' mb-5'">
+          <h3 class="mt-0 mb-1 pl-6 font-mono text-xs font-medium text-text-muted">{{ group.module }}/</h3>
+          <ul [class]="list + ' mb-4'">
             @for (file of group.files; track file.path) {
-              <li class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-3 border-b border-border py-2 text-sm">
+              <li class="-mx-3 grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-3 rounded-lg px-3 py-1.5 text-sm transition-colors duration-150 hover:bg-text/4 motion-reduce:transition-none">
                 <span class="flex items-center gap-1 text-xs text-text-muted" [attr.data-action]="file.action">
                   <svg [lucideIcon]="actions[file.action].icon" size="13" aria-hidden="true"></svg>{{ actionLabel(file) }}
                 </span>

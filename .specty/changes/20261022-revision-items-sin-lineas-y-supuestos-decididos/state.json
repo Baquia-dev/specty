@@ -6,6 +6,13 @@
   "branch": "specty/20261022-revision-items-sin-lineas-y-supuestos-decididos",
   "baseCommit": "3a65efe17778442ebb87e084410a27c9f6ea995d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:06969955f1113448b73ab3267e777ef5631d8dfcc387e04b747a01d323ec0608",
+    "at": "2026-10-22T16:25:24.775Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -25,7 +32,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "21316bc47526ee910e42df2d730f8689cd4b920f",
+      "startedAt": "2026-10-22T16:25:35.735Z",
+      "doneAt": "2026-10-22T16:27:12.261Z",
+      "summary": "ROW y LIST de spec-sections: filas sin líneas, con -mx-3 px-3 y resalte suave (hover y focus-within con el texto al 4 %, sin transición con movimiento reducido); listas con sangría pl-6 y sin línea arriba ni abajo; los archivos igual, con el módulo también sangrado. Afecta a la spec completa y al delta. Tests y docs/ui.md actualizados."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:06969955f1113448b73ab3267e777ef5631d8dfcc387e04b747a01d323ec0608",
-    "at": "2026-10-22T16:25:24.775Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

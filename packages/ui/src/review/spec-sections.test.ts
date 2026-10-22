@@ -125,7 +125,11 @@ describe("AssumptionRow", () => {
     const { element, source, fixture, host } = await render();
     const card = element.querySelector<HTMLElement>("sp-assumption-row");
     expect(card?.getAttribute("role")).toBe("listitem");
-    expect(card?.className).toContain("border-b");
+    // No lines between rows: the one under the pointer or with focus inside lights up instead.
+    expect(card?.className).not.toMatch(/\bborder-[bt]\b/);
+    expect(card?.className.split(" ")).toEqual(
+      expect.arrayContaining(["hover:bg-text/4", "focus-within:bg-text/4"]),
+    );
     expect(text(card?.querySelector(".font-mono"))).toBe("A1");
     expect(text(card)).toContain("Alto impacto");
     expect(text(card?.querySelector("[data-decision]"))).toBe("Por decidir");
@@ -203,9 +207,16 @@ describe("ReviewItems", () => {
   it("puts criterion warnings inline, with icon and text, in id-first rows (AC1, AC3)", async () => {
     const { element } = await render();
     const vague = element.querySelector("#criteria [data-item=AC2]");
-    expect(vague?.className).toContain("border-b");
     expect(text(vague?.querySelector(".font-mono"))).toBe("AC2");
-    expect(element.querySelector("#criteria ol")?.className).toContain("border-t");
+    // Indented under the section, with no line between, above or below the rows.
+    const list = element.querySelector("#criteria ol")?.className ?? "";
+    expect(list.split(" ")).toContain("pl-6");
+    const rows = [...element.querySelectorAll("#criteria li, #files li, #tasks li, #risks li")];
+    expect(rows.length).toBeGreaterThan(0);
+    for (const line of [list, ...rows.map((row) => row.className)]) {
+      expect(line).not.toMatch(/\bborder-[bt]\b/);
+    }
+    expect(vague?.className.split(" ")).toContain("hover:bg-text/4");
     expect(vague?.querySelectorAll("[role=note]").length).toBe(2);
     expect(vague?.querySelector("[role=note] svg")).not.toBeNull();
     expect(element.querySelector("#criteria [data-item=AC1] [role=note]")).toBeNull();

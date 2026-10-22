@@ -109,7 +109,9 @@ describe("SpecReview", () => {
     expect(text(assumptions?.querySelector("h2 + p"))).toBe(
       "Confirma o rechaza los de alto impacto: aprobar espera por ellos.",
     );
-    expect(assumptions?.querySelector("[role=list]")?.className).toContain("border-t");
+    const list = assumptions?.querySelector("[role=list]")?.className ?? "";
+    expect(list.split(" ")).toContain("pl-6");
+    expect(list).not.toMatch(/\bborder-[bt]\b/);
     expect(text(assumptions?.querySelector("[data-progress]"))).toBe(
       "1 de 2 de alto impacto decididos",
     );
