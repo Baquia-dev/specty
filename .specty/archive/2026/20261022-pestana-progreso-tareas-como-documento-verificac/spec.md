@@ -91,3 +91,30 @@ La pestaña Progreso del cambio muestra hoy un texto provisional. Pasa a ser la 
   - ac: AC2
   - verify: pnpm check
   - notes: `outputSegments(line)` puro en `data/progress.ts` parte cada línea en tramos con su tono; la fila los pinta con los colores de fase. Comprobar en el navegador, en claro y oscuro, que el contraste sigue cumpliendo.
+
+## Cierre
+
+### Resumen
+
+La pestaña Progreso deja el texto provisional y muestra las tareas en el orden de la spec como filas de documento. Cada fila lleva el estado, el resumen, el commit, los archivos, los criterios, la duración, los intentos y la última verificación. La salida de la verificación fallida aparece en colores que la contextualizan y está abierta en la tarea en curso. Una tarea que espera una decisión de la persona sube a «Te espera» con su solicitud de alcance, que explica qué implica decidir. «Aprobar» la aprueba, «Rechazar…» pide el motivo en un diálogo, y al decidir la tarea vuelve a su lugar. Encima van un resumen y una barra por tarea. Si no hay tareas, un estado vacío lo dice.
+
+### Desviaciones
+
+- **Revisión 3, antes de aprobar:** la persona ajustó A1 para que la tarea que necesita una acción suba a «Te espera» como en la propuesta C y vuelva a su lugar al decidirla. Pidió además la salida en vivo de la verificación en curso; como no cabía en el límite de archivos, va en el cambio siguiente.
+- **Ajuste tras revisar el resultado (T5):** colores que contextualizan la salida (AC2 refinado, A6 añadido), sin archivos nuevos.
+- **Rechazo en diálogo:** se pide el motivo en un diálogo, como al rechazar un supuesto, en lugar del campo en línea de la maqueta. Así es coherente en toda la app.
+- **`change-page.test.ts`:** se adaptó el test de actualización en vivo, que buscaba el texto provisional. El archivo quedó en el límite de 300 líneas.
+
+### Decisiones
+
+- **Modelo puro:** el progreso es un modelo puro (`data/progress.ts`) que solo importa tipos del core. Las pantallas usan sus utilidades (duración, tramos de salida) sin cargar el parser en el hilo principal.
+- **Audit leído con guardas:** `audit.jsonl` es un dato de disco. `task.verified` se lee con guardas de tipo, ignorando líneas mal formadas, y de `outputTail` solo se toman textos.
+- **Colores por marcas:** reconocen marcas de los ejecutores de tests sin interpretar el lenguaje. Usan los colores de fase, con contraste de al menos 5,4:1 en los dos temas.
+- **Decidir alcance:** `decideScope` es una acción de la fuente, como decidir un supuesto. La de ejemplo aprueba añadiendo las rutas al alcance de la tarea y registra `scope.decided`; la lógica vive en `sample-progress.ts` para no pasar de 300 líneas en `fixtures.ts`.
+- **Sin elemento fantasma:** la tarea que sube a «Te espera» sale de la lista sin dejar un hueco. El orden se recupera al decidir, con una entrada corta (`starting:`) y sin movimiento si se reduce.
+
+### Pendientes
+
+- **Salida en vivo:** la salida de la verificación que está corriendo, en el cambio siguiente. Hace falta que la fuente transmita las líneas mientras la verificación corre; hoy la CLI solo guarda la cola de una verificación fallida.
+- **CLI:** escribir la salida mientras se verifica (por ejemplo, en un archivo del cambio) para que el servidor la transmita.
+- **Pestañas por hacer:** Aceptación e Historial. El detalle por eventos de la propuesta de línea de tiempo irá en Historial.

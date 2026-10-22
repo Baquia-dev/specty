@@ -21,3 +21,6 @@
 {"ts":"2026-10-22T23:09:14.919Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T5","baseCommit":"0e465471b3fa6354215e3b75929a7fd4d29007a0"}}
 {"ts":"2026-10-22T23:12:50.205Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm check","exit":0,"ms":38923}}
 {"ts":"2026-10-22T23:12:50.207Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"outputSegments(line) puro en data/progress.ts: parte cada línea en tramos con su tono reconociendo marcas de los ejecutores de tests (fallos [E], ✗, FAIL, Error, -N; aciertos ✓, +N, All tests passed; rutas con línea y columna; tiempos; Expected:/Actual: o Received: como línea entera) y deja el resto tal cual, sin perder texto. La fila pinta la salida con los colores de fase (rojo, verde, azul, atenuado), con contraste de al menos 5,4:1 en claro y oscuro. Tests de los tramos y de la pestaña; docs/ui.md."}}
+{"ts":"2026-10-22T23:14:08.090Z","actor":"human","event":"change.accepted","data":{"revision":4}}
+{"ts":"2026-10-22T23:14:30.217Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":5,"hash":"sha256:df4e0fa178471d8e7dbb82b2763be3a7f98cc26d45280a62c2ade6b4e171e309","size":"L","warnings":1}}
+{"ts":"2026-10-22T23:15:22.324Z","actor":"human","event":"change.closed","data":{}}
