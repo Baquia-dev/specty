@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-revision-diff-mas-claro",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-revision-diff-mas-claro",
   "baseCommit": "642c62d30383248c90ef3015552de01b6adce276",
   "revision": 1,
@@ -39,15 +39,28 @@
   "tasks": {
     "T1": {
       "status": "done",
+      "baseCommit": "bb6dfb9e38df97bb5aacf6c60642494b862f4d45",
+      "attempts": 1,
+      "startedAt": "2026-10-22T16:50:59.261Z",
+      "doneAt": "2026-10-22T16:58:12.591Z",
+      "summary": "DeltaEntryView pasa de 'diff' a 'text', 'before' (solo con palabras quitadas), 'chips' (criterios y archivos de una tarea, con su cambio y si son posible alcance nuevo) y 'details' (impacto, verificación, tipo, notas). delta.ts compara los campos de cada ítem en vez del texto de la spec, separa la puntuación y agrupa cada tramo cambiado (lo quitado antes que lo añadido) para que una frase cambiada no se fragmente. En el ejemplo, A2 cambia una frase y A3 gana un impacto. S1: la vista del delta usa el texto final (adaptación mínima; el rediseño es T2).",
       "scopeExtra": [
         "packages/ui/src/review/delta-review.ts",
         "packages/ui/src/review/delta-review.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/data/word-diff.ts",
+        "packages/ui/src/data/delta.ts",
+        "packages/ui/src/data/delta.test.ts"
       ],
       "attempts": 1,
-      "baseCommit": "bb6dfb9e38df97bb5aacf6c60642494b862f4d45",
-      "startedAt": "2026-10-22T16:50:59.261Z",
-      "doneAt": "2026-10-22T16:58:12.591Z",
-      "summary": "DeltaEntryView pasa de 'diff' a 'text', 'before' (solo con palabras quitadas), 'chips' (criterios y archivos de una tarea, con su cambio y si son posible alcance nuevo) y 'details' (impacto, verificación, tipo, notas). delta.ts compara los campos de cada ítem en vez del texto de la spec, separa la puntuación y agrupa cada tramo cambiado (lo quitado antes que lo añadido) para que una frase cambiada no se fragmente. En el ejemplo, A2 cambia una frase y A3 gana un impacto. S1: la vista del delta usa el texto final (adaptación mínima; el rediseño es T2)."
+      "baseCommit": "079f36e2d9efd166f52e907e589a28721fe1f887",
+      "startedAt": "2026-10-22T16:58:12.845Z",
+      "doneAt": "2026-10-22T17:07:14.396Z",
+      "summary": "Vista del delta: filtros Todo/Añadidos/Modificados/Eliminados con su número, leyenda, marca de cambio a la derecha (con hueco reservado para que se alineen), texto final con lo añadido en fondo tenue y subrayado fino, línea «Antes» (sp-before-line, también en sp-assumption-row) solo con palabras quitadas, eliminados atenuados y tachados, tareas con chips (añadido, quitado, posible alcance nuevo en ámbar con icono) y detalles aparte. S2: el diff pasa a data/word-diff.ts; los espacios ya no puntúan, así una frase cambiada no marca como nuevo lo que ya estaba. docs/ui.md actualizado. Comprobado en el navegador en claro y oscuro."
     }
   },
   "pending": {
@@ -59,6 +72,6 @@
     "AC": 4,
     "T": 2,
     "R": 1,
-    "S": 1
+    "S": 2
   }
 }

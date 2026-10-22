@@ -109,9 +109,11 @@ describe("ReviewDelta", () => {
     expect(parts("del")).toEqual([]);
     expect(parts("ins")).toEqual(["[añadido: y la familia recibe un aviso]"]);
     expect(text(item("AC2")?.querySelector("sp-word-diff"))).toMatch(/^CUANDO el tutor acepta/);
-    expect(text(item("R1")?.querySelector("sp-word-diff"))).toBe(
-      "Las fotos del móvil pesan demasiado. Mitigación: reducirlas antes de enviarlas (AC3).",
-    );
+    // Nothing was removed from AC2: no «Antes».
+    expect(item("AC2")?.querySelector("[data-before]")).toBeNull();
+    // Added text is a soft tint with a fine underline, in the text's own color.
+    expect(item("AC2")?.querySelector("ins")?.className).toContain("bg-phase-done-bg/70");
+    expect(item("AC2")?.querySelector("ins")?.className).not.toContain("text-phase-done");
     const goal = element.querySelector("[data-delta-section=goal] sp-word-diff");
     // The goal only gained words: nothing struck out.
     expect(goal?.querySelector("del")).toBeNull();
@@ -119,6 +121,86 @@ describe("ReviewDelta", () => {
       "[añadido: o un PDF ]",
       "[añadido: recibe un aviso cuando ]",
     ]);
+  });
+
+  it("shows what a modified text said before, only when words were removed (AC1)", async () => {
+    const { item } = await render();
+    const before = item("A2")?.querySelector("[data-before]");
+    expect(text(before)).toMatch(/^Antes: /);
+    expect(text(before?.querySelector("del"))).toContain("no hace falta");
+    expect(text(before)).toContain("el original en papel");
+    // The final text reads clean: what is new is marked, nothing struck out in it.
+    const final = item("A2")?.querySelector("sp-word-diff:not([data-before] sp-word-diff)");
+    expect(final?.querySelector("del")).toBeNull();
+    // Only what is new is marked: "del justificante;" was already there.
+    expect([...(final?.querySelectorAll("ins") ?? [])].map((part) => text(part))).toEqual([
+      "[añadido: o un PDF ]",
+      "[añadido: ya no se pide]",
+    ]);
+  });
+
+  it("reads added items as plain text and removed ones muted and struck out (AC2)", async () => {
+    const { item } = await render();
+    expect(item("AC4")?.querySelector("ins, del")).toBeNull();
+    expect(text(item("AC4")?.querySelector("sp-word-diff"))).toBe(
+      "CUANDO el tutor rechaza el justificante ENTONCES la familia recibe un aviso con el motivo.",
+    );
+    const removed = item("R1")?.querySelector("[data-removed]");
+    expect(text(removed)).toBe(
+      "Eliminado: Las fotos del móvil pesan demasiado. Mitigación: reducirlas antes de enviarlas (AC3).",
+    );
+    expect(removed?.className).toContain("line-through");
+    expect(removed?.className).toContain("text-text-muted");
+  });
+
+  it("shows tasks with their criteria and files as chips, and changes without text apart (AC3)", async () => {
+    const { item } = await render();
+    const chips = (key: string) =>
+      [...(item(key)?.querySelectorAll<HTMLElement>("[data-chips] > span") ?? [])].map(
+        (chip) => `${text(chip)} (${chip.dataset.chip})`,
+      );
+    expect(text(item("T4")?.querySelector("sp-word-diff"))).toBe(
+      "Avisar a la familia cuando el tutor decide",
+    );
+    expect(chips("T4")).toEqual([
+      "AC2 (same)",
+      "AC4 (same)",
+      "posible alcance nuevo: lib/notifications/absence_notice.dart (scope)",
+    ]);
+    expect(item("T4")?.querySelector("[data-chip=scope] svg")).not.toBeNull();
+    expect(chips("T3")).toEqual([
+      "AC1 (same)",
+      "lib/absences/justify_screen.dart (same)",
+      "test/absences/justify_screen_test.dart (same)",
+    ]);
+    // A3 only gained an impact: it says so apart.
+    expect(text(item("A3")?.querySelector("[data-detail]"))).toBe(
+      "Impacto: bajo (antes: sin indicar)",
+    );
+  });
+
+  it("filters by change, with the count of each, and explains how to read it (AC4)", async () => {
+    const { element, fixture } = await render();
+    const filters = () => [...element.querySelectorAll<HTMLButtonElement>("[data-filters] button")];
+    expect(filters().map(text)).toEqual(["Todo 10", "Añadidos 5", "Modificados 4", "Eliminados 1"]);
+    expect(filters()[0]?.getAttribute("aria-pressed")).toBe("true");
+    const shown = () =>
+      [...element.querySelectorAll<HTMLElement>("[data-delta-section]")].map(
+        (section) => section.dataset.deltaSection,
+      );
+    filters()[3]?.click();
+    await fixture.whenStable();
+    expect(shown()).toEqual(["risks"]);
+    expect(filters()[3]?.getAttribute("aria-pressed")).toBe("true");
+    filters()[2]?.click();
+    await fixture.whenStable();
+    expect(shown()).toEqual(["goal", "assumptions", "criteria"]);
+    filters()[0]?.click();
+    await fixture.whenStable();
+    expect(shown()).toHaveLength(6);
+    expect(text(element.querySelector("[data-legend]"))).toBe(
+      "Lo nuevo va resaltado; lo quitado aparece en «Antes».",
+    );
   });
 
   it("keeps its screen-reader text inside a positioned box, so the page itself never scrolls (AC2)", async () => {

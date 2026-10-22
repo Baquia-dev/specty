@@ -54,7 +54,7 @@ El delta ("Qué cambió desde que aprobaste") se lee sin esfuerzo, como en la ma
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/delta.ts, packages/ui/src/data/delta.test.ts, packages/ui/src/data/sample-revisions.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T2: Vista del delta más clara, con filtros
+- [x] T2: Vista del delta más clara, con filtros
   - files: packages/ui/src/review/spec-sections.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/delta-review.ts, packages/ui/src/review/delta-review.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check

@@ -12,17 +12,8 @@ import {
   type Task,
   validateSpec,
 } from "@baquia-dev/specty-core";
-import type {
-  Bilingual,
-  DeltaChipView,
-  DeltaEntryView,
-  DeltaView,
-  DiffPart,
-  ReviewSection,
-} from "./records";
-
-/** Past this many tokens per side, a modified text shows whole, removed and then added. */
-const MAX_TOKENS = 600;
+import type { Bilingual, DeltaChipView, DeltaEntryView, DeltaView, ReviewSection } from "./records";
+import { textAndBefore } from "./word-diff";
 
 const SECTION_BY_KIND: Readonly<Partial<Record<DeltaEntry["kind"], ReviewSection>>> = {
   assumption: "assumptions",
@@ -54,117 +45,6 @@ const IMPACT: Readonly<Record<Impact | "none", Bilingual>> = {
   low: { es: "bajo", en: "low" },
   none: { es: "sin indicar", en: "not set" },
 };
-
-/** Words, spaces and punctuation, each its own token: "justificada." keeps "justificada". */
-function tokens(text: string): string[] {
-  return text.split(/(\s+|[.,;:!?¿¡()«»"“”])/).filter((token) => token.length > 0);
-}
-
-/** Joins neighbouring parts with the same change. */
-function merge(parts: readonly DiffPart[]): DiffPart[] {
-  const merged: DiffPart[] = [];
-  for (const part of parts) {
-    const last = merged.at(-1);
-    if (last !== undefined && last.change === part.change) {
-      merged[merged.length - 1] = { ...last, text: last.text + part.text };
-    } else if (part.text.length > 0) {
-      merged.push(part);
-    }
-  }
-  return merged;
-}
-
-/** A word diff: the longest common subsequence of words, spaces and punctuation. */
-export function wordDiff(before: string, after: string): readonly DiffPart[] {
-  const a = tokens(before);
-  const b = tokens(after);
-  if (a.length > MAX_TOKENS || b.length > MAX_TOKENS) {
-    return merge([
-      { text: before, change: "removed" },
-      { text: after, change: "added" },
-    ]);
-  }
-  const width = b.length + 1;
-  // common[i * width + j]: length of the common subsequence of a[i..] and b[j..].
-  const common = new Uint32Array((a.length + 1) * width);
-  const at = (i: number, j: number) => common[i * width + j] ?? 0;
-  for (let i = a.length - 1; i >= 0; i--) {
-    for (let j = b.length - 1; j >= 0; j--) {
-      common[i * width + j] =
-        a[i] === b[j] ? at(i + 1, j + 1) + 1 : Math.max(at(i + 1, j), at(i, j + 1));
-    }
-  }
-  const parts: DiffPart[] = [];
-  let i = 0;
-  let j = 0;
-  while (i < a.length && j < b.length) {
-    if (a[i] === b[j]) {
-      parts.push({ text: a[i] ?? "" });
-      i++;
-      j++;
-    } else if (at(i + 1, j) >= at(i, j + 1)) {
-      parts.push({ text: a[i++] ?? "", change: "removed" });
-    } else {
-      parts.push({ text: b[j++] ?? "", change: "added" });
-    }
-  }
-  for (; i < a.length; i++) parts.push({ text: a[i] ?? "", change: "removed" });
-  for (; j < b.length; j++) parts.push({ text: b[j] ?? "", change: "added" });
-  return merge(tidy(parts));
-}
-
-/**
- * Keeps a changed phrase in one piece: a lone space between two changes belongs to them, and
- * within each run of changes what was removed comes before what was added. Without this,
- * "foto o un PDF" against "foto; no…" splits into "o", "un" and "PDF".
- */
-function tidy(parts: readonly DiffPart[]): DiffPart[] {
-  const changed = (part: DiffPart | undefined) => part?.change !== undefined;
-  const spread = parts.flatMap((part, index): DiffPart[] =>
-    part.change === undefined &&
-    /^\s+$/.test(part.text) &&
-    changed(parts[index - 1]) &&
-    changed(parts[index + 1])
-      ? [
-          { text: part.text, change: "removed" },
-          { text: part.text, change: "added" },
-        ]
-      : [part],
-  );
-  const result: DiffPart[] = [];
-  let run: DiffPart[] = [];
-  const flush = () => {
-    result.push(
-      ...run.filter((part) => part.change === "removed"),
-      ...run.filter((part) => part.change === "added"),
-    );
-    run = [];
-  };
-  for (const part of spread) {
-    if (part.change === undefined) {
-      flush();
-      result.push(part);
-    } else {
-      run.push(part);
-    }
-  }
-  flush();
-  return result;
-}
-
-/**
- * A modified text as the person reads it: the final text with the added words marked and, only
- * when words were removed, the approved text with those marked.
- */
-export function textAndBefore(
-  old: string,
-  now: string,
-): { readonly text: readonly DiffPart[]; readonly before?: readonly DiffPart[] } {
-  const parts = wordDiff(old, now);
-  const text = merge(parts.filter((part) => part.change !== "removed"));
-  if (!parts.some((part) => part.change === "removed")) return { text };
-  return { text, before: merge(parts.filter((part) => part.change !== "added")) };
-}
 
 /** A unit's text as the person reads it: without the list marker, the checkbox or the id. */
 export function readable(text: string): string {

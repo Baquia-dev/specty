@@ -47,16 +47,30 @@ export const REVEAL = "opacity-0 group-focus-within:opacity-100 group-hover:opac
 export const LIST = "m-0 flex list-none flex-col gap-0.5 p-0 pl-6";
 
 /**
- * A word diff: added words highlighted, removed ones struck out. Color and line are not enough
- * for a screen reader, so each part also says what happened to it.
+ * A word diff: added words on a faint tint with a fine underline, removed ones struck out, both in
+ * the text's own color so the sentence still reads as one. Color and line are not enough for a
+ * screen reader, so each part also says what happened to it.
  */
 @Component({
   selector: "sp-word-diff",
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "whitespace-pre-wrap" },
-  template: `@for (part of parts(); track $index) {@if (part.change === 'added') {<ins class="rounded-sm bg-phase-done-bg text-phase-done no-underline"><span class="sr-only">{{ t()('[añadido: ', '[added: ') }}</span>{{ part.text }}<span class="sr-only">]</span></ins>} @else if (part.change === 'removed') {<del class="rounded-sm bg-phase-cancelled-bg text-phase-cancelled line-through"><span class="sr-only">{{ t()('[eliminado: ', '[removed: ') }}</span>{{ part.text }}<span class="sr-only">]</span></del>} @else {<span>{{ part.text }}</span>}}`,
+  template: `@for (part of parts(); track $index) {@if (part.change === 'added') {<ins class="rounded-sm bg-phase-done-bg/70 no-underline shadow-[inset_0_-1px_0_var(--color-phase-done)]"><span class="sr-only">{{ t()('[añadido: ', '[added: ') }}</span>{{ part.text }}<span class="sr-only">]</span></ins>} @else if (part.change === 'removed') {<del class="rounded-sm bg-phase-cancelled-bg/70 line-through decoration-phase-cancelled"><span class="sr-only">{{ t()('[eliminado: ', '[removed: ') }}</span>{{ part.text }}<span class="sr-only">]</span></del>} @else {<span>{{ part.text }}</span>}}`,
 })
 export class WordDiff {
+  readonly parts = input.required<readonly DiffPart[]>();
+  protected readonly t = inject(Preferences).t;
+}
+
+/** What a modified text said before, muted, with the removed words struck out. */
+@Component({
+  selector: "sp-before-line",
+  imports: [WordDiff],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: "flex gap-2.5 text-[13px] text-text-muted", "data-before": "" },
+  template: `<span class="shrink-0 pt-px text-[10px] tracking-widest uppercase">{{ t()('Antes', 'Before') }}<span class="sr-only">:&ngsp;</span></span><sp-word-diff [parts]="parts()" />`,
+})
+export class BeforeLine {
   readonly parts = input.required<readonly DiffPart[]>();
   protected readonly t = inject(Preferences).t;
 }

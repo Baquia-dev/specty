@@ -57,7 +57,11 @@ Se lee como un documento bien maquetado, no como un tablero de tarjetas.
 
 ### Revisión del delta
 
-Muestra "Qué cambió desde que aprobaste": ítems añadidos, modificados y eliminados, con diff por palabras. Las tareas nuevas que tocan archivos no previstos llevan la marca "posible alcance nuevo". "Ver spec completa" queda como acción secundaria.
+Muestra "Qué cambió desde que aprobaste": ítems añadidos, modificados y eliminados, agrupados por sección, con filtros (Todo, Añadidos, Modificados, Eliminados) y su número. "Ver spec completa" queda como acción secundaria.
+
+- **Modificado**: el texto final, limpio, con lo nuevo resaltado con suavidad (fondo tenue y subrayado fino). Solo si se quitaron palabras, una línea «Antes» atenuada con lo quitado tachado. La puntuación se compara aparte, y cada tramo cambiado se muestra entero, no en trocitos.
+- **Añadido**: texto normal con su marca. **Eliminado**: atenuado y tachado.
+- **Tareas**: título y chips de criterios y archivos, como en la revisión; los chips añadidos o quitados se distinguen, y el archivo que es "posible alcance nuevo" va en ámbar con icono y su aviso. Lo que cambia sin texto propio (impacto de un supuesto, verificación o tipo de una tarea) se cuenta en una línea aparte.
 
 ### Progreso
 
