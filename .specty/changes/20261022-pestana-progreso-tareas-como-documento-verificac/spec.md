@@ -68,7 +68,7 @@ La pestaña Progreso del cambio muestra hoy un texto provisional. Pasa a ser la 
 
 ## Tareas
 
-- [ ] T1: El progreso de las tareas
+- [x] T1: El progreso de las tareas
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts, packages/ui/src/data/views.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts --include src/data/views.test.ts

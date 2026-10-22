@@ -6,6 +6,13 @@
   "branch": "specty/20261022-pestana-progreso-tareas-como-documento-verificac",
   "baseCommit": "2505cc5d59c2bb62f9c432a6d454c4118a5efeef",
   "revision": 3,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:ae6cc657d0fa0977631326cd4e45401bfa046634040fca8b0dda1d025522bb26",
+    "at": "2026-10-22T22:51:57.173Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bcdc2b0295de983b9db37d0106351b0c72b05b66",
+      "startedAt": "2026-10-22T22:52:11.540Z",
+      "doneAt": "2026-10-22T22:54:21.976Z",
+      "summary": "data/progress.ts (puro, solo tipos de core): AuditRecord, progressOf(spec, state, audit) une las tareas de la spec en su orden con su estado (resumen, commit, intentos, inicio y fin), su última verificación (task.verified leído con guardas; solo la fallida trae outputTail) y sus solicitudes de alcance pendientes; taskElapsed, workTime y formatDuration («18 s», «14 min», «1 h 5 min»). records.ts: ChangeRecord.audit, ChangeView.progress y SpectyData.decideScope (solo lectura por defecto). views.ts: el progreso en la vista. Tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "A": 5,
     "AC": 5,
     "T": 4
-  },
-  "approved": {
-    "revision": 3,
-    "hash": "sha256:ae6cc657d0fa0977631326cd4e45401bfa046634040fca8b0dda1d025522bb26",
-    "at": "2026-10-22T22:51:57.173Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

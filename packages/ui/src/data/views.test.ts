@@ -80,6 +80,7 @@ describe("deriveView", () => {
     expect(view.size?.reasons[0]).toEqual({ es: "1 archivo", en: "1 file" });
     expect(view.effort).toEqual({ plan: expect.any(String), implement: expect.any(String) });
     expect(view.tasks).toEqual({ done: 0, total: 1 });
+    expect(view.progress.tasks.map((task) => [task.id, task.status])).toEqual([["T1", "pending"]]);
     expect(view.problems).toEqual([]);
     expect(view.tab).toBe("spec");
   });

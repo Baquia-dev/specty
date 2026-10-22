@@ -13,6 +13,7 @@ import {
   type Spec,
 } from "@baquia-dev/specty-core";
 import { deriveDelta } from "./delta";
+import { progressOf } from "./progress";
 import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind, ReviewView } from "./records";
 import { deriveReview } from "./review";
 
@@ -108,6 +109,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
       ...deriveReview(spec, state, record.comments ?? []),
       ...deltaOf(record, state, spec),
     },
+    progress: progressOf(spec, state, record.audit ?? []),
   };
 }
 

@@ -9,6 +9,7 @@ import type {
   Phase,
   SizeLevel,
 } from "@baquia-dev/specty-core";
+import type { AuditRecord, ProgressView } from "./progress";
 
 /** What a data source gives for each change: the files as they are, and when its phase began. */
 export interface ChangeRecord {
@@ -20,6 +21,8 @@ export interface ChangeRecord {
   readonly comments?: readonly CommentRecord[];
   /** `revisions/r<N>.md` for N = `state.approved.revision`: only when the change was approved. */
   readonly approvedSpec?: string;
+  /** `audit.jsonl` (formats.md §4), oldest first; none when absent. */
+  readonly audit?: readonly AuditRecord[];
 }
 
 /** Where a comment points: an item (`A1`) or a quote inside a section. */
@@ -81,6 +84,16 @@ export abstract class SpectyData {
 
   /** Approves exactly `revision`: if the spec changed meanwhile, the source refuses. */
   approve(_change: string, _revision: number): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** Approves or rejects a scope request; a rejection carries the reason the agent reads. */
+  decideScope(
+    _change: string,
+    _request: string,
+    _decision: "approved" | "rejected",
+    _reason?: string,
+  ): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 }
@@ -236,6 +249,8 @@ export interface ChangeView {
   /** Why the record could not be read in full (invalid state or spec errors). */
   readonly problems: readonly string[];
   readonly review: ReviewView;
+  /** The tasks in the spec's order, with their state and last verification. */
+  readonly progress: ProgressView;
 }
 
 /** Messages to and from the derivation worker. */
