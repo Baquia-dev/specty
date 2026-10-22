@@ -6,6 +6,13 @@
   "branch": "specty/20261022-salida-en-vivo-de-la-verificacion-en-curso",
   "baseCommit": "ec15e53489ed118a7c246b86ce4381dbf8c4f5a8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4c001b3a94df78faf5835e0604dd4476c0e480b81632421e556ab25469a94dae",
+    "at": "2026-10-22T23:17:43.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "363130e90658c58184281447f8c7bb1e3f2a1607",
+      "startedAt": "2026-10-22T23:17:51.328Z",
+      "doneAt": "2026-10-22T23:18:28.068Z",
+      "summary": "data/progress.ts: RunRecord (tarea, comando, inicio y líneas hasta ahora), aparte de las vistas derivadas porque cambia con cada línea, y formatClock («0:42», «12:05», «1:05:30»). records.ts: SpectyData.watchRun(change, listener), que por defecto responde que no corre ninguna. Tests del reloj."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "A": 5,
     "AC": 5,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4c001b3a94df78faf5835e0604dd4476c0e480b81632421e556ab25469a94dae",
-    "at": "2026-10-22T23:17:43.634Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

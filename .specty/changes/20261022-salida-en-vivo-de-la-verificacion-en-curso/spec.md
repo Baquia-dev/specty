@@ -58,7 +58,7 @@ Mientras Specty verifica una tarea (al ejecutar `specty task done`, que puede ta
 
 ## Tareas
 
-- [ ] T1: El canal de la verificación en curso
+- [x] T1: El canal de la verificación en curso
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts, packages/ui/src/data/records.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts

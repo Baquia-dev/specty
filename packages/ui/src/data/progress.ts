@@ -24,6 +24,18 @@ export interface VerificationView {
   readonly output: readonly string[];
 }
 
+/**
+ * A verification running now (`specty task done` checking a task), as the source streams it:
+ * apart from the derived views, since it changes with every line.
+ */
+export interface RunRecord {
+  readonly task: string;
+  readonly command: string;
+  readonly startedAt: string;
+  /** Every line so far, oldest first. */
+  readonly output: readonly string[];
+}
+
 /** A scope request still waiting for the person. */
 export interface TaskScopeRequest {
   readonly id: string;
@@ -161,6 +173,17 @@ export function outputSegments(line: string): readonly OutputSegment[] {
   }
   if (at < line.length) segments.push({ text: line.slice(at), tone: "plain" });
   return segments;
+}
+
+/** «0:42», «12:05», «1:05:30»: how long something has been running, second by second. */
+export function formatClock(ms: number): string {
+  const total = Math.max(0, Math.floor(ms / 1_000));
+  const hours = Math.floor(total / 3_600);
+  const minutes = Math.floor((total % 3_600) / 60);
+  const seconds = String(total % 60).padStart(2, "0");
+  return hours > 0
+    ? `${hours}:${String(minutes).padStart(2, "0")}:${seconds}`
+    : `${minutes}:${seconds}`;
 }
 
 /** «18 s» for a verification, «14 min» or «1 h 5 min» for a task. */

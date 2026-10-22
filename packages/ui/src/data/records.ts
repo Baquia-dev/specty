@@ -9,7 +9,7 @@ import type {
   Phase,
   SizeLevel,
 } from "@baquia-dev/specty-core";
-import type { AuditRecord, ProgressView } from "./progress";
+import type { AuditRecord, ProgressView, RunRecord } from "./progress";
 
 /** What a data source gives for each change: the files as they are, and when its phase began. */
 export interface ChangeRecord {
@@ -85,6 +85,15 @@ export abstract class SpectyData {
   /** Approves exactly `revision`: if the spec changed meanwhile, the source refuses. */
   approve(_change: string, _revision: number): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /**
+   * Follows the verification running in `change`: the listener gets it at once and with each new
+   * line, and `undefined` when none runs. A source without live runs simply never has one.
+   */
+  watchRun(_change: string, listener: (run: RunRecord | undefined) => void): () => void {
+    listener(undefined);
+    return () => undefined;
   }
 
   /** Approves or rejects a scope request; a rejection carries the reason the agent reads. */

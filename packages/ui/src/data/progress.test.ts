@@ -2,6 +2,7 @@
 import { type ChangeState, parseSpec } from "@baquia-dev/specty-core";
 import {
   type AuditRecord,
+  formatClock,
   formatDuration,
   outputSegments,
   progressOf,
@@ -215,6 +216,14 @@ describe("durations", () => {
     expect(second && taskElapsed(second, now)).toBe(12 * 60_000);
     expect(third && taskElapsed(third, now)).toBeUndefined();
     expect(workTime(progressOf(SPEC, STATE, []), now)).toBe(26 * 60_000);
+  });
+
+  it("counts a running verification like a clock (AC1)", () => {
+    expect(formatClock(0)).toBe("0:00");
+    expect(formatClock(42_400)).toBe("0:42");
+    expect(formatClock(12 * 60_000 + 5_000)).toBe("12:05");
+    expect(formatClock(3_930_000)).toBe("1:05:30");
+    expect(formatClock(-5)).toBe("0:00");
   });
 
   it("reads like a person would say it, in both languages", () => {
