@@ -6,6 +6,13 @@
   "branch": "specty/20261022-sistema-de-diseno-select-propio-en-el-catalogo-y",
   "baseCommit": "6b6229c95db643847538b223ea9e66ed0d004956",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7e4013e0c7798bc85a4e2dfeb153fdea4c61d5effff0bb3e68f2e26b10328218",
+    "at": "2026-10-22T21:31:19.669Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8dde85d2db1e703ffa8c8d07cc5e5c94c28ec289",
+      "startedAt": "2026-10-22T21:33:30.467Z",
+      "doneAt": "2026-10-22T21:35:03.529Z",
+      "summary": "sp-select sobre Angular Aria: disparador con ngCombobox no editable (role combobox, aria-haspopup listbox, nombre por aria-labelledby a su etiqueta visible o aria-label con hideLabel) y lista ngListbox en un ngComboboxPopup dentro de una superposición del CDK con las posiciones de los menús, al menos tan ancha como el disparador. focusMode activedescendant para que el foco quede en el disparador y se anuncie la opción activa. Enter, Espacio, ↓ y Alt+↓ abren; flechas, Inicio/Fin y escribir mueven; Enter o clic eligen y cierran; Escape cierra sin cambiar. mousedown en la lista evita que el clic se pierda al cerrar por foco. Estilo de los menús, marca en la elegida y chevrón que gira. 6 tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7e4013e0c7798bc85a4e2dfeb153fdea4c61d5effff0bb3e68f2e26b10328218",
-    "at": "2026-10-22T21:31:19.669Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

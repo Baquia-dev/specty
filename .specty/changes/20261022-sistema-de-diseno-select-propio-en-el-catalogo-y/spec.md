@@ -48,7 +48,7 @@ La Bandeja ordena con un `<select>` nativo, cuyo desplegable dibuja el sistema y
 
 ## Tareas
 
-- [ ] T1: El select propio
+- [x] T1: El select propio
   - files: packages/ui/src/components/select.ts, packages/ui/src/components/select.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/select.test.ts
