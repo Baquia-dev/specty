@@ -2,25 +2,25 @@
   "schema": 1,
   "id": "20261022-prototipo-revision-de-spec",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261022-prototipo-revision-de-spec",
   "baseCommit": "f081fac8a754d519823cbd159ad81cc5af891bbb",
-  "revision": 2,
+  "revision": 3,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:ca12568fde559e4a48a543f045f281a47cd2782b50dd68cc49f949a338bb8545",
-    "at": "2026-10-22T07:07:33.765Z",
+    "revision": 3,
+    "hash": "sha256:cc6534b8dd029c24548974a825d8088d80ff3371a0a1ecd731539ab611bdb156",
+    "at": "2026-10-22T07:14:07.365Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
     "level": "L",
-    "score": 17,
+    "score": 18,
     "adjust": 0,
     "reasons": [
       "12 archivos",
       "cambia dependencias",
-      "6 tareas"
+      "7 tareas"
     ]
   },
   "items": {
@@ -100,12 +100,12 @@
     },
     "T6": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5f75068cfdbcc206a35160f709ea0b486311b26b",
+      "attempts": 1,
       "startedAt": "2026-10-22T07:07:42.333Z",
       "doneAt": "2026-10-22T07:08:27.093Z",
-      "summary": "<base href=\"/\"> en index.html: al recargar /changes/<id>?tab=spec, styles.css y main.js se piden desde la raíz. Comprobado con ng serve en esa ruta: la página lleva el base href, styles.css responde 200 text/css y main.js 200 text/javascript"
+      "summary": "<base href=\"/\"> en index.html: al recargar /changes/<id>?tab=spec, styles.css y main.js se piden desde la raíz. Comprobado con ng serve en esa ruta: la página lleva el base href, styles.css responde 200 text/css y main.js 200 text/javascript",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -115,7 +115,7 @@
   "maxIds": {
     "A": 5,
     "AC": 9,
-    "T": 6,
+    "T": 7,
     "R": 3,
     "S": 1
   }

@@ -29,7 +29,7 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
 
 ## Criterios de aceptación
 
-- AC1: CUANDO se abre la pestaña Spec de un cambio ENTONCES la revisión muestra, en este orden, Objetivo y Fuera de alcance, Supuestos, Criterios, Archivos, Tareas, Riesgos y Diseño (plegado), y un índice de secciones lleva a cada una y marca las que tienen pendientes, comentarios o avisos.
+- AC1: CUANDO se abre la pestaña Spec de un cambio ENTONCES la revisión muestra, en este orden, Objetivo y Fuera de alcance, Supuestos, Criterios, Archivos, Tareas, Riesgos y Diseño (plegado), y un índice de secciones lleva a cada una con un desplazamiento animado (inmediato con movimiento reducido), marca la sección que se está leyendo y las que tienen pendientes, comentarios o avisos; cada sección es una tarjeta con icono, título, una línea que dice qué se espera de quien revisa y su progreso (por ejemplo, "1 de 2 supuestos de alto impacto decididos"), y las decisiones se distinguen por color, icono y texto; la cabecera del cambio (título, fase, revisión y qué espera de la persona) sigue visible al desplazarse; y el final de cada página deja un margen inferior para que el contenido no quede pegado al borde de la ventana.
 - AC2: CUANDO la spec está en revisión ENTONCES cada supuesto se muestra como tarjeta con su impacto y su decisión, con Confirmar y Rechazar; rechazar exige escribir el motivo, que queda junto al supuesto, y la decisión se guarda en la fuente y se ve al momento.
 - AC3: CUANDO un criterio es vago o no sigue la forma CUANDO … ENTONCES ENTONCES el aviso aparece en línea, con icono y texto, en el idioma elegido.
 - AC4: CUANDO se ven los archivos y las tareas ENTONCES los archivos aparecen agrupados por módulo, con insignias de crear, modificar, borrar o renombrar y la marca de ruta sensible (con icono y texto); y cada tarea muestra su estado y chips con sus criterios y sus archivos.
@@ -108,6 +108,11 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
   - verify: pnpm check
   - type: fix
   - notes: Defecto pedido en aceptación. Sin `<base href="/">`, al recargar en `/changes/<id>` el navegador pide `styles.css` y `main.js` bajo `/changes/`, recibe el HTML de la app y se niega a aplicarlo. Comprobar recargando con `ng serve` una ruta profunda (página, estilos y script con 200 y su tipo MIME).
+- [ ] T7: Revisión más clara: secciones en tarjetas, índice animado y cabecera fija
+  - files: packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/change/change-page.ts
+  - ac: AC1
+  - verify: pnpm check
+  - notes: Ajuste pedido en aceptación. Cada sección pasa a ser una tarjeta (superficie, borde y radio xl) con icono, título, una línea de qué hacer y su progreso. Las decisiones de los supuestos usan el color de fase de terminado, revisión o cancelado, siempre con icono y texto. El índice usa scrollIntoView con behavior smooth, o auto con prefers-reduced-motion, y marca con aria-current la sección visible (IntersectionObserver). La cabecera del cambio queda sticky arriba del contenedor con scroll, y el índice se pega debajo de ella. La página del cambio termina con padding inferior; la Bandeja y el catálogo ya lo tienen.
 
 ## Riesgos
 
