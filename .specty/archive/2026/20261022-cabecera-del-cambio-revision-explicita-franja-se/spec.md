@@ -68,3 +68,28 @@ La cabecera del cambio dice «r3» sin explicar si esa revisión está aprobada 
   - files: packages/ui/src/change/change-bar.ts, packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts, packages/ui/src/change/change-page.test.ts, docs/ui.md
   - ac: AC5
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+La cabecera del cambio nombra la revisión con su número y su estado («Revisión 3 · por aprobar») y dice cuál está aprobada, cuándo y quién la aprobó. La franja de datos se ajusta a su contenido y la rama se ve completa, partida si hace falta. El esfuerzo recomendado sale de la franja y pasa a ser una sugerencia para el agente junto a las acciones. La barra compacta y el botón de aprobar usan la misma forma («Revisión 3 · por aprobar», «Aprobar revisión 3»).
+
+### Desviaciones
+
+- `review/spec-review.test.ts` también esperaba «Aprobar r2». Se actualizó en T3 como test junto a `review-actions.ts`, sin ampliar el alcance.
+- En escritorio la sugerencia iba alineada a la derecha y la bombilla quedaba separada del texto. Ahora el bloque sigue a la derecha, pero el texto se alinea a la izquierda junto al icono.
+- El guard volvió a bloquear un script en heredoc por leer `=>` como una redirección (pendiente ya anotado). El script se escribió en un archivo aparte.
+
+### Decisiones
+
+- El nombre y el estado de la revisión salen de un módulo puro (`data/revision.ts`) que la Bandeja, el delta y los comentarios pueden usar en el cambio siguiente. El estado depende de la fase, porque un cambio solo vuelve a borrador antes de su primera propuesta: «Pedir cambios» lo deja en revisión.
+- La línea de la revisión aprobada dice quién la aprobó, porque en un equipo no siempre es quien mira. La fecha es corta y lleva el año solo si no es el actual.
+- Desde `lg`, la franja es una fila flexible en la que solo la rama encoge. Por debajo es una rejilla en la que la rama va al final, a todo el ancho, para no dejar huecos.
+- La franja pasó a `change/change-facts.ts`, de modo que la página bajó de 284 a 257 líneas.
+
+### Pendientes
+
+- La Bandeja («r3 frente a r2»), el delta («Qué cambió desde que aprobaste r2»), la revisión completa y los comentarios siguen con «rN»: cambio siguiente.
+- El select propio de la Bandeja, en el catálogo y en el estilo de la UI.
+- El origen de cada revisión (tras tus comentarios, ajuste, cierre) necesita el historial de `audit.jsonl` y va con la pestaña Historial.

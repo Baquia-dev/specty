@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-cabecera-del-cambio-revision-explicita-franja-se",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-cabecera-del-cambio-revision-explicita-franja-se",
   "baseCommit": "7386d38b22779117d0dfd4d10c49b13f60b6c923",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:eab325a0b3bc41c05be374615ccbdb7a4b62be8bb2a53ddcec6081ac1470e2af",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3a51caecd922ecbd25810c0a947d3c6466c75edc",
+      "attempts": 1,
       "startedAt": "2026-10-22T20:29:50.966Z",
       "doneAt": "2026-10-22T20:32:06.400Z",
-      "summary": "Barra compacta: «Revisión 3 · por aprobar» con el estado oculto en el teléfono («Revisión 3»), y «Sin proponer» para un borrador. Botón «Aprobar revisión 3» en la cabecera y en la barra. Tests de la barra, de las acciones y de la revisión; docs/ui.md."
+      "summary": "Barra compacta: «Revisión 3 · por aprobar» con el estado oculto en el teléfono («Revisión 3»), y «Sin proponer» para un borrador. Botón «Aprobar revisión 3» en la cabecera y en la barra. Tests de la barra, de las acciones y de la revisión; docs/ui.md.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,5 +73,6 @@
     "A": 3,
     "AC": 5,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T20:39:50.327Z"
 }
