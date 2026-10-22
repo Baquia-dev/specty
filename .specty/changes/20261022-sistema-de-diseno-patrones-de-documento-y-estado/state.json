@@ -35,14 +35,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/review/delta-review.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "e61071a031f78d782e2577e33e0795a4f3917e38",
+      "attempts": 1,
       "startedAt": "2026-10-22T17:46:17.585Z",
       "doneAt": "2026-10-22T17:49:42.036Z",
-      "summary": "components/document.ts: PAGE (ancho común), ROW (fila sin líneas con resalte al pasar el puntero o con el foco), REVEAL (acciones de la fila) y LIST (lista con sangría), y sp-section-divider (título en versalitas, línea fina y contador o progreso; nivel h2 o h3). La revisión, la fila del supuesto y spec-sections los usan en lugar de sus copias; S1: el delta importa de ahí. Tests del divisor y de las clases."
+      "summary": "components/document.ts: PAGE (ancho común), ROW (fila sin líneas con resalte al pasar el puntero o con el foco), REVEAL (acciones de la fila) y LIST (lista con sangría), y sp-section-divider (título en versalitas, línea fina y contador o progreso; nivel h2 o h3). La revisión, la fila del supuesto y spec-sections los usan en lugar de sus copias; S1: el delta importa de ahí. Tests del divisor y de las clases.",
+      "scopeExtra": [
+        "packages/ui/src/review/delta-review.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "11dc0057cb649a227605b9de0ef9f02e1f25b0e4",
+      "startedAt": "2026-10-22T17:49:42.296Z",
+      "doneAt": "2026-10-22T17:51:30.883Z",
+      "summary": "components/empty-state.ts: sp-empty-state (role=status, icono decorativo, título h1 o h2 y contenido proyectado para el texto y la acción). La página del cambio usa PAGE para su ancho y el estado vacío para 'No existe ese cambio', con su enlace de vuelta. El delta usa sp-section-divider para sus grupos. Tests del estado vacío."
     }
   },
   "pending": {

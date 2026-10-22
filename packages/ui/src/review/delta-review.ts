@@ -17,7 +17,7 @@ import {
   LucideTriangleAlert,
 } from "@lucide/angular";
 import { Button, IconButton } from "../components/button";
-import { LIST, REVEAL, ROW } from "../components/document";
+import { LIST, REVEAL, ROW, SectionDivider } from "../components/document";
 import type {
   Bilingual,
   ChangeView,
@@ -106,7 +106,16 @@ export class ChangeMark {
 /** "What changed since you approved" (docs/ui.md): the delta first, the full spec on demand. */
 @Component({
   selector: "sp-review-delta",
-  imports: [LucideDynamicIcon, Button, IconButton, AssumptionRow, ChangeMark, WordDiff, BeforeLine],
+  imports: [
+    LucideDynamicIcon,
+    Button,
+    IconButton,
+    AssumptionRow,
+    ChangeMark,
+    WordDiff,
+    BeforeLine,
+    SectionDivider,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Positioned, so the screen-reader text of the diff (absolute) stays inside the scrolling area.
   host: { class: "relative flex flex-col gap-6" },
@@ -138,11 +147,7 @@ export class ChangeMark {
 
     @for (group of groups(); track group.section) {
       <section class="flex flex-col" [attr.data-delta-section]="group.section" [attr.aria-labelledby]="'delta-' + group.section">
-        <div class="flex items-center gap-3 font-mono text-[11px] text-text-muted">
-          <h3 class="m-0 font-sans text-xs font-medium tracking-[0.12em] uppercase" [id]="'delta-' + group.section">{{ labels[group.section][lang()] }}</h3>
-          <span class="h-px flex-1 bg-border" aria-hidden="true"></span>
-          <span>{{ group.entries.length }}</span>
-        </div>
+        <sp-section-divider [heading]="labels[group.section][lang()]" [headingId]="'delta-' + group.section" [meta]="group.entries.length" />
         <div role="list" [class]="list + ' mt-3'">
           @for (entry of group.entries; track entry.key) {
             @if (assumptionOf(entry); as assumption) {

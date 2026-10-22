@@ -49,7 +49,7 @@ Las piezas que hoy dan a la revisión su aire de documento (las filas sin línea
   - files: packages/ui/src/components/document.ts, packages/ui/src/components/document.test.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/spec-review.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T2: Estado vacío y ancho de página
+- [x] T2: Estado vacío y ancho de página
   - files: packages/ui/src/components/empty-state.ts, packages/ui/src/components/empty-state.test.ts, packages/ui/src/review/delta-review.ts, packages/ui/src/change/change-page.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui test

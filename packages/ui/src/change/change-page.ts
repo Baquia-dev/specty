@@ -14,8 +14,15 @@ import {
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import type { EffortLevel } from "@baquia-dev/specty-core";
-import { LucideArrowLeft, LucideDynamicIcon, LucideTriangleAlert } from "@lucide/angular";
+import {
+  LucideArrowLeft,
+  LucideDynamicIcon,
+  LucideFileQuestion,
+  LucideTriangleAlert,
+} from "@lucide/angular";
 import { PhaseBadge } from "../components/badge";
+import { PAGE } from "../components/document";
+import { EmptyState } from "../components/empty-state";
 import { Skeleton } from "../components/skeleton";
 import { TabPanel, Tabs } from "../components/tabs";
 import { ChangesStore } from "../data/changes-store";
@@ -59,6 +66,7 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
     LucideDynamicIcon,
     PhaseBadge,
     Skeleton,
+    EmptyState,
     Tabs,
     TabPanel,
     SpecReview,
@@ -74,7 +82,7 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
           <sp-change-bar #bar [change]="change" [shown]="compact()" [reading]="tab() === 'spec' ? reading() : undefined" />
         </div>
 
-        <header #hero class="mx-auto flex w-full max-w-6xl flex-col px-6 pt-8" data-hero>
+        <header #hero [class]="page + ' flex flex-col pt-8'" data-hero>
           <p class="m-0 flex items-center gap-2 text-sm text-text-muted">
             <a routerLink="/" class="flex items-center gap-1 text-text-muted">
               <svg [lucideIcon]="back" size="14" aria-hidden="true"></svg>{{ t()('Bandeja', 'Inbox') }}
@@ -140,7 +148,7 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
           }
         </header>
 
-        <div class="mx-auto mt-2 w-full max-w-6xl px-6">
+        <div [class]="page + ' mt-2'">
           <sp-tabs [label]="t()('Secciones del cambio', 'Change sections')" [selected]="tab()" (selectedChange)="select($event)">
             <sp-tab-panel value="spec" label="Spec">
               <sp-spec-review [change]="change" [(reading)]="reading" />
@@ -161,16 +169,15 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
           </sp-tabs>
         </div>
       } @else if (store.views.hasValue()) {
-        <section class="mx-auto mt-8 flex w-full max-w-6xl flex-col items-start gap-3 px-6" role="status">
-          <h1 class="m-0 text-lg font-semibold">{{ t()('No existe ese cambio', 'That change does not exist') }}</h1>
+        <sp-empty-state [class]="page" [heading]="t()('No existe ese cambio', 'That change does not exist')" [icon]="missing" [level]="1">
           <p class="m-0 text-sm text-text-muted">
             <code class="font-mono">{{ id() }}</code>
             {{ t()('no está entre los cambios del proyecto.', 'is not among the changes of the project.') }}
           </p>
-          <a routerLink="/">{{ t()('Volver a la Bandeja', 'Back to the Inbox') }}</a>
-        </section>
+          <a routerLink="/" class="font-medium text-text">{{ t()('Volver a la Bandeja', 'Back to the Inbox') }}</a>
+        </sp-empty-state>
       } @else {
-        <div class="mx-auto mt-8 flex w-full max-w-6xl flex-col gap-6 px-6">
+        <div [class]="page + ' mt-8 flex flex-col gap-6'">
           <sp-skeleton height="2rem" width="60%" />
           <sp-skeleton height="12rem" [announce]="false" />
         </div>
@@ -189,6 +196,8 @@ export class ChangePage {
   protected readonly t = this.preferences.t;
   protected readonly back = LucideArrowLeft;
   protected readonly warning = LucideTriangleAlert;
+  protected readonly missing = LucideFileQuestion;
+  protected readonly page = PAGE;
   protected readonly waiting = WAITING;
   protected readonly fact = FACT;
   protected readonly factLabel = FACT_LABEL;
