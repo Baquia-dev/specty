@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-paleta-y-menu-la-opcion-activa-se-anuncia-y-el-m",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-paleta-y-menu-la-opcion-activa-se-anuncia-y-el-m",
   "baseCommit": "fc4b4e897225d4b40448ae27de0b5b565335404a",
   "revision": 3,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e595b0b3ce67b26cfd05805c1cc158db3080f835",
+      "attempts": 1,
       "startedAt": "2026-10-22T22:15:43.719Z",
       "doneAt": "2026-10-22T22:17:29.229Z",
-      "summary": "components/overlay-follow.ts: followOrigin(open, overlay) recoloca una superposición siempre adjunta mientras está abierta: al abrir, cuando cambia el tamaño de su panel (ResizeObserver) y con cada desplazamiento (escucha en captura, así cuenta el main del armazón); deja de escuchar al cerrarse. sp-menu la usa: tras desplazar 100 px aparece junto a su botón (antes 140 px por debajo) y en una ventana baja se abre encima. Tests del helper y del menú; comprobado en el navegador."
+      "summary": "components/overlay-follow.ts: followOrigin(open, overlay) recoloca una superposición siempre adjunta mientras está abierta: al abrir, cuando cambia el tamaño de su panel (ResizeObserver) y con cada desplazamiento (escucha en captura, así cuenta el main del armazón); deja de escuchar al cerrarse. sp-menu la usa: tras desplazar 100 px aparece junto a su botón (antes 140 px por debajo) y en una ventana baja se abre encima. Tests del helper y del menú; comprobado en el navegador.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "40fc5e3cf73db21ad90612beca632c9a66b75f3c",
+      "startedAt": "2026-10-22T22:17:29.517Z",
+      "doneAt": "2026-10-22T22:19:39.456Z",
+      "summary": "El select usa followOrigin en lugar de su lógica propia (misma colocación: al abrir, al cambiar de tamaño y al desplazar). Test que comprueba que se recoloca al abrir y con el desplazamiento. docs/ui.md: la paleta mantiene el foco en el buscador y anuncia la opción activa; menús y select se recolocan junto a su botón. Comprobado en el navegador en el catálogo y en la Bandeja."
     }
   },
   "pending": {

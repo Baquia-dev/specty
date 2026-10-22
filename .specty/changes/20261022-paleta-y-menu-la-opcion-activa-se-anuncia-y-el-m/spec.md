@@ -61,7 +61,7 @@ Este cambio arregla los dos problemas y comparte con el select la forma de coloc
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/overlay-follow.test.ts --include src/components/menu.test.ts
   - notes: Comprobar en el navegador con el menú del catálogo («Superposiciones y teclado») tras desplazar y en una ventana baja.
-- [ ] T3: El select usa la misma colocación
+- [x] T3: El select usa la misma colocación
   - files: packages/ui/src/components/select.ts, packages/ui/src/components/select.test.ts, docs/ui.md
   - ac: AC4
   - verify: pnpm check

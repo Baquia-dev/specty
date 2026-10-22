@@ -2,15 +2,12 @@
 import { Combobox, ComboboxPopup, ComboboxWidget } from "@angular/aria/combobox";
 import { Listbox, Option } from "@angular/aria/listbox";
 import { CdkConnectedOverlay, CdkOverlayOrigin } from "@angular/cdk/overlay";
-import { DOCUMENT } from "@angular/common";
 import {
-  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
   computed,
   ElementRef,
   effect,
-  inject,
   input,
   model,
   signal,
@@ -18,6 +15,7 @@ import {
 } from "@angular/core";
 import { LucideCheck, LucideChevronDown, LucideDynamicIcon } from "@lucide/angular";
 import { MENU_POSITIONS } from "./menu";
+import { followOrigin } from "./overlay-follow";
 
 export interface SelectOption {
   readonly value: string;
@@ -134,26 +132,14 @@ export class Select {
   private readonly overlay = viewChild.required(CdkConnectedOverlay);
 
   constructor() {
-    const document = inject(DOCUMENT);
     effect(() => {
       if (this.expanded()) this.width.set(this.field().nativeElement.offsetWidth);
     });
-    // The overlay stays attached while closed: placed again once the list has its size (Aria
-    // renders it on the first opening, after this runs), it opens above when it does not fit
-    // below, and it follows any scroll while open.
-    afterRenderEffect((onCleanup) => {
-      if (!this.expanded()) return;
-      const overlay = this.overlay().overlayRef;
-      const follow = () => overlay.updatePosition();
-      follow();
-      const resize = typeof ResizeObserver === "undefined" ? undefined : new ResizeObserver(follow);
-      resize?.observe(overlay.overlayElement);
-      document.addEventListener("scroll", follow, { capture: true, passive: true });
-      onCleanup(() => {
-        resize?.disconnect();
-        document.removeEventListener("scroll", follow, { capture: true });
-      });
-    });
+    // The list renders on the first opening; placed again then, it opens above when needed.
+    followOrigin(
+      () => this.expanded(),
+      () => this.overlay(),
+    );
   }
 
   /** Choosing closes the list; choosing the chosen one again keeps it. */

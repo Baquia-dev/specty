@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { OverlayRef } from "@angular/cdk/overlay";
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { Select, type SelectOption } from "./select";
@@ -113,6 +114,22 @@ describe("Select", () => {
     await key("Escape");
     expect(trigger?.getAttribute("aria-expanded")).toBe("false");
     expect(host.value()).toBe("waiting");
+  });
+
+  it("places its list next to the trigger when it opens and as the page scrolls (AC4)", async () => {
+    const place = vi.spyOn(OverlayRef.prototype, "updatePosition");
+    try {
+      const { trigger, settle } = await render();
+      place.mockClear();
+      trigger?.click();
+      await settle();
+      const opened = place.mock.calls.length;
+      expect(opened).toBeGreaterThan(0);
+      document.body.dispatchEvent(new Event("scroll"));
+      expect(place.mock.calls.length).toBeGreaterThan(opened);
+    } finally {
+      place.mockRestore();
+    }
   });
 
   it("chooses with a click, without the press taking the focus from the trigger (AC2)", async () => {
