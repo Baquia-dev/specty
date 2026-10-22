@@ -98,7 +98,7 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
   - files: packages/ui/src/data/sample-specs.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/changes-store.ts
   - ac: AC5, AC6, AC9
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T3: Armazón común y rutas
+- [x] T3: Armazón común y rutas
   - files: packages/ui/src/app/shell.ts, packages/ui/src/app/routes.ts, packages/ui/src/main.ts, packages/ui/src/catalog/catalog.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty-ui test

@@ -56,12 +56,24 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "464fc3598fd2d2aadba176bfd762d91bf783432e",
+      "attempts": 1,
       "startedAt": "2026-10-22T04:48:59.866Z",
       "doneAt": "2026-10-22T04:53:19.598Z",
-      "summary": "Ocho cambios de ejemplo de «Mi colegio» (specs reales en sample-specs.ts; estados validados por parseChangeState) que cubren las cuatro decisiones, trabajo en curso y recientes, con tiempos relativos al arranque. FixtureData implementa SpectyData y registra los comandos Simular: aprobar la spec, aprobar el alcance, terminar una tarea y cortar o recuperar la conexión (cada uno busca el cambio que le corresponde). ChangesStore: resource() que deriva por un Worker (new URL de derive.worker) o, sin workers, con import() bajo demanda; recarga con subscribe conservando la vista anterior; decisions (las más antiguas primero), active, recent y byId. Tests de validez de las muestras, directo, fallo y recuperación, vía worker y fuente alternativa"
+      "summary": "Ocho cambios de ejemplo de «Mi colegio» (specs reales en sample-specs.ts; estados validados por parseChangeState) que cubren las cuatro decisiones, trabajo en curso y recientes, con tiempos relativos al arranque. FixtureData implementa SpectyData y registra los comandos Simular: aprobar la spec, aprobar el alcance, terminar una tarea y cortar o recuperar la conexión (cada uno busca el cambio que le corresponde). ChangesStore: resource() que deriva por un Worker (new URL de derive.worker) o, sin workers, con import() bajo demanda; recarga con subscribe conservando la vista anterior; decisions (las más antiguas primero), active, recent y byId. Tests de validez de las muestras, directo, fallo y recuperación, vía worker y fuente alternativa",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/inbox/inbox.ts",
+        "packages/ui/src/change/change-page.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "e3c4881b39e77ae90170d61123dbcb86f7609d39",
+      "startedAt": "2026-10-22T04:53:19.851Z",
+      "doneAt": "2026-10-22T05:16:03.292Z",
+      "summary": "Armazón sp-root (app/shell.ts): cabecera con Bandeja, Catálogo, botón «Buscar o ejecutar… ⌘K», tema e idioma (movidos desde el catálogo) y sp-toaster; comandos globales (Bandeja, catálogo, tema, idioma) y uno «Abrir: …» por cada cambio según aparecen. app/routes.ts con todo bajo demanda: / Bandeja, /changes/:id, /catalog con sus páginas como hijas. main.ts arranca el armazón con FixtureData y withComponentInputBinding. El catálogo queda como sección con su navegación y comandos «Catálogo: …». Bandeja y página del cambio mínimas (S1) para que las rutas compilen. Tests del catálogo y superposiciones montados sobre el armazón; shell.test.ts nuevo"
     }
   },
   "pending": {
@@ -72,6 +84,7 @@
     "A": 5,
     "AC": 10,
     "T": 5,
-    "R": 4
+    "R": 4,
+    "S": 1
   }
 }

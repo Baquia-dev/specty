@@ -2,12 +2,17 @@
 import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router } from "@angular/router";
 import { PHASES } from "@baquia-dev/specty-core";
+import { APP_ROUTES } from "../app/routes";
+import { Shell } from "../app/shell";
+import { FixtureData } from "../data/fixtures";
+import { SpectyData } from "../data/records";
 import { PHASE_LABELS, TOKENS } from "../theme/tokens";
-import { CATALOG_ROUTES, Catalog } from "./catalog";
 
 async function open(path: string) {
-  TestBed.configureTestingModule({ providers: [provideRouter(CATALOG_ROUTES)] });
-  const fixture = TestBed.createComponent(Catalog);
+  TestBed.configureTestingModule({
+    providers: [provideRouter(APP_ROUTES), { provide: SpectyData, useClass: FixtureData }],
+  });
+  const fixture = TestBed.createComponent(Shell);
   await TestBed.inject(Router).navigateByUrl(path);
   await fixture.whenStable();
   const element: HTMLElement = fixture.nativeElement;
@@ -28,8 +33,8 @@ describe("Catalog", () => {
   });
 
   it("opens on Colors and links every page, marking the current one (AC3)", async () => {
-    const { element } = await open("/");
-    const links = [...element.querySelectorAll<HTMLAnchorElement>("nav a")];
+    const { element } = await open("/catalog");
+    const links = [...element.querySelectorAll<HTMLAnchorElement>("sp-catalog nav a")];
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
       "/catalog/colors",
       "/catalog/typography",
@@ -90,7 +95,7 @@ describe("Catalog", () => {
   });
 
   it("redirects unknown paths to Colors", async () => {
-    const { element } = await open("/nowhere");
+    const { element } = await open("/catalog/nowhere");
     expect(element.querySelector("h1")?.textContent).toContain("Colores");
   });
 });

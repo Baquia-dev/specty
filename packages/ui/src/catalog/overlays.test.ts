@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router } from "@angular/router";
+import { APP_ROUTES } from "../app/routes";
+import { Shell } from "../app/shell";
+import { FixtureData } from "../data/fixtures";
+import { SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
-import { CATALOG_ROUTES, Catalog } from "./catalog";
 
 const press = (key: string, init: KeyboardEventInit = {}) =>
   document.body.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, ...init }));
@@ -15,8 +18,10 @@ async function open(path: string) {
   localStorage.clear();
   localStorage.setItem("specty.lang", "es");
   TestBed.resetTestingModule();
-  TestBed.configureTestingModule({ providers: [provideRouter(CATALOG_ROUTES)] });
-  const fixture = TestBed.createComponent(Catalog);
+  TestBed.configureTestingModule({
+    providers: [provideRouter(APP_ROUTES), { provide: SpectyData, useClass: FixtureData }],
+  });
+  const fixture = TestBed.createComponent(Shell);
   await TestBed.inject(Router).navigateByUrl(path);
   await fixture.whenStable();
   const element: HTMLElement = fixture.nativeElement;
@@ -84,7 +89,7 @@ describe("Overlays page and catalog commands", () => {
       option.textContent?.trim(),
     );
     expect(labels).toEqual(
-      expect.arrayContaining(["Ir a Componentes", "Tema oscuro", "Idioma: inglés"]),
+      expect.arrayContaining(["Catálogo: Componentes", "Tema oscuro", "Idioma: inglés"]),
     );
     const english = [...document.querySelectorAll<HTMLElement>("[role=option]")].find(
       (option) => option.textContent?.trim() === "Idioma: inglés",
