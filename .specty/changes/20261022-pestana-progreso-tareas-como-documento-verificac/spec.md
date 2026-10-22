@@ -72,7 +72,7 @@ La pestaña Progreso del cambio muestra hoy un texto provisional. Pasa a ser la 
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts, packages/ui/src/data/views.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts --include src/data/views.test.ts
-- [ ] T2: Muestras y decisión de alcance en la fuente
+- [x] T2: Muestras y decisión de alcance en la fuente
   - files: packages/ui/src/data/sample-progress.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts

@@ -79,6 +79,7 @@ describe("sample data", () => {
 
 describe("FixtureData actions", () => {
   const REVIEW = "20261020-evolucion-trimestre";
+  const PDF = "20261019-boletines-pdf";
 
   afterEach(() => TestBed.resetTestingModule());
 
@@ -111,6 +112,56 @@ describe("FixtureData actions", () => {
       body: "¿Cuánto es rápido?",
       section: "criteria",
       revision: 2,
+    });
+  });
+
+  it("keeps the work in progress: times, commits, attempts and a failure's last lines", async () => {
+    const { store, settle } = setup();
+    await settle();
+    const progress = store.all().find((change) => change.id === PDF)?.progress;
+    const [first, second, third] = progress?.tasks ?? [];
+    expect(first).toMatchObject({ status: "done", commit: "a1b2c3d", attempts: 1 });
+    expect(first?.verification).toMatchObject({ passed: true, ms: 18_000, output: [] });
+    expect(second).toMatchObject({ status: "done", commit: "7e4f9a0", attempts: 2 });
+    expect(third).toMatchObject({ status: "active", attempts: 1 });
+    expect(third?.verification?.passed).toBe(false);
+    expect(third?.verification?.output.at(-1)).toBe("00:07 +6 -1: Some tests failed.");
+    expect(third?.scopeRequests.map((request) => request.id)).toEqual(["S1"]);
+  });
+
+  it("decides scope requests: an approval widens the task, a rejection keeps the reason (AC3, AC4)", async () => {
+    const { fixtures, store, settle } = setup();
+    await settle();
+    const scope = () => {
+      const record = sampleRecords(0).find((item) => item.state.id === PDF);
+      return record?.state.pending.scopeRequests[0];
+    };
+    expect(scope()?.id).toBe("S1");
+    await fixtures.decideScope(PDF, "S1", "rejected", "Usa el maquetador del boletín.");
+    await settle();
+    let view = store.all().find((change) => change.id === PDF);
+    expect(view?.decision).toBeUndefined();
+    expect(view?.progress.tasks[2]?.scopeRequests).toEqual([]);
+    // Already decided: the source explains it instead of deciding twice.
+    await expect(fixtures.decideScope(PDF, "S1", "approved")).rejects.toMatchObject({
+      text: { es: "La solicitud S1 ya no está pendiente." },
+    });
+
+    // A fresh source, approving this time: the path enters the task's scope, and it is logged.
+    const fresh = setup();
+    await fresh.settle();
+    fresh.fixtures.approveScope();
+    await fresh.settle();
+    view = fresh.store.all().find((change) => change.id === PDF);
+    expect(view?.decision).toBeUndefined();
+    const records = await fresh.fixtures.changes();
+    const record = records.find((item) => item.state.id === PDF);
+    const asked = scope()?.task ?? "";
+    expect(record?.state.tasks[asked]?.scopeExtra).toEqual(["lib/shared/pdf/layout.dart"]);
+    expect(record?.audit?.at(-1)).toMatchObject({
+      actor: "human",
+      event: "scope.decided",
+      data: { request: "S1", decision: "approved" },
     });
   });
 

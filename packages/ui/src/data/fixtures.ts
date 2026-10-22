@@ -9,6 +9,7 @@ import {
   type CommentRecord,
   SpectyData,
 } from "./records";
+import { boletinesProgress, decideScopeIn, loginProgress, withProgress } from "./sample-progress";
 import { revisedSample } from "./sample-revisions";
 import { SAMPLE_SPECS } from "./sample-specs";
 
@@ -78,26 +79,7 @@ export function sampleRecords(now: number): ChangeRecord[] {
       ],
     },
     revisedSample(now),
-    sample(
-      "20261019-boletines-pdf",
-      "implementing",
-      3,
-      now,
-      {
-        pending: {
-          scopeRequests: [
-            {
-              id: "S1",
-              task: "T3",
-              paths: ["lib/shared/pdf/layout.dart"],
-              reason: "La firma necesita el maquetador compartido.",
-            },
-          ],
-          adjustment: null,
-        },
-      },
-      ["done", "done", "active"],
-    ),
+    withProgress(sample("20261019-boletines-pdf", "implementing", 3, now), boletinesProgress(now)),
     sample("20261018-asistencia-curso", "acceptance", 95, now, {}, ["done", "done"]),
     sample(
       "20261017-recordatorios-correo",
@@ -107,7 +89,7 @@ export function sampleRecords(now: number): ChangeRecord[] {
       { closingSubmittedAt: new Date(now - 40 * MINUTE).toISOString() },
       ["done"],
     ),
-    sample("20261021-login-google", "implementing", 25, now, {}, ["done", "active"]),
+    withProgress(sample("20261021-login-google", "implementing", 25, now), loginProgress(now)),
     sample("20261021-modo-oscuro", "draft", 8, now),
     sample("20261015-redondeo-promedios", "done", 60 * 26, now, {}, ["done"]),
     sample("20261014-chat-docentes", "cancelled", 60 * 72, now),
@@ -163,10 +145,11 @@ export class FixtureData extends SpectyData {
   }
 
   approveScope(): void {
-    this.update(
-      (state) => state.pending.scopeRequests.length > 0,
-      (state) => ({ ...state, pending: { ...state.pending, scopeRequests: [] } }),
-    );
+    const record = this.records.find((item) => item.state.pending.scopeRequests.length > 0);
+    const request = record?.state.pending.scopeRequests[0];
+    if (record !== undefined && request !== undefined) {
+      void this.decideScope(record.state.id, request.id, "approved");
+    }
   }
 
   /** Marks the active task done; with none left, the change moves to acceptance. */
@@ -250,6 +233,17 @@ export class FixtureData extends SpectyData {
         },
       };
     });
+  }
+
+  override decideScope(
+    change: string,
+    request: string,
+    decision: "approved" | "rejected",
+    reason?: string,
+  ): Promise<void> {
+    return this.edit(change, (record) =>
+      decideScopeIn(record, request, decision, reason, Date.now()),
+    );
   }
 
   /** Applies `change` to one record and tells the subscribers; a thrown ActionError rejects. */
