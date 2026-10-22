@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261021-prototipo-armazon-datos-de-ejemplo-y-bandeja",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261021-prototipo-armazon-datos-de-ejemplo-y-bandeja",
+  "baseCommit": "9e196d2b560217a652cd2f2b657746ecb3e9e09a",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:844ec2c8c12981767ad8930ef21600effbf647b4ebe281f082a6d9aef7f2a194",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bf33a81a82eb3d86b5bc27133b089764a63bf99d6d2be9e3c47a437f1bb5fbc9",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3bea12edf6df62a226362eb59aa85ee67344ab4e64fd279032fc4d7a777fa3af",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:834c78e402f3637de40e5cfe4dfb89538c02183381552be9efbffbebfbacdea5",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d0dcff285a90607cbaa02b4fcdf8381a8855f33a7f729542f9536a6d7bcaabb9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 10,
+    "T": 5,
+    "R": 4
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:0f06a0795bce393e2455825b8df9019a95a86141de3dc5179c5aab8672189dea",
+    "at": "2026-10-22T04:46:59.980Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
