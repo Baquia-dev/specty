@@ -1,0 +1,3 @@
+{"ts":"2026-10-22T17:37:40.362Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-sistema-de-diseno-patrones-de-documento-y-estado","follows":["20261022-revision-acciones-en-la-cabecera-y-en-la-barra-c"]}}
+{"ts":"2026-10-22T17:38:02.974Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:08a4c64be5235bb4bb52f0c4e9665e193229bb3eeba7d0e8bacd4c5365e6b8a2","size":"L","warnings":1}}
+{"ts":"2026-10-22T17:45:43.340Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:08a4c64be5235bb4bb52f0c4e9665e193229bb3eeba7d0e8bacd4c5365e6b8a2","channel":"tty"}}

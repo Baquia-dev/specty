@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261022-sistema-de-diseno-patrones-de-documento-y-estado",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-sistema-de-diseno-patrones-de-documento-y-estado",
+  "baseCommit": "9fe5e000d6e1fef3c6b5a7b83755a8ec26521669",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a0a56bb325ed844df4ab1ee36332664ae11823bbbc65036a6498b7953c4caef4",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:0c50819700429b6e4b21f1a5d5212b9597c4ab557d472c29c37e62f3b3b6bf31",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:08a4c64be5235bb4bb52f0c4e9665e193229bb3eeba7d0e8bacd4c5365e6b8a2",
+    "at": "2026-10-22T17:45:43.323Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
