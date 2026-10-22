@@ -90,7 +90,7 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
 
 ## Tareas
 
-- [ ] T1: Contrato de datos y vistas derivadas con core
+- [x] T1: Contrato de datos y vistas derivadas con core
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/derive.worker.ts
   - ac: AC2, AC4, AC7, AC10
   - verify: pnpm --filter @baquia-dev/specty-ui test
