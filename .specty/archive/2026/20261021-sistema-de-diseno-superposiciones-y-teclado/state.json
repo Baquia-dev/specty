@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261021-sistema-de-diseno-superposiciones-y-teclado",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261021-sistema-de-diseno-superposiciones-y-teclado",
   "baseCommit": "e06145d176229086dc278878d9f3faeb15061b9e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:079f43128c2d60511f2ba69ce9a178388c0def94b2b039aed7c8a7ca1688c34a",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c265cb929d2151e885b529fd1302afec70260264",
+      "attempts": 1,
       "startedAt": "2026-10-21T22:05:18.880Z",
       "doneAt": "2026-10-21T22:08:43.548Z",
-      "summary": "Página /catalog/overlays: diálogo de ejemplo (rechazar supuesto con motivo obligatorio), menú Exportar con aviso de éxito, avisos de los cuatro tipos, pestañas, plegable y lista de tarjetas con j/k registrados por la página. El armazón coloca sp-toaster y registra en la paleta (mod+k) ir a cada página, tema claro/oscuro/sistema e idioma. Páginas cargadas bajo demanda (loadComponent). ng build: 511 kB sin comprimir / 112 kB transferidos, con aviso del umbral propio de 500 kB (el límite de ui.md, 300 KB gzip, se cumple); ng serve sirve la página sin errores de pre-empaquetado. 67 tests"
+      "summary": "Página /catalog/overlays: diálogo de ejemplo (rechazar supuesto con motivo obligatorio), menú Exportar con aviso de éxito, avisos de los cuatro tipos, pestañas, plegable y lista de tarjetas con j/k registrados por la página. El armazón coloca sp-toaster y registra en la paleta (mod+k) ir a cada página, tema claro/oscuro/sistema e idioma. Páginas cargadas bajo demanda (loadComponent). ng build: 511 kB sin comprimir / 112 kB transferidos, con aviso del umbral propio de 500 kB (el límite de ui.md, 300 KB gzip, se cumple); ng serve sirve la página sin errores de pre-empaquetado. 67 tests",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,5 +92,6 @@
     "AC": 9,
     "T": 4,
     "R": 4
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T04:16:48.423Z"
 }

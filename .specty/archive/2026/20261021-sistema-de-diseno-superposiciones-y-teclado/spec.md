@@ -104,3 +104,38 @@ Completar el sistema de diseño con las piezas que flotan sobre la página o res
 - R2: jsdom no calcula posiciones, así que los tests no pueden comprobar que un overlay no se sale de la pantalla. Mitigación: se comprueban las posiciones de respaldo configuradas y se revisa en el navegador antes de aceptar.
 - R3: Si `hostDirectives` de Aria no funciona con paneles proyectados, las pestañas siguen el patrón de WAI-ARIA propio (A3), con más código. Mitigación: se decide en T2 con un test de teclado que ya valga para las dos variantes.
 - R4: El CDK y Aria aumentan el bundle (hoy, 82 kB transferidos). Mitigación: se comprueba el presupuesto con `ng build` en T4.
+
+## Cierre
+
+### Resumen
+
+- Diálogo: servicio `Dialogs` sobre el CDK y marco `sp-dialog` (título que lo anuncia, foco atrapado, fondo negro al 40 %, Escape y devolución del foco).
+- Tooltip: la descripción accesible siempre está presente, y la burbuja flota en un overlay conectado del CDK con posiciones de respaldo.
+- Componentes nuevos:
+  - `sp-tabs` y `sp-tab-panel`;
+  - `sp-collapsible`;
+  - `sp-menu`, sobre Angular Aria;
+  - `Toasts` con `sp-toaster`, que tiene regiones vivas cortés y asertiva.
+- Registro de atajos `Shortcuts` (`?` lista los activos) y paleta `Commands` con `sp-command-palette` (`mod+k`).
+- Página `/catalog/overlays`. ⌘K funciona en todo el catálogo, y `j`/`k` en la lista de ejemplo.
+- 67 tests con un 99 % de líneas; las páginas del catálogo se cargan bajo demanda.
+
+### Desviaciones
+
+- Pestañas con el patrón de WAI-ARIA propio en lugar de Angular Aria. Aria `TabPanel` exige un `ng-template ngTabContent` en el contenido del anfitrión, que no encaja con paneles proyectados: se cumplió R3 y se resolvió como prevé A3.
+- El listbox de Aria selecciona en `follow` por defecto, y eso ejecutaba el primer comando al abrir la paleta. Se usa `selectionMode="explicit"`.
+- `aria-haspopup` vale `"true"` (lo pone Aria), que ARIA define como menú.
+- En los tests, el CDK necesita un `InteractivityChecker` que considere visibles los elementos, porque jsdom no calcula tamaños. En el navegador, `cdkFocusInitial` lleva el foco al campo de la paleta.
+
+### Decisiones
+
+- Shift solo cuenta en las letras y en las teclas no impresas: `?` es `?`, y `mod+shift+d` es distinto de `mod+d`.
+- Un atajo vive lo que vive el componente que lo registra; si dos usan las mismas teclas, gana el último.
+- Las páginas del catálogo se cargan bajo demanda (`loadComponent`).
+
+### Pendientes
+
+- El bundle inicial (511 kB sin comprimir, 112 kB transferidos) supera el aviso propio de 500 kB, aunque cumple el límite de ui.md (300 KB comprimidos). Para bajarlo:
+  - cargar la paleta bajo demanda;
+  - dar a core un punto de entrada ligero (la UI arrastra zod, yaml y picomatch).
+- Siguiente paso de la fase 2: el prototipo navegable ("Prototipo: armazón, datos de ejemplo y Bandeja"), con `--follows` a este.
