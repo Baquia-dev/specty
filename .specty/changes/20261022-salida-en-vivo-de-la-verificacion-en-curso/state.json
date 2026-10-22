@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261022-salida-en-vivo-de-la-verificacion-en-curso",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-salida-en-vivo-de-la-verificacion-en-curso",
+  "baseCommit": "ec15e53489ed118a7c246b86ce4381dbf8c4f5a8",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:efabf657f3818873be1f68ac0a7fc28e9cca90e29bc0f25ab028e38cfe8479eb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e834b54fdcbcde9b32582202f26e7f6bca28a65d2eee2e460d57438aa35c7999",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ec5104b66bd8ff3262296e6c11f7ff443592a946a639fcfd5979c69c95dafb99",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a05735ad7ae626782bae2960f50ebaa4cc3838a03b2ab5a7ef8fb0d144708fcf",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:82f62d3f06cbbbc7a814b0cdc2b0834c04ec38f797f8a57048c72aa7a5c9c1b1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4c001b3a94df78faf5835e0604dd4476c0e480b81632421e556ab25469a94dae",
+    "at": "2026-10-22T23:17:43.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
