@@ -4,13 +4,26 @@ import { provideRouter, Router } from "@angular/router";
 import { PHASES } from "@baquia-dev/specty-core";
 import { APP_ROUTES } from "../app/routes";
 import { Shell } from "../app/shell";
+import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
+import type { ChangeRecord as ChangeRecordForTest } from "../data/records";
 import { SpectyData } from "../data/records";
+import { deriveViews } from "../data/views";
 import { PHASE_LABELS, TOKENS } from "../theme/tokens";
+
+/** jsdom has no Worker: derive in the same thread, as the worker would. */
+const IN_THREAD = {
+  provide: DERIVER,
+  useValue: (records: readonly ChangeRecordForTest[]) => Promise.resolve(deriveViews(records)),
+};
 
 async function open(path: string) {
   TestBed.configureTestingModule({
-    providers: [provideRouter(APP_ROUTES), { provide: SpectyData, useClass: FixtureData }],
+    providers: [
+      provideRouter(APP_ROUTES),
+      { provide: SpectyData, useClass: FixtureData },
+      IN_THREAD,
+    ],
   });
   const fixture = TestBed.createComponent(Shell);
   await TestBed.inject(Router).navigateByUrl(path);

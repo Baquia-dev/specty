@@ -1,11 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router } from "@angular/router";
+import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
+import type { ChangeRecord as ChangeRecordForTest } from "../data/records";
 import { SpectyData } from "../data/records";
+import { deriveViews } from "../data/views";
 import { Preferences } from "../theme/preferences";
 import { APP_ROUTES } from "./routes";
 import { Shell } from "./shell";
+
+/** jsdom has no Worker: derive in the same thread, as the worker would. */
+const IN_THREAD = {
+  provide: DERIVER,
+  useValue: (records: readonly ChangeRecordForTest[]) => Promise.resolve(deriveViews(records)),
+};
 
 async function open(path: string) {
   window.matchMedia = (() => ({
@@ -16,7 +25,11 @@ async function open(path: string) {
   localStorage.setItem("specty.lang", "es");
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
-    providers: [provideRouter(APP_ROUTES), { provide: SpectyData, useClass: FixtureData }],
+    providers: [
+      provideRouter(APP_ROUTES),
+      { provide: SpectyData, useClass: FixtureData },
+      IN_THREAD,
+    ],
   });
   const fixture = TestBed.createComponent(Shell);
   const router = TestBed.inject(Router);

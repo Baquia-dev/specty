@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261021-prototipo-armazon-datos-de-ejemplo-y-bandeja",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261021-prototipo-armazon-datos-de-ejemplo-y-bandeja",
   "baseCommit": "9e196d2b560217a652cd2f2b657746ecb3e9e09a",
   "revision": 2,
@@ -77,12 +77,28 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bc8527b7ca4be5f6f49359b4d061e29f73450f77",
+      "attempts": 1,
       "startedAt": "2026-10-22T05:16:03.568Z",
       "doneAt": "2026-10-22T05:20:12.334Z",
-      "summary": "Bandeja: «Esperan tu decisión» (las más antiguas primero) con insignia de fase, tipo de decisión, tiempo de espera relativo que se actualiza cada 30 s, tamaño y razones, supuestos de alto impacto por confirmar, solicitudes de alcance (tarea, rutas y motivo) y acción directa que abre la pestaña que toca (primaria solo en la tarjeta seleccionada: una acción primaria por pantalla); «En curso» agrupado por fase con progreso de tareas; «Recientes». j/k mueven la selección y llevan el foco al enlace de la tarjeta, de modo que Enter abre de forma nativa (registrar Enter como atajo rompería Enter en los botones). Esqueletos mientras carga y aviso con Reintentar si la fuente falla"
+      "summary": "Bandeja: «Esperan tu decisión» (las más antiguas primero) con insignia de fase, tipo de decisión, tiempo de espera relativo que se actualiza cada 30 s, tamaño y razones, supuestos de alto impacto por confirmar, solicitudes de alcance (tarea, rutas y motivo) y acción directa que abre la pestaña que toca (primaria solo en la tarjeta seleccionada: una acción primaria por pantalla); «En curso» agrupado por fase con progreso de tareas; «Recientes». j/k mueven la selección y llevan el foco al enlace de la tarjeta, de modo que Enter abre de forma nativa (registrar Enter como atajo rompería Enter en los botones). Esqueletos mientras carga y aviso con Reintentar si la fuente falla",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/data/changes-store.ts",
+        "packages/ui/src/data/fixtures.test.ts",
+        "packages/ui/src/app/shell.test.ts",
+        "packages/ui/src/catalog/catalog.test.ts",
+        "packages/ui/src/catalog/overlays.test.ts",
+        "packages/ui/src/inbox/inbox.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "e5764051de66c8d9e76fd7cc472c7bf7406f787f",
+      "startedAt": "2026-10-22T05:20:12.622Z",
+      "doneAt": "2026-10-22T05:42:24.136Z",
+      "summary": "Página del cambio: vuelta a la Bandeja, insignia de fase, revisión, rama, título, tamaño con razones, esfuerzo recomendado, qué espera de la persona y problemas de lectura; sp-tabs con Spec · Progreso · Aceptación · Historial en la pestaña de la fase o la de ?tab=, que se reescribe al cambiar; estado vacío para un id desconocido; se actualiza en directo. AC10 (S2): el respaldo import('./views') compartía el índice de core con el bundle inicial y sacaba zod, yaml y picomatch a un fragmento inicial (1,12 MB); ahora DERIVER deriva siempre en el worker y los tests de jsdom inyectan un derivador en el mismo hilo. ng build --stats-json: zod, yaml y picomatch solo en worker-*.js (598 kB, bajo demanda); Bandeja y Cambio bajo demanda; inicial 540 kB / 120 kB transferidos (aviso de 500 kB previo: CDK y Aria del armazón)"
     }
   },
   "pending": {
@@ -94,6 +110,6 @@
     "AC": 10,
     "T": 5,
     "R": 4,
-    "S": 1
+    "S": 2
   }
 }

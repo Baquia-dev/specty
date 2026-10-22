@@ -3,9 +3,18 @@ import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router } from "@angular/router";
 import { APP_ROUTES } from "../app/routes";
 import { Shell } from "../app/shell";
+import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
+import type { ChangeRecord as ChangeRecordForTest } from "../data/records";
 import { SpectyData } from "../data/records";
+import { deriveViews } from "../data/views";
 import { Preferences } from "../theme/preferences";
+
+/** jsdom has no Worker: derive in the same thread, as the worker would. */
+const IN_THREAD = {
+  provide: DERIVER,
+  useValue: (records: readonly ChangeRecordForTest[]) => Promise.resolve(deriveViews(records)),
+};
 
 const press = (key: string, init: KeyboardEventInit = {}) =>
   document.body.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, ...init }));
@@ -19,7 +28,11 @@ async function open(path: string) {
   localStorage.setItem("specty.lang", "es");
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
-    providers: [provideRouter(APP_ROUTES), { provide: SpectyData, useClass: FixtureData }],
+    providers: [
+      provideRouter(APP_ROUTES),
+      { provide: SpectyData, useClass: FixtureData },
+      IN_THREAD,
+    ],
   });
   const fixture = TestBed.createComponent(Shell);
   await TestBed.inject(Router).navigateByUrl(path);

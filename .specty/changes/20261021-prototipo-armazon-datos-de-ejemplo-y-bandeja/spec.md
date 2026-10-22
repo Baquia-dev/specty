@@ -106,7 +106,7 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
   - files: packages/ui/src/inbox/inbox.ts
   - ac: AC1, AC2, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T5: Página del cambio con pestañas
+- [x] T5: Página del cambio con pestañas
   - files: packages/ui/src/change/change-page.ts
   - ac: AC4, AC5, AC10
   - verify: pnpm check

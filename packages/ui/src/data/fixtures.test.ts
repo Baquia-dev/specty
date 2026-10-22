@@ -2,18 +2,29 @@
 import { signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { parseChangeState, parseSpec } from "@baquia-dev/specty-core";
-import { ChangesStore } from "./changes-store";
+import { ChangesStore, DERIVER } from "./changes-store";
 import { answer } from "./derive.worker";
 import { FixtureData, sampleRecords } from "./fixtures";
+import type { ChangeRecord as ChangeRecordForTest } from "./records";
 import { type ChangeRecord, SpectyData } from "./records";
+import { deriveViews } from "./views";
 
-function setup() {
+/** jsdom has no Worker: derive in the same thread, as the worker would. */
+const IN_THREAD = {
+  provide: DERIVER,
+  useValue: (records: readonly ChangeRecordForTest[]) => Promise.resolve(deriveViews(records)),
+};
+
+/** `inThread: false` keeps the real deriver, which uses a Worker. */
+function setup(inThread = true) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
   })) as unknown as typeof window.matchMedia;
   TestBed.resetTestingModule();
-  TestBed.configureTestingModule({ providers: [{ provide: SpectyData, useClass: FixtureData }] });
+  TestBed.configureTestingModule({
+    providers: [{ provide: SpectyData, useClass: FixtureData }, ...(inThread ? [IN_THREAD] : [])],
+  });
   const fixtures = TestBed.inject(SpectyData) as FixtureData;
   const store = TestBed.inject(ChangesStore);
   return { fixtures, store, settle: () => settled(store) };
@@ -101,10 +112,16 @@ describe("ChangesStore", () => {
       terminate() {}
     }
     Object.assign(globalThis, { Worker: FakeWorker });
-    const { store, settle } = setup();
+    const { store, settle } = setup(false);
     await settle();
     expect(posted).toEqual([0]);
     expect(store.all()).toHaveLength(8);
+  });
+
+  it("says so when there are no web workers and no deriver was given", async () => {
+    const { store, settle } = setup(false);
+    await settle();
+    expect(String(store.views.error())).toContain("no Web Workers");
   });
 
   it("finds a change by id", async () => {
@@ -124,7 +141,9 @@ describe("ChangesStore", () => {
       }
     }
     TestBed.resetTestingModule();
-    TestBed.configureTestingModule({ providers: [{ provide: SpectyData, useClass: OneChange }] });
+    TestBed.configureTestingModule({
+      providers: [{ provide: SpectyData, useClass: OneChange }, IN_THREAD],
+    });
     const store = TestBed.inject(ChangesStore);
     await settled(store);
     expect(store.all().map((view) => view.decision)).toEqual(["review"]);
