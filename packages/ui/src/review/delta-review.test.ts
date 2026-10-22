@@ -70,7 +70,7 @@ describe("ReviewDelta", () => {
     expect(text(element.querySelector("h2"))).toBe("Qué cambió desde que aprobaste r2");
     expect(text(element.querySelector("header p"))).toBe("r3 · frente a r2");
     expect(text(element.querySelector("[data-summary]"))).toBe(
-      "5 añadidos · 3 modificados · 1 eliminado",
+      "5 añadidos · 4 modificados · 1 eliminado",
     );
     const groups = [...element.querySelectorAll<HTMLElement>("[data-delta-section]")];
     expect(groups.map((group) => group.dataset.deltaSection)).toEqual([
@@ -105,11 +105,12 @@ describe("ReviewDelta", () => {
     const { item, element } = await render();
     const parts = (tag: string) =>
       [...(item("AC2")?.querySelectorAll(tag) ?? [])].map((part) => text(part));
-    expect(parts("del")).toEqual(["[eliminado: justificada.]"]);
-    expect(parts("ins")).toEqual(["[añadido: justificada y la familia recibe un aviso.]"]);
+    // Punctuation apart: only the new words are marked, "justificada." is not repeated.
+    expect(parts("del")).toEqual([]);
+    expect(parts("ins")).toEqual(["[añadido: y la familia recibe un aviso]"]);
     expect(text(item("AC2")?.querySelector("sp-word-diff"))).toMatch(/^CUANDO el tutor acepta/);
-    expect(text(item("R1")?.querySelector("del"))).toBe(
-      "[eliminado: Las fotos del móvil pesan demasiado. Mitigación: reducirlas antes de enviarlas (AC3).]",
+    expect(text(item("R1")?.querySelector("sp-word-diff"))).toBe(
+      "Las fotos del móvil pesan demasiado. Mitigación: reducirlas antes de enviarlas (AC3).",
     );
     const goal = element.querySelector("[data-delta-section=goal] sp-word-diff");
     // The goal only gained words: nothing struck out.
@@ -157,7 +158,7 @@ describe("ReviewDelta", () => {
     const { element, item } = await render("en");
     TestBed.inject(Preferences);
     expect(text(element.querySelector("h2"))).toBe("What changed since you approved r2");
-    expect(text(element.querySelector("[data-summary]"))).toBe("5 added · 3 modified · 1 removed");
+    expect(text(element.querySelector("[data-summary]"))).toBe("5 added · 4 modified · 1 removed");
     expect(text(item("T4")?.querySelector("[data-new-scope]"))).toContain("Possible new scope:");
     expect(text(item("AC2")?.querySelector("ins"))).toContain("[added:");
   });

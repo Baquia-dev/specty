@@ -146,6 +146,15 @@ export interface DiffPart {
   readonly change?: "added" | "removed";
 }
 
+/** A criterion or a file of a task, as a chip, with what happened to it since the approval. */
+export interface DeltaChipView {
+  readonly label: string;
+  readonly kind: "criterion" | "file";
+  readonly change?: "added" | "removed";
+  /** A file the approved revision did not list: "possible new scope". */
+  readonly newScope: boolean;
+}
+
 /** One unit that changed since the approved revision: an item, a file or a section of text. */
 export interface DeltaEntryView {
   /** An item id (`AC3`), a file path, or the section key of a text (`goal`). */
@@ -153,7 +162,14 @@ export interface DeltaEntryView {
   readonly kind: "title" | "section" | "assumption" | "criterion" | "task" | "risk" | "file";
   readonly change: "added" | "removed" | "modified";
   readonly section: ReviewSection | "title";
-  readonly diff: readonly DiffPart[];
+  /** The text now, with the added words marked if modified; the text it had, if removed. */
+  readonly text: readonly DiffPart[];
+  /** Only when words were removed: the approved text, with the removed words marked. */
+  readonly before?: readonly DiffPart[];
+  /** A task's criteria and files. */
+  readonly chips?: readonly DeltaChipView[];
+  /** What changed without text of its own: an assumption's impact, a task's verification… */
+  readonly details: readonly Bilingual[];
   /** A new task touching files the approved revision did not list: "possible new scope". */
   readonly newScope: readonly Bilingual[];
 }

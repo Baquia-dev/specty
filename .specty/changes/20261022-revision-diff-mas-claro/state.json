@@ -6,6 +6,13 @@
   "branch": "specty/20261022-revision-diff-mas-claro",
   "baseCommit": "642c62d30383248c90ef3015552de01b6adce276",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:98b52e915253202eb6f68c99f23548e04aeec530b675b375cc02c44c4cb1c590",
+    "at": "2026-10-22T16:50:51.229Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -29,7 +36,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/delta-review.ts",
+        "packages/ui/src/review/delta-review.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "bb6dfb9e38df97bb5aacf6c60642494b862f4d45",
+      "startedAt": "2026-10-22T16:50:59.261Z",
+      "doneAt": "2026-10-22T16:58:12.591Z",
+      "summary": "DeltaEntryView pasa de 'diff' a 'text', 'before' (solo con palabras quitadas), 'chips' (criterios y archivos de una tarea, con su cambio y si son posible alcance nuevo) y 'details' (impacto, verificación, tipo, notas). delta.ts compara los campos de cada ítem en vez del texto de la spec, separa la puntuación y agrupa cada tramo cambiado (lo quitado antes que lo añadido) para que una frase cambiada no se fragmente. En el ejemplo, A2 cambia una frase y A3 gana un impacto. S1: la vista del delta usa el texto final (adaptación mínima; el rediseño es T2)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,13 +58,7 @@
     "A": 3,
     "AC": 4,
     "T": 2,
-    "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:98b52e915253202eb6f68c99f23548e04aeec530b675b375cc02c44c4cb1c590",
-    "at": "2026-10-22T16:50:51.229Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
+    "R": 1,
+    "S": 1
   }
 }

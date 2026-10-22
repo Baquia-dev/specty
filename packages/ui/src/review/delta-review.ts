@@ -100,7 +100,7 @@ export class ChangeMark {
         <div role="list" [class]="list + ' mt-3'">
           @for (entry of group.entries; track entry.key) {
             @if (assumptionOf(entry); as assumption) {
-              <sp-assumption-row [change]="change().id" [assumption]="assumption" [diff]="entry.diff" [editable]="editable()" (comment)="comment.emit($event)">
+              <sp-assumption-row [change]="change().id" [assumption]="assumption" [diff]="entry.text" [editable]="editable()" (comment)="comment.emit($event)">
                 <sp-change-mark [change]="entry.change" />
               </sp-assumption-row>
             } @else {
@@ -108,7 +108,7 @@ export class ChangeMark {
                 <span class="pt-0.5 font-mono text-xs text-text-muted">{{ isItem(entry) ? entry.key : '' }}</span>
                 <div class="flex min-w-0 flex-col gap-1.5">
                   <sp-change-mark [change]="entry.change" />
-                  <sp-word-diff [parts]="entry.diff" />
+                  <sp-word-diff [parts]="entry.text" />
                   @for (note of entry.newScope; track $index) {
                     <p class="m-0 flex items-start gap-2 text-sm" style="color: var(--color-phase-review)" role="note" data-new-scope>
                       <svg class="mt-1 shrink-0" [lucideIcon]="warningIcon" size="14" aria-hidden="true"></svg>

@@ -63,6 +63,7 @@ describe("sample data", () => {
     expect(view?.review.delta?.entries.map((entry) => `${entry.change} ${entry.key}`)).toEqual([
       "modified goal",
       "modified A2",
+      "modified A3",
       "modified AC2",
       "added AC4",
       "added lib/notifications/absence_notice.dart",

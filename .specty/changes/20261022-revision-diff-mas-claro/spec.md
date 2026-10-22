@@ -50,7 +50,7 @@ El delta ("Qué cambió desde que aprobaste") se lee sin esfuerzo, como en la ma
 
 ## Tareas
 
-- [ ] T1: Delta por campos, con texto final y «Antes»
+- [x] T1: Delta por campos, con texto final y «Antes»
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/delta.ts, packages/ui/src/data/delta.test.ts, packages/ui/src/data/sample-revisions.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui test

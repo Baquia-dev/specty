@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { type ChangeState, parseSpec } from "@baquia-dev/specty-core";
-import { deriveDelta, readable, wordDiff } from "./delta";
+import { deriveDelta, readable, textAndBefore, wordDiff } from "./delta";
 import type { DiffPart } from "./records";
 import { deriveView } from "./views";
 
@@ -92,11 +92,13 @@ function state(overrides: Partial<ChangeState> = {}): ChangeState {
 }
 
 describe("wordDiff", () => {
-  it("keeps what did not change and marks the words removed and added (AC2)", () => {
+  it("keeps what did not change and marks the words removed and added (AC1)", () => {
     const parts = wordDiff("La página carga rápido.", "La página carga en menos de 2 s.");
     expect(parts[0]).toEqual({ text: "La página carga " });
-    expect(changed(parts, "removed")).toBe("rápido.");
-    expect(changed(parts, "added")).toBe("en menos de 2 s.");
+    expect(changed(parts, "removed")).toBe("rápido");
+    expect(changed(parts, "added")).toBe("en menos de 2 s");
+    // Punctuation is a token of its own: the final period is kept, not removed and added.
+    expect(parts.at(-1)).toEqual({ text: "." });
   });
 
   it("returns one unchanged part for equal texts, and only additions from nothing", () => {
@@ -115,13 +117,34 @@ describe("wordDiff", () => {
   });
 });
 
+describe("textAndBefore", () => {
+  it("gives the final text with the additions, and no «Antes» when nothing was removed (AC1)", () => {
+    expect(textAndBefore("queda justificada.", "queda justificada y avisa.")).toEqual({
+      text: [{ text: "queda justificada" }, { text: " y avisa", change: "added" }, { text: "." }],
+    });
+  });
+
+  it("adds «Antes» with the removed words only when something was removed (AC1)", () => {
+    const { text, before } = textAndBefore(
+      "Basta con una foto; no hace falta el original.",
+      "Basta con una foto o un PDF; el original ya no se pide.",
+    );
+    expect(changed(text, "added")).toBe(" o un PDF;| ya no se pide");
+    expect(changed(text, "removed")).toBe("");
+    expect(text.map((part) => part.text).join("")).toBe(
+      "Basta con una foto o un PDF; el original ya no se pide.",
+    );
+    expect(changed(before ?? [], "removed")).toBe("; no hace falta");
+    expect((before ?? []).map((part) => part.text).join("")).toBe(
+      "Basta con una foto; no hace falta el original.",
+    );
+  });
+});
+
 describe("readable", () => {
   it("drops the list marker, the checkbox and the id, and the indent of sub-items", () => {
     expect(readable("- [ ] T3: Avisar\n  - files: lib/a.dart\n  - ac: AC2")).toBe(
       "Avisar\nfiles: lib/a.dart\nac: AC2",
-    );
-    expect(readable("- A2: Basta con una foto.\n  - impacto: alto")).toBe(
-      "Basta con una foto.\nimpacto: alto",
     );
     expect(readable("- crear lib/a.dart — aviso")).toBe("crear lib/a.dart — aviso");
     expect(readable("Texto de una sección.")).toBe("Texto de una sección.");
@@ -130,10 +153,11 @@ describe("readable", () => {
 
 describe("deriveDelta", () => {
   const delta = deriveDelta(parseSpec(CURRENT).spec, parseSpec(APPROVED).spec, 2);
+  const entry = (key: string) => delta.entries.find((candidate) => candidate.key === key);
 
   it("lists what was added, removed and modified, in the order of the document (AC1)", () => {
     expect(delta.approvedRevision).toBe(2);
-    expect(delta.entries.map((entry) => `${entry.change} ${entry.section} ${entry.key}`)).toEqual([
+    expect(delta.entries.map((item) => `${item.change} ${item.section} ${item.key}`)).toEqual([
       "modified goal goal",
       "modified assumptions A2",
       "modified criteria AC2",
@@ -145,24 +169,70 @@ describe("deriveDelta", () => {
     ]);
   });
 
-  it("diffs modified units by word and shows added and removed ones whole (AC2)", () => {
-    const entry = (key: string) => delta.entries.find((candidate) => candidate.key === key);
-    expect(changed(entry("A2")?.diff ?? [], "added")).toBe("o un PDF ");
-    expect(changed(entry("A2")?.diff ?? [], "removed")).toBe("");
-    expect(changed(entry("goal")?.diff ?? [], "removed")).toBe("app.");
-    expect(entry("AC3")?.diff).toEqual([
-      { text: "CUANDO el tutor lo rechaza ENTONCES la familia ve el motivo.", change: "added" },
+  it("shows the final text of modified items, with the additions and no repeated words (AC1)", () => {
+    expect(changed(entry("A2")?.text ?? [], "added")).toBe("o un PDF ");
+    expect(entry("A2")?.before).toBeUndefined();
+    expect(entry("AC2")?.text).toEqual([
+      { text: "CUANDO el tutor lo acepta ENTONCES la falta queda justificada" },
+      { text: " y la familia recibe un aviso", change: "added" },
+      { text: "." },
     ]);
-    expect(entry("R1")?.diff).toEqual([{ text: "Las fotos pesan demasiado.", change: "removed" }]);
+    expect(changed(entry("goal")?.text ?? [], "added")).toBe(", con una foto o un PDF");
   });
 
-  it("marks a new task that touches files the approved revision did not list (AC3)", () => {
-    const task = delta.entries.find((entry) => entry.key === "T3");
-    expect(task?.newScope).toHaveLength(1);
-    expect(task?.newScope[0]?.es).toContain("lib/notifications/push.dart");
-    expect(task?.newScope[0]?.es).toContain("alcance nuevo");
-    expect(task?.newScope[0]?.en).toContain("lib/notifications/push.dart");
-    expect(delta.entries.filter((entry) => entry.newScope.length > 0)).toHaveLength(1);
+  it("shows added and removed items as plain text: their mark tells what happened (AC2)", () => {
+    expect(entry("AC3")?.text).toEqual([
+      { text: "CUANDO el tutor lo rechaza ENTONCES la familia ve el motivo." },
+    ]);
+    expect(entry("R1")?.text).toEqual([{ text: "Las fotos pesan demasiado." }]);
+    expect(entry("T3")?.text).toEqual([{ text: "Avisar a la familia" }]);
+  });
+
+  it("gives tasks their criteria and files as chips, flagging possible new scope (AC3)", () => {
+    expect(entry("T3")?.chips).toEqual([
+      { label: "AC2", kind: "criterion", newScope: false },
+      { label: "AC3", kind: "criterion", newScope: false },
+      { label: "lib/notifications/push.dart", kind: "file", newScope: true },
+    ]);
+    expect(entry("T3")?.newScope[0]?.es).toContain("alcance nuevo");
+    expect(entry("T3")?.newScope[0]?.en).toContain("lib/notifications/push.dart");
+    expect(delta.entries.filter((item) => item.newScope.length > 0)).toHaveLength(1);
+    expect(entry("A2")?.chips).toBeUndefined();
+  });
+
+  it("marks chips added or removed in a modified task, and tells changes without text (AC3)", () => {
+    const before = parseSpec(
+      APPROVED.replace(
+        "- A1: El colegio acepta justificantes digitales.\n  - impacto: alto",
+        "- A1: El colegio acepta justificantes digitales.\n  - impacto: medio",
+      ).replace(
+        "  - files: lib/absences/list.dart\n  - ac: AC2",
+        "  - files: lib/absences/list.dart, lib/absences/justify.dart\n  - ac: AC2\n  - verify: flutter test",
+      ),
+    ).spec;
+    const after = parseSpec(
+      APPROVED.replace(
+        "  - files: lib/absences/list.dart\n  - ac: AC2",
+        "  - files: lib/absences/list.dart\n  - ac: AC1, AC2\n  - verify: flutter test test/absences",
+      ),
+    ).spec;
+    const changes = deriveDelta(after, before, 2).entries;
+    const a1 = changes.find((item) => item.key === "A1");
+    expect(a1?.change).toBe("modified");
+    expect(a1?.text).toEqual([{ text: "El colegio acepta justificantes digitales." }]);
+    expect(a1?.details).toEqual([
+      { es: "Impacto: alto (antes: medio)", en: "Impact: high (was: medium)" },
+    ]);
+    const t2 = changes.find((item) => item.key === "T2");
+    expect(t2?.chips).toEqual([
+      { label: "AC1", kind: "criterion", change: "added", newScope: false },
+      { label: "AC2", kind: "criterion", newScope: false },
+      { label: "lib/absences/list.dart", kind: "file", newScope: false },
+      { label: "lib/absences/justify.dart", kind: "file", change: "removed", newScope: false },
+    ]);
+    expect(t2?.details.map((detail) => detail.es)).toEqual([
+      "Verificación: flutter test test/absences (antes: flutter test)",
+    ]);
   });
 });
 

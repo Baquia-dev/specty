@@ -62,7 +62,16 @@ const CURRENT = APPROVED.replace(
   "adjuntando una foto del justificante, y el tutor la acepta o la rechaza.",
   "adjuntando una foto o un PDF del justificante, y recibe un aviso cuando el tutor la acepta o la rechaza.",
 )
-  .replace("Basta con una foto del justificante;", "Basta con una foto o un PDF del justificante;")
+  // A2 changes a phrase, not only adds words: the review shows what it said before.
+  .replace(
+    "Basta con una foto del justificante; no hace falta el original en papel.",
+    "Basta con una foto o un PDF del justificante; el original en papel ya no se pide.",
+  )
+  // A3 only gains an impact: no text of its own changes.
+  .replace(
+    "- A3: Los tutores revisan los justificantes desde la web de docentes.",
+    "- A3: Los tutores revisan los justificantes desde la web de docentes.\n  - impacto: bajo",
+  )
   .replace(
     "ENTONCES la falta queda justificada.",
     `ENTONCES la falta queda justificada y la familia recibe un aviso.
