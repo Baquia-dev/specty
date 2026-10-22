@@ -1,0 +1,3 @@
+{"ts":"2026-10-22T09:29:58.970Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-prototipo-delta-de-la-revision","follows":["20261022-prototipo-revision-con-formato-de-documento"]}}
+{"ts":"2026-10-22T09:30:29.423Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:9c83fdcad4ac4670277b68e0f8df08d8c1869cd7cef1a31670b390e493cf5134","size":"L","warnings":1}}
+{"ts":"2026-10-22T09:34:52.302Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:9c83fdcad4ac4670277b68e0f8df08d8c1869cd7cef1a31670b390e493cf5134","channel":"tty"}}

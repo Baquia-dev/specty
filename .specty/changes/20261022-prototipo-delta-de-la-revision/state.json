@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261022-prototipo-delta-de-la-revision",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-prototipo-delta-de-la-revision",
+  "baseCommit": "39342c99c049d945803a8f45a4d4ae99d95dd96d",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:dbc268b82f4b01d375501b2009dca25c322329ba813e5ebba2ea3e6aacd3afc7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:91c638a01a5ea02618ae8ee132430f5c74d109a230a8fcbe4e8d0d4fd90545d0",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3ca8bec8c1c2c690ac9468da6785bcc55424d6885f61dae2689d366b56ac6b4b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:83fe03eb336d986f933dfdec6eb58f971f7cce91e3b3d3c9fe625d29d0b91fcc",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:db1f4015eb58fa58df4e90fd216fe492160689433b6674066273a2c64f8f3ebe",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9c83fdcad4ac4670277b68e0f8df08d8c1869cd7cef1a31670b390e493cf5134",
+    "at": "2026-10-22T09:34:52.278Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
