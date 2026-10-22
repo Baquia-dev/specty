@@ -29,11 +29,12 @@ La pestaña Progreso del cambio muestra hoy un texto provisional. Pasa a ser la 
 - A3: La solicitud de alcance va dentro de la fila de su tarea. Muestra la ruta, el motivo del agente, qué implica decidir y los botones «Aprobar» y «Rechazar…». Rechazar pide el motivo en un diálogo, como al rechazar un supuesto, porque el agente lo lee.
 - A4: La fuente de datos entrega con cada cambio los eventos de su `audit.jsonl` (`ChangeRecord.audit`). Progreso solo lee `task.verified`; el Historial leerá el resto. Decidir una solicitud es una acción de la fuente (`decideScope`), como decidir un supuesto.
 - A5: La duración de una tarea va desde que empezó hasta que terminó; la de la tarea en curso, hasta ahora. El tiempo de trabajo del resumen es la suma de las dos.
+- A6: Los colores de la salida salen de reconocer marcas habituales de los ejecutores de tests, sin interpretar el lenguaje: en rojo `[E]`, `✗`, `FAIL`, `Error`, `-N` y la línea «Actual:» o «Received:»; en verde `✓`, `+N`, «All tests passed» y la línea «Expected:»; en azul las rutas con línea y columna; atenuados los tiempos. Lo que no se reconoce queda en el color del texto, y el color nunca es la única señal: el propio texto dice qué falló.
 
 ## Criterios de aceptación
 
 - AC1: CUANDO se abre la pestaña Progreso de un cambio con tareas ENTONCES las tareas aparecen en el orden de la spec como filas de documento, con su id, título, estado, resumen, commit, archivos, criterios, duración e intentos, y encima el resumen con una barra por tarea.
-- AC2: CUANDO una tarea tiene verificaciones ENTONCES se ve la última, correcta o fallida, con su duración y su comando; CUANDO falló ENTONCES «Ver salida» muestra sus últimas líneas, abiertas por defecto en la tarea en curso.
+- AC2: CUANDO una tarea tiene verificaciones ENTONCES se ve la última, correcta o fallida, con su duración y su comando; CUANDO falló ENTONCES «Ver salida» muestra sus últimas líneas con colores que las contextualizan (fallos en rojo, aciertos en verde, rutas en azul, tiempos atenuados), abiertas por defecto en la tarea en curso.
 - AC3: CUANDO una tarea pidió alcance ENTONCES sale de su lugar y aparece arriba, en «Te espera», con la solicitud: la ruta, el motivo y qué implica decidir; «Aprobar» la aprueba y «Rechazar…» pide el motivo en un diálogo antes de rechazarla; CUANDO la solicitud se decide ENTONCES la tarea vuelve a su lugar en la lista.
 - AC4: CUANDO cambia el progreso (termina una tarea, se decide una solicitud) ENTONCES la pestaña se actualiza sola; CUANDO la fuente no puede hacer la acción ENTONCES lo explica en un aviso.
 - AC5: CUANDO el cambio aún no tiene tareas ENTONCES la pestaña lo dice con un estado vacío.
@@ -85,3 +86,8 @@ La pestaña Progreso del cambio muestra hoy un texto provisional. Pasa a ser la 
   - ac: AC1, AC4
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro: «Exportar boletines en PDF» con la solicitud (aprobar y rechazar con motivo), «Login con Google», un cambio sin tareas, y que el resumen y la cabecera se actualizan al decidir.
+- [ ] T5: Colores que contextualizan la salida
+  - files: packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts, packages/ui/src/progress/task-row.ts, packages/ui/src/progress/progress-tab.test.ts, docs/ui.md
+  - ac: AC2
+  - verify: pnpm check
+  - notes: `outputSegments(line)` puro en `data/progress.ts` parte cada línea en tramos con su tono; la fila los pinta con los colores de fase. Comprobar en el navegador, en claro y oscuro, que el contraste sigue cumpliendo.

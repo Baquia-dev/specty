@@ -2,25 +2,25 @@
   "schema": 1,
   "id": "20261022-pestana-progreso-tareas-como-documento-verificac",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261022-pestana-progreso-tareas-como-documento-verificac",
   "baseCommit": "2505cc5d59c2bb62f9c432a6d454c4118a5efeef",
-  "revision": 3,
+  "revision": 4,
   "approved": {
-    "revision": 3,
-    "hash": "sha256:ae6cc657d0fa0977631326cd4e45401bfa046634040fca8b0dda1d025522bb26",
-    "at": "2026-10-22T22:51:57.173Z",
+    "revision": 4,
+    "hash": "sha256:3c4033ca37fa9ff525cff6afb7805b1c373bd774e929b533dddfa825f4498645",
+    "at": "2026-10-22T23:09:07.214Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
     "level": "L",
-    "score": 17,
+    "score": 18,
     "adjust": 0,
     "reasons": [
       "14 archivos",
       "2 módulos",
-      "4 tareas"
+      "5 tareas"
     ]
   },
   "items": {
@@ -42,6 +42,10 @@
     },
     "A5": {
       "hash": "sha256:d1a3288aee0424e35417f62265f0de1ec3b082ae7aca70094f45c2db6c7b66b9",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:5d718e45b1fa4045c81c878fec9c92328b2332c23271af6002d5f45083ecb404",
       "decision": "implicit"
     }
   },
@@ -75,12 +79,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9c7b753697e7dff10154adce7ceb36949510da97",
+      "attempts": 1,
       "startedAt": "2026-10-22T23:01:13.635Z",
       "doneAt": "2026-10-22T23:04:52.130Z",
-      "summary": "La pestaña Progreso de la página del cambio usa sp-progress-tab en lugar del texto provisional. Test de la página: la pestaña con sus tres tareas y T3 arriba, y la actualización en vivo. docs/ui.md: la sección Progreso. Comprobado en el navegador a 390 y 1280 px, en claro y oscuro: «Exportar boletines en PDF» con T3 en «Te espera» y su fallo abierto; aprobar y rechazar con motivo devuelven T3 a su lugar y actualizan resumen y cabecera; «Login con Google»; estado vacío en un borrador sin tareas."
+      "summary": "La pestaña Progreso de la página del cambio usa sp-progress-tab en lugar del texto provisional. Test de la página: la pestaña con sus tres tareas y T3 arriba, y la actualización en vivo. docs/ui.md: la sección Progreso. Comprobado en el navegador a 390 y 1280 px, en claro y oscuro: «Exportar boletines en PDF» con T3 en «Te espera» y su fallo abierto; aprobar y rechazar con motivo devuelven T3 a su lugar y actualizan resumen y cabecera; «Login con Google»; estado vacío en un borrador sin tareas.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,8 +92,8 @@
     "adjustment": null
   },
   "maxIds": {
-    "A": 5,
+    "A": 6,
     "AC": 5,
-    "T": 4
+    "T": 5
   }
 }
