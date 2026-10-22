@@ -158,6 +158,34 @@ describe("AssumptionRow", () => {
     expect(source.calls).toEqual([["20261021-login-google", "A1", "confirmed"]]);
   });
 
+  it("offers «Cambiar decisión» once decided, which brings the choices back (AC2)", async () => {
+    const { element, source, settle, host, fixture } = await render();
+    const card = () => element.querySelector("sp-assumption-row");
+    const buttons = () => [...(card()?.querySelectorAll("sp-button button") ?? [])].map(text);
+    const decided = { id: "A1", text: "Existe el proyecto.", impact: "high" } as const;
+    host.assumption.set({ ...decided, decision: "confirmed" });
+    await fixture.whenStable();
+    expect(buttons()).toEqual(["Cambiar decisión"]);
+    expect(card()?.hasAttribute("data-waiting")).toBe(false);
+
+    card()?.querySelector<HTMLButtonElement>("sp-button button")?.click();
+    await settle();
+    expect(buttons()).toEqual(["Confirmar", "Rechazar…"]);
+    // The pressed button is gone: focus moves to the first choice.
+    expect(document.activeElement).toBe(card()?.querySelector("[data-choices] button"));
+
+    // A live update with the same decision leaves the choices open…
+    host.assumption.set({ ...decided, decision: "confirmed" });
+    await fixture.whenStable();
+    expect(buttons()).toEqual(["Confirmar", "Rechazar…"]);
+    card()?.querySelector<HTMLButtonElement>("sp-button button")?.click();
+    expect(source.calls).toEqual([["20261021-login-google", "A1", "confirmed"]]);
+    // …and a new decision folds them away.
+    host.assumption.set({ ...decided, decision: "rejected", comment: "No existe." });
+    await fixture.whenStable();
+    expect(buttons()).toEqual(["Cambiar decisión"]);
+  });
+
   it("rejects only with a reason, which stays next to it (AC2)", async () => {
     const { element, source, settle, host, fixture } = await render();
     [

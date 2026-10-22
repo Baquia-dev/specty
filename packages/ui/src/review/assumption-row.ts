@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DIALOG_DATA, DialogRef } from "@angular/cdk/dialog";
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
+  Injector,
   inject,
   input,
+  linkedSignal,
   output,
   signal,
 } from "@angular/core";
@@ -79,7 +83,7 @@ const DECISIONS = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     role: "listitem",
-    "[class]": "rowClass()",
+    "[class]": "row",
     "[attr.data-item]": "assumption().id",
     "[attr.data-waiting]": "waiting() || null",
     // A high-impact assumption still undecided reads on a faint tint, besides its chip.
@@ -103,10 +107,15 @@ const DECISIONS = {
         <p class="m-0 mt-1 border-l-2 border-border pl-3 text-sm text-text-muted">{{ t()('Motivo', 'Reason') }}: «{{ reason }}»</p>
       }
       @if (editable()) {
-        <div class="mt-2 flex gap-2">
-          <sp-button size="sm" variant="primary" (pressed)="confirm()">{{ t()('Confirmar', 'Confirm') }}</sp-button>
-          <sp-button size="sm" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
-        </div>
+        @if (assumption().decision === 'pending' || reconsidering()) {
+          <div class="mt-2 flex gap-2" data-choices>
+            <sp-button size="sm" variant="primary" (pressed)="confirm()">{{ t()('Confirmar', 'Confirm') }}</sp-button>
+            <sp-button size="sm" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
+          </div>
+        } @else {
+          <!-- Already decided: the choices stay out of the way until the person asks for them. -->
+          <sp-button class="mt-1 self-start" size="sm" variant="ghost" (pressed)="reconsider()">{{ t()('Cambiar decisión', 'Change decision') }}</sp-button>
+        }
       }
     </div>
     <div class="flex items-start gap-1">
@@ -128,15 +137,24 @@ export class AssumptionRow {
   private readonly source = inject(SpectyData);
   private readonly dialogs = inject(Dialogs);
   private readonly failed = reportFailure(inject(Toasts), inject(Preferences));
+  private readonly host: HTMLElement = inject(ElementRef).nativeElement;
+  private readonly injector = inject(Injector);
   protected readonly t = inject(Preferences).t;
+  protected readonly row = ROW;
   protected readonly reveal = REVEAL;
   protected readonly decisions = DECISIONS;
   /** A high-impact assumption still undecided: approval waits for it. */
   protected readonly waiting = computed(
     () => this.assumption().impact === "high" && this.assumption().decision === "pending",
   );
-  /** The tinted row bleeds into the margin so its text stays aligned with the others. */
-  protected readonly rowClass = computed(() => (this.waiting() ? `${ROW} -mx-3 px-3` : ROW));
+  /**
+   * The person asked to change a decision already taken. A new decision folds the choices away
+   * again; live updates that keep the same decision leave them open.
+   */
+  protected readonly reconsidering = linkedSignal<string, boolean>({
+    source: () => this.assumption().decision,
+    computation: (decision, previous) => (previous?.source === decision ? previous.value : false),
+  });
   protected readonly commentIcon = LucideMessageSquarePlus;
   protected readonly decisionLabel = computed(() => {
     const t = this.t();
@@ -147,6 +165,14 @@ export class AssumptionRow {
       rejected: t("Rechazado", "Rejected"),
     }[this.assumption().decision];
   });
+
+  /** Shows the choices again and moves focus to the first, since the pressed button goes away. */
+  protected reconsider(): void {
+    this.reconsidering.set(true);
+    afterNextRender(() => this.host.querySelector<HTMLElement>("[data-choices] button")?.focus(), {
+      injector: this.injector,
+    });
+  }
 
   protected confirm(): void {
     this.source

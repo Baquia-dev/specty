@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-revision-items-sin-lineas-y-supuestos-decididos",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-revision-items-sin-lineas-y-supuestos-decididos",
   "baseCommit": "3a65efe17778442ebb87e084410a27c9f6ea995d",
   "revision": 1,
@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "21316bc47526ee910e42df2d730f8689cd4b920f",
+      "attempts": 1,
       "startedAt": "2026-10-22T16:25:35.735Z",
       "doneAt": "2026-10-22T16:27:12.261Z",
-      "summary": "ROW y LIST de spec-sections: filas sin líneas, con -mx-3 px-3 y resalte suave (hover y focus-within con el texto al 4 %, sin transición con movimiento reducido); listas con sangría pl-6 y sin línea arriba ni abajo; los archivos igual, con el módulo también sangrado. Afecta a la spec completa y al delta. Tests y docs/ui.md actualizados."
+      "summary": "ROW y LIST de spec-sections: filas sin líneas, con -mx-3 px-3 y resalte suave (hover y focus-within con el texto al 4 %, sin transición con movimiento reducido); listas con sangría pl-6 y sin línea arriba ni abajo; los archivos igual, con el módulo también sangrado. Afecta a la spec completa y al delta. Tests y docs/ui.md actualizados.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a77a5b60be5ce61f1ae587e811c8d6fdacda31b4",
+      "startedAt": "2026-10-22T16:27:12.515Z",
+      "doneAt": "2026-10-22T16:29:54.629Z",
+      "summary": "Supuesto decidido (confirmado, rechazado o aceptado con la spec) muestra 'Cambiar decisión' en lugar de Confirmar y Rechazar; al pulsarlo vuelven y el foco pasa a Confirmar. Un linkedSignal conserva la elección en las actualizaciones en vivo con la misma decisión y la pliega al cambiar de decisión; fuera de revisión no se muestra nada. La fila del supuesto usa ROW directamente. Comprobado en el navegador en claro y en oscuro, en la spec completa y el delta."
     }
   },
   "pending": {
