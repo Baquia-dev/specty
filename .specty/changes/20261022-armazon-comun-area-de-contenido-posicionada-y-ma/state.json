@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-armazon-comun-area-de-contenido-posicionada-y-ma",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-armazon-comun-area-de-contenido-posicionada-y-ma",
   "baseCommit": "639c0d181f353090cfa63728c44c236bc13f88a2",
   "revision": 2,
@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "97b2f5568d43c2210431918655307830e08475ef",
+      "attempts": 1,
       "startedAt": "2026-10-22T10:24:45.762Z",
       "doneAt": "2026-10-22T10:26:39.312Z",
-      "summary": "El main del armazón pasa a ser relative (el contenido absoluto, como el texto para lectores de pantalla, ya no se sale del área que se desplaza) y lleva pb-16, el margen inferior común. Test: main relative, con overflow-y-auto y pb-16 en la Bandeja y el catálogo."
+      "summary": "El main del armazón pasa a ser relative (el contenido absoluto, como el texto para lectores de pantalla, ya no se sale del área que se desplaza) y lleva pb-16, el margen inferior común. Test: main relative, con overflow-y-auto y pb-16 en la Bandeja y el catálogo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "12887b1c8d71a2a539e76383ed717db3246d4caf",
+      "startedAt": "2026-10-22T10:26:39.562Z",
+      "doneAt": "2026-10-22T10:29:02.584Z",
+      "summary": "La Bandeja (py-8 → pt-8), el catálogo (py-6 → pt-6) y la página del cambio (sin pb-16) dejan el margen inferior al armazón. Tests: la página del cambio y la Bandeja no ponen margen inferior propio y main lleva pb-16. En el navegador, en la Bandeja, el catálogo, un cambio y su delta: html sin desplazamiento (0 px) y 64 px entre el final del contenido y el borde."
     }
   },
   "pending": {

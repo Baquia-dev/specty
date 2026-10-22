@@ -50,7 +50,7 @@ export const CATALOG_ROUTES: Routes = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="flex flex-wrap">
-      <nav class="flex-[1_1_200px] px-4 py-6" [attr.aria-label]="t()('Catálogo', 'Catalog')">
+      <nav class="flex-[1_1_200px] px-4 pt-6" [attr.aria-label]="t()('Catálogo', 'Catalog')">
         <ul class="m-0 flex list-none flex-col gap-1 p-0">
           @for (page of pages(); track page.path) {
             <li>
@@ -67,7 +67,7 @@ export const CATALOG_ROUTES: Routes = [
           }
         </ul>
       </nav>
-      <div class="min-w-0 flex-[999_1_560px] px-6 py-6">
+      <div class="min-w-0 flex-[999_1_560px] px-6 pt-6">
         <router-outlet />
       </div>
     </div>

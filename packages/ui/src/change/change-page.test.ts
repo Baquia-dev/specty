@@ -135,9 +135,12 @@ describe("ChangePage", () => {
     }
   });
 
-  it("ends the page with room below the content (AC1)", async () => {
+  it("leaves the room below the content to the shell, like every page (AC2)", async () => {
     const { element } = await open("/changes/20261020-evolucion-trimestre");
-    expect(element.querySelector("sp-change-page > div")?.className).toContain("pb-16");
+    expect(element.querySelector("main")?.className.split(" ")).toContain("pb-16");
+    const page = element.querySelector("sp-change-page > div");
+    expect(page).not.toBeNull();
+    expect(page?.className).not.toMatch(/\b(pb|py)-\d/);
   });
 
   it.each([

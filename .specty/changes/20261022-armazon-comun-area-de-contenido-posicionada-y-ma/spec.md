@@ -40,7 +40,7 @@ El armazón común de la UI resuelve dos cosas que hoy arregla cada página por 
   - files: packages/ui/src/app/shell.ts, packages/ui/src/app/shell.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T2: Las páginas dejan de poner su propio margen inferior
+- [x] T2: Las páginas dejan de poner su propio margen inferior
   - files: packages/ui/src/inbox/inbox.ts, packages/ui/src/catalog/catalog.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts
   - ac: AC2
   - verify: pnpm check

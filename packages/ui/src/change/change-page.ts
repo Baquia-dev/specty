@@ -63,7 +63,7 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
   imports: [RouterLink, LucideDynamicIcon, PhaseBadge, Skeleton, Tabs, TabPanel, SpecReview],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex flex-col pb-16">
+    <div class="flex flex-col">
       @if (change(); as change) {
         <!-- Zero height in the flow: the bar never pushes the content. -->
         <div class="sticky top-0 z-20 h-0">

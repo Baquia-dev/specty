@@ -87,6 +87,8 @@ describe("Inbox", () => {
 
   it("shows skeletons first, then decisions, work in progress and recent changes (AC1, AC6)", async () => {
     const { element } = await open();
+    // The room below the content comes from the shell, as on every page.
+    expect(element.querySelector("sp-inbox > div")?.className).not.toMatch(/\b(pb|py)-\d/);
     const headings = [...element.querySelectorAll("sp-inbox h2")].map((heading) =>
       text(heading).trim(),
     );

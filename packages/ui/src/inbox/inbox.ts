@@ -58,7 +58,7 @@ const TICK_MS = 30_000;
   imports: [RouterLink, LucideDynamicIcon, Badge, PhaseBadge, Button, Card, Kbd, Skeleton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto flex max-w-4xl flex-col gap-10 px-6 py-8">
+    <div class="mx-auto flex max-w-4xl flex-col gap-10 px-6 pt-8">
       <header class="flex flex-wrap items-baseline justify-between gap-3">
         <h1 class="m-0 text-xl font-semibold">{{ t()('Bandeja', 'Inbox') }}</h1>
         <span class="flex items-center gap-1 text-xs text-text-muted">
