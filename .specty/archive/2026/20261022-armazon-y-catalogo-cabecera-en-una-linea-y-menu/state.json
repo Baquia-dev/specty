@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-armazon-y-catalogo-cabecera-en-una-linea-y-menu",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-armazon-y-catalogo-cabecera-en-una-linea-y-menu",
   "baseCommit": "2c5b9b89c27debccb518e14d517c0aa604a90f08",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:343bbbc7e9c473c7bd2a0c7ddb178a18b450ccc563925bf9ce06f2da3033ada9",
@@ -54,12 +54,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f03db221aa350337488b4d6868dc11d171cd78fd",
+      "attempts": 1,
       "startedAt": "2026-10-22T19:22:12.372Z",
       "doneAt": "2026-10-22T19:25:37.500Z",
-      "summary": "Catálogo con el ancho de página común (PAGE): menú lateral de 15 rem, sin saltos de línea y fijo al desplazarse; en el teléfono, una línea que se desplaza de lado. «Colores» en filas de documento bajo sp-section-divider (Base y acento 9, Usos del acento, Fases 8): muestra, token, uso y valor, apiladas en el teléfono; las fases con un punto de color por token; los usos del acento sin recuadro. Tests del ancho, el menú y las filas; docs/ui.md."
+      "summary": "Catálogo con el ancho de página común (PAGE): menú lateral de 15 rem, sin saltos de línea y fijo al desplazarse; en el teléfono, una línea que se desplaza de lado. «Colores» en filas de documento bajo sp-section-divider (Base y acento 9, Usos del acento, Fases 8): muestra, token, uso y valor, apiladas en el teléfono; las fases con un punto de color por token; los usos del acento sin recuadro. Tests del ancho, el menú y las filas; docs/ui.md.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -72,5 +72,6 @@
     "T": 2,
     "R": 1,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T19:30:19.603Z"
 }

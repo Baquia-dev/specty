@@ -65,3 +65,26 @@ En el teléfono la cabecera de la app ocupa tres líneas (unos 145 px) y, sumada
 ## Riesgos
 
 - R1: El popover nativo no existe en jsdom — los tests comprueban el marcado (botón con `popovertarget`, panel `popover`, opciones) y las elecciones; el abrir y cerrar se comprueba en el navegador.
+
+## Cierre
+
+### Resumen
+
+La cabecera ocupa una sola línea (57 px) en cualquier ancho desde 360 px: specty, Bandeja y Catálogo y, a la derecha, el buscador (en el teléfono, solo el icono) y un menú de preferencias con el tema y el idioma. El catálogo usa el ancho de página común, con su menú sin saltos de línea (en el teléfono, una línea que se desplaza de lado), y «Colores» muestra los tokens en filas de documento bajo divisores de sección.
+
+### Desviaciones
+
+- S1: `components/tooltip.ts` entró en T1. Al abrir el menú, el tooltip del botón quedaba como una píldora vacía; ahora un tooltip se oculta cuando su texto queda vacío mientras se ve, lo que sirve también a cualquier botón cuyo motivo de bloqueo desaparece bajo el puntero.
+- En escritorio el menú del catálogo queda fijo al desplazarse, algo que la spec no pedía pero que sigue el patrón del índice de la revisión.
+
+### Decisiones
+
+- Popover nativo (`popover` y `popovertarget`) en lugar de `sp-menu`: el menú tiene grupos de opciones, no acciones, y el navegador da el cierre con Escape o al pulsar fuera, el orden de tabulación tras el botón y la vuelta del foco. Se abre con `popovertarget` porque abrirlo desde código hace que pulsar el botón con el menú abierto lo cierre y lo vuelva a abrir.
+- El panel no lleva ninguna utilidad de `display`: el navegador lo oculta mientras está cerrado y una clase `flex` lo mostraría siempre. Va `fixed` bajo la cabecera, que nunca se desplaza, sin posicionamiento por ancla.
+- En el teléfono el buscador es un `sp-icon-button` y desde 640 px un `sp-button` con texto: un solo botón con el texto oculto quedaba rectangular junto al de preferencias.
+- El evento `toggle` se lee por su campo `newState`, no con `instanceof ToggleEvent`, porque jsdom no define esa clase.
+
+### Pendientes
+
+- El cambio siguiente: la página del cambio y la revisión en el teléfono (cabecera amplia con el título de cuatro líneas y la franja de datos que se rompe, la redacción de «Esfuerzo recomendado», el índice «Contenido» que tapa el texto y las marcas a la derecha que estrechan los ítems en la revisión y el delta).
+- En el teléfono, si la entrada activa del menú del catálogo queda fuera de la vista al entrar directamente (por ejemplo, «Patrones»), no se desplaza hasta ella.
