@@ -63,7 +63,7 @@ Cuando una spec vuelve a revisión después de haber sido aprobada (por ejemplo,
 
 ## Tareas
 
-- [ ] T1: Delta de la revisión en los datos
+- [x] T1: Delta de la revisión en los datos
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/delta.ts, packages/ui/src/data/delta.test.ts, packages/ui/src/data/views.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui test

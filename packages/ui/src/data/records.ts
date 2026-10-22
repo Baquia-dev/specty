@@ -18,6 +18,8 @@ export interface ChangeRecord {
   readonly phaseSince: string;
   /** `comments.json` (formats.md §5); none when absent. */
   readonly comments?: readonly CommentRecord[];
+  /** `revisions/r<N>.md` for N = `state.approved.revision`: only when the change was approved. */
+  readonly approvedSpec?: string;
 }
 
 /** Where a comment points: an item (`A1`) or a quote inside a section. */
@@ -138,6 +140,31 @@ export interface SectionIndexView {
   readonly warnings: number;
 }
 
+/** A piece of a word diff: unchanged, added or removed. */
+export interface DiffPart {
+  readonly text: string;
+  readonly change?: "added" | "removed";
+}
+
+/** One unit that changed since the approved revision: an item, a file or a section of text. */
+export interface DeltaEntryView {
+  /** An item id (`AC3`), a file path, or the section key of a text (`goal`). */
+  readonly key: string;
+  readonly kind: "title" | "section" | "assumption" | "criterion" | "task" | "risk" | "file";
+  readonly change: "added" | "removed" | "modified";
+  readonly section: ReviewSection | "title";
+  readonly diff: readonly DiffPart[];
+  /** A new task touching files the approved revision did not list: "possible new scope". */
+  readonly newScope: readonly Bilingual[];
+}
+
+/** What changed since the person approved (docs/ui.md, "Revisión del delta"). */
+export interface DeltaView {
+  readonly approvedRevision: number;
+  /** In the order of the document. */
+  readonly entries: readonly DeltaEntryView[];
+}
+
 /** Everything the spec review shows, as plain data. */
 export interface ReviewView {
   readonly goal: string;
@@ -153,6 +180,8 @@ export interface ReviewView {
   readonly index: readonly SectionIndexView[];
   /** Validation errors: approving waits for them. */
   readonly errors: readonly Bilingual[];
+  /** Only in review, when an earlier revision was approved. */
+  readonly delta?: DeltaView;
 }
 
 /** What a change waits for from the person, if anything. */

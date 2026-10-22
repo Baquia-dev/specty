@@ -12,7 +12,8 @@ import {
   recommendEffort,
   type Spec,
 } from "@baquia-dev/specty-core";
-import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind } from "./records";
+import { deriveDelta } from "./delta";
+import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind, ReviewView } from "./records";
 import { deriveReview } from "./review";
 
 const TABS: Readonly<Record<Phase, ChangeTab>> = {
@@ -94,8 +95,19 @@ export function deriveView(record: ChangeRecord): ChangeView {
     },
     tab: initialTab(state.phase),
     problems,
-    review: deriveReview(spec, state, record.comments ?? []),
+    review: {
+      ...deriveReview(spec, state, record.comments ?? []),
+      ...deltaOf(record, state, spec),
+    },
   };
+}
+
+/** In review, what changed since the approved revision, if there was one. */
+function deltaOf(record: ChangeRecord, state: ChangeState, spec: Spec): Partial<ReviewView> {
+  if (state.phase !== "review" || state.approved === undefined) return {};
+  if (record.approvedSpec === undefined) return {};
+  const approved = parseSpec(record.approvedSpec).spec;
+  return { delta: deriveDelta(spec, approved, state.approved.revision) };
 }
 
 export function deriveViews(records: readonly ChangeRecord[]): readonly ChangeView[] {

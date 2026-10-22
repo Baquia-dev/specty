@@ -6,6 +6,13 @@
   "branch": "specty/20261022-prototipo-delta-de-la-revision",
   "baseCommit": "39342c99c049d945803a8f45a4d4ae99d95dd96d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9c83fdcad4ac4670277b68e0f8df08d8c1869cd7cef1a31670b390e493cf5134",
+    "at": "2026-10-22T09:34:52.278Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5b88fdfa32d7c7e9ce18de94c81dfabf22752752",
+      "startedAt": "2026-10-22T09:35:07.617Z",
+      "doneAt": "2026-10-22T09:38:27.171Z",
+      "summary": "ChangeRecord.approvedSpec y ReviewView.delta (entradas planas con clave, tipo, cambio, sección, diff y avisos). data/delta.ts: specDelta y hashUnits del core contra la revisión aprobada, texto legible sin marcador ni id, diff por palabras propio (subsecuencia común, con límite de 600 tokens), y posible alcance nuevo con la regla possible-new-scope del core en es y en. views.ts lo añade solo en revisión con aprobación y approvedSpec."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "AC": 5,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9c83fdcad4ac4670277b68e0f8df08d8c1869cd7cef1a31670b390e493cf5134",
-    "at": "2026-10-22T09:34:52.278Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
