@@ -6,6 +6,13 @@
   "branch": "specty/20261022-armazon-comun-area-de-contenido-posicionada-y-ma",
   "baseCommit": "639c0d181f353090cfa63728c44c236bc13f88a2",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:119b92eab9e86923321590f5839b44392ce4e7399bb16081daa9dc8c34a6f4de",
+    "at": "2026-10-22T10:24:36.820Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "97b2f5568d43c2210431918655307830e08475ef",
+      "startedAt": "2026-10-22T10:24:45.762Z",
+      "doneAt": "2026-10-22T10:26:39.312Z",
+      "summary": "El main del armazón pasa a ser relative (el contenido absoluto, como el texto para lectores de pantalla, ya no se sale del área que se desplaza) y lleva pb-16, el margen inferior común. Test: main relative, con overflow-y-auto y pb-16 en la Bandeja y el catálogo."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:119b92eab9e86923321590f5839b44392ce4e7399bb16081daa9dc8c34a6f4de",
-    "at": "2026-10-22T10:24:36.820Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

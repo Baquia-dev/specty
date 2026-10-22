@@ -36,7 +36,7 @@ El armazón común de la UI resuelve dos cosas que hoy arregla cada página por 
 
 ## Tareas
 
-- [ ] T1: El armazón posiciona el área de contenido y pone el margen inferior
+- [x] T1: El armazón posiciona el área de contenido y pone el margen inferior
   - files: packages/ui/src/app/shell.ts, packages/ui/src/app/shell.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui test

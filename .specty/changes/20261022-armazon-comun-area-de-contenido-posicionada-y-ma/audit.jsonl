@@ -2,3 +2,6 @@
 {"ts":"2026-10-22T10:23:52.214Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:9e98b0144bead8b53f0b9f62d1bf9fa906c39bd6fae9e67453602a32177350fa","size":"M","warnings":1}}
 {"ts":"2026-10-22T10:24:03.868Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:119b92eab9e86923321590f5839b44392ce4e7399bb16081daa9dc8c34a6f4de","size":"M","warnings":0}}
 {"ts":"2026-10-22T10:24:36.834Z","actor":"human","event":"spec.approved","data":{"revision":2,"hash":"sha256:119b92eab9e86923321590f5839b44392ce4e7399bb16081daa9dc8c34a6f4de","channel":"tty"}}
+{"ts":"2026-10-22T10:24:45.763Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"97b2f5568d43c2210431918655307830e08475ef"}}
+{"ts":"2026-10-22T10:26:39.311Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-ui test","exit":0,"ms":22001}}
+{"ts":"2026-10-22T10:26:39.313Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"El main del armazón pasa a ser relative (el contenido absoluto, como el texto para lectores de pantalla, ya no se sale del área que se desplaza) y lleva pb-16, el margen inferior común. Test: main relative, con overflow-y-auto y pb-16 en la Bandeja y el catálogo."}}

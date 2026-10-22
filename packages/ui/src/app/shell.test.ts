@@ -60,6 +60,19 @@ describe("Shell", () => {
     expect(router.url).toBe("/catalog/colors");
   });
 
+  it("scrolls only a positioned content area, which ends every page with the same room (AC1, AC2)", async () => {
+    for (const url of ["/", "/catalog"]) {
+      const { element } = await open(url);
+      const main = element.querySelector("main");
+      const classes = main?.className.split(" ") ?? [];
+      // Absolute content (screen-reader text) stays inside it instead of scrolling the page.
+      expect(classes, url).toEqual(
+        expect.arrayContaining(["relative", "overflow-y-auto", "pb-16"]),
+      );
+      TestBed.resetTestingModule();
+    }
+  });
+
   it("switches theme and language without reloading (AC8)", async () => {
     const { fixture, element } = await open("/catalog");
     element.querySelector<HTMLInputElement>("input[name=theme][value=dark]")?.click();

@@ -94,7 +94,11 @@ const CHOICE =
           }
         </fieldset>
       </header>
-      <main #content tabindex="-1" class="min-h-0 flex-1 overflow-y-auto focus:outline-none">
+      <!--
+        Only this area scrolls. Positioned, so absolute content (screen-reader text) cannot escape
+        it and scroll the whole page; every page ends with the same room below.
+      -->
+      <main #content tabindex="-1" class="relative min-h-0 flex-1 overflow-y-auto pb-16 focus:outline-none">
         <router-outlet />
       </main>
       <sp-toaster />
