@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261022-revision-explicita-en-la-bandeja-el-delta-la-rev",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-revision-explicita-en-la-bandeja-el-delta-la-rev",
+  "baseCommit": "aa45c83f03fa28e9f0273d4936b619eeb8ccd1da",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:18bfde66a53b741be5ad639a5a1ad6852a41ed7ca16b9bdfc2ede48d23932a1e",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:d22068d41973ce53f59434b247f2b884e8b6af2748963a925c319b48ec00342a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:76e4a44f1bb859a55974e4b678699b7bea0d240d9f393f30cca7a30e29c391ec",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:097a9b5b071310509f04652e812b280514f21ec7a3639d8323db14a8b253eae6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5ea00bea7d29a18d3555c609bfbc1314fa0c8df114ed5dd10f86bbb233543f8a",
+    "at": "2026-10-22T21:00:11.648Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
