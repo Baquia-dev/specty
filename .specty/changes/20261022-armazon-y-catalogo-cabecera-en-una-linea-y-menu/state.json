@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261022-armazon-y-catalogo-cabecera-en-una-linea-y-menu",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-armazon-y-catalogo-cabecera-en-una-linea-y-menu",
+  "baseCommit": "2c5b9b89c27debccb518e14d517c0aa604a90f08",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ed8878b67fcbeb7bd909db9033a9038e756220427f2a87ff6644eef5cc5635cb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2301ae89f8bef90aec80778f2b7658205d2e4f5c367874435782c1017567daf0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7c63f41a28c91daeaea967c1ce547de2c25fcfd34fb50da6fe4ae54c971c0bd1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6602d23bf172d52d8eee25d47150e02c7803a0c8e4c4010f8e342f33db10de0d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:343bbbc7e9c473c7bd2a0c7ddb178a18b450ccc563925bf9ce06f2da3033ada9",
+    "at": "2026-10-22T18:47:24.326Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
