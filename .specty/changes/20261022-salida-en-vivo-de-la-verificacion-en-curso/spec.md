@@ -62,7 +62,7 @@ Mientras Specty verifica una tarea (al ejecutar `specty task done`, que puede ta
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts, packages/ui/src/data/records.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts
-- [ ] T2: Una verificación simulada en la fuente de ejemplo
+- [x] T2: Una verificación simulada en la fuente de ejemplo
   - files: packages/ui/src/data/sample-run.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts

@@ -2,6 +2,7 @@
 import { Injectable, inject } from "@angular/core";
 import type { ChangeState, Phase } from "@baquia-dev/specty-core";
 import { Commands } from "../components/command-palette";
+import type { RunRecord } from "./progress";
 import {
   ActionError,
   type ChangeRecord,
@@ -11,6 +12,7 @@ import {
 } from "./records";
 import { boletinesProgress, decideScopeIn, loginProgress, withProgress } from "./sample-progress";
 import { revisedSample } from "./sample-revisions";
+import { canFinishTask, finishTaskIn, RunSimulation, runTarget, verifiedIn } from "./sample-run";
 import { SAMPLE_SPECS } from "./sample-specs";
 
 const HASH = `sha256:${"0".repeat(64)}`;
@@ -105,6 +107,10 @@ export class FixtureData extends SpectyData {
   private records = sampleRecords(Date.now());
   private readonly listeners = new Set<() => void>();
   private failing = false;
+  /** Verifications printing line by line; each leaves its result in the record. */
+  private readonly runs = new RunSimulation((change, run, passed) => {
+    void this.edit(change, (record) => verifiedIn(record, run, passed, Date.now()));
+  });
 
   constructor() {
     super();
@@ -122,6 +128,9 @@ export class FixtureData extends SpectyData {
       this.approveScope(),
     );
     simulate("task", "terminar una tarea", "finish a task", () => this.finishTask());
+    simulate("verify", "verificar la tarea en curso", "verify the task in progress", () =>
+      this.startRun(),
+    );
     simulate("outage", "cortar o recuperar la conexión", "drop or restore the connection", () =>
       this.toggleOutage(),
     );
@@ -152,23 +161,19 @@ export class FixtureData extends SpectyData {
     }
   }
 
+  /** Verifies the task in progress of the first change that has one, line by line. */
+  startRun(): void {
+    const target = runTarget(this.records);
+    if (target !== undefined) this.runs.start(target);
+  }
+
+  override watchRun(change: string, listener: (run: RunRecord | undefined) => void): () => void {
+    return this.runs.watch(change, listener);
+  }
+
   /** Marks the active task done; with none left, the change moves to acceptance. */
   finishTask(): void {
-    const activeTask = (state: ChangeState) =>
-      Object.entries(state.tasks).find(([, task]) => task.status === "active");
-    this.update(
-      (state) =>
-        state.phase === "implementing" &&
-        state.pending.scopeRequests.length === 0 &&
-        activeTask(state) !== undefined,
-      (state) => {
-        const [id, task] = activeTask(state) ?? [];
-        if (id === undefined || task === undefined) return state;
-        const tasks = { ...state.tasks, [id]: { ...task, status: "done" as const } };
-        const left = Object.values(tasks).some((entry) => entry.status !== "done");
-        return { ...state, tasks, phase: left ? state.phase : "acceptance" };
-      },
-    );
+    this.update(canFinishTask, finishTaskIn);
   }
 
   toggleOutage(): void {
