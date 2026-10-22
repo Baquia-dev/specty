@@ -66,3 +66,25 @@ Este cambio arregla los dos problemas y comparte con el select la forma de coloc
   - ac: AC4
   - verify: pnpm check
   - notes: Comprobar en el navegador el select del catálogo y el de la Bandeja, cerca del borde inferior.
+
+## Cierre
+
+### Resumen
+
+- **Paleta de comandos:** mantiene el foco en el buscador mientras las flechas recorren sus resultados, así que se puede seguir escribiendo para filtrar, y anuncia la opción activa.
+- **Menú:** se abre junto a su botón aunque la página se haya desplazado, y encima de él cuando no cabe debajo.
+- **Colocación compartida:** el menú y el select usan la misma lógica, `followOrigin`.
+
+### Desviaciones
+
+- La revisión 3 de la spec dividió la tarea del menú y el select en dos (T2 y T3), por el aviso de tamaño de Specty, y añadió a T3 el test del select.
+- Un archivo provisional se escribió por error en una ruta mal tecleada, fuera del repositorio (`…/Jorge Palacio/Projectos/…`). Se comprobó que la carpeta era nueva y solo lo contenía a él, y se borró.
+
+### Decisiones
+
+- **`followOrigin`:** recibe la condición de apertura y la superposición, y se llama en el constructor. Mientras la superposición está abierta, la recoloca al abrir, cuando cambia el tamaño del panel y con cada desplazamiento. Escucha el desplazamiento en fase de captura, para que cuente el `main` del armazón sin registrarlo en el CDK.
+- **Foco en la paleta:** la paleta, como el select, usa `focusMode="activedescendant"`. El menú sigue moviendo el foco a sus elementos, como pide su patrón.
+
+### Pendientes
+
+- Las pestañas Progreso, Aceptación e Historial (fase 2), siguiente paso acordado.

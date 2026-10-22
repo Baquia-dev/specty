@@ -12,3 +12,6 @@
 {"ts":"2026-10-22T22:17:29.518Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"40fc5e3cf73db21ad90612beca632c9a66b75f3c"}}
 {"ts":"2026-10-22T22:19:39.455Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":42600}}
 {"ts":"2026-10-22T22:19:39.458Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"El select usa followOrigin en lugar de su lógica propia (misma colocación: al abrir, al cambiar de tamaño y al desplazar). Test que comprueba que se recoloca al abrir y con el desplazamiento. docs/ui.md: la paleta mantiene el foco en el buscador y anuncia la opción activa; menús y select se recolocan junto a su botón. Comprobado en el navegador en el catálogo y en la Bandeja."}}
+{"ts":"2026-10-22T22:21:20.960Z","actor":"human","event":"change.accepted","data":{"revision":3}}
+{"ts":"2026-10-22T22:22:03.175Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":4,"hash":"sha256:8a21019e75c6d4f0cdf00a764fe6e9c38195782d578bd802bf612945c0e91868","size":"L","warnings":0}}
+{"ts":"2026-10-22T22:22:51.241Z","actor":"human","event":"change.closed","data":{}}
