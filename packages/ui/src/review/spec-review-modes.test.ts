@@ -23,6 +23,9 @@ async function viewOf(source: SpectyData, id: string): Promise<ChangeView> {
   return found;
 }
 
+const text = (element: Element | null | undefined) =>
+  element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+
 async function render(id: string) {
   window.matchMedia = (() => ({
     matches: false,
@@ -44,36 +47,34 @@ async function render(id: string) {
   const element: HTMLElement = fixture.nativeElement;
   const review = () => element.querySelector<HTMLElement>("sp-spec-review");
   const delta = () => element.querySelector<HTMLElement>("sp-review-delta");
-  const approve = () =>
-    [...element.querySelectorAll<HTMLButtonElement>("[role=region] sp-button button")].at(-1);
+  const decision = (id: string) =>
+    text(element.querySelector(`sp-assumption-row[data-item=${id}] [data-decision]`));
   // What the store does when the source changes: derive the view again.
   const refresh = async () => {
     fixture.componentInstance.change.set(await viewOf(source, id));
     await settle();
   };
-  return { review, delta, approve, settle, refresh };
+  return { review, delta, decision, settle, refresh };
 }
-
-const text = (element: Element | null | undefined) =>
-  element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
 
 describe("SpecReview modes", () => {
   afterEach(() => TestBed.resetTestingModule());
 
   it("starts on the changes since the approval, and switches to the full spec and back (AC1, AC4)", async () => {
-    const { review, delta, approve, settle, refresh } = await render(REVISED);
+    const { review, delta, decision, settle, refresh } = await render(REVISED);
     expect(text(delta()?.querySelector("h2"))).toBe("Qué cambió desde que aprobaste r2");
     expect(review()?.querySelector("nav")).toBeNull();
     expect(review()?.querySelectorAll("[data-section]")).toHaveLength(0);
 
-    // A2 changed: approving waits until it is decided, right from the changes.
-    expect(approve()?.disabled).toBe(true);
+    // The decision lives in the page header now: the review has no bar of its own.
+    expect(review()?.querySelector("sp-review-actions, [role=region]")).toBeNull();
+    // A2 changed: it is decided right from the changes.
+    expect(decision("A2")).toBe("Por decidir");
     delta()
       ?.querySelector<HTMLButtonElement>("sp-assumption-row[data-item=A2] sp-button button")
       ?.click();
     await refresh();
-    expect(approve()?.disabled).toBe(false);
-    expect(text(approve())).toBe("Aprobar r3");
+    expect(decision("A2")).toBe("Confirmado");
     // Live updates of the same change keep the view the person is on.
     expect(delta()).not.toBeNull();
 

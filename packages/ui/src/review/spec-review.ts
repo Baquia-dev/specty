@@ -24,7 +24,6 @@ import { AssumptionRow } from "./assumption-row";
 import { ReviewComments, SECTION_LABELS, selectionAnchor } from "./comments";
 import { ReviewDelta } from "./delta-review";
 import { Markdown } from "./markdown";
-import { ReviewActions, scrollParent } from "./review-actions";
 import { SECTION_META, sectionNumber, sectionProgress } from "./section-meta";
 import { LIST, ReviewItems } from "./spec-sections";
 
@@ -36,6 +35,15 @@ const PICK_MS = 1000;
 
 /** A section counts as being read once its start is this far under the sticky bars. */
 const READ_PX = 32;
+
+/** The nearest ancestor that scrolls (the shell's main), or undefined when the page scrolls. */
+function scrollParent(element: HTMLElement, view: Window): HTMLElement | undefined {
+  for (let node = element.parentElement; node !== null; node = node.parentElement) {
+    const { overflowY } = view.getComputedStyle(node);
+    if (overflowY === "auto" || overflowY === "scroll") return node;
+  }
+  return undefined;
+}
 
 /**
  * A section of the document. While `data-flash` is set (picked in the index), its divider
@@ -56,15 +64,10 @@ const SECTION =
     ReviewItems,
     ReviewComments,
     ReviewDelta,
-    ReviewActions,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Positioned, so absolute screen-reader text inside stays within the scrolling area.
-  host: {
-    class: "relative flex scroll-mt-[calc(var(--sp-sticky-top,0px)+1rem)] flex-col gap-6",
-    // Room for the fixed decision bar, even when it wraps onto two lines.
-    "[class.pb-12]": "inReview()",
-  },
+  host: { class: "relative flex scroll-mt-[calc(var(--sp-sticky-top,0px)+1rem)] flex-col gap-6" },
   template: `
     <div class="flex flex-wrap items-start gap-x-12 gap-y-6">
       @if (mode() === 'full') {
@@ -138,10 +141,6 @@ const SECTION =
         <sp-review-comments [change]="change().id" [comments]="review().comments" [editable]="inReview()" [selection]="selection()" [(anchor)]="anchor" />
       </aside>
     </div>
-
-    @if (inReview()) {
-      <sp-review-actions [change]="change()" />
-    }
   `,
 })
 export class SpecReview {

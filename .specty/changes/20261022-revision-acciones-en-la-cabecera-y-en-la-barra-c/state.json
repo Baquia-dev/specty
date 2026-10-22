@@ -6,6 +6,13 @@
   "branch": "specty/20261022-revision-acciones-en-la-cabecera-y-en-la-barra-c",
   "baseCommit": "d7336d86b431b04ec1d4122fff06909e38076d68",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f9cd28313de1a8462c30b95328d116a39e22c00ed950ac68bf0fa06dfc89c027",
+    "at": "2026-10-22T17:16:23.260Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4cc365bade999cbff4523e5fa0211456ec6aeabc",
+      "startedAt": "2026-10-22T17:16:36.069Z",
+      "doneAt": "2026-10-22T17:18:12.339Z",
+      "summary": "sp-review-actions deja de ser una barra fija medida: es un grupo en línea (role=group) con [compact]; normal con el motivo del bloqueo como texto debajo de los botones, compacto con botones pequeños y el motivo solo en el tooltip. La revisión ya no pinta barra en el pie ni reserva margen para ella; scrollParent vuelve a spec-review.ts. Tests de las dos variantes y de pedir cambios y aprobar; el de modos ya no busca la barra en la revisión."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f9cd28313de1a8462c30b95328d116a39e22c00ed950ac68bf0fa06dfc89c027",
-    "at": "2026-10-22T17:16:23.260Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

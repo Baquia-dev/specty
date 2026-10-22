@@ -47,7 +47,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: Acciones en línea y sin barra inferior
+- [x] T1: Acciones en línea y sin barra inferior
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review-modes.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/review-actions.test.ts --include src/review/spec-review-modes.test.ts
