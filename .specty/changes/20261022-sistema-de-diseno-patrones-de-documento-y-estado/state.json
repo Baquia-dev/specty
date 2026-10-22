@@ -6,6 +6,13 @@
   "branch": "specty/20261022-sistema-de-diseno-patrones-de-documento-y-estado",
   "baseCommit": "9fe5e000d6e1fef3c6b5a7b83755a8ec26521669",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:08a4c64be5235bb4bb52f0c4e9665e193229bb3eeba7d0e8bacd4c5365e6b8a2",
+    "at": "2026-10-22T17:45:43.323Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -25,7 +32,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/delta-review.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "e61071a031f78d782e2577e33e0795a4f3917e38",
+      "startedAt": "2026-10-22T17:46:17.585Z",
+      "doneAt": "2026-10-22T17:49:42.036Z",
+      "summary": "components/document.ts: PAGE (ancho común), ROW (fila sin líneas con resalte al pasar el puntero o con el foco), REVEAL (acciones de la fila) y LIST (lista con sangría), y sp-section-divider (título en versalitas, línea fina y contador o progreso; nivel h2 o h3). La revisión, la fila del supuesto y spec-sections los usan en lugar de sus copias; S1: el delta importa de ahí. Tests del divisor y de las clases."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,13 +52,7 @@
   "maxIds": {
     "A": 2,
     "AC": 3,
-    "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:08a4c64be5235bb4bb52f0c4e9665e193229bb3eeba7d0e8bacd4c5365e6b8a2",
-    "at": "2026-10-22T17:45:43.323Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
+    "T": 3,
+    "S": 1
   }
 }

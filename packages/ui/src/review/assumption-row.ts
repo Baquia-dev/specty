@@ -22,6 +22,7 @@ import {
 } from "@lucide/angular";
 import { Button, IconButton } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
+import { REVEAL, ROW } from "../components/document";
 import { Field } from "../components/field";
 import { Toasts } from "../components/toast";
 import {
@@ -31,7 +32,7 @@ import {
   SpectyData,
 } from "../data/records";
 import { Preferences } from "../theme/preferences";
-import { BeforeLine, REVEAL, ROW, reportFailure, WordDiff } from "./spec-sections";
+import { BeforeLine, reportFailure, WordDiff } from "./spec-sections";
 
 /** Reason is required: the agent reads it in `specty next`. */
 @Component({

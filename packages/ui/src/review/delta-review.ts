@@ -17,6 +17,7 @@ import {
   LucideTriangleAlert,
 } from "@lucide/angular";
 import { Button, IconButton } from "../components/button";
+import { LIST, REVEAL, ROW } from "../components/document";
 import type {
   Bilingual,
   ChangeView,
@@ -28,7 +29,7 @@ import type {
 import { Preferences } from "../theme/preferences";
 import { AssumptionRow } from "./assumption-row";
 import { SECTION_LABELS } from "./comments";
-import { BeforeLine, LIST, REVEAL, ROW, WordDiff } from "./spec-sections";
+import { BeforeLine, WordDiff } from "./spec-sections";
 
 type Change = DeltaEntryView["change"];
 

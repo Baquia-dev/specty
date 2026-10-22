@@ -14,6 +14,7 @@ import {
 } from "@lucide/angular";
 import { Badge } from "../components/badge";
 import { IconButton } from "../components/button";
+import { LIST, REVEAL, ROW } from "../components/document";
 import type { Toasts } from "../components/toast";
 import {
   ActionError,
@@ -32,19 +33,6 @@ export function reportFailure(toasts: Toasts, preferences: Preferences) {
     toasts.show(text, "error");
   };
 }
-
-/**
- * A document row: its id in a fixed column, the content, and its actions on the right. No lines
- * between rows: the one under the pointer, or with focus inside, lights up softly instead.
- */
-export const ROW =
-  "group -mx-3 grid grid-cols-[2.75rem_minmax(0,1fr)_auto] gap-x-3 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none";
-
-/** The comment button of an item shows with the pointer over the item or focus inside it. */
-export const REVEAL = "opacity-0 group-focus-within:opacity-100 group-hover:opacity-100";
-
-/** The rows of a section, indented under its title; its divider is the only line. */
-export const LIST = "m-0 flex list-none flex-col gap-0.5 p-0 pl-6";
 
 /**
  * A word diff: added words on a faint tint with a fine underline, removed ones struck out, both in

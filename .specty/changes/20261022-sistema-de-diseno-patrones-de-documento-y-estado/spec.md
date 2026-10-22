@@ -45,7 +45,7 @@ Las piezas que hoy dan a la revisión su aire de documento (las filas sin línea
 
 ## Tareas
 
-- [ ] T1: Filas, listas y divisor en el sistema de diseño
+- [x] T1: Filas, listas y divisor en el sistema de diseño
   - files: packages/ui/src/components/document.ts, packages/ui/src/components/document.test.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/spec-review.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui test

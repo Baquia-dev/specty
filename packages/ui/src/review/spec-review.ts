@@ -18,6 +18,7 @@ import {
 import { LucideDynamicIcon, LucideMessageSquare, LucideTriangleAlert } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Collapsible } from "../components/collapsible";
+import { LIST } from "../components/document";
 import type { ChangeView, CommentAnchor, ReviewSection } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { AssumptionRow } from "./assumption-row";
@@ -25,7 +26,7 @@ import { ReviewComments, SECTION_LABELS, selectionAnchor } from "./comments";
 import { ReviewDelta } from "./delta-review";
 import { Markdown } from "./markdown";
 import { SECTION_META, sectionNumber, sectionProgress } from "./section-meta";
-import { LIST, ReviewItems } from "./spec-sections";
+import { ReviewItems } from "./spec-sections";
 
 /** How long the section picked in the index stays highlighted. */
 const FLASH_MS = 1400;
