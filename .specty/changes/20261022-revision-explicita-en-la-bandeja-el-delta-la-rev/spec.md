@@ -59,7 +59,7 @@ La cabecera del cambio ya nombra la revisión con palabras («Revisión 3 · por
   - files: packages/ui/src/review/delta-review.ts, packages/ui/src/review/delta-review.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review-modes.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/delta-review.test.ts --include src/review/spec-review-modes.test.ts
-- [ ] T3: Los comentarios y la documentación
+- [x] T3: Los comentarios y la documentación
   - files: packages/ui/src/review/comments.ts, packages/ui/src/review/comments.test.ts, docs/ui.md
   - ac: AC4
   - verify: pnpm check

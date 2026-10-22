@@ -183,6 +183,11 @@ describe("ChangePage", () => {
       expect(bar()?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("review");
       expect(text(bar()?.querySelector("p"))).toBe("Agrupar la evolución académica por trimestre");
       expect(text(bar()?.querySelector("[data-revision]"))).toBe("Revisión 2 · por aprobar");
+      // Title, revision and section grow together and only the title is cut: one line for all.
+      const heading = bar()?.querySelector<HTMLElement>("[data-heading]");
+      expect(heading?.className.split(" ")).toContain("flex-1");
+      expect(heading?.querySelector("p")?.className).toContain("truncate");
+      expect(heading?.querySelector("[data-revision]")?.className).toContain("shrink-0");
       expect(bar()?.querySelector("[data-revision] span")?.className).toContain("hidden sm:inline");
       expect(text(bar()?.querySelector("[data-reading]"))).toBe("§ 04 Criterios");
       expect(text(bar()?.querySelector("[data-summary]"))).toBe("Supuestos 1/2 · Comentarios 2");

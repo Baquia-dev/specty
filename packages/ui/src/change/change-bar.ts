@@ -28,18 +28,26 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
     "data-sticky": "",
   },
   template: `
-    <!-- On narrow screens the summary and the section give way, and the actions wrap below. -->
-    <div class="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center gap-x-3 gap-y-2 px-6 py-2">
+    <!--
+      One line from md: the section being read shows from xl and the summary from lg, so the
+      title has room; on a phone the actions wrap below.
+    -->
+    <div class="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center gap-x-3 gap-y-2 px-6 py-2 md:flex-nowrap">
       <sp-phase-badge [phase]="change().phase" />
-      <p class="m-0 min-w-32 flex-1 truncate text-[15px] font-semibold tracking-tight md:flex-none">{{ change().title }}</p>
-      <!-- «Revisión 3 · por aprobar»; on a phone, only the number, so the title keeps its room. -->
-      <span class="text-xs whitespace-nowrap text-text-muted" data-revision>{{ revision().number }}@if (revision().state; as state) {<span class="hidden sm:inline"> · {{ state }}</span>}</span>
-      @if (readingLabel(); as section) {
-        <span class="hidden h-4 w-px shrink-0 bg-border sm:block" aria-hidden="true"></span>
-        <span class="hidden font-mono text-xs whitespace-nowrap text-text-muted sm:inline" data-reading>§ {{ section }}</span>
-      }
-      <span class="hidden flex-1 md:block" aria-hidden="true"></span>
-      <span class="hidden shrink-0 text-sm whitespace-nowrap text-text-muted md:inline" data-summary>
+      <!--
+        Title, revision and section grow together into the free room and only the title gives way,
+        so a long title is cut instead of pushing the actions to a second line.
+      -->
+      <div class="flex min-w-0 flex-1 items-center gap-3" data-heading>
+        <p class="m-0 min-w-0 truncate text-[15px] font-semibold tracking-tight">{{ change().title }}</p>
+        <!-- «Revisión 3 · por aprobar»; on a phone, only the number, so the title keeps its room. -->
+        <span class="shrink-0 text-xs whitespace-nowrap text-text-muted" data-revision>{{ revision().number }}@if (revision().state; as state) {<span class="hidden sm:inline"> · {{ state }}</span>}</span>
+        @if (readingLabel(); as section) {
+          <span class="hidden h-4 w-px shrink-0 bg-border xl:block" aria-hidden="true"></span>
+          <span class="hidden shrink-0 font-mono text-xs whitespace-nowrap text-text-muted xl:inline" data-reading>§ {{ section }}</span>
+        }
+      </div>
+      <span class="hidden shrink-0 text-sm whitespace-nowrap text-text-muted lg:inline" data-summary>
         @if (highImpact(); as high) {
           {{ t()('Supuestos', 'Assumptions') }} <span class="font-medium text-text">{{ high.decided }}/{{ high.total }}</span> ·
         }

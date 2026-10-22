@@ -94,9 +94,9 @@ export function selectionAnchor(root: HTMLElement): CommentAnchor | undefined {
           <span class="font-mono text-[11px] text-text-muted">{{ anchorLabel(comment.anchor) }}</span>
           <p class="m-0 leading-normal">{{ comment.body }}</p>
           <span class="text-xs text-text-muted">
-            {{ comment.author }} · {{ since(comment.createdAt) }} · r{{ comment.revision }}
+            {{ comment.author }} · {{ since(comment.createdAt) }} · {{ t()('en la revisión ', 'on revision ') }}{{ comment.revision }}
             @if (comment.resolvedInRevision) {
-              · {{ t()('resuelto en r', 'resolved in r') }}{{ comment.resolvedInRevision }}
+              · {{ t()('resuelto en la ', 'resolved in revision ') }}{{ comment.resolvedInRevision }}
             }
           </span>
         </li>

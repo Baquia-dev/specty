@@ -100,9 +100,9 @@ describe("ReviewComments", () => {
     const { element } = await render();
     const [open, done] = [...element.querySelectorAll("[data-comment]")];
     expect(text(open)).toContain("Diseño: «una línea por materia»");
-    expect(text(open)).toContain("Ana Gómez · hace 5 min · r2");
+    expect(text(open)).toContain("Ana Gómez · hace 5 min · en la revisión 2");
     expect(text(done)).toContain("Sobre A3");
-    expect(text(done)).toContain("resuelto en r2");
+    expect(text(done)).toContain("resuelto en la 2");
     expect(done?.className).toContain("opacity-60");
     expect(text(element.querySelector("h2"))).toContain("Comentarios 1");
   });
