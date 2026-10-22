@@ -88,7 +88,7 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
   - files: packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-specs.ts
   - ac: AC2, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T3: Markdown y secciones de la revisión
+- [x] T3: Markdown y secciones de la revisión
   - files: packages/ui/package.json, packages/ui/src/review/markdown.ts, packages/ui/src/review/spec-sections.ts
   - ac: AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui test

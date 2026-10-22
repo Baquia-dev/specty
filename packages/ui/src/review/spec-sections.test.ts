@@ -1,0 +1,226 @@
+// SPDX-License-Identifier: Apache-2.0
+import { Component, signal } from "@angular/core";
+import { TestBed } from "@angular/core/testing";
+import { type ChangeState, parseSpec } from "@baquia-dev/specty-core";
+import { Toasts } from "../components/toast";
+import {
+  type AssumptionView,
+  type ChangeRecord,
+  type CommentAnchor,
+  SpectyData,
+} from "../data/records";
+import { deriveReview } from "../data/review";
+import { Markdown } from "./markdown";
+import { AssumptionCard, ReviewItems } from "./spec-sections";
+
+const SPEC = `# Entrar con Google
+
+## Objetivo
+
+Entrar con Google.
+
+## Criterios de aceptación
+
+- AC1: CUANDO alguien pulsa "Entrar" ENTONCES entra.
+- AC2: La pantalla responde rápido.
+
+## Archivos
+
+- crear lib/auth/google.dart — proveedor
+- renombrar lib/login/old.dart -> lib/login/screen.dart — nombre claro
+
+## Tareas
+
+- [ ] T1: Proveedor
+  - files: lib/auth/google.dart
+  - ac: AC1, AC2
+
+## Riesgos
+
+- R1: Google cambia su API.
+`;
+
+const STATE: ChangeState = {
+  schema: 1,
+  id: "20261021-login-google",
+  kind: "standard",
+  phase: "review",
+  revision: 1,
+  items: {},
+  tasks: { T1: { status: "active", attempts: 1, scopeExtra: [] } },
+  pending: { scopeRequests: [], adjustment: null },
+  maxIds: {},
+};
+
+const REVIEW = deriveReview(parseSpec(SPEC).spec, STATE, []);
+
+class Recording extends SpectyData {
+  readonly calls: unknown[][] = [];
+  changes(): Promise<readonly ChangeRecord[]> {
+    return Promise.resolve([]);
+  }
+  subscribe(): () => void {
+    return () => undefined;
+  }
+  override decideAssumption(...args: unknown[]): Promise<void> {
+    this.calls.push(args);
+    return args[1] === "A9" ? Promise.reject(new Error("boom")) : Promise.resolve();
+  }
+}
+
+@Component({
+  imports: [AssumptionCard, ReviewItems, Markdown],
+  template: `
+    <sp-assumption-card change="20261021-login-google" [assumption]="assumption()" [editable]="editable()" (comment)="anchors.push($event)" />
+    @for (section of sections; track section) {
+      <sp-review-items [attr.id]="section" [review]="review" [section]="section" (comment)="anchors.push($event)" />
+    }
+    <sp-markdown [text]="markdown" />
+  `,
+})
+class Host {
+  readonly assumption = signal<AssumptionView>({
+    id: "A1",
+    text: "Existe el proyecto.",
+    impact: "high",
+    decision: "pending",
+  });
+  readonly editable = signal(true);
+  readonly review = REVIEW;
+  readonly sections = ["criteria", "files", "tasks", "risks"] as const;
+  readonly anchors: CommentAnchor[] = [];
+  readonly markdown =
+    'Hola **mundo**\n\n<script>window.hacked = true</script><img src=x onerror="window.hacked = true">\n\n```dart\nfinal x = 1;\n```';
+}
+
+async function render() {
+  window.matchMedia = (() => ({
+    matches: false,
+    addEventListener: () => undefined,
+  })) as unknown as typeof window.matchMedia;
+  localStorage.setItem("specty.lang", "es");
+  TestBed.resetTestingModule();
+  const source = new Recording();
+  TestBed.configureTestingModule({ providers: [{ provide: SpectyData, useValue: source }] });
+  const fixture = TestBed.createComponent(Host);
+  await fixture.whenStable();
+  const element: HTMLElement = fixture.nativeElement;
+  const settle = async () => {
+    await fixture.whenStable();
+    await new Promise((resolve) => setTimeout(resolve));
+  };
+  return { fixture, element, source, settle, host: fixture.componentInstance };
+}
+
+const text = (element: Element | null | undefined) =>
+  element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+
+describe("AssumptionCard", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("shows impact and decision, and confirms in review (AC2)", async () => {
+    const { element, source } = await render();
+    const card = element.querySelector("sp-assumption-card");
+    expect(text(card)).toContain("Alto impacto");
+    expect(text(card?.querySelector("[data-decision]"))).toBe("Por decidir");
+    card?.querySelector<HTMLButtonElement>("sp-button button")?.click();
+    expect(source.calls).toEqual([["20261021-login-google", "A1", "confirmed"]]);
+  });
+
+  it("rejects only with a reason, which stays next to it (AC2)", async () => {
+    const { element, source, settle, host, fixture } = await render();
+    [
+      ...element.querySelectorAll<HTMLButtonElement>("sp-assumption-card sp-button button"),
+    ][1]?.click();
+    await settle();
+    const buttons = () => [
+      ...document.querySelectorAll<HTMLButtonElement>("[role=dialog] sp-button button"),
+    ];
+    expect(buttons().at(-1)?.disabled).toBe(true);
+    const field = document.querySelector<HTMLTextAreaElement>("[role=dialog] textarea");
+    if (field === null) throw new Error("no field");
+    field.value = "Son periodos del colegio.";
+    field.dispatchEvent(new Event("input"));
+    await settle();
+    buttons().at(-1)?.click();
+    await settle();
+    expect(source.calls).toEqual([
+      ["20261021-login-google", "A1", "rejected", "Son periodos del colegio."],
+    ]);
+    expect(document.querySelector("[role=dialog]")).toBeNull();
+
+    host.assumption.set({
+      id: "A1",
+      text: "Existe el proyecto.",
+      decision: "rejected",
+      comment: "Son periodos del colegio.",
+    });
+    host.editable.set(false);
+    await fixture.whenStable();
+    expect(text(element.querySelector("sp-assumption-card"))).toContain(
+      "Motivo: «Son periodos del colegio.»",
+    );
+    expect(element.querySelector("sp-assumption-card sp-button")).toBeNull();
+  });
+
+  it("emits a comment anchored to the item (AC6)", async () => {
+    const { element, host } = await render();
+    element.querySelector<HTMLButtonElement>("sp-assumption-card sp-icon-button button")?.click();
+    expect(host.anchors).toEqual([{ item: "A1" }]);
+  });
+});
+
+describe("ReviewItems", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("puts criterion warnings inline, with icon and text (AC3)", async () => {
+    const { element } = await render();
+    const vague = element.querySelector("#criteria [data-item=AC2]");
+    expect(vague?.querySelectorAll("[role=note]").length).toBe(2);
+    expect(vague?.querySelector("[role=note] svg")).not.toBeNull();
+    expect(element.querySelector("#criteria [data-item=AC1] [role=note]")).toBeNull();
+  });
+
+  it("shows files by module with actions and sensitive marks; tasks with status and chips (AC4)", async () => {
+    const { element, host } = await render();
+    const files = element.querySelector("#files");
+    expect([...(files?.querySelectorAll("h3") ?? [])].map((heading) => text(heading))).toEqual([
+      "auth/",
+      "login/",
+    ]);
+    expect(text(files?.querySelector("[data-action=create]"))).toBe("Crear");
+    expect(text(files?.querySelector("[data-sensitive]"))).toBe("Ruta sensible");
+    expect(text(files)).toContain("lib/login/old.dart → lib/login/screen.dart");
+    const task = element.querySelector("#tasks [data-item=T1]");
+    expect(text(task?.querySelector("[data-status]"))).toBe("Activa");
+    expect(task?.querySelectorAll("sp-badge").length).toBe(3);
+    expect(text(task)).toContain("lib/auth/google.dart");
+    element.querySelector<HTMLButtonElement>("#risks sp-icon-button button")?.click();
+    element.querySelector<HTMLButtonElement>("#tasks sp-icon-button button")?.click();
+    element.querySelector<HTMLButtonElement>("#criteria sp-icon-button button")?.click();
+    expect(host.anchors).toEqual([{ item: "R1" }, { item: "T1" }, { item: "AC1" }]);
+  });
+
+  it("reports a failed action as an error toast", async () => {
+    const { fixture, host, element, settle } = await render();
+    host.assumption.set({ id: "A9", text: "Falla.", decision: "pending" });
+    await fixture.whenStable();
+    element.querySelector<HTMLButtonElement>("sp-assumption-card sp-button button")?.click();
+    await settle();
+    expect(TestBed.inject(Toasts).items()).toEqual([
+      expect.objectContaining({ kind: "error", text: "Error: boom" }),
+    ]);
+  });
+});
+
+describe("Markdown", () => {
+  it("formats text and code, and never runs scripts or handlers (AC5)", async () => {
+    const { element } = await render();
+    const markdown = element.querySelector("sp-markdown");
+    expect(markdown?.querySelector("strong")?.textContent).toBe("mundo");
+    expect(markdown?.querySelector("pre code")?.textContent).toContain("final x = 1;");
+    expect(markdown?.querySelector("script")).toBeNull();
+    expect(markdown?.querySelector("img")?.getAttribute("onerror")).toBeNull();
+    expect((window as unknown as { hacked?: boolean }).hacked).toBeUndefined();
+  });
+});
