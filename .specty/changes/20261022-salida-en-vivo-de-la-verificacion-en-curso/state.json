@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-salida-en-vivo-de-la-verificacion-en-curso",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-salida-en-vivo-de-la-verificacion-en-curso",
   "baseCommit": "ec15e53489ed118a7c246b86ce4381dbf8c4f5a8",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f61fa476352c7a1a8e793cc8cce409632ffbf799",
+      "attempts": 1,
       "startedAt": "2026-10-22T23:21:48.531Z",
       "doneAt": "2026-10-22T23:24:40.604Z",
-      "summary": "progress/live-output.ts: sp-live-output. Con una verificación en curso muestra «Verificando · 0:42» (reloj de un segundo), el comando y las líneas coloreadas con outputSegments en una región desplazable que sigue la última línea salvo que la persona suba; entonces aparece «Ir al final», que vuelve y mueve el foco a la salida. Se oculta y se muestra (abierta por defecto); guarda las últimas 500 líneas y cuenta las anteriores. Siempre montada en la tarea en curso, su región de estado anuncia el inicio, el fin y el resultado, no cada línea. Exporta OUTPUT_TONES y MAX_LINES. 5 tests."
+      "summary": "progress/live-output.ts: sp-live-output. Con una verificación en curso muestra «Verificando · 0:42» (reloj de un segundo), el comando y las líneas coloreadas con outputSegments en una región desplazable que sigue la última línea salvo que la persona suba; entonces aparece «Ir al final», que vuelve y mueve el foco a la salida. Se oculta y se muestra (abierta por defecto); guarda las últimas 500 líneas y cuenta las anteriores. Siempre montada en la tarea en curso, su región de estado anuncia el inicio, el fin y el resultado, no cada línea. Exporta OUTPUT_TONES y MAX_LINES. 5 tests.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "63239b3730847960bedcc6f2bfc07d161251a04a",
+      "startedAt": "2026-10-22T23:24:40.898Z",
+      "doneAt": "2026-10-22T23:34:09.605Z",
+      "summary": "La pestaña Progreso sigue la verificación en curso por watchRun y la muestra en la fila de la tarea activa; la salida fallida anterior se pliega mientras corre. Comprobado en el navegador a 390 y 1280 px, claro y oscuro."
     }
   },
   "pending": {

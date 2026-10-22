@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   input,
   signal,
@@ -11,9 +12,10 @@ import {
 import { LucideListChecks } from "@lucide/angular";
 import { LIST, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
-import { formatDuration, type TaskStatus, workTime } from "../data/progress";
-import type { ChangeView } from "../data/records";
+import { formatDuration, type RunRecord, type TaskStatus, workTime } from "../data/progress";
+import { type ChangeView, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
+import { LiveOutput } from "./live-output";
 import { ScopeRequest } from "./scope-request";
 import { TaskRow } from "./task-row";
 
@@ -33,7 +35,7 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
  */
 @Component({
   selector: "sp-progress-tab",
-  imports: [SectionDivider, EmptyState, TaskRow, ScopeRequest],
+  imports: [SectionDivider, EmptyState, TaskRow, ScopeRequest, LiveOutput],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-8" },
   template: `
@@ -55,7 +57,10 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
           <sp-section-divider [heading]="t()('Te espera', 'Waiting for you')" headingId="progress-waiting" [meta]="waiting().length" [level]="2" />
           <div role="list" [class]="list + ' mt-2'">
             @for (task of waiting(); track task.id) {
-              <sp-task-row [task]="task" [now]="now()">
+              <sp-task-row [task]="task" [now]="now()" [live]="liveOn(task.id) !== undefined">
+                @if (task.status === 'active') {
+                  <sp-live-output [task]="task.id" [run]="liveOn(task.id)" [verification]="task.verification" />
+                }
                 @for (request of task.scopeRequests; track request.id) {
                   <sp-scope-request class="mt-1" [change]="change().id" [task]="task.id" [request]="request" />
                 }
@@ -68,7 +73,11 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
         <sp-section-divider [heading]="t()('Tareas', 'Tasks')" headingId="progress-tasks" [meta]="doneOfTotal()" [level]="2" />
         <div role="list" [class]="list + ' mt-2'">
           @for (task of listed(); track task.id) {
-            <sp-task-row [task]="task" [now]="now()" />
+            <sp-task-row [task]="task" [now]="now()" [live]="liveOn(task.id) !== undefined">
+              @if (task.status === 'active') {
+                <sp-live-output [task]="task.id" [run]="liveOn(task.id)" [verification]="task.verification" />
+              }
+            </sp-task-row>
           }
         </div>
       </section>
@@ -84,6 +93,9 @@ export class ProgressTab {
   protected readonly segments = SEGMENTS;
   protected readonly emptyIcon = LucideListChecks;
   protected readonly now = signal(Date.now());
+  /** The verification running in this change, streamed apart from the derived views. */
+  private readonly run = signal<RunRecord | undefined>(undefined);
+  private readonly id = computed(() => this.change().id);
 
   protected readonly tasks = computed(() => this.change().progress.tasks);
   /** Tasks with a decision of the person pending: at the top, out of the list. */
@@ -134,8 +146,18 @@ export class ProgressTab {
       .join("");
   });
 
+  /** The run on this task, while one goes on. */
+  protected liveOn(task: string): RunRecord | undefined {
+    const run = this.run();
+    return run?.task === task ? run : undefined;
+  }
+
   constructor() {
     const timer = setInterval(() => this.now.set(Date.now()), TICK_MS);
     inject(DestroyRef).onDestroy(() => clearInterval(timer));
+    const source = inject(SpectyData);
+    effect((onCleanup) => {
+      onCleanup(source.watchRun(this.id(), (run) => this.run.set(run)));
+    });
   }
 }

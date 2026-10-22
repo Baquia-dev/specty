@@ -20,7 +20,6 @@ import {
 import { ROW } from "../components/document";
 import {
   formatDuration,
-  type OutputTone,
   outputSegments,
   type TaskProgressView,
   type TaskStatus,
@@ -28,6 +27,7 @@ import {
 } from "../data/progress";
 import { relativeTime } from "../data/records";
 import { Preferences } from "../theme/preferences";
+import { OUTPUT_TONES } from "./live-output";
 
 /** Each state with its icon and the phase color that reads like it (never color alone). */
 const MARKS: Readonly<
@@ -44,18 +44,6 @@ const MARKS: Readonly<
   done: { icon: LucideCircleCheck, tone: "done", es: "Hecha", en: "Done" },
   active: { icon: LucideCircleDot, tone: "implementing", es: "En curso", en: "In progress" },
   pending: { icon: LucideCircleDashed, tone: "draft", es: "Pendiente", en: "Pending" },
-};
-
-/**
- * The output in the phase colors, which keep their contrast in both themes: failures read as a
- * cancelled change, passes as a done one, locations as work in progress; timings step back.
- */
-const TONES: Readonly<Record<OutputTone, string>> = {
-  plain: "",
-  muted: "text-text-muted",
-  pass: "text-phase-done",
-  fail: "text-phase-cancelled",
-  path: "text-phase-implementing",
 };
 
 /** A row arriving (back in the list, or up to «Te espera») fades in; still with reduced motion. */
@@ -135,6 +123,8 @@ export class TaskRow {
   readonly task = input.required<TaskProgressView>();
   /** The clock of the tab, so durations move on. */
   readonly now = input(Date.now());
+  /** A new verification of this task is running: the last failure folds out of its way. */
+  readonly live = input(false);
 
   private readonly preferences = inject(Preferences);
   protected readonly t = this.preferences.t;
@@ -145,15 +135,15 @@ export class TaskRow {
   protected readonly mark = computed(() => MARKS[this.task().status]);
 
   /**
-   * The output starts open on a failure of the task in progress. A new run sets it again; live
-   * updates of the same run keep what the person chose.
+   * The output starts open on a failure of the task in progress, and folded while a new one runs.
+   * A new result or run sets it again; live updates of the same one keep what the person chose.
    */
-  protected readonly open = linkedSignal<string | undefined, boolean>({
-    source: () => this.task().verification?.at,
-    computation: (at, previous) => {
-      if (previous !== undefined && previous.source === at) return previous.value;
+  protected readonly open = linkedSignal<string, boolean>({
+    source: () => `${this.task().verification?.at ?? ""}|${this.live()}`,
+    computation: (key, previous) => {
+      if (previous !== undefined && previous.source === key) return previous.value;
       const run = this.task().verification;
-      return this.task().status === "active" && run !== undefined && !run.passed;
+      return this.task().status === "active" && !this.live() && run !== undefined && !run.passed;
     },
   });
 
@@ -161,7 +151,7 @@ export class TaskRow {
   protected readonly output = computed(() =>
     (this.task().verification?.output ?? []).map((line) => outputSegments(line)),
   );
-  protected readonly tones = TONES;
+  protected readonly tones = OUTPUT_TONES;
 
   /** «En curso · empezó hace 12 min». */
   protected readonly running = computed(() => {

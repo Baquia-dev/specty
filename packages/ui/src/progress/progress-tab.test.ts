@@ -5,6 +5,7 @@ import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
 import { ActionError, type ChangeRecord, SpectyData } from "../data/records";
+import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
 import { ProgressTab } from "./progress-tab";
 
@@ -77,7 +78,10 @@ const text = (element: Element | null | undefined) =>
   element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
 
 describe("Progress tab", () => {
-  afterEach(() => TestBed.resetTestingModule());
+  afterEach(() => {
+    vi.useRealTimers();
+    TestBed.resetTestingModule();
+  });
 
   it("lists the tasks in order as document rows, with a summary and a bar per task (AC1)", async () => {
     const { element, rows, row } = await render();
@@ -185,5 +189,33 @@ describe("Progress tab", () => {
     expect(text(active?.querySelector("[data-running]"))).toBe("En curso · empezó hace 25 min");
     expect(active?.querySelector("[data-verification]")).toBeNull();
     expect(text(active?.querySelector("[data-mark]"))).toBe("En curso");
+  });
+
+  it("streams the run of the task in progress into its row, and leaves its result (AC1, AC5)", async () => {
+    // Only the run's steps are faked: the store settles on real timeouts.
+    vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
+    const { settle, row } = await render();
+    const source = TestBed.inject(SpectyData);
+    if (!(source instanceof FixtureData)) throw new Error("no sample source");
+    const task = () => row("T3");
+    source.startRun();
+    vi.advanceTimersByTime(STEP_MS * 2);
+    await settle();
+    const live = task()?.querySelector("[data-live]");
+    expect(text(live?.firstElementChild)).toMatch(
+      /^Verificando · 0:\d\d flutter test test\/reports Ocultar salida$/,
+    );
+    expect(live?.querySelectorAll("[data-log] > span")).toHaveLength(2);
+    // The last failure folds out of the way, and stays at hand.
+    expect(task()?.querySelector("[data-output]")).toBeNull();
+    expect(text(task()?.querySelector("[data-verification]"))).toContain("Ver salida");
+    expect(row("T1")?.querySelector("sp-live-output")).toBeNull();
+
+    vi.advanceTimersByTime(STEP_MS * 20);
+    await settle();
+    expect(task()?.querySelector("[data-live]")).toBeNull();
+    expect(text(task()?.querySelector("[data-verification]"))).toMatch(/^Falló .* Ocultar salida$/);
+    expect(text(task()?.querySelector("[data-output]"))).toContain("Couldn't resolve");
+    expect(text(task()?.querySelector("[data-attempts]"))).toBe("2 intentos");
   });
 });

@@ -70,7 +70,7 @@ Mientras Specty verifica una tarea (al ejecutar `specty task done`, que puede ta
   - files: packages/ui/src/progress/live-output.ts, packages/ui/src/progress/live-output.test.ts
   - ac: AC1, AC2, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/live-output.test.ts
-- [ ] T4: La salida en vivo en la pestaña Progreso
+- [x] T4: La salida en vivo en la pestaña Progreso
   - files: packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/task-row.ts, packages/ui/src/progress/progress-tab.test.ts, docs/ui.md
   - ac: AC1, AC3
   - verify: pnpm check
