@@ -1,0 +1,3 @@
+{"ts":"2026-10-22T21:30:12.578Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-sistema-de-diseno-select-propio-en-el-catalogo-y","follows":["20261022-barra-compacta-solo-con-los-botones-y-sugerencia"]}}
+{"ts":"2026-10-22T21:30:46.377Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:7e4013e0c7798bc85a4e2dfeb153fdea4c61d5effff0bb3e68f2e26b10328218","size":"M","warnings":0}}
+{"ts":"2026-10-22T21:31:19.693Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:7e4013e0c7798bc85a4e2dfeb153fdea4c61d5effff0bb3e68f2e26b10328218","channel":"tty"}}
