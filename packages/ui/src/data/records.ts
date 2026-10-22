@@ -219,6 +219,8 @@ export interface ChangeView {
   readonly kind: ChangeKind;
   readonly phase: Phase;
   readonly revision: number;
+  /** The approved revision: which one, when and by whom (`state.approved`). */
+  readonly approved?: { readonly revision: number; readonly at: string; readonly by: string };
   readonly branch?: string;
   readonly phaseSince: string;
   readonly goal: string;

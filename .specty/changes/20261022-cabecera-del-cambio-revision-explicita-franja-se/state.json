@@ -6,6 +6,13 @@
   "branch": "specty/20261022-cabecera-del-cambio-revision-explicita-franja-se",
   "baseCommit": "7386d38b22779117d0dfd4d10c49b13f60b6c923",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eab325a0b3bc41c05be374615ccbdb7a4b62be8bb2a53ddcec6081ac1470e2af",
+    "at": "2026-10-22T20:23:24.898Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5d9fe29a03ad75d495194ffff58402f2f0e1279b",
+      "startedAt": "2026-10-22T20:23:36.290Z",
+      "doneAt": "2026-10-22T20:25:01.336Z",
+      "summary": "ChangeView.approved (revisión, fecha y quién) copiado de state.approved. data/revision.ts, puro: revisionName («Revisión 3 · por aprobar»; «Sin proponer» en la 0), revisionState con un estado por fase y approvedNote («La 2 está aprobada · 21 oct · Ana Gómez» o «Aprobada el 21 oct · …», con el año si es otro), bilingües. Tests de la vista y del nombre."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:eab325a0b3bc41c05be374615ccbdb7a4b62be8bb2a53ddcec6081ac1470e2af",
-    "at": "2026-10-22T20:23:24.898Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

@@ -55,7 +55,7 @@ La cabecera del cambio dice «r3» sin explicar si esa revisión está aprobada 
 
 ## Tareas
 
-- [ ] T1: Nombre y estado de la revisión
+- [x] T1: Nombre y estado de la revisión
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/ui/src/data/revision.ts, packages/ui/src/data/revision.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/revision.test.ts --include src/data/views.test.ts

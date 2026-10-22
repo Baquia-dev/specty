@@ -84,6 +84,13 @@ describe("deriveView", () => {
     expect(view.tab).toBe("spec");
   });
 
+  it("carries the approved revision: which one, when and by whom", () => {
+    const at = "2026-10-21T15:02:11.000Z";
+    const approved = { revision: 1, hash: HASH, at, by: "Ana Gómez", channel: "ui" } as const;
+    expect(deriveView(record({ approved })).approved).toEqual({ revision: 1, at, by: "Ana Gómez" });
+    expect(deriveView(record()).approved).toBeUndefined();
+  });
+
   it("counts high-impact assumptions still undecided in review (AC2)", () => {
     expect(deriveView(record()).highImpactPending).toBe(1);
     const decided = record({

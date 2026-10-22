@@ -70,6 +70,15 @@ export function deriveView(record: ChangeRecord): ChangeView {
     kind: state.kind,
     phase: state.phase,
     revision: state.revision,
+    ...(state.approved === undefined
+      ? {}
+      : {
+          approved: {
+            revision: state.approved.revision,
+            at: state.approved.at,
+            by: state.approved.by,
+          },
+        }),
     ...(state.branch === undefined ? {} : { branch: state.branch }),
     phaseSince: record.phaseSince,
     goal: spec.sections.goal ?? spec.sections.reason ?? "",
