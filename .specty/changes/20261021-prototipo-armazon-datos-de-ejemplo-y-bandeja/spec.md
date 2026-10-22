@@ -102,7 +102,7 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
   - files: packages/ui/src/app/shell.ts, packages/ui/src/app/routes.ts, packages/ui/src/main.ts, packages/ui/src/catalog/catalog.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T4: Bandeja
+- [x] T4: Bandeja
   - files: packages/ui/src/inbox/inbox.ts
   - ac: AC1, AC2, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui test

@@ -65,15 +65,24 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "e3c4881b39e77ae90170d61123dbcb86f7609d39",
+      "attempts": 1,
+      "startedAt": "2026-10-22T04:53:19.851Z",
+      "doneAt": "2026-10-22T05:16:03.292Z",
+      "summary": "Armazón sp-root (app/shell.ts): cabecera con Bandeja, Catálogo, botón «Buscar o ejecutar… ⌘K», tema e idioma (movidos desde el catálogo) y sp-toaster; comandos globales (Bandeja, catálogo, tema, idioma) y uno «Abrir: …» por cada cambio según aparecen. app/routes.ts con todo bajo demanda: / Bandeja, /changes/:id, /catalog con sus páginas como hijas. main.ts arranca el armazón con FixtureData y withComponentInputBinding. El catálogo queda como sección con su navegación y comandos «Catálogo: …». Bandeja y página del cambio mínimas (S1) para que las rutas compilen. Tests del catálogo y superposiciones montados sobre el armazón; shell.test.ts nuevo",
       "scopeExtra": [
         "packages/ui/src/inbox/inbox.ts",
         "packages/ui/src/change/change-page.ts"
-      ],
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "e3c4881b39e77ae90170d61123dbcb86f7609d39",
-      "startedAt": "2026-10-22T04:53:19.851Z",
-      "doneAt": "2026-10-22T05:16:03.292Z",
-      "summary": "Armazón sp-root (app/shell.ts): cabecera con Bandeja, Catálogo, botón «Buscar o ejecutar… ⌘K», tema e idioma (movidos desde el catálogo) y sp-toaster; comandos globales (Bandeja, catálogo, tema, idioma) y uno «Abrir: …» por cada cambio según aparecen. app/routes.ts con todo bajo demanda: / Bandeja, /changes/:id, /catalog con sus páginas como hijas. main.ts arranca el armazón con FixtureData y withComponentInputBinding. El catálogo queda como sección con su navegación y comandos «Catálogo: …». Bandeja y página del cambio mínimas (S1) para que las rutas compilen. Tests del catálogo y superposiciones montados sobre el armazón; shell.test.ts nuevo"
+      "baseCommit": "bc8527b7ca4be5f6f49359b4d061e29f73450f77",
+      "startedAt": "2026-10-22T05:16:03.568Z",
+      "doneAt": "2026-10-22T05:20:12.334Z",
+      "summary": "Bandeja: «Esperan tu decisión» (las más antiguas primero) con insignia de fase, tipo de decisión, tiempo de espera relativo que se actualiza cada 30 s, tamaño y razones, supuestos de alto impacto por confirmar, solicitudes de alcance (tarea, rutas y motivo) y acción directa que abre la pestaña que toca (primaria solo en la tarjeta seleccionada: una acción primaria por pantalla); «En curso» agrupado por fase con progreso de tareas; «Recientes». j/k mueven la selección y llevan el foco al enlace de la tarjeta, de modo que Enter abre de forma nativa (registrar Enter como atajo rompería Enter en los botones). Esqueletos mientras carga y aviso con Reintentar si la fuente falla"
     }
   },
   "pending": {
