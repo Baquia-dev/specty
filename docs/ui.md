@@ -42,7 +42,7 @@ Todos los cambios en filas de documento, sin tarjetas: por defecto, "Esperan tu 
 - **Barra fija**: el buscador, los filtros por fase y "X de N cambios" quedan arriba al desplazarse, de ancho completo como la barra compacta del cambio; su línea inferior aparece solo mientras está fija. En el teléfono las fases van en una sola línea que se desplaza de lado.
 - **Buscador** por título o id, sin distinguir mayúsculas ni tildes; `/` lo enfoca y Escape lo vacía.
 - **Filtros por fase**, cada una con su número; elegir otra vez la fase activa vuelve a "Todas".
-- **Agrupar** por estado, por fase o sin agrupar, y **ordenar** por lo que más espera, lo más reciente, título o tamaño; van en la cabecera, junto al título, porque se tocan poco.
+- **Agrupar** por estado, por fase o sin agrupar, y **ordenar** por lo que más espera, lo más reciente, título o tamaño, con el select propio del sistema de diseño; van en la cabecera, junto al título, porque se tocan poco.
 - Con un filtro activo se ve cuántos cambios se muestran de cuántos; si ninguno coincide, un estado vacío con "Limpiar filtros".
 - La URL siempre queda limpia: agrupar y ordenar se recuerdan en el navegador, como el tema; la búsqueda y la fase duran la sesión (siguen al entrar a un cambio y volver).
 

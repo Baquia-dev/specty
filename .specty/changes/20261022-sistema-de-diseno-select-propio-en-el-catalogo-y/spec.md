@@ -57,7 +57,7 @@ La Bandeja ordena con un `<select>` nativo, cuyo desplegable dibuja el sistema y
   - files: packages/ui/src/catalog/components.ts, packages/ui/src/catalog/components.test.ts, docs/ui.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/catalog/components.test.ts
-- [ ] T3: Ordenar la Bandeja con el select propio
+- [x] T3: Ordenar la Bandeja con el select propio
   - files: packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/inbox/inbox-toolbar.test.ts, docs/ui.md
   - ac: AC5
   - verify: pnpm check

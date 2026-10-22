@@ -146,11 +146,16 @@ describe("Inbox toolbar", () => {
       "Cancelado 1",
     ]);
     groups()[2]?.click();
-    const sort = element.querySelector<HTMLSelectElement>("[data-sort]");
-    if (sort === null) throw new Error("no sort");
-    sort.value = "title";
-    sort.dispatchEvent(new Event("change"));
+    // Sorting uses the select of the design system, not the system's dropdown.
+    expect(element.querySelector("select")).toBeNull();
+    element.querySelector<HTMLElement>("[data-sort] [data-select]")?.click();
     await settle();
+    [...document.querySelectorAll<HTMLElement>("[role=option]")]
+      .find((option) => text(option) === "Título, de la A a la Z")
+      ?.click();
+    await settle();
+    expect(text(element.querySelector("[data-sort] [data-select]"))).toBe("Título, de la A a la Z");
+    expect(localStorage.getItem("specty.inbox.sort")).toBe("title");
     expect(sections()).toEqual(["Todos los cambios 9"]);
     const titles = rows().map((item) => text(item.querySelector("a")));
     expect(titles).toEqual(titles.toSorted((a, b) => a.localeCompare(b, "es")));

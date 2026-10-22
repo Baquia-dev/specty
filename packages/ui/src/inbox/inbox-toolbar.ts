@@ -14,6 +14,7 @@ import {
 import { PHASES } from "@baquia-dev/specty-core";
 import { LucideDynamicIcon, LucideSearch } from "@lucide/angular";
 import { Kbd } from "../components/kbd";
+import { Select } from "../components/select";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
 import { PHASE_LABELS } from "../theme/tokens";
@@ -55,6 +56,7 @@ const BAR_RESTING = `${BAR} border-transparent`;
 /** Grouping and sorting: preferences of the view, rarely touched, so they sit in the header. */
 @Component({
   selector: "sp-inbox-view-options",
+  imports: [Select],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-wrap items-center gap-x-4 gap-y-3 text-[13px] text-text-muted" },
   template: `
@@ -66,14 +68,7 @@ const BAR_RESTING = `${BAR} border-transparent`;
         }
       </div>
     </div>
-    <label class="flex items-center gap-2">
-      {{ t()('Ordenar', 'Sort') }}
-      <select class="h-9 rounded-lg border border-border bg-surface px-2 font-sans text-[13px] text-text" (change)="sortBy($event)" data-sort>
-        @for (sort of sorts; track sort) {
-          <option [value]="sort" [selected]="state.sort() === sort">{{ t()(sortLabels[sort][0], sortLabels[sort][1]) }}</option>
-        }
-      </select>
-    </label>
+    <sp-select [label]="t()('Ordenar', 'Sort')" [options]="sorts()" [value]="state.sort()" (valueChange)="sortBy($event)" data-sort />
   `,
 })
 export class InboxViewOptions {
@@ -81,12 +76,14 @@ export class InboxViewOptions {
   protected readonly t = inject(Preferences).t;
   protected readonly toggle = TOGGLE;
   protected readonly groups = INBOX_GROUPS;
-  protected readonly sorts = INBOX_SORTS;
   protected readonly groupLabels = GROUP_LABELS;
-  protected readonly sortLabels = SORT_LABELS;
+  /** The ways to sort, in the language of the interface, for the select. */
+  protected readonly sorts = computed(() => {
+    const t = this.t();
+    return INBOX_SORTS.map((sort) => ({ value: sort, label: t(...SORT_LABELS[sort]) }));
+  });
 
-  protected sortBy(event: Event): void {
-    const value = event.target instanceof HTMLSelectElement ? event.target.value : "";
+  protected sortBy(value: string): void {
     const sort = INBOX_SORTS.find((option) => option === value);
     if (sort !== undefined) this.state.sort.set(sort);
   }
