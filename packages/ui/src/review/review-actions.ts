@@ -27,7 +27,7 @@ import { reportFailure } from "./spec-sections";
         {{ t()('Pedir cambios', 'Request changes') }}
       </sp-button>
       <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="blocked()" (pressed)="approve()">
-        {{ t()('Aprobar r', 'Approve r') }}{{ change().revision }}
+        {{ t()('Aprobar revisión ', 'Approve revision ') }}{{ change().revision }}
       </sp-button>
     </div>
     @if (!compact() && blocked(); as reason) {

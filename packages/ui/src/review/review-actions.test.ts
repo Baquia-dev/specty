@@ -53,7 +53,7 @@ describe("ReviewActions", () => {
     expect(actions()?.getAttribute("role")).toBe("group");
     expect(actions()?.getAttribute("aria-label")).toBe("Decisión sobre la spec");
     expect(actions()?.className).not.toMatch(/\b(fixed|sticky|bottom-0)\b/);
-    expect(buttons().map(text)).toEqual(["Pedir cambios", "Aprobar r2"]);
+    expect(buttons().map(text)).toEqual(["Pedir cambios", "Aprobar revisión 2"]);
   });
 
   it("writes why approving waits below the buttons, and only in the tooltip when compact (AC1, AC2)", async () => {

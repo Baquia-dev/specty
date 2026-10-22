@@ -226,7 +226,7 @@ describe("SpecReview", () => {
     await settle();
     expect(bar()?.querySelector("[data-blocked]")).toBeNull();
     expect(barButtons()[1]?.disabled).toBe(false);
-    expect(text(barButtons()[1])).toBe("Aprobar r2");
+    expect(text(barButtons()[1])).toBe("Aprobar revisión 2");
 
     barButtons()[0]?.click();
     await settle();

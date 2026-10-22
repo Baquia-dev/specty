@@ -64,7 +64,7 @@ La cabecera del cambio dice «r3» sin explicar si esa revisión está aprobada 
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
   - notes: Comprobar en el navegador a 390, 768 y 1280 px, en claro y oscuro, con una rama larga, un cambio en revisión con revisión aprobada, uno en implementación y uno en borrador.
-- [ ] T3: La revisión en la barra compacta y en el botón de aprobar
+- [x] T3: La revisión en la barra compacta y en el botón de aprobar
   - files: packages/ui/src/change/change-bar.ts, packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts, packages/ui/src/change/change-page.test.ts, docs/ui.md
   - ac: AC5
   - verify: pnpm check

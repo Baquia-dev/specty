@@ -182,7 +182,8 @@ describe("ChangePage", () => {
       expect(bar()?.className).toContain("opacity-100");
       expect(bar()?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("review");
       expect(text(bar()?.querySelector("p"))).toBe("Agrupar la evolución académica por trimestre");
-      expect(text(bar()?.querySelector("p + span"))).toBe("r2");
+      expect(text(bar()?.querySelector("[data-revision]"))).toBe("Revisión 2 · por aprobar");
+      expect(bar()?.querySelector("[data-revision] span")?.className).toContain("hidden sm:inline");
       expect(text(bar()?.querySelector("[data-reading]"))).toBe("§ 04 Criterios");
       expect(text(bar()?.querySelector("[data-summary]"))).toBe("Supuestos 1/2 · Comentarios 2");
       // The decision comes along, compact: small buttons, the reason only in their tooltip.
@@ -190,7 +191,7 @@ describe("ChangePage", () => {
       expect(actions?.hasAttribute("data-compact")).toBe(true);
       expect([...(actions?.querySelectorAll("sp-button button") ?? [])].map(text)).toEqual([
         "Pedir cambios",
-        "Aprobar r2",
+        "Aprobar revisión 2",
       ]);
       expect(actions?.querySelector("[data-blocked]")).toBeNull();
       expect(bar()?.querySelector("h1")).toBeNull();
@@ -208,7 +209,7 @@ describe("ChangePage", () => {
     const actions = element.querySelector("sp-change-page [data-hero] sp-review-actions");
     expect([...(actions?.querySelectorAll("sp-button button") ?? [])].map(text)).toEqual([
       "Pedir cambios",
-      "Aprobar r2",
+      "Aprobar revisión 2",
     ]);
     expect(text(actions?.querySelector("[data-blocked]"))).toBe(
       "Falta 1 supuesto de alto impacto por decidir.",

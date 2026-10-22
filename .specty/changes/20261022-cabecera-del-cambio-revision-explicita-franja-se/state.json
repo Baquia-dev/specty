@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-cabecera-del-cambio-revision-explicita-franja-se",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-cabecera-del-cambio-revision-explicita-franja-se",
   "baseCommit": "7386d38b22779117d0dfd4d10c49b13f60b6c923",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "18f6808dc8392d40ca55c6443793ef4f0d94a09c",
+      "attempts": 1,
       "startedAt": "2026-10-22T20:25:01.586Z",
       "doneAt": "2026-10-22T20:29:49.337Z",
-      "summary": "sp-change-facts (extraída de la página): revisión con nombre y estado («Revisión 3 · por aprobar») y la aprobada con fecha y quién; desde lg una fila flexible donde cada dato ocupa su contenido con líneas finas y solo la rama encoge partiéndose (wrap-anywhere, nunca recortada); más estrecha, rejilla de 2 o 3 columnas con la rama al final a todo el ancho. El esfuerzo sale de la franja: «Sugerencia para el agente: implementar con esfuerzo X y revisar con Y» (planificar en borrador), atenuada con bombilla en la columna de las acciones. Tests de la cabecera; docs/ui.md."
+      "summary": "sp-change-facts (extraída de la página): revisión con nombre y estado («Revisión 3 · por aprobar») y la aprobada con fecha y quién; desde lg una fila flexible donde cada dato ocupa su contenido con líneas finas y solo la rama encoge partiéndose (wrap-anywhere, nunca recortada); más estrecha, rejilla de 2 o 3 columnas con la rama al final a todo el ancho. El esfuerzo sale de la franja: «Sugerencia para el agente: implementar con esfuerzo X y revisar con Y» (planificar en borrador), atenuada con bombilla en la columna de las acciones. Tests de la cabecera; docs/ui.md.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3a51caecd922ecbd25810c0a947d3c6466c75edc",
+      "startedAt": "2026-10-22T20:29:50.966Z",
+      "doneAt": "2026-10-22T20:32:06.400Z",
+      "summary": "Barra compacta: «Revisión 3 · por aprobar» con el estado oculto en el teléfono («Revisión 3»), y «Sin proponer» para un borrador. Botón «Aprobar revisión 3» en la cabecera y en la barra. Tests de la barra, de las acciones y de la revisión; docs/ui.md."
     }
   },
   "pending": {
