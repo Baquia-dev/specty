@@ -108,7 +108,7 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
   - verify: pnpm check
   - type: fix
   - notes: Defecto pedido en aceptación. Sin `<base href="/">`, al recargar en `/changes/<id>` el navegador pide `styles.css` y `main.js` bajo `/changes/`, recibe el HTML de la app y se niega a aplicarlo. Comprobar recargando con `ng serve` una ruta profunda (página, estilos y script con 200 y su tipo MIME).
-- [ ] T7: Revisión más clara: secciones en tarjetas, índice animado y cabecera fija
+- [x] T7: Revisión más clara: secciones en tarjetas, índice animado y cabecera fija
   - files: packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/change/change-page.ts
   - ac: AC1
   - verify: pnpm check

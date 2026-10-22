@@ -81,11 +81,12 @@ export class RejectAssumption {
   }
 }
 
-const DECISION_ICONS = {
-  pending: LucideCircleDashed,
-  implicit: LucideCircleDashed,
-  confirmed: LucideCircleCheck,
-  rejected: LucideCircleX,
+/** Each decision with its icon and the phase color that reads like it (never color alone). */
+const DECISIONS = {
+  pending: { icon: LucideCircleDashed, tone: "review" },
+  implicit: { icon: LucideCircleDashed, tone: "draft" },
+  confirmed: { icon: LucideCircleCheck, tone: "done" },
+  rejected: { icon: LucideCircleX, tone: "cancelled" },
 } as const;
 
 /** An assumption to confirm or reject (only in review). */
@@ -94,8 +95,9 @@ const DECISION_ICONS = {
   imports: [LucideDynamicIcon, Badge, Button, IconButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: "group flex flex-col gap-2 rounded-xl border border-border bg-surface p-4",
+    class: "group flex flex-col gap-2 rounded-xl border border-border bg-bg p-4",
     "[attr.data-item]": "assumption().id",
+    "[style.border-color]": "waiting() ? 'var(--color-phase-review)' : null",
   },
   template: `
     <div class="flex flex-wrap items-center gap-2">
@@ -105,8 +107,8 @@ const DECISION_ICONS = {
           <svg [lucideIcon]="warning" size="13" aria-hidden="true"></svg>{{ t()('Alto impacto', 'High impact') }}
         </span>
       }
-      <span class="ml-auto flex items-center gap-1 text-xs text-text-muted" data-decision>
-        <svg [lucideIcon]="icons[assumption().decision]" size="13" aria-hidden="true"></svg>{{ decisionLabel() }}
+      <span class="ml-auto flex h-6 items-center gap-1 rounded-md px-2 text-xs font-medium" [style.color]="'var(--color-phase-' + decisions[assumption().decision].tone + ')'" [style.background]="'var(--color-phase-' + decisions[assumption().decision].tone + '-bg)'" data-decision>
+        <svg [lucideIcon]="decisions[assumption().decision].icon" size="13" aria-hidden="true"></svg>{{ decisionLabel() }}
       </span>
       <sp-icon-button class="opacity-0 group-focus-within:opacity-100 group-hover:opacity-100" size="sm" [label]="t()('Comentar ' + assumption().id, 'Comment on ' + assumption().id)" [icon]="commentIcon" (pressed)="comment.emit({ item: assumption().id })" />
     </div>
@@ -132,7 +134,11 @@ export class AssumptionCard {
   private readonly dialogs = inject(Dialogs);
   private readonly failed = reportFailure(inject(Toasts), inject(Preferences));
   protected readonly t = inject(Preferences).t;
-  protected readonly icons = DECISION_ICONS;
+  protected readonly decisions = DECISIONS;
+  /** A high-impact assumption still undecided: approval waits for it. */
+  protected readonly waiting = computed(
+    () => this.assumption().impact === "high" && this.assumption().decision === "pending",
+  );
   protected readonly warning = LucideTriangleAlert;
   protected readonly commentIcon = LucideMessageSquarePlus;
   protected readonly decisionLabel = computed(() => {

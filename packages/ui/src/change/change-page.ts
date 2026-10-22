@@ -3,9 +3,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
+  ElementRef,
+  effect,
   inject,
   input,
   linkedSignal,
+  viewChild,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import type { EffortLevel } from "@baquia-dev/specty-core";
@@ -40,20 +44,26 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
   imports: [RouterLink, LucideDynamicIcon, Badge, PhaseBadge, Skeleton, Tabs, TabPanel, SpecReview],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 pt-8">
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 pt-8 pb-16">
       <a routerLink="/" class="flex items-center gap-1 self-start text-sm text-text-muted">
         <svg [lucideIcon]="back" size="14" aria-hidden="true"></svg>{{ t()('Bandeja', 'Inbox') }}
       </a>
       @if (change(); as change) {
-        <header class="flex flex-col gap-3">
+        <!-- Title and state stay in view while the content scrolls below. -->
+        <div #sticky class="sticky top-0 z-20 -mx-6 flex flex-col gap-1 border-b border-border bg-bg px-6 py-3" data-sticky>
           <div class="flex flex-wrap items-center gap-2">
             <sp-phase-badge [phase]="change.phase" />
             <sp-badge>r{{ change.revision }}</sp-badge>
-            @if (change.branch; as branch) {
-              <code class="font-mono text-xs text-text-muted">{{ branch }}</code>
-            }
+            <h1 class="m-0 min-w-0 flex-1 truncate text-lg font-semibold">{{ change.title }}</h1>
           </div>
-          <h1 class="m-0 text-xl font-semibold">{{ change.title }}</h1>
+          @if (change.decision; as decision) {
+            <p class="m-0 text-sm font-medium" data-waiting>{{ t()(waiting[decision].es, waiting[decision].en) }}</p>
+          }
+        </div>
+        <header class="flex flex-col gap-2">
+          @if (change.branch; as branch) {
+            <code class="font-mono text-xs text-text-muted">{{ branch }}</code>
+          }
           <p class="m-0 flex flex-wrap items-center gap-2 text-sm text-text-muted">
             @if (change.size; as size) {
               <sp-badge>{{ size.level }}</sp-badge>
@@ -67,9 +77,6 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               </span>
             }
           </p>
-          @if (change.decision; as decision) {
-            <p class="m-0 text-sm font-medium" data-waiting>{{ t()(waiting[decision].es, waiting[decision].en) }}</p>
-          }
           @for (problem of change.problems; track problem) {
             <p class="m-0 flex items-center gap-2 text-sm" role="note">
               <svg [lucideIcon]="warning" size="14" aria-hidden="true" style="color: var(--color-phase-review)"></svg>
@@ -125,6 +132,23 @@ export class ChangePage {
   protected readonly warning = LucideTriangleAlert;
   protected readonly waiting = WAITING;
   protected readonly change = this.store.byId(this.id);
+  private readonly sticky = viewChild<ElementRef<HTMLElement>>("sticky");
+
+  constructor() {
+    // Sticky parts below (spec index, comments, anchors) start under the header's real height.
+    const host: HTMLElement = inject(ElementRef).nativeElement;
+    let observer: ResizeObserver | undefined;
+    effect(() => {
+      const header = this.sticky()?.nativeElement;
+      observer?.disconnect();
+      if (header === undefined || typeof ResizeObserver === "undefined") return;
+      observer = new ResizeObserver(() =>
+        host.style.setProperty("--sp-sticky-top", `${header.offsetHeight}px`),
+      );
+      observer.observe(header);
+    });
+    inject(DestroyRef).onDestroy(() => observer?.disconnect());
+  }
 
   /** The tab in the URL if valid; otherwise, the one for the change's phase. */
   protected readonly tab = linkedSignal<ChangeTab>(() => {

@@ -94,6 +94,60 @@ describe("SpecReview", () => {
     );
   });
 
+  it("shows each section as a card with icon, hint and progress; decisions in color, icon and text (AC1)", async () => {
+    const { review } = await open(REVIEW);
+    const assumptions = review()?.querySelector("[data-section=assumptions]");
+    expect(assumptions?.className).toContain("rounded-xl");
+    expect(assumptions?.querySelector("header svg")).not.toBeNull();
+    expect(text(assumptions?.querySelector("header p"))).toBe(
+      "Confirma o rechaza los de alto impacto: aprobar espera por ellos.",
+    );
+    expect(text(assumptions?.querySelector("[data-progress]"))).toBe(
+      "1 de 2 de alto impacto decididos",
+    );
+    expect(text(review()?.querySelector("[data-section=tasks] [data-progress]"))).toBe(
+      "0 de 2 hechas",
+    );
+    const confirmed = review()?.querySelector<HTMLElement>(
+      "sp-assumption-card[data-item=A1] [data-decision]",
+    );
+    expect(text(confirmed)).toBe("Confirmado");
+    expect(confirmed?.style.color).toBe("var(--color-phase-done)");
+    expect(confirmed?.querySelector("svg")).not.toBeNull();
+    const waiting = review()?.querySelector<HTMLElement>("sp-assumption-card[data-item=A2]");
+    expect(waiting?.style.borderColor).toBe("var(--color-phase-review)");
+  });
+
+  it("scrolls to a section smoothly, or at once with reduced motion, and marks it (AC1)", async () => {
+    const { review, settle } = await open(REVIEW);
+    const calls: ScrollIntoViewOptions[] = [];
+    Element.prototype.scrollIntoView = (options?: boolean | ScrollIntoViewOptions) => {
+      if (typeof options === "object") calls.push(options);
+    };
+    const criteria = () =>
+      [...(review()?.querySelectorAll<HTMLButtonElement>("nav button") ?? [])].find((button) =>
+        text(button).startsWith("Criterios"),
+      );
+    criteria()?.click();
+    await settle();
+    expect(calls.at(-1)).toEqual({ behavior: "smooth", block: "start" });
+    expect(criteria()?.getAttribute("aria-current")).toBe("true");
+    expect(document.activeElement?.id).toBe("review-criteria-title");
+
+    window.matchMedia = (() => ({
+      matches: true,
+      addEventListener: () => undefined,
+    })) as unknown as typeof window.matchMedia;
+    criteria()?.click();
+    expect(calls.at(-1)).toEqual({ behavior: "auto", block: "start" });
+    // Test files share globals: leave matchMedia and scrollIntoView as other files expect them.
+    window.matchMedia = (() => ({
+      matches: false,
+      addEventListener: () => undefined,
+    })) as unknown as typeof window.matchMedia;
+    Reflect.deleteProperty(Element.prototype, "scrollIntoView");
+  });
+
   it("blocks approval with a visible reason until high-impact assumptions are decided (AC7)", async () => {
     const { review, bar, barButtons, settle } = await open(REVIEW);
     expect(text(bar()?.querySelector("[data-blocked]"))).toBe(

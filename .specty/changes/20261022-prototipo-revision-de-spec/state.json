@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-prototipo-revision-de-spec",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-prototipo-revision-de-spec",
   "baseCommit": "f081fac8a754d519823cbd159ad81cc5af891bbb",
   "revision": 3,
@@ -106,6 +106,17 @@
       "doneAt": "2026-10-22T07:08:27.093Z",
       "summary": "<base href=\"/\"> en index.html: al recargar /changes/<id>?tab=spec, styles.css y main.js se piden desde la raíz. Comprobado con ng serve en esa ruta: la página lleva el base href, styles.css responde 200 text/css y main.js 200 text/javascript",
       "scopeExtra": []
+    },
+    "T7": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/section-meta.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "b9b0fb334526da336ee71737b23061077dc39049",
+      "startedAt": "2026-10-22T07:14:45.918Z",
+      "doneAt": "2026-10-22T07:25:38.317Z",
+      "summary": "Revisión más clara: cada sección es una tarjeta con icono, título, línea de qué se espera de quien revisa y progreso (section-meta.ts, S2: supuestos de alto impacto decididos, tareas hechas, archivos y módulos, avisos de criterios); los supuestos son tarjetas sobre el fondo con la decisión como etiqueta de color de fase, icono y texto (confirmado, pendiente, rechazado) y borde ámbar si son de alto impacto pendientes. El índice desplaza con scrollIntoView smooth (auto con prefers-reduced-motion), enfoca el título y marca con aria-current la sección visible (IntersectionObserver); índice y comentarios quedan sticky bajo la cabecera, cuya altura publica la página en --sp-sticky-top (ResizeObserver) y usan los scroll-margin de las secciones. La página del cambio fija título, fase, revisión y qué espera de la persona y termina con pb-16 (el margen en el armazón queda pendiente, a petición de la persona)"
     }
   },
   "pending": {
@@ -117,6 +128,6 @@
     "AC": 9,
     "T": 7,
     "R": 3,
-    "S": 1
+    "S": 2
   }
 }

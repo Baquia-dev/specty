@@ -61,14 +61,22 @@ describe("ChangePage", () => {
 
   it("shows title, phase, revision, branch, size with reasons and effort (AC4)", async () => {
     const { element } = await open("/changes/20261020-evolucion-trimestre");
+    // Title and state stay in view (sticky); branch, size and effort scroll with the page.
+    const sticky = element.querySelector<HTMLElement>("sp-change-page [data-sticky]");
+    expect(sticky?.className).toContain("sticky");
+    expect(text(sticky?.querySelector("h1"))).toBe("Agrupar la evolución académica por trimestre");
+    expect(sticky?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("review");
+    expect(text(sticky)).toContain("r2");
+    expect(text(sticky?.querySelector("[data-waiting]"))).toBe("Espera tu revisión de la spec");
     const header = element.querySelector("sp-change-page header");
-    expect(text(header?.querySelector("h1"))).toBe("Agrupar la evolución académica por trimestre");
-    expect(header?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("review");
-    expect(text(header)).toContain("r2");
     expect(text(header)).toContain("specty/20261020-evolucion-trimestre");
     expect(text(header)).toContain("3 archivos");
     expect(text(header)).toMatch(/Esfuerzo recomendado: planificación \S+ · implementación \S+/);
-    expect(text(header?.querySelector("[data-waiting]"))).toBe("Espera tu revisión de la spec");
+  });
+
+  it("ends the page with room below the content (AC1)", async () => {
+    const { element } = await open("/changes/20261020-evolucion-trimestre");
+    expect(element.querySelector("sp-change-page > div")?.className).toContain("pb-16");
   });
 
   it.each([
@@ -107,8 +115,8 @@ describe("ChangePage", () => {
     fixtures.approveScope();
     fixtures.finishTask();
     await settle();
-    const header = element.querySelector("sp-change-page header");
-    expect(header?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("acceptance");
-    expect(text(header?.querySelector("[data-waiting]"))).toBe("Espera que aceptes el resultado");
+    const sticky = element.querySelector("sp-change-page [data-sticky]");
+    expect(sticky?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("acceptance");
+    expect(text(sticky?.querySelector("[data-waiting]"))).toBe("Espera que aceptes el resultado");
   });
 });
