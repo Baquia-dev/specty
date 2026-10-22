@@ -8,3 +8,6 @@
 {"ts":"2026-10-22T10:26:39.562Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"12887b1c8d71a2a539e76383ed717db3246d4caf"}}
 {"ts":"2026-10-22T10:29:02.582Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":29828}}
 {"ts":"2026-10-22T10:29:02.585Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"La Bandeja (py-8 → pt-8), el catálogo (py-6 → pt-6) y la página del cambio (sin pb-16) dejan el margen inferior al armazón. Tests: la página del cambio y la Bandeja no ponen margen inferior propio y main lleva pb-16. En el navegador, en la Bandeja, el catálogo, un cambio y su delta: html sin desplazamiento (0 px) y 64 px entre el final del contenido y el borde."}}
+{"ts":"2026-10-22T10:31:53.910Z","actor":"human","event":"change.accepted","data":{"revision":2}}
+{"ts":"2026-10-22T10:32:11.851Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:7c89ec108eb7f44b27b4a82be1b66ac17d1cbf974fad4c5b9cc8f0d735eb9f04","size":"M","warnings":0}}
+{"ts":"2026-10-22T10:32:19.628Z","actor":"human","event":"change.closed","data":{}}

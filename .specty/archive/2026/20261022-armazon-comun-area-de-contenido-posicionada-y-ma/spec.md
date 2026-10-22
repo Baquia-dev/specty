@@ -45,3 +45,27 @@ El armazón común de la UI resuelve dos cosas que hoy arregla cada página por 
   - ac: AC2
   - verify: pnpm check
   - notes: Comprobar en el navegador que `html` no se desplaza (scrollHeight igual a clientHeight) en la Bandeja, el catálogo, un cambio y su delta, y que el final de cada página deja el mismo margen.
+
+## Cierre
+
+### Resumen
+
+- El `main` del armazón es `relative` y lleva `pb-16`: el contenido absoluto ya no puede salirse del área que se desplaza, y todas las páginas terminan con el mismo margen inferior.
+- La Bandeja, el catálogo y la página del cambio dejan de poner su propio margen inferior.
+- Comprobado en Chrome sin interfaz en la Bandeja, el catálogo, un cambio y su delta: `html` no se desplaza y quedan 64 px al final. 160 tests en la UI.
+
+### Desviaciones
+
+- La tarea única se dividió en dos (armazón; páginas) por el aviso de Specty sobre el número de archivos por tarea (revisión 2 de la spec).
+- El test del armazón comprueba la Bandeja y el catálogo, no la página del cambio: su router no enlaza los parámetros de ruta como inputs. La página del cambio lo comprueba en su propio test, y la Bandeja también en el suyo (test implícito).
+
+### Decisiones
+
+- El margen va en el propio `main`, no en un envoltorio: los navegadores lo cuentan dentro de lo desplazable y la barra fija de la revisión, que se mide por su ancho, no cambia.
+- Se mantiene el `relative` de la revisión y del delta, para cuando se muestren sin este armazón (por ejemplo, en una webview del editor).
+
+### Pendientes
+
+- Pulir el diff del delta: separar la puntuación, aligerar los ítems añadidos y quitar la línea "impacto: alto" repetida.
+- Siguiente pantalla de la fase 2: progreso.
+- Mejoras de Specty anotadas: esfuerzo ajustado por el modelo, recomendar revisar la spec con un modelo más capaz y el guard que lee el cuerpo de los heredoc como comandos.
