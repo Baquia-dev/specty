@@ -126,3 +126,33 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
 - R4: Un worker no comparte memoria y hay que serializar: las vistas no pueden llevar funciones ni señales. Mitigación: vistas como datos planos, y un test que deriva por las dos vías y compara.
 - R2: `resource()` de Angular puede cambiar de API entre versiones menores. Mitigación: queda encerrado en `changes-store.ts`.
 - R3: Mover la cabecera al armazón rompe tests del catálogo (tema e idioma, ⌘K). Mitigación: esos tests pasan al armazón, y los del catálogo se quedan con su navegación.
+
+## Cierre
+
+### Resumen
+
+- Contrato de datos independiente del transporte (`SpectyData`, `ChangeRecord`): por cambio, el texto de `spec.md`, su `state.json` y desde cuándo está en su fase. La UI deriva las vistas con core en un web worker.
+- Datos de ejemplo de "Mi colegio" (ocho cambios) con comandos "Simular: …" para probar el directo sin servidor.
+- Armazón común: cabecera con Bandeja, catálogo, ⌘K, tema e idioma; scroll solo bajo la cabecera; Retroceso para volver; todas las pantallas bajo demanda.
+- Bandeja: decisiones pendientes primero, cambios en curso por fase y recientes; `j`/`k` con resaltado solo en modo teclado y Enter nativo.
+- Página del cambio: cabecera completa y pestañas que abren según la fase, sincronizadas con `?tab=`.
+- 107 tests. Bundle inicial de 540 kB (120 kB transferidos); zod, yaml y picomatch solo en el worker.
+
+### Desviaciones
+
+- El respaldo sin workers de A1 (`import("./views")`) metía core entero en un fragmento inicial (1,12 MB), porque compartía el índice de core con el bundle principal. Se quitó (S2): la derivación es el token `DERIVER`, que usa siempre el worker, y los tests de jsdom inyectan un derivador en el mismo hilo.
+- S1: la Bandeja y la página del cambio se crearon como componentes mínimos en T3, porque las rutas los necesitaban para compilar.
+- Ajuste en aceptación (T6): resaltado de la selección solo con teclado, Retroceso para volver y scroll solo bajo la cabecera. Tocó `card.ts` y `kbd.ts` de cambios anteriores.
+
+### Decisiones
+
+- Se descartó Escape para volver: ya cierra diálogos, menús y tooltips.
+- `j`/`k` mueven el foco al enlace de la tarjeta en lugar de registrar Enter, porque el registro de atajos impediría Enter en los botones.
+- El contenido recibe el foco al navegar para que las teclas de desplazamiento lo muevan.
+
+### Pendientes
+
+- Entradas ligeras en core, para recuperar un respaldo sin worker en VS Code y MCP Apps (el token `DERIVER` ya lo admite).
+- Investigar por qué `@lucide/angular` pesa 112 kB en el bundle inicial.
+- Mejoras de Specty: aprobar sola una ampliación hacia archivos ya en la spec aprobada, y que el guard no lea el cuerpo de un heredoc como comandos.
+- Siguiente cambio de la fase 2: "Prototipo: revisión de spec y delta", con `--follows` a este.

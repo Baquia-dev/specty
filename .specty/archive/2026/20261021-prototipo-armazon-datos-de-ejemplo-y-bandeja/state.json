@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261021-prototipo-armazon-datos-de-ejemplo-y-bandeja",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261021-prototipo-armazon-datos-de-ejemplo-y-bandeja",
   "baseCommit": "9e196d2b560217a652cd2f2b657746ecb3e9e09a",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:2b6804618a4c6e8c052481ea6603a2daf65d2d67171eabefd0946f08aa093987",
@@ -102,12 +102,12 @@
     },
     "T6": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "58fac3fc2f0c923be82fd9295809d00c4591eead",
+      "attempts": 1,
       "startedAt": "2026-10-22T05:59:59.598Z",
       "doneAt": "2026-10-22T06:07:03.941Z",
-      "summary": "InputModality (keyboard/modality.ts): teclado al pulsar cualquier tecla que no sea solo un modificador, ratón al mover o pulsar el puntero (escuchas en captura y pasivas). sp-card mantiene aria-current pero solo dibuja el resaltado de selected en modo teclado. Armazón: h-dvh sin scroll del documento, main como único contenedor con scroll que vuelve arriba y recibe el foco (preventScroll) en cada navegación; Retroceso (⌫, también en sp-kbd) vuelve con Location.back() si hubo navegación dentro de la app o a la Bandeja si no, y no actúa con un diálogo abierto ni escribiendo (regla del registro de atajos). Tests de modalidad, scroll, vuelta atrás y excepciones"
+      "summary": "InputModality (keyboard/modality.ts): teclado al pulsar cualquier tecla que no sea solo un modificador, ratón al mover o pulsar el puntero (escuchas en captura y pasivas). sp-card mantiene aria-current pero solo dibuja el resaltado de selected en modo teclado. Armazón: h-dvh sin scroll del documento, main como único contenedor con scroll que vuelve arriba y recibe el foco (preventScroll) en cada navegación; Retroceso (⌫, también en sp-kbd) vuelve con Location.back() si hubo navegación dentro de la app o a la Bandeja si no, y no actúa con un diálogo abierto ni escribiendo (regla del registro de atajos). Tests de modalidad, scroll, vuelta atrás y excepciones",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -120,5 +120,6 @@
     "T": 6,
     "R": 4,
     "S": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T06:15:15.507Z"
 }
