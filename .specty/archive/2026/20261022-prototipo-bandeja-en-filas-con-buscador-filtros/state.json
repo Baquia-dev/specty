@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-prototipo-bandeja-en-filas-con-buscador-filtros",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-prototipo-bandeja-en-filas-con-buscador-filtros",
   "baseCommit": "a40c1d5566d49ad1f3aa79c57f9c68aef2763a43",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:c9bf9ee8c35deeb5bb55c627a1ecb8a9e51757b8a1b9df4421b1e478d73b642f",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2eeecd7e4538f4b1c4772a783a0ca802a25fd0c5",
+      "attempts": 1,
       "startedAt": "2026-10-22T18:28:38.434Z",
       "doneAt": "2026-10-22T18:35:58.948Z",
-      "summary": "Barra fija de ancho completo (sp-inbox-toolbar) con el buscador, la pista j/k, las fases y 'X de N cambios'; fondo sólido y línea inferior solo mientras está fija (IntersectionObserver sobre el main). Agrupar y ordenar (sp-inbox-view-options) suben a la cabecera. En el teléfono las fases van en una línea que se desplaza de lado. La fila lleva el tiempo bajo la fase (al lado en el teléfono) y alinea fase y tiempo con título y qué espera; j/k traen la fila a la vista sin dejarla bajo la barra. Tests de la barra separados en inbox-toolbar.test.ts; docs/ui.md actualizado."
+      "summary": "Barra fija de ancho completo (sp-inbox-toolbar) con el buscador, la pista j/k, las fases y 'X de N cambios'; fondo sólido y línea inferior solo mientras está fija (IntersectionObserver sobre el main). Agrupar y ordenar (sp-inbox-view-options) suben a la cabecera. En el teléfono las fases van en una línea que se desplaza de lado. La fila lleva el tiempo bajo la fase (al lado en el teléfono) y alinea fase y tiempo con título y qué espera; j/k traen la fila a la vista sin dejarla bajo la barra. Tests de la barra separados en inbox-toolbar.test.ts; docs/ui.md actualizado.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "A": 4,
     "AC": 6,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T18:39:14.737Z"
 }

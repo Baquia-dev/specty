@@ -69,3 +69,29 @@ La Bandeja deja las tarjetas altas y se lee como el resto de la app, en filas de
   - ac: AC1, AC2
   - verify: pnpm check
   - notes: Comprobar en el navegador, en claro, oscuro y a 390 px, que la barra fija no tapa filas al llegar arriba, que su línea aparece solo fija y que la fila alinea fase y tiempo con título y qué espera.
+
+## Cierre
+
+### Resumen
+
+La Bandeja deja las tarjetas y se lee en filas de documento bajo divisores de sección, sin líneas entre filas. Cada fila muestra la fase con cuánto lleva debajo, el título, qué espera con su tamaño, las notas que piden atención, el avance y la acción directa. Se puede buscar por título o id (`/` y Escape), filtrar por fase con su número, agrupar (estado, fase o sin agrupar) y ordenar (lo que más espera, lo más reciente, título o tamaño). El buscador, las fases y "X de N cambios" quedan fijos al desplazarse. La URL queda siempre limpia: agrupar y ordenar se guardan en el navegador; la búsqueda y la fase duran la sesión.
+
+### Desviaciones
+
+- Revisión 3, pedida al revisar el resultado: barra fija con buscador y fases, y el tiempo bajo la fase (T3, AC1 y AC2 ajustados). Agrupar y ordenar pasaron a la cabecera (A4) para que la barra fija sea baja en el teléfono.
+- Al comprobar a 390 px, la fila se apila en el teléfono (fase y tiempo, título, acción); en la revisión 3 el tiempo va al lado de la fase.
+- La barra fija tiene fondo sólido, no translúcido como la barra compacta del cambio: las filas pasan justo bajo el buscador y su texto se transparentaba.
+- `inbox.test.ts` pasó de 300 líneas: los tests de la barra (fija, fases, agrupar y ordenar, estado vacío) van en `inbox-toolbar.test.ts`, con la Bandeja sola, sin el shell.
+
+### Decisiones
+
+- `InboxState` es un servicio de la app: la búsqueda y la fase siguen al ir a un cambio y volver, y se pierden al recargar; agrupar y ordenar se guardan en `specty.inbox.group` y `specty.inbox.sort`, con lectura y escritura protegidas.
+- La barra sabe que está fija con un `IntersectionObserver` sobre ella misma (raíz el `main` del shell, `rootMargin` de -1 px arriba, umbral 1), sin elemento centinela; sin `IntersectionObserver` queda fija igual, sin la línea.
+- Las filas tienen margen de desplazamiento (`scroll-mt-36`) y j/k enfocan sin desplazar y luego traen la fila a la vista, para que nunca quede bajo la barra.
+- La pista de j/k va en la barra y solo desde `sm`: en el teléfono no hay teclado.
+
+### Pendientes
+
+- En el teléfono, la cabecera del shell (unos 145 px) más la barra fija ocupan mucho; entra en el repaso de móvil ya anotado (cabecera y menú de preferencias, índice «Contenido» de la revisión a 390 px).
+- El margen de las filas es fijo (144 px) y cubre la barra más alta de hoy (unos 132 px en el teléfono con un filtro activo); si la barra crece, medirla como hace la página del cambio con `--sp-sticky-top`.
+- La línea de fases que se desplaza de lado en el teléfono no indica que hay más; un degradado en el borde lo haría evidente.
