@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261022-cabecera-del-cambio-revision-explicita-franja-se",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-cabecera-del-cambio-revision-explicita-franja-se",
+  "baseCommit": "7386d38b22779117d0dfd4d10c49b13f60b6c923",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2f961ad43acfd326887e16ec380affae322fd7a60e31eed62ee02420b80c7d2d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2689eefc28a4484d4c5d07a836f3bddde2d836730a40966116ea8a8107a9ac1f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:a56a0700f8fb6b9909afc919ff8e64f55ff68eb6755782a7d8c34a841059d27f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eab325a0b3bc41c05be374615ccbdb7a4b62be8bb2a53ddcec6081ac1470e2af",
+    "at": "2026-10-22T20:23:24.898Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
