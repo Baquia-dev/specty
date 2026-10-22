@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-prototipo-revision-de-spec",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-prototipo-revision-de-spec",
   "baseCommit": "f081fac8a754d519823cbd159ad81cc5af891bbb",
   "revision": 2,
@@ -97,6 +97,15 @@
         "packages/ui/src/data/review.ts",
         "packages/ui/src/review/spec-sections.ts"
       ]
+    },
+    "T6": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5f75068cfdbcc206a35160f709ea0b486311b26b",
+      "startedAt": "2026-10-22T07:07:42.333Z",
+      "doneAt": "2026-10-22T07:08:27.093Z",
+      "summary": "<base href=\"/\"> en index.html: al recargar /changes/<id>?tab=spec, styles.css y main.js se piden desde la raíz. Comprobado con ng serve en esa ruta: la página lleva el base href, styles.css responde 200 text/css y main.js 200 text/javascript"
     }
   },
   "pending": {

@@ -102,7 +102,7 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
   - ac: AC1, AC7, AC8, AC9
   - verify: pnpm check
   - notes: Comprobar con `ng build --stats-json` que `marked` solo está en el fragmento del cambio, no en el inicial.
-- [ ] T6: Recargar en una ruta profunda carga los recursos desde la raíz
+- [x] T6: Recargar en una ruta profunda carga los recursos desde la raíz
   - files: packages/ui/src/index.html
   - ac: AC1
   - verify: pnpm check
