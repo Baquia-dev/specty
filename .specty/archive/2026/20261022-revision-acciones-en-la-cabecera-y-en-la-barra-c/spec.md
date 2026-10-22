@@ -56,3 +56,28 @@ follows:
   - ac: AC1, AC2, AC3
   - verify: pnpm check
   - notes: Comprobar en el navegador, en claro y en oscuro, la cabecera con las acciones y la barra compacta al desplazarse; y que no queda barra en el pie.
+
+## Cierre
+
+### Resumen
+
+- "Pedir cambios" y "Aprobar rN" están en la cabecera de la página del cambio, a la derecha del título, con el motivo del bloqueo debajo; al desplazarse, en pequeño en la barra compacta, con el motivo en el tooltip. Sin barra en el pie.
+- Solo en revisión, en cualquier pestaña.
+- En pantallas estrechas, la barra compacta oculta el resumen y la sección, conserva el título y baja los botones a una segunda línea.
+- 174 tests en la UI; comprobado en Chrome sin interfaz en claro, oscuro y a 390 px.
+
+### Desviaciones
+
+- S1 (T2): la barra compacta pasó a `sp-change-bar` (`change/change-bar.ts`), porque `change-page.ts` llegaba a 317 líneas.
+- La verificación de T1 se limitó a sus propios tests: mover las acciones de la revisión a la cabecera rompía los de la revisión hasta T2, que exigió `pnpm check` completo.
+- En móvil se ajustó la barra compacta (no estaba en la spec): sin ese ajuste los botones no cabían.
+
+### Decisiones
+
+- Un único componente de acciones en dos variantes (normal y compacta), para que la cabecera y la barra se comporten igual.
+- El motivo del bloqueo se ve como texto solo en la cabecera; en la barra compacta basta el tooltip con `aria-disabled`.
+
+### Pendientes
+
+- En móvil, el índice "Contenido" de la revisión se queda fijo encima del texto al apilarse las columnas (viene de cambios anteriores): pasada de móvil y pulido.
+- Patrones de página en el sistema de diseño y Bandeja con buscador, filtros, agrupar y ordenar.

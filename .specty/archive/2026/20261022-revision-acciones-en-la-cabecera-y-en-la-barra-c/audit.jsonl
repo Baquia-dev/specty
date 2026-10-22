@@ -9,3 +9,6 @@
 {"ts":"2026-10-22T17:21:33.718Z","actor":"human","event":"scope.decided","data":{"id":"S1","decision":"approved"}}
 {"ts":"2026-10-22T17:24:49.342Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":34787}}
 {"ts":"2026-10-22T17:24:49.345Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Acciones en la cabecera amplia, a la derecha del título, con el motivo del bloqueo debajo; en la barra compacta, en pequeño y con el motivo en el tooltip; solo en revisión y en cualquier pestaña. Sin barra en el pie. S1: la barra compacta pasa a sp-change-bar (change/change-bar.ts) porque change-page.ts llegaba a 317 líneas; en pantallas estrechas oculta resumen y sección, conserva el título y baja los botones a una segunda línea. docs/ui.md y tests actualizados. Comprobado en el navegador en claro, oscuro y a 390 px; html sin desplazamiento."}}
+{"ts":"2026-10-22T17:34:57.019Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-22T17:35:17.960Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:c47cd647dfc4d72cc44b63b5013182124bb92f01ea005bf229d72d60c22b1a16","size":"M","warnings":0}}
+{"ts":"2026-10-22T17:35:45.571Z","actor":"human","event":"change.closed","data":{}}

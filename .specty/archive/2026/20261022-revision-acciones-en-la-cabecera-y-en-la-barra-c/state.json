@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-revision-acciones-en-la-cabecera-y-en-la-barra-c",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-revision-acciones-en-la-cabecera-y-en-la-barra-c",
   "baseCommit": "d7336d86b431b04ec1d4122fff06909e38076d68",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f9cd28313de1a8462c30b95328d116a39e22c00ed950ac68bf0fa06dfc89c027",
@@ -48,14 +48,14 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/change/change-bar.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "4aaebcbf042e9dcd88f73332e5b83c6016918fe2",
+      "attempts": 1,
       "startedAt": "2026-10-22T17:18:12.618Z",
       "doneAt": "2026-10-22T17:24:49.343Z",
-      "summary": "Acciones en la cabecera amplia, a la derecha del título, con el motivo del bloqueo debajo; en la barra compacta, en pequeño y con el motivo en el tooltip; solo en revisión y en cualquier pestaña. Sin barra en el pie. S1: la barra compacta pasa a sp-change-bar (change/change-bar.ts) porque change-page.ts llegaba a 317 líneas; en pantallas estrechas oculta resumen y sección, conserva el título y baja los botones a una segunda línea. docs/ui.md y tests actualizados. Comprobado en el navegador en claro, oscuro y a 390 px; html sin desplazamiento."
+      "summary": "Acciones en la cabecera amplia, a la derecha del título, con el motivo del bloqueo debajo; en la barra compacta, en pequeño y con el motivo en el tooltip; solo en revisión y en cualquier pestaña. Sin barra en el pie. S1: la barra compacta pasa a sp-change-bar (change/change-bar.ts) porque change-page.ts llegaba a 317 líneas; en pantallas estrechas oculta resumen y sección, conserva el título y baja los botones a una segunda línea. docs/ui.md y tests actualizados. Comprobado en el navegador en claro, oscuro y a 390 px; html sin desplazamiento.",
+      "scopeExtra": [
+        "packages/ui/src/change/change-bar.ts"
+      ]
     }
   },
   "pending": {
@@ -67,5 +67,6 @@
     "AC": 3,
     "T": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T17:35:17.959Z"
 }
