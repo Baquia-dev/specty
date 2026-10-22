@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261022-pestana-progreso-tareas-como-documento-verificac",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-pestana-progreso-tareas-como-documento-verificac",
+  "baseCommit": "2505cc5d59c2bb62f9c432a6d454c4118a5efeef",
+  "revision": 3,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:464b123c2b3fe73318816261c7d024ab0773b649e98c30abcf520306e5d83e10",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:94c026b56dd1b351487916b8fadc859db08d0a0b7c1aa75770ab741cc317a368",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c0ffea905247964d9bc6a84f396d8b021621384125026777717d1873db628e8f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c293d0bcf184d875aad396101ead3be24ea389182b3f83b3a6af97e5c9168230",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d1a3288aee0424e35417f62265f0de1ec3b082ae7aca70094f45c2db6c7b66b9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4
+  },
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:ae6cc657d0fa0977631326cd4e45401bfa046634040fca8b0dda1d025522bb26",
+    "at": "2026-10-22T22:51:57.173Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
