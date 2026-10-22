@@ -282,9 +282,12 @@ describe("ChangePage", () => {
     expect(empty?.querySelector("a")?.getAttribute("href")).toBe("/");
   });
 
-  it("updates the open change live (AC5)", async () => {
+  it("shows the tasks in the Progress tab and updates the open change live (AC5)", async () => {
     const { element, fixtures, settle } = await open("/changes/20261019-boletines-pdf");
-    expect(text(element.querySelector("[role=tabpanel]:not([hidden])"))).toContain("S1 · T3 pide");
+    // The real tab, with the task waiting for a decision on top.
+    const tab = element.querySelector("[role=tabpanel]:not([hidden]) sp-progress-tab");
+    expect(tab?.querySelectorAll("sp-task-row")).toHaveLength(3);
+    expect(text(tab?.querySelector("[data-waiting] [data-scope-request]"))).toContain("T3 pide");
     fixtures.approveScope();
     fixtures.finishTask();
     await settle();

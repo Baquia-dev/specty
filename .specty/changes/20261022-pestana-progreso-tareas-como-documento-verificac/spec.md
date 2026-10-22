@@ -80,7 +80,7 @@ La pestaña Progreso del cambio muestra hoy un texto provisional. Pasa a ser la 
   - files: packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/task-row.ts, packages/ui/src/progress/scope-request.ts, packages/ui/src/progress/progress-tab.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/progress-tab.test.ts
-- [ ] T4: La pestaña en la página del cambio
+- [x] T4: La pestaña en la página del cambio
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts, docs/ui.md
   - ac: AC1, AC4
   - verify: pnpm check

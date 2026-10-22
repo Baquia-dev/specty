@@ -33,6 +33,7 @@ import {
   type ReviewSection,
   relativeTime,
 } from "../data/records";
+import { ProgressTab } from "../progress/progress-tab";
 import { ReviewActions } from "../review/review-actions";
 import { SpecReview } from "../review/spec-review";
 import { Preferences } from "../theme/preferences";
@@ -79,6 +80,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     ReviewActions,
     ChangeBar,
     ChangeFacts,
+    ProgressTab,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -143,11 +145,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               <sp-spec-review [change]="change" [(reading)]="reading" />
             </sp-tab-panel>
             <sp-tab-panel value="progress" [label]="t()('Progreso', 'Progress')">
-              <p class="mt-0">{{ change.tasks.done }}/{{ change.tasks.total }} {{ t()('tareas hechas', 'tasks done') }}</p>
-              @for (request of change.scopeRequests; track request.id) {
-                <p class="m-0 text-sm">{{ request.id }} · {{ request.task }} {{ t()('pide', 'asks for') }} <code class="font-mono text-xs">{{ request.paths.join(', ') }}</code>: «{{ request.reason }}»</p>
-              }
-              <p class="mb-0 text-sm text-text-muted">{{ t()('La línea de tiempo de tareas llega en un próximo cambio del prototipo.', 'The task timeline comes in a later prototype change.') }}</p>
+              <sp-progress-tab class="pt-2" [change]="change" />
             </sp-tab-panel>
             <sp-tab-panel value="acceptance" [label]="t()('Aceptación', 'Acceptance')">
               <p class="m-0 text-sm text-text-muted">{{ t()('Criterios con evidencia, diffs y cierre llegan en un próximo cambio del prototipo.', 'Criteria with evidence, diffs and closing come in a later prototype change.') }}</p>

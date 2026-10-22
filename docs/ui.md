@@ -82,7 +82,11 @@ Muestra «Qué cambió desde la revisión 2» y, encima, cuál está aprobada, c
 
 ### Progreso
 
-Línea de tiempo de tareas: pendiente, activa, hecha o fallida. Cada tarea muestra su commit, sus archivos, la verificación (expandible, con su salida) y la duración. Las solicitudes de alcance aparecen en línea con Aprobar / Rechazar y motivo. Todo se actualiza en vivo.
+Las tareas, en el orden de la spec, como filas de documento (igual que los ítems de la revisión). Cada una muestra su id, título, estado (hecha, en curso o pendiente, con color, icono y texto), resumen, commit, archivos, criterios, duración, intentos y su última verificación (correcta o fallida, con su duración y su comando). Encima van un resumen («2 de 3 tareas hechas · 37 min de trabajo · 1 decisión te espera») y una barra con un tramo por tarea.
+
+- **Te espera**: la tarea que necesita una decisión de la persona (hoy, una solicitud de alcance) sale de su lugar y aparece arriba con la solicitud: la ruta, el motivo del agente y qué implica decidir. «Aprobar» la aprueba; «Rechazar…» pide el motivo en un diálogo, como al rechazar un supuesto, porque el agente lo lee. Una vez decidida, la tarea vuelve a su lugar con una entrada corta (sin movimiento si se pide reducirlo).
+- **Salida**: solo una verificación fallida guarda sus últimas líneas (`outputTail` en `audit.jsonl`), así que solo ella ofrece «Ver salida»; en la tarea en curso se ve abierta. La salida en vivo de la verificación que está corriendo llega en un cambio posterior.
+- La tarea en curso se resalta y dice cuándo empezó. Todo se actualiza en vivo; si la fuente no puede hacer una acción, un aviso lo explica. Sin tareas, un estado vacío lo dice.
 
 ### Aceptación
 
