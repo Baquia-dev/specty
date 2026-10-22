@@ -4,3 +4,4 @@
 {"ts":"2026-10-22T21:22:46.536Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"f74685a00c9046e7988b6b9cc3a43fc6af69495a"}}
 {"ts":"2026-10-22T21:25:23.486Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":32870}}
 {"ts":"2026-10-22T21:25:23.488Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Barra compacta sin el resumen de supuestos y comentarios: a la derecha solo la decisión. La sugerencia de esfuerzo queda oculta tras el token SHOW_EFFORT_HINT (false por defecto); su lógica y el esfuerzo derivado se conservan y un test la activa para comprobar su redacción. docs/ui.md actualizado. Comprobado a 390, 768, 1024 y 1280 px."}}
+{"ts":"2026-10-22T21:28:01.752Z","actor":"human","event":"change.closed","data":{"lane":"quick"}}
