@@ -2,11 +2,19 @@
 import { Injectable, inject } from "@angular/core";
 import type { ChangeState, Phase } from "@baquia-dev/specty-core";
 import { Commands } from "../components/command-palette";
-import { type ChangeRecord, SpectyData } from "./records";
+import {
+  ActionError,
+  type ChangeRecord,
+  type CommentAnchor,
+  type CommentRecord,
+  SpectyData,
+} from "./records";
 import { SAMPLE_SPECS } from "./sample-specs";
 
 const HASH = `sha256:${"0".repeat(64)}`;
 const MINUTE = 60_000;
+/** The reviewer of the sample project: a fictional person. */
+export const REVIEWER = "Ana Gómez";
 
 type TaskStatus = "pending" | "active" | "done";
 
@@ -43,11 +51,31 @@ function sample(
 /** The sample project "Mi colegio": every pending decision, work in progress and recent changes. */
 export function sampleRecords(now: number): ChangeRecord[] {
   return [
-    sample("20261020-evolucion-trimestre", "review", 12, now, {
-      revision: 2,
-      items: { A1: { hash: HASH, decision: "confirmed" } },
-      size: { level: "M", score: 6, adjust: 0, reasons: [] },
-    }),
+    {
+      ...sample("20261020-evolucion-trimestre", "review", 12, now, {
+        revision: 2,
+        items: { A1: { hash: HASH, decision: "confirmed" } },
+        size: { level: "M", score: 6, adjust: 0, reasons: [] },
+      }),
+      comments: [
+        {
+          id: "c1",
+          revision: 2,
+          anchor: { item: "A3" },
+          author: REVIEWER,
+          body: "El gráfico actual no tiene leyenda interactiva: revisa si basta.",
+          createdAt: new Date(now - 9 * MINUTE).toISOString(),
+        },
+        {
+          id: "c2",
+          revision: 2,
+          anchor: { section: "design", quote: "una línea por materia" },
+          author: REVIEWER,
+          body: "Con doce materias, ¿no satura? Quizá agrupar por área.",
+          createdAt: new Date(now - 7 * MINUTE).toISOString(),
+        },
+      ],
+    },
     sample(
       "20261019-boletines-pdf",
       "implementing",
@@ -161,6 +189,83 @@ export class FixtureData extends SpectyData {
   toggleOutage(): void {
     this.failing = !this.failing;
     this.notify();
+  }
+
+  override decideAssumption(
+    change: string,
+    item: string,
+    decision: "confirmed" | "rejected",
+    comment?: string,
+  ): Promise<void> {
+    return this.edit(change, (record) => ({
+      ...record,
+      state: {
+        ...record.state,
+        items: {
+          ...record.state.items,
+          [item]: { hash: HASH, decision, ...(comment ? { comment } : {}) },
+        },
+      },
+    }));
+  }
+
+  override addComment(change: string, anchor: CommentAnchor, body: string): Promise<void> {
+    return this.edit(change, (record) => {
+      const comments = record.comments ?? [];
+      const comment: CommentRecord = {
+        id: `c${comments.length + 1}`,
+        revision: record.state.revision,
+        anchor,
+        author: REVIEWER,
+        body,
+        createdAt: new Date().toISOString(),
+      };
+      return { ...record, comments: [...comments, comment] };
+    });
+  }
+
+  /** The agent gets the comments in `specty next`; here nothing else changes. */
+  override requestChanges(change: string): Promise<void> {
+    return this.edit(change, (record) => record);
+  }
+
+  override approve(change: string, revision: number): Promise<void> {
+    return this.edit(change, (record) => {
+      if (record.state.revision !== revision) {
+        throw new ActionError({
+          es: `La spec cambió: ahora es la revisión ${record.state.revision}. Revísala de nuevo.`,
+          en: `The spec changed: it is now revision ${record.state.revision}. Review it again.`,
+        });
+      }
+      const at = new Date().toISOString();
+      return {
+        ...record,
+        phaseSince: at,
+        state: {
+          ...record.state,
+          phase: "implementing",
+          approved: { revision, hash: HASH, at, by: REVIEWER, channel: "ui" },
+        },
+      };
+    });
+  }
+
+  /** Applies `change` to one record and tells the subscribers; a thrown ActionError rejects. */
+  private edit(id: string, change: (record: ChangeRecord) => ChangeRecord): Promise<void> {
+    const record = this.records.find((item) => item.state.id === id);
+    if (record === undefined) {
+      return Promise.reject(
+        new ActionError({ es: `No existe el cambio ${id}.`, en: `There is no change ${id}.` }),
+      );
+    }
+    try {
+      const updated = change(record);
+      this.records = this.records.map((item) => (item === record ? updated : item));
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    this.notify();
+    return Promise.resolve();
   }
 
   /** Changes the first record that `matches`; a new phase restarts its waiting time. */

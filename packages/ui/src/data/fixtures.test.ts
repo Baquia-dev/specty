@@ -49,6 +49,60 @@ describe("sample data", () => {
   });
 });
 
+describe("FixtureData actions", () => {
+  const REVIEW = "20261020-evolucion-trimestre";
+
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("starts with a review that only waits for decisions, with two comments", async () => {
+    const { store, settle } = setup();
+    await settle();
+    const review = store.all().find((view) => view.id === REVIEW)?.review;
+    expect(review?.errors).toEqual([]);
+    expect(review?.comments.map((comment) => comment.section)).toEqual(["assumptions", "design"]);
+    // "rápido" is vague, and the criterion lacks CUANDO … ENTONCES.
+    expect(review?.criteria.find((criterion) => criterion.id === "AC3")?.warnings.length).toBe(2);
+    expect(review?.design).toContain("```dart");
+  });
+
+  it("decides assumptions and adds comments, live (AC2, AC6)", async () => {
+    const { fixtures, store, settle } = setup();
+    await settle();
+    await fixtures.decideAssumption(REVIEW, "A2", "rejected", "Son periodos del colegio.");
+    await fixtures.addComment(REVIEW, { item: "AC3" }, "¿Cuánto es rápido?");
+    await settle();
+    const view = store.all().find((change) => change.id === REVIEW);
+    expect(view?.review.assumptions.find((item) => item.id === "A2")).toMatchObject({
+      decision: "rejected",
+      comment: "Son periodos del colegio.",
+    });
+    expect(view?.highImpactPending).toBe(0);
+    expect(view?.review.comments.at(-1)).toMatchObject({
+      id: "c3",
+      author: "Ana Gómez",
+      body: "¿Cuánto es rápido?",
+      section: "criteria",
+      revision: 2,
+    });
+  });
+
+  it("approves only the revision shown, and the change moves on (AC7)", async () => {
+    const { fixtures, store, settle } = setup();
+    await settle();
+    await expect(fixtures.approve(REVIEW, 1)).rejects.toMatchObject({
+      text: { es: expect.stringContaining("revisión 2") },
+    });
+    await fixtures.requestChanges(REVIEW);
+    await fixtures.approve(REVIEW, 2);
+    await settle();
+    const view = store.all().find((change) => change.id === REVIEW);
+    expect(view?.phase).toBe("implementing");
+    await expect(fixtures.addComment("20990101-nada", { item: "A1" }, "x")).rejects.toMatchObject({
+      text: { en: "There is no change 20990101-nada." },
+    });
+  });
+});
+
 describe("ChangesStore", () => {
   afterEach(() => {
     TestBed.resetTestingModule();

@@ -28,6 +28,18 @@ El estudiante ve su evolución por materia agrupada por trimestre, con una líne
 
 - AC1: CUANDO el estudiante elige "Por trimestre" ENTONCES ve un punto por trimestre y materia.
 - AC2: CUANDO toca una materia de la leyenda ENTONCES su línea se oculta o se muestra.
+- AC3: El gráfico carga rápido.
+
+## Diseño
+
+El proveedor agrupa las notas por **periodo académico** y el gráfico dibuja una línea por materia.
+
+- La agrupación vive en \`EvolutionProvider\`, no en el widget.
+- La leyenda reutiliza \`SubjectChip\`.
+
+\`\`\`dart
+final byTerm = groupBy(grades, (grade) => grade.term);
+\`\`\`
 
 ## Archivos
 
@@ -43,7 +55,7 @@ El estudiante ve su evolución por materia agrupada por trimestre, con una líne
   - verify: flutter test test/home
 - [ ] T2: Selector de periodo y leyenda interactiva
   - files: lib/analytics/evolution_card.dart, test/analytics/evolution_card_test.dart
-  - ac: AC1, AC2
+  - ac: AC1, AC2, AC3
   - verify: flutter test test/analytics
 `,
   ),

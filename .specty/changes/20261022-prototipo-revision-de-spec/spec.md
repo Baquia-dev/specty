@@ -84,7 +84,7 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/review.ts, packages/ui/src/data/views.ts
   - ac: AC1, AC3, AC4, AC9
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T2: Datos de ejemplo y acciones en memoria
+- [x] T2: Datos de ejemplo y acciones en memoria
   - files: packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-specs.ts
   - ac: AC2, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui test
