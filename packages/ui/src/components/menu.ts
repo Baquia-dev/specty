@@ -7,6 +7,7 @@ import {
 } from "@angular/cdk/overlay";
 import { ChangeDetectionStrategy, Component, input, output, viewChild } from "@angular/core";
 import { LucideDynamicIcon, type LucideIconInput } from "@lucide/angular";
+import { followOrigin } from "./overlay-follow";
 
 export interface MenuEntry {
   readonly id: string;
@@ -95,6 +96,15 @@ export class Menu {
 
   protected readonly positions = [...MENU_POSITIONS];
   protected readonly list = viewChild<AriaMenu<string>>("list");
+  private readonly overlay = viewChild(CdkConnectedOverlay);
+
+  constructor() {
+    // Next to its button even after the page scrolls, and above it when it does not fit below.
+    followOrigin(
+      () => this.list()?.visible() ?? false,
+      () => this.overlay(),
+    );
+  }
 
   protected choose(value: string | undefined): void {
     if (value !== undefined) this.selected.emit(value);

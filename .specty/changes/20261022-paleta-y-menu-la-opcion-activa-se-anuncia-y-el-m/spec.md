@@ -56,7 +56,7 @@ Este cambio arregla los dos problemas y comparte con el select la forma de coloc
   - files: packages/ui/src/components/command-palette.ts, packages/ui/src/components/command-palette.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/command-palette.test.ts
-- [ ] T2: El menú se coloca junto a su botón
+- [x] T2: El menú se coloca junto a su botón
   - files: packages/ui/src/components/overlay-follow.ts, packages/ui/src/components/overlay-follow.test.ts, packages/ui/src/components/menu.ts, packages/ui/src/components/menu.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/overlay-follow.test.ts --include src/components/menu.test.ts

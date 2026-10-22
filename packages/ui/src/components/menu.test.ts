@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { OverlayRef } from "@angular/cdk/overlay";
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { MENU_POSITIONS, Menu, type MenuEntry } from "./menu";
@@ -82,6 +83,23 @@ describe("Menu", () => {
     await settle();
     expect(menu()?.hidden).toBe(true);
     expect(document.activeElement).toBe(trigger);
+  });
+
+  it("places itself next to its button when it opens and as the page scrolls", async () => {
+    const place = vi.spyOn(OverlayRef.prototype, "updatePosition");
+    try {
+      const { trigger, settle } = await render();
+      place.mockClear();
+      trigger?.focus();
+      key(trigger, "ArrowDown");
+      await settle();
+      const opened = place.mock.calls.length;
+      expect(opened).toBeGreaterThan(0);
+      document.body.dispatchEvent(new Event("scroll"));
+      expect(place.mock.calls.length).toBeGreaterThan(opened);
+    } finally {
+      place.mockRestore();
+    }
   });
 
   it("opens below, or above when it does not fit (AC5)", () => {

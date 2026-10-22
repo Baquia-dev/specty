@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "20f0c039af8308e8bd6916d99e740cde639b8aff",
+      "attempts": 1,
       "startedAt": "2026-10-22T22:14:51.411Z",
       "doneAt": "2026-10-22T22:15:43.427Z",
-      "summary": "Paleta: focusMode activedescendant en su listbox. El foco se queda en el buscador al recorrer con las flechas (antes saltaba a las opciones y lo escrito dejaba de filtrar) y la opción activa se anuncia por aria-activedescendant. Test y comprobación en el navegador."
+      "summary": "Paleta: focusMode activedescendant en su listbox. El foco se queda en el buscador al recorrer con las flechas (antes saltaba a las opciones y lo escrito dejaba de filtrar) y la opción activa se anuncia por aria-activedescendant. Test y comprobación en el navegador.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e595b0b3ce67b26cfd05805c1cc158db3080f835",
+      "startedAt": "2026-10-22T22:15:43.719Z",
+      "doneAt": "2026-10-22T22:17:29.229Z",
+      "summary": "components/overlay-follow.ts: followOrigin(open, overlay) recoloca una superposición siempre adjunta mientras está abierta: al abrir, cuando cambia el tamaño de su panel (ResizeObserver) y con cada desplazamiento (escucha en captura, así cuenta el main del armazón); deja de escuchar al cerrarse. sp-menu la usa: tras desplazar 100 px aparece junto a su botón (antes 140 px por debajo) y en una ventana baja se abre encima. Tests del helper y del menú; comprobado en el navegador."
     }
   },
   "pending": {
