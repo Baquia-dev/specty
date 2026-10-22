@@ -119,3 +119,32 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
 - R1: Anclar comentarios a una selección de texto es frágil: la cita puede cruzar varias secciones o desaparecer en la revisión siguiente. Mitigación: solo se ofrece si la selección cae dentro de una sola sección; la cita se guarda literal, y el agente la recibe tal cual (formats.md §5).
 - R2: La vista del cambio crece al incluir la revisión entera. Mitigación: son datos planos derivados en el worker; con pocos cambios activos el coste es bajo. Si crece, se derivará la revisión bajo demanda por id.
 - R3: Algunas piezas pueden superar las 300 líneas (secciones, revisión). Mitigación: componentes pequeños por sección dentro de `spec-sections.ts`, y si no basta, pedir un archivo más con `specty scope add`.
+
+## Cierre
+
+### Resumen
+
+- La pestaña Spec es la revisión de docs/ui.md: índice con contadores, secciones en orden, supuestos que confirmar o rechazar (rechazo con motivo), criterios y tareas con avisos en línea, archivos por módulo con rutas sensibles, diseño plegado en Markdown saneado, comentarios sobre ítems o citas y barra fija con "Pedir cambios" y "Aprobar rN".
+- Contrato ampliado: comentarios en `ChangeRecord` y acciones en `SpectyData` (de solo lectura por defecto); los datos de ejemplo las implementan en memoria.
+- Cabecera del cambio fija, índice animado que marca la sección visible y margen inferior en la página.
+- 137 tests. `marked` solo en el fragmento del cambio; zod y yaml solo en el worker.
+
+### Desviaciones
+
+- S1 (T5): las tareas muestran sus avisos en línea, porque el índice los contaba sin que se vieran.
+- T6 (defecto en aceptación): `<base href="/">` para recargar en rutas profundas.
+- T7 (ajuste en aceptación): secciones en tarjetas, índice animado, cabecera fija y margen inferior. S2: metadatos de sección en `section-meta.ts` por el límite de 300 líneas.
+- Arreglado un test intermitente: el builder no aísla archivos y `button.test.ts` dejaba `window.matchMedia` incompleto.
+
+### Decisiones
+
+- Avisos y errores en los dos idiomas ejecutando `validateSpec` una vez por idioma.
+- Las acciones de `SpectyData` fallan como solo lectura por defecto, para que ninguna fuente esté obligada a implementarlas.
+- La persona prefirió, tras ver las tarjetas, una revisión con formato de documento: va a un cambio de seguimiento, porque este estaba en el límite de tamaño.
+
+### Pendientes
+
+- "Prototipo: revisión con formato de documento": divisores tipográficos en lugar de tarjetas, realce animado de la sección elegida y cabecera amplia arriba que pasa a barra compacta fija al desplazarse. Antes, una maqueta para elegir el diseño.
+- Después, "Prototipo: delta de la revisión".
+- Margen inferior en el armazón común en lugar de en cada página.
+- Bundle inicial en 579 kB (126 kB transferidos), por encima del aviso propio de 500 kB; revisar Lucide.
