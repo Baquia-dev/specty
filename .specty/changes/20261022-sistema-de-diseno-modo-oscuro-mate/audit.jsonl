@@ -1,0 +1,3 @@
+{"ts":"2026-10-22T15:54:01.830Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261022-sistema-de-diseno-modo-oscuro-mate","follows":["20261022-armazon-comun-area-de-contenido-posicionada-y-ma"]}}
+{"ts":"2026-10-22T15:54:13.099Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:0e376efc418f19d1bbb0a852ce40c876fda470acfc80cc4de410a89e4ea525d5","size":"M","warnings":0}}
+{"ts":"2026-10-22T16:16:07.456Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:0e376efc418f19d1bbb0a852ce40c876fda470acfc80cc4de410a89e4ea525d5","channel":"tty"}}
