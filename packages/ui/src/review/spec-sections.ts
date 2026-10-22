@@ -18,6 +18,7 @@ import type { Toasts } from "../components/toast";
 import {
   ActionError,
   type CommentAnchor,
+  type DiffPart,
   type FileView,
   type ReviewView,
   type TaskItemView,
@@ -41,6 +42,21 @@ export const REVEAL = "opacity-0 group-focus-within:opacity-100 group-hover:opac
 
 /** The rows of a section start under a hairline, like the rows between them. */
 export const LIST = "m-0 list-none border-t border-border p-0";
+
+/**
+ * A word diff: added words highlighted, removed ones struck out. Color and line are not enough
+ * for a screen reader, so each part also says what happened to it.
+ */
+@Component({
+  selector: "sp-word-diff",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: "whitespace-pre-wrap" },
+  template: `@for (part of parts(); track $index) {@if (part.change === 'added') {<ins class="rounded-sm bg-phase-done-bg text-phase-done no-underline"><span class="sr-only">{{ t()('[añadido: ', '[added: ') }}</span>{{ part.text }}<span class="sr-only">]</span></ins>} @else if (part.change === 'removed') {<del class="rounded-sm bg-phase-cancelled-bg text-phase-cancelled line-through"><span class="sr-only">{{ t()('[eliminado: ', '[removed: ') }}</span>{{ part.text }}<span class="sr-only">]</span></del>} @else {<span>{{ part.text }}</span>}}`,
+})
+export class WordDiff {
+  readonly parts = input.required<readonly DiffPart[]>();
+  protected readonly t = inject(Preferences).t;
+}
 
 const ACTIONS = {
   create: { icon: LucidePlus, es: "Crear", en: "Create" },

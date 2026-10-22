@@ -20,9 +20,14 @@ import { Button, IconButton } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Field } from "../components/field";
 import { Toasts } from "../components/toast";
-import { type AssumptionView, type CommentAnchor, SpectyData } from "../data/records";
+import {
+  type AssumptionView,
+  type CommentAnchor,
+  type DiffPart,
+  SpectyData,
+} from "../data/records";
 import { Preferences } from "../theme/preferences";
-import { REVEAL, ROW, reportFailure } from "./spec-sections";
+import { REVEAL, ROW, reportFailure, WordDiff } from "./spec-sections";
 
 /** Reason is required: the agent reads it in `specty next`. */
 @Component({
@@ -70,7 +75,7 @@ const DECISIONS = {
 /** An assumption as a document row: confirm or reject it in review. */
 @Component({
   selector: "sp-assumption-row",
-  imports: [LucideDynamicIcon, Button, IconButton],
+  imports: [LucideDynamicIcon, Button, IconButton, WordDiff],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     role: "listitem",
@@ -84,7 +89,13 @@ const DECISIONS = {
   template: `
     <span class="pt-0.5 font-mono text-xs text-text-muted">{{ assumption().id }}</span>
     <div class="flex min-w-0 flex-col gap-1">
-      <p class="m-0" [class.text-text-muted]="assumption().decision === 'rejected'">{{ assumption().text }}</p>
+      <!-- In the delta, what happened to it (added, modified) goes first. -->
+      <ng-content />
+      @if (diff(); as parts) {
+        <sp-word-diff class="block" [parts]="parts" />
+      } @else {
+        <p class="m-0" [class.text-text-muted]="assumption().decision === 'rejected'">{{ assumption().text }}</p>
+      }
       @if (assumption().impact === 'high') {
         <span class="text-xs text-text-muted">{{ t()('Alto impacto', 'High impact') }}</span>
       }
@@ -110,6 +121,8 @@ export class AssumptionRow {
   readonly assumption = input.required<AssumptionView>();
   readonly change = input.required<string>();
   readonly editable = input(false);
+  /** In the delta: its text as a word diff against the approved revision. */
+  readonly diff = input<readonly DiffPart[] | undefined>(undefined);
   readonly comment = output<CommentAnchor>();
 
   private readonly source = inject(SpectyData);

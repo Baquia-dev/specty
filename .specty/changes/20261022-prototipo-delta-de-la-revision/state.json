@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02462b4b10d49eacbead448bd58acf7da138b7e9",
+      "attempts": 1,
       "startedAt": "2026-10-22T09:38:27.422Z",
       "doneAt": "2026-10-22T09:41:15.641Z",
-      "summary": "data/sample-revisions.ts: 'Justificar faltas desde la app' en revisión r3 con r2 aprobada y su texto (approvedSpec); vuelve de un ajuste con el objetivo, A2 y AC2 modificados, AC4, T3 y T4 añadidos (T4 toca un archivo no previsto: posible alcance nuevo) y R1 cambiado por R2. A2 cambió y espera decisión. fixtures.ts lo añade; tests: specs aprobadas válidas, su delta, nueve cambios y cinco decisiones en la Bandeja."
+      "summary": "data/sample-revisions.ts: 'Justificar faltas desde la app' en revisión r3 con r2 aprobada y su texto (approvedSpec); vuelve de un ajuste con el objetivo, A2 y AC2 modificados, AC4, T3 y T4 añadidos (T4 toca un archivo no previsto: posible alcance nuevo) y R1 cambiado por R2. A2 cambió y espera decisión. fixtures.ts lo añade; tests: specs aprobadas válidas, su delta, nueve cambios y cinco decisiones en la Bandeja.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d23349688e87476f2464acc231c9d9c4e29d66f9",
+      "startedAt": "2026-10-22T09:41:15.893Z",
+      "doneAt": "2026-10-22T09:45:10.384Z",
+      "summary": "review/delta-review.ts: sp-review-delta con cabecera 'Qué cambió desde que aprobaste rN', resumen de añadidos, modificados y eliminados, 'Ver spec completa', grupos por sección en el orden del documento y filas con id, marca de cambio (sp-change-mark: color, icono y texto), diff y avisos de posible alcance nuevo; comentar ítems no eliminados. sp-word-diff en spec-sections.ts: <ins>/<del> con colores de fase y texto para lectores de pantalla. sp-assumption-row admite un diff y una marca proyectada, para decidir los supuestos cambiados en el delta."
     }
   },
   "pending": {

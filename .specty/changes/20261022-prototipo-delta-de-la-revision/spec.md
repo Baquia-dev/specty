@@ -71,7 +71,7 @@ Cuando una spec vuelve a revisión después de haber sido aprobada (por ejemplo,
   - files: packages/ui/src/data/sample-revisions.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T3: Vista de los cambios con diff por palabras
+- [x] T3: Vista de los cambios con diff por palabras
   - files: packages/ui/src/review/spec-sections.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/delta-review.ts, packages/ui/src/review/delta-review.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui test
