@@ -71,7 +71,7 @@ Este cambio deja la página legible en cualquier ancho y aclara el esfuerzo.
   - ac: AC4, AC5, AC6
   - verify: pnpm check
   - notes: Comprobar en el navegador a 390 y 1280 px, en claro y oscuro: la revisión completa y el delta, el índice al desplazarse, y la página «Patrones» del catálogo, que también usa estas filas.
-- [ ] T2: Cabecera del cambio, franja de datos y esfuerzo
+- [x] T2: Cabecera del cambio, franja de datos y esfuerzo
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check

@@ -53,9 +53,14 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
   closing: { es: "Espera que confirmes el cierre", en: "Waiting for you to confirm the closing" },
 };
 
-/** A fact of the wide header: a small-caps label over its value, split by hairlines. */
+/**
+ * A fact of the wide header: a small-caps label over its value. In a grid of two or three
+ * columns (phone, tablet) they stand apart by space; in one row (from lg), split by hairlines.
+ */
 const FACT =
-  "flex min-w-0 flex-col gap-1 border-l border-border px-5 py-3.5 first:border-l-0 first:pl-0";
+  "flex min-w-0 flex-col gap-1 py-3 lg:border-l lg:border-border lg:px-5 lg:py-3.5 lg:first:border-l-0 lg:first:pl-0";
+const FACTS =
+  "mt-8 mb-0 grid grid-cols-2 gap-x-6 border-t border-border sm:grid-cols-3 lg:grid-flow-col lg:auto-cols-fr lg:grid-cols-none lg:gap-x-0";
 const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
 
 /** One change: a wide header, a compact bar while scrolling, and the tabs Spec · Progress · Acceptance · History. */
@@ -96,18 +101,19 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
                 <sp-phase-badge [phase]="change.phase" />
                 @if (change.decision; as decision) {
                   <span class="text-sm text-text-muted" data-waiting>{{ t()(waiting[decision].es, waiting[decision].en) }}</span>
-                  <span class="text-sm text-text-muted" aria-hidden="true">·</span>
+                  <span class="hidden text-sm text-text-muted sm:inline" aria-hidden="true">·</span>
                 }
-                <span class="text-sm text-text-muted" data-since>{{ since(change.phaseSince) }}</span>
+                <!-- On a phone, how long goes on its own line instead of after a dangling dot. -->
+                <span class="w-full text-sm text-text-muted sm:w-auto" data-since>{{ since(change.phaseSince) }}</span>
               </div>
-              <h1 class="mt-3 mb-0 max-w-4xl text-[2.375rem] leading-[1.15] font-semibold tracking-[-0.028em]">{{ change.title }}</h1>
+              <h1 class="mt-3 mb-0 max-w-4xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.028em] sm:text-[2.375rem]">{{ change.title }}</h1>
             </div>
-            <!-- The decision on the spec, next to its title; in review only. -->
+            <!-- The decision on the spec, next to its title; in review only. Under the title, it starts at its edge. -->
             @if (change.phase === 'review') {
-              <sp-review-actions class="mt-1" [change]="change" />
+              <sp-review-actions class="mt-1 max-lg:items-start" [change]="change" />
             }
           </div>
-          <dl class="mt-8 mb-0 grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] border-t border-border">
+          <dl [class]="facts">
             <div [class]="fact">
               <dt [class]="factLabel">{{ t()('Revisión', 'Revision') }}</dt>
               <dd class="m-0 font-mono text-sm">r{{ change.revision }}</dd>
@@ -126,10 +132,11 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
             }
             @if (change.effort; as effort) {
               <div [class]="fact">
-                <dt [class]="factLabel">{{ t()('Esfuerzo recomendado', 'Recommended effort') }}</dt>
-                <dd class="m-0 text-sm">
-                  {{ t()('Planificación', 'Planning') }} {{ effortName(effort.plan) }} ·
-                  {{ t()('Implementación', 'Implementation') }} {{ effortName(effort.implement) }}
+                <dt [class]="factLabel">{{ t()('Esfuerzo', 'Effort') }}</dt>
+                <!-- Once the spec is written, the planning level serves to adjust it and decide scope. -->
+                <dd class="m-0 grid grid-cols-[auto_1fr] gap-x-2 text-sm" data-effort>
+                  <span class="text-text-muted">{{ t()('Implementar', 'Implement') }}&ngsp;</span><span>{{ effortName(effort.implement) }}&ngsp;</span>
+                  <span class="text-text-muted">{{ change.phase === 'draft' ? t()('Planificar', 'Plan') : t()('Revisar', 'Review') }}&ngsp;</span><span>{{ effortName(effort.plan) }}</span>
                 </dd>
               </div>
             }
@@ -200,6 +207,7 @@ export class ChangePage {
   protected readonly page = PAGE;
   protected readonly waiting = WAITING;
   protected readonly fact = FACT;
+  protected readonly facts = FACTS;
   protected readonly factLabel = FACT_LABEL;
   protected readonly change = this.store.byId(this.id);
   /** The wide header is out of view: show the compact bar. */
