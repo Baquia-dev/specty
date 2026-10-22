@@ -85,7 +85,7 @@ Cuando una spec vuelve a revisión después de haber sido aprobada (por ejemplo,
   - verify: pnpm check
   - type: fix
   - notes: Defecto pedido en aceptación. Los textos para lectores de pantalla del diff (`sr-only`, con `position: absolute`) no tienen un ancestro posicionado dentro del contenedor que se desplaza (`main` es `static`), así que se salen de él y el documento crece (1798 px frente a 860 de alto en el ejemplo): aparece el scroll de `html`. `sp-review-delta` y `sp-spec-review` pasan a ser `relative`, y un test comprueba que el texto oculto queda dentro de un ancestro posicionado. Comprobar en el navegador que `html` no se desplaza.
-- [ ] T6: La barra de decisión ocupa todo el ancho, fija abajo
+- [x] T6: La barra de decisión ocupa todo el ancho, fija abajo
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/spec-review.ts
   - ac: AC4
   - verify: pnpm check

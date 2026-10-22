@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-prototipo-delta-de-la-revision",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-prototipo-delta-de-la-revision",
   "baseCommit": "39342c99c049d945803a8f45a4d4ae99d95dd96d",
   "revision": 2,
@@ -83,17 +83,26 @@
     },
     "T5": {
       "status": "done",
+      "baseCommit": "c508f2fb240609d4badbb6c928b8c567dffdfe6b",
+      "attempts": 2,
+      "startedAt": "2026-10-22T10:05:48.698Z",
+      "doneAt": "2026-10-22T10:10:31.347Z",
+      "summary": "sp-review-delta y sp-spec-review pasan a ser relative: el texto para lectores de pantalla del diff (sr-only, absolute) ya no se sale del área que se desplaza; en el navegador html mide 860 de 860 (antes 1798) en los cambios, la spec completa y la Bandeja; test de que todo sr-only del delta tiene un ancestro posicionado. Además (ampliación por política) se desactiva una bomba de tiempo de los tests del CLI que rompía pnpm check desde hoy: el reloj de los comandos era fijo (2026-10-21) y el hook de git usa la hora real, así que el recibo de approve caducaba a las 24 h; ahora es hoy a las 10:00 UTC y CHANGE, el id del carril rápido y la carpeta del archivo se derivan de él.",
       "scopeExtra": [
         "packages/cli/test/support.ts",
         "packages/cli/test/commands.test.ts",
         "packages/cli/test/flow.test.ts",
         "packages/cli/test/enforce.test.ts"
-      ],
-      "attempts": 2,
-      "baseCommit": "c508f2fb240609d4badbb6c928b8c567dffdfe6b",
-      "startedAt": "2026-10-22T10:05:48.698Z",
-      "doneAt": "2026-10-22T10:10:31.347Z",
-      "summary": "sp-review-delta y sp-spec-review pasan a ser relative: el texto para lectores de pantalla del diff (sr-only, absolute) ya no se sale del área que se desplaza; en el navegador html mide 860 de 860 (antes 1798) en los cambios, la spec completa y la Bandeja; test de que todo sr-only del delta tiene un ancestro posicionado. Además (ampliación por política) se desactiva una bomba de tiempo de los tests del CLI que rompía pnpm check desde hoy: el reloj de los comandos era fijo (2026-10-21) y el hook de git usa la hora real, así que el recibo de approve caducaba a las 24 h; ahora es hoy a las 10:00 UTC y CHANGE, el id del carril rápido y la carpeta del archivo se derivan de él."
+      ]
+    },
+    "T6": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d8ffd89be234365f85c49a71e880a1cf91d3e69b",
+      "startedAt": "2026-10-22T10:10:33.930Z",
+      "doneAt": "2026-10-22T10:13:13.222Z",
+      "summary": "La barra de 'Pedir cambios' y 'Aprobar' queda fija abajo, a todo el ancho del área que se desplaza, con borde superior y fondo translúcido como la barra de navegación, y su contenido alineado con la columna de la página (max-w-6xl). Mide el contenedor que se desplaza (izquierda y clientWidth, con ResizeObserver) para no tapar su scrollbar; sin contenedor propio usa todo el ancho de la ventana. La revisión reserva pb-12 en revisión para que no tape el final. scrollParent pasa a review-actions.ts. Comprobado en el navegador: barra de 1265 px (main sin scrollbar), pegada abajo, y html sin scroll."
     }
   },
   "pending": {

@@ -1,5 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  inject,
+  input,
+  signal,
+} from "@angular/core";
 import { LucideDynamicIcon, LucideTriangleAlert } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Toasts } from "../components/toast";
@@ -7,34 +18,52 @@ import { type ChangeView, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { reportFailure } from "./spec-sections";
 
-/** The decision on the spec, fixed at the foot of the review: request changes or approve. */
+/** The nearest ancestor that scrolls (the shell's main), or undefined when the page scrolls. */
+export function scrollParent(element: HTMLElement, view: Window): HTMLElement | undefined {
+  for (let node = element.parentElement; node !== null; node = node.parentElement) {
+    const { overflowY } = view.getComputedStyle(node);
+    if (overflowY === "auto" || overflowY === "scroll") return node;
+  }
+  return undefined;
+}
+
+/**
+ * The decision on the spec: request changes or approve. Like the navigation bar on top, it spans
+ * the whole content area, fixed at the bottom; its content lines up with the page's.
+ */
 @Component({
   selector: "sp-review-actions",
   imports: [LucideDynamicIcon, Button],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class:
-      "sticky bottom-0 z-10 flex flex-wrap items-center justify-end gap-3 border-t border-border bg-bg/90 py-3 backdrop-blur",
+    class: "fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg/90 backdrop-blur",
     role: "region",
     "[attr.aria-label]": "t()('Decisión sobre la spec', 'Decision on the spec')",
+    // Over the scrolling area only, so its scrollbar stays uncovered.
+    "[style.left.px]": "area()?.left",
+    "[style.width.px]": "area()?.width",
   },
   template: `
-    @if (blocked(); as reason) {
-      <p class="m-0 mr-auto flex items-center gap-2 text-sm" style="color: var(--color-phase-review)" data-blocked>
-        <svg [lucideIcon]="warningIcon" size="14" aria-hidden="true"></svg>{{ reason }}
-      </p>
-    }
-    <sp-button [disabledReason]="openComments() ? '' : t()('Escribe al menos un comentario para pedir cambios.', 'Write at least one comment to request changes.')" (pressed)="requestChanges()">
-      {{ t()('Pedir cambios', 'Request changes') }}
-    </sp-button>
-    <sp-button variant="primary" [disabledReason]="blocked()" (pressed)="approve()">
-      {{ t()('Aprobar r', 'Approve r') }}{{ change().revision }}
-    </sp-button>
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-end gap-3 px-6 py-3">
+      @if (blocked(); as reason) {
+        <p class="m-0 mr-auto flex items-center gap-2 text-sm" style="color: var(--color-phase-review)" data-blocked>
+          <svg [lucideIcon]="warningIcon" size="14" aria-hidden="true"></svg>{{ reason }}
+        </p>
+      }
+      <sp-button [disabledReason]="openComments() ? '' : t()('Escribe al menos un comentario para pedir cambios.', 'Write at least one comment to request changes.')" (pressed)="requestChanges()">
+        {{ t()('Pedir cambios', 'Request changes') }}
+      </sp-button>
+      <sp-button variant="primary" [disabledReason]="blocked()" (pressed)="approve()">
+        {{ t()('Aprobar r', 'Approve r') }}{{ change().revision }}
+      </sp-button>
+    </div>
   `,
 })
 export class ReviewActions {
   readonly change = input.required<ChangeView>();
 
+  /** Left edge and inner width (without its scrollbar) of the scrolling area, once measured. */
+  protected readonly area = signal<{ left: number; width: number } | undefined>(undefined);
   private readonly source = inject(SpectyData);
   private readonly toasts = inject(Toasts);
   private readonly preferences = inject(Preferences);
@@ -68,6 +97,25 @@ export class ReviewActions {
       );
     return "";
   });
+
+  constructor() {
+    const host: HTMLElement = inject(ElementRef).nativeElement;
+    const document = inject(DOCUMENT);
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      const view = document.defaultView;
+      const scroller = view === null ? undefined : scrollParent(host, view);
+      // When the page itself scrolls, the viewport's width (inset-x-0) is already right.
+      if (scroller === undefined) return;
+      const measure = () =>
+        this.area.set({ left: scroller.getBoundingClientRect().left, width: scroller.clientWidth });
+      measure();
+      if (typeof ResizeObserver === "undefined") return;
+      const observer = new ResizeObserver(measure);
+      observer.observe(scroller);
+      destroyRef.onDestroy(() => observer.disconnect());
+    });
+  }
 
   protected requestChanges(): void {
     this.source.requestChanges(this.change().id).then(() => {
