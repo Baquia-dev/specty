@@ -1,0 +1,4 @@
+{"ts":"2026-10-22T10:23:34.707Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-armazon-comun-area-de-contenido-posicionada-y-ma","follows":["20261022-prototipo-delta-de-la-revision"]}}
+{"ts":"2026-10-22T10:23:52.214Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:9e98b0144bead8b53f0b9f62d1bf9fa906c39bd6fae9e67453602a32177350fa","size":"M","warnings":1}}
+{"ts":"2026-10-22T10:24:03.868Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:119b92eab9e86923321590f5839b44392ce4e7399bb16081daa9dc8c34a6f4de","size":"M","warnings":0}}
+{"ts":"2026-10-22T10:24:36.834Z","actor":"human","event":"spec.approved","data":{"revision":2,"hash":"sha256:119b92eab9e86923321590f5839b44392ce4e7399bb16081daa9dc8c34a6f4de","channel":"tty"}}

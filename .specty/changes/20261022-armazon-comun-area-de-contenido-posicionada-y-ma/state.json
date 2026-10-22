@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261022-armazon-comun-area-de-contenido-posicionada-y-ma",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-armazon-comun-area-de-contenido-posicionada-y-ma",
+  "baseCommit": "639c0d181f353090cfa63728c44c236bc13f88a2",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:661dfc843592338f8fe2d979a132e441871003ff249f6ba6a60485a92ce3160e",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:fd34456dc567c697d205b4dc106df1546f8959e6b4ee47cd78fbf0ce7759f9be",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:119b92eab9e86923321590f5839b44392ce4e7399bb16081daa9dc8c34a6f4de",
+    "at": "2026-10-22T10:24:36.820Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
