@@ -43,9 +43,36 @@ describe("sample data", () => {
   it("is valid for core: states pass and specs parse without errors (AC9)", () => {
     for (const record of sampleRecords(Date.now())) {
       expect(parseChangeState(record.state).ok, record.state.id).toBe(true);
-      const errors = parseSpec(record.spec).diagnostics.filter((d) => d.severity === "error");
-      expect(errors, record.state.id).toEqual([]);
+      const approved = record.approvedSpec === undefined ? [] : [record.approvedSpec];
+      for (const text of [record.spec, ...approved]) {
+        const errors = parseSpec(text).diagnostics.filter((d) => d.severity === "error");
+        expect(errors, record.state.id).toEqual([]);
+      }
     }
+  });
+
+  it("has a change back in review after an adjustment, with its delta (AC1, AC3)", () => {
+    const record = sampleRecords(Date.now()).find(
+      (item) => item.state.id === "20261016-justificar-faltas",
+    );
+    if (record === undefined) throw new Error("no revised sample");
+    const view = deriveViews([record])[0];
+    expect(view?.review.errors).toEqual([]);
+    expect(view?.highImpactPending).toBe(1);
+    expect(view?.review.delta?.approvedRevision).toBe(2);
+    expect(view?.review.delta?.entries.map((entry) => `${entry.change} ${entry.key}`)).toEqual([
+      "modified goal",
+      "modified A2",
+      "modified AC2",
+      "added AC4",
+      "added lib/notifications/absence_notice.dart",
+      "added T3",
+      "added T4",
+      "removed R1",
+      "added R2",
+    ]);
+    const newScope = view?.review.delta?.entries.filter((entry) => entry.newScope.length > 0);
+    expect(newScope?.map((entry) => entry.key)).toEqual(["T4"]);
   });
 });
 
@@ -117,6 +144,7 @@ describe("ChangesStore", () => {
       "acceptance",
       "closing",
       "review",
+      "review",
       "scope",
     ]);
     expect(
@@ -134,7 +162,12 @@ describe("ChangesStore", () => {
     fixtures.approveSpec();
     fixtures.approveScope();
     await settle();
-    expect(store.decisions().map((view) => view.decision)).toEqual(["acceptance", "closing"]);
+    // The first review is approved; the revised one still waits.
+    expect(store.decisions().map((view) => view.decision)).toEqual([
+      "acceptance",
+      "closing",
+      "review",
+    ]);
     fixtures.finishTask();
     fixtures.finishTask();
     await settle();
@@ -151,7 +184,7 @@ describe("ChangesStore", () => {
     fixtures.toggleOutage();
     await settle();
     expect(store.views.error()).toBeUndefined();
-    expect(store.all()).toHaveLength(8);
+    expect(store.all()).toHaveLength(9);
   });
 
   it("derives through a web worker when there is one (AC10)", async () => {
@@ -169,7 +202,7 @@ describe("ChangesStore", () => {
     const { store, settle } = setup(false);
     await settle();
     expect(posted).toEqual([0]);
-    expect(store.all()).toHaveLength(8);
+    expect(store.all()).toHaveLength(9);
   });
 
   it("says so when there are no web workers and no deriver was given", async () => {

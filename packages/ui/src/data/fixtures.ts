@@ -9,6 +9,7 @@ import {
   type CommentRecord,
   SpectyData,
 } from "./records";
+import { revisedSample } from "./sample-revisions";
 import { SAMPLE_SPECS } from "./sample-specs";
 
 const HASH = `sha256:${"0".repeat(64)}`;
@@ -76,6 +77,7 @@ export function sampleRecords(now: number): ChangeRecord[] {
         },
       ],
     },
+    revisedSample(now),
     sample(
       "20261019-boletines-pdf",
       "implementing",

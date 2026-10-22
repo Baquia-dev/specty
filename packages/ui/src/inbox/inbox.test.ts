@@ -90,13 +90,14 @@ describe("Inbox", () => {
     const headings = [...element.querySelectorAll("sp-inbox h2")].map((heading) =>
       text(heading).trim(),
     );
-    expect(headings).toEqual(["Esperan tu decisión 4", "En curso", "Recientes"]);
+    expect(headings).toEqual(["Esperan tu decisión 5", "En curso", "Recientes"]);
     const decisions = [...element.querySelectorAll("section[aria-labelledby=decisions] sp-card")];
     expect(
       decisions.map((card) => text(card.querySelector("[data-decision]") ?? undefined)),
     ).toEqual([
       "Resultado por aceptar",
       "Cierre por confirmar",
+      "Spec por revisar",
       "Spec por revisar",
       "Solicitud de alcance",
     ]);
