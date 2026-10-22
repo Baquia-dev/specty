@@ -58,3 +58,27 @@ Las piezas que hoy dan a la revisión su aire de documento (las filas sin línea
   - ac: AC3
   - verify: pnpm check
   - notes: Comprobar en el navegador, en claro y en oscuro, la página "Patrones", la revisión y el delta (se ven como antes) y el estado vacío de un cambio que no existe.
+
+## Cierre
+
+### Resumen
+
+- El sistema de diseño tiene los patrones de documento (`components/document.ts`): divisor de sección, listas con sangría, filas sin líneas con resalte al pasar el puntero o con el foco, acciones que se revelan y un ancho de página común.
+- Y un estado vacío (`components/empty-state.ts`) con icono, título, qué pasó y cómo seguir; lo estrena "No existe ese cambio".
+- La revisión y el delta usan esas piezas y se ven igual que antes. El catálogo tiene una página "Patrones", también desde la paleta.
+- 179 tests en la UI; comprobado en Chrome sin interfaz, en claro y oscuro.
+
+### Desviaciones
+
+- S1 (T1): el delta cambió en T1 de dónde importa las filas, porque si no T1 no compilaba o `spec-sections.ts` tenía que reexportarlas para siempre.
+
+### Decisiones
+
+- Las filas y las listas son clases compartidas (cada pantalla compone sus propias columnas); el divisor y el estado vacío, componentes.
+- El estado vacío proyecta su texto y su acción, para admitir código, enlaces o botones.
+- El divisor numerado de la spec completa ("§ 0N") sigue en la revisión: es propio de ella.
+
+### Pendientes
+
+- Bandeja en filas de documento con buscador, filtros por fase, agrupar y ordenar, usando estas piezas.
+- En móvil, el índice de la revisión se queda fijo encima del texto.

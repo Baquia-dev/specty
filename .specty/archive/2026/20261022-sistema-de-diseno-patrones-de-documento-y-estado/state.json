@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-sistema-de-diseno-patrones-de-documento-y-estado",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-sistema-de-diseno-patrones-de-documento-y-estado",
   "baseCommit": "9fe5e000d6e1fef3c6b5a7b83755a8ec26521669",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:08a4c64be5235bb4bb52f0c4e9665e193229bb3eeba7d0e8bacd4c5365e6b8a2",
@@ -55,12 +55,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5e20ba9b489b90d1ce376f9ffad87e31148768b6",
+      "attempts": 1,
       "startedAt": "2026-10-22T17:51:31.149Z",
       "doneAt": "2026-10-22T17:54:10.573Z",
-      "summary": "Página 'Patrones' del catálogo (catalog/patterns.ts): divisor de sección, lista de documento con ítems de ejemplo y resalte al pasar el puntero, estado vacío con su acción y el ancho de página común; en la navegación, las rutas y la paleta (go:catalog/patterns). docs/ui.md recoge los patrones. Comprobado en el navegador en claro y oscuro: Patrones, el estado vacío de un cambio que no existe y el delta (igual que antes)."
+      "summary": "Página 'Patrones' del catálogo (catalog/patterns.ts): divisor de sección, lista de documento con ítems de ejemplo y resalte al pasar el puntero, estado vacío con su acción y el ancho de página común; en la navegación, las rutas y la paleta (go:catalog/patterns). docs/ui.md recoge los patrones. Comprobado en el navegador en claro y oscuro: Patrones, el estado vacío de un cambio que no existe y el delta (igual que antes).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -72,5 +72,6 @@
     "AC": 3,
     "T": 3,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T18:00:33.421Z"
 }

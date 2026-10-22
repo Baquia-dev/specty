@@ -12,3 +12,6 @@
 {"ts":"2026-10-22T17:51:31.149Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"5e20ba9b489b90d1ce376f9ffad87e31148768b6"}}
 {"ts":"2026-10-22T17:54:10.572Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":31054}}
 {"ts":"2026-10-22T17:54:10.574Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"Página 'Patrones' del catálogo (catalog/patterns.ts): divisor de sección, lista de documento con ítems de ejemplo y resalte al pasar el puntero, estado vacío con su acción y el ancho de página común; en la navegación, las rutas y la paleta (go:catalog/patterns). docs/ui.md recoge los patrones. Comprobado en el navegador en claro y oscuro: Patrones, el estado vacío de un cambio que no existe y el delta (igual que antes)."}}
+{"ts":"2026-10-22T18:00:21.812Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-22T18:00:33.422Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:628b99d5dfc3b8f4d26097fa79e547f1b7c8d3c25ba0e1e0533e760016510e19","size":"L","warnings":1}}
+{"ts":"2026-10-22T18:02:01.913Z","actor":"human","event":"change.closed","data":{}}
