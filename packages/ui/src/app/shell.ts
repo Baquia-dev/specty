@@ -11,42 +11,42 @@ import {
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
-import { LANGS } from "@baquia-dev/specty-core";
-import {
-  LucideDynamicIcon,
-  LucideMonitor,
-  LucideMoon,
-  LucideSearch,
-  LucideSun,
-} from "@lucide/angular";
+import { LucideDynamicIcon, LucideSearch } from "@lucide/angular";
 import { filter } from "rxjs";
-import { Button } from "../components/button";
+import { Button, IconButton } from "../components/button";
 import { Commands } from "../components/command-palette";
 import { Kbd } from "../components/kbd";
 import { Toaster } from "../components/toast";
 import { ChangesStore } from "../data/changes-store";
 import { Shortcuts } from "../keyboard/shortcuts";
-import { Preferences, THEME_CHOICES, type ThemeChoice } from "../theme/preferences";
+import { Preferences } from "../theme/preferences";
+import { PreferencesMenu } from "./preferences-menu";
 
-const THEME_ICONS = { light: LucideSun, dark: LucideMoon, system: LucideMonitor } as const;
-
-const CHOICE =
-  "flex h-8 cursor-pointer items-center gap-2 rounded-lg px-3 text-sm has-checked:bg-surface has-checked:shadow-sm has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 has-focus-visible:outline-focus";
-
-/** The frame of every screen: header (Inbox, catalog, ⌘K, theme and language) and toasts. */
+/** The frame of every screen: header (Inbox, catalog, ⌘K, preferences) and toasts. */
 @Component({
   selector: "sp-root",
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideDynamicIcon, Button, Kbd, Toaster],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    LucideDynamicIcon,
+    Button,
+    IconButton,
+    Kbd,
+    Toaster,
+    PreferencesMenu,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- The window never scrolls: only the content below the header does. -->
     <div class="flex h-dvh flex-col overflow-hidden bg-bg text-text">
-      <header class="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3 border-b border-border px-6 py-3">
+      <!-- One line at any width: the search shrinks to an icon on a phone; theme and language live in a menu. -->
+      <header class="flex shrink-0 flex-nowrap items-center gap-x-2.5 border-b border-border px-6 py-3 sm:gap-x-6">
         <a routerLink="/" class="font-mono text-md font-semibold no-underline">specty</a>
         <nav class="flex gap-1" [attr.aria-label]="t()('Principal', 'Main')">
           @for (link of links; track link.path) {
             <a
-              class="flex h-8 items-center rounded-lg px-3 text-sm text-text-muted no-underline aria-[current=page]:bg-surface aria-[current=page]:text-text aria-[current=page]:shadow-sm"
+              class="flex h-8 items-center rounded-lg px-2 text-sm whitespace-nowrap text-text-muted no-underline aria-[current=page]:bg-surface aria-[current=page]:text-text aria-[current=page]:shadow-sm sm:px-3"
               [routerLink]="link.path"
               routerLinkActive
               ariaCurrentWhenActive="page"
@@ -55,44 +55,19 @@ const CHOICE =
             >
           }
         </nav>
-        <sp-button class="ml-auto" size="sm" (pressed)="commands.openPalette()">
-          <svg [lucideIcon]="search" size="14" aria-hidden="true"></svg>
-          <span class="text-text-muted">{{ t()('Buscar o ejecutar…', 'Search or run…') }}</span>
-          <sp-kbd keys="mod+k" />
-        </sp-button>
-        <fieldset class="m-0 flex gap-1 border-0 p-0">
-          <legend class="sr-only">{{ t()('Tema', 'Theme') }}</legend>
-          @for (choice of themes; track choice) {
-            <label [class]="choice_">
-              <input
-                class="sr-only"
-                type="radio"
-                name="theme"
-                [value]="choice"
-                [checked]="preferences.theme() === choice"
-                (change)="preferences.theme.set(choice)"
-              />
-              <svg [lucideIcon]="themeIcons[choice]" size="14" aria-hidden="true"></svg>
-              <span class="sr-only">{{ themeLabel(choice) }}</span>
-            </label>
-          }
-        </fieldset>
-        <fieldset class="m-0 flex gap-1 border-0 p-0">
-          <legend class="sr-only">{{ t()('Idioma', 'Language') }}</legend>
-          @for (lang of langs; track lang) {
-            <label [class]="choice_ + ' font-mono uppercase'">
-              <input
-                class="sr-only"
-                type="radio"
-                name="lang"
-                [value]="lang"
-                [checked]="preferences.lang() === lang"
-                (change)="preferences.lang.set(lang)"
-              />
-              {{ lang }}
-            </label>
-          }
-        </fieldset>
+        <div class="ml-auto flex items-center gap-2">
+          <span class="flex sm:hidden">
+            <sp-icon-button size="sm" variant="secondary" [icon]="search" [label]="t()('Buscar o ejecutar', 'Search or run')" (pressed)="commands.openPalette()" />
+          </span>
+          <span class="hidden sm:flex">
+            <sp-button size="sm" (pressed)="commands.openPalette()">
+              <svg [lucideIcon]="search" size="14" aria-hidden="true"></svg>
+              <span class="text-text-muted">{{ t()('Buscar o ejecutar…', 'Search or run…') }}</span>
+              <sp-kbd keys="mod+k" />
+            </sp-button>
+          </span>
+          <sp-preferences-menu />
+        </div>
       </header>
       <!--
         Only this area scrolls. Positioned, so absolute content (screen-reader text) cannot escape
@@ -110,11 +85,7 @@ export class Shell {
   protected readonly commands = inject(Commands);
   private readonly document = inject(DOCUMENT);
   protected readonly t = this.preferences.t;
-  protected readonly themes = THEME_CHOICES;
-  protected readonly themeIcons = THEME_ICONS;
-  protected readonly langs = LANGS;
   protected readonly search = LucideSearch;
-  protected readonly choice_ = CHOICE;
   protected readonly links = [
     { path: "/", es: "Bandeja", en: "Inbox", exact: true },
     { path: "/catalog", es: "Catálogo", en: "Catalog", exact: false },
@@ -186,12 +157,5 @@ export class Shell {
         );
       }
     });
-  }
-
-  protected themeLabel(choice: ThemeChoice): string {
-    const t = this.t();
-    if (choice === "light") return t("Tema claro", "Light theme");
-    if (choice === "dark") return t("Tema oscuro", "Dark theme");
-    return t("Tema del sistema", "System theme");
   }
 }

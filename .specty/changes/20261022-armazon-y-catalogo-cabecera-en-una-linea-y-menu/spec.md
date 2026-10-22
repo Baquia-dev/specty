@@ -51,7 +51,7 @@ En el teléfono la cabecera de la app ocupa tres líneas (unos 145 px) y, sumada
 
 ## Tareas
 
-- [ ] T1: Cabecera en una línea con menú de preferencias
+- [x] T1: Cabecera en una línea con menú de preferencias
   - files: packages/ui/src/app/preferences-menu.ts, packages/ui/src/app/shell.ts, packages/ui/src/app/shell.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check

@@ -31,6 +31,10 @@ Brief de diseño de la UI web local. Objetivo: que la persona revise **decisione
 
 ## Pantallas
 
+### Armazón
+
+Una cabecera de una sola línea en cualquier ancho, que nunca se desplaza: specty, Bandeja y Catálogo y, a la derecha, "Buscar o ejecutar… ⌘K" (en pantallas de menos de 640 px, solo el icono, con ese nombre accesible) y el botón de **preferencias**. Este abre un menú bajo la cabecera con el tema (Claro, Oscuro, Sistema) y el idioma (Español, English, cada uno en su lengua); elegir aplica al momento sin cerrarlo, y Escape o pulsar fuera lo cierran. La paleta conserva sus comandos de tema e idioma. Solo se desplaza el contenido bajo la cabecera.
+
 ### Bandeja
 
 Todos los cambios en filas de documento, sin tarjetas: por defecto, "Esperan tu decisión" (spec por revisar, solicitud de alcance, resultado por aceptar y cierre por confirmar), "En curso" y "Recientes", lo que más espera primero. Cada fila muestra la fase con cuánto lleva debajo (en el teléfono, al lado), el título, qué espera con su tamaño, las notas que piden atención (supuestos de alto impacto, solicitud de alcance), el avance de las tareas en curso y, si espera a la persona, la acción directa; la fila elegida con j/k se resalta, su acción es la principal y, si hace falta, se desplaza a la vista sin quedar bajo la barra fija.

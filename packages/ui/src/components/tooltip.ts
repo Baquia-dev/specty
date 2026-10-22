@@ -87,6 +87,8 @@ export class Tooltip {
 
   constructor() {
     afterRenderEffect(() => {
+      // Left without text, it closes even while showing, instead of floating an empty bubble.
+      if (!this.text()) this.hide();
       const target = this.host.querySelector(DESCRIBED);
       if (target === null) return;
       if (this.text() && this.describe()) target.setAttribute("aria-describedby", this.id);

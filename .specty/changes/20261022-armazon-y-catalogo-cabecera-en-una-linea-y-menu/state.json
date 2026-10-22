@@ -6,6 +6,13 @@
   "branch": "specty/20261022-armazon-y-catalogo-cabecera-en-una-linea-y-menu",
   "baseCommit": "2c5b9b89c27debccb518e14d517c0aa604a90f08",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:343bbbc7e9c473c7bd2a0c7ddb178a18b450ccc563925bf9ce06f2da3033ada9",
+    "at": "2026-10-22T18:47:24.326Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -33,7 +40,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/components/tooltip.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "e5dcbcecbc19dde913f1496e7b9ce2f7506aa47a",
+      "startedAt": "2026-10-22T18:47:34.556Z",
+      "doneAt": "2026-10-22T19:22:09.939Z",
+      "summary": "Cabecera en una sola línea (57 px) en cualquier ancho desde 360 px: specty, Bandeja, Catálogo y, a la derecha, el buscador (en el teléfono un sp-icon-button con nombre 'Buscar o ejecutar'; desde 640 px con texto y ⌘K) y sp-preferences-menu: botón con popover nativo fijo bajo la cabecera, con Tema (Claro, Oscuro, Sistema) e Idioma (Español, English); elegir aplica sin cerrar, Escape, pulsar fuera o el botón lo cierran y el foco vuelve al botón; el botón queda realzado mientras está abierto. S1: el tooltip se oculta cuando su texto queda vacío mientras se ve (sin píldora vacía). Tests del shell y del tooltip; docs/ui.md con la sección Armazón."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,13 +61,7 @@
     "A": 4,
     "AC": 5,
     "T": 2,
-    "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:343bbbc7e9c473c7bd2a0c7ddb178a18b450ccc563925bf9ce06f2da3033ada9",
-    "at": "2026-10-22T18:47:24.326Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
+    "R": 1,
+    "S": 1
   }
 }

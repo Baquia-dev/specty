@@ -48,6 +48,17 @@ describe("Tooltip", () => {
     expect(bubble()).toBeNull();
   });
 
+  it("closes when its text goes empty while showing, with no empty bubble", async () => {
+    const { link, bubble, settle, host } = await render();
+    link?.dispatchEvent(new FocusEvent("focusin", { bubbles: true }));
+    await settle();
+    expect(bubble()).not.toBeNull();
+    host.text.set("");
+    await settle();
+    expect(bubble()).toBeNull();
+    expect(link?.hasAttribute("aria-describedby")).toBe(false);
+  });
+
   it("stays while the pointer moves onto the bubble, and leaves after (WCAG 1.4.13)", async () => {
     const { wrapper, bubble } = await render();
     // The overlay attaches synchronously; only the grace timer needs a fake clock.

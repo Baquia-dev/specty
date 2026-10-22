@@ -45,6 +45,9 @@ async function open(path: string) {
   return { fixture, element: fixture.nativeElement as HTMLElement, router, settle };
 }
 
+const text = (element: Element | null | undefined) =>
+  element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+
 describe("Shell", () => {
   afterEach(() => TestBed.resetTestingModule());
 
@@ -58,6 +61,49 @@ describe("Shell", () => {
     expect(element.querySelectorAll("header input[name=lang]")).toHaveLength(2);
     expect(element.querySelector("sp-catalog")).not.toBeNull();
     expect(router.url).toBe("/catalog/colors");
+  });
+
+  it("keeps the header on one line, theme and language in a preferences menu (AC1, AC2)", async () => {
+    const { element, settle } = await open("/");
+    const header = element.querySelector("header");
+    expect(header?.className).toContain("flex-nowrap");
+    expect(header?.querySelectorAll("fieldset")).toHaveLength(2);
+    // A native popover, opened by its own button and hidden by the browser while closed.
+    const trigger = element.querySelector<HTMLButtonElement>("sp-preferences-menu button");
+    const panel = element.querySelector<HTMLElement>("sp-preferences-menu [popover]");
+    expect(trigger?.getAttribute("aria-label")).toBe("Preferencias");
+    expect(trigger?.getAttribute("popovertarget")).toBe(panel?.id);
+    expect(panel?.className.split(" ")).not.toContain("flex");
+    expect([...(panel?.querySelectorAll("legend") ?? [])].map(text)).toEqual(["Tema", "Idioma"]);
+    expect([...(panel?.querySelectorAll("label") ?? [])].map(text)).toEqual([
+      "Claro",
+      "Oscuro",
+      "Sistema",
+      "Español",
+      "English",
+    ]);
+    // While open, its button stays raised.
+    const toggle = (newState: string) =>
+      panel?.dispatchEvent(Object.assign(new Event("toggle"), { newState }));
+    toggle("open");
+    await settle();
+    expect(trigger?.className.split(" ")).toContain("bg-surface");
+    toggle("closed");
+    await settle();
+    expect(trigger?.className.split(" ")).not.toContain("bg-surface");
+  });
+
+  it("shrinks the search to an icon on a phone, which still opens the palette (AC3)", async () => {
+    const { element, settle } = await open("/");
+    const icon = element.querySelector<HTMLButtonElement>("header sp-icon-button button");
+    expect(icon?.getAttribute("aria-label")).toBe("Buscar o ejecutar");
+    expect(icon?.closest("span")?.className).toContain("sm:hidden");
+    expect(element.querySelector("header sp-button")?.closest("span")?.className).toContain(
+      "hidden sm:flex",
+    );
+    icon?.click();
+    await settle();
+    expect(document.querySelectorAll("[role=option]").length).toBeGreaterThan(0);
   });
 
   it("scrolls only a positioned content area, which ends every page with the same room (AC1, AC2)", async () => {
