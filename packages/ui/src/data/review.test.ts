@@ -136,6 +136,7 @@ describe("deriveReview", () => {
         status: "done",
         ac: ["AC1"],
         files: ["lib/auth/google_provider.dart", "test/auth/google_provider_test.dart"],
+        warnings: [],
       },
       {
         id: "T2",
@@ -143,6 +144,7 @@ describe("deriveReview", () => {
         status: "pending",
         ac: ["AC1", "AC2"],
         files: ["lib/login/login_screen.dart"],
+        warnings: [expect.objectContaining({ es: expect.stringContaining("T2") })],
       },
     ]);
   });

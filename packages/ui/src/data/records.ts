@@ -121,6 +121,7 @@ export interface TaskItemView {
   readonly status: "pending" | "active" | "done";
   readonly ac: readonly string[];
   readonly files: readonly string[];
+  readonly warnings: readonly Bilingual[];
 }
 
 export interface CommentView extends CommentRecord {

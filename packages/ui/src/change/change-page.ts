@@ -15,6 +15,7 @@ import { Skeleton } from "../components/skeleton";
 import { TabPanel, Tabs } from "../components/tabs";
 import { ChangesStore } from "../data/changes-store";
 import type { ChangeTab, DecisionKind } from "../data/records";
+import { SpecReview } from "../review/spec-review";
 import { Preferences } from "../theme/preferences";
 
 const TABS: readonly ChangeTab[] = ["spec", "progress", "acceptance", "history"];
@@ -36,10 +37,10 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
 /** One change: its header and the tabs Spec · Progress · Acceptance · History, opened by phase. */
 @Component({
   selector: "sp-change-page",
-  imports: [RouterLink, LucideDynamicIcon, Badge, PhaseBadge, Skeleton, Tabs, TabPanel],
+  imports: [RouterLink, LucideDynamicIcon, Badge, PhaseBadge, Skeleton, Tabs, TabPanel, SpecReview],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mx-auto flex max-w-4xl flex-col gap-6 px-6 py-8">
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-6 pt-8">
       <a routerLink="/" class="flex items-center gap-1 self-start text-sm text-text-muted">
         <svg [lucideIcon]="back" size="14" aria-hidden="true"></svg>{{ t()('Bandeja', 'Inbox') }}
       </a>
@@ -79,8 +80,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
 
         <sp-tabs [label]="t()('Secciones del cambio', 'Change sections')" [selected]="tab()" (selectedChange)="select($event)">
           <sp-tab-panel value="spec" label="Spec">
-            <p class="mt-0 max-w-[64ch]">{{ change.goal || t()('La spec aún no tiene objetivo.', 'The spec has no goal yet.') }}</p>
-            <p class="m-0 text-sm text-text-muted">{{ t()('La revisión de la spec y su delta llegan en el siguiente cambio del prototipo.', 'Spec review and its delta come in the next prototype change.') }}</p>
+            <sp-spec-review [change]="change" />
           </sp-tab-panel>
           <sp-tab-panel value="progress" [label]="t()('Progreso', 'Progress')">
             <p class="mt-0">{{ change.tasks.done }}/{{ change.tasks.total }} {{ t()('tareas hechas', 'tasks done') }}</p>

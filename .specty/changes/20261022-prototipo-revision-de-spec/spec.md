@@ -96,7 +96,7 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
   - files: packages/ui/src/review/comments.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T5: Pantalla de revisión y barra de acción
+- [x] T5: Pantalla de revisión y barra de acción
   - files: packages/ui/src/review/spec-review.ts, packages/ui/src/change/change-page.ts
   - ac: AC1, AC7, AC8, AC9
   - verify: pnpm check

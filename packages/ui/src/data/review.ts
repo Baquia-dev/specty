@@ -104,6 +104,7 @@ export function deriveReview(
     status: state.tasks[task.id]?.status ?? (task.done ? "done" : "pending"),
     ac: task.ac === "none" || task.ac === undefined ? [] : task.ac,
     files: task.files,
+    warnings: warningsFor(task.id).map((warning) => warning.text),
   }));
   const reviewComments = comments
     .map(

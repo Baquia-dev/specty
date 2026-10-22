@@ -238,6 +238,11 @@ const STATUS = {
                   <code class="rounded-sm border border-border px-1 font-mono text-xs">{{ path }}</code>
                 }
               </div>
+              @for (warning of task.warnings; track $index) {
+                <p class="m-0 flex items-center gap-2 text-sm" role="note">
+                  <svg [lucideIcon]="warningIcon" size="14" aria-hidden="true" style="color: var(--color-phase-review)"></svg>{{ warning[lang()] }}
+                </p>
+              }
             </li>
           }
         </ol>
