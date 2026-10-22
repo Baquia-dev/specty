@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-sistema-de-diseno-modo-oscuro-mate",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-sistema-de-diseno-modo-oscuro-mate",
   "baseCommit": "12857e42912b5f9ccd57cd91f1cf0c44057bac59",
   "revision": 1,
@@ -26,12 +26,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cf0c0a4000618ed52451cb033a3e275243e7ff61",
+      "attempts": 1,
       "startedAt": "2026-10-22T16:16:16.026Z",
       "doneAt": "2026-10-22T16:18:04.647Z",
-      "summary": "Tema oscuro mate en styles.css: fondo #222222, superficie #292929, borde #3a3a3a, texto #e8e8e8 (13:1 sobre el fondo, antes 17,8:1), secundario #a6a6a6, foco #c8c8c8 y fases desaturadas; sombras más suaves. Test nuevo: el texto en oscuro queda entre 7:1 y 14:1 y el fondo y la superficie no son casi negros; el de WCAG AA sigue en verde. docs/ui.md actualizado. Comprobado en el navegador (Bandeja, revisión, delta y catálogo en oscuro)."
+      "summary": "Tema oscuro mate en styles.css: fondo #222222, superficie #292929, borde #3a3a3a, texto #e8e8e8 (13:1 sobre el fondo, antes 17,8:1), secundario #a6a6a6, foco #c8c8c8 y fases desaturadas; sombras más suaves. Test nuevo: el texto en oscuro queda entre 7:1 y 14:1 y el fondo y la superficie no son casi negros; el de WCAG AA sigue en verde. docs/ui.md actualizado. Comprobado en el navegador (Bandeja, revisión, delta y catálogo en oscuro).",
+      "scopeExtra": []
     }
   },
   "pending": {
