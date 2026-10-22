@@ -26,6 +26,7 @@ import type {
   DeltaEntryView,
   DeltaView,
 } from "../data/records";
+import { approvedNote } from "../data/revision";
 import { Preferences } from "../theme/preferences";
 import { AssumptionRow } from "./assumption-row";
 import { SECTION_LABELS } from "./comments";
@@ -121,9 +122,12 @@ export class ChangeMark {
   host: { class: "relative flex flex-col gap-6" },
   template: `
     <header class="flex flex-col gap-3 border-b border-border pb-5">
-      <p class="m-0 font-mono text-[11px] text-text-muted">r{{ change().revision }} · {{ t()('frente a', 'against') }} r{{ delta().approvedRevision }}</p>
+      <!-- Which revision is approved, when and by whom: in a team, not always who is looking. -->
+      @if (approved(); as note) {
+        <p class="m-0 text-xs text-text-muted" data-approved>{{ note }}</p>
+      }
       <div class="flex flex-wrap items-center gap-3">
-        <h2 class="m-0 text-[1.375rem] leading-tight font-semibold tracking-tight">{{ t()('Qué cambió desde que aprobaste r', 'What changed since you approved r') }}{{ delta().approvedRevision }}</h2>
+        <h2 class="m-0 text-[1.375rem] leading-tight font-semibold tracking-tight">{{ t()('Qué cambió desde la revisión ', 'What changed since revision ') }}{{ delta().approvedRevision }}</h2>
         <sp-button class="ml-auto" size="sm" (pressed)="showFull.emit()">{{ t()('Ver spec completa', 'See the full spec') }}</sp-button>
       </div>
       <p class="m-0 text-sm text-text-muted" data-summary>{{ summary() }}</p>
@@ -229,6 +233,8 @@ export class ReviewDelta {
   protected readonly warningIcon = LucideTriangleAlert;
   protected readonly commentIcon = LucideMessageSquarePlus;
   /** Which changes to show. */
+  /** «La 2 está aprobada · 19 oct · Ana Gómez». */
+  protected readonly approved = computed(() => approvedNote(this.change(), this.lang()));
   protected readonly filter = signal<"all" | Change>("all");
 
   private count(change: "all" | Change): number {

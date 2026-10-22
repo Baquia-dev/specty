@@ -99,8 +99,8 @@ const SECTION =
             <sp-review-delta [change]="change()" [delta]="delta" [editable]="inReview()" (comment)="anchor.set($event)" (showFull)="show('full')" />
           } @else {
             <p class="m-0 flex flex-wrap items-center gap-3 border-b border-border pb-4 text-sm text-text-muted">
-              {{ t()('Estás viendo la spec completa de r', 'You are seeing the full spec of r') }}{{ change().revision }}.
-              <sp-button size="sm" data-mode-toggle (pressed)="show('delta')">{{ t()('Ver solo los cambios desde r', 'See only the changes since r') }}{{ delta.approvedRevision }}</sp-button>
+              {{ t()('Estás viendo la spec completa de la revisión ', 'You are seeing the full spec of revision ') }}{{ change().revision }}.
+              <sp-button size="sm" data-mode-toggle (pressed)="show('delta')">{{ t()('Ver solo los cambios desde la revisión ', 'See only the changes since revision ') }}{{ delta.approvedRevision }}</sp-button>
             </p>
           }
         }

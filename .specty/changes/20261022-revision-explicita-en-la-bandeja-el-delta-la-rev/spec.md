@@ -55,7 +55,7 @@ La cabecera del cambio ya nombra la revisión con palabras («Revisión 3 · por
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox.test.ts
-- [ ] T2: El delta y la spec completa
+- [x] T2: El delta y la spec completa
   - files: packages/ui/src/review/delta-review.ts, packages/ui/src/review/delta-review.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review-modes.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/delta-review.test.ts --include src/review/spec-review-modes.test.ts

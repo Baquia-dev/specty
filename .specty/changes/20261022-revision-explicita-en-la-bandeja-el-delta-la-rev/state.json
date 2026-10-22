@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d9e16225703cb69181f68f4117fd8f1d8e90b10a",
+      "attempts": 1,
       "startedAt": "2026-10-22T21:00:26.373Z",
       "doneAt": "2026-10-22T21:01:04.889Z",
-      "summary": "Bandeja: «Spec por revisar · revisión 3, frente a la 2 aprobada», o «revisión N» sin revisión aprobada, en los dos idiomas. Tests de la Bandeja."
+      "summary": "Bandeja: «Spec por revisar · revisión 3, frente a la 2 aprobada», o «revisión N» sin revisión aprobada, en los dos idiomas. Tests de la Bandeja.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f69759187b79d9eeea1efc363ab4ae13c8161b60",
+      "startedAt": "2026-10-22T21:01:05.154Z",
+      "doneAt": "2026-10-22T21:02:00.762Z",
+      "summary": "Delta: título «Qué cambió desde la revisión 2» y encima la línea de la revisión aprobada con fecha y quién (approvedNote), ya no «r3 · frente a r2» ni «desde que aprobaste». Spec completa: «Estás viendo la spec completa de la revisión 3» y «Ver solo los cambios desde la revisión 2». Tests del delta y de los modos."
     }
   },
   "pending": {

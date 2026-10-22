@@ -62,7 +62,7 @@ describe("SpecReview modes", () => {
 
   it("starts on the changes since the approval, and switches to the full spec and back (AC1, AC4)", async () => {
     const { review, delta, decision, settle, refresh } = await render(REVISED);
-    expect(text(delta()?.querySelector("h2"))).toBe("Qué cambió desde que aprobaste r2");
+    expect(text(delta()?.querySelector("h2"))).toBe("Qué cambió desde la revisión 2");
     expect(review()?.querySelector("nav")).toBeNull();
     expect(review()?.querySelectorAll("[data-section]")).toHaveLength(0);
 
@@ -84,7 +84,8 @@ describe("SpecReview modes", () => {
     expect(review()?.querySelectorAll("[data-section]").length).toBeGreaterThan(0);
     expect(review()?.querySelector("nav")).not.toBeNull();
     const back = review()?.querySelector<HTMLButtonElement>("[data-mode-toggle] button");
-    expect(text(back)).toBe("Ver solo los cambios desde r2");
+    expect(text(back)).toBe("Ver solo los cambios desde la revisión 2");
+    expect(text(back?.closest("p"))).toContain("Estás viendo la spec completa de la revisión 3.");
     expect(document.activeElement).toBe(back);
     await refresh();
     expect(delta()).toBeNull();

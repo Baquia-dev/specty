@@ -67,8 +67,10 @@ describe("ReviewDelta", () => {
 
   it("says what changed since the approval, grouped as in the document (AC1)", async () => {
     const { element, host } = await render();
-    expect(text(element.querySelector("h2"))).toBe("Qué cambió desde que aprobaste r2");
-    expect(text(element.querySelector("header p"))).toBe("r3 · frente a r2");
+    expect(text(element.querySelector("h2"))).toBe("Qué cambió desde la revisión 2");
+    expect(text(element.querySelector("header [data-approved]"))).toMatch(
+      /^La 2 está aprobada · .+ · Ana Gómez$/,
+    );
     expect(text(element.querySelector("[data-summary]"))).toBe(
       "5 añadidos · 4 modificados · 1 eliminado",
     );
@@ -241,7 +243,7 @@ describe("ReviewDelta", () => {
   it("speaks English too", async () => {
     const { element, item } = await render("en");
     TestBed.inject(Preferences);
-    expect(text(element.querySelector("h2"))).toBe("What changed since you approved r2");
+    expect(text(element.querySelector("h2"))).toBe("What changed since revision 2");
     expect(text(element.querySelector("[data-summary]"))).toBe("5 added · 4 modified · 1 removed");
     expect(text(item("T4")?.querySelector("[data-new-scope]"))).toContain("Possible new scope:");
     expect(text(item("AC2")?.querySelector("ins"))).toContain("[added:");
