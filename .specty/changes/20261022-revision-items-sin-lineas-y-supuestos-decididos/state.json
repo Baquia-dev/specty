@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261022-revision-items-sin-lineas-y-supuestos-decididos",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-revision-items-sin-lineas-y-supuestos-decididos",
+  "baseCommit": "3a65efe17778442ebb87e084410a27c9f6ea995d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0c6a1c4e3c39098102df9369f70b9448a933da921739097de4f34d02ebb31891",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:1dbc38f48e964c6c10b0798b31cf4a713162cc47f49b02c7ef5c626b2c153c0f",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:06969955f1113448b73ab3267e777ef5631d8dfcc387e04b747a01d323ec0608",
+    "at": "2026-10-22T16:25:24.775Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

@@ -1,0 +1,3 @@
+{"ts":"2026-10-22T16:23:09.548Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-revision-items-sin-lineas-y-supuestos-decididos","follows":["20261022-sistema-de-diseno-modo-oscuro-mate"]}}
+{"ts":"2026-10-22T16:23:30.794Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:06969955f1113448b73ab3267e777ef5631d8dfcc387e04b747a01d323ec0608","size":"M","warnings":0}}
+{"ts":"2026-10-22T16:25:24.794Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:06969955f1113448b73ab3267e777ef5631d8dfcc387e04b747a01d323ec0608","channel":"tty"}}
