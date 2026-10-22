@@ -1,3 +1,6 @@
 {"ts":"2026-10-22T20:42:04.303Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-revision-explicita-en-la-bandeja-el-delta-la-rev","follows":["20261022-cabecera-del-cambio-revision-explicita-franja-se"]}}
 {"ts":"2026-10-22T20:42:23.298Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:5ea00bea7d29a18d3555c609bfbc1314fa0c8df114ed5dd10f86bbb233543f8a","size":"L","warnings":0}}
 {"ts":"2026-10-22T21:00:11.671Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:5ea00bea7d29a18d3555c609bfbc1314fa0c8df114ed5dd10f86bbb233543f8a","channel":"tty"}}
+{"ts":"2026-10-22T21:00:26.374Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"d9e16225703cb69181f68f4117fd8f1d8e90b10a"}}
+{"ts":"2026-10-22T21:01:04.887Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox.test.ts","exit":0,"ms":7922}}
+{"ts":"2026-10-22T21:01:04.889Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Bandeja: «Spec por revisar · revisión 3, frente a la 2 aprobada», o «revisión N» sin revisión aprobada, en los dos idiomas. Tests de la Bandeja."}}

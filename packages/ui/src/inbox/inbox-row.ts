@@ -119,8 +119,11 @@ export class InboxRow {
         ? DECISIONS[change.decision].label[lang] +
           (change.decision === "review"
             ? delta
-              ? ` · r${change.revision} ${t("frente a", "against")} r${delta.approvedRevision}`
-              : ` · r${change.revision}`
+              ? t(
+                  ` · revisión ${change.revision}, frente a la ${delta.approvedRevision} aprobada`,
+                  ` · revision ${change.revision}, against approved revision ${delta.approvedRevision}`,
+                )
+              : t(` · revisión ${change.revision}`, ` · revision ${change.revision}`)
             : "")
         : change.phase === "draft"
           ? t("La spec se está redactando", "The spec is being written")

@@ -134,7 +134,10 @@ describe("Inbox", () => {
     expect(text(first?.querySelector("sp-button"))).toBe("Revisar resultado");
     expect(first?.querySelector("sp-button button")?.className).toContain("bg-accent");
     expect(text(row("20261016-justificar-faltas")?.querySelector("[data-waits]"))).toContain(
-      "Spec por revisar · r3 frente a r2",
+      "Spec por revisar · revisión 3, frente a la 2 aprobada",
+    );
+    expect(text(row("20261020-evolucion-trimestre")?.querySelector("[data-waits]"))).toMatch(
+      /^Spec por revisar · revisión 2 · /,
     );
     expect(text(row("20261020-evolucion-trimestre")?.querySelector("[data-note]"))).toBe(
       "1 supuesto de alto impacto por confirmar",

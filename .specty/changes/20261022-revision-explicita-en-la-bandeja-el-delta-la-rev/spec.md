@@ -51,7 +51,7 @@ La cabecera del cambio ya nombra la revisión con palabras («Revisión 3 · por
 
 ## Tareas
 
-- [ ] T1: La revisión con palabras en la Bandeja
+- [x] T1: La revisión con palabras en la Bandeja
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox.test.ts

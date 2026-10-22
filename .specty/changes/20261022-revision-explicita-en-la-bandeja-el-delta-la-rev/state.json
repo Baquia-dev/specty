@@ -6,6 +6,13 @@
   "branch": "specty/20261022-revision-explicita-en-la-bandeja-el-delta-la-rev",
   "baseCommit": "aa45c83f03fa28e9f0273d4936b619eeb8ccd1da",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5ea00bea7d29a18d3555c609bfbc1314fa0c8df114ed5dd10f86bbb233543f8a",
+    "at": "2026-10-22T21:00:11.648Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d9e16225703cb69181f68f4117fd8f1d8e90b10a",
+      "startedAt": "2026-10-22T21:00:26.373Z",
+      "doneAt": "2026-10-22T21:01:04.889Z",
+      "summary": "Bandeja: «Spec por revisar · revisión 3, frente a la 2 aprobada», o «revisión N» sin revisión aprobada, en los dos idiomas. Tests de la Bandeja."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5ea00bea7d29a18d3555c609bfbc1314fa0c8df114ed5dd10f86bbb233543f8a",
-    "at": "2026-10-22T21:00:11.648Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
