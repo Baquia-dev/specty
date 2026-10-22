@@ -54,7 +54,8 @@ async function open(id: string, source: new () => SpectyData = FixtureData) {
   await TestBed.inject(Router).navigateByUrl(`/changes/${id}?tab=spec`);
   await settle();
   const review = () => element.querySelector<HTMLElement>("sp-spec-review");
-  const bar = () => review()?.querySelector<HTMLElement>("[role=region]");
+  // The decision on the spec lives in the page header (and in the compact bar).
+  const bar = () => element.querySelector<HTMLElement>("[data-hero] sp-review-actions");
   const barButtons = () => [
     ...(bar()?.querySelectorAll<HTMLButtonElement>("sp-button button") ?? []),
   ];
@@ -225,7 +226,7 @@ describe("SpecReview", () => {
     barButtons()[1]?.click();
     await settle();
     expect(TestBed.inject(Toasts).items().at(-1)?.text).toBe("Revisión 2 aprobada.");
-    expect(review()?.querySelector("[role=region]")).toBeNull();
+    expect(bar()).toBeNull();
     expect(review()?.querySelector("sp-assumption-row sp-button")).toBeNull();
   });
 
@@ -252,9 +253,9 @@ describe("SpecReview", () => {
   });
 
   it("is read-only outside review, with comments still visible (AC8)", async () => {
-    const { review } = await open("20261021-login-google");
+    const { review, bar } = await open("20261021-login-google");
     expect(review()?.querySelector("sp-review-delta")).toBeNull();
-    expect(review()?.querySelector("[role=region]")).toBeNull();
+    expect(bar()).toBeNull();
     expect(review()?.querySelector("sp-assumption-row sp-button")).toBeNull();
     expect(review()?.querySelector("aside form")).toBeNull();
     expect(text(review()?.querySelector("aside h2"))).toContain("Comentarios");

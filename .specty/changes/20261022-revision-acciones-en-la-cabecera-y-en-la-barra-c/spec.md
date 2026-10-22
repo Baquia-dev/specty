@@ -51,7 +51,7 @@ follows:
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review-modes.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/review-actions.test.ts --include src/review/spec-review-modes.test.ts
-- [ ] T2: Acciones en la cabecera y en la barra compacta
+- [x] T2: Acciones en la cabecera y en la barra compacta
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts, packages/ui/src/review/spec-review.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check

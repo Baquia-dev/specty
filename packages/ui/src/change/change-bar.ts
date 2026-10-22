@@ -1,0 +1,84 @@
+// SPDX-License-Identifier: Apache-2.0
+import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
+import { PhaseBadge } from "../components/badge";
+import type { ChangeView, ReviewSection } from "../data/records";
+import { SECTION_LABELS } from "../review/comments";
+import { ReviewActions } from "../review/review-actions";
+import { sectionNumber } from "../review/section-meta";
+import { Preferences } from "../theme/preferences";
+
+/** The compact bar slides in once the wide header is out of view; hidden, it is inert. */
+const BAR =
+  "absolute inset-x-0 top-0 border-b border-border bg-bg/90 backdrop-blur transition-[translate,opacity] duration-200 ease-out motion-reduce:transition-none";
+const BAR_SHOWN = `${BAR} translate-y-0 opacity-100`;
+const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
+
+/**
+ * The change at a glance while scrolling: phase, title, revision, the section being read, what
+ * is still to decide and, in review, the decision on the spec.
+ */
+@Component({
+  selector: "sp-change-bar",
+  imports: [PhaseBadge, ReviewActions],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    "[class]": "shown() ? barShown : barHidden",
+    "[attr.inert]": "shown() ? null : ''",
+    "data-sticky": "",
+  },
+  template: `
+    <!-- On narrow screens the summary and the section give way, and the actions wrap below. -->
+    <div class="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center gap-x-3 gap-y-2 px-6 py-2">
+      <sp-phase-badge [phase]="change().phase" />
+      <p class="m-0 min-w-32 flex-1 truncate text-[15px] font-semibold tracking-tight md:flex-none">{{ change().title }}</p>
+      <span class="font-mono text-xs text-text-muted">r{{ change().revision }}</span>
+      @if (readingLabel(); as section) {
+        <span class="hidden h-4 w-px shrink-0 bg-border sm:block" aria-hidden="true"></span>
+        <span class="hidden font-mono text-xs whitespace-nowrap text-text-muted sm:inline" data-reading>§ {{ section }}</span>
+      }
+      <span class="hidden flex-1 md:block" aria-hidden="true"></span>
+      <span class="hidden shrink-0 text-sm whitespace-nowrap text-text-muted md:inline" data-summary>
+        @if (highImpact(); as high) {
+          {{ t()('Supuestos', 'Assumptions') }} <span class="font-medium text-text">{{ high.decided }}/{{ high.total }}</span> ·
+        }
+        {{ t()('Comentarios', 'Comments') }} <span class="font-medium text-text">{{ openComments() }}</span>
+      </span>
+      @if (change().phase === 'review') {
+        <sp-review-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
+      }
+    </div>
+  `,
+})
+export class ChangeBar {
+  readonly change = input.required<ChangeView>();
+  /** The wide header is out of view. */
+  readonly shown = input(false);
+  /** The spec section being read, when the Spec tab is open. */
+  readonly reading = input<ReviewSection | undefined>(undefined);
+
+  private readonly preferences = inject(Preferences);
+  protected readonly t = this.preferences.t;
+  protected readonly barShown = BAR_SHOWN;
+  protected readonly barHidden = BAR_HIDDEN;
+
+  /** "04 Criterios": the section being read, numbered as in the document. */
+  protected readonly readingLabel = computed(() => {
+    const key = this.reading();
+    const present = this.change().review.index.filter((entry) => entry.present);
+    const position = present.findIndex((entry) => entry.key === key);
+    if (key === undefined || position < 0) return "";
+    return `${sectionNumber(position)} ${SECTION_LABELS[key][this.preferences.lang()]}`;
+  });
+
+  /** High-impact assumptions decided out of all of them, if there are any. */
+  protected readonly highImpact = computed(() => {
+    const high = this.change().review.assumptions.filter((item) => item.impact === "high");
+    if (high.length === 0) return undefined;
+    const decided = high.filter((item) => item.decision !== "pending").length;
+    return { decided, total: high.length };
+  });
+
+  protected readonly openComments = computed(
+    () => this.change().review.comments.filter((comment) => !comment.resolved).length,
+  );
+}

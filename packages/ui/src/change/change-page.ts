@@ -25,10 +25,10 @@ import {
   type ReviewSection,
   relativeTime,
 } from "../data/records";
-import { SECTION_LABELS } from "../review/comments";
-import { sectionNumber } from "../review/section-meta";
+import { ReviewActions } from "../review/review-actions";
 import { SpecReview } from "../review/spec-review";
 import { Preferences } from "../theme/preferences";
+import { ChangeBar } from "./change-bar";
 
 const TABS: readonly ChangeTab[] = ["spec", "progress", "acceptance", "history"];
 
@@ -46,12 +46,6 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
   closing: { es: "Espera que confirmes el cierre", en: "Waiting for you to confirm the closing" },
 };
 
-/** The compact bar slides in once the wide header is out of view; hidden, it is inert. */
-const BAR =
-  "absolute inset-x-0 top-0 border-b border-border bg-bg/90 backdrop-blur transition-[translate,opacity] duration-200 ease-out motion-reduce:transition-none";
-const BAR_SHOWN = `${BAR} translate-y-0 opacity-100`;
-const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
-
 /** A fact of the wide header: a small-caps label over its value, split by hairlines. */
 const FACT =
   "flex min-w-0 flex-col gap-1 border-l border-border px-5 py-3.5 first:border-l-0 first:pl-0";
@@ -60,30 +54,24 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
 /** One change: a wide header, a compact bar while scrolling, and the tabs Spec · Progress · Acceptance · History. */
 @Component({
   selector: "sp-change-page",
-  imports: [RouterLink, LucideDynamicIcon, PhaseBadge, Skeleton, Tabs, TabPanel, SpecReview],
+  imports: [
+    RouterLink,
+    LucideDynamicIcon,
+    PhaseBadge,
+    Skeleton,
+    Tabs,
+    TabPanel,
+    SpecReview,
+    ReviewActions,
+    ChangeBar,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="flex flex-col">
       @if (change(); as change) {
         <!-- Zero height in the flow: the bar never pushes the content. -->
         <div class="sticky top-0 z-20 h-0">
-          <div #bar [class]="compact() ? barShown : barHidden" [attr.inert]="compact() ? null : ''" data-sticky>
-            <div class="mx-auto flex h-14 max-w-6xl items-center gap-3 px-6">
-              <sp-phase-badge [phase]="change.phase" />
-              <p class="m-0 min-w-0 truncate text-[15px] font-semibold tracking-tight">{{ change.title }}</p>
-              <span class="font-mono text-xs text-text-muted">r{{ change.revision }}</span>
-              @if (tab() === 'spec' && readingLabel(); as section) {
-                <span class="h-4 w-px shrink-0 bg-border" aria-hidden="true"></span>
-                <span class="font-mono text-xs whitespace-nowrap text-text-muted" data-reading>§ {{ section }}</span>
-              }
-              <span class="ml-auto shrink-0 text-sm whitespace-nowrap text-text-muted" data-summary>
-                @if (highImpact(); as high) {
-                  {{ t()('Supuestos', 'Assumptions') }} <span class="font-medium text-text">{{ high.decided }}/{{ high.total }}</span> ·
-                }
-                {{ t()('Comentarios', 'Comments') }} <span class="font-medium text-text">{{ openComments() }}</span>
-              </span>
-            </div>
-          </div>
+          <sp-change-bar #bar [change]="change" [shown]="compact()" [reading]="tab() === 'spec' ? reading() : undefined" />
         </div>
 
         <header #hero class="mx-auto flex w-full max-w-6xl flex-col px-6 pt-8" data-hero>
@@ -94,15 +82,23 @@ const FACT_LABEL = "text-[11px] tracking-[0.1em] text-text-muted uppercase";
             <span aria-hidden="true">/</span>
             <span class="min-w-0 truncate font-mono text-xs">{{ change.id }}</span>
           </p>
-          <div class="mt-6 flex flex-wrap items-center gap-x-2.5 gap-y-1">
-            <sp-phase-badge [phase]="change.phase" />
-            @if (change.decision; as decision) {
-              <span class="text-sm text-text-muted" data-waiting>{{ t()(waiting[decision].es, waiting[decision].en) }}</span>
-              <span class="text-sm text-text-muted" aria-hidden="true">·</span>
+          <div class="mt-6 flex flex-wrap items-start gap-x-8 gap-y-4">
+            <div class="flex min-w-0 flex-[1_1_28rem] flex-col">
+              <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                <sp-phase-badge [phase]="change.phase" />
+                @if (change.decision; as decision) {
+                  <span class="text-sm text-text-muted" data-waiting>{{ t()(waiting[decision].es, waiting[decision].en) }}</span>
+                  <span class="text-sm text-text-muted" aria-hidden="true">·</span>
+                }
+                <span class="text-sm text-text-muted" data-since>{{ since(change.phaseSince) }}</span>
+              </div>
+              <h1 class="mt-3 mb-0 max-w-4xl text-[2.375rem] leading-[1.15] font-semibold tracking-[-0.028em]">{{ change.title }}</h1>
+            </div>
+            <!-- The decision on the spec, next to its title; in review only. -->
+            @if (change.phase === 'review') {
+              <sp-review-actions class="mt-1" [change]="change" />
             }
-            <span class="text-sm text-text-muted" data-since>{{ since(change.phaseSince) }}</span>
           </div>
-          <h1 class="mt-3 mb-0 max-w-4xl text-[2.375rem] leading-[1.15] font-semibold tracking-[-0.028em]">{{ change.title }}</h1>
           <dl class="mt-8 mb-0 grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] border-t border-border">
             <div [class]="fact">
               <dt [class]="factLabel">{{ t()('Revisión', 'Revision') }}</dt>
@@ -194,8 +190,6 @@ export class ChangePage {
   protected readonly back = LucideArrowLeft;
   protected readonly warning = LucideTriangleAlert;
   protected readonly waiting = WAITING;
-  protected readonly barShown = BAR_SHOWN;
-  protected readonly barHidden = BAR_HIDDEN;
   protected readonly fact = FACT;
   protected readonly factLabel = FACT_LABEL;
   protected readonly change = this.store.byId(this.id);
@@ -203,7 +197,7 @@ export class ChangePage {
   protected readonly compact = signal(false);
   /** The spec section being read, from the review. */
   protected readonly reading = signal<ReviewSection | undefined>(undefined);
-  private readonly bar = viewChild<ElementRef<HTMLElement>>("bar");
+  private readonly bar = viewChild("bar", { read: ElementRef<HTMLElement> });
   private readonly hero = viewChild<ElementRef<HTMLElement>>("hero");
 
   constructor() {
@@ -246,27 +240,6 @@ export class ChangePage {
     const lang = this.preferences.lang();
     return (this.change()?.size?.reasons ?? []).map((reason) => reason[lang]).join(" · ");
   });
-
-  /** "04 Criterios": the section being read, numbered as in the document. */
-  protected readonly readingLabel = computed(() => {
-    const key = this.reading();
-    const present = (this.change()?.review.index ?? []).filter((entry) => entry.present);
-    const position = present.findIndex((entry) => entry.key === key);
-    if (key === undefined || position < 0) return "";
-    return `${sectionNumber(position)} ${SECTION_LABELS[key][this.preferences.lang()]}`;
-  });
-
-  /** High-impact assumptions decided out of all of them, if there are any. */
-  protected readonly highImpact = computed(() => {
-    const high = (this.change()?.review.assumptions ?? []).filter((item) => item.impact === "high");
-    if (high.length === 0) return undefined;
-    const decided = high.filter((item) => item.decision !== "pending").length;
-    return { decided, total: high.length };
-  });
-
-  protected readonly openComments = computed(
-    () => (this.change()?.review.comments ?? []).filter((comment) => !comment.resolved).length,
-  );
 
   protected readonly toDecide = computed(() => {
     const t = this.t();

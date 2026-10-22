@@ -124,7 +124,14 @@ describe("ChangePage", () => {
       expect(text(bar()?.querySelector("p + span"))).toBe("r2");
       expect(text(bar()?.querySelector("[data-reading]"))).toBe("§ 04 Criterios");
       expect(text(bar()?.querySelector("[data-summary]"))).toBe("Supuestos 1/2 · Comentarios 2");
-      expect(bar()?.querySelector("button")).toBeNull();
+      // The decision comes along, compact: small buttons, the reason only in their tooltip.
+      const actions = bar()?.querySelector<HTMLElement>("sp-review-actions");
+      expect(actions?.hasAttribute("data-compact")).toBe(true);
+      expect([...(actions?.querySelectorAll("sp-button button") ?? [])].map(text)).toEqual([
+        "Pedir cambios",
+        "Aprobar r2",
+      ]);
+      expect(actions?.querySelector("[data-blocked]")).toBeNull();
       expect(bar()?.querySelector("h1")).toBeNull();
 
       trigger("[data-hero]", true);
@@ -133,6 +140,26 @@ describe("ChangePage", () => {
     } finally {
       Reflect.deleteProperty(window, "IntersectionObserver");
     }
+  });
+
+  it("puts the decision on the spec next to the title, with no bar at the foot (AC1)", async () => {
+    const { element } = await open("/changes/20261020-evolucion-trimestre");
+    const actions = element.querySelector("sp-change-page [data-hero] sp-review-actions");
+    expect([...(actions?.querySelectorAll("sp-button button") ?? [])].map(text)).toEqual([
+      "Pedir cambios",
+      "Aprobar r2",
+    ]);
+    expect(text(actions?.querySelector("[data-blocked]"))).toBe(
+      "Falta 1 supuesto de alto impacto por decidir.",
+    );
+    // Two places at most: the header and the compact bar, and nothing fixed below.
+    expect(element.querySelectorAll("sp-review-actions")).toHaveLength(2);
+    expect(element.querySelector("sp-spec-review sp-review-actions")).toBeNull();
+  });
+
+  it("offers no decision on the spec outside review (AC3)", async () => {
+    const { element } = await open("/changes/20261021-login-google?tab=spec");
+    expect(element.querySelector("sp-review-actions")).toBeNull();
   });
 
   it("leaves the room below the content to the shell, like every page (AC2)", async () => {

@@ -40,7 +40,7 @@ Arriba, tarjetas "Esperan tu decisión": spec por revisar, solicitud de alcance,
 Se lee como un documento bien maquetado, no como un tablero de tarjetas.
 
 - **Cabecera amplia**, arriba del todo: ruta de vuelta, fase con lo que espera de la persona y desde cuándo, título grande y una franja de datos (revisión, rama, tamaño con sus razones, esfuerzo recomendado y lo que queda por decidir, por ejemplo "1 supuesto de alto impacto"). Debajo, las pestañas.
-- **Barra compacta fija**: aparece, con una transición, cuando la cabecera amplia sale de la vista. Muestra la fase, el título recortado, la revisión, la sección que se está leyendo ("§ 04 Criterios") y el resumen de supuestos de alto impacto decididos y comentarios. Solo informa: las acciones están en la barra de acción del pie. Mientras está oculta es `inert`.
+- **Barra compacta fija**: aparece, con una transición, cuando la cabecera amplia sale de la vista. Muestra la fase, el título recortado, la revisión, la sección que se está leyendo ("§ 04 Criterios"), el resumen de supuestos de alto impacto decididos y comentarios (oculto en pantallas estrechas) y, en revisión, "Pedir cambios" y "Aprobar" en pequeño, con el motivo del bloqueo en el tooltip. Mientras está oculta es `inert`.
 - **Columna izquierda**: índice "Contenido" numerado, con indicadores (pendiente, comentado, aviso). Al elegir una sección, la página se desplaza hasta ella y la sección se resalta un momento: la línea de su divisor se dibuja, el número se oscurece y el fondo se ilumina. Con movimiento reducido no hay transición.
 - **Centro**: cada sección empieza con un divisor tipográfico (número "§ 0N", línea fina y su progreso a la derecha), seguido del título, una línea con lo que se espera de quien revisa y el contenido. Los ítems van con sangría bajo el título de la sección, con su identificador en una columna fija y sin líneas entre ellos: el ítem bajo el puntero o con el foco se ilumina con un fondo suave y muestra «Comentar». El divisor de cada sección es la única línea. En este orden:
   1. Objetivo y Fuera de alcance, editables en línea.
@@ -52,7 +52,7 @@ Se lee como un documento bien maquetado, no como un tablero de tarjetas.
   7. Diseño, plegado, con Markdown enriquecido y código resaltado.
 - **Columna derecha**: comentarios y actividad.
 - **Comentarios**: al seleccionar texto o pasar el cursor sobre un ítem aparece "Comentar". Cada comentario se ancla al ítem o a la cita, y llega al agente en `specty next`.
-- **Barra de acción fija**: "Pedir cambios" (envía los comentarios) y "Aprobar". "Aprobar" queda deshabilitado, con el motivo visible, mientras haya supuestos de alto impacto sin decidir o errores de validación.
+- **Acciones**: "Pedir cambios" (envía los comentarios) y "Aprobar", en la cabecera amplia, a la derecha del título, y en la barra compacta al desplazarse; no hay barra en el pie. "Aprobar" queda deshabilitado mientras haya supuestos de alto impacto sin decidir o errores de validación, con el motivo como texto debajo de los botones de la cabecera y en el tooltip. Se muestran en cualquier pestaña mientras el cambio está en revisión.
 - **Modo fuente** (CodeMirror), para quien prefiera editar el Markdown. El contenido es el mismo.
 
 ### Revisión del delta
