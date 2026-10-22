@@ -29,8 +29,8 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
   },
   template: `
     <!--
-      One line from md: the section being read shows from xl and the summary from lg, so the
-      title has room; on a phone the actions wrap below.
+      One line from md, with only the decision on the right: the section being read shows from
+      xl, so the title has room; on a phone the actions wrap below.
     -->
     <div class="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center gap-x-3 gap-y-2 px-6 py-2 md:flex-nowrap">
       <sp-phase-badge [phase]="change().phase" />
@@ -47,12 +47,6 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
           <span class="hidden shrink-0 font-mono text-xs whitespace-nowrap text-text-muted xl:inline" data-reading>§ {{ section }}</span>
         }
       </div>
-      <span class="hidden shrink-0 text-sm whitespace-nowrap text-text-muted lg:inline" data-summary>
-        @if (highImpact(); as high) {
-          {{ t()('Supuestos', 'Assumptions') }} <span class="font-medium text-text">{{ high.decided }}/{{ high.total }}</span> ·
-        }
-        {{ t()('Comentarios', 'Comments') }} <span class="font-medium text-text">{{ openComments() }}</span>
-      </span>
       @if (change().phase === 'review') {
         <sp-review-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
       }
@@ -90,16 +84,4 @@ export class ChangeBar {
     if (key === undefined || position < 0) return "";
     return `${sectionNumber(position)} ${SECTION_LABELS[key][this.preferences.lang()]}`;
   });
-
-  /** High-impact assumptions decided out of all of them, if there are any. */
-  protected readonly highImpact = computed(() => {
-    const high = this.change().review.assumptions.filter((item) => item.impact === "high");
-    if (high.length === 0) return undefined;
-    const decided = high.filter((item) => item.decision !== "pending").length;
-    return { decided, total: high.length };
-  });
-
-  protected readonly openComments = computed(
-    () => this.change().review.comments.filter((comment) => !comment.resolved).length,
-  );
 }

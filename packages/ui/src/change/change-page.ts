@@ -5,6 +5,7 @@ import {
   DestroyRef,
   ElementRef,
   effect,
+  InjectionToken,
   inject,
   input,
   linkedSignal,
@@ -39,6 +40,15 @@ import { ChangeBar } from "./change-bar";
 import { ChangeFacts } from "./change-facts";
 
 const TABS: readonly ChangeTab[] = ["spec", "progress", "acceptance", "history"];
+
+/**
+ * Whether the header suggests the effort for the agent («implementar con esfuerzo medio y
+ * revisar con alto»). Hidden for now; the effort is still derived, so showing it again only
+ * takes changing this default.
+ */
+export const SHOW_EFFORT_HINT = new InjectionToken<boolean>("SHOW_EFFORT_HINT", {
+  factory: () => false,
+});
 
 const EFFORT: Readonly<Record<EffortLevel, { es: string; en: string }>> = {
   low: { es: "bajo", en: "low" },
@@ -104,12 +114,12 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               Beside the title: the decision on the spec (in review) and, as a suggestion rather
               than a fact of the change, the effort for the agent. Under the title, at its edge.
             -->
-            @if (change.phase === 'review' || change.effort) {
+            @if (change.phase === 'review' || (showEffort && change.effort)) {
               <div class="mt-1 flex flex-col items-end gap-3 max-lg:items-start">
                 @if (change.phase === 'review') {
                   <sp-review-actions class="max-lg:items-start" [change]="change" />
                 }
-                @if (change.effort; as effort) {
+                @if (showEffort && change.effort; as effort) {
                   <p class="m-0 flex max-w-80 items-start gap-2 text-[13px] text-text-muted" data-effort>
                     <svg class="mt-0.5 shrink-0" [lucideIcon]="suggestion" size="14" aria-hidden="true"></svg>
                     <span><span class="font-medium">{{ t()('Sugerencia para el agente:', 'Suggestion for the agent:') }}</span>&ngsp;{{ effortHint(change.phase, effort) }}</span>
@@ -179,6 +189,7 @@ export class ChangePage {
   protected readonly page = PAGE;
   protected readonly waiting = WAITING;
   protected readonly suggestion = LucideLightbulb;
+  protected readonly showEffort = inject(SHOW_EFFORT_HINT);
   protected readonly change = this.store.byId(this.id);
   /** The wide header is out of view: show the compact bar. */
   protected readonly compact = signal(false);

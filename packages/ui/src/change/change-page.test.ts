@@ -8,6 +8,7 @@ import { FixtureData } from "../data/fixtures";
 import type { ChangeRecord as ChangeRecordForTest } from "../data/records";
 import { SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
+import { SHOW_EFFORT_HINT } from "./change-page";
 
 /** jsdom has no Worker: derive in the same thread, as the worker would. */
 const IN_THREAD = {
@@ -15,7 +16,7 @@ const IN_THREAD = {
   useValue: (records: readonly ChangeRecordForTest[]) => Promise.resolve(deriveViews(records)),
 };
 
-async function open(url: string) {
+async function open(url: string, effortHint = false) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
@@ -28,6 +29,7 @@ async function open(url: string) {
       provideRouter(APP_ROUTES, withComponentInputBinding()),
       { provide: SpectyData, useClass: FixtureData },
       IN_THREAD,
+      { provide: SHOW_EFFORT_HINT, useValue: effortHint },
     ],
   });
   const fixture = TestBed.createComponent(Shell);
@@ -121,9 +123,20 @@ describe("ChangePage", () => {
     expect(name?.className).not.toContain("truncate");
   });
 
-  it("suggests the effort beside the decision, not among the facts; in a draft, to plan (AC4)", async () => {
+  it("hides the effort suggestion for now, and shows nothing in its place", async () => {
+    const { element } = await open("/changes/20261020-evolucion-trimestre");
+    const hero = element.querySelector<HTMLElement>("sp-change-page [data-hero]");
+    expect(hero?.querySelector("[data-effort]")).toBeNull();
+    expect(hero?.querySelector("sp-review-actions")).not.toBeNull();
+    TestBed.resetTestingModule();
+    const draft = await open("/changes/20261021-modo-oscuro");
+    const column = draft.element.querySelector("sp-change-page [data-hero] h1")?.parentElement;
+    expect(column?.nextElementSibling).toBeNull();
+  });
+
+  it("when shown, suggests the effort beside the decision; in a draft, to plan (AC4)", async () => {
     const effort = async (id: string) => {
-      const { element } = await open(`/changes/${id}`);
+      const { element } = await open(`/changes/${id}`, true);
       const hero = element.querySelector<HTMLElement>("sp-change-page [data-hero]");
       expect(hero?.querySelector("dl [data-effort]")).toBeNull();
       const hint = hero?.querySelector("[data-effort]");
@@ -190,7 +203,9 @@ describe("ChangePage", () => {
       expect(heading?.querySelector("[data-revision]")?.className).toContain("shrink-0");
       expect(bar()?.querySelector("[data-revision] span")?.className).toContain("hidden sm:inline");
       expect(text(bar()?.querySelector("[data-reading]"))).toBe("§ 04 Criterios");
-      expect(text(bar()?.querySelector("[data-summary]"))).toBe("Supuestos 1/2 · Comentarios 2");
+      // Only the decision on the right: no summary of assumptions and comments.
+      expect(bar()?.querySelector("[data-summary]")).toBeNull();
+      expect(text(bar())).not.toContain("Comentarios");
       // The decision comes along, compact: small buttons, the reason only in their tooltip.
       const actions = bar()?.querySelector<HTMLElement>("sp-review-actions");
       expect(actions?.hasAttribute("data-compact")).toBe(true);

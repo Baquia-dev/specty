@@ -18,7 +18,7 @@ La barra compacta deja de mostrar el resumen «Supuestos 1/2 · Comentarios 2» 
 
 ## Tareas
 
-- [ ] T1: Barra compacta solo con los botones y sugerencia de esfuerzo oculta
+- [x] T1: Barra compacta solo con los botones y sugerencia de esfuerzo oculta
   - files: packages/ui/src/change/change-bar.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts
   - verify: pnpm check
   - notes: Actualizar también docs/ui.md (barra compacta y sugerencia). Comprobar en el navegador a 390 y 1280 px.

@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261022-barra-compacta-solo-con-los-botones-y-sugerencia",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-barra-compacta-solo-con-los-botones-y-sugerencia",
   "baseCommit": "60d1af32f547eb2492b2d9dc52f1b94167b608de",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:842339c0a02f1c4311daf9d1134819056ab3f7756a3c1312b8571b7d44056d5a",
+    "at": "2026-10-22T21:22:36.731Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f74685a00c9046e7988b6b9cc3a43fc6af69495a",
+      "startedAt": "2026-10-22T21:22:46.535Z",
+      "doneAt": "2026-10-22T21:25:23.487Z",
+      "summary": "Barra compacta sin el resumen de supuestos y comentarios: a la derecha solo la decisión. La sugerencia de esfuerzo queda oculta tras el token SHOW_EFFORT_HINT (false por defecto); su lógica y el esfuerzo derivado se conservan y un test la activa para comprobar su redacción. docs/ui.md actualizado. Comprobado a 390, 768, 1024 y 1280 px."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:842339c0a02f1c4311daf9d1134819056ab3f7756a3c1312b8571b7d44056d5a",
-    "at": "2026-10-22T21:22:36.731Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
