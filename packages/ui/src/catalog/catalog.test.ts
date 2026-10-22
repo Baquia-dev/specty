@@ -4,6 +4,7 @@ import { provideRouter, Router } from "@angular/router";
 import { PHASES } from "@baquia-dev/specty-core";
 import { APP_ROUTES } from "../app/routes";
 import { Shell } from "../app/shell";
+import { Commands } from "../components/command-palette";
 import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
 import type { ChangeRecord as ChangeRecordForTest } from "../data/records";
@@ -54,6 +55,7 @@ describe("Catalog", () => {
       "/catalog/foundations",
       "/catalog/components",
       "/catalog/overlays",
+      "/catalog/patterns",
     ]);
     expect(links[0]?.getAttribute("aria-current")).toBe("page");
     expect(element.querySelector("h1")?.textContent).toContain("Colores");
@@ -105,6 +107,25 @@ describe("Catalog", () => {
     expect(element.querySelector("h1")?.textContent).toContain("Colors");
     expect(text(element)).toContain("Dark");
     expect(localStorage.getItem("specty.theme")).toBe("dark");
+  });
+
+  it("shows the document patterns and the empty state, from the palette too (AC3)", async () => {
+    const { element } = await open("/catalog/patterns");
+    expect(element.querySelector("h1")?.textContent).toContain("Patrones");
+    const list = element.querySelector("[data-example=list]");
+    expect(list?.querySelector("sp-section-divider h3")?.textContent).toBe("Criterios");
+    expect(list?.querySelector("sp-section-divider [data-meta]")?.textContent).toBe("3");
+    const rows = [...(list?.querySelectorAll<HTMLElement>("ol > li") ?? [])];
+    expect(rows.map((row) => row.dataset.item)).toEqual(["AC1", "AC2", "AC3"]);
+    expect(rows[0]?.className).toContain("hover:bg-text/4");
+    expect(list?.querySelector("ol")?.className).toContain("pl-6");
+    const empty = element.querySelector("[data-example=empty] sp-empty-state");
+    expect(empty?.getAttribute("role")).toBe("status");
+    expect(empty?.textContent).toContain("Ningún cambio coincide");
+    expect(element.querySelector("[data-example=page]")?.textContent).toContain("max-w-6xl");
+
+    const palette = TestBed.inject(Commands);
+    expect(palette.all().some((command) => command.id === "go:catalog/patterns")).toBe(true);
   });
 
   it("redirects unknown paths to Colors", async () => {

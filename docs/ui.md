@@ -106,6 +106,7 @@ Punto de partida para el sistema de diseño:
 - Geist para la interfaz y Geist Mono para rutas, comandos, ids y código, autoalojadas (sin red).
 - Las ocho fases: `adjusting` comparte el azul de implementación y `closing` el violeta de aceptación; se distinguen por icono y nombre.
 - Todos los pares de texto cumplen 4,5:1 en claro y en oscuro (lo comprueba un test).
+- Patrones de documento (`components/document.ts`, página "Patrones" del catálogo): divisor de sección con título en versalitas, línea fina y contador; listas con sangría bajo su sección y filas sin líneas que se iluminan al pasar el puntero o con el foco y revelan sus acciones; un ancho de página común (72 rem). Y un estado vacío (`components/empty-state.ts`) con icono, título, qué pasó y cómo seguir.
 
 ## Stack
 

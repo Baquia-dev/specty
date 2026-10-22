@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-sistema-de-diseno-patrones-de-documento-y-estado",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-sistema-de-diseno-patrones-de-documento-y-estado",
   "baseCommit": "9fe5e000d6e1fef3c6b5a7b83755a8ec26521669",
   "revision": 1,
@@ -46,12 +46,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "11dc0057cb649a227605b9de0ef9f02e1f25b0e4",
+      "attempts": 1,
       "startedAt": "2026-10-22T17:49:42.296Z",
       "doneAt": "2026-10-22T17:51:30.883Z",
-      "summary": "components/empty-state.ts: sp-empty-state (role=status, icono decorativo, título h1 o h2 y contenido proyectado para el texto y la acción). La página del cambio usa PAGE para su ancho y el estado vacío para 'No existe ese cambio', con su enlace de vuelta. El delta usa sp-section-divider para sus grupos. Tests del estado vacío."
+      "summary": "components/empty-state.ts: sp-empty-state (role=status, icono decorativo, título h1 o h2 y contenido proyectado para el texto y la acción). La página del cambio usa PAGE para su ancho y el estado vacío para 'No existe ese cambio', con su enlace de vuelta. El delta usa sp-section-divider para sus grupos. Tests del estado vacío.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5e20ba9b489b90d1ce376f9ffad87e31148768b6",
+      "startedAt": "2026-10-22T17:51:31.149Z",
+      "doneAt": "2026-10-22T17:54:10.573Z",
+      "summary": "Página 'Patrones' del catálogo (catalog/patterns.ts): divisor de sección, lista de documento con ítems de ejemplo y resalte al pasar el puntero, estado vacío con su acción y el ancho de página común; en la navegación, las rutas y la paleta (go:catalog/patterns). docs/ui.md recoge los patrones. Comprobado en el navegador en claro y oscuro: Patrones, el estado vacío de un cambio que no existe y el delta (igual que antes)."
     }
   },
   "pending": {

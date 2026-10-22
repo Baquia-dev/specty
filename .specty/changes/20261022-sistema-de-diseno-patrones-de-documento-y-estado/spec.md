@@ -53,7 +53,7 @@ Las piezas que hoy dan a la revisión su aire de documento (las filas sin línea
   - files: packages/ui/src/components/empty-state.ts, packages/ui/src/components/empty-state.test.ts, packages/ui/src/review/delta-review.ts, packages/ui/src/change/change-page.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T3: Página "Patrones" del catálogo
+- [x] T3: Página "Patrones" del catálogo
   - files: packages/ui/src/catalog/patterns.ts, packages/ui/src/catalog/catalog.ts, packages/ui/src/catalog/catalog.test.ts, docs/ui.md
   - ac: AC3
   - verify: pnpm check

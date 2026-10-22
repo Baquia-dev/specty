@@ -6,6 +6,7 @@ import {
   LucideDynamicIcon,
   LucideLayers,
   LucideLayoutGrid,
+  LucideLayoutList,
   LucidePalette,
   LucideType,
 } from "@lucide/angular";
@@ -39,6 +40,11 @@ export const CATALOG_ROUTES: Routes = [
     path: "overlays",
     loadComponent: () => import("./overlays").then((page) => page.Overlays),
     title: "Specty · Superposiciones y teclado",
+  },
+  {
+    path: "patterns",
+    loadComponent: () => import("./patterns").then((page) => page.Patterns),
+    title: "Specty · Patrones",
   },
   { path: "**", redirectTo: "colors" },
 ];
@@ -91,6 +97,7 @@ export class Catalog {
         icon: LucideLayers,
         label: t("Superposiciones y teclado", "Overlays and keyboard"),
       },
+      { path: "/catalog/patterns", icon: LucideLayoutList, label: t("Patrones", "Patterns") },
     ];
   });
 
@@ -103,6 +110,7 @@ export class Catalog {
       ["foundations", "Fundamentos", "Foundations"],
       ["components", "Componentes", "Components"],
       ["overlays", "Superposiciones y teclado", "Overlays and keyboard"],
+      ["patterns", "Patrones", "Patterns"],
     ] as const) {
       const [path, es, en] = page;
       commands.register({
