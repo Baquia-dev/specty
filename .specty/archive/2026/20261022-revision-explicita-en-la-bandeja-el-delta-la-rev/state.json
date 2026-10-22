@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-revision-explicita-en-la-bandeja-el-delta-la-rev",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-revision-explicita-en-la-bandeja-el-delta-la-rev",
   "baseCommit": "aa45c83f03fa28e9f0273d4936b619eeb8ccd1da",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5ea00bea7d29a18d3555c609bfbc1314fa0c8df114ed5dd10f86bbb233543f8a",
@@ -61,14 +61,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/change/change-bar.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "0bfe7c95b5529f5e475cec801d2a30b12e4c2e25",
+      "attempts": 1,
       "startedAt": "2026-10-22T21:02:01.013Z",
       "doneAt": "2026-10-22T21:08:33.309Z",
-      "summary": "Comentarios: «· en la revisión 2 · resuelto en la 3». docs/ui.md: la revisión con palabras en toda la UI y el delta con la línea de la aprobada. S1: la barra compacta, que con la revisión explícita y un título largo se partía en dos líneas a 1280 px, va en una línea desde md: título, revisión y sección forman un grupo que crece y solo recorta el título; la sección se muestra desde xl y el resumen desde lg; en el teléfono las acciones siguen bajando. Comprobado en el navegador: ningún «rN» suelto en Bandeja, delta, spec completa ni comentarios, a 390 y 1280 px."
+      "summary": "Comentarios: «· en la revisión 2 · resuelto en la 3». docs/ui.md: la revisión con palabras en toda la UI y el delta con la línea de la aprobada. S1: la barra compacta, que con la revisión explícita y un título largo se partía en dos líneas a 1280 px, va en una línea desde md: título, revisión y sección forman un grupo que crece y solo recorta el título; la sección se muestra desde xl y el resumen desde lg; en el teléfono las acciones siguen bajando. Comprobado en el navegador: ningún «rN» suelto en Bandeja, delta, spec completa ni comentarios, a 390 y 1280 px.",
+      "scopeExtra": [
+        "packages/ui/src/change/change-bar.ts"
+      ]
     }
   },
   "pending": {
@@ -80,5 +80,6 @@
     "AC": 4,
     "T": 3,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T21:19:47.944Z"
 }

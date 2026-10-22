@@ -64,3 +64,25 @@ La cabecera del cambio ya nombra la revisión con palabras («Revisión 3 · por
   - ac: AC4
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, que no queda ningún «rN» suelto en la Bandeja, el delta, la spec completa ni los comentarios.
+
+## Cierre
+
+### Resumen
+
+Toda la UI nombra las revisiones con palabras. La Bandeja dice «revisión 3, frente a la 2 aprobada». El delta se titula «Qué cambió desde la revisión 2» y lleva encima cuál está aprobada, cuándo y quién la aprobó. La spec completa habla de «la revisión 3» y la 2. Los comentarios dicen en qué revisión se escribieron y en cuál se resolvieron. Ya no queda ningún «rN» suelto: se comprobó en el texto visible de cada pantalla a 390 y 1280 px.
+
+### Desviaciones
+
+- S1 (T3): entró `change/change-bar.ts`. Con la revisión explícita del cambio anterior y un título largo, la barra compacta se partía en dos líneas a 1280 px. Ahora va en una línea desde `md`. El título, la revisión y la sección forman un grupo que crece y en el que solo se recorta el título. La sección se muestra desde `xl` y el resumen desde `lg`.
+- Al revisar el resultado, la persona pidió quitar de la barra compacta el resumen de supuestos y comentarios, y ocultar la sugerencia de esfuerzo. Como ningún criterio de este cambio lo cubría, va en un cambio rápido de seguimiento.
+
+### Decisiones
+
+- El delta ya no dice «desde que aprobaste», porque en un equipo puede haberla aprobado otra persona. Quién la aprobó se lee en la línea de encima, con el mismo texto que la cabecera (`approvedNote`).
+- Desde `md`, la barra no salta de línea y prioriza el contenido por ancho: el título se recorta antes de que bajen los botones. En el teléfono, las acciones siguen en una segunda línea.
+
+### Pendientes
+
+- Cambio rápido de seguimiento: la barra compacta solo con los botones y la sugerencia de esfuerzo oculta, conservando su lógica.
+- El select propio de la Bandeja, en el catálogo y con el estilo de la UI.
+- El origen de cada revisión (tras tus comentarios, ajuste, cierre), con la pestaña Historial.

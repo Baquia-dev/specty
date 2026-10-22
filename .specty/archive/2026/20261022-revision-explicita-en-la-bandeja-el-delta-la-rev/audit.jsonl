@@ -12,3 +12,6 @@
 {"ts":"2026-10-22T21:05:18.175Z","actor":"human","event":"scope.decided","data":{"id":"S1","decision":"approved"}}
 {"ts":"2026-10-22T21:08:33.308Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":30839}}
 {"ts":"2026-10-22T21:08:33.310Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"Comentarios: «· en la revisión 2 · resuelto en la 3». docs/ui.md: la revisión con palabras en toda la UI y el delta con la línea de la aprobada. S1: la barra compacta, que con la revisión explícita y un título largo se partía en dos líneas a 1280 px, va en una línea desde md: título, revisión y sección forman un grupo que crece y solo recorta el título; la sección se muestra desde xl y el resumen desde lg; en el teléfono las acciones siguen bajando. Comprobado en el navegador: ningún «rN» suelto en Bandeja, delta, spec completa ni comentarios, a 390 y 1280 px."}}
+{"ts":"2026-10-22T21:19:22.842Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-22T21:19:47.946Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ed19089d69d6a02d840ac33ef597abf99c09bb5aba0abe91f39635ed44b484e2","size":"L","warnings":0}}
+{"ts":"2026-10-22T21:19:59.129Z","actor":"human","event":"change.closed","data":{}}
