@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261022-prototipo-bandeja-en-filas-con-buscador-filtros",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-prototipo-bandeja-en-filas-con-buscador-filtros",
+  "baseCommit": "a40c1d5566d49ad1f3aa79c57f9c68aef2763a43",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:41a0ec54fb8d5afddd838308efd792cbb4c3bc54fff6fb2e6bafbb3fc99cdf81",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fcd27a7ffc9adfe737c675d334dcabaaa33f04ce6ffe67bc61708c65f1162f21",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6b942b381e2047500760cc8496f77b5375f780cf3fb9ebeb724b73a287577a36",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a1154e7439bae3fc35d6d02cec6aade4f68ac4a58ee6f9485e6176c783ab54ce",
+    "at": "2026-10-22T18:11:53.251Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
