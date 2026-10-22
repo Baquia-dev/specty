@@ -2,25 +2,25 @@
   "schema": 1,
   "id": "20261022-prototipo-revision-de-spec",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261022-prototipo-revision-de-spec",
   "baseCommit": "f081fac8a754d519823cbd159ad81cc5af891bbb",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:80ef44f7bb86ea2b0108d4680ffdd5878f58f824ff9a92caa1d87d74938bf683",
-    "at": "2026-10-22T06:27:21.674Z",
+    "revision": 2,
+    "hash": "sha256:ca12568fde559e4a48a543f045f281a47cd2782b50dd68cc49f949a338bb8545",
+    "at": "2026-10-22T07:07:33.765Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
     "level": "L",
-    "score": 15,
+    "score": 17,
     "adjust": 0,
     "reasons": [
-      "11 archivos",
+      "12 archivos",
       "cambia dependencias",
-      "5 tareas"
+      "6 tareas"
     ]
   },
   "items": {
@@ -87,16 +87,16 @@
     },
     "T5": {
       "status": "done",
+      "baseCommit": "08fa7b41bf4bd4686d41116e3e6dabb765292cbc",
+      "attempts": 1,
+      "startedAt": "2026-10-22T06:43:53.221Z",
+      "doneAt": "2026-10-22T07:03:13.285Z",
+      "summary": "sp-spec-review en la pestaña Spec: índice de secciones presentes con contadores de pendientes y avisos, y de comentarios (con texto para lector de pantalla), que lleva y enfoca cada sección; secciones en orden (objetivo y fuera de alcance en Markdown, supuestos, criterios, archivos, tareas, riesgos y diseño plegado); columna de comentarios con la selección de texto vía selectionchange; barra sticky en revisión con Pedir cambios (motivo si no hay comentarios abiertos) y Aprobar rN (motivo en tooltip y como texto), con avisos de éxito o error; solo lectura fuera de revisión. S1: las tareas muestran sus avisos en línea, porque el índice los contaba sin que se vieran. marked solo en el fragmento del cambio (76 kB); zod y yaml solo en el worker; inicial 579 kB / 126 kB transferidos",
       "scopeExtra": [
         "packages/ui/src/data/records.ts",
         "packages/ui/src/data/review.ts",
         "packages/ui/src/review/spec-sections.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "08fa7b41bf4bd4686d41116e3e6dabb765292cbc",
-      "startedAt": "2026-10-22T06:43:53.221Z",
-      "doneAt": "2026-10-22T07:03:13.285Z",
-      "summary": "sp-spec-review en la pestaña Spec: índice de secciones presentes con contadores de pendientes y avisos, y de comentarios (con texto para lector de pantalla), que lleva y enfoca cada sección; secciones en orden (objetivo y fuera de alcance en Markdown, supuestos, criterios, archivos, tareas, riesgos y diseño plegado); columna de comentarios con la selección de texto vía selectionchange; barra sticky en revisión con Pedir cambios (motivo si no hay comentarios abiertos) y Aprobar rN (motivo en tooltip y como texto), con avisos de éxito o error; solo lectura fuera de revisión. S1: las tareas muestran sus avisos en línea, porque el índice los contaba sin que se vieran. marked solo en el fragmento del cambio (76 kB); zod y yaml solo en el worker; inicial 579 kB / 126 kB transferidos"
+      ]
     }
   },
   "pending": {
@@ -106,7 +106,7 @@
   "maxIds": {
     "A": 5,
     "AC": 9,
-    "T": 5,
+    "T": 6,
     "R": 3,
     "S": 1
   }

@@ -76,6 +76,7 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
 - crear packages/ui/src/review/spec-sections.ts — secciones de la revisión
 - crear packages/ui/src/review/comments.ts — columna y redactor de comentarios
 - crear packages/ui/src/review/spec-review.ts — índice, secciones, comentarios y barra de acción
+- modificar packages/ui/src/index.html — base href para recargar en rutas profundas
 - modificar packages/ui/src/change/change-page.ts — la pestaña Spec usa la revisión
 
 ## Tareas
@@ -101,6 +102,12 @@ La pestaña Spec de un cambio pasa a ser la pantalla de revisión de docs/ui.md.
   - ac: AC1, AC7, AC8, AC9
   - verify: pnpm check
   - notes: Comprobar con `ng build --stats-json` que `marked` solo está en el fragmento del cambio, no en el inicial.
+- [ ] T6: Recargar en una ruta profunda carga los recursos desde la raíz
+  - files: packages/ui/src/index.html
+  - ac: AC1
+  - verify: pnpm check
+  - type: fix
+  - notes: Defecto pedido en aceptación. Sin `<base href="/">`, al recargar en `/changes/<id>` el navegador pide `styles.css` y `main.js` bajo `/changes/`, recibe el HTML de la app y se niega a aplicarlo. Comprobar recargando con `ng serve` una ruta profunda (página, estilos y script con 200 y su tipo MIME).
 
 ## Riesgos
 
