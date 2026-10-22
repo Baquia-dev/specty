@@ -76,3 +76,31 @@ La revisión de la spec se lee como un documento bien maquetado, no como un tabl
 ## Riesgos
 
 - R1: Una barra oculta que siga siendo enfocable confunde al teclado y al lector de pantalla. Mitigación: `inert` mientras está oculta, comprobado en los tests.
+
+## Cierre
+
+### Resumen
+
+- La revisión de la spec se lee como un documento: índice "Contenido" numerado, secciones con divisor tipográfico ("§ 0N", línea fina y progreso), título, pista y contenido, sin tarjetas.
+- Supuestos, criterios, tareas y riesgos son filas con el id en una columna fija y líneas finas; el supuesto de alto impacto sin decidir lleva un fondo tenue además de su chip.
+- Al elegir una sección en el índice, la línea del divisor se dibuja, el número se oscurece y el fondo se ilumina durante 1,4 s (sin transición con movimiento reducido).
+- La página del cambio abre con una cabecera amplia y, al desplazarse, muestra una barra compacta fija, solo informativa e `inert` mientras está oculta.
+- 140 tests en la UI; comprobado en Chrome sin interfaz, en claro y oscuro.
+
+### Desviaciones
+
+- S1 (T1): `spec-review.ts` y su test pasaron a T1, porque el supuesto se movió a `assumption-row.ts` con otro selector y la revisión debía importarlo para que T1 compilara.
+- S2 (T3): la sección leída se calcula al desplazarse en lugar de con IntersectionObserver. Con la barra compacta, una sección tapada por ella seguía contando como visible y el índice marcaba la anterior. Ahora es la última cuyo inicio pasó bajo la barra (`--sp-sticky-top`), la última al final de la página, y una elección en el índice se respeta mientras dura su desplazamiento.
+- `reportFailure` se quedó en `spec-sections.ts`, porque `comments.ts` la importa de ahí.
+
+### Decisiones
+
+- Revisión 2 de la spec, a petición de la persona: la barra compacta no lleva "Pedir cambios" ni "Aprobar"; las acciones siguen solo en la barra del pie. Se descartó el componente de acciones compartido.
+- La barra compacta tiene altura cero en el flujo y se superpone, para no empujar el contenido al aparecer.
+- Los números de sección sustituyen a los iconos, lo que además quita iconos de Lucide del fragmento.
+
+### Pendientes
+
+- "Prototipo: delta de la revisión".
+- Margen inferior en el armazón común en lugar de en cada página.
+- Mejoras de Specty anotadas: esfuerzo recomendado ajustado por el modelo (por tarea, con motivo) y recomendación de revisar la spec con un modelo más capaz; el guard sigue leyendo el cuerpo de los heredoc como comandos.

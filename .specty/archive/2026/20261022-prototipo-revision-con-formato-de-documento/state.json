@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-prototipo-revision-con-formato-de-documento",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-prototipo-revision-con-formato-de-documento",
   "baseCommit": "69f4b9e87c33480b50f746ce964e5e5d665c5bbb",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:abdaddfcb12c5b8eac82a94b2271df530036e11e6bcc2418cd82544611f307ff",
@@ -63,15 +63,15 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "666ae4987016f0b3d98380e809b9d7085f997b3e",
+      "attempts": 1,
+      "startedAt": "2026-10-22T08:35:29.284Z",
+      "doneAt": "2026-10-22T09:13:38.137Z",
+      "summary": "Cabecera amplia (ruta de vuelta, fase con lo que espera y desde cuándo, título grande, franja de datos con revisión, rama, tamaño, esfuerzo y lo que queda por decidir) y barra compacta fija a ancho completo, de altura cero en el flujo, que aparece con transición cuando la cabecera amplia sale de la vista (IntersectionObserver) e inert mientras está oculta; muestra fase, título, revisión, sección leída y resumen, sin acciones. S2: la sección leída es la última cuyo inicio pasó bajo la barra (--sp-sticky-top), la última al final de la página, y una elección en el índice se respeta mientras dura su desplazamiento. docs/ui.md actualizado.",
       "scopeExtra": [
         "packages/ui/src/review/spec-review.ts",
         "packages/ui/src/review/spec-review.test.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "666ae4987016f0b3d98380e809b9d7085f997b3e",
-      "startedAt": "2026-10-22T08:35:29.284Z",
-      "doneAt": "2026-10-22T09:13:38.137Z",
-      "summary": "Cabecera amplia (ruta de vuelta, fase con lo que espera y desde cuándo, título grande, franja de datos con revisión, rama, tamaño, esfuerzo y lo que queda por decidir) y barra compacta fija a ancho completo, de altura cero en el flujo, que aparece con transición cuando la cabecera amplia sale de la vista (IntersectionObserver) e inert mientras está oculta; muestra fase, título, revisión, sección leída y resumen, sin acciones. S2: la sección leída es la última cuyo inicio pasó bajo la barra (--sp-sticky-top), la última al final de la página, y una elección en el índice se respeta mientras dura su desplazamiento. docs/ui.md actualizado."
+      ]
     }
   },
   "pending": {
@@ -84,5 +84,6 @@
     "T": 3,
     "R": 2,
     "S": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T09:25:25.921Z"
 }
