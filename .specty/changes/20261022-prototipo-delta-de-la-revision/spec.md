@@ -79,7 +79,7 @@ Cuando una spec vuelve a revisión después de haber sido aprobada (por ejemplo,
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts
   - ac: AC1, AC4, AC5
   - verify: pnpm check
-- [ ] T5: Ver el diff no desplaza la página entera
+- [x] T5: Ver el diff no desplaza la página entera
   - files: packages/ui/src/review/delta-review.ts, packages/ui/src/review/spec-review.ts
   - ac: AC1, AC2
   - verify: pnpm check

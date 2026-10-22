@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  ARCHIVE,
   CHANGE,
   CONFIG,
   cli,
@@ -66,7 +67,7 @@ describe("git hooks", () => {
     expect(git(root, "log", "-1", "--format=%(trailers:key=Specty-Retro,valueonly)")).toBe("true");
     expect(git(root, "log", "-1", "--format=%(trailers:key=Specty-Change,valueonly)")).toBe(id);
     expect(git(root, "show", "--name-only", "--format=", "HEAD")).toContain(
-      `.specty/archive/2026/${id}/spec.md`,
+      `${ARCHIVE}/${id}/spec.md`,
     );
   });
 

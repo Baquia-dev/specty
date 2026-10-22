@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import {
+  ARCHIVE,
   CHANGE,
   CONFIG,
   cli,
@@ -145,7 +146,7 @@ describe("a standard change from request to closing", () => {
     expect((await cli(root, ["propose"])).out).toContain("Cierre válido.");
     const closed = await cli(root, ["close"], { terminal: person() });
     expect(closed.out).toContain("Cambio cerrado y archivado");
-    expect(await exists(`${root}/.specty/archive/2026/${CHANGE}/state.json`)).toBe(true);
+    expect(await exists(`${root}/${ARCHIVE}/${CHANGE}/state.json`)).toBe(true);
     expect(await exists(`${root}/.specty/changes/${CHANGE}`)).toBe(false);
     expect(git(root, "status", "--porcelain")).toBe("");
     expect((await cli(root, ["next"])).out).toContain("El cambio está cerrado.");
@@ -156,7 +157,8 @@ describe("the quick lane", () => {
   it("goes from a one-task spec to an archived change", async () => {
     const root = await tempRepo({ "src/button.ts": "Sing in\n", ".specty/config.yaml": CONFIG() });
     await cli(root, ["new", "Corregir botón", "--kind", "quick"]);
-    const id = "20261021-corregir-boton";
+    // Ids start with the date of the commands' clock, like CHANGE.
+    const id = `${CHANGE.slice(0, 8)}-corregir-boton`;
     await writeFiles(root, {
       [`.specty/changes/${id}/spec.md`]:
         "---\nkind: quick\n---\n\n# Corregir botón\n\n## Objetivo\n\nDice «Sing in».\n\n## Archivos\n\n- modificar src/button.ts — texto\n\n## Tareas\n\n- [ ] T1: Corregir texto\n  - files: src/button.ts\n  - type: fix\n",
@@ -168,7 +170,7 @@ describe("the quick lane", () => {
     await cli(root, ["task", "done", "T1", "--summary", "Texto corregido"]);
     const accepted = await cli(root, ["accept"], { terminal: person() });
     expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
-    expect(await read(root, `.specty/archive/2026/${id}/spec.md`)).toContain("Texto corregido");
+    expect(await read(root, `${ARCHIVE}/${id}/spec.md`)).toContain("Texto corregido");
   });
 });
 

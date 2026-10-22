@@ -68,7 +68,8 @@ const SECTION =
     ReviewActions,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: "flex scroll-mt-[calc(var(--sp-sticky-top,0px)+1rem)] flex-col gap-6" },
+  // Positioned, so absolute screen-reader text inside stays within the scrolling area.
+  host: { class: "relative flex scroll-mt-[calc(var(--sp-sticky-top,0px)+1rem)] flex-col gap-6" },
   template: `
     <div class="flex flex-wrap items-start gap-x-12 gap-y-6">
       @if (mode() === 'full') {

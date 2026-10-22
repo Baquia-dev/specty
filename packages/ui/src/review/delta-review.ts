@@ -78,7 +78,8 @@ export class ChangeMark {
   selector: "sp-review-delta",
   imports: [LucideDynamicIcon, Button, IconButton, AssumptionRow, ChangeMark, WordDiff],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: "flex flex-col gap-6" },
+  // Positioned, so the screen-reader text of the diff (absolute) stays inside the scrolling area.
+  host: { class: "relative flex flex-col gap-6" },
   template: `
     <header class="flex flex-col gap-1.5 border-b border-border pb-5">
       <p class="m-0 font-mono text-[11px] text-text-muted">r{{ change().revision }} · {{ t()('frente a', 'against') }} r{{ delta().approvedRevision }}</p>

@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import {
+  ARCHIVE,
   CHANGE,
   CONFIG,
   cli,
@@ -60,7 +61,7 @@ describe("human decisions", () => {
       terminal: person({ ask: ["Ya no hace falta"] }),
     });
     expect(cancelled.out).toContain("Cambio cancelado y archivado");
-    expect(await exists(`${root}/.specty/archive/2026/${CHANGE}/state.json`)).toBe(true);
+    expect(await exists(`${root}/${ARCHIVE}/${CHANGE}/state.json`)).toBe(true);
     expect((await cli(root, ["cancel"], { terminal: person() })).out).toContain(
       "No hay nada pendiente",
     );

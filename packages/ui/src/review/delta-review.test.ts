@@ -120,6 +120,16 @@ describe("ReviewDelta", () => {
     ]);
   });
 
+  it("keeps its screen-reader text inside a positioned box, so the page itself never scrolls (AC2)", async () => {
+    const { element } = await render();
+    const delta = element.querySelector("sp-review-delta");
+    const hidden = [...(delta?.querySelectorAll(".sr-only") ?? [])];
+    expect(hidden.length).toBeGreaterThan(0);
+    // `sr-only` is absolute: without a positioned ancestor in the scrolling area it escapes it.
+    for (const span of hidden) expect(span.closest(".relative")).not.toBeNull();
+    expect(delta?.className.split(" ")).toContain("relative");
+  });
+
   it("marks possible new scope, with its reason (AC3)", async () => {
     const { item } = await render();
     const note = item("T4")?.querySelector("[data-new-scope]");

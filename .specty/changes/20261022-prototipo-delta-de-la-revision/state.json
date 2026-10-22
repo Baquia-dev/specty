@@ -80,6 +80,20 @@
       "doneAt": "2026-10-22T09:52:10.006Z",
       "summary": "La revisión empieza por los cambios cuando hay delta (sin índice), con 'Ver spec completa' y, desde la spec completa, 'Ver solo los cambios desde rN'; al cambiar de vista lleva arriba y enfoca el conmutador. El modo es un linkedSignal que conserva la elección en las actualizaciones en vivo del mismo cambio (el test lo cazó: sin 'previous' volvía a los cambios). La barra de decisión sale a review-actions.ts. Tests del modo en spec-review-modes.test.ts (test implícito, mismo directorio) para no pasar de 300 líneas.",
       "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/support.ts",
+        "packages/cli/test/commands.test.ts",
+        "packages/cli/test/flow.test.ts",
+        "packages/cli/test/enforce.test.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "c508f2fb240609d4badbb6c928b8c567dffdfe6b",
+      "startedAt": "2026-10-22T10:05:48.698Z",
+      "doneAt": "2026-10-22T10:10:31.347Z",
+      "summary": "sp-review-delta y sp-spec-review pasan a ser relative: el texto para lectores de pantalla del diff (sr-only, absolute) ya no se sale del área que se desplaza; en el navegador html mide 860 de 860 (antes 1798) en los cambios, la spec completa y la Bandeja; test de que todo sr-only del delta tiene un ancestro posicionado. Además (ampliación por política) se desactiva una bomba de tiempo de los tests del CLI que rompía pnpm check desde hoy: el reloj de los comandos era fijo (2026-10-21) y el hook de git usa la hora real, así que el recibo de approve caducaba a las 24 h; ahora es hoy a las 10:00 UTC y CHANGE, el id del carril rápido y la carpeta del archivo se derivan de él."
     }
   },
   "pending": {

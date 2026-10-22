@@ -7,7 +7,13 @@ import { runCli } from "../src/program";
 import type { Terminal } from "../src/session";
 
 export const DIST = join(import.meta.dirname, "..", "dist", "specty.mjs");
-export const NOW = new Date("2026-10-21T10:00:00Z");
+/**
+ * The commands' clock: today at 10:00 UTC. The git hooks run on the real clock, so a fixed date
+ * would let a receipt written by `approve` expire (24 h) and break the hook tests one day later.
+ */
+export const NOW = new Date(`${new Date().toISOString().slice(0, 10)}T10:00:00Z`);
+/** Where `close` archives a change today. */
+export const ARCHIVE = `.specty/archive/${NOW.getUTCFullYear()}`;
 
 /** Isolated git: no global or system configuration, fixed identity. */
 const GIT_ENV = {
@@ -171,5 +177,5 @@ La app saluda por nombre.
   - type: refactor
 `;
 
-export const CHANGE = "20261021-saludo-personalizado";
+export const CHANGE = `${NOW.toISOString().slice(0, 10).replaceAll("-", "")}-saludo-personalizado`;
 export const SPEC_PATH = `.specty/changes/${CHANGE}/spec.md`;
