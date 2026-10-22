@@ -59,19 +59,80 @@ const text = (element: Element | null | undefined) =>
 describe("ChangePage", () => {
   afterEach(() => TestBed.resetTestingModule());
 
-  it("shows title, phase, revision, branch, size with reasons and effort (AC4)", async () => {
+  it("opens with a wide header: way back, phase and wait, big title, facts and tabs (AC3)", async () => {
     const { element } = await open("/changes/20261020-evolucion-trimestre");
-    // Title and state stay in view (sticky); branch, size and effort scroll with the page.
-    const sticky = element.querySelector<HTMLElement>("sp-change-page [data-sticky]");
-    expect(sticky?.className).toContain("sticky");
-    expect(text(sticky?.querySelector("h1"))).toBe("Agrupar la evolución académica por trimestre");
-    expect(sticky?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("review");
-    expect(text(sticky)).toContain("r2");
-    expect(text(sticky?.querySelector("[data-waiting]"))).toBe("Espera tu revisión de la spec");
-    const header = element.querySelector("sp-change-page header");
-    expect(text(header)).toContain("specty/20261020-evolucion-trimestre");
-    expect(text(header)).toContain("3 archivos");
-    expect(text(header)).toMatch(/Esfuerzo recomendado: planificación \S+ · implementación \S+/);
+    const hero = element.querySelector<HTMLElement>("sp-change-page [data-hero]");
+    expect(hero?.querySelector("a")?.getAttribute("href")).toBe("/");
+    expect(text(hero?.querySelector("a"))).toBe("Bandeja");
+    expect(text(hero?.querySelector("p .font-mono"))).toBe("20261020-evolucion-trimestre");
+    expect(hero?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("review");
+    expect(text(hero?.querySelector("[data-waiting]"))).toBe("Espera tu revisión de la spec");
+    expect(text(hero?.querySelector("[data-since]"))).toMatch(/^hace /);
+    expect(text(hero?.querySelector("h1"))).toBe("Agrupar la evolución académica por trimestre");
+    const facts = [...(hero?.querySelectorAll("dl > div") ?? [])].map(
+      (fact) => `${text(fact.querySelector("dt"))}: ${text(fact.querySelector("dd"))}`,
+    );
+    expect(facts[0]).toBe("Revisión: r2");
+    expect(facts[1]).toBe("Rama: specty/20261020-evolucion-trimestre");
+    expect(facts[2]).toMatch(/^Tamaño: \S+ · .*3 archivos/);
+    expect(facts[3]).toMatch(/^Esfuerzo recomendado: Planificación \S+ · Implementación \S+$/);
+    expect(facts[4]).toBe("Por decidir: 1 supuesto de alto impacto");
+    expect(element.querySelector("sp-change-page [role=tablist]")).not.toBeNull();
+  });
+
+  it("slides in a compact bar, without actions, once the wide header leaves the view (AC4)", async () => {
+    const observers: { callback: IntersectionObserverCallback; targets: Element[] }[] = [];
+    class FakeObserver {
+      readonly targets: Element[] = [];
+      constructor(callback: IntersectionObserverCallback) {
+        observers.push({ callback, targets: this.targets });
+      }
+      observe(target: Element): void {
+        this.targets.push(target);
+      }
+      disconnect(): void {}
+    }
+    Object.assign(window, { IntersectionObserver: FakeObserver });
+    try {
+      const { element, settle } = await open("/changes/20261020-evolucion-trimestre");
+      const bar = () => element.querySelector<HTMLElement>("sp-change-page [data-sticky]");
+      const trigger = (target: string, isIntersecting: boolean) => {
+        for (const { callback, targets } of observers) {
+          const found = targets.find((candidate) => candidate.matches(target));
+          if (found === undefined) continue;
+          const entry = { target: found, isIntersecting } as IntersectionObserverEntry;
+          callback([entry], {} as IntersectionObserver);
+        }
+      };
+      // At the top, the bar is out of sight and out of reach.
+      expect(bar()?.hasAttribute("inert")).toBe(true);
+      expect(bar()?.className).toContain("opacity-0");
+      expect(bar()?.className).toContain("motion-reduce:transition-none");
+
+      trigger("[data-hero]", false);
+      // The section being read comes from the review: pick "Criterios" in its index.
+      Element.prototype.scrollIntoView = () => undefined;
+      [...element.querySelectorAll<HTMLButtonElement>("sp-spec-review nav button")]
+        .find((button) => text(button).includes("Criterios"))
+        ?.click();
+      Reflect.deleteProperty(Element.prototype, "scrollIntoView");
+      await settle();
+      expect(bar()?.hasAttribute("inert")).toBe(false);
+      expect(bar()?.className).toContain("opacity-100");
+      expect(bar()?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("review");
+      expect(text(bar()?.querySelector("p"))).toBe("Agrupar la evolución académica por trimestre");
+      expect(text(bar()?.querySelector("p + span"))).toBe("r2");
+      expect(text(bar()?.querySelector("[data-reading]"))).toBe("§ 04 Criterios");
+      expect(text(bar()?.querySelector("[data-summary]"))).toBe("Supuestos 1/2 · Comentarios 2");
+      expect(bar()?.querySelector("button")).toBeNull();
+      expect(bar()?.querySelector("h1")).toBeNull();
+
+      trigger("[data-hero]", true);
+      await settle();
+      expect(bar()?.hasAttribute("inert")).toBe(true);
+    } finally {
+      Reflect.deleteProperty(window, "IntersectionObserver");
+    }
   });
 
   it("ends the page with room below the content (AC1)", async () => {
@@ -115,8 +176,10 @@ describe("ChangePage", () => {
     fixtures.approveScope();
     fixtures.finishTask();
     await settle();
-    const sticky = element.querySelector("sp-change-page [data-sticky]");
-    expect(sticky?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("acceptance");
-    expect(text(sticky?.querySelector("[data-waiting]"))).toBe("Espera que aceptes el resultado");
+    const hero = element.querySelector("sp-change-page [data-hero]");
+    expect(hero?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("acceptance");
+    expect(text(hero?.querySelector("[data-waiting]"))).toBe("Espera que aceptes el resultado");
+    const bar = element.querySelector("sp-change-page [data-sticky]");
+    expect(bar?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("acceptance");
   });
 });

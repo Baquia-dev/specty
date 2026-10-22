@@ -37,11 +37,14 @@ Arriba, tarjetas "Esperan tu decisión": spec por revisar, solicitud de alcance,
 
 ### Revisión de spec
 
-- **Cabecera**: título, fase, revisión, rama, tamaño con sus razones y esfuerzo recomendado. Incluye el progreso de la revisión, por ejemplo "2 supuestos de alto impacto por confirmar".
-- **Columna izquierda**: índice de secciones con indicadores (pendiente, comentado, aviso).
-- **Centro**, en este orden:
+Se lee como un documento bien maquetado, no como un tablero de tarjetas.
+
+- **Cabecera amplia**, arriba del todo: ruta de vuelta, fase con lo que espera de la persona y desde cuándo, título grande y una franja de datos (revisión, rama, tamaño con sus razones, esfuerzo recomendado y lo que queda por decidir, por ejemplo "1 supuesto de alto impacto"). Debajo, las pestañas.
+- **Barra compacta fija**: aparece, con una transición, cuando la cabecera amplia sale de la vista. Muestra la fase, el título recortado, la revisión, la sección que se está leyendo ("§ 04 Criterios") y el resumen de supuestos de alto impacto decididos y comentarios. Solo informa: las acciones están en la barra de acción del pie. Mientras está oculta es `inert`.
+- **Columna izquierda**: índice "Contenido" numerado, con indicadores (pendiente, comentado, aviso). Al elegir una sección, la página se desplaza hasta ella y la sección se resalta un momento: la línea de su divisor se dibuja, el número se oscurece y el fondo se ilumina. Con movimiento reducido no hay transición.
+- **Centro**: cada sección empieza con un divisor tipográfico (número "§ 0N", línea fina y su progreso a la derecha), seguido del título, una línea con lo que se espera de quien revisa y el contenido. Los ítems son filas separadas por líneas finas, con su identificador en una columna fija. En este orden:
   1. Objetivo y Fuera de alcance, editables en línea.
-  2. Supuestos, como tarjetas con Confirmar / Rechazar y comentario.
+  2. Supuestos, con Confirmar / Rechazar, su decisión (color, icono y texto) y comentario. El de alto impacto sin decidir lleva además un fondo tenue.
   3. Criterios, con los avisos de vaguedad en línea.
   4. Archivos, en árbol por módulo, con insignias de crear / modificar / borrar y marca de ruta sensible.
   5. Tareas, con chips de criterios y de archivos. Se pueden reordenar en `draft` y `review`.

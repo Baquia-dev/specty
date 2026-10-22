@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-prototipo-revision-con-formato-de-documento",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-prototipo-revision-con-formato-de-documento",
   "baseCommit": "69f4b9e87c33480b50f746ce964e5e5d665c5bbb",
   "revision": 2,
@@ -54,12 +54,24 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "18a6484d2166b65a304c39afc41deeb3720a8498",
+      "attempts": 1,
       "startedAt": "2026-10-22T08:31:10.498Z",
       "doneAt": "2026-10-22T08:35:29.019Z",
-      "summary": "Revisión como documento: índice 'Contenido' numerado, cada sección con divisor § 0N, línea fina y progreso, h2, pista y contenido, sin tarjetas. Al elegir una sección en el índice se marca con data-flash 1,4 s: la línea se dibuja, el número se oscurece y el fondo se ilumina (sin transición con movimiento reducido). La sección leída sale como model 'reading'. Comentarios en lista con divisores; section-meta sin iconos y con sectionNumber."
+      "summary": "Revisión como documento: índice 'Contenido' numerado, cada sección con divisor § 0N, línea fina y progreso, h2, pista y contenido, sin tarjetas. Al elegir una sección en el índice se marca con data-flash 1,4 s: la línea se dibuja, el número se oscurece y el fondo se ilumina (sin transición con movimiento reducido). La sección leída sale como model 'reading'. Comentarios en lista con divisores; section-meta sin iconos y con sectionNumber.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/spec-review.ts",
+        "packages/ui/src/review/spec-review.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "666ae4987016f0b3d98380e809b9d7085f997b3e",
+      "startedAt": "2026-10-22T08:35:29.284Z",
+      "doneAt": "2026-10-22T09:13:38.137Z",
+      "summary": "Cabecera amplia (ruta de vuelta, fase con lo que espera y desde cuándo, título grande, franja de datos con revisión, rama, tamaño, esfuerzo y lo que queda por decidir) y barra compacta fija a ancho completo, de altura cero en el flujo, que aparece con transición cuando la cabecera amplia sale de la vista (IntersectionObserver) e inert mientras está oculta; muestra fase, título, revisión, sección leída y resumen, sin acciones. S2: la sección leída es la última cuyo inicio pasó bajo la barra (--sp-sticky-top), la última al final de la página, y una elección en el índice se respeta mientras dura su desplazamiento. docs/ui.md actualizado."
     }
   },
   "pending": {
@@ -71,6 +83,6 @@
     "AC": 5,
     "T": 3,
     "R": 2,
-    "S": 1
+    "S": 2
   }
 }

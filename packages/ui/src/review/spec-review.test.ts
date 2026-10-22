@@ -165,6 +165,46 @@ describe("SpecReview", () => {
     Reflect.deleteProperty(Element.prototype, "scrollIntoView");
   });
 
+  it("marks the last section whose start has passed under the sticky bars, and the last one at the end (AC4)", async () => {
+    const { review, settle } = await open(REVIEW);
+    const sections = [...(review()?.querySelectorAll<HTMLElement>("[data-section]") ?? [])];
+    const place = (first: number) =>
+      sections.forEach((section, position) => {
+        section.getBoundingClientRect = () => ({ top: first + position * 400 }) as DOMRect;
+      });
+    const marked = () =>
+      text(review()?.querySelector("nav button[aria-current=true]")).replace(/^\d+ /, "");
+    review()?.style.setProperty("--sp-sticky-top", "56px");
+
+    // The line is at 56 + 32 px: assumptions start at 80 px; criteria, at 480 px, not yet.
+    place(-720);
+    window.dispatchEvent(new Event("scroll"));
+    await settle();
+    expect(marked()).toMatch(/^Supuestos/);
+
+    // Criteria start at 80 px: they are read now.
+    place(-1120);
+    window.dispatchEvent(new Event("scroll"));
+    await settle();
+    expect(marked()).toMatch(/^Criterios/);
+
+    // At the end of the page, the last section, even if its start never reaches the line.
+    const root = document.documentElement;
+    Object.defineProperties(root, {
+      scrollHeight: { value: 3000, configurable: true },
+      clientHeight: { value: 800, configurable: true },
+      scrollTop: { value: 2200, configurable: true },
+    });
+    try {
+      window.dispatchEvent(new Event("scroll"));
+      await settle();
+      expect(marked()).toMatch(/^Diseño/);
+    } finally {
+      for (const property of ["scrollHeight", "clientHeight", "scrollTop"])
+        Reflect.deleteProperty(root, property);
+    }
+  });
+
   it("blocks approval with a visible reason until high-impact assumptions are decided (AC7)", async () => {
     const { review, bar, barButtons, settle } = await open(REVIEW);
     expect(text(bar()?.querySelector("[data-blocked]"))).toBe(

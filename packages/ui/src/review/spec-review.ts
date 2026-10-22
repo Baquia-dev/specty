@@ -29,6 +29,21 @@ import { LIST, ReviewItems, reportFailure } from "./spec-sections";
 /** How long the section picked in the index stays highlighted. */
 const FLASH_MS = 1400;
 
+/** After a pick in the index, the scroll it starts does not move the mark away from it. */
+const PICK_MS = 1000;
+
+/** A section counts as being read once its start is this far under the sticky bars. */
+const READ_PX = 32;
+
+/** The nearest ancestor that scrolls (the shell's main), or undefined when the page scrolls. */
+function scrollParent(element: HTMLElement, view: Window): HTMLElement | undefined {
+  for (let node = element.parentElement; node !== null; node = node.parentElement) {
+    const { overflowY } = view.getComputedStyle(node);
+    if (overflowY === "auto" || overflowY === "scroll") return node;
+  }
+  return undefined;
+}
+
 /**
  * A section of the document. While `data-flash` is set (picked in the index), its divider
  * line draws across, its number darkens and its background lights up; all of it fades back.
@@ -145,6 +160,7 @@ export class SpecReview {
   protected readonly lang = this.preferences.lang;
   protected readonly meta = SECTION_META;
   protected readonly section = SECTION;
+  protected readonly number = sectionNumber;
   protected readonly list = LIST;
   protected readonly warningIcon = LucideTriangleAlert;
   protected readonly commentIcon = LucideMessageSquare;
@@ -153,6 +169,8 @@ export class SpecReview {
   /** The section just picked in the index, highlighted for a moment. */
   protected readonly flashed = signal<ReviewSection | undefined>(undefined);
   private flashTimer: ReturnType<typeof setTimeout> | undefined;
+  /** When a section was last picked in the index. */
+  private pickedAt = 0;
 
   protected readonly review = computed(() => this.change().review);
   protected readonly index = computed(() => this.review().index.filter((entry) => entry.present));
@@ -192,30 +210,45 @@ export class SpecReview {
       this.document.removeEventListener("selectionchange", onSelection);
       clearTimeout(this.flashTimer);
     });
-    // The index marks the topmost section in view.
+    // The section being read follows the scroll; a pick in the index wins while its scroll runs.
     afterNextRender(() => {
-      if (typeof IntersectionObserver === "undefined") return;
-      const visible = new Set<ReviewSection>();
-      const observer = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-          const key = (entry.target as HTMLElement).dataset.section as ReviewSection;
-          if (entry.isIntersecting) visible.add(key);
-          else visible.delete(key);
-        }
-        this.reading.set(this.index().find((item) => visible.has(item.key))?.key);
-      });
-      for (const section of this.center().nativeElement.querySelectorAll("[data-section]"))
-        observer.observe(section);
-      destroyRef.onDestroy(() => observer.disconnect());
+      const view = this.document.defaultView;
+      if (view === null) return;
+      const scroller = scrollParent(this.host, view);
+      const target: EventTarget = scroller ?? view;
+      const update = () => {
+        if (Date.now() - this.pickedAt < PICK_MS) return;
+        this.reading.set(this.readingAt(scroller, view));
+      };
+      target.addEventListener("scroll", update, { passive: true });
+      destroyRef.onDestroy(() => target.removeEventListener("scroll", update));
+      update();
     });
+  }
+
+  /** The last section whose start is under the sticky bars; at the page's end, the last one. */
+  private readingAt(scroller: HTMLElement | undefined, view: Window): ReviewSection | undefined {
+    const sections = [
+      ...this.center().nativeElement.querySelectorAll<HTMLElement>("[data-section]"),
+    ];
+    const keys = sections.map((section) => section.dataset.section as ReviewSection);
+    const box = scroller ?? view.document.documentElement;
+    const scrolls = box.scrollHeight > box.clientHeight;
+    if (scrolls && box.scrollTop + box.clientHeight >= box.scrollHeight - 2) return keys.at(-1);
+    const sticky = view.getComputedStyle(this.host).getPropertyValue("--sp-sticky-top");
+    const line =
+      (scroller?.getBoundingClientRect().top ?? 0) +
+      (Number(sticky.replace("px", "")) || 0) +
+      READ_PX;
+    let current = keys[0];
+    sections.forEach((section, position) => {
+      if (section.getBoundingClientRect().top <= line) current = keys[position];
+    });
+    return current;
   }
 
   protected label(key: ReviewSection): string {
     return SECTION_LABELS[key][this.lang()];
-  }
-
-  protected number(position: number): string {
-    return sectionNumber(position);
   }
 
   protected itemSection(key: ReviewSection): "criteria" | "files" | "tasks" | "risks" {
@@ -235,6 +268,7 @@ export class SpecReview {
     section?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
     section?.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true });
     this.reading.set(key);
+    this.pickedAt = Date.now();
     clearTimeout(this.flashTimer);
     this.flashed.set(key);
     this.flashTimer = setTimeout(() => this.flashed.set(undefined), FLASH_MS);

@@ -68,7 +68,7 @@ La revisión de la spec se lee como un documento bien maquetado, no como un tabl
   - files: packages/ui/src/review/section-meta.ts, packages/ui/src/review/comments.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T3: Cabecera amplia y barra compacta fija
+- [x] T3: Cabecera amplia y barra compacta fija
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts, docs/ui.md
   - ac: AC3, AC4
   - verify: pnpm check
