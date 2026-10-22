@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261022-prototipo-revision-con-formato-de-documento",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-prototipo-revision-con-formato-de-documento",
+  "baseCommit": "69f4b9e87c33480b50f746ce964e5e5d665c5bbb",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e8cbacd4b017a6fb947a8c770569658c7d3f538b914ff815f5afa108e7522b3f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:543fc90498926729f204ba70fb736f86281f62915cbf63c361a55c11412e7c3a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:343abb0ab5e7b06c06d60401fc01a3b616742d2937a9946bc4ea1cfc52c03124",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:45b935644bf509b902ed54a307a91f8ecfa058549f88c961b34be80303869751",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:abdaddfcb12c5b8eac82a94b2271df530036e11e6bcc2418cd82544611f307ff",
+    "at": "2026-10-22T08:24:40.695Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

@@ -1,0 +1,4 @@
+{"ts":"2026-10-22T08:07:20.047Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-prototipo-revision-con-formato-de-documento","follows":["20261022-prototipo-revision-de-spec"]}}
+{"ts":"2026-10-22T08:12:48.838Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:a4584860e67c1439cb93df7a5c066c99ae5f49e560feaca79e4fbb6e5847f55b","size":"L","warnings":0}}
+{"ts":"2026-10-22T08:15:45.722Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:abdaddfcb12c5b8eac82a94b2271df530036e11e6bcc2418cd82544611f307ff","size":"L","warnings":0}}
+{"ts":"2026-10-22T08:24:40.721Z","actor":"human","event":"spec.approved","data":{"revision":2,"hash":"sha256:abdaddfcb12c5b8eac82a94b2271df530036e11e6bcc2418cd82544611f307ff","channel":"tty"}}
