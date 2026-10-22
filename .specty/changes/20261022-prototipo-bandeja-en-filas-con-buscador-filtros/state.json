@@ -6,6 +6,13 @@
   "branch": "specty/20261022-prototipo-bandeja-en-filas-con-buscador-filtros",
   "baseCommit": "a40c1d5566d49ad1f3aa79c57f9c68aef2763a43",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a1154e7439bae3fc35d6d02cec6aade4f68ac4a58ee6f9485e6176c783ab54ce",
+    "at": "2026-10-22T18:11:53.251Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e5661278b74e3e84547dea7aaa72537c6417e0bc",
+      "startedAt": "2026-10-22T18:12:17.154Z",
+      "doneAt": "2026-10-22T18:13:43.381Z",
+      "summary": "inbox/inbox-view.ts (puro): estado de cada cambio (espera decisión, en curso, reciente), búsqueda por título o id sin mayúsculas ni tildes, filtro por fase con contadores dentro de la búsqueda, orden (lo que más espera, lo más reciente, título, tamaño) y secciones por estado, por fase o sin agrupar. inbox/inbox-state.ts: búsqueda y fase en memoria; agrupación y orden guardados en el navegador con lectura y escritura protegidas; clear() limpia los filtros. Tests de los dos."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 6,
     "T": 2
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:a1154e7439bae3fc35d6d02cec6aade4f68ac4a58ee6f9485e6176c783ab54ce",
-    "at": "2026-10-22T18:11:53.251Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
