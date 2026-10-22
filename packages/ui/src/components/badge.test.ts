@@ -62,10 +62,23 @@ describe("Card", () => {
     expect(card?.classList).not.toContain("outline-focus");
     host.selected.set(true);
     await fixture.whenStable();
+    // Announced always; highlighted only once the keyboard is in use.
     expect(card?.getAttribute("aria-current")).toBe("true");
+    expect(card?.classList).not.toContain("outline-focus");
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Shift" }));
+    await fixture.whenStable();
+    expect(card?.classList).not.toContain("outline-focus");
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "j" }));
+    await fixture.whenStable();
     expect(card?.classList).toContain("outline-focus");
     // Drawn over the card's own border, not around it.
     expect(card?.classList).toContain("-outline-offset-2");
+
+    document.dispatchEvent(new Event("pointermove"));
+    await fixture.whenStable();
+    expect(card?.classList).not.toContain("outline-focus");
+    expect(card?.getAttribute("aria-current")).toBe("true");
   });
 });
 

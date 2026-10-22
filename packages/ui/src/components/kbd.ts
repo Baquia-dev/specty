@@ -24,6 +24,7 @@ const KEYS: Readonly<Record<string, (mac: boolean) => { shown: string; spoken: N
       : { shown: "Alt", spoken: { es: "Alt", en: "Alt" } },
   enter: () => ({ shown: "↵", spoken: { es: "Intro", en: "Enter" } }),
   esc: () => ({ shown: "Esc", spoken: { es: "Escape", en: "Escape" } }),
+  backspace: () => ({ shown: "⌫", spoken: { es: "Retroceso", en: "Backspace" } }),
 };
 
 /** A keyboard shortcut: one `<kbd>` per key, read aloud as a whole (`keys="mod+k"`). */

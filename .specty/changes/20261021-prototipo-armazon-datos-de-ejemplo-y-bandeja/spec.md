@@ -114,7 +114,7 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
   - ac: AC4, AC5, AC10
   - verify: pnpm check
   - notes: Comprobar AC10 con `ng build --stats-json` y anotar en el resumen qué paquetes quedan en cada fragmento.
-- [ ] T6: Resaltado solo con teclado, tecla para volver y scroll bajo la cabecera
+- [x] T6: Resaltado solo con teclado, tecla para volver y scroll bajo la cabecera
   - files: packages/ui/src/keyboard/modality.ts, packages/ui/src/components/card.ts, packages/ui/src/components/kbd.ts, packages/ui/src/app/shell.ts
   - ac: AC3, AC8
   - verify: pnpm check

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { Location } from "@angular/common";
 import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router } from "@angular/router";
 import { DERIVER } from "../data/changes-store";
@@ -84,6 +85,53 @@ describe("Shell", () => {
         "Catálogo: Colores",
       ]),
     );
+  });
+
+  it("scrolls only the content below the header, back to the top on each page (AC8)", async () => {
+    const { element, router, settle } = await open("/catalog/colors");
+    const frame = element.querySelector("sp-root > div, :scope > div");
+    expect(frame?.className).toContain("h-dvh");
+    expect(frame?.className).toContain("overflow-hidden");
+    const content = element.querySelector<HTMLElement>("main");
+    expect(content?.className).toContain("overflow-y-auto");
+    if (content === null) return;
+    content.scrollTop = 300;
+    await router.navigateByUrl("/catalog/typography");
+    await settle();
+    expect(content.scrollTop).toBe(0);
+    expect(document.activeElement).toBe(content);
+  });
+
+  it("goes back with Backspace, or to the Inbox when entering directly (AC8)", async () => {
+    const { router, settle } = await open("/catalog/colors");
+    const back = () =>
+      document.body.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Backspace", bubbles: true }),
+      );
+    back();
+    await settle();
+    expect(router.url).toBe("/");
+    await router.navigateByUrl("/catalog/typography");
+    await settle();
+    const historyBack = vi
+      .spyOn(TestBed.inject(Location), "back")
+      .mockImplementation(() => undefined);
+    back();
+    expect(historyBack).toHaveBeenCalled();
+    historyBack.mockRestore();
+  });
+
+  it("does not go back while typing or with a dialog open (AC8)", async () => {
+    const { element, router, settle } = await open("/catalog/overlays");
+    element.querySelector<HTMLButtonElement>("#open-dialog button")?.click();
+    await settle();
+    document.body.dispatchEvent(new KeyboardEvent("keydown", { key: "Backspace", bubbles: true }));
+    await settle();
+    expect(router.url).toBe("/catalog/overlays");
+    const field = document.querySelector<HTMLTextAreaElement>("[role=dialog] textarea");
+    field?.dispatchEvent(new KeyboardEvent("keydown", { key: "Backspace", bubbles: true }));
+    await settle();
+    expect(router.url).toBe("/catalog/overlays");
   });
 
   it("sends unknown paths to the Inbox", async () => {

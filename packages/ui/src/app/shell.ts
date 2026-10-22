@@ -1,6 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject } from "@angular/core";
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { DOCUMENT, Location } from "@angular/common";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  type ElementRef,
+  effect,
+  inject,
+  viewChild,
+} from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { LANGS } from "@baquia-dev/specty-core";
 import {
   LucideDynamicIcon,
@@ -9,11 +19,13 @@ import {
   LucideSearch,
   LucideSun,
 } from "@lucide/angular";
+import { filter } from "rxjs";
 import { Button } from "../components/button";
 import { Commands } from "../components/command-palette";
 import { Kbd } from "../components/kbd";
 import { Toaster } from "../components/toast";
 import { ChangesStore } from "../data/changes-store";
+import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences, THEME_CHOICES, type ThemeChoice } from "../theme/preferences";
 
 const THEME_ICONS = { light: LucideSun, dark: LucideMoon, system: LucideMonitor } as const;
@@ -27,8 +39,9 @@ const CHOICE =
   imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideDynamicIcon, Button, Kbd, Toaster],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex min-h-screen flex-col bg-bg text-text">
-      <header class="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-border px-6 py-3">
+    <!-- The window never scrolls: only the content below the header does. -->
+    <div class="flex h-dvh flex-col overflow-hidden bg-bg text-text">
+      <header class="flex shrink-0 flex-wrap items-center gap-x-6 gap-y-3 border-b border-border px-6 py-3">
         <a routerLink="/" class="font-mono text-md font-semibold no-underline">specty</a>
         <nav class="flex gap-1" [attr.aria-label]="t()('Principal', 'Main')">
           @for (link of links; track link.path) {
@@ -81,7 +94,7 @@ const CHOICE =
           }
         </fieldset>
       </header>
-      <main class="flex-1">
+      <main #content tabindex="-1" class="min-h-0 flex-1 overflow-y-auto focus:outline-none">
         <router-outlet />
       </main>
       <sp-toaster />
@@ -91,6 +104,7 @@ const CHOICE =
 export class Shell {
   protected readonly preferences = inject(Preferences);
   protected readonly commands = inject(Commands);
+  private readonly document = inject(DOCUMENT);
   protected readonly t = this.preferences.t;
   protected readonly themes = THEME_CHOICES;
   protected readonly themeIcons = THEME_ICONS;
@@ -102,10 +116,41 @@ export class Shell {
     { path: "/catalog", es: "Catálogo", en: "Catalog", exact: false },
   ];
 
+  private readonly content = viewChild.required<ElementRef<HTMLElement>>("content");
+  /** Navigations inside the app: going back only leaves the app when there is none. */
+  private navigations = 0;
+
   constructor() {
     const router = inject(Router);
+    const location = inject(Location);
     const store = inject(ChangesStore);
     const destroyRef = inject(DestroyRef);
+
+    // A new page starts at the top, with focus on the content so the keys scroll it.
+    router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(destroyRef),
+      )
+      .subscribe(() => {
+        this.navigations++;
+        if (this.navigations === 1) return;
+        const content = this.content().nativeElement;
+        content.scrollTop = 0;
+        content.focus({ preventScroll: true });
+      });
+    inject(Shortcuts).register(
+      {
+        keys: "backspace",
+        description: { es: "Volver a la página anterior", en: "Go back" },
+        run: () => {
+          if (this.document.querySelector("[role=dialog][aria-modal=true]") !== null) return;
+          if (this.navigations > 1) location.back();
+          else void router.navigateByUrl("/");
+        },
+      },
+      destroyRef,
+    );
     const add = (id: string, es: string, en: string, run: () => void) =>
       this.commands.register({ id, label: { es, en }, run }, destroyRef);
     add("go:inbox", "Ir a la Bandeja", "Go to the Inbox", () => void router.navigateByUrl("/"));
