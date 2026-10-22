@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261022-revision-diff-mas-claro",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-revision-diff-mas-claro",
+  "baseCommit": "642c62d30383248c90ef3015552de01b6adce276",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:46210dddda5b5539d7a93fc3b9f21be99fb3bb89db507912cc7e20a034c0a9f4",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6fe595fc0291e9d46fa8cd840b5ca0305de476f9f9e86a66145ed2b1a56dade6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:845dcc102e3fce068ffc27580611e238db7f90ce68e5bb0e618f416221e9c35c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:98b52e915253202eb6f68c99f23548e04aeec530b675b375cc02c44c4cb1c590",
+    "at": "2026-10-22T16:50:51.229Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
