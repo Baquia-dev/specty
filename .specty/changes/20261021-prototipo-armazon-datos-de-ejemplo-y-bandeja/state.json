@@ -2,24 +2,24 @@
   "schema": 1,
   "id": "20261021-prototipo-armazon-datos-de-ejemplo-y-bandeja",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261021-prototipo-armazon-datos-de-ejemplo-y-bandeja",
   "baseCommit": "9e196d2b560217a652cd2f2b657746ecb3e9e09a",
-  "revision": 2,
+  "revision": 3,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:0f06a0795bce393e2455825b8df9019a95a86141de3dc5179c5aab8672189dea",
-    "at": "2026-10-22T04:46:59.980Z",
+    "revision": 3,
+    "hash": "sha256:2b6804618a4c6e8c052481ea6603a2daf65d2d67171eabefd0946f08aa093987",
+    "at": "2026-10-22T05:59:44.632Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
     "level": "L",
-    "score": 14,
+    "score": 18,
     "adjust": 0,
     "reasons": [
-      "12 archivos",
-      "5 tareas"
+      "15 archivos",
+      "6 tareas"
     ]
   },
   "items": {
@@ -86,6 +86,11 @@
     },
     "T5": {
       "status": "done",
+      "baseCommit": "e5764051de66c8d9e76fd7cc472c7bf7406f787f",
+      "attempts": 1,
+      "startedAt": "2026-10-22T05:20:12.622Z",
+      "doneAt": "2026-10-22T05:42:24.136Z",
+      "summary": "Página del cambio: vuelta a la Bandeja, insignia de fase, revisión, rama, título, tamaño con razones, esfuerzo recomendado, qué espera de la persona y problemas de lectura; sp-tabs con Spec · Progreso · Aceptación · Historial en la pestaña de la fase o la de ?tab=, que se reescribe al cambiar; estado vacío para un id desconocido; se actualiza en directo. AC10 (S2): el respaldo import('./views') compartía el índice de core con el bundle inicial y sacaba zod, yaml y picomatch a un fragmento inicial (1,12 MB); ahora DERIVER deriva siempre en el worker y los tests de jsdom inyectan un derivador en el mismo hilo. ng build --stats-json: zod, yaml y picomatch solo en worker-*.js (598 kB, bajo demanda); Bandeja y Cambio bajo demanda; inicial 540 kB / 120 kB transferidos (aviso de 500 kB previo: CDK y Aria del armazón)",
       "scopeExtra": [
         "packages/ui/src/data/changes-store.ts",
         "packages/ui/src/data/fixtures.test.ts",
@@ -93,12 +98,7 @@
         "packages/ui/src/catalog/catalog.test.ts",
         "packages/ui/src/catalog/overlays.test.ts",
         "packages/ui/src/inbox/inbox.test.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "e5764051de66c8d9e76fd7cc472c7bf7406f787f",
-      "startedAt": "2026-10-22T05:20:12.622Z",
-      "doneAt": "2026-10-22T05:42:24.136Z",
-      "summary": "Página del cambio: vuelta a la Bandeja, insignia de fase, revisión, rama, título, tamaño con razones, esfuerzo recomendado, qué espera de la persona y problemas de lectura; sp-tabs con Spec · Progreso · Aceptación · Historial en la pestaña de la fase o la de ?tab=, que se reescribe al cambiar; estado vacío para un id desconocido; se actualiza en directo. AC10 (S2): el respaldo import('./views') compartía el índice de core con el bundle inicial y sacaba zod, yaml y picomatch a un fragmento inicial (1,12 MB); ahora DERIVER deriva siempre en el worker y los tests de jsdom inyectan un derivador en el mismo hilo. ng build --stats-json: zod, yaml y picomatch solo en worker-*.js (598 kB, bajo demanda); Bandeja y Cambio bajo demanda; inicial 540 kB / 120 kB transferidos (aviso de 500 kB previo: CDK y Aria del armazón)"
+      ]
     }
   },
   "pending": {
@@ -108,7 +108,7 @@
   "maxIds": {
     "A": 5,
     "AC": 10,
-    "T": 5,
+    "T": 6,
     "R": 4,
     "S": 2
   }

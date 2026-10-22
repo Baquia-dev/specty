@@ -37,12 +37,12 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
 
 - AC1: CUANDO se abre la UI ENTONCES la Bandeja (`/`) muestra primero "Esperan tu decisión" (spec por revisar, solicitud de alcance, resultado por aceptar y cierre por confirmar), cada tarjeta con título, insignia de fase, tamaño, cuánto lleva esperando y su acción directa; debajo, los cambios en curso agrupados por fase, y al final los recientes (terminados o cancelados).
 - AC2: CUANDO una spec en revisión tiene supuestos de alto impacto sin decidir ENTONCES su tarjeta dice cuántos son; una solicitud de alcance muestra la tarea, las rutas pedidas y el motivo.
-- AC3: CUANDO la persona usa `j`/`k` en la Bandeja ENTONCES la selección recorre las tarjetas (anillo de foco y `aria-current`) y Enter abre el cambio seleccionado; además, la paleta (`mod+k`) ofrece ir a la Bandeja y abrir cada cambio por su título.
+- AC3: CUANDO la persona usa `j`/`k` en la Bandeja ENTONCES la selección recorre las tarjetas (`aria-current`) y Enter abre el cambio seleccionado; el resaltado de la selección solo se ve después de usar el teclado y desaparece en cuanto se usa el ratón; además, la paleta (`mod+k`) ofrece ir a la Bandeja y abrir cada cambio por su título.
 - AC4: CUANDO se abre un cambio ENTONCES la cabecera muestra título, fase, revisión, rama, tamaño con sus razones y esfuerzo recomendado, y las pestañas Spec · Progreso · Aceptación · Historial abren en la que corresponde a la fase (borrador y revisión → Spec; implementación y ajustes → Progreso; aceptación y cierre → Aceptación; terminado y cancelado → Historial); un id desconocido muestra un estado vacío con vuelta a la Bandeja.
 - AC5: CUANDO cambian los datos en la fuente ENTONCES la Bandeja y el cambio abierto se actualizan sin recargar; los comandos "Simular: …" lo demuestran con los datos de ejemplo.
 - AC6: CUANDO los datos están cargando ENTONCES se ven esqueletos con la forma final; si la fuente falla, un mensaje dice qué pasó y ofrece reintentar.
 - AC7: CUANDO se sustituye la fuente de datos por otra que cumple el contrato ENTONCES las pantallas funcionan igual, porque solo dependen de `SpectyData`.
-- AC8: CUANDO se navega por la UI ENTONCES una cabecera común ofrece la Bandeja, el catálogo, la paleta (un botón con su atajo) y el cambio de tema e idioma; el catálogo sigue en `/catalog` con su navegación.
+- AC8: CUANDO se navega por la UI ENTONCES una cabecera común ofrece la Bandeja, el catálogo, la paleta (un botón con su atajo) y el cambio de tema e idioma; el catálogo sigue en `/catalog` con su navegación; el documento no tiene scroll: solo se desplaza el contenido bajo la cabecera, que vuelve arriba al cambiar de página; y Retroceso (⌫) vuelve a la página anterior (a la Bandeja si se entró directamente), salvo al escribir en un campo o con un diálogo abierto.
 - AC9: CUANDO se cargan los datos de ejemplo ENTONCES cada spec es válida para core y cada estado pasa `parseChangeState`.
 - AC10: CUANDO se construye la UI (`ng build --stats-json`) ENTONCES el parser de core, zod y yaml no están en el bundle inicial: viven en el worker de derivación y en el fragmento de respaldo bajo demanda; la Bandeja y la página del cambio son fragmentos bajo demanda; y la derivación funciona igual por las dos vías.
 
@@ -87,6 +87,9 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
 - modificar packages/ui/src/catalog/catalog.ts — el catálogo como sección del armazón
 - crear packages/ui/src/inbox/inbox.ts — Bandeja
 - crear packages/ui/src/change/change-page.ts — página del cambio con pestañas
+- crear packages/ui/src/keyboard/modality.ts — si se está usando el teclado o el ratón
+- modificar packages/ui/src/components/card.ts — resaltado de la selección solo en modo teclado
+- modificar packages/ui/src/components/kbd.ts — tecla Retroceso (⌫)
 
 ## Tareas
 
@@ -111,6 +114,11 @@ Las pantallas solo dependen de un contrato de datos. Así, al conectar el servid
   - ac: AC4, AC5, AC10
   - verify: pnpm check
   - notes: Comprobar AC10 con `ng build --stats-json` y anotar en el resumen qué paquetes quedan en cada fragmento.
+- [ ] T6: Resaltado solo con teclado, tecla para volver y scroll bajo la cabecera
+  - files: packages/ui/src/keyboard/modality.ts, packages/ui/src/components/card.ts, packages/ui/src/components/kbd.ts, packages/ui/src/app/shell.ts
+  - ac: AC3, AC8
+  - verify: pnpm check
+  - notes: Ajuste pedido en aceptación. `InputModality` sabe si se está usando el teclado (cualquier tecla) o el ratón (puntero que se mueve o pulsa). `sp-card` solo dibuja el resaltado de `selected` en modo teclado, y mantiene `aria-current`. El armazón ocupa la ventana (`h-dvh`, sin scroll del documento), con `main` como único contenedor con scroll, que vuelve arriba en cada navegación. Retroceso vuelve atrás con el historial de la app, o a la Bandeja si no lo hay. `sp-kbd` dibuja `⌫`.
 
 ## Riesgos
 
