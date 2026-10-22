@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261022-prototipo-revision-de-spec",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-prototipo-revision-de-spec",
+  "baseCommit": "f081fac8a754d519823cbd159ad81cc5af891bbb",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "cambia dependencias",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a2c30fff3b0fb1582e54a4ea20c58c905d19f6d0cc6eded14c6a1bad1f745f36",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e8760910a44f1c000453344bde6cfc049a57d43af18eae7a9bd10910df54837d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:4eae919948859f08384aefc68360cc3537f1507b198fe0a84b8b88b4dc158b15",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3b37e6d4c8a4a26e15e1ad504360fa303c65b9cfc48bcab6b8fc15a95b6e7f1e",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f9b47090c05e7a1fc52ad7909fd9273c9c2c55228253b5f45b0c2b6bdeaaf125",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 9,
+    "T": 5,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:80ef44f7bb86ea2b0108d4680ffdd5878f58f824ff9a92caa1d87d74938bf683",
+    "at": "2026-10-22T06:27:21.674Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
