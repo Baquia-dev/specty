@@ -32,7 +32,7 @@ Cuando una spec vuelve a revisión después de haber sido aprobada (por ejemplo,
 - AC1: CUANDO se abre la pestaña Spec de un cambio en revisión que ya tuvo una revisión aprobada ENTONCES se muestra primero "Qué cambió desde que aprobaste rN": un resumen de añadidos, modificados y eliminados, y los cambios agrupados por sección en el orden del documento, cada uno con su identificador, una marca de añadido, modificado o eliminado (color, icono y texto) y la opción de comentarlo; "Ver spec completa" lleva a la revisión completa, y desde ella se puede volver a los cambios.
 - AC2: CUANDO un ítem o una sección de texto se modificó ENTONCES su texto se muestra con diff por palabras: lo añadido resaltado y lo eliminado tachado, con un texto oculto que dice a los lectores de pantalla qué se añadió y qué se eliminó; un ítem añadido se muestra entero como añadido y uno eliminado, entero tachado.
 - AC3: CUANDO una tarea nueva toca archivos que no estaban en los archivos aprobados ENTONCES lleva la marca "Posible alcance nuevo" con el motivo, con icono y texto, en el idioma elegido.
-- AC4: CUANDO entre los cambios hay supuestos añadidos o modificados ENTONCES se pueden confirmar o rechazar desde los cambios, igual que en la revisión completa, y "Aprobar" sigue esperando por los de alto impacto.
+- AC4: CUANDO entre los cambios hay supuestos añadidos o modificados ENTONCES se pueden confirmar o rechazar desde los cambios, igual que en la revisión completa, y "Aprobar" sigue esperando por los de alto impacto; la barra con "Pedir cambios" y "Aprobar" ocupa todo el ancho del área de contenido, fija abajo, como la barra de navegación de arriba.
 - AC5: CUANDO el cambio no está en revisión o no tiene una revisión aprobada ENTONCES la pestaña Spec muestra la revisión completa como hasta ahora.
 
 ## Diseño
@@ -79,6 +79,17 @@ Cuando una spec vuelve a revisión después de haber sido aprobada (por ejemplo,
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts
   - ac: AC1, AC4, AC5
   - verify: pnpm check
+- [ ] T5: Ver el diff no desplaza la página entera
+  - files: packages/ui/src/review/delta-review.ts, packages/ui/src/review/spec-review.ts
+  - ac: AC1, AC2
+  - verify: pnpm check
+  - type: fix
+  - notes: Defecto pedido en aceptación. Los textos para lectores de pantalla del diff (`sr-only`, con `position: absolute`) no tienen un ancestro posicionado dentro del contenedor que se desplaza (`main` es `static`), así que se salen de él y el documento crece (1798 px frente a 860 de alto en el ejemplo): aparece el scroll de `html`. `sp-review-delta` y `sp-spec-review` pasan a ser `relative`, y un test comprueba que el texto oculto queda dentro de un ancestro posicionado. Comprobar en el navegador que `html` no se desplaza.
+- [ ] T6: La barra de decisión ocupa todo el ancho, fija abajo
+  - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/spec-review.ts
+  - ac: AC4
+  - verify: pnpm check
+  - notes: Ajuste pedido en aceptación. La barra de "Pedir cambios" y "Aprobar" deja de vivir dentro de la columna de 72 rem: queda fija abajo, a todo el ancho del área que se desplaza, con borde superior y fondo translúcido como la barra de navegación, y su contenido alineado con el de la página. Se mide el contenedor que se desplaza (posición y ancho sin la barra de desplazamiento) para no tapar su scrollbar; el margen inferior de la página deja sitio para que no tape el final del contenido.
 
 ## Riesgos
 

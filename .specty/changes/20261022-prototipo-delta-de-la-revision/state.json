@@ -2,24 +2,24 @@
   "schema": 1,
   "id": "20261022-prototipo-delta-de-la-revision",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261022-prototipo-delta-de-la-revision",
   "baseCommit": "39342c99c049d945803a8f45a4d4ae99d95dd96d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:9c83fdcad4ac4670277b68e0f8df08d8c1869cd7cef1a31670b390e493cf5134",
-    "at": "2026-10-22T09:34:52.278Z",
+    "revision": 2,
+    "hash": "sha256:838d1e83b4877e36a201054874fd4062659f685cca9c0832dcbe5aa0fb9e1b4d",
+    "at": "2026-10-22T10:05:39.556Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
     "level": "L",
-    "score": 16,
+    "score": 18,
     "adjust": 0,
     "reasons": [
       "15 archivos",
-      "4 tareas"
+      "6 tareas"
     ]
   },
   "items": {
@@ -74,12 +74,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "578f79fd6d1669604b396df3ea7a8eb2b244750a",
+      "attempts": 1,
       "startedAt": "2026-10-22T09:45:10.649Z",
       "doneAt": "2026-10-22T09:52:10.006Z",
-      "summary": "La revisión empieza por los cambios cuando hay delta (sin índice), con 'Ver spec completa' y, desde la spec completa, 'Ver solo los cambios desde rN'; al cambiar de vista lleva arriba y enfoca el conmutador. El modo es un linkedSignal que conserva la elección en las actualizaciones en vivo del mismo cambio (el test lo cazó: sin 'previous' volvía a los cambios). La barra de decisión sale a review-actions.ts. Tests del modo en spec-review-modes.test.ts (test implícito, mismo directorio) para no pasar de 300 líneas."
+      "summary": "La revisión empieza por los cambios cuando hay delta (sin índice), con 'Ver spec completa' y, desde la spec completa, 'Ver solo los cambios desde rN'; al cambiar de vista lleva arriba y enfoca el conmutador. El modo es un linkedSignal que conserva la elección en las actualizaciones en vivo del mismo cambio (el test lo cazó: sin 'previous' volvía a los cambios). La barra de decisión sale a review-actions.ts. Tests del modo en spec-review-modes.test.ts (test implícito, mismo directorio) para no pasar de 300 líneas.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -89,7 +89,7 @@
   "maxIds": {
     "A": 5,
     "AC": 5,
-    "T": 4,
+    "T": 6,
     "R": 2
   }
 }
