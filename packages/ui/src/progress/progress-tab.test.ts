@@ -106,6 +106,16 @@ describe("Progress tab", () => {
     expect(text(verification("T2"))).toContain("Verificación correcta · 9 s");
     expect(text(verification("T3"))).toMatch(/^Falló hace 4 min · 7 s flutter test test\/reports/);
     expect(text(row("T3")?.querySelector("[data-output]"))).toContain("Some tests failed.");
+    // Colors that place each piece: failures, passes, locations and timings.
+    const tone = (name: string) =>
+      [...(row("T3")?.querySelectorAll(`[data-output] [data-tone=${name}]`) ?? [])].map(text);
+    expect(tone("fail")).toEqual(["-1", "[E]", "Error", "-1", "failed"]);
+    expect(tone("pass")).toEqual(["+6", "+6"]);
+    expect(tone("path")).toEqual(["lib/reports/pdf/report_card.dart:12:8"]);
+    expect(tone("muted")).toEqual(["00:07", "00:07"]);
+    expect(row("T3")?.querySelector("[data-output] [data-tone=path]")?.className).toContain(
+      "text-phase-implementing",
+    );
     const toggle = verification("T3")?.querySelector<HTMLButtonElement>("button");
     expect(toggle?.getAttribute("aria-expanded")).toBe("true");
     toggle?.click();

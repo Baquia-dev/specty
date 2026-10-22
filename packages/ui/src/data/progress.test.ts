@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { type ChangeState, parseSpec } from "@baquia-dev/specty-core";
-import { type AuditRecord, formatDuration, progressOf, taskElapsed, workTime } from "./progress";
+import {
+  type AuditRecord,
+  formatDuration,
+  outputSegments,
+  progressOf,
+  taskElapsed,
+  workTime,
+} from "./progress";
 
 const SPEC = parseSpec(`---
 kind: standard
@@ -143,6 +150,58 @@ describe("progressOf", () => {
       "done",
       "pending",
       "pending",
+    ]);
+  });
+});
+
+describe("outputSegments", () => {
+  const tones = (line: string) =>
+    outputSegments(line).map((segment) => [segment.tone, segment.text]);
+
+  it("colors failures, passes, locations and timings, and keeps the text whole (AC2)", () => {
+    const line = "00:07 +6 -1: report card footer shows the signature [E]";
+    expect(tones(line)).toEqual([
+      ["muted", "00:07"],
+      ["plain", " "],
+      ["pass", "+6"],
+      ["plain", " "],
+      ["fail", "-1"],
+      ["plain", ": report card footer shows the signature "],
+      ["fail", "[E]"],
+    ]);
+    expect(
+      outputSegments(line)
+        .map((segment) => segment.text)
+        .join(""),
+    ).toBe(line);
+    expect(tones("  lib/reports/pdf/report_card.dart:12:8")).toEqual([
+      ["plain", "  "],
+      ["path", "lib/reports/pdf/report_card.dart:12:8"],
+    ]);
+    expect(tones("00:09 +7: All tests passed!")).toEqual([
+      ["muted", "00:09"],
+      ["plain", " "],
+      ["pass", "+7"],
+      ["plain", ": "],
+      ["pass", "All tests passed!"],
+    ]);
+    expect(tones("  Error: Couldn't resolve it.")[1]).toEqual(["fail", "Error"]);
+    expect(tones("Some tests failed.")).toEqual([
+      ["plain", "Some tests "],
+      ["fail", "failed"],
+      ["plain", "."],
+    ]);
+  });
+
+  it("reads an assertion's expected and actual lines whole", () => {
+    expect(tones("  Expected: 'Descargar PDF'")).toEqual([["pass", "  Expected: 'Descargar PDF'"]]);
+    expect(tones("    Actual: 'Descargar'")).toEqual([["fail", "    Actual: 'Descargar'"]]);
+    expect(tones("  Received: 3")).toEqual([["fail", "  Received: 3"]]);
+  });
+
+  it("leaves alone what it does not recognize, like dates or words with numbers", () => {
+    expect(tones("Compiling 2026-10-22 build v2-1")).toEqual([
+      ["plain", "Compiling 2026-10-22 build v2-1"],
     ]);
   });
 });

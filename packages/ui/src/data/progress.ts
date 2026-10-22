@@ -121,6 +121,48 @@ export function workTime(progress: ProgressView, now: number): number {
   return progress.tasks.reduce((sum, task) => sum + (taskElapsed(task, now) ?? 0), 0);
 }
 
+/** What a piece of a verification's output means, by the marks test runners print. */
+export type OutputTone = "plain" | "pass" | "fail" | "path" | "muted";
+
+export interface OutputSegment {
+  readonly text: string;
+  readonly tone: OutputTone;
+}
+
+/** Marks inside a line; at one place, the first alternative wins. */
+const MARKS = new RegExp(
+  [
+    String.raw`(?<muted>^\d{2}:\d{2}(?::\d{2})?)`,
+    String.raw`(?<path>[\w@./-]+\.[A-Za-z]\w*:\d+(?::\d+)?)`,
+    String.raw`(?<fail>\[E\]|✗|×|\bFAIL(?:ED)?\b|\b[Ee]rror\b|\bException\b|\bfailed\b|(?<![\w+-])-\d+\b)`,
+    String.raw`(?<pass>✓|\bPASS(?:ED)?\b|All tests passed!?|\bpassed\b|(?<![\w+-])\+\d+\b)`,
+  ].join("|"),
+  "gu",
+);
+
+/**
+ * A line of output in pieces with their tone (A6): failures in red, passes in green, locations
+ * in blue, timings muted; what is not recognized stays plain. The text is kept whole.
+ */
+export function outputSegments(line: string): readonly OutputSegment[] {
+  if (/^\s*(?:Actual|Received):/.test(line)) return [{ text: line, tone: "fail" }];
+  if (/^\s*Expected:/.test(line)) return [{ text: line, tone: "pass" }];
+  const segments: OutputSegment[] = [];
+  let at = 0;
+  for (const match of line.matchAll(MARKS)) {
+    const start = match.index;
+    if (start > at) segments.push({ text: line.slice(at, start), tone: "plain" });
+    const groups = match.groups ?? {};
+    const tone = (["muted", "path", "fail", "pass"] as const).find(
+      (name) => groups[name] !== undefined,
+    );
+    segments.push({ text: match[0], tone: tone ?? "plain" });
+    at = start + match[0].length;
+  }
+  if (at < line.length) segments.push({ text: line.slice(at), tone: "plain" });
+  return segments;
+}
+
 /** «18 s» for a verification, «14 min» or «1 h 5 min» for a task. */
 export function formatDuration(ms: number, lang: Lang): string {
   if (ms < 60_000) {

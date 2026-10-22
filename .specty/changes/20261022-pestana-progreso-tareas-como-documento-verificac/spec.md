@@ -86,7 +86,7 @@ La pestaña Progreso del cambio muestra hoy un texto provisional. Pasa a ser la 
   - ac: AC1, AC4
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro: «Exportar boletines en PDF» con la solicitud (aprobar y rechazar con motivo), «Login con Google», un cambio sin tareas, y que el resumen y la cabecera se actualizan al decidir.
-- [ ] T5: Colores que contextualizan la salida
+- [x] T5: Colores que contextualizan la salida
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts, packages/ui/src/progress/task-row.ts, packages/ui/src/progress/progress-tab.test.ts, docs/ui.md
   - ac: AC2
   - verify: pnpm check

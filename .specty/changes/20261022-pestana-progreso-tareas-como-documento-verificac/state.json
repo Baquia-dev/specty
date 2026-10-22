@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-pestana-progreso-tareas-como-documento-verificac",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-pestana-progreso-tareas-como-documento-verificac",
   "baseCommit": "2505cc5d59c2bb62f9c432a6d454c4118a5efeef",
   "revision": 4,
@@ -85,6 +85,15 @@
       "doneAt": "2026-10-22T23:04:52.130Z",
       "summary": "La pestaña Progreso de la página del cambio usa sp-progress-tab en lugar del texto provisional. Test de la página: la pestaña con sus tres tareas y T3 arriba, y la actualización en vivo. docs/ui.md: la sección Progreso. Comprobado en el navegador a 390 y 1280 px, en claro y oscuro: «Exportar boletines en PDF» con T3 en «Te espera» y su fallo abierto; aprobar y rechazar con motivo devuelven T3 a su lugar y actualizan resumen y cabecera; «Login con Google»; estado vacío en un borrador sin tareas.",
       "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0e465471b3fa6354215e3b75929a7fd4d29007a0",
+      "startedAt": "2026-10-22T23:09:14.918Z",
+      "doneAt": "2026-10-22T23:12:50.206Z",
+      "summary": "outputSegments(line) puro en data/progress.ts: parte cada línea en tramos con su tono reconociendo marcas de los ejecutores de tests (fallos [E], ✗, FAIL, Error, -N; aciertos ✓, +N, All tests passed; rutas con línea y columna; tiempos; Expected:/Actual: o Received: como línea entera) y deja el resto tal cual, sin perder texto. La fila pinta la salida con los colores de fase (rojo, verde, azul, atenuado), con contraste de al menos 5,4:1 en claro y oscuro. Tests de los tramos y de la pestaña; docs/ui.md."
     }
   },
   "pending": {

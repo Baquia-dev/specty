@@ -20,6 +20,8 @@ import {
 import { ROW } from "../components/document";
 import {
   formatDuration,
+  type OutputTone,
+  outputSegments,
   type TaskProgressView,
   type TaskStatus,
   taskElapsed,
@@ -42,6 +44,18 @@ const MARKS: Readonly<
   done: { icon: LucideCircleCheck, tone: "done", es: "Hecha", en: "Done" },
   active: { icon: LucideCircleDot, tone: "implementing", es: "En curso", en: "In progress" },
   pending: { icon: LucideCircleDashed, tone: "draft", es: "Pendiente", en: "Pending" },
+};
+
+/**
+ * The output in the phase colors, which keep their contrast in both themes: failures read as a
+ * cancelled change, passes as a done one, locations as work in progress; timings step back.
+ */
+const TONES: Readonly<Record<OutputTone, string>> = {
+  plain: "",
+  muted: "text-text-muted",
+  pass: "text-phase-done",
+  fail: "text-phase-cancelled",
+  path: "text-phase-implementing",
 };
 
 /** A row arriving (back in the list, or up to «Te espera») fades in; still with reduced motion. */
@@ -106,7 +120,8 @@ const ENTER =
           }
         </div>
         @if (open() && run.output.length > 0) {
-          <pre class="m-0 rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" data-output>{{ output() }}</pre>
+          <!-- Inside <pre> every space of the template shows: the lines go on one template line. -->
+          <pre class="m-0 rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" data-output>@for (line of output(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
         }
       }
       <ng-content />
@@ -142,8 +157,11 @@ export class TaskRow {
     },
   });
 
-  /** The last lines of a failed run, as the terminal printed them. */
-  protected readonly output = computed(() => (this.task().verification?.output ?? []).join("\n"));
+  /** The last lines of a failed run, each in pieces with the tone of what they say. */
+  protected readonly output = computed(() =>
+    (this.task().verification?.output ?? []).map((line) => outputSegments(line)),
+  );
+  protected readonly tones = TONES;
 
   /** «En curso · empezó hace 12 min». */
   protected readonly running = computed(() => {
