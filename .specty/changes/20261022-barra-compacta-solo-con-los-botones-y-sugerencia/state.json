@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261022-barra-compacta-solo-con-los-botones-y-sugerencia",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261022-barra-compacta-solo-con-los-botones-y-sugerencia",
+  "baseCommit": "60d1af32f547eb2492b2d9dc52f1b94167b608de",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:842339c0a02f1c4311daf9d1134819056ab3f7756a3c1312b8571b7d44056d5a",
+    "at": "2026-10-22T21:22:36.731Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
