@@ -62,3 +62,29 @@ La Bandeja ordena con un `<select>` nativo, cuyo desplegable dibuja el sistema y
   - ac: AC5
   - verify: pnpm check
   - notes: Comprobar en el navegador a 390 y 1280 px.
+
+## Cierre
+
+### Resumen
+
+El sistema de diseño tiene un select propio, `sp-select`. Su desplegable sigue el estilo de los menús: marca la opción elegida, ilumina la activa, se abre debajo o encima según quepa y nunca es más estrecho que el disparador. El teclado y el lector de pantalla se comportan como en un select nativo, porque está construido sobre Angular Aria. Está documentado en la página «Componentes» del catálogo y lo usa «Ordenar» en la Bandeja, que sigue recordando el orden elegido.
+
+### Desviaciones
+
+- **S1 (T2):** `components/select.ts`, de T1, volvió a entrar porque la prueba en el navegador destapó dos defectos que los tests de jsdom no veían.
+  - La referencia de plantilla `#trigger` tapaba la propiedad de clases del disparador, que se quedaba sin estilos. Ahora la referencia se llama `#field`.
+  - La superposición, siempre adjunta, conservaba la posición que calculó al cargar y no seguía el desplazamiento del `main`. Por eso la lista salía fuera de sitio y no se abría hacia arriba. Ahora se recoloca al abrir, cuando cambia de tamaño y con cada desplazamiento mientras está abierta.
+- **Edición antes de aprobar:** el primer arreglo de S1 se aplicó con un script de Python antes de que la solicitud estuviera aprobada. El guard no ve los archivos que escribe un intérprete. Se declaró enseguida en S1, y el segundo arreglo esperó a la aprobación.
+- **Anuncio de la opción activa:** al probar el teclado se vio que el lector de pantalla no la anunciaba. Se arregló con `focusMode="activedescendant"` en el listbox, ya en T1.
+
+### Decisiones
+
+- **Patrón de Aria:** combobox no editable sobre un listbox, el patrón que Aria propone para un desplegable propio. Así se heredan el teclado (flechas, Inicio/Fin, escribir para saltar, Escape) y la semántica (`combobox`, `aria-haspopup=listbox`, `aria-activedescendant`). El foco no sale del disparador.
+- **Cierre al elegir:** Aria lo deja a la app, así que lo hace `choose()`. La lista cancela su `mousedown` para que pulsar una opción no quite el foco al disparador, porque el cierre por pérdida de foco se adelantaría al clic.
+- **Superposición siempre adjunta:** se mantiene, como la del menú, y se recoloca con un `ResizeObserver` sobre el panel, porque Aria dibuja la lista después de la primera apertura.
+
+### Pendientes
+
+- **Paleta de comandos:** usa la misma combinación sin `focusMode="activedescendant"`, así que probablemente tampoco anuncia la opción activa. Hay que comprobarlo y arreglarlo en un cambio aparte.
+- **`sp-menu`:** su superposición también es siempre adjunta. Conviene comprobar si se coloca bien tras desplazar el `main`.
+- **Guard:** no comprueba los archivos que escribe un intérprete (`python3 script.py <archivo>`). Queda anotado entre las mejoras pendientes de Specty.

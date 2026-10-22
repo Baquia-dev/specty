@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-sistema-de-diseno-select-propio-en-el-catalogo-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-sistema-de-diseno-select-propio-en-el-catalogo-y",
   "baseCommit": "6b6229c95db643847538b223ea9e66ed0d004956",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:7e4013e0c7798bc85a4e2dfeb153fdea4c61d5effff0bb3e68f2e26b10328218",
@@ -59,12 +59,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a8afc245f0b978674ab497b31d1fada9865bc02f",
+      "attempts": 1,
       "startedAt": "2026-10-22T21:51:03.755Z",
       "doneAt": "2026-10-22T21:53:10.988Z",
-      "summary": "«Ordenar» de la Bandeja usa sp-select en lugar del <select> nativo, con las opciones en el idioma de la interfaz; el orden elegido se aplica y se guarda como antes (specty.inbox.sort) y la URL sigue limpia. Test que ordena con el select y comprueba lo guardado. docs/ui.md. Comprobado a 390 y 1280 px, en claro y oscuro, y tras recargar."
+      "summary": "«Ordenar» de la Bandeja usa sp-select en lugar del <select> nativo, con las opciones en el idioma de la interfaz; el orden elegido se aplica y se guarda como antes (specty.inbox.sort) y la URL sigue limpia. Test que ordena con el select y comprueba lo guardado. docs/ui.md. Comprobado a 390 y 1280 px, en claro y oscuro, y tras recargar.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -76,5 +76,6 @@
     "AC": 5,
     "T": 3,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-22T21:56:49.531Z"
 }

@@ -12,3 +12,6 @@
 {"ts":"2026-10-22T21:51:03.755Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"a8afc245f0b978674ab497b31d1fada9865bc02f"}}
 {"ts":"2026-10-22T21:53:10.986Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":35340}}
 {"ts":"2026-10-22T21:53:10.989Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"«Ordenar» de la Bandeja usa sp-select en lugar del <select> nativo, con las opciones en el idioma de la interfaz; el orden elegido se aplica y se guarda como antes (specty.inbox.sort) y la URL sigue limpia. Test que ordena con el select y comprueba lo guardado. docs/ui.md. Comprobado a 390 y 1280 px, en claro y oscuro, y tras recargar."}}
+{"ts":"2026-10-22T21:56:21.211Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-22T21:56:49.533Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:0d87072927d7262c3a8ca8e91ac0b86ba94fab7c6ba296e48f8dff6e8bdc9198","size":"M","warnings":0}}
+{"ts":"2026-10-22T22:00:19.568Z","actor":"human","event":"change.closed","data":{}}
