@@ -64,7 +64,7 @@ La revisión de la spec se lee como un documento bien maquetado, no como un tabl
   - files: packages/ui/src/review/assumption-row.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/spec-sections.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui test
-- [ ] T2: Revisión como documento con resalte de la sección elegida
+- [x] T2: Revisión como documento con resalte de la sección elegida
   - files: packages/ui/src/review/section-meta.ts, packages/ui/src/review/comments.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui test

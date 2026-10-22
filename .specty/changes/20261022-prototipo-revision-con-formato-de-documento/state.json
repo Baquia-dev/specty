@@ -43,14 +43,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/review/spec-review.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "dac809546fef43d78e694693dd01fb35a08ea84b",
+      "attempts": 1,
       "startedAt": "2026-10-22T08:24:55.048Z",
       "doneAt": "2026-10-22T08:31:10.227Z",
-      "summary": "Supuesto como fila de documento (sp-assumption-row en assumption-row.ts, con fondo tenue si es de alto impacto y está sin decidir); criterios, archivos, tareas y riesgos como filas con el id en una columna fija y líneas finas. S1: la revisión importa la fila y usa la lista con divisor superior."
+      "summary": "Supuesto como fila de documento (sp-assumption-row en assumption-row.ts, con fondo tenue si es de alto impacto y está sin decidir); criterios, archivos, tareas y riesgos como filas con el id en una columna fija y líneas finas. S1: la revisión importa la fila y usa la lista con divisor superior.",
+      "scopeExtra": [
+        "packages/ui/src/review/spec-review.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "18a6484d2166b65a304c39afc41deeb3720a8498",
+      "startedAt": "2026-10-22T08:31:10.498Z",
+      "doneAt": "2026-10-22T08:35:29.019Z",
+      "summary": "Revisión como documento: índice 'Contenido' numerado, cada sección con divisor § 0N, línea fina y progreso, h2, pista y contenido, sin tarjetas. Al elegir una sección en el índice se marca con data-flash 1,4 s: la línea se dibuja, el número se oscurece y el fondo se ilumina (sin transición con movimiento reducido). La sección leída sale como model 'reading'. Comentarios en lista con divisores; section-meta sin iconos y con sectionNumber."
     }
   },
   "pending": {

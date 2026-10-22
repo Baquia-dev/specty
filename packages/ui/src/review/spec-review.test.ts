@@ -77,10 +77,10 @@ describe("SpecReview", () => {
     const index = [...(review()?.querySelectorAll("nav button") ?? [])].map((button) =>
       text(button),
     );
-    expect(index).toContain("Supuestos 1 por revisar, 1 comentarios");
-    expect(index).toContain("Criterios 2 por revisar,");
-    expect(index).toContain("Tareas 1 por revisar,");
-    expect(index).toContain("Diseño 1 comentarios");
+    expect(index).toContain("03 Supuestos 1 por revisar, 1 comentarios");
+    expect(index).toContain("04 Criterios 2 por revisar,");
+    expect(index).toContain("06 Tareas 1 por revisar,");
+    expect(index).toContain("07 Diseño 1 comentarios");
     // Every warning counted in the index is visible in its section.
     expect(review()?.querySelectorAll("[data-section=tasks] [role=note]").length).toBe(1);
     expect(review()?.querySelectorAll("[data-section=criteria] [role=note]").length).toBe(2);
@@ -94,14 +94,17 @@ describe("SpecReview", () => {
     );
   });
 
-  it("shows each section as a card with icon, hint and progress; decisions in color, icon and text (AC1)", async () => {
+  it("reads as a document: numbered divider, title, hint and progress; no cards; decisions in color, icon and text (AC1)", async () => {
     const { review } = await open(REVIEW);
     const assumptions = review()?.querySelector("[data-section=assumptions]");
-    expect(assumptions?.className).toContain("rounded-xl");
-    expect(assumptions?.querySelector("header svg")).not.toBeNull();
-    expect(text(assumptions?.querySelector("header p"))).toBe(
+    expect(assumptions?.className).not.toContain("border-border");
+    expect(assumptions?.className).not.toContain("bg-surface");
+    expect(text(assumptions?.querySelector("[data-divider]"))).toMatch(/^§ 03/);
+    expect(text(assumptions?.querySelector("h2"))).toBe("Supuestos");
+    expect(text(assumptions?.querySelector("h2 + p"))).toBe(
       "Confirma o rechaza los de alto impacto: aprobar espera por ellos.",
     );
+    expect(assumptions?.querySelector("[role=list]")?.className).toContain("border-t");
     expect(text(assumptions?.querySelector("[data-progress]"))).toBe(
       "1 de 2 de alto impacto decididos",
     );
@@ -118,7 +121,7 @@ describe("SpecReview", () => {
     expect(waiting?.hasAttribute("data-waiting")).toBe(true);
   });
 
-  it("scrolls to a section smoothly, or at once with reduced motion, and marks it (AC1)", async () => {
+  it("scrolls to a section smoothly, or at once with reduced motion, marks it and highlights it for a moment (AC2)", async () => {
     const { review, settle } = await open(REVIEW);
     const calls: ScrollIntoViewOptions[] = [];
     Element.prototype.scrollIntoView = (options?: boolean | ScrollIntoViewOptions) => {
@@ -126,13 +129,27 @@ describe("SpecReview", () => {
     };
     const criteria = () =>
       [...(review()?.querySelectorAll<HTMLButtonElement>("nav button") ?? [])].find((button) =>
-        text(button).startsWith("Criterios"),
+        text(button).includes("Criterios"),
       );
+    const flashed = () =>
+      [...(review()?.querySelectorAll<HTMLElement>("[data-flash]") ?? [])].map(
+        (section) => section.dataset.section,
+      );
+    expect(flashed()).toEqual([]);
     criteria()?.click();
     await settle();
     expect(calls.at(-1)).toEqual({ behavior: "smooth", block: "start" });
     expect(criteria()?.getAttribute("aria-current")).toBe("true");
     expect(document.activeElement?.id).toBe("review-criteria-title");
+    expect(flashed()).toEqual(["criteria"]);
+    // The highlight has no transition when the system asks for reduced motion.
+    const section = review()?.querySelector<HTMLElement>("[data-section=criteria]");
+    expect(section?.className).toContain("motion-reduce:transition-none");
+    expect(section?.className).toContain("data-flash:bg-phase-draft-bg");
+
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await settle();
+    expect(flashed()).toEqual([]);
 
     window.matchMedia = (() => ({
       matches: true,
