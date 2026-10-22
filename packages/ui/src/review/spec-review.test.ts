@@ -109,13 +109,13 @@ describe("SpecReview", () => {
       "0 de 2 hechas",
     );
     const confirmed = review()?.querySelector<HTMLElement>(
-      "sp-assumption-card[data-item=A1] [data-decision]",
+      "sp-assumption-row[data-item=A1] [data-decision]",
     );
     expect(text(confirmed)).toBe("Confirmado");
     expect(confirmed?.style.color).toBe("var(--color-phase-done)");
     expect(confirmed?.querySelector("svg")).not.toBeNull();
-    const waiting = review()?.querySelector<HTMLElement>("sp-assumption-card[data-item=A2]");
-    expect(waiting?.style.borderColor).toBe("var(--color-phase-review)");
+    const waiting = review()?.querySelector<HTMLElement>("sp-assumption-row[data-item=A2]");
+    expect(waiting?.hasAttribute("data-waiting")).toBe(true);
   });
 
   it("scrolls to a section smoothly, or at once with reduced motion, and marks it (AC1)", async () => {
@@ -154,7 +154,7 @@ describe("SpecReview", () => {
       "Falta 1 supuesto de alto impacto por decidir.",
     );
     expect(barButtons()[1]?.disabled).toBe(true);
-    const a2 = review()?.querySelector("sp-assumption-card[data-item=A2]");
+    const a2 = review()?.querySelector("sp-assumption-row[data-item=A2]");
     a2?.querySelector<HTMLButtonElement>("sp-button button")?.click();
     await settle();
     expect(bar()?.querySelector("[data-blocked]")).toBeNull();
@@ -168,7 +168,7 @@ describe("SpecReview", () => {
     await settle();
     expect(TestBed.inject(Toasts).items().at(-1)?.text).toBe("Revisión 2 aprobada.");
     expect(review()?.querySelector("[role=region]")).toBeNull();
-    expect(review()?.querySelector("sp-assumption-card sp-button")).toBeNull();
+    expect(review()?.querySelector("sp-assumption-row sp-button")).toBeNull();
   });
 
   it("comments on an item from its button and on a text selection (AC6)", async () => {
@@ -196,7 +196,7 @@ describe("SpecReview", () => {
   it("is read-only outside review, with comments still visible (AC8)", async () => {
     const { review } = await open("20261021-login-google");
     expect(review()?.querySelector("[role=region]")).toBeNull();
-    expect(review()?.querySelector("sp-assumption-card sp-button")).toBeNull();
+    expect(review()?.querySelector("sp-assumption-row sp-button")).toBeNull();
     expect(review()?.querySelector("aside form")).toBeNull();
     expect(text(review()?.querySelector("aside h2"))).toContain("Comentarios");
   });
@@ -204,7 +204,7 @@ describe("SpecReview", () => {
   it("explains it when the source cannot take an action (AC9)", async () => {
     const { review, settle } = await open(REVIEW, ReadOnly);
     review()
-      ?.querySelector<HTMLButtonElement>("sp-assumption-card[data-item=A2] sp-button button")
+      ?.querySelector<HTMLButtonElement>("sp-assumption-row[data-item=A2] sp-button button")
       ?.click();
     await settle();
     expect(TestBed.inject(Toasts).items().at(-1)).toMatchObject({

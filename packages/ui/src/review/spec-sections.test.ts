@@ -10,8 +10,9 @@ import {
   SpectyData,
 } from "../data/records";
 import { deriveReview } from "../data/review";
+import { AssumptionRow } from "./assumption-row";
 import { Markdown } from "./markdown";
-import { AssumptionCard, ReviewItems } from "./spec-sections";
+import { ReviewItems } from "./spec-sections";
 
 const SPEC = `# Entrar con Google
 
@@ -69,9 +70,11 @@ class Recording extends SpectyData {
 }
 
 @Component({
-  imports: [AssumptionCard, ReviewItems, Markdown],
+  imports: [AssumptionRow, ReviewItems, Markdown],
   template: `
-    <sp-assumption-card change="20261021-login-google" [assumption]="assumption()" [editable]="editable()" (comment)="anchors.push($event)" />
+    <div role="list">
+      <sp-assumption-row change="20261021-login-google" [assumption]="assumption()" [editable]="editable()" (comment)="anchors.push($event)" />
+    </div>
     @for (section of sections; track section) {
       <sp-review-items [attr.id]="section" [review]="review" [section]="section" (comment)="anchors.push($event)" />
     }
@@ -115,14 +118,38 @@ async function render() {
 const text = (element: Element | null | undefined) =>
   element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
 
-describe("AssumptionCard", () => {
+describe("AssumptionRow", () => {
   afterEach(() => TestBed.resetTestingModule());
 
-  it("shows impact and decision, and confirms in review (AC2)", async () => {
-    const { element, source } = await render();
-    const card = element.querySelector("sp-assumption-card");
+  it("is a document row with impact and decision, tinted while it blocks approval (AC1)", async () => {
+    const { element, source, fixture, host } = await render();
+    const card = element.querySelector<HTMLElement>("sp-assumption-row");
+    expect(card?.getAttribute("role")).toBe("listitem");
+    expect(card?.className).toContain("border-b");
+    expect(text(card?.querySelector(".font-mono"))).toBe("A1");
     expect(text(card)).toContain("Alto impacto");
     expect(text(card?.querySelector("[data-decision]"))).toBe("Por decidir");
+    expect(card?.querySelector("[data-decision] svg")).not.toBeNull();
+    expect(card?.hasAttribute("data-waiting")).toBe(true);
+    expect(card?.style.background).toContain("var(--color-phase-review-bg)");
+    card?.querySelector<HTMLButtonElement>("sp-button button")?.click();
+    expect(source.calls).toEqual([["20261021-login-google", "A1", "confirmed"]]);
+
+    host.assumption.set({
+      id: "A1",
+      text: "Existe el proyecto.",
+      impact: "high",
+      decision: "confirmed",
+    });
+    await fixture.whenStable();
+    expect(card?.hasAttribute("data-waiting")).toBe(false);
+    expect(card?.style.background).toBe("");
+    expect(text(card?.querySelector("[data-decision]"))).toBe("Confirmado");
+  });
+
+  it("confirms in review (AC2)", async () => {
+    const { element, source } = await render();
+    const card = element.querySelector("sp-assumption-row");
     card?.querySelector<HTMLButtonElement>("sp-button button")?.click();
     expect(source.calls).toEqual([["20261021-login-google", "A1", "confirmed"]]);
   });
@@ -130,7 +157,7 @@ describe("AssumptionCard", () => {
   it("rejects only with a reason, which stays next to it (AC2)", async () => {
     const { element, source, settle, host, fixture } = await render();
     [
-      ...element.querySelectorAll<HTMLButtonElement>("sp-assumption-card sp-button button"),
+      ...element.querySelectorAll<HTMLButtonElement>("sp-assumption-row sp-button button"),
     ][1]?.click();
     await settle();
     const buttons = () => [
@@ -157,15 +184,15 @@ describe("AssumptionCard", () => {
     });
     host.editable.set(false);
     await fixture.whenStable();
-    expect(text(element.querySelector("sp-assumption-card"))).toContain(
+    expect(text(element.querySelector("sp-assumption-row"))).toContain(
       "Motivo: «Son periodos del colegio.»",
     );
-    expect(element.querySelector("sp-assumption-card sp-button")).toBeNull();
+    expect(element.querySelector("sp-assumption-row sp-button")).toBeNull();
   });
 
   it("emits a comment anchored to the item (AC6)", async () => {
     const { element, host } = await render();
-    element.querySelector<HTMLButtonElement>("sp-assumption-card sp-icon-button button")?.click();
+    element.querySelector<HTMLButtonElement>("sp-assumption-row sp-icon-button button")?.click();
     expect(host.anchors).toEqual([{ item: "A1" }]);
   });
 });
@@ -173,9 +200,12 @@ describe("AssumptionCard", () => {
 describe("ReviewItems", () => {
   afterEach(() => TestBed.resetTestingModule());
 
-  it("puts criterion warnings inline, with icon and text (AC3)", async () => {
+  it("puts criterion warnings inline, with icon and text, in id-first rows (AC1, AC3)", async () => {
     const { element } = await render();
     const vague = element.querySelector("#criteria [data-item=AC2]");
+    expect(vague?.className).toContain("border-b");
+    expect(text(vague?.querySelector(".font-mono"))).toBe("AC2");
+    expect(element.querySelector("#criteria ol")?.className).toContain("border-t");
     expect(vague?.querySelectorAll("[role=note]").length).toBe(2);
     expect(vague?.querySelector("[role=note] svg")).not.toBeNull();
     expect(element.querySelector("#criteria [data-item=AC1] [role=note]")).toBeNull();
@@ -193,7 +223,12 @@ describe("ReviewItems", () => {
     expect(text(files)).toContain("lib/login/old.dart → lib/login/screen.dart");
     const task = element.querySelector("#tasks [data-item=T1]");
     expect(text(task?.querySelector("[data-status]"))).toBe("Activa");
-    expect(task?.querySelectorAll("sp-badge").length).toBe(3);
+    expect(text(task?.querySelector(".font-mono"))).toBe("T1");
+    expect([...(task?.querySelectorAll("sp-badge") ?? [])].map((badge) => text(badge))).toEqual([
+      "AC1",
+      "AC2",
+    ]);
+    expect(text(element.querySelector("#risks [data-item=R1] .font-mono"))).toBe("R1");
     expect(text(task)).toContain("lib/auth/google.dart");
     element.querySelector<HTMLButtonElement>("#risks sp-icon-button button")?.click();
     element.querySelector<HTMLButtonElement>("#tasks sp-icon-button button")?.click();
@@ -205,7 +240,7 @@ describe("ReviewItems", () => {
     const { fixture, host, element, settle } = await render();
     host.assumption.set({ id: "A9", text: "Falla.", decision: "pending" });
     await fixture.whenStable();
-    element.querySelector<HTMLButtonElement>("sp-assumption-card sp-button button")?.click();
+    element.querySelector<HTMLButtonElement>("sp-assumption-row sp-button button")?.click();
     await settle();
     expect(TestBed.inject(Toasts).items()).toEqual([
       expect.objectContaining({ kind: "error", text: "Error: boom" }),

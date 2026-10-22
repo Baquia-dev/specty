@@ -60,7 +60,7 @@ La revisión de la spec se lee como un documento bien maquetado, no como un tabl
 
 ## Tareas
 
-- [ ] T1: Supuestos y demás ítems como filas
+- [x] T1: Supuestos y demás ítems como filas
   - files: packages/ui/src/review/assumption-row.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/spec-sections.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui test

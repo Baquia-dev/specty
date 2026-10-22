@@ -6,6 +6,13 @@
   "branch": "specty/20261022-prototipo-revision-con-formato-de-documento",
   "baseCommit": "69f4b9e87c33480b50f746ce964e5e5d665c5bbb",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:abdaddfcb12c5b8eac82a94b2271df530036e11e6bcc2418cd82544611f307ff",
+    "at": "2026-10-22T08:24:40.695Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -33,7 +40,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/spec-review.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "dac809546fef43d78e694693dd01fb35a08ea84b",
+      "startedAt": "2026-10-22T08:24:55.048Z",
+      "doneAt": "2026-10-22T08:31:10.227Z",
+      "summary": "Supuesto como fila de documento (sp-assumption-row en assumption-row.ts, con fondo tenue si es de alto impacto y está sin decidir); criterios, archivos, tareas y riesgos como filas con el id en una columna fija y líneas finas. S1: la revisión importa la fila y usa la lista con divisor superior."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,13 +61,7 @@
     "A": 4,
     "AC": 5,
     "T": 3,
-    "R": 2
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:abdaddfcb12c5b8eac82a94b2271df530036e11e6bcc2418cd82544611f307ff",
-    "at": "2026-10-22T08:24:40.695Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
+    "R": 2,
+    "S": 1
   }
 }

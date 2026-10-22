@@ -19,10 +19,11 @@ import { Toasts } from "../components/toast";
 import type { ChangeView, CommentAnchor, ReviewSection } from "../data/records";
 import { SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
+import { AssumptionRow } from "./assumption-row";
 import { ReviewComments, SECTION_LABELS, selectionAnchor } from "./comments";
 import { Markdown } from "./markdown";
 import { SECTION_META, sectionProgress } from "./section-meta";
-import { AssumptionCard, ReviewItems, reportFailure } from "./spec-sections";
+import { LIST, ReviewItems, reportFailure } from "./spec-sections";
 
 const CARD =
   "flex scroll-mt-[calc(var(--sp-sticky-top,0px)+1rem)] flex-col gap-4 rounded-xl border border-border bg-surface p-5";
@@ -35,7 +36,7 @@ const CARD =
     Button,
     Collapsible,
     Markdown,
-    AssumptionCard,
+    AssumptionRow,
     ReviewItems,
     ReviewComments,
   ],
@@ -79,9 +80,11 @@ const CARD =
               @case ('goal') { <sp-markdown [text]="review().goal" /> }
               @case ('outOfScope') { <sp-markdown [text]="review().outOfScope" /> }
               @case ('assumptions') {
-                @for (assumption of review().assumptions; track assumption.id) {
-                  <sp-assumption-card [change]="change().id" [assumption]="assumption" [editable]="inReview()" (comment)="anchor.set($event)" />
-                }
+                <div role="list" [class]="list">
+                  @for (assumption of review().assumptions; track assumption.id) {
+                    <sp-assumption-row [change]="change().id" [assumption]="assumption" [editable]="inReview()" (comment)="anchor.set($event)" />
+                  }
+                </div>
               }
               @case ('design') {
                 <sp-collapsible [label]="t()('Ver el diseño', 'Show the design')"><sp-markdown [text]="review().design" /></sp-collapsible>
@@ -128,6 +131,7 @@ export class SpecReview {
   protected readonly lang = this.preferences.lang;
   protected readonly meta = SECTION_META;
   protected readonly card = CARD;
+  protected readonly list = LIST;
   protected readonly warningIcon = LucideTriangleAlert;
   protected readonly commentIcon = LucideMessageSquare;
   protected readonly anchor = signal<CommentAnchor | undefined>(undefined);
