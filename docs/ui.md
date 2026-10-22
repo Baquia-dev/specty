@@ -33,11 +33,12 @@ Brief de diseño de la UI web local. Objetivo: que la persona revise **decisione
 
 ### Bandeja
 
-Todos los cambios en filas de documento, sin tarjetas: por defecto, "Esperan tu decisión" (spec por revisar, solicitud de alcance, resultado por aceptar y cierre por confirmar), "En curso" y "Recientes", lo que más espera primero. Cada fila muestra la fase, el título, qué espera con su tamaño, las notas que piden atención (supuestos de alto impacto, solicitud de alcance), el avance de las tareas en curso, cuánto lleva y, si espera a la persona, la acción directa; la fila elegida con j/k se resalta y su acción es la principal.
+Todos los cambios en filas de documento, sin tarjetas: por defecto, "Esperan tu decisión" (spec por revisar, solicitud de alcance, resultado por aceptar y cierre por confirmar), "En curso" y "Recientes", lo que más espera primero. Cada fila muestra la fase con cuánto lleva debajo (en el teléfono, al lado), el título, qué espera con su tamaño, las notas que piden atención (supuestos de alto impacto, solicitud de alcance), el avance de las tareas en curso y, si espera a la persona, la acción directa; la fila elegida con j/k se resalta, su acción es la principal y, si hace falta, se desplaza a la vista sin quedar bajo la barra fija.
 
+- **Barra fija**: el buscador, los filtros por fase y "X de N cambios" quedan arriba al desplazarse, de ancho completo como la barra compacta del cambio; su línea inferior aparece solo mientras está fija. En el teléfono las fases van en una sola línea que se desplaza de lado.
 - **Buscador** por título o id, sin distinguir mayúsculas ni tildes; `/` lo enfoca y Escape lo vacía.
 - **Filtros por fase**, cada una con su número; elegir otra vez la fase activa vuelve a "Todas".
-- **Agrupar** por estado, por fase o sin agrupar, y **ordenar** por lo que más espera, lo más reciente, título o tamaño.
+- **Agrupar** por estado, por fase o sin agrupar, y **ordenar** por lo que más espera, lo más reciente, título o tamaño; van en la cabecera, junto al título, porque se tocan poco.
 - Con un filtro activo se ve cuántos cambios se muestran de cuántos; si ninguno coincide, un estado vacío con "Limpiar filtros".
 - La URL siempre queda limpia: agrupar y ordenar se recuerdan en el navegador, como el tema; la búsqueda y la fase duran la sesión (siguen al entrar a un cambio y volver).
 

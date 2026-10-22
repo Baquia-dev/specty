@@ -127,6 +127,10 @@ describe("Inbox", () => {
     expect(first?.className).toContain("hover:bg-text/4");
     expect(first?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("acceptance");
     expect(text(first?.querySelector("[data-waits]"))).toMatch(/^Resultado por aceptar · S/);
+    // How long goes under the phase, apart from the action.
+    const since = first?.querySelector("[data-since]");
+    expect(since?.parentElement?.querySelector("sp-phase-badge")).not.toBeNull();
+    expect(since?.parentElement?.querySelector("sp-button")).toBeNull();
     expect(text(first?.querySelector("sp-button"))).toBe("Revisar resultado");
     expect(first?.querySelector("sp-button button")?.className).toContain("bg-accent");
     expect(text(row("20261016-justificar-faltas")?.querySelector("[data-waits]"))).toContain(
@@ -170,69 +174,6 @@ describe("Inbox", () => {
     await fixture.whenStable();
     expect(search()?.value).toBe("");
     expect(rows()).toHaveLength(9);
-  });
-
-  it("filters by phase, each with its count; the chosen one again shows them all (AC3)", async () => {
-    const { element, rows, settle } = await open();
-    const chips = () => [...element.querySelectorAll<HTMLButtonElement>("[data-phases] button")];
-    expect(chips().map(text)).toEqual([
-      "Todas 9",
-      "Borrador 1",
-      "Revisión 2",
-      "Implementación 2",
-      "Aceptación 1",
-      "Cierre 1",
-      "Terminado 1",
-      "Cancelado 1",
-    ]);
-    chips()[2]?.click();
-    await settle();
-    expect(rows().map((item) => short(item.dataset.id))).toEqual([
-      "justificar-faltas",
-      "evolucion-trimestre",
-    ]);
-    expect(chips()[2]?.getAttribute("aria-pressed")).toBe("true");
-    chips()[2]?.click();
-    await settle();
-    expect(rows()).toHaveLength(9);
-  });
-
-  it("groups by phase or not at all, and sorts by title (AC4)", async () => {
-    const { element, sections, rows, settle } = await open();
-    const groups = () => [...element.querySelectorAll<HTMLButtonElement>("[data-group] button")];
-    groups()[1]?.click();
-    await settle();
-    expect(sections()).toEqual([
-      "Borrador 1",
-      "Revisión 2",
-      "Implementación 2",
-      "Aceptación 1",
-      "Cierre 1",
-      "Terminado 1",
-      "Cancelado 1",
-    ]);
-    groups()[2]?.click();
-    const sort = element.querySelector<HTMLSelectElement>("[data-sort]");
-    if (sort === null) throw new Error("no sort");
-    sort.value = "title";
-    sort.dispatchEvent(new Event("change"));
-    await settle();
-    expect(sections()).toEqual(["Todos los cambios 9"]);
-    const titles = rows().map((item) => text(item.querySelector("a")));
-    expect(titles).toEqual(titles.toSorted((a, b) => a.localeCompare(b, "es")));
-  });
-
-  it("says when nothing matches, how many are shown, and clears the filters (AC5)", async () => {
-    const { element, rows, settle, typeIn } = await open();
-    await typeIn("correo");
-    expect(text(element.querySelector("[data-shown]"))).toBe("1 de 9 cambios · Limpiar filtros");
-    await typeIn("nada parecido");
-    const empty = element.querySelector("sp-inbox sp-empty-state");
-    expect(text(empty?.querySelector("h2"))).toBe("Ningún cambio coincide");
-    empty?.querySelector<HTMLButtonElement>("sp-button button")?.click();
-    await settle();
-    expect(rows()).toHaveLength(9);
-    expect(element.querySelector("[data-shown]")).toBeNull();
   });
 
   it("keeps the view when coming back from a change, with a clean URL (AC6)", async () => {

@@ -35,9 +35,12 @@ const DECISIONS: Readonly<
   },
 };
 
-/** A document row; the one picked with j/k keeps the highlight the others show on hover. */
+/**
+ * A document row; the one picked with j/k keeps the highlight the others show on hover. Its
+ * scroll margin keeps it clear of the pinned search when j/k bring it into view.
+ */
 const ROW =
-  "group -mx-3 grid grid-cols-1 items-center gap-x-4 gap-y-2 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none sm:grid-cols-[8.5rem_minmax(0,1fr)_auto]";
+  "group -mx-3 grid scroll-mt-36 scroll-mb-4 grid-cols-1 items-start gap-x-4 gap-y-2 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none sm:grid-cols-[8.5rem_minmax(0,1fr)_auto]";
 
 /** One change in the Inbox: its phase, what it waits for, how long, and the way into it. */
 @Component({
@@ -51,7 +54,11 @@ const ROW =
     "[attr.aria-current]": "current() || null",
   },
   template: `
-    <sp-phase-badge class="justify-self-start" [phase]="change().phase" />
+    <!-- How long under the phase; on a phone, beside it. -->
+    <div class="flex items-center gap-2 sm:flex-col sm:items-start sm:gap-1">
+      <sp-phase-badge [phase]="change().phase" />
+      <span class="text-xs whitespace-nowrap text-text-muted" data-since>{{ since() }}</span>
+    </div>
     <div class="flex min-w-0 flex-col gap-0.5">
       <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change().id]" [queryParams]="{ tab: change().tab }" (focus)="picked.emit()">{{ change().title }}</a>
       @if (waits(); as line) {
@@ -77,14 +84,13 @@ const ROW =
         </span>
       }
     </div>
-    <div class="flex items-center gap-3 sm:justify-self-end">
-      <span class="text-[13px] whitespace-nowrap text-text-muted" data-since>{{ since() }}</span>
-      @if (change().decision; as decision) {
+    @if (change().decision; as decision) {
+      <div class="flex sm:self-center sm:justify-self-end">
         <sp-button size="sm" [variant]="current() ? 'primary' : 'secondary'" (pressed)="open()">
           {{ t()(decisions[decision].action.es, decisions[decision].action.en) }}
         </sp-button>
-      }
-    </div>
+      </div>
+    }
   `,
 })
 export class InboxRow {
@@ -152,9 +158,10 @@ export class InboxRow {
     relativeTime(this.change().phaseSince, this.now(), this.preferences.lang()),
   );
 
-  /** Moves focus to the row's link, so Enter opens it. */
+  /** Moves focus to the row's link, so Enter opens it, and brings the row into view. */
   focus(): void {
-    this.host.querySelector<HTMLElement>("a")?.focus();
+    this.host.querySelector<HTMLElement>("a")?.focus({ preventScroll: true });
+    this.host.scrollIntoView?.({ block: "nearest" });
   }
 
   protected open(): void {

@@ -17,7 +17,6 @@ import {
 import { Button } from "../components/button";
 import { LIST, PAGE, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
-import { Kbd } from "../components/kbd";
 import { Skeleton } from "../components/skeleton";
 import { ChangesStore } from "../data/changes-store";
 import type { ChangeView } from "../data/records";
@@ -25,7 +24,7 @@ import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
 import { InboxRow } from "./inbox-row";
 import { InboxState } from "./inbox-state";
-import { InboxToolbar } from "./inbox-toolbar";
+import { InboxToolbar, InboxViewOptions } from "./inbox-toolbar";
 import { inboxSections, phaseCounts, stateOf } from "./inbox-view";
 
 const TICK_MS = 30_000;
@@ -38,28 +37,27 @@ const TICK_MS = 30_000;
     Button,
     SectionDivider,
     EmptyState,
-    Kbd,
     Skeleton,
     InboxRow,
     InboxToolbar,
+    InboxViewOptions,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [class]="page + ' flex flex-col gap-8 pt-10'">
-      <header class="flex flex-wrap items-end justify-between gap-4">
+    <!-- The search bar spans the whole width to pin like the compact bar; the rest keeps the page width. -->
+    <div class="flex flex-col pt-10">
+      <header [class]="page + ' flex flex-wrap items-end justify-between gap-x-8 gap-y-4 pb-5'">
         <div class="flex flex-col gap-1.5">
-          <h1 class="m-0 text-[2rem] leading-tight font-semibold tracking-[-0.025em]">{{ t()('Bandeja', 'Inbox') }}</h1>
+          <h1 class="m-0 text-[2rem] leading-tight font-semibold tracking-tight">{{ t()('Bandeja', 'Inbox') }}</h1>
           @if (summary(); as line) {
             <p class="m-0 text-sm text-text-muted" data-summary>{{ line }}</p>
           }
         </div>
-        <span class="hidden items-center gap-1 text-xs text-text-muted sm:flex">
-          <sp-kbd keys="j" /> <sp-kbd keys="k" /> {{ t()('moverte', 'move') }} ·
-          <sp-kbd keys="enter" /> {{ t()('abrir', 'open') }}
-        </span>
+        <sp-inbox-view-options />
       </header>
 
       @if (store.views.error(); as error) {
+        <div [class]="page + ' pt-3'">
         <div role="alert" class="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-surface p-4">
           <svg [lucideIcon]="warning" size="16" aria-hidden="true" style="color: var(--color-phase-cancelled)"></svg>
           <p class="m-0 flex-1 text-sm">
@@ -67,20 +65,16 @@ const TICK_MS = 30_000;
           </p>
           <sp-button size="sm" (pressed)="store.views.reload()">{{ t()('Reintentar', 'Retry') }}</sp-button>
         </div>
+        </div>
       } @else if (!store.views.hasValue()) {
-        <div class="flex flex-col gap-3">
+        <div [class]="page + ' flex flex-col gap-3 pt-3'">
           <sp-skeleton height="2.5rem" />
           <sp-skeleton height="4.5rem" [announce]="false" />
           <sp-skeleton height="4.5rem" [announce]="false" />
         </div>
       } @else {
-        <sp-inbox-toolbar [counts]="counts()" />
-        @if (state.filtered()) {
-          <p class="-mt-4 mb-0 flex items-center gap-2 text-[13px] text-text-muted" data-shown>
-            {{ t()(shown() + ' de ' + store.all().length + ' cambios', shown() + ' of ' + store.all().length + ' changes') }} ·
-            <button type="button" class="cursor-pointer border-0 bg-transparent p-0 font-sans text-[13px] text-text underline" (click)="state.clear()">{{ t()('Limpiar filtros', 'Clear filters') }}</button>
-          </p>
-        }
+        <sp-inbox-toolbar [counts]="counts()" [shown]="shown()" [total]="store.all().length" />
+        <div [class]="page + ' flex flex-col gap-8 pt-5'">
         @for (section of sections(); track section.key) {
           <section [attr.aria-labelledby]="'inbox-' + section.key" [attr.data-section]="section.key">
             <sp-section-divider [heading]="t()(section.label.es, section.label.en)" [headingId]="'inbox-' + section.key" [meta]="section.changes.length" [level]="2" />
@@ -102,6 +96,7 @@ const TICK_MS = 30_000;
             </sp-empty-state>
           }
         }
+        </div>
       }
     </div>
   `,

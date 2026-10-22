@@ -64,7 +64,7 @@ La Bandeja deja las tarjetas altas y se lee como el resto de la app, en filas de
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm check
   - notes: Comprobar en el navegador, en claro, oscuro y a 390 px: filas, buscador con "/", filtros, agrupar, ordenar, estado vacío; que ir a un cambio y volver conserva la vista, que recargar conserva agrupar y ordenar, y que la URL no cambia.
-- [ ] T3: Buscador y fases fijos al desplazarse; el tiempo bajo la fase
+- [x] T3: Buscador y fases fijos al desplazarse; el tiempo bajo la fase
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox.test.ts, docs/ui.md
   - ac: AC1, AC2
   - verify: pnpm check
