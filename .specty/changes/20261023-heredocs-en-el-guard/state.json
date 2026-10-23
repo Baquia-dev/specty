@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261023-heredocs-en-el-guard",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-heredocs-en-el-guard",
+  "baseCommit": "a46479ddb0ee17a8a67092d2ceebcf7fa178b20d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8081166eaea099764511e9190e664cdfbfedc4b04952b2de98234aa553d03b2d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1eda1eca6cbbd2160915295bb2801fa9f481076f84bcb04233b6c0fd393e1353",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:59a7881a3961f2ff3ba4317771dfa4c5ff9699898bafa05c9f497f3872944aac",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:f86bb5719c6f657d78fc12d1d28a3a08a19feb0964908731aacd254c902bada6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:786234a5e9794034db80f9842f05e80bf4dfcb984fca0443cffe5afd34e4f32a",
+    "at": "2026-10-23T09:50:56.125Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

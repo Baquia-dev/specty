@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T09:46:43.714Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-heredocs-en-el-guard"}}
+{"ts":"2026-10-23T09:47:06.286Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:786234a5e9794034db80f9842f05e80bf4dfcb984fca0443cffe5afd34e4f32a","size":"M","warnings":0}}
+{"ts":"2026-10-23T09:50:56.138Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:786234a5e9794034db80f9842f05e80bf4dfcb984fca0443cffe5afd34e4f32a","channel":"tty"}}
