@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261023-datos-del-cierre",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-datos-del-cierre",
+  "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:00a3a26cd89d42eb57f3bc9c2ecaf3ca112345236b5e7d1c32b770f9ff8ee161",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2e77daaea8d70481fb13e7aa899f36b7ef44730dfdcd16019565708bf12e6b3b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:2d2f8f65bc58bf16e4a3d9621cc450473c84ae7b75b8267ef73893ab13b09b70",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a328e359b6913d9fe2335e1abad635fa0768c9aaaf28da67d7dc603dc560788e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a687bca20ec98d142163f79495fd6d5681e8b89f2612b6a6904eee1959fcf6ca",
+    "at": "2026-10-23T10:16:39.224Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
