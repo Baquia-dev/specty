@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261023-una-sesion-de-agente-una-worktree",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-una-sesion-de-agente-una-worktree",
+  "baseCommit": "ab68b0a2fa56f85a115f0dcaf05f2016003ea58f",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:541e98aef58b56038c553a5d767332374af05651aa40cc732512be483b6cbbe0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7913e373c25679fdbfb6762502f6be2312dc3602c507b3447c6c3256bcdaf237",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:50e1c5ad78f2a071fab11c5ed2b240d780c5a88e771a09757e9ff49d0af0c440",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c31b9fccb44343b8f9ed4b1a2e09460c265a0d7302c1563a350ed5867fb8db0a",
+    "at": "2026-10-23T21:43:35.452Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
