@@ -11,6 +11,7 @@ import {
   nextCard,
   parseSpec,
   renderText,
+  type StatusEntry,
   specTemplate,
   statusCard,
   type TaskView,
@@ -137,6 +138,38 @@ describe("next cards", () => {
       ES,
     );
     expect(card.next).toBe("te toca decidir en 20261021-x: `specty approve`.");
+  });
+
+  it("shows where each change lives and the decision owed in another folder", () => {
+    const here: StatusEntry = {
+      id: "a",
+      kind: "standard",
+      phase: "implementing",
+      title: "A",
+      waitingFor: "agent",
+      current: true,
+      pendingScope: [],
+    };
+    const there: StatusEntry = {
+      ...here,
+      id: "b",
+      phase: "acceptance",
+      title: "B",
+      waitingFor: "human",
+      current: false,
+      folder: "../repo.worktrees/b",
+    };
+    const card = statusCard([here, there], ES);
+    const text = renderText(card, "es");
+    expect(text).toContain("▸ a · standard · implementing · espera al agente — A\n");
+    expect(text).toContain(
+      "  b · standard · acceptance · espera a ti — B · en ../repo.worktrees/b",
+    );
+    expect(card.next).toBe("te toca decidir en b: `specty accept`.");
+    const english = renderText(statusCard([there], { ...ES, lang: "en" }), "en");
+    expect(english).toContain(
+      "b · standard · acceptance · waits for you — B · in ../repo.worktrees/b",
+    );
   });
 });
 

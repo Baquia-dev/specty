@@ -117,7 +117,23 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty integrate` | Con una incorporación pendiente | Termina el merge de la rama principal que dejó el cierre: sin marcadores, dentro de sus archivos y con la verificación en verde, hace el commit de merge (§9) |
 | `specty retro [--into <id>]` | Cualquiera | Devuelve el protocolo para documentar cambios ya hechos |
 
-Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve [--scope <S>]`, `reject --scope <S>`, `accept`, `close` y `cancel`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
+Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve [<cambio>] [--scope <S>]`, `reject [<cambio>] --scope <S>`, `accept [<cambio>]`, `close [<cambio>]` y `cancel [<cambio>]`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
+
+Estas decisiones se toman desde cualquier carpeta del repo, porque cada cambio vive en su propia worktree. El comando elige el cambio en este orden:
+
+1. El que se nombra con `<cambio>`.
+2. El de la carpeta actual, si espera esa decisión.
+3. El único que la espera en todas las worktrees. La salida dice cuál es y en qué carpeta está.
+4. Si la esperan varios, el que la persona elige en la terminal.
+
+Cada uno espera una decisión distinta:
+
+- `approve`: la spec en revisión, o con `--scope S`, esa solicitud. `reject --scope S` espera esa misma solicitud.
+- `accept`: un resultado en aceptación.
+- `close`: un cierre enviado, o un cambio cerrado que no llegó a su rama destino.
+- `cancel`: cualquier cambio abierto.
+
+El comando se ejecuta en la worktree del cambio y con su configuración, como si la persona hubiera hecho `cd` allí. Si ningún cambio espera esa decisión, lo dice. Los comandos del agente nunca preguntan: actúan sobre el cambio de su carpeta. `status` muestra los cambios abiertos de todas las worktrees, cada uno leído en su carpeta, con la ruta de los que no son el de la carpeta actual; la copia de otro cambio que una rama heredó no cuenta.
 
 `delegate on|off` activa o desactiva el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)), también solo desde una TTY. El interruptor vale para el clon y todas sus worktrees. Mientras está activo, el agente ejecuta esas acciones sin TTY, y la CLI responde por la persona: confirma, da por confirmados los supuestos de impacto alto pendientes y no escribe comentarios. Además, `accept` ejecuta siempre la verificación completa y no acepta si falla. La auditoría registra esas decisiones como del agente, por delegación. Con TTY sigue decidiendo la persona, aunque el modo esté activo.
 

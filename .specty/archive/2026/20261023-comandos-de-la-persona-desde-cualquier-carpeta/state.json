@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "id": "20261023-comandos-de-la-persona-desde-cualquier-carpeta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261023-comandos-de-la-persona-desde-cualquier-carpeta",
+  "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:369d157748b35368889ab313809058e21fbe5a74d173dc41fea024c4fcb66c9b",
+    "at": "2026-10-23T19:24:51.622Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6e8419f3353fac690eddddf3bd34e46de6f676f0d1abcb0c28b2212b2f3233bc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ffc756942262058feeca8346001cfad6ea2922bd9c6106305f518f5f89ea7d23",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:661014f482c81e3c9c4db24dab060b8a4a79630ea0fd55ba51fec69d48442789",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:153fc0489bdbc6d27ceb13cf23f0c3f31923cbd77fdbb9b590acb43fdb882271",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c15eb14a035df4f0b4ee1e9901c4e0638301506c833988a2dad4e25eb47cbb26",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4a3252c7a7fc99d8c11a4216cd2db62a7c545ca8",
+      "attempts": 1,
+      "startedAt": "2026-10-23T19:25:06.207Z",
+      "doneAt": "2026-10-23T19:27:42.614Z",
+      "summary": "status lista el cambio de cada worktree (cada uno leído en su carpeta y con su configuración, vía locateChanges en flow/changes.ts) más los de la carpeta actual sin rama, sin las copias que hereda una rama; core: StatusEntry.folder con la ruta relativa, «espera al agente» y el SIGUIENTE nombra la decisión pendiente aunque esté en otra carpeta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "cae56f35d63b38cb9c4be494238144a887cdc470",
+      "attempts": 1,
+      "startedAt": "2026-10-23T19:27:42.912Z",
+      "doneAt": "2026-10-23T19:31:25.060Z",
+      "summary": "approve, reject, accept, close y cancel aceptan [cambio] y pasan por personSession (commands/human.ts): con id, ese; si no, el de la carpeta actual si espera la decisión; si no, el único que la espera entre todas las worktrees (awaits en flow/changes.ts), o el que la persona elige; el comando corre con la sesión de la carpeta del cambio y una nota lo nombra con su carpeta. Sin candidatos dice que ningún cambio espera esa acción; los agentes no se redirigen. commands.test actualiza el mensaje sin cambios",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "07382fc1e4423e9154c7304606cda19e0ad1eebb",
+      "attempts": 1,
+      "startedAt": "2026-10-23T19:31:25.346Z",
+      "doneAt": "2026-10-23T19:33:11.369Z",
+      "summary": "ARCHITECTURE §6: los comandos de la persona aceptan [cambio] y se toman desde cualquier carpeta (orden de elección, qué decisión espera cada cambio, se ejecutan en la worktree del cambio) y status muestra todas las worktrees sin las copias heredadas",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-23T19:47:19.676Z",
+  "integration": {
+    "target": "main",
+    "commit": "293637c04a9592fe47511fe9876aa611f066ca80",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/program.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/approve.ts",
+      "packages/cli/src/commands/delegate.ts",
+      "packages/cli/src/commands/human.ts",
+      "packages/cli/src/commands/scope-decision.ts",
+      "packages/cli/src/commands/status.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/flow/active.ts",
+      "packages/cli/src/flow/changes.ts",
+      "packages/cli/src/flow/finish.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/src/store/local.ts",
+      "packages/cli/test/anywhere.test.ts",
+      "packages/cli/test/commands.test.ts",
+      "packages/cli/test/delegate.test.ts",
+      "packages/core/src/cards/human.ts",
+      "packages/core/src/schema/state.ts",
+      "packages/core/test/cards.test.ts"
+    ],
+    "at": "2026-10-23T19:49:16.078Z",
+    "resolved": {
+      "commit": "83cddc7",
+      "at": "2026-10-23T19:54:43.568Z"
+    }
+  }
+}

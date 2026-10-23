@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { relative } from "node:path";
 import {
   isIntegrating,
   type Output,
@@ -7,18 +8,19 @@ import {
   type StatusEntry,
   statusCard,
 } from "@baquia-dev/specty-core";
-import { resolveActive } from "../flow/active";
+import { isFinished } from "../flow/active";
+import { locateChanges } from "../flow/changes";
 import type { Session } from "../session";
-import { listOpenChanges, readSpec } from "../store/changes";
+import { readSpec } from "../store/changes";
 
-/** `specty status`: open changes, their phase and who they wait for. */
+/** `specty status`: the open changes of every worktree, their phase and who they wait for. */
 export async function status(session: Session): Promise<Output> {
-  const current = await resolveActive(session);
-  const changes = await listOpenChanges(session.paths);
+  const located = (await locateChanges(session)).filter(({ change }) => !isFinished(change.state));
   const entries = await Promise.all(
-    changes.map(async (change): Promise<StatusEntry> => {
+    located.map(async ({ change, session: there, current }): Promise<StatusEntry> => {
       const { state } = change;
-      const title = parseSpec(await readSpec(change.files), { language: session.lang }).spec.title;
+      const title = parseSpec(await readSpec(change.files), { language: there.lang }).spec.title;
+      const folder = relative(session.root, there.root);
       return {
         id: state.id,
         kind: state.kind,
@@ -32,8 +34,9 @@ export async function status(session: Session): Promise<Output> {
                 state.closingSubmittedAt !== undefined,
                 isIntegrating(state),
               ).waitingFor,
-        current: current?.state.id === state.id,
+        current,
         pendingScope: state.pending.scopeRequests.map((request) => request.id),
+        ...(folder.length > 0 ? { folder } : {}),
       };
     }),
   );
