@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-comandos-de-la-persona-desde-cualquier-carpeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-comandos-de-la-persona-desde-cualquier-carpeta",
   "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cae56f35d63b38cb9c4be494238144a887cdc470",
+      "attempts": 1,
       "startedAt": "2026-10-23T19:27:42.912Z",
       "doneAt": "2026-10-23T19:31:25.060Z",
-      "summary": "approve, reject, accept, close y cancel aceptan [cambio] y pasan por personSession (commands/human.ts): con id, ese; si no, el de la carpeta actual si espera la decisión; si no, el único que la espera entre todas las worktrees (awaits en flow/changes.ts), o el que la persona elige; el comando corre con la sesión de la carpeta del cambio y una nota lo nombra con su carpeta. Sin candidatos dice que ningún cambio espera esa acción; los agentes no se redirigen. commands.test actualiza el mensaje sin cambios"
+      "summary": "approve, reject, accept, close y cancel aceptan [cambio] y pasan por personSession (commands/human.ts): con id, ese; si no, el de la carpeta actual si espera la decisión; si no, el único que la espera entre todas las worktrees (awaits en flow/changes.ts), o el que la persona elige; el comando corre con la sesión de la carpeta del cambio y una nota lo nombra con su carpeta. Sin candidatos dice que ningún cambio espera esa acción; los agentes no se redirigen. commands.test actualiza el mensaje sin cambios",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "07382fc1e4423e9154c7304606cda19e0ad1eebb",
+      "startedAt": "2026-10-23T19:31:25.346Z",
+      "doneAt": "2026-10-23T19:33:11.369Z",
+      "summary": "ARCHITECTURE §6: los comandos de la persona aceptan [cambio] y se toman desde cualquier carpeta (orden de elección, qué decisión espera cada cambio, se ejecutan en la worktree del cambio) y status muestra todas las worktrees sin las copias heredadas"
     }
   },
   "pending": {

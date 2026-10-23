@@ -67,7 +67,7 @@ kind: standard
   - files: packages/cli/src/flow/changes.ts, packages/cli/src/commands/human.ts, packages/cli/src/program.ts, packages/cli/test/anywhere.test.ts
   - ac: AC1, AC2, AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/anywhere.test.ts test/flow.test.ts
-- [ ] T3: Documentar los comandos desde cualquier carpeta
+- [x] T3: Documentar los comandos desde cualquier carpeta
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check
