@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-verificacion-completa-en-la-pestana-aceptacion",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261022-verificacion-completa-en-la-pestana-aceptacion",
   "baseCommit": "f274d2de0214cfe412f0d30ce7bbb84ce55cd683",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:061611661af42dd37816f8b4b3ff2623dc6c831f367c3d630cb2bc6f3d93e59a",
@@ -100,5 +100,6 @@
     "AC": 5,
     "T": 4,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T03:12:30.281Z"
 }

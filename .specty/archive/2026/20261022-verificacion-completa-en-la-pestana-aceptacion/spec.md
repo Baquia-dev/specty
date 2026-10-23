@@ -89,3 +89,32 @@ Antes de aceptar, la persona puede ejecutar la verificación completa del proyec
 
 - R1: Son 15 archivos, el máximo — dos solo se tocan para hacer sitio (`time.ts` y `sample-records.ts`); si aparece otro, se pide con `specty scope add`.
 - R2: El formato gana un evento que la CLI aún no escribe — queda en Fuera de alcance y en los pendientes del cierre, para que `specty accept` lo registre en su cambio.
+
+## Cierre
+
+### Resumen
+
+La pestaña Aceptación tiene la sección «Verificación completa», encima de los criterios, cuando el proyecto define `verify.full`. Muestra el comando y «Sin ejecutar» o el último resultado («Correcta · 3 s · este minuto» o «Falló · …» con sus últimas líneas). En aceptación, «Ejecutar» la pide a la fuente, y mientras corre se ve el mismo bloque en vivo de Progreso, en un panel de altura fija que se desplaza por dentro. El resultado queda en `audit.jsonl` como `change.verified`, documentado en `docs/formats.md`, así que sigue a la vista al volver. Hay una verificación a la vez por cambio. En el prototipo, la paleta puede hacer que la siguiente falle para ver los dos casos.
+
+### Desviaciones
+
+- **El commit de T1 no compila solo:** `RunRecord.task` pasó a ser opcional y rompió `sample-run.ts`, que era de T2; T2 lo arregló en el commit siguiente.
+- **Arreglo en el navegador (T3):** en el móvil, el comando largo partía el título del divisor; ahí va debajo, junto al estado. El test de la pestaña busca ahora el divisor de «Criterios», porque el primero es el de la verificación completa.
+- **Ajuste al revisar (T4):** el panel en vivo tiene altura fija desde la primera línea y se desplaza por dentro, sin arrastrar la página (AC2 refinado). Es el mismo bloque en Progreso.
+- **Ajuste retirado:** la animación al aparecer el panel no cupo. Con una quinta tarea, el cambio pasaba a tamaño XL, así que se retiró sin tocar la spec (la revisión 3 es igual a la 2) y va en un cambio rápido después de este.
+- **Fallo de Specty:** al aprobar la revisión 3, con todas las tareas ya hechas, la fase quedó en `implementing`. `specty accept` no podía aceptar y ninguna tarea podía avanzarla, así que la persona cambió a mano la fase de `state.json` a `acceptance` antes de aceptar.
+
+### Decisiones
+
+- **Mismo canal en vivo:** la verificación completa usa `watchRun`; una ejecución sin tarea es la completa, así que Progreso la ignora y la sección de Aceptación solo muestra esas.
+- **`change.verified` como `task.verified`:** mismos datos y mismas guardas al leerlo, con una función común (`runOf`).
+- **`verify.full` en cada registro:** la configuración es del proyecto, pero la fuente la añade a cada cambio (`ChangeRecord.verifyFull`) en lugar de abrir otra API de configuración.
+- **Sitio sin tocar imports:** `relativeTime` pasó a `data/time.ts` y las muestras a `data/sample-records.ts`; los archivos de origen los reexportan.
+- **Desplazamiento contenido:** el panel en vivo usa `overscroll-contain`, para que al llegar a sus extremos no se mueva la página.
+
+### Pendientes
+
+- **Animación de la salida en vivo:** el panel se abre con altura y opacidad, y la línea del reloj entra con un desvanecido; sin animación si se reduce el movimiento. Cambio rápido siguiente.
+- **Decidir con la verificación completa:** el aviso bajo «Aceptar resultado» y el diálogo de aceptar con «Ejecutarla antes» o «Aceptar de todos modos». Cambio rápido.
+- **Specty:** que aprobar una revisión sin tareas pendientes lleve a aceptación (y que `doctor` avise del desajuste); que `specty accept` registre `change.verified`; y que el servidor local ejecute `verify.full` y transmita su salida.
+- **Del cambio anterior:** la franja dice «cierre por confirmar» antes de que el agente envíe el cierre.
