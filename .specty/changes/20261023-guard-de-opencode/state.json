@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261023-guard-de-opencode",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-guard-de-opencode",
+  "baseCommit": "afc9376b80ce2052262ca4802069e671f79e23c7",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a2436f55f3014671be43a1f0eb033564a92b1bce444f7c04cfc3b4d8b40f5fd1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ccfe46e818bd8df0bcd03cc427ccba9f08c591ec541ac3dc40c5ab9136d30db6",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:bda2cdde8282bb499bd1a73cdf31bd9adf2565997f2640150966db8014eac5ab",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:d1b726e74418056d5f5bd434eb26b124c5e2e5a14fab847582f850d56a9e9975",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8a94c2f0a37f1674c3ba2cd245d51d693a6fb7fd208f737729bd963012f56bb9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7c9cf2d16c0791b84aa94f4b222237a3c9060bbb659591ac35dbac9c191bb2dd",
+    "at": "2026-10-23T23:26:54.061Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
