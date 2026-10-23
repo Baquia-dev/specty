@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261023-biome-no-formatea-los-hooks-del-agente",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261023-biome-no-formatea-los-hooks-del-agente",
+  "baseCommit": "5841c0528117daa7f461d1ecfd572377d0065582",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:796b27a476fea5cfc21b8f639f260c7a6223af0ac4d4f293fa64b8d635c50a9d",
+    "at": "2026-10-23T20:17:01.287Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
