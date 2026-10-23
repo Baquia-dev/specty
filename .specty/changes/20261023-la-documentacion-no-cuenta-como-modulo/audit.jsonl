@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T14:59:52.428Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261023-la-documentacion-no-cuenta-como-modulo"}}
+{"ts":"2026-10-23T15:02:47.093Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:80e42198bd488a20d625661fc2b9c84a0d270bd1b66ded497b1eb98bd4643e45","size":"M","warnings":0}}
+{"ts":"2026-10-23T15:15:32.195Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:80e42198bd488a20d625661fc2b9c84a0d270bd1b66ded497b1eb98bd4643e45","channel":"tty"}}
