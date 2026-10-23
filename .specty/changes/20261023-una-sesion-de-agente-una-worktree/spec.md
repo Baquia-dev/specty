@@ -58,7 +58,7 @@ Una sesión de agente no puede saltar a la worktree de otro cambio mientras el s
   - files: packages/cli/src/store/local.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/install/agents.ts, packages/cli/test/sessions.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/sessions.test.ts test/setup.test.ts test/enforce.test.ts
-- [ ] T3: Documentar una sesión, una worktree
+- [x] T3: Documentar una sesión, una worktree
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check

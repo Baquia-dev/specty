@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-una-sesion-de-agente-una-worktree",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-una-sesion-de-agente-una-worktree",
   "baseCommit": "ab68b0a2fa56f85a115f0dcaf05f2016003ea58f",
   "revision": 1,
@@ -48,14 +48,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/enforce/sessions.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "1eefbba90418ff48e6b69933059a9e1e75f4929f",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:44:39.175Z",
       "doneAt": "2026-10-23T21:48:17.304Z",
-      "summary": "El guard ve EnterWorktree (init lo añade al matcher de PreToolUse): enforce/sessions.ts arma la acción enter con la carpeta de destino y la atadura de la sesión (common/specty/sessions/<session_id>.json, con su cambio solo si sigue abierto en esa carpeta) y, si se permite, ata la sesión al destino. Sin session_id no se juzga; una carpeta que ya no existe libera la sesión. enforce/sessions.ts entró por la ampliación S1"
+      "summary": "El guard ve EnterWorktree (init lo añade al matcher de PreToolUse): enforce/sessions.ts arma la acción enter con la carpeta de destino y la atadura de la sesión (common/specty/sessions/<session_id>.json, con su cambio solo si sigue abierto en esa carpeta) y, si se permite, ata la sesión al destino. Sin session_id no se juzga; una carpeta que ya no existe libera la sesión. enforce/sessions.ts entró por la ampliación S1",
+      "scopeExtra": [
+        "packages/cli/src/enforce/sessions.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8dab2d2365136782229fe24420d40ca757311ef3",
+      "startedAt": "2026-10-23T21:48:17.689Z",
+      "doneAt": "2026-10-23T21:51:05.470Z",
+      "summary": "ARCHITECTURE §10: el guard no deja a una sesión entrar en otra worktree mientras su cambio sigue abierto (atadura por session_id en la carpeta común, se libera al cerrar, cancelar o desaparecer la carpeta)"
     }
   },
   "pending": {
