@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-init-hace-el-commit-de-sus-archivos",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-init-hace-el-commit-de-sus-archivos",
   "baseCommit": "475bce1518564e8068f3e3ab6940bb0e73ff3119",
   "revision": 1,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f2a34b0fe3851b43765891414717bc24a6c18618",
+      "attempts": 1,
       "startedAt": "2026-10-23T20:54:05.549Z",
       "doneAt": "2026-10-23T20:57:51.557Z",
-      "summary": "init guarda los archivos con cambios antes de empezar, junta los que escribe (config, AGENTS.md, CLAUDE.md, la configuración no local de Claude Code y Cursor, hooks de husky o lefthook) y al final commitInstall (install/commit.ts) hace el commit, con recibo init y Specty-Init, de los que ahora difieren de HEAD y no tenían cambios previos; nombra los que quedan fuera, no incluye lo preparado por la persona y no hace commit con un cambio activo en la carpeta"
+      "summary": "init guarda los archivos con cambios antes de empezar, junta los que escribe (config, AGENTS.md, CLAUDE.md, la configuración no local de Claude Code y Cursor, hooks de husky o lefthook) y al final commitInstall (install/commit.ts) hace el commit, con recibo init y Specty-Init, de los que ahora difieren de HEAD y no tenían cambios previos; nombra los que quedan fuera, no incluye lo preparado por la persona y no hace commit con un cambio activo en la carpeta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "abe48f45e6416531a0635bcac9d4a3ae44697fd8",
+      "startedAt": "2026-10-23T20:57:51.865Z",
+      "doneAt": "2026-10-23T20:59:51.497Z",
+      "summary": "ARCHITECTURE §9: el commit de init entre los commits que hace Specty (qué entra, qué queda fuera y que no se hace con un cambio activo); formats.md §7: el trailer Specty-Init"
     }
   },
   "pending": {

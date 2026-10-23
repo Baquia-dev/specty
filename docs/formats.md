@@ -340,6 +340,7 @@ Specty-Agent: claude-code
 | Manual dentro del alcance | `Specty-Change`, `Specty-Manual: true` |
 | Retro | `Specty-Change` (del cambio retro o del activo), `Specty-Retro: true` |
 | Spike | Además, `Specty-Kind: spike`; el CI impide fusionarlo a la rama principal |
+| Instalación (`init`) | Solo `Specty-Init: true`: no pertenece a ningún cambio |
 
 ## 8. Bloque de AGENTS.md
 

@@ -62,7 +62,7 @@ kind: standard
   - files: packages/cli/src/install/commit.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-commit.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-commit.test.ts test/setup.test.ts test/install.test.ts
-- [ ] T3: Documentar el commit de `init`
+- [x] T3: Documentar el commit de `init`
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm check

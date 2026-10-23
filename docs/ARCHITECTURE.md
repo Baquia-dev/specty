@@ -218,6 +218,7 @@ Solo se incorporan los cambios `standard` y `quick` con rama y en modo `individu
 - Al aprobar una revisión: solo `.specty/changes/<id>/` (`docs(spec): …`).
 - En `task done`: el código de la tarea, junto con `state.json` y `audit.jsonl`.
 - Al cerrar: el merge de la rama principal en la del cambio, si avanzó, y el movimiento a `.specty/archive/`.
+- En `init`: los archivos que escribe y que git sigue (`config.yaml`, `AGENTS.md`, `CLAUDE.md`, la configuración no local del guard de Claude Code y de Cursor, los hooks de husky o lefthook), en la rama de la carpeta y sin spec, porque es la instalación de Specty (`chore(specty): …`, `Specty-Init: true`). Así la carpeta principal queda limpia, y ningún cierre se bloquea por esos archivos. Quedan fuera los que ya tenían cambios de la persona (la salida los nombra), lo que ella tenga preparado y los archivos locales. Con un cambio activo en la carpeta, `init` no hace el commit.
 
 **Recibos.** Antes de cada commit, Specty guarda en `.git/specty/receipts.json` el hash del índice (`git write-tree`). El hook `pre-commit` acepta el commit si encuentra un recibo válido para ese índice, y lo consume. Así, un agente que ejecuta `git commit` por su cuenta no pasa, aunque copie los trailers.
 
