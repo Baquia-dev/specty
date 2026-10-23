@@ -147,6 +147,32 @@ describe("decisions and tabs", () => {
     ).toBe("closing");
   });
 
+  it("carries the history from the audit, oldest first", () => {
+    expect(deriveView(record()).history).toEqual([]);
+    const audit = [
+      {
+        ts: "2026-10-20T14:00:00Z",
+        actor: "agent",
+        tool: "codex",
+        event: "spec.proposed",
+        data: { revision: 2 },
+      },
+      {
+        ts: "2026-10-20T15:00:00Z",
+        actor: "human",
+        event: "spec.approved",
+        data: { revision: 2, channel: "tty" },
+      },
+    ] as const;
+    const history = deriveView({ ...record(), audit }).history;
+    expect(history.map((entry) => [entry.at, entry.actor, entry.type, entry.title.es])).toEqual([
+      ["2026-10-20T14:00:00Z", "agent", "spec", "Propuso la revisión 2"],
+      ["2026-10-20T15:00:00Z", "human", "spec", "Aprobó la revisión 2"],
+    ]);
+    expect(history[0]?.tool).toBe("codex");
+    expect(history[1]?.details.map((detail) => detail.en)).toEqual(["In the terminal"]);
+  });
+
   it("carries the closing the agent wrote, in its parts (AC1)", () => {
     expect(deriveView(record()).closing).toBeUndefined();
     const closing = `${SPEC}

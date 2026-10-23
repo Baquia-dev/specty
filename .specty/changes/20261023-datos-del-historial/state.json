@@ -50,12 +50,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "48176e2aeccb166be48a1c9f590a68ba4d2d18c1",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:56:15.040Z",
       "doneAt": "2026-10-23T11:00:09.926Z",
-      "summary": "data/history.ts: historyOf(audit) convierte cada evento de audit.jsonl en una entrada { at, actor, tool?, event, type, title, details } con título y detalles en español e inglés, del más antiguo al más reciente. Cubre creación (carril, rama, sigue a), propuestas (tamaño, avisos), supuestos (uno con comentario, o la lista de rechazados que escribe approve), cambios pedidos, aprobaciones (canal), tareas (base, commit, resumen), verificaciones de tarea y completa (veredicto, duración, comando, código de salida), alcance (la solicitud entera de la CLI o solo su id; aprobada, rechazada o por la política), ajustes, aceptación, cierre, cancelación y retro. Un spec.proposed después de change.accepted es «Envió el cierre». Tipos para filtrar: spec, tasks, verifications, scope, adjustments, closing y other. Lee cada campo con cuidado: un evento desconocido o con datos de otro tipo aparece con su nombre y lo que se pueda leer. Tests: una historia completa de la creación al cierre, las formas del alcance, ajustes/cancelación/retro/cambio rápido, y eventos desconocidos o incompletos."
+      "summary": "data/history.ts: historyOf(audit) convierte cada evento de audit.jsonl en una entrada { at, actor, tool?, event, type, title, details } con título y detalles en español e inglés, del más antiguo al más reciente. Cubre creación (carril, rama, sigue a), propuestas (tamaño, avisos), supuestos (uno con comentario, o la lista de rechazados que escribe approve), cambios pedidos, aprobaciones (canal), tareas (base, commit, resumen), verificaciones de tarea y completa (veredicto, duración, comando, código de salida), alcance (la solicitud entera de la CLI o solo su id; aprobada, rechazada o por la política), ajustes, aceptación, cierre, cancelación y retro. Un spec.proposed después de change.accepted es «Envió el cierre». Tipos para filtrar: spec, tasks, verifications, scope, adjustments, closing y other. Lee cada campo con cuidado: un evento desconocido o con datos de otro tipo aparece con su nombre y lo que se pueda leer. Tests: una historia completa de la creación al cierre, las formas del alcance, ajustes/cancelación/retro/cambio rápido, y eventos desconocidos o incompletos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "08b7aa2d34f7d1bf16d38adc34a5a407f647845f",
+      "startedAt": "2026-10-23T11:00:10.184Z",
+      "doneAt": "2026-10-23T11:01:54.647Z",
+      "summary": "SpectyData y ActionError (con sus mensajes de solo lectura y sin diffs) pasan a data/source.ts, y records.ts los reexporta, así nadie que los importa cambia; records.ts baja de 300 a 221 líneas, y watchRun recupera su comentario completo. ChangeView.history: historyOf(audit) de cada cambio, del más antiguo al más reciente, derivado en views.ts. Test: la historia en la vista (vacía sin auditoría; actor, herramienta, tipo, título y detalle). Pasan los 358 tests de la UI."
     }
   },
   "pending": {
