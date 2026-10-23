@@ -71,17 +71,37 @@ export function evaluateTaskScope(input: ScopeInput): ScopeEvaluation {
   return { verdicts, outOfScope, ok: outOfScope.length === 0 };
 }
 
+/** Why a path may join a task's scope without a person. */
+export type AutoBasis = "test" | "generated" | "planned";
+
 /**
- * Whether a scope request can be approved by policy. Only tests and generated files outside
- * sensitive paths qualify; everything else needs a person.
+ * Why `path` may join a task's scope without a person: it is a test, a generated file, or a
+ * file the approved spec already lists in Files (`planned`), which the person approved with it.
+ * A sensitive path always needs a person.
  */
-export function decideScopeRequest(paths: readonly string[], rules: ScopeRules): "auto" | "human" {
+export function autoBasis(
+  path: string,
+  rules: ScopeRules,
+  planned: readonly string[] = [],
+): AutoBasis | undefined {
+  if (matchesAny(path, rules.sensitive)) return undefined;
+  if (isTestFile(path)) return "test";
+  if (matchesAny(path, rules.generated)) return "generated";
+  if (matchesAny(path, planned)) return "planned";
+  return undefined;
+}
+
+/**
+ * Whether a scope request can be approved by policy: every path has an `autoBasis`. With
+ * `autoApprove: none`, everything needs a person.
+ */
+export function decideScopeRequest(
+  paths: readonly string[],
+  rules: ScopeRules,
+  planned: readonly string[] = [],
+): "auto" | "human" {
   if (rules.autoApprove === "none" || paths.length === 0) return "human";
-  const safe = paths.every(
-    (path) =>
-      !matchesAny(path, rules.sensitive) && (isTestFile(path) || matchesAny(path, rules.generated)),
-  );
-  return safe ? "auto" : "human";
+  return paths.every((path) => autoBasis(path, rules, planned) !== undefined) ? "auto" : "human";
 }
 
 export function isSensitive(path: string, rules: Pick<ScopeRules, "sensitive">): boolean {

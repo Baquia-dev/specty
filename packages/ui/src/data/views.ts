@@ -14,6 +14,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { closingOf } from "./closing";
 import { deriveDelta } from "./delta";
+import { historyOf } from "./history";
 import { progressOf } from "./progress";
 import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind, ReviewView } from "./records";
 import { deriveReview } from "./review";
@@ -112,6 +113,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
     },
     progress: progressOf(spec, state, record.audit ?? [], record.verifyFull),
     ...closingIn(spec),
+    history: historyOf(record.audit ?? []),
   };
 }
 

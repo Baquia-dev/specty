@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  autoBasis,
   blockedCard,
   type ChangeState,
   classifyPath,
   decideScopeRequest,
   headerOf,
+  matchesAny,
   nextCard,
   normalizePath,
   type Output,
@@ -90,19 +92,48 @@ export async function scopeAdd(
       nextCard({ change: await changeView(session, active), dirty: [] }, cards),
     );
   }
-  if (decideScopeRequest(missing, rules) === "auto") {
+  // The change's scope: what the approved spec lists in Files, both sides of each rename.
+  const planned = (spec.sections.files?.items ?? []).flatMap((entry) =>
+    entry.from === undefined ? [entry.path] : [entry.from, entry.path],
+  );
+  if (decideScopeRequest(missing, rules, planned) === "auto") {
+    const decided = missing.map((path) => ({
+      path,
+      basis: autoBasis(path, rules, planned),
+      tasks: (spec.sections.tasks?.items ?? [])
+        .filter((item) => item.id !== taskId && matchesAny(path, item.files))
+        .map((item) => item.id),
+    }));
+    const foreseen = decided.filter((entry) => entry.basis === "planned");
     const updated = await commitState(
       session,
       active,
       withExtras(state, taskId, missing),
       "scope.decided",
-      { task: taskId, paths: missing, reason: reason.trim(), decision: "auto" },
+      {
+        task: taskId,
+        paths: missing,
+        reason: reason.trim(),
+        decision: "auto",
+        basis: Object.fromEntries(decided.map((entry) => [entry.path, entry.basis])),
+        plannedFor: Object.fromEntries(foreseen.map((entry) => [entry.path, entry.tasks])),
+      },
       "specty",
     );
+    const described = decided.map((entry) => {
+      if (entry.basis !== "planned") return entry.path;
+      const tasks = entry.tasks.join(", ");
+      return entry.tasks.length === 0
+        ? t(`${entry.path} (ya en Archivos)`, `${entry.path} (already in Files)`)
+        : t(
+            `${entry.path} (ya en Archivos, prevista para ${tasks})`,
+            `${entry.path} (already in Files, planned for ${tasks})`,
+          );
+    });
     return withLead(
       t(
-        `Ampliación aprobada por la política: ${missing.join(", ")}.`,
-        `Extension approved by policy: ${missing.join(", ")}.`,
+        `Ampliación aprobada por la política: ${described.join(", ")}.`,
+        `Extension approved by policy: ${described.join(", ")}.`,
       ),
       nextCard({ change: await changeView(session, updated), dirty: [] }, cards),
     );

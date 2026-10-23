@@ -131,6 +131,8 @@ export {
 export { isGoverned } from "./scope/governed";
 export { isLockfileFor, isManifest } from "./scope/lockfiles";
 export {
+  type AutoBasis,
+  autoBasis,
   type ChangedFile,
   type ChangeStatus,
   classifyPath,

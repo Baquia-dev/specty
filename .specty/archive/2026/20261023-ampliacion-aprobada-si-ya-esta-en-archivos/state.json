@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "20261023-ampliacion-aprobada-si-ya-esta-en-archivos",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261023-ampliacion-aprobada-si-ya-esta-en-archivos",
+  "baseCommit": "be5b16878c9848945445c40e66144e2fbfc16e66",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d470d9e4f17866d7104218dc444509bb2a1369b477a5bfa9a3acc96069cd02b4",
+    "at": "2026-10-23T10:58:42.023Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fc3758e894a9efe6d0f96cc999364114b926921cfd42582d477b4880a74cb656",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d4126af9b0009fb7ffb4da13082e5f9ee80c404042e9fdec78051336ba5f90c5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:08d0574427877274af0aef608b1ec64fa85211a2a1bfc7e18ab0b7c20f64bfc7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3e089a14a6db4503526cfaa96dffdb42dd9498c8",
+      "attempts": 1,
+      "startedAt": "2026-10-23T11:01:17.361Z",
+      "doneAt": "2026-10-23T11:01:55.185Z",
+      "summary": "autoBasis da el motivo de cada ruta (test, generated o planned) y decideScopeRequest aprueba también lo previsto en Archivos, nunca lo sensible",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e5e414c108b65bdb09b32c12ff1ad85893f55c7a",
+      "attempts": 1,
+      "startedAt": "2026-10-23T11:01:55.506Z",
+      "doneAt": "2026-10-23T11:04:07.529Z",
+      "summary": "scope add aprueba solo lo previsto en Archivos, anota la tarea que lo preveía y registra basis y plannedFor en scope.decided; formats.md §4 y §6 y ARCHITECTURE §8 al día",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-23T14:33:25.281Z"
+}

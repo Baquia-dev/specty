@@ -156,7 +156,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - archivos generados declarados (`**/*.g.dart`, `**/*.freezed.dart`);
   - el lockfile, si el manifiesto (`package.json`, `pubspec.yaml`…) está en el alcance.
 - **Rutas sensibles** (migraciones, auth, CI, infraestructura, configuración de Specty): nunca se aprueban solas.
-- **Ampliación**: `scope add` evalúa la política. Si no aplica, crea una solicitud que la UI muestra al momento. Mientras está pendiente, el agente puede seguir trabajando dentro de su alcance, pero no completar la tarea.
+- **Ampliación**: `scope add` evalúa la política. Con `tests-and-generated` aprueba sola los tests, los archivos generados y los que ya están en la sección Archivos de la spec aprobada (son alcance del cambio y solo cambian de tarea), salvo las rutas sensibles. Si no aplica, crea una solicitud que la UI muestra al momento. Mientras está pendiente, el agente puede seguir trabajando dentro de su alcance, pero no completar la tarea.
 - Durante una tarea activa, todo cambio en el árbol se atribuye a esa tarea: Specty no distingue quién teclea.
 
 ## 9. Git

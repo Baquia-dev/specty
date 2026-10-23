@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261023-datos-del-historial",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261023-datos-del-historial",
+  "baseCommit": "029df601ae98625368d691ee9cf8853ed43014ff",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3bcfdb5feb151956261e2a2cefcb0283e27332b7870338d0abf987939204ff71",
+    "at": "2026-10-23T10:50:00.952Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:14d4a3499dbac68fe60458f71858fbee4d725d90d2be30402b37b8515320eabb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:76dac7f51224b9f571f59621a2fbd8477476fbd3cb25553ba3e39ed0be93687e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a2f194c939df0284a2408b7cb938e8a3bb94cfae6cf11a65e7f0b5e38f7b8227",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ee8bf4a983e1c8deab636130094abb1a0efd5b5048758f82de3bd1e5b6213497",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:1ea0c61e1389a0e0b8cd8d1d4f6d5a4e5d8a95f102a195d759fae95e0d0e57dc",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:1ec74bfee4bcb462690aab495a1c5864bbee6ae9a3ed082c0048846aa3733102",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "48176e2aeccb166be48a1c9f590a68ba4d2d18c1",
+      "attempts": 1,
+      "startedAt": "2026-10-23T10:56:15.040Z",
+      "doneAt": "2026-10-23T11:00:09.926Z",
+      "summary": "data/history.ts: historyOf(audit) convierte cada evento de audit.jsonl en una entrada { at, actor, tool?, event, type, title, details } con título y detalles en español e inglés, del más antiguo al más reciente. Cubre creación (carril, rama, sigue a), propuestas (tamaño, avisos), supuestos (uno con comentario, o la lista de rechazados que escribe approve), cambios pedidos, aprobaciones (canal), tareas (base, commit, resumen), verificaciones de tarea y completa (veredicto, duración, comando, código de salida), alcance (la solicitud entera de la CLI o solo su id; aprobada, rechazada o por la política), ajustes, aceptación, cierre, cancelación y retro. Un spec.proposed después de change.accepted es «Envió el cierre». Tipos para filtrar: spec, tasks, verifications, scope, adjustments, closing y other. Lee cada campo con cuidado: un evento desconocido o con datos de otro tipo aparece con su nombre y lo que se pueda leer. Tests: una historia completa de la creación al cierre, las formas del alcance, ajustes/cancelación/retro/cambio rápido, y eventos desconocidos o incompletos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "08b7aa2d34f7d1bf16d38adc34a5a407f647845f",
+      "attempts": 1,
+      "startedAt": "2026-10-23T11:00:10.184Z",
+      "doneAt": "2026-10-23T11:01:54.647Z",
+      "summary": "SpectyData y ActionError (con sus mensajes de solo lectura y sin diffs) pasan a data/source.ts, y records.ts los reexporta, así nadie que los importa cambia; records.ts baja de 300 a 221 líneas, y watchRun recupera su comentario completo. ChangeView.history: historyOf(audit) de cada cambio, del más antiguo al más reciente, derivado en views.ts. Test: la historia en la vista (vacía sin auditoría; actor, herramienta, tipo, título y detalle). Pasan los 358 tests de la UI.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "45107fc773602749f06cec8873cd4f1cedb77176",
+      "attempts": 2,
+      "startedAt": "2026-10-23T11:01:54.983Z",
+      "doneAt": "2026-10-23T11:05:27.626Z",
+      "summary": "data/sample-history.ts: la historia de cada cambio de ejemplo, de su creación a su fase actual, unida por orden de tiempo a los eventos que ya traían (tareas, verificaciones, alcance); el agente declara su herramienta. Evolución: dos propuestas con cambios pedidos y A1 confirmado; Justificar faltas: aprobación de la revisión 2, sus tareas, los ajustes pedidos y la revisión 3; Boletines, Asistencia y Login: creación, propuesta y aprobación antes de sus tareas; Recordatorios: tarea sin verificación ni commit (como muestra su aceptación), aceptación y cierre enviado; Modo oscuro: solo creado; Redondeo (rápido): de la creación al cierre al aceptar; Chat docentes: cancelado con su motivo. sampleRecords los aplica con withHistory. Test: cada historia empieza en la creación y va en orden de tiempo, termina donde debe (cierre enviado, cerrado, cancelado, supuesto confirmado) y conserva los eventos que ya había. El test de los avisos de 5 s (toast.test.ts) falló una vez por tiempo con la carga de la máquina en 20 y pasó al repetirlo.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-23T14:34:11.284Z"
+}
