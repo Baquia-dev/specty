@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261023-cancelar-un-cambio-sin-aprobar",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-cancelar-un-cambio-sin-aprobar",
   "baseCommit": "1bb581b0bca4485c6a417f13cf0d667c91ee41b0",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e0b79d7a79231321cf110c2823889ba7f9fe6115d82d422178e0bf39b90b37e8",
+    "at": "2026-10-23T21:25:36.375Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5773d2fc6983e70d8d4909b1a6199440e514a1eb",
+      "startedAt": "2026-10-23T21:25:36.873Z",
+      "doneAt": "2026-10-23T21:26:44.059Z",
+      "summary": "commitArchive solo incluye la carpeta antigua del cambio si git la sigue: un cambio sin aprobar nunca se commiteó, y git add fallaba con «pathspec did not match» al cancelarlo. Test: cancelar en borrador y en revisión archiva y deja la carpeta limpia"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e0b79d7a79231321cf110c2823889ba7f9fe6115d82d422178e0bf39b90b37e8",
-    "at": "2026-10-23T21:25:36.375Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

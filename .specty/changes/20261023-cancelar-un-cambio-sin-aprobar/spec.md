@@ -15,7 +15,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Cancelar un cambio que nunca se aprobó
+- [x] T1: Cancelar un cambio que nunca se aprobó
   - files: packages/cli/src/flow/finish.ts, packages/cli/test/flow.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts
   - type: fix

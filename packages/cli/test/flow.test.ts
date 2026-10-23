@@ -174,6 +174,24 @@ describe("a standard change from request to closing", () => {
   });
 });
 
+describe("cancelling", () => {
+  it("archives a change that was never approved, in draft or in review", async () => {
+    for (const propose of [false, true]) {
+      const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });
+      await cli(root, ["new", "Saludo personalizado"]);
+      await writeFiles(root, { [SPEC_PATH]: SPEC });
+      if (propose) expect((await cli(root, ["propose"])).code).toBe(0);
+      const cancelled = await cli(root, ["cancel", "--reason", "Ya no hace falta"], {
+        terminal: person(),
+      });
+      expect(cancelled.code).toBe(0);
+      expect(cancelled.out).toContain("Cambio cancelado y archivado");
+      expect(await exists(`${root}/${ARCHIVE}/${CHANGE}/spec.md`)).toBe(true);
+      expect(git(root, "status", "--porcelain")).toBe("");
+    }
+  });
+});
+
 describe("the quick lane", () => {
   it("goes from a one-task spec to an archived change", async () => {
     const root = await tempRepo({ "src/button.ts": "Sing in\n", ".specty/config.yaml": CONFIG() });

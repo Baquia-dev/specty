@@ -34,7 +34,12 @@ export async function commitArchive(
   after: StoredChange,
   subject: string,
 ): Promise<string> {
-  const paths = [session.paths.relative(before.files.dir), session.paths.relative(after.files.dir)];
+  // A change never approved was never committed: git does not know its old folder.
+  const old = session.paths.relative(before.files.dir);
+  const paths = [
+    ...((await session.git.isTracked(old)) ? [old] : []),
+    session.paths.relative(after.files.dir),
+  ];
   return commitWithReceipt(session, {
     subject,
     trailers: changeTrailers(session, after.state.id),
