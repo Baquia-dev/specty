@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261023-rama-destino-configurable",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-rama-destino-configurable",
+  "baseCommit": "05c8d351dbcf89b2519252e623748e7b6e4c0f2a",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e75bcde8f440988086b7de5439d6142b672499bcc086e559b0beb6cc78d452c0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:be919fb2dad21f17fd85ec04729975e40a29e0e9b4de06524c10378cda005ca1",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b8e12ecf7d449220d114ae41f4f56ea1fe4dfbfad47cab3f6cbd3b1f782a5b93",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:30863e3ffbf56fa830ad426d2220fa6307d1d1b16809718cfc4ccb3d6f8e5238",
+    "at": "2026-10-23T18:47:55.310Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
