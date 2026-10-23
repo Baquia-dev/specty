@@ -2,24 +2,25 @@
   "schema": 1,
   "id": "20261022-verificacion-completa-en-la-pestana-aceptacion",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261022-verificacion-completa-en-la-pestana-aceptacion",
   "baseCommit": "f274d2de0214cfe412f0d30ce7bbb84ce55cd683",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:f476e4b8f869273ac17c50c01a3338ca91a43aca666c9706eb6a9363e0bf3a95",
-    "at": "2026-10-23T02:14:33.839Z",
+    "revision": 2,
+    "hash": "sha256:061611661af42dd37816f8b4b3ff2623dc6c831f367c3d630cb2bc6f3d93e59a",
+    "at": "2026-10-23T02:47:21.711Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
     "level": "L",
-    "score": 17,
+    "score": 18,
     "adjust": 0,
     "reasons": [
       "15 archivos",
-      "2 módulos"
+      "2 módulos",
+      "4 tareas"
     ]
   },
   "items": {
@@ -73,12 +74,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "610bd8d7283fb65c09012d90f3a0cd0ee0099b4e",
+      "attempts": 1,
       "startedAt": "2026-10-23T02:19:47.909Z",
       "doneAt": "2026-10-23T02:29:21.910Z",
-      "summary": "acceptance/full-verification.ts: sp-full-verification, encima de «Criterios» solo si el proyecto tiene verify.full. Muestra el comando en el divisor (en el móvil, debajo), «Sin ejecutar» o el último resultado («Correcta · 3 s · este minuto» / «Falló · …» con «Ver salida», abierta al fallar) y, en aceptación, «Ejecutar» o «Ejecutar de nuevo», que llama a verifyChange (un fallo de la fuente sale en un aviso). Se suscribe a watchRun y, mientras corre una ejecución sin tarea, muestra el bloque en vivo de Progreso. live-output.ts: la tarea es opcional; sin ella, la etiqueta y los anuncios hablan de la verificación completa («Verificando todo el cambio…»). acceptance-tab.ts pone la sección; su test busca ahora el divisor de los criterios. docs/ui.md: la verificación completa en Aceptación. 4 tests. Comprobado a 390 y 1280 px, en claro y oscuro: idle, en vivo, ocultar y mostrar, correcta, fallida con el interruptor de la paleta, y el resultado al volver desde la Bandeja."
+      "summary": "acceptance/full-verification.ts: sp-full-verification, encima de «Criterios» solo si el proyecto tiene verify.full. Muestra el comando en el divisor (en el móvil, debajo), «Sin ejecutar» o el último resultado («Correcta · 3 s · este minuto» / «Falló · …» con «Ver salida», abierta al fallar) y, en aceptación, «Ejecutar» o «Ejecutar de nuevo», que llama a verifyChange (un fallo de la fuente sale en un aviso). Se suscribe a watchRun y, mientras corre una ejecución sin tarea, muestra el bloque en vivo de Progreso. live-output.ts: la tarea es opcional; sin ella, la etiqueta y los anuncios hablan de la verificación completa («Verificando todo el cambio…»). acceptance-tab.ts pone la sección; su test busca ahora el divisor de los criterios. docs/ui.md: la verificación completa en Aceptación. 4 tests. Comprobado a 390 y 1280 px, en claro y oscuro: idle, en vivo, ocultar y mostrar, correcta, fallida con el interruptor de la paleta, y el resultado al volver desde la Bandeja.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,7 +89,7 @@
   "maxIds": {
     "A": 7,
     "AC": 5,
-    "T": 3,
+    "T": 4,
     "R": 2
   }
 }

@@ -32,7 +32,7 @@ Antes de aceptar, la persona puede ejecutar la verificación completa del proyec
 ## Criterios de aceptación
 
 - AC1: CUANDO el proyecto tiene `verify.full` y la persona abre la pestaña Aceptación ENTONCES ve «Verificación completa» con su comando y su último resultado o «Sin ejecutar», y en aceptación el botón para ejecutarla.
-- AC2: CUANDO pulsa «Ejecutar» ENTONCES ve la salida en vivo con el reloj, el comando y las líneas con sus colores, puede ocultarla o volver al final, y el lector de pantalla anuncia que empezó y cómo terminó.
+- AC2: CUANDO pulsa «Ejecutar» ENTONCES ve la salida en vivo con el reloj, el comando y las líneas con sus colores, en un panel de altura fija que se desplaza por dentro cuando las líneas no caben, puede ocultarla o volver al final, y el lector de pantalla anuncia que empezó y cómo terminó.
 - AC3: CUANDO la verificación termina ENTONCES queda su resultado, correcto o fallido, con las últimas líneas si falló, y sigue ahí al volver a la página.
 - AC4: CUANDO ya corre una verificación en el cambio, o la fuente no puede ejecutarla, ENTONCES un aviso lo explica y no empieza otra.
 - AC5: CUANDO el proyecto no tiene `verify.full` ENTONCES la sección no aparece.
@@ -79,6 +79,11 @@ Antes de aceptar, la persona puede ejecutar la verificación completa del proyec
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro: ejecutar la verificación completa de «Panel de asistencia por curso», ver llegar las líneas, ocultar y mostrar, el resultado al terminar y tras recargar, y el caso fallido con el interruptor de la paleta.
+- [ ] T4: El panel en vivo con altura fija
+  - files: packages/ui/src/progress/live-output.ts, docs/ui.md
+  - ac: AC2
+  - verify: pnpm check
+  - notes: Ajuste pedido al revisar el resultado. El panel de la salida en vivo tiene una altura fija desde la primera línea, en vez de crecer hasta su máximo, y se desplaza por dentro cuando no caben; es el mismo bloque en Progreso. Comprobar en el navegador a 390 y 1280 px que no cambia de alto mientras llegan las líneas.
 
 ## Riesgos
 
