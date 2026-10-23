@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-aprobar-una-revision-sin-tareas-pendientes-pasa",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-aprobar-una-revision-sin-tareas-pendientes-pasa",
   "baseCommit": "3d77ecbc286a0e60fcbb5e461dc569a9d0ba0cc1",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9f2568131f180ed7f0c80037ece91710b2eb29a7a0749f6339accd426ad30d91",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a4a3f4ece5d99be70600f5cbf1a090350df2223b",
+      "attempts": 1,
       "startedAt": "2026-10-23T05:17:52.627Z",
       "doneAt": "2026-10-23T05:19:57.328Z",
-      "summary": "cli/commands/approve.ts: cuenta las tareas de la spec que se aprueba cuyo estado no es done (como task done) y las pasa en el evento approve; sin ninguna, el cambio pasa a aceptación. cli/test/flow.test.ts: test del caso que atascó un cambio real: hechas las dos tareas, se pide un ajuste, se propone la spec sin cambios, se aprueba y el cambio queda en aceptación, y specty accept lo acepta. pnpm check en verde."
+      "summary": "cli/commands/approve.ts: cuenta las tareas de la spec que se aprueba cuyo estado no es done (como task done) y las pasa en el evento approve; sin ninguna, el cambio pasa a aceptación. cli/test/flow.test.ts: test del caso que atascó un cambio real: hechas las dos tareas, se pide un ajuste, se propone la spec sin cambios, se aprueba y el cambio queda en aceptación, y specty accept lo acepta. pnpm check en verde.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "A": 3,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T05:21:35.155Z"
 }

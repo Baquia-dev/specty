@@ -51,3 +51,25 @@ Hoy, aprobar una revisión siempre deja el cambio en implementación, y solo `sp
   - files: packages/cli/src/commands/approve.ts, packages/cli/test/flow.test.ts
   - ac: AC1, AC2
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+Aprobar una revisión cuyas tareas están todas hechas lleva el cambio a aceptación, como al terminar la última tarea, en lugar de dejarlo en implementación sin nada que hacer. El evento `approve` de la máquina de estados lleva las tareas pendientes, y `specty approve` las cuenta como `specty task done`. Una épica sigue pasando a implementación y una retro sigue terminando. Un test de la CLI reproduce el caso que atascó un cambio real: retirar un ajuste, proponer la spec sin cambios, aprobarla y aceptar.
+
+### Desviaciones
+
+- **El commit de T1 no compila solo en la CLI:** el evento `approve` exige `remainingTasks` y `approve.ts` no lo enviaba hasta T2. Es el compilador obligando a dar el dato, que es lo que se buscaba.
+- **Sin el diagrama:** `docs/ARCHITECTURE.md` habría sido un tercer módulo; quedó fuera desde la spec.
+
+### Decisiones
+
+- **El dato va en el evento:** como en `taskDone`, la máquina recibe las tareas pendientes en lugar de leer el estado, para seguir siendo pura y que nadie pueda olvidar el dato.
+- **Mismo conteo que `task done`:** tareas de la spec cuyo estado no es `done`.
+
+### Pendientes
+
+- **Documentación:** que el diagrama de `docs/ARCHITECTURE.md` §4 muestre que aprobar sin tareas pendientes va a aceptación.
+- **Detección:** que `specty doctor` avise de un cambio en implementación sin tareas pendientes, y cómo repararlo.
+- **Recompilar la CLI** (`pnpm --filter @baquia-dev/specty build`) para que el `specty` instalado use el arreglo.
