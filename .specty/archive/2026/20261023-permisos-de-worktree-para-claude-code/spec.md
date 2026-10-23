@@ -19,3 +19,9 @@ Cada cambio vive en su worktree, y en Claude Code el agente entra en ella con `E
 - [x] T1: Permisos de worktree en la instalación de Claude Code
   - files: packages/cli/src/install/agents.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+init añade a la configuración de Claude Code donde instala el guard los permisos EnterWorktree y ExitWorktree (allow) y ExitWorktree(action:remove) (ask), después de las reglas que ya hubiera y sin duplicar al repetir init. ARCHITECTURE §10 lo documenta.
