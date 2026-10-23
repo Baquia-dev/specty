@@ -170,4 +170,23 @@ describe("phasePermissions", () => {
     expect(phasePermissions("closing", true).waitingFor).toBe("human");
     expect(phasePermissions("adjusting").spec).toBe("append-only");
   });
+
+  it("opens the incorporated files and waits for the agent while an incorporation is pending", () => {
+    expect(phasePermissions("closing", true, true)).toEqual({
+      code: "integration",
+      spec: "closing-only",
+      waitingFor: "agent",
+    });
+    expect(phasePermissions("acceptance", false, true)).toEqual({
+      code: "integration",
+      spec: "locked",
+      waitingFor: "agent",
+    });
+    expect(phasePermissions("closing", true, false)).toEqual({
+      code: "blocked",
+      spec: "closing-only",
+      waitingFor: "human",
+    });
+    expect(phasePermissions("acceptance").code).toBe("blocked");
+  });
 });

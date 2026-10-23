@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
-import { DEFAULT_CONFIG, parseChangeState, resolveConfig } from "../../src";
+import { DEFAULT_CONFIG, isIntegrating, parseChangeState, resolveConfig } from "../../src";
 
 /** The example of docs/formats.md §6. */
 const CONFIG_EXAMPLE = `
@@ -105,6 +105,30 @@ describe("parseChangeState", () => {
 
   it("accepts a valid state", () => {
     expect(parseChangeState(state).ok).toBe(true);
+  });
+
+  it("accepts a pending incorporation and tells it from a resolved one", () => {
+    const integration = {
+      target: "main",
+      commit: "b4c5d6e",
+      reason: "conflicts",
+      conflicts: ["src/app.ts"],
+      paths: ["src/app.ts", "src/other.ts"],
+      at: "2026-10-23T15:02:11Z",
+    };
+    const pending = parseChangeState({ ...state, phase: "closing", integration });
+    expect(pending.ok).toBe(true);
+    if (pending.ok) expect(isIntegrating(pending.state)).toBe(true);
+    const resolved = parseChangeState({
+      ...state,
+      integration: { ...integration, resolved: { commit: "c7d8e9f", at: "2026-10-23T15:10:00Z" } },
+    });
+    expect(resolved.ok).toBe(true);
+    if (resolved.ok) expect(isIntegrating(resolved.state)).toBe(false);
+    expect(isIntegrating({})).toBe(false);
+    const wrong = parseChangeState({ ...state, integration: { ...integration, reason: "other" } });
+    expect(wrong.ok).toBe(false);
+    if (!wrong.ok) expect(wrong.issues[0]).toMatch(/^integration\.reason/);
   });
 
   it("rejects malformed states with readable issues", () => {

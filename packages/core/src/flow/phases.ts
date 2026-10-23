@@ -21,8 +21,11 @@ export const PHASES: readonly Phase[] = [
   "cancelled",
 ];
 
-/** Governed code: blocked, or open only for the active task's scope. */
-export type CodeAccess = "blocked" | "active-task";
+/**
+ * Governed code: blocked, open only for the active task's scope, or only for the files a pending
+ * incorporation of the main branch brings together.
+ */
+export type CodeAccess = "blocked" | "active-task" | "integration";
 
 /**
  * Edits to `spec.md`: free (draft, review), append-only (adjusting: new tasks and criteria,
@@ -48,14 +51,18 @@ const PERMISSIONS: Readonly<Record<Exclude<Phase, "closing">, PhasePermissions>>
   cancelled: { code: "blocked", spec: "locked", waitingFor: "nobody" },
 };
 
-/** What each phase allows (ARCHITECTURE §4). */
-export function phasePermissions(phase: Phase, closingSubmitted = false): PhasePermissions {
-  if (phase === "closing") {
-    return {
-      code: "blocked",
-      spec: "closing-only",
-      waitingFor: closingSubmitted ? "human" : "agent",
-    };
-  }
-  return PERMISSIONS[phase];
+/**
+ * What each phase allows (ARCHITECTURE §4). A pending incorporation (`integrating`) keeps the
+ * phase and its spec access, opens the files it brings together and waits for the agent.
+ */
+export function phasePermissions(
+  phase: Phase,
+  closingSubmitted = false,
+  integrating = false,
+): PhasePermissions {
+  const permissions: PhasePermissions =
+    phase === "closing"
+      ? { code: "blocked", spec: "closing-only", waitingFor: closingSubmitted ? "human" : "agent" }
+      : PERMISSIONS[phase];
+  return integrating ? { ...permissions, code: "integration", waitingFor: "agent" } : permissions;
 }

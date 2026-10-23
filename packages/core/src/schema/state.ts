@@ -36,6 +36,26 @@ const ScopeRequestSchema = z.strictObject({
   reason: z.string().min(1),
 });
 
+/**
+ * Bringing the main branch into the change failed (conflicts, or the verification fails on the
+ * result) and the merge waits in the change's folder for the agent (ARCHITECTURE §9).
+ */
+const IntegrationSchema = z.strictObject({
+  /** The branch the change goes to. */
+  target: z.string().min(1),
+  /** The commit of `target` being merged. */
+  commit: Commit,
+  reason: z.enum(["conflicts", "verify"]),
+  conflicts: z.array(z.string().min(1)),
+  /** What either side changed since their common base: the only files the agent may touch. */
+  paths: z.array(z.string().min(1)),
+  at: Timestamp,
+  /** Kept once resolved, so the person sees what the agent did when closing. */
+  resolved: z.strictObject({ commit: Commit, at: Timestamp }).optional(),
+});
+
+export type IntegrationState = z.infer<typeof IntegrationSchema>;
+
 /** `.specty/changes/<id>/state.json`. Only Specty writes it. */
 export const ChangeStateSchema = z.strictObject({
   schema: z.literal(1),
@@ -79,7 +99,13 @@ export const ChangeStateSchema = z.strictObject({
   /** Highest number ever used per prefix (items and `S` scope requests): ids are never reused. */
   maxIds: z.partialRecord(z.enum(["A", "AC", "T", "R", "C", "S"]), Count),
   closingSubmittedAt: Timestamp.optional(),
+  integration: IntegrationSchema.optional(),
 });
+
+/** True while an incorporation waits for the agent. */
+export function isIntegrating(state: Pick<ChangeState, "integration">): boolean {
+  return state.integration !== undefined && state.integration.resolved === undefined;
+}
 
 export type ChangeState = z.infer<typeof ChangeStateSchema>;
 

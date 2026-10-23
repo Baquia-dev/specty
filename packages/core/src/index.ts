@@ -124,6 +124,8 @@ export {
 export {
   type ChangeState,
   ChangeStateSchema,
+  type IntegrationState,
+  isIntegrating,
   PhaseSchema,
   parseChangeState,
   type StateResult,

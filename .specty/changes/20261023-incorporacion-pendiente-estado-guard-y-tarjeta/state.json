@@ -6,6 +6,13 @@
   "branch": "specty/20261023-incorporacion-pendiente-estado-guard-y-tarjeta",
   "baseCommit": "2f7160e1abd609d34de05044e07b2325801a5cae",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:de6b9dffa5b1458118be204b64bc9811d719c9beb20fff6c76e18a44eca2d027",
+    "at": "2026-10-23T16:18:54.013Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "946da5484c216c2f98cecfc0ada750cab636509c",
+      "startedAt": "2026-10-23T16:19:02.654Z",
+      "doneAt": "2026-10-23T16:20:05.879Z",
+      "summary": "state.json admite integration (destino, commit, motivo conflicts|verify, conflictos, archivos que puede tocar el agente, fecha y resolved opcional) e isIntegrating; phasePermissions(phase, closingSubmitted, integrating) abre el código con el acceso integration y espera al agente sin cambiar la fase ni el acceso a la spec"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 5,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:de6b9dffa5b1458118be204b64bc9811d719c9beb20fff6c76e18a44eca2d027",
-    "at": "2026-10-23T16:18:54.013Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
