@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261023-escrituras-en-otras-worktrees",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-escrituras-en-otras-worktrees",
+  "baseCommit": "920fd9e77565dab6bdd595253ae576ea6b7ac307",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a7a8e967915f66ea8d60c38fd8070a729ecea9356b442389d3ff439ad6f90156",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e2ad04b06590254e5e982d4d1b01c5dd1b14dae674dbbeaf1a0f004c248f40b5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8e1ad9e25e50249e48deb19fbcc85ce7fd0e19c14ab49b3ddbdccd9d6969755f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:4e9990b78c8b4af8d6ca193cc2d6ed07c6ded3bfb95c366efc81abca336b9869",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:fd03205d02fe0fd30260a6d41c7a1512c4446fa2ba9c3b2da857727bac637376",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ee805ae8205c02628aeef8260c0e684b9868705635ef49a45a3db5309e219b6b",
+    "at": "2026-10-23T10:56:55.927Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
