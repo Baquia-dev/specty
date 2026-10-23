@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261023-selector-segmentado-en-el-sistema-de-diseno",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-selector-segmentado-en-el-sistema-de-diseno",
+  "baseCommit": "2c4e255890d2dd0b02c8dd554d38111b302592cf",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2632617c43cecf894d3f3ca0d1c3804cf5f9b2fc7ef54c69a8290c898344e910",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9a57783016f7dd24991a9a9f10ae5fe8f204502b98bd8f43e95d0a6c546686f0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cc9e083ab09acc0484df6044ed1059f0029fac3933e0c66c49a2decf5754b6af",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cd40e0e0c558c01dc54d3d996080a6f87f31ed0bc7c09250853b75c747a080bc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:04bda8ecc4f6eccc7c589079692edb4aedfd062a0b51108d4e982187703c712f",
+    "at": "2026-10-23T06:49:16.408Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
