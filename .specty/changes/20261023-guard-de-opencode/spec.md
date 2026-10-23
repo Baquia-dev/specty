@@ -63,7 +63,7 @@ kind: standard
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/detect/project.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/opencode.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/install.test.ts test/setup.test.ts
-- [ ] T3: Documentar el guard de OpenCode
+- [x] T3: Documentar el guard de OpenCode
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check

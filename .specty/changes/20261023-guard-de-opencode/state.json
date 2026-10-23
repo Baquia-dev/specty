@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-guard-de-opencode",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-guard-de-opencode",
   "baseCommit": "afc9376b80ce2052262ca4802069e671f79e23c7",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "24676dcf1a196f86b33413a2ba7979da3089d834",
+      "attempts": 1,
       "startedAt": "2026-10-23T23:29:31.454Z",
       "doneAt": "2026-10-23T23:31:49.633Z",
-      "summary": "init escribe el plugin de Specty en la configuración global de OpenCode (plugins/specty.js), un módulo sin dependencias con setup (OpenCode 2) y server (OpenCode 1) que, en carpetas con Specty, pasa cada herramienta al guard sin bloquear OpenCode y la rechaza con su motivo; detect reconoce .opencode/ y opencode.json(c); doctor comprueba el plugin"
+      "summary": "init escribe el plugin de Specty en la configuración global de OpenCode (plugins/specty.js), un módulo sin dependencias con setup (OpenCode 2) y server (OpenCode 1) que, en carpetas con Specty, pasa cada herramienta al guard sin bloquear OpenCode y la rechaza con su motivo; detect reconoce .opencode/ y opencode.json(c); doctor comprueba el plugin",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "33e0383484b6fe39aa3c001dada0f1f6af741d50",
+      "startedAt": "2026-10-23T23:31:49.947Z",
+      "doneAt": "2026-10-23T23:34:00.587Z",
+      "summary": "ARCHITECTURE: fila de OpenCode en la tabla de hooks por herramienta, con el plugin global, sus dos API y las herramientas que juzga"
     }
   },
   "pending": {
