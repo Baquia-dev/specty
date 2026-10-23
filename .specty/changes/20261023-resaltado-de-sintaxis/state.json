@@ -56,12 +56,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "93dc63b750e41a1ed2475b6b16d09f72966807af",
+      "attempts": 1,
       "startedAt": "2026-10-23T08:38:04.307Z",
       "doneAt": "2026-10-23T08:39:37.494Z",
-      "summary": "Cinco colores de código en styles.css (claro y oscuro): palabras clave (violeta), cadenas (ámbar), comentarios (gris), funciones y tipos (azul) y constantes (verde azulado, para no confundirse con el verde de lo añadido). En el inventario con pares de contraste ≥4,5 sobre la superficie y los cuatro fondos del diff. En oscuro, las palabras cambiadas pasan del 30 % al 22 % de tinte (#3f4c45 y #514442), y palabra clave, comentario y función se aclaran un poco (#c2b1e6, #bababa, #a2bbe7): así todos cumplen y las palabras siguen distinguiéndose de su línea (1,3:1)."
+      "summary": "Cinco colores de código en styles.css (claro y oscuro): palabras clave (violeta), cadenas (ámbar), comentarios (gris), funciones y tipos (azul) y constantes (verde azulado, para no confundirse con el verde de lo añadido). En el inventario con pares de contraste ≥4,5 sobre la superficie y los cuatro fondos del diff. En oscuro, las palabras cambiadas pasan del 30 % al 22 % de tinte (#3f4c45 y #514442), y palabra clave, comentario y función se aclaran un poco (#c2b1e6, #bababa, #a2bbe7): así todos cumplen y las palabras siguen distinguiéndose de su línea (1,3:1).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b3111910a36c608df579258da80176686ae9850d",
+      "startedAt": "2026-10-23T08:39:37.771Z",
+      "doneAt": "2026-10-23T08:42:28.989Z",
+      "summary": "Dependencia shiki 4.5.0 (exacta, como las demás). highlight/languages.ts: los 30 lenguajes de A2, cada uno con un import() literal de shiki/langs/<id>.mjs (una chunk por gramática) y sus extensiones o nombres; languageOf(path). highlight/highlight.ts: LineSpan y spansOf(line, tokens?), que corta la línea donde empieza o acaba un color o una palabra cambiada (y descarta tokens que no deletrean la línea); highlightFile(file), que carga Shiki con import() (núcleo + motor de JavaScript + tema de variables CSS, una sola vez, y se reintenta si falló), la gramática si falta, y resalta cada lado de cada bloque como un trozo de código (las quitadas del lado antiguo, el resto del nuevo); devuelve un mapa línea → tokens con los colores del sistema y los comentarios en cursiva, o nada si el lenguaje no está en la lista, el archivo es binario, pasa de 2.000 líneas o algo falla; y el token HIGHLIGHT. Solo tipos de Shiki se importan de forma estática. Los tests usan Shiki de verdad con el diff de ejemplo en Dart."
     }
   },
   "pending": {
