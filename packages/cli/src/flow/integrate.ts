@@ -12,7 +12,7 @@ import { type Git, resolved } from "../io/git";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
-import { changeTrailers, commitWithReceipt } from "./commits";
+import { commitWithReceipt, decisionTrailers } from "./commits";
 import { targetBranch } from "./worktree";
 
 /** How a finished change reaches the main branch (ARCHITECTURE §9, "Incorporación"). */
@@ -143,7 +143,7 @@ export async function absorbTarget(
   }
   const commit = await commitWithReceipt(session, {
     subject: `Merge branch '${plan.target}' into ${plan.branch}`,
-    trailers: changeTrailers(session, plan.id),
+    trailers: decisionTrailers(session, plan.id),
     stage: [],
     receipt: { change: plan.id, kind: "close" },
   });

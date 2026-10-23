@@ -6,7 +6,7 @@ import { appendAudit, type StoredChange, saveState } from "../store/changes";
 import { addReceipt, writePointer } from "../store/local";
 import { changeFiles } from "../store/paths";
 import { auditEntry } from "./active";
-import { changeTrailers, commitWithReceipt } from "./commits";
+import { changeTrailers, commitWithReceipt, decisionTrailers } from "./commits";
 
 /**
  * Moves a finished change to `.specty/archive/<year>/<id>` with its final state. Only a person's
@@ -42,7 +42,7 @@ export async function commitArchive(
   ];
   return commitWithReceipt(session, {
     subject,
-    trailers: changeTrailers(session, after.state.id),
+    trailers: decisionTrailers(session, after.state.id),
     stage: [paths],
     only: paths,
     receipt: { change: after.state.id, kind: "close" },

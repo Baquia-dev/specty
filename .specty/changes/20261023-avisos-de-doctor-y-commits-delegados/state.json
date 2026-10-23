@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2927d26aa6d73c10faa33cb54e7e007e4e787d28",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:54:01.705Z",
       "doneAt": "2026-10-23T21:58:11.765Z",
-      "summary": "doctor revisa con Biome y Prettier también .claude/settings.json y .cursor/hooks.json cuando existen (vale excluir el archivo o su carpeta) y muestra el modo delegado activo en un bloque AVISOS que no cuenta como problema"
+      "summary": "doctor revisa con Biome y Prettier también .claude/settings.json y .cursor/hooks.json cuando existen (vale excluir el archivo o su carpeta) y muestra el modo delegado activo en un bloque AVISOS que no cuenta como problema",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "25970b459b208cc45bf75f09c8fe027349ab088e",
+      "startedAt": "2026-10-23T21:58:12.091Z",
+      "doneAt": "2026-10-23T22:00:48.094Z",
+      "summary": "decisionTrailers añade Specty-Delegated: true cuando el agente decide en modo delegado; lo llevan la aprobación de la spec, el merge de la incorporación y el archivo al cerrar, cancelar o aceptar un quick; las tareas y las decisiones de la persona no"
     }
   },
   "pending": {

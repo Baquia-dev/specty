@@ -20,7 +20,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
-import { changeTrailers, commitWithReceipt } from "../flow/commits";
+import { commitWithReceipt, decisionTrailers } from "../flow/commits";
 import { finishRetro } from "../flow/finish";
 import { listed, sharedFiles, sharedLines } from "../flow/shared";
 import type { Session } from "../session";
@@ -204,7 +204,7 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     return retroDone(session, await finishRetro(session, updated, approvedState));
   const commit = await commitWithReceipt(session, {
     subject: `docs(spec): ${spec.title}`,
-    trailers: changeTrailers(session, state.id, {
+    trailers: decisionTrailers(session, state.id, {
       "Specty-Spec": `r${state.revision}@${shortHash(analysis.hash)}`,
     }),
     stage: [[session.paths.relative(files.dir)]],

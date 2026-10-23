@@ -11,11 +11,13 @@ import {
   CONFIG,
   cli,
   git,
+  inWorktree,
   person,
   read,
   SPEC,
   SPEC_PATH,
   tempRepo,
+  toClosing,
   writeFiles,
 } from "./support";
 
@@ -204,6 +206,42 @@ describe("delegated decisions on record", () => {
     const [line] = await audited(root, "spec.approved");
     expect(line?.actor).toBe("human");
     expect(line?.data.delegated).toBeUndefined();
+    expect(trailerOf(root)).toBe("");
+  });
+});
+
+/** The `Specty-Delegated` trailer of a commit: empty when it does not carry it. */
+const trailerOf = (cwd: string, commit = "HEAD") =>
+  git(cwd, "log", "-1", "--format=%(trailers:key=Specty-Delegated,valueonly)", commit);
+
+describe("delegated decisions in git log (AC3)", () => {
+  it("mark the commits of the agent's decisions, not those of its tasks", async () => {
+    const root = await delegated();
+    await inReview(root);
+    expect((await cli(root, ["approve"])).code).toBe(0);
+    expect(trailerOf(root)).toBe("true");
+    await cli(root, ["next"]);
+    await writeFiles(root, { "src/app.ts": "1\n" });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Uno"])).code).toBe(0);
+    expect(trailerOf(root)).toBe("");
+    expect((await cli(root, ["cancel", "--reason", "Prueba"])).code).toBe(0);
+    expect(trailerOf(root)).toBe("true");
+  });
+
+  it("mark the merge and the archive of a close the agent confirms", async () => {
+    const { root, folder } = await inWorktree();
+    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    await toClosing(folder);
+    await writeFiles(root, { "src/other.ts": "export const other = 1;\n" });
+    git(root, "add", "-A");
+    git(root, "commit", "-q", "-m", "otro trabajo en main");
+    expect((await cli(folder, ["close"])).code).toBe(0);
+    const merge = git(root, "rev-list", "--merges", "-1", `specty/${CHANGE}`);
+    expect(trailerOf(root, merge)).toBe("true");
+    expect(trailerOf(root, "main")).toBe("true");
+    // The person approved this spec themselves: their commit stays theirs.
+    const approval = git(root, "log", "-1", "--format=%H", "--grep=^docs(spec): Saludo", "main");
+    expect(trailerOf(root, approval)).toBe("");
   });
 });
 

@@ -53,3 +53,18 @@ export function changeTrailers(
       : {}),
   };
 }
+
+/**
+ * Trailers of a commit that records a person's decision: approving, merging in on close, archiving.
+ * When the agent took it for them in delegated mode, `git log` says so too (ADR 0010).
+ */
+export function decisionTrailers(
+  session: Session,
+  change: string,
+  extra: Readonly<Record<string, string>> = {},
+): Record<string, string> {
+  return changeTrailers(session, change, {
+    ...extra,
+    ...(session.delegated && session.actor === "agent" ? { "Specty-Delegated": "true" } : {}),
+  });
+}
