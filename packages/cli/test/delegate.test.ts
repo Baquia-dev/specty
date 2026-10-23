@@ -6,6 +6,7 @@ import { exists } from "../src/io/files";
 import {
   AGENT,
   APP,
+  ARCHIVE,
   CHANGE,
   cli,
   git,
@@ -150,5 +151,57 @@ describe("delegated mode", () => {
         "MODO DELEGADO",
       );
     }
+  });
+});
+
+interface AuditLine {
+  readonly actor: string;
+  readonly event: string;
+  readonly data: Record<string, unknown>;
+}
+
+/** The audit lines of `event`, from the change's folder or the archive. */
+async function audited(root: string, event: string, dir = `.specty/changes/${CHANGE}`) {
+  const lines = (await read(root, `${dir}/audit.jsonl`)).trim().split("\n");
+  return lines.map((line): AuditLine => JSON.parse(line)).filter((line) => line.event === event);
+}
+
+describe("delegated decisions on record", () => {
+  it("approve for the person, with their name and the delegated channel", async () => {
+    const root = await delegated();
+    await inReview(root);
+    const approved = await cli(root, ["approve"]);
+    expect(approved.code).toBe(0);
+    expect(approved.out).toContain("Revisión 1 aprobada (commit");
+    expect(approved.out).toContain("SIGUIENTE: sigue con `specty next`.");
+    const state = JSON.parse(await read(root, `.specty/changes/${CHANGE}/state.json`));
+    expect(state.approved).toMatchObject({ by: "Ana", channel: "delegated" });
+    expect(state.items.A1.decision).toBe("confirmed");
+    expect(await audited(root, "spec.approved")).toMatchObject([
+      { actor: "agent", data: { channel: "delegated", delegated: true } },
+    ]);
+
+    await cli(root, ["next"]);
+    await cli(root, ["scope", "add", "lib/other.ts", "--reason", "Ayudante"]);
+    expect((await cli(root, ["approve", "--scope", "S1"])).code).toBe(0);
+    expect(await audited(root, "scope.decided")).toMatchObject([
+      { actor: "agent", data: { id: "S1", decision: "approved", delegated: true } },
+    ]);
+
+    expect((await cli(root, ["cancel", "--reason", "Prueba"])).code).toBe(0);
+    expect(await audited(root, "change.cancelled", `${ARCHIVE}/${CHANGE}`)).toMatchObject([
+      { actor: "agent", data: { reason: "Prueba", delegated: true } },
+    ]);
+  });
+
+  it("leave the person's own decisions as theirs while the mode is on", async () => {
+    const root = await delegated();
+    await inReview(root);
+    expect((await cli(root, ["approve"], { terminal: person() })).code).toBe(0);
+    const state = JSON.parse(await read(root, `.specty/changes/${CHANGE}/state.json`));
+    expect(state.approved).toMatchObject({ by: "Ana", channel: "tty" });
+    const [line] = await audited(root, "spec.approved");
+    expect(line?.actor).toBe("human");
+    expect(line?.data.delegated).toBeUndefined();
   });
 });

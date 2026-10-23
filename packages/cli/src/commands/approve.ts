@@ -24,13 +24,14 @@ import { changeTrailers, commitWithReceipt } from "../flow/commits";
 import { finishRetro } from "../flow/finish";
 import type { Session } from "../session";
 import { readRevision, readSpec, type StoredChange } from "../store/changes";
+import { canDecide } from "./human";
 import { retroDone } from "./retro";
 import { decideScope } from "./scope-decision";
 
 /** `specty approve [--scope S]`: a person approves the spec in review or a scope request. */
 export async function approve(session: Session, scope: string | undefined): Promise<Output> {
   const { cards } = session;
-  if (!session.environment.terminal.interactive) return notInteractiveCard("approve", cards);
+  if (!canDecide(session)) return notInteractiveCard("approve", cards);
   const t = translator(session.lang);
   const active = await resolveActive(session);
   if (active === undefined) {
@@ -91,10 +92,14 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
   )) {
     const current = items[assumption.id];
     if (current === undefined || current.decision === "confirmed") continue;
-    const choice = await terminal.choose(`${assumption.id}: ${assumption.text}`, [
-      { value: "confirm", label: t("Confirmar", "Confirm") },
-      { value: "reject", label: t("Rechazar", "Reject") },
-    ]);
+    // In delegated mode the agent decides for the person: it confirms what it wrote.
+    const choice =
+      session.actor === "agent"
+        ? "confirm"
+        : await terminal.choose(`${assumption.id}: ${assumption.text}`, [
+            { value: "confirm", label: t("Confirmar", "Confirm") },
+            { value: "reject", label: t("Rechazar", "Reject") },
+          ]);
     if (choice === undefined) return postponed(session, header);
     const comment =
       choice === "reject"
@@ -169,6 +174,8 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
       item.decision === "pending" ? { ...item, decision: "implicit" as const } : item,
     ]),
   );
+  // The person who delegated stays as `by`; the channel records that the agent approved.
+  const channel = session.actor === "agent" ? "delegated" : "tty";
   const approvedState: ChangeState = {
     ...state,
     phase: moved.phase,
@@ -178,7 +185,7 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
       hash: analysis.hash,
       at: session.environment.now().toISOString(),
       by: (await session.git.config("user.name")) ?? "unknown",
-      channel: "tty",
+      channel,
     },
     pending: { ...state.pending, adjustment: null },
   };
@@ -187,7 +194,7 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     active,
     approvedState,
     "spec.approved",
-    { revision: state.revision, hash: analysis.hash, channel: "tty" },
+    { revision: state.revision, hash: analysis.hash, channel },
     "human",
   );
   if (state.kind === "retro")

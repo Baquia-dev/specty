@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "10fff58746b4539cb8feadbdd25a21bd71022015",
+      "attempts": 1,
       "startedAt": "2026-10-23T19:27:19.557Z",
       "doneAt": "2026-10-23T19:29:28.757Z",
-      "summary": "La sesión lee el interruptor (Session.delegated, cards.delegated) y, sin TTY y con el modo activo, usa una terminal delegada que confirma, no elige ni escribe por la persona y muestra los resúmenes en stderr; interactive sigue falso. canDecide abre humanChange (accept, close, cancel) y reject; el guard recibe delegated. Latencia del guard: p95 90 → 98 ms."
+      "summary": "La sesión lee el interruptor (Session.delegated, cards.delegated) y, sin TTY y con el modo activo, usa una terminal delegada que confirma, no elige ni escribe por la persona y muestra los resúmenes en stderr; interactive sigue falso. canDecide abre humanChange (accept, close, cancel) y reject; el guard recibe delegated. Latencia del guard: p95 90 → 98 ms.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d6195587e3ffb7042e6dd5fe7fb7b49c8d388233",
+      "startedAt": "2026-10-23T19:29:29.042Z",
+      "doneAt": "2026-10-23T19:31:21.589Z",
+      "summary": "auditEntry (flow/active.ts) registra como del agente, con delegated: true, una decisión de la persona tomada por delegación; lo usan commitState y archive (cierres, cancelaciones, quick y retro). approve abre con canDecide, confirma los supuestos de impacto alto pendientes si actúa el agente y guarda channel delegated (by sigue siendo la persona); core: approved.channel admite delegated. Con TTY, aunque el modo esté activo, la persona sigue como human/tty."
     }
   },
   "pending": {

@@ -5,9 +5,13 @@ import type { Session } from "../session";
 import { appendAudit, type StoredChange, saveState } from "../store/changes";
 import { addReceipt, writePointer } from "../store/local";
 import { changeFiles } from "../store/paths";
+import { auditEntry } from "./active";
 import { changeTrailers, commitWithReceipt } from "./commits";
 
-/** Moves a finished change to `.specty/archive/<year>/<id>` with its final state. */
+/**
+ * Moves a finished change to `.specty/archive/<year>/<id>` with its final state. Only a person's
+ * decision finishes a change: closing, cancelling, accepting a quick one or confirming a retro.
+ */
 export async function archive(
   session: Session,
   change: StoredChange,
@@ -16,12 +20,7 @@ export async function archive(
   data: Readonly<Record<string, unknown>>,
 ): Promise<StoredChange> {
   await saveState(change.files, state);
-  await appendAudit(change.files, {
-    ts: session.environment.now().toISOString(),
-    actor: session.actor,
-    event,
-    data,
-  });
+  await appendAudit(change.files, auditEntry(session, "human", event, data));
   const target = session.paths.archivedDir(state.id, session.environment.now().getFullYear());
   await move(change.files.dir, target);
   if (!session.config.git.branchPerChange) await writePointer(session.git, "active", undefined);

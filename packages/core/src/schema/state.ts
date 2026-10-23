@@ -71,7 +71,8 @@ export const ChangeStateSchema = z.strictObject({
       hash: Hash,
       at: Timestamp,
       by: z.string().min(1),
-      channel: z.enum(["ui", "tty", "pr"]),
+      // `delegated`: the agent approved for the person, who turned delegated mode on (ADR 0010).
+      channel: z.enum(["ui", "tty", "pr", "delegated"]),
     })
     .optional(),
   size: z

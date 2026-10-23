@@ -72,7 +72,7 @@ Segundo y último paso del modo delegado (ADR 0010). `specty delegate on` lo act
   - files: packages/cli/src/session.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/commands/human.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/test/delegate.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts
-- [ ] T3: La auditoría y la aprobación delegadas
+- [x] T3: La auditoría y la aprobación delegadas
   - files: packages/cli/src/flow/active.ts, packages/cli/src/flow/finish.ts, packages/core/src/schema/state.ts, packages/cli/src/commands/approve.ts, packages/cli/test/delegate.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts
