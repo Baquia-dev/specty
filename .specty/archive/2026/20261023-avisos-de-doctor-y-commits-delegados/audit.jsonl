@@ -10,3 +10,6 @@
 {"ts":"2026-10-23T22:00:48.417Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"e94b6fee8018473c2eb927463cf8b21c6d4e5775"}}
 {"ts":"2026-10-23T22:03:44.233Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":74860}}
 {"ts":"2026-10-23T22:03:44.236Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats.md §7: filas del merge y el archivo, y del trailer Specty-Delegated en las decisiones que el agente toma en modo delegado"}}
+{"ts":"2026-10-23T22:04:51.855Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-23T22:05:03.923Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:6a46793adbb91c03a968b83f9c3289c9e2b85cca784e178051c331aef5699db6","size":"M","warnings":0}}
+{"ts":"2026-10-23T22:05:20.550Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

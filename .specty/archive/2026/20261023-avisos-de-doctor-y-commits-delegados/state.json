@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-avisos-de-doctor-y-commits-delegados",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-avisos-de-doctor-y-commits-delegados",
   "baseCommit": "adbc8a881d9fb55f927a25ac8f8baf964938a432",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:8cf8f05d2efc3e36b219ab446b04d464ff23532ac05de6cc63c86119f3d33062",
@@ -56,12 +56,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e94b6fee8018473c2eb927463cf8b21c6d4e5775",
+      "attempts": 1,
       "startedAt": "2026-10-23T22:00:48.417Z",
       "doneAt": "2026-10-23T22:03:44.234Z",
-      "summary": "formats.md §7: filas del merge y el archivo, y del trailer Specty-Delegated en las decisiones que el agente toma en modo delegado"
+      "summary": "formats.md §7: filas del merge y el archivo, y del trailer Specty-Delegated en las decisiones que el agente toma en modo delegado",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,5 +73,6 @@
     "AC": 3,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T22:05:03.921Z"
 }

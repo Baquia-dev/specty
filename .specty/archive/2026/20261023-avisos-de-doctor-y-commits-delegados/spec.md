@@ -62,3 +62,23 @@ kind: standard
 ## Riesgos
 
 - R1: El aviso del formateador da un falso positivo con una configuración que excluye esos archivos de otra forma — dice exactamente qué línea buscar y dónde, y es solo un aviso de `doctor`.
+
+## Cierre
+
+### Resumen
+
+`doctor` revisa con Biome y Prettier, además de `.specty/`, los archivos de hooks que escribió `init` cuando existen (`.claude/settings.json`, `.cursor/hooks.json`), y da por buena la exclusión del archivo o de su carpeta. Si el modo delegado está activo, lo dice en un bloque «AVISOS» con la fecha, quién lo activó y cómo desactivarlo, sin ponerse en rojo. Los commits de las decisiones que el agente toma en modo delegado (aprobar la spec, el merge de la incorporación al cerrar y el archivo al cerrar, cancelar o aceptar un quick) llevan `Specty-Delegated: true`; los de las tareas y los de las decisiones de la persona no.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- La lista de rutas que escribe Specty vive en una sola tabla de `detect/formatters.ts`, con la forma de excluir cada una en cada formateador; `.specty/` sigue siendo obligatoria y los archivos de hooks solo se miran si existen.
+- `specty integrate` no lleva el trailer: lo ejecuta siempre el agente al terminar de resolver la incorporación, así que no es una decisión de la persona.
+- La retro confirmada tampoco lo lleva: el commit lo hace la persona con su `git commit`.
+
+### Pendientes
+
+Ninguno.
