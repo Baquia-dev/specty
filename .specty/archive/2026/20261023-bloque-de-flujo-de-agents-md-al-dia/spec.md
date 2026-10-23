@@ -18,3 +18,9 @@ kind: quick
   - files: AGENTS.md
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+AGENTS.md con el bloque de flujo tal como lo regeneró specty init en la carpeta principal (copiado byte a byte): añade que el agente solo ejecuta aprobar, aceptar y cerrar si SIGUIENTE se lo pide, en modo delegado. La carpeta principal quedó restaurada para que el cierre pueda avanzar main
