@@ -210,7 +210,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló |
 | `task.completed` | tarea, commit, resumen |
-| `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona) |
+| `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
 | `change.verified` | la verificación completa (`verify.full`) antes de aceptar: comando, código de salida, duración, final de la salida si falló |
@@ -260,7 +260,7 @@ verify:
 scope:
   implicitTests: true             # tests junto a los archivos del alcance
   generated: ["**/*.g.dart", "**/*.freezed.dart"]
-  autoApprove: tests-and-generated  # none | tests-and-generated
+  autoApprove: tests-and-generated  # none | tests-and-generated: tests, generados y lo que ya está en Archivos
 lanes:
   quick: { maxFiles: 3 }
 split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 }
