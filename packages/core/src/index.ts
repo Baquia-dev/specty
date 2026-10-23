@@ -34,6 +34,8 @@ export { type BlockedCommitView, blockedCommitMessage } from "./cards/hooks";
 export {
   closedCard,
   decisionCard,
+  delegationCard,
+  delegationWarning,
   nothingPendingCard,
   notInteractiveCard,
   type StatusEntry,

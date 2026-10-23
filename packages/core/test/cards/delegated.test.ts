@@ -3,12 +3,17 @@ import { describe, expect, it } from "vitest";
 import {
   type CardContext,
   type ChangeView,
+  decisionCard,
+  delegationCard,
+  delegationWarning,
+  flowBlock,
   nextCard,
   type ProposedView,
   proposedCard,
   recommendEffort,
   type SizeResult,
   scopeRequestedCard,
+  statusCard,
 } from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
@@ -120,5 +125,77 @@ describe("agent cards in delegated mode", () => {
       rejected: [{ id: "A1", text: "Supuesto", comment: "No" }],
     });
     expect(next(rejected, delegated(ES))).toBe(next(rejected, ES));
+  });
+});
+
+describe("person cards in delegated mode", () => {
+  it("continue with `next` after a decision", () => {
+    expect(decisionCard("H", ["Hecho."], delegated(ES)).next).toBe("sigue con `specty next`.");
+    expect(decisionCard("H", ["Done."], delegated(EN)).next).toBe("continue with `specty next`.");
+    expect(decisionCard("H", ["Hecho."], ES).next).toBe(
+      "dile a tu agente «continúa»; ejecutará `specty next`.",
+    );
+  });
+
+  it("remind the person in the status that the mode is on", () => {
+    const block = (ctx: CardContext) =>
+      statusCard([], ctx).blocks.find((entry) => entry.title === "MODO DELEGADO");
+    expect(block(delegated(ES))?.lines[0]).toContain("`specty delegate off`");
+    expect(block(ES)).toBeUndefined();
+    const english = statusCard([], delegated(EN)).blocks.find(
+      (entry) => entry.title === "DELEGATED MODE",
+    );
+    expect(english?.lines[0]).toContain("To turn it off: `specty delegate off`.");
+  });
+
+  it("warn about everything the agent will decide, in both languages", () => {
+    const es = delegationWarning(ES).join("\n");
+    for (const fragment of [
+      "aprueba specs y confirma sus supuestos de impacto alto",
+      "también en rutas sensibles",
+      "pasan la verificación completa",
+      "los incorpora a la rama principal, y cancela cambios",
+      "deja de garantizar que una persona revise cada spec y cada resultado",
+      "como del agente, por delegación",
+      "este clon y todas sus worktrees hasta que ejecutes `specty delegate off`",
+    ])
+      expect(es).toContain(fragment);
+    const en = delegationWarning(EN).join("\n");
+    for (const fragment of [
+      "high-impact assumptions",
+      "sensitive paths included",
+      "full verification",
+      "cancels changes",
+      "no longer guarantees",
+      "by delegation",
+      "all its worktrees until you run `specty delegate off`",
+    ])
+      expect(en).toContain(fragment);
+    expect(delegationWarning(EN)).toHaveLength(delegationWarning(ES).length);
+  });
+
+  it("confirm the position of the switch", () => {
+    const on = delegationCard(true, ES);
+    expect(on.header).toBe("SPECTY · modo delegado");
+    expect(on.blocks[0]?.lines[0]).toMatch(/^Modo delegado activado/);
+    expect(on.next).toBe("dile a tu agente «continúa»; ejecutará `specty next`.");
+    const off = delegationCard(false, EN);
+    expect(off.blocks[0]?.lines[0]).toMatch(/^Delegated mode off/);
+    expect(off.next).toBe("check `specty status` when you want to decide.");
+  });
+});
+
+describe("flow block", () => {
+  it("lets the agent run the person's commands only when `NEXT:` says so", () => {
+    for (const lang of ["es", "en"] as const) {
+      const block = flowBlock(lang, "specty");
+      expect(block.split("\n").length).toBeLessThanOrEqual(8);
+    }
+    expect(flowBlock("es", "specty")).toContain(
+      "Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.",
+    );
+    expect(flowBlock("en", "specty")).toContain(
+      "Only when `NEXT:` tells you to (delegated mode) do you run them yourself.",
+    );
   });
 });

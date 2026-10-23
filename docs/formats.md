@@ -338,12 +338,12 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 - Si el usuario pide un cambio y no hay uno activo, `specty next` te indica cómo crear la spec.
 - Completa cada tarea con `specty task done <id>`; no ejecutes `git commit` tú mismo.
 - Si necesitas un archivo fuera del alcance de la tarea, pídelo con `specty scope add`.
-- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno.
+- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno. Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.
 - Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.
 <!-- specty:end id=flow -->
 ```
 
-Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modifica. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas para completarlas a mano. Cuando exista la UI (fase 2), la línea de aprobación remitirá también a ella.
+Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modifica. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas para completarlas a mano. Cuando exista la UI (fase 2), la línea de aprobación remitirá también a ella. La línea de aprobar, aceptar y cerrar menciona el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)): mientras está activo, es el `SIGUIENTE:` de cada tarjeta el que le pide al agente que lo haga él.
 
 ## 9. Salida de los comandos
 

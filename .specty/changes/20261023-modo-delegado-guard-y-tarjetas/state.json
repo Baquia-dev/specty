@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-modo-delegado-guard-y-tarjetas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-modo-delegado-guard-y-tarjetas",
   "baseCommit": "4a13669fcf89f9a7a70f406ac2980c34d6544874",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c5a2c19ba3c63624c0a9bc890fe93e6811d230f9",
+      "attempts": 1,
       "startedAt": "2026-10-23T18:41:17.057Z",
       "doneAt": "2026-10-23T18:42:59.601Z",
-      "summary": "Con delegated en CardContext, el SIGUIENTE de la spec propuesta, la revisión, la solicitud de alcance, la aceptación y el cierre propuesto o enviado le dice al agente que ejecute él approve, approve --scope, accept o close; sin delegación los textos no cambian. Tests en test/cards/delegated.test.ts."
+      "summary": "Con delegated en CardContext, el SIGUIENTE de la spec propuesta, la revisión, la solicitud de alcance, la aceptación y el cierre propuesto o enviado le dice al agente que ejecute él approve, approve --scope, accept o close; sin delegación los textos no cambian. Tests en test/cards/delegated.test.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "38530221c6876808e7965789f32e4bb423b304fe",
+      "startedAt": "2026-10-23T18:42:59.925Z",
+      "doneAt": "2026-10-23T18:45:05.499Z",
+      "summary": "decisionCard sigue con specty next en modo delegado; statusCard añade el bloque MODO DELEGADO; delegationWarning enumera lo que decidirá el agente (también supuestos de impacto alto, rutas sensibles, verificación completa, auditoría, clon y worktrees hasta delegate off) y delegationCard confirma on/off, en es y en; la línea del bloque de flujo de AGENTS.md y formats §8 mencionan el modo delegado."
     }
   },
   "pending": {

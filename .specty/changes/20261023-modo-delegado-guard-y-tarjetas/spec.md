@@ -70,7 +70,7 @@ Primer paso del modo delegado que pidió el usuario: un interruptor con el que l
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/flow.ts, packages/core/src/cards/next.ts, packages/core/src/cards/work.ts, packages/core/test/cards/delegated.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/delegated.test.ts
-- [ ] T3: La advertencia, las tarjetas de la persona y AGENTS.md
+- [x] T3: La advertencia, las tarjetas de la persona y AGENTS.md
   - files: packages/core/src/cards/human.ts, packages/core/src/agents-md.ts, packages/core/src/index.ts, packages/core/test/cards/delegated.test.ts, docs/formats.md
   - ac: AC4, AC5, AC6
   - verify: pnpm check
