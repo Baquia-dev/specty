@@ -223,10 +223,18 @@ async function leaveForAgent(
   return { ok: false, output: blocked(state, [lead, failure.reason], failure.details, next) };
 }
 
-/** What the person does while the agent resolves an incorporation. */
+/**
+ * What comes next while an incorporation waits for the agent: the person tells the agent to go
+ * on, or, in delegated mode, the agent resolves it itself and then runs `again`.
+ */
 export function askAgent(session: Session, again: "close" | "accept"): string {
   const t = translator(session.lang);
   const { command } = session.cards;
+  if (session.cards.delegated === true)
+    return t(
+      `modo delegado: resuélvela tú (\`${command} next\` te dice qué falta), termínala con \`${command} integrate\` y vuelve a ejecutar \`${command} ${again}\`.`,
+      `delegated mode: resolve it yourself (\`${command} next\` says what is missing), finish it with \`${command} integrate\` and run \`${command} ${again}\` again.`,
+    );
   return t(
     `dile a tu agente «continúa» (ejecutará \`${command} next\`); cuando termine, vuelve a ejecutar \`${command} ${again}\`.`,
     `tell your agent "continue" (it will run \`${command} next\`); when it is done, run \`${command} ${again}\` again.`,

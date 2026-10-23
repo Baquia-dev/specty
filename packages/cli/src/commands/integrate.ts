@@ -65,10 +65,7 @@ export async function integrate(session: Session): Promise<Output> {
         ),
       ],
       undefined,
-      t(
-        `pide al usuario que vuelva a ejecutar \`${cards.command} ${again}\` y termina tu turno.`,
-        `ask the user to run \`${cards.command} ${again}\` again and end your turn.`,
-      ),
+      runAgain(session, again),
     );
   }
   const marked: string[] = [];
@@ -138,11 +135,23 @@ export async function integrate(session: Session): Promise<Output> {
         `Incorporation of ${target} resolved (merge ${commit}).`,
       ),
     ]),
-    next: t(
-      `pide al usuario que vuelva a ejecutar \`${cards.command} ${again}\` y termina tu turno.`,
-      `ask the user to run \`${cards.command} ${again}\` again and end your turn.`,
-    ),
+    next: runAgain(session, again),
   };
+}
+
+/** Who runs `again` once the merge is done: the person, or the agent itself in delegated mode. */
+function runAgain(session: Session, again: "close" | "accept"): string {
+  const t = translator(session.lang);
+  const { command } = session.cards;
+  if (session.cards.delegated === true)
+    return t(
+      `modo delegado: vuelve a ejecutar tú \`${command} ${again}\` y sigue su salida.`,
+      `delegated mode: run \`${command} ${again}\` again yourself and follow its output.`,
+    );
+  return t(
+    `pide al usuario que vuelva a ejecutar \`${command} ${again}\` y termina tu turno.`,
+    `ask the user to run \`${command} ${again}\` again and end your turn.`,
+  );
 }
 
 export type Pending =

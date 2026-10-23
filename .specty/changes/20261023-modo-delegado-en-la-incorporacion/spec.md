@@ -42,7 +42,7 @@ Con el modo delegado activo, la incorporación sigue sola. Si un cierre choca, l
 
 ## Tareas
 
-- [ ] T1: La incorporación habla al agente en modo delegado
+- [x] T1: La incorporación habla al agente en modo delegado
   - files: packages/cli/src/flow/integrate.ts, packages/cli/src/commands/integrate.ts, packages/cli/test/delegated-integration.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/delegated-integration.test.ts test/resolve.test.ts test/integrate.test.ts

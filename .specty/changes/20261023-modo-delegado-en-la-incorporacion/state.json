@@ -6,6 +6,13 @@
   "branch": "specty/20261023-modo-delegado-en-la-incorporacion",
   "baseCommit": "a936b866cca758453e66e32c86d9ff1e9dde7052",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:124d5a0ae5145bdf827a1623a0839cd29510f8765543c99bf96d7c7743401395",
+    "at": "2026-10-23T21:07:15.927Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -24,7 +31,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "424ed6189ee869a4568fa07c9feba56cd8de34bc",
+      "startedAt": "2026-10-23T21:07:36.025Z",
+      "doneAt": "2026-10-23T21:08:55.545Z",
+      "summary": "En modo delegado (session.cards.delegated), askAgent pide al agente resolver la incorporación (specty next y specty integrate) y repetir close o accept, y specty integrate le pide repetirlo él (runAgain), en vez de pedir al usuario; sin el modo, los textos de siempre"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "AC": 4,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:124d5a0ae5145bdf827a1623a0839cd29510f8765543c99bf96d7c7743401395",
-    "at": "2026-10-23T21:07:15.927Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
