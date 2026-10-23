@@ -6,6 +6,13 @@
   "branch": "specty/20261023-modo-delegado-interruptor-en-la-cli",
   "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
   "revision": 3,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:b1616b5910b82c992e3c0699117600ebf4af07622a34b78c1a63fd53bdaae54b",
+    "at": "2026-10-23T19:25:25.950Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b62b845252b36c6c2d187bd3ccd2a2d175655b5d",
+      "startedAt": "2026-10-23T19:25:34.287Z",
+      "doneAt": "2026-10-23T19:27:19.288Z",
+      "summary": "specty delegate on muestra la advertencia y solo activa el modo con un «sí» explícito (la primera opción, la por defecto, es no); off lo desactiva; ambos exigen TTY. El interruptor vive en git rev-parse --git-path common/specty/delegated.json (by y at), compartido por todas las worktrees del clon."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 7,
     "T": 4,
     "R": 3
-  },
-  "approved": {
-    "revision": 3,
-    "hash": "sha256:b1616b5910b82c992e3c0699117600ebf4af07622a34b78c1a63fd53bdaae54b",
-    "at": "2026-10-23T19:25:25.950Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

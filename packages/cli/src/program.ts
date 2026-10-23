@@ -11,10 +11,11 @@ import {
   renderText,
   translator,
 } from "@baquia-dev/specty-core";
-import { Command, CommanderError } from "commander";
+import { Argument, Command, CommanderError } from "commander";
 import { accept } from "./commands/accept";
 import { adjust } from "./commands/adjust";
 import { approve } from "./commands/approve";
+import { delegate } from "./commands/delegate";
 import { doctor } from "./commands/doctor";
 import { cancel, close } from "./commands/finish";
 import { init } from "./commands/init";
@@ -211,6 +212,11 @@ export async function runCli(
     .description("cancel the change (person only)")
     .option("--reason <text>")
     .action((options: { reason?: string }) => run((session) => cancel(session, options.reason))());
+  program
+    .command("delegate")
+    .description("let your agent take your decisions, or take them back (person only)")
+    .addArgument(new Argument("<mode>", "on or off").choices(["on", "off"]))
+    .action((mode: string) => run((session) => delegate(session, mode === "on" ? "on" : "off"))());
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
   program

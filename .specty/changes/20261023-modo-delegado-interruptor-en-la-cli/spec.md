@@ -64,7 +64,7 @@ Segundo y último paso del modo delegado (ADR 0010). `specty delegate on` lo act
 
 ## Tareas
 
-- [ ] T1: El interruptor `specty delegate`
+- [x] T1: El interruptor `specty delegate`
   - files: packages/cli/src/commands/delegate.ts, packages/cli/src/program.ts, packages/cli/src/store/local.ts, packages/cli/test/delegate.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts
