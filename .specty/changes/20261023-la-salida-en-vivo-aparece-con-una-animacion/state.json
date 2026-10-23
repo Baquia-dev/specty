@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261023-la-salida-en-vivo-aparece-con-una-animacion",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-la-salida-en-vivo-aparece-con-una-animacion",
   "baseCommit": "b5e0608077ca85ce2e72379eb8084111eba60f1f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1fa4701542e3628fdb8faf58e432f3ccf87d6c2a22817f117326c7c54d0b41bc",
+    "at": "2026-10-23T05:28:27.318Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -16,19 +23,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bdf119af48cce7b4fbe255d7693b28aa9041c3d6",
+      "startedAt": "2026-10-23T05:28:39.185Z",
+      "doneAt": "2026-10-23T05:31:58.148Z",
+      "summary": "live-output.ts: el bloque en vivo entra desde un poco más arriba con un desvanecido (transition-[opacity,translate] con starting:) y el panel de la salida se abre desde arriba (transition-[height,opacity], starting:h-0 y opacity-0), con transition-duration var(--duration-base) y var(--ease-standard): con movimiento reducido el token vale 0 ms y aparece sin animación. Vale al empezar una verificación y al volver a mostrar la salida, en Aceptación y en Progreso. live-output.test.ts comprueba las clases y el tiempo. docs/ui.md lo describe. Medido en el navegador a 390 y 1280 px: de 22 a 288 px y de opacidad 0 a 1 en unos 200 ms; con movimiento reducido, 288 px y opacidad 1 desde el primer instante."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1fa4701542e3628fdb8faf58e432f3ccf87d6c2a22817f117326c7c54d0b41bc",
-    "at": "2026-10-23T05:28:27.318Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

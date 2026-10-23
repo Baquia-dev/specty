@@ -18,7 +18,7 @@ El panel de la salida en vivo deja de aparecer de golpe. Al empezar una verifica
 
 ## Tareas
 
-- [ ] T1: La entrada animada de la salida en vivo
+- [x] T1: La entrada animada de la salida en vivo
   - files: packages/ui/src/progress/live-output.ts, packages/ui/src/progress/live-output.test.ts, docs/ui.md
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro, en Aceptación y en Progreso: que el panel se abre al empezar y al mostrarlo de nuevo, y que con movimiento reducido aparece sin animación.

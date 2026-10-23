@@ -123,6 +123,26 @@ describe("Live output", () => {
     expect(log()).not.toBeNull();
   });
 
+  it("comes in animated, with the system's timing that reduced motion turns off", async () => {
+    const { element, log } = await render();
+    // jsdom runs no transitions: what is checked is what the browser animates and with what timing.
+    const live = element.querySelector<HTMLElement>("[data-live]");
+    expect(live?.className.split(" ")).toEqual(
+      expect.arrayContaining([
+        "transition-[opacity,translate]",
+        "starting:-translate-y-1",
+        "starting:opacity-0",
+      ]),
+    );
+    expect(log()?.className.split(" ")).toEqual(
+      expect.arrayContaining(["transition-[height,opacity]", "starting:h-0", "starting:opacity-0"]),
+    );
+    for (const entering of [live, log()]) {
+      expect(entering?.getAttribute("style")).toContain("var(--duration-base)");
+      expect(entering?.getAttribute("style")).toContain("var(--ease-standard)");
+    }
+  });
+
   it("announces when a run starts, ends and how it went, never line by line (AC4)", async () => {
     const { host, element, settle } = await render(null);
     const said = () => text(element.querySelector("[data-announce]"));

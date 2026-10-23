@@ -70,6 +70,10 @@ function wording(task: string | undefined): Wording {
   };
 }
 
+/** The system's timing for things that enter; `--duration-base` is 0 ms with reduced motion. */
+const MOTION =
+  "transition-duration: var(--duration-base); transition-timing-function: var(--ease-standard)";
+
 /** Enough to read what failed; older lines are counted, not kept on screen. */
 export const MAX_LINES = 500;
 /** Closer than this to the end, the output counts as followed. */
@@ -87,7 +91,8 @@ const END_PX = 8;
   template: `
     <p class="sr-only" role="status" data-announce>{{ message() }}</p>
     @if (run(); as run) {
-      <div class="flex flex-col gap-2" data-live>
+      <!-- It comes in from a little above, and its output opens from the top: with reduced motion, the token is 0 ms. -->
+      <div class="flex flex-col gap-2 transition-[opacity,translate] starting:-translate-y-1 starting:opacity-0" [style]="motion" data-live>
         <div class="flex flex-wrap items-center gap-2 text-[13px]">
           <span class="inline-flex items-center gap-2" style="color: var(--color-phase-implementing)">
             <span class="size-2 animate-pulse rounded-full motion-reduce:animate-none" style="background: var(--color-phase-implementing)" aria-hidden="true"></span>
@@ -105,7 +110,7 @@ const END_PX = 8;
               scroll inside, and at its ends the scroll stays in the box.
               Inside <pre> every space of the template shows: the lines go on one template line.
             -->
-            <pre #log tabindex="0" class="m-0 h-72 overflow-y-auto overscroll-contain rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" [attr.aria-label]="t()(said().log.es, said().log.en)" (scroll)="onScroll()" data-log>@if (hidden() > 0) {<span class="block text-text-muted" data-hidden>{{ t()('… ' + hidden() + ' líneas antes', '… ' + hidden() + ' earlier lines') }}</span>}@for (line of lines(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
+            <pre #log tabindex="0" class="m-0 h-72 overflow-y-auto overscroll-contain rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap transition-[height,opacity] starting:h-0 starting:opacity-0" [style]="motion" [attr.aria-label]="t()(said().log.es, said().log.en)" (scroll)="onScroll()" data-log>@if (hidden() > 0) {<span class="block text-text-muted" data-hidden>{{ t()('… ' + hidden() + ' líneas antes', '… ' + hidden() + ' earlier lines') }}</span>}@for (line of lines(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
             @if (!following()) {
               <button type="button" class="absolute right-3 bottom-3 h-8 cursor-pointer rounded-lg border border-border bg-surface px-3 font-sans text-[13px] font-medium text-text shadow-sm" (click)="toEnd()" data-to-end>{{ t()('Ir al final', 'Go to the end') }}</button>
             }
@@ -126,6 +131,7 @@ export class LiveOutput {
   private readonly preferences = inject(Preferences);
   protected readonly t = this.preferences.t;
   protected readonly tones = OUTPUT_TONES;
+  protected readonly motion = MOTION;
   /** Open while it runs, unless the person hides it. */
   protected readonly shown = signal(true);
   /** At the end of the output: new lines keep it there. */
