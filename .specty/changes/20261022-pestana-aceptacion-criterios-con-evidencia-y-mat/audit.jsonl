@@ -1,0 +1,4 @@
+{"ts":"2026-10-23T01:09:46.596Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-pestana-aceptacion-criterios-con-evidencia-y-mat"}}
+{"ts":"2026-10-23T01:11:14.182Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:2510ef8159cffe29337e890023973bc9f9d87f053470a983f80741b95ddf11bb","size":"L","warnings":3}}
+{"ts":"2026-10-23T01:11:24.014Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:7a8a2f502dcf2783d1722602a096a17fcc52c9f699434533c9f14488ad4ffa1c","size":"L","warnings":2}}
+{"ts":"2026-10-23T01:14:16.210Z","actor":"human","event":"spec.approved","data":{"revision":2,"hash":"sha256:7a8a2f502dcf2783d1722602a096a17fcc52c9f699434533c9f14488ad4ffa1c","channel":"tty"}}

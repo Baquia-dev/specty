@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261022-pestana-aceptacion-criterios-con-evidencia-y-mat",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-pestana-aceptacion-criterios-con-evidencia-y-mat",
+  "baseCommit": "52f53d135ee33eb18bc0029bc12324985d29ec51",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:109fc2f4b8e500b98369fe30c120defc2ff898c7259d0bc39d5833429d96463b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:744190566e82b501900734f75d7f2d92ed6147755aefcdb142c712aa090f5e04",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ce9c179c8017b2d3a67de7ca279e0fb8bace02e6bac41a057b4f5d37de120a44",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:b098694b715411ad2c2ddabdfb35546e6afee345ad723b7167cf802e639603bb",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:127d1b465e9a96646ba585d8a03d81b5d680df8428a779b5263576bc6d6551e6",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:9af2b50a5b26c79aecd9e521804ca869c4444a50162de6ff3a03d6737d4fadf4",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:e02e599e6d9cd42e6773b25827fbee331f3a8b8dffefb6e829dc02797a423ab1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7a8a2f502dcf2783d1722602a096a17fcc52c9f699434533c9f14488ad4ffa1c",
+    "at": "2026-10-23T01:14:16.179Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
