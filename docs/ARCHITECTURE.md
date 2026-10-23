@@ -117,7 +117,7 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty integrate` | Con una incorporación pendiente | Termina el merge de la rama principal que dejó el cierre: sin marcadores, dentro de sus archivos y con la verificación en verde, hace el commit de merge (§9) |
 | `specty retro [--into <id>]` | Cualquiera | Devuelve el protocolo para documentar cambios ya hechos |
 
-Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve [<cambio>] [--scope <S>]`, `reject [<cambio>] --scope <S>`, `accept [<cambio>]`, `close [<cambio>]` y `cancel [<cambio>]`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
+Comandos para la persona: `init`, `ui`, `status`, `prune`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. `prune` también lo puede ejecutar el agente, porque solo borra lo ya incorporado (§9). También `approve [<cambio>] [--scope <S>]`, `reject [<cambio>] --scope <S>`, `accept [<cambio>]`, `close [<cambio>]` y `cancel [<cambio>]`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
 
 Estas decisiones se toman desde cualquier carpeta del repo, porque cada cambio vive en su propia worktree. El comando elige el cambio en este orden:
 
@@ -214,6 +214,8 @@ Las worktrees que otras herramientas crean dentro del repositorio (Claude Code u
 5. La worktree del cambio se borra con `git worktree remove`, sin `--force`, y la rama queda; si el cambio vivía en la carpeta principal, esa carpeta vuelve a la rama principal. Si cierra el agente (modo delegado) desde dentro de la worktree, la carpeta queda para no dejar su sesión en una carpeta borrada, y la salida le pide salir de ella (en Claude Code, `ExitWorktree`).
 
 Solo se incorporan los cambios `standard` y `quick` con rama y en modo `individual`. Un `spike` no se fusiona, un `retro` no tiene rama, y las épicas y el modo `team` (que integra por PR) cierran como antes, con un SIGUIENTE que pide fusionar la rama.
+
+**Limpieza.** Antes de crear su worktree, `specty new` borra las de cambios ya terminados: cerrados que ya están en su rama destino (o que no se incorporan), y cancelados. Son las que quedan cuando el agente cierra desde dentro. Nunca borra la carpeta en la que corre el proceso, ni la principal, ni la de un cambio abierto. Usa `git worktree remove` sin `--force`, así que una carpeta con archivos sin seguimiento queda, y las ramas también. `specty prune` hace lo mismo y además borra las ramas `specty/*` y `spike/*` que ya están en la rama destino y no están en ninguna worktree. Las demás quedan, como la de un cambio cancelado, que guarda su registro, y la salida dice por qué.
 
 **Commits que hace Specty**, siempre con la identidad git de la persona y con trailers ([formats.md §7](formats.md#7-trailers-de-commit)):
 

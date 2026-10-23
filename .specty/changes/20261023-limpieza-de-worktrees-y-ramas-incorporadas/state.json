@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-limpieza-de-worktrees-y-ramas-incorporadas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-limpieza-de-worktrees-y-ramas-incorporadas",
   "baseCommit": "bca6638313fd3d0fb99b5d74a17ac7c7473fef98",
   "revision": 1,
@@ -47,12 +47,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6d395c6d274bd36c6402a5c523ab216c0ea5c4d6",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:34:13.023Z",
       "doneAt": "2026-10-23T21:37:29.463Z",
-      "summary": "specty prune: removeFinished más deleteMerged, que borra las ramas specty/* y spike/* ya en la rama destino que no están en ninguna worktree y nombra las que quedan sin incorporar; la salida dice lo borrado, lo que queda y por qué, o que no había nada. Para no pasar de 300 líneas en program.ts, la lectura de las opciones de init pasa a initCommand en commands/init.ts"
+      "summary": "specty prune: removeFinished más deleteMerged, que borra las ramas specty/* y spike/* ya en la rama destino que no están en ninguna worktree y nombra las que quedan sin incorporar; la salida dice lo borrado, lo que queda y por qué, o que no había nada. Para no pasar de 300 líneas en program.ts, la lectura de las opciones de init pasa a initCommand en commands/init.ts",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5cf65da6b31494a4f17a5193216e0dd7d54e89a2",
+      "startedAt": "2026-10-23T21:37:29.782Z",
+      "doneAt": "2026-10-23T21:40:19.141Z",
+      "summary": "ARCHITECTURE §6: prune entre los comandos, también para el agente; §9: la limpieza de new y prune, qué se borra y qué queda"
     }
   },
   "pending": {

@@ -60,7 +60,7 @@ Las carpetas y las ramas de los cambios terminados no se acumulan. `specty new` 
   - files: packages/cli/src/flow/prune.ts, packages/cli/src/commands/prune.ts, packages/cli/src/program.ts, packages/cli/src/commands/init.ts, packages/cli/test/prune.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune.test.ts test/setup.test.ts test/install.test.ts
-- [ ] T3: Documentar la limpieza
+- [x] T3: Documentar la limpieza
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check
