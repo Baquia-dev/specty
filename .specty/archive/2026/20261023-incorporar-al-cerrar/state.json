@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-incorporar-al-cerrar",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-incorporar-al-cerrar",
   "baseCommit": "c6b94c0cf13ba797005eb2688dc5e1c9e18dec0a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c31676e574b09f827d4e5ddb2146f89384202e2c081887a1dcb48df1053ee4f3",
@@ -81,12 +81,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a9477445bc68e2b73b179cab1e84d98e1356feee",
+      "attempts": 1,
       "startedAt": "2026-10-23T15:27:21.856Z",
       "doneAt": "2026-10-23T15:30:21.894Z",
-      "summary": "ARCHITECTURE §9: la incorporación al cerrar (pasos, rechazos, reintento, borrado de la worktree y qué cambios se incorporan) y el merge entre los commits que hace Specty; §6: close y el accept de un quick incorporan"
+      "summary": "ARCHITECTURE §9: la incorporación al cerrar (pasos, rechazos, reintento, borrado de la worktree y qué cambios se incorporan) y el merge entre los commits que hace Specty; §6: close y el accept de un quick incorporan",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -98,5 +98,6 @@
     "AC": 9,
     "T": 4,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T15:39:32.567Z"
 }

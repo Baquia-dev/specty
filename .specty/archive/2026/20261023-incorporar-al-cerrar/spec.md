@@ -87,3 +87,32 @@ Cuando la persona cierra un cambio (o acepta uno quick), Specty lo incorpora a l
 - R1: Borrar la worktree corta lo que corre en ella, como la sesión del agente o un servidor de desarrollo — A4 lo hace explícito, se pide confirmar al aprobar, y la salida dice la carpeta en la que seguir.
 - R2: La verificación tras el merge (en este repo, `pnpm check`) tarda minutos en la terminal de la persona — solo corre cuando la rama principal avanzó; si no, el avance es un fast-forward sin verificar de nuevo, porque el código es el aceptado.
 - R3: Otra sesión mueve la rama principal entre la verificación y el avance — `update-ref` con el valor anterior y `merge --ff-only` fallan sin pisar nada, y A6 deja reintentarlo con `specty close`.
+
+## Cierre
+
+### Resumen
+
+`specty close`, y `accept` en un cambio quick, incorporan el cambio a la rama principal en el mismo comando. Si la principal avanzó, primero se fusiona en la rama del cambio, en su carpeta, y el commit de merge solo se hace con `verify.full` (o `verify.default`) en verde. Después la principal avanza por fast-forward donde está (o con `update-ref` si no está en ninguna carpeta), y la worktree del cambio se borra conservando la rama; si el cambio vivía en la carpeta principal, esta vuelve a la principal. Con conflictos, con la verificación en rojo o con la carpeta de la principal con cambios sin commit, no se cierra ni cambia nada, y la salida lista los archivos y explica cómo incorporarla a mano. Un cambio ya cerrado cuya rama no llegó a la principal se reintenta con `specty close`. `spike`, `retro`, épicas, el modo `team` y un repo sin rama principal cierran como antes. Se probó en el repo real: el cambio quick «La documentación no cuenta como módulo» se aceptó con este CLI, `main` avanzó por fast-forward hasta su commit de archivo (a3f0b2b) y su worktree se borró, con la rama intacta.
+
+### Desviaciones
+
+- **`absorbTarget` recibe el comando que se repite (`close` o `accept`),** porque el SIGUIENTE de un rechazo en un quick pide volver a aceptar, no cerrar.
+- **Dos funciones más en `flow/integrate.ts`:** `withIntegration`, que añade a la tarjeta de cierre lo que hizo la incorporación y, si la principal no avanzó, cómo reintentarlo; e `isIncorporated`, para el reintento de `close` sobre un cambio ya cerrado.
+- **La cola de la verificación solo se muestra si falla,** en un bloque de la salida, y no con `terminal.note` como decía el Diseño: con verde basta la línea «… y `<comando>` pasó».
+- **T3 amplió su alcance a `flow/integrate.ts`** para dejarlo por debajo de las 300 líneas (T2 lo dejó en 313). La política la aprobó sola porque el archivo ya estaba en Archivos.
+
+### Decisiones
+
+- **El mensaje de rechazo depende de la fase:** «No se cerró», «No se aceptó» (quick) o «No se incorporó» (reintento de un cambio ya cerrado).
+- **La comprobación de A6 mira solo los archivos con seguimiento** (`git diff --name-only HEAD` en la carpeta de la principal). Un archivo sin seguimiento que choque lo detecta el propio `merge --ff-only`, y el cambio queda para el reintento.
+- **El commit de merge lleva un recibo de tipo `close`,** como el del archivo, y el sujeto habitual de git (`Merge branch '<principal>' into <rama>`).
+- **Los textos van en la CLI,** junto a los de `close`, como pedía el Diseño.
+- **A1, A2 y A4, confirmados al aprobar:** la rama destino es la principal, la principal solo avanza por fast-forward hasta código verificado, y la worktree se borra al incorporar.
+
+### Pendientes
+
+- **Que el agente resuelva los conflictos en la worktree del cambio:** siguiente cambio de la serie (core y CLI). Hasta entonces, la persona incorpora la principal a mano y repite el comando.
+- **Rama destino configurable (`git.target`) y `new --from <rama>` como destino del cambio.**
+- **Que `specty new` cree siempre una worktree y prepare sus dependencias,** y que los comandos de la persona funcionen desde cualquier carpeta.
+- **Recompilar el CLI de la carpeta principal** tras incorporar este cambio, porque el `specty` global apunta a ese `dist`.
+- **Un falso positivo del guard:** `2>&1)` dentro de una subshell se toma como escritura a un archivo `&1)`.
