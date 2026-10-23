@@ -337,6 +337,8 @@ Specty-Agent: claude-code
 | --- | --- |
 | Tarea | `Specty-Change`, `Specty-Task`, `Specty-Spec` (revisión@hash corto), `Specty-Agent` |
 | Spec aprobada | `Specty-Change`, `Specty-Spec` |
+| Merge de la incorporación al cerrar; archivo al cerrar, cancelar o aceptar un quick | `Specty-Change` |
+| Decisión que el agente toma en modo delegado (las dos filas anteriores) | Además, `Specty-Delegated: true` y `Specty-Agent`; los commits de las tareas no lo llevan (ADR 0010) |
 | Manual dentro del alcance | `Specty-Change`, `Specty-Manual: true` |
 | Retro | `Specty-Change` (del cambio retro o del activo), `Specty-Retro: true` |
 | Spike | Además, `Specty-Kind: spike`; el CI impide fusionarlo a la rama principal |

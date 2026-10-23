@@ -53,7 +53,7 @@ kind: standard
   - files: packages/cli/src/flow/commits.ts, packages/cli/src/commands/approve.ts, packages/cli/src/flow/finish.ts, packages/cli/src/flow/integrate.ts, packages/cli/test/delegate.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts test/flow.test.ts test/integrate.test.ts
-- [ ] T3: Documentar el trailer
+- [x] T3: Documentar el trailer
   - files: docs/formats.md
   - ac: —
   - verify: pnpm check

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-avisos-de-doctor-y-commits-delegados",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-avisos-de-doctor-y-commits-delegados",
   "baseCommit": "adbc8a881d9fb55f927a25ac8f8baf964938a432",
   "revision": 1,
@@ -47,12 +47,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "25970b459b208cc45bf75f09c8fe027349ab088e",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:58:12.091Z",
       "doneAt": "2026-10-23T22:00:48.094Z",
-      "summary": "decisionTrailers añade Specty-Delegated: true cuando el agente decide en modo delegado; lo llevan la aprobación de la spec, el merge de la incorporación y el archivo al cerrar, cancelar o aceptar un quick; las tareas y las decisiones de la persona no"
+      "summary": "decisionTrailers añade Specty-Delegated: true cuando el agente decide en modo delegado; lo llevan la aprobación de la spec, el merge de la incorporación y el archivo al cerrar, cancelar o aceptar un quick; las tareas y las decisiones de la persona no",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e94b6fee8018473c2eb927463cf8b21c6d4e5775",
+      "startedAt": "2026-10-23T22:00:48.417Z",
+      "doneAt": "2026-10-23T22:03:44.234Z",
+      "summary": "formats.md §7: filas del merge y el archivo, y del trailer Specty-Delegated en las decisiones que el agente toma en modo delegado"
     }
   },
   "pending": {
