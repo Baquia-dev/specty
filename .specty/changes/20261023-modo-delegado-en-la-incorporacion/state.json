@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "424ed6189ee869a4568fa07c9feba56cd8de34bc",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:07:36.025Z",
       "doneAt": "2026-10-23T21:08:55.545Z",
-      "summary": "En modo delegado (session.cards.delegated), askAgent pide al agente resolver la incorporación (specty next y specty integrate) y repetir close o accept, y specty integrate le pide repetirlo él (runAgain), en vez de pedir al usuario; sin el modo, los textos de siempre"
+      "summary": "En modo delegado (session.cards.delegated), askAgent pide al agente resolver la incorporación (specty next y specty integrate) y repetir close o accept, y specty integrate le pide repetirlo él (runAgain), en vez de pedir al usuario; sin el modo, los textos de siempre",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6405856523b2ece8a7c81ea160deb980dc7eb6b7",
+      "startedAt": "2026-10-23T21:08:55.851Z",
+      "doneAt": "2026-10-23T21:10:47.136Z",
+      "summary": "landChange no borra la worktree si quien cierra es el agente y la carpeta de trabajo del proceso está dentro: el cambio se incorpora igual, la carpeta y la rama quedan (Landed.kept) y withIntegration le pide salir (en Claude Code, ExitWorktree) y seguir en la carpeta principal; la persona, o un cierre desde fuera, la borran como antes"
     }
   },
   "pending": {

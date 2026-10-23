@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { cli, git, inWorktree, person, toClosing, writeFiles } from "./support";
+import { exists } from "../src/io/files";
+import { CHANGE, cli, git, inWorktree, person, toClosing, writeFiles } from "./support";
 
 /** A change ready to close in its worktree, with delegated mode on and main conflicting. */
 async function delegatedConflict() {
@@ -35,5 +36,22 @@ describe("the incorporation in delegated mode", () => {
       "SIGUIENTE: modo delegado: vuelve a ejecutar tú `specty close` y sigue su salida.",
     );
     expect(integrated.out).not.toContain("pide al usuario");
+  });
+
+  it("keeps the folder an agent closes from inside, and tells it to leave (AC3)", async () => {
+    const { root, folder } = await inWorktree();
+    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    await toClosing(folder);
+    const closed = await cli(folder, ["close"]);
+    expect(closed.code).toBe(0);
+    expect(closed.out).toContain("Incorporado a main.");
+    expect(closed.out).toContain(
+      `La carpeta ${folder} queda, porque tu sesión trabaja en ella; la rama specty/${CHANGE} también.`,
+    );
+    expect(closed.out).toContain(
+      `SIGUIENTE: sal de ${folder} (en Claude Code, \`ExitWorktree\`) y sigue en ${root}; para otro cambio, \`specty new "<título>"\`.`,
+    );
+    expect(await exists(folder)).toBe(true);
+    expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", `specty/${CHANGE}`));
   });
 });

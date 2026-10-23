@@ -46,7 +46,7 @@ Con el modo delegado activo, la incorporación sigue sola. Si un cierre choca, l
   - files: packages/cli/src/flow/integrate.ts, packages/cli/src/commands/integrate.ts, packages/cli/test/delegated-integration.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/delegated-integration.test.ts test/resolve.test.ts test/integrate.test.ts
-- [ ] T2: El agente que cierra desde dentro no pierde su carpeta
+- [x] T2: El agente que cierra desde dentro no pierde su carpeta
   - files: packages/cli/src/flow/land.ts, packages/cli/test/delegated-integration.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/delegated-integration.test.ts test/integrate.test.ts test/anywhere.test.ts
