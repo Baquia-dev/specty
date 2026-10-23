@@ -19,6 +19,7 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 .git/specty/                   # local, por worktree, nunca versionado
 ├─ receipts.json               # recibos de commit
 ├─ active                      # cambio activo cuando no hay rama por cambio
+├─ shell/<tool_use_id>.json    # foto del árbol antes de cada comando de Bash del agente
 └─ server.json                 # puerto y token de la UI en ejecución
 ```
 

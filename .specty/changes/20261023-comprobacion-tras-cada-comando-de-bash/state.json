@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-comprobacion-tras-cada-comando-de-bash",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-comprobacion-tras-cada-comando-de-bash",
   "baseCommit": "b8e3884997f96d39efed5c21d323b6c7b6fbfbd4",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ac5be762b9992d37b5ec13d805efd2d291f80716",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:29:01.500Z",
       "doneAt": "2026-10-23T10:34:26.862Z",
-      "summary": "Foto del árbol antes de cada comando de Bash y comprobación al terminar (PostToolUse y PostToolUseFailure), con limpieza de fotos huérfanas; p95 160 ms antes y 158 ms después"
+      "summary": "Foto del árbol antes de cada comando de Bash y comprobación al terminar (PostToolUse y PostToolUseFailure), con limpieza de fotos huérfanas; p95 160 ms antes y 158 ms después",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b61a5d5d9f706af3c8f0beac6d868c8a6d4aa72a",
+      "startedAt": "2026-10-23T10:34:27.135Z",
+      "doneAt": "2026-10-23T10:37:53.867Z",
+      "summary": "init instala PostToolUse y PostToolUseFailure con Bash; doctor dice qué evento falta; ARCHITECTURE §10 y formats.md §1 al día"
     }
   },
   "pending": {

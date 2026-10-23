@@ -67,7 +67,7 @@ El guard ve lo que cambia un comando de Bash, no solo lo que su texto deja adivi
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enforce.test.ts
   - notes: Medir el guard antes y después de un comando: p95 < 200 ms.
-- [ ] T3: Instalar la comprobación y avisar si falta
+- [x] T3: Instalar la comprobación y avisar si falta
   - files: packages/cli/src/install/agents.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/setup.test.ts
   - ac: AC7
   - verify: pnpm check

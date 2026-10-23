@@ -7,3 +7,6 @@
 {"ts":"2026-10-23T10:29:01.501Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"ac5be762b9992d37b5ec13d805efd2d291f80716"}}
 {"ts":"2026-10-23T10:34:26.861Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/enforce.test.ts","exit":0,"ms":18629}}
 {"ts":"2026-10-23T10:34:26.863Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Foto del árbol antes de cada comando de Bash y comprobación al terminar (PostToolUse y PostToolUseFailure), con limpieza de fotos huérfanas; p95 160 ms antes y 158 ms después"}}
+{"ts":"2026-10-23T10:34:27.135Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"b61a5d5d9f706af3c8f0beac6d868c8a6d4aa72a"}}
+{"ts":"2026-10-23T10:37:53.866Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":41185}}
+{"ts":"2026-10-23T10:37:53.869Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"init instala PostToolUse y PostToolUseFailure con Bash; doctor dice qué evento falta; ARCHITECTURE §10 y formats.md §1 al día"}}

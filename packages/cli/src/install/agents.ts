@@ -5,7 +5,15 @@ import { appendLine, isRecord, readText, writeText } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
 
-const CLAUDE_MATCHER = "Edit|MultiEdit|Write|NotebookEdit|Bash";
+/**
+ * The Claude Code events the guard listens to, with the tools each one covers: before each
+ * write or command, and after each Bash command, whether it succeeded or failed.
+ */
+const CLAUDE_EVENTS: Readonly<Record<string, string>> = {
+  PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash",
+  PostToolUse: "Bash",
+  PostToolUseFailure: "Bash",
+};
 const FORMAT = { formattingOptions: { insertSpaces: true, tabSize: 2, eol: "\n" } };
 
 export interface AgentInstall {
@@ -49,21 +57,40 @@ export function hasGuard(text: string | undefined, tool: "claude-code" | "cursor
   return text?.includes(`guard --tool ${tool}`) === true;
 }
 
+/** The Claude Code events whose guard hook none of these settings files (their text) installs. */
+export function missingClaudeEvents(settings: readonly (string | undefined)[]): string[] {
+  const installed = settings.map((text): unknown => (text === undefined ? undefined : parse(text)));
+  return Object.keys(CLAUDE_EVENTS).filter(
+    (event) =>
+      !installed.some((value) => {
+        const entries = isRecord(value) && isRecord(value.hooks) ? value.hooks[event] : undefined;
+        return (
+          Array.isArray(entries) && entries.some((entry: unknown) => isOurs(entry, "claude-code"))
+        );
+      }),
+  );
+}
+
 type Entry = Record<string, unknown>;
 
 function isOurs(entry: unknown, tool: string): boolean {
   return JSON.stringify(entry).includes(`guard --tool ${tool}`);
 }
 
+/** Puts the guard in each Claude Code event, or takes it out when `command` is undefined. */
 function withClaudeHook(value: Entry, command: string | undefined): Entry {
   const hooks = isRecord(value.hooks) ? value.hooks : {};
-  const current = Array.isArray(hooks.PreToolUse) ? hooks.PreToolUse : [];
-  const kept = current.filter((entry: unknown) => !isOurs(entry, "claude-code"));
-  const ours =
-    command === undefined
-      ? []
-      : [{ matcher: CLAUDE_MATCHER, hooks: [{ type: "command", command }] }];
-  return { ...value, hooks: { ...hooks, PreToolUse: [...kept, ...ours] } };
+  const events = Object.entries(CLAUDE_EVENTS).flatMap(
+    ([event, matcher]): [string, unknown[]][] => {
+      const current = Array.isArray(hooks[event]) ? hooks[event] : [];
+      const kept = current.filter((entry: unknown) => !isOurs(entry, "claude-code"));
+      const ours =
+        command === undefined ? [] : [{ matcher, hooks: [{ type: "command", command }] }];
+      const entries = [...kept, ...ours];
+      return entries.length === 0 && !Object.hasOwn(hooks, event) ? [] : [[event, entries]];
+    },
+  );
+  return { ...value, hooks: { ...hooks, ...Object.fromEntries(events) } };
 }
 
 function withCursorHooks(value: Entry, command: string): Entry {
