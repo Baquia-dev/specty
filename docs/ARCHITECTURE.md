@@ -135,6 +135,8 @@ Cada uno espera una decisión distinta:
 
 El comando se ejecuta en la worktree del cambio y con su configuración, como si la persona hubiera hecho `cd` allí. Si ningún cambio espera esa decisión, lo dice. Los comandos del agente nunca preguntan: actúan sobre el cambio de su carpeta. `status` muestra los cambios abiertos de todas las worktrees, cada uno leído en su carpeta, con la ruta de los que no son el de la carpeta actual; la copia de otro cambio que una rama heredó no cuenta.
 
+`delegate on|off` activa o desactiva el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)), también solo desde una TTY. El interruptor vale para el clon y todas sus worktrees. Mientras está activo, el agente ejecuta esas acciones sin TTY, y la CLI responde por la persona: confirma, da por confirmados los supuestos de impacto alto pendientes y no escribe comentarios. Además, `accept` ejecuta siempre la verificación completa y no acepta si falla. La auditoría registra esas decisiones como del agente, por delegación. Con TTY sigue decidiendo la persona, aunque el modo esté activo.
+
 Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, que se registra como retro aparte) y `init`, `status`, `doctor`, `approve`, `reject`, `accept`, `close` y `cancel`. `ui`, `why`, `audit`, `export`, `ci` y `next --wait` llegan en fases posteriores.
 
 **Contrato de salida** (igual en CLI y MCP):

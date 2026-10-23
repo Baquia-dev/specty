@@ -140,9 +140,14 @@ describe("a person's decisions from any folder", () => {
     );
     const missing = await cli(root, ["close", "nada"], { terminal: person() });
     expect(missing.out).toContain("No hay ningún cambio nada.");
-    await inReview(root, "Saludo personalizado", CHANGE);
+    const folder = await inReview(root, "Saludo personalizado", CHANGE);
     const agent = await cli(root, ["approve"]);
     expect(agent.code).toBe(2);
     expect(agent.out).toContain("lo ejecuta una persona en su terminal");
+    // Delegated mode lets the agent decide, but only on its own folder's change.
+    const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    expect(on.code).toBe(0);
+    expect((await cli(root, ["approve"])).out).toContain("No hay un cambio activo.");
+    expect(await stateIn(folder)).toMatchObject({ phase: "review" });
   });
 });

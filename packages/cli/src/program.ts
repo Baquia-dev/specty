@@ -11,13 +11,14 @@ import {
   renderText,
   translator,
 } from "@baquia-dev/specty-core";
-import { Command, CommanderError } from "commander";
+import { Argument, Command, CommanderError } from "commander";
 import { accept } from "./commands/accept";
 import { adjust } from "./commands/adjust";
 import { approve } from "./commands/approve";
+import { delegate } from "./commands/delegate";
 import { doctor } from "./commands/doctor";
 import { cancel, close } from "./commands/finish";
-import { personSession } from "./commands/human";
+import { type PersonAction, personSession } from "./commands/human";
 import { init } from "./commands/init";
 import { integrate } from "./commands/integrate";
 import { newChange } from "./commands/new";
@@ -30,7 +31,6 @@ import { status } from "./commands/status";
 import { taskDone } from "./commands/task";
 import { guard } from "./enforce/guard";
 import { preCommit, prepareCommitMsg } from "./enforce/hook";
-import type { PersonAction } from "./flow/changes";
 import { bareCards, type Environment, openSession, type Session, systemLanguage } from "./session";
 
 export interface CliEnvironment extends Environment {
@@ -203,10 +203,7 @@ export async function runCli(
       const chosen = await personSession(session, action, options);
       return chosen.kind === "output" ? chosen.output : handler(chosen.session);
     })();
-  const CHANGE = [
-    "[change]",
-    "the change's id (default: the one waiting for this decision)",
-  ] as const;
+  const CHANGE = ["[change]", "the change's id (default: the one waiting)"] as const;
   program
     .command("approve")
     .description("approve the spec or a scope request (person only)")
@@ -244,6 +241,11 @@ export async function runCli(
     .action((id: string | undefined, options: { reason?: string }) =>
       decide("cancel", { id }, (session) => cancel(session, options.reason)),
     );
+  program
+    .command("delegate")
+    .description("let your agent take your decisions, or take them back (person only)")
+    .addArgument(new Argument("<mode>", "on or off").choices(["on", "off"]))
+    .action((mode: string) => run((session) => delegate(session, mode === "on" ? "on" : "off"))());
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
   program

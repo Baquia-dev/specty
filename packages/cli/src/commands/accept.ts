@@ -51,14 +51,17 @@ export async function accept(session: Session): Promise<Output> {
       .join("\n"),
   );
   const full = session.config.verify.full;
+  // In delegated mode the agent always runs the full verification, and never accepts a failure.
+  const delegated = session.actor === "agent";
   if (
     full !== undefined &&
-    (await terminal.confirm(
-      t(
-        `¿Ejecutar antes la verificación completa (\`${full}\`)?`,
-        `Run the full verification (\`${full}\`) first?`,
-      ),
-    ))
+    (delegated ||
+      (await terminal.confirm(
+        t(
+          `¿Ejecutar antes la verificación completa (\`${full}\`)?`,
+          `Run the full verification (\`${full}\`) first?`,
+        ),
+      )))
   ) {
     const result = await execute(full, [], {
       cwd: session.root,
@@ -72,6 +75,18 @@ export async function accept(session: Session): Promise<Output> {
         : t("Verificación fallida", "Verification failed"),
       tail(result, 15).join("\n"),
     );
+    if (result.code !== 0 && delegated)
+      return blockedCard(
+        headerOf(state.id, state.phase),
+        t(
+          `La verificación completa (\`${full}\`) falló: en modo delegado no se acepta.`,
+          `The full verification (\`${full}\`) failed: in delegated mode it is not accepted.`,
+        ),
+        t(
+          `corrige el fallo: ejecuta \`${session.cards.command} adjust "<qué falla>"\` y sigue su salida.`,
+          `fix the failure: run \`${session.cards.command} adjust "<what fails>"\` and follow its output.`,
+        ),
+      );
     if (
       result.code !== 0 &&
       !(await terminal.confirm(t("¿Aceptar de todos modos?", "Accept anyway?")))

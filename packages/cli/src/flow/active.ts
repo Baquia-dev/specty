@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { ChangeState } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
-import { appendAudit, loadChange, type StoredChange, saveState } from "../store/changes";
+import {
+  type AuditEntry,
+  appendAudit,
+  loadChange,
+  type StoredChange,
+  saveState,
+} from "../store/changes";
 import { readPointer } from "../store/local";
 
 const CHANGE_BRANCH = /^(?:specty|spike)\/(.+)$/;
@@ -34,15 +40,30 @@ export async function commitState(
   state: ChangeState,
   event: string,
   data: Readonly<Record<string, unknown>>,
-  actor: "agent" | "human" | "specty" = session.actor,
+  actor: AuditEntry["actor"] = session.actor,
 ): Promise<StoredChange> {
   await saveState(change.files, state);
-  await appendAudit(change.files, {
-    ts: session.environment.now().toISOString(),
-    actor,
-    ...(actor === "agent" && session.tool !== undefined ? { tool: session.tool } : {}),
-    event,
-    data,
-  });
+  await appendAudit(change.files, auditEntry(session, actor, event, data));
   return { ...change, state };
+}
+
+/**
+ * An audit line. A person's decision that the agent takes in delegated mode (ADR 0010) is the
+ * agent's, marked `delegated`.
+ */
+export function auditEntry(
+  session: Session,
+  actor: AuditEntry["actor"],
+  event: string,
+  data: Readonly<Record<string, unknown>>,
+): AuditEntry {
+  const delegated = actor === "human" && session.actor === "agent" && session.delegated;
+  const who = delegated ? "agent" : actor;
+  return {
+    ts: session.environment.now().toISOString(),
+    actor: who,
+    ...(who === "agent" && session.tool !== undefined ? { tool: session.tool } : {}),
+    event,
+    data: delegated ? { ...data, delegated: true } : data,
+  };
 }

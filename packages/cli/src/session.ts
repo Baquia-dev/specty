@@ -9,9 +9,13 @@ import {
 } from "@baquia-dev/specty-core";
 import { createGit, findRoot, type Git } from "./io/git";
 import { loadConfig } from "./store/config";
+import { readDelegation } from "./store/local";
 import { type RepoPaths, repoPaths } from "./store/paths";
 
-/** Questions to a person. Implementations must not answer on their own. */
+/**
+ * Questions to a person. Implementations must not answer on their own, except the delegated
+ * terminal, which answers for a person who delegated their decisions (`delegatedTerminal`).
+ */
 export interface Terminal {
   /** stdin and stdout are a TTY: a person can answer. No variable overrides it. */
   readonly interactive: boolean;
@@ -58,6 +62,8 @@ export interface Session {
   readonly tool: AgentTool | undefined;
   /** Who runs the command, for the audit log: a person at a TTY or an agent. */
   readonly actor: "agent" | "human";
+  /** The person delegated their decisions to the agent: `specty delegate on` (ADR 0010). */
+  readonly delegated: boolean;
   readonly cards: CardContext;
 }
 
@@ -83,7 +89,11 @@ export async function openSession(environment: Environment): Promise<Opened> {
   const loaded = await loadConfig(paths);
   if (loaded.kind === "missing") return { kind: "missing", root, paths, git };
   if (loaded.kind === "invalid") return { kind: "invalid", issues: loaded.issues };
-  return { kind: "ok", session: sessionFrom(environment, root, paths, git, loaded.config) };
+  const delegated = (await readDelegation(git)) !== undefined;
+  return {
+    kind: "ok",
+    session: sessionFrom(environment, root, paths, git, loaded.config, delegated),
+  };
 }
 
 export function sessionFrom(
@@ -92,25 +102,48 @@ export function sessionFrom(
   paths: RepoPaths,
   git: Git,
   config: ResolvedConfig,
+  delegated = false,
 ): Session {
   const tool = detectAgentTool(environment.env);
   const lang = config.language;
+  const { interactive } = environment.terminal;
   return {
-    environment,
+    // With no person at the terminal, the delegated terminal answers for the one who delegated.
+    environment:
+      delegated && !interactive
+        ? { ...environment, terminal: delegatedTerminal(environment.io) }
+        : environment,
     root,
     paths,
     git,
     config,
     lang,
     tool,
-    actor: environment.terminal.interactive ? "human" : "agent",
+    actor: interactive ? "human" : "agent",
+    delegated,
     cards: {
       lang,
       command: COMMAND,
       ...(tool !== undefined ? { tool } : {}),
       quickMaxFiles: config.lanes.quick.maxFiles,
       implicitTests: config.scope.implicitTests,
+      ...(delegated ? { delegated: true } : {}),
     },
+  };
+}
+
+/**
+ * Answers for a person who delegated their decisions (ADR 0010), in an agent's shell: it
+ * confirms, never picks an option or writes a text for them, and shows the summaries on stderr,
+ * so `--json` stays clean. It is still not interactive: delegating does not make the shell a person.
+ */
+export function delegatedTerminal(io: Io): Terminal {
+  return {
+    interactive: false,
+    confirm: async () => true,
+    choose: async () => undefined,
+    ask: async () => undefined,
+    note: (title, text) => io.err(`${title}\n${text}`),
   };
 }
 

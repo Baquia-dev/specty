@@ -80,6 +80,30 @@ export async function writePointer(
   else await writeText(path, `${id}\n`);
 }
 
+/** The person delegated their decisions to the agent (ADR 0010): who did it and when. */
+export interface Delegation {
+  readonly by: string;
+  readonly at: string;
+}
+
+// Under `common/`, git keeps a path in the common directory: one switch for every worktree.
+const DELEGATION = "common/specty/delegated.json";
+
+export async function readDelegation(git: Git): Promise<Delegation | undefined> {
+  const value = parseJson(await readText(await git.gitPath(DELEGATION)));
+  if (!isRecord(value)) return undefined;
+  const { by, at } = value;
+  return typeof by === "string" && typeof at === "string" ? { by, at } : undefined;
+}
+
+export async function writeDelegation(git: Git, delegation: Delegation): Promise<void> {
+  await writeText(await git.gitPath(DELEGATION), `${JSON.stringify(delegation, null, 2)}\n`);
+}
+
+export async function clearDelegation(git: Git): Promise<void> {
+  await remove(await git.gitPath(DELEGATION));
+}
+
 async function readReceipts(git: Git): Promise<Receipt[]> {
   const value = parseJson(await readText(await git.gitPath("specty/receipts.json")));
   if (!Array.isArray(value)) return [];

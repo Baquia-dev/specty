@@ -3,6 +3,7 @@ import { createGit, resolved } from "../io/git";
 import { type Session, sessionFrom } from "../session";
 import { listOpenChanges, type StoredChange } from "../store/changes";
 import { loadConfig } from "../store/config";
+import { readDelegation } from "../store/local";
 import { repoPaths } from "../store/paths";
 import { isFinished, resolveActive } from "./active";
 import { integrationOf, isIncorporated } from "./integrate";
@@ -73,11 +74,12 @@ export async function awaits(
   }
 }
 
-/** A session in another worktree, or nothing when Specty is not set up there. */
+/** A session in another worktree, as `openSession` opens it there; nothing when Specty is not set up. */
 async function sessionIn(session: Session, folder: string): Promise<Session | undefined> {
   const paths = repoPaths(folder);
   const loaded = await loadConfig(paths);
   if (loaded.kind !== "ok") return undefined;
   const git = createGit(folder, session.environment.env);
-  return sessionFrom(session.environment, folder, paths, git, loaded.config);
+  const delegated = (await readDelegation(git)) !== undefined;
+  return sessionFrom(session.environment, folder, paths, git, loaded.config, delegated);
 }
