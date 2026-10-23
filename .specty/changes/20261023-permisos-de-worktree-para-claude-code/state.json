@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261023-permisos-de-worktree-para-claude-code",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261023-permisos-de-worktree-para-claude-code",
+  "baseCommit": "293637c04a9592fe47511fe9876aa611f066ca80",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6a6bbcb12ede6f671ed1bfb1cba0e7484d13ea073c2790c9c4fa98acf79b7a56",
+    "at": "2026-10-23T20:00:27.812Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

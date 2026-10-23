@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T19:54:07.592Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261023-permisos-de-worktree-para-claude-code"}}
+{"ts":"2026-10-23T19:58:23.714Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:6a6bbcb12ede6f671ed1bfb1cba0e7484d13ea073c2790c9c4fa98acf79b7a56","size":"S","warnings":0}}
+{"ts":"2026-10-23T20:00:27.824Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:6a6bbcb12ede6f671ed1bfb1cba0e7484d13ea073c2790c9c4fa98acf79b7a56","channel":"tty"}}
