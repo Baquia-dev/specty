@@ -6,6 +6,13 @@
   "branch": "specty/20261023-limpieza-de-worktrees-y-ramas-incorporadas",
   "baseCommit": "bca6638313fd3d0fb99b5d74a17ac7c7473fef98",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c8d5900447dddb407cb89a811c46fe78b592d293306169c273a19ca4336ab4fd",
+    "at": "2026-10-23T21:32:36.408Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d538e556cc665376c58a6e14f3986dcee08a93bd",
+      "startedAt": "2026-10-23T21:32:37.009Z",
+      "doneAt": "2026-10-23T21:34:12.703Z",
+      "summary": "flow/prune.ts: removeFinished borra con git worktree remove (sin --force) las carpetas de cambios cerrados ya incorporados a su destino, o cancelados; nunca la del proceso, la principal ni la de un cambio abierto, y las ramas quedan. new la llama antes de crear la worktree y nombra lo borrado; land.ts exporta within"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c8d5900447dddb407cb89a811c46fe78b592d293306169c273a19ca4336ab4fd",
-    "at": "2026-10-23T21:32:36.408Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

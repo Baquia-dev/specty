@@ -7,11 +7,13 @@ import {
   makeChangeId,
   nextCard,
   type Output,
+  section,
   specTemplate,
   translator,
   withLead,
 } from "@baquia-dev/specty-core";
 import { commitState, isFinished, resolveActive } from "../flow/active";
+import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
 import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
 import { exists, writeText } from "../io/files";
@@ -147,6 +149,8 @@ async function newInWorktree(
       ),
     );
   }
+  // Folders of changes already closed (and incorporated) or cancelled are no longer needed.
+  const { removed } = await removeFinished(session);
   const home = await worktreesHome(git);
   const id = await uniqueId(session, makeChangeId(session.environment.now(), title), home);
   const branch = branchOf(options.kind, id);
@@ -189,6 +193,10 @@ async function newInWorktree(
       ...(copied.length > 0
         ? [{ title: t("HOOKS DEL AGENTE COPIADOS", "AGENT HOOKS COPIED"), lines: copied }]
         : []),
+      ...section(
+        t("CARPETAS DE CAMBIOS TERMINADOS, BORRADAS", "FOLDERS OF FINISHED CHANGES, REMOVED"),
+        removed,
+      ),
       ...(failed === undefined
         ? []
         : [

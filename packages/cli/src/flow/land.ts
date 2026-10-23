@@ -94,7 +94,7 @@ export function withIntegration(
 }
 
 /** True when `path` is `folder` or lies inside it, with symbolic links resolved. */
-async function within(path: string, folder: string): Promise<boolean> {
+export async function within(path: string, folder: string): Promise<boolean> {
   const inner = relative(await resolved(folder), await resolved(path));
   return !inner.startsWith("..") && !isAbsolute(inner);
 }

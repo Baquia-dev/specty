@@ -52,7 +52,7 @@ Las carpetas y las ramas de los cambios terminados no se acumulan. `specty new` 
 
 ## Tareas
 
-- [ ] T1: Las worktrees que sobran se borran al crear un cambio
+- [x] T1: Las worktrees que sobran se borran al crear un cambio
   - files: packages/cli/src/flow/prune.ts, packages/cli/src/flow/land.ts, packages/cli/src/commands/new.ts, packages/cli/test/prune.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune.test.ts test/worktrees.test.ts
