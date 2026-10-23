@@ -55,7 +55,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: El guard atiende a OpenCode
+- [x] T1: El guard atiende a OpenCode
   - files: packages/core/src/agents.ts, packages/core/test/cards.test.ts, packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/support.ts, packages/cli/test/opencode.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/enforce.test.ts

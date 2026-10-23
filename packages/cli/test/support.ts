@@ -28,6 +28,8 @@ const GIT_ENV = {
 
 /** Codex's user configuration for the tests, so `init` never touches the real `~/.codex`. */
 export const CODEX_HOME = join(tmpdir(), `specty-codex-${process.pid}`);
+/** Where OpenCode's global configuration goes in the tests, instead of `~/.config`. */
+export const XDG_CONFIG_HOME = join(tmpdir(), `specty-config-${process.pid}`);
 
 export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
   const {
@@ -36,9 +38,10 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
     GEMINI_CLI: _c,
     CODEX_SANDBOX: _d,
     SPECTY_AGENT: _e,
+    OPENCODE: _f,
     ...rest
   } = process.env;
-  return { ...rest, ...GIT_ENV, LANG: "es_ES.UTF-8", CODEX_HOME, ...extra };
+  return { ...rest, ...GIT_ENV, LANG: "es_ES.UTF-8", CODEX_HOME, XDG_CONFIG_HOME, ...extra };
 }
 
 export function git(cwd: string, ...args: string[]): string {

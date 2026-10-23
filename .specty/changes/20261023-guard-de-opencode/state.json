@@ -6,6 +6,13 @@
   "branch": "specty/20261023-guard-de-opencode",
   "baseCommit": "afc9376b80ce2052262ca4802069e671f79e23c7",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7c9cf2d16c0791b84aa94f4b222237a3c9060bbb659591ac35dbac9c191bb2dd",
+    "at": "2026-10-23T23:26:54.061Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "35ba8cf104cc39aae2174e99ee38d932cea4b570",
+      "startedAt": "2026-10-23T23:26:54.517Z",
+      "doneAt": "2026-10-23T23:29:31.149Z",
+      "summary": "OpenCode entra en las herramientas del core (se detecta con OPENCODE=1) y del guard: shell/bash van al análisis de shell en su workdir, edit/write/multiedit son escrituras por path o filePath, y patch/apply_patch se juzgan como sus escrituras y borrados; los tests aíslan XDG_CONFIG_HOME y no heredan OPENCODE"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7c9cf2d16c0791b84aa94f4b222237a3c9060bbb659591ac35dbac9c191bb2dd",
-    "at": "2026-10-23T23:26:54.061Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

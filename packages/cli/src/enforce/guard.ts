@@ -113,9 +113,18 @@ async function afterShell(
 }
 
 function cwdOf(event: Record<string, unknown>, fallback: string): string {
-  if (typeof event.cwd === "string" && event.cwd.length > 0) return event.cwd;
   const roots = event.workspace_roots;
-  return Array.isArray(roots) && typeof roots[0] === "string" ? roots[0] : fallback;
+  const base =
+    typeof event.cwd === "string" && event.cwd.length > 0
+      ? event.cwd
+      : Array.isArray(roots) && typeof roots[0] === "string"
+        ? roots[0]
+        : fallback;
+  // A command that names its own folder (OpenCode's `workdir`) runs there.
+  const input = isRecord(event.tool_input) ? event.tool_input : {};
+  return typeof input.workdir === "string" && input.workdir.length > 0
+    ? resolve(base, input.workdir)
+    : base;
 }
 
 /**

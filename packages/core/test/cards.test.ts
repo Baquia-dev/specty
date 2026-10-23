@@ -235,6 +235,7 @@ describe("templates", () => {
 describe("agent detection", () => {
   it("reads the environment, with an explicit override", () => {
     expect(detectAgentTool({ CLAUDECODE: "1" })).toBe("claude-code");
+    expect(detectAgentTool({ OPENCODE: "1" })).toBe("opencode");
     expect(detectAgentTool({ SPECTY_AGENT: "cursor", CLAUDECODE: "1" })).toBe("cursor");
     expect(detectAgentTool({ SPECTY_AGENT: "constructor" })).toBeUndefined();
     expect(detectAgentTool({})).toBeUndefined();

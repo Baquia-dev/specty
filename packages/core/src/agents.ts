@@ -5,6 +5,7 @@ export type AgentTool =
   | "claude-code"
   | "cursor"
   | "codex"
+  | "opencode"
   | "gemini-cli"
   | "copilot"
   | "windsurf"
@@ -14,6 +15,7 @@ export const AGENT_NAMES: Readonly<Record<AgentTool, string>> = {
   "claude-code": "Claude Code",
   cursor: "Cursor",
   codex: "Codex",
+  opencode: "OpenCode",
   "gemini-cli": "Gemini CLI",
   copilot: "GitHub Copilot",
   windsurf: "Windsurf",
@@ -48,5 +50,6 @@ export function detectAgentTool(
   if (env.CURSOR_AGENT === "1") return "cursor";
   if (env.GEMINI_CLI === "1") return "gemini-cli";
   if (env.CODEX_SANDBOX !== undefined) return "codex";
+  if (env.OPENCODE === "1") return "opencode";
   return undefined;
 }
