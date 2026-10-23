@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-selector-segmentado-en-el-sistema-de-diseno",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-selector-segmentado-en-el-sistema-de-diseno",
   "baseCommit": "2c4e255890d2dd0b02c8dd554d38111b302592cf",
   "revision": 2,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1bc89ff512a32f42762fe09068445b2e35d59b14",
+      "attempts": 1,
       "startedAt": "2026-10-23T06:49:33.564Z",
       "doneAt": "2026-10-23T06:50:30.151Z",
-      "summary": "components/segmented.ts: sp-segmented, un grupo de radios nativos (role radiogroup nombrado por su etiqueta, visible o con hideLabel solo para el lector) con estilo de segmentos: caja de 36 px con borde, opciones de 32 px (40 en táctil), la elegida con fondo tenue y semibold (has-checked), el foco dibujado sobre la opción (has-focus-visible) y opciones que pasan de línea. Un name por instancia. API como el select: label, hideLabel, options y value (model). 4 tests."
+      "summary": "components/segmented.ts: sp-segmented, un grupo de radios nativos (role radiogroup nombrado por su etiqueta, visible o con hideLabel solo para el lector) con estilo de segmentos: caja de 36 px con borde, opciones de 32 px (40 en táctil), la elegida con fondo tenue y semibold (has-checked), el foco dibujado sobre la opción (has-focus-visible) y opciones que pasan de línea. Un name por instancia. API como el select: label, hideLabel, options y value (model). 4 tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4492c56f57a0b797a1013ae6c8b34a1b66f72118",
+      "startedAt": "2026-10-23T06:50:30.410Z",
+      "doneAt": "2026-10-23T06:54:08.810Z",
+      "summary": "catalog/components.ts: la sección «Selector segmentado» en «Componentes», con su descripción (cuándo usarlo frente al select y cómo se usa con el teclado) y dos ejemplos que funcionan, «Vista del diff» y «Qué cambios», con lo elegido en una región que se anuncia. components.test.ts lo comprueba. docs/ui.md describe el componente. Comprobado en el navegador a 390 y 1280 px, en claro y oscuro: Tab entra en la opción elegida, la flecha cambia la opción, el foco se ve sobre ella (2 px), el clic elige y en el teléfono las opciones pasan de línea sin desbordar. Nota: la caja mide 38 px (opciones de 32 + relleno y borde), 2 px más que el select."
     }
   },
   "pending": {

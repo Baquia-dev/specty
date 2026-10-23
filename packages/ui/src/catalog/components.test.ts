@@ -56,6 +56,22 @@ describe("Components page", () => {
     TestBed.resetTestingModule();
   });
 
+  it("shows the segmented control with its description and examples that choose (AC5)", async () => {
+    const { fixture, element } = await render("es");
+    const section = element.querySelector<HTMLElement>("[aria-labelledby=segmented]");
+    expect(section?.querySelector("h2")?.textContent?.trim()).toBe("Selector segmentado");
+    expect(section?.querySelector("p")?.textContent).toContain("mejor el select");
+    const groups = [...(section?.querySelectorAll("[role=radiogroup]") ?? [])];
+    expect(groups).toHaveLength(2);
+    const chosen = () => section?.querySelector("[data-segmented-chosen]")?.textContent?.trim();
+    expect(chosen()).toBe("Elegido: Unificado · Todo el cambio");
+    section?.querySelector<HTMLElement>("sp-segmented [data-value=split]")?.click();
+    section?.querySelector<HTMLElement>("sp-segmented [data-value=T2]")?.click();
+    await fixture.whenStable();
+    expect(chosen()).toBe("Elegido: Lado a lado · T2 · Panel con estudiantes destacados");
+    TestBed.resetTestingModule();
+  });
+
   it("follows the language (AC9)", async () => {
     const { element } = await render("en");
     expect(element.querySelector("h1")?.textContent).toContain("Components");

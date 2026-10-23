@@ -7,6 +7,7 @@ import { Button, IconButton } from "../components/button";
 import { Card } from "../components/card";
 import { Field } from "../components/field";
 import { Kbd } from "../components/kbd";
+import { Segmented } from "../components/segmented";
 import { Select } from "../components/select";
 import { Skeleton } from "../components/skeleton";
 import { Tooltip } from "../components/tooltip";
@@ -15,7 +16,19 @@ import { Preferences } from "../theme/preferences";
 /** Every base component with its variants and states, in the current theme and language. */
 @Component({
   selector: "sp-components",
-  imports: [Badge, PhaseBadge, Button, IconButton, Card, Field, Kbd, Select, Skeleton, Tooltip],
+  imports: [
+    Badge,
+    PhaseBadge,
+    Button,
+    IconButton,
+    Card,
+    Field,
+    Kbd,
+    Select,
+    Segmented,
+    Skeleton,
+    Tooltip,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h1 class="mt-0 mb-2 text-xl font-semibold">{{ t()('Componentes', 'Components') }}</h1>
@@ -116,6 +129,23 @@ import { Preferences } from "../theme/preferences";
       </div>
     </section>
 
+    <section class="mb-10" aria-labelledby="segmented">
+      <h2 id="segmented" class="mb-4 text-lg font-semibold">{{ t()('Selector segmentado', 'Segmented control') }}</h2>
+      <div class="flex flex-col items-start gap-3 rounded-xl border border-border bg-surface p-4">
+        <p class="m-0 max-w-[64ch] text-sm text-text-muted">
+          {{
+            t()(
+              'Para elegir una entre pocas opciones cortas, todas a la vista; con muchas o largas, mejor el select. Son radios: Tab entra en la opción elegida y las flechas mueven y eligen. Si no caben, pasan a la línea siguiente.',
+              'To choose one of a few short options, all in sight; with many or long ones, the select fits better. They are radios: Tab goes into the chosen option and the arrows move and choose. When they do not fit, they wrap to the next line.'
+            )
+          }}
+        </p>
+        <sp-segmented [label]="t()('Vista del diff', 'Diff view')" [options]="modes()" [(value)]="mode" />
+        <sp-segmented [label]="t()('Qué cambios', 'Which changes')" [options]="scopes()" [(value)]="scope" />
+        <span class="text-sm text-text-muted" aria-live="polite" data-segmented-chosen>{{ t()('Elegido', 'Chosen') }}: {{ segmentedChosen() }}</span>
+      </div>
+    </section>
+
     <section aria-labelledby="loading">
       <h2 id="loading" class="mb-4 text-lg font-semibold">{{ t()('Carga', 'Loading') }}</h2>
       <div class="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4">
@@ -144,5 +174,26 @@ export class Components {
   });
   protected readonly chosen = computed(
     () => this.sorts().find((option) => option.value === this.sort())?.label ?? "",
+  );
+  protected readonly mode = signal("unified");
+  protected readonly modes = computed(() => {
+    const t = this.t();
+    return [
+      { value: "unified", label: t("Unificado", "Unified") },
+      { value: "split", label: t("Lado a lado", "Side by side") },
+    ];
+  });
+  protected readonly scope = signal("all");
+  protected readonly scopes = computed(() => [
+    { value: "all", label: this.t()("Todo el cambio", "The whole change") },
+    { value: "T1", label: "T1 · Agregados semanales" },
+    { value: "T2", label: "T2 · Panel con estudiantes destacados" },
+  ]);
+  /** «Unificado · Todo el cambio». */
+  protected readonly segmentedChosen = computed(() =>
+    [
+      this.modes().find((option) => option.value === this.mode())?.label,
+      this.scopes().find((option) => option.value === this.scope())?.label,
+    ].join(" · "),
   );
 }
