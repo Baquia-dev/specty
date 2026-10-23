@@ -25,6 +25,8 @@ const WIDE = "(min-width: 640px)";
 /**
  * A diff to read (docs/ui.md, Visor de diffs): a summary, the bar its user projects (what changes
  * to see), unified or side by side, the list of files and each file. On a phone, only unified.
+ * The title and the bar stay in view while the diff scrolls by. With no files to show yet, it
+ * shows the state its user projects (`[diffStatus]`), so the bar stays put.
  */
 @Component({
   selector: "sp-diff-viewer",
@@ -32,40 +34,58 @@ const WIDE = "(min-width: 640px)";
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex min-w-0 flex-col gap-3" },
   template: `
-    <div class="flex flex-wrap items-center justify-between gap-3 empty:hidden">
-      <ng-content />
-      @if (wide()) {
-        <sp-segmented class="ml-auto" [label]="t()('Cómo ver los cambios', 'How to see the changes')" [hideLabel]="true" [options]="modes()" [value]="mode()" (valueChange)="choose($event)" data-mode />
-      }
+    <!--
+      Fixed under the change's compact bar (--sp-sticky-top) until the diff ends: the title, the
+      bar and the mode, on the page's ground so the code passing under it does not show. Its
+      padding reaches into the gaps around it, so it only adds room once fixed; with nothing in
+      it, it takes none.
+    -->
+    <div class="sticky top-[var(--sp-sticky-top,0px)] z-10 -my-3 flex flex-col gap-3 bg-bg py-3 [&:not(:has(>:not(:empty)))]:hidden" data-bar>
+      <ng-content select="[diffHeading]" />
+      <div class="flex flex-wrap items-center justify-between gap-3 empty:hidden">
+        <ng-content />
+        @if (wide()) {
+          <sp-segmented class="ml-auto" [label]="t()('Cómo ver los cambios', 'How to see the changes')" [hideLabel]="true" [options]="modes()" [value]="mode()" (valueChange)="choose($event)" data-mode />
+        }
+      </div>
     </div>
-    @if (files().length === 0) {
-      <p class="m-0 text-sm text-text-muted" role="status" data-empty>{{ t()('No hay cambios.', 'No changes.') }}</p>
+    @if (files() === undefined) {
+      <ng-content select="[diffStatus]" />
     } @else {
-      <p class="m-0 text-[13px] text-text-muted" data-summary>@if (range(); as range) {<span class="font-mono text-xs">{{ range }}</span> · }{{ fileCount() }} · <span class="font-mono text-xs" aria-hidden="true"><span class="text-diff-added-text">+{{ additions() }}</span>&nbsp;<span class="text-diff-removed-text">−{{ deletions() }}</span></span><span class="sr-only">{{ counts() }}</span></p>
-      @if (files().length > 1) {
-        <ul class="m-0 list-none overflow-hidden rounded-xl border border-border bg-surface p-0" [attr.aria-label]="t()('Archivos cambiados', 'Changed files')" data-files>
-          @for (file of files(); track file.path; let index = $index) {
-            <li class="border-border not-first:border-t">
-              <button type="button" class="flex min-h-10 w-full cursor-pointer items-center gap-2.5 px-3 py-1 text-left text-text hover:bg-text/4" (click)="goTo(index)" data-goto>
-                <span class="min-w-0 flex-1 font-mono text-xs wrap-anywhere" data-path>@for (part of parts(file.path); track $index) {{{ part }}<wbr />}</span>
-                <span class="font-mono text-xs" aria-hidden="true" data-counts><span class="text-diff-added-text">+{{ file.additions }}</span>&nbsp;<span class="text-diff-removed-text">−{{ file.deletions }}</span></span>
-                <span class="sr-only">, {{ countsOf(file) }}</span>
-              </button>
-            </li>
+      <!-- While another diff loads, this one stays, dimmed. -->
+      <div class="flex flex-col gap-3 transition-opacity" [class.opacity-60]="busy()" [attr.aria-busy]="busy()" data-content>
+        @if (list().length === 0) {
+          <p class="m-0 text-sm text-text-muted" role="status" data-empty>{{ t()('No hay cambios.', 'No changes.') }}</p>
+        } @else {
+          <p class="m-0 text-[13px] text-text-muted" data-summary>@if (range(); as range) {<span class="font-mono text-xs">{{ range }}</span> · }{{ fileCount() }} · <span class="font-mono text-xs" aria-hidden="true"><span class="text-diff-added-text">+{{ additions() }}</span>&nbsp;<span class="text-diff-removed-text">−{{ deletions() }}</span></span><span class="sr-only">{{ counts() }}</span></p>
+          @if (list().length > 1) {
+            <ul class="m-0 list-none overflow-hidden rounded-xl border border-border bg-surface p-0" [attr.aria-label]="t()('Archivos cambiados', 'Changed files')" data-files>
+              @for (file of list(); track file.path; let index = $index) {
+                <li class="border-border not-first:border-t">
+                  <button type="button" class="flex min-h-10 w-full cursor-pointer items-center gap-2.5 px-3 py-1 text-left text-text hover:bg-text/4" (click)="goTo(index)" data-goto>
+                    <span class="min-w-0 flex-1 font-mono text-xs wrap-anywhere" data-path>@for (part of parts(file.path); track $index) {{{ part }}<wbr />}</span>
+                    <span class="font-mono text-xs" aria-hidden="true" data-counts><span class="text-diff-added-text">+{{ file.additions }}</span>&nbsp;<span class="text-diff-removed-text">−{{ file.deletions }}</span></span>
+                    <span class="sr-only">, {{ countsOf(file) }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
           }
-        </ul>
-      }
-      @for (file of files(); track file.path) {
-        <sp-diff-file [file]="file" [mode]="shownMode()" />
-      }
+          @for (file of list(); track file.path) {
+            <sp-diff-file [file]="file" [mode]="shownMode()" />
+          }
+        }
+      </div>
     }
   `,
 })
 export class DiffViewer {
-  /** The files, as `parseDiff` reads them. */
-  readonly files = input.required<readonly DiffFile[]>();
+  /** The files, as `parseDiff` reads them; none while there is no diff to show (`[diffStatus]`). */
+  readonly files = input.required<readonly DiffFile[] | undefined>();
   /** What the diff goes between, as «5d2a7b0 → 3c9d1e2»; none when unknown. */
   readonly range = input<string | undefined>(undefined);
+  /** Another diff is on its way: this one stays, dimmed, until it arrives. */
+  readonly busy = input(false);
 
   private readonly window = inject(DOCUMENT).defaultView;
   private readonly preferences = inject(Preferences);
@@ -82,17 +102,18 @@ export class DiffViewer {
     { value: "split", label: this.t()("Lado a lado", "Side by side") },
   ]);
 
+  protected readonly list = computed(() => this.files() ?? []);
   protected readonly additions = computed(() =>
-    this.files().reduce((sum, file) => sum + file.additions, 0),
+    this.list().reduce((sum, file) => sum + file.additions, 0),
   );
   protected readonly deletions = computed(() =>
-    this.files().reduce((sum, file) => sum + file.deletions, 0),
+    this.list().reduce((sum, file) => sum + file.deletions, 0),
   );
   protected readonly counts = computed(() =>
     countsLabel(this.additions(), this.deletions(), this.preferences.lang()),
   );
   protected readonly fileCount = computed(() => {
-    const count = this.files().length;
+    const count = this.list().length;
     return count === 1
       ? this.t()("1 archivo", "1 file")
       : this.t()(`${count} archivos`, `${count} files`);

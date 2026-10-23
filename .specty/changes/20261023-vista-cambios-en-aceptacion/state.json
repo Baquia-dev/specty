@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-vista-cambios-en-aceptacion",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-vista-cambios-en-aceptacion",
   "baseCommit": "03473c9aaca90f16894591a67b8e3dd3ad412f25",
   "revision": 2,
@@ -66,6 +66,15 @@
       "doneAt": "2026-10-23T09:09:35.001Z",
       "summary": "La pestaña Aceptación tiene tres vistas en «Vista» (Criterios, Matriz y Cambios), recordadas en specty.acceptance.view; «Cambios» muestra sp-changes-view en lugar de la sección de criterios, con la tarea elegida en la pestaña. «Ver diff» (output diff) junto a cada tarea con commit en la evidencia de un criterio (al final de la línea, revelado al pasar o enfocar la fila; «Ver diff de T1» para el lector) y junto al commit en el detalle de la matriz: cambia a «Cambios» con esa tarea y, tras renderizar, lleva el foco al título de la vista. docs/ui.md describe la vista y «Ver diff». Tests: la vista recordada, «Ver diff» desde un criterio y desde la matriz con el foco, y las expectativas de evidencia y detalle con «Ver diff». Comprobado en el navegador (Panel de asistencia) a 390 y 1280 px, claro y oscuro: Ver diff de T1 desde AC1 (rango 5d2a7b0 → 3c9d1e2, foco en el título), Todo el cambio (foco sigue en la barra), Ver diff de T2 desde la matriz, código coloreado y sin desbordes.",
       "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e26be19d170378341462829b21552ffc1678fc08",
+      "startedAt": "2026-10-23T09:27:33.171Z",
+      "doneAt": "2026-10-23T09:34:40.102Z",
+      "summary": "El visor de diffs tiene una franja fija arriba (sticky en --sp-sticky-top, z-10, sobre bg-bg, con su relleno metido en los huecos de alrededor para no mover nada mientras no está fija, y oculta si no tiene nada): el título que proyecta quien lo usa ([diffHeading]), su barra y «Unificado | Lado a lado». files puede faltar: entonces muestra el estado proyectado ([diffStatus]) en vez del diff, y busy atenúa (aria-busy) lo de debajo de la franja mientras llega otro diff. La vista Cambios monta el visor siempre que hay commits y le proyecta el título «Cambios», la barra y las líneas de carga o el error, así el título y la barra nunca se mueven ni pierden el foco. Tests: la franja fija con el título y la barra (y sin el diff), las líneas de carga bajo la franja ya montada y el diff atenuado en [data-content]. docs/ui.md describe la franja. Comprobado en el navegador a 390 y 1280 px, claro y oscuro: la franja queda justo bajo la barra compacta (y=114 en escritorio, 138 en teléfono), tapa el código en sus dos bordes, se va con el final del diff, en el catálogo se fija arriba del todo, y «Ver diff» sigue dejando el foco en el título."
     }
   },
   "pending": {

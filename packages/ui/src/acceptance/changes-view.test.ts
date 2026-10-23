@@ -151,17 +151,21 @@ describe("Changes view", () => {
     // Not settled: the diff is still on its way.
     const { fixture, element, files } = await render(ASISTENCIA, SlowData, false);
     fixture.detectChanges();
-    expect(element.querySelector("sp-skeleton")).not.toBeNull();
-    expect(element.querySelector("sp-diff-viewer")).toBeNull();
+    // The loading lines go under the band, with the title and the bar already in place.
+    expect(element.querySelector("sp-diff-viewer [diffStatus] sp-skeleton")).not.toBeNull();
+    expect(element.querySelector("[data-bar] #acceptance-changes")).not.toBeNull();
+    expect(element.querySelector("[data-summary]")).toBeNull();
     const source = slow();
     source.answer();
     await fixture.whenStable();
     expect(files()).toHaveLength(4);
+    expect(element.querySelector("sp-skeleton")).toBeNull();
     // Choosing T1: the bar stays, with the last diff dimmed and busy until T1's arrives.
     element.querySelector<HTMLElement>('[data-scope] [data-value="T1"]')?.click();
     fixture.detectChanges();
-    const diff = element.querySelector("[data-diff]");
+    const diff = element.querySelector("[data-content]");
     expect(diff?.getAttribute("aria-busy")).toBe("true");
+    expect(diff?.className).toContain("opacity-60");
     expect(files()).toHaveLength(4);
     expect(element.querySelector<HTMLInputElement>('[data-scope] input[value="T1"]')?.checked).toBe(
       true,
@@ -169,7 +173,20 @@ describe("Changes view", () => {
     source.answer();
     await fixture.whenStable();
     expect(files()).toHaveLength(2);
-    expect(element.querySelector("[data-diff]")?.getAttribute("aria-busy")).toBe("false");
+    expect(element.querySelector("[data-content]")?.getAttribute("aria-busy")).toBe("false");
+  });
+
+  it("keeps the title and the bar in one band fixed under the change's bar (AC1)", async () => {
+    const { element } = await render();
+    const band = element.querySelector<HTMLElement>("sp-diff-viewer [data-bar]");
+    expect(band?.className).toContain("sticky");
+    expect(band?.className).toContain("top-[var(--sp-sticky-top,0px)]");
+    // On the page's ground, so the code passing under it does not show.
+    expect(band?.className).toContain("bg-bg");
+    expect(band?.querySelector("#acceptance-changes")?.textContent?.trim()).toBe("Cambios");
+    expect(band?.querySelector("[data-scope]")).not.toBeNull();
+    // The diff itself scrolls under it.
+    expect(band?.querySelector("[data-summary], sp-diff-file")).toBeNull();
   });
 
   it("explains why the source could not give the diff (AC4)", async () => {

@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: Apache-2.0
-import { NgTemplateOutlet } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -27,41 +26,43 @@ export const WHOLE_CHANGE = "all";
 
 /**
  * The Changes view of the Acceptance tab (docs/ui.md, Aceptación): the diff of the whole change or
- * of one task, from the data source, in the diff viewer. While a new diff loads, the last one
- * stays, dimmed, so the bar that chose it keeps the focus.
+ * of one task, from the data source, in the diff viewer. Its title and its bar stay in view while
+ * the diff scrolls by; while a new diff loads, the last one stays, dimmed, so the bar that chose
+ * it keeps the focus.
  */
 @Component({
   selector: "sp-changes-view",
-  imports: [DiffViewer, SectionDivider, EmptyState, Segmented, Skeleton, NgTemplateOutlet],
+  imports: [DiffViewer, SectionDivider, EmptyState, Segmented, Skeleton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "block" },
   template: `
     <section aria-labelledby="acceptance-changes">
-      <sp-section-divider [heading]="t()('Cambios', 'Changes')" headingId="acceptance-changes" [level]="2" />
-      <div class="mt-3">
-        @if (committed().length === 0) {
-          <sp-empty-state [heading]="t()('Aún no hay cambios que ver', 'No changes to see yet')" [icon]="emptyIcon">
-            <p class="m-0">{{ t()('Aparecen aquí cuando una tarea tiene su commit.', 'They show here once a task has its commit.') }}</p>
-          </sp-empty-state>
-        } @else if (failure(); as failure) {
-          <div class="flex flex-col items-start gap-3">
-            <ng-container *ngTemplateOutlet="bar" />
-            <p class="m-0 text-sm" role="alert" data-error>{{ failure }}</p>
+      @if (committed().length === 0) {
+        <sp-section-divider [heading]="t()('Cambios', 'Changes')" headingId="acceptance-changes" [level]="2" />
+        <sp-empty-state class="mt-3" [heading]="t()('Aún no hay cambios que ver', 'No changes to see yet')" [icon]="emptyIcon">
+          <p class="m-0">{{ t()('Aparecen aquí cuando una tarea tiene su commit.', 'They show here once a task has its commit.') }}</p>
+        </sp-empty-state>
+      } @else {
+        <!--
+          The title and the bar go in the viewer's fixed band, the loading lines or the failure
+          under it: the viewer stays while a diff loads or fails, so they never move nor lose
+          the focus.
+        -->
+        <sp-diff-viewer [files]="files()" [range]="range()" [busy]="loading()">
+          <sp-section-divider diffHeading [heading]="t()('Cambios', 'Changes')" headingId="acceptance-changes" [level]="2" />
+          @if (committed().length > 1) {
+            <sp-segmented [label]="t()('Qué cambios ver', 'Which changes to see')" [hideLabel]="true" [options]="scopes()" [value]="scope()" (valueChange)="task.set($event)" data-scope />
+          }
+          <div diffStatus>
+            @if (failure(); as failure) {
+              <p class="m-0 text-sm" role="alert" data-error>{{ failure }}</p>
+            } @else {
+              <sp-skeleton [lines]="6" height="12px" />
+            }
           </div>
-        } @else if (files(); as files) {
-          <div class="transition-opacity" [class.opacity-60]="loading()" [attr.aria-busy]="loading()" data-diff>
-            <sp-diff-viewer [files]="files" [range]="range()"><ng-container *ngTemplateOutlet="bar" /></sp-diff-viewer>
-          </div>
-        } @else {
-          <sp-skeleton [lines]="6" height="12px" />
-        }
-      </div>
-    </section>
-    <ng-template #bar>
-      @if (committed().length > 1) {
-        <sp-segmented [label]="t()('Qué cambios ver', 'Which changes to see')" [hideLabel]="true" [options]="scopes()" [value]="scope()" (valueChange)="task.set($event)" data-scope />
+        </sp-diff-viewer>
       }
-    </ng-template>
+    </section>
   `,
 })
 export class ChangesView {

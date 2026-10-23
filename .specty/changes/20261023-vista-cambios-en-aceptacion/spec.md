@@ -64,7 +64,7 @@ La pestaña Aceptación gana una tercera vista, «Cambios», con el diff del cam
   - ac: AC1, AC3
   - verify: pnpm check
   - notes: Comprobar en el navegador, en «Panel de asistencia por curso», a 390 y 1280 px y en claro y oscuro: la vista Cambios, elegir T1 y T2, «Ver diff» desde un criterio y desde la matriz, y el foco al llegar.
-- [ ] T3: El título y la barra de Cambios, fijos al bajar
+- [x] T3: El título y la barra de Cambios, fijos al bajar
   - files: packages/ui/src/components/diff-viewer.ts, packages/ui/src/acceptance/changes-view.ts, packages/ui/src/acceptance/changes-view.test.ts, docs/ui.md
   - ac: AC1
   - verify: pnpm check
