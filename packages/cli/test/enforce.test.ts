@@ -140,6 +140,16 @@ describe("agent guard", () => {
     expect((await bash('echo hi > "$TMPDIR/a.ts"')).code).toBe(0);
   });
 
+  it("does not read heredoc bodies as commands (AC1, AC2)", async () => {
+    const root = await initialized();
+    const bash = (command: string) => claude(root, "Bash", { command });
+    expect((await bash("python3 - <<'PY'\n# map: old => src/app.ts\nprint(1)\nPY")).code).toBe(0);
+    await writeFiles(root, { "src/app.ts": "changed\n" });
+    const after = await bash("cat <<'EOF' > /dev/null\ndon't\nEOF\ngit commit -m x");
+    expect(after.code).toBe(2);
+    expect(after.err).toBe((await bash("git commit -m x")).err);
+  });
+
   it("never blocks paths git ignores (AC4)", async () => {
     const root = await initialized();
     await writeFiles(root, { ".gitignore": "node_modules/\ndist/\n" });

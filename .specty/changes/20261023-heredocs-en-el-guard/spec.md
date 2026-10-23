@@ -55,7 +55,7 @@ El guard analiza solo lo que bash ejecuta: deja de leer el cuerpo de los heredoc
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
   - type: fix
-- [ ] T2: El guard con heredocs, de punta a punta
+- [x] T2: El guard con heredocs, de punta a punta
   - files: packages/cli/test/enforce.test.ts
   - ac: AC1, AC2
   - verify: pnpm check

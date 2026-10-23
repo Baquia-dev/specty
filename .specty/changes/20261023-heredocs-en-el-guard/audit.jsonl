@@ -4,3 +4,6 @@
 {"ts":"2026-10-23T09:51:16.014Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"76573db9d61520a4011bdcbf360acb0be98c527c"}}
 {"ts":"2026-10-23T09:57:25.716Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts","exit":0,"ms":782}}
 {"ts":"2026-10-23T09:57:25.718Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Heredocs, aritmética y comentarios en el tokenizador, con un test por cada forma"}}
+{"ts":"2026-10-23T09:57:26.015Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"86ac37049ba5389ba5a172b91d546175d4241e5d"}}
+{"ts":"2026-10-23T09:59:29.069Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":37485}}
+{"ts":"2026-10-23T09:59:29.071Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"El guard de punta a punta: el heredoc ya no bloquea y el commit tras él sí"}}
