@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { DiffPart } from "./records";
-import { textAndBefore, wordDiff } from "./word-diff";
+import { codeTokens, textAndBefore, wordDiff } from "./word-diff";
 
 const changed = (parts: readonly DiffPart[], change: DiffPart["change"]) =>
   parts
@@ -31,6 +31,15 @@ describe("wordDiff", () => {
       { text: long, change: "removed" },
       { text: `${long}más`, change: "added" },
     ]);
+  });
+
+  it("cuts code at every sign, so only what changed is marked", () => {
+    const prose = wordDiff("limit=3;", "limit=4;");
+    expect(changed(prose, "added")).toBe("limit=4");
+    const code = wordDiff("limit=3;", "limit=4;", codeTokens);
+    expect(changed(code, "removed")).toBe("3");
+    expect(changed(code, "added")).toBe("4");
+    expect(codeTokens("a.b(c_d, $e)")).toEqual(["a", ".", "b", "(", "c_d", ",", " ", "$e", ")"]);
   });
 });
 

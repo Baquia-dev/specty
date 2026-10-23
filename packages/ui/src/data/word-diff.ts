@@ -11,6 +11,11 @@ function tokens(text: string): string[] {
   return text.split(/(\s+|[.,;:!?¿¡()«»"“”])/).filter((token) => token.length > 0);
 }
 
+/** Code: every sign is a token of its own, so `a=b` against `a=c` changes only `b`. */
+export function codeTokens(text: string): string[] {
+  return text.split(/(\s+|[^\p{L}\p{N}_$])/u).filter((token) => token.length > 0);
+}
+
 /** Only words and punctuation score a match: spaces are everywhere and must not decide it. */
 function weight(token: string): number {
   return /^\s+$/.test(token) ? 0 : 1;
@@ -30,10 +35,17 @@ function merge(parts: readonly DiffPart[]): DiffPart[] {
   return merged;
 }
 
-/** A word diff: the heaviest common subsequence of words and punctuation. */
-export function wordDiff(before: string, after: string): readonly DiffPart[] {
-  const a = tokens(before);
-  const b = tokens(after);
+/**
+ * A word diff: the heaviest common subsequence of words and punctuation. `split` cuts the texts
+ * into tokens: prose by default, or `codeTokens`.
+ */
+export function wordDiff(
+  before: string,
+  after: string,
+  split: (text: string) => string[] = tokens,
+): readonly DiffPart[] {
+  const a = split(before);
+  const b = split(after);
   if (a.length > MAX_TOKENS || b.length > MAX_TOKENS) {
     return merge([
       { text: before, change: "removed" },

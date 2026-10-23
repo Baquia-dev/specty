@@ -53,7 +53,7 @@ La UI puede pedir a su fuente de datos el diff de una tarea o del cambio complet
 
 ## Tareas
 
-- [ ] T1: Leer un diff unificado
+- [x] T1: Leer un diff unificado
   - files: packages/ui/src/data/diff.ts, packages/ui/src/data/diff.test.ts, packages/ui/src/data/word-diff.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/diff.test.ts --include src/data/word-diff.test.ts
