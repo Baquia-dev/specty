@@ -69,7 +69,7 @@ La pestaña Aceptación deja el texto provisional. Muestra cada criterio con la 
   - files: packages/ui/src/data/acceptance.ts, packages/ui/src/data/acceptance.test.ts, packages/ui/src/data/records.ts, packages/ui/src/data/sample-acceptance.ts, packages/ui/src/data/fixtures.ts
   - ac: AC1, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/acceptance.test.ts
-- [ ] T2: Aceptar y pedir ajustes
+- [x] T2: Aceptar y pedir ajustes
   - files: packages/ui/src/acceptance/acceptance-actions.ts, packages/ui/src/acceptance/acceptance-actions.test.ts
   - ac: AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/acceptance-actions.test.ts
