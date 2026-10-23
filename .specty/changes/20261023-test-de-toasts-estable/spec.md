@@ -14,7 +14,7 @@ El test «leaves after 5 s unless hovered or focused» de `toast.test.ts` deja d
 
 ## Tareas
 
-- [ ] T1: Falsificar los timers después de `render()`
+- [x] T1: Falsificar los timers después de `render()`
   - files: packages/ui/src/components/toast.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/toast.test.ts
   - type: fix
