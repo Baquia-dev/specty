@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-incorporar-al-cerrar",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-incorporar-al-cerrar",
   "baseCommit": "c6b94c0cf13ba797005eb2688dc5e1c9e18dec0a",
   "revision": 1,
@@ -70,14 +70,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/flow/integrate.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "eebe18880649beae8f734a3ffc77385205b6de05",
+      "attempts": 1,
       "startedAt": "2026-10-23T15:24:14.476Z",
       "doneAt": "2026-10-23T15:27:21.473Z",
-      "summary": "accept de un quick incorpora el cambio igual que close (fusión de main verificada, fast-forward y salida de la carpeta); si se rechaza, el cambio sigue en aceptación y el SIGUIENTE pide volver a ejecutar accept. integrate.ts recortado a menos de 300 líneas (ampliación aprobada por estar en Archivos)"
+      "summary": "accept de un quick incorpora el cambio igual que close (fusión de main verificada, fast-forward y salida de la carpeta); si se rechaza, el cambio sigue en aceptación y el SIGUIENTE pide volver a ejecutar accept. integrate.ts recortado a menos de 300 líneas (ampliación aprobada por estar en Archivos)",
+      "scopeExtra": [
+        "packages/cli/src/flow/integrate.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a9477445bc68e2b73b179cab1e84d98e1356feee",
+      "startedAt": "2026-10-23T15:27:21.856Z",
+      "doneAt": "2026-10-23T15:30:21.894Z",
+      "summary": "ARCHITECTURE §9: la incorporación al cerrar (pasos, rechazos, reintento, borrado de la worktree y qué cambios se incorporan) y el merge entre los commits que hace Specty; §6: close y el accept de un quick incorporan"
     }
   },
   "pending": {

@@ -112,7 +112,7 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty adjust "<petición literal>"` | acceptance | Registra la petición y devuelve el protocolo de clasificación |
 | `specty retro [--into <id>]` | Cualquiera | Devuelve el protocolo para documentar cambios ya hechos |
 
-Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve [--scope <S>]`, `reject --scope <S>`, `accept`, `close` y `cancel`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir.
+Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve [--scope <S>]`, `reject --scope <S>`, `accept`, `close` y `cancel`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
 
 Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, que se registra como retro aparte) y `init`, `status`, `doctor`, `approve`, `reject`, `accept`, `close` y `cancel`. `ui`, `why`, `audit`, `export`, `ci` y `next --wait` llegan en fases posteriores.
 
@@ -173,11 +173,21 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 
 Las worktrees que otras herramientas crean dentro del repositorio (Claude Code usa `.claude/worktrees/`) no cuentan como código sin spec ni entran en los commits de Specty.
 
+**Incorporación.** Al cerrar un cambio, o al aceptar uno quick, Specty lo lleva a la rama principal (la misma que usa `new --worktree` como base) en ese mismo comando. La rama principal solo avanza por fast-forward hasta código verificado, así que nunca recibe un conflicto: lo resuelve el cambio que llega después, en su rama y su carpeta.
+
+1. Si la carpeta donde está la rama principal tiene cambios sin commit en archivos con seguimiento, el comando se niega antes de tocar nada.
+2. Si la rama principal avanzó desde que empezó el cambio, se fusiona en la rama del cambio, en su carpeta (`git merge --no-ff --no-commit`), y se ejecuta `verify.full` (o `verify.default`). Solo con verde se hace el commit de merge, con recibo y `Specty-Change`. Con conflictos o en rojo, el merge se aborta, el cambio sigue en su fase y la salida lista los conflictos o la cola de la verificación; hasta que el agente pueda resolverlos, la persona incorpora la principal a mano en esa carpeta y repite el comando.
+3. Se archiva el cambio como siempre.
+4. La rama principal avanza por fast-forward: con `git merge --ff-only` en la carpeta donde está, o con `git update-ref` si no está en ninguna. Si falla (otra sesión la movió entre medias), el cambio queda cerrado y `specty close` reintenta solo la incorporación.
+5. La worktree del cambio se borra con `git worktree remove`, sin `--force`, y la rama queda; si el cambio vivía en la carpeta principal, esa carpeta vuelve a la rama principal.
+
+Solo se incorporan los cambios `standard` y `quick` con rama y en modo `individual`. Un `spike` no se fusiona, un `retro` no tiene rama, y las épicas y el modo `team` (que integra por PR) cierran como antes, con un SIGUIENTE que pide fusionar la rama.
+
 **Commits que hace Specty**, siempre con la identidad git de la persona y con trailers ([formats.md §7](formats.md#7-trailers-de-commit)):
 
 - Al aprobar una revisión: solo `.specty/changes/<id>/` (`docs(spec): …`).
 - En `task done`: el código de la tarea, junto con `state.json` y `audit.jsonl`.
-- Al cerrar: el movimiento a `.specty/archive/`.
+- Al cerrar: el merge de la rama principal en la del cambio, si avanzó, y el movimiento a `.specty/archive/`.
 
 **Recibos.** Antes de cada commit, Specty guarda en `.git/specty/receipts.json` el hash del índice (`git write-tree`). El hook `pre-commit` acepta el commit si encuentra un recibo válido para ese índice, y lo consume. Así, un agente que ejecuta `git commit` por su cuenta no pasa, aunque copie los trailers.
 
