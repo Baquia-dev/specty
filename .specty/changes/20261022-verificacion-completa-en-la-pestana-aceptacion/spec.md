@@ -70,7 +70,7 @@ Antes de aceptar, la persona puede ejecutar la verificación completa del proyec
   - files: docs/formats.md, packages/ui/src/data/time.ts, packages/ui/src/data/records.ts, packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts
   - ac: AC1, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts
-- [ ] T2: La verificación completa simulada
+- [x] T2: La verificación completa simulada
   - files: packages/ui/src/data/views.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-run.ts, packages/ui/src/data/sample-run.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-run.test.ts

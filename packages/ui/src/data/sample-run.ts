@@ -3,15 +3,16 @@
 // way `specty task done` will stream it, and a task finished. Run from the palette, without the CLI.
 import type { ChangeState } from "@baquia-dev/specty-core";
 import type { AuditRecord, RunRecord } from "./progress";
-import type { ChangeRecord } from "./records";
+import { ActionError, type ChangeRecord } from "./records";
 
 /** One line every so often: slow enough to watch it scroll. */
 export const STEP_MS = 350;
 
-/** What to verify: the task in progress of a change, and whether it will pass. */
+/** What to verify: the task in progress of a change, or all of it, and whether it will pass. */
 export interface RunTarget {
   readonly change: string;
-  readonly task: string;
+  /** None for the full verification. */
+  readonly task?: string;
   readonly command: string;
   readonly passes: boolean;
   /** The path a pending scope request asks for: without it, the run fails. */
@@ -67,8 +68,70 @@ export function runTarget(records: readonly ChangeRecord[]): RunTarget | undefin
   return undefined;
 }
 
+/**
+ * The full verification of a change: only in acceptance, with `verify.full` configured, and
+ * when nothing else is verifying it. The source explains why it does not start.
+ */
+export function fullTarget(
+  record: ChangeRecord | undefined,
+  passes: boolean,
+  busy: boolean,
+): RunTarget {
+  const refuse = (es: string, en: string) => new ActionError({ es, en });
+  if (record === undefined) throw refuse("Ese cambio no existe.", "That change does not exist.");
+  const { state, verifyFull } = record;
+  if (verifyFull === undefined) {
+    throw refuse(
+      "El proyecto no tiene verificación completa (verify.full en config.yaml).",
+      "The project has no full verification (verify.full in config.yaml).",
+    );
+  }
+  if (state.phase !== "acceptance") {
+    throw refuse(
+      "La verificación completa se ejecuta en la aceptación.",
+      "The full verification runs during acceptance.",
+    );
+  }
+  if (busy) {
+    throw refuse(
+      "Ya hay una verificación en curso en este cambio: espera a que termine.",
+      "A verification is already running in this change: wait for it to end.",
+    );
+  }
+  return { change: state.id, command: verifyFull, passes };
+}
+
+/** `flutter analyze && flutter test` over the whole project; a failure lands in another module. */
+function fullScript(passes: boolean): readonly string[] {
+  const opening = [
+    "Analyzing mi_colegio...",
+    "No issues found! (ran in 3.1s)",
+    "00:00 +0: loading test/attendance/attendance_repository_test.dart",
+    "00:02 +6: attendance repository weekly percentage per course",
+    "00:04 +14: course panel highlights students over three absences",
+  ];
+  if (passes) {
+    return [
+      ...opening,
+      "00:07 +25: reports keep their totals",
+      "00:09 +33: auth signs in with Google",
+      "00:11 +41: All tests passed!",
+    ];
+  }
+  return [
+    ...opening,
+    "00:07 +24 -1: reports keep their totals [E]",
+    "  Expected: <31>",
+    "    Actual: <30>",
+    "  test/reports/totals_test.dart:48:7",
+    "00:09 +32 -1: auth signs in with Google",
+    "00:11 +40 -1: Some tests failed.",
+  ];
+}
+
 /** The lines a test runner prints, ending in a pass or in a failure. */
 function script(target: RunTarget): readonly string[] {
+  if (target.task === undefined) return fullScript(target.passes);
   const where = target.command.split(" ").at(-1) ?? "test";
   const opening = [
     `00:00 +0: loading ${where}`,
@@ -89,7 +152,10 @@ function script(target: RunTarget): readonly string[] {
   ];
 }
 
-/** What a finished run leaves: one more attempt and its `task.verified` event. */
+/**
+ * What a finished run leaves: a task's, one more attempt and its `task.verified` event; the full
+ * verification, its `change.verified` event.
+ */
 export function verifiedIn(
   record: ChangeRecord,
   run: RunRecord,
@@ -97,24 +163,30 @@ export function verifiedIn(
   now: number,
 ): ChangeRecord {
   const { state } = record;
+  const result = {
+    cmd: run.command,
+    exit: passed ? 0 : 1,
+    ms: Math.max(0, now - Date.parse(run.startedAt)),
+    ...(passed ? {} : { outputTail: run.output.slice(-10) }),
+  };
+  const ts = new Date(now).toISOString();
+  const audit = record.audit ?? [];
+  if (run.task === undefined) {
+    const event: AuditRecord = { ts, actor: "specty", event: "change.verified", data: result };
+    return { ...record, audit: [...audit, event] };
+  }
   const task = state.tasks[run.task];
   const event: AuditRecord = {
-    ts: new Date(now).toISOString(),
+    ts,
     actor: "specty",
     event: "task.verified",
-    data: {
-      task: run.task,
-      cmd: run.command,
-      exit: passed ? 0 : 1,
-      ms: Math.max(0, now - Date.parse(run.startedAt)),
-      ...(passed ? {} : { outputTail: run.output.slice(-10) }),
-    },
+    data: { task: run.task, ...result },
   };
   const tasks =
     task === undefined
       ? state.tasks
       : { ...state.tasks, [run.task]: { ...task, attempts: task.attempts + 1 } };
-  return { ...record, state: { ...state, tasks }, audit: [...(record.audit ?? []), event] };
+  return { ...record, state: { ...state, tasks }, audit: [...audit, event] };
 }
 
 /** Runs in progress, one per change, each printing a line every `STEP_MS`. */
@@ -141,11 +213,16 @@ export class RunSimulation {
     return () => listeners.delete(listener);
   }
 
+  /** Something is verifying `change` now. */
+  busy(change: string): boolean {
+    return this.running.has(change);
+  }
+
   /** Starts verifying `target`; a change already verifying goes on with its run. */
   start(target: RunTarget, now: number = Date.now()): void {
     if (this.running.has(target.change)) return;
     const run: RunRecord = {
-      task: target.task,
+      ...(target.task === undefined ? {} : { task: target.task }),
       command: target.command,
       startedAt: new Date(now).toISOString(),
       output: [],

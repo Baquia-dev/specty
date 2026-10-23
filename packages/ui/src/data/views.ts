@@ -109,7 +109,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
       ...deriveReview(spec, state, record.comments ?? []),
       ...deltaOf(record, state, spec),
     },
-    progress: progressOf(spec, state, record.audit ?? []),
+    progress: progressOf(spec, state, record.audit ?? [], record.verifyFull),
   };
 }
 

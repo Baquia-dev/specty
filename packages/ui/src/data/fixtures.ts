@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, inject } from "@angular/core";
-import type { ChangeState, Phase } from "@baquia-dev/specty-core";
+import type { ChangeState } from "@baquia-dev/specty-core";
 import { Commands } from "../components/command-palette";
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
@@ -11,94 +11,19 @@ import {
   type CommentRecord,
   SpectyData,
 } from "./records";
-import { asistenciaSample, decideResultIn } from "./sample-acceptance";
-import { boletinesProgress, decideScopeIn, loginProgress, withProgress } from "./sample-progress";
-import { revisedSample } from "./sample-revisions";
-import { canFinishTask, finishTaskIn, RunSimulation, runTarget, verifiedIn } from "./sample-run";
-import { SAMPLE_SPECS } from "./sample-specs";
+import { decideResultIn } from "./sample-acceptance";
+import { decideScopeIn } from "./sample-progress";
+import { HASH, REVIEWER, sampleRecords } from "./sample-records";
+import {
+  canFinishTask,
+  finishTaskIn,
+  fullTarget,
+  RunSimulation,
+  runTarget,
+  verifiedIn,
+} from "./sample-run";
 
-const HASH = `sha256:${"0".repeat(64)}`;
-const MINUTE = 60_000;
-/** The reviewer of the sample project: a fictional person. */
-export const REVIEWER = "Ana Gómez";
-
-type TaskStatus = "pending" | "active" | "done";
-
-function sample(
-  id: string,
-  phase: Phase,
-  minutesAgo: number,
-  now: number,
-  extra: Partial<ChangeState> = {},
-  tasks: readonly TaskStatus[] = [],
-): ChangeRecord {
-  const state: ChangeState = {
-    schema: 1,
-    id,
-    kind: id.includes("modo-oscuro") || id.includes("redondeo") ? "quick" : "standard",
-    phase,
-    branch: `specty/${id}`,
-    revision: phase === "draft" ? 0 : 1,
-    items: {},
-    tasks: Object.fromEntries(
-      tasks.map((status, index) => [`T${index + 1}`, { status, attempts: 1, scopeExtra: [] }]),
-    ),
-    pending: { scopeRequests: [], adjustment: null },
-    maxIds: {},
-    ...extra,
-  };
-  return {
-    spec: SAMPLE_SPECS[id] ?? "",
-    state,
-    phaseSince: new Date(now - minutesAgo * MINUTE).toISOString(),
-  };
-}
-
-/** The sample project "Mi colegio": every pending decision, work in progress and recent changes. */
-export function sampleRecords(now: number): ChangeRecord[] {
-  return [
-    {
-      ...sample("20261020-evolucion-trimestre", "review", 12, now, {
-        revision: 2,
-        items: { A1: { hash: HASH, decision: "confirmed" } },
-        size: { level: "M", score: 6, adjust: 0, reasons: [] },
-      }),
-      comments: [
-        {
-          id: "c1",
-          revision: 2,
-          anchor: { item: "A3" },
-          author: REVIEWER,
-          body: "El gráfico actual no tiene leyenda interactiva: revisa si basta.",
-          createdAt: new Date(now - 9 * MINUTE).toISOString(),
-        },
-        {
-          id: "c2",
-          revision: 2,
-          anchor: { section: "design", quote: "una línea por materia" },
-          author: REVIEWER,
-          body: "Con doce materias, ¿no satura? Quizá agrupar por área.",
-          createdAt: new Date(now - 7 * MINUTE).toISOString(),
-        },
-      ],
-    },
-    revisedSample(now),
-    withProgress(sample("20261019-boletines-pdf", "implementing", 3, now), boletinesProgress(now)),
-    asistenciaSample(sample("20261018-asistencia-curso", "acceptance", 95, now), now),
-    sample(
-      "20261017-recordatorios-correo",
-      "closing",
-      40,
-      now,
-      { closingSubmittedAt: new Date(now - 40 * MINUTE).toISOString() },
-      ["done"],
-    ),
-    withProgress(sample("20261021-login-google", "implementing", 25, now), loginProgress(now)),
-    sample("20261021-modo-oscuro", "draft", 8, now),
-    sample("20261015-redondeo-promedios", "done", 60 * 26, now, {}, ["done"]),
-    sample("20261014-chat-docentes", "cancelled", 60 * 72, now),
-  ];
-}
+export { REVIEWER, sampleRecords } from "./sample-records";
 
 /**
  * Prototype data source: the sample project in memory. Its "Simulate" commands move the samples
@@ -109,6 +34,8 @@ export class FixtureData extends SpectyData {
   private records = sampleRecords(Date.now());
   private readonly listeners = new Set<() => void>();
   private failing = false;
+  /** The next full verification fails: to see both results without the CLI. */
+  private fullFails = false;
   /** Verifications printing line by line; each leaves its result in the record. */
   private readonly runs = new RunSimulation((change, run, passed) => {
     void this.edit(change, (record) => verifiedIn(record, run, passed, Date.now()));
@@ -132,6 +59,12 @@ export class FixtureData extends SpectyData {
     simulate("task", "terminar una tarea", "finish a task", () => this.finishTask());
     simulate("verify", "verificar la tarea en curso", "verify the task in progress", () =>
       this.startRun(),
+    );
+    simulate(
+      "full",
+      "alternar el resultado de la verificación completa",
+      "toggle the result of the full verification",
+      () => this.toggleFullResult(),
     );
     simulate("outage", "cortar o recuperar la conexión", "drop or restore the connection", () =>
       this.toggleOutage(),
@@ -171,6 +104,21 @@ export class FixtureData extends SpectyData {
 
   override watchRun(change: string, listener: (run: RunRecord | undefined) => void): () => void {
     return this.runs.watch(change, listener);
+  }
+
+  /** The full verification of a change in acceptance, line by line; one run at a time. */
+  override verifyChange(change: string): Promise<void> {
+    const record = this.records.find((item) => item.state.id === change);
+    try {
+      this.runs.start(fullTarget(record, !this.fullFails, this.runs.busy(change)));
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    return Promise.resolve();
+  }
+
+  toggleFullResult(): void {
+    this.fullFails = !this.fullFails;
   }
 
   /** Marks the active task done; with none left, the change moves to acceptance. */
