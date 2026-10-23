@@ -18,6 +18,7 @@ import {
   withLead,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
+import { listed, sharedBlock, sharedFiles } from "../flow/shared";
 import { changeView } from "../flow/views";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
@@ -93,9 +94,9 @@ export async function scopeAdd(
     );
   }
   // The change's scope: what the approved spec lists in Files, both sides of each rename.
-  const planned = (spec.sections.files?.items ?? []).flatMap((entry) =>
-    entry.from === undefined ? [entry.path] : [entry.from, entry.path],
-  );
+  const planned = listed(spec);
+  // Requested files another open change also lists, shown whatever the decision.
+  const shared = sharedBlock(session, await sharedFiles(session, state.id, missing));
   if (decideScopeRequest(missing, rules, planned) === "auto") {
     const decided = missing.map((path) => ({
       path,
@@ -130,13 +131,14 @@ export async function scopeAdd(
             `${entry.path} (already in Files, planned for ${tasks})`,
           );
     });
-    return withLead(
+    const card = withLead(
       t(
         `Ampliación aprobada por la política: ${described.join(", ")}.`,
         `Extension approved by policy: ${described.join(", ")}.`,
       ),
       nextCard({ change: await changeView(session, updated), dirty: [] }, cards),
     );
+    return { ...card, blocks: [...card.blocks, ...shared] };
   }
   const number = (state.maxIds.S ?? 0) + 1;
   const request = { id: `S${number}`, task: taskId, paths: missing, reason: reason.trim() };
@@ -151,7 +153,8 @@ export async function scopeAdd(
     "scope.requested",
     request,
   );
-  return scopeRequestedCard(header, request.id, missing, cards);
+  const card = scopeRequestedCard(header, request.id, missing, cards);
+  return { ...card, blocks: [...card.blocks, ...shared] };
 }
 
 export function withExtras(

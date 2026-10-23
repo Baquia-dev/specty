@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b5badcada979c4d2f76f6cdb2bb01406bc01647a",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:16:50.401Z",
       "doneAt": "2026-10-23T21:19:09.508Z",
-      "summary": "flow/shared.ts: sharedFiles compara las rutas gobernadas de un cambio con la sección Archivos y las ampliaciones aprobadas de los demás cambios abiertos (cada uno leído en su worktree, comodines en los dos sentidos); propose añade el bloque ARCHIVOS COMPARTIDOS y approve lo muestra en el resumen antes de decidir. La documentación no cuenta y un cambio cerrado tampoco"
+      "summary": "flow/shared.ts: sharedFiles compara las rutas gobernadas de un cambio con la sección Archivos y las ampliaciones aprobadas de los demás cambios abiertos (cada uno leído en su worktree, comodines en los dos sentidos); propose añade el bloque ARCHIVOS COMPARTIDOS y approve lo muestra en el resumen antes de decidir. La documentación no cuenta y un cambio cerrado tampoco",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ec5b94fe3d861efa89526240f76abcd857773699",
+      "startedAt": "2026-10-23T21:19:09.825Z",
+      "doneAt": "2026-10-23T21:21:39.094Z",
+      "summary": "scope add añade el bloque ARCHIVOS COMPARTIDOS a su salida, tanto si la ampliación se aprueba sola como si queda pendiente; reutiliza listed() de flow/shared.ts para las rutas de la sección Archivos"
     }
   },
   "pending": {

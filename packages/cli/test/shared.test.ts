@@ -39,6 +39,40 @@ describe("files shared with other open changes", () => {
     expect((await cli(docs, ["propose"])).out).not.toContain("ARCHIVOS COMPARTIDOS");
   });
 
+  it("are named when a task asks for more scope, approved or pending (AC3)", async () => {
+    const root = await tempRepo(APP);
+    const first = await drafted(root, "Saludo personalizado", CHANGE, SPEC);
+    await cli(first, ["propose"]);
+    await cli(first, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    await cli(first, ["next"]);
+    const files = ["src/other.ts", "lib/extra.test.ts"];
+    const second = await drafted(root, "Otro cambio", OTHER, quick("Otro cambio", files));
+    await cli(second, ["propose"]);
+    const pending = await cli(first, [
+      "scope",
+      "add",
+      "src/other.ts",
+      "--task",
+      "T1",
+      "--reason",
+      "Lo necesito",
+    ]);
+    expect(pending.out).toContain("S1");
+    expect(pending.out).toContain(`ARCHIVOS COMPARTIDOS:\n  src/other.ts — también en ${OTHER}`);
+    // A test outside the task's folders is approved by policy, and still named.
+    const approved = await cli(first, [
+      "scope",
+      "add",
+      "lib/extra.test.ts",
+      "--task",
+      "T1",
+      "--reason",
+      "Un test",
+    ]);
+    expect(approved.out).toContain("Ampliación aprobada por la política");
+    expect(approved.out).toContain(`lib/extra.test.ts — también en ${OTHER}`);
+  });
+
   it("leaves out a change that is no longer open (AC4)", async () => {
     const root = await tempRepo(APP);
     const first = await drafted(root, "Saludo personalizado", CHANGE, SPEC);

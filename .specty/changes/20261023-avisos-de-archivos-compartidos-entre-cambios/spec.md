@@ -52,7 +52,7 @@ Specty avisa cuando un cambio planea tocar archivos que otro cambio abierto, en 
   - files: packages/cli/src/flow/shared.ts, packages/cli/src/commands/propose.ts, packages/cli/src/commands/approve.ts, packages/cli/test/shared.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/shared.test.ts test/flow.test.ts
-- [ ] T2: Archivos compartidos al ampliar el alcance
+- [x] T2: Archivos compartidos al ampliar el alcance
   - files: packages/cli/src/commands/scope.ts, packages/cli/src/flow/shared.ts, packages/cli/test/shared.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/shared.test.ts test/commands.test.ts
