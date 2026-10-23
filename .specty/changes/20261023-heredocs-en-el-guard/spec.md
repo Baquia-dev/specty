@@ -50,7 +50,7 @@ El guard analiza solo lo que bash ejecuta: deja de leer el cuerpo de los heredoc
 
 ## Tareas
 
-- [ ] T1: Heredocs y comentarios en el tokenizador
+- [x] T1: Heredocs y comentarios en el tokenizador
   - files: packages/core/src/guard/tokens.ts, packages/core/test/guard/shell.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts

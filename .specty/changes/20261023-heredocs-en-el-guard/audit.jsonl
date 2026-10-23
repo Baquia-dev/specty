@@ -1,3 +1,6 @@
 {"ts":"2026-10-23T09:46:43.714Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-heredocs-en-el-guard"}}
 {"ts":"2026-10-23T09:47:06.286Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:786234a5e9794034db80f9842f05e80bf4dfcb984fca0443cffe5afd34e4f32a","size":"M","warnings":0}}
 {"ts":"2026-10-23T09:50:56.138Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:786234a5e9794034db80f9842f05e80bf4dfcb984fca0443cffe5afd34e4f32a","channel":"tty"}}
+{"ts":"2026-10-23T09:51:16.014Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"76573db9d61520a4011bdcbf360acb0be98c527c"}}
+{"ts":"2026-10-23T09:57:25.716Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts","exit":0,"ms":782}}
+{"ts":"2026-10-23T09:57:25.718Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Heredocs, aritmética y comentarios en el tokenizador, con un test por cada forma"}}

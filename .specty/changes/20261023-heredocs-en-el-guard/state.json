@@ -6,6 +6,13 @@
   "branch": "specty/20261023-heredocs-en-el-guard",
   "baseCommit": "a46479ddb0ee17a8a67092d2ceebcf7fa178b20d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:786234a5e9794034db80f9842f05e80bf4dfcb984fca0443cffe5afd34e4f32a",
+    "at": "2026-10-23T09:50:56.125Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "76573db9d61520a4011bdcbf360acb0be98c527c",
+      "startedAt": "2026-10-23T09:51:16.012Z",
+      "doneAt": "2026-10-23T09:57:25.717Z",
+      "summary": "Heredocs, aritmética y comentarios en el tokenizador, con un test por cada forma"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 7,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:786234a5e9794034db80f9842f05e80bf4dfcb984fca0443cffe5afd34e4f32a",
-    "at": "2026-10-23T09:50:56.125Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

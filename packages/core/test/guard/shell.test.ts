@@ -21,6 +21,13 @@ describe("tokenize", () => {
       [`cmd`, ">", "out", "2>", "&1", ">>", "log", "&>", "all"],
     ]);
   });
+
+  it("skips comments and heredoc bodies, as bash does not run them", () => {
+    expect(words("cat <<'EOF' > out # note\nx > y\nEOF\nls")).toEqual([
+      ["cat", "<<", "EOF", ">", "out"],
+      ["ls"],
+    ]);
+  });
 });
 
 describe("analyzeShell", () => {
@@ -73,6 +80,47 @@ describe("analyzeShell", () => {
     const heredoc = analyzeShell("cat > src/a.ts <<'EOF'\nx\nEOF");
     expect(heredoc.writes).toEqual(["src/a.ts"]);
     expect(analyzeShell("wc -l <<< 'text'").writes).toEqual([]);
+  });
+
+  it("does not read heredoc bodies as commands (AC1, AC2, AC7)", () => {
+    const body = "x => src/a.ts\ngit commit -m x\n";
+    for (const open of ["<<EOF", "<< EOF", "<<'EOF'", '<<"EOF"', "<<\\EOF"]) {
+      expect(analyzeShell(`cat ${open}\n${body}EOF`)).toMatchObject({ writes: [], commits: [] });
+    }
+    const python = "python3 - <<'PY'\n# map: old => packages/core/src/index.ts\nprint(1)\nPY";
+    expect(analyzeShell(python).writes).toEqual([]);
+    const after = analyzeShell("cat <<'EOF' > /dev/null\ndon't\nEOF\ngit commit -m x");
+    expect(after.commits).toEqual([{ all: false }]);
+    expect(analyzeShell("cat <<EOF\nx\nEOF\necho hi > src/b.ts").writes).toEqual(["src/b.ts"]);
+    const open = analyzeShell("cat <<EOF\nx > src/a.ts\ngit commit -m x");
+    expect([open.writes, open.commits]).toEqual([[], []]);
+  });
+
+  it("closes a `<<-` heredoc on a line indented with tabs (AC3)", () => {
+    const dashed = analyzeShell("cat <<-EOF\n\tx > src/a.ts\n\tEOF\ngit commit -m x");
+    expect([dashed.writes, dashed.commits]).toEqual([[], [{ all: false }]]);
+    expect(analyzeShell("cat <<EOF\n\tEOF\ngit commit -m x").commits).toEqual([]);
+  });
+
+  it("skips the bodies of several heredocs in order (AC4)", () => {
+    const both = analyzeShell(
+      "cat <<A; cat <<'B'\na > src/a.ts\nA\nb > src/b.ts\nB\ngit commit -m x",
+    );
+    expect([both.writes, both.commits]).toEqual([[], [{ all: false }]]);
+  });
+
+  it("does not take arithmetic or a here-string for a heredoc (AC5)", () => {
+    for (const command of ["echo $((1 << 2))", "(( x = 1 << 2 ))", "wc -l <<< 'text'"]) {
+      expect(analyzeShell(`${command}\ngit commit -m x`).commits).toEqual([{ all: false }]);
+    }
+    expect(analyzeShell("echo $((a > b)) > src/a.ts").writes).toEqual(["src/a.ts"]);
+  });
+
+  it("ignores comments, but not a `#` inside a word (AC6)", () => {
+    expect(analyzeShell("echo hi # > src/a.ts").writes).toEqual([]);
+    expect(analyzeShell("# git commit -m x\nls").commits).toEqual([]);
+    expect(analyzeShell("echo a#b > src/a.ts").writes).toEqual(["src/a.ts"]);
+    expect(analyzeShell('echo "#" $# > src/a.ts').writes).toEqual(["src/a.ts"]);
   });
 
   it("places relative paths after `cd` (AC2)", () => {
