@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261023-comprobacion-tras-cada-comando-de-bash",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-comprobacion-tras-cada-comando-de-bash",
+  "baseCommit": "b8e3884997f96d39efed5c21d323b6c7b6fbfbd4",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:983e951567e0ba9eb942ad73a5196eb94c9ebb355450f84aa12c6018f97666da",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9e55290c4bf13e2f3145865f1376cecea06849ca87080636775f47b26f3740b7",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f1b0a1bbe6c5307058448cb834e2b6c0815acba3401ae6e08b8a4f77af860edc",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cdacf27787458edd3ac4c5e257387bea627ab4f5940ab3b9cab66d51e8b16f3f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b4362ef33063cff88be1f690032ff6410372671689193823bd0e457c8daae1ed",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:e24a023bbdd8bafedc7d78fdbd44b752313f9a73e3c220df9199c4ace8938a9a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff72314e022f0010c889423ef320aef46385a6bfcde2fbe051f8a5be7ba45b0c",
+    "at": "2026-10-23T10:25:34.990Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
