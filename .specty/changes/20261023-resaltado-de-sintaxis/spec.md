@@ -66,7 +66,7 @@ El visor de diffs colorea el código con Shiki, con los colores del sistema de d
   - files: packages/ui/package.json, packages/ui/src/highlight/languages.ts, packages/ui/src/highlight/highlight.ts, packages/ui/src/highlight/highlight.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/highlight/highlight.test.ts
-- [ ] T3: El visor con colores
+- [x] T3: El visor con colores
   - files: packages/ui/src/components/diff-file.ts, packages/ui/src/components/diff-file.test.ts, packages/ui/src/components/diff-viewer.test.ts, docs/ui.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check

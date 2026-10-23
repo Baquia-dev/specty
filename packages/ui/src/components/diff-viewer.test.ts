@@ -3,7 +3,7 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { type DiffFile, parseDiff } from "../data/diff";
 import { sampleDiff } from "../data/sample-diffs";
-
+import { HIGHLIGHT } from "../highlight/highlight";
 import { DiffViewer } from "./diff-viewer";
 
 const CHANGE = "20261018-asistencia-curso";
@@ -40,6 +40,9 @@ async function render(
   const resize = screen(wide);
   localStorage.setItem("specty.lang", lang);
   TestBed.resetTestingModule();
+  // Plain code: the colors are tested in diff-file.test.ts and highlight.test.ts.
+  const plain = () => Promise.resolve(undefined);
+  TestBed.configureTestingModule({ providers: [{ provide: HIGHLIGHT, useValue: plain }] });
   const fixture = TestBed.createComponent(Host);
   fixture.componentInstance.files.set(parseDiff(diff));
   fixture.componentInstance.range.set(range);

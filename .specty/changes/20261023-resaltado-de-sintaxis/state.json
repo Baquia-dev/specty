@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-resaltado-de-sintaxis",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-resaltado-de-sintaxis",
   "baseCommit": "f9e15e340e7d2781b0f035d7cc31cd930de172d3",
   "revision": 1,
@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b3111910a36c608df579258da80176686ae9850d",
+      "attempts": 1,
       "startedAt": "2026-10-23T08:39:37.771Z",
       "doneAt": "2026-10-23T08:42:28.989Z",
-      "summary": "Dependencia shiki 4.5.0 (exacta, como las demás). highlight/languages.ts: los 30 lenguajes de A2, cada uno con un import() literal de shiki/langs/<id>.mjs (una chunk por gramática) y sus extensiones o nombres; languageOf(path). highlight/highlight.ts: LineSpan y spansOf(line, tokens?), que corta la línea donde empieza o acaba un color o una palabra cambiada (y descarta tokens que no deletrean la línea); highlightFile(file), que carga Shiki con import() (núcleo + motor de JavaScript + tema de variables CSS, una sola vez, y se reintenta si falló), la gramática si falta, y resalta cada lado de cada bloque como un trozo de código (las quitadas del lado antiguo, el resto del nuevo); devuelve un mapa línea → tokens con los colores del sistema y los comentarios en cursiva, o nada si el lenguaje no está en la lista, el archivo es binario, pasa de 2.000 líneas o algo falla; y el token HIGHLIGHT. Solo tipos de Shiki se importan de forma estática. Los tests usan Shiki de verdad con el diff de ejemplo en Dart."
+      "summary": "Dependencia shiki 4.5.0 (exacta, como las demás). highlight/languages.ts: los 30 lenguajes de A2, cada uno con un import() literal de shiki/langs/<id>.mjs (una chunk por gramática) y sus extensiones o nombres; languageOf(path). highlight/highlight.ts: LineSpan y spansOf(line, tokens?), que corta la línea donde empieza o acaba un color o una palabra cambiada (y descarta tokens que no deletrean la línea); highlightFile(file), que carga Shiki con import() (núcleo + motor de JavaScript + tema de variables CSS, una sola vez, y se reintenta si falló), la gramática si falta, y resalta cada lado de cada bloque como un trozo de código (las quitadas del lado antiguo, el resto del nuevo); devuelve un mapa línea → tokens con los colores del sistema y los comentarios en cursiva, o nada si el lenguaje no está en la lista, el archivo es binario, pasa de 2.000 líneas o algo falla; y el token HIGHLIGHT. Solo tipos de Shiki se importan de forma estática. Los tests usan Shiki de verdad con el diff de ejemplo en Dart.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b19f70f7b552c35f305ae308b1123642fb361b82",
+      "startedAt": "2026-10-23T08:42:29.274Z",
+      "doneAt": "2026-10-23T08:47:10.436Z",
+      "summary": "diff-file.ts usa HIGHLIGHT con un resource(): el diff se ve al momento sin colores y se colorea cuando llega el resaltado; si falla, sigue sin colores. Los tramos vienen de spansOf(line, tokens) de highlight.ts (se quitó la copia local) y llevan su color (style) y cursiva. Los tests de los colores van en diff-file.test.ts (Shiki de verdad: colores, palabras cambiadas con color, los dos modos, sin colores al momento y con error); diff-viewer.test.ts (300 líneas) inyecta un resaltado sin colores. docs/ui.md describe el resaltado. ng build: Shiki solo está en chunks diferidos (núcleo, motor y una chunk por gramática); los archivos iniciales pasan de 702.218 a 704.875 bytes, sin Shiki. El aviso de presupuesto inicial (500 kB, con 656,75 kB) ya salía antes de este cambio. Comprobado en el navegador a 390 y 1280 px, claro y oscuro: código coloreado en los dos modos, comentarios en cursiva, palabras cambiadas marcadas."
     }
   },
   "pending": {

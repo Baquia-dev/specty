@@ -11,6 +11,7 @@ import {
   input,
   linkedSignal,
   model,
+  resource,
   viewChild,
 } from "@angular/core";
 import type { Lang } from "@baquia-dev/specty-core";
@@ -24,31 +25,10 @@ import {
   splitRows,
 } from "../data/diff";
 import type { Bilingual } from "../data/records";
+import { type FileColors, HIGHLIGHT, type LineSpan, spansOf } from "../highlight/highlight";
 import { Preferences } from "../theme/preferences";
 
 export type DiffMode = "unified" | "split";
-
-/** A piece of a line: its text and whether it is a word that changed. Highlighting adds a color. */
-export interface LineSpan {
-  readonly text: string;
-  readonly changed: boolean;
-  readonly color?: string;
-}
-
-/** A line in pieces: the words that changed apart from the rest. */
-export function spansOf(line: DiffLine): readonly LineSpan[] {
-  const spans: LineSpan[] = [];
-  let at = 0;
-  for (const { start, end } of line.changed ?? []) {
-    if (start > at) spans.push({ text: line.text.slice(at, start), changed: false });
-    if (end > start) spans.push({ text: line.text.slice(start, end), changed: true });
-    at = Math.max(at, end);
-  }
-  if (at < line.text.length || spans.length === 0) {
-    spans.push({ text: line.text.slice(at), changed: false });
-  }
-  return spans;
-}
 
 /** Past this many lines a file shows only its first ones, until the person asks for the rest. */
 export const LONG_FILE = 60;
@@ -92,9 +72,9 @@ type Row =
   | { readonly type: "line"; readonly line: LineView }
   | { readonly type: "pair"; readonly left?: LineView; readonly right?: LineView };
 
-const view = (line: DiffLine): LineView => ({ ...line, spans: spansOf(line) });
-
-function rowsOf(hunks: readonly DiffHunk[], mode: DiffMode): readonly Row[] {
+/** The rows of the hunks in the chosen mode, each line in pieces with its colors, if any. */
+function rowsOf(hunks: readonly DiffHunk[], mode: DiffMode, colors?: FileColors): readonly Row[] {
+  const view = (line: DiffLine): LineView => ({ ...line, spans: spansOf(line, colors?.get(line)) });
   return hunks.flatMap((hunk): Row[] => [
     { type: "hunk", hunk },
     ...(mode === "unified"
@@ -207,7 +187,7 @@ let nextId = 0;
     }
     <ng-template #cells let-line let-last="last" let-echo="echo">
       <span [class]="'select-none ' + lookOf(line).bg + ' ' + lookOf(line).tone" aria-hidden="true">{{ lookOf(line).sign }}</span>
-      <span [class]="code + ' ' + lookOf(line).bg + (last ? ' pr-3' : ' border-r border-border pr-2')" [attr.aria-hidden]="echo ? 'true' : null" data-code>@if (spoken(line); as said) {<span class="sr-only">{{ said }}</span>}@for (span of line?.spans ?? []; track $index) {<span [class]="span.changed ? lookOf(line).word : ''" [attr.data-changed]="span.changed ? '' : null">{{ span.text }}</span>}</span>
+      <span [class]="code + ' ' + lookOf(line).bg + (last ? ' pr-3' : ' border-r border-border pr-2')" [attr.aria-hidden]="echo ? 'true' : null" data-code>@if (spoken(line); as said) {<span class="sr-only">{{ said }}</span>}@for (span of line?.spans ?? []; track $index) {<span [class]="span.changed ? lookOf(line).word : ''" [class.italic]="span.italic === true" [style.color]="span.color ?? null" [attr.data-changed]="span.changed ? '' : null">{{ span.text }}</span>}</span>
     </ng-template>
   `,
 })
@@ -240,6 +220,13 @@ export class DiffFileView {
     computation: () => undefined,
   });
 
+  /** The code's colors: the diff shows plain at once, and in color once they are ready. */
+  private readonly highlight = inject(HIGHLIGHT);
+  private readonly colors = resource({
+    params: () => this.file(),
+    loader: ({ params }) => this.highlight(params),
+  });
+
   protected readonly status = computed(() => STATUS[this.file().status]);
   protected readonly counts = computed(() =>
     countsLabel(this.file().additions, this.file().deletions, this.lang()),
@@ -253,7 +240,13 @@ export class DiffFileView {
       : firstLines(hunks, PREVIEW_LINES);
   });
   protected readonly hidden = computed(() => this.shown().hidden);
-  protected readonly rows = computed(() => rowsOf(this.shown().hunks, this.mode()));
+  protected readonly rows = computed(() =>
+    rowsOf(
+      this.shown().hunks,
+      this.mode(),
+      this.colors.hasValue() ? this.colors.value() : undefined,
+    ),
+  );
 
   /** Room for the longest line number, then the sign and the code; on each side when split. */
   protected readonly columns = computed(() => {
