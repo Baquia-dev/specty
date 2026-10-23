@@ -8,6 +8,7 @@ import {
   CONFIG,
   cli,
   APP as FILES,
+  folderOf,
   git,
   inWorktree,
   person,
@@ -201,6 +202,31 @@ describe("closing incorporates the change into the main branch", () => {
     });
     const waiting = await cli(second.folder, ["accept"], { terminal: person() });
     expect(waiting.out).toContain("El agente aún resuelve la incorporación de main");
+  });
+
+  it("incorporates into git.target, and into nothing when that branch is missing", async () => {
+    const config =
+      'version: 1\nlanguage: es\ngit:\n  worktrees: false\n  target: develop\nverify:\n  default: "true"\n';
+    const toDevelop = async () => {
+      const root = await tempRepo({ ...FILES, ".specty/config.yaml": config });
+      git(root, "branch", "develop");
+      expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+      const folder = folderOf(root);
+      await toClosing(folder);
+      return { root, folder, main: git(root, "rev-parse", "main") };
+    };
+    const kept = await toDevelop();
+    const closed = await cli(kept.folder, ["close"], { terminal: person() });
+    expect(closed.out).toContain("Incorporado a develop.");
+    expect(git(kept.root, "rev-parse", "develop")).toBe(git(kept.root, "rev-parse", BRANCH));
+    expect(git(kept.root, "rev-parse", "main")).toBe(kept.main);
+    expect(await exists(kept.folder)).toBe(false);
+
+    const gone = await toDevelop();
+    git(gone.root, "branch", "-D", "develop");
+    const alone = await cli(gone.folder, ["close"], { terminal: person() });
+    expect(alone.out).toContain(`SIGUIENTE: fusiona la rama ${BRANCH} (o abre un PR)`);
+    expect(git(gone.root, "rev-parse", "main")).toBe(gone.main);
   });
 
   it("closes as before in team mode and without a main branch (AC9)", async () => {

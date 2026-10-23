@@ -18,13 +18,31 @@ export interface ParallelBase {
 }
 
 /**
- * Where a change in a new worktree starts: `from`, else the main branch, else HEAD. Not the
- * current branch, so that a parallel change never inherits another one's unmerged work.
+ * Where a change in a new worktree starts: `from`, else `git.target` (`target`), else the main
+ * branch, else HEAD. Not the current branch, so that a parallel change never inherits another
+ * one's unmerged work.
  */
-export async function parallelBase(git: Git, from: string | undefined): Promise<ParallelBase> {
-  const name = from ?? (await mainBranch(git)) ?? "HEAD";
+export async function parallelBase(
+  git: Git,
+  from: string | undefined,
+  target?: string,
+): Promise<ParallelBase> {
+  const name = from ?? target ?? (await mainBranch(git)) ?? "HEAD";
   const result = await git.run(["rev-parse", "--verify", "-q", `${name}^{commit}`]);
   return { name, commit: result.code === 0 ? result.stdout.trim() : undefined };
+}
+
+/**
+ * The branch finished changes go to: `git.target` (`configured`) when set, or nothing if that
+ * branch does not exist, so a change never lands on a branch nobody chose; unset, the main branch.
+ */
+export async function targetBranch(
+  git: Git,
+  configured: string | undefined,
+): Promise<string | undefined> {
+  if (configured === undefined) return mainBranch(git);
+  const local = await git.run(["rev-parse", "--verify", "-q", `refs/heads/${configured}`]);
+  return local.code === 0 ? configured : undefined;
 }
 
 /** The remote's default branch, or else the first local one of `init.defaultBranch`, `main`, `master`. */

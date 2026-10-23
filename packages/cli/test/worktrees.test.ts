@@ -139,6 +139,24 @@ describe("every change in its own worktree", () => {
     expect((await cli(root, ["new", "--from", "main", "Desde main"])).code).toBe(0);
   });
 
+  it("starts from git.target unless --from says otherwise, and refuses a missing one", async () => {
+    const root = await tempRepo(configured("  target: develop\n"));
+    const missing = await cli(root, ["new", "Otro cambio"]);
+    expect(missing.code).toBe(2);
+    expect(missing.out).toContain("`develop` no es una rama ni un commit.");
+    expect(await exists(home(root))).toBe(false);
+    git(root, "switch", "-q", "-c", "develop");
+    git(root, "commit", "-q", "--allow-empty", "-m", "develop");
+    git(root, "switch", "-q", "main");
+    const created = await cli(root, ["new", "Otro cambio"]);
+    expect(created.out).toContain(", desde develop (");
+    expect(git(join(home(root), OTHER), "rev-parse", "HEAD")).toBe(
+      git(root, "rev-parse", "develop"),
+    );
+    const from = await cli(root, ["new", "--from", "main", "Desde main"]);
+    expect(from.out).toContain(", desde main (");
+  });
+
   it("prepares the new folder with git.setup, or else with the stack's install command (AC2)", async () => {
     const folderOf = (root: string) => join(home(root), OTHER);
     const set = await tempRepo(configured('  setup: "echo listo > preparado.txt"\n'));

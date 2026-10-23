@@ -133,7 +133,7 @@ async function newInWorktree(
       ),
     );
   }
-  const base = await parallelBase(git, options.from);
+  const base = await parallelBase(git, options.from, session.config.git.target);
   if (base.commit === undefined) {
     return blockedCard(
       headerOf(),

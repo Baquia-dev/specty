@@ -13,12 +13,12 @@ import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { changeTrailers, commitWithReceipt } from "./commits";
-import { mainBranch } from "./worktree";
+import { targetBranch } from "./worktree";
 
 /** How a finished change reaches the main branch (ARCHITECTURE §9, "Incorporación"). */
 export interface Integration {
   readonly id: string;
-  /** The main branch, which receives the change. */
+  /** The branch that receives the change: `git.target`, or the main branch. */
   readonly target: string;
   readonly branch: string;
   /** The folder where `target` is checked out, if any. */
@@ -40,7 +40,7 @@ export async function integrationOf(
   const { git, config } = session;
   if (state.branch === undefined || !INTEGRATED.has(state.kind) || config.mode !== "individual")
     return undefined;
-  const target = await mainBranch(git);
+  const target = await targetBranch(git, config.git.target);
   if (target === undefined || target === state.branch) return undefined;
   const worktrees = await git.worktrees();
   const main = worktrees[0]?.folder ?? git.root;

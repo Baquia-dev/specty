@@ -53,7 +53,7 @@ kind: standard
   - files: packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema
-- [ ] T2: Base y destino desde `git.target`
+- [x] T2: Base y destino desde `git.target`
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/commands/new.ts, packages/cli/src/flow/integrate.ts, packages/cli/test/worktrees.test.ts, packages/cli/test/integrate.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts test/integrate.test.ts
