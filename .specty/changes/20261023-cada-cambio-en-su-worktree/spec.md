@@ -59,7 +59,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Configuración y bloque de flujo
+- [x] T1: Configuración y bloque de flujo
   - files: packages/core/src/schema/config.ts, packages/core/src/agents-md.ts, packages/core/test/schema/schema.test.ts, packages/core/test/cards.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/cards.test.ts

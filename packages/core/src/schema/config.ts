@@ -33,7 +33,16 @@ export interface ResolvedConfig {
   readonly size: { readonly S: number; readonly M: number; readonly L: number };
   readonly policy: { readonly tests: TestsPolicy };
   readonly retro: { readonly mode: "agent" | "minimal" };
-  readonly git: { readonly branchPerChange: boolean };
+  readonly git: {
+    readonly branchPerChange: boolean;
+    /** `new` creates each change in a worktree of its own (needs `branchPerChange`). */
+    readonly worktrees: boolean;
+    /**
+     * What prepares a new worktree, such as installing dependencies; `false` runs nothing.
+     * Unset: the install command of the stack detected there.
+     */
+    readonly setup?: string | false;
+  };
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
 }
@@ -52,7 +61,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   size: { S: 4, M: 10, L: 18 },
   policy: { tests: "recommended" },
   retro: { mode: "agent" },
-  git: { branchPerChange: true },
+  git: { branchPerChange: true, worktrees: true },
   team: { approvers: [], requirePrReview: true },
   ui: { port: "auto", requireUserPresence: false },
 };
@@ -99,7 +108,13 @@ export const ConfigSchema = z.strictObject({
     .strictObject({ tests: z.enum(["required", "recommended", "off"]).optional() })
     .optional(),
   retro: z.strictObject({ mode: z.enum(["agent", "minimal"]).optional() }).optional(),
-  git: z.strictObject({ branchPerChange: z.boolean().optional() }).optional(),
+  git: z
+    .strictObject({
+      branchPerChange: z.boolean().optional(),
+      worktrees: z.boolean().optional(),
+      setup: z.union([z.string().min(1), z.literal(false)]).optional(),
+    })
+    .optional(),
   team: z
     .strictObject({
       approvers: z.array(z.string().min(1)).optional(),
@@ -180,7 +195,11 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     },
     policy: { tests: input.policy?.tests ?? base.policy.tests },
     retro: { mode: input.retro?.mode ?? base.retro.mode },
-    git: { branchPerChange: input.git?.branchPerChange ?? base.git.branchPerChange },
+    git: {
+      branchPerChange: input.git?.branchPerChange ?? base.git.branchPerChange,
+      worktrees: input.git?.worktrees ?? base.git.worktrees,
+      ...(input.git?.setup !== undefined ? { setup: input.git.setup } : {}),
+    },
     team: {
       approvers: input.team?.approvers ?? base.team.approvers,
       requirePrReview: input.team?.requirePrReview ?? base.team.requirePrReview,

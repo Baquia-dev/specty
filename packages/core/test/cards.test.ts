@@ -168,6 +168,13 @@ describe("AGENTS.md blocks", () => {
   it("keeps the flow block to a few lines", () => {
     expect(flowBlock("es", "specty").split("\n").length).toBeLessThanOrEqual(8);
   });
+
+  it("tells the agent to work in the change's own folder", () => {
+    expect(flowBlock("es", "specty")).toContain(
+      "- Cada cambio vive en su propia carpeta (una worktree): tras `specty new`, trabaja en la carpeta que indica, no en la principal.",
+    );
+    expect(flowBlock("en", "specty")).toContain("after `specty new`, work in the folder it names");
+  });
 });
 
 describe("templates", () => {

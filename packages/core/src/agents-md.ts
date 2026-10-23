@@ -26,6 +26,10 @@ export function flowBlock(lang: Lang, command: string): string {
       `- If the user asks for a change and none is active, \`${command} next\` tells you how to create the spec.`,
     ),
     t(
+      `- Cada cambio vive en su propia carpeta (una worktree): tras \`${command} new\`, trabaja en la carpeta que indica, no en la principal.`,
+      `- Each change lives in its own folder (a worktree): after \`${command} new\`, work in the folder it names, not in the main one.`,
+    ),
+    t(
       `- Completa cada tarea con \`${command} task done <id>\`; no ejecutes \`git commit\` tú mismo.`,
       `- Complete each task with \`${command} task done <id>\`; do not run \`git commit\` yourself.`,
     ),
