@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-cada-cambio-en-su-worktree",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-cada-cambio-en-su-worktree",
   "baseCommit": "f27616dca7bbfc58e1eed946b3b2fd1f98d89f4a",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7aff8210b80c8dd61aa1debe8fecf2e5de532f61",
+      "attempts": 1,
       "startedAt": "2026-10-23T18:38:04.127Z",
       "doneAt": "2026-10-23T18:40:40.955Z",
-      "summary": "new crea el cambio en una worktree aunque no se pase --worktree (salvo git.worktrees: false o sin rama por cambio), y --from ya no pide --worktree en ese caso; prepareWorktree ejecuta allí git.setup o el comando del stack detectado y la salida lo nombra o muestra la cola si falla; el SIGUIENTE pide continuar en esa carpeta. Los tests fijan git.worktrees: false en CONFIG; worktrees.test prueba el valor por defecto y la preparación (con un pnpm de mentira en el PATH)"
+      "summary": "new crea el cambio en una worktree aunque no se pase --worktree (salvo git.worktrees: false o sin rama por cambio), y --from ya no pide --worktree en ese caso; prepareWorktree ejecuta allí git.setup o el comando del stack detectado y la salida lo nombra o muestra la cola si falla; el SIGUIENTE pide continuar en esa carpeta. Los tests fijan git.worktrees: false en CONFIG; worktrees.test prueba el valor por defecto y la preparación (con un pnpm de mentira en el PATH)",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f1e3b5bab0421122934a4d69a959308bddc33174",
+      "startedAt": "2026-10-23T18:40:41.222Z",
+      "doneAt": "2026-10-23T18:42:41.142Z",
+      "summary": "formats.md §6: git.worktrees y git.setup, con el comando de preparación por stack; ARCHITECTURE §6 (fila de new) y §9 (cambios en paralelo: siempre en una worktree, preparación y el agente sigue allí); AGENTS.md de este repo con la línea nueva del bloque de flujo"
     }
   },
   "pending": {
