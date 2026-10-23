@@ -17,7 +17,7 @@ Dos textos dejan de contradecir lo que hace Specty. Una vez escrita la spec, `pr
 
 ## Tareas
 
-- [ ] T1: Esfuerzo tras la spec y diagrama de fases
+- [x] T1: Esfuerzo tras la spec y diagrama de fases
   - files: packages/core/src/cards/text.ts, packages/core/test/cards.test.ts
   - verify: pnpm check
   - type: fix

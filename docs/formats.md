@@ -333,7 +333,7 @@ Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modif
 ```text
 SPECTY · 20261020-evolucion-academica · review · revisión 1
 SPEC VÁLIDA · tamaño M (3 archivos, 2 módulos, sin tests en analytics)
-ESFUERZO RECOMENDADO (Claude Code): planificación high · implementación medium
+ESFUERZO RECOMENDADO (Claude Code): implementación medium · revisiones de la spec y del alcance: high
 AVISO: T1 no incluye tests (política: recommended).
 SIGUIENTE: dile al usuario que la spec está lista en http://localhost:4777/c/20261020-evolucion-academica, con su tamaño y el esfuerzo recomendado, y termina tu turno.
 ```

@@ -4,6 +4,8 @@ import {
   type CardContext,
   type ChangeView,
   detectAgentTool,
+  type EffortRecommendation,
+  effortLine,
   flowBlock,
   hasBlock,
   nextCard,
@@ -101,6 +103,18 @@ describe("next cards", () => {
       ES,
     );
     expect(card.next).toBe("te toca decidir en 20261021-x: `specty approve`.");
+  });
+});
+
+describe("effort", () => {
+  it("recommends implementing and reviewing once the spec is written", () => {
+    const effort: EffortRecommendation = { plan: "high", implement: "medium" };
+    expect(effortLine(effort, ES)).toBe(
+      "ESFUERZO RECOMENDADO: implementación medio · revisiones de la spec y del alcance: alto",
+    );
+    expect(effortLine(effort, { ...ES, lang: "en", tool: "claude-code" })).toBe(
+      "RECOMMENDED EFFORT (Claude Code): implementation medium · spec and scope reviews: high",
+    );
   });
 });
 

@@ -61,12 +61,13 @@ specty/
  draft ──propose──► review ◄──── comentarios: el agente corrige y vuelve a proponer
                       │  ▲
               aprobar*│  └─────────propose (solo el delta)───────┐
-                      ▼                                          │
-                 implementing ◄── scope add · decidir alcance*   │
-                      │                                          │
-          última tarea│                                          │
-                      ▼                                          │
-                  acceptance ──pedir ajustes (agente o persona)──► adjusting
+    ┌─────────────────┤                                          │
+    │ sin tareas      ▼                                          │
+    │ pendientes implementing ◄── scope add · decidir alcance*   │
+    │                 │                                          │
+    │     última tarea│                                          │
+    │                 ▼                                          │
+    └───────────► acceptance ──pedir ajustes (agente o persona)──► adjusting
                       │
               aceptar*│
                       ▼
