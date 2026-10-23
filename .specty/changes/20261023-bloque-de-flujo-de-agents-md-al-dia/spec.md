@@ -14,7 +14,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Llevar a `main` el bloque de flujo regenerado
+- [x] T1: Llevar a `main` el bloque de flujo regenerado
   - files: AGENTS.md
   - verify: pnpm lint
   - type: docs
