@@ -67,3 +67,26 @@ La vista de cada cambio trae su historia: los eventos de `audit.jsonl` como una 
   - files: packages/ui/src/data/sample-history.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/sample-specs.test.ts
   - ac: AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+La vista de cada cambio trae su historia (`ChangeView.history`): cada evento de `audit.jsonl` como una entrada con su momento, su actor (la persona, el agente con su herramienta, o Specty), su tipo para filtrar (spec, tareas, verificaciones, alcance, ajustes, cierre u otros), un título y sus detalles en español e inglés, del más antiguo al más reciente. Un `spec.proposed` después de aceptar se cuenta como «Envió el cierre». Los cambios de ejemplo traen su historia completa, coherente con lo que ya muestran.
+
+### Desviaciones
+
+- **`history.ts` en 299 líneas:** los plurales, los títulos con tarea y las rutas pasaron a pequeños ayudantes para no partir el archivo, que la tarea no permitía.
+- **El test de los avisos de 5 s volvió a fallar por tiempo** con la carga de la máquina por encima de 20 (tres sesiones a la vez), y pasó al repetirlo.
+
+### Decisiones
+
+- **Lectura tolerante:** la CLI escribe algunos eventos con otros campos que `formats.md` (`change.created` con `kind`, `scope.requested` con la solicitud entera, `assumption.decided` con la lista de rechazados al aprobar); se leen las dos formas, y un dato de otro tipo se ignora sin romper la entrada.
+- **La fuente de datos en su propio archivo** (`data/source.ts`), reexportada por `records.ts`: nadie que la importa cambió.
+- **Sin verificación ni commit en «Recordatorios por correo»:** su historia añade la tarea sin ellos, porque su aceptación muestra justo eso.
+
+### Pendientes
+
+- **La pestaña Historial**, con la línea de tiempo y sus filtros, en el cambio siguiente.
+- **Que la CLI registre el envío del cierre** con un evento propio, y que `formats.md` recoja los campos que de verdad escribe.
+- **El test de los avisos de 5 s**, que conviene arreglar para que no dependa de la carga de la máquina.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-datos-del-historial",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-datos-del-historial",
   "baseCommit": "029df601ae98625368d691ee9cf8853ed43014ff",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:3bcfdb5feb151956261e2a2cefcb0283e27332b7870338d0abf987939204ff71",
@@ -68,12 +68,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "45107fc773602749f06cec8873cd4f1cedb77176",
+      "attempts": 2,
       "startedAt": "2026-10-23T11:01:54.983Z",
       "doneAt": "2026-10-23T11:05:27.626Z",
-      "summary": "data/sample-history.ts: la historia de cada cambio de ejemplo, de su creación a su fase actual, unida por orden de tiempo a los eventos que ya traían (tareas, verificaciones, alcance); el agente declara su herramienta. Evolución: dos propuestas con cambios pedidos y A1 confirmado; Justificar faltas: aprobación de la revisión 2, sus tareas, los ajustes pedidos y la revisión 3; Boletines, Asistencia y Login: creación, propuesta y aprobación antes de sus tareas; Recordatorios: tarea sin verificación ni commit (como muestra su aceptación), aceptación y cierre enviado; Modo oscuro: solo creado; Redondeo (rápido): de la creación al cierre al aceptar; Chat docentes: cancelado con su motivo. sampleRecords los aplica con withHistory. Test: cada historia empieza en la creación y va en orden de tiempo, termina donde debe (cierre enviado, cerrado, cancelado, supuesto confirmado) y conserva los eventos que ya había. El test de los avisos de 5 s (toast.test.ts) falló una vez por tiempo con la carga de la máquina en 20 y pasó al repetirlo."
+      "summary": "data/sample-history.ts: la historia de cada cambio de ejemplo, de su creación a su fase actual, unida por orden de tiempo a los eventos que ya traían (tareas, verificaciones, alcance); el agente declara su herramienta. Evolución: dos propuestas con cambios pedidos y A1 confirmado; Justificar faltas: aprobación de la revisión 2, sus tareas, los ajustes pedidos y la revisión 3; Boletines, Asistencia y Login: creación, propuesta y aprobación antes de sus tareas; Recordatorios: tarea sin verificación ni commit (como muestra su aceptación), aceptación y cierre enviado; Modo oscuro: solo creado; Redondeo (rápido): de la creación al cierre al aceptar; Chat docentes: cancelado con su motivo. sampleRecords los aplica con withHistory. Test: cada historia empieza en la creación y va en orden de tiempo, termina donde debe (cierre enviado, cerrado, cancelado, supuesto confirmado) y conserva los eventos que ya había. El test de los avisos de 5 s (toast.test.ts) falló una vez por tiempo con la carga de la máquina en 20 y pasó al repetirlo.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -84,5 +84,6 @@
     "A": 6,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T14:34:11.284Z"
 }
