@@ -12,6 +12,7 @@ import {
 import { commitState, resolveActive } from "../flow/active";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
+import { canDecide } from "./human";
 import { withExtras } from "./scope";
 
 /** `specty reject --scope S`: a person turns down a scope request. */
@@ -21,7 +22,7 @@ export async function reject(
   reason: string | undefined,
 ): Promise<Output> {
   const { cards } = session;
-  if (!session.environment.terminal.interactive) return notInteractiveCard("reject", cards);
+  if (!canDecide(session)) return notInteractiveCard("reject", cards);
   const t = translator(session.lang);
   const active = await resolveActive(session);
   if (active === undefined) {

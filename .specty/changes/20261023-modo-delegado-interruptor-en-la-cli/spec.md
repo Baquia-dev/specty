@@ -68,7 +68,7 @@ Segundo y último paso del modo delegado (ADR 0010). `specty delegate on` lo act
   - files: packages/cli/src/commands/delegate.ts, packages/cli/src/program.ts, packages/cli/src/store/local.ts, packages/cli/test/delegate.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts
-- [ ] T2: La sesión, el guard y las puertas con el modo activo
+- [x] T2: La sesión, el guard y las puertas con el modo activo
   - files: packages/cli/src/session.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/commands/human.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/test/delegate.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts

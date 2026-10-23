@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b62b845252b36c6c2d187bd3ccd2a2d175655b5d",
+      "attempts": 1,
       "startedAt": "2026-10-23T19:25:34.287Z",
       "doneAt": "2026-10-23T19:27:19.288Z",
-      "summary": "specty delegate on muestra la advertencia y solo activa el modo con un «sí» explícito (la primera opción, la por defecto, es no); off lo desactiva; ambos exigen TTY. El interruptor vive en git rev-parse --git-path common/specty/delegated.json (by y at), compartido por todas las worktrees del clon."
+      "summary": "specty delegate on muestra la advertencia y solo activa el modo con un «sí» explícito (la primera opción, la por defecto, es no); off lo desactiva; ambos exigen TTY. El interruptor vive en git rev-parse --git-path common/specty/delegated.json (by y at), compartido por todas las worktrees del clon.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "10fff58746b4539cb8feadbdd25a21bd71022015",
+      "startedAt": "2026-10-23T19:27:19.557Z",
+      "doneAt": "2026-10-23T19:29:28.757Z",
+      "summary": "La sesión lee el interruptor (Session.delegated, cards.delegated) y, sin TTY y con el modo activo, usa una terminal delegada que confirma, no elige ni escribe por la persona y muestra los resúmenes en stderr; interactive sigue falso. canDecide abre humanChange (accept, close, cancel) y reject; el guard recibe delegated. Latencia del guard: p95 90 → 98 ms."
     }
   },
   "pending": {

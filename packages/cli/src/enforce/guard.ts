@@ -210,7 +210,12 @@ async function resolveAction(session: Session, raw: RawAction, cwd: string): Pro
 
 async function guardContext(session: Session) {
   const active = await resolveActive(session);
-  const base = { config: session.config, lang: session.lang, command: COMMAND };
+  const base = {
+    config: session.config,
+    lang: session.lang,
+    command: COMMAND,
+    delegated: session.delegated,
+  };
   if (active === undefined || isFinished(active.state)) return base;
   const { state } = active;
   const taskEntry = Object.entries(state.tasks).find(([, task]) => task.status === "active");

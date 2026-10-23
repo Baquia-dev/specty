@@ -13,13 +13,18 @@ import type { StoredChange } from "../store/changes";
 
 // Shared by the commands only a person may run.
 
+/** A person decides at their TTY, or the agent decides for them in delegated mode (ADR 0010). */
+export function canDecide(session: Session): boolean {
+  return session.environment.terminal.interactive || session.delegated;
+}
+
 export type Guarded =
   | { readonly kind: "output"; readonly output: Output }
   | { readonly kind: "change"; readonly change: StoredChange };
 
 export async function humanChange(session: Session, action: string): Promise<Guarded> {
   const t = translator(session.lang);
-  if (!session.environment.terminal.interactive)
+  if (!canDecide(session))
     return { kind: "output", output: notInteractiveCard(action, session.cards) };
   const change = await resolveActive(session);
   if (change === undefined) {

@@ -3,7 +3,19 @@ import { readFile } from "node:fs/promises";
 import { basename, dirname, isAbsolute, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
-import { AGENT, APP, cli, git, person, tempRepo } from "./support";
+import {
+  AGENT,
+  APP,
+  CHANGE,
+  cli,
+  git,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
 
 /** Where the switch lives, as git resolves it from `cwd`. */
 function switchOf(cwd: string): string {
@@ -72,5 +84,71 @@ describe("specty delegate", () => {
     expect(off.out).toContain("Modo delegado desactivado");
     expect(await exists(switchOf(root))).toBe(false);
     expect((await cli(root, ["delegate", "maybe"], { terminal: person() })).code).toBe(1);
+  });
+});
+
+/** The guard's answer to a Bash command of the agent: 0 lets it through, 2 blocks it. */
+const bash = async (root: string, command: string) =>
+  (
+    await cli(root, ["guard", "--tool", "claude-code"], {
+      stdin: JSON.stringify({ cwd: root, tool_name: "Bash", tool_input: { command } }),
+    })
+  ).code;
+
+/** A change in review, its spec proposed by the agent. */
+async function inReview(root: string): Promise<void> {
+  await cli(root, ["new", "Saludo personalizado"]);
+  await writeFiles(root, { [SPEC_PATH]: SPEC });
+  expect((await cli(root, ["propose"])).code).toBe(0);
+}
+
+/** The same change, approved by its person and with a scope request pending. */
+async function withRequest(root: string): Promise<void> {
+  await inReview(root);
+  await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+  await cli(root, ["next"]);
+  await cli(root, ["scope", "add", "lib/other.ts", "--reason", "Ayudante"]);
+}
+
+describe("delegated mode", () => {
+  it("lets the agent run the person's commands, and only those", async () => {
+    const root = await delegated();
+    await inReview(root);
+    expect((await cli(root, ["next"])).out).toContain(
+      "SIGUIENTE: modo delegado: aprueba tú la spec con `specty approve`",
+    );
+    const status = (await cli(root, ["status"], { terminal: person() })).out;
+    expect(status).toContain("MODO DELEGADO");
+    expect(status).toContain("`specty delegate off`");
+    expect(await bash(root, "specty approve")).toBe(0);
+    expect(await bash(root, "specty delegate off")).toBe(2);
+  });
+
+  it("decides scope requests and cancels without a TTY", async () => {
+    const root = await delegated();
+    await withRequest(root);
+    const rejected = await cli(root, ["reject", "--scope", "S1", "--reason", "Usa src/app.ts"]);
+    expect(rejected.code).toBe(0);
+    expect(rejected.out).toContain("S1 rechazada.");
+    expect(rejected.out).toContain("SIGUIENTE: sigue con `specty next`.");
+    expect(await read(root, `.specty/changes/${CHANGE}/audit.jsonl`)).toContain(
+      '"reason":"Usa src/app.ts"',
+    );
+    const cancelled = await cli(root, ["cancel", "--reason", "Ya no hace falta"]);
+    expect(cancelled.code).toBe(0);
+    expect(cancelled.out).toContain("Cambio cancelado y archivado");
+  });
+
+  it("changes nothing for a person who did not delegate, or took it back", async () => {
+    for (const root of [await tempRepo(APP), await delegated()]) {
+      await cli(root, ["delegate", "off"], { terminal: person() });
+      await withRequest(root);
+      expect((await cli(root, ["reject", "--scope", "S1"])).code).toBe(2);
+      expect((await cli(root, ["cancel", "--reason", "x"])).code).toBe(2);
+      expect(await bash(root, "specty approve")).toBe(2);
+      expect((await cli(root, ["status"], { terminal: person() })).out).not.toContain(
+        "MODO DELEGADO",
+      );
+    }
   });
 });
