@@ -55,7 +55,7 @@ La pestaña Aceptación gana una tercera vista, «Cambios», con el diff del cam
   - files: packages/ui/src/acceptance/changes-view.ts, packages/ui/src/acceptance/changes-view.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/changes-view.test.ts
-- [ ] T2: Cambios en la pestaña y «Ver diff»
+- [x] T2: Cambios en la pestaña y «Ver diff»
   - files: packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/acceptance/acceptance-tab.test.ts, packages/ui/src/acceptance/criterion-row.ts, packages/ui/src/acceptance/trace-matrix.ts, docs/ui.md
   - ac: AC1, AC3
   - verify: pnpm check

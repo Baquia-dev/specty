@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DOCUMENT } from "@angular/common";
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
   effect,
+  Injector,
   inject,
   input,
   signal,
+  viewChild,
 } from "@angular/core";
 import { LucideListChecks } from "@lucide/angular";
 import { LIST, SectionDivider } from "../components/document";
@@ -16,24 +19,33 @@ import { Select } from "../components/select";
 import { evidenceOf, summaryOf } from "../data/acceptance";
 import type { ChangeView } from "../data/records";
 import { Preferences } from "../theme/preferences";
+import { ChangesView, WHOLE_CHANGE } from "./changes-view";
 import { CriterionRow } from "./criterion-row";
 import { FullVerification } from "./full-verification";
 import { TraceMatrix } from "./trace-matrix";
 
-type AcceptanceView = "list" | "matrix";
+type AcceptanceView = "list" | "matrix" | "changes";
 
-const VIEWS: readonly AcceptanceView[] = ["list", "matrix"];
+const VIEWS: readonly AcceptanceView[] = ["list", "matrix", "changes"];
 /** The view is a preference, remembered in this browser like the Inbox's grouping. */
 const VIEW_KEY = "specty.acceptance.view";
 
 /**
  * The Acceptance tab (docs/ui.md, Aceptación): each criterion with the work that backs it, as
- * document rows or as a matrix of criteria by tasks. Outside acceptance it shows the evidence so
- * far, with no actions.
+ * document rows or as a matrix of criteria by tasks, and the diff of that work. Outside
+ * acceptance it shows the evidence so far, with no actions.
  */
 @Component({
   selector: "sp-acceptance-tab",
-  imports: [SectionDivider, EmptyState, Select, CriterionRow, TraceMatrix, FullVerification],
+  imports: [
+    SectionDivider,
+    EmptyState,
+    Select,
+    CriterionRow,
+    TraceMatrix,
+    FullVerification,
+    ChangesView,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
   template: `
@@ -53,18 +65,22 @@ const VIEW_KEY = "specty.acceptance.view";
       @if (change().progress.full; as full) {
         <sp-full-verification [change]="change()" [full]="full" />
       }
-      <section aria-labelledby="acceptance-criteria">
-        <sp-section-divider [heading]="t()('Criterios', 'Criteria')" headingId="acceptance-criteria" [meta]="verifiedOfTotal()" [level]="2" />
-        @if (view() === 'matrix') {
-          <sp-trace-matrix class="mt-3" [evidence]="evidence()" [tasks]="change().progress.tasks" />
-        } @else {
-          <div role="list" [class]="list + ' mt-2'">
-            @for (item of evidence(); track item.id) {
-              <sp-criterion-row [evidence]="item" [change]="change()" [canAdjust]="change().phase === 'acceptance'" />
-            }
-          </div>
-        }
-      </section>
+      @if (view() === 'changes') {
+        <sp-changes-view [change]="change()" [(task)]="diffTask" />
+      } @else {
+        <section aria-labelledby="acceptance-criteria">
+          <sp-section-divider [heading]="t()('Criterios', 'Criteria')" headingId="acceptance-criteria" [meta]="verifiedOfTotal()" [level]="2" />
+          @if (view() === 'matrix') {
+            <sp-trace-matrix class="mt-3" [evidence]="evidence()" [tasks]="change().progress.tasks" (diff)="showDiff($event)" />
+          } @else {
+            <div role="list" [class]="list + ' mt-2'">
+              @for (item of evidence(); track item.id) {
+                <sp-criterion-row [evidence]="item" [change]="change()" [canAdjust]="change().phase === 'acceptance'" (diff)="showDiff($event)" />
+              }
+            </div>
+          }
+        </section>
+      }
     }
   `,
 })
@@ -81,7 +97,12 @@ export class AcceptanceTab {
   protected readonly views = computed(() => [
     { value: "list", label: this.t()("Criterios", "Criteria") },
     { value: "matrix", label: this.t()("Matriz", "Matrix") },
+    { value: "changes", label: this.t()("Cambios", "Changes") },
   ]);
+  /** The task whose diff the Changes view shows. */
+  protected readonly diffTask = signal(WHOLE_CHANGE);
+  private readonly changesView = viewChild(ChangesView);
+  private readonly injector = inject(Injector);
 
   protected readonly evidence = computed(() =>
     evidenceOf(this.change().review.criteria, this.change().progress.tasks),
@@ -138,6 +159,13 @@ export class AcceptanceTab {
   protected choose(value: string): void {
     const view = VIEWS.find((item) => item === value);
     if (view !== undefined) this.view.set(view);
+  }
+
+  /** «Ver diff» of a task: the Changes view with it, and the focus on the view. */
+  protected showDiff(task: string): void {
+    this.diffTask.set(task);
+    this.view.set("changes");
+    afterNextRender(() => this.changesView()?.focus(), { injector: this.injector });
   }
 
   /** Storage can be missing or throw (private mode, blocked site data): the list is the default. */

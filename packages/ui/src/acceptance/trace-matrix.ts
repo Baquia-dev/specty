@@ -1,5 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from "@angular/core";
 import { LucideDynamicIcon, LucideGitCommitHorizontal } from "@lucide/angular";
 import type { CriterionEvidence } from "../data/acceptance";
 import type { TaskProgressView } from "../data/progress";
@@ -76,6 +84,7 @@ const BODY = "border-b border-border py-1.5 pr-3 align-top";
         <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[13px] text-text-muted">
           @if (detail.task.commit; as commit) {
             <span class="inline-flex items-center gap-1 font-mono text-xs text-text"><svg [lucideIcon]="commitIcon" size="13" aria-hidden="true"></svg><span class="sr-only">{{ t()('commit', 'commit') }}&ngsp;</span>{{ commit }}</span>&ngsp;
+            <button type="button" class="h-6 cursor-pointer border-0 bg-transparent px-1 font-sans text-[13px] text-text underline" (click)="diff.emit(detail.task.id)" data-show-diff>{{ t()('Ver diff', 'Show diff') }}<span class="sr-only">&ngsp;{{ t()('de', 'of') }} {{ detail.task.id }}</span></button>&ngsp;
           }
           @for (file of detail.task.files; track $index) {
             <code class="rounded-md bg-text/5 px-1.5 font-mono text-xs">{{ file }}</code>&ngsp;
@@ -99,6 +108,8 @@ const BODY = "border-b border-border py-1.5 pr-3 align-top";
 export class TraceMatrix {
   readonly evidence = input.required<readonly CriterionEvidence[]>();
   readonly tasks = input.required<readonly TaskProgressView[]>();
+  /** «Ver diff» of the task in the detail: the task's id. */
+  readonly diff = output<string>();
 
   protected readonly t = inject(Preferences).t;
   protected readonly head = HEAD;

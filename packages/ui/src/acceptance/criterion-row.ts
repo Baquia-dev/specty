@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from "@angular/core";
 import {
   LucideCheck,
   LucideCircleCheck,
@@ -90,6 +90,12 @@ export function verdictOf(task: TaskProgressView): Mark {
               <span class="inline-flex items-center gap-1.5" [style.color]="'var(--color-phase-' + verdict(task).tone + ')'" data-verdict>
                 <svg [lucideIcon]="verdict(task).icon" size="13" aria-hidden="true"></svg>{{ t()(verdict(task).es, verdict(task).en) }}
               </span>
+              <!-- Last on the line: while hidden, its room is at the end. -->
+              @if (task.commit) {
+                &ngsp;<button type="button" [class]="reveal + ' h-6 cursor-pointer border-0 bg-transparent px-1 font-sans text-[13px] whitespace-nowrap text-text underline'" (click)="diff.emit(task.id)" data-show-diff>
+                  {{ t()('Ver diff', 'Show diff') }}<span class="sr-only">&ngsp;{{ t()('de', 'of') }} {{ task.id }}</span>
+                </button>
+              }
             </li>
           }
         </ul>
@@ -116,6 +122,8 @@ export class CriterionRow {
   readonly change = input.required<ChangeView>();
   /** In acceptance: the criterion can be reported as not met. */
   readonly canAdjust = input(false);
+  /** «Ver diff» of a task that backs it: the task's id. */
+  readonly diff = output<string>();
 
   private readonly dialogs = inject(ResultDialogs);
   protected readonly t = inject(Preferences).t;

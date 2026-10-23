@@ -4,6 +4,7 @@ import { TestBed } from "@angular/core/testing";
 import { FixtureData, sampleRecords } from "../data/fixtures";
 import { type ChangeView, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
+import { HIGHLIGHT } from "../highlight/highlight";
 import { AcceptanceTab } from "./acceptance-tab";
 
 const VIEWS = deriveViews(sampleRecords(Date.now()));
@@ -32,7 +33,13 @@ async function render(change: ChangeView = ASISTENCIA) {
   })) as unknown as typeof window.matchMedia;
   localStorage.setItem("specty.lang", "es");
   TestBed.resetTestingModule();
-  TestBed.configureTestingModule({ providers: [{ provide: SpectyData, useClass: FixtureData }] });
+  TestBed.configureTestingModule({
+    providers: [
+      { provide: SpectyData, useClass: FixtureData },
+      // Plain code in the Changes view: the colors are tested with the viewer.
+      { provide: HIGHLIGHT, useValue: () => Promise.resolve(undefined) },
+    ],
+  });
   const fixture = TestBed.createComponent(Host);
   fixture.componentRef.setInput("change", change);
   await fixture.whenStable();
@@ -45,6 +52,16 @@ async function render(change: ChangeView = ASISTENCIA) {
 const text = (element: Element | null | undefined) =>
   element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
 const texts = (elements: Iterable<Element>) => [...elements].map(text);
+
+/** Picks a view in the «Vista» select, as the person would. */
+async function chooseView(element: HTMLElement, settle: () => Promise<void>, label: string) {
+  element.querySelector<HTMLElement>("[data-view] [data-select]")?.click();
+  await settle();
+  [...document.querySelectorAll<HTMLElement>("[role=option]")]
+    .find((option) => text(option) === label)
+    ?.click();
+  await settle();
+}
 
 describe("Acceptance tab", () => {
   beforeEach(() => localStorage.removeItem(KEY));
@@ -69,8 +86,8 @@ describe("Acceptance tab", () => {
       "CUANDO el coordinador abre el panel ENTONCES ve el porcentaje semanal por curso.",
     );
     expect(texts(row("AC1")?.querySelectorAll("[data-evidence] li") ?? [])).toEqual([
-      "T1 Agregados semanales commit 3c9d1e2 Verificación correcta · 12 s",
-      "T2 Panel con estudiantes destacados commit 8b0a4f6 Verificación correcta · 21 s",
+      "T1 Agregados semanales commit 3c9d1e2 Verificación correcta · 12 s Ver diff de T1",
+      "T2 Panel con estudiantes destacados commit 8b0a4f6 Verificación correcta · 21 s Ver diff de T2",
     ]);
     expect(row("AC1")?.querySelector<HTMLElement>("[data-verdict]")?.style.color).toBe(
       "var(--color-phase-done)",
@@ -159,13 +176,47 @@ describe("Acceptance tab", () => {
       "AC2 · cubierto por T2",
       "Panel con estudiantes destacados",
       "Panel por curso con los estudiantes de más de tres ausencias resaltados.",
-      "commit 8b0a4f6 lib/attendance/course_panel.dart 2 intentos",
+      "commit 8b0a4f6 Ver diff de T2 lib/attendance/course_panel.dart 2 intentos",
       "Verificación correcta · 21 s flutter test test/attendance",
     ]);
 
     // Back later, the matrix is still there; a task with no commit shows how far it got.
     const again = await render(view("20261019-boletines-pdf"));
     expect(text(again.element.querySelector("[data-cell=AC1-T3]"))).toBe("En curso");
+  });
+
+  it("shows the diff of the change in the Changes view, and remembers it (AC1)", async () => {
+    const { element, settle } = await render();
+    await chooseView(element, settle, "Cambios");
+    expect(localStorage.getItem(KEY)).toBe("changes");
+    expect(element.querySelector("[aria-labelledby=acceptance-criteria]")).toBeNull();
+    expect(text(element.querySelector("#acceptance-changes"))).toBe("Cambios");
+    expect(text(element.querySelector("sp-diff-viewer [data-summary]"))).toContain(
+      "5d2a7b0 → 8b0a4f6 · 4 archivos",
+    );
+    // Back later, it opens there.
+    const again = await render();
+    expect(again.element.querySelector("sp-changes-view")).not.toBeNull();
+  });
+
+  it("takes «Ver diff» from a criterion or the matrix to that task's diff (AC3)", async () => {
+    const { element, row, settle } = await render();
+    const shown = () => text(element.querySelector("sp-diff-viewer [data-summary]"));
+    row("AC1")?.querySelector<HTMLElement>("[data-task=T1] [data-show-diff]")?.click();
+    await settle();
+    expect(shown()).toContain("5d2a7b0 → 3c9d1e2 · 2 archivos");
+    expect(element.querySelector<HTMLInputElement>('[data-scope] input[value="T1"]')?.checked).toBe(
+      true,
+    );
+    expect(document.activeElement?.id).toBe("acceptance-changes");
+    // From the matrix: the detail of the cell picked.
+    await chooseView(element, settle, "Matriz");
+    element.querySelector<HTMLElement>("[data-cell=AC2-T2]")?.click();
+    await settle();
+    element.querySelector<HTMLElement>("[data-detail] [data-show-diff]")?.click();
+    await settle();
+    expect(shown()).toContain("3c9d1e2 → 8b0a4f6 · 2 archivos");
+    expect(document.activeElement?.id).toBe("acceptance-changes");
   });
 
   it("falls back to the list when the browser keeps nothing", async () => {
