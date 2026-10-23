@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T02:09:55.514Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261022-verificacion-completa-en-la-pestana-aceptacion"}}
+{"ts":"2026-10-23T02:10:29.994Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:f476e4b8f869273ac17c50c01a3338ca91a43aca666c9706eb6a9363e0bf3a95","size":"L","warnings":1}}
+{"ts":"2026-10-23T02:14:33.858Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:f476e4b8f869273ac17c50c01a3338ca91a43aca666c9706eb6a9363e0bf3a95","channel":"tty"}}

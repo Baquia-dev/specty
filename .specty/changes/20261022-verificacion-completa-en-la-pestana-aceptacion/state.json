@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "id": "20261022-verificacion-completa-en-la-pestana-aceptacion",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-verificacion-completa-en-la-pestana-aceptacion",
+  "baseCommit": "f274d2de0214cfe412f0d30ce7bbb84ce55cd683",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e31153d64ef2b056c4d39dd94928f437c51ad3b3b035f4268cc6ae6af96d0dfd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:40a2da446e57de1e452a5c361049cc5ac3b923ddc0d6c9ac4a1589cdafd5dc33",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e7e0f4dc90102a2527b3344d71d61b30ae6718d65ec2e51f146386de2f72c8f3",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:935e64c6bdba5c3f385736bfa030a647e7de8f5dc371a9ab8dd30b0a2829ae18",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:37f4bd54683541ced15ba745638d4863d002fcdc5994a030e8c6ae9c371cc7d8",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:b81dff16399e05d0456327c4b4cc3019df7fdee998482c533844ead46a51eebc",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:2403c3a0374723c77ec9889d7f7429d429ca2ea560a624bc5fd8ddab412f7747",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f476e4b8f869273ac17c50c01a3338ca91a43aca666c9706eb6a9363e0bf3a95",
+    "at": "2026-10-23T02:14:33.839Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
