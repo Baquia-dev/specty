@@ -54,7 +54,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Recibo y trailer del commit de `init`
+- [x] T1: Recibo y trailer del commit de `init`
   - files: packages/cli/src/store/local.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/init-commit.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-commit.test.ts test/enforce.test.ts

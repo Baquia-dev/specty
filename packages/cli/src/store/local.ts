@@ -8,7 +8,10 @@ import type { Git } from "../io/git";
  * receipts, markers between hooks and pointers to the change in progress.
  */
 
-export type ReceiptKind = "spec" | "task" | "close" | "retro";
+/** `init` is Specty's own installation: its commit belongs to no change. */
+const RECEIPT_KINDS = ["spec", "task", "close", "retro", "init"] as const;
+
+export type ReceiptKind = (typeof RECEIPT_KINDS)[number];
 
 export interface Receipt {
   readonly tree: string;
@@ -57,7 +60,7 @@ export async function takeMarker(git: Git): Promise<CommitMarker | undefined> {
   const { tree, change, kind } = value;
   if (typeof tree !== "string" || typeof change !== "string" || typeof kind !== "string")
     return undefined;
-  const known = ["spec", "task", "close", "retro", "manual"] as const;
+  const known = [...RECEIPT_KINDS, "manual"] as const;
   const markerKind = known.find((candidate) => candidate === kind);
   return markerKind === undefined ? undefined : { tree, change, kind: markerKind };
 }
@@ -110,9 +113,7 @@ async function readReceipts(git: Git): Promise<Receipt[]> {
   return value.flatMap((entry: unknown): Receipt[] => {
     if (!isRecord(entry)) return [];
     const { tree, change, kind, task, createdAt } = entry;
-    const receiptKind = (["spec", "task", "close", "retro"] as const).find(
-      (candidate) => candidate === kind,
-    );
+    const receiptKind = RECEIPT_KINDS.find((candidate) => candidate === kind);
     if (typeof tree !== "string" || typeof change !== "string" || typeof createdAt !== "string")
       return [];
     if (receiptKind === undefined) return [];

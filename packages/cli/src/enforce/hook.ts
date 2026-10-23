@@ -53,6 +53,8 @@ export async function prepareCommitMsg(
   const marker = await takeMarker(git);
   if (marker === undefined || source === "merge" || source === "squash" || source === "commit")
     return 0;
+  // Specty's installation belongs to no change: its message already says `Specty-Init`.
+  if (marker.kind === "init") return 0;
   if (marker.tree !== (await git.writeTree())) return 0;
   const extra =
     marker.kind === "manual"
