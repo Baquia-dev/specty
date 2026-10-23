@@ -60,7 +60,7 @@ La vista de cada cambio trae el cierre que redacta el agente, en sus partes (res
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/ui/src/data/revision.ts, packages/ui/src/data/revision.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts --include src/data/revision.test.ts
-- [ ] T3: Confirmar el cierre en la fuente de ejemplo
+- [x] T3: Confirmar el cierre en la fuente de ejemplo
   - files: packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts, packages/ui/src/data/sample-specs.ts
   - ac: AC3
   - verify: pnpm check

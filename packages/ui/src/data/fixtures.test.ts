@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { parseChangeState, parseSpec } from "@baquia-dev/specty-core";
 import { ChangesStore, DERIVER } from "./changes-store";
 import { answer } from "./derive.worker";
 import { FixtureData, sampleRecords } from "./fixtures";
@@ -39,44 +38,7 @@ async function settled(store: ChangesStore): Promise<void> {
   }
 }
 
-describe("sample data", () => {
-  it("is valid for core: states pass and specs parse without errors (AC9)", () => {
-    for (const record of sampleRecords(Date.now())) {
-      expect(parseChangeState(record.state).ok, record.state.id).toBe(true);
-      const approved = record.approvedSpec === undefined ? [] : [record.approvedSpec];
-      for (const text of [record.spec, ...approved]) {
-        const errors = parseSpec(text).diagnostics.filter((d) => d.severity === "error");
-        expect(errors, record.state.id).toEqual([]);
-      }
-    }
-  });
-
-  it("has a change back in review after an adjustment, with its delta (AC1, AC3)", () => {
-    const record = sampleRecords(Date.now()).find(
-      (item) => item.state.id === "20261016-justificar-faltas",
-    );
-    if (record === undefined) throw new Error("no revised sample");
-    const view = deriveViews([record])[0];
-    expect(view?.review.errors).toEqual([]);
-    expect(view?.highImpactPending).toBe(1);
-    expect(view?.review.delta?.approvedRevision).toBe(2);
-    expect(view?.review.delta?.entries.map((entry) => `${entry.change} ${entry.key}`)).toEqual([
-      "modified goal",
-      "modified A2",
-      "modified A3",
-      "modified AC2",
-      "added AC4",
-      "added lib/notifications/absence_notice.dart",
-      "added T3",
-      "added T4",
-      "removed R1",
-      "added R2",
-    ]);
-    const newScope = view?.review.delta?.entries.filter((entry) => entry.newScope.length > 0);
-    expect(newScope?.map((entry) => entry.key)).toEqual(["T4"]);
-  });
-});
-
+// The sample data itself is checked in sample-specs.test.ts.
 describe("FixtureData actions", () => {
   const REVIEW = "20261020-evolucion-trimestre";
   const PDF = "20261019-boletines-pdf";
@@ -179,6 +141,22 @@ describe("FixtureData actions", () => {
     await expect(fixtures.addComment("20990101-nada", { item: "A1" }, "x")).rejects.toMatchObject({
       text: { en: "There is no change 20990101-nada." },
     });
+  });
+
+  it("confirms only a closing the agent sent, and the change is done (AC3)", async () => {
+    const { fixtures, store, settle } = setup();
+    const [mail, panel] = ["20261017-recordatorios-correo", "20261018-asistencia-curso"];
+    const refused = (es: string) => ({ text: { es: expect.stringContaining(es) } });
+    await expect(fixtures.confirmClosing(PDF)).rejects.toMatchObject(refused("no espera"));
+    await fixtures.decideResult(panel, { kind: "accept" });
+    await expect(fixtures.confirmClosing(panel)).rejects.toMatchObject(refused("aún no"));
+    await fixtures.confirmClosing(mail);
+    await settle();
+    const view = store.all().find((change) => change.id === mail);
+    expect(view?.phase).toBe("done");
+    expect(view?.closing?.pending).toContain("La plantilla en inglés");
+    const closed = (await fixtures.changes()).find((item) => item.state.id === mail);
+    expect(closed?.audit?.at(-1)).toMatchObject({ actor: "human", event: "change.closed" });
   });
 });
 

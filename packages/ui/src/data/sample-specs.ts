@@ -162,7 +162,23 @@ Las familias reciben un correo el día anterior a la entrega de cada tarea.
 
 ## Cierre
 
-Recordatorios enviados con la cola existente. Pendiente: plantilla en inglés.
+### Resumen
+
+Las familias reciben un correo el día anterior a cada entrega. Una tarea programada recorre a las 18:00 las entregas del día siguiente y encola un correo por familia, con la tarea y su fecha.
+
+### Desviaciones
+
+- **La cola existente en lugar de una nueva:** los correos van por la cola de notificaciones que ya usan los boletines; no hizo falta un servicio aparte.
+
+### Decisiones
+
+- **Un correo por familia y día:** si un estudiante tiene varias entregas, van juntas en el mismo correo.
+- **Sin reintentos propios:** la cola ya reintenta tres veces; un fallo final queda en su registro.
+
+### Pendientes
+
+- **La plantilla en inglés:** hoy los correos salen solo en español.
+- **Darse de baja:** falta un enlace para que una familia deje de recibirlos.
 `,
   ),
   "20261021-login-google": spec(

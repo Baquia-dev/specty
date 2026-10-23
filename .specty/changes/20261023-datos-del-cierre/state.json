@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-datos-del-cierre",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-datos-del-cierre",
   "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
   "revision": 1,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e618484d46658da5f340fe84068618d221bb82ea",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:17:59.960Z",
       "doneAt": "2026-10-23T10:21:08.509Z",
-      "summary": "ChangeView.closing (las partes del cierre, de closingOf) solo cuando la spec tiene la sección Cierre con texto; SpectyData.confirmClosing(change), de solo lectura por defecto. Para que records.ts siga en 300 líneas, el texto de «sin diffs» pasa a una constante (NO_DIFFS) y el comentario de watchRun queda en una línea. La revisión en cierre dice «aceptada, en cierre» (accepted, being closed) hasta que el agente envía el cierre y «cierre por confirmar» después (revisionState mira decision). Tests: el cierre en la vista (y ninguno con la sección vacía) y las dos etiquetas. Todos los tests de la UI pasan salvo uno ajeno, el de los avisos de 5 s, que pasa solo y se pasa de tiempo con la máquina cargada."
+      "summary": "ChangeView.closing (las partes del cierre, de closingOf) solo cuando la spec tiene la sección Cierre con texto; SpectyData.confirmClosing(change), de solo lectura por defecto. Para que records.ts siga en 300 líneas, el texto de «sin diffs» pasa a una constante (NO_DIFFS) y el comentario de watchRun queda en una línea. La revisión en cierre dice «aceptada, en cierre» (accepted, being closed) hasta que el agente envía el cierre y «cierre por confirmar» después (revisionState mira decision). Tests: el cierre en la vista (y ninguno con la sección vacía) y las dos etiquetas. Todos los tests de la UI pasan salvo uno ajeno, el de los avisos de 5 s, que pasa solo y se pasa de tiempo con la máquina cargada.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7a7ca0b9560936c9ba5be73d33aff47ff5600e41",
+      "startedAt": "2026-10-23T10:21:08.798Z",
+      "doneAt": "2026-10-23T10:24:08.672Z",
+      "summary": "FixtureData.confirmClosing(change), como specty close: solo con el cambio en cierre y el cierre enviado (closingSubmittedAt); si no, explica por qué (no espera un cierre, o el agente aún no lo ha enviado). Pasa a terminado, reinicia su tiempo de fase y registra change.closed por la persona. El ejemplo «Recordatorios de tareas por correo» trae un cierre con Resumen, Desviaciones, Decisiones y Pendientes. fixtures.test.ts pasaba de 300 líneas: las pruebas de los datos de ejemplo (que las specs y estados son válidos para el core, y el delta) pasan a sample-specs.test.ts, junto a sample-specs.ts, con una nueva: el cierre de ejemplo en sus cuatro partes. Test de la confirmación: rechazos con y sin cierre enviado, paso a terminado, el cierre en la vista y el evento en la auditoría."
     }
   },
   "pending": {
