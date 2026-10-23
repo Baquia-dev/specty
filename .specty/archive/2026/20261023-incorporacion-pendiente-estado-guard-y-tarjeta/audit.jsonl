@@ -13,3 +13,6 @@
 {"ts":"2026-10-23T16:22:11.046Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"9be427c5c381a2affeb603f73a8c5721a278bec0"}}
 {"ts":"2026-10-23T16:23:50.991Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":36959}}
 {"ts":"2026-10-23T16:23:50.993Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"formats.md §3: el campo integration de state.json con su ejemplo; ARCHITECTURE §4: permisos con una incorporación pendiente; §10: el guard la respeta"}}
+{"ts":"2026-10-23T16:45:56.430Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T16:47:10.057Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:f9560548127d99bc097809d4ad655edf5acd40093ea27bf28d388dc3a545fbc7","size":"L","warnings":1}}
+{"ts":"2026-10-23T16:49:05.838Z","actor":"human","event":"change.closed","data":{}}

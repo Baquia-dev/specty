@@ -82,3 +82,25 @@ Core aprende qué es una incorporación pendiente, para que un conflicto al inco
 
 - R1: Si la rama principal avanzó mucho, la lista de archivos que se pueden tocar es larga y abulta `state.json` — es lo justo para resolver la fusión, y la tarjeta muestra solo los primeros 20.
 - R2: Hasta el siguiente cambio nada escribe `integration`, así que esto no se ve en uso — las pruebas cubren el estado, el guard y la tarjeta por separado, y el siguiente cambio prueba el flujo completo.
+
+## Cierre
+
+### Resumen
+
+Core sabe qué es una incorporación pendiente. `state.json` admite `integration`: rama destino, su commit, motivo `conflicts` o `verify`, archivos en conflicto, archivos que el agente puede tocar, fecha y, al resolverse, `resolved` con el commit de merge. `isIntegrating` dice si sigue pendiente. `phasePermissions(phase, closingSubmitted, integrating)` abre el código con el acceso `integration` y espera al agente, sin cambiar la fase ni el acceso a la spec. El guard, con una incorporación pendiente, solo deja escribir y borrar los archivos que junta, sus tests implícitos y los generados; deniega el resto con la regla `integration` y, ante un `git commit`, propone `specty integrate`. `specty next` muestra antes que la fase la tarjeta de la incorporación: motivo, conflictos, los primeros 20 archivos que se pueden tocar y el SIGUIENTE `specty integrate`. La CLI que lo usa es el cambio «El agente resuelve la incorporación», ya implementado en paralelo sobre esta rama.
+
+### Desviaciones
+
+- **`isIntegrating` en `schema/state.ts`:** el Diseño no lo nombraba. Es el único criterio de «pendiente» (con `integration` y sin `resolved`) para la CLI, el guard y la tarjeta.
+- **El SIGUIENTE de `git commit` vive en `guard/integration.ts` (`commitNext`),** junto con el de `task done`, porque `decide.ts` habría pasado de 300 líneas con las dos ramas dentro.
+
+### Decisiones
+
+- **La vista de la tarjeta (`IntegrationView`) solo existe mientras la incorporación está pendiente:** ya resuelta, `next` vuelve a la tarjeta de la fase sin mirar nada más.
+- **El guard consulta la incorporación antes que la fase,** así que manda en `closing` y en `acceptance` por igual, como pide A3. Los archivos de Specty siguen protegidos y la documentación sigue libre.
+- **A1 y A2, confirmados al aprobar:** la incorporación vive en `state.json` y se conserva resuelta, y el agente solo toca lo que cambió cualquiera de los dos lados.
+
+### Pendientes
+
+- **La CLI («El agente resuelve la incorporación»):** está en aceptación, en su worktree, sobre esta rama. Conviene cerrarla después de este cambio.
+- **«espera a el agente» en `status`:** el texto de core sigue sin la contracción «al».
