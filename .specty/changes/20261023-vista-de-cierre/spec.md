@@ -62,7 +62,7 @@ En la pestaña Aceptación, un cambio en cierre muestra lo que redactó el agent
   - files: packages/ui/src/acceptance/closing-actions.ts, packages/ui/src/acceptance/closing-actions.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/closing-actions.test.ts
-- [ ] T3: La acción en la cabecera y en la barra
+- [x] T3: La acción en la cabecera y en la barra
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts, packages/ui/src/change/change-bar.ts, docs/ui.md
   - ac: AC2, AC3
   - verify: pnpm check
