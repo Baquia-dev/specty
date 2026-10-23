@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-limpieza-de-worktrees-y-ramas-incorporadas",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-limpieza-de-worktrees-y-ramas-incorporadas",
   "baseCommit": "bca6638313fd3d0fb99b5d74a17ac7c7473fef98",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c8d5900447dddb407cb89a811c46fe78b592d293306169c273a19ca4336ab4fd",
@@ -56,12 +56,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5cf65da6b31494a4f17a5193216e0dd7d54e89a2",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:37:29.782Z",
       "doneAt": "2026-10-23T21:40:19.141Z",
-      "summary": "ARCHITECTURE §6: prune entre los comandos, también para el agente; §9: la limpieza de new y prune, qué se borra y qué queda"
+      "summary": "ARCHITECTURE §6: prune entre los comandos, también para el agente; §9: la limpieza de new y prune, qué se borra y qué queda",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,5 +73,6 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T21:41:28.956Z"
 }

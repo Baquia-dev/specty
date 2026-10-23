@@ -70,3 +70,24 @@ Las carpetas y las ramas de los cambios terminados no se acumulan. `specty new` 
 
 - R1: Borrar la carpeta de un cambio cerrado en la que aún trabaja la sesión de un agente de otra terminal — la salida del cierre le pide salir de ella, y la carpeta del propio proceso nunca se borra.
 - R2: Borrar una rama que alguien quería conservar — solo se borran las que ya están en la rama destino, sin perder ningún commit.
+
+## Cierre
+
+### Resumen
+
+Las carpetas y las ramas de los cambios terminados ya no se acumulan. Antes de crear su worktree, `specty new` borra con `git worktree remove` (sin `--force`) las de los cambios cerrados que ya están en su rama destino, o que no se incorporan, y las de los cancelados, y la salida las nombra. Nunca borra la carpeta en la que corre el proceso, ni la principal, ni la de un cambio abierto, y las ramas quedan. `specty prune` hace lo mismo y además borra las ramas `specty/*` y `spike/*` que ya están en la rama destino y no están en ninguna worktree. Nombra lo que queda y por qué, como una rama sin incorporar o un cambio cerrado que aún no está en su destino, y dice si no había nada que limpiar.
+
+### Desviaciones
+
+- **Un cambio cerrado que no se incorpora (sin rama destino, modo `team`, spike) también suelta su carpeta:** su rama queda, y la carpeta ya no hace falta. El Diseño solo hablaba de los incorporados.
+- **`prune` también nombra las ramas que quedan sin incorporar,** no solo las carpetas, para que «lo que queda» sea completo.
+
+### Decisiones
+
+- **`prune` borra las ramas con `git branch -D` después de comprobar con `--merged`** que ya están en la rama destino. `-d` mira la rama actual, que desde otra worktree no es la destino.
+- **La lectura de las opciones de `init` pasó a `initCommand`,** en `commands/init.ts`. Así `program.ts` queda en 293 líneas con el comando nuevo.
+- **A1 y A2, confirmados al aprobar:** qué carpeta sobra y qué rama se borra.
+
+### Pendientes
+
+- **Recompilar el CLI de la carpeta principal** cuando esto esté en `main`, y ejecutar `specty prune` para limpiar las ramas antiguas de este repo y las carpetas que quedaron hoy.

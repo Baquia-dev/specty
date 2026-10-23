@@ -10,3 +10,6 @@
 {"ts":"2026-10-23T21:37:29.782Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"5cf65da6b31494a4f17a5193216e0dd7d54e89a2"}}
 {"ts":"2026-10-23T21:40:19.140Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":68383}}
 {"ts":"2026-10-23T21:40:19.143Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §6: prune entre los comandos, también para el agente; §9: la limpieza de new y prune, qué se borra y qué queda"}}
+{"ts":"2026-10-23T21:41:20.252Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-23T21:41:28.957Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:070a0a0a70ac835b77d69bf4ebda2ec5de147da40ff11686520d9dba9802a54e","size":"M","warnings":0}}
+{"ts":"2026-10-23T21:41:39.624Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
