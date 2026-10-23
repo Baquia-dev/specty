@@ -102,3 +102,29 @@ Si incorporar la rama principal al cerrar da conflictos, o la verificación fall
 - R1: El agente resuelve un conflicto mal pero con la verificación en verde — la persona ve el merge del agente antes de confirmar el cierre, y el guard le impide tocar archivos fuera de la incorporación.
 - R2: El merge en curso deja la carpeta del cambio en un estado que otras herramientas (un `git pull`, un `ng serve`) ven a medias — es la misma carpeta del cambio, que nadie más usa, y la tarjeta de `next` lo explica.
 - R3: Esta rama parte de la del cambio anterior (core), aún sin incorporar — la base es la de ese cambio, y al cerrar se incorpora `main` con él dentro.
+
+## Cierre
+
+### Resumen
+
+Si incorporar la rama principal al cerrar (o al aceptar un quick) da conflictos, o la verificación falla con el resultado, el merge ya no se aborta. Queda en curso en la worktree del cambio, `state.json` registra la incorporación pendiente con los archivos que cambió cada lado desde su base común, y la salida le pide a la persona decirle al agente «continúa». El agente ve la incorporación en `specty next`, el guard solo le deja tocar esos archivos y `status` dice que se le espera a él. `specty integrate` no hace ningún commit si quedan marcadores, si hay cambios fuera de la incorporación o si la verificación falla. Cuando todo está bien, hace el commit de merge (con recibo, `Specty-Change` y sin `.specty/`), marca la incorporación como resuelta y pide al usuario repetir `close` o `accept`. Mientras el merge sigue en curso, `close` y `accept` esperan. Si alguien lo aborta, la incorporación se descarta y se intenta de nuevo. Antes de confirmar, `close` muestra el merge del agente y lo que resolvió. Las pruebas de punta a punta recorren el ciclo completo con worktrees reales: conflicto, intentos rechazados, resolución, cierre, `main` avanzada y carpeta borrada, también en el carril quick.
+
+### Desviaciones
+
+- **`pendingIntegration` está en `commands/integrate.ts` y no en `flow/integrate.ts`,** junto al comando del agente: en `flow/integrate.ts` lo dejaba en 314 líneas. Fue una ampliación de T2 que la política aprobó sola porque el archivo estaba en Archivos.
+- **`flow/integrate.ts` exporta `askAgent` y `blocked`,** que el comando reutiliza para que la espera de `close` y `accept` diga lo mismo que el rechazo.
+- **`test/support.ts` también recibe `quickInWorktree` y `stateIn`,** además de `inWorktree` y `toClosing`, porque los dos archivos de pruebas los necesitan.
+
+### Decisiones
+
+- **Los marcadores se buscan solo en los archivos que estaban en conflicto,** a principio de línea: `<<<<<<<` y `>>>>>>>` seguidos de espacio o fin de línea, o `=======` solo. Una línea de siete `=` en otro archivo no bloquea.
+- **El commit de merge prepara todo salvo `.specty/`:** el cierre y el estado sin commit del cambio entran luego en el commit de archivo.
+- **Sin `MERGE_HEAD`, `specty integrate` no descarta nada:** lo descarta el siguiente `close` o `accept`, que es quien vuelve a intentar la incorporación.
+- **A1 y A2, confirmados al aprobar:** el merge queda en curso para el agente, y `specty integrate` exige las tres comprobaciones antes del commit.
+
+### Pendientes
+
+- **Recompilar el CLI de la carpeta principal** cuando esto esté en `main`: hasta entonces, el `specty` global sigue abortando ante un conflicto.
+- **«Cada cambio en su worktree»:** `new` siempre en una worktree, con las dependencias instaladas, rama destino configurable (`git.target`) y `--from` como destino.
+- **Los comandos de la persona desde cualquier carpeta,** y `status` sobre todas las worktrees: desde la worktree de un cambio, `status` muestra la copia que su rama heredó de otro.
+- **El test de toasts de la UI:** sigue fallando a veces con la máquina cargada, como en la verificación de T5.

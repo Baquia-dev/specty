@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-el-agente-resuelve-la-incorporacion",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-el-agente-resuelve-la-incorporacion",
   "baseCommit": "9e08ae019b342fe4b96f2b41e6434921d8c42d5c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2b7f27bf117bfca7fd8e8634c0453fc33a0727c7a670f3f23ffa9c564975ce93",
@@ -85,12 +85,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "efa4fcc2d0e1787a2d9efcfb9036ad43a17f5d43",
+      "attempts": 2,
       "startedAt": "2026-10-23T16:41:38.757Z",
       "doneAt": "2026-10-23T16:44:03.425Z",
-      "summary": "ARCHITECTURE §6: specty integrate; §9: el merge con conflictos o en rojo queda para el agente (estado, guard, integrate, espera de close y accept, merge abortado, nota antes de confirmar) y el reintento de un cambio cerrado sigue a mano; formats.md §4: eventos integration.started, integration.resolved e integration.abandoned"
+      "summary": "ARCHITECTURE §6: specty integrate; §9: el merge con conflictos o en rojo queda para el agente (estado, guard, integrate, espera de close y accept, merge abortado, nota antes de confirmar) y el reintento de un cambio cerrado sigue a mano; formats.md §4: eventos integration.started, integration.resolved e integration.abandoned",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -102,5 +102,6 @@
     "AC": 8,
     "T": 5,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T16:51:09.428Z"
 }
