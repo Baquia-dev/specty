@@ -3,7 +3,7 @@
 import type { Lang, Phase } from "@baquia-dev/specty-core";
 import type { Bilingual, ChangeView } from "./records";
 
-type RevisionOf = Pick<ChangeView, "phase" | "revision" | "approved">;
+type RevisionOf = Pick<ChangeView, "phase" | "revision" | "approved" | "decision">;
 
 /** What the current revision is, by the change's phase. */
 const STATES: Readonly<Record<Phase, Bilingual>> = {
@@ -12,14 +12,19 @@ const STATES: Readonly<Record<Phase, Bilingual>> = {
   adjusting: { es: "aprobada, en ajuste", en: "approved, being adjusted" },
   implementing: { es: "aprobada", en: "approved" },
   acceptance: { es: "aprobada", en: "approved" },
-  closing: { es: "cierre por confirmar", en: "closing to confirm" },
+  closing: { es: "aceptada, en cierre", en: "accepted, being closed" },
   done: { es: "cerrada", en: "closed" },
   cancelled: { es: "cancelada", en: "cancelled" },
 };
 
+/** Once the agent sends the closing, it waits for the person. */
+const CLOSING_SENT: Bilingual = { es: "cierre por confirmar", en: "closing to confirm" };
+
 /** «por aprobar», «aprobada»… */
 export function revisionState(change: RevisionOf): Bilingual {
-  return STATES[change.phase];
+  return change.phase === "closing" && change.decision === "closing"
+    ? CLOSING_SENT
+    : STATES[change.phase];
 }
 
 /** «Revisión 3 · por aprobar». A draft never proposed has no number yet: «Sin proponer». */

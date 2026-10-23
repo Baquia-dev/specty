@@ -10,6 +10,7 @@ import type {
   SizeLevel,
 } from "@baquia-dev/specty-core";
 import type { ResultDecision } from "./acceptance";
+import type { ClosingParts } from "./closing";
 import type { AuditRecord, ProgressView, RunRecord } from "./progress";
 
 export { relativeTime } from "./time";
@@ -58,6 +59,7 @@ const READ_ONLY: Bilingual = {
   es: "Esta fuente de datos es de solo lectura: no admite acciones.",
   en: "This data source is read-only: it takes no actions.",
 };
+const NO_DIFFS: Bilingual = { es: "Esta fuente no da diffs.", en: "This source gives no diffs." };
 
 /**
  * Any data source the UI can run on: fetch + SSE from the local server, `postMessage` in an
@@ -92,10 +94,7 @@ export abstract class SpectyData {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 
-  /**
-   * Follows the verification running in `change`: the listener gets it at once and with each new
-   * line, and `undefined` when none runs. A source without live runs simply never has one.
-   */
+  /** Follows the run in `change`: at once, with each new line, and `undefined` when none runs. */
   watchRun(_change: string, listener: (run: RunRecord | undefined) => void): () => void {
     listener(undefined);
     return () => undefined;
@@ -116,6 +115,11 @@ export abstract class SpectyData {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 
+  /** Confirms the closing the agent sent, as `specty close`: the change is done. */
+  confirmClosing(_change: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
   /** Starts the full verification (`verify.full`); it streams through `watchRun`, with no task. */
   verifyChange(_change: string): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
@@ -123,9 +127,7 @@ export abstract class SpectyData {
 
   /** The diff, as `git diff` writes it, of a task or, with none, of the whole change. */
   diff(_change: string, _task?: string): Promise<string> {
-    return Promise.reject(
-      new ActionError({ es: "Esta fuente no da diffs.", en: "This source gives no diffs." }),
-    );
+    return Promise.reject(new ActionError(NO_DIFFS));
   }
 }
 
@@ -282,6 +284,8 @@ export interface ChangeView {
   readonly review: ReviewView;
   /** The tasks in the spec's order, with their state and last verification. */
   readonly progress: ProgressView;
+  /** The closing the agent wrote (`## Cierre`), in its parts; none until it writes it. */
+  readonly closing?: ClosingParts;
 }
 
 /** Messages to and from the derivation worker. */

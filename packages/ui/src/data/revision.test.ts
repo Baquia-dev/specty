@@ -30,9 +30,20 @@ describe("revision", () => {
       implementing: "aprobada",
       acceptance: "aprobada",
       adjusting: "aprobada, en ajuste",
-      closing: "cierre por confirmar",
+      closing: "aceptada, en cierre",
       done: "cerrada",
       cancelled: "cancelada",
+    });
+  });
+
+  it("says the closing waits for the person only once the agent sends it (AC2)", () => {
+    expect(revisionName({ phase: "closing", revision: 2 })).toEqual({
+      es: "Revisión 2 · aceptada, en cierre",
+      en: "Revision 2 · accepted, being closed",
+    });
+    expect(revisionName({ phase: "closing", revision: 2, decision: "closing" })).toEqual({
+      es: "Revisión 2 · cierre por confirmar",
+      en: "Revision 2 · closing to confirm",
     });
   });
 

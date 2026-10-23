@@ -147,6 +147,33 @@ describe("decisions and tabs", () => {
     ).toBe("closing");
   });
 
+  it("carries the closing the agent wrote, in its parts (AC1)", () => {
+    expect(deriveView(record()).closing).toBeUndefined();
+    const closing = `${SPEC}
+## Cierre
+
+### Resumen
+
+Evolución agrupada por trimestre.
+
+### Pendientes
+
+- Exportar el gráfico.
+`;
+    const view = deriveView(record({ phase: "closing" }, closing));
+    expect(view.closing).toEqual({
+      summary: "Evolución agrupada por trimestre.",
+      deviations: "",
+      decisions: "",
+      pending: "- Exportar el gráfico.",
+      other: "",
+    });
+    // An empty section is no closing yet.
+    expect(
+      deriveView(record({ phase: "closing" }, `${SPEC}\n## Cierre\n\n`)).closing,
+    ).toBeUndefined();
+  });
+
   it("opens each phase on its tab (AC4)", () => {
     expect(
       (

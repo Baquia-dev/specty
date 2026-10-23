@@ -56,7 +56,7 @@ La vista de cada cambio trae el cierre que redacta el agente, en sus partes (res
   - files: packages/ui/src/data/closing.ts, packages/ui/src/data/closing.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/closing.test.ts
-- [ ] T2: El cierre en la vista y su etiqueta
+- [x] T2: El cierre en la vista y su etiqueta
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/ui/src/data/revision.ts, packages/ui/src/data/revision.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts --include src/data/revision.test.ts
