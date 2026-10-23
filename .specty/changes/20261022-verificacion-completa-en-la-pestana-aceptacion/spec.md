@@ -74,7 +74,7 @@ Antes de aceptar, la persona puede ejecutar la verificación completa del proyec
   - files: packages/ui/src/data/views.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-run.ts, packages/ui/src/data/sample-run.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-run.test.ts
-- [ ] T3: La sección en la pestaña Aceptación
+- [x] T3: La sección en la pestaña Aceptación
   - files: packages/ui/src/progress/live-output.ts, packages/ui/src/acceptance/full-verification.ts, packages/ui/src/acceptance/full-verification.test.ts, packages/ui/src/acceptance/acceptance-tab.ts, docs/ui.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm check

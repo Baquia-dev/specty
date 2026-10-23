@@ -20,6 +20,7 @@ import {
   type RunRecord,
   type VerificationView,
 } from "../data/progress";
+import type { Bilingual } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
 /**
@@ -33,6 +34,41 @@ export const OUTPUT_TONES: Readonly<Record<OutputTone, string>> = {
   fail: "text-phase-cancelled",
   path: "text-phase-implementing",
 };
+
+interface Wording {
+  /** The name of the output region. */
+  readonly log: Bilingual;
+  readonly start: Bilingual;
+  readonly end: Bilingual;
+  readonly passed: Bilingual;
+  readonly failed: Bilingual;
+}
+
+/** What the output and its announcements say of a task's runs, or of the full verification's. */
+function wording(task: string | undefined): Wording {
+  if (task === undefined) {
+    return {
+      log: {
+        es: "Salida en vivo de la verificación completa",
+        en: "Live output of the full verification",
+      },
+      start: { es: "Verificando todo el cambio", en: "Verifying the whole change" },
+      end: { es: "Terminó la verificación completa.", en: "The full verification ended." },
+      passed: { es: "La verificación completa fue correcta.", en: "The full verification passed." },
+      failed: { es: "La verificación completa falló.", en: "The full verification failed." },
+    };
+  }
+  return {
+    log: { es: `Salida en vivo de ${task}`, en: `Live output of ${task}` },
+    start: { es: `Verificando ${task}`, en: `Verifying ${task}` },
+    end: { es: `Terminó la verificación de ${task}.`, en: `The verification of ${task} ended.` },
+    passed: {
+      es: `La verificación de ${task} fue correcta.`,
+      en: `The verification of ${task} passed.`,
+    },
+    failed: { es: `La verificación de ${task} falló.`, en: `The verification of ${task} failed.` },
+  };
+}
 
 /** Enough to read what failed; older lines are counted, not kept on screen. */
 export const MAX_LINES = 500;
@@ -65,7 +101,7 @@ const END_PX = 8;
         @if (shown()) {
           <div class="relative">
             <!-- Inside <pre> every space of the template shows: the lines go on one template line. -->
-            <pre #log tabindex="0" class="m-0 max-h-72 overflow-y-auto rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" [attr.aria-label]="t()('Salida en vivo de ' + task(), 'Live output of ' + task())" (scroll)="onScroll()" data-log>@if (hidden() > 0) {<span class="block text-text-muted" data-hidden>{{ t()('… ' + hidden() + ' líneas antes', '… ' + hidden() + ' earlier lines') }}</span>}@for (line of lines(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
+            <pre #log tabindex="0" class="m-0 max-h-72 overflow-y-auto rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" [attr.aria-label]="t()(said().log.es, said().log.en)" (scroll)="onScroll()" data-log>@if (hidden() > 0) {<span class="block text-text-muted" data-hidden>{{ t()('… ' + hidden() + ' líneas antes', '… ' + hidden() + ' earlier lines') }}</span>}@for (line of lines(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
             @if (!following()) {
               <button type="button" class="absolute right-3 bottom-3 h-8 cursor-pointer rounded-lg border border-border bg-surface px-3 font-sans text-[13px] font-medium text-text shadow-sm" (click)="toEnd()" data-to-end>{{ t()('Ir al final', 'Go to the end') }}</button>
             }
@@ -76,7 +112,8 @@ const END_PX = 8;
   `,
 })
 export class LiveOutput {
-  readonly task = input.required<string>();
+  /** The task the runs check; none for the full verification of the change. */
+  readonly task = input<string | undefined>(undefined);
   /** The run on this task, while there is one. */
   readonly run = input<RunRecord | undefined>(undefined);
   /** The task's last verification, to tell how a run ended once its result arrives. */
@@ -103,6 +140,7 @@ export class LiveOutput {
     const run = this.run();
     return run === undefined ? "" : formatClock(this.now() - Date.parse(run.startedAt));
   });
+  protected readonly said = computed(() => wording(this.task()));
 
   constructor() {
     const timer = setInterval(() => this.now.set(Date.now()), 1_000);
@@ -121,24 +159,16 @@ export class LiveOutput {
       const run = this.run();
       const result = this.verification();
       untracked(() => {
-        const t = this.t();
-        const task = this.task();
+        const lang = this.preferences.lang();
+        const said = this.said();
         if (run !== undefined && !running) {
-          this.message.set(
-            t(`Verificando ${task}: ${run.command}.`, `Verifying ${task}: ${run.command}.`),
-          );
+          this.message.set(`${said.start[lang]}: ${run.command}.`);
         } else if (run === undefined && running) {
           awaiting = true;
-          this.message.set(
-            t(`Terminó la verificación de ${task}.`, `The verification of ${task} ended.`),
-          );
+          this.message.set(said.end[lang]);
         } else if (awaiting && result !== undefined && result.at !== lastAt) {
           awaiting = false;
-          this.message.set(
-            result.passed
-              ? t(`La verificación de ${task} fue correcta.`, `The verification of ${task} passed.`)
-              : t(`La verificación de ${task} falló.`, `The verification of ${task} failed.`),
-          );
+          this.message.set((result.passed ? said.passed : said.failed)[lang]);
         }
         running = run !== undefined;
         lastAt = result?.at;

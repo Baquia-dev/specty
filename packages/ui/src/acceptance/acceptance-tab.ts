@@ -17,6 +17,7 @@ import { evidenceOf, summaryOf } from "../data/acceptance";
 import type { ChangeView } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { CriterionRow } from "./criterion-row";
+import { FullVerification } from "./full-verification";
 import { TraceMatrix } from "./trace-matrix";
 
 type AcceptanceView = "list" | "matrix";
@@ -32,7 +33,7 @@ const VIEW_KEY = "specty.acceptance.view";
  */
 @Component({
   selector: "sp-acceptance-tab",
-  imports: [SectionDivider, EmptyState, Select, CriterionRow, TraceMatrix],
+  imports: [SectionDivider, EmptyState, Select, CriterionRow, TraceMatrix, FullVerification],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
   template: `
@@ -47,6 +48,10 @@ const VIEW_KEY = "specty.acceptance.view";
       </div>
       @if (closingNote(); as note) {
         <p class="m-0 text-sm" role="note" data-closing>{{ note }}</p>
+      }
+      <!-- Only when the project has a full verification (verify.full). -->
+      @if (change().progress.full; as full) {
+        <sp-full-verification [change]="change()" [full]="full" />
       }
       <section aria-labelledby="acceptance-criteria">
         <sp-section-divider [heading]="t()('Criterios', 'Criteria')" headingId="acceptance-criteria" [meta]="verifiedOfTotal()" [level]="2" />

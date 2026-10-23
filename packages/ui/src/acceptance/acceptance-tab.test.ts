@@ -58,7 +58,8 @@ describe("Acceptance tab", () => {
     expect(text(element.querySelector("[data-summary]"))).toBe(
       "2 de 2 criterios verificados · 2 tareas hechas · 2 commits",
     );
-    expect(text(element.querySelector("sp-section-divider [data-meta]"))).toBe("2 de 2");
+    const criteria = element.querySelector("[aria-labelledby=acceptance-criteria]");
+    expect(text(criteria?.querySelector("sp-section-divider [data-meta]"))).toBe("2 de 2");
     const rows = [...element.querySelectorAll<HTMLElement>("sp-criterion-row")];
     expect(rows.map((item) => [item.dataset.criterion, item.getAttribute("role")])).toEqual([
       ["AC1", "listitem"],
