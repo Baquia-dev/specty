@@ -73,3 +73,24 @@ kind: standard
 
 - R1: OpenCode cambia otra vez su API de plugins (ya pasó de la 1 a la 2) — el plugin falla abierto, `doctor` comprueba que está, y los hooks de git, `task done` y el CI siguen aplicando.
 - R2: No hay OpenCode en esta máquina para probarlo de punta a punta — los tests cargan el plugin real con las formas de OpenCode 1 y 2 tomadas de su código y ejecutan el guard de verdad.
+
+## Cierre
+
+### Resumen
+
+OpenCode tiene el guard de Specty. `init` (con `--tools opencode`, o cuando el repositorio tiene `.opencode/`, `opencode.json` u `opencode.jsonc`) escribe `plugins/specty.js` en la configuración global de OpenCode: un módulo sin dependencias que sirve a OpenCode 2 (`setup` y `execute.before`) y a OpenCode 1 (`server` y `tool.execute.before`). En una carpeta con `.specty/config.yaml`, el plugin manda cada herramienta al guard sin bloquear OpenCode y la rechaza con el motivo y el SIGUIENTE cuando el guard responde 2. El guard juzga `shell`/`bash` con el análisis de shell en su `workdir`, `edit`, `write` y `multiedit` como escrituras, y `patch`/`apply_patch` como sus escrituras y borrados. `doctor` comprueba el plugin, y Specty reconoce a OpenCode como agente por `OPENCODE=1`.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- La forma del plugin y de los eventos se tomó del código de OpenCode (`packages/core/src/plugin/module.ts`, `hooks.ts` y las herramientas de `packages/core/src/tool/plugin/`) y de `@opencode/plugin` 2.1.4, donde `Plugin.define` es la identidad: un objeto plano con `id` y `setup` basta, sin dependencias.
+- El plugin manda al guard la forma de Claude Code (`cwd`, `session_id`, `tool_use_id`, `tool_name`, `tool_input`), así que el guard toma el `workdir` de `tool_input` para cualquier herramienta que lo dé.
+- El plugin lanza el guard con `spawn` y no con `spawnSync`, para no congelar OpenCode mientras el guard decide.
+- Los tests apuntan `XDG_CONFIG_HOME` a una carpeta temporal y no heredan `OPENCODE`, igual que con Codex y `CODEX_HOME`.
+
+### Pendientes
+
+- Una revisión tras cada comando en OpenCode, si su API de plugins deja avisar al modelo de forma estable.

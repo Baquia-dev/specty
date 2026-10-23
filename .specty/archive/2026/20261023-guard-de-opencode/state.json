@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-guard-de-opencode",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-guard-de-opencode",
   "baseCommit": "afc9376b80ce2052262ca4802069e671f79e23c7",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:7c9cf2d16c0791b84aa94f4b222237a3c9060bbb659591ac35dbac9c191bb2dd",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "33e0383484b6fe39aa3c001dada0f1f6af741d50",
+      "attempts": 1,
       "startedAt": "2026-10-23T23:31:49.947Z",
       "doneAt": "2026-10-23T23:34:00.587Z",
-      "summary": "ARCHITECTURE: fila de OpenCode en la tabla de hooks por herramienta, con el plugin global, sus dos API y las herramientas que juzga"
+      "summary": "ARCHITECTURE: fila de OpenCode en la tabla de hooks por herramienta, con el plugin global, sus dos API y las herramientas que juzga",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,5 +82,6 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T23:35:12.320Z"
 }
