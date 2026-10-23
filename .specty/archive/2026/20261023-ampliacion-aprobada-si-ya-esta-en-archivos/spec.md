@@ -56,3 +56,23 @@ kind: standard
 ## Riesgos
 
 - R1: Una tarea puede quedarse con el trabajo de otra sin que nadie lo vea hasta la aceptación — la salida de `scope add` lo dice al momento, `audit.jsonl` lo guarda para la UI, y el commit de la tarea muestra qué archivos tocó.
+
+## Cierre
+
+### Resumen
+
+`specty scope add` aprueba solo un archivo que ya está en la sección Archivos de la spec aprobada, con un glob o como lado de un renombrado, salvo que sea una ruta sensible o que la política sea `none`. `autoBasis` da el motivo de cada ruta (`test`, `generated` o `planned`, en ese orden) y `decideScopeRequest` recibe lo previsto. Al aprobar, la salida anota cada ruta prevista con las tareas que la listaban («src/greeting.ts (ya en Archivos, prevista para T2)»), y `scope.decided` guarda `basis` y `plannedFor` en `audit.jsonl`.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- **Sin valor nuevo en la configuración (A1, confirmado):** `tests-and-generated` cubre también lo previsto en Archivos, así que los repositorios ya configurados lo reciben sin tocar `config.yaml`; `formats.md` §6 lo aclara.
+- **Lo previsto sale de la spec aprobada**, no de los `files` de las tareas: cuenta un archivo de Archivos aunque ninguna tarea lo liste.
+- **`plannedFor` solo nombra otras tareas:** un archivo que ya estaba en la tarea activa no llega a pedirse.
+
+### Pendientes
+
+- **El aviso en la UI** de que una tarea toca un archivo previsto para otra, con `plannedFor` como dato: es trabajo de la sesión de la UI.

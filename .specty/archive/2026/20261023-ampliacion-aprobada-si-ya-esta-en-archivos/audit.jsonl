@@ -7,3 +7,6 @@
 {"ts":"2026-10-23T11:01:55.506Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"e5e414c108b65bdb09b32c12ff1ad85893f55c7a"}}
 {"ts":"2026-10-23T11:04:07.522Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":40023}}
 {"ts":"2026-10-23T11:04:07.562Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"scope add aprueba solo lo previsto en Archivos, anota la tarea que lo preveía y registra basis y plannedFor en scope.decided; formats.md §4 y §6 y ARCHITECTURE §8 al día"}}
+{"ts":"2026-10-23T14:32:40.069Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T14:33:25.282Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:6a8053a37daf29575d7dec0a45210be74450d6d22130a7b666c3c2eaec347724","size":"M","warnings":0}}
+{"ts":"2026-10-23T14:36:04.450Z","actor":"human","event":"change.closed","data":{}}
