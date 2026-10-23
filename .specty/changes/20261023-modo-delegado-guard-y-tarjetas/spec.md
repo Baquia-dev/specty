@@ -66,7 +66,7 @@ Primer paso del modo delegado que pidió el usuario: un interruptor con el que l
   - files: packages/core/src/guard/human.ts, packages/core/src/guard/decide.ts, packages/core/test/guard/decide.test.ts, docs/decisions/0010-modo-delegado.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
-- [ ] T2: Las tarjetas del agente con la delegación
+- [x] T2: Las tarjetas del agente con la delegación
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/flow.ts, packages/core/src/cards/next.ts, packages/core/src/cards/work.ts, packages/core/test/cards/delegated.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/delegated.test.ts

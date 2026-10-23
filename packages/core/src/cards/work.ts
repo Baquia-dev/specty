@@ -89,10 +89,16 @@ export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
     status: "ok",
     header: headerOf(change.id, "acceptance"),
     blocks: section(t("TAREAS HECHAS", "DONE TASKS"), done),
-    next: t(
-      `pide al usuario que revise el resultado y lo acepte con \`${ctx.command} accept\`. Si pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
-      `ask the user to review the result and accept it with \`${ctx.command} accept\`. If they ask for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
-    ),
+    next:
+      ctx.delegated === true
+        ? t(
+            `modo delegado: acepta tú el resultado con \`${ctx.command} accept\` y sigue su salida. Si el usuario pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
+            `delegated mode: accept the result yourself with \`${ctx.command} accept\` and follow its output. If the user asks for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
+          )
+        : t(
+            `pide al usuario que revise el resultado y lo acepte con \`${ctx.command} accept\`. Si pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
+            `ask the user to review the result and accept it with \`${ctx.command} accept\`. If they ask for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
+          ),
   };
 }
 
@@ -134,6 +140,22 @@ export function adjustingCard(change: ChangeView, ctx: CardContext): Output {
 
 export function closingCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
+  if (change.closingSubmitted && ctx.delegated === true) {
+    return {
+      status: "ok",
+      header: headerOf(change.id, "closing"),
+      blocks: section(undefined, [
+        t(
+          "Cierre enviado; en modo delegado lo confirmas tú.",
+          "Closing submitted; in delegated mode you confirm it.",
+        ),
+      ]),
+      next: t(
+        `modo delegado: confirma tú el cierre con \`${ctx.command} close\` y sigue su salida.`,
+        `delegated mode: confirm the closing yourself with \`${ctx.command} close\` and follow its output.`,
+      ),
+    };
+  }
   if (change.closingSubmitted) {
     return {
       status: "ok",

@@ -70,10 +70,16 @@ export function proposedCard(view: ProposedView, ctx: CardContext): Output {
         ...section(undefined, [t("Cierre válido.", "Valid closing.")]),
         ...section(t("AVISOS", "WARNINGS"), warnings),
       ],
-      next: t(
-        `pide al usuario que confirme el cierre con \`${ctx.command} close\` y termina tu turno.`,
-        `ask the user to confirm the closing with \`${ctx.command} close\` and end your turn.`,
-      ),
+      next:
+        ctx.delegated === true
+          ? t(
+              `modo delegado: confirma tú el cierre con \`${ctx.command} close\` y sigue su salida.`,
+              `delegated mode: confirm the closing yourself with \`${ctx.command} close\` and follow its output.`,
+            )
+          : t(
+              `pide al usuario que confirme el cierre con \`${ctx.command} close\` y termina tu turno.`,
+              `ask the user to confirm the closing with \`${ctx.command} close\` and end your turn.`,
+            ),
     };
   }
   return {
@@ -93,10 +99,16 @@ export function proposedCard(view: ProposedView, ctx: CardContext): Output {
       ),
       ...section(t("AVISOS", "WARNINGS"), warnings),
     ],
-    next: t(
-      `dile al usuario que la spec está lista en ${view.specPath}, con su tamaño y el esfuerzo recomendado, y que la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
-      `tell the user the spec is ready at ${view.specPath}, with its size and recommended effort, and that they approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
-    ),
+    next:
+      ctx.delegated === true
+        ? t(
+            `modo delegado: aprueba tú la spec con \`${ctx.command} approve\` y sigue su salida.`,
+            `delegated mode: approve the spec yourself with \`${ctx.command} approve\` and follow its output.`,
+          )
+        : t(
+            `dile al usuario que la spec está lista en ${view.specPath}, con su tamaño y el esfuerzo recomendado, y que la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
+            `tell the user the spec is ready at ${view.specPath}, with its size and recommended effort, and that they approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
+          ),
   };
 }
 
@@ -186,10 +198,16 @@ export function scopeRequestedCard(
     status: "ok",
     header,
     blocks: section(t(`SOLICITUD ${request}`, `REQUEST ${request}`), paths),
-    next: t(
-      `sigue con lo que está dentro del alcance y pide al usuario que apruebe la solicitud con \`${ctx.command} approve --scope ${request}\`.`,
-      `keep working within the scope and ask the user to approve the request with \`${ctx.command} approve --scope ${request}\`.`,
-    ),
+    next:
+      ctx.delegated === true
+        ? t(
+            `modo delegado: aprueba tú la solicitud con \`${ctx.command} approve --scope ${request}\` y sigue con la tarea.`,
+            `delegated mode: approve the request yourself with \`${ctx.command} approve --scope ${request}\` and continue with the task.`,
+          )
+        : t(
+            `sigue con lo que está dentro del alcance y pide al usuario que apruebe la solicitud con \`${ctx.command} approve --scope ${request}\`.`,
+            `keep working within the scope and ask the user to approve the request with \`${ctx.command} approve --scope ${request}\`.`,
+          ),
   };
 }
 

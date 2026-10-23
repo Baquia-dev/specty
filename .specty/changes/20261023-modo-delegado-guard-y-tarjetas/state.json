@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b05219102fbabce1dd2d10b4f7b88769349b69c4",
+      "attempts": 1,
       "startedAt": "2026-10-23T18:39:13.888Z",
       "doneAt": "2026-10-23T18:41:16.783Z",
-      "summary": "El guard deja al agente ejecutar approve, accept, close, cancel y reject si la persona delegó (delegated en GuardContext), y bloquea siempre delegate. Las acciones de la persona pasan a guard/human.ts (humanDenial); ADR 0010 y ARCHITECTURE §4 y §10."
+      "summary": "El guard deja al agente ejecutar approve, accept, close, cancel y reject si la persona delegó (delegated en GuardContext), y bloquea siempre delegate. Las acciones de la persona pasan a guard/human.ts (humanDenial); ADR 0010 y ARCHITECTURE §4 y §10.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c5a2c19ba3c63624c0a9bc890fe93e6811d230f9",
+      "startedAt": "2026-10-23T18:41:17.057Z",
+      "doneAt": "2026-10-23T18:42:59.601Z",
+      "summary": "Con delegated en CardContext, el SIGUIENTE de la spec propuesta, la revisión, la solicitud de alcance, la aceptación y el cierre propuesto o enviado le dice al agente que ejecute él approve, approve --scope, accept o close; sin delegación los textos no cambian. Tests en test/cards/delegated.test.ts."
     }
   },
   "pending": {

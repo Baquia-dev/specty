@@ -126,6 +126,22 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
       ),
     };
   }
+  if (ctx.delegated === true) {
+    return {
+      status: "ok",
+      header,
+      blocks: section(undefined, [
+        t(
+          "Modo delegado: la revisión te toca a ti. No modifiques código.",
+          "Delegated mode: the review is yours. Do not modify code.",
+        ),
+      ]),
+      next: t(
+        `modo delegado: aprueba tú la spec con \`${ctx.command} approve\` y sigue su salida.`,
+        `delegated mode: approve the spec yourself with \`${ctx.command} approve\` and follow its output.`,
+      ),
+    };
+  }
   return {
     status: "ok",
     header,

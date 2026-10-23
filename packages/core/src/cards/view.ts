@@ -13,6 +13,8 @@ export interface CardContext {
   readonly tool?: AgentTool;
   readonly quickMaxFiles: number;
   readonly implicitTests: boolean;
+  /** The person delegated their decisions to the agent (ADR 0010): the agent runs them itself. */
+  readonly delegated?: boolean;
 }
 
 export interface CriterionView {
