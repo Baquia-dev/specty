@@ -72,3 +72,26 @@ kind: standard
 
 - R1: Un commit directo en `main` sin spec — solo lleva archivos que escribe Specty y que antes no tenían cambios, con un trailer propio, y si hay un cambio activo no se hace.
 - R2: Los tests que ejecutan `init` y luego trabajan contaban con esos archivos sin commit — se revisan al correr la suite; con el commit, la carpeta queda limpia como esperan los flujos de cambio.
+
+## Cierre
+
+### Resumen
+
+`specty init` hace el commit de los archivos que escribe y que git sigue, para que la carpeta principal quede limpia y ningún cierre se bloquee por ellos. Entran `.specty/config.yaml`, `AGENTS.md`, `CLAUDE.md`, la configuración no local del guard de Claude Code y de Cursor, y los hooks de husky o lefthook. El mensaje es `chore(specty): instalar Specty` la primera vez y `chore(specty): actualizar la instalación de Specty` después, con `Specty-Init: true`. Lleva un recibo nuevo de tipo `init`, así el hook `pre-commit` lo deja pasar, y `prepare-commit-msg` no le añade `Specty-Change`. Si no cambió nada, no hay commit. Los archivos que ya tenían cambios de la persona quedan fuera (la salida los nombra), lo que tenga preparado sigue preparado, y con un cambio activo en la carpeta no hay commit. Las pruebas pasan por los hooks de git que el propio `init` instala.
+
+### Desviaciones
+
+- **`RECEIPT_KINDS` es ahora la única lista de tipos de recibo:** de ella salen el tipo, la lectura de los recibos y la de la marca. Había dos listas fijas, y la de lectura descartaba los recibos `init`. No estaba en el Diseño; salió al probar T1.
+- **La configuración del guard entra solo si no es local:** `init` usa el archivo y la marca `local` que ya devuelve cada instalador, en vez de rutas fijas, para no tocar `install/agents.ts`. Cuando la invocación no es portable, la configuración va a `settings.local.json` y ese archivo nunca entra.
+
+### Decisiones
+
+- **El estado previo se toma antes de escribir nada,** con `changedSince(HEAD)`. Un archivo sin seguimiento que ya existía también cuenta como cambio de la persona.
+- **El recibo de `init` no nombra ningún cambio** (`change` vacío), y su marca hace que `prepare-commit-msg` no toque el mensaje.
+- **A1 y A2, confirmados al aprobar:** el commit va a la rama de la carpeta, sin spec, y solo con los archivos de Specty que no tenían cambios.
+
+### Pendientes
+
+- **Recompilar el CLI de la carpeta principal** cuando esto esté en `main`.
+- **El formato del JSON que escribe `init`:** este repo excluye esos archivos de Biome, pero en otros repos un formateador puede rechazarlos. Falta que `init` escriba como los formateadores comunes, o que `doctor` avise.
+- **Una sesión de agente, una worktree:** anotado para proponerlo aparte.

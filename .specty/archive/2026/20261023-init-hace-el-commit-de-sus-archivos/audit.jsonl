@@ -10,3 +10,6 @@
 {"ts":"2026-10-23T20:57:51.866Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"abe48f45e6416531a0635bcac9d4a3ae44697fd8"}}
 {"ts":"2026-10-23T20:59:51.495Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":46717}}
 {"ts":"2026-10-23T20:59:51.498Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §9: el commit de init entre los commits que hace Specty (qué entra, qué queda fuera y que no se hace con un cambio activo); formats.md §7: el trailer Specty-Init"}}
+{"ts":"2026-10-23T21:01:44.879Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T21:02:05.764Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:eca7b9440c5fb0929699a908342e4d57721e96425aeeea1291908deb361100ec","size":"M","warnings":0}}
+{"ts":"2026-10-23T21:02:27.945Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

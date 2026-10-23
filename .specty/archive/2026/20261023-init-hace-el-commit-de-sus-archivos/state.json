@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-init-hace-el-commit-de-sus-archivos",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-init-hace-el-commit-de-sus-archivos",
   "baseCommit": "475bce1518564e8068f3e3ab6940bb0e73ff3119",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:0d178b432002fc899a225be304eab0961be6ff37397ec5329674fa40d8076089",
@@ -60,12 +60,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "abe48f45e6416531a0635bcac9d4a3ae44697fd8",
+      "attempts": 1,
       "startedAt": "2026-10-23T20:57:51.865Z",
       "doneAt": "2026-10-23T20:59:51.497Z",
-      "summary": "ARCHITECTURE §9: el commit de init entre los commits que hace Specty (qué entra, qué queda fuera y que no se hace con un cambio activo); formats.md §7: el trailer Specty-Init"
+      "summary": "ARCHITECTURE §9: el commit de init entre los commits que hace Specty (qué entra, qué queda fuera y que no se hace con un cambio activo); formats.md §7: el trailer Specty-Init",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T21:02:05.763Z"
 }
