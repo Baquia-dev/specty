@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261023-permisos-de-worktree-para-claude-code",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-permisos-de-worktree-para-claude-code",
   "baseCommit": "293637c04a9592fe47511fe9876aa611f066ca80",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6a6bbcb12ede6f671ed1bfb1cba0e7484d13ea073c2790c9c4fa98acf79b7a56",
+    "at": "2026-10-23T20:00:27.812Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8800d68b7a82815d671ef360105a719b7475bbd3",
+      "startedAt": "2026-10-23T20:00:37.035Z",
+      "doneAt": "2026-10-23T20:02:12.438Z",
+      "summary": "init añade a la configuración de Claude Code donde instala el guard los permisos EnterWorktree y ExitWorktree (allow) y ExitWorktree(action:remove) (ask), después de las reglas que ya hubiera y sin duplicar al repetir init. ARCHITECTURE §10 lo documenta."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6a6bbcb12ede6f671ed1bfb1cba0e7484d13ea073c2790c9c4fa98acf79b7a56",
-    "at": "2026-10-23T20:00:27.812Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

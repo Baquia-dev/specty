@@ -16,6 +16,6 @@ Cada cambio vive en su worktree, y en Claude Code el agente entra en ella con `E
 
 ## Tareas
 
-- [ ] T1: Permisos de worktree en la instalación de Claude Code
+- [x] T1: Permisos de worktree en la instalación de Claude Code
   - files: packages/cli/src/install/agents.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
