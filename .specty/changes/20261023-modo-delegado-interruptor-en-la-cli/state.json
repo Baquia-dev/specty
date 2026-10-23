@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261023-modo-delegado-interruptor-en-la-cli",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-modo-delegado-interruptor-en-la-cli",
+  "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
+  "revision": 3,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a45a20064954b73959b05685d02c4a06dc968a34a12dcaef55710d347318f4fd",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:4a7622d534ec8c94f51442576fce03e9f1196d454a9cfe741ad36982a8988c8f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:5d529668f9f00b88bacf3e5e9a15b46b65f1c21de98b00bffec4d86d8b863db9",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cab154caf38e5032bc5be85dbe7e95aba57a304ebbdb591311df3045af9c7d68",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c746e195bf460a782208cbbb6fa64fd959d005f0ae8bdec1709682b5e4278368",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:b1616b5910b82c992e3c0699117600ebf4af07622a34b78c1a63fd53bdaae54b",
+    "at": "2026-10-23T19:25:25.950Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
