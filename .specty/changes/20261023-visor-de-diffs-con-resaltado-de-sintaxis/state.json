@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "20261023-visor-de-diffs-con-resaltado-de-sintaxis",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-visor-de-diffs-con-resaltado-de-sintaxis",
+  "baseCommit": "014031ed20161460edbb7321b75ce3670cc7660e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c61d85c651a6c5e1b832b6c6a4f1bbdaa94b25fd8fb0e8dd6a9307ac92c9ba62",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:31e13acbc82c99c196a9958f0b174384ab4479dd68d935cdc8d0e15d52cde790",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f7f5b3caad8291c567d955757428fec825767d571b0ce1e8a281f0ed5a1ea2b3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:72e84e8f873c4a94d9f3baf8116bef75a75f54d71e135af5e830c96913e66d2a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:5075dbde15ce236f3f0c2048319eb56bff441e612db7723492268b0b4bc4d6ad",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:08129e62a17fbb0dffa09c9340e35baf785566eeab424cab865159ed34696029",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:ae611ef28edd63d0d44eede3b6a54091b607b9c49c4a7825f32e9ce4e5a402ea",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 6,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d5586bf7a94b47655242ecc8a4e9d852b9045cd9b4cfe32ad0a67471620a37c4",
+    "at": "2026-10-23T07:33:24.746Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

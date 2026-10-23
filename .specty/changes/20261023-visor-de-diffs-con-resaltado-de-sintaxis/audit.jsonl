@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T07:29:57.462Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-visor-de-diffs-con-resaltado-de-sintaxis"}}
+{"ts":"2026-10-23T07:31:27.489Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:d5586bf7a94b47655242ecc8a4e9d852b9045cd9b4cfe32ad0a67471620a37c4","size":"M","warnings":1}}
+{"ts":"2026-10-23T07:33:24.767Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:d5586bf7a94b47655242ecc8a4e9d852b9045cd9b4cfe32ad0a67471620a37c4","channel":"tty"}}
