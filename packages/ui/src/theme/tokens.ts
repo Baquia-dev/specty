@@ -70,6 +70,21 @@ const DIFF_COLORS: readonly Token[] = [
   ),
 ];
 
+/** The colors of highlighted code; plain text and punctuation keep `--color-text`. */
+const CODE_KINDS = ["keyword", "string", "comment", "function", "constant"] as const;
+
+const CODE_LABELS: Readonly<Record<(typeof CODE_KINDS)[number], Readonly<Record<Lang, string>>>> = {
+  keyword: { es: "Código: palabras clave", en: "Code: keywords" },
+  string: { es: "Código: cadenas", en: "Code: strings" },
+  comment: { es: "Código: comentarios, en cursiva", en: "Code: comments, in italics" },
+  function: { es: "Código: funciones y tipos", en: "Code: functions and types" },
+  constant: { es: "Código: constantes y números", en: "Code: constants and numbers" },
+};
+
+const CODE_COLORS: readonly Token[] = CODE_KINDS.map((kind) =>
+  token(`--color-code-${kind}`, "color", CODE_LABELS[kind].es, CODE_LABELS[kind].en),
+);
+
 const PHASE_COLORS: readonly Token[] = PHASES.flatMap((phase) => [
   token(
     `--color-phase-${phase}`,
@@ -129,6 +144,7 @@ const FOUNDATIONS: readonly Token[] = [
 export const TOKENS: readonly Token[] = [
   ...COLORS,
   ...DIFF_COLORS,
+  ...CODE_COLORS,
   ...PHASE_COLORS,
   ...TYPOGRAPHY,
   ...FOUNDATIONS,
@@ -169,6 +185,18 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
       (bg) => ({ fg: `--color-diff-${side}-text`, bg, min: 4.5 }) as const,
     ),
   ]),
+  // Highlighted code sits on the surface, on the changed lines and on the changed words.
+  ...CODE_KINDS.flatMap((kind) =>
+    (
+      [
+        "--color-surface",
+        "--color-diff-added",
+        "--color-diff-added-word",
+        "--color-diff-removed",
+        "--color-diff-removed-word",
+      ] as const
+    ).map((bg) => ({ fg: `--color-code-${kind}`, bg, min: 4.5 }) as const),
+  ),
 ];
 
 /** WCAG contrast ratio between two `#rrggbb` colors. */

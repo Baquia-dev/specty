@@ -6,6 +6,13 @@
   "branch": "specty/20261023-resaltado-de-sintaxis",
   "baseCommit": "f9e15e340e7d2781b0f035d7cc31cd930de172d3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d90758449de9599de9c3f3f3c6db0c96c6f28ab9f222af53556f34fd979d1d4e",
+    "at": "2026-10-23T08:37:55.437Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -46,7 +53,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "93dc63b750e41a1ed2475b6b16d09f72966807af",
+      "startedAt": "2026-10-23T08:38:04.307Z",
+      "doneAt": "2026-10-23T08:39:37.494Z",
+      "summary": "Cinco colores de código en styles.css (claro y oscuro): palabras clave (violeta), cadenas (ámbar), comentarios (gris), funciones y tipos (azul) y constantes (verde azulado, para no confundirse con el verde de lo añadido). En el inventario con pares de contraste ≥4,5 sobre la superficie y los cuatro fondos del diff. En oscuro, las palabras cambiadas pasan del 30 % al 22 % de tinte (#3f4c45 y #514442), y palabra clave, comentario y función se aclaran un poco (#c2b1e6, #bababa, #a2bbe7): así todos cumplen y las palabras siguen distinguiéndose de su línea (1,3:1)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -56,12 +73,5 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d90758449de9599de9c3f3f3c6db0c96c6f28ab9f222af53556f34fd979d1d4e",
-    "at": "2026-10-23T08:37:55.437Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

@@ -58,7 +58,7 @@ El visor de diffs colorea el código con Shiki, con los colores del sistema de d
 
 ## Tareas
 
-- [ ] T1: Los colores del código
+- [x] T1: Los colores del código
   - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme/tokens.test.ts

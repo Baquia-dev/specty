@@ -44,6 +44,13 @@
   --color-diff-removed-word: #e9d4d4;
   --color-diff-removed-text: #9b3b3b;
 
+  /* Code, through Shiki's CSS-variables theme: the phase hues, legible on every diff background. */
+  --color-code-keyword: #6d28d9;
+  --color-code-string: #92400e;
+  --color-code-comment: #52525b;
+  --color-code-function: #1d4ed8;
+  --color-code-constant: #115e59;
+
   --font-*: initial;
   --font-sans: "Geist Variable", system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
@@ -126,12 +133,19 @@
   --color-phase-cancelled: #dfa29a;
   --color-phase-cancelled-bg: #3d2f2c;
 
+  /* The changed words, softer than in light, so the code colors keep their contrast on them. */
   --color-diff-added: #333936;
-  --color-diff-added-word: #48594f;
+  --color-diff-added-word: #3f4c45;
   --color-diff-added-text: #8fcaa8;
   --color-diff-removed: #3b3534;
-  --color-diff-removed-word: #604d4b;
+  --color-diff-removed-word: #514442;
   --color-diff-removed-text: #dfa29a;
+
+  --color-code-keyword: #c2b1e6;
+  --color-code-string: #e2c07d;
+  --color-code-comment: #bababa;
+  --color-code-function: #a2bbe7;
+  --color-code-constant: #86c9c0;
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.35);
