@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261023-el-agente-resuelve-la-incorporacion",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-el-agente-resuelve-la-incorporacion",
+  "baseCommit": "9e08ae019b342fe4b96f2b41e6434921d8c42d5c",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4f4e954af29450bc87625d39de25c6ac06ef68a361d798da95f186da09d10c39",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1db571a6f8bc53cc3bca3488b8ba3f585761144e99638b269aa298601bf4576d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2e64ee9952540d6c3d171f7331ef703010bd5465a5e5ec702473e8fddeb421ad",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:53d3cf30c716d020cc865f27ae4cd1481967a0e29229bb65df309ce86c420e5f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:915245a9f0ebd7d5d55a1e0d3023392117533f53b9035cd89897f08f3f8a5a1c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 8,
+    "T": 5,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2b7f27bf117bfca7fd8e8634c0453fc33a0727c7a670f3f23ffa9c564975ce93",
+    "at": "2026-10-23T16:32:21.526Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
