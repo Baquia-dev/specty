@@ -57,7 +57,7 @@ La UI puede pedir a su fuente de datos el diff de una tarea o del cambio complet
   - files: packages/ui/src/data/diff.ts, packages/ui/src/data/diff.test.ts, packages/ui/src/data/word-diff.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/diff.test.ts --include src/data/word-diff.test.ts
-- [ ] T2: Los diffs en la fuente de datos
+- [x] T2: Los diffs en la fuente de datos
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/progress.ts, packages/ui/src/data/sample-diffs.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/diff.test.ts
   - ac: AC1, AC5
   - verify: pnpm check

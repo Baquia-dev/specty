@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-datos-de-los-diffs",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-datos-de-los-diffs",
   "baseCommit": "138a52bf455f8f9eae81a675923af3135a716d74",
   "revision": 1,
@@ -50,12 +50,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "36fedaff471087910c23cc07b43a544471e791aa",
+      "attempts": 1,
       "startedAt": "2026-10-23T07:01:49.122Z",
       "doneAt": "2026-10-23T07:04:51.196Z",
-      "summary": "data/diff.ts: parseDiff lee la salida de git diff en archivos (ruta, ruta anterior si se renombró, estado nuevo/borrado/modificado/renombrado, binario, añadidas y quitadas) con sus bloques (rangos, la sección tras @@ y cada línea con su número en cada lado); ignora lo que no entiende, «\\ No newline…» y los CRLF, y acepta rutas entre comillas. En cada tanda de quitadas seguida de añadidas, empareja en orden y marca como rangos las palabras que cambiaron, solo si se conserva al menos el 40 % de la línea. splitRows empareja para el modo lado a lado (contexto en los dos lados, lo que sobra con un lado vacío). word-diff.ts: wordDiff acepta cómo trocear y codeTokens corta en cualquier signo; la revisión del delta sigue igual. Tests en diff.test.ts y word-diff.test.ts."
+      "summary": "data/diff.ts: parseDiff lee la salida de git diff en archivos (ruta, ruta anterior si se renombró, estado nuevo/borrado/modificado/renombrado, binario, añadidas y quitadas) con sus bloques (rangos, la sección tras @@ y cada línea con su número en cada lado); ignora lo que no entiende, «\\ No newline…» y los CRLF, y acepta rutas entre comillas. En cada tanda de quitadas seguida de añadidas, empareja en orden y marca como rangos las palabras que cambiaron, solo si se conserva al menos el 40 % de la línea. splitRows empareja para el modo lado a lado (contexto en los dos lados, lo que sobra con un lado vacío). word-diff.ts: wordDiff acepta cómo trocear y codeTokens corta en cualquier signo; la revisión del delta sigue igual. Tests en diff.test.ts y word-diff.test.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f376855fb398bb23c6dcf3360d96864d2638a67a",
+      "startedAt": "2026-10-23T07:04:51.474Z",
+      "doneAt": "2026-10-23T07:08:42.159Z",
+      "summary": "records.ts: SpectyData.diff(change, task?) devuelve el diff como lo escribe git (de una tarea o, sin ella, del cambio completo); por defecto rechaza con «Esta fuente no da diffs.» (296 líneas). progress.ts: TaskProgressView.baseCommit, para el rango de cada tarea. sample-diffs.ts: los diffs de «Panel de asistencia por curso» (T1 modifica el repositorio y su test; T2 añade el panel y su test), escritos con un constructor que cuenta las líneas de cada bloque; el del cambio completo es la suma. fixtures.ts: diff en la fuente de ejemplo (vacío para los demás cambios, error si el cambio no existe). Tests en diff.test.ts: los diffs por tarea y completos leídos con parseDiff, la palabra cambiada en la consulta, los casos sin diff y los commits de cada tarea."
     }
   },
   "pending": {

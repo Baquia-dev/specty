@@ -12,6 +12,7 @@ import {
   SpectyData,
 } from "./records";
 import { decideResultIn } from "./sample-acceptance";
+import { sampleDiff } from "./sample-diffs";
 import { decideScopeIn } from "./sample-progress";
 import { HASH, REVIEWER, sampleRecords } from "./sample-records";
 import {
@@ -104,6 +105,19 @@ export class FixtureData extends SpectyData {
 
   override watchRun(change: string, listener: (run: RunRecord | undefined) => void): () => void {
     return this.runs.watch(change, listener);
+  }
+
+  /** The sample's diffs: those of «Panel de asistencia por curso»; the other changes show none. */
+  override diff(change: string, task?: string): Promise<string> {
+    if (!this.records.some((record) => record.state.id === change)) {
+      return Promise.reject(
+        new ActionError({
+          es: `No existe el cambio ${change}.`,
+          en: `There is no change ${change}.`,
+        }),
+      );
+    }
+    return Promise.resolve(sampleDiff(change, task));
   }
 
   /** The full verification of a change in acceptance, line by line; one run at a time. */

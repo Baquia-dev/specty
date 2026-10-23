@@ -1,5 +1,29 @@
 // SPDX-License-Identifier: Apache-2.0
+import { Injectable } from "@angular/core";
+import { TestBed } from "@angular/core/testing";
 import { type DiffLine, parseDiff, splitRows } from "./diff";
+import { FixtureData, sampleRecords } from "./fixtures";
+import { ActionError, type ChangeRecord, SpectyData } from "./records";
+import { deriveViews } from "./views";
+
+const ASISTENCIA = "20261018-asistencia-curso";
+
+/** A source with nothing of its own: it gives no diffs. */
+@Injectable()
+class Bare extends SpectyData {
+  changes(): Promise<readonly ChangeRecord[]> {
+    return Promise.resolve([]);
+  }
+  subscribe(): () => void {
+    return () => undefined;
+  }
+}
+
+function source(): FixtureData {
+  TestBed.resetTestingModule();
+  TestBed.configureTestingModule({ providers: [FixtureData] });
+  return TestBed.inject(FixtureData);
+}
 
 const MODIFIED = [
   "diff --git a/lib/attendance/attendance_repository.dart b/lib/attendance/attendance_repository.dart",
@@ -186,5 +210,59 @@ describe("splitRows", () => {
         },
       ).map((row) => row.right),
     ).toEqual([undefined, undefined]);
+  });
+});
+
+describe("the diffs in the source", () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it("gives each task's diff and the whole change's, as git writes them (AC1)", async () => {
+    const fixtures = source();
+    const files = async (task?: string) =>
+      parseDiff(await fixtures.diff(ASISTENCIA, task)).map((file) => [
+        file.path,
+        file.status,
+        file.additions,
+        file.deletions,
+      ]);
+    expect(await files("T1")).toEqual([
+      ["lib/attendance/attendance_repository.dart", "modified", 24, 1],
+      ["test/attendance/attendance_repository_test.dart", "modified", 11, 1],
+    ]);
+    expect(await files("T2")).toEqual([
+      ["lib/attendance/course_panel.dart", "added", 44, 0],
+      ["test/attendance/course_panel_test.dart", "added", 19, 0],
+    ]);
+    expect((await files()).map(([path]) => path)).toEqual([
+      "lib/attendance/attendance_repository.dart",
+      "test/attendance/attendance_repository_test.dart",
+      "lib/attendance/course_panel.dart",
+      "test/attendance/course_panel_test.dart",
+    ]);
+    // The new argument of the query is the only thing marked in its line.
+    const [repository] = parseDiff(await fixtures.diff(ASISTENCIA, "T1"));
+    const added = repository?.hunks[1]?.lines.find((line) => line.kind === "added");
+    expect(
+      (added?.changed ?? []).map((range) => added?.text.slice(range.start, range.end)),
+    ).toEqual([", orderBy: 'date'"]);
+  });
+
+  it("has nothing for a change without sample diffs, and explains what it cannot give (AC1)", async () => {
+    const fixtures = source();
+    expect(await fixtures.diff("20261019-boletines-pdf", "T1")).toBe("");
+    await expect(fixtures.diff("20990101-no-existe")).rejects.toBeInstanceOf(ActionError);
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({ providers: [Bare] });
+    await expect(TestBed.inject(Bare).diff(ASISTENCIA)).rejects.toMatchObject({
+      text: { es: "Esta fuente no da diffs." },
+    });
+  });
+
+  it("knows the commits each task went from and to (AC5)", () => {
+    const view = deriveViews(sampleRecords(Date.now())).find((item) => item.id === ASISTENCIA);
+    expect(view?.progress.tasks.map((task) => [task.id, task.baseCommit, task.commit])).toEqual([
+      ["T1", "5d2a7b0", "3c9d1e2"],
+      ["T2", "3c9d1e2", "8b0a4f6"],
+    ]);
   });
 });

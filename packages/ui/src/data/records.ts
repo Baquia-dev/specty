@@ -120,6 +120,13 @@ export abstract class SpectyData {
   verifyChange(_change: string): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
   }
+
+  /** The diff, as `git diff` writes it, of a task or, with none, of the whole change. */
+  diff(_change: string, _task?: string): Promise<string> {
+    return Promise.reject(
+      new ActionError({ es: "Esta fuente no da diffs.", en: "This source gives no diffs." }),
+    );
+  }
 }
 
 export type ReviewSection =

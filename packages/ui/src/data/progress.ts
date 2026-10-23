@@ -50,6 +50,8 @@ export interface TaskProgressView {
   readonly title: string;
   readonly status: TaskStatus;
   readonly summary?: string;
+  /** The commit it started from; with `commit`, the range of its diff. */
+  readonly baseCommit?: string;
   readonly commit?: string;
   readonly files: readonly string[];
   readonly criteria: readonly string[];
@@ -119,6 +121,7 @@ export function progressOf(
       title: task.title,
       status: stored?.status ?? (task.done ? "done" : "pending"),
       ...(stored?.summary === undefined ? {} : { summary: stored.summary }),
+      ...(stored?.baseCommit === undefined ? {} : { baseCommit: stored.baseCommit }),
       ...(stored?.commit === undefined ? {} : { commit: stored.commit }),
       files: task.files,
       criteria: task.ac === undefined || task.ac === "none" ? [] : task.ac,
