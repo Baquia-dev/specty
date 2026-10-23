@@ -53,3 +53,24 @@ El sistema de diseño gana un selector segmentado: unas pocas opciones a la vist
   - ac: AC5
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro: el aspecto, elegir con el ratón y con las flechas, el foco visible y que las opciones pasen de línea en el teléfono.
+
+## Cierre
+
+### Resumen
+
+El sistema de diseño tiene `sp-segmented`, un selector segmentado para elegir una entre pocas opciones cortas, todas a la vista. Son radios nativos con estilo de segmentos: Tab entra en la opción elegida, las flechas mueven y eligen, el grupo se anuncia por su etiqueta, el foco se dibuja sobre la opción y las opciones pasan de línea si no caben. Su API es la del select (`label`, `hideLabel`, `options`, `value`). Está en «Componentes» del catálogo con dos ejemplos que funcionan.
+
+### Desviaciones
+
+- **Medida:** la caja mide 38 px y no 36, porque las opciones de 32 px más el relleno y el borde no caben en 36 (A2 pedía las dos cosas). Igualarla al select, con opciones de 30 px, habría tocado un archivo de T1 ya cerrada; se dejó así y se avisó al aceptar.
+
+### Decisiones
+
+- **Radios nativos y no Angular Aria:** Aria no tiene un grupo de radios, y el navegador ya da el teclado, el foco y la semántica de un grupo de radios.
+- **El foco en la opción:** el radio está oculto a la vista, así que la opción dibuja el anillo con `has-focus-visible`, hacia dentro, como el resto de la UI.
+- **Un `name` por instancia:** dos selectores en la misma página nunca comparten su elección.
+
+### Pendientes
+
+- **Igualar la altura al select** (opciones de 30 px), si se quiere.
+- **Usarlo en el visor de diffs** («Unificado | Lado a lado» y «Todo el cambio · T1 · T2»), en su cambio.
