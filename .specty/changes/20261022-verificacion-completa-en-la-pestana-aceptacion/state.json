@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261022-verificacion-completa-en-la-pestana-aceptacion",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261022-verificacion-completa-en-la-pestana-aceptacion",
   "baseCommit": "f274d2de0214cfe412f0d30ce7bbb84ce55cd683",
   "revision": 2,
@@ -80,6 +80,15 @@
       "doneAt": "2026-10-23T02:29:21.910Z",
       "summary": "acceptance/full-verification.ts: sp-full-verification, encima de «Criterios» solo si el proyecto tiene verify.full. Muestra el comando en el divisor (en el móvil, debajo), «Sin ejecutar» o el último resultado («Correcta · 3 s · este minuto» / «Falló · …» con «Ver salida», abierta al fallar) y, en aceptación, «Ejecutar» o «Ejecutar de nuevo», que llama a verifyChange (un fallo de la fuente sale en un aviso). Se suscribe a watchRun y, mientras corre una ejecución sin tarea, muestra el bloque en vivo de Progreso. live-output.ts: la tarea es opcional; sin ella, la etiqueta y los anuncios hablan de la verificación completa («Verificando todo el cambio…»). acceptance-tab.ts pone la sección; su test busca ahora el divisor de los criterios. docs/ui.md: la verificación completa en Aceptación. 4 tests. Comprobado a 390 y 1280 px, en claro y oscuro: idle, en vivo, ocultar y mostrar, correcta, fallida con el interruptor de la paleta, y el resultado al volver desde la Bandeja.",
       "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c3f9eec8373a766eb8933126b2fc4237c4825330",
+      "startedAt": "2026-10-23T02:47:31.288Z",
+      "doneAt": "2026-10-23T02:50:07.947Z",
+      "summary": "live-output.ts: el panel de la salida en vivo tiene altura fija (h-72, 288 px) desde la primera línea en vez de crecer hasta su máximo, se desplaza por dentro cuando las líneas no caben (overflow-y-auto) y no arrastra la página al llegar a sus extremos (overscroll-contain). Es el mismo bloque en Progreso. live-output.test.ts lo comprueba por sus clases. docs/ui.md lo describe. Medido en el navegador a 390 y 1280 px: 288 px constantes mientras llegan las líneas, en la verificación completa y en la tarea en curso."
     }
   },
   "pending": {

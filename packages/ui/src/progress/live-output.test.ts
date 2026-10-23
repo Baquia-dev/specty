@@ -75,6 +75,11 @@ describe("Live output", () => {
     expect(
       [...(log()?.querySelectorAll("[data-tone=pass]") ?? [])].map((part) => part.textContent),
     ).toEqual(["+0", "+1"]);
+    // A fixed height from the first line, scrolling inside (the layout itself is checked in a browser).
+    expect(log()?.className.split(" ")).toEqual(
+      expect.arrayContaining(["h-72", "overflow-y-auto", "overscroll-contain"]),
+    );
+    expect(log()?.className).not.toContain("max-h-");
     vi.advanceTimersByTime(42_000);
     await settle();
     expect(text(element.querySelector("[data-clock]"))).toBe("0:42");

@@ -79,7 +79,7 @@ Antes de aceptar, la persona puede ejecutar la verificación completa del proyec
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro: ejecutar la verificación completa de «Panel de asistencia por curso», ver llegar las líneas, ocultar y mostrar, el resultado al terminar y tras recargar, y el caso fallido con el interruptor de la paleta.
-- [ ] T4: El panel en vivo con altura fija
+- [x] T4: El panel en vivo con altura fija
   - files: packages/ui/src/progress/live-output.ts, docs/ui.md
   - ac: AC2
   - verify: pnpm check

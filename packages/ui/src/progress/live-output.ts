@@ -100,8 +100,12 @@ const END_PX = 8;
         </div>
         @if (shown()) {
           <div class="relative">
-            <!-- Inside <pre> every space of the template shows: the lines go on one template line. -->
-            <pre #log tabindex="0" class="m-0 max-h-72 overflow-y-auto rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" [attr.aria-label]="t()(said().log.es, said().log.en)" (scroll)="onScroll()" data-log>@if (hidden() > 0) {<span class="block text-text-muted" data-hidden>{{ t()('… ' + hidden() + ' líneas antes', '… ' + hidden() + ' earlier lines') }}</span>}@for (line of lines(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
+            <!--
+              The same height from the first line, so the page does not move as lines arrive; they
+              scroll inside, and at its ends the scroll stays in the box.
+              Inside <pre> every space of the template shows: the lines go on one template line.
+            -->
+            <pre #log tabindex="0" class="m-0 h-72 overflow-y-auto overscroll-contain rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" [attr.aria-label]="t()(said().log.es, said().log.en)" (scroll)="onScroll()" data-log>@if (hidden() > 0) {<span class="block text-text-muted" data-hidden>{{ t()('… ' + hidden() + ' líneas antes', '… ' + hidden() + ' earlier lines') }}</span>}@for (line of lines(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
             @if (!following()) {
               <button type="button" class="absolute right-3 bottom-3 h-8 cursor-pointer rounded-lg border border-border bg-surface px-3 font-sans text-[13px] font-medium text-text shadow-sm" (click)="toEnd()" data-to-end>{{ t()('Ir al final', 'Go to the end') }}</button>
             }
