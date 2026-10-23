@@ -58,7 +58,7 @@ En la pestaña Aceptación, un cambio en cierre muestra lo que redactó el agent
   - files: packages/ui/src/acceptance/closing-view.ts, packages/ui/src/acceptance/closing-view.test.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/acceptance/acceptance-tab.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/closing-view.test.ts --include src/acceptance/acceptance-tab.test.ts
-- [ ] T2: Confirmar y archivar
+- [x] T2: Confirmar y archivar
   - files: packages/ui/src/acceptance/closing-actions.ts, packages/ui/src/acceptance/closing-actions.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/closing-actions.test.ts
