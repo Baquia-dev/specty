@@ -25,11 +25,13 @@ export interface VerificationView {
 }
 
 /**
- * A verification running now (`specty task done` checking a task), as the source streams it:
- * apart from the derived views, since it changes with every line.
+ * A verification running now (`specty task done` checking a task, or the full verification before
+ * accepting), as the source streams it: apart from the derived views, since it changes with every
+ * line.
  */
 export interface RunRecord {
-  readonly task: string;
+  /** The task it checks; none for the full verification (`verify.full`). */
+  readonly task?: string;
   readonly command: string;
   readonly startedAt: string;
   /** Every line so far, oldest first. */
@@ -59,20 +61,26 @@ export interface TaskProgressView {
   readonly scopeRequests: readonly TaskScopeRequest[];
 }
 
-export interface ProgressView {
-  readonly tasks: readonly TaskProgressView[];
+/** The project's full verification (`verify.full`): its command and its last run, if any. */
+export interface FullVerificationView {
+  readonly command: string;
+  readonly last?: VerificationView;
 }
 
-/** A `task.verified` event read with care: the audit is data from disk, not a promise. */
-function verificationOf(record: AuditRecord): (VerificationView & { task: string }) | undefined {
-  if (record.event !== "task.verified") return undefined;
-  const { task, cmd, exit, ms, outputTail } = record.data;
-  if (typeof task !== "string" || typeof cmd !== "string") return undefined;
+export interface ProgressView {
+  readonly tasks: readonly TaskProgressView[];
+  /** Only when the project has a full verification. */
+  readonly full?: FullVerificationView;
+}
+
+/** A verification event read with care: the audit is data from disk, not a promise. */
+function runOf(record: AuditRecord): VerificationView | undefined {
+  const { cmd, exit, ms, outputTail } = record.data;
+  if (typeof cmd !== "string") return undefined;
   const output = Array.isArray(outputTail)
     ? outputTail.filter((line): line is string => typeof line === "string")
     : [];
   return {
-    task,
     at: record.ts,
     command: cmd,
     passed: exit === 0,
@@ -81,13 +89,28 @@ function verificationOf(record: AuditRecord): (VerificationView & { task: string
   };
 }
 
-/** The spec's tasks in their order, with what Specty knows of each. */
+/** A `task.verified` event, with the task it checked. */
+function verificationOf(record: AuditRecord): (VerificationView & { task: string }) | undefined {
+  if (record.event !== "task.verified") return undefined;
+  const { task } = record.data;
+  const run = runOf(record);
+  return typeof task === "string" && run !== undefined ? { ...run, task } : undefined;
+}
+
+/**
+ * The spec's tasks in their order, with what Specty knows of each; and, when the project has a
+ * full verification (`verifyFull`), its last `change.verified`.
+ */
 export function progressOf(
   spec: Spec,
   state: ChangeState,
   audit: readonly AuditRecord[],
+  verifyFull?: string,
 ): ProgressView {
   const verifications = audit.flatMap((record) => verificationOf(record) ?? []);
+  const lastFull = audit
+    .flatMap((record) => (record.event === "change.verified" ? (runOf(record) ?? []) : []))
+    .at(-1);
   const tasks = (spec.sections.tasks?.items ?? []).map((task): TaskProgressView => {
     const stored = state.tasks[task.id];
     const last = verifications.filter((run) => run.task === task.id).at(-1);
@@ -118,7 +141,11 @@ export function progressOf(
         .map(({ id, paths, reason }) => ({ id, paths, reason })),
     };
   });
-  return { tasks };
+  if (verifyFull === undefined) return { tasks };
+  return {
+    tasks,
+    full: { command: verifyFull, ...(lastFull === undefined ? {} : { last: lastFull }) },
+  };
 }
 
 /** How long a task took, or has taken so far; nothing before it starts. */

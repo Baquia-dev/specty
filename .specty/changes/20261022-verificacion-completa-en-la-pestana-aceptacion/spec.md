@@ -66,7 +66,7 @@ Antes de aceptar, la persona puede ejecutar la verificación completa del proyec
 
 ## Tareas
 
-- [ ] T1: El registro de la verificación completa
+- [x] T1: El registro de la verificación completa
   - files: docs/formats.md, packages/ui/src/data/time.ts, packages/ui/src/data/records.ts, packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts
   - ac: AC1, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts

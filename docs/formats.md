@@ -212,6 +212,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona) |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
+| `change.verified` | la verificación completa (`verify.full`) antes de aceptar: comando, código de salida, duración, final de la salida si falló |
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | hash del índice, modo (`agent` o `minimal`) |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |
@@ -221,6 +222,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 {"ts":"2026-10-20T14:52:40Z","actor":"human","event":"assumption.decided","data":{"item":"A2","decision":"rejected","comment":"Por periodo debe agrupar por trimestres, no por los periodos configurados."}}
 {"ts":"2026-10-20T15:02:11Z","actor":"human","event":"spec.approved","data":{"revision":3,"hash":"sha256:4be1c2d…","channel":"ui"}}
 {"ts":"2026-10-20T15:20:09Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"flutter test test/features/home","exit":0,"ms":18422}}
+{"ts":"2026-10-20T16:05:31Z","actor":"specty","event":"change.verified","data":{"cmd":"flutter analyze && flutter test","exit":0,"ms":41870}}
 ```
 
 ## 5. `comments.json`

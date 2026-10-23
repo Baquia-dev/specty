@@ -12,6 +12,8 @@ import type {
 import type { ResultDecision } from "./acceptance";
 import type { AuditRecord, ProgressView, RunRecord } from "./progress";
 
+export { relativeTime } from "./time";
+
 /** What a data source gives for each change: the files as they are, and when its phase began. */
 export interface ChangeRecord {
   readonly spec: string;
@@ -24,6 +26,8 @@ export interface ChangeRecord {
   readonly approvedSpec?: string;
   /** `audit.jsonl` (formats.md §4), oldest first; none when absent. */
   readonly audit?: readonly AuditRecord[];
+  /** `verify.full` of `config.yaml` (formats.md §6): the project's full verification, if any. */
+  readonly verifyFull?: string;
 }
 
 /** Where a comment points: an item (`A1`) or a quote inside a section. */
@@ -109,6 +113,11 @@ export abstract class SpectyData {
 
   /** Accepts the result, or asks for adjustments with the person's literal request. */
   decideResult(_change: string, _decision: ResultDecision): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** Starts the full verification (`verify.full`); it streams through `watchRun`, with no task. */
+  verifyChange(_change: string): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 }
@@ -277,20 +286,4 @@ export interface DeriveRequest {
 export interface DeriveResponse {
   readonly id: number;
   readonly views: readonly ChangeView[];
-}
-
-const UNITS: readonly [Intl.RelativeTimeFormatUnit, number][] = [
-  ["day", 86_400_000],
-  ["hour", 3_600_000],
-  ["minute", 60_000],
-];
-
-/** "hace 12 min" / "12 min ago"; "ahora" under a minute. */
-export function relativeTime(iso: string, now: number, lang: Lang): string {
-  const elapsed = now - Date.parse(iso);
-  const format = new Intl.RelativeTimeFormat(lang, { numeric: "auto", style: "short" });
-  for (const [unit, size] of UNITS) {
-    if (Math.abs(elapsed) >= size) return format.format(-Math.round(elapsed / size), unit);
-  }
-  return format.format(0, "minute");
 }

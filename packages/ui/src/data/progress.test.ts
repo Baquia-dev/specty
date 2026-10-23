@@ -153,6 +153,43 @@ describe("progressOf", () => {
       "pending",
     ]);
   });
+
+  it("keeps the last full verification, only when the project has one (AC1, AC3, AC5)", () => {
+    const full = "flutter analyze && flutter test";
+    const changeVerified = (ts: string, data: Record<string, unknown>): AuditRecord => ({
+      ts,
+      actor: "specty",
+      event: "change.verified",
+      data,
+    });
+    const audit = [
+      ...AUDIT,
+      changeVerified("2026-10-22T11:00:00.000Z", {
+        cmd: full,
+        exit: 1,
+        ms: 9_000,
+        outputTail: ["00:09 +37 -1: Some tests failed."],
+      }),
+      changeVerified("2026-10-22T11:05:00.000Z", { cmd: full, exit: 0, ms: 41_000 }),
+      // Malformed lines are skipped, not trusted.
+      changeVerified("2026-10-22T11:06:00.000Z", { exit: 0 }),
+    ];
+    expect(progressOf(SPEC, STATE, audit, full).full).toEqual({
+      command: full,
+      last: { at: "2026-10-22T11:05:00.000Z", command: full, passed: true, ms: 41_000, output: [] },
+    });
+    expect(progressOf(SPEC, STATE, audit.slice(0, -2), full).full?.last).toMatchObject({
+      passed: false,
+      output: ["00:09 +37 -1: Some tests failed."],
+    });
+    // Never run yet; and with no `verify.full`, nothing to show.
+    expect(progressOf(SPEC, STATE, AUDIT, full).full).toEqual({ command: full });
+    expect(progressOf(SPEC, STATE, audit).full).toBeUndefined();
+    // A full verification is no task's verification.
+    expect(progressOf(SPEC, STATE, audit, full).tasks[0]?.verification?.at).toBe(
+      "2026-10-22T10:18:00.000Z",
+    );
+  });
 });
 
 describe("outputSegments", () => {
