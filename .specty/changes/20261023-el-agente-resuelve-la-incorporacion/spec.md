@@ -87,7 +87,7 @@ Si incorporar la rama principal al cerrar da conflictos, o la verificación fall
   - files: packages/cli/src/enforce/guard.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/status.ts, packages/cli/test/resolve.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/resolve.test.ts
-- [ ] T4: `specty integrate` y el cierre tras la resolución
+- [x] T4: `specty integrate` y el cierre tras la resolución
   - files: packages/cli/src/commands/integrate.ts, packages/cli/src/program.ts, packages/cli/src/commands/finish.ts, packages/cli/test/resolve.test.ts
   - ac: AC4, AC5, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/resolve.test.ts test/integrate.test.ts

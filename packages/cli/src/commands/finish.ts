@@ -34,6 +34,28 @@ export async function close(session: Session): Promise<Output> {
   const { state } = change;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
   session.environment.terminal.note(spec.title, spec.sections.closing ?? "");
+  const resolved = state.integration?.resolved;
+  if (state.integration !== undefined && resolved !== undefined) {
+    const { target, conflicts } = state.integration;
+    session.environment.terminal.note(
+      t("Incorporación resuelta por el agente", "Incorporation resolved by the agent"),
+      [
+        t(
+          `${target} entró con el merge ${resolved.commit}.`,
+          `${target} came in with merge ${resolved.commit}.`,
+        ),
+        conflicts.length > 0
+          ? t(
+              `Conflictos resueltos: ${conflicts.join(", ")}.`,
+              `Conflicts resolved: ${conflicts.join(", ")}.`,
+            )
+          : t(
+              "Arregló lo que fallaba en la verificación.",
+              "It fixed what failed the verification.",
+            ),
+      ].join("\n"),
+    );
+  }
   if (
     !(await session.environment.terminal.confirm(
       t("¿Confirmar el cierre?", "Confirm the closing?"),
