@@ -12,6 +12,8 @@ export type FlowEvent =
       readonly type: "approve";
       readonly validationErrors: number;
       readonly pendingHighImpact: number;
+      /** Tasks of the approved spec not done yet: with none, there is nothing to implement. */
+      readonly remainingTasks: number;
     }
   | { readonly type: "taskDone"; readonly remainingTasks: number }
   | { readonly type: "scopeRequest" }
@@ -100,7 +102,10 @@ export function transition({ phase, kind, actor, event }: TransitionInput): Tran
     case "approve":
       if (event.validationErrors > 0) return reject("validation-errors");
       if (event.pendingHighImpact > 0) return reject("pending-assumptions");
-      return to(kind === "retro" ? "done" : "implementing");
+      if (kind === "retro") return to("done");
+      // An epic advances through its children; any other change with every task done (a
+      // withdrawn adjustment, say) goes straight to acceptance, as after its last task.
+      return to(kind === "epic" || event.remainingTasks > 0 ? "implementing" : "acceptance");
     case "taskDone":
       if (WITHOUT_TASKS.has(kind)) return reject("kind-not-allowed");
       return to(event.remainingTasks > 0 ? "implementing" : "acceptance");

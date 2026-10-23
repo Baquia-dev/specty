@@ -16,11 +16,14 @@ import {
 
 const ACTORS: readonly Actor[] = ["agent", "human", "specty"];
 
-/** Events with every precondition satisfied; `taskDone` completes the last task. */
+/**
+ * Events with every precondition satisfied; `taskDone` completes the last task, and `approve`
+ * finds every task done.
+ */
 const PASSING: Readonly<Record<FlowEventType, FlowEvent>> = {
   propose: { type: "propose", validationErrors: 0 },
   requestChanges: { type: "requestChanges" },
-  approve: { type: "approve", validationErrors: 0, pendingHighImpact: 0 },
+  approve: { type: "approve", validationErrors: 0, pendingHighImpact: 0, remainingTasks: 0 },
   taskDone: { type: "taskDone", remainingTasks: 0 },
   scopeRequest: { type: "scopeRequest" },
   decideScope: { type: "decideScope" },
@@ -45,7 +48,10 @@ const TABLE: Readonly<Record<FlowEventType, Row>> = {
     next: { draft: "review", review: "review", adjusting: "review", closing: "closing" },
   },
   requestChanges: { actors: ["human"], next: { review: "review" } },
-  approve: { actors: ["human"], next: { review: { retro: "done", other: "implementing" } } },
+  approve: {
+    actors: ["human"],
+    next: { review: { retro: "done", epic: "implementing", other: "acceptance" } },
+  },
   taskDone: {
     actors: ["agent", "human"],
     next: {
@@ -121,9 +127,20 @@ describe("transition", () => {
     expect(
       transition({
         ...base,
-        event: { type: "approve", validationErrors: 0, pendingHighImpact: 1 },
+        event: { type: "approve", validationErrors: 0, pendingHighImpact: 1, remainingTasks: 2 },
       }),
     ).toEqual({ ok: false, code: "pending-assumptions" });
+    // With tasks to do, approving starts the implementation (AC2).
+    for (const kind of ["standard", "quick", "spike", "epic"] as const) {
+      expect(
+        transition({
+          ...base,
+          kind,
+          event: { type: "approve", validationErrors: 0, pendingHighImpact: 0, remainingTasks: 2 },
+        }),
+        kind,
+      ).toEqual({ ok: true, phase: "implementing" });
+    }
     expect(
       transition({
         ...base,

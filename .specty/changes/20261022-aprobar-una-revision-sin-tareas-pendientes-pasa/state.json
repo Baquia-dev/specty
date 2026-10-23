@@ -6,6 +6,13 @@
   "branch": "specty/20261022-aprobar-una-revision-sin-tareas-pendientes-pasa",
   "baseCommit": "3d77ecbc286a0e60fcbb5e461dc569a9d0ba0cc1",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9f2568131f180ed7f0c80037ece91710b2eb29a7a0749f6339accd426ad30d91",
+    "at": "2026-10-23T05:16:48.122Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0c2f616a8ce7ab822b5254791b264814d40a0721",
+      "startedAt": "2026-10-23T05:17:08.969Z",
+      "doneAt": "2026-10-23T05:17:52.358Z",
+      "summary": "core/flow/machine.ts: el evento approve lleva remainingTasks (las tareas de la spec aprobada sin hacer). Una retro sigue terminando; una épica, o un cambio con tareas pendientes, pasa a implementación; sin tareas pendientes pasa a aceptación, como tras la última tarea. machine.test.ts: la tabla documentada lo recoge (approve con todo hecho: retro done, épica implementing, el resto acceptance) y un test comprueba que con tareas pendientes cada tipo va a implementación. Hasta T2, la CLI no compila: approve.ts aún no envía remainingTasks."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9f2568131f180ed7f0c80037ece91710b2eb29a7a0749f6339accd426ad30d91",
-    "at": "2026-10-23T05:16:48.122Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
