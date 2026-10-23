@@ -80,6 +80,21 @@ describe("decideGuard on files", () => {
     expect(denied).toMatchObject({ allow: false });
     if (!denied.allow) expect(denied.next).toContain("specty scope add src/b.ts --task T1");
   });
+
+  it("judges each path of an edit that writes and deletes at once, such as a patch", () => {
+    const files = (writes: string[], deletes: string[] = []): GuardAction => ({
+      kind: "files",
+      writes,
+      deletes,
+    });
+    expect(allowed(files(["src/a.ts"], ["src/extra.ts"]), ctx(IMPLEMENTING))).toBe(true);
+    expect(decideGuard(files(["src/a.ts"], ["src/b.ts"]), ctx(IMPLEMENTING))).toMatchObject({
+      rule: "scope",
+    });
+    // Writing the spec is allowed in a draft; deleting it never is.
+    expect(allowed(files([SPEC]), ctx(change("draft")))).toBe(true);
+    expect(allowed(files([], [SPEC]), ctx(change("draft")))).toBe(false);
+  });
 });
 
 describe("decideGuard on shell commands", () => {

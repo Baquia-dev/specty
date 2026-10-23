@@ -59,7 +59,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: El core juzga las rutas de un parche
+- [x] T1: El core juzga las rutas de un parche
   - files: packages/core/src/guard/patch.ts, packages/core/test/guard/patch.test.ts, packages/core/src/guard/decide.ts, packages/core/test/guard/decide.test.ts, packages/core/src/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard

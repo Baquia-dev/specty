@@ -80,6 +80,8 @@ export type GuardAction =
       readonly foreign?: readonly ForeignPath[];
     }
   | { readonly kind: "shell"; readonly facts: ShellFacts }
+  /** An edit that writes and deletes files at once, such as a patch (Codex, OpenCode). */
+  | ({ readonly kind: "files" } & Pick<ShellFacts, "writes" | "deletes" | "foreign">)
   /** The session moves into the worktree `target`, bound or not to another one. */
   | { readonly kind: "enter"; readonly target: string; readonly bound?: BoundSession }
   | { readonly kind: "other" };
@@ -115,6 +117,7 @@ const ALLOW: GuardDecision = { allow: true };
 export function decideGuard(action: GuardAction, ctx: GuardContext): GuardDecision {
   if (action.kind === "other") return ALLOW;
   if (action.kind === "shell") return decideShell(action.facts, ctx);
+  if (action.kind === "files") return decideFiles(action, ctx);
   if (action.kind === "enter") {
     const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command);
     return denial === undefined ? ALLOW : deny("session", denial.reason, denial.next);
@@ -168,11 +171,19 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
       commitNext(ctx.change ?? {}, ctx.lang, ctx.command),
     );
   }
+  return decideFiles(facts, ctx);
+}
+
+/** Each path a command or an edit writes or deletes, after those inside other worktrees. */
+function decideFiles(
+  files: Pick<ShellFacts, "writes" | "deletes" | "foreign">,
+  ctx: GuardContext,
+): GuardDecision {
   return (
-    denyForeign(facts.foreign, ctx) ??
+    denyForeign(files.foreign, ctx) ??
     firstDenial([
-      ...facts.writes.map((path) => decidePath(path, "write", ctx)),
-      ...facts.deletes.map((path) => decidePath(path, "delete", ctx)),
+      ...files.writes.map((path) => decidePath(path, "write", ctx)),
+      ...files.deletes.map((path) => decidePath(path, "delete", ctx)),
     ])
   );
 }

@@ -6,6 +6,13 @@
   "branch": "specty/20261023-guard-de-codex",
   "baseCommit": "bef28e4c22dc8e7aa7844e24e82a45aa5c9ac9f2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fc4a520a30e403c0a8fbf1b3c4d258b589ebfd0deb7b4b36b882d795b71ae9b3",
+    "at": "2026-10-23T23:09:51.354Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6f88772f77f6058731c9efc2d99f4b7c28e29520",
+      "startedAt": "2026-10-23T23:09:51.859Z",
+      "doneAt": "2026-10-23T23:10:41.225Z",
+      "summary": "patchPaths lee las cabeceras de un parche (*** Add/Update/Delete File, *** Move to) y decideGuard juzga la nueva acción files con escrituras y borrados, compartiendo decideFiles con el shell"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 4,
     "T": 4,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:fc4a520a30e403c0a8fbf1b3c4d258b589ebfd0deb7b4b36b882d795b71ae9b3",
-    "at": "2026-10-23T23:09:51.354Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
