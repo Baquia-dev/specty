@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261023-bloque-de-flujo-de-agents-md-al-dia",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261023-bloque-de-flujo-de-agents-md-al-dia",
+  "baseCommit": "b58346663e96a656b1ccb92cf76bdc50488a5f18",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:31951678039464aab7329dab71ef7c5e46301b4ebdf5ffee2da02ef23eb902ae",
+    "at": "2026-10-23T20:06:25.300Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
