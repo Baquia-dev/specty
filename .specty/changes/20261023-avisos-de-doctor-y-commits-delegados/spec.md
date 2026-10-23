@@ -45,7 +45,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: `doctor` avisa de los archivos de hooks y del modo delegado
+- [x] T1: `doctor` avisa de los archivos de hooks y del modo delegado
   - files: packages/cli/src/detect/formatters.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/install.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/install.test.ts

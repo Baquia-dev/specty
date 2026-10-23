@@ -8,6 +8,7 @@ import { gitHooksInstalled } from "../install/git-hooks";
 import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
 import { COMMAND, type Session } from "../session";
+import { readDelegation } from "../store/local";
 
 /** `specty doctor`: checks that the configuration and every hook are in place. */
 export async function doctor(session: Session): Promise<Output> {
@@ -65,13 +66,13 @@ export async function doctor(session: Session): Promise<Output> {
       ),
     );
   }
-  for (const formatter of await formatterExclusions(root)) {
+  for (const { name, path, add, file, excluded } of await formatterExclusions(root)) {
     check(
-      formatter.excluded,
-      t(`${formatter.name} excluye .specty/.`, `${formatter.name} excludes .specty/.`),
+      excluded,
+      t(`${name} excluye ${path}.`, `${name} excludes ${path}.`),
       t(
-        `${formatter.name} también revisa .specty/, que escribe Specty: añade ${formatter.add} en ${formatter.file}.`,
-        `${formatter.name} also checks .specty/, which Specty writes: add ${formatter.add} to ${formatter.file}.`,
+        `${name} también revisa ${path}, que escribe Specty: añade ${add} en ${file}.`,
+        `${name} also checks ${path}, which Specty writes: add ${add} to ${file}.`,
       ),
     );
   }
@@ -102,10 +103,25 @@ export async function doctor(session: Session): Promise<Output> {
       "verify.default is missing in .specty/config.yaml.",
     ),
   );
+  // Delegated mode is the person's choice, not a fault: a warning that never turns doctor red.
+  const delegation = await readDelegation(git);
+  const warnings =
+    delegation === undefined
+      ? []
+      : [
+          t(
+            `Modo delegado activo desde el ${delegation.at.slice(0, 10)} (${delegation.by}): tu agente toma tus decisiones. Para desactivarlo: \`${COMMAND} delegate off\`.`,
+            `Delegated mode on since ${delegation.at.slice(0, 10)} (${delegation.by}): your agent makes your decisions. To turn it off: \`${COMMAND} delegate off\`.`,
+          ),
+        ];
   return {
     status: problems.length === 0 ? "ok" : "invalid",
     header: headerOf("doctor"),
-    blocks: [...section("OK", ok), ...section(t("PROBLEMAS", "PROBLEMS"), problems)],
+    blocks: [
+      ...section("OK", ok),
+      ...section(t("AVISOS", "WARNINGS"), warnings),
+      ...section(t("PROBLEMAS", "PROBLEMS"), problems),
+    ],
     next:
       problems.length === 0
         ? t(

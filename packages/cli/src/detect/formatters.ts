@@ -1,14 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
-import { isRecord, parseJson, readText } from "../io/files";
+import { exists, isRecord, parseJson, readText } from "../io/files";
 
 /**
- * A formatter that would also check `.specty/`. Specty writes its state in its own format, so
- * the repository should exclude that folder rather than have Specty imitate every formatter.
+ * A formatter that would also check a path Specty writes in its own format: `.specty/`, and the
+ * agent hook files of `init`. The repository should exclude them rather than have Specty imitate
+ * every formatter.
  */
 export interface FormatterExclusion {
   readonly name: "Biome" | "Prettier";
+  /** The path Specty writes. */
+  readonly path: string;
   /** Where the exclusion goes. */
   readonly file: string;
   /** What to add there. */
@@ -16,27 +19,77 @@ export interface FormatterExclusion {
   readonly excluded: boolean;
 }
 
+interface Written {
+  readonly path: string;
+  /** Checked only when it exists: the agent hook files depend on the tools installed. */
+  readonly optional: boolean;
+  readonly biome: string;
+  readonly inBiome: RegExp;
+  readonly prettier: string;
+  readonly inPrettier: RegExp;
+}
+
+/** What Specty writes, and how each formatter's exclusion of it (or of its folder) looks. */
+const WRITTEN: readonly Written[] = [
+  {
+    path: ".specty/",
+    optional: false,
+    biome: '"!.specty"',
+    inBiome: /"!(?:\*\*\/)?\.specty(?:\/\*\*)?\/?"/,
+    prettier: ".specty/",
+    inPrettier: /^\/?\.specty\/?(?:\*\*)?$/,
+  },
+  {
+    path: ".claude/settings.json",
+    optional: true,
+    biome: '"!.claude/settings.json"',
+    inBiome: /"!(?:\*\*\/)?\.claude(?:\/settings\.json|\/\*\*|\/)?"/,
+    prettier: ".claude/settings.json",
+    inPrettier: /^\/?\.claude(?:\/settings\.json|\/\*\*|\/)?$/,
+  },
+  {
+    path: ".cursor/hooks.json",
+    optional: true,
+    biome: '"!.cursor/hooks.json"',
+    inBiome: /"!(?:\*\*\/)?\.cursor(?:\/hooks\.json|\/\*\*|\/)?"/,
+    prettier: ".cursor/hooks.json",
+    inPrettier: /^\/?\.cursor(?:\/hooks\.json|\/\*\*|\/)?$/,
+  },
+];
+
 const PRETTIER_CONFIG = /^(?:\.prettierrc(?:\.[\w]+)?|prettier\.config\.[cm]?[jt]s)$/;
 
 export async function formatterExclusions(root: string): Promise<FormatterExclusion[]> {
+  const written: Written[] = [];
+  for (const entry of WRITTEN) {
+    if (!entry.optional || (await exists(join(root, entry.path)))) written.push(entry);
+  }
   const found: FormatterExclusion[] = [];
   const biome = await firstText(root, ["biome.json", "biome.jsonc"]);
   if (biome !== undefined) {
-    found.push({
-      name: "Biome",
-      file: `${biome.file} (files.includes)`,
-      add: '"!.specty"',
-      excluded: /"!(?:\*\*\/)?\.specty(?:\/\*\*)?\/?"/.test(biome.text),
-    });
+    for (const entry of written) {
+      found.push({
+        name: "Biome",
+        path: entry.path,
+        file: `${biome.file} (files.includes)`,
+        add: entry.biome,
+        excluded: entry.inBiome.test(biome.text),
+      });
+    }
   }
   if (await usesPrettier(root)) {
-    const ignore = (await readText(join(root, ".prettierignore"))) ?? "";
-    found.push({
-      name: "Prettier",
-      file: ".prettierignore",
-      add: ".specty/",
-      excluded: ignore.split("\n").some((line) => /^\/?\.specty\/?(?:\*\*)?$/.test(line.trim())),
-    });
+    const lines = ((await readText(join(root, ".prettierignore"))) ?? "")
+      .split("\n")
+      .map((line) => line.trim());
+    for (const entry of written) {
+      found.push({
+        name: "Prettier",
+        path: entry.path,
+        file: ".prettierignore",
+        add: entry.prettier,
+        excluded: lines.some((line) => entry.inPrettier.test(line)),
+      });
+    }
   }
   return found;
 }

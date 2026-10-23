@@ -6,6 +6,13 @@
   "branch": "specty/20261023-avisos-de-doctor-y-commits-delegados",
   "baseCommit": "adbc8a881d9fb55f927a25ac8f8baf964938a432",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8cf8f05d2efc3e36b219ab446b04d464ff23532ac05de6cc63c86119f3d33062",
+    "at": "2026-10-23T21:54:01.165Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2927d26aa6d73c10faa33cb54e7e007e4e787d28",
+      "startedAt": "2026-10-23T21:54:01.705Z",
+      "doneAt": "2026-10-23T21:58:11.765Z",
+      "summary": "doctor revisa con Biome y Prettier también .claude/settings.json y .cursor/hooks.json cuando existen (vale excluir el archivo o su carpeta) y muestra el modo delegado activo en un bloque AVISOS que no cuenta como problema"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "AC": 3,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8cf8f05d2efc3e36b219ab446b04d464ff23532ac05de6cc63c86119f3d33062",
-    "at": "2026-10-23T21:54:01.165Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

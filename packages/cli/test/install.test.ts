@@ -55,6 +55,7 @@ describe("hook managers", () => {
       'Biome también revisa .specty/, que escribe Specty: añade "!.specty" en biome.json (files.includes).',
     );
     expect(warned.out).toContain("Prettier también revisa .specty/");
+    expect(warned.out).not.toContain(".cursor/hooks.json");
 
     await writeFiles(root, {
       "biome.json": JSON.stringify({ files: { includes: ["**", "!.specty"] } }),
@@ -64,6 +65,57 @@ describe("hook managers", () => {
     expect(fixed.out).toContain("Biome excluye .specty/.");
     expect(fixed.out).toContain("Prettier excluye .specty/.");
     expect(fixed.out).not.toContain("también revisa .specty/");
+  });
+
+  it("warns when a formatter would check the hook files init writes (AC1)", async () => {
+    const root = await tempRepo({
+      "biome.json": JSON.stringify({ files: { includes: ["**", "!.specty"] } }),
+      "package.json": JSON.stringify({ name: "x", prettier: {} }),
+      ".prettierignore": ".specty/\n",
+      ".claude/settings.json": "{}\n",
+      ".cursor/hooks.json": "{}\n",
+    });
+    await cli(root, ["init", "--language", "es"]);
+    const warned = (await cli(root, ["doctor"])).out;
+    expect(warned).toContain(
+      'Biome también revisa .claude/settings.json, que escribe Specty: añade "!.claude/settings.json" en biome.json (files.includes).',
+    );
+    expect(warned).toContain('añade "!.cursor/hooks.json" en biome.json');
+    expect(warned).toContain(
+      "Prettier también revisa .claude/settings.json, que escribe Specty: añade .claude/settings.json en .prettierignore.",
+    );
+    expect(warned).toContain("Prettier también revisa .cursor/hooks.json");
+
+    // Excluding the file or its folder, in either formatter's spelling, is enough.
+    await writeFiles(root, {
+      "biome.json": JSON.stringify({
+        files: { includes: ["**", "!.specty", "!.claude", "!**/.cursor/hooks.json"] },
+      }),
+      ".prettierignore": ".specty/\n.claude/\n/.cursor/hooks.json\n",
+    });
+    const fixed = (await cli(root, ["doctor"])).out;
+    expect(fixed).toContain("Biome excluye .claude/settings.json.");
+    expect(fixed).toContain("Biome excluye .cursor/hooks.json.");
+    expect(fixed).toContain("Prettier excluye .claude/settings.json.");
+    expect(fixed).toContain("Prettier excluye .cursor/hooks.json.");
+    expect(fixed).not.toContain("también revisa");
+  });
+
+  it("warns about delegated mode without counting it as a problem (AC2)", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    await cli(root, ["init", "--language", "es", "--tools", "claude-code"]);
+    const before = await cli(root, ["doctor"]);
+    expect(before.code).toBe(0);
+    expect(before.out).not.toContain("AVISOS");
+
+    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    const after = await cli(root, ["doctor"]);
+    expect(after.code).toBe(0);
+    expect(after.out).toContain("AVISOS");
+    expect(after.out).toMatch(
+      /Modo delegado activo desde el \d{4}-\d{2}-\d{2} \(Ana\): tu agente toma tus decisiones\. Para desactivarlo: `specty delegate off`\./,
+    );
+    expect(after.out).not.toContain("PROBLEMAS");
   });
 
   it("explains what to add for simple-git-hooks", async () => {
