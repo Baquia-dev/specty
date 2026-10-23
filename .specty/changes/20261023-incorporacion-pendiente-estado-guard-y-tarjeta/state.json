@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "946da5484c216c2f98cecfc0ada750cab636509c",
+      "attempts": 1,
       "startedAt": "2026-10-23T16:19:02.654Z",
       "doneAt": "2026-10-23T16:20:05.879Z",
-      "summary": "state.json admite integration (destino, commit, motivo conflicts|verify, conflictos, archivos que puede tocar el agente, fecha y resolved opcional) e isIntegrating; phasePermissions(phase, closingSubmitted, integrating) abre el código con el acceso integration y espera al agente sin cambiar la fase ni el acceso a la spec"
+      "summary": "state.json admite integration (destino, commit, motivo conflicts|verify, conflictos, archivos que puede tocar el agente, fecha y resolved opcional) e isIntegrating; phasePermissions(phase, closingSubmitted, integrating) abre el código con el acceso integration y espera al agente sin cambiar la fase ni el acceso a la spec",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "70e6907467775c0524314b092866d61e3ee626bd",
+      "startedAt": "2026-10-23T16:20:06.177Z",
+      "doneAt": "2026-10-23T16:21:20.184Z",
+      "summary": "Durante una incorporación pendiente el guard abre solo los archivos que junta (con sus tests implícitos y generados, vía classifyPath) en cualquier fase, deniega el resto con la regla integration, y el SIGUIENTE de git commit pasa a specty integrate; guard/integration.ts nuevo con integrationDenial y commitNext"
     }
   },
   "pending": {

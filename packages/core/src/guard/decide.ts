@@ -6,6 +6,7 @@ import type { ResolvedConfig } from "../schema/config";
 import { isGoverned } from "../scope/governed";
 import { classifyPath, scopeRulesFrom } from "../scope/scope";
 import type { ChangeKind } from "../spec/model";
+import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
 import { type ForeignPath, foreignDenial } from "./worktrees";
 
 /** Subcommands only a person may run (ARCHITECTURE §4, invariant). */
@@ -49,6 +50,8 @@ export interface GuardChange {
     readonly files: readonly string[];
     readonly extras: readonly string[];
   };
+  /** A pending incorporation of the main branch: it alone decides about code, in any phase. */
+  readonly integration?: GuardIntegration;
 }
 
 export interface GuardContext {
@@ -94,7 +97,8 @@ export type GuardRule =
   | "phase"
   | "no-task"
   | "scope"
-  | "worktree";
+  | "worktree"
+  | "integration";
 
 export type GuardDecision =
   | { readonly allow: true }
@@ -163,17 +167,13 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
     );
   }
   if (facts.committedGoverned.length > 0) {
-    const task = ctx.change?.task?.id ?? "<T>";
     return deny(
       "commit",
       t(
         "Los commits de código los hace Specty al completar cada tarea.",
         "Code commits are made by Specty when each task is completed.",
       ),
-      t(
-        `ejecuta \`${ctx.command} task done ${task} --summary "<qué hiciste>"\`.`,
-        `run \`${ctx.command} task done ${task} --summary "<what you did>"\`.`,
-      ),
+      commitNext(ctx.change ?? {}, ctx.lang, ctx.command),
     );
   }
   return (
@@ -212,6 +212,10 @@ function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): 
       ),
       t(`ejecuta \`${ctx.command} next\`.`, `run \`${ctx.command} next\`.`),
     );
+  }
+  if (change.integration !== undefined) {
+    const denial = integrationDenial(path, change.integration, ctx.config, ctx.lang, ctx.command);
+    return denial === undefined ? ALLOW : deny("integration", denial.reason, denial.next);
   }
   if (change.phase !== "implementing") {
     return deny(

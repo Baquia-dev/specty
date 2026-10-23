@@ -109,6 +109,50 @@ describe("decideGuard on shell commands", () => {
   });
 });
 
+describe("decideGuard during a pending incorporation", () => {
+  const integrating = (phase: GuardChange["phase"]): GuardChange => ({
+    ...change(phase),
+    integration: { target: "main", paths: ["src/a.ts", "src/b.ts"] },
+  });
+  const RESOLVE =
+    "resuelve la incorporación de main en los archivos que junta y ejecuta `specty integrate`.";
+
+  it("opens only the files it brings together, with their tests, in closing and acceptance", () => {
+    for (const phase of ["closing", "acceptance"] as const) {
+      const context = ctx(integrating(phase));
+      expect(allowed(write("src/a.ts", "src/b.ts", "src/a.test.ts"), context)).toBe(true);
+      expect(allowed({ kind: "delete", paths: ["src/b.ts"] }, context)).toBe(true);
+      expect(allowed(shell({ writes: ["src/a.ts"], deletes: ["src/b.ts"] }), context)).toBe(true);
+    }
+    expect(decideGuard(write("src/c.ts"), ctx(integrating("closing")))).toEqual({
+      allow: false,
+      rule: "integration",
+      reason:
+        "`src/c.ts` queda fuera de la incorporación de main: solo se tocan los archivos que cambiaron este cambio o main.",
+      next: RESOLVE,
+    });
+    // Documentation stays free and Specty's files stay protected.
+    expect(allowed(write("docs/guide.md"), ctx(integrating("closing")))).toBe(true);
+    expect(
+      decideGuard(write(".specty/changes/20261021-x/state.json"), ctx(integrating("closing"))),
+    ).toMatchObject({ rule: "protected" });
+  });
+
+  it("points a commit to `specty integrate`, in the project's language", () => {
+    const commit = shell({ committedGoverned: ["src/a.ts"] });
+    expect(decideGuard(commit, ctx(integrating("closing")))).toMatchObject({
+      rule: "commit",
+      next: RESOLVE,
+    });
+    const english = decideGuard(write("src/c.ts"), { ...ctx(integrating("closing")), lang: "en" });
+    expect(english).toMatchObject({
+      reason:
+        "`src/c.ts` is outside the incorporation of main: only the files this change or main changed may be touched.",
+      next: "resolve the incorporation of main in the files it brings together and run `specty integrate`.",
+    });
+  });
+});
+
 describe("decideGuard on another worktree", () => {
   const OTHER: ForeignPath = {
     path: "/w/otra/src/a.ts",

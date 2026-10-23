@@ -64,7 +64,7 @@ Core aprende qué es una incorporación pendiente, para que un conflicto al inco
   - files: packages/core/src/schema/state.ts, packages/core/src/flow/phases.ts, packages/core/src/index.ts, packages/core/test/schema/schema.test.ts, packages/core/test/flow/machine.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/flow
-- [ ] T2: El guard durante la incorporación
+- [x] T2: El guard durante la incorporación
   - files: packages/core/src/guard/integration.ts, packages/core/src/guard/decide.ts, packages/core/src/index.ts, packages/core/test/guard/decide.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard
