@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261022-aprobar-una-revision-sin-tareas-pendientes-pasa",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261022-aprobar-una-revision-sin-tareas-pendientes-pasa",
+  "baseCommit": "3d77ecbc286a0e60fcbb5e461dc569a9d0ba0cc1",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ec003c87ea11dcab85e52313fda047149dfc9acb0c5071ea79ba38440e1f01f9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a477967260f62b91dce1fade65953a0790ac7d656a72f2d2ebd00d93f6dc5d52",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:5f8e3d3b6851d5c05d88f9a6197b8772ffcb3bae4db79329550fc88c10134c56",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9f2568131f180ed7f0c80037ece91710b2eb29a7a0749f6339accd426ad30d91",
+    "at": "2026-10-23T05:16:48.122Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
