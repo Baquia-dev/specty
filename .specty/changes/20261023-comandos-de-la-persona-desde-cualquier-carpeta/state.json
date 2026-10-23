@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261023-comandos-de-la-persona-desde-cualquier-carpeta",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-comandos-de-la-persona-desde-cualquier-carpeta",
+  "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6e8419f3353fac690eddddf3bd34e46de6f676f0d1abcb0c28b2212b2f3233bc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ffc756942262058feeca8346001cfad6ea2922bd9c6106305f518f5f89ea7d23",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:661014f482c81e3c9c4db24dab060b8a4a79630ea0fd55ba51fec69d48442789",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:153fc0489bdbc6d27ceb13cf23f0c3f31923cbd77fdbb9b590acb43fdb882271",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c15eb14a035df4f0b4ee1e9901c4e0638301506c833988a2dad4e25eb47cbb26",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:369d157748b35368889ab313809058e21fbe5a74d173dc41fea024c4fcb66c9b",
+    "at": "2026-10-23T19:24:51.622Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
