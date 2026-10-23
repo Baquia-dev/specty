@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0912edc853c848e97f26d4a739359dfadd7774c8",
+      "attempts": 1,
       "startedAt": "2026-10-23T18:36:49.808Z",
       "doneAt": "2026-10-23T18:37:39.878Z",
-      "summary": "config: git.worktrees (por defecto true) y git.setup (texto o false, opcional); el bloque de flujo de AGENTS.md añade que cada cambio vive en su worktree y se trabaja en la carpeta que indica new (8 líneas)"
+      "summary": "config: git.worktrees (por defecto true) y git.setup (texto o false, opcional); el bloque de flujo de AGENTS.md añade que cada cambio vive en su worktree y se trabaja en la carpeta que indica new (8 líneas)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3f80c671e4e56d8ead94c8f0bc85c3baef8102ae",
+      "startedAt": "2026-10-23T18:37:40.146Z",
+      "doneAt": "2026-10-23T18:38:03.859Z",
+      "summary": "setupCommand(stack) en detect/project.ts: el comando que prepara una worktree nueva según la herramienta (pnpm, npm, yarn, bun, flutter, dart, uv, poetry, pdm, pipenv, composer) o el lenguaje (Bundler, Mix, Go); ninguno para los stacks cuyos builds traen sus dependencias"
     }
   },
   "pending": {

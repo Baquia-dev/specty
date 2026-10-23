@@ -63,7 +63,7 @@ kind: standard
   - files: packages/core/src/schema/config.ts, packages/core/src/agents-md.ts, packages/core/test/schema/schema.test.ts, packages/core/test/cards.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/cards.test.ts
-- [ ] T2: Comando de preparación por stack
+- [x] T2: Comando de preparación por stack
   - files: packages/cli/src/detect/project.ts, packages/cli/test/setup.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts
