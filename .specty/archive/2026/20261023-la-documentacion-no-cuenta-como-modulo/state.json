@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-la-documentacion-no-cuenta-como-modulo",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-la-documentacion-no-cuenta-como-modulo",
   "baseCommit": "c6b94c0cf13ba797005eb2688dc5e1c9e18dec0a",
   "revision": 1,
@@ -26,12 +26,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4115b218ca72062b63d5c99374f7aa5227c0b9ce",
+      "attempts": 1,
       "startedAt": "2026-10-23T15:16:06.139Z",
       "doneAt": "2026-10-23T15:16:25.978Z",
-      "summary": "Los módulos del tamaño cuentan solo rutas gobernadas (isGoverned en collectSignals): docs/ y los .md ya no suman módulo, aunque siguen contando como archivos; test y ARCHITECTURE §11"
+      "summary": "Los módulos del tamaño cuentan solo rutas gobernadas (isGoverned en collectSignals): docs/ y los .md ya no suman módulo, aunque siguen contando como archivos; test y ARCHITECTURE §11",
+      "scopeExtra": []
     }
   },
   "pending": {

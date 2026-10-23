@@ -4,3 +4,4 @@
 {"ts":"2026-10-23T15:16:06.140Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"4115b218ca72062b63d5c99374f7aa5227c0b9ce"}}
 {"ts":"2026-10-23T15:16:25.977Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing/sizing.test.ts","exit":0,"ms":812}}
 {"ts":"2026-10-23T15:16:25.979Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Los módulos del tamaño cuentan solo rutas gobernadas (isGoverned en collectSignals): docs/ y los .md ya no suman módulo, aunque siguen contando como archivos; test y ARCHITECTURE §11"}}
+{"ts":"2026-10-23T15:35:32.043Z","actor":"human","event":"change.closed","data":{"lane":"quick"}}
