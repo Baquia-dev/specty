@@ -12,6 +12,7 @@ import {
   recommendEffort,
   type Spec,
 } from "@baquia-dev/specty-core";
+import { closingOf } from "./closing";
 import { deriveDelta } from "./delta";
 import { progressOf } from "./progress";
 import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind, ReviewView } from "./records";
@@ -110,7 +111,14 @@ export function deriveView(record: ChangeRecord): ChangeView {
       ...deltaOf(record, state, spec),
     },
     progress: progressOf(spec, state, record.audit ?? [], record.verifyFull),
+    ...closingIn(spec),
   };
+}
+
+/** The closing the agent wrote, in its parts; nothing while the section is missing or empty. */
+function closingIn(spec: Spec): Pick<ChangeView, "closing"> {
+  const text = spec.sections.closing?.trim() ?? "";
+  return text === "" ? {} : { closing: closingOf(text) };
 }
 
 /** In review, what changed since the approved revision, if there was one. */
