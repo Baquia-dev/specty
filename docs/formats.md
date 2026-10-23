@@ -294,6 +294,7 @@ git:
   branchPerChange: true
   worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange)
   setup: "pnpm install --prefer-offline"  # prepara cada worktree nueva; false: nada; sin la clave: el comando del stack
+  target: develop                 # rama de la que parten los cambios y a la que se incorporan; sin la clave: la principal
 team:                             # solo con mode: team
   approvers: []
   requirePrReview: true
@@ -314,6 +315,8 @@ La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y 
 - Bundler: `bundle install`; Composer: `composer install`; Mix: `mix deps.get`; Go: `go mod download`.
 
 Los demás stacks no lo necesitan, porque su build trae las dependencias. Con `false`, no se ejecuta nada.
+
+`git.target` es la rama de la que parten los cambios nuevos y a la que se incorporan al cerrar. Sin la clave, es la rama principal detectada (ARCHITECTURE §9). Si la clave nombra una rama que no existe en local, `new` se bloquea y `close` cierra sin incorporar: Specty no recurre a la principal.
 
 ## 7. Trailers de commit
 

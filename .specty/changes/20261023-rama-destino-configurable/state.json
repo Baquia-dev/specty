@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-rama-destino-configurable",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-rama-destino-configurable",
   "baseCommit": "05c8d351dbcf89b2519252e623748e7b6e4c0f2a",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fadcfff6d7a3861de62852f29837d4c1884efe3e",
+      "attempts": 1,
       "startedAt": "2026-10-23T18:49:29.430Z",
       "doneAt": "2026-10-23T18:50:57.286Z",
-      "summary": "targetBranch(git, git.target) en flow/worktree.ts: la rama configurada si existe, nada si falta, o la principal sin clave; parallelBase parte de --from, luego de git.target y luego de la principal (si git.target falta, new se bloquea sin crear nada); integrationOf incorpora a targetBranch, así que close va a git.target y, si esa rama no existe, cierra sin incorporar"
+      "summary": "targetBranch(git, git.target) en flow/worktree.ts: la rama configurada si existe, nada si falta, o la principal sin clave; parallelBase parte de --from, luego de git.target y luego de la principal (si git.target falta, new se bloquea sin crear nada); integrationOf incorpora a targetBranch, así que close va a git.target y, si esa rama no existe, cierra sin incorporar",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "b1119e2dfa2b5267dc7db039de18aa8977a95c2e",
+      "startedAt": "2026-10-23T18:50:57.549Z",
+      "doneAt": "2026-10-23T18:53:15.473Z",
+      "summary": "formats.md §6: git.target en el ejemplo y qué hace si falta la rama; ARCHITECTURE §9: la base y la incorporación usan la rama destino (git.target o la principal)"
     }
   },
   "pending": {

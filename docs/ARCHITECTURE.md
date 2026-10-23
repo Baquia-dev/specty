@@ -169,7 +169,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 **Cambios en paralelo.** Una carpeta tiene una sola rama, así que trabaja un solo cambio. Por eso `specty new "<título>"` crea cada cambio en una worktree nueva, con su rama y su carpeta, y nadie trabaja en la carpeta principal. Con `git.worktrees: false`, `new` crea la rama en la carpeta actual, desde su rama, como antes, y `--worktree` pide la worktree para un cambio. En una worktree nueva:
 
 - **Carpeta:** `<carpeta principal>.worktrees/<id>`, fuera del repositorio, para que las herramientas y los tests de la otra carpeta no la vean.
-- **Base:** `--from <rama>` o, por defecto, la rama principal: la de `origin/HEAD` y, sin remoto, la primera que exista de `init.defaultBranch`, `main` y `master`. Nunca la rama actual, porque un cambio en paralelo no debe heredar el trabajo sin fusionar de otro.
+- **Base:** `--from <rama>` o, por defecto, la rama destino. Es `git.target` o, sin esa clave, la rama principal: la de `origin/HEAD` y, sin remoto, la primera que exista de `init.defaultBranch`, `main` y `master`. Nunca la rama actual, porque un cambio en paralelo no debe heredar el trabajo sin fusionar de otro. Si `git.target` nombra una rama que no existe, `new` se bloquea.
 - **Lo que no mira:** el cambio en curso y el código sin spec de la carpeta actual, porque no los toca.
 - **Hooks:** copia los archivos de hooks de agente que git no sigue (`.claude/settings.local.json`…). Los versionados llegan con la rama; los hooks de git y `.git/info/exclude` se comparten entre worktrees, y el estado local de `.git/specty/` es de cada una.
 - **Preparación:** ejecuta allí `git.setup` o, sin esa clave, el comando de instalación del stack detectado (formats.md §6), y la salida lo nombra. Si falla, el cambio existe igual, y la salida muestra la cola y pide ejecutarlo allí.
@@ -177,7 +177,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 
 Las worktrees que otras herramientas crean dentro del repositorio (Claude Code usa `.claude/worktrees/`) no cuentan como código sin spec ni entran en los commits de Specty.
 
-**Incorporación.** Al cerrar un cambio, o al aceptar uno quick, Specty lo lleva a la rama principal (la misma que usa `new --worktree` como base) en ese mismo comando. La rama principal solo avanza por fast-forward hasta código verificado, así que nunca recibe un conflicto: lo resuelve el cambio que llega después, en su rama y su carpeta.
+**Incorporación.** Al cerrar un cambio, o al aceptar uno quick, Specty lo lleva a la rama destino en ese mismo comando. Es la misma que `new` usa como base: `git.target` o, sin esa clave, la rama principal. Si `git.target` nombra una rama que no existe, el cambio se cierra sin incorporarse. En lo que sigue, «la rama principal» es la rama destino. La rama principal solo avanza por fast-forward hasta código verificado, así que nunca recibe un conflicto: lo resuelve el cambio que llega después, en su rama y su carpeta.
 
 1. Si la carpeta donde está la rama principal tiene cambios sin commit en archivos con seguimiento, el comando se niega antes de tocar nada.
 2. Si la rama principal avanzó desde que empezó el cambio, se fusiona en la rama del cambio, en su carpeta (`git merge --no-ff --no-commit`), y se ejecuta `verify.full` (o `verify.default`). Solo con verde se hace el commit de merge, con recibo y `Specty-Change`. Con conflictos o en rojo, el comando no cierra y el merge queda en curso en la carpeta del cambio, para el agente:
