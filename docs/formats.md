@@ -195,6 +195,24 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - `items[].comment` (opcional) guarda por qué la persona rechazó un supuesto; el agente lo lee en `specty next`.
 - `maxIds` guarda el número más alto usado por cada prefijo (también `S`, las solicitudes de alcance), para que un id borrado nunca se reutilice con otro significado.
 - `closingSubmittedAt` (opcional) indica que el cierre ya se envió y espera la confirmación de la persona.
+- `integration` (opcional) registra una incorporación de la rama principal que no salió sola: el merge dio conflictos o, con su resultado, la verificación falla, y el merge espera en la carpeta del cambio a que el agente lo termine (ARCHITECTURE §9). Mientras no tiene `resolved`, el agente solo puede tocar los archivos de `paths`:
+
+  ```json
+  "integration": {
+    "target": "main",
+    "commit": "b4c5d6e",
+    "reason": "conflicts",
+    "conflicts": ["lib/features/home/home_page.dart"],
+    "paths": ["lib/features/home/home_page.dart", "lib/core/theme/ca_colors.dart"],
+    "at": "2026-10-20T16:02:11Z",
+    "resolved": { "commit": "c7d8e9f", "at": "2026-10-20T16:10:40Z" }
+  }
+  ```
+
+  - `target` es la rama destino, y `commit`, el commit suyo que se incorpora.
+  - `reason` es `conflicts` o `verify`. `conflicts` lista los archivos en conflicto; con `verify`, puede ir vacío.
+  - `paths` son los archivos que cambió cualquiera de los dos lados desde su base común. Sus tests implícitos y los archivos generados también se pueden tocar.
+  - `resolved` (opcional) guarda el commit de merge y la fecha. El campo se conserva para que la persona vea al cerrar qué resolvió el agente.
 
 ## 4. `audit.jsonl`
 

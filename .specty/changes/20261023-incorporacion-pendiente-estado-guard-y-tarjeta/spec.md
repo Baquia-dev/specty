@@ -72,7 +72,7 @@ Core aprende qué es una incorporación pendiente, para que un conflicto al inco
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/integration.ts, packages/core/src/cards/next.ts, packages/core/src/index.ts, packages/core/test/cards.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts
-- [ ] T4: Documentar la incorporación pendiente
+- [x] T4: Documentar la incorporación pendiente
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check

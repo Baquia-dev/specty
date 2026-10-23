@@ -86,6 +86,8 @@ specty/
 | `closing` | bloqueado | solo la sección Cierre | agente, luego persona |
 | `done`, `cancelled` | — | inmutable (archivado) | — |
 
+**Incorporación pendiente.** Si incorporar la rama principal al cerrar (o al aceptar un quick) deja un merge para el agente (§9), la fase no cambia. Lo que cambia es el código gobernado: solo quedan abiertos los archivos que junta la fusión, con sus tests implícitos y los generados, y se espera al agente. La spec conserva el acceso de su fase. `specty next` muestra la incorporación antes que el trabajo de la fase.
+
 **Invariante:** el agente solo ejecuta transiciones que envían trabajo o reducen sus propios permisos. Ninguna variable de entorno, flag ni modo de prueba habilita una acción humana desde la CLI del agente; los tests usan inyección de dependencias. En el legacy, `VITEST=1` o `NODE_ENV=test` habilitaban la aprobación sin TTY, y el guard solo bloqueaba el texto `specty approve`.
 
 ## 5. Carriles
@@ -218,7 +220,7 @@ Solo se incorporan los cambios `standard` y `quick` con rama y en modo `individu
 | Capa | Qué hace | ¿Se puede evadir? |
 | --- | --- | --- |
 | 1. Instrucciones (AGENTS.md y salida de Specty) | Guía | Sí |
-| 2. Hooks del agente (guard) | Bloquea escrituras fuera de alcance, `git commit` directo, acciones humanas y edición de archivos protegidos; en Claude Code, al terminar cada comando de Bash, avisa de lo que cambió sin permiso | Sí, con shell indirecta; el aviso posterior llega con el cambio ya hecho |
+| 2. Hooks del agente (guard) | Bloquea escrituras fuera de alcance (o, con una incorporación pendiente, fuera de los archivos que junta), `git commit` directo, acciones humanas y edición de archivos protegidos; en Claude Code, al terminar cada comando de Bash, avisa de lo que cambió sin permiso | Sí, con shell indirecta; el aviso posterior llega con el cambio ya hecho |
 | 3. Hooks de git | Bloquea commits sin recibo ni spec | Sí, con `--no-verify` |
 | 4. CI (`specty ci` como check obligatorio) | Rechaza commits no trazables, specs sin aprobación válida para su hash y ramas `spike/` hacia la principal | No |
 | 5. Revisión de PR (modo equipo) | Aprobación con identidad verificada por el servidor | No |
