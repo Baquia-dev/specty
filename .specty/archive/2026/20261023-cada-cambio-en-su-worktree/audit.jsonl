@@ -13,3 +13,6 @@
 {"ts":"2026-10-23T18:40:41.223Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"f1e3b5bab0421122934a4d69a959308bddc33174"}}
 {"ts":"2026-10-23T18:42:41.141Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":36046}}
 {"ts":"2026-10-23T18:42:41.143Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"formats.md §6: git.worktrees y git.setup, con el comando de preparación por stack; ARCHITECTURE §6 (fila de new) y §9 (cambios en paralelo: siempre en una worktree, preparación y el agente sigue allí); AGENTS.md de este repo con la línea nueva del bloque de flujo"}}
+{"ts":"2026-10-23T18:47:19.791Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T18:49:01.258Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:b74fba14b501363155ab142b47339fcd645c2d0a626ef7f0dc53135e08d0e9ce","size":"L","warnings":1}}
+{"ts":"2026-10-23T18:59:59.747Z","actor":"human","event":"change.closed","data":{}}

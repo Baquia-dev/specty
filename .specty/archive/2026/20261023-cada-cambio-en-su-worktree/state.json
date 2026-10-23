@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-cada-cambio-en-su-worktree",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-cada-cambio-en-su-worktree",
   "baseCommit": "f27616dca7bbfc58e1eed946b3b2fd1f98d89f4a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:6f47bb5671496f3e7abcdbf835b0c80983f4229e5771d33ed5c84b3984f4dc2f",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f1e3b5bab0421122934a4d69a959308bddc33174",
+      "attempts": 1,
       "startedAt": "2026-10-23T18:40:41.222Z",
       "doneAt": "2026-10-23T18:42:41.142Z",
-      "summary": "formats.md §6: git.worktrees y git.setup, con el comando de preparación por stack; ARCHITECTURE §6 (fila de new) y §9 (cambios en paralelo: siempre en una worktree, preparación y el agente sigue allí); AGENTS.md de este repo con la línea nueva del bloque de flujo"
+      "summary": "formats.md §6: git.worktrees y git.setup, con el comando de preparación por stack; ARCHITECTURE §6 (fila de new) y §9 (cambios en paralelo: siempre en una worktree, preparación y el agente sigue allí); AGENTS.md de este repo con la línea nueva del bloque de flujo",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,5 +88,6 @@
     "AC": 5,
     "T": 4,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T18:49:01.255Z"
 }

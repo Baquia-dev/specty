@@ -82,3 +82,28 @@ kind: standard
 - R1: Instalar dependencias en cada worktree tarda, y en algunos stacks mucho — la salida dice qué se ejecuta, `git.setup` lo cambia y `git.setup: false` lo apaga. En este repo, `pnpm install` desde la caché tarda unos segundos.
 - R2: Un agente que no puede cambiar su carpeta de trabajo (por ejemplo, un editor abierto en la carpeta principal) no puede escribir en la worktree, porque el guard se lo bloquea — el SIGUIENTE le pide abrir allí un agente.
 - R3: Cambiar el valor por defecto afecta a quien ya usa Specty sin worktrees — A1 se confirma al aprobar, y `git.worktrees: false` lo deja como antes.
+
+## Cierre
+
+### Resumen
+
+`specty new "<título>"` crea cada cambio en su propia worktree (`<carpeta principal>.worktrees/<id>`), sin pedir `--worktree`, y la carpeta actual sigue en su rama. `git.worktrees: false` devuelve el comportamiento anterior, y entonces `--worktree` pide la worktree para un cambio. La carpeta nueva se prepara con `git.setup` o, sin esa clave, con el comando de instalación del stack que se detecta en ella (`setupCommand`: pnpm, npm, yarn, bun, Flutter, Dart, uv, Poetry, PDM, Pipenv, Composer, Bundler, Mix y Go). La salida dice qué se ejecutó y, si falla, muestra la cola y pide ejecutarlo allí, con el cambio ya creado. `git.setup: false` no ejecuta nada. El SIGUIENTE de `new` pide continuar en esa carpeta (cambiar allí la de la sesión o abrir allí un agente), y el bloque de flujo de AGENTS.md lo dice en una línea; el AGENTS.md de este repo ya la tiene. La configuración de los tests existentes fija `git.worktrees: false`, y los tests nuevos prueban el valor por defecto y la preparación con un `pnpm` simulado en el PATH.
+
+### Desviaciones
+
+- **`--from` sin `--worktree` vale cuando el cambio va a una worktree:** el Diseño lo decía, y además la fila de `new` en ARCHITECTURE §6 ya no lista `--worktree`, que solo hace falta con `git.worktrees: false`.
+- **La configuración del test «needs a branch per change» se escribe entera,** sin `CONFIG()`, porque `CONFIG()` ya trae un bloque `git:` y el YAML no admite la clave dos veces.
+
+### Decisiones
+
+- **El comando se detecta en la carpeta nueva, no en la actual:** es la que tiene los manifiestos de la rama del cambio.
+- **La preparación usa `verify.timeoutSec` como límite de tiempo,** igual que la verificación.
+- **Si no hay comando para el stack, la salida no dice nada de preparación:** no hay nada que hacer.
+- **A1 y A2, confirmados al aprobar:** las worktrees son el valor por defecto también en los repos que ya usan Specty, y Specty instala las dependencias con el comando de cada stack.
+
+### Pendientes
+
+- **«Rama destino configurable» (`git.target`):** aprobado, en su worktree sobre esta rama.
+- **Recompilar el CLI de la carpeta principal** cuando esto esté en `main`: hasta entonces, el `specty` global sigue cambiando la rama de la carpeta con `new` sin `--worktree`.
+- **Comandos de la persona desde cualquier carpeta** y `status` sobre todas las worktrees: el último cambio de la serie.
+- **El test de toasts de la UI:** volvió a fallar una vez en un `pnpm check` con la máquina cargada.
