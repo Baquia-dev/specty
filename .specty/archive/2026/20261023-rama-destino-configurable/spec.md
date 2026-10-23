@@ -67,3 +67,25 @@ kind: standard
 
 - R1: Un `git.target` con una errata bloquea `new` en todo el repo — el bloqueo nombra la rama, y al quitar la clave se vuelve a la principal.
 - R2: Esta rama parte de «Cada cambio en su worktree», aún sin incorporar — al cerrar se incorpora `main` con ella dentro.
+
+## Cierre
+
+### Resumen
+
+`git.target`, en `config.yaml`, fija la rama de la que parten los cambios nuevos y a la que se incorporan al cerrar (o al aceptar un quick). `targetBranch` devuelve esa rama si existe en local, nada si está configurada pero no existe, y la rama principal detectada si no hay clave. `new` parte de `--from`, luego de `git.target` y luego de la principal, y si `git.target` no existe se bloquea sin crear carpeta ni rama. `close` incorpora a `git.target`, y si esa rama falta, cierra sin incorporar y pide fusionar la rama del cambio: nunca recurre a la principal por su cuenta. Sin la clave, todo sigue como antes.
+
+### Desviaciones
+
+- **`parallelBase` no usa `targetBranch`:** recibe `git.target` como un nombre más (después de `--from`), y si la rama no existe, `rev-parse` da el mismo bloqueo de siempre («no es una rama ni un commit»). El Diseño ya lo describía así; `targetBranch` solo la usa la incorporación.
+- **El test de `close` con `git.target` escribe la configuración entera:** `CONFIG()` ya trae un bloque `git:`, y no se puede repetir.
+
+### Decisiones
+
+- **`git.target` se comprueba como rama local (`refs/heads/<rama>`) para incorporar:** un tag o un commit pueden servir de base, pero no se les puede hacer fast-forward.
+- **A1, confirmado al aprobar:** `git.target` es a la vez la base y el destino.
+
+### Pendientes
+
+- **Recompilar el CLI de la carpeta principal** cuando esto esté en `main`; con eso, `specty new` sin flags ya crea cada cambio en su worktree preparada.
+- **Comandos de la persona desde cualquier carpeta** y `status` sobre todas las worktrees: el último cambio de la serie.
+- **El test de toasts de la UI:** falló otra vez en una verificación de `task done` y pasó al repetirla.

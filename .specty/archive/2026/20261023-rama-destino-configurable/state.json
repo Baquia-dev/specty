@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-rama-destino-configurable",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-rama-destino-configurable",
   "baseCommit": "05c8d351dbcf89b2519252e623748e7b6e4c0f2a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:30863e3ffbf56fa830ad426d2220fa6307d1d1b16809718cfc4ccb3d6f8e5238",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "b1119e2dfa2b5267dc7db039de18aa8977a95c2e",
+      "attempts": 2,
       "startedAt": "2026-10-23T18:50:57.549Z",
       "doneAt": "2026-10-23T18:53:15.473Z",
-      "summary": "formats.md §6: git.target en el ejemplo y qué hace si falta la rama; ARCHITECTURE §9: la base y la incorporación usan la rama destino (git.target o la principal)"
+      "summary": "formats.md §6: git.target en el ejemplo y qué hace si falta la rama; ARCHITECTURE §9: la base y la incorporación usan la rama destino (git.target o la principal)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,6 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T19:01:22.072Z"
 }
