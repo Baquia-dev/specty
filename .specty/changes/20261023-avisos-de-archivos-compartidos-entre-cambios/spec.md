@@ -48,7 +48,7 @@ Specty avisa cuando un cambio planea tocar archivos que otro cambio abierto, en 
 
 ## Tareas
 
-- [ ] T1: Archivos compartidos al proponer y al aprobar
+- [x] T1: Archivos compartidos al proponer y al aprobar
   - files: packages/cli/src/flow/shared.ts, packages/cli/src/commands/propose.ts, packages/cli/src/commands/approve.ts, packages/cli/test/shared.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/shared.test.ts test/flow.test.ts

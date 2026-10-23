@@ -22,6 +22,7 @@ import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
 import { finishRetro } from "../flow/finish";
+import { listed, sharedFiles, sharedLines } from "../flow/shared";
 import type { Session } from "../session";
 import { readRevision, readSpec, type StoredChange } from "../store/changes";
 import { canDecide } from "./human";
@@ -72,6 +73,7 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     );
   }
   const analysis = await analyzeChange(session, active, "review");
+  const shared = await sharedFiles(session, state.id, listed(spec));
   const approvedText = await readRevision(files, state.approved?.revision);
   const delta =
     approvedText === undefined ? [] : specDelta(parseSpec(approvedText).spec, spec).entries;
@@ -83,6 +85,7 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
       effortLine(recommendEffort(analysis.size.level), session.cards),
       ...delta.map((entry) => `Δ ${deltaLine(entry, session.cards)}`),
       ...analysis.diagnostics.map((entry) => `! ${entry.message}`),
+      ...sharedLines(session, shared).map((line) => `! ${t("Compartido", "Shared")}: ${line}`),
     ].join("\n"),
   );
 

@@ -20,6 +20,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
+import { listed, sharedBlock, sharedFiles } from "../flow/shared";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readRevision } from "../store/changes";
@@ -102,7 +103,7 @@ export async function propose(session: Session): Promise<Output> {
     approvedText === undefined || phase === "closing"
       ? []
       : specDelta(parseSpec(approvedText).spec, analysis.spec).entries;
-  return proposedCard(
+  const card = proposedCard(
     {
       header: headerOf(state.id, moved.phase, t(`revisión ${revision}`, `revision ${revision}`)),
       specPath,
@@ -114,6 +115,10 @@ export async function propose(session: Session): Promise<Output> {
     },
     cards,
   );
+  // Files another open change also lists: seen while planning, not when the merge collides.
+  if (phase === "closing") return card;
+  const shared = await sharedFiles(session, state.id, listed(analysis.spec));
+  return { ...card, blocks: [...card.blocks, ...sharedBlock(session, shared)] };
 }
 
 /** Keeps confirmations whose text did not change; everything else waits for a person again. */
