@@ -2,6 +2,7 @@
 import { Injectable, inject } from "@angular/core";
 import type { ChangeState, Phase } from "@baquia-dev/specty-core";
 import { Commands } from "../components/command-palette";
+import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import {
   ActionError,
@@ -10,6 +11,7 @@ import {
   type CommentRecord,
   SpectyData,
 } from "./records";
+import { asistenciaSample, decideResultIn } from "./sample-acceptance";
 import { boletinesProgress, decideScopeIn, loginProgress, withProgress } from "./sample-progress";
 import { revisedSample } from "./sample-revisions";
 import { canFinishTask, finishTaskIn, RunSimulation, runTarget, verifiedIn } from "./sample-run";
@@ -82,7 +84,7 @@ export function sampleRecords(now: number): ChangeRecord[] {
     },
     revisedSample(now),
     withProgress(sample("20261019-boletines-pdf", "implementing", 3, now), boletinesProgress(now)),
-    sample("20261018-asistencia-curso", "acceptance", 95, now, {}, ["done", "done"]),
+    asistenciaSample(sample("20261018-asistencia-curso", "acceptance", 95, now), now),
     sample(
       "20261017-recordatorios-correo",
       "closing",
@@ -249,6 +251,10 @@ export class FixtureData extends SpectyData {
     return this.edit(change, (record) =>
       decideScopeIn(record, request, decision, reason, Date.now()),
     );
+  }
+
+  override decideResult(change: string, decision: ResultDecision): Promise<void> {
+    return this.edit(change, (record) => decideResultIn(record, decision, Date.now()));
   }
 
   /** Applies `change` to one record and tells the subscribers; a thrown ActionError rejects. */

@@ -6,6 +6,13 @@
   "branch": "specty/20261022-pestana-aceptacion-criterios-con-evidencia-y-mat",
   "baseCommit": "52f53d135ee33eb18bc0029bc12324985d29ec51",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7a8a2f502dcf2783d1722602a096a17fcc52c9f699434533c9f14488ad4ffa1c",
+    "at": "2026-10-23T01:14:16.179Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -46,7 +53,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d7ac9dc737748a62eb010fc4bb27791476e8506f",
+      "startedAt": "2026-10-23T01:14:40.181Z",
+      "doneAt": "2026-10-23T01:16:57.075Z",
+      "summary": "data/acceptance.ts: ResultDecision (aceptar o ajustar con la petición literal), evidenceOf (por criterio, las tareas que lo cubren y su estado: verified, unverified, pending o uncovered) y summaryOf (criterios verificados, tareas hechas y commits). records.ts: SpectyData.decideResult, de solo lectura por defecto (296 líneas). sample-acceptance.ts: la muestra «Panel de asistencia por curso» con commits, duraciones y verificaciones (T2 a la segunda), y decideResultIn como la CLI: aceptar pasa a cierre con change.accepted (un quick termina con change.closed); ajustar pasa a adjusting con pending.adjustment y adjust.requested; rechaza una petición vacía y un cambio fuera de aceptación. fixtures.ts usa la muestra y delega la decisión (298 líneas). 6 tests en acceptance.test.ts."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -56,12 +73,5 @@
     "AC": 6,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:7a8a2f502dcf2783d1722602a096a17fcc52c9f699434533c9f14488ad4ffa1c",
-    "at": "2026-10-23T01:14:16.179Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

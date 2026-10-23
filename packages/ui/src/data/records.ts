@@ -9,6 +9,7 @@ import type {
   Phase,
   SizeLevel,
 } from "@baquia-dev/specty-core";
+import type { ResultDecision } from "./acceptance";
 import type { AuditRecord, ProgressView, RunRecord } from "./progress";
 
 /** What a data source gives for each change: the files as they are, and when its phase began. */
@@ -103,6 +104,11 @@ export abstract class SpectyData {
     _decision: "approved" | "rejected",
     _reason?: string,
   ): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  /** Accepts the result, or asks for adjustments with the person's literal request. */
+  decideResult(_change: string, _decision: ResultDecision): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 }

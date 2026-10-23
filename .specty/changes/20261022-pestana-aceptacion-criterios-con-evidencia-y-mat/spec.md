@@ -65,7 +65,7 @@ La pestaña Aceptación deja el texto provisional. Muestra cada criterio con la 
 
 ## Tareas
 
-- [ ] T1: La evidencia por criterio y la decisión en la fuente
+- [x] T1: La evidencia por criterio y la decisión en la fuente
   - files: packages/ui/src/data/acceptance.ts, packages/ui/src/data/acceptance.test.ts, packages/ui/src/data/records.ts, packages/ui/src/data/sample-acceptance.ts, packages/ui/src/data/fixtures.ts
   - ac: AC1, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/acceptance.test.ts
