@@ -74,9 +74,27 @@ export type GuardAction =
   | { readonly kind: "shell"; readonly facts: ShellFacts }
   | { readonly kind: "other" };
 
+/** The rule behind a denial, so a caller can pick the next step (`scope add` only for `scope`). */
+export type GuardRule =
+  | "human"
+  | "package"
+  | "bypass"
+  | "commit"
+  | "protected"
+  | "spec"
+  | "no-change"
+  | "phase"
+  | "no-task"
+  | "scope";
+
 export type GuardDecision =
   | { readonly allow: true }
-  | { readonly allow: false; readonly reason: string; readonly next: string };
+  | {
+      readonly allow: false;
+      readonly rule: GuardRule;
+      readonly reason: string;
+      readonly next: string;
+    };
 
 const ALLOW: GuardDecision = { allow: true };
 
@@ -92,6 +110,7 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
   const human = facts.specty.find((name) => HUMAN_COMMANDS.has(name));
   if (human !== undefined) {
     return deny(
+      "human",
       t(
         `\`${ctx.command} ${human}\` lo ejecuta el usuario en su terminal, no el agente.`,
         `\`${ctx.command} ${human}\` is run by the user in their terminal, not by the agent.`,
@@ -104,6 +123,7 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
   }
   if (facts.unscopedNpx) {
     return deny(
+      "package",
       t(
         "`npx specty` instala otro paquete de npm, no Specty.",
         "`npx specty` installs an unrelated npm package, not Specty.",
@@ -113,6 +133,7 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
   }
   if (facts.bypass) {
     return deny(
+      "bypass",
       t(
         "No se permite saltarse los hooks (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
         "Skipping hooks is not allowed (`--no-verify`, `core.hooksPath`, `HUSKY=0`…).",
@@ -123,6 +144,7 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
   if (facts.committedGoverned.length > 0) {
     const task = ctx.change?.task?.id ?? "<T>";
     return deny(
+      "commit",
       t(
         "Los commits de código los hace Specty al completar cada tarea.",
         "Code commits are made by Specty when each task is completed.",
@@ -145,6 +167,7 @@ function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): 
   if (change !== undefined && path === change.specPath) return decideSpec(change, mode, ctx);
   if (matchesAny(path, PROTECTED) || path.startsWith(".specty/")) {
     return deny(
+      "protected",
       t(
         `\`${path}\` lo gestiona Specty; no se edita a mano.`,
         `\`${path}\` is managed by Specty; do not edit it by hand.`,
@@ -158,6 +181,7 @@ function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): 
   if (!isGoverned(path, ctx.config)) return ALLOW;
   if (change === undefined) {
     return deny(
+      "no-change",
       t(
         `No hay un cambio activo y \`${path}\` es código gobernado: primero va la spec.`,
         `There is no active change and \`${path}\` is governed code: the spec comes first.`,
@@ -167,6 +191,7 @@ function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): 
   }
   if (change.phase !== "implementing") {
     return deny(
+      "phase",
       t(
         `El cambio ${change.id} está en fase ${change.phase}: solo se toca código con la spec aprobada y una tarea activa.`,
         `Change ${change.id} is in the ${change.phase} phase: code is touched only with an approved spec and an active task.`,
@@ -177,6 +202,7 @@ function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): 
   const task = change.task;
   if (task === undefined) {
     return deny(
+      "no-task",
       t("No hay una tarea activa.", "There is no active task."),
       t(
         `ejecuta \`${ctx.command} next\` para activar la siguiente.`,
@@ -191,6 +217,7 @@ function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): 
   });
   if (verdict !== "out-of-scope") return ALLOW;
   return deny(
+    "scope",
     t(
       `\`${path}\` está fuera del alcance de ${task.id}.`,
       `\`${path}\` is outside the scope of ${task.id}.`,
@@ -212,6 +239,7 @@ function decideSpec(
   if (mode === "write" && access !== "locked") return ALLOW;
   const implementing = change.phase === "implementing";
   return deny(
+    "spec",
     implementing
       ? t(
           "La spec está aprobada y bloqueada mientras se implementa.",
@@ -234,6 +262,6 @@ function firstDenial(decisions: readonly GuardDecision[]): GuardDecision {
   return decisions.find((decision) => !decision.allow) ?? ALLOW;
 }
 
-function deny(reason: string, next: string): GuardDecision {
-  return { allow: false, reason, next };
+function deny(rule: GuardRule, reason: string, next: string): GuardDecision {
+  return { allow: false, rule, reason, next };
 }

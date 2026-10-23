@@ -2,6 +2,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   effect,
@@ -10,6 +11,7 @@ import {
   input,
   linkedSignal,
   signal,
+  untracked,
   viewChild,
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
@@ -23,6 +25,7 @@ import {
 } from "@lucide/angular";
 import { AcceptanceActions } from "../acceptance/acceptance-actions";
 import { AcceptanceTab } from "../acceptance/acceptance-tab";
+import { ClosingActions } from "../acceptance/closing-actions";
 import { PhaseBadge } from "../components/badge";
 import { PAGE } from "../components/document";
 import { EmptyState } from "../components/empty-state";
@@ -85,6 +88,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     ProgressTab,
     AcceptanceTab,
     AcceptanceActions,
+    ClosingActions,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -118,15 +122,17 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
             </div>
             <!--
               Beside the title: the decision waiting (on the spec in review, on the result in
-              acceptance) and, as a suggestion rather than a fact of the change, the effort for the
-              agent. Under the title, at its edge.
+              acceptance, on the closing once the agent sent it) and, as a suggestion rather than a
+              fact of the change, the effort for the agent. Under the title, at its edge.
             -->
-            @if (change.phase === 'review' || change.phase === 'acceptance' || (showEffort && change.effort)) {
+            @if (change.phase === 'review' || change.phase === 'acceptance' || change.decision === 'closing' || (showEffort && change.effort)) {
               <div class="mt-1 flex flex-col items-end gap-3 max-lg:items-start">
                 @if (change.phase === 'review') {
                   <sp-review-actions class="max-lg:items-start" [change]="change" />
                 } @else if (change.phase === 'acceptance') {
                   <sp-acceptance-actions class="flex-wrap" [change]="change" />
+                } @else if (change.decision === 'closing') {
+                  <sp-closing-actions [change]="change" />
                 }
                 @if (showEffort && change.effort; as effort) {
                   <p class="m-0 flex max-w-80 items-start gap-2 text-[13px] text-text-muted" data-effort>
@@ -233,10 +239,19 @@ export class ChangePage {
     });
   }
 
-  /** The tab in the URL if valid; otherwise, the one for the change's phase. */
-  protected readonly tab = linkedSignal<ChangeTab>(() => {
-    const asked = TABS.find((tab) => tab === this.tabParam());
-    return asked ?? this.change()?.tab ?? "spec";
+  private readonly changeId = computed(() => this.change()?.id);
+
+  /**
+   * The tab in the URL if valid; otherwise, the one for the change's phase when it opens. A new
+   * phase while the person looks does not move them: confirming a closing keeps it in sight.
+   */
+  protected readonly tab = linkedSignal<
+    readonly [string | undefined, string | undefined],
+    ChangeTab
+  >({
+    source: () => [this.tabParam(), this.changeId()],
+    computation: ([param]) =>
+      TABS.find((tab) => tab === param) ?? untracked(() => this.change()?.tab) ?? "spec",
   });
 
   /**

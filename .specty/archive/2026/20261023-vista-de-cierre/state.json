@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261023-vista-de-cierre",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261023-vista-de-cierre",
+  "baseCommit": "c6aa75f02694760065912f8d98e86980a69a4de3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e1d08a11d9fd9545a3ee5785551da1ce262c0520d4e67ec7d84885ec2e348f3d",
+    "at": "2026-10-23T10:30:30.036Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8658248d83b129f1cef12c3ed771023672623db4824bf015a01ef465534cf429",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ce68806c51a9ab1f5b3601946b720bc97f5e31b392a479ebb72437a62d4b843c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:20940e094b71b2f1585f23016eeb06ac742226bf5237a460b36cc744539c4cdf",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:2219ed6e676f1e4f78608217d29c31f09b7c77354af98cc6f4dacdfa9d1d1e3d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3023c7b8fd198c13d523f688bad9e7b842f15a8f",
+      "attempts": 1,
+      "startedAt": "2026-10-23T10:30:39.094Z",
+      "doneAt": "2026-10-23T10:33:11.367Z",
+      "summary": "sp-closing-view: la sección «Cierre» (divisor de nivel 2 con su estado: en redacción, por confirmar o confirmado) con las partes del cierre bajo sus subtítulos (Resumen, Desviaciones, Decisiones, Pendientes; Summary… Follow-ups en inglés) y su markdown con sp-markdown, sangradas como el resto del documento; las vacías no aparecen y lo que no encaja va al final sin título. Mientras el agente redacta (cierre sin enviar) solo dice que lo está redactando. La pestaña Aceptación la muestra bajo el resumen y encima de la verificación completa, en cierre y en terminado con cierre (no en un cambio rápido), en lugar de la nota de cierre. Tests: las partes y su orden, el markdown, el aviso de redacción, partes vacías y texto suelto, terminado en inglés, y en la pestaña el orden de las secciones, la redacción, terminado y el cambio rápido.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c86d16f0f6d3eb78828cb9043d0aca8e364689ef",
+      "attempts": 1,
+      "startedAt": "2026-10-23T10:33:11.673Z",
+      "doneAt": "2026-10-23T10:34:25.368Z",
+      "summary": "closing-actions.ts: sp-closing-actions (el botón «Confirmar y archivar», normal o compacto, en un grupo «Decisión sobre el cierre») y el diálogo sp-confirm-closing, que dice qué pasa (el cambio termina y se archiva con su cierre, que queda en su historia) y que no se puede deshacer (lo pendiente va en un cambio nuevo), con «Cancelar» y «Confirmar y archivar». Confirma con SpectyData.confirmClosing; al terminar cierra el diálogo y avisa «Cierre confirmado: el cambio está terminado y archivado.»; si la fuente no puede, un aviso con su motivo y el diálogo sigue abierto. Tests: el botón y su versión compacta, cancelar sin cambios, confirmar hasta terminado con su aviso, y el rechazo de la fuente.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "686f3473931afc5a0768c9332a58a061b7960939",
+      "attempts": 1,
+      "startedAt": "2026-10-23T10:34:25.642Z",
+      "doneAt": "2026-10-23T10:39:35.019Z",
+      "summary": "«Confirmar y archivar» (sp-closing-actions) en la cabecera amplia, junto al título, y compacto en la barra, solo cuando el cambio espera la confirmación del cierre (decision closing), como las acciones de aceptación. La pestaña del cambio ya no se mueve si la fase cambia mientras la persona mira: sin ?tab= se elige al abrir (por fase) y se queda; así, al confirmar, la página sigue en Aceptación con el cierre a la vista en vez de saltar a Historial. change-page.test.ts estaba en 300 líneas, así que los tests de la página con un cierre van en change-page.closing.test.ts, junto a él: la acción en cabecera y barra con su revisión «cierre por confirmar», nada mientras el agente redacta («aceptada, en cierre»), y confirmar hasta terminado sin salir de Aceptación. docs/ui.md describe la sección Cierre, la acción y la regla de la pestaña. Comprobado en el navegador (puerto 4322, desde specty-prototipo) a 390 y 1280 px, claro y oscuro: Recordatorios con su cierre en cuatro partes, el diálogo, terminado con el cierre confirmado y su aviso, y Panel de asistencia tras aceptar con el cierre en redacción.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-23T10:45:45.316Z"
+}

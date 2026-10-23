@@ -61,12 +61,13 @@ specty/
  draft ──propose──► review ◄──── comentarios: el agente corrige y vuelve a proponer
                       │  ▲
               aprobar*│  └─────────propose (solo el delta)───────┐
-                      ▼                                          │
-                 implementing ◄── scope add · decidir alcance*   │
-                      │                                          │
-          última tarea│                                          │
-                      ▼                                          │
-                  acceptance ──pedir ajustes (agente o persona)──► adjusting
+    ┌─────────────────┤                                          │
+    │ sin tareas      ▼                                          │
+    │ pendientes implementing ◄── scope add · decidir alcance*   │
+    │                 │                                          │
+    │     última tarea│                                          │
+    │                 ▼                                          │
+    └───────────► acceptance ──pedir ajustes (agente o persona)──► adjusting
                       │
               aceptar*│
                       ▼
@@ -207,7 +208,7 @@ Las worktrees que otras herramientas crean dentro del repositorio (Claude Code u
 | Capa | Qué hace | ¿Se puede evadir? |
 | --- | --- | --- |
 | 1. Instrucciones (AGENTS.md y salida de Specty) | Guía | Sí |
-| 2. Hooks del agente (guard) | Bloquea escrituras fuera de alcance, `git commit` directo, acciones humanas y edición de archivos protegidos | Sí, con shell indirecta |
+| 2. Hooks del agente (guard) | Bloquea escrituras fuera de alcance, `git commit` directo, acciones humanas y edición de archivos protegidos; en Claude Code, al terminar cada comando de Bash, avisa de lo que cambió sin permiso | Sí, con shell indirecta; el aviso posterior llega con el cambio ya hecho |
 | 3. Hooks de git | Bloquea commits sin recibo ni spec | Sí, con `--no-verify` |
 | 4. CI (`specty ci` como check obligatorio) | Rechaza commits no trazables, specs sin aprobación válida para su hash y ramas `spike/` hacia la principal | No |
 | 5. Revisión de PR (modo equipo) | Aprobación con identidad verificada por el servidor | No |
@@ -221,13 +222,15 @@ Las worktrees que otras herramientas crean dentro del repositorio (Claude Code u
 
 El guard solo juzga rutas que puede ubicar dentro del repositorio y que git no ignora. El análisis de shell sigue los `cd` de cada comando y, como bash, se salta los comentarios y el cuerpo de los heredocs; dentro de `((…))` y `$((…))`, `<`, `>`, `&` y `|` son aritmética, no redirecciones. Una ruta con variables sin expandir, o una ruta relativa tras un `cd` a un destino desconocido, no se bloquea por alcance: la cubren los hooks de git y el CI.
 
+**Después de cada comando de Bash** (Claude Code: `PostToolUse` y `PostToolUseFailure`, con el matcher `Bash`). Antes del comando, si lo permite y no es de Specty, el guard guarda una foto de los archivos que difieren de `HEAD`, con su tamaño y su fecha, en `.git/specty/shell/<tool_use_id>.json`. Al terminar, compara y juzga lo que cambió con las mismas reglas, así que también ve lo que escriben intérpretes, scripts y generadores, que el análisis de shell no puede prever. No lo deshace: Claude Code muestra el aviso al modelo, y `task done` sigue siendo la puerta. Las fotos que nadie recoge se borran al cabo de un día.
+
 Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escriben archivos, `--no-verify`, `core.hooksPath`, acciones humanas) son de mejor esfuerzo, porque un comando siempre se puede ofuscar. Para eso existe la capa 3. El guard también bloquea `npx specty`, `npm i specty` y sus equivalentes sin scope, porque `specty` en npm es un paquete ajeno ([ADR 0007](decisions/0007-nombre-y-organizacion.md)), y responde con el comando correcto.
 
 **Soporte de hooks por herramienta** (revisado el 2026-10-21; se vuelve a verificar al implementar cada adaptador):
 
 | Herramienta | Evento previo a la acción | Configuración | Estado |
 | --- | --- | --- | --- |
-| Claude Code | `PreToolUse` (`matcher` + `hooks: [{ type: "command" }]`; salida 2 bloquea) | `.claude/settings.json`, o `settings.local.json` si el comando lleva una ruta local | Implementado (F1) |
+| Claude Code | `PreToolUse` (`matcher` + `hooks: [{ type: "command" }]`; salida 2 bloquea), y `PostToolUse` y `PostToolUseFailure` con `Bash` (salida 2: el modelo ve el aviso) | `.claude/settings.json`, o `settings.local.json` si el comando lleva una ruta local | Implementado (F1); aviso tras cada comando de Bash |
 | Antigravity | `PreToolUse` | `.agents/hooks.json` | El legacy lo instala; verificar |
 | Cursor | `preToolUse` (`Write`, `Delete`, `Shell`) y `beforeShellExecution`; responde JSON con `permission` | `.cursor/hooks.json` (`version: 1`) | Implementado (F1). No existe un evento previo a editar: `Write` cubre las escrituras del agente |
 | Windsurf | `pre_write_code`, `pre_run_command` | `.windsurf/hooks.json` | Documentado |

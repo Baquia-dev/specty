@@ -104,7 +104,7 @@ describe("Acceptance tab", () => {
     expect(text(pdf.row("AC1")?.querySelector("[data-mark]"))).toBe("Pendiente");
     expect(text(pdf.row("AC1")?.querySelector("[data-task=T3] [data-verdict]"))).toBe("En curso");
     expect(pdf.element.querySelector("[data-not-met]")).toBeNull();
-    expect(pdf.element.querySelector("[data-closing]")).toBeNull();
+    expect(pdf.element.querySelector("sp-closing-view")).toBeNull();
 
     const reminders = view("20261017-recordatorios-correo");
     const sent = await render(reminders);
@@ -113,16 +113,28 @@ describe("Acceptance tab", () => {
     expect(text(sent.element.querySelector("[data-summary]"))).toBe(
       "0 de 1 criterios verificados · 1 tarea hecha · 0 commits",
     );
-    expect(text(sent.element.querySelector("[data-closing]"))).toBe(
-      "El agente envió el cierre: confírmalo con specty close.",
-    );
-    // Accepted, with the closing not sent yet: nothing waits for the person.
+    // The closing the agent sent, under the summary and above the full verification (AC1).
+    const sections = [...sent.element.querySelectorAll("section[aria-labelledby]")];
+    expect(sections.map((section) => section.getAttribute("aria-labelledby"))).toEqual([
+      "acceptance-closing",
+      "full-verification",
+      "acceptance-criteria",
+    ]);
+    expect(sent.element.querySelectorAll("sp-closing-view [data-part]")).toHaveLength(4);
+    // Accepted, with the closing not sent yet: the agent is writing it (AC2).
     const { decision, ...accepted } = reminders;
     expect(decision).toBe("closing");
     const writing = await render(accepted);
-    expect(text(writing.element.querySelector("[data-closing]"))).toBe(
-      "Resultado aceptado: el agente redacta el cierre.",
+    expect(text(writing.element.querySelector("[data-writing]"))).toContain(
+      "El agente redacta el cierre",
     );
+    // Done: the closing stays to read; a quick change, with none, shows no section.
+    const done = await render({ ...accepted, phase: "done" });
+    expect(text(done.element.querySelector("sp-closing-view [data-meta]"))).toBe("confirmado");
+    const { closing: _none, ...quick } = accepted;
+    expect(
+      (await render({ ...quick, phase: "done" })).element.querySelector("sp-closing-view"),
+    ).toBeNull();
   });
 
   it("marks a criterion no task covers", async () => {
