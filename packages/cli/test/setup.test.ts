@@ -66,11 +66,15 @@ describe("specty init", () => {
     expect((await cli(root, ["doctor"])).out).toContain("Claude Code: guard instalado.");
   });
 
-  it("lets the agent enter and leave worktrees, keeping the permissions people wrote", async () => {
+  it("lets the agent use worktrees without a prompt, keeping the permissions people wrote", async () => {
     const root = await tempRepo({
       "package.json": '{"name":"x","scripts":{"test":"true"}}\n',
       ".claude/settings.local.json": JSON.stringify({
-        permissions: { allow: ["Bash(npm test)"], deny: ["Read(.env)"] },
+        permissions: {
+          allow: ["Bash(npm test)"],
+          deny: ["Read(.env)"],
+          ask: ["ExitWorktree(action:remove)", "Bash(rm *)"],
+        },
       }),
     });
     expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
@@ -79,9 +83,21 @@ describe("specty init", () => {
     expect(settings.permissions).toEqual({
       allow: ["Bash(npm test)", "EnterWorktree", "ExitWorktree"],
       deny: ["Read(.env)"],
-      ask: ["ExitWorktree(action:remove)"],
+      ask: ["Bash(rm *)"],
     });
     expect(settings.hooks.PreToolUse).toHaveLength(1);
+
+    // The rule an earlier init wrote, alone in `ask`, leaves no `ask` behind.
+    await writeFiles(root, {
+      ".claude/settings.local.json": JSON.stringify({
+        ...settings,
+        permissions: { allow: ["EnterWorktree"], ask: ["ExitWorktree(action:remove)"] },
+      }),
+    });
+    expect((await cli(root, ["init"])).code).toBe(0);
+    expect(JSON.parse(await read(root, ".claude/settings.local.json")).permissions).toEqual({
+      allow: ["EnterWorktree", "ExitWorktree"],
+    });
   });
 
   it("is idempotent and keeps what people wrote", async () => {

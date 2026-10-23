@@ -270,7 +270,7 @@ Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escribe
 
 | Herramienta | Evento previo a la acción | Configuración | Estado |
 | --- | --- | --- | --- |
-| Claude Code | `PreToolUse` (`matcher` + `hooks: [{ type: "command" }]`; salida 2 bloquea), y `PostToolUse` y `PostToolUseFailure` con `Bash` (salida 2: el modelo ve el aviso) | `.claude/settings.json`, o `settings.local.json` si el comando lleva una ruta local | Implementado (F1); aviso tras cada comando de Bash. En el mismo archivo, `init` permite `EnterWorktree` y `ExitWorktree` para que el agente entre en la worktree del cambio sin preguntar; borrar una worktree (`ExitWorktree(action:remove)`) sigue preguntando |
+| Claude Code | `PreToolUse` (`matcher` + `hooks: [{ type: "command" }]`; salida 2 bloquea), y `PostToolUse` y `PostToolUseFailure` con `Bash` (salida 2: el modelo ve el aviso) | `.claude/settings.json`, o `settings.local.json` si el comando lleva una ruta local | Implementado (F1); aviso tras cada comando de Bash. En el mismo archivo, `init` permite `EnterWorktree` y `ExitWorktree`: las worktrees son transparentes para la persona, y el agente entra, sale y las borra sin preguntar |
 | Antigravity | `PreToolUse` | `.agents/hooks.json` | El legacy lo instala; verificar |
 | Cursor | `preToolUse` (`Write`, `Delete`, `Shell`) y `beforeShellExecution`; responde JSON con `permission` | `.cursor/hooks.json` (`version: 1`) | Implementado (F1). No existe un evento previo a editar: `Write` cubre las escrituras del agente |
 | Windsurf | `pre_write_code`, `pre_run_command` | `.windsurf/hooks.json` | Documentado |

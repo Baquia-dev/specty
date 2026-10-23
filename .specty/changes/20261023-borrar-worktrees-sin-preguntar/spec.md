@@ -16,6 +16,6 @@ Las worktrees deben ser transparentes para el usuario, así que borrar una tampo
 
 ## Tareas
 
-- [ ] T1: ExitWorktree sin pregunta al borrar
+- [x] T1: ExitWorktree sin pregunta al borrar
   - files: packages/cli/src/install/agents.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check

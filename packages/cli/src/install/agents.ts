@@ -14,14 +14,10 @@ const CLAUDE_EVENTS: Readonly<Record<string, string>> = {
   PostToolUse: "Bash",
   PostToolUseFailure: "Bash",
 };
-/**
- * Each change lives in its own worktree: the agent enters and leaves it without a prompt, while
- * removing one (it takes the branch with it) still asks.
- */
-const CLAUDE_PERMISSIONS: Readonly<Record<string, readonly string[]>> = {
-  allow: ["EnterWorktree", "ExitWorktree"],
-  ask: ["ExitWorktree(action:remove)"],
-};
+/** Each change lives in its own worktree: the agent enters, leaves and removes it without a prompt. */
+const CLAUDE_ALLOW: readonly string[] = ["EnterWorktree", "ExitWorktree"];
+/** The `ask` rule an earlier `init` wrote, which made removing a worktree ask. */
+const OLD_CLAUDE_ASK = "ExitWorktree(action:remove)";
 const FORMAT = { formattingOptions: { insertSpaces: true, tabSize: 2, eol: "\n" } };
 const CLAUDE_SETTINGS = ".claude/settings.json";
 const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
@@ -116,14 +112,19 @@ function withClaudeHook(value: Entry, command: string | undefined): Entry {
   return { ...value, hooks: { ...hooks, ...Object.fromEntries(events) } };
 }
 
-/** Adds the worktree permissions, after the rules the file already had. */
+/**
+ * Adds the worktree permissions after the rules the file already had, and drops the old `ask`
+ * rule; an `ask` left empty goes too.
+ */
 function withClaudePermissions(value: Entry): Entry {
-  const permissions = isRecord(value.permissions) ? value.permissions : {};
-  const lists = Object.entries(CLAUDE_PERMISSIONS).map(([list, rules]) => {
-    const current: unknown[] = Array.isArray(permissions[list]) ? permissions[list] : [];
-    return [list, [...current, ...rules.filter((rule) => !current.includes(rule))]];
-  });
-  return { ...value, permissions: { ...permissions, ...Object.fromEntries(lists) } };
+  const { ask, ...permissions } = isRecord(value.permissions) ? value.permissions : {};
+  const current: unknown[] = Array.isArray(permissions.allow) ? permissions.allow : [];
+  const allow = [...current, ...CLAUDE_ALLOW.filter((rule) => !current.includes(rule))];
+  const kept: unknown = Array.isArray(ask)
+    ? ask.filter((rule: unknown) => rule !== OLD_CLAUDE_ASK)
+    : ask;
+  const empty = kept === undefined || (Array.isArray(kept) && kept.length === 0);
+  return { ...value, permissions: { ...permissions, allow, ...(empty ? {} : { ask: kept }) } };
 }
 
 function withCursorHooks(value: Entry, command: string): Entry {
