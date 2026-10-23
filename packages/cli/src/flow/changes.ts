@@ -4,7 +4,8 @@ import { type Session, sessionFrom } from "../session";
 import { listOpenChanges, type StoredChange } from "../store/changes";
 import { loadConfig } from "../store/config";
 import { repoPaths } from "../store/paths";
-import { resolveActive } from "./active";
+import { isFinished, resolveActive } from "./active";
+import { integrationOf, isIncorporated } from "./integrate";
 
 /** A change and a session in the folder it lives in. */
 export interface Located {
@@ -36,6 +37,40 @@ export async function locateChanges(session: Session): Promise<Located[]> {
       located.push({ change, session, current: false });
   }
   return located;
+}
+
+/** The decisions only a person takes, from any folder. */
+export type PersonAction = "approve" | "reject" | "accept" | "close" | "cancel";
+
+/**
+ * Whether the change waits for the person's `action`: the spec's review, or with `scope` that
+ * scope request; acceptance; a submitted closing, or a closed change that did not reach its
+ * target branch; and, to cancel, any open change.
+ */
+export async function awaits(
+  action: PersonAction,
+  { change, session }: Located,
+  scope: string | undefined,
+): Promise<boolean> {
+  const { state } = change;
+  const requested =
+    scope !== undefined && state.pending.scopeRequests.some((request) => request.id === scope);
+  switch (action) {
+    case "approve":
+      return scope === undefined ? state.phase === "review" : requested;
+    case "reject":
+      return requested;
+    case "accept":
+      return state.phase === "acceptance";
+    case "close": {
+      if (state.phase === "closing") return state.closingSubmittedAt !== undefined;
+      if (state.phase !== "done") return false;
+      const plan = await integrationOf(session, state);
+      return plan !== undefined && !(await isIncorporated(session, plan));
+    }
+    case "cancel":
+      return !isFinished(state);
+  }
 }
 
 /** A session in another worktree, or nothing when Specty is not set up there. */

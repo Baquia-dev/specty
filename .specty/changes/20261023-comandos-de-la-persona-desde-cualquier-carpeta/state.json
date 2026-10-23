@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4a3252c7a7fc99d8c11a4216cd2db62a7c545ca8",
+      "attempts": 1,
       "startedAt": "2026-10-23T19:25:06.207Z",
       "doneAt": "2026-10-23T19:27:42.614Z",
-      "summary": "status lista el cambio de cada worktree (cada uno leído en su carpeta y con su configuración, vía locateChanges en flow/changes.ts) más los de la carpeta actual sin rama, sin las copias que hereda una rama; core: StatusEntry.folder con la ruta relativa, «espera al agente» y el SIGUIENTE nombra la decisión pendiente aunque esté en otra carpeta"
+      "summary": "status lista el cambio de cada worktree (cada uno leído en su carpeta y con su configuración, vía locateChanges en flow/changes.ts) más los de la carpeta actual sin rama, sin las copias que hereda una rama; core: StatusEntry.folder con la ruta relativa, «espera al agente» y el SIGUIENTE nombra la decisión pendiente aunque esté en otra carpeta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cae56f35d63b38cb9c4be494238144a887cdc470",
+      "startedAt": "2026-10-23T19:27:42.912Z",
+      "doneAt": "2026-10-23T19:31:25.060Z",
+      "summary": "approve, reject, accept, close y cancel aceptan [cambio] y pasan por personSession (commands/human.ts): con id, ese; si no, el de la carpeta actual si espera la decisión; si no, el único que la espera entre todas las worktrees (awaits en flow/changes.ts), o el que la persona elige; el comando corre con la sesión de la carpeta del cambio y una nota lo nombra con su carpeta. Sin candidatos dice que ningún cambio espera esa acción; los agentes no se redirigen. commands.test actualiza el mensaje sin cambios"
     }
   },
   "pending": {

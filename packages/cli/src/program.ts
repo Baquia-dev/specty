@@ -17,6 +17,7 @@ import { adjust } from "./commands/adjust";
 import { approve } from "./commands/approve";
 import { doctor } from "./commands/doctor";
 import { cancel, close } from "./commands/finish";
+import { personSession } from "./commands/human";
 import { init } from "./commands/init";
 import { integrate } from "./commands/integrate";
 import { newChange } from "./commands/new";
@@ -29,6 +30,7 @@ import { status } from "./commands/status";
 import { taskDone } from "./commands/task";
 import { guard } from "./enforce/guard";
 import { preCommit, prepareCommitMsg } from "./enforce/hook";
+import type { PersonAction } from "./flow/changes";
 import { bareCards, type Environment, openSession, type Session, systemLanguage } from "./session";
 
 export interface CliEnvironment extends Environment {
@@ -191,26 +193,57 @@ export async function runCli(
     .action((options: { minimal?: boolean }) =>
       run((session) => retro(session, options.minimal === true))(),
     );
+  /** A person's decision runs in the folder of the change it applies to, from any folder. */
+  const decide = (
+    action: PersonAction,
+    options: { readonly id: string | undefined; readonly scope?: string | undefined },
+    handler: (session: Session) => Promise<Output>,
+  ) =>
+    run(async (session) => {
+      const chosen = await personSession(session, action, options);
+      return chosen.kind === "output" ? chosen.output : handler(chosen.session);
+    })();
+  const CHANGE = [
+    "[change]",
+    "the change's id (default: the one waiting for this decision)",
+  ] as const;
   program
     .command("approve")
     .description("approve the spec or a scope request (person only)")
+    .argument(...CHANGE)
     .option("--scope <id>")
-    .action((options: { scope?: string }) => run((session) => approve(session, options.scope))());
+    .action((id: string | undefined, options: { scope?: string }) =>
+      decide("approve", { id, scope: options.scope }, (session) => approve(session, options.scope)),
+    );
   program
     .command("reject")
     .description("reject a scope request (person only)")
+    .argument(...CHANGE)
     .requiredOption("--scope <id>")
     .option("--reason <text>")
-    .action((options: { scope: string; reason?: string }) =>
-      run((session) => reject(session, options.scope, options.reason))(),
+    .action((id: string | undefined, options: { scope: string; reason?: string }) =>
+      decide("reject", { id, scope: options.scope }, (session) =>
+        reject(session, options.scope, options.reason),
+      ),
     );
-  program.command("accept").description("accept the result (person only)").action(run(accept));
-  program.command("close").description("confirm the closing (person only)").action(run(close));
+  program
+    .command("accept")
+    .description("accept the result (person only)")
+    .argument(...CHANGE)
+    .action((id: string | undefined) => decide("accept", { id }, accept));
+  program
+    .command("close")
+    .description("confirm the closing (person only)")
+    .argument(...CHANGE)
+    .action((id: string | undefined) => decide("close", { id }, close));
   program
     .command("cancel")
     .description("cancel the change (person only)")
+    .argument(...CHANGE)
     .option("--reason <text>")
-    .action((options: { reason?: string }) => run((session) => cancel(session, options.reason))());
+    .action((id: string | undefined, options: { reason?: string }) =>
+      decide("cancel", { id }, (session) => cancel(session, options.reason)),
+    );
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
   program

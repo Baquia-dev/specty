@@ -63,7 +63,7 @@ kind: standard
   - files: packages/core/src/cards/human.ts, packages/core/test/cards.test.ts, packages/cli/src/flow/changes.ts, packages/cli/src/commands/status.ts, packages/cli/test/anywhere.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/anywhere.test.ts
-- [ ] T2: Las decisiones desde cualquier carpeta
+- [x] T2: Las decisiones desde cualquier carpeta
   - files: packages/cli/src/flow/changes.ts, packages/cli/src/commands/human.ts, packages/cli/src/program.ts, packages/cli/test/anywhere.test.ts
   - ac: AC1, AC2, AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/anywhere.test.ts test/flow.test.ts

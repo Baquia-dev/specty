@@ -121,7 +121,7 @@ describe("human decisions", () => {
   it("only accepts, closes or approves what is waiting", async () => {
     const root = await tempRepo({ ".specty/config.yaml": CONFIG() });
     expect((await cli(root, ["accept"], { terminal: person() })).out).toContain(
-      "No hay un cambio activo.",
+      "Ningún cambio espera `accept`.",
     );
     await cli(root, ["new", "Algo"]);
     expect((await cli(root, ["approve"], { terminal: person() })).out).toContain(
