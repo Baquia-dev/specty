@@ -13,3 +13,6 @@
 {"ts":"2026-10-22T23:24:40.903Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"63239b3730847960bedcc6f2bfc07d161251a04a"}}
 {"ts":"2026-10-22T23:34:09.604Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":39055}}
 {"ts":"2026-10-22T23:34:09.607Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"La pestaña Progreso sigue la verificación en curso por watchRun y la muestra en la fila de la tarea activa; la salida fallida anterior se pliega mientras corre. Comprobado en el navegador a 390 y 1280 px, claro y oscuro."}}
+{"ts":"2026-10-23T00:41:46.640Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T00:42:36.147Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:658ec198ba71cb19c9a9da6405f0575ca1004ec405c1cbeebdbcbd271d8e8acc","size":"L","warnings":1}}
+{"ts":"2026-10-23T00:44:13.758Z","actor":"human","event":"change.closed","data":{}}

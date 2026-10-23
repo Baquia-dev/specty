@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-salida-en-vivo-de-la-verificacion-en-curso",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-salida-en-vivo-de-la-verificacion-en-curso",
   "baseCommit": "ec15e53489ed118a7c246b86ce4381dbf8c4f5a8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4c001b3a94df78faf5835e0604dd4476c0e480b81632421e556ab25469a94dae",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "63239b3730847960bedcc6f2bfc07d161251a04a",
+      "attempts": 1,
       "startedAt": "2026-10-22T23:24:40.898Z",
       "doneAt": "2026-10-22T23:34:09.605Z",
-      "summary": "La pestaña Progreso sigue la verificación en curso por watchRun y la muestra en la fila de la tarea activa; la salida fallida anterior se pliega mientras corre. Comprobado en el navegador a 390 y 1280 px, claro y oscuro."
+      "summary": "La pestaña Progreso sigue la verificación en curso por watchRun y la muestra en la fila de la tarea activa; la salida fallida anterior se pliega mientras corre. Comprobado en el navegador a 390 y 1280 px, claro y oscuro.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,5 +91,6 @@
     "A": 5,
     "AC": 5,
     "T": 4
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T00:42:36.146Z"
 }

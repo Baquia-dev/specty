@@ -75,3 +75,30 @@ Mientras Specty verifica una tarea (al ejecutar `specty task done`, que puede ta
   - ac: AC1, AC3
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro: lanzar la simulación desde la paleta, ver llegar las líneas, subir para leer y volver con «Ir al final», ocultar y mostrar, y que al terminar quede el resultado.
+
+## Cierre
+
+### Resumen
+
+Mientras Specty verifica la tarea en curso, su fila en Progreso muestra «Verificando · 0:42», el comando y la salida a medida que llega, con los colores de la salida. Sigue la última línea salvo que la persona suba a leer; entonces «Ir al final» la devuelve. Se puede ocultar sin perder la línea del reloj. La salida fallida anterior se pliega mientras corre, y al terminar queda el resultado como cualquier verificación. Un lector de pantalla oye el inicio, el fin y el resultado, no cada línea. La salida llega por su propio canal, `SpectyData.watchRun`, y en el prototipo la lanza «Simular: verificar la tarea en curso».
+
+### Desviaciones
+
+- **Tests de la simulación:** van en `data/sample-run.test.ts`, junto a la simulación, y no en `fixtures.test.ts`, que no se tocó.
+- **Lógica fuera de `fixtures.ts`:** además de la simulación, `canFinishTask` y `finishTaskIn` pasaron a `sample-run.ts` para que `fixtures.ts` no pase de 300 líneas.
+- **`watchRun` por defecto:** responde una vez que no corre ninguna (`undefined`) en lugar de no emitir nada. Así quien se suscribe siempre recibe el estado actual al empezar.
+- **Bloque siempre montado:** `sp-live-output` está en la fila de la tarea en curso aunque no corra nada, para que su región de estado pueda anunciar el fin y el resultado. Solo se ve mientras hay una verificación.
+- **Comprobación de «Ir al final»:** la salida simulada tiene 11 líneas y no llena la región, así que en el navegador se comprobó acortando la región en la página. Los tests lo cubren midiendo el desplazamiento.
+
+### Decisiones
+
+- **Canal aparte:** cada línea actualiza solo la señal de la pestaña abierta, no la derivación de vistas del worker. La pestaña se suscribe al cambio que muestra y se da de baja al cambiar o al cerrarse.
+- **Plegar sin pisar a la persona:** la fila decide si la salida anterior está abierta según la última verificación y si hay otra en curso. Un resultado nuevo o una verificación nueva lo recalculan, y mientras no cambien se respeta lo que eligió la persona. El fallo nuevo aparece abierto al terminar.
+- **Seguir el final:** se considera al final a menos de 8 px; «Ir al final» vuelve a seguir la salida y mueve el foco a ella, porque el botón desaparece.
+- **Colores compartidos:** `OUTPUT_TONES` sale de la fila al bloque en vivo, así la salida en vivo y la guardada se leen igual.
+- **Simulación coherente con el ejemplo:** la verificación falla mientras la tarea espera el archivo que pidió en su solicitud de alcance, con el error que lo nombra, y pasa una vez aprobada. Al terminar suma un intento y deja `task.verified` en el audit, con `outputTail` si falló, como la CLI.
+
+### Pendientes
+
+- **CLI y servidor:** que la CLI escriba la salida mientras verifica y el servidor local la transmita, para implementar `watchRun` en la fuente real.
+- **Pestañas por hacer:** Aceptación e Historial. El detalle por eventos irá en Historial.
