@@ -76,3 +76,28 @@ El visor de diffs colorea el código con Shiki, con los colores del sistema de d
 
 - R1: Shiki pesa: su núcleo y el motor de JavaScript rondan cientos de KB, y cada gramática decenas — solo se descargan al ver un diff, y solo las gramáticas de los archivos que aparecen.
 - R2: El motor de JavaScript no cubre alguna gramática — Shiki lo avisa al cargarla; ese lenguaje queda sin colores (A5).
+
+## Cierre
+
+### Resumen
+
+El visor de diffs colorea el código con Shiki y los colores del sistema: palabras clave, cadenas, comentarios en cursiva, funciones y constantes, en claro y oscuro, con 4,5:1 o más sobre la superficie y los cuatro fondos del diff. El diff se ve al momento sin colores y se colorea cuando el resaltado está listo; las palabras cambiadas siguen marcadas. Shiki se descarga con `import()` al ver el primer diff, sin WASM, y cada uno de los 30 lenguajes de la lista cuando aparece un archivo suyo. Los demás lenguajes, los binarios, los archivos de más de 2.000 líneas y cualquier fallo dejan el diff sin colores, sin errores. El resaltado se inyecta con `HIGHLIGHT`.
+
+### Desviaciones
+
+- **Tests de los colores en `diff-file.test.ts`:** `diff-viewer.test.ts` quedaba en el límite de 300 líneas, así que solo inyecta un resaltado sin colores, y los tests del archivo con colores (Shiki de verdad) van junto a `diff-file.ts`.
+- **Fondos de las palabras cambiadas en oscuro:** pasan del 30 % al 22 % de tinte, como preveía A3, y palabra clave, comentario y función se aclaran un poco para cumplir el contraste.
+
+### Decisiones
+
+- **Constantes en verde azulado:** el verde de lo añadido ya marca líneas, así que los números y los tipos van en otro tono.
+- **Comentarios siempre en cursiva:** el tema de variables CSS de Shiki no la pone, así que la pone el resaltado.
+- **Un lado por vez:** las líneas quitadas toman los colores del código antiguo y las demás los del nuevo, cada lado de cada bloque resaltado de una vez.
+- **Una sola dependencia:** `shiki` (exacta, 4.5.0); sus gramáticas se importan como `shiki/langs/<id>.mjs`, una por archivo diferido.
+- **Tokens que no cuadran se ignoran:** si los tokens no deletrean la línea, se ve sin colores en vez de con el texto mal partido.
+
+### Pendientes
+
+- **Presupuesto de la carga inicial:** `ng build` avisa de 656,75 kB frente a 500 kB; ya pasaba antes de este cambio (que suma unos 2,6 kB, sin Shiki). Conviene ver qué entra en la carga inicial o ajustar el presupuesto.
+- **La vista «Cambios» en Aceptación**, en el cambio siguiente.
+- **El servidor local:** ejecutar git para cada tarea y para el cambio completo.
