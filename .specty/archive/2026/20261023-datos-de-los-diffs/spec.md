@@ -61,3 +61,27 @@ La UI puede pedir a su fuente de datos el diff de una tarea o del cambio complet
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/progress.ts, packages/ui/src/data/sample-diffs.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/diff.test.ts
   - ac: AC1, AC5
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+La fuente de datos da diffs: `diff(change, task?)` devuelve el texto tal como lo escribe `git diff`, de una tarea o del cambio completo, y una fuente que no los tiene lo dice. `parseDiff` lo lee en archivos (nuevos, borrados, modificados, renombrados o binarios, con sus líneas añadidas y quitadas) y bloques con los números de cada lado. Ignora lo que no entiende y acepta CRLF, rutas entre comillas y «\ No newline at end of file». Empareja las líneas quitadas y añadidas para verlas lado a lado (`splitRows`) y marca las palabras que cambiaron en las que se parecen. Cada tarea expone su commit de partida, y la fuente de ejemplo trae los diffs de «Panel de asistencia por curso».
+
+### Desviaciones
+
+- **Aviso de Biome:** las cadenas de `sample-diffs.ts` llevan `${…}` del código Dart de ejemplo. Se desactivó solo en ese archivo, con su motivo, el aviso de plantillas dentro de cadenas.
+- **Tests del diff por palabras:** se añadió uno para `codeTokens` en `word-diff.test.ts`, junto al archivo de la tarea.
+
+### Decisiones
+
+- **El texto de git como contrato:** la fuente no traduce nada, el servidor solo tendrá que ejecutar git y la UI lee el formato de siempre.
+- **Los conteos mandan:** el lector sigue los conteos de cada cabecera `@@`, así una línea de código que empieza por «--- » o «+++ » no se confunde con una cabecera.
+- **Palabras solo donde ayudan:** si una línea conserva menos del 40 %, se ve entera como quitada y añadida, sin marcar palabras.
+- **Diffs de ejemplo construidos:** se escriben como líneas y un constructor calcula las cabeceras, así los conteos siempre cuadran.
+
+### Pendientes
+
+- **El visor de diffs con resaltado de sintaxis**, en el cambio siguiente.
+- **La vista «Cambios» en Aceptación**, después.
+- **El servidor local:** ejecutar git para cada tarea (de su commit de partida a su commit) y para el cambio completo (desde la rama base).
