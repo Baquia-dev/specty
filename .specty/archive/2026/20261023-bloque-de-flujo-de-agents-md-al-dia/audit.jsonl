@@ -1,0 +1,9 @@
+{"ts":"2026-10-23T20:04:04.448Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261023-bloque-de-flujo-de-agents-md-al-dia"}}
+{"ts":"2026-10-23T20:04:32.302Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:31951678039464aab7329dab71ef7c5e46301b4ebdf5ffee2da02ef23eb902ae","size":"S","warnings":0}}
+{"ts":"2026-10-23T20:06:25.323Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:31951678039464aab7329dab71ef7c5e46301b4ebdf5ffee2da02ef23eb902ae","channel":"tty"}}
+{"ts":"2026-10-23T20:08:41.243Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"f20b7e0ca949df4705a5bc2956f7e7789dffb168"}}
+{"ts":"2026-10-23T20:08:47.545Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm lint","exit":0,"ms":1671}}
+{"ts":"2026-10-23T20:08:47.546Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"AGENTS.md con el bloque de flujo tal como lo regeneró specty init en la carpeta principal (copiado byte a byte): añade que el agente solo ejecuta aprobar, aceptar y cerrar si SIGUIENTE se lo pide, en modo delegado. La carpeta principal quedó restaurada para que el cierre pueda avanzar main"}}
+{"ts":"2026-10-23T20:13:43.593Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"5841c0528117daa7f461d1ecfd572377d0065582","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-23T20:25:26.507Z","actor":"specty","event":"integration.abandoned","data":{"target":"main"}}
+{"ts":"2026-10-23T20:26:12.814Z","actor":"human","event":"change.closed","data":{"lane":"quick"}}

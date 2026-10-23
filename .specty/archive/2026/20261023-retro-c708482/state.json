@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "20261023-retro-c708482",
+  "kind": "retro",
+  "phase": "done",
+  "baseCommit": "d3a82b44cf2e898051801c66614fdd29d9c7a82a",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1f9effb4c81cc906c6036380c1881d6960ad56925f4a7746470548d5f12ee4c6",
+    "at": "2026-10-23T20:08:53.582Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
