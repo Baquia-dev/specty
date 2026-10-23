@@ -29,6 +29,7 @@ import { scopeAdd } from "./commands/scope";
 import { reject } from "./commands/scope-decision";
 import { status } from "./commands/status";
 import { taskDone } from "./commands/task";
+import { isGuardTool } from "./enforce/actions";
 import { guard } from "./enforce/guard";
 import { preCommit, prepareCommitMsg } from "./enforce/hook";
 import { bareCards, type Environment, openSession, type Session, systemLanguage } from "./session";
@@ -276,7 +277,7 @@ export async function runCli(
     .command("guard", { hidden: true })
     .requiredOption("--tool <tool>")
     .action(async (options: { tool: string }) => {
-      if (options.tool !== "claude-code" && options.tool !== "cursor") return;
+      if (!isGuardTool(options.tool)) return;
       const reply = await guard(environment, options.tool, await environment.stdin());
       if (reply.stdout.length > 0) environment.io.out(reply.stdout);
       if (reply.stderr.length > 0) environment.io.err(reply.stderr);

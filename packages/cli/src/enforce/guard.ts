@@ -19,10 +19,9 @@ import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
-import { bindSession, type EnterRequest, enterAction } from "./sessions";
+import { checksAfterShell, type GuardTool, type RawAction, toolAction } from "./actions";
+import { bindSession, enterAction } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
-
-export type GuardTool = "claude-code" | "cursor";
 
 export interface GuardReply {
   readonly code: number;
@@ -30,17 +29,10 @@ export interface GuardReply {
   readonly stderr: string;
 }
 
-/** A tool event, reduced to what the flow cares about. Paths are still as the tool sent them. */
-type RawAction =
-  | { readonly kind: "write" | "delete"; readonly paths: readonly string[] }
-  | { readonly kind: "shell"; readonly command: string }
-  | { readonly kind: "enter"; readonly request: EnterRequest }
-  | { readonly kind: "other" };
-
 /**
  * `specty guard --tool <id>`: called by the agent's hooks before each action and, in Claude
- * Code, after each Bash command. It fails open on its own errors (the git hooks and CI still
- * apply) and never blocks outside Specty repos.
+ * Code and Codex, after each Bash command. It fails open on its own errors (the git hooks and
+ * CI still apply) and never blocks outside Specty repos.
  */
 export async function guard(
   environment: Environment,
@@ -54,8 +46,9 @@ export async function guard(
     const opened = await openSession({ ...environment, cwd });
     if (opened.kind !== "ok") return allow(tool);
     const session = opened.session;
-    if (tool === "claude-code" && isAfterTool(event)) return await afterShell(session, event);
-    const raw = tool === "claude-code" ? claudeAction(event) : cursorAction(event);
+    const after = checksAfterShell(tool);
+    if (after && isAfterTool(event)) return await afterShell(session, tool, event);
+    const raw = toolAction(tool, event);
     const action =
       raw.kind === "enter"
         ? await enterAction(environment, session, event, raw.request, cwd)
@@ -63,7 +56,7 @@ export async function guard(
     const decision = decideGuard(action, await guardContext(session));
     // One change at a time per session: the worktree it may enter becomes its own.
     if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
-    if (decision.allow && tool === "claude-code") await beforeShell(session, event, action);
+    if (decision.allow && after) await beforeShell(session, event, action);
     return reply(tool, decision, session);
   } catch (error) {
     const message = `specty guard: ${error instanceof Error ? error.message : String(error)}`;
@@ -106,71 +99,23 @@ async function beforeShell(
 }
 
 /** After a Bash command, judges what it changed with the guard's own rules. */
-async function afterShell(session: Session, event: Record<string, unknown>): Promise<GuardReply> {
+async function afterShell(
+  session: Session,
+  tool: GuardTool,
+  event: Record<string, unknown>,
+): Promise<GuardReply> {
   const id = toolUseId(event);
   const before = id === undefined ? undefined : await takeSnapshot(session, id);
   await pruneSnapshots(session);
-  if (before === undefined) return allow("claude-code");
+  if (before === undefined) return allow(tool);
   const changes = shellChanges(before, await treeSnapshot(session));
-  return reply("claude-code", decideAfterShell(changes, await guardContext(session)), session);
+  return reply(tool, decideAfterShell(changes, await guardContext(session)), session);
 }
 
 function cwdOf(event: Record<string, unknown>, fallback: string): string {
   if (typeof event.cwd === "string" && event.cwd.length > 0) return event.cwd;
   const roots = event.workspace_roots;
   return Array.isArray(roots) && typeof roots[0] === "string" ? roots[0] : fallback;
-}
-
-function claudeAction(event: Record<string, unknown>): RawAction {
-  const input = isRecord(event.tool_input) ? event.tool_input : {};
-  switch (event.tool_name) {
-    case "Edit":
-    case "MultiEdit":
-    case "Write":
-      return { kind: "write", paths: strings(input.file_path) };
-    case "NotebookEdit":
-      return { kind: "write", paths: strings(input.notebook_path) };
-    case "Bash":
-      return typeof input.command === "string"
-        ? { kind: "shell", command: input.command }
-        : { kind: "other" };
-    case "EnterWorktree":
-      return {
-        kind: "enter",
-        request: {
-          ...(typeof input.path === "string" ? { path: input.path } : {}),
-          ...(typeof input.name === "string" ? { name: input.name } : {}),
-        },
-      };
-    default:
-      return { kind: "other" };
-  }
-}
-
-function cursorAction(event: Record<string, unknown>): RawAction {
-  if (event.hook_event_name === "beforeShellExecution") {
-    return typeof event.command === "string"
-      ? { kind: "shell", command: event.command }
-      : { kind: "other" };
-  }
-  const input = isRecord(event.tool_input) ? event.tool_input : {};
-  const paths = [input.file_path, input.path, input.target_file, input.filePath].flatMap(strings);
-  switch (event.tool_name) {
-    case "Shell":
-      return typeof input.command === "string"
-        ? { kind: "shell", command: input.command }
-        : { kind: "other" };
-    case "Write":
-      return { kind: "write", paths };
-    case "Delete":
-      return { kind: "delete", paths };
-    default:
-      return { kind: "other" };
-  }
-}
-
-function strings(value: unknown): string[] {
-  return typeof value === "string" && value.length > 0 ? [value] : [];
 }
 
 /**
@@ -198,6 +143,7 @@ async function resolveAction(
   cwd: string,
 ): Promise<GuardAction> {
   if (raw.kind === "other") return raw;
+  if (raw.kind === "files") return { kind: "files", ...(await placeFiles(session, cwd, raw)) };
   if (raw.kind !== "shell") {
     const { inside, foreign } = await inRepo(session, cwd, raw.paths);
     return { kind: raw.kind, paths: inside, foreign };
@@ -211,8 +157,6 @@ async function resolveAction(
           ...(await session.git.staged()),
           ...(await session.git.changedSince(await session.git.head())),
         ]).filter((path) => !path.startsWith(".specty/") && isGoverned(path, session.config));
-  const writes = await inRepo(session, cwd, analysis.writes);
-  const deletes = await inRepo(session, cwd, analysis.deletes);
   return {
     kind: "shell",
     facts: {
@@ -220,10 +164,23 @@ async function resolveAction(
       unscopedNpx: analysis.unscopedNpx,
       bypass: analysis.bypass,
       committedGoverned,
-      writes: writes.inside,
-      deletes: deletes.inside,
-      foreign: [...writes.foreign, ...deletes.foreign],
+      ...(await placeFiles(session, cwd, analysis)),
     },
+  };
+}
+
+/** What a command or a patch writes and deletes here, and apart, what it would change elsewhere. */
+async function placeFiles(
+  session: Session,
+  cwd: string,
+  files: { readonly writes: readonly string[]; readonly deletes: readonly string[] },
+) {
+  const writes = await inRepo(session, cwd, files.writes);
+  const deletes = await inRepo(session, cwd, files.deletes);
+  return {
+    writes: writes.inside,
+    deletes: deletes.inside,
+    foreign: [...writes.foreign, ...deletes.foreign],
   };
 }
 

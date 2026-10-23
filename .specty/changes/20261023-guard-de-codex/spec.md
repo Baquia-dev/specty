@@ -63,7 +63,7 @@ kind: standard
   - files: packages/core/src/guard/patch.ts, packages/core/test/guard/patch.test.ts, packages/core/src/guard/decide.ts, packages/core/test/guard/decide.test.ts, packages/core/src/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard
-- [ ] T2: El guard atiende a Codex
+- [x] T2: El guard atiende a Codex
   - files: packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/program.ts, packages/cli/test/codex.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts test/enforce.test.ts
