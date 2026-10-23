@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T16:55:32.680Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-cada-cambio-en-su-worktree"}}
+{"ts":"2026-10-23T17:05:24.642Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:6f47bb5671496f3e7abcdbf835b0c80983f4229e5771d33ed5c84b3984f4dc2f","size":"L","warnings":1}}
+{"ts":"2026-10-23T18:36:39.531Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:6f47bb5671496f3e7abcdbf835b0c80983f4229e5771d33ed5c84b3984f4dc2f","channel":"tty"}}

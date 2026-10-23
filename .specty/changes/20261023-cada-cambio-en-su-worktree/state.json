@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261023-cada-cambio-en-su-worktree",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-cada-cambio-en-su-worktree",
+  "baseCommit": "f27616dca7bbfc58e1eed946b3b2fd1f98d89f4a",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:369cf91fa336c7565573293df506424a4bb166284544fcb5dadc8ed0ef58cdc9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3f08a1dfbc52c8973bff8df402aa2c211809bdc73c8c253223118cf93032e72a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:70f96d59d6fdbf2a6f0c28674b9ccb05dcf13a43d59d248445d5d55eb8c2c886",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:616226d7a258f3d2a4b29daf1da4c0c7260e6a38094ed510190688d82868d2cd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f47bb5671496f3e7abcdbf835b0c80983f4229e5771d33ed5c84b3984f4dc2f",
+    "at": "2026-10-23T18:36:39.506Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
