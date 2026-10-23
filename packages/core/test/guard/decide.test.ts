@@ -89,6 +89,45 @@ describe("decideGuard on shell commands", () => {
     expect(allowed(shell({ bypass: true }), ctx())).toBe(false);
   });
 
+  it("opens the person's commands to the agent only when the person delegated them", () => {
+    const delegated: GuardContext = { ...ctx(IMPLEMENTING), delegated: true };
+    for (const name of ["approve", "accept", "close", "cancel", "reject"]) {
+      expect(allowed(shell({ specty: [name] }), delegated)).toBe(true);
+      const denied = decideGuard(shell({ specty: [name] }), ctx(IMPLEMENTING));
+      expect(denied.allow).toBe(false);
+      if (!denied.allow) {
+        expect(denied.rule).toBe("human");
+        expect(denied.reason).toBe(
+          `\`specty ${name}\` lo ejecuta el usuario en su terminal, no el agente.`,
+        );
+        expect(denied.next).toBe("pídele al usuario que lo ejecute y termina tu turno.");
+      }
+    }
+  });
+
+  it("never lets the agent turn delegated mode on or off", () => {
+    for (const context of [
+      ctx(),
+      { ...ctx(IMPLEMENTING), delegated: true },
+      { ...ctx(), lang: "en" as const },
+    ]) {
+      const denied = decideGuard(shell({ specty: ["next", "delegate"] }), context);
+      expect(denied.allow).toBe(false);
+      if (!denied.allow) {
+        expect(denied.rule).toBe("human");
+        expect(denied.reason).toContain("`specty delegate`");
+      }
+    }
+  });
+
+  it("keeps the other shell rules in delegated mode", () => {
+    const delegated: GuardContext = { ...ctx(IMPLEMENTING), delegated: true };
+    expect(allowed(shell({ specty: ["approve"], bypass: true }), delegated)).toBe(false);
+    expect(allowed(shell({ specty: ["close"], committedGoverned: ["src/a.ts"] }), delegated)).toBe(
+      false,
+    );
+  });
+
   it("blocks commits of governed code but not of documentation", () => {
     const denied = decideGuard(shell({ committedGoverned: ["src/a.ts"] }), ctx(IMPLEMENTING));
     expect(denied.allow).toBe(false);

@@ -6,17 +6,11 @@ import type { ResolvedConfig } from "../schema/config";
 import { isGoverned } from "../scope/governed";
 import { classifyPath, scopeRulesFrom } from "../scope/scope";
 import type { ChangeKind } from "../spec/model";
+import { humanDenial } from "./human";
 import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
 import { type ForeignPath, foreignDenial } from "./worktrees";
 
-/** Subcommands only a person may run (ARCHITECTURE §4, invariant). */
-export const HUMAN_COMMANDS: ReadonlySet<string> = new Set([
-  "approve",
-  "accept",
-  "close",
-  "cancel",
-  "reject",
-]);
+export { HUMAN_COMMANDS } from "./human";
 
 /** Files only Specty writes; editing them by hand would bypass the flow. */
 const PROTECTED: readonly string[] = [
@@ -60,6 +54,8 @@ export interface GuardContext {
   readonly change?: GuardChange;
   /** How messages tell the agent to call Specty, for example `specty`. */
   readonly command: string;
+  /** The person delegated their decisions to the agent (ADR 0010): their commands are open. */
+  readonly delegated?: boolean;
 }
 
 /** Facts about a shell command, with paths already relative to the repository root. */
@@ -132,20 +128,8 @@ function denyForeign(
 
 function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
   const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
-  const human = facts.specty.find((name) => HUMAN_COMMANDS.has(name));
-  if (human !== undefined) {
-    return deny(
-      "human",
-      t(
-        `\`${ctx.command} ${human}\` lo ejecuta el usuario en su terminal, no el agente.`,
-        `\`${ctx.command} ${human}\` is run by the user in their terminal, not by the agent.`,
-      ),
-      t(
-        `pídele al usuario que lo ejecute y termina tu turno.`,
-        "ask the user to run it and end your turn.",
-      ),
-    );
-  }
+  const human = humanDenial(facts.specty, ctx);
+  if (human !== undefined) return deny("human", human.reason, human.next);
   if (facts.unscopedNpx) {
     return deny(
       "package",

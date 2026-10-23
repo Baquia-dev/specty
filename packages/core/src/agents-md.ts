@@ -38,8 +38,8 @@ export function flowBlock(lang: Lang, command: string): string {
       `- If you need a file outside the task's scope, request it with \`${command} scope add\`.`,
     ),
     t(
-      "- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno.",
-      "- Approving, accepting and closing are done by the user in their terminal; ask them and end your turn.",
+      "- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno. Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.",
+      "- Approving, accepting and closing are done by the user in their terminal; ask them and end your turn. Only when `NEXT:` tells you to (delegated mode) do you run them yourself.",
     ),
     t(
       "- Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.",

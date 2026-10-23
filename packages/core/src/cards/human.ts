@@ -48,17 +48,87 @@ export function nothingPendingCard(
   };
 }
 
-/** A human decision was recorded; the agent continues when the user says so. */
+/**
+ * A human decision was recorded; the agent continues when the user says so. In delegated mode the
+ * agent usually took it, and the line reads right for whoever runs the command.
+ */
 export function decisionCard(header: string, lines: readonly string[], ctx: CardContext): Output {
   const t = translator(ctx.lang);
   return {
     status: "ok",
     header,
     blocks: section(undefined, lines),
-    next: t(
-      `dile a tu agente «continúa»; ejecutará \`${ctx.command} next\`.`,
-      `tell your agent "continue"; it will run \`${ctx.command} next\`.`,
+    next:
+      ctx.delegated === true
+        ? t(`sigue con \`${ctx.command} next\`.`, `continue with \`${ctx.command} next\`.`)
+        : t(
+            `dile a tu agente «continúa»; ejecutará \`${ctx.command} next\`.`,
+            `tell your agent "continue"; it will run \`${ctx.command} next\`.`,
+          ),
+  };
+}
+
+/** What delegated mode lets the agent do, shown to the person before they confirm it (ADR 0010). */
+export function delegationWarning(ctx: CardContext): readonly string[] {
+  const t = translator(ctx.lang);
+  return [
+    t(
+      "Con el modo delegado, tu agente toma sin preguntarte las decisiones que hoy son solo tuyas:",
+      "In delegated mode, your agent makes the decisions that today are only yours, without asking you:",
     ),
+    t(
+      "- aprueba specs y confirma sus supuestos de impacto alto;",
+      "- it approves specs and confirms their high-impact assumptions;",
+    ),
+    t(
+      "- aprueba o rechaza ampliaciones de alcance, también en rutas sensibles;",
+      "- it approves or rejects scope extensions, sensitive paths included;",
+    ),
+    t(
+      "- acepta los resultados que pasan la verificación completa;",
+      "- it accepts the results that pass the full verification;",
+    ),
+    t(
+      "- cierra cambios y los incorpora a la rama principal, y cancela cambios.",
+      "- it closes changes and merges them into the main branch, and cancels changes.",
+    ),
+    t(
+      "Specty deja de garantizar que una persona revise cada spec y cada resultado. La auditoría registra cada una de esas acciones como del agente, por delegación.",
+      "Specty no longer guarantees that a person reviews every spec and every result. The audit log records each of those actions as the agent's, by delegation.",
+    ),
+    t(
+      `Vale para este clon y todas sus worktrees hasta que ejecutes \`${ctx.command} delegate off\`.`,
+      `It applies to this clone and all its worktrees until you run \`${ctx.command} delegate off\`.`,
+    ),
+  ];
+}
+
+/** `specty delegate on|off`: the position the switch is in now. */
+export function delegationCard(on: boolean, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return {
+    status: "ok",
+    header: headerOf(t("modo delegado", "delegated mode")),
+    blocks: section(undefined, [
+      on
+        ? t(
+            "Modo delegado activado: tu agente aprueba, decide el alcance, acepta, cierra y cancela por ti.",
+            "Delegated mode on: your agent approves, decides scope, accepts, closes and cancels for you.",
+          )
+        : t(
+            "Modo delegado desactivado: aprobar, decidir el alcance, aceptar, cerrar y cancelar vuelven a ser solo tuyos.",
+            "Delegated mode off: approving, deciding scope, accepting, closing and cancelling are yours alone again.",
+          ),
+    ]),
+    next: on
+      ? t(
+          `dile a tu agente «continúa»; ejecutará \`${ctx.command} next\`.`,
+          `tell your agent "continue"; it will run \`${ctx.command} next\`.`,
+        )
+      : t(
+          `revisa \`${ctx.command} status\` cuando quieras decidir.`,
+          `check \`${ctx.command} status\` when you want to decide.`,
+        ),
   };
 }
 
@@ -114,10 +184,23 @@ export function statusCard(entries: readonly StatusEntry[], ctx: CardContext): O
   return {
     status: "ok",
     header: headerOf(t("estado", "status")),
-    blocks: section(
-      t("CAMBIOS ABIERTOS", "OPEN CHANGES"),
-      lines.length > 0 ? lines : [t("Ninguno.", "None.")],
-    ),
+    blocks: [
+      ...section(
+        t("CAMBIOS ABIERTOS", "OPEN CHANGES"),
+        lines.length > 0 ? lines : [t("Ninguno.", "None.")],
+      ),
+      ...section(
+        t("MODO DELEGADO", "DELEGATED MODE"),
+        ctx.delegated === true
+          ? [
+              t(
+                `Tu agente toma tus decisiones: aprueba, decide el alcance, acepta, cierra y cancela. Para desactivarlo: \`${ctx.command} delegate off\`.`,
+                `Your agent makes your decisions: it approves, decides scope, accepts, closes and cancels. To turn it off: \`${ctx.command} delegate off\`.`,
+              ),
+            ]
+          : [],
+      ),
+    ],
     next:
       waiting === undefined
         ? t(
