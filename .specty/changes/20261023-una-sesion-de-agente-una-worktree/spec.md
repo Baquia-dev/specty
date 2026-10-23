@@ -54,7 +54,7 @@ Una sesión de agente no puede saltar a la worktree de otro cambio mientras el s
   - files: packages/core/src/guard/session.ts, packages/core/src/guard/decide.ts, packages/core/src/index.ts, packages/core/test/guard/decide.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard
-- [ ] T2: El guard ata cada sesión a su worktree
+- [x] T2: El guard ata cada sesión a su worktree
   - files: packages/cli/src/store/local.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/install/agents.ts, packages/cli/test/sessions.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/sessions.test.ts test/setup.test.ts test/enforce.test.ts

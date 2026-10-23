@@ -107,6 +107,30 @@ export async function clearDelegation(git: Git): Promise<void> {
   await remove(await git.gitPath(DELEGATION));
 }
 
+/** The worktree an agent session works in: one change at a time per session (the guard). */
+export interface SessionBinding {
+  readonly folder: string;
+  readonly at: string;
+}
+
+/** Also under `common/`: a session can enter a worktree from any of them. */
+const binding = (session: string) => `common/specty/sessions/${session}.json`;
+
+export async function readBinding(git: Git, session: string): Promise<SessionBinding | undefined> {
+  const value = parseJson(await readText(await git.gitPath(binding(session))));
+  if (!isRecord(value)) return undefined;
+  const { folder, at } = value;
+  return typeof folder === "string" && typeof at === "string" ? { folder, at } : undefined;
+}
+
+export async function writeBinding(
+  git: Git,
+  session: string,
+  bound: SessionBinding,
+): Promise<void> {
+  await writeText(await git.gitPath(binding(session)), `${JSON.stringify(bound, null, 2)}\n`);
+}
+
 async function readReceipts(git: Git): Promise<Receipt[]> {
   const value = parseJson(await readText(await git.gitPath("specty/receipts.json")));
   if (!Array.isArray(value)) return [];

@@ -19,6 +19,7 @@ import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
+import { bindSession, type EnterRequest, enterAction } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 
 export type GuardTool = "claude-code" | "cursor";
@@ -33,6 +34,7 @@ export interface GuardReply {
 type RawAction =
   | { readonly kind: "write" | "delete"; readonly paths: readonly string[] }
   | { readonly kind: "shell"; readonly command: string }
+  | { readonly kind: "enter"; readonly request: EnterRequest }
   | { readonly kind: "other" };
 
 /**
@@ -54,8 +56,13 @@ export async function guard(
     const session = opened.session;
     if (tool === "claude-code" && isAfterTool(event)) return await afterShell(session, event);
     const raw = tool === "claude-code" ? claudeAction(event) : cursorAction(event);
-    const action = await resolveAction(session, raw, cwd);
+    const action =
+      raw.kind === "enter"
+        ? await enterAction(environment, session, event, raw.request, cwd)
+        : await resolveAction(session, raw, cwd);
     const decision = decideGuard(action, await guardContext(session));
+    // One change at a time per session: the worktree it may enter becomes its own.
+    if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
     if (decision.allow && tool === "claude-code") await beforeShell(session, event, action);
     return reply(tool, decision, session);
   } catch (error) {
@@ -127,6 +134,14 @@ function claudeAction(event: Record<string, unknown>): RawAction {
       return typeof input.command === "string"
         ? { kind: "shell", command: input.command }
         : { kind: "other" };
+    case "EnterWorktree":
+      return {
+        kind: "enter",
+        request: {
+          ...(typeof input.path === "string" ? { path: input.path } : {}),
+          ...(typeof input.name === "string" ? { name: input.name } : {}),
+        },
+      };
     default:
       return { kind: "other" };
   }
@@ -177,7 +192,11 @@ async function inRepo(
   return { inside: placed.inside.filter((path) => !ignored.has(path)), foreign: placed.foreign };
 }
 
-async function resolveAction(session: Session, raw: RawAction, cwd: string): Promise<GuardAction> {
+async function resolveAction(
+  session: Session,
+  raw: Exclude<RawAction, { readonly kind: "enter" }>,
+  cwd: string,
+): Promise<GuardAction> {
   if (raw.kind === "other") return raw;
   if (raw.kind !== "shell") {
     const { inside, foreign } = await inRepo(session, cwd, raw.paths);

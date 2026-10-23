@@ -39,12 +39,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "770f94c26907762793f11058b1234e213c7c1799",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:43:35.971Z",
       "doneAt": "2026-10-23T21:44:38.855Z",
-      "summary": "core: acción enter (worktree de destino y atadura de la sesión) y regla session; guard/session.ts deniega entrar en otra worktree mientras el cambio de la sesión sigue abierto, y deja entrar a una sesión libre, a la que vuelve a su carpeta o a la de un cambio terminado"
+      "summary": "core: acción enter (worktree de destino y atadura de la sesión) y regla session; guard/session.ts deniega entrar en otra worktree mientras el cambio de la sesión sigue abierto, y deja entrar a una sesión libre, a la que vuelve a su carpeta o a la de un cambio terminado",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/enforce/sessions.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "1eefbba90418ff48e6b69933059a9e1e75f4929f",
+      "startedAt": "2026-10-23T21:44:39.175Z",
+      "doneAt": "2026-10-23T21:48:17.304Z",
+      "summary": "El guard ve EnterWorktree (init lo añade al matcher de PreToolUse): enforce/sessions.ts arma la acción enter con la carpeta de destino y la atadura de la sesión (common/specty/sessions/<session_id>.json, con su cambio solo si sigue abierto en esa carpeta) y, si se permite, ata la sesión al destino. Sin session_id no se juzga; una carpeta que ya no existe libera la sesión. enforce/sessions.ts entró por la ampliación S1"
     }
   },
   "pending": {
@@ -55,6 +66,7 @@
     "A": 3,
     "AC": 5,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 1
   }
 }

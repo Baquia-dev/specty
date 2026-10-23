@@ -10,7 +10,7 @@ import type { Invocation } from "../session";
  * write or command, and after each Bash command, whether it succeeded or failed.
  */
 const CLAUDE_EVENTS: Readonly<Record<string, string>> = {
-  PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash",
+  PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
   PostToolUse: "Bash",
   PostToolUseFailure: "Bash",
 };
