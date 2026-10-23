@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8eb66a6d23016a57379d8b91355f2de38f502e0c",
+      "attempts": 1,
       "startedAt": "2026-10-23T23:10:41.532Z",
       "doneAt": "2026-10-23T23:12:05.147Z",
-      "summary": "Los lectores de eventos de cada herramienta pasan a enforce/actions.ts y se suma Codex: Bash va al análisis de shell y apply_patch a una acción files con las rutas del parche; Codex responde con la salida 2 y stderr y tiene la revisión tras cada comando de Bash; guard --tool codex"
+      "summary": "Los lectores de eventos de cada herramienta pasan a enforce/actions.ts y se suma Codex: Bash va al análisis de shell y apply_patch a una acción files con las rutas del parche; Codex responde con la salida 2 y stderr y tiene la revisión tras cada comando de Bash; guard --tool codex",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e099b2da9f758bbc34c5fc4c827777f0dd77fd45",
+      "startedAt": "2026-10-23T23:12:05.445Z",
+      "doneAt": "2026-10-23T23:14:54.683Z",
+      "summary": "init instala el guard de Codex en el hooks.json de usuario (CODEX_HOME o ~/.codex) con PreToolUse (Bash, apply_patch) y PostToolUse (Bash), conservando los demás hooks, y explica que hay que confiar en él una vez con /hooks; doctor lo comprueba; los tests apuntan CODEX_HOME a una carpeta temporal"
     }
   },
   "pending": {

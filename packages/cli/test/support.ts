@@ -26,6 +26,9 @@ const GIT_ENV = {
   GIT_COMMITTER_EMAIL: "ana@example.com",
 };
 
+/** Codex's user configuration for the tests, so `init` never touches the real `~/.codex`. */
+export const CODEX_HOME = join(tmpdir(), `specty-codex-${process.pid}`);
+
 export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
   const {
     CLAUDECODE: _a,
@@ -35,7 +38,7 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
     SPECTY_AGENT: _e,
     ...rest
   } = process.env;
-  return { ...rest, ...GIT_ENV, LANG: "es_ES.UTF-8", ...extra };
+  return { ...rest, ...GIT_ENV, LANG: "es_ES.UTF-8", CODEX_HOME, ...extra };
 }
 
 export function git(cwd: string, ...args: string[]): string {

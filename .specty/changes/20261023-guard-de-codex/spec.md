@@ -67,7 +67,7 @@ kind: standard
   - files: packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/program.ts, packages/cli/test/codex.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts test/enforce.test.ts
-- [ ] T3: `init` instala el guard en la configuración de usuario de Codex y `doctor` lo comprueba
+- [x] T3: `init` instala el guard en la configuración de usuario de Codex y `doctor` lo comprueba
   - files: packages/cli/src/install/agents.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/support.ts, packages/cli/test/codex.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts test/install.test.ts test/setup.test.ts

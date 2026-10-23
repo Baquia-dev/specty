@@ -12,7 +12,7 @@ import {
   translator,
 } from "@baquia-dev/specty-core";
 import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
-import { installClaudeCode, installCursor } from "../install/agents";
+import { installClaudeCode, installCodex, installCursor } from "../install/agents";
 import { commitInstall } from "../install/commit";
 import { installGitHooks } from "../install/git-hooks";
 import { renderConfig, writeAgentsMd, writeClaudePointer } from "../install/project-files";
@@ -28,7 +28,7 @@ export interface InitOptions {
   readonly tools?: readonly AgentTool[];
 }
 
-const WITH_HOOKS: ReadonlySet<AgentTool> = new Set(["claude-code", "cursor"]);
+const WITH_HOOKS: ReadonlySet<AgentTool> = new Set(["claude-code", "cursor", "codex"]);
 
 /** `specty init` as typed: reads its options, and says which language its output uses. */
 export async function initCommand(
@@ -116,6 +116,22 @@ export async function init(environment: Environment, options: InitOptions): Prom
       t(
         `Cursor: guard en ${installed.file}${installed.local ? " (local)" : ""}.`,
         `Cursor: guard in ${installed.file}${installed.local ? " (local)" : ""}.`,
+      ),
+    );
+  }
+  if (tools.includes("codex")) {
+    // Outside the repository: nothing for init's commit.
+    const file = await installCodex(environment.env, environment.invocation);
+    done.push(
+      t(
+        `Codex: guard en ${file}, tu configuración de usuario: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
+        `Codex: guard in ${file}, your user configuration: it applies to all your repositories and does nothing outside those using Specty.`,
+      ),
+    );
+    warnings.push(
+      t(
+        "Codex solo ejecuta el guard cuando confías en él: en Codex, abre `/hooks` y márcalo como de confianza. Basta una vez.",
+        "Codex runs the guard only once you trust it: in Codex, open `/hooks` and trust it. Once is enough.",
       ),
     );
   }

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
+import { homedir } from "node:os";
 import { join } from "node:path";
 import { applyEdits, modify, parse } from "jsonc-parser";
+import type { GuardTool } from "../enforce/actions";
 import { appendLine, isRecord, readText, writeText } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
@@ -13,6 +15,11 @@ const CLAUDE_EVENTS: Readonly<Record<string, string>> = {
   PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
   PostToolUse: "Bash",
   PostToolUseFailure: "Bash",
+};
+/** The Codex events the guard listens to; its `matcher` is a regular expression on `tool_name`. */
+const CODEX_EVENTS: Readonly<Record<string, string>> = {
+  PreToolUse: "^(Bash|apply_patch)$",
+  PostToolUse: "^Bash$",
 };
 /** Each change lives in its own worktree: the agent enters, leaves and removes it without a prompt. */
 const CLAUDE_ALLOW: readonly string[] = ["EnterWorktree", "ExitWorktree"];
@@ -48,11 +55,15 @@ export async function installClaudeCode(
 ): Promise<AgentInstall> {
   const target = invocation.portable ? CLAUDE_SETTINGS : CLAUDE_LOCAL_SETTINGS;
   const other = invocation.portable ? CLAUDE_LOCAL_SETTINGS : CLAUDE_SETTINGS;
-  await rewriteJson(join(root, other), (value) => withClaudeHook(value, undefined), false);
+  await rewriteJson(
+    join(root, other),
+    (value) => withHooks(value, CLAUDE_EVENTS, "claude-code", undefined),
+    false,
+  );
   const command = `${invocation.command} guard --tool claude-code`;
   await rewriteJson(
     join(root, target),
-    (value) => withClaudePermissions(withClaudeHook(value, command)),
+    (value) => withClaudePermissions(withHooks(value, CLAUDE_EVENTS, "claude-code", command)),
     true,
   );
   if (!invocation.portable) await excludeLocally(git, target);
@@ -72,7 +83,28 @@ export async function installCursor(
   return { file, local: !invocation.portable };
 }
 
-export function hasGuard(text: string | undefined, tool: "claude-code" | "cursor"): boolean {
+/**
+ * Codex keeps its trust in each hook by the absolute path of the hook's file, so a hook inside
+ * the repository would need trusting again in every worktree. The guard goes to the user's
+ * configuration instead (`$CODEX_HOME`, or `~/.codex`): trusted once, and idle outside Specty repos.
+ */
+export function codexHooksFile(env: NodeJS.ProcessEnv): string {
+  const home = env.CODEX_HOME !== undefined && env.CODEX_HOME !== "" ? env.CODEX_HOME : undefined;
+  return join(home ?? join(env.HOME ?? homedir(), ".codex"), "hooks.json");
+}
+
+/** Codex: `PreToolUse` (Bash, apply_patch) and `PostToolUse` (Bash) in its user `hooks.json`. */
+export async function installCodex(
+  env: NodeJS.ProcessEnv,
+  invocation: Invocation,
+): Promise<string> {
+  const file = codexHooksFile(env);
+  const command = `${invocation.command} guard --tool codex`;
+  await rewriteJson(file, (value) => withHooks(value, CODEX_EVENTS, "codex", command), true);
+  return file;
+}
+
+export function hasGuard(text: string | undefined, tool: GuardTool): boolean {
   return text?.includes(`guard --tool ${tool}`) === true;
 }
 
@@ -96,20 +128,25 @@ function isOurs(entry: unknown, tool: string): boolean {
   return JSON.stringify(entry).includes(`guard --tool ${tool}`);
 }
 
-/** Puts the guard in each Claude Code event, or takes it out when `command` is undefined. */
-function withClaudeHook(value: Entry, command: string | undefined): Entry {
+/**
+ * Puts the guard in each event of a `hooks` object shaped like Claude Code's (Codex uses the same
+ * one), or takes it out when `command` is undefined. Other hooks stay as they were.
+ */
+function withHooks(
+  value: Entry,
+  events: Readonly<Record<string, string>>,
+  tool: GuardTool,
+  command: string | undefined,
+): Entry {
   const hooks = isRecord(value.hooks) ? value.hooks : {};
-  const events = Object.entries(CLAUDE_EVENTS).flatMap(
-    ([event, matcher]): [string, unknown[]][] => {
-      const current = Array.isArray(hooks[event]) ? hooks[event] : [];
-      const kept = current.filter((entry: unknown) => !isOurs(entry, "claude-code"));
-      const ours =
-        command === undefined ? [] : [{ matcher, hooks: [{ type: "command", command }] }];
-      const entries = [...kept, ...ours];
-      return entries.length === 0 && !Object.hasOwn(hooks, event) ? [] : [[event, entries]];
-    },
-  );
-  return { ...value, hooks: { ...hooks, ...Object.fromEntries(events) } };
+  const updated = Object.entries(events).flatMap(([event, matcher]): [string, unknown[]][] => {
+    const current = Array.isArray(hooks[event]) ? hooks[event] : [];
+    const kept = current.filter((entry: unknown) => !isOurs(entry, tool));
+    const ours = command === undefined ? [] : [{ matcher, hooks: [{ type: "command", command }] }];
+    const entries = [...kept, ...ours];
+    return entries.length === 0 && !Object.hasOwn(hooks, event) ? [] : [[event, entries]];
+  });
+  return { ...value, hooks: { ...hooks, ...Object.fromEntries(updated) } };
 }
 
 /**

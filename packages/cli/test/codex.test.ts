@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { exists } from "../src/io/files";
 import { APP, cli, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
@@ -89,5 +93,54 @@ describe("the guard in Codex", () => {
     const after = await bash("PostToolUse", "call_3", "python3 gen.py");
     expect(after.code).toBe(2);
     expect(after.err).toContain("`src/generated.ts` está fuera del alcance de T1.");
+  });
+});
+
+/** A Codex user configuration of its own, as `CODEX_HOME` points to it. */
+async function codexHome() {
+  const home = await mkdtemp(join(tmpdir(), "specty-codex-home-"));
+  const file = join(home, "hooks.json");
+  const read = async () => JSON.parse(await readFile(file, "utf8"));
+  return { env: { CODEX_HOME: home }, file, read };
+}
+
+const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
+
+describe("installing the guard in Codex", () => {
+  it("writes it to the user's hooks.json, keeps other hooks and leaves the repository alone (AC1)", async () => {
+    const { env, file, read } = await codexHome();
+    const stop = { hooks: [{ type: "command", command: "echo bye" }] };
+    await writeFile(file, JSON.stringify({ description: "mine", hooks: { Stop: [stop] } }));
+    const root = await tempRepo(PACKAGE);
+    const result = await cli(root, ["init", "--language", "es", "--tools", "codex"], { env });
+    expect(result.code).toBe(0);
+    expect(result.out).toContain(`Codex: guard en ${file}, tu configuración de usuario`);
+    expect(result.out).toContain("en Codex, abre `/hooks` y márcalo como de confianza");
+    const hooks = await read();
+    expect(hooks).toMatchObject({ description: "mine", hooks: { Stop: [stop] } });
+    const guard = { type: "command", command: expect.stringContaining("guard --tool codex") };
+    expect(hooks.hooks.PreToolUse).toMatchObject([
+      { matcher: "^(Bash|apply_patch)$", hooks: [guard] },
+    ]);
+    expect(hooks.hooks.PostToolUse).toMatchObject([{ matcher: "^Bash$", hooks: [guard] }]);
+    expect(await exists(join(root, ".codex"))).toBe(false);
+
+    await cli(root, ["init", "--tools", "codex"], { env });
+    expect((await read()).hooks.PreToolUse).toHaveLength(1);
+  });
+
+  it("installs it for a repository with .codex/, and doctor checks it (AC4)", async () => {
+    const { env, file } = await codexHome();
+    const root = await tempRepo({ ...PACKAGE, ".codex/config.toml": 'model = "gpt-5"\n' });
+    await cli(root, ["init", "--language", "es"], { env });
+    expect((await cli(root, ["doctor"], { env })).out).toContain(
+      `Codex: guard en ${file}; Codex lo ejecuta cuando confías en él con \`/hooks\`.`,
+    );
+    await writeFile(file, "{}\n");
+    const missing = await cli(root, ["doctor"], { env });
+    expect(missing.code).toBe(1);
+    expect(missing.out).toContain(
+      `Codex: falta el guard en ${file}; ejecuta \`specty init --tools codex\`.`,
+    );
   });
 });

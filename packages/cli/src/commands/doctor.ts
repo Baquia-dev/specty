@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { hasBlock, headerOf, type Output, section, translator } from "@baquia-dev/specty-core";
 import { formatterExclusions } from "../detect/formatters";
 import { detectProject } from "../detect/project";
-import { hasGuard, missingClaudeEvents } from "../install/agents";
+import { codexHooksFile, hasGuard, missingClaudeEvents } from "../install/agents";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
@@ -63,6 +63,22 @@ export async function doctor(session: Session): Promise<Output> {
       t(
         `Cursor: falta el guard; ejecuta \`${COMMAND} init --tools cursor\`.`,
         `Cursor: the guard is missing; run \`${COMMAND} init --tools cursor\`.`,
+      ),
+    );
+  }
+  // Codex's guard lives in the user's configuration, shared by every repository.
+  const codex = codexHooksFile(session.environment.env);
+  const codexGuard = hasGuard(await readText(codex), "codex");
+  if (tools.includes("codex") || codexGuard) {
+    check(
+      codexGuard,
+      t(
+        `Codex: guard en ${codex}; Codex lo ejecuta cuando confías en él con \`/hooks\`.`,
+        `Codex: guard in ${codex}; Codex runs it once you trust it with \`/hooks\`.`,
+      ),
+      t(
+        `Codex: falta el guard en ${codex}; ejecuta \`${COMMAND} init --tools codex\`.`,
+        `Codex: the guard is missing in ${codex}; run \`${COMMAND} init --tools codex\`.`,
       ),
     );
   }
