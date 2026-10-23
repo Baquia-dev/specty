@@ -21,6 +21,9 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 ├─ active                      # cambio activo cuando no hay rama por cambio
 ├─ shell/<tool_use_id>.json    # foto del árbol antes de cada comando de Bash del agente
 └─ server.json                 # puerto y token de la UI en ejecución
+
+.git/common/specty/            # local, compartido por todas las worktrees, nunca versionado
+└─ delegated.json              # modo delegado activo (ADR 0010): { "by", "at" }, quién lo activó y cuándo
 ```
 
 ### Identificadores
@@ -185,6 +188,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 ```
 
 - `approved.hash` debe coincidir con la forma canónica actual de `spec.md`. Si no coincide, nada avanza hasta que se proponga y apruebe una nueva revisión.
+- `approved.channel` dice por dónde se aprobó: `tty`, `ui`, `pr` o `delegated`. `delegated` significa que aprobó el agente en modo delegado. `by` es siempre la persona: la que aprobó o la que delegó.
 - `items[].decision` puede ser:
   - `pending`;
   - `confirmed` o `rejected`: lo decidió la persona;
@@ -216,7 +220,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 
 ## 4. `audit.jsonl`
 
-Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "tool"?, "event", "data" }`. `tool` es la herramienta que declara el agente: sirve como contexto, no como prueba.
+Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "tool"?, "event", "data" }`. `tool` es la herramienta que declara el agente: sirve como contexto, no como prueba. Si el agente toma una decisión de la persona en modo delegado (aprobar, decidir el alcance, aceptar, cerrar o cancelar), la línea lleva `actor: "agent"` y `data.delegated: true`.
 
 | Evento | Datos |
 | --- | --- |

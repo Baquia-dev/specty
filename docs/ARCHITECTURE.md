@@ -119,6 +119,8 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 
 Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve [--scope <S>]`, `reject --scope <S>`, `accept`, `close` y `cancel`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
 
+`delegate on|off` activa o desactiva el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)), también solo desde una TTY. El interruptor vale para el clon y todas sus worktrees. Mientras está activo, el agente ejecuta esas acciones sin TTY, y la CLI responde por la persona: confirma, da por confirmados los supuestos de impacto alto pendientes y no escribe comentarios. Además, `accept` ejecuta siempre la verificación completa y no acepta si falla. La auditoría registra esas decisiones como del agente, por delegación. Con TTY sigue decidiendo la persona, aunque el modo esté activo.
+
 Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, que se registra como retro aparte) y `init`, `status`, `doctor`, `approve`, `reject`, `accept`, `close` y `cancel`. `ui`, `why`, `audit`, `export`, `ci` y `next --wait` llegan en fases posteriores.
 
 **Contrato de salida** (igual en CLI y MCP):

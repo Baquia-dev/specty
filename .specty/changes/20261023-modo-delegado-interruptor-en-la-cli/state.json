@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-modo-delegado-interruptor-en-la-cli",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-modo-delegado-interruptor-en-la-cli",
   "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
   "revision": 3,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d6195587e3ffb7042e6dd5fe7fb7b49c8d388233",
+      "attempts": 1,
       "startedAt": "2026-10-23T19:29:29.042Z",
       "doneAt": "2026-10-23T19:31:21.589Z",
-      "summary": "auditEntry (flow/active.ts) registra como del agente, con delegated: true, una decisión de la persona tomada por delegación; lo usan commitState y archive (cierres, cancelaciones, quick y retro). approve abre con canDecide, confirma los supuestos de impacto alto pendientes si actúa el agente y guarda channel delegated (by sigue siendo la persona); core: approved.channel admite delegated. Con TTY, aunque el modo esté activo, la persona sigue como human/tty."
+      "summary": "auditEntry (flow/active.ts) registra como del agente, con delegated: true, una decisión de la persona tomada por delegación; lo usan commitState y archive (cierres, cancelaciones, quick y retro). approve abre con canDecide, confirma los supuestos de impacto alto pendientes si actúa el agente y guarda channel delegated (by sigue siendo la persona); core: approved.channel admite delegated. Con TTY, aunque el modo esté activo, la persona sigue como human/tty.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bab522ce2f3216d0bc626262d42ac99e8f211150",
+      "startedAt": "2026-10-23T19:31:21.874Z",
+      "doneAt": "2026-10-23T19:33:39.539Z",
+      "summary": "Actuando el agente, accept ejecuta siempre verify.full y, si falla, no acepta: tarjeta bloqueada que pide specty adjust (con la salida del fallo en stderr). ARCHITECTURE §6 documenta delegate y las acciones delegadas; formats §1 el archivo .git/common/specty/delegated.json, §3 approved.channel delegated y §4 la marca delegated de la auditoría."
     }
   },
   "pending": {

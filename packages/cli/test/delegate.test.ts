@@ -8,6 +8,7 @@ import {
   APP,
   ARCHIVE,
   CHANGE,
+  CONFIG,
   cli,
   git,
   person,
@@ -203,5 +204,42 @@ describe("delegated decisions on record", () => {
     const [line] = await audited(root, "spec.approved");
     expect(line?.actor).toBe("human");
     expect(line?.data.delegated).toBeUndefined();
+  });
+});
+
+describe("delegated acceptance", () => {
+  it("runs the full verification and accepts only when it passes", async () => {
+    const root = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}  full: "test -f verificado"\n`,
+    });
+    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    await inReview(root);
+    await cli(root, ["approve"]);
+    await cli(root, ["next"]);
+    await writeFiles(root, { "src/app.ts": "1\n" });
+    await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
+    await writeFiles(root, { "src/app.ts": "2\n" });
+    await cli(root, ["task", "done", "T2", "--summary", "Dos"]);
+    expect((await cli(root, ["next"])).out).toContain(
+      "SIGUIENTE: modo delegado: acepta tú el resultado con `specty accept`",
+    );
+
+    const failed = await cli(root, ["accept"]);
+    expect(failed.code).toBe(2);
+    expect(failed.out).toContain("La verificación completa (`test -f verificado`) falló");
+    expect(failed.out).toContain('`specty adjust "<qué falla>"`');
+    expect(failed.err).toContain("Verificación fallida");
+    expect(JSON.parse(await read(root, `.specty/changes/${CHANGE}/state.json`)).phase).toBe(
+      "acceptance",
+    );
+
+    await writeFiles(root, { verificado: "" });
+    const accepted = await cli(root, ["accept"]);
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toContain("Resultado aceptado");
+    expect(await audited(root, "change.accepted")).toMatchObject([
+      { actor: "agent", data: { delegated: true } },
+    ]);
   });
 });

@@ -76,7 +76,7 @@ Segundo y último paso del modo delegado (ADR 0010). `specty delegate on` lo act
   - files: packages/cli/src/flow/active.ts, packages/cli/src/flow/finish.ts, packages/core/src/schema/state.ts, packages/cli/src/commands/approve.ts, packages/cli/test/delegate.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts
-- [ ] T4: Aceptar con la verificación completa, y la documentación
+- [x] T4: Aceptar con la verificación completa, y la documentación
   - files: packages/cli/src/commands/accept.ts, docs/ARCHITECTURE.md, docs/formats.md, packages/cli/test/delegate.test.ts
   - ac: AC5
   - verify: pnpm check
