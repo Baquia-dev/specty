@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "id": "20261023-comprobacion-tras-cada-comando-de-bash",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261023-comprobacion-tras-cada-comando-de-bash",
+  "baseCommit": "b8e3884997f96d39efed5c21d323b6c7b6fbfbd4",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff72314e022f0010c889423ef320aef46385a6bfcde2fbe051f8a5be7ba45b0c",
+    "at": "2026-10-23T10:25:34.990Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:983e951567e0ba9eb942ad73a5196eb94c9ebb355450f84aa12c6018f97666da",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9e55290c4bf13e2f3145865f1376cecea06849ca87080636775f47b26f3740b7",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f1b0a1bbe6c5307058448cb834e2b6c0815acba3401ae6e08b8a4f77af860edc",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cdacf27787458edd3ac4c5e257387bea627ab4f5940ab3b9cab66d51e8b16f3f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:b4362ef33063cff88be1f690032ff6410372671689193823bd0e457c8daae1ed",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:e24a023bbdd8bafedc7d78fdbd44b752313f9a73e3c220df9199c4ace8938a9a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c695a083e5e5d7e3b2bfb2d09b7a2ece4ed14e1b",
+      "attempts": 1,
+      "startedAt": "2026-10-23T10:25:47.670Z",
+      "doneAt": "2026-10-23T10:29:01.174Z",
+      "summary": "decideGuard da la regla de cada denegación; guard/after.ts compara las fotos y juzga lo que cambió un comando con las reglas del guard",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ac5be762b9992d37b5ec13d805efd2d291f80716",
+      "attempts": 1,
+      "startedAt": "2026-10-23T10:29:01.500Z",
+      "doneAt": "2026-10-23T10:34:26.862Z",
+      "summary": "Foto del árbol antes de cada comando de Bash y comprobación al terminar (PostToolUse y PostToolUseFailure), con limpieza de fotos huérfanas; p95 160 ms antes y 158 ms después",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b61a5d5d9f706af3c8f0beac6d868c8a6d4aa72a",
+      "attempts": 1,
+      "startedAt": "2026-10-23T10:34:27.135Z",
+      "doneAt": "2026-10-23T10:37:53.867Z",
+      "summary": "init instala PostToolUse y PostToolUseFailure con Bash; doctor dice qué evento falta; ARCHITECTURE §10 y formats.md §1 al día",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-23T10:43:36.499Z"
+}

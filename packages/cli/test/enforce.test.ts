@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
+import { readdir, utimes } from "node:fs/promises";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   ARCHIVE,
@@ -6,6 +8,7 @@ import {
   CONFIG,
   cli,
   git,
+  NOW,
   person,
   read,
   SPEC,
@@ -181,5 +184,82 @@ describe("agent guard", () => {
     expect(shell).toEqual({ permission: "allow" });
     const broken = await cli(root, ["guard", "--tool", "cursor"], { stdin: "not json" });
     expect(JSON.parse(broken.out)).toEqual({ permission: "allow" });
+  });
+});
+
+describe("after each Bash command", () => {
+  /** The hook Claude Code runs around a Bash tool call: before it, and after it ran or failed. */
+  const hook = (root: string, event: string, id: string, command = "python3 gen.py") =>
+    cli(root, ["guard", "--tool", "claude-code"], {
+      stdin: JSON.stringify({
+        cwd: root,
+        hook_event_name: event,
+        tool_name: "Bash",
+        tool_input: { command },
+        tool_use_id: id,
+      }),
+    });
+
+  async function implementing(): Promise<string> {
+    const root = await initialized();
+    await cli(root, ["new", "Saludo personalizado"]);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    await cli(root, ["propose"]);
+    await cli(root, ["approve"], { terminal: person() });
+    await cli(root, ["next"]);
+    return root;
+  }
+
+  it("warns at once about what the command changed outside the task (AC1, AC3)", async () => {
+    const root = await implementing();
+    await writeFiles(root, { "src/before.ts": "already changed\n" });
+    expect((await hook(root, "PreToolUse", "t1")).code).toBe(0);
+    await writeFiles(root, { "src/app.ts": "in scope\n", "src/other.ts": "generated\n" });
+    const after = await hook(root, "PostToolUse", "t1");
+    expect(after.code).toBe(2);
+    expect(after.err).toContain("`src/other.ts` está fuera del alcance de T1.");
+    expect(after.err).toContain('specty scope add src/other.ts --task T1 --reason "<motivo>"');
+    expect(after.err).not.toContain("src/before.ts");
+  });
+
+  it("stays silent when nothing outside the task changed (AC2)", async () => {
+    const root = await implementing();
+    await writeFiles(root, { ".gitignore": "dist/\n" });
+    expect((await hook(root, "PreToolUse", "t2")).code).toBe(0);
+    await writeFiles(root, { "src/app.ts": "in scope\n", "dist/app.js": "built\n" });
+    expect((await hook(root, "PostToolUse", "t2")).code).toBe(0);
+  });
+
+  it("checks failed commands too, and never Specty's own (AC5, AC6)", async () => {
+    const root = await implementing();
+    await hook(root, "PreToolUse", "t3");
+    await writeFiles(root, { "src/other.ts": "x\n" });
+    expect((await hook(root, "PostToolUseFailure", "t3")).code).toBe(2);
+    await hook(root, "PreToolUse", "t4", "specty next");
+    await writeFiles(root, { "src/third.ts": "x\n" });
+    expect((await hook(root, "PostToolUse", "t4")).code).toBe(0);
+  });
+
+  it("applies the guard's rules without a change in progress (AC4)", async () => {
+    const root = await initialized();
+    await hook(root, "PreToolUse", "t5");
+    await writeFiles(root, { "src/app.ts": "changed\n" });
+    const after = await hook(root, "PostToolUse", "t5");
+    expect(after.code).toBe(2);
+    expect(after.err).toContain("No hay un cambio activo");
+    expect(after.err).toContain("ejecuta `specty next`");
+  });
+
+  it("leaves no snapshot behind, and stays silent without one", async () => {
+    const root = await initialized();
+    const shell = join(root, ".git/specty/shell");
+    await writeFiles(root, { ".git/specty/shell/old.json": "{}" });
+    const old = new Date(NOW.getTime() - 2 * 24 * 60 * 60 * 1000);
+    await utimes(join(shell, "old.json"), old, old);
+    await hook(root, "PreToolUse", "t6");
+    expect(await readdir(shell)).toEqual(["t6.json"]);
+    await hook(root, "PostToolUse", "t6");
+    expect(await readdir(shell)).toEqual([]);
+    expect((await hook(root, "PostToolUse", "unknown")).code).toBe(0);
   });
 });

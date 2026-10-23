@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { hasBlock, headerOf, type Output, section, translator } from "@baquia-dev/specty-core";
 import { formatterExclusions } from "../detect/formatters";
 import { detectProject } from "../detect/project";
-import { hasGuard } from "../install/agents";
+import { hasGuard, missingClaudeEvents } from "../install/agents";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
@@ -37,14 +37,22 @@ export async function doctor(session: Session): Promise<Output> {
   );
   const tools = (await detectProject(root, "")).tools;
   if (tools.includes("claude-code")) {
-    const settings = `${(await readText(join(root, ".claude/settings.json"))) ?? ""}${(await readText(join(root, ".claude/settings.local.json"))) ?? ""}`;
+    const missing = missingClaudeEvents([
+      await readText(join(root, ".claude/settings.json")),
+      await readText(join(root, ".claude/settings.local.json")),
+    ]);
     check(
-      hasGuard(settings, "claude-code"),
+      missing.length === 0,
       t("Claude Code: guard instalado.", "Claude Code: guard installed."),
-      t(
-        `Claude Code: falta el guard; ejecuta \`${COMMAND} init\`.`,
-        `Claude Code: the guard is missing; run \`${COMMAND} init\`.`,
-      ),
+      missing.includes("PreToolUse")
+        ? t(
+            `Claude Code: falta el guard; ejecuta \`${COMMAND} init\`.`,
+            `Claude Code: the guard is missing; run \`${COMMAND} init\`.`,
+          )
+        : t(
+            `Claude Code: falta la comprobación tras cada comando de Bash (${missing.join(", ")}); ejecuta \`${COMMAND} init\`.`,
+            `Claude Code: the check after each Bash command is missing (${missing.join(", ")}); run \`${COMMAND} init\`.`,
+          ),
     );
   }
   if (tools.includes("cursor")) {

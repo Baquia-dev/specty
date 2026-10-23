@@ -20,12 +20,13 @@ export function effortLabel(level: EffortLevel, ctx: CardContext): string {
   return effortName(level, ctx.tool) ?? NEUTRAL_EFFORT[ctx.lang][level];
 }
 
+/** Once the spec is written, the planning level is the one for reviewing the spec and its scope. */
 export function effortLine(effort: EffortRecommendation, ctx: CardContext): string {
   const t = translator(ctx.lang);
   const tool = ctx.tool === undefined ? "" : ` (${AGENT_NAMES[ctx.tool]})`;
   return t(
-    `ESFUERZO RECOMENDADO${tool}: planificación ${effortLabel(effort.plan, ctx)} · implementación ${effortLabel(effort.implement, ctx)}`,
-    `RECOMMENDED EFFORT${tool}: planning ${effortLabel(effort.plan, ctx)} · implementation ${effortLabel(effort.implement, ctx)}`,
+    `ESFUERZO RECOMENDADO${tool}: implementación ${effortLabel(effort.implement, ctx)} · revisiones de la spec y del alcance: ${effortLabel(effort.plan, ctx)}`,
+    `RECOMMENDED EFFORT${tool}: implementation ${effortLabel(effort.implement, ctx)} · spec and scope reviews: ${effortLabel(effort.plan, ctx)}`,
   );
 }
 
