@@ -6,6 +6,13 @@
   "branch": "specty/20261023-datos-del-historial",
   "baseCommit": "029df601ae98625368d691ee9cf8853ed43014ff",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3bcfdb5feb151956261e2a2cefcb0283e27332b7870338d0abf987939204ff71",
+    "at": "2026-10-23T10:50:00.952Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -40,7 +47,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "48176e2aeccb166be48a1c9f590a68ba4d2d18c1",
+      "startedAt": "2026-10-23T10:56:15.040Z",
+      "doneAt": "2026-10-23T11:00:09.926Z",
+      "summary": "data/history.ts: historyOf(audit) convierte cada evento de audit.jsonl en una entrada { at, actor, tool?, event, type, title, details } con título y detalles en español e inglés, del más antiguo al más reciente. Cubre creación (carril, rama, sigue a), propuestas (tamaño, avisos), supuestos (uno con comentario, o la lista de rechazados que escribe approve), cambios pedidos, aprobaciones (canal), tareas (base, commit, resumen), verificaciones de tarea y completa (veredicto, duración, comando, código de salida), alcance (la solicitud entera de la CLI o solo su id; aprobada, rechazada o por la política), ajustes, aceptación, cierre, cancelación y retro. Un spec.proposed después de change.accepted es «Envió el cierre». Tipos para filtrar: spec, tasks, verifications, scope, adjustments, closing y other. Lee cada campo con cuidado: un evento desconocido o con datos de otro tipo aparece con su nombre y lo que se pueda leer. Tests: una historia completa de la creación al cierre, las formas del alcance, ajustes/cancelación/retro/cambio rápido, y eventos desconocidos o incompletos."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -49,12 +66,5 @@
     "A": 6,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:3bcfdb5feb151956261e2a2cefcb0283e27332b7870338d0abf987939204ff71",
-    "at": "2026-10-23T10:50:00.952Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
