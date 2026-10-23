@@ -235,6 +235,9 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | hash del índice, modo (`agent` o `minimal`) |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |
+| `integration.started` | incorporar la rama principal al cerrar dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
+| `integration.resolved` | `specty integrate` hizo el commit de merge: commit |
+| `integration.abandoned` | el merge ya no estaba en curso y la incorporación pendiente se descartó: rama destino |
 
 ```jsonl
 {"ts":"2026-10-20T14:40:03Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:c09d…","size":"M"}}

@@ -91,7 +91,7 @@ Si incorporar la rama principal al cerrar da conflictos, o la verificación fall
   - files: packages/cli/src/commands/integrate.ts, packages/cli/src/program.ts, packages/cli/src/commands/finish.ts, packages/cli/test/resolve.test.ts
   - ac: AC4, AC5, AC6, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/resolve.test.ts test/integrate.test.ts
-- [ ] T5: Documentar que el agente resuelve la incorporación
+- [x] T5: Documentar que el agente resuelve la incorporación
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm check
