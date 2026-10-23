@@ -48,6 +48,16 @@ export interface RejectedView {
   readonly comment?: string;
 }
 
+/** An incorporation of the main branch that waits for the agent in the change's folder. */
+export interface IntegrationView {
+  readonly target: string;
+  /** The merge conflicts, or the verification fails on its result. */
+  readonly reason: "conflicts" | "verify";
+  readonly conflicts: readonly string[];
+  /** The files the agent may touch to finish it. */
+  readonly paths: readonly string[];
+}
+
 export interface ChangeView {
   readonly id: string;
   readonly kind: ChangeKind;
@@ -67,4 +77,6 @@ export interface ChangeView {
   readonly closingSubmitted: boolean;
   /** `spec.md` no longer matches the approved revision. */
   readonly specChanged: boolean;
+  /** Only while an incorporation is pending: it comes before the phase's work. */
+  readonly integration?: IntegrationView;
 }

@@ -81,6 +81,40 @@ describe("next cards", () => {
     expect(card.status).toBe("blocked");
   });
 
+  it("puts a pending incorporation before the phase's work", () => {
+    const paths = Array.from({ length: 22 }, (_, index) => `src/f${index + 1}.ts`);
+    const closing: ChangeView = {
+      ...view("closing"),
+      closingSubmitted: true,
+      integration: { target: "main", reason: "conflicts", conflicts: ["src/f1.ts"], paths },
+    };
+    expect(text(closing)).toBe(
+      [
+        "SPECTY · 20261021-x · closing · incorporando main",
+        "Incorporar main a este cambio dio conflictos; el merge espera en esta carpeta.",
+        "CONFLICTOS:",
+        "  src/f1.ts",
+        "PUEDES TOCAR:",
+        ...paths.slice(0, 20).map((path) => `  ${path}`),
+        "  y 2 más",
+        "SIGUIENTE: resuelve los conflictos sin dejar marcadores (`<<<<<<<`) y ejecuta `specty integrate`.",
+      ].join("\n"),
+    );
+    const failing: ChangeView = {
+      ...view("acceptance"),
+      integration: { target: "main", reason: "verify", conflicts: [], paths: ["src/a.ts"] },
+    };
+    const english = renderText(
+      nextCard({ change: failing, dirty: [] }, { ...ES, lang: "en" }),
+      "en",
+    );
+    expect(english).toContain("SPECTY · 20261021-x · acceptance · merging main");
+    expect(english).toContain("With main merged in, the verification fails");
+    expect(english).not.toContain("CONFLICTS");
+    expect(english).toContain("NEXT: fix what fails and run `specty integrate`.");
+    expect(text(view("closing"))).toContain("CÓMO CERRAR:");
+  });
+
   it("asks to document changes made without a spec", () => {
     const card = nextCard({ dirty: ["src/a.ts"] }, ES);
     expect(card.status).toBe("blocked");

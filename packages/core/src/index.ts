@@ -45,6 +45,7 @@ export type {
   CardContext,
   ChangeView,
   CriterionView,
+  IntegrationView,
   RejectedView,
   ScopeRequestView,
   TaskView,

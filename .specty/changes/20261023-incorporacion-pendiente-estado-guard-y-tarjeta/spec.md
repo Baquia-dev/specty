@@ -68,7 +68,7 @@ Core aprende qué es una incorporación pendiente, para que un conflicto al inco
   - files: packages/core/src/guard/integration.ts, packages/core/src/guard/decide.ts, packages/core/src/index.ts, packages/core/test/guard/decide.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard
-- [ ] T3: La tarjeta de la incorporación pendiente
+- [x] T3: La tarjeta de la incorporación pendiente
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/integration.ts, packages/core/src/cards/next.ts, packages/core/src/index.ts, packages/core/test/cards.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts

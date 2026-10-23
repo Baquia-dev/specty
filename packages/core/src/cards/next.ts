@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { headerOf, type Output, section } from "../output";
+import { integrationCard } from "./integration";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, ChangeView } from "./view";
 import { acceptanceCard, adjustingCard, closingCard, implementingCard } from "./work";
@@ -16,6 +17,7 @@ export interface NextView {
 export function nextCard(view: NextView, ctx: CardContext): Output {
   const { change } = view;
   if (change === undefined) return noChangeCard(view.dirty, ctx);
+  if (change.integration !== undefined) return integrationCard(change, change.integration, ctx);
   switch (change.phase) {
     case "draft":
       return draftCard(change, ctx);
