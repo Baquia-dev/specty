@@ -38,9 +38,6 @@
     "allow": [
       "EnterWorktree",
       "ExitWorktree"
-    ],
-    "ask": [
-      "ExitWorktree(action:remove)"
     ]
   }
 }

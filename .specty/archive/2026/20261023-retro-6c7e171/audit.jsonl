@@ -1,0 +1,4 @@
+{"ts":"2026-10-23T20:37:27.267Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"retro","tree":"6c7e1719f30f5ad17e70ad45ee98725416bd2261"}}
+{"ts":"2026-10-23T20:37:34.675Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:6200369ee724aaf6da9e06fc782f6269741bf3abb2a2bf3c3ec17681fce5ef98","size":"S","warnings":0}}
+{"ts":"2026-10-23T20:38:42.506Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:6200369ee724aaf6da9e06fc782f6269741bf3abb2a2bf3c3ec17681fce5ef98","channel":"tty"}}
+{"ts":"2026-10-23T20:38:42.507Z","actor":"human","event":"retro.confirmed","data":{"mode":"agent"}}
