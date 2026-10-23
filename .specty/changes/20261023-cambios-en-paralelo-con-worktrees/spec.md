@@ -70,7 +70,7 @@ Specty permite trabajar varios cambios a la vez, cada uno con su propio agente. 
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts
   - type: fix
-- [ ] T2: `specty new --worktree`
+- [x] T2: `specty new --worktree`
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/commands/new.ts, packages/cli/src/program.ts, packages/cli/src/install/agents.ts, packages/cli/test/worktrees.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts

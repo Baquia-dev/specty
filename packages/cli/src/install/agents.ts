@@ -7,6 +7,16 @@ import type { Invocation } from "../session";
 
 const CLAUDE_MATCHER = "Edit|MultiEdit|Write|NotebookEdit|Bash";
 const FORMAT = { formattingOptions: { insertSpaces: true, tabSize: 2, eol: "\n" } };
+const CLAUDE_SETTINGS = ".claude/settings.json";
+const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
+const CURSOR_HOOKS = ".cursor/hooks.json";
+
+/** Files where Specty installs agent hooks; `new --worktree` copies the ones git does not track. */
+export const AGENT_HOOK_FILES: readonly string[] = [
+  CLAUDE_SETTINGS,
+  CLAUDE_LOCAL_SETTINGS,
+  CURSOR_HOOKS,
+];
 
 export interface AgentInstall {
   readonly file: string;
@@ -23,8 +33,8 @@ export async function installClaudeCode(
   git: Git,
   invocation: Invocation,
 ): Promise<AgentInstall> {
-  const target = invocation.portable ? ".claude/settings.json" : ".claude/settings.local.json";
-  const other = invocation.portable ? ".claude/settings.local.json" : ".claude/settings.json";
+  const target = invocation.portable ? CLAUDE_SETTINGS : CLAUDE_LOCAL_SETTINGS;
+  const other = invocation.portable ? CLAUDE_LOCAL_SETTINGS : CLAUDE_SETTINGS;
   await rewriteJson(join(root, other), (value) => withClaudeHook(value, undefined), false);
   const command = `${invocation.command} guard --tool claude-code`;
   await rewriteJson(join(root, target), (value) => withClaudeHook(value, command), true);
@@ -38,7 +48,7 @@ export async function installCursor(
   git: Git,
   invocation: Invocation,
 ): Promise<AgentInstall> {
-  const file = ".cursor/hooks.json";
+  const file = CURSOR_HOOKS;
   const command = `${invocation.command} guard --tool cursor`;
   await rewriteJson(join(root, file), (value) => withCursorHooks(value, command), true);
   if (!invocation.portable) await excludeLocally(git, file);

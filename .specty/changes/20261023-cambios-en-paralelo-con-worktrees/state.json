@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "59514be1299f6258130269c3ce976c5e81390fff",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:19:14.356Z",
       "doneAt": "2026-10-23T10:22:48.023Z",
-      "summary": "git.ts lista las worktrees (worktrees, nestedWorktrees) y descarta de los archivos sin seguimiento las que viven dentro del repo; commits.ts las excluye al preparar el commit. Tests de punta a punta: una worktree en .claude/worktrees/x no bloquea next ni task done y no entra en el commit; un repo anidado normal sigue contando."
+      "summary": "git.ts lista las worktrees (worktrees, nestedWorktrees) y descarta de los archivos sin seguimiento las que viven dentro del repo; commits.ts las excluye al preparar el commit. Tests de punta a punta: una worktree en .claude/worktrees/x no bloquea next ni task done y no entra en el commit; un repo anidado normal sigue contando.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d615349420097177990cc6e169954c819fd95be5",
+      "startedAt": "2026-10-23T10:22:48.316Z",
+      "doneAt": "2026-10-23T10:27:21.581Z",
+      "summary": "flow/worktree.ts: base del cambio (--from, o la rama principal: origin/HEAD, init.defaultBranch, main, master; si no, HEAD), carpeta <principal>.worktrees/<id> y git worktree add copiando los hooks de agente que git no sigue (lista única en install/agents.ts). new.ts: --worktree crea el cambio allí sin mirar la carpeta actual; --from sin --worktree es inválido; sin rama por cambio se bloquea; el bloqueo por cambio en curso propone --worktree; uniqueId evita carpetas ocupadas. program.ts: opciones --worktree y --from. Tests de punta a punta para AC1-AC7."
     }
   },
   "pending": {
