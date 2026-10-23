@@ -69,3 +69,29 @@ El guard impide que un agente cambie archivos de otra worktree del repositorio: 
 
 - R1: Si la worktree propia se tomara por otra, el guard bloquearía todas las escrituras de la sesión — la propia se reconoce por su ruta real y gana los empates, y los tests cubren la carpeta principal, una hermana y una anidada.
 - R2: Una llamada más a git en cada evento con rutas suma latencia al guard — solo se hace cuando la acción tiene rutas, y se mide con el CLI compilado antes de cerrar.
+
+## Cierre
+
+### Resumen
+
+El guard bloquea que un agente escriba o borre en otra worktree del repositorio, con sus herramientas o por shell (`echo >` y `rm`), y nombra la carpeta y la rama de esa worktree. Cubre una carpeta hermana, una anidada como `.claude/worktrees/x` y, desde una anidada, la carpeta principal. Dentro de la propia carpeta y fuera de cualquier worktree decide como antes. Responde en el formato de cada agente: salida 2 en Claude Code y `permission: deny` en Cursor. Con el CLI compilado, en este repo con tres worktrees, el p95 del guard pasa de 100 a 110 ms, dentro del objetivo de 200.
+
+### Desviaciones
+
+- **Ninguna respecto al plan.** La primera verificación de T2 falló en un test de la UI ajeno al cambio (`toast.test.ts`, por un timeout de 5 s) con la máquina a carga 17 por tres sesiones en paralelo; ese test pasa aislado, y al repetir la verificación pasó todo.
+
+### Decisiones
+
+- **`foreign` es opcional en las acciones:** así no cambian la comprobación tras cada comando de Bash (`decideAfterShell`) ni nadie que construya acciones sin rutas ajenas.
+- **La regla vive en su propio archivo de core (`guard/worktrees.ts`),** porque `decide.ts` ya rozaba el máximo de 300 líneas; queda en 291.
+- **La worktree propia se reconoce por su ruta real y gana los empates,** mientras que las rutas de la herramienta se comparan tal como llegan, como ya hacía el guard (A3).
+- **Una worktree desacoplada se nombra solo por su carpeta,** porque no tiene rama.
+- **A1, confirmado al aprobar:** se bloquea todo lo que está en otra worktree, aunque git lo ignore allí o la carpeta actual no tenga un cambio activo.
+
+### Pendientes
+
+- **La línea de ARCHITECTURE §10 sobre esta regla:** el límite de 2 módulos la dejó fuera. Propuesta: que las rutas no gobernadas, como `docs/` y `*.md`, no cuenten como módulo.
+- **Los commits tras un `cd` a otra worktree u otro repositorio** se siguen juzgando con los cambios de esta carpeta.
+- **Lo que un intérprete escribe en otra worktree** no lo ve la comprobación tras cada comando de Bash, que solo mira esta carpeta.
+- **Un test de la UI inestable con carga:** `toast.test.ts` falsea `setTimeout` antes de `whenStable()`; si los falseara después de `render()`, sería determinista.
+- **`specty status` y los comandos de la persona sobre todas las worktrees,** eligiendo el cambio por su fase: el siguiente cambio de la serie.
