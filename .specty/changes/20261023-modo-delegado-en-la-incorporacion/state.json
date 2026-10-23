@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-modo-delegado-en-la-incorporacion",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-modo-delegado-en-la-incorporacion",
   "baseCommit": "a936b866cca758453e66e32c86d9ff1e9dde7052",
   "revision": 1,
@@ -43,12 +43,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6405856523b2ece8a7c81ea160deb980dc7eb6b7",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:08:55.851Z",
       "doneAt": "2026-10-23T21:10:47.136Z",
-      "summary": "landChange no borra la worktree si quien cierra es el agente y la carpeta de trabajo del proceso está dentro: el cambio se incorpora igual, la carpeta y la rama quedan (Landed.kept) y withIntegration le pide salir (en Claude Code, ExitWorktree) y seguir en la carpeta principal; la persona, o un cierre desde fuera, la borran como antes"
+      "summary": "landChange no borra la worktree si quien cierra es el agente y la carpeta de trabajo del proceso está dentro: el cambio se incorpora igual, la carpeta y la rama quedan (Landed.kept) y withIntegration le pide salir (en Claude Code, ExitWorktree) y seguir en la carpeta principal; la persona, o un cierre desde fuera, la borran como antes",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d1eb41d164d6b7bb910063d78f179eac7443da94",
+      "startedAt": "2026-10-23T21:10:47.451Z",
+      "doneAt": "2026-10-23T21:12:47.612Z",
+      "summary": "ARCHITECTURE §9: en modo delegado el agente resuelve la incorporación y repite él close o accept, y si cierra desde dentro de la worktree la carpeta queda y se le pide salir"
     }
   },
   "pending": {

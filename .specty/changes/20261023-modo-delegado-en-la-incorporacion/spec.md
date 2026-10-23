@@ -50,7 +50,7 @@ Con el modo delegado activo, la incorporación sigue sola. Si un cierre choca, l
   - files: packages/cli/src/flow/land.ts, packages/cli/test/delegated-integration.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/delegated-integration.test.ts test/integrate.test.ts test/anywhere.test.ts
-- [ ] T3: Documentar la incorporación en modo delegado
+- [x] T3: Documentar la incorporación en modo delegado
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check

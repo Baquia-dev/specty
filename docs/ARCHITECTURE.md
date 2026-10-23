@@ -205,11 +205,12 @@ Las worktrees que otras herramientas crean dentro del repositorio (Claude Code u
    - El agente la termina con `specty integrate`, que exige que no queden marcadores de conflicto, que lo cambiado esté dentro de esos archivos y que la verificación pase. Entonces hace el commit de merge, que deja fuera `.specty/`, y marca la incorporación como resuelta.
    - Mientras tanto, `close` y `accept` piden decirle al agente «continúa». Si alguien aborta el merge, la incorporación pendiente se descarta y el comando la intenta de nuevo.
    - La persona repite el comando, y antes de confirmar ve el merge del agente y lo que resolvió.
+   - En modo delegado, el agente lo hace todo: la salida le pide resolver la incorporación con `specty next` y `specty integrate`, y repetir él `close` (o `accept`), sin pasar por la persona.
 
    El reintento de un cambio ya cerrado (paso 4) aborta el merge en lugar de dejarlo para el agente; la persona incorpora la principal a mano en esa carpeta y repite el comando.
 3. Se archiva el cambio como siempre.
 4. La rama principal avanza por fast-forward: con `git merge --ff-only` en la carpeta donde está, o con `git update-ref` si no está en ninguna. Si falla (otra sesión la movió entre medias), el cambio queda cerrado y `specty close` reintenta solo la incorporación.
-5. La worktree del cambio se borra con `git worktree remove`, sin `--force`, y la rama queda; si el cambio vivía en la carpeta principal, esa carpeta vuelve a la rama principal.
+5. La worktree del cambio se borra con `git worktree remove`, sin `--force`, y la rama queda; si el cambio vivía en la carpeta principal, esa carpeta vuelve a la rama principal. Si cierra el agente (modo delegado) desde dentro de la worktree, la carpeta queda para no dejar su sesión en una carpeta borrada, y la salida le pide salir de ella (en Claude Code, `ExitWorktree`).
 
 Solo se incorporan los cambios `standard` y `quick` con rama y en modo `individual`. Un `spike` no se fusiona, un `retro` no tiene rama, y las épicas y el modo `team` (que integra por PR) cierran como antes, con un SIGUIENTE que pide fusionar la rama.
 
