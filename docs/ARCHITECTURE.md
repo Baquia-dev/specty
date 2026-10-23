@@ -257,7 +257,7 @@ Specty protege contra el agente impaciente (el que se salta pasos para ayudar) y
 
 **Señales deterministas** que calcula `propose`:
 
-- archivos por acción (crear, modificar, borrar) y módulos distintos tocados;
+- archivos por acción (crear, modificar, borrar) y módulos distintos tocados (solo cuentan las rutas gobernadas: la documentación y lo demás de `ignored` no suma módulos);
 - rutas sensibles: migraciones, auth, pagos, CI, infraestructura;
 - dependencias nuevas o cambios de API pública;
 - fan-in de los archivos tocados (cuántos archivos los importan);

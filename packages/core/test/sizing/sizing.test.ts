@@ -47,6 +47,18 @@ describe("computeSize", () => {
     );
   });
 
+  it("counts as modules only governed paths, not documentation", () => {
+    const text = STANDARD.replace(
+      "\n## Tareas",
+      "- modificar docs/ARCHITECTURE.md — diseño\n- modificar lib/README.md — uso\n\n## Tareas",
+    );
+    const size = computeSize(specOf(text), DEFAULT_CONFIG);
+    expect(size.signals.modules).toEqual(["analytics", "home"]);
+    expect(size.signals.fileCount).toBe(5);
+    const governed = computeSize(specOf(text), { ...DEFAULT_CONFIG, ignored: [] });
+    expect(governed.signals.modules).toEqual(["analytics", "docs", "home", "lib"]);
+  });
+
   it("weighs sensitive paths and dependency changes", () => {
     const text = STANDARD.replace(
       "\n## Tareas",
