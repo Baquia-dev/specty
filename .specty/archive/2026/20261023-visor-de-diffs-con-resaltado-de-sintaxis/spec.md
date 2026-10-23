@@ -70,3 +70,30 @@ El sistema de diseño gana un visor de diffs, con su sección en el catálogo. M
   - ac: AC6
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro: los dos modos, las palabras marcadas, plegar, «Mostrar N líneas más», la lista de archivos y el selector de qué cambios ver.
+
+## Cierre
+
+### Resumen
+
+El sistema de diseño tiene un visor de diffs. `sp-diff-viewer` muestra un resumen («5d2a7b0 → 8b0a4f6 · 4 archivos · +98 −2»), la barra que pone quien lo usa, «Unificado | Lado a lado» (recordado en el navegador; por debajo de 640 px solo unificado), la lista de archivos y cada archivo. `sp-diff-file` se pliega y muestra la ruta, el estado, las cuentas y los bloques con números, signos y palabras cambiadas; un archivo de más de 60 líneas enseña 40 y «Mostrar N líneas más». Un lector de pantalla oye «Añadida:» o «Quitada:» en vez de números y signos. Los fondos son tokens con su contraste comprobado en claro y oscuro, y el catálogo lo muestra con el diff de ejemplo y un selector de qué cambios ver. Cada línea va en tramos (`spansOf`), listos para el resaltado.
+
+### Desviaciones
+
+- **Dos tokens más:** `--color-diff-added-text` y `--color-diff-removed-text`, para el signo y las cuentas +N −N, con sus pares de contraste. El diseño solo listaba los cuatro fondos.
+- **Tests de las funciones puras en `diff-file.test.ts`:** `diff-viewer.test.ts` pasaba de 300 líneas, así que `spansOf`, `firstLines`, `countsLabel` y `pathParts` se prueban junto a su archivo.
+- **Solicitud S1 (T3):** la comprobación en el teléfono mostró el chevron solo en una línea y las rutas partidas a mitad de nombre. Se arregló en `diff-file.ts` y `diff-viewer.ts`: el chevron va fijo junto a un bloque que se parte por su cuenta, y las rutas solo se cortan tras «/». Para no pasar de 300 líneas, las filas de bloque guardan el bloque entero y una sola señal dice si el archivo se ve completo.
+- **«Mostrar N líneas más» no se ve en el catálogo:** ningún archivo del ejemplo pasa de 60 líneas; lo cubren los tests.
+
+### Decisiones
+
+- **Colores opacos:** los fondos del mockup eran transparentes sobre la superficie; se guardaron como su mezcla en hexadecimal, para que el test de contraste los mida.
+- **Estado por texto y por color:** «Nuevo» y «Borrado» llevan el tinte de su lado; «Modificado» y «Renombrado», un borde neutro.
+- **Comas para el lector de pantalla:** el nombre de un botón junta sus piezas sin espacios, así que entre la ruta, el estado y las cuentas va una coma oculta.
+- **El foco no se pierde:** «Mostrar N líneas más» desaparece al pulsarlo y el foco pasa a la primera línea nueva; la lista de archivos lleva el foco a la cabecera de cada uno.
+- **Lado a lado, la línea de contexto se oye una vez:** la copia de la derecha queda oculta para el lector.
+
+### Pendientes
+
+- **El resaltado de sintaxis con Shiki**, en el cambio siguiente: los colores del código y `highlight.ts`, que da color a los tramos.
+- **La vista «Cambios» en Aceptación**, después: el visor con el diff por tarea o del cambio completo.
+- **El servidor local:** ejecutar git para cada tarea y para el cambio completo.

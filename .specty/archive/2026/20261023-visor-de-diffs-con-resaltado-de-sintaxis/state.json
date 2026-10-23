@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-visor-de-diffs-con-resaltado-de-sintaxis",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-visor-de-diffs-con-resaltado-de-sintaxis",
   "baseCommit": "014031ed20161460edbb7321b75ce3670cc7660e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d5586bf7a94b47655242ecc8a4e9d852b9045cd9b4cfe32ad0a67471620a37c4",
@@ -73,16 +73,16 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "a76c78db4dec127ff1f9e2d2cc8d1536c32b1477",
+      "attempts": 1,
+      "startedAt": "2026-10-23T07:44:32.474Z",
+      "doneAt": "2026-10-23T08:13:14.077Z",
+      "summary": "Sección «Visor de diffs» en «Componentes» del catálogo: el diff de ejemplo de «Panel de asistencia» con un selector segmentado de qué cambios ver (Todo el cambio · T1 · T2), que cambia archivos y rango (5d2a7b0 → 8b0a4f6, → 3c9d1e2, 3c9d1e2 →). docs/ui.md describe el visor en «Lenguaje visual», el stack ya no lo da por evaluar y Aceptación anuncia la vista «Cambios». Comprobado en el navegador a 390 y 1280 px, en claro y oscuro: los dos modos, palabras marcadas, plegar, la lista que lleva el foco y el selector; «Mostrar N líneas más» no aparece en el ejemplo (ningún archivo pasa de 60 líneas) y lo cubren los tests. Con S1: en el teléfono el chevron quedaba solo en una línea y las rutas se partían a mitad de nombre; ahora el chevron va fijo junto a un bloque que se parte por su cuenta y las rutas solo se cortan tras «/» (<wbr>, pathParts). Para seguir en 300 líneas, las filas de bloque guardan el bloque y una sola señal (revealed) dice si se muestra todo.",
       "scopeExtra": [
         "packages/ui/src/components/diff-file.ts",
         "packages/ui/src/components/diff-viewer.ts",
         "packages/ui/src/components/diff-viewer.test.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "a76c78db4dec127ff1f9e2d2cc8d1536c32b1477",
-      "startedAt": "2026-10-23T07:44:32.474Z",
-      "doneAt": "2026-10-23T08:13:14.077Z",
-      "summary": "Sección «Visor de diffs» en «Componentes» del catálogo: el diff de ejemplo de «Panel de asistencia» con un selector segmentado de qué cambios ver (Todo el cambio · T1 · T2), que cambia archivos y rango (5d2a7b0 → 8b0a4f6, → 3c9d1e2, 3c9d1e2 →). docs/ui.md describe el visor en «Lenguaje visual», el stack ya no lo da por evaluar y Aceptación anuncia la vista «Cambios». Comprobado en el navegador a 390 y 1280 px, en claro y oscuro: los dos modos, palabras marcadas, plegar, la lista que lleva el foco y el selector; «Mostrar N líneas más» no aparece en el ejemplo (ningún archivo pasa de 60 líneas) y lo cubren los tests. Con S1: en el teléfono el chevron quedaba solo en una línea y las rutas se partían a mitad de nombre; ahora el chevron va fijo junto a un bloque que se parte por su cuenta y las rutas solo se cortan tras «/» (<wbr>, pathParts). Para seguir en 300 líneas, las filas de bloque guardan el bloque y una sola señal (revealed) dice si se muestra todo."
+      ]
     }
   },
   "pending": {
@@ -94,5 +94,6 @@
     "AC": 6,
     "T": 3,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T08:24:26.937Z"
 }
