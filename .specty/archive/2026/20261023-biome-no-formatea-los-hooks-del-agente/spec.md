@@ -18,3 +18,9 @@ kind: quick
   - files: biome.json
   - verify: pnpm lint
   - type: fix
+
+## Cierre
+
+### Resumen
+
+biome.json excluye .claude/settings.json y .cursor/hooks.json, que escribe specty init con su propio formato JSON: el lint de main volvía a fallar desde el retro 5841c05. pnpm lint y pnpm check completos en verde

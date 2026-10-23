@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-biome-no-formatea-los-hooks-del-agente",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-biome-no-formatea-los-hooks-del-agente",
   "baseCommit": "5841c0528117daa7f461d1ecfd572377d0065582",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2ac59d67146969c47fe7db10f6e9ab21c026b09b",
+      "attempts": 1,
       "startedAt": "2026-10-23T20:17:09.541Z",
       "doneAt": "2026-10-23T20:18:29.842Z",
-      "summary": "biome.json excluye .claude/settings.json y .cursor/hooks.json, que escribe specty init con su propio formato JSON: el lint de main volvía a fallar desde el retro 5841c05. pnpm lint y pnpm check completos en verde"
+      "summary": "biome.json excluye .claude/settings.json y .cursor/hooks.json, que escribe specty init con su propio formato JSON: el lint de main volvía a fallar desde el retro 5841c05. pnpm lint y pnpm check completos en verde",
+      "scopeExtra": []
     }
   },
   "pending": {
