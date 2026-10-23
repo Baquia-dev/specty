@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c695a083e5e5d7e3b2bfb2d09b7a2ece4ed14e1b",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:25:47.670Z",
       "doneAt": "2026-10-23T10:29:01.174Z",
-      "summary": "decideGuard da la regla de cada denegación; guard/after.ts compara las fotos y juzga lo que cambió un comando con las reglas del guard"
+      "summary": "decideGuard da la regla de cada denegación; guard/after.ts compara las fotos y juzga lo que cambió un comando con las reglas del guard",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ac5be762b9992d37b5ec13d805efd2d291f80716",
+      "startedAt": "2026-10-23T10:29:01.500Z",
+      "doneAt": "2026-10-23T10:34:26.862Z",
+      "summary": "Foto del árbol antes de cada comando de Bash y comprobación al terminar (PostToolUse y PostToolUseFailure), con limpieza de fotos huérfanas; p95 160 ms antes y 158 ms después"
     }
   },
   "pending": {

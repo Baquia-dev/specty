@@ -2,18 +2,21 @@
 import { isAbsolute, relative, resolve, sep } from "node:path";
 import {
   analyzeShell,
+  decideAfterShell,
   decideGuard,
   type GuardAction,
   type GuardChange,
   type GuardDecision,
   isGoverned,
   parseSpec,
+  shellChanges,
 } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
 import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
+import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 
 export type GuardTool = "claude-code" | "cursor";
 
@@ -30,8 +33,9 @@ type RawAction =
   | { readonly kind: "other" };
 
 /**
- * `specty guard --tool <id>`: called by the agent's hooks before each action. It fails open
- * on its own errors (the git hooks and CI still apply) and never blocks outside Specty repos.
+ * `specty guard --tool <id>`: called by the agent's hooks before each action and, in Claude
+ * Code, after each Bash command. It fails open on its own errors (the git hooks and CI still
+ * apply) and never blocks outside Specty repos.
  */
 export async function guard(
   environment: Environment,
@@ -45,9 +49,12 @@ export async function guard(
     const opened = await openSession({ ...environment, cwd });
     if (opened.kind !== "ok") return allow(tool);
     const session = opened.session;
+    if (tool === "claude-code" && isAfterTool(event)) return await afterShell(session, event);
     const raw = tool === "claude-code" ? claudeAction(event) : cursorAction(event);
     const action = await resolveAction(session, raw, cwd);
-    return reply(tool, decideGuard(action, await guardContext(session)), session);
+    const decision = decideGuard(action, await guardContext(session));
+    if (decision.allow && tool === "claude-code") await beforeShell(session, event, action);
+    return reply(tool, decision, session);
   } catch (error) {
     const message = `specty guard: ${error instanceof Error ? error.message : String(error)}`;
     return tool === "cursor"
@@ -58,6 +65,44 @@ export async function guard(
         }
       : { code: 1, stdout: "", stderr: message };
   }
+}
+
+function isAfterTool(event: Record<string, unknown>): boolean {
+  return event.hook_event_name === "PostToolUse" || event.hook_event_name === "PostToolUseFailure";
+}
+
+/** The tool call that links the hooks before and after a command, safe as a file name. */
+function toolUseId(event: Record<string, unknown>): string | undefined {
+  const id = event.tool_use_id;
+  return typeof id === "string" && /^[\w-]{1,128}$/.test(id) ? id : undefined;
+}
+
+/** Before a Bash command it lets through, keeps a snapshot of the tree to compare afterwards. */
+async function beforeShell(
+  session: Session,
+  event: Record<string, unknown>,
+  action: GuardAction,
+): Promise<void> {
+  const id = toolUseId(event);
+  // Specty's own commands write its state and make its commits as part of the flow.
+  if (action.kind !== "shell" || action.facts.specty.length > 0 || id === undefined) return;
+  try {
+    // Without the hook after the command (an install older than it), nobody reads snapshots.
+    await pruneSnapshots(session);
+    await saveSnapshot(session, id, await treeSnapshot(session));
+  } catch {
+    // Without a snapshot the check after the command stays silent.
+  }
+}
+
+/** After a Bash command, judges what it changed with the guard's own rules. */
+async function afterShell(session: Session, event: Record<string, unknown>): Promise<GuardReply> {
+  const id = toolUseId(event);
+  const before = id === undefined ? undefined : await takeSnapshot(session, id);
+  await pruneSnapshots(session);
+  if (before === undefined) return allow("claude-code");
+  const changes = shellChanges(before, await treeSnapshot(session));
+  return reply("claude-code", decideAfterShell(changes, await guardContext(session)), session);
 }
 
 function cwdOf(event: Record<string, unknown>, fallback: string): string {
