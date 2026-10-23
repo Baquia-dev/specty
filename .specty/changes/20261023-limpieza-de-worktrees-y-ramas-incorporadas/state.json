@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261023-limpieza-de-worktrees-y-ramas-incorporadas",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-limpieza-de-worktrees-y-ramas-incorporadas",
+  "baseCommit": "bca6638313fd3d0fb99b5d74a17ac7c7473fef98",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fe267c8e669f314d82c309775ebcef8532ec58a0b2e2c31cc1044b0b3bbdee2d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a888f142de5d916dac7148f9a5a5d98504f66d20ab5d65e721a0a3ce26ec69d4",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e0738c499dcde3f00e4fa65c38eef296f0aaecb729a4d95cac49ebef46f3ccd4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c8d5900447dddb407cb89a811c46fe78b592d293306169c273a19ca4336ab4fd",
+    "at": "2026-10-23T21:32:36.408Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
