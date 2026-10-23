@@ -14,6 +14,14 @@ const CLAUDE_EVENTS: Readonly<Record<string, string>> = {
   PostToolUse: "Bash",
   PostToolUseFailure: "Bash",
 };
+/**
+ * Each change lives in its own worktree: the agent enters and leaves it without a prompt, while
+ * removing one (it takes the branch with it) still asks.
+ */
+const CLAUDE_PERMISSIONS: Readonly<Record<string, readonly string[]>> = {
+  allow: ["EnterWorktree", "ExitWorktree"],
+  ask: ["ExitWorktree(action:remove)"],
+};
 const FORMAT = { formattingOptions: { insertSpaces: true, tabSize: 2, eol: "\n" } };
 const CLAUDE_SETTINGS = ".claude/settings.json";
 const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
@@ -33,8 +41,9 @@ export interface AgentInstall {
 }
 
 /**
- * Claude Code: a `PreToolUse` hook (matcher + `hooks: [{ type: "command" }]`). Machine-specific
- * commands go to `.claude/settings.local.json`, which is never committed.
+ * Claude Code: a `PreToolUse` hook (matcher + `hooks: [{ type: "command" }]`) and the worktree
+ * permissions. Machine-specific commands go to `.claude/settings.local.json`, which is never
+ * committed.
  */
 export async function installClaudeCode(
   root: string,
@@ -45,7 +54,11 @@ export async function installClaudeCode(
   const other = invocation.portable ? CLAUDE_LOCAL_SETTINGS : CLAUDE_SETTINGS;
   await rewriteJson(join(root, other), (value) => withClaudeHook(value, undefined), false);
   const command = `${invocation.command} guard --tool claude-code`;
-  await rewriteJson(join(root, target), (value) => withClaudeHook(value, command), true);
+  await rewriteJson(
+    join(root, target),
+    (value) => withClaudePermissions(withClaudeHook(value, command)),
+    true,
+  );
   if (!invocation.portable) await excludeLocally(git, target);
   return { file: target, local: !invocation.portable };
 }
@@ -101,6 +114,16 @@ function withClaudeHook(value: Entry, command: string | undefined): Entry {
     },
   );
   return { ...value, hooks: { ...hooks, ...Object.fromEntries(events) } };
+}
+
+/** Adds the worktree permissions, after the rules the file already had. */
+function withClaudePermissions(value: Entry): Entry {
+  const permissions = isRecord(value.permissions) ? value.permissions : {};
+  const lists = Object.entries(CLAUDE_PERMISSIONS).map(([list, rules]) => {
+    const current: unknown[] = Array.isArray(permissions[list]) ? permissions[list] : [];
+    return [list, [...current, ...rules.filter((rule) => !current.includes(rule))]];
+  });
+  return { ...value, permissions: { ...permissions, ...Object.fromEntries(lists) } };
 }
 
 function withCursorHooks(value: Entry, command: string): Entry {

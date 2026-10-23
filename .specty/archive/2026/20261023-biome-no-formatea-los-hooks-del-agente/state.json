@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261023-biome-no-formatea-los-hooks-del-agente",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261023-biome-no-formatea-los-hooks-del-agente",
+  "baseCommit": "5841c0528117daa7f461d1ecfd572377d0065582",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:796b27a476fea5cfc21b8f639f260c7a6223af0ac4d4f293fa64b8d635c50a9d",
+    "at": "2026-10-23T20:17:01.287Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2ac59d67146969c47fe7db10f6e9ab21c026b09b",
+      "attempts": 1,
+      "startedAt": "2026-10-23T20:17:09.541Z",
+      "doneAt": "2026-10-23T20:18:29.842Z",
+      "summary": "biome.json excluye .claude/settings.json y .cursor/hooks.json, que escribe specty init con su propio formato JSON: el lint de main volvía a fallar desde el retro 5841c05. pnpm lint y pnpm check completos en verde",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

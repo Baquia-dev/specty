@@ -66,6 +66,24 @@ describe("specty init", () => {
     expect((await cli(root, ["doctor"])).out).toContain("Claude Code: guard instalado.");
   });
 
+  it("lets the agent enter and leave worktrees, keeping the permissions people wrote", async () => {
+    const root = await tempRepo({
+      "package.json": '{"name":"x","scripts":{"test":"true"}}\n',
+      ".claude/settings.local.json": JSON.stringify({
+        permissions: { allow: ["Bash(npm test)"], deny: ["Read(.env)"] },
+      }),
+    });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    expect((await cli(root, ["init"])).code).toBe(0);
+    const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
+    expect(settings.permissions).toEqual({
+      allow: ["Bash(npm test)", "EnterWorktree", "ExitWorktree"],
+      deny: ["Read(.env)"],
+      ask: ["ExitWorktree(action:remove)"],
+    });
+    expect(settings.hooks.PreToolUse).toHaveLength(1);
+  });
+
   it("is idempotent and keeps what people wrote", async () => {
     const root = await tempRepo({
       "pubspec.yaml": "name: app\nflutter:\n  uses-material-design: true\n",
