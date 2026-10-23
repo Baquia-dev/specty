@@ -6,6 +6,13 @@
   "branch": "specty/20261023-selector-segmentado-en-el-sistema-de-diseno",
   "baseCommit": "2c4e255890d2dd0b02c8dd554d38111b302592cf",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:04bda8ecc4f6eccc7c589079692edb4aedfd062a0b51108d4e982187703c712f",
+    "at": "2026-10-23T06:49:16.408Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1bc89ff512a32f42762fe09068445b2e35d59b14",
+      "startedAt": "2026-10-23T06:49:33.564Z",
+      "doneAt": "2026-10-23T06:50:30.151Z",
+      "summary": "components/segmented.ts: sp-segmented, un grupo de radios nativos (role radiogroup nombrado por su etiqueta, visible o con hideLabel solo para el lector) con estilo de segmentos: caja de 36 px con borde, opciones de 32 px (40 en táctil), la elegida con fondo tenue y semibold (has-checked), el foco dibujado sobre la opción (has-focus-visible) y opciones que pasan de línea. Un name por instancia. API como el select: label, hideLabel, options y value (model). 4 tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 5,
     "T": 2
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:04bda8ecc4f6eccc7c589079692edb4aedfd062a0b51108d4e982187703c712f",
-    "at": "2026-10-23T06:49:16.408Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

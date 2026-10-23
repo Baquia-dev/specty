@@ -44,7 +44,7 @@ El sistema de diseño gana un selector segmentado: unas pocas opciones a la vist
 
 ## Tareas
 
-- [ ] T1: El selector segmentado
+- [x] T1: El selector segmentado
   - files: packages/ui/src/components/segmented.ts, packages/ui/src/components/segmented.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/segmented.test.ts
