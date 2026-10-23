@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261023-resaltado-de-sintaxis",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-resaltado-de-sintaxis",
+  "baseCommit": "f9e15e340e7d2781b0f035d7cc31cd930de172d3",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4c1be5c359ced4912aa86602b1fd617c47b6ad437e90a3048893a16328d68bae",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ec1bfa995d8238f155fbea7a18a4b3f91618a95dddee9d44f09391b5320965ee",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:862b421ddfcbb92a9abab27b79d9501517393870a2dc6969dc9befc804487edb",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:543c3d060a60f229b54917174ff7545b7713e5446d5c6daaf862f18ecfc2c479",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:803674cd6451dff3fb7158908d4151cee3dcb487a92d39a3caceddb4bba893ac",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:74d4fdf75be16da95f4c9aa6d6f013649ebac51093782896a10a1ce91acaeb68",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:ca0e3830da05a537b3dbaf3228653a521ee9f00a8141db9619976b705da9e66b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d90758449de9599de9c3f3f3c6db0c96c6f28ab9f222af53556f34fd979d1d4e",
+    "at": "2026-10-23T08:37:55.437Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
