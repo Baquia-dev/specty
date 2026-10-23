@@ -20,6 +20,7 @@ import { evidenceOf, summaryOf } from "../data/acceptance";
 import type { ChangeView } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { ChangesView, WHOLE_CHANGE } from "./changes-view";
+import { ClosingView } from "./closing-view";
 import { CriterionRow } from "./criterion-row";
 import { FullVerification } from "./full-verification";
 import { TraceMatrix } from "./trace-matrix";
@@ -45,6 +46,7 @@ const VIEW_KEY = "specty.acceptance.view";
     TraceMatrix,
     FullVerification,
     ChangesView,
+    ClosingView,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
@@ -58,8 +60,9 @@ const VIEW_KEY = "specty.acceptance.view";
         <p class="m-0 text-sm text-text-muted" data-summary><strong class="font-semibold text-text">{{ verifiedLine() }}</strong>{{ rest() }}</p>
         <sp-select [label]="t()('Vista', 'View')" [options]="views()" [value]="view()" (valueChange)="choose($event)" data-view />
       </div>
-      @if (closingNote(); as note) {
-        <p class="m-0 text-sm" role="note" data-closing>{{ note }}</p>
+      <!-- After accepting: the closing the agent writes, and once done, what it said. -->
+      @if (showsClosing()) {
+        <sp-closing-view [change]="change()" />
       }
       <!-- Only when the project has a full verification (verify.full). -->
       @if (change().progress.full; as full) {
@@ -137,19 +140,10 @@ export class AcceptanceTab {
     return ` · ${tasks} · ${made}`;
   });
 
-  /** After accepting: who has to act on the closing now. */
-  protected readonly closingNote = computed(() => {
-    const change = this.change();
-    if (change.phase !== "closing") return "";
-    return change.decision === "closing"
-      ? this.t()(
-          "El agente envió el cierre: confírmalo con specty close.",
-          "The agent sent the closing: confirm it with specty close.",
-        )
-      : this.t()(
-          "Resultado aceptado: el agente redacta el cierre.",
-          "Result accepted: the agent is writing the closing.",
-        );
+  /** In closing, always; once done, when there is a closing to read (a quick change has none). */
+  protected readonly showsClosing = computed(() => {
+    const { phase, closing } = this.change();
+    return phase === "closing" || (phase === "done" && closing !== undefined);
   });
 
   constructor() {

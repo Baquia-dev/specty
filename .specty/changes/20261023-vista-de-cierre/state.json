@@ -6,6 +6,13 @@
   "branch": "specty/20261023-vista-de-cierre",
   "baseCommit": "c6aa75f02694760065912f8d98e86980a69a4de3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e1d08a11d9fd9545a3ee5785551da1ce262c0520d4e67ec7d84885ec2e348f3d",
+    "at": "2026-10-23T10:30:30.036Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3023c7b8fd198c13d523f688bad9e7b842f15a8f",
+      "startedAt": "2026-10-23T10:30:39.094Z",
+      "doneAt": "2026-10-23T10:33:11.367Z",
+      "summary": "sp-closing-view: la sección «Cierre» (divisor de nivel 2 con su estado: en redacción, por confirmar o confirmado) con las partes del cierre bajo sus subtítulos (Resumen, Desviaciones, Decisiones, Pendientes; Summary… Follow-ups en inglés) y su markdown con sp-markdown, sangradas como el resto del documento; las vacías no aparecen y lo que no encaja va al final sin título. Mientras el agente redacta (cierre sin enviar) solo dice que lo está redactando. La pestaña Aceptación la muestra bajo el resumen y encima de la verificación completa, en cierre y en terminado con cierre (no en un cambio rápido), en lugar de la nota de cierre. Tests: las partes y su orden, el markdown, el aviso de redacción, partes vacías y texto suelto, terminado en inglés, y en la pestaña el orden de las secciones, la redacción, terminado y el cambio rápido."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e1d08a11d9fd9545a3ee5785551da1ce262c0520d4e67ec7d84885ec2e348f3d",
-    "at": "2026-10-23T10:30:30.036Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
