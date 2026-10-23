@@ -4,7 +4,6 @@ import {
   CHANGE_KINDS,
   EXIT_CODES,
   headerOf,
-  isAgentTool,
   type Lang,
   notInitializedCard,
   type Output,
@@ -19,11 +18,12 @@ import { delegate } from "./commands/delegate";
 import { doctor } from "./commands/doctor";
 import { cancel, close } from "./commands/finish";
 import { type PersonAction, personSession } from "./commands/human";
-import { init } from "./commands/init";
+import { initCommand } from "./commands/init";
 import { integrate } from "./commands/integrate";
 import { newChange } from "./commands/new";
 import { next } from "./commands/next";
 import { propose } from "./commands/propose";
+import { prune } from "./commands/prune";
 import { retro } from "./commands/retro";
 import { scopeAdd } from "./commands/scope";
 import { reject } from "./commands/scope-decision";
@@ -254,20 +254,13 @@ export async function runCli(
     .option("--language <lang>", "es or en")
     .option("--tools <list>", "comma-separated agent tools, for example claude-code,cursor")
     .action(async (options: { language?: string; tools?: string }) => {
-      const language =
-        options.language === "es" || options.language === "en" ? options.language : undefined;
-      const tools = options.tools
-        ?.split(",")
-        .map((tool) => tool.trim())
-        .filter(isAgentTool);
-      emit(
-        await init(environment, {
-          ...(language !== undefined ? { language } : {}),
-          ...(tools !== undefined ? { tools } : {}),
-        }),
-        language ?? systemLanguage(environment.env),
-      );
+      const { output, lang } = await initCommand(environment, options);
+      emit(output, lang);
     });
+  program
+    .command("prune")
+    .description("remove the folders of finished changes and the branches already merged")
+    .action(run(prune));
   program
     .command("hook", { hidden: true })
     .argument("<name>")

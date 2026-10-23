@@ -5,6 +5,7 @@ import {
   type AgentTool,
   blockedCard,
   headerOf,
+  isAgentTool,
   type Lang,
   type Output,
   section,
@@ -28,6 +29,24 @@ export interface InitOptions {
 }
 
 const WITH_HOOKS: ReadonlySet<AgentTool> = new Set(["claude-code", "cursor"]);
+
+/** `specty init` as typed: reads its options, and says which language its output uses. */
+export async function initCommand(
+  environment: Environment,
+  options: { readonly language?: string; readonly tools?: string },
+): Promise<{ readonly output: Output; readonly lang: Lang }> {
+  const language =
+    options.language === "es" || options.language === "en" ? options.language : undefined;
+  const tools = options.tools
+    ?.split(",")
+    .map((tool) => tool.trim())
+    .filter(isAgentTool);
+  const output = await init(environment, {
+    ...(language !== undefined ? { language } : {}),
+    ...(tools !== undefined ? { tools } : {}),
+  });
+  return { output, lang: language ?? systemLanguage(environment.env) };
+}
 
 /** `specty init`: detects the project and installs config, AGENTS.md blocks and hooks. Idempotent. */
 export async function init(environment: Environment, options: InitOptions): Promise<Output> {

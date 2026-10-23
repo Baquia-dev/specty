@@ -5,6 +5,7 @@ import { isFinished } from "./active";
 import { locateChanges } from "./changes";
 import { integrationOf, isIncorporated, reasonOf } from "./integrate";
 import { within } from "./land";
+import { targetBranch } from "./worktree";
 
 export interface Cleanup {
   readonly removed: readonly string[];
@@ -40,5 +41,41 @@ export async function removeFinished(session: Session): Promise<Cleanup> {
     if (result.code === 0) removed.push(there.root);
     else kept.push(`${there.root}: ${reasonOf(result)}`);
   }
+  return { removed, kept };
+}
+
+/**
+ * Deletes the change branches (`specty/*`, `spike/*`) that are already in the target branch and
+ * checked out in no worktree: their commits are in the target, so nothing is lost. The others
+ * stay, such as a cancelled change's, which keeps its record.
+ */
+export async function deleteMerged(session: Session): Promise<Cleanup> {
+  const t = translator(session.lang);
+  const { git } = session;
+  const target = await targetBranch(git, session.config.git.target);
+  if (target === undefined) return { removed: [], kept: [] };
+  const branches = async (filter: "--merged" | "--no-merged") =>
+    (
+      await git.output([
+        "branch",
+        filter,
+        target,
+        "--format=%(refname:short)",
+        "--list",
+        "specty/*",
+        "spike/*",
+      ])
+    )
+      .split("\n")
+      .map((branch) => branch.trim())
+      .filter((branch) => branch.length > 0);
+  const inUse = new Set((await git.worktrees()).flatMap(({ branch }) => branch ?? []));
+  const removed: string[] = [];
+  for (const branch of (await branches("--merged")).filter((name) => !inUse.has(name))) {
+    if ((await git.run(["branch", "-D", branch])).code === 0) removed.push(branch);
+  }
+  const kept = (await branches("--no-merged")).map((branch) =>
+    t(`${branch}: no está en ${target}.`, `${branch}: not in ${target}.`),
+  );
   return { removed, kept };
 }

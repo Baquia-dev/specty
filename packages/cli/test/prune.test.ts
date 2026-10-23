@@ -1,7 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
-import { CHANGE, cli, folderOf, git, inWorktree, person, toClosing } from "./support";
+import {
+  APP,
+  CHANGE,
+  cli,
+  folderOf,
+  git,
+  inWorktree,
+  person,
+  tempRepo,
+  toClosing,
+} from "./support";
 
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
 const REMOVED = "CARPETAS DE CAMBIOS TERMINADOS, BORRADAS";
@@ -29,5 +39,49 @@ describe("folders of finished changes", () => {
     expect(await exists(folderOf(root, OTHER))).toBe(true);
     expect(git(root, "branch", "--list", `specty/${CHANGE}`)).toContain(CHANGE);
     expect((await cli(root, ["new", "--worktree", "Cuarto"])).out).not.toContain(REMOVED);
+  });
+});
+
+describe("specty prune", () => {
+  it("removes finished folders and merged branches, and keeps the rest (AC2, AC3)", async () => {
+    // The other changes start first: a new change would already clean up finished folders.
+    const { root, folder } = await inWorktree();
+    expect((await cli(root, ["new", "--worktree", "Otro cambio"])).code).toBe(0);
+    expect((await cli(root, ["new", "--worktree", "Tercero"])).code).toBe(0);
+    const cancelled = folderOf(root, OTHER);
+    const open = folderOf(root, CHANGE.replace("saludo-personalizado", "tercero"));
+    // A cancelled change: its folder goes, its branch (not in main) stays.
+    await cli(cancelled, ["cancel", "--reason", "Ya no"], { terminal: person() });
+    // A change the agent closed from inside: its folder goes, its branch (in main) too.
+    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    await toClosing(folder);
+    await cli(folder, ["close"]);
+    const pruned = await cli(root, ["prune"]);
+    expect(pruned.code).toBe(0);
+    expect(pruned.out).toContain("CARPETAS BORRADAS:");
+    expect(pruned.out).toContain(`  ${folder}\n`);
+    expect(pruned.out).toContain(`  ${cancelled}`);
+    expect(pruned.out).toContain(`RAMAS BORRADAS:\n  specty/${CHANGE}`);
+    expect(pruned.out).toContain(`QUEDAN:\n  specty/${OTHER}: no está en main.`);
+    expect(await exists(folder)).toBe(false);
+    expect(await exists(cancelled)).toBe(false);
+    expect(await exists(open)).toBe(true);
+    expect(git(root, "branch", "--list", `specty/${CHANGE}`)).toBe("");
+    expect(git(root, "branch", "--list", `specty/${OTHER}`)).toContain(OTHER);
+  });
+
+  it("keeps a closed change that is not in its target yet, and says when nothing goes (AC3, AC4)", async () => {
+    const { root, folder } = await inWorktree();
+    const before = git(root, "rev-parse", "main");
+    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    await toClosing(folder);
+    await cli(folder, ["close"]);
+    // main goes back: the closed change is no longer in it.
+    git(root, "reset", "-q", "--hard", before);
+    const pruned = await cli(root, ["prune"]);
+    expect(pruned.out).toContain(`QUEDAN:\n  ${folder}: ${CHANGE} aún no está en main.`);
+    expect(await exists(folder)).toBe(true);
+    const clean = await cli(await tempRepo(APP), ["prune"]);
+    expect(clean.out).toContain("No había nada que limpiar.");
   });
 });

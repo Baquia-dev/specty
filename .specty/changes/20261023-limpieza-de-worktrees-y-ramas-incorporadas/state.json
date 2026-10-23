@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d538e556cc665376c58a6e14f3986dcee08a93bd",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:32:37.009Z",
       "doneAt": "2026-10-23T21:34:12.703Z",
-      "summary": "flow/prune.ts: removeFinished borra con git worktree remove (sin --force) las carpetas de cambios cerrados ya incorporados a su destino, o cancelados; nunca la del proceso, la principal ni la de un cambio abierto, y las ramas quedan. new la llama antes de crear la worktree y nombra lo borrado; land.ts exporta within"
+      "summary": "flow/prune.ts: removeFinished borra con git worktree remove (sin --force) las carpetas de cambios cerrados ya incorporados a su destino, o cancelados; nunca la del proceso, la principal ni la de un cambio abierto, y las ramas quedan. new la llama antes de crear la worktree y nombra lo borrado; land.ts exporta within",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6d395c6d274bd36c6402a5c523ab216c0ea5c4d6",
+      "startedAt": "2026-10-23T21:34:13.023Z",
+      "doneAt": "2026-10-23T21:37:29.463Z",
+      "summary": "specty prune: removeFinished más deleteMerged, que borra las ramas specty/* y spike/* ya en la rama destino que no están en ninguna worktree y nombra las que quedan sin incorporar; la salida dice lo borrado, lo que queda y por qué, o que no había nada. Para no pasar de 300 líneas en program.ts, la lectura de las opciones de init pasa a initCommand en commands/init.ts"
     }
   },
   "pending": {
