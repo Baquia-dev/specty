@@ -49,7 +49,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: `git.target` en la configuración
+- [x] T1: `git.target` en la configuración
   - files: packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema

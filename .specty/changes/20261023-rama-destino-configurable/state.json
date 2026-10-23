@@ -6,6 +6,13 @@
   "branch": "specty/20261023-rama-destino-configurable",
   "baseCommit": "05c8d351dbcf89b2519252e623748e7b6e4c0f2a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:30863e3ffbf56fa830ad426d2220fa6307d1d1b16809718cfc4ccb3d6f8e5238",
+    "at": "2026-10-23T18:47:55.310Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d1cdfb48ab030eca28a3a787f51fe6a5e5d4ccd0",
+      "startedAt": "2026-10-23T18:48:10.666Z",
+      "doneAt": "2026-10-23T18:49:29.138Z",
+      "summary": "config: git.target opcional (texto no vacío), la rama de la que parten los cambios y a la que se incorporan"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:30863e3ffbf56fa830ad426d2220fa6307d1d1b16809718cfc4ccb3d6f8e5238",
-    "at": "2026-10-23T18:47:55.310Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

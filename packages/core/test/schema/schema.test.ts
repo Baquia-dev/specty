@@ -76,6 +76,16 @@ describe("resolveConfig", () => {
     expect(configured({ setup: true })).toBeUndefined();
   });
 
+  it("takes an optional target branch", () => {
+    const target = (git: unknown) => {
+      const result = resolveConfig({ version: 1, git });
+      return result.ok ? result.config.git.target : "invalid";
+    };
+    expect(target({ target: "develop" })).toBe("develop");
+    expect(target({})).toBeUndefined();
+    expect(target({ target: "" })).toBe("invalid");
+  });
+
   it("reports unknown keys, bad values and inconsistent thresholds", () => {
     const issues = (input: unknown) => (resolveConfig(input).ok ? [] : ["invalid"]);
     expect(issues({ version: 1, colour: "blue" })).toEqual(["invalid"]);

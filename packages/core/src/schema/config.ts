@@ -42,6 +42,8 @@ export interface ResolvedConfig {
      * Unset: the install command of the stack detected there.
      */
     readonly setup?: string | false;
+    /** The branch changes start from and go to when finished. Unset: the main branch. */
+    readonly target?: string;
   };
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
@@ -113,6 +115,7 @@ export const ConfigSchema = z.strictObject({
       branchPerChange: z.boolean().optional(),
       worktrees: z.boolean().optional(),
       setup: z.union([z.string().min(1), z.literal(false)]).optional(),
+      target: z.string().min(1).optional(),
     })
     .optional(),
   team: z
@@ -199,6 +202,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
       branchPerChange: input.git?.branchPerChange ?? base.git.branchPerChange,
       worktrees: input.git?.worktrees ?? base.git.worktrees,
       ...(input.git?.setup !== undefined ? { setup: input.git.setup } : {}),
+      ...(input.git?.target !== undefined ? { target: input.git.target } : {}),
     },
     team: {
       approvers: input.team?.approvers ?? base.team.approvers,
