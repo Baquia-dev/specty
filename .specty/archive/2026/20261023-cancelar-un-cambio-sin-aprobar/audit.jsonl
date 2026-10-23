@@ -4,3 +4,4 @@
 {"ts":"2026-10-23T21:25:36.875Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"5773d2fc6983e70d8d4909b1a6199440e514a1eb"}}
 {"ts":"2026-10-23T21:26:44.058Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts","exit":0,"ms":9672}}
 {"ts":"2026-10-23T21:26:44.059Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"commitArchive solo incluye la carpeta antigua del cambio si git la sigue: un cambio sin aprobar nunca se commiteó, y git add fallaba con «pathspec did not match» al cancelarlo. Test: cancelar en borrador y en revisión archiva y deja la carpeta limpia"}}
+{"ts":"2026-10-23T21:27:43.383Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

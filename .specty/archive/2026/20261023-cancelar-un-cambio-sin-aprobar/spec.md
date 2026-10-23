@@ -19,3 +19,9 @@ kind: quick
   - files: packages/cli/src/flow/finish.ts, packages/cli/test/flow.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+commitArchive solo incluye la carpeta antigua del cambio si git la sigue: un cambio sin aprobar nunca se commiteó, y git add fallaba con «pathspec did not match» al cancelarlo. Test: cancelar en borrador y en revisión archiva y deja la carpeta limpia

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-cancelar-un-cambio-sin-aprobar",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-cancelar-un-cambio-sin-aprobar",
   "baseCommit": "1bb581b0bca4485c6a417f13cf0d667c91ee41b0",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5773d2fc6983e70d8d4909b1a6199440e514a1eb",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:25:36.873Z",
       "doneAt": "2026-10-23T21:26:44.059Z",
-      "summary": "commitArchive solo incluye la carpeta antigua del cambio si git la sigue: un cambio sin aprobar nunca se commiteó, y git add fallaba con «pathspec did not match» al cancelarlo. Test: cancelar en borrador y en revisión archiva y deja la carpeta limpia"
+      "summary": "commitArchive solo incluye la carpeta antigua del cambio si git la sigue: un cambio sin aprobar nunca se commiteó, y git add fallaba con «pathspec did not match» al cancelarlo. Test: cancelar en borrador y en revisión archiva y deja la carpeta limpia",
+      "scopeExtra": []
     }
   },
   "pending": {
