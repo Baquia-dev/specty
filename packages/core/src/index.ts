@@ -92,6 +92,7 @@ export {
   type ShellFacts,
 } from "./guard/decide";
 export type { GuardIntegration } from "./guard/integration";
+export type { BoundSession } from "./guard/session";
 export { analyzeShell, type ShellAnalysis } from "./guard/shell";
 export type { ForeignPath } from "./guard/worktrees";
 export { hashText, type Sha256Hash, shortHash } from "./hash";

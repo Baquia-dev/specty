@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  type BoundSession,
   DEFAULT_CONFIG,
   decideGuard,
   type ForeignPath,
@@ -189,6 +190,36 @@ describe("decideGuard during a pending incorporation", () => {
         "`src/c.ts` is outside the incorporation of main: only the files this change or main changed may be touched.",
       next: "resolve the incorporation of main in the files it brings together and run `specty integrate`.",
     });
+  });
+});
+
+describe("decideGuard when a session enters a worktree", () => {
+  const enter = (target: string, bound?: BoundSession): GuardAction => ({
+    kind: "enter",
+    target,
+    ...(bound !== undefined ? { bound } : {}),
+  });
+
+  it("lets a free session in, and a session back into its own folder", () => {
+    expect(allowed(enter("/w/b"), ctx())).toBe(true);
+    // Bound to a folder whose change is finished: free again.
+    expect(allowed(enter("/w/b", { folder: "/w/a" }), ctx())).toBe(true);
+    expect(allowed(enter("/w/a", { folder: "/w/a", change: "20261021-x" }), ctx())).toBe(true);
+  });
+
+  it("keeps a session out of another worktree while its change is open", () => {
+    expect(decideGuard(enter("/w/b", { folder: "/w/a", change: "20261021-x" }), ctx())).toEqual({
+      allow: false,
+      rule: "session",
+      reason:
+        "Esta sesión trabaja en `/w/a` (cambio 20261021-x, aún abierto): una sesión trabaja un solo cambio a la vez.",
+      next: "termina ese cambio (`specty next` allí), o abre otra sesión en `/w/b` para trabajar en ese.",
+    });
+    const english = decideGuard(enter("/w/b", { folder: "/w/a", change: "20261021-x" }), {
+      ...ctx(),
+      lang: "en",
+    });
+    expect(english).toMatchObject({ next: expect.stringContaining("open another session in") });
   });
 });
 

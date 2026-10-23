@@ -50,7 +50,7 @@ Una sesión de agente no puede saltar a la worktree de otro cambio mientras el s
 
 ## Tareas
 
-- [ ] T1: La decisión de entrar en una worktree
+- [x] T1: La decisión de entrar en una worktree
   - files: packages/core/src/guard/session.ts, packages/core/src/guard/decide.ts, packages/core/src/index.ts, packages/core/test/guard/decide.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard

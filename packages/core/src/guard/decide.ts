@@ -8,6 +8,7 @@ import { classifyPath, scopeRulesFrom } from "../scope/scope";
 import type { ChangeKind } from "../spec/model";
 import { humanDenial } from "./human";
 import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
+import { type BoundSession, sessionDenial } from "./session";
 import { type ForeignPath, foreignDenial } from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
@@ -79,6 +80,8 @@ export type GuardAction =
       readonly foreign?: readonly ForeignPath[];
     }
   | { readonly kind: "shell"; readonly facts: ShellFacts }
+  /** The session moves into the worktree `target`, bound or not to another one. */
+  | { readonly kind: "enter"; readonly target: string; readonly bound?: BoundSession }
   | { readonly kind: "other" };
 
 /** The rule behind a denial, so a caller can pick the next step (`scope add` only for `scope`). */
@@ -94,7 +97,8 @@ export type GuardRule =
   | "no-task"
   | "scope"
   | "worktree"
-  | "integration";
+  | "integration"
+  | "session";
 
 export type GuardDecision =
   | { readonly allow: true }
@@ -111,6 +115,10 @@ const ALLOW: GuardDecision = { allow: true };
 export function decideGuard(action: GuardAction, ctx: GuardContext): GuardDecision {
   if (action.kind === "other") return ALLOW;
   if (action.kind === "shell") return decideShell(action.facts, ctx);
+  if (action.kind === "enter") {
+    const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command);
+    return denial === undefined ? ALLOW : deny("session", denial.reason, denial.next);
+  }
   return (
     denyForeign(action.foreign, ctx) ??
     firstDenial(action.paths.map((path) => decidePath(path, action.kind, ctx)))

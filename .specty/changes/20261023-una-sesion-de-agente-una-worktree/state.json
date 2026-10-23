@@ -6,6 +6,13 @@
   "branch": "specty/20261023-una-sesion-de-agente-una-worktree",
   "baseCommit": "ab68b0a2fa56f85a115f0dcaf05f2016003ea58f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c31b9fccb44343b8f9ed4b1a2e09460c265a0d7302c1563a350ed5867fb8db0a",
+    "at": "2026-10-23T21:43:35.452Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "770f94c26907762793f11058b1234e213c7c1799",
+      "startedAt": "2026-10-23T21:43:35.971Z",
+      "doneAt": "2026-10-23T21:44:38.855Z",
+      "summary": "core: acción enter (worktree de destino y atadura de la sesión) y regla session; guard/session.ts deniega entrar en otra worktree mientras el cambio de la sesión sigue abierto, y deja entrar a una sesión libre, a la que vuelve a su carpeta o a la de un cambio terminado"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c31b9fccb44343b8f9ed4b1a2e09460c265a0d7302c1563a350ed5867fb8db0a",
-    "at": "2026-10-23T21:43:35.452Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
