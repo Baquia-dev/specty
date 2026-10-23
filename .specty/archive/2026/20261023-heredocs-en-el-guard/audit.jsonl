@@ -7,3 +7,6 @@
 {"ts":"2026-10-23T09:57:26.015Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"86ac37049ba5389ba5a172b91d546175d4241e5d"}}
 {"ts":"2026-10-23T09:59:29.069Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":37485}}
 {"ts":"2026-10-23T09:59:29.071Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"El guard de punta a punta: el heredoc ya no bloquea y el commit tras él sí"}}
+{"ts":"2026-10-23T10:01:46.745Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T10:02:47.184Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:a17b4edeada99a0fe68afec78325fc02fde6e4d1a78ee700cf9e444706b5e89d","size":"M","warnings":0}}
+{"ts":"2026-10-23T10:03:45.142Z","actor":"human","event":"change.closed","data":{}}

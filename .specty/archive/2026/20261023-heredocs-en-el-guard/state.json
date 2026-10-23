@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-heredocs-en-el-guard",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-heredocs-en-el-guard",
   "baseCommit": "a46479ddb0ee17a8a67092d2ceebcf7fa178b20d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:786234a5e9794034db80f9842f05e80bf4dfcb984fca0443cffe5afd34e4f32a",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "86ac37049ba5389ba5a172b91d546175d4241e5d",
+      "attempts": 1,
       "startedAt": "2026-10-23T09:57:26.014Z",
       "doneAt": "2026-10-23T09:59:29.070Z",
-      "summary": "El guard de punta a punta: el heredoc ya no bloquea y el commit tras él sí"
+      "summary": "El guard de punta a punta: el heredoc ya no bloquea y el commit tras él sí",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,5 +69,6 @@
     "AC": 7,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T10:02:47.183Z"
 }

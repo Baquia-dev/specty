@@ -65,3 +65,25 @@ El guard analiza solo lo que bash ejecuta: deja de leer el cuerpo de los heredoc
 
 - R1: Tomar por heredoc algo que no lo es haría saltar líneas que bash sí ejecuta, un falso negativo nuevo — AC5 cubre los desplazamientos y los here-strings, cada forma tiene su test, y los recibos del `pre-commit` siguen parando cualquier commit hecho sin `task done`.
 - R2: Un `#` en mitad de una palabra tomado por comentario ocultaría el resto de la línea — AC6 prueba que `a#b` no es un comentario.
+
+## Cierre
+
+### Resumen
+
+El guard deja de leer como comandos lo que bash no ejecuta. `tokenize` reconoce `<<` y `<<-` con su delimitador sin comillas (`EOF`, `'EOF'`, `"EOF"`, `\EOF`) y, al acabar la línea, salta sus cuerpos en el orden en que se abrieron; sin línea de cierre, el resto del comando es cuerpo. Dentro de `((…))` y `$((…))`, `<`, `>`, `&` y `|` son aritmética, y una palabra que empieza por `#` fuera de comillas descarta el resto de la línea. Con el guard compilado, el heredoc de Python con `=>` en el cuerpo pasa de bloquearse a permitirse, y el `git commit` que sigue a un heredoc con `don't` pasa de colarse a bloquearse con el mismo mensaje que el commit solo.
+
+### Desviaciones
+
+- **Ninguna respecto al plan.** Seguir la aritmética, como preveía el Diseño, arregla también `echo $((a > b))`, que antes contaba como escritura en un archivo `b))`; tiene su test.
+
+### Decisiones
+
+- **Todo en el tokenizador:** `<<` y su delimitador salen como un operador de entrada y su destino, que `splitRedirections` ya descartaba, así que `shell.ts` no cambia.
+- **`((` siempre es aritmética, como en bash:** `((cmd > a))` es una expresión y no dos subshells (bash pide `( (` para eso), así que ahí `>` no es una escritura.
+- **Un `<<` sin delimitador no abre un heredoc:** bash lo rechaza como error de sintaxis, y el guard lo lee como antes.
+- **Los comentarios entran en este cambio (A1):** confirmado al aprobar; es el mismo fallo en la misma función.
+
+### Pendientes
+
+- **Sustituciones de comandos** (`$(…)` y comillas invertidas): siguen sin analizarse, también dentro de un heredoc sin comillas, donde bash las expande (A3).
+- **Escrituras de intérpretes y scripts** (`python3 script.py …`): solo las detecta `task done`; un hook `PostToolUse` para Bash las vería al momento.
