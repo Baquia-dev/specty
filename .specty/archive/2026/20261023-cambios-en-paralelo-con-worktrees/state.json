@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-cambios-en-paralelo-con-worktrees",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-cambios-en-paralelo-con-worktrees",
   "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:320b06fc1116b297391c656fa91413f93f6bb8a40438e4f0e7702e4365f30442",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b3650c1d9e16bbee7593a9bdc2c4b830406f19fe",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:27:21.877Z",
       "doneAt": "2026-10-23T10:29:38.795Z",
-      "summary": "ARCHITECTURE §6: la fila de new incluye --worktree [--from <rama>] y que con --worktree vale siempre. §9: párrafo «Cambios en paralelo» con la carpeta <principal>.worktrees/<id>, la base (--from o la rama principal, nunca la actual), lo que no mira, la copia de hooks, el estado local por worktree, las dependencias a mano y las worktrees anidadas de otras herramientas."
+      "summary": "ARCHITECTURE §6: la fila de new incluye --worktree [--from <rama>] y que con --worktree vale siempre. §9: párrafo «Cambios en paralelo» con la carpeta <principal>.worktrees/<id>, la base (--from o la rama principal, nunca la actual), lo que no mira, la copia de hooks, el estado local por worktree, las dependencias a mano y las worktrees anidadas de otras herramientas.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -86,5 +86,6 @@
     "AC": 8,
     "T": 3,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T10:38:21.711Z"
 }

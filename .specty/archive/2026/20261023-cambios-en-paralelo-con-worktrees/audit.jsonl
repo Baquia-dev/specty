@@ -10,3 +10,6 @@
 {"ts":"2026-10-23T10:27:21.877Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"b3650c1d9e16bbee7593a9bdc2c4b830406f19fe"}}
 {"ts":"2026-10-23T10:29:38.794Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":40611}}
 {"ts":"2026-10-23T10:29:38.797Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §6: la fila de new incluye --worktree [--from <rama>] y que con --worktree vale siempre. §9: párrafo «Cambios en paralelo» con la carpeta <principal>.worktrees/<id>, la base (--from o la rama principal, nunca la actual), lo que no mira, la copia de hooks, el estado local por worktree, las dependencias a mano y las worktrees anidadas de otras herramientas."}}
+{"ts":"2026-10-23T10:37:30.010Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T10:38:21.712Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:c6f2d471ff44593062fbd3c26c5c802a9dd4a7f8398583c6accd6de82a1742dd","size":"M","warnings":0}}
+{"ts":"2026-10-23T10:43:44.781Z","actor":"human","event":"change.closed","data":{}}

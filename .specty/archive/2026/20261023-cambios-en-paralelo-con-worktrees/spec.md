@@ -85,3 +85,32 @@ Specty permite trabajar varios cambios a la vez, cada uno con su propio agente. 
 - R1: La rama principal detectada no es la que el usuario espera, por ejemplo con un remoto que tiene otra rama por defecto — la salida dice siempre la base, y `--from` la fija.
 - R2: Con enlaces simbólicos en la ruta (en macOS, `/var` y `/private/var`), una worktree anidada no se reconocería — las rutas se comparan ya resueltas, y los tests usan carpetas temporales resueltas.
 - R3: Hasta el siguiente cambio, un agente puede escribir en la carpeta de otro cambio — el `task done` de ese cambio lo detecta si el archivo queda fuera de su alcance, y el bloqueo en el guard es el siguiente cambio de la serie.
+
+## Cierre
+
+### Resumen
+
+`specty new --worktree "<título>"` crea el cambio en `<carpeta principal>.worktrees/<id>`, con su rama desde la rama principal o desde `--from <rama>`, copia los archivos de hooks de agente que git no sigue y deja la carpeta actual como estaba; el bloqueo por cambio en curso propone `--worktree`. Las worktrees que otras herramientas crean dentro del repositorio ya no cuentan como código sin spec, no dejan a `task done` fuera de alcance y no entran en los commits de Specty: antes, `git add -A` las metía como repositorio embebido. Con el CLI compilado, en un repo desechable, `new` sin `--worktree` propone la alternativa, `new --worktree` crea la carpeta desde `main` y `specty next` en ella muestra el borrador. Este cambio se hizo en una worktree hermana creada a mano, en paralelo con otras sesiones.
+
+### Desviaciones
+
+- **Sin `Git` para la carpeta nueva:** escribir la spec, `state.json` y `audit.jsonl` solo necesita sus rutas (`repoPaths`), así que no se usa `createGit` como decía el Diseño.
+- **Funciones de `flow/worktree.ts` con otra forma:** `worktreeFolder(git, id)` quedó como `worktreesHome(git)`, porque `uniqueId` necesita la carpeta común para dar por ocupado un id cuya carpeta ya existe; y `mainBranch` va dentro de `parallelBase`, que además resuelve `--from` y el commit.
+- **`worktrees()` devuelve solo las carpetas,** sin la rama: este cambio no la usa.
+
+### Decisiones
+
+- **Los textos de `new --worktree` van en `commands/new.ts`,** junto a los demás de `new`, como pedía el Diseño. ARCHITECTURE §6 dice que los textos viven en core, pero la CLI ya tenía 148 llamadas al traductor, y moverlos aquí habría sumado core y pasado de 2 módulos. Se resuelve en una serie aparte (Pendientes).
+- **El bloqueo solo propone `--worktree` con una rama por cambio:** sin ella, `--worktree` se bloquea, y proponerlo llevaría a un callejón sin salida.
+- **`--from` sin `--worktree` es inválido** en vez de crear la rama desde otra base en la misma carpeta: `new` sin `--worktree` no cambia.
+- **Una carpeta sobrante ocupa su id:** `uniqueId` pasa a `<id>-2` en vez de fallar en `git worktree add`.
+- **La base es la rama local** con el nombre de `origin/HEAD`, no `origin/<rama>`, porque se fusiona en local y la rama local puede ir por delante.
+- **A1, A2 y A3, confirmados al aprobar:** la carpeta va fuera del repositorio, la base es la rama principal y las dependencias se instalan a mano.
+
+### Pendientes
+
+- **Que el guard bloquee las escrituras de un agente en la carpeta de otro cambio:** es el siguiente cambio de la serie (core y CLI); su línea de §10 irá en un cambio que no sume un tercer módulo.
+- **`specty status` y los comandos de la persona sobre todas las worktrees,** eligiendo el cambio por su fase: hoy `approve`, `accept` y `close` se ejecutan desde la carpeta del cambio.
+- **Textos de la CLI a core:** una serie por grupos de comandos (agente, persona y preparación) y una comprobación en `scripts/check-sources.mjs` para no volver atrás.
+- **Un falso positivo del guard:** con código sin commitear en la carpeta actual, bloquea `cd <otro repo> && git commit`, porque mira los cambios de este repositorio e ignora el `cd`.
+- **Borrar la worktree al cerrar o fusionar:** hoy se hace a mano con `git worktree remove`.
