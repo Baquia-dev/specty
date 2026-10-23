@@ -2,14 +2,14 @@
   "schema": 1,
   "id": "20261022-verificacion-completa-en-la-pestana-aceptacion",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261022-verificacion-completa-en-la-pestana-aceptacion",
   "baseCommit": "f274d2de0214cfe412f0d30ce7bbb84ce55cd683",
-  "revision": 2,
+  "revision": 3,
   "approved": {
-    "revision": 2,
+    "revision": 3,
     "hash": "sha256:061611661af42dd37816f8b4b3ff2623dc6c831f367c3d630cb2bc6f3d93e59a",
-    "at": "2026-10-23T02:47:21.711Z",
+    "at": "2026-10-23T02:53:32.265Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
@@ -83,12 +83,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c3f9eec8373a766eb8933126b2fc4237c4825330",
+      "attempts": 1,
       "startedAt": "2026-10-23T02:47:31.288Z",
       "doneAt": "2026-10-23T02:50:07.947Z",
-      "summary": "live-output.ts: el panel de la salida en vivo tiene altura fija (h-72, 288 px) desde la primera línea en vez de crecer hasta su máximo, se desplaza por dentro cuando las líneas no caben (overflow-y-auto) y no arrastra la página al llegar a sus extremos (overscroll-contain). Es el mismo bloque en Progreso. live-output.test.ts lo comprueba por sus clases. docs/ui.md lo describe. Medido en el navegador a 390 y 1280 px: 288 px constantes mientras llegan las líneas, en la verificación completa y en la tarea en curso."
+      "summary": "live-output.ts: el panel de la salida en vivo tiene altura fija (h-72, 288 px) desde la primera línea en vez de crecer hasta su máximo, se desplaza por dentro cuando las líneas no caben (overflow-y-auto) y no arrastra la página al llegar a sus extremos (overscroll-contain). Es el mismo bloque en Progreso. live-output.test.ts lo comprueba por sus clases. docs/ui.md lo describe. Medido en el navegador a 390 y 1280 px: 288 px constantes mientras llegan las líneas, en la verificación completa y en la tarea en curso.",
+      "scopeExtra": []
     }
   },
   "pending": {
