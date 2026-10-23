@@ -2,23 +2,23 @@
   "schema": 1,
   "id": "20261023-vista-cambios-en-aceptacion",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261023-vista-cambios-en-aceptacion",
   "baseCommit": "03473c9aaca90f16894591a67b8e3dd3ad412f25",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:543b496bcab572aea92028fb4d83860e6f337a086838486124ea3b14c6dee423",
-    "at": "2026-10-23T08:58:51.710Z",
+    "revision": 2,
+    "hash": "sha256:8124b8fb3380e1e52b5fae85dd0812ff023ab38899784edfb9cb3e3ab9044853",
+    "at": "2026-10-23T09:27:24.515Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "tty"
   },
   "size": {
     "level": "M",
-    "score": 9,
+    "score": 10,
     "adjust": 0,
     "reasons": [
-      "7 archivos",
+      "8 archivos",
       "2 módulos"
     ]
   },
@@ -42,6 +42,10 @@
     "A5": {
       "hash": "sha256:1135c01e0b5fcde2e1cb499f18259c326c2b11e3dd33cf9809c688a7df979f00",
       "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:4a23f700ed58a8c4ba0b3347418abf6559424085dd3078808f4034875b250254",
+      "decision": "confirmed"
     }
   },
   "tasks": {
@@ -56,12 +60,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a7b9158c11404261dbabf030bd93a2a031092625",
+      "attempts": 1,
       "startedAt": "2026-10-23T09:02:49.691Z",
       "doneAt": "2026-10-23T09:09:35.001Z",
-      "summary": "La pestaña Aceptación tiene tres vistas en «Vista» (Criterios, Matriz y Cambios), recordadas en specty.acceptance.view; «Cambios» muestra sp-changes-view en lugar de la sección de criterios, con la tarea elegida en la pestaña. «Ver diff» (output diff) junto a cada tarea con commit en la evidencia de un criterio (al final de la línea, revelado al pasar o enfocar la fila; «Ver diff de T1» para el lector) y junto al commit en el detalle de la matriz: cambia a «Cambios» con esa tarea y, tras renderizar, lleva el foco al título de la vista. docs/ui.md describe la vista y «Ver diff». Tests: la vista recordada, «Ver diff» desde un criterio y desde la matriz con el foco, y las expectativas de evidencia y detalle con «Ver diff». Comprobado en el navegador (Panel de asistencia) a 390 y 1280 px, claro y oscuro: Ver diff de T1 desde AC1 (rango 5d2a7b0 → 3c9d1e2, foco en el título), Todo el cambio (foco sigue en la barra), Ver diff de T2 desde la matriz, código coloreado y sin desbordes."
+      "summary": "La pestaña Aceptación tiene tres vistas en «Vista» (Criterios, Matriz y Cambios), recordadas en specty.acceptance.view; «Cambios» muestra sp-changes-view en lugar de la sección de criterios, con la tarea elegida en la pestaña. «Ver diff» (output diff) junto a cada tarea con commit en la evidencia de un criterio (al final de la línea, revelado al pasar o enfocar la fila; «Ver diff de T1» para el lector) y junto al commit en el detalle de la matriz: cambia a «Cambios» con esa tarea y, tras renderizar, lleva el foco al título de la vista. docs/ui.md describe la vista y «Ver diff». Tests: la vista recordada, «Ver diff» desde un criterio y desde la matriz con el foco, y las expectativas de evidencia y detalle con «Ver diff». Comprobado en el navegador (Panel de asistencia) a 390 y 1280 px, claro y oscuro: Ver diff de T1 desde AC1 (rango 5d2a7b0 → 3c9d1e2, foco en el título), Todo el cambio (foco sigue en la barra), Ver diff de T2 desde la matriz, código coloreado y sin desbordes.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,8 +73,8 @@
     "adjustment": null
   },
   "maxIds": {
-    "A": 5,
+    "A": 6,
     "AC": 4,
-    "T": 2
+    "T": 3
   }
 }

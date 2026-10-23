@@ -25,10 +25,12 @@ La pestaña Aceptación gana una tercera vista, «Cambios», con el diff del cam
 - A3: El diff se pide a la fuente (`diff(change, task?)`) cada vez que cambia lo elegido o llega un commit nuevo. Mientras llega se ven líneas de carga; si la fuente no puede darlo, su mensaje explica por qué, sin romper la pestaña. Sin ninguna tarea con commit, un estado vacío dice que aún no hay cambios que ver.
 - A4: «Ver diff» aparece junto al commit de cada tarea en la evidencia de un criterio (se revela al pasar o enfocar la fila, como «No se cumple…») y en el detalle de la matriz. Cambia la vista a «Cambios» con esa tarea elegida y lleva el foco al título de la vista, para que el teclado y el lector de pantalla sigan donde está el diff.
 - A5: En el teléfono el visor ya muestra solo la vista unificada; la barra de qué cambios ver pasa a la línea siguiente si no cabe.
+- A6: Al bajar por el diff, el título «Cambios» y la barra (qué cambios ver y «Unificado | Lado a lado») se quedan fijos arriba, justo bajo la barra compacta del cambio (`--sp-sticky-top`), sobre el fondo de la página, hasta que termina el diff. Es una sola franja que pertenece al visor de diffs, así en el catálogo también se queda fija. Mientras carga o si falla, el visor sigue montado con su franja y muestra el estado en lugar del diff, para que el título y la barra no se muevan ni pierdan el foco.
+  - impacto: alto
 
 ## Criterios de aceptación
 
-- AC1: CUANDO la persona elige la vista «Cambios» ENTONCES ve el diff del cambio completo en el visor, con el rango de commits, y la elección se recuerda.
+- AC1: CUANDO la persona elige la vista «Cambios» ENTONCES ve el diff del cambio completo en el visor, con el rango de commits, y la elección se recuerda; al bajar por el diff, el título y la barra de qué cambios ver y del modo siguen a la vista.
 - AC2: CUANDO elige una tarea en «Qué cambios ver» ENTONCES ve solo el diff de esa tarea, con su rango.
 - AC3: CUANDO pulsa «Ver diff» en la evidencia de un criterio o en el detalle de la matriz ENTONCES pasa a «Cambios» con esa tarea elegida y el foco en la vista.
 - AC4: CUANDO el diff está cargando, la fuente no lo puede dar o no hay commits ENTONCES la vista lo dice, sin romper la pestaña.
@@ -38,6 +40,7 @@ La pestaña Aceptación gana una tercera vista, «Cambios», con el diff del cam
 - **Vista** (`acceptance/changes-view.ts`, `sp-changes-view`): recibe el cambio y la tarea elegida (un `model`), pide el diff con `resource()` a `SpectyData`, lo lee con `parseDiff` y lo muestra en `sp-diff-viewer` con la barra proyectada.
 - **Pestaña** (`acceptance/acceptance-tab.ts`): la tercera opción del selector y la tarea elegida; atiende «Ver diff» de las filas y de la matriz.
 - **Filas y matriz** (`criterion-row.ts`, `trace-matrix.ts`): «Ver diff» emite la tarea con un `output`.
+- **Franja fija** (`components/diff-viewer.ts`): arriba del visor, `sticky` en `--sp-sticky-top`, con un título proyectado (`[diffHeading]`) y la barra. `files` puede faltar (aún no leído o ilegible): entonces muestra el estado proyectado (`[diffStatus]`) en vez del resumen y los archivos. `busy` atenúa lo de debajo de la franja mientras llega otro diff.
 
 ## Archivos
 
@@ -48,6 +51,7 @@ La pestaña Aceptación gana una tercera vista, «Cambios», con el diff del cam
 - modificar packages/ui/src/acceptance/criterion-row.ts — «Ver diff» en la evidencia
 - modificar packages/ui/src/acceptance/trace-matrix.ts — «Ver diff» en el detalle
 - modificar docs/ui.md — la vista Cambios en Aceptación
+- modificar packages/ui/src/components/diff-viewer.ts — la franja fija con el título y la barra, el estado mientras no hay diff y el diff atenuado mientras llega otro
 
 ## Tareas
 
@@ -60,3 +64,8 @@ La pestaña Aceptación gana una tercera vista, «Cambios», con el diff del cam
   - ac: AC1, AC3
   - verify: pnpm check
   - notes: Comprobar en el navegador, en «Panel de asistencia por curso», a 390 y 1280 px y en claro y oscuro: la vista Cambios, elegir T1 y T2, «Ver diff» desde un criterio y desde la matriz, y el foco al llegar.
+- [ ] T3: El título y la barra de Cambios, fijos al bajar
+  - files: packages/ui/src/components/diff-viewer.ts, packages/ui/src/acceptance/changes-view.ts, packages/ui/src/acceptance/changes-view.test.ts, docs/ui.md
+  - ac: AC1
+  - verify: pnpm check
+  - notes: Comprobar en el navegador, a 390 y 1280 px y en claro y oscuro, que al bajar por el diff la franja queda bajo la barra compacta sin taparla ni dejar ver el código por detrás, que se va al acabar el diff, que en el catálogo también se queda fija y que «Ver diff» sigue dejando el foco en el título.
