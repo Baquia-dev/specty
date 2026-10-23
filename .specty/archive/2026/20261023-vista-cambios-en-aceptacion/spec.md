@@ -69,3 +69,29 @@ La pestaña Aceptación gana una tercera vista, «Cambios», con el diff del cam
   - ac: AC1
   - verify: pnpm check
   - notes: Comprobar en el navegador, a 390 y 1280 px y en claro y oscuro, que al bajar por el diff la franja queda bajo la barra compacta sin taparla ni dejar ver el código por detrás, que se va al acabar el diff, que en el catálogo también se queda fija y que «Ver diff» sigue dejando el foco en el título.
+
+## Cierre
+
+### Resumen
+
+La pestaña Aceptación tiene la vista «Cambios»: el diff del cambio completo o de cada tarea con commit, en el visor de diffs, con su rango de commits. Se pide a la fuente y se relee al elegir otra cosa o al llegar un commit. «Ver diff», desde la evidencia de un criterio o desde el detalle de la matriz, lleva al diff de esa tarea con el foco en el título. El título y la barra (qué cambios ver y el modo) forman la franja fija del visor, bajo la barra compacta del cambio. Mientras carga hay líneas de carga; al cambiar de tarea, el diff anterior espera atenuado; si la fuente falla, lo dice con sus palabras; sin commits, un estado vacío lo explica.
+
+### Desviaciones
+
+- **Ajuste en la revisión 2:** la persona pidió que el título y la barra no se perdieran al bajar por el diff. Se refinó AC1 y se añadieron A6 y T3, que tocó `components/diff-viewer.ts`, fuera de los archivos aprobados al principio: la franja fija es del visor porque el selector de modo vive en él, y por eso también se queda fija en el catálogo.
+- **El visor admite un diff que aún no está:** `files` sin valor muestra el estado que proyecta quien lo usa (`[diffStatus]`), y `busy` atenúa el diff mientras llega otro; la vista Cambios ya no envuelve el diff para atenuarlo.
+- **Servidores de desarrollo con una compilación vieja:** tras un error de un paso intermedio, `ng serve` siguió sirviendo la versión anterior hasta reiniciarlo. No afecta al código.
+
+### Decisiones
+
+- **La tarea elegida es un `model` de la vista:** la pestaña la fija con «Ver diff», y una tarea sin commit vale como «Todo el cambio».
+- **El diff anterior espera atenuado:** así la barra no se desmonta mientras llega el siguiente y el foco no se pierde.
+- **«Ver diff» discreto en la evidencia:** al final de la línea de cada tarea, se revela al pasar o enfocar la fila, como «No se cumple…»; en el detalle de la matriz está siempre a la vista, junto al commit.
+- **La franja sigue a `--sp-sticky-top`:** queda bajo la barra compacta del cambio y, donde no la hay, arriba del todo. Su relleno entra en los huecos de alrededor, así no mueve nada mientras no está fija.
+- **Tests sin colores:** los de la pestaña y la vista inyectan un resaltado vacío; los colores se prueban con el visor.
+
+### Pendientes
+
+- **El servidor local:** ejecutar git para cada tarea y para el cambio completo; hoy solo la fuente de ejemplo da diffs.
+- **La parte fija en el teléfono:** barra compacta y franja ocupan algo más de un cuarto de la pantalla; si estorba, se puede fijar solo la barra.
+- **Presupuesto de la carga inicial:** 656 kB frente a 500 kB, anotado ya en el cambio anterior.

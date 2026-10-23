@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-vista-cambios-en-aceptacion",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-vista-cambios-en-aceptacion",
   "baseCommit": "03473c9aaca90f16894591a67b8e3dd3ad412f25",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:8124b8fb3380e1e52b5fae85dd0812ff023ab38899784edfb9cb3e3ab9044853",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e26be19d170378341462829b21552ffc1678fc08",
+      "attempts": 1,
       "startedAt": "2026-10-23T09:27:33.171Z",
       "doneAt": "2026-10-23T09:34:40.102Z",
-      "summary": "El visor de diffs tiene una franja fija arriba (sticky en --sp-sticky-top, z-10, sobre bg-bg, con su relleno metido en los huecos de alrededor para no mover nada mientras no está fija, y oculta si no tiene nada): el título que proyecta quien lo usa ([diffHeading]), su barra y «Unificado | Lado a lado». files puede faltar: entonces muestra el estado proyectado ([diffStatus]) en vez del diff, y busy atenúa (aria-busy) lo de debajo de la franja mientras llega otro diff. La vista Cambios monta el visor siempre que hay commits y le proyecta el título «Cambios», la barra y las líneas de carga o el error, así el título y la barra nunca se mueven ni pierden el foco. Tests: la franja fija con el título y la barra (y sin el diff), las líneas de carga bajo la franja ya montada y el diff atenuado en [data-content]. docs/ui.md describe la franja. Comprobado en el navegador a 390 y 1280 px, claro y oscuro: la franja queda justo bajo la barra compacta (y=114 en escritorio, 138 en teléfono), tapa el código en sus dos bordes, se va con el final del diff, en el catálogo se fija arriba del todo, y «Ver diff» sigue dejando el foco en el título."
+      "summary": "El visor de diffs tiene una franja fija arriba (sticky en --sp-sticky-top, z-10, sobre bg-bg, con su relleno metido en los huecos de alrededor para no mover nada mientras no está fija, y oculta si no tiene nada): el título que proyecta quien lo usa ([diffHeading]), su barra y «Unificado | Lado a lado». files puede faltar: entonces muestra el estado proyectado ([diffStatus]) en vez del diff, y busy atenúa (aria-busy) lo de debajo de la franja mientras llega otro diff. La vista Cambios monta el visor siempre que hay commits y le proyecta el título «Cambios», la barra y las líneas de carga o el error, así el título y la barra nunca se mueven ni pierden el foco. Tests: la franja fija con el título y la barra (y sin el diff), las líneas de carga bajo la franja ya montada y el diff atenuado en [data-content]. docs/ui.md describe la franja. Comprobado en el navegador a 390 y 1280 px, claro y oscuro: la franja queda justo bajo la barra compacta (y=114 en escritorio, 138 en teléfono), tapa el código en sus dos bordes, se va con el final del diff, en el catálogo se fija arriba del todo, y «Ver diff» sigue dejando el foco en el título.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -85,5 +85,6 @@
     "A": 6,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T09:44:27.864Z"
 }
