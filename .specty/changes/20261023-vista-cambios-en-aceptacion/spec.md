@@ -51,7 +51,7 @@ La pestaña Aceptación gana una tercera vista, «Cambios», con el diff del cam
 
 ## Tareas
 
-- [ ] T1: La vista Cambios
+- [x] T1: La vista Cambios
   - files: packages/ui/src/acceptance/changes-view.ts, packages/ui/src/acceptance/changes-view.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/changes-view.test.ts

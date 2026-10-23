@@ -6,6 +6,13 @@
   "branch": "specty/20261023-vista-cambios-en-aceptacion",
   "baseCommit": "03473c9aaca90f16894591a67b8e3dd3ad412f25",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:543b496bcab572aea92028fb4d83860e6f337a086838486124ea3b14c6dee423",
+    "at": "2026-10-23T08:58:51.710Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8f9d448a520eb92d90507c76d195df0973944ae2",
+      "startedAt": "2026-10-23T08:59:00.512Z",
+      "doneAt": "2026-10-23T09:02:49.422Z",
+      "summary": "sp-changes-view: sección «Cambios» con el visor de diffs. Pide el diff a SpectyData con resource() (cambio, tarea elegida y commits como parámetros, así se relee al elegir otra tarea o llegar un commit) y lo lee con parseDiff. Barra «Qué cambios ver» (selector segmentado proyectado en el visor): Todo el cambio y cada tarea con commit; con una sola, no aparece. Rango: base → commit de la tarea, o de la primera base al último commit. La tarea elegida es un model (WHOLE_CHANGE = all); una tarea sin commit vale como el cambio completo. Estados: sin commits, estado vacío y no pide nada; la primera carga, líneas de esqueleto; al recargar, el diff anterior sigue atenuado y con aria-busy para que la barra no se desmonte y el foco siga en ella; si falla, el mensaje de la fuente (ActionError) o uno genérico, con role=alert y la barra para elegir otra cosa. focus() lleva el foco al título de la vista."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,12 +63,5 @@
     "A": 5,
     "AC": 4,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:543b496bcab572aea92028fb4d83860e6f337a086838486124ea3b14c6dee423",
-    "at": "2026-10-23T08:58:51.710Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
