@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-guard-de-codex",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-guard-de-codex",
   "baseCommit": "bef28e4c22dc8e7aa7844e24e82a45aa5c9ac9f2",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e099b2da9f758bbc34c5fc4c827777f0dd77fd45",
+      "attempts": 1,
       "startedAt": "2026-10-23T23:12:05.445Z",
       "doneAt": "2026-10-23T23:14:54.683Z",
-      "summary": "init instala el guard de Codex en el hooks.json de usuario (CODEX_HOME o ~/.codex) con PreToolUse (Bash, apply_patch) y PostToolUse (Bash), conservando los demás hooks, y explica que hay que confiar en él una vez con /hooks; doctor lo comprueba; los tests apuntan CODEX_HOME a una carpeta temporal"
+      "summary": "init instala el guard de Codex en el hooks.json de usuario (CODEX_HOME o ~/.codex) con PreToolUse (Bash, apply_patch) y PostToolUse (Bash), conservando los demás hooks, y explica que hay que confiar en él una vez con /hooks; doctor lo comprueba; los tests apuntan CODEX_HOME a una carpeta temporal",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "09c179083c226852845b1106487fba220e28b37f",
+      "startedAt": "2026-10-23T23:14:54.968Z",
+      "doneAt": "2026-10-23T23:17:03.733Z",
+      "summary": "ARCHITECTURE: el guard normaliza los parches a escrituras y borrados, Codex tiene la revisión tras cada comando, y su fila en la tabla de hooks explica por qué va en la configuración de usuario"
     }
   },
   "pending": {

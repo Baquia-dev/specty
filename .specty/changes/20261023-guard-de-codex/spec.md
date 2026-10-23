@@ -71,7 +71,7 @@ kind: standard
   - files: packages/cli/src/install/agents.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/support.ts, packages/cli/test/codex.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts test/install.test.ts test/setup.test.ts
-- [ ] T4: Documentar el guard de Codex
+- [x] T4: Documentar el guard de Codex
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check

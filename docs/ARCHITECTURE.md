@@ -261,13 +261,13 @@ Solo se incorporan los cambios `standard` y `quick` con rama y en modo `individu
 **Guard.** Un único punto de entrada, `specty guard --tool <id>`:
 
 1. Lee el evento de la herramienta por stdin.
-2. Lo normaliza a escritura, borrado, shell o MCP.
+2. Lo normaliza a escritura, borrado, shell o MCP. Un parche (`apply_patch` de Codex) es un conjunto de escrituras y borrados: sus cabeceras `*** Add File:` y `*** Update File:` escriben, `*** Delete File:` borra, y `*** Move to:` escribe la ruta nueva y borra la anterior.
 3. Core decide.
 4. El adaptador responde en el formato de la herramienta: normalmente, código de salida 2 con el motivo y el siguiente paso.
 
 El guard solo juzga rutas que puede ubicar dentro del repositorio y que git no ignora. El análisis de shell sigue los `cd` de cada comando y, como bash, se salta los comentarios y el cuerpo de los heredocs; dentro de `((…))` y `$((…))`, `<`, `>`, `&` y `|` son aritmética, no redirecciones. Una ruta con variables sin expandir, o una ruta relativa tras un `cd` a un destino desconocido, no se bloquea por alcance: la cubren los hooks de git y el CI.
 
-**Después de cada comando de Bash** (Claude Code: `PostToolUse` y `PostToolUseFailure`, con el matcher `Bash`). Antes del comando, si lo permite y no es de Specty, el guard guarda una foto de los archivos que difieren de `HEAD`, con su tamaño y su fecha, en `.git/specty/shell/<tool_use_id>.json`. Al terminar, compara y juzga lo que cambió con las mismas reglas, así que también ve lo que escriben intérpretes, scripts y generadores, que el análisis de shell no puede prever. No lo deshace: Claude Code muestra el aviso al modelo, y `task done` sigue siendo la puerta. Las fotos que nadie recoge se borran al cabo de un día.
+**Después de cada comando de Bash** (Claude Code: `PostToolUse` y `PostToolUseFailure`, con el matcher `Bash`; Codex: `PostToolUse`, que también llega tras un comando fallido). Antes del comando, si lo permite y no es de Specty, el guard guarda una foto de los archivos que difieren de `HEAD`, con su tamaño y su fecha, en `.git/specty/shell/<tool_use_id>.json`. Al terminar, compara y juzga lo que cambió con las mismas reglas, así que también ve lo que escriben intérpretes, scripts y generadores, que el análisis de shell no puede prever. No lo deshace: Claude Code muestra el aviso al modelo, y `task done` sigue siendo la puerta. Las fotos que nadie recoge se borran al cabo de un día.
 
 **Una sesión, una worktree** (Claude Code: `EnterWorktree` en el matcher de `PreToolUse`). El trabajo en paralelo es una sesión de agente por cambio. La primera worktree en la que entra una sesión (por el `session_id` del evento) pasa a ser la suya, y queda guardada en la carpeta común de git (`common/specty/sessions/<id>.json`). Mientras el cambio de esa worktree siga abierto, el guard no le deja entrar en otra: el motivo nombra su worktree y su cambio, y el SIGUIENTE pide terminarlo o abrir otra sesión. Cuando el cambio se cierra o se cancela, o su carpeta ya no existe, la sesión queda libre y puede encadenar el siguiente. Sin `session_id`, el guard no juzga la entrada.
 
@@ -283,7 +283,7 @@ Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escribe
 | Windsurf | `pre_write_code`, `pre_run_command` | `.windsurf/hooks.json` | Documentado |
 | Gemini CLI | `BeforeTool` | `.gemini/settings.json` | Experimental; hay que activarlo |
 | GitHub Copilot | `preToolUse` | `.github/hooks/*.json` | Parcial; verificar |
-| Codex | hooks en `config.toml` | `~/.codex/config.toml` | `PreToolUse` sin confirmar |
+| Codex (0.123 o posterior) | `PreToolUse` con `Bash` y `apply_patch` (el comando o el parche van en `tool_input.command`; salida 2 bloquea), y `PostToolUse` con `Bash` | `hooks.json` de la configuración de usuario (`$CODEX_HOME`, o `~/.codex`), no del repositorio: Codex guarda la confianza en cada hook por la ruta absoluta de su archivo, y uno del repositorio habría que aprobarlo con `/hooks` en cada worktree | Implementado; aviso tras cada comando de Bash. La persona confía en el hook una vez con `/hooks`; fuera de los repositorios con Specty, el guard no hace nada |
 | Resto (Aider, Zed, Cline, Continue…) | — | — | Solo capas 1, 3 y 4 |
 
 ### Modelo de confianza
