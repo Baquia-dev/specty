@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-import { mkdir } from "node:fs/promises";
-import { basename, dirname, join } from "node:path";
+import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { basename, delimiter, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import {
@@ -48,7 +49,7 @@ describe("specty new --worktree", () => {
       `Cambio creado: ${OTHER} (rama specty/${OTHER}) en ${folder}, desde main (${main.slice(0, 7)}).`,
     );
     expect(created.out).toContain(
-      `SIGUIENTE: en ${folder}, instala las dependencias y abre allí un agente que ejecute \`specty next\``,
+      `SIGUIENTE: continúa en ${folder}: cambia allí la carpeta de trabajo de tu sesión (o abre allí un agente) y ejecuta \`specty next\`; esta carpeta sigue con su propio trabajo.`,
     );
     expect(git(folder, "branch", "--show-current")).toBe(`specty/${OTHER}`);
     expect(git(folder, "rev-parse", "HEAD")).toBe(main);
@@ -100,13 +101,77 @@ describe("specty new --worktree", () => {
   });
 
   it("needs a branch per change", async () => {
-    const config = `${CONFIG()}git:\n  branchPerChange: false\n`;
+    const config =
+      'version: 1\nlanguage: es\ngit:\n  branchPerChange: false\nverify:\n  default: "true"\n';
     const root = await tempRepo({ ...FILES, ".specty/config.yaml": config });
     const refused = await cli(root, ["new", "--worktree", "Otro cambio"]);
     expect(refused.code).toBe(2);
     expect(refused.out).toContain("`--worktree` necesita una rama por cambio");
     await cli(root, ["new", "Saludo personalizado"]);
     expect((await cli(root, ["new", "Otro cambio"])).out).toContain("cámbiate a otra rama");
+  });
+});
+
+describe("every change in its own worktree", () => {
+  /** Specty's defaults: changes go to worktrees. */
+  const DEFAULTS = 'version: 1\nlanguage: es\nverify:\n  default: "true"\n';
+  const configured = (git: string) => ({
+    ...FILES,
+    ".specty/config.yaml": `${DEFAULTS}git:\n${git}`,
+  });
+
+  it("creates the change in a worktree without --worktree, leaving this folder on its branch (AC1, AC4)", async () => {
+    const root = await tempRepo({ ...FILES, ".specty/config.yaml": DEFAULTS });
+    const created = await cli(root, ["new", "Otro cambio"]);
+    expect(created.code).toBe(0);
+    const folder = join(home(root), OTHER);
+    expect(created.out).toContain(
+      `Cambio creado: ${OTHER} (rama specty/${OTHER}) en ${folder}, desde main (`,
+    );
+    expect(created.out).toContain(
+      `SIGUIENTE: continúa en ${folder}: cambia allí la carpeta de trabajo de tu sesión (o abre allí un agente) y ejecuta \`specty next\``,
+    );
+    expect(created.out).not.toContain("Carpeta preparada");
+    expect(git(root, "branch", "--show-current")).toBe("main");
+    expect(git(folder, "branch", "--show-current")).toBe(`specty/${OTHER}`);
+    expect((await cli(folder, ["next"])).out).toContain(`SPECTY · ${OTHER} · draft`);
+    // `--from` needs no `--worktree` either.
+    expect((await cli(root, ["new", "--from", "main", "Desde main"])).code).toBe(0);
+  });
+
+  it("prepares the new folder with git.setup, or else with the stack's install command (AC2)", async () => {
+    const folderOf = (root: string) => join(home(root), OTHER);
+    const set = await tempRepo(configured('  setup: "echo listo > preparado.txt"\n'));
+    const prepared = await cli(set, ["new", "Otro cambio"]);
+    expect(prepared.out).toContain("Carpeta preparada con `echo listo > preparado.txt`.");
+    expect(await read(folderOf(set), "preparado.txt")).toBe("listo\n");
+
+    const broken = await tempRepo(configured('  setup: "echo roto && exit 3"\n'));
+    const failed = await cli(broken, ["new", "Otro cambio"]);
+    expect(failed.code).toBe(0);
+    expect(failed.out).toContain("FALLÓ `echo roto && exit 3`:\n  roto");
+    expect(failed.out).toContain(
+      `SIGUIENTE: en ${folderOf(broken)}, ejecuta \`echo roto && exit 3\`; después cambia allí la carpeta de trabajo de tu sesión`,
+    );
+    expect(await exists(join(folderOf(broken), `.specty/changes/${OTHER}/spec.md`))).toBe(true);
+
+    // Without git.setup, the detected stack's command runs: here a stand-in `pnpm`.
+    const bin = await mkdtemp(join(tmpdir(), "specty-bin-"));
+    await writeFile(join(bin, "pnpm"), '#!/bin/sh\necho "$@" > instalado.txt\n');
+    await chmod(join(bin, "pnpm"), 0o755);
+    const env = { PATH: `${bin}${delimiter}${process.env.PATH ?? ""}` };
+    const node = {
+      "package.json": '{"name":"demo"}\n',
+      "pnpm-lock.yaml": "lockfileVersion: '9.0'\n",
+    };
+    const detected = await tempRepo({ ...FILES, ...node, ".specty/config.yaml": DEFAULTS });
+    const installed = await cli(detected, ["new", "Otro cambio"], { env });
+    expect(installed.out).toContain("Carpeta preparada con `pnpm install --prefer-offline`.");
+    expect(await read(folderOf(detected), "instalado.txt")).toBe("install --prefer-offline\n");
+    const off = await tempRepo({ ...configured("  setup: false\n"), ...node });
+    const untouched = await cli(off, ["new", "Otro cambio"], { env });
+    expect(untouched.out).not.toContain("Carpeta preparada");
+    expect(await exists(join(folderOf(off), "instalado.txt"))).toBe(false);
   });
 });
 

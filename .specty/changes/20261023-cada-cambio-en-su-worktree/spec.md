@@ -67,7 +67,7 @@ kind: standard
   - files: packages/cli/src/detect/project.ts, packages/cli/test/setup.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts
-- [ ] T3: `new` siempre en una worktree preparada
+- [x] T3: `new` siempre en una worktree preparada
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/commands/new.ts, packages/cli/test/support.ts, packages/cli/test/worktrees.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts test/flow.test.ts

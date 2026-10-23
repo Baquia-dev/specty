@@ -135,8 +135,12 @@ export async function cli(
   return { code, out: out.join("\n"), err: err.join("\n") };
 }
 
+/**
+ * A test repository's configuration. Changes stay in the same folder, as most tests follow one
+ * folder's flow; `git` goes before `verify` so tests can append keys to `verify`.
+ */
 export const CONFIG = (verify = "true") =>
-  `version: 1\nlanguage: es\nverify:\n  default: ${JSON.stringify(verify)}\n`;
+  `version: 1\nlanguage: es\ngit:\n  worktrees: false\nverify:\n  default: ${JSON.stringify(verify)}\n`;
 
 export const SPEC = `---
 kind: standard
