@@ -4,3 +4,4 @@
 {"ts":"2026-10-23T10:08:40.095Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"11e43c3da67753f313f47d2c445f0aa6bc0f432c"}}
 {"ts":"2026-10-23T10:11:28.517Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":36421}}
 {"ts":"2026-10-23T10:11:28.520Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"La línea de esfuerzo dice implementación y revisiones de la spec y del alcance; formats.md §9 y el diagrama de ARCHITECTURE §4 al día"}}
+{"ts":"2026-10-23T10:15:51.183Z","actor":"human","event":"change.closed","data":{"lane":"quick"}}

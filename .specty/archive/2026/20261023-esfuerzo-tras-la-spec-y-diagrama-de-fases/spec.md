@@ -22,3 +22,9 @@ Dos textos dejan de contradecir lo que hace Specty. Una vez escrita la spec, `pr
   - verify: pnpm check
   - type: fix
   - notes: Actualizar también la salida de `propose` en docs/formats.md §9 y el diagrama de docs/ARCHITECTURE.md §4 (aprobar sin tareas pendientes → acceptance).
+
+## Cierre
+
+### Resumen
+
+La línea de esfuerzo dice implementación y revisiones de la spec y del alcance; formats.md §9 y el diagrama de ARCHITECTURE §4 al día

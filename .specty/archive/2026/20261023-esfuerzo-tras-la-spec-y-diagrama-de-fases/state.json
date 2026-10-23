@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-esfuerzo-tras-la-spec-y-diagrama-de-fases",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-esfuerzo-tras-la-spec-y-diagrama-de-fases",
   "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "11e43c3da67753f313f47d2c445f0aa6bc0f432c",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:08:40.094Z",
       "doneAt": "2026-10-23T10:11:28.518Z",
-      "summary": "La línea de esfuerzo dice implementación y revisiones de la spec y del alcance; formats.md §9 y el diagrama de ARCHITECTURE §4 al día"
+      "summary": "La línea de esfuerzo dice implementación y revisiones de la spec y del alcance; formats.md §9 y el diagrama de ARCHITECTURE §4 al día",
+      "scopeExtra": []
     }
   },
   "pending": {
