@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261023-borrar-worktrees-sin-preguntar",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261023-borrar-worktrees-sin-preguntar",
+  "baseCommit": "5841c0528117daa7f461d1ecfd572377d0065582",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:79f2924bdc3bcfdc21379e8c073b1f557d4c9c786beb3e3e63e2ef388c8e164c",
+    "at": "2026-10-23T20:15:28.900Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b2114519893c2e02eacbb447bafef0825c96ab67",
+      "attempts": 2,
+      "startedAt": "2026-10-23T20:15:36.500Z",
+      "doneAt": "2026-10-23T20:20:08.183Z",
+      "summary": "init solo escribe EnterWorktree y ExitWorktree en permissions.allow y quita la regla ask ExitWorktree(action:remove) que escribía antes, conservando las demás reglas ask (y quitando ask si queda vacío). biome.json deja fuera .claude y .cursor, que escriben init y las herramientas de agentes (5841c05 había dejado pnpm check en rojo). ARCHITECTURE §10: el agente entra, sale y borra worktrees sin preguntar.",
+      "scopeExtra": [
+        "biome.json"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1,
+    "S": 1
+  },
+  "integration": {
+    "target": "main",
+    "commit": "c8602ed2a027b2fc6194b0fc9347e26f9bbbbf4a",
+    "reason": "conflicts",
+    "conflicts": [
+      "biome.json"
+    ],
+    "paths": [
+      "AGENTS.md",
+      "biome.json",
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/install/agents.ts",
+      "packages/cli/test/setup.test.ts",
+      "packages/ui/src/components/toast.test.ts"
+    ],
+    "at": "2026-10-23T20:31:11.710Z",
+    "resolved": {
+      "commit": "bf5f3c9",
+      "at": "2026-10-23T20:32:35.700Z"
+    }
+  }
+}

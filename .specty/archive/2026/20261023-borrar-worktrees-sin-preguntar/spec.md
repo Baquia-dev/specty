@@ -19,3 +19,9 @@ Las worktrees deben ser transparentes para el usuario, así que borrar una tampo
 - [x] T1: ExitWorktree sin pregunta al borrar
   - files: packages/cli/src/install/agents.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+init solo escribe EnterWorktree y ExitWorktree en permissions.allow y quita la regla ask ExitWorktree(action:remove) que escribía antes, conservando las demás reglas ask (y quitando ask si queda vacío). biome.json deja fuera .claude y .cursor, que escriben init y las herramientas de agentes (5841c05 había dejado pnpm check en rojo). ARCHITECTURE §10: el agente entra, sale y borra worktrees sin preguntar.

@@ -7,3 +7,6 @@
 {"ts":"2026-10-23T20:18:57.026Z","actor":"human","event":"scope.decided","data":{"id":"S1","decision":"approved"}}
 {"ts":"2026-10-23T20:20:08.182Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":48134}}
 {"ts":"2026-10-23T20:20:08.184Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"init solo escribe EnterWorktree y ExitWorktree en permissions.allow y quita la regla ask ExitWorktree(action:remove) que escribía antes, conservando las demás reglas ask (y quitando ask si queda vacío). biome.json deja fuera .claude y .cursor, que escriben init y las herramientas de agentes (5841c05 había dejado pnpm check en rojo). ARCHITECTURE §10: el agente entra, sale y borra worktrees sin preguntar."}}
+{"ts":"2026-10-23T20:31:11.711Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"c8602ed2a027b2fc6194b0fc9347e26f9bbbbf4a","reason":"conflicts","conflicts":["biome.json"]}}
+{"ts":"2026-10-23T20:32:35.701Z","actor":"agent","tool":"claude-code","event":"integration.resolved","data":{"commit":"bf5f3c9"}}
+{"ts":"2026-10-23T20:34:04.479Z","actor":"human","event":"change.closed","data":{"lane":"quick"}}
