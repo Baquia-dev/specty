@@ -83,7 +83,7 @@ Si incorporar la rama principal al cerrar da conflictos, o la verificación fall
   - files: packages/cli/src/flow/integrate.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/test/support.ts, packages/cli/test/integrate.test.ts
   - ac: AC1, AC2, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts
-- [ ] T3: El agente ve la incorporación pendiente
+- [x] T3: El agente ve la incorporación pendiente
   - files: packages/cli/src/enforce/guard.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/status.ts, packages/cli/test/resolve.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/resolve.test.ts
