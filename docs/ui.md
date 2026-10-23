@@ -91,10 +91,11 @@ Las tareas, en el orden de la spec, como filas de documento (igual que los ítem
 
 ### Aceptación
 
-- Lista de criterios, cada uno con su evidencia: tareas que lo cubren, commits y verificación.
-- Diff por tarea o completo, unificado o lado a lado.
-- Botón "Ejecutar verificación completa"; la ejecuta el servidor.
-- Acciones: "Aceptar" o "Pedir ajustes". El cuadro de ajustes explica cómo se clasificará la petición.
+- **Criterios** (vista por defecto): cada criterio es una fila de documento con su texto y, debajo, las tareas que lo cubren, con su commit y el veredicto de su última verificación. A la derecha va su estado: «Verificado» (todas sus tareas hechas y con verificación correcta), «Hecho, sin verificación», «Pendiente» o «Sin tarea». Encima, un resumen: «2 de 2 criterios verificados · 2 tareas hechas · 2 commits». La evidencia sale de lo que ya trae la vista del cambio (criterios de la spec y progreso de las tareas).
+- **Matriz** (vista alternativa): criterios por tareas, en el orden de la spec. Cada celda cubierta es un botón con el estado de la tarea y su commit; la celda elegida muestra debajo esa tarea (resumen, archivos, commit, intentos y verificación). Una tabla ancha se desplaza de lado dentro de su caja. El selector «Vista» cambia entre las dos, y la elección se recuerda en el navegador, como la agrupación de la Bandeja.
+- **Acciones**: en aceptación, la cabecera y la barra compacta muestran «Pedir ajustes…» y «Aceptar resultado». «Aceptar resultado» confirma en un diálogo con las tareas hechas, sus commits y lo que viene después: el agente redacta el cierre o, en un cambio rápido, el cambio se cierra. «Pedir ajustes…» explica cómo clasificará el agente la petición (defecto, refinamiento o alcance nuevo), no deja enviarla vacía y la envía tal cual, como `specty adjust`. Cada criterio tiene «No se cumple…», que aparece al pasar o enfocar la fila y abre ese diálogo con la petición empezando por el criterio («AC2: »). Si la fuente no puede hacerlo, un aviso lo explica y el diálogo sigue abierto.
+- Fuera de aceptación muestra la evidencia que haya, sin acciones; en cierre dice si el agente redacta el cierre o si ya lo envió y espera `specty close`.
+- Llegan en cambios posteriores: el botón «Ejecutar verificación completa» (la ejecuta el servidor, con su salida en vivo) y el diff por tarea o completo, unificado o lado a lado.
 
 ### Cierre
 

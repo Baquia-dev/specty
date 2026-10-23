@@ -163,7 +163,11 @@ describe("Acceptance actions", () => {
     if (change === undefined) throw new Error("no change");
     TestBed.inject(ResultDialogs).adjust(change, "AC2: ");
     await settle();
-    expect(dialog()?.querySelector("textarea")?.value).toBe("AC2: ");
+    const field = dialog()?.querySelector("textarea");
+    expect(field?.value).toBe("AC2: ");
+    // The dialog's first focus goes to the request, with the caret after the criterion.
+    expect(field?.hasAttribute("cdkFocusInitial")).toBe(true);
+    expect([field?.selectionStart, field?.selectionEnd]).toEqual([5, 5]);
   });
 
   it("keeps the dialog and explains it when the source cannot decide (AC6)", async () => {

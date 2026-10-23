@@ -21,6 +21,8 @@ import {
   LucideLightbulb,
   LucideTriangleAlert,
 } from "@lucide/angular";
+import { AcceptanceActions } from "../acceptance/acceptance-actions";
+import { AcceptanceTab } from "../acceptance/acceptance-tab";
 import { PhaseBadge } from "../components/badge";
 import { PAGE } from "../components/document";
 import { EmptyState } from "../components/empty-state";
@@ -81,6 +83,8 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     ChangeBar,
     ChangeFacts,
     ProgressTab,
+    AcceptanceTab,
+    AcceptanceActions,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -113,13 +117,16 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               <h1 class="mt-3 mb-0 max-w-4xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.028em] sm:text-[2.375rem]">{{ change.title }}</h1>
             </div>
             <!--
-              Beside the title: the decision on the spec (in review) and, as a suggestion rather
-              than a fact of the change, the effort for the agent. Under the title, at its edge.
+              Beside the title: the decision waiting (on the spec in review, on the result in
+              acceptance) and, as a suggestion rather than a fact of the change, the effort for the
+              agent. Under the title, at its edge.
             -->
-            @if (change.phase === 'review' || (showEffort && change.effort)) {
+            @if (change.phase === 'review' || change.phase === 'acceptance' || (showEffort && change.effort)) {
               <div class="mt-1 flex flex-col items-end gap-3 max-lg:items-start">
                 @if (change.phase === 'review') {
                   <sp-review-actions class="max-lg:items-start" [change]="change" />
+                } @else if (change.phase === 'acceptance') {
+                  <sp-acceptance-actions class="flex-wrap" [change]="change" />
                 }
                 @if (showEffort && change.effort; as effort) {
                   <p class="m-0 flex max-w-80 items-start gap-2 text-[13px] text-text-muted" data-effort>
@@ -148,7 +155,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               <sp-progress-tab class="pt-2" [change]="change" />
             </sp-tab-panel>
             <sp-tab-panel value="acceptance" [label]="t()('Aceptación', 'Acceptance')">
-              <p class="m-0 text-sm text-text-muted">{{ t()('Criterios con evidencia, diffs y cierre llegan en un próximo cambio del prototipo.', 'Criteria with evidence, diffs and closing come in a later prototype change.') }}</p>
+              <sp-acceptance-tab class="pt-2" [change]="change" />
             </sp-tab-panel>
             <sp-tab-panel value="history" [label]="t()('Historial', 'History')">
               <p class="m-0 text-sm text-text-muted">{{ t()('El historial y la trazabilidad llegan en la fase 3.', 'History and traceability come in phase 3.') }}</p>

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
+import { AcceptanceActions } from "../acceptance/acceptance-actions";
 import { PhaseBadge } from "../components/badge";
 import type { ChangeView, ReviewSection } from "../data/records";
 import { revisionName, revisionState } from "../data/revision";
@@ -16,11 +17,11 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
 
 /**
  * The change at a glance while scrolling: phase, title, revision, the section being read, what
- * is still to decide and, in review, the decision on the spec.
+ * is still to decide and the decision waiting: on the spec in review, on the result in acceptance.
  */
 @Component({
   selector: "sp-change-bar",
-  imports: [PhaseBadge, ReviewActions],
+  imports: [PhaseBadge, ReviewActions, AcceptanceActions],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     "[class]": "shown() ? barShown : barHidden",
@@ -49,6 +50,8 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
       </div>
       @if (change().phase === 'review') {
         <sp-review-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
+      } @else if (change().phase === 'acceptance') {
+        <sp-acceptance-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
       }
     </div>
   `,

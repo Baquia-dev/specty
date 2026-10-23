@@ -77,7 +77,7 @@ La pestaña Aceptación deja el texto provisional. Muestra cada criterio con la 
   - files: packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/acceptance/criterion-row.ts, packages/ui/src/acceptance/trace-matrix.ts, packages/ui/src/acceptance/acceptance-tab.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/acceptance-tab.test.ts
-- [ ] T4: La pestaña y las acciones en la página del cambio
+- [x] T4: La pestaña y las acciones en la página del cambio
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/change/change-bar.ts, docs/ui.md
   - ac: AC1, AC4
   - verify: pnpm check

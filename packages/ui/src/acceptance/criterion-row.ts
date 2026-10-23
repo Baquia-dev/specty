@@ -94,17 +94,21 @@ export function verdictOf(task: TaskProgressView): Mark {
           }
         </ul>
       }
+    </div>
+    <!--
+      The state and, under it, the action that shows on the row: it adds no height of its own. On
+      a phone they sit side by side on the row's first line, next to the id.
+    -->
+    <div class="flex flex-col items-end gap-1 self-start max-sm:flex-row-reverse max-sm:items-center max-sm:gap-2">
+      <span class="flex h-6 items-center gap-1 rounded-full px-2.5 text-xs font-medium whitespace-nowrap" [style.color]="'var(--color-phase-' + mark().tone + ')'" [style.background]="'var(--color-phase-' + mark().tone + '-bg)'" data-mark>
+        <svg [lucideIcon]="mark().icon" size="13" aria-hidden="true"></svg>{{ t()(mark().es, mark().en) }}
+      </span>
       @if (canAdjust()) {
-        <div [class]="reveal">
-          <button type="button" class="h-6 cursor-pointer border-0 bg-transparent px-1 font-sans text-[13px] text-text underline" (click)="notMet()" data-not-met>
-            {{ t()('No se cumple', 'Not met') }}<span class="sr-only">&ngsp;{{ evidence().id }}</span>…
-          </button>
-        </div>
+        <button type="button" [class]="reveal + ' h-6 cursor-pointer border-0 bg-transparent px-1 font-sans text-[13px] whitespace-nowrap text-text underline'" (click)="notMet()" data-not-met>
+          {{ t()('No se cumple', 'Not met') }}<span class="sr-only">&ngsp;{{ evidence().id }}</span>…
+        </button>
       }
     </div>
-    <span class="flex h-6 items-center gap-1 self-start rounded-full px-2.5 text-xs font-medium whitespace-nowrap" [style.color]="'var(--color-phase-' + mark().tone + ')'" [style.background]="'var(--color-phase-' + mark().tone + '-bg)'" data-mark>
-      <svg [lucideIcon]="mark().icon" size="13" aria-hidden="true"></svg>{{ t()(mark().es, mark().en) }}
-    </span>
   `,
 })
 export class CriterionRow {

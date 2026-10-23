@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DIALOG_DATA, DialogRef } from "@angular/cdk/dialog";
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   Injectable,
   inject,
   input,
@@ -79,6 +81,18 @@ export class AdjustResult {
   protected readonly lang = this.preferences.lang;
   protected readonly classes = CLASSES;
   protected readonly request = signal(this.data.request ?? "");
+
+  constructor() {
+    // Writing the request is what the dialog is for: the dialog's first focus goes to it (the CDK
+    // honours `cdkFocusInitial`, and this runs before it), with the caret after «AC2: ».
+    const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
+    afterNextRender(() => {
+      const field = host.querySelector("textarea");
+      if (field === null) return;
+      field.setAttribute("cdkFocusInitial", "");
+      field.setSelectionRange(field.value.length, field.value.length);
+    });
+  }
 
   protected send(): void {
     const request = this.request().trim();
