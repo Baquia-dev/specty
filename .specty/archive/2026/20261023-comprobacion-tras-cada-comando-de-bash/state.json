@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-comprobacion-tras-cada-comando-de-bash",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-comprobacion-tras-cada-comando-de-bash",
   "baseCommit": "b8e3884997f96d39efed5c21d323b6c7b6fbfbd4",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ff72314e022f0010c889423ef320aef46385a6bfcde2fbe051f8a5be7ba45b0c",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b61a5d5d9f706af3c8f0beac6d868c8a6d4aa72a",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:34:27.135Z",
       "doneAt": "2026-10-23T10:37:53.867Z",
-      "summary": "init instala PostToolUse y PostToolUseFailure con Bash; doctor dice qué evento falta; ARCHITECTURE §10 y formats.md §1 al día"
+      "summary": "init instala PostToolUse y PostToolUseFailure con Bash; doctor dice qué evento falta; ARCHITECTURE §10 y formats.md §1 al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -86,5 +86,6 @@
     "AC": 7,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T10:43:36.499Z"
 }

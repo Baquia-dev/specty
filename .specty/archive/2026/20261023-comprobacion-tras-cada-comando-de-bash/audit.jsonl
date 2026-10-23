@@ -10,3 +10,6 @@
 {"ts":"2026-10-23T10:34:27.135Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"b61a5d5d9f706af3c8f0beac6d868c8a6d4aa72a"}}
 {"ts":"2026-10-23T10:37:53.866Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":41185}}
 {"ts":"2026-10-23T10:37:53.869Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"init instala PostToolUse y PostToolUseFailure con Bash; doctor dice qué evento falta; ARCHITECTURE §10 y formats.md §1 al día"}}
+{"ts":"2026-10-23T10:41:00.972Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T10:43:36.500Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:83c2dd0c5d6eaf6cce07e6ab3d836bee9977d0a777e4b498f1761a808b947184","size":"L","warnings":0}}
+{"ts":"2026-10-23T10:45:51.980Z","actor":"human","event":"change.closed","data":{}}

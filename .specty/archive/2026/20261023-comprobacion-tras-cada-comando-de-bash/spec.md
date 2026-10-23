@@ -77,3 +77,27 @@ El guard ve lo que cambia un comando de Bash, no solo lo que su texto deja adivi
 
 - R1: Cada comando de Bash ejecuta Specty dos veces, antes y después — la foto usa las mismas consultas a git que `task done` y una lectura de fecha por archivo cambiado; T2 mide que ambos se queden por debajo de 200 ms.
 - R2: Un aviso por cambios de otro comando en paralelo podría llevar al agente a deshacer trabajo ajeno — el aviso dice qué cambió y pide revisarlo antes de deshacerlo (A3).
+
+## Cierre
+
+### Resumen
+
+Al terminar cada comando de Bash, Claude Code recibe un aviso si el comando cambió algo que el flujo no permitía. Antes del comando, si lo deja pasar y no es de Specty, el guard guarda en `.git/specty/shell/<tool_use_id>.json` el tamaño y la fecha de los archivos que difieren de `HEAD`. Al terminar (`PostToolUse`, o `PostToolUseFailure` si falló), `shellChanges` saca lo que cambió y `decideAfterShell` lo juzga con `decideGuard`: un solo aviso con cada archivo y su motivo, `scope add` solo para los que pueden pedir alcance, y código 2 para que el modelo lo vea. `specty init` instala los dos eventos con el matcher `Bash`, y `specty doctor` dice cuál falta. Medido en este repo: p95 de 160 ms antes del comando y de 158 ms después.
+
+### Desviaciones
+
+- **El hook de antes también borra las fotos viejas.** El plan solo las borraba en el de después, pero en una instalación sin los hooks nuevos nadie las recoge; borrándolas en los dos, nunca se acumulan más de un día. Se vio al recompilar: este repo, todavía con los hooks antiguos, empezó a guardarlas.
+
+### Decisiones
+
+- **La huella es el tamaño y la fecha de modificación,** no el contenido: basta para saber si el comando tocó el archivo sin leerlo. Un archivo reescrito igual en el mismo instante pasaría inadvertido, y lo vería `task done`.
+- **Una foto por llamada, por `tool_use_id`:** los comandos en paralelo no se pisan la foto.
+- **El aviso pide revisar antes de deshacer,** porque otro comando en paralelo pudo cambiar esos archivos (A3).
+- **Sin foto, silencio:** el primer comando tras instalar, un `tool_use_id` desconocido o un fallo del propio hook no avisan (A5).
+- **`doctor` distingue** si falta el guard entero o solo la comprobación posterior, y nombra los eventos que faltan.
+
+### Pendientes
+
+- **Este repositorio** necesita volver a ejecutar `specty init` para recibir `PostToolUse` y `PostToolUseFailure`; hasta entonces, `doctor` lo avisa y las fotos que guarda el guard se borran al cabo de un día.
+- **Cursor:** su `postToolUse` admite `additional_context`; falta comprobar si basta para avisar al agente.
+- **Comandos en paralelo:** dos comandos simultáneos, de la misma sesión o de otra sobre el mismo árbol, pueden atribuirse sus cambios.
