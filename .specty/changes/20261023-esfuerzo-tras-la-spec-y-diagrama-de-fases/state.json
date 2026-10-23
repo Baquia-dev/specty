@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261023-esfuerzo-tras-la-spec-y-diagrama-de-fases",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261023-esfuerzo-tras-la-spec-y-diagrama-de-fases",
+  "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:45af9ec8cdb462a9a25252de4fdc93c0028b47bf644cfe92c5917229d1c7a12d",
+    "at": "2026-10-23T10:08:24.344Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
