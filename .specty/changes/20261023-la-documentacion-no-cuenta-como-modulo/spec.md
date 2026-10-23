@@ -16,6 +16,6 @@ El tamaño de un cambio cuenta como módulos solo las rutas gobernadas: la docum
 
 ## Tareas
 
-- [ ] T1: Contar como módulos solo las rutas gobernadas
+- [x] T1: Contar como módulos solo las rutas gobernadas
   - files: packages/core/src/sizing/size.ts, packages/core/test/sizing/sizing.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing/sizing.test.ts

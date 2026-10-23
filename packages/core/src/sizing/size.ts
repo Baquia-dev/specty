@@ -3,6 +3,7 @@ import { matchesAny } from "../glob";
 import { counted, type Lang } from "../i18n";
 import { moduleOf } from "../paths";
 import type { ResolvedConfig } from "../schema/config";
+import { isGoverned } from "../scope/governed";
 import { isManifest } from "../scope/lockfiles";
 import { isTestFile } from "../scope/tests";
 import type { FileAction, Spec } from "../spec/model";
@@ -22,7 +23,7 @@ export interface RepoSignals {
 export interface SizeSignals {
   readonly files: Readonly<Record<FileAction, number>>;
   readonly fileCount: number;
-  /** Modules of the non-test files. */
+  /** Modules of the governed non-test files: documentation and other ignored paths add none. */
   readonly modules: readonly string[];
   readonly sensitive: readonly string[];
   readonly manifests: readonly string[];
@@ -68,7 +69,10 @@ export function collectSignals(
   const count = (action: FileAction): number =>
     entries.filter((entry) => entry.action === action).length;
   // Tests mirror their modules and manifests already weigh as dependencies: neither adds a module.
-  const code = paths.filter((path) => !isTestFile(path) && !isManifest(path));
+  // Neither does what is not governed, such as documentation: it is not code.
+  const code = paths.filter(
+    (path) => !isTestFile(path) && !isManifest(path) && isGoverned(path, config),
+  );
   const modules = [...new Set(code.map(moduleOf))].toSorted();
   return {
     files: {

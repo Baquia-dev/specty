@@ -1,3 +1,6 @@
 {"ts":"2026-10-23T14:59:52.428Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261023-la-documentacion-no-cuenta-como-modulo"}}
 {"ts":"2026-10-23T15:02:47.093Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:80e42198bd488a20d625661fc2b9c84a0d270bd1b66ded497b1eb98bd4643e45","size":"M","warnings":0}}
 {"ts":"2026-10-23T15:15:32.195Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:80e42198bd488a20d625661fc2b9c84a0d270bd1b66ded497b1eb98bd4643e45","channel":"tty"}}
+{"ts":"2026-10-23T15:16:06.140Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"4115b218ca72062b63d5c99374f7aa5227c0b9ce"}}
+{"ts":"2026-10-23T15:16:25.977Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing/sizing.test.ts","exit":0,"ms":812}}
+{"ts":"2026-10-23T15:16:25.979Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Los módulos del tamaño cuentan solo rutas gobernadas (isGoverned en collectSignals): docs/ y los .md ya no suman módulo, aunque siguen contando como archivos; test y ARCHITECTURE §11"}}
