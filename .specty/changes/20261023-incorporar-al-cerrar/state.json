@@ -6,6 +6,13 @@
   "branch": "specty/20261023-incorporar-al-cerrar",
   "baseCommit": "c6b94c0cf13ba797005eb2688dc5e1c9e18dec0a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c31676e574b09f827d4e5ddb2146f89384202e2c081887a1dcb48df1053ee4f3",
+    "at": "2026-10-23T15:15:46.306Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -42,7 +49,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "931355fc37334c95f67cfa69fee1fb340012ff2f",
+      "startedAt": "2026-10-23T15:15:54.955Z",
+      "doneAt": "2026-10-23T15:21:14.734Z",
+      "summary": "close incorpora el cambio a la rama principal: si main avanzó, la fusiona en la rama del cambio (--no-ff --no-commit), verifica y hace el commit de merge con recibo; tras archivar, main avanza por fast-forward donde está (o update-ref) y la worktree se borra (la rama queda) o la carpeta principal vuelve a main. flow/integrate.ts nuevo; spike, modo team y sin rama principal cierran como antes"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -52,12 +69,5 @@
     "AC": 9,
     "T": 4,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c31676e574b09f827d4e5ddb2146f89384202e2c081887a1dcb48df1053ee4f3",
-    "at": "2026-10-23T15:15:46.306Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

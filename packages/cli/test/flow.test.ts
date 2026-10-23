@@ -149,6 +149,10 @@ describe("a standard change from request to closing", () => {
     expect(await exists(`${root}/${ARCHIVE}/${CHANGE}/state.json`)).toBe(true);
     expect(await exists(`${root}/.specty/changes/${CHANGE}`)).toBe(false);
     expect(git(root, "status", "--porcelain")).toBe("");
+    // Incorporated into main, where this folder went back: there is no change here any more.
+    expect(git(root, "branch", "--show-current")).toBe("main");
+    expect((await cli(root, ["next"])).out).toContain("No hay un cambio activo.");
+    git(root, "switch", "-q", `specty/${CHANGE}`);
     expect((await cli(root, ["next"])).out).toContain("El cambio está cerrado.");
   });
 

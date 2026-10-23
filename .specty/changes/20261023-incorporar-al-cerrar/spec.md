@@ -64,7 +64,7 @@ Cuando la persona cierra un cambio (o acepta uno quick), Specty lo incorpora a l
 
 ## Tareas
 
-- [ ] T1: Incorporar el cambio al cerrar
+- [x] T1: Incorporar el cambio al cerrar
   - files: packages/cli/src/flow/integrate.ts, packages/cli/src/flow/worktree.ts, packages/cli/src/commands/finish.ts, packages/cli/test/integrate.test.ts, packages/cli/test/flow.test.ts
   - ac: AC1, AC2, AC5, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts test/flow.test.ts

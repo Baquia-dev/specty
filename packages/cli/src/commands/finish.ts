@@ -11,6 +11,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { archive, commitArchive } from "../flow/finish";
+import { absorbTarget, integrationOf, landChange, withIntegration } from "../flow/integrate";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
 import { writePointer } from "../store/local";
@@ -33,6 +34,11 @@ export async function close(session: Session): Promise<Output> {
     ))
   )
     return postponed(session, state);
+  // The main branch comes into the change before anything is archived: a refusal changes nothing.
+  const plan = await integrationOf(session, state);
+  const absorbed =
+    plan === undefined ? undefined : await absorbTarget(session, plan, state, "close");
+  if (absorbed?.ok === false) return absorbed.output;
   const moved = transition({
     phase: "closing",
     kind: state.kind,
@@ -61,14 +67,20 @@ export async function close(session: Session): Promise<Output> {
     archived,
     `docs(spec): ${t("cerrar", "close")} ${spec.title}`,
   );
-  return closedCard(
-    headerOf(state.id, "done"),
-    t(
-      `Cambio cerrado y archivado (commit ${commit}).`,
-      `Change closed and archived (commit ${commit}).`,
+  const landed = plan === undefined ? undefined : await landChange(session, plan);
+  return withIntegration(
+    session,
+    closedCard(
+      headerOf(state.id, "done"),
+      t(
+        `Cambio cerrado y archivado (commit ${commit}).`,
+        `Change closed and archived (commit ${commit}).`,
+      ),
+      landed?.landed === true ? undefined : state.branch,
+      session.cards,
     ),
-    state.branch,
-    session.cards,
+    absorbed?.lines ?? [],
+    landed,
   );
 }
 
