@@ -104,7 +104,7 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | Comando | Fase | Efecto |
 | --- | --- | --- |
 | `specty next` | Todas | Dice qué toca ahora. En `implementing` activa la siguiente tarea y devuelve su tarjeta; en el resto es de solo lectura |
-| `specty new "<título>" [--kind] [--follows <id>] [--epic <id> --slice C1]` | Sin cambio activo | Crea el cambio, la rama y el esqueleto de la spec |
+| `specty new "<título>" [--kind] [--follows <id>] [--epic <id> --slice C1] [--worktree [--from <rama>]]` | Sin cambio activo; con `--worktree`, siempre | Crea el cambio, la rama y el esqueleto de la spec. Con `--worktree`, en una carpeta nueva (§9) |
 | `specty propose` | draft, review, adjusting, closing | Valida la spec; calcula tamaño, delta y esfuerzo recomendado; la envía a revisión |
 | `specty task done <T> --summary "<texto>"` | implementing | Comprueba el alcance, ejecuta `verify`, hace el commit y avanza |
 | `specty scope add <ruta…> --task <T> --reason "<texto>"` | implementing | Pide ampliar el alcance; se aprueba sola si la política lo permite |
@@ -161,6 +161,16 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 ## 9. Git
 
 **Ramas.** Por defecto, cada cambio vive en `specty/<id>` (o `spike/<id>`), creada desde la rama actual al ejecutar `new`. El cambio activo es el ligado a la rama actual. Con `git.branchPerChange: false`, el puntero vive en `.git/specty/active`, en local. Las ramas permiten trabajar cambios en paralelo con `git worktree`, y por eso no existe un archivo de estado global.
+
+**Cambios en paralelo.** Una carpeta tiene una sola rama, así que trabaja un solo cambio. `specty new --worktree "<título>"` crea el cambio en una worktree nueva, con su rama y su carpeta, y la carpeta actual sigue como estaba:
+
+- **Carpeta:** `<carpeta principal>.worktrees/<id>`, fuera del repositorio, para que las herramientas y los tests de la otra carpeta no la vean.
+- **Base:** `--from <rama>` o, por defecto, la rama principal: la de `origin/HEAD` y, sin remoto, la primera que exista de `init.defaultBranch`, `main` y `master`. Nunca la rama actual, porque un cambio en paralelo no debe heredar el trabajo sin fusionar de otro.
+- **Lo que no mira:** el cambio en curso y el código sin spec de la carpeta actual, porque no los toca.
+- **Hooks:** copia los archivos de hooks de agente que git no sigue (`.claude/settings.local.json`…). Los versionados llegan con la rama; los hooks de git y `.git/info/exclude` se comparten entre worktrees, y el estado local de `.git/specty/` es de cada una.
+- **Dependencias:** se instalan a mano en la carpeta nueva, porque dependen del stack.
+
+Las worktrees que otras herramientas crean dentro del repositorio (Claude Code usa `.claude/worktrees/`) no cuentan como código sin spec ni entran en los commits de Specty.
 
 **Commits que hace Specty**, siempre con la identidad git de la persona y con trailers ([formats.md §7](formats.md#7-trailers-de-commit)):
 

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-cambios-en-paralelo-con-worktrees",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-cambios-en-paralelo-con-worktrees",
   "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d615349420097177990cc6e169954c819fd95be5",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:22:48.316Z",
       "doneAt": "2026-10-23T10:27:21.581Z",
-      "summary": "flow/worktree.ts: base del cambio (--from, o la rama principal: origin/HEAD, init.defaultBranch, main, master; si no, HEAD), carpeta <principal>.worktrees/<id> y git worktree add copiando los hooks de agente que git no sigue (lista única en install/agents.ts). new.ts: --worktree crea el cambio allí sin mirar la carpeta actual; --from sin --worktree es inválido; sin rama por cambio se bloquea; el bloqueo por cambio en curso propone --worktree; uniqueId evita carpetas ocupadas. program.ts: opciones --worktree y --from. Tests de punta a punta para AC1-AC7."
+      "summary": "flow/worktree.ts: base del cambio (--from, o la rama principal: origin/HEAD, init.defaultBranch, main, master; si no, HEAD), carpeta <principal>.worktrees/<id> y git worktree add copiando los hooks de agente que git no sigue (lista única en install/agents.ts). new.ts: --worktree crea el cambio allí sin mirar la carpeta actual; --from sin --worktree es inválido; sin rama por cambio se bloquea; el bloqueo por cambio en curso propone --worktree; uniqueId evita carpetas ocupadas. program.ts: opciones --worktree y --from. Tests de punta a punta para AC1-AC7.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b3650c1d9e16bbee7593a9bdc2c4b830406f19fe",
+      "startedAt": "2026-10-23T10:27:21.877Z",
+      "doneAt": "2026-10-23T10:29:38.795Z",
+      "summary": "ARCHITECTURE §6: la fila de new incluye --worktree [--from <rama>] y que con --worktree vale siempre. §9: párrafo «Cambios en paralelo» con la carpeta <principal>.worktrees/<id>, la base (--from o la rama principal, nunca la actual), lo que no mira, la copia de hooks, el estado local por worktree, las dependencias a mano y las worktrees anidadas de otras herramientas."
     }
   },
   "pending": {
