@@ -82,3 +82,25 @@ kind: standard
 - R1: Codex cambia la forma de sus eventos (ya lo hizo con `apply_patch`) — el guard falla abierto ante un evento que no entiende, y los hooks de git, `task done` y el CI siguen aplicando.
 - R2: La persona no confía en el hook y Codex no lo ejecuta — `init` y `doctor` lo explican, y lo demás sigue protegiendo como hoy.
 - R3: El agente puede editar `~/.codex/hooks.json`, que queda fuera del repositorio y del guard — Codex no ejecuta un hook modificado hasta que la persona vuelve a confiar en él, y el modelo de confianza de Specty ya asume que un agente decidido a evadirlo puede hacerlo en local.
+
+## Cierre
+
+### Resumen
+
+Codex tiene el guard de Specty. `init` (con `--tools codex`, o cuando el repositorio tiene `.codex/`) lo escribe en el `hooks.json` de usuario de Codex, en `PreToolUse` para `Bash` y `apply_patch` y en `PostToolUse` para `Bash`, conserva los demás hooks y explica que hay que confiar en él una vez con `/hooks`; `doctor` lo comprueba. El guard lee los parches de `apply_patch` (añadir, cambiar, mover y borrar) y los juzga con las mismas reglas que las escrituras y los borrados de un comando, juzga los comandos de Bash antes de ejecutarse y, tras ellos, avisa de lo que cambiaron fuera de la tarea.
+
+### Desviaciones
+
+Ninguna respecto a esta spec. Sustituye al cambio cancelado `20261023-guard-para-codex`, cuyo diseño ponía el hook en `.codex/hooks.json` del repositorio: al implementarlo se vio en el código de Codex que la confianza de cada hook se guarda por la ruta absoluta de su archivo, así que habría que aprobarlo de nuevo en cada worktree. Las tareas T1 y T2 se rehicieron igual; la única diferencia es que `.codex/hooks.json` ya no entra en los archivos protegidos, porque Specty no lo escribe.
+
+### Decisiones
+
+- El hook de usuario vale para todos los repositorios de la persona; fuera de los que usan Specty, el guard abre la sesión, no encuentra `.specty/config.yaml` y deja pasar. Se aceptó el coste de arrancar el guard en cada herramienta antes que pedir confianza en cada worktree.
+- La forma de los eventos se comprobó en la documentación oficial de hooks y en los tests de Codex (`codex-rs/core/tests/suite/hooks.rs`): `Bash` lleva el script tal cual y `apply_patch` el parche, ambos en `tool_input.command`.
+- Los lectores de eventos de cada herramienta viven en `enforce/actions.ts`, y `guard.ts` se queda con el flujo; `withHooks` instala el guard tanto en Claude Code como en Codex, que usan la misma forma de `hooks`.
+- Los tests apuntan `CODEX_HOME` a una carpeta temporal en `testEnv`, para que ningún `init` toque la configuración real.
+
+### Pendientes
+
+- Guard para OpenCode, en su propio cambio.
+- `cancel` sugiere «fusiona la rama» también cuando el cambio cancelado tiene commits de código; fusionarla traería código a medias.
