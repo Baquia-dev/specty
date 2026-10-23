@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261023-cambios-en-paralelo-con-worktrees",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-cambios-en-paralelo-con-worktrees",
+  "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:194c3d9188f43bea8a37e31396f6899fb871109a223cec2fca9318ddc4a3e83e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a9f77258b71e68ba7a85f381fbee3f94a9f844571dcc977809f33aa5b11e79af",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:224760de63ab814f13b1c9c89b816715d1407e8c0c5a5b4dde84732952e6919b",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:fc7a5b12132d259ffca91b6bb3e3973e6958a8b50ac892a96f45bc99f27e6e5c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e8c932daaff07176f37d00e681b1e2be1265dc28a33d1c01e09ad2e89833bee3",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:6b9b1dfaec4f34a9d51c67114297348e67b1dadd8030b4507c4af96ea70dd5ca",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 8,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:320b06fc1116b297391c656fa91413f93f6bb8a40438e4f0e7702e4365f30442",
+    "at": "2026-10-23T10:18:54.381Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

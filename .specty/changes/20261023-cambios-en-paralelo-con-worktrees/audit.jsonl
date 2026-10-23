@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T10:10:03.232Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-cambios-en-paralelo-con-worktrees"}}
+{"ts":"2026-10-23T10:17:45.743Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:320b06fc1116b297391c656fa91413f93f6bb8a40438e4f0e7702e4365f30442","size":"M","warnings":0}}
+{"ts":"2026-10-23T10:18:54.400Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:320b06fc1116b297391c656fa91413f93f6bb8a40438e4f0e7702e4365f30442","channel":"tty"}}
