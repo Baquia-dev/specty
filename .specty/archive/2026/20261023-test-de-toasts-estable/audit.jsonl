@@ -4,3 +4,6 @@
 {"ts":"2026-10-23T20:07:01.099Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"771a351c52856e49d4be3a6cf8d837e7457b46e6"}}
 {"ts":"2026-10-23T20:08:26.455Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/toast.test.ts","exit":0,"ms":5843}}
 {"ts":"2026-10-23T20:08:26.456Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"El test de toasts falsifica setTimeout después de render(): antes, whenStable() dependía solo de requestAnimationFrame (Angular corre la detección de cambios con el primero de setTimeout o rAF) y bajo carga se colgaba 5 s. Comprobado: falsificando también rAF antes de render() el test se cuelga siempre; después de render() pasa incluso con rAF falso"}}
+{"ts":"2026-10-23T20:13:42.340Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"5841c0528117daa7f461d1ecfd572377d0065582","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-23T20:26:15.290Z","actor":"specty","event":"integration.abandoned","data":{"target":"main"}}
+{"ts":"2026-10-23T20:27:12.601Z","actor":"human","event":"change.closed","data":{"lane":"quick"}}

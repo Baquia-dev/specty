@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-test-de-toasts-estable",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-test-de-toasts-estable",
   "baseCommit": "d3a82b44cf2e898051801c66614fdd29d9c7a82a",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "771a351c52856e49d4be3a6cf8d837e7457b46e6",
+      "attempts": 1,
       "startedAt": "2026-10-23T20:07:01.098Z",
       "doneAt": "2026-10-23T20:08:26.455Z",
-      "summary": "El test de toasts falsifica setTimeout después de render(): antes, whenStable() dependía solo de requestAnimationFrame (Angular corre la detección de cambios con el primero de setTimeout o rAF) y bajo carga se colgaba 5 s. Comprobado: falsificando también rAF antes de render() el test se cuelga siempre; después de render() pasa incluso con rAF falso"
+      "summary": "El test de toasts falsifica setTimeout después de render(): antes, whenStable() dependía solo de requestAnimationFrame (Angular corre la detección de cambios con el primero de setTimeout o rAF) y bajo carga se colgaba 5 s. Comprobado: falsificando también rAF antes de render() el test se cuelga siempre; después de render() pasa incluso con rAF falso",
+      "scopeExtra": []
     }
   },
   "pending": {

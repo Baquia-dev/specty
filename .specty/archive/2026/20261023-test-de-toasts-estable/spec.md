@@ -18,3 +18,9 @@ El test «leaves after 5 s unless hovered or focused» de `toast.test.ts` deja d
   - files: packages/ui/src/components/toast.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/toast.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+El test de toasts falsifica setTimeout después de render(): antes, whenStable() dependía solo de requestAnimationFrame (Angular corre la detección de cambios con el primero de setTimeout o rAF) y bajo carga se colgaba 5 s. Comprobado: falsificando también rAF antes de render() el test se cuelga siempre; después de render() pasa incluso con rAF falso
