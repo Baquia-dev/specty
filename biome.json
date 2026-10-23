@@ -13,7 +13,9 @@
       "!**/dist",
       "!**/coverage",
       "!**/test/fixtures",
-      "!.specty"
+      "!.specty",
+      "!.claude/settings.json",
+      "!.cursor/hooks.json"
     ]
   },
   "formatter": {

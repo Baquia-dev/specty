@@ -14,7 +14,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Excluir de Biome los archivos de hooks que escribe Specty
+- [x] T1: Excluir de Biome los archivos de hooks que escribe Specty
   - files: biome.json
   - verify: pnpm lint
   - type: fix
