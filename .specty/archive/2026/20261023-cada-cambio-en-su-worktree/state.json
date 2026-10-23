@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261023-cada-cambio-en-su-worktree",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261023-cada-cambio-en-su-worktree",
+  "baseCommit": "f27616dca7bbfc58e1eed946b3b2fd1f98d89f4a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f47bb5671496f3e7abcdbf835b0c80983f4229e5771d33ed5c84b3984f4dc2f",
+    "at": "2026-10-23T18:36:39.506Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:369cf91fa336c7565573293df506424a4bb166284544fcb5dadc8ed0ef58cdc9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3f08a1dfbc52c8973bff8df402aa2c211809bdc73c8c253223118cf93032e72a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:70f96d59d6fdbf2a6f0c28674b9ccb05dcf13a43d59d248445d5d55eb8c2c886",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:616226d7a258f3d2a4b29daf1da4c0c7260e6a38094ed510190688d82868d2cd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0912edc853c848e97f26d4a739359dfadd7774c8",
+      "attempts": 1,
+      "startedAt": "2026-10-23T18:36:49.808Z",
+      "doneAt": "2026-10-23T18:37:39.878Z",
+      "summary": "config: git.worktrees (por defecto true) y git.setup (texto o false, opcional); el bloque de flujo de AGENTS.md añade que cada cambio vive en su worktree y se trabaja en la carpeta que indica new (8 líneas)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3f80c671e4e56d8ead94c8f0bc85c3baef8102ae",
+      "attempts": 1,
+      "startedAt": "2026-10-23T18:37:40.146Z",
+      "doneAt": "2026-10-23T18:38:03.859Z",
+      "summary": "setupCommand(stack) en detect/project.ts: el comando que prepara una worktree nueva según la herramienta (pnpm, npm, yarn, bun, flutter, dart, uv, poetry, pdm, pipenv, composer) o el lenguaje (Bundler, Mix, Go); ninguno para los stacks cuyos builds traen sus dependencias",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7aff8210b80c8dd61aa1debe8fecf2e5de532f61",
+      "attempts": 1,
+      "startedAt": "2026-10-23T18:38:04.127Z",
+      "doneAt": "2026-10-23T18:40:40.955Z",
+      "summary": "new crea el cambio en una worktree aunque no se pase --worktree (salvo git.worktrees: false o sin rama por cambio), y --from ya no pide --worktree en ese caso; prepareWorktree ejecuta allí git.setup o el comando del stack detectado y la salida lo nombra o muestra la cola si falla; el SIGUIENTE pide continuar en esa carpeta. Los tests fijan git.worktrees: false en CONFIG; worktrees.test prueba el valor por defecto y la preparación (con un pnpm de mentira en el PATH)",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "f1e3b5bab0421122934a4d69a959308bddc33174",
+      "attempts": 1,
+      "startedAt": "2026-10-23T18:40:41.222Z",
+      "doneAt": "2026-10-23T18:42:41.142Z",
+      "summary": "formats.md §6: git.worktrees y git.setup, con el comando de preparación por stack; ARCHITECTURE §6 (fila de new) y §9 (cambios en paralelo: siempre en una worktree, preparación y el agente sigue allí); AGENTS.md de este repo con la línea nueva del bloque de flujo",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-23T18:49:01.255Z"
+}

@@ -3,6 +3,7 @@ import { join } from "node:path";
 import {
   type ChangeView,
   dirname,
+  isIntegrating,
   parseSpec,
   recommendTaskEffort,
   type Spec,
@@ -66,6 +67,16 @@ export async function changeView(session: Session, change: StoredChange): Promis
       state.phase === "implementing" &&
       state.approved !== undefined &&
       specHash(spec) !== state.approved.hash,
+    ...(state.integration !== undefined && isIntegrating(state)
+      ? {
+          integration: {
+            target: state.integration.target,
+            reason: state.integration.reason,
+            conflicts: state.integration.conflicts,
+            paths: state.integration.paths,
+          },
+        }
+      : {}),
   };
 }
 

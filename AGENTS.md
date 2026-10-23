@@ -15,6 +15,7 @@
 ## Flujo de trabajo (Specty)
 Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta `specty next` y sigue su salida hasta la línea `SIGUIENTE:`.
 - Si el usuario pide un cambio y no hay uno activo, `specty next` te indica cómo crear la spec.
+- Cada cambio vive en su propia carpeta (una worktree): tras `specty new`, trabaja en la carpeta que indica, no en la principal.
 - Completa cada tarea con `specty task done <id>`; no ejecutes `git commit` tú mismo.
 - Si necesitas un archivo fuera del alcance de la tarea, pídelo con `specty scope add`.
 - Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno.

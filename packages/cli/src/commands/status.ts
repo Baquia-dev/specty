@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  isIntegrating,
   type Output,
   parseSpec,
   phasePermissions,
@@ -26,7 +27,11 @@ export async function status(session: Session): Promise<Output> {
         waitingFor:
           state.pending.scopeRequests.length > 0
             ? "human"
-            : phasePermissions(state.phase, state.closingSubmittedAt !== undefined).waitingFor,
+            : phasePermissions(
+                state.phase,
+                state.closingSubmittedAt !== undefined,
+                isIntegrating(state),
+              ).waitingFor,
         current: current?.state.id === state.id,
         pendingScope: state.pending.scopeRequests.map((request) => request.id),
       };

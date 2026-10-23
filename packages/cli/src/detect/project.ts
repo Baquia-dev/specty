@@ -129,6 +129,35 @@ export function commandsFor(stack: Stack): Commands {
   }
 }
 
+/** Install commands by tool, for stacks whose builds do not fetch dependencies on their own. */
+const SETUP: Readonly<Record<string, string>> = {
+  pnpm: "pnpm install --prefer-offline",
+  npm: "npm install",
+  yarn: "yarn install",
+  bun: "bun install",
+  flutter: "flutter pub get",
+  dart: "dart pub get",
+  uv: "uv sync",
+  poetry: "poetry install",
+  pdm: "pdm install",
+  pipenv: "pipenv install --dev",
+  composer: "composer install",
+};
+
+/** What prepares a new worktree of this stack (its dependencies), when it needs anything. */
+export function setupCommand(stack: Stack): string | undefined {
+  switch (stack.language) {
+    case "ruby":
+      return "bundle install";
+    case "elixir":
+      return "mix deps.get";
+    case "go":
+      return "go mod download";
+    default:
+      return stack.tool === undefined ? undefined : SETUP[stack.tool];
+  }
+}
+
 /** verify.default and verify.full for config.yaml. */
 export function verifyCommands(commands: Commands): {
   readonly default?: string;

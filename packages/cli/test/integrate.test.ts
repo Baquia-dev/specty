@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename, dirname, join } from "node:path";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import {
@@ -7,48 +7,20 @@ import {
   CHANGE,
   CONFIG,
   cli,
+  APP as FILES,
   git,
+  inWorktree,
   person,
+  quickInWorktree,
   read,
-  SPEC,
-  SPEC_PATH,
+  stateIn,
   tempRepo,
+  toClosing,
   tryGit,
   writeFiles,
 } from "./support";
 
-const FILES = {
-  "src/app.ts": "export const greet = () => 'hola';\n",
-  ".specty/config.yaml": CONFIG(),
-};
 const BRANCH = `specty/${CHANGE}`;
-
-/** Where `new --worktree` puts the change of `root`. */
-const folderOf = (root: string) => join(dirname(root), `${basename(root)}.worktrees`, CHANGE);
-
-/** A repository whose change lives in a worktree of its own. */
-async function inWorktree(files: Readonly<Record<string, string>> = FILES) {
-  const root = await tempRepo(files);
-  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
-  return { root, folder: folderOf(root) };
-}
-
-/** Takes the change in `folder` from its spec to a closing waiting for the person. */
-async function toClosing(folder: string): Promise<void> {
-  await writeFiles(folder, { [SPEC_PATH]: SPEC });
-  expect((await cli(folder, ["propose"])).code).toBe(0);
-  const approved = await cli(folder, ["approve"], { terminal: person({ choose: ["confirm"] }) });
-  expect(approved.code).toBe(0);
-  await cli(folder, ["next"]);
-  await writeFiles(folder, { "src/app.ts": "1\n" });
-  await cli(folder, ["task", "done", "T1", "--summary", "Uno"]);
-  await writeFiles(folder, { "src/app.ts": "2\n" });
-  await cli(folder, ["task", "done", "T2", "--summary", "Dos"]);
-  await cli(folder, ["accept"], { terminal: person() });
-  const closing = "\n## Cierre\n\n### Resumen\n\nSaludo listo.\n";
-  await writeFiles(folder, { [SPEC_PATH]: `${await read(folder, SPEC_PATH)}${closing}` });
-  expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
-}
 
 describe("closing incorporates the change into the main branch", () => {
   it("fast-forwards main where it is checked out and removes the change's worktree (AC1, AC5)", async () => {
@@ -100,7 +72,7 @@ describe("closing incorporates the change into the main branch", () => {
     expect(git(root, "status", "--porcelain")).toBe("");
   });
 
-  it("leaves everything as it was when main conflicts with the change (AC3)", async () => {
+  it("leaves a merge with conflicts in the change's folder for the agent", async () => {
     const { root, folder } = await inWorktree();
     await toClosing(folder);
     const tip = git(folder, "rev-parse", "HEAD");
@@ -110,23 +82,47 @@ describe("closing incorporates the change into the main branch", () => {
     const closed = await cli(folder, ["close"], { terminal: person() });
     expect(closed.code).toBe(2);
     expect(closed.out).toContain(`SPECTY · ${CHANGE} · closing`);
-    expect(closed.out).toContain("No se cerró y nada cambió.\nmain choca con este cambio.");
-    expect(closed.out).toContain("CONFLICTOS:\n  src/app.ts");
     expect(closed.out).toContain(
-      "SIGUIENTE: incorpora main a mano en esta carpeta (`git merge main`, resuelve y haz el commit) y vuelve a ejecutar `specty close`.",
+      "No se cerró: el merge queda en esta carpeta para que lo resuelva el agente.\nmain choca con este cambio.",
     );
-    expect(tryGit(folder, "rev-parse", "-q", "--verify", "MERGE_HEAD").status).not.toBe(0);
+    expect(closed.out).toContain("CONFLICTOS:\n  src/app.ts");
+    const ask =
+      "SIGUIENTE: dile a tu agente «continúa» (ejecutará `specty next`); cuando termine, vuelve a ejecutar `specty close`.";
+    expect(closed.out).toContain(ask);
+    expect(tryGit(folder, "rev-parse", "-q", "--verify", "MERGE_HEAD").status).toBe(0);
+    expect(await read(folder, "src/app.ts")).toContain("<<<<<<<");
     expect(git(folder, "rev-parse", "HEAD")).toBe(tip);
     expect(git(root, "rev-parse", "main")).toBe(main);
-    expect(await read(folder, "src/app.ts")).toBe("2\n");
-    expect((await cli(folder, ["next"])).out).toContain(`SPECTY · ${CHANGE} · closing`);
+    expect(await stateIn(folder)).toMatchObject({
+      phase: "closing",
+      integration: {
+        target: "main",
+        commit: main,
+        reason: "conflicts",
+        conflicts: ["src/app.ts"],
+        paths: ["src/app.ts"],
+      },
+    });
+    // While the agent resolves it, closing waits (AC7).
+    const waiting = await cli(folder, ["close"], { terminal: person() });
+    expect(waiting.code).toBe(2);
+    expect(waiting.out).toContain(
+      "El agente aún resuelve la incorporación de main en esta carpeta.",
+    );
+    expect(waiting.out).toContain(ask);
+    // A merge someone aborted is forgotten and the incorporation starts over.
+    git(folder, "merge", "--abort");
+    const again = await cli(folder, ["close"], { terminal: person() });
+    expect(again.out).toContain("CONFLICTOS:\n  src/app.ts");
+    expect(await read(folder, `.specty/changes/${CHANGE}/audit.jsonl`)).toContain(
+      '"event":"integration.abandoned"',
+    );
   });
 
-  it("leaves everything as it was when the verification fails after merging main (AC4)", async () => {
+  it("leaves a merge whose verification fails for the agent", async () => {
     const config = `${CONFIG()}  full: "echo roto && exit 1"\n`;
     const { root, folder } = await inWorktree({ ...FILES, ".specty/config.yaml": config });
     await toClosing(folder);
-    const tip = git(folder, "rev-parse", "HEAD");
     await writeFiles(root, { "src/other.ts": "export const other = 1;\n" });
     git(root, "add", "-A");
     git(root, "commit", "-q", "-m", "otro trabajo en main");
@@ -134,10 +130,12 @@ describe("closing incorporates the change into the main branch", () => {
     expect(closed.code).toBe(2);
     expect(closed.out).toContain("Con main incorporado, `echo roto && exit 1` falla.");
     expect(closed.out).toContain("SALIDA DE LA VERIFICACIÓN:\n  roto");
-    expect(closed.out).toContain("SIGUIENTE: incorpora main a mano en esta carpeta");
-    expect(tryGit(folder, "rev-parse", "-q", "--verify", "MERGE_HEAD").status).not.toBe(0);
-    expect(git(folder, "rev-parse", "HEAD")).toBe(tip);
-    expect(await exists(join(folder, "src/other.ts"))).toBe(false);
+    expect(closed.out).toContain("SIGUIENTE: dile a tu agente «continúa»");
+    expect(tryGit(folder, "rev-parse", "-q", "--verify", "MERGE_HEAD").status).toBe(0);
+    expect(await exists(join(folder, "src/other.ts"))).toBe(true);
+    expect(await stateIn(folder)).toMatchObject({
+      integration: { reason: "verify", conflicts: [], paths: ["src/app.ts", "src/other.ts"] },
+    });
   });
 
   it("refuses before touching anything when main's folder has uncommitted changes (AC6)", async () => {
@@ -178,21 +176,8 @@ describe("closing incorporates the change into the main branch", () => {
 
   it("incorporates a quick change on acceptance, and keeps it in acceptance on a conflict (AC8)", async () => {
     const root = await tempRepo({ ...FILES, "src/button.ts": "Sing in\n" });
-    /** A quick change in its own worktree that writes `text` to the button, done and in acceptance. */
-    const quick = async (title: string, slug: string, text: string) => {
-      expect((await cli(root, ["new", "--worktree", "--kind", "quick", title])).code).toBe(0);
-      const id = `${CHANGE.slice(0, 8)}-${slug}`;
-      const folder = join(dirname(root), `${basename(root)}.worktrees`, id);
-      await writeFiles(folder, {
-        [`.specty/changes/${id}/spec.md`]: `---\nkind: quick\n---\n\n# ${title}\n\n## Objetivo\n\nDice «Sing in».\n\n## Archivos\n\n- modificar src/button.ts — texto\n\n## Tareas\n\n- [ ] T1: Corregir texto\n  - files: src/button.ts\n  - type: fix\n`,
-      });
-      await cli(folder, ["propose"]);
-      await cli(folder, ["approve"], { terminal: person() });
-      await cli(folder, ["next"]);
-      await writeFiles(folder, { "src/button.ts": text });
-      await cli(folder, ["task", "done", "T1", "--summary", "Texto corregido"]);
-      return { id, folder };
-    };
+    const quick = (title: string, slug: string, text: string) =>
+      quickInWorktree(root, title, slug, text);
     const first = await quick("Corregir botón", "corregir-boton", "Sign in\n");
     const accepted = await cli(first.folder, ["accept"], { terminal: person() });
     expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
@@ -205,12 +190,17 @@ describe("closing incorporates the change into the main branch", () => {
     git(root, "commit", "-q", "-am", "main cambia el botón");
     const refused = await cli(second.folder, ["accept"], { terminal: person() });
     expect(refused.code).toBe(2);
-    expect(refused.out).toContain("No se aceptó y nada cambió.");
-    expect(refused.out).toContain("CONFLICTOS:\n  src/button.ts");
-    expect(refused.out).toContain("y vuelve a ejecutar `specty accept`.");
-    expect((await cli(second.folder, ["next"])).out).toContain(
-      `SPECTY · ${second.id} · acceptance`,
+    expect(refused.out).toContain(
+      "No se aceptó: el merge queda en esta carpeta para que lo resuelva el agente.",
     );
+    expect(refused.out).toContain("CONFLICTOS:\n  src/button.ts");
+    expect(refused.out).toContain("cuando termine, vuelve a ejecutar `specty accept`.");
+    expect(await stateIn(second.folder, second.id)).toMatchObject({
+      phase: "acceptance",
+      integration: { reason: "conflicts", conflicts: ["src/button.ts"] },
+    });
+    const waiting = await cli(second.folder, ["accept"], { terminal: person() });
+    expect(waiting.out).toContain("El agente aún resuelve la incorporación de main");
   });
 
   it("closes as before in team mode and without a main branch (AC9)", async () => {

@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "id": "20261023-el-agente-resuelve-la-incorporacion",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261023-el-agente-resuelve-la-incorporacion",
+  "baseCommit": "9e08ae019b342fe4b96f2b41e6434921d8c42d5c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2b7f27bf117bfca7fd8e8634c0453fc33a0727c7a670f3f23ffa9c564975ce93",
+    "at": "2026-10-23T16:32:21.526Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4f4e954af29450bc87625d39de25c6ac06ef68a361d798da95f186da09d10c39",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1db571a6f8bc53cc3bca3488b8ba3f585761144e99638b269aa298601bf4576d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2e64ee9952540d6c3d171f7331ef703010bd5465a5e5ec702473e8fddeb421ad",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:53d3cf30c716d020cc865f27ae4cd1481967a0e29229bb65df309ce86c420e5f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:915245a9f0ebd7d5d55a1e0d3023392117533f53b9035cd89897f08f3f8a5a1c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6f75d4e14a5409bfa5c976fd46a275e5e23b439d",
+      "attempts": 1,
+      "startedAt": "2026-10-23T16:32:35.361Z",
+      "doneAt": "2026-10-23T16:33:36.689Z",
+      "summary": "landChange, withIntegration y el avance de la rama pasan a flow/land.ts; integrate.ts exporta contains y reasonOf y queda en 202 líneas. Sin cambios de comportamiento",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "54b401c95f95f015261491ffca1ec899f29fa6ba",
+      "attempts": 1,
+      "startedAt": "2026-10-23T16:33:36.957Z",
+      "doneAt": "2026-10-23T16:38:34.255Z",
+      "summary": "Con conflictos o la verificación en rojo al cerrar (o al aceptar un quick) el merge queda en curso y state.json registra integration (destino, commit, motivo, conflictos y archivos tocables: lo que cambió cada lado desde la base, sin .specty); la salida pide decirle al agente «continúa». close y accept esperan mientras el merge sigue en curso y, si alguien lo abortó, descartan la incorporación (integration.abandoned) y la reintentan. pendingIntegration vive en commands/integrate.ts (ampliación aprobada por estar en Archivos); ayudantes de test en support.ts",
+      "scopeExtra": [
+        "packages/cli/src/commands/integrate.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b90b00d539b25b7259206c2f7d0f413a9ef881df",
+      "attempts": 1,
+      "startedAt": "2026-10-23T16:38:34.555Z",
+      "doneAt": "2026-10-23T16:39:31.516Z",
+      "summary": "Con una incorporación pendiente, el guard recibe sus archivos (GuardChange.integration), next muestra la tarjeta de core (ChangeView.integration) y status dice que espera al agente; test/resolve.test.ts lo comprueba de punta a punta con el hook de Claude Code",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "a43c78e129e685c0736fc0c0a24bcd070944cc3d",
+      "attempts": 1,
+      "startedAt": "2026-10-23T16:39:31.848Z",
+      "doneAt": "2026-10-23T16:41:38.495Z",
+      "summary": "specty integrate (agente): con el merge en curso comprueba que no queden marcadores en los archivos en conflicto, que lo cambiado esté dentro de la incorporación y que la verificación pase; entonces hace el commit de merge (sin .specty/) con recibo, marca integration.resolved y pide al usuario volver a ejecutar close o accept. close muestra antes de confirmar el merge del agente y lo que resolvió. Pruebas de punta a punta en test/resolve.test.ts",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "efa4fcc2d0e1787a2d9efcfb9036ad43a17f5d43",
+      "attempts": 2,
+      "startedAt": "2026-10-23T16:41:38.757Z",
+      "doneAt": "2026-10-23T16:44:03.425Z",
+      "summary": "ARCHITECTURE §6: specty integrate; §9: el merge con conflictos o en rojo queda para el agente (estado, guard, integrate, espera de close y accept, merge abortado, nota antes de confirmar) y el reintento de un cambio cerrado sigue a mano; formats.md §4: eventos integration.started, integration.resolved e integration.abandoned",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 8,
+    "T": 5,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-23T16:51:09.428Z"
+}

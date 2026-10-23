@@ -18,6 +18,7 @@ import { approve } from "./commands/approve";
 import { doctor } from "./commands/doctor";
 import { cancel, close } from "./commands/finish";
 import { init } from "./commands/init";
+import { integrate } from "./commands/integrate";
 import { newChange } from "./commands/new";
 import { next } from "./commands/next";
 import { propose } from "./commands/propose";
@@ -174,6 +175,10 @@ export async function runCli(
     .action((paths: string[], options: { task?: string; reason: string }) =>
       run((session) => scopeAdd(session, paths, options.reason, options.task))(),
     );
+  program
+    .command("integrate")
+    .description("finish the merge of the main branch a closing left here")
+    .action(run(integrate));
   program
     .command("adjust")
     .description("record the user's adjustment request")

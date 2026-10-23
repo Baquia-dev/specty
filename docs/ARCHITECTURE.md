@@ -109,11 +109,12 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | Comando | Fase | Efecto |
 | --- | --- | --- |
 | `specty next` | Todas | Dice qué toca ahora. En `implementing` activa la siguiente tarea y devuelve su tarjeta; en el resto es de solo lectura |
-| `specty new "<título>" [--kind] [--follows <id>] [--epic <id> --slice C1] [--worktree [--from <rama>]]` | Sin cambio activo; con `--worktree`, siempre | Crea el cambio, la rama y el esqueleto de la spec. Con `--worktree`, en una carpeta nueva (§9) |
+| `specty new "<título>" [--kind] [--follows <id>] [--epic <id> --slice C1] [--from <rama>]` | Siempre (sin worktrees: sin cambio activo) | Crea el cambio, la rama y el esqueleto de la spec en una worktree nueva y preparada (§9). Con `git.worktrees: false`, en la carpeta actual, salvo con `--worktree` |
 | `specty propose` | draft, review, adjusting, closing | Valida la spec; calcula tamaño, delta y esfuerzo recomendado; la envía a revisión |
 | `specty task done <T> --summary "<texto>"` | implementing | Comprueba el alcance, ejecuta `verify`, hace el commit y avanza |
 | `specty scope add <ruta…> --task <T> --reason "<texto>"` | implementing | Pide ampliar el alcance; se aprueba sola si la política lo permite |
 | `specty adjust "<petición literal>"` | acceptance | Registra la petición y devuelve el protocolo de clasificación |
+| `specty integrate` | Con una incorporación pendiente | Termina el merge de la rama principal que dejó el cierre: sin marcadores, dentro de sus archivos y con la verificación en verde, hace el commit de merge (§9) |
 | `specty retro [--into <id>]` | Cualquiera | Devuelve el protocolo para documentar cambios ya hechos |
 
 Comandos para la persona: `init`, `ui`, `status`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor` y `ci`. También `approve [--scope <S>]`, `reject --scope <S>`, `accept`, `close` y `cancel`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
@@ -165,22 +166,29 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 
 ## 9. Git
 
-**Ramas.** Por defecto, cada cambio vive en `specty/<id>` (o `spike/<id>`), creada desde la rama actual al ejecutar `new`. El cambio activo es el ligado a la rama actual. Con `git.branchPerChange: false`, el puntero vive en `.git/specty/active`, en local. Las ramas permiten trabajar cambios en paralelo con `git worktree`, y por eso no existe un archivo de estado global.
+**Ramas.** Por defecto, cada cambio vive en `specty/<id>` (o `spike/<id>`). El cambio activo es el ligado a la rama de la carpeta. Con `git.branchPerChange: false`, el puntero vive en `.git/specty/active`, en local. Las ramas permiten trabajar cambios en paralelo con `git worktree`, y por eso no existe un archivo de estado global.
 
-**Cambios en paralelo.** Una carpeta tiene una sola rama, así que trabaja un solo cambio. `specty new --worktree "<título>"` crea el cambio en una worktree nueva, con su rama y su carpeta, y la carpeta actual sigue como estaba:
+**Cambios en paralelo.** Una carpeta tiene una sola rama, así que trabaja un solo cambio. Por eso `specty new "<título>"` crea cada cambio en una worktree nueva, con su rama y su carpeta, y nadie trabaja en la carpeta principal. Con `git.worktrees: false`, `new` crea la rama en la carpeta actual, desde su rama, como antes, y `--worktree` pide la worktree para un cambio. En una worktree nueva:
 
 - **Carpeta:** `<carpeta principal>.worktrees/<id>`, fuera del repositorio, para que las herramientas y los tests de la otra carpeta no la vean.
 - **Base:** `--from <rama>` o, por defecto, la rama principal: la de `origin/HEAD` y, sin remoto, la primera que exista de `init.defaultBranch`, `main` y `master`. Nunca la rama actual, porque un cambio en paralelo no debe heredar el trabajo sin fusionar de otro.
 - **Lo que no mira:** el cambio en curso y el código sin spec de la carpeta actual, porque no los toca.
 - **Hooks:** copia los archivos de hooks de agente que git no sigue (`.claude/settings.local.json`…). Los versionados llegan con la rama; los hooks de git y `.git/info/exclude` se comparten entre worktrees, y el estado local de `.git/specty/` es de cada una.
-- **Dependencias:** se instalan a mano en la carpeta nueva, porque dependen del stack.
+- **Preparación:** ejecuta allí `git.setup` o, sin esa clave, el comando de instalación del stack detectado (formats.md §6), y la salida lo nombra. Si falla, el cambio existe igual, y la salida muestra la cola y pide ejecutarlo allí.
+- **El agente sigue allí:** el SIGUIENTE de `new` le pide cambiar a esa carpeta la de su sesión, o abrir allí un agente; el bloque de flujo de AGENTS.md lo dice también. El guard le impide escribir en otra worktree (§10).
 
 Las worktrees que otras herramientas crean dentro del repositorio (Claude Code usa `.claude/worktrees/`) no cuentan como código sin spec ni entran en los commits de Specty.
 
 **Incorporación.** Al cerrar un cambio, o al aceptar uno quick, Specty lo lleva a la rama principal (la misma que usa `new --worktree` como base) en ese mismo comando. La rama principal solo avanza por fast-forward hasta código verificado, así que nunca recibe un conflicto: lo resuelve el cambio que llega después, en su rama y su carpeta.
 
 1. Si la carpeta donde está la rama principal tiene cambios sin commit en archivos con seguimiento, el comando se niega antes de tocar nada.
-2. Si la rama principal avanzó desde que empezó el cambio, se fusiona en la rama del cambio, en su carpeta (`git merge --no-ff --no-commit`), y se ejecuta `verify.full` (o `verify.default`). Solo con verde se hace el commit de merge, con recibo y `Specty-Change`. Con conflictos o en rojo, el merge se aborta, el cambio sigue en su fase y la salida lista los conflictos o la cola de la verificación; hasta que el agente pueda resolverlos, la persona incorpora la principal a mano en esa carpeta y repite el comando.
+2. Si la rama principal avanzó desde que empezó el cambio, se fusiona en la rama del cambio, en su carpeta (`git merge --no-ff --no-commit`), y se ejecuta `verify.full` (o `verify.default`). Solo con verde se hace el commit de merge, con recibo y `Specty-Change`. Con conflictos o en rojo, el comando no cierra y el merge queda en curso en la carpeta del cambio, para el agente:
+   - `state.json` registra la incorporación pendiente (formats.md §3), con los archivos que cambió cada lado desde su base común. El guard solo deja tocar esos archivos (§4), y `specty next` le muestra al agente qué resolver.
+   - El agente la termina con `specty integrate`, que exige que no queden marcadores de conflicto, que lo cambiado esté dentro de esos archivos y que la verificación pase. Entonces hace el commit de merge, que deja fuera `.specty/`, y marca la incorporación como resuelta.
+   - Mientras tanto, `close` y `accept` piden decirle al agente «continúa». Si alguien aborta el merge, la incorporación pendiente se descarta y el comando la intenta de nuevo.
+   - La persona repite el comando, y antes de confirmar ve el merge del agente y lo que resolvió.
+
+   El reintento de un cambio ya cerrado (paso 4) aborta el merge en lugar de dejarlo para el agente; la persona incorpora la principal a mano en esa carpeta y repite el comando.
 3. Se archiva el cambio como siempre.
 4. La rama principal avanza por fast-forward: con `git merge --ff-only` en la carpeta donde está, o con `git update-ref` si no está en ninguna. Si falla (otra sesión la movió entre medias), el cambio queda cerrado y `specty close` reintenta solo la incorporación.
 5. La worktree del cambio se borra con `git worktree remove`, sin `--force`, y la rama queda; si el cambio vivía en la carpeta principal, esa carpeta vuelve a la rama principal.

@@ -13,23 +13,32 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState } from "../flow/active";
 import { archive, commitArchive } from "../flow/finish";
-import { absorbTarget, integrationOf, landChange, withIntegration } from "../flow/integrate";
+import { absorbTarget, integrationOf } from "../flow/integrate";
+import { landChange, withIntegration } from "../flow/land";
 import { changeView } from "../flow/views";
 import { execute, tail } from "../io/exec";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { humanChange, postponed } from "./human";
+import { pendingIntegration } from "./integrate";
 
 /** `specty accept`: a person accepts the result; quick changes close right away. */
 export async function accept(session: Session): Promise<Output> {
   const guard = await humanChange(session, "accept");
   if (guard.kind === "output") return guard.output;
-  const { change } = guard;
   const t = translator(session.lang);
+  if (guard.change.state.phase !== "acceptance")
+    return nothingPendingCard(
+      guard.change.state.id,
+      guard.change.state.phase,
+      "accept",
+      session.cards,
+    );
+  const pending = await pendingIntegration(session, guard.change, "accept");
+  if (pending.kind === "wait") return pending.output;
+  const { change } = pending;
   const { state } = change;
-  if (state.phase !== "acceptance")
-    return nothingPendingCard(state.id, state.phase, "accept", session.cards);
   const { terminal } = session.environment;
   const view = await changeView(session, change);
   terminal.note(
@@ -127,7 +136,7 @@ async function closeQuick(
   // As when closing: the main branch comes in first, and a refusal leaves it in acceptance.
   const plan = await integrationOf(session, change.state);
   const absorbed =
-    plan === undefined ? undefined : await absorbTarget(session, plan, change.state, "accept");
+    plan === undefined ? undefined : await absorbTarget(session, plan, change, "accept");
   if (absorbed?.ok === false) return absorbed.output;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
   const closing = `### ${t("Resumen", "Summary")}\n\n${summaries.join("\n")}`;

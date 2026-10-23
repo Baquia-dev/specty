@@ -9,6 +9,7 @@ import {
   type GuardChange,
   type GuardDecision,
   isGoverned,
+  isIntegrating,
   parseSpec,
   shellChanges,
 } from "@baquia-dev/specty-core";
@@ -226,6 +227,9 @@ async function guardContext(session: Session) {
     specPath: session.paths.relative(active.files.spec),
     ...(taskEntry !== undefined
       ? { task: { id: taskEntry[0], files, extras: taskEntry[1].scopeExtra } }
+      : {}),
+    ...(state.integration !== undefined && isIntegrating(state)
+      ? { integration: { target: state.integration.target, paths: state.integration.paths } }
       : {}),
   };
   return { ...base, change };

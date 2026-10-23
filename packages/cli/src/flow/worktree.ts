@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { copyFile, mkdir } from "node:fs/promises";
 import { basename, dirname, isAbsolute, join, relative, sep } from "node:path";
-import type { ForeignPath } from "@baquia-dev/specty-core";
+import { type ForeignPath, translator } from "@baquia-dev/specty-core";
+import { setupCommand } from "../detect/project";
+import { detectStacks } from "../detect/stack";
 import { AGENT_HOOK_FILES } from "../install/agents";
+import { execute, tail } from "../io/exec";
 import { exists } from "../io/files";
 import { type Git, resolved, type Worktree } from "../io/git";
+import type { Session } from "../session";
 
 export interface ParallelBase {
   /** What the person named, or the branch Specty chose. */
@@ -101,6 +105,39 @@ function closest(owners: readonly Worktree[], path: string): Worktree | undefine
         best === undefined || owner.folder.length > best.folder.length ? owner : best,
       undefined,
     );
+}
+
+export interface Prepared {
+  readonly command: string;
+  readonly ok: boolean;
+  /** The end of what it printed. */
+  readonly output: readonly string[];
+}
+
+/**
+ * Prepares a new worktree, usually installing its dependencies: runs `git.setup` there or, when it
+ * is unset, the install command of the stack detected in the folder. Undefined when nothing runs.
+ */
+export async function prepareWorktree(
+  session: Session,
+  folder: string,
+): Promise<Prepared | undefined> {
+  const { setup } = session.config.git;
+  if (setup === false) return undefined;
+  const command =
+    setup ?? (await detectStacks(folder)).map(setupCommand).find((found) => found !== undefined);
+  if (command === undefined) return undefined;
+  const t = translator(session.lang);
+  session.environment.io.err(
+    `specty: ${t("preparando la carpeta con", "preparing the folder with")} \`${command}\`…`,
+  );
+  const result = await execute(command, [], {
+    cwd: folder,
+    shell: true,
+    env: session.environment.env,
+    timeoutMs: session.config.verify.timeoutSec * 1000,
+  });
+  return { command, ok: result.code === 0, output: tail(result, 15) };
 }
 
 /**

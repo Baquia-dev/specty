@@ -4,7 +4,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
-import { commandsFor, verifyCommands } from "../src/detect/project";
+import { commandsFor, setupCommand, verifyCommands } from "../src/detect/project";
+import type { Stack } from "../src/detect/stack";
 import { upsertShellBlock } from "../src/install/git-hooks";
 import { exists } from "../src/io/files";
 import { parseNameStatus } from "../src/io/git";
@@ -108,6 +109,41 @@ describe("detection and helpers", () => {
     expect(
       commandsFor({ language: "dart", frameworks: ["flutter"], tool: "flutter", scripts: {} }).lint,
     ).toBe("flutter analyze");
+  });
+
+  it("knows how to prepare a new worktree of each stack", () => {
+    const of = (language: Stack["language"], tool?: string) =>
+      setupCommand({
+        language,
+        frameworks: [],
+        scripts: {},
+        ...(tool !== undefined ? { tool } : {}),
+      });
+    expect(of("typescript", "pnpm")).toBe("pnpm install --prefer-offline");
+    expect(of("javascript", "npm")).toBe("npm install");
+    expect(of("typescript", "yarn")).toBe("yarn install");
+    expect(of("typescript", "bun")).toBe("bun install");
+    expect(of("dart", "flutter")).toBe("flutter pub get");
+    expect(of("dart", "dart")).toBe("dart pub get");
+    expect(of("python", "uv")).toBe("uv sync");
+    expect(of("python", "poetry")).toBe("poetry install");
+    expect(of("python", "pdm")).toBe("pdm install");
+    expect(of("python", "pipenv")).toBe("pipenv install --dev");
+    expect(of("php", "composer")).toBe("composer install");
+    expect(of("ruby")).toBe("bundle install");
+    expect(of("elixir")).toBe("mix deps.get");
+    expect(of("go")).toBe("go mod download");
+    for (const [language, tool] of [
+      ["python", "pip"],
+      ["rust", undefined],
+      ["java", "maven"],
+      ["kotlin", "gradlew"],
+      ["csharp", "dotnet"],
+      ["swift", undefined],
+      ["cpp", undefined],
+    ] as const) {
+      expect(of(language, tool), language).toBeUndefined();
+    }
   });
 
   it("parses git name-status output", () => {

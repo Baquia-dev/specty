@@ -235,6 +235,9 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | hash del índice, modo (`agent` o `minimal`) |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |
+| `integration.started` | incorporar la rama principal al cerrar dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
+| `integration.resolved` | `specty integrate` hizo el commit de merge: commit |
+| `integration.abandoned` | el merge ya no estaba en curso y la incorporación pendiente se descartó: rama destino |
 
 ```jsonl
 {"ts":"2026-10-20T14:40:03Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:c09d…","size":"M"}}
@@ -289,6 +292,8 @@ retro:
   mode: agent                     # agent | minimal
 git:
   branchPerChange: true
+  worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange)
+  setup: "pnpm install --prefer-offline"  # prepara cada worktree nueva; false: nada; sin la clave: el comando del stack
 team:                             # solo con mode: team
   approvers: []
   requirePrReview: true
@@ -300,6 +305,15 @@ ui:
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
 
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
+
+`git.worktrees` (por defecto `true`) hace que `specty new` cree cada cambio en su propia worktree; con `false`, `new` cambia la rama de la carpeta actual (ARCHITECTURE §9). `git.setup` es el comando que prepara cada worktree nueva, normalmente instalando las dependencias. Sin la clave, Specty usa el del stack que detecta en la carpeta:
+
+- pnpm: `pnpm install --prefer-offline`; npm: `npm install`; yarn: `yarn install`; bun: `bun install`.
+- Flutter: `flutter pub get`; Dart: `dart pub get`.
+- uv: `uv sync`; Poetry: `poetry install`; PDM: `pdm install`; Pipenv: `pipenv install --dev`.
+- Bundler: `bundle install`; Composer: `composer install`; Mix: `mix deps.get`; Go: `go mod download`.
+
+Los demás stacks no lo necesitan, porque su build trae las dependencias. Con `false`, no se ejecuta nada.
 
 ## 7. Trailers de commit
 

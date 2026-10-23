@@ -13,7 +13,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState, isFinished, resolveActive } from "../flow/active";
 import { changeView } from "../flow/views";
-import { addWorktree, parallelBase, worktreesHome } from "../flow/worktree";
+import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
 import { exists, writeText } from "../io/files";
 import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
@@ -52,7 +52,10 @@ export async function newChange(session: Session, options: NewOptions): Promise<
       status: "invalid",
     };
   }
-  if (options.from !== undefined && options.worktree !== true) {
+  // Every change gets a worktree of its own unless the repository turned that off.
+  const { git: settings } = session.config;
+  const inWorktree = options.worktree === true || (settings.worktrees && settings.branchPerChange);
+  if (options.from !== undefined && !inWorktree) {
     return {
       ...blockedCard(
         headerOf(),
@@ -65,7 +68,7 @@ export async function newChange(session: Session, options: NewOptions): Promise<
       status: "invalid",
     };
   }
-  if (options.worktree === true) return newInWorktree(session, options, title);
+  if (inWorktree) return newInWorktree(session, options, title);
   const active = await resolveActive(session);
   if (active !== undefined && !isFinished(active.state)) {
     return blockedCard(
@@ -156,7 +159,13 @@ async function newInWorktree(
     baseCommit: base.commit,
     dir: repoPaths(folder).changeDir(id),
   });
+  const prepared = await prepareWorktree(session, folder);
   const from = `${base.name} (${base.commit.slice(0, 7)})`;
+  const failed = prepared?.ok === false ? prepared : undefined;
+  const carryOn = t(
+    `cambia allí la carpeta de trabajo de tu sesión (o abre allí un agente) y ejecuta \`${cards.command} next\`; esta carpeta sigue con su propio trabajo.`,
+    `switch your session's working folder there (or open an agent there) and run \`${cards.command} next\`; this folder carries on with its own work.`,
+  );
   return {
     status: "ok",
     header: headerOf(id, "draft"),
@@ -167,16 +176,35 @@ async function newInWorktree(
             `Cambio creado: ${id} (rama ${branch}) en ${folder}, desde ${from}.`,
             `Change created: ${id} (branch ${branch}) in ${folder}, from ${from}.`,
           ),
+          ...(prepared?.ok === true
+            ? [
+                t(
+                  `Carpeta preparada con \`${prepared.command}\`.`,
+                  `Folder prepared with \`${prepared.command}\`.`,
+                ),
+              ]
+            : []),
         ],
       },
       ...(copied.length > 0
         ? [{ title: t("HOOKS DEL AGENTE COPIADOS", "AGENT HOOKS COPIED"), lines: copied }]
         : []),
+      ...(failed === undefined
+        ? []
+        : [
+            {
+              title: t(`FALLÓ \`${failed.command}\``, `\`${failed.command}\` FAILED`),
+              lines: failed.output,
+            },
+          ]),
     ],
-    next: t(
-      `en ${folder}, instala las dependencias y abre allí un agente que ejecute \`${cards.command} next\`; esta carpeta sigue con su propio trabajo.`,
-      `in ${folder}, install the dependencies and open an agent there that runs \`${cards.command} next\`; this folder carries on with its own work.`,
-    ),
+    next:
+      failed === undefined
+        ? t(`continúa en ${folder}: ${carryOn}`, `carry on in ${folder}: ${carryOn}`)
+        : t(
+            `en ${folder}, ejecuta \`${failed.command}\`; después ${carryOn}`,
+            `in ${folder}, run \`${failed.command}\`; then ${carryOn}`,
+          ),
   };
 }
 

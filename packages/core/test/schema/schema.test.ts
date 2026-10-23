@@ -30,6 +30,8 @@ retro:
   mode: agent
 git:
   branchPerChange: true
+  worktrees: true
+  setup: flutter pub get
 team:
   approvers: []
   requirePrReview: true
@@ -53,6 +55,25 @@ describe("resolveConfig", () => {
       ok: true,
       config: { ...DEFAULT_CONFIG, split: { ...DEFAULT_CONFIG.split, maxTasks: 5 } },
     });
+  });
+
+  it("puts each change in a worktree unless told otherwise, prepared as configured", () => {
+    expect(DEFAULT_CONFIG.git).toEqual({ branchPerChange: true, worktrees: true });
+    const configured = (git: unknown) => {
+      const result = resolveConfig({ version: 1, git });
+      return result.ok ? result.config.git : undefined;
+    };
+    expect(configured({ worktrees: false, setup: false })).toEqual({
+      branchPerChange: true,
+      worktrees: false,
+      setup: false,
+    });
+    expect(configured({ setup: "pnpm install --offline" })).toMatchObject({
+      worktrees: true,
+      setup: "pnpm install --offline",
+    });
+    expect(configured({ setup: "" })).toBeUndefined();
+    expect(configured({ setup: true })).toBeUndefined();
   });
 
   it("reports unknown keys, bad values and inconsistent thresholds", () => {
