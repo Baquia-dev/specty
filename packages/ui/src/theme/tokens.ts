@@ -51,6 +51,25 @@ const COLORS: readonly Token[] = [
   ),
 ];
 
+const DIFF_COLORS: readonly Token[] = [
+  token("--color-diff-added", "color", "Diff: línea añadida", "Diff: added line"),
+  token("--color-diff-added-word", "color", "Diff: palabras añadidas", "Diff: added words"),
+  token(
+    "--color-diff-added-text",
+    "color",
+    "Diff: signo y cuenta de lo añadido",
+    "Diff: sign and count of what was added",
+  ),
+  token("--color-diff-removed", "color", "Diff: línea quitada", "Diff: removed line"),
+  token("--color-diff-removed-word", "color", "Diff: palabras quitadas", "Diff: removed words"),
+  token(
+    "--color-diff-removed-text",
+    "color",
+    "Diff: signo y cuenta de lo quitado",
+    "Diff: sign and count of what was removed",
+  ),
+];
+
 const PHASE_COLORS: readonly Token[] = PHASES.flatMap((phase) => [
   token(
     `--color-phase-${phase}`,
@@ -107,7 +126,13 @@ const FOUNDATIONS: readonly Token[] = [
   ),
 ];
 
-export const TOKENS: readonly Token[] = [...COLORS, ...PHASE_COLORS, ...TYPOGRAPHY, ...FOUNDATIONS];
+export const TOKENS: readonly Token[] = [
+  ...COLORS,
+  ...DIFF_COLORS,
+  ...PHASE_COLORS,
+  ...TYPOGRAPHY,
+  ...FOUNDATIONS,
+];
 
 export function tokensOf(group: TokenGroup): readonly Token[] {
   return TOKENS.filter((item) => item.group === group);
@@ -135,6 +160,15 @@ export const CONTRAST_PAIRS: readonly ContrastPair[] = [
     bg: `--color-phase-${phase}-bg` as const,
     min: 4.5,
   })),
+  // Diff lines carry the text, the line numbers and the sign; the words that changed, the text.
+  ...(["added", "removed"] as const).flatMap((side) => [
+    { fg: "--color-text", bg: `--color-diff-${side}`, min: 4.5 } as const,
+    { fg: "--color-text", bg: `--color-diff-${side}-word`, min: 4.5 } as const,
+    { fg: "--color-text-muted", bg: `--color-diff-${side}`, min: 4.5 } as const,
+    ...(["--color-bg", "--color-surface", `--color-diff-${side}`] as const).map(
+      (bg) => ({ fg: `--color-diff-${side}-text`, bg, min: 4.5 }) as const,
+    ),
+  ]),
 ];
 
 /** WCAG contrast ratio between two `#rrggbb` colors. */

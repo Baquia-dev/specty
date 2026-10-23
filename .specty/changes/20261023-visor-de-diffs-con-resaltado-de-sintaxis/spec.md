@@ -57,7 +57,7 @@ El sistema de diseño gana un visor de diffs, con su sección en el catálogo. M
 
 ## Tareas
 
-- [ ] T1: Los fondos del diff
+- [x] T1: Los fondos del diff
   - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme/tokens.test.ts

@@ -6,6 +6,13 @@
   "branch": "specty/20261023-visor-de-diffs-con-resaltado-de-sintaxis",
   "baseCommit": "014031ed20161460edbb7321b75ce3670cc7660e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d5586bf7a94b47655242ecc8a4e9d852b9045cd9b4cfe32ad0a67471620a37c4",
+    "at": "2026-10-23T07:33:24.746Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -45,7 +52,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9f167802ad97a884ebf30d8dc0b46e19c365f409",
+      "startedAt": "2026-10-23T07:33:32.871Z",
+      "doneAt": "2026-10-23T07:35:22.604Z",
+      "summary": "Fondos del diff en styles.css (claro y oscuro): línea añadida y quitada y sus palabras cambiadas, en hexadecimal opaco sobre la superficie. Además, --color-diff-added-text y --color-diff-removed-text para el signo y las cuentas +N −N. En el inventario con pares de contraste ≥4,5: texto sobre los cuatro fondos, texto secundario sobre las líneas, y los colores de signo sobre la página, la superficie y su línea."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -54,12 +71,5 @@
     "A": 7,
     "AC": 6,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d5586bf7a94b47655242ecc8a4e9d852b9045cd9b4cfe32ad0a67471620a37c4",
-    "at": "2026-10-23T07:33:24.746Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

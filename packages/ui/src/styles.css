@@ -36,6 +36,14 @@
   --color-phase-cancelled: #9b3b3b;
   --color-phase-cancelled-bg: #f8e8e8;
 
+  /* Diff lines: a tint over the surface, stronger on the words that changed; signs and counts. */
+  --color-diff-added: #ecf3ef;
+  --color-diff-added-word: #ccddd2;
+  --color-diff-added-text: #166534;
+  --color-diff-removed: #f7efef;
+  --color-diff-removed-word: #e9d4d4;
+  --color-diff-removed-text: #9b3b3b;
+
   --font-*: initial;
   --font-sans: "Geist Variable", system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
@@ -117,6 +125,13 @@
   --color-phase-done-bg: #2c3a31;
   --color-phase-cancelled: #dfa29a;
   --color-phase-cancelled-bg: #3d2f2c;
+
+  --color-diff-added: #333936;
+  --color-diff-added-word: #48594f;
+  --color-diff-added-text: #8fcaa8;
+  --color-diff-removed: #3b3534;
+  --color-diff-removed-word: #604d4b;
+  --color-diff-removed-text: #dfa29a;
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.35);
