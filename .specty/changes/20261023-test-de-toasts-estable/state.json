@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261023-test-de-toasts-estable",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261023-test-de-toasts-estable",
+  "baseCommit": "d3a82b44cf2e898051801c66614fdd29d9c7a82a",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3eb972c571e684ed946f9ac5af354ee2972d69cffdd1339ef0b1d3465b90eb4e",
+    "at": "2026-10-23T20:06:32.571Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
