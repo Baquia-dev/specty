@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-avisos-de-archivos-compartidos-entre-cambios",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-avisos-de-archivos-compartidos-entre-cambios",
   "baseCommit": "b1c1d8bee9d6bf1d28a46093aede36029e1e0d75",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c8efdaf17260ed5116e6330577c1fcc38ac418bb3720ac1945b098fb278aa02e",
@@ -56,12 +56,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3d671ed65777f0e3ef4c7d03819625bdc1c80753",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:21:39.399Z",
       "doneAt": "2026-10-23T21:23:36.790Z",
-      "summary": "ARCHITECTURE §8: los avisos de archivos compartidos en propose, approve y scope add, qué cuenta y que solo avisan"
+      "summary": "ARCHITECTURE §8: los avisos de archivos compartidos en propose, approve y scope add, qué cuenta y que solo avisan",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,5 +73,6 @@
     "AC": 4,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T21:24:37.599Z"
 }

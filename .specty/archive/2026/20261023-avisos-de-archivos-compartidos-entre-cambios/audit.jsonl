@@ -10,3 +10,6 @@
 {"ts":"2026-10-23T21:21:39.399Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"3d671ed65777f0e3ef4c7d03819625bdc1c80753"}}
 {"ts":"2026-10-23T21:23:36.789Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":48883}}
 {"ts":"2026-10-23T21:23:36.791Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §8: los avisos de archivos compartidos en propose, approve y scope add, qué cuenta y que solo avisan"}}
+{"ts":"2026-10-23T21:24:29.536Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-23T21:24:37.600Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:695dce361a94a513bb3ec6b7f424c11e7ba34677f6745ce898690b0cd150bd3a","size":"M","warnings":0}}
+{"ts":"2026-10-23T21:24:41.583Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -65,3 +65,24 @@ Specty avisa cuando un cambio planea tocar archivos que otro cambio abierto, en 
 ## Riesgos
 
 - R1: Muchas worktrees hacen más lento `propose` — solo se leen la spec y el estado de cada cambio, sin ejecutar nada.
+
+## Cierre
+
+### Resumen
+
+`propose`, `approve` y `scope add` avisan, en un bloque «ARCHIVOS COMPARTIDOS», cuando un archivo gobernado del cambio aparece también en la sección Archivos (las dos rutas de un renombrado), o en las ampliaciones aprobadas, de otro cambio abierto de otra worktree, cada uno leído en su propia carpeta. Las rutas con comodines encajan en los dos sentidos. La documentación no cuenta, ni un cambio ya cerrado o cancelado. `approve` muestra los archivos compartidos en el resumen que la persona ve antes de decidir. `scope add` los muestra tanto si la ampliación se aprueba sola como si queda pendiente. Solo se avisa: la spec sigue siendo válida y las decisiones no cambian.
+
+### Desviaciones
+
+- **`scope add` reutiliza `listed()`** de `flow/shared.ts` para las rutas de la sección Archivos, que antes calculaba por su cuenta.
+- **Las pruebas cancelan un cambio ya aprobado:** cancelar uno que aún no se había aprobado falla (ver Pendientes).
+
+### Decisiones
+
+- **En `propose` se avisa al proponer la spec, no al proponer el cierre.**
+- **La comparación es por archivo:** no se mira qué líneas tocará cada cambio.
+
+### Pendientes
+
+- **Un fallo de `cancel` encontrado al probar:** si el cambio nunca se aprobó, su carpeta nunca entró en git, y al archivar `git add -A -- <carpeta antigua>` falla («pathspec did not match»). Va en un cambio aparte, el siguiente.
+- **Recompilar el CLI de la carpeta principal** cuando esto esté en `main`.
