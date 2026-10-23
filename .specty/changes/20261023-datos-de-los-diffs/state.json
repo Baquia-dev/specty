@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261023-datos-de-los-diffs",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-datos-de-los-diffs",
+  "baseCommit": "138a52bf455f8f9eae81a675923af3135a716d74",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a2fc0be0f5370451b248c5fca9a20ea1ffb807283ec2b3fd604c1ac9bbb67ebb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:42fb9785d4b440e037c756c041ebb0482119b68f59bf4c602e6ac58a38ee5c81",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:47bcb80a909160da48f63d1626b6dd2b523a0cb81ed043fce0d63ae7c7c5908e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:7b37877f1bc57962832f014d588d21a5df461ae462c1c9530b70f0b99ff33da8",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8bc0e05908d276c391c3de2049b614dbfc5fea7d2878ea73bea7557a2f9fd815",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:265e3e720972fd8054d35639179c1ba43a01df3bae01114624aae36d4ba0f3d5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b690d1cf7085c6fc6eed700727e2d9e7451ad24c7d8fb7a90507672b55106635",
+    "at": "2026-10-23T07:01:41.526Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
