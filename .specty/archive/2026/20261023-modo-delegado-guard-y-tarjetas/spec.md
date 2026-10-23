@@ -79,3 +79,36 @@ Primer paso del modo delegado que pidió el usuario: un interruptor con el que l
 
 - R1: Un `SIGUIENTE:` mal elegido haría que el agente actuara por la persona sin delegación, o que se parara teniéndola — cada tarjeta afectada se prueba con y sin `delegated`, y sin él los textos no cambian.
 - R2: Las dos incorporaciones en curso también tocan el guard y las tarjetas, así que puede haber conflictos al cerrar — se resuelven en este cambio al incorporarse (§9), y sacar las acciones de la persona a `guard/human.ts` reduce las líneas en común.
+
+## Cierre
+
+### Resumen
+
+El core ya conoce el modo delegado, aunque todavía nadie puede activarlo. `GuardContext` y `CardContext` tienen un `delegated` opcional. Con él, el guard deja que el agente ejecute `approve`, `accept`, `close`, `cancel` y `reject`, y bloquea siempre `delegate`. Las acciones de la persona viven ahora en `guard/human.ts` (`humanDenial`), y `decide.ts` queda en 279 líneas.
+
+Con la delegación activa, las tarjetas de la spec propuesta, la revisión, la solicitud de alcance, la aceptación y el cierre propuesto o enviado le dicen al agente que ejecute él el comando. La tarjeta de decisión sigue con `specty next`, y la de estado añade el bloque MODO DELEGADO. `delegationWarning` y `delegationCard` dan el texto de la advertencia y la confirmación del interruptor, en español y en inglés.
+
+La línea del bloque de flujo de AGENTS.md menciona el modo delegado. Lo documentan la ADR 0010, ARCHITECTURE §4 y §10, y formats §8.
+
+### Desviaciones
+
+- **Ninguna respecto al plan.** Añadí un test que no estaba previsto: con la delegación, el guard sigue aplicando el resto de reglas de shell, como saltarse los hooks o hacer commits de código.
+
+### Decisiones
+
+- **`delegate` no está en `HUMAN_COMMANDS`:** ese conjunto son las acciones que la persona puede delegar. `delegate` va aparte, en un conjunto privado de `guard/human.ts`, para que ninguna delegación lo abra.
+- **Sin delegación, los textos no cambian:** cada tarjeta comprueba `ctx.delegated === true`, y un test compara la salida con `delegated: false` y sin el campo.
+- **«sigue con `specty next`» en la tarjeta de decisión:** sirve tanto si la lee el agente que actuó por delegación como si la lee la persona.
+- **Los supuestos rechazados no cambian:** con la delegación, una revisión con supuestos rechazados sigue mandando al agente a corregir la spec.
+- **A1–A3 se confirmaron al aprobar:** solo la persona activa el modo, que cubre todas sus acciones y vale para el clon entero.
+
+### Pendientes
+
+- **El interruptor en la CLI**, en el cambio siguiente («Modo delegado: interruptor en la CLI»):
+  - `specty delegate on|off`, solo desde una TTY, con la advertencia y una confirmación;
+  - el interruptor guardado en la carpeta común de git, y `delegated` pasado al guard y a las tarjetas;
+  - `approve`, `reject --scope`, `accept`, `close` y `cancel` sin TTY mientras esté activo: se confirman los supuestos y se ejecuta la verificación completa antes de aceptar;
+  - la marca de delegación en la auditoría y en `approved.channel`;
+  - ARCHITECTURE §6 y formats.
+- **El interruptor en la UI:** cuando la UI tenga su servidor local (§15).
+- **El AGENTS.md de este repositorio:** la línea nueva del bloque de flujo llega al volver a ejecutar `specty init`.

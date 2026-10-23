@@ -10,3 +10,6 @@
 {"ts":"2026-10-23T18:42:59.926Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"38530221c6876808e7965789f32e4bb423b304fe"}}
 {"ts":"2026-10-23T18:45:05.498Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":38353}}
 {"ts":"2026-10-23T18:45:05.500Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"decisionCard sigue con specty next en modo delegado; statusCard añade el bloque MODO DELEGADO; delegationWarning enumera lo que decidirá el agente (también supuestos de impacto alto, rutas sensibles, verificación completa, auditoría, clon y worktrees hasta delegate off) y delegationCard confirma on/off, en es y en; la línea del bloque de flujo de AGENTS.md y formats §8 mencionan el modo delegado."}}
+{"ts":"2026-10-23T18:49:22.653Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T18:50:07.131Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:dba089f3d0a7ef9bb949bdd8ec982998df8081dbd8a7fa171a612a8a06c00861","size":"L","warnings":1}}
+{"ts":"2026-10-23T19:01:40.011Z","actor":"human","event":"change.closed","data":{}}
