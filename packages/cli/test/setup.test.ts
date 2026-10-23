@@ -40,6 +40,31 @@ describe("specty init", () => {
     expect((await cli(root, ["doctor"])).code).toBe(0);
   });
 
+  it("installs the check after each Bash command, and doctor misses it (AC7)", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
+    for (const event of ["PostToolUse", "PostToolUseFailure"]) {
+      expect(settings.hooks[event]).toMatchObject([
+        { matcher: "Bash", hooks: [{ type: "command" }] },
+      ]);
+    }
+    const hooks = {
+      PreToolUse: settings.hooks.PreToolUse,
+      PostToolUseFailure: settings.hooks.PostToolUseFailure,
+    };
+    await writeFiles(root, {
+      ".claude/settings.local.json": JSON.stringify({ ...settings, hooks }),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Claude Code: falta la comprobación tras cada comando de Bash (PostToolUse); ejecuta `specty init`.",
+    );
+    expect((await cli(root, ["init"])).code).toBe(0);
+    expect((await cli(root, ["doctor"])).out).toContain("Claude Code: guard instalado.");
+  });
+
   it("is idempotent and keeps what people wrote", async () => {
     const root = await tempRepo({
       "pubspec.yaml": "name: app\nflutter:\n  uses-material-design: true\n",
