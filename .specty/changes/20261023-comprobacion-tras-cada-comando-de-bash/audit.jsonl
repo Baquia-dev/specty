@@ -1,3 +1,6 @@
 {"ts":"2026-10-23T10:23:35.379Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-comprobacion-tras-cada-comando-de-bash"}}
 {"ts":"2026-10-23T10:24:11.748Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:ff72314e022f0010c889423ef320aef46385a6bfcde2fbe051f8a5be7ba45b0c","size":"L","warnings":0}}
 {"ts":"2026-10-23T10:25:35.011Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:ff72314e022f0010c889423ef320aef46385a6bfcde2fbe051f8a5be7ba45b0c","channel":"tty"}}
+{"ts":"2026-10-23T10:25:47.671Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"c695a083e5e5d7e3b2bfb2d09b7a2ece4ed14e1b"}}
+{"ts":"2026-10-23T10:29:01.172Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/guard","exit":0,"ms":917}}
+{"ts":"2026-10-23T10:29:01.174Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"decideGuard da la regla de cada denegación; guard/after.ts compara las fotos y juzga lo que cambió un comando con las reglas del guard"}}

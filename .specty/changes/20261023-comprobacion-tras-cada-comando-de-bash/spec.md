@@ -58,7 +58,7 @@ El guard ve lo que cambia un comando de Bash, no solo lo que su texto deja adivi
 
 ## Tareas
 
-- [ ] T1: Qué cambió un comando y cómo se juzga
+- [x] T1: Qué cambió un comando y cómo se juzga
   - files: packages/core/src/guard/decide.ts, packages/core/src/guard/after.ts, packages/core/src/index.ts, packages/core/test/guard/after.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard

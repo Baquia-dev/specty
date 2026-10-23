@@ -72,11 +72,19 @@ export {
 } from "./flow/phases";
 export { globBase, isGlob, matchesAny, matchesPattern } from "./glob";
 export {
+  DELETED,
+  decideAfterShell,
+  type ShellChanges,
+  type ShellSnapshot,
+  shellChanges,
+} from "./guard/after";
+export {
   decideGuard,
   type GuardAction,
   type GuardChange,
   type GuardContext,
   type GuardDecision,
+  type GuardRule,
   HUMAN_COMMANDS,
   type ShellFacts,
 } from "./guard/decide";

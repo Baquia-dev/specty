@@ -6,6 +6,13 @@
   "branch": "specty/20261023-comprobacion-tras-cada-comando-de-bash",
   "baseCommit": "b8e3884997f96d39efed5c21d323b6c7b6fbfbd4",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff72314e022f0010c889423ef320aef46385a6bfcde2fbe051f8a5be7ba45b0c",
+    "at": "2026-10-23T10:25:34.990Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -41,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c695a083e5e5d7e3b2bfb2d09b7a2ece4ed14e1b",
+      "startedAt": "2026-10-23T10:25:47.670Z",
+      "doneAt": "2026-10-23T10:29:01.174Z",
+      "summary": "decideGuard da la regla de cada denegación; guard/after.ts compara las fotos y juzga lo que cambió un comando con las reglas del guard"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -51,12 +68,5 @@
     "AC": 7,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ff72314e022f0010c889423ef320aef46385a6bfcde2fbe051f8a5be7ba45b0c",
-    "at": "2026-10-23T10:25:34.990Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
