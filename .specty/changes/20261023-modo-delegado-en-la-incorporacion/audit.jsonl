@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T21:05:58.671Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-modo-delegado-en-la-incorporacion"}}
+{"ts":"2026-10-23T21:07:12.342Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:124d5a0ae5145bdf827a1623a0839cd29510f8765543c99bf96d7c7743401395","size":"M","warnings":0}}
+{"ts":"2026-10-23T21:07:15.938Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:124d5a0ae5145bdf827a1623a0839cd29510f8765543c99bf96d7c7743401395","channel":"delegated","delegated":true}}

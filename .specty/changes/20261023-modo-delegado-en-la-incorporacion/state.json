@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261023-modo-delegado-en-la-incorporacion",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-modo-delegado-en-la-incorporacion",
+  "baseCommit": "a936b866cca758453e66e32c86d9ff1e9dde7052",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c4177be2ceabcb1e88b72550ce9d5a38284678eef0a289bb25e4f6a91d5f7888",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c1c95d6bebb3388cab73489cf30f45bc299cd8082b90b583b5288d26c0978ecb",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:124d5a0ae5145bdf827a1623a0839cd29510f8765543c99bf96d7c7743401395",
+    "at": "2026-10-23T21:07:15.927Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
