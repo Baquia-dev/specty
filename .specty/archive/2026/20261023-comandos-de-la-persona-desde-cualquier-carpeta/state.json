@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-comandos-de-la-persona-desde-cualquier-carpeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-comandos-de-la-persona-desde-cualquier-carpeta",
   "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:369d157748b35368889ab313809058e21fbe5a74d173dc41fea024c4fcb66c9b",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "07382fc1e4423e9154c7304606cda19e0ad1eebb",
+      "attempts": 1,
       "startedAt": "2026-10-23T19:31:25.346Z",
       "doneAt": "2026-10-23T19:33:11.369Z",
-      "summary": "ARCHITECTURE §6: los comandos de la persona aceptan [cambio] y se toman desde cualquier carpeta (orden de elección, qué decisión espera cada cambio, se ejecutan en la worktree del cambio) y status muestra todas las worktrees sin las copias heredadas"
+      "summary": "ARCHITECTURE §6: los comandos de la persona aceptan [cambio] y se toman desde cualquier carpeta (orden de elección, qué decisión espera cada cambio, se ejecutan en la worktree del cambio) y status muestra todas las worktrees sin las copias heredadas",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,5 +82,42 @@
     "AC": 6,
     "T": 3,
     "R": 3
+  },
+  "closingSubmittedAt": "2026-10-23T19:47:19.676Z",
+  "integration": {
+    "target": "main",
+    "commit": "293637c04a9592fe47511fe9876aa611f066ca80",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/program.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/approve.ts",
+      "packages/cli/src/commands/delegate.ts",
+      "packages/cli/src/commands/human.ts",
+      "packages/cli/src/commands/scope-decision.ts",
+      "packages/cli/src/commands/status.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/flow/active.ts",
+      "packages/cli/src/flow/changes.ts",
+      "packages/cli/src/flow/finish.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/src/store/local.ts",
+      "packages/cli/test/anywhere.test.ts",
+      "packages/cli/test/commands.test.ts",
+      "packages/cli/test/delegate.test.ts",
+      "packages/core/src/cards/human.ts",
+      "packages/core/src/schema/state.ts",
+      "packages/core/test/cards.test.ts"
+    ],
+    "at": "2026-10-23T19:49:16.078Z",
+    "resolved": {
+      "commit": "83cddc7",
+      "at": "2026-10-23T19:54:43.568Z"
+    }
   }
 }

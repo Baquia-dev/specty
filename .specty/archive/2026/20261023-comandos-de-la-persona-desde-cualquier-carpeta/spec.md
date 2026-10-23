@@ -78,3 +78,29 @@ kind: standard
 - R1: La persona decide sobre un cambio distinto del que creía — la salida nombra el cambio y su carpeta, todos esos comandos piden confirmación antes de actuar y, con varios candidatos, la terminal pregunta.
 - R2: Abrir una sesión por worktree hace más lento `status` con muchas worktrees — solo lee `state.json` y la spec de cada una, sin ejecutar nada.
 - R3: El modo delegado de la otra sesión también toca los comandos de la persona — si al cerrar choca, el conflicto lo resuelve el agente en la worktree de este cambio, como ahora hace Specty.
+
+## Cierre
+
+### Resumen
+
+`approve`, `reject`, `accept`, `close` y `cancel` funcionan desde cualquier carpeta y aceptan `[cambio]`. `personSession` elige el cambio así: el nombrado; si no, el de la carpeta actual si espera esa decisión; si no, el único que la espera entre todas las worktrees; y si hay varios, el que la persona elige en la terminal (id, fase y título). El comando corre con una sesión abierta en la worktree del cambio y con su configuración, así que `close` incorpora y borra esa carpeta igual que desde dentro. Una nota dice qué cambio es y en qué carpeta está. Si ninguno espera la decisión y la carpeta actual no tiene cambio, lo dice («Ningún cambio espera `accept`»). Los comandos de un agente no se redirigen. `status` lee el cambio de cada worktree en su propia carpeta, muestra la ruta de los que no son el de la carpeta actual y no cuenta las copias que una rama heredó de otra. Dice «espera al agente», y su SIGUIENTE nombra la decisión pendiente aunque esté en otra carpeta. Las pruebas de punta a punta aprueban, eligen entre varios, aceptan y cierran desde la carpeta principal, con worktrees reales.
+
+### Desviaciones
+
+- **`locateChanges` en vez de `openChanges`:** devuelve el cambio de cada worktree en cualquier fase, porque `close` también espera a un cambio ya cerrado que no llegó a su rama destino. `status` filtra los abiertos.
+- **`awaits` es asíncrona:** para ese caso de `close` comprueba si la rama del cambio ya está en su destino.
+- **Sin candidatos, el cambio de la carpeta actual responde como antes:** su tarjeta «No hay nada pendiente de `<acción>` en la fase X» también lleva a `status`. El mensaje nuevo de AC4 sale cuando la carpeta no tiene cambio.
+- **`commands.test.ts` cambia una expectativa:** sin ningún cambio, `accept` ya no dice «No hay un cambio activo». El archivo ya contaba como test implícito de la tarea.
+
+### Decisiones
+
+- **Las opciones del selector siguen el orden de `git worktree list`,** y si la persona no elige ninguna, nada cambia.
+- **La carpeta se muestra relativa a la actual,** en la nota y en `status`.
+- **Una worktree sin `config.yaml` válido se salta,** igual que una desacoplada o en una rama que no es de un cambio.
+- **A1 y A2, confirmados al aprobar:** el orden de elección y que el comando corre en la carpeta del cambio.
+
+### Pendientes
+
+- **Recompilar el CLI de la carpeta principal** cuando esto esté en `main`: entonces `specty approve`, `accept` y `close` ya funcionan sin `cd`.
+- **El modo delegado en la CLI,** que otra sesión está haciendo en su worktree, toca estos mismos comandos. Si choca al cerrar, la incorporación deja el merge para su agente.
+- **El test de toasts de la UI** sigue siendo inestable con la máquina cargada.

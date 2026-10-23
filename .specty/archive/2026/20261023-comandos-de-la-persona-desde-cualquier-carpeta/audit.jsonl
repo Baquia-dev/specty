@@ -10,3 +10,8 @@
 {"ts":"2026-10-23T19:31:25.346Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"07382fc1e4423e9154c7304606cda19e0ad1eebb"}}
 {"ts":"2026-10-23T19:33:11.367Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":43439}}
 {"ts":"2026-10-23T19:33:11.371Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §6: los comandos de la persona aceptan [cambio] y se toman desde cualquier carpeta (orden de elección, qué decisión espera cada cambio, se ejecutan en la worktree del cambio) y status muestra todas las worktrees sin las copias heredadas"}}
+{"ts":"2026-10-23T19:46:49.847Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-23T19:47:19.677Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:bcdfcd147760b0e38a4081f6a3ed31942352a5d0b716d58965c10e27afeb0bf3","size":"M","warnings":0}}
+{"ts":"2026-10-23T19:49:16.079Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"293637c04a9592fe47511fe9876aa611f066ca80","reason":"conflicts","conflicts":["packages/cli/src/program.ts"]}}
+{"ts":"2026-10-23T19:54:43.569Z","actor":"agent","tool":"claude-code","event":"integration.resolved","data":{"commit":"83cddc7"}}
+{"ts":"2026-10-23T19:59:29.543Z","actor":"human","event":"change.closed","data":{}}
