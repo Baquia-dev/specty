@@ -15,3 +15,6 @@
 {"ts":"2026-10-23T19:31:21.875Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"bab522ce2f3216d0bc626262d42ac99e8f211150"}}
 {"ts":"2026-10-23T19:33:39.538Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":47408}}
 {"ts":"2026-10-23T19:33:39.542Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"Actuando el agente, accept ejecuta siempre verify.full y, si falla, no acepta: tarjeta bloqueada que pide specty adjust (con la salida del fallo en stderr). ARCHITECTURE §6 documenta delegate y las acciones delegadas; formats §1 el archivo .git/common/specty/delegated.json, §3 approved.channel delegated y §4 la marca delegated de la auditoría."}}
+{"ts":"2026-10-23T19:47:20.067Z","actor":"human","event":"change.accepted","data":{"revision":3}}
+{"ts":"2026-10-23T19:48:01.142Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":4,"hash":"sha256:e6a45c003011a97aa373f70c4d45603cde3a3d87b89f827bfba4184d0db957fb","size":"L","warnings":1}}
+{"ts":"2026-10-23T19:48:38.031Z","actor":"human","event":"change.closed","data":{}}

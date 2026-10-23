@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-modo-delegado-interruptor-en-la-cli",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-modo-delegado-interruptor-en-la-cli",
   "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:b1616b5910b82c992e3c0699117600ebf4af07622a34b78c1a63fd53bdaae54b",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bab522ce2f3216d0bc626262d42ac99e8f211150",
+      "attempts": 1,
       "startedAt": "2026-10-23T19:31:21.874Z",
       "doneAt": "2026-10-23T19:33:39.539Z",
-      "summary": "Actuando el agente, accept ejecuta siempre verify.full y, si falla, no acepta: tarjeta bloqueada que pide specty adjust (con la salida del fallo en stderr). ARCHITECTURE §6 documenta delegate y las acciones delegadas; formats §1 el archivo .git/common/specty/delegated.json, §3 approved.channel delegated y §4 la marca delegated de la auditoría."
+      "summary": "Actuando el agente, accept ejecuta siempre verify.full y, si falla, no acepta: tarjeta bloqueada que pide specty adjust (con la salida del fallo en stderr). ARCHITECTURE §6 documenta delegate y las acciones delegadas; formats §1 el archivo .git/common/specty/delegated.json, §3 approved.channel delegated y §4 la marca delegated de la auditoría.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,5 +92,6 @@
     "AC": 7,
     "T": 4,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T19:48:01.141Z"
 }
