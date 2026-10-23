@@ -79,7 +79,7 @@ Si incorporar la rama principal al cerrar da conflictos, o la verificación fall
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts test/flow.test.ts
   - type: refactor
-- [ ] T2: El merge con conflictos o en rojo queda para el agente
+- [x] T2: El merge con conflictos o en rojo queda para el agente
   - files: packages/cli/src/flow/integrate.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/test/support.ts, packages/cli/test/integrate.test.ts
   - ac: AC1, AC2, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts

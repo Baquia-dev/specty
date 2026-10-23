@@ -47,12 +47,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6f75d4e14a5409bfa5c976fd46a275e5e23b439d",
+      "attempts": 1,
       "startedAt": "2026-10-23T16:32:35.361Z",
       "doneAt": "2026-10-23T16:33:36.689Z",
-      "summary": "landChange, withIntegration y el avance de la rama pasan a flow/land.ts; integrate.ts exporta contains y reasonOf y queda en 202 líneas. Sin cambios de comportamiento"
+      "summary": "landChange, withIntegration y el avance de la rama pasan a flow/land.ts; integrate.ts exporta contains y reasonOf y queda en 202 líneas. Sin cambios de comportamiento",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/commands/integrate.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "54b401c95f95f015261491ffca1ec899f29fa6ba",
+      "startedAt": "2026-10-23T16:33:36.957Z",
+      "doneAt": "2026-10-23T16:38:34.255Z",
+      "summary": "Con conflictos o la verificación en rojo al cerrar (o al aceptar un quick) el merge queda en curso y state.json registra integration (destino, commit, motivo, conflictos y archivos tocables: lo que cambió cada lado desde la base, sin .specty); la salida pide decirle al agente «continúa». close y accept esperan mientras el merge sigue en curso y, si alguien lo abortó, descartan la incorporación (integration.abandoned) y la reintentan. pendingIntegration vive en commands/integrate.ts (ampliación aprobada por estar en Archivos); ayudantes de test en support.ts"
     }
   },
   "pending": {

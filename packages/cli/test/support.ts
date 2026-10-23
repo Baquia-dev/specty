@@ -2,7 +2,8 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
+import { expect } from "vitest";
 import { runCli } from "../src/program";
 import type { Terminal } from "../src/session";
 
@@ -179,3 +180,58 @@ La app saluda por nombre.
 
 export const CHANGE = `${NOW.toISOString().slice(0, 10).replaceAll("-", "")}-saludo-personalizado`;
 export const SPEC_PATH = `.specty/changes/${CHANGE}/spec.md`;
+
+/** The files of a repository for SPEC's change. */
+export const APP = {
+  "src/app.ts": "export const greet = () => 'hola';\n",
+  ".specty/config.yaml": CONFIG(),
+};
+
+/** Where `new --worktree` puts the change `id` of `root`. */
+export const folderOf = (root: string, id = CHANGE) =>
+  join(dirname(root), `${basename(root)}.worktrees`, id);
+
+/** A repository whose change lives in a worktree of its own. */
+export async function inWorktree(files: Readonly<Record<string, string>> = APP) {
+  const root = await tempRepo(files);
+  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+  return { root, folder: folderOf(root) };
+}
+
+/** Takes SPEC's change in `folder` to a closing that waits for the person. */
+export async function toClosing(folder: string): Promise<void> {
+  await writeFiles(folder, { [SPEC_PATH]: SPEC });
+  expect((await cli(folder, ["propose"])).code).toBe(0);
+  const approved = await cli(folder, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+  expect(approved.code).toBe(0);
+  await cli(folder, ["next"]);
+  await writeFiles(folder, { "src/app.ts": "1\n" });
+  await cli(folder, ["task", "done", "T1", "--summary", "Uno"]);
+  await writeFiles(folder, { "src/app.ts": "2\n" });
+  await cli(folder, ["task", "done", "T2", "--summary", "Dos"]);
+  await cli(folder, ["accept"], { terminal: person() });
+  const closing = "\n## Cierre\n\n### Resumen\n\nSaludo listo.\n";
+  await writeFiles(folder, { [SPEC_PATH]: `${await read(folder, SPEC_PATH)}${closing}` });
+  expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
+}
+
+/** A quick change of `root`, in its own worktree, that writes `text` to the button: in acceptance. */
+export async function quickInWorktree(root: string, title: string, slug: string, text: string) {
+  expect((await cli(root, ["new", "--worktree", "--kind", "quick", title])).code).toBe(0);
+  const id = `${CHANGE.slice(0, 8)}-${slug}`;
+  const folder = folderOf(root, id);
+  await writeFiles(folder, {
+    [`.specty/changes/${id}/spec.md`]: `---\nkind: quick\n---\n\n# ${title}\n\n## Objetivo\n\nDice «Sing in».\n\n## Archivos\n\n- modificar src/button.ts — texto\n\n## Tareas\n\n- [ ] T1: Corregir texto\n  - files: src/button.ts\n  - type: fix\n`,
+  });
+  await cli(folder, ["propose"]);
+  await cli(folder, ["approve"], { terminal: person() });
+  await cli(folder, ["next"]);
+  await writeFiles(folder, { "src/button.ts": text });
+  await cli(folder, ["task", "done", "T1", "--summary", "Texto corregido"]);
+  return { id, folder };
+}
+
+/** The change's `state.json` in `folder`. */
+export async function stateIn(folder: string, id = CHANGE): Promise<Record<string, unknown>> {
+  return JSON.parse(await read(folder, `.specty/changes/${id}/state.json`));
+}

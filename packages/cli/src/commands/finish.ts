@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   blockedCard,
-  type ChangeState,
   closedCard,
   headerOf,
   nothingPendingCard,
@@ -15,20 +14,24 @@ import { archive, commitArchive } from "../flow/finish";
 import { absorbTarget, integrationOf, isIncorporated } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
 import type { Session } from "../session";
-import { readSpec } from "../store/changes";
+import { readSpec, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
 import { humanChange, postponed } from "./human";
+import { pendingIntegration } from "./integrate";
 
 export async function close(session: Session): Promise<Output> {
   const guard = await humanChange(session, "close");
   if (guard.kind === "output") return guard.output;
-  const { change } = guard;
   const t = translator(session.lang);
-  const { state } = change;
-  if (state.phase === "done") return landClosed(session, state);
-  if (state.phase !== "closing" || state.closingSubmittedAt === undefined) {
-    return nothingPendingCard(state.id, state.phase, "close", session.cards);
+  const found = guard.change.state;
+  if (found.phase === "done") return landClosed(session, guard.change);
+  if (found.phase !== "closing" || found.closingSubmittedAt === undefined) {
+    return nothingPendingCard(found.id, found.phase, "close", session.cards);
   }
+  const pending = await pendingIntegration(session, guard.change, "close");
+  if (pending.kind === "wait") return pending.output;
+  const { change } = pending;
+  const { state } = change;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
   session.environment.terminal.note(spec.title, spec.sections.closing ?? "");
   if (
@@ -40,7 +43,7 @@ export async function close(session: Session): Promise<Output> {
   // The main branch comes into the change before anything is archived: a refusal changes nothing.
   const plan = await integrationOf(session, state);
   const absorbed =
-    plan === undefined ? undefined : await absorbTarget(session, plan, state, "close");
+    plan === undefined ? undefined : await absorbTarget(session, plan, change, "close");
   if (absorbed?.ok === false) return absorbed.output;
   const moved = transition({
     phase: "closing",
@@ -88,8 +91,9 @@ export async function close(session: Session): Promise<Output> {
 }
 
 /** A closed change that did not reach the main branch (its landing failed): retries only that. */
-async function landClosed(session: Session, state: ChangeState): Promise<Output> {
+async function landClosed(session: Session, change: StoredChange): Promise<Output> {
   const t = translator(session.lang);
+  const { state } = change;
   const plan = await integrationOf(session, state);
   if (plan === undefined || (await isIncorporated(session, plan)))
     return nothingPendingCard(state.id, state.phase, "close", session.cards);
@@ -102,7 +106,7 @@ async function landClosed(session: Session, state: ChangeState): Promise<Output>
     ))
   )
     return postponed(session, state);
-  const absorbed = await absorbTarget(session, plan, state, "close");
+  const absorbed = await absorbTarget(session, plan, change, "close");
   if (!absorbed.ok) return absorbed.output;
   const landed = await landChange(session, plan);
   return withIntegration(
