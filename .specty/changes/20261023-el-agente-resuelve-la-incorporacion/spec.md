@@ -74,7 +74,7 @@ Si incorporar la rama principal al cerrar da conflictos, o la verificación fall
 
 ## Tareas
 
-- [ ] T1: Sacar el avance de la rama principal a `flow/land.ts`
+- [x] T1: Sacar el avance de la rama principal a `flow/land.ts`
   - files: packages/cli/src/flow/land.ts, packages/cli/src/flow/integrate.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts test/flow.test.ts

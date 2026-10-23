@@ -187,100 +187,8 @@ export function isIncorporated(session: Session, plan: Integration): Promise<boo
   return contains(session.git, plan.target, plan.branch);
 }
 
-export interface Landed {
-  /** The main branch now contains the change. */
-  readonly landed: boolean;
-  readonly lines: readonly string[];
-}
-
-/**
- * Fast-forwards the main branch to the change, where it is checked out, and then leaves the
- * change's folder: a worktree of its own is removed (its branch stays), the main folder goes
- * back to the main branch. Reports failures instead of throwing: the change is already closed.
- */
-export async function landChange(session: Session, plan: Integration): Promise<Landed> {
-  const t = translator(session.lang);
-  const { git } = session;
-  const tip = await git.output(["rev-parse", "HEAD"]);
-  const failure =
-    plan.holder === undefined
-      ? await advanceRef(session, plan.target, tip)
-      : failureOf(await git.run(["-C", plan.holder, "merge", "--ff-only", "-q", plan.branch]));
-  if (failure !== undefined) {
-    return {
-      landed: false,
-      lines: [t(`${plan.target} no avanzó: ${failure}`, `${plan.target} did not move: ${failure}`)],
-    };
-  }
-  const lines = [t(`Incorporado a ${plan.target}.`, `Merged into ${plan.target}.`)];
-  if (plan.inMain) {
-    if (plan.holder === undefined && (await git.run(["switch", "-q", plan.target])).code === 0)
-      lines.push(
-        t(`Esta carpeta vuelve a ${plan.target}.`, `This folder is back on ${plan.target}.`),
-      );
-    return { landed: true, lines };
-  }
-  const removed = await git.run(["-C", plan.main, "worktree", "remove", git.root]);
-  lines.push(
-    removed.code === 0
-      ? t(
-          `La carpeta ${git.root} se eliminó y la rama ${plan.branch} queda; sigue en ${plan.main}.`,
-          `Folder ${git.root} was removed and branch ${plan.branch} stays; carry on in ${plan.main}.`,
-        )
-      : t(
-          `La carpeta ${git.root} queda: ${reasonOf(removed)} Bórrala con \`git worktree remove\` cuando ya no la necesites.`,
-          `Folder ${git.root} stays: ${reasonOf(removed)} Remove it with \`git worktree remove\` when you no longer need it.`,
-        ),
-  );
-  return { landed: true, lines };
-}
-
-/** The closing card plus what the incorporation did; if the main branch did not move, how to retry. */
-export function withIntegration(
-  session: Session,
-  card: Output,
-  before: readonly string[],
-  landed: Landed | undefined,
-): Output {
-  if (landed === undefined) return card;
-  const t = translator(session.lang);
-  const { command } = session.cards;
-  return {
-    ...card,
-    blocks: [...card.blocks, ...section(undefined, [...before, ...landed.lines])],
-    ...(landed.landed
-      ? {}
-      : {
-          next: t(
-            `cuando se pueda, vuelve a ejecutar \`${command} close\` para incorporarlo.`,
-            `when possible, run \`${command} close\` again to merge it.`,
-          ),
-        }),
-  };
-}
-
-/**
- * Moves `branch`, checked out nowhere, to `tip`: only as a fast-forward, and only if nobody moved
- * it meanwhile. Returns why it did not, or undefined.
- */
-async function advanceRef(
-  session: Session,
-  branch: string,
-  tip: string,
-): Promise<string | undefined> {
-  const t = translator(session.lang);
-  const ref = `refs/heads/${branch}`;
-  const old = await session.git.output(["rev-parse", ref]);
-  if (!(await contains(session.git, tip, old)))
-    return t(
-      "ya tiene commits que el cambio no incluye.",
-      "it already has commits the change does not include.",
-    );
-  return failureOf(await session.git.run(["update-ref", ref, tip, old]));
-}
-
 /** True when `commit` already contains `ancestor`. */
-async function contains(git: Git, commit: string, ancestor: string): Promise<boolean> {
+export async function contains(git: Git, commit: string, ancestor: string): Promise<boolean> {
   return (await git.run(["merge-base", "--is-ancestor", ancestor, commit])).code === 0;
 }
 
@@ -288,10 +196,7 @@ function lines(text: string): string[] {
   return text.split("\n").filter((line) => line.trim().length > 0);
 }
 
-function failureOf(result: ExecResult): string | undefined {
-  return result.code === 0 ? undefined : reasonOf(result);
-}
-
-function reasonOf(result: ExecResult): string {
+/** The last line git or the command printed, to say why it failed. */
+export function reasonOf(result: ExecResult): string {
   return tail(result, 1)[0] ?? `exit ${result.code ?? "?"}`;
 }

@@ -12,13 +12,8 @@ import {
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { archive, commitArchive } from "../flow/finish";
-import {
-  absorbTarget,
-  integrationOf,
-  isIncorporated,
-  landChange,
-  withIntegration,
-} from "../flow/integrate";
+import { absorbTarget, integrationOf, isIncorporated } from "../flow/integrate";
+import { landChange, withIntegration } from "../flow/land";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
 import { writePointer } from "../store/local";

@@ -13,7 +13,8 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState } from "../flow/active";
 import { archive, commitArchive } from "../flow/finish";
-import { absorbTarget, integrationOf, landChange, withIntegration } from "../flow/integrate";
+import { absorbTarget, integrationOf } from "../flow/integrate";
+import { landChange, withIntegration } from "../flow/land";
 import { changeView } from "../flow/views";
 import { execute, tail } from "../io/exec";
 import { writeText } from "../io/files";
