@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-avisos-de-archivos-compartidos-entre-cambios",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-avisos-de-archivos-compartidos-entre-cambios",
   "baseCommit": "b1c1d8bee9d6bf1d28a46093aede36029e1e0d75",
   "revision": 1,
@@ -47,12 +47,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ec5b94fe3d861efa89526240f76abcd857773699",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:19:09.825Z",
       "doneAt": "2026-10-23T21:21:39.094Z",
-      "summary": "scope add añade el bloque ARCHIVOS COMPARTIDOS a su salida, tanto si la ampliación se aprueba sola como si queda pendiente; reutiliza listed() de flow/shared.ts para las rutas de la sección Archivos"
+      "summary": "scope add añade el bloque ARCHIVOS COMPARTIDOS a su salida, tanto si la ampliación se aprueba sola como si queda pendiente; reutiliza listed() de flow/shared.ts para las rutas de la sección Archivos",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3d671ed65777f0e3ef4c7d03819625bdc1c80753",
+      "startedAt": "2026-10-23T21:21:39.399Z",
+      "doneAt": "2026-10-23T21:23:36.790Z",
+      "summary": "ARCHITECTURE §8: los avisos de archivos compartidos en propose, approve y scope add, qué cuenta y que solo avisan"
     }
   },
   "pending": {

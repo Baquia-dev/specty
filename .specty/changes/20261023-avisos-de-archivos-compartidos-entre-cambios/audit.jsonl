@@ -7,3 +7,6 @@
 {"ts":"2026-10-23T21:19:09.825Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"ec5b94fe3d861efa89526240f76abcd857773699"}}
 {"ts":"2026-10-23T21:21:39.093Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/shared.test.ts test/commands.test.ts","exit":0,"ms":8462}}
 {"ts":"2026-10-23T21:21:39.095Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"scope add añade el bloque ARCHIVOS COMPARTIDOS a su salida, tanto si la ampliación se aprueba sola como si queda pendiente; reutiliza listed() de flow/shared.ts para las rutas de la sección Archivos"}}
+{"ts":"2026-10-23T21:21:39.399Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"3d671ed65777f0e3ef4c7d03819625bdc1c80753"}}
+{"ts":"2026-10-23T21:23:36.789Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":48883}}
+{"ts":"2026-10-23T21:23:36.791Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §8: los avisos de archivos compartidos en propose, approve y scope add, qué cuenta y que solo avisan"}}

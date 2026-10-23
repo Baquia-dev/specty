@@ -181,6 +181,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 - **Rutas sensibles** (migraciones, auth, CI, infraestructura, configuración de Specty): nunca se aprueban solas.
 - **Ampliación**: `scope add` evalúa la política. Con `tests-and-generated` aprueba sola los tests, los archivos generados y los que ya están en la sección Archivos de la spec aprobada (son alcance del cambio y solo cambian de tarea), salvo las rutas sensibles. Si no aplica, crea una solicitud que la UI muestra al momento. Mientras está pendiente, el agente puede seguir trabajando dentro de su alcance, pero no completar la tarea.
 - Durante una tarea activa, todo cambio en el árbol se atribuye a esa tarea: Specty no distingue quién teclea.
+- **Archivos compartidos:** `propose`, `approve` y `scope add` avisan («ARCHIVOS COMPARTIDOS») cuando un archivo gobernado del cambio aparece también en la sección Archivos, o en las ampliaciones aprobadas, de otro cambio abierto de otra worktree, leído en su carpeta. Las rutas con comodines encajan en los dos sentidos. Solo avisan, para que el posible conflicto se vea al planificar y no al incorporar; la documentación no cuenta.
 
 ## 9. Git
 

@@ -56,7 +56,7 @@ Specty avisa cuando un cambio planea tocar archivos que otro cambio abierto, en 
   - files: packages/cli/src/commands/scope.ts, packages/cli/src/flow/shared.ts, packages/cli/test/shared.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/shared.test.ts test/commands.test.ts
-- [ ] T3: Documentar los archivos compartidos
+- [x] T3: Documentar los archivos compartidos
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check
