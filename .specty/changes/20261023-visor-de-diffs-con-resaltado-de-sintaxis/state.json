@@ -55,12 +55,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9f167802ad97a884ebf30d8dc0b46e19c365f409",
+      "attempts": 1,
       "startedAt": "2026-10-23T07:33:32.871Z",
       "doneAt": "2026-10-23T07:35:22.604Z",
-      "summary": "Fondos del diff en styles.css (claro y oscuro): línea añadida y quitada y sus palabras cambiadas, en hexadecimal opaco sobre la superficie. Además, --color-diff-added-text y --color-diff-removed-text para el signo y las cuentas +N −N. En el inventario con pares de contraste ≥4,5: texto sobre los cuatro fondos, texto secundario sobre las líneas, y los colores de signo sobre la página, la superficie y su línea."
+      "summary": "Fondos del diff en styles.css (claro y oscuro): línea añadida y quitada y sus palabras cambiadas, en hexadecimal opaco sobre la superficie. Además, --color-diff-added-text y --color-diff-removed-text para el signo y las cuentas +N −N. En el inventario con pares de contraste ≥4,5: texto sobre los cuatro fondos, texto secundario sobre las líneas, y los colores de signo sobre la página, la superficie y su línea.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f414dc757ed0da1f0d55ab5008d528e272ffed89",
+      "startedAt": "2026-10-23T07:35:22.852Z",
+      "doneAt": "2026-10-23T07:44:32.190Z",
+      "summary": "sp-diff-viewer (resumen con rango, archivos y +N −N; barra proyectada; Unificado | Lado a lado con el selector segmentado, recordado en specty.diff.mode y oculto por debajo de 640 px; lista de archivos que lleva el foco a cada uno) y sp-diff-file (cabecera plegable con ruta, ruta anterior, estado y cuentas; bloques con cabecera @@, números, signos y palabras cambiadas, en unificado o emparejados con splitRows; archivos de más de 60 líneas muestran 40 y «Mostrar N líneas más», que lleva el foco a la primera línea nueva; binario y sin contenido). Cada línea va en tramos (spansOf) para el resaltado. Lector de pantalla: números y signos ocultos, «Añadida:»/«Quitada:», «Desde la línea N: sección», la línea de contexto se oye una vez lado a lado, y comas entre las piezas del nombre de cada botón. Las funciones puras se prueban en diff-file.test.ts."
     }
   },
   "pending": {

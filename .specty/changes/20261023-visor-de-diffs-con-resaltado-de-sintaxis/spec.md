@@ -61,7 +61,7 @@ El sistema de diseño gana un visor de diffs, con su sección en el catálogo. M
   - files: packages/ui/src/styles.css, packages/ui/src/theme/tokens.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme/tokens.test.ts
-- [ ] T2: El visor de diffs
+- [x] T2: El visor de diffs
   - files: packages/ui/src/components/diff-file.ts, packages/ui/src/components/diff-viewer.ts, packages/ui/src/components/diff-viewer.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/diff-viewer.test.ts
