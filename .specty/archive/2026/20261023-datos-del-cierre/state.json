@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-datos-del-cierre",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-datos-del-cierre",
   "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a687bca20ec98d142163f79495fd6d5681e8b89f2612b6a6904eee1959fcf6ca",
@@ -60,12 +60,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7a7ca0b9560936c9ba5be73d33aff47ff5600e41",
+      "attempts": 1,
       "startedAt": "2026-10-23T10:21:08.798Z",
       "doneAt": "2026-10-23T10:24:08.672Z",
-      "summary": "FixtureData.confirmClosing(change), como specty close: solo con el cambio en cierre y el cierre enviado (closingSubmittedAt); si no, explica por qué (no espera un cierre, o el agente aún no lo ha enviado). Pasa a terminado, reinicia su tiempo de fase y registra change.closed por la persona. El ejemplo «Recordatorios de tareas por correo» trae un cierre con Resumen, Desviaciones, Decisiones y Pendientes. fixtures.test.ts pasaba de 300 líneas: las pruebas de los datos de ejemplo (que las specs y estados son válidos para el core, y el delta) pasan a sample-specs.test.ts, junto a sample-specs.ts, con una nueva: el cierre de ejemplo en sus cuatro partes. Test de la confirmación: rechazos con y sin cierre enviado, paso a terminado, el cierre en la vista y el evento en la auditoría."
+      "summary": "FixtureData.confirmClosing(change), como specty close: solo con el cambio en cierre y el cierre enviado (closingSubmittedAt); si no, explica por qué (no espera un cierre, o el agente aún no lo ha enviado). Pasa a terminado, reinicia su tiempo de fase y registra change.closed por la persona. El ejemplo «Recordatorios de tareas por correo» trae un cierre con Resumen, Desviaciones, Decisiones y Pendientes. fixtures.test.ts pasaba de 300 líneas: las pruebas de los datos de ejemplo (que las specs y estados son válidos para el core, y el delta) pasan a sample-specs.test.ts, junto a sample-specs.ts, con una nueva: el cierre de ejemplo en sus cuatro partes. Test de la confirmación: rechazos con y sin cierre enviado, paso a terminado, el cierre en la vista y el evento en la auditoría.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -76,5 +76,6 @@
     "A": 4,
     "AC": 3,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T10:27:06.659Z"
 }

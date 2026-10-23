@@ -64,3 +64,28 @@ La vista de cada cambio trae el cierre que redacta el agente, en sus partes (res
   - files: packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts, packages/ui/src/data/sample-specs.ts
   - ac: AC3
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+La vista de cada cambio trae el cierre que redacta el agente, partido en resumen, desviaciones, decisiones y pendientes (`closingOf`), y la fuente de datos tiene `confirmClosing`: en el ejemplo pasa el cambio a terminado y lo registra igual que `specty close`. La revisión dice «aceptada, en cierre» mientras el agente redacta y «cierre por confirmar» cuando lo envía. «Recordatorios de tareas por correo» trae un cierre de ejemplo con sus cuatro partes.
+
+### Desviaciones
+
+- **Hecho en un worktree aparte (`../specty-prototipo`):** en paralelo con otras sesiones que trabajan en la CLI; las órdenes de la persona se dan desde esa carpeta.
+- **Pruebas de los datos de ejemplo movidas:** `fixtures.test.ts` pasaba de 300 líneas, así que las de las specs y los estados de ejemplo y la del delta van ahora en `sample-specs.test.ts`, con una nueva sobre el cierre de ejemplo.
+- **`records.ts` en 300 líneas:** el mensaje de «sin diffs» pasó a una constante y el comentario de `watchRun` a una sola línea.
+
+### Decisiones
+
+- **Títulos por cómo empiezan:** «Desviaciones (respecto al plan)», «Follow-ups» y «Pending» cuentan; lo que no encaja va aparte con su título, para no perder nada.
+- **Un cierre vacío no es un cierre:** sin texto en la sección, la vista no trae `closing`.
+- **La etiqueta sigue a la decisión:** «cierre por confirmar» solo cuando la Bandeja también lo pide, con el cierre enviado (`closingSubmittedAt`).
+- **Los mismos rechazos que la CLI:** confirmar exige el cambio en cierre y el cierre enviado.
+
+### Pendientes
+
+- **La vista de cierre** (la sección y «Confirmar y archivar»), en el cambio siguiente.
+- **El test de los avisos de 5 s** (`toast.test.ts`) roza su límite de 5 s y falla con la máquina cargada; conviene darle tiempo propio o temporizadores simulados.
+- **Fusionar sin mover otras carpetas:** con varios worktrees, `main` se adelanta desde la carpeta del cambio, no desde la principal, donde trabaja otra sesión.
