@@ -62,7 +62,7 @@ Primer paso del modo delegado que pidió el usuario: un interruptor con el que l
 
 ## Tareas
 
-- [ ] T1: El guard respeta la delegación
+- [x] T1: El guard respeta la delegación
   - files: packages/core/src/guard/human.ts, packages/core/src/guard/decide.ts, packages/core/test/guard/decide.test.ts, docs/decisions/0010-modo-delegado.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts

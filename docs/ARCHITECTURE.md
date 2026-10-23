@@ -90,6 +90,8 @@ specty/
 
 **Invariante:** el agente solo ejecuta transiciones que envían trabajo o reducen sus propios permisos. Ninguna variable de entorno, flag ni modo de prueba habilita una acción humana desde la CLI del agente; los tests usan inyección de dependencias. En el legacy, `VITEST=1` o `NODE_ENV=test` habilitaban la aprobación sin TTY, y el guard solo bloqueaba el texto `specty approve`.
 
+La única excepción es el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)). La persona lo activa desde su terminal con `specty delegate on`, después de leer una advertencia y confirmarla, y mientras dura el agente ejecuta esas acciones en su nombre. `delegate` en sí nunca lo ejecuta el agente: ni para activar el modo ni para desactivarlo.
+
 ## 5. Carriles
 
 | Carril | Cuándo | Diferencias con el flujo estándar |
@@ -220,7 +222,7 @@ Solo se incorporan los cambios `standard` y `quick` con rama y en modo `individu
 | Capa | Qué hace | ¿Se puede evadir? |
 | --- | --- | --- |
 | 1. Instrucciones (AGENTS.md y salida de Specty) | Guía | Sí |
-| 2. Hooks del agente (guard) | Bloquea escrituras fuera de alcance (o, con una incorporación pendiente, fuera de los archivos que junta), `git commit` directo, acciones humanas y edición de archivos protegidos; en Claude Code, al terminar cada comando de Bash, avisa de lo que cambió sin permiso | Sí, con shell indirecta; el aviso posterior llega con el cambio ya hecho |
+| 2. Hooks del agente (guard) | Bloquea escrituras fuera de alcance (o, con una incorporación pendiente, fuera de los archivos que junta), `git commit` directo, acciones humanas (salvo en modo delegado, y nunca `delegate`) y edición de archivos protegidos; en Claude Code, al terminar cada comando de Bash, avisa de lo que cambió sin permiso | Sí, con shell indirecta; el aviso posterior llega con el cambio ya hecho |
 | 3. Hooks de git | Bloquea commits sin recibo ni spec | Sí, con `--no-verify` |
 | 4. CI (`specty ci` como check obligatorio) | Rechaza commits no trazables, specs sin aprobación válida para su hash y ramas `spike/` hacia la principal | No |
 | 5. Revisión de PR (modo equipo) | Aprobación con identidad verificada por el servidor | No |
@@ -254,6 +256,8 @@ Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escribe
 ### Modelo de confianza
 
 Specty protege contra el agente impaciente (el que se salta pasos para ayudar) y contra el olvido humano. No protege contra una persona o un agente que quiera evadirlo deliberadamente con acceso de escritura al repositorio: en local, cualquier control se puede desactivar. Por eso las garantías fuertes viven en el servidor: el CI obligatorio y, en modo equipo, la revisión de PR. En la fase 4, la aprobación con presencia del usuario (WebAuthn, es decir, Touch ID o Windows Hello) eleva la barrera en local, porque el agente no puede generarla.
+
+En modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)), la persona renuncia a revisar cada spec y cada resultado: el agente decide por ella, y la auditoría marca esas decisiones como delegadas. Lo demás se mantiene: la spec antes del código, el alcance de cada tarea y los commits de Specty.
 
 ## 11. Tamaño y esfuerzo
 
