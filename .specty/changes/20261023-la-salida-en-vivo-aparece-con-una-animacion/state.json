@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "id": "20261023-la-salida-en-vivo-aparece-con-una-animacion",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261023-la-salida-en-vivo-aparece-con-una-animacion",
+  "baseCommit": "b5e0608077ca85ce2e72379eb8084111eba60f1f",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1fa4701542e3628fdb8faf58e432f3ccf87d6c2a22817f117326c7c54d0b41bc",
+    "at": "2026-10-23T05:28:27.318Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}

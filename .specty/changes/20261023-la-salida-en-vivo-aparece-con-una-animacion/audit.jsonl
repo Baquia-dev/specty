@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T05:23:04.653Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261023-la-salida-en-vivo-aparece-con-una-animacion"}}
+{"ts":"2026-10-23T05:23:17.971Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:1fa4701542e3628fdb8faf58e432f3ccf87d6c2a22817f117326c7c54d0b41bc","size":"M","warnings":0}}
+{"ts":"2026-10-23T05:28:27.337Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:1fa4701542e3628fdb8faf58e432f3ccf87d6c2a22817f117326c7c54d0b41bc","channel":"tty"}}
