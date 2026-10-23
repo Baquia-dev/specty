@@ -6,6 +6,13 @@
   "branch": "specty/20261023-comandos-de-la-persona-desde-cualquier-carpeta",
   "baseCommit": "bc66dbf329addf2c049bbea5145a8e19596381d5",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:369d157748b35368889ab313809058e21fbe5a74d173dc41fea024c4fcb66c9b",
+    "at": "2026-10-23T19:24:51.622Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4a3252c7a7fc99d8c11a4216cd2db62a7c545ca8",
+      "startedAt": "2026-10-23T19:25:06.207Z",
+      "doneAt": "2026-10-23T19:27:42.614Z",
+      "summary": "status lista el cambio de cada worktree (cada uno leído en su carpeta y con su configuración, vía locateChanges en flow/changes.ts) más los de la carpeta actual sin rama, sin las copias que hereda una rama; core: StatusEntry.folder con la ruta relativa, «espera al agente» y el SIGUIENTE nombra la decisión pendiente aunque esté en otra carpeta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "AC": 6,
     "T": 3,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:369d157748b35368889ab313809058e21fbe5a74d173dc41fea024c4fcb66c9b",
-    "at": "2026-10-23T19:24:51.622Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

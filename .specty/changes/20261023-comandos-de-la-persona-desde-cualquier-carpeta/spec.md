@@ -59,7 +59,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Estado de todas las worktrees
+- [x] T1: Estado de todas las worktrees
   - files: packages/core/src/cards/human.ts, packages/core/test/cards.test.ts, packages/cli/src/flow/changes.ts, packages/cli/src/commands/status.ts, packages/cli/test/anywhere.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/anywhere.test.ts

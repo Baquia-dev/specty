@@ -164,11 +164,18 @@ export interface StatusEntry {
   readonly waitingFor: WaitingFor;
   readonly current: boolean;
   readonly pendingScope: readonly string[];
+  /** Where the change lives, relative to this folder, when it is not this folder. */
+  readonly folder?: string;
 }
 
+/** Open changes of every worktree; a person's decision can be taken from any folder. */
 export function statusCard(entries: readonly StatusEntry[], ctx: CardContext): Output {
   const t = translator(ctx.lang);
-  const who = { agent: t("el agente", "the agent"), human: t("ti", "you"), nobody: "—" };
+  const who = {
+    agent: t("al agente", "the agent"),
+    human: t("a ti", "you"),
+    nobody: t("a —", "—"),
+  };
   const lines = entries.map((entry) => {
     const marker = entry.current ? "▸" : " ";
     const scope =
@@ -178,9 +185,12 @@ export function statusCard(entries: readonly StatusEntry[], ctx: CardContext): O
             ` · alcance: ${entry.pendingScope.join(", ")}`,
             ` · scope: ${entry.pendingScope.join(", ")}`,
           );
-    return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera a", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}`;
+    const where = entry.folder === undefined ? "" : ` · ${t("en", "in")} ${entry.folder}`;
+    return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}`;
   });
-  const waiting = entries.find((entry) => entry.current && entry.waitingFor === "human");
+  const waiting =
+    entries.find((entry) => entry.current && entry.waitingFor === "human") ??
+    entries.find((entry) => entry.waitingFor === "human");
   return {
     status: "ok",
     header: headerOf(t("estado", "status")),
