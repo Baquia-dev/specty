@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename } from "node:path";
+import { basename, relative, resolve, sep } from "node:path";
 import {
   AGENT_NAMES,
   type AgentTool,
@@ -12,10 +12,11 @@ import {
 } from "@baquia-dev/specty-core";
 import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { installClaudeCode, installCursor } from "../install/agents";
+import { commitInstall } from "../install/commit";
 import { installGitHooks } from "../install/git-hooks";
 import { renderConfig, writeAgentsMd, writeClaudePointer } from "../install/project-files";
 import { writeText } from "../io/files";
-import { createGit, findRoot } from "../io/git";
+import { createGit, findRoot, pathsOf } from "../io/git";
 import { COMMAND, type Environment, systemLanguage } from "../session";
 import { loadConfig } from "../store/config";
 import { repoPaths } from "../store/paths";
@@ -42,6 +43,8 @@ export async function init(environment: Environment, options: InitOptions): Prom
   }
   const paths = repoPaths(root);
   const git = createGit(root, environment.env);
+  // What already had changes stays out of init's commit: it is the person's work.
+  const before = new Set(pathsOf(await git.changedSince(await git.head())));
   const existing = await loadConfig(paths);
   if (existing.kind === "invalid") {
     return blockedCard(
@@ -61,6 +64,8 @@ export async function init(environment: Environment, options: InitOptions): Prom
   const tools =
     options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
   const agents = await writeAgentsMd(root, lang, detection);
+  // Repository-relative files init writes that git tracks: they go into its commit.
+  const written = [".specty/config.yaml", "AGENTS.md"];
   const done: string[] = [
     existing.kind === "missing"
       ? t(".specty/config.yaml creado.", ".specty/config.yaml created.")
@@ -77,6 +82,7 @@ export async function init(environment: Environment, options: InitOptions): Prom
     if (await writeClaudePointer(root))
       done.push(t("CLAUDE.md importa AGENTS.md.", "CLAUDE.md imports AGENTS.md."));
     const installed = await installClaudeCode(root, git, environment.invocation);
+    written.push("CLAUDE.md", ...(installed.local ? [] : [installed.file]));
     done.push(
       t(
         `Claude Code: guard en ${installed.file}${installed.local ? " (local)" : ""}.`,
@@ -86,6 +92,7 @@ export async function init(environment: Environment, options: InitOptions): Prom
   }
   if (tools.includes("cursor")) {
     const installed = await installCursor(root, git, environment.invocation);
+    if (!installed.local) written.push(installed.file);
     done.push(
       t(
         `Cursor: guard en ${installed.file}${installed.local ? " (local)" : ""}.`,
@@ -105,6 +112,10 @@ export async function init(environment: Environment, options: InitOptions): Prom
     );
   }
   const hooks = await installGitHooks(root, git, environment.invocation);
+  // Hooks inside the git directory are not in the tree; husky's and lefthook's files are.
+  written.push(
+    ...hooks.files.map((file) => relative(root, resolve(root, file)).split(sep).join("/")),
+  );
   if (hooks.manual === undefined) {
     done.push(
       t(
@@ -136,6 +147,9 @@ export async function init(environment: Environment, options: InitOptions): Prom
       ),
     );
   }
+  const committed = await commitInstall(environment, written, before, existing.kind === "missing");
+  done.push(...committed.done);
+  warnings.push(...committed.warnings);
   const facts = projectFacts(detection);
   return {
     status: "ok",

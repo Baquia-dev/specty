@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ebf82ee70734466a79486b77c3746cc3a70df880",
+      "attempts": 1,
       "startedAt": "2026-10-23T20:51:41.053Z",
       "doneAt": "2026-10-23T20:54:05.232Z",
-      "summary": "Recibo de tipo init (RECEIPT_KINDS es ahora la única lista de tipos, de la que salen el tipo, la lectura de recibos y la de la marca; antes había dos listas fijas) y prepare-commit-msg no añade Specty-Change a un commit de init, que ya lleva Specty-Init"
+      "summary": "Recibo de tipo init (RECEIPT_KINDS es ahora la única lista de tipos, de la que salen el tipo, la lectura de recibos y la de la marca; antes había dos listas fijas) y prepare-commit-msg no añade Specty-Change a un commit de init, que ya lleva Specty-Init",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f2a34b0fe3851b43765891414717bc24a6c18618",
+      "startedAt": "2026-10-23T20:54:05.549Z",
+      "doneAt": "2026-10-23T20:57:51.557Z",
+      "summary": "init guarda los archivos con cambios antes de empezar, junta los que escribe (config, AGENTS.md, CLAUDE.md, la configuración no local de Claude Code y Cursor, hooks de husky o lefthook) y al final commitInstall (install/commit.ts) hace el commit, con recibo init y Specty-Init, de los que ahora difieren de HEAD y no tenían cambios previos; nombra los que quedan fuera, no incluye lo preparado por la persona y no hace commit con un cambio activo en la carpeta"
     }
   },
   "pending": {

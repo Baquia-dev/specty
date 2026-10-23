@@ -58,7 +58,7 @@ kind: standard
   - files: packages/cli/src/store/local.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/init-commit.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-commit.test.ts test/enforce.test.ts
-- [ ] T2: `init` hace el commit de lo que escribió
+- [x] T2: `init` hace el commit de lo que escribió
   - files: packages/cli/src/install/commit.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-commit.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-commit.test.ts test/setup.test.ts test/install.test.ts
