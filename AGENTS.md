@@ -18,7 +18,7 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 - Cada cambio vive en su propia carpeta (una worktree): tras `specty new`, trabaja en la carpeta que indica, no en la principal.
 - Completa cada tarea con `specty task done <id>`; no ejecutes `git commit` tú mismo.
 - Si necesitas un archivo fuera del alcance de la tarea, pídelo con `specty scope add`.
-- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno.
+- Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno. Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.
 - Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.
 <!-- specty:end id=flow -->
 

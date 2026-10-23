@@ -36,8 +36,10 @@ describe("Toasts", () => {
   });
 
   it("leaves after 5 s unless hovered or focused; errors stay (AC6)", async () => {
-    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
     const { toasts } = await render();
+    // Only now: Angular runs change detection on whichever of setTimeout and requestAnimationFrame
+    // comes first, so with timers faked before `render()` its `whenStable()` hangs under load.
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
     const info = toasts.show("Guardado.");
     const kept = toasts.show("Revisa esto.", "warning");
     toasts.show("Falló la verificación.", "error");
