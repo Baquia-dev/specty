@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261023-avisos-de-doctor-y-commits-delegados",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-avisos-de-doctor-y-commits-delegados",
+  "baseCommit": "adbc8a881d9fb55f927a25ac8f8baf964938a432",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:004e02bc06cbda180f347ad5779e2f75315aa84697fa81960e0303ca18532652",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:ecdf24f96f3d16e50a4b4e3ab181d97904f1edddd3a59bd7244d424b2a5f7312",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:fbcf8eea87c354a160f55e8aa984730452d7a48120f1464bdd8004c142c0bc8b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8cf8f05d2efc3e36b219ab446b04d464ff23532ac05de6cc63c86119f3d33062",
+    "at": "2026-10-23T21:54:01.165Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
