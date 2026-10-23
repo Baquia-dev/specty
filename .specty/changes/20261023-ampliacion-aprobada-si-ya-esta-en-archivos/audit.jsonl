@@ -4,3 +4,6 @@
 {"ts":"2026-10-23T11:01:17.362Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"3e089a14a6db4503526cfaa96dffdb42dd9498c8"}}
 {"ts":"2026-10-23T11:01:55.184Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/scope","exit":0,"ms":841}}
 {"ts":"2026-10-23T11:01:55.186Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"autoBasis da el motivo de cada ruta (test, generated o planned) y decideScopeRequest aprueba también lo previsto en Archivos, nunca lo sensible"}}
+{"ts":"2026-10-23T11:01:55.506Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"e5e414c108b65bdb09b32c12ff1ad85893f55c7a"}}
+{"ts":"2026-10-23T11:04:07.522Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":40023}}
+{"ts":"2026-10-23T11:04:07.562Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"scope add aprueba solo lo previsto en Archivos, anota la tarea que lo preveía y registra basis y plannedFor en scope.decided; formats.md §4 y §6 y ARCHITECTURE §8 al día"}}

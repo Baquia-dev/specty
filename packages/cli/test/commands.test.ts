@@ -15,10 +15,10 @@ import {
   writeFiles,
 } from "./support";
 
-async function implementing(config = CONFIG()): Promise<string> {
+async function implementing(config = CONFIG(), spec = SPEC): Promise<string> {
   const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": config });
   await cli(root, ["new", "Saludo personalizado"]);
-  await writeFiles(root, { [SPEC_PATH]: SPEC });
+  await writeFiles(root, { [SPEC_PATH]: spec });
   await cli(root, ["propose"]);
   await cli(root, ["approve"], { terminal: person() });
   await cli(root, ["next"]);
@@ -52,6 +52,42 @@ describe("human decisions", () => {
     );
     expect((await cli(root, ["scope", "add", "../fuera.ts", "--reason", "x"])).code).toBe(1);
     expect((await cli(root, ["scope", "add", "src/b.ts"])).code).toBe(1);
+  });
+
+  /** SPEC with two more files in Files, both planned for T2: one plain, one sensitive. */
+  const PLANNED = SPEC.replace(
+    "- crear src/app.test.ts — prueba",
+    "- crear src/app.test.ts — prueba\n- crear src/greeting.ts — texto\n- crear src/auth/name.ts — nombre",
+  ).replace(
+    "  - files: src/app.ts\n  - ac: AC1\n  - type: refactor",
+    "  - files: src/app.ts, src/greeting.ts, src/auth/name.ts\n  - ac: AC1\n  - type: refactor",
+  );
+
+  it("approves files the spec already plans, never sensitive ones (AC1, AC2, AC3, AC4)", async () => {
+    const root = await implementing(CONFIG(), PLANNED);
+    const added = await cli(root, [
+      "scope",
+      "add",
+      "src/greeting.ts",
+      "--reason",
+      "Lo necesito ya",
+    ]);
+    expect(added.out).toContain(
+      "Ampliación aprobada por la política: src/greeting.ts (ya en Archivos, prevista para T2).",
+    );
+    expect(await read(root, `.specty/changes/${CHANGE}/audit.jsonl`)).toContain(
+      '"basis":{"src/greeting.ts":"planned"},"plannedFor":{"src/greeting.ts":["T2"]}',
+    );
+    const sensitive = await cli(root, ["scope", "add", "src/auth/name.ts", "--reason", "x"]);
+    expect(sensitive.out).toContain("approve --scope S1");
+    const unplanned = await cli(root, ["scope", "add", "src/other.ts", "--reason", "x"]);
+    expect(unplanned.out).toContain("approve --scope S2");
+  });
+
+  it("asks a person for planned files when the policy is none (AC2)", async () => {
+    const root = await implementing(`${CONFIG()}scope:\n  autoApprove: none\n`, PLANNED);
+    const added = await cli(root, ["scope", "add", "src/greeting.ts", "--reason", "x"]);
+    expect(added.out).toContain("approve --scope S1");
   });
 
   it("cancels a change and archives it", async () => {

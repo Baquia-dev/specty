@@ -47,7 +47,7 @@ kind: standard
   - files: packages/core/src/scope/scope.ts, packages/core/src/index.ts, packages/core/test/scope/scope.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope
-- [ ] T2: scope add lo aplica y lo registra
+- [x] T2: scope add lo aplica y lo registra
   - files: packages/cli/src/commands/scope.ts, packages/cli/test/commands.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
