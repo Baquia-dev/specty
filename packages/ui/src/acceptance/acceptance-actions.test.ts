@@ -5,6 +5,7 @@ import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
 import { ActionError, type ChangeRecord, SpectyData } from "../data/records";
+import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
 import { AcceptanceActions, ResultDialogs } from "./acceptance-actions";
 
@@ -17,8 +18,14 @@ const ASISTENCIA = "20261018-asistencia-curso";
 class Host {
   readonly id = input(ASISTENCIA);
   readonly compact = input(false);
+  /** As a project with no `verify.full` would see it. */
+  readonly unconfigured = input(false);
   private readonly store = inject(ChangesStore);
-  readonly change = computed(() => this.store.all().find((view) => view.id === this.id()));
+  readonly change = computed(() => {
+    const view = this.store.all().find((item) => item.id === this.id());
+    if (view === undefined || !this.unconfigured()) return view;
+    return { ...view, progress: { tasks: view.progress.tasks } };
+  });
 }
 
 /** A source that cannot decide: the dialog stays and a notice says why. */
@@ -31,7 +38,7 @@ class Refusing extends FixtureData {
   }
 }
 
-async function render(source: typeof FixtureData = FixtureData, compact = false) {
+async function render(source: typeof FixtureData = FixtureData, compact = false, bare = false) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
@@ -49,6 +56,7 @@ async function render(source: typeof FixtureData = FixtureData, compact = false)
   });
   const fixture = TestBed.createComponent(Host);
   fixture.componentRef.setInput("compact", compact);
+  fixture.componentRef.setInput("unconfigured", bare);
   const store = TestBed.inject(ChangesStore);
   const settle = async () => {
     for (let round = 0; round < 60; round++) {
@@ -179,5 +187,95 @@ describe("Acceptance actions", () => {
     expect(toasts()).toContain("El servidor no responde.");
     expect(dialog()).not.toBeNull();
     expect(view()?.phase).toBe("acceptance");
+  });
+});
+
+describe("Deciding with the full verification", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    TestBed.resetTestingModule();
+  });
+
+  /** The sample source, to run the full verification and choose how it ends. */
+  function sample(): FixtureData {
+    const source = TestBed.inject(SpectyData);
+    if (!(source instanceof FixtureData)) throw new Error("no sample source");
+    return source;
+  }
+
+  it("says under «Aceptar resultado» how it stands, in its color", async () => {
+    // Only the run's steps are faked: the store settles on real timeouts.
+    vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
+    const { element, settle } = await render();
+    const hint = () => element.querySelector<HTMLElement>("[data-full-hint]");
+    expect(text(hint())).toBe("La verificación completa aún no se ha ejecutado.");
+    expect(hint()?.style.color).toBe("var(--color-text-muted)");
+    await sample().verifyChange(ASISTENCIA);
+    await settle();
+    expect(text(hint())).toBe("La verificación completa está corriendo.");
+    vi.advanceTimersByTime(STEP_MS * 20);
+    await settle();
+    expect(text(hint())).toBe("La verificación completa es correcta.");
+    expect(hint()?.style.color).toBe("var(--color-phase-done)");
+    sample().toggleFullResult();
+    await sample().verifyChange(ASISTENCIA);
+    vi.advanceTimersByTime(STEP_MS * 20);
+    await settle();
+    expect(text(hint())).toBe("La verificación completa falló.");
+    expect(hint()?.style.color).toBe("var(--color-phase-cancelled)");
+    // Only beside the title: the sticky bar keeps its buttons alone.
+    const compact = await render(FixtureData, true);
+    expect(compact.element.querySelector("[data-full-hint]")).toBeNull();
+  });
+
+  it("offers to run it first, follows it while open, and to accept anyway once it failed", async () => {
+    vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
+    const { element, buttons, dialog, dialogButton, settle, view } = await render();
+    const note = () => text(dialog()?.querySelector("[data-full-note]"));
+    buttons()[1]?.click();
+    await settle();
+    expect(note()).toBe(
+      "No ejecutaste la verificación completa. Puedes aceptar igual, o ejecutarla antes.",
+    );
+    dialog()?.querySelector<HTMLButtonElement>("[data-run-first]")?.click();
+    await settle();
+    expect(dialog()).toBeNull();
+    expect(text(element.querySelector("[data-full-hint]"))).toBe(
+      "La verificación completa está corriendo.",
+    );
+    // Opened while it runs, the dialog tells how it ended.
+    buttons()[1]?.click();
+    await settle();
+    expect(note()).toBe("La verificación completa está corriendo.");
+    vi.advanceTimersByTime(STEP_MS * 20);
+    await settle();
+    expect(note()).toBe("La verificación completa es correcta.");
+    expect(dialogButton("Aceptar")).toBeDefined();
+    dialogButton("Cancelar")?.click();
+    await settle();
+
+    sample().toggleFullResult();
+    await sample().verifyChange(ASISTENCIA);
+    vi.advanceTimersByTime(STEP_MS * 20);
+    await settle();
+    buttons()[1]?.click();
+    await settle();
+    expect(note()).toBe("La verificación completa falló: revisa su salida antes de aceptar.");
+    dialogButton("Aceptar de todos modos")?.click();
+    await settle();
+    expect(view()?.phase).toBe("closing");
+  });
+
+  it("says nothing of it when the project has none", async () => {
+    const { element, buttons, dialog, dialogButton, settle } = await render(
+      FixtureData,
+      false,
+      true,
+    );
+    expect(element.querySelector("[data-full-hint]")).toBeNull();
+    buttons()[1]?.click();
+    await settle();
+    expect(dialog()?.querySelector("[data-full-note]")).toBeNull();
+    expect(dialogButton("Aceptar")).toBeDefined();
   });
 });

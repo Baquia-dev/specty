@@ -18,7 +18,7 @@ La decisión de aceptar tiene en cuenta la verificación completa (`verify.full`
 
 ## Tareas
 
-- [ ] T1: Aceptar según la verificación completa
+- [x] T1: Aceptar según la verificación completa
   - files: packages/ui/src/acceptance/acceptance-actions.ts, packages/ui/src/acceptance/acceptance-actions.test.ts, docs/ui.md
   - verify: pnpm check
   - notes: Las acciones siguen la ejecución en vivo con `watchRun` (una ejecución sin tarea es la completa) y pasan ese estado vivo al diálogo. La línea va solo en la cabecera, no en la barra compacta. Comprobar en el navegador, a 390 y 1280 px, en claro y oscuro: sin ejecutar, corriendo, correcta y fallida (con el interruptor de la paleta), y «Ejecutarla antes» desde el diálogo.

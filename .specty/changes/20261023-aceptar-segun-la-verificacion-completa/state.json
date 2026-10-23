@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261023-aceptar-segun-la-verificacion-completa",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-aceptar-segun-la-verificacion-completa",
   "baseCommit": "c4f10a945a70762065074327ee6a5e230502d541",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:04b0c2289bf6824677b95b53e9f9e133d9875e0b45128e3631f2b29441f04ba5",
+    "at": "2026-10-23T05:42:44.021Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -16,19 +23,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f64e674d7243d73b63516b5721f487a408741c87",
+      "startedAt": "2026-10-23T05:42:53.273Z",
+      "doneAt": "2026-10-23T05:49:09.901Z",
+      "summary": "acceptance-actions.ts: fullStateOf decide cómo está la verificación completa (sin ejecutar, corriendo, correcta o fallida; nada sin verify.full) con la vista del cambio y la ejecución en vivo. sp-acceptance-actions sigue watchRun y, solo en la cabecera, muestra bajo los botones «La verificación completa …» en su color (atenuada, verde o roja); pasa ese estado vivo al diálogo. AcceptResult lo repite y lo sigue mientras está abierto: sin ejecutar, «ejecutarla antes» cierra el diálogo y la lanza; si falló, pide revisar su salida y el botón pasa a «Aceptar de todos modos». Los textos se forman con «La verificación completa» más el estado para no pasar de 300 líneas (298). 3 tests nuevos (9 en total). docs/ui.md lo describe. Comprobado a 390 y 1280 px, en claro y oscuro: sin ejecutar, «ejecutarla antes», corriendo, el diálogo abierto que pasa a correcta, fallida y «Aceptar de todos modos»."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:04b0c2289bf6824677b95b53e9f9e133d9875e0b45128e3631f2b29441f04ba5",
-    "at": "2026-10-23T05:42:44.021Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }
