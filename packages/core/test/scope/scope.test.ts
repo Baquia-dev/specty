@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  autoBasis,
   type ChangedFile,
   DEFAULT_CONFIG,
   decideScopeRequest,
@@ -97,6 +98,23 @@ describe("decideScopeRequest", () => {
     expect(decideScopeRequest(["test/x_test.dart"], { ...RULES, autoApprove: "none" })).toBe(
       "human",
     );
+  });
+
+  it("approves what the approved spec already plans, unless it is sensitive (AC1, AC2, AC4)", () => {
+    const planned = ["lib/b.dart", "lib/feature/**", "lib/auth/login.dart"];
+    expect(decideScopeRequest(["lib/b.dart", "lib/feature/x.dart"], RULES, planned)).toBe("auto");
+    expect(decideScopeRequest(["lib/b.dart", "lib/c.dart"], RULES, planned)).toBe("human");
+    expect(decideScopeRequest(["lib/auth/login.dart"], RULES, planned)).toBe("human");
+    expect(decideScopeRequest(["lib/b.dart"], { ...RULES, autoApprove: "none" }, planned)).toBe(
+      "human",
+    );
+  });
+
+  it("names why each path qualifies, tests and generated files first", () => {
+    expect(autoBasis("test/x_test.dart", RULES, ["test/x_test.dart"])).toBe("test");
+    expect(autoBasis("lib/a.g.dart", RULES, ["lib/a.g.dart"])).toBe("generated");
+    expect(autoBasis("lib/b.dart", RULES, ["lib/b.dart"])).toBe("planned");
+    expect(autoBasis("lib/c.dart", RULES, ["lib/b.dart"])).toBeUndefined();
   });
 });
 

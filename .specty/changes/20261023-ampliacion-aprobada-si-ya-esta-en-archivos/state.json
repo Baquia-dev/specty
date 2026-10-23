@@ -6,6 +6,13 @@
   "branch": "specty/20261023-ampliacion-aprobada-si-ya-esta-en-archivos",
   "baseCommit": "be5b16878c9848945445c40e66144e2fbfc16e66",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d470d9e4f17866d7104218dc444509bb2a1369b477a5bfa9a3acc96069cd02b4",
+    "at": "2026-10-23T10:58:42.023Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3e089a14a6db4503526cfaa96dffdb42dd9498c8",
+      "startedAt": "2026-10-23T11:01:17.361Z",
+      "doneAt": "2026-10-23T11:01:55.185Z",
+      "summary": "autoBasis da el motivo de cada ruta (test, generated o planned) y decideScopeRequest aprueba también lo previsto en Archivos, nunca lo sensible"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 4,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d470d9e4f17866d7104218dc444509bb2a1369b477a5bfa9a3acc96069cd02b4",
-    "at": "2026-10-23T10:58:42.023Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

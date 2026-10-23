@@ -1,3 +1,6 @@
 {"ts":"2026-10-23T10:57:35.732Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-ampliacion-aprobada-si-ya-esta-en-archivos"}}
 {"ts":"2026-10-23T10:58:05.172Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:d470d9e4f17866d7104218dc444509bb2a1369b477a5bfa9a3acc96069cd02b4","size":"M","warnings":0}}
 {"ts":"2026-10-23T10:58:42.044Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:d470d9e4f17866d7104218dc444509bb2a1369b477a5bfa9a3acc96069cd02b4","channel":"tty"}}
+{"ts":"2026-10-23T11:01:17.362Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"3e089a14a6db4503526cfaa96dffdb42dd9498c8"}}
+{"ts":"2026-10-23T11:01:55.184Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/scope","exit":0,"ms":841}}
+{"ts":"2026-10-23T11:01:55.186Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"autoBasis da el motivo de cada ruta (test, generated o planned) y decideScopeRequest aprueba también lo previsto en Archivos, nunca lo sensible"}}

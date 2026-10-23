@@ -43,7 +43,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: La política aprueba lo previsto en Archivos
+- [x] T1: La política aprueba lo previsto en Archivos
   - files: packages/core/src/scope/scope.ts, packages/core/src/index.ts, packages/core/test/scope/scope.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope
