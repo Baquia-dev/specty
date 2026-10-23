@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   DEFAULT_CONFIG,
   decideGuard,
+  type ForeignPath,
   type GuardAction,
   type GuardChange,
   type GuardContext,
@@ -105,5 +106,47 @@ describe("decideGuard on shell commands", () => {
   it("answers in the project's language", () => {
     const english = decideGuard(write("src/a.ts"), { ...ctx(), lang: "en" });
     if (!english.allow) expect(english.reason).toContain("There is no active change");
+  });
+});
+
+describe("decideGuard on another worktree", () => {
+  const OTHER: ForeignPath = {
+    path: "/w/otra/src/a.ts",
+    worktree: "/w/otra",
+    branch: "specty/otra",
+  };
+
+  it("denies changing its files in every phase, with or without a change here", () => {
+    for (const context of [ctx(), ctx(change("draft")), ctx(IMPLEMENTING)]) {
+      expect(allowed({ kind: "write", paths: [], foreign: [OTHER] }, context)).toBe(false);
+      expect(allowed({ kind: "delete", paths: ["src/a.ts"], foreign: [OTHER] }, context)).toBe(
+        false,
+      );
+      expect(allowed(shell({ writes: ["src/a.ts"], foreign: [OTHER] }), context)).toBe(false);
+    }
+    expect(decideGuard({ kind: "write", paths: [], foreign: [OTHER] }, ctx())).toEqual({
+      allow: false,
+      rule: "worktree",
+      reason:
+        "`/w/otra/src/a.ts` está en otra worktree (`/w/otra`, rama specty/otra): es de otro cambio.",
+      next: "trabaja solo con los archivos de esta carpeta; ese cambio se edita desde una sesión abierta en `/w/otra`.",
+    });
+  });
+
+  it("names only the folder of a detached worktree, in the project's language", () => {
+    const detached = { path: "/w/x/a.ts", worktree: "/w/x" };
+    expect(
+      decideGuard({ kind: "write", paths: [], foreign: [detached] }, { ...ctx(), lang: "en" }),
+    ).toMatchObject({
+      allow: false,
+      reason: "`/w/x/a.ts` is in another worktree (`/w/x`): it belongs to another change.",
+    });
+  });
+
+  it("leaves the decision to this folder's rules when nothing is foreign", () => {
+    expect(allowed({ kind: "write", paths: ["src/a.ts"], foreign: [] }, ctx(IMPLEMENTING))).toBe(
+      true,
+    );
+    expect(allowed(shell({ writes: ["src/a.ts"], foreign: [] }), ctx(IMPLEMENTING))).toBe(true);
   });
 });

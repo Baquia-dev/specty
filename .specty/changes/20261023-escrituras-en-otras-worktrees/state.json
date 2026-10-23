@@ -6,6 +6,13 @@
   "branch": "specty/20261023-escrituras-en-otras-worktrees",
   "baseCommit": "920fd9e77565dab6bdd595253ae576ea6b7ac307",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ee805ae8205c02628aeef8260c0e684b9868705635ef49a45a3db5309e219b6b",
+    "at": "2026-10-23T10:56:55.927Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e342094052fa15b5719c1a99e7395e101d974dc1",
+      "startedAt": "2026-10-23T11:01:28.494Z",
+      "doneAt": "2026-10-23T11:03:22.841Z",
+      "summary": "core/src/guard/worktrees.ts: ForeignPath (ruta, carpeta de la worktree y su rama) y foreignDenial con el motivo y el siguiente paso en español e inglés. decide.ts: campo foreign opcional en las acciones de escritura y borrado y en ShellFacts, regla nueva worktree que se decide antes que las rutas propias y sin mirar la fase. index.ts exporta ForeignPath. Tests: en todas las fases y sin cambio activo, con rama o desacoplada, en inglés, y sin rutas ajenas decide como antes."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "AC": 5,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ee805ae8205c02628aeef8260c0e684b9868705635ef49a45a3db5309e219b6b",
-    "at": "2026-10-23T10:56:55.927Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

@@ -89,6 +89,7 @@ export {
   type ShellFacts,
 } from "./guard/decide";
 export { analyzeShell, type ShellAnalysis } from "./guard/shell";
+export type { ForeignPath } from "./guard/worktrees";
 export { hashText, type Sha256Hash, shortHash } from "./hash";
 export { fold, LANGS, type Lang } from "./i18n";
 export {

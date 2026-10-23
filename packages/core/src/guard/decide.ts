@@ -6,6 +6,7 @@ import type { ResolvedConfig } from "../schema/config";
 import { isGoverned } from "../scope/governed";
 import { classifyPath, scopeRulesFrom } from "../scope/scope";
 import type { ChangeKind } from "../spec/model";
+import { type ForeignPath, foreignDenial } from "./worktrees";
 
 /** Subcommands only a person may run (ARCHITECTURE §4, invariant). */
 export const HUMAN_COMMANDS: ReadonlySet<string> = new Set([
@@ -67,10 +68,17 @@ export interface ShellFacts {
   readonly committedGoverned: readonly string[];
   readonly writes: readonly string[];
   readonly deletes: readonly string[];
+  /** What the command would change inside another worktree of the repository. */
+  readonly foreign?: readonly ForeignPath[];
 }
 
 export type GuardAction =
-  | { readonly kind: "write" | "delete"; readonly paths: readonly string[] }
+  | {
+      readonly kind: "write" | "delete";
+      readonly paths: readonly string[];
+      /** Paths inside another worktree of the repository, kept apart from `paths`. */
+      readonly foreign?: readonly ForeignPath[];
+    }
   | { readonly kind: "shell"; readonly facts: ShellFacts }
   | { readonly kind: "other" };
 
@@ -85,7 +93,8 @@ export type GuardRule =
   | "no-change"
   | "phase"
   | "no-task"
-  | "scope";
+  | "scope"
+  | "worktree";
 
 export type GuardDecision =
   | { readonly allow: true }
@@ -102,7 +111,19 @@ const ALLOW: GuardDecision = { allow: true };
 export function decideGuard(action: GuardAction, ctx: GuardContext): GuardDecision {
   if (action.kind === "other") return ALLOW;
   if (action.kind === "shell") return decideShell(action.facts, ctx);
-  return firstDenial(action.paths.map((path) => decidePath(path, action.kind, ctx)));
+  return (
+    denyForeign(action.foreign, ctx) ??
+    firstDenial(action.paths.map((path) => decidePath(path, action.kind, ctx)))
+  );
+}
+
+/** Another worktree's files belong to another change, whatever this folder's phase. */
+function denyForeign(
+  foreign: readonly ForeignPath[] | undefined,
+  ctx: GuardContext,
+): GuardDecision | undefined {
+  const denial = foreignDenial(foreign ?? [], ctx.lang);
+  return denial === undefined ? undefined : deny("worktree", denial.reason, denial.next);
 }
 
 function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
@@ -155,10 +176,13 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
       ),
     );
   }
-  return firstDenial([
-    ...facts.writes.map((path) => decidePath(path, "write", ctx)),
-    ...facts.deletes.map((path) => decidePath(path, "delete", ctx)),
-  ]);
+  return (
+    denyForeign(facts.foreign, ctx) ??
+    firstDenial([
+      ...facts.writes.map((path) => decidePath(path, "write", ctx)),
+      ...facts.deletes.map((path) => decidePath(path, "delete", ctx)),
+    ])
+  );
 }
 
 function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): GuardDecision {

@@ -56,7 +56,7 @@ El guard impide que un agente cambie archivos de otra worktree del repositorio: 
 
 ## Tareas
 
-- [ ] T1: La regla de otras worktrees en core
+- [x] T1: La regla de otras worktrees en core
   - files: packages/core/src/guard/worktrees.ts, packages/core/src/guard/decide.ts, packages/core/src/index.ts, packages/core/test/guard/decide.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
