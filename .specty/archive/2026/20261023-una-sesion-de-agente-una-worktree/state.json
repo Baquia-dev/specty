@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-una-sesion-de-agente-una-worktree",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-una-sesion-de-agente-una-worktree",
   "baseCommit": "ab68b0a2fa56f85a115f0dcaf05f2016003ea58f",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c31b9fccb44343b8f9ed4b1a2e09460c265a0d7302c1563a350ed5867fb8db0a",
@@ -59,12 +59,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8dab2d2365136782229fe24420d40ca757311ef3",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:48:17.689Z",
       "doneAt": "2026-10-23T21:51:05.470Z",
-      "summary": "ARCHITECTURE §10: el guard no deja a una sesión entrar en otra worktree mientras su cambio sigue abierto (atadura por session_id en la carpeta común, se libera al cerrar, cancelar o desaparecer la carpeta)"
+      "summary": "ARCHITECTURE §10: el guard no deja a una sesión entrar en otra worktree mientras su cambio sigue abierto (atadura por session_id en la carpeta común, se libera al cerrar, cancelar o desaparecer la carpeta)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "T": 3,
     "R": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T21:52:31.063Z"
 }

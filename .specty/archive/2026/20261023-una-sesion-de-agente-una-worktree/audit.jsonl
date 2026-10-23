@@ -12,3 +12,6 @@
 {"ts":"2026-10-23T21:48:17.690Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"8dab2d2365136782229fe24420d40ca757311ef3"}}
 {"ts":"2026-10-23T21:51:05.467Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":63975}}
 {"ts":"2026-10-23T21:51:05.473Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §10: el guard no deja a una sesión entrar en otra worktree mientras su cambio sigue abierto (atadura por session_id en la carpeta común, se libera al cerrar, cancelar o desaparecer la carpeta)"}}
+{"ts":"2026-10-23T21:52:23.306Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-23T21:52:31.064Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:d6ea2c9c311c6ee2158da47a7602ccdbb54ba3bbf3fa1b1b71d81da8cc8226e7","size":"L","warnings":0}}
+{"ts":"2026-10-23T21:52:35.290Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

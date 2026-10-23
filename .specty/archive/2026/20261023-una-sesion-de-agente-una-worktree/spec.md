@@ -68,3 +68,23 @@ Una sesión de agente no puede saltar a la worktree de otro cambio mientras el s
 
 - R1: Una sesión queda atada a un cambio que se abandonó sin cancelarlo — se libera al cancelarlo, y la salida del bloqueo lo dice.
 - R2: Cada `EnterWorktree` abre una sesión de Specty en la carpeta atada para mirar su cambio — solo lee el estado.
+
+## Cierre
+
+### Resumen
+
+En Claude Code, una sesión de agente trabaja un solo cambio a la vez. `specty init` añade `EnterWorktree` al matcher de `PreToolUse`, así el guard ve cada entrada en una worktree. La primera worktree en la que entra una sesión (por su `session_id`) pasa a ser la suya, guardada en `common/specty/sessions/<id>.json` para que se vea desde todas las worktrees. Mientras el cambio de esa worktree siga abierto, entrar en otra se bloquea con la regla `session`: el motivo nombra su worktree y su cambio, y el SIGUIENTE pide terminarlo o abrir otra sesión. Volver a la propia se permite. Cuando el cambio se cierra o se cancela, o su carpeta ya no existe, la sesión queda libre y puede encadenar el siguiente. Sin `session_id`, el guard no juzga la entrada.
+
+### Desviaciones
+
+- **`enforce/sessions.ts` es un archivo nuevo:** la atadura, la acción `enter` y su cambio abierto van aparte para que `guard.ts` no pase de 300 líneas. Entró con la ampliación S1, aprobada en modo delegado.
+
+### Decisiones
+
+- **El cambio de la carpeta atada se lee en esa carpeta,** con una sesión de Specty abierta allí, como hace `status`. Una carpeta que no existe libera la sesión sin abrir nada.
+- **`EnterWorktree` con `name`** (una worktree nueva de Claude Code) se juzga como una carpeta dentro de `.claude/worktrees/`.
+- **A1, confirmado al aprobar:** la sesión puede encadenar cambios de uno en uno, pero no saltar entre cambios abiertos.
+
+### Pendientes
+
+- **Recompilar el CLI de la carpeta principal y volver a ejecutar `specty init`** cuando esto esté en `main`, para que `EnterWorktree` llegue al guard de este repo. `init` hace ya él mismo el commit.
