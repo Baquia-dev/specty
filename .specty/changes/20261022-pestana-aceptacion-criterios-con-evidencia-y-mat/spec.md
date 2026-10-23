@@ -73,7 +73,7 @@ La pestaña Aceptación deja el texto provisional. Muestra cada criterio con la 
   - files: packages/ui/src/acceptance/acceptance-actions.ts, packages/ui/src/acceptance/acceptance-actions.test.ts
   - ac: AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/acceptance-actions.test.ts
-- [ ] T3: Los criterios con evidencia y la matriz
+- [x] T3: Los criterios con evidencia y la matriz
   - files: packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/acceptance/criterion-row.ts, packages/ui/src/acceptance/trace-matrix.ts, packages/ui/src/acceptance/acceptance-tab.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/acceptance-tab.test.ts

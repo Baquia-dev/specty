@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1de81348162d2a254c10e4f78b59b46389695200",
+      "attempts": 1,
       "startedAt": "2026-10-23T01:16:57.362Z",
       "doneAt": "2026-10-23T01:19:06.450Z",
-      "summary": "acceptance/acceptance-actions.ts: sp-acceptance-actions («Pedir ajustes…» y «Aceptar resultado», normal y compacta para la barra) y ResultDialogs, que abre los diálogos y deja empezar la petición con un texto («AC2: ») para la fila del criterio. AdjustResult explica cómo clasificará el agente la petición (defecto, refinamiento, alcance nuevo), no deja enviarla vacía y la envía tal cual con decideResult; AcceptResult lista las tareas hechas con su commit y lo que viene después (el cierre, o que un cambio quick se cierra). Si la fuente falla, un aviso lo explica y el diálogo sigue abierto. 6 tests."
+      "summary": "acceptance/acceptance-actions.ts: sp-acceptance-actions («Pedir ajustes…» y «Aceptar resultado», normal y compacta para la barra) y ResultDialogs, que abre los diálogos y deja empezar la petición con un texto («AC2: ») para la fila del criterio. AdjustResult explica cómo clasificará el agente la petición (defecto, refinamiento, alcance nuevo), no deja enviarla vacía y la envía tal cual con decideResult; AcceptResult lista las tareas hechas con su commit y lo que viene después (el cierre, o que un cambio quick se cierra). Si la fuente falla, un aviso lo explica y el diálogo sigue abierto. 6 tests.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d55a8302ac8425077af4f75e4a2085a106896318",
+      "startedAt": "2026-10-23T01:19:06.728Z",
+      "doneAt": "2026-10-23T01:23:55.601Z",
+      "summary": "acceptance/acceptance-tab.ts: sp-acceptance-tab con el resumen («2 de 2 criterios verificados · 2 tareas hechas · 2 commits»), el selector «Vista» (sp-select: Criterios o Matriz, recordado en localStorage con caída a la lista si el navegador no guarda nada), la nota del cierre en esa fase y un estado vacío sin criterios. criterion-row.ts: sp-criterion-row, fila de documento con el texto, las tareas que lo cubren (id, título, commit y veredicto de su última verificación) y la marca del criterio (Verificado, Hecho sin verificación, Pendiente, Sin tarea); en aceptación, «No se cumple…» (REVEAL) abre «Pedir ajustes» con «AC2: ». Exporta verdictOf. trace-matrix.ts: sp-trace-matrix, tabla con encabezados de fila y columna, celdas cubiertas como botones con aria-pressed y nombre completo, «—» con texto para lector de pantalla en las no cubiertas, fila de verificaciones y el detalle de la celda elegida (la primera por defecto) en bloques. 7 tests."
     }
   },
   "pending": {

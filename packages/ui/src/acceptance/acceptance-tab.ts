@@ -1,0 +1,155 @@
+// SPDX-License-Identifier: Apache-2.0
+import { DOCUMENT } from "@angular/common";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  signal,
+} from "@angular/core";
+import { LucideListChecks } from "@lucide/angular";
+import { LIST, SectionDivider } from "../components/document";
+import { EmptyState } from "../components/empty-state";
+import { Select } from "../components/select";
+import { evidenceOf, summaryOf } from "../data/acceptance";
+import type { ChangeView } from "../data/records";
+import { Preferences } from "../theme/preferences";
+import { CriterionRow } from "./criterion-row";
+import { TraceMatrix } from "./trace-matrix";
+
+type AcceptanceView = "list" | "matrix";
+
+const VIEWS: readonly AcceptanceView[] = ["list", "matrix"];
+/** The view is a preference, remembered in this browser like the Inbox's grouping. */
+const VIEW_KEY = "specty.acceptance.view";
+
+/**
+ * The Acceptance tab (docs/ui.md, Aceptación): each criterion with the work that backs it, as
+ * document rows or as a matrix of criteria by tasks. Outside acceptance it shows the evidence so
+ * far, with no actions.
+ */
+@Component({
+  selector: "sp-acceptance-tab",
+  imports: [SectionDivider, EmptyState, Select, CriterionRow, TraceMatrix],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { class: "flex flex-col gap-6" },
+  template: `
+    @if (evidence().length === 0) {
+      <sp-empty-state [heading]="t()('Aún no hay criterios', 'No criteria yet')" [icon]="emptyIcon">
+        <p class="m-0">{{ t()('Aparecen aquí cuando la spec los define.', 'They show here once the spec defines them.') }}</p>
+      </sp-empty-state>
+    } @else {
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <p class="m-0 text-sm text-text-muted" data-summary><strong class="font-semibold text-text">{{ verifiedLine() }}</strong>{{ rest() }}</p>
+        <sp-select [label]="t()('Vista', 'View')" [options]="views()" [value]="view()" (valueChange)="choose($event)" data-view />
+      </div>
+      @if (closingNote(); as note) {
+        <p class="m-0 text-sm" role="note" data-closing>{{ note }}</p>
+      }
+      <section aria-labelledby="acceptance-criteria">
+        <sp-section-divider [heading]="t()('Criterios', 'Criteria')" headingId="acceptance-criteria" [meta]="verifiedOfTotal()" [level]="2" />
+        @if (view() === 'matrix') {
+          <sp-trace-matrix class="mt-3" [evidence]="evidence()" [tasks]="change().progress.tasks" />
+        } @else {
+          <div role="list" [class]="list + ' mt-2'">
+            @for (item of evidence(); track item.id) {
+              <sp-criterion-row [evidence]="item" [change]="change()" [canAdjust]="change().phase === 'acceptance'" />
+            }
+          </div>
+        }
+      </section>
+    }
+  `,
+})
+export class AcceptanceTab {
+  readonly change = input.required<ChangeView>();
+
+  private readonly window = inject(DOCUMENT).defaultView;
+  private readonly preferences = inject(Preferences);
+  protected readonly t = this.preferences.t;
+  protected readonly list = LIST;
+  protected readonly emptyIcon = LucideListChecks;
+  protected readonly view = signal<AcceptanceView>(this.stored() ?? "list");
+
+  protected readonly views = computed(() => [
+    { value: "list", label: this.t()("Criterios", "Criteria") },
+    { value: "matrix", label: this.t()("Matriz", "Matrix") },
+  ]);
+
+  protected readonly evidence = computed(() =>
+    evidenceOf(this.change().review.criteria, this.change().progress.tasks),
+  );
+  private readonly summary = computed(() =>
+    summaryOf(this.evidence(), this.change().progress.tasks),
+  );
+
+  /** «2 de 2 criterios verificados». */
+  protected readonly verifiedLine = computed(() => {
+    const { verified, criteria } = this.summary();
+    return this.t()(
+      `${verified} de ${criteria} criterios verificados`,
+      `${verified} of ${criteria} criteria verified`,
+    );
+  });
+
+  protected readonly verifiedOfTotal = computed(() => {
+    const { verified, criteria } = this.summary();
+    return this.t()(`${verified} de ${criteria}`, `${verified} of ${criteria}`);
+  });
+
+  /** « · 2 tareas hechas · 2 commits». */
+  protected readonly rest = computed(() => {
+    const { done, commits } = this.summary();
+    const t = this.t();
+    const tasks =
+      done === 1
+        ? t("1 tarea hecha", "1 task done")
+        : t(`${done} tareas hechas`, `${done} tasks done`);
+    const made = commits === 1 ? "1 commit" : `${commits} commits`;
+    return ` · ${tasks} · ${made}`;
+  });
+
+  /** After accepting: who has to act on the closing now. */
+  protected readonly closingNote = computed(() => {
+    const change = this.change();
+    if (change.phase !== "closing") return "";
+    return change.decision === "closing"
+      ? this.t()(
+          "El agente envió el cierre: confírmalo con specty close.",
+          "The agent sent the closing: confirm it with specty close.",
+        )
+      : this.t()(
+          "Resultado aceptado: el agente redacta el cierre.",
+          "Result accepted: the agent is writing the closing.",
+        );
+  });
+
+  constructor() {
+    effect(() => this.store(this.view()));
+  }
+
+  protected choose(value: string): void {
+    const view = VIEWS.find((item) => item === value);
+    if (view !== undefined) this.view.set(view);
+  }
+
+  /** Storage can be missing or throw (private mode, blocked site data): the list is the default. */
+  private stored(): AcceptanceView | undefined {
+    try {
+      const value = this.window?.localStorage.getItem(VIEW_KEY);
+      return VIEWS.find((item) => item === value);
+    } catch {
+      return undefined;
+    }
+  }
+
+  private store(view: AcceptanceView): void {
+    try {
+      this.window?.localStorage.setItem(VIEW_KEY, view);
+    } catch {
+      // Not remembered across visits; the current choice still applies.
+    }
+  }
+}
