@@ -3,6 +3,7 @@
 import type { ChangeState, Phase } from "@baquia-dev/specty-core";
 import type { ChangeRecord } from "./records";
 import { asistenciaSample } from "./sample-acceptance";
+import { withHistory } from "./sample-history";
 import { boletinesProgress, loginProgress, withProgress } from "./sample-progress";
 import { revisedSample } from "./sample-revisions";
 import { SAMPLE_SPECS } from "./sample-specs";
@@ -93,5 +94,5 @@ export function sampleRecords(now: number): ChangeRecord[] {
     sample("20261015-redondeo-promedios", "done", 60 * 26, now, {}, ["done"]),
     sample("20261014-chat-docentes", "cancelled", 60 * 72, now),
   ];
-  return records.map((record) => ({ ...record, verifyFull: VERIFY_FULL }));
+  return records.map((record) => withHistory({ ...record, verifyFull: VERIFY_FULL }, now));
 }

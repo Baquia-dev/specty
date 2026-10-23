@@ -63,7 +63,7 @@ La vista de cada cambio trae su historia: los eventos de `audit.jsonl` como una 
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts
-- [ ] T3: La historia de los ejemplos
+- [x] T3: La historia de los ejemplos
   - files: packages/ui/src/data/sample-history.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/sample-specs.test.ts
   - ac: AC4
   - verify: pnpm check

@@ -42,6 +42,37 @@ describe("sample data", () => {
     expect(newScope?.map((entry) => entry.key)).toEqual(["T4"]);
   });
 
+  it("tells each change's history from its creation to its phase now (AC4)", () => {
+    const views = deriveViews(sampleRecords(Date.now()));
+    for (const view of views) {
+      expect(view.history[0]?.event, view.id).toBe("change.created");
+      const times = view.history.map((entry) => entry.at);
+      expect(times, view.id).toEqual(times.toSorted());
+    }
+    const last = (id: string) => views.find((view) => view.id === id)?.history.at(-1);
+    expect(last("20261017-recordatorios-correo")?.title.es).toBe("Envió el cierre");
+    expect(last("20261015-redondeo-promedios")?.event).toBe("change.closed");
+    expect(last("20261014-chat-docentes")?.event).toBe("change.cancelled");
+    expect(last("20261020-evolucion-trimestre")?.title.es).toBe("Confirmó A1");
+    // The events the samples already had stay, in their place.
+    const pdf = views.find((view) => view.id === "20261019-boletines-pdf")?.history ?? [];
+    expect(pdf.map((entry) => entry.event)).toEqual([
+      "change.created",
+      "spec.proposed",
+      "spec.approved",
+      "task.started",
+      "task.verified",
+      "task.completed",
+      "task.started",
+      "task.verified",
+      "task.verified",
+      "task.completed",
+      "task.started",
+      "task.verified",
+      "scope.requested",
+    ]);
+  });
+
   it("has a closing sent for confirmation, in its four parts", () => {
     const view = deriveViews([sample("20261017-recordatorios-correo")])[0];
     expect(view?.decision).toBe("closing");
