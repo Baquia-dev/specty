@@ -72,7 +72,7 @@ Cuando la persona cierra un cambio (o acepta uno quick), Specty lo incorpora a l
   - files: packages/cli/src/flow/integrate.ts, packages/cli/src/commands/finish.ts, packages/cli/test/integrate.test.ts
   - ac: AC3, AC4, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts
-- [ ] T3: Incorporar el quick al aceptar
+- [x] T3: Incorporar el quick al aceptar
   - files: packages/cli/src/commands/accept.ts, packages/cli/test/integrate.test.ts, packages/cli/test/flow.test.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts test/flow.test.ts

@@ -76,21 +76,18 @@ export async function absorbTarget(
       ? []
       : lines((await git.run(["-C", plan.holder, "diff", "--name-only", "HEAD"])).stdout);
   if (plan.holder !== undefined && dirty.length > 0) {
-    return refused(
-      session,
-      state,
-      [
-        t(
-          `${plan.target} está en ${plan.holder}, que tiene cambios sin commit: avanzarla podría pisarlos.`,
-          `${plan.target} is checked out in ${plan.holder}, which has uncommitted changes: moving it could overwrite them.`,
-        ),
-      ],
-      { title: t("SIN COMMIT", "UNCOMMITTED"), lines: dirty },
-      t(
-        `guarda o descarta esos cambios en ${plan.holder} y vuelve a ejecutar ${run}.`,
-        `commit or discard those changes in ${plan.holder} and run ${run} again.`,
-      ),
+    const reason = t(
+      `${plan.target} está en ${plan.holder}, que tiene cambios sin commit: avanzarla podría pisarlos.`,
+      `${plan.target} is checked out in ${plan.holder}, which has uncommitted changes: moving it could overwrite them.`,
     );
+    const next = t(
+      `guarda o descarta esos cambios en ${plan.holder} y vuelve a ejecutar ${run}.`,
+      `commit or discard those changes in ${plan.holder} and run ${run} again.`,
+    );
+    return refused(session, state, reason, next, {
+      title: t("SIN COMMIT", "UNCOMMITTED"),
+      lines: dirty,
+    });
   }
   if (await contains(git, "HEAD", plan.target)) return { ok: true, lines: [] };
   const byHand = t(
@@ -101,31 +98,21 @@ export async function absorbTarget(
   if (merged.code !== 0) {
     const conflicts = lines((await git.run(["diff", "--name-only", "--diff-filter=U"])).stdout);
     await git.run(["merge", "--abort"]);
-    return conflicts.length > 0
-      ? refused(
-          session,
-          state,
-          [
-            t(
-              `${plan.target} choca con este cambio.`,
-              `${plan.target} conflicts with this change.`,
-            ),
-          ],
-          { title: t("CONFLICTOS", "CONFLICTS"), lines: conflicts },
-          byHand,
-        )
-      : refused(
-          session,
-          state,
-          [
-            t(
-              `No se pudo incorporar ${plan.target} a este cambio: ${reasonOf(merged)}`,
-              `Could not bring ${plan.target} into this change: ${reasonOf(merged)}`,
-            ),
-          ],
-          undefined,
-          byHand,
-        );
+    if (conflicts.length === 0) {
+      const reason = t(
+        `No se pudo incorporar ${plan.target} a este cambio: ${reasonOf(merged)}`,
+        `Could not bring ${plan.target} into this change: ${reasonOf(merged)}`,
+      );
+      return refused(session, state, reason, byHand);
+    }
+    const reason = t(
+      `${plan.target} choca con este cambio.`,
+      `${plan.target} conflicts with this change.`,
+    );
+    return refused(session, state, reason, byHand, {
+      title: t("CONFLICTOS", "CONFLICTS"),
+      lines: conflicts,
+    });
   }
   const command = session.config.verify.full ?? session.config.verify.default;
   if (command !== undefined) {
@@ -138,18 +125,15 @@ export async function absorbTarget(
     });
     if (result.code !== 0) {
       await git.run(["merge", "--abort"]);
-      return refused(
-        session,
-        state,
-        [
-          t(
-            `Con ${plan.target} incorporado, \`${command}\` falla.`,
-            `With ${plan.target} merged in, \`${command}\` fails.`,
-          ),
-        ],
-        { title: t("SALIDA DE LA VERIFICACIÓN", "VERIFICATION OUTPUT"), lines: tail(result, 15) },
-        byHand,
+      const reason = t(
+        `Con ${plan.target} incorporado, \`${command}\` falla.`,
+        `With ${plan.target} merged in, \`${command}\` fails.`,
       );
+      const output = tail(result, 15);
+      return refused(session, state, reason, byHand, {
+        title: t("SALIDA DE LA VERIFICACIÓN", "VERIFICATION OUTPUT"),
+        lines: output,
+      });
     }
   }
   const commit = await commitWithReceipt(session, {
@@ -175,24 +159,24 @@ export async function absorbTarget(
 function refused(
   session: Session,
   state: ChangeState,
-  reasons: readonly string[],
-  details: OutputBlock | undefined,
+  reason: string,
   next: string,
+  details?: OutputBlock,
 ): Absorbed {
   const t = translator(session.lang);
   const lead =
     state.phase === "done"
       ? t("No se incorporó y nada cambió.", "Not merged, and nothing changed.")
-      : t("No se cerró y nada cambió.", "Not closed, and nothing changed.");
+      : state.phase === "acceptance"
+        ? t("No se aceptó y nada cambió.", "Not accepted, and nothing changed.")
+        : t("No se cerró y nada cambió.", "Not closed, and nothing changed.");
+  const blocks = section(undefined, [lead, reason]);
   return {
     ok: false,
     output: {
       status: "blocked",
       header: headerOf(state.id, state.phase),
-      blocks: [
-        ...section(undefined, [lead, ...reasons]),
-        ...(details === undefined ? [] : [details]),
-      ],
+      blocks: details === undefined ? blocks : [...blocks, details],
       next,
     },
   };

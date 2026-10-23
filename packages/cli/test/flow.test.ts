@@ -191,6 +191,8 @@ describe("the quick lane", () => {
     await cli(root, ["task", "done", "T1", "--summary", "Texto corregido"]);
     const accepted = await cli(root, ["accept"], { terminal: person() });
     expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
+    expect(accepted.out).toContain("Incorporado a main.");
+    expect(git(root, "branch", "--show-current")).toBe("main");
     expect(await read(root, `${ARCHIVE}/${id}/spec.md`)).toContain("Texto corregido");
   });
 });

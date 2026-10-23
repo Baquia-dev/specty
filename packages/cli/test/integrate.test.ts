@@ -176,6 +176,43 @@ describe("closing incorporates the change into the main branch", () => {
     expect(again.out).toContain("No hay nada pendiente de `close` en la fase done.");
   });
 
+  it("incorporates a quick change on acceptance, and keeps it in acceptance on a conflict (AC8)", async () => {
+    const root = await tempRepo({ ...FILES, "src/button.ts": "Sing in\n" });
+    /** A quick change in its own worktree that writes `text` to the button, done and in acceptance. */
+    const quick = async (title: string, slug: string, text: string) => {
+      expect((await cli(root, ["new", "--worktree", "--kind", "quick", title])).code).toBe(0);
+      const id = `${CHANGE.slice(0, 8)}-${slug}`;
+      const folder = join(dirname(root), `${basename(root)}.worktrees`, id);
+      await writeFiles(folder, {
+        [`.specty/changes/${id}/spec.md`]: `---\nkind: quick\n---\n\n# ${title}\n\n## Objetivo\n\nDice «Sing in».\n\n## Archivos\n\n- modificar src/button.ts — texto\n\n## Tareas\n\n- [ ] T1: Corregir texto\n  - files: src/button.ts\n  - type: fix\n`,
+      });
+      await cli(folder, ["propose"]);
+      await cli(folder, ["approve"], { terminal: person() });
+      await cli(folder, ["next"]);
+      await writeFiles(folder, { "src/button.ts": text });
+      await cli(folder, ["task", "done", "T1", "--summary", "Texto corregido"]);
+      return { id, folder };
+    };
+    const first = await quick("Corregir botón", "corregir-boton", "Sign in\n");
+    const accepted = await cli(first.folder, ["accept"], { terminal: person() });
+    expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
+    expect(accepted.out).toContain("Incorporado a main.");
+    expect(await read(root, "src/button.ts")).toBe("Sign in\n");
+    expect(await exists(first.folder)).toBe(false);
+
+    const second = await quick("Otro botón", "otro-boton", "Log in\n");
+    await writeFiles(root, { "src/button.ts": "Sign up\n" });
+    git(root, "commit", "-q", "-am", "main cambia el botón");
+    const refused = await cli(second.folder, ["accept"], { terminal: person() });
+    expect(refused.code).toBe(2);
+    expect(refused.out).toContain("No se aceptó y nada cambió.");
+    expect(refused.out).toContain("CONFLICTOS:\n  src/button.ts");
+    expect(refused.out).toContain("y vuelve a ejecutar `specty accept`.");
+    expect((await cli(second.folder, ["next"])).out).toContain(
+      `SPECTY · ${second.id} · acceptance`,
+    );
+  });
+
   it("closes as before in team mode and without a main branch (AC9)", async () => {
     const team = await inWorktree({ ...FILES, ".specty/config.yaml": `${CONFIG()}mode: team\n` });
     await toClosing(team.folder);

@@ -13,6 +13,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState } from "../flow/active";
 import { archive, commitArchive } from "../flow/finish";
+import { absorbTarget, integrationOf, landChange, withIntegration } from "../flow/integrate";
 import { changeView } from "../flow/views";
 import { execute, tail } from "../io/exec";
 import { writeText } from "../io/files";
@@ -123,6 +124,11 @@ async function closeQuick(
   summaries: readonly string[],
 ): Promise<Output> {
   const t = translator(session.lang);
+  // As when closing: the main branch comes in first, and a refusal leaves it in acceptance.
+  const plan = await integrationOf(session, change.state);
+  const absorbed =
+    plan === undefined ? undefined : await absorbTarget(session, plan, change.state, "accept");
+  if (absorbed?.ok === false) return absorbed.output;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
   const closing = `### ${t("Resumen", "Summary")}\n\n${summaries.join("\n")}`;
   await writeText(
@@ -142,13 +148,19 @@ async function closeQuick(
     archived,
     `docs(spec): ${t("cerrar", "close")} ${spec.title}`,
   );
-  return closedCard(
-    headerOf(change.state.id, "done"),
-    t(
-      `Cambio aceptado, cerrado y archivado (commit ${commit}).`,
-      `Change accepted, closed and archived (commit ${commit}).`,
+  const landed = plan === undefined ? undefined : await landChange(session, plan);
+  return withIntegration(
+    session,
+    closedCard(
+      headerOf(change.state.id, "done"),
+      t(
+        `Cambio aceptado, cerrado y archivado (commit ${commit}).`,
+        `Change accepted, closed and archived (commit ${commit}).`,
+      ),
+      landed?.landed === true ? undefined : change.state.branch,
+      session.cards,
     ),
-    change.state.branch,
-    session.cards,
+    absorbed?.lines ?? [],
+    landed,
   );
 }
