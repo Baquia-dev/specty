@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261022-pestana-aceptacion-criterios-con-evidencia-y-mat",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261022-pestana-aceptacion-criterios-con-evidencia-y-mat",
   "baseCommit": "52f53d135ee33eb18bc0029bc12324985d29ec51",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:7a8a2f502dcf2783d1722602a096a17fcc52c9f699434533c9f14488ad4ffa1c",
@@ -83,15 +83,15 @@
     },
     "T4": {
       "status": "done",
+      "baseCommit": "58a5f27fd0c9a849d8c294febf2f52aeb91cb2e0",
+      "attempts": 1,
+      "startedAt": "2026-10-23T01:23:55.882Z",
+      "doneAt": "2026-10-23T01:33:17.894Z",
+      "summary": "change-page.ts: la pestaña Aceptación en lugar del texto provisional y sp-acceptance-actions junto al título durante la aceptación (como las de revisión). change-bar.ts: las acciones compactas en la barra en aceptación. docs/ui.md: la sección Aceptación con las dos vistas, las acciones y lo que llega después. Con S1, dos arreglos de la comprobación en el navegador: «No se cumple…» va bajo la marca (en el móvil, a su lado) y ya no deja un hueco bajo cada criterio; «Pedir ajustes» abre con el foco en la petición (cdkFocusInitial) y el cursor tras «AC2: ». Comprobado a 390 y 1280 px, en claro y oscuro: evidencia, matriz recordada, «No se cumple…», pedir ajustes desde la barra compacta (pasa a ajustes) y aceptar desde la cabecera (pasa a cierre, con la nota y la Bandeja al día).",
       "scopeExtra": [
         "packages/ui/src/acceptance/criterion-row.ts",
         "packages/ui/src/acceptance/acceptance-actions.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "58a5f27fd0c9a849d8c294febf2f52aeb91cb2e0",
-      "startedAt": "2026-10-23T01:23:55.882Z",
-      "doneAt": "2026-10-23T01:33:17.894Z",
-      "summary": "change-page.ts: la pestaña Aceptación en lugar del texto provisional y sp-acceptance-actions junto al título durante la aceptación (como las de revisión). change-bar.ts: las acciones compactas en la barra en aceptación. docs/ui.md: la sección Aceptación con las dos vistas, las acciones y lo que llega después. Con S1, dos arreglos de la comprobación en el navegador: «No se cumple…» va bajo la marca (en el móvil, a su lado) y ya no deja un hueco bajo cada criterio; «Pedir ajustes» abre con el foco en la petición (cdkFocusInitial) y el cursor tras «AC2: ». Comprobado a 390 y 1280 px, en claro y oscuro: evidencia, matriz recordada, «No se cumple…», pedir ajustes desde la barra compacta (pasa a ajustes) y aceptar desde la cabecera (pasa a cierre, con la nota y la Bandeja al día)."
+      ]
     }
   },
   "pending": {
@@ -104,5 +104,6 @@
     "T": 4,
     "R": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T02:05:02.373Z"
 }

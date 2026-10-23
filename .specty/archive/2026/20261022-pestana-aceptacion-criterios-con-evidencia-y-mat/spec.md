@@ -87,3 +87,31 @@ La pestaña Aceptación deja el texto provisional. Muestra cada criterio con la 
 
 - R1: Con muchas tareas la matriz es ancha — se desplaza de lado dentro de su caja, y la lista sigue siendo la vista por defecto.
 - R2: `records.ts` y `fixtures.ts` están cerca de las 300 líneas — la fuente gana una sola acción, y la muestra y su lógica van en `sample-acceptance.ts`.
+
+## Cierre
+
+### Resumen
+
+La pestaña Aceptación deja el texto provisional. En la vista «Criterios», por defecto, cada criterio es una fila de documento con las tareas que lo cubren, su commit, el veredicto de su última verificación y su estado («Verificado», «Hecho, sin verificación», «Pendiente» o «Sin tarea»), bajo un resumen. La vista «Matriz» muestra criterios por tareas, con el detalle de la celda elegida; la vista se elige con «Vista» y se recuerda en el navegador. En aceptación, la cabecera y la barra compacta llevan «Pedir ajustes…» y «Aceptar resultado», con diálogos que explican cómo se clasificará la petición y qué viene después de aceptar. Cada criterio ofrece «No se cumple…», que abre la petición empezando por él. La fuente de ejemplo hace lo que la CLI: aceptar pasa a cierre (o cierra un cambio quick), y pedir ajustes pasa a ajustes con la petición literal.
+
+### Desviaciones
+
+- **Ampliación S1 en T4:** la comprobación en el navegador encontró dos detalles en archivos de tareas ya hechas. «No se cumple…», oculto hasta pasar por la fila, reservaba una línea y dejaba un hueco bajo cada criterio; ahora va bajo la marca de estado (en el móvil, a su lado). El diálogo «Pedir ajustes» abría con el foco en Cerrar; ahora lo pone en la petición, con el cursor tras «AC2: ».
+- **T4 sin tests propios:** `change-page.test.ts` está en las 300 líneas. La pestaña y las acciones tienen sus tests, y su conexión con la cabecera y la barra se comprobó en el navegador.
+- **El detalle de la matriz en bloques:** cada línea es un párrafo, para que un lector de pantalla no las lea pegadas.
+
+### Decisiones
+
+- **Evidencia calculada en la pestaña:** `evidenceOf` usa lo que ya trae la vista del cambio (criterios de la spec y progreso de las tareas), así que la derivación de vistas en el worker no cambia.
+- **Una sola acción:** `decideResult(change, { kind: "accept" } | { kind: "adjust", request })`, con los mismos eventos que la CLI: `change.accepted`, `adjust.requested` y, en un cambio quick, `change.closed`.
+- **«No se cumple…» reutiliza «Pedir ajustes»:** el estado guarda una sola petición de ajuste a la vez, así que la petición sobre un criterio es la misma, empezando por su id; el agente la recibe tal cual, como con `specty adjust`.
+- **Aceptar se confirma en un diálogo:** concede permiso sobre el código, como `specty accept`, que también pide confirmación.
+- **El foco del diálogo:** el campo lleva `cdkFocusInitial`, que el diálogo del CDK respeta, sin cambiar el comportamiento de los demás diálogos.
+
+### Pendientes
+
+- **Verificación completa:** «Ejecutar verificación completa» (`verify.full`) desde la UI, con su salida en vivo y su resultado en el diálogo de aceptar; es el cambio siguiente.
+- **Diffs:** por tarea o del cambio completo, unificado o lado a lado.
+- **Cierre:** ver el cierre del agente y «Confirmar y archivar». La franja de datos dice «cierre por confirmar» aunque el agente aún no lo haya enviado; conviene ajustarlo en ese cambio.
+- **Servidor local:** implementar `decideResult` con las mismas garantías que la CLI para una acción que concede permisos.
+- **Historial:** la línea de tiempo de eventos.
