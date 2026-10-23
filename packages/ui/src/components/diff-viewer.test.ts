@@ -103,6 +103,10 @@ describe("Diff viewer", () => {
     const toggle = repository?.querySelector("[data-file-toggle]");
     expect(text(toggle?.querySelector("[data-counts]"))).toBe("+24 −1");
     expect(heard(toggle)).toBe(`${REPOSITORY}, Modificado, 24 añadidas, 1 quitada`);
+    // The chevron stays apart; a path breaks only after a slash, in the header and in the list.
+    expect(toggle?.querySelector(":scope > [data-head] [data-status]")).not.toBeNull();
+    expect(toggle?.querySelectorAll("[data-path] wbr")).toHaveLength(3);
+    expect(list[0]?.querySelectorAll("[data-path] wbr")).toHaveLength(3);
     const [first] = repository?.querySelectorAll("[data-hunk]") ?? [];
     expect(text(first?.querySelector("[aria-hidden]"))).toBe("@@ -1,6 +1,7 @@");
     const added = repository?.querySelector("[data-line=added]");

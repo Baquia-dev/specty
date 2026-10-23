@@ -5,13 +5,23 @@ import { LucideCheck, LucideSettings } from "@lucide/angular";
 import { Badge, PhaseBadge } from "../components/badge";
 import { Button, IconButton } from "../components/button";
 import { Card } from "../components/card";
+import { DiffViewer } from "../components/diff-viewer";
 import { Field } from "../components/field";
 import { Kbd } from "../components/kbd";
 import { Segmented } from "../components/segmented";
 import { Select } from "../components/select";
 import { Skeleton } from "../components/skeleton";
 import { Tooltip } from "../components/tooltip";
+import { parseDiff } from "../data/diff";
+import { sampleDiff } from "../data/sample-diffs";
 import { Preferences } from "../theme/preferences";
+
+/** The commits around each task of the sample change «Panel de asistencia por curso». */
+const SAMPLE_RANGES: Readonly<Record<string, string>> = {
+  all: "5d2a7b0 → 8b0a4f6",
+  T1: "5d2a7b0 → 3c9d1e2",
+  T2: "3c9d1e2 → 8b0a4f6",
+};
 
 /** Every base component with its variants and states, in the current theme and language. */
 @Component({
@@ -22,6 +32,7 @@ import { Preferences } from "../theme/preferences";
     Button,
     IconButton,
     Card,
+    DiffViewer,
     Field,
     Kbd,
     Select,
@@ -146,6 +157,21 @@ import { Preferences } from "../theme/preferences";
       </div>
     </section>
 
+    <section class="mb-10" aria-labelledby="diff-viewer">
+      <h2 id="diff-viewer" class="mb-4 text-lg font-semibold">{{ t()('Visor de diffs', 'Diff viewer') }}</h2>
+      <p class="mt-0 mb-4 max-w-[64ch] text-sm text-text-muted">
+        {{
+          t()(
+            'Un diff de git por archivos, unificado o lado a lado (en el teléfono, solo unificado), con las palabras que cambiaron marcadas. Cada archivo se pliega y los largos muestran sus primeras líneas. Quien lo usa pone su barra: aquí, qué cambios ver.',
+            'A git diff by files, unified or side by side (only unified on a phone), with the words that changed marked. Each file folds, and long ones show their first lines. Whoever uses it brings its bar: here, which changes to see.'
+          )
+        }}
+      </p>
+      <sp-diff-viewer [files]="diffFiles()" [range]="diffRange()">
+        <sp-segmented [label]="t()('Qué cambios ver', 'Which changes to see')" [hideLabel]="true" [options]="diffScopes()" [(value)]="diffScope" data-diff-scope />
+      </sp-diff-viewer>
+    </section>
+
     <section aria-labelledby="loading">
       <h2 id="loading" class="mb-4 text-lg font-semibold">{{ t()('Carga', 'Loading') }}</h2>
       <div class="flex flex-col gap-4 rounded-xl border border-border bg-surface p-4">
@@ -189,6 +215,17 @@ export class Components {
     { value: "T1", label: "T1 · Agregados semanales" },
     { value: "T2", label: "T2 · Panel con estudiantes destacados" },
   ]);
+  protected readonly diffScope = signal("all");
+  protected readonly diffScopes = computed(() => [
+    { value: "all", label: this.t()("Todo el cambio", "The whole change") },
+    { value: "T1", label: "T1" },
+    { value: "T2", label: "T2" },
+  ]);
+  protected readonly diffFiles = computed(() => {
+    const scope = this.diffScope();
+    return parseDiff(sampleDiff("20261018-asistencia-curso", scope === "all" ? undefined : scope));
+  });
+  protected readonly diffRange = computed(() => SAMPLE_RANGES[this.diffScope()]);
   /** «Unificado · Todo el cambio». */
   protected readonly segmentedChosen = computed(() =>
     [

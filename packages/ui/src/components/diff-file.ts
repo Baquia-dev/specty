@@ -84,27 +84,19 @@ interface LineView {
   readonly spans: readonly LineSpan[];
 }
 
+/** «lib/», «attendance/», «panel.dart»: a path breaks only after a slash. */
+export const pathParts = (path: string): readonly string[] => path.split(/(?<=\/)/);
+
 type Row =
-  | {
-      readonly type: "hunk";
-      readonly header: string;
-      readonly from: number;
-      readonly section: string;
-    }
+  | { readonly type: "hunk"; readonly hunk: DiffHunk }
   | { readonly type: "line"; readonly line: LineView }
   | { readonly type: "pair"; readonly left?: LineView; readonly right?: LineView };
 
 const view = (line: DiffLine): LineView => ({ ...line, spans: spansOf(line) });
 
-function hunkRow(hunk: DiffHunk): Row {
-  const header = `@@ -${hunk.oldStart},${hunk.oldLines} +${hunk.newStart},${hunk.newLines} @@`;
-  const from = hunk.newLines > 0 ? hunk.newStart : hunk.oldStart;
-  return { type: "hunk", header, from, section: hunk.section };
-}
-
 function rowsOf(hunks: readonly DiffHunk[], mode: DiffMode): readonly Row[] {
   return hunks.flatMap((hunk): Row[] => [
-    hunkRow(hunk),
+    { type: "hunk", hunk },
     ...(mode === "unified"
       ? hunk.lines.map((line): Row => ({ type: "line", line: view(line) }))
       : splitRows(hunk).map(
@@ -167,13 +159,16 @@ let nextId = 0;
   },
   template: `
     <button #toggle type="button" [class]="head" [class.border-b]="open()" [attr.aria-expanded]="open()" [attr.aria-controls]="open() ? bodyId : null" (click)="open.set(!open())" data-file-toggle>
-      <svg class="shrink-0 text-text-muted transition-transform" style="transition-duration: var(--duration-base)" size="14" aria-hidden="true" [lucideIcon]="chevron" [class.-rotate-90]="!open()"></svg>
-      <span class="min-w-0 font-mono text-[13px] font-medium [overflow-wrap:anywhere]" data-path>@if (file().oldPath; as old) {<span class="text-text-muted">{{ old }}</span><span aria-hidden="true"> → </span><span class="sr-only">{{ t()(', ahora ', ', now ') }}</span>}{{ file().path }}</span>
-      <!-- A button's name runs its pieces together: the commas keep them apart when read. -->
-      <span class="sr-only">, </span>
-      <span [class]="badge + ' ' + status().tone" data-status>{{ status().label[lang()] }}</span>
-      <span class="ml-auto font-mono text-xs" aria-hidden="true" data-counts><span class="text-diff-added-text">+{{ file().additions }}</span>&nbsp;<span class="text-diff-removed-text">−{{ file().deletions }}</span></span>
-      <span class="sr-only">, {{ counts() }}</span>
+      <svg class="mt-0.75 shrink-0 text-text-muted transition-transform" style="transition-duration: var(--duration-base)" size="14" aria-hidden="true" [lucideIcon]="chevron" [class.-rotate-90]="!open()"></svg>
+      <!-- Beside the chevron, on as many lines as it needs: the path, its status and its counts. -->
+      <span class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2.5 gap-y-1" data-head>
+        <span class="min-w-0 font-mono text-[13px] font-medium wrap-anywhere" data-path>@if (file().oldPath; as old) {<span class="text-text-muted">@for (part of parts(old); track $index) {{{ part }}<wbr />}</span><span aria-hidden="true"> → </span><span class="sr-only">{{ t()(', ahora ', ', now ') }}</span>}@for (part of parts(file().path); track $index) {{{ part }}<wbr />}</span>
+        <!-- A button's name runs its pieces together: the commas keep them apart when read. -->
+        <span class="sr-only">, </span>
+        <span [class]="badge + ' ' + status().tone" data-status>{{ status().label[lang()] }}</span>
+        <span class="ml-auto font-mono text-xs" aria-hidden="true" data-counts><span class="text-diff-added-text">+{{ file().additions }}</span>&nbsp;<span class="text-diff-removed-text">−{{ file().deletions }}</span></span>
+        <span class="sr-only">, {{ counts() }}</span>
+      </span>
     </button>
     @if (open()) {
       <div class="font-mono text-xs leading-5 [tab-size:4]" [id]="bodyId" [style.--diff-cols]="columns()" data-body>
@@ -185,7 +180,7 @@ let nextId = 0;
         @for (row of rows(); track $index) {
           @switch (row.type) {
             @case ('hunk') {
-              <div class="bg-text/4 px-3 py-1 text-text-muted [overflow-wrap:anywhere]" [attr.tabindex]="$index === revealed() ? -1 : null" data-hunk><span aria-hidden="true">{{ row.header }}{{ row.section ? ' ' + row.section : '' }}</span><span class="sr-only">{{ t()('Desde la línea ', 'From line ') + row.from + (row.section ? ': ' + row.section : '') }}</span></div>
+              <div class="bg-text/4 px-3 py-1 text-text-muted wrap-anywhere" [attr.tabindex]="$index === revealed() ? -1 : null" data-hunk><span aria-hidden="true">&#64;&#64; -{{ row.hunk.oldStart }},{{ row.hunk.oldLines }} +{{ row.hunk.newStart }},{{ row.hunk.newLines }} &#64;&#64;{{ row.hunk.section ? ' ' + row.hunk.section : '' }}</span><span class="sr-only">{{ t()('Desde la línea ', 'From line ') + (row.hunk.newLines > 0 ? row.hunk.newStart : row.hunk.oldStart) + (row.hunk.section ? ': ' + row.hunk.section : '') }}</span></div>
             }
             @case ('line') {
               <div [class]="'grid grid-cols-(--diff-cols) ' + lookOf(row.line).bg" [attr.tabindex]="$index === revealed() ? -1 : null" [attr.data-line]="row.line.kind">
@@ -229,14 +224,21 @@ export class DiffFileView {
   protected readonly lang = this.preferences.lang;
   protected readonly bodyId = `sp-diff-file-${nextId++}`;
   protected readonly chevron = LucideChevronDown;
+  protected readonly parts = pathParts;
   protected readonly head =
-    "flex min-h-10 w-full cursor-pointer flex-wrap items-center gap-x-2.5 gap-y-1 border-border bg-bg px-3 py-1.5 text-left text-text";
+    "flex min-h-10 w-full cursor-pointer items-start gap-2.5 border-border bg-bg px-3 py-2.5 text-left text-text";
   protected readonly badge = "inline-flex h-5 items-center rounded-sm px-1.5 text-xs font-medium";
   protected readonly number = "pr-2 text-right text-text-muted select-none";
-  protected readonly code = "min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere]";
+  protected readonly code = "min-w-0 whitespace-pre-wrap wrap-anywhere";
 
-  /** A long file shows its first lines until the person asks for the rest; a new file, too. */
-  private readonly expanded = linkedSignal({ source: this.file, computation: () => false });
+  /**
+   * A long file shows its first lines until «Mostrar N líneas más»; then, the first row it brought,
+   * which takes the focus. A new file starts over.
+   */
+  protected readonly revealed = linkedSignal<DiffFile, number | undefined>({
+    source: this.file,
+    computation: () => undefined,
+  });
 
   protected readonly status = computed(() => STATUS[this.file().status]);
   protected readonly counts = computed(() =>
@@ -246,17 +248,12 @@ export class DiffFileView {
   private readonly shown = computed(() => {
     const { hunks } = this.file();
     const total = hunks.reduce((sum, hunk) => sum + hunk.lines.length, 0);
-    return this.expanded() || total <= LONG_FILE
+    return this.revealed() !== undefined || total <= LONG_FILE
       ? { hunks, hidden: 0 }
       : firstLines(hunks, PREVIEW_LINES);
   });
   protected readonly hidden = computed(() => this.shown().hidden);
   protected readonly rows = computed(() => rowsOf(this.shown().hunks, this.mode()));
-  /** After «Mostrar N líneas más», the first row it brought, which takes the focus. */
-  protected readonly revealed = linkedSignal<DiffFile, number | undefined>({
-    source: this.file,
-    computation: () => undefined,
-  });
 
   /** Room for the longest line number, then the sign and the code; on each side when split. */
   protected readonly columns = computed(() => {
@@ -286,9 +283,7 @@ export class DiffFileView {
   }
 
   protected reveal(): void {
-    const first = this.rows().length;
-    this.expanded.set(true);
-    this.revealed.set(first);
+    this.revealed.set(this.rows().length);
     // The button is gone: the focus moves to the first line it brought.
     afterNextRender(
       () =>

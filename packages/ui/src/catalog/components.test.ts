@@ -72,6 +72,28 @@ describe("Components page", () => {
     TestBed.resetTestingModule();
   });
 
+  it("shows the diff viewer with the sample diff and which changes to see (AC6)", async () => {
+    const { fixture, element } = await render("es");
+    const section = element.querySelector<HTMLElement>("[aria-labelledby=diff-viewer]");
+    expect(section?.querySelector("h2")?.textContent?.trim()).toBe("Visor de diffs");
+    expect(section?.querySelector("p")?.textContent).toContain("unificado o lado a lado");
+    const summary = () => section?.querySelector("[data-summary]")?.textContent ?? "";
+    const files = () =>
+      [...(section?.querySelectorAll("sp-diff-file") ?? [])].map((file) =>
+        file.getAttribute("data-file"),
+      );
+    expect(summary()).toContain("5d2a7b0 → 8b0a4f6 · 4 archivos");
+    expect(files()).toHaveLength(4);
+    section?.querySelector<HTMLElement>("[data-diff-scope] [data-value=T2]")?.click();
+    await fixture.whenStable();
+    expect(summary()).toContain("3c9d1e2 → 8b0a4f6 · 2 archivos");
+    expect(files()).toEqual([
+      "lib/attendance/course_panel.dart",
+      "test/attendance/course_panel_test.dart",
+    ]);
+    TestBed.resetTestingModule();
+  });
+
   it("follows the language (AC9)", async () => {
     const { element } = await render("en");
     expect(element.querySelector("h1")?.textContent).toContain("Components");

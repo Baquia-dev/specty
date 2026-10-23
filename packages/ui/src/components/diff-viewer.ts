@@ -13,7 +13,7 @@ import {
 } from "@angular/core";
 import type { DiffFile } from "../data/diff";
 import { Preferences } from "../theme/preferences";
-import { countsLabel, DiffFileView, type DiffMode } from "./diff-file";
+import { countsLabel, DiffFileView, type DiffMode, pathParts } from "./diff-file";
 import { Segmented } from "./segmented";
 
 const MODES: readonly DiffMode[] = ["unified", "split"];
@@ -47,7 +47,7 @@ const WIDE = "(min-width: 640px)";
           @for (file of files(); track file.path; let index = $index) {
             <li class="border-border not-first:border-t">
               <button type="button" class="flex min-h-10 w-full cursor-pointer items-center gap-2.5 px-3 py-1 text-left text-text hover:bg-text/4" (click)="goTo(index)" data-goto>
-                <span class="min-w-0 flex-1 font-mono text-xs [overflow-wrap:anywhere]">{{ file.path }}</span>
+                <span class="min-w-0 flex-1 font-mono text-xs wrap-anywhere" data-path>@for (part of parts(file.path); track $index) {{{ part }}<wbr />}</span>
                 <span class="font-mono text-xs" aria-hidden="true" data-counts><span class="text-diff-added-text">+{{ file.additions }}</span>&nbsp;<span class="text-diff-removed-text">−{{ file.deletions }}</span></span>
                 <span class="sr-only">, {{ countsOf(file) }}</span>
               </button>
@@ -71,6 +71,7 @@ export class DiffViewer {
   private readonly preferences = inject(Preferences);
   private readonly views = viewChildren(DiffFileView);
   protected readonly t = this.preferences.t;
+  protected readonly parts = pathParts;
 
   protected readonly mode = signal<DiffMode>(this.stored() ?? "unified");
   protected readonly wide = signal(true);

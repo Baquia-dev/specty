@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { parseDiff } from "../data/diff";
 import { sampleDiff } from "../data/sample-diffs";
-import { countsLabel, firstLines, spansOf } from "./diff-file";
+import { countsLabel, firstLines, pathParts, spansOf } from "./diff-file";
 
 describe("Diff lines", () => {
   it("cuts a line into the words that changed and the rest", () => {
@@ -26,6 +26,11 @@ describe("Diff lines", () => {
     const { hunks, hidden } = firstLines(file?.hunks ?? [], 10);
     expect(hunks.map((hunk) => hunk.lines.length)).toEqual([7, 3]);
     expect(hidden).toBe(25);
+  });
+
+  it("breaks a path only after its slashes", () => {
+    expect(pathParts("lib/attendance/panel.dart")).toEqual(["lib/", "attendance/", "panel.dart"]);
+    expect(pathParts("README.md")).toEqual(["README.md"]);
   });
 
   it("counts lines in words", () => {
