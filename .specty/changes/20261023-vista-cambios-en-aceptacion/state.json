@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261023-vista-cambios-en-aceptacion",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-vista-cambios-en-aceptacion",
+  "baseCommit": "03473c9aaca90f16894591a67b8e3dd3ad412f25",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:16ac89b9eea86c05a32dc486963815f534fbb12366d0fe03e410e34d9901ec77",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1e5d04090dbb4bfd1d360e8f2a839cd04815ba228b01c4ec8fba391c3a2c8b7a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e726fe99e9fed03942eabd2b125ccc04459280c6bc954557980ea4e22fd28ad4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ba1a984feddca17b7d42e5773c969dbaa3174b824773cb8bf4d9e0f3d3469b66",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:1135c01e0b5fcde2e1cb499f18259c326c2b11e3dd33cf9809c688a7df979f00",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:543b496bcab572aea92028fb4d83860e6f337a086838486124ea3b14c6dee423",
+    "at": "2026-10-23T08:58:51.710Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
