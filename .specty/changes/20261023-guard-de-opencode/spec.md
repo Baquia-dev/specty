@@ -59,7 +59,7 @@ kind: standard
   - files: packages/core/src/agents.ts, packages/core/test/cards.test.ts, packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/support.ts, packages/cli/test/opencode.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/enforce.test.ts
-- [ ] T2: `init` instala el plugin de OpenCode y `doctor` lo comprueba
+- [x] T2: `init` instala el plugin de OpenCode y `doctor` lo comprueba
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/detect/project.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/opencode.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/install.test.ts test/setup.test.ts

@@ -5,6 +5,7 @@ import { formatterExclusions } from "../detect/formatters";
 import { detectProject } from "../detect/project";
 import { codexHooksFile, hasGuard, missingClaudeEvents } from "../install/agents";
 import { gitHooksInstalled } from "../install/git-hooks";
+import { opencodePluginFile } from "../install/opencode";
 import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
 import { COMMAND, type Session } from "../session";
@@ -79,6 +80,19 @@ export async function doctor(session: Session): Promise<Output> {
       t(
         `Codex: falta el guard en ${codex}; ejecuta \`${COMMAND} init --tools codex\`.`,
         `Codex: the guard is missing in ${codex}; run \`${COMMAND} init --tools codex\`.`,
+      ),
+    );
+  }
+  // So does OpenCode's plugin, in its global configuration.
+  const plugin = opencodePluginFile(session.environment.env);
+  const pluginGuard = hasGuard(await readText(plugin), "opencode");
+  if (tools.includes("opencode") || pluginGuard) {
+    check(
+      pluginGuard,
+      t(`OpenCode: plugin del guard en ${plugin}.`, `OpenCode: guard plugin in ${plugin}.`),
+      t(
+        `OpenCode: falta el plugin del guard en ${plugin}; ejecuta \`${COMMAND} init --tools opencode\`.`,
+        `OpenCode: the guard plugin is missing in ${plugin}; run \`${COMMAND} init --tools opencode\`.`,
       ),
     );
   }

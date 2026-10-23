@@ -233,6 +233,7 @@ async function agentTools(root: string): Promise<AgentTool[]> {
     ["claude-code", [".claude", "CLAUDE.md"]],
     ["cursor", [".cursor", ".cursorrules"]],
     ["codex", [".codex"]],
+    ["opencode", [".opencode", "opencode.json", "opencode.jsonc"]],
     ["gemini-cli", [".gemini", "GEMINI.md"]],
     ["copilot", [".github/copilot-instructions.md", ".github/instructions"]],
     ["windsurf", [".windsurf", ".windsurfrules"]],

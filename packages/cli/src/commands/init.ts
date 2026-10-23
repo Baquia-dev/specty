@@ -15,6 +15,7 @@ import { type Detection, detectProject, projectFacts, verifyCommands } from "../
 import { installClaudeCode, installCodex, installCursor } from "../install/agents";
 import { commitInstall } from "../install/commit";
 import { installGitHooks } from "../install/git-hooks";
+import { installOpencode } from "../install/opencode";
 import { renderConfig, writeAgentsMd, writeClaudePointer } from "../install/project-files";
 import { writeText } from "../io/files";
 import { createGit, findRoot, pathsOf } from "../io/git";
@@ -28,7 +29,7 @@ export interface InitOptions {
   readonly tools?: readonly AgentTool[];
 }
 
-const WITH_HOOKS: ReadonlySet<AgentTool> = new Set(["claude-code", "cursor", "codex"]);
+const WITH_HOOKS: ReadonlySet<AgentTool> = new Set(["claude-code", "cursor", "codex", "opencode"]);
 
 /** `specty init` as typed: reads its options, and says which language its output uses. */
 export async function initCommand(
@@ -132,6 +133,15 @@ export async function init(environment: Environment, options: InitOptions): Prom
       t(
         "Codex solo ejecuta el guard cuando confías en él: en Codex, abre `/hooks` y márcalo como de confianza. Basta una vez.",
         "Codex runs the guard only once you trust it: in Codex, open `/hooks` and trust it. Once is enough.",
+      ),
+    );
+  }
+  if (tools.includes("opencode")) {
+    const file = await installOpencode(environment.env, environment.invocation);
+    done.push(
+      t(
+        `OpenCode: plugin del guard en ${file}, tu configuración global: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
+        `OpenCode: guard plugin in ${file}, your global configuration: it applies to all your repositories and does nothing outside those using Specty.`,
       ),
     );
   }
