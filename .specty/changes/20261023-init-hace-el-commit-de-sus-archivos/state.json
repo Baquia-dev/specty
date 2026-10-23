@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261023-init-hace-el-commit-de-sus-archivos",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-init-hace-el-commit-de-sus-archivos",
+  "baseCommit": "475bce1518564e8068f3e3ab6940bb0e73ff3119",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0836bd5a4fe337d367fa362e3f7dec1868e298563b28339afe05d9eb82406707",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9386b80d971d32c41aaa895f1e8dc6f3267bffbc102d1579c81f387537f06f40",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:668938d193da461a5a884c754a15634173d022bf17d67eff483da2e7c53f5ea6",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e5391455922471aa63b6e00bdd414f8986e0e09b10153617f9781ad763cc0873",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0d178b432002fc899a225be304eab0961be6ff37397ec5329674fa40d8076089",
+    "at": "2026-10-23T20:51:28.684Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
