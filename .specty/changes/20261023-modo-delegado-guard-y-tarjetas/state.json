@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261023-modo-delegado-guard-y-tarjetas",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-modo-delegado-guard-y-tarjetas",
+  "baseCommit": "4a13669fcf89f9a7a70f406ac2980c34d6544874",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4059fc3382c65ad1d5c46cf3da2ce0ee0b4f81a6acd7edbec547303480c91e38",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4a9cb0de4105f169efb4466303a7bb0b87a9d57965a37bc8ad28315f8f10cb20",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:89de284c013a28cec2065ebad15f00f2ba2cc544685aa4291a98cbd2af177df7",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:24ebd3d5d4bbd15e412bf36ab2cb37a3a2feee54cf5fac25b83395d101380e75",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:444111322b7e7bd9eb312dc86023717864da8264676dbee9c9a68b2cf55da890",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2f5fd55b1beac3581a90d48d648d3d2721d9f89abf62e560518bc3f2128625fb",
+    "at": "2026-10-23T18:39:05.497Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
