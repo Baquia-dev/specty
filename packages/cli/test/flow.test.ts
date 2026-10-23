@@ -151,6 +151,23 @@ describe("a standard change from request to closing", () => {
     expect(git(root, "status", "--porcelain")).toBe("");
     expect((await cli(root, ["next"])).out).toContain("El cambio está cerrado.");
   });
+
+  it("goes back to acceptance when an adjustment is withdrawn (AC1)", async () => {
+    const root = await approvedRepo();
+    await cli(root, ["next"]);
+    await writeFiles(root, { "src/app.ts": "1\n" });
+    await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
+    await writeFiles(root, { "src/app.ts": "2\n" });
+    await cli(root, ["task", "done", "T2", "--summary", "Dos"]);
+    await cli(root, ["adjust", "Algo que al final no se hará"]);
+    // Nothing added to the spec: proposed as it was and approved again, with every task done.
+    expect((await cli(root, ["propose"])).code).toBe(0);
+    const approved = await cli(root, ["approve"], { terminal: person() });
+    expect(approved.out).toContain(`SPECTY · ${CHANGE} · acceptance`);
+    expect((await cli(root, ["accept"], { terminal: person() })).out).toContain(
+      "el agente redactará el cierre",
+    );
+  });
 });
 
 describe("the quick lane", () => {

@@ -139,11 +139,20 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
   ) {
     return postponed(session, header);
   }
+  // Counted as `task done` counts them: with none left, the change goes to acceptance.
+  const remainingTasks = (spec.sections.tasks?.items ?? []).filter(
+    (item) => state.tasks[item.id]?.status !== "done",
+  ).length;
   const moved = transition({
     phase: "review",
     kind: state.kind,
     actor: "human",
-    event: { type: "approve", validationErrors: analysis.valid ? 0 : 1, pendingHighImpact: 0 },
+    event: {
+      type: "approve",
+      validationErrors: analysis.valid ? 0 : 1,
+      pendingHighImpact: 0,
+      remainingTasks,
+    },
   });
   if (!moved.ok)
     return blockedCard(

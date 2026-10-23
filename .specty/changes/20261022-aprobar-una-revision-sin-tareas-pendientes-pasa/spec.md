@@ -47,7 +47,7 @@ Hoy, aprobar una revisión siempre deja el cambio en implementación, y solo `sp
   - files: packages/core/src/flow/machine.ts, packages/core/test/flow/machine.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/machine.test.ts
-- [ ] T2: specty approve cuenta las tareas pendientes
+- [x] T2: specty approve cuenta las tareas pendientes
   - files: packages/cli/src/commands/approve.ts, packages/cli/test/flow.test.ts
   - ac: AC1, AC2
   - verify: pnpm check
