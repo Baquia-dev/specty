@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T21:14:57.584Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-avisos-de-archivos-compartidos-entre-cambios"}}
+{"ts":"2026-10-23T21:16:46.830Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:c8efdaf17260ed5116e6330577c1fcc38ac418bb3720ac1945b098fb278aa02e","size":"M","warnings":0}}
+{"ts":"2026-10-23T21:16:49.927Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:c8efdaf17260ed5116e6330577c1fcc38ac418bb3720ac1945b098fb278aa02e","channel":"delegated","delegated":true}}

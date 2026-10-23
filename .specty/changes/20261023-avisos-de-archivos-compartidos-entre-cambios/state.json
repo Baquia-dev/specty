@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261023-avisos-de-archivos-compartidos-entre-cambios",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-avisos-de-archivos-compartidos-entre-cambios",
+  "baseCommit": "b1c1d8bee9d6bf1d28a46093aede36029e1e0d75",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:204323681fe8e806aa5cc9238e3fbcae8b192d1d831251e8a7646bd882f4a218",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:3f375cd84cad8c627c4a03e7d5b92e2a16cdcbafcc9877008e72dd782ec139c8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:a7c060e5d26efcaf8bc96b84069ad3169b8369f0a7ed9153a81a5a4c56dc79c5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c8efdaf17260ed5116e6330577c1fcc38ac418bb3720ac1945b098fb278aa02e",
+    "at": "2026-10-23T21:16:49.915Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
