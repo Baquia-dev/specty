@@ -65,7 +65,7 @@ Specty permite trabajar varios cambios a la vez, cada uno con su propio agente. 
 
 ## Tareas
 
-- [ ] T1: Las worktrees anidadas no cuentan como cambios
+- [x] T1: Las worktrees anidadas no cuentan como cambios
   - files: packages/cli/src/io/git.ts, packages/cli/src/flow/commits.ts, packages/cli/test/worktrees.test.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts

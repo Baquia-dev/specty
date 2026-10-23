@@ -6,6 +6,13 @@
   "branch": "specty/20261023-cambios-en-paralelo-con-worktrees",
   "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:320b06fc1116b297391c656fa91413f93f6bb8a40438e4f0e7702e4365f30442",
+    "at": "2026-10-23T10:18:54.381Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -41,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "59514be1299f6258130269c3ce976c5e81390fff",
+      "startedAt": "2026-10-23T10:19:14.356Z",
+      "doneAt": "2026-10-23T10:22:48.023Z",
+      "summary": "git.ts lista las worktrees (worktrees, nestedWorktrees) y descarta de los archivos sin seguimiento las que viven dentro del repo; commits.ts las excluye al preparar el commit. Tests de punta a punta: una worktree en .claude/worktrees/x no bloquea next ni task done y no entra en el commit; un repo anidado normal sigue contando."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -51,12 +68,5 @@
     "AC": 8,
     "T": 3,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:320b06fc1116b297391c656fa91413f93f6bb8a40438e4f0e7702e4365f30442",
-    "at": "2026-10-23T10:18:54.381Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

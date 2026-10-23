@@ -18,8 +18,10 @@ export interface CommitRequest {
  */
 export async function commitWithReceipt(session: Session, request: CommitRequest): Promise<string> {
   const { git } = session;
+  // Worktrees inside this one belong to other changes; `git add -A` would embed them.
+  const nested = (await git.nestedWorktrees()).map((folder) => `:(exclude)${folder}`);
   for (const pathspecs of request.stage) {
-    await git.output(["add", "-A", "--", ...pathspecs]);
+    await git.output(["add", "-A", "--", ...pathspecs, ...nested]);
   }
   const tree =
     request.only === undefined ? await git.writeTree() : await git.treeWith(request.only);

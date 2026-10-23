@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
-import { mkdir } from "node:fs/promises";
-import { dirname, isAbsolute, resolve } from "node:path";
+import { mkdir, realpath } from "node:fs/promises";
+import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import type { ChangedFile } from "@baquia-dev/specty-core";
 import { type ExecResult, execute } from "./exec";
 import { exists, remove } from "./files";
@@ -43,6 +43,10 @@ export interface Git {
   /** The repository-relative `paths` that git ignores and does not track. */
   ignored(paths: readonly string[]): Promise<string[]>;
   config(key: string): Promise<string | undefined>;
+  /** Folders of every worktree of the repository, the main one first. */
+  worktrees(): Promise<string[]>;
+  /** Repository-relative folders of the other worktrees that live inside this one. */
+  nestedWorktrees(): Promise<string[]>;
 }
 
 /** Root of the repository that contains `cwd`, or undefined outside git. */
@@ -73,11 +77,34 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
     return isAbsolute(path) ? path : resolve(root, path);
   };
   const head = () => optional(["rev-parse", "--verify", "-q", "HEAD"]);
-  const untracked = async () =>
-    (await output(["ls-files", "--others", "--exclude-standard", "-z"]))
+  const worktrees = async () =>
+    (await output(["worktree", "list", "--porcelain"]))
+      .split("\n")
+      .filter((line) => line.startsWith("worktree "))
+      .map((line) => line.slice("worktree ".length));
+  const nestedWorktrees = async () => {
+    const own = await resolved(root);
+    const folders = await Promise.all((await worktrees()).map(resolved));
+    return folders.flatMap((folder) => {
+      const inner = relative(own, folder);
+      return inner === "" || inner.startsWith("..") || isAbsolute(inner)
+        ? []
+        : [inner.split(sep).join("/")];
+    });
+  };
+  const untracked = async () => {
+    const paths = (await output(["ls-files", "--others", "--exclude-standard", "-z"]))
       .split("\0")
-      .filter((path) => path.length > 0)
+      .filter((path) => path.length > 0);
+    // git lists a nested repository as `dir/`; a worktree of this repository there belongs to
+    // another change, not to this one.
+    const nested = paths.some((path) => path.endsWith("/"))
+      ? new Set((await nestedWorktrees()).map((folder) => `${folder}/`))
+      : new Set<string>();
+    return paths
+      .filter((path) => !nested.has(path))
       .map((path): ChangedFile => ({ path, status: "added" }));
+  };
 
   return {
     root,
@@ -137,7 +164,14 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
       return result.stdout.split("\0").filter((path) => path.length > 0);
     },
     config: (key) => optional(["config", "--get", key]),
+    worktrees,
+    nestedWorktrees,
   };
+}
+
+/** The path with symbolic links resolved, or as given when it does not exist. */
+function resolved(path: string): Promise<string> {
+  return realpath(path).catch(() => path);
 }
 
 /** Parses `git diff --name-status -z` output; copies count as additions. */
