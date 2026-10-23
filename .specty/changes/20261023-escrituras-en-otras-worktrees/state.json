@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-escrituras-en-otras-worktrees",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-escrituras-en-otras-worktrees",
   "baseCommit": "920fd9e77565dab6bdd595253ae576ea6b7ac307",
   "revision": 1,
@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e342094052fa15b5719c1a99e7395e101d974dc1",
+      "attempts": 1,
       "startedAt": "2026-10-23T11:01:28.494Z",
       "doneAt": "2026-10-23T11:03:22.841Z",
-      "summary": "core/src/guard/worktrees.ts: ForeignPath (ruta, carpeta de la worktree y su rama) y foreignDenial con el motivo y el siguiente paso en español e inglés. decide.ts: campo foreign opcional en las acciones de escritura y borrado y en ShellFacts, regla nueva worktree que se decide antes que las rutas propias y sin mirar la fase. index.ts exporta ForeignPath. Tests: en todas las fases y sin cambio activo, con rama o desacoplada, en inglés, y sin rutas ajenas decide como antes."
+      "summary": "core/src/guard/worktrees.ts: ForeignPath (ruta, carpeta de la worktree y su rama) y foreignDenial con el motivo y el siguiente paso en español e inglés. decide.ts: campo foreign opcional en las acciones de escritura y borrado y en ShellFacts, regla nueva worktree que se decide antes que las rutas propias y sin mirar la fase. index.ts exporta ForeignPath. Tests: en todas las fases y sin cambio activo, con rama o desacoplada, en inglés, y sin rutas ajenas decide como antes.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "00ee98e5b76c0f14dd1ff1ff0ae657cdd9955fbb",
+      "startedAt": "2026-10-23T11:03:23.142Z",
+      "doneAt": "2026-10-23T11:08:36.910Z",
+      "summary": "git.ts: worktrees() devuelve carpeta y rama (bloques de --porcelain) y exporta resolved. flow/worktree.ts: placePaths asigna cada ruta absoluta a la worktree que la contiene más de cerca; la propia se reconoce por su ruta real y gana los empates; worktreesHome usa el nuevo formato. guard.ts: inRepo usa placePaths, sigue descartando lo que git ignora en la carpeta propia y devuelve aparte las rutas de otras worktrees, que resolveAction añade a la acción (escritura, borrado y shell). Tests de punta a punta: carpeta hermana con Write, echo > y rm; worktree anidada y, desde ella, la carpeta principal; la propia carpeta y fuera de toda worktree deciden como antes; Cursor responde permission deny. Latencia del guard medida con el CLI compilado: p95 de 100 a 110 ms."
     }
   },
   "pending": {

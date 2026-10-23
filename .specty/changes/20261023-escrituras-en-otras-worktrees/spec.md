@@ -60,7 +60,7 @@ El guard impide que un agente cambie archivos de otra worktree del repositorio: 
   - files: packages/core/src/guard/worktrees.ts, packages/core/src/guard/decide.ts, packages/core/src/index.ts, packages/core/test/guard/decide.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
-- [ ] T2: El guard separa las rutas de otras worktrees
+- [x] T2: El guard separa las rutas de otras worktrees
   - files: packages/cli/src/io/git.ts, packages/cli/src/flow/worktree.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/worktrees.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm check

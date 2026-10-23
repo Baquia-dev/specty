@@ -23,6 +23,11 @@ const FILES = {
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
 /** Where `new --worktree` puts the worktrees of `root`. */
 const home = (root: string) => join(dirname(root), `${basename(root)}.worktrees`);
+/** Claude Code's hook before an agent action, run from `cwd`. */
+const claude = (cwd: string, tool: string, input: Record<string, unknown>) =>
+  cli(cwd, ["guard", "--tool", "claude-code"], {
+    stdin: JSON.stringify({ cwd, tool_name: tool, tool_input: input }),
+  });
 
 describe("specty new --worktree", () => {
   it("creates the change in its own folder, from the main branch, leaving this one as it was", async () => {
@@ -133,5 +138,60 @@ describe("a worktree inside the repository", () => {
     git(`${root}/vendor/lib`, "add", "-A");
     git(`${root}/vendor/lib`, "commit", "-q", "-m", "init");
     expect((await cli(root, ["next"])).out).toContain("CAMBIOS SIN SPEC:\n  vendor/lib/");
+  });
+});
+
+describe("the guard and the other worktrees", () => {
+  it("blocks changing another worktree's files, beside this folder or inside it", async () => {
+    const root = await tempRepo(FILES);
+    const sibling = join(home(root), "otra");
+    const nested = join(root, ".claude/worktrees/x");
+    git(root, "worktree", "add", "-q", "-b", "specty/otra", sibling);
+    git(root, "worktree", "add", "-q", "--detach", ".claude/worktrees/x");
+    const write = await claude(root, "Write", { file_path: join(sibling, "src/app.ts") });
+    expect(write.code).toBe(2);
+    expect(write.err).toContain(
+      `\`${join(sibling, "src/app.ts")}\` está en otra worktree (\`${sibling}\`, rama specty/otra): es de otro cambio.`,
+    );
+    expect(write.err).toContain(
+      `SIGUIENTE: trabaja solo con los archivos de esta carpeta; ese cambio se edita desde una sesión abierta en \`${sibling}\`.`,
+    );
+    const shell = await claude(root, "Bash", { command: `echo x > ${sibling}/src/app.ts` });
+    expect(shell.err).toContain("está en otra worktree");
+    const removal = await claude(root, "Bash", { command: `rm ${sibling}/src/app.ts` });
+    expect(removal.err).toContain("está en otra worktree");
+    const inside = await claude(root, "Edit", { file_path: join(nested, "src/app.ts") });
+    expect(inside.err).toContain(`está en otra worktree (\`${nested}\`): es de otro cambio.`);
+    // From the nested worktree, the main folder is another one.
+    const outward = await claude(nested, "Edit", { file_path: join(root, "src/app.ts") });
+    expect(outward.err).toContain(`está en otra worktree (\`${root}\`, rama main)`);
+  });
+
+  it("decides as before inside this folder and outside every worktree", async () => {
+    const root = await tempRepo(FILES);
+    git(root, "worktree", "add", "-q", "-b", "specty/otra", join(home(root), "otra"));
+    const own = await claude(root, "Write", { file_path: join(root, "src/app.ts") });
+    expect(own.err).toContain("No hay un cambio activo y `src/app.ts` es código gobernado");
+    expect((await claude(root, "Write", { file_path: join(dirname(root), "fuera.ts") })).code).toBe(
+      0,
+    );
+  });
+
+  it("answers Cursor in its own format", async () => {
+    const root = await tempRepo(FILES);
+    const sibling = join(home(root), "otra");
+    git(root, "worktree", "add", "-q", "-b", "specty/otra", sibling);
+    const denied = await cli(root, ["guard", "--tool", "cursor"], {
+      stdin: JSON.stringify({
+        hook_event_name: "preToolUse",
+        tool_name: "Write",
+        workspace_roots: [root],
+        tool_input: { file_path: join(sibling, "src/app.ts") },
+      }),
+    });
+    expect(JSON.parse(denied.out)).toMatchObject({
+      permission: "deny",
+      user_message: expect.stringContaining("está en otra worktree"),
+    });
   });
 });

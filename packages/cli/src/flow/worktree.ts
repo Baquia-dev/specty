@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { copyFile, mkdir } from "node:fs/promises";
-import { basename, dirname, join } from "node:path";
+import { basename, dirname, isAbsolute, join, relative, sep } from "node:path";
+import type { ForeignPath } from "@baquia-dev/specty-core";
 import { AGENT_HOOK_FILES } from "../install/agents";
 import { exists } from "../io/files";
-import type { Git } from "../io/git";
+import { type Git, resolved, type Worktree } from "../io/git";
 
 export interface ParallelBase {
   /** What the person named, or the branch Specty chose. */
@@ -41,8 +42,65 @@ async function mainBranch(git: Git): Promise<string | undefined> {
 
 /** `<main folder>.worktrees`, beside the main worktree: never inside a repository. */
 export async function worktreesHome(git: Git): Promise<string> {
-  const main = (await git.worktrees())[0] ?? git.root;
+  const main = (await git.worktrees())[0]?.folder ?? git.root;
   return join(dirname(main), `${basename(main)}.worktrees`);
+}
+
+export interface PlacedPaths {
+  /** Repository-relative paths inside this worktree. */
+  readonly inside: readonly string[];
+  /** Paths inside another worktree of the repository. */
+  readonly foreign: readonly ForeignPath[];
+}
+
+/**
+ * Sorts absolute paths by the worktree that contains them most closely, so a worktree nested in
+ * another owns its files. This one is recognized by its real path and wins ties. Paths outside
+ * every worktree are dropped.
+ */
+export async function placePaths(git: Git, paths: readonly string[]): Promise<PlacedPaths> {
+  if (paths.length === 0) return { inside: [], foreign: [] };
+  const own = await resolved(git.root);
+  const listed = await git.worktrees();
+  const isOwn = await Promise.all(
+    listed.map(async ({ folder }) => (await resolved(folder)) === own),
+  );
+  const self: Worktree = { folder: git.root };
+  const owners = [self, ...listed.filter((_, index) => !isOwn[index])];
+  const placed = paths.flatMap((path) => {
+    const owner = closest(owners, path);
+    return owner === undefined ? [] : [{ path, owner }];
+  });
+  return {
+    inside: placed
+      .filter(({ owner }) => owner === self)
+      .map(({ path }) => relative(git.root, path).split(sep).join("/")),
+    foreign: placed.flatMap(({ path, owner }): ForeignPath[] =>
+      owner === self
+        ? []
+        : [
+            {
+              path,
+              worktree: owner.folder,
+              ...(owner.branch !== undefined ? { branch: owner.branch } : {}),
+            },
+          ],
+    ),
+  };
+}
+
+/** The worktree whose folder contains `path` most closely; the first one wins ties. */
+function closest(owners: readonly Worktree[], path: string): Worktree | undefined {
+  return owners
+    .filter(({ folder }) => {
+      const inner = relative(folder, path);
+      return !inner.startsWith("..") && !isAbsolute(inner);
+    })
+    .reduce<Worktree | undefined>(
+      (best, owner) =>
+        best === undefined || owner.folder.length > best.folder.length ? owner : best,
+      undefined,
+    );
 }
 
 /**

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { isAbsolute, relative, resolve, sep } from "node:path";
+import { resolve } from "node:path";
 import {
   analyzeShell,
   decideAfterShell,
   decideGuard,
+  type ForeignPath,
   type GuardAction,
   type GuardChange,
   type GuardDecision,
@@ -12,6 +13,7 @@ import {
   shellChanges,
 } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
+import { placePaths } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
@@ -156,23 +158,30 @@ function strings(value: unknown): string[] {
 }
 
 /**
- * Turns tool paths into repository-relative ones. Paths outside the repository and paths git
- * ignores (`node_modules/`, caches, builds) are not governed code, so they are dropped.
+ * Turns tool paths into repository-relative ones, and keeps apart those inside another worktree:
+ * they belong to another change. Paths outside every worktree and paths git ignores
+ * (`node_modules/`, caches, builds) are not governed code, so they are dropped.
  */
-async function inRepo(session: Session, cwd: string, paths: readonly string[]): Promise<string[]> {
-  const inside = paths.flatMap((path) => {
-    const relativePath = relative(session.root, resolve(cwd, path));
-    if (relativePath.startsWith("..") || isAbsolute(relativePath)) return [];
-    return [relativePath.split(sep).join("/")];
-  });
+async function inRepo(
+  session: Session,
+  cwd: string,
+  paths: readonly string[],
+): Promise<{ readonly inside: string[]; readonly foreign: readonly ForeignPath[] }> {
+  const placed = await placePaths(
+    session.git,
+    paths.map((path) => resolve(cwd, path)),
+  );
   // The root itself (`rm -rf .`) is never ignored, and git rejects an empty pathspec.
-  const ignored = new Set(await session.git.ignored(inside.filter((path) => path !== "")));
-  return inside.filter((path) => !ignored.has(path));
+  const ignored = new Set(await session.git.ignored(placed.inside.filter((path) => path !== "")));
+  return { inside: placed.inside.filter((path) => !ignored.has(path)), foreign: placed.foreign };
 }
 
 async function resolveAction(session: Session, raw: RawAction, cwd: string): Promise<GuardAction> {
   if (raw.kind === "other") return raw;
-  if (raw.kind !== "shell") return { kind: raw.kind, paths: await inRepo(session, cwd, raw.paths) };
+  if (raw.kind !== "shell") {
+    const { inside, foreign } = await inRepo(session, cwd, raw.paths);
+    return { kind: raw.kind, paths: inside, foreign };
+  }
   // Paths the analysis cannot place (shell variables, `cd` to an unknown place) are not judged.
   const analysis = analyzeShell(raw.command);
   const committedGoverned =
@@ -182,6 +191,8 @@ async function resolveAction(session: Session, raw: RawAction, cwd: string): Pro
           ...(await session.git.staged()),
           ...(await session.git.changedSince(await session.git.head())),
         ]).filter((path) => !path.startsWith(".specty/") && isGoverned(path, session.config));
+  const writes = await inRepo(session, cwd, analysis.writes);
+  const deletes = await inRepo(session, cwd, analysis.deletes);
   return {
     kind: "shell",
     facts: {
@@ -189,8 +200,9 @@ async function resolveAction(session: Session, raw: RawAction, cwd: string): Pro
       unscopedNpx: analysis.unscopedNpx,
       bypass: analysis.bypass,
       committedGoverned,
-      writes: await inRepo(session, cwd, analysis.writes),
-      deletes: await inRepo(session, cwd, analysis.deletes),
+      writes: writes.inside,
+      deletes: deletes.inside,
+      foreign: [...writes.foreign, ...deletes.foreign],
     },
   };
 }

@@ -43,10 +43,16 @@ export interface Git {
   /** The repository-relative `paths` that git ignores and does not track. */
   ignored(paths: readonly string[]): Promise<string[]>;
   config(key: string): Promise<string | undefined>;
-  /** Folders of every worktree of the repository, the main one first. */
-  worktrees(): Promise<string[]>;
+  /** Every worktree of the repository, the main one first. */
+  worktrees(): Promise<Worktree[]>;
   /** Repository-relative folders of the other worktrees that live inside this one. */
   nestedWorktrees(): Promise<string[]>;
+}
+
+export interface Worktree {
+  readonly folder: string;
+  /** Its branch, unless it is detached. */
+  readonly branch?: string;
 }
 
 /** Root of the repository that contains `cwd`, or undefined outside git. */
@@ -77,14 +83,23 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
     return isAbsolute(path) ? path : resolve(root, path);
   };
   const head = () => optional(["rev-parse", "--verify", "-q", "HEAD"]);
+  // `--porcelain` prints one block per worktree: `worktree <folder>`, then `branch refs/heads/…`
+  // unless it is detached.
   const worktrees = async () =>
-    (await output(["worktree", "list", "--porcelain"]))
-      .split("\n")
-      .filter((line) => line.startsWith("worktree "))
-      .map((line) => line.slice("worktree ".length));
+    (await output(["worktree", "list", "--porcelain"])).split("\n\n").flatMap((block) => {
+      const lines = block.split("\n");
+      const value = (prefix: string) =>
+        lines.find((line) => line.startsWith(prefix))?.slice(prefix.length);
+      const folder = value("worktree ");
+      const branch = value("branch refs/heads/");
+      if (folder === undefined) return [];
+      return [branch === undefined ? { folder } : { folder, branch }];
+    });
   const nestedWorktrees = async () => {
     const own = await resolved(root);
-    const folders = await Promise.all((await worktrees()).map(resolved));
+    const folders = await Promise.all(
+      (await worktrees()).map((worktree) => resolved(worktree.folder)),
+    );
     return folders.flatMap((folder) => {
       const inner = relative(own, folder);
       return inner === "" || inner.startsWith("..") || isAbsolute(inner)
@@ -170,7 +185,7 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
 }
 
 /** The path with symbolic links resolved, or as given when it does not exist. */
-function resolved(path: string): Promise<string> {
+export function resolved(path: string): Promise<string> {
   return realpath(path).catch(() => path);
 }
 
