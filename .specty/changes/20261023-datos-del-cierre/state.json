@@ -6,6 +6,13 @@
   "branch": "specty/20261023-datos-del-cierre",
   "baseCommit": "4e98cb49372657baa9570fcbab0e3ad6099b332a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a687bca20ec98d142163f79495fd6d5681e8b89f2612b6a6904eee1959fcf6ca",
+    "at": "2026-10-23T10:16:39.224Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c9ab1b1d4fe0f50b137d7d5fbfde5092a6bacb1d",
+      "startedAt": "2026-10-23T10:16:47.823Z",
+      "doneAt": "2026-10-23T10:17:59.695Z",
+      "summary": "data/closing.ts: closingOf(text) parte el cierre por sus títulos de nivel 3 en summary, deviations, decisions y pending (Resumen/Summary, Desviaciones/Deviations, Decisiones/Decisions, Pendientes/Follow-ups/Pending; cuentan por cómo empiezan y sin distinguir mayúsculas, así «Desviaciones (respecto al plan)» vale). Lo que va antes del primer título o bajo otro título va a other con su título, para no perder nada; una parte escrita dos veces conserva las dos; los títulos dentro de un bloque de código cercado son código; acepta finales de línea de Windows. Puro. Tests: el cierre en español y en inglés, lo que no es parte, partes repetidas, bloques de código, cierre vacío y títulos de otros niveles."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -41,12 +58,5 @@
     "A": 4,
     "AC": 3,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a687bca20ec98d142163f79495fd6d5681e8b89f2612b6a6904eee1959fcf6ca",
-    "at": "2026-10-23T10:16:39.224Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

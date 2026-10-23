@@ -52,7 +52,7 @@ La vista de cada cambio trae el cierre que redacta el agente, en sus partes (res
 
 ## Tareas
 
-- [ ] T1: El cierre en sus partes
+- [x] T1: El cierre en sus partes
   - files: packages/ui/src/data/closing.ts, packages/ui/src/data/closing.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/closing.test.ts
