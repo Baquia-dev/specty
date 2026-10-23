@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261023-guard-de-codex",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-guard-de-codex",
+  "baseCommit": "bef28e4c22dc8e7aa7844e24e82a45aa5c9ac9f2",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1d7aef40c4d6d5408e23ab51b17e3009c3364fb79285e9ad22f9fe1fe068706b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:40b32eb0791035aadc48588560fa67e80d610e51c4ae6d35e2acc42a96ab5120",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:069a0c0ee390c71afe60cbe349f3f1c154622252cb003fbdce347cb017f54f8c",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a74bf2e80bfc1ea77781764c5d63fe12d6affd4467988564dcd37aa030386164",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e81822764fff796cdc795c736ab0dc48f7f0de15aa4a4fe00e8627c99fa66ad4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fc4a520a30e403c0a8fbf1b3c4d258b589ebfd0deb7b4b36b882d795b71ae9b3",
+    "at": "2026-10-23T23:09:51.354Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
