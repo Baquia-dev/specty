@@ -67,3 +67,28 @@ En la pestaña Aceptación, un cambio en cierre muestra lo que redactó el agent
   - ac: AC2, AC3
   - verify: pnpm check
   - notes: Comprobar en el navegador, en «Recordatorios de tareas por correo» y en «Panel de asistencia por curso» tras aceptarlo, a 390 y 1280 px y en claro y oscuro: las partes del cierre, el aviso mientras el agente redacta, el diálogo, el paso a terminado y la barra compacta.
+
+## Cierre
+
+### Resumen
+
+La pestaña Aceptación muestra el cierre del agente en su sección «Cierre», bajo el resumen: Resumen, Desviaciones, Decisiones y Pendientes, cada parte con su subtítulo y su markdown, y su estado a la derecha del divisor (en redacción, por confirmar, confirmado). Mientras el agente lo redacta, solo dice que está en ello. Con el cierre enviado, «Confirmar y archivar» aparece en la cabecera y en la barra compacta; su diálogo dice que el cambio termina y se archiva sin vuelta atrás, y al confirmar la cabecera pasa a «Terminado», las acciones desaparecen y el cierre sigue a la vista.
+
+### Desviaciones
+
+- **La pestaña ya no se mueve sola:** al confirmar, la página saltaba a Historial porque la pestaña se recalculaba con cada cambio de fase. Ahora, sin `?tab=`, se elige al abrir el cambio y se queda donde está la persona; lo pedía A4 («el cierre sigue a la vista»).
+- **Tests de la página en su propio archivo:** `change-page.test.ts` estaba en 300 líneas, así que los de la página con un cierre van en `change-page.closing.test.ts`, junto a él, en lugar de modificarlo.
+- **Un archivo creado por error y borrado:** durante T1 se creó por accidente `Projects/placeholder-never-used.txt` fuera del repositorio, y se borró enseguida junto con su carpeta vacía.
+
+### Decisiones
+
+- **El estado en el divisor:** «en redacción», «por confirmar» o «confirmado», donde otras secciones ponen su cuenta.
+- **Las partes, sangradas como el resto del documento**, con su subtítulo y el markdown del agente tal cual (listas y negritas).
+- **Un cambio rápido terminado no muestra la sección:** no tiene cierre que leer.
+- **El diálogo dice qué pasa con lo pendiente:** no se puede deshacer, así que lo pendiente va en un cambio nuevo.
+
+### Pendientes
+
+- **La pestaña Historial**, que hoy no muestra nada propio.
+- **Las actualizaciones de documentos que proponga el cierre** (docs/ui.md las menciona para más adelante).
+- **El test de los avisos de 5 s** sigue rozando su límite con la máquina cargada.
