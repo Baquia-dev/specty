@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261023-cancelar-un-cambio-sin-aprobar",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261023-cancelar-un-cambio-sin-aprobar",
+  "baseCommit": "1bb581b0bca4485c6a417f13cf0d667c91ee41b0",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e0b79d7a79231321cf110c2823889ba7f9fe6115d82d422178e0bf39b90b37e8",
+    "at": "2026-10-23T21:25:36.375Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
