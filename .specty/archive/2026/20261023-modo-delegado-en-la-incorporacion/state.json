@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-modo-delegado-en-la-incorporacion",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-modo-delegado-en-la-incorporacion",
   "baseCommit": "a936b866cca758453e66e32c86d9ff1e9dde7052",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:124d5a0ae5145bdf827a1623a0839cd29510f8765543c99bf96d7c7743401395",
@@ -52,12 +52,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d1eb41d164d6b7bb910063d78f179eac7443da94",
+      "attempts": 1,
       "startedAt": "2026-10-23T21:10:47.451Z",
       "doneAt": "2026-10-23T21:12:47.612Z",
-      "summary": "ARCHITECTURE §9: en modo delegado el agente resuelve la incorporación y repite él close o accept, y si cierra desde dentro de la worktree la carpeta queda y se le pide salir"
+      "summary": "ARCHITECTURE §9: en modo delegado el agente resuelve la incorporación y repite él close o accept, y si cierra desde dentro de la worktree la carpeta queda y se le pide salir",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,5 +69,6 @@
     "AC": 4,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-23T21:13:57.789Z"
 }

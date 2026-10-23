@@ -59,3 +59,24 @@ Con el modo delegado activo, la incorporación sigue sola. Si un cierre choca, l
 ## Riesgos
 
 - R1: Quedan carpetas de cambios ya cerrados mientras no llegue la limpieza — la salida las nombra, y el cambio de limpieza es el siguiente de la serie.
+
+## Cierre
+
+### Resumen
+
+Con el modo delegado activo, la incorporación ya no detiene el flujo autónomo. Si un cierre choca, la salida le pide al agente resolverla él: `specty next` le dice qué falta, la termina con `specty integrate` y vuelve a ejecutar `close` (o `accept`). Si el merge sigue en curso, la espera dice lo mismo. Tras `integrate`, o si el merge ya no está en curso, le pide repetir él el comando, sin «pide al usuario… y termina tu turno». Si cierra el agente y su carpeta de trabajo está dentro de la worktree del cambio, el cambio se incorpora igual, pero la carpeta y la rama quedan, y el SIGUIENTE le pide salir de ella (en Claude Code, `ExitWorktree`) y seguir en la carpeta principal. Sin el modo delegado, o si cierra la persona, todo sigue como antes.
+
+### Desviaciones
+
+- **Ninguna en el comportamiento.** El texto del SIGUIENTE de `integrate` quedó en un ayudante, `runAgain`, porque lo usan los dos finales del comando.
+
+### Decisiones
+
+- **El modo delegado se lee de `session.cards.delegated`,** como en las tarjetas del núcleo: con el modo activo, los textos se dirigen al agente.
+- **La carpeta del agente se detecta por la carpeta de trabajo del proceso.** Un `cd <worktree> && specty close` lanzado desde otra carpeta también la conserva, porque el proceso no puede saber dónde está la sesión del agente; la limpieza la recoge después.
+- **A2, confirmado al aprobar:** la carpeta queda si cierra el agente desde dentro.
+
+### Pendientes
+
+- **La limpieza de worktrees y ramas ya incorporadas,** que recoge las carpetas que deja el agente: es el siguiente cambio de la serie.
+- **Recompilar el CLI de la carpeta principal** cuando esto esté en `main`.

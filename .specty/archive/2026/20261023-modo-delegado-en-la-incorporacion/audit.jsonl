@@ -10,3 +10,6 @@
 {"ts":"2026-10-23T21:10:47.452Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"d1eb41d164d6b7bb910063d78f179eac7443da94"}}
 {"ts":"2026-10-23T21:12:47.610Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":47927}}
 {"ts":"2026-10-23T21:12:47.613Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §9: en modo delegado el agente resuelve la incorporación y repite él close o accept, y si cierra desde dentro de la worktree la carpeta queda y se le pide salir"}}
+{"ts":"2026-10-23T21:13:48.322Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-23T21:13:57.790Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:82c89f7f2134dc6acd2243810ddd7152cbaf34a6c6e51100d5f9a85e3f22b3d7","size":"M","warnings":0}}
+{"ts":"2026-10-23T21:14:02.844Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
