@@ -1,0 +1,3 @@
+{"ts":"2026-10-23T20:13:41.986Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261023-borrar-worktrees-sin-preguntar"}}
+{"ts":"2026-10-23T20:14:18.172Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:79f2924bdc3bcfdc21379e8c073b1f557d4c9c786beb3e3e63e2ef388c8e164c","size":"S","warnings":0}}
+{"ts":"2026-10-23T20:15:28.913Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:79f2924bdc3bcfdc21379e8c073b1f557d4c9c786beb3e3e63e2ef388c8e164c","channel":"tty"}}

@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261023-borrar-worktrees-sin-preguntar",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261023-borrar-worktrees-sin-preguntar",
+  "baseCommit": "5841c0528117daa7f461d1ecfd572377d0065582",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:79f2924bdc3bcfdc21379e8c073b1f557d4c9c786beb3e3e63e2ef388c8e164c",
+    "at": "2026-10-23T20:15:28.900Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
