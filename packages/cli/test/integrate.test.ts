@@ -13,6 +13,7 @@ import {
   SPEC,
   SPEC_PATH,
   tempRepo,
+  tryGit,
   writeFiles,
 } from "./support";
 
@@ -97,6 +98,82 @@ describe("closing incorporates the change into the main branch", () => {
     expect(git(root, "branch", "--show-current")).toBe("main");
     expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", BRANCH));
     expect(git(root, "status", "--porcelain")).toBe("");
+  });
+
+  it("leaves everything as it was when main conflicts with the change (AC3)", async () => {
+    const { root, folder } = await inWorktree();
+    await toClosing(folder);
+    const tip = git(folder, "rev-parse", "HEAD");
+    await writeFiles(root, { "src/app.ts": "main\n" });
+    git(root, "commit", "-q", "-am", "main cambia el saludo");
+    const main = git(root, "rev-parse", "main");
+    const closed = await cli(folder, ["close"], { terminal: person() });
+    expect(closed.code).toBe(2);
+    expect(closed.out).toContain(`SPECTY · ${CHANGE} · closing`);
+    expect(closed.out).toContain("No se cerró y nada cambió.\nmain choca con este cambio.");
+    expect(closed.out).toContain("CONFLICTOS:\n  src/app.ts");
+    expect(closed.out).toContain(
+      "SIGUIENTE: incorpora main a mano en esta carpeta (`git merge main`, resuelve y haz el commit) y vuelve a ejecutar `specty close`.",
+    );
+    expect(tryGit(folder, "rev-parse", "-q", "--verify", "MERGE_HEAD").status).not.toBe(0);
+    expect(git(folder, "rev-parse", "HEAD")).toBe(tip);
+    expect(git(root, "rev-parse", "main")).toBe(main);
+    expect(await read(folder, "src/app.ts")).toBe("2\n");
+    expect((await cli(folder, ["next"])).out).toContain(`SPECTY · ${CHANGE} · closing`);
+  });
+
+  it("leaves everything as it was when the verification fails after merging main (AC4)", async () => {
+    const config = `${CONFIG()}  full: "echo roto && exit 1"\n`;
+    const { root, folder } = await inWorktree({ ...FILES, ".specty/config.yaml": config });
+    await toClosing(folder);
+    const tip = git(folder, "rev-parse", "HEAD");
+    await writeFiles(root, { "src/other.ts": "export const other = 1;\n" });
+    git(root, "add", "-A");
+    git(root, "commit", "-q", "-m", "otro trabajo en main");
+    const closed = await cli(folder, ["close"], { terminal: person() });
+    expect(closed.code).toBe(2);
+    expect(closed.out).toContain("Con main incorporado, `echo roto && exit 1` falla.");
+    expect(closed.out).toContain("SALIDA DE LA VERIFICACIÓN:\n  roto");
+    expect(closed.out).toContain("SIGUIENTE: incorpora main a mano en esta carpeta");
+    expect(tryGit(folder, "rev-parse", "-q", "--verify", "MERGE_HEAD").status).not.toBe(0);
+    expect(git(folder, "rev-parse", "HEAD")).toBe(tip);
+    expect(await exists(join(folder, "src/other.ts"))).toBe(false);
+  });
+
+  it("refuses before touching anything when main's folder has uncommitted changes (AC6)", async () => {
+    const { root, folder } = await inWorktree();
+    await toClosing(folder);
+    await writeFiles(root, { "src/app.ts": "a medias\n" });
+    const closed = await cli(folder, ["close"], { terminal: person() });
+    expect(closed.code).toBe(2);
+    expect(closed.out).toContain(`main está en ${root}, que tiene cambios sin commit`);
+    expect(closed.out).toContain("SIN COMMIT:\n  src/app.ts");
+    expect(closed.out).toContain(
+      `SIGUIENTE: guarda o descarta esos cambios en ${root} y vuelve a ejecutar \`specty close\`.`,
+    );
+    expect((await cli(folder, ["next"])).out).toContain(`SPECTY · ${CHANGE} · closing`);
+    expect(await read(root, "src/app.ts")).toBe("a medias\n");
+  });
+
+  it("retries only the incorporation of a closed change that did not reach main (AC7)", async () => {
+    const root = await tempRepo(FILES);
+    git(root, "branch", "-m", "main", "trunk");
+    await cli(root, ["new", "Saludo personalizado"]);
+    await toClosing(root);
+    await cli(root, ["close"], { terminal: person() });
+    // Now there is a main branch, and the closed change is not in it.
+    git(root, "branch", "-m", "trunk", "main");
+    const retried = await cli(root, ["close"], { terminal: person() });
+    expect(retried.code).toBe(0);
+    expect(retried.out).toContain("El cambio ya estaba cerrado y archivado.");
+    expect(retried.out).toContain("Incorporado a main.");
+    expect(git(root, "branch", "--show-current")).toBe("main");
+    expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", BRANCH));
+    const closings = git(root, "log", "--format=%s", "main").split("\n");
+    expect(closings.filter((subject) => subject.startsWith("docs(spec): cerrar"))).toHaveLength(1);
+    git(root, "switch", "-q", BRANCH);
+    const again = await cli(root, ["close"], { terminal: person() });
+    expect(again.out).toContain("No hay nada pendiente de `close` en la fase done.");
   });
 
   it("closes as before in team mode and without a main branch (AC9)", async () => {

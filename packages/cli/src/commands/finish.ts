@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   blockedCard,
+  type ChangeState,
   closedCard,
   headerOf,
   nothingPendingCard,
@@ -11,7 +12,13 @@ import {
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { archive, commitArchive } from "../flow/finish";
-import { absorbTarget, integrationOf, landChange, withIntegration } from "../flow/integrate";
+import {
+  absorbTarget,
+  integrationOf,
+  isIncorporated,
+  landChange,
+  withIntegration,
+} from "../flow/integrate";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
 import { writePointer } from "../store/local";
@@ -23,6 +30,7 @@ export async function close(session: Session): Promise<Output> {
   const { change } = guard;
   const t = translator(session.lang);
   const { state } = change;
+  if (state.phase === "done") return landClosed(session, state);
   if (state.phase !== "closing" || state.closingSubmittedAt === undefined) {
     return nothingPendingCard(state.id, state.phase, "close", session.cards);
   }
@@ -80,6 +88,37 @@ export async function close(session: Session): Promise<Output> {
       session.cards,
     ),
     absorbed?.lines ?? [],
+    landed,
+  );
+}
+
+/** A closed change that did not reach the main branch (its landing failed): retries only that. */
+async function landClosed(session: Session, state: ChangeState): Promise<Output> {
+  const t = translator(session.lang);
+  const plan = await integrationOf(session, state);
+  if (plan === undefined || (await isIncorporated(session, plan)))
+    return nothingPendingCard(state.id, state.phase, "close", session.cards);
+  if (
+    !(await session.environment.terminal.confirm(
+      t(
+        `¿Incorporar ${plan.branch} a ${plan.target}?`,
+        `Merge ${plan.branch} into ${plan.target}?`,
+      ),
+    ))
+  )
+    return postponed(session, state);
+  const absorbed = await absorbTarget(session, plan, state, "close");
+  if (!absorbed.ok) return absorbed.output;
+  const landed = await landChange(session, plan);
+  return withIntegration(
+    session,
+    closedCard(
+      headerOf(state.id, "done"),
+      t("El cambio ya estaba cerrado y archivado.", "The change was already closed and archived."),
+      landed.landed ? undefined : state.branch,
+      session.cards,
+    ),
+    absorbed.lines,
     landed,
   );
 }

@@ -3,6 +3,7 @@ import {
   type ChangeState,
   headerOf,
   type Output,
+  type OutputBlock,
   section,
   translator,
 } from "@baquia-dev/specty-core";
@@ -68,16 +69,63 @@ export async function absorbTarget(
 ): Promise<Absorbed> {
   const t = translator(session.lang);
   const { git } = session;
+  const run = `\`${session.cards.command} ${again}\``;
+  // Checked before anything moves: the fast-forward could overwrite those changes.
+  const dirty =
+    plan.holder === undefined
+      ? []
+      : lines((await git.run(["-C", plan.holder, "diff", "--name-only", "HEAD"])).stdout);
+  if (plan.holder !== undefined && dirty.length > 0) {
+    return refused(
+      session,
+      state,
+      [
+        t(
+          `${plan.target} está en ${plan.holder}, que tiene cambios sin commit: avanzarla podría pisarlos.`,
+          `${plan.target} is checked out in ${plan.holder}, which has uncommitted changes: moving it could overwrite them.`,
+        ),
+      ],
+      { title: t("SIN COMMIT", "UNCOMMITTED"), lines: dirty },
+      t(
+        `guarda o descarta esos cambios en ${plan.holder} y vuelve a ejecutar ${run}.`,
+        `commit or discard those changes in ${plan.holder} and run ${run} again.`,
+      ),
+    );
+  }
   if (await contains(git, "HEAD", plan.target)) return { ok: true, lines: [] };
+  const byHand = t(
+    `incorpora ${plan.target} a mano en esta carpeta (\`git merge ${plan.target}\`, resuelve y haz el commit) y vuelve a ejecutar ${run}.`,
+    `merge ${plan.target} by hand in this folder (\`git merge ${plan.target}\`, resolve and commit) and run ${run} again.`,
+  );
   const merged = await git.run(["merge", "--no-ff", "--no-commit", plan.target]);
   if (merged.code !== 0) {
+    const conflicts = lines((await git.run(["diff", "--name-only", "--diff-filter=U"])).stdout);
     await git.run(["merge", "--abort"]);
-    return refused(session, plan, state, again, [
-      t(
-        `No se pudo incorporar ${plan.target} a este cambio: ${reasonOf(merged)}`,
-        `Could not bring ${plan.target} into this change: ${reasonOf(merged)}`,
-      ),
-    ]);
+    return conflicts.length > 0
+      ? refused(
+          session,
+          state,
+          [
+            t(
+              `${plan.target} choca con este cambio.`,
+              `${plan.target} conflicts with this change.`,
+            ),
+          ],
+          { title: t("CONFLICTOS", "CONFLICTS"), lines: conflicts },
+          byHand,
+        )
+      : refused(
+          session,
+          state,
+          [
+            t(
+              `No se pudo incorporar ${plan.target} a este cambio: ${reasonOf(merged)}`,
+              `Could not bring ${plan.target} into this change: ${reasonOf(merged)}`,
+            ),
+          ],
+          undefined,
+          byHand,
+        );
   }
   const command = session.config.verify.full ?? session.config.verify.default;
   if (command !== undefined) {
@@ -90,12 +138,18 @@ export async function absorbTarget(
     });
     if (result.code !== 0) {
       await git.run(["merge", "--abort"]);
-      return refused(session, plan, state, again, [
-        t(
-          `Con ${plan.target} incorporado, \`${command}\` falla.`,
-          `With ${plan.target} merged in, \`${command}\` fails.`,
-        ),
-      ]);
+      return refused(
+        session,
+        state,
+        [
+          t(
+            `Con ${plan.target} incorporado, \`${command}\` falla.`,
+            `With ${plan.target} merged in, \`${command}\` fails.`,
+          ),
+        ],
+        { title: t("SALIDA DE LA VERIFICACIÓN", "VERIFICATION OUTPUT"), lines: tail(result, 15) },
+        byHand,
+      );
     }
   }
   const commit = await commitWithReceipt(session, {
@@ -117,31 +171,36 @@ export async function absorbTarget(
   };
 }
 
-/** Nothing moved: the change stays in its phase, and the person can bring the main branch in by hand. */
+/** Nothing moved: the change stays in its phase, its branch and its folder as they were. */
 function refused(
   session: Session,
-  plan: Integration,
   state: ChangeState,
-  again: "close" | "accept",
-  lines: readonly string[],
+  reasons: readonly string[],
+  details: OutputBlock | undefined,
+  next: string,
 ): Absorbed {
   const t = translator(session.lang);
-  const run = `\`${session.cards.command} ${again}\``;
+  const lead =
+    state.phase === "done"
+      ? t("No se incorporó y nada cambió.", "Not merged, and nothing changed.")
+      : t("No se cerró y nada cambió.", "Not closed, and nothing changed.");
   return {
     ok: false,
     output: {
       status: "blocked",
       header: headerOf(state.id, state.phase),
-      blocks: section(undefined, [
-        t("No se cerró y nada cambió.", "Not closed, and nothing changed."),
-        ...lines,
-      ]),
-      next: t(
-        `incorpora ${plan.target} a mano en esta carpeta (\`git merge ${plan.target}\`, resuelve y haz el commit) y vuelve a ejecutar ${run}.`,
-        `merge ${plan.target} by hand in this folder (\`git merge ${plan.target}\`, resolve and commit) and run ${run} again.`,
-      ),
+      blocks: [
+        ...section(undefined, [lead, ...reasons]),
+        ...(details === undefined ? [] : [details]),
+      ],
+      next,
     },
   };
+}
+
+/** True when the main branch already contains the change's branch. */
+export function isIncorporated(session: Session, plan: Integration): Promise<boolean> {
+  return contains(session.git, plan.target, plan.branch);
 }
 
 export interface Landed {
@@ -239,6 +298,10 @@ async function advanceRef(
 /** True when `commit` already contains `ancestor`. */
 async function contains(git: Git, commit: string, ancestor: string): Promise<boolean> {
   return (await git.run(["merge-base", "--is-ancestor", ancestor, commit])).code === 0;
+}
+
+function lines(text: string): string[] {
+  return text.split("\n").filter((line) => line.trim().length > 0);
 }
 
 function failureOf(result: ExecResult): string | undefined {

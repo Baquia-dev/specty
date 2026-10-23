@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "931355fc37334c95f67cfa69fee1fb340012ff2f",
+      "attempts": 1,
       "startedAt": "2026-10-23T15:15:54.955Z",
       "doneAt": "2026-10-23T15:21:14.734Z",
-      "summary": "close incorpora el cambio a la rama principal: si main avanzó, la fusiona en la rama del cambio (--no-ff --no-commit), verifica y hace el commit de merge con recibo; tras archivar, main avanza por fast-forward donde está (o update-ref) y la worktree se borra (la rama queda) o la carpeta principal vuelve a main. flow/integrate.ts nuevo; spike, modo team y sin rama principal cierran como antes"
+      "summary": "close incorpora el cambio a la rama principal: si main avanzó, la fusiona en la rama del cambio (--no-ff --no-commit), verifica y hace el commit de merge con recibo; tras archivar, main avanza por fast-forward donde está (o update-ref) y la worktree se borra (la rama queda) o la carpeta principal vuelve a main. flow/integrate.ts nuevo; spike, modo team y sin rama principal cierran como antes",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a6180eb83b942df79e73fec48de482d296a39034",
+      "startedAt": "2026-10-23T15:21:15.193Z",
+      "doneAt": "2026-10-23T15:24:14.162Z",
+      "summary": "Rechazos sin tocar nada: conflictos (lista de archivos y merge abortado), verificación en rojo tras la fusión (cola de la salida) y carpeta de main con cambios sin commit (comprobado antes de fusionar); el SIGUIENTE explica la incorporación a mano. close sobre un cambio ya cerrado cuya rama no está en main reintenta solo la incorporación, sin volver a archivar"
     }
   },
   "pending": {
