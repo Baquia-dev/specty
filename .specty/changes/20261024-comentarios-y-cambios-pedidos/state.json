@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261024-comentarios-y-cambios-pedidos",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-comentarios-y-cambios-pedidos",
+  "baseCommit": "db4ad02e1f8e754c918b4cf5f5e06eaa5affebb7",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bd487d66e36011e32440a9236d980d1579067dcaade0888e0335d90e1d071a3d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d3ccd896ae56e8d14580c8fea1d426933d633be4c0e1a05ef4572203f8ae7973",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:683e67a9205437fe62134d00dbc450862c2f434b6762c0c1e9f1aaf27cb36d8d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b591cbf0fdf11aec8a417b772d217a88ff1cf5c00a8502b854cbe09613899425",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c8eccec810926b94a038b650313df0ef2f843e2d3bb5c537dc5215d2134f0924",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:77971f1de0630420dd3f3594422ac83e9c473f926b3ff2653300553d81a95d66",
+    "at": "2026-10-24T06:46:05.482Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
