@@ -75,3 +75,26 @@ kind: standard
 
 - R1: El agente ve el enlace con el token si lanza `specty ui` — hoy solo da lectura; antes de abrir acciones a la UI hay que decidir cómo impedir que el agente las use.
 - R2: Revisar cada segundo con muchas worktrees cuesta un `git worktree list` por segundo mientras alguien escucha — se mide y, si hace falta, se cambia por vigilar carpetas sin tocar la API.
+
+## Cierre
+
+### Resumen
+
+`specty ui` levanta el servidor local en `127.0.0.1` (4173 o el siguiente libre, o `--port`), imprime el enlace con un token que vive solo en memoria y sigue hasta Ctrl+C. Al abrir el enlace, el token se cambia por una cookie `HttpOnly` y `SameSite=Strict` con el puerto en el nombre; la API comprueba `Host`, `Origin` y la cookie, solo admite GET y no habilita CORS. `GET /api/changes` da cada cambio una vez con la forma de `ChangeRecord` de la UI y su carpeta (el abierto de cada worktree y los archivados, la principal primero), y `GET /api/events` avisa con `changes` al conectarse y cuando cambia la firma de los archivos, que solo se mira mientras alguien escucha. La UI construida se sirve con su `index.html` marcado para el servidor, también en las rutas de la app, y sin ella una página explica cómo construirla. Probado con el bundle real sobre este repositorio: 71 cambios en 143 ms.
+
+### Desviaciones
+
+- `store/changes.ts` entró en el alcance de T1 (S1) para exportar `listDir`, que ya listaba las carpetas de los cambios, en lugar de duplicarlo.
+
+### Decisiones
+
+- El tipo `ChangeRecord` del servidor copia el de la UI en vez de compartirlo: el CLI no puede importar del paquete de la UI. Si la API crece, conviene llevar el contrato a core.
+- Los eventos emiten `changes` también al conectarse, para que la UI vuelva a pedir los datos y no pierda lo que cambió entre su primera petición y la suscripción (o tras reconectarse).
+- La UI se busca desde la ubicación del propio bundle (`import.meta.url`): el `specty` global no tiene una ruta de script en `invocation`.
+- Los archivos estáticos de la UI no exigen la cookie: no llevan datos, y la cookie `SameSite=Strict` ya protege la API.
+
+### Pendientes
+
+- Que la UI lea de este servidor (`ServerData` sobre `SpectyData`) y muestre la carpeta de cada cambio en la Bandeja.
+- Incluir la UI construida en el paquete de npm del CLI.
+- Las acciones de la persona desde la UI, después de decidir cómo impedir que el agente las use (ve el enlace si lanza `specty ui`).

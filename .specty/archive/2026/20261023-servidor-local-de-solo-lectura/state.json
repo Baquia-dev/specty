@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-servidor-local-de-solo-lectura",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-servidor-local-de-solo-lectura",
   "baseCommit": "b32587b4d4c1cb57da5eb8e8f96bfb2cd749e368",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:61636864c9c74a1fd1efe49cf8b93cf40352295ac9da5d5716aea56d4a2032c6",
@@ -76,12 +76,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a2e85c7ffa10de93e9080b377ad8d9338223b747",
+      "attempts": 1,
       "startedAt": "2026-10-24T02:51:52.509Z",
       "doneAt": "2026-10-24T02:54:10.159Z",
-      "summary": "ARCHITECTURE §15 separa lo que existe (specty ui, seguridad, /api/changes, /api/events, la UI marcada) de lo que falta (la UI leyendo del servidor, arranque en segundo plano, acciones con CSRF y la decisión sobre el agente); AGENTS.md nombra server/ en el mapa"
+      "summary": "ARCHITECTURE §15 separa lo que existe (specty ui, seguridad, /api/changes, /api/events, la UI marcada) de lo que falta (la UI leyendo del servidor, arranque en segundo plano, acciones con CSRF y la decisión sobre el agente); AGENTS.md nombra server/ en el mapa",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -94,5 +94,6 @@
     "T": 4,
     "R": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T02:55:19.681Z"
 }
