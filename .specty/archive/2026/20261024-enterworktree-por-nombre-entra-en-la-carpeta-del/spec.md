@@ -78,3 +78,25 @@ En Claude Code, el agente entra en la carpeta que preparó `specty new` sin que 
 
 - R1: Con el hook instalado, si `specty` no se puede ejecutar, Claude Code no puede crear worktrees, tampoco para subagentes — `init` usa la misma invocación que el guard (una ruta local si `specty` no está en el PATH), el hook solo necesita git, y `doctor` comprueba que está.
 - R2: Las worktrees de los subagentes salen de HEAD y no de la rama principal remota, como haría Claude Code por defecto — es lo que hizo el experimento sin problemas (A2), y para un subagente HEAD es el trabajo que está viendo.
+
+## Cierre
+
+### Resumen
+
+`init` instala en Claude Code los hooks `WorktreeCreate` y `WorktreeRemove`, sin `matcher`, con el mismo `specty guard --tool claude-code`, que los atiende antes de abrir la sesión (`enforce/worktree-hooks.ts`). Con el id de un cambio, el hook responde con la carpeta que preparó `specty new`; con otro nombre, crea o reutiliza `.claude/worktrees/<name>` en la rama `worktree-<name>` desde HEAD. Al borrar, quita las de Claude Code con su rama fusionada y deja las de los cambios. El guard juzga el `name` de `EnterWorktree` con la misma carpeta (`namedWorktree`), así que la sesión queda ligada a la del cambio. `doctor` avisa aparte si faltan estos hooks, y el SIGUIENTE de `specty new` propone `EnterWorktree` con `name` cuando están. Probado con el `dist` compilado: el id de este mismo cambio devuelve su carpeta.
+
+### Desviaciones
+
+- **T2 se dividió en dos tareas antes de aprobar** (`init` y `doctor`; `new` y la documentación), porque tenía seis archivos y el aviso recomienda cinco como máximo.
+
+### Decisiones
+
+- **Los hooks de worktrees pasan por el guard (A1):** un solo comando por herramienta, y `missingClaudeEvents` y `withHooks` los tratan como los demás eventos; los eventos sin `matcher` se escriben sin esa clave.
+- **Los hooks no necesitan la configuración de Specty:** solo git, para que Claude Code pueda crear worktrees aunque `config.yaml` falle; el idioma sale de la configuración si se puede leer, o del sistema.
+- **La rama de una worktree de Claude Code se borra con `-d`:** solo si no queda nada sin fusionar.
+- **Un `name` sin hooks no se propone:** `entersByName` mira los ajustes de la carpeta donde se ejecuta `new`, porque sin el hook ese nombre crearía una worktree vacía (A4).
+
+### Pendientes
+
+- **Quitar el experimento local de este repositorio (A5):** volver a ejecutar `specty init` en la carpeta principal, para que `.claude/settings.json` tenga los hooks nuevos, y quitar del `.claude/settings.local.json` los hooks que llaman a `~/.claude/hooks/specty-worktree.mjs`.
+- **`specty new` borra las carpetas de cambios terminados de otras sesiones:** `removeFinished` solo respeta la carpeta del proceso que lo ejecuta, así que puede quitar la carpeta de un cambio recién cerrado mientras su sesión aún está dentro; se vio el 2026-10-24 con «Falsos positivos del guard».

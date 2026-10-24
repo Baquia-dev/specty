@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-enterworktree-por-nombre-entra-en-la-carpeta-del",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-enterworktree-por-nombre-entra-en-la-carpeta-del",
   "baseCommit": "2d7297ea1653e1d735ec5bff6759097529685b13",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:10b6e90639bfc467ed05da6e45cd592208f6d23a90872197fc5eaf549ad5dcff",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3088250eb7bc47cfcb91466c72832b67fd322fd8",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:30:29.079Z",
       "doneAt": "2026-10-24T10:33:23.187Z",
-      "summary": "El SIGUIENTE de specty new propone EnterWorktree con name igual al id cuando los ajustes de Claude Code de la carpeta tienen el hook (entersByName). ARCHITECTURE §10: entrar por nombre y la fila de Claude Code."
+      "summary": "El SIGUIENTE de specty new propone EnterWorktree con name igual al id cuando los ajustes de Claude Code de la carpeta tienen el hook (entersByName). ARCHITECTURE §10: entrar por nombre y la fila de Claude Code.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -81,5 +81,6 @@
     "AC": 6,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T10:34:59.935Z"
 }
