@@ -47,7 +47,7 @@ Cuando la sirve `specty ui`, la UI muestra los cambios reales de todas las workt
   - files: packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts, packages/ui/src/inbox/inbox.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts --include src/inbox/inbox.test.ts
-- [ ] T2: La UI elige su fuente al arrancar
+- [x] T2: La UI elige su fuente al arrancar
   - files: packages/ui/src/main.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm check

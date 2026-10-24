@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-la-ui-lee-del-servidor-local",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-la-ui-lee-del-servidor-local",
   "baseCommit": "37e89bf9a07616ee2f6d6d36d66b9e613c88e513",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4742333e7d2cc04c82d8be320283579a95f50bda",
+      "attempts": 1,
       "startedAt": "2026-10-24T04:49:18.894Z",
       "doneAt": "2026-10-24T04:51:21.855Z",
-      "summary": "data/server.ts: ServerData lee los cambios de /api/changes, con una comprobación ligera de la respuesta, y vuelve a leerlos con cada evento changes de /api/events; sin sesión pide abrir el enlace de specty ui; dataSource(page) elige ServerData si la página lleva la marca del servidor y, si no, carga FixtureData bajo demanda; la Bandeja muestra el error de carga en el idioma de la persona"
+      "summary": "data/server.ts: ServerData lee los cambios de /api/changes, con una comprobación ligera de la respuesta, y vuelve a leerlos con cada evento changes de /api/events; sin sesión pide abrir el enlace de specty ui; dataSource(page) elige ServerData si la página lleva la marca del servidor y, si no, carga FixtureData bajo demanda; la Bandeja muestra el error de carga en el idioma de la persona",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02c6018df900753c3b9d9bf376b17b6792ebdb7b",
+      "startedAt": "2026-10-24T04:51:22.177Z",
+      "doneAt": "2026-10-24T04:56:31.339Z",
+      "summary": "main.ts arranca Angular con la fuente que elige dataSource(document): ServerData con la marca de specty ui y, si no, FixtureData cargada bajo demanda (la carga inicial baja de 665 a 632 kB); ARCHITECTURE §15 lo cuenta; probado con specty ui sobre este repo: página marcada, script servido y las vistas de los 72 cambios reales derivadas sin fallos"
     }
   },
   "pending": {
