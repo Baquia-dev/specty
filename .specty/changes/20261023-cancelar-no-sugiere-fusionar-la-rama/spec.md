@@ -16,7 +16,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: La salida de `cancel` no sugiere fusionar la rama
+- [x] T1: La salida de `cancel` no sugiere fusionar la rama
   - files: packages/core/src/cards/human.ts, packages/cli/src/commands/finish.ts, packages/cli/test/commands.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/commands.test.ts test/flow.test.ts test/delegate.test.ts
   - type: fix

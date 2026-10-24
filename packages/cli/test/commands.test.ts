@@ -97,10 +97,28 @@ describe("human decisions", () => {
       terminal: person({ ask: ["Ya no hace falta"] }),
     });
     expect(cancelled.out).toContain("Cambio cancelado y archivado");
+    expect(cancelled.out).toContain(
+      `La rama specty/${CHANGE} guarda la spec y su registro; no se incorpora.`,
+    );
+    expect(cancelled.out).toContain('SIGUIENTE: para otro cambio, `specty new "<título>"`.');
+    expect(cancelled.out).not.toContain("fusiona");
     expect(await exists(`${root}/${ARCHIVE}/${CHANGE}/state.json`)).toBe(true);
     expect((await cli(root, ["cancel"], { terminal: person() })).out).toContain(
       "No hay nada pendiente",
     );
+  });
+
+  it("warns that the branch of a cancelled change keeps the code of its done tasks", async () => {
+    const root = await implementing();
+    await writeFiles(root, { "src/app.ts": "1\n" });
+    await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
+    const cancelled = await cli(root, ["cancel", "--reason", "Otro enfoque"], {
+      terminal: person(),
+    });
+    expect(cancelled.out).toContain(
+      `La rama specty/${CHANGE} guarda la spec, su registro y el código de las tareas hechas; no se incorpora, porque llevaría ese código a medias.`,
+    );
+    expect(cancelled.out).not.toContain("fusiona");
   });
 
   it("runs the full verification before accepting, and can be declined", async () => {

@@ -156,6 +156,37 @@ export function closedCard(
   };
 }
 
+/**
+ * A cancelled change: its branch is never merged, because it may hold half-done code. The card
+ * says what the branch keeps and only offers another change.
+ */
+export function cancelledCard(
+  header: string,
+  lead: string,
+  branch: { readonly name: string; readonly withCode: boolean } | undefined,
+  ctx: CardContext,
+): Output {
+  const t = translator(ctx.lang);
+  const kept =
+    branch === undefined
+      ? []
+      : [
+          branch.withCode
+            ? t(
+                `La rama ${branch.name} guarda la spec, su registro y el código de las tareas hechas; no se incorpora, porque llevaría ese código a medias.`,
+                `Branch ${branch.name} keeps the spec, its record and the code of the done tasks; it is not merged, as it would bring that half-done code.`,
+              )
+            : t(
+                `La rama ${branch.name} guarda la spec y su registro; no se incorpora.`,
+                `Branch ${branch.name} keeps the spec and its record; it is not merged.`,
+              ),
+        ];
+  return {
+    ...closedCard(header, lead, undefined, ctx),
+    blocks: section(undefined, [lead, ...kept]),
+  };
+}
+
 export interface StatusEntry {
   readonly id: string;
   readonly kind: ChangeKind;

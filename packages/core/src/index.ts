@@ -32,6 +32,7 @@ export {
 } from "./cards/flow";
 export { type BlockedCommitView, blockedCommitMessage } from "./cards/hooks";
 export {
+  cancelledCard,
   closedCard,
   decisionCard,
   delegationCard,

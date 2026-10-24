@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   blockedCard,
+  cancelledCard,
   closedCard,
   headerOf,
   nothingPendingCard,
@@ -187,13 +188,15 @@ export async function cancel(session: Session, reason: string | undefined): Prom
     archived,
     `docs(spec): ${t("cancelar", "cancel")} ${state.id}`,
   );
-  return closedCard(
+  // `task done` commits each task's code; the state cannot hold that commit's own hash.
+  const withCode = Object.values(state.tasks).some((task) => task.status === "done");
+  return cancelledCard(
     headerOf(state.id, "cancelled"),
     t(
       `Cambio cancelado y archivado (commit ${commit}).`,
       `Change cancelled and archived (commit ${commit}).`,
     ),
-    state.branch,
+    state.branch === undefined ? undefined : { name: state.branch, withCode },
     session.cards,
   );
 }
