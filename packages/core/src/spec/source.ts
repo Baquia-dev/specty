@@ -20,6 +20,8 @@ export interface SourceSection {
 export interface SpecSource {
   readonly frontmatter?: { readonly raw: string; readonly line: number };
   readonly frontmatterUnclosed: boolean;
+  /** The line where an HTML comment opens that never closes: it hides everything after it. */
+  readonly commentUnclosed?: number;
   /** Every `#` heading; the first one is the title. */
   readonly titles: readonly SourceHeading[];
   /** Non-blank lines that appear before the first `##` section. */
@@ -39,10 +41,11 @@ export function normalizeText(text: string): string {
 export function readSource(text: string): SpecSource {
   const lines = normalizeText(text).split("\n");
   const front = readFrontmatterBlock(lines);
-  const body = stripComments(lines.slice(front.bodyStart), front.bodyStart + 1);
+  const { body, unclosed } = stripComments(lines.slice(front.bodyStart), front.bodyStart + 1);
   return {
     ...(front.frontmatter !== undefined ? { frontmatter: front.frontmatter } : {}),
     frontmatterUnclosed: front.unclosed,
+    ...(unclosed !== undefined ? { commentUnclosed: unclosed } : {}),
     ...splitSections(body),
   };
 }
@@ -64,10 +67,15 @@ function readFrontmatterBlock(lines: readonly string[]): FrontmatterBlock {
   };
 }
 
-function stripComments(lines: readonly string[], firstLine: number): SourceLine[] {
+/** The body without comments, and the line where a comment opens that never closes. */
+function stripComments(
+  lines: readonly string[],
+  firstLine: number,
+): { readonly body: SourceLine[]; readonly unclosed?: number } {
   const output: SourceLine[] = [];
   let fence: string | undefined;
   let inComment = false;
+  let openedAt: number | undefined;
   lines.forEach((raw, index) => {
     const line = firstLine + index;
     if (fence !== undefined) {
@@ -76,43 +84,74 @@ function stripComments(lines: readonly string[], firstLine: number): SourceLine[
       return;
     }
     const cleaned = removeComments(raw, inComment);
+    if (cleaned.opensHere) openedAt = line;
     inComment = cleaned.open;
     if (cleaned.touched && cleaned.text.trim() === "") return;
     const marker = FENCE_OPEN.exec(cleaned.text)?.[1];
     if (marker !== undefined) fence = marker;
     output.push({ text: cleaned.text, line, fenced: marker !== undefined });
   });
-  return output;
+  return { body: output, ...(inComment && openedAt !== undefined ? { unclosed: openedAt } : {}) };
 }
 
 interface CleanedLine {
   readonly text: string;
   readonly open: boolean;
+  /** The comment that continues on the next line opens on this one. */
+  readonly opensHere: boolean;
   readonly touched: boolean;
 }
 
-/** Removes `<!-- … -->` spans; `open` reports a comment that continues on the next line. */
+/**
+ * Removes `<!-- … -->` spans; `open` reports a comment that continues on the next line. A comment
+ * quoted as inline code, between runs of backticks of the same length, is text, not a comment.
+ */
 function removeComments(raw: string, startsInComment: boolean): CleanedLine {
   let text = "";
   let rest = raw;
   let open = startsInComment;
+  let opensHere = false;
   let touched = startsInComment;
   while (rest.length > 0) {
     if (open) {
       const end = rest.indexOf("-->");
-      if (end === -1) return { text, open: true, touched: true };
+      if (end === -1) return { text, open: true, opensHere, touched: true };
       rest = rest.slice(end + 3);
       open = false;
+      opensHere = false;
       continue;
     }
     const start = rest.indexOf("<!--");
-    if (start === -1) return { text: text + rest, open: false, touched };
+    const code = inlineCode(rest);
+    if (code !== undefined && (start === -1 || code.start < start)) {
+      text += rest.slice(0, code.end);
+      rest = rest.slice(code.end);
+      continue;
+    }
+    if (start === -1) return { text: text + rest, open: false, opensHere: false, touched };
     text += rest.slice(0, start);
     rest = rest.slice(start + 4);
     open = true;
+    opensHere = true;
     touched = true;
   }
-  return { text, open, touched };
+  return { text, open, opensHere: open && opensHere, touched };
+}
+
+/**
+ * The first inline code span of `text`, or the first run of backticks that does not close on this
+ * line (copied as text): where it starts, and where the text after it begins.
+ */
+function inlineCode(text: string): { readonly start: number; readonly end: number } | undefined {
+  const opening = /`+/.exec(text);
+  if (opening === null) return undefined;
+  const after = opening.index + opening[0].length;
+  // The closing run has the same length: a longer or shorter one is part of the code.
+  const closing = new RegExp(`(?<!\`)${opening[0]}(?!\`)`).exec(text.slice(after));
+  return {
+    start: opening.index,
+    end: closing === null ? after : after + closing.index + closing[0].length,
+  };
 }
 
 function closesFence(raw: string, opening: string): boolean {

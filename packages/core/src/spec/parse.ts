@@ -161,9 +161,14 @@ function detectLanguage(langs: readonly Lang[], fallback: Lang | undefined): Lan
 }
 
 function layoutDiagnostics(source: SpecSource, lang: Lang): Diagnostic[] {
-  const unclosed = source.frontmatterUnclosed
-    ? [diagnostic(lang, { code: "frontmatter-unclosed", line: 1 })]
-    : [];
+  const unclosed = [
+    ...(source.frontmatterUnclosed
+      ? [diagnostic(lang, { code: "frontmatter-unclosed", line: 1 })]
+      : []),
+    ...(source.commentUnclosed !== undefined
+      ? [diagnostic(lang, { code: "comment-unclosed", line: source.commentUnclosed })]
+      : []),
+  ];
   const [title, extra] = source.titles;
   const missingTitle = title === undefined ? [diagnostic(lang, { code: "title-missing" })] : [];
   const duplicateTitle =

@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "id": "20261024-comentarios-html-en-la-spec-sin-cerrar-y-en-codi",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-comentarios-html-en-la-spec-sin-cerrar-y-en-codi",
+  "baseCommit": "b99c6604441b4c4fb17e9dbecaf472963e6d89b0",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f3c5dec97f686592731fa22dcf3a3f91785b2a086d32a23b4e4a431dbefe3fa",
+    "at": "2026-10-24T21:16:26.918Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:37766f23353a2385498d8d6f9ca1e447fd5040ca81c1db3471ea0877cb60047e",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:9841fce99efc591c1902c4bfdd712e3e8a882a7442d7d2570ec620f8b3c719d3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4d4cd5d86166eb7e5f65be9e0d44eaa2e430b972",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:16:27.994Z",
+      "doneAt": "2026-10-24T21:18:26.109Z",
+      "summary": "readSource anota la línea donde se abre un comentario que no se cierra (commentUnclosed) y parse lo convierte en el error comment-unclosed, en español e inglés, con esa línea.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "75268bef5c77a437d01ca146ab237dbeb39270d6",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:18:26.389Z",
+      "doneAt": "2026-10-24T21:20:39.475Z",
+      "summary": "removeComments salta el código en línea (series de comillas invertidas de la misma longitud en la línea): un comentario citado entre comillas es texto, en ítems, secciones y forma canónica; los demás se quitan como antes. formats.md §2.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-24T21:22:20.113Z",
+  "integration": {
+    "target": "main",
+    "commit": "e35326fa5a7f8df239b710fb1191f9c0a58e31c4",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/formats.md",
+      "packages/core/src/checks/code.ts",
+      "packages/core/src/checks/functions.ts",
+      "packages/core/src/checks/strict-types.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/checks.ts",
+      "packages/core/src/spec/diagnostics.ts",
+      "packages/core/src/spec/messages.en.ts",
+      "packages/core/src/spec/messages.es.ts",
+      "packages/core/src/spec/parse.ts",
+      "packages/core/src/spec/source.ts",
+      "packages/core/test/checks/functions.test.ts",
+      "packages/core/test/spec/parse.test.ts",
+      "packages/core/test/spec/roundtrip.test.ts"
+    ],
+    "at": "2026-10-24T21:25:19.852Z",
+    "resolved": {
+      "commit": "eabe404",
+      "at": "2026-10-24T21:29:13.016Z"
+    }
+  }
+}

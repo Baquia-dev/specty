@@ -19,6 +19,13 @@ describe("round trip", () => {
     expect(result.text).toBe(fixture("messy.es.canonical.md"));
   });
 
+  it("keeps a comment quoted as inline code in the canonical form (AC2)", () => {
+    const quoted = "La pista `<!-- pista -->` se queda; esta <!-- no --> se va.";
+    const result = canonicalize(`---\nkind: quick\n---\n\n# Título\n\n## Objetivo\n\n${quoted}\n`);
+    expect(result.diagnostics).toEqual([]);
+    expect(result.text).toContain("La pista `<!-- pista -->` se queda; esta  se va.");
+  });
+
   it("is idempotent: canonicalizing canonical text changes nothing", () => {
     const once = canonicalize(fixture("messy.es.md"));
     const twice = canonicalize(once.text);
