@@ -8,6 +8,7 @@ import {
   translator,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
+import { projectProvider } from "../check/commands";
 import { commonProvider } from "../check/common";
 import { checkContext } from "../check/files";
 import { loadPlan, planProvider } from "../check/plan";
@@ -17,6 +18,7 @@ import type { Session } from "../session";
 
 /** Every provider `specty check` knows; each says whether it applies to the repository. */
 const PROVIDERS: readonly Provider[] = [commonProvider];
+// The project's own commands come first, from the stacks of each run.
 
 interface CheckOptions {
   readonly changed?: boolean;
@@ -65,7 +67,11 @@ export async function check(
     detectStacks(session.root),
     spec === undefined ? undefined : loadPlan(session, spec.id),
   ]);
-  const providers = plan === undefined ? PROVIDERS : [...PROVIDERS, planProvider(plan)];
+  const providers = [
+    projectProvider(stacks, session.config),
+    ...PROVIDERS,
+    ...(plan === undefined ? [] : [planProvider(plan)]),
+  ];
   const report = await runChecks(context, providers, stacks);
   return {
     report: renderReport(report, {

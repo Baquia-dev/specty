@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "20261024-los-comandos-del-proyecto-en-specty-check",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-los-comandos-del-proyecto-en-specty-check",
+  "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0f21e3650d466847d70967bfee2e8d265804b4e8c5807c228e862ac3fda33f16",
+    "at": "2026-10-24T20:45:29.443Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3c783e2e0ce1b3263c2d82b8b8f52016b239a7e59555f810865cd0057018ca15",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9b9c5034cfc725dcc46972bea16ece35281876334febe85207e984bb817f6517",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:aa2cfc2a3eb009e0c632c9f0017ea58b9e0f4b62ea26d61a019c518f603bd86a",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0fdda8919ba24680e7c815a44065954c6c6dbeee9b98c626f6104bb1a2bee974",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "dbf4026ce1c5b07710a753d450230ec2ab3b5781",
+      "attempts": 1,
+      "startedAt": "2026-10-24T20:45:29.855Z",
+      "doneAt": "2026-10-24T20:47:06.162Z",
+      "summary": "core/checks/output.ts: findingsInOutput saca hallazgos ruta:línea de la salida de cualquier herramienta (tsc, ESLint, Biome, Go, Rust, pytest, Vitest, analizador de Dart), sin colores ni repetidos, como mucho 100; sin ubicaciones, las últimas líneas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "fd211f327b2aa6a613cea21f5615066d228783ef",
+      "attempts": 1,
+      "startedAt": "2026-10-24T20:47:06.414Z",
+      "doneAt": "2026-10-24T20:50:27.342Z",
+      "summary": "check/commands.ts: proveedor del proyecto con format, lint, typecheck y tests desde commandsFor (formato solo en su forma de comprobación) o checks.commands; un fallo da su código o el tiempo límite y los hallazgos de su salida, los del diff primero.",
+      "scopeExtra": [
+        "packages/cli/src/detect/project.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a73480906f900e60ad58bb58f25f1537d0e26536",
+      "attempts": 1,
+      "startedAt": "2026-10-24T20:50:27.602Z",
+      "doneAt": "2026-10-24T20:51:57.390Z",
+      "summary": "formats §6 documenta checks.commands y las verificaciones de los comandos del proyecto (detección, formato solo de comprobación, tiempo límite, hallazgos de la salida); ARCHITECTURE las añade a la fila de specty check.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 3,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-24T20:56:44.303Z"
+}

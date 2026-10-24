@@ -13,7 +13,13 @@ export interface ChecksConfig {
   /** Paths no check looks at, on top of the ignored and generated ones. */
   readonly exclude: readonly string[];
   readonly todo: TodoConfig;
+  /** The project's commands for the command checks, over the ones Specty detects. */
+  readonly commands: Readonly<Partial<Record<CommandCheck, string>>>;
 }
+
+/** The checks that run one of the project's own commands. */
+export const COMMAND_CHECKS = ["format", "lint", "typecheck", "tests"] as const;
+export type CommandCheck = (typeof COMMAND_CHECKS)[number];
 
 /** What the `todo` check looks for: its markers, and what counts as pointing to an issue. */
 export interface TodoConfig {
@@ -45,6 +51,7 @@ export const DEFAULT_CHECKS: ChecksConfig = {
     markers: ["TODO", "FIXME"],
     reference: String.raw`#\d+|\b[A-Z][A-Z0-9]+-\d+\b|https?://\S+`,
   },
+  commands: {},
 };
 
 function isRegex(source: string): boolean {
@@ -70,6 +77,14 @@ export const ChecksSchema = z.strictObject({
         .optional(),
     })
     .optional(),
+  commands: z
+    .strictObject({
+      format: z.string().min(1).optional(),
+      lint: z.string().min(1).optional(),
+      typecheck: z.string().min(1).optional(),
+      tests: z.string().min(1).optional(),
+    } satisfies Record<CommandCheck, z.ZodType>)
+    .optional(),
 });
 
 export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): ChecksConfig {
@@ -81,6 +96,12 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
       markers: input?.todo?.markers ?? DEFAULT_CHECKS.todo.markers,
       reference: input?.todo?.reference ?? DEFAULT_CHECKS.todo.reference,
     },
+    commands: Object.fromEntries(
+      COMMAND_CHECKS.flatMap((id) => {
+        const command = input?.commands?.[id];
+        return command === undefined ? [] : [[id, command]];
+      }),
+    ),
   };
 }
 

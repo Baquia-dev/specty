@@ -81,6 +81,7 @@ export {
   testCases,
   unreferencedTodos,
 } from "./checks/markers";
+export { findingsInOutput } from "./checks/output";
 export {
   type CheckMode,
   type CheckReport,
@@ -162,6 +163,8 @@ export { basename, dirname, moduleOf, normalizePath, type PathProblem, pathProbl
 export {
   type CheckLevel,
   type ChecksConfig,
+  COMMAND_CHECKS,
+  type CommandCheck,
   checkLevel,
   DEFAULT_CHECKS,
   type TodoConfig,
