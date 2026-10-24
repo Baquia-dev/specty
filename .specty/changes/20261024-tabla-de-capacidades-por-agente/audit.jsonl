@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T15:32:37.475Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-tabla-de-capacidades-por-agente"}}
+{"ts":"2026-10-24T15:33:13.839Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:8dae7d31508d3d87b648bab132e3532211cb7df45bc7dcfe917663d6b2853697","size":"M","warnings":1}}
+{"ts":"2026-10-24T15:33:14.435Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:8dae7d31508d3d87b648bab132e3532211cb7df45bc7dcfe917663d6b2853697","channel":"delegated","delegated":true}}

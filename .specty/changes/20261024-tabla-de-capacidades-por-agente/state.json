@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261024-tabla-de-capacidades-por-agente",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-tabla-de-capacidades-por-agente",
+  "baseCommit": "4db5a547a720f0d9080ad6bbc5b1cf9c90a63b58",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bb3adc6c172ca6c2c714f2eaee4a312b832972d844e1f6d0b72cc38e8ab6b4e8",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:91f48ca5df31773bd8c45fce61d1e16613cdf50169c24750a3ddf98f54d4cb0b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:a88317f26b48f3f5fc262ddb0bd6b0580f58c2f965dc81c2adbf879729c31d73",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8dae7d31508d3d87b648bab132e3532211cb7df45bc7dcfe917663d6b2853697",
+    "at": "2026-10-24T15:33:14.412Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
