@@ -50,7 +50,7 @@ El core sabe medir cada función de un archivo en los lenguajes de llaves (TypeS
 
 ## Tareas
 
-- [ ] T1: El código y los comentarios de cada línea, compartidos
+- [x] T1: El código y los comentarios de cada línea, compartidos
   - files: packages/core/src/checks/code.ts, packages/core/src/checks/strict-types.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/strict-types.test.ts

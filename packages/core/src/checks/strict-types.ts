@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { splitCode } from "./code";
 
 /**
  * Specty's own detection of what strict TypeScript forbids, for a project with no ESLint to
@@ -34,72 +35,17 @@ function nonNull(tsx: boolean): RegExp {
 
 export function strictTypeViolations(text: string, tsx: boolean): StrictTypeViolation[] {
   const assertion = nonNull(tsx);
-  const violations: StrictTypeViolation[] = [];
-  let inBlock = false;
-  text.split(/\r?\n/).forEach((source, index) => {
-    const parts = split(source, inBlock);
-    inBlock = parts.inBlock;
+  return splitCode(text).flatMap((parts, index): StrictTypeViolation[] => {
     const code = parts.code.trimEnd();
     const line = index + 1;
-    if (ANY_TYPE.some((pattern) => pattern.test(code))) {
-      violations.push({ line, rule: "explicit-any" });
-    }
-    if (parts.comments.some((comment) => TS_COMMENT.test(comment))) {
-      violations.push({ line, rule: "ts-comment" });
-    }
-    if (assertion.test(code)) violations.push({ line, rule: "non-null-assertion" });
+    return [
+      ...(ANY_TYPE.some((pattern) => pattern.test(code))
+        ? [{ line, rule: "explicit-any" as const }]
+        : []),
+      ...(parts.comments.some((comment) => TS_COMMENT.test(comment))
+        ? [{ line, rule: "ts-comment" as const }]
+        : []),
+      ...(assertion.test(code) ? [{ line, rule: "non-null-assertion" as const }] : []),
+    ];
   });
-  return violations;
-}
-
-interface Parts {
-  /** The line without its comments, with each string left empty. */
-  readonly code: string;
-  readonly comments: readonly string[];
-  /** Whether a block comment is still open at the end of the line. */
-  readonly inBlock: boolean;
-}
-
-function split(line: string, startsInBlock: boolean): Parts {
-  let code = "";
-  const comments: string[] = [];
-  let inBlock = startsInBlock;
-  let index = 0;
-  while (index < line.length) {
-    if (inBlock) {
-      const end = line.indexOf("*/", index);
-      comments.push(line.slice(index, end === -1 ? line.length : end));
-      if (end === -1) break;
-      inBlock = false;
-      index = end + 2;
-      code += " ";
-    } else if (line.startsWith("//", index)) {
-      comments.push(line.slice(index + 2));
-      break;
-    } else if (line.startsWith("/*", index)) {
-      inBlock = true;
-      index += 2;
-    } else {
-      const char = line.charAt(index);
-      if (char === '"' || char === "'" || char === "`") {
-        code += `${char}${char}`;
-        index = closing(line, index) + 1;
-      } else {
-        code += char;
-        index += 1;
-      }
-    }
-  }
-  return { code, comments, inBlock };
-}
-
-/** Where the string that opens at `start` closes; a string left open runs to the end of the line. */
-function closing(line: string, start: number): number {
-  const quote = line.charAt(start);
-  for (let index = start + 1; index < line.length; index += 1) {
-    const char = line.charAt(index);
-    if (char === "\\") index += 1;
-    else if (char === quote) return index;
-  }
-  return line.length;
 }
