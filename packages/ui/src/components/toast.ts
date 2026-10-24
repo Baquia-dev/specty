@@ -8,16 +8,16 @@ import {
   input,
   signal,
 } from "@angular/core";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { Preferences } from "../theme/preferences";
+import { IconButton } from "./button";
 import {
   LucideCircleCheck,
   LucideCircleX,
-  LucideDynamicIcon,
   LucideInfo,
   LucideTriangleAlert,
   LucideX,
-} from "@lucide/angular";
-import { Preferences } from "../theme/preferences";
-import { IconButton } from "./button";
+} from "./icons";
 
 export type ToastKind = "info" | "success" | "warning" | "error";
 

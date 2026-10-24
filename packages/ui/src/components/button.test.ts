@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { LucideCheck } from "@lucide/angular";
 import { Button, IconButton } from "./button";
+import { LucideCheck } from "./icons";
 
 @Component({
   imports: [Button, IconButton],

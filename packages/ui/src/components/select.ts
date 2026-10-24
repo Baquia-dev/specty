@@ -13,7 +13,8 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
-import { LucideCheck, LucideChevronDown, LucideDynamicIcon } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { LucideCheck, LucideChevronDown } from "./icons";
 import { MENU_POSITIONS } from "./menu";
 import { followOrigin } from "./overlay-follow";
 

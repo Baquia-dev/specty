@@ -54,7 +54,7 @@ Los iconos dejan de cargar una plantilla compilada cada uno. Hoy cada icono de `
   - files: packages/ui/package.json, pnpm-lock.yaml, packages/ui/src/components/icons.ts, packages/ui/src/components/icons.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/icons.test.ts && pnpm sources
-- [ ] T2: Los componentes toman sus iconos de icons.ts
+- [x] T2: Los componentes toman sus iconos de icons.ts
   - files: packages/ui/src/components/badge.ts, packages/ui/src/components/collapsible.ts, packages/ui/src/components/dialog.ts, packages/ui/src/components/diff-file.ts, packages/ui/src/components/field.ts, packages/ui/src/components/select.ts, packages/ui/src/components/toast.ts, packages/ui/src/components/button.test.ts, packages/ui/src/components/empty-state.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components && pnpm sources

@@ -36,12 +36,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2fd5431177c81977800494d013bf143bdbbe0a88",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:28:49.923Z",
       "doneAt": "2026-10-24T11:30:35.523Z",
-      "summary": "packages/ui añade lucide 1.55.0 (la misma versión que @lucide/angular); components/icons.ts exporta los 50 iconos de la UI como LucideIconData ({ name, node }) con sus nombres de siempre (LucideTriangleAlert…) y el dibujo de lucide, con los renombrados a su nombre nuevo (file-question-mark, trash); un test comprueba los 50 y que LucideDynamicIcon los dibuja"
+      "summary": "packages/ui añade lucide 1.55.0 (la misma versión que @lucide/angular); components/icons.ts exporta los 50 iconos de la UI como LucideIconData ({ name, node }) con sus nombres de siempre (LucideTriangleAlert…) y el dibujo de lucide, con los renombrados a su nombre nuevo (file-question-mark, trash); un test comprueba los 50 y que LucideDynamicIcon los dibuja",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "859f49f23229cdc3f6c20e178adf295144526ca8",
+      "startedAt": "2026-10-24T11:30:36.271Z",
+      "doneAt": "2026-10-24T11:32:00.034Z",
+      "summary": "badge, collapsible, dialog, diff-file, field, select y toast (y los tests de button y empty-state) toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon"
     }
   },
   "pending": {

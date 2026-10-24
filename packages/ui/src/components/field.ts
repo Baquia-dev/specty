@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, input, model } from "@angular/core";
-import { LucideCircleAlert, LucideDynamicIcon } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { LucideCircleAlert } from "./icons";
 
 let nextId = 0;
 
