@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "20261024-avisos-de-riesgo-y-aserciones-en-aceptacion",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-avisos-de-riesgo-y-aserciones-en-aceptacion",
+  "baseCommit": "0823681dfdd53f80cf573904cd913a4bcf687058",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bc08f6a699f5ce7706eb35e4aaea10d2c8735fd9e69d9e2c223a570c195aa62d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:57815f3b492f619a2bd1ebbd218ccb65d0fad31f28e817505be4015f548adfe0",
+    "at": "2026-10-24T15:15:37.800Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
