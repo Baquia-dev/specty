@@ -120,7 +120,13 @@ describe("Full verification", () => {
     const order = [...element().querySelectorAll("sp-full-verification, section")].map(
       (item) => item.getAttribute("aria-labelledby") ?? item.tagName.toLowerCase(),
     );
-    expect(order).toEqual(["sp-full-verification", "full-verification", "acceptance-criteria"]);
+    // The sample's warnings go first, then the full verification, above the criteria.
+    expect(order).toEqual([
+      "acceptance-warnings",
+      "sp-full-verification",
+      "full-verification",
+      "acceptance-criteria",
+    ]);
   });
 
   it("runs live, leaves its result and keeps it on coming back (AC2, AC3)", async () => {
