@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-medir-las-funciones-lineas-y-complejidad",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-medir-las-funciones-lineas-y-complejidad",
   "baseCommit": "653209b8e233ea37be4d05c0f3e8a1482d60fb02",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "70da161e622f8d1ae15f8fced78417f1349f66d1",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:10:30.040Z",
       "doneAt": "2026-10-24T21:11:11.421Z",
-      "summary": "core/checks/code.ts: splitCode separa en cada línea el código (cadenas vacías, comentarios de bloque seguidos) de sus comentarios, con lifetimes de Rust opcionales; strict-types.ts lo usa en vez de su propio separador, con sus tests igual."
+      "summary": "core/checks/code.ts: splitCode separa en cada línea el código (cadenas vacías, comentarios de bloque seguidos) de sus comentarios, con lifetimes de Rust opcionales; strict-types.ts lo usa en vez de su propio separador, con sus tests igual.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1c590bfae549e0b737c329f898bdc61ac1245d82",
+      "startedAt": "2026-10-24T21:11:11.685Z",
+      "doneAt": "2026-10-24T21:15:30.093Z",
+      "summary": "core/checks/functions.ts: functionMetrics mide cada función de los lenguajes de llaves (cabeceras de varias líneas y Allman, llaves sin comentarios ni cadenas, anidadas aparte en la complejidad); checks.functions con maxLines 50 y complexity 10."
     }
   },
   "pending": {

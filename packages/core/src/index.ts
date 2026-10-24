@@ -72,6 +72,7 @@ export type {
 } from "./cards/view";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
+export { type FunctionMetric, functionMetrics } from "./checks/functions";
 export {
   focusedTests,
   type Mark,

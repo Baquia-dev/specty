@@ -54,7 +54,7 @@ El core sabe medir cada función de un archivo en los lenguajes de llaves (TypeS
   - files: packages/core/src/checks/code.ts, packages/core/src/checks/strict-types.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/strict-types.test.ts
-- [ ] T2: Medir las funciones y sus límites en la configuración
+- [x] T2: Medir las funciones y sus límites en la configuración
   - files: packages/core/src/checks/functions.ts, packages/core/src/index.ts, packages/core/test/checks/functions.test.ts, packages/core/src/schema/checks.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks
