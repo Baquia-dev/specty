@@ -11,9 +11,11 @@ import {
   isGoverned,
   isIntegrating,
   parseSpec,
+  renderText,
   type ShellAnalysis,
   shellChanges,
 } from "@baquia-dev/specty-core";
+import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
 import { placePaths } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
@@ -33,7 +35,8 @@ export interface GuardReply {
 
 /**
  * `specty guard --tool <id>`: called by the agent's hooks before each action and, in Claude
- * Code and Codex, after each Bash command; in Claude Code, also to create and remove worktrees.
+ * Code and Codex, after each Bash command; in Claude Code, also to create and remove worktrees
+ * and, after a compaction, to bring back what `specty next` says.
  * It fails open on its own errors (the git hooks and CI still apply) and never blocks outside
  * Specty repos.
  */
@@ -53,6 +56,10 @@ export async function guard(
     const opened = await openSession({ ...environment, cwd });
     if (opened.kind !== "ok") return allow(tool);
     const session = opened.session;
+    // After a compaction Claude Code adds this to the context, so the task card comes back.
+    if (tool === "claude-code" && event.hook_event_name === "SessionStart") {
+      return { code: 0, stdout: renderText(await next(session), session.lang), stderr: "" };
+    }
     const after = checksAfterShell(tool);
     if (after && isAfterTool(event)) return await afterShell(session, tool, event);
     const raw = toolAction(tool, event);

@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "id": "20261024-test-primero-y-aviso-de-aserciones-quitadas",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-test-primero-y-aviso-de-aserciones-quitadas",
+  "baseCommit": "3055301ea2e358b17a097b2f71b3281524250e76",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:03f7d8c12ef2777774962f7b6449bd83a533be2979c65c2b59397d39cf5b1760",
+    "at": "2026-10-24T10:35:00.929Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e41601c78e9b848bb86fcaa10f3b7b4544cf8d712b2dc7626c9f52040a897ab3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bfa6b0e30ab7ab26b138207ac4eaed38c861f79bff46d11cbe0185d4cfe92b87",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:c8ce256f293d47885f98ecbc8e64169be62ead0350afef5312eb7143b45415d9",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0834b86bc1bd729b48aa74885c6350b6baac5f680beb4b1485205604795dd0cb",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0129fdb650b4385627e404241e82b9eaa8db498b40d89afc3cc1c3734e94a929",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7fee82b7e61e6e34c0e5597bb54b93bb663a4fb8",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:35:01.591Z",
+      "doneAt": "2026-10-24T10:36:15.538Z",
+      "summary": "removedAssertions(diff) en core/scope/assertions.ts: por archivo, aserciones quitadas menos añadidas en un diff unificado; los comentarios no cuentan, las cabeceras solo antes del primer hunk, borrados y renombrados con su ruta final",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b50e32c09d5fcbb8fb72b9c535fcaf34813f05f0",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:36:16.152Z",
+      "doneAt": "2026-10-24T10:38:03.450Z",
+      "summary": "testRules (validate/quality.ts) por tipo y política; TaskView.testRules y removedAssertions; la tarjeta de la tarea muestra el bloque TESTS y la de aceptación AVISOS con assertionWarnings, que se exporta para accept",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "154018ddf71cdcc17372c6596821d5dd1580c312",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:38:03.801Z",
+      "doneAt": "2026-10-24T10:42:31.535Z",
+      "summary": "flow/assertions.ts pide a git el diff de los tests que ya existían; task done lo analiza tras verificar, lo guarda en task.completed (removedAssertions) y lo avisa en AVISOS; changeView calcula testRules y lee los avisos de la auditoría; accept los añade a la nota de la persona",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "9197cce6225dd9380c40e96ea078ead9a8d56864",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:42:32.738Z",
+      "doneAt": "2026-10-24T10:44:58.197Z",
+      "summary": "ARCHITECTURE §7: las reglas de tests de la tarjeta y el aviso de aserciones quitadas de task done; formats.md §4: removedAssertions en task.completed",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-24T10:46:52.065Z",
+  "integration": {
+    "target": "main",
+    "commit": "0d7980fcdc386470dcf690bafe7ac2c9f3e69d6d",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/task.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/enforce/sessions.ts",
+      "packages/cli/src/enforce/worktree-hooks.ts",
+      "packages/cli/src/flow/assertions.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/install/agents.ts",
+      "packages/cli/test/assertions.test.ts",
+      "packages/cli/test/session-start.test.ts",
+      "packages/cli/test/sessions.test.ts",
+      "packages/cli/test/setup.test.ts",
+      "packages/cli/test/worktree-hooks.test.ts",
+      "packages/cli/test/worktrees.test.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/scope/assertions.ts",
+      "packages/core/src/validate/quality.ts",
+      "packages/core/test/cards/tests.test.ts",
+      "packages/core/test/scope/assertions.test.ts",
+      "packages/ui/src/acceptance/acceptance-actions.test.ts",
+      "packages/ui/src/acceptance/acceptance-actions.ts",
+      "packages/ui/src/acceptance/acceptance-tab.test.ts",
+      "packages/ui/src/acceptance/acceptance-tab.ts",
+      "packages/ui/src/acceptance/closing-actions.test.ts",
+      "packages/ui/src/acceptance/closing-actions.ts",
+      "packages/ui/src/acceptance/criterion-row.ts",
+      "packages/ui/src/acceptance/full-verification.test.ts",
+      "packages/ui/src/acceptance/full-verification.ts",
+      "packages/ui/src/acceptance/result-dialogs.ts",
+      "packages/ui/src/app/delegation.test.ts",
+      "packages/ui/src/app/delegation.ts",
+      "packages/ui/src/data/fixtures.ts",
+      "packages/ui/src/progress/progress-tab.test.ts",
+      "packages/ui/src/progress/scope-request.ts"
+    ],
+    "at": "2026-10-24T10:46:52.349Z",
+    "resolved": {
+      "commit": "8f2659e",
+      "at": "2026-10-24T10:48:20.400Z"
+    }
+  }
+}

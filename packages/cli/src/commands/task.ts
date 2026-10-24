@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type AssertionLoss,
+  assertionWarnings,
   blockedCard,
   type ChangeState,
   evaluateTaskScope,
@@ -12,6 +14,7 @@ import {
   parseSpec,
   type Spec,
   scopeRulesFrom,
+  section,
   serializeSpec,
   shortHash,
   specHash,
@@ -22,6 +25,7 @@ import {
   withLead,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
+import { assertionLosses } from "../flow/assertions";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
 import { changeView, taskVerification } from "../flow/views";
 import { execute, tail } from "../io/exec";
@@ -111,12 +115,33 @@ export async function taskDone(session: Session, taskId: string, summary: string
   if (!verified.ok)
     return verifyFailedCard(header, id, verified.command, verified.code, verified.tail, cards);
 
-  const done = await complete(session, verified.change, spec, task, summary.trim());
+  const removed = await assertionLosses(session, stored?.baseCommit, changed);
+  const done = await complete(session, verified.change, spec, task, summary.trim(), removed);
   const following =
     done.state.phase === "implementing" ? await activateNextTask(session, done) : done;
+  const view = await changeView(session, following);
+  const card = nextCard({ change: view, dirty: [] }, cards);
+  const warnings = assertionWarnings(
+    view.tasks.filter((item) => item.id === id),
+    session.lang,
+  );
   return withLead(
     t(`${id} completada: commit ${done.commit}.`, `${id} done: commit ${done.commit}.`),
-    nextCard({ change: await changeView(session, following), dirty: [] }, cards),
+    warnings.length === 0
+      ? card
+      : {
+          ...card,
+          blocks: [
+            ...section(t("AVISOS", "WARNINGS"), [
+              ...warnings,
+              t(
+                "Si no era parte de la tarea, explícaselo al usuario: lo verá al aceptar.",
+                "If it was not part of the task, explain it to the user: they will see it on acceptance.",
+              ),
+            ]),
+            ...card.blocks,
+          ],
+        },
   );
 }
 
@@ -183,6 +208,7 @@ async function complete(
   spec: Spec,
   task: Task,
   summary: string,
+  removed: readonly AssertionLoss[],
 ): Promise<StoredChange & { readonly commit: string }> {
   const { state } = change;
   const now = session.environment.now().toISOString();
@@ -211,6 +237,7 @@ async function complete(
   const updated = await commitState(session, change, { ...state, phase, tasks }, "task.completed", {
     task: task.id,
     summary,
+    ...(removed.length > 0 ? { removedAssertions: removed } : {}),
   });
   const relativeDir = session.paths.relative(change.files.dir);
   const scope = moduleOf(task.files[0] ?? "");

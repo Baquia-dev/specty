@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { fold } from "../i18n";
+import type { TestsPolicy } from "../schema/config";
 import { isTestFile } from "../scope/tests";
 import { computeSize } from "../sizing/size";
 import type { Diagnostic } from "../spec/diagnostics";
-import type { CommitType } from "../spec/model";
+import type { CommitType, Task } from "../spec/model";
 import { fileLine, itemLine, type Rule, report } from "./context";
 import { formatBreach, splitBreaches } from "./limits";
 
@@ -57,6 +58,16 @@ const VAGUE_TERMS: readonly string[] = [
 
 /** Types expected to come with tests. */
 const CODE_TYPES: ReadonlySet<CommitType> = new Set(["feat", "fix", "refactor", "perf"]);
+
+/** What the task card asks about tests: write them first, or keep the existing ones as they are. */
+export type TestRules = "first" | "keep";
+
+/** New behaviour (`feat`, `fix`) starts from a failing test; `refactor` and `perf` keep theirs. */
+export function testRules(task: Pick<Task, "type">, policy: TestsPolicy): TestRules | undefined {
+  const type = task.type ?? "feat";
+  if (policy === "off" || !CODE_TYPES.has(type)) return undefined;
+  return type === "feat" || type === "fix" ? "first" : "keep";
+}
 
 /** Criteria name an observable outcome, in WHEN … THEN … form. */
 export const checkCriteria: Rule = (spec, ctx, lang) =>

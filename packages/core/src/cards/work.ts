@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { counted, type Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
@@ -62,6 +63,7 @@ export function taskCard(change: ChangeView, task: TaskView, ctx: CardContext): 
       ...section(t("CONVENCIONES", "CONVENTIONS"), change.conventions),
       ...section(t("HECHO", "DONE"), done),
       ...section(t("ALCANCE PENDIENTE DE APROBACIÓN", "SCOPE AWAITING APPROVAL"), pending),
+      ...section("TESTS", testLines(task, ctx)),
       ...section(undefined, [
         ...(task.verify === undefined
           ? []
@@ -79,16 +81,64 @@ export function taskCard(change: ChangeView, task: TaskView, ctx: CardContext): 
   };
 }
 
+/** Test first for new behaviour, and an existing failing test is a finding, not something to bend. */
+function testLines(task: TaskView, ctx: CardContext): string[] {
+  const t = translator(ctx.lang);
+  if (task.testRules === undefined) return [];
+  return [
+    ...(task.testRules === "first"
+      ? [
+          t(
+            "Primero el test: escribe el que comprueba cada criterio y míralo fallar; después, el código.",
+            "Test first: write the test that checks each criterion and watch it fail; then the code.",
+          ),
+        ]
+      : []),
+    t(
+      "Si falla un test que ya existía, no lo cambies para que pase: para y explícaselo al usuario.",
+      "If a test that already existed fails, do not change it to make it pass: stop and explain it to the user.",
+    ),
+  ];
+}
+
+/** One line per test that a task removed assertions from: for the agent's card and the person. */
+export function assertionWarnings(tasks: readonly TaskView[], lang: Lang): string[] {
+  const t = translator(lang);
+  return tasks.flatMap((task) =>
+    (task.removedAssertions ?? []).map((loss) =>
+      t(
+        `${task.id} quitó ${counted(loss.removed, "aserción", "aserciones")} de ${loss.path}, un test que ya existía.`,
+        `${task.id} removed ${counted(loss.removed, "assertion", "assertions")} from ${loss.path}, a test that already existed.`,
+      ),
+    ),
+  );
+}
+
 export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const done = change.tasks.map(
     (task) =>
       `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
   );
+  const warnings = assertionWarnings(change.tasks, ctx.lang);
   return {
     status: "ok",
     header: headerOf(change.id, "acceptance"),
-    blocks: section(t("TAREAS HECHAS", "DONE TASKS"), done),
+    blocks: [
+      ...section(t("TAREAS HECHAS", "DONE TASKS"), done),
+      ...section(
+        t("AVISOS", "WARNINGS"),
+        warnings.length === 0
+          ? []
+          : [
+              ...warnings,
+              t(
+                "Cuéntaselo al usuario antes de que acepte: un test debilitado puede ocultar un fallo.",
+                "Tell the user before they accept: a weakened test can hide a defect.",
+              ),
+            ],
+      ),
+    ],
     next:
       ctx.delegated === true
         ? t(

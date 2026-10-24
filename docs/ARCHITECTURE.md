@@ -167,7 +167,11 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - la tarea, sus archivos permitidos y los criterios que cubre;
   - punteros a las convenciones de esas rutas (AGENTS.md anidados);
   - las tareas previas resumidas, con su commit;
+  - las reglas de tests, según el tipo de la tarea y salvo con `policy.tests: off`: en `feat` y `fix`, primero el test que comprueba cada criterio, visto fallar; en `feat`, `fix`, `refactor` y `perf`, un test que ya existía y falla no se cambia para que pase: el agente para y se lo explica al usuario;
   - la verificación y el esfuerzo sugerido.
+
+  Como respaldo determinista de esa regla, `task done` compara los tests que ya existían en el commit base de la tarea con el árbol de trabajo (`git diff -U0 -M`) y cuenta, por archivo, las aserciones quitadas menos las añadidas (`expect(`, `assert…`, `XCTAssert…`, `.should`, `t.Error`…; una aserción comentada cuenta como quitada). Si alguno pierde aserciones, la salida lo avisa, `task.completed` lo guarda y la tarjeta de aceptación y la nota de `specty accept` lo muestran. Es un aviso, no un bloqueo.
+- **Tras compactar** (Claude Code: `SessionStart` con el matcher `compact`, al mismo `specty guard --tool claude-code`): el guard responde con lo que imprimiría `next`, y Claude Code lo añade al contexto, así que la tarjeta vuelve entera aunque el resumen la haya recortado. Solo tras compactar: al empezar, reanudar o limpiar, AGENTS.md ya pide ejecutar `next`. Fuera de un repositorio con Specty no añade nada.
 - **Entre cambios**: un cambio de seguimiento carga la sección Cierre del anterior, no su historial.
 
 ## 8. Alcance
@@ -279,7 +283,7 @@ Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escribe
 
 | Herramienta | Evento previo a la acción | Configuración | Estado |
 | --- | --- | --- | --- |
-| Claude Code | `PreToolUse` (`matcher` + `hooks: [{ type: "command" }]`; salida 2 bloquea), y `PostToolUse` y `PostToolUseFailure` con `Bash` (salida 2: el modelo ve el aviso) | `.claude/settings.json`, o `settings.local.json` si el comando lleva una ruta local | Implementado (F1); aviso tras cada comando de Bash. En el mismo archivo, `init` permite `EnterWorktree` y `ExitWorktree` e instala `WorktreeCreate` y `WorktreeRemove`: las worktrees son transparentes para la persona, y el agente entra (por nombre), sale y las borra sin preguntar |
+| Claude Code | `PreToolUse` (`matcher` + `hooks: [{ type: "command" }]`; salida 2 bloquea), `PostToolUse` y `PostToolUseFailure` con `Bash` (salida 2: el modelo ve el aviso), y `SessionStart` con `compact` (su salida va al contexto) | `.claude/settings.json`, o `settings.local.json` si el comando lleva una ruta local | Implementado (F1); aviso tras cada comando de Bash. En el mismo archivo, `init` permite `EnterWorktree` y `ExitWorktree` e instala `WorktreeCreate` y `WorktreeRemove`: las worktrees son transparentes para la persona, y el agente entra (por nombre), sale y las borra sin preguntar |
 | Antigravity | `PreToolUse` | `.agents/hooks.json` | El legacy lo instala; verificar |
 | Cursor | `preToolUse` (`Write`, `Delete`, `Shell`) y `beforeShellExecution`; responde JSON con `permission` | `.cursor/hooks.json` (`version: 1`) | Implementado (F1). No existe un evento previo a editar: `Write` cubre las escrituras del agente |
 | Windsurf | `pre_write_code`, `pre_run_command` | `.windsurf/hooks.json` | Documentado |

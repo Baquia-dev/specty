@@ -9,8 +9,9 @@ import type { Invocation } from "../session";
 
 /**
  * The Claude Code events the guard listens to, with the tools each one covers: before each
- * write or command, after each Bash command, whether it succeeded or failed, and when Claude Code
- * creates or removes a worktree, which takes no matcher.
+ * write or command, after each Bash command, whether it succeeded or failed, when Claude Code
+ * creates or removes a worktree, which takes no matcher, and when a session starts again after a
+ * compaction.
  */
 const CLAUDE_EVENTS: Readonly<Record<string, string | undefined>> = {
   PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
@@ -18,6 +19,7 @@ const CLAUDE_EVENTS: Readonly<Record<string, string | undefined>> = {
   PostToolUseFailure: "Bash",
   WorktreeCreate: undefined,
   WorktreeRemove: undefined,
+  SessionStart: "compact",
 };
 /** Claude Code's worktree events: with them, `EnterWorktree` by name enters the change's folder. */
 export const CLAUDE_WORKTREE_EVENTS: readonly string[] = ["WorktreeCreate", "WorktreeRemove"];

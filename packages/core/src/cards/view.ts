@@ -2,8 +2,10 @@
 import type { AgentTool } from "../agents";
 import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
+import type { AssertionLoss } from "../scope/assertions";
 import type { EffortLevel } from "../sizing/effort";
 import type { ChangeKind } from "../spec/model";
+import type { TestRules } from "../validate/quality";
 
 /** What the cards need to know about the environment. */
 export interface CardContext {
@@ -35,6 +37,10 @@ export interface TaskView {
   /** Short SHA of the task's commit, when known. */
   readonly commit?: string;
   readonly effort: EffortLevel;
+  /** What the card asks about tests, by the task's type and the tests policy. */
+  readonly testRules?: TestRules;
+  /** Assertions the task removed from tests that existed at its base commit. */
+  readonly removedAssertions?: readonly AssertionLoss[];
 }
 
 export interface ScopeRequestView {

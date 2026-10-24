@@ -48,8 +48,11 @@ export async function doctor(session: Session): Promise<Output> {
       await readText(join(root, ".claude/settings.json")),
       await readText(join(root, ".claude/settings.local.json")),
     ]);
-    const worktrees = missing.filter((event) => CLAUDE_WORKTREE_EVENTS.includes(event));
-    const afterBash = missing.filter((event) => !worktrees.includes(event));
+    const lacking = (events: readonly string[]) =>
+      missing.filter((event) => events.includes(event)).join(", ");
+    const afterBash = lacking(["PostToolUse", "PostToolUseFailure"]);
+    const worktrees = lacking(CLAUDE_WORKTREE_EVENTS);
+    const compact = lacking(["SessionStart"]);
     if (missing.length === 0)
       ok.push(t("Claude Code: guard instalado.", "Claude Code: guard installed."));
     else if (missing.includes("PreToolUse")) {
@@ -60,19 +63,27 @@ export async function doctor(session: Session): Promise<Output> {
         ),
       );
     } else {
-      if (afterBash.length > 0) {
+      if (afterBash !== "") {
         problems.push(
           t(
-            `Claude Code: falta la comprobación tras cada comando de Bash (${afterBash.join(", ")}); ejecuta \`${COMMAND} init\`.`,
-            `Claude Code: the check after each Bash command is missing (${afterBash.join(", ")}); run \`${COMMAND} init\`.`,
+            `Claude Code: falta la comprobación tras cada comando de Bash (${afterBash}); ejecuta \`${COMMAND} init\`.`,
+            `Claude Code: the check after each Bash command is missing (${afterBash}); run \`${COMMAND} init\`.`,
           ),
         );
       }
-      if (worktrees.length > 0) {
+      if (worktrees !== "") {
         problems.push(
           t(
-            `Claude Code: faltan los hooks de las worktrees (${worktrees.join(", ")}), así que \`EnterWorktree\` por nombre no entra en la carpeta del cambio; ejecuta \`${COMMAND} init\`.`,
-            `Claude Code: the worktree hooks are missing (${worktrees.join(", ")}), so \`EnterWorktree\` by name does not enter the change's folder; run \`${COMMAND} init\`.`,
+            `Claude Code: faltan los hooks de las worktrees (${worktrees}), así que \`EnterWorktree\` por nombre no entra en la carpeta del cambio; ejecuta \`${COMMAND} init\`.`,
+            `Claude Code: the worktree hooks are missing (${worktrees}), so \`EnterWorktree\` by name does not enter the change's folder; run \`${COMMAND} init\`.`,
+          ),
+        );
+      }
+      if (compact !== "") {
+        problems.push(
+          t(
+            `Claude Code: falta la tarjeta de Specty tras compactar (${compact}); ejecuta \`${COMMAND} init\`.`,
+            `Claude Code: Specty's card after a compaction is missing (${compact}); run \`${COMMAND} init\`.`,
           ),
         );
       }

@@ -53,6 +53,7 @@ export type {
   ScopeRequestView,
   TaskView,
 } from "./cards/view";
+export { assertionWarnings } from "./cards/work";
 export {
   type Actor,
   EVENT_RULES,
@@ -137,6 +138,7 @@ export {
   parseChangeState,
   type StateResult,
 } from "./schema/state";
+export { type AssertionLoss, removedAssertions } from "./scope/assertions";
 export { isGoverned } from "./scope/governed";
 export { isLockfileFor, isManifest } from "./scope/lockfiles";
 export {
@@ -198,3 +200,4 @@ export { hashUnits, serializeSpec } from "./spec/serialize";
 export { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
 export { specTemplate, type TemplateOptions } from "./templates";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";
+export { type TestRules, testRules } from "./validate/quality";

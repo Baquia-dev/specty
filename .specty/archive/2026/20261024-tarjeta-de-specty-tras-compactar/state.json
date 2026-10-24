@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261024-tarjeta-de-specty-tras-compactar",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261024-tarjeta-de-specty-tras-compactar",
+  "baseCommit": "e1373253e1f7b7e557132160c2d66d09b85d74d4",
+  "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:932b687db550967193eed80b36a2fae86c1e07d081bed5d3400c237d449490bb",
+    "at": "2026-10-24T10:38:51.739Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "1897b1e8c3b2e0a06a5d2e59892fefb51b913d17",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:38:53.143Z",
+      "doneAt": "2026-10-24T10:42:20.445Z",
+      "summary": "El guard responde a SessionStart con la salida de next (Claude Code la añade al contexto); init instala SessionStart con el matcher compact; doctor tiene un aviso propio para ese hook. ARCHITECTURE §7 y §10.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}
