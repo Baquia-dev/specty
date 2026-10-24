@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "05b082906b3c4622da82899f87839620d695cbbd",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:54:55.801Z",
       "doneAt": "2026-10-24T20:56:43.431Z",
-      "summary": "core/cards/epic.ts: epicCard lista los cortes (cerrado, en curso con su cambio, listo, espera a sus depends pendientes) y propone seguir el corte en curso o empezar el primero listo con new --epic --slice; nunca pide accept. La aceptación lista los cortes. SliceView en ChangeView.slices."
+      "summary": "core/cards/epic.ts: epicCard lista los cortes (cerrado, en curso con su cambio, listo, espera a sus depends pendientes) y propone seguir el corte en curso o empezar el primero listo con new --epic --slice; nunca pide accept. La aceptación lista los cortes. SliceView en ChangeView.slices.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6a389be623a20717202e06704efb007c26e2663e",
+      "startedAt": "2026-10-24T20:56:43.696Z",
+      "doneAt": "2026-10-24T20:59:07.049Z",
+      "summary": "flow/epic.ts: sliceViews deriva el estado de cada corte de los cambios hijos (abiertos en cualquier worktree, archivados aquí y en la carpeta principal; los cancelados no cuentan) y finishEpic pasa la épica a aceptación con childrenDone (epic.slicesDone). next y changeView lo usan."
     }
   },
   "pending": {

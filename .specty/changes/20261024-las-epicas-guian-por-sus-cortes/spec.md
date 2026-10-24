@@ -58,7 +58,7 @@ Una épica aprobada queda en `implementing` para siempre: nada dispara `children
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/epic.ts, packages/core/src/cards/work.ts, packages/core/src/index.ts, packages/core/test/cards/epic.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts
-- [ ] T2: next lista los cortes y pasa la épica a aceptación
+- [x] T2: next lista los cortes y pasa la épica a aceptación
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/next.ts, packages/cli/test/epic.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic.test.ts
