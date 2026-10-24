@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
+import { readdir } from "node:fs/promises";
 import { isRecord, parseJson, readText, remove, writeText } from "../io/files";
 import type { Git } from "../io/git";
 
@@ -114,13 +115,25 @@ export interface SessionBinding {
 }
 
 /** Also under `common/`: a session can enter a worktree from any of them. */
-const binding = (session: string) => `common/specty/sessions/${session}.json`;
+const SESSIONS = "common/specty/sessions";
+const binding = (session: string) => `${SESSIONS}/${session}.json`;
 
 export async function readBinding(git: Git, session: string): Promise<SessionBinding | undefined> {
   const value = parseJson(await readText(await git.gitPath(binding(session))));
   if (!isRecord(value)) return undefined;
   const { folder, at } = value;
   return typeof folder === "string" && typeof at === "string" ? { folder, at } : undefined;
+}
+
+/** Every agent session's worktree, as the guard recorded it, also of sessions that ended. */
+export async function readBindings(git: Git): Promise<SessionBinding[]> {
+  const names: string[] = await readdir(await git.gitPath(SESSIONS)).catch(() => []);
+  const bindings = await Promise.all(
+    names
+      .filter((name) => name.endsWith(".json"))
+      .map((name) => readBinding(git, name.slice(0, -".json".length))),
+  );
+  return bindings.flatMap((bound) => (bound === undefined ? [] : [bound]));
 }
 
 export async function writeBinding(

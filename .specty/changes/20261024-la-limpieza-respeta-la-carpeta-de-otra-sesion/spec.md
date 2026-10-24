@@ -17,7 +17,7 @@ Antes de crear su worktree, `specty new` (y `specty prune`) borra las carpetas d
 
 ## Tareas
 
-- [ ] T1: La limpieza no borra la carpeta a la que está atada otra sesión
+- [x] T1: La limpieza no borra la carpeta a la que está atada otra sesión
   - files: packages/cli/src/store/local.ts, packages/cli/src/flow/prune.ts, packages/cli/test/prune.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: fix
