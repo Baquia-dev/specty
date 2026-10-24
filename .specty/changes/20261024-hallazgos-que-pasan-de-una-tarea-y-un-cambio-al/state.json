@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "da5d0ba206e6d1a7a1e37cd6d535bf0481fb5108",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:35:20.556Z",
       "doneAt": "2026-10-24T11:36:50.524Z",
-      "summary": "TaskView.findings y ChangeView.carried; la tarjeta de tarea muestra HALLAZGOS de las hechas, la de cierre los pide llevar a Pendientes, y la del borrador muestra por cambio seguido sus Pendientes y hallazgos, o que no está en esta carpeta"
+      "summary": "TaskView.findings y ChangeView.carried; la tarjeta de tarea muestra HALLAZGOS de las hechas, la de cierre los pide llevar a Pendientes, y la del borrador muestra por cambio seguido sus Pendientes y hallazgos, o que no está en esta carpeta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ac64d53b930453654dd5d6438fb59937344ff6b6",
+      "startedAt": "2026-10-24T11:36:50.834Z",
+      "doneAt": "2026-10-24T14:45:33.336Z",
+      "summary": "--finding repetible en task done, validado como el resumen y guardado en task.completed.findings; flow/carried.ts lee la auditoría, los hallazgos y, en borrador, los Pendientes del Cierre y los hallazgos de cada cambio de follows; changeView los pasa a las tarjetas"
     }
   },
   "pending": {

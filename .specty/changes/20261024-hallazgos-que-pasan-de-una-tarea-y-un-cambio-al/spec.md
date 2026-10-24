@@ -55,7 +55,7 @@ Lo que el agente descubre mientras trabaja deja de perderse entre tareas y entre
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/src/cards/next.ts, packages/core/test/cards/findings.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards test/cards.test.ts
-- [ ] T2: task done --finding y los cambios seguidos
+- [x] T2: task done --finding y los cambios seguidos
   - files: packages/cli/src/program.ts, packages/cli/src/commands/task.ts, packages/cli/src/flow/views.ts, packages/cli/src/flow/carried.ts, packages/cli/test/findings.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/findings.test.ts test/flow.test.ts

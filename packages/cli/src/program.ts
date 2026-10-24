@@ -167,8 +167,14 @@ export async function runCli(
     .command("done")
     .argument("<id>")
     .option("--summary <text>", "what the task did", "")
-    .action((id: string, options: { summary: string }) =>
-      run((session) => taskDone(session, id, options.summary))(),
+    .option(
+      "--finding <text>",
+      "something the next tasks or changes should know; repeatable",
+      (value: string, previous: string[]) => [...previous, value],
+      [],
+    )
+    .action((id: string, options: { summary: string; finding: string[] }) =>
+      run((session) => taskDone(session, id, options.summary, options.finding))(),
     );
   program
     .command("scope")
