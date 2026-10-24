@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261024-verificacion-completa-desde-la-ui",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-verificacion-completa-desde-la-ui",
+  "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:aa10a01ddc05fbee156a8cce56b379527b74b140b98de78c4d8de358d50991e0",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:119f26c92764a7fdcee9b5bb34326d53d06e1de428844fa77d83cf64473d43e0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 6,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:673623971ab33b62a64b70cff115d3695057678951bcf0237e49d1a8f26eb278",
+    "at": "2026-10-24T10:02:10.230Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
