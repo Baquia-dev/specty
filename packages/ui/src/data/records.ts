@@ -184,8 +184,16 @@ export interface ChangeView {
   readonly kind: ChangeKind;
   readonly phase: Phase;
   readonly revision: number;
-  /** The approved revision: which one, when and by whom (`state.approved`). */
-  readonly approved?: { readonly revision: number; readonly at: string; readonly by: string };
+  /**
+   * The approved revision: which one, when and by whom (`state.approved`). `delegated`: the agent
+   * approved it for `by`, who delegated their decisions (ADR 0010).
+   */
+  readonly approved?: {
+    readonly revision: number;
+    readonly at: string;
+    readonly by: string;
+    readonly delegated?: boolean;
+  };
   readonly branch?: string;
   readonly phaseSince: string;
   readonly goal: string;

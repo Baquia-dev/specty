@@ -90,6 +90,13 @@ describe("deriveView", () => {
     const approved = { revision: 1, hash: HASH, at, by: "Ana Gómez", channel: "ui" } as const;
     expect(deriveView(record({ approved })).approved).toEqual({ revision: 1, at, by: "Ana Gómez" });
     expect(deriveView(record()).approved).toBeUndefined();
+    const delegated = { ...approved, channel: "delegated" } as const;
+    expect(deriveView(record({ approved: delegated })).approved).toEqual({
+      revision: 1,
+      at,
+      by: "Ana Gómez",
+      delegated: true,
+    });
   });
 
   it("counts high-impact assumptions still undecided in review (AC2)", () => {

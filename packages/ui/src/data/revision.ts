@@ -52,6 +52,7 @@ function shortDate(iso: string, lang: Lang, now: number): string {
 /**
  * Which revision is approved, when and by whom: in a team it is not always who is looking.
  * «La 2 está aprobada · 21 oct · Ana Gómez»; when the current one is it, «Aprobada el 21 oct…».
+ * In delegated mode the agent approved for the person: «… por el agente de Ana Gómez».
  */
 export function approvedNote(
   change: RevisionOf,
@@ -61,12 +62,19 @@ export function approvedNote(
   const approved = change.approved;
   if (approved === undefined) return undefined;
   const date = shortDate(approved.at, lang, now);
+  const agent =
+    approved.delegated === true
+      ? { es: `por el agente de ${approved.by}`, en: `by ${approved.by}'s agent` }
+      : undefined;
   if (approved.revision === change.revision) {
+    if (agent !== undefined)
+      return lang === "es" ? `Aprobada el ${date} ${agent.es}` : `Approved on ${date} ${agent.en}`;
     return lang === "es"
       ? `Aprobada el ${date} · ${approved.by}`
       : `Approved on ${date} · ${approved.by}`;
   }
+  const who = agent?.[lang] ?? approved.by;
   return lang === "es"
-    ? `La ${approved.revision} está aprobada · ${date} · ${approved.by}`
-    : `Revision ${approved.revision} is approved · ${date} · ${approved.by}`;
+    ? `La ${approved.revision} está aprobada · ${date} · ${who}`
+    : `Revision ${approved.revision} is approved · ${date} · ${who}`;
 }

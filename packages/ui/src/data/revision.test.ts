@@ -57,6 +57,20 @@ describe("revision", () => {
     expect(approvedNote({ phase: "review", revision: 1 }, "es", NOW)).toBeUndefined();
   });
 
+  it("says when the agent approved for the person, in delegated mode (AC1)", () => {
+    const approved = { ...APPROVED, delegated: true };
+    const current = { phase: "implementing" as const, revision: 2, approved };
+    expect(approvedNote(current, "es", NOW)).toBe("Aprobada el 21 oct por el agente de Ana Gómez");
+    expect(approvedNote(current, "en", NOW)).toBe("Approved on Oct 21 by Ana Gómez's agent");
+    const review = { phase: "review" as const, revision: 3, approved };
+    expect(approvedNote(review, "es", NOW)).toBe(
+      "La 2 está aprobada · 21 oct · por el agente de Ana Gómez",
+    );
+    expect(approvedNote(review, "en", NOW)).toBe(
+      "Revision 2 is approved · Oct 21 · by Ana Gómez's agent",
+    );
+  });
+
   it("adds the year to an approval from another year", () => {
     const old = { ...APPROVED, at: "2025-12-30T09:00:00Z" };
     expect(approvedNote({ phase: "acceptance", revision: 2, approved: old }, "es", NOW)).toBe(

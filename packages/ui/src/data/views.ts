@@ -80,6 +80,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
             revision: state.approved.revision,
             at: state.approved.at,
             by: state.approved.by,
+            ...(state.approved.channel === "delegated" ? { delegated: true } : {}),
           },
         }),
     ...(state.branch === undefined ? {} : { branch: state.branch }),
