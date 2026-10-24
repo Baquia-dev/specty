@@ -51,7 +51,7 @@ Mientras el agente ejecuta `specty task done`, la UI que sirve `specty ui` muest
   - files: packages/cli/src/io/exec.ts, packages/cli/src/store/runs.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/commands/task.ts, packages/cli/test/live-run.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/live-run.test.ts test/commands.test.ts && pnpm sources
-- [ ] T2: El servidor la emite en los eventos
+- [x] T2: El servidor la emite en los eventos
   - files: packages/cli/src/server/runs.ts, packages/cli/test/server/live.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server && pnpm sources

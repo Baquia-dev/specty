@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8a4e1765db39c1a450091929cc48c4c0ea2079d7",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:25:41.497Z",
       "doneAt": "2026-10-24T15:27:22.119Z",
-      "summary": "execute acepta onOutput; store/runs.ts escribe, lee y borra las ejecuciones en curso en common/specty/runs/<cambio>.json (tarea, comando, inicio, últimas líneas y pid); flow/live-run.ts runLive verifica una tarea reescribiendo ese archivo como mucho cada 250 ms y lo borra al terminar, pase o falle; task done verifica con runLive"
+      "summary": "execute acepta onOutput; store/runs.ts escribe, lee y borra las ejecuciones en curso en common/specty/runs/<cambio>.json (tarea, comando, inicio, últimas líneas y pid); flow/live-run.ts runLive verifica una tarea reescribiendo ese archivo como mucho cada 250 ms y lo borra al terminar, pase o falle; task done verifica con runLive",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "32b76f474fbe2c5ed5333cffe3e4f15f000ce623",
+      "startedAt": "2026-10-24T15:27:22.736Z",
+      "doneAt": "2026-10-24T15:32:35.600Z",
+      "summary": "server/runs.ts lee cada medio segundo los archivos de las tareas (taskRuns): emite run con su tarea cuando cambian y run: null cuando desaparecen, current los da si no corre una verificación completa (que tiene prioridad y calla los de la tarea mientras corre), y borra sin mostrarlo el archivo de un proceso que ya no existe. verify.test.ts espera el final de la verificación completa tras su primer evento, porque los run: null de las tareas pueden llegar antes"
     }
   },
   "pending": {
