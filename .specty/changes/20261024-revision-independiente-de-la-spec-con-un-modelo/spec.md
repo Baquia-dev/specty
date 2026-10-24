@@ -62,7 +62,7 @@ Antes de aprobar una spec grande o sensible, Specty puede pedir una segunda opin
   - files: packages/core/src/schema/config.ts, packages/core/src/cards/review.ts, packages/core/src/cards/flow.ts, packages/core/src/index.ts, packages/core/src/guard/decide.ts, packages/core/test/cards/review.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards test/guard test/schema
-- [ ] T2: specty review y la recomendación de propose
+- [x] T2: specty review y la recomendación de propose
   - files: packages/cli/src/commands/review.ts, packages/cli/src/program.ts, packages/cli/src/commands/propose.ts, packages/cli/test/review.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review.test.ts test/commands-named.test.ts

@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02744298a79b51347cffb0bbe396a5ffa4ae4b47",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:55:32.801Z",
       "doneAt": "2026-10-24T14:57:16.483Z",
-      "summary": "review.command y timeoutSec en la configuración; cards/review.ts con el texto para el revisor (es/en) y reviewedCard; ProposedView.review hace que propose pida specty review antes de la aprobación; el guard protege reviews/"
+      "summary": "review.command y timeoutSec en la configuración; cards/review.ts con el texto para el revisor (es/en) y reviewedCard; ProposedView.review hace que propose pida specty review antes de la aprobación; el guard protege reviews/",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f097b4e3ee3dfcbcbc2eb50afe57255ff7743d7a",
+      "startedAt": "2026-10-24T14:57:16.747Z",
+      "doneAt": "2026-10-24T14:58:49.355Z",
+      "summary": "commands/review.ts pasa por la entrada estándar las instrucciones y la spec al review.command, guarda la respuesta en reviews/spec-r<n>.md y anota review.completed; sin clave, fuera de revisión o si falla, lo explica sin cambiar la fase. propose pide la revisión una vez por cambio en specs L/XL o sensibles"
     }
   },
   "pending": {
