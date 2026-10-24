@@ -3,8 +3,11 @@ import {
   type Analysis,
   analyzeSpec,
   type ItemPrefix,
+  isGlob,
+  matchesPattern,
   type ProposePhase,
   parseSpec,
+  type RepoSignals,
   type Spec,
 } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
@@ -31,18 +34,33 @@ export async function analyzeChange(
     ...(state.maxIds.R !== undefined ? { R: state.maxIds.R } : {}),
     ...(state.maxIds.C !== undefined ? { C: state.maxIds.C } : {}),
   };
+  const text = await readSpec(files);
   return analyzeSpec(
-    await readSpec(files),
+    text,
     {
       phase,
       config: session.config,
       doneTasks,
       maxIds,
+      repo: await repoSignals(session, text),
       ...(approved !== undefined ? { approved } : {}),
       ...(previous !== undefined ? { previous } : {}),
     },
     { language: session.lang },
   );
+}
+
+/** What core cannot see: the files each glob of the spec matches today, for its size. */
+async function repoSignals(session: Session, text: string): Promise<RepoSignals> {
+  const entries = parseSpec(text, { language: session.lang }).spec.sections.files?.items ?? [];
+  const globs = [...new Set(entries.map((entry) => entry.path).filter(isGlob))];
+  if (globs.length === 0) return {};
+  const paths = await session.git.files();
+  return {
+    globMatches: Object.fromEntries(
+      globs.map((glob) => [glob, paths.filter((path) => matchesPattern(path, glob))]),
+    ),
+  };
 }
 
 async function revisionSpec(session: Session, text: string | undefined): Promise<Spec | undefined> {

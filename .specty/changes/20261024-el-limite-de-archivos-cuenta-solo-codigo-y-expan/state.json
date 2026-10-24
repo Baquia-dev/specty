@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6212bc608d2aa431be8168ea973b1dcd961ac761",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:07:54.407Z",
       "doneAt": "2026-10-24T10:08:19.222Z",
-      "summary": "checkQuickLane cuenta codeFiles de collectSignals con los datos del repositorio: los tests y la documentación no cuentan y un glob cuenta sus coincidencias más una"
+      "summary": "checkQuickLane cuenta codeFiles de collectSignals con los datos del repositorio: los tests y la documentación no cuentan y un glob cuenta sus coincidencias más una",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d35a4c41db4f95ac5ab22953d0d152c473056203",
+      "startedAt": "2026-10-24T10:08:19.548Z",
+      "doneAt": "2026-10-24T10:11:33.835Z",
+      "summary": "Git.files() lista lo seguido y lo no ignorado sin seguir; analyzeChange calcula globMatches solo si la spec tiene globs, así que propose y approve cuentan las coincidencias en el tamaño y en los límites"
     }
   },
   "pending": {

@@ -8,3 +8,6 @@
 {"ts":"2026-10-24T10:07:54.408Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"6212bc608d2aa431be8168ea973b1dcd961ac761"}}
 {"ts":"2026-10-24T10:08:19.221Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/validate","exit":0,"ms":777}}
 {"ts":"2026-10-24T10:08:19.223Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"checkQuickLane cuenta codeFiles de collectSignals con los datos del repositorio: los tests y la documentación no cuentan y un glob cuenta sus coincidencias más una"}}
+{"ts":"2026-10-24T10:08:19.548Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"d35a4c41db4f95ac5ab22953d0d152c473056203"}}
+{"ts":"2026-10-24T10:11:33.833Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/sizing.test.ts","exit":0,"ms":4234}}
+{"ts":"2026-10-24T10:11:33.840Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"Git.files() lista lo seguido y lo no ignorado sin seguir; analyzeChange calcula globMatches solo si la spec tiene globs, así que propose y approve cuentan las coincidencias en el tamaño y en los límites"}}
