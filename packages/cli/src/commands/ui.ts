@@ -56,7 +56,9 @@ export async function ui(
       status: "invalid",
     };
   }
-  const server = await startServer({ session, port: first, ui: await uiFolder() });
+  // Only the person decides from the UI: an agent that starts the server would see the link.
+  const actions = session.environment.terminal.interactive;
+  const server = await startServer({ session, port: first, ui: await uiFolder(), actions });
   const opened: Output = {
     status: "ok",
     header: headerOf("ui"),
@@ -65,6 +67,15 @@ export async function ui(
         `Los cambios de todas las worktrees, en ${server.link}`,
         `The changes of every worktree, at ${server.link}`,
       ),
+      actions
+        ? t(
+            "Desde la UI puedes aprobar, decidir el alcance, aceptar y cerrar.",
+            "From the UI you can approve, decide scope, accept and close.",
+          )
+        : t(
+            "Solo lectura: lo arrancó el agente. Para decidir desde la UI, arráncalo tú con `specty ui`.",
+            "Read only: the agent started it. To decide from the UI, start it yourself with `specty ui`.",
+          ),
     ]),
     next: t(
       "abre el enlace en tu navegador; Ctrl+C cierra el servidor.",

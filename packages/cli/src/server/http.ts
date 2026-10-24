@@ -4,7 +4,9 @@ import { readFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { extname, join, resolve, sep } from "node:path";
 import { translator } from "@baquia-dev/specty-core";
+import { parseJson } from "../io/files";
 import type { Session } from "../session";
+import { parseAction, runAction } from "./actions";
 import { type ChangeEvents, changeEvents } from "./events";
 import { changeRecords } from "./records";
 
@@ -14,6 +16,11 @@ export interface ServerOptions {
   readonly port: number;
   /** The folder of the built UI; without one, a page explains how to build it. */
   readonly ui: string | undefined;
+  /**
+   * The person may decide from the UI: only when they started the server themselves, since an
+   * agent that starts it sees the link.
+   */
+  readonly actions?: boolean;
   /** Milliseconds between looks at the changes while someone listens to the events. */
   readonly interval?: number;
 }
@@ -30,7 +37,11 @@ interface Context extends ServerOptions {
   readonly token: string;
   /** Cookies of `localhost` reach every port: the name carries this one. */
   readonly cookie: string;
+  /** Every action carries it in `X-Specty-CSRF`; `GET /api/session` gives it to the page. */
+  readonly csrf: string;
   readonly events: ChangeEvents;
+  /** Runs the actions one at a time: the commands were not written to overlap. */
+  readonly serial: <T>(task: () => Promise<T>) => Promise<T>;
 }
 
 const TEXT = "text/plain; charset=utf-8";
@@ -57,14 +68,22 @@ const SAFE = {
 /** Tells the UI it runs on this server, not on its sample data. */
 const MARKER = '<meta name="specty-data" content="server" />';
 
-/** Starts the local server on `127.0.0.1` (ARCHITECTURE §15); for now it only reads. */
+/** Starts the local server on `127.0.0.1` (ARCHITECTURE §15). */
 export async function startServer(options: ServerOptions): Promise<UiServer> {
   const server = createServer();
   const port = await listen(server, options.port);
   const token = randomBytes(32).toString("base64url");
+  const csrf = randomBytes(32).toString("base64url");
   const events = changeEvents(options.session, options.interval ?? 1000, SAFE);
   const ui = options.ui === undefined ? undefined : resolve(options.ui);
-  const context: Context = { ...options, ui, port, token, cookie: `specty-${port}`, events };
+  let last: Promise<unknown> = Promise.resolve();
+  const serial = <T>(task: () => Promise<T>): Promise<T> => {
+    const run = last.then(task, task);
+    last = run.catch(() => undefined);
+    return run;
+  };
+  const cookie = `specty-${port}`;
+  const context: Context = { ...options, ui, port, token, cookie, csrf, events, serial };
   server.on("request", (request: IncomingMessage, response: ServerResponse) => {
     handle(request, response, context).catch(() => send(response, 500, TEXT, "specty: error"));
   });
@@ -100,8 +119,10 @@ async function handle(request: IncomingMessage, response: ServerResponse, contex
   // Another host name means DNS rebinding: a page elsewhere pointing its name at this server.
   if (!isLocal(request.headers.host, context.port))
     return send(response, 403, TEXT, "specty: host");
-  if (request.method !== "GET") return send(response, 405, TEXT, "specty: read only");
   const url = new URL(request.url ?? "/", "http://localhost");
+  if (request.method === "POST" && url.pathname.startsWith("/api/"))
+    return act(request, response, context, url.pathname);
+  if (request.method !== "GET") return send(response, 405, TEXT, "specty: method");
   const token = url.searchParams.get("token");
   if (token !== null) {
     if (!same(token, context.token)) return send(response, 403, TEXT, "specty: link");
@@ -121,9 +142,58 @@ async function handle(request: IncomingMessage, response: ServerResponse, contex
     if (url.pathname === "/api/changes")
       return send(response, 200, JSON_TYPE, JSON.stringify(await changeRecords(context.session)));
     if (url.pathname === "/api/events") return context.events.add(response);
+    if (url.pathname === "/api/session") {
+      const actions = context.actions === true;
+      return send(
+        response,
+        200,
+        JSON_TYPE,
+        JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
+      );
+    }
     return send(response, 404, JSON_TYPE, '{"error":"not found"}');
   }
   return serveUi(response, context, url.pathname);
+}
+
+/**
+ * An action of the person: from this origin, with the session and, when the person started the
+ * server, with its CSRF token. The answer is the command's output: 200 done, 409 refused.
+ */
+async function act(
+  request: IncomingMessage,
+  response: ServerResponse,
+  context: Context,
+  pathname: string,
+) {
+  const origin = request.headers.origin;
+  const here = origin !== undefined && isLocal(origin.replace(/^http:\/\//, ""), context.port);
+  if (!here || !hasSession(request.headers.cookie, context))
+    return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
+  if (context.actions !== true) return send(response, 403, JSON_TYPE, '{"error":"read-only"}');
+  const csrf = request.headers["x-specty-csrf"];
+  if (typeof csrf !== "string" || !same(csrf, context.csrf))
+    return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
+  const parsed = parseAction(
+    pathname.split("/").filter((part) => part !== ""),
+    await readBody(request),
+  );
+  if (parsed === undefined) return send(response, 400, JSON_TYPE, '{"error":"bad request"}');
+  const output = await context.serial(() => runAction(context.session, parsed.id, parsed.action));
+  return send(response, output.status === "ok" ? 200 : 409, JSON_TYPE, JSON.stringify(output));
+}
+
+/** A JSON body of at most 64 KiB; anything else reads as nothing. */
+async function readBody(request: IncomingMessage): Promise<unknown> {
+  const parts: Buffer[] = [];
+  let size = 0;
+  for await (const chunk of request) {
+    const part = Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk));
+    size += part.length;
+    if (size > 65_536) return undefined;
+    parts.push(part);
+  }
+  return parseJson(Buffer.concat(parts).toString("utf8"));
 }
 
 /** The built UI's files; app routes, and `index.html` itself, get the marked `index.html`. */

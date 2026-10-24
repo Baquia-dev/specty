@@ -149,7 +149,9 @@ describe("the local server", () => {
       const origin = (value: string) => ask(server.port, "/api/changes", { cookie, origin: value });
       expect((await origin("http://evil.example")).status).toBe(403);
       expect((await origin(`http://localhost:${server.port}`)).status).toBe(200);
-      expect((await ask(server.port, "/api/changes", { cookie }, "POST")).status).toBe(405);
+      // A POST is an action of the person: without its origin it is refused, and other methods too.
+      expect((await ask(server.port, "/api/changes", { cookie }, "POST")).status).toBe(403);
+      expect((await ask(server.port, "/api/changes", { cookie }, "PUT")).status).toBe(405);
       expect((await ask(server.port, "/api/other", { cookie })).status).toBe(404);
     } finally {
       await server.close();
