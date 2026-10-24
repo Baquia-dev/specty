@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-acciones-de-la-persona-en-el-servidor-local",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-acciones-de-la-persona-en-el-servidor-local",
   "baseCommit": "f6888d6092f5ff46564993e99d71a59c0ab6c500",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ed21bf60ef3cca8c0f2fea2e088e0094afe493d9123f1ceb774c6ee64416253d",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02d7a3b73ca7b78c5c789dbbc70d9f451d583c9e",
+      "attempts": 1,
       "startedAt": "2026-10-24T05:34:51.656Z",
       "doneAt": "2026-10-24T05:37:25.224Z",
-      "summary": "ARCHITECTURE §15 cuenta las acciones (quién puede, /api/session, CSRF, rutas, cómo se ejecutan y qué responden) y deja pendiente que la UI las llame; ui.md: solo se decide desde la UI si la persona arrancó specty ui"
+      "summary": "ARCHITECTURE §15 cuenta las acciones (quién puede, /api/session, CSRF, rutas, cómo se ejecutan y qué responden) y deja pendiente que la UI las llame; ui.md: solo se decide desde la UI si la persona arrancó specty ui",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -81,5 +81,6 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T05:38:52.864Z"
 }

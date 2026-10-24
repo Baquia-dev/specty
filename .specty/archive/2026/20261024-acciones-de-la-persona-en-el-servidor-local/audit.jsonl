@@ -10,3 +10,6 @@
 {"ts":"2026-10-24T05:34:51.656Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"02d7a3b73ca7b78c5c789dbbc70d9f451d583c9e"}}
 {"ts":"2026-10-24T05:37:25.222Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":56771}}
 {"ts":"2026-10-24T05:37:25.225Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §15 cuenta las acciones (quién puede, /api/session, CSRF, rutas, cómo se ejecutan y qué responden) y deja pendiente que la UI las llame; ui.md: solo se decide desde la UI si la persona arrancó specty ui"}}
+{"ts":"2026-10-24T05:38:30.939Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T05:38:52.865Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:9adb27dd8337cfa71255c3519c3cc6ebac72de33d16c6e45abc7ea8a10bf033f","size":"M","warnings":0}}
+{"ts":"2026-10-24T05:39:00.595Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

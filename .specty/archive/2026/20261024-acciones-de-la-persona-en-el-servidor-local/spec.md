@@ -72,3 +72,25 @@ El servidor de `specty ui` deja de ser solo de lectura cuando lo arranca la pers
 
 - R1: Confirmar el cierre desde la UI incorpora el cambio y puede tardar lo que tarde la verificación — la petición espera; la UI lo mostrará en curso.
 - R2: Un agente con acceso al navegador de la persona podría usar su sesión — fuera del modelo de confianza de Specty, como hoy un agente que escribe en la terminal de la persona.
+
+## Cierre
+
+### Resumen
+
+Cuando la persona arranca `specty ui` en su terminal, el servidor acepta sus decisiones desde la UI: aprobar la revisión que vio, confirmar o rechazar un supuesto de alto impacto, aprobar o rechazar una solicitud de alcance, aceptar el resultado, pedir un ajuste y confirmar el cierre. Cada una ejecuta el comando de la CLI que ya existía, en la carpeta del cambio, con una terminal de la UI que registra el canal `ui`. Las acciones exigen la cookie de sesión, el `Origin` del servidor y el token CSRF de `GET /api/session`, se ejecutan de una en una y responden la salida del comando (200 o 409). Si lo arranca el agente, el servidor sigue de solo lectura y toda acción recibe 403 `read-only`. Probado de punta a punta por HTTP: aprobar con commit y canal `ui`, alcance, aceptar, cerrar con la incorporación, ajustar y los rechazos de seguridad.
+
+### Desviaciones
+
+- Las pruebas HTTP de las acciones quedaron en `packages/cli/test/server/actions.test.ts` (test implícito de `src/server/`), para que `server-actions.test.ts` no pasara de 300 líneas.
+- `server.test.ts`, también test implícito, cambió una expectativa: un `POST` sin `Origin` ya no es 405 sino 403, porque los `POST` de la API son acciones; otros métodos siguen en 405.
+
+### Decisiones
+
+- La terminal de la UI confirma todo y no elige nada: si un comando necesitara una elección que la persona no hizo en la pantalla, la acción se aplaza. Por eso el servidor comprueba antes de aprobar que la revisión sea la vigente y que estén confirmados los supuestos de alto impacto, en vez de confundir con un éxito el «Nada cambió» de un aplazamiento.
+- El token CSRF solo se entrega con la sesión y cuando hay acciones; el orden de las comprobaciones (origen y cookie, luego acciones, luego CSRF) deja distinguir un servidor de solo lectura de una petición ajena.
+- `decideAssumption` va en `flow/review.ts` porque no hay comando de la CLI que decida un supuesto suelto: en la terminal, `approve` los pregunta todos a la vez.
+
+### Pendientes
+
+- Que la UI llame a estas acciones desde `ServerData`.
+- Comentarios y «pedir cambios» de la revisión, el interruptor del modo delegado, la verificación completa y los diffs desde la UI.
