@@ -6,6 +6,13 @@
   "branch": "specty/20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
   "baseCommit": "69bfe9e590b99257dde6e00d852a3492b3eb30c6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1480f7dbcdddc0af7eaedc65557aca797890ac3aeea22d70e804e359456da723",
+    "at": "2026-10-24T14:48:42.192Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6f4bc6bda3cf36c410f7b6ebbbf0a029e85c8c1f",
+      "startedAt": "2026-10-24T14:48:43.226Z",
+      "doneAt": "2026-10-24T14:50:03.207Z",
+      "summary": "acceptance-actions, acceptance-tab, changes-view, closing-view, criterion-row, full-verification y trace-matrix toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon y el tipo LucideIconInput"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 3,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1480f7dbcdddc0af7eaedc65557aca797890ac3aeea22d70e804e359456da723",
-    "at": "2026-10-24T14:48:42.192Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

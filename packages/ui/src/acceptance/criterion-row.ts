@@ -1,17 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from "@angular/core";
+import { LucideDynamicIcon, type LucideIconInput } from "@lucide/angular";
+import { REVEAL, ROW } from "../components/document";
 import {
   LucideCheck,
   LucideCircleCheck,
   LucideCircleDashed,
   LucideCircleDot,
-  LucideDynamicIcon,
   LucideGitCommitHorizontal,
-  type LucideIconInput,
   LucideTriangleAlert,
   LucideX,
-} from "@lucide/angular";
-import { REVEAL, ROW } from "../components/document";
+} from "../components/icons";
 import type { CriterionEvidence, EvidenceStatus } from "../data/acceptance";
 import { formatDuration, type TaskProgressView } from "../data/progress";
 import type { ChangeView } from "../data/records";

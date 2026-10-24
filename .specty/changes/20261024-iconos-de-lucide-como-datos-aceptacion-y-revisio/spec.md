@@ -47,7 +47,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: La aceptación toma sus iconos de icons.ts
+- [x] T1: La aceptación toma sus iconos de icons.ts
   - files: packages/ui/src/acceptance/acceptance-actions.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/acceptance/changes-view.ts, packages/ui/src/acceptance/closing-view.ts, packages/ui/src/acceptance/criterion-row.ts, packages/ui/src/acceptance/full-verification.ts, packages/ui/src/acceptance/trace-matrix.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance && pnpm sources

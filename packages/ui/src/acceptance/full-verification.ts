@@ -10,15 +10,10 @@ import {
   linkedSignal,
   signal,
 } from "@angular/core";
-import {
-  LucideCheck,
-  LucideCircleDashed,
-  LucideDynamicIcon,
-  LucidePlay,
-  LucideX,
-} from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { SectionDivider } from "../components/document";
+import { LucideCheck, LucideCircleDashed, LucidePlay, LucideX } from "../components/icons";
 import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
 import {

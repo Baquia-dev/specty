@@ -11,10 +11,10 @@ import {
   type ResourceStatus,
   resource,
 } from "@angular/core";
-import { LucideGitCompareArrows } from "@lucide/angular";
 import { DiffViewer } from "../components/diff-viewer";
 import { SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
+import { LucideGitCompareArrows } from "../components/icons";
 import { Segmented } from "../components/segmented";
 import { Skeleton } from "../components/skeleton";
 import { parseDiff } from "../data/diff";
