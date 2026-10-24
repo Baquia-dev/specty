@@ -13,6 +13,7 @@ import {
 } from "@angular/core";
 import { PHASES } from "@baquia-dev/specty-core";
 import { LucideDynamicIcon, LucideSearch } from "@lucide/angular";
+import { EdgeFade } from "../components/edge-fade";
 import { Kbd } from "../components/kbd";
 import { Select } from "../components/select";
 import { Shortcuts } from "../keyboard/shortcuts";
@@ -92,7 +93,7 @@ export class InboxViewOptions {
 /** Search and phase filters, pinned while the Inbox scrolls. "/" goes to the search. */
 @Component({
   selector: "sp-inbox-toolbar",
-  imports: [LucideDynamicIcon, Kbd],
+  imports: [LucideDynamicIcon, Kbd, EdgeFade],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     "[class]": "pinned() ? barPinned : barResting",
@@ -114,7 +115,7 @@ export class InboxViewOptions {
       </div>
       <!-- On a phone the phases stay on one line that scrolls sideways. -->
       <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:gap-4">
-        <div class="-mx-6 flex min-w-0 gap-1.5 overflow-x-auto px-6 scrollbar-none sm:mx-0 sm:flex-1 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" [attr.aria-label]="t()('Filtrar por fase', 'Filter by phase')" data-phases>
+        <div spEdgeFade class="-mx-6 flex min-w-0 gap-1.5 overflow-x-auto px-6 scrollbar-none sm:mx-0 sm:flex-1 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" [attr.aria-label]="t()('Filtrar por fase', 'Filter by phase')" data-phases>
           @for (option of phases(); track option.key) {
             <button type="button" class="flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-border bg-transparent px-2.5 font-sans text-xs font-medium text-text-muted aria-pressed:border-transparent aria-pressed:text-text" [style.background]="state.phase() === option.key ? option.background : null" [attr.aria-pressed]="state.phase() === option.key" (click)="pick(option.key)">
               <span class="size-1.5 rounded-full" [style.background]="option.dot" aria-hidden="true"></span>

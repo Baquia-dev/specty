@@ -18,6 +18,7 @@ import {
 } from "@lucide/angular";
 import { Button, IconButton } from "../components/button";
 import { LIST, REVEAL, ROW, SectionDivider } from "../components/document";
+import { EdgeFade } from "../components/edge-fade";
 import type {
   Bilingual,
   ChangeView,
@@ -116,6 +117,7 @@ export class ChangeMark {
     WordDiff,
     BeforeLine,
     SectionDivider,
+    EdgeFade,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Positioned, so the screen-reader text of the diff (absolute) stays inside the scrolling area.
@@ -133,7 +135,7 @@ export class ChangeMark {
       <p class="m-0 text-sm text-text-muted" data-summary>{{ summary() }}</p>
       <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
         <!-- On a phone the filters scroll sideways inside their group instead of widening the page. -->
-        <div class="flex max-w-full gap-1 overflow-x-auto rounded-lg bg-text/5 p-1 scrollbar-none" role="group" [attr.aria-label]="t()('Filtrar cambios', 'Filter changes')" data-filters>
+        <div spEdgeFade class="flex max-w-full gap-1 overflow-x-auto rounded-lg bg-text/5 p-1 scrollbar-none" role="group" [attr.aria-label]="t()('Filtrar cambios', 'Filter changes')" data-filters>
           @for (option of filters(); track option.key) {
             <button type="button" class="flex h-7 shrink-0 cursor-pointer items-center gap-1.5 rounded-md border-0 bg-transparent px-2.5 font-sans text-[13px] whitespace-nowrap text-text-muted aria-pressed:bg-surface aria-pressed:font-semibold aria-pressed:text-text aria-pressed:shadow-sm" [attr.aria-pressed]="filter() === option.key" (click)="filter.set(option.key)">
               @if (option.tone) {

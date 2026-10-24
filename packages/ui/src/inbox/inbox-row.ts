@@ -40,7 +40,7 @@ const DECISIONS: Readonly<
  * scroll margin keeps it clear of the pinned search when j/k bring it into view.
  */
 const ROW =
-  "group -mx-3 grid scroll-mt-36 scroll-mb-4 grid-cols-1 items-start gap-x-4 gap-y-2 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none sm:grid-cols-[8.5rem_minmax(0,1fr)_auto]";
+  "group -mx-3 grid scroll-mt-[calc(var(--sp-sticky-top,9rem)+0.5rem)] scroll-mb-4 grid-cols-1 items-start gap-x-4 gap-y-2 rounded-lg px-3 py-3 transition-colors duration-150 hover:bg-text/4 focus-within:bg-text/4 motion-reduce:transition-none sm:grid-cols-[8.5rem_minmax(0,1fr)_auto]";
 
 /** One change in the Inbox: its phase, what it waits for, how long, and the way into it. */
 @Component({
