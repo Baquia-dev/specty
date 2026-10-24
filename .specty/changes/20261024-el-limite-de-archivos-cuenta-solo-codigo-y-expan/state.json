@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261024-el-limite-de-archivos-cuenta-solo-codigo-y-expan",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-el-limite-de-archivos-cuenta-solo-codigo-y-expan",
+  "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b6d4a118ffc6b8041b5774fbcec62e5d9df479e063cc45e3b40469dd778091d8",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c2445d740ea06fe0378a7abb60d46715ec603191091cc927c1d2804f491357dd",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7ce3b0a89b4af6725bb3f0cb8bfc4f139939fa5d8967135c2701906d4610a52e",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ea3702dc9476050ca0b830dd88ebf66b53a4c73b0a26281fad1d20e4802f92ce",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c0dda3df5418b6b977dbb3be99a7709f6974ba921f42458a8d94978bd516ec1e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a3b968b046b1ea6a70818e88953b2a756116709b01d21ac46fee4407d5dd1633",
+    "at": "2026-10-24T10:05:30.428Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
