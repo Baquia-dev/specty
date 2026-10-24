@@ -60,7 +60,7 @@ La persona ve y cambia el modo delegado desde la UI, como pidió: mientras está
   - files: packages/ui/src/app/delegation.ts, packages/ui/src/app/delegation.test.ts, packages/ui/src/app/shell.ts, packages/ui/src/app/preferences-menu.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/delegation.test.ts --include src/app/shell.test.ts
-- [ ] T3: Documentar el modo delegado en la UI
+- [x] T3: Documentar el modo delegado en la UI
   - files: docs/ui.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check

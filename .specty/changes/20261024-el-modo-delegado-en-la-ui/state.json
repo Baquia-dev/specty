@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-el-modo-delegado-en-la-ui",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-el-modo-delegado-en-la-ui",
   "baseCommit": "61c29132dbebdcb0e26562c772609c9ab8f7dea6",
   "revision": 1,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "31d677cfc031214dafe5f24cdda207972e645ab5",
+      "attempts": 1,
       "startedAt": "2026-10-24T06:11:24.515Z",
       "doneAt": "2026-10-24T06:15:12.668Z",
-      "summary": "app/delegation.ts: DelegationState lee el modo delegado y lo recarga con los eventos; el chip «Modo delegado» aparece en la cabecera mientras está activo y abre la confirmación para desactivarlo (desde cuándo y quién); la sección del menú de preferencias y el comando «Modo delegado…» de la paleta abren el aviso de delegate on en el idioma de la persona, con lista y código, y solo «Sí, que decida mi agente» lo activa; un rechazo se explica en un aviso"
+      "summary": "app/delegation.ts: DelegationState lee el modo delegado y lo recarga con los eventos; el chip «Modo delegado» aparece en la cabecera mientras está activo y abre la confirmación para desactivarlo (desde cuándo y quién); la sección del menú de preferencias y el comando «Modo delegado…» de la paleta abren el aviso de delegate on en el idioma de la persona, con lista y código, y solo «Sí, que decida mi agente» lo activa; un rechazo se explica en un aviso",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7bb2b3996bed16c49cabce5718650daf741d301b",
+      "startedAt": "2026-10-24T06:15:13.031Z",
+      "doneAt": "2026-10-24T06:18:19.716Z",
+      "summary": "ui.md (Armazón) cuenta el chip, la sección de preferencias, el comando y los diálogos del modo delegado; ARCHITECTURE §15 ya no lo deja pendiente"
     }
   },
   "pending": {

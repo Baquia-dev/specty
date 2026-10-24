@@ -391,7 +391,7 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
 
 - Que el paquete de npm incluya la UI construida.
 - `propose` y `next` arrancan el servidor en segundo plano si no está activo e imprimen el enlace; el servidor se apaga solo tras un rato inactivo. Si el sandbox del agente impide arrancarlo, la persona ejecuta `specty ui`.
-- Comentarios y «pedir cambios» en la revisión; el interruptor del modo delegado en la UI; la verificación completa lanzada desde la UI; edición estructurada de la spec (core serializa y escribe el archivo) y diffs por tarea. Las acciones humanas existen solo en la UI y en la TTY. La seguridad del servidor está en [ui.md](ui.md#seguridad).
+- Comentarios y «pedir cambios» en la revisión; la verificación completa lanzada desde la UI; edición estructurada de la spec (core serializa y escribe el archivo) y diffs por tarea. Las acciones humanas existen solo en la UI y en la TTY. La seguridad del servidor está en [ui.md](ui.md#seguridad).
 - La verificación completa previa a la aceptación la lanza la persona desde la UI y la ejecuta el servidor, así no depende del timeout de herramientas del agente.
 
 ## 16. Calidad
