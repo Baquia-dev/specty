@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-doctor-avisa-del-mapa-y-las-convenciones-sin-com",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-doctor-avisa-del-mapa-y-las-convenciones-sin-com",
   "baseCommit": "1c3aac4b6653bc1a97eb4d461144bc8e425b3e07",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c87c4d36710e868ac860ea4ca7e9d5cda0fc89f598cab2a057e0f0bd0b09c87b",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "012bd9af167dc75b7cdbc67892024231d1763c32",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:21:57.331Z",
       "doneAt": "2026-10-24T20:36:19.566Z",
-      "summary": "doctor avisa en AVISOS, sin ponerse en rojo, de «Mapa» y «Convenciones» sin completar, con lo que va en ellas. Test en setup.test.ts; en install.test.ts, el test del modo delegado ahora mira «Modo delegado» en vez de cero avisos, como decidió el usuario. ARCHITECTURE §7 y §14."
+      "summary": "doctor avisa en AVISOS, sin ponerse en rojo, de «Mapa» y «Convenciones» sin completar, con lo que va en ellas. Test en setup.test.ts; en install.test.ts, el test del modo delegado ahora mira «Modo delegado» en vez de cero avisos, como decidió el usuario. ARCHITECTURE §7 y §14.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "A": 3,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T20:38:00.776Z"
 }

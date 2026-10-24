@@ -50,3 +50,23 @@ kind: standard
   - files: packages/cli/src/commands/doctor.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+`unfilledSections`, en el core, reconoce «Mapa» y «Convenciones» (o «Map» y «Conventions») que, hasta el siguiente encabezado de su nivel o de uno superior, solo tienen comentarios y espacios. `specty doctor` lo dice en AVISOS, con los títulos tal como están y qué va en esas secciones, y sigue en verde. Tras `init`, el aviso sale hasta que la persona las completa; si AGENTS.md no tiene esas secciones, no avisa. ARCHITECTURE lo cuenta en §7 y en lo que comprueba `doctor` (§14).
+
+### Desviaciones
+
+- `packages/cli/test/install.test.ts`, que no estaba en la lista de archivos pero entraba en el alcance como test: el test del modo delegado esperaba cero avisos justo tras `init`, y ahora sale el de las secciones. Al fallar, se paró y el usuario decidió precisar la aserción: comprueba que no salga «Modo delegado», que era su propósito.
+
+### Decisiones
+
+- Los títulos salen de `humanSections`, en todos los idiomas, en vez de repetirse: si cambia el título que escribe `init`, el aviso lo sigue.
+- Cualquier cosa que no sea un comentario cuenta como contenido, también un encabezado; no se juzga qué escribió la persona.
+- Solo se reconocen los encabezados con `#`. Los subrayados con `===` no cuentan, y un `## Mapa` dentro de un bloque de código se toma como encabezado: en un AGENTS.md es raro y solo cambia un aviso.
+
+### Pendientes
+
+- Ninguno.
