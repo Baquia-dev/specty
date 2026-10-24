@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-pulido-bordes-que-se-desvanecen-y-desplazamiento",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-pulido-bordes-que-se-desvanecen-y-desplazamiento",
   "baseCommit": "e4b57dc75844cbbd2eaf0ab7fc3d07d7cb6f07c9",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:65ddc9578c3dcca2ba39bae12da6823138880df4d723e9489d53112ccc3962b5",
@@ -48,12 +48,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "50cb7ed9ed7ba366d7d422d0a797e9544a7a4c02",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:19:42.369Z",
       "doneAt": "2026-10-24T11:21:51.012Z",
-      "summary": "docs/ui.md: los bordes que se desvanecen (Lenguaje visual), el menú del catálogo que centra la página abierta y la Bandeja que mide su barra fija"
+      "summary": "docs/ui.md: los bordes que se desvanecen (Lenguaje visual), el menú del catálogo que centra la página abierta y la Bandeja que mide su barra fija",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T11:23:47.544Z"
 }

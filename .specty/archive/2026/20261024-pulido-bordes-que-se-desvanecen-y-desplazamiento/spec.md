@@ -59,3 +59,22 @@ Tres detalles pendientes de la UI. Las filas que se desplazan de lado (las fases
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Las filas que se desplazan de lado (las fases de la Bandeja, el menú del catálogo en el teléfono y los filtros del delta) se desvanecen en el borde donde queda más contenido, con la directiva `spEdgeFade` y el token `--fade-edge`. El menú del catálogo centra la página abierta cuando se desplaza de lado. La Bandeja mide su barra fija (`--sp-sticky-top`), así la fila elegida con j/k no queda debajo aunque la barra crezca.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El desvanecido usa `mask-image`, no un degradado superpuesto: funciona sobre cualquier fondo y no tapa los clics.
+- Los bordes se recalculan al desplazar, al cambiar el tamaño y al cambiar el contenido (A1), sin vigilar nada más.
+
+### Pendientes
+
+- El peso de los iconos de Lucide, en su propio cambio.
