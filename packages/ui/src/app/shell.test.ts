@@ -67,14 +67,19 @@ describe("Shell", () => {
     const { element, settle } = await open("/");
     const header = element.querySelector("header");
     expect(header?.className).toContain("flex-nowrap");
-    expect(header?.querySelectorAll("fieldset")).toHaveLength(2);
+    // Theme, language and, as the sample source knows it, delegated mode.
+    expect(header?.querySelectorAll("fieldset")).toHaveLength(3);
     // A native popover, opened by its own button and hidden by the browser while closed.
     const trigger = element.querySelector<HTMLButtonElement>("sp-preferences-menu button");
     const panel = element.querySelector<HTMLElement>("sp-preferences-menu [popover]");
     expect(trigger?.getAttribute("aria-label")).toBe("Preferencias");
     expect(trigger?.getAttribute("popovertarget")).toBe(panel?.id);
     expect(panel?.className.split(" ")).not.toContain("flex");
-    expect([...(panel?.querySelectorAll("legend") ?? [])].map(text)).toEqual(["Tema", "Idioma"]);
+    expect([...(panel?.querySelectorAll("legend") ?? [])].map(text)).toEqual([
+      "Tema",
+      "Idioma",
+      "Modo delegado",
+    ]);
     expect([...(panel?.querySelectorAll("label") ?? [])].map(text)).toEqual([
       "Claro",
       "Oscuro",

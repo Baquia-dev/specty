@@ -56,7 +56,7 @@ La persona ve y cambia el modo delegado desde la UI, como pidió: mientras está
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-delegation.ts, packages/ui/src/data/sample-diffs.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts --include src/data/fixtures.test.ts
-- [ ] T2: El chip, la sección y los diálogos
+- [x] T2: El chip, la sección y los diálogos
   - files: packages/ui/src/app/delegation.ts, packages/ui/src/app/delegation.test.ts, packages/ui/src/app/shell.ts, packages/ui/src/app/preferences-menu.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/delegation.test.ts --include src/app/shell.test.ts

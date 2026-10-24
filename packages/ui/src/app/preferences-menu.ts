@@ -11,6 +11,7 @@ import {
 } from "@lucide/angular";
 import { Tooltip } from "../components/tooltip";
 import { Preferences, THEME_CHOICES, type ThemeChoice } from "../theme/preferences";
+import { DelegationSetting } from "./delegation";
 
 const THEMES: Readonly<
   Record<ThemeChoice, { readonly icon: LucideIconInput; readonly es: string; readonly en: string }>
@@ -40,7 +41,7 @@ const LEGEND = "mb-2 p-0 text-xs font-medium tracking-widest text-text-muted upp
  */
 @Component({
   selector: "sp-preferences-menu",
-  imports: [LucideDynamicIcon, Tooltip],
+  imports: [LucideDynamicIcon, Tooltip, DelegationSetting],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "inline-flex" },
   template: `
@@ -75,6 +76,7 @@ const LEGEND = "mb-2 p-0 text-xs font-medium tracking-widest text-text-muted upp
             }
           </div>
         </fieldset>
+        <sp-delegation-setting [legendClass]="legend" />
       </div>
     </div>
   `,

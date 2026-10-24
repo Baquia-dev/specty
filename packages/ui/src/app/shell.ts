@@ -20,6 +20,7 @@ import { Toaster } from "../components/toast";
 import { ChangesStore } from "../data/changes-store";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
+import { DelegationChip } from "./delegation";
 import { PreferencesMenu } from "./preferences-menu";
 
 /** The frame of every screen: header (Inbox, catalog, ⌘K, preferences) and toasts. */
@@ -34,6 +35,7 @@ import { PreferencesMenu } from "./preferences-menu";
     IconButton,
     Kbd,
     Toaster,
+    DelegationChip,
     PreferencesMenu,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -66,6 +68,7 @@ import { PreferencesMenu } from "./preferences-menu";
               <sp-kbd keys="mod+k" />
             </sp-button>
           </span>
+          <sp-delegation-chip />
           <sp-preferences-menu />
         </div>
       </header>

@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "77352f406c1e03f1b0fd9b506035d2f48a35bea5",
+      "attempts": 1,
       "startedAt": "2026-10-24T06:08:25.945Z",
       "doneAt": "2026-10-24T06:11:24.165Z",
-      "summary": "SpectyData gana delegation() y setDelegation(on) con el tipo Delegation; ServerData los resuelve con GET y POST /api/delegation y comparte una sola conexión de eventos entre sus suscriptores; FixtureData guarda el modo delegado de ejemplo (sample-delegation.ts, con el aviso de la CLI) y la búsqueda del diff de ejemplo pasa a sample-diffs.ts"
+      "summary": "SpectyData gana delegation() y setDelegation(on) con el tipo Delegation; ServerData los resuelve con GET y POST /api/delegation y comparte una sola conexión de eventos entre sus suscriptores; FixtureData guarda el modo delegado de ejemplo (sample-delegation.ts, con el aviso de la CLI) y la búsqueda del diff de ejemplo pasa a sample-diffs.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "31d677cfc031214dafe5f24cdda207972e645ab5",
+      "startedAt": "2026-10-24T06:11:24.515Z",
+      "doneAt": "2026-10-24T06:15:12.668Z",
+      "summary": "app/delegation.ts: DelegationState lee el modo delegado y lo recarga con los eventos; el chip «Modo delegado» aparece en la cabecera mientras está activo y abre la confirmación para desactivarlo (desde cuándo y quién); la sección del menú de preferencias y el comando «Modo delegado…» de la paleta abren el aviso de delegate on en el idioma de la persona, con lista y código, y solo «Sí, que decida mi agente» lo activa; un rechazo se explica en un aviso"
     }
   },
   "pending": {
