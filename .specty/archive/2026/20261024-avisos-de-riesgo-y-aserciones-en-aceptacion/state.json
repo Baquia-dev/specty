@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-avisos-de-riesgo-y-aserciones-en-aceptacion",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-avisos-de-riesgo-y-aserciones-en-aceptacion",
   "baseCommit": "0823681dfdd53f80cf573904cd913a4bcf687058",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:57815f3b492f619a2bd1ebbd218ccb65d0fad31f28e817505be4015f548adfe0",
@@ -48,12 +48,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0a95b471bd8fa29a367858c8d0255186bea27850",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:20:26.263Z",
       "doneAt": "2026-10-24T15:22:03.523Z",
-      "summary": "docs/ui.md (Aceptación): la sección «Avisos», de dónde salen, qué muestra cada fila y que son patrones conocidos, no fallos seguros"
+      "summary": "docs/ui.md (Aceptación): la sección «Avisos», de dónde salen, qué muestra cada fila y que son patrones conocidos, no fallos seguros",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:23:12.302Z"
 }

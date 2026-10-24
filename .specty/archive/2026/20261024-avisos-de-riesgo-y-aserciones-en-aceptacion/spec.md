@@ -57,3 +57,22 @@ La pestaña Aceptación muestra los avisos que `specty task done` anota de cada 
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La pestaña Aceptación muestra la sección «Avisos» con lo que `specty task done` anotó de cada tarea: los riesgos según el contenido de lo que añadió (archivo, línea, lo encontrado y su CWE) y las aserciones que quitó de tests que ya existían. Es el mismo bloque AVISOS que ve el agente, con la nota de que son patrones conocidos, no fallos seguros. El cambio en aceptación de ejemplo trae un riesgo y una aserción quitada, así que también se ve en el prototipo.
+
+### Desviaciones
+
+- El test del orden de las secciones de `full-verification.test.ts` cambió: el ejemplo en aceptación ahora tiene avisos, que van antes de la verificación completa.
+
+### Decisiones
+
+- Los textos se calculan en el worker con `riskLabel` del core, en los dos idiomas, y el componente solo los muestra: así la pantalla no necesita el catálogo de reglas.
+- Cuenta la última vez que se completó cada tarea, como en la CLI.
+
+### Pendientes
+
+- Ninguno.

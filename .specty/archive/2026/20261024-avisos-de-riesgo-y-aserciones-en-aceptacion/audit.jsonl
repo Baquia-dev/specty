@@ -10,3 +10,7 @@
 {"ts":"2026-10-24T15:20:26.267Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"0a95b471bd8fa29a367858c8d0255186bea27850"}}
 {"ts":"2026-10-24T15:22:03.522Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":88135}}
 {"ts":"2026-10-24T15:22:03.524Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"docs/ui.md (Aceptación): la sección «Avisos», de dónde salen, qué muestra cada fila y que son patrones conocidos, no fallos seguros"}}
+{"ts":"2026-10-24T15:23:04.258Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":55657}}
+{"ts":"2026-10-24T15:23:04.261Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T15:23:12.303Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:f12ce7cd5917b7016f0aa3963f3851b815b6d84a2641785c0c46792ee8f15e6c","size":"M","warnings":0}}
+{"ts":"2026-10-24T15:24:13.195Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
