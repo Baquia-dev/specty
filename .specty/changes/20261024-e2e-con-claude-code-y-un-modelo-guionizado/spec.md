@@ -43,7 +43,7 @@ Una prueba de punta a punta con el agente real: Claude Code en modo headless hab
 
 ## Tareas
 
-- [ ] T1: El modelo guionizado
+- [x] T1: El modelo guionizado
   - files: packages/cli/test/fake-model.ts, packages/cli/test/agent-e2e.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agent-e2e.test.ts
