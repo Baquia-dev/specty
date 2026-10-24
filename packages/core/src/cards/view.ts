@@ -44,6 +44,17 @@ export interface TaskView {
   readonly removedAssertions?: readonly AssertionLoss[];
   /** Known risky content the task added, from its diff. */
   readonly risks?: readonly RiskFinding[];
+  /** What the agent learned in the task (`task done --finding`), for the tasks and changes after. */
+  readonly findings?: readonly string[];
+}
+
+/** What a change this one follows (`follows`) left for it: its follow-ups and its findings. */
+export interface CarriedView {
+  readonly id: string;
+  /** False when the change is not in this folder, for example open in another worktree. */
+  readonly found: boolean;
+  readonly pending: readonly string[];
+  readonly findings: readonly { readonly task: string; readonly text: string }[];
 }
 
 export interface ScopeRequestView {
@@ -96,6 +107,8 @@ export interface ChangeView {
   readonly adjustment?: string;
   /** The user's literal request the change was created for (`new --request`), while drafting. */
   readonly request?: string;
+  /** While drafting, what each change in `follows` left for this one. */
+  readonly carried?: readonly CarriedView[];
   readonly closingSubmitted: boolean;
   /** `spec.md` no longer matches the approved revision. */
   readonly specChanged: boolean;

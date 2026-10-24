@@ -6,6 +6,13 @@
   "branch": "specty/20261024-hallazgos-que-pasan-de-una-tarea-y-un-cambio-al",
   "baseCommit": "e903c57e13e10c6c189ef3d83c4b487eb5d49587",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7d41ae7350c3e268ad940d80d4b06cec0fadce2ffb8c94433772b746b1b02df8",
+    "at": "2026-10-24T11:35:19.968Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "da5d0ba206e6d1a7a1e37cd6d535bf0481fb5108",
+      "startedAt": "2026-10-24T11:35:20.556Z",
+      "doneAt": "2026-10-24T11:36:50.524Z",
+      "summary": "TaskView.findings y ChangeView.carried; la tarjeta de tarea muestra HALLAZGOS de las hechas, la de cierre los pide llevar a Pendientes, y la del borrador muestra por cambio seguido sus Pendientes y hallazgos, o que no está en esta carpeta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7d41ae7350c3e268ad940d80d4b06cec0fadce2ffb8c94433772b746b1b02df8",
-    "at": "2026-10-24T11:35:19.968Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
