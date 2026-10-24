@@ -59,7 +59,7 @@ La configuración define las capas del proyecto (`checks.layers`: las rutas de c
   - files: packages/core/src/schema/checks.ts, packages/core/src/checks/layers.ts, packages/core/src/index.ts, packages/core/test/checks/layers.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/layers.test.ts
-- [ ] T2: La verificación `layers` con dependency-cruiser
+- [x] T2: La verificación `layers` con dependency-cruiser
   - files: packages/cli/src/check/layers.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-layers.test.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-layers.test.ts
