@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-architecture-el-primer-changes-llega-con-la-foto",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-architecture-el-primer-changes-llega-con-la-foto",
   "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1c762989424571b47e15049c07c99f3a43411639",
+      "attempts": 1,
       "startedAt": "2026-10-24T16:16:39.058Z",
       "doneAt": "2026-10-24T16:16:59.842Z",
-      "summary": "ARCHITECTURE §15: el primer changes de /api/events sale cuando el servidor tiene su primera firma (por qué, y que como mucho llega uno de más), y run cubre la verificación completa y la de una tarea, con las últimas líneas antes de run: null"
+      "summary": "ARCHITECTURE §15: el primer changes de /api/events sale cuando el servidor tiene su primera firma (por qué, y que como mucho llega uno de más), y run cubre la verificación completa y la de una tarea, con las últimas líneas antes de run: null",
+      "scopeExtra": []
     }
   },
   "pending": {

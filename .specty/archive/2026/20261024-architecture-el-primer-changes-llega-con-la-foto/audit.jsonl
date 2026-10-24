@@ -4,3 +4,5 @@
 {"ts":"2026-10-24T16:16:39.059Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"1c762989424571b47e15049c07c99f3a43411639"}}
 {"ts":"2026-10-24T16:16:59.842Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm lint","exit":0,"ms":2805}}
 {"ts":"2026-10-24T16:16:59.844Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"ARCHITECTURE §15: el primer changes de /api/events sale cuando el servidor tiene su primera firma (por qué, y que como mucho llega uno de más), y run cubre la verificación completa y la de una tarea, con las últimas líneas antes de run: null"}}
+{"ts":"2026-10-24T16:18:55.727Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":107017}}
+{"ts":"2026-10-24T16:18:55.875Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

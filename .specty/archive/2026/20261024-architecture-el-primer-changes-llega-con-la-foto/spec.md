@@ -19,3 +19,9 @@ ARCHITECTURE §15 dice que `/api/events` emite `changes` «al conectarse». Desd
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+ARCHITECTURE §15: el primer changes de /api/events sale cuando el servidor tiene su primera firma (por qué, y que como mucho llega uno de más), y run cubre la verificación completa y la de una tarea, con las últimas líneas antes de run: null
