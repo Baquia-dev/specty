@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T17:05:24.532Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-el-primer-cambio-de-un-proyecto-nuevo-es-el-esqu","request":"Realiza todo en el orden sugerido (c: el flujo completo de proyecto nuevo de §14)"}}
+{"ts":"2026-10-24T17:06:13.353Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:6a8d594da3ecb10e8a67b7de46e7f3c240b0497ab28782f7ac991e9996b9011a","size":"L","warnings":1}}
+{"ts":"2026-10-24T17:06:14.283Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:6a8d594da3ecb10e8a67b7de46e7f3c240b0497ab28782f7ac991e9996b9011a","channel":"delegated","delegated":true}}
