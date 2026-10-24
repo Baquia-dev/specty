@@ -6,6 +6,13 @@
   "branch": "specty/20261024-ci-en-tres-sistemas-y-publicacion-con-procedenci",
   "baseCommit": "78aedb8d652d8935ea32dbc0538d23cc4f854856",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48fe3b9cd819e1c19eab0249d8cb6f728e163ef8aa8c81fab6688ba045ec14aa",
+    "at": "2026-10-24T15:52:16.144Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -30,7 +37,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7b5958591545f3b060409d54e16bb13415007c5f",
+      "startedAt": "2026-10-24T15:52:16.758Z",
+      "doneAt": "2026-10-24T15:53:10.405Z",
+      "summary": "ci.yml: pnpm install --frozen-lockfile y pnpm check en Linux, macOS y Windows con Node 22, y en Linux con Node 24; Windows con continue-on-error y sin CRLF; pnpm 11 y caché de pnpm. workflows.test.ts fija su forma."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -40,12 +57,5 @@
     "AC": 3,
     "T": 2,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:48fe3b9cd819e1c19eab0249d8cb6f728e163ef8aa8c81fab6688ba045ec14aa",
-    "at": "2026-10-24T15:52:16.144Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

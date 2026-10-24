@@ -44,7 +44,7 @@ Segunda parte del punto «CI en Linux, macOS y Windows, más knip y `npm publish
 
 ## Tareas
 
-- [ ] T1: El CI en Linux, macOS y Windows
+- [x] T1: El CI en Linux, macOS y Windows
   - files: .github/workflows/ci.yml, packages/cli/test/workflows.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts
