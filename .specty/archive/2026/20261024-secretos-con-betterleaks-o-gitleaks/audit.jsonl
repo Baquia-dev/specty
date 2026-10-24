@@ -7,3 +7,7 @@
 {"ts":"2026-10-24T17:55:30.943Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"4431f757321452edad00696c1b7aa78542d0c340"}}
 {"ts":"2026-10-24T17:57:54.752Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":63840}}
 {"ts":"2026-10-24T17:57:54.754Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"formats §6 documenta secrets (escáneres y orden, copia con sus archivos, --config de Betterleaks, --redact, sin escáner no corre, cómo silenciar un falso positivo); ARCHITECTURE lo añade a la fila de specty check."}}
+{"ts":"2026-10-24T17:58:57.660Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":62464}}
+{"ts":"2026-10-24T17:58:57.662Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T17:59:25.772Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:4000b3790a01adedf2ad8bf161842563c5fbd1fc30088147de2cd8ec83fd84d8","size":"M","warnings":1}}
+{"ts":"2026-10-24T17:59:29.806Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

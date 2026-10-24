@@ -69,3 +69,33 @@ follows:
 
 - R1: Una versión de Betterleaks cambia sus opciones o la forma del informe — el adaptador lee las dos formas conocidas, un informe que no entiende deja la verificación sin correr con ese motivo, nunca en verde, y el test fija las invocaciones.
 - R2: Copiar un repositorio grande con `--all` tarda — solo se copian los archivos de la ejecución, sin dependencias ni generados, y la copia se borra siempre.
+
+## Cierre
+
+### Resumen
+
+`specty check` trae la verificación `secrets`, desde un solo adaptador (`check/secrets.ts`) en el proveedor común. Prueba Betterleaks 2, después la forma de gitleaks con el mismo Betterleaks (la versión 1) y por último gitleaks. El escáner analiza una copia temporal de los archivos de la ejecución, tal como los ve el modo, con los archivos de configuración e ignorados de la raíz; siempre recibe `--redact` y escribe su informe fuera de la copia. Specty lee las dos formas de informe y, con `--changed` y `--staged`, solo muestra las líneas añadidas. Sin escáner, la verificación no corre y `--verbose` dice qué instalar.
+
+### Desviaciones
+
+- `check.test.ts` y `check-markers.test.ts` ponen `secrets: off` en su configuración (y `check.test.ts` recibe ahora solo las líneas de `checks.levels`), para que sus totales no dependan de los escáneres de la máquina; sus expectativas no cambiaron.
+- `task done` marcó `check/secrets.ts` como ruta de seguridad por su nombre y pidió revisarlo con la persona antes de aceptar; en modo delegado lo acepté en el mismo paso y lo revisé después: la copia va a una carpeta de `mkdtemp` (solo para el usuario) que se borra en `finally`, el escáner se lanza sin shell, con argumentos fijos y `--redact`, y nada del informe más que la regla, la ruta y la línea llega a la salida.
+
+### Decisiones
+
+- Una copia temporal en lugar de analizar el repositorio: así `--staged` juzga lo preparado y el escáner no ve lo que la ejecución excluye.
+- `.betterleaks.toml` se pasa con `--config` porque Betterleaks 2 no lo carga solo; el entorno (`BETTERLEAKS_CONFIG`, `BETTERLEAKS_CONFIG_TOML`) manda sobre el archivo.
+- Si las dos formas de Betterleaks fallan, el motivo es el error de la primera, que es la suya.
+- Un informe que no existe se lee como cero hallazgos; uno que no se entiende deja la verificación sin correr.
+- Sin archivos en la ejecución, `secrets` no lanza el escáner.
+
+### Pendientes
+
+- Si el proceso muere a mitad, la copia temporal queda en la carpeta temporal del sistema (con permisos solo para el usuario).
+- `check-secrets.test.ts` usa `sh` y escáneres falsos con `#!/usr/bin/env node`: no corre en Windows, que en el CI aún no bloquea.
+- Un comentario HTML sin cerrar en el cuerpo de una spec se traga el resto del archivo: `propose` solo dice que faltan secciones, sin señalar la línea.
+- `execute` guarda solo los últimos 512 KB de stdout: un diff mayor pierde sus primeros archivos (que entonces cuentan enteros) y un archivo preparado mayor se leería cortado.
+- `isTestFile` no reconoce los tests unitarios de Rust dentro de `src/` ni los `*.cy.ts` de Cypress.
+- Arreglar el flujo de las épicas: su tarjeta en `implementing` y la regla de una sesión por worktree con sus cortes.
+- `packages/cli/src/commands/init.ts` sigue con 307 líneas de código.
+- El corte siguiente del ADR 0012: `specty check --spec <id>`.

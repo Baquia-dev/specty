@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-secretos-con-betterleaks-o-gitleaks",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-secretos-con-betterleaks-o-gitleaks",
   "baseCommit": "0cfa3a682dc5b3ccb6e6fbbfea90d7772ec63fc7",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:891dab316ff924e81f7e7e878ea6e7d94d186051df2827df33b65194978780b5",
@@ -55,12 +55,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4431f757321452edad00696c1b7aa78542d0c340",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:55:30.942Z",
       "doneAt": "2026-10-24T17:57:54.753Z",
-      "summary": "formats §6 documenta secrets (escáneres y orden, copia con sus archivos, --config de Betterleaks, --redact, sin escáner no corre, cómo silenciar un falso positivo); ARCHITECTURE lo añade a la fila de specty check."
+      "summary": "formats §6 documenta secrets (escáneres y orden, copia con sus archivos, --config de Betterleaks, --redact, sin escáner no corre, cómo silenciar un falso positivo); ARCHITECTURE lo añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -72,5 +72,6 @@
     "AC": 7,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T17:59:25.771Z"
 }
