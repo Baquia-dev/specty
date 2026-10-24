@@ -8,7 +8,8 @@ import {
   output,
   signal,
 } from "@angular/core";
-import { LucideDynamicIcon, LucideGitCommitHorizontal } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { LucideGitCommitHorizontal } from "../components/icons";
 import type { CriterionEvidence } from "../data/acceptance";
 import type { TaskProgressView } from "../data/progress";
 import { Preferences } from "../theme/preferences";

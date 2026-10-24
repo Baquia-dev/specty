@@ -58,6 +58,26 @@
           }
         }
       }
+    },
+    {
+      "includes": ["packages/ui/src/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "@lucide/angular": {
+                    "allowImportNames": ["LucideDynamicIcon", "LucideIconData", "LucideIconInput"],
+                    "message": "Each @lucide/angular icon carries its own compiled template: take icons from components/icons.ts (docs/ui.md, Stack)."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   ],
   "css": {

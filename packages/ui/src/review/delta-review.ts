@@ -8,17 +8,17 @@ import {
   output,
   signal,
 } from "@angular/core";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { Button, IconButton } from "../components/button";
+import { LIST, REVEAL, ROW, SectionDivider } from "../components/document";
+import { EdgeFade } from "../components/edge-fade";
 import {
-  LucideDynamicIcon,
   LucideMessageSquarePlus,
   LucideMinus,
   LucidePencil,
   LucidePlus,
   LucideTriangleAlert,
-} from "@lucide/angular";
-import { Button, IconButton } from "../components/button";
-import { LIST, REVEAL, ROW, SectionDivider } from "../components/document";
-import { EdgeFade } from "../components/edge-fade";
+} from "../components/icons";
 import type {
   Bilingual,
   ChangeView,

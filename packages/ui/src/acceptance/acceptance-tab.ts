@@ -12,9 +12,9 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
-import { LucideListChecks } from "@lucide/angular";
 import { LIST, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
+import { LucideListChecks } from "../components/icons";
 import { Select } from "../components/select";
 import { evidenceOf, summaryOf } from "../data/acceptance";
 import { Decisions } from "../data/decisions";

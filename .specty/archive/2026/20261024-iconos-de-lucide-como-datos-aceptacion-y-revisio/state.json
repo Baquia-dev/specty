@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
+  "baseCommit": "69bfe9e590b99257dde6e00d852a3492b3eb30c6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1480f7dbcdddc0af7eaedc65557aca797890ac3aeea22d70e804e359456da723",
+    "at": "2026-10-24T14:48:42.192Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ab974922d5fdf00c0c9e6614ce2c34d62b01eed79bb43a83500a73973e77bacd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6f4bc6bda3cf36c410f7b6ebbbf0a029e85c8c1f",
+      "attempts": 1,
+      "startedAt": "2026-10-24T14:48:43.226Z",
+      "doneAt": "2026-10-24T14:50:03.207Z",
+      "summary": "acceptance-actions, acceptance-tab, changes-view, closing-view, criterion-row, full-verification y trace-matrix toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon y el tipo LucideIconInput",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a1f305e2f897250ba667d9247bc0f274059bfdb2",
+      "attempts": 1,
+      "startedAt": "2026-10-24T14:50:03.537Z",
+      "doneAt": "2026-10-24T14:52:23.492Z",
+      "summary": "comments, assumption-row, delta-review, review-actions, spec-review y spec-sections toman sus iconos de components/icons.ts; biome.json prohíbe en packages/ui/src importar de @lucide/angular algo distinto de LucideDynamicIcon, LucideIconData y LucideIconInput, con un error que dice de dónde tomar los iconos",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5678f3c2923103cc403798fc483e6d2a6629e124",
+      "attempts": 1,
+      "startedAt": "2026-10-24T14:52:24.162Z",
+      "doneAt": "2026-10-24T14:54:29.628Z",
+      "summary": "docs/ui.md (Stack, Iconos): la migración terminada, la regla de Biome y lo medido (Lucide 215 → 24 KB en el chunk inicial, lo inicial 668 → 520 KB sin comprimir; comprimido apenas cambia)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 3,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T14:55:39.432Z"
+}

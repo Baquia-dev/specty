@@ -15,10 +15,11 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
-import { LucideDynamicIcon, LucideMessageSquare, LucideTriangleAlert } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Collapsible } from "../components/collapsible";
 import { LIST } from "../components/document";
+import { LucideMessageSquare, LucideTriangleAlert } from "../components/icons";
 import { Decisions } from "../data/decisions";
 import type { ChangeView, CommentAnchor, ReviewSection } from "../data/records";
 import { Preferences } from "../theme/preferences";

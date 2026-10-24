@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
-import { LucideDynamicIcon, LucidePencilLine } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { SectionDivider } from "../components/document";
+import { LucidePencilLine } from "../components/icons";
 import type { ClosingParts } from "../data/closing";
 import type { Bilingual, ChangeView } from "../data/records";
 import { Markdown } from "../review/markdown";

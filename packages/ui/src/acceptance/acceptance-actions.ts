@@ -8,8 +8,9 @@ import {
   input,
   signal,
 } from "@angular/core";
-import { LucideDynamicIcon, LucideTriangleAlert } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
+import { LucideTriangleAlert } from "../components/icons";
 import { Decisions } from "../data/decisions";
 import type { RunRecord } from "../data/progress";
 import type { ChangeView } from "../data/records";
