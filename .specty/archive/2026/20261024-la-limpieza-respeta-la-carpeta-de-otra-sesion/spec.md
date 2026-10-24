@@ -21,3 +21,9 @@ Antes de crear su worktree, `specty new` (y `specty prune`) borra las carpetas d
   - files: packages/cli/src/store/local.ts, packages/cli/src/flow/prune.ts, packages/cli/test/prune.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: fix
+
+## Cierre
+
+### Resumen
+
+removeFinished (new y prune) deja la carpeta de un cambio terminado si una sesión de agente está atada a ella según el guard (readBindings), y prune lo dice; un registro de hace más de un día no cuenta. ARCHITECTURE §9.

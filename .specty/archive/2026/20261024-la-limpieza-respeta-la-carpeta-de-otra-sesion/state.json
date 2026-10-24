@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-la-limpieza-respeta-la-carpeta-de-otra-sesion",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-la-limpieza-respeta-la-carpeta-de-otra-sesion",
   "baseCommit": "37e3e214d1ac865a69cd1fdc8723f4640a30687e",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8b5dcd6102098ec6062c4b3c4f830870a7eba1ba",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:41:42.651Z",
       "doneAt": "2026-10-24T21:45:21.305Z",
-      "summary": "removeFinished (new y prune) deja la carpeta de un cambio terminado si una sesión de agente está atada a ella según el guard (readBindings), y prune lo dice; un registro de hace más de un día no cuenta. ARCHITECTURE §9."
+      "summary": "removeFinished (new y prune) deja la carpeta de un cambio terminado si una sesión de agente está atada a ella según el guard (readBindings), y prune lo dice; un registro de hace más de un día no cuenta. ARCHITECTURE §9.",
+      "scopeExtra": []
     }
   },
   "pending": {

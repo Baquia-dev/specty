@@ -4,3 +4,4 @@
 {"ts":"2026-10-24T21:41:42.652Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"8b5dcd6102098ec6062c4b3c4f830870a7eba1ba"}}
 {"ts":"2026-10-24T21:45:21.060Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":96556,"tree":"sha256:fa1693583e7ea37d879f3c4a1ef9d0d4e30c39b6c367c8620a666376cb44b062"}}
 {"ts":"2026-10-24T21:45:21.311Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"removeFinished (new y prune) deja la carpeta de un cambio terminado si una sesión de agente está atada a ella según el guard (readBindings), y prune lo dice; un registro de hace más de un día no cuenta. ARCHITECTURE §9."}}
+{"ts":"2026-10-24T21:45:32.307Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}
