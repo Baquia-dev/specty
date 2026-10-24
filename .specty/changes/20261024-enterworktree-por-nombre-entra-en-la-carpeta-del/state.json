@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261024-enterworktree-por-nombre-entra-en-la-carpeta-del",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-enterworktree-por-nombre-entra-en-la-carpeta-del",
+  "baseCommit": "2d7297ea1653e1d735ec5bff6759097529685b13",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cc29ea1f0e6f8c3c33fc262cb9273923248fd03a9874b1f588efc8905ec45a50",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:44bd5a566ec3992377782f0a602fb7cda23d5e3b2ccf4af927e6f96ef5a68c33",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:a423ba0e216b9b865bc19302ecf53b93fd50d7119306c13e1b4dc173a95c89a5",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cccb09ab0a7cf25879f7cfdccebb546ffa91f887584fe9139a0c87dadf255101",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0bbee8855cf24a984ac43d2c5ce2f82510f9bdf427b0bf28c97b032233b0fb51",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:10b6e90639bfc467ed05da6e45cd592208f6d23a90872197fc5eaf549ad5dcff",
+    "at": "2026-10-24T10:25:46.235Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
