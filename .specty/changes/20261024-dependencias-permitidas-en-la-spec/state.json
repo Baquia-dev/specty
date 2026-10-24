@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261024-dependencias-permitidas-en-la-spec",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-dependencias-permitidas-en-la-spec",
+  "baseCommit": "23f429472307f19f980312d9ceeb65db3acca016",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cdd1e948e500747626fba67ea7145d5641f9a55e3d605b334c7ba9da0726d09f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2088fc894677a698f451de174f2f1f3dd4cb099b424c21cb8326a7bd63b5041d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:2dc1b1afcd7029ca2aa68e2f3a4220d7aa0730f5556a84032cc46c725f537b3a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d63b0d3a2ba1478359d459d14a1f8e7ff587bfddb78f8157dc0ca9a6e64ca5ba",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5581bda16d772fddfc145ef64e7922908a9eca86899f994d81a133d1981e8079",
+    "at": "2026-10-24T18:17:54.816Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
