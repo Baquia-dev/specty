@@ -68,7 +68,7 @@ Segunda parte de «Solo lectura en la revisión». Cuando la UI no deja decidir,
   - files: packages/ui/src/progress/scope-request.ts, packages/ui/src/progress/progress-tab.test.ts, packages/ui/src/app/delegation.ts, packages/ui/src/app/delegation.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress --include src/app && pnpm sources
-- [ ] T5: Documentar la aceptación, el alcance y el modo delegado en solo lectura
+- [x] T5: Documentar la aceptación, el alcance y el modo delegado en solo lectura
   - files: docs/ui.md
   - ac: AC5
   - verify: pnpm check

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-solo-lectura-en-aceptacion-alcance-y-modo-delega",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-solo-lectura-en-aceptacion-alcance-y-modo-delega",
   "baseCommit": "2b3fb269b541dd6522c7acd891af403f2de63aa7",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fa8871e18e4eeba6869516eed3f022502703a5d0",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:35:28.705Z",
       "doneAt": "2026-10-24T10:37:41.059Z",
-      "summary": "ScopeRequest desactiva «Aprobar» y «Rechazar…» con el motivo de Decisions; en el modo delegado, «Activar…/Desactivar…» del menú y la confirmación de los diálogos de activar y desactivar (que se abren desde el menú, el chip o la paleta) se desactivan con el motivo, y el diálogo sigue mostrando desde cuándo y quién lo activó"
+      "summary": "ScopeRequest desactiva «Aprobar» y «Rechazar…» con el motivo de Decisions; en el modo delegado, «Activar…/Desactivar…» del menú y la confirmación de los diálogos de activar y desactivar (que se abren desde el menú, el chip o la paleta) se desactivan con el motivo, y el diálogo sigue mostrando desde cuándo y quién lo activó",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f94220ac5c305b301c0f2b06c472f01d929fd314",
+      "startedAt": "2026-10-24T10:37:41.389Z",
+      "doneAt": "2026-10-24T10:40:11.493Z",
+      "summary": "docs/ui.md cuenta cómo se ven en solo lectura la solicitud de alcance (Progreso), la aceptación y la verificación completa (Aceptación), «Confirmar y archivar» (Cierre) y el modo delegado (Armazón)"
     }
   },
   "pending": {
