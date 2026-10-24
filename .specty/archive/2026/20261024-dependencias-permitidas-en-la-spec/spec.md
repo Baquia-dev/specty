@@ -77,3 +77,30 @@ Una spec puede nombrar en su frontmatter las dependencias que el cambio está au
 ## Riesgos
 
 - R1: Un manifiesto con una forma poco común (dependencias por `git:` o `path:` en `pubspec.yaml`, `workspace:` en `package.json`) — solo importan los nombres, que son las claves, sea cual sea su valor.
+
+## Cierre
+
+### Resumen
+
+Las specs pueden nombrar en su frontmatter las dependencias que el cambio puede añadir: `allowedDependencies`, con nombres o globs. La lista entra en el hash, así que se aprueba con la spec. `specty check --spec` trae la verificación `dependencies`: compara cada `package.json` y `pubspec.yaml` del diff con su punto de partida y falla con cada nombre nuevo que la lista no permite, con su línea. Los paquetes del SDK de Flutter y los cambios de versión no cuentan. Además, la guía de redacción de las specs estándar y rápidas le pide al agente que nombre ahí las dependencias que añadirá.
+
+### Desviaciones
+
+- El lector se exporta como `readsDependencies` y no como `isManifest`, porque el core ya tenía un `isManifest` en `scope/lockfiles.ts` (cualquier manifiesto, para los lockfiles y el tamaño).
+- La línea de la guía de redacción (AC5) se comprueba desde el CLI, en `check-plan.test.ts`, y no en un test del core.
+
+### Decisiones
+
+- Un manifiesto que no se puede leer, antes o después, no da dependencias: lo señalan sus propias herramientas, y así un JSON roto en el punto de partida no convierte todas las dependencias en nuevas.
+- La línea de cada dependencia se busca después de la clave de su sección, para no confundirla con un script del mismo nombre.
+- `allowedDependencies` usa la misma sintaxis de globs que las rutas (`matchesAny`).
+
+### Pendientes
+
+- Lectores para otros ecosistemas (`requirements.txt`, `go.mod`, `Cargo.toml`, `Gemfile`, `composer.json`, `pom.xml`, `*.csproj`), con la guía para añadirlos en la documentación (corte 9).
+- El corte siguiente del ADR 0012: el proveedor de TypeScript, Angular y NestJS.
+- Un comentario HTML sin cerrar en el cuerpo de una spec se traga el resto del archivo: `propose` solo dice que faltan secciones, sin señalar la línea.
+- `execute` guarda solo los últimos 512 KB de stdout: un diff mayor pierde sus primeros archivos (que entonces cuentan enteros) y un archivo preparado mayor se leería cortado.
+- `isTestFile` no reconoce los tests unitarios de Rust dentro de `src/` ni los `*.cy.ts` de Cypress.
+- Arreglar el flujo de las épicas: su tarjeta en `implementing` y la regla de una sesión por worktree con sus cortes.
+- `packages/cli/src/commands/init.ts` sigue con 307 líneas de código.

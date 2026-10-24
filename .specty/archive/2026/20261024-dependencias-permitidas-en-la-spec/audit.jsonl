@@ -13,3 +13,7 @@
 {"ts":"2026-10-24T20:39:26.717Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"7fef64b1c949ce984aed664305fd04396c8a94d5"}}
 {"ts":"2026-10-24T20:40:48.669Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":65829}}
 {"ts":"2026-10-24T20:40:48.671Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"formats §2 documenta allowedDependencies en el frontmatter y §6 la verificación dependencies (manifiestos, SDK, versiones, manifiestos nuevos o rotos, cómo añadir un lector); ARCHITECTURE la añade a la fila de specty check."}}
+{"ts":"2026-10-24T20:42:00.140Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":63418}}
+{"ts":"2026-10-24T20:42:00.142Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T20:42:14.872Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:8fe2361d4bdf9a2c1a88ea66327c4d26893fb8416c0e95faeeac3a25ce03c057","size":"L","warnings":1}}
+{"ts":"2026-10-24T20:43:22.126Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

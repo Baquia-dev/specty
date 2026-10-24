@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-dependencias-permitidas-en-la-spec",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-dependencias-permitidas-en-la-spec",
   "baseCommit": "23f429472307f19f980312d9ceeb65db3acca016",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5581bda16d772fddfc145ef64e7922908a9eca86899f994d81a133d1981e8079",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7fef64b1c949ce984aed664305fd04396c8a94d5",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:39:26.716Z",
       "doneAt": "2026-10-24T20:40:48.670Z",
-      "summary": "formats §2 documenta allowedDependencies en el frontmatter y §6 la verificación dependencies (manifiestos, SDK, versiones, manifiestos nuevos o rotos, cómo añadir un lector); ARCHITECTURE la añade a la fila de specty check."
+      "summary": "formats §2 documenta allowedDependencies en el frontmatter y §6 la verificación dependencies (manifiestos, SDK, versiones, manifiestos nuevos o rotos, cómo añadir un lector); ARCHITECTURE la añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,5 +88,6 @@
     "AC": 5,
     "T": 4,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T20:42:14.871Z"
 }
