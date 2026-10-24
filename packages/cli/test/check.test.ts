@@ -29,7 +29,7 @@ describe("specty check", () => {
         "FALLA max-lines",
         "  src/big.ts 520 líneas de código (máximo 500)",
         "  src/long.ts 320 líneas de código (aviso a partir de 300)",
-        "OK 0/1 · FALLA: max-lines",
+        "OK 3/4 · FALLA: max-lines",
       ].join("\n"),
     );
   });
@@ -41,11 +41,11 @@ describe("specty check", () => {
     const staged = await cli(root, ["check", "--staged"]);
     expect(staged.code).toBe(0);
     expect(staged.out).toBe(
-      "AVISO max-lines\n  src/long.ts 320 líneas de código (aviso a partir de 300)\nOK 0/1 · AVISO: max-lines",
+      "AVISO max-lines\n  src/long.ts 320 líneas de código (aviso a partir de 300)\nOK 3/4 · AVISO: max-lines",
     );
     git(root, "add", "-A");
     git(root, "commit", "-q", "-m", "x", "--no-verify");
-    expect((await cli(root, ["check"])).out).toBe("OK 1/1");
+    expect((await cli(root, ["check"])).out).toBe("OK 4/4");
     const all = await cli(root, ["check", "--all"]);
     expect(all.code).toBe(1);
     expect(all.out).toContain("  src/big.ts 520 líneas de código (máximo 500)");
@@ -70,18 +70,25 @@ describe("specty check", () => {
     const json = JSON.parse((await cli(root, ["--json", "check"])).out);
     expect(json).toMatchObject({
       mode: "changed",
-      checks: [{ id: "max-lines", level: "error", status: "failed" }],
-      summary: { passed: 0, total: 1, failed: ["max-lines"] },
+      checks: [
+        { id: "max-lines", level: "error", status: "failed" },
+        { id: "focused-tests", status: "passed" },
+        { id: "skipped-tests", status: "passed" },
+        { id: "todo", status: "passed" },
+      ],
+      summary: { passed: 3, total: 4, failed: ["max-lines"] },
       exitCode: 1,
     });
     await writeFiles(root, { "src/big.ts": source(5) });
-    expect((await cli(root, ["check", "--verbose"])).out).toBe("OK max-lines\nOK 1/1");
+    expect((await cli(root, ["check", "--verbose"])).out).toBe(
+      "OK max-lines\nOK focused-tests\nOK skipped-tests\nOK todo\nOK 4/4",
+    );
   });
 
   it("follows the level of each check", async () => {
     const off = await repo("checks:\n  levels:\n    max-lines: off\n");
     await writeFiles(off, { "src/big.ts": source(520) });
-    expect(await cli(off, ["check"])).toMatchObject({ code: 0, out: "OK 0/0" });
+    expect(await cli(off, ["check"])).toMatchObject({ code: 0, out: "OK 3/3" });
     const warn = await repo("checks:\n  levels:\n    max-lines: warn\n");
     await writeFiles(warn, { "src/big.ts": source(520) });
     const run = await cli(warn, ["check"]);

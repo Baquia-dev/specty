@@ -61,12 +61,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0932dba1d0025fbc01398cefaa997ef9b8a6a552",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:36:34.163Z",
       "doneAt": "2026-10-24T17:38:26.113Z",
-      "summary": "checkContext en check/files.ts da a cada verificación read (lo preparado con --staged, memorizado) y added (líneas añadidas según git diff -U0 con forma fija); max-lines lee por el contexto."
+      "summary": "checkContext en check/files.ts da a cada verificación read (lo preparado con --staged, memorizado) y added (líneas añadidas según git diff -U0 con forma fija); max-lines lee por el contexto.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/check/max-lines.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "0c1399a6430c65643a35344714b2973dbbfec0c1",
+      "startedAt": "2026-10-24T17:38:26.406Z",
+      "doneAt": "2026-10-24T17:41:06.201Z",
+      "summary": "check/markers.ts define focused-tests, skipped-tests y todo sobre las líneas añadidas; check/common.ts reúne el proveedor común. specty check --all sobre este repo: sin hallazgos de las tres."
     }
   },
   "pending": {

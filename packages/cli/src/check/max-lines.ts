@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { type Finding, fileSize, translator } from "@baquia-dev/specty-core";
-import type { CheckDefinition, Provider } from "./provider";
+import type { CheckDefinition } from "./provider";
 
 /** Lines of code of each file, by the `lines` rule `task done` also applies, in any language. */
-const maxLines: CheckDefinition = {
+export const maxLines: CheckDefinition = {
   id: "max-lines",
   async run({ session, files, read }) {
     const t = translator(session.lang);
@@ -34,11 +34,4 @@ const maxLines: CheckDefinition = {
     );
     return { findings: findings.flat() };
   },
-};
-
-/** The checks that apply to every stack. */
-export const commonProvider: Provider = {
-  id: "common",
-  applies: () => true,
-  checks: [maxLines],
 };

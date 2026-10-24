@@ -7,8 +7,8 @@ import {
   reportJson,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
+import { commonProvider } from "../check/common";
 import { checkContext } from "../check/files";
-import { commonProvider } from "../check/max-lines";
 import { type Provider, type ReportOutput, runChecks } from "../check/provider";
 import { detectStacks } from "../detect/stack";
 import type { Session } from "../session";
