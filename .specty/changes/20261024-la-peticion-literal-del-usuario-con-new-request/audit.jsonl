@@ -7,3 +7,6 @@
 {"ts":"2026-10-24T10:26:40.620Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"655ea0d311a51f84751e0017483748e81f946352"}}
 {"ts":"2026-10-24T10:28:05.958Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/request.test.ts","exit":0,"ms":1901}}
 {"ts":"2026-10-24T10:28:05.960Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Opción --request en new; NewOptions.request, una petición vacía se rechaza antes de crear nada y la no vacía va a change.created (data.request), también con --worktree; changeView la lee de la auditoría en borrador"}}
+{"ts":"2026-10-24T10:28:06.329Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"969ac3eb58bd55ed3b615195442af89aaeb0e3af"}}
+{"ts":"2026-10-24T10:29:21.565Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":58306}}
+{"ts":"2026-10-24T10:29:21.593Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats.md §4: request en change.created; ARCHITECTURE: --request en la tabla de comandos y para qué sirve"}}

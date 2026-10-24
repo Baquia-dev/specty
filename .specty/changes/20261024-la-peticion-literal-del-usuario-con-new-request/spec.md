@@ -58,7 +58,7 @@ kind: standard
   - files: packages/cli/src/program.ts, packages/cli/src/commands/new.ts, packages/cli/src/flow/views.ts, packages/cli/test/request.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/request.test.ts
-- [ ] T3: Documentar la petición literal
+- [x] T3: Documentar la petición literal
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm check

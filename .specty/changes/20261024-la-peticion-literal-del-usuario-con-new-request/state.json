@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-la-peticion-literal-del-usuario-con-new-request",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-la-peticion-literal-del-usuario-con-new-request",
   "baseCommit": "2d7297ea1653e1d735ec5bff6759097529685b13",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "655ea0d311a51f84751e0017483748e81f946352",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:26:40.620Z",
       "doneAt": "2026-10-24T10:28:05.959Z",
-      "summary": "Opción --request en new; NewOptions.request, una petición vacía se rechaza antes de crear nada y la no vacía va a change.created (data.request), también con --worktree; changeView la lee de la auditoría en borrador"
+      "summary": "Opción --request en new; NewOptions.request, una petición vacía se rechaza antes de crear nada y la no vacía va a change.created (data.request), también con --worktree; changeView la lee de la auditoría en borrador",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "969ac3eb58bd55ed3b615195442af89aaeb0e3af",
+      "startedAt": "2026-10-24T10:28:06.328Z",
+      "doneAt": "2026-10-24T10:29:21.576Z",
+      "summary": "formats.md §4: request en change.created; ARCHITECTURE: --request en la tabla de comandos y para qué sirve"
     }
   },
   "pending": {
