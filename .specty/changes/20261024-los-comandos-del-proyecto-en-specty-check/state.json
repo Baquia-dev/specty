@@ -43,12 +43,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dbf4026ce1c5b07710a753d450230ec2ab3b5781",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:45:29.855Z",
       "doneAt": "2026-10-24T20:47:06.162Z",
-      "summary": "core/checks/output.ts: findingsInOutput saca hallazgos ruta:línea de la salida de cualquier herramienta (tsc, ESLint, Biome, Go, Rust, pytest, Vitest, analizador de Dart), sin colores ni repetidos, como mucho 100; sin ubicaciones, las últimas líneas."
+      "summary": "core/checks/output.ts: findingsInOutput saca hallazgos ruta:línea de la salida de cualquier herramienta (tsc, ESLint, Biome, Go, Rust, pytest, Vitest, analizador de Dart), sin colores ni repetidos, como mucho 100; sin ubicaciones, las últimas líneas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/detect/project.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "fd211f327b2aa6a613cea21f5615066d228783ef",
+      "startedAt": "2026-10-24T20:47:06.414Z",
+      "doneAt": "2026-10-24T20:50:27.342Z",
+      "summary": "check/commands.ts: proveedor del proyecto con format, lint, typecheck y tests desde commandsFor (formato solo en su forma de comprobación) o checks.commands; un fallo da su código o el tiempo límite y los hallazgos de su salida, los del diff primero."
     }
   },
   "pending": {
@@ -59,6 +70,7 @@
     "A": 4,
     "AC": 6,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 1
   }
 }

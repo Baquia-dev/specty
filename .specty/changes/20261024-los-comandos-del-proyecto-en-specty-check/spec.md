@@ -59,7 +59,7 @@ follows:
   - files: packages/core/src/checks/output.ts, packages/core/src/index.ts, packages/core/test/checks/output.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/output.test.ts
-- [ ] T2: Las verificaciones de los comandos del proyecto
+- [x] T2: Las verificaciones de los comandos del proyecto
   - files: packages/core/src/schema/checks.ts, packages/core/src/index.ts, packages/cli/src/check/commands.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-commands.test.ts
   - ac: AC1, AC2, AC3, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-commands.test.ts test/check.test.ts

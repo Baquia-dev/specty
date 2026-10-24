@@ -63,23 +63,29 @@ export async function detectProject(root: string, name: string): Promise<Detecti
   };
 }
 
+/** How the stack's package manager runs one of its scripts: `npm run lint`, `pnpm lint`… */
+export function scriptCommand(stack: Stack, script: string): string {
+  const { tool } = stack;
+  if (tool === "npm") return script === "test" ? "npm test" : `npm run ${script}`;
+  return tool === "bun" ? `bun run ${script}` : `${tool} ${script}`;
+}
+
+/** What runs a Python tool inside the project's environment: `uv run `, or nothing. */
+export function pythonPrefix(stack: Stack): string {
+  const { tool } = stack;
+  if (tool === "uv" || tool === "poetry" || tool === "pdm") return `${tool} run `;
+  return tool === "pipenv" ? "pipenv run " : "";
+}
+
 export function commandsFor(stack: Stack): Commands {
   const { tool, scripts, frameworks } = stack;
   switch (stack.language) {
     case "typescript":
     case "javascript": {
-      const runner = (script: string) =>
-        tool === "npm"
-          ? script === "test"
-            ? "npm test"
-            : `npm run ${script}`
-          : tool === "bun"
-            ? `bun run ${script}`
-            : `${tool} ${script}`;
       const pick = (...names: string[]) => names.find((script) => scripts[script] !== undefined);
       const entry = (key: keyof Commands, ...names: string[]) => {
         const script = pick(...names);
-        return script === undefined ? {} : { [key]: runner(script) };
+        return script === undefined ? {} : { [key]: scriptCommand(stack, script) };
       };
       return {
         ...entry("test", "test"),
@@ -94,12 +100,7 @@ export function commandsFor(stack: Stack): Commands {
         ? { test: "flutter test", lint: "flutter analyze" }
         : { test: "dart test", lint: "dart analyze" };
     case "python": {
-      const prefix =
-        tool === "uv" || tool === "poetry" || tool === "pdm"
-          ? `${tool} run `
-          : tool === "pipenv"
-            ? "pipenv run "
-            : "";
+      const prefix = pythonPrefix(stack);
       const test = frameworks.includes("django")
         ? `${prefix}python manage.py test`
         : `${prefix}pytest`;

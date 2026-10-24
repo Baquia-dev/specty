@@ -161,6 +161,8 @@ export { basename, dirname, moduleOf, normalizePath, type PathProblem, pathProbl
 export {
   type CheckLevel,
   type ChecksConfig,
+  COMMAND_CHECKS,
+  type CommandCheck,
   checkLevel,
   DEFAULT_CHECKS,
   type TodoConfig,
