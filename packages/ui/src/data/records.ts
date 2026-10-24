@@ -31,6 +31,14 @@ export interface ChangeRecord {
   readonly audit?: readonly AuditRecord[];
   /** `verify.full` of `config.yaml` (formats.md §6): the project's full verification, if any. */
   readonly verifyFull?: string;
+  /** The worktree whose files these are, as the local server says it. */
+  readonly folder?: string;
+}
+
+/** A governed file other open changes also list: their merges may collide. */
+export interface SharedFile {
+  readonly path: string;
+  readonly changes: readonly { readonly id: string; readonly title: string }[];
 }
 
 /** Where a comment points: an item (`A1`) or a quote inside a section. */
@@ -207,6 +215,10 @@ export interface ChangeView {
     readonly delegated?: boolean;
   };
   readonly branch?: string;
+  /** The folder (worktree) the change lives in, when the source says it. */
+  readonly folder?: string;
+  /** Governed files that other open changes also list. */
+  readonly shared?: readonly SharedFile[];
   readonly phaseSince: string;
   readonly goal: string;
   readonly size?: { readonly level: SizeLevel; readonly reasons: readonly Bilingual[] };

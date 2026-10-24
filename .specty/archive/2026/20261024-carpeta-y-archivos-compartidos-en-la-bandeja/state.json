@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261024-carpeta-y-archivos-compartidos-en-la-bandeja",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-carpeta-y-archivos-compartidos-en-la-bandeja",
+  "baseCommit": "19563c089fd91e18f75719fac38d9e59d4e0eaa0",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5c1d30dda48b229bf94cfe034d3fd9b6d98a712051b236ed843cd46511e44bb9",
+    "at": "2026-10-24T10:55:52.567Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b4c8d2f45b4a48e01a52bb646e8663e950948668829eb9f4174fbf8acabdddc2",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:d050419a151e9cbef8b2cfd801462a5b906b4949e994f5590cb0d88a0235fc7c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9bf13ed24cee7708d7dd1874696e84a6c41424ec",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:55:53.078Z",
+      "doneAt": "2026-10-24T10:57:50.525Z",
+      "summary": "ChangeRecord.folder recoge la carpeta que ya envía el servidor y ChangeView.folder la pasa a la vista; data/shared.ts calcula, como cli/flow/shared.ts, los archivos gobernados (DEFAULT_CONFIG) que listan a la vez varios cambios abiertos en Archivos o en ampliaciones aprobadas, con globs en los dos sentidos y sin los cambios terminados o cancelados, y deriveViews lo añade como ChangeView.shared con el id y el título de los otros cambios",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b7ca5f9b7bd7718541712c574b65a31b863eda76",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:57:50.903Z",
+      "doneAt": "2026-10-24T11:00:25.646Z",
+      "summary": "InboxRow muestra la carpeta del cambio acortada a sus dos últimos tramos (monoespaciada, atenuada, con la ruta completa en el title) y, si comparte archivos con otros cambios abiertos, un aviso en tono de atención: «Comparte <rutas> con «<títulos>»»",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "a3e85d207ffea2973a33ee2cec2733717e2a3ec5",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:00:25.981Z",
+      "doneAt": "2026-10-24T11:06:01.646Z",
+      "summary": "docs/ui.md: en la Bandeja, la carpeta de cada cambio (acortada, con la ruta completa en el title, solo con el servidor local) y el aviso de archivos compartidos, con la misma regla que specty approve y la configuración por defecto de qué es gobernado",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T11:07:42.475Z"
+}
