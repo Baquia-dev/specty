@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
+  "baseCommit": "69bfe9e590b99257dde6e00d852a3492b3eb30c6",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ab974922d5fdf00c0c9e6614ce2c34d62b01eed79bb43a83500a73973e77bacd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1480f7dbcdddc0af7eaedc65557aca797890ac3aeea22d70e804e359456da723",
+    "at": "2026-10-24T14:48:42.192Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
