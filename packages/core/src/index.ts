@@ -137,6 +137,7 @@ export {
   parseChangeState,
   type StateResult,
 } from "./schema/state";
+export { type AssertionLoss, removedAssertions } from "./scope/assertions";
 export { isGoverned } from "./scope/governed";
 export { isLockfileFor, isManifest } from "./scope/lockfiles";
 export {

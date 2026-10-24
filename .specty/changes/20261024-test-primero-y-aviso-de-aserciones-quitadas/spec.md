@@ -58,7 +58,7 @@ La tarjeta de cada tarea de código pide escribir primero el test y verlo fallar
 
 ## Tareas
 
-- [ ] T1: Aserciones quitadas en un diff
+- [x] T1: Aserciones quitadas en un diff
   - files: packages/core/src/scope/assertions.ts, packages/core/test/scope/assertions.test.ts, packages/core/src/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope

@@ -6,6 +6,13 @@
   "branch": "specty/20261024-test-primero-y-aviso-de-aserciones-quitadas",
   "baseCommit": "3055301ea2e358b17a097b2f71b3281524250e76",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:03f7d8c12ef2777774962f7b6449bd83a533be2979c65c2b59397d39cf5b1760",
+    "at": "2026-10-24T10:35:00.929Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7fee82b7e61e6e34c0e5597bb54b93bb663a4fb8",
+      "startedAt": "2026-10-24T10:35:01.591Z",
+      "doneAt": "2026-10-24T10:36:15.538Z",
+      "summary": "removedAssertions(diff) en core/scope/assertions.ts: por archivo, aserciones quitadas menos añadidas en un diff unificado; los comentarios no cuentan, las cabeceras solo antes del primer hunk, borrados y renombrados con su ruta final"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 5,
     "T": 4,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:03f7d8c12ef2777774962f7b6449bd83a533be2979c65c2b59397d39cf5b1760",
-    "at": "2026-10-24T10:35:00.929Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
