@@ -6,6 +6,7 @@ import { Button } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Field } from "../components/field";
 import { Toasts } from "../components/toast";
+import { Decisions } from "../data/decisions";
 import type { TaskScopeRequest } from "../data/progress";
 import { SpectyData } from "../data/records";
 import { reportFailure } from "../review/spec-sections";
@@ -88,8 +89,8 @@ export class RejectScope {
         }}
       </span>
       <div class="flex flex-wrap gap-2">
-        <sp-button size="sm" variant="primary" (pressed)="approve()">{{ t()('Aprobar', 'Approve') }}</sp-button>
-        <sp-button size="sm" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
+        <sp-button size="sm" variant="primary" [disabledReason]="decisions.blocked()" (pressed)="approve()">{{ t()('Aprobar', 'Approve') }}</sp-button>
+        <sp-button size="sm" [disabledReason]="decisions.blocked()" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
       </div>
     </div>
   `,
@@ -104,6 +105,7 @@ export class ScopeRequest {
   private readonly toasts = inject(Toasts);
   private readonly preferences = inject(Preferences);
   private readonly failed = reportFailure(this.toasts, this.preferences);
+  protected readonly decisions = inject(Decisions);
   protected readonly t = this.preferences.t;
   protected readonly icon = LucideFilePlus;
 

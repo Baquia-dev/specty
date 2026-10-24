@@ -20,6 +20,7 @@ import {
 import { Button } from "../components/button";
 import { SectionDivider } from "../components/document";
 import { Toasts } from "../components/toast";
+import { Decisions } from "../data/decisions";
 import {
   type FullVerificationView,
   formatDuration,
@@ -68,7 +69,7 @@ const TICK_MS = 30_000;
               <span class="text-text-muted">{{ t()('Corre todos los tests del proyecto, no solo los de cada tarea.', "It runs every test in the project, not only each task's.") }}</span>&ngsp;
             }
             @if (change().phase === 'acceptance') {
-              <sp-button size="sm" (pressed)="run()" data-run>
+              <sp-button size="sm" [disabledReason]="decisions.blocked()" (pressed)="run()" data-run>
                 <svg [lucideIcon]="runIcon" size="12" aria-hidden="true"></svg>
                 {{ full().last ? t()('Ejecutar de nuevo', 'Run again') : t()('Ejecutar', 'Run') }}
               </sp-button>
@@ -89,6 +90,7 @@ export class FullVerification {
 
   private readonly source = inject(SpectyData);
   private readonly preferences = inject(Preferences);
+  protected readonly decisions = inject(Decisions);
   private readonly failed = reportFailure(inject(Toasts), this.preferences);
   protected readonly t = this.preferences.t;
   protected readonly tones = OUTPUT_TONES;

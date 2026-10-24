@@ -17,6 +17,7 @@ import { LIST, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { Select } from "../components/select";
 import { evidenceOf, summaryOf } from "../data/acceptance";
+import { Decisions } from "../data/decisions";
 import type { ChangeView } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { ChangesView, WHOLE_CHANGE } from "./changes-view";
@@ -78,7 +79,7 @@ const VIEW_KEY = "specty.acceptance.view";
           } @else {
             <div role="list" [class]="list + ' mt-2'">
               @for (item of evidence(); track item.id) {
-                <sp-criterion-row [evidence]="item" [change]="change()" [canAdjust]="change().phase === 'acceptance'" (diff)="showDiff($event)" />
+                <sp-criterion-row [evidence]="item" [change]="change()" [canAdjust]="change().phase === 'acceptance' && decisions.allowed()" (diff)="showDiff($event)" />
               }
             </div>
           }
@@ -92,6 +93,7 @@ export class AcceptanceTab {
 
   private readonly window = inject(DOCUMENT).defaultView;
   private readonly preferences = inject(Preferences);
+  protected readonly decisions = inject(Decisions);
   protected readonly t = this.preferences.t;
   protected readonly list = LIST;
   protected readonly emptyIcon = LucideListChecks;
