@@ -70,6 +70,7 @@ export type {
   TaskView,
 } from "./cards/view";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
+export { focusedTests, type Mark, skippedTests, unreferencedTodos } from "./checks/markers";
 export {
   type CheckMode,
   type CheckReport,
@@ -148,7 +149,13 @@ export {
   section,
 } from "./output";
 export { basename, dirname, moduleOf, normalizePath, type PathProblem, pathProblem } from "./paths";
-export { type CheckLevel, type ChecksConfig, checkLevel, DEFAULT_CHECKS } from "./schema/checks";
+export {
+  type CheckLevel,
+  type ChecksConfig,
+  checkLevel,
+  DEFAULT_CHECKS,
+  type TodoConfig,
+} from "./schema/checks";
 export {
   type ConfigInput,
   type ConfigIssue,

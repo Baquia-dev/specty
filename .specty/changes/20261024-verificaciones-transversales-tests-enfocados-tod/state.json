@@ -6,6 +6,13 @@
   "branch": "specty/20261024-verificaciones-transversales-tests-enfocados-tod",
   "baseCommit": "8d3b06b1dabce6e5304c453eb3fb4c2d3f8bf96c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48ce8fba6c73e0b2003dfe42d2327c9613ed4e093e5fb9f4283022c53c140294",
+    "at": "2026-10-24T17:31:48.029Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -42,7 +49,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "874e6fe3e47d1412c2b30f4cc56c798aa13d76a9",
+      "startedAt": "2026-10-24T17:31:52.032Z",
+      "doneAt": "2026-10-24T17:36:33.912Z",
+      "summary": "core/checks/markers.ts detecta por línea tests enfocados, omitidos y TODO sin referencia, con catálogos por familia de frameworks; checks.todo (markers, reference validada como regex) en la configuración."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -52,12 +69,5 @@
     "AC": 7,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:48ce8fba6c73e0b2003dfe42d2327c9613ed4e093e5fb9f4283022c53c140294",
-    "at": "2026-10-24T17:31:48.029Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

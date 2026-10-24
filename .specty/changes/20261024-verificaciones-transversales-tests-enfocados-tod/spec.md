@@ -67,7 +67,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: La detección pura de marcas y la configuración de `todo`
+- [x] T1: La detección pura de marcas y la configuración de `todo`
   - files: packages/core/src/schema/checks.ts, packages/core/src/checks/markers.ts, packages/core/src/index.ts, packages/core/test/checks/markers.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts

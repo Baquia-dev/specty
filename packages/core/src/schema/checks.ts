@@ -12,6 +12,15 @@ export interface ChecksConfig {
   readonly maxFindings: number;
   /** Paths no check looks at, on top of the ignored and generated ones. */
   readonly exclude: readonly string[];
+  readonly todo: TodoConfig;
+}
+
+/** What the `todo` check looks for: its markers, and what counts as pointing to an issue. */
+export interface TodoConfig {
+  /** Words that, first in a comment, mark pending work; case matters. */
+  readonly markers: readonly string[];
+  /** Regular expression for a reference to an issue, searched after the marker. */
+  readonly reference: string;
 }
 
 export const DEFAULT_CHECKS: ChecksConfig = {
@@ -31,12 +40,36 @@ export const DEFAULT_CHECKS: ChecksConfig = {
     "**/.angular/**",
     "**/.gradle/**",
   ],
+  // An issue number (`#12`, `acme/app#12`), a tracker key (`ABC-12`) or a link.
+  todo: {
+    markers: ["TODO", "FIXME"],
+    reference: String.raw`#\d+|\b[A-Z][A-Z0-9]+-\d+\b|https?://\S+`,
+  },
 };
+
+function isRegex(source: string): boolean {
+  try {
+    new RegExp(source);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export const ChecksSchema = z.strictObject({
   levels: z.record(z.string(), z.enum(["error", "warn", "off"])).optional(),
   maxFindings: z.number().int().positive().optional(),
   exclude: z.array(z.string().min(1)).optional(),
+  todo: z
+    .strictObject({
+      markers: z.array(z.string().min(1)).min(1).optional(),
+      reference: z
+        .string()
+        .min(1)
+        .refine(isRegex, { error: "Not a valid regular expression." })
+        .optional(),
+    })
+    .optional(),
 });
 
 export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): ChecksConfig {
@@ -44,6 +77,10 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
     levels: input?.levels ?? DEFAULT_CHECKS.levels,
     maxFindings: input?.maxFindings ?? DEFAULT_CHECKS.maxFindings,
     exclude: input?.exclude ?? DEFAULT_CHECKS.exclude,
+    todo: {
+      markers: input?.todo?.markers ?? DEFAULT_CHECKS.todo.markers,
+      reference: input?.todo?.reference ?? DEFAULT_CHECKS.todo.reference,
+    },
   };
 }
 
