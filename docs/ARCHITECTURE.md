@@ -331,6 +331,8 @@ La puntuación da un nivel `S`, `M`, `L` o `XL`, con umbrales configurables. El 
 - Planificar y revisar el alcance: según el tamaño del cambio.
 - Implementar: según el tamaño de cada tarea. Normalmente un nivel menos, porque una spec bien hecha reduce el razonamiento necesario.
 
+El modelo que redacta la spec puede subir esas recomendaciones con su motivo, como el tamaño: la de la revisión con `effort: { review, reason }` en el frontmatter, y la de cada tarea con su campo `effort: <nivel> — <motivo>`. Specty toma el mayor de los dos, así que no puede bajarlas. La implementación del cambio es la mayor entre la de su tamaño y las de sus tareas. Cuando el modelo sube algo, la línea de esfuerzo de `propose` y `approve` lo dice con sus motivos. Una revisión en `max` también pide la revisión independiente antes de aprobar ([ADR 0011](decisions/0011-revision-independiente.md)), si la persona la configuró.
+
 La tabla `presets/effort.yaml` traduce los niveles a cada herramienta (por ejemplo, el nivel de esfuerzo de Claude Code o el *reasoning effort* de Codex). Se actualiza con cada versión de Specty, porque cambia con cada lanzamiento de modelos. `propose` imprime la recomendación para la herramienta detectada y el agente se la transmite a la persona. Specty no cambia el esfuerzo del modelo: lo recomienda.
 
 **Dividir.** Si el cambio es `XL` o supera los umbrales (por defecto: más de 8 tareas, más de 15 archivos de código o más de 2 módulos), `propose` lo rechaza y propone una épica. Los archivos de código son los gobernados que no son tests, con los globs expandidos; los tests y la documentación no cuentan en el límite, pero sí en la puntuación, y por tanto en el nivel `XL`. El límite de 3 archivos del carril `quick` cuenta igual. Al dividir conviene:

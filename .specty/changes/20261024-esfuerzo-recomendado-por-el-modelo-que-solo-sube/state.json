@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-esfuerzo-recomendado-por-el-modelo-que-solo-sube",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-esfuerzo-recomendado-por-el-modelo-que-solo-sube",
   "baseCommit": "f507a2a7a58ff1b3a449f8373243ad0bb0a737da",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8965ddc914e1211d4b5722ae264866eb2978b387",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:25:40.898Z",
       "doneAt": "2026-10-24T15:28:02.606Z",
-      "summary": "recommendEffort(level, spec) y recommendTaskEffort toman el máximo entre Specty y el effort del modelo, con raisedBy cuando sube; effortLine muestra «(el modelo lo sube: …)»; propose y approve pasan la spec, y una revisión en max también pide specty review"
+      "summary": "recommendEffort(level, spec) y recommendTaskEffort toman el máximo entre Specty y el effort del modelo, con raisedBy cuando sube; effortLine muestra «(el modelo lo sube: …)»; propose y approve pasan la spec, y una revisión en max también pide specty review",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9594edc3268cccafd6b389b56c48f77655974c7f",
+      "startedAt": "2026-10-24T15:28:02.895Z",
+      "doneAt": "2026-10-24T15:30:05.585Z",
+      "summary": "formats.md §1: effort en el frontmatter y en las tareas; ARCHITECTURE §11: el esfuerzo del modelo solo sube, cómo se ve y su relación con la revisión independiente"
     }
   },
   "pending": {

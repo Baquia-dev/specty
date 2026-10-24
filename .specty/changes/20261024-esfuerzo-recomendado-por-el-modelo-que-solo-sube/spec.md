@@ -66,7 +66,7 @@ El modelo que redacta la spec puede recomendar más esfuerzo que el que calcula 
   - files: packages/core/src/sizing/effort.ts, packages/core/src/cards/text.ts, packages/core/test/sizing/sizing.test.ts, packages/cli/src/commands/propose.ts, packages/cli/src/commands/approve.ts, packages/cli/test/review.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/review.test.ts
-- [ ] T3: Documentar el esfuerzo del modelo
+- [x] T3: Documentar el esfuerzo del modelo
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm check
