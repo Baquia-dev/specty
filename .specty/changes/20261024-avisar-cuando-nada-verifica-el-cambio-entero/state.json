@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-avisar-cuando-nada-verifica-el-cambio-entero",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-avisar-cuando-nada-verifica-el-cambio-entero",
+  "baseCommit": "fd5996d4a45e980bd9ab68b5672e3b9c796c7719",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:990d36a7d510e8978cbd577a62cc2a7c2ff4c2814fe48a9563b50077cb6153a8",
+    "at": "2026-10-24T16:44:57.054Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
