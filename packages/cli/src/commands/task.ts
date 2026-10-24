@@ -38,7 +38,12 @@ import { readSpec, type StoredChange } from "../store/changes";
 import { activateNextTask } from "./next";
 
 /** `specty task done`: checks scope, runs the verification, commits and moves on. */
-export async function taskDone(session: Session, taskId: string, summary: string): Promise<Output> {
+export async function taskDone(
+  session: Session,
+  taskId: string,
+  summary: string,
+  findings: readonly string[] = [],
+): Promise<Output> {
   const t = translator(session.lang);
   const { cards } = session;
   const nextStep = t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`);
@@ -62,11 +67,14 @@ export async function taskDone(session: Session, taskId: string, summary: string
       nextStep,
     );
   }
-  if (summary.trim().length === 0) {
+  const emptyFinding = findings.some((finding) => finding.trim().length === 0);
+  if (summary.trim().length === 0 || emptyFinding) {
     return {
       ...blockedCard(
         header,
-        t("Falta el resumen (--summary).", "The summary (--summary) is missing."),
+        emptyFinding
+          ? t("Un hallazgo (--finding) está vacío.", "A finding (--finding) is empty.")
+          : t("Falta el resumen (--summary).", "The summary (--summary) is missing."),
         t(
           `ejecuta \`${cards.command} task done ${id} --summary "<qué hiciste>"\`.`,
           `run \`${cards.command} task done ${id} --summary "<what you did>"\`.`,
@@ -118,11 +126,12 @@ export async function taskDone(session: Session, taskId: string, summary: string
   if (!verified.ok)
     return verifyFailedCard(header, id, verified.command, verified.code, verified.tail, cards);
 
-  const findings: Findings = {
+  const notes: Notes = {
     removedAssertions: await assertionLosses(session, stored?.baseCommit, changed),
     risks: await riskFindings(session, stored?.baseCommit, changed),
+    findings: findings.map((finding) => finding.trim()),
   };
-  const done = await complete(session, verified.change, spec, task, summary.trim(), findings);
+  const done = await complete(session, verified.change, spec, task, summary.trim(), notes);
   const following =
     done.state.phase === "implementing" ? await activateNextTask(session, done) : done;
   const view = await changeView(session, following);
@@ -152,10 +161,14 @@ export async function taskDone(session: Session, taskId: string, summary: string
   );
 }
 
-/** What the task's diff shows the person on acceptance; `task.completed` keeps what is there. */
-interface Findings {
+/**
+ * What `task.completed` keeps besides the summary, when there is any: what the task's diff shows
+ * the person on acceptance, and what the agent learned for the tasks and changes after.
+ */
+interface Notes {
   readonly removedAssertions: readonly AssertionLoss[];
   readonly risks: readonly RiskFinding[];
+  readonly findings: readonly string[];
 }
 
 type Verification =
@@ -221,7 +234,7 @@ async function complete(
   spec: Spec,
   task: Task,
   summary: string,
-  findings: Findings,
+  notes: Notes,
 ): Promise<StoredChange & { readonly commit: string }> {
   const { state } = change;
   const now = session.environment.now().toISOString();
@@ -250,10 +263,8 @@ async function complete(
   const updated = await commitState(session, change, { ...state, phase, tasks }, "task.completed", {
     task: task.id,
     summary,
-    ...(findings.removedAssertions.length > 0
-      ? { removedAssertions: findings.removedAssertions }
-      : {}),
-    ...(findings.risks.length > 0 ? { risks: findings.risks } : {}),
+    // Only the notes there are: `removedAssertions`, `risks`, `findings`.
+    ...Object.fromEntries(Object.entries(notes).filter(([, list]) => list.length > 0)),
   });
   const relativeDir = session.paths.relative(change.files.dir);
   const scope = moduleOf(task.files[0] ?? "");

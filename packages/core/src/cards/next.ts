@@ -2,7 +2,7 @@
 import { headerOf, type Output, section } from "../output";
 import { integrationCard } from "./integration";
 import { draftingGuide, quoted, translator } from "./text";
-import type { CardContext, ChangeView, CommentView } from "./view";
+import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
 import { acceptanceCard, adjustingCard, closingCard, implementingCard } from "./work";
 
 export { taskCard } from "./work";
@@ -100,6 +100,12 @@ function draftCard(change: ChangeView, ctx: CardContext): Output {
         t("PETICIÓN DEL USUARIO", "THE USER'S REQUEST"),
         change.request === undefined ? [] : change.request.split("\n"),
       ),
+      ...(change.carried ?? []).flatMap((carried) =>
+        section(
+          t(`DEL CAMBIO ${carried.id}`, `FROM CHANGE ${carried.id}`),
+          carriedLines(carried, ctx),
+        ),
+      ),
       ...section(t("CÓMO REDACTARLA", "HOW TO WRITE IT"), draftingGuide(change, ctx)),
     ],
     next: t(
@@ -107,6 +113,33 @@ function draftCard(change: ChangeView, ctx: CardContext): Output {
       `complete the spec and run \`${ctx.command} propose\`.`,
     ),
   };
+}
+
+/** The follow-ups and findings a followed change left, for this spec to take or leave out. */
+function carriedLines(carried: CarriedView, ctx: CardContext): string[] {
+  const t = translator(ctx.lang);
+  if (!carried.found) {
+    return [
+      t(
+        "No está en esta carpeta: si sigue abierto, vive en otra worktree.",
+        "It is not in this folder: if it is still open, it lives in another worktree.",
+      ),
+    ];
+  }
+  const lines = [
+    ...carried.pending.map((item) => t(`Pendiente: ${item}`, `Follow-up: ${item}`)),
+    ...carried.findings.map(({ task, text }) =>
+      t(`Hallazgo de ${task}: ${text}`, `Finding of ${task}: ${text}`),
+    ),
+  ];
+  if (lines.length === 0) return [t("Sin pendientes ni hallazgos.", "No follow-ups or findings.")];
+  return [
+    ...lines,
+    t(
+      "Decide qué entra en esta spec; lo demás va a «Fuera de alcance».",
+      'Decide what goes into this spec; the rest goes to "Out of scope".',
+    ),
+  ];
 }
 
 /** The spec's sections by the keys comments use (formats.md §5), as the agent reads them. */

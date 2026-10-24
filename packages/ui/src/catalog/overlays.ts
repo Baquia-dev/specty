@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from "@angular/core";
-import { LucideDownload } from "@lucide/angular";
 import { PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { Card } from "../components/card";
 import { Collapsible } from "../components/collapsible";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Field } from "../components/field";
+import { LucideDownload } from "../components/icons";
 import { Kbd } from "../components/kbd";
 import { Menu } from "../components/menu";
 import { TabPanel, Tabs } from "../components/tabs";

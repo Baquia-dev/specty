@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261024-hallazgos-que-pasan-de-una-tarea-y-un-cambio-al",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-hallazgos-que-pasan-de-una-tarea-y-un-cambio-al",
+  "baseCommit": "e903c57e13e10c6c189ef3d83c4b487eb5d49587",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7d41ae7350c3e268ad940d80d4b06cec0fadce2ffb8c94433772b746b1b02df8",
+    "at": "2026-10-24T11:35:19.968Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7912be244deaab3c4e2d1d19d657d237a0582e6596a501b5505ed3e38dd673a8",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:5ed12616a999042f5c2a0e7f89ab22e8726a5b4f34d2a6a1589fbf1a281e3765",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:1d3eab24b5f3a717f45f24d0727681e55926fdf424a77bb30587d02527b564be",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1aad17d81be0cb0256713fc3c2f73330dc8b989f86ad2cfbebfabc5d7a56b720",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "da5d0ba206e6d1a7a1e37cd6d535bf0481fb5108",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:35:20.556Z",
+      "doneAt": "2026-10-24T11:36:50.524Z",
+      "summary": "TaskView.findings y ChangeView.carried; la tarjeta de tarea muestra HALLAZGOS de las hechas, la de cierre los pide llevar a Pendientes, y la del borrador muestra por cambio seguido sus Pendientes y hallazgos, o que no está en esta carpeta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ac64d53b930453654dd5d6438fb59937344ff6b6",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:36:50.834Z",
+      "doneAt": "2026-10-24T14:45:33.336Z",
+      "summary": "--finding repetible en task done, validado como el resumen y guardado en task.completed.findings; flow/carried.ts lee la auditoría, los hallazgos y, en borrador, los Pendientes del Cierre y los hallazgos de cada cambio de follows; changeView los pasa a las tarjetas",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e540138c3880a06499026d101159910f3966ecfe",
+      "attempts": 1,
+      "startedAt": "2026-10-24T14:45:35.025Z",
+      "doneAt": "2026-10-24T14:48:19.811Z",
+      "summary": "ARCHITECTURE §6 y §7: --finding, dónde se ven los hallazgos y qué carga un cambio de seguimiento; formats.md §4: findings en task.completed",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T14:50:18.126Z"
+}

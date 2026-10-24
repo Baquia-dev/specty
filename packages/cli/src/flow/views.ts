@@ -15,10 +15,11 @@ import {
   type TaskView,
   testRules,
 } from "@baquia-dev/specty-core";
-import { exists, isRecord, parseJson, readText } from "../io/files";
+import { exists, isRecord } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
+import { type Audit, carriedOf, dataOf, findingsOf, readAudit } from "./carried";
 
 /**
  * What `task done` runs for a task, as one command: the repository's quick check, so a broken
@@ -36,14 +37,14 @@ export async function changeView(session: Session, change: StoredChange): Promis
   const { state } = change;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
   const commits = await taskCommits(session, state.id);
-  const audit = await auditOf(change);
+  const audit = await readAudit(change.files);
   const findings = findingsByTask(audit);
   const tasks = (spec.sections.tasks?.items ?? []).map((task): TaskView => {
     const stored = state.tasks[task.id];
     const verify = taskVerification(session, task);
     const commit = commits.get(task.id);
     const rules = testRules(task, session.config.policy.tests);
-    const { lost, risks } = findings.get(task.id) ?? { lost: [], risks: [] };
+    const { lost, risks, notes } = findings.get(task.id) ?? { lost: [], risks: [], notes: [] };
     return {
       id: task.id,
       title: task.title,
@@ -58,6 +59,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
       ...(rules !== undefined ? { testRules: rules } : {}),
       ...(lost.length > 0 ? { removedAssertions: lost } : {}),
       ...(risks.length > 0 ? { risks } : {}),
+      ...(notes.length > 0 ? { findings: notes } : {}),
     };
   });
   const active = tasks.find((task) => task.status === "active");
@@ -88,6 +90,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
     requested: state.phase === "review" ? await requested(change, audit) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     ...(state.phase === "draft" ? request(audit) : {}),
+    ...(state.phase === "draft" ? await carriedOf(session, spec.frontmatter.follows) : {}),
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specChanged:
       state.phase === "implementing" &&
@@ -132,16 +135,20 @@ function request(audit: Audit): Pick<ChangeView, "request"> {
 interface TaskFindings {
   readonly lost: readonly AssertionLoss[];
   readonly risks: readonly RiskFinding[];
+  /** What the agent learned (`--finding`). */
+  readonly notes: readonly string[];
 }
 
-/** What each task's diff showed, as `task done` recorded it: removed assertions and risks. */
+/** What `task done` recorded of each task: removed assertions, risks and findings. */
 function findingsByTask(audit: Audit): ReadonlyMap<string, TaskFindings> {
+  const notes = findingsOf(audit);
   return new Map(
     audit
       .filter((entry) => entry.event === "task.completed")
       .flatMap((entry): [string, TaskFindings][] => {
         const { task, removedAssertions, risks } = dataOf(entry);
         if (typeof task !== "string") return [];
+        const learned = notes.filter((note) => note.task === task).map((note) => note.text);
         const lost = listOf(removedAssertions).flatMap((loss) =>
           typeof loss.path === "string" && typeof loss.removed === "number"
             ? [{ path: loss.path, removed: loss.removed }]
@@ -159,26 +166,13 @@ function findingsByTask(audit: Audit): ReadonlyMap<string, TaskFindings> {
               ]
             : [],
         );
-        return [[task, { lost, risks: found }]];
+        return [[task, { lost, risks: found, notes: learned }]];
       }),
   );
 }
 
 function listOf(value: unknown): Record<string, unknown>[] {
   return Array.isArray(value) ? value.filter((item: unknown) => isRecord(item)) : [];
-}
-
-type Audit = readonly Record<string, unknown>[];
-
-async function auditOf(change: StoredChange): Promise<Audit> {
-  return ((await readText(change.files.audit)) ?? "").split("\n").flatMap((line) => {
-    const entry = parseJson(line);
-    return isRecord(entry) ? [entry] : [];
-  });
-}
-
-function dataOf(entry: Record<string, unknown> | undefined): Record<string, unknown> {
-  return isRecord(entry?.data) ? entry.data : {};
 }
 
 function criteriaOf(spec: Spec, ac: readonly string[] | "none" | undefined): TaskView["criteria"] {

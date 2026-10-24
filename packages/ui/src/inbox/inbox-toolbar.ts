@@ -12,8 +12,9 @@ import {
   viewChild,
 } from "@angular/core";
 import { PHASES } from "@baquia-dev/specty-core";
-import { LucideDynamicIcon, LucideSearch } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { EdgeFade } from "../components/edge-fade";
+import { LucideSearch } from "../components/icons";
 import { Kbd } from "../components/kbd";
 import { Select } from "../components/select";
 import { Shortcuts } from "../keyboard/shortcuts";
