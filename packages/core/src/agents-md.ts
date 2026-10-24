@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { translator } from "./cards/text";
-import type { Lang } from "./i18n";
+import { fold, LANGS, type Lang } from "./i18n";
 
 /** Facts that `specty init` detects and writes in the project block of AGENTS.md. */
 export interface ProjectFacts {
@@ -89,6 +89,38 @@ export function humanSections(lang: Lang): string {
       "<!-- Only what cannot be inferred from the code and no linter enforces. Every rule, verifiable. -->",
     ),
   ].join("\n");
+}
+
+/** The titles `humanSections` writes, in every language: a section is recognized in any. */
+const HUMAN_TITLES = LANGS.flatMap((lang) =>
+  humanSections(lang)
+    .split("\n")
+    .flatMap((line) => headingOf(line)?.title ?? []),
+).map(fold);
+
+/**
+ * The sections people complete by hand that are still empty: up to the next heading of their
+ * level or a higher one, nothing but comments, such as the hints, and blank lines. Their titles as
+ * written, in order. A section AGENTS.md does not have is not listed: the rest of it is theirs.
+ */
+export function unfilledSections(text: string): readonly string[] {
+  const lines = text.split("\n");
+  return lines.flatMap((line, index) => {
+    const heading = headingOf(line);
+    if (heading === undefined || !HUMAN_TITLES.includes(fold(heading.title))) return [];
+    const stop = lines.findIndex((next, at) => {
+      const level = at > index ? headingOf(next)?.level : undefined;
+      return level !== undefined && level <= heading.level;
+    });
+    const body = lines.slice(index + 1, stop === -1 ? undefined : stop).join("\n");
+    return body.replace(/<!--[\s\S]*?-->/g, "").trim() === "" ? [heading.title] : [];
+  });
+}
+
+/** A Markdown heading such as `## Title`, maybe closed with `#`s. */
+function headingOf(line: string): { readonly level: number; readonly title: string } | undefined {
+  const [, hashes, title] = /^(#{1,6})[ \t]+(.*?)(?:[ \t]+#+)?[ \t]*$/.exec(line) ?? [];
+  return hashes === undefined || title === undefined ? undefined : { level: hashes.length, title };
 }
 
 const begin = (id: string) => `<!-- specty:begin id=${id} -->`;

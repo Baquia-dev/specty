@@ -6,6 +6,13 @@
   "branch": "specty/20261024-doctor-avisa-del-mapa-y-las-convenciones-sin-com",
   "baseCommit": "1c3aac4b6653bc1a97eb4d461144bc8e425b3e07",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c87c4d36710e868ac860ea4ca7e9d5cda0fc89f598cab2a057e0f0bd0b09c87b",
+    "at": "2026-10-24T17:20:10.383Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1aa148e162a1a887b9555c131dcbc5fa9b8baa27",
+      "startedAt": "2026-10-24T17:20:11.506Z",
+      "doneAt": "2026-10-24T17:21:56.850Z",
+      "summary": "unfilledSections(text) en core/agents-md.ts: los títulos, tal como están, de Mapa/Convenciones (es o en, cualquier nivel, sin distinguir mayúsculas ni tildes) que solo tienen comentarios y espacios hasta el siguiente encabezado de su nivel. Toma los títulos de humanSections."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c87c4d36710e868ac860ea4ca7e9d5cda0fc89f598cab2a057e0f0bd0b09c87b",
-    "at": "2026-10-24T17:20:10.383Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

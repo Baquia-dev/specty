@@ -15,6 +15,7 @@ export {
   type ProjectFacts,
   projectBlock,
   removeBlock,
+  unfilledSections,
   upsertBlock,
 } from "./agents-md";
 export { type Analysis, analyzeSpec } from "./analyze";

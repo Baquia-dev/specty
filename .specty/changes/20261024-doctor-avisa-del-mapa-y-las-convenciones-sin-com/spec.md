@@ -42,7 +42,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: El core reconoce el Mapa y las Convenciones sin completar
+- [x] T1: El core reconoce el Mapa y las Convenciones sin completar
   - files: packages/core/src/agents-md.ts, packages/core/src/index.ts, packages/core/test/agents-md.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
