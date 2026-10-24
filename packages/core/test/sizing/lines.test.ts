@@ -1,6 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { codeLines, DEFAULT_CONFIG, longFiles, resolveConfig } from "../../src";
+import { codeLines, DEFAULT_CONFIG, fileSize, longFiles, resolveConfig } from "../../src";
+
+describe("fileSize", () => {
+  it("gives a file's lines of code with the thresholds of its kind, or nothing", () => {
+    expect(fileSize("src/a.ts", "a = 1\n// note\n\nb = 2\n", DEFAULT_CONFIG)).toEqual({
+      lines: 2,
+      warn: 300,
+      fail: 500,
+    });
+    expect(fileSize("test/a_test.go", "x", DEFAULT_CONFIG)).toMatchObject({ warn: 400, fail: 600 });
+    expect(fileSize("docs/a.md", "x", DEFAULT_CONFIG)).toBeUndefined();
+  });
+});
 
 /** `count` lines of code, in no language in particular. */
 const lines = (count: number): string =>

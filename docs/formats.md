@@ -312,6 +312,10 @@ lines:                            # líneas de código de los archivos que toca 
   fail: 500                       # bloquea si la tarea lo lleva por encima; false: nunca
   tests: { warn: 400, fail: 600 }
   exclude: ["**/fixtures/**", "**/mocks/**", "**/testdata/**", "**/migrations/**", "**/locales/**"]  # por defecto, también __fixtures__, __mocks__, i18n, l10n y translations
+checks:                           # specty check (ADR 0012)
+  levels: { max-lines: error }    # error | warn | off por verificación; sin la clave, error
+  maxFindings: 10                 # fallos que se muestran por verificación antes de «… y N más»
+  exclude: ["**/node_modules/**", "**/build/**", "**/dist/**", "**/.dart_tool/**"]  # por defecto, también out, target, coverage, vendor, .next, .angular y .gradle
 policy:
   tests: recommended              # required | recommended | off
 retro:

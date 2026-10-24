@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261024-el-test-del-presupuesto-usa-los-limites-de-split",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261024-el-test-del-presupuesto-usa-los-limites-de-split",
+  "baseCommit": "a9286005a52e50f5c6a2393e77e158dc683349ca",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2969cc34856d9c0fa0842d444aebc70b7e1c779e3a5ae1cefa7889dcd7662300",
+    "at": "2026-10-24T17:13:57.947Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cb7d2fd4ae06b7537ded315d728f347c242d2df4",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:13:59.378Z",
+      "doneAt": "2026-10-24T17:14:53.307Z",
+      "summary": "La tarjeta del test del presupuesto toma las tareas (split.maxTasks) y los archivos de la tarea activa (split.taskMaxFiles) de DEFAULT_CONFIG.split en vez de 8 y 5 escritos: si alguien sube esos límites, la tarjeta del test crece y falla si deja de caber.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

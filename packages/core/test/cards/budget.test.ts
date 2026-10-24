@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   type CardContext,
   type ChangeView,
+  DEFAULT_CONFIG,
   NOTE_MAX,
   nextCard,
   renderText,
@@ -22,13 +23,15 @@ const prose = (length: number) =>
 const path = (n: number) => `packages/cli/src/server/acciones-de-la-persona-${n}.ts`;
 
 /**
- * The largest reasonable task card: 8 tasks (no archived change has more than 7), the active one
- * with 5 files, 3 long criteria and a scope request; every summary at `summary` characters, and
- * 4 findings at the most.
+ * The largest reasonable task card: as many tasks as a change has before `propose` asks to split
+ * it (`split.maxTasks`), the active one with as many files as a task has before `propose` warns
+ * (`split.taskMaxFiles`), 3 long criteria and a scope request; every summary at `summary`
+ * characters, and 4 findings at the most. Raising those limits makes this card larger.
  */
 function largest(summary: number): ChangeView {
+  const { maxTasks, taskMaxFiles } = DEFAULT_CONFIG.split;
   const done = Array.from(
-    { length: 7 },
+    { length: maxTasks - 1 },
     (_, index): TaskView => ({
       id: `T${index + 1}`,
       title: prose(80),
@@ -43,10 +46,10 @@ function largest(summary: number): ChangeView {
     }),
   );
   const active: TaskView = {
-    id: "T8",
+    id: `T${maxTasks}`,
     title: prose(80),
     status: "active",
-    files: [1, 2, 3, 4, 5].map(path),
+    files: Array.from({ length: taskMaxFiles }, (_, index) => path(index + 1)),
     extras: [],
     criteria: [1, 2, 3].map((n) => ({ id: `AC${n}`, text: prose(300) })),
     verify: "pnpm --filter @baquia-dev/specty exec vitest run test/server/acciones.test.ts",
@@ -63,7 +66,14 @@ function largest(summary: number): ChangeView {
     revision: 3,
     tasks: [...done, active],
     conventions: ["packages/AGENTS.md", "packages/cli/AGENTS.md", "packages/cli/src/AGENTS.md"],
-    pendingScope: [{ id: "S1", task: "T8", paths: [path(9)], reason: prose(120) }],
+    pendingScope: [
+      {
+        id: "S1",
+        task: `T${maxTasks}`,
+        paths: [path(maxTasks + taskMaxFiles)],
+        reason: prose(120),
+      },
+    ],
     rejected: [],
     closingSubmitted: false,
     specChanged: false,

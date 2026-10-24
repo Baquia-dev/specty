@@ -71,6 +71,19 @@ export type {
 } from "./cards/view";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
 export {
+  type CheckMode,
+  type CheckReport,
+  type CheckResult,
+  type CheckStatus,
+  type Finding,
+  type RenderOptions,
+  renderReport,
+  reportExitCode,
+  reportJson,
+  statusOf,
+  summaryLine,
+} from "./checks/report";
+export {
   type Actor,
   EVENT_RULES,
   type EventRule,
@@ -135,6 +148,7 @@ export {
   section,
 } from "./output";
 export { basename, dirname, moduleOf, normalizePath, type PathProblem, pathProblem } from "./paths";
+export { type CheckLevel, type ChecksConfig, checkLevel, DEFAULT_CHECKS } from "./schema/checks";
 export {
   type ConfigInput,
   type ConfigIssue,
@@ -181,7 +195,7 @@ export {
   recommendEffort,
   recommendTaskEffort,
 } from "./sizing/effort";
-export { codeLines, type LongFile, longFiles, type SizedFile } from "./sizing/lines";
+export { codeLines, fileSize, type LongFile, longFiles, type SizedFile } from "./sizing/lines";
 export {
   collectSignals,
   computeSize,

@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "id": "20261024-el-nucleo-de-specty-check",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-el-nucleo-de-specty-check",
+  "baseCommit": "2e2fdcade0d1870b5cba3c80803c8ad2a4fad65f",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:06ab03ea476295ce909b5ff8e315a4047340aa6c5fa01db3afcece184ed92c18",
+    "at": "2026-10-24T17:07:39.611Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c1041b246614682e1591d319cbfdf146639c98956795f6238e757d04d6840bb2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:40774dacfc891d71f39ba31ca4d6b4fd6373447ed779adad75764c0ebe910142",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:1b822bb7f46fe6b260c7c906bd2c9efeb240acfc3a82c238315fc5d190e3010d",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:c3bee73f368be16ed74b0588635efeb042cf604d535260677ecd89f0f6dd9a8d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e4f5207a0c3443a8ae134a727d747db5b18a0749c9ace6ad2f5dcd9742671bc6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4d5ca5aee438802663693565dacefcfd93f859e3",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:07:40.772Z",
+      "doneAt": "2026-10-24T17:10:37.030Z",
+      "summary": "schema/checks.ts con levels, maxFindings y exclude (carpetas de dependencias y artefactos comunes a cualquier ecosistema); checks/report.ts con Finding, CheckResult, estados, salida compacta con resumen, detallada, JSON y código de salida en es/en; fileSize en sizing/lines.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "4eadcd963105c535aba4cb79847fb63bb085179e",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:10:37.490Z",
+      "doneAt": "2026-10-24T17:12:59.463Z",
+      "summary": "Proveedores y runChecks por niveles; selección de --changed (merge-base con la rama destino), --staged y --all sin lo excluido; max-lines como proveedor común; el comando check con su propio informe, que respeta --json",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "dcf204f75d2d26696e19e3d1f1d94f5b8de7d926",
+      "attempts": 2,
+      "startedAt": "2026-10-24T17:12:59.741Z",
+      "doneAt": "2026-10-24T17:20:52.672Z",
+      "summary": "ADR 0012: el principio, las decisiones del usuario y los nueve cortes; ARCHITECTURE: specty check en la tabla de comandos; formats.md: la clave checks. schema/checks.ts importa zod como el resto de core, para no cargar sus locales en los hooks",
+      "scopeExtra": [
+        "packages/core/src/schema/checks.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T17:22:14.367Z"
+}
