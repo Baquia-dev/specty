@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261024-presupuesto-de-la-tarjeta-de-tarea",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-presupuesto-de-la-tarjeta-de-tarea",
+  "baseCommit": "ffbe398ddc13ec971c6d510e3e1e7ee0985a3fb3",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ff245bed6328f3653403bd82473c4e6b7527d6f0ba872fc9657ae80310908ba1",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:88ded8a24480cb84b0cb8968242421a4ee3da71ceb8c930d18c391de2510a8d6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:62cd8e49856eeab399b61230bd3a196de8dd0f1638f6046b28d1698e4ab85554",
+    "at": "2026-10-24T16:33:12.381Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

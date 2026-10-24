@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T16:32:28.513Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-presupuesto-de-la-tarjeta-de-tarea"}}
+{"ts":"2026-10-24T16:33:12.148Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:62cd8e49856eeab399b61230bd3a196de8dd0f1638f6046b28d1698e4ab85554","size":"M","warnings":0}}
+{"ts":"2026-10-24T16:33:12.390Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:62cd8e49856eeab399b61230bd3a196de8dd0f1638f6046b28d1698e4ab85554","channel":"delegated","delegated":true}}
