@@ -47,14 +47,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/index.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "f596a958d56c0f8e5a74dda92650caa009275bb3",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:19:30.202Z",
       "doneAt": "2026-10-24T15:20:38.878Z",
-      "summary": "Core: removeBlock quita un bloque gestionado y la línea en blanco que lo separaba, y deja el texto como antes del bloque (exportado desde el índice, ampliación S1); uninstall entra en PERSON_ONLY, así que el guard se lo bloquea al agente también en modo delegado."
+      "summary": "Core: removeBlock quita un bloque gestionado y la línea en blanco que lo separaba, y deja el texto como antes del bloque (exportado desde el índice, ampliación S1); uninstall entra en PERSON_ONLY, así que el guard se lo bloquea al agente también en modo delegado.",
+      "scopeExtra": [
+        "packages/core/src/index.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f4fa9ec908ee90a19d4748acf5cc6df01d2a711d",
+      "startedAt": "2026-10-24T15:20:39.524Z",
+      "doneAt": "2026-10-24T15:23:33.938Z",
+      "summary": "InstallFiles sabe borrar (simulado o de verdad, con copia y removed en el manifiesto) y rewriteJson pasa a files.ts y quita las claves que la actualización deja fuera. Contrapartes: removeAgentHooks (hooks y permisos de worktrees en Claude Code y Cursor; borra el archivo si queda vacío), removeGitHooks (bloque de los hooks nativos o de husky, comando specty de lefthook) y removeAgentsBlocks."
     }
   },
   "pending": {

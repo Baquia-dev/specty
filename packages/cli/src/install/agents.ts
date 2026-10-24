@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
 import { join } from "node:path";
-import { applyEdits, modify, parse } from "jsonc-parser";
+import { parse } from "jsonc-parser";
 import type { GuardTool } from "../enforce/actions";
 import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
-import { type InstallFiles, installFiles } from "./files";
+import { type InstallFiles, installFiles, rewriteJson } from "./files";
 
 /**
  * The Claude Code events the guard listens to, with the tools each one covers: before each
@@ -43,7 +43,6 @@ const CODEX_EVENTS: Readonly<Record<string, string>> = {
 const CLAUDE_ALLOW: readonly string[] = ["EnterWorktree", "ExitWorktree"];
 /** The `ask` rule an earlier `init` wrote, which made removing a worktree ask. */
 const OLD_CLAUDE_ASK = "ExitWorktree(action:remove)";
-const FORMAT = { formattingOptions: { insertSpaces: true, tabSize: 2, eol: "\n" } };
 const CLAUDE_SETTINGS = ".claude/settings.json";
 const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
 const CURSOR_HOOKS = ".cursor/hooks.json";
@@ -116,6 +115,28 @@ export async function installCursor(
 export function codexHooksFile(env: NodeJS.ProcessEnv): string {
   const home = env.CODEX_HOME !== undefined && env.CODEX_HOME !== "" ? env.CODEX_HOME : undefined;
   return join(home ?? join(env.HOME ?? homedir(), ".codex"), "hooks.json");
+}
+
+/**
+ * Takes Specty's hooks and worktree permissions out of Claude Code's and Cursor's files in the
+ * repository, leaving everything else; a file left with nothing else goes.
+ */
+export async function removeAgentHooks(root: string, files: InstallFiles): Promise<void> {
+  const claude = (value: Entry) =>
+    withoutEmpty(
+      withoutClaudePermissions(withHooks(value, CLAUDE_EVENTS, "claude-code", undefined)),
+    );
+  for (const file of [CLAUDE_SETTINGS, CLAUDE_LOCAL_SETTINGS]) {
+    await rewriteJson(join(root, file), claude, false, files);
+  }
+  const cursor = (value: Entry) =>
+    withoutEmpty(withHooks(value, CURSOR_EVENTS, "cursor", undefined));
+  await rewriteJson(join(root, CURSOR_HOOKS), cursor, false, files);
+  for (const file of [CLAUDE_SETTINGS, CLAUDE_LOCAL_SETTINGS, CURSOR_HOOKS]) {
+    const value: unknown = parse((await files.read(join(root, file))) ?? "null");
+    const left = isRecord(value) ? Object.keys(value).filter((key) => key !== "version") : [];
+    if (isRecord(value) && left.length === 0) await files.remove(join(root, file));
+  }
 }
 
 /** Codex: `PreToolUse` (Bash, apply_patch) and `PostToolUse` (Bash) in its user `hooks.json`. */
@@ -211,6 +232,29 @@ function withClaudePermissions(value: Entry): Entry {
   return { ...value, permissions: { ...permissions, allow, ...(empty ? {} : { ask: kept }) } };
 }
 
+function withoutClaudePermissions(value: Entry): Entry {
+  if (!isRecord(value.permissions) || !Array.isArray(value.permissions.allow)) return value;
+  const allow = value.permissions.allow.filter(
+    (rule: unknown) => !CLAUDE_ALLOW.includes(String(rule)),
+  );
+  return { ...value, permissions: { ...value.permissions, allow } };
+}
+
+/** Drops the hook lists and permissions that were left empty, and their objects if empty too. */
+function withoutEmpty(value: Entry): Entry {
+  const prune = (entry: unknown) =>
+    isRecord(entry)
+      ? Object.fromEntries(
+          Object.entries(entry).filter(([, item]) => !(Array.isArray(item) && item.length === 0)),
+        )
+      : entry;
+  const { hooks, permissions, ...rest } = value;
+  const kept = Object.entries({ hooks: prune(hooks), permissions: prune(permissions) }).filter(
+    ([, item]) => item !== undefined && !(isRecord(item) && Object.keys(item).length === 0),
+  );
+  return { ...rest, ...Object.fromEntries(kept) };
+}
+
 function withCursorHooks(value: Entry, command: string): Entry {
   const hooks = isRecord(value.hooks) ? value.hooks : {};
   const updated = Object.entries(CURSOR_EVENTS).map(([name, matcher]) => {
@@ -223,30 +267,6 @@ function withCursorHooks(value: Entry, command: string): Entry {
     version: typeof value.version === "number" ? value.version : 1,
     hooks: { ...hooks, ...Object.fromEntries(updated) },
   };
-}
-
-/** Rewrites a JSON(C) file key by key, keeping comments and formatting elsewhere. */
-async function rewriteJson(
-  path: string,
-  update: (value: Entry) => Entry,
-  create: boolean,
-  files: InstallFiles,
-): Promise<void> {
-  const text = await files.read(path);
-  if (text === undefined && !create) return;
-  const source = text ?? "{}\n";
-  const parsed: unknown = parse(source);
-  const before = isRecord(parsed) ? parsed : {};
-  const after = update(before);
-  const changed = Object.keys(after).filter(
-    (key) => JSON.stringify(after[key]) !== JSON.stringify(before[key]),
-  );
-  if (changed.length === 0 && text !== undefined) return;
-  const final = changed.reduce(
-    (current, key) => applyEdits(current, modify(current, [key], after[key], FORMAT)),
-    source,
-  );
-  await files.write(path, final.endsWith("\n") ? final : `${final}\n`);
 }
 
 /** Keeps a machine-specific file out of git without touching `.gitignore`. */

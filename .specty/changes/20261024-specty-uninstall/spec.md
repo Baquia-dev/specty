@@ -68,7 +68,7 @@ Segunda mitad del punto «init reversible y `specty uninstall`»: hoy no hay for
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core test
   - type: feat
-- [ ] T2: Los instaladores saben quitar lo suyo
+- [x] T2: Los instaladores saben quitar lo suyo
   - files: packages/cli/src/install/files.ts, packages/cli/test/install-files.test.ts, packages/cli/src/install/agents.ts, packages/cli/src/install/git-hooks.ts, packages/cli/src/install/project-files.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/install-files.test.ts test/setup.test.ts test/install.test.ts
