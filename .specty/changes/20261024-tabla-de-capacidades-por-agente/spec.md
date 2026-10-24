@@ -45,7 +45,7 @@ Qué hace Specty con cada agente está repartido: `init` tiene su lista de herra
 
 ## Tareas
 
-- [ ] T1: La tabla de capacidades en core, y ARCHITECTURE desde ella
+- [x] T1: La tabla de capacidades en core, y ARCHITECTURE desde ella
   - files: packages/core/src/capabilities.ts, packages/core/src/index.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core test

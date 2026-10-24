@@ -19,6 +19,14 @@ export {
 } from "./agents-md";
 export { type Analysis, analyzeSpec } from "./analyze";
 export {
+  AGENT_CAPABILITIES,
+  type AgentCapabilities,
+  capabilityTable,
+  type GuardedAgent,
+  type GuardSurface,
+  isGuardedAgent,
+} from "./capabilities";
+export {
   blockedCard,
   changeHeader,
   deltaLine,

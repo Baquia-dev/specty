@@ -294,6 +294,21 @@ El guard solo juzga rutas que puede ubicar dentro del repositorio y que git no i
 
 Objetivo de rendimiento: p95 < 200 ms. Para acercarse, los hooks cargan solo su entrada: `main.ts` no importa nada de forma estática, y con `guard --tool <id>` o `hook <nombre>` carga `enforce/entry.ts`, que los ejecuta sin commander, los prompts, los comandos ni el servidor; cualquier otra forma de esos comandos pasa por la CLI completa. El bundle va partido en `dist/` (`specty.mjs` y sus trozos, en la misma carpeta), y un test recorre su metafile para que los hooks no vuelvan a llegar a esas partes. Core importa zod como espacio de nombres (`import * as z`), así que los bundles de la CLI y de la UI dejan fuera sus traducciones y su JSON Schema: el de la CLI pasó de 1,70 a 1,14 MB. Medido el 2026-10-24, el guard de un `Bash` bajó de 123 a 101 ms de mediana en un prototipo sin carga, y de 359 a 244 ms con la máquina cargada por otras sesiones. El resto de su tiempo son las llamadas a git. Las reglas de shell (comandos que escriben archivos, `--no-verify`, cambiar `core.hooksPath` (leerlo no), acciones humanas) son de mejor esfuerzo, porque un comando siempre se puede ofuscar. Para eso existe la capa 3. El guard también bloquea `npx specty`, `npm i specty` y sus equivalentes sin scope, porque `specty` en npm es un paquete ajeno ([ADR 0007](decisions/0007-nombre-y-organizacion.md)), y responde con el comando correcto.
 
+**Capacidades por herramienta.** La tabla `AGENT_CAPABILITIES` de `core/src/capabilities.ts` dice qué hace Specty con cada agente, y de ella salen las herramientas a las que `init` instala hooks, las que atiende el guard (el tipo `GuardTool`) y los archivos con los que se detecta cada una. Esta tabla se genera con `capabilityTable("es")`, y un test de core falla si no coincide:
+
+<!-- specty:capabilities:begin -->
+| Herramienta | Guard | Aviso tras cada comando | Tarjeta tras compactar | Worktree por nombre | Se detecta por |
+| --- | --- | --- | --- | --- | --- |
+| Claude Code | en el repositorio | sí | sí | sí | `.claude`, `CLAUDE.md` |
+| Cursor | en el repositorio | sí | — | — | `.cursor`, `.cursorrules` |
+| Codex | en la configuración del usuario | sí | — | — | `.codex` |
+| OpenCode | en la configuración del usuario | sí | — | — | `.opencode`, `opencode.json`, `opencode.jsonc` |
+| Gemini CLI | — | — | — | — | `.gemini`, `GEMINI.md` |
+| GitHub Copilot | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
+| Windsurf | — | — | — | — | `.windsurf`, `.windsurfrules` |
+| Antigravity | — | — | — | — | `.agents`, `.agent` |
+<!-- specty:capabilities:end -->
+
 **Soporte de hooks por herramienta** (revisado el 2026-10-21; se vuelve a verificar al implementar cada adaptador):
 
 | Herramienta | Evento previo a la acción | Configuración | Estado |

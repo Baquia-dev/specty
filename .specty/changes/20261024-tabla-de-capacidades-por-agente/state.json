@@ -6,6 +6,13 @@
   "branch": "specty/20261024-tabla-de-capacidades-por-agente",
   "baseCommit": "4db5a547a720f0d9080ad6bbc5b1cf9c90a63b58",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8dae7d31508d3d87b648bab132e3532211cb7df45bc7dcfe917663d6b2853697",
+    "at": "2026-10-24T15:33:14.412Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9a20f5339d3810b80a7dcf5d2d38ce8b5d259a67",
+      "startedAt": "2026-10-24T15:33:15.233Z",
+      "doneAt": "2026-10-24T15:35:08.898Z",
+      "summary": "core/src/capabilities.ts: AGENT_CAPABILITIES (markers, guard, afterShell, afterCompaction, worktreeByName) con as const satisfies, el tipo GuardedAgent derivado, isGuardedAgent y capabilityTable(lang) en Markdown. ARCHITECTURE §10 lleva la tabla generada entre marcas, y un test de core falla si no coincide."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 3,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8dae7d31508d3d87b648bab132e3532211cb7df45bc7dcfe917663d6b2853697",
-    "at": "2026-10-24T15:33:14.412Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
