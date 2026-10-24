@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261024-esfuerzo-recomendado-por-el-modelo-que-solo-sube",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-esfuerzo-recomendado-por-el-modelo-que-solo-sube",
+  "baseCommit": "f507a2a7a58ff1b3a449f8373243ad0bb0a737da",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:34e42174fe03a4128f3aa08c6761e2c44a805bad643238b4d398c3d66a07f5dd",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:56f1d9d45653488b9699e2c6d15b51248935fdf84fe97719d293df24b9d6abf0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7465aa4ff74712c06055363f765223ab7acac8ea3c4a4144efe22a5cb88b4bcd",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:75db775ab99263cc1dbbfb223833eede31af6aa70f6b9f5be78ef8312a9f7046",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:45f28f29a520ee5b2e4737d4d296b6f6efcda76e789e2b4688f0c2a503f88232",
+    "at": "2026-10-24T15:23:39.733Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
