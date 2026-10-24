@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-esfuerzo-recomendado-por-el-modelo-que-solo-sube",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-esfuerzo-recomendado-por-el-modelo-que-solo-sube",
   "baseCommit": "f507a2a7a58ff1b3a449f8373243ad0bb0a737da",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:45f28f29a520ee5b2e4737d4d296b6f6efcda76e789e2b4688f0c2a503f88232",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9594edc3268cccafd6b389b56c48f77655974c7f",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:28:02.895Z",
       "doneAt": "2026-10-24T15:30:05.585Z",
-      "summary": "formats.md §1: effort en el frontmatter y en las tareas; ARCHITECTURE §11: el esfuerzo del modelo solo sube, cómo se ve y su relación con la revisión independiente"
+      "summary": "formats.md §1: effort en el frontmatter y en las tareas; ARCHITECTURE §11: el esfuerzo del modelo solo sube, cómo se ve y su relación con la revisión independiente",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:31:53.024Z"
 }

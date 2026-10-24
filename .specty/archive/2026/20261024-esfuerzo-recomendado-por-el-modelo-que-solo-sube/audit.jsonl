@@ -11,3 +11,7 @@
 {"ts":"2026-10-24T15:28:02.895Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"9594edc3268cccafd6b389b56c48f77655974c7f"}}
 {"ts":"2026-10-24T15:30:05.578Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":96208}}
 {"ts":"2026-10-24T15:30:05.592Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats.md §1: effort en el frontmatter y en las tareas; ARCHITECTURE §11: el esfuerzo del modelo solo sube, cómo se ve y su relación con la revisión independiente"}}
+{"ts":"2026-10-24T15:31:44.735Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":92863}}
+{"ts":"2026-10-24T15:31:44.737Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T15:31:53.025Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:8848db1254f8ef04aecbf5f5a117055979c8d0b595eaf170139bd4fc618084dd","size":"L","warnings":2}}
+{"ts":"2026-10-24T15:32:55.501Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

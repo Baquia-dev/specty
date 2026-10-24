@@ -71,3 +71,23 @@ El modelo que redacta la spec puede recomendar más esfuerzo que el que calcula 
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El modelo puede recomendar más esfuerzo que el que calcula Specty, con su motivo: para la revisión de la spec y del alcance, con `effort: { review, reason }` en el frontmatter, y para cada tarea, con `effort: <nivel> — <motivo>`. El parser los lee y valida, y el serializador los escribe en forma canónica. `recommendEffort(level, spec)` y `recommendTaskEffort` toman el mayor de los dos, así que el modelo solo puede subirlo. La línea de esfuerzo de `propose` y `approve` dice «(el modelo lo sube: …)» con sus motivos, y la tarjeta de cada tarea muestra su nivel. Con la revisión en `max`, `propose` también pide la revisión independiente del ADR 0011, aunque el cambio no sea L ni XL.
+
+### Desviaciones
+
+- Ninguna. `EffortLevel` y la lista de niveles viven ahora en `spec/model.ts`, y `sizing/effort.ts` los reexporta, como decía el diseño.
+
+### Decisiones
+
+- Un nivel del modelo por debajo del calculado no se aplica ni avisa: el esfuerzo es una recomendación, no un límite.
+- La implementación del cambio es la mayor entre la de su tamaño y las de sus tareas.
+
+### Pendientes
+
+- Mostrar en la UI el esfuerzo que sube el modelo, con su motivo, cuando la UI vuelva a enseñar la pista de esfuerzo.
+- `packages/core/src/cards/work.ts` (289 líneas) y `packages/core/src/guard/decide.ts` (299) siguen pendientes de partir.
