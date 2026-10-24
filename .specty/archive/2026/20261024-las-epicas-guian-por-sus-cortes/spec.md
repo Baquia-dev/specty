@@ -70,3 +70,24 @@ Una épica aprobada queda en `implementing` para siempre: nada dispara `children
   - files: packages/cli/src/commands/accept.ts, packages/cli/src/flow/integrate.ts, packages/cli/test/epic.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC4, AC5
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+Una épica aprobada ya no se queda atascada en `implementing`. Su tarjeta (`core/cards/epic.ts`) lista los cortes con su estado y propone seguir con el corte en curso o empezar el primero listo con `specty new "<título>" --epic <id> --slice <C>`; nunca pide un `accept`. La CLI (`flow/epic.ts`) deriva el estado de cada corte de los cambios hijos, abiertos en cualquier worktree o archivados aquí y en la carpeta principal, y `next` pasa la épica a aceptación con `childrenDone` cuando todos están cerrados (`epic.slicesDone`). `new --epic --slice` rechaza, sin crear nada, el corte que no puede empezar. Aceptar una épica no ejecuta la verificación completa y su nota lista los cortes; al cerrarla se incorpora como un standard, sin verificar. El test de punta a punta recorre la épica entera, con main movida antes del cierre.
+
+### Desviaciones
+
+- `change.created` guarda ahora `epic` y `slice` en el corte de una épica: formats.md ya lo daba por hecho y el código no lo hacía.
+
+### Decisiones
+
+- El estado de los cortes no se guarda en la épica: se deriva cada vez de los cambios hijos, para tener una sola fuente de verdad. Para no leer cada spec archivada, solo se analizan las que contienen el id de la épica.
+- Un corte con un cambio cerrado y otro abierto cuenta como cerrado; un cambio cancelado no cuenta.
+- Incorporar una épica sin verificar: lo único que lleva su rama es su propia carpeta en `.specty/`.
+
+### Pendientes
+
+- Que la sesión que lleva la épica pueda entrar en la carpeta de sus cortes (la regla de una sesión por worktree): es el cambio siguiente.
+- Ver la épica y sus cortes en la UI.

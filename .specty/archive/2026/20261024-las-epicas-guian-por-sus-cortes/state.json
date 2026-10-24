@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-las-epicas-guian-por-sus-cortes",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-las-epicas-guian-por-sus-cortes",
   "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:293d65adc46237036bcb4496af1cd2d6580afdd2ec6fbbad687bc36c9cf431a9",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dc7302402af591aafa095630acc3df3c45777826",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:00:45.083Z",
       "doneAt": "2026-10-24T21:04:59.290Z",
-      "summary": "accept no verifica una épica y su nota lista los cortes; las épicas se incorporan al cerrar, sin verificar (no tienen código propio). Test de punta a punta con main movida. ARCHITECTURE §5, §6 y §9; formats.md §4 (epic.slicesDone; epic y slice en change.created)."
+      "summary": "accept no verifica una épica y su nota lista los cortes; las épicas se incorporan al cerrar, sin verificar (no tienen código propio). Test de punta a punta con main movida. ARCHITECTURE §5, §6 y §9; formats.md §4 (epic.slicesDone; epic y slice en change.created).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,5 +87,6 @@
     "A": 4,
     "AC": 5,
     "T": 4
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T21:07:15.842Z"
 }
