@@ -6,6 +6,13 @@
   "branch": "specty/20261024-la-peticion-literal-del-usuario-con-new-request",
   "baseCommit": "2d7297ea1653e1d735ec5bff6759097529685b13",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8bd4cb585f0a6921c9e86a34b4fc5632b185d84baf2431f0701eed10ea6caef1",
+    "at": "2026-10-24T10:25:51.107Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a74cfaad418252450beda989fba15fb01e90fc68",
+      "startedAt": "2026-10-24T10:25:51.610Z",
+      "doneAt": "2026-10-24T10:26:39.969Z",
+      "summary": "ChangeView.request; la tarjeta del borrador muestra «PETICIÓN DEL USUARIO» antes de la guía, y la de sin cambio pide --request y habla de archivos de código en quick"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8bd4cb585f0a6921c9e86a34b4fc5632b185d84baf2431f0701eed10ea6caef1",
-    "at": "2026-10-24T10:25:51.107Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

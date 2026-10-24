@@ -50,7 +50,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: La petición en las tarjetas
+- [x] T1: La petición en las tarjetas
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/test/cards.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts

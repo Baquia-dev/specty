@@ -61,7 +61,20 @@ describe("next cards", () => {
     ] as const) {
       expect(text(view(phase)).split("\n").at(-1), phase).toMatch(/^SIGUIENTE: .*`specty /);
     }
-    expect(text().split("\n").at(-1)).toContain('specty new "<título>"');
+    expect(text().split("\n").at(-1)).toBe(
+      'SIGUIENTE: ejecuta `specty new "<título>" --request "<petición literal del usuario>"` (añade `--kind quick` si son hasta 3 archivos de código sin rutas sensibles).',
+    );
+    const en = renderText(nextCard({ dirty: [] }, { ...ES, lang: "en" }), "en");
+    expect(en).toContain('`specty new "<title>" --request "<the user\'s literal request>"`');
+  });
+
+  it("shows the user's literal request while drafting, when there is one", () => {
+    const request = "Que el saludo use el nombre.\nY que no grite.";
+    const card = text({ ...view("draft"), request });
+    expect(card).toContain(
+      "PETICIÓN DEL USUARIO:\n  Que el saludo use el nombre.\n  Y que no grite.\nCÓMO REDACTARLA:",
+    );
+    expect(text(view("draft"))).not.toContain("PETICIÓN DEL USUARIO");
   });
 
   it("gives the task card everything for one task", () => {
