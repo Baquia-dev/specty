@@ -19,3 +19,9 @@ kind: quick
   - files: packages/cli/src/commands/task.ts, packages/cli/src/flow/task-done.ts
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+verify y complete (con ticked y withoutStatus) pasan de commands/task.ts a flow/task-done.ts como verifyTask y completeTask, sin cambiar su código; task.ts queda en 183 líneas con las comprobaciones y la tarjeta.

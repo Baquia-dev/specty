@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-dividir-task-ts-por-responsabilidad",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-dividir-task-ts-por-responsabilidad",
   "baseCommit": "f9475652d0e94e2dd260716a67becad693419ba0",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a7a24028c8e406ccd0d0d9d0d8a188f38baa31d1",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:04:25.905Z",
       "doneAt": "2026-10-24T17:07:04.866Z",
-      "summary": "verify y complete (con ticked y withoutStatus) pasan de commands/task.ts a flow/task-done.ts como verifyTask y completeTask, sin cambiar su código; task.ts queda en 183 líneas con las comprobaciones y la tarjeta."
+      "summary": "verify y complete (con ticked y withoutStatus) pasan de commands/task.ts a flow/task-done.ts como verifyTask y completeTask, sin cambiar su código; task.ts queda en 183 líneas con las comprobaciones y la tarjeta.",
+      "scopeExtra": []
     }
   },
   "pending": {
