@@ -18,6 +18,7 @@ import { historyOf } from "./history";
 import { type AuditRecord, progressOf } from "./progress";
 import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind, ReviewView } from "./records";
 import { deriveReview } from "./review";
+import { sharedFiles } from "./shared";
 
 const TABS: Readonly<Record<Phase, ChangeTab>> = {
   draft: "spec",
@@ -103,6 +104,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
           },
         }),
     ...(state.branch === undefined ? {} : { branch: state.branch }),
+    ...(record.folder === undefined ? {} : { folder: record.folder }),
     phaseSince: record.phaseSince,
     goal: spec.sections.goal ?? spec.sections.reason ?? "",
     size: {
@@ -152,6 +154,12 @@ function deltaOf(record: ChangeRecord, state: ChangeState, spec: Spec): Partial<
   return { delta: deriveDelta(spec, approved, state.approved.revision) };
 }
 
+/** Every change's view, each with the files it shares with the other open changes. */
 export function deriveViews(records: readonly ChangeRecord[]): readonly ChangeView[] {
-  return records.map(deriveView);
+  const shared = sharedFiles(records);
+  return records.map((record) => {
+    const view = deriveView(record);
+    const mine = shared.get(view.id);
+    return mine === undefined ? view : { ...view, shared: mine };
+  });
 }

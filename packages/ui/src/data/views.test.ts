@@ -85,6 +85,22 @@ describe("deriveView", () => {
     expect(view.tab).toBe("spec");
   });
 
+  it("carries the folder it lives in, and the files it shares with other open changes (AC1, AC2)", () => {
+    const folder = "/Users/ana/mi-colegio.worktrees/20261020-evolucion-trimestre";
+    expect(deriveView({ ...record(), folder }).folder).toBe(folder);
+    expect(deriveView(record()).folder).toBeUndefined();
+    const other = record({ id: "20261021-otro" }, SPEC.replace("# Agrupar", "# Otro: agrupar"));
+    const [mine, theirs] = deriveViews([record(), other]);
+    expect(mine?.shared).toEqual([
+      {
+        path: "lib/home/provider.dart",
+        changes: [{ id: "20261021-otro", title: "Otro: agrupar la evolución por trimestre" }],
+      },
+    ]);
+    expect(theirs?.shared?.[0]?.changes[0]?.id).toBe("20261020-evolucion-trimestre");
+    expect(deriveViews([record()])[0]?.shared).toBeUndefined();
+  });
+
   it("carries the approved revision: which one, when and by whom", () => {
     const at = "2026-10-21T15:02:11.000Z";
     const approved = { revision: 1, hash: HASH, at, by: "Ana Gómez", channel: "ui" } as const;

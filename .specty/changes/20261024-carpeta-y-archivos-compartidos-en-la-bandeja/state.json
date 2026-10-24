@@ -6,6 +6,13 @@
   "branch": "specty/20261024-carpeta-y-archivos-compartidos-en-la-bandeja",
   "baseCommit": "19563c089fd91e18f75719fac38d9e59d4e0eaa0",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5c1d30dda48b229bf94cfe034d3fd9b6d98a712051b236ed843cd46511e44bb9",
+    "at": "2026-10-24T10:55:52.567Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9bf13ed24cee7708d7dd1874696e84a6c41424ec",
+      "startedAt": "2026-10-24T10:55:53.078Z",
+      "doneAt": "2026-10-24T10:57:50.525Z",
+      "summary": "ChangeRecord.folder recoge la carpeta que ya envía el servidor y ChangeView.folder la pasa a la vista; data/shared.ts calcula, como cli/flow/shared.ts, los archivos gobernados (DEFAULT_CONFIG) que listan a la vez varios cambios abiertos en Archivos o en ampliaciones aprobadas, con globs en los dos sentidos y sin los cambios terminados o cancelados, y deriveViews lo añade como ChangeView.shared con el id y el título de los otros cambios"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5c1d30dda48b229bf94cfe034d3fd9b6d98a712051b236ed843cd46511e44bb9",
-    "at": "2026-10-24T10:55:52.567Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

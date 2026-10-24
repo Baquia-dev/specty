@@ -45,7 +45,7 @@ La Bandeja dice en qué carpeta (worktree) vive cada cambio y avisa cuando dos c
 
 ## Tareas
 
-- [ ] T1: La carpeta y los archivos compartidos en la vista
+- [x] T1: La carpeta y los archivos compartidos en la vista
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/shared.ts, packages/ui/src/data/shared.test.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources
