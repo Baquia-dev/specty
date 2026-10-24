@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  type CardContext,
   computeSize,
   DEFAULT_CONFIG,
+  effortLine,
   formatSizeReason,
   recommendEffort,
   recommendTaskEffort,
@@ -142,5 +144,44 @@ describe("effort", () => {
     expect(recommendTaskEffort(task(["lib/a.dart"]), DEFAULT_CONFIG)).toBe("low");
     expect(recommendTaskEffort(task(["lib/a.dart", "lib/b.dart"]), DEFAULT_CONFIG)).toBe("medium");
     expect(recommendTaskEffort(task(["lib/auth/a.dart"]), DEFAULT_CONFIG)).toBe("high");
+  });
+
+  it("lets the model raise the effort, with its reasons, and never lower it", () => {
+    const raised = specOf(
+      STANDARD.replace(
+        "kind: standard",
+        "kind: standard\neffort:\n  review: max\n  reason: Fechas ambiguas",
+      ).replace(
+        "  - verify: flutter test test/features/home\n",
+        "$&  - effort: high — toca la caché\n",
+      ),
+    );
+    expect(recommendEffort("M", raised)).toEqual({
+      plan: "max",
+      implement: "high",
+      raisedBy: ["Fechas ambiguas", "toca la caché"],
+    });
+    const ES: CardContext = {
+      lang: "es",
+      command: "specty",
+      quickMaxFiles: 3,
+      implicitTests: true,
+    };
+    expect(effortLine(recommendEffort("M", raised), ES)).toBe(
+      "ESFUERZO RECOMENDADO: implementación alto · revisiones de la spec y del alcance: máximo (el modelo lo sube: Fechas ambiguas; toca la caché)",
+    );
+    const lowered = specOf(
+      STANDARD.replace("kind: standard", "kind: standard\neffort:\n  review: low\n  reason: Fácil"),
+    );
+    expect(recommendEffort("M", lowered)).toEqual({ plan: "high", implement: "medium" });
+    const task = (level: Task["effort"]): Task => ({
+      id: "T1",
+      title: "x",
+      done: false,
+      files: ["lib/auth/a.dart"],
+      ...(level !== undefined ? { effort: level } : {}),
+    });
+    expect(recommendTaskEffort(task({ level: "max" }), DEFAULT_CONFIG)).toBe("max");
+    expect(recommendTaskEffort(task({ level: "low" }), DEFAULT_CONFIG)).toBe("high");
   });
 });

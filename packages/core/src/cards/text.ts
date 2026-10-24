@@ -24,9 +24,16 @@ export function effortLabel(level: EffortLevel, ctx: CardContext): string {
 export function effortLine(effort: EffortRecommendation, ctx: CardContext): string {
   const t = translator(ctx.lang);
   const tool = ctx.tool === undefined ? "" : ` (${AGENT_NAMES[ctx.tool]})`;
+  const reasons = effort.raisedBy?.join("; ") ?? "";
+  const raised =
+    effort.raisedBy === undefined
+      ? ""
+      : reasons.length === 0
+        ? t(" (el modelo lo sube)", " (raised by the model)")
+        : t(` (el modelo lo sube: ${reasons})`, ` (raised by the model: ${reasons})`);
   return t(
-    `ESFUERZO RECOMENDADO${tool}: implementación ${effortLabel(effort.implement, ctx)} · revisiones de la spec y del alcance: ${effortLabel(effort.plan, ctx)}`,
-    `RECOMMENDED EFFORT${tool}: implementation ${effortLabel(effort.implement, ctx)} · spec and scope reviews: ${effortLabel(effort.plan, ctx)}`,
+    `ESFUERZO RECOMENDADO${tool}: implementación ${effortLabel(effort.implement, ctx)} · revisiones de la spec y del alcance: ${effortLabel(effort.plan, ctx)}${raised}`,
+    `RECOMMENDED EFFORT${tool}: implementation ${effortLabel(effort.implement, ctx)} · spec and scope reviews: ${effortLabel(effort.plan, ctx)}${raised}`,
   );
 }
 

@@ -62,7 +62,7 @@ El modelo que redacta la spec puede recomendar más esfuerzo que el que calcula 
   - files: packages/core/src/spec/model.ts, packages/core/src/spec/frontmatter.ts, packages/core/src/spec/read-tasks.ts, packages/core/src/spec/vocabulary.ts, packages/core/src/spec/serialize.ts, packages/core/test/spec/parse.test.ts, packages/core/test/spec/arbitraries.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec
-- [ ] T2: El esfuerzo del modelo solo sube
+- [x] T2: El esfuerzo del modelo solo sube
   - files: packages/core/src/sizing/effort.ts, packages/core/src/cards/text.ts, packages/core/test/sizing/sizing.test.ts, packages/cli/src/commands/propose.ts, packages/cli/src/commands/approve.ts, packages/cli/test/review.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/review.test.ts

@@ -76,6 +76,23 @@ describe("specty review", () => {
     expect((await cli(root, ["propose"])).out).toContain("`specty approve`");
   });
 
+  it("is recommended for a small spec whose review effort the model raised to max", async () => {
+    const { command } = await reviewer();
+    const root = await repo(command);
+    const raised = SPEC.replace(
+      "kind: standard",
+      "kind: standard\neffort:\n  review: max\n  reason: El saludo cambia la API pública",
+    );
+    await writeFiles(root, { [SPEC_PATH]: raised });
+    const proposed = await cli(root, ["propose"]);
+    expect(proposed.out).toContain(
+      "revisiones de la spec y del alcance: máximo (el modelo lo sube: El saludo cambia la API pública)",
+    );
+    expect(proposed.out).toContain(
+      "SIGUIENTE: antes de pedir la aprobación, ejecuta `specty review`",
+    );
+  });
+
   it("is not recommended nor run without a review command", async () => {
     const root = await repo();
     await writeFiles(root, { [SPEC_PATH]: SENSITIVE });

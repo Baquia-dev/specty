@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "56833f0ff9de8021e930f4e5054dbee0dc02e81a",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:23:40.849Z",
       "doneAt": "2026-10-24T15:25:40.621Z",
-      "summary": "EFFORT_LEVELS y EffortLevel en spec/model.ts; frontmatter effort { review, reason } y campo de tarea effort: <nivel> — <motivo>, leídos, validados (field-invalid y frontmatter-invalid) y serializados en forma canónica; ida y vuelta con los generadores"
+      "summary": "EFFORT_LEVELS y EffortLevel en spec/model.ts; frontmatter effort { review, reason } y campo de tarea effort: <nivel> — <motivo>, leídos, validados (field-invalid y frontmatter-invalid) y serializados en forma canónica; ida y vuelta con los generadores",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8965ddc914e1211d4b5722ae264866eb2978b387",
+      "startedAt": "2026-10-24T15:25:40.898Z",
+      "doneAt": "2026-10-24T15:28:02.606Z",
+      "summary": "recommendEffort(level, spec) y recommendTaskEffort toman el máximo entre Specty y el effort del modelo, con raisedBy cuando sube; effortLine muestra «(el modelo lo sube: …)»; propose y approve pasan la spec, y una revisión en max también pide specty review"
     }
   },
   "pending": {
