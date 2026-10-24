@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-tabla-de-capacidades-por-agente",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-tabla-de-capacidades-por-agente",
   "baseCommit": "4db5a547a720f0d9080ad6bbc5b1cf9c90a63b58",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:8dae7d31508d3d87b648bab132e3532211cb7df45bc7dcfe917663d6b2853697",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f21d513f654e64493f90a87015ef40b9221d8a90",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:35:09.174Z",
       "doneAt": "2026-10-24T15:37:36.847Z",
-      "summary": "La CLI lee la tabla: GuardTool es GuardedAgent e isGuardTool usa isGuardedAgent (enforce/actions.ts); init decide a qué herramientas no instala hooks con isGuardedAgent (sin WITH_HOOKS); agentTools detecta con los markers de AGENT_CAPABILITIES. Los tests de instalación, detección y guard pasan sin tocarlos."
+      "summary": "La CLI lee la tabla: GuardTool es GuardedAgent e isGuardTool usa isGuardedAgent (enforce/actions.ts); init decide a qué herramientas no instala hooks con isGuardedAgent (sin WITH_HOOKS); agentTools detecta con los markers de AGENT_CAPABILITIES. Los tests de instalación, detección y guard pasan sin tocarlos.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,5 +65,6 @@
     "AC": 3,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:38:52.708Z"
 }

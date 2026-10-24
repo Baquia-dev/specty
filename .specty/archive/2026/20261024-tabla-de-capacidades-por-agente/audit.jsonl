@@ -7,3 +7,7 @@
 {"ts":"2026-10-24T15:35:09.174Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"f21d513f654e64493f90a87015ef40b9221d8a90"}}
 {"ts":"2026-10-24T15:37:36.719Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":58883}}
 {"ts":"2026-10-24T15:37:36.848Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"La CLI lee la tabla: GuardTool es GuardedAgent e isGuardTool usa isGuardedAgent (enforce/actions.ts); init decide a qué herramientas no instala hooks con isGuardedAgent (sin WITH_HOOKS); agentTools detecta con los markers de AGENT_CAPABILITIES. Los tests de instalación, detección y guard pasan sin tocarlos."}}
+{"ts":"2026-10-24T15:38:38.166Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":55780}}
+{"ts":"2026-10-24T15:38:38.169Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T15:38:52.709Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:078dbab961ab419de1ebf9ff5c4533864423a50ef76f58a44913d5ab2eeb1e05","size":"M","warnings":1}}
+{"ts":"2026-10-24T15:40:50.745Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
