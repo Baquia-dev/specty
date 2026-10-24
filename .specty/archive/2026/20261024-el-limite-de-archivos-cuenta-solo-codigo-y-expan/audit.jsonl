@@ -14,3 +14,8 @@
 {"ts":"2026-10-24T10:11:34.549Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"d1dad6ff1119b0e70d503a84044698130d312fc6"}}
 {"ts":"2026-10-24T10:14:29.425Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":141252}}
 {"ts":"2026-10-24T10:14:29.430Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"ARCHITECTURE §11: los globs se expanden en la CLI y el límite cuenta archivos de código, que no son tests ni documentación, aunque estos pesan en la puntuación; formats.md §1 y §6, lo mismo para split.maxFiles y lanes.quick.maxFiles"}}
+{"ts":"2026-10-24T10:16:29.951Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":114880}}
+{"ts":"2026-10-24T10:16:29.955Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T10:16:44.993Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:3bedef775bfc37be89e684d52511b3857b6d9ec8cd59f39db33e584f45b1d475","size":"L","warnings":0}}
+{"ts":"2026-10-24T10:16:50.659Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:c5b6b06b5ef2bc1adb3c06dd6d4e1ae4ee5dcb7ea44a2e58df3f31038e0c8bd7","size":"L","warnings":0}}
+{"ts":"2026-10-24T10:18:30.003Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

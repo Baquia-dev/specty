@@ -76,3 +76,26 @@ El límite de archivos de una spec (15 en standard, 3 en quick) cuenta solo los 
 ## Riesgos
 
 - R1: Un glob amplio (`src/**`) en un repositorio grande puede disparar el tamaño y obligar a dividir lo que antes pasaba. Mitigación: es lo que formats.md ya promete; el mensaje dice cuántos archivos de código cuenta, y la spec puede listar rutas explícitas.
+
+## Cierre
+
+### Resumen
+
+El límite de archivos de una spec cuenta solo archivos de código: los gobernados que no son tests. Vale para el de división (15) y su aviso, y para el del carril quick (3). Un glob cuenta como sus coincidencias actuales más una, en los límites y en la puntuación, y una ruta que también cubre un glob cuenta una vez. Core recibe las coincidencias en `RepoSignals.globMatches`; la CLI las busca con `Git.files()` (lo seguido y lo no ignorado sin seguir) solo cuando la spec tiene globs. Los mensajes dicen «N archivos de código, máximo M».
+
+### Desviaciones
+
+- T1 también tocó `test/spec/messages.test.ts` y `test/cards/delegated.test.ts`, con una ampliación de alcance aprobada sola por ser de tests: el texto del límite cambió y `SizeSignals` ganó `codeFiles`.
+- T1 cambió también el texto del límite de quick, que vive en `validate/limits.ts`, en vez de dejarlo para T2.
+- Los tests del límite de división usan un umbral L alto para aislar el límite de archivos del nivel `XL` (ver Pendientes).
+
+### Decisiones
+
+- El «más una» de un glob cuenta en el límite solo si el patrón es código gobernado que no es test, con las mismas reglas que una ruta.
+- La razón «N archivos» del tamaño sigue contando todos los archivos, con los globs expandidos, porque todos pesan en la puntuación.
+- Los manifiestos cuentan como código en el límite.
+
+### Pendientes
+
+- Con los umbrales por defecto (L hasta 18), la puntuación, que sigue sumando tests y documentación, llega a `XL` casi a la vez que el límite: 15 archivos de código en 2 módulos ya puntúan 17, y con tres tests pasa a `XL`. 8 de los cambios standard archivados puntuaron 17 o 18. Para que los tests no obliguen a dividir, habría que pesarlos menos en la puntuación; es una decisión de la persona.
+- El punto 33 b: que la persona pueda aprobar por encima de los límites de división.

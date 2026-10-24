@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-el-limite-de-archivos-cuenta-solo-codigo-y-expan",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-el-limite-de-archivos-cuenta-solo-codigo-y-expan",
   "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
-  "revision": 1,
+  "revision": 3,
   "approved": {
     "revision": 1,
     "hash": "sha256:a3b968b046b1ea6a70818e88953b2a756116709b01d21ac46fee4407d5dd1633",
@@ -78,12 +78,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d1dad6ff1119b0e70d503a84044698130d312fc6",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:11:34.548Z",
       "doneAt": "2026-10-24T10:14:29.426Z",
-      "summary": "ARCHITECTURE §11: los globs se expanden en la CLI y el límite cuenta archivos de código, que no son tests ni documentación, aunque estos pesan en la puntuación; formats.md §1 y §6, lo mismo para split.maxFiles y lanes.quick.maxFiles"
+      "summary": "ARCHITECTURE §11: los globs se expanden en la CLI y el límite cuenta archivos de código, que no son tests ni documentación, aunque estos pesan en la puntuación; formats.md §1 y §6, lo mismo para split.maxFiles y lanes.quick.maxFiles",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -95,5 +95,6 @@
     "AC": 5,
     "T": 4,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T10:16:50.657Z"
 }
