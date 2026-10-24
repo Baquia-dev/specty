@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "20261024-riesgo-segun-el-contenido-del-diff-y-el-tamano-s",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-riesgo-segun-el-contenido-del-diff-y-el-tamano-s",
+  "baseCommit": "b68f47168b95796c2942bee43190c543fecb93d9",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dcd956006806126c47e5706319f49cdbdacc368ae9c26797e7af534e0e010a61",
+    "at": "2026-10-24T11:20:36.979Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c524604bc2609409680b584d12e94f4768fc586ed36d587ebcca8e3b80944415",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a1fa52acd2a9ef32acf0a9f98d77b4b2fdf2ae2ee041bd006134c3c7c85e7318",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:490c97248752a6b4abc8d94c2f8d4dfa57f3d78a5f17cd21cf3c1b62d87e035b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e9e59020dddc3346ff96ac9749c97244ea792ddb4175c549dcdba076089015de",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2fc4ae76257a0e509f56bea250f5567aa205a9d5",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:20:38.169Z",
+      "doneAt": "2026-10-24T11:22:38.775Z",
+      "summary": "scope/risk.ts: catálogo de 10 reglas de contenido con su CWE (TLS, eval, exec de Python, deserialización, shell, hash débil, CORS, permisos, secretos, HTML sin escapar), modo 755 y rutas de riesgo; contentRisks lee un diff -U0 con números de línea y se salta los tests; riskLabel en es/en",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d6e90339395012957d5e830eeedbc3b488b8eb90",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:22:39.880Z",
+      "doneAt": "2026-10-24T11:24:11.419Z",
+      "summary": "TaskView.risks; riskWarnings da una línea por hallazgo con ruta, línea, texto y CWE; la tarjeta de aceptación junta en AVISOS las aserciones quitadas y los riesgos, cada grupo con su indicación para el usuario",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e3a5e25a4d3de89de5f71913df103eda5318477f",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:24:12.406Z",
+      "doneAt": "2026-10-24T11:27:26.515Z",
+      "summary": "flow/risk.ts arma un árbol con el trabajo actual de los archivos gobernados (treeWith) y analiza git diff -U0 -M base..árbol, archivos nuevos incluidos; task done lo guarda en task.completed (risks) y lo avisa en AVISOS junto a las aserciones; changeView valida los riesgos de la auditoría con isRiskRule; accept los añade a su nota",
+      "scopeExtra": [
+        "packages/core/src/scope/risk.ts",
+        "packages/core/src/index.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "c599d68a126fe18598d71bda3a78fdab8bacc03e",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:27:27.023Z",
+      "doneAt": "2026-10-24T11:30:15.923Z",
+      "summary": "computeSize solo aplica adjust: 1; un -1 queda en las razones como «sin aplicar: el tamaño solo puede subir», y un XL que intenta bajarse sigue pidiendo dividirse; ARCHITECTURE §7 y §11 y formats.md §1 y §4: el catálogo de riesgos, risks y el ajuste que solo sube",
+      "scopeExtra": [
+        "packages/core/test/spec/messages.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-24T11:31:55.086Z"
+}

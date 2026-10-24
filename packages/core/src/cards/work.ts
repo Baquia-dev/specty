@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { counted, type Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
+import { riskLabel } from "../scope/risk";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
 
@@ -114,30 +115,49 @@ export function assertionWarnings(tasks: readonly TaskView[], lang: Lang): strin
   );
 }
 
+/** One line per risky finding of a task's diff: for the agent's card and the person. */
+export function riskWarnings(tasks: readonly TaskView[], lang: Lang): string[] {
+  return tasks.flatMap((task) =>
+    (task.risks ?? []).map(
+      (risk) =>
+        `${task.id}: ${risk.path}${risk.line === undefined ? "" : `:${risk.line}`} ${riskLabel(risk.rule, lang)}${risk.cwe === undefined ? "" : ` (${risk.cwe})`}.`,
+    ),
+  );
+}
+
 export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const done = change.tasks.map(
     (task) =>
       `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
   );
-  const warnings = assertionWarnings(change.tasks, ctx.lang);
+  const assertions = assertionWarnings(change.tasks, ctx.lang);
+  const risks = riskWarnings(change.tasks, ctx.lang);
   return {
     status: "ok",
     header: headerOf(change.id, "acceptance"),
     blocks: [
       ...section(t("TAREAS HECHAS", "DONE TASKS"), done),
-      ...section(
-        t("AVISOS", "WARNINGS"),
-        warnings.length === 0
+      ...section(t("AVISOS", "WARNINGS"), [
+        ...assertions,
+        ...(assertions.length === 0
           ? []
           : [
-              ...warnings,
               t(
                 "Cuéntaselo al usuario antes de que acepte: un test debilitado puede ocultar un fallo.",
                 "Tell the user before they accept: a weakened test can hide a defect.",
               ),
-            ],
-      ),
+            ]),
+        ...risks,
+        ...(risks.length === 0
+          ? []
+          : [
+              t(
+                "Revísalo con el usuario antes de que acepte: son patrones de riesgo conocidos, no fallos seguros.",
+                "Review them with the user before they accept: they are known risky patterns, not sure defects.",
+              ),
+            ]),
+      ]),
     ],
     next:
       ctx.delegated === true

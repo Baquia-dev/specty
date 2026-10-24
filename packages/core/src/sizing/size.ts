@@ -44,6 +44,7 @@ export type SizeReason =
     }
   | { readonly code: "dependencies" }
   | { readonly code: "no-tests"; readonly modules: readonly string[] }
+  /** The model's `estimate`: `+1` applies, `-1` is shown as not applied. */
   | { readonly code: "adjusted"; readonly adjust: -1 | 1; readonly reason: string };
 
 export interface SizeResult {
@@ -107,7 +108,7 @@ export function collectSignals(
   };
 }
 
-/** Deterministic size of a change; the model may shift it one level through `estimate`. */
+/** Deterministic size of a change; the model may raise it one level through `estimate`. */
 export function computeSize(
   spec: Spec,
   config: ResolvedConfig,
@@ -127,7 +128,8 @@ export function computeSize(
     2 * signals.modulesWithoutTests.length;
   const baseLevel = levelFor(score, config.size);
   const estimate = spec.frontmatter.estimate;
-  const adjust = estimate?.adjust ?? 0;
+  // The model may only raise the size: lowering it could dodge the split of an XL change.
+  const adjust = estimate?.adjust === 1 ? 1 : 0;
   const when = (condition: boolean, reason: SizeReason): SizeReason[] =>
     condition ? [reason] : [];
   const reasons: SizeReason[] = [
@@ -173,10 +175,13 @@ export function formatSizeReason(reason: SizeReason, lang: Lang): string {
       return es ? "cambia dependencias" : "changes dependencies";
     case "no-tests":
       return `${es ? "sin tests en" : "no tests in"} ${reason.modules.join(", ")}`;
-    case "adjusted": {
-      const signed = reason.adjust > 0 ? "+1" : "-1";
-      return `${es ? "ajuste del modelo" : "model adjustment"} (${signed}): ${reason.reason}`;
-    }
+    case "adjusted":
+      if (reason.adjust < 0) {
+        return es
+          ? "ajuste del modelo (-1) sin aplicar: el tamaño solo puede subir"
+          : "model adjustment (-1) not applied: the size can only go up";
+      }
+      return `${es ? "ajuste del modelo" : "model adjustment"} (+1): ${reason.reason}`;
   }
 }
 

@@ -3,6 +3,7 @@ import type { AgentTool } from "../agents";
 import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
 import type { AssertionLoss } from "../scope/assertions";
+import type { RiskFinding } from "../scope/risk";
 import type { EffortLevel } from "../sizing/effort";
 import type { ChangeKind } from "../spec/model";
 import type { TestRules } from "../validate/quality";
@@ -41,6 +42,8 @@ export interface TaskView {
   readonly testRules?: TestRules;
   /** Assertions the task removed from tests that existed at its base commit. */
   readonly removedAssertions?: readonly AssertionLoss[];
+  /** Known risky content the task added, from its diff. */
+  readonly risks?: readonly RiskFinding[];
 }
 
 export interface ScopeRequestView {

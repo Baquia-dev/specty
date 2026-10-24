@@ -12,6 +12,8 @@ import {
   type Output,
   outOfScopeCard,
   parseSpec,
+  type RiskFinding,
+  riskWarnings,
   type Spec,
   scopeRulesFrom,
   section,
@@ -27,6 +29,7 @@ import {
 import { commitState, resolveActive } from "../flow/active";
 import { assertionLosses } from "../flow/assertions";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
+import { riskFindings } from "../flow/risk";
 import { changeView, taskVerification } from "../flow/views";
 import { execute, tail } from "../io/exec";
 import { writeText } from "../io/files";
@@ -115,16 +118,20 @@ export async function taskDone(session: Session, taskId: string, summary: string
   if (!verified.ok)
     return verifyFailedCard(header, id, verified.command, verified.code, verified.tail, cards);
 
-  const removed = await assertionLosses(session, stored?.baseCommit, changed);
-  const done = await complete(session, verified.change, spec, task, summary.trim(), removed);
+  const findings: Findings = {
+    removedAssertions: await assertionLosses(session, stored?.baseCommit, changed),
+    risks: await riskFindings(session, stored?.baseCommit, changed),
+  };
+  const done = await complete(session, verified.change, spec, task, summary.trim(), findings);
   const following =
     done.state.phase === "implementing" ? await activateNextTask(session, done) : done;
   const view = await changeView(session, following);
   const card = nextCard({ change: view, dirty: [] }, cards);
-  const warnings = assertionWarnings(
-    view.tasks.filter((item) => item.id === id),
-    session.lang,
-  );
+  const finished = view.tasks.filter((item) => item.id === id);
+  const warnings = [
+    ...assertionWarnings(finished, session.lang),
+    ...riskWarnings(finished, session.lang),
+  ];
   return withLead(
     t(`${id} completada: commit ${done.commit}.`, `${id} done: commit ${done.commit}.`),
     warnings.length === 0
@@ -143,6 +150,12 @@ export async function taskDone(session: Session, taskId: string, summary: string
           ],
         },
   );
+}
+
+/** What the task's diff shows the person on acceptance; `task.completed` keeps what is there. */
+interface Findings {
+  readonly removedAssertions: readonly AssertionLoss[];
+  readonly risks: readonly RiskFinding[];
 }
 
 type Verification =
@@ -208,7 +221,7 @@ async function complete(
   spec: Spec,
   task: Task,
   summary: string,
-  removed: readonly AssertionLoss[],
+  findings: Findings,
 ): Promise<StoredChange & { readonly commit: string }> {
   const { state } = change;
   const now = session.environment.now().toISOString();
@@ -237,7 +250,10 @@ async function complete(
   const updated = await commitState(session, change, { ...state, phase, tasks }, "task.completed", {
     task: task.id,
     summary,
-    ...(removed.length > 0 ? { removedAssertions: removed } : {}),
+    ...(findings.removedAssertions.length > 0
+      ? { removedAssertions: findings.removedAssertions }
+      : {}),
+    ...(findings.risks.length > 0 ? { risks: findings.risks } : {}),
   });
   const relativeDir = session.paths.relative(change.files.dir);
   const scope = moduleOf(task.files[0] ?? "");

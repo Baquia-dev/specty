@@ -78,7 +78,7 @@ describe("size and limit texts", () => {
       "2 archivos muy importados",
       "cambia dependencias",
       "sin tests en home, grades",
-      "ajuste del modelo (-1): solo copia",
+      "ajuste del modelo (-1) sin aplicar: el tamaño solo puede subir",
     ]);
     expect(reasons.map((reason) => formatSizeReason(reason, "en"))).toEqual([
       "1 file",
@@ -88,7 +88,7 @@ describe("size and limit texts", () => {
       "2 widely imported files",
       "changes dependencies",
       "no tests in home, grades",
-      "model adjustment (-1): solo copia",
+      "model adjustment (-1) not applied: the size can only go up",
     ]);
   });
 
