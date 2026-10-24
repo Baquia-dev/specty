@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261023-la-ui-lee-del-servidor-local",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-la-ui-lee-del-servidor-local",
   "baseCommit": "37e89bf9a07616ee2f6d6d36d66b9e613c88e513",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5f64b1ffd00332da2436114c3e47173186f5bbb5b4b1fa54ceaf4b3d48aa84aa",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02c6018df900753c3b9d9bf376b17b6792ebdb7b",
+      "attempts": 1,
       "startedAt": "2026-10-24T04:51:22.177Z",
       "doneAt": "2026-10-24T04:56:31.339Z",
-      "summary": "main.ts arranca Angular con la fuente que elige dataSource(document): ServerData con la marca de specty ui y, si no, FixtureData cargada bajo demanda (la carga inicial baja de 665 a 632 kB); ARCHITECTURE §15 lo cuenta; probado con specty ui sobre este repo: página marcada, script servido y las vistas de los 72 cambios reales derivadas sin fallos"
+      "summary": "main.ts arranca Angular con la fuente que elige dataSource(document): ServerData con la marca de specty ui y, si no, FixtureData cargada bajo demanda (la carga inicial baja de 665 a 632 kB); ARCHITECTURE §15 lo cuenta; probado con specty ui sobre este repo: página marcada, script servido y las vistas de los 72 cambios reales derivadas sin fallos",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "AC": 2,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T04:57:43.925Z"
 }

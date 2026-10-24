@@ -7,3 +7,6 @@
 {"ts":"2026-10-24T04:51:22.177Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"02c6018df900753c3b9d9bf376b17b6792ebdb7b"}}
 {"ts":"2026-10-24T04:56:31.338Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":71068}}
 {"ts":"2026-10-24T04:56:31.341Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"main.ts arranca Angular con la fuente que elige dataSource(document): ServerData con la marca de specty ui y, si no, FixtureData cargada bajo demanda (la carga inicial baja de 665 a 632 kB); ARCHITECTURE §15 lo cuenta; probado con specty ui sobre este repo: página marcada, script servido y las vistas de los 72 cambios reales derivadas sin fallos"}}
+{"ts":"2026-10-24T04:57:28.344Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T04:57:43.927Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:6b333944f560a0243eed23af51abe59b7f3769ba2ff3df7835c95cbf96f07d65","size":"M","warnings":1}}
+{"ts":"2026-10-24T04:57:56.711Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

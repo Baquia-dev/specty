@@ -55,3 +55,23 @@ Cuando la sirve `specty ui`, la UI muestra los cambios reales de todas las workt
 ## Riesgos
 
 - R1: La marca no llega si alguien sirve la UI de otra forma — entonces la UI usa los datos de ejemplo, como hoy.
+
+## Cierre
+
+### Resumen
+
+Servida por `specty ui`, la UI lee los cambios reales de todas las worktrees con `ServerData` (`/api/changes`) y los vuelve a leer con cada evento `changes`; fuera del servidor sigue con los datos de ejemplo, que ahora solo se cargan entonces, así que la carga inicial bajó de 665 a 632 kB. Sin sesión, la Bandeja pide abrir el enlace que imprime `specty ui`, y sus errores de carga salen en el idioma de la persona. Probado contra este repositorio: la página llega marcada, el script se sirve y la UI deriva las vistas de sus 72 cambios reales sin fallos.
+
+### Desviaciones
+
+- La lógica de elegir la fuente quedó en `data/server.ts` (`dataSource`), con sus tests, y `main.ts` solo la llama: así T2, que no tenía tests, no deja lógica sin probar.
+
+### Decisiones
+
+- La respuesta del servidor se comprueba por encima (lista con `spec`, `state` y `phaseSince`) y no con el parser de core, que no debe llegar a la carga inicial.
+- El presupuesto de 500 kB sin comprimir de `angular.json` ya se superaba antes (665 kB); este cambio lo reduce, y en transferencia la carga inicial son 130 kB, dentro de los 300 KB gzip de `ui.md`.
+
+### Pendientes
+
+- Incluir la UI construida en el paquete de npm del CLI.
+- Las acciones desde la UI, cuando el servidor las tenga.
