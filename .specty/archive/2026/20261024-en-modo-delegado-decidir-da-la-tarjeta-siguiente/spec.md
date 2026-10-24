@@ -39,3 +39,22 @@ En modo delegado, el agente toma las decisiones de la persona (aprobar, decidir 
   - files: packages/cli/src/commands/next.ts, packages/cli/src/commands/approve.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/src/commands/accept.ts, packages/cli/test/delegate.test.ts, packages/cli/test/friction.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+Cuando el agente toma en modo delegado una decisión de la persona (aprobar la spec, rechazar supuestos, decidir una solicitud de alcance o aceptar el resultado), `thenNext` añade a su salida, debajo de la decisión, la tarjeta que daría `specty next`, con su SIGUIENTE. Las decisiones de la persona en su terminal, y las que no salen bien, quedan como estaban. El cambio standard en modo delegado pasa de 11 a 9 comandos del agente; la línea base de fricción y ARCHITECTURE §16 lo reflejan.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Se envuelven las cuatro salidas de decisión, no los comandos enteros: así una confirmación de retro o una aprobación pospuesta no traen una tarjeta que no toca.
+- Lo que sigue lo calcula el mismo `next`: activa la tarea, o pasa una épica a aceptación, igual que si el agente lo ejecutara.
+
+### Pendientes
+
+- Ninguno.

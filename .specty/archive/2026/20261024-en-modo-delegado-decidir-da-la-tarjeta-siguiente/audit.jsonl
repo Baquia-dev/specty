@@ -4,3 +4,6 @@
 {"ts":"2026-10-24T21:46:35.977Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"0cd680e403a5c76e3a2971e86764c1add1d26471"}}
 {"ts":"2026-10-24T21:50:25.470Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":74229,"tree":"sha256:ab0d5b1d5cda2c6a147efad3d2717b2af5387e8421410cc3300d18b0d055ba70"}}
 {"ts":"2026-10-24T21:50:25.625Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"thenNext (commands/next.ts): cuando el agente toma en modo delegado una decisión de la persona (aprobar, rechazar supuestos, decidir el alcance, aceptar), su salida trae la decisión y la tarjeta de next. Delegado: 9 comandos del agente en vez de 11. ARCHITECTURE §16."}}
+{"ts":"2026-10-24T21:50:34.629Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T21:50:47.697Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:c13a1dbf4b56278eed7ad5d239cd6a5831f9dbd230f1ca7527eee9c61409071c","size":"M","warnings":1}}
+{"ts":"2026-10-24T21:52:03.400Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-en-modo-delegado-decidir-da-la-tarjeta-siguiente",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-en-modo-delegado-decidir-da-la-tarjeta-siguiente",
   "baseCommit": "6b0d02db7d5090fdbfdf1d82fc9c0b5022b66ae3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:567b78452b0c99cdd61dfb9c6d918b4600957b74bd791756bd8ad134bf3a5fce",
@@ -30,12 +30,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0cd680e403a5c76e3a2971e86764c1add1d26471",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:46:35.975Z",
       "doneAt": "2026-10-24T21:50:25.623Z",
-      "summary": "thenNext (commands/next.ts): cuando el agente toma en modo delegado una decisión de la persona (aprobar, rechazar supuestos, decidir el alcance, aceptar), su salida trae la decisión y la tarjeta de next. Delegado: 9 comandos del agente en vez de 11. ARCHITECTURE §16."
+      "summary": "thenNext (commands/next.ts): cuando el agente toma en modo delegado una decisión de la persona (aprobar, rechazar supuestos, decidir el alcance, aceptar), su salida trae la decisión y la tarjeta de next. Delegado: 9 comandos del agente en vez de 11. ARCHITECTURE §16.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -46,5 +46,6 @@
     "A": 1,
     "AC": 3,
     "T": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T21:50:47.695Z"
 }
