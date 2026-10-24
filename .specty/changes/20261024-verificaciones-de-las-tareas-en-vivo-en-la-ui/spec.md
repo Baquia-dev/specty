@@ -47,7 +47,7 @@ Mientras el agente ejecuta `specty task done`, la UI que sirve `specty ui` muest
 
 ## Tareas
 
-- [ ] T1: task done deja su verificación en vivo
+- [x] T1: task done deja su verificación en vivo
   - files: packages/cli/src/io/exec.ts, packages/cli/src/store/runs.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/commands/task.ts, packages/cli/test/live-run.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/live-run.test.ts test/commands.test.ts && pnpm sources

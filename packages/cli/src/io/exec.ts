@@ -8,6 +8,8 @@ export interface ExecOptions {
   readonly timeoutMs?: number;
   /** Run `command` through the system shell (verification commands are shell strings). */
   readonly shell?: boolean;
+  /** Hears each piece of stdout and stderr as it comes, for a live view of the output. */
+  readonly onOutput?: (stream: "stdout" | "stderr", text: string) => void;
 }
 
 export interface ExecResult {
@@ -39,10 +41,14 @@ export function execute(
     let timedOut = false;
     const keep = (text: string) => (text.length > MAX_OUTPUT ? text.slice(-MAX_OUTPUT) : text);
     child.stdout.on("data", (chunk: Buffer) => {
-      stdout = keep(stdout + chunk.toString("utf8"));
+      const text = chunk.toString("utf8");
+      stdout = keep(stdout + text);
+      options.onOutput?.("stdout", text);
     });
     child.stderr.on("data", (chunk: Buffer) => {
-      stderr = keep(stderr + chunk.toString("utf8"));
+      const text = chunk.toString("utf8");
+      stderr = keep(stderr + text);
+      options.onOutput?.("stderr", text);
     });
     const timer =
       options.timeoutMs === undefined

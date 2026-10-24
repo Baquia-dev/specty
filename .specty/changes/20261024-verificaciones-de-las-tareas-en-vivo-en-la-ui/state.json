@@ -6,6 +6,13 @@
   "branch": "specty/20261024-verificaciones-de-las-tareas-en-vivo-en-la-ui",
   "baseCommit": "e864e063e6ad25c932ea4e2d2da4654d881e6f2a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:338ad5eb88f7d236ed886da9f55ba48c6380ba41951c497bc62802debc02d3c0",
+    "at": "2026-10-24T15:25:41.070Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8a4e1765db39c1a450091929cc48c4c0ea2079d7",
+      "startedAt": "2026-10-24T15:25:41.497Z",
+      "doneAt": "2026-10-24T15:27:22.119Z",
+      "summary": "execute acepta onOutput; store/runs.ts escribe, lee y borra las ejecuciones en curso en common/specty/runs/<cambio>.json (tarea, comando, inicio, últimas líneas y pid); flow/live-run.ts runLive verifica una tarea reescribiendo ese archivo como mucho cada 250 ms y lo borra al terminar, pase o falle; task done verifica con runLive"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:338ad5eb88f7d236ed886da9f55ba48c6380ba41951c497bc62802debc02d3c0",
-    "at": "2026-10-24T15:25:41.070Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
