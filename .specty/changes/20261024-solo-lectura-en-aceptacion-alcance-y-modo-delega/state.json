@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261024-solo-lectura-en-aceptacion-alcance-y-modo-delega",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-solo-lectura-en-aceptacion-alcance-y-modo-delega",
+  "baseCommit": "2b3fb269b541dd6522c7acd891af403f2de63aa7",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5c50457f098926502ed3a5427bbda48d5233ef431cd4741af548f5c32fb0cf5d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 5,
+    "T": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:583d8e0354263860188bc17ceeef493a71562709df029e18ab05eeeb816f16b4",
+    "at": "2026-10-24T10:29:41.861Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
