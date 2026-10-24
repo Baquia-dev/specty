@@ -175,7 +175,7 @@ export const TYPES_WITHOUT_CRITERIA: ReadonlySet<CommitType> = new Set([
   "chore",
 ]);
 
-export const TASK_FIELDS: readonly string[] = ["files", "ac", "verify", "type", "notes"];
+export const TASK_FIELDS: readonly string[] = ["files", "ac", "verify", "type", "notes", "effort"];
 export const SLICE_FIELDS: readonly string[] = ["ac", "depends"];
 
 function isSectionKey(key: string): key is SectionKey {

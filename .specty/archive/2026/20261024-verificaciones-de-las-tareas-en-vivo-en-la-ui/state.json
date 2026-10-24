@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261024-verificaciones-de-las-tareas-en-vivo-en-la-ui",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-verificaciones-de-las-tareas-en-vivo-en-la-ui",
+  "baseCommit": "e864e063e6ad25c932ea4e2d2da4654d881e6f2a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:338ad5eb88f7d236ed886da9f55ba48c6380ba41951c497bc62802debc02d3c0",
+    "at": "2026-10-24T15:25:41.070Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:193d7576ccfb0f026deb9f8e465f83e4aa2efed2bfd2ed44ca7fb287ab2f1c43",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:16b1dbd83d610c49536eb5f5294a7847a6249862ac735e93b9a3ba333514f135",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8a4e1765db39c1a450091929cc48c4c0ea2079d7",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:25:41.497Z",
+      "doneAt": "2026-10-24T15:27:22.119Z",
+      "summary": "execute acepta onOutput; store/runs.ts escribe, lee y borra las ejecuciones en curso en common/specty/runs/<cambio>.json (tarea, comando, inicio, últimas líneas y pid); flow/live-run.ts runLive verifica una tarea reescribiendo ese archivo como mucho cada 250 ms y lo borra al terminar, pase o falle; task done verifica con runLive",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "32b76f474fbe2c5ed5333cffe3e4f15f000ce623",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:27:22.736Z",
+      "doneAt": "2026-10-24T15:32:35.600Z",
+      "summary": "server/runs.ts lee cada medio segundo los archivos de las tareas (taskRuns): emite run con su tarea cuando cambian y run: null cuando desaparecen, current los da si no corre una verificación completa (que tiene prioridad y calla los de la tarea mientras corre), y borra sin mostrarlo el archivo de un proceso que ya no existe. verify.test.ts espera el final de la verificación completa tras su primer evento, porque los run: null de las tareas pueden llegar antes",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "2cc573668364e49fd3e230e3e869eb04e699e2b7",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:32:36.303Z",
+      "doneAt": "2026-10-24T15:34:01.124Z",
+      "summary": "ARCHITECTURE §15: la verificación de las tareas en vivo (el archivo de specty/runs/, cada cuánto se escribe y se lee, la prioridad de la completa y los procesos que ya no existen); docs/ui.md (Progreso): con el servidor, la salida en vivo es la de specty task done",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T15:35:13.792Z"
+}

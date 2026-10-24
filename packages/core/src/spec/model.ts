@@ -65,6 +65,22 @@ export const COMMIT_TYPES: readonly CommitType[] = [
   "style",
 ];
 
+/** Neutral effort levels; the CLI maps them to each tool's settings. */
+export const EFFORT_LEVELS = ["low", "medium", "high", "max"] as const;
+export type EffortLevel = (typeof EFFORT_LEVELS)[number];
+
+/** The model's effort for one task, which can only raise Specty's: `effort: high — reason`. */
+export interface TaskEffort {
+  readonly level: EffortLevel;
+  readonly reason?: string;
+}
+
+/** The model's effort for reviewing the spec and the scope, which can only raise Specty's. */
+export interface ReviewEffort {
+  readonly review: EffortLevel;
+  readonly reason: string;
+}
+
 export interface Assumption {
   readonly id: string;
   readonly text: string;
@@ -99,6 +115,7 @@ export interface Task {
   readonly verify?: string;
   readonly type?: CommitType;
   readonly notes?: string;
+  readonly effort?: TaskEffort;
 }
 
 export interface Slice {
@@ -127,6 +144,7 @@ export interface Frontmatter {
   readonly dependsOn: readonly string[];
   readonly timebox?: string;
   readonly estimate?: Estimate;
+  readonly effort?: ReviewEffort;
 }
 
 export interface SpecSections {

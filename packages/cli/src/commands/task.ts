@@ -29,9 +29,10 @@ import {
 import { commitState, resolveActive } from "../flow/active";
 import { assertionLosses } from "../flow/assertions";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
+import { runLive } from "../flow/live-run";
 import { riskFindings } from "../flow/risk";
 import { changeView, taskVerification } from "../flow/views";
-import { execute, tail } from "../io/exec";
+import { tail } from "../io/exec";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -187,12 +188,8 @@ async function verify(session: Session, change: StoredChange, task: Task): Promi
     `specty: ${translator(session.lang)("verificando", "verifying")} \`${command}\`…`,
   );
   const started = Date.now();
-  const result = await execute(command, [], {
-    cwd: session.root,
-    shell: true,
-    env: session.environment.env,
-    timeoutMs: session.config.verify.timeoutSec * 1000,
-  });
+  // Live while it runs, so the local server can show it.
+  const result = await runLive(session, change.state.id, task.id, command);
   const passed = result.code === 0;
   const output = tail(result);
   const stored = change.state.tasks[task.id];

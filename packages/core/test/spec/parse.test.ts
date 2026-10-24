@@ -115,4 +115,26 @@ describe("parseSpec", () => {
     expect(files("- renombrar src/a.ts — sin destino")).toEqual(["file-rename-target"]);
     expect(files("- crear src/a.ts\n- modificar src/a.ts")).toEqual(["file-duplicate:src/a.ts"]);
   });
+
+  it("reads the effort the model recommends, for the review and for each task", () => {
+    const text = MINIMAL.replace(
+      "kind: quick",
+      "kind: quick\neffort:\n  review: max\n  reason: Toca la caché compartida",
+    );
+    const tasks =
+      "\n## Tareas\n\n- [ ] T1: x\n  - effort: high — reescribe el índice\n- [ ] T2: y\n  - effort: medium\n";
+    const { spec, diagnostics } = parseSpec(`${text}${tasks}`);
+    expect(diagnostics).toEqual([]);
+    expect(spec.frontmatter.effort).toEqual({ review: "max", reason: "Toca la caché compartida" });
+    expect(spec.sections.tasks?.items.map((task) => task.effort)).toEqual([
+      { level: "high", reason: "reescribe el índice" },
+      { level: "medium" },
+    ]);
+    expect(codes(`${MINIMAL}\n## Tareas\n\n- [ ] T1: x\n  - effort: enorme\n`)).toEqual([
+      "field-invalid:T1",
+    ]);
+    expect(codes(MINIMAL.replace("kind: quick", "kind: quick\neffort:\n  review: max"))).toEqual([
+      "frontmatter-invalid",
+    ]);
+  });
 });

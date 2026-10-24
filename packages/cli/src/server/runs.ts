@@ -5,9 +5,14 @@ import { locateChanges } from "../flow/changes";
 import { recordFullVerification } from "../flow/verified";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
+import { clearRun, readRuns } from "../store/runs";
 
-/** A full verification going on: its command, when it started and its output so far. */
+/**
+ * A verification going on: its command, when it started and its output so far. One with a task is
+ * that task's, run by `specty task done` in another process; one without is the full one.
+ */
 export interface Run {
+  readonly task?: string;
   readonly command: string;
   readonly startedAt: string;
   /** Its last lines, oldest first. */
@@ -15,7 +20,7 @@ export interface Run {
 }
 
 export interface Runs {
-  /** The full verification of change `id` going on now, if any. */
+  /** The verification of change `id` going on now, the full one first, if any. */
   current(id: string): Run | undefined;
   /** Starts the full verification of change `id` in its folder; the answer says whether it did. */
   start(id: string): Promise<Output>;
@@ -27,6 +32,8 @@ export interface Runs {
 const KEPT = 1000;
 /** At most this often, in milliseconds, the listener hears a run that moves. */
 const EVERY = 250;
+/** How often, in milliseconds, the server looks at the tasks' verifications in other processes. */
+const TASKS_EVERY = 500;
 
 /**
  * The full verifications the person starts from the UI, one per change: `verify.full` runs with
@@ -39,6 +46,9 @@ export function changeRuns(
 ): Runs {
   const going = new Map<string, { run: Run; stop: () => void }>();
   let closing = false;
+  const tasks = taskRuns(session, (id, run) => {
+    if (!going.has(id)) heard(id, run);
+  });
 
   function run(id: string, there: Session, change: StoredChange, command: string): void {
     const started = Date.now();
@@ -97,7 +107,7 @@ export function changeRuns(
   }
 
   return {
-    current: (id) => going.get(id)?.run,
+    current: (id) => going.get(id)?.run ?? tasks.current(id),
     async start(id) {
       const t = translator(session.lang);
       const found = (await locateChanges(session)).find(({ change }) => change.state.id === id);
@@ -153,7 +163,64 @@ export function changeRuns(
     },
     close() {
       closing = true;
+      tasks.close();
       for (const { stop } of going.values()) stop();
     },
   };
+}
+
+/**
+ * The tasks' verifications that `specty task done` keeps live in other processes
+ * (`store/runs.ts`), looked at every half second: `heard` gets each one that moves, and
+ * `undefined` once its file is gone. A file whose process no longer exists is removed unseen.
+ */
+function taskRuns(
+  session: Session,
+  heard: (id: string, run: Run | undefined) => void,
+): { current(id: string): Run | undefined; close(): void } {
+  let runs = new Map<string, Run>();
+  const said = new Map<string, string>();
+  const look = async () => {
+    const now = new Map<string, Run>();
+    for (const [id, live] of await readRuns(session.git)) {
+      if (!alive(live.pid)) {
+        await clearRun(session.git, id);
+        continue;
+      }
+      const { task, command, startedAt, output } = live;
+      now.set(id, { task, command, startedAt, output });
+    }
+    runs = now;
+    for (const [id, run] of now) {
+      const text = JSON.stringify(run);
+      if (said.get(id) !== text) heard(id, run);
+      said.set(id, text);
+    }
+    for (const id of [...said.keys()].filter((known) => !now.has(known))) {
+      said.delete(id);
+      heard(id, undefined);
+    }
+  };
+  let looking = false;
+  const timer = setInterval(() => {
+    if (looking) return;
+    looking = true;
+    look()
+      .catch(() => undefined)
+      .finally(() => {
+        looking = false;
+      });
+  }, TASKS_EVERY);
+  timer.unref();
+  return { current: (id) => runs.get(id), close: () => clearInterval(timer) };
+}
+
+/** Whether process `pid` still exists: one that only refuses signals from us does. */
+function alive(pid: number): boolean {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return error instanceof Error && "code" in error && error.code === "EPERM";
+  }
 }

@@ -15,6 +15,21 @@ async function audit(root: string): Promise<Readonly<Record<string, unknown>>[]>
     .map((line) => JSON.parse(line));
 }
 
+/**
+ * Waits for the full verification of `command` to end: its first event, then a `run: null` after
+ * it. The tasks' own runs (`task done`) also end with `run: null`, but only before it starts.
+ */
+async function fullEnds(events: ReturnType<typeof listen>, command: string) {
+  const mark = `"command":${JSON.stringify(command)}`;
+  await events.until(({ data }) => data.includes(mark));
+  const from = events.heard.findIndex(({ data }) => data.includes(mark));
+  const ended = () =>
+    events.heard
+      .slice(from)
+      .some(({ name, data }) => name === "run" && data.endsWith('"run":null}'));
+  await events.until(ended);
+}
+
 describe("the full verification from the local server", () => {
   it("runs in the change's folder, live, and its result goes to the audit (AC1, AC2, AC4)", async () => {
     const { root, server, headers } = await serving(true, withFull(SLOW));
@@ -33,10 +48,10 @@ describe("the full verification from the local server", () => {
         409,
         true,
       ]);
-      await events.until(({ name, data }) => name === "run" && data.endsWith('"run":null}'));
+      await fullEnds(events, SLOW);
       const runs = events.heard.filter(({ name }) => name === "run").map(({ data }) => data);
       expect(runs.some((data) => data.includes('"output":["uno"]'))).toBe(true);
-      expect(runs[0]).toContain(`"change":"${CHANGE}"`);
+      expect(runs.every((data) => data.includes(`"change":"${CHANGE}"`))).toBe(true);
       expect((await audit(root)).at(-1)).toMatchObject({
         actor: "specty",
         event: "change.verified",
@@ -59,7 +74,7 @@ describe("the full verification from the local server", () => {
       expect(missing.body).toContain("No hay ningún cambio 20990101-nada.");
       await implemented(root, "1\n", "2\n");
       expect((await call(server.port, path("verify"), headers, {})).status).toBe(200);
-      await events.until(({ name, data }) => name === "run" && data.endsWith('"run":null}'));
+      await fullEnds(events, "echo mal && exit 3");
       expect((await audit(root)).at(-1)).toMatchObject({
         event: "change.verified",
         data: { exit: 3, outputTail: ["mal"] },

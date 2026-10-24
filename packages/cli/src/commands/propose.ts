@@ -2,6 +2,7 @@
 import {
   blockedCard,
   type ChangeState,
+  type EffortRecommendation,
   formatSizeReason,
   headerOf,
   invalidSpecCard,
@@ -110,16 +111,18 @@ export async function propose(session: Session): Promise<Output> {
     approvedText === undefined || phase === "closing"
       ? []
       : specDelta(parseSpec(approvedText).spec, analysis.spec).entries;
+  const effort = recommendEffort(analysis.size.level, analysis.spec);
+  const review = await reviewRecommended(session, active, analysis.size, effort, phase);
   const card = proposedCard(
     {
       header: headerOf(state.id, moved.phase, t(`revisión ${revision}`, `revision ${revision}`)),
       specPath,
       size: analysis.size,
-      effort: recommendEffort(analysis.size.level),
+      effort,
       warnings: analysis.diagnostics.filter((entry) => entry.severity === "warning"),
       delta,
       closing: phase === "closing",
-      ...((await reviewRecommended(session, active, analysis.size, phase)) ? { review: true } : {}),
+      ...(review ? { review } : {}),
     },
     cards,
   );
@@ -130,18 +133,20 @@ export async function propose(session: Session): Promise<Output> {
 }
 
 /**
- * An independent review (ADR 0011) comes before the approval of a large or sensitive spec, once
- * per change, when the person set one up; a failed one counts, so reviews never chain.
+ * An independent review (ADR 0011) comes before the approval of a large or sensitive spec, or one
+ * whose review effort is `max`, once per change, when the person set one up; a failed one counts,
+ * so reviews never chain.
  */
 async function reviewRecommended(
   session: Session,
   change: StoredChange,
   size: SizeResult,
+  effort: EffortRecommendation,
   phase: ProposePhase,
 ): Promise<boolean> {
   if (session.config.review === undefined || phase === "closing") return false;
   const large = size.level === "L" || size.level === "XL" || size.signals.sensitive.length > 0;
-  if (!large) return false;
+  if (!large && effort.plan !== "max") return false;
   const audit = await readAudit(change.files);
   return !audit.some(
     (entry) => entry.event === "review.completed" && dataOf(entry).target === "spec",

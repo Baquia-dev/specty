@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261024-esfuerzo-recomendado-por-el-modelo-que-solo-sube",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-esfuerzo-recomendado-por-el-modelo-que-solo-sube",
+  "baseCommit": "f507a2a7a58ff1b3a449f8373243ad0bb0a737da",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:45f28f29a520ee5b2e4737d4d296b6f6efcda76e789e2b4688f0c2a503f88232",
+    "at": "2026-10-24T15:23:39.733Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:34e42174fe03a4128f3aa08c6761e2c44a805bad643238b4d398c3d66a07f5dd",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:56f1d9d45653488b9699e2c6d15b51248935fdf84fe97719d293df24b9d6abf0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7465aa4ff74712c06055363f765223ab7acac8ea3c4a4144efe22a5cb88b4bcd",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:75db775ab99263cc1dbbfb223833eede31af6aa70f6b9f5be78ef8312a9f7046",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "56833f0ff9de8021e930f4e5054dbee0dc02e81a",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:23:40.849Z",
+      "doneAt": "2026-10-24T15:25:40.621Z",
+      "summary": "EFFORT_LEVELS y EffortLevel en spec/model.ts; frontmatter effort { review, reason } y campo de tarea effort: <nivel> — <motivo>, leídos, validados (field-invalid y frontmatter-invalid) y serializados en forma canónica; ida y vuelta con los generadores",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8965ddc914e1211d4b5722ae264866eb2978b387",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:25:40.898Z",
+      "doneAt": "2026-10-24T15:28:02.606Z",
+      "summary": "recommendEffort(level, spec) y recommendTaskEffort toman el máximo entre Specty y el effort del modelo, con raisedBy cuando sube; effortLine muestra «(el modelo lo sube: …)»; propose y approve pasan la spec, y una revisión en max también pide specty review",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "9594edc3268cccafd6b389b56c48f77655974c7f",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:28:02.895Z",
+      "doneAt": "2026-10-24T15:30:05.585Z",
+      "summary": "formats.md §1: effort en el frontmatter y en las tareas; ARCHITECTURE §11: el esfuerzo del modelo solo sube, cómo se ve y su relación con la revisión independiente",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T15:31:53.024Z"
+}

@@ -82,7 +82,7 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     [
       `${session.paths.relative(files.spec)} · ${t("revisión", "revision")} ${state.revision}`,
       `${t("Tamaño", "Size")} ${analysis.size.level}: ${analysis.size.reasons.map((reason) => formatSizeReason(reason, session.lang)).join(", ")}`,
-      effortLine(recommendEffort(analysis.size.level), session.cards),
+      effortLine(recommendEffort(analysis.size.level, analysis.spec), session.cards),
       ...delta.map((entry) => `Δ ${deltaLine(entry, session.cards)}`),
       ...analysis.diagnostics.map((entry) => `! ${entry.message}`),
       ...sharedLines(session, shared).map((line) => `! ${t("Compartido", "Shared")}: ${line}`),
