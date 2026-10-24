@@ -141,6 +141,7 @@ export {
 export { type AssertionLoss, removedAssertions } from "./scope/assertions";
 export { isGoverned } from "./scope/governed";
 export { isLockfileFor, isManifest } from "./scope/lockfiles";
+export { contentRisks, type RiskFinding, type RiskRule, riskLabel } from "./scope/risk";
 export {
   type AutoBasis,
   autoBasis,

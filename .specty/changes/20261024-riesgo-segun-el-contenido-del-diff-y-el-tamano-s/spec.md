@@ -60,7 +60,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Los riesgos de un diff
+- [x] T1: Los riesgos de un diff
   - files: packages/core/src/scope/risk.ts, packages/core/test/scope/risk.test.ts, packages/core/src/index.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope

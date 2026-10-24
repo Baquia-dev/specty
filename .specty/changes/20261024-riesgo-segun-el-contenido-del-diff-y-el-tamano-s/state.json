@@ -6,6 +6,13 @@
   "branch": "specty/20261024-riesgo-segun-el-contenido-del-diff-y-el-tamano-s",
   "baseCommit": "b68f47168b95796c2942bee43190c543fecb93d9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dcd956006806126c47e5706319f49cdbdacc368ae9c26797e7af534e0e010a61",
+    "at": "2026-10-24T11:20:36.979Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -34,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2fc4ae76257a0e509f56bea250f5567aa205a9d5",
+      "startedAt": "2026-10-24T11:20:38.169Z",
+      "doneAt": "2026-10-24T11:22:38.775Z",
+      "summary": "scope/risk.ts: catálogo de 10 reglas de contenido con su CWE (TLS, eval, exec de Python, deserialización, shell, hash débil, CORS, permisos, secretos, HTML sin escapar), modo 755 y rutas de riesgo; contentRisks lee un diff -U0 con números de línea y se salta los tests; riskLabel en es/en"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "A": 4,
     "AC": 5,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:dcd956006806126c47e5706319f49cdbdacc368ae9c26797e7af534e0e010a61",
-    "at": "2026-10-24T11:20:36.979Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
