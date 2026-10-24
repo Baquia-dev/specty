@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T10:34:10.664Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-test-primero-y-aviso-de-aserciones-quitadas","request":"«Test primero», y un aviso cuando se borran aserciones."}}
+{"ts":"2026-10-24T10:34:57.249Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:03f7d8c12ef2777774962f7b6449bd83a533be2979c65c2b59397d39cf5b1760","size":"L","warnings":0}}
+{"ts":"2026-10-24T10:35:00.946Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:03f7d8c12ef2777774962f7b6449bd83a533be2979c65c2b59397d39cf5b1760","channel":"delegated","delegated":true}}

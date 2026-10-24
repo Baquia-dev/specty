@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261024-test-primero-y-aviso-de-aserciones-quitadas",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-test-primero-y-aviso-de-aserciones-quitadas",
+  "baseCommit": "3055301ea2e358b17a097b2f71b3281524250e76",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e41601c78e9b848bb86fcaa10f3b7b4544cf8d712b2dc7626c9f52040a897ab3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bfa6b0e30ab7ab26b138207ac4eaed38c861f79bff46d11cbe0185d4cfe92b87",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:c8ce256f293d47885f98ecbc8e64169be62ead0350afef5312eb7143b45415d9",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0834b86bc1bd729b48aa74885c6350b6baac5f680beb4b1485205604795dd0cb",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0129fdb650b4385627e404241e82b9eaa8db498b40d89afc3cc1c3734e94a929",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:03f7d8c12ef2777774962f7b6449bd83a533be2979c65c2b59397d39cf5b1760",
+    "at": "2026-10-24T10:35:00.929Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
