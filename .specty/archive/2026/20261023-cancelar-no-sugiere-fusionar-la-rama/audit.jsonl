@@ -6,3 +6,4 @@
 {"ts":"2026-10-24T02:20:03.928Z","actor":"agent","tool":"claude-code","event":"scope.decided","data":{"id":"S1","decision":"approved","delegated":true}}
 {"ts":"2026-10-24T02:22:09.650Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/commands.test.ts test/flow.test.ts test/delegate.test.ts","exit":0,"ms":9558}}
 {"ts":"2026-10-24T02:22:09.652Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"cancel usa la nueva cancelledCard: dice que la rama guarda la spec y su registro (y el código de las tareas hechas, si las hay) y que no se incorpora, y su SIGUIENTE solo propone specty new"}}
+{"ts":"2026-10-24T02:23:13.671Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

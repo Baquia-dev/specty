@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-cancelar-no-sugiere-fusionar-la-rama",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261023-cancelar-no-sugiere-fusionar-la-rama",
   "baseCommit": "247e6408ddfc2df9a204620f335964183d03c5ad",
   "revision": 1,
@@ -26,14 +26,14 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/index.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "b76fb4eceebf2cc750de4b94cfe090c2224534a4",
+      "attempts": 1,
       "startedAt": "2026-10-24T02:19:36.464Z",
       "doneAt": "2026-10-24T02:22:09.651Z",
-      "summary": "cancel usa la nueva cancelledCard: dice que la rama guarda la spec y su registro (y el código de las tareas hechas, si las hay) y que no se incorpora, y su SIGUIENTE solo propone specty new"
+      "summary": "cancel usa la nueva cancelledCard: dice que la rama guarda la spec y su registro (y el código de las tareas hechas, si las hay) y que no se incorpora, y su SIGUIENTE solo propone specty new",
+      "scopeExtra": [
+        "packages/core/src/index.ts"
+      ]
     }
   },
   "pending": {

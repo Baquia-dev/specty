@@ -20,3 +20,9 @@ kind: quick
   - files: packages/core/src/cards/human.ts, packages/cli/src/commands/finish.ts, packages/cli/test/commands.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/commands.test.ts test/flow.test.ts test/delegate.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+cancel usa la nueva cancelledCard: dice que la rama guarda la spec y su registro (y el código de las tareas hechas, si las hay) y que no se incorpora, y su SIGUIENTE solo propone specty new
