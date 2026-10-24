@@ -54,7 +54,7 @@ Dos comprobaciones de que ninguna salida de Specty deja al agente sin camino. Un
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/commands-named.test.ts
   - type: test
-- [ ] T2: El recorrido que sigue los SIGUIENTE y mide la fricción
+- [x] T2: El recorrido que sigue los SIGUIENTE y mide la fricción
   - files: packages/cli/test/walk.ts, packages/cli/test/friction.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/friction.test.ts
