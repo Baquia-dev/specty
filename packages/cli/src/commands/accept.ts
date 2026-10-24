@@ -58,6 +58,14 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
       ...assertionWarnings(view.tasks, session.lang),
       ...riskWarnings(view.tasks, session.lang),
       ...longFileWarnings(view.tasks, session.lang),
+      ...(session.config.verify.full === undefined && session.config.verify.default === undefined
+        ? [
+            t(
+              "Nada verifica el cambio entero: .specty/config.yaml no tiene `verify.full` ni `verify.default`, así que solo se ejecutó el `verify` de cada tarea.",
+              "Nothing verifies the whole change: .specty/config.yaml has neither `verify.full` nor `verify.default`, so only each task's `verify` ran.",
+            ),
+          ]
+        : []),
     ].join("\n"),
   );
   const full = session.config.verify.full;

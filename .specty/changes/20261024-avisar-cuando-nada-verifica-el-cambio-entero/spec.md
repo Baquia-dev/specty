@@ -16,7 +16,7 @@ Una tarea no se aprueba sin `verify` si no hay `verify.default` (`propose` ya lo
 
 ## Tareas
 
-- [ ] T1: Los avisos de `accept` y de la incorporación sin verificación
+- [x] T1: Los avisos de `accept` y de la incorporación sin verificación
   - files: packages/cli/src/commands/accept.ts, packages/cli/src/flow/integrate.ts, packages/cli/test/unverified.test.ts
   - verify: pnpm check
   - type: feat

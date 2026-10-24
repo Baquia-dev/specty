@@ -147,8 +147,14 @@ export async function absorbTarget(
     stage: [],
     receipt: { change: plan.id, kind: "close" },
   });
+  // Each task ran its own `verify`; with neither of these, nothing checked the merge.
   const verified =
-    command === undefined ? "" : t(` y \`${command}\` pasó`, ` and \`${command}\` passed`);
+    command === undefined
+      ? t(
+          " sin verificar: .specty/config.yaml no tiene `verify.full` ni `verify.default`",
+          " without a verification: .specty/config.yaml has neither `verify.full` nor `verify.default`",
+        )
+      : t(` y \`${command}\` pasó`, ` and \`${command}\` passed`);
   return {
     ok: true,
     lines: [
