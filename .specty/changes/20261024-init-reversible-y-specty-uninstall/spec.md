@@ -50,7 +50,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Los instaladores escriben con simulación y copias
+- [x] T1: Los instaladores escriben con simulación y copias
   - files: packages/cli/src/install/files.ts, packages/cli/src/install/agents.ts, packages/cli/src/install/git-hooks.ts, packages/cli/src/install/project-files.ts, packages/cli/src/install/opencode.ts, packages/cli/test/install-files.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/install-files.test.ts test/setup.test.ts test/install.test.ts test/opencode.test.ts test/codex.test.ts test/cursor.test.ts
