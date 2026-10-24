@@ -51,6 +51,17 @@ describe("specty check", () => {
     expect(all.out).toContain("  src/big.ts 520 líneas de código (máximo 500)");
   });
 
+  it("judges what is staged with --staged, not what is on disk", async () => {
+    const root = await repo();
+    await writeFiles(root, { "src/big.ts": source(520) });
+    git(root, "add", "src/big.ts");
+    await writeFiles(root, { "src/big.ts": source(5) });
+    const staged = await cli(root, ["check", "--staged"]);
+    expect(staged.code).toBe(1);
+    expect(staged.out).toContain("  src/big.ts 520 líneas de código (máximo 500)");
+    expect((await cli(root, ["check"])).code).toBe(0);
+  });
+
   it("gives JSON for CI and the detail with --verbose", async () => {
     const root = await repo();
     await writeFiles(root, { "src/big.ts": source(520) });

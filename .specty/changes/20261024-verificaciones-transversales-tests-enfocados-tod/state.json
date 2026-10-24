@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "874e6fe3e47d1412c2b30f4cc56c798aa13d76a9",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:31:52.032Z",
       "doneAt": "2026-10-24T17:36:33.912Z",
-      "summary": "core/checks/markers.ts detecta por línea tests enfocados, omitidos y TODO sin referencia, con catálogos por familia de frameworks; checks.todo (markers, reference validada como regex) en la configuración."
+      "summary": "core/checks/markers.ts detecta por línea tests enfocados, omitidos y TODO sin referencia, con catálogos por familia de frameworks; checks.todo (markers, reference validada como regex) en la configuración.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0932dba1d0025fbc01398cefaa997ef9b8a6a552",
+      "startedAt": "2026-10-24T17:36:34.163Z",
+      "doneAt": "2026-10-24T17:38:26.113Z",
+      "summary": "checkContext en check/files.ts da a cada verificación read (lo preparado con --staged, memorizado) y added (líneas añadidas según git diff -U0 con forma fija); max-lines lee por el contexto."
     }
   },
   "pending": {

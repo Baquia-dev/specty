@@ -20,6 +20,10 @@ export interface CheckContext {
   readonly mode: CheckMode;
   /** Repository-relative files of the run, the excluded ones already left out. */
   readonly files: readonly string[];
+  /** The text of `path` as the mode sees it: staged with `--staged`, on disk otherwise. */
+  read(path: string): Promise<string | undefined>;
+  /** Lines `path` adds, from 1; undefined when every line of it counts (`--all`, a new file). */
+  added(path: string): ReadonlySet<number> | undefined;
 }
 
 /** What one check gives: its findings, or why it could not run (a missing tool, say). */

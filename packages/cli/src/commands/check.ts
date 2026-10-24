@@ -7,7 +7,7 @@ import {
   reportJson,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
-import { selectFiles } from "../check/files";
+import { checkContext } from "../check/files";
 import { commonProvider } from "../check/max-lines";
 import { type Provider, type ReportOutput, runChecks } from "../check/provider";
 import { detectStacks } from "../detect/stack";
@@ -42,9 +42,11 @@ export function checkCommand(
 
 /** `specty check`: deterministic, with no model and no agent (ADR 0012). */
 export async function check(session: Session, mode: CheckMode, verbose: boolean) {
-  const files = await selectFiles(session, mode);
-  const stacks = await detectStacks(session.root);
-  const report = await runChecks({ session, mode, files }, PROVIDERS, stacks);
+  const [context, stacks] = await Promise.all([
+    checkContext(session, mode),
+    detectStacks(session.root),
+  ]);
+  const report = await runChecks(context, PROVIDERS, stacks);
   return {
     report: renderReport(report, {
       lang: session.lang,

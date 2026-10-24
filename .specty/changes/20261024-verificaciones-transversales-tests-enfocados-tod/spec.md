@@ -71,7 +71,7 @@ follows:
   - files: packages/core/src/schema/checks.ts, packages/core/src/checks/markers.ts, packages/core/src/index.ts, packages/core/test/checks/markers.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts
-- [ ] T2: El contexto de cada verificación lee según el modo y sabe qué líneas se añadieron
+- [x] T2: El contexto de cada verificación lee según el modo y sabe qué líneas se añadieron
   - files: packages/cli/src/check/provider.ts, packages/cli/src/check/files.ts, packages/cli/src/check/max-lines.ts, packages/cli/src/commands/check.ts, packages/cli/test/check.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check.test.ts

@@ -1,17 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join } from "node:path";
 import { type Finding, fileSize, translator } from "@baquia-dev/specty-core";
-import { readText } from "../io/files";
 import type { CheckDefinition, Provider } from "./provider";
 
 /** Lines of code of each file, by the `lines` rule `task done` also applies, in any language. */
 const maxLines: CheckDefinition = {
   id: "max-lines",
-  async run({ session, files }) {
+  async run({ session, files, read }) {
     const t = translator(session.lang);
     const findings = await Promise.all(
       files.map(async (path): Promise<Finding[]> => {
-        const text = await readText(join(session.root, path));
+        const text = await read(path);
         const size = text === undefined ? undefined : fileSize(path, text, session.config);
         if (size === undefined) return [];
         const { lines, warn, fail } = size;
