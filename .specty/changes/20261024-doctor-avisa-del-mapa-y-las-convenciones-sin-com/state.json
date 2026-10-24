@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261024-doctor-avisa-del-mapa-y-las-convenciones-sin-com",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-doctor-avisa-del-mapa-y-las-convenciones-sin-com",
+  "baseCommit": "1c3aac4b6653bc1a97eb4d461144bc8e425b3e07",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:70e8e50aa024ed6e6773dbab1a526dfc287a8a5994a7429ff5b35403238911b9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:0fe3b7579294537ec4cac6c74de4151d968fac78aead9534f6b587a6b7894569",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:562c27d4bc9d33fc588d94d02e58820a81a8d970881705e8e01d035e8cd98c15",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c87c4d36710e868ac860ea4ca7e9d5cda0fc89f598cab2a057e0f0bd0b09c87b",
+    "at": "2026-10-24T17:20:10.383Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
