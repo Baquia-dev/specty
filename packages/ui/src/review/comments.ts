@@ -8,9 +8,10 @@ import {
   model,
   signal,
 } from "@angular/core";
-import { LucideDynamicIcon, LucideQuote } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Field } from "../components/field";
+import { LucideQuote } from "../components/icons";
 import { Toasts } from "../components/toast";
 import {
   type Bilingual,

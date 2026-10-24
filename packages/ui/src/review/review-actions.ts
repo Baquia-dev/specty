@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
-import { LucideDynamicIcon, LucideHourglass, LucideTriangleAlert } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
+import { LucideHourglass, LucideTriangleAlert } from "../components/icons";
 import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
 import { type ChangeView, SpectyData } from "../data/records";

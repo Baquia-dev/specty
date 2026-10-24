@@ -52,7 +52,7 @@ kind: standard
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance && pnpm sources
   - type: refactor
-- [ ] T2: La revisión toma sus iconos de icons.ts, y Biome lo exige
+- [x] T2: La revisión toma sus iconos de icons.ts, y Biome lo exige
   - files: packages/ui/src/review/comments.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/delta-review.ts, packages/ui/src/review/review-actions.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-sections.ts, biome.json
   - ac: AC1, AC2
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review && pnpm sources

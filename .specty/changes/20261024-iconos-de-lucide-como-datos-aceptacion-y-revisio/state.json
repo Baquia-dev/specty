@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6f4bc6bda3cf36c410f7b6ebbbf0a029e85c8c1f",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:48:43.226Z",
       "doneAt": "2026-10-24T14:50:03.207Z",
-      "summary": "acceptance-actions, acceptance-tab, changes-view, closing-view, criterion-row, full-verification y trace-matrix toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon y el tipo LucideIconInput"
+      "summary": "acceptance-actions, acceptance-tab, changes-view, closing-view, criterion-row, full-verification y trace-matrix toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon y el tipo LucideIconInput",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a1f305e2f897250ba667d9247bc0f274059bfdb2",
+      "startedAt": "2026-10-24T14:50:03.537Z",
+      "doneAt": "2026-10-24T14:52:23.492Z",
+      "summary": "comments, assumption-row, delta-review, review-actions, spec-review y spec-sections toman sus iconos de components/icons.ts; biome.json prohíbe en packages/ui/src importar de @lucide/angular algo distinto de LucideDynamicIcon, LucideIconData y LucideIconInput, con un error que dice de dónde tomar los iconos"
     }
   },
   "pending": {

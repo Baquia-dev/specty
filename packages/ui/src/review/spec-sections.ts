@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, inject, input, output } from "@angular/core";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { Badge } from "../components/badge";
+import { IconButton } from "../components/button";
+import { LIST, REVEAL, ROW } from "../components/document";
 import {
   LucideArrowRight,
   LucideCircleCheck,
   LucideCircleDashed,
-  LucideDynamicIcon,
   LucideMessageSquarePlus,
   LucidePencil,
   LucidePlus,
   LucideShieldAlert,
   LucideTrash2,
   LucideTriangleAlert,
-} from "@lucide/angular";
-import { Badge } from "../components/badge";
-import { IconButton } from "../components/button";
-import { LIST, REVEAL, ROW } from "../components/document";
+} from "../components/icons";
 import type { Toasts } from "../components/toast";
 import {
   ActionError,

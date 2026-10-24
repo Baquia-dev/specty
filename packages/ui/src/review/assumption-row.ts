@@ -13,17 +13,17 @@ import {
   output,
   signal,
 } from "@angular/core";
-import {
-  LucideCircleCheck,
-  LucideCircleDashed,
-  LucideCircleX,
-  LucideDynamicIcon,
-  LucideMessageSquarePlus,
-} from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button, IconButton } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { REVEAL, ROW } from "../components/document";
 import { Field } from "../components/field";
+import {
+  LucideCircleCheck,
+  LucideCircleDashed,
+  LucideCircleX,
+  LucideMessageSquarePlus,
+} from "../components/icons";
 import { Toasts } from "../components/toast";
 import {
   type AssumptionView,
