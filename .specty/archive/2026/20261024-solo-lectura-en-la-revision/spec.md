@@ -63,3 +63,23 @@ Cuando la UI corre sobre un servidor de solo lectura, porque lo arrancó el agen
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La revisión ya no ofrece decisiones que van a fallar. `SpectyData.readOnly()` dice si se puede decidir desde la fuente: un servidor que arrancó el agente o una pestaña sin sesión no lo permiten, y los datos de ejemplo sí. `Decisions` lo pregunta una vez. En solo lectura, «Pedir cambios» y «Aprobar» aparecen desactivados con el motivo, y la revisión se ve como fuera de revisión: sin «Comentar», sin Confirmar / Rechazar y sin formulario de comentario. De paso, criterios, tareas, riesgos, supuestos y el delta ya no ofrecen «Comentar» fuera de la revisión.
+
+### Desviaciones
+
+- T2 también tocó `assumption-row.ts` y `delta-review.ts` (ampliación S1): su «Comentar» no miraba `editable`.
+- Los tests de `Markdown` pasaron de `spec-sections.test.ts` a `markdown.test.ts`, junto a su componente, para que el primero no pasara de 300 líneas.
+
+### Decisiones
+
+- Los botones de la cabecera se desactivan con el motivo visible en vez de ocultarse. Así se entiende por qué no se puede decidir y cómo hacerlo; las acciones en línea se ocultan para no llenar la página de botones apagados.
+- Mientras la fuente no responde, nada se desactiva: un rechazo se sigue explicando con un aviso (A1).
+
+### Pendientes
+
+- La aceptación, el cierre, las solicitudes de alcance y el modo delegado, en el cambio siguiente.
