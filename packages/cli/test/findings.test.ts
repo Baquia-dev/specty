@@ -61,6 +61,26 @@ describe("findings", () => {
     );
   });
 
+  it("and summaries fit in 300 characters, since every next task card repeats them (AC1)", async () => {
+    const root = await approved();
+    await writeFiles(root, { "src/app.ts": "1\n" });
+    const long = "x".repeat(301);
+    const summary = await cli(root, ["task", "done", "T1", "--summary", long]);
+    expect([summary.code, summary.out]).toEqual([
+      1,
+      expect.stringContaining("El resumen tiene 301 caracteres; el máximo es 300"),
+    ]);
+    const finding = await cli(root, done("T1", CACHE, long));
+    expect([finding.code, finding.out]).toEqual([
+      1,
+      expect.stringContaining("Un hallazgo tiene 301 caracteres; el máximo es 300"),
+    ]);
+    // Refused before verifying: nothing was recorded, and 300 is still fine.
+    const audit = await read(root, `.specty/changes/${CHANGE}/audit.jsonl`);
+    expect(audit).not.toContain('"task.verified"');
+    expect((await cli(root, ["task", "done", "T1", "--summary", "y".repeat(300)])).code).toBe(0);
+  });
+
   it("reach the draft of a change that follows, with the follow-ups of its closing", async () => {
     const root = await approved();
     await writeFiles(root, { "src/app.ts": "1\n" });

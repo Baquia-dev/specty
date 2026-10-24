@@ -11,6 +11,7 @@ import {
   longFileCard,
   longFileWarnings,
   moduleOf,
+  NOTE_MAX,
   nextCard,
   type Output,
   outOfScopeCard,
@@ -74,6 +75,29 @@ export async function taskDone(
     );
   }
   const emptyFinding = findings.some((finding) => finding.trim().length === 0);
+  // Every next task card repeats them: one or two sentences each, refused before verifying.
+  const longSummary = summary.trim().length > NOTE_MAX ? summary.trim().length : undefined;
+  const longFinding = findings.map((finding) => finding.trim().length).find((n) => n > NOTE_MAX);
+  if (longSummary !== undefined || longFinding !== undefined) {
+    const [es, en] =
+      longSummary !== undefined
+        ? [`El resumen tiene ${longSummary}`, `The summary has ${longSummary}`]
+        : [`Un hallazgo tiene ${longFinding}`, `A finding has ${longFinding}`];
+    return {
+      ...blockedCard(
+        header,
+        t(
+          `${es} caracteres; el máximo es ${NOTE_MAX}, porque las tarjetas de las tareas siguientes lo repiten.`,
+          `${en} characters; the most is ${NOTE_MAX}, since the next task cards repeat it.`,
+        ),
+        t(
+          "dilo en una o dos frases (el detalle ya está en el commit) y vuelve a ejecutar `task done`.",
+          "say it in one or two sentences (the detail is in the commit) and run `task done` again.",
+        ),
+      ),
+      status: "invalid",
+    };
+  }
   if (summary.trim().length === 0 || emptyFinding) {
     return {
       ...blockedCard(

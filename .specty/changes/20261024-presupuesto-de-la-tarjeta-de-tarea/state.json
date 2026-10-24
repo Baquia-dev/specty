@@ -6,6 +6,13 @@
   "branch": "specty/20261024-presupuesto-de-la-tarjeta-de-tarea",
   "baseCommit": "ffbe398ddc13ec971c6d510e3e1e7ee0985a3fb3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:62cd8e49856eeab399b61230bd3a196de8dd0f1638f6046b28d1698e4ab85554",
+    "at": "2026-10-24T16:33:12.381Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "06ac2eb430da34fa07fbc65939612f532fe55be0",
+      "startedAt": "2026-10-24T16:33:12.806Z",
+      "doneAt": "2026-10-24T16:34:21.426Z",
+      "summary": "NOTE_MAX (300) en el core; task done rechaza, antes de verificar, un resumen o hallazgo más largo, diciendo cuántos caracteres tiene. Test: 301 se rechaza sin anotar nada y 300 pasa."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:62cd8e49856eeab399b61230bd3a196de8dd0f1638f6046b28d1698e4ab85554",
-    "at": "2026-10-24T16:33:12.381Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

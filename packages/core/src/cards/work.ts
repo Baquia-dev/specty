@@ -8,6 +8,12 @@ import type { CardContext, ChangeView, TaskView } from "./view";
 
 // Cards while the change is being built: tasks, acceptance, adjustments and closing.
 
+/**
+ * The longest a task's summary or finding may be: every next task card repeats them, and the
+ * card keeps to about 1,500 tokens (ARCHITECTURE §7).
+ */
+export const NOTE_MAX = 300;
+
 export function implementingCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   if (change.specChanged) {
