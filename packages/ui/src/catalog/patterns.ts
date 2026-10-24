@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/core";
-import { LucideMessageSquarePlus, LucideSearchX } from "@lucide/angular";
 import { Button, IconButton } from "../components/button";
 import { LIST, PAGE, REVEAL, ROW, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
+import { LucideMessageSquarePlus, LucideSearchX } from "../components/icons";
 import { Preferences } from "../theme/preferences";
 
 /** The patterns that make a screen read like a document, and the empty state. */

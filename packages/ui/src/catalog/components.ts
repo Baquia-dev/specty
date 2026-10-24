@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from "@angular/core";
 import { PHASES } from "@baquia-dev/specty-core";
-import { LucideCheck, LucideSettings } from "@lucide/angular";
 import { Badge, PhaseBadge } from "../components/badge";
 import { Button, IconButton } from "../components/button";
 import { Card } from "../components/card";
 import { DiffViewer } from "../components/diff-viewer";
 import { Field } from "../components/field";
+import { LucideCheck, LucideSettings } from "../components/icons";
 import { Kbd } from "../components/kbd";
 import { Segmented } from "../components/segmented";
 import { Select } from "../components/select";

@@ -43,7 +43,7 @@ Segunda de las tres partes de «Iconos de Lucide como datos». `app/`, `catalog/
 
 ## Tareas
 
-- [ ] T1: El armazón y el catálogo toman sus iconos de icons.ts
+- [x] T1: El armazón y el catálogo toman sus iconos de icons.ts
   - files: packages/ui/src/app/delegation.ts, packages/ui/src/app/shell.ts, packages/ui/src/app/preferences-menu.ts, packages/ui/src/catalog/catalog.ts, packages/ui/src/catalog/components.ts, packages/ui/src/catalog/patterns.ts, packages/ui/src/catalog/overlays.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app --include src/catalog && pnpm sources
