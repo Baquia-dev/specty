@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-cambios-pedidos-visibles-en-la-revision",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-cambios-pedidos-visibles-en-la-revision",
   "baseCommit": "2606852d2bc240dd0fb6e5e70141d9fdc35152f1",
   "revision": 1,
@@ -43,12 +43,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2ddb1c1eebcb150f630931905481614485f8bd22",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:48:29.757Z",
       "doneAt": "2026-10-24T10:49:43.559Z",
-      "summary": "ReviewActions muestra bajo los botones «Cambios pedidos: el agente prepara la revisión N+1.» (atenuado, con un reloj de arena) cuando la vista trae changesRequested, y lo usa como motivo para desactivar «Pedir cambios»; «Aprobar» sigue disponible"
+      "summary": "ReviewActions muestra bajo los botones «Cambios pedidos: el agente prepara la revisión N+1.» (atenuado, con un reloj de arena) cuando la vista trae changesRequested, y lo usa como motivo para desactivar «Pedir cambios»; «Aprobar» sigue disponible",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b4ed26694828d3ba0da31324fe60d88f7434f091",
+      "startedAt": "2026-10-24T10:49:43.865Z",
+      "doneAt": "2026-10-24T10:52:00.977Z",
+      "summary": "docs/ui.md: viñeta «Cambios pedidos» en la revisión de spec (el aviso bajo los botones, Pedir cambios desactivado, Aprobar disponible, el cambio espera al agente en la cabecera y la Bandeja, y el prototipo lo anota como el servidor)"
     }
   },
   "pending": {

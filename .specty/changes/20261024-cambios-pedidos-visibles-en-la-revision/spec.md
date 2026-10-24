@@ -54,7 +54,7 @@ Cuando la persona ya pidió cambios, la UI lo muestra. La revisión dice que el 
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review --include src/change && pnpm sources
-- [ ] T3: Documentar los cambios pedidos en la UI
+- [x] T3: Documentar los cambios pedidos en la UI
   - files: docs/ui.md
   - ac: AC5
   - verify: pnpm check
