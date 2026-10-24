@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261024-la-ui-dentro-del-paquete-npm",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-la-ui-dentro-del-paquete-npm",
   "baseCommit": "a1961ef1a93ac7cc271cff2ada23add782e62cf6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3d1f2b208db8d80306694cedbf098d38a05eb7269ab055fa723f3b46b5dd7edf",
+    "at": "2026-10-24T11:18:25.597Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -16,19 +23,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "63598e466a1c8bbacdaeeeb46cd5750569fc4d97",
+      "startedAt": "2026-10-24T11:18:26.061Z",
+      "doneAt": "2026-10-24T11:21:07.058Z",
+      "summary": "build.mjs acepta --ui <carpeta> (copia la build de la UI a dist/ui y falla sin index.html) y --outdir; una build normal borra dist/ui. El prepack del paquete construye la UI y la copia: npm pack lleva 88 archivos (1,2 MB), con dist/ui/index.html. Test de punta a punta con el bundle sirviendo la UI. ARCHITECTURE §15."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:3d1f2b208db8d80306694cedbf098d38a05eb7269ab055fa723f3b46b5dd7edf",
-    "at": "2026-10-24T11:18:25.597Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

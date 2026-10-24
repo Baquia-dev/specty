@@ -17,7 +17,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: El bundle lleva la UI al empaquetar
+- [x] T1: El bundle lleva la UI al empaquetar
   - files: packages/cli/build.mjs, packages/cli/package.json, packages/cli/test/bundle.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: build
