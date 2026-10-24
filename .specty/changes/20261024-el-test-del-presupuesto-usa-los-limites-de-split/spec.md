@@ -14,7 +14,7 @@ El test del presupuesto de la tarjeta de tarea arma la tarjeta más grande razon
 
 ## Tareas
 
-- [ ] T1: La tarjeta del test del presupuesto usa los límites de split
+- [x] T1: La tarjeta del test del presupuesto usa los límites de split
   - files: packages/core/test/cards/budget.test.ts
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/budget.test.ts
   - type: test
