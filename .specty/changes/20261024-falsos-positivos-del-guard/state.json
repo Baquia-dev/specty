@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261024-falsos-positivos-del-guard",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-falsos-positivos-del-guard",
+  "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:11692ac8196f1ecb66f3f1ed60896dc0cde1cbab05bccc74b033a66b67ec24e6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ef1bde41f448590f4ad2c59be72e70a29d819fa768676b3d748ce61abfa31750",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:daf95f8fba71020e7d939b197731d39f3085d64b7caa30151316edb7a909bcc7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6ba0b3b46d8bffc1c099f547837f362b22cfd03b0826707a163f7b13326bb4c3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:59272a1f5a31901f013795cb277355ed9941fb1c9defc66902c5bfe611b8757d",
+    "at": "2026-10-24T10:06:35.420Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
