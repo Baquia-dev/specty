@@ -49,7 +49,7 @@ Segunda parte del punto «CI en Linux, macOS y Windows, más knip y `npm publish
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts
   - type: ci
-- [ ] T2: La publicación con procedencia
+- [x] T2: La publicación con procedencia
   - files: .github/workflows/release.yml, packages/cli/package.json, packages/cli/test/workflows.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3
   - verify: pnpm check

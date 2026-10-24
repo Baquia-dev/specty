@@ -53,3 +53,24 @@ describe("the CI", () => {
     expect(String(check?.["continue-on-error"])).toContain("matrix.os == 'windows-latest'");
   });
 });
+
+describe("the release", () => {
+  it("publishes with provenance only from a tag that matches the version, after pnpm check (AC2, AC3)", async () => {
+    const release = await workflow("release.yml");
+    expect(release.on).toEqual({ push: { tags: ["v*"] } });
+    expect(release.permissions).toEqual({ contents: "read", "id-token": "write" });
+    const steps = release.jobs.publish?.steps ?? [];
+    const commands = runs(steps);
+    const at = (text: string) => commands.findIndex((command) => command.includes(text));
+    expect(at('= "$GITHUB_REF_NAME"')).toBeGreaterThan(at("pnpm install --frozen-lockfile"));
+    expect(at("pnpm check")).toBeGreaterThan(at('= "$GITHUB_REF_NAME"'));
+    expect(at("npm publish --provenance --access public")).toBeGreaterThan(at("pnpm check"));
+    const publish = steps.find((step) => step.run?.startsWith("npm publish"));
+    expect(publish?.["working-directory"]).toBe("packages/cli");
+    const pkg = JSON.parse(await readFile(join(import.meta.dirname, "..", "package.json"), "utf8"));
+    expect(pkg.private).toBeUndefined();
+    expect(pkg.publishConfig).toEqual({ access: "public", provenance: true });
+    // npm 11 drops a `bin` written as `./dist/…` when it publishes, and the package loses `specty`.
+    expect(pkg.bin).toEqual({ specty: "dist/specty.mjs" });
+  });
+});

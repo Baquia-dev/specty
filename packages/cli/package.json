@@ -1,7 +1,6 @@
 {
   "name": "@baquia-dev/specty",
   "version": "0.1.0",
-  "private": true,
   "description": "Spec-driven development, enforced, for any AI coding agent.",
   "license": "Apache-2.0",
   "repository": {
@@ -11,13 +10,17 @@
   },
   "type": "module",
   "bin": {
-    "specty": "./dist/specty.mjs"
+    "specty": "dist/specty.mjs"
   },
   "files": [
     "dist"
   ],
   "engines": {
     "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "node build.mjs",
