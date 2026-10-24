@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
+  type AssertionLoss,
   type ChangeView,
   dirname,
   isIntegrating,
@@ -10,6 +11,7 @@ import {
   specHash,
   type Task,
   type TaskView,
+  testRules,
 } from "@baquia-dev/specty-core";
 import { exists, isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
@@ -32,10 +34,14 @@ export async function changeView(session: Session, change: StoredChange): Promis
   const { state } = change;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
   const commits = await taskCommits(session, state.id);
+  const audit = await auditOf(change);
+  const removed = removedByTask(audit);
   const tasks = (spec.sections.tasks?.items ?? []).map((task): TaskView => {
     const stored = state.tasks[task.id];
     const verify = taskVerification(session, task);
     const commit = commits.get(task.id);
+    const rules = testRules(task, session.config.policy.tests);
+    const lost = removed.get(task.id) ?? [];
     return {
       id: task.id,
       title: task.title,
@@ -47,6 +53,8 @@ export async function changeView(session: Session, change: StoredChange): Promis
       ...(verify !== undefined ? { verify } : {}),
       ...(stored?.summary !== undefined ? { summary: stored.summary } : {}),
       ...(commit !== undefined ? { commit } : {}),
+      ...(rules !== undefined ? { testRules: rules } : {}),
+      ...(lost.length > 0 ? { removedAssertions: lost } : {}),
     };
   });
   const active = tasks.find((task) => task.status === "active");
@@ -74,9 +82,9 @@ export async function changeView(session: Session, change: StoredChange): Promis
         },
       ];
     }),
-    requested: state.phase === "review" ? await requested(change) : [],
+    requested: state.phase === "review" ? await requested(change, audit) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
-    ...(state.phase === "draft" ? await request(change) : {}),
+    ...(state.phase === "draft" ? request(audit) : {}),
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specChanged:
       state.phase === "implementing" &&
@@ -99,8 +107,11 @@ export async function changeView(session: Session, change: StoredChange): Promis
  * The unresolved comments the agent must answer: only once the person asked for changes after
  * the last proposal; until then, the review is still theirs.
  */
-async function requested(change: StoredChange): Promise<NonNullable<ChangeView["requested"]>> {
-  const last = (await auditOf(change)).findLast(
+async function requested(
+  change: StoredChange,
+  audit: Audit,
+): Promise<NonNullable<ChangeView["requested"]>> {
+  const last = audit.findLast(
     (entry) => entry.event === "spec.proposed" || entry.event === "review.changes_requested",
   );
   if (last?.event !== "review.changes_requested") return [];
@@ -110,17 +121,40 @@ async function requested(change: StoredChange): Promise<NonNullable<ChangeView["
 }
 
 /** The user's literal request, from the audit, where `new --request` left it. */
-async function request(change: StoredChange): Promise<Pick<ChangeView, "request">> {
-  const created = (await auditOf(change)).find((entry) => entry.event === "change.created");
-  const data = isRecord(created?.data) ? created.data : {};
+function request(audit: Audit): Pick<ChangeView, "request"> {
+  const data = dataOf(audit.find((entry) => entry.event === "change.created"));
   return typeof data.request === "string" ? { request: data.request } : {};
 }
 
-async function auditOf(change: StoredChange): Promise<Record<string, unknown>[]> {
+/** The assertions each task removed from existing tests, as `task done` recorded them. */
+function removedByTask(audit: Audit): ReadonlyMap<string, readonly AssertionLoss[]> {
+  return new Map(
+    audit
+      .filter((entry) => entry.event === "task.completed")
+      .flatMap((entry): [string, AssertionLoss[]][] => {
+        const { task, removedAssertions } = dataOf(entry);
+        if (typeof task !== "string" || !Array.isArray(removedAssertions)) return [];
+        const losses = removedAssertions.flatMap((loss: unknown) =>
+          isRecord(loss) && typeof loss.path === "string" && typeof loss.removed === "number"
+            ? [{ path: loss.path, removed: loss.removed }]
+            : [],
+        );
+        return [[task, losses]];
+      }),
+  );
+}
+
+type Audit = readonly Record<string, unknown>[];
+
+async function auditOf(change: StoredChange): Promise<Audit> {
   return ((await readText(change.files.audit)) ?? "").split("\n").flatMap((line) => {
     const entry = parseJson(line);
     return isRecord(entry) ? [entry] : [];
   });
+}
+
+function dataOf(entry: Record<string, unknown> | undefined): Record<string, unknown> {
+  return isRecord(entry?.data) ? entry.data : {};
 }
 
 function criteriaOf(spec: Spec, ac: readonly string[] | "none" | undefined): TaskView["criteria"] {

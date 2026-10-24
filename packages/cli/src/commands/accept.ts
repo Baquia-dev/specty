@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  assertionWarnings,
   blockedCard,
   closedCard,
   decisionCard,
@@ -47,12 +48,13 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   const view = await changeView(session, change);
   terminal.note(
     view.title,
-    view.tasks
-      .map(
+    [
+      ...view.tasks.map(
         (task) =>
           `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
-      )
-      .join("\n"),
+      ),
+      ...assertionWarnings(view.tasks, session.lang),
+    ].join("\n"),
   );
   const full = session.config.verify.full;
   // In delegated mode the agent always runs the full verification, and never accepts a failure.

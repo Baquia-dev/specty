@@ -66,7 +66,7 @@ La tarjeta de cada tarea de código pide escribir primero el test y verlo fallar
   - files: packages/core/src/validate/quality.ts, packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/test/cards/tests.test.ts, packages/core/src/index.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards test/validate
-- [ ] T3: task done avisa y accept lo muestra
+- [x] T3: task done avisa y accept lo muestra
   - files: packages/cli/src/flow/assertions.ts, packages/cli/src/commands/task.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/accept.ts, packages/cli/test/assertions.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/assertions.test.ts test/flow.test.ts
