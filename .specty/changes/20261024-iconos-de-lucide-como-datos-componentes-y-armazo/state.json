@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261024-iconos-de-lucide-como-datos-componentes-y-armazo",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-iconos-de-lucide-como-datos-componentes-y-armazo",
+  "baseCommit": "3cac524b0f1f5be561fd53c4d6cc1b00392cbbd6",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cdcf67d4d73cbf4f05183287648dbf929efac5bc402d2512d990836673018c84",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7ef7c73af1bc85e8827671675cf95dfcacd38e333147240713bf5fa37b0a16c0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5c2c871b32d6f64f610770d690d26f1e2db2f6713be3be955bd0679adf09e274",
+    "at": "2026-10-24T11:28:49.389Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
