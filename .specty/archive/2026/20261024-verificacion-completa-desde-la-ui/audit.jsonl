@@ -13,3 +13,6 @@
 {"ts":"2026-10-24T10:07:59.110Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"03e48da121e5fe917a340d5ca3c91cd2c1f680a4"}}
 {"ts":"2026-10-24T10:10:41.297Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":62255}}
 {"ts":"2026-10-24T10:10:41.300Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"ARCHITECTURE §15 documenta POST /verify (fuera de la cola, solo en aceptación, 409 con su motivo), GET /run, el evento run y que la UI lo sigue con server-answers.ts; formats.md §4 dice que change.verified lo anotan specty accept y el servidor, con exit null si se cortó por tiempo"}}
+{"ts":"2026-10-24T10:11:44.123Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T10:11:52.241Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:6d93da6698b2660b0d883d4db2c5bd61d85e157cca49f32152e299630496757e","size":"L","warnings":1}}
+{"ts":"2026-10-24T10:11:57.830Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

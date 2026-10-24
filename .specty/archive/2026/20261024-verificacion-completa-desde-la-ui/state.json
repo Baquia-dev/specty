@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-verificacion-completa-desde-la-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-verificacion-completa-desde-la-ui",
   "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:673623971ab33b62a64b70cff115d3695057678951bcf0237e49d1a8f26eb278",
@@ -63,12 +63,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "03e48da121e5fe917a340d5ca3c91cd2c1f680a4",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:07:59.110Z",
       "doneAt": "2026-10-24T10:10:41.299Z",
-      "summary": "ARCHITECTURE §15 documenta POST /verify (fuera de la cola, solo en aceptación, 409 con su motivo), GET /run, el evento run y que la UI lo sigue con server-answers.ts; formats.md §4 dice que change.verified lo anotan specty accept y el servidor, con exit null si se cortó por tiempo"
+      "summary": "ARCHITECTURE §15 documenta POST /verify (fuera de la cola, solo en aceptación, 409 con su motivo), GET /run, el evento run y que la UI lo sigue con server-answers.ts; formats.md §4 dice que change.verified lo anotan specty accept y el servidor, con exit null si se cortó por tiempo",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -79,5 +79,6 @@
     "A": 2,
     "AC": 6,
     "T": 4
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T10:11:52.239Z"
 }

@@ -71,3 +71,24 @@ Desde la UI que sirve `specty ui`, la persona ejecuta la verificación completa 
   - ac: AC6
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Desde la UI que sirve `specty ui`, la persona ejecuta la verificación completa de un cambio en aceptación y ve su salida en vivo. `POST /api/changes/<id>/verify` la arranca en la carpeta del cambio, fuera de la cola de acciones. El evento `run` lleva la ejecución mientras corre, y `GET /api/changes/<id>/run` deja ver una que ya corría. Al terminar, el resultado queda en la auditoría como `change.verified`, que ahora también anota `specty accept` cuando la ejecuta en la terminal.
+
+### Desviaciones
+
+- El ayudante de los tests del servidor que lleva un cambio a aceptación (`implemented`) pasó de `test/server/diff.test.ts` a `test/server/support.ts`, junto a uno nuevo que escucha `/api/events` como el navegador; los dos son tests implícitos de la tarea.
+
+### Decisiones
+
+- Si se cierra el servidor con una verificación en marcha, se termina sin anotarla: no es un resultado de la verificación, sino una interrupción.
+- `change.verified` lleva `exit: null` cuando la verificación se cortó por tiempo, como `task.verified`.
+- La UI sigue la ejecución con eventos que llevan la ejecución entera (últimas 1000 líneas, cada 250 ms como mucho), en vez de trozos, porque en local reenviarla es barato y la UI no tiene que unirlos.
+
+### Pendientes
+
+- Ver en vivo las verificaciones de las tareas, que corren en el proceso del agente.
+- Cancelar desde la UI una verificación en curso.
