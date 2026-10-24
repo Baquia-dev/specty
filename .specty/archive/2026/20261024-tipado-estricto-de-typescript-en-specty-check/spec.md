@@ -72,3 +72,23 @@ En un proyecto TypeScript, `specty check` falla si el cambio añade un `any` exp
 
 - R1: La detección propia da un falso positivo en una sintaxis rara — solo mira las líneas añadidas, y el nivel de `strict-types` se baja en `checks.levels`; con ESLint instalado, manda el análisis de ESLint.
 - R2: El ESLint del proyecto tarda con `--all` en un repositorio grande — es el mismo coste que su propio lint, y en `--changed` solo recibe los archivos de la ejecución.
+
+## Cierre
+
+### Resumen
+
+En un proyecto TypeScript, `specty check` trae `strict-types`, que prohíbe en las líneas añadidas un `any` explícito, `@ts-ignore` y `@ts-nocheck`, y la aserción no nula. Si el proyecto tiene ESLint con typescript-eslint, lo ejecuta con su configuración y además las tres reglas a `error`. Si no, usa una detección propia del core, línea a línea, sin comentarios ni cadenas. Los dos caminos dan los mismos mensajes, en los dos idiomas. Sobre este repositorio, que usa Biome, `specty check` pasó entero: `lint`, `typecheck` y `tests` con `pnpm`, `strict-types` y las comunes.
+
+### Desviaciones
+
+- ESLint escribe su informe a un archivo (`--output-file`) y no a la salida estándar, para que el tope de lo que guarda `execute` nunca lo corte.
+
+### Decisiones
+
+- `@ts-expect-error` se permite, como en la configuración `recommended` de typescript-eslint; `@ts-ignore` y `@ts-nocheck` solo cuentan al inicio de un comentario, que es donde el compilador los obedece.
+- La asignación definida (`let x!: T`) no es una aserción no nula, y en `.tsx` un `!` al final de la línea puede ser texto JSX, así que tampoco cuenta.
+- Con ESLint, solo cuentan los mensajes de las tres reglas: los de las reglas del propio proyecto ya los da la verificación `lint`.
+
+### Pendientes
+
+- Las líneas por función y la complejidad, las capas con dependency-cruiser y la regeneración del cliente de Prisma, en los cortes siguientes del proveedor de TypeScript.

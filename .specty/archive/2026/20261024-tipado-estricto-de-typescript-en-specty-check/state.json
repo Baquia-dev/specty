@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-tipado-estricto-de-typescript-en-specty-check",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-tipado-estricto-de-typescript-en-specty-check",
   "baseCommit": "881ffae0bedb6fb3c63dd7ca095da67ab41f4ef0",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:6eb858bd34a664b889ebb8e14a75fdd0481daddb0cddf547522a0a4a2e82c816",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "51a3a194dc1a5e65f70a3109c121c8ebf6ab5cfa",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:04:04.289Z",
       "doneAt": "2026-10-24T21:06:09.562Z",
-      "summary": "formats §6 documenta strict-types (qué prohíbe, el camino de ESLint con --rule y el de la detección propia, los *.d.ts); ARCHITECTURE la añade a la fila de specty check."
+      "summary": "formats §6 documenta strict-types (qué prohíbe, el camino de ESLint con --rule y el de la detección propia, los *.d.ts); ARCHITECTURE la añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,5 +82,6 @@
     "AC": 6,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T21:08:04.339Z"
 }

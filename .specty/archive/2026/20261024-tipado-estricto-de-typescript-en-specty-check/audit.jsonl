@@ -10,3 +10,7 @@
 {"ts":"2026-10-24T21:04:04.290Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"51a3a194dc1a5e65f70a3109c121c8ebf6ab5cfa"}}
 {"ts":"2026-10-24T21:06:09.559Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":106859}}
 {"ts":"2026-10-24T21:06:09.573Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats §6 documenta strict-types (qué prohíbe, el camino de ESLint con --rule y el de la detección propia, los *.d.ts); ARCHITECTURE la añade a la fila de specty check."}}
+{"ts":"2026-10-24T21:07:49.783Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":88794}}
+{"ts":"2026-10-24T21:07:49.786Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T21:08:04.342Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:9e729e517f93ecb9fe0ded19ed78990aaabfdd1c22969e8d08cbecb834b08ca2","size":"M","warnings":1}}
+{"ts":"2026-10-24T21:08:04.795Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
