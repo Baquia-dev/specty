@@ -58,7 +58,7 @@ El modelo que redacta la spec puede recomendar más esfuerzo que el que calcula 
 
 ## Tareas
 
-- [ ] T1: Los campos de esfuerzo en la spec
+- [x] T1: Los campos de esfuerzo en la spec
   - files: packages/core/src/spec/model.ts, packages/core/src/spec/frontmatter.ts, packages/core/src/spec/read-tasks.ts, packages/core/src/spec/vocabulary.ts, packages/core/src/spec/serialize.ts, packages/core/test/spec/parse.test.ts, packages/core/test/spec/arbitraries.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec

@@ -5,6 +5,7 @@ import {
   CHANGE_KINDS,
   COMMIT_TYPES,
   type Criterion,
+  EFFORT_LEVELS,
   type FileAction,
   type FileEntry,
   type Frontmatter,
@@ -112,6 +113,7 @@ const frontmatter: fc.Arbitrary<Frontmatter> = fc
     estimate: optional(
       fc.record({ adjust: fc.constantFrom<-1 | 0 | 1>(-1, 0, 1), reason: sentence }),
     ),
+    effort: optional(fc.record({ review: fc.constantFrom(...EFFORT_LEVELS), reason: sentence })),
   })
   .map((data) => ({
     kind: data.kind,
@@ -121,6 +123,7 @@ const frontmatter: fc.Arbitrary<Frontmatter> = fc
     ...(data.slice !== undefined ? { slice: data.slice } : {}),
     ...(data.timebox !== undefined ? { timebox: data.timebox } : {}),
     ...(data.estimate !== undefined ? { estimate: data.estimate } : {}),
+    ...(data.effort !== undefined ? { effort: data.effort } : {}),
   }));
 
 const task = (
@@ -141,6 +144,12 @@ const task = (
       verify: optional(fc.constantFrom("pnpm test", "flutter test test/features", "pytest -q")),
       type: optional(fc.constantFrom(...COMMIT_TYPES)),
       notes: optional(sentence),
+      effort: optional(
+        fc.record(
+          { level: fc.constantFrom(...EFFORT_LEVELS), reason: sentence },
+          { requiredKeys: ["level"] },
+        ),
+      ),
     })
     .map((data) => ({
       id: `T${index + 1}`,
@@ -151,6 +160,7 @@ const task = (
       ...(data.verify !== undefined ? { verify: data.verify } : {}),
       ...(data.type !== undefined ? { type: data.type } : {}),
       ...(data.notes !== undefined ? { notes: data.notes } : {}),
+      ...(data.effort !== undefined ? { effort: data.effort } : {}),
     }));
 
 const tasks = (paths: readonly string[], criteria: readonly string[]): fc.Arbitrary<Task[]> =>

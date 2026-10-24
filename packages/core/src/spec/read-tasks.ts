@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import { type RawField, type RawList, splitList, unwrapCode } from "./list";
-import { COMMIT_TYPES, type Task } from "./model";
+import { COMMIT_TYPES, EFFORT_LEVELS, type Task } from "./model";
 import {
   claimedHead,
   createReader,
@@ -42,6 +42,7 @@ export function readTasks(raw: RawList, lang: Lang): ListResult<Task> {
         ...verifyOf(fields.get("verify")),
         ...commitType(fields.get("type"), head.id, reader),
         ...notesOf(fields.get("notes")),
+        ...effortOf(fields.get("effort"), head.id, reader),
       },
     ];
   });
@@ -93,6 +94,26 @@ function commitType(
 function verifyOf(field: RawField | undefined): Partial<Pick<Task, "verify">> {
   const verify = field === undefined ? "" : unwrapCode(field.value);
   return verify.length > 0 ? { verify } : {};
+}
+
+/** `effort: high`, or `effort: high — reason`, as the reasons of the Files section. */
+function effortOf(
+  field: RawField | undefined,
+  owner: string,
+  reader: Reader,
+): Partial<Pick<Task, "effort">> {
+  if (field === undefined) return {};
+  const [raw = "", ...rest] = field.value.split(" — ");
+  const level = EFFORT_LEVELS.find((candidate) => candidate === raw.trim().toLowerCase());
+  const reason = rest.join(" — ").trim();
+  if (level !== undefined) return { effort: { level, ...(reason.length > 0 ? { reason } : {}) } };
+  reader.report({
+    code: "field-invalid",
+    params: { id: owner, field: field.key, value: field.value, valid: EFFORT_LEVELS.join(", ") },
+    line: field.line,
+    target: owner,
+  });
+  return {};
 }
 
 function notesOf(field: RawField | undefined): Partial<Pick<Task, "notes">> {

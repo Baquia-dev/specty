@@ -4,7 +4,7 @@ import * as z from "zod";
 import type { Lang } from "../i18n";
 import { CHANGE_ID } from "../ids";
 import { type Diagnostic, diagnostic } from "./diagnostics";
-import { CHANGE_KINDS, type ChangeKind, type Frontmatter } from "./model";
+import { CHANGE_KINDS, type ChangeKind, EFFORT_LEVELS, type Frontmatter } from "./model";
 
 const ChangeId = z.string().regex(CHANGE_ID);
 
@@ -24,6 +24,7 @@ export const FrontmatterSchema = z.strictObject({
       reason: z.string().min(1),
     })
     .optional(),
+  effort: z.strictObject({ review: z.enum(EFFORT_LEVELS), reason: z.string().min(1) }).optional(),
 });
 
 export interface FrontmatterResult {
@@ -69,6 +70,9 @@ export function readFrontmatter(
       ...(data.timebox !== undefined ? { timebox: data.timebox } : {}),
       ...(data.estimate !== undefined
         ? { estimate: { adjust: data.estimate.adjust, reason: data.estimate.reason } }
+        : {}),
+      ...(data.effort !== undefined
+        ? { effort: { review: data.effort.review, reason: data.effort.reason } }
         : {}),
     },
     diagnostics: [],
