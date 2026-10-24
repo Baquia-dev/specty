@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-el-test-del-presupuesto-usa-los-limites-de-split",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-el-test-del-presupuesto-usa-los-limites-de-split",
+  "baseCommit": "a9286005a52e50f5c6a2393e77e158dc683349ca",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2969cc34856d9c0fa0842d444aebc70b7e1c779e3a5ae1cefa7889dcd7662300",
+    "at": "2026-10-24T17:13:57.947Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
