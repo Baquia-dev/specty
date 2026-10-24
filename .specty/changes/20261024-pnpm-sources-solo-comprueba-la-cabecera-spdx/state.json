@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-pnpm-sources-solo-comprueba-la-cabecera-spdx",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-pnpm-sources-solo-comprueba-la-cabecera-spdx",
+  "baseCommit": "6c75421846d3b6b76689d225c306cf63e6b50fea",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48185533d340783af57cb1972391b5cc1d2585b25f5c4fd276720ee6efa5e9ae",
+    "at": "2026-10-24T16:30:28.876Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
