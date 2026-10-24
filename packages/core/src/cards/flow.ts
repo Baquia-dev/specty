@@ -55,6 +55,8 @@ export interface ProposedView {
   /** Changes since the last approved revision, when there is one. */
   readonly delta: readonly DeltaEntry[];
   readonly closing: boolean;
+  /** An independent review (ADR 0011) should come before the approval. */
+  readonly review?: boolean;
 }
 
 /** `specty propose` accepted: the spec (or the closing) waits for the user. */
@@ -100,15 +102,20 @@ export function proposedCard(view: ProposedView, ctx: CardContext): Output {
       ...section(t("AVISOS", "WARNINGS"), warnings),
     ],
     next:
-      ctx.delegated === true
+      view.review === true
         ? t(
-            `modo delegado: aprueba tú la spec con \`${ctx.command} approve\` y sigue su salida.`,
-            `delegated mode: approve the spec yourself with \`${ctx.command} approve\` and follow its output.`,
+            `antes de pedir la aprobación, ejecuta \`${ctx.command} review\`: una revisión independiente de la spec con un modelo más fuerte.`,
+            `before asking for the approval, run \`${ctx.command} review\`: an independent review of the spec by a stronger model.`,
           )
-        : t(
-            `dile al usuario que la spec está lista en ${view.specPath}, con su tamaño y el esfuerzo recomendado, y que la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
-            `tell the user the spec is ready at ${view.specPath}, with its size and recommended effort, and that they approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
-          ),
+        : ctx.delegated === true
+          ? t(
+              `modo delegado: aprueba tú la spec con \`${ctx.command} approve\` y sigue su salida.`,
+              `delegated mode: approve the spec yourself with \`${ctx.command} approve\` and follow its output.`,
+            )
+          : t(
+              `dile al usuario que la spec está lista en ${view.specPath}, con su tamaño y el esfuerzo recomendado, y que la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
+              `tell the user the spec is ready at ${view.specPath}, with its size and recommended effort, and that they approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
+            ),
   };
 }
 

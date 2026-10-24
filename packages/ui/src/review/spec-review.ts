@@ -29,6 +29,7 @@ import { ReviewDelta } from "./delta-review";
 import { Markdown } from "./markdown";
 import { SECTION_META, sectionNumber, sectionProgress } from "./section-meta";
 import { ReviewItems } from "./spec-sections";
+import { UserRequest } from "./user-request";
 
 /** How long the section picked in the index stays highlighted. */
 const FLASH_MS = 1400;
@@ -67,6 +68,7 @@ const SECTION =
     ReviewItems,
     ReviewComments,
     ReviewDelta,
+    UserRequest,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Positioned, so absolute screen-reader text inside stays within the scrolling area.
@@ -121,7 +123,10 @@ const SECTION =
             <p class="m-0 text-sm text-text-muted">{{ meta[entry.key].hint[lang()] }}</p>
             <div class="mt-4">
               @switch (entry.key) {
-                @case ('goal') { <sp-markdown class="text-base leading-relaxed" [text]="review().goal" /> }
+                @case ('goal') {
+                  <sp-markdown class="text-base leading-relaxed" [text]="review().goal" />
+                  @if (change().request; as asked) { <sp-user-request [text]="asked" /> }
+                }
                 @case ('outOfScope') { <sp-markdown class="text-base leading-relaxed" [text]="review().outOfScope" /> }
                 @case ('assumptions') {
                   <div role="list" [class]="list">

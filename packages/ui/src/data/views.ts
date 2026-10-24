@@ -12,6 +12,7 @@ import {
   recommendEffort,
   type Spec,
 } from "@baquia-dev/specty-core";
+import { requestOf } from "./asked";
 import { closingOf } from "./closing";
 import { deriveDelta } from "./delta";
 import { historyOf } from "./history";
@@ -85,6 +86,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const level = state.size?.level ?? size.level;
   const tasks = spec.sections.tasks?.items ?? [];
   const requested = changesRequestedOf(state, record.audit ?? []);
+  const request = requestOf(record.audit ?? []);
   // Once the person asked for changes, the change waits for the agent, not for them.
   const decision = requested === undefined ? decisionOf(state) : undefined;
   return {
@@ -107,6 +109,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
     ...(record.folder === undefined ? {} : { folder: record.folder }),
     phaseSince: record.phaseSince,
     goal: spec.sections.goal ?? spec.sections.reason ?? "",
+    ...(request === undefined ? {} : { request }),
     size: {
       level,
       reasons: size.reasons.map((reason) => ({

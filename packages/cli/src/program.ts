@@ -25,6 +25,7 @@ import { next } from "./commands/next";
 import { propose } from "./commands/propose";
 import { prune } from "./commands/prune";
 import { retro } from "./commands/retro";
+import { review } from "./commands/review";
 import { scopeAdd } from "./commands/scope";
 import { reject } from "./commands/scope-decision";
 import { status } from "./commands/status";
@@ -161,6 +162,10 @@ export async function runCli(
     .command("propose")
     .description("validate the spec and send it to review")
     .action(run(propose));
+  program
+    .command("review")
+    .description("an independent review of the spec, by the command the person set up")
+    .action(run(review));
   program
     .command("task")
     .description("task commands")
