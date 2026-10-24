@@ -61,3 +61,24 @@ follows:
 ## Riesgos
 
 - R1: Renombrar una función grande la hace parecer nueva — el mensaje lleva su nombre y su tamaño, y quien la renombra puede dividirla o bajar el nivel; es el mismo caso que crearla.
+
+## Cierre
+
+### Resumen
+
+`specty check` trae `function-lines` y `complexity` en los lenguajes de llaves. Miden cada función con la estimación del core y fallan con la que el cambio tocó, pasa de `checks.functions` (50 líneas, complejidad 10) y es nueva o creció respecto al punto de partida. La deuda que ya existía no bloquea un cambio pequeño; con `--all`, la CI la ve entera. En este repositorio, `--changed` pasó entero, y `--all` da 51 funciones largas y 49 complejas de antes.
+
+### Desviaciones
+
+- El plan del ADR 0012 decía usar `max-lines-per-function` y `complexity` de ESLint en TypeScript. Se usa la estimación propia en todos los lenguajes, porque ESLint no sabe cómo era la función antes del cambio y no podría aplicar la regla de «nueva o creció».
+- La primera verificación de T2 falló con la máquina cargada (load 44); `pnpm check` pasó a mano y en el segundo intento.
+
+### Decisiones
+
+- Una función se empareja con la del punto de partida por nombre y por orden entre las de ese nombre; las que no tienen nombre siempre se tratan como nuevas.
+- El proveedor de las funciones se aplica a cualquier stack que no sea Python, Ruby o Elixir, y no mide los archivos de test.
+
+### Pendientes
+
+- Para que la CI de este repositorio use `specty check --all`, sus 51 funciones largas y 49 complejas tendrán que dividirse, o bajar estas verificaciones a `warn` en su `checks.levels`.
+- Del proveedor de TypeScript quedan las capas con dependency-cruiser y la regeneración del cliente de Prisma.

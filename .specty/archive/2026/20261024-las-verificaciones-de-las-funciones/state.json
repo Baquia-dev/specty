@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-las-verificaciones-de-las-funciones",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-las-verificaciones-de-las-funciones",
   "baseCommit": "e35326fa5a7f8df239b710fb1191f9c0a58e31c4",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:09fba35e28f516a684173372657befdf4c8e49e5f0069a5ca8a387b68262c731",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "2cc0661a44d8d192302dbc10dcb6c7712731e009",
+      "attempts": 2,
       "startedAt": "2026-10-24T21:25:50.293Z",
       "doneAt": "2026-10-24T21:32:59.474Z",
-      "summary": "formats §6 documenta checks.functions y las verificaciones function-lines y complexity (estimación, qué cuenta, nueva o crecida, --all, tests fuera, por qué no ESLint); ARCHITECTURE las añade a la fila de specty check."
+      "summary": "formats §6 documenta checks.functions y las verificaciones function-lines y complexity (estimación, qué cuenta, nueva o crecida, --all, tests fuera, por qué no ESLint); ARCHITECTURE las añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "AC": 5,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T21:34:30.010Z"
 }
