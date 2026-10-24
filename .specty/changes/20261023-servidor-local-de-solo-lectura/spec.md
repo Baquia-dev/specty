@@ -61,7 +61,7 @@ kind: standard
   - files: packages/cli/src/server/events.ts, packages/cli/src/server/http.ts, packages/cli/test/server.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts
-- [ ] T3: El comando `specty ui`
+- [x] T3: El comando `specty ui`
   - files: packages/cli/src/commands/ui.ts, packages/cli/src/enforce/commands.ts, packages/cli/src/program.ts, packages/cli/test/server.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts test/enforce.test.ts

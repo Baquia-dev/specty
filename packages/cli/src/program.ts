@@ -29,9 +29,8 @@ import { scopeAdd } from "./commands/scope";
 import { reject } from "./commands/scope-decision";
 import { status } from "./commands/status";
 import { taskDone } from "./commands/task";
-import { isGuardTool } from "./enforce/actions";
-import { guard } from "./enforce/guard";
-import { preCommit, prepareCommitMsg } from "./enforce/hook";
+import { ui } from "./commands/ui";
+import { enforcementCommands } from "./enforce/commands";
 import { bareCards, type Environment, openSession, type Session, systemLanguage } from "./session";
 
 export interface CliEnvironment extends Environment {
@@ -263,26 +262,13 @@ export async function runCli(
     .description("remove the folders of finished changes and the branches already merged")
     .action(run(prune));
   program
-    .command("hook", { hidden: true })
-    .argument("<name>")
-    .argument("[args...]")
-    .action(async (name: string, args: string[]) => {
-      const opened = await openSession(environment);
-      if (opened.kind !== "ok") return;
-      if (name === "pre-commit") code = await preCommit(opened.session);
-      if (name === "prepare-commit-msg")
-        code = await prepareCommitMsg(opened.session, args[0] ?? "", args[1]);
-    });
-  program
-    .command("guard", { hidden: true })
-    .requiredOption("--tool <tool>")
-    .action(async (options: { tool: string }) => {
-      if (!isGuardTool(options.tool)) return;
-      const reply = await guard(environment, options.tool, await environment.stdin());
-      if (reply.stdout.length > 0) environment.io.out(reply.stdout);
-      if (reply.stderr.length > 0) environment.io.err(reply.stderr);
-      code = reply.code;
-    });
+    .command("ui")
+    .description("serve the changes of every worktree on localhost, until Ctrl+C")
+    .option("--port <port>", "the port to try first (default: 4173)")
+    .action((options: { port?: string }) => run((session) => ui(session, options.port))());
+  enforcementCommands(program, environment, (exit) => {
+    code = exit;
+  });
 
   try {
     await program.parseAsync([...argv], { from: "user" });

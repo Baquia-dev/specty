@@ -4,6 +4,7 @@ import { type IncomingHttpHeaders, request } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { ui } from "../src/commands/ui";
 import { startServer, type UiServer } from "../src/server/http";
 import { changeRecords } from "../src/server/records";
 import { openSession, type Session } from "../src/session";
@@ -22,14 +23,17 @@ import {
   writeFiles,
 } from "./support";
 
-/** A session in `cwd`, as the commands open it. */
-async function sessionAt(cwd: string): Promise<Session> {
+/** A session in `cwd`, as the commands open it; what it prints goes to `out`. */
+async function sessionAt(
+  cwd: string,
+  out: (text: string) => void = () => undefined,
+): Promise<Session> {
   const opened = await openSession({
     cwd,
     env: testEnv(),
     now: () => NOW,
     terminal: AGENT,
-    io: { out: () => undefined, err: () => undefined },
+    io: { out, err: () => undefined },
     invocation: { command: `node "${DIST}"`, portable: false, script: DIST },
   });
   if (opened.kind !== "ok") throw new Error(`no Specty session in ${cwd}`);
@@ -232,5 +236,34 @@ describe("the local server", () => {
     } finally {
       await server.close();
     }
+  });
+});
+
+describe("specty ui", () => {
+  it("prints the link and serves until it is told to stop (AC1)", async () => {
+    const { root } = await twoChanges();
+    const printed: string[] = [];
+    let stop: () => void = () => undefined;
+    const stopped = new Promise<void>((done) => {
+      stop = done;
+    });
+    const running = ui(await sessionAt(root, (text) => printed.push(text)), "0", stopped);
+    await until(() => printed.length > 0);
+    expect(printed[0]).toContain("SPECTY · ui");
+    expect(printed[0]).toContain("Ctrl+C cierra el servidor");
+    const port = Number(/http:\/\/localhost:(\d+)\/\?token=\S+/.exec(printed[0] ?? "")?.[1]);
+    expect((await ask(port, "/api/changes")).status).toBe(403);
+    stop();
+    const output = await running;
+    expect(output.status).toBe("ok");
+    expect(output.next).toContain("`specty ui`");
+    await expect(ask(port, "/")).rejects.toThrow();
+  });
+
+  it("refuses a port that is not one", async () => {
+    const { root } = await twoChanges();
+    const result = await cli(root, ["ui", "--port", "abc"]);
+    expect(result.code).toBe(1);
+    expect(result.out).toContain("Puerto no válido: abc.");
   });
 });

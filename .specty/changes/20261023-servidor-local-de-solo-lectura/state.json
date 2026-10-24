@@ -58,12 +58,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3dfbef34e25e15e0eb56c5bca8117c266cc41cdb",
+      "attempts": 1,
       "startedAt": "2026-10-24T02:45:28.693Z",
       "doneAt": "2026-10-24T02:48:28.329Z",
-      "summary": "server/http.ts: startServer escucha en 127.0.0.1 (el puerto pedido o los 19 siguientes), cambia el token del enlace por una cookie HttpOnly y SameSite=Strict con el puerto en el nombre, comprueba Host y Origin, solo admite GET y no habilita CORS; sirve /api/changes, /api/events y la UI construida con su index.html marcado, sin salir de su carpeta; server/events.ts avisa con eventos changes cuando la firma de los archivos cambia, y solo mira mientras alguien escucha"
+      "summary": "server/http.ts: startServer escucha en 127.0.0.1 (el puerto pedido o los 19 siguientes), cambia el token del enlace por una cookie HttpOnly y SameSite=Strict con el puerto en el nombre, comprueba Host y Origin, solo admite GET y no habilita CORS; sirve /api/changes, /api/events y la UI construida con su index.html marcado, sin salir de su carpeta; server/events.ts avisa con eventos changes cuando la firma de los archivos cambia, y solo mira mientras alguien escucha",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "788daba86c46747f5e8ea0f3c2f3681453489d70",
+      "startedAt": "2026-10-24T02:48:28.606Z",
+      "doneAt": "2026-10-24T02:51:52.216Z",
+      "summary": "specty ui (commands/ui.ts) arranca el servidor en 4173 o el siguiente libre (o --port), imprime el enlace con el token en una tarjeta y lo cierra con Ctrl+C; busca la UI construida junto al bundle o en packages/ui/dist/browser; los comandos ocultos hook y guard pasan a enforce/commands.ts y program.ts queda en 280 líneas"
     }
   },
   "pending": {
