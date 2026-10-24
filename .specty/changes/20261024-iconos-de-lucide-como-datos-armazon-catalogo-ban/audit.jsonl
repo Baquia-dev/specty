@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T11:37:07.325Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-iconos-de-lucide-como-datos-armazon-catalogo-ban"}}
+{"ts":"2026-10-24T14:42:01.758Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:1cf64d7103ee99b83036466517bf0510d41aae647adab5aa0fcde1abd9019527","size":"L","warnings":5}}
+{"ts":"2026-10-24T14:42:02.129Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:1cf64d7103ee99b83036466517bf0510d41aae647adab5aa0fcde1abd9019527","channel":"delegated","delegated":true}}
