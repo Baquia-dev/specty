@@ -23,3 +23,9 @@ Cuando el agente cierra un cambio desde dentro de su worktree (modo delegado), l
   - files: packages/cli/src/flow/land.ts, packages/cli/src/enforce/worktree-hooks.ts, packages/cli/test/delegated-integration.test.ts, packages/cli/test/prune.test.ts, packages/cli/test/worktree-hooks.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: fix
+
+## Cierre
+
+### Resumen
+
+landChange borra la worktree en cuanto el cambio está en su rama destino, también si el agente cierra desde dentro (modo delegado); su SIGUIENTE dice que la carpeta ya no existe y que salga (ExitWorktree), o que salga de ella si no se pudo borrar; a una persona le basta la línea de dónde seguir. El hook WorktreeRemove responde bien si la carpeta ya no existe. Los tests de prune fabrican la carpeta que sobra con una worktree bloqueada. ARCHITECTURE §9 y §10.

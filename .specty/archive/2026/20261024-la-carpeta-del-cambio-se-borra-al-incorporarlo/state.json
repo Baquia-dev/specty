@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-la-carpeta-del-cambio-se-borra-al-incorporarlo",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-la-carpeta-del-cambio-se-borra-al-incorporarlo",
   "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "287af590a42dec457af4ad68f5b3f8489e8a4b21",
+      "attempts": 2,
       "startedAt": "2026-10-24T16:11:35.649Z",
       "doneAt": "2026-10-24T16:17:57.486Z",
-      "summary": "landChange borra la worktree en cuanto el cambio está en su rama destino, también si el agente cierra desde dentro (modo delegado); su SIGUIENTE dice que la carpeta ya no existe y que salga (ExitWorktree), o que salga de ella si no se pudo borrar; a una persona le basta la línea de dónde seguir. El hook WorktreeRemove responde bien si la carpeta ya no existe. Los tests de prune fabrican la carpeta que sobra con una worktree bloqueada. ARCHITECTURE §9 y §10."
+      "summary": "landChange borra la worktree en cuanto el cambio está en su rama destino, también si el agente cierra desde dentro (modo delegado); su SIGUIENTE dice que la carpeta ya no existe y que salga (ExitWorktree), o que salga de ella si no se pudo borrar; a una persona le basta la línea de dónde seguir. El hook WorktreeRemove responde bien si la carpeta ya no existe. Los tests de prune fabrican la carpeta que sobra con una worktree bloqueada. ARCHITECTURE §9 y §10.",
+      "scopeExtra": []
     }
   },
   "pending": {
