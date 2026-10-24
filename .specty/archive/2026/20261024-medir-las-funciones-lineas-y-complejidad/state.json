@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261024-medir-las-funciones-lineas-y-complejidad",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-medir-las-funciones-lineas-y-complejidad",
+  "baseCommit": "653209b8e233ea37be4d05c0f3e8a1482d60fb02",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c61447aa79db99a03fefc301040a56d747b87824717f1fe7481475744222a9f7",
+    "at": "2026-10-24T21:10:29.592Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ed1aeba66e1abe2edfab44c6e8646e73a63875bad4cbfeb8176e9dcf47c72dd6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cc2065878d965ffe9e98f8c171dcc3dfda46ce9344d5c58a00855a0223a7f8ac",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:615077f43da3736a84389d17712e19f322c0e4c208a4fa66bf446eecb614a592",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:f7216bed32add10e6b5ee50130956883b4259e86a20a13df92a5631cd9000171",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "70da161e622f8d1ae15f8fced78417f1349f66d1",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:10:30.040Z",
+      "doneAt": "2026-10-24T21:11:11.421Z",
+      "summary": "core/checks/code.ts: splitCode separa en cada línea el código (cadenas vacías, comentarios de bloque seguidos) de sus comentarios, con lifetimes de Rust opcionales; strict-types.ts lo usa en vez de su propio separador, con sus tests igual.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "1c590bfae549e0b737c329f898bdc61ac1245d82",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:11:11.685Z",
+      "doneAt": "2026-10-24T21:15:30.093Z",
+      "summary": "core/checks/functions.ts: functionMetrics mide cada función de los lenguajes de llaves (cabeceras de varias líneas y Allman, llaves sin comentarios ni cadenas, anidadas aparte en la complejidad); checks.functions con maxLines 50 y complexity 10.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-24T21:17:02.681Z"
+}

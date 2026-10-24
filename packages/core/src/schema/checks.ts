@@ -13,6 +13,8 @@ export interface ChecksConfig {
   /** Paths no check looks at, on top of the ignored and generated ones. */
   readonly exclude: readonly string[];
   readonly todo: TodoConfig;
+  /** Limits of each function: its lines of code and its cyclomatic complexity. */
+  readonly functions: { readonly maxLines: number; readonly complexity: number };
   /** The project's commands for the command checks, over the ones Specty detects. */
   readonly commands: Readonly<Partial<Record<CommandCheck, string>>>;
 }
@@ -51,6 +53,7 @@ export const DEFAULT_CHECKS: ChecksConfig = {
     markers: ["TODO", "FIXME"],
     reference: String.raw`#\d+|\b[A-Z][A-Z0-9]+-\d+\b|https?://\S+`,
   },
+  functions: { maxLines: 50, complexity: 10 },
   commands: {},
 };
 
@@ -77,6 +80,12 @@ export const ChecksSchema = z.strictObject({
         .optional(),
     })
     .optional(),
+  functions: z
+    .strictObject({
+      maxLines: z.number().int().positive().optional(),
+      complexity: z.number().int().positive().optional(),
+    })
+    .optional(),
   commands: z
     .strictObject({
       format: z.string().min(1).optional(),
@@ -95,6 +104,10 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
     todo: {
       markers: input?.todo?.markers ?? DEFAULT_CHECKS.todo.markers,
       reference: input?.todo?.reference ?? DEFAULT_CHECKS.todo.reference,
+    },
+    functions: {
+      maxLines: input?.functions?.maxLines ?? DEFAULT_CHECKS.functions.maxLines,
+      complexity: input?.functions?.complexity ?? DEFAULT_CHECKS.functions.complexity,
     },
     commands: Object.fromEntries(
       COMMAND_CHECKS.flatMap((id) => {
