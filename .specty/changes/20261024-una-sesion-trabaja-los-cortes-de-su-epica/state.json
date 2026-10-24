@@ -6,6 +6,13 @@
   "branch": "specty/20261024-una-sesion-trabaja-los-cortes-de-su-epica",
   "baseCommit": "bc3432fe1214b5891499152202973336b89fef03",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:db2d6dbf4cee366ba7397544b79491ae5b5a6082caea52bd3f9ae57fbd62822a",
+    "at": "2026-10-24T21:10:37.223Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "85f5cbd618a3043f2440b588c5ba29daace53dc3",
+      "startedAt": "2026-10-24T21:10:37.666Z",
+      "doneAt": "2026-10-24T21:11:26.741Z",
+      "summary": "sessionDenial deja entrar a una sesión atada a una épica abierta en la carpeta de un corte de esa épica (la acción enter lleva epic, la épica del cambio de destino); un corte de otra épica, otro cambio o la vuelta a la épica con el corte abierto siguen fuera."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 4,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:db2d6dbf4cee366ba7397544b79491ae5b5a6082caea52bd3f9ae57fbd62822a",
-    "at": "2026-10-24T21:10:37.223Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

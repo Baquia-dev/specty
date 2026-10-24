@@ -43,7 +43,7 @@ La regla «una sesión, una worktree» ata una sesión a la carpeta de su cambio
 
 ## Tareas
 
-- [ ] T1: El guard deja entrar en un corte de la épica de la sesión
+- [x] T1: El guard deja entrar en un corte de la épica de la sesión
   - files: packages/core/src/guard/session.ts, packages/core/src/guard/decide.ts, packages/core/test/guard/decide.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
