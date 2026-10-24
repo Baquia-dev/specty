@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261024-ci-en-tres-sistemas-y-publicacion-con-procedenci",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-ci-en-tres-sistemas-y-publicacion-con-procedenci",
+  "baseCommit": "78aedb8d652d8935ea32dbc0538d23cc4f854856",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 rutas sensibles",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2a634a8d10e5fe9f1d6add1533315f16f52b6a2344fc206dab2da6f13b65d407",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2a8c30d08e0c9b5ee3c97391ecab02cf794383508f52cab0888a6b47e5cc23bd",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e8776bfc2daf13fab9b236142e77978321a1206de6d98a95583b8b5fc7525371",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48fe3b9cd819e1c19eab0249d8cb6f728e163ef8aa8c81fab6688ba045ec14aa",
+    "at": "2026-10-24T15:52:16.144Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
