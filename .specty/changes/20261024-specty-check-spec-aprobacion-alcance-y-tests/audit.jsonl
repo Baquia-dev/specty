@@ -10,3 +10,6 @@
 {"ts":"2026-10-24T18:09:53.734Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"e0606e81f25d20ad52dc37d7acf8649e69bd90a5"}}
 {"ts":"2026-10-24T18:12:54.440Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/check-plan.test.ts","exit":0,"ms":5737}}
 {"ts":"2026-10-24T18:12:54.531Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"check/plan-tests.ts: fix-tests (cada fix activa o hecha trae un test suyo; con --staged solo la activa) y tests-removed (avisa de tests borrados o con menos casos); scope cuenta también los borrados. check --spec sobre este cambio: todo OK."}}
+{"ts":"2026-10-24T18:12:54.789Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"066b23b7264f9355462e02533720c53dec151a58"}}
+{"ts":"2026-10-24T18:14:28.553Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":68875}}
+{"ts":"2026-10-24T18:14:28.556Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"formats §6 documenta check --spec y sus cuatro verificaciones (spec-approved, scope, fix-tests, tests-removed); ARCHITECTURE añade --spec a la fila de specty check."}}

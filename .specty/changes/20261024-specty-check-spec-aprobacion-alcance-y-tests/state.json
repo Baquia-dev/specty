@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-specty-check-spec-aprobacion-alcance-y-tests",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-specty-check-spec-aprobacion-alcance-y-tests",
   "baseCommit": "6beba238efdc5f76b19b3a97a7f537a53db57737",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e0606e81f25d20ad52dc37d7acf8649e69bd90a5",
+      "attempts": 1,
       "startedAt": "2026-10-24T18:09:53.733Z",
       "doneAt": "2026-10-24T18:12:54.530Z",
-      "summary": "check/plan-tests.ts: fix-tests (cada fix activa o hecha trae un test suyo; con --staged solo la activa) y tests-removed (avisa de tests borrados o con menos casos); scope cuenta también los borrados. check --spec sobre este cambio: todo OK."
+      "summary": "check/plan-tests.ts: fix-tests (cada fix activa o hecha trae un test suyo; con --staged solo la activa) y tests-removed (avisa de tests borrados o con menos casos); scope cuenta también los borrados. check --spec sobre este cambio: todo OK.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "066b23b7264f9355462e02533720c53dec151a58",
+      "startedAt": "2026-10-24T18:12:54.788Z",
+      "doneAt": "2026-10-24T18:14:28.554Z",
+      "summary": "formats §6 documenta check --spec y sus cuatro verificaciones (spec-approved, scope, fix-tests, tests-removed); ARCHITECTURE añade --spec a la fila de specty check."
     }
   },
   "pending": {

@@ -365,6 +365,13 @@ La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y 
 
 Las dos de tests solo miran los archivos de test (por nombre o por carpeta, como `scope.implicitTests`). Con `--changed` y `--staged`, las tres de marcas y `secrets` solo miran las líneas que el cambio añade según `git diff -U0`; con `--all`, todas. Con `--staged`, todas las verificaciones leen lo preparado, no lo que hay en el disco.
 
+`specty check --spec [id]` añade las verificaciones del plan aprobado de un cambio: el de `id` o, sin él, el activo de la carpeta. Comparan el diff de la ejecución con el plan, así que no se combinan con `--all`. La aprobación sigue en `state.json`, que el agente no puede escribir, y el alcance es el mismo que usa `task done`:
+
+- `spec-approved`: la spec está aprobada y no cambió desde entonces; el cierre, que llega después, no cuenta. Falla si no está aprobada, si cambió, si el cambio está cancelado o si no existe. Sin cambio, es la única que aparece.
+- `scope`: cada archivo que el diff toca o borra está en «Archivos» (con el origen de los renombrados), en los `files` de alguna tarea o en una ampliación aprobada; los tests implícitos y los generados entran solos. Lista cada ruta que queda fuera.
+- `fix-tests`: cada tarea `fix` activa o hecha tiene en el diff un test suyo, de sus `files`, de sus ampliaciones o junto a ellos. Con `--staged` solo cuenta la activa, porque la hecha ya hizo su commit.
+- `tests-removed`: avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada test con menos casos que en el punto de partida (el merge-base o HEAD). Los casos se cuentan con un catálogo de declaraciones por familia de frameworks (`it(`, `test(`, `testWidgets(`, `def test_`, `func Test`, `@Test`, `[Fact]`, `#[test]`…); su nivel solo sirve para apagarlo.
+
 `git.worktrees` (por defecto `true`) hace que `specty new` cree cada cambio en su propia worktree; con `false`, `new` cambia la rama de la carpeta actual (ARCHITECTURE §9). `git.setup` es el comando que prepara cada worktree nueva, normalmente instalando las dependencias. Sin la clave, Specty usa el del stack que detecta en la carpeta:
 
 - pnpm: `pnpm install --prefer-offline`; npm: `npm install`; yarn: `yarn install`; bun: `bun install`.

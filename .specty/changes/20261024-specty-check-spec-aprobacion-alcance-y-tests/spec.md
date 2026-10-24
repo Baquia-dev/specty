@@ -71,7 +71,7 @@ follows:
   - files: packages/cli/src/check/plan-tests.ts, packages/cli/src/check/plan.ts, packages/cli/test/check-plan.test.ts
   - ac: AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-plan.test.ts
-- [ ] T4: La documentación
+- [x] T4: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm check
