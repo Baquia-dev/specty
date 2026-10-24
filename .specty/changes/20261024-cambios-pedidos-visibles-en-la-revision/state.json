@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261024-cambios-pedidos-visibles-en-la-revision",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-cambios-pedidos-visibles-en-la-revision",
+  "baseCommit": "2606852d2bc240dd0fb6e5e70141d9fdc35152f1",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2d6802f57ca1f0cf6c76a622d21ae51006351ce4c22875fd9b4dde6503cbd6ee",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b9156332477848c4e2f831e4d66503076d3dc05c27e78d6c230f7275b32557db",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9c5083f060900f6e153f67fb1f3eb7e22f9da46b191e485f3002131620db868a",
+    "at": "2026-10-24T10:46:04.065Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
