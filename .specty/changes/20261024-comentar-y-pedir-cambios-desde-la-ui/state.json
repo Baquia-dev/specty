@@ -6,6 +6,13 @@
   "branch": "specty/20261024-comentar-y-pedir-cambios-desde-la-ui",
   "baseCommit": "82c639af4510595bac478f24746d95eb23b46500",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9deb510f9ba89fd6fba96b44552e5b8dffbdc53214fb2e2b3d45de8492e6da30",
+    "at": "2026-10-24T07:06:07.669Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4ae8a1a24dc0ca6fdef0650ee27c0d785e951a40",
+      "startedAt": "2026-10-24T07:06:25.658Z",
+      "doneAt": "2026-10-24T07:07:26.382Z",
+      "summary": "ServerData.addComment envía POST /api/changes/<id>/comments con el ancla y el texto, y requestChanges, POST /request-changes, por act como las demás decisiones (cookie, CSRF y motivo del flujo si se rechaza); solo verificar y los diffs siguen respondiendo que el servidor aún no los admite"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9deb510f9ba89fd6fba96b44552e5b8dffbdc53214fb2e2b3d45de8492e6da30",
-    "at": "2026-10-24T07:06:07.669Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

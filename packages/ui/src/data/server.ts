@@ -5,6 +5,7 @@ import {
   ActionError,
   type Bilingual,
   type ChangeRecord,
+  type CommentAnchor,
   type Delegation,
   SpectyData,
 } from "./records";
@@ -127,12 +128,12 @@ export class ServerData extends SpectyData {
     return this.act(change, "close", {});
   }
 
-  override addComment(): Promise<void> {
-    return Promise.reject(new ActionError(NOT_YET));
+  override addComment(change: string, anchor: CommentAnchor, body: string): Promise<void> {
+    return this.act(change, "comments", { anchor, body });
   }
 
-  override requestChanges(): Promise<void> {
-    return Promise.reject(new ActionError(NOT_YET));
+  override requestChanges(change: string): Promise<void> {
+    return this.act(change, "request-changes", {});
   }
 
   override verifyChange(): Promise<void> {

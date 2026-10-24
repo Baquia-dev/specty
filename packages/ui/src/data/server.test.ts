@@ -162,15 +162,23 @@ describe("ServerData actions", () => {
     const requests = serverAnswering({
       "/api/session": SESSION,
       ...Object.fromEntries(
-        ["approve", "assumptions/A1", "scope/S1", "accept", "adjust", "close"].map((verb) => [
-          at(verb),
-          [200, { status: "ok" }] as const,
-        ]),
+        [
+          "approve",
+          "assumptions/A1",
+          "comments",
+          "request-changes",
+          "scope/S1",
+          "accept",
+          "adjust",
+          "close",
+        ].map((verb) => [at(verb), [200, { status: "ok" }] as const]),
       ),
     });
     const data = new ServerData();
     await data.approve(CHANGE, 2);
     await data.decideAssumption(CHANGE, "A1", "rejected", "Por trimestres.");
+    await data.addComment(CHANGE, { section: "design", quote: "saludo" }, "Más corto.");
+    await data.requestChanges(CHANGE);
     await data.decideScope(CHANGE, "S1", "approved");
     await data.decideResult(CHANGE, { kind: "accept" });
     await data.decideResult(CHANGE, { kind: "adjust", request: "Más corto." });
@@ -180,6 +188,12 @@ describe("ServerData actions", () => {
         ["/api/session", "GET", ""],
         [at("approve"), "POST", '{"revision":2}'],
         [at("assumptions/A1"), "POST", '{"decision":"rejected","comment":"Por trimestres."}'],
+        [
+          at("comments"),
+          "POST",
+          '{"anchor":{"section":"design","quote":"saludo"},"body":"Más corto."}',
+        ],
+        [at("request-changes"), "POST", "{}"],
         [at("scope/S1"), "POST", '{"decision":"approved"}'],
         [at("accept"), "POST", "{}"],
         [at("adjust"), "POST", '{"request":"Más corto."}'],
@@ -211,13 +225,17 @@ describe("ServerData actions", () => {
     expect(await reason(approve())).toBe("El servidor no entendió la petición.");
     serverAnswering({ "/api/session": SESSION, [at("approve")]: [500, {}] });
     expect(await reason(approve())).toBe("El servidor respondió 500.");
+    const nothing = {
+      status: "blocked",
+      blocks: [{ lines: ["No hay comentarios sin resolver ni supuestos rechazados que pedir."] }],
+      next: "comenta lo que debe cambiar, o aprueba la spec.",
+    };
+    serverAnswering({ "/api/session": SESSION, [at("request-changes")]: [409, nothing] });
+    expect(await reason(new ServerData().requestChanges(CHANGE))).toBe(
+      "No hay comentarios sin resolver ni supuestos rechazados que pedir. Comenta lo que debe cambiar, o aprueba la spec.",
+    );
     const data = new ServerData();
-    for (const action of [
-      data.addComment(),
-      data.requestChanges(),
-      data.verifyChange(),
-      data.diff(),
-    ]) {
+    for (const action of [data.verifyChange(), data.diff()]) {
       expect(await reason(action)).toContain("aún no admite esto desde la UI");
     }
   });

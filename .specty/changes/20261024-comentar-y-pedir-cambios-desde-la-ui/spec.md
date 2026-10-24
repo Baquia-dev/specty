@@ -37,7 +37,7 @@ En la UI que sirve `specty ui`, la persona comenta la spec durante la revisión 
 
 ## Tareas
 
-- [ ] T1: Comentar y pedir cambios contra el servidor local
+- [x] T1: Comentar y pedir cambios contra el servidor local
   - files: packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts
