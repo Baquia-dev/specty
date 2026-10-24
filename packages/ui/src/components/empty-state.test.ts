@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { LucideSearchX } from "@lucide/angular";
 import { EmptyState } from "./empty-state";
+import { LucideSearchX } from "./icons";
 
 @Component({
   imports: [EmptyState],

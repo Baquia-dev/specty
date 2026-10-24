@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
 import type { Phase } from "@baquia-dev/specty-core";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { Preferences } from "../theme/preferences";
+import { PHASE_LABELS } from "../theme/tokens";
 import {
   LucideArchive,
   LucideBan,
   LucideCircleCheck,
   LucideCode,
-  LucideDynamicIcon,
   LucideEye,
   LucideListChecks,
   LucidePencilLine,
   LucideWrench,
-} from "@lucide/angular";
-import { Preferences } from "../theme/preferences";
-import { PHASE_LABELS } from "../theme/tokens";
+} from "./icons";
 
 /** Phases are never told apart by color alone: each one has its icon and its name. */
 export const PHASE_ICONS = {

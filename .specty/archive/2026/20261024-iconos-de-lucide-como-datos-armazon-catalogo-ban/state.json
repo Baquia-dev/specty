@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261024-iconos-de-lucide-como-datos-armazon-catalogo-ban",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-iconos-de-lucide-como-datos-armazon-catalogo-ban",
+  "baseCommit": "e17aa1d6ba48fb808266855fcb614254abcc0bbc",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1cf64d7103ee99b83036466517bf0510d41aae647adab5aa0fcde1abd9019527",
+    "at": "2026-10-24T14:42:02.119Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:87fed4037a7d88f9dc9990e12984c4cf543b8075c45f53518b52d9d3af3c68d9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "01e3ff1a80c5343d5f29b8633741f743d460fe6e",
+      "attempts": 1,
+      "startedAt": "2026-10-24T14:42:02.627Z",
+      "doneAt": "2026-10-24T14:43:24.334Z",
+      "summary": "app (delegation, shell, preferences-menu) y catalog (catalog, components, patterns, overlays) toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon y el tipo LucideIconInput",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "0f2bd614cb622a27b447411d25a8f64caa2e18f9",
+      "attempts": 1,
+      "startedAt": "2026-10-24T14:43:24.650Z",
+      "doneAt": "2026-10-24T14:44:32.970Z",
+      "summary": "change-page, inbox-toolbar, inbox, progress-tab, scope-request y task-row toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon y el tipo LucideIconInput",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 1,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-24T14:47:24.471Z"
+}

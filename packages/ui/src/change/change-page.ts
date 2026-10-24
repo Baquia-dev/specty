@@ -16,19 +16,19 @@ import {
 } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import type { EffortLevel, Phase } from "@baquia-dev/specty-core";
-import {
-  LucideArrowLeft,
-  LucideDynamicIcon,
-  LucideFileQuestion,
-  LucideLightbulb,
-  LucideTriangleAlert,
-} from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { AcceptanceActions } from "../acceptance/acceptance-actions";
 import { AcceptanceTab } from "../acceptance/acceptance-tab";
 import { ClosingActions } from "../acceptance/closing-actions";
 import { PhaseBadge } from "../components/badge";
 import { PAGE } from "../components/document";
 import { EmptyState } from "../components/empty-state";
+import {
+  LucideArrowLeft,
+  LucideFileQuestion,
+  LucideLightbulb,
+  LucideTriangleAlert,
+} from "../components/icons";
 import { Skeleton } from "../components/skeleton";
 import { TabPanel, Tabs } from "../components/tabs";
 import { ChangesStore } from "../data/changes-store";

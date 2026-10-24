@@ -13,10 +13,11 @@ import {
   resource,
 } from "@angular/core";
 import type { Lang } from "@baquia-dev/specty-core";
-import { LucideBot, LucideDynamicIcon } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Commands } from "../components/command-palette";
 import { DialogFrame, Dialogs } from "../components/dialog";
+import { LucideBot } from "../components/icons";
 import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
 import { SpectyData } from "../data/records";

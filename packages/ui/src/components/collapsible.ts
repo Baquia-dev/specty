@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, input, model } from "@angular/core";
-import { LucideChevronDown, LucideDynamicIcon } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { LucideChevronDown } from "./icons";
 
 let nextId = 0;
 

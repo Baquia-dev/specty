@@ -17,18 +17,18 @@ import {
   RouterOutlet,
   type Routes,
 } from "@angular/router";
+import { LucideDynamicIcon } from "@lucide/angular";
+import { Commands } from "../components/command-palette";
+import { PAGE } from "../components/document";
+import { EdgeFade } from "../components/edge-fade";
 import {
   LucideComponent,
-  LucideDynamicIcon,
   LucideLayers,
   LucideLayoutGrid,
   LucideLayoutList,
   LucidePalette,
   LucideType,
-} from "@lucide/angular";
-import { Commands } from "../components/command-palette";
-import { PAGE } from "../components/document";
-import { EdgeFade } from "../components/edge-fade";
+} from "../components/icons";
 import { Preferences } from "../theme/preferences";
 
 /** Pages of the catalog, under `/catalog`; each loads on demand. */

@@ -15,7 +15,7 @@ import {
   viewChild,
 } from "@angular/core";
 import type { Lang } from "@baquia-dev/specty-core";
-import { LucideChevronDown, LucideDynamicIcon } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import {
   type DiffFile,
   type DiffFileStatus,
@@ -27,6 +27,7 @@ import {
 import type { Bilingual } from "../data/records";
 import { type FileColors, HIGHLIGHT, type LineSpan, spansOf } from "../highlight/highlight";
 import { Preferences } from "../theme/preferences";
+import { LucideChevronDown } from "./icons";
 
 export type DiffMode = "unified" | "split";
 

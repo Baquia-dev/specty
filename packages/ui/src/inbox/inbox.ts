@@ -11,15 +11,11 @@ import {
   viewChild,
   viewChildren,
 } from "@angular/core";
-import {
-  LucideDynamicIcon,
-  LucideInbox,
-  LucideSearchX,
-  LucideTriangleAlert,
-} from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { LIST, PAGE, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
+import { LucideInbox, LucideSearchX, LucideTriangleAlert } from "../components/icons";
 import { Skeleton } from "../components/skeleton";
 import { ChangesStore } from "../data/changes-store";
 import { ActionError, type ChangeView } from "../data/records";

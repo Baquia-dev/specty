@@ -1,14 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from "@angular/core";
 import { LANGS, type Lang } from "@baquia-dev/specty-core";
-import {
-  LucideDynamicIcon,
-  type LucideIconInput,
-  LucideMonitor,
-  LucideMoon,
-  LucideSlidersHorizontal,
-  LucideSun,
-} from "@lucide/angular";
+import { LucideDynamicIcon, type LucideIconInput } from "@lucide/angular";
+import { LucideMonitor, LucideMoon, LucideSlidersHorizontal, LucideSun } from "../components/icons";
 import { Tooltip } from "../components/tooltip";
 import { Preferences, THEME_CHOICES, type ThemeChoice } from "../theme/preferences";
 import { DelegationSetting } from "./delegation";

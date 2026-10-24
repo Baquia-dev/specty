@@ -11,10 +11,11 @@ import {
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
-import { LucideDynamicIcon, LucideSearch } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { filter } from "rxjs";
 import { Button, IconButton } from "../components/button";
 import { Commands } from "../components/command-palette";
+import { LucideSearch } from "../components/icons";
 import { Kbd } from "../components/kbd";
 import { Toaster } from "../components/toast";
 import { ChangesStore } from "../data/changes-store";

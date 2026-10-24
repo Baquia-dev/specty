@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DIALOG_DATA, DialogRef } from "@angular/cdk/dialog";
 import { ChangeDetectionStrategy, Component, inject, input, signal } from "@angular/core";
-import { LucideDynamicIcon, LucideFilePlus } from "@lucide/angular";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Field } from "../components/field";
+import { LucideFilePlus } from "../components/icons";
 import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
 import type { TaskScopeRequest } from "../data/progress";

@@ -158,7 +158,8 @@ Decidido en el [ADR 0009](decisions/0009-angular-para-la-ui.md):
 - Tailwind CSS 4 con tokens propios.
 - Componentes propios sobre las primitivas accesibles de Angular Aria y el CDK.
 - `animate.enter`/`animate.leave` y transiciones CSS para el movimiento; `resource()` y signals para el estado del servidor.
-- CodeMirror 6 para el modo fuente, Shiki para el resaltado, combobox de Angular Aria para la paleta de comandos, `@lucide/angular` para los iconos y un visor de diffs propio (`components/diff-viewer.ts`).
+- CodeMirror 6 para el modo fuente, Shiki para el resaltado, combobox de Angular Aria para la paleta de comandos, iconos de Lucide y un visor de diffs propio (`components/diff-viewer.ts`).
+- **Iconos**: se dibujan con un solo componente, `LucideDynamicIcon` de `@lucide/angular` (`<svg [lucideIcon]="…">`), y sus dibujos son datos de `lucide` (`components/icons.ts`). Cada icono de `@lucide/angular` es un componente con su propia copia compilada de la misma plantilla, unos 3 KB por icono, mientras que en `lucide` cada dibujo es un solo arreglo, y el bundle solo guarda los que se usan. Para usar un icono nuevo, se añade a `icons.ts` con su nombre en Lucide. Mientras dure la migración, algunas pantallas aún importan las clases de `@lucide/angular`.
 - Tests con el builder de tests de Angular y Vitest.
 - Presupuesto: menos de 300 KB gzip en la carga inicial; el resto, bajo demanda.
 
