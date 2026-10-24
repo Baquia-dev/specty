@@ -59,3 +59,23 @@ ARCHITECTURE §14 prevé un camino para los proyectos nuevos que no existe: hoy 
 
 - R1: Tomar por nuevo un proyecto que no lo es y preguntar de más — solo con ningún stack detectado y sin código gobernado (A1), y nunca si ya hay `PRODUCT.md`.
 - R2: Una entrevista larga que frene el primer uso — son siete preguntas que se pueden dejar en blanco, y quedan como comentario para después.
+
+## Cierre
+
+### Resumen
+
+`init` reconoce un proyecto nuevo (`install/product.ts`): la detección no encuentra ningún stack y no hay código gobernado salvo metadatos del repositorio y los archivos de los agentes, que salen de la tabla de capacidades. Si no hay `PRODUCT.md`, lo crea con una sección por cada pregunta de §14 y lo incluye en su commit. Con una persona en la terminal, le hace las siete preguntas y escribe sus respuestas, con la pregunta como comentario donde la dejó en blanco; su SIGUIENTE le pide al agente el primer cambio. Si lo ejecuta un agente, deja las preguntas como comentarios, y su SIGUIENTE le pide hacerlas en el chat, completar `PRODUCT.md` y crear el primer cambio. `--dry-run` lo planea sin preguntar. Un repositorio con código, con un stack detectado o con un `PRODUCT.md` sigue como antes.
+
+### Desviaciones
+
+- **Ninguna respecto al plan.**
+
+### Decisiones
+
+- **Los archivos de los agentes salen de `AGENT_CAPABILITIES`:** un `.claude/` o un `.cursor/` de antes no hacen que el proyecto deje de ser nuevo, y no hay una segunda lista que mantener.
+- **Con `--dry-run` no se pregunta nada,** aunque haya una persona en la terminal: se planea el archivo con las preguntas.
+
+### Pendientes
+
+- **`commands/init.ts` tiene 307 líneas de código** y `task done` avisa. Propuesta para dividirlo por responsabilidad: la instalación de cada agente con sus líneas de salida (Claude Code, Cursor, Codex, OpenCode y los avisos de herramientas sin hooks) a `install/agents-step.ts`, y la salida de `--dry-run` (`planned`) junto a `install/files.ts`. Pendiente de que la persona lo decida.
+- **El primer cambio de esqueleto** (`bootstrap`, §14): el cambio siguiente.
