@@ -79,3 +79,23 @@ La tarjeta de cada tarea de código pide escribir primero el test y verlo fallar
 ## Riesgos
 
 - R1: El patrón de aserciones da falsos avisos (una línea que nombra `expect` sin serlo) o se le escapan frameworks. Mitigación: es un aviso, no un bloqueo, y el test de core fija qué cuenta en cada lenguaje.
+
+## Cierre
+
+### Resumen
+
+La tarjeta de cada tarea trae un bloque TESTS según su tipo: en `feat` y `fix`, primero el test, visto fallar; en `feat`, `fix`, `refactor` y `perf`, un test que ya existía y falla no se cambia para que pase, y el agente para y se lo explica al usuario. Con `policy.tests: off`, o en otros tipos, no hay bloque. `task done` compara los tests que ya existían en el commit base de la tarea con el árbol de trabajo (`removedAssertions` de core sobre `git diff -U0 -M`), y si alguno pierde aserciones (las quitadas menos las añadidas, con las comentadas como quitadas) lo avisa en AVISOS, lo guarda en `task.completed` y lo muestran la tarjeta de aceptación y la nota de `specty accept`.
+
+### Desviaciones
+
+- Ninguna respecto al plan. `changeView` lee ahora la auditoría una sola vez, en cada fase, para los avisos de cada tarea, la petición del borrador y los comentarios pedidos; así la salida de `task done` usa el mismo formateador que la aceptación.
+
+### Decisiones
+
+- El aviso usa el diff del árbol de trabajo antes del commit de la tarea, con `--literal-pathspecs` y `core.quotePath=false`, para que las rutas con caracteres especiales no fallen.
+- Mover o reescribir una aserción no avisa: se cuenta la diferencia entre quitadas y añadidas por archivo.
+
+### Pendientes
+
+- Mostrar el aviso en la pestaña Aceptación de la UI, con `task.completed.data.removedAssertions` de la auditoría.
+- Detectar tests desactivados (`.skip`, `xit`, `@Ignore`, `t.Skip`), que debilitan un test sin quitar aserciones.

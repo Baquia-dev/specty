@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-test-primero-y-aviso-de-aserciones-quitadas",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-test-primero-y-aviso-de-aserciones-quitadas",
   "baseCommit": "3055301ea2e358b17a097b2f71b3281524250e76",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:03f7d8c12ef2777774962f7b6449bd83a533be2979c65c2b59397d39cf5b1760",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9197cce6225dd9380c40e96ea078ead9a8d56864",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:42:32.738Z",
       "doneAt": "2026-10-24T10:44:58.197Z",
-      "summary": "ARCHITECTURE §7: las reglas de tests de la tarjeta y el aviso de aserciones quitadas de task done; formats.md §4: removedAssertions en task.completed"
+      "summary": "ARCHITECTURE §7: las reglas de tests de la tarjeta y el aviso de aserciones quitadas de task done; formats.md §4: removedAssertions en task.completed",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,5 +92,62 @@
     "AC": 5,
     "T": 4,
     "R": 1
+  },
+  "closingSubmittedAt": "2026-10-24T10:46:52.065Z",
+  "integration": {
+    "target": "main",
+    "commit": "0d7980fcdc386470dcf690bafe7ac2c9f3e69d6d",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ARCHITECTURE.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/task.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/enforce/sessions.ts",
+      "packages/cli/src/enforce/worktree-hooks.ts",
+      "packages/cli/src/flow/assertions.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/install/agents.ts",
+      "packages/cli/test/assertions.test.ts",
+      "packages/cli/test/session-start.test.ts",
+      "packages/cli/test/sessions.test.ts",
+      "packages/cli/test/setup.test.ts",
+      "packages/cli/test/worktree-hooks.test.ts",
+      "packages/cli/test/worktrees.test.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/scope/assertions.ts",
+      "packages/core/src/validate/quality.ts",
+      "packages/core/test/cards/tests.test.ts",
+      "packages/core/test/scope/assertions.test.ts",
+      "packages/ui/src/acceptance/acceptance-actions.test.ts",
+      "packages/ui/src/acceptance/acceptance-actions.ts",
+      "packages/ui/src/acceptance/acceptance-tab.test.ts",
+      "packages/ui/src/acceptance/acceptance-tab.ts",
+      "packages/ui/src/acceptance/closing-actions.test.ts",
+      "packages/ui/src/acceptance/closing-actions.ts",
+      "packages/ui/src/acceptance/criterion-row.ts",
+      "packages/ui/src/acceptance/full-verification.test.ts",
+      "packages/ui/src/acceptance/full-verification.ts",
+      "packages/ui/src/acceptance/result-dialogs.ts",
+      "packages/ui/src/app/delegation.test.ts",
+      "packages/ui/src/app/delegation.ts",
+      "packages/ui/src/data/fixtures.ts",
+      "packages/ui/src/progress/progress-tab.test.ts",
+      "packages/ui/src/progress/scope-request.ts"
+    ],
+    "at": "2026-10-24T10:46:52.349Z",
+    "resolved": {
+      "commit": "8f2659e",
+      "at": "2026-10-24T10:48:20.400Z"
+    }
   }
 }

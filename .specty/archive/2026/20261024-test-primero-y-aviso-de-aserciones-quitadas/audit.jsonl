@@ -13,3 +13,9 @@
 {"ts":"2026-10-24T10:42:32.739Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"9197cce6225dd9380c40e96ea078ead9a8d56864"}}
 {"ts":"2026-10-24T10:44:58.194Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":132144}}
 {"ts":"2026-10-24T10:44:58.200Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"ARCHITECTURE §7: las reglas de tests de la tarjeta y el aviso de aserciones quitadas de task done; formats.md §4: removedAssertions en task.completed"}}
+{"ts":"2026-10-24T10:46:43.079Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":100679}}
+{"ts":"2026-10-24T10:46:43.082Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T10:46:52.067Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:a126dc17d83a1313c28c02053637c4274431c5d8cb38b38d52e984c6b3025562","size":"L","warnings":0}}
+{"ts":"2026-10-24T10:46:52.350Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"0d7980fcdc386470dcf690bafe7ac2c9f3e69d6d","reason":"conflicts","conflicts":["docs/ARCHITECTURE.md"]}}
+{"ts":"2026-10-24T10:48:20.401Z","actor":"agent","tool":"claude-code","event":"integration.resolved","data":{"commit":"8f2659e"}}
+{"ts":"2026-10-24T10:48:23.758Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
