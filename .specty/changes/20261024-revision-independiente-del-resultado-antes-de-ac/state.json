@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b4839851ca826b4445f125ad93b81efbd7ec3cf0",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:13:36.048Z",
       "doneAt": "2026-10-24T15:15:23.142Z",
-      "summary": "diffReviewPrompt (spec y diff, es/en) y ReviewedView.target, con su SIGUIENTE propio para el resultado; ChangeView.recommendReview hace que la tarjeta de aceptación pida specty review antes de la aceptación"
+      "summary": "diffReviewPrompt (spec y diff, es/en) y ReviewedView.target, con su SIGUIENTE propio para el resultado; ChangeView.recommendReview hace que la tarjeta de aceptación pida specty review antes de la aceptación",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7b3f50f1690cd090938298a85ca27820ec7f3a06",
+      "startedAt": "2026-10-24T15:15:23.428Z",
+      "doneAt": "2026-10-24T15:17:13.535Z",
+      "summary": "specty review en aceptación pasa la spec y el diff del cambio (changeDiff) y guarda reviews/diff-<n>.md con target diff; sin diff o con uno demasiado grande lo explica sin ejecutar nada; changeView recomienda la revisión en aceptación para cambios L/XL o con avisos, hasta que una siga a la última tarea"
     }
   },
   "pending": {

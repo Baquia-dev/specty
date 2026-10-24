@@ -58,7 +58,7 @@ La revisión independiente del ADR 0011 cubre también el resultado: con el camb
   - files: packages/core/src/cards/review.ts, packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/src/index.ts, packages/core/test/cards/review.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
-- [ ] T2: specty review en aceptación
+- [x] T2: specty review en aceptación
   - files: packages/cli/src/commands/review.ts, packages/cli/src/flow/views.ts, packages/cli/test/review.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review.test.ts
