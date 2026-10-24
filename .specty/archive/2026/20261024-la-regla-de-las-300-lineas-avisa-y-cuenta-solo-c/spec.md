@@ -20,3 +20,9 @@ kind: quick
   - files: scripts/check-sources.mjs, packages/cli/test/sources.test.ts, AGENTS.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/sources.test.ts && pnpm sources
   - type: build
+
+## Cierre
+
+### Resumen
+
+check-sources.mjs cuenta solo líneas de código, avisa a partir de 300 (tests 400) y falla a partir de 500 (tests 600), sin medir generados, migraciones, i18n, mocks ni sample-*; la cabecera SPDX sigue obligatoria. AGENTS.md lo redacta como criterio: proponer la división por responsabilidad, nunca partir por el número
