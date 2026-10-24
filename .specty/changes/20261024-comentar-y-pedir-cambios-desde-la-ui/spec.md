@@ -41,7 +41,7 @@ En la UI que sirve `specty ui`, la persona comenta la spec durante la revisión 
   - files: packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts
-- [ ] T2: Documentar comentar y pedir cambios desde la UI
+- [x] T2: Documentar comentar y pedir cambios desde la UI
   - files: docs/ARCHITECTURE.md
   - ac: AC3
   - verify: pnpm check
