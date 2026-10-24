@@ -121,17 +121,19 @@ describe("decideGuard on shell commands", () => {
     }
   });
 
-  it("never lets the agent turn delegated mode on or off", () => {
-    for (const context of [
-      ctx(),
-      { ...ctx(IMPLEMENTING), delegated: true },
-      { ...ctx(), lang: "en" as const },
-    ]) {
-      const denied = decideGuard(shell({ specty: ["next", "delegate"] }), context);
-      expect(denied.allow).toBe(false);
-      if (!denied.allow) {
-        expect(denied.rule).toBe("human");
-        expect(denied.reason).toContain("`specty delegate`");
+  it("never lets the agent turn delegated mode on or off, nor take Specty out", () => {
+    for (const name of ["delegate", "uninstall"]) {
+      for (const context of [
+        ctx(),
+        { ...ctx(IMPLEMENTING), delegated: true },
+        { ...ctx(), lang: "en" as const },
+      ]) {
+        const denied = decideGuard(shell({ specty: ["next", name] }), context);
+        expect(denied.allow).toBe(false);
+        if (!denied.allow) {
+          expect(denied.rule).toBe("human");
+          expect(denied.reason).toContain(`\`specty ${name}\``);
+        }
       }
     }
   });

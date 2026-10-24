@@ -65,4 +65,42 @@ describe("how the installers write", () => {
     expect(await exists(backups)).toBe(false);
     expect(installFiles({ dryRun: true, backups: { folder: backups, root } }).changes).toEqual([]);
   });
+
+  it("deletes files, planned or for real, keeping a copy of each", async () => {
+    const root = await folder();
+    const backups = join(await folder(), "backups");
+    await writeFile(join(root, "hook"), "#!/bin/sh\n");
+    const planned = installFiles({ dryRun: true });
+    await planned.remove(join(root, "hook"));
+    await planned.remove(join(root, "missing"));
+    expect(await planned.read(join(root, "hook"))).toBeUndefined();
+    expect(await exists(join(root, "hook"))).toBe(true);
+    expect(planned.changes).toEqual([{ path: join(root, "hook"), created: false, removed: true }]);
+    const files = installFiles({ backups: { folder: backups, root } });
+    await files.remove(join(root, "hook"));
+    expect(await exists(join(root, "hook"))).toBe(false);
+    expect(await readFile(join(backups, "repo/hook"), "utf8")).toBe("#!/bin/sh\n");
+    expect(JSON.parse(await readFile(join(backups, "manifest.json"), "utf8"))).toEqual([
+      { path: join(root, "hook"), created: false, removed: true, copy: "repo/hook" },
+    ]);
+  });
+
+  it("counts a file changed and then deleted in the same run as deleted", async () => {
+    const root = await folder();
+    const backups = join(await folder(), "backups");
+    await writeFile(join(root, "hooks.json"), '{"version":1,"hooks":{}}\n');
+    const files = installFiles({ backups: { folder: backups, root } });
+    await files.write(join(root, "hooks.json"), '{"version":1}\n');
+    await files.remove(join(root, "hooks.json"));
+    expect(files.changes).toEqual([
+      { path: join(root, "hooks.json"), created: false, removed: true },
+    ]);
+    expect(await readFile(join(backups, "repo/hooks.json"), "utf8")).toBe(
+      '{"version":1,"hooks":{}}\n',
+    );
+    const manifest = JSON.parse(await readFile(join(backups, "manifest.json"), "utf8"));
+    expect(manifest).toEqual([
+      { path: join(root, "hooks.json"), created: false, copy: "repo/hooks.json", removed: true },
+    ]);
+  });
 });

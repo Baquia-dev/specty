@@ -96,6 +96,9 @@ export function serializeFrontmatter(frontmatter: Frontmatter): string {
     ...(frontmatter.estimate !== undefined
       ? { estimate: { adjust: frontmatter.estimate.adjust, reason: frontmatter.estimate.reason } }
       : {}),
+    ...(frontmatter.effort !== undefined
+      ? { effort: { review: frontmatter.effort.review, reason: frontmatter.effort.reason } }
+      : {}),
   };
   return `---\n${stringify(data, { lineWidth: 0 }).trimEnd()}\n---`;
 }
@@ -164,6 +167,12 @@ function taskLines(task: Task): string[] {
     ...field("verify", task.verify),
     ...field("type", task.type),
     ...field("notes", task.notes),
+    ...field(
+      "effort",
+      task.effort === undefined
+        ? undefined
+        : `${task.effort.level}${task.effort.reason === undefined ? "" : ` — ${task.effort.reason}`}`,
+    ),
   ];
 }
 

@@ -10,6 +10,7 @@ import {
   hasBlock,
   nextCard,
   parseSpec,
+  removeBlock,
   renderText,
   type StatusEntry,
   specTemplate,
@@ -233,6 +234,15 @@ describe("AGENTS.md blocks", () => {
     expect(second).not.toContain("uno");
     expect(second).toContain("Texto humano.");
     expect(hasBlock(second, "flow")).toBe(true);
+  });
+
+  it("takes a block out and leaves the text as it was before it", () => {
+    const human = "# Proyecto\n\nTexto humano.\n";
+    const withBoth = upsertBlock(upsertBlock(human, "project", "hechos"), "flow", "uno");
+    expect(removeBlock(removeBlock(withBoth, "flow"), "project")).toBe(human);
+    expect(removeBlock(upsertBlock("", "flow", "uno"), "flow")).toBe("");
+    expect(removeBlock(`${human}\n${upsertBlock("", "flow", "uno")}`, "flow")).toBe(human);
+    expect(removeBlock(human, "flow")).toBe(human);
   });
 
   it("keeps the flow block to a few lines", () => {

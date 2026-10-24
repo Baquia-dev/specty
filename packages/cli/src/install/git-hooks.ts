@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isAbsolute, join, resolve } from "node:path";
-import { parseDocument } from "yaml";
+import { isMap, parseDocument } from "yaml";
 import { exists, isDirectory, isRecord, parseJson, readText } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
@@ -84,6 +84,51 @@ export async function gitHooksInstalled(root: string, git: Git): Promise<boolean
   const directory = manager === "husky" ? join(root, ".husky") : await hooksDirectory(root, git);
   const texts = await Promise.all(GIT_HOOKS.map((hook) => readText(join(directory, hook))));
   return texts.every((text) => text?.includes(BEGIN) === true);
+}
+
+/** Takes Specty's blocks out of the git hooks; a hook left with nothing else goes. */
+export async function removeGitHooks(root: string, git: Git, files: InstallFiles): Promise<void> {
+  const manager = await detectHookManager(root, git);
+  if (manager === "lefthook") return removeLefthook(root, files);
+  if (manager === "simple-git-hooks") return;
+  const directory = manager === "husky" ? join(root, ".husky") : await hooksDirectory(root, git);
+  for (const hook of GIT_HOOKS) {
+    const path = join(directory, hook);
+    const text = await files.read(path);
+    if (text === undefined || !text.includes(BEGIN)) continue;
+    const left = removeShellBlock(text);
+    if (left.replace(/^#!.*\n?/, "").trim() === "") await files.remove(path);
+    else await files.write(path, left, { executable: true });
+  }
+}
+
+/** The text without Specty's block and the line break `upsertShellBlock` put after it. */
+export function removeShellBlock(text: string): string {
+  const start = text.indexOf(BEGIN);
+  const stop = text.indexOf(END);
+  if (start === -1 || stop < start) return text;
+  return `${text.slice(0, start)}${text.slice(stop + END.length).replace(/^\n/, "")}`;
+}
+
+async function removeLefthook(root: string, files: InstallFiles): Promise<void> {
+  for (const file of LEFTHOOK_FILES) {
+    const path = join(root, file);
+    const text = await files.read(path);
+    if (text === undefined) continue;
+    const document = parseDocument(text);
+    const ours = GIT_HOOKS.filter((hook) => document.hasIn([hook, "commands", "specty"]));
+    if (ours.length === 0) continue;
+    for (const hook of ours) {
+      document.deleteIn([hook, "commands", "specty"]);
+      for (const key of [[hook, "commands"], [hook]]) {
+        const node = document.getIn(key, true);
+        if (isMap(node) && node.items.length === 0) document.deleteIn(key);
+      }
+    }
+    const rest = document.contents;
+    if (rest === null || (isMap(rest) && rest.items.length === 0)) await files.remove(path);
+    else await files.write(path, document.toString());
+  }
 }
 
 /** Committed hook files cannot hold machine paths: they call `specty` from PATH. */

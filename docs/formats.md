@@ -25,10 +25,10 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 
 .git/common/specty/            # local, compartido por todas las worktrees, nunca versionado
 ├─ delegated.json              # modo delegado activo (ADR 0010): { "by", "at" }, quién lo activó y cuándo
-└─ backups/<fecha>/            # lo que había antes de que `init` lo cambiara (una carpeta por ejecución)
+└─ backups/<fecha>/            # lo que había antes de que `init` o `uninstall` lo cambiaran (una carpeta por ejecución)
    ├─ repo/<ruta>              # copia de un archivo del repositorio
    ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
-   └─ manifest.json            # [{ "path", "created", "copy"? }]: cada archivo creado o cambiado
+   └─ manifest.json            # [{ "path", "created", "removed"?, "copy"? }]: cada archivo creado, cambiado o borrado
 ```
 
 ### Identificadores
@@ -51,6 +51,9 @@ timebox: 2h                           # solo spike
 estimate:                             # opcional: ajuste del modelo al tamaño calculado
   adjust: +1                          # solo sube: un -1 no se aplica y el tamaño lo dice
   reason: Agregación por periodos sin tests previos.
+effort:                               # opcional: esfuerzo del modelo para revisar la spec y el alcance
+  review: max                         # low | medium | high | max; solo sube el que calcula Specty
+  reason: El periodo cambia la API pública.
 ---
 ```
 
@@ -125,6 +128,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
   - `verify` (opcional si la configuración tiene una verificación por defecto).
   - `type` (opcional, por defecto `feat`): tipo de Conventional Commits.
   - `notes` (opcional).
+  - `effort` (opcional): el esfuerzo que el modelo recomienda para implementarla, `low`, `medium`, `high` o `max`, y su motivo tras ` — ` (`effort: high — reescribe el índice`). Solo sube el que calcula Specty.
 - **Supuestos**: los marcados con `impacto: alto` exigen una decisión explícita antes de aprobar. Los demás se aceptan junto con la spec.
 - **Cortes** (épicas): `- C1: título`, con los campos `ac` (criterios que cubre) y `depends` (cortes que deben cerrarse antes).
 - **Variaciones aceptadas**: Specty tolera, y reescribe en forma canónica:
