@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-entrada-ligera-para-los-hooks",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-entrada-ligera-para-los-hooks",
   "baseCommit": "3cac524b0f1f5be561fd53c4d6cc1b00392cbbd6",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "99b9faa74d4b2d7326a45f9eff218d48bca0f2f0",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:30:53.204Z",
       "doneAt": "2026-10-24T11:33:29.005Z",
-      "summary": "enforce/entry.ts tiene guardCommand y hookCommand (las acciones de guard y hook, que commands.ts ahora llama) y runHook, que reconoce la forma exacta de los hooks y los ejecuta con una terminal sin prompts. main.ts no importa nada de forma estática: los hooks cargan solo su entrada y lo demás carga la CLI completa."
+      "summary": "enforce/entry.ts tiene guardCommand y hookCommand (las acciones de guard y hook, que commands.ts ahora llama) y runHook, que reconoce la forma exacta de los hooks y los ejecuta con una terminal sin prompts. main.ts no importa nada de forma estática: los hooks cargan solo su entrada y lo demás carga la CLI completa.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bdd19b70565349599cc56fa0458a17af5157e67c",
+      "startedAt": "2026-10-24T11:33:29.827Z",
+      "doneAt": "2026-10-24T11:37:55.740Z",
+      "summary": "build.mjs parte el bundle (splitting, trozos [name]-[hash] en dist/ junto a specty.mjs), borra los .mjs que la build no generó y guarda el metafile con --metafile. El test de bundle recorre los imports estáticos desde la entrada de los hooks: no llegan a commander, los prompts, program.ts, el servidor ni init; no hay traducciones de zod; el bundle partido responde al guard y a --help. ARCHITECTURE §2 y §10."
     }
   },
   "pending": {

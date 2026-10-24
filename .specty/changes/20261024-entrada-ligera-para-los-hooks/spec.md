@@ -62,7 +62,7 @@ Los hooks del agente llaman a `specty guard` antes de cada acción y después de
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/hooks-entry.test.ts test/enforce.test.ts
   - type: perf
-- [ ] T3: El bundle partido
+- [x] T3: El bundle partido
   - files: packages/cli/build.mjs, packages/cli/test/bundle.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC4
   - verify: pnpm check
