@@ -53,7 +53,7 @@ export type {
   ScopeRequestView,
   TaskView,
 } from "./cards/view";
-export { assertionWarnings } from "./cards/work";
+export { assertionWarnings, riskWarnings } from "./cards/work";
 export {
   type Actor,
   EVENT_RULES,

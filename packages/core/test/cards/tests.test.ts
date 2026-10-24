@@ -6,6 +6,7 @@ import {
   type ChangeView,
   nextCard,
   renderText,
+  riskWarnings,
   type TaskView,
   testRules,
 } from "../../src";
@@ -103,5 +104,33 @@ describe("removed assertions", () => {
       "AVISOS:\n  T1 quitó 2 aserciones de src/a.test.ts, un test que ya existía.\n  T1 quitó 1 aserción de src/b.test.ts, un test que ya existía.\n  Cuéntaselo al usuario antes de que acepte: un test debilitado puede ocultar un fallo.",
     );
     expect(card("acceptance", [task("T1", "done")])).not.toContain("AVISOS:");
+  });
+});
+
+describe("content risks", () => {
+  const tasks = [
+    task("T1", "done", {
+      risks: [
+        { path: "src/api.ts", line: 13, rule: "tls-disabled", cwe: "CWE-295" },
+        { path: "scripts/run.sh", rule: "executable" },
+      ],
+    }),
+    task("T2", "done", { removedAssertions: [{ path: "src/a.test.ts", removed: 1 }] }),
+  ];
+
+  it("are one line per finding, with its line and CWE, in both languages", () => {
+    expect(riskWarnings(tasks, "es")).toEqual([
+      "T1: src/api.ts:13 desactiva la verificación TLS (CWE-295).",
+      "T1: scripts/run.sh pasa a ser ejecutable.",
+    ]);
+    expect(riskWarnings(tasks, "en")[0]).toBe(
+      "T1: src/api.ts:13 disables TLS verification (CWE-295).",
+    );
+  });
+
+  it("show in the acceptance card after the removed assertions", () => {
+    expect(card("acceptance", tasks)).toContain(
+      "AVISOS:\n  T2 quitó 1 aserción de src/a.test.ts, un test que ya existía.\n  Cuéntaselo al usuario antes de que acepte: un test debilitado puede ocultar un fallo.\n  T1: src/api.ts:13 desactiva la verificación TLS (CWE-295).\n  T1: scripts/run.sh pasa a ser ejecutable.\n  Revísalo con el usuario antes de que acepte: son patrones de riesgo conocidos, no fallos seguros.",
+    );
   });
 });
