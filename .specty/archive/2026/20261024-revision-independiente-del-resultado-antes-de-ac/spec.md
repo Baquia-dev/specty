@@ -67,3 +67,23 @@ La revisión independiente del ADR 0011 cubre también el resultado: con el camb
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`specty review` revisa también el resultado. Con el cambio en aceptación, le pasa al comando de la persona las instrucciones para revisar código, la spec y el diff de todo el cambio, el mismo de `changeDiff`, sin `.specty/`. La respuesta queda en `reviews/diff-<n>.md` y `review.completed` lleva `target: "diff"`. Su SIGUIENTE pide contárselo al usuario y que acepte o pida un ajuste; en modo delegado, ajustar o aceptar el agente. Sin diff, o con uno demasiado grande, lo explica sin ejecutar el comando. La tarjeta de aceptación lo pide en los cambios L o XL, o con aserciones quitadas o riesgos, hasta que haya una revisión posterior a la última tarea.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La recomendación vuelve tras un ajuste con tareas nuevas, porque compara la última revisión del resultado con la última tarea completada.
+
+### Pendientes
+
+- Que el modelo recomiende el esfuerzo de implementación y de revisión, sin poder bajarlo del que calcula Specty: el cambio siguiente.
+- `packages/core/src/cards/work.ts` queda en 289 líneas y `packages/core/src/guard/decide.ts` en 299: hay que partirlos antes de añadirles nada.
+- Mostrar las revisiones en la UI, con `review.completed` y los archivos de `reviews/`.

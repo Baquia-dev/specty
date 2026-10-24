@@ -10,3 +10,7 @@
 {"ts":"2026-10-24T15:17:14.166Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"58038df28c50503e3c00a194edf2ee3bf7b17066"}}
 {"ts":"2026-10-24T15:18:48.149Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":64568}}
 {"ts":"2026-10-24T15:18:48.154Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ADR 0011: la revisión del resultado ya está; ARCHITECTURE: specty review también en aceptación; formats.md: reviews/diff-<n>.md y target diff"}}
+{"ts":"2026-10-24T15:20:07.878Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":74973}}
+{"ts":"2026-10-24T15:20:07.880Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T15:20:15.665Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:368d1ea3c3ceea3afa2d9ff3e1f4441dce03ce8fb29052395eaf42ac92044a89","size":"L","warnings":0}}
+{"ts":"2026-10-24T15:21:27.367Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

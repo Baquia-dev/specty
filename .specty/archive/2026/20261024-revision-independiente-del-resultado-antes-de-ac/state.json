@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-revision-independiente-del-resultado-antes-de-ac",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-revision-independiente-del-resultado-antes-de-ac",
   "baseCommit": "72a4e4ae3c2240468f91d830ba14d4cbee53a084",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d4f4a816eca831193a22887038bc7a700ff12d9f0fb8f91da079a12681ea518e",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "58038df28c50503e3c00a194edf2ee3bf7b17066",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:17:14.163Z",
       "doneAt": "2026-10-24T15:18:48.151Z",
-      "summary": "ADR 0011: la revisión del resultado ya está; ARCHITECTURE: specty review también en aceptación; formats.md: reviews/diff-<n>.md y target diff"
+      "summary": "ADR 0011: la revisión del resultado ya está; ARCHITECTURE: specty review también en aceptación; formats.md: reviews/diff-<n>.md y target diff",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:20:15.664Z"
 }
