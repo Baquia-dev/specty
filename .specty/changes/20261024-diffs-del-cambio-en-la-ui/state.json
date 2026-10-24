@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261024-diffs-del-cambio-en-la-ui",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-diffs-del-cambio-en-la-ui",
+  "baseCommit": "b224970bf1d54ae665f29eab9b02012ae8642b02",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c4bff497e14e0adc9cb491d840402cd48fb3cb55ddca2f65a6ca171408fc52a2",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:ca5b8e57f002ace7601fcd868fabf914af4484ef4170db18516f72e65932b001",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:173aaeb50fc0faeb9b5491d45eb086c815bfbe04304ba0962bf003c3951a4a5b",
+    "at": "2026-10-24T07:16:04.497Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
