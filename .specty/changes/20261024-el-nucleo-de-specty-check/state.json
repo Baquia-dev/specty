@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4d5ca5aee438802663693565dacefcfd93f859e3",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:07:40.772Z",
       "doneAt": "2026-10-24T17:10:37.030Z",
-      "summary": "schema/checks.ts con levels, maxFindings y exclude (carpetas de dependencias y artefactos comunes a cualquier ecosistema); checks/report.ts con Finding, CheckResult, estados, salida compacta con resumen, detallada, JSON y código de salida en es/en; fileSize en sizing/lines.ts"
+      "summary": "schema/checks.ts con levels, maxFindings y exclude (carpetas de dependencias y artefactos comunes a cualquier ecosistema); checks/report.ts con Finding, CheckResult, estados, salida compacta con resumen, detallada, JSON y código de salida en es/en; fileSize en sizing/lines.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4eadcd963105c535aba4cb79847fb63bb085179e",
+      "startedAt": "2026-10-24T17:10:37.490Z",
+      "doneAt": "2026-10-24T17:12:59.463Z",
+      "summary": "Proveedores y runChecks por niveles; selección de --changed (merge-base con la rama destino), --staged y --all sin lo excluido; max-lines como proveedor común; el comando check con su propio informe, que respeta --json"
     }
   },
   "pending": {

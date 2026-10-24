@@ -66,7 +66,7 @@ Primer corte de los quality gates (ADR 0012): `specty check` verifica, sin model
   - files: packages/core/src/schema/checks.ts, packages/core/src/schema/config.ts, packages/core/src/checks/report.ts, packages/core/src/sizing/lines.ts, packages/core/src/index.ts, packages/core/test/checks/report.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks test/schema test/sizing
-- [ ] T2: specty check con sus modos y max-lines
+- [x] T2: specty check con sus modos y max-lines
   - files: packages/cli/src/check/provider.ts, packages/cli/src/check/files.ts, packages/cli/src/check/max-lines.ts, packages/cli/src/commands/check.ts, packages/cli/src/program.ts, packages/cli/test/check.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check.test.ts test/commands-named.test.ts
