@@ -55,7 +55,7 @@ kind: standard
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/install-files.test.ts test/setup.test.ts test/install.test.ts test/opencode.test.ts test/codex.test.ts test/cursor.test.ts
   - type: refactor
-- [ ] T2: `init --dry-run` y las copias de `init`
+- [x] T2: `init --dry-run` y las copias de `init`
   - files: packages/cli/src/commands/init.ts, packages/cli/src/program.ts, packages/cli/test/init-reversible.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check

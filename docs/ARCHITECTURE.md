@@ -378,6 +378,8 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
    - opcionalmente, el workflow de CI.
 5. Termina con `specty doctor`.
 
+Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiaría (solo los que cambiarían de verdad), sin escribir nada ni hacer commit. Sin `--dry-run`, antes de cambiar un archivo que ya existía, `init` guarda una copia en la carpeta común de git (`common/specty/backups/<fecha>/`, ver [formats.md §1](formats.md#1-estructura)) y la salida dice dónde; si todo lo que escribe es nuevo, no crea la carpeta. Los instaladores escriben a través de `install/files.ts`, que simula, compara y copia.
+
 **Proyecto nuevo**:
 
 1. Entrevista breve: qué, para quién, alcance del MVP, fuera de alcance, stack (o "recomiéndame"), despliegue y restricciones.

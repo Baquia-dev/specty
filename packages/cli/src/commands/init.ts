@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename, relative, resolve, sep } from "node:path";
+import { basename, isAbsolute, relative, resolve, sep } from "node:path";
 import {
   AGENT_NAMES,
   type AgentTool,
@@ -14,10 +14,11 @@ import {
 import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { installClaudeCode, installCodex, installCursor } from "../install/agents";
 import { commitInstall } from "../install/commit";
+import { type FileChange, installFiles } from "../install/files";
 import { installGitHooks } from "../install/git-hooks";
 import { installOpencode } from "../install/opencode";
 import { renderConfig, writeAgentsMd, writeClaudePointer } from "../install/project-files";
-import { writeText } from "../io/files";
+import { exists } from "../io/files";
 import { createGit, findRoot, pathsOf } from "../io/git";
 import { COMMAND, type Environment, systemLanguage } from "../session";
 import { loadConfig } from "../store/config";
@@ -27,6 +28,8 @@ export interface InitOptions {
   readonly language?: Lang;
   /** Agent tools to configure; by default, the ones detected in the repository. */
   readonly tools?: readonly AgentTool[];
+  /** Only say what it would create or change: nothing is written or committed. */
+  readonly dryRun?: boolean;
 }
 
 const WITH_HOOKS: ReadonlySet<AgentTool> = new Set(["claude-code", "cursor", "codex", "opencode"]);
@@ -34,7 +37,7 @@ const WITH_HOOKS: ReadonlySet<AgentTool> = new Set(["claude-code", "cursor", "co
 /** `specty init` as typed: reads its options, and says which language its output uses. */
 export async function initCommand(
   environment: Environment,
-  options: { readonly language?: string; readonly tools?: string },
+  options: { readonly language?: string; readonly tools?: string; readonly dryRun?: boolean },
 ): Promise<{ readonly output: Output; readonly lang: Lang }> {
   const language =
     options.language === "es" || options.language === "en" ? options.language : undefined;
@@ -45,6 +48,7 @@ export async function initCommand(
   const output = await init(environment, {
     ...(language !== undefined ? { language } : {}),
     ...(tools !== undefined ? { tools } : {}),
+    ...(options.dryRun === true ? { dryRun: true } : {}),
   });
   return { output, lang: language ?? systemLanguage(environment.env) };
 }
@@ -79,11 +83,21 @@ export async function init(environment: Environment, options: InitOptions): Prom
   const lang = existing.kind === "ok" ? existing.config.language : fallback;
   const t = translator(lang);
   const detection = await detectProject(root, basename(root));
-  if (existing.kind === "missing") await writeText(paths.config, renderConfig(lang, detection));
+  const stamp = environment
+    .now()
+    .toISOString()
+    .replace(/\.\d+Z$/, "Z")
+    .replaceAll(":", "-");
+  const backups = await git.gitPath(`common/specty/backups/${stamp}`);
+  // A dry run only plans; otherwise every file that existed is copied before it changes.
+  const files = installFiles(
+    options.dryRun === true ? { dryRun: true } : { backups: { folder: backups, root } },
+  );
+  if (existing.kind === "missing") await files.write(paths.config, renderConfig(lang, detection));
 
   const tools =
     options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
-  const agents = await writeAgentsMd(root, lang, detection);
+  const agents = await writeAgentsMd(root, lang, detection, files);
   // Repository-relative files init writes that git tracks: they go into its commit.
   const written = [".specty/config.yaml", "AGENTS.md"];
   const done: string[] = [
@@ -99,9 +113,9 @@ export async function init(environment: Environment, options: InitOptions): Prom
   ];
   const warnings: string[] = [];
   if (tools.includes("claude-code")) {
-    if (await writeClaudePointer(root))
+    if (await writeClaudePointer(root, files))
       done.push(t("CLAUDE.md importa AGENTS.md.", "CLAUDE.md imports AGENTS.md."));
-    const installed = await installClaudeCode(root, git, environment.invocation);
+    const installed = await installClaudeCode(root, git, environment.invocation, files);
     written.push("CLAUDE.md", ...(installed.local ? [] : [installed.file]));
     done.push(
       t(
@@ -111,7 +125,7 @@ export async function init(environment: Environment, options: InitOptions): Prom
     );
   }
   if (tools.includes("cursor")) {
-    const installed = await installCursor(root, git, environment.invocation);
+    const installed = await installCursor(root, git, environment.invocation, files);
     if (!installed.local) written.push(installed.file);
     done.push(
       t(
@@ -122,7 +136,7 @@ export async function init(environment: Environment, options: InitOptions): Prom
   }
   if (tools.includes("codex")) {
     // Outside the repository: nothing for init's commit.
-    const file = await installCodex(environment.env, environment.invocation);
+    const file = await installCodex(environment.env, environment.invocation, files);
     done.push(
       t(
         `Codex: guard en ${file}, tu configuración de usuario: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
@@ -137,7 +151,7 @@ export async function init(environment: Environment, options: InitOptions): Prom
     );
   }
   if (tools.includes("opencode")) {
-    const file = await installOpencode(environment.env, environment.invocation);
+    const file = await installOpencode(environment.env, environment.invocation, files);
     done.push(
       t(
         `OpenCode: plugin del guard en ${file}, tu configuración global: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
@@ -156,7 +170,7 @@ export async function init(environment: Environment, options: InitOptions): Prom
       ),
     );
   }
-  const hooks = await installGitHooks(root, git, environment.invocation);
+  const hooks = await installGitHooks(root, git, environment.invocation, files);
   // Hooks inside the git directory are not in the tree; husky's and lefthook's files are.
   written.push(
     ...hooks.files.map((file) => relative(root, resolve(root, file)).split(sep).join("/")),
@@ -192,8 +206,14 @@ export async function init(environment: Environment, options: InitOptions): Prom
       ),
     );
   }
+  if (options.dryRun === true) return planned(files.changes, root, warnings, t);
   const committed = await commitInstall(environment, written, before, existing.kind === "missing");
   done.push(...committed.done);
+  if (await exists(backups)) {
+    done.push(
+      t(`Copia de lo que había antes: ${backups}.`, `Copy of what was there before: ${backups}.`),
+    );
+  }
   warnings.push(...committed.warnings);
   const facts = projectFacts(detection);
   return {
@@ -210,6 +230,39 @@ export async function init(environment: Environment, options: InitOptions): Prom
     next: t(
       `completa las secciones «Mapa» y «Convenciones» de AGENTS.md con lo que no se deduce del código, revisa .specty/config.yaml y ejecuta \`${COMMAND} doctor\`.`,
       `complete the "Map" and "Conventions" sections of AGENTS.md with what cannot be inferred from the code, review .specty/config.yaml and run \`${COMMAND} doctor\`.`,
+    ),
+  };
+}
+
+/** What `init --dry-run` would create or change, with paths relative to the repository. */
+function planned(
+  changes: readonly FileChange[],
+  root: string,
+  warnings: readonly string[],
+  t: (es: string, en: string) => string,
+): Output {
+  const shown = (path: string) => {
+    const inner = relative(root, path);
+    return inner.startsWith("..") || isAbsolute(inner) ? path : inner.split(sep).join("/");
+  };
+  const lines = changes.map((change) =>
+    change.created
+      ? t(`crear ${shown(change.path)}`, `create ${shown(change.path)}`)
+      : t(`cambiar ${shown(change.path)}`, `change ${shown(change.path)}`),
+  );
+  return {
+    status: "ok",
+    header: headerOf("init"),
+    blocks: [
+      ...section(
+        t("SIMULACIÓN, NO SE HA ESCRITO NADA", "DRY RUN, NOTHING WAS WRITTEN"),
+        lines.length > 0 ? lines : [t("Nada que cambiar.", "Nothing to change.")],
+      ),
+      ...section(t("AVISOS", "WARNINGS"), warnings),
+    ],
+    next: t(
+      `ejecuta \`${COMMAND} init\` sin \`--dry-run\` para aplicarlo.`,
+      `run \`${COMMAND} init\` without \`--dry-run\` to apply it.`,
     ),
   };
 }

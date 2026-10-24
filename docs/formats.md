@@ -23,7 +23,11 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 └─ server.json                 # puerto y token de la UI en ejecución
 
 .git/common/specty/            # local, compartido por todas las worktrees, nunca versionado
-└─ delegated.json              # modo delegado activo (ADR 0010): { "by", "at" }, quién lo activó y cuándo
+├─ delegated.json              # modo delegado activo (ADR 0010): { "by", "at" }, quién lo activó y cuándo
+└─ backups/<fecha>/            # lo que había antes de que `init` lo cambiara (una carpeta por ejecución)
+   ├─ repo/<ruta>              # copia de un archivo del repositorio
+   ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
+   └─ manifest.json            # [{ "path", "created", "copy"? }]: cada archivo creado o cambiado
 ```
 
 ### Identificadores

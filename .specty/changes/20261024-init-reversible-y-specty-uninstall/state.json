@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-init-reversible-y-specty-uninstall",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-init-reversible-y-specty-uninstall",
   "baseCommit": "12d05ae2a06dbddc40150d0d4491f40968a59abc",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3dca7ad40e00aecf3caf5289da44e1d7e821a897",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:58:01.028Z",
       "doneAt": "2026-10-24T15:00:50.748Z",
-      "summary": "install/files.ts: InstallFiles lee y escribe por los instaladores, registra solo lo que cambia, simula sin tocar el disco (las lecturas ven lo planeado) y, con copias, guarda cada archivo existente antes de su primer cambio (repo/… u outside/…) con un manifest.json. agents.ts, git-hooks.ts, project-files.ts y opencode.ts escriben solo a través de él."
+      "summary": "install/files.ts: InstallFiles lee y escribe por los instaladores, registra solo lo que cambia, simula sin tocar el disco (las lecturas ven lo planeado) y, con copias, guarda cada archivo existente antes de su primer cambio (repo/… u outside/…) con un manifest.json. agents.ts, git-hooks.ts, project-files.ts y opencode.ts escriben solo a través de él.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "6ff22ef0eddb501ae4d598a6bab6375970e951d8",
+      "startedAt": "2026-10-24T15:00:51.373Z",
+      "doneAt": "2026-10-24T15:15:21.590Z",
+      "summary": "init crea un InstallFiles (simulado con --dry-run; con copias en common/specty/backups/<fecha>/ si no) y lo pasa a todos los instaladores; con --dry-run no hace commit y lista «crear/cambiar <ruta>», y si no, la salida dice dónde está la copia. program.ts registra --dry-run. formats.md §1 y ARCHITECTURE §14."
     }
   },
   "pending": {
