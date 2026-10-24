@@ -58,3 +58,28 @@ ARCHITECTURE §7 promete una tarjeta de tarea de unos 1.500 tokens, pero ningún
   - ac: AC3, AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`task done` rechaza, antes de verificar, un resumen o un hallazgo de más de 300 caracteres (`NOTE_MAX`, en el core) y dice cuántos tiene; con 300 o menos, todo sigue igual. Un test del core arma la tarjeta de tarea más grande razonable y comprueba que cabe en 1.500 tokens, estimados como caracteres ÷ 4, en español y en inglés. Hoy ronda los 1.400 (5.607 caracteres en español); con resúmenes de 980 caracteres, como los que había en los cambios archivados, no cabría.
+
+ARCHITECTURE §7 cuenta las tres piezas que sostienen el presupuesto: el aviso de `propose` por archivos por tarea, el límite de `task done` y el test. También dice que la detección genera el stack, los paquetes y los comandos, y que el Mapa y las Convenciones de AGENTS.md los completa la persona. `formats.md` §4 dice el límite del resumen y de los hallazgos de `task.completed`.
+
+### Desviaciones
+
+- ARCHITECTURE dice el límite también en la tabla de comandos (§6). En §7, la lista de lo que incluye la tarjeta suma los hallazgos y las solicitudes de alcance pendientes, que la tarjeta ya mostraba.
+- `formats.md` §8: al ejemplo del bloque de flujo le faltaba la línea de las worktrees, que añadió un cambio anterior; ahora la tiene.
+
+### Decisiones
+
+- El rechazo va antes de la verificación: el reintento es barato porque no vuelve a ejecutar los tests.
+- La tarjeta del test es la más grande razonable con los valores por defecto: 8 tareas (`split.maxTasks`; ningún cambio archivado tiene más de 7) y 5 archivos por tarea (`split.taskMaxFiles`).
+- Quedan unos 100 tokens de margen. Si un texto nuevo de la tarjeta no cabe, se recorta otro; el presupuesto no sube.
+
+### Pendientes
+
+- `packages/cli/src/commands/task.ts` quedó en 307 líneas de código (aviso a partir de 300). Propuesta de división por responsabilidad: llevar `verify` y `complete` (con `ticked` y `withoutStatus`) a un módulo de `flow/`, junto a `assertions`, `risk`, `lines` y `live-run`. Esas funciones anotan la verificación y la tarea hecha y hacen el commit; `task.ts` quedaría con las comprobaciones y la tarjeta.
+- Que el test del presupuesto tome las 8 tareas y los 5 archivos de `DEFAULT_CONFIG.split`, para que falle si alguien sube esos límites y la tarjeta deja de caber.
+- Que `doctor` avise de un Mapa o unas Convenciones vacíos (quedó fuera de alcance).
