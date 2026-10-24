@@ -63,7 +63,7 @@ En Claude Code, el agente entra en la carpeta que preparó `specty new` sin que 
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktree-hooks.test.ts test/sessions.test.ts
   - type: feat
-- [ ] T2: `init` instala los hooks y `doctor` los revisa
+- [x] T2: `init` instala los hooks y `doctor` los revisa
   - files: packages/cli/src/install/agents.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/setup.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts

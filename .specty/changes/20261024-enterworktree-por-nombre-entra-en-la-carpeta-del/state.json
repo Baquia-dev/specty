@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8ab80b36a0a792c80a544c18307099ed2e11c28c",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:25:47.146Z",
       "doneAt": "2026-10-24T10:28:52.975Z",
-      "summary": "enforce/worktree-hooks.ts atiende WorktreeCreate (la carpeta preparada por specty new, o .claude/worktrees/<name> desde HEAD, reutilizable) y WorktreeRemove (quita las de Claude Code con su rama fusionada; deja las de Specty). El guard le pasa esos eventos antes de abrir la sesión, y el name de EnterWorktree usa namedWorktree."
+      "summary": "enforce/worktree-hooks.ts atiende WorktreeCreate (la carpeta preparada por specty new, o .claude/worktrees/<name> desde HEAD, reutilizable) y WorktreeRemove (quita las de Claude Code con su rama fusionada; deja las de Specty). El guard le pasa esos eventos antes de abrir la sesión, y el name de EnterWorktree usa namedWorktree.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "74264030f8070352ff32a45f66b826f8dea6d849",
+      "startedAt": "2026-10-24T10:28:53.891Z",
+      "doneAt": "2026-10-24T10:30:28.743Z",
+      "summary": "init escribe WorktreeCreate y WorktreeRemove con el guard y sin matcher (los eventos de Claude Code admiten no llevarlo); entersByName dice si una carpeta tiene el hook; doctor avisa por separado de la comprobación tras Bash y de los hooks de las worktrees."
     }
   },
   "pending": {
