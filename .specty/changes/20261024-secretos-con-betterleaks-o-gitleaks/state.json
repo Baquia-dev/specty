@@ -6,6 +6,13 @@
   "branch": "specty/20261024-secretos-con-betterleaks-o-gitleaks",
   "baseCommit": "0cfa3a682dc5b3ccb6e6fbbfea90d7772ec63fc7",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:891dab316ff924e81f7e7e878ea6e7d94d186051df2827df33b65194978780b5",
+    "at": "2026-10-24T17:51:53.316Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -36,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c753663fa06c01ae6d0274a3bc96d3be2d4a9c56",
+      "startedAt": "2026-10-24T17:53:14.300Z",
+      "doneAt": "2026-10-24T17:55:30.691Z",
+      "summary": "check/secrets.ts: secrets con Betterleaks 2, Betterleaks 1 o gitleaks sobre una copia temporal de lo que ve el modo, con --redact, sus archivos de configuración y solo líneas añadidas; sin escáner no corre y dice qué instalar."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,12 +63,5 @@
     "AC": 7,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:891dab316ff924e81f7e7e878ea6e7d94d186051df2827df33b65194978780b5",
-    "at": "2026-10-24T17:51:53.316Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

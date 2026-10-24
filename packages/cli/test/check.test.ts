@@ -6,10 +6,11 @@ import { CONFIG, cli, git, tempRepo, writeFiles } from "./support";
 const source = (count: number): string =>
   `${Array.from({ length: count }, (_, index) => `export const v${index} = ${index};`).join("\n")}\n`;
 
-async function repo(config = ""): Promise<string> {
+/** `levels` are lines under `checks.levels`; `secrets` stays off, whatever the machine has. */
+async function repo(levels = ""): Promise<string> {
   return tempRepo({
     "src/app.ts": source(10),
-    ".specty/config.yaml": `${CONFIG()}${config}`,
+    ".specty/config.yaml": `${CONFIG()}checks:\n  levels:\n    secrets: off\n${levels}`,
   });
 }
 
@@ -86,10 +87,10 @@ describe("specty check", () => {
   });
 
   it("follows the level of each check", async () => {
-    const off = await repo("checks:\n  levels:\n    max-lines: off\n");
+    const off = await repo("    max-lines: off\n");
     await writeFiles(off, { "src/big.ts": source(520) });
     expect(await cli(off, ["check"])).toMatchObject({ code: 0, out: "OK 3/3" });
-    const warn = await repo("checks:\n  levels:\n    max-lines: warn\n");
+    const warn = await repo("    max-lines: warn\n");
     await writeFiles(warn, { "src/big.ts": source(520) });
     const run = await cli(warn, ["check"]);
     expect(run.code).toBe(0);

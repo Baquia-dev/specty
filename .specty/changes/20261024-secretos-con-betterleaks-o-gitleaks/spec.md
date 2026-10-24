@@ -56,7 +56,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: La verificación `secrets` con Betterleaks o gitleaks
+- [x] T1: La verificación `secrets` con Betterleaks o gitleaks
   - files: packages/cli/src/check/secrets.ts, packages/cli/src/check/common.ts, packages/cli/test/check-secrets.test.ts, packages/cli/test/check.test.ts, packages/cli/test/check-markers.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-secrets.test.ts test/check.test.ts test/check-markers.test.ts

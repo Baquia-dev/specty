@@ -8,10 +8,11 @@ const SKIP = ".skip";
 const TODO = "TODO";
 const FIXME = "FIXME";
 
-async function repo(files: Readonly<Record<string, string>> = {}, config = ""): Promise<string> {
+/** `secrets` stays off, whatever scanners the machine has. */
+async function repo(files: Readonly<Record<string, string>> = {}): Promise<string> {
   return tempRepo({
     "src/app.ts": "export const a = 1;\n",
-    ".specty/config.yaml": `${CONFIG()}${config}`,
+    ".specty/config.yaml": `${CONFIG()}checks:\n  levels: { secrets: off }\n`,
     ...files,
   });
 }
@@ -107,7 +108,7 @@ describe("the marker checks of specty check", () => {
   it("follow the level of each check and the configured reference, in English too", async () => {
     const config = [
       "checks:",
-      "  levels: { todo: warn, focused-tests: off }",
+      "  levels: { todo: warn, focused-tests: off, secrets: off }",
       "  todo: { reference: '\\bPROJ-\\d+\\b' }",
       "",
     ].join("\n");
