@@ -125,15 +125,23 @@ export async function doctor(session: Session): Promise<Output> {
   }
   // So does OpenCode's plugin, in its global configuration.
   const plugin = opencodePluginFile(session.environment.env);
-  const pluginGuard = hasGuard(await readText(plugin), "opencode");
+  const pluginText = await readText(plugin);
+  const pluginGuard = hasGuard(pluginText, "opencode");
   if (tools.includes("opencode") || pluginGuard) {
+    // A plugin from before the check after each command never sends `PostToolUse`.
+    const afterShell = pluginText?.includes('"PostToolUse"') === true;
     check(
-      pluginGuard,
+      pluginGuard && afterShell,
       t(`OpenCode: plugin del guard en ${plugin}.`, `OpenCode: guard plugin in ${plugin}.`),
-      t(
-        `OpenCode: falta el plugin del guard en ${plugin}; ejecuta \`${COMMAND} init --tools opencode\`.`,
-        `OpenCode: the guard plugin is missing in ${plugin}; run \`${COMMAND} init --tools opencode\`.`,
-      ),
+      pluginGuard
+        ? t(
+            `OpenCode: al plugin del guard le falta la comprobación tras cada comando; ejecuta \`${COMMAND} init --tools opencode\`.`,
+            `OpenCode: the guard plugin lacks the check after each command; run \`${COMMAND} init --tools opencode\`.`,
+          )
+        : t(
+            `OpenCode: falta el plugin del guard en ${plugin}; ejecuta \`${COMMAND} init --tools opencode\`.`,
+            `OpenCode: the guard plugin is missing in ${plugin}; run \`${COMMAND} init --tools opencode\`.`,
+          ),
     );
   }
   for (const { name, path, add, file, excluded } of await formatterExclusions(root)) {

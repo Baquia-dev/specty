@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-comprobacion-tras-cada-comando-en-cursor-y-openc",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-comprobacion-tras-cada-comando-en-cursor-y-openc",
   "baseCommit": "800f1a4d6f5140b2d7438bee5dd6eebea77c9304",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "69b1906d6d0b122e1ad05e8cccaed1baa1dabe94",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:55:56.380Z",
       "doneAt": "2026-10-24T10:58:01.799Z",
-      "summary": "init escribe postToolUse y postToolUseFailure (matcher Shell) en .cursor/hooks.json, desde una tabla de eventos como la de Claude Code; missingCursorEvents dice cuáles faltan y doctor avisa aparte de la comprobación tras cada comando."
+      "summary": "init escribe postToolUse y postToolUseFailure (matcher Shell) en .cursor/hooks.json, desde una tabla de eventos como la de Claude Code; missingCursorEvents dice cuáles faltan y doctor avisa aparte de la comprobación tras cada comando.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "1041728a94e9f25fb70f814afd185c4bd3751d2a",
+      "startedAt": "2026-10-24T10:58:02.104Z",
+      "doneAt": "2026-10-24T11:04:53.392Z",
+      "summary": "x"
     }
   },
   "pending": {

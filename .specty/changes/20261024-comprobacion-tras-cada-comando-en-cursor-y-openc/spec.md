@@ -64,7 +64,7 @@ En Claude Code y Codex, el guard compara el árbol antes y después de cada coma
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/setup.test.ts
   - type: feat
-- [ ] T3: El plugin de OpenCode avisa tras cada comando
+- [x] T3: El plugin de OpenCode avisa tras cada comando
   - files: packages/cli/src/install/opencode.ts, packages/cli/test/opencode.test.ts, packages/cli/src/commands/doctor.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3, AC4, AC5
   - verify: pnpm check
