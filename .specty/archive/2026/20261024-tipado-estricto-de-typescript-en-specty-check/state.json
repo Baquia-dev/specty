@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "20261024-tipado-estricto-de-typescript-en-specty-check",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-tipado-estricto-de-typescript-en-specty-check",
+  "baseCommit": "881ffae0bedb6fb3c63dd7ca095da67ab41f4ef0",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6eb858bd34a664b889ebb8e14a75fdd0481daddb0cddf547522a0a4a2e82c816",
+    "at": "2026-10-24T20:59:15.687Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0bfcc495b95d90adba3a00aefc4ecafb338936ab9a27421aae5992141d9e08ea",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0feec611a23071c227849138ce6843334263c5ebf524626edbff39a3ffa61c85",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a336842311071349bf92942b23b5f33006f4870f22c074b9be32a8b0413db1f3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:34c6dea0fe9962706e59207798240a9d40473f5694ce1bc40e7ca00f9d41e142",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:825b67ce1ce67b3121bb6f489ea0b8af10352dfdecb89b3208ec9fa7c544ee14",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d8395d7299ca34340039ed2647eacc464429577b",
+      "attempts": 1,
+      "startedAt": "2026-10-24T20:59:16.120Z",
+      "doneAt": "2026-10-24T21:01:01.674Z",
+      "summary": "core/checks/strict-types.ts: strictTypeViolations detecta línea a línea, sin comentarios ni cadenas, any donde va un tipo, @ts-ignore/@ts-nocheck al inicio de un comentario y la aserción no nula (sin el fin de línea en .tsx).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "da6a9089b1ca5c7993dc268b036f5de021f46196",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:01:01.928Z",
+      "doneAt": "2026-10-24T21:04:03.806Z",
+      "summary": "check/typescript.ts: proveedor de TypeScript con strict-types; con ESLint y typescript-eslint lo ejecuta con las tres reglas a error (informe a archivo), si no, la detección propia; mismos mensajes es/en. specty check en este repo: todo OK.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "51a3a194dc1a5e65f70a3109c121c8ebf6ab5cfa",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:04:04.289Z",
+      "doneAt": "2026-10-24T21:06:09.562Z",
+      "summary": "formats §6 documenta strict-types (qué prohíbe, el camino de ESLint con --rule y el de la detección propia, los *.d.ts); ARCHITECTURE la añade a la fila de specty check.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T21:08:04.339Z"
+}

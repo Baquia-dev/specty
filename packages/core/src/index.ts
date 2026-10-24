@@ -96,6 +96,11 @@ export {
   summaryLine,
 } from "./checks/report";
 export {
+  type StrictTypeRule,
+  type StrictTypeViolation,
+  strictTypeViolations,
+} from "./checks/strict-types";
+export {
   type Actor,
   EVENT_RULES,
   type EventRule,
