@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { z } from "zod";
+import * as z from "zod";
 import type { Lang } from "../i18n";
 
 export type TestsPolicy = "required" | "recommended" | "off";

@@ -52,7 +52,7 @@ Los hooks del agente llaman a `specty guard` antes de cada acción y después de
 
 ## Tareas
 
-- [ ] T1: Core importa zod como espacio de nombres
+- [x] T1: Core importa zod como espacio de nombres
   - files: packages/core/src/schema/config.ts, packages/core/src/schema/state.ts, packages/core/src/spec/frontmatter.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core test

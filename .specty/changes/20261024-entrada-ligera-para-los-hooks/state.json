@@ -6,6 +6,13 @@
   "branch": "specty/20261024-entrada-ligera-para-los-hooks",
   "baseCommit": "3cac524b0f1f5be561fd53c4d6cc1b00392cbbd6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:636250c9469e57ff214217169dd3e10bd0befe736dcf00b3cb1cbd99bec224d1",
+    "at": "2026-10-24T11:30:15.922Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4776cb72d05de1f1a696f2aa51eae235b5535f4f",
+      "startedAt": "2026-10-24T11:30:16.432Z",
+      "doneAt": "2026-10-24T11:30:52.208Z",
+      "summary": "schema/config.ts, schema/state.ts y spec/frontmatter.ts importan zod como espacio de nombres; el bundle de la CLI baja de 1,70 a 1,14 MB y ya no lleva las traducciones de zod."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:636250c9469e57ff214217169dd3e10bd0befe736dcf00b3cb1cbd99bec224d1",
-    "at": "2026-10-24T11:30:15.922Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

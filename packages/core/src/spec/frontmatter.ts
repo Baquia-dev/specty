@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { parse as parseYaml } from "yaml";
-import { z } from "zod";
+import * as z from "zod";
 import type { Lang } from "../i18n";
 import { CHANGE_ID } from "../ids";
 import { type Diagnostic, diagnostic } from "./diagnostics";
