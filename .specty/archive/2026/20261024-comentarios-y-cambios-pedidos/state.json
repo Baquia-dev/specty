@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-comentarios-y-cambios-pedidos",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-comentarios-y-cambios-pedidos",
   "baseCommit": "db4ad02e1f8e754c918b4cf5f5e06eaa5affebb7",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:77971f1de0630420dd3f3594422ac83e9c473f926b3ff2653300553d81a95d66",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5a5b26ff24672d38c59fb6656a6d2c33390cb0d1",
+      "attempts": 1,
       "startedAt": "2026-10-24T06:54:23.087Z",
       "doneAt": "2026-10-24T06:57:53.024Z",
-      "summary": "formats.md §4 y §5 documentan los comentarios (ancla y claves de sección, id c<n>, solo en revisión, sin auditoría al comentar, review.changes_requested con los comentarios sin resolver, llegan al agente solo tras pedir cambios, propose los resuelve con una revisión nueva) y el ejemplo de la tarjeta de revisión con SUPUESTOS RECHAZADOS y CAMBIOS PEDIDOS; ARCHITECTURE §15 añade las rutas /comments y /request-changes"
+      "summary": "formats.md §4 y §5 documentan los comentarios (ancla y claves de sección, id c<n>, solo en revisión, sin auditoría al comentar, review.changes_requested con los comentarios sin resolver, llegan al agente solo tras pedir cambios, propose los resuelve con una revisión nueva) y el ejemplo de la tarjeta de revisión con SUPUESTOS RECHAZADOS y CAMBIOS PEDIDOS; ARCHITECTURE §15 añade las rutas /comments y /request-changes",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,5 +91,6 @@
     "A": 5,
     "AC": 4,
     "T": 4
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T06:59:22.591Z"
 }

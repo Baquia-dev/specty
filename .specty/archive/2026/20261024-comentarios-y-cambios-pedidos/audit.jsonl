@@ -13,3 +13,6 @@
 {"ts":"2026-10-24T06:54:23.087Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"5a5b26ff24672d38c59fb6656a6d2c33390cb0d1"}}
 {"ts":"2026-10-24T06:57:53.023Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":64741}}
 {"ts":"2026-10-24T06:57:53.026Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"formats.md §4 y §5 documentan los comentarios (ancla y claves de sección, id c<n>, solo en revisión, sin auditoría al comentar, review.changes_requested con los comentarios sin resolver, llegan al agente solo tras pedir cambios, propose los resuelve con una revisión nueva) y el ejemplo de la tarjeta de revisión con SUPUESTOS RECHAZADOS y CAMBIOS PEDIDOS; ARCHITECTURE §15 añade las rutas /comments y /request-changes"}}
+{"ts":"2026-10-24T06:59:03.400Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T06:59:22.592Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:a458e74667e211dd6f5750792d18a02542077cde967e6439d0620b90a7effe09","size":"L","warnings":1}}
+{"ts":"2026-10-24T06:59:32.470Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

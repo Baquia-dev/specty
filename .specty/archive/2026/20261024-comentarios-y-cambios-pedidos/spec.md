@@ -70,3 +70,25 @@ La revisión de una spec en la UI se completa: la persona comenta una sección o
   - ac: —
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Durante la revisión, la persona puede comentar la spec desde la UI, anclando cada comentario a un ítem o a una cita de una sección, y después pedir los cambios. Los comentarios se guardan en `comments.json`; pedir cambios lo anota en la auditoría como `review.changes_requested`, y desde entonces `specty next` le da al agente los comentarios sin resolver en «CAMBIOS PEDIDOS», junto a los supuestos rechazados. La siguiente revisión que propone el agente los resuelve. El servidor local expone las dos acciones (`/comments` y `/request-changes`) con la misma seguridad que las demás.
+
+### Desviaciones
+
+- Los ayudantes de los tests del servidor (sesión, peticiones, cambio en revisión servido) pasaron de `test/server/actions.test.ts` a `test/server/support.ts`, para compartirlos con `test/server/comments.test.ts`.
+
+### Decisiones
+
+- Comentar no entra en la auditoría; pedir cambios, sí, con los ids de los comentarios sin resolver. La auditoría registra decisiones, y la decisión es pedir los cambios.
+- Los comentarios llegan al agente solo después de que la persona pide los cambios: mientras comenta, la revisión sigue siendo suya y el agente no debe tocar la spec.
+- Pedir cambios sin comentarios sin resolver ni supuestos rechazados se rechaza: no hay nada que pedir.
+- `propose` resuelve los comentarios solo con una revisión nueva; si la spec no cambió, siguen abiertos.
+- Comentar y pedir cambios no tienen comando de terminal: son parte de la revisión en la UI.
+
+### Pendientes
+
+- La UI aún responde «todavía no está en el servidor» al comentar y al pedir cambios: falta que `ServerData` llame a las rutas nuevas.
