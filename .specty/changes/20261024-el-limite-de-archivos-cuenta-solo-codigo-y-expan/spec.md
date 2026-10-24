@@ -55,7 +55,7 @@ El límite de archivos de una spec (15 en standard, 3 en quick) cuenta solo los 
 
 ## Tareas
 
-- [ ] T1: El tamaño expande los globs y el límite cuenta solo código
+- [x] T1: El tamaño expande los globs y el límite cuenta solo código
   - files: packages/core/src/sizing/size.ts, packages/core/src/validate/limits.ts, packages/core/test/sizing/sizing.test.ts, packages/core/test/validate/quality.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing test/validate

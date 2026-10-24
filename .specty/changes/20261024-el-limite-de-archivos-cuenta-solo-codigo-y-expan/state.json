@@ -6,6 +6,13 @@
   "branch": "specty/20261024-el-limite-de-archivos-cuenta-solo-codigo-y-expan",
   "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a3b968b046b1ea6a70818e88953b2a756116709b01d21ac46fee4407d5dd1633",
+    "at": "2026-10-24T10:05:30.428Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -38,7 +45,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/spec/messages.test.ts",
+        "packages/core/test/cards/delegated.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "d939727d3579b43f1364e2b6740fac6b96a399e9",
+      "startedAt": "2026-10-24T10:05:33.370Z",
+      "doneAt": "2026-10-24T10:07:54.001Z",
+      "summary": "collectSignals expande cada glob en sus coincidencias (RepoSignals.globMatches) más el patrón, sin repetir rutas; nuevo codeFiles (gobernado y no test), que usan el límite de división y su aviso; los mensajes dicen «archivos de código»"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +68,5 @@
     "AC": 5,
     "T": 4,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a3b968b046b1ea6a70818e88953b2a756116709b01d21ac46fee4407d5dd1633",
-    "at": "2026-10-24T10:05:30.428Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
