@@ -75,3 +75,22 @@ La regla de los archivos cortos pasa a ser de Specty, para cualquier proyecto y 
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La regla de los archivos cortos es ahora de Specty y vale para cualquier lenguaje. No usa listas de extensiones ni nombres de frameworks. `task done` mide en líneas de código, sin blancos ni comentarios, los archivos gobernados que la tarea crea o modifica. Hay excepciones para lo que solo parece un comentario: directivas de C, C++ y C#, atributos de Rust, selectores de CSS y `--i`. No mide lo ignorado, lo generado (`scope.generated` o una marca en las primeras líneas), los lockfiles, los binarios ni `lines.exclude`. Avisa si la tarea deja un archivo por encima de 300 líneas de código (tests: 400) y lo hizo crecer, y pide proponer una división por responsabilidad, nunca partir por el número. El aviso queda en `task.completed.longFiles` y en la aceptación. Bloquea solo si la tarea lo lleva por encima de 500 (tests: 600); con `fail: false`, nunca. La persona ajusta todo en `lines`.
+
+### Desviaciones
+
+- T3 tocó también `packages/cli/test/server/diff.test.ts`, con una ampliación de tests aprobada sola. Su diff enorme, de 20.000 líneas, cruzaba el nuevo máximo y se marca como generado (`// @generated`), que es lo que suelen ser esos archivos.
+
+### Decisiones
+
+- El bloqueo compara con el commit base de la tarea: solo bloquea si la tarea cruza el máximo, para no castigar archivos que ya eran largos.
+- Las carpetas excluidas por defecto son nombres comunes a cualquier ecosistema (fixtures, mocks, testdata, migraciones, textos traducidos), y la persona puede cambiarlas.
+
+### Pendientes
+
+- Quitar la medida de tamaño de `pnpm sources`, que pasa a quedarse solo con la cabecera SPDX, y actualizar AGENTS.md: el cambio quick siguiente.

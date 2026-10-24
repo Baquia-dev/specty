@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-regla-agnostica-del-tamano-de-los-archivos-en-ta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-regla-agnostica-del-tamano-de-los-archivos-en-ta",
   "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ef2753284561fcd0c6c7953c85cdbf70f2ccd1e024080a8b68e650f2c0743c65",
@@ -61,14 +61,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/server/diff.test.ts"
-      ],
-      "attempts": 3,
       "baseCommit": "e28031cc1ae8275375e5e923c6c70244647eabdc",
+      "attempts": 3,
       "startedAt": "2026-10-24T16:22:58.448Z",
       "doneAt": "2026-10-24T16:27:43.248Z",
-      "summary": "ARCHITECTURE §7: la regla del tamaño de los archivos, cómo cuenta en cualquier lenguaje, qué no mide, cuándo avisa y cuándo bloquea; formats.md §6: la clave lines con sus valores por defecto; §4: longFiles en task.completed. El diff enorme de server/diff.test.ts se marca como generado"
+      "summary": "ARCHITECTURE §7: la regla del tamaño de los archivos, cómo cuenta en cualquier lenguaje, qué no mide, cuándo avisa y cuándo bloquea; formats.md §6: la clave lines con sus valores por defecto; §4: longFiles en task.completed. El diff enorme de server/diff.test.ts se marca como generado",
+      "scopeExtra": [
+        "packages/cli/test/server/diff.test.ts"
+      ]
     }
   },
   "pending": {
@@ -79,5 +79,6 @@
     "A": 4,
     "AC": 5,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T16:28:56.012Z"
 }
