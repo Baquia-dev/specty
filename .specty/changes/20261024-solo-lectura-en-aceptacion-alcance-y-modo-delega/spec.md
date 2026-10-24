@@ -51,7 +51,7 @@ Segunda parte de «Solo lectura en la revisión». Cuando la UI no deja decidir,
 
 ## Tareas
 
-- [ ] T1: Los diálogos del resultado en su propio archivo
+- [x] T1: Los diálogos del resultado en su propio archivo
   - files: packages/ui/src/acceptance/result-dialogs.ts, packages/ui/src/acceptance/acceptance-actions.ts, packages/ui/src/acceptance/criterion-row.ts, packages/ui/src/acceptance/acceptance-actions.test.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance && pnpm sources

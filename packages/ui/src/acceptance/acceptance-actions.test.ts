@@ -7,7 +7,8 @@ import { FixtureData } from "../data/fixtures";
 import { ActionError, type ChangeRecord, SpectyData } from "../data/records";
 import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
-import { AcceptanceActions, ResultDialogs } from "./acceptance-actions";
+import { AcceptanceActions } from "./acceptance-actions";
+import { ResultDialogs } from "./result-dialogs";
 
 const ASISTENCIA = "20261018-asistencia-curso";
 

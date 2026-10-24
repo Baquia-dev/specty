@@ -6,6 +6,13 @@
   "branch": "specty/20261024-solo-lectura-en-aceptacion-alcance-y-modo-delega",
   "baseCommit": "2b3fb269b541dd6522c7acd891af403f2de63aa7",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:583d8e0354263860188bc17ceeef493a71562709df029e18ab05eeeb816f16b4",
+    "at": "2026-10-24T10:29:41.861Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e8a24e5b28ccc696510c801b18bdea5fc311b4eb",
+      "startedAt": "2026-10-24T10:29:43.289Z",
+      "doneAt": "2026-10-24T10:30:47.428Z",
+      "summary": "Los diálogos de ajustar y aceptar, ResultDialogs y el estado de la verificación completa (FullState, fullStateOf, fullLine) pasan de acceptance-actions.ts a result-dialogs.ts; acceptance-actions.ts se queda con la decisión de la cabecera, y criterion-row.ts y el test importan los diálogos de su archivo"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 5,
     "T": 5
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:583d8e0354263860188bc17ceeef493a71562709df029e18ab05eeeb816f16b4",
-    "at": "2026-10-24T10:29:41.861Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -16,7 +16,7 @@ import type { CriterionEvidence, EvidenceStatus } from "../data/acceptance";
 import { formatDuration, type TaskProgressView } from "../data/progress";
 import type { ChangeView } from "../data/records";
 import { Preferences } from "../theme/preferences";
-import { ResultDialogs } from "./acceptance-actions";
+import { ResultDialogs } from "./result-dialogs";
 
 /** A state in words, with its icon and the phase color that reads like it (never color alone). */
 export interface Mark {
