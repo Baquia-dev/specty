@@ -43,7 +43,7 @@ describe("the project's commands in specty check", () => {
         "  `npm run lint` salió con 1",
         "  src/app.ts:3 error no-x",
         "  lib/other.ts:9 error no-y",
-        "OK 7/8 · FALLA: lint",
+        "OK 9/10 · FALLA: lint",
       ].join("\n"),
     );
     const report = JSON.parse((await cli(root, ["--json", "check"])).out);
@@ -84,7 +84,7 @@ describe("the project's commands in specty check", () => {
         "  `node tools/tests.js` salió con 2",
         "  src/a.test.ts:1 one",
         "  … y 2 más",
-        "OK 4/5 · FALLA: tests",
+        "OK 6/7 · FALLA: tests",
       ].join("\n"),
     );
   });

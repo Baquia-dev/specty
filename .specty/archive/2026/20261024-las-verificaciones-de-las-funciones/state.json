@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "20261024-las-verificaciones-de-las-funciones",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-las-verificaciones-de-las-funciones",
+  "baseCommit": "e35326fa5a7f8df239b710fb1191f9c0a58e31c4",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:09fba35e28f516a684173372657befdf4c8e49e5f0069a5ca8a387b68262c731",
+    "at": "2026-10-24T21:19:18.955Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bbebefda1afc1fa6cac0ac94930467f2c723fcc21f5053bafc2446d6219ffccd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:65cadac90136bcc500d7efe244e1385c0a59ca6a10f5153d4c70f2d8b81e1843",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:eac2f1b5e6bfeb20a23364f3f967aaf5fb0d126fe4a032bb7594b20fb5f0fae4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c2a96b86278a87daa64d027e300e5cb156b0b5d8",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:19:19.387Z",
+      "doneAt": "2026-10-24T21:25:49.987Z",
+      "summary": "check/functions.ts: function-lines y complexity con functionMetrics; solo cuentan las funciones tocadas que pasan del límite y son nuevas o crecieron respecto al punto de partida; fuera los tests; el resumen de check-commands y check-typescript suma las dos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2cc0661a44d8d192302dbc10dcb6c7712731e009",
+      "attempts": 2,
+      "startedAt": "2026-10-24T21:25:50.293Z",
+      "doneAt": "2026-10-24T21:32:59.474Z",
+      "summary": "formats §6 documenta checks.functions y las verificaciones function-lines y complexity (estimación, qué cuenta, nueva o crecida, --all, tests fuera, por qué no ESLint); ARCHITECTURE las añade a la fila de specty check.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-24T21:34:30.010Z"
+}
