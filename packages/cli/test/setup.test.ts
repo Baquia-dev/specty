@@ -66,6 +66,52 @@ describe("specty init", () => {
     expect((await cli(root, ["doctor"])).out).toContain("Claude Code: guard instalado.");
   });
 
+  it("installs the worktree hooks without a matcher, and doctor misses them (AC5)", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
+    for (const event of ["WorktreeCreate", "WorktreeRemove"]) {
+      expect(settings.hooks[event]).toEqual([
+        {
+          hooks: [
+            { type: "command", command: expect.stringContaining("guard --tool claude-code") },
+          ],
+        },
+      ]);
+    }
+    const hooks = { ...settings.hooks, WorktreeRemove: [] };
+    await writeFiles(root, {
+      ".claude/settings.local.json": JSON.stringify({ ...settings, hooks }),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Claude Code: faltan los hooks de las worktrees (WorktreeRemove), así que `EnterWorktree` por nombre no entra en la carpeta del cambio; ejecuta `specty init`.",
+    );
+    expect(doctor.out).not.toContain("comprobación tras cada comando");
+    expect((await cli(root, ["init"])).code).toBe(0);
+    expect((await cli(root, ["doctor"])).out).toContain("Claude Code: guard instalado.");
+  });
+
+  it("installs the card after a compaction, and doctor misses it", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
+    expect(settings.hooks.SessionStart).toMatchObject([
+      { matcher: "compact", hooks: [{ type: "command" }] },
+    ]);
+    const hooks = { ...settings.hooks, SessionStart: [] };
+    await writeFiles(root, {
+      ".claude/settings.local.json": JSON.stringify({ ...settings, hooks }),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Claude Code: falta la tarjeta de Specty tras compactar (SessionStart); ejecuta `specty init`.",
+    );
+    expect(doctor.out).not.toContain("comprobación tras cada comando");
+  });
+
   it("lets the agent use worktrees without a prompt, keeping the permissions people wrote", async () => {
     const root = await tempRepo({
       "package.json": '{"name":"x","scripts":{"test":"true"}}\n',

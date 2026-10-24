@@ -6,7 +6,7 @@ import { Commands } from "../components/command-palette";
 import { Toasts } from "../components/toast";
 import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
-import { ActionError, type ChangeRecord, SpectyData } from "../data/records";
+import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
 import { APP_ROUTES } from "./routes";
 import { Shell } from "./shell";
@@ -18,6 +18,14 @@ class Refusing extends FixtureData {
     return Promise.reject(
       new ActionError({ es: "Este servidor es de solo lectura.", en: "This server is read only." }),
     );
+  }
+}
+
+/** The sample data on a server the agent started: nobody decides here. */
+@Injectable()
+class ReadOnly extends FixtureData {
+  override readOnly(): Promise<Bilingual | undefined> {
+    return Promise.resolve({ es: "Solo lectura.", en: "Read only." });
   }
 }
 
@@ -102,6 +110,24 @@ describe("Delegated mode in the UI", () => {
     await settle();
     expect(chip()).toBeNull();
     expect(toasts()).toContain("Modo delegado desactivado: vuelves a decidir tú.");
+  });
+
+  it("shows it on a read-only server, but cannot switch it (AC4)", async () => {
+    const { chip, setting, settingButton, dialog, dialogButton, settle } = await render(ReadOnly);
+    expect(text(setting())).toContain("Apagado");
+    expect(settingButton()?.disabled).toBe(true);
+    await TestBed.inject(SpectyData).setDelegation(true);
+    await settle();
+    chip()?.click();
+    await settle();
+    expect(text(dialog())).toContain("; lo activó Ana Gómez.");
+    expect(dialogButton("Desactivar")?.disabled).toBe(true);
+    TestBed.inject(Commands)
+      .all()
+      .find((entry) => entry.id === "delegation")
+      ?.run();
+    await settle();
+    expect(dialogButton("Desactivar")?.disabled).toBe(true);
   });
 
   it("explains a refusal and keeps the dialog; the palette offers it too (AC2)", async () => {

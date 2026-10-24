@@ -4,10 +4,11 @@ import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
-import { ActionError, type ChangeRecord, SpectyData } from "../data/records";
+import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
-import { AcceptanceActions, ResultDialogs } from "./acceptance-actions";
+import { AcceptanceActions } from "./acceptance-actions";
+import { ResultDialogs } from "./result-dialogs";
 
 const ASISTENCIA = "20261018-asistencia-curso";
 
@@ -35,6 +36,14 @@ class Refusing extends FixtureData {
     return Promise.reject(
       new ActionError({ es: "El servidor no responde.", en: "The server does not answer." }),
     );
+  }
+}
+
+/** The sample data on a server the agent started: nobody decides here. */
+@Injectable()
+class ReadOnly extends FixtureData {
+  override readOnly(): Promise<Bilingual | undefined> {
+    return Promise.resolve({ es: "Solo lectura.", en: "Read only." });
   }
 }
 
@@ -93,6 +102,14 @@ function type(field: HTMLTextAreaElement | null | undefined, value: string): voi
 
 describe("Acceptance actions", () => {
   afterEach(() => TestBed.resetTestingModule());
+
+  it("offers no decision on a read-only server, and says why (AC1)", async () => {
+    const { element, buttons } = await render(ReadOnly);
+    expect(buttons().map((button) => button.disabled)).toEqual([true, true]);
+    const group = element.querySelector("sp-acceptance-actions");
+    expect(text(group?.querySelector("[data-blocked]"))).toBe("Solo lectura.");
+    expect(group?.querySelector("[data-full-hint]")).toBeNull();
+  });
 
   it("offers asking for adjustments and accepting, compact in the bar", async () => {
     const { element, buttons } = await render();

@@ -1,0 +1,80 @@
+---
+kind: standard
+---
+
+# EnterWorktree por nombre entra en la carpeta del cambio
+
+## Objetivo
+
+En Claude Code, el agente entra en la carpeta que preparó `specty new` sin que la persona tenga que aprobar nada. Desde la versión 2.1.206, `EnterWorktree` con `path` fuera de `.claude/worktrees/` siempre pregunta, y ninguna regla de permisos lo evita. Con `name` no pregunta, así que `init` instala los hooks `WorktreeCreate` y `WorktreeRemove`, que llevan ese nombre a la carpeta del cambio, y el guard juzga la misma carpeta. Probado con un script local el 2026-10-24: la persona confirmó que la pregunta ya no aparece.
+
+## Fuera de alcance
+
+- Mover las worktrees de Specty a `.claude/worktrees/`.
+- Borrar al salir la carpeta de un cambio ya terminado: lo sigue haciendo `specty new`.
+- Otras herramientas: solo Claude Code tiene `EnterWorktree`.
+- Quitar el experimento local de este repositorio (A5).
+
+## Supuestos
+
+- A1: `WorktreeCreate` y `WorktreeRemove` van al mismo `specty guard --tool claude-code`, que los distingue por `hook_event_name`: un solo comando por herramienta, e `init` y `doctor` los tratan como los demás eventos del guard.
+  - impacto: alto
+- A2: Un nombre que no es el de una carpeta preparada por Specty crea `.claude/worktrees/<name>` en la rama `worktree-<name>` desde HEAD, como Claude Code sin hooks con `worktree.baseRef: head`, porque con el hook Claude Code ya no crea worktrees por su cuenta, tampoco para los subagentes aislados.
+  - impacto: medio
+- A3: `ExitWorktree` con `remove` no borra la carpeta de un cambio de Specty: el hook lo rechaza y `specty new` la limpia cuando el cambio termina; las de `.claude/worktrees/` se borran como antes, con su rama `worktree-…` solo si ya está fusionada.
+- A4: `specty new` propone `EnterWorktree` con `name` solo si los ajustes de Claude Code de la carpeta donde se ejecuta tienen el hook, porque sin él ese nombre crearía otra worktree, vacía.
+- A5: El experimento local (`~/.claude/hooks/specty-worktree.mjs` y sus hooks en `.claude/settings.local.json`) no forma parte del cambio: al cerrarlo, se vuelve a ejecutar `specty init` en la carpeta principal y se quitan los hooks del experimento.
+
+## Criterios de aceptación
+
+- AC1: CUANDO Claude Code crea una worktree con el id de un cambio cuya carpeta preparó `specty new` ENTONCES el hook responde con esa carpeta, sin crear nada.
+- AC2: CUANDO el nombre no es el de una carpeta de Specty ENTONCES el hook crea `.claude/worktrees/<name>` en la rama `worktree-<name>` desde HEAD, o reutiliza la que ya exista, y responde con su ruta; un nombre con segmentos vacíos, `.` o `..` se rechaza.
+- AC3: CUANDO Claude Code borra una worktree de `.claude/worktrees/` ENTONCES el hook la quita, y su rama si ya está fusionada; CUANDO es la carpeta de un cambio de Specty ENTONCES la deja y explica por qué.
+- AC4: CUANDO el guard juzga `EnterWorktree` con `name` ENTONCES usa la misma carpeta que el hook: la sesión queda ligada a la carpeta del cambio, no a una ruta que no existe.
+- AC5: CUANDO se ejecuta `specty init` con Claude Code ENTONCES sus ajustes llevan `WorktreeCreate` y `WorktreeRemove` con el guard, sin `matcher`, y `doctor` avisa si faltan.
+- AC6: CUANDO `specty new` crea la worktree de un cambio y los ajustes de Claude Code tienen el hook ENTONCES el SIGUIENTE dice cómo entrar: `EnterWorktree` con `name` igual al id del cambio.
+
+## Diseño
+
+- `enforce/worktree-hooks.ts`: `namedWorktree(git, name)` da la carpeta de un nombre: `<carpeta principal>.worktrees/<name>` si git la lista, o si no `.claude/worktrees/<name>` en la worktree actual. `worktreeHook` atiende los dos eventos: `WorktreeCreate` (lee `name`, escribe la ruta en stdout) y `WorktreeRemove` (lee `worktree_path`). Solo necesita git: funciona aunque la configuración de Specty falle.
+- `enforce/guard.ts` pasa esos eventos a `worktreeHook` antes de abrir la sesión, y `enforce/sessions.ts` usa `namedWorktree` para el `name` de `EnterWorktree`.
+- `install/agents.ts`: los eventos de Claude Code admiten no llevar `matcher`; se añaden `WorktreeCreate` y `WorktreeRemove`, y `entersByName(root)` dice si los ajustes de una carpeta tienen el hook.
+- `doctor` separa los avisos: la comprobación tras cada comando de Bash y los hooks de las worktrees.
+- `commands/new.ts` añade al SIGUIENTE `EnterWorktree` con `name: "<id>"` cuando `entersByName` lo permite (A4).
+
+## Archivos
+
+- crear packages/cli/src/enforce/worktree-hooks.ts — crear y borrar worktrees por nombre
+- modificar packages/cli/src/enforce/guard.ts — pasa `WorktreeCreate` y `WorktreeRemove` al hook
+- modificar packages/cli/src/enforce/sessions.ts — el `name` de `EnterWorktree` con `namedWorktree`
+- crear packages/cli/test/worktree-hooks.test.ts — los dos eventos
+- modificar packages/cli/test/sessions.test.ts — la sesión queda ligada a la carpeta del cambio al entrar por nombre
+- modificar packages/cli/src/install/agents.ts — los dos eventos sin `matcher` y `entersByName`
+- modificar packages/cli/src/commands/doctor.ts — el aviso de los hooks de las worktrees
+- modificar packages/cli/src/commands/new.ts — el SIGUIENTE con `EnterWorktree` y `name`
+- modificar packages/cli/test/setup.test.ts — `init` los instala y `doctor` avisa si faltan
+- modificar packages/cli/test/worktrees.test.ts — el SIGUIENTE con y sin el hook
+- modificar docs/ARCHITECTURE.md — los hooks de las worktrees (§10)
+
+## Tareas
+
+- [ ] T1: Los hooks de las worktrees y el guard con `name`
+  - files: packages/cli/src/enforce/worktree-hooks.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/sessions.ts, packages/cli/test/worktree-hooks.test.ts, packages/cli/test/sessions.test.ts
+  - ac: AC1, AC2, AC3, AC4
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktree-hooks.test.ts test/sessions.test.ts
+  - type: feat
+- [ ] T2: `init` instala los hooks y `doctor` los revisa
+  - files: packages/cli/src/install/agents.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/setup.test.ts
+  - ac: AC5
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts
+  - type: feat
+- [ ] T3: `new` propone entrar por nombre
+  - files: packages/cli/src/commands/new.ts, packages/cli/test/worktrees.test.ts, docs/ARCHITECTURE.md
+  - ac: AC6
+  - verify: pnpm check
+  - type: feat
+
+## Riesgos
+
+- R1: Con el hook instalado, si `specty` no se puede ejecutar, Claude Code no puede crear worktrees, tampoco para subagentes — `init` usa la misma invocación que el guard (una ruta local si `specty` no está en el PATH), el hook solo necesita git, y `doctor` comprueba que está.
+- R2: Las worktrees de los subagentes salen de HEAD y no de la rama principal remota, como haría Claude Code por defecto — es lo que hizo el experimento sin problemas (A2), y para un subagente HEAD es el trabajo que está viendo.

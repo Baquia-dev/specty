@@ -16,6 +16,7 @@ import { commitState, isFinished, resolveActive } from "../flow/active";
 import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
 import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
+import { entersByName } from "../install/agents";
 import { exists, writeText } from "../io/files";
 import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
@@ -170,9 +171,16 @@ async function newInWorktree(
   const prepared = await prepareWorktree(session, folder);
   const from = `${base.name} (${base.commit.slice(0, 7)})`;
   const failed = prepared?.ok === false ? prepared : undefined;
+  // With Specty's worktree hooks, entering by name skips the prompt a folder outside `.claude` gets.
+  const byName = (await entersByName(session.root))
+    ? t(
+        `en Claude Code, \`EnterWorktree\` con \`name: "${id}"\`; `,
+        `in Claude Code, \`EnterWorktree\` with \`name: "${id}"\`; `,
+      )
+    : "";
   const carryOn = t(
-    `cambia allí la carpeta de trabajo de tu sesión (o abre allí un agente) y ejecuta \`${cards.command} next\`; esta carpeta sigue con su propio trabajo.`,
-    `switch your session's working folder there (or open an agent there) and run \`${cards.command} next\`; this folder carries on with its own work.`,
+    `cambia allí la carpeta de trabajo de tu sesión (${byName}o abre allí un agente) y ejecuta \`${cards.command} next\`; esta carpeta sigue con su propio trabajo.`,
+    `switch your session's working folder there (${byName}or open an agent there) and run \`${cards.command} next\`; this folder carries on with its own work.`,
   );
   return {
     status: "ok",

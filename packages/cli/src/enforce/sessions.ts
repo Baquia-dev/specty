@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join, resolve } from "node:path";
+import { resolve } from "node:path";
 import type { BoundSession, GuardAction } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
 import { exists } from "../io/files";
 import { resolved } from "../io/git";
 import { type Environment, openSession, type Session } from "../session";
 import { readBinding, writeBinding } from "../store/local";
+import { namedWorktree } from "./worktree-hooks";
 
 /** `EnterWorktree` as Claude Code sends it: a folder to enter, or a name for a new one. */
 export interface EnterRequest {
@@ -30,12 +31,12 @@ export async function enterAction(
   request: EnterRequest,
   cwd: string,
 ): Promise<GuardAction> {
-  const main = (await session.git.worktrees())[0]?.folder ?? session.root;
+  // By name, the hook `WorktreeCreate` picks the folder: the change's own, if it has one.
   const target =
     request.path !== undefined
       ? await resolved(resolve(cwd, request.path))
       : request.name !== undefined
-        ? join(main, ".claude", "worktrees", request.name)
+        ? (await namedWorktree(session.git, request.name)).folder
         : undefined;
   if (target === undefined) return { kind: "other" };
   const id = sessionOf(event);

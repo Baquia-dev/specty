@@ -4,7 +4,7 @@ import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
-import { ActionError, type ChangeRecord, SpectyData } from "../data/records";
+import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
 import { ProgressTab } from "./progress-tab";
@@ -22,6 +22,14 @@ class Host {
 }
 
 /** A source that cannot decide: the tab explains why. */
+/** The sample data on a server the agent started: nobody decides here. */
+@Injectable()
+class ReadOnly extends FixtureData {
+  override readOnly(): Promise<Bilingual | undefined> {
+    return Promise.resolve({ es: "Solo lectura.", en: "Read only." });
+  }
+}
+
 @Injectable()
 class Refusing extends FixtureData {
   override decideScope(): Promise<void> {
@@ -166,6 +174,14 @@ describe("Progress tab", () => {
     expect(document.querySelector("[role=dialog]")).toBeNull();
     expect(rows("tasks")).toEqual(["T1", "T2", "T3"]);
     expect(toasts()).toContain("Rechazaste S1.");
+  });
+
+  it("cannot decide a scope request on a read-only server (AC3)", async () => {
+    const { row } = await render(PDF, ReadOnly);
+    const buttons = row("T3")?.querySelectorAll<HTMLButtonElement>(
+      "[data-scope-request] sp-button button",
+    );
+    expect([...(buttons ?? [])].map((button) => button.disabled)).toEqual([true, true]);
   });
 
   it("explains it when the source cannot decide (AC4)", async () => {

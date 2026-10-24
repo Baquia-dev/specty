@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-import { Component, input } from "@angular/core";
+import { Component, Injectable, input } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { FixtureData, sampleRecords } from "../data/fixtures";
-import { type ChangeView, SpectyData } from "../data/records";
+import { type Bilingual, type ChangeView, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
 import { HIGHLIGHT } from "../highlight/highlight";
 import { AcceptanceTab } from "./acceptance-tab";
@@ -26,7 +26,15 @@ class Host {
   readonly change = input.required<ChangeView>();
 }
 
-async function render(change: ChangeView = ASISTENCIA) {
+/** The sample data on a server the agent started: nobody decides here. */
+@Injectable()
+class ReadOnly extends FixtureData {
+  override readOnly(): Promise<Bilingual | undefined> {
+    return Promise.resolve({ es: "Solo lectura.", en: "Read only." });
+  }
+}
+
+async function render(change: ChangeView = ASISTENCIA, source: typeof FixtureData = FixtureData) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
@@ -35,13 +43,16 @@ async function render(change: ChangeView = ASISTENCIA) {
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
     providers: [
-      { provide: SpectyData, useClass: FixtureData },
+      { provide: SpectyData, useClass: source },
       // Plain code in the Changes view: the colors are tested with the viewer.
       { provide: HIGHLIGHT, useValue: () => Promise.resolve(undefined) },
     ],
   });
   const fixture = TestBed.createComponent(Host);
   fixture.componentRef.setInput("change", change);
+  await fixture.whenStable();
+  // The source says once whether the person may decide here.
+  await new Promise((done) => setTimeout(done));
   await fixture.whenStable();
   const element: HTMLElement = fixture.nativeElement;
   const row = (id: string) => element.querySelector<HTMLElement>(`[data-criterion=${id}]`);
@@ -252,6 +263,11 @@ describe("Acceptance tab", () => {
     const dialog = document.querySelector("[role=dialog]");
     expect(text(dialog?.querySelector("h2"))).toBe("Pedir ajustes");
     expect(dialog?.querySelector("textarea")?.value).toBe("AC2: ");
+  });
+
+  it("offers no «No se cumple…» on a read-only server (AC1)", async () => {
+    const { element } = await render(ASISTENCIA, ReadOnly);
+    expect(element.querySelector("[data-not-met]")).toBeNull();
   });
 
   it("says so when the spec has no criteria yet", async () => {

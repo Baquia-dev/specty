@@ -100,6 +100,20 @@ describe("specty new --worktree", () => {
     expect(await read(folder, ".cursor/hooks.json")).toBe('{"version":1}\n');
   });
 
+  it("tells Claude Code to enter by name when its worktree hooks are installed (AC6)", async () => {
+    const root = await tempRepo(FILES);
+    const guard = [{ hooks: [{ type: "command", command: "specty guard --tool claude-code" }] }];
+    await writeFiles(root, {
+      ".claude/settings.local.json": JSON.stringify({
+        hooks: { WorktreeCreate: guard, WorktreeRemove: guard },
+      }),
+    });
+    const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
+    expect(created.out).toContain(
+      `cambia allí la carpeta de trabajo de tu sesión (en Claude Code, \`EnterWorktree\` con \`name: "${OTHER}"\`; o abre allí un agente) y ejecuta \`specty next\``,
+    );
+  });
+
   it("needs a branch per change", async () => {
     const config =
       'version: 1\nlanguage: es\ngit:\n  branchPerChange: false\nverify:\n  default: "true"\n';

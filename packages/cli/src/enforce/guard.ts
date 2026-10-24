@@ -11,9 +11,11 @@ import {
   isGoverned,
   isIntegrating,
   parseSpec,
+  renderText,
   type ShellAnalysis,
   shellChanges,
 } from "@baquia-dev/specty-core";
+import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
 import { placePaths } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
@@ -23,6 +25,7 @@ import { readSpec } from "../store/changes";
 import { checksAfterShell, type GuardTool, type RawAction, toolAction } from "./actions";
 import { bindSession, enterAction } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
+import { isWorktreeEvent, worktreeHook } from "./worktree-hooks";
 
 export interface GuardReply {
   readonly code: number;
@@ -32,8 +35,10 @@ export interface GuardReply {
 
 /**
  * `specty guard --tool <id>`: called by the agent's hooks before each action and, in Claude
- * Code and Codex, after each Bash command. It fails open on its own errors (the git hooks and
- * CI still apply) and never blocks outside Specty repos.
+ * Code and Codex, after each Bash command; in Claude Code, also to create and remove worktrees
+ * and, after a compaction, to bring back what `specty next` says.
+ * It fails open on its own errors (the git hooks and CI still apply) and never blocks outside
+ * Specty repos.
  */
 export async function guard(
   environment: Environment,
@@ -44,9 +49,17 @@ export async function guard(
     const event = parseJson(stdin);
     if (!isRecord(event)) return allow(tool);
     const cwd = cwdOf(event, environment.cwd);
+    // They make and remove worktrees for Claude Code, so they answer even outside a session.
+    if (tool === "claude-code" && isWorktreeEvent(event)) {
+      return await worktreeHook(environment, event, cwd);
+    }
     const opened = await openSession({ ...environment, cwd });
     if (opened.kind !== "ok") return allow(tool);
     const session = opened.session;
+    // After a compaction Claude Code adds this to the context, so the task card comes back.
+    if (tool === "claude-code" && event.hook_event_name === "SessionStart") {
+      return { code: 0, stdout: renderText(await next(session), session.lang), stderr: "" };
+    }
     const after = checksAfterShell(tool);
     if (after && isAfterTool(event)) return await afterShell(session, tool, event);
     const raw = toolAction(tool, event);

@@ -4,7 +4,13 @@ import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
-import { ActionError, type ChangeRecord, type ChangeView, SpectyData } from "../data/records";
+import {
+  ActionError,
+  type Bilingual,
+  type ChangeRecord,
+  type ChangeView,
+  SpectyData,
+} from "../data/records";
 import { VERIFY_FULL } from "../data/sample-records";
 import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
@@ -24,6 +30,14 @@ class Host {
   readonly change = computed(
     () => this.view() ?? this.store.all().find((item) => item.id === this.id()),
   );
+}
+
+/** The sample data on a server the agent started: nobody decides here. */
+@Injectable()
+class ReadOnly extends FixtureData {
+  override readOnly(): Promise<Bilingual | undefined> {
+    return Promise.resolve({ es: "Solo lectura.", en: "Read only." });
+  }
 }
 
 /** A source that cannot run it: a notice says why. */
@@ -159,6 +173,11 @@ describe("Full verification", () => {
 
     await remount();
     expect(text(section()?.querySelector("[data-verdict]"))).toMatch(/^Falló · /);
+  });
+
+  it("cannot be run from a read-only server (AC2)", async () => {
+    const { section } = await render(ASISTENCIA, ReadOnly);
+    expect(section()?.querySelector<HTMLButtonElement>("[data-run] button")?.disabled).toBe(true);
   });
 
   it("explains it when the source cannot run it (AC4)", async () => {

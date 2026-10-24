@@ -18,6 +18,7 @@ import { Button } from "../components/button";
 import { Commands } from "../components/command-palette";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Toasts } from "../components/toast";
+import { Decisions } from "../data/decisions";
 import { SpectyData } from "../data/records";
 import { reportFailure } from "../review/spec-sections";
 import { Preferences } from "../theme/preferences";
@@ -103,7 +104,7 @@ const when = (at: string | undefined, lang: Lang) =>
         }
       </div>
       <sp-button actions (pressed)="frame.close()">{{ t()('No, sigo decidiendo yo', 'No, I keep deciding') }}</sp-button>
-      <sp-button actions variant="primary" (pressed)="turnOn()">{{ t()('Sí, que decida mi agente', 'Yes, let my agent decide') }}</sp-button>
+      <sp-button actions variant="primary" [disabledReason]="decisions.blocked()" (pressed)="turnOn()">{{ t()('Sí, que decida mi agente', 'Yes, let my agent decide') }}</sp-button>
     </sp-dialog>
   `,
 })
@@ -113,6 +114,7 @@ export class TurnOnDelegation {
   private readonly toasts = inject(Toasts);
   private readonly preferences = inject(Preferences);
   private readonly failed = reportFailure(this.toasts, this.preferences);
+  protected readonly decisions = inject(Decisions);
   protected readonly t = this.preferences.t;
   protected readonly pieces = piecesOf;
   protected readonly blocks = computed(() =>
@@ -145,7 +147,7 @@ export class TurnOnDelegation {
       </p>
       <p class="m-0 text-[13px] text-text-muted">{{ t()('Al desactivarlo, vuelves a decidir tú, en la UI o en la terminal.', 'Once it is off, you decide again, in the UI or in the terminal.') }}</p>
       <sp-button actions (pressed)="frame.close()">{{ t()('Cancelar', 'Cancel') }}</sp-button>
-      <sp-button actions variant="primary" (pressed)="turnOff()">{{ t()('Desactivar', 'Turn off') }}</sp-button>
+      <sp-button actions variant="primary" [disabledReason]="decisions.blocked()" (pressed)="turnOff()">{{ t()('Desactivar', 'Turn off') }}</sp-button>
     </sp-dialog>
   `,
 })
@@ -155,6 +157,7 @@ export class TurnOffDelegation {
   private readonly toasts = inject(Toasts);
   private readonly preferences = inject(Preferences);
   private readonly failed = reportFailure(this.toasts, this.preferences);
+  protected readonly decisions = inject(Decisions);
   protected readonly t = this.preferences.t;
   protected readonly since = computed(() =>
     when(this.state.current()?.at, this.preferences.lang()),
@@ -224,7 +227,7 @@ export class DelegationChip {
         <legend [class]="legendClass()">{{ t()('Modo delegado', 'Delegated mode') }}</legend>
         <div class="flex items-center justify-between gap-3">
           <p class="m-0 text-[13px] text-text-muted">{{ delegation.on ? t()('Activo: tu agente decide por ti.', 'On: your agent decides for you.') : t()('Apagado: tu agente te pide cada decisión.', 'Off: your agent asks you for each decision.') }}</p>
-          <sp-button size="sm" (pressed)="open()">{{ delegation.on ? t()('Desactivar…', 'Turn off…') : t()('Activar…', 'Turn on…') }}</sp-button>
+          <sp-button size="sm" [disabledReason]="decisions.blocked()" (pressed)="open()">{{ delegation.on ? t()('Desactivar…', 'Turn off…') : t()('Activar…', 'Turn on…') }}</sp-button>
         </div>
       </fieldset>
     }
@@ -235,6 +238,7 @@ export class DelegationSetting {
   readonly legendClass = input("");
 
   protected readonly state = inject(DelegationState);
+  protected readonly decisions = inject(Decisions);
   private readonly dialogs = inject(Dialogs);
   protected readonly t = inject(Preferences).t;
 
