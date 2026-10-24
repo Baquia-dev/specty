@@ -54,7 +54,7 @@ kind: standard
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/test/cards.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts
-- [ ] T2: new --request guarda la petición
+- [x] T2: new --request guarda la petición
   - files: packages/cli/src/program.ts, packages/cli/src/commands/new.ts, packages/cli/src/flow/views.ts, packages/cli/test/request.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/request.test.ts
