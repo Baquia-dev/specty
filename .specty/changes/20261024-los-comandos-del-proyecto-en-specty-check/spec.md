@@ -55,7 +55,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: Los hallazgos de la salida de una herramienta
+- [x] T1: Los hallazgos de la salida de una herramienta
   - files: packages/core/src/checks/output.ts, packages/core/src/index.ts, packages/core/test/checks/output.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/output.test.ts

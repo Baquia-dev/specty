@@ -79,6 +79,7 @@ export {
   testCases,
   unreferencedTodos,
 } from "./checks/markers";
+export { findingsInOutput } from "./checks/output";
 export {
   type CheckMode,
   type CheckReport,

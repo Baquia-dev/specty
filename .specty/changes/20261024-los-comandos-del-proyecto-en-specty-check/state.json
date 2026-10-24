@@ -6,6 +6,13 @@
   "branch": "specty/20261024-los-comandos-del-proyecto-en-specty-check",
   "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0f21e3650d466847d70967bfee2e8d265804b4e8c5807c228e862ac3fda33f16",
+    "at": "2026-10-24T20:45:29.443Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dbf4026ce1c5b07710a753d450230ec2ab3b5781",
+      "startedAt": "2026-10-24T20:45:29.855Z",
+      "doneAt": "2026-10-24T20:47:06.162Z",
+      "summary": "core/checks/output.ts: findingsInOutput saca hallazgos ruta:línea de la salida de cualquier herramienta (tsc, ESLint, Biome, Go, Rust, pytest, Vitest, analizador de Dart), sin colores ni repetidos, como mucho 100; sin ubicaciones, las últimas líneas."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 6,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:0f21e3650d466847d70967bfee2e8d265804b4e8c5807c228e862ac3fda33f16",
-    "at": "2026-10-24T20:45:29.443Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
