@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-pnpm-sources-solo-comprueba-la-cabecera-spdx",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-pnpm-sources-solo-comprueba-la-cabecera-spdx",
   "baseCommit": "6c75421846d3b6b76689d225c306cf63e6b50fea",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "732ed49dcdf7f41dd11871363262bcb82d984954",
+      "attempts": 1,
       "startedAt": "2026-10-24T16:30:29.331Z",
       "doneAt": "2026-10-24T16:31:04.134Z",
-      "summary": "check-sources.mjs solo comprueba la cabecera SPDX: el tamaño es de Specty en task done; el test lo cubre; AGENTS.md describe la regla de Specty como criterio, con lines en config.yaml"
+      "summary": "check-sources.mjs solo comprueba la cabecera SPDX: el tamaño es de Specty en task done; el test lo cubre; AGENTS.md describe la regla de Specty como criterio, con lines en config.yaml",
+      "scopeExtra": []
     }
   },
   "pending": {

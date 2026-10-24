@@ -4,3 +4,5 @@
 {"ts":"2026-10-24T16:30:29.332Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"732ed49dcdf7f41dd11871363262bcb82d984954"}}
 {"ts":"2026-10-24T16:31:04.049Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/sources.test.ts && pnpm sources","exit":0,"ms":1368}}
 {"ts":"2026-10-24T16:31:04.135Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"check-sources.mjs solo comprueba la cabecera SPDX: el tamaño es de Specty en task done; el test lo cubre; AGENTS.md describe la regla de Specty como criterio, con lines en config.yaml","removedAssertions":[{"path":"packages/cli/test/sources.test.ts","removed":8}]}}
+{"ts":"2026-10-24T16:32:14.976Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":61630}}
+{"ts":"2026-10-24T16:32:15.043Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

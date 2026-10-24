@@ -22,3 +22,9 @@ El tamaño de los archivos lo vigila ahora Specty en `task done`, en cualquier l
   - files: scripts/check-sources.mjs, packages/cli/test/sources.test.ts, AGENTS.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/sources.test.ts && pnpm sources
   - type: build
+
+## Cierre
+
+### Resumen
+
+check-sources.mjs solo comprueba la cabecera SPDX: el tamaño es de Specty en task done; el test lo cubre; AGENTS.md describe la regla de Specty como criterio, con lines en config.yaml
