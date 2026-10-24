@@ -42,7 +42,7 @@ La causa es una carrera que también tiene el producto. El servidor envía el pr
 
 ## Tareas
 
-- [ ] T1: changes después de la foto inicial
+- [x] T1: changes después de la foto inicial
   - files: packages/cli/src/server/events.ts, packages/cli/test/server.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts test/server

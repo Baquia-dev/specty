@@ -119,9 +119,11 @@ async function enter(server: UiServer): Promise<string> {
   return cookie.split(";")[0] ?? "";
 }
 
+/** Waits for `check`, up to 20 s of real time: a loaded machine slows every turn of the loop. */
 async function until(check: () => boolean) {
-  for (let waited = 0; !check(); waited += 20) {
-    if (waited > 5000) throw new Error("timed out");
+  const deadline = Date.now() + 20_000;
+  while (!check()) {
+    if (Date.now() > deadline) throw new Error("timed out");
     await new Promise((done) => setTimeout(done, 20));
   }
 }
@@ -183,10 +185,9 @@ describe("the local server", () => {
       stream.on("error", () => undefined);
       stream.end();
       const heard = () => received.join("").split("event: changes").length - 1;
+      // The first `changes` comes once the server has its first look: whatever moves right
+      // after it is heard, however slow that look was.
       await until(() => heard() === 1);
-      // Let the server take its first look before anything moves.
-      await new Promise((done) => setTimeout(done, 200));
-      expect(heard()).toBe(1);
       await writeFiles(other, { [`.specty/changes/${OTHER}/spec.md`]: "# Otro cambio\n\nYa.\n" });
       await until(() => heard() === 2);
     } finally {

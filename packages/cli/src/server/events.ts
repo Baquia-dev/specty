@@ -67,24 +67,29 @@ export function changeEvents(
       looking = false;
     }
   };
+  /** The first look while someone listens: until it is done, nothing can tell what moved. */
+  let ready: Promise<void> | undefined;
   const stop = () => {
     clearInterval(timer);
     timer = undefined;
     last = undefined;
+    ready = undefined;
   };
   return {
     add(response) {
       response.writeHead(200, { ...headers, "Content-Type": "text/event-stream" });
-      tell(response);
       listeners.add(response);
       response.on("close", () => {
         listeners.delete(response);
         if (listeners.size === 0) stop();
       });
-      if (timer === undefined) {
-        void look();
-        timer = setInterval(() => void look(), interval);
-      }
+      ready ??= look();
+      timer ??= setInterval(() => void look(), interval);
+      // It hears `changes` once the first look is done: whatever it reads then is in that look,
+      // so anything that moves later is heard, however slow the look was.
+      void ready.then(() => {
+        if (listeners.has(response)) tell(response);
+      });
     },
     send(event, data) {
       const text = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;

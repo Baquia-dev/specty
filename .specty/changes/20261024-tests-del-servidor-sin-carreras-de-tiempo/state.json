@@ -6,6 +6,13 @@
   "branch": "specty/20261024-tests-del-servidor-sin-carreras-de-tiempo",
   "baseCommit": "3fa960c092121873d0c353f84ecc06ae24012b22",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7ca19681581f38e8d50356bf487f7a0eb4528855e2f451702dbd1c0037a63daa",
+    "at": "2026-10-24T15:45:01.358Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0feb9c369fa5884f1a8ffddd4667097e6a47ae5f",
+      "startedAt": "2026-10-24T15:45:01.820Z",
+      "doneAt": "2026-10-24T15:47:43.632Z",
+      "summary": "server/events.ts: cada oyente nuevo oye su primer changes cuando termina la primera mirada (una promesa ready que se reinicia cuando no queda nadie), así lo que cambie después ya no puede quedar dentro de la foto inicial. server.test.ts: until mide tiempo real (20 s) y escribe en cuanto oye el primer changes; sin el arreglo ese test fallaba 2 de 3 veces con «timed out», con él pasa 5 de 5"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7ca19681581f38e8d50356bf487f7a0eb4528855e2f451702dbd1c0037a63daa",
-    "at": "2026-10-24T15:45:01.358Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
