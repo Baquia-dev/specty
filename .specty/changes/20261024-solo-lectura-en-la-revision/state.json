@@ -6,6 +6,13 @@
   "branch": "specty/20261024-solo-lectura-en-la-revision",
   "baseCommit": "6af2b8c61960b3a3bda9116b28127bdea4135ee5",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fef37bce5003b0b9e374fad3b9d5e815f57a7d478b37c682625e69b09248c1a8",
+    "at": "2026-10-24T10:15:28.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "46d30ea834950c99d6ce75655dda250622bc3629",
+      "startedAt": "2026-10-24T10:15:30.526Z",
+      "doneAt": "2026-10-24T10:17:38.241Z",
+      "summary": "SpectyData.readOnly() dice por qué no se puede decidir desde la fuente (la base, su solo lectura; FixtureData, nada; ServerData, según /api/session: solo lectura sin acciones, el motivo del fallo sin sesión). Decisions (data/decisions.ts) se lo pregunta una vez y da blocked, en el idioma de la persona, y allowed"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:fef37bce5003b0b9e374fad3b9d5e815f57a7d478b37c682625e69b09248c1a8",
-    "at": "2026-10-24T10:15:28.634Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

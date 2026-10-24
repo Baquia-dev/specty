@@ -50,7 +50,7 @@ Cuando la UI corre sobre un servidor de solo lectura, porque lo arrancó el agen
 
 ## Tareas
 
-- [ ] T1: La fuente dice si se puede decidir
+- [x] T1: La fuente dice si se puede decidir
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-actions.test.ts, packages/ui/src/data/decisions.ts, packages/ui/src/data/decisions.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources
