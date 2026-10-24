@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-revision-independiente-de-la-spec-con-un-modelo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-revision-independiente-de-la-spec-con-un-modelo",
   "baseCommit": "b1585c78af7a6016aa88b97ae874eb7e5ae2a0e2",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f097b4e3ee3dfcbcbc2eb50afe57255ff7743d7a",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:57:16.747Z",
       "doneAt": "2026-10-24T14:58:49.355Z",
-      "summary": "commands/review.ts pasa por la entrada estándar las instrucciones y la spec al review.command, guarda la respuesta en reviews/spec-r<n>.md y anota review.completed; sin clave, fuera de revisión o si falla, lo explica sin cambiar la fase. propose pide la revisión una vez por cambio en specs L/XL o sensibles"
+      "summary": "commands/review.ts pasa por la entrada estándar las instrucciones y la spec al review.command, guarda la respuesta en reviews/spec-r<n>.md y anota review.completed; sin clave, fuera de revisión o si falla, lo explica sin cambiar la fase. propose pide la revisión una vez por cambio en specs L/XL o sensibles",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c0d40d4cdbceb4f4a04de45ec08e161405ba8f04",
+      "startedAt": "2026-10-24T14:58:49.622Z",
+      "doneAt": "2026-10-24T15:00:54.092Z",
+      "summary": "ADR 0011 (revisión independiente opcional con el comando que configura la persona; modifica la 0001) y la 0001 enlazada; ARCHITECTURE: propose y specty review en la tabla de comandos; formats.md: la clave review, reviews/ y review.completed"
     }
   },
   "pending": {

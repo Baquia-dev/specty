@@ -66,7 +66,7 @@ Antes de aprobar una spec grande o sensible, Specty puede pedir una segunda opin
   - files: packages/cli/src/commands/review.ts, packages/cli/src/program.ts, packages/cli/src/commands/propose.ts, packages/cli/test/review.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review.test.ts test/commands-named.test.ts
-- [ ] T3: El ADR y la documentación
+- [x] T3: El ADR y la documentación
   - files: docs/decisions/0011-revision-independiente.md, docs/decisions/0001-sin-llm.md, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC5
   - verify: pnpm check
