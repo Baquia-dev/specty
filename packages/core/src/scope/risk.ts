@@ -110,6 +110,11 @@ const LABELS: Readonly<Record<RiskRule, readonly [string, string]>> = {
   ],
 };
 
+/** True for a rule of the catalog, such as one read back from the audit. */
+export function isRiskRule(value: unknown): value is RiskRule {
+  return typeof value === "string" && Object.hasOwn(LABELS, value);
+}
+
 export function riskLabel(rule: RiskRule, lang: Lang): string {
   const [es, en] = LABELS[rule];
   return lang === "es" ? es : en;

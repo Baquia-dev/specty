@@ -68,7 +68,7 @@ kind: standard
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/test/cards/tests.test.ts, packages/core/src/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
-- [ ] T3: task done avisa de los riesgos y accept los muestra
+- [x] T3: task done avisa de los riesgos y accept los muestra
   - files: packages/cli/src/flow/risk.ts, packages/cli/src/commands/task.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/accept.ts, packages/cli/test/risk.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/risk.test.ts test/assertions.test.ts
