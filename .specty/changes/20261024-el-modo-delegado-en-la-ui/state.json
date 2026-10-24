@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261024-el-modo-delegado-en-la-ui",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-el-modo-delegado-en-la-ui",
+  "baseCommit": "61c29132dbebdcb0e26562c772609c9ab8f7dea6",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:816a275d0bf435f698d917a3e79f15e74fe3536bf0224151e985ff5be962ef26",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f8b0d9fad468bd69a1eaf4db4000a638e9359ebd558d0b78f3bacbc46e3f73cf",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3386ac3fa6b4576cd1a71a7b77f1f7186f15bbfae64b4c63c392654a64947e26",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:95291e9a6bb54766268b335b742316a121ebd53c49f6c71f93ec2ddae28b7204",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:12bd741ce811667a379bfb10c513aade0d2ef8fcacc1bc32f438d731b25bbedb",
+    "at": "2026-10-24T06:08:25.388Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
