@@ -23,8 +23,11 @@ import { readSpec, type StoredChange } from "../store/changes";
 import { humanChange, postponed } from "./human";
 import { pendingIntegration } from "./integrate";
 
-/** `specty accept`: a person accepts the result; quick changes close right away. */
-export async function accept(session: Session): Promise<Output> {
+/**
+ * `specty accept`: a person accepts the result; quick changes close right away. `verify` answers
+ * beforehand whether to run the full verification first (the UI runs it on its own).
+ */
+export async function accept(session: Session, verify?: boolean): Promise<Output> {
   const guard = await humanChange(session, "accept");
   if (guard.kind === "output") return guard.output;
   const t = translator(session.lang);
@@ -56,12 +59,13 @@ export async function accept(session: Session): Promise<Output> {
   if (
     full !== undefined &&
     (delegated ||
-      (await terminal.confirm(
-        t(
-          `¿Ejecutar antes la verificación completa (\`${full}\`)?`,
-          `Run the full verification (\`${full}\`) first?`,
-        ),
-      )))
+      (verify ??
+        (await terminal.confirm(
+          t(
+            `¿Ejecutar antes la verificación completa (\`${full}\`)?`,
+            `Run the full verification (\`${full}\`) first?`,
+          ),
+        ))))
   ) {
     const result = await execute(full, [], {
       cwd: session.root,

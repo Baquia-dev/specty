@@ -19,6 +19,8 @@ import { type RepoPaths, repoPaths } from "./store/paths";
 export interface Terminal {
   /** stdin and stdout are a TTY: a person can answer. No variable overrides it. */
   readonly interactive: boolean;
+  /** Where the person decides: their terminal (the default) or the UI that `specty ui` serves. */
+  readonly channel?: "tty" | "ui";
   confirm(message: string): Promise<boolean>;
   choose<T extends string>(
     message: string,

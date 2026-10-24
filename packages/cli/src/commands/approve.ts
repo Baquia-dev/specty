@@ -178,7 +178,7 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     ]),
   );
   // The person who delegated stays as `by`; the channel records that the agent approved.
-  const channel = session.actor === "agent" ? "delegated" : "tty";
+  const channel = session.actor === "agent" ? "delegated" : (terminal.channel ?? "tty");
   const approvedState: ChangeState = {
     ...state,
     phase: moved.phase,

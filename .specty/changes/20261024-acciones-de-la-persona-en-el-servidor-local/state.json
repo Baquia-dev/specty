@@ -6,6 +6,13 @@
   "branch": "specty/20261024-acciones-de-la-persona-en-el-servidor-local",
   "baseCommit": "f6888d6092f5ff46564993e99d71a59c0ab6c500",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ed21bf60ef3cca8c0f2fea2e088e0094afe493d9123f1ceb774c6ee64416253d",
+    "at": "2026-10-24T05:27:20.074Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -36,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8bdc334d9af69d9f27abedcf0cc5936dd17a580e",
+      "startedAt": "2026-10-24T05:27:20.628Z",
+      "doneAt": "2026-10-24T05:29:34.817Z",
+      "summary": "Terminal.channel (tty o ui) y approve registra el canal de la terminal; accept(session, verify) no pregunta por la verificación completa si ya viene la respuesta; flow/review.ts decideAssumption guarda en state.items la decisión de un supuesto durante la revisión, con el motivo si se rechaza, y la anota como assumption.decided"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,12 +63,5 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ed21bf60ef3cca8c0f2fea2e088e0094afe493d9123f1ceb774c6ee64416253d",
-    "at": "2026-10-24T05:27:20.074Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
