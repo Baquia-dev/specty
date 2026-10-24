@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9bf13ed24cee7708d7dd1874696e84a6c41424ec",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:55:53.078Z",
       "doneAt": "2026-10-24T10:57:50.525Z",
-      "summary": "ChangeRecord.folder recoge la carpeta que ya envía el servidor y ChangeView.folder la pasa a la vista; data/shared.ts calcula, como cli/flow/shared.ts, los archivos gobernados (DEFAULT_CONFIG) que listan a la vez varios cambios abiertos en Archivos o en ampliaciones aprobadas, con globs en los dos sentidos y sin los cambios terminados o cancelados, y deriveViews lo añade como ChangeView.shared con el id y el título de los otros cambios"
+      "summary": "ChangeRecord.folder recoge la carpeta que ya envía el servidor y ChangeView.folder la pasa a la vista; data/shared.ts calcula, como cli/flow/shared.ts, los archivos gobernados (DEFAULT_CONFIG) que listan a la vez varios cambios abiertos en Archivos o en ampliaciones aprobadas, con globs en los dos sentidos y sin los cambios terminados o cancelados, y deriveViews lo añade como ChangeView.shared con el id y el título de los otros cambios",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b7ca5f9b7bd7718541712c574b65a31b863eda76",
+      "startedAt": "2026-10-24T10:57:50.903Z",
+      "doneAt": "2026-10-24T11:00:25.646Z",
+      "summary": "InboxRow muestra la carpeta del cambio acortada a sus dos últimos tramos (monoespaciada, atenuada, con la ruta completa en el title) y, si comparte archivos con otros cambios abiertos, un aviso en tono de atención: «Comparte <rutas> con «<títulos>»»"
     }
   },
   "pending": {

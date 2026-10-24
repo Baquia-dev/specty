@@ -64,6 +64,18 @@ const ROW =
       @if (waits(); as line) {
         <span class="text-[13px] text-text-muted" data-waits>{{ line }}</span>
       }
+      @if (folder(); as place) {
+        <span class="font-mono text-xs break-all text-text-muted" [attr.title]="change().folder" data-folder>{{ place }}</span>
+      }
+      @if (change().shared; as shared) {
+        <span class="text-[13px]" style="color: var(--color-phase-review)" data-shared>
+          {{ t()('Comparte', 'Shares') }}
+          @for (file of shared; track file.path; let last = $last) {
+            <code class="font-mono text-xs">{{ file.path }}</code>@if (!last) {,&ngsp;}
+          }
+          {{ t()('con', 'with') }} {{ sharers() }}
+        </span>
+      }
       @if (change().highImpactPending > 0) {
         <span class="text-[13px]" style="color: var(--color-phase-review)" data-note>{{ pending() }}</span>
       }
@@ -132,6 +144,17 @@ export class InboxRow {
       ? [change.size.level, ...change.size.reasons.map((reason) => reason[lang])].join(" · ")
       : "";
     return [doing, size].filter((part) => part !== "").join(" · ");
+  });
+
+  /** Where it lives, by the last two parts of its folder: «specty.worktrees/<id>». */
+  protected readonly folder = computed(
+    () => this.change().folder?.split(/[\\/]/).filter(Boolean).slice(-2).join("/") ?? "",
+  );
+
+  /** The other open changes that list the same files, by title. */
+  protected readonly sharers = computed(() => {
+    const titles = (this.change().shared ?? []).flatMap((file) => file.changes.map((c) => c.title));
+    return [...new Set(titles)].map((title) => `«${title}»`).join(", ");
   });
 
   protected readonly pending = computed(() => {
