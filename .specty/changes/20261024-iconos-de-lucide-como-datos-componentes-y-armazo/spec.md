@@ -50,7 +50,7 @@ Los iconos dejan de cargar una plantilla compilada cada uno. Hoy cada icono de `
 
 ## Tareas
 
-- [ ] T1: Los iconos de la UI como datos
+- [x] T1: Los iconos de la UI como datos
   - files: packages/ui/package.json, pnpm-lock.yaml, packages/ui/src/components/icons.ts, packages/ui/src/components/icons.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/icons.test.ts && pnpm sources
