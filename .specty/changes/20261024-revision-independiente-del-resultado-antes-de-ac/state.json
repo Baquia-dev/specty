@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-revision-independiente-del-resultado-antes-de-ac",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-revision-independiente-del-resultado-antes-de-ac",
   "baseCommit": "72a4e4ae3c2240468f91d830ba14d4cbee53a084",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7b3f50f1690cd090938298a85ca27820ec7f3a06",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:15:23.428Z",
       "doneAt": "2026-10-24T15:17:13.535Z",
-      "summary": "specty review en aceptación pasa la spec y el diff del cambio (changeDiff) y guarda reviews/diff-<n>.md con target diff; sin diff o con uno demasiado grande lo explica sin ejecutar nada; changeView recomienda la revisión en aceptación para cambios L/XL o con avisos, hasta que una siga a la última tarea"
+      "summary": "specty review en aceptación pasa la spec y el diff del cambio (changeDiff) y guarda reviews/diff-<n>.md con target diff; sin diff o con uno demasiado grande lo explica sin ejecutar nada; changeView recomienda la revisión en aceptación para cambios L/XL o con avisos, hasta que una siga a la última tarea",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "58038df28c50503e3c00a194edf2ee3bf7b17066",
+      "startedAt": "2026-10-24T15:17:14.163Z",
+      "doneAt": "2026-10-24T15:18:48.151Z",
+      "summary": "ADR 0011: la revisión del resultado ya está; ARCHITECTURE: specty review también en aceptación; formats.md: reviews/diff-<n>.md y target diff"
     }
   },
   "pending": {

@@ -62,7 +62,7 @@ La revisión independiente del ADR 0011 cubre también el resultado: con el camb
   - files: packages/cli/src/commands/review.ts, packages/cli/src/flow/views.ts, packages/cli/test/review.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review.test.ts
-- [ ] T3: Documentar la revisión del resultado
+- [x] T3: Documentar la revisión del resultado
   - files: docs/decisions/0011-revision-independiente.md, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC4
   - verify: pnpm check
