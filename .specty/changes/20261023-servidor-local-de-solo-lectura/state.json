@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261023-servidor-local-de-solo-lectura",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-servidor-local-de-solo-lectura",
+  "baseCommit": "b32587b4d4c1cb57da5eb8e8f96bfb2cd749e368",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a4062581f920bf311faff443fa661e1d2707f6fbe58376ac57cde439c7273090",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6d225c06b9b187c35005473e0d27c3c1d6f856af036b93a28db1cb03a37a02dd",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:97ef9b49a1dbdbbd458f42824e24d436187619264fbb3165828f5b0e534c1e3c",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:6ce420fa8e9d5622ddca6c934ad7b5cfed400f08e8e86f653469b75d63b7b9d6",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:77b732e634ce2bc802cce46621d3559faad054e335a1bc7dc95222a822dca9db",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:61636864c9c74a1fd1efe49cf8b93cf40352295ac9da5d5716aea56d4a2032c6",
+    "at": "2026-10-24T02:43:30.537Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T02:26:57.808Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261023-servidor-local-de-solo-lectura"}}
+{"ts":"2026-10-24T02:43:27.056Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:61636864c9c74a1fd1efe49cf8b93cf40352295ac9da5d5716aea56d4a2032c6","size":"M","warnings":0}}
+{"ts":"2026-10-24T02:43:30.546Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:61636864c9c74a1fd1efe49cf8b93cf40352295ac9da5d5716aea56d4a2032c6","channel":"delegated","delegated":true}}
