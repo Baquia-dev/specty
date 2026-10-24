@@ -35,6 +35,8 @@ export interface NewOptions {
   readonly worktree?: boolean;
   /** With `worktree`, the branch to start from (by default, the main branch). */
   readonly from?: string;
+  /** The user's literal request, kept in the audit as they wrote it. */
+  readonly request?: string;
 }
 
 /** `specty new`: creates the change, its branch and the spec skeleton. */
@@ -42,14 +44,16 @@ export async function newChange(session: Session, options: NewOptions): Promise<
   const t = translator(session.lang);
   const { cards } = session;
   const title = options.title.trim();
-  if (title.length === 0) {
+  if (title.length === 0 || options.request?.trim() === "") {
     return {
       ...blockedCard(
         headerOf(),
-        t("Falta el título.", "The title is missing."),
+        title.length === 0
+          ? t("Falta el título.", "The title is missing.")
+          : t("La petición (--request) está vacía.", "The request (--request) is empty."),
         t(
-          `ejecuta \`${cards.command} new "<título>"\`.`,
-          `run \`${cards.command} new "<title>"\`.`,
+          `ejecuta \`${cards.command} new "<título>" --request "<petición literal del usuario>"\`.`,
+          `run \`${cards.command} new "<title>" --request "<the user's literal request>"\`.`,
         ),
       ),
       status: "invalid",
@@ -259,6 +263,7 @@ async function createChange(
     kind: options.kind,
     ...(branch !== undefined ? { branch } : {}),
     ...(options.follows.length > 0 ? { follows: options.follows } : {}),
+    ...(options.request !== undefined ? { request: options.request.trim() } : {}),
   });
 }
 

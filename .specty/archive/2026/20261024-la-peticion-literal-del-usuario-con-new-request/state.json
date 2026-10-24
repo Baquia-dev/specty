@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261024-la-peticion-literal-del-usuario-con-new-request",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-la-peticion-literal-del-usuario-con-new-request",
+  "baseCommit": "2d7297ea1653e1d735ec5bff6759097529685b13",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8bd4cb585f0a6921c9e86a34b4fc5632b185d84baf2431f0701eed10ea6caef1",
+    "at": "2026-10-24T10:25:51.107Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:02b4010d14562a93d76491fed25ee69561625b91885f0fdf5d018940bf2aceff",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b9a772d8ceaa87b42de34b3ddfb0b51cd9b23a8417b82f4931a8ced805f81680",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c3af4c37d4f4a294a1d4d338864381ce5deea2a8d6bcc27ca0d2eafddefb706f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c10b8d0dff866d6e54aaf110a3fcb0251d4338c77d5f77f00d0808574316e27b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a74cfaad418252450beda989fba15fb01e90fc68",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:25:51.610Z",
+      "doneAt": "2026-10-24T10:26:39.969Z",
+      "summary": "ChangeView.request; la tarjeta del borrador muestra «PETICIÓN DEL USUARIO» antes de la guía, y la de sin cambio pide --request y habla de archivos de código en quick",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "655ea0d311a51f84751e0017483748e81f946352",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:26:40.620Z",
+      "doneAt": "2026-10-24T10:28:05.959Z",
+      "summary": "Opción --request en new; NewOptions.request, una petición vacía se rechaza antes de crear nada y la no vacía va a change.created (data.request), también con --worktree; changeView la lee de la auditoría en borrador",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "969ac3eb58bd55ed3b615195442af89aaeb0e3af",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:28:06.328Z",
+      "doneAt": "2026-10-24T10:29:21.576Z",
+      "summary": "formats.md §4: request en change.created; ARCHITECTURE: --request en la tabla de comandos y para qué sirve",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T10:30:35.918Z"
+}

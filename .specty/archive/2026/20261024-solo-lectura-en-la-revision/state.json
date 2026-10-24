@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "id": "20261024-solo-lectura-en-la-revision",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-solo-lectura-en-la-revision",
+  "baseCommit": "6af2b8c61960b3a3bda9116b28127bdea4135ee5",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fef37bce5003b0b9e374fad3b9d5e815f57a7d478b37c682625e69b09248c1a8",
+    "at": "2026-10-24T10:15:28.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:92f39138511e614a89327540731e8ee2dda5b583ae6fc0a786d62300f98e824b",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:193199972415b3ad6af8175b0f133f614e8475fa406150e4c6bd64e4ccae2d53",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "46d30ea834950c99d6ce75655dda250622bc3629",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:15:30.526Z",
+      "doneAt": "2026-10-24T10:17:38.241Z",
+      "summary": "SpectyData.readOnly() dice por qué no se puede decidir desde la fuente (la base, su solo lectura; FixtureData, nada; ServerData, según /api/session: solo lectura sin acciones, el motivo del fallo sin sesión). Decisions (data/decisions.ts) se lo pregunta una vez y da blocked, en el idioma de la persona, y allowed",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "7fe9400027913227f2ca970443584559da5e4bb4",
+      "attempts": 3,
+      "startedAt": "2026-10-24T10:17:38.787Z",
+      "doneAt": "2026-10-24T10:23:38.916Z",
+      "summary": "ReviewActions suma el motivo de solo lectura (Decisions.blocked) al de cada botón y lo muestra bajo los botones; SpecReview solo deja editar en revisión y si se puede decidir, y pasa editable también a ReviewItems; criterios, tareas, riesgos, supuestos (assumption-row) y el delta (delta-review, ampliación S1) solo ofrecen Comentar si se edita, así que fuera de revisión ya no aparece. Los tests de Markdown pasan a markdown.test.ts para que spec-sections.test.ts no pase de 300 líneas",
+      "scopeExtra": [
+        "packages/ui/src/review/assumption-row.ts",
+        "packages/ui/src/review/delta-review.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5681213fd1e38666c70a99d2832d6ce95ccf0229",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:23:39.247Z",
+      "doneAt": "2026-10-24T10:25:54.936Z",
+      "summary": "docs/ui.md: Comentar solo en revisión y el comentario llega al agente al pedir los cambios; nueva viñeta Solo lectura (revisión como fuera de revisión, Pedir cambios y Aprobar desactivados con el motivo, nada se desactiva mientras la fuente no responde)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-24T10:26:56.381Z"
+}

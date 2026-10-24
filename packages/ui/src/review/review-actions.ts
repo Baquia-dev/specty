@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from "@an
 import { LucideDynamicIcon, LucideTriangleAlert } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Toasts } from "../components/toast";
+import { Decisions } from "../data/decisions";
 import { type ChangeView, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { reportFailure } from "./spec-sections";
@@ -23,14 +24,14 @@ import { reportFailure } from "./spec-sections";
   },
   template: `
     <div class="flex gap-2">
-      <sp-button [size]="compact() ? 'sm' : 'md'" [disabledReason]="openComments() ? '' : t()('Escribe al menos un comentario para pedir cambios.', 'Write at least one comment to request changes.')" (pressed)="requestChanges()">
+      <sp-button [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked() || (openComments() ? '' : t()('Escribe al menos un comentario para pedir cambios.', 'Write at least one comment to request changes.'))" (pressed)="requestChanges()">
         {{ t()('Pedir cambios', 'Request changes') }}
       </sp-button>
-      <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="blocked()" (pressed)="approve()">
+      <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="why()" (pressed)="approve()">
         {{ t()('Aprobar revisión ', 'Approve revision ') }}{{ change().revision }}
       </sp-button>
     </div>
-    @if (!compact() && blocked(); as reason) {
+    @if (!compact() && why(); as reason) {
       <p class="m-0 flex items-center gap-1.5 text-xs" style="color: var(--color-phase-review)" data-blocked>
         <svg [lucideIcon]="warningIcon" size="13" aria-hidden="true"></svg>{{ reason }}
       </p>
@@ -46,6 +47,7 @@ export class ReviewActions {
   private readonly toasts = inject(Toasts);
   private readonly preferences = inject(Preferences);
   private readonly failed = reportFailure(this.toasts, this.preferences);
+  protected readonly decisions = inject(Decisions);
   protected readonly t = this.preferences.t;
   protected readonly warningIcon = LucideTriangleAlert;
 
@@ -75,6 +77,8 @@ export class ReviewActions {
       );
     return "";
   });
+  /** Why approving waits: first that nobody can decide here, then what the spec still lacks. */
+  protected readonly why = computed(() => this.decisions.blocked() || this.blocked());
 
   protected requestChanges(): void {
     this.source.requestChanges(this.change().id).then(() => {

@@ -28,6 +28,11 @@ export abstract class SpectyData {
   /** Calls `listener` whenever the data may have changed; returns how to stop. */
   abstract subscribe(listener: () => void): () => void;
 
+  /** Why the person cannot decide from this source, or nothing when they can. */
+  readOnly(): Promise<Bilingual | undefined> {
+    return Promise.resolve(READ_ONLY);
+  }
+
   decideAssumption(
     _change: string,
     _item: string,

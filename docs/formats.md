@@ -225,7 +225,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 
 | Evento | Datos |
 | --- | --- |
-| `change.created` | carril, rama, origen (`follows`, `epic`) |
+| `change.created` | carril, rama, origen (`follows`, `epic`) y, con `new --request`, la petición literal del usuario (`request`), tal como la escribió |
 | `spec.proposed` | revisión, hash, tamaño, avisos |
 | `assumption.decided` | ítem, decisión, comentario |
 | `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |

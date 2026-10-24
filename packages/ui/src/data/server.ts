@@ -4,6 +4,7 @@ import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import {
   ActionError,
+  type Bilingual,
   type ChangeRecord,
   type CommentAnchor,
   type Delegation,
@@ -86,6 +87,16 @@ export class ServerData extends SpectyData {
       this.runListeners.delete(told);
       this.closeIfIdle();
     };
+  }
+
+  /** Read only when the agent started the server; without a session, why it has none. */
+  override async readOnly(): Promise<Bilingual | undefined> {
+    try {
+      const { actions, csrf } = await this.serverSession();
+      return actions && csrf !== undefined ? undefined : READ_ONLY;
+    } catch (error) {
+      return error instanceof ActionError ? error.text : UNEXPECTED;
+    }
   }
 
   override async delegation(): Promise<Delegation> {

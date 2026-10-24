@@ -108,6 +108,7 @@ export async function runCli(
     .option("--timebox <duration>", "spike time limit, for example 2h")
     .option("--worktree", "create the change in a new worktree, so this folder keeps its work")
     .option("--from <branch>", "with --worktree, the branch to start from (default: the main one)")
+    .option("--request <text>", "the user's literal request, kept in the audit as written")
     .action(
       (
         title: string,
@@ -119,6 +120,7 @@ export async function runCli(
           timebox?: string;
           worktree?: boolean;
           from?: string;
+          request?: string;
         },
       ) => {
         const kind = CHANGE_KINDS.find((candidate) => candidate === options.kind);
@@ -150,6 +152,7 @@ export async function runCli(
             ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),
             worktree: options.worktree === true,
             ...(options.from !== undefined ? { from: options.from } : {}),
+            ...(options.request !== undefined ? { request: options.request } : {}),
           }),
         )();
       },

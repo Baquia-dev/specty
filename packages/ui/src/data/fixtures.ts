@@ -115,6 +115,11 @@ export class FixtureData extends SpectyData {
     return sampleDiffOf(this.records, change, task);
   }
 
+  /** The prototype takes every decision. */
+  override readOnly(): Promise<undefined> {
+    return Promise.resolve(undefined);
+  }
+
   override delegation(): Promise<Delegation> {
     return Promise.resolve(this.delegated);
   }

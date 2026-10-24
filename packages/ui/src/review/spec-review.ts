@@ -19,6 +19,7 @@ import { LucideDynamicIcon, LucideMessageSquare, LucideTriangleAlert } from "@lu
 import { Button } from "../components/button";
 import { Collapsible } from "../components/collapsible";
 import { LIST } from "../components/document";
+import { Decisions } from "../data/decisions";
 import type { ChangeView, CommentAnchor, ReviewSection } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { AssumptionRow } from "./assumption-row";
@@ -96,7 +97,7 @@ const SECTION =
       <article #center class="flex min-w-0 flex-[999_1_480px] flex-col gap-6">
         @if (review().delta; as delta) {
           @if (mode() === 'delta') {
-            <sp-review-delta [change]="change()" [delta]="delta" [editable]="inReview()" (comment)="anchor.set($event)" (showFull)="show('full')" />
+            <sp-review-delta [change]="change()" [delta]="delta" [editable]="editable()" (comment)="anchor.set($event)" (showFull)="show('full')" />
           } @else {
             <p class="m-0 flex flex-wrap items-center gap-3 border-b border-border pb-4 text-sm text-text-muted">
               {{ t()('Estás viendo la spec completa de la revisión ', 'You are seeing the full spec of revision ') }}{{ change().revision }}.
@@ -124,14 +125,14 @@ const SECTION =
                 @case ('assumptions') {
                   <div role="list" [class]="list">
                     @for (assumption of review().assumptions; track assumption.id) {
-                      <sp-assumption-row [change]="change().id" [assumption]="assumption" [editable]="inReview()" (comment)="anchor.set($event)" />
+                      <sp-assumption-row [change]="change().id" [assumption]="assumption" [editable]="editable()" (comment)="anchor.set($event)" />
                     }
                   </div>
                 }
                 @case ('design') {
                   <sp-collapsible [label]="t()('Ver el diseño', 'Show the design')"><sp-markdown [text]="review().design" /></sp-collapsible>
                 }
-                @default { <sp-review-items [review]="review()" [section]="itemSection(entry.key)" (comment)="anchor.set($event)" /> }
+                @default { <sp-review-items [review]="review()" [section]="itemSection(entry.key)" [editable]="editable()" (comment)="anchor.set($event)" /> }
               }
             </div>
           </section>
@@ -139,7 +140,7 @@ const SECTION =
       </article>
 
       <aside class="sticky top-[calc(var(--sp-sticky-top,0px)+1rem)] flex-[1_1_260px]">
-        <sp-review-comments [change]="change().id" [comments]="review().comments" [editable]="inReview()" [selection]="selection()" [(anchor)]="anchor" />
+        <sp-review-comments [change]="change().id" [comments]="review().comments" [editable]="editable()" [selection]="selection()" [(anchor)]="anchor" />
       </aside>
     </div>
   `,
@@ -150,6 +151,7 @@ export class SpecReview {
   readonly reading = model<ReviewSection | undefined>(undefined);
 
   private readonly preferences = inject(Preferences);
+  private readonly decisions = inject(Decisions);
   private readonly document = inject(DOCUMENT);
   private readonly injector = inject(Injector);
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
@@ -172,7 +174,10 @@ export class SpecReview {
 
   protected readonly review = computed(() => this.change().review);
   protected readonly index = computed(() => this.review().index.filter((entry) => entry.present));
-  protected readonly inReview = computed(() => this.change().phase === "review");
+  /** Comments and decisions on the spec: only in review, and only where the person may decide. */
+  protected readonly editable = computed(
+    () => this.change().phase === "review" && this.decisions.allowed(),
+  );
   /**
    * With a delta, the review starts on the changes (docs/ui.md). Live updates of the same change
    * keep the person's choice; another change, or a delta appearing or going away, resets it.
