@@ -50,3 +50,22 @@ En modo delegado, el agente toma las decisiones de la persona, y la auditoría y
   - files: packages/ui/src/data/history-text.ts, packages/ui/src/data/history.ts, packages/ui/src/data/history.test.ts, docs/ui.md
   - ac: AC2
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+La UI distingue las decisiones que el agente tomó por la persona en modo delegado. La nota de una aprobación delegada dice «Aprobada el 21 oct por el agente de Ana Gómez» («Approved on Oct 21 by Ana Gómez's agent»), o «· por el agente de …» cuando la aprobada es una revisión anterior, y en el historial cada línea de la auditoría con `data.delegated` (aprobar, decidir el alcance, aceptar, cerrar o cancelar) lleva el detalle «Por delegación: lo decidió el agente».
+
+### Desviaciones
+
+- `views.test.ts` comprueba también que la vista lleve `approved.delegated`, como test junto a `views.ts`.
+
+### Decisiones
+
+- El detalle del historial sale de `data.delegated`, que la CLI escribe en todas las decisiones delegadas, y no del canal de la aprobación: así vale igual para el alcance, la aceptación, el cierre y la cancelación.
+- Las utilidades de texto del historial pasaron a `history-text.ts` para que `history.ts`, que estaba en 299 líneas, tenga sitio.
+
+### Pendientes
+
+- El interruptor del modo delegado en la UI, cuando el servidor local admita acciones.

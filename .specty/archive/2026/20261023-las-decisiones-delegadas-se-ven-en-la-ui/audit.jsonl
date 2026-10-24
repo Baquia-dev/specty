@@ -7,3 +7,6 @@
 {"ts":"2026-10-24T05:01:10.280Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"ae74f0648a5855e1cd0827e5b270d574225753c1"}}
 {"ts":"2026-10-24T05:04:40.089Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":54168}}
 {"ts":"2026-10-24T05:04:40.091Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"El historial añade «Por delegación: lo decidió el agente» a cada línea con data.delegated (aprobar, decidir el alcance, aceptar, cerrar, cancelar); las utilidades de texto pasan a history-text.ts y history.ts baja a 286 líneas; ui.md lo cuenta en Historial"}}
+{"ts":"2026-10-24T05:05:40.911Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T05:05:58.636Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:36c282ce24428a08061d0a3f5b0fedaf04156b3b2f9f5e2a5c5c2e4a4b492b33","size":"M","warnings":0}}
+{"ts":"2026-10-24T05:06:04.984Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
