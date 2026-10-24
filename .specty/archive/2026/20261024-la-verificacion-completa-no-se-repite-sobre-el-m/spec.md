@@ -46,3 +46,23 @@ En cada cambio, la verificación completa (`pnpm check` en este repositorio, var
   - files: packages/cli/src/flow/verified.ts, packages/cli/src/commands/accept.ts, packages/cli/test/reuse.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC2, AC3, AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+Cada verificación anota en la auditoría el código sobre el que corrió: `tree`, un hash del árbol de trabajo sin `.specty/`, tomado antes de verificar y sin tocar el índice (`codeTree`). Lo guardan `task.verified`, el `change.verified` de `accept` y el de la UI. `accept` no repite la verificación completa si la última con ese comando, sola o tras `verify.quick`, pasó con el código que hay ahora: dice dónde pasó y sigue, sin preguntar. Con el código cambiado, o si esa última falló, corre como antes. Se ahorra una verificación completa por cambio.
+
+### Desviaciones
+
+- `packages/cli/test/server/verify.test.ts`, dentro del alcance como test: comprueba que la verificación lanzada desde la UI guarda `tree`.
+
+### Decisiones
+
+- El código se toma antes de verificar: si la verificación escribe archivos, el código cambia y la siguiente corre, que es lo prudente.
+- Solo cuenta la última verificación con ese comando; una que pasó antes no salva a una que falló después con el mismo código.
+- Este mismo cambio aún se aceptó con la verificación repetida, porque el `specty` instalado era el anterior.
+
+### Pendientes
+
+- Ninguno.
