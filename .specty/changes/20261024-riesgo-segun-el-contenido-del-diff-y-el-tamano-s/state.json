@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261024-riesgo-segun-el-contenido-del-diff-y-el-tamano-s",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-riesgo-segun-el-contenido-del-diff-y-el-tamano-s",
+  "baseCommit": "b68f47168b95796c2942bee43190c543fecb93d9",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c524604bc2609409680b584d12e94f4768fc586ed36d587ebcca8e3b80944415",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a1fa52acd2a9ef32acf0a9f98d77b4b2fdf2ae2ee041bd006134c3c7c85e7318",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:490c97248752a6b4abc8d94c2f8d4dfa57f3d78a5f17cd21cf3c1b62d87e035b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e9e59020dddc3346ff96ac9749c97244ea792ddb4175c549dcdba076089015de",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dcd956006806126c47e5706319f49cdbdacc368ae9c26797e7af534e0e010a61",
+    "at": "2026-10-24T11:20:36.979Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
