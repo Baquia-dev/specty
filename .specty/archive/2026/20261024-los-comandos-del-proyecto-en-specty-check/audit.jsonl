@@ -12,3 +12,7 @@
 {"ts":"2026-10-24T20:50:27.603Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"a73480906f900e60ad58bb58f25f1537d0e26536"}}
 {"ts":"2026-10-24T20:51:57.388Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":67770}}
 {"ts":"2026-10-24T20:51:57.391Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats §6 documenta checks.commands y las verificaciones de los comandos del proyecto (detección, formato solo de comprobación, tiempo límite, hallazgos de la salida); ARCHITECTURE las añade a la fila de specty check."}}
+{"ts":"2026-10-24T20:56:25.186Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":64913}}
+{"ts":"2026-10-24T20:56:25.188Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T20:56:44.304Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:b5a9c35a5d2a2d9b952c7882355bad210a220184a09358a1ca44d90094a702fe","size":"L","warnings":1}}
+{"ts":"2026-10-24T20:56:44.473Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

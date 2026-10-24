@@ -72,3 +72,26 @@ follows:
 
 - R1: Los tests del proyecto tardan y `specty check` los repite cada vez — `checks.levels.tests: off` los apaga, y el corte 8 decidirá cómo convive con la verificación de `task done`.
 - R2: El analizador toma por ubicación algo que no lo es (una URL con puerto) — solo cuenta una ruta con extensión seguida de un número de línea, y una URL no tiene esa forma.
+
+## Cierre
+
+### Resumen
+
+`specty check` ejecuta primero el formato, el lint, el typecheck y los tests del proyecto (`format`, `lint`, `typecheck`, `tests`). Usa los comandos que Specty detecta en cualquier stack, los mismos de `verify` y AGENTS.md, o los de `checks.commands`. El formato solo se detecta en su forma de comprobación. Un comando que falla da con qué código salió, o que superó el tiempo límite. Detrás van los hallazgos `ruta:línea` que el core saca de su salida con un analizador genérico (tsc, ESLint, Biome, Go, Rust, pytest, Vitest, analizador de Dart), primero los de los archivos del diff.
+
+### Desviaciones
+
+- `detect/project.ts` entró en T2 con `scope add`, aprobado en modo delegado. Exporta `scriptCommand` y `pythonPrefix`, que `commandsFor` ya usaba por dentro, para que el comando de formato no los duplique; lo que se detecta no cambió.
+- El formato no se añadió a `Commands`, para no cambiar lo que `init` detecta y escribe; vive en el proveedor del proyecto.
+- La aceptación esperó a la persona por el aviso de riesgo «ejecuta comandos a través de la shell (CWE-78)» en `check/commands.ts`. Los comandos salen de los scripts del proyecto o de `.specty/config.yaml`, que el guard protege, como `verify.default`; la persona aceptó.
+
+### Decisiones
+
+- Cada herramienta mira el proyecto entero, porque un cambio puede romper archivos que no tocó; los hallazgos de los archivos del diff van delante.
+- Sin comando, ni detectado ni configurado, la verificación no aparece, en vez de salir como «sin ejecutar» en cada stack que no la tiene.
+- El analizador guarda como mucho 100 hallazgos por salida y, sin ninguna ubicación, las últimas 5 líneas.
+
+### Pendientes
+
+- El resto del proveedor de TypeScript, Angular y NestJS: tipado estricto, capas con dependency-cruiser, líneas por función y complejidad, y regeneración del cliente de Prisma.
+- El corte 8 decidirá cómo conviven los tests de `specty check` con la verificación de cada tarea en `task done`.

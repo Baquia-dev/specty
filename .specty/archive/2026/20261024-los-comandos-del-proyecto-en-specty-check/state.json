@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-los-comandos-del-proyecto-en-specty-check",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-los-comandos-del-proyecto-en-specty-check",
   "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:0f21e3650d466847d70967bfee2e8d265804b4e8c5807c228e862ac3fda33f16",
@@ -63,12 +63,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a73480906f900e60ad58bb58f25f1537d0e26536",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:50:27.602Z",
       "doneAt": "2026-10-24T20:51:57.390Z",
-      "summary": "formats §6 documenta checks.commands y las verificaciones de los comandos del proyecto (detección, formato solo de comprobación, tiempo límite, hallazgos de la salida); ARCHITECTURE las añade a la fila de specty check."
+      "summary": "formats §6 documenta checks.commands y las verificaciones de los comandos del proyecto (detección, formato solo de comprobación, tiempo límite, hallazgos de la salida); ARCHITECTURE las añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -81,5 +81,6 @@
     "T": 3,
     "R": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T20:56:44.303Z"
 }
