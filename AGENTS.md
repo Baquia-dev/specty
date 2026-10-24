@@ -49,7 +49,8 @@ Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-de
 ## Convenciones
 
 - `packages/core/src` no usa APIs de Node ni del DOM: debe correr en el navegador. Lo comprueban `tsc` (sin tipos de Node) y Biome (`noNodejsModules`).
-- Cada archivo fuente empieza con `// SPDX-License-Identifier: Apache-2.0` y tiene 300 líneas como máximo (lo comprueba `pnpm sources`).
+- Cada archivo fuente empieza con `// SPDX-License-Identifier: Apache-2.0` (lo comprueba `pnpm sources`).
+- Archivos cortos, con una responsabilidad: si uno pasa de unas 300 líneas de código (sin líneas en blanco ni comentarios; en los tests, unas 400), propón cómo dividirlo por responsabilidad antes de seguir. Nunca lo partas solo para cumplir el número: un `parte2.ts` o unos helpers sin cohesión son peores que un archivo largo. `pnpm sources` avisa a partir de 300 (tests: 400) y falla a partir de 500 (tests: 600); no mide el código generado, las migraciones, los textos de i18n, los mocks ni los datos de ejemplo (`sample-*`).
 - Sin `any` ni casts inseguros; datos `readonly` e inmutables.
 - Todo texto visible tiene versión en español y en inglés.
 - Nada que conceda permisos sobre el código (aprobar, aceptar, cerrar) puede habilitarse con una variable de entorno: las pruebas inyectan una terminal.

@@ -16,7 +16,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Avisar a las 300 líneas de código y fallar a las 500
+- [x] T1: Avisar a las 300 líneas de código y fallar a las 500
   - files: scripts/check-sources.mjs, packages/cli/test/sources.test.ts, AGENTS.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/sources.test.ts && pnpm sources
   - type: build
