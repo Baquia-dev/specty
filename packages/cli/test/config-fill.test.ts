@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
-import { cli, read, tempRepo, writeFiles } from "./support";
+import { cli, folderOf, person, read, tempRepo, writeFiles } from "./support";
 
 /** A manifest the detection reads: a test command, and lint and typecheck for the full one. */
 const MANIFEST = JSON.stringify({
@@ -56,6 +56,35 @@ describe("init on an existing configuration", () => {
     const added = await cli(root, ["init"]);
     expect(added.out).toContain(".specty/config.yaml: añadido verify.full (");
     expect(parse(await read(root, ".specty/config.yaml")).verify.default).toBe("make test");
+  });
+
+  it("is what closing proposes once the change created the project (AC4)", async () => {
+    const root = await started();
+    const created = await cli(root, ["new", "--kind", "quick", "Esqueleto"]);
+    const id = /SPECTY · (\S+) · draft/.exec(created.out)?.[1] ?? "";
+    const folder = folderOf(root, id);
+    const spec = [
+      "---\nkind: quick\n---\n\n# Esqueleto\n\n## Objetivo\n\nEl manifiesto del proyecto.\n",
+      "## Archivos\n\n- crear package.json — scripts del proyecto\n",
+      '## Tareas\n\n- [ ] T1: Manifiesto\n  - files: package.json\n  - verify: "true"\n  - type: feat\n',
+    ].join("\n");
+    await writeFiles(folder, { [`.specty/changes/${id}/spec.md`]: spec });
+    expect((await cli(folder, ["propose"])).code).toBe(0);
+    await cli(folder, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    await cli(folder, ["next"]);
+    await writeFiles(folder, { "package.json": MANIFEST });
+    expect((await cli(folder, ["task", "done", "T1", "--summary", "Manifiesto"])).code).toBe(0);
+    const closed = await cli(folder, ["accept"], { terminal: person() });
+    expect(closed.out).toContain(
+      `Specty detecta ahora verify.default (\`npm test\`) y verify.full (\`npm run lint && npm run typecheck && npm test\`), que .specty/config.yaml no tiene: \`specty init\` en ${root} lo añade.`,
+    );
+    expect((await cli(root, ["init"])).out).toContain(
+      ".specty/config.yaml: añadido verify.default",
+    );
+    // With the verification in place, there is nothing left to add.
+    expect((await cli(root, ["init"])).out).toContain(
+      ".specty/config.yaml ya existía; no se tocó.",
+    );
   });
 
   it("adds a verify block at the end when the file has none (AC1)", async () => {

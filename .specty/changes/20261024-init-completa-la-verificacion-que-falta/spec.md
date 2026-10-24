@@ -53,7 +53,7 @@ En un repositorio vacío, `init` deja `.specty/config.yaml` sin `verify`, porque
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/config-fill.test.ts test/setup.test.ts test/init-reversible.test.ts
   - type: feat
-- [ ] T2: `close` propone `init` cuando detecta verificación nueva
+- [x] T2: `close` propone `init` cuando detecta verificación nueva
   - files: packages/cli/src/flow/detected.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/test/config-fill.test.ts, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm check

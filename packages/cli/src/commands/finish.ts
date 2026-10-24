@@ -11,6 +11,7 @@ import {
   translator,
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
+import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
 import { absorbTarget, integrationOf, isIncorporated } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
@@ -96,8 +97,10 @@ export async function close(session: Session): Promise<Output> {
     archived,
     `docs(spec): ${t("cerrar", "close")} ${spec.title}`,
   );
+  // Read while the folder exists: landing removes a worktree of its own.
+  const hints = await verifyHints(session, plan?.main ?? session.root);
   const landed = plan === undefined ? undefined : await landChange(session, plan);
-  return withIntegration(
+  const card = withIntegration(
     session,
     closedCard(
       headerOf(state.id, "done"),
@@ -111,6 +114,7 @@ export async function close(session: Session): Promise<Output> {
     absorbed?.lines ?? [],
     landed,
   );
+  return withVerifyHints(card, hints);
 }
 
 /** A closed change that did not reach the main branch (its landing failed): retries only that. */

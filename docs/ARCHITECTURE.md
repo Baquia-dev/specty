@@ -418,7 +418,7 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 1. Entrevista breve: qué, para quién, alcance del MVP, fuera de alcance, stack (o "recomiéndame"), despliegue y restricciones.
 2. Genera `PRODUCT.md` y el esqueleto de AGENTS.md.
 3. El primer cambio es `bootstrap`, de carril `standard`, así que el scaffolding también queda trazado.
-4. Al cerrarlo, Specty vuelve a detectar el proyecto y completa los comandos.
+4. Al cerrarlo, Specty vuelve a detectar el proyecto y completa los comandos. Esto ya funciona para cualquier cambio: antes de incorporarlo, `close` (y el `accept` de un cambio quick) detecta en su carpeta los comandos de verificación, y si `config.yaml` no tiene `verify.default` o `verify.full` y la detección los encuentra, la salida propone `specty init` en la carpeta principal. Con el archivo ya creado, `init` solo añade las claves de `verify` que faltan, insertando sus líneas, y no cambia nada más ([formats.md §6](formats.md#6-configyaml)).
 
 **`specty doctor`** comprueba:
 
