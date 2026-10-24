@@ -30,12 +30,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e8d4cd1a01a79c6a60d80f4396fb4603f51846f1",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:57:59.468Z",
       "doneAt": "2026-10-24T14:59:01.489Z",
-      "summary": "data/asked.ts: requestOf lee la petición de change.created en la auditoría (un texto no vacío, tal cual); deriveView la pone en ChangeView.request, y el cambio en revisión de ejemplo se crea con una petición"
+      "summary": "data/asked.ts: requestOf lee la petición de change.created en la auditoría (un texto no vacío, tal cual); deriveView la pone en ChangeView.request, y el cambio en revisión de ejemplo se crea con una petición",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8d20daeb9863df47692f5f3fd2d26da4f01dabb5",
+      "startedAt": "2026-10-24T14:59:01.761Z",
+      "doneAt": "2026-10-24T15:00:55.328Z",
+      "summary": "review/user-request.ts: el bloque «Lo que pediste» cita la petición tal cual (texto, no Markdown; comillas «» o “” según el idioma; borde y tono atenuado), y SpecReview lo muestra bajo el Objetivo cuando la vista trae request"
     }
   },
   "pending": {

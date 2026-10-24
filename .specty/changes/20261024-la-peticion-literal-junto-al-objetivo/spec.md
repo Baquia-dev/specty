@@ -48,7 +48,7 @@ Cuando el cambio se creó con `specty new --request`, la revisión de la spec mu
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/asked.ts, packages/ui/src/data/asked.test.ts, packages/ui/src/data/views.ts, packages/ui/src/data/sample-history.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources
-- [ ] T2: La revisión la muestra bajo el Objetivo
+- [x] T2: La revisión la muestra bajo el Objetivo
   - files: packages/ui/src/review/user-request.ts, packages/ui/src/review/user-request.test.ts, packages/ui/src/review/spec-review.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review && pnpm sources
