@@ -53,9 +53,15 @@ export function commitNext(
       `resolve the incorporation of ${change.integration.target} in the files it brings together and run \`${command} integrate\`.`,
     );
   }
-  const task = change.task?.id ?? "<T>";
+  // Without a task, `task done` would be refused too: `next` names the way (a spec, or a retro).
+  if (change.task === undefined) {
+    return t(
+      `ejecuta \`${command} next\`: te dice cómo seguir con ese código.`,
+      `run \`${command} next\`: it tells you how to go on with that code.`,
+    );
+  }
   return t(
-    `ejecuta \`${command} task done ${task} --summary "<qué hiciste>"\`.`,
-    `run \`${command} task done ${task} --summary "<what you did>"\`.`,
+    `ejecuta \`${command} task done ${change.task.id} --summary "<qué hiciste>"\`.`,
+    `run \`${command} task done ${change.task.id} --summary "<what you did>"\`.`,
   );
 }
