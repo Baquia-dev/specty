@@ -7,3 +7,9 @@
 {"ts":"2026-10-24T21:18:26.390Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"75268bef5c77a437d01ca146ab237dbeb39270d6"}}
 {"ts":"2026-10-24T21:20:39.356Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":72428}}
 {"ts":"2026-10-24T21:20:39.477Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"removeComments salta el código en línea (series de comillas invertidas de la misma longitud en la línea): un comentario citado entre comillas es texto, en ítems, secciones y forma canónica; los demás se quitan como antes. formats.md §2."}}
+{"ts":"2026-10-24T21:22:01.318Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":71072}}
+{"ts":"2026-10-24T21:22:01.320Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T21:22:20.119Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:f252b8a9caea0dab010d8b9349bb56e26b734b53141c9fe329e2d8ff4ebe5b4a","size":"M","warnings":1}}
+{"ts":"2026-10-24T21:25:19.856Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"e35326fa5a7f8df239b710fb1191f9c0a58e31c4","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-24T21:29:13.017Z","actor":"agent","tool":"claude-code","event":"integration.resolved","data":{"commit":"eabe404"}}
+{"ts":"2026-10-24T21:29:21.168Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

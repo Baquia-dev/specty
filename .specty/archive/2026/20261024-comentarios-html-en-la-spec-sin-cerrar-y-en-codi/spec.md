@@ -48,3 +48,22 @@ Al leer una spec, Specty quita los comentarios HTML, que son las pistas de la pl
   - ac: AC2, AC3, AC4
   - verify: pnpm check
   - type: fix
+
+## Cierre
+
+### Resumen
+
+Un comentario HTML que se abre y no se cierra es ahora el error `comment-unclosed`, que señala la línea donde empieza y avisa de que oculta todo lo que sigue. Y al quitar comentarios, `removeComments` salta el código en línea: entre series de comillas invertidas de la misma longitud, un comentario citado es texto, así que el ítem y la forma canónica lo conservan. Los demás comentarios se quitan como antes, también en una línea con código. formats.md §2 tiene las dos reglas.
+
+### Desviaciones
+
+- La primera versión de esta spec no se podía proponer, por el mismo fallo: se reescribió sin citar los marcadores de comentario.
+
+### Decisiones
+
+- El código en línea se mira en cada línea por separado; un tramo que cruza líneas no se reconoce, como quedó fuera de alcance.
+- La línea del error es la del comentario abierto que llega al final, no la del primero de la spec.
+
+### Pendientes
+
+- Ninguno.
