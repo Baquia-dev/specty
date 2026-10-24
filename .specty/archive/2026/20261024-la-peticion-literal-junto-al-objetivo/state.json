@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-la-peticion-literal-junto-al-objetivo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-la-peticion-literal-junto-al-objetivo",
   "baseCommit": "12d05ae2a06dbddc40150d0d4491f40968a59abc",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4e0d0cc215fca8f7908a1b0965ee97e1a1ecbda76e3c0110ba34bb57289aed97",
@@ -48,12 +48,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7fa195b95aa1d890b487a13c4d9d32f28aaec478",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:00:55.595Z",
       "doneAt": "2026-10-24T15:02:53.764Z",
-      "summary": "docs/ui.md (Revisión de spec): «Lo que pediste» bajo el Objetivo, de dónde sale y cómo se ve"
+      "summary": "docs/ui.md (Revisión de spec): «Lo que pediste» bajo el Objetivo, de dónde sale y cómo se ve",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:13:00.965Z"
 }

@@ -57,3 +57,22 @@ Cuando el cambio se creó con `specty new --request`, la revisión de la spec mu
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Cuando el cambio se creó con `specty new --request`, la revisión de la spec muestra «Lo que pediste» bajo el Objetivo: la petición del usuario tal cual, leída de `change.created` en la auditoría, entre comillas y en su propio tono. El cambio en revisión de ejemplo trae una, así que también se ve en el prototipo.
+
+### Desviaciones
+
+- Ninguna en el código. Al aceptar, la verificación completa falló dos veces en los tests de la CLI, con la carga de la máquina en 51 por las tres sesiones en paralelo. Pasó al lanzarla sola, y a la tercera también al aceptar.
+
+### Decisiones
+
+- La petición se muestra como texto, no como Markdown, para que se lea exactamente lo que escribió la persona.
+- El bloque es un componente propio (`review/user-request.ts`) con su test, porque `spec-review.test.ts` ya tiene 300 líneas.
+
+### Pendientes
+
+- Encontrar el test de la CLI que falla bajo carga, en una sesión sin otras en paralelo, y hacerlo determinista.
