@@ -21,6 +21,7 @@ const PROTECTED: readonly string[] = [
   ".specty/changes/*/audit.jsonl",
   ".specty/changes/*/comments.json",
   ".specty/changes/*/revisions/**",
+  ".specty/changes/*/reviews/**",
   ".git/**",
   ".claude/settings.json",
   ".claude/settings.local.json",

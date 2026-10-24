@@ -58,7 +58,7 @@ Antes de aprobar una spec grande o sensible, Specty puede pedir una segunda opin
 
 ## Tareas
 
-- [ ] T1: La revisión en core
+- [x] T1: La revisión en core
   - files: packages/core/src/schema/config.ts, packages/core/src/cards/review.ts, packages/core/src/cards/flow.ts, packages/core/src/index.ts, packages/core/src/guard/decide.ts, packages/core/test/cards/review.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards test/guard test/schema
