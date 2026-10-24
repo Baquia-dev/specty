@@ -45,3 +45,23 @@ Primera parte del punto «CI en Linux, macOS y Windows, más knip y `npm publish
 
 - R1: knip lento o ruidoso en cada verificación — tarda alrededor de un segundo, y con las exportaciones apagadas hoy no dice nada.
 - R2: Un falso aviso de knip bloquearía `pnpm check` de todas las sesiones — hoy pasa limpio, y `knip.json` puede ignorar un caso concreto con su motivo.
+
+## Cierre
+
+### Resumen
+
+knip 6.41.0 es una dependencia de desarrollo fijada, y `pnpm check` lo ejecuta (`pnpm knip`) tras comprobar los tamaños y antes de los tests. `knip.json` apaga las reglas de exportaciones y tipos, así que hoy exige que no sobren archivos, dependencias ni binarios y que se resuelvan todos los imports, y pasa en un segundo. En un proyecto de prueba con un archivo y una dependencia de más, falla y los nombra. knip descubrió solo los tres paquetes y sus entradas, sin configurarlas.
+
+### Desviaciones
+
+- **El punto se dividió en dos cambios:** con los workflows de `.github/` (ruta sensible) y la dependencia nueva, la spec completa salió XL. Este cambio es knip; el CI y la publicación van en el siguiente.
+
+### Decisiones
+
+- **Las exportaciones sin usar, apagadas por ahora:** encenderlas obliga a tocar unos 35 archivos de los tres carriles, y es mejor un cambio aparte que choque menos.
+- **Sin entradas a mano en `knip.json`:** los plugins de Vitest, Angular y esbuild ya las encuentran.
+
+### Pendientes
+
+- **Quitar las 34 exportaciones y los 13 tipos sin usar** que lista `pnpm exec knip --include exports,types`, y después encender esas reglas.
+- **El CI y la publicación con procedencia:** el cambio siguiente.
