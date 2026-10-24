@@ -59,3 +59,22 @@ Cuando la persona ya pidió cambios, la UI lo muestra. La revisión dice que el 
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Cuando la persona ya pidió cambios, la revisión lo dice: bajo los botones se lee «Cambios pedidos: el agente prepara la revisión N+1.», y «Pedir cambios» se desactiva con ese motivo. El cambio pasa a esperar al agente, así que la cabecera ya no dice que espera la revisión de la persona y la Bandeja no lo pone entre lo que le espera. La vista lo deriva de la auditoría con la misma regla que `specty next`, y el prototipo anota la petición como el servidor.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El aviso va en `ReviewActions`, bajo los botones, y no en la cabecera del cambio, que ya deja de decir que espera a la persona: así no hubo que tocar `change-page.ts`, que tiene 289 líneas, ni su test, que tiene 300.
+- «Aprobar» sigue disponible tras pedir cambios (A2).
+
+### Pendientes
+
+- Que el servidor rechace una segunda petición de cambios sobre la misma revisión.

@@ -10,3 +10,7 @@
 {"ts":"2026-10-24T10:49:43.865Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"b4ed26694828d3ba0da31324fe60d88f7434f091"}}
 {"ts":"2026-10-24T10:52:00.975Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":54616}}
 {"ts":"2026-10-24T10:52:00.978Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"docs/ui.md: viñeta «Cambios pedidos» en la revisión de spec (el aviso bajo los botones, Pedir cambios desactivado, Aprobar disponible, el cambio espera al agente en la cabecera y la Bandeja, y el prototipo lo anota como el servidor)"}}
+{"ts":"2026-10-24T10:52:55.452Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":54013}}
+{"ts":"2026-10-24T10:52:55.454Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T10:53:01.499Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:eed3722d19e5c31e91dfe9e41e8db67e3a4766ecc458055066d33613a74a6eeb","size":"M","warnings":1}}
+{"ts":"2026-10-24T10:54:07.038Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
