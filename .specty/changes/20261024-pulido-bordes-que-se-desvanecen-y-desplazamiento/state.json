@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "20261024-pulido-bordes-que-se-desvanecen-y-desplazamiento",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-pulido-bordes-que-se-desvanecen-y-desplazamiento",
+  "baseCommit": "e4b57dc75844cbbd2eaf0ab7fc3d07d7cb6f07c9",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3fe3a9a1ef6a670e20b7475c8640a84b3ca9721291933468d5ef836c551e3d3f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:65ddc9578c3dcca2ba39bae12da6823138880df4d723e9489d53112ccc3962b5",
+    "at": "2026-10-24T11:14:33.495Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
