@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-tarjeta-de-specty-tras-compactar",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-tarjeta-de-specty-tras-compactar",
   "baseCommit": "e1373253e1f7b7e557132160c2d66d09b85d74d4",
   "revision": 2,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1897b1e8c3b2e0a06a5d2e59892fefb51b913d17",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:38:53.143Z",
       "doneAt": "2026-10-24T10:42:20.445Z",
-      "summary": "El guard responde a SessionStart con la salida de next (Claude Code la añade al contexto); init instala SessionStart con el matcher compact; doctor tiene un aviso propio para ese hook. ARCHITECTURE §7 y §10."
+      "summary": "El guard responde a SessionStart con la salida de next (Claude Code la añade al contexto); init instala SessionStart con el matcher compact; doctor tiene un aviso propio para ese hook. ARCHITECTURE §7 y §10.",
+      "scopeExtra": []
     }
   },
   "pending": {

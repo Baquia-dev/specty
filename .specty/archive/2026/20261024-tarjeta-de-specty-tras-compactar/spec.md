@@ -23,3 +23,9 @@ Cuando Claude Code compacta la conversación, la tarjeta de la tarea se resume y
   - files: packages/cli/src/enforce/guard.ts, packages/cli/src/install/agents.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/session-start.test.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: feat
+
+## Cierre
+
+### Resumen
+
+El guard responde a SessionStart con la salida de next (Claude Code la añade al contexto); init instala SessionStart con el matcher compact; doctor tiene un aviso propio para ese hook. ARCHITECTURE §7 y §10.

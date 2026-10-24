@@ -5,3 +5,5 @@
 {"ts":"2026-10-24T10:38:53.146Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"1897b1e8c3b2e0a06a5d2e59892fefb51b913d17"}}
 {"ts":"2026-10-24T10:42:20.444Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":106776}}
 {"ts":"2026-10-24T10:42:20.448Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"El guard responde a SessionStart con la salida de next (Claude Code la añade al contexto); init instala SessionStart con el matcher compact; doctor tiene un aviso propio para ese hook. ARCHITECTURE §7 y §10."}}
+{"ts":"2026-10-24T10:44:41.856Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":136177}}
+{"ts":"2026-10-24T10:46:15.665Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}
