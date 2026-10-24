@@ -193,6 +193,18 @@ describe("decideGuard during a pending incorporation", () => {
     ).toMatchObject({ rule: "protected" });
   });
 
+  it("points a commit to the active task, or to `specty next` without one", () => {
+    const commit = shell({ committedGoverned: ["src/a.ts"] });
+    expect(decideGuard(commit, ctx(IMPLEMENTING))).toMatchObject({
+      rule: "commit",
+      next: 'ejecuta `specty task done T1 --summary "<qué hiciste>"`.',
+    });
+    expect(decideGuard(commit, ctx())).toMatchObject({
+      rule: "commit",
+      next: "ejecuta `specty next`: te dice cómo seguir con ese código.",
+    });
+  });
+
   it("points a commit to `specty integrate`, in the project's language", () => {
     const commit = shell({ committedGoverned: ["src/a.ts"] });
     expect(decideGuard(commit, ctx(integrating("closing")))).toMatchObject({

@@ -441,6 +441,19 @@ Dos de esos comandos son un `next` que solo trae la tarjeta siguiente: uno tras 
 
 Mide violaciones, bloqueos y rondas. Se ejecuta antes de cada versión, y es lo que demuestra que Specty funciona con cualquier modelo.
 
+**El agente real con un modelo guionizado** (`agent-e2e.test.ts`, con `fake-model.ts`). Es la parte de la suite que no necesita un modelo de verdad. Claude Code corre en modo headless (`claude -p`) en un repositorio preparado con `specty init`. Habla con un servidor local que imita la API de Messages: responde por SSE una secuencia fija de llamadas a herramientas, y sabe por dónde va contando los `tool_result` que trae la conversación. La prueba lee esos `tool_result` y comprueba lo que Claude Code le devolvió al modelo:
+
+- sin cambio activo, escribir código gobernado, hacer `git commit` con código sin commit y ejecutar `specty approve` dan tres errores del hook de Specty, cada uno con su SIGUIENTE, y el repositorio no cambia;
+- con una tarea activa, un archivo de su alcance se escribe y otro de fuera vuelve con `specty scope add`.
+
+Claude Code se busca en `SPECTY_E2E_CLAUDE`, en el PATH y en las extensiones de VS Code, Cursor, Windsurf y Antigravity (la versión más reciente). Si no está, la prueba se salta. La variable solo dice dónde está el binario. Corre aislado:
+
+- `CLAUDE_CONFIG_DIR` y `HOME` temporales, una clave falsa y `ANTHROPIC_BASE_URL` al servidor;
+- `--setting-sources project,local`, porque con la ruta absoluta del bundle `init` pone los hooks en `.claude/settings.local.json`;
+- `--strict-mcp-config`, solo Write y Bash, y sin tráfico no esencial.
+
+Si Claude Code no llegara al servidor, la prueba falla, y la API real rechazaría la clave falsa. Claude Code exige leer un archivo antes de sobrescribirlo, y lo comprueba antes de los hooks; por eso el guion escribe archivos nuevos. Codex y OpenCode pueden usar el mismo servidor con la API compatible con OpenAI.
+
 ## 17. Portado desde el legacy
 
 | Módulo | Tamaño | Acoplamiento | Plan |
