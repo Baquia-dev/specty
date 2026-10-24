@@ -62,7 +62,7 @@ Primer corte de los quality gates (ADR 0012): `specty check` verifica, sin model
 
 ## Tareas
 
-- [ ] T1: El modelo de verificaciones, su configuración y su salida
+- [x] T1: El modelo de verificaciones, su configuración y su salida
   - files: packages/core/src/schema/checks.ts, packages/core/src/schema/config.ts, packages/core/src/checks/report.ts, packages/core/src/sizing/lines.ts, packages/core/src/index.ts, packages/core/test/checks/report.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks test/schema test/sizing

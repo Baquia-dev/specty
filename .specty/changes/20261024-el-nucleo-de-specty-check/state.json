@@ -6,6 +6,13 @@
   "branch": "specty/20261024-el-nucleo-de-specty-check",
   "baseCommit": "2e2fdcade0d1870b5cba3c80803c8ad2a4fad65f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:06ab03ea476295ce909b5ff8e315a4047340aa6c5fa01db3afcece184ed92c18",
+    "at": "2026-10-24T17:07:39.611Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -37,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4d5ca5aee438802663693565dacefcfd93f859e3",
+      "startedAt": "2026-10-24T17:07:40.772Z",
+      "doneAt": "2026-10-24T17:10:37.030Z",
+      "summary": "schema/checks.ts con levels, maxFindings y exclude (carpetas de dependencias y artefactos comunes a cualquier ecosistema); checks/report.ts con Finding, CheckResult, estados, salida compacta con resumen, detallada, JSON y código de salida en es/en; fileSize en sizing/lines.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,12 +63,5 @@
     "A": 5,
     "AC": 6,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:06ab03ea476295ce909b5ff8e315a4047340aa6c5fa01db3afcece184ed92c18",
-    "at": "2026-10-24T17:07:39.611Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

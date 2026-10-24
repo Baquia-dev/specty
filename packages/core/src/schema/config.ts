@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as z from "zod";
 import type { Lang } from "../i18n";
+import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 
 export type TestsPolicy = "required" | "recommended" | "off";
 
@@ -47,6 +48,8 @@ export interface ResolvedConfig {
     readonly tests: LineLimits;
     readonly exclude: readonly string[];
   };
+  /** What `specty check` runs and how much it prints (ADR 0012). */
+  readonly checks: ChecksConfig;
   readonly policy: { readonly tests: TestsPolicy };
   readonly retro: { readonly mode: "agent" | "minimal" };
   readonly git: {
@@ -100,6 +103,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
       "**/translations/**",
     ],
   },
+  checks: DEFAULT_CHECKS,
   policy: { tests: "recommended" },
   retro: { mode: "agent" },
   git: { branchPerChange: true, worktrees: true },
@@ -157,6 +161,7 @@ export const ConfigSchema = z.strictObject({
       exclude: Globs.optional(),
     })
     .optional(),
+  checks: ChecksSchema.optional(),
   policy: z
     .strictObject({ tests: z.enum(["required", "recommended", "off"]).optional() })
     .optional(),
@@ -261,6 +266,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
       },
       exclude: input.lines?.exclude ?? base.lines.exclude,
     },
+    checks: resolveChecks(input.checks),
     policy: { tests: input.policy?.tests ?? base.policy.tests },
     retro: { mode: input.retro?.mode ?? base.retro.mode },
     git: {
