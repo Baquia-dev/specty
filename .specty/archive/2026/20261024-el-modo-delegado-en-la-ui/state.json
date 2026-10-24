@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-el-modo-delegado-en-la-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-el-modo-delegado-en-la-ui",
   "baseCommit": "61c29132dbebdcb0e26562c772609c9ab8f7dea6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:12bd741ce811667a379bfb10c513aade0d2ef8fcacc1bc32f438d731b25bbedb",
@@ -60,12 +60,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7bb2b3996bed16c49cabce5718650daf741d301b",
+      "attempts": 1,
       "startedAt": "2026-10-24T06:15:13.031Z",
       "doneAt": "2026-10-24T06:18:19.716Z",
-      "summary": "ui.md (Armazón) cuenta el chip, la sección de preferencias, el comando y los diálogos del modo delegado; ARCHITECTURE §15 ya no lo deja pendiente"
+      "summary": "ui.md (Armazón) cuenta el chip, la sección de preferencias, el comando y los diálogos del modo delegado; ARCHITECTURE §15 ya no lo deja pendiente",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -76,5 +76,6 @@
     "A": 4,
     "AC": 3,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T06:19:50.092Z"
 }

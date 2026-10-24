@@ -10,3 +10,6 @@
 {"ts":"2026-10-24T06:15:13.031Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"7bb2b3996bed16c49cabce5718650daf741d301b"}}
 {"ts":"2026-10-24T06:18:19.714Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":77730}}
 {"ts":"2026-10-24T06:18:19.718Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ui.md (Armazón) cuenta el chip, la sección de preferencias, el comando y los diálogos del modo delegado; ARCHITECTURE §15 ya no lo deja pendiente"}}
+{"ts":"2026-10-24T06:19:29.414Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T06:19:50.094Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:c87256573c1e44b9fb3f81521fb67146680941c304923f82776114f4bdf833bf","size":"L","warnings":2}}
+{"ts":"2026-10-24T06:19:56.637Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

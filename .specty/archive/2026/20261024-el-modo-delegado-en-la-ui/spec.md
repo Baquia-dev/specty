@@ -65,3 +65,24 @@ La persona ve y cambia el modo delegado desde la UI, como pidió: mientras está
   - ac: —
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La persona ve y cambia el modo delegado desde la UI. Mientras está activo, la cabecera muestra el chip «Modo delegado» en tono de atención, que abre un diálogo con desde cuándo y quién lo activó y el botón para desactivarlo. El menú de preferencias tiene una sección «Modo delegado» y la paleta el comando «Modo delegado…»: activarlo muestra el aviso de `specty delegate on` en el idioma de la persona (con su lista y su código) y solo se activa con «Sí, que decida mi agente». `SpectyData` gana `delegation()` y `setDelegation()`: `ServerData` usa las rutas del servidor y ahora comparte una sola conexión de eventos entre todos sus suscriptores, y `FixtureData` guarda en memoria el modo delegado de ejemplo.
+
+### Desviaciones
+
+- `shell.test.ts`, test implícito de `shell.ts`, cuenta ahora tres grupos en el menú de preferencias: tema, idioma y modo delegado.
+
+### Decisiones
+
+- El aviso viene de la fuente, en los dos idiomas: con el servidor, de las tarjetas del core, así que la UI no copia el texto; el prototipo lo trae escrito igual en `sample-delegation.ts`.
+- El chip solo aparece con el modo activo y la sección del menú solo si la fuente sabe del modo delegado; el estilo de la leyenda de la sección lo pasa el menú, para no duplicarlo ni crear una importación circular.
+- `fixtures.ts`, que estaba en 289 líneas, pasó la búsqueda del diff de ejemplo a `sample-diffs.ts` para tener sitio.
+
+### Pendientes
+
+- Comentarios y «pedir cambios» en la revisión, y la verificación completa y los diffs desde la UI con el servidor.
+- Ocultar o desactivar los botones de decisión cuando el servidor es de solo lectura.
