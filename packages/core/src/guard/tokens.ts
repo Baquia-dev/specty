@@ -6,6 +6,9 @@ export interface Token {
   readonly operator: boolean;
 }
 
+/** A simple command, with its words and redirections, or where a subshell opens or closes. */
+export type Piece = readonly Token[] | "(" | ")";
+
 /** A heredoc opened on the current line; its body starts on the next one. */
 interface Heredoc {
   readonly delimiter: string;
@@ -14,27 +17,28 @@ interface Heredoc {
 }
 
 interface State {
-  readonly segments: Token[][];
+  readonly pieces: (Token[] | "(" | ")")[];
   readonly heredocs: Heredoc[];
   word: string;
   started: boolean;
   quote: '"' | "'" | undefined;
-  /** Depth of `((…))` and `$((…))`, where `<`, `>`, `&` and `|` are arithmetic. */
+  /** Depth of `((…))` and `$((…))`, where `<`, `>`, `&`, `|` and parentheses are arithmetic. */
   arithmetic: number;
 }
 
 /** Characters that end an unquoted word. */
 const METACHARACTERS: ReadonlySet<string> = new Set([..." \t\n;&|<>()"]);
-const ARITHMETIC: ReadonlySet<string> = new Set([..."<>&|"]);
+const ARITHMETIC: ReadonlySet<string> = new Set([..."<>&|()"]);
 
 /**
  * Splits a shell command into simple commands (`;`, `&&`, `||`, `|`, `&`, newlines) made of
- * words and redirections. Like bash, it skips comments and heredoc bodies, which do not run.
- * Best effort: enough to read intent, not a full shell grammar.
+ * words and redirections, and marks where each subshell (`(…)`, `$(…)`) opens and closes. Like
+ * bash, it skips comments and heredoc bodies, which do not run. Best effort: enough to read
+ * intent, not a full shell grammar.
  */
-export function tokenize(command: string): Token[][] {
+export function tokenize(command: string): Piece[] {
   const state: State = {
-    segments: [[]],
+    pieces: [[]],
     heredocs: [],
     word: "",
     started: false,
@@ -46,7 +50,7 @@ export function tokenize(command: string): Token[][] {
     index = step(state, chars, index);
   }
   flush(state);
-  return state.segments.filter((segment) => segment.length > 0);
+  return state.pieces.filter((piece) => typeof piece === "string" || piece.length > 0);
 }
 
 function step(state: State, chars: readonly string[], index: number): number {
@@ -75,6 +79,7 @@ function step(state: State, chars: readonly string[], index: number): number {
     append(state, char);
     return index;
   }
+  if (char === "(" || char === ")") return subshell(state, char, index);
   if (char === ">") return redirect(state, next, index);
   if (char === "<") return input(state, chars, index);
   if (char === "&" || char === "|") return ampersandOrPipe(state, char, chars, index);
@@ -189,6 +194,13 @@ function arithmetic(state: State, change: 1 | -1, index: number): number {
   return index + 1;
 }
 
+/** Outside arithmetic, `(` and `)` end the word and the command, and open or close a subshell. */
+function subshell(state: State, char: "(" | ")", index: number): number {
+  flush(state);
+  state.pieces.push(char);
+  return index;
+}
+
 function ampersandOrPipe(
   state: State,
   char: string,
@@ -213,7 +225,7 @@ function ampersandOrPipe(
 
 function split(state: State, index: number): number {
   flush(state);
-  state.segments.push([]);
+  state.pieces.push([]);
   return index;
 }
 
@@ -233,9 +245,9 @@ function reset(state: State): void {
 }
 
 function current(state: State): Token[] {
-  const segment = state.segments.at(-1);
-  if (segment !== undefined) return segment;
+  const piece = state.pieces.at(-1);
+  if (typeof piece === "object") return piece;
   const created: Token[] = [];
-  state.segments.push(created);
+  state.pieces.push(created);
   return created;
 }

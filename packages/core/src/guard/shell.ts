@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { lookup } from "../lookup";
 import { basename } from "../paths";
+import { analyzeGit, type GitCommit } from "./git";
 import { type Token, tokenize } from "./tokens";
 
 /** What a shell command would do, as far as the flow is concerned. */
@@ -9,8 +10,13 @@ export interface ShellAnalysis {
   readonly specty: readonly string[];
   /** `npx specty` and similar: they install an unrelated npm package. */
   readonly unscopedNpx: boolean;
-  /** One entry per `git commit`; `all` when it also commits tracked changes (`-a`). */
-  readonly commits: readonly { readonly all: boolean }[];
+  /**
+   * One entry per `git commit`; `all` when it also commits tracked changes (`-a`). `directory`
+   * says where it runs when a `cd` or `git -C` moves it somewhere the analysis can name (relative
+   * to where the command starts, or absolute); without it, it runs where the command starts or
+   * somewhere unknown.
+   */
+  readonly commits: readonly { readonly all: boolean; readonly directory?: string }[];
   /** Skips or disables hooks: `--no-verify`, `core.hooksPath`, `HUSKY=0`… */
   readonly bypass: boolean;
   /** Paths written through redirections, `tee`, `touch`, `cp`, `mv` or `sed -i`. */
@@ -41,11 +47,26 @@ const EMPTY: ShellAnalysis = {
   unresolved: [],
 };
 
+/** What one simple command does, before placing its paths and commits. */
+type Segment = Omit<ShellAnalysis, "unresolved" | "commits"> & {
+  readonly commits: readonly GitCommit[];
+};
+
 /** Paths are relative to where the command starts, following its `cd`s, or absolute. */
 export function analyzeShell(command: string): ShellAnalysis {
   let directory: Directory = "";
+  // Where to return when each open subshell closes: its `cd`s stay inside it.
+  const outer: Directory[] = [];
   let result = EMPTY;
   for (const tokens of tokenize(command)) {
+    if (tokens === "(") {
+      outer.push(directory);
+      continue;
+    }
+    if (tokens === ")") {
+      if (outer.length > 0) directory = outer.pop();
+      continue;
+    }
     const segment = analyzeSegment(tokens);
     const place = (paths: readonly string[]) => paths.map((path) => locate(directory, path));
     const writes = place(segment.writes);
@@ -53,6 +74,7 @@ export function analyzeShell(command: string): ShellAnalysis {
     const unresolved = [...writes, ...deletes].filter((item) => item.path === undefined);
     result = merge(result, {
       ...segment,
+      commits: segment.commits.map((commit) => placeCommit(directory, commit)),
       writes: writes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       deletes: deletes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       unresolved: unresolved.map((item) => item.raw),
@@ -76,14 +98,27 @@ function changeDirectory(directory: Directory, tokens: readonly Token[]): Direct
   const words = tokens.filter((token) => !token.operator).map((token) => token.text);
   if (words[0] !== "cd") return directory;
   const target = words.slice(1).find((word) => !word.startsWith("-") || word === "-");
-  if (target === undefined || target === "-" || UNRESOLVABLE.test(target)) return undefined;
+  return target === undefined ? undefined : enter(directory, target);
+}
+
+/** The directory `target` names from `directory`, as `cd` and `git -C` read it. */
+function enter(directory: Directory, target: string): Directory {
+  if (target === "-" || UNRESOLVABLE.test(target)) return undefined;
   if (target.startsWith("/")) return target.replace(/\/+$/, "") || "/";
   if (directory === undefined) return undefined;
   const joined = directory === "" ? target : `${directory}/${target}`;
   return joined.replace(/\/+$/, "");
 }
 
-function analyzeSegment(tokens: readonly Token[]): Omit<ShellAnalysis, "unresolved"> {
+/** A commit runs in its segment's directory, moved by its `-C` options. */
+function placeCommit(directory: Directory, commit: GitCommit): ShellAnalysis["commits"][number] {
+  const where = commit.moves.reduce<Directory>((from, move) => enter(from, move), directory);
+  return where === undefined || where === ""
+    ? { all: commit.all }
+    : { all: commit.all, directory: where };
+}
+
+function analyzeSegment(tokens: readonly Token[]): Segment {
   const { words, redirected } = splitRedirections(tokens);
   const assignments = words.filter(
     (word, index) => isAssignment(word) && words.slice(0, index).every(isAssignment),
@@ -195,34 +230,6 @@ function packageRunner(program: string, args: readonly string[]): readonly strin
 function isUnscopedNpx(program: string, args: readonly string[]): boolean {
   const runner = packageRunner(program, args);
   return runner !== undefined && UNSCOPED_PACKAGE.test(subcommand(runner));
-}
-
-function analyzeGit(args: readonly string[]): Pick<ShellAnalysis, "commits" | "bypass"> {
-  const options = leadingGitOptions(args);
-  const bypassOption = options.values.some((value) => /^core\.hookspath/i.test(value));
-  const command = args[options.end];
-  const rest = args.slice(options.end + 1);
-  if (command === "commit") {
-    const short = rest.filter((arg) => /^-[a-zA-Z]+$/.test(arg));
-    const skip = rest.includes("--no-verify") || short.some((flag) => flag.includes("n"));
-    const all = rest.includes("--all") || short.some((flag) => flag.includes("a"));
-    return { commits: [{ all }], bypass: bypassOption || skip };
-  }
-  const configures = command === "config" && rest.some((arg) => /^core\.hookspath/i.test(arg));
-  return { commits: [], bypass: bypassOption || configures };
-}
-
-function leadingGitOptions(args: readonly string[]): { end: number; values: string[] } {
-  const values: string[] = [];
-  let index = 0;
-  while (index < args.length && (args[index] ?? "").startsWith("-")) {
-    const option = args[index] ?? "";
-    const takesValue =
-      option === "-c" || option === "-C" || option === "--git-dir" || option === "--work-tree";
-    if (takesValue) values.push(args[index + 1] ?? "");
-    index += takesValue ? 2 : 1;
-  }
-  return { end: index, values };
 }
 
 function fileEffects(

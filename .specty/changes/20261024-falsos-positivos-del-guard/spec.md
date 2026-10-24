@@ -52,7 +52,7 @@ El guard deja de bloquear tres comandos legítimos que hoy para: leer `core.hook
 
 ## Tareas
 
-- [ ] T1: Subshells, commits en otra carpeta y `git config` en el análisis de shell
+- [x] T1: Subshells, commits en otra carpeta y `git config` en el análisis de shell
   - files: packages/core/src/guard/tokens.ts, packages/core/src/guard/shell.ts, packages/core/src/guard/git.ts, packages/core/test/guard/shell.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
