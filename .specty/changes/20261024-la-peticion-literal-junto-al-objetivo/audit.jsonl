@@ -7,3 +7,6 @@
 {"ts":"2026-10-24T14:59:01.762Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"8d20daeb9863df47692f5f3fd2d26da4f01dabb5"}}
 {"ts":"2026-10-24T15:00:55.245Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review && pnpm sources","exit":0,"ms":40004}}
 {"ts":"2026-10-24T15:00:55.329Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"review/user-request.ts: el bloque «Lo que pediste» cita la petición tal cual (texto, no Markdown; comillas «» o “” según el idioma; borde y tono atenuado), y SpecReview lo muestra bajo el Objetivo cuando la vista trae request"}}
+{"ts":"2026-10-24T15:00:55.595Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"7fa195b95aa1d890b487a13c4d9d32f28aaec478"}}
+{"ts":"2026-10-24T15:02:53.760Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":111326}}
+{"ts":"2026-10-24T15:02:53.771Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"docs/ui.md (Revisión de spec): «Lo que pediste» bajo el Objetivo, de dónde sale y cómo se ve"}}

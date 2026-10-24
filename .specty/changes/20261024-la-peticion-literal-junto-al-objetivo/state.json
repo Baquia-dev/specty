@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-la-peticion-literal-junto-al-objetivo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-la-peticion-literal-junto-al-objetivo",
   "baseCommit": "12d05ae2a06dbddc40150d0d4491f40968a59abc",
   "revision": 1,
@@ -39,12 +39,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8d20daeb9863df47692f5f3fd2d26da4f01dabb5",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:59:01.761Z",
       "doneAt": "2026-10-24T15:00:55.328Z",
-      "summary": "review/user-request.ts: el bloque «Lo que pediste» cita la petición tal cual (texto, no Markdown; comillas «» o “” según el idioma; borde y tono atenuado), y SpecReview lo muestra bajo el Objetivo cuando la vista trae request"
+      "summary": "review/user-request.ts: el bloque «Lo que pediste» cita la petición tal cual (texto, no Markdown; comillas «» o “” según el idioma; borde y tono atenuado), y SpecReview lo muestra bajo el Objetivo cuando la vista trae request",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7fa195b95aa1d890b487a13c4d9d32f28aaec478",
+      "startedAt": "2026-10-24T15:00:55.595Z",
+      "doneAt": "2026-10-24T15:02:53.764Z",
+      "summary": "docs/ui.md (Revisión de spec): «Lo que pediste» bajo el Objetivo, de dónde sale y cómo se ve"
     }
   },
   "pending": {

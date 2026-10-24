@@ -52,7 +52,7 @@ Cuando el cambio se creó con `specty new --request`, la revisión de la spec mu
   - files: packages/ui/src/review/user-request.ts, packages/ui/src/review/user-request.test.ts, packages/ui/src/review/spec-review.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review && pnpm sources
-- [ ] T3: Documentar la petición junto al Objetivo
+- [x] T3: Documentar la petición junto al Objetivo
   - files: docs/ui.md
   - ac: AC4
   - verify: pnpm check
