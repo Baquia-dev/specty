@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-dividir-task-ts-por-responsabilidad",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-dividir-task-ts-por-responsabilidad",
+  "baseCommit": "f9475652d0e94e2dd260716a67becad693419ba0",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a69818ec05c10b207ae6b0124615ba3749bf856f1a60e7fbd7fce61ab9c968a3",
+    "at": "2026-10-24T17:04:25.149Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
