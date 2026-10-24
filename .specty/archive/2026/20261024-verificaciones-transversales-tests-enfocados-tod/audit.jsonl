@@ -14,3 +14,7 @@
 {"ts":"2026-10-24T17:41:06.460Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"2ba4e86cf70530987eab22d78506cb141bdb37ca"}}
 {"ts":"2026-10-24T17:43:50.210Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":62587}}
 {"ts":"2026-10-24T17:43:50.212Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"formats §6 documenta checks.todo y las cuatro verificaciones comunes (catálogo, solo líneas añadidas, --staged lee lo preparado); ARCHITECTURE actualiza la fila de specty check."}}
+{"ts":"2026-10-24T17:45:02.900Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":68647}}
+{"ts":"2026-10-24T17:45:02.902Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T17:45:34.499Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:44493bca4e1b3f8f829e132003cb6e14f83e3849c632879522ab1ebbc4d1541a","size":"L","warnings":1}}
+{"ts":"2026-10-24T17:46:40.536Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

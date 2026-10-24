@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-verificaciones-transversales-tests-enfocados-tod",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-verificaciones-transversales-tests-enfocados-tod",
   "baseCommit": "8d3b06b1dabce6e5304c453eb3fb4c2d3f8bf96c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:48ce8fba6c73e0b2003dfe42d2327c9613ed4e093e5fb9f4283022c53c140294",
@@ -81,12 +81,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2ba4e86cf70530987eab22d78506cb141bdb37ca",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:41:06.460Z",
       "doneAt": "2026-10-24T17:43:50.211Z",
-      "summary": "formats §6 documenta checks.todo y las cuatro verificaciones comunes (catálogo, solo líneas añadidas, --staged lee lo preparado); ARCHITECTURE actualiza la fila de specty check."
+      "summary": "formats §6 documenta checks.todo y las cuatro verificaciones comunes (catálogo, solo líneas añadidas, --staged lee lo preparado); ARCHITECTURE actualiza la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -98,5 +98,6 @@
     "AC": 7,
     "T": 4,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T17:45:34.498Z"
 }

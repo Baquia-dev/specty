@@ -88,3 +88,33 @@ follows:
 
 - R1: Falsos positivos de las marcas en código de test legítimo (un helper `fit` propio) — el catálogo exige el texto entre comillas tras las marcas de prefijo, y el nivel de cada verificación se baja en `checks.levels`.
 - R2: Una configuración de git del usuario cambia la forma del diff (`diff.noprefix`, `diff.external`, colores) — el diff se pide con `--no-ext-diff`, `--no-color`, `--src-prefix=a/`, `--dst-prefix=b/` y `core.quotePath=false`.
+
+## Cierre
+
+### Resumen
+
+`specty check` trae cuatro verificaciones comunes a cualquier lenguaje: `max-lines`, `focused-tests`, `skipped-tests` y `todo`. La detección es pura y vive en `core/src/checks/markers.ts`, con un catálogo de marcas declarativas por familia de frameworks; `checks.todo` configura las marcas y la expresión de la referencia. Cada verificación recibe un contexto (`check/files.ts`) que lee lo preparado con `--staged` y sabe qué líneas añade el cambio según `git diff -U0`, así que con `--changed` y `--staged` no se culpa al cambio de lo que ya estaba. Sobre este repositorio, `specty check --all` no encuentra nada de las tres nuevas.
+
+### Desviaciones
+
+- Los secretos (Betterleaks o gitleaks), que el plan del ADR 0012 ponía en este corte, pasan al cambio siguiente: con ellos la spec pasaba de 15 archivos.
+- `max-lines.ts` entró en T3 con `scope add`, porque el proveedor común salió de él a `common.ts`.
+- `check.test.ts` cambió sus totales (`OK 0/1` → `OK 3/4`, y el JSON lista cuatro verificaciones) a propósito, como preveía la spec.
+
+### Decisiones
+
+- Un TODO cuenta solo como primera palabra de un comentario, para no confundirlo con un enum o un estado `"TODO"`.
+- Las marcas de prefijo (`fit`, `xit`) exigen el nombre del test entre comillas detrás, y ninguna marca de JavaScript cuenta tras `.`, una letra o una comilla (`model.fit(`, `"fit"`).
+- Los saltos condicionales (`test.skipIf`, `@pytest.mark.skipif`, `t.Skip()`, `pytest.skip()`) no cuentan.
+- Con `--staged`, también `max-lines` lee lo preparado (`git cat-file blob :ruta`).
+- Un archivo que falta en el diff (nuevo sin seguimiento, o con una ruta que git cita) cuenta entero: más hallazgos, nunca menos.
+- Los tests construyen las marcas por partes para que el propio repositorio pase `specty check`.
+
+### Pendientes
+
+- El corte siguiente: los secretos con Betterleaks (preferido) o gitleaks, como una verificación más de `check/common.ts`.
+- Un comentario HTML sin cerrar en el cuerpo de una spec se traga el resto del archivo: `propose` solo dice que faltan secciones, sin señalar la línea.
+- `execute` guarda solo los últimos 512 KB de stdout: un diff mayor pierde sus primeros archivos (que entonces cuentan enteros) y un archivo preparado mayor se leería cortado.
+- `isTestFile` no reconoce los tests unitarios de Rust dentro de `src/` ni los `*.cy.ts` de Cypress, así que sus marcas no se miran.
+- Arreglar el flujo de las épicas: su tarjeta en `implementing` y la regla de una sesión por worktree con sus cortes.
+- `packages/cli/src/commands/init.ts` sigue con 307 líneas de código: `specty check --all` avisa de él.
