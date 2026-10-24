@@ -21,3 +21,9 @@ gentle-ai escribe en las instrucciones del agente bloques delimitados (``). Su g
   - files: packages/cli/src/detect/gentle-ai.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/gentle-ai.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: feat
+
+## Cierre
+
+### Resumen
+
+detect/gentle-ai.ts busca los bloques de flujo de gentle-ai (agent-routing, orchestrator, sdd-orchestrator, sdd) en AGENTS.md y CLAUDE.md del repositorio y en los archivos globales de Claude Code, Codex, OpenCode y Cursor; doctor avisa por archivo, nombrando los bloques. ARCHITECTURE §14.

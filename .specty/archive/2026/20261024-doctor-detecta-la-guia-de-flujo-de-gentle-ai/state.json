@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-doctor-detecta-la-guia-de-flujo-de-gentle-ai",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-doctor-detecta-la-guia-de-flujo-de-gentle-ai",
   "baseCommit": "e4b57dc75844cbbd2eaf0ab7fc3d07d7cb6f07c9",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "714a508e083c404594fe63c341bc25ee05936257",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:11:05.787Z",
       "doneAt": "2026-10-24T11:14:23.269Z",
-      "summary": "detect/gentle-ai.ts busca los bloques de flujo de gentle-ai (agent-routing, orchestrator, sdd-orchestrator, sdd) en AGENTS.md y CLAUDE.md del repositorio y en los archivos globales de Claude Code, Codex, OpenCode y Cursor; doctor avisa por archivo, nombrando los bloques. ARCHITECTURE §14."
+      "summary": "detect/gentle-ai.ts busca los bloques de flujo de gentle-ai (agent-routing, orchestrator, sdd-orchestrator, sdd) en AGENTS.md y CLAUDE.md del repositorio y en los archivos globales de Claude Code, Codex, OpenCode y Cursor; doctor avisa por archivo, nombrando los bloques. ARCHITECTURE §14.",
+      "scopeExtra": []
     }
   },
   "pending": {
