@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "20261024-comentar-y-pedir-cambios-desde-la-ui",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-comentar-y-pedir-cambios-desde-la-ui",
+  "baseCommit": "82c639af4510595bac478f24746d95eb23b46500",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:10d340c1416f4ca6d879dd468d3ffc94cffb5582ea5eebbe51daca55f9b60dfb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9deb510f9ba89fd6fba96b44552e5b8dffbdc53214fb2e2b3d45de8492e6da30",
+    "at": "2026-10-24T07:06:07.669Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
