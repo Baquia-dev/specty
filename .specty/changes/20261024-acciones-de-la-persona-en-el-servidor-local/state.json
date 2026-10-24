@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261024-acciones-de-la-persona-en-el-servidor-local",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-acciones-de-la-persona-en-el-servidor-local",
+  "baseCommit": "f6888d6092f5ff46564993e99d71a59c0ab6c500",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4a746af4feb4175e6d58246192c852c9dee4ea36cf5bd5f829c10013e8925c3d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cf903535bc122e14da28634b0971df77e0fbefcf04ccbb6184206454bdd22cd9",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e5b17a96d3e136fecb1ff111e819c13105c735240142427bb2964e1c975bef68",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c94a1ad41b44d6edd98b38182f1a9c1488f927370a577038351bd46eb10b5697",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:61974e8234ccfc02f069f9f2bc14d84dee7d0faba002c5433ca9445d38d67cb6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ed21bf60ef3cca8c0f2fea2e088e0094afe493d9123f1ceb774c6ee64416253d",
+    "at": "2026-10-24T05:27:20.074Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
