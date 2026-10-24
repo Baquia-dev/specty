@@ -316,6 +316,9 @@ checks:                           # specty check (ADR 0012)
   levels: { max-lines: error }    # error | warn | off por verificación; sin la clave, error
   maxFindings: 10                 # fallos que se muestran por verificación antes de «… y N más»
   exclude: ["**/node_modules/**", "**/build/**", "**/dist/**", "**/.dart_tool/**"]  # por defecto, también out, target, coverage, vendor, .next, .angular y .gradle
+  todo:                           # la verificación todo
+    markers: ["TODO", "FIXME"]    # palabras que, primeras en un comentario, marcan trabajo pendiente; distingue mayúsculas
+    reference: "#\\d+|\\b[A-Z][A-Z0-9]+-\\d+\\b|https?://\\S+"  # expresión regular de la referencia a un issue, tras la marca
 policy:
   tests: recommended              # required | recommended | off
 retro:
@@ -350,6 +353,15 @@ review:
 `specty init` escribe `verify.default` y `verify.full` con los comandos que detecta. Si el archivo ya existe, solo añade los que falten y la detección encuentre ahora (por ejemplo, tras el primer cambio de un repositorio vacío), insertando sus líneas al final de `verify` (o un bloque `verify` nuevo al final del archivo); nunca cambia un valor que ya está, y el resto del archivo, con sus comentarios, queda igual.
 
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
+
+`specty check` trae hoy, para cualquier lenguaje, estas verificaciones, cada una con su id en `checks.levels`:
+
+- `max-lines`: las líneas de código de cada archivo, con los límites de `lines`.
+- `focused-tests`: un test enfocado deja sin correr a los demás (`describe.only`, `fit`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` de Ginkgo).
+- `skipped-tests`: un test apagado con una marca (`it.skip`, `xit`, `skip:` de Dart, `@pytest.mark.skip`, `@unittest.skip`, `#[ignore]`, `@Disabled`, `@Ignore`, `enabled = false` de TestNG, `[Ignore]`, `Skip = "…"` de xUnit). No cuentan los saltos condicionales, que decide el propio test (`test.skipIf`, `@pytest.mark.skipif`, `t.Skip()`, `pytest.skip()`).
+- `todo`: una marca de `checks.todo.markers` que empieza un comentario (`//`, `/*`, `*` a principio de línea, `#`, `--`, el de HTML, `;` o `%`) sin nada que case con `checks.todo.reference` en el resto de la línea. Por defecto vale `#12`, `acme/app#12`, una clave como `ABC-12` o un enlace. Una configuración con una `reference` que no es una expresión regular no se acepta.
+
+Las dos de tests solo miran los archivos de test (por nombre o por carpeta, como `scope.implicitTests`). Con `--changed` y `--staged`, las tres de marcas solo miran las líneas que el cambio añade según `git diff -U0`; con `--all`, todas. Con `--staged`, todas las verificaciones leen lo preparado, no lo que hay en el disco.
 
 `git.worktrees` (por defecto `true`) hace que `specty new` cree cada cambio en su propia worktree; con `false`, `new` cambia la rama de la carpeta actual (ARCHITECTURE §9). `git.setup` es el comando que prepara cada worktree nueva, normalmente instalando las dependencias. Sin la clave, Specty usa el del stack que detecta en la carpeta:
 

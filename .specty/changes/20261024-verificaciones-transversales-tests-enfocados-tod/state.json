@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-verificaciones-transversales-tests-enfocados-tod",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-verificaciones-transversales-tests-enfocados-tod",
   "baseCommit": "8d3b06b1dabce6e5304c453eb3fb4c2d3f8bf96c",
   "revision": 1,
@@ -70,14 +70,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/check/max-lines.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "0c1399a6430c65643a35344714b2973dbbfec0c1",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:38:26.406Z",
       "doneAt": "2026-10-24T17:41:06.201Z",
-      "summary": "check/markers.ts define focused-tests, skipped-tests y todo sobre las líneas añadidas; check/common.ts reúne el proveedor común. specty check --all sobre este repo: sin hallazgos de las tres."
+      "summary": "check/markers.ts define focused-tests, skipped-tests y todo sobre las líneas añadidas; check/common.ts reúne el proveedor común. specty check --all sobre este repo: sin hallazgos de las tres.",
+      "scopeExtra": [
+        "packages/cli/src/check/max-lines.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2ba4e86cf70530987eab22d78506cb141bdb37ca",
+      "startedAt": "2026-10-24T17:41:06.460Z",
+      "doneAt": "2026-10-24T17:43:50.211Z",
+      "summary": "formats §6 documenta checks.todo y las cuatro verificaciones comunes (catálogo, solo líneas añadidas, --staged lee lo preparado); ARCHITECTURE actualiza la fila de specty check."
     }
   },
   "pending": {

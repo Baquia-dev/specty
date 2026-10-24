@@ -79,7 +79,7 @@ follows:
   - files: packages/cli/src/check/markers.ts, packages/cli/src/check/common.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-markers.test.ts, packages/cli/test/check.test.ts
   - ac: AC1, AC2, AC3, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-markers.test.ts test/check.test.ts
-- [ ] T4: La documentación
+- [x] T4: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm check
