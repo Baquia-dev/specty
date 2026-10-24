@@ -15,6 +15,7 @@ sensitive: ["lib/core/auth/**", "**/migrations/**", ".github/**"]
 verify:
   default: flutter test
   full: flutter analyze && flutter test
+  quick: dart format --output=none --set-exit-if-changed .
   timeoutSec: 600
 scope:
   implicitTests: true
@@ -46,7 +47,10 @@ describe("resolveConfig", () => {
   it("accepts the documented example", () => {
     const result = resolveConfig(parse(CONFIG_EXAMPLE));
     expect(result.ok).toBe(true);
-    if (result.ok) expect(result.config.verify.default).toBe("flutter test");
+    if (result.ok) {
+      expect(result.config.verify.default).toBe("flutter test");
+      expect(result.config.verify.quick).toBe("dart format --output=none --set-exit-if-changed .");
+    }
   });
 
   it("fills in defaults", () => {

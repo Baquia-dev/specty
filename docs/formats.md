@@ -287,6 +287,7 @@ sensitive: ["lib/core/auth/**", "**/migrations/**", ".github/**"]
 verify:
   default: flutter test
   full: flutter analyze && flutter test
+  quick: dart format --output=none --set-exit-if-changed .  # antes de la verificación de cada tarea
   timeoutSec: 600
 scope:
   implicitTests: true             # tests junto a los archivos del alcance
@@ -314,6 +315,8 @@ ui:
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
+
+`verify.quick` es una comprobación rápida de todo el repositorio, como el formato o el tamaño de los archivos, que `task done` ejecuta antes de la verificación de cada tarea. Las dos van en un solo comando, `<quick> && <verify>`, que es también el que muestra la tarjeta de la tarea. Así un fallo aparece en la tarea que lo causó, no en otra posterior ni al aceptar. Sin la clave, cada tarea ejecuta solo su verificación.
 
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
 

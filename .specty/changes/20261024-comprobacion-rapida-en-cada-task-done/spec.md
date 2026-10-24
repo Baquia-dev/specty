@@ -21,7 +21,7 @@ Una clave nueva, `verify.quick`, nombra una comprobación rápida de todo el rep
 
 ## Tareas
 
-- [ ] T1: Comprobación rápida en cada task done
+- [x] T1: Comprobación rápida en cada task done
   - files: packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/task.ts, packages/cli/test/flow.test.ts, .specty/config.yaml, docs/formats.md, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema && pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts
   - type: feat

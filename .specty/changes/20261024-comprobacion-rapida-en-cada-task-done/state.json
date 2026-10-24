@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261024-comprobacion-rapida-en-cada-task-done",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-comprobacion-rapida-en-cada-task-done",
   "baseCommit": "c06e1a84d2ac88b2d5b0d90a963fbfee0a0e8d62",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4e0ff5153f676b8f4ca2f92f3af3b0d32b50ec8f6daaf94a6b1b1726c2dc3c6d",
+    "at": "2026-10-24T10:20:27.787Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -16,19 +23,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fad9b72e91845ca55ddbfcd259d10d9d40ba3a92",
+      "startedAt": "2026-10-24T10:20:28.274Z",
+      "doneAt": "2026-10-24T10:22:33.217Z",
+      "summary": "Clave verify.quick; taskVerification (flow/views.ts) la antepone a la verificación de la tarea en un solo comando, que ejecuta task done y muestra la tarjeta; formats.md §6 y la tabla de comandos de ARCHITECTURE. .specty/config.yaml no se tocó: lo protege el guard"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4e0ff5153f676b8f4ca2f92f3af3b0d32b50ec8f6daaf94a6b1b1726c2dc3c6d",
-    "at": "2026-10-24T10:20:27.787Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
