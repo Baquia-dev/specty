@@ -10,3 +10,9 @@
 {"ts":"2026-10-24T11:33:29.828Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"bdd19b70565349599cc56fa0458a17af5157e67c"}}
 {"ts":"2026-10-24T11:37:55.630Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":54548}}
 {"ts":"2026-10-24T11:37:55.741Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"build.mjs parte el bundle (splitting, trozos [name]-[hash] en dist/ junto a specty.mjs), borra los .mjs que la build no generó y guarda el metafile con --metafile. El test de bundle recorre los imports estáticos desde la entrada de los hooks: no llegan a commander, los prompts, program.ts, el servidor ni init; no hay traducciones de zod; el bundle partido responde al guard y a --help. ARCHITECTURE §2 y §10."}}
+{"ts":"2026-10-24T14:43:19.554Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":66178}}
+{"ts":"2026-10-24T14:43:19.557Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T14:44:32.255Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:70939eb4d5e092551caef33bf181be9837fd7204a023a7a5d63c8853882768b3","size":"L","warnings":0}}
+{"ts":"2026-10-24T14:46:50.066Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"e17aa1d6ba48fb808266855fcb614254abcc0bbc","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-24T14:52:30.556Z","actor":"agent","tool":"claude-code","event":"integration.resolved","data":{"commit":"6284c1c"}}
+{"ts":"2026-10-24T14:54:09.268Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -72,3 +72,25 @@ Los hooks del agente llaman a `specty guard` antes de cada acción y después de
 
 - R1: Un trozo que falte en el paquete o en `dist/` rompería todos los comandos — `files: ["dist"]` los incluye, el test de bundle ejecuta el bundle partido, y la build borra solo los trozos que no generó.
 - R2: Un import estático nuevo desde `enforce/` hacia la CLI volvería a cargarlo todo sin que nadie lo note — el test de bundle recorre los imports del metafile y falla si los hooks llegan a commander, los prompts, `program.ts` o el servidor.
+
+## Cierre
+
+### Resumen
+
+Los hooks cargan solo su entrada. `main.ts` ya no importa nada de forma estática: con `guard --tool <id>`, `guard --tool=<id>` o `hook <nombre> [args…]` carga `enforce/entry.ts` y los ejecuta con una terminal sin prompts; con cualquier otra cosa carga la CLI completa. `enforce/commands.ts` llama a las mismas funciones (`guardCommand`, `hookCommand`), así que las dos rutas responden igual, y un test lo comprueba. `build.mjs` parte el bundle en `dist/` y borra los trozos de builds anteriores. Core importa zod como espacio de nombres, y el bundle de la CLI baja de 1,70 a 1,14 MB, sin las traducciones de zod. Medido el 2026-10-24, el guard de un `Bash` bajó de 123 a 101 ms de mediana en un prototipo sin carga, y de 359 a 244 ms con la máquina cargada por otras sesiones.
+
+### Desviaciones
+
+- **Los trozos no se llaman todos `chunk-*.mjs` (A2):** los de los imports dinámicos llevan el nombre de su módulo (`entry-*`, `program-*`…), así que la build borra cualquier `.mjs` de `dist/` que no haya generado.
+- **El test no exige que los hooks dejen fuera `install/`:** `install/agents.ts` entra porque `flow/worktree.ts` importa de él la lista `AGENT_HOOK_FILES`. El test comprueba lo que dice AC2 (commander, los prompts, `program.ts` y el servidor) y además `commands/init.ts`.
+
+### Decisiones
+
+- **Una sola implementación de cada comando de hook:** las acciones de commander y `runHook` llaman a `guardCommand` y `hookCommand`, así que no hay dos versiones que se puedan separar.
+- **El test recorre el metafile de esbuild, no los tiempos:** los tiempos varían con la carga de la máquina; el grafo de imports no.
+- **El índice de core no cambia:** el bundle ya deja fuera los módulos de core que no se usan (`sideEffects: false`), y así este cambio no choca con los de otras sesiones en `core/src/index.ts`.
+
+### Pendientes
+
+- **`AGENT_HOOK_FILES` fuera de `install/agents.ts`:** así los hooks dejarían de cargar ese módulo y jsonc-parser (unos 9 KB).
+- **Las llamadas a git del guard** son ahora la mayor parte de su tiempo: agruparlas o evitar las que no hacen falta para cada evento.

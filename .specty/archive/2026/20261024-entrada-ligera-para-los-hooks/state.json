@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-entrada-ligera-para-los-hooks",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-entrada-ligera-para-los-hooks",
   "baseCommit": "3cac524b0f1f5be561fd53c4d6cc1b00392cbbd6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:636250c9469e57ff214217169dd3e10bd0befe736dcf00b3cb1cbd99bec224d1",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bdd19b70565349599cc56fa0458a17af5157e67c",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:33:29.827Z",
       "doneAt": "2026-10-24T11:37:55.740Z",
-      "summary": "build.mjs parte el bundle (splitting, trozos [name]-[hash] en dist/ junto a specty.mjs), borra los .mjs que la build no generó y guarda el metafile con --metafile. El test de bundle recorre los imports estáticos desde la entrada de los hooks: no llegan a commander, los prompts, program.ts, el servidor ni init; no hay traducciones de zod; el bundle partido responde al guard y a --help. ARCHITECTURE §2 y §10."
+      "summary": "build.mjs parte el bundle (splitting, trozos [name]-[hash] en dist/ junto a specty.mjs), borra los .mjs que la build no generó y guarda el metafile con --metafile. El test de bundle recorre los imports estáticos desde la entrada de los hooks: no llegan a commander, los prompts, program.ts, el servidor ni init; no hay traducciones de zod; el bundle partido responde al guard y a --help. ARCHITECTURE §2 y §10.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,5 +78,58 @@
     "AC": 4,
     "T": 3,
     "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T14:44:32.253Z",
+  "integration": {
+    "target": "main",
+    "commit": "e17aa1d6ba48fb808266855fcb614254abcc0bbc",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/build.mjs",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/task.ts",
+      "packages/cli/src/enforce/commands.ts",
+      "packages/cli/src/enforce/entry.ts",
+      "packages/cli/src/flow/risk.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/main.ts",
+      "packages/cli/test/bundle.test.ts",
+      "packages/cli/test/hooks-entry.test.ts",
+      "packages/cli/test/risk.test.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/state.ts",
+      "packages/core/src/scope/risk.ts",
+      "packages/core/src/sizing/size.ts",
+      "packages/core/src/spec/frontmatter.ts",
+      "packages/core/test/cards/tests.test.ts",
+      "packages/core/test/scope/risk.test.ts",
+      "packages/core/test/sizing/sizing.test.ts",
+      "packages/core/test/spec/messages.test.ts",
+      "packages/ui/package.json",
+      "packages/ui/src/components/badge.ts",
+      "packages/ui/src/components/button.test.ts",
+      "packages/ui/src/components/collapsible.ts",
+      "packages/ui/src/components/dialog.ts",
+      "packages/ui/src/components/diff-file.ts",
+      "packages/ui/src/components/empty-state.test.ts",
+      "packages/ui/src/components/field.ts",
+      "packages/ui/src/components/icons.test.ts",
+      "packages/ui/src/components/icons.ts",
+      "packages/ui/src/components/select.ts",
+      "packages/ui/src/components/toast.ts",
+      "pnpm-lock.yaml"
+    ],
+    "at": "2026-10-24T14:46:50.063Z",
+    "resolved": {
+      "commit": "6284c1c",
+      "at": "2026-10-24T14:52:30.553Z"
+    }
   }
 }
