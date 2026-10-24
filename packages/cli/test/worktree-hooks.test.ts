@@ -55,5 +55,8 @@ describe("Claude Code's worktree hooks", () => {
     expect(kept.err).toContain(`${folderOf(root)} es la carpeta de un cambio de Specty: se queda`);
     expect(listed(root)).toContain(folderOf(root));
     expect((await hook(root, "WorktreeRemove", {})).code).toBe(1);
+    // `close` already removed a merged change's folder: leaving it with `remove` is fine.
+    const gone = `${folderOf(root)}-cerrada`;
+    expect(await hook(root, "WorktreeRemove", { worktree_path: gone })).toMatchObject({ code: 0 });
   });
 });

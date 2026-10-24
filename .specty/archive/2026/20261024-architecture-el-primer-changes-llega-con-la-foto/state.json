@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261024-architecture-el-primer-changes-llega-con-la-foto",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261024-architecture-el-primer-changes-llega-con-la-foto",
+  "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b5273c783037a3e62053b52d4f2d22f38cfc95bf079daeff18109128c58b7e05",
+    "at": "2026-10-24T16:16:38.604Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "1c762989424571b47e15049c07c99f3a43411639",
+      "attempts": 1,
+      "startedAt": "2026-10-24T16:16:39.058Z",
+      "doneAt": "2026-10-24T16:16:59.842Z",
+      "summary": "ARCHITECTURE §15: el primer changes de /api/events sale cuando el servidor tiene su primera firma (por qué, y que como mucho llega uno de más), y run cubre la verificación completa y la de una tarea, con las últimas líneas antes de run: null",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

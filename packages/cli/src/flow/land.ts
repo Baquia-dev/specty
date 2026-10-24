@@ -10,14 +10,15 @@ export interface Landed {
   /** The main branch now contains the change. */
   readonly landed: boolean;
   readonly lines: readonly string[];
-  /** The change's folder was kept because the agent that closed works inside it. */
-  readonly kept?: { readonly folder: string; readonly main: string };
+  /** The agent that closed works inside the change's folder, removed or not: it must leave it. */
+  readonly left?: { readonly folder: string; readonly main: string; readonly removed: boolean };
 }
 
 /**
  * Fast-forwards the main branch to the change, where it is checked out, and then leaves the
- * change's folder: a worktree of its own is removed (its branch stays), the main folder goes
- * back to the main branch. Reports failures instead of throwing: the change is already closed.
+ * change's folder: a worktree of its own is removed at once (its branch stays), also when whoever
+ * closes works inside it; the main folder goes back to the main branch. Reports failures instead
+ * of throwing: the change is already closed.
  */
 export async function landChange(session: Session, plan: Integration): Promise<Landed> {
   const t = translator(session.lang);
@@ -41,16 +42,9 @@ export async function landChange(session: Session, plan: Integration): Promise<L
       );
     return { landed: true, lines };
   }
-  // An agent closing for the person (delegated mode) from inside the folder would lose it.
-  if (session.actor === "agent" && (await within(session.environment.cwd, git.root))) {
-    lines.push(
-      t(
-        `La carpeta ${git.root} queda, porque tu sesión trabaja en ella; la rama ${plan.branch} también.`,
-        `Folder ${git.root} stays, because your session works in it; so does branch ${plan.branch}.`,
-      ),
-    );
-    return { landed: true, lines, kept: { folder: git.root, main: plan.main } };
-  }
+  // Its work is in the target now: the folder goes, even from under whoever closed in it. An
+  // agent's session (delegated mode) must then leave it; a person reads where to carry on.
+  const inside = session.actor === "agent" && (await within(session.environment.cwd, git.root));
   const removed = await git.run(["-C", plan.main, "worktree", "remove", git.root]);
   lines.push(
     removed.code === 0
@@ -63,7 +57,8 @@ export async function landChange(session: Session, plan: Integration): Promise<L
           `Folder ${git.root} stays: ${reasonOf(removed)} Remove it with \`git worktree remove\` when you no longer need it.`,
         ),
   );
-  return { landed: true, lines };
+  const left = { folder: git.root, main: plan.main, removed: removed.code === 0 };
+  return { landed: true, lines, ...(inside ? { left } : {}) };
 }
 
 /** The closing card plus what the incorporation did; if the main branch did not move, how to retry. */
@@ -84,11 +79,14 @@ export function withIntegration(
     );
     return { ...card, blocks, next };
   }
-  if (landed.kept === undefined) return { ...card, blocks };
-  const { folder, main } = landed.kept;
+  if (landed.left === undefined) return { ...card, blocks };
+  const { folder, main, removed } = landed.left;
+  const leave = removed
+    ? t(`${folder} ya no existe: sal de ella`, `${folder} no longer exists: leave it`)
+    : t(`sal de ${folder}`, `leave ${folder}`);
   const next = t(
-    `sal de ${folder} (en Claude Code, \`ExitWorktree\`) y sigue en ${main}; para otro cambio, \`${command} new "<título>"\`.`,
-    `leave ${folder} (in Claude Code, \`ExitWorktree\`) and carry on in ${main}; for another change, \`${command} new "<title>"\`.`,
+    `${leave} (en Claude Code, \`ExitWorktree\`) y sigue en ${main}; para otro cambio, \`${command} new "<título>"\`.`,
+    `${leave} (in Claude Code, \`ExitWorktree\`) and carry on in ${main}; for another change, \`${command} new "<title>"\`.`,
   );
   return { ...card, blocks, next };
 }
