@@ -25,7 +25,17 @@ const created = (minutes: number, id: string, kind = "standard"): Step => [
 /** What happened before and around the events each sample already has. */
 const STEPS: Readonly<Record<string, readonly Step[]>> = {
   "20261020-evolucion-trimestre": [
-    created(4 * HOUR, "20261020-evolucion-trimestre"),
+    [
+      4 * HOUR,
+      "agent",
+      "change.created",
+      {
+        kind: "standard",
+        branch: "specty/20261020-evolucion-trimestre",
+        request:
+          "En el panel del estudiante quiero ver la evolución por trimestre, no solo mes a mes; el gráfico de ahora me sirve.",
+      },
+    ],
     [3 * HOUR + 50, "agent", "spec.proposed", { revision: 1, size: "M", warnings: 1 }],
     [3 * HOUR, "human", "review.changes_requested", { revision: 1, comments: ["c0"] }],
     [12, "agent", "spec.proposed", { revision: 2, size: "M", warnings: 0 }],

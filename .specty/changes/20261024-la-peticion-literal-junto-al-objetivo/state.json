@@ -6,6 +6,13 @@
   "branch": "specty/20261024-la-peticion-literal-junto-al-objetivo",
   "baseCommit": "12d05ae2a06dbddc40150d0d4491f40968a59abc",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4e0d0cc215fca8f7908a1b0965ee97e1a1ecbda76e3c0110ba34bb57289aed97",
+    "at": "2026-10-24T14:57:59.041Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e8d4cd1a01a79c6a60d80f4396fb4603f51846f1",
+      "startedAt": "2026-10-24T14:57:59.468Z",
+      "doneAt": "2026-10-24T14:59:01.489Z",
+      "summary": "data/asked.ts: requestOf lee la petición de change.created en la auditoría (un texto no vacío, tal cual); deriveView la pone en ChangeView.request, y el cambio en revisión de ejemplo se crea con una petición"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4e0d0cc215fca8f7908a1b0965ee97e1a1ecbda76e3c0110ba34bb57289aed97",
-    "at": "2026-10-24T14:57:59.041Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
