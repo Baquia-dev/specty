@@ -48,7 +48,7 @@ Una prueba de punta a punta con el agente real: Claude Code en modo headless hab
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agent-e2e.test.ts
   - type: test
-- [ ] T2: Documentar la prueba con el agente real
+- [x] T2: Documentar la prueba con el agente real
   - files: docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm check
