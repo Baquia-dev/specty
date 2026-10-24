@@ -57,7 +57,7 @@ kind: standard
   - files: packages/cli/src/server/records.ts, packages/cli/test/server.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts
-- [ ] T2: El servidor, con su seguridad, la API, los eventos y la UI
+- [x] T2: El servidor, con su seguridad, la API, los eventos y la UI
   - files: packages/cli/src/server/events.ts, packages/cli/src/server/http.ts, packages/cli/test/server.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts

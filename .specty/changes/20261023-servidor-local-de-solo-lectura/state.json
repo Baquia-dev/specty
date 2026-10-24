@@ -47,14 +47,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/store/changes.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "ca2026c6fc230c1f36de119bc741caabd402a34e",
+      "attempts": 1,
       "startedAt": "2026-10-24T02:43:30.962Z",
       "doneAt": "2026-10-24T02:45:28.413Z",
-      "summary": "server/records.ts: changeRecords(session) da cada cambio una vez con la forma de ChangeRecord de la UI (spec, state, comments, audit, spec aprobada, verifyFull) más su carpeta: el abierto de cada worktree y los archivados de cada worktree, la principal primero; phaseSince sale de la última entrada de la auditoría que lleva a la fase actual; listDir pasa a exportarse"
+      "summary": "server/records.ts: changeRecords(session) da cada cambio una vez con la forma de ChangeRecord de la UI (spec, state, comments, audit, spec aprobada, verifyFull) más su carpeta: el abierto de cada worktree y los archivados de cada worktree, la principal primero; phaseSince sale de la última entrada de la auditoría que lleva a la fase actual; listDir pasa a exportarse",
+      "scopeExtra": [
+        "packages/cli/src/store/changes.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3dfbef34e25e15e0eb56c5bca8117c266cc41cdb",
+      "startedAt": "2026-10-24T02:45:28.693Z",
+      "doneAt": "2026-10-24T02:48:28.329Z",
+      "summary": "server/http.ts: startServer escucha en 127.0.0.1 (el puerto pedido o los 19 siguientes), cambia el token del enlace por una cookie HttpOnly y SameSite=Strict con el puerto en el nombre, comprueba Host y Origin, solo admite GET y no habilita CORS; sirve /api/changes, /api/events y la UI construida con su index.html marcado, sin salir de su carpeta; server/events.ts avisa con eventos changes cuando la firma de los archivos cambia, y solo mira mientras alguien escucha"
     }
   },
   "pending": {
