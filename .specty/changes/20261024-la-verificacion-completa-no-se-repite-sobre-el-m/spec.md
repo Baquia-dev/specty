@@ -42,7 +42,7 @@ En cada cambio, la verificación completa (`pnpm check` en este repositorio, var
   - files: packages/cli/src/flow/verified.ts, packages/cli/src/flow/task-done.ts, packages/cli/src/server/runs.ts, packages/cli/test/reuse.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/reuse.test.ts test/server.test.ts
-- [ ] T2: accept no repite la verificación completa sobre el mismo código
+- [x] T2: accept no repite la verificación completa sobre el mismo código
   - files: packages/cli/src/flow/verified.ts, packages/cli/src/commands/accept.ts, packages/cli/test/reuse.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC2, AC3, AC4
   - verify: pnpm check

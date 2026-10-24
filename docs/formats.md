@@ -241,14 +241,14 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |
 | `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada |
 | `task.started` | tarea, commit base |
-| `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló |
+| `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló, y `tree`: el código sobre el que corrió, un hash del árbol de trabajo sin `.specty/` tomado antes de verificar |
 | `task.completed` | tarea, commit, resumen (300 caracteres como máximo) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
 | `epic.slicesDone` | todos los cortes de una épica tienen un cambio cerrado, y `specty next` la pasa a aceptación (actor `specty`): `slices`, el cambio de cada corte |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
 | `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec` o `diff`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |
-| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta o por el servidor local cuando la persona la lanza desde la UI (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, y las últimas 10 líneas si falló |
+| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta o por el servidor local cuando la persona la lanza desde la UI (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, las últimas 10 líneas si falló, y `tree`, como en `task.verified`. `accept` no la repite si la última verificación con ese comando (también la de una tarea, sola o tras `verify.quick`) pasó con el mismo `tree` |
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | hash del índice, modo (`agent` o `minimal`) |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |

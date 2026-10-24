@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-la-verificacion-completa-no-se-repite-sobre-el-m",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-la-verificacion-completa-no-se-repite-sobre-el-m",
   "baseCommit": "f5e3eba3bf60f169b3d9f7a14af990ea729a9c5e",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ac9f033ffda5415401a8070789943b5e34f728ff",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:30:57.496Z",
       "doneAt": "2026-10-24T21:34:14.372Z",
-      "summary": "codeTree (flow/verified.ts): hash del árbol de trabajo sin .specty, tomado sin tocar el índice antes de verificar. task.verified y change.verified (accept y la UI) lo guardan como tree."
+      "summary": "codeTree (flow/verified.ts): hash del árbol de trabajo sin .specty, tomado sin tocar el índice antes de verificar. task.verified y change.verified (accept y la UI) lo guardan como tree.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "054e6dfc11896047df0b445732207ccd8e8439d9",
+      "startedAt": "2026-10-24T21:34:14.894Z",
+      "doneAt": "2026-10-24T21:38:10.258Z",
+      "summary": "accept no repite verify.full cuando la última verificación con ese comando (de una tarea, sola o tras verify.quick, o de la UI) pasó con el mismo tree: lo dice y sigue; si cambió el código o la última falló, corre. accept anota tree en su run. ARCHITECTURE §6 y formats.md §4."
     }
   },
   "pending": {

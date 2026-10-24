@@ -3,6 +3,7 @@ import { hashText } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import { appendAudit, type StoredChange } from "../store/changes";
 import { auditEntry } from "./active";
+import { dataOf, readAudit } from "./carried";
 
 /** A finished run of the full verification: its non-empty output lines, oldest first. */
 export interface FullRun {
@@ -34,6 +35,29 @@ export function recordFullVerification(
       ...(run.code === 0 ? {} : { outputTail: run.output.slice(-10) }),
     }),
   );
+}
+
+/**
+ * Whether the full verification `command` need not run again: its last run, alone or after
+ * `verify.quick` in a task, passed on the code there is now. Then where it ran: the task, or none
+ * for a full run of `accept` or of the UI. Undefined when it must run.
+ */
+export async function passedOnThisCode(
+  session: Session,
+  change: StoredChange,
+  command: string,
+): Promise<{ readonly task?: string } | undefined> {
+  const { quick } = session.config.verify;
+  const commands = new Set([command, ...(quick === undefined ? [] : [`${quick} && ${command}`])]);
+  const last = (await readAudit(change.files)).findLast(
+    (entry) =>
+      (entry.event === "task.verified" || entry.event === "change.verified") &&
+      commands.has(String(dataOf(entry).cmd)),
+  );
+  const data = dataOf(last);
+  if (data.exit !== 0 || typeof data.tree !== "string") return undefined;
+  if (data.tree !== (await codeTree(session))) return undefined;
+  return typeof data.task === "string" ? { task: data.task } : {};
 }
 
 /**
