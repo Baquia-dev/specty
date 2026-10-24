@@ -67,7 +67,7 @@ El límite de archivos de una spec (15 en standard, 3 en quick) cuenta solo los 
   - files: packages/cli/src/io/git.ts, packages/cli/src/flow/analysis.ts, packages/cli/test/sizing.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/sizing.test.ts
-- [ ] T4: Documentar el límite de archivos
+- [x] T4: Documentar el límite de archivos
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC5
   - verify: pnpm check
