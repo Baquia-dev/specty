@@ -65,7 +65,7 @@ La revisión de una spec en la UI se completa: la persona comenta una sección o
   - files: packages/cli/src/server/actions.ts, packages/cli/test/server/comments.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/comments.test.ts test/server/actions.test.ts
-- [ ] T4: Documentar los comentarios
+- [x] T4: Documentar los comentarios
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check

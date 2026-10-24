@@ -227,7 +227,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `change.created` | carril, rama, origen (`follows`, `epic`) |
 | `spec.proposed` | revisión, hash, tamaño, avisos |
 | `assumption.decided` | ítem, decisión, comentario |
-| `review.changes_requested` | revisión, ids de comentarios |
+| `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |
 | `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada |
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló |
@@ -267,7 +267,12 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 ]
 ```
 
-Un ancla puede ser un ítem (`{ "item": "A1" }`) o una cita dentro de una sección (`{ "section", "quote" }`). Los comentarios sin resolver llegan al agente en `specty next`.
+Un ancla puede ser un ítem (`{ "item": "A1" }`) o una cita dentro de una sección (`{ "section", "quote" }`); `section` es la clave de la sección (`goal`, `outOfScope`, `assumptions`, `criteria`, `design`, `files`, `tasks`, `risks`).
+
+- La persona comenta solo durante la revisión (fase `review`), desde la UI. `id` es `c<n>` por orden de llegada, `revision` es la revisión comentada y `author`, el `user.name` de git. Un comentario vacío se rechaza.
+- Comentar no entra en la auditoría; pedir cambios, sí: `review.changes_requested` con los ids de los comentarios sin resolver. Sin comentarios sin resolver ni supuestos rechazados, no hay nada que pedir y se rechaza.
+- Los comentarios sin resolver llegan al agente en `specty next` («CAMBIOS PEDIDOS») solo cuando la persona pidió cambios después de la última propuesta: mientras comenta, la revisión sigue siendo suya.
+- `propose` con una revisión nueva marca los comentarios sin resolver con `resolvedInRevision`. Si la spec no cambió, no hay revisión nueva y siguen abiertos.
 
 ## 6. `config.yaml`
 
@@ -381,14 +386,14 @@ AVISO: T1 no incluye tests (política: recommended).
 SIGUIENTE: dile al usuario que la spec está lista en http://localhost:4777/c/20261020-evolucion-academica, con su tamaño y el esfuerzo recomendado, y termina tu turno.
 ```
 
-`specty next` en revisión, con comentarios:
+`specty next` en revisión, cuando la persona rechazó un supuesto y pidió cambios:
 
 ```text
-SPECTY · 20261020-evolucion-academica · review · revisión 2 · 1 comentario
-COMENTARIOS:
-  [Diseño] «Usa CaChip para la leyenda, no un Container.»
+SPECTY · 20261020-evolucion-academica · review · revisión 2
 SUPUESTOS RECHAZADOS:
-  A2 «Por periodo debe agrupar por trimestres, no por los periodos configurados.»
+  A2 «"Por periodo" agrupa por trimestres académicos.» — Por periodo debe agrupar por trimestres, no por los periodos configurados.
+CAMBIOS PEDIDOS:
+  c1 · Diseño «Container redondeado»: Usa CaChip para la leyenda, no un Container.
 SIGUIENTE: corrige .specty/changes/20261020-evolucion-academica/spec.md y ejecuta `specty propose`.
 ```
 
