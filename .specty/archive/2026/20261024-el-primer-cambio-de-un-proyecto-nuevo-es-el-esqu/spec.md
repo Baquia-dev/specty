@@ -68,3 +68,30 @@ Segunda parte del flujo de proyecto nuevo de ARCHITECTURE §14: tras `init` y `P
 
 - R1: Un repositorio con código en un lenguaje que la detección no reconoce tiene código gobernado, así que no cuenta como nuevo — A1 mira los archivos gobernados además del stack.
 - R2: Rechazar `quick` frena a quien solo quiere un archivo de prueba — solo en un proyecto sin código, una vez, y el SIGUIENTE da el comando correcto.
+
+## Cierre
+
+### Resumen
+
+En un proyecto nuevo (sin stack detectado ni código gobernado, como lo ve `init`):
+
+- `specty next` sin cambio activo dice que el primer cambio es el esqueleto del proyecto, a partir de `PRODUCT.md`, con sus preguntas sin responder antes al usuario, y propone `new "Esqueleto del proyecto" --request "…"` sin `--kind quick`;
+- `new --kind quick` se rechaza con el comando correcto;
+- `new` crea la spec con pistas propias en el Objetivo, los Supuestos, los Archivos y las Tareas, y anota `bootstrap: true` en `change.created`.
+
+En cuanto el esqueleto llega a la rama, el proyecto deja de ser nuevo y todo vuelve a ser como siempre. Con el cambio anterior, el flujo de §14 queda completo. `init` entrevista y escribe `PRODUCT.md`; el primer cambio es el esqueleto, standard; y al cerrarlo, la salida propone `init` para añadir la verificación que ya se detecta.
+
+### Desviaciones
+
+- **Un test del cambio anterior pasó a standard:** «Init completa la verificación que falta» creaba un cambio quick en un repositorio vacío, que ahora se rechaza. Su escenario es justo el primer cambio de un proyecto nuevo, así que ahora es un cambio standard que se cierra con `close`.
+- **La primera verificación de T2 falló por la carga de la máquina** (media de 79): por separado pasaban los tests de core, la CLI y la UI, y con la carga por debajo de 20 pasó entera.
+
+### Decisiones
+
+- **`spike` sigue permitido en un proyecto nuevo:** explorar antes de decidir el stack tiene sentido.
+- **Las pistas del esqueleto solo cambian cuatro secciones** y siguen siendo comentarios: la spec analizada es igual que con la plantilla de siempre.
+- **`next` solo mira si el proyecto es nuevo cuando no hay código sin spec,** así no detecta de más cuando ya hay cambios pendientes.
+
+### Pendientes
+
+- **Probar el flujo con un agente real** en un repositorio vacío. Los tests lo recorren con la CLI; en esta sesión, el aislamiento de worktree de Claude Code no dejó ejecutarlo a mano en otra carpeta.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-el-primer-cambio-de-un-proyecto-nuevo-es-el-esqu",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-el-primer-cambio-de-un-proyecto-nuevo-es-el-esqu",
   "baseCommit": "2e2fdcade0d1870b5cba3c80803c8ad2a4fad65f",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:6a8d594da3ecb10e8a67b7de46e7f3c240b0497ab28782f7ac991e9996b9011a",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 3,
       "baseCommit": "11f2ca9e6f895108cb5959a102b3f33a1339ed3a",
+      "attempts": 3,
       "startedAt": "2026-10-24T17:07:13.441Z",
       "doneAt": "2026-10-24T17:25:39.163Z",
-      "summary": "freshProject alimenta isNewProject; next lo pasa a la tarjeta sin cambio activo, y new rechaza quick en un proyecto nuevo, da la plantilla del esqueleto y anota bootstrap. El test de (b) pasa a un primer cambio standard. ARCHITECTURE §14 y formats.md §4."
+      "summary": "freshProject alimenta isNewProject; next lo pasa a la tarjeta sin cambio activo, y new rechaza quick en un proyecto nuevo, da la plantilla del esqueleto y anota bootstrap. El test de (b) pasa a un primer cambio standard. ARCHITECTURE §14 y formats.md §4.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,5 +65,6 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T17:27:41.356Z"
 }
