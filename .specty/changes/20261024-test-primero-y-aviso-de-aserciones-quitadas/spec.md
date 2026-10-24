@@ -62,7 +62,7 @@ La tarjeta de cada tarea de código pide escribir primero el test y verlo fallar
   - files: packages/core/src/scope/assertions.ts, packages/core/test/scope/assertions.test.ts, packages/core/src/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope
-- [ ] T2: Las reglas de tests y los avisos en las tarjetas
+- [x] T2: Las reglas de tests y los avisos en las tarjetas
   - files: packages/core/src/validate/quality.ts, packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/test/cards/tests.test.ts, packages/core/src/index.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards test/validate
