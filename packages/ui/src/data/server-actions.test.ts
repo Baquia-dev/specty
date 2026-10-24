@@ -113,9 +113,6 @@ describe("ServerData actions", () => {
     expect(await reason(new ServerData().requestChanges(CHANGE))).toBe(
       "No hay comentarios sin resolver ni supuestos rechazados que pedir. Comenta lo que debe cambiar, o aprueba la spec.",
     );
-    expect(await reason(new ServerData().verifyChange())).toContain(
-      "aún no admite esto desde la UI",
-    );
   });
 
   it("reads the diff of a task or of the whole change, and says why there is none (AC3, AC4)", async () => {

@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "id": "20261024-verificacion-completa-desde-la-ui",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-verificacion-completa-desde-la-ui",
+  "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:673623971ab33b62a64b70cff115d3695057678951bcf0237e49d1a8f26eb278",
+    "at": "2026-10-24T10:02:10.230Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:aa10a01ddc05fbee156a8cce56b379527b74b140b98de78c4d8de358d50991e0",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:119f26c92764a7fdcee9b5bb34326d53d06e1de428844fa77d83cf64473d43e0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7f0e2574b3dbcafed488df9604bc667f028b803d",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:02:10.752Z",
+      "doneAt": "2026-10-24T10:02:57.720Z",
+      "summary": "flow/verified.ts anota change.verified (comando, código de salida, duración y, si falló, las últimas 10 líneas) como task.verified; specty accept lo anota cada vez que ejecuta la verificación completa en la terminal, también en modo delegado",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c33251bd9e88b08b91f1ca80f1c418f800426c12",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:02:58.049Z",
+      "doneAt": "2026-10-24T10:05:53.800Z",
+      "summary": "server/runs.ts ejecuta verify.full con la shell en la carpeta del cambio, una por cambio, con su timeout; junta stdout y stderr por líneas (las últimas 1000), avisa cada 250 ms como mucho y al terminar anota change.verified; al cerrar el servidor termina las que siguen sin anotarlas. events.ts emite run ({change, run}, run: null al terminar); POST /api/changes/<id>/verify es una acción fuera de la cola (409 si no está en aceptación, no hay verify.full o ya corre; 403 en solo lectura) y GET /api/changes/<id>/run da la ejecución en curso",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7ca460a93b83b32b4f3d5f0071a0ef459bec2ad8",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:05:54.118Z",
+      "doneAt": "2026-10-24T10:07:58.777Z",
+      "summary": "ServerData.verifyChange hace POST /verify y watchRun escucha run en el flujo de eventos compartido (que se cierra cuando nadie escucha) y pide /run para empezar desde lo que lleva; si llega antes un evento, gana el evento. Las comprobaciones y los mensajes de las respuestas pasan a data/server-answers.ts (con isRun y runEvent), y server.ts baja a 230 líneas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "03e48da121e5fe917a340d5ca3c91cd2c1f680a4",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:07:59.110Z",
+      "doneAt": "2026-10-24T10:10:41.299Z",
+      "summary": "ARCHITECTURE §15 documenta POST /verify (fuera de la cola, solo en aceptación, 409 con su motivo), GET /run, el evento run y que la UI lo sigue con server-answers.ts; formats.md §4 dice que change.verified lo anotan specty accept y el servidor, con exit null si se cortó por tiempo",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 6,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-24T10:11:52.239Z"
+}

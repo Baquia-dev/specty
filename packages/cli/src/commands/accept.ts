@@ -15,6 +15,7 @@ import { commitState } from "../flow/active";
 import { archive, commitArchive } from "../flow/finish";
 import { absorbTarget, integrationOf } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
+import { recordFullVerification } from "../flow/verified";
 import { changeView } from "../flow/views";
 import { execute, tail } from "../io/exec";
 import { writeText } from "../io/files";
@@ -67,11 +68,18 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
           ),
         ))))
   ) {
+    const started = Date.now();
     const result = await execute(full, [], {
       cwd: session.root,
       shell: true,
       env: session.environment.env,
       timeoutMs: session.config.verify.timeoutSec * 1000,
+    });
+    await recordFullVerification(session, change, {
+      command: full,
+      code: result.code,
+      ms: Date.now() - started,
+      output: tail(result),
     });
     terminal.note(
       result.code === 0

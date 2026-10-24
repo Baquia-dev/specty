@@ -13,6 +13,7 @@ import {
   cli,
   DIST,
   NOW,
+  person,
   read,
   SPEC,
   SPEC_PATH,
@@ -102,6 +103,65 @@ export async function serving(actions = true, config = CONFIG()) {
     actions,
   });
   return { root, server, ...(await enter(server)) };
+}
+
+/** SPEC's change, approved, with its tasks done in order: each leaves `src/app.ts` as given. */
+export async function implemented(root: string, ...contents: readonly string[]) {
+  await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+  await cli(root, ["next"]);
+  for (const [index, content] of contents.entries()) {
+    await writeFiles(root, { "src/app.ts": content });
+    const done = await cli(root, ["task", "done", `T${index + 1}`, "--summary", "Hecho"]);
+    expect(done.code).toBe(0);
+  }
+}
+
+/** An event of `/api/events`: its name and its data as sent. */
+export interface Heard {
+  readonly name: string;
+  readonly data: string;
+}
+
+/** Listens to `/api/events` as the browser does: every event heard, and a wait for one. */
+export function listen(port: number, headers: Readonly<Record<string, string>>) {
+  const heard: Heard[] = [];
+  const waiting: { readonly test: (event: Heard) => boolean; readonly done: () => void }[] = [];
+  let rest = "";
+  const sent = request(
+    {
+      host: "127.0.0.1",
+      port,
+      path: "/api/events",
+      headers: { host: `127.0.0.1:${port}`, ...headers },
+    },
+    (response) => {
+      response.setEncoding("utf8");
+      response.on("data", (chunk: string) => {
+        const blocks = `${rest}${chunk}`.split("\n\n");
+        rest = blocks.pop() ?? "";
+        for (const block of blocks) {
+          const event = {
+            name: /^event: (.*)$/m.exec(block)?.[1] ?? "",
+            data: /^data: (.*)$/m.exec(block)?.[1] ?? "",
+          };
+          heard.push(event);
+          for (const wait of waiting.filter(({ test }) => test(event))) wait.done();
+        }
+      });
+    },
+  );
+  sent.on("error", () => undefined);
+  sent.end();
+  return {
+    heard,
+    until: (test: (event: Heard) => boolean) =>
+      heard.some(test)
+        ? Promise.resolve()
+        : new Promise<void>((done) => {
+            waiting.push({ test, done });
+          }),
+    close: () => sent.destroy(),
+  };
 }
 
 export const state = async (root: string) =>

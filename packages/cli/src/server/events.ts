@@ -35,6 +35,8 @@ export async function fingerprint(session: Session): Promise<string> {
 export interface ChangeEvents {
   /** Turns `response` into an event stream that hears `changes`, once at the start. */
   add(response: ServerResponse): void;
+  /** Tells every listener `event`, with `data` as JSON. */
+  send(event: string, data: unknown): void;
   close(): void;
 }
 
@@ -83,6 +85,10 @@ export function changeEvents(
         void look();
         timer = setInterval(() => void look(), interval);
       }
+    },
+    send(event, data) {
+      const text = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+      for (const listener of listeners) listener.write(text);
     },
     close() {
       stop();

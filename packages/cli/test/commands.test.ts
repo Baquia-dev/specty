@@ -129,6 +129,17 @@ describe("human decisions", () => {
     await cli(root, ["task", "done", "T2", "--summary", "Dos"]);
     const declined = await cli(root, ["accept"], { terminal: person({ confirm: [true, false] }) });
     expect(declined.out).toContain("Nada cambió.");
+    const audit = (await read(root, `.specty/changes/${CHANGE}/audit.jsonl`)).trim().split("\n");
+    expect(JSON.parse(audit.at(-1) ?? "{}")).toMatchObject({
+      actor: "specty",
+      event: "change.verified",
+      data: {
+        cmd: "echo completo && false",
+        exit: 1,
+        ms: expect.any(Number),
+        outputTail: ["completo"],
+      },
+    });
     expect((await cli(root, ["close"], { terminal: person() })).out).toContain(
       "No hay nada pendiente",
     );
