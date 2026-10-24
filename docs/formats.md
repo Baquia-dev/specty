@@ -241,7 +241,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada |
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló |
-| `task.completed` | tarea, commit, resumen y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
+| `task.completed` | tarea, commit, resumen (300 caracteres como máximo) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
@@ -394,6 +394,7 @@ Specty-Agent: claude-code
 ## Flujo de trabajo (Specty)
 Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta `specty next` y sigue su salida hasta la línea `SIGUIENTE:`.
 - Si el usuario pide un cambio y no hay uno activo, `specty next` te indica cómo crear la spec.
+- Cada cambio vive en su propia carpeta (una worktree): tras `specty new`, trabaja en la carpeta que indica, no en la principal.
 - Completa cada tarea con `specty task done <id>`; no ejecutes `git commit` tú mismo.
 - Si necesitas un archivo fuera del alcance de la tarea, pídelo con `specty scope add`.
 - Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno. Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.

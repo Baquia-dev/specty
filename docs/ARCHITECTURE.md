@@ -112,7 +112,7 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty new "<título>" [--request "<petición literal>"] [--kind] [--follows <id>] [--epic <id> --slice C1] [--from <rama>]` | Siempre (sin worktrees: sin cambio activo) | Crea el cambio, la rama y el esqueleto de la spec en una worktree nueva y preparada (§9). Con `git.worktrees: false`, en la carpeta actual, salvo con `--worktree`. `--request` guarda la petición del usuario tal cual en `change.created`, y la tarjeta del borrador se la muestra al agente: la spec responde a lo que se pidió, no a una paráfrasis |
 | `specty propose` | draft, review, adjusting, closing | Valida la spec; calcula tamaño, delta y esfuerzo recomendado; la envía a revisión. Si la persona configuró `review.command` y la spec es L, XL o sensible, pide antes `specty review`, una vez por cambio |
 | `specty review` | review, acceptance | Pasa a la revisión independiente que configuró la persona ([ADR 0011](decisions/0011-revision-independiente.md)) la spec, en revisión, o la spec y el diff de todo el cambio, en aceptación: otro modelo, sin herramientas ni más contexto. Guarda la respuesta en `reviews/` y la muestra; el agente corrige lo que sea real o se lo cuenta al usuario. La tarjeta de aceptación la pide para cambios L o XL o con avisos de aserciones o riesgos. Es información: no cambia la fase |
-| `specty task done <T> --summary "<texto>" [--finding "<texto>"]` | implementing | Comprueba el alcance, ejecuta `verify.quick` (si existe) y el `verify` de la tarea, hace el commit y avanza. Cada `--finding` queda para las tareas y los cambios siguientes (§7) |
+| `specty task done <T> --summary "<texto>" [--finding "<texto>"]` | implementing | Comprueba el alcance, ejecuta `verify.quick` (si existe) y el `verify` de la tarea, hace el commit y avanza. Cada `--finding` queda para las tareas y los cambios siguientes (§7). El resumen y cada hallazgo tienen 300 caracteres como máximo |
 | `specty scope add <ruta…> --task <T> --reason "<texto>"` | implementing | Pide ampliar el alcance; se aprueba sola si la política lo permite |
 | `specty adjust "<petición literal>"` | acceptance | Registra la petición y devuelve el protocolo de clasificación |
 | `specty integrate` | Con una incorporación pendiente | Termina el merge de la rama principal que dejó el cierre: sin marcadores, dentro de sus archivos y con la verificación en verde, hace el commit de merge (§9) |
@@ -159,17 +159,25 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 ## 7. Contexto para el agente
 
 - **AGENTS.md**: Specty gestiona dos bloques delimitados ([formats.md §8](formats.md#8-bloque-de-agentsmd)):
-  - hechos del proyecto: stack, comandos verificados, mapa y convenciones, generados por la detección;
+  - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check);
   - flujo: unas 8 líneas.
 
-  El resto del archivo pertenece a la persona y Specty no lo toca.
+  El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no aplica ningún linter.
 - **Punteros por herramienta**: solo para las herramientas detectadas o elegidas, y solo donde la herramienta no lee AGENTS.md por sí misma (por ejemplo, `CLAUDE.md` con `@AGENTS.md`). Nunca copian contenido.
-- **Tarjeta de tarea** (salida de `next` en `implementing`). Presupuesto: unos 1.500 tokens; si una tarea no cabe, `propose` avisa que hay que dividirla. Incluye:
+- **Tarjeta de tarea** (salida de `next` en `implementing`). Presupuesto: unos 1.500 tokens, estimados como caracteres ÷ 4. Incluye:
   - la tarea, sus archivos permitidos y los criterios que cubre;
   - punteros a las convenciones de esas rutas (AGENTS.md anidados);
-  - las tareas previas resumidas, con su commit;
+  - las tareas previas resumidas, con su commit, y los hallazgos que anotaron;
+  - las solicitudes de alcance pendientes;
   - las reglas de tests, según el tipo de la tarea y salvo con `policy.tests: off`: en `feat` y `fix`, primero el test que comprueba cada criterio, visto fallar; en `feat`, `fix`, `refactor` y `perf`, un test que ya existía y falla no se cambia para que pase: el agente para y se lo explica al usuario;
   - la verificación y el esfuerzo sugerido.
+
+  Lo que más crece es lo que se repite: cada tarjeta lleva el resumen y los hallazgos de todas las tareas anteriores. El presupuesto se sostiene con tres piezas:
+  - `propose` avisa cuando una tarea toca más de `split.taskMaxFiles` archivos (5 por defecto) y sugiere dividirla;
+  - `task done` rechaza, antes de verificar, un resumen o un hallazgo de más de 300 caracteres (`NOTE_MAX`): una o dos frases, porque el detalle ya está en el commit;
+  - un test del core (`core/test/cards/budget.test.ts`) arma la tarjeta más grande razonable y falla si pasa de 1.500 tokens, en español o en inglés. Esa tarjeta usa los límites por defecto de `split` (8 tareas, 5 archivos) y tiene 3 criterios largos, 4 hallazgos y los resúmenes al máximo. Si un texto nuevo de la tarjeta no cabe, hay que recortar otro.
+
+  Specty no cuenta con el tokenizador de ningún modelo porque no depende de ninguno ([ADR 0001](decisions/0001-sin-llm.md)); para un presupuesto aproximado, caracteres ÷ 4 basta.
 
   Como respaldo determinista de esa regla, `task done` compara los tests que ya existían en el commit base de la tarea con el árbol de trabajo (`git diff -U0 -M`) y cuenta, por archivo, las aserciones quitadas menos las añadidas (`expect(`, `assert…`, `XCTAssert…`, `.should`, `t.Error`…; una aserción comentada cuenta como quitada). Si alguno pierde aserciones, la salida lo avisa, `task.completed` lo guarda y la tarjeta de aceptación y la nota de `specty accept` lo muestran. Es un aviso, no un bloqueo.
 

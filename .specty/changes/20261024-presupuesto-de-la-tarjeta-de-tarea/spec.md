@@ -53,7 +53,7 @@ ARCHITECTURE §7 promete una tarjeta de tarea de unos 1.500 tokens, pero ningún
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/budget.test.ts
   - type: test
-- [ ] T3: Documentar el presupuesto y lo que genera la detección
+- [x] T3: Documentar el presupuesto y lo que genera la detección
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC3, AC4
   - verify: pnpm check

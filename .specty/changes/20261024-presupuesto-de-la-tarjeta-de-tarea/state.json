@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-presupuesto-de-la-tarjeta-de-tarea",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-presupuesto-de-la-tarjeta-de-tarea",
   "baseCommit": "ffbe398ddc13ec971c6d510e3e1e7ee0985a3fb3",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "caa5c880d96d2645a32537ec66b2dc7bd0d1d3c7",
+      "attempts": 1,
       "startedAt": "2026-10-24T16:34:21.686Z",
       "doneAt": "2026-10-24T16:37:34.011Z",
-      "summary": "Test del core que arma la tarjeta más grande razonable (8 tareas, 5 archivos, 3 criterios de 300, 4 hallazgos y resúmenes al máximo) y comprueba en es y en en que cabe en 1.500 tokens (hoy ~1.400); con resúmenes de 980 caracteres no cabría."
+      "summary": "Test del core que arma la tarjeta más grande razonable (8 tareas, 5 archivos, 3 criterios de 300, 4 hallazgos y resúmenes al máximo) y comprueba en es y en en que cabe en 1.500 tokens (hoy ~1.400); con resúmenes de 980 caracteres no cabría.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b626be89579c511fbe8f047fb8dd26658f76a76f",
+      "startedAt": "2026-10-24T16:37:34.260Z",
+      "doneAt": "2026-10-24T16:40:24.776Z",
+      "summary": "ARCHITECTURE §7: el presupuesto se estima como caracteres ÷ 4 y se sostiene con tres piezas (aviso de propose, límite de 300 en task done, test del core); la detección genera stack, paquetes y comandos, y el Mapa y las Convenciones los completa la persona. formats.md §4: el límite de 300."
     }
   },
   "pending": {
