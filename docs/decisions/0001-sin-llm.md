@@ -1,6 +1,6 @@
 # 0001 · Specty no invoca modelos (por ahora)
 
-- Estado: aceptada
+- Estado: aceptada; modificada por la [0011](0011-revision-independiente.md), que permite una revisión opcional con el comando que configura la persona
 - Fecha: 2026-10-20
 
 ## Contexto

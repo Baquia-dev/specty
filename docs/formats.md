@@ -13,7 +13,8 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 │  ├─ state.json               # estado: solo lo escribe Specty
 │  ├─ audit.jsonl              # eventos que git no puede derivar (solo se añaden líneas)
 │  ├─ comments.json            # hilos de revisión de la UI
-│  └─ revisions/r1.md, r2.md…  # instantánea de cada revisión propuesta
+│  ├─ revisions/r1.md, r2.md…  # instantánea de cada revisión propuesta
+│  └─ reviews/spec-r1.md…      # respuesta de la revisión independiente (ADR 0011), protegida
 └─ archive/<año>/<id>/         # cambios cerrados o cancelados, misma estructura
 
 .git/specty/                   # local, por worktree, nunca versionado
@@ -236,6 +237,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
+| `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |
 | `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta o por el servidor local cuando la persona la lanza desde la UI (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, y las últimas 10 líneas si falló |
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | hash del índice, modo (`agent` o `minimal`) |
@@ -315,6 +317,16 @@ ui:
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
+
+`review` activa la revisión independiente (ADR 0011), que solo configura la persona:
+
+```yaml
+review:
+  command: claude -p --model opus --tools "" --setting-sources "" --strict-mcp-config
+  timeoutSec: 600                 # opcional; sin la clave, el de verify
+```
+
+`specty review` le pasa a `command` por la entrada estándar las instrucciones y la spec, y guarda su salida en `reviews/spec-r<revisión>.md`. Sin `review`, Specty no recomienda ni ejecuta revisiones.
 
 `verify.quick` es una comprobación rápida de todo el repositorio, como el formato o el tamaño de los archivos, que `task done` ejecuta antes de la verificación de cada tarea. Las dos van en un solo comando, `<quick> && <verify>`, que es también el que muestra la tarjeta de la tarea. Así un fallo aparece en la tarea que lo causó, no en otra posterior ni al aceptar. Sin la clave, cada tarea ejecuta solo su verificación.
 

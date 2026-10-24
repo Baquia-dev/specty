@@ -49,6 +49,11 @@ export interface ResolvedConfig {
   };
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
+  /**
+   * The independent review (ADR 0011): a command the person sets up, which reads the text to
+   * review on its standard input. Unset, Specty neither recommends nor runs a review.
+   */
+  readonly review?: { readonly command: string; readonly timeoutSec: number };
 }
 
 export const DEFAULT_CONFIG: ResolvedConfig = {
@@ -132,6 +137,9 @@ export const ConfigSchema = z.strictObject({
       port: z.union([z.literal("auto"), z.number().int().min(1).max(65535)]).optional(),
       requireUserPresence: z.boolean().optional(),
     })
+    .optional(),
+  review: z
+    .strictObject({ command: z.string().min(1), timeoutSec: Positive.optional() })
     .optional(),
   /** Per-tool effort table overrides; interpreted by the CLI. */
   effort: z.record(z.string(), z.unknown()).optional(),
@@ -217,5 +225,14 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
       port: input.ui?.port ?? base.ui.port,
       requireUserPresence: input.ui?.requireUserPresence ?? base.ui.requireUserPresence,
     },
+    ...(input.review !== undefined
+      ? {
+          review: {
+            command: input.review.command,
+            timeoutSec:
+              input.review.timeoutSec ?? input.verify?.timeoutSec ?? base.verify.timeoutSec,
+          },
+        }
+      : {}),
   };
 }

@@ -12,6 +12,7 @@ import {
   parseSpec,
   proposedCard,
   recommendEffort,
+  type SizeResult,
   type Spec,
   specDelta,
   specHash,
@@ -20,10 +21,11 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
+import { dataOf, readAudit } from "../flow/carried";
 import { listed, sharedBlock, sharedFiles } from "../flow/shared";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
-import { readRevision } from "../store/changes";
+import { readRevision, type StoredChange } from "../store/changes";
 import { resolveComments } from "../store/comments";
 
 const PROPOSE_PHASES: readonly ProposePhase[] = ["draft", "review", "adjusting", "closing"];
@@ -117,6 +119,7 @@ export async function propose(session: Session): Promise<Output> {
       warnings: analysis.diagnostics.filter((entry) => entry.severity === "warning"),
       delta,
       closing: phase === "closing",
+      ...((await reviewRecommended(session, active, analysis.size, phase)) ? { review: true } : {}),
     },
     cards,
   );
@@ -124,6 +127,25 @@ export async function propose(session: Session): Promise<Output> {
   if (phase === "closing") return card;
   const shared = await sharedFiles(session, state.id, listed(analysis.spec));
   return { ...card, blocks: [...card.blocks, ...sharedBlock(session, shared)] };
+}
+
+/**
+ * An independent review (ADR 0011) comes before the approval of a large or sensitive spec, once
+ * per change, when the person set one up; a failed one counts, so reviews never chain.
+ */
+async function reviewRecommended(
+  session: Session,
+  change: StoredChange,
+  size: SizeResult,
+  phase: ProposePhase,
+): Promise<boolean> {
+  if (session.config.review === undefined || phase === "closing") return false;
+  const large = size.level === "L" || size.level === "XL" || size.signals.sensitive.length > 0;
+  if (!large) return false;
+  const audit = await readAudit(change.files);
+  return !audit.some(
+    (entry) => entry.event === "review.completed" && dataOf(entry).target === "spec",
+  );
 }
 
 /** Keeps confirmations whose text did not change; everything else waits for a person again. */

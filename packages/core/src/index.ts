@@ -43,6 +43,7 @@ export {
   statusCard,
 } from "./cards/human";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./cards/next";
+export { type ReviewedView, reviewedCard, specReviewPrompt } from "./cards/review";
 export { effortLabel, effortLine, translator } from "./cards/text";
 export type {
   CardContext,
