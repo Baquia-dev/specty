@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-la-regla-de-las-300-lineas-avisa-y-cuenta-solo-c",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-la-regla-de-las-300-lineas-avisa-y-cuenta-solo-c",
+  "baseCommit": "3fa960c092121873d0c353f84ecc06ae24012b22",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:421db4877d1e31c85a743143eb86661ee9895d61e384da81036a67acf87b212b",
+    "at": "2026-10-24T15:43:52.300Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
