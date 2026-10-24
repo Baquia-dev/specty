@@ -25,3 +25,9 @@ Una clave nueva, `verify.quick`, nombra una comprobación rápida de todo el rep
   - files: packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/task.ts, packages/cli/test/flow.test.ts, .specty/config.yaml, docs/formats.md, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema && pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts
   - type: feat
+
+## Cierre
+
+### Resumen
+
+Clave verify.quick; taskVerification (flow/views.ts) la antepone a la verificación de la tarea en un solo comando, que ejecuta task done y muestra la tarjeta; formats.md §6 y la tabla de comandos de ARCHITECTURE. .specty/config.yaml no se tocó: lo protege el guard

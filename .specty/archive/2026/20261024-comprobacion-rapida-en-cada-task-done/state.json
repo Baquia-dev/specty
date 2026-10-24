@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-comprobacion-rapida-en-cada-task-done",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-comprobacion-rapida-en-cada-task-done",
   "baseCommit": "c06e1a84d2ac88b2d5b0d90a963fbfee0a0e8d62",
   "revision": 1,
@@ -26,12 +26,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fad9b72e91845ca55ddbfcd259d10d9d40ba3a92",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:20:28.274Z",
       "doneAt": "2026-10-24T10:22:33.217Z",
-      "summary": "Clave verify.quick; taskVerification (flow/views.ts) la antepone a la verificación de la tarea en un solo comando, que ejecuta task done y muestra la tarjeta; formats.md §6 y la tabla de comandos de ARCHITECTURE. .specty/config.yaml no se tocó: lo protege el guard"
+      "summary": "Clave verify.quick; taskVerification (flow/views.ts) la antepone a la verificación de la tarea en un solo comando, que ejecuta task done y muestra la tarjeta; formats.md §6 y la tabla de comandos de ARCHITECTURE. .specty/config.yaml no se tocó: lo protege el guard",
+      "scopeExtra": []
     }
   },
   "pending": {
