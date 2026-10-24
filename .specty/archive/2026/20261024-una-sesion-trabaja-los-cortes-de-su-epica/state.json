@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "20261024-una-sesion-trabaja-los-cortes-de-su-epica",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-una-sesion-trabaja-los-cortes-de-su-epica",
+  "baseCommit": "bc3432fe1214b5891499152202973336b89fef03",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:db2d6dbf4cee366ba7397544b79491ae5b5a6082caea52bd3f9ae57fbd62822a",
+    "at": "2026-10-24T21:10:37.223Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1fe37844b98b918da0996a12318712442b11ad5fee1cf3134acf9f16d8bf48e1",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a0c2ad0e2f56f99b07bb190c91e1d4b40cf34de0a0323db8a2a2f4e6e109b40e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "85f5cbd618a3043f2440b588c5ba29daace53dc3",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:10:37.666Z",
+      "doneAt": "2026-10-24T21:11:26.741Z",
+      "summary": "sessionDenial deja entrar a una sesión atada a una épica abierta en la carpeta de un corte de esa épica (la acción enter lleva epic, la épica del cambio de destino); un corte de otra épica, otro cambio o la vuelta a la épica con el corte abierto siguen fuera.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "7032560a0f72f405fd7d0b91d023a504eaa369cf",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:11:27.009Z",
+      "doneAt": "2026-10-24T21:13:45.146Z",
+      "summary": "enterAction lee la spec del cambio abierto de la carpeta de destino y pasa su epic al guard; test de punta a punta: la sesión de la épica entra en su corte, no vuelve con el corte abierto, otra sesión no entra, y con el corte terminado vuelve a la épica. ARCHITECTURE §10.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-24T21:15:16.695Z"
+}

@@ -10,15 +10,19 @@ export interface BoundSession {
 
 /**
  * Why an agent session may not enter the worktree `target`: it already works in another one whose
- * change is still open, and a session works one change at a time. Undefined when it may.
+ * change is still open, and a session works one change at a time. Undefined when it may, also
+ * when that change is an epic and `epic`, the epic of the change in `target`, is that one: the
+ * session goes on with a slice of its epic.
  */
 export function sessionDenial(
   bound: BoundSession | undefined,
   target: string,
   lang: Lang,
   command: string,
+  epic?: string,
 ): { readonly reason: string; readonly next: string } | undefined {
-  if (bound?.change === undefined || bound.folder === target) return undefined;
+  if (bound?.change === undefined || bound.folder === target || epic === bound.change)
+    return undefined;
   const t = (es: string, en: string) => (lang === "es" ? es : en);
   return {
     reason: t(

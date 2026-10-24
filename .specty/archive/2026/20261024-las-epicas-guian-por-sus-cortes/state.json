@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261024-las-epicas-guian-por-sus-cortes",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-las-epicas-guian-por-sus-cortes",
+  "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:293d65adc46237036bcb4496af1cd2d6580afdd2ec6fbbad687bc36c9cf431a9",
+    "at": "2026-10-24T20:54:55.380Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3c4873a3228a91b5362cce1f2e411f6105594e4bfd333620668fdd5a4462dc11",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:633ee6dfcfdbd3b3d324241c31b1a3a6ae52f07a0a524167734a6894d06cbd61",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:a5ad993d12857042d3696153c6b16f3af39779a8c179cc96dcd23dc6096826c9",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9f13f310eb77eb335cdb551ac2b688f0c88d493ecf535eb9aee16cc365806ef1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "05b082906b3c4622da82899f87839620d695cbbd",
+      "attempts": 1,
+      "startedAt": "2026-10-24T20:54:55.801Z",
+      "doneAt": "2026-10-24T20:56:43.431Z",
+      "summary": "core/cards/epic.ts: epicCard lista los cortes (cerrado, en curso con su cambio, listo, espera a sus depends pendientes) y propone seguir el corte en curso o empezar el primero listo con new --epic --slice; nunca pide accept. La aceptación lista los cortes. SliceView en ChangeView.slices.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "6a389be623a20717202e06704efb007c26e2663e",
+      "attempts": 1,
+      "startedAt": "2026-10-24T20:56:43.696Z",
+      "doneAt": "2026-10-24T20:59:07.049Z",
+      "summary": "flow/epic.ts: sliceViews deriva el estado de cada corte de los cambios hijos (abiertos en cualquier worktree, archivados aquí y en la carpeta principal; los cancelados no cuentan) y finishEpic pasa la épica a aceptación con childrenDone (epic.slicesDone). next y changeView lo usan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "549ea4d488232f15114cd4f30ceccc76530f367f",
+      "attempts": 1,
+      "startedAt": "2026-10-24T20:59:07.310Z",
+      "doneAt": "2026-10-24T21:00:44.813Z",
+      "summary": "sliceRefusal (flow/epic.ts) rechaza en new, antes de crear nada: --epic sin --slice o al revés, una épica que no está abierta o aprobada, un corte que no tiene, uno que ya tiene cambio o con depends sin cerrar. change.created guarda epic y slice.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "dc7302402af591aafa095630acc3df3c45777826",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:00:45.083Z",
+      "doneAt": "2026-10-24T21:04:59.290Z",
+      "summary": "accept no verifica una épica y su nota lista los cortes; las épicas se incorporan al cerrar, sin verificar (no tienen código propio). Test de punta a punta con main movida. ARCHITECTURE §5, §6 y §9; formats.md §4 (epic.slicesDone; epic y slice en change.created).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-24T21:07:15.842Z"
+}

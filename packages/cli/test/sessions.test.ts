@@ -1,9 +1,38 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { APP, CHANGE, cli, folderOf, git, person, read, tempRepo } from "./support";
+import { APP, CHANGE, cli, folderOf, git, person, read, tempRepo, writeFiles } from "./support";
 
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
 const THIRD = CHANGE.replace("saludo-personalizado", "tercero");
+const EPIC = CHANGE.replace("saludo-personalizado", "panel");
+const SLICE = CHANGE.replace("saludo-personalizado", "inicio");
+const EPIC_SPEC = `---
+kind: epic
+---
+
+# Panel
+
+## Objetivo
+
+El estudiante ve su progreso.
+
+## Fuera de alcance
+
+- Exportarlo.
+
+## Supuestos
+
+- A1: El progreso ya se guarda.
+
+## Criterios de aceptación
+
+- AC1: CUANDO el estudiante inicia sesión ENTONCES llega a su panel.
+
+## Cortes
+
+- C1: Inicio
+  - ac: AC1
+`;
 
 /** Claude Code's hook before `EnterWorktree`, run from `cwd`, for the agent session `session`. */
 const enter = (cwd: string, path: string, session?: string) =>
@@ -75,6 +104,38 @@ describe("one worktree per agent session", () => {
     );
     // Any other name is Claude Code's own worktree, which the session may not enter either.
     expect((await enterByName(first, "explorar", "s1")).code).toBe(2);
+  });
+
+  it("lets the session of an epic into its slices, one at a time", async () => {
+    const root = await tempRepo(APP);
+    expect((await cli(root, ["new", "--worktree", "--kind", "epic", "Panel"])).code).toBe(0);
+    const epic = folderOf(root, EPIC);
+    await writeFiles(epic, { [`.specty/changes/${EPIC}/spec.md`]: EPIC_SPEC });
+    expect((await cli(epic, ["propose"])).code).toBe(0);
+    expect((await cli(epic, ["approve"], { terminal: person() })).code).toBe(0);
+    expect((await enter(root, epic, "s1")).code).toBe(0);
+    const started = await cli(epic, [
+      "new",
+      "--worktree",
+      "Inicio",
+      "--epic",
+      EPIC,
+      "--slice",
+      "C1",
+    ]);
+    expect(started.code).toBe(0);
+    const slice = folderOf(root, SLICE);
+    expect((await enter(epic, slice, "s1")).code).toBe(0);
+    // Bound to the open slice now: the epic waits until it is closed (AC1, AC2).
+    expect((await enter(slice, epic, "s1")).code).toBe(2);
+    // A session bound to another change stays out of the slice (AC3).
+    expect((await cli(root, ["new", "--worktree", "Otro cambio"])).code).toBe(0);
+    const other = folderOf(root, OTHER);
+    await enter(root, other, "s2");
+    expect((await enter(other, slice, "s2")).code).toBe(2);
+    // With the slice finished (cancelled here), the session goes back to its epic (AC2).
+    await cli(slice, ["cancel", "--reason", "Ya no"], { terminal: person() });
+    expect((await enter(slice, epic, "s1")).code).toBe(0);
   });
 
   it("is installed by init in Claude Code's hook (AC5)", async () => {

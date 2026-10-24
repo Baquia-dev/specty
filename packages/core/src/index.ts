@@ -27,6 +27,7 @@ export {
   type GuardSurface,
   isGuardedAgent,
 } from "./capabilities";
+export { epicCard, sliceLines } from "./cards/epic";
 export {
   blockedCard,
   changeHeader,
@@ -68,6 +69,7 @@ export type {
   IntegrationView,
   RejectedView,
   ScopeRequestView,
+  SliceView,
   TaskView,
 } from "./cards/view";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";

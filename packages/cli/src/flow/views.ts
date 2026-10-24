@@ -21,6 +21,7 @@ import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
 import { type Audit, carriedOf, dataOf, findingsOf, readAudit } from "./carried";
+import { sliceViews } from "./epic";
 
 /**
  * What `task done` runs for a task, as one command: the repository's quick check, so a broken
@@ -116,6 +117,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
           },
         }
       : {}),
+    ...(state.kind === "epic" ? { slices: await sliceViews(session, change, spec) } : {}),
   };
 }
 

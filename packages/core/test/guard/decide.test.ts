@@ -223,10 +223,11 @@ describe("decideGuard during a pending incorporation", () => {
 });
 
 describe("decideGuard when a session enters a worktree", () => {
-  const enter = (target: string, bound?: BoundSession): GuardAction => ({
+  const enter = (target: string, bound?: BoundSession, epic?: string): GuardAction => ({
     kind: "enter",
     target,
     ...(bound !== undefined ? { bound } : {}),
+    ...(epic !== undefined ? { epic } : {}),
   });
 
   it("lets a free session in, and a session back into its own folder", () => {
@@ -249,6 +250,20 @@ describe("decideGuard when a session enters a worktree", () => {
       lang: "en",
     });
     expect(english).toMatchObject({ next: expect.stringContaining("open another session in") });
+  });
+
+  it("lets a session bound to an epic into a slice of that epic, and nowhere else (AC1, AC3)", () => {
+    const epic = { folder: "/w/epica", change: "20261021-epica" };
+    expect(allowed(enter("/w/corte", epic, "20261021-epica"), ctx())).toBe(true);
+    // A slice of another epic, or a change of no epic, stays out.
+    expect(allowed(enter("/w/corte", epic, "20261021-otra"), ctx())).toBe(false);
+    expect(allowed(enter("/w/b", epic), ctx())).toBe(false);
+    // Bound to a change that is not that epic, its slices stay out too.
+    const other = { folder: "/w/a", change: "20261021-x" };
+    expect(allowed(enter("/w/corte", other, "20261021-epica"), ctx())).toBe(false);
+    // Once bound to the slice, the epic waits until the slice is closed.
+    const slice = { folder: "/w/corte", change: "20261022-corte" };
+    expect(allowed(enter("/w/epica", slice), ctx())).toBe(false);
   });
 });
 

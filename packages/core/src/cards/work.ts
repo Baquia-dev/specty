@@ -2,6 +2,7 @@
 import { counted, type Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { riskLabel } from "../scope/risk";
+import { epicCard, sliceLines } from "./epic";
 import { longFileWarnings, splitAdvice } from "./lines";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
@@ -32,6 +33,8 @@ export function implementingCard(change: ChangeView, ctx: CardContext): Output {
       ),
     };
   }
+  // An epic has no tasks: it advances through its slices, each one a change of its own.
+  if (change.kind === "epic") return epicCard(change, ctx);
   const task = change.tasks.find((item) => item.status === "active");
   if (task === undefined) return acceptanceCard(change, ctx);
   return taskCard(change, task, ctx);
@@ -151,6 +154,7 @@ export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
     status: "ok",
     header: headerOf(change.id, "acceptance"),
     blocks: [
+      ...section(t("CORTES", "SLICES"), sliceLines(change.slices ?? [], ctx)),
       ...section(t("TAREAS HECHAS", "DONE TASKS"), done),
       ...section(t("AVISOS", "WARNINGS"), [
         ...assertions,

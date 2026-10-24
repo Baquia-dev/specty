@@ -11,6 +11,7 @@ import {
   parseSpec,
   riskWarnings,
   serializeSpec,
+  sliceLines,
   transition,
   translator,
 } from "@baquia-dev/specty-core";
@@ -49,9 +50,12 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   const { state } = change;
   const { terminal } = session.environment;
   const view = await changeView(session, change);
+  // An epic has no code of its own: each of its slices was verified when it closed.
+  const epic = state.kind === "epic";
   terminal.note(
     view.title,
     [
+      ...sliceLines(view.slices ?? [], session.cards),
       ...view.tasks.map(
         (task) =>
           `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
@@ -59,7 +63,9 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
       ...assertionWarnings(view.tasks, session.lang),
       ...riskWarnings(view.tasks, session.lang),
       ...longFileWarnings(view.tasks, session.lang),
-      ...(session.config.verify.full === undefined && session.config.verify.default === undefined
+      ...(!epic &&
+      session.config.verify.full === undefined &&
+      session.config.verify.default === undefined
         ? [
             t(
               "Nada verifica el cambio entero: .specty/config.yaml no tiene `verify.full` ni `verify.default`, así que solo se ejecutó el `verify` de cada tarea.",
@@ -69,7 +75,7 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
         : []),
     ].join("\n"),
   );
-  const full = session.config.verify.full;
+  const full = epic ? undefined : session.config.verify.full;
   // In delegated mode the agent always runs the full verification, and never accepts a failure.
   const delegated = session.actor === "agent";
   if (

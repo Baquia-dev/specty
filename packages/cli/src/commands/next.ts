@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isGoverned, nextCard, type Output, parseSpec } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
+import { finishEpic } from "../flow/epic";
 import { changeView } from "../flow/views";
 import { freshProject } from "../install/product";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 
-/** `specty next`: what to do now. In `implementing` it activates the next pending task. */
+/**
+ * `specty next`: what to do now. In `implementing` it activates the next pending task, or moves an
+ * epic whose slices are all closed to acceptance.
+ */
 export async function next(session: Session): Promise<Output> {
   const active = await resolveActive(session);
   if (active === undefined) {
@@ -17,7 +21,11 @@ export async function next(session: Session): Promise<Output> {
     return nextCard({ dirty, ...(fresh ? { fresh } : {}) }, session.cards);
   }
   const change =
-    active.state.phase === "implementing" ? await activateNextTask(session, active) : active;
+    active.state.phase !== "implementing"
+      ? active
+      : active.state.kind === "epic"
+        ? await finishEpic(session, active)
+        : await activateNextTask(session, active);
   return nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
 }
 

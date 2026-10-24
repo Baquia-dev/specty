@@ -90,6 +90,17 @@ export interface IntegrationView {
   readonly paths: readonly string[];
 }
 
+/** A slice of an epic, with the change that implements it, if there is one. */
+export interface SliceView {
+  readonly id: string;
+  readonly title: string;
+  readonly depends: readonly string[];
+  /** Closed; in progress; ready, with every slice it depends on closed; or waiting for them. */
+  readonly status: "done" | "open" | "ready" | "waiting";
+  /** The slice's change: the closed one, or the one in progress, with its folder. */
+  readonly child?: { readonly id: string; readonly phase: Phase; readonly folder?: string };
+}
+
 export interface ChangeView {
   readonly id: string;
   readonly kind: ChangeKind;
@@ -119,4 +130,6 @@ export interface ChangeView {
   readonly specChanged: boolean;
   /** Only while an incorporation is pending: it comes before the phase's work. */
   readonly integration?: IntegrationView;
+  /** An epic's slices, in the order of its spec. */
+  readonly slices?: readonly SliceView[];
 }

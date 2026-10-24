@@ -83,8 +83,16 @@ export type GuardAction =
   | { readonly kind: "shell"; readonly facts: ShellFacts }
   /** An edit that writes and deletes files at once, such as a patch (Codex, OpenCode). */
   | ({ readonly kind: "files" } & Pick<ShellFacts, "writes" | "deletes" | "foreign">)
-  /** The session moves into the worktree `target`, bound or not to another one. */
-  | { readonly kind: "enter"; readonly target: string; readonly bound?: BoundSession }
+  /**
+   * The session moves into the worktree `target`, bound or not to another one. `epic` is the epic
+   * of the open change in `target`, when that change is one of its slices.
+   */
+  | {
+      readonly kind: "enter";
+      readonly target: string;
+      readonly bound?: BoundSession;
+      readonly epic?: string;
+    }
   | { readonly kind: "other" };
 
 /** The rule behind a denial, so a caller can pick the next step (`scope add` only for `scope`). */
@@ -120,7 +128,7 @@ export function decideGuard(action: GuardAction, ctx: GuardContext): GuardDecisi
   if (action.kind === "shell") return decideShell(action.facts, ctx);
   if (action.kind === "files") return decideFiles(action, ctx);
   if (action.kind === "enter") {
-    const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command);
+    const denial = sessionDenial(action.bound, action.target, ctx.lang, ctx.command, action.epic);
     return denial === undefined ? ALLOW : deny("session", denial.reason, denial.next);
   }
   return (
