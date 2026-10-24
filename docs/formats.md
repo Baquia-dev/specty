@@ -235,7 +235,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 
 | Evento | Datos |
 | --- | --- |
-| `change.created` | carril, rama, origen (`follows`, `epic`) y, con `new --request`, la petición literal del usuario (`request`), tal como la escribió; `bootstrap: true` si es el primer cambio de un proyecto nuevo, su esqueleto (ARCHITECTURE §14) |
+| `change.created` | carril, rama, origen (`follows`; `epic` y `slice` en el corte de una épica) y, con `new --request`, la petición literal del usuario (`request`), tal como la escribió; `bootstrap: true` si es el primer cambio de un proyecto nuevo, su esqueleto (ARCHITECTURE §14) |
 | `spec.proposed` | revisión, hash, tamaño, avisos |
 | `assumption.decided` | ítem, decisión, comentario |
 | `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |
@@ -244,6 +244,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló |
 | `task.completed` | tarea, commit, resumen (300 caracteres como máximo) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
+| `epic.slicesDone` | todos los cortes de una épica tienen un cambio cerrado, y `specty next` la pasa a aceptación (actor `specty`): `slices`, el cambio de cada corte |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
 | `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec` o `diff`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |

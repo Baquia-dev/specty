@@ -30,7 +30,7 @@ export interface Integration {
 }
 
 /** Kinds that end in the main branch: a spike is never merged and a retro has no branch. */
-const INTEGRATED: ReadonlySet<ChangeState["kind"]> = new Set(["standard", "quick"]);
+const INTEGRATED: ReadonlySet<ChangeState["kind"]> = new Set(["standard", "quick", "epic"]);
 
 /** Where the change goes when it is finished, or undefined when Specty does not incorporate it. */
 export async function integrationOf(
@@ -117,7 +117,9 @@ export async function absorbTarget(
     );
     return refused(session, state, failure, byHand);
   }
-  const command = session.config.verify.full ?? session.config.verify.default;
+  // An epic has no code of its own: each of its slices was verified when it closed.
+  const epic = state.kind === "epic";
+  const command = epic ? undefined : (session.config.verify.full ?? session.config.verify.default);
   if (command !== undefined) {
     session.environment.io.err(`specty: ${t("verificando", "verifying")} \`${command}\`…`);
     const result = await execute(command, [], {
@@ -148,8 +150,12 @@ export async function absorbTarget(
     receipt: { change: plan.id, kind: "close" },
   });
   // Each task ran its own `verify`; with neither of these, nothing checked the merge.
-  const verified =
-    command === undefined
+  const verified = epic
+    ? t(
+        " sin verificar: una épica no tiene código propio",
+        " without a verification: an epic has no code of its own",
+      )
+    : command === undefined
       ? t(
           " sin verificar: .specty/config.yaml no tiene `verify.full` ni `verify.default`",
           " without a verification: .specty/config.yaml has neither `verify.full` nor `verify.default`",

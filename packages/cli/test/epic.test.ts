@@ -2,7 +2,7 @@
 import { basename, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
-import { CHANGE, CONFIG, cli, person, read, tempRepo, writeFiles } from "./support";
+import { CHANGE, CONFIG, cli, git, person, read, tempRepo, writeFiles } from "./support";
 
 const EPIC = CHANGE.replace("saludo-personalizado", "panel-del-estudiante");
 const FIRST = CHANGE.replace("saludo-personalizado", "inicio-de-sesion");
@@ -43,9 +43,13 @@ El estudiante ve su progreso de un vistazo.
   - depends: C1
 `;
 
-/** An approved epic, in `root` itself (this repository works without worktrees). */
+/**
+ * An approved epic, in `root` itself (this repository works without worktrees). Its full
+ * verification fails: an epic has no code of its own, so nothing should run it.
+ */
 async function approvedEpic(): Promise<string> {
-  const root = await tempRepo({ "src/app.ts": "1\n", ".specty/config.yaml": CONFIG() });
+  const config = `${CONFIG()}  full: "exit 3"\n`;
+  const root = await tempRepo({ "src/app.ts": "1\n", ".specty/config.yaml": config });
   expect((await cli(root, ["new", "--kind", "epic", "Panel del estudiante"])).code).toBe(0);
   await writeFiles(root, { [`${EPIC_DIR}/spec.md`]: EPIC_SPEC });
   expect((await cli(root, ["propose"])).code).toBe(0);
@@ -149,5 +153,26 @@ describe("an epic", () => {
       event: "epic.slicesDone",
       data: { slices: { C1: FIRST, C2: SECOND } },
     });
+
+    const terminal = person();
+    expect((await cli(root, ["accept"], { terminal })).code).toBe(0);
+    expect(terminal.notes.join("\n")).toContain(`C2 Panel — cerrado (${SECOND})`);
+    expect(await read(root, `${EPIC_DIR}/audit.jsonl`)).not.toContain('"change.verified"');
+    // The main branch moves meanwhile: incorporating the epic merges it, and verifies nothing.
+    const other = join(dirname(root), `${basename(root)}-main`);
+    git(root, "worktree", "add", "-q", other, "main");
+    await writeFiles(other, { "src/otro.ts": "2\n" });
+    git(other, "add", ".");
+    git(other, "commit", "-q", "-m", "Otro cambio");
+    git(root, "worktree", "remove", other);
+    const closing =
+      "\n## Cierre\n\n### Resumen\n\nPanel listo.\n\n### Desviaciones\n\n- Ninguna.\n\n### Decisiones\n\n- Ninguna.\n\n### Pendientes\n\n- Ninguno.\n";
+    const spec = `${EPIC_DIR}/spec.md`;
+    await writeFiles(root, { [spec]: `${await read(root, spec)}${closing}` });
+    expect((await cli(root, ["propose"])).code).toBe(0);
+    const closed = await cli(root, ["close"], { terminal: person() });
+    expect([closed.code, closed.out]).toEqual([0, expect.stringContaining("Incorporado a main")]);
+    expect(closed.out).toContain("sin verificar: una épica no tiene código propio");
+    expect(git(root, "ls-tree", "-r", "--name-only", "main")).toContain("src/otro.ts");
   });
 });

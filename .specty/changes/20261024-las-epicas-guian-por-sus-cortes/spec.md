@@ -66,7 +66,7 @@ Una épica aprobada queda en `implementing` para siempre: nada dispara `children
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/commands/new.ts, packages/cli/test/epic.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic.test.ts
-- [ ] T4: Aceptar y cerrar una épica sin verificar código que no tiene
+- [x] T4: Aceptar y cerrar una épica sin verificar código que no tiene
   - files: packages/cli/src/commands/accept.ts, packages/cli/src/flow/integrate.ts, packages/cli/test/epic.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC4, AC5
   - verify: pnpm check

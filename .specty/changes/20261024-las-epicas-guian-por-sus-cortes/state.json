@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-las-epicas-guian-por-sus-cortes",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-las-epicas-guian-por-sus-cortes",
   "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "549ea4d488232f15114cd4f30ceccc76530f367f",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:59:07.310Z",
       "doneAt": "2026-10-24T21:00:44.813Z",
-      "summary": "sliceRefusal (flow/epic.ts) rechaza en new, antes de crear nada: --epic sin --slice o al revés, una épica que no está abierta o aprobada, un corte que no tiene, uno que ya tiene cambio o con depends sin cerrar. change.created guarda epic y slice."
+      "summary": "sliceRefusal (flow/epic.ts) rechaza en new, antes de crear nada: --epic sin --slice o al revés, una épica que no está abierta o aprobada, un corte que no tiene, uno que ya tiene cambio o con depends sin cerrar. change.created guarda epic y slice.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dc7302402af591aafa095630acc3df3c45777826",
+      "startedAt": "2026-10-24T21:00:45.083Z",
+      "doneAt": "2026-10-24T21:04:59.290Z",
+      "summary": "accept no verifica una épica y su nota lista los cortes; las épicas se incorporan al cerrar, sin verificar (no tienen código propio). Test de punta a punta con main movida. ARCHITECTURE §5, §6 y §9; formats.md §4 (epic.slicesDone; epic y slice en change.created)."
     }
   },
   "pending": {
