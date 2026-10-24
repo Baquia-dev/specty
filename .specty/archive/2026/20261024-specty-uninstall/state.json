@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261024-specty-uninstall",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-specty-uninstall",
+  "baseCommit": "f78407745fe8969f8dd47efe82872057316e1853",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2cd7385a1145b579e9db9d224096072b76d06b857bc9e9a58d4f5b0a71e3c0ec",
+    "at": "2026-10-24T15:19:28.928Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9fc76a9dba4472364cd6d02c1911389e9511b8937a615e6a3f08e458d38112fe",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7de4bdcbb97c6eeacfeb5e3913e713555425ef3c2f2500957da1e4755308f5ed",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7bc695af320703aa5fe870be28d51b2426d931bbfce5350fa61727b5fba4c6fa",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1fca5f8594e9c45d30a1e084c32a9065f169f18d1e46c9bc0770bda639be00b5",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:86b6c5bfd463160fea1b0dd31e2456c748eebb285f21b74443af3ecfc48ef89d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f596a958d56c0f8e5a74dda92650caa009275bb3",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:19:30.202Z",
+      "doneAt": "2026-10-24T15:20:38.878Z",
+      "summary": "Core: removeBlock quita un bloque gestionado y la línea en blanco que lo separaba, y deja el texto como antes del bloque (exportado desde el índice, ampliación S1); uninstall entra en PERSON_ONLY, así que el guard se lo bloquea al agente también en modo delegado.",
+      "scopeExtra": [
+        "packages/core/src/index.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f4fa9ec908ee90a19d4748acf5cc6df01d2a711d",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:20:39.524Z",
+      "doneAt": "2026-10-24T15:23:33.938Z",
+      "summary": "InstallFiles sabe borrar (simulado o de verdad, con copia y removed en el manifiesto) y rewriteJson pasa a files.ts y quita las claves que la actualización deja fuera. Contrapartes: removeAgentHooks (hooks y permisos de worktrees en Claude Code y Cursor; borra el archivo si queda vacío), removeGitHooks (bloque de los hooks nativos o de husky, comando specty de lefthook) y removeAgentsBlocks.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "556a6c33af82eb535aaaa1aa59b912bee46e472e",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:23:34.611Z",
+      "doneAt": "2026-10-24T15:28:04.276Z",
+      "summary": "commands/uninstall.ts: comprueba la terminal (salvo --dry-run), planea con un InstallFiles simulado, enseña la lista, pregunta (por defecto «No») y lo repite de verdad con copias; dice qué se queda (.specty/, CLAUDE.md, guard global de Codex y OpenCode) y no hace commit. program.ts lo registra con uninstallCommand. InstallFiles cuenta como borrado un archivo cambiado y luego borrado (S1). ARCHITECTURE §6 y §14, formats.md §1.",
+      "scopeExtra": [
+        "packages/cli/src/install/files.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-24T15:29:40.002Z"
+}

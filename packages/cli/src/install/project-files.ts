@@ -6,6 +6,7 @@ import {
   humanSections,
   type Lang,
   projectBlock,
+  removeBlock,
   translator,
   upsertBlock,
 } from "@baquia-dev/specty-core";
@@ -75,6 +76,17 @@ export async function writeAgentsMd(
   const withProject = upsertBlock(base, "project", projectBlock(projectFacts(detection), lang));
   await files.write(path, upsertBlock(withProject, "flow", flowBlock(lang, COMMAND)));
   return current === undefined ? "created" : "updated";
+}
+
+/** Takes Specty's blocks out of AGENTS.md; the rest of the file is the person's and stays. */
+export async function removeAgentsBlocks(root: string, files: InstallFiles): Promise<void> {
+  const path = join(root, "AGENTS.md");
+  const current = await files.read(path);
+  if (current === undefined) return;
+  const left = removeBlock(removeBlock(current, "flow"), "project");
+  if (left === current) return;
+  if (left.trim() === "") await files.remove(path);
+  else await files.write(path, left);
 }
 
 /** Claude Code reads CLAUDE.md: it imports AGENTS.md instead of copying it. */

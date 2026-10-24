@@ -31,6 +31,7 @@ import { reject } from "./commands/scope-decision";
 import { status } from "./commands/status";
 import { taskDone } from "./commands/task";
 import { ui } from "./commands/ui";
+import { uninstallCommand } from "./commands/uninstall";
 import { enforcementCommands } from "./enforce/commands";
 import { bareCards, type Environment, openSession, type Session, systemLanguage } from "./session";
 
@@ -260,6 +261,7 @@ export async function runCli(
     .description("let your agent take your decisions, or take them back (person only)")
     .addArgument(new Argument("<mode>", "on or off").choices(["on", "off"]))
     .action((mode: string) => run((session) => delegate(session, mode === "on" ? "on" : "off"))());
+  uninstallCommand(program, run);
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
   program

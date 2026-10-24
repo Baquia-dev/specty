@@ -35,6 +35,18 @@ export interface ChangeRecord {
   readonly folder?: string;
 }
 
+/** A warning `task done` left on a task: a risky pattern it added, or assertions it removed. */
+export interface WarningView {
+  readonly task: string;
+  readonly kind: "risk" | "assertions";
+  readonly path: string;
+  /** The line in the new version of the file, for a risky pattern. */
+  readonly line?: number;
+  readonly cwe?: string;
+  /** What was found, as a phrase: «parece un secreto en el código». */
+  readonly text: Bilingual;
+}
+
 /** A governed file other open changes also list: their merges may collide. */
 export interface SharedFile {
   readonly path: string;
@@ -239,6 +251,8 @@ export interface ChangeView {
   readonly review: ReviewView;
   /** The tasks in the spec's order, with their state and last verification. */
   readonly progress: ProgressView;
+  /** What `task done` warned about the tasks, to review before accepting; none when nothing. */
+  readonly warnings?: readonly WarningView[];
   /** The closing the agent wrote (`## Cierre`), in its parts; none until it writes it. */
   readonly closing?: ClosingParts;
   /** What happened, from `audit.jsonl`, oldest first. */

@@ -46,7 +46,18 @@ export function asistenciaSample(record: ChangeRecord, now: number): ChangeRecor
     audit: [
       event(at(150), "agent", "task.started", { task: "T1", baseCommit: "5d2a7b0" }),
       event(at(133), "specty", "task.verified", { task: "T1", cmd, exit: 0, ms: 12_000 }),
-      event(at(132), "agent", "task.completed", { task: "T1", commit: "3c9d1e2" }),
+      event(at(132), "agent", "task.completed", {
+        task: "T1",
+        commit: "3c9d1e2",
+        risks: [
+          {
+            path: "lib/attendance/attendance_repository.dart",
+            rule: "secret",
+            cwe: "CWE-798",
+            line: 12,
+          },
+        ],
+      }),
       event(at(131), "agent", "task.started", { task: "T2", baseCommit: "3c9d1e2" }),
       event(at(112), "specty", "task.verified", {
         task: "T2",
@@ -62,7 +73,11 @@ export function asistenciaSample(record: ChangeRecord, now: number): ChangeRecor
         ],
       }),
       event(at(97), "specty", "task.verified", { task: "T2", cmd, exit: 0, ms: 21_000 }),
-      event(at(96), "agent", "task.completed", { task: "T2", commit: "8b0a4f6" }),
+      event(at(96), "agent", "task.completed", {
+        task: "T2",
+        commit: "8b0a4f6",
+        removedAssertions: [{ path: "test/attendance/course_panel_test.dart", removed: 1 }],
+      }),
     ],
   });
 }

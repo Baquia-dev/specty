@@ -20,6 +20,7 @@ import { type AuditRecord, progressOf } from "./progress";
 import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind, ReviewView } from "./records";
 import { deriveReview } from "./review";
 import { sharedFiles } from "./shared";
+import { warningsOf } from "./warnings";
 
 const TABS: Readonly<Record<Phase, ChangeTab>> = {
   draft: "spec",
@@ -87,6 +88,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const tasks = spec.sections.tasks?.items ?? [];
   const requested = changesRequestedOf(state, record.audit ?? []);
   const request = requestOf(record.audit ?? []);
+  const warnings = warningsOf(record.audit ?? []);
   // Once the person asked for changes, the change waits for the agent, not for them.
   const decision = requested === undefined ? decisionOf(state) : undefined;
   return {
@@ -139,6 +141,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
     },
     progress: progressOf(spec, state, record.audit ?? [], record.verifyFull),
     ...closingIn(spec),
+    ...(warnings.length === 0 ? {} : { warnings }),
     history: historyOf(record.audit ?? []),
   };
 }
