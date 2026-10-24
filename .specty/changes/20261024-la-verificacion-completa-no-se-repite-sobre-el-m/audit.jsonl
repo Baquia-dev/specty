@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T21:29:38.724Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-la-verificacion-completa-no-se-repite-sobre-el-m","request":"si realiza todo eneguida de forma autonoma las 12 observaciones"}}
+{"ts":"2026-10-24T21:30:55.540Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:a2a7019a2936622f2ad591cac8ded3b473adbab7c64951dbea89e7d0d4f110de","size":"M","warnings":0}}
+{"ts":"2026-10-24T21:30:56.316Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:a2a7019a2936622f2ad591cac8ded3b473adbab7c64951dbea89e7d0d4f110de","channel":"delegated","delegated":true}}
