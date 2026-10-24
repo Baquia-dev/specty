@@ -17,6 +17,7 @@ import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
 import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
 import { entersByName } from "../install/agents";
+import { freshProject } from "../install/product";
 import { exists, writeText } from "../io/files";
 import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
@@ -35,12 +36,39 @@ export interface NewOptions {
   readonly worktree?: boolean;
   /** With `worktree`, the branch to start from (by default, the main branch). */
   readonly from?: string;
+  /** Set by `new` itself: the first change of a new project, its skeleton (ARCHITECTURE §14). */
+  readonly bootstrap?: boolean;
   /** The user's literal request, kept in the audit as they wrote it. */
   readonly request?: string;
 }
 
-/** `specty new`: creates the change, its branch and the spec skeleton. */
+/**
+ * `specty new`: creates the change, its branch and the spec skeleton. In a new project, the first
+ * change is its skeleton: standard, so the scaffolding is traced, with hints of its own.
+ */
 export async function newChange(session: Session, options: NewOptions): Promise<Output> {
+  const bootstrap = await freshProject(session);
+  if (bootstrap && options.kind === "quick") {
+    const t = translator(session.lang);
+    return {
+      ...blockedCard(
+        headerOf(),
+        t(
+          "Es el primer cambio de un proyecto nuevo: el esqueleto va en un cambio standard, no quick.",
+          "This is a new project's first change: the skeleton goes in a standard change, not a quick one.",
+        ),
+        t(
+          `ejecuta \`${session.cards.command} new "${options.title.trim()}" --request "<petición literal del usuario>"\`, sin \`--kind quick\`.`,
+          `run \`${session.cards.command} new "${options.title.trim()}" --request "<the user's literal request>"\`, without \`--kind quick\`.`,
+        ),
+      ),
+      status: "invalid",
+    };
+  }
+  return createNew(session, bootstrap ? { ...options, bootstrap } : options);
+}
+
+async function createNew(session: Session, options: NewOptions): Promise<Output> {
   const t = translator(session.lang);
   const { cards } = session;
   const title = options.title.trim();
@@ -256,6 +284,7 @@ async function createChange(
       ...(options.epic !== undefined ? { epic: options.epic } : {}),
       ...(options.slice !== undefined ? { slice: options.slice } : {}),
       ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),
+      ...(options.bootstrap === true ? { bootstrap: true } : {}),
     }),
   );
   const state = initialState({ id, kind: options.kind, branch, baseCommit: target.baseCommit });
@@ -264,6 +293,7 @@ async function createChange(
     ...(branch !== undefined ? { branch } : {}),
     ...(options.follows.length > 0 ? { follows: options.follows } : {}),
     ...(options.request !== undefined ? { request: options.request.trim() } : {}),
+    ...(options.bootstrap === true ? { bootstrap: true } : {}),
   });
 }
 

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-el-primer-cambio-de-un-proyecto-nuevo-es-el-esqu",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-el-primer-cambio-de-un-proyecto-nuevo-es-el-esqu",
   "baseCommit": "2e2fdcade0d1870b5cba3c80803c8ad2a4fad65f",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2bbb948a08438fd21f20952fb8dccd1c82cb1684",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:06:15.640Z",
       "doneAt": "2026-10-24T17:07:13.162Z",
-      "summary": "Core: NextView.fresh da la tarjeta de un proyecto nuevo (el primer cambio es el esqueleto, a partir de PRODUCT.md, sin --kind quick), y TemplateOptions.bootstrap cambia las pistas del Objetivo, los Supuestos, los Archivos y las Tareas."
+      "summary": "Core: NextView.fresh da la tarjeta de un proyecto nuevo (el primer cambio es el esqueleto, a partir de PRODUCT.md, sin --kind quick), y TemplateOptions.bootstrap cambia las pistas del Objetivo, los Supuestos, los Archivos y las Tareas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 3,
+      "baseCommit": "11f2ca9e6f895108cb5959a102b3f33a1339ed3a",
+      "startedAt": "2026-10-24T17:07:13.441Z",
+      "doneAt": "2026-10-24T17:25:39.163Z",
+      "summary": "freshProject alimenta isNewProject; next lo pasa a la tarjeta sin cambio activo, y new rechaza quick en un proyecto nuevo, da la plantilla del esqueleto y anota bootstrap. El test de (b) pasa a un primer cambio standard. ARCHITECTURE §14 y formats.md §4."
     }
   },
   "pending": {

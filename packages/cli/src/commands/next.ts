@@ -2,6 +2,7 @@
 import { isGoverned, nextCard, type Output, parseSpec } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { changeView } from "../flow/views";
+import { freshProject } from "../install/product";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -10,7 +11,10 @@ import { readSpec, type StoredChange } from "../store/changes";
 export async function next(session: Session): Promise<Output> {
   const active = await resolveActive(session);
   if (active === undefined) {
-    return nextCard({ dirty: await dirtyGoverned(session) }, session.cards);
+    const dirty = await dirtyGoverned(session);
+    // Without code yet, the first change is the project's skeleton (ARCHITECTURE §14).
+    const fresh = dirty.length === 0 && (await freshProject(session));
+    return nextCard({ dirty, ...(fresh ? { fresh } : {}) }, session.cards);
   }
   const change =
     active.state.phase === "implementing" ? await activateNextTask(session, active) : active;

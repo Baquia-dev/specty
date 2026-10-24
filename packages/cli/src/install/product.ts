@@ -8,8 +8,8 @@ import {
   type ResolvedConfig,
   translator,
 } from "@baquia-dev/specty-core";
-import type { Detection } from "../detect/project";
-import type { Terminal } from "../session";
+import { type Detection, detectProject } from "../detect/project";
+import type { Session, Terminal } from "../session";
 import type { InstallFiles } from "./files";
 
 /** Repository metadata, which exists before any code does: it does not make a project. */
@@ -58,6 +58,12 @@ export function isNewProject(
     (path) => isGoverned(path, config) && !METADATA.test(path) && !agentFile(path),
   );
   return detection.stacks.length === 0 && code.length === 0;
+}
+
+/** Whether this folder holds a new project, as `init` sees it: for `next` and the first `new`. */
+export async function freshProject(session: Session): Promise<boolean> {
+  const detection = await detectProject(session.root, "");
+  return isNewProject(detection, await session.git.files(), session.config);
 }
 
 /**

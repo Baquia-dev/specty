@@ -419,7 +419,13 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 2. Genera `PRODUCT.md` y el esqueleto de AGENTS.md.
 
    Así lo hace `init` (`install/product.ts`). Un proyecto es nuevo si la detección no encuentra ningún stack y no hay código gobernado salvo metadatos del repositorio (`.gitignore`, `.gitattributes`, `.editorconfig`, licencias) y los archivos de los agentes, sin mirar ningún lenguaje. Entonces, si no hay `PRODUCT.md`, lo crea y lo incluye en su commit. Con una persona en la terminal (y sin `--dry-run`), hace las siete preguntas y escribe una sección por respuesta, con la pregunta como comentario donde la dejó en blanco; su SIGUIENTE le pide al agente el primer cambio. Si lo ejecuta un agente, deja las preguntas como comentarios, y su SIGUIENTE le pide hacerlas en el chat, completar `PRODUCT.md` y crear el primer cambio.
-3. El primer cambio es `bootstrap`, de carril `standard`, así que el scaffolding también queda trazado.
+3. El primer cambio es `bootstrap`, de carril `standard`, así que el scaffolding también queda trazado. Mientras el proyecto sea nuevo (sin stack detectado ni código gobernado), ocurre esto:
+   - `next` sin cambio activo dice que el primer cambio es el esqueleto del proyecto, a partir de `PRODUCT.md` (con sus preguntas sin responder antes al usuario), y propone `new "Esqueleto del proyecto"` sin `--kind quick`;
+   - `new --kind quick` se rechaza (`spike` no);
+   - la spec trae pistas propias en el Objetivo, los Supuestos (el stack y los comandos), los Archivos (un glob para lo que genere una herramienta) y las Tareas (`verify` en cada una, porque aún no hay `verify.default`);
+   - `change.created` anota `bootstrap: true`.
+
+   Deja de ser nuevo en cuanto el esqueleto llega a la rama.
 4. Al cerrarlo, Specty vuelve a detectar el proyecto y completa los comandos. Esto ya funciona para cualquier cambio: antes de incorporarlo, `close` (y el `accept` de un cambio quick) detecta en su carpeta los comandos de verificación, y si `config.yaml` no tiene `verify.default` o `verify.full` y la detección los encuentra, la salida propone `specty init` en la carpeta principal. Con el archivo ya creado, `init` solo añade las claves de `verify` que faltan, insertando sus líneas, y no cambia nada más ([formats.md §6](formats.md#6-configyaml)).
 
 **`specty doctor`** comprueba:

@@ -58,7 +58,7 @@ Segunda parte del flujo de proyecto nuevo de ARCHITECTURE §14: tras `init` y `P
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core test
   - type: feat
-- [ ] T2: La CLI lleva el primer cambio al esqueleto
+- [x] T2: La CLI lleva el primer cambio al esqueleto
   - files: packages/cli/src/install/product.ts, packages/cli/src/commands/next.ts, packages/cli/src/commands/new.ts, packages/cli/test/bootstrap.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
