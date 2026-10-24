@@ -46,7 +46,7 @@ Tres detalles pendientes de la UI. Las filas que se desplazan de lado (las fases
 
 ## Tareas
 
-- [ ] T1: Los bordes que se desvanecen
+- [x] T1: Los bordes que se desvanecen
   - files: packages/ui/src/components/edge-fade.ts, packages/ui/src/components/edge-fade.test.ts, packages/ui/src/styles.css, packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/review/delta-review.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components --include src/inbox --include src/review && pnpm sources

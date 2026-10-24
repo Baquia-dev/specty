@@ -91,7 +91,28 @@
 :root {
   --duration-fast: 120ms;
   --duration-base: 200ms;
+  /* How far a row that scrolls sideways fades where more of it hides (components/edge-fade.ts). */
+  --fade-edge: 24px;
   color-scheme: light;
+}
+
+/* The edges of a row that scrolls sideways, where more of it hides. */
+[data-fade-start] {
+  mask-image: linear-gradient(to right, transparent, #000 var(--fade-edge));
+}
+
+[data-fade-end] {
+  mask-image: linear-gradient(to right, #000 calc(100% - var(--fade-edge)), transparent);
+}
+
+[data-fade-start][data-fade-end] {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade-edge),
+    #000 calc(100% - var(--fade-edge)),
+    transparent
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -6,6 +6,13 @@
   "branch": "specty/20261024-pulido-bordes-que-se-desvanecen-y-desplazamiento",
   "baseCommit": "e4b57dc75844cbbd2eaf0ab7fc3d07d7cb6f07c9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:65ddc9578c3dcca2ba39bae12da6823138880df4d723e9489d53112ccc3962b5",
+    "at": "2026-10-24T11:14:33.495Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ee049096722e93be73087e568842b0f034e32c4b",
+      "startedAt": "2026-10-24T11:14:34.823Z",
+      "doneAt": "2026-10-24T11:17:18.564Z",
+      "summary": "components/edge-fade.ts: la directiva spEdgeFade marca data-fade-start y data-fade-end según lo que queda oculto al desplazar, al cambiar el tamaño y al cambiar el contenido; styles.css desvanece esos bordes con mask-image sobre el token --fade-edge. La llevan las fases de la Bandeja y los filtros del delta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:65ddc9578c3dcca2ba39bae12da6823138880df4d723e9489d53112ccc3962b5",
-    "at": "2026-10-24T11:14:33.495Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
