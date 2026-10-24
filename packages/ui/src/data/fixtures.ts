@@ -17,7 +17,7 @@ import { decideResultIn } from "./sample-acceptance";
 import { sampleDelegation } from "./sample-delegation";
 import { sampleDiffOf } from "./sample-diffs";
 import { decideScopeIn } from "./sample-progress";
-import { HASH, REVIEWER, sampleRecords } from "./sample-records";
+import { HASH, REVIEWER, requestChangesIn, sampleRecords } from "./sample-records";
 import {
   canFinishTask,
   finishTaskIn,
@@ -189,9 +189,9 @@ export class FixtureData extends SpectyData {
     });
   }
 
-  /** The agent gets the comments in `specty next`; here nothing else changes. */
+  /** Noted in the audit, as the server does: the agent gets the comments in `specty next`. */
   override requestChanges(change: string): Promise<void> {
-    return this.edit(change, (record) => record);
+    return this.edit(change, (record) => requestChangesIn(record, Date.now()));
   }
 
   override approve(change: string, revision: number): Promise<void> {

@@ -212,6 +212,8 @@ export interface ChangeView {
   readonly size?: { readonly level: SizeLevel; readonly reasons: readonly Bilingual[] };
   readonly effort?: { readonly plan: EffortLevel; readonly implement: EffortLevel };
   readonly decision?: DecisionKind;
+  /** In review, once the person asked for changes: the agent prepares the next revision. */
+  readonly changesRequested?: { readonly revision: number; readonly at: string };
   /** High-impact assumptions still undecided: approving waits for them. */
   readonly highImpactPending: number;
   readonly scopeRequests: readonly ScopeRequestView[];

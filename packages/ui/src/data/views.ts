@@ -15,7 +15,7 @@ import {
 import { closingOf } from "./closing";
 import { deriveDelta } from "./delta";
 import { historyOf } from "./history";
-import { progressOf } from "./progress";
+import { type AuditRecord, progressOf } from "./progress";
 import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind, ReviewView } from "./records";
 import { deriveReview } from "./review";
 
@@ -43,6 +43,23 @@ export function decisionOf(state: ChangeState): DecisionKind | undefined {
   return undefined;
 }
 
+/**
+ * The changes the person asked for on the revision in review, while the agent owes the next one:
+ * the last proposal or request in the audit is a request, as `specty next` reads it.
+ */
+export function changesRequestedOf(
+  state: ChangeState,
+  audit: readonly AuditRecord[],
+): ChangeView["changesRequested"] {
+  if (state.phase !== "review") return undefined;
+  const last = audit.findLast(
+    (entry) => entry.event === "spec.proposed" || entry.event === "review.changes_requested",
+  );
+  if (last?.event !== "review.changes_requested") return undefined;
+  const { revision } = last.data;
+  return { revision: typeof revision === "number" ? revision : state.revision, at: last.ts };
+}
+
 /** High-impact assumptions without a decision of the person. */
 export function highImpactPending(spec: Spec, state: ChangeState): number {
   return (spec.sections.assumptions?.items ?? []).filter((assumption) => {
@@ -66,7 +83,9 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const size = computeSize(spec, DEFAULT_CONFIG);
   const level = state.size?.level ?? size.level;
   const tasks = spec.sections.tasks?.items ?? [];
-  const decision = decisionOf(state);
+  const requested = changesRequestedOf(state, record.audit ?? []);
+  // Once the person asked for changes, the change waits for the agent, not for them.
+  const decision = requested === undefined ? decisionOf(state) : undefined;
   return {
     id: state.id,
     title: spec.title || state.id,
@@ -95,6 +114,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
     },
     effort: recommendEffort(level),
     ...(decision === undefined ? {} : { decision }),
+    ...(requested === undefined ? {} : { changesRequested: requested }),
     highImpactPending: state.phase === "review" ? highImpactPending(spec, state) : 0,
     scopeRequests: state.pending.scopeRequests.map((request) => ({
       id: request.id,
