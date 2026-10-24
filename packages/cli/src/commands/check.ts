@@ -5,10 +5,12 @@ import {
   renderReport,
   reportExitCode,
   reportJson,
+  translator,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import { commonProvider } from "../check/common";
 import { checkContext } from "../check/files";
+import { loadPlan, planProvider } from "../check/plan";
 import { type Provider, type ReportOutput, runChecks } from "../check/provider";
 import { detectStacks } from "../detect/stack";
 import type { Session } from "../session";
@@ -21,6 +23,13 @@ interface CheckOptions {
   readonly staged?: boolean;
   readonly all?: boolean;
   readonly verbose?: boolean;
+  /** `true` for `--spec` alone: the active change. */
+  readonly spec?: string | boolean;
+}
+
+/** The change whose plan `--spec` checks: the one named, or the active one with no id. */
+interface SpecOption {
+  readonly id: string | undefined;
 }
 
 /** Registers `specty check`; `run` opens the session as for every command. */
@@ -34,19 +43,30 @@ export function checkCommand(
     .option("--changed", "what changed against the target branch, plus new files (default)")
     .option("--staged", "what is staged, for a pre-commit hook")
     .option("--all", "everything git tracks, for CI")
+    .option("--spec [id]", "also what the approved plan of a change allows (the active one)")
     .option("--verbose", "every finding, what passed and why a check did not run")
     .action((options: CheckOptions) =>
-      run((session) => check(session, modeOf(options), options.verbose === true))(),
+      run((session) =>
+        check(session, modeOf(options), options.verbose === true, specOf(options)),
+      )(),
     );
 }
 
 /** `specty check`: deterministic, with no model and no agent (ADR 0012). */
-export async function check(session: Session, mode: CheckMode, verbose: boolean) {
-  const [context, stacks] = await Promise.all([
+export async function check(
+  session: Session,
+  mode: CheckMode,
+  verbose: boolean,
+  spec?: SpecOption,
+): Promise<ReportOutput> {
+  if (spec !== undefined && mode === "all") return withoutDiff(session);
+  const [context, stacks, plan] = await Promise.all([
     checkContext(session, mode),
     detectStacks(session.root),
+    spec === undefined ? undefined : loadPlan(session, spec.id),
   ]);
-  const report = await runChecks(context, PROVIDERS, stacks);
+  const providers = plan === undefined ? PROVIDERS : [...PROVIDERS, planProvider(plan)];
+  const report = await runChecks(context, providers, stacks);
   return {
     report: renderReport(report, {
       lang: session.lang,
@@ -55,11 +75,25 @@ export async function check(session: Session, mode: CheckMode, verbose: boolean)
     }),
     json: reportJson(report),
     code: reportExitCode(report),
-  } satisfies ReportOutput;
+  };
+}
+
+/** `--spec` compares the change's diff with its plan, and `--all` has no diff. */
+function withoutDiff(session: Session): ReportOutput {
+  const error = translator(session.lang)(
+    "--spec mira el diff del cambio: úsalo con --changed (por defecto) o con --staged, no con --all.",
+    "--spec looks at the change's diff: use it with --changed (the default) or --staged, not --all.",
+  );
+  return { report: error, json: { error }, code: 1 };
 }
 
 /** The widest mode asked for wins: `--all`, then `--staged`, then `--changed`. */
 function modeOf(options: CheckOptions): CheckMode {
   if (options.all === true) return "all";
   return options.staged === true ? "staged" : "changed";
+}
+
+function specOf(options: CheckOptions): SpecOption | undefined {
+  if (options.spec === undefined || options.spec === false) return undefined;
+  return { id: options.spec === true ? undefined : options.spec };
 }

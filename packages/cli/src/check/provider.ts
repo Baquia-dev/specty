@@ -20,8 +20,15 @@ export interface CheckContext {
   readonly mode: CheckMode;
   /** Repository-relative files of the run, the excluded ones already left out. */
   readonly files: readonly string[];
+  /** Paths the run's diff deletes, with the same filters as `files`; none with `--all`. */
+  readonly deleted: readonly string[];
   /** The text of `path` as the mode sees it: staged with `--staged`, on disk otherwise. */
   read(path: string): Promise<string | undefined>;
+  /**
+   * The text of `path` where the run starts (the merge-base with `--changed`, HEAD with
+   * `--staged`); undefined with `--all`, or when it did not exist there.
+   */
+  before(path: string): Promise<string | undefined>;
   /** Lines `path` adds, from 1; undefined when every line of it counts (`--all`, a new file). */
   added(path: string): ReadonlySet<number> | undefined;
 }

@@ -13,57 +13,61 @@ import type { CheckContext } from "./provider";
  */
 export async function checkContext(session: Session, mode: CheckMode): Promise<CheckContext> {
   const base = mode === "changed" ? await baseOf(session) : undefined;
-  const [files, added] = await Promise.all([
-    selectFiles(session, mode, base),
+  const [changed, added] = await Promise.all([
+    candidates(session, mode, base),
     addedLines(session, mode, base),
   ]);
+  const checked = changed.filter((file) => isChecked(session, file.path));
   const texts = new Map<string, Promise<string | undefined>>();
+  // Where the run starts: the merge-base with `--changed`, HEAD with `--staged`.
+  const start = mode === "staged" ? "HEAD" : base;
   return {
     session,
     mode,
-    files,
+    files: [...new Set(checked.filter((file) => file.status !== "deleted").map(pathOf))],
+    deleted: checked.filter((file) => file.status === "deleted").map(pathOf),
     read(path) {
       const known = texts.get(path);
       if (known !== undefined) return known;
-      const text = mode === "staged" ? staged(session, path) : readText(join(session.root, path));
+      const text =
+        mode === "staged" ? blob(session, `:${path}`) : readText(join(session.root, path));
       texts.set(path, text);
       return text;
     },
+    before: async (path) => (start === undefined ? undefined : blob(session, `${start}:${path}`)),
     added: (path) => added?.get(path),
   };
 }
 
-/**
- * The files of the run: what changed against the target branch (the merge-base, plus new files
- * git does not track), what is staged, or everything git sees. Never Specty's own files, what is
- * not governed, what is generated, or `checks.exclude`.
- */
-async function selectFiles(
-  session: Session,
-  mode: CheckMode,
-  base: string | undefined,
-): Promise<string[]> {
-  const paths = await candidates(session, mode, base);
+/** Never Specty's own files, what is not governed, what is generated, or `checks.exclude`. */
+function isChecked(session: Session, path: string): boolean {
   const { config } = session;
-  return [...new Set(paths)].filter(
-    (path) =>
-      !path.startsWith(".specty/") &&
-      isGoverned(path, config) &&
-      !matchesAny(path, config.scope.generated) &&
-      !matchesAny(path, config.checks.exclude),
+  return (
+    !path.startsWith(".specty/") &&
+    isGoverned(path, config) &&
+    !matchesAny(path, config.scope.generated) &&
+    !matchesAny(path, config.checks.exclude)
   );
 }
 
+/**
+ * What changed against the target branch (the merge-base, plus new files git does not track),
+ * what is staged, or everything git sees.
+ */
 async function candidates(
   session: Session,
   mode: CheckMode,
   base: string | undefined,
-): Promise<string[]> {
+): Promise<readonly ChangedFile[]> {
   const { git } = session;
-  if (mode === "all") return git.files();
-  if (mode === "staged") return present(await git.staged());
-  return present(await git.changedSince(base));
+  if (mode === "all") {
+    return (await git.files()).map((path): ChangedFile => ({ path, status: "modified" }));
+  }
+  if (mode === "staged") return git.staged();
+  return git.changedSince(base);
 }
+
+const pathOf = (file: ChangedFile) => file.path;
 
 /** Where `--changed` starts: the merge-base with the target branch, or HEAD without one. */
 async function baseOf(session: Session): Promise<string | undefined> {
@@ -76,13 +80,9 @@ async function baseOf(session: Session): Promise<string | undefined> {
   return git.head();
 }
 
-/** Deleted files have nothing left to check. */
-function present(files: readonly ChangedFile[]): string[] {
-  return files.filter((file) => file.status !== "deleted").map((file) => file.path);
-}
-
-async function staged(session: Session, path: string): Promise<string | undefined> {
-  const shown = await session.git.run(["cat-file", "blob", `:${path}`]);
+/** The text of a blob, `:path` staged or `rev:path` in a commit; undefined when there is none. */
+async function blob(session: Session, object: string): Promise<string | undefined> {
+  const shown = await session.git.run(["cat-file", "blob", object]);
   return shown.code === 0 ? shown.stdout : undefined;
 }
 

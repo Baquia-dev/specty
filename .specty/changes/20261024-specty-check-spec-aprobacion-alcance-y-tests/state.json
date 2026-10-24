@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3a5894e5170fed63db2b1f664269e144789b153c",
+      "attempts": 1,
       "startedAt": "2026-10-24T18:03:29.948Z",
       "doneAt": "2026-10-24T18:04:46.341Z",
-      "summary": "testCases en core/checks/markers.ts cuenta las líneas que declaran un caso de test con un catálogo por familia de frameworks (JS, Dart, RSpec, pytest, Go, XCTest, JUnit, xUnit, Rust, PHPUnit), sin contar comentarios."
+      "summary": "testCases en core/checks/markers.ts cuenta las líneas que declaran un caso de test con un catálogo por familia de frameworks (JS, Dart, RSpec, pytest, Go, XCTest, JUnit, xUnit, Rust, PHPUnit), sin contar comentarios.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ed4522f6066b142528a06f81c1858b907492b2da",
+      "startedAt": "2026-10-24T18:04:46.634Z",
+      "doneAt": "2026-10-24T18:09:53.468Z",
+      "summary": "check --spec [id] carga el plan (el cambio dado o el activo) y añade spec-approved (sin contar el cierre) y scope (Archivos, files de las tareas y ampliaciones, con las reglas de task done); el contexto gana deleted y before; --spec con --all se rechaza."
     }
   },
   "pending": {

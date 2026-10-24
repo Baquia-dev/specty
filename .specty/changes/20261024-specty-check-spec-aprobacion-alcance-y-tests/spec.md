@@ -63,7 +63,7 @@ follows:
   - files: packages/core/src/checks/markers.ts, packages/core/src/index.ts, packages/core/test/checks/markers.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts
-- [ ] T2: `--spec` con `spec-approved` y `scope`
+- [x] T2: `--spec` con `spec-approved` y `scope`
   - files: packages/cli/src/check/provider.ts, packages/cli/src/check/files.ts, packages/cli/src/check/plan.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-plan.test.ts
   - ac: AC1, AC2, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-plan.test.ts test/check.test.ts
