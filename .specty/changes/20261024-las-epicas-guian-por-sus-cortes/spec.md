@@ -62,7 +62,7 @@ Una épica aprobada queda en `implementing` para siempre: nada dispara `children
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/next.ts, packages/cli/test/epic.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic.test.ts
-- [ ] T3: new rechaza un corte que no puede empezar
+- [x] T3: new rechaza un corte que no puede empezar
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/commands/new.ts, packages/cli/test/epic.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/epic.test.ts

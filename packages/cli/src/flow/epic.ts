@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
+  blockedCard,
+  headerOf,
+  type Output,
   type Phase,
   parseSpec,
   type SliceView,
   type Spec,
   transition,
+  translator,
 } from "@baquia-dev/specty-core";
 import { readText } from "../io/files";
 import type { Session } from "../session";
@@ -66,6 +70,98 @@ export async function sliceViews(
           }),
     };
   });
+}
+
+/**
+ * Why `new --epic <epic> --slice <slice>` cannot start that slice, before anything is created:
+ * the epic is not open and approved, the slice is not one of its slices, it already has a change,
+ * or a slice it depends on is not closed. Undefined when it can start.
+ */
+export async function sliceRefusal(
+  session: Session,
+  epic: string | undefined,
+  slice: string | undefined,
+): Promise<Output | undefined> {
+  if (epic === undefined && slice === undefined) return undefined;
+  const t = translator(session.lang);
+  const { command } = session.cards;
+  const refuse = (status: "invalid" | "blocked", reason: string, next: string): Output => ({
+    ...blockedCard(headerOf(), reason, next),
+    status,
+  });
+  if (epic === undefined || slice === undefined) {
+    return refuse(
+      "invalid",
+      t(
+        "`--epic` y `--slice` van juntos: la épica y el corte que implementa el cambio.",
+        "`--epic` and `--slice` go together: the epic and the slice the change implements.",
+      ),
+      t(
+        `ejecuta \`${command} new "<título>" --epic <épica> --slice <corte>\`.`,
+        `run \`${command} new "<title>" --epic <epic> --slice <slice>\`.`,
+      ),
+    );
+  }
+  const found = (await locateChanges(session)).find(({ change }) => change.state.id === epic);
+  if (found === undefined || found.change.state.kind !== "epic" || isFinished(found.change.state)) {
+    return refuse(
+      "invalid",
+      t(`No hay ninguna épica abierta ${epic}.`, `There is no open epic ${epic}.`),
+      t(`revisa su id con \`${command} status\`.`, `check its id with \`${command} status\`.`),
+    );
+  }
+  const { phase } = found.change.state;
+  const resume = t(
+    `ejecuta \`${command} next\` en la carpeta de la épica, que dice qué corte sigue.`,
+    `run \`${command} next\` in the epic's folder, which says which slice comes next.`,
+  );
+  if (phase !== "implementing") {
+    return refuse(
+      "blocked",
+      t(
+        `La épica ${epic} aún no está aprobada (fase ${phase}).`,
+        `Epic ${epic} is not approved yet (phase ${phase}).`,
+      ),
+      resume,
+    );
+  }
+  const spec = parseSpec(await readSpec(found.change.files), { language: session.lang }).spec;
+  const slices = await sliceViews(found.session, found.change, spec);
+  const target = slices.find((item) => item.id === slice);
+  if (target === undefined) {
+    const ids = slices.map(({ id }) => id).join(", ");
+    return refuse(
+      "invalid",
+      t(
+        `La épica ${epic} no tiene el corte ${slice}; sus cortes: ${ids}.`,
+        `Epic ${epic} has no slice ${slice}; its slices: ${ids}.`,
+      ),
+      resume,
+    );
+  }
+  if (target.child !== undefined) {
+    return refuse(
+      "blocked",
+      t(
+        `El corte ${slice} ya tiene un cambio: ${target.child.id}, en ${target.child.phase}.`,
+        `Slice ${slice} already has a change: ${target.child.id}, in ${target.child.phase}.`,
+      ),
+      resume,
+    );
+  }
+  if (target.status === "waiting") {
+    const closed = new Set(slices.filter((item) => item.status === "done").map(({ id }) => id));
+    const waiting = target.depends.filter((id) => !closed.has(id)).join(", ");
+    return refuse(
+      "blocked",
+      t(
+        `El corte ${slice} depende de cortes que aún no están cerrados: ${waiting}.`,
+        `Slice ${slice} depends on slices that are not closed yet: ${waiting}.`,
+      ),
+      resume,
+    );
+  }
+  return undefined;
 }
 
 /** Moves an approved epic to acceptance once every slice has a closed change (`childrenDone`). */

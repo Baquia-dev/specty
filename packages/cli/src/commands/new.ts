@@ -13,6 +13,7 @@ import {
   withLead,
 } from "@baquia-dev/specty-core";
 import { commitState, isFinished, resolveActive } from "../flow/active";
+import { sliceRefusal } from "../flow/epic";
 import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
 import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
@@ -87,6 +88,8 @@ async function createNew(session: Session, options: NewOptions): Promise<Output>
       status: "invalid",
     };
   }
+  const refusal = await sliceRefusal(session, options.epic, options.slice);
+  if (refusal !== undefined) return refusal;
   // Every change gets a worktree of its own unless the repository turned that off.
   const { git: settings } = session.config;
   const inWorktree = options.worktree === true || (settings.worktrees && settings.branchPerChange);
@@ -292,6 +295,7 @@ async function createChange(
     kind: options.kind,
     ...(branch !== undefined ? { branch } : {}),
     ...(options.follows.length > 0 ? { follows: options.follows } : {}),
+    ...(options.epic !== undefined ? { epic: options.epic, slice: options.slice } : {}),
     ...(options.request !== undefined ? { request: options.request.trim() } : {}),
     ...(options.bootstrap === true ? { bootstrap: true } : {}),
   });

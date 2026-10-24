@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6a389be623a20717202e06704efb007c26e2663e",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:56:43.696Z",
       "doneAt": "2026-10-24T20:59:07.049Z",
-      "summary": "flow/epic.ts: sliceViews deriva el estado de cada corte de los cambios hijos (abiertos en cualquier worktree, archivados aquí y en la carpeta principal; los cancelados no cuentan) y finishEpic pasa la épica a aceptación con childrenDone (epic.slicesDone). next y changeView lo usan."
+      "summary": "flow/epic.ts: sliceViews deriva el estado de cada corte de los cambios hijos (abiertos en cualquier worktree, archivados aquí y en la carpeta principal; los cancelados no cuentan) y finishEpic pasa la épica a aceptación con childrenDone (epic.slicesDone). next y changeView lo usan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "549ea4d488232f15114cd4f30ceccc76530f367f",
+      "startedAt": "2026-10-24T20:59:07.310Z",
+      "doneAt": "2026-10-24T21:00:44.813Z",
+      "summary": "sliceRefusal (flow/epic.ts) rechaza en new, antes de crear nada: --epic sin --slice o al revés, una épica que no está abierta o aprobada, un corte que no tiene, uno que ya tiene cambio o con depends sin cerrar. change.created guarda epic y slice."
     }
   },
   "pending": {

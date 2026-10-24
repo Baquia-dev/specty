@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { basename, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { exists } from "../src/io/files";
 import { CHANGE, CONFIG, cli, person, read, tempRepo, writeFiles } from "./support";
 
 const EPIC = CHANGE.replace("saludo-personalizado", "panel-del-estudiante");
@@ -65,6 +66,52 @@ async function archiveChild(root: string, id: string, slice: string): Promise<vo
     }),
   });
 }
+
+describe("specty new --epic --slice", () => {
+  it("refuses a slice that cannot start, and creates nothing (AC3)", async () => {
+    const root = await tempRepo({ "src/app.ts": "1\n", ".specty/config.yaml": CONFIG() });
+    await cli(root, ["new", "--kind", "epic", "Panel del estudiante"]);
+    await writeFiles(root, { [`${EPIC_DIR}/spec.md`]: EPIC_SPEC });
+    await cli(root, ["propose"]);
+    const slice = (title: string, ...options: string[]) =>
+      cli(root, ["new", "--worktree", title, ...options]);
+    const refused = async (title: string, options: string[], code: number, reason: string) => {
+      const result = await slice(title, ...options);
+      expect([result.code, result.out]).toEqual([code, expect.stringContaining(reason)]);
+    };
+    await refused("Inicio de sesión", ["--epic", EPIC, "--slice", "C1"], 2, "aún no está aprobada");
+    expect((await cli(root, ["approve"], { terminal: person() })).code).toBe(0);
+    await refused("Inicio de sesión", ["--epic", EPIC], 1, "`--epic` y `--slice` van juntos");
+    await refused("Inicio de sesión", ["--slice", "C1"], 1, "`--epic` y `--slice` van juntos");
+    const other = ["--epic", "20200101-ninguna", "--slice", "C1"];
+    await refused("Inicio de sesión", other, 1, "No hay ninguna épica abierta 20200101-ninguna.");
+    await refused(
+      "Exportar",
+      ["--epic", EPIC, "--slice", "C9"],
+      1,
+      `La épica ${EPIC} no tiene el corte C9; sus cortes: C1, C2.`,
+    );
+    await refused(
+      "Panel",
+      ["--epic", EPIC, "--slice", "C2"],
+      2,
+      "El corte C2 depende de cortes que aún no están cerrados: C1.",
+    );
+    expect(await exists(join(home(root), SECOND))).toBe(false);
+
+    expect((await slice("Inicio de sesión", "--epic", EPIC, "--slice", "C1")).code).toBe(0);
+    const created = (await read(join(home(root), FIRST), `.specty/changes/${FIRST}/audit.jsonl`))
+      .trim()
+      .split("\n");
+    expect(JSON.parse(created[0] ?? "{}").data).toMatchObject({ epic: EPIC, slice: "C1" });
+    await refused(
+      "Otra vez",
+      ["--epic", EPIC, "--slice", "C1"],
+      2,
+      `El corte C1 ya tiene un cambio: ${FIRST}, en draft.`,
+    );
+  });
+});
 
 describe("an epic", () => {
   it("lists its slices and moves to acceptance once every one is closed (AC1, AC2)", async () => {
