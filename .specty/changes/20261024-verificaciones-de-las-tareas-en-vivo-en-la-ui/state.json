@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261024-verificaciones-de-las-tareas-en-vivo-en-la-ui",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-verificaciones-de-las-tareas-en-vivo-en-la-ui",
+  "baseCommit": "e864e063e6ad25c932ea4e2d2da4654d881e6f2a",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:193d7576ccfb0f026deb9f8e465f83e4aa2efed2bfd2ed44ca7fb287ab2f1c43",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:16b1dbd83d610c49536eb5f5294a7847a6249862ac735e93b9a3ba333514f135",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:338ad5eb88f7d236ed886da9f55ba48c6380ba41951c497bc62802debc02d3c0",
+    "at": "2026-10-24T15:25:41.070Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
