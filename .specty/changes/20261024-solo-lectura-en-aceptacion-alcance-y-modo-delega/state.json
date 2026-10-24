@@ -31,12 +31,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e8a24e5b28ccc696510c801b18bdea5fc311b4eb",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:29:43.289Z",
       "doneAt": "2026-10-24T10:30:47.428Z",
-      "summary": "Los diálogos de ajustar y aceptar, ResultDialogs y el estado de la verificación completa (FullState, fullStateOf, fullLine) pasan de acceptance-actions.ts a result-dialogs.ts; acceptance-actions.ts se queda con la decisión de la cabecera, y criterion-row.ts y el test importan los diálogos de su archivo"
+      "summary": "Los diálogos de ajustar y aceptar, ResultDialogs y el estado de la verificación completa (FullState, fullStateOf, fullLine) pasan de acceptance-actions.ts a result-dialogs.ts; acceptance-actions.ts se queda con la decisión de la cabecera, y criterion-row.ts y el test importan los diálogos de su archivo",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/data/fixtures.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "fc6560976c2ecbe1229521e16b7fbd23d277fd3b",
+      "startedAt": "2026-10-24T10:30:47.917Z",
+      "doneAt": "2026-10-24T10:33:40.882Z",
+      "summary": "AcceptanceActions desactiva «Pedir ajustes…» y «Aceptar resultado» con el motivo de Decisions y lo muestra bajo los botones en lugar de la línea de la verificación completa; AcceptanceTab solo da canAdjust a los criterios si se puede decidir, así que «No se cumple…» no aparece en solo lectura. FixtureData.readOnly() se ensancha (ampliación S1) para que los tests lo sobrescriban"
     }
   },
   "pending": {
@@ -46,6 +57,7 @@
   "maxIds": {
     "A": 1,
     "AC": 5,
-    "T": 5
+    "T": 5,
+    "S": 1
   }
 }

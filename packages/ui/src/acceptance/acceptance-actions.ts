@@ -8,7 +8,9 @@ import {
   input,
   signal,
 } from "@angular/core";
+import { LucideDynamicIcon, LucideTriangleAlert } from "@lucide/angular";
 import { Button } from "../components/button";
+import { Decisions } from "../data/decisions";
 import type { RunRecord } from "../data/progress";
 import type { ChangeView } from "../data/records";
 import { SpectyData } from "../data/records";
@@ -21,7 +23,7 @@ import { type FullState, fullLine, fullStateOf, ResultDialogs } from "./result-d
  */
 @Component({
   selector: "sp-acceptance-actions",
-  imports: [Button],
+  imports: [LucideDynamicIcon, Button],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: "flex flex-col items-end gap-1.5 max-lg:items-start",
@@ -31,11 +33,17 @@ import { type FullState, fullLine, fullStateOf, ResultDialogs } from "./result-d
   },
   template: `
     <div class="flex flex-wrap gap-2">
-      <sp-button [size]="compact() ? 'sm' : 'md'" (pressed)="dialogs.adjust(change())">{{ t()('Pedir ajustes…', 'Ask for adjustments…') }}</sp-button>
-      <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" (pressed)="dialogs.accept(change(), full)">{{ t()('Aceptar resultado', 'Accept result') }}</sp-button>
+      <sp-button [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked()" (pressed)="dialogs.adjust(change())">{{ t()('Pedir ajustes…', 'Ask for adjustments…') }}</sp-button>
+      <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked()" (pressed)="dialogs.accept(change(), full)">{{ t()('Aceptar resultado', 'Accept result') }}</sp-button>
     </div>
-    @if (!compact() && full(); as state) {
-      <p class="m-0 text-xs" [style.color]="said(state).tone" data-full-hint>{{ said(state).text }}</p>
+    @if (!compact()) {
+      @if (decisions.blocked(); as reason) {
+        <p class="m-0 flex items-center gap-1.5 text-xs" style="color: var(--color-phase-review)" data-blocked>
+          <svg [lucideIcon]="warningIcon" size="13" aria-hidden="true"></svg>{{ reason }}
+        </p>
+      } @else if (full(); as state) {
+        <p class="m-0 text-xs" [style.color]="said(state).tone" data-full-hint>{{ said(state).text }}</p>
+      }
     }
   `,
 })
@@ -45,6 +53,8 @@ export class AcceptanceActions {
   readonly compact = input(false);
 
   protected readonly dialogs = inject(ResultDialogs);
+  protected readonly decisions = inject(Decisions);
+  protected readonly warningIcon = LucideTriangleAlert;
   private readonly source = inject(SpectyData);
   private readonly preferences = inject(Preferences);
   protected readonly t = this.preferences.t;

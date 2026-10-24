@@ -6,6 +6,7 @@ import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import {
   ActionError,
+  type Bilingual,
   type ChangeRecord,
   type CommentAnchor,
   type CommentRecord,
@@ -116,7 +117,7 @@ export class FixtureData extends SpectyData {
   }
 
   /** The prototype takes every decision. */
-  override readOnly(): Promise<undefined> {
+  override readOnly(): Promise<Bilingual | undefined> {
     return Promise.resolve(undefined);
   }
 
