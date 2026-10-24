@@ -46,7 +46,7 @@ Cuando la persona ya pidió cambios, la UI lo muestra. La revisión dice que el 
 
 ## Tareas
 
-- [ ] T1: La vista sabe que se pidieron cambios
+- [x] T1: La vista sabe que se pidieron cambios
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources

@@ -6,6 +6,13 @@
   "branch": "specty/20261024-cambios-pedidos-visibles-en-la-revision",
   "baseCommit": "2606852d2bc240dd0fb6e5e70141d9fdc35152f1",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9c5083f060900f6e153f67fb1f3eb7e22f9da46b191e485f3002131620db868a",
+    "at": "2026-10-24T10:46:04.065Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8a5e3be238cf561e4714e57181c53a1c3d88498f",
+      "startedAt": "2026-10-24T10:46:06.038Z",
+      "doneAt": "2026-10-24T10:48:29.447Z",
+      "summary": "changesRequestedOf (views.ts) deriva de la auditoría si la persona pidió cambios sobre la revisión en revisión (el último spec.proposed o review.changes_requested es una petición); ChangeView.changesRequested lleva revisión y hora, y mientras existe el cambio no espera a la persona (decision vacío). requestChangesIn (sample-records.ts) anota review.changes_requested con los comentarios sin resolver o se niega como el servidor, y FixtureData.requestChanges lo usa"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9c5083f060900f6e153f67fb1f3eb7e22f9da46b191e485f3002131620db868a",
-    "at": "2026-10-24T10:46:04.065Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
