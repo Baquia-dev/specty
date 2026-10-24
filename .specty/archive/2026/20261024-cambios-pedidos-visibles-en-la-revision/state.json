@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261024-cambios-pedidos-visibles-en-la-revision",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-cambios-pedidos-visibles-en-la-revision",
+  "baseCommit": "2606852d2bc240dd0fb6e5e70141d9fdc35152f1",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9c5083f060900f6e153f67fb1f3eb7e22f9da46b191e485f3002131620db868a",
+    "at": "2026-10-24T10:46:04.065Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2d6802f57ca1f0cf6c76a622d21ae51006351ce4c22875fd9b4dde6503cbd6ee",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b9156332477848c4e2f831e4d66503076d3dc05c27e78d6c230f7275b32557db",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8a5e3be238cf561e4714e57181c53a1c3d88498f",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:46:06.038Z",
+      "doneAt": "2026-10-24T10:48:29.447Z",
+      "summary": "changesRequestedOf (views.ts) deriva de la auditoría si la persona pidió cambios sobre la revisión en revisión (el último spec.proposed o review.changes_requested es una petición); ChangeView.changesRequested lleva revisión y hora, y mientras existe el cambio no espera a la persona (decision vacío). requestChangesIn (sample-records.ts) anota review.changes_requested con los comentarios sin resolver o se niega como el servidor, y FixtureData.requestChanges lo usa",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2ddb1c1eebcb150f630931905481614485f8bd22",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:48:29.757Z",
+      "doneAt": "2026-10-24T10:49:43.559Z",
+      "summary": "ReviewActions muestra bajo los botones «Cambios pedidos: el agente prepara la revisión N+1.» (atenuado, con un reloj de arena) cuando la vista trae changesRequested, y lo usa como motivo para desactivar «Pedir cambios»; «Aprobar» sigue disponible",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "b4ed26694828d3ba0da31324fe60d88f7434f091",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:49:43.865Z",
+      "doneAt": "2026-10-24T10:52:00.977Z",
+      "summary": "docs/ui.md: viñeta «Cambios pedidos» en la revisión de spec (el aviso bajo los botones, Pedir cambios desactivado, Aprobar disponible, el cambio espera al agente en la cabecera y la Bandeja, y el prototipo lo anota como el servidor)",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T10:53:01.497Z"
+}

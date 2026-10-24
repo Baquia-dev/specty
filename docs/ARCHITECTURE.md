@@ -415,7 +415,21 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
 - core con cobertura ≥ 90 %;
 - ida y vuelta parser ↔ serializador;
 - todas las transiciones de la máquina de estados;
-- pruebas end-to-end con repositorios git temporales.
+- pruebas end-to-end con repositorios git temporales;
+- ningún SIGUIENTE sin salida, con dos comprobaciones:
+  - estática (`commands-named.test.ts`): cada comando `specty …` que nombran los textos de core y de la CLI, fuera de los comentarios, pasa por el parser de la CLI con su verbo, su subcomando y sus opciones. Los argumentos que falten no cuentan, porque los textos también mencionan comandos sin ellos;
+  - dinámica (`friction.test.ts`, con `walk.ts`): un recorrido hace lo que haría un agente. Ejecuta `next` y luego el comando que nombra cada SIGUIENTE, con el trabajo de cada fase guionizado, y como persona los comandos de la persona. Recorre un cambio quick, uno standard, uno standard con tropiezos y uno en modo delegado. Los tropiezos son código antes de la spec y un commit del agente (ambos en el guard), una spec sin criterios, un archivo fuera del alcance y una verificación en rojo. Cada bloqueo debe quedar resuelto: una salida sin bloqueo en 4 pasos como máximo. Uno sin comando en su SIGUIENTE sería «sin continuación», y uno que no se despeja, «callejón».
+
+**Fricción.** El mismo recorrido cuenta los comandos, y el test fija las cifras. Un cambio que añada o ahorre comandos las cambia a la vista. Línea base (octubre de 2026), en comandos del agente (con `next`) y de la persona:
+
+| Recorrido | Hasta la spec aprobada | Hasta el final | Bloqueos |
+| --- | --- | --- | --- |
+| quick | 3 + 1 | 5 + 2 | 0 |
+| standard | 3 + 1 | 8 + 3 | 0 |
+| standard con tropiezos | 5 + 1 | 15 + 4 | 5, todos resueltos |
+| standard en modo delegado | 4 + 0 | 11 + 0 | 0 |
+
+Dos de esos comandos son un `next` que solo trae la tarjeta siguiente: uno tras `approve` y otro tras `accept` en standard.
 
 **Suite de cumplimiento** (`evals/`): escenarios con agentes reales en modo headless (Claude Code, Codex, Gemini CLI, Cursor CLI…), por ejemplo:
 

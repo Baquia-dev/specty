@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The sample project "Mi colegio" as the source reads it: one record per change, in every phase.
 import type { ChangeState, Phase } from "@baquia-dev/specty-core";
-import type { ChangeRecord } from "./records";
+import { ActionError, type ChangeRecord } from "./records";
 import { asistenciaSample } from "./sample-acceptance";
 import { withHistory } from "./sample-history";
 import { boletinesProgress, loginProgress, withProgress } from "./sample-progress";
@@ -95,4 +95,29 @@ export function sampleRecords(now: number): ChangeRecord[] {
     sample("20261014-chat-docentes", "cancelled", 60 * 72, now),
   ];
   return records.map((record) => withHistory({ ...record, verifyFull: VERIFY_FULL }, now));
+}
+
+/**
+ * The person asks for changes, as the local server does: the unresolved comments go to the agent
+ * in a `review.changes_requested`; with none, and no rejected assumption, there is nothing to ask.
+ */
+export function requestChangesIn(record: ChangeRecord, now: number): ChangeRecord {
+  const { state } = record;
+  const open = (record.comments ?? [])
+    .filter((comment) => comment.resolvedInRevision === undefined)
+    .map((comment) => comment.id);
+  const rejected = Object.values(state.items).some((item) => item.decision === "rejected");
+  if (state.phase !== "review" || (open.length === 0 && !rejected)) {
+    throw new ActionError({
+      es: "No hay comentarios sin resolver ni supuestos rechazados que pedir.",
+      en: "There are no unresolved comments or rejected assumptions to ask for.",
+    });
+  }
+  const entry = {
+    ts: new Date(now).toISOString(),
+    actor: "human" as const,
+    event: "review.changes_requested",
+    data: { revision: state.revision, comments: open },
+  };
+  return { ...record, audit: [...(record.audit ?? []), entry] };
 }

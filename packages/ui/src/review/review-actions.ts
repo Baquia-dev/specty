@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
-import { LucideDynamicIcon, LucideTriangleAlert } from "@lucide/angular";
+import { LucideDynamicIcon, LucideHourglass, LucideTriangleAlert } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
@@ -24,13 +24,18 @@ import { reportFailure } from "./spec-sections";
   },
   template: `
     <div class="flex gap-2">
-      <sp-button [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked() || (openComments() ? '' : t()('Escribe al menos un comentario para pedir cambios.', 'Write at least one comment to request changes.'))" (pressed)="requestChanges()">
+      <sp-button [size]="compact() ? 'sm' : 'md'" [disabledReason]="askWhy()" (pressed)="requestChanges()">
         {{ t()('Pedir cambios', 'Request changes') }}
       </sp-button>
       <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="why()" (pressed)="approve()">
         {{ t()('Aprobar revisión ', 'Approve revision ') }}{{ change().revision }}
       </sp-button>
     </div>
+    @if (!compact() && requested(); as said) {
+      <p class="m-0 flex items-center gap-1.5 text-xs text-text-muted" data-requested>
+        <svg [lucideIcon]="requestedIcon" size="13" aria-hidden="true"></svg>{{ said }}
+      </p>
+    }
     @if (!compact() && why(); as reason) {
       <p class="m-0 flex items-center gap-1.5 text-xs" style="color: var(--color-phase-review)" data-blocked>
         <svg [lucideIcon]="warningIcon" size="13" aria-hidden="true"></svg>{{ reason }}
@@ -50,6 +55,7 @@ export class ReviewActions {
   protected readonly decisions = inject(Decisions);
   protected readonly t = this.preferences.t;
   protected readonly warningIcon = LucideTriangleAlert;
+  protected readonly requestedIcon = LucideHourglass;
 
   protected readonly openComments = computed(
     () => this.change().review.comments.filter((comment) => !comment.resolved).length,
@@ -79,6 +85,28 @@ export class ReviewActions {
   });
   /** Why approving waits: first that nobody can decide here, then what the spec still lacks. */
   protected readonly why = computed(() => this.decisions.blocked() || this.blocked());
+  /** Once the person asked for changes, the agent owes the next revision. */
+  protected readonly requested = computed(() => {
+    const asked = this.change().changesRequested;
+    if (asked === undefined) return "";
+    const next = asked.revision + 1;
+    return this.t()(
+      `Cambios pedidos: el agente prepara la revisión ${next}.`,
+      `Changes requested: the agent is preparing revision ${next}.`,
+    );
+  });
+  /** Why asking for changes waits: nobody decides here, they were asked already, or nothing to ask. */
+  protected readonly askWhy = computed(
+    () =>
+      this.decisions.blocked() ||
+      this.requested() ||
+      (this.openComments() > 0
+        ? ""
+        : this.t()(
+            "Escribe al menos un comentario para pedir cambios.",
+            "Write at least one comment to request changes.",
+          )),
+  );
 
   protected requestChanges(): void {
     this.source.requestChanges(this.change().id).then(() => {

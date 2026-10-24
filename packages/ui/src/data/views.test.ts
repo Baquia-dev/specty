@@ -154,6 +154,27 @@ describe("decisions and tabs", () => {
     ).toBe("closing");
   });
 
+  it("waits for the agent once the person asked for changes, until the next proposal (AC1, AC3)", () => {
+    const step = (ts: string, event: string, revision: number) => ({
+      ts,
+      actor: "human" as const,
+      event,
+      data: { revision },
+    });
+    const asked = [
+      step("2026-10-20T14:00:00Z", "spec.proposed", 1),
+      step("2026-10-20T15:00:00Z", "review.changes_requested", 1),
+    ];
+    const view = deriveView({ ...record({ phase: "review", revision: 1 }), audit: asked });
+    expect([view.decision, view.changesRequested]).toEqual([
+      undefined,
+      { revision: 1, at: "2026-10-20T15:00:00Z" },
+    ]);
+    const proposed = [...asked, step("2026-10-20T16:00:00Z", "spec.proposed", 2)];
+    const next = deriveView({ ...record({ phase: "review", revision: 2 }), audit: proposed });
+    expect([next.decision, next.changesRequested]).toEqual(["review", undefined]);
+  });
+
   it("carries the history from the audit, oldest first", () => {
     expect(deriveView(record()).history).toEqual([]);
     const audit = [

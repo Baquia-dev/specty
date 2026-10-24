@@ -134,12 +134,20 @@ describe("FixtureData actions", () => {
       text: { es: expect.stringContaining("revisión 2") },
     });
     await fixtures.requestChanges(REVIEW);
+    await settle();
+    // Noted as the server does: the change now waits for the agent's next revision (AC4).
+    const asked = store.all().find((change) => change.id === REVIEW);
+    expect([asked?.decision, asked?.changesRequested?.revision]).toEqual([undefined, 2]);
     await fixtures.approve(REVIEW, 2);
     await settle();
     const view = store.all().find((change) => change.id === REVIEW);
     expect(view?.phase).toBe("implementing");
     await expect(fixtures.addComment("20990101-nada", { item: "A1" }, "x")).rejects.toMatchObject({
       text: { en: "There is no change 20990101-nada." },
+    });
+    // Nothing to ask for outside review, or with nothing open (AC4).
+    await expect(fixtures.requestChanges(REVIEW)).rejects.toMatchObject({
+      text: { es: "No hay comentarios sin resolver ni supuestos rechazados que pedir." },
     });
   });
 
