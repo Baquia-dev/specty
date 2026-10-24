@@ -73,3 +73,22 @@ Segunda parte de «Solo lectura en la revisión». Cuando la UI no deja decidir,
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Con «Solo lectura en la revisión», la UI ya no ofrece en ningún sitio decisiones que van a fallar cuando la fuente no deja decidir. «Pedir ajustes…» y «Aceptar resultado» aparecen desactivados con el motivo visible bajo los botones. «Ejecutar» de la verificación completa, «Confirmar y archivar», «Aprobar» y «Rechazar…» de las solicitudes de alcance, y activar o desactivar el modo delegado se desactivan con el motivo en el tooltip. Los criterios dejan de ofrecer «No se cumple…».
+
+### Desviaciones
+
+- `FixtureData.readOnly()` se ensanchó a `Bilingual | undefined` (ampliación S1), para que los tests puedan usar los datos de ejemplo como servidor de solo lectura.
+
+### Decisiones
+
+- Los diálogos del modo delegado se siguen abriendo en solo lectura: muestran desde cuándo y quién lo activó, y solo su confirmación se desactiva.
+- Las solicitudes de alcance desactivan sus botones en vez de ocultarlos, porque la pestaña de progreso no tiene cabecera que explique el solo lectura (A1).
+
+### Pendientes
+
+- Un aviso general de solo lectura en la cabecera de la app, si hiciera falta.

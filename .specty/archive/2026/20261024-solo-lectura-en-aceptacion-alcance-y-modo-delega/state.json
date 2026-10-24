@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-solo-lectura-en-aceptacion-alcance-y-modo-delega",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-solo-lectura-en-aceptacion-alcance-y-modo-delega",
   "baseCommit": "2b3fb269b541dd6522c7acd891af403f2de63aa7",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:583d8e0354263860188bc17ceeef493a71562709df029e18ab05eeeb816f16b4",
@@ -69,12 +69,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f94220ac5c305b301c0f2b06c472f01d929fd314",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:37:41.389Z",
       "doneAt": "2026-10-24T10:40:11.493Z",
-      "summary": "docs/ui.md cuenta cómo se ven en solo lectura la solicitud de alcance (Progreso), la aceptación y la verificación completa (Aceptación), «Confirmar y archivar» (Cierre) y el modo delegado (Armazón)"
+      "summary": "docs/ui.md cuenta cómo se ven en solo lectura la solicitud de alcance (Progreso), la aceptación y la verificación completa (Aceptación), «Confirmar y archivar» (Cierre) y el modo delegado (Armazón)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -86,5 +86,6 @@
     "AC": 5,
     "T": 5,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T10:41:37.380Z"
 }

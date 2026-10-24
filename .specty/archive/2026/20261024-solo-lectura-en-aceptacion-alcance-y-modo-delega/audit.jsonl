@@ -18,3 +18,7 @@
 {"ts":"2026-10-24T10:37:41.390Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T5","baseCommit":"f94220ac5c305b301c0f2b06c472f01d929fd314"}}
 {"ts":"2026-10-24T10:40:11.492Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm check","exit":0,"ms":58874}}
 {"ts":"2026-10-24T10:40:11.494Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"docs/ui.md cuenta cómo se ven en solo lectura la solicitud de alcance (Progreso), la aceptación y la verificación completa (Aceptación), «Confirmar y archivar» (Cierre) y el modo delegado (Armazón)"}}
+{"ts":"2026-10-24T10:41:28.187Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":76203}}
+{"ts":"2026-10-24T10:41:28.191Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T10:41:37.385Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:f7fbfacd58cfec61744ebcd72b67839418b8307587d28cbacafd12e01f1200cb","size":"L","warnings":0}}
+{"ts":"2026-10-24T10:43:29.557Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
