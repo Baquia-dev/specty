@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-capas-de-clean-architecture-con-dependency-cruis",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-capas-de-clean-architecture-con-dependency-cruis",
   "baseCommit": "a9fda3dd8bb770e242c07f781e7bcb985eef5e53",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a76154fba838b7d2a30cdc6d0c1b165fd402b336",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:41:06.275Z",
       "doneAt": "2026-10-24T21:43:48.238Z",
-      "summary": "check/layers.ts: layersProvider ejecuta el depcruise del proyecto (sin config, con tsconfig) y pasa sus imports al core; línea de cada import, solo las añadidas; sin depcruise no corre. Probado con dependency-cruiser 18.7.0 real: alias, npm y node:fs."
+      "summary": "check/layers.ts: layersProvider ejecuta el depcruise del proyecto (sin config, con tsconfig) y pasa sus imports al core; línea de cada import, solo las añadidas; sin depcruise no corre. Probado con dependency-cruiser 18.7.0 real: alias, npm y node:fs.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d60dea41e4eabb8f791304abce826fa2ba65785d",
+      "startedAt": "2026-10-24T21:43:48.540Z",
+      "doneAt": "2026-10-24T21:46:02.556Z",
+      "summary": "formats §6 documenta checks.layers (ejemplo de Clean Architecture, may, forbiddenPackages, primera capa) y la verificación layers con dependency-cruiser; ARCHITECTURE la añade a la fila de specty check."
     }
   },
   "pending": {

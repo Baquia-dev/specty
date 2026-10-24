@@ -63,7 +63,7 @@ La configuración define las capas del proyecto (`checks.layers`: las rutas de c
   - files: packages/cli/src/check/layers.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-layers.test.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-layers.test.ts
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm check
