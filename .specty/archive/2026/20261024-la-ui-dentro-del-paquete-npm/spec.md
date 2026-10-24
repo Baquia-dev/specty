@@ -21,3 +21,9 @@ kind: quick
   - files: packages/cli/build.mjs, packages/cli/package.json, packages/cli/test/bundle.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: build
+
+## Cierre
+
+### Resumen
+
+build.mjs acepta --ui <carpeta> (copia la build de la UI a dist/ui y falla sin index.html) y --outdir; una build normal borra dist/ui. El prepack del paquete construye la UI y la copia: npm pack lleva 88 archivos (1,2 MB), con dist/ui/index.html. Test de punta a punta con el bundle sirviendo la UI. ARCHITECTURE §15.
