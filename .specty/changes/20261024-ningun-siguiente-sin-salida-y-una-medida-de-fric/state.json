@@ -6,6 +6,13 @@
   "branch": "specty/20261024-ningun-siguiente-sin-salida-y-una-medida-de-fric",
   "baseCommit": "800f1a4d6f5140b2d7438bee5dd6eebea77c9304",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7699253aca4c37e6fc8c0ce5095cff699d32eae9d21767f5e32a06d0059b30f0",
+    "at": "2026-10-24T10:52:21.936Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -36,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8e709bb737776dc392efdc104a68ddc4e6f895bd",
+      "startedAt": "2026-10-24T10:52:23.260Z",
+      "doneAt": "2026-10-24T10:53:38.157Z",
+      "summary": "commands-named.test.ts: busca en core/src y cli/src, fuera de comentarios, los comandos specty entre comillas invertidas, cambia marcadores por valores y separa alternativas, y los pasa por el parser de la CLI fuera de git; también comprueba que detecta una opción y un verbo inexistentes"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -45,12 +62,5 @@
     "A": 5,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7699253aca4c37e6fc8c0ce5095cff699d32eae9d21767f5e32a06d0059b30f0",
-    "at": "2026-10-24T10:52:21.936Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

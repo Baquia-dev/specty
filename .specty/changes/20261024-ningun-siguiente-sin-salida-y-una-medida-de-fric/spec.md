@@ -49,7 +49,7 @@ Dos comprobaciones de que ninguna salida de Specty deja al agente sin camino. Un
 
 ## Tareas
 
-- [ ] T1: Los comandos que nombran los textos existen
+- [x] T1: Los comandos que nombran los textos existen
   - files: packages/cli/test/commands-named.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/commands-named.test.ts
