@@ -6,6 +6,13 @@
   "branch": "specty/20261024-las-epicas-guian-por-sus-cortes",
   "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:293d65adc46237036bcb4496af1cd2d6580afdd2ec6fbbad687bc36c9cf431a9",
+    "at": "2026-10-24T20:54:55.380Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -34,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "05b082906b3c4622da82899f87839620d695cbbd",
+      "startedAt": "2026-10-24T20:54:55.801Z",
+      "doneAt": "2026-10-24T20:56:43.431Z",
+      "summary": "core/cards/epic.ts: epicCard lista los cortes (cerrado, en curso con su cambio, listo, espera a sus depends pendientes) y propone seguir el corte en curso o empezar el primero listo con new --epic --slice; nunca pide accept. La aceptación lista los cortes. SliceView en ChangeView.slices."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "A": 4,
     "AC": 5,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:293d65adc46237036bcb4496af1cd2d6580afdd2ec6fbbad687bc36c9cf431a9",
-    "at": "2026-10-24T20:54:55.380Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -54,7 +54,7 @@ Una épica aprobada queda en `implementing` para siempre: nada dispara `children
 
 ## Tareas
 
-- [ ] T1: La tarjeta de la épica y los cortes en la aceptación
+- [x] T1: La tarjeta de la épica y los cortes en la aceptación
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/epic.ts, packages/core/src/cards/work.ts, packages/core/src/index.ts, packages/core/test/cards/epic.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/epic.test.ts
