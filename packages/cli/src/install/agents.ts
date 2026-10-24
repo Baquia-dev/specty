@@ -3,9 +3,10 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { applyEdits, modify, parse } from "jsonc-parser";
 import type { GuardTool } from "../enforce/actions";
-import { appendLine, isRecord, readText, writeText } from "../io/files";
+import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
+import { type InstallFiles, installFiles } from "./files";
 
 /**
  * The Claude Code events the guard listens to, with the tools each one covers: before each
@@ -69,6 +70,7 @@ export async function installClaudeCode(
   root: string,
   git: Git,
   invocation: Invocation,
+  files: InstallFiles = installFiles(),
 ): Promise<AgentInstall> {
   const target = invocation.portable ? CLAUDE_SETTINGS : CLAUDE_LOCAL_SETTINGS;
   const other = invocation.portable ? CLAUDE_LOCAL_SETTINGS : CLAUDE_SETTINGS;
@@ -76,14 +78,16 @@ export async function installClaudeCode(
     join(root, other),
     (value) => withHooks(value, CLAUDE_EVENTS, "claude-code", undefined),
     false,
+    files,
   );
   const command = `${invocation.command} guard --tool claude-code`;
   await rewriteJson(
     join(root, target),
     (value) => withClaudePermissions(withHooks(value, CLAUDE_EVENTS, "claude-code", command)),
     true,
+    files,
   );
-  if (!invocation.portable) await excludeLocally(git, target);
+  if (!invocation.portable) await excludeLocally(git, target, files);
   return { file: target, local: !invocation.portable };
 }
 
@@ -95,11 +99,12 @@ export async function installCursor(
   root: string,
   git: Git,
   invocation: Invocation,
+  files: InstallFiles = installFiles(),
 ): Promise<AgentInstall> {
   const file = CURSOR_HOOKS;
   const command = `${invocation.command} guard --tool cursor`;
-  await rewriteJson(join(root, file), (value) => withCursorHooks(value, command), true);
-  if (!invocation.portable) await excludeLocally(git, file);
+  await rewriteJson(join(root, file), (value) => withCursorHooks(value, command), true, files);
+  if (!invocation.portable) await excludeLocally(git, file, files);
   return { file, local: !invocation.portable };
 }
 
@@ -117,10 +122,12 @@ export function codexHooksFile(env: NodeJS.ProcessEnv): string {
 export async function installCodex(
   env: NodeJS.ProcessEnv,
   invocation: Invocation,
+  files: InstallFiles = installFiles(),
 ): Promise<string> {
   const file = codexHooksFile(env);
   const command = `${invocation.command} guard --tool codex`;
-  await rewriteJson(file, (value) => withHooks(value, CODEX_EVENTS, "codex", command), true);
+  const update = (value: Entry) => withHooks(value, CODEX_EVENTS, "codex", command);
+  await rewriteJson(file, update, true, files);
   return file;
 }
 
@@ -223,8 +230,9 @@ async function rewriteJson(
   path: string,
   update: (value: Entry) => Entry,
   create: boolean,
+  files: InstallFiles,
 ): Promise<void> {
-  const text = await readText(path);
+  const text = await files.read(path);
   if (text === undefined && !create) return;
   const source = text ?? "{}\n";
   const parsed: unknown = parse(source);
@@ -238,13 +246,13 @@ async function rewriteJson(
     (current, key) => applyEdits(current, modify(current, [key], after[key], FORMAT)),
     source,
   );
-  await writeText(path, final.endsWith("\n") ? final : `${final}\n`);
+  await files.write(path, final.endsWith("\n") ? final : `${final}\n`);
 }
 
 /** Keeps a machine-specific file out of git without touching `.gitignore`. */
-async function excludeLocally(git: Git, file: string): Promise<void> {
+async function excludeLocally(git: Git, file: string, files: InstallFiles): Promise<void> {
   if (await git.isTracked(file)) return;
   const exclude = await git.gitPath("info/exclude");
-  const text = (await readText(exclude)) ?? "";
-  if (!text.split("\n").includes(`/${file}`)) await appendLine(exclude, `/${file}`);
+  const text = (await files.read(exclude)) ?? "";
+  if (!text.split("\n").includes(`/${file}`)) await files.write(exclude, `${text}/${file}\n`);
 }

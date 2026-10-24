@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod } from "node:fs/promises";
 import { isAbsolute, join, resolve } from "node:path";
 import { parseDocument } from "yaml";
-import { exists, isDirectory, isRecord, parseJson, readText, writeText } from "../io/files";
+import { exists, isDirectory, isRecord, parseJson, readText } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
+import { type InstallFiles, installFiles } from "./files";
 
 export type HookManager = "native" | "husky" | "lefthook" | "simple-git-hooks";
 
@@ -38,16 +38,17 @@ export async function installGitHooks(
   root: string,
   git: Git,
   invocation: Invocation,
+  files: InstallFiles = installFiles(),
 ): Promise<HookInstall> {
   const manager = await detectHookManager(root, git);
   switch (manager) {
     case "husky":
       return {
         manager,
-        files: await writeScripts(join(root, ".husky"), portable(invocation), false),
+        files: await writeScripts(join(root, ".husky"), portable(invocation), false, files),
       };
     case "lefthook":
-      return { manager, files: [await writeLefthook(root, portable(invocation))] };
+      return { manager, files: [await writeLefthook(root, portable(invocation), files)] };
     case "simple-git-hooks":
       return {
         manager,
@@ -57,7 +58,7 @@ export async function installGitHooks(
     case "native":
       return {
         manager,
-        files: await writeScripts(await hooksDirectory(root, git), invocation, true),
+        files: await writeScripts(await hooksDirectory(root, git), invocation, true, files),
       };
   }
 }
@@ -94,13 +95,14 @@ async function writeScripts(
   directory: string,
   invocation: Invocation,
   shebang: boolean,
+  files: InstallFiles,
 ): Promise<string[]> {
   const written: string[] = [];
   for (const hook of GIT_HOOKS) {
     const path = join(directory, hook);
-    const current = (await readText(path)) ?? (shebang ? "#!/bin/sh\n" : "");
-    await writeText(path, upsertShellBlock(current, block(hook, invocation)));
-    await chmod(path, 0o755);
+    const current = (await files.read(path)) ?? (shebang ? "#!/bin/sh\n" : "");
+    const text = upsertShellBlock(current, block(hook, invocation));
+    await files.write(path, text, { executable: true });
     written.push(path);
   }
   return written;
@@ -133,13 +135,17 @@ export function upsertShellBlock(text: string, content: string): string {
   return `${text}${separator}${content}\n`;
 }
 
-async function writeLefthook(root: string, invocation: Invocation): Promise<string> {
+async function writeLefthook(
+  root: string,
+  invocation: Invocation,
+  files: InstallFiles,
+): Promise<string> {
   const candidates = await Promise.all(
     LEFTHOOK_FILES.map(async (file) => ((await exists(join(root, file))) ? file : undefined)),
   );
   const file = candidates.find((candidate) => candidate !== undefined) ?? "lefthook.yml";
   const path = join(root, file);
-  const document = parseDocument((await readText(path)) ?? "");
+  const document = parseDocument((await files.read(path)) ?? "");
   document.setIn(
     ["pre-commit", "commands", "specty", "run"],
     `${invocation.command} hook pre-commit`,
@@ -148,6 +154,6 @@ async function writeLefthook(root: string, invocation: Invocation): Promise<stri
     ["prepare-commit-msg", "commands", "specty", "run"],
     `${invocation.command} hook prepare-commit-msg {1} {2} {3}`,
   );
-  await writeText(path, document.toString());
+  await files.write(path, document.toString());
   return file;
 }

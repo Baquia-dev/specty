@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261024-revision-independiente-del-resultado-antes-de-ac",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-revision-independiente-del-resultado-antes-de-ac",
+  "baseCommit": "72a4e4ae3c2240468f91d830ba14d4cbee53a084",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d4f4a816eca831193a22887038bc7a700ff12d9f0fb8f91da079a12681ea518e",
+    "at": "2026-10-24T15:13:34.967Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3440951e5341b60f191295f5862f93d30b5fcf27106b06c03896b08c47c69ed2",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:9db4b0c8af5929fef2f599a6f34f9047867ac0f7e2c5fdd03d7bb56360371130",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3dfffc07faf4e61ebf351c9055931ba09c5e4c342716b2cc6a9c7ededddca596",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:4d20e2276330ef534c58ad56daddde40aa64471ab18daa0b883c8c6283d9faef",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b4839851ca826b4445f125ad93b81efbd7ec3cf0",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:13:36.048Z",
+      "doneAt": "2026-10-24T15:15:23.142Z",
+      "summary": "diffReviewPrompt (spec y diff, es/en) y ReviewedView.target, con su SIGUIENTE propio para el resultado; ChangeView.recommendReview hace que la tarjeta de aceptación pida specty review antes de la aceptación",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "7b3f50f1690cd090938298a85ca27820ec7f3a06",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:15:23.428Z",
+      "doneAt": "2026-10-24T15:17:13.535Z",
+      "summary": "specty review en aceptación pasa la spec y el diff del cambio (changeDiff) y guarda reviews/diff-<n>.md con target diff; sin diff o con uno demasiado grande lo explica sin ejecutar nada; changeView recomienda la revisión en aceptación para cambios L/XL o con avisos, hasta que una siga a la última tarea",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "58038df28c50503e3c00a194edf2ee3bf7b17066",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:17:14.163Z",
+      "doneAt": "2026-10-24T15:18:48.151Z",
+      "summary": "ADR 0011: la revisión del resultado ya está; ARCHITECTURE: specty review también en aceptación; formats.md: reviews/diff-<n>.md y target diff",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T15:20:15.664Z"
+}

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
 import { join } from "node:path";
-import { writeText } from "../io/files";
 import type { Invocation } from "../session";
+import { type InstallFiles, installFiles } from "./files";
 
 /**
  * Specty's plugin in OpenCode's global configuration (`$XDG_CONFIG_HOME/opencode`, or
@@ -17,9 +17,10 @@ export function opencodePluginFile(env: NodeJS.ProcessEnv): string {
 export async function installOpencode(
   env: NodeJS.ProcessEnv,
   invocation: Invocation,
+  files: InstallFiles = installFiles(),
 ): Promise<string> {
   const file = opencodePluginFile(env);
-  await writeText(file, opencodePlugin(`${invocation.command} guard --tool opencode`));
+  await files.write(file, opencodePlugin(`${invocation.command} guard --tool opencode`));
   return file;
 }
 

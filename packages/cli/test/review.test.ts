@@ -4,7 +4,17 @@ import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { CHANGE, CONFIG, cli, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import {
+  CHANGE,
+  CONFIG,
+  cli,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
 
 const DIR = `.specty/changes/${CHANGE}`;
 /** SPEC touching a sensitive path, so propose recommends the review. */
@@ -87,5 +97,39 @@ describe("specty review", () => {
     expect(failed.out).toContain('La revisión falló (`node -e "process.exit(3)"`, código 3).');
     expect(existsSync(join(root, DIR, "reviews"))).toBe(false);
     expect((await cli(root, ["next"])).out).toContain(`SPECTY · ${CHANGE} · review`);
+  });
+});
+
+describe("specty review of the result", () => {
+  it("is recommended in acceptance after a risky task, and reviews the change's diff", async () => {
+    const { command, prompt } = await reviewer();
+    const root = await repo(command);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    // A small, plain spec: no review before the approval.
+    expect((await cli(root, ["propose"])).out).not.toContain("specty review");
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    await cli(root, ["next"]);
+    await writeFiles(root, { "src/app.ts": "export const greet = (input) => eval(input);\n" });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Uno"])).code).toBe(0);
+    await writeFiles(root, { "src/app.ts": "export const greet = (name) => name;\n" });
+    expect((await cli(root, ["task", "done", "T2", "--summary", "Dos"])).code).toBe(0);
+    expect((await cli(root, ["next"])).out).toContain(
+      "SIGUIENTE: antes de pedir la aceptación, ejecuta `specty review`",
+    );
+    const reviewed = await cli(root, ["review"]);
+    expect(reviewed.code).toBe(0);
+    expect(reviewed.out).toContain(`Guardada en ${DIR}/reviews/diff-1.md.`);
+    expect(reviewed.out).toContain("pídele que acepte con `specty accept`");
+    const sent = await readFile(prompt, "utf8");
+    expect(sent).toContain("Eres un revisor independiente de un cambio de código");
+    expect(sent).toContain("<diff>\ndiff --git a/src/app.ts b/src/app.ts");
+    expect(sent).not.toContain(".specty/changes");
+    const audit = (await read(root, `${DIR}/audit.jsonl`)).trim().split("\n");
+    expect(JSON.parse(audit.at(-1) ?? "{}")).toMatchObject({
+      event: "review.completed",
+      data: { target: "diff", file: `${DIR}/reviews/diff-1.md` },
+    });
+    // Reviewed after the last task: the card asks for the acceptance again.
+    expect((await cli(root, ["next"])).out).toContain("lo acepte con `specty accept`");
   });
 });

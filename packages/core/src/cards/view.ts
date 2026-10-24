@@ -109,6 +109,8 @@ export interface ChangeView {
   readonly request?: string;
   /** While drafting, what each change in `follows` left for this one. */
   readonly carried?: readonly CarriedView[];
+  /** In acceptance, an independent review of the result (ADR 0011) should come first. */
+  readonly recommendReview?: boolean;
   readonly closingSubmitted: boolean;
   /** `spec.md` no longer matches the approved revision. */
   readonly specChanged: boolean;

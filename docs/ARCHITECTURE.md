@@ -111,7 +111,7 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty next` | Todas | Dice qué toca ahora. En `implementing` activa la siguiente tarea y devuelve su tarjeta; en el resto es de solo lectura |
 | `specty new "<título>" [--request "<petición literal>"] [--kind] [--follows <id>] [--epic <id> --slice C1] [--from <rama>]` | Siempre (sin worktrees: sin cambio activo) | Crea el cambio, la rama y el esqueleto de la spec en una worktree nueva y preparada (§9). Con `git.worktrees: false`, en la carpeta actual, salvo con `--worktree`. `--request` guarda la petición del usuario tal cual en `change.created`, y la tarjeta del borrador se la muestra al agente: la spec responde a lo que se pidió, no a una paráfrasis |
 | `specty propose` | draft, review, adjusting, closing | Valida la spec; calcula tamaño, delta y esfuerzo recomendado; la envía a revisión. Si la persona configuró `review.command` y la spec es L, XL o sensible, pide antes `specty review`, una vez por cambio |
-| `specty review` | review | Pasa la spec a la revisión independiente que configuró la persona ([ADR 0011](decisions/0011-revision-independiente.md)): otro modelo, sin herramientas ni más contexto que la spec. Guarda la respuesta en `reviews/` y la muestra; el agente corrige lo que sea real o se lo cuenta al usuario. Es información: no cambia la fase |
+| `specty review` | review, acceptance | Pasa a la revisión independiente que configuró la persona ([ADR 0011](decisions/0011-revision-independiente.md)) la spec, en revisión, o la spec y el diff de todo el cambio, en aceptación: otro modelo, sin herramientas ni más contexto. Guarda la respuesta en `reviews/` y la muestra; el agente corrige lo que sea real o se lo cuenta al usuario. La tarjeta de aceptación la pide para cambios L o XL o con avisos de aserciones o riesgos. Es información: no cambia la fase |
 | `specty task done <T> --summary "<texto>" [--finding "<texto>"]` | implementing | Comprueba el alcance, ejecuta `verify.quick` (si existe) y el `verify` de la tarea, hace el commit y avanza. Cada `--finding` queda para las tareas y los cambios siguientes (§7) |
 | `specty scope add <ruta…> --task <T> --reason "<texto>"` | implementing | Pide ampliar el alcance; se aprueba sola si la política lo permite |
 | `specty adjust "<petición literal>"` | acceptance | Registra la petición y devuelve el protocolo de clasificación |
@@ -378,6 +378,8 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
    - los hooks de git;
    - opcionalmente, el workflow de CI.
 5. Termina con `specty doctor`.
+
+Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiaría (solo los que cambiarían de verdad), sin escribir nada ni hacer commit. Sin `--dry-run`, antes de cambiar un archivo que ya existía, `init` guarda una copia en la carpeta común de git (`common/specty/backups/<fecha>/`, ver [formats.md §1](formats.md#1-estructura)) y la salida dice dónde; si todo lo que escribe es nuevo, no crea la carpeta. Los instaladores escriben a través de `install/files.ts`, que simula, compara y copia.
 
 **Proyecto nuevo**:
 

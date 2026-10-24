@@ -166,15 +166,20 @@ export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
       ]),
     ],
     next:
-      ctx.delegated === true
+      change.recommendReview === true
         ? t(
-            `modo delegado: acepta tú el resultado con \`${ctx.command} accept\` y sigue su salida. Si el usuario pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
-            `delegated mode: accept the result yourself with \`${ctx.command} accept\` and follow its output. If the user asks for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
+            `antes de pedir la aceptación, ejecuta \`${ctx.command} review\`: una revisión independiente del resultado con un modelo más fuerte.`,
+            `before asking for the acceptance, run \`${ctx.command} review\`: an independent review of the result by a stronger model.`,
           )
-        : t(
-            `pide al usuario que revise el resultado y lo acepte con \`${ctx.command} accept\`. Si pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
-            `ask the user to review the result and accept it with \`${ctx.command} accept\`. If they ask for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
-          ),
+        : ctx.delegated === true
+          ? t(
+              `modo delegado: acepta tú el resultado con \`${ctx.command} accept\` y sigue su salida. Si el usuario pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
+              `delegated mode: accept the result yourself with \`${ctx.command} accept\` and follow its output. If the user asks for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
+            )
+          : t(
+              `pide al usuario que revise el resultado y lo acepte con \`${ctx.command} accept\`. Si pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
+              `ask the user to review the result and accept it with \`${ctx.command} accept\`. If they ask for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
+            ),
   };
 }
 

@@ -14,7 +14,7 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 │  ├─ audit.jsonl              # eventos que git no puede derivar (solo se añaden líneas)
 │  ├─ comments.json            # hilos de revisión de la UI
 │  ├─ revisions/r1.md, r2.md…  # instantánea de cada revisión propuesta
-│  └─ reviews/spec-r1.md…      # respuesta de la revisión independiente (ADR 0011), protegida
+│  └─ reviews/spec-r1.md, diff-1.md…  # respuestas de la revisión independiente (ADR 0011), protegidas
 └─ archive/<año>/<id>/         # cambios cerrados o cancelados, misma estructura
 
 .git/specty/                   # local, por worktree, nunca versionado
@@ -24,7 +24,11 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 └─ server.json                 # puerto y token de la UI en ejecución
 
 .git/common/specty/            # local, compartido por todas las worktrees, nunca versionado
-└─ delegated.json              # modo delegado activo (ADR 0010): { "by", "at" }, quién lo activó y cuándo
+├─ delegated.json              # modo delegado activo (ADR 0010): { "by", "at" }, quién lo activó y cuándo
+└─ backups/<fecha>/            # lo que había antes de que `init` lo cambiara (una carpeta por ejecución)
+   ├─ repo/<ruta>              # copia de un archivo del repositorio
+   ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
+   └─ manifest.json            # [{ "path", "created", "copy"? }]: cada archivo creado o cambiado
 ```
 
 ### Identificadores
@@ -237,7 +241,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
-| `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |
+| `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec` o `diff`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |
 | `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta o por el servidor local cuando la persona la lanza desde la UI (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, y las últimas 10 líneas si falló |
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | hash del índice, modo (`agent` o `minimal`) |
@@ -326,7 +330,7 @@ review:
   timeoutSec: 600                 # opcional; sin la clave, el de verify
 ```
 
-`specty review` le pasa a `command` por la entrada estándar las instrucciones y la spec, y guarda su salida en `reviews/spec-r<revisión>.md`. Sin `review`, Specty no recomienda ni ejecuta revisiones.
+`specty review` le pasa a `command` por la entrada estándar las instrucciones y la spec, y guarda su salida en `reviews/spec-r<revisión>.md`. En aceptación le pasa también el diff de todo el cambio, y la salida va a `reviews/diff-<n>.md`, con `n` el número de la revisión del resultado. Sin `review`, Specty no recomienda ni ejecuta revisiones.
 
 `verify.quick` es una comprobación rápida de todo el repositorio, como el formato o el tamaño de los archivos, que `task done` ejecuta antes de la verificación de cada tarea. Las dos van en un solo comando, `<quick> && <verify>`, que es también el que muestra la tarjeta de la tarea. Así un fallo aparece en la tarea que lo causó, no en otra posterior ni al aceptar. Sin la clave, cada tarea ejecuta solo su verificación.
 

@@ -267,7 +267,8 @@ export async function runCli(
     .description("set up Specty in this repository")
     .option("--language <lang>", "es or en")
     .option("--tools <list>", "comma-separated agent tools, for example claude-code,cursor")
-    .action(async (options: { language?: string; tools?: string }) => {
+    .option("--dry-run", "only list what init would create or change")
+    .action(async (options: { language?: string; tools?: string; dryRun?: boolean }) => {
       const { output, lang } = await initCommand(environment, options);
       emit(output, lang);
     });

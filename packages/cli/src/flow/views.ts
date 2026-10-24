@@ -91,6 +91,9 @@ export async function changeView(session: Session, change: StoredChange): Promis
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     ...(state.phase === "draft" ? request(audit) : {}),
     ...(state.phase === "draft" ? await carriedOf(session, spec.frontmatter.follows) : {}),
+    ...(state.phase === "acceptance" && resultReview(session, change, tasks, audit)
+      ? { recommendReview: true }
+      : {}),
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specChanged:
       state.phase === "implementing" &&
@@ -173,6 +176,29 @@ function findingsByTask(audit: Audit): ReadonlyMap<string, TaskFindings> {
 
 function listOf(value: unknown): Record<string, unknown>[] {
   return Array.isArray(value) ? value.filter((item: unknown) => isRecord(item)) : [];
+}
+
+/**
+ * An independent review of the result (ADR 0011) comes before the acceptance of a large change,
+ * or of one whose tasks removed assertions or added risks, until one follows its last task.
+ */
+function resultReview(
+  session: Session,
+  change: StoredChange,
+  tasks: readonly TaskView[],
+  audit: Audit,
+): boolean {
+  if (session.config.review === undefined) return false;
+  const level = change.state.size?.level;
+  const warned = tasks.some(
+    (task) => (task.risks?.length ?? 0) > 0 || (task.removedAssertions?.length ?? 0) > 0,
+  );
+  if (level !== "L" && level !== "XL" && !warned) return false;
+  const lastTask = audit.findLastIndex((entry) => entry.event === "task.completed");
+  const lastReview = audit.findLastIndex(
+    (entry) => entry.event === "review.completed" && dataOf(entry).target === "diff",
+  );
+  return lastReview < lastTask;
 }
 
 function criteriaOf(spec: Spec, ac: readonly string[] | "none" | undefined): TaskView["criteria"] {
