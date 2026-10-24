@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-tests-del-servidor-sin-carreras-de-tiempo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-tests-del-servidor-sin-carreras-de-tiempo",
   "baseCommit": "3fa960c092121873d0c353f84ecc06ae24012b22",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:7ca19681581f38e8d50356bf487f7a0eb4528855e2f451702dbd1c0037a63daa",
@@ -39,12 +39,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1f2f900fe1799584497ec74d4aca034772aad9fc",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:47:44.248Z",
       "doneAt": "2026-10-24T15:52:50.947Z",
-      "summary": "server/runs.ts: al terminar una verificación completa, si hay líneas sin avisar, las envía en un run antes de anotar el resultado y del run: null. Los tests esperan lo que comprueban, con límite en tiempo real: live-run.test.ts la primera línea en el archivo (con sleep 2 de margen), server/live.test.ts que el servidor borre el archivo del proceso muerto, y verify.test.ts la salida que empieza por «uno». Con carga (la suite de la CLI junto a todos los tests de la carpeta principal, carga 36) pasa entera dos veces"
+      "summary": "server/runs.ts: al terminar una verificación completa, si hay líneas sin avisar, las envía en un run antes de anotar el resultado y del run: null. Los tests esperan lo que comprueban, con límite en tiempo real: live-run.test.ts la primera línea en el archivo (con sleep 2 de margen), server/live.test.ts que el servidor borre el archivo del proceso muerto, y verify.test.ts la salida que empieza por «uno». Con carga (la suite de la CLI junto a todos los tests de la carpeta principal, carga 36) pasa entera dos veces",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -55,5 +55,6 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:54:18.733Z"
 }

@@ -50,3 +50,24 @@ La causa es una carrera que también tiene el producto. El servidor envía el pr
   - files: packages/cli/src/server/runs.ts, packages/cli/test/live-run.test.ts, packages/cli/test/server/live.test.ts, packages/cli/test/server/verify.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/live-run.test.ts test/server && pnpm sources
+
+## Cierre
+
+### Resumen
+
+El test sensible a los tiempos era «tells its listeners when a change moves» (`test/server.test.ts`), y la carrera era también del servidor. Enviaba el primer `changes` antes de tomar su foto inicial de los archivos. Bajo carga, esa foto terminaba después de un cambio, que quedaba dentro de ella y nadie oía; el test esperaba hasta agotar su `until`, que contaba vueltas y no tiempo real (39 s). Al quitar la espera fija de 200 ms, el test fallaba 2 de 3 veces sin el arreglo. Con él, cada oyente oye su primer `changes` cuando la foto ya está hecha, y el test pasa 5 de 5.
+
+Además se quitaron otras esperas fijas: los tests de la ejecución en vivo esperan a que ocurra lo que comprueban, y una verificación completa envía sus últimas líneas antes de terminar. Bajo carga (la suite de la CLI junto a todos los tests de la carpeta principal) pasó entera dos veces.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El arreglo de fondo va en el servidor, no solo en el test. Si un archivo cambiaba entre la primera lectura de la UI y la foto inicial, la UI tampoco lo oía. En el peor caso ahora llega un `changes` de más, que solo hace releer.
+- Los límites de espera de los tests son de 20 s en tiempo real: en una máquina cargada, cada vuelta de un bucle tarda mucho más de lo que dice.
+
+### Pendientes
+
+- ARCHITECTURE §15 dice que `/api/events` emite `changes` «al conectarse». Ahora es al tener la foto inicial, unos milisegundos después; conviene precisarlo en el próximo cambio que toque esa sección.
