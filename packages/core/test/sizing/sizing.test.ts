@@ -59,6 +59,37 @@ describe("computeSize", () => {
     expect(governed.signals.modules).toEqual(["analytics", "docs", "home", "lib"]);
   });
 
+  it("counts a glob as its current matches plus one, and a repeated path once", () => {
+    const text = STANDARD.replace(
+      "\n## Tareas",
+      "- modificar lib/features/home/** — vista\n- borrar test/old/** — tests viejos\n\n## Tareas",
+    );
+    const globMatches = {
+      "lib/features/home/**": [
+        "lib/features/home/home_estudiante_provider.dart",
+        "lib/features/home/home_page.dart",
+      ],
+      "test/old/**": ["test/old/a_test.dart"],
+    };
+    const size = computeSize(specOf(text), DEFAULT_CONFIG, { globMatches });
+    // The provider is listed by name and matched by the glob: it counts once.
+    expect(size.signals.files).toEqual({ create: 1, modify: 4, delete: 2, rename: 0 });
+    expect(size.signals.fileCount).toBe(7);
+    expect(size.signals.codeFiles).toBe(4);
+    // A glob without matches, or without repository data, counts one.
+    expect(computeSize(specOf(text), DEFAULT_CONFIG).signals.fileCount).toBe(5);
+  });
+
+  it("counts as code files only governed paths that are not tests", () => {
+    const text = STANDARD.replace(
+      "\n## Tareas",
+      "- modificar docs/ARCHITECTURE.md — diseño\n- modificar pubspec.yaml — dependencia\n\n## Tareas",
+    );
+    const size = computeSize(specOf(text), DEFAULT_CONFIG);
+    expect(size.signals.fileCount).toBe(5);
+    expect(size.signals.codeFiles).toBe(3);
+  });
+
   it("weighs sensitive paths and dependency changes", () => {
     const text = STANDARD.replace(
       "\n## Tareas",

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { matchesAny } from "../glob";
 import { fold } from "../i18n";
+import { collectSignals } from "../sizing/size";
 import { SECTION_ORDER, type SectionKey, type Spec } from "../spec/model";
 import { KIND_RULES, SECTION_TITLES } from "../spec/vocabulary";
 import { type Rule, report, sectionLine } from "./context";
@@ -82,16 +83,18 @@ export const checkSpikeClosing: Rule = (spec, ctx, lang) => {
       ];
 };
 
-/** The quick lane: one task, few files, no sensitive paths. */
+/** The quick lane: one task, few code files, no sensitive paths. */
 export const checkQuickLane: Rule = (spec, ctx, lang) => {
   if (spec.frontmatter.kind !== "quick") return [];
   const files = spec.sections.files?.items ?? [];
   const tasks = spec.sections.tasks?.items.length ?? 0;
   const limit = ctx.config.lanes.quick.maxFiles;
+  // Tests and documentation ride along; a glob counts its matches, as in the split limit.
+  const { codeFiles } = collectSignals(spec, ctx.config, ctx.repo);
   const sensitive = files.some((entry) => matchesAny(entry.path, ctx.config.sensitive));
   const problems: QuickProblem[] = [
     ...(tasks > 1 ? [{ kind: "tasks", value: tasks } as const] : []),
-    ...(files.length > limit ? [{ kind: "files", value: files.length, max: limit } as const] : []),
+    ...(codeFiles > limit ? [{ kind: "files", value: codeFiles, max: limit } as const] : []),
     ...(sensitive ? [{ kind: "sensitive" } as const] : []),
   ];
   if (problems.length === 0) return [];

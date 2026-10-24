@@ -40,6 +40,8 @@ export interface Git {
   commit(message: string, paths?: readonly string[]): Promise<string>;
   operationInProgress(): Promise<boolean>;
   isTracked(path: string): Promise<boolean>;
+  /** Repository-relative files git tracks, plus the untracked ones it does not ignore. */
+  files(): Promise<string[]>;
   /** The repository-relative `paths` that git ignores and does not track. */
   ignored(paths: readonly string[]): Promise<string[]>;
   config(key: string): Promise<string | undefined>;
@@ -168,6 +170,14 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
     },
     async isTracked(path) {
       return (await run(["ls-files", "--error-unmatch", "--", path])).code === 0;
+    },
+    async files() {
+      const paths = (await output(["ls-files", "-z", "--cached", "--others", "--exclude-standard"]))
+        .split("\0")
+        // A nested repository or worktree is listed as `dir/`: it is not a file of this one.
+        .filter((path) => path.length > 0 && !path.endsWith("/"));
+      // An unmerged path is listed once per stage.
+      return [...new Set(paths)];
     },
     async ignored(paths) {
       if (paths.length === 0) return [];

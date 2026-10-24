@@ -94,7 +94,7 @@ describe("size and limit texts", () => {
 
   it("formats breaches and quick-lane problems in both languages", () => {
     expect(formatBreach({ metric: "files", value: 16, max: 15 }, "es")).toBe(
-      "16 archivos, máximo 15",
+      "16 archivos de código, máximo 15",
     );
     expect(formatBreach({ metric: "modules", value: 3, max: 2 }, "en")).toBe("3 modules, max 2");
     expect(formatBreach({ metric: "level", value: "XL" }, "es")).toBe("tamaño XL");
@@ -103,7 +103,7 @@ describe("size and limit texts", () => {
       "2 tareas; quick admite una",
     );
     expect(formatQuickProblem({ kind: "files", value: 4, max: 3 }, "es")).toBe(
-      "4 archivos, máximo 3",
+      "4 archivos de código, máximo 3",
     );
     expect(formatQuickProblem({ kind: "sensitive" }, "es")).toBe("toca rutas sensibles");
   });
