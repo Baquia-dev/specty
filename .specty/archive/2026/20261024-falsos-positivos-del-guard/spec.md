@@ -67,3 +67,25 @@ El guard deja de bloquear tres comandos legítimos que hoy para: leer `core.hook
 
 - R1: Tomar por subshell un paréntesis que no lo es haría analizar como comando algo que no lo es, o perder un `cd` — los paréntesis de la aritmética siguen dentro de ella, un `)` sin pareja no mueve la carpeta, y AC6 prueba que el `cd` de un subshell no se escapa.
 - R2: Un commit de este repositorio tomado por uno de fuera se colaría — solo cuenta como de fuera si su carpeta se puede nombrar y está fuera de todas las worktrees (A1, A3), y los recibos del `pre-commit` siguen parando cualquier commit sin `task done`.
+
+## Cierre
+
+### Resumen
+
+El guard deja de bloquear los tres comandos legítimos. `tokenize` saca `(` y `)` como piezas propias fuera de la aritmética, así que `2>&1)` termina en `&1` y ya no es una escritura, y lo que corre en un subshell o una sustitución se analiza: `(git commit -m x)` y `echo $(git commit -m x)`, que antes se colaban, se bloquean como el commit solo. `analyzeShell` guarda la carpeta al abrir cada subshell y la recupera al cerrarlo, y anota en cada commit la carpeta a la que lo llevan un `cd` o `git -C`. El guard del CLI no cuenta un commit cuya carpeta queda fuera de todas las worktrees. `git config` solo cuenta como saltarse los hooks si cambia `core.hooksPath`.
+
+### Desviaciones
+
+- **Ninguna respecto al plan.** Tratar los subshells, como preveía el Diseño, cierra además dos falsos negativos (`(git commit …)` y `$(git commit …)`); tienen su test.
+
+### Decisiones
+
+- **Piezas en vez de una profundidad por comando:** con `"("` y `")"` en la salida, dos subshells hermanos (`(cd a); (git commit)`) no comparten la carpeta, cosa que una profundidad no distingue.
+- **El análisis de git en `guard/git.ts`:** `shell.ts` se habría pasado de 300 líneas.
+- **Un `git config` lee si su primer operando es `get` o `list`, si lleva `--get*` o `--list`, o si solo nombra la clave;** los subcomandos se miran solo en el primer operando, para que `git config core.hooksPath get` (que pone el valor `get`) siga contando como cambio.
+- **`git -c core.hooksPath=… config --get …` sigue bloqueado:** el `-c` cambia los hooks de ese comando, sea cual sea.
+
+### Pendientes
+
+- **Grupos con llaves** (`{ …; }`): el programa se sigue leyendo como `{`, así que `{ git commit -m x; }` se cuela en el guard; los recibos del `pre-commit` lo paran.
+- **Sustituciones dentro de comillas dobles** y comillas invertidas: siguen sin analizarse.
