@@ -38,7 +38,7 @@ En cada cambio, la verificación completa (`pnpm check` en este repositorio, var
 
 ## Tareas
 
-- [ ] T1: Cada verificación anota el código sobre el que corrió
+- [x] T1: Cada verificación anota el código sobre el que corrió
   - files: packages/cli/src/flow/verified.ts, packages/cli/src/flow/task-done.ts, packages/cli/src/server/runs.ts, packages/cli/test/reuse.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/reuse.test.ts test/server.test.ts

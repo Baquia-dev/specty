@@ -6,6 +6,13 @@
   "branch": "specty/20261024-la-verificacion-completa-no-se-repite-sobre-el-m",
   "baseCommit": "f5e3eba3bf60f169b3d9f7a14af990ea729a9c5e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a2a7019a2936622f2ad591cac8ded3b473adbab7c64951dbea89e7d0d4f110de",
+    "at": "2026-10-24T21:30:56.287Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ac9f033ffda5415401a8070789943b5e34f728ff",
+      "startedAt": "2026-10-24T21:30:57.496Z",
+      "doneAt": "2026-10-24T21:34:14.372Z",
+      "summary": "codeTree (flow/verified.ts): hash del árbol de trabajo sin .specty, tomado sin tocar el índice antes de verificar. task.verified y change.verified (accept y la UI) lo guardan como tree."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -37,12 +54,5 @@
     "A": 3,
     "AC": 4,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a2a7019a2936622f2ad591cac8ded3b473adbab7c64951dbea89e7d0d4f110de",
-    "at": "2026-10-24T21:30:56.287Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

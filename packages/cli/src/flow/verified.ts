@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { hashText } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import { appendAudit, type StoredChange } from "../store/changes";
 import { auditEntry } from "./active";
@@ -10,6 +11,8 @@ export interface FullRun {
   readonly code: number | undefined;
   readonly ms: number;
   readonly output: readonly string[];
+  /** The code it ran on (`codeTree`), when it could be read. */
+  readonly tree?: string;
 }
 
 /**
@@ -27,7 +30,27 @@ export function recordFullVerification(
       cmd: run.command,
       exit: run.code ?? null,
       ms: run.ms,
+      ...(run.tree === undefined ? {} : { tree: run.tree }),
       ...(run.code === 0 ? {} : { outputTail: run.output.slice(-10) }),
     }),
   );
+}
+
+/**
+ * The code a verification runs on: the working tree without `.specty/`, whose files change with
+ * every record. A hash of its top-level entries, taken without touching the index; undefined when
+ * git cannot tell.
+ */
+export async function codeTree(session: Session): Promise<string | undefined> {
+  try {
+    const tree = await session.git.treeWith(["."]);
+    const listed = await session.git.run(["ls-tree", tree]);
+    if (listed.code !== 0) return undefined;
+    const entries = listed.stdout
+      .split("\n")
+      .filter((line) => line !== "" && !line.endsWith("\t.specty"));
+    return hashText(entries.join("\n"));
+  } catch {
+    return undefined;
+  }
 }

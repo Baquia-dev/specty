@@ -56,7 +56,13 @@ describe("the full verification from the local server", () => {
       expect((await audit(root)).at(-1)).toMatchObject({
         actor: "specty",
         event: "change.verified",
-        data: { cmd: SLOW, exit: 0, ms: expect.any(Number) },
+        // With the code it ran on, so that `accept` need not run it again.
+        data: {
+          cmd: SLOW,
+          exit: 0,
+          ms: expect.any(Number),
+          tree: expect.stringMatching(/^sha256:/),
+        },
       });
       expect((await call(server.port, path("run"), headers)).body).toBe("null");
     } finally {
