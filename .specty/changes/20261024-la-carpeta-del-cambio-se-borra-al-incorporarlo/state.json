@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-la-carpeta-del-cambio-se-borra-al-incorporarlo",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-la-carpeta-del-cambio-se-borra-al-incorporarlo",
+  "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:457686cc63a38630b23181840dc688995f850bd88e5809dcd54bcd22f8b6027e",
+    "at": "2026-10-24T16:11:35.222Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
