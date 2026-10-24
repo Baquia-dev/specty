@@ -62,7 +62,7 @@ El servidor de `specty ui` deja de ser solo de lectura cuando lo arranca la pers
   - files: packages/cli/src/server/actions.ts, packages/cli/src/server/http.ts, packages/cli/src/commands/ui.ts, packages/cli/test/server-actions.test.ts
   - ac: AC1, AC2, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-actions.test.ts test/server.test.ts
-- [ ] T3: Documentar las acciones
+- [x] T3: Documentar las acciones
   - files: docs/ARCHITECTURE.md, docs/ui.md
   - ac: —
   - verify: pnpm check

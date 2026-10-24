@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-acciones-de-la-persona-en-el-servidor-local",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-acciones-de-la-persona-en-el-servidor-local",
   "baseCommit": "f6888d6092f5ff46564993e99d71a59c0ab6c500",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0a51d6076e74655c2913103377e09b15a0e96e2b",
+      "attempts": 1,
       "startedAt": "2026-10-24T05:29:35.156Z",
       "doneAt": "2026-10-24T05:34:51.303Z",
-      "summary": "server/actions.ts lee cada acción de su ruta y su cuerpo y la ejecuta con el comando de la CLI (approve, approve/reject --scope, accept sin preguntar por la verificación, adjust, close) o con decideAssumption, en la carpeta del cambio y con una terminal de la UI (canal ui); antes de aprobar comprueba la revisión y los supuestos de alto impacto; http.ts añade GET /api/session, el token CSRF, Origin obligatorio y las acciones de una en una (200 o 409); specty ui solo las habilita si lo arranca la persona"
+      "summary": "server/actions.ts lee cada acción de su ruta y su cuerpo y la ejecuta con el comando de la CLI (approve, approve/reject --scope, accept sin preguntar por la verificación, adjust, close) o con decideAssumption, en la carpeta del cambio y con una terminal de la UI (canal ui); antes de aprobar comprueba la revisión y los supuestos de alto impacto; http.ts añade GET /api/session, el token CSRF, Origin obligatorio y las acciones de una en una (200 o 409); specty ui solo las habilita si lo arranca la persona",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02d7a3b73ca7b78c5c789dbbc70d9f451d583c9e",
+      "startedAt": "2026-10-24T05:34:51.656Z",
+      "doneAt": "2026-10-24T05:37:25.224Z",
+      "summary": "ARCHITECTURE §15 cuenta las acciones (quién puede, /api/session, CSRF, rutas, cómo se ejecutan y qué responden) y deja pendiente que la UI las llame; ui.md: solo se decide desde la UI si la persona arrancó specty ui"
     }
   },
   "pending": {

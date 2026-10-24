@@ -171,5 +171,6 @@ Decidido en el [ADR 0009](decisions/0009-angular-para-la-ui.md):
 
 - El servidor escucha solo en `127.0.0.1`.
 - Usa un token de sesión, comprueba `Host` y `Origin` (contra DNS rebinding), exige un token CSRF en las mutaciones y no habilita CORS.
+- Solo se decide desde la UI si la persona arrancó `specty ui` en su terminal: el agente que lo arranca vería el enlace, así que su servidor es de solo lectura (decisión del 2026-10-24).
 - Los enlaces usan `localhost`, porque WebAuthn no admite direcciones IP como identificador de origen.
 - Opcionalmente (fase 4), las aprobaciones exigen presencia del usuario con WebAuthn.
