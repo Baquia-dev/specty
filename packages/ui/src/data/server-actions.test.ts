@@ -143,6 +143,21 @@ describe("ServerData actions", () => {
   });
 });
 
+describe("whether the person may decide on the local server", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("is read only when the agent started it, or when the tab has no session (AC1)", async () => {
+    serverAnswering({ "/api/session": SESSION });
+    expect(await new ServerData().readOnly()).toBeUndefined();
+    serverAnswering({ "/api/session": [200, { actions: false }] });
+    expect((await new ServerData().readOnly())?.es).toContain("lo arrancó el agente");
+    serverAnswering({ "/api/session": [403, { error: "forbidden" }] });
+    expect((await new ServerData().readOnly())?.es).toContain("Esta pestaña no tiene sesión");
+    vi.stubGlobal("fetch", () => Promise.reject(new TypeError("Failed to fetch")));
+    expect((await new ServerData().readOnly())?.es).toBe("El servidor devolvió datos inesperados.");
+  });
+});
+
 describe("delegated mode through ServerData", () => {
   afterEach(() => vi.unstubAllGlobals());
 

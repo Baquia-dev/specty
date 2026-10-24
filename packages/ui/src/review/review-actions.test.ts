@@ -3,7 +3,7 @@ import { Component, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
 import { FixtureData, sampleRecords } from "../data/fixtures";
-import { type ChangeView, SpectyData } from "../data/records";
+import { type ChangeRecord, type ChangeView, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
 import { ReviewActions } from "./review-actions";
 
@@ -24,15 +24,28 @@ class Host {
   readonly compact = signal(false);
 }
 
-async function render() {
+/** A source with no actions of its own: nobody decides here. */
+class ReadOnly extends SpectyData {
+  changes(): Promise<readonly ChangeRecord[]> {
+    return Promise.resolve([]);
+  }
+  subscribe(): () => void {
+    return () => undefined;
+  }
+}
+
+async function render(source: new () => SpectyData = FixtureData) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
   })) as unknown as typeof window.matchMedia;
   localStorage.setItem("specty.lang", "es");
   TestBed.resetTestingModule();
-  TestBed.configureTestingModule({ providers: [{ provide: SpectyData, useClass: FixtureData }] });
+  TestBed.configureTestingModule({ providers: [{ provide: SpectyData, useClass: source }] });
   const fixture = TestBed.createComponent(Host);
+  await fixture.whenStable();
+  // The source says once whether the person may decide here.
+  await new Promise((done) => setTimeout(done));
   await fixture.whenStable();
   const element: HTMLElement = fixture.nativeElement;
   const actions = () => element.querySelector<HTMLElement>("sp-review-actions");
@@ -70,6 +83,16 @@ describe("ReviewActions", () => {
     expect(actions()?.querySelector("[data-blocked]")).toBeNull();
     expect(buttons()[1]?.disabled).toBe(true);
     expect(buttons()[1]?.className).toContain("h-8");
+  });
+
+  it("offers no decision on a read-only server, and says why (AC2)", async () => {
+    const { actions, buttons, fixture, host } = await render(ReadOnly);
+    host.change.set({ ...viewOf(REVIEW), highImpactPending: 0 });
+    await fixture.whenStable();
+    expect(buttons().map((button) => button.disabled)).toEqual([true, true]);
+    expect(text(actions()?.querySelector("[data-blocked]"))).toBe(
+      "Esta fuente de datos es de solo lectura: no admite acciones.",
+    );
   });
 
   it("requests changes and approves the revision it shows, telling so (AC2)", async () => {

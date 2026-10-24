@@ -96,7 +96,9 @@ const STATUS = {
                   </p>
                 }
               </div>
-              <sp-icon-button [class]="reveal" size="sm" [label]="commentLabel(criterion.id)" [icon]="commentIcon" (pressed)="comment.emit({ item: criterion.id })" />
+              @if (editable()) {
+                <sp-icon-button [class]="reveal" size="sm" [label]="commentLabel(criterion.id)" [icon]="commentIcon" (pressed)="comment.emit({ item: criterion.id })" />
+              }
             </li>
           }
         </ol>
@@ -151,7 +153,9 @@ const STATUS = {
                 <span class="flex h-6 items-center gap-1 text-xs whitespace-nowrap text-text-muted" data-status>
                   <svg [lucideIcon]="status[task.status].icon" size="13" aria-hidden="true"></svg>{{ statusLabel(task) }}
                 </span>
-                <sp-icon-button [class]="reveal" size="sm" [label]="commentLabel(task.id)" [icon]="commentIcon" (pressed)="comment.emit({ item: task.id })" />
+                @if (editable()) {
+                  <sp-icon-button [class]="reveal" size="sm" [label]="commentLabel(task.id)" [icon]="commentIcon" (pressed)="comment.emit({ item: task.id })" />
+                }
               </div>
             </li>
           }
@@ -163,7 +167,9 @@ const STATUS = {
             <li [class]="row" [attr.data-item]="risk.id">
               <span class="pt-0.5 font-mono text-xs text-text-muted">{{ risk.id }}</span>
               <p class="m-0">{{ risk.text }}</p>
-              <sp-icon-button [class]="reveal" size="sm" [label]="commentLabel(risk.id)" [icon]="commentIcon" (pressed)="comment.emit({ item: risk.id })" />
+              @if (editable()) {
+                <sp-icon-button [class]="reveal" size="sm" [label]="commentLabel(risk.id)" [icon]="commentIcon" (pressed)="comment.emit({ item: risk.id })" />
+              }
             </li>
           }
         </ul>
@@ -174,6 +180,8 @@ const STATUS = {
 export class ReviewItems {
   readonly review = input.required<ReviewView>();
   readonly section = input.required<"criteria" | "files" | "tasks" | "risks">();
+  /** In review, where the person may decide: each item can be commented on. */
+  readonly editable = input(false);
   readonly comment = output<CommentAnchor>();
 
   private readonly preferences = inject(Preferences);

@@ -11,7 +11,6 @@ import {
 } from "../data/records";
 import { deriveReview } from "../data/review";
 import { AssumptionRow } from "./assumption-row";
-import { Markdown } from "./markdown";
 import { ReviewItems } from "./spec-sections";
 
 const SPEC = `# Entrar con Google
@@ -70,15 +69,14 @@ class Recording extends SpectyData {
 }
 
 @Component({
-  imports: [AssumptionRow, ReviewItems, Markdown],
+  imports: [AssumptionRow, ReviewItems],
   template: `
     <div role="list">
       <sp-assumption-row change="20261021-login-google" [assumption]="assumption()" [editable]="editable()" (comment)="anchors.push($event)" />
     </div>
     @for (section of sections; track section) {
-      <sp-review-items [attr.id]="section" [review]="review" [section]="section" (comment)="anchors.push($event)" />
+      <sp-review-items [attr.id]="section" [review]="review" [section]="section" [editable]="editable()" (comment)="anchors.push($event)" />
     }
-    <sp-markdown [text]="markdown" />
   `,
 })
 class Host {
@@ -92,8 +90,6 @@ class Host {
   readonly review = REVIEW;
   readonly sections = ["criteria", "files", "tasks", "risks"] as const;
   readonly anchors: CommentAnchor[] = [];
-  readonly markdown =
-    'Hola **mundo**\n\n<script>window.hacked = true</script><img src=x onerror="window.hacked = true">\n\n```dart\nfinal x = 1;\n```';
 }
 
 async function render() {
@@ -275,6 +271,13 @@ describe("ReviewItems", () => {
     expect(host.anchors).toEqual([{ item: "R1" }, { item: "T1" }, { item: "AC1" }]);
   });
 
+  it("offers no comment outside an editable review (AC4)", async () => {
+    const { fixture, host, element } = await render();
+    host.editable.set(false);
+    await fixture.whenStable();
+    expect(element.querySelector("sp-review-items sp-icon-button")).toBeNull();
+  });
+
   it("reports a failed action as an error toast", async () => {
     const { fixture, host, element, settle } = await render();
     host.assumption.set({ id: "A9", text: "Falla.", decision: "pending" });
@@ -284,17 +287,5 @@ describe("ReviewItems", () => {
     expect(TestBed.inject(Toasts).items()).toEqual([
       expect.objectContaining({ kind: "error", text: "Error: boom" }),
     ]);
-  });
-});
-
-describe("Markdown", () => {
-  it("formats text and code, and never runs scripts or handlers (AC5)", async () => {
-    const { element } = await render();
-    const markdown = element.querySelector("sp-markdown");
-    expect(markdown?.querySelector("strong")?.textContent).toBe("mundo");
-    expect(markdown?.querySelector("pre code")?.textContent).toContain("final x = 1;");
-    expect(markdown?.querySelector("script")).toBeNull();
-    expect(markdown?.querySelector("img")?.getAttribute("onerror")).toBeNull();
-    expect((window as unknown as { hacked?: boolean }).hacked).toBeUndefined();
   });
 });
