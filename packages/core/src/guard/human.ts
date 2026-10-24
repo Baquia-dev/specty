@@ -13,8 +13,11 @@ export const HUMAN_COMMANDS: ReadonlySet<string> = new Set([
   "reject",
 ]);
 
-/** Subcommands no delegation opens: only the person turns delegated mode on or off. */
-const PERSON_ONLY: ReadonlySet<string> = new Set(["delegate"]);
+/**
+ * Subcommands no delegation opens: only the person turns delegated mode on or off, and only they
+ * take Specty out of the repository.
+ */
+const PERSON_ONLY: ReadonlySet<string> = new Set(["delegate", "uninstall"]);
 
 export interface HumanContext {
   readonly lang: Lang;
@@ -26,7 +29,7 @@ export interface HumanContext {
 
 /**
  * Why the agent may not run one of the person's subcommands. Undefined when it runs none, or when
- * the person delegated them all, which never covers `delegate` itself.
+ * the person delegated them all, which never covers `delegate` or `uninstall`.
  */
 export function humanDenial(
   specty: readonly string[],

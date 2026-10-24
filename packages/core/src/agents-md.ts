@@ -115,6 +115,19 @@ export function upsertBlock(text: string, id: string, content: string): string {
     .replace(/\n{3,}/g, "\n\n");
 }
 
+/** Takes a managed block out, with the blank line that set it apart; the rest stays as it was. */
+export function removeBlock(text: string, id: string): string {
+  const start = text.indexOf(begin(id));
+  const stop = text.indexOf(end(id));
+  if (start === -1 || stop < start) return text;
+  const left = `${text.slice(0, start)}${text.slice(stop + end(id).length)}`;
+  if (left.trim() === "") return "";
+  return `${left
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/^\n+/, "")
+    .trimEnd()}\n`;
+}
+
 export function hasBlock(text: string, id: string): boolean {
   return text.includes(begin(id)) && text.includes(end(id));
 }

@@ -63,7 +63,7 @@ Segunda mitad del punto «init reversible y `specty uninstall`»: hoy no hay for
 
 ## Tareas
 
-- [ ] T1: Core sabe quitar un bloque y reserva `uninstall` a la persona
+- [x] T1: Core sabe quitar un bloque y reserva `uninstall` a la persona
   - files: packages/core/src/agents-md.ts, packages/core/src/guard/human.ts, packages/core/test/cards.test.ts, packages/core/test/guard/decide.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core test

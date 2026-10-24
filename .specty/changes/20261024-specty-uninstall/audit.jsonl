@@ -1,3 +1,8 @@
 {"ts":"2026-10-24T15:18:16.409Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-specty-uninstall"}}
 {"ts":"2026-10-24T15:19:22.546Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:2cd7385a1145b579e9db9d224096072b76d06b857bc9e9a58d4f5b0a71e3c0ec","size":"L","warnings":0}}
 {"ts":"2026-10-24T15:19:28.988Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:2cd7385a1145b579e9db9d224096072b76d06b857bc9e9a58d4f5b0a71e3c0ec","channel":"delegated","delegated":true}}
+{"ts":"2026-10-24T15:19:30.205Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"f596a958d56c0f8e5a74dda92650caa009275bb3"}}
+{"ts":"2026-10-24T15:20:06.998Z","actor":"agent","tool":"claude-code","event":"scope.requested","data":{"id":"S1","task":"T1","paths":["packages/core/src/index.ts"],"reason":"exportar removeBlock junto a upsertBlock para que la CLI lo use"}}
+{"ts":"2026-10-24T15:20:11.242Z","actor":"agent","tool":"claude-code","event":"scope.decided","data":{"id":"S1","decision":"approved","delegated":true}}
+{"ts":"2026-10-24T15:20:38.504Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core test","exit":0,"ms":7047}}
+{"ts":"2026-10-24T15:20:38.880Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Core: removeBlock quita un bloque gestionado y la línea en blanco que lo separaba, y deja el texto como antes del bloque (exportado desde el índice, ampliación S1); uninstall entra en PERSON_ONLY, así que el guard se lo bloquea al agente también en modo delegado."}}

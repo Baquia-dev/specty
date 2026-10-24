@@ -6,6 +6,13 @@
   "branch": "specty/20261024-specty-uninstall",
   "baseCommit": "f78407745fe8969f8dd47efe82872057316e1853",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2cd7385a1145b579e9db9d224096072b76d06b857bc9e9a58d4f5b0a71e3c0ec",
+    "at": "2026-10-24T15:19:28.928Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -37,7 +44,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/index.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "f596a958d56c0f8e5a74dda92650caa009275bb3",
+      "startedAt": "2026-10-24T15:19:30.202Z",
+      "doneAt": "2026-10-24T15:20:38.878Z",
+      "summary": "Core: removeBlock quita un bloque gestionado y la línea en blanco que lo separaba, y deja el texto como antes del bloque (exportado desde el índice, ampliación S1); uninstall entra en PERSON_ONLY, así que el guard se lo bloquea al agente también en modo delegado."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,13 +65,7 @@
     "A": 5,
     "AC": 6,
     "T": 3,
-    "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2cd7385a1145b579e9db9d224096072b76d06b857bc9e9a58d4f5b0a71e3c0ec",
-    "at": "2026-10-24T15:19:28.928Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
+    "R": 2,
+    "S": 1
   }
 }
