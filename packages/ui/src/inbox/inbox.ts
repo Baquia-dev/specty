@@ -19,7 +19,7 @@ import { LIST, PAGE, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { Skeleton } from "../components/skeleton";
 import { ChangesStore } from "../data/changes-store";
-import type { ChangeView } from "../data/records";
+import { ActionError, type ChangeView } from "../data/records";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
 import { InboxRow } from "./inbox-row";
@@ -176,6 +176,7 @@ export class Inbox {
   }
 
   protected message(error: unknown): string {
+    if (error instanceof ActionError) return error.text[this.preferences.lang()];
     return error instanceof Error ? error.message : String(error);
   }
 }

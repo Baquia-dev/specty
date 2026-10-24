@@ -6,6 +6,13 @@
   "branch": "specty/20261023-la-ui-lee-del-servidor-local",
   "baseCommit": "37e89bf9a07616ee2f6d6d36d66b9e613c88e513",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5f64b1ffd00332da2436114c3e47173186f5bbb5b4b1fa54ceaf4b3d48aa84aa",
+    "at": "2026-10-24T04:49:18.392Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4742333e7d2cc04c82d8be320283579a95f50bda",
+      "startedAt": "2026-10-24T04:49:18.894Z",
+      "doneAt": "2026-10-24T04:51:21.855Z",
+      "summary": "data/server.ts: ServerData lee los cambios de /api/changes, con una comprobación ligera de la respuesta, y vuelve a leerlos con cada evento changes de /api/events; sin sesión pide abrir el enlace de specty ui; dataSource(page) elige ServerData si la página lleva la marca del servidor y, si no, carga FixtureData bajo demanda; la Bandeja muestra el error de carga en el idioma de la persona"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "AC": 2,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5f64b1ffd00332da2436114c3e47173186f5bbb5b4b1fa54ceaf4b3d48aa84aa",
-    "at": "2026-10-24T04:49:18.392Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

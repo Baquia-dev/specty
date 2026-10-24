@@ -43,7 +43,7 @@ Cuando la sirve `specty ui`, la UI muestra los cambios reales de todas las workt
 
 ## Tareas
 
-- [ ] T1: La fuente de datos del servidor local
+- [x] T1: La fuente de datos del servidor local
   - files: packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts, packages/ui/src/inbox/inbox.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts --include src/inbox/inbox.test.ts
