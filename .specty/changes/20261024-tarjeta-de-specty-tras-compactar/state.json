@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-tarjeta-de-specty-tras-compactar",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-tarjeta-de-specty-tras-compactar",
+  "baseCommit": "e1373253e1f7b7e557132160c2d66d09b85d74d4",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:932b687db550967193eed80b36a2fae86c1e07d081bed5d3400c237d449490bb",
+    "at": "2026-10-24T10:38:51.739Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
