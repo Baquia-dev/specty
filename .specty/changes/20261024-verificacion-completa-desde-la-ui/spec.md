@@ -58,7 +58,7 @@ Desde la UI que sirve `specty ui`, la persona ejecuta la verificación completa 
   - files: packages/cli/src/flow/verified.ts, packages/cli/src/commands/accept.ts, packages/cli/test/commands.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/commands.test.ts test/delegate.test.ts
-- [ ] T2: La verificación completa en el servidor
+- [x] T2: La verificación completa en el servidor
   - files: packages/cli/src/server/runs.ts, packages/cli/src/server/events.ts, packages/cli/src/server/http.ts, packages/cli/test/server/verify.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server && pnpm sources

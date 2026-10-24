@@ -10,6 +10,7 @@ import { delegationView, parseAction, runAction, setDelegation } from "./actions
 import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
 import { changeRecords } from "./records";
+import { changeRuns, type Runs } from "./runs";
 
 export interface ServerOptions {
   readonly session: Session;
@@ -43,6 +44,7 @@ interface Context extends ServerOptions {
   readonly events: ChangeEvents;
   /** Runs the actions one at a time: the commands were not written to overlap. */
   readonly serial: <T>(task: () => Promise<T>) => Promise<T>;
+  readonly runs: Runs;
 }
 
 const TEXT = "text/plain; charset=utf-8";
@@ -84,7 +86,10 @@ export async function startServer(options: ServerOptions): Promise<UiServer> {
     return run;
   };
   const cookie = `specty-${port}`;
-  const context: Context = { ...options, ui, port, token, cookie, csrf, events, serial };
+  const runs = changeRuns(options.session, (change, run) =>
+    events.send("run", { change, run: run ?? null }),
+  );
+  const context: Context = { ...options, ui, port, token, cookie, csrf, events, serial, runs };
   server.on("request", (request: IncomingMessage, response: ServerResponse) => {
     handle(request, response, context).catch(() => send(response, 500, TEXT, "specty: error"));
   });
@@ -92,6 +97,7 @@ export async function startServer(options: ServerOptions): Promise<UiServer> {
     port,
     link: `http://localhost:${port}/?token=${token}`,
     close: () => {
+      runs.close();
       events.close();
       server.closeAllConnections();
       return new Promise((done) => server.close(() => done()));
@@ -156,10 +162,14 @@ async function handle(request: IncomingMessage, response: ServerResponse, contex
       const view = await delegationView(context.session);
       return send(response, 200, JSON_TYPE, JSON.stringify(view));
     }
-    const diff = /^\/api\/changes\/([^/]+)\/diff$/.exec(url.pathname)?.[1];
-    if (diff !== undefined) {
+    const [, id, part] = /^\/api\/changes\/([^/]+)\/(diff|run)$/.exec(url.pathname) ?? [];
+    if (id !== undefined && part === "run") {
+      const run = context.runs.current(decodeURIComponent(id)) ?? null;
+      return send(response, 200, JSON_TYPE, JSON.stringify(run));
+    }
+    if (id !== undefined) {
       const task = url.searchParams.get("task") ?? undefined;
-      return sendDiff(response, await changeDiff(context.session, decodeURIComponent(diff), task));
+      return sendDiff(response, await changeDiff(context.session, decodeURIComponent(id), task));
     }
     return send(response, 404, JSON_TYPE, '{"error":"not found"}');
   }
@@ -193,6 +203,9 @@ async function act(
     if (typeof on !== "boolean") return bad();
     return done(await context.serial(() => setDelegation(context.session, on)));
   }
+  const verify = /^\/api\/changes\/([^/]+)\/verify$/.exec(pathname)?.[1];
+  // Outside the queue: it takes minutes and changes no state, so the other actions go on.
+  if (verify !== undefined) return done(await context.runs.start(decodeURIComponent(verify)));
   const parsed = parseAction(
     pathname.split("/").filter((part) => part !== ""),
     body,
