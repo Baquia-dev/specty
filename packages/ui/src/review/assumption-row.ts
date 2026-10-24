@@ -128,7 +128,9 @@ const DECISIONS = {
       <span class="flex h-6 items-center gap-1 rounded-full px-2.5 text-xs font-medium whitespace-nowrap" [style.color]="'var(--color-phase-' + decisions[assumption().decision].tone + ')'" [style.background]="'var(--color-phase-' + decisions[assumption().decision].tone + '-bg)'" data-decision>
         <svg [lucideIcon]="decisions[assumption().decision].icon" size="13" aria-hidden="true"></svg>{{ decisionLabel() }}
       </span>
-      <sp-icon-button [class]="reveal" size="sm" [label]="t()('Comentar ' + assumption().id, 'Comment on ' + assumption().id)" [icon]="commentIcon" (pressed)="comment.emit({ item: assumption().id })" />
+      @if (editable()) {
+        <sp-icon-button [class]="reveal" size="sm" [label]="t()('Comentar ' + assumption().id, 'Comment on ' + assumption().id)" [icon]="commentIcon" (pressed)="comment.emit({ item: assumption().id })" />
+      }
     </div>
   `,
 })

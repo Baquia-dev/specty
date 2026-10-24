@@ -34,12 +34,24 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "46d30ea834950c99d6ce75655dda250622bc3629",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:15:30.526Z",
       "doneAt": "2026-10-24T10:17:38.241Z",
-      "summary": "SpectyData.readOnly() dice por qué no se puede decidir desde la fuente (la base, su solo lectura; FixtureData, nada; ServerData, según /api/session: solo lectura sin acciones, el motivo del fallo sin sesión). Decisions (data/decisions.ts) se lo pregunta una vez y da blocked, en el idioma de la persona, y allowed"
+      "summary": "SpectyData.readOnly() dice por qué no se puede decidir desde la fuente (la base, su solo lectura; FixtureData, nada; ServerData, según /api/session: solo lectura sin acciones, el motivo del fallo sin sesión). Decisions (data/decisions.ts) se lo pregunta una vez y da blocked, en el idioma de la persona, y allowed",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/assumption-row.ts",
+        "packages/ui/src/review/delta-review.ts"
+      ],
+      "attempts": 3,
+      "baseCommit": "7fe9400027913227f2ca970443584559da5e4bb4",
+      "startedAt": "2026-10-24T10:17:38.787Z",
+      "doneAt": "2026-10-24T10:23:38.916Z",
+      "summary": "ReviewActions suma el motivo de solo lectura (Decisions.blocked) al de cada botón y lo muestra bajo los botones; SpecReview solo deja editar en revisión y si se puede decidir, y pasa editable también a ReviewItems; criterios, tareas, riesgos, supuestos (assumption-row) y el delta (delta-review, ampliación S1) solo ofrecen Comentar si se edita, así que fuera de revisión ya no aparece. Los tests de Markdown pasan a markdown.test.ts para que spec-sections.test.ts no pase de 300 líneas"
     }
   },
   "pending": {
@@ -49,6 +61,7 @@
   "maxIds": {
     "A": 2,
     "AC": 5,
-    "T": 3
+    "T": 3,
+    "S": 1
   }
 }

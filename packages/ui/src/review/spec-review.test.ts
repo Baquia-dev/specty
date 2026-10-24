@@ -20,6 +20,13 @@ class ReadOnly extends SpectyData {
   }
 }
 
+/** A source that says the person may decide, and then refuses every action. */
+class Refusing extends ReadOnly {
+  override readOnly(): Promise<undefined> {
+    return Promise.resolve(undefined);
+  }
+}
+
 /** Whether the system asks for reduced motion. Test files share globals: keep it complete. */
 function motion(reduced: boolean): void {
   window.matchMedia = (() => ({
@@ -269,8 +276,18 @@ describe("SpecReview", () => {
     expect(text(review()?.querySelector("aside h2"))).toContain("Comentarios");
   });
 
+  it("offers no decision on a read-only source, and says why in the header", async () => {
+    const { review, barButtons, bar } = await open(REVIEW, ReadOnly);
+    const inline = "sp-assumption-row sp-button, sp-icon-button, aside form, aside sp-button";
+    expect(review()?.querySelector(inline)).toBeNull();
+    expect(barButtons().map((button) => button.disabled)).toEqual([true, true]);
+    expect(text(bar()?.querySelector("[data-blocked]"))).toBe(
+      "Esta fuente de datos es de solo lectura: no admite acciones.",
+    );
+  });
+
   it("explains it when the source cannot take an action (AC9)", async () => {
-    const { review, settle } = await open(REVIEW, ReadOnly);
+    const { review, settle } = await open(REVIEW, Refusing);
     review()
       ?.querySelector<HTMLButtonElement>("sp-assumption-row[data-item=A2] sp-button button")
       ?.click();

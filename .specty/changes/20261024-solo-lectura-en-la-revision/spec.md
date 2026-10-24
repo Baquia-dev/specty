@@ -54,7 +54,7 @@ Cuando la UI corre sobre un servidor de solo lectura, porque lo arrancó el agen
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-actions.test.ts, packages/ui/src/data/decisions.ts, packages/ui/src/data/decisions.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources
-- [ ] T2: La revisión sin decisiones en solo lectura
+- [x] T2: La revisión sin decisiones en solo lectura
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/spec-sections.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review && pnpm sources

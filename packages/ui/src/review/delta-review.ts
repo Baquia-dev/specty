@@ -201,7 +201,7 @@ export class ChangeMark {
                 </div>
                 <div class="flex items-start gap-1">
                   <sp-change-mark [change]="entry.change" />
-                  @if (isItem(entry) && entry.change !== 'removed') {
+                  @if (editable() && isItem(entry) && entry.change !== 'removed') {
                     <sp-icon-button [class]="reveal" size="sm" [label]="t()('Comentar ' + entry.key, 'Comment on ' + entry.key)" [icon]="commentIcon" (pressed)="comment.emit({ item: entry.key })" />
                   } @else {
                     <!-- Same room as the comment button, so every mark lines up. -->
