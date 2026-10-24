@@ -93,6 +93,25 @@ describe("specty init", () => {
     expect((await cli(root, ["doctor"])).out).toContain("Claude Code: guard instalado.");
   });
 
+  it("installs the card after a compaction, and doctor misses it", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
+    expect(settings.hooks.SessionStart).toMatchObject([
+      { matcher: "compact", hooks: [{ type: "command" }] },
+    ]);
+    const hooks = { ...settings.hooks, SessionStart: [] };
+    await writeFiles(root, {
+      ".claude/settings.local.json": JSON.stringify({ ...settings, hooks }),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Claude Code: falta la tarjeta de Specty tras compactar (SessionStart); ejecuta `specty init`.",
+    );
+    expect(doctor.out).not.toContain("comprobación tras cada comando");
+  });
+
   it("lets the agent use worktrees without a prompt, keeping the permissions people wrote", async () => {
     const root = await tempRepo({
       "package.json": '{"name":"x","scripts":{"test":"true"}}\n',

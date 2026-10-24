@@ -19,7 +19,7 @@ Cuando Claude Code compacta la conversación, la tarjeta de la tarea se resume y
 
 ## Tareas
 
-- [ ] T1: El guard devuelve la tarjeta tras compactar, `init` instala el hook y `doctor` lo revisa
+- [x] T1: El guard devuelve la tarjeta tras compactar, `init` instala el hook y `doctor` lo revisa
   - files: packages/cli/src/enforce/guard.ts, packages/cli/src/install/agents.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/session-start.test.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: feat
