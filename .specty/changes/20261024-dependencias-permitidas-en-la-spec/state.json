@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-dependencias-permitidas-en-la-spec",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-dependencias-permitidas-en-la-spec",
   "baseCommit": "23f429472307f19f980312d9ceeb65db3acca016",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "60bb0bec497a0c0df52d1b1890e77a924f7a6438",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:37:31.800Z",
       "doneAt": "2026-10-24T20:39:26.440Z",
-      "summary": "cli/check/dependencies.ts: la verificación dependencies de --spec compara cada manifiesto con su punto de partida y falla con cada dependencia nueva que no casa con allowedDependencies; planProvider la añade."
+      "summary": "cli/check/dependencies.ts: la verificación dependencies de --spec compara cada manifiesto con su punto de partida y falla con cada dependencia nueva que no casa con allowedDependencies; planProvider la añade.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7fef64b1c949ce984aed664305fd04396c8a94d5",
+      "startedAt": "2026-10-24T20:39:26.716Z",
+      "doneAt": "2026-10-24T20:40:48.670Z",
+      "summary": "formats §2 documenta allowedDependencies en el frontmatter y §6 la verificación dependencies (manifiestos, SDK, versiones, manifiestos nuevos o rotos, cómo añadir un lector); ARCHITECTURE la añade a la fila de specty check."
     }
   },
   "pending": {

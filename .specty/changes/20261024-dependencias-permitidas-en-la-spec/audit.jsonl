@@ -10,3 +10,6 @@
 {"ts":"2026-10-24T20:37:31.801Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"60bb0bec497a0c0df52d1b1890e77a924f7a6438"}}
 {"ts":"2026-10-24T20:39:26.354Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/check-plan.test.ts","exit":0,"ms":7629}}
 {"ts":"2026-10-24T20:39:26.441Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"cli/check/dependencies.ts: la verificación dependencies de --spec compara cada manifiesto con su punto de partida y falla con cada dependencia nueva que no casa con allowedDependencies; planProvider la añade."}}
+{"ts":"2026-10-24T20:39:26.717Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"7fef64b1c949ce984aed664305fd04396c8a94d5"}}
+{"ts":"2026-10-24T20:40:48.669Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":65829}}
+{"ts":"2026-10-24T20:40:48.671Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"formats §2 documenta allowedDependencies en el frontmatter y §6 la verificación dependencies (manifiestos, SDK, versiones, manifiestos nuevos o rotos, cómo añadir un lector); ARCHITECTURE la añade a la fila de specty check."}}

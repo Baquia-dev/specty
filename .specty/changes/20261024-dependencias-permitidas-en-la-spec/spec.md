@@ -69,7 +69,7 @@ Una spec puede nombrar en su frontmatter las dependencias que el cambio está au
   - files: packages/cli/src/check/dependencies.ts, packages/cli/src/check/plan.ts, packages/cli/test/check-plan.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-plan.test.ts
-- [ ] T4: La documentación
+- [x] T4: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm check

@@ -47,6 +47,7 @@ epic: 20261015-dashboard-estudiante   # opcional: épica a la que pertenece
 slice: C2                             # opcional: corte de la épica
 follows: [20261001-analytics-base]    # opcional: cambios que continúa
 dependsOn: []                         # opcional: cambios que deben cerrarse antes
+allowedDependencies: [zod, "@angular/*"]  # opcional: dependencias que el cambio puede añadir (nombres o globs); las demás las rechaza `specty check --spec`
 timebox: 2h                           # solo spike
 estimate:                             # opcional: ajuste del modelo al tamaño calculado
   adjust: +1                          # solo sube: un -1 no se aplica y el tamaño lo dice
@@ -369,6 +370,7 @@ Las dos de tests solo miran los archivos de test (por nombre o por carpeta, como
 
 - `spec-approved`: la spec está aprobada y no cambió desde entonces; el cierre, que llega después, no cuenta. Falla si no está aprobada, si cambió, si el cambio está cancelado o si no existe. Sin cambio, es la única que aparece.
 - `scope`: cada archivo que el diff toca o borra está en «Archivos» (con el origen de los renombrados), en los `files` de alguna tarea o en una ampliación aprobada; los tests implícitos y los generados entran solos. Lista cada ruta que queda fuera.
+- `dependencies`: cada dependencia que el diff añade a un manifiesto casa con `allowedDependencies` del frontmatter, por nombre o por glob. Lee `package.json` (`dependencies`, `devDependencies`, `peerDependencies` y `optionalDependencies`) y `pubspec.yaml` (`dependencies` y `dev_dependencies`, sin los paquetes del SDK como `sdk: flutter`), en cualquier carpeta. Solo cuentan los nombres nuevos respecto al punto de partida: un cambio de versión no; un manifiesto nuevo, con todas sus dependencias. Un manifiesto que no se puede leer no da ninguna. Cada ecosistema nuevo es un lector más en `core/src/checks/dependencies.ts`.
 - `fix-tests`: cada tarea `fix` activa o hecha tiene en el diff un test suyo, de sus `files`, de sus ampliaciones o junto a ellos. Con `--staged` solo cuenta la activa, porque la hecha ya hizo su commit.
 - `tests-removed`: avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada test con menos casos que en el punto de partida (el merge-base o HEAD). Los casos se cuentan con un catálogo de declaraciones por familia de frameworks (`it(`, `test(`, `testWidgets(`, `def test_`, `func Test`, `@Test`, `[Fact]`, `#[test]`…); su nivel solo sirve para apagarlo.
 
