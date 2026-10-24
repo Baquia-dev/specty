@@ -51,3 +51,21 @@ La regla «una sesión, una worktree» ata una sesión a la carpeta de su cambio
   - files: packages/cli/src/enforce/sessions.ts, packages/cli/test/sessions.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+La sesión que lleva una épica ya puede trabajar sus cortes. Al entrar en una worktree, `enterAction` lee la spec del cambio abierto de esa carpeta y pasa su `epic` al guard, y `sessionDenial` deja entrar si es la épica a la que está atada la sesión. Desde ese momento la sesión queda atada al corte: no vuelve a la épica ni entra en otro cambio hasta que el corte se cierra. El test de punta a punta recorre la épica, su corte, otra sesión que no entra, y la vuelta a la épica con el corte terminado. ARCHITECTURE §10 cuenta la excepción.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La relación se mira en el destino (la spec del corte nombra la épica), no en la épica: así basta con el cambio abierto de la carpeta, sin buscar los cortes.
+
+### Pendientes
+
+- Ninguno.
