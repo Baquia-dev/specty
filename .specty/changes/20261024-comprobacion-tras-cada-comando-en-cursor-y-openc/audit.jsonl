@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T10:50:44.554Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-comprobacion-tras-cada-comando-en-cursor-y-openc"}}
+{"ts":"2026-10-24T10:51:37.615Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:221b520da86c016c4b6bc3c5b9bca0f0ed566d2b33ae764b68c2532b87f56f36","size":"M","warnings":0}}
+{"ts":"2026-10-24T10:51:42.791Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:221b520da86c016c4b6bc3c5b9bca0f0ed566d2b33ae764b68c2532b87f56f36","channel":"delegated","delegated":true}}
