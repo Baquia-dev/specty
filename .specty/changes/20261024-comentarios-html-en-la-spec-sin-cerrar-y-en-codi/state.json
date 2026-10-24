@@ -6,6 +6,13 @@
   "branch": "specty/20261024-comentarios-html-en-la-spec-sin-cerrar-y-en-codi",
   "baseCommit": "b99c6604441b4c4fb17e9dbecaf472963e6d89b0",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f3c5dec97f686592731fa22dcf3a3f91785b2a086d32a23b4e4a431dbefe3fa",
+    "at": "2026-10-24T21:16:26.918Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4d4cd5d86166eb7e5f65be9e0d44eaa2e430b972",
+      "startedAt": "2026-10-24T21:16:27.994Z",
+      "doneAt": "2026-10-24T21:18:26.109Z",
+      "summary": "readSource anota la línea donde se abre un comentario que no se cierra (commentUnclosed) y parse lo convierte en el error comment-unclosed, en español e inglés, con esa línea."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 4,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6f3c5dec97f686592731fa22dcf3a3f91785b2a086d32a23b4e4a431dbefe3fa",
-    "at": "2026-10-24T21:16:26.918Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

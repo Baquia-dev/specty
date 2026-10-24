@@ -10,6 +10,7 @@ export type DiagnosticCode =
   | "frontmatter-missing"
   | "frontmatter-unclosed"
   | "frontmatter-invalid"
+  | "comment-unclosed"
   | "title-missing"
   | "title-duplicate"
   | "text-outside-section"

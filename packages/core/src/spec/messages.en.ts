@@ -15,6 +15,8 @@ export const MESSAGES_EN: MessageCatalog = {
     "Missing frontmatter with `kind` at the top of the file (for example, `kind: standard`).",
   "frontmatter-unclosed": () => "The frontmatter is not closed: add a `---` line after its fields.",
   "frontmatter-invalid": (p) => `Invalid frontmatter: ${v(p, "detail")}.`,
+  "comment-unclosed": () =>
+    "A `<!--` comment opens and never closes: everything after it is hidden. Close it with `-->`.",
   "title-missing": () => "Missing title: add a `# Title` line before the sections.",
   "title-duplicate": () =>
     "There can be only one `#` title; use `##` for sections and `###` inside them.",

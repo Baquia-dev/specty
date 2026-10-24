@@ -63,6 +63,22 @@ describe("parseSpec", () => {
     expect(parseSpec(text).spec.sections.goal).toBe("Uno  dos.\nTres.");
   });
 
+  it("reports a comment that never closes, at the line where it opens (AC1)", () => {
+    const body = "Algo.\nOtra <!-- a --> línea <!-- sin cierre\n\n## Archivos\n\n- crear a.ts — a";
+    const text = MINIMAL.replace("Algo.", body);
+    const unclosed = parseSpec(text).diagnostics.find(({ code }) => code === "comment-unclosed");
+    expect(unclosed).toMatchObject({ severity: "error", line: lineOf(text, "Otra <!--") });
+    expect(unclosed?.message).toBe(
+      "Un comentario `<!--` se abre y no se cierra: todo lo que sigue queda oculto. Ciérralo con `-->`.",
+    );
+    // One that closes several lines later is fine, as before.
+    expect(codes(MINIMAL.replace("Algo.", "Algo.\n<!-- a\nb -->"))).toEqual([]);
+    const english = parseSpec("---\nkind: quick\n---\n\n# Title\n\n## Goal\n\nX <!-- open\n");
+    expect(english.diagnostics.find(({ code }) => code === "comment-unclosed")?.message).toContain(
+      "everything after it is hidden",
+    );
+  });
+
   it("parses renames and backticked paths", () => {
     const text = `${MINIMAL}\n## Archivos\n\n- renombrar \`a b.ts\` -> src/c.ts — mover\n`;
     expect(parseSpec(text).spec.sections.files?.items).toEqual([

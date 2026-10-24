@@ -38,7 +38,7 @@ Al leer una spec, Specty quita los comentarios HTML, que son las pistas de la pl
 
 ## Tareas
 
-- [ ] T1: El comentario sin cerrar es un error con su línea
+- [x] T1: El comentario sin cerrar es un error con su línea
   - files: packages/core/src/spec/source.ts, packages/core/src/spec/parse.ts, packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/spec/parse.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec

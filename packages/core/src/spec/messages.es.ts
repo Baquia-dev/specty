@@ -16,6 +16,8 @@ export const MESSAGES_ES: MessageCatalog = {
   "frontmatter-unclosed": () =>
     "El frontmatter no está cerrado: añade una línea `---` después de sus campos.",
   "frontmatter-invalid": (p) => `Frontmatter no válido: ${v(p, "detail")}.`,
+  "comment-unclosed": () =>
+    "Un comentario `<!--` se abre y no se cierra: todo lo que sigue queda oculto. Ciérralo con `-->`.",
   "title-missing": () => "Falta el título: añade una línea `# Título` antes de las secciones.",
   "title-duplicate": () =>
     "Solo puede haber un título `#`; usa `##` para las secciones y `###` dentro de ellas.",
