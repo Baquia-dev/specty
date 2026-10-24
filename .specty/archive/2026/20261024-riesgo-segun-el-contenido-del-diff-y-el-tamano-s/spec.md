@@ -76,3 +76,25 @@ kind: standard
   - files: packages/core/src/sizing/size.ts, packages/core/test/sizing/sizing.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC3, AC4, AC5
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+`task done` analiza lo que cada tarea añade a los archivos gobernados que no son tests, con los nuevos incluidos: el diff va del commit base a un árbol con el trabajo actual (`treeWith`). Usa un catálogo de diez reglas con su CWE, más los archivos que pasan a modo 755 y las rutas de pagos, webhooks o seguridad (`core/src/scope/risk.ts`). Los hallazgos van a `task.completed` (`risks`) y a los AVISOS de su salida, de la tarjeta de aceptación y de la nota de `specty accept`, junto a las aserciones quitadas, con una indicación propia para el usuario. Además, el modelo ya no puede bajar el tamaño: `adjust: -1` no se aplica y las razones lo dicen, y un XL que intenta bajarse sigue pidiendo dividirse; antes bajaba a L y esquivaba la épica.
+
+### Desviaciones
+
+- T3 tocó también `core/src/scope/risk.ts` y `core/src/index.ts`, para exportar `isRiskRule`, con el que `changeView` valida los riesgos que lee de la auditoría. Las dos ampliaciones se aprobaron solas, porque ya estaban en Archivos.
+- T4 cambió también `core/test/spec/messages.test.ts`, que fijaba el texto del ajuste `-1` (ampliación de tests, aprobada sola).
+
+### Decisiones
+
+- El ajuste `-1` no invalida la spec: se ignora y se dice, para no bloquear cambios en curso.
+- Los avisos de riesgo nombran archivo, línea, regla y CWE, y dicen que son patrones conocidos, no fallos seguros.
+
+### Pendientes
+
+- Mostrar los riesgos en la pestaña Aceptación de la UI (punto A7 de la sesión de la UI), con `task.completed.data.risks`.
+- Que las rutas de riesgo no se aprueben solas en `scope add`, aunque estén en Archivos.
+- Que la persona pueda confirmar una bajada de tamaño, si alguna vez hace falta.

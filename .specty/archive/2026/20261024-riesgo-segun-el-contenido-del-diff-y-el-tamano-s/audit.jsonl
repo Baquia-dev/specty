@@ -16,3 +16,7 @@
 {"ts":"2026-10-24T11:27:48.307Z","actor":"specty","event":"scope.decided","data":{"task":"T4","paths":["packages/core/test/spec/messages.test.ts"],"reason":"El texto del ajuste -1 cambia: ya no se aplica","decision":"auto","basis":{"packages/core/test/spec/messages.test.ts":"test"},"plannedFor":{}}}
 {"ts":"2026-10-24T11:30:15.908Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":68807}}
 {"ts":"2026-10-24T11:30:15.925Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"computeSize solo aplica adjust: 1; un -1 queda en las razones como «sin aplicar: el tamaño solo puede subir», y un XL que intenta bajarse sigue pidiendo dividirse; ARCHITECTURE §7 y §11 y formats.md §1 y §4: el catálogo de riesgos, risks y el ajuste que solo sube"}}
+{"ts":"2026-10-24T11:31:44.667Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":82314}}
+{"ts":"2026-10-24T11:31:44.673Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T11:31:55.089Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:4d6655f3eae87606c20e7ae08c4c11f45e1929ebc2c092e74af7c907d7108c3b","size":"L","warnings":0}}
+{"ts":"2026-10-24T11:33:24.281Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
