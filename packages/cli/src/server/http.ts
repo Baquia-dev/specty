@@ -7,6 +7,7 @@ import { type Output, translator } from "@baquia-dev/specty-core";
 import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
 import { delegationView, parseAction, runAction, setDelegation } from "./actions";
+import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
 import { changeRecords } from "./records";
 
@@ -155,6 +156,11 @@ async function handle(request: IncomingMessage, response: ServerResponse, contex
       const view = await delegationView(context.session);
       return send(response, 200, JSON_TYPE, JSON.stringify(view));
     }
+    const diff = /^\/api\/changes\/([^/]+)\/diff$/.exec(url.pathname)?.[1];
+    if (diff !== undefined) {
+      const task = url.searchParams.get("task") ?? undefined;
+      return sendDiff(response, await changeDiff(context.session, decodeURIComponent(diff), task));
+    }
     return send(response, 404, JSON_TYPE, '{"error":"not found"}');
   }
   return serveUi(response, context, url.pathname);
@@ -193,6 +199,20 @@ async function act(
   );
   if (parsed === undefined) return bad();
   return done(await context.serial(() => runAction(context.session, parsed.id, parsed.action)));
+}
+
+/** A diff as text; without one, why: 404 no commits, 413 too large (with its range), 500 git. */
+function sendDiff(response: ServerResponse, answer: DiffAnswer) {
+  if (answer.kind === "diff") return send(response, 200, TEXT, answer.text);
+  if (answer.kind === "missing") return send(response, 404, JSON_TYPE, '{"error":"not found"}');
+  if (answer.kind === "too-large")
+    return send(
+      response,
+      413,
+      JSON_TYPE,
+      JSON.stringify({ error: "too large", range: answer.range }),
+    );
+  return send(response, 500, JSON_TYPE, '{"error":"git"}');
 }
 
 /** A JSON body of at most 64 KiB; anything else reads as nothing. */

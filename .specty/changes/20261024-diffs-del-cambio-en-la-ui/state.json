@@ -6,6 +6,13 @@
   "branch": "specty/20261024-diffs-del-cambio-en-la-ui",
   "baseCommit": "b224970bf1d54ae665f29eab9b02012ae8642b02",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:173aaeb50fc0faeb9b5491d45eb086c815bfbe04304ba0962bf003c3951a4a5b",
+    "at": "2026-10-24T07:16:04.497Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "58488238d703accd1543e1167335b19215aa414e",
+      "startedAt": "2026-10-24T07:16:05.062Z",
+      "doneAt": "2026-10-24T07:19:18.015Z",
+      "summary": "server/records.ts completa state.tasks[T].commit de cada tarea hecha con una sola búsqueda git log --all por el trailer Specty-Task; server/diff.ts da el diff de una tarea (baseCommit..commit) o de todo el cambio (base de la primera tarea con commit..commit de la última), sin .specty/, y GET /api/changes/<id>/diff[?task=T] lo sirve como texto, también en solo lectura: 404 sin commits, 413 con el rango si pasa del límite de salida (que io/exec.ts ahora exporta), 403 sin sesión"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:173aaeb50fc0faeb9b5491d45eb086c815bfbe04304ba0962bf003c3951a4a5b",
-    "at": "2026-10-24T07:16:04.497Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

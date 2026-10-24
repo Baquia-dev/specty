@@ -66,7 +66,49 @@ export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
       }
     }
   }
-  return records;
+  const commits = await taskCommits(session);
+  return records.map((record) => withCommits(record, commits.get(record.state.id)));
+}
+
+/**
+ * The commit of every task of every change, by its trailers, in one look through the history of
+ * every branch. `state.json` cannot keep it: it is the commit that holds the file.
+ */
+async function taskCommits(
+  session: Session,
+): Promise<ReadonlyMap<string, ReadonlyMap<string, string>>> {
+  const result = await session.git.run([
+    "log",
+    "--all",
+    "--grep=Specty-Task:",
+    "--format=%h%x1f%(trailers:key=Specty-Change,valueonly,separator=%x2C)%x1f%(trailers:key=Specty-Task,valueonly,separator=%x2C)",
+  ]);
+  const commits = new Map<string, Map<string, string>>();
+  if (result.code !== 0) return commits;
+  const found = result.stdout.split("\n").flatMap((line) => {
+    const [sha, change, task] = line.split("\x1f").map((part) => part.trim());
+    return sha && change && task ? [{ sha, change, task }] : [];
+  });
+  // git lists the newest first: going backwards, a task keeps its latest commit.
+  for (const { sha, change, task } of found.toReversed()) {
+    commits.set(change, (commits.get(change) ?? new Map<string, string>()).set(task, sha));
+  }
+  return commits;
+}
+
+/** `record` with the commit of each task done. */
+function withCommits(
+  record: ChangeRecord,
+  commits: ReadonlyMap<string, string> | undefined,
+): ChangeRecord {
+  if (commits === undefined) return record;
+  const tasks = Object.fromEntries(
+    Object.entries(record.state.tasks).map(([id, task]) => {
+      const commit = commits.get(id);
+      return [id, task.status === "done" && commit !== undefined ? { ...task, commit } : task];
+    }),
+  );
+  return { ...record, state: { ...record.state, tasks } };
 }
 
 /** A change's files; a change whose state cannot be read is left out. */

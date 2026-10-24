@@ -48,7 +48,7 @@ En la UI que sirve `specty ui`, la persona ve el diff de cada tarea y el de todo
 
 ## Tareas
 
-- [ ] T1: Los commits de las tareas y el diff en el servidor
+- [x] T1: Los commits de las tareas y el diff en el servidor
   - files: packages/cli/src/server/records.ts, packages/cli/src/server/diff.ts, packages/cli/src/server/http.ts, packages/cli/src/io/exec.ts, packages/cli/test/server/diff.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server

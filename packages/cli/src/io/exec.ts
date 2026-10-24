@@ -18,7 +18,8 @@ export interface ExecResult {
   readonly timedOut: boolean;
 }
 
-const MAX_OUTPUT = 512 * 1024;
+/** What `execute` keeps of each stream: an output this long lost its beginning. */
+export const MAX_OUTPUT = 512 * 1024;
 
 /** Runs a process and collects its output (the last 512 KB of each stream). */
 export function execute(
