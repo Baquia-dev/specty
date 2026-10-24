@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T16:58:37.914Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-proyecto-nuevo-entrevista-y-product-md","request":"Realiza todo en el orden sugerido (c: el flujo completo de proyecto nuevo de §14)"}}
+{"ts":"2026-10-24T16:59:12.400Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:ba98c15a503ee813dea2ee10d7eb9f0c7b07af915759b8a156c46e8c0ecab975","size":"S","warnings":0}}
+{"ts":"2026-10-24T16:59:12.625Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:ba98c15a503ee813dea2ee10d7eb9f0c7b07af915759b8a156c46e8c0ecab975","channel":"delegated","delegated":true}}

@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261024-proyecto-nuevo-entrevista-y-product-md",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-proyecto-nuevo-entrevista-y-product-md",
+  "baseCommit": "f9475652d0e94e2dd260716a67becad693419ba0",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:287dcfe3608816eccc2e3b8b4b5b181a6b5390e23a71814f620ad57d27c68396",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:494d9dbeeef1bf2473e5c4ada634a997e5973a28c3f308f2f3729b93bd6166a6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b06de7dfd8cc0ca04ea561dd9f9d8045068c99ae888a6294d47216116a8e5c96",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:291a01d60ce2c9d69d594eaaf8c5ab0acd3069fd88abb33b8b51b5a0f761fb2f",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 1,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ba98c15a503ee813dea2ee10d7eb9f0c7b07af915759b8a156c46e8c0ecab975",
+    "at": "2026-10-24T16:59:12.616Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
