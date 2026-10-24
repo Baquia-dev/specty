@@ -6,6 +6,13 @@
   "branch": "specty/20261024-modo-delegado-en-el-servidor-local",
   "baseCommit": "b9c7abab86a370eae51a503e4f0a26dad029d7e4",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ce8644db769136979a0c1882f610e19accd68536064c34a0bac9b2c54fc779bc",
+    "at": "2026-10-24T05:59:19.128Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "098483d8f6d147295b9cef3fdd78c2d60e7ae6b4",
+      "startedAt": "2026-10-24T05:59:19.649Z",
+      "doneAt": "2026-10-24T06:01:38.225Z",
+      "summary": "GET /api/delegation da si el modo delegado está activo, quién lo activó y cuándo, y el aviso de delegate on en español e inglés; POST /api/delegation {on} es una acción de la persona que ejecuta delegate on|off con la terminal de la UI respondiendo sí al activarlo; el interruptor entra en la firma de los eventos"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -37,12 +54,5 @@
     "A": 3,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ce8644db769136979a0c1882f610e19accd68536064c34a0bac9b2c54fc779bc",
-    "at": "2026-10-24T05:59:19.128Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -1,8 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
-import { blockedCard, headerOf, type Output, parseSpec, translator } from "@baquia-dev/specty-core";
+import {
+  blockedCard,
+  delegationWarning,
+  headerOf,
+  type Output,
+  parseSpec,
+  translator,
+} from "@baquia-dev/specty-core";
 import { accept } from "../commands/accept";
 import { adjust } from "../commands/adjust";
 import { approve } from "../commands/approve";
+import { delegate } from "../commands/delegate";
 import { close } from "../commands/finish";
 import { type PersonAction, personSession } from "../commands/human";
 import { reject } from "../commands/scope-decision";
@@ -11,6 +19,7 @@ import { decideAssumption } from "../flow/review";
 import { isRecord } from "../io/files";
 import { type Session, sessionFrom, type Terminal } from "../session";
 import { readSpec } from "../store/changes";
+import { readDelegation } from "../store/local";
 
 /** A decision the person takes in the UI, as its route and its body say it. */
 export type Action =
@@ -90,17 +99,49 @@ const COMMAND: Readonly<Record<Action["kind"], PersonAction>> = {
 
 /**
  * The person deciding on the UI's screen: they already decided there, so every confirmation is
- * a yes. Nothing is chosen for them: a question that needs a choice postpones the action.
+ * a yes. Only `choice`, what they picked on screen, is chosen for them; any other question that
+ * needs a choice postpones the action.
  */
-function screen(): Terminal {
+function screen(choice?: string): Terminal {
   return {
     interactive: true,
     channel: "ui",
     confirm: () => Promise.resolve(true),
-    choose: () => Promise.resolve(undefined),
+    choose: (_message, options) =>
+      Promise.resolve(options.find((option) => option.value === choice)?.value),
     ask: () => Promise.resolve(undefined),
     note: () => undefined,
   };
+}
+
+/** `session` with the person deciding on the UI's screen. */
+function onScreen(session: Session, choice?: string): Session {
+  return sessionFrom(
+    { ...session.environment, terminal: screen(choice) },
+    session.root,
+    session.paths,
+    session.git,
+    session.config,
+    session.delegated,
+  );
+}
+
+/** Delegated mode as the UI shows it: on or off, who turned it on and when, and the warning. */
+export async function delegationView(session: Session) {
+  const delegation = await readDelegation(session.git);
+  const warning = {
+    es: delegationWarning({ ...session.cards, lang: "es" }),
+    en: delegationWarning({ ...session.cards, lang: "en" }),
+  };
+  return delegation === undefined ? { on: false, warning } : { on: true, ...delegation, warning };
+}
+
+/**
+ * The person turns delegated mode on or off from the UI, as `specty delegate on|off`: turning it
+ * on answers the command's question with the yes they gave after reading the warning.
+ */
+export function setDelegation(session: Session, on: boolean): Promise<Output> {
+  return delegate(onScreen(session, on ? "yes" : undefined), on ? "on" : "off");
 }
 
 /**
@@ -108,14 +149,7 @@ function screen(): Terminal {
  * terminal; the answer is that command's output.
  */
 export async function runAction(session: Session, id: string, action: Action): Promise<Output> {
-  const ui = sessionFrom(
-    { ...session.environment, terminal: screen() },
-    session.root,
-    session.paths,
-    session.git,
-    session.config,
-    session.delegated,
-  );
+  const ui = onScreen(session);
   const scope = action.kind === "scope" ? { scope: action.request } : {};
   const chosen = await personSession(ui, COMMAND[action.kind], { id, ...scope });
   if (chosen.kind === "output") return chosen.output;

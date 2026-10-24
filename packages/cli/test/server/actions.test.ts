@@ -2,6 +2,7 @@
 import { type IncomingHttpHeaders, request } from "node:http";
 import { describe, expect, it } from "vitest";
 import { ui } from "../../src/commands/ui";
+import { fingerprint } from "../../src/server/events";
 import { startServer, type UiServer } from "../../src/server/http";
 import { openSession, type Session, type Terminal } from "../../src/session";
 import {
@@ -232,5 +233,47 @@ describe("specty ui and the person's actions", () => {
       await ui(session, "0", Promise.resolve());
       expect(printed.join("\n")).toContain(says);
     }
+  });
+});
+
+describe("delegated mode in the local server", () => {
+  it("is read with its warning, and switched only by the person (AC1, AC2)", async () => {
+    const { root, server, headers } = await serving();
+    const delegation = "/api/delegation";
+    try {
+      const view = async () => JSON.parse((await call(server.port, delegation, headers)).body);
+      expect(await view()).toMatchObject({
+        on: false,
+        warning: {
+          es: expect.arrayContaining([expect.stringContaining("Con el modo delegado")]),
+          en: expect.arrayContaining([expect.stringContaining("In delegated mode")]),
+        },
+      });
+      expect((await call(server.port, delegation, headers, { on: true })).status).toBe(200);
+      expect(await view()).toMatchObject({ on: true, by: "Ana", at: expect.any(String) });
+      expect((await cli(root, ["status"], { terminal: person() })).out).toContain("MODO DELEGADO");
+      expect((await call(server.port, delegation, headers, { on: "sí" })).status).toBe(400);
+      const { cookie, origin } = headers;
+      expect((await call(server.port, delegation, { cookie, origin }, { on: false })).status).toBe(
+        403,
+      );
+      expect((await call(server.port, delegation, headers, { on: false })).status).toBe(200);
+      expect((await view()).on).toBe(false);
+    } finally {
+      await server.close();
+    }
+    const readOnly = await serving(false);
+    const refused = await call(readOnly.server.port, delegation, readOnly.headers, { on: true });
+    expect(refused.status).toBe(403);
+    await readOnly.server.close();
+  });
+
+  it("moves the fingerprint of the events when it changes (AC3)", async () => {
+    const { root, server } = await serving();
+    await server.close();
+    const session = await sessionAt(root, AGENT);
+    const before = await fingerprint(session);
+    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    expect(await fingerprint(session)).not.toBe(before);
   });
 });

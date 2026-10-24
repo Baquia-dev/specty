@@ -4,6 +4,7 @@ import type { ServerResponse } from "node:http";
 import { join } from "node:path";
 import type { Session } from "../session";
 import { listDir } from "../store/changes";
+import { readDelegation } from "../store/local";
 import { repoPaths } from "../store/paths";
 
 /** The files of an open change whose time and size say it moved. */
@@ -11,10 +12,11 @@ const WATCHED: readonly string[] = ["spec.md", "state.json", "audit.jsonl", "com
 
 /**
  * What the changes look like on disk: the open changes of each worktree, by their files' time and
- * size, and the name of every archived change. The same fingerprint means the same data.
+ * size, the name of every archived change, and the delegated mode switch. The same fingerprint
+ * means the same data.
  */
 export async function fingerprint(session: Session): Promise<string> {
-  const parts: string[] = [];
+  const parts: string[] = [`delegated ${JSON.stringify(await readDelegation(session.git))}`];
   for (const { folder } of await session.git.worktrees()) {
     const { changes, archive } = repoPaths(folder);
     for (const id of await listDir(changes)) {

@@ -43,7 +43,7 @@ El servidor de `specty ui` dice si el modo delegado está activo (quién lo acti
 
 ## Tareas
 
-- [ ] T1: El modo delegado en el servidor
+- [x] T1: El modo delegado en el servidor
   - files: packages/cli/src/server/actions.ts, packages/cli/src/server/http.ts, packages/cli/src/server/events.ts, packages/cli/test/server/actions.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/actions.test.ts test/server.test.ts test/delegate.test.ts

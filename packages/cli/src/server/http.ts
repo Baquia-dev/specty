@@ -3,10 +3,10 @@ import { randomBytes, timingSafeEqual } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { extname, join, resolve, sep } from "node:path";
-import { translator } from "@baquia-dev/specty-core";
-import { parseJson } from "../io/files";
+import { type Output, translator } from "@baquia-dev/specty-core";
+import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
-import { parseAction, runAction } from "./actions";
+import { delegationView, parseAction, runAction, setDelegation } from "./actions";
 import { type ChangeEvents, changeEvents } from "./events";
 import { changeRecords } from "./records";
 
@@ -151,6 +151,10 @@ async function handle(request: IncomingMessage, response: ServerResponse, contex
         JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
       );
     }
+    if (url.pathname === "/api/delegation") {
+      const view = await delegationView(context.session);
+      return send(response, 200, JSON_TYPE, JSON.stringify(view));
+    }
     return send(response, 404, JSON_TYPE, '{"error":"not found"}');
   }
   return serveUi(response, context, url.pathname);
@@ -174,13 +178,21 @@ async function act(
   const csrf = request.headers["x-specty-csrf"];
   if (typeof csrf !== "string" || !same(csrf, context.csrf))
     return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
+  const body = await readBody(request);
+  const bad = () => send(response, 400, JSON_TYPE, '{"error":"bad request"}');
+  const done = (output: Output) =>
+    send(response, output.status === "ok" ? 200 : 409, JSON_TYPE, JSON.stringify(output));
+  if (pathname === "/api/delegation") {
+    const on = isRecord(body) ? body.on : undefined;
+    if (typeof on !== "boolean") return bad();
+    return done(await context.serial(() => setDelegation(context.session, on)));
+  }
   const parsed = parseAction(
     pathname.split("/").filter((part) => part !== ""),
-    await readBody(request),
+    body,
   );
-  if (parsed === undefined) return send(response, 400, JSON_TYPE, '{"error":"bad request"}');
-  const output = await context.serial(() => runAction(context.session, parsed.id, parsed.action));
-  return send(response, output.status === "ok" ? 200 : 409, JSON_TYPE, JSON.stringify(output));
+  if (parsed === undefined) return bad();
+  return done(await context.serial(() => runAction(context.session, parsed.id, parsed.action)));
 }
 
 /** A JSON body of at most 64 KiB; anything else reads as nothing. */
