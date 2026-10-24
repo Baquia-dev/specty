@@ -54,7 +54,7 @@ Tres detalles pendientes de la UI. Las filas que se desplazan de lado (las fases
   - files: packages/ui/src/catalog/catalog.ts, packages/ui/src/catalog/catalog.test.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/catalog --include src/inbox && pnpm sources
-- [ ] T3: Documentar los bordes que se desvanecen
+- [x] T3: Documentar los bordes que se desvanecen
   - files: docs/ui.md
   - ac: AC4
   - verify: pnpm check

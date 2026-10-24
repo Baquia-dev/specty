@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-pulido-bordes-que-se-desvanecen-y-desplazamiento",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-pulido-bordes-que-se-desvanecen-y-desplazamiento",
   "baseCommit": "e4b57dc75844cbbd2eaf0ab7fc3d07d7cb6f07c9",
   "revision": 1,
@@ -39,12 +39,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "910922ce5f4bd23568e3f222204b69a5b015aa70",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:17:19.152Z",
       "doneAt": "2026-10-24T11:19:42.020Z",
-      "summary": "El menú del catálogo lleva spEdgeFade y, tras cada navegación, centra su enlace activo si se desplaza de lado; la Bandeja mide su barra fija con un ResizeObserver y la publica como --sp-sticky-top, y cada fila la usa en su scroll-margin-top en lugar de scroll-mt-36"
+      "summary": "El menú del catálogo lleva spEdgeFade y, tras cada navegación, centra su enlace activo si se desplaza de lado; la Bandeja mide su barra fija con un ResizeObserver y la publica como --sp-sticky-top, y cada fila la usa en su scroll-margin-top en lugar de scroll-mt-36",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "50cb7ed9ed7ba366d7d422d0a797e9544a7a4c02",
+      "startedAt": "2026-10-24T11:19:42.369Z",
+      "doneAt": "2026-10-24T11:21:51.012Z",
+      "summary": "docs/ui.md: los bordes que se desvanecen (Lenguaje visual), el menú del catálogo que centra la página abierta y la Bandeja que mide su barra fija"
     }
   },
   "pending": {
