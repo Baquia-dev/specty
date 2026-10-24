@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261024-init-reversible-y-specty-uninstall",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-init-reversible-y-specty-uninstall",
+  "baseCommit": "12d05ae2a06dbddc40150d0d4491f40968a59abc",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:262036205904beeb57466ec2bfc106e62551bd9875828dd164fd467387e5eec4",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6653911537486c1ddb7de7da6dd8fc29b83a8d5014098421f9aab35673f917ef",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f4dfe2e3ece63115eab3922768c3bd37c83508b4fd6a2caeb444bf217e65627b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ad582ad798cde969bc7434e09358b7cb9af18471132ffb27cc04e7beed1f94dc",
+    "at": "2026-10-24T14:58:00.607Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
