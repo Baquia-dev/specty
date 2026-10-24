@@ -47,7 +47,7 @@ La regla «una sesión, una worktree» ata una sesión a la carpeta de su cambio
   - files: packages/core/src/guard/session.ts, packages/core/src/guard/decide.ts, packages/core/test/guard/decide.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
-- [ ] T2: La CLI sabe de qué épica es el cambio de destino
+- [x] T2: La CLI sabe de qué épica es el cambio de destino
   - files: packages/cli/src/enforce/sessions.ts, packages/cli/test/sessions.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
