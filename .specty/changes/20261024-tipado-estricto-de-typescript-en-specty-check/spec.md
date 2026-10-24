@@ -59,7 +59,7 @@ En un proyecto TypeScript, `specty check` falla si el cambio añade un `any` exp
   - files: packages/core/src/checks/strict-types.ts, packages/core/src/index.ts, packages/core/test/checks/strict-types.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/strict-types.test.ts
-- [ ] T2: `strict-types` con ESLint o con la detección propia
+- [x] T2: `strict-types` con ESLint o con la detección propia
   - files: packages/cli/src/check/typescript.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-typescript.test.ts
   - ac: AC1, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-typescript.test.ts test/check.test.ts

@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d8395d7299ca34340039ed2647eacc464429577b",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:59:16.120Z",
       "doneAt": "2026-10-24T21:01:01.674Z",
-      "summary": "core/checks/strict-types.ts: strictTypeViolations detecta línea a línea, sin comentarios ni cadenas, any donde va un tipo, @ts-ignore/@ts-nocheck al inicio de un comentario y la aserción no nula (sin el fin de línea en .tsx)."
+      "summary": "core/checks/strict-types.ts: strictTypeViolations detecta línea a línea, sin comentarios ni cadenas, any donde va un tipo, @ts-ignore/@ts-nocheck al inicio de un comentario y la aserción no nula (sin el fin de línea en .tsx).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "da6a9089b1ca5c7993dc268b036f5de021f46196",
+      "startedAt": "2026-10-24T21:01:01.928Z",
+      "doneAt": "2026-10-24T21:04:03.806Z",
+      "summary": "check/typescript.ts: proveedor de TypeScript con strict-types; con ESLint y typescript-eslint lo ejecuta con las tres reglas a error (informe a archivo), si no, la detección propia; mismos mensajes es/en. specty check en este repo: todo OK."
     }
   },
   "pending": {
