@@ -55,7 +55,7 @@ Mientras el agente ejecuta `specty task done`, la UI que sirve `specty ui` muest
   - files: packages/cli/src/server/runs.ts, packages/cli/test/server/live.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server && pnpm sources
-- [ ] T3: Documentar la verificación en vivo de las tareas
+- [x] T3: Documentar la verificación en vivo de las tareas
   - files: docs/ARCHITECTURE.md, docs/ui.md
   - ac: AC4
   - verify: pnpm check
