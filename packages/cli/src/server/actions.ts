@@ -15,10 +15,11 @@ import { close } from "../commands/finish";
 import { type PersonAction, personSession } from "../commands/human";
 import { reject } from "../commands/scope-decision";
 import { resolveActive } from "../flow/active";
-import { decideAssumption } from "../flow/review";
+import { addComment, decideAssumption, requestChanges } from "../flow/review";
 import { isRecord } from "../io/files";
 import { type Session, sessionFrom, type Terminal } from "../session";
 import { readSpec } from "../store/changes";
+import { type CommentAnchor, isAnchor } from "../store/comments";
 import { readDelegation } from "../store/local";
 
 /** A decision the person takes in the UI, as its route and its body say it. */
@@ -36,6 +37,8 @@ export type Action =
       readonly decision: "approved" | "rejected";
       readonly reason?: string;
     }
+  | { readonly kind: "comment"; readonly anchor: CommentAnchor; readonly body: string }
+  | { readonly kind: "requestChanges" }
   | { readonly kind: "accept" }
   | { readonly kind: "adjust"; readonly request: string }
   | { readonly kind: "close" };
@@ -70,6 +73,10 @@ export function parseAction(
         ...(reason === undefined ? {} : { reason }),
       };
     }
+    const body = text("body");
+    if (verb === "comments" && target === undefined && isAnchor(data.anchor) && body !== undefined)
+      return { kind: "comment", anchor: data.anchor, body };
+    if (verb === "request-changes" && target === undefined) return { kind: "requestChanges" };
     const request = text("request")?.trim();
     if (verb === "adjust" && target === undefined && request !== undefined && request !== "")
       return { kind: "adjust", request };
@@ -91,6 +98,8 @@ function isOneOf<T extends string>(value: unknown, options: readonly T[]): value
 const COMMAND: Readonly<Record<Action["kind"], PersonAction>> = {
   approve: "approve",
   assumption: "approve",
+  comment: "approve",
+  requestChanges: "approve",
   scope: "approve",
   accept: "accept",
   adjust: "accept",
@@ -157,9 +166,13 @@ export async function runAction(session: Session, id: string, action: Action): P
   switch (action.kind) {
     case "approve":
       return approveRevision(there, action.revision);
-    case "assumption": {
+    case "assumption":
+    case "comment":
+    case "requestChanges": {
       const change = await resolveActive(there);
       if (change === undefined) return noChange(there);
+      if (action.kind === "comment") return addComment(there, change, action.anchor, action.body);
+      if (action.kind === "requestChanges") return requestChanges(there, change);
       return decideAssumption(there, change, action.item, action.decision, action.comment);
     }
     case "scope":

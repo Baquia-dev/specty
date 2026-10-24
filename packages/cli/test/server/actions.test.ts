@@ -1,110 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
-import { type IncomingHttpHeaders, request } from "node:http";
 import { describe, expect, it } from "vitest";
 import { ui } from "../../src/commands/ui";
 import { fingerprint } from "../../src/server/events";
-import { startServer, type UiServer } from "../../src/server/http";
-import { openSession, type Session, type Terminal } from "../../src/session";
 import {
   AGENT,
   APP,
   ARCHIVE,
   CHANGE,
-  CONFIG,
   cli,
-  DIST,
   git,
-  NOW,
   person,
   read,
-  SPEC,
   SPEC_PATH,
   tempRepo,
-  testEnv,
   writeFiles,
 } from "../support";
-
-/** A session in `cwd`, as the commands open it; what it prints goes to `out`. */
-async function sessionAt(
-  cwd: string,
-  terminal: Terminal,
-  out = (_: string) => undefined,
-): Promise<Session> {
-  const opened = await openSession({
-    cwd,
-    env: testEnv(),
-    now: () => NOW,
-    terminal,
-    io: { out, err: () => undefined },
-    invocation: { command: `node "${DIST}"`, portable: false, script: DIST },
-  });
-  if (opened.kind !== "ok") throw new Error(`no Specty session in ${cwd}`);
-  return opened.session;
-}
-
-interface Answer {
-  readonly status: number;
-  readonly headers: IncomingHttpHeaders;
-  readonly body: string;
-}
-
-/** A request as the browser makes it: from 127.0.0.1, with `headers` and an optional JSON body. */
-function call(port: number, path: string, headers: Record<string, string> = {}, body?: unknown) {
-  return new Promise<Answer>((done, fail) => {
-    const sent = request(
-      {
-        host: "127.0.0.1",
-        port,
-        path,
-        method: body === undefined ? "GET" : "POST",
-        headers: { host: `127.0.0.1:${port}`, "content-type": "application/json", ...headers },
-      },
-      (response) => {
-        let text = "";
-        response.setEncoding("utf8");
-        response.on("data", (chunk: string) => {
-          text += chunk;
-        });
-        response.on("end", () =>
-          done({ status: response.statusCode ?? 0, headers: response.headers, body: text }),
-        );
-      },
-    );
-    sent.on("error", fail);
-    sent.end(body === undefined ? undefined : JSON.stringify(body));
-  });
-}
-
-/** Opens the server's link and reads its session: the headers every action needs. */
-async function enter(server: UiServer) {
-  const { pathname, search } = new URL(server.link);
-  const cookie = (await call(server.port, `${pathname}${search}`)).headers["set-cookie"]?.[0];
-  const headers = {
-    cookie: cookie?.split(";")[0] ?? "",
-    origin: `http://localhost:${server.port}`,
-  };
-  const session = JSON.parse((await call(server.port, "/api/session", headers)).body);
-  return { session, headers: { ...headers, "x-specty-csrf": session.csrf ?? "" } };
-}
-
-/** SPEC's change in review, and a server the person started there (or the agent: read only). */
-async function serving(actions = true, config = CONFIG()) {
-  const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
-  await cli(root, ["new", "Saludo personalizado"]);
-  await writeFiles(root, { [SPEC_PATH]: SPEC });
-  expect((await cli(root, ["propose"])).code).toBe(0);
-  const server = await startServer({
-    session: await sessionAt(root, AGENT),
-    port: 0,
-    ui: undefined,
-    actions,
-  });
-  return { root, server, ...(await enter(server)) };
-}
-
-const STATE = `.specty/changes/${CHANGE}/state.json`;
-const state = async (root: string) => JSON.parse(await read(root, STATE));
-const path = (verb: string) => `/api/changes/${CHANGE}/${verb}`;
+import { call, path, serving, sessionAt, state } from "./support";
 
 describe("the person's actions in the local server", () => {
   it("are there only when the person started the server (AC1)", async () => {
