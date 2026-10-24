@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-ci-en-tres-sistemas-y-publicacion-con-procedenci",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-ci-en-tres-sistemas-y-publicacion-con-procedenci",
   "baseCommit": "78aedb8d652d8935ea32dbc0538d23cc4f854856",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:48fe3b9cd819e1c19eab0249d8cb6f728e163ef8aa8c81fab6688ba045ec14aa",
@@ -49,12 +49,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cfe317ece139a51ebe6e6c73222a6d2a27b3c46c",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:53:10.692Z",
       "doneAt": "2026-10-24T15:56:19.142Z",
-      "summary": "release.yml publica @baquia-dev/specty con npm publish --provenance --access public (id-token: write, NPM_TOKEN) desde una etiqueta v<versión> que coincida con el paquete y tras pnpm check. El paquete deja de ser private, lleva publishConfig público con procedencia y su bin pasa a dist/specty.mjs, porque npm 11 quitaba ./dist/specty.mjs al publicar (comprobado con npm publish --dry-run). workflows.test.ts y ARCHITECTURE §16."
+      "summary": "release.yml publica @baquia-dev/specty con npm publish --provenance --access public (id-token: write, NPM_TOKEN) desde una etiqueta v<versión> que coincida con el paquete y tras pnpm check. El paquete deja de ser private, lleva publishConfig público con procedencia y su bin pasa a dist/specty.mjs, porque npm 11 quitaba ./dist/specty.mjs al publicar (comprobado con npm publish --dry-run). workflows.test.ts y ARCHITECTURE §16.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -66,5 +66,6 @@
     "AC": 3,
     "T": 2,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:57:36.130Z"
 }

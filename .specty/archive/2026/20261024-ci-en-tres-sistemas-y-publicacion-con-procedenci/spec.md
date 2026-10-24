@@ -60,3 +60,24 @@ Segunda parte del punto «CI en Linux, macOS y Windows, más knip y `npm publish
 - R1: Una publicación accidental — solo la hace el workflow, con una etiqueta que coincida con la versión, tras `pnpm check`, y con un secreto que la persona tiene que crear.
 - R2: El CI de Windows en rojo desde el primer día — no bloquea (A1), y sus fallos quedan a la vista para arreglarlos aparte.
 - R3: Un workflow que no se puede probar aquí — el test fija su forma, y el primer push a `main` lo ejecuta de verdad.
+
+## Cierre
+
+### Resumen
+
+`.github/workflows/ci.yml` ejecuta `pnpm install --frozen-lockfile` y `pnpm check`, que ya incluye knip, en cada push a `main` y en cada pull request: en Linux, macOS y Windows con Node 22, y en Linux también con Node 24. Windows no bloquea hasta que pase una vez, y git no convierte los saltos de línea a CRLF. `.github/workflows/release.yml` publica `@baquia-dev/specty` con `npm publish --provenance --access public` cuando se sube una etiqueta `v<versión>`, en este orden: instala, comprueba que la etiqueta es la versión, ejecuta `pnpm check` y publica, con `id-token: write` y el secreto `NPM_TOKEN`. El paquete deja de ser privado y lleva `publishConfig` público con procedencia. `workflows.test.ts` fija la forma de los dos workflows y del paquete.
+
+### Desviaciones
+
+- **El `bin` del paquete cambió de `./dist/specty.mjs` a `dist/specty.mjs`:** `npm publish --dry-run` avisó de que npm 11 quitaría el primero al publicar, y el paquete se habría instalado sin el comando `specty`. Lo comprobé en una copia: sin `./` se conserva. El test lo fija.
+
+### Decisiones
+
+- **Las acciones van por versión mayor** (`actions/checkout@v5`, `actions/setup-node@v5`, `pnpm/action-setup@v4`), y pnpm por la mayor que pide `devEngines` (11).
+- **Publicar con `npm` y no con `pnpm`,** como pedía el punto (`npm publish --provenance`), desde `packages/cli`, donde el `devEngines` de la raíz no lo impide.
+
+### Pendientes
+
+- **Ver el primer CI de verdad**, sobre todo el de Windows, y arreglar lo que falle allí.
+- **Crear el secreto `NPM_TOKEN`** en el repositorio, o configurar la publicación de confianza de npm para este workflow, antes de la primera etiqueta.
+- **Incluir `LICENSE` y `NOTICE` en el paquete:** hoy solo publica `dist/` y `package.json`.
