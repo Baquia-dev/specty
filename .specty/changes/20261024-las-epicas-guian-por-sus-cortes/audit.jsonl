@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T20:53:20.530Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-las-epicas-guian-por-sus-cortes","request":"si realiza todo eneguida de forma autonoma las 12 observaciones"}}
+{"ts":"2026-10-24T20:54:52.610Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:293d65adc46237036bcb4496af1cd2d6580afdd2ec6fbbad687bc36c9cf431a9","size":"L","warnings":0}}
+{"ts":"2026-10-24T20:54:55.390Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:293d65adc46237036bcb4496af1cd2d6580afdd2ec6fbbad687bc36c9cf431a9","channel":"delegated","delegated":true}}

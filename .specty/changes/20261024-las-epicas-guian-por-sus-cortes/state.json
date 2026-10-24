@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261024-las-epicas-guian-por-sus-cortes",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-las-epicas-guian-por-sus-cortes",
+  "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3c4873a3228a91b5362cce1f2e411f6105594e4bfd333620668fdd5a4462dc11",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:633ee6dfcfdbd3b3d324241c31b1a3a6ae52f07a0a524167734a6894d06cbd61",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:a5ad993d12857042d3696153c6b16f3af39779a8c179cc96dcd23dc6096826c9",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9f13f310eb77eb335cdb551ac2b688f0c88d493ecf535eb9aee16cc365806ef1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:293d65adc46237036bcb4496af1cd2d6580afdd2ec6fbbad687bc36c9cf431a9",
+    "at": "2026-10-24T20:54:55.380Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
