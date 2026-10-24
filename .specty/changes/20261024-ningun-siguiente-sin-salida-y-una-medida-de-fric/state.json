@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261024-ningun-siguiente-sin-salida-y-una-medida-de-fric",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-ningun-siguiente-sin-salida-y-una-medida-de-fric",
+  "baseCommit": "800f1a4d6f5140b2d7438bee5dd6eebea77c9304",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5328a75d75e4376fbfac15b805408e0690633fa9e18b040bbc1494875640e772",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:beeea3240da30e1a90d078c6d6a172cd6915623355c71375212d73c487bcdfbc",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:700d4e60917c3c275f79bbba1d05c0292516f6baebaa3b213a465b173e2502c9",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:aceffadb5774668490ef9939baaf809e1507f8467eec6136c1d149a393853cd2",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:550cf2fc32b49b2cabf465d9b123df1e6f5e6861bafae5b22ddce2db66cf2b68",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7699253aca4c37e6fc8c0ce5095cff699d32eae9d21767f5e32a06d0059b30f0",
+    "at": "2026-10-24T10:52:21.936Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
