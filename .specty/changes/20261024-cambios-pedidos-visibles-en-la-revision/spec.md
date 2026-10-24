@@ -50,7 +50,7 @@ Cuando la persona ya pidió cambios, la UI lo muestra. La revisión dice que el 
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources
-- [ ] T2: La revisión muestra los cambios pedidos
+- [x] T2: La revisión muestra los cambios pedidos
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review --include src/change && pnpm sources

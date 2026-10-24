@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8a5e3be238cf561e4714e57181c53a1c3d88498f",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:46:06.038Z",
       "doneAt": "2026-10-24T10:48:29.447Z",
-      "summary": "changesRequestedOf (views.ts) deriva de la auditoría si la persona pidió cambios sobre la revisión en revisión (el último spec.proposed o review.changes_requested es una petición); ChangeView.changesRequested lleva revisión y hora, y mientras existe el cambio no espera a la persona (decision vacío). requestChangesIn (sample-records.ts) anota review.changes_requested con los comentarios sin resolver o se niega como el servidor, y FixtureData.requestChanges lo usa"
+      "summary": "changesRequestedOf (views.ts) deriva de la auditoría si la persona pidió cambios sobre la revisión en revisión (el último spec.proposed o review.changes_requested es una petición); ChangeView.changesRequested lleva revisión y hora, y mientras existe el cambio no espera a la persona (decision vacío). requestChangesIn (sample-records.ts) anota review.changes_requested con los comentarios sin resolver o se niega como el servidor, y FixtureData.requestChanges lo usa",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2ddb1c1eebcb150f630931905481614485f8bd22",
+      "startedAt": "2026-10-24T10:48:29.757Z",
+      "doneAt": "2026-10-24T10:49:43.559Z",
+      "summary": "ReviewActions muestra bajo los botones «Cambios pedidos: el agente prepara la revisión N+1.» (atenuado, con un reloj de arena) cuando la vista trae changesRequested, y lo usa como motivo para desactivar «Pedir cambios»; «Aprobar» sigue disponible"
     }
   },
   "pending": {
