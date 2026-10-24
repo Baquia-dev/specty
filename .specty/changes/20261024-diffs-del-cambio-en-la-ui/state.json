@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "58488238d703accd1543e1167335b19215aa414e",
+      "attempts": 1,
       "startedAt": "2026-10-24T07:16:05.062Z",
       "doneAt": "2026-10-24T07:19:18.015Z",
-      "summary": "server/records.ts completa state.tasks[T].commit de cada tarea hecha con una sola búsqueda git log --all por el trailer Specty-Task; server/diff.ts da el diff de una tarea (baseCommit..commit) o de todo el cambio (base de la primera tarea con commit..commit de la última), sin .specty/, y GET /api/changes/<id>/diff[?task=T] lo sirve como texto, también en solo lectura: 404 sin commits, 413 con el rango si pasa del límite de salida (que io/exec.ts ahora exporta), 403 sin sesión"
+      "summary": "server/records.ts completa state.tasks[T].commit de cada tarea hecha con una sola búsqueda git log --all por el trailer Specty-Task; server/diff.ts da el diff de una tarea (baseCommit..commit) o de todo el cambio (base de la primera tarea con commit..commit de la última), sin .specty/, y GET /api/changes/<id>/diff[?task=T] lo sirve como texto, también en solo lectura: 404 sin commits, 413 con el rango si pasa del límite de salida (que io/exec.ts ahora exporta), 403 sin sesión",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "21a78c96a4432c18f69973122c11bf558bd6f801",
+      "startedAt": "2026-10-24T07:19:18.405Z",
+      "doneAt": "2026-10-24T07:20:36.803Z",
+      "summary": "ServerData.diff pide GET /api/changes/<id>/diff (con ?task=<T> para una tarea) y devuelve el texto; explica la falta de sesión (403), que aún no hay commits (404) y el diff demasiado grande (413) con el git diff del rango que da el servidor; solo verifyChange sigue sin ruta"
     }
   },
   "pending": {

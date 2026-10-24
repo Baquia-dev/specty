@@ -133,13 +133,17 @@ const CHANGE = "20261024-saludo";
 const at = (verb: string) => `/api/changes/${CHANGE}/${verb}`;
 const SESSION: [number, unknown] = [200, { actions: true, csrf: "t0k3n" }];
 
-/** A local server inside `fetch`: it answers by path and keeps every request. */
+/**
+ * A local server inside `fetch`: it answers by path, a text as it is and anything else as JSON,
+ * and keeps every request.
+ */
 function serverAnswering(answers: Readonly<Record<string, readonly [number, unknown]>>) {
   const requests: { readonly url: string; readonly init?: RequestInit }[] = [];
   const fetched = vi.fn((url: string, init?: RequestInit) => {
     requests.push({ url, ...(init === undefined ? {} : { init }) });
     const [status, body] = answers[url] ?? [404, { error: "not found" }];
-    return Promise.resolve(new Response(JSON.stringify(body), { status }));
+    const text = typeof body === "string" ? body : JSON.stringify(body);
+    return Promise.resolve(new Response(text, { status }));
   });
   vi.stubGlobal("fetch", fetched);
   return requests;
@@ -234,10 +238,36 @@ describe("ServerData actions", () => {
     expect(await reason(new ServerData().requestChanges(CHANGE))).toBe(
       "No hay comentarios sin resolver ni supuestos rechazados que pedir. Comenta lo que debe cambiar, o aprueba la spec.",
     );
+    expect(await reason(new ServerData().verifyChange())).toContain(
+      "aún no admite esto desde la UI",
+    );
+  });
+
+  it("reads the diff of a task or of the whole change, and says why there is none (AC3, AC4)", async () => {
+    const text = "diff --git a/src/app.ts b/src/app.ts\n";
+    const requests = serverAnswering({
+      [at("diff")]: [200, text],
+      [at("diff?task=T%201")]: [200, ""],
+    });
     const data = new ServerData();
-    for (const action of [data.verifyChange(), data.diff()]) {
-      expect(await reason(action)).toContain("aún no admite esto desde la UI");
-    }
+    expect(await data.diff(CHANGE)).toBe(text);
+    expect(await data.diff(CHANGE, "T 1")).toBe("");
+    expect(requests.map(({ url, init }) => [url, init?.method ?? "GET"])).toEqual([
+      [at("diff"), "GET"],
+      [at("diff?task=T%201"), "GET"],
+    ]);
+    serverAnswering({ [at("diff")]: [413, { error: "too large", range: "5d2a7b0..3c9d1e2" }] });
+    expect(await reason(data.diff(CHANGE))).toBe(
+      "El diff pasa de 512 KB y no cabe aquí: míralo con `git diff 5d2a7b0..3c9d1e2` en la carpeta del cambio.",
+    );
+    serverAnswering({ [at("diff")]: [413, {}] });
+    expect(await reason(data.diff(CHANGE))).toContain("míralo con `git diff` en la carpeta");
+    serverAnswering({});
+    expect(await reason(data.diff(CHANGE))).toContain("aún no hay commits de esta tarea");
+    serverAnswering({ [at("diff")]: [403, { error: "forbidden" }] });
+    expect(await reason(data.diff(CHANGE))).toContain("Esta pestaña no tiene sesión");
+    serverAnswering({ [at("diff")]: [500, { error: "git" }] });
+    expect(await reason(data.diff(CHANGE))).toBe("El servidor respondió 500.");
   });
 });
 

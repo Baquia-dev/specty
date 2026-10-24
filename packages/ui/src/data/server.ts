@@ -29,6 +29,10 @@ const NOT_YET: Bilingual = {
   es: "El servidor local aún no admite esto desde la UI: hazlo en la terminal.",
   en: "The local server does not support this from the UI yet: do it in the terminal.",
 };
+const NO_DIFF: Bilingual = {
+  es: "El servidor no tiene diff de esto: aún no hay commits de esta tarea o de este cambio.",
+  en: "The server has no diff for this: this task or change has no commits yet.",
+};
 const NOT_UNDERSTOOD: Bilingual = {
   es: "El servidor no entendió la petición.",
   en: "The server did not understand the request.",
@@ -140,8 +144,21 @@ export class ServerData extends SpectyData {
     return Promise.reject(new ActionError(NOT_YET));
   }
 
-  override diff(): Promise<string> {
-    return Promise.reject(new ActionError(NOT_YET));
+  /** The diff of a task or of the whole change; it is read, so even an agent's server gives it. */
+  override async diff(change: string, task?: string): Promise<string> {
+    const query = task === undefined ? "" : `?task=${encodeURIComponent(task)}`;
+    const response = await fetch(`/api/changes/${encodeURIComponent(change)}/diff${query}`);
+    if (response.ok) return response.text();
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    if (response.status === 404) throw new ActionError(NO_DIFF);
+    if (response.status === 413) {
+      const body: unknown = await response.json().catch(() => undefined);
+      throw new ActionError(tooLarge(isObject(body) ? body.range : undefined));
+    }
+    throw new ActionError({
+      es: `El servidor respondió ${response.status}.`,
+      en: `The server answered ${response.status}.`,
+    });
   }
 
   /** One of the person's actions on a change. */
@@ -194,6 +211,15 @@ async function refusal(response: Response): Promise<Bilingual> {
   return {
     es: `El servidor respondió ${response.status}.`,
     en: `The server answered ${response.status}.`,
+  };
+}
+
+/** A diff over the server's limit: the range to see it with git, when the server gave it. */
+function tooLarge(range: unknown): Bilingual {
+  const command = typeof range === "string" ? `git diff ${range}` : "git diff";
+  return {
+    es: `El diff pasa de 512 KB y no cabe aquí: míralo con \`${command}\` en la carpeta del cambio.`,
+    en: `The diff is over 512 KB and does not fit here: see it with \`${command}\` in the change's folder.`,
   };
 }
 
