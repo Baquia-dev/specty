@@ -49,7 +49,7 @@ ARCHITECTURE §14 prevé un camino para los proyectos nuevos que no existe: hoy 
 
 ## Tareas
 
-- [ ] T1: `init` entrevista y escribe `PRODUCT.md` en un proyecto nuevo
+- [x] T1: `init` entrevista y escribe `PRODUCT.md` en un proyecto nuevo
   - files: packages/cli/src/install/product.ts, packages/cli/src/commands/init.ts, packages/cli/test/new-project.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
