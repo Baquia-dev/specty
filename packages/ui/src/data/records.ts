@@ -221,6 +221,8 @@ export interface ChangeView {
   readonly shared?: readonly SharedFile[];
   readonly phaseSince: string;
   readonly goal: string;
+  /** What the person asked for, word for word, when the change was created with `--request`. */
+  readonly request?: string;
   readonly size?: { readonly level: SizeLevel; readonly reasons: readonly Bilingual[] };
   readonly effort?: { readonly plan: EffortLevel; readonly implement: EffortLevel };
   readonly decision?: DecisionKind;

@@ -11,8 +11,8 @@ import {
 } from "@baquia-dev/specty-core";
 import type { Detection } from "../detect/project";
 import { projectFacts, verifyCommands } from "../detect/project";
-import { readText, writeText } from "../io/files";
 import { COMMAND } from "../session";
+import { type InstallFiles, installFiles } from "./files";
 
 /** `.specty/config.yaml` with the detected values and short comments (docs/formats.md §6). */
 export function renderConfig(lang: Lang, detection: Detection): string {
@@ -67,20 +67,24 @@ export async function writeAgentsMd(
   root: string,
   lang: Lang,
   detection: Detection,
+  files: InstallFiles = installFiles(),
 ): Promise<"created" | "updated"> {
   const path = join(root, "AGENTS.md");
-  const current = await readText(path);
+  const current = await files.read(path);
   const base = current ?? `# ${detection.name}\n\n${humanSections(lang)}\n`;
   const withProject = upsertBlock(base, "project", projectBlock(projectFacts(detection), lang));
-  await writeText(path, upsertBlock(withProject, "flow", flowBlock(lang, COMMAND)));
+  await files.write(path, upsertBlock(withProject, "flow", flowBlock(lang, COMMAND)));
   return current === undefined ? "created" : "updated";
 }
 
 /** Claude Code reads CLAUDE.md: it imports AGENTS.md instead of copying it. */
-export async function writeClaudePointer(root: string): Promise<boolean> {
+export async function writeClaudePointer(
+  root: string,
+  files: InstallFiles = installFiles(),
+): Promise<boolean> {
   const path = join(root, "CLAUDE.md");
-  const current = await readText(path);
+  const current = await files.read(path);
   if (current?.split("\n").some((line) => line.trim() === "@AGENTS.md") === true) return false;
-  await writeText(path, current === undefined ? "@AGENTS.md\n" : `@AGENTS.md\n\n${current}`);
+  await files.write(path, current === undefined ? "@AGENTS.md\n" : `@AGENTS.md\n\n${current}`);
   return true;
 }
