@@ -56,7 +56,7 @@ En la UI que sirve `specty ui`, la persona ve el diff de cada tarea y el de todo
   - files: packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts
-- [ ] T3: Documentar los diffs del servidor
+- [x] T3: Documentar los diffs del servidor
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC5
   - verify: pnpm check

@@ -196,6 +196,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 
   Si el texto de un ítem cambia, su decisión vuelve a `pending`.
 - `tasks[].status` puede ser `pending`, `active` o `done`. `scopeExtra` guarda las ampliaciones aprobadas.
+- `tasks[].baseCommit` es el commit desde el que empezó la tarea. `tasks[].commit` (opcional) es el commit de la tarea, pero la CLI no lo guarda: es el commit que contiene el propio `state.json`. Se encuentra por su trailer `Specty-Task`, y el servidor local lo añade a lo que sirve a la UI (ARCHITECTURE §15).
 - `items[].comment` (opcional) guarda por qué la persona rechazó un supuesto; el agente lo lee en `specty next`.
 - `maxIds` guarda el número más alto usado por cada prefijo (también `S`, las solicitudes de alcance), para que un id borrado nunca se reutilice con otro significado.
 - `closingSubmittedAt` (opcional) indica que el cierre ya se envió y espera la confirmación de la persona.
