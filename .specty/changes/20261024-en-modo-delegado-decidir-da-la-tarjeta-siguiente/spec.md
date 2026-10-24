@@ -35,7 +35,7 @@ En modo delegado, el agente toma las decisiones de la persona (aprobar, decidir 
 
 ## Tareas
 
-- [ ] T1: En modo delegado, cada decisión trae la tarjeta siguiente
+- [x] T1: En modo delegado, cada decisión trae la tarjeta siguiente
   - files: packages/cli/src/commands/next.ts, packages/cli/src/commands/approve.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/src/commands/accept.ts, packages/cli/test/delegate.test.ts, packages/cli/test/friction.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check

@@ -154,8 +154,9 @@ describe("following every SIGUIENTE", () => {
     expect(on.code).toBe(0);
     const result = await walk(root, standard(root, false), true);
     expect(result.done, transcript(result)).toBe(true);
+    // Each decision the agent takes brings the next card: no `next` after approve and accept.
     expect(result.friction).toEqual({
-      agent: 11,
+      agent: 9,
       person: 0,
       blockedTools: 0,
       blocks: 0,

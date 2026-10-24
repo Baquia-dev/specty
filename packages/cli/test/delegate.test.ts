@@ -134,7 +134,8 @@ describe("delegated mode", () => {
     const rejected = await cli(root, ["reject", "--scope", "S1", "--reason", "Usa src/app.ts"]);
     expect(rejected.code).toBe(0);
     expect(rejected.out).toContain("S1 rechazada.");
-    expect(rejected.out).toContain("SIGUIENTE: sigue con `specty next`.");
+    // The agent goes on at once: no `next` that only brings the card (AC1).
+    expect(rejected.out).toContain("SIGUIENTE: implementa T1 y ejecuta `specty task done T1");
     expect(await read(root, `.specty/changes/${CHANGE}/audit.jsonl`)).toContain(
       '"reason":"Usa src/app.ts"',
     );
@@ -176,7 +177,8 @@ describe("delegated decisions on record", () => {
     const approved = await cli(root, ["approve"]);
     expect(approved.code).toBe(0);
     expect(approved.out).toContain("Revisión 1 aprobada (commit");
-    expect(approved.out).toContain("SIGUIENTE: sigue con `specty next`.");
+    expect(approved.out).toContain("TAREA T1: ");
+    expect(approved.out).toContain("SIGUIENTE: implementa T1 y ejecuta `specty task done T1");
     const state = JSON.parse(await read(root, `.specty/changes/${CHANGE}/state.json`));
     expect(state.approved).toMatchObject({ by: "Ana", channel: "delegated" });
     expect(state.items.A1.decision).toBe("confirmed");

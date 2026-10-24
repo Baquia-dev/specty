@@ -26,6 +26,7 @@ import { listed, sharedFiles, sharedLines } from "../flow/shared";
 import type { Session } from "../session";
 import { readRevision, readSpec, type StoredChange } from "../store/changes";
 import { canDecide } from "./human";
+import { thenNext } from "./next";
 import { retroDone } from "./retro";
 import { decideScope } from "./scope-decision";
 
@@ -126,15 +127,18 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
       { rejected },
       "human",
     );
-    return decisionCard(
-      header,
-      [
-        t(
-          `Rechazaste ${rejected.join(", ")}; el agente debe corregir la spec.`,
-          `You rejected ${rejected.join(", ")}; the agent must fix the spec.`,
-        ),
-      ],
-      session.cards,
+    return thenNext(
+      session,
+      decisionCard(
+        header,
+        [
+          t(
+            `Rechazaste ${rejected.join(", ")}; el agente debe corregir la spec.`,
+            `You rejected ${rejected.join(", ")}; the agent must fix the spec.`,
+          ),
+        ],
+        session.cards,
+      ),
     );
   }
   if (
@@ -211,15 +215,18 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     only: [session.paths.relative(files.dir)],
     receipt: { change: state.id, kind: "spec" },
   });
-  return decisionCard(
-    headerOf(state.id, moved.phase),
-    [
-      t(
-        `Revisión ${state.revision} aprobada (commit ${commit}).`,
-        `Revision ${state.revision} approved (commit ${commit}).`,
-      ),
-    ],
-    session.cards,
+  return thenNext(
+    session,
+    decisionCard(
+      headerOf(state.id, moved.phase),
+      [
+        t(
+          `Revisión ${state.revision} aprobada (commit ${commit}).`,
+          `Revision ${state.revision} approved (commit ${commit}).`,
+        ),
+      ],
+      session.cards,
+    ),
   );
 }
 

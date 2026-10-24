@@ -494,9 +494,9 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 | quick | 3 + 1 | 5 + 2 | 0 |
 | standard | 3 + 1 | 8 + 3 | 0 |
 | standard con tropiezos | 5 + 1 | 15 + 4 | 5, todos resueltos |
-| standard en modo delegado | 4 + 0 | 11 + 0 | 0 |
+| standard en modo delegado | 4 + 0 | 9 + 0 | 0 |
 
-Dos de esos comandos son un `next` que solo trae la tarjeta siguiente: uno tras `approve` y otro tras `accept` en standard.
+En standard, dos de esos comandos son un `next` que solo trae la tarjeta siguiente: uno tras `approve` y otro tras `accept`, cuando decide la persona y el agente sigue cuando ella se lo dice. En modo delegado no hacen falta: cuando el agente toma una decisión de la persona (aprobar, rechazar supuestos, decidir el alcance, aceptar), su salida trae la decisión y, debajo, la tarjeta que daría `next`.
 
 **Suite de cumplimiento** (`evals/`): escenarios con agentes reales en modo headless (Claude Code, Codex, Gemini CLI, Cursor CLI…), por ejemplo:
 
