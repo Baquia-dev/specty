@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { parseSpec } from "../../src";
+import { parseSpec, serializeSpec } from "../../src";
 import { fixture, label, lineOf } from "../helpers";
 
 const codes = (text: string): string[] => parseSpec(text).diagnostics.map(label);
@@ -76,6 +76,18 @@ describe("parseSpec", () => {
     expect(codes("---\nkind: big\n---\n\n# T\n")).toEqual(["frontmatter-invalid"]);
     expect(codes("---\nkind: quick\nowner: me\n---\n\n# T\n")).toEqual(["frontmatter-invalid"]);
     expect(codes("---\nkind: [\n---\n\n# T\n")).toEqual(["frontmatter-invalid"]);
+  });
+
+  it("reads the dependencies a change may add, and writes them back", () => {
+    const text = `---\nkind: quick\nallowedDependencies: [zod, "@angular/*"]\n---\n\n# T\n\n## Objetivo\n\nA.\n`;
+    const { spec, diagnostics } = parseSpec(text);
+    expect(diagnostics).toEqual([]);
+    expect(spec.frontmatter.allowedDependencies).toEqual(["zod", "@angular/*"]);
+    expect(serializeSpec(spec)).toContain('allowedDependencies:\n  - zod\n  - "@angular/*"\n');
+    expect(serializeSpec(parseSpec(MINIMAL).spec)).not.toContain("allowedDependencies");
+    expect(codes('---\nkind: quick\nallowedDependencies: [""]\n---\n\n# T\n')).toEqual([
+      "frontmatter-invalid",
+    ]);
   });
 
   it("reports layout problems", () => {

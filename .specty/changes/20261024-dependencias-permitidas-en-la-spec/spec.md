@@ -57,7 +57,7 @@ Una spec puede nombrar en su frontmatter las dependencias que el cambio está au
 
 ## Tareas
 
-- [ ] T1: `allowedDependencies` en el frontmatter
+- [x] T1: `allowedDependencies` en el frontmatter
   - files: packages/core/src/spec/model.ts, packages/core/src/spec/frontmatter.ts, packages/core/src/spec/serialize.ts, packages/core/test/spec/parse.test.ts, packages/core/test/spec/arbitraries.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec

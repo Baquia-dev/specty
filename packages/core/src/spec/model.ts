@@ -142,6 +142,8 @@ export interface Frontmatter {
   readonly slice?: string;
   readonly follows: readonly string[];
   readonly dependsOn: readonly string[];
+  /** Dependencies the change may add to a manifest: names or globs (`@angular/*`). */
+  readonly allowedDependencies?: readonly string[];
   readonly timebox?: string;
   readonly estimate?: Estimate;
   readonly effort?: ReviewEffort;

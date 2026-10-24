@@ -92,6 +92,9 @@ export function serializeFrontmatter(frontmatter: Frontmatter): string {
     ...(frontmatter.slice !== undefined ? { slice: frontmatter.slice } : {}),
     ...(frontmatter.follows.length > 0 ? { follows: [...frontmatter.follows] } : {}),
     ...(frontmatter.dependsOn.length > 0 ? { dependsOn: [...frontmatter.dependsOn] } : {}),
+    ...(frontmatter.allowedDependencies !== undefined && frontmatter.allowedDependencies.length > 0
+      ? { allowedDependencies: [...frontmatter.allowedDependencies] }
+      : {}),
     ...(frontmatter.timebox !== undefined ? { timebox: frontmatter.timebox } : {}),
     ...(frontmatter.estimate !== undefined
       ? { estimate: { adjust: frontmatter.estimate.adjust, reason: frontmatter.estimate.reason } }

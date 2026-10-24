@@ -17,6 +17,7 @@ export const FrontmatterSchema = z.strictObject({
     .optional(),
   follows: z.array(ChangeId).optional(),
   dependsOn: z.array(ChangeId).optional(),
+  allowedDependencies: z.array(z.string().min(1)).optional(),
   timebox: z.string().min(1).optional(),
   estimate: z
     .strictObject({
@@ -67,6 +68,9 @@ export function readFrontmatter(
       ...(data.slice !== undefined ? { slice: data.slice } : {}),
       follows: data.follows ?? [],
       dependsOn: data.dependsOn ?? [],
+      ...(data.allowedDependencies !== undefined && data.allowedDependencies.length > 0
+        ? { allowedDependencies: data.allowedDependencies }
+        : {}),
       ...(data.timebox !== undefined ? { timebox: data.timebox } : {}),
       ...(data.estimate !== undefined
         ? { estimate: { adjust: data.estimate.adjust, reason: data.estimate.reason } }

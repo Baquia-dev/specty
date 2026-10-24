@@ -109,6 +109,7 @@ const frontmatter: fc.Arbitrary<Frontmatter> = fc
     slice: optional(fc.constantFrom("C1", "C2")),
     follows: fc.subarray(["20261001-analytics-base", "20261002-grades"]),
     dependsOn: fc.subarray(["20261003-api"]),
+    allowedDependencies: fc.subarray(["zod", "@angular/*", "riverpod"]),
     timebox: optional(fc.constantFrom("2h", "1d")),
     estimate: optional(
       fc.record({ adjust: fc.constantFrom<-1 | 0 | 1>(-1, 0, 1), reason: sentence }),
@@ -119,6 +120,9 @@ const frontmatter: fc.Arbitrary<Frontmatter> = fc
     kind: data.kind,
     follows: data.follows,
     dependsOn: data.dependsOn,
+    ...(data.allowedDependencies.length > 0
+      ? { allowedDependencies: data.allowedDependencies }
+      : {}),
     ...(data.epic !== undefined ? { epic: data.epic } : {}),
     ...(data.slice !== undefined ? { slice: data.slice } : {}),
     ...(data.timebox !== undefined ? { timebox: data.timebox } : {}),
