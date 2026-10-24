@@ -65,7 +65,7 @@ kind: standard
   - files: packages/cli/src/commands/ui.ts, packages/cli/src/enforce/commands.ts, packages/cli/src/program.ts, packages/cli/test/server.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts test/enforce.test.ts
-- [ ] T4: Documentar el servidor
+- [x] T4: Documentar el servidor
   - files: docs/ARCHITECTURE.md, AGENTS.md
   - ac: —
   - verify: pnpm check

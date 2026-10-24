@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-servidor-local-de-solo-lectura",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-servidor-local-de-solo-lectura",
   "baseCommit": "b32587b4d4c1cb57da5eb8e8f96bfb2cd749e368",
   "revision": 1,
@@ -67,12 +67,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "788daba86c46747f5e8ea0f3c2f3681453489d70",
+      "attempts": 1,
       "startedAt": "2026-10-24T02:48:28.606Z",
       "doneAt": "2026-10-24T02:51:52.216Z",
-      "summary": "specty ui (commands/ui.ts) arranca el servidor en 4173 o el siguiente libre (o --port), imprime el enlace con el token en una tarjeta y lo cierra con Ctrl+C; busca la UI construida junto al bundle o en packages/ui/dist/browser; los comandos ocultos hook y guard pasan a enforce/commands.ts y program.ts queda en 280 líneas"
+      "summary": "specty ui (commands/ui.ts) arranca el servidor en 4173 o el siguiente libre (o --port), imprime el enlace con el token en una tarjeta y lo cierra con Ctrl+C; busca la UI construida junto al bundle o en packages/ui/dist/browser; los comandos ocultos hook y guard pasan a enforce/commands.ts y program.ts queda en 280 líneas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a2e85c7ffa10de93e9080b377ad8d9338223b747",
+      "startedAt": "2026-10-24T02:51:52.509Z",
+      "doneAt": "2026-10-24T02:54:10.159Z",
+      "summary": "ARCHITECTURE §15 separa lo que existe (specty ui, seguridad, /api/changes, /api/events, la UI marcada) de lo que falta (la UI leyendo del servidor, arranque en segundo plano, acciones con CSRF y la decisión sobre el agente); AGENTS.md nombra server/ en el mapa"
     }
   },
   "pending": {

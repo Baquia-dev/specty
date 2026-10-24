@@ -376,14 +376,19 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
 
 ## 15. Servidor local y UI
 
-- `specty ui` levanta un servidor HTTP en `127.0.0.1` con eventos SSE (portado del legacy). `propose` y `next` lo arrancan en segundo plano si no está activo e imprimen el enlace; el servidor se apaga solo tras un rato inactivo. Si el sandbox del agente impide arrancarlo, la persona ejecuta `specty ui`.
-- API:
-  - lectura de cambios: spec parseada, estado, delta, tamaño y diffs por tarea;
-  - edición estructurada de la spec: core serializa y escribe el archivo;
-  - comentarios y acciones humanas.
+**Lo que existe** (`packages/cli/src/server/`, solo lectura):
 
-  Un vigilante del sistema de archivos y de `HEAD` emite eventos para que todas las vistas se actualicen.
-- Las acciones humanas existen solo en la UI y en la TTY. La seguridad del servidor está en [ui.md](ui.md#seguridad).
+- `specty ui [--port <n>]` levanta un servidor HTTP en `127.0.0.1`, en el puerto 4173 o el siguiente libre (hasta 19 más), imprime el enlace `http://localhost:<puerto>/?token=…` y sigue hasta Ctrl+C. El token se genera al arrancar y vive solo en memoria. Al abrir el enlace, el servidor lo cambia por una cookie `specty-<puerto>` (`HttpOnly`, `SameSite=Strict`; el puerto va en el nombre porque las cookies de `localhost` se comparten entre puertos) y redirige a `/`, así el token no queda en la URL.
+- Toda petición con un `Host` que no sea `localhost:<puerto>` o `127.0.0.1:<puerto>` recibe 403 (DNS rebinding). La API exige la cookie y, si llega `Origin`, que sea el del servidor; no habilita CORS, solo admite GET (405 para lo demás) y todas las respuestas llevan `nosniff`, `no-referrer`, `X-Frame-Options: DENY` y `no-store`.
+- `GET /api/changes` devuelve cada cambio una vez, con la forma de `ChangeRecord` de la UI (`packages/ui/src/data/records.ts`): `spec`, `state`, `comments`, `audit` y la spec aprobada tal cual, `verifyFull` de su carpeta, `phaseSince` y `folder`, la worktree donde vive. Primero va el cambio abierto de cada worktree y después los archivados de cada worktree, la principal primero, para que un cambio cerrado que no llegó a la rama principal se vea desde su carpeta. `phaseSince` es la hora de la última entrada de la auditoría que lleva a la fase actual (`change.created`, `spec.proposed`, `spec.approved`, `adjust.requested`, `task.completed`, `change.accepted`, `change.closed`, `retro.confirmed` o `change.cancelled`, según la fase); si no hay ninguna, la de `state.json`.
+- `GET /api/events` es un flujo SSE: emite `changes` al conectarse y cada vez que cambia la firma de los archivos (hora y tamaño de `spec.md`, `state.json`, `audit.jsonl` y `comments.json` de los cambios abiertos de cada worktree, y la lista de los archivados). Se revisa cada segundo y solo mientras alguien escucha: es portable y barato, y no obliga a vigilar carpetas con `node_modules` dentro.
+- La UI construida se sirve desde `ui/` junto al bundle del CLI o, en el monorepo, desde `packages/ui/dist/browser`, nunca fuera de esa carpeta. Su `index.html`, que también responde a las rutas de la app, lleva `<meta name="specty-data" content="server">` para que la UI sepa que lee del servidor. Sin una UI construida, una página explica cómo construirla.
+
+**Lo que falta:**
+
+- Que la UI lea del servidor (su contrato `SpectyData` ya separa la fuente de datos) y que el paquete de npm incluya la UI construida.
+- `propose` y `next` arrancan el servidor en segundo plano si no está activo e imprimen el enlace; el servidor se apaga solo tras un rato inactivo. Si el sandbox del agente impide arrancarlo, la persona ejecuta `specty ui`.
+- Edición estructurada de la spec (core serializa y escribe el archivo), diffs por tarea, comentarios y acciones humanas, con un token CSRF en las mutaciones. Las acciones humanas existen solo en la UI y en la TTY; antes de abrirlas hay que decidir cómo impedir que el agente las use, porque un agente que lanza `specty ui` ve el enlace con el token. La seguridad del servidor está en [ui.md](ui.md#seguridad).
 - La verificación completa previa a la aceptación la lanza la persona desde la UI y la ejecuta el servidor, así no depende del timeout de herramientas del agente.
 
 ## 16. Calidad
