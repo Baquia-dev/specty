@@ -59,7 +59,7 @@ Lo que el agente descubre mientras trabaja deja de perderse entre tareas y entre
   - files: packages/cli/src/program.ts, packages/cli/src/commands/task.ts, packages/cli/src/flow/views.ts, packages/cli/src/flow/carried.ts, packages/cli/test/findings.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/findings.test.ts test/flow.test.ts
-- [ ] T3: Documentar los hallazgos
+- [x] T3: Documentar los hallazgos
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC4
   - verify: pnpm check

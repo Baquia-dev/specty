@@ -111,7 +111,7 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty next` | Todas | Dice qué toca ahora. En `implementing` activa la siguiente tarea y devuelve su tarjeta; en el resto es de solo lectura |
 | `specty new "<título>" [--request "<petición literal>"] [--kind] [--follows <id>] [--epic <id> --slice C1] [--from <rama>]` | Siempre (sin worktrees: sin cambio activo) | Crea el cambio, la rama y el esqueleto de la spec en una worktree nueva y preparada (§9). Con `git.worktrees: false`, en la carpeta actual, salvo con `--worktree`. `--request` guarda la petición del usuario tal cual en `change.created`, y la tarjeta del borrador se la muestra al agente: la spec responde a lo que se pidió, no a una paráfrasis |
 | `specty propose` | draft, review, adjusting, closing | Valida la spec; calcula tamaño, delta y esfuerzo recomendado; la envía a revisión |
-| `specty task done <T> --summary "<texto>"` | implementing | Comprueba el alcance, ejecuta `verify.quick` (si existe) y el `verify` de la tarea, hace el commit y avanza |
+| `specty task done <T> --summary "<texto>" [--finding "<texto>"]` | implementing | Comprueba el alcance, ejecuta `verify.quick` (si existe) y el `verify` de la tarea, hace el commit y avanza. Cada `--finding` queda para las tareas y los cambios siguientes (§7) |
 | `specty scope add <ruta…> --task <T> --reason "<texto>"` | implementing | Pide ampliar el alcance; se aprueba sola si la política lo permite |
 | `specty adjust "<petición literal>"` | acceptance | Registra la petición y devuelve el protocolo de clasificación |
 | `specty integrate` | Con una incorporación pendiente | Termina el merge de la rama principal que dejó el cierre: sin marcadores, dentro de sus archivos y con la verificación en verde, hace el commit de merge (§9) |
@@ -185,7 +185,8 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 
   También avisa de los archivos que pasan a modo 755 y de las rutas de pagos, webhooks o seguridad. Los patrones avisan de más antes que de menos, porque no bloquean: `task.completed` guarda `risks`, y la aceptación los muestra para que la persona los revise.
 - **Tras compactar** (Claude Code: `SessionStart` con el matcher `compact`, al mismo `specty guard --tool claude-code`): el guard responde con lo que imprimiría `next`, y Claude Code lo añade al contexto, así que la tarjeta vuelve entera aunque el resumen la haya recortado. Solo tras compactar: al empezar, reanudar o limpiar, AGENTS.md ya pide ejecutar `next`. Fuera de un repositorio con Specty no añade nada.
-- **Entre cambios**: un cambio de seguimiento carga la sección Cierre del anterior, no su historial.
+- **Hallazgos**: lo que el agente descubre en una tarea y deben saber las siguientes, o el cambio que venga después, lo deja con `task done <T> --finding "<texto>"` (repetible), en `task.completed`. Las tarjetas de las tareas siguientes lo muestran en HALLAZGOS. La del cierre pide llevar a `### Pendientes` los que sigan abiertos.
+- **Entre cambios**: un cambio de seguimiento (`new --follows <id>`) carga en su borrador los Pendientes del Cierre del anterior y los hallazgos de sus tareas, no su historial. Lo busca entre los cambios abiertos y archivados de su carpeta; si no lo encuentra, por ejemplo porque sigue abierto en otra worktree, el borrador lo dice.
 
 ## 8. Alcance
 

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-hallazgos-que-pasan-de-una-tarea-y-un-cambio-al",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-hallazgos-que-pasan-de-una-tarea-y-un-cambio-al",
   "baseCommit": "e903c57e13e10c6c189ef3d83c4b487eb5d49587",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ac64d53b930453654dd5d6438fb59937344ff6b6",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:36:50.834Z",
       "doneAt": "2026-10-24T14:45:33.336Z",
-      "summary": "--finding repetible en task done, validado como el resumen y guardado en task.completed.findings; flow/carried.ts lee la auditoría, los hallazgos y, en borrador, los Pendientes del Cierre y los hallazgos de cada cambio de follows; changeView los pasa a las tarjetas"
+      "summary": "--finding repetible en task done, validado como el resumen y guardado en task.completed.findings; flow/carried.ts lee la auditoría, los hallazgos y, en borrador, los Pendientes del Cierre y los hallazgos de cada cambio de follows; changeView los pasa a las tarjetas",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e540138c3880a06499026d101159910f3966ecfe",
+      "startedAt": "2026-10-24T14:45:35.025Z",
+      "doneAt": "2026-10-24T14:48:19.811Z",
+      "summary": "ARCHITECTURE §6 y §7: --finding, dónde se ven los hallazgos y qué carga un cambio de seguimiento; formats.md §4: findings en task.completed"
     }
   },
   "pending": {
