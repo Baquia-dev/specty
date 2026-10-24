@@ -10,3 +10,7 @@
 {"ts":"2026-10-24T11:00:25.981Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"a3e85d207ffea2973a33ee2cec2733717e2a3ec5"}}
 {"ts":"2026-10-24T11:06:01.643Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":76102}}
 {"ts":"2026-10-24T11:06:01.651Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"docs/ui.md: en la Bandeja, la carpeta de cada cambio (acortada, con la ruta completa en el title, solo con el servidor local) y el aviso de archivos compartidos, con la misma regla que specty approve y la configuración por defecto de qué es gobernado"}}
+{"ts":"2026-10-24T11:07:27.477Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":80812}}
+{"ts":"2026-10-24T11:07:27.481Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T11:07:42.485Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:c6b8b0bf9ef3e9374b29e6522146c5ac9768ac413ea15cb562629799eff1e065","size":"M","warnings":0}}
+{"ts":"2026-10-24T11:08:59.180Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

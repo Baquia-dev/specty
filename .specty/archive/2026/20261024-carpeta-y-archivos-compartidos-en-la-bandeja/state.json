@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-carpeta-y-archivos-compartidos-en-la-bandeja",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-carpeta-y-archivos-compartidos-en-la-bandeja",
   "baseCommit": "19563c089fd91e18f75719fac38d9e59d4e0eaa0",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5c1d30dda48b229bf94cfe034d3fd9b6d98a712051b236ed843cd46511e44bb9",
@@ -52,12 +52,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a3e85d207ffea2973a33ee2cec2733717e2a3ec5",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:00:25.981Z",
       "doneAt": "2026-10-24T11:06:01.646Z",
-      "summary": "docs/ui.md: en la Bandeja, la carpeta de cada cambio (acortada, con la ruta completa en el title, solo con el servidor local) y el aviso de archivos compartidos, con la misma regla que specty approve y la configuración por defecto de qué es gobernado"
+      "summary": "docs/ui.md: en la Bandeja, la carpeta de cada cambio (acortada, con la ruta completa en el title, solo con el servidor local) y el aviso de archivos compartidos, con la misma regla que specty approve y la configuración por defecto de qué es gobernado",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T11:07:42.475Z"
 }

@@ -58,3 +58,24 @@ La Bandeja dice en qué carpeta (worktree) vive cada cambio y avisa cuando dos c
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La Bandeja dice en qué carpeta vive cada cambio cuando la UI corre con el servidor local, y avisa cuando dos cambios abiertos listan el mismo archivo gobernado, con la misma regla que `specty approve`. La vista recoge la carpeta que ya enviaba el servidor, y `data/shared.ts` calcula los archivos compartidos en la derivación, sobre todos los cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La regla de archivos compartidos usa la configuración por defecto de qué es gobernado, porque la UI no lee `config.yaml` (A1).
+- La carpeta se acorta a sus dos últimos tramos, con la ruta completa en el `title` (A2).
+- Durante el cierre, un `pnpm check` falló en un test de tiempos del servidor (`tells its listeners when a change moves`), con la carga de la máquina en 53 por las tres sesiones en paralelo. Pasó al repetirlo solo y en la verificación de la tarea.
+
+### Pendientes
+
+- Mostrar la carpeta y los archivos compartidos también en la página del cambio.
+- Que el servidor envíe la configuración de `governed` e `ignored`, para que el aviso coincida con el de la terminal en proyectos con reglas propias.
