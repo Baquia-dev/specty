@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-e2e-con-claude-code-y-un-modelo-guionizado",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-e2e-con-claude-code-y-un-modelo-guionizado",
   "baseCommit": "cdac3d6b2ddb5db4c57cf1afd229a27dd4274899",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d7c32e29015c7d272511cfd273d7a09779f9dadd0fb470e1ef69bf5c18137264",
@@ -54,12 +54,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e410c8454eb0b0d86dd81c64930314d28af44600",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:12:51.966Z",
       "doneAt": "2026-10-24T11:14:57.400Z",
-      "summary": "ARCHITECTURE §16: la prueba con el agente real y el modelo guionizado, qué comprueba, cómo encuentra y aísla Claude Code"
+      "summary": "ARCHITECTURE §16: la prueba con el agente real y el modelo guionizado, qué comprueba, cómo encuentra y aísla Claude Code",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -71,5 +71,6 @@
     "AC": 4,
     "T": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T11:17:05.513Z"
 }

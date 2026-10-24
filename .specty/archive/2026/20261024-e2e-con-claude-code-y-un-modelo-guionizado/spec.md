@@ -53,3 +53,23 @@ Una prueba de punta a punta con el agente real: Claude Code en modo headless hab
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`agent-e2e.test.ts` ejecuta el Claude Code real en modo headless contra `fake-model.ts`, una API de Messages falsa que responde por SSE un guion de llamadas a herramientas, en un repositorio con `specty init`. Comprueba lo que Claude Code devolvió al modelo. Sin cambio activo, escribir código gobernado, hacer un commit de código y ejecutar `specty approve` dan tres errores del hook de Specty con su SIGUIENTE, y el repositorio no cambia. Con una tarea activa, un archivo de su alcance se escribe y otro de fuera vuelve con `specty scope add`. Claude Code se busca en `SPECTY_E2E_CLAUDE`, el PATH o las extensiones de los editores, y corre aislado; si no está, la prueba se salta. Cada recorrido tarda unos 5 segundos.
+
+### Desviaciones
+
+- El E2E encontró un SIGUIENTE sin salida: sin una tarea activa, el bloqueo de un `git commit` mandaba a `specty task done <T>`, que se rechazaría. Ahora manda a `specty next`, que dice cómo seguir con ese código (una spec o una retro). El arreglo va en `core/src/guard/integration.ts`, del carril del guard, con su test en `decide.test.ts`, por una ampliación de alcance (S1).
+- Con la ruta absoluta del bundle, `init` pone los hooks en `.claude/settings.local.json`, así que la prueba carga `project,local` y no solo `project` como decía A2.
+
+### Decisiones
+
+- La prueba busca también el Claude Code de las extensiones de los editores, para que corra en esta máquina sin configurar nada. Depende de una versión de Claude Code que cambia sola: si un cambio suyo rompe los hooks, la prueba lo dice.
+
+### Pendientes
+
+- El hook de git `pre-commit`, que es lo que ve un agente sin guard, habla a la persona («Pídele a tu agente…») y no tiene línea SIGUIENTE.
+- Codex y OpenCode con el mismo servidor y la API compatible con OpenAI, cuando estén instalados.
