@@ -57,7 +57,7 @@ La revisión de una spec en la UI se completa: la persona comenta una sección o
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/test/cards.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts
-- [ ] T2: Comentar, pedir cambios y resolverlos en la CLI
+- [x] T2: Comentar, pedir cambios y resolverlos en la CLI
   - files: packages/cli/src/store/comments.ts, packages/cli/src/flow/review.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/propose.ts, packages/cli/test/comments.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/comments.test.ts test/flow.test.ts

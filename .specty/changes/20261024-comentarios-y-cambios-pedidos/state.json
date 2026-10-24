@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bfb2cacbc8159fb3553cc50b206abed7e1fe24c6",
+      "attempts": 1,
       "startedAt": "2026-10-24T06:46:06.117Z",
       "doneAt": "2026-10-24T06:47:29.428Z",
-      "summary": "La vista del cambio trae los comentarios pedidos (CommentView) y la tarjeta de revisión los muestra al agente en «CAMBIOS PEDIDOS», cada uno con su ancla (ítem, o sección y cita), junto a los supuestos rechazados, y le pide corregir la spec y proponerla"
+      "summary": "La vista del cambio trae los comentarios pedidos (CommentView) y la tarjeta de revisión los muestra al agente en «CAMBIOS PEDIDOS», cada uno con su ancla (ítem, o sección y cita), junto a los supuestos rechazados, y le pide corregir la spec y proponerla",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a5b98ee658032457b0788c0e98a72bf5ed031ce3",
+      "startedAt": "2026-10-24T06:47:29.766Z",
+      "doneAt": "2026-10-24T06:50:15.164Z",
+      "summary": "store/comments.ts lee y escribe comments.json; flow/review.ts addComment guarda un comentario durante la revisión (id c<n>, revisión, ancla, autor, texto, hora) y requestChanges anota review.changes_requested con los comentarios sin resolver, o se niega sin nada que pedir; la vista trae los comentarios pedidos solo tras esa petición; propose los resuelve con la revisión nueva"
     }
   },
   "pending": {

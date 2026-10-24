@@ -24,6 +24,7 @@ import { listed, sharedBlock, sharedFiles } from "../flow/shared";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readRevision } from "../store/changes";
+import { resolveComments } from "../store/comments";
 
 const PROPOSE_PHASES: readonly ProposePhase[] = ["draft", "review", "adjusting", "closing"];
 
@@ -76,7 +77,11 @@ export async function propose(session: Session): Promise<Output> {
     moved.phase === state.phase;
   const revision = unchanged ? state.revision : state.revision + 1;
   await writeText(files.spec, analysis.text);
-  if (!unchanged) await writeText(files.revision(revision), analysis.text);
+  if (!unchanged) {
+    await writeText(files.revision(revision), analysis.text);
+    // The new revision is the agent's answer to the comments still open (formats.md §5).
+    await resolveComments(files, revision);
+  }
   const now = session.environment.now().toISOString();
   const nextState: ChangeState = {
     ...state,

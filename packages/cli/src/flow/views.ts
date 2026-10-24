@@ -10,9 +10,10 @@ import {
   specHash,
   type TaskView,
 } from "@baquia-dev/specty-core";
-import { exists } from "../io/files";
+import { exists, isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
+import { readComments } from "../store/comments";
 
 /** Everything the cards need about a change, read from its files and from git. */
 export async function changeView(session: Session, change: StoredChange): Promise<ChangeView> {
@@ -61,6 +62,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
         },
       ];
     }),
+    requested: state.phase === "review" ? await requested(change) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specChanged:
@@ -78,6 +80,24 @@ export async function changeView(session: Session, change: StoredChange): Promis
         }
       : {}),
   };
+}
+
+/**
+ * The unresolved comments the agent must answer: only once the person asked for changes after
+ * the last proposal; until then, the review is still theirs.
+ */
+async function requested(change: StoredChange): Promise<NonNullable<ChangeView["requested"]>> {
+  const audit = ((await readText(change.files.audit)) ?? "").split("\n").flatMap((line) => {
+    const entry = parseJson(line);
+    return isRecord(entry) ? [entry] : [];
+  });
+  const last = audit.findLast(
+    (entry) => entry.event === "spec.proposed" || entry.event === "review.changes_requested",
+  );
+  if (last?.event !== "review.changes_requested") return [];
+  return (await readComments(change.files))
+    .filter((comment) => comment.resolvedInRevision === undefined)
+    .map(({ id, anchor, body }) => ({ id, anchor, body }));
 }
 
 function criteriaOf(spec: Spec, ac: readonly string[] | "none" | undefined): TaskView["criteria"] {
