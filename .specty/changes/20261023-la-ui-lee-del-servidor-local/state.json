@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261023-la-ui-lee-del-servidor-local",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-la-ui-lee-del-servidor-local",
+  "baseCommit": "37e89bf9a07616ee2f6d6d36d66b9e613c88e513",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b67b9505fccf61aa221bb53637d00ade0163cf19850e3607ec65f2e291b218d0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:becee00728ed1118a427ee3256d243cd591ae9097aff7eac573bbbc96c95c1e4",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3cfba4d0c31f299e13511722c827847cf464b7b5b7db4aef7c03ae79e968af76",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0cb60c72c4ef83e186d095d56d4d11673c749866cf49c135ea8041c953fd5263",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5f64b1ffd00332da2436114c3e47173186f5bbb5b4b1fa54ceaf4b3d48aa84aa",
+    "at": "2026-10-24T04:49:18.392Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
