@@ -26,5 +26,5 @@ La [0001](0001-sin-llm.md) dice que Specty nunca llama a modelos, y prevé que u
 - Cada revisión consume la cuenta de la persona y envía la spec al proveedor de su CLI. Por eso es opcional, la configura ella y Specty solo la recomienda en los cambios grandes o sensibles, una vez.
 - Si el comando falla o no responde, el flujo sigue: la revisión no es un paso obligatorio.
 - Los tests usan un revisor falso, un script que lee la entrada estándar. No llaman a ningún modelo.
-- La revisión del resultado antes de aceptar puede usar el mismo comando. Irá en otro cambio.
+- El mismo comando revisa el resultado antes de aceptar. Con el cambio en aceptación, `specty review` le pasa la spec y el diff de todo el cambio, sin `.specty/`. La tarjeta de aceptación lo pide cuando el cambio es L o XL, o alguna tarea quitó aserciones o añadió riesgos conocidos, hasta que haya una revisión posterior a la última tarea. Luego el agente se lo cuenta al usuario, que acepta o pide un ajuste.
 - La [0001](0001-sin-llm.md) sigue en pie para todo lo demás: Specty no redacta, no decide y no necesita un modelo para funcionar.

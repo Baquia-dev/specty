@@ -20,6 +20,7 @@ import { evidenceOf, summaryOf } from "../data/acceptance";
 import { Decisions } from "../data/decisions";
 import type { ChangeView } from "../data/records";
 import { Preferences } from "../theme/preferences";
+import { AcceptanceWarnings } from "./acceptance-warnings";
 import { ChangesView, WHOLE_CHANGE } from "./changes-view";
 import { ClosingView } from "./closing-view";
 import { CriterionRow } from "./criterion-row";
@@ -48,6 +49,7 @@ const VIEW_KEY = "specty.acceptance.view";
     FullVerification,
     ChangesView,
     ClosingView,
+    AcceptanceWarnings,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
@@ -64,6 +66,10 @@ const VIEW_KEY = "specty.acceptance.view";
       <!-- After accepting: the closing the agent writes, and once done, what it said. -->
       @if (showsClosing()) {
         <sp-closing-view [change]="change()" />
+      }
+      <!-- What task done warned about: risky patterns added and assertions removed. -->
+      @if (change().warnings; as warnings) {
+        <sp-acceptance-warnings [warnings]="warnings" />
       }
       <!-- Only when the project has a full verification (verify.full). -->
       @if (change().progress.full; as full) {
