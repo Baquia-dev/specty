@@ -53,7 +53,7 @@ follows:
   - files: packages/cli/src/check/functions.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-functions.test.ts, packages/cli/test/check-commands.test.ts, packages/cli/test/check-typescript.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions.test.ts test/check-commands.test.ts test/check-typescript.test.ts
-- [ ] T2: La documentación
+- [x] T2: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm check

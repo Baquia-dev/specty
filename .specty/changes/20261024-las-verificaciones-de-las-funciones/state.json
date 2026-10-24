@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-las-verificaciones-de-las-funciones",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-las-verificaciones-de-las-funciones",
   "baseCommit": "e35326fa5a7f8df239b710fb1191f9c0a58e31c4",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c2a96b86278a87daa64d027e300e5cb156b0b5d8",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:19:19.387Z",
       "doneAt": "2026-10-24T21:25:49.987Z",
-      "summary": "check/functions.ts: function-lines y complexity con functionMetrics; solo cuentan las funciones tocadas que pasan del límite y son nuevas o crecieron respecto al punto de partida; fuera los tests; el resumen de check-commands y check-typescript suma las dos."
+      "summary": "check/functions.ts: function-lines y complexity con functionMetrics; solo cuentan las funciones tocadas que pasan del límite y son nuevas o crecieron respecto al punto de partida; fuera los tests; el resumen de check-commands y check-typescript suma las dos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "2cc0661a44d8d192302dbc10dcb6c7712731e009",
+      "startedAt": "2026-10-24T21:25:50.293Z",
+      "doneAt": "2026-10-24T21:32:59.474Z",
+      "summary": "formats §6 documenta checks.functions y las verificaciones function-lines y complexity (estimación, qué cuenta, nueva o crecida, --all, tests fuera, por qué no ESLint); ARCHITECTURE las añade a la fila de specty check."
     }
   },
   "pending": {
