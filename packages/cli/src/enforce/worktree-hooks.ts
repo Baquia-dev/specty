@@ -4,6 +4,7 @@ import { translator } from "@baquia-dev/specty-core";
 import { reasonOf } from "../flow/integrate";
 import { within } from "../flow/land";
 import { worktreesHome } from "../flow/worktree";
+import { exists } from "../io/files";
 import { createGit, findRoot, type Git, resolved } from "../io/git";
 import { COMMAND, type Environment, openSession, systemLanguage } from "../session";
 
@@ -87,16 +88,18 @@ async function create(git: Git, name: string, t: Translate): Promise<HookReply> 
   return { code: 0, stdout: target.folder, stderr: "" };
 }
 
-/** A change's folder stays: its work is not done until the change is, and `new` cleans it up. */
+/** A change's folder stays while its change is open; `close` removes it once it is merged. */
 async function remove(git: Git, path: string, t: Translate): Promise<HookReply> {
   if (path === "")
     return refuse(t("Falta la carpeta de la worktree.", "The worktree's folder is missing."));
   const folder = await resolved(resolve(git.root, path));
+  // `close` already removed it, once the change reached its target: nothing left to do.
+  if (!(await exists(folder))) return { code: 0, stdout: "", stderr: "" };
   if (await within(folder, await worktreesHome(git))) {
     return refuse(
       t(
-        `${folder} es la carpeta de un cambio de Specty: se queda, y \`${COMMAND} new\` la borra cuando el cambio termina.`,
-        `${folder} is a Specty change's folder: it stays, and \`${COMMAND} new\` removes it once the change is finished.`,
+        `${folder} es la carpeta de un cambio de Specty: se queda mientras el cambio siga abierto, y \`${COMMAND} close\` la borra al incorporarlo.`,
+        `${folder} is a Specty change's folder: it stays while the change is open, and \`${COMMAND} close\` removes it once the change is merged.`,
       ),
     );
   }

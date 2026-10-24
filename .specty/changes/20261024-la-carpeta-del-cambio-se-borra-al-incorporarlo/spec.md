@@ -19,7 +19,7 @@ Cuando el agente cierra un cambio desde dentro de su worktree (modo delegado), l
 
 ## Tareas
 
-- [ ] T1: La worktree se borra al incorporar el cambio
+- [x] T1: La worktree se borra al incorporar el cambio
   - files: packages/cli/src/flow/land.ts, packages/cli/src/enforce/worktree-hooks.ts, packages/cli/test/delegated-integration.test.ts, packages/cli/test/prune.test.ts, packages/cli/test/worktree-hooks.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: fix

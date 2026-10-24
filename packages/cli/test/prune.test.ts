@@ -16,13 +16,23 @@ import {
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
 const REMOVED = "CARPETAS DE CAMBIOS TERMINADOS, BORRADAS";
 
-/** A change the agent closed from inside its worktree (delegated mode): the folder stayed. */
+/**
+ * A change closed (delegated mode) whose folder could not be removed: it was locked then. `close`
+ * removes the folder of a merged change, so only one like this is left for the clean-up.
+ */
 async function leftover() {
   const { root, folder } = await inWorktree();
   await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
   await toClosing(folder);
-  expect((await cli(folder, ["close"])).out).toContain("queda, porque tu sesión trabaja en ella");
+  await closeLocked(root, folder);
   return { root, folder };
+}
+
+/** Closes the change in `folder` while its worktree is locked, so the folder stays. */
+async function closeLocked(root: string, folder: string): Promise<void> {
+  git(root, "worktree", "lock", folder);
+  expect((await cli(folder, ["close"])).out).toContain(`La carpeta ${folder} queda: `);
+  git(root, "worktree", "unlock", folder);
 }
 
 describe("folders of finished changes", () => {
@@ -52,10 +62,10 @@ describe("specty prune", () => {
     const open = folderOf(root, CHANGE.replace("saludo-personalizado", "tercero"));
     // A cancelled change: its folder goes, its branch (not in main) stays.
     await cli(cancelled, ["cancel", "--reason", "Ya no"], { terminal: person() });
-    // A change the agent closed from inside: its folder goes, its branch (in main) too.
+    // A closed change whose folder stayed: its folder goes, its branch (in main) too.
     await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
     await toClosing(folder);
-    await cli(folder, ["close"]);
+    await closeLocked(root, folder);
     const pruned = await cli(root, ["prune"]);
     expect(pruned.code).toBe(0);
     expect(pruned.out).toContain("CARPETAS BORRADAS:");
@@ -75,7 +85,7 @@ describe("specty prune", () => {
     const before = git(root, "rev-parse", "main");
     await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
     await toClosing(folder);
-    await cli(folder, ["close"]);
+    await closeLocked(root, folder);
     // main goes back: the closed change is no longer in it.
     git(root, "reset", "-q", "--hard", before);
     const pruned = await cli(root, ["prune"]);

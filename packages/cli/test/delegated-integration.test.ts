@@ -38,7 +38,7 @@ describe("the incorporation in delegated mode", () => {
     expect(integrated.out).not.toContain("pide al usuario");
   });
 
-  it("keeps the folder an agent closes from inside, and tells it to leave (AC3)", async () => {
+  it("removes the folder an agent closes from inside once merged, and tells it to leave", async () => {
     const { root, folder } = await inWorktree();
     await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
     await toClosing(folder);
@@ -46,12 +46,23 @@ describe("the incorporation in delegated mode", () => {
     expect(closed.code).toBe(0);
     expect(closed.out).toContain("Incorporado a main.");
     expect(closed.out).toContain(
-      `La carpeta ${folder} queda, porque tu sesión trabaja en ella; la rama specty/${CHANGE} también.`,
+      `La carpeta ${folder} se eliminó y la rama specty/${CHANGE} queda; sigue en ${root}.`,
     );
     expect(closed.out).toContain(
-      `SIGUIENTE: sal de ${folder} (en Claude Code, \`ExitWorktree\`) y sigue en ${root}; para otro cambio, \`specty new "<título>"\`.`,
+      `SIGUIENTE: ${folder} ya no existe: sal de ella (en Claude Code, \`ExitWorktree\`) y sigue en ${root}; para otro cambio, \`specty new "<título>"\`.`,
     );
-    expect(await exists(folder)).toBe(true);
+    expect(await exists(folder)).toBe(false);
     expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", `specty/${CHANGE}`));
+  });
+
+  it("keeps a folder it cannot remove, and still tells the agent to leave it", async () => {
+    const { root, folder } = await inWorktree();
+    await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    await toClosing(folder);
+    git(root, "worktree", "lock", folder);
+    const closed = await cli(folder, ["close"]);
+    expect(closed.out).toContain(`La carpeta ${folder} queda: `);
+    expect(closed.out).toContain(`SIGUIENTE: sal de ${folder} (en Claude Code, \`ExitWorktree\`)`);
+    expect(await exists(folder)).toBe(true);
   });
 });
