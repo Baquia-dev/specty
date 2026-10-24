@@ -61,3 +61,25 @@ En la UI que sirve `specty ui`, la persona ve el diff de cada tarea y el de todo
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La vista de cambios de la UI ya funciona con el servidor de `specty ui`. `/api/changes` añade a `state` el commit de cada tarea hecha, que encuentra por su trailer `Specty-Task`, y `GET /api/changes/<id>/diff` da el diff de git de todo el cambio o, con `?task=<T>`, el de una tarea, sin los archivos de `.specty/`. Es una lectura, así que también lo da el servidor que arrancó el agente. Responde 404 si aún no hay commits y 413, con el rango, si el diff pasa de 512 KB. `ServerData.diff` lo pide y explica cada caso; solo verificar el cambio sigue sin ruta en el servidor.
+
+### Desviaciones
+
+- T3 también partió `packages/ui/src/data/server.test.ts`, que con T2 llegó a 309 líneas: las acciones, el modo delegado y los diffs pasaron a `server-actions.test.ts`, con una ampliación de alcance que se aprobó sola por ser de tests. La verificación de T2 solo corría ese archivo de test, así que el límite de 300 líneas apareció con `pnpm check`.
+- El ayudante `serverAnswering` de esos tests ahora devuelve un texto tal cual, para responder diffs.
+
+### Decisiones
+
+- El commit de cada tarea lo añade el servidor al servir el estado; no se guarda, porque `state.json` no puede contener el commit que lo contiene.
+- Una sola búsqueda `git log --all --grep=Specty-Task:` por lectura de `/api/changes`. Filtrar por el trailer evita que, en un historial largo, el límite de salida de 512 KB deje fuera los commits más recientes.
+- Si el diff no cabe, el servidor responde 413 en vez de enviarlo por partes: la vista no está hecha para diffs tan grandes, y el rango basta para verlo con git.
+
+### Pendientes
+
+- Ejecutar la verificación completa desde la UI: la ruta en el servidor, la salida en vivo y el evento `change.verified`, que la CLI documenta pero no escribe.
+- Que las tareas que crean o hacen crecer archivos verifiquen también `pnpm sources`, para no descubrir el límite de líneas en otra tarea.

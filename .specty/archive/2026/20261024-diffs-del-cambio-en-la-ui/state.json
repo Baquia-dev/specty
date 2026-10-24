@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-diffs-del-cambio-en-la-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-diffs-del-cambio-en-la-ui",
   "baseCommit": "b224970bf1d54ae665f29eab9b02012ae8642b02",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:173aaeb50fc0faeb9b5491d45eb086c815bfbe04304ba0962bf003c3951a4a5b",
@@ -53,15 +53,15 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "c88395e63455ac0934898391b27bf00c97d715f6",
+      "attempts": 1,
+      "startedAt": "2026-10-24T07:20:37.171Z",
+      "doneAt": "2026-10-24T09:45:48.539Z",
+      "summary": "ARCHITECTURE §15 documenta GET /api/changes/<id>/diff (todo el cambio o una tarea, sin .specty/, también en solo lectura, 404 y 413 con el rango) y que /api/changes añade a state el commit de cada tarea hecha; formats.md §3 explica tasks[].baseCommit y por qué tasks[].commit no se guarda; server.test.ts (309 líneas) se parte por responsabilidad: las acciones, el modo delegado y los diffs pasan a server-actions.test.ts",
       "scopeExtra": [
         "packages/ui/src/data/server.test.ts",
         "packages/ui/src/data/server-actions.test.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "c88395e63455ac0934898391b27bf00c97d715f6",
-      "startedAt": "2026-10-24T07:20:37.171Z",
-      "doneAt": "2026-10-24T09:45:48.539Z",
-      "summary": "ARCHITECTURE §15 documenta GET /api/changes/<id>/diff (todo el cambio o una tarea, sin .specty/, también en solo lectura, 404 y 413 con el rango) y que /api/changes añade a state el commit de cada tarea hecha; formats.md §3 explica tasks[].baseCommit y por qué tasks[].commit no se guarda; server.test.ts (309 líneas) se parte por responsabilidad: las acciones, el modo delegado y los diffs pasan a server-actions.test.ts"
+      ]
     }
   },
   "pending": {
@@ -72,5 +72,6 @@
     "A": 2,
     "AC": 5,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T09:47:02.573Z"
 }
