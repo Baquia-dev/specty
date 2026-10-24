@@ -18,3 +18,9 @@ El test del presupuesto de la tarjeta de tarea arma la tarjeta más grande razon
   - files: packages/core/test/cards/budget.test.ts
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/budget.test.ts
   - type: test
+
+## Cierre
+
+### Resumen
+
+La tarjeta del test del presupuesto toma las tareas (split.maxTasks) y los archivos de la tarea activa (split.taskMaxFiles) de DEFAULT_CONFIG.split en vez de 8 y 5 escritos: si alguien sube esos límites, la tarjeta del test crece y falla si deja de caber.

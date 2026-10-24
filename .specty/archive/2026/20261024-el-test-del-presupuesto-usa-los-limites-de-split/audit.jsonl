@@ -4,3 +4,5 @@
 {"ts":"2026-10-24T17:13:59.380Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"cb7d2fd4ae06b7537ded315d728f347c242d2df4"}}
 {"ts":"2026-10-24T17:14:53.129Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/budget.test.ts","exit":0,"ms":3141}}
 {"ts":"2026-10-24T17:14:53.308Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"La tarjeta del test del presupuesto toma las tareas (split.maxTasks) y los archivos de la tarea activa (split.taskMaxFiles) de DEFAULT_CONFIG.split en vez de 8 y 5 escritos: si alguien sube esos límites, la tarjeta del test crece y falla si deja de caber."}}
+{"ts":"2026-10-24T17:19:01.623Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":242342}}
+{"ts":"2026-10-24T17:19:01.840Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

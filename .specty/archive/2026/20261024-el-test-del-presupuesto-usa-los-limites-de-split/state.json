@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-el-test-del-presupuesto-usa-los-limites-de-split",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-el-test-del-presupuesto-usa-los-limites-de-split",
   "baseCommit": "a9286005a52e50f5c6a2393e77e158dc683349ca",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cb7d2fd4ae06b7537ded315d728f347c242d2df4",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:13:59.378Z",
       "doneAt": "2026-10-24T17:14:53.307Z",
-      "summary": "La tarjeta del test del presupuesto toma las tareas (split.maxTasks) y los archivos de la tarea activa (split.taskMaxFiles) de DEFAULT_CONFIG.split en vez de 8 y 5 escritos: si alguien sube esos límites, la tarjeta del test crece y falla si deja de caber."
+      "summary": "La tarjeta del test del presupuesto toma las tareas (split.maxTasks) y los archivos de la tarea activa (split.taskMaxFiles) de DEFAULT_CONFIG.split en vez de 8 y 5 escritos: si alguien sube esos límites, la tarjeta del test crece y falla si deja de caber.",
+      "scopeExtra": []
     }
   },
   "pending": {
