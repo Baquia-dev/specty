@@ -167,7 +167,10 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - la tarea, sus archivos permitidos y los criterios que cubre;
   - punteros a las convenciones de esas rutas (AGENTS.md anidados);
   - las tareas previas resumidas, con su commit;
+  - las reglas de tests, según el tipo de la tarea y salvo con `policy.tests: off`: en `feat` y `fix`, primero el test que comprueba cada criterio, visto fallar; en `feat`, `fix`, `refactor` y `perf`, un test que ya existía y falla no se cambia para que pase: el agente para y se lo explica al usuario;
   - la verificación y el esfuerzo sugerido.
+
+  Como respaldo determinista de esa regla, `task done` compara los tests que ya existían en el commit base de la tarea con el árbol de trabajo (`git diff -U0 -M`) y cuenta, por archivo, las aserciones quitadas menos las añadidas (`expect(`, `assert…`, `XCTAssert…`, `.should`, `t.Error`…; una aserción comentada cuenta como quitada). Si alguno pierde aserciones, la salida lo avisa, `task.completed` lo guarda y la tarjeta de aceptación y la nota de `specty accept` lo muestran. Es un aviso, no un bloqueo.
 - **Entre cambios**: un cambio de seguimiento carga la sección Cierre del anterior, no su historial.
 
 ## 8. Alcance

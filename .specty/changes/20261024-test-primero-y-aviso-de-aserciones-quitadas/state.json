@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-test-primero-y-aviso-de-aserciones-quitadas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-test-primero-y-aviso-de-aserciones-quitadas",
   "baseCommit": "3055301ea2e358b17a097b2f71b3281524250e76",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "154018ddf71cdcc17372c6596821d5dd1580c312",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:38:03.801Z",
       "doneAt": "2026-10-24T10:42:31.535Z",
-      "summary": "flow/assertions.ts pide a git el diff de los tests que ya existían; task done lo analiza tras verificar, lo guarda en task.completed (removedAssertions) y lo avisa en AVISOS; changeView calcula testRules y lee los avisos de la auditoría; accept los añade a la nota de la persona"
+      "summary": "flow/assertions.ts pide a git el diff de los tests que ya existían; task done lo analiza tras verificar, lo guarda en task.completed (removedAssertions) y lo avisa en AVISOS; changeView calcula testRules y lee los avisos de la auditoría; accept los añade a la nota de la persona",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9197cce6225dd9380c40e96ea078ead9a8d56864",
+      "startedAt": "2026-10-24T10:42:32.738Z",
+      "doneAt": "2026-10-24T10:44:58.197Z",
+      "summary": "ARCHITECTURE §7: las reglas de tests de la tarjeta y el aviso de aserciones quitadas de task done; formats.md §4: removedAssertions en task.completed"
     }
   },
   "pending": {

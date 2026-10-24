@@ -70,7 +70,7 @@ La tarjeta de cada tarea de código pide escribir primero el test y verlo fallar
   - files: packages/cli/src/flow/assertions.ts, packages/cli/src/commands/task.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/accept.ts, packages/cli/test/assertions.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/assertions.test.ts test/flow.test.ts
-- [ ] T4: Documentar test primero y el aviso
+- [x] T4: Documentar test primero y el aviso
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC5
   - verify: pnpm check
