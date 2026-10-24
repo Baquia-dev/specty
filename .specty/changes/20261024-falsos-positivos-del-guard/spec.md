@@ -57,7 +57,7 @@ El guard deja de bloquear tres comandos legítimos que hoy para: leer `core.hook
   - ac: AC1, AC2, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
   - type: fix
-- [ ] T2: El guard no juzga commits de otros repositorios
+- [x] T2: El guard no juzga commits de otros repositorios
   - files: packages/cli/src/enforce/guard.ts, packages/cli/test/enforce.test.ts
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm check

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-falsos-positivos-del-guard",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-falsos-positivos-del-guard",
   "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7ecf6270e8ec2c1b527370bbc2dbfd1a29efb0c2",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:06:35.934Z",
       "doneAt": "2026-10-24T10:10:30.791Z",
-      "summary": "El tokenizador marca los subshells; el análisis de shell guarda la carpeta en cada subshell, ubica cada commit movido por cd o -C, y config solo cuenta como bypass si cambia core.hooksPath (análisis en guard/git.ts). ARCHITECTURE §10 al día."
+      "summary": "El tokenizador marca los subshells; el análisis de shell guarda la carpeta en cada subshell, ubica cada commit movido por cd o -C, y config solo cuenta como bypass si cambia core.hooksPath (análisis en guard/git.ts). ARCHITECTURE §10 al día.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "11c50f830d7dad5e2ccc1bab887639f350e58f8b",
+      "startedAt": "2026-10-24T10:10:31.436Z",
+      "doneAt": "2026-10-24T10:14:40.578Z",
+      "summary": "El guard ubica la carpeta de cada commit con placePaths: si un cd o -C lo llevan fuera de todas las worktrees, no cuenta como commit de este repositorio. Test de punta a punta con los tres falsos positivos, otra worktree, una carpeta desconocida y un subshell."
     }
   },
   "pending": {
