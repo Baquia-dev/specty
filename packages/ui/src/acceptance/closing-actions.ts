@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from "@angular/core
 import { Button } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Toasts } from "../components/toast";
+import { Decisions } from "../data/decisions";
 import type { ChangeView } from "../data/records";
 import { SpectyData } from "../data/records";
 import { reportFailure } from "../review/spec-sections";
@@ -71,7 +72,7 @@ export class ConfirmClosing {
     "[attr.data-compact]": "compact() || null",
   },
   template: `
-    <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" (pressed)="open()">{{ t()('Confirmar y archivar', 'Confirm and archive') }}</sp-button>
+    <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="decisions.blocked()" (pressed)="open()">{{ t()('Confirmar y archivar', 'Confirm and archive') }}</sp-button>
   `,
 })
 export class ClosingActions {
@@ -79,6 +80,7 @@ export class ClosingActions {
   /** In the sticky bar: a small button. */
   readonly compact = input(false);
 
+  protected readonly decisions = inject(Decisions);
   private readonly dialogs = inject(Dialogs);
   protected readonly t = inject(Preferences).t;
 

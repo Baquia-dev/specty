@@ -4,7 +4,7 @@ import { TestBed } from "@angular/core/testing";
 import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
-import { ActionError, type ChangeRecord, SpectyData } from "../data/records";
+import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
 import { ClosingActions } from "./closing-actions";
 
@@ -21,6 +21,14 @@ class Host {
 }
 
 /** A source that cannot confirm: the dialog stays and a notice says why. */
+/** The sample data on a server the agent started: nobody decides here. */
+@Injectable()
+class ReadOnly extends FixtureData {
+  override readOnly(): Promise<Bilingual | undefined> {
+    return Promise.resolve({ es: "Solo lectura.", en: "Read only." });
+  }
+}
+
 @Injectable()
 class Refusing extends FixtureData {
   override confirmClosing(): Promise<void> {
@@ -74,6 +82,11 @@ const text = (element: Element | null | undefined) =>
 
 describe("Closing actions", () => {
   afterEach(() => TestBed.resetTestingModule());
+
+  it("offers no confirmation on a read-only server (AC2)", async () => {
+    const { button } = await render(ReadOnly);
+    expect(button()?.disabled).toBe(true);
+  });
 
   it("offers confirming and archiving, compact in the bar", async () => {
     const { element, button } = await render();

@@ -40,14 +40,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/data/fixtures.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "fc6560976c2ecbe1229521e16b7fbd23d277fd3b",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:30:47.917Z",
       "doneAt": "2026-10-24T10:33:40.882Z",
-      "summary": "AcceptanceActions desactiva «Pedir ajustes…» y «Aceptar resultado» con el motivo de Decisions y lo muestra bajo los botones en lugar de la línea de la verificación completa; AcceptanceTab solo da canAdjust a los criterios si se puede decidir, así que «No se cumple…» no aparece en solo lectura. FixtureData.readOnly() se ensancha (ampliación S1) para que los tests lo sobrescriban"
+      "summary": "AcceptanceActions desactiva «Pedir ajustes…» y «Aceptar resultado» con el motivo de Decisions y lo muestra bajo los botones en lugar de la línea de la verificación completa; AcceptanceTab solo da canAdjust a los criterios si se puede decidir, así que «No se cumple…» no aparece en solo lectura. FixtureData.readOnly() se ensancha (ampliación S1) para que los tests lo sobrescriban",
+      "scopeExtra": [
+        "packages/ui/src/data/fixtures.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3d7e9d307d5776c2052bfaa2d553c6946e4736e4",
+      "startedAt": "2026-10-24T10:33:41.260Z",
+      "doneAt": "2026-10-24T10:35:27.740Z",
+      "summary": "«Ejecutar» de la verificación completa y «Confirmar y archivar» del cierre se desactivan con el motivo de Decisions en el tooltip, con un test de solo lectura cada uno"
     }
   },
   "pending": {
