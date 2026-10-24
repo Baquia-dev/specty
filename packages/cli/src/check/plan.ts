@@ -13,6 +13,7 @@ import {
 import { resolveActive } from "../flow/active";
 import type { Session } from "../session";
 import { loadChange, readSpec } from "../store/changes";
+import { dependencies } from "./dependencies";
 import { fixTests, testsRemoved } from "./plan-tests";
 import type { CheckDefinition, Provider } from "./provider";
 
@@ -48,7 +49,7 @@ export function planProvider(plan: Plan): Provider {
     checks:
       "missing" in plan
         ? [approved(plan)]
-        : [approved(plan), scope(plan), fixTests(plan), testsRemoved],
+        : [approved(plan), scope(plan), dependencies(plan), fixTests(plan), testsRemoved],
   };
 }
 

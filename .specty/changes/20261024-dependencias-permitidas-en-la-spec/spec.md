@@ -65,7 +65,7 @@ Una spec puede nombrar en su frontmatter las dependencias que el cambio está au
   - files: packages/core/src/checks/dependencies.ts, packages/core/src/index.ts, packages/core/test/checks/dependencies.test.ts, packages/core/src/cards/text.ts
   - ac: AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/dependencies.test.ts
-- [ ] T3: La verificación `dependencies` de `--spec`
+- [x] T3: La verificación `dependencies` de `--spec`
   - files: packages/cli/src/check/dependencies.ts, packages/cli/src/check/plan.ts, packages/cli/test/check-plan.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-plan.test.ts

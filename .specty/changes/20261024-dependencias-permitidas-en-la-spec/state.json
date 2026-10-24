@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7c88fee2fe5959fe9cb8e316ed9b85776f414e6c",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:35:13.039Z",
       "doneAt": "2026-10-24T20:37:31.512Z",
-      "summary": "core/checks/dependencies.ts: lectores de package.json y pubspec.yaml (sin paquetes del SDK) y addedDependencies con su línea; readsDependencies, porque isManifest ya existía en scope/lockfiles.ts; la guía de redacción nombra allowedDependencies."
+      "summary": "core/checks/dependencies.ts: lectores de package.json y pubspec.yaml (sin paquetes del SDK) y addedDependencies con su línea; readsDependencies, porque isManifest ya existía en scope/lockfiles.ts; la guía de redacción nombra allowedDependencies.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "60bb0bec497a0c0df52d1b1890e77a924f7a6438",
+      "startedAt": "2026-10-24T20:37:31.800Z",
+      "doneAt": "2026-10-24T20:39:26.440Z",
+      "summary": "cli/check/dependencies.ts: la verificación dependencies de --spec compara cada manifiesto con su punto de partida y falla con cada dependencia nueva que no casa con allowedDependencies; planProvider la añade."
     }
   },
   "pending": {

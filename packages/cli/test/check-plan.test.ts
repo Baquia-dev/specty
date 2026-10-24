@@ -23,6 +23,14 @@ const ENGLISH = CONFIG().replace("language: es", "language: en");
 /** SPEC with T1 as a fix. */
 const FIX_SPEC = SPEC.replace("  - ac: AC1\n- [ ] T2", "  - ac: AC1\n  - type: fix\n- [ ] T2");
 
+/** SPEC allowing `zod` and anything of `@angular`. */
+const DEPENDENCIES_SPEC = SPEC.replace(
+  "kind: standard\n",
+  'kind: standard\nallowedDependencies: [zod, "@angular/*"]\n',
+);
+
+const json = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
+
 /**
  * A repository with `files` on main, on the branch of the change of `spec` (SPEC's by default),
  * approved, with T1 active.
@@ -50,7 +58,7 @@ interface CheckJson {
   readonly findings: readonly { readonly path?: string; readonly message: string }[];
 }
 
-const PLAN_CHECKS = ["spec-approved", "scope", "fix-tests", "tests-removed"];
+const PLAN_CHECKS = ["spec-approved", "scope", "fix-tests", "tests-removed", "dependencies"];
 
 /** The plan checks of a `--json` run, by id. */
 async function planChecks(root: string, ...args: string[]): Promise<Record<string, CheckJson>> {
@@ -174,6 +182,54 @@ describe("specty check --spec", () => {
     expect(english.out).toContain("  src/app.test.ts 2 fewer cases (from 3 to 1)");
     expect(english.out).toContain("  src/old.test.ts test deleted");
     expect(english.out).toContain("  src/one.test.ts 1 fewer case (from 2 to 1)");
+  });
+
+  it("fails on each dependency a manifest gains that the spec does not allow", async () => {
+    const root = await approvedChange({
+      spec: DEPENDENCIES_SPEC,
+      files: {
+        "package.json": json({ name: "app", dependencies: { react: "18" } }),
+        "app/pubspec.yaml": "name: app\ndependencies:\n  flutter:\n    sdk: flutter\n",
+      },
+    });
+    await writeFiles(root, {
+      "package.json": json({
+        name: "app",
+        dependencies: { react: "19", zod: "4", lodash: "4", "@angular/core": "22" },
+      }),
+      "app/pubspec.yaml": [
+        "name: app",
+        "dependencies:",
+        "  flutter:",
+        "    sdk: flutter",
+        "  http: ^1.2.0",
+        "dev_dependencies:",
+        "  flutter_test:",
+        "    sdk: flutter",
+        "",
+      ].join("\n"),
+    });
+    const run = await cli(root, ["check", "--spec"]);
+    expect(run.code).toBe(1);
+    expect(run.out).toContain(
+      [
+        "FALLA dependencies",
+        "  app/pubspec.yaml:5 dependencia nueva sin permiso en la spec: http",
+        "  package.json:6 dependencia nueva sin permiso en la spec: lodash",
+      ].join("\n"),
+    );
+    await writeFiles(root, { ".specty/config.yaml": `${ENGLISH}${CHECKS}` });
+    expect((await cli(root, ["check", "--spec"])).out).toContain(
+      "  package.json:6 new dependency not allowed by the spec: lodash",
+    );
+  });
+
+  it("tells the agent drafting a spec to name the dependencies it will add", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${CHECKS}` });
+    await cli(root, ["new", "Saludo personalizado"]);
+    expect((await cli(root, ["next"])).out).toContain(
+      "Si el cambio añade dependencias a un manifiesto, nómbralas en `allowedDependencies` del frontmatter",
+    );
   });
 
   it("refuses --spec with --all, which has no diff of the change", async () => {
