@@ -7,3 +7,6 @@
 {"ts":"2026-10-24T21:01:01.929Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"da6a9089b1ca5c7993dc268b036f5de021f46196"}}
 {"ts":"2026-10-24T21:04:03.628Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/check-typescript.test.ts test/check.test.ts","exit":0,"ms":4287}}
 {"ts":"2026-10-24T21:04:03.810Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"check/typescript.ts: proveedor de TypeScript con strict-types; con ESLint y typescript-eslint lo ejecuta con las tres reglas a error (informe a archivo), si no, la detección propia; mismos mensajes es/en. specty check en este repo: todo OK."}}
+{"ts":"2026-10-24T21:04:04.290Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"51a3a194dc1a5e65f70a3109c121c8ebf6ab5cfa"}}
+{"ts":"2026-10-24T21:06:09.559Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":106859}}
+{"ts":"2026-10-24T21:06:09.573Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats §6 documenta strict-types (qué prohíbe, el camino de ESLint con --rule y el de la detección propia, los *.d.ts); ARCHITECTURE la añade a la fila de specty check."}}

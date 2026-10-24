@@ -63,7 +63,7 @@ En un proyecto TypeScript, `specty check` falla si el cambio añade un `any` exp
   - files: packages/cli/src/check/typescript.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-typescript.test.ts
   - ac: AC1, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-typescript.test.ts test/check.test.ts
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC3
   - verify: pnpm check
