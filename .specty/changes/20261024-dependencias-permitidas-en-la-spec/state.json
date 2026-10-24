@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "64b9af41b5c062071f65a858333b5bdf64b8e111",
+      "attempts": 1,
       "startedAt": "2026-10-24T18:17:55.284Z",
       "doneAt": "2026-10-24T20:35:12.770Z",
-      "summary": "Frontmatter.allowedDependencies (opcional, nombres o globs): frontmatter.ts lo valida y lo lee, serialize.ts lo escribe solo si no está vacío y entra en el hash; tests de lectura, escritura y roundtrip."
+      "summary": "Frontmatter.allowedDependencies (opcional, nombres o globs): frontmatter.ts lo valida y lo lee, serialize.ts lo escribe solo si no está vacío y entra en el hash; tests de lectura, escritura y roundtrip.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7c88fee2fe5959fe9cb8e316ed9b85776f414e6c",
+      "startedAt": "2026-10-24T20:35:13.039Z",
+      "doneAt": "2026-10-24T20:37:31.512Z",
+      "summary": "core/checks/dependencies.ts: lectores de package.json y pubspec.yaml (sin paquetes del SDK) y addedDependencies con su línea; readsDependencies, porque isManifest ya existía en scope/lockfiles.ts; la guía de redacción nombra allowedDependencies."
     }
   },
   "pending": {

@@ -62,6 +62,10 @@ export function draftingGuide(change: ChangeView, ctx: CardContext): string[] {
       'Write everything else as assumptions; mark with "impact: high" those that would change the design if false.',
     ),
   ];
+  const dependencies = t(
+    "Si el cambio añade dependencias a un manifiesto, nómbralas en `allowedDependencies` del frontmatter: `specty check --spec` rechaza las demás.",
+    "If the change adds dependencies to a manifest, name them in the frontmatter's `allowedDependencies`: `specty check --spec` rejects the rest.",
+  );
   switch (change.kind) {
     case "quick":
       return [
@@ -69,6 +73,7 @@ export function draftingGuide(change: ChangeView, ctx: CardContext): string[] {
           `Quick: objetivo, archivos (hasta ${ctx.quickMaxFiles}, sin rutas sensibles) y una sola tarea con \`verify\`.`,
           `Quick: goal, files (up to ${ctx.quickMaxFiles}, no sensitive paths) and a single task with \`verify\`.`,
         ),
+        dependencies,
       ];
     case "spike":
       return [
@@ -104,6 +109,7 @@ export function draftingGuide(change: ChangeView, ctx: CardContext): string[] {
           "Archivos: cada ruta que tocarás, con su motivo. Tareas: pequeñas, con `files`, `ac` y `verify`.",
           "Files: every path you will touch, with its reason. Tasks: small, with `files`, `ac` and `verify`.",
         ),
+        dependencies,
         t(
           "Borra las secciones opcionales que no uses.",
           "Remove the optional sections you do not use.",

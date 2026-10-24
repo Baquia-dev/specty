@@ -61,7 +61,7 @@ Una spec puede nombrar en su frontmatter las dependencias que el cambio está au
   - files: packages/core/src/spec/model.ts, packages/core/src/spec/frontmatter.ts, packages/core/src/spec/serialize.ts, packages/core/test/spec/parse.test.ts, packages/core/test/spec/arbitraries.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec
-- [ ] T2: Las dependencias nuevas de un manifiesto
+- [x] T2: Las dependencias nuevas de un manifiesto
   - files: packages/core/src/checks/dependencies.ts, packages/core/src/index.ts, packages/core/test/checks/dependencies.test.ts, packages/core/src/cards/text.ts
   - ac: AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/dependencies.test.ts

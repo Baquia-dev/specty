@@ -70,6 +70,7 @@ export type {
   TaskView,
 } from "./cards/view";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
+export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export {
   focusedTests,
   type Mark,
