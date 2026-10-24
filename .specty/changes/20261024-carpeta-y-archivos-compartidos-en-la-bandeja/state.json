@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261024-carpeta-y-archivos-compartidos-en-la-bandeja",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-carpeta-y-archivos-compartidos-en-la-bandeja",
+  "baseCommit": "19563c089fd91e18f75719fac38d9e59d4e0eaa0",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b4c8d2f45b4a48e01a52bb646e8663e950948668829eb9f4174fbf8acabdddc2",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:d050419a151e9cbef8b2cfd801462a5b906b4949e994f5590cb0d88a0235fc7c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5c1d30dda48b229bf94cfe034d3fd9b6d98a712051b236ed843cd46511e44bb9",
+    "at": "2026-10-24T10:55:52.567Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

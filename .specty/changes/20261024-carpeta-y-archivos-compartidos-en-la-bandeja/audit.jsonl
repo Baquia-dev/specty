@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T10:55:29.390Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-carpeta-y-archivos-compartidos-en-la-bandeja"}}
+{"ts":"2026-10-24T10:55:51.806Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:5c1d30dda48b229bf94cfe034d3fd9b6d98a712051b236ed843cd46511e44bb9","size":"M","warnings":0}}
+{"ts":"2026-10-24T10:55:52.580Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:5c1d30dda48b229bf94cfe034d3fd9b6d98a712051b236ed843cd46511e44bb9","channel":"delegated","delegated":true}}
