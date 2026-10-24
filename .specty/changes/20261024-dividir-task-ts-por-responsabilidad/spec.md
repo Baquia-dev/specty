@@ -15,7 +15,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Los pasos de task done que dejan rastro pasan a flow/task-done.ts
+- [x] T1: Los pasos de task done que dejan rastro pasan a flow/task-done.ts
   - files: packages/cli/src/commands/task.ts, packages/cli/src/flow/task-done.ts
   - verify: pnpm check
   - type: refactor
