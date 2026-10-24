@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261024-solo-lectura-en-la-revision",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-solo-lectura-en-la-revision",
+  "baseCommit": "6af2b8c61960b3a3bda9116b28127bdea4135ee5",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:92f39138511e614a89327540731e8ee2dda5b583ae6fc0a786d62300f98e824b",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:193199972415b3ad6af8175b0f133f614e8475fa406150e4c6bd64e4ccae2d53",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fef37bce5003b0b9e374fad3b9d5e815f57a7d478b37c682625e69b09248c1a8",
+    "at": "2026-10-24T10:15:28.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
