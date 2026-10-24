@@ -59,7 +59,7 @@ Los iconos dejan de cargar una plantilla compilada cada uno. Hoy cada icono de `
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components && pnpm sources
   - type: refactor
-- [ ] T3: Documentar de dónde salen los iconos
+- [x] T3: Documentar de dónde salen los iconos
   - files: docs/ui.md
   - ac: AC3
   - verify: pnpm check

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-iconos-de-lucide-como-datos-componentes-y-armazo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-iconos-de-lucide-como-datos-componentes-y-armazo",
   "baseCommit": "3cac524b0f1f5be561fd53c4d6cc1b00392cbbd6",
   "revision": 1,
@@ -45,12 +45,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "859f49f23229cdc3f6c20e178adf295144526ca8",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:30:36.271Z",
       "doneAt": "2026-10-24T11:32:00.034Z",
-      "summary": "badge, collapsible, dialog, diff-file, field, select y toast (y los tests de button y empty-state) toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon"
+      "summary": "badge, collapsible, dialog, diff-file, field, select y toast (y los tests de button y empty-state) toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8538cf49eee9cccbba974cdf4037f4a9e4279f52",
+      "startedAt": "2026-10-24T11:32:00.394Z",
+      "doneAt": "2026-10-24T11:34:13.383Z",
+      "summary": "docs/ui.md (Stack): los iconos se dibujan con LucideDynamicIcon y sus dibujos son datos de lucide en components/icons.ts, por qué (una plantilla compilada por icono, unos 3 KB cada uno) y cómo añadir uno; mientras dure la migración conviven ambos"
     }
   },
   "pending": {
