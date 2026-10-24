@@ -48,7 +48,7 @@ Segunda de las tres partes de «Iconos de Lucide como datos». `app/`, `catalog/
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app --include src/catalog && pnpm sources
   - type: refactor
-- [ ] T2: La página del cambio, la Bandeja y el progreso toman sus iconos de icons.ts
+- [x] T2: La página del cambio, la Bandeja y el progreso toman sus iconos de icons.ts
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/scope-request.ts, packages/ui/src/progress/task-row.ts
   - ac: AC1
   - verify: pnpm check

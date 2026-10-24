@@ -7,17 +7,16 @@ import {
   input,
   linkedSignal,
 } from "@angular/core";
+import { LucideDynamicIcon, type LucideIconInput } from "@lucide/angular";
+import { ROW } from "../components/document";
 import {
   LucideCheck,
   LucideCircleCheck,
   LucideCircleDashed,
   LucideCircleDot,
-  LucideDynamicIcon,
   LucideGitCommitHorizontal,
-  type LucideIconInput,
   LucideX,
-} from "@lucide/angular";
-import { ROW } from "../components/document";
+} from "../components/icons";
 import {
   formatDuration,
   outputSegments,

@@ -9,9 +9,9 @@ import {
   input,
   signal,
 } from "@angular/core";
-import { LucideListChecks } from "@lucide/angular";
 import { LIST, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
+import { LucideListChecks } from "../components/icons";
 import { formatDuration, type RunRecord, type TaskStatus, workTime } from "../data/progress";
 import { type ChangeView, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
