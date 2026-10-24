@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261024-ci-en-tres-sistemas-knip-y-publicacion-con-proce",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-ci-en-tres-sistemas-knip-y-publicacion-con-proce",
   "baseCommit": "3fa960c092121873d0c353f84ecc06ae24012b22",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9d035f5cc0ea0cf130203b3a2a9f45f999726c67d1cc3db70f864ba27571ae2b",
+    "at": "2026-10-24T15:45:35.985Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0043a3ba739a9ebb55509917056ff4fe5176f4a7",
+      "startedAt": "2026-10-24T15:45:37.186Z",
+      "doneAt": "2026-10-24T15:48:03.815Z",
+      "summary": "knip 6.41.0 fijado como dependencia de desarrollo, knip.json con las reglas de exportaciones y tipos apagadas, y pnpm check ejecuta pnpm knip tras los tamaños y antes de los tests. Hoy pasa; en un proyecto de prueba falla y nombra un archivo y una dependencia que sobran. AGENTS.md al día."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 3,
     "T": 1,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9d035f5cc0ea0cf130203b3a2a9f45f999726c67d1cc3db70f864ba27571ae2b",
-    "at": "2026-10-24T15:45:35.985Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

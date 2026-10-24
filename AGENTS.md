@@ -29,7 +29,7 @@ Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-de
 ## Comandos
 
 - Instalar: `pnpm install`
-- Todo (lint, tipos, cabeceras y tamaño de archivos, tests con cobertura): `pnpm check`
+- Todo (lint, tipos, cabeceras y tamaño de archivos, código muerto con knip, tests con cobertura): `pnpm check`
 - Formatear y corregir lint: `pnpm format`
 - Construir el CLI: `pnpm --filter @baquia-dev/specty build` (genera `packages/cli/dist/specty.mjs`)
 - Catálogo del sistema de diseño: `pnpm --filter @baquia-dev/specty-ui exec ng serve` (abre `/catalog`)

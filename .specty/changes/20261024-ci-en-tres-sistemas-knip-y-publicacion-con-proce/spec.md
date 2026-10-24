@@ -35,7 +35,7 @@ Primera parte del punto «CI en Linux, macOS y Windows, más knip y `npm publish
 
 ## Tareas
 
-- [ ] T1: knip en `pnpm check`
+- [x] T1: knip en `pnpm check`
   - files: knip.json, package.json, pnpm-lock.yaml, AGENTS.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check
