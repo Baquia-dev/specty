@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-las-salidas-de-git-no-se-recortan",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-las-salidas-de-git-no-se-recortan",
+  "baseCommit": "a3f579fd11a5ea5cb06331607bf241dd0ab1e6b8",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d5bad54c8dfe2fe8463f590fd93745788045d14e950c3a520c8f27f99fffe38a",
+    "at": "2026-10-24T21:52:43.676Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
