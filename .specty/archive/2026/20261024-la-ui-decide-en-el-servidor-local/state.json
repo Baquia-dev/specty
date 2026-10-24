@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-la-ui-decide-en-el-servidor-local",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-la-ui-decide-en-el-servidor-local",
   "baseCommit": "31572b8cd11503350269d9af1827f1f8703d2aaf",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:6927d2a4190b2a07dddf02810067d07dfb43644a9532f2331717d67ee8aaca6d",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f4e6f02cb38437c0ab183702553a741b07e84d8e",
+      "attempts": 1,
       "startedAt": "2026-10-24T05:49:58.306Z",
       "doneAt": "2026-10-24T05:52:55.586Z",
-      "summary": "ARCHITECTURE §15: las decisiones de la UI son POST a las acciones del servidor con el token CSRF y cada rechazo se muestra con su motivo; en lo que falta quedan comentarios, pedir cambios, el modo delegado, la verificación desde la UI, la edición de la spec y los diffs"
+      "summary": "ARCHITECTURE §15: las decisiones de la UI son POST a las acciones del servidor con el token CSRF y cada rechazo se muestra con su motivo; en lo que falta quedan comentarios, pedir cambios, el modo delegado, la verificación desde la UI, la edición de la spec y los diffs",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -63,5 +63,6 @@
     "A": 3,
     "AC": 2,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T05:54:20.468Z"
 }

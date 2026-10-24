@@ -46,3 +46,24 @@ Servida por un `specty ui` que arrancó la persona, la UI deja de ser de solo le
   - ac: —
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Servida por un `specty ui` que arrancó la persona, la UI aprueba, decide supuestos y solicitudes de alcance, acepta, pide ajustes y confirma el cierre llamando a las acciones del servidor, con el token CSRF que pide una vez a `GET /api/session`. Cada rechazo llega a la persona con su motivo y en su idioma: el del flujo (409, con el texto de la CLI), que el servidor es de solo lectura porque lo arrancó el agente, que la pestaña no tiene sesión, que el servidor no entendió la petición, o que comentarios, «pedir cambios», verificación y diffs aún no existen en él.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Si el servidor es de solo lectura, la acción se rechaza sin llegar a hacer el `POST`: la sesión ya lo dice.
+- El texto de un rechazo del flujo junta las líneas de la salida y su siguiente paso, con mayúscula inicial, en el idioma del repositorio, y se muestra igual en los dos idiomas de la UI.
+- Una sesión que falló se vuelve a pedir en la siguiente acción, por si la persona abrió el enlace entretanto.
+
+### Pendientes
+
+- Comentarios y «pedir cambios» en la revisión, el interruptor del modo delegado, la verificación completa y los diffs, en el servidor y en la UI.
+- Ocultar o desactivar los botones de decisión cuando el servidor es de solo lectura.

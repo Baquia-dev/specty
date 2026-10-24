@@ -7,3 +7,6 @@
 {"ts":"2026-10-24T05:49:58.307Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"f4e6f02cb38437c0ab183702553a741b07e84d8e"}}
 {"ts":"2026-10-24T05:52:55.580Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":84281}}
 {"ts":"2026-10-24T05:52:55.593Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"ARCHITECTURE §15: las decisiones de la UI son POST a las acciones del servidor con el token CSRF y cada rechazo se muestra con su motivo; en lo que falta quedan comentarios, pedir cambios, el modo delegado, la verificación desde la UI, la edición de la spec y los diffs"}}
+{"ts":"2026-10-24T05:54:04.820Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T05:54:20.469Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:268e199e89cfda97aff96f7e27cd66ad3120f1b61232c05edb860d851000c3c0","size":"S","warnings":0}}
+{"ts":"2026-10-24T05:54:27.237Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
