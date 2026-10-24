@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
   "baseCommit": "69bfe9e590b99257dde6e00d852a3492b3eb30c6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1480f7dbcdddc0af7eaedc65557aca797890ac3aeea22d70e804e359456da723",
@@ -49,12 +49,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5678f3c2923103cc403798fc483e6d2a6629e124",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:52:24.162Z",
       "doneAt": "2026-10-24T14:54:29.628Z",
-      "summary": "docs/ui.md (Stack, Iconos): la migración terminada, la regla de Biome y lo medido (Lucide 215 → 24 KB en el chunk inicial, lo inicial 668 → 520 KB sin comprimir; comprimido apenas cambia)"
+      "summary": "docs/ui.md (Stack, Iconos): la migración terminada, la regla de Biome y lo medido (Lucide 215 → 24 KB en el chunk inicial, lo inicial 668 → 520 KB sin comprimir; comprimido apenas cambia)",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,5 +65,6 @@
     "A": 1,
     "AC": 3,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T14:55:39.432Z"
 }

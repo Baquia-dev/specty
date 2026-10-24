@@ -62,3 +62,21 @@ kind: standard
   - ac: AC3
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Termina la migración de los iconos a datos: `acceptance/` y `review/` toman sus iconos de `components/icons.ts`, y ningún archivo de la UI importa ya clases de iconos de `@lucide/angular`. Biome lo impide con `noRestrictedImports` y un mensaje que dice de dónde tomarlos. Medido tras las tres partes: Lucide pasó de 215 KB a 24 KB en el chunk inicial, y lo inicial de 668 KB a 520 KB sin comprimir. Comprimido apenas cambia (de 137,8 a 135,9 KB), porque las plantillas repetidas comprimían bien; lo que se ahorra es el JavaScript que se analiza al arrancar.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La regla de Biome se probó añadiendo de forma temporal una importación prohibida a `review/comments.ts`, que está en el alcance, y quitándola después. Un archivo de prueba aparte lo bloqueó el guard, y Biome no muestra diagnósticos al leer el código por stdin.
+
+### Pendientes
+
+- Ninguno de esta migración.
