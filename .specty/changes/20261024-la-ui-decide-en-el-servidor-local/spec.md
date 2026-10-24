@@ -37,7 +37,7 @@ Servida por un `specty ui` que arrancó la persona, la UI deja de ser de solo le
 
 ## Tareas
 
-- [ ] T1: Las acciones de la persona en `ServerData`
+- [x] T1: Las acciones de la persona en `ServerData`
   - files: packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts

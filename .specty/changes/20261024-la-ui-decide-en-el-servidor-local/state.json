@@ -6,6 +6,13 @@
   "branch": "specty/20261024-la-ui-decide-en-el-servidor-local",
   "baseCommit": "31572b8cd11503350269d9af1827f1f8703d2aaf",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6927d2a4190b2a07dddf02810067d07dfb43644a9532f2331717d67ee8aaca6d",
+    "at": "2026-10-24T05:47:54.152Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f44411c2364115e24258b45a5fb4c8f21e3e34c4",
+      "startedAt": "2026-10-24T05:47:54.712Z",
+      "doneAt": "2026-10-24T05:49:57.964Z",
+      "summary": "ServerData aprueba, decide supuestos y solicitudes de alcance, acepta, pide ajustes y confirma el cierre con POST a las acciones del servidor y el token CSRF de /api/session (pedido una vez); explica en el idioma de la persona el rechazo del flujo (409), el servidor de solo lectura, la falta de sesión, la petición no entendida y lo que el servidor aún no admite (comentarios, pedir cambios, verificación y diffs)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -37,12 +54,5 @@
     "A": 3,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6927d2a4190b2a07dddf02810067d07dfb43644a9532f2331717d67ee8aaca6d",
-    "at": "2026-10-24T05:47:54.152Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
