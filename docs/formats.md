@@ -320,6 +320,8 @@ checks:                           # specty check (ADR 0012)
   todo:                           # la verificación todo
     markers: ["TODO", "FIXME"]    # palabras que, primeras en un comentario, marcan trabajo pendiente; distingue mayúsculas
     reference: "#\\d+|\\b[A-Z][A-Z0-9]+-\\d+\\b|https?://\\S+"  # expresión regular de la referencia a un issue, tras la marca
+  commands:                       # opcional: los comandos del proyecto, por encima de los detectados
+    tests: "pnpm test --run"      # format | lint | typecheck | tests
 policy:
   tests: recommended              # required | recommended | off
 retro:
@@ -355,7 +357,9 @@ review:
 
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
 
-`specty check` trae hoy, para cualquier lenguaje, estas verificaciones, cada una con su id en `checks.levels`:
+`specty check` ejecuta primero los comandos del propio proyecto, cada uno como una verificación con su id: `format`, `lint`, `typecheck` y `tests`. Salen de `checks.commands` o, sin la clave, de los que Specty detecta en el stack principal, los mismos que `init` escribe en `verify` y en AGENTS.md. El formato solo se detecta en su forma de comprobación, nunca en la que reescribe archivos: los scripts `format:check`, `fmt:check` o `check:format` en JavaScript y TypeScript, `dart format --output=none --set-exit-if-changed .` en Dart, `cargo fmt --check` en Rust, `ruff format --check` en Python con ruff y `dotnet format --verify-no-changes` en .NET. Una verificación sin comando no aparece. Cada comando corre con la shell en la raíz, con el tiempo límite de `verify.timeoutSec`, y mira el proyecto entero, porque un cambio puede romper archivos que no tocó. Pasa si sale con 0. Si no, su primer hallazgo dice con qué código salió, o que superó el tiempo, y los demás son las líneas de su salida que señalan `ruta:línea` (o `ruta(línea,columna)`, o la ruta en una línea y `línea:columna` en las siguientes, como ESLint), primero las de archivos de la ejecución. Sin ninguna, son sus últimas líneas. Como en todas, se muestran hasta `checks.maxFindings`.
+
+Después vienen, para cualquier lenguaje, estas verificaciones, cada una con su id en `checks.levels`:
 
 - `max-lines`: las líneas de código de cada archivo, con los límites de `lines`.
 - `focused-tests`: un test enfocado deja sin correr a los demás (`describe.only`, `fit`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` de Ginkgo).

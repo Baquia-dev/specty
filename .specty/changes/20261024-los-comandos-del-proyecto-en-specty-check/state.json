@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-los-comandos-del-proyecto-en-specty-check",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-los-comandos-del-proyecto-en-specty-check",
   "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
   "revision": 1,
@@ -52,14 +52,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/detect/project.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "fd211f327b2aa6a613cea21f5615066d228783ef",
+      "attempts": 1,
       "startedAt": "2026-10-24T20:47:06.414Z",
       "doneAt": "2026-10-24T20:50:27.342Z",
-      "summary": "check/commands.ts: proveedor del proyecto con format, lint, typecheck y tests desde commandsFor (formato solo en su forma de comprobación) o checks.commands; un fallo da su código o el tiempo límite y los hallazgos de su salida, los del diff primero."
+      "summary": "check/commands.ts: proveedor del proyecto con format, lint, typecheck y tests desde commandsFor (formato solo en su forma de comprobación) o checks.commands; un fallo da su código o el tiempo límite y los hallazgos de su salida, los del diff primero.",
+      "scopeExtra": [
+        "packages/cli/src/detect/project.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a73480906f900e60ad58bb58f25f1537d0e26536",
+      "startedAt": "2026-10-24T20:50:27.602Z",
+      "doneAt": "2026-10-24T20:51:57.390Z",
+      "summary": "formats §6 documenta checks.commands y las verificaciones de los comandos del proyecto (detección, formato solo de comprobación, tiempo límite, hallazgos de la salida); ARCHITECTURE las añade a la fila de specty check."
     }
   },
   "pending": {
