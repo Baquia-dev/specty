@@ -68,7 +68,7 @@ En Claude Code, el agente entra en la carpeta que preparó `specty new` sin que 
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts
   - type: feat
-- [ ] T3: `new` propone entrar por nombre
+- [x] T3: `new` propone entrar por nombre
   - files: packages/cli/src/commands/new.ts, packages/cli/test/worktrees.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm check
