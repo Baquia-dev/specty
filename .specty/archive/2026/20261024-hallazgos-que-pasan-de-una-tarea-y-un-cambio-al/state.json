@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-hallazgos-que-pasan-de-una-tarea-y-un-cambio-al",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-hallazgos-que-pasan-de-una-tarea-y-un-cambio-al",
   "baseCommit": "e903c57e13e10c6c189ef3d83c4b487eb5d49587",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:7d41ae7350c3e268ad940d80d4b06cec0fadce2ffb8c94433772b746b1b02df8",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e540138c3880a06499026d101159910f3966ecfe",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:45:35.025Z",
       "doneAt": "2026-10-24T14:48:19.811Z",
-      "summary": "ARCHITECTURE §6 y §7: --finding, dónde se ven los hallazgos y qué carga un cambio de seguimiento; formats.md §4: findings en task.completed"
+      "summary": "ARCHITECTURE §6 y §7: --finding, dónde se ven los hallazgos y qué carga un cambio de seguimiento; formats.md §4: findings en task.completed",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T14:50:18.126Z"
 }
