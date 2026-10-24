@@ -43,6 +43,28 @@ const HINTS: Readonly<Record<Lang, Readonly<Record<SectionKey, string>>>> = {
   },
 };
 
+/** What the first change of a new project needs to hear instead (ARCHITECTURE §14). */
+const BOOTSTRAP_HINTS: Readonly<Record<Lang, Readonly<Partial<Record<SectionKey, string>>>>> = {
+  es: {
+    goal: "El esqueleto del proyecto, a partir de PRODUCT.md: qué se podrá hacer y comprobar al terminar este cambio.",
+    assumptions:
+      'El stack, las herramientas y los comandos que eliges (o que pide PRODUCT.md), uno por supuesto: "- A1: …"; con "  - impacto: alto" los que el usuario debe confirmar.',
+    files:
+      'Lo que crea el andamiaje: el manifiesto y la configuración, el primer test, y con un glob lo que genere una herramienta: "- crear src/** — …".',
+    tasks:
+      'Pasos pequeños: la primera tarea deja el proyecto construyendo y con un test que pasa. Cada tarea con "  - verify: comando", porque aún no hay verify.default.',
+  },
+  en: {
+    goal: "The project's skeleton, from PRODUCT.md: what can be done and checked when this change ends.",
+    assumptions:
+      'The stack, tools and commands you choose (or PRODUCT.md asks for), one per assumption: "- A1: …"; with "  - impact: high" those the user must confirm.',
+    files:
+      'What the scaffolding creates: the manifest and configuration, the first test, and with a glob what a tool generates: "- create src/** — …".',
+    tasks:
+      'Small steps: the first task leaves the project building with a passing test. Every task with "  - verify: command", since there is no verify.default yet.',
+  },
+};
+
 export interface TemplateOptions {
   readonly kind: ChangeKind;
   readonly lang: Lang;
@@ -53,6 +75,8 @@ export interface TemplateOptions {
   readonly slice?: string;
   /** Pre-filled Files section (retro specs are written from the diff). */
   readonly files?: readonly FileEntry[];
+  /** The first change of a new project: its skeleton (ARCHITECTURE §14). */
+  readonly bootstrap?: boolean;
 }
 
 /** Skeleton of a new spec: frontmatter, title and one hinted section per allowed section. */
@@ -79,7 +103,7 @@ export function specTemplate(options: TemplateOptions): string {
     const prefilled =
       key === "files" && options.files !== undefined && options.files.length > 0
         ? options.files.map((entry) => fileLine(entry, lang)).join("\n")
-        : `<!-- ${HINTS[lang][key]} -->`;
+        : `<!-- ${(options.bootstrap === true ? BOOTSTRAP_HINTS[lang][key] : undefined) ?? HINTS[lang][key]} -->`;
     return `## ${SECTION_TITLES[lang][key]}\n\n${prefilled}`;
   });
   return `${[header, ...sections].join("\n\n")}\n`;

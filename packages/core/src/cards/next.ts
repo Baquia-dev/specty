@@ -11,12 +11,14 @@ export interface NextView {
   readonly change?: ChangeView;
   /** Governed paths changed in the working tree while no change is active. */
   readonly dirty: readonly string[];
+  /** A new project: no stack and no governed code yet, so the first change is its skeleton. */
+  readonly fresh?: boolean;
 }
 
 /** `specty next`: what to do now, for every phase. Never changes anything. */
 export function nextCard(view: NextView, ctx: CardContext): Output {
   const { change } = view;
-  if (change === undefined) return noChangeCard(view.dirty, ctx);
+  if (change === undefined) return noChangeCard(view.dirty, ctx, view.fresh === true);
   if (change.integration !== undefined) return integrationCard(change, change.integration, ctx);
   switch (change.phase) {
     case "draft":
@@ -52,7 +54,7 @@ export function notInitializedCard(ctx: CardContext): Output {
   };
 }
 
-function noChangeCard(dirty: readonly string[], ctx: CardContext): Output {
+function noChangeCard(dirty: readonly string[], ctx: CardContext, fresh: boolean): Output {
   const t = translator(ctx.lang);
   if (dirty.length > 0) {
     return {
@@ -62,6 +64,27 @@ function noChangeCard(dirty: readonly string[], ctx: CardContext): Output {
       next: t(
         `documéntalos: prepáralos con \`git add\` y ejecuta \`${ctx.command} retro\`.`,
         `document them: stage them with \`git add\` and run \`${ctx.command} retro\`.`,
+      ),
+    };
+  }
+  // ARCHITECTURE §14: the skeleton is the first change, standard, so the scaffolding is traced.
+  if (fresh) {
+    return {
+      status: "ok",
+      header: headerOf(),
+      blocks: section(undefined, [
+        t(
+          "No hay un cambio activo, y es un proyecto nuevo: aún no hay código.",
+          "There is no active change, and this is a new project: there is no code yet.",
+        ),
+        t(
+          "El primer cambio es el esqueleto del proyecto, a partir de PRODUCT.md; si tiene preguntas sin responder, házselas antes al usuario.",
+          "The first change is the project's skeleton, from PRODUCT.md; if it has unanswered questions, ask the user first.",
+        ),
+      ]),
+      next: t(
+        `ejecuta \`${ctx.command} new "Esqueleto del proyecto" --request "<petición literal del usuario>"\`.`,
+        `run \`${ctx.command} new "Project skeleton" --request "<the user's literal request>"\`.`,
       ),
     };
   }

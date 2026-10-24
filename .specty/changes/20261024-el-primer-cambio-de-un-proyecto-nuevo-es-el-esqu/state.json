@@ -6,6 +6,13 @@
   "branch": "specty/20261024-el-primer-cambio-de-un-proyecto-nuevo-es-el-esqu",
   "baseCommit": "2e2fdcade0d1870b5cba3c80803c8ad2a4fad65f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6a8d594da3ecb10e8a67b7de46e7f3c240b0497ab28782f7ac991e9996b9011a",
+    "at": "2026-10-24T17:06:14.238Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2bbb948a08438fd21f20952fb8dccd1c82cb1684",
+      "startedAt": "2026-10-24T17:06:15.640Z",
+      "doneAt": "2026-10-24T17:07:13.162Z",
+      "summary": "Core: NextView.fresh da la tarjeta de un proyecto nuevo (el primer cambio es el esqueleto, a partir de PRODUCT.md, sin --kind quick), y TemplateOptions.bootstrap cambia las pistas del Objetivo, los Supuestos, los Archivos y las Tareas."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6a8d594da3ecb10e8a67b7de46e7f3c240b0497ab28782f7ac991e9996b9011a",
-    "at": "2026-10-24T17:06:14.238Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

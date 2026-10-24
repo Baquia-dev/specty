@@ -53,7 +53,7 @@ Segunda parte del flujo de proyecto nuevo de ARCHITECTURE §14: tras `init` y `P
 
 ## Tareas
 
-- [ ] T1: Core: la tarjeta y la plantilla del esqueleto
+- [x] T1: Core: la tarjeta y la plantilla del esqueleto
   - files: packages/core/src/cards/next.ts, packages/core/src/templates.ts, packages/core/test/cards/bootstrap.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core test
