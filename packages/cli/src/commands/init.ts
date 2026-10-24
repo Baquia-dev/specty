@@ -4,6 +4,7 @@ import {
   AGENT_NAMES,
   type AgentTool,
   blockedCard,
+  DEFAULT_CONFIG,
   headerOf,
   isAgentTool,
   isGuardedAgent,
@@ -18,6 +19,7 @@ import { commitInstall } from "../install/commit";
 import { type FileChange, installFiles } from "../install/files";
 import { installGitHooks } from "../install/git-hooks";
 import { installOpencode } from "../install/opencode";
+import { isNewProject, newProjectNext, writeProduct } from "../install/product";
 import {
   completeConfig,
   renderConfig,
@@ -87,6 +89,12 @@ export async function init(environment: Environment, options: InitOptions): Prom
   const lang = existing.kind === "ok" ? existing.config.language : fallback;
   const t = translator(lang);
   const detection = await detectProject(root, basename(root));
+  // Read before init writes anything: whether there is a project yet.
+  const fresh = isNewProject(
+    detection,
+    await git.files(),
+    existing.kind === "ok" ? existing.config : DEFAULT_CONFIG,
+  );
   const stamp = environment
     .now()
     .toISOString()
@@ -110,8 +118,23 @@ export async function init(environment: Environment, options: InitOptions): Prom
   const tools =
     options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
   const agents = await writeAgentsMd(root, lang, detection, files);
+  // A new project starts with what it is for: the interview with a person, or its questions.
+  const product = fresh
+    ? await writeProduct({
+        root,
+        name: detection.name,
+        lang,
+        terminal: environment.terminal,
+        ask: environment.terminal.interactive && options.dryRun !== true,
+        files,
+      })
+    : undefined;
   // Repository-relative files init writes that git tracks: they go into its commit.
-  const written = [".specty/config.yaml", "AGENTS.md"];
+  const written = [
+    ".specty/config.yaml",
+    "AGENTS.md",
+    ...(product === undefined ? [] : ["PRODUCT.md"]),
+  ];
   const done: string[] = [
     existing.kind === "missing"
       ? t(".specty/config.yaml creado.", ".specty/config.yaml created.")
@@ -127,6 +150,19 @@ export async function init(environment: Environment, options: InitOptions): Prom
     agents === "created"
       ? t("AGENTS.md creado con los bloques de Specty.", "AGENTS.md created with Specty's blocks.")
       : t("AGENTS.md: bloques de Specty actualizados.", "AGENTS.md: Specty's blocks updated."),
+    ...(product === undefined
+      ? []
+      : [
+          product === "interviewed"
+            ? t(
+                "Proyecto nuevo: PRODUCT.md creado con tus respuestas.",
+                "New project: PRODUCT.md created with your answers.",
+              )
+            : t(
+                "Proyecto nuevo: PRODUCT.md creado con las preguntas por responder.",
+                "New project: PRODUCT.md created with the questions to answer.",
+              ),
+        ]),
   ];
   const warnings: string[] = [];
   if (tools.includes("claude-code")) {
@@ -245,10 +281,13 @@ export async function init(environment: Environment, options: InitOptions): Prom
       ]),
       ...section(t("AVISOS", "WARNINGS"), warnings),
     ],
-    next: t(
-      `completa las secciones «Mapa» y «Convenciones» de AGENTS.md con lo que no se deduce del código, revisa .specty/config.yaml y ejecuta \`${COMMAND} doctor\`.`,
-      `complete the "Map" and "Conventions" sections of AGENTS.md with what cannot be inferred from the code, review .specty/config.yaml and run \`${COMMAND} doctor\`.`,
-    ),
+    next:
+      product === undefined
+        ? t(
+            `completa las secciones «Mapa» y «Convenciones» de AGENTS.md con lo que no se deduce del código, revisa .specty/config.yaml y ejecuta \`${COMMAND} doctor\`.`,
+            `complete the "Map" and "Conventions" sections of AGENTS.md with what cannot be inferred from the code, review .specty/config.yaml and run \`${COMMAND} doctor\`.`,
+          )
+        : newProjectNext(lang, product === "interviewed", COMMAND),
   };
 }
 
