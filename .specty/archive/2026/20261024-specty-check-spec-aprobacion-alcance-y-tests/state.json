@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "20261024-specty-check-spec-aprobacion-alcance-y-tests",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-specty-check-spec-aprobacion-alcance-y-tests",
+  "baseCommit": "6beba238efdc5f76b19b3a97a7f537a53db57737",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:43048a26643af1f1dcff3d3a7e107f452e9b07d8d4460e5f00d0b7d1fa0d0a5c",
+    "at": "2026-10-24T18:03:29.525Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:49d3cad9e87caddc015a2eabaf0a1c6f5281ed484daa221ca63896cb620c7398",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:26d4aa160d3ac277c48a212050254d9f516a914016f35bf8f58e30f06501745e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2c1644642db19d83c817e53ba1516606d1a811c1cbc03bc98c02d12100d73e15",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:16905ce79e9d5ce1258fe8b6ca7be1b3aedb90b5a114c91eb6959b04ad13d2b1",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:eca4e7e766881c859f88ecf6c14fff9eda116cf35ee427e9b92175bf6c19d007",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3a5894e5170fed63db2b1f664269e144789b153c",
+      "attempts": 1,
+      "startedAt": "2026-10-24T18:03:29.948Z",
+      "doneAt": "2026-10-24T18:04:46.341Z",
+      "summary": "testCases en core/checks/markers.ts cuenta las líneas que declaran un caso de test con un catálogo por familia de frameworks (JS, Dart, RSpec, pytest, Go, XCTest, JUnit, xUnit, Rust, PHPUnit), sin contar comentarios.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ed4522f6066b142528a06f81c1858b907492b2da",
+      "attempts": 1,
+      "startedAt": "2026-10-24T18:04:46.634Z",
+      "doneAt": "2026-10-24T18:09:53.468Z",
+      "summary": "check --spec [id] carga el plan (el cambio dado o el activo) y añade spec-approved (sin contar el cierre) y scope (Archivos, files de las tareas y ampliaciones, con las reglas de task done); el contexto gana deleted y before; --spec con --all se rechaza.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e0606e81f25d20ad52dc37d7acf8649e69bd90a5",
+      "attempts": 1,
+      "startedAt": "2026-10-24T18:09:53.733Z",
+      "doneAt": "2026-10-24T18:12:54.530Z",
+      "summary": "check/plan-tests.ts: fix-tests (cada fix activa o hecha trae un test suyo; con --staged solo la activa) y tests-removed (avisa de tests borrados o con menos casos); scope cuenta también los borrados. check --spec sobre este cambio: todo OK.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "066b23b7264f9355462e02533720c53dec151a58",
+      "attempts": 1,
+      "startedAt": "2026-10-24T18:12:54.788Z",
+      "doneAt": "2026-10-24T18:14:28.554Z",
+      "summary": "formats §6 documenta check --spec y sus cuatro verificaciones (spec-approved, scope, fix-tests, tests-removed); ARCHITECTURE añade --spec a la fila de specty check.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T18:16:04.026Z"
+}

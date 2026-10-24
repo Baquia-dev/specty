@@ -234,7 +234,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 
 | Evento | Datos |
 | --- | --- |
-| `change.created` | carril, rama, origen (`follows`, `epic`) y, con `new --request`, la petición literal del usuario (`request`), tal como la escribió |
+| `change.created` | carril, rama, origen (`follows`, `epic`) y, con `new --request`, la petición literal del usuario (`request`), tal como la escribió; `bootstrap: true` si es el primer cambio de un proyecto nuevo, su esqueleto (ARCHITECTURE §14) |
 | `spec.proposed` | revisión, hash, tamaño, avisos |
 | `assumption.decided` | ítem, decisión, comentario |
 | `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |
@@ -312,6 +312,13 @@ lines:                            # líneas de código de los archivos que toca 
   fail: 500                       # bloquea si la tarea lo lleva por encima; false: nunca
   tests: { warn: 400, fail: 600 }
   exclude: ["**/fixtures/**", "**/mocks/**", "**/testdata/**", "**/migrations/**", "**/locales/**"]  # por defecto, también __fixtures__, __mocks__, i18n, l10n y translations
+checks:                           # specty check (ADR 0012)
+  levels: { max-lines: error }    # error | warn | off por verificación; sin la clave, error
+  maxFindings: 10                 # fallos que se muestran por verificación antes de «… y N más»
+  exclude: ["**/node_modules/**", "**/build/**", "**/dist/**", "**/.dart_tool/**"]  # por defecto, también out, target, coverage, vendor, .next, .angular y .gradle
+  todo:                           # la verificación todo
+    markers: ["TODO", "FIXME"]    # palabras que, primeras en un comentario, marcan trabajo pendiente; distingue mayúsculas
+    reference: "#\\d+|\\b[A-Z][A-Z0-9]+-\\d+\\b|https?://\\S+"  # expresión regular de la referencia a un issue, tras la marca
 policy:
   tests: recommended              # required | recommended | off
 retro:
@@ -346,6 +353,24 @@ review:
 `specty init` escribe `verify.default` y `verify.full` con los comandos que detecta. Si el archivo ya existe, solo añade los que falten y la detección encuentre ahora (por ejemplo, tras el primer cambio de un repositorio vacío), insertando sus líneas al final de `verify` (o un bloque `verify` nuevo al final del archivo); nunca cambia un valor que ya está, y el resto del archivo, con sus comentarios, queda igual.
 
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
+
+`specty check` trae hoy, para cualquier lenguaje, estas verificaciones, cada una con su id en `checks.levels`:
+
+- `max-lines`: las líneas de código de cada archivo, con los límites de `lines`.
+- `focused-tests`: un test enfocado deja sin correr a los demás (`describe.only`, `fit`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` de Ginkgo).
+- `skipped-tests`: un test apagado con una marca (`it.skip`, `xit`, `skip:` de Dart, `@pytest.mark.skip`, `@unittest.skip`, `#[ignore]`, `@Disabled`, `@Ignore`, `enabled = false` de TestNG, `[Ignore]`, `Skip = "…"` de xUnit). No cuentan los saltos condicionales, que decide el propio test (`test.skipIf`, `@pytest.mark.skipif`, `t.Skip()`, `pytest.skip()`).
+- `todo`: una marca de `checks.todo.markers` que empieza un comentario (`//`, `/*`, `*` a principio de línea, `#`, `--`, el de HTML, `;` o `%`) sin nada que case con `checks.todo.reference` en el resto de la línea. Por defecto vale `#12`, `acme/app#12`, una clave como `ABC-12` o un enlace. Una configuración con una `reference` que no es una expresión regular no se acepta.
+
+- `secrets`: los secretos, con Betterleaks o, si no está, gitleaks. Specty le pasa al escáner una copia temporal de los archivos de la ejecución, tal como los ve el modo, junto a `.gitleaks.toml`, `.gitleaksignore` y `.betterleaksignore` de la raíz; a Betterleaks le pasa `.betterleaks.toml` con `--config`, porque no lo carga solo, salvo que el entorno defina `BETTERLEAKS_CONFIG` o `BETTERLEAKS_CONFIG_TOML`. El escáner siempre recibe `--redact`, así que el secreto no llega ni al informe ni a la salida. Primero prueba Betterleaks 2 (`fs`), después la forma de gitleaks (`dir`), que es la de Betterleaks 1, y por último gitleaks. Si no hay ninguno, la verificación no corre (`SIN EJECUTAR`) y `--verbose` dice qué instalar; si el escáner falla, tampoco, con su último mensaje como motivo. Para un falso positivo valen los comentarios `betterleaks:allow` o `gitleaks:allow` y los archivos de ignorados de cada escáner.
+
+Las dos de tests solo miran los archivos de test (por nombre o por carpeta, como `scope.implicitTests`). Con `--changed` y `--staged`, las tres de marcas y `secrets` solo miran las líneas que el cambio añade según `git diff -U0`; con `--all`, todas. Con `--staged`, todas las verificaciones leen lo preparado, no lo que hay en el disco.
+
+`specty check --spec [id]` añade las verificaciones del plan aprobado de un cambio: el de `id` o, sin él, el activo de la carpeta. Comparan el diff de la ejecución con el plan, así que no se combinan con `--all`. La aprobación sigue en `state.json`, que el agente no puede escribir, y el alcance es el mismo que usa `task done`:
+
+- `spec-approved`: la spec está aprobada y no cambió desde entonces; el cierre, que llega después, no cuenta. Falla si no está aprobada, si cambió, si el cambio está cancelado o si no existe. Sin cambio, es la única que aparece.
+- `scope`: cada archivo que el diff toca o borra está en «Archivos» (con el origen de los renombrados), en los `files` de alguna tarea o en una ampliación aprobada; los tests implícitos y los generados entran solos. Lista cada ruta que queda fuera.
+- `fix-tests`: cada tarea `fix` activa o hecha tiene en el diff un test suyo, de sus `files`, de sus ampliaciones o junto a ellos. Con `--staged` solo cuenta la activa, porque la hecha ya hizo su commit.
+- `tests-removed`: avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada test con menos casos que en el punto de partida (el merge-base o HEAD). Los casos se cuentan con un catálogo de declaraciones por familia de frameworks (`it(`, `test(`, `testWidgets(`, `def test_`, `func Test`, `@Test`, `[Fact]`, `#[test]`…); su nivel solo sirve para apagarlo.
 
 `git.worktrees` (por defecto `true`) hace que `specty new` cree cada cambio en su propia worktree; con `false`, `new` cambia la rama de la carpeta actual (ARCHITECTURE §9). `git.setup` es el comando que prepara cada worktree nueva, normalmente instalando las dependencias. Sin la clave, Specty usa el del stack que detecta en la carpeta:
 

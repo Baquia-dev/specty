@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { matchesAny } from "../glob";
-import type { ResolvedConfig } from "../schema/config";
+import type { LineLimits, ResolvedConfig } from "../schema/config";
 import { isGoverned } from "../scope/governed";
 import { isLockfile } from "../scope/lockfiles";
 import { isTestFile } from "../scope/tests";
@@ -79,9 +79,9 @@ export interface LongFile {
  */
 export function longFiles(files: readonly SizedFile[], config: ResolvedConfig): LongFile[] {
   return files.flatMap((file): LongFile[] => {
-    if (!sized(file.path, file.after, config)) return [];
-    const { warn, fail } = isTestFile(file.path) ? config.lines.tests : config.lines;
-    const lines = codeLines(file.after);
+    const size = fileSize(file.path, file.after, config);
+    if (size === undefined) return [];
+    const { lines, warn, fail } = size;
     const before = file.before === undefined ? 0 : codeLines(file.before);
     const base = { path: file.path, lines, before };
     if (fail !== false && lines > fail && before <= fail) {
@@ -89,6 +89,20 @@ export function longFiles(files: readonly SizedFile[], config: ResolvedConfig): 
     }
     return lines > warn && lines > before ? [{ ...base, limit: warn, severity: "warning" }] : [];
   });
+}
+
+/**
+ * A file's lines of code with its thresholds, the ones of a test or of other code; undefined
+ * when it is not sized: not governed, generated, a lockfile, binary or excluded.
+ */
+export function fileSize(
+  path: string,
+  text: string,
+  config: ResolvedConfig,
+): ({ readonly lines: number } & LineLimits) | undefined {
+  if (!sized(path, text, config)) return undefined;
+  const { warn, fail } = isTestFile(path) ? config.lines.tests : config.lines;
+  return { lines: codeLines(text), warn, fail };
 }
 
 /** Hand-written code: governed, and neither generated, a lockfile, binary nor excluded. */

@@ -60,21 +60,30 @@ describe("init on an existing configuration", () => {
 
   it("is what closing proposes once the change created the project (AC4)", async () => {
     const root = await started();
-    const created = await cli(root, ["new", "--kind", "quick", "Esqueleto"]);
+    // In a project that started empty, the first change is its skeleton: a standard one.
+    const created = await cli(root, ["new", "Esqueleto"]);
     const id = /SPECTY · (\S+) · draft/.exec(created.out)?.[1] ?? "";
     const folder = folderOf(root, id);
+    const path = `.specty/changes/${id}/spec.md`;
     const spec = [
-      "---\nkind: quick\n---\n\n# Esqueleto\n\n## Objetivo\n\nEl manifiesto del proyecto.\n",
+      "---\nkind: standard\n---\n\n# Esqueleto\n\n## Objetivo\n\nEl manifiesto del proyecto.\n",
+      "## Fuera de alcance\n\n- Ninguno\n",
+      "## Supuestos\n\n- A1: El proyecto usa npm.\n",
+      "## Criterios de aceptación\n\n- AC1: CUANDO se instala ENTONCES hay scripts.\n",
       "## Archivos\n\n- crear package.json — scripts del proyecto\n",
-      '## Tareas\n\n- [ ] T1: Manifiesto\n  - files: package.json\n  - verify: "true"\n  - type: feat\n',
+      '## Tareas\n\n- [ ] T1: Manifiesto\n  - files: package.json\n  - ac: AC1\n  - verify: "true"\n  - type: feat\n',
     ].join("\n");
-    await writeFiles(folder, { [`.specty/changes/${id}/spec.md`]: spec });
+    await writeFiles(folder, { [path]: spec });
     expect((await cli(folder, ["propose"])).code).toBe(0);
     await cli(folder, ["approve"], { terminal: person({ choose: ["confirm"] }) });
     await cli(folder, ["next"]);
     await writeFiles(folder, { "package.json": MANIFEST });
     expect((await cli(folder, ["task", "done", "T1", "--summary", "Manifiesto"])).code).toBe(0);
-    const closed = await cli(folder, ["accept"], { terminal: person() });
+    await cli(folder, ["accept"], { terminal: person() });
+    const closing = "\n## Cierre\n\n### Resumen\n\nEl manifiesto.\n";
+    await writeFiles(folder, { [path]: `${await read(folder, path)}${closing}` });
+    expect((await cli(folder, ["propose"])).code).toBe(0);
+    const closed = await cli(folder, ["close"], { terminal: person() });
     expect(closed.out).toContain(
       `Specty detecta ahora verify.default (\`npm test\`) y verify.full (\`npm run lint && npm run typecheck && npm test\`), que .specty/config.yaml no tiene: \`specty init\` en ${root} lo añade.`,
     );

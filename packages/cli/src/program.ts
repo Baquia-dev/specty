@@ -11,9 +11,11 @@ import {
   translator,
 } from "@baquia-dev/specty-core";
 import { Argument, Command, CommanderError } from "commander";
+import type { ReportOutput } from "./check/provider";
 import { accept } from "./commands/accept";
 import { adjust } from "./commands/adjust";
 import { approve } from "./commands/approve";
+import { checkCommand } from "./commands/check";
 import { delegate } from "./commands/delegate";
 import { doctor } from "./commands/doctor";
 import { cancel, close } from "./commands/finish";
@@ -46,7 +48,13 @@ export async function runCli(
 ): Promise<number> {
   let code = 0;
   let json = false;
-  const emit = (output: Output, lang: Lang) => {
+  const emit = (output: Output | ReportOutput, lang: Lang) => {
+    // `specty check` prints its own report, which ends in its summary line, not a card.
+    if ("report" in output) {
+      environment.io.out(json ? JSON.stringify(output.json) : output.report);
+      code = output.code;
+      return;
+    }
     environment.io.out(
       json
         ? JSON.stringify({ ...output, exitCode: EXIT_CODES[output.status] })
@@ -54,7 +62,7 @@ export async function runCli(
     );
     code = EXIT_CODES[output.status];
   };
-  const run = (handler: (session: Session) => Promise<Output>) => async () => {
+  const run = (handler: (session: Session) => Promise<Output | ReportOutput>) => async () => {
     const opened = await openSession(environment);
     const cards = bareCards(environment.env);
     const t = translator(cards.lang);
@@ -262,6 +270,7 @@ export async function runCli(
     .addArgument(new Argument("<mode>", "on or off").choices(["on", "off"]))
     .action((mode: string) => run((session) => delegate(session, mode === "on" ? "on" : "off"))());
   uninstallCommand(program, run);
+  checkCommand(program, run);
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
   program

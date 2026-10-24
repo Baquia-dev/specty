@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "20261024-el-primer-cambio-de-un-proyecto-nuevo-es-el-esqu",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-el-primer-cambio-de-un-proyecto-nuevo-es-el-esqu",
+  "baseCommit": "2e2fdcade0d1870b5cba3c80803c8ad2a4fad65f",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6a8d594da3ecb10e8a67b7de46e7f3c240b0497ab28782f7ac991e9996b9011a",
+    "at": "2026-10-24T17:06:14.238Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a32a08997ce9f3c62e940e0340b7012f01a38952fb8013490e1c07fd059b52d2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2b688a3d660486bad992d0fbab5da7e231b3ae48b7b9920513395d829167392b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:5588ea0416410dc4c156550909c696f749bb61721620c93f53f9c8e2be180f93",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2bbb948a08438fd21f20952fb8dccd1c82cb1684",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:06:15.640Z",
+      "doneAt": "2026-10-24T17:07:13.162Z",
+      "summary": "Core: NextView.fresh da la tarjeta de un proyecto nuevo (el primer cambio es el esqueleto, a partir de PRODUCT.md, sin --kind quick), y TemplateOptions.bootstrap cambia las pistas del Objetivo, los Supuestos, los Archivos y las Tareas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "11f2ca9e6f895108cb5959a102b3f33a1339ed3a",
+      "attempts": 3,
+      "startedAt": "2026-10-24T17:07:13.441Z",
+      "doneAt": "2026-10-24T17:25:39.163Z",
+      "summary": "freshProject alimenta isNewProject; next lo pasa a la tarjeta sin cambio activo, y new rechaza quick en un proyecto nuevo, da la plantilla del esqueleto y anota bootstrap. El test de (b) pasa a un primer cambio standard. ARCHITECTURE §14 y formats.md §4.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T17:27:41.356Z"
+}

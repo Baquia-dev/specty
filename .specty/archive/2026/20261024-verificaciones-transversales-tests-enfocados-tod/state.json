@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "id": "20261024-verificaciones-transversales-tests-enfocados-tod",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-verificaciones-transversales-tests-enfocados-tod",
+  "baseCommit": "8d3b06b1dabce6e5304c453eb3fb4c2d3f8bf96c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48ce8fba6c73e0b2003dfe42d2327c9613ed4e093e5fb9f4283022c53c140294",
+    "at": "2026-10-24T17:31:48.029Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:703b9274f53213151c22a513ff6861f7e354b0b7a108f3e6ee2ac94351e0e0ae",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ff84f53fb0b34da497a73eef4218aa01fc5458eb188a53847754c6add1437675",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8331225e6cec2cd55b28048654916671d436aa6929a9a4ad7c51c59096dacc12",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0389d7812bcf8b9cc96b9a31e847411cf8cb0b26ce007b6b352ec6fdf59f7cce",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f7812d7e7126a1144be10fc0e054d01e567d7d0decf03f5b50eccbed9d89552b",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:083df1027c9c6fbeb5ec4bba630f1f471508d3a248ab443225a2a6e739d527be",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "874e6fe3e47d1412c2b30f4cc56c798aa13d76a9",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:31:52.032Z",
+      "doneAt": "2026-10-24T17:36:33.912Z",
+      "summary": "core/checks/markers.ts detecta por línea tests enfocados, omitidos y TODO sin referencia, con catálogos por familia de frameworks; checks.todo (markers, reference validada como regex) en la configuración.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "0932dba1d0025fbc01398cefaa997ef9b8a6a552",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:36:34.163Z",
+      "doneAt": "2026-10-24T17:38:26.113Z",
+      "summary": "checkContext en check/files.ts da a cada verificación read (lo preparado con --staged, memorizado) y added (líneas añadidas según git diff -U0 con forma fija); max-lines lee por el contexto.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "0c1399a6430c65643a35344714b2973dbbfec0c1",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:38:26.406Z",
+      "doneAt": "2026-10-24T17:41:06.201Z",
+      "summary": "check/markers.ts define focused-tests, skipped-tests y todo sobre las líneas añadidas; check/common.ts reúne el proveedor común. specty check --all sobre este repo: sin hallazgos de las tres.",
+      "scopeExtra": [
+        "packages/cli/src/check/max-lines.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "2ba4e86cf70530987eab22d78506cb141bdb37ca",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:41:06.460Z",
+      "doneAt": "2026-10-24T17:43:50.211Z",
+      "summary": "formats §6 documenta checks.todo y las cuatro verificaciones comunes (catálogo, solo líneas añadidas, --staged lee lo preparado); ARCHITECTURE actualiza la fila de specty check.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T17:45:34.498Z"
+}

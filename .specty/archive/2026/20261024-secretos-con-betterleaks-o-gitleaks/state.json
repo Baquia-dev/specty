@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "id": "20261024-secretos-con-betterleaks-o-gitleaks",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-secretos-con-betterleaks-o-gitleaks",
+  "baseCommit": "0cfa3a682dc5b3ccb6e6fbbfea90d7772ec63fc7",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:891dab316ff924e81f7e7e878ea6e7d94d186051df2827df33b65194978780b5",
+    "at": "2026-10-24T17:51:53.316Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:08eba54b7d004c6f85eb119eefc63fe30d3162058585b475ac9eac9094466c34",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a38f0e9131f408d7b98ca862b67b1dea6a582f193eb61b3ce1e146c01284b6ed",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:4ac96a43e8f9906c08de83b04f5ffa6322883d915409a60b80c812912bf7a9f0",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:86eb486e8dc72790ae351747450a15e65ff3e6ae26cfccd0d9325ebdddde55fc",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:c6a499e9cfc2177f62363917dc51eef6a3c33987c5ea513930e45cd7a57106a7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c753663fa06c01ae6d0274a3bc96d3be2d4a9c56",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:53:14.300Z",
+      "doneAt": "2026-10-24T17:55:30.691Z",
+      "summary": "check/secrets.ts: secrets con Betterleaks 2, Betterleaks 1 o gitleaks sobre una copia temporal de lo que ve el modo, con --redact, sus archivos de configuración y solo líneas añadidas; sin escáner no corre y dice qué instalar.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "4431f757321452edad00696c1b7aa78542d0c340",
+      "attempts": 1,
+      "startedAt": "2026-10-24T17:55:30.942Z",
+      "doneAt": "2026-10-24T17:57:54.753Z",
+      "summary": "formats §6 documenta secrets (escáneres y orden, copia con sus archivos, --config de Betterleaks, --redact, sin escáner no corre, cómo silenciar un falso positivo); ARCHITECTURE lo añade a la fila de specty check.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T17:59:25.771Z"
+}
