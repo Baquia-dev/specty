@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-avisos-de-riesgo-y-aserciones-en-aceptacion",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-avisos-de-riesgo-y-aserciones-en-aceptacion",
   "baseCommit": "0823681dfdd53f80cf573904cd913a4bcf687058",
   "revision": 1,
@@ -39,12 +39,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "deced9f53179f19197a7155caab414dd4b338ce8",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:17:44.646Z",
       "doneAt": "2026-10-24T15:20:25.812Z",
-      "summary": "acceptance/acceptance-warnings.ts: la sección «Avisos» (divisor con la cuenta, la nota de que son patrones conocidos, no fallos seguros, y una fila por aviso con la tarea, el archivo con su línea, lo encontrado y su CWE); AcceptanceTab la muestra antes de la verificación completa cuando hay avisos. El test del orden de secciones de full-verification incluye ahora los avisos del ejemplo"
+      "summary": "acceptance/acceptance-warnings.ts: la sección «Avisos» (divisor con la cuenta, la nota de que son patrones conocidos, no fallos seguros, y una fila por aviso con la tarea, el archivo con su línea, lo encontrado y su CWE); AcceptanceTab la muestra antes de la verificación completa cuando hay avisos. El test del orden de secciones de full-verification incluye ahora los avisos del ejemplo",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0a95b471bd8fa29a367858c8d0255186bea27850",
+      "startedAt": "2026-10-24T15:20:26.263Z",
+      "doneAt": "2026-10-24T15:22:03.523Z",
+      "summary": "docs/ui.md (Aceptación): la sección «Avisos», de dónde salen, qué muestra cada fila y que son patrones conocidos, no fallos seguros"
     }
   },
   "pending": {

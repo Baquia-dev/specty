@@ -52,7 +52,7 @@ La pestaña Aceptación muestra los avisos que `specty task done` anota de cada 
   - files: packages/ui/src/acceptance/acceptance-warnings.ts, packages/ui/src/acceptance/acceptance-warnings.test.ts, packages/ui/src/acceptance/acceptance-tab.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance && pnpm sources
-- [ ] T3: Documentar los avisos en Aceptación
+- [x] T3: Documentar los avisos en Aceptación
   - files: docs/ui.md
   - ac: AC4
   - verify: pnpm check
