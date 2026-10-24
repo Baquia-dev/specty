@@ -236,7 +236,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
-| `change.verified` | la verificación completa (`verify.full`) antes de aceptar: comando, código de salida, duración, final de la salida si falló |
+| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta o por el servidor local cuando la persona la lanza desde la UI (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, y las últimas 10 líneas si falló |
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | hash del índice, modo (`agent` o `minimal`) |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |

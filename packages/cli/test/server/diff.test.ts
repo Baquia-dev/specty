@@ -1,18 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { cli, git, person, writeFiles } from "../support";
-import { call, path, serving } from "./support";
-
-/** SPEC's change, approved, with its tasks done in order: each leaves `src/app.ts` as given. */
-async function implemented(root: string, ...contents: readonly string[]) {
-  await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
-  await cli(root, ["next"]);
-  for (const [index, content] of contents.entries()) {
-    await writeFiles(root, { "src/app.ts": content });
-    const done = await cli(root, ["task", "done", `T${index + 1}`, "--summary", "Hecho"]);
-    expect(done.code).toBe(0);
-  }
-}
+import { git } from "../support";
+import { call, implemented, path, serving } from "./support";
 
 const GREET = "export const greet = (name: string) => 'Hola, ' + name;";
 
