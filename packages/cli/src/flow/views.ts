@@ -8,12 +8,24 @@ import {
   recommendTaskEffort,
   type Spec,
   specHash,
+  type Task,
   type TaskView,
 } from "@baquia-dev/specty-core";
 import { exists, isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
+
+/**
+ * What `task done` runs for a task, as one command: the repository's quick check, so a broken
+ * rule shows up in the task that broke it, then the task's own verification or the default one.
+ */
+export function taskVerification(session: Session, task: Task): string | undefined {
+  const { quick } = session.config.verify;
+  const own = task.verify ?? session.config.verify.default;
+  if (quick === undefined) return own;
+  return own === undefined ? quick : `${quick} && ${own}`;
+}
 
 /** Everything the cards need about a change, read from its files and from git. */
 export async function changeView(session: Session, change: StoredChange): Promise<ChangeView> {
@@ -22,7 +34,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
   const commits = await taskCommits(session, state.id);
   const tasks = (spec.sections.tasks?.items ?? []).map((task): TaskView => {
     const stored = state.tasks[task.id];
-    const verify = task.verify ?? session.config.verify.default;
+    const verify = taskVerification(session, task);
     const commit = commits.get(task.id);
     return {
       id: task.id,

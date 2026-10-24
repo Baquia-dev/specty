@@ -53,6 +53,43 @@ describe("size limits", () => {
     expect(check(withTasks(5))).toContain("size-near-split");
   });
 
+  it("counts only code files against the file limit", () => {
+    // A high L threshold keeps the size level out of the way: only the file limit decides.
+    const config = withConfig({ size: { S: 4, M: 10, L: 99 } });
+    const code = (count: number, prefix = "lib/features/home/extra") =>
+      Array.from({ length: count }, (_, index) => `- crear ${prefix}${index}.dart — extra`);
+    const others = [
+      ...code(6, "test/features/home/extra_test"),
+      "- modificar docs/ARCHITECTURE.md — diseño",
+      "- modificar lib/README.md — uso",
+    ];
+    const withFiles = (lines: readonly string[]) =>
+      STANDARD.replace("\n## Tareas", `${lines.join("\n")}\n\n## Tareas`);
+    // The example declares 2 code files: 13 more reach 15, with 9 tests and docs besides.
+    expect(check(withFiles([...code(13), ...others]), { config })).not.toContain("split-required");
+    const over = parseSpec(withFiles([...code(14), ...others]));
+    const diagnostics = validateSpec(over.spec, { phase: "draft", config });
+    expect(diagnostics.find((entry) => entry.code === "split-required")?.message).toContain(
+      "(16 archivos de código, máximo 15)",
+    );
+  });
+
+  it("counts the matches of a glob against the file limit", () => {
+    const config = withConfig({ size: { S: 4, M: 10, L: 99 } });
+    const text = STANDARD.replace(
+      "\n## Tareas",
+      "- modificar lib/features/home/widgets/** — vistas\n\n## Tareas",
+    );
+    const matches = Array.from(
+      { length: 10 },
+      (_, index) => `lib/features/home/widgets/w${index}.dart`,
+    );
+    const repo = { globMatches: { "lib/features/home/widgets/**": matches } };
+    // 2 code files, 10 matches and the glob itself: 13 of 15, close to the limit.
+    expect(check(text, { config, repo })).toContain("size-near-split");
+    expect(check(text, { config })).not.toContain("size-near-split");
+  });
+
   it("warns about tasks that touch too many files", () => {
     const config = withConfig({ split: { ...DEFAULT_CONFIG.split, taskMaxFiles: 1 } });
     expect(check(STANDARD, { config })).toContain("task-too-large:T2");

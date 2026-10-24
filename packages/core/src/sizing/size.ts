@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { matchesAny } from "../glob";
+import { isGlob, matchesAny } from "../glob";
 import { counted, type Lang } from "../i18n";
 import { moduleOf } from "../paths";
 import type { ResolvedConfig } from "../schema/config";
@@ -18,11 +18,16 @@ export interface RepoSignals {
   readonly fanIn?: Readonly<Record<string, number>>;
   /** Modules (as returned by `moduleOf`) without tests today. */
   readonly modulesWithoutTests?: readonly string[];
+  /** Repository paths each glob of the Files section matches today. */
+  readonly globMatches?: Readonly<Record<string, readonly string[]>>;
 }
 
 export interface SizeSignals {
   readonly files: Readonly<Record<FileAction, number>>;
+  /** Every file, with a glob counted as its current matches plus one. */
   readonly fileCount: number;
+  /** The governed non-test files among them: what the split and quick limits count. */
+  readonly codeFiles: number;
   /** Modules of the governed non-test files: documentation and other ignored paths add none. */
   readonly modules: readonly string[];
   readonly sensitive: readonly string[];
@@ -66,8 +71,16 @@ export function collectSignals(
       ),
     ),
   ];
-  const count = (action: FileAction): number =>
-    entries.filter((entry) => entry.action === action).length;
+  // A glob counts as its current matches plus one (formats.md §1); a path listed twice, once.
+  const units = new Map<string, FileAction>();
+  for (const entry of entries) {
+    const matches = isGlob(entry.path) ? (repo.globMatches?.[entry.path] ?? []) : [];
+    for (const unit of [...matches, entry.path]) {
+      if (!units.has(unit)) units.set(unit, entry.action);
+    }
+  }
+  const actions = [...units.values()];
+  const count = (action: FileAction): number => actions.filter((other) => other === action).length;
   // Tests mirror their modules and manifests already weigh as dependencies: neither adds a module.
   // Neither does what is not governed, such as documentation: it is not code.
   const code = paths.filter(
@@ -81,7 +94,8 @@ export function collectSignals(
       delete: count("delete"),
       rename: count("rename"),
     },
-    fileCount: entries.length,
+    fileCount: units.size,
+    codeFiles: [...units.keys()].filter((path) => isCode(path, config)).length,
     modules,
     sensitive: paths.filter((path) => matchesAny(path, config.sensitive)),
     manifests: paths.filter(isManifest),
@@ -164,6 +178,11 @@ export function formatSizeReason(reason: SizeReason, lang: Lang): string {
       return `${es ? "ajuste del modelo" : "model adjustment"} (${signed}): ${reason.reason}`;
     }
   }
+}
+
+/** Governed and not a test: what the file limits count. */
+function isCode(path: string, config: ResolvedConfig): boolean {
+  return !isTestFile(path) && isGoverned(path, config);
 }
 
 function levelFor(score: number, thresholds: ResolvedConfig["size"]): SizeLevel {

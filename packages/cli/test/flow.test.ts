@@ -117,6 +117,20 @@ describe("a standard change from request to closing", () => {
     expect(failed.out).toContain("roto");
   });
 
+  it("runs the quick check before each task's verification", async () => {
+    const root = await approvedRepo();
+    const quick = (command: string) =>
+      CONFIG().replace("verify:\n", `verify:\n  quick: ${JSON.stringify(command)}\n`);
+    await writeFiles(root, { ".specty/config.yaml": quick("echo largo && false") });
+    expect((await cli(root, ["next"])).out).toContain("VERIFICACIÓN: echo largo && false && true");
+    await writeFiles(root, { "src/app.ts": "y\n" });
+    const failed = await cli(root, ["task", "done", "T1", "--summary", "x"]);
+    expect(failed.code).toBe(2);
+    expect(failed.out).toContain("VERIFICACIÓN FALLIDA: echo largo && false && true (código 1)");
+    await writeFiles(root, { ".specty/config.yaml": quick("true") });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "x"])).code).toBe(0);
+  });
+
   it("accepts, adjusts, closes and archives", async () => {
     const root = await approvedRepo();
     await cli(root, ["next"]);

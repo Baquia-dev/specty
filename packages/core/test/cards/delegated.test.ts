@@ -29,6 +29,7 @@ const size: SizeResult = {
   signals: {
     files: { create: 0, modify: 1, delete: 0, rename: 0 },
     fileCount: 1,
+    codeFiles: 1,
     modules: [],
     sensitive: [],
     manifests: [],

@@ -22,7 +22,7 @@ export function splitBreaches(
   const { split } = config;
   const metrics: readonly Breach[] = [
     { metric: "tasks", value: size.signals.tasks, max: split.maxTasks },
-    { metric: "files", value: size.signals.fileCount, max: split.maxFiles },
+    { metric: "files", value: size.signals.codeFiles, max: split.maxFiles },
     { metric: "modules", value: size.signals.modules.length, max: split.maxModules },
   ];
   const over = metrics.filter((breach) => breach.metric !== "level" && breach.value > breach.max);
@@ -43,7 +43,7 @@ export function formatBreach(breach: Breach, lang: Lang): string {
   if (breach.metric === "level") return es ? `tamaño ${breach.value}` : `size ${breach.value}`;
   const nouns = {
     tasks: es ? "tareas" : "tasks",
-    files: es ? "archivos" : "files",
+    files: es ? "archivos de código" : "code files",
     modules: es ? "módulos" : "modules",
   };
   return `${breach.value} ${nouns[breach.metric]}, ${es ? "máximo" : "max"} ${breach.max}`;
@@ -58,8 +58,8 @@ export function formatQuickProblem(problem: QuickProblem, lang: Lang): string {
         : `${problem.value} tasks; quick allows one`;
     case "files":
       return es
-        ? `${problem.value} archivos, máximo ${problem.max}`
-        : `${problem.value} files, max ${problem.max}`;
+        ? `${problem.value} archivos de código, máximo ${problem.max}`
+        : `${problem.value} code files, max ${problem.max}`;
     case "sensitive":
       return es ? "toca rutas sensibles" : "touches sensitive paths";
   }

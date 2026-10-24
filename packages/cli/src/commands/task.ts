@@ -23,7 +23,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
-import { changeView } from "../flow/views";
+import { changeView, taskVerification } from "../flow/views";
 import { execute, tail } from "../io/exec";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
@@ -130,7 +130,7 @@ type Verification =
     };
 
 async function verify(session: Session, change: StoredChange, task: Task): Promise<Verification> {
-  const command = task.verify ?? session.config.verify.default;
+  const command = taskVerification(session, task);
   if (command === undefined) return { ok: true, change };
   session.environment.io.err(
     `specty: ${translator(session.lang)("verificando", "verifying")} \`${command}\`…`,

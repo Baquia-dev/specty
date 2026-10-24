@@ -11,6 +11,7 @@ import {
   isGoverned,
   isIntegrating,
   parseSpec,
+  type ShellAnalysis,
   shellChanges,
 } from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
@@ -159,13 +160,12 @@ async function resolveAction(
   }
   // Paths the analysis cannot place (shell variables, `cd` to an unknown place) are not judged.
   const analysis = analyzeShell(raw.command);
-  const committedGoverned =
-    analysis.commits.length === 0
-      ? []
-      : pathsOf([
-          ...(await session.git.staged()),
-          ...(await session.git.changedSince(await session.git.head())),
-        ]).filter((path) => !path.startsWith(".specty/") && isGoverned(path, session.config));
+  const committedGoverned = (await commitsHere(session, cwd, analysis.commits))
+    ? pathsOf([
+        ...(await session.git.staged()),
+        ...(await session.git.changedSince(await session.git.head())),
+      ]).filter((path) => !path.startsWith(".specty/") && isGoverned(path, session.config))
+    : [];
   return {
     kind: "shell",
     facts: {
@@ -176,6 +176,24 @@ async function resolveAction(
       ...(await placeFiles(session, cwd, analysis)),
     },
   };
+}
+
+/**
+ * Whether a commit of the command is this repository's: one whose folder the analysis cannot
+ * name, or one inside any of its worktrees. A folder outside them all is another repository,
+ * even if it does not exist yet (`cd /tmp/x && git init && git commit`).
+ */
+async function commitsHere(
+  session: Session,
+  cwd: string,
+  commits: ShellAnalysis["commits"],
+): Promise<boolean> {
+  if (commits.some((commit) => commit.directory === undefined)) return true;
+  const placed = await placePaths(
+    session.git,
+    commits.map((commit) => resolve(cwd, commit.directory ?? "")),
+  );
+  return placed.inside.length > 0 || placed.foreign.length > 0;
 }
 
 /** What a command or a patch writes and deletes here, and apart, what it would change elsewhere. */

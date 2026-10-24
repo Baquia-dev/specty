@@ -113,7 +113,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 ```
 
 - **Criterios**: `CUANDO … ENTONCES …` o `WHEN … THEN …`; opcionalmente `DADO` / `GIVEN`.
-- **Archivos**: una acción, una ruta o glob y el motivo. Acciones: `crear`, `modificar`, `borrar` o `renombrar origen -> destino` (también en inglés: create, modify, delete, rename). Se prefieren rutas explícitas; para el tamaño, un glob cuenta como sus coincidencias actuales más una.
+- **Archivos**: una acción, una ruta o glob y el motivo. Acciones: `crear`, `modificar`, `borrar` o `renombrar origen -> destino` (también en inglés: create, modify, delete, rename). Se prefieren rutas explícitas; para el tamaño, un glob cuenta como sus coincidencias actuales más una, y una ruta que también cubre un glob cuenta una vez. Los límites de archivos (`split.maxFiles` y `lanes.quick.maxFiles`) cuentan solo los archivos de código: los gobernados que no son tests. La puntuación del tamaño cuenta todos.
 - **Campos de tarea**:
   - `files` (obligatorio): rutas o globs incluidos en Archivos.
   - `ac` (obligatorio salvo en quick y spike): los criterios que cubre. Las tareas `refactor`, `test`, `docs` o `chore` pueden indicar `ac: —`.
@@ -287,14 +287,15 @@ sensitive: ["lib/core/auth/**", "**/migrations/**", ".github/**"]
 verify:
   default: flutter test
   full: flutter analyze && flutter test
+  quick: dart format --output=none --set-exit-if-changed .  # antes de la verificación de cada tarea
   timeoutSec: 600
 scope:
   implicitTests: true             # tests junto a los archivos del alcance
   generated: ["**/*.g.dart", "**/*.freezed.dart"]
   autoApprove: tests-and-generated  # none | tests-and-generated: tests, generados y lo que ya está en Archivos
 lanes:
-  quick: { maxFiles: 3 }
-split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 }
+  quick: { maxFiles: 3 }          # archivos de código: gobernados, sin contar tests
+split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 }  # maxFiles, como en quick
 size: { S: 4, M: 10, L: 18 }      # puntuación máxima de cada nivel; por encima de L es XL
 policy:
   tests: recommended              # required | recommended | off
@@ -314,6 +315,8 @@ ui:
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
+
+`verify.quick` es una comprobación rápida de todo el repositorio, como el formato o el tamaño de los archivos, que `task done` ejecuta antes de la verificación de cada tarea. Las dos van en un solo comando, `<quick> && <verify>`, que es también el que muestra la tarjeta de la tarea. Así un fallo aparece en la tarea que lo causó, no en otra posterior ni al aceptar. Sin la clave, cada tarea ejecuta solo su verificación.
 
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
 

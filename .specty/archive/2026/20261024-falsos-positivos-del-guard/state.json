@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "20261024-falsos-positivos-del-guard",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-falsos-positivos-del-guard",
+  "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:59272a1f5a31901f013795cb277355ed9941fb1c9defc66902c5bfe611b8757d",
+    "at": "2026-10-24T10:06:35.420Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:11692ac8196f1ecb66f3f1ed60896dc0cde1cbab05bccc74b033a66b67ec24e6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ef1bde41f448590f4ad2c59be72e70a29d819fa768676b3d748ce61abfa31750",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:daf95f8fba71020e7d939b197731d39f3085d64b7caa30151316edb7a909bcc7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6ba0b3b46d8bffc1c099f547837f362b22cfd03b0826707a163f7b13326bb4c3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7ecf6270e8ec2c1b527370bbc2dbfd1a29efb0c2",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:06:35.934Z",
+      "doneAt": "2026-10-24T10:10:30.791Z",
+      "summary": "El tokenizador marca los subshells; el análisis de shell guarda la carpeta en cada subshell, ubica cada commit movido por cd o -C, y config solo cuenta como bypass si cambia core.hooksPath (análisis en guard/git.ts). ARCHITECTURE §10 al día.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "11c50f830d7dad5e2ccc1bab887639f350e58f8b",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:10:31.436Z",
+      "doneAt": "2026-10-24T10:14:40.578Z",
+      "summary": "El guard ubica la carpeta de cada commit con placePaths: si un cd o -C lo llevan fuera de todas las worktrees, no cuenta como commit de este repositorio. Test de punta a punta con los tres falsos positivos, otra worktree, una carpeta desconocida y un subshell.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T10:17:02.958Z"
+}

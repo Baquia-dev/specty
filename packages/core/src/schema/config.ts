@@ -15,6 +15,8 @@ export interface ResolvedConfig {
   readonly verify: {
     readonly default?: string;
     readonly full?: string;
+    /** A fast check of the whole repository that runs before each task's verification. */
+    readonly quick?: string;
     readonly timeoutSec: number;
   };
   readonly scope: {
@@ -82,6 +84,7 @@ export const ConfigSchema = z.strictObject({
     .strictObject({
       default: z.string().min(1).optional(),
       full: z.string().min(1).optional(),
+      quick: z.string().min(1).optional(),
       timeoutSec: Positive.optional(),
     })
     .optional(),
@@ -167,6 +170,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
   const base = DEFAULT_CONFIG;
   const verifyDefault = input.verify?.default;
   const verifyFull = input.verify?.full;
+  const verifyQuick = input.verify?.quick;
   return {
     version: 1,
     language: input.language ?? base.language,
@@ -177,6 +181,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     verify: {
       ...(verifyDefault !== undefined ? { default: verifyDefault } : {}),
       ...(verifyFull !== undefined ? { full: verifyFull } : {}),
+      ...(verifyQuick !== undefined ? { quick: verifyQuick } : {}),
       timeoutSec: input.verify?.timeoutSec ?? base.verify.timeoutSec,
     },
     scope: {

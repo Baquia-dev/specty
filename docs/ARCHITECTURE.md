@@ -111,7 +111,7 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty next` | Todas | Dice qué toca ahora. En `implementing` activa la siguiente tarea y devuelve su tarjeta; en el resto es de solo lectura |
 | `specty new "<título>" [--kind] [--follows <id>] [--epic <id> --slice C1] [--from <rama>]` | Siempre (sin worktrees: sin cambio activo) | Crea el cambio, la rama y el esqueleto de la spec en una worktree nueva y preparada (§9). Con `git.worktrees: false`, en la carpeta actual, salvo con `--worktree` |
 | `specty propose` | draft, review, adjusting, closing | Valida la spec; calcula tamaño, delta y esfuerzo recomendado; la envía a revisión |
-| `specty task done <T> --summary "<texto>"` | implementing | Comprueba el alcance, ejecuta `verify`, hace el commit y avanza |
+| `specty task done <T> --summary "<texto>"` | implementing | Comprueba el alcance, ejecuta `verify.quick` (si existe) y el `verify` de la tarea, hace el commit y avanza |
 | `specty scope add <ruta…> --task <T> --reason "<texto>"` | implementing | Pide ampliar el alcance; se aprueba sola si la política lo permite |
 | `specty adjust "<petición literal>"` | acceptance | Registra la petición y devuelve el protocolo de clasificación |
 | `specty integrate` | Con una incorporación pendiente | Termina el merge de la rama principal que dejó el cierre: sin marcadores, dentro de sus archivos y con la verificación en verde, hace el commit de merge (§9) |
@@ -265,13 +265,13 @@ Solo se incorporan los cambios `standard` y `quick` con rama y en modo `individu
 3. Core decide.
 4. El adaptador responde en el formato de la herramienta: normalmente, código de salida 2 con el motivo y el siguiente paso.
 
-El guard solo juzga rutas que puede ubicar dentro del repositorio y que git no ignora. El análisis de shell sigue los `cd` de cada comando y, como bash, se salta los comentarios y el cuerpo de los heredocs; dentro de `((…))` y `$((…))`, `<`, `>`, `&` y `|` son aritmética, no redirecciones. Una ruta con variables sin expandir, o una ruta relativa tras un `cd` a un destino desconocido, no se bloquea por alcance: la cubren los hooks de git y el CI.
+El guard solo juzga rutas que puede ubicar dentro del repositorio y que git no ignora. El análisis de shell sigue los `cd` de cada comando y, como bash, se salta los comentarios y el cuerpo de los heredocs; dentro de `((…))` y `$((…))`, `<`, `>`, `&`, `|` y los paréntesis son aritmética, no redirecciones ni subshells. Lo que corre en un subshell (`(…)` o `$(…)` fuera de comillas) se analiza como el resto, y sus `cd` no salen de él. Una ruta con variables sin expandir, o una ruta relativa tras un `cd` a un destino desconocido, no se bloquea por alcance: la cubren los hooks de git y el CI. Un `git commit` que un `cd` o `git -C` llevan a una carpeta fuera de todas las worktrees del repositorio es de otro repositorio y no se juzga; si la carpeta no se puede ubicar, se juzga como de este.
 
 **Después de cada comando de Bash** (Claude Code: `PostToolUse` y `PostToolUseFailure`, con el matcher `Bash`; Codex: `PostToolUse`, que también llega tras un comando fallido). Antes del comando, si lo permite y no es de Specty, el guard guarda una foto de los archivos que difieren de `HEAD`, con su tamaño y su fecha, en `.git/specty/shell/<tool_use_id>.json`. Al terminar, compara y juzga lo que cambió con las mismas reglas, así que también ve lo que escriben intérpretes, scripts y generadores, que el análisis de shell no puede prever. No lo deshace: Claude Code muestra el aviso al modelo, y `task done` sigue siendo la puerta. Las fotos que nadie recoge se borran al cabo de un día.
 
 **Una sesión, una worktree** (Claude Code: `EnterWorktree` en el matcher de `PreToolUse`). El trabajo en paralelo es una sesión de agente por cambio. La primera worktree en la que entra una sesión (por el `session_id` del evento) pasa a ser la suya, y queda guardada en la carpeta común de git (`common/specty/sessions/<id>.json`). Mientras el cambio de esa worktree siga abierto, el guard no le deja entrar en otra: el motivo nombra su worktree y su cambio, y el SIGUIENTE pide terminarlo o abrir otra sesión. Cuando el cambio se cierra o se cancela, o su carpeta ya no existe, la sesión queda libre y puede encadenar el siguiente. Sin `session_id`, el guard no juzga la entrada.
 
-Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escriben archivos, `--no-verify`, `core.hooksPath`, acciones humanas) son de mejor esfuerzo, porque un comando siempre se puede ofuscar. Para eso existe la capa 3. El guard también bloquea `npx specty`, `npm i specty` y sus equivalentes sin scope, porque `specty` en npm es un paquete ajeno ([ADR 0007](decisions/0007-nombre-y-organizacion.md)), y responde con el comando correcto.
+Objetivo de rendimiento: p95 < 200 ms. Las reglas de shell (comandos que escriben archivos, `--no-verify`, cambiar `core.hooksPath` (leerlo no), acciones humanas) son de mejor esfuerzo, porque un comando siempre se puede ofuscar. Para eso existe la capa 3. El guard también bloquea `npx specty`, `npm i specty` y sus equivalentes sin scope, porque `specty` en npm es un paquete ajeno ([ADR 0007](decisions/0007-nombre-y-organizacion.md)), y responde con el comando correcto.
 
 **Soporte de hooks por herramienta** (revisado el 2026-10-21; se vuelve a verificar al implementar cada adaptador):
 
@@ -297,7 +297,7 @@ En modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)), la persona renun
 
 **Señales deterministas** que calcula `propose`:
 
-- archivos por acción (crear, modificar, borrar) y módulos distintos tocados (solo cuentan las rutas gobernadas: la documentación y lo demás de `ignored` no suma módulos);
+- archivos por acción (crear, modificar, borrar) y módulos distintos tocados (solo cuentan las rutas gobernadas: la documentación y lo demás de `ignored` no suma módulos). Un glob cuenta como sus coincidencias actuales más una: la CLI las busca entre lo que git sigue y lo no ignorado sin seguir, y se las pasa a core, que no lee el disco;
 - rutas sensibles: migraciones, auth, pagos, CI, infraestructura;
 - dependencias nuevas o cambios de API pública;
 - fan-in de los archivos tocados (cuántos archivos los importan);
@@ -312,7 +312,7 @@ La puntuación da un nivel `S`, `M`, `L` o `XL`, con umbrales configurables. El 
 
 La tabla `presets/effort.yaml` traduce los niveles a cada herramienta (por ejemplo, el nivel de esfuerzo de Claude Code o el *reasoning effort* de Codex). Se actualiza con cada versión de Specty, porque cambia con cada lanzamiento de modelos. `propose` imprime la recomendación para la herramienta detectada y el agente se la transmite a la persona. Specty no cambia el esfuerzo del modelo: lo recomienda.
 
-**Dividir.** Si el cambio es `XL` o supera los umbrales (por defecto: más de 8 tareas, más de 15 archivos o más de 2 módulos), `propose` lo rechaza y propone una épica:
+**Dividir.** Si el cambio es `XL` o supera los umbrales (por defecto: más de 8 tareas, más de 15 archivos de código o más de 2 módulos), `propose` lo rechaza y propone una épica. Los archivos de código son los gobernados que no son tests, con los globs expandidos; los tests y la documentación no cuentan en el límite, pero sí en la puntuación, y por tanto en el nivel `XL`. El límite de 3 archivos del carril `quick` cuenta igual. Al dividir conviene:
 
 - cortes verticales que funcionen de punta a punta;
 - contratos primero, si los cortes van en paralelo;

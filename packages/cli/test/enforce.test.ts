@@ -153,6 +153,27 @@ describe("agent guard", () => {
     expect(after.err).toBe((await bash("git commit -m x")).err);
   });
 
+  it("leaves alone other repositories' commits and reads of `core.hooksPath` (AC1, AC3–AC5)", async () => {
+    const root = await initialized();
+    const bash = (command: string) => claude(root, "Bash", { command });
+    await writeFiles(root, { "src/app.ts": "changed\n" });
+    const other = `${root}-otro`;
+    const created = await bash(
+      `mkdir -p "${other}" && cd "${other}" && git init -q && git commit -m x`,
+    );
+    expect(created.code).toBe(0);
+    expect((await bash(`git -C "${other}" commit -m x`)).code).toBe(0);
+    git(root, "worktree", "add", "-q", "--detach", `${root}-worktree`);
+    expect((await bash(`cd "${root}-worktree" && git commit -m x`)).code).toBe(2);
+    expect((await bash("cd src && git commit -m x")).code).toBe(2);
+    expect((await bash("cd $X && git commit -m x")).code).toBe(2);
+    expect((await bash("(git commit -m x)")).code).toBe(2);
+    expect((await bash("git config --get core.hooksPath")).code).toBe(0);
+    expect((await bash("git config core.hooksPath /dev/null")).code).toBe(2);
+    const next = "(specty next 2>&1 || npx -y @baquia-dev/specty next 2>&1) | head -60";
+    expect((await bash(next)).code).toBe(0);
+  });
+
   it("never blocks paths git ignores (AC4)", async () => {
     const root = await initialized();
     await writeFiles(root, { ".gitignore": "node_modules/\ndist/\n" });

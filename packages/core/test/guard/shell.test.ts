@@ -4,7 +4,9 @@ import { analyzeShell } from "../../src";
 import { tokenize } from "../../src/guard/tokens";
 
 const words = (command: string) =>
-  tokenize(command).map((segment) => segment.map((token) => token.text));
+  tokenize(command).map((piece) =>
+    typeof piece === "string" ? piece : piece.map((token) => token.text),
+  );
 
 describe("tokenize", () => {
   it("splits commands and keeps quoted text together", () => {
@@ -26,6 +28,20 @@ describe("tokenize", () => {
     expect(words("cat <<'EOF' > out # note\nx > y\nEOF\nls")).toEqual([
       ["cat", "<<", "EOF", ">", "out"],
       ["ls"],
+    ]);
+  });
+
+  it("marks subshells, but not the parentheses of arithmetic", () => {
+    expect(words("(specty next 2>&1 || echo x) | head -60")).toEqual([
+      "(",
+      ["specty", "next", "2>", "&1"],
+      ["echo", "x"],
+      ")",
+      ["head", "-60"],
+    ]);
+    expect(words("echo $(pwd)")).toEqual([["echo", "$"], "(", ["pwd"], ")"]);
+    expect(words("echo $(( (1 + 2) * 3 ))")).toEqual([
+      ["echo", "$((", "(1", "+", "2)", "*", "3", "))"],
     ]);
   });
 });
@@ -55,6 +71,75 @@ describe("analyzeShell", () => {
     expect(analyzeShell("HUSKY=0 git commit -m x").bypass).toBe(true);
     expect(analyzeShell("git config core.hooksPath .nothing").bypass).toBe(true);
     expect(analyzeShell("git status && git log").bypass).toBe(false);
+  });
+
+  it("lets `git config` read `core.hooksPath` (AC1)", () => {
+    for (const command of [
+      "git config --get core.hooksPath",
+      "git config core.hooksPath",
+      "git config --get-all core.hooksPath",
+      "git config --show-origin --get-regexp core.hookspath",
+      "git config --file .git/config --get core.hooksPath",
+      "git config get core.hooksPath",
+      "git config --list | grep core.hooksPath",
+    ]) {
+      expect(analyzeShell(command).bypass).toBe(false);
+    }
+  });
+
+  it("still blocks `git config` that changes `core.hooksPath` (AC2)", () => {
+    for (const command of [
+      "git config core.hooksPath .nothing",
+      "git config --local core.hooksPath ''",
+      "git config core.hooksPath get",
+      "git config --add core.hooksPath x",
+      "git config --replace-all core.hooksPath x",
+      "git config --unset core.hooksPath",
+      "git config --unset-all core.hooksPath",
+      "git config set core.hooksPath x",
+      "git config unset core.hooksPath",
+      "git -c core.hooksPath=x config --get core.hooksPath",
+    ]) {
+      expect(analyzeShell(command).bypass).toBe(true);
+    }
+  });
+
+  it("says where a commit runs when a `cd` or `git -C` names another folder", () => {
+    const other = analyzeShell("cd /tmp/other && git init -q && git commit -m x");
+    expect(other.commits).toEqual([{ all: false, directory: "/tmp/other" }]);
+    expect(analyzeShell("git -C ../other commit -am x").commits).toEqual([
+      { all: true, directory: "../other" },
+    ]);
+    expect(analyzeShell("cd sub && git -C ../x commit -m y").commits).toEqual([
+      { all: false, directory: "sub/../x" },
+    ]);
+    expect(analyzeShell("git -C /a -C b commit").commits).toEqual([
+      { all: false, directory: "/a/b" },
+    ]);
+    expect(analyzeShell("cd $X && git commit -m x").commits).toEqual([{ all: false }]);
+    expect(analyzeShell("cd - && git commit -m x").commits).toEqual([{ all: false }]);
+  });
+
+  it("reads inside subshells and does not take `2>&1)` for a file (AC5)", () => {
+    const next = analyzeShell(
+      "(specty next 2>&1 || npx -y @baquia-dev/specty next 2>&1) | head -60",
+    );
+    expect([next.writes, next.specty]).toEqual([[], ["next", "next"]]);
+    expect(analyzeShell("(git commit -m x)").commits).toEqual([{ all: false }]);
+    expect(analyzeShell("echo $(git commit -m x)").commits).toEqual([{ all: false }]);
+    expect(analyzeShell("echo $(pwd) > src/a.ts").writes).toEqual(["src/a.ts"]);
+    expect(analyzeShell("(echo hi > src/a.ts)").writes).toEqual(["src/a.ts"]);
+  });
+
+  it("keeps a subshell's `cd` inside it (AC6)", () => {
+    expect(analyzeShell("(cd /tmp) && echo hi > src/app.ts").writes).toEqual(["src/app.ts"]);
+    expect(analyzeShell("(cd /tmp && echo hi > a.ts)").writes).toEqual(["/tmp/a.ts"]);
+    expect(analyzeShell("cd a && (cd b; touch c) && touch d").writes).toEqual(["a/b/c", "a/d"]);
+    expect(analyzeShell("echo $(cd /tmp; pwd) > a.ts").writes).toEqual(["a.ts"]);
+    expect(analyzeShell("cd sub ) ; touch a").writes).toEqual(["sub/a"]);
+    expect(analyzeShell("(cd /tmp/other && git commit -m x)").commits).toEqual([
+      { all: false, directory: "/tmp/other" },
+    ]);
   });
 
   it("finds files written or removed", () => {
