@@ -17,7 +17,7 @@ gentle-ai escribe en las instrucciones del agente bloques delimitados (``). Su g
 
 ## Tareas
 
-- [ ] T1: `doctor` avisa de la guía de flujo de gentle-ai
+- [x] T1: `doctor` avisa de la guía de flujo de gentle-ai
   - files: packages/cli/src/detect/gentle-ai.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/gentle-ai.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: feat

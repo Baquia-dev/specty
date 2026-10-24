@@ -2,6 +2,7 @@
 import { join } from "node:path";
 import { hasBlock, headerOf, type Output, section, translator } from "@baquia-dev/specty-core";
 import { formatterExclusions } from "../detect/formatters";
+import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
 import {
   CLAUDE_WORKTREE_EVENTS,
@@ -142,6 +143,16 @@ export async function doctor(session: Session): Promise<Output> {
             `OpenCode: falta el plugin del guard en ${plugin}; ejecuta \`${COMMAND} init --tools opencode\`.`,
             `OpenCode: the guard plugin is missing in ${plugin}; run \`${COMMAND} init --tools opencode\`.`,
           ),
+    );
+  }
+  // Another tool's guidance that tells the agent to do what the guard blocks.
+  for (const { file, blocks } of await gentleAiGuidance(root, session.environment.env)) {
+    const names = blocks.map((block) => `\`${block}\``).join(", ");
+    problems.push(
+      t(
+        `gentle-ai: ${file} tiene su guía de flujo (${names}), que pide al agente sus propios commits y su propio plan; el guard de Specty bloquea esos commits. Quita esos bloques de ${file} para trabajar con Specty.`,
+        `gentle-ai: ${file} has its flow guidance (${names}), which asks the agent for its own commits and plan; Specty's guard blocks those commits. Remove those blocks from ${file} to work with Specty.`,
+      ),
     );
   }
   for (const { name, path, add, file, excluded } of await formatterExclusions(root)) {

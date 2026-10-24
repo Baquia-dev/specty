@@ -378,6 +378,7 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
 - que las rutas citadas existen;
 - el presupuesto de AGENTS.md;
 - los punteros y hooks instalados;
+- que la guía de otra herramienta no pida al agente lo que el guard bloquea: los bloques de flujo de gentle-ai (`agent-routing`, el de su ODD, que pide commits propios por unidad de trabajo, y `orchestrator`, `sdd-orchestrator` y `sdd`, los de su antiguo SDD) en AGENTS.md o CLAUDE.md del repositorio, o en los archivos globales donde gentle-ai los escribe (`~/.claude/CLAUDE.md`, el `AGENTS.md` de Codex y el de OpenCode, y `~/.cursor/rules/gentle-ai.mdc`);
 - la versión de Node y la configuración de CI.
 
 ## 15. Servidor local y UI
