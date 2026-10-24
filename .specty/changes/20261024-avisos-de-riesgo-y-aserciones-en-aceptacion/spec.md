@@ -44,7 +44,7 @@ La pestaña Aceptación muestra los avisos que `specty task done` anota de cada 
 
 ## Tareas
 
-- [ ] T1: La vista trae los avisos de cada tarea
+- [x] T1: La vista trae los avisos de cada tarea
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/warnings.ts, packages/ui/src/data/warnings.test.ts, packages/ui/src/data/views.ts, packages/ui/src/data/sample-acceptance.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources

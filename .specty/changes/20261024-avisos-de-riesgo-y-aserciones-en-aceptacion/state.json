@@ -6,6 +6,13 @@
   "branch": "specty/20261024-avisos-de-riesgo-y-aserciones-en-aceptacion",
   "baseCommit": "0823681dfdd53f80cf573904cd913a4bcf687058",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:57815f3b492f619a2bd1ebbd218ccb65d0fad31f28e817505be4015f548adfe0",
+    "at": "2026-10-24T15:15:37.800Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "640b0d8fe30101ed2c5faa5c10b4b2af092be57f",
+      "startedAt": "2026-10-24T15:15:38.897Z",
+      "doneAt": "2026-10-24T15:17:44.123Z",
+      "summary": "data/warnings.ts: warningsOf toma la última entrada task.completed de cada tarea y da sus riesgos (validados con isRiskRule, texto con riskLabel en los dos idiomas, archivo, línea y CWE) y sus aserciones quitadas; deriveView los pone en ChangeView.warnings, y el cambio en aceptación de ejemplo anota un secreto en T1 y una aserción quitada en T2"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:57815f3b492f619a2bd1ebbd218ccb65d0fad31f28e817505be4015f548adfe0",
-    "at": "2026-10-24T15:15:37.800Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
