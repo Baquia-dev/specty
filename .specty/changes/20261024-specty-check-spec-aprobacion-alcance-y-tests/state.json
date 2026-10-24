@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261024-specty-check-spec-aprobacion-alcance-y-tests",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-specty-check-spec-aprobacion-alcance-y-tests",
+  "baseCommit": "6beba238efdc5f76b19b3a97a7f537a53db57737",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:49d3cad9e87caddc015a2eabaf0a1c6f5281ed484daa221ca63896cb620c7398",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:26d4aa160d3ac277c48a212050254d9f516a914016f35bf8f58e30f06501745e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2c1644642db19d83c817e53ba1516606d1a811c1cbc03bc98c02d12100d73e15",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:16905ce79e9d5ce1258fe8b6ca7be1b3aedb90b5a114c91eb6959b04ad13d2b1",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:eca4e7e766881c859f88ecf6c14fff9eda116cf35ee427e9b92175bf6c19d007",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:43048a26643af1f1dcff3d3a7e107f452e9b07d8d4460e5f00d0b7d1fa0d0a5c",
+    "at": "2026-10-24T18:03:29.525Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
