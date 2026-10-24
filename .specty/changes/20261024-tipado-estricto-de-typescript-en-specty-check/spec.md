@@ -55,7 +55,7 @@ En un proyecto TypeScript, `specty check` falla si el cambio añade un `any` exp
 
 ## Tareas
 
-- [ ] T1: La detección propia del tipado estricto
+- [x] T1: La detección propia del tipado estricto
   - files: packages/core/src/checks/strict-types.ts, packages/core/src/index.ts, packages/core/test/checks/strict-types.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/strict-types.test.ts
