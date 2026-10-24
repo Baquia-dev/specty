@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261024-ci-en-tres-sistemas-knip-y-publicacion-con-proce",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-ci-en-tres-sistemas-knip-y-publicacion-con-proce",
+  "baseCommit": "3fa960c092121873d0c353f84ecc06ae24012b22",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9d035f5cc0ea0cf130203b3a2a9f45f999726c67d1cc3db70f864ba27571ae2b",
+    "at": "2026-10-24T15:45:35.985Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ee92fd07dbe13d5eb46a2dff46ca165f55bc9efe633d8c8cafef33be8fc3111b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9dbf7f4b713964a48a4547db8b90418daeb58c55704699b1948c5c498f302a49",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6ff0fd636e512b54c56ba263b3db5116f5b555f7babfb557e89a6743eceb64da",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0043a3ba739a9ebb55509917056ff4fe5176f4a7",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:45:37.186Z",
+      "doneAt": "2026-10-24T15:48:03.815Z",
+      "summary": "knip 6.41.0 fijado como dependencia de desarrollo, knip.json con las reglas de exportaciones y tipos apagadas, y pnpm check ejecuta pnpm knip tras los tamaños y antes de los tests. Hoy pasa; en un proyecto de prueba falla y nombra un archivo y una dependencia que sobran. AGENTS.md al día.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 1,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T15:49:29.927Z"
+}
