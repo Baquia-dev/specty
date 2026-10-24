@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261024-tipado-estricto-de-typescript-en-specty-check",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-tipado-estricto-de-typescript-en-specty-check",
+  "baseCommit": "881ffae0bedb6fb3c63dd7ca095da67ab41f4ef0",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0bfcc495b95d90adba3a00aefc4ecafb338936ab9a27421aae5992141d9e08ea",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0feec611a23071c227849138ce6843334263c5ebf524626edbff39a3ffa61c85",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a336842311071349bf92942b23b5f33006f4870f22c074b9be32a8b0413db1f3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:34c6dea0fe9962706e59207798240a9d40473f5694ce1bc40e7ca00f9d41e142",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:825b67ce1ce67b3121bb6f489ea0b8af10352dfdecb89b3208ec9fa7c544ee14",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6eb858bd34a664b889ebb8e14a75fdd0481daddb0cddf547522a0a4a2e82c816",
+    "at": "2026-10-24T20:59:15.687Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
