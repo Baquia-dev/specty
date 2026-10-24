@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261024-e2e-con-claude-code-y-un-modelo-guionizado",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-e2e-con-claude-code-y-un-modelo-guionizado",
+  "baseCommit": "cdac3d6b2ddb5db4c57cf1afd229a27dd4274899",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ee95fbc322579a36dd37ff00cfd5fc08c954fd59eed7829a8c64b6f85cd95142",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:be8bcf9f472b951502ca030b431e798e74220062f6e5c009c81da98aa948b23f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:c9b51c803142d7cb1b755ee5426391c20421884b218b66fae3fecd8eadb946ff",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:602a350e4c9cc3b0bba783174ce59d06976ea330a2818188e146bae1c490fcd1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d7c32e29015c7d272511cfd273d7a09779f9dadd0fb470e1ef69bf5c18137264",
+    "at": "2026-10-24T11:07:24.865Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
