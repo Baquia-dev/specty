@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-doctor-detecta-la-guia-de-flujo-de-gentle-ai",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-doctor-detecta-la-guia-de-flujo-de-gentle-ai",
+  "baseCommit": "e4b57dc75844cbbd2eaf0ab7fc3d07d7cb6f07c9",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:efa968f7db357ef0c6557b9e542a58e067e69f3d202b023b3c492189eb1d767d",
+    "at": "2026-10-24T11:11:05.287Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
