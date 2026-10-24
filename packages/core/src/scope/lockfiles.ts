@@ -31,6 +31,13 @@ const OTHER_MANIFESTS = [
   /(?:^|\/)requirements[^/]*\.txt$/,
 ];
 
+const LOCKFILES: ReadonlySet<string> = new Set(Object.values(LOCKFILES_BY_MANIFEST).flat());
+
+/** True for the lockfiles package managers write (`pnpm-lock.yaml`, `Cargo.lock`…). */
+export function isLockfile(path: string): boolean {
+  return LOCKFILES.has(basename(path));
+}
+
 /** True for files that declare dependencies (`package.json`, `pubspec.yaml`, `*.csproj`…). */
 export function isManifest(path: string): boolean {
   return (

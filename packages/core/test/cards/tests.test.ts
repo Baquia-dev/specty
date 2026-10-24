@@ -4,6 +4,8 @@ import {
   assertionWarnings,
   type CardContext,
   type ChangeView,
+  longFileCard,
+  longFileWarnings,
   nextCard,
   renderText,
   riskWarnings,
@@ -131,6 +133,48 @@ describe("content risks", () => {
   it("show in the acceptance card after the removed assertions", () => {
     expect(card("acceptance", tasks)).toContain(
       "AVISOS:\n  T2 quitó 1 aserción de src/a.test.ts, un test que ya existía.\n  Cuéntaselo al usuario antes de que acepte: un test debilitado puede ocultar un fallo.\n  T1: src/api.ts:13 desactiva la verificación TLS (CWE-295).\n  T1: scripts/run.sh pasa a ser ejecutable.\n  Revísalo con el usuario antes de que acepte: son patrones de riesgo conocidos, no fallos seguros.",
+    );
+  });
+});
+
+describe("long files", () => {
+  const long = {
+    path: "src/a.ts",
+    lines: 320,
+    before: 250,
+    limit: 300,
+    severity: "warning" as const,
+  };
+  const tasks = [task("T1", "done", { longFiles: [long] })];
+
+  it("are one line per file, in both languages", () => {
+    expect(longFileWarnings(tasks, "es")).toEqual([
+      "T1: src/a.ts, 320 líneas de código (aviso a partir de 300).",
+    ]);
+    expect(longFileWarnings(tasks, "en")).toEqual([
+      "T1: src/a.ts, 320 lines of code (warning past 300).",
+    ]);
+  });
+
+  it("show in the acceptance card, with the advice not to split for the number", () => {
+    expect(card("acceptance", tasks)).toContain(
+      "AVISOS:\n  T1: src/a.ts, 320 líneas de código (aviso a partir de 300).\n  Si un archivo mezcla responsabilidades, propón cómo dividirlo antes de seguir; nunca lo partas solo para cumplir el número.",
+    );
+  });
+
+  it("block a task that takes a file past the maximum, naming the way on", () => {
+    const blocked = longFileCard(
+      "SPECTY · 20261024-x · implementing",
+      "T1",
+      [{ ...long, lines: 520, limit: 500, severity: "error" }],
+      ES,
+    );
+    expect(blocked.status).toBe("blocked");
+    expect(renderText(blocked, "es")).toContain(
+      "ARCHIVOS DEMASIADO LARGOS:\n  src/a.ts: 520 líneas de código (máximo 500)",
+    );
+    expect(blocked.next).toBe(
+      'divide esos archivos por responsabilidad (pide con `specty scope add` los archivos nuevos que necesites) y vuelve a ejecutar `specty task done T1 --summary "<qué hiciste>"`; si de verdad son una sola responsabilidad, explícaselo al usuario, que puede cambiar `lines.fail` en .specty/config.yaml.',
     );
   });
 });

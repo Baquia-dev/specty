@@ -5,6 +5,7 @@ import type { Lang } from "../i18n";
 import type { AssertionLoss } from "../scope/assertions";
 import type { RiskFinding } from "../scope/risk";
 import type { EffortLevel } from "../sizing/effort";
+import type { LongFile } from "../sizing/lines";
 import type { ChangeKind } from "../spec/model";
 import type { TestRules } from "../validate/quality";
 
@@ -46,6 +47,8 @@ export interface TaskView {
   readonly risks?: readonly RiskFinding[];
   /** What the agent learned in the task (`task done --finding`), for the tasks and changes after. */
   readonly findings?: readonly string[];
+  /** Files the task left past the warning line of lines of code. */
+  readonly longFiles?: readonly LongFile[];
 }
 
 /** What a change this one follows (`follows`) left for it: its follow-ups and its findings. */

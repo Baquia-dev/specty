@@ -6,6 +6,13 @@
   "branch": "specty/20261024-regla-agnostica-del-tamano-de-los-archivos-en-ta",
   "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ef2753284561fcd0c6c7953c85cdbf70f2ccd1e024080a8b68e650f2c0743c65",
+    "at": "2026-10-24T16:16:36.851Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -33,7 +40,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "49eaee74adfc738c51a59e0a712e692c75b7c780",
+      "startedAt": "2026-10-24T16:16:37.353Z",
+      "doneAt": "2026-10-24T16:20:31.372Z",
+      "summary": "codeLines cuenta líneas de código sin blancos ni comentarios (//, #, -- , /* */, <!-- -->, --[[ ]]) con excepciones (directivas de C/C++/C#, atributos de Rust, selectores CSS, --i); longFiles avisa al crecer pasado warn y bloquea al cruzar fail, sin medir ignorados, generados, lockfiles, binarios ni lines.exclude; clave lines en la configuración; cards/lines.ts con avisos y bloqueo, y la aceptación los muestra"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ef2753284561fcd0c6c7953c85cdbf70f2ccd1e024080a8b68e650f2c0743c65",
-    "at": "2026-10-24T16:16:36.851Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

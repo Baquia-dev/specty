@@ -5,6 +5,12 @@ import type { Lang } from "../i18n";
 export type TestsPolicy = "required" | "recommended" | "off";
 
 /** `.specty/config.yaml` with every default applied. */
+/** Lines of code: a warning past `warn`, a block past `fail`, or never with `false`. */
+export interface LineLimits {
+  readonly warn: number;
+  readonly fail: number | false;
+}
+
 export interface ResolvedConfig {
   readonly version: 1;
   readonly language: Lang;
@@ -33,6 +39,14 @@ export interface ResolvedConfig {
   };
   /** Highest score of each size level; anything above `L` is `XL`. */
   readonly size: { readonly S: number; readonly M: number; readonly L: number };
+  /**
+   * Lines of code of the files a task touches: a warning past `warn`, a block past `fail` (or
+   * never, with `false`). Tests have their own; `exclude` lists paths not sized.
+   */
+  readonly lines: LineLimits & {
+    readonly tests: LineLimits;
+    readonly exclude: readonly string[];
+  };
   readonly policy: { readonly tests: TestsPolicy };
   readonly retro: { readonly mode: "agent" | "minimal" };
   readonly git: {
@@ -68,6 +82,24 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   lanes: { quick: { maxFiles: 3 } },
   split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 },
   size: { S: 4, M: 10, L: 18 },
+  lines: {
+    warn: 300,
+    fail: 500,
+    tests: { warn: 400, fail: 600 },
+    // Folders of data rather than logic, common to every ecosystem.
+    exclude: [
+      "**/fixtures/**",
+      "**/__fixtures__/**",
+      "**/mocks/**",
+      "**/__mocks__/**",
+      "**/testdata/**",
+      "**/migrations/**",
+      "**/i18n/**",
+      "**/l10n/**",
+      "**/locales/**",
+      "**/translations/**",
+    ],
+  },
   policy: { tests: "recommended" },
   retro: { mode: "agent" },
   git: { branchPerChange: true, worktrees: true },
@@ -77,6 +109,10 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
 
 const Globs = z.array(z.string().min(1));
 const Positive = z.number().int().positive();
+const LineLimitsSchema = z.strictObject({
+  warn: Positive.optional(),
+  fail: z.union([Positive, z.literal(false)]).optional(),
+});
 
 export const ConfigSchema = z.strictObject({
   version: z.literal(1),
@@ -113,6 +149,13 @@ export const ConfigSchema = z.strictObject({
     .optional(),
   size: z
     .strictObject({ S: Positive.optional(), M: Positive.optional(), L: Positive.optional() })
+    .optional(),
+  lines: z
+    .strictObject({
+      ...LineLimitsSchema.shape,
+      tests: LineLimitsSchema.optional(),
+      exclude: Globs.optional(),
+    })
     .optional(),
   policy: z
     .strictObject({ tests: z.enum(["required", "recommended", "off"]).optional() })
@@ -208,6 +251,15 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
       S: input.size?.S ?? base.size.S,
       M: input.size?.M ?? base.size.M,
       L: input.size?.L ?? base.size.L,
+    },
+    lines: {
+      warn: input.lines?.warn ?? base.lines.warn,
+      fail: input.lines?.fail ?? base.lines.fail,
+      tests: {
+        warn: input.lines?.tests?.warn ?? base.lines.tests.warn,
+        fail: input.lines?.tests?.fail ?? base.lines.tests.fail,
+      },
+      exclude: input.lines?.exclude ?? base.lines.exclude,
     },
     policy: { tests: input.policy?.tests ?? base.policy.tests },
     retro: { mode: input.retro?.mode ?? base.retro.mode },

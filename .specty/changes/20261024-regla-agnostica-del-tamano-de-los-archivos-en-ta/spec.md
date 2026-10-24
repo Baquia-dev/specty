@@ -62,7 +62,7 @@ La regla de los archivos cortos pasa a ser de Specty, para cualquier proyecto y 
 
 ## Tareas
 
-- [ ] T1: Contar líneas de código y decidir en core
+- [x] T1: Contar líneas de código y decidir en core
   - files: packages/core/src/schema/config.ts, packages/core/src/sizing/lines.ts, packages/core/src/scope/lockfiles.ts, packages/core/src/cards/lines.ts, packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/src/index.ts, packages/core/test/sizing/lines.test.ts, packages/core/test/cards/tests.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing test/cards test/schema test/scope

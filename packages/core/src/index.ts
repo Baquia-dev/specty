@@ -51,6 +51,7 @@ export {
   type StatusEntry,
   statusCard,
 } from "./cards/human";
+export { longFileCard, longFileWarnings, splitAdvice } from "./cards/lines";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./cards/next";
 export {
   diffReviewPrompt,
@@ -140,6 +141,7 @@ export {
   type ConfigResult,
   ConfigSchema,
   DEFAULT_CONFIG,
+  type LineLimits,
   type ResolvedConfig,
   resolveConfig,
   type TestsPolicy,
@@ -155,7 +157,7 @@ export {
 } from "./schema/state";
 export { type AssertionLoss, removedAssertions } from "./scope/assertions";
 export { isGoverned } from "./scope/governed";
-export { isLockfileFor, isManifest } from "./scope/lockfiles";
+export { isLockfile, isLockfileFor, isManifest } from "./scope/lockfiles";
 export { contentRisks, isRiskRule, type RiskFinding, type RiskRule, riskLabel } from "./scope/risk";
 export {
   type AutoBasis,
@@ -179,6 +181,7 @@ export {
   recommendEffort,
   recommendTaskEffort,
 } from "./sizing/effort";
+export { codeLines, type LongFile, longFiles, type SizedFile } from "./sizing/lines";
 export {
   collectSignals,
   computeSize,

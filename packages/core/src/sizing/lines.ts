@@ -1,0 +1,102 @@
+// SPDX-License-Identifier: Apache-2.0
+import { matchesAny } from "../glob";
+import type { ResolvedConfig } from "../schema/config";
+import { isGoverned } from "../scope/governed";
+import { isLockfile } from "../scope/lockfiles";
+import { isTestFile } from "../scope/tests";
+
+/**
+ * The size of the files a task touches, in lines of code, for any language: short files cost an
+ * agent less context and fewer failed edits. It warns past one line and blocks past another, so
+ * a file is looked at rather than split for the number.
+ */
+
+/** Comment blocks that open a line, with what closes them. */
+const BLOCKS: readonly (readonly [string, string])[] = [
+  ["/*", "*/"],
+  ["<!--", "-->"],
+  ["--[[", "]]"],
+];
+
+/**
+ * `#` lines that are code: directives of C, C++ and C# written against the `#`, attributes of
+ * Rust and CSS selectors. A `#` followed by a space stays a comment (`# if the cache…`).
+ */
+const HASH_CODE =
+  /^#(?:(?:include|import|define|undef|if|ifdef|ifndef|elif|else|endif|pragma|error|warning|line|region|endregion|nullable)\b|!?\[|[A-Za-z_][\w-]*.*(?:\{|,\s*$))/;
+
+/** Marks that tools write at the top of what they generate. */
+const GENERATED = /@generated|DO NOT EDIT|auto-?generated|Code generated/i;
+const GENERATED_HEAD = 10;
+
+/** Lines with code: blank lines and comments do not count, in the usual syntaxes. */
+export function codeLines(text: string): number {
+  let closing: string | undefined;
+  let count = 0;
+  for (const raw of text.split("\n")) {
+    const line = raw.trim();
+    if (closing !== undefined) {
+      if (line.includes(closing)) closing = undefined;
+      continue;
+    }
+    const block = BLOCKS.find(([open]) => line.startsWith(open));
+    if (block !== undefined) {
+      const [open, close] = block;
+      if (!line.slice(open.length).includes(close)) closing = close;
+    } else if (line.length > 0 && !isLineComment(line)) {
+      count += 1;
+    }
+  }
+  return count;
+}
+
+function isLineComment(line: string): boolean {
+  if (line.startsWith("//")) return true;
+  if (line.startsWith("#")) return !HASH_CODE.test(line);
+  return line === "--" || line.startsWith("-- ");
+}
+
+/** One file a task touched: its text at the task's base commit, if it existed, and now. */
+export interface SizedFile {
+  readonly path: string;
+  readonly before?: string;
+  readonly after: string;
+}
+
+export interface LongFile {
+  readonly path: string;
+  readonly lines: number;
+  /** Its lines of code at the task's base commit; 0 for a new file. */
+  readonly before: number;
+  /** The line it passed: the warning one, or the maximum when it blocks. */
+  readonly limit: number;
+  readonly severity: "warning" | "error";
+}
+
+/**
+ * The files a task left too long. It blocks only when the task takes a file past the maximum;
+ * it warns when the task grows one past the warning line, including one already past the maximum.
+ */
+export function longFiles(files: readonly SizedFile[], config: ResolvedConfig): LongFile[] {
+  return files.flatMap((file): LongFile[] => {
+    if (!sized(file.path, file.after, config)) return [];
+    const { warn, fail } = isTestFile(file.path) ? config.lines.tests : config.lines;
+    const lines = codeLines(file.after);
+    const before = file.before === undefined ? 0 : codeLines(file.before);
+    const base = { path: file.path, lines, before };
+    if (fail !== false && lines > fail && before <= fail) {
+      return [{ ...base, limit: fail, severity: "error" }];
+    }
+    return lines > warn && lines > before ? [{ ...base, limit: warn, severity: "warning" }] : [];
+  });
+}
+
+/** Hand-written code: governed, and neither generated, a lockfile, binary nor excluded. */
+function sized(path: string, text: string, config: ResolvedConfig): boolean {
+  if (path.startsWith(".specty/") || !isGoverned(path, config)) return false;
+  if (matchesAny(path, config.scope.generated) || matchesAny(path, config.lines.exclude)) {
+    return false;
+  }
+  if (isLockfile(path) || text.includes("\0")) return false;
+  return !GENERATED.test(text.split("\n", GENERATED_HEAD).join("\n"));
+}

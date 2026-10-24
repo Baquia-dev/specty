@@ -2,6 +2,7 @@
 import { counted, type Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { riskLabel } from "../scope/risk";
+import { longFileWarnings, splitAdvice } from "./lines";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
 
@@ -139,6 +140,7 @@ export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
   );
   const assertions = assertionWarnings(change.tasks, ctx.lang);
   const risks = riskWarnings(change.tasks, ctx.lang);
+  const long = longFileWarnings(change.tasks, ctx.lang);
   return {
     status: "ok",
     header: headerOf(change.id, "acceptance"),
@@ -163,6 +165,8 @@ export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
                 "Review them with the user before they accept: they are known risky patterns, not sure defects.",
               ),
             ]),
+        ...long,
+        ...(long.length === 0 ? [] : [splitAdvice(ctx.lang)]),
       ]),
     ],
     next:
