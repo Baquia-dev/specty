@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
-import { type AgentTool, matchesPattern, type ProjectFacts } from "@baquia-dev/specty-core";
+import {
+  AGENT_CAPABILITIES,
+  type AgentTool,
+  isAgentTool,
+  matchesPattern,
+  type ProjectFacts,
+} from "@baquia-dev/specty-core";
 import { parse as parseYaml } from "yaml";
 import { exists, isDirectory, isRecord, parseJson, readText } from "../io/files";
 import { detectStacks, type Stack } from "./stack";
@@ -229,22 +235,15 @@ async function expand(root: string, pattern: string): Promise<string[]> {
 }
 
 async function agentTools(root: string): Promise<AgentTool[]> {
-  const markers: readonly (readonly [AgentTool, readonly string[]])[] = [
-    ["claude-code", [".claude", "CLAUDE.md"]],
-    ["cursor", [".cursor", ".cursorrules"]],
-    ["codex", [".codex"]],
-    ["opencode", [".opencode", "opencode.json", "opencode.jsonc"]],
-    ["gemini-cli", [".gemini", "GEMINI.md"]],
-    ["copilot", [".github/copilot-instructions.md", ".github/instructions"]],
-    ["windsurf", [".windsurf", ".windsurfrules"]],
-    ["antigravity", [".agents", ".agent"]],
-  ];
+  // Each agent's marker files come from the capability table.
   const present = await Promise.all(
-    markers.map(async ([tool, paths]) =>
-      (await Promise.all(paths.map((path) => exists(join(root, path))))).some(Boolean)
-        ? [tool]
-        : [],
-    ),
+    Object.keys(AGENT_CAPABILITIES)
+      .filter(isAgentTool)
+      .map(async (tool) => {
+        const paths: readonly string[] = AGENT_CAPABILITIES[tool].markers;
+        const found = await Promise.all(paths.map((path) => exists(join(root, path))));
+        return found.some(Boolean) ? [tool] : [];
+      }),
   );
   return present.flat();
 }

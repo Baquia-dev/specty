@@ -50,7 +50,7 @@ Qué hace Specty con cada agente está repartido: `init` tiene su lista de herra
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core test
   - type: feat
-- [ ] T2: La CLI lee la tabla
+- [x] T2: La CLI lee la tabla
   - files: packages/cli/src/enforce/actions.ts, packages/cli/src/commands/init.ts, packages/cli/src/detect/project.ts
   - ac: AC1
   - verify: pnpm check

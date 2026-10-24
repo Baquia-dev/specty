@@ -6,6 +6,7 @@ import {
   blockedCard,
   headerOf,
   isAgentTool,
+  isGuardedAgent,
   type Lang,
   type Output,
   section,
@@ -31,8 +32,6 @@ export interface InitOptions {
   /** Only say what it would create or change: nothing is written or committed. */
   readonly dryRun?: boolean;
 }
-
-const WITH_HOOKS: ReadonlySet<AgentTool> = new Set(["claude-code", "cursor", "codex", "opencode"]);
 
 /** `specty init` as typed: reads its options, and says which language its output uses. */
 export async function initCommand(
@@ -160,7 +159,7 @@ export async function init(environment: Environment, options: InitOptions): Prom
     );
   }
   const unsupported = tools
-    .filter((tool) => !WITH_HOOKS.has(tool))
+    .filter((tool) => !isGuardedAgent(tool))
     .map((tool) => AGENT_NAMES[tool]);
   if (unsupported.length > 0) {
     warnings.push(

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-tabla-de-capacidades-por-agente",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-tabla-de-capacidades-por-agente",
   "baseCommit": "4db5a547a720f0d9080ad6bbc5b1cf9c90a63b58",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9a20f5339d3810b80a7dcf5d2d38ce8b5d259a67",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:33:15.233Z",
       "doneAt": "2026-10-24T15:35:08.898Z",
-      "summary": "core/src/capabilities.ts: AGENT_CAPABILITIES (markers, guard, afterShell, afterCompaction, worktreeByName) con as const satisfies, el tipo GuardedAgent derivado, isGuardedAgent y capabilityTable(lang) en Markdown. ARCHITECTURE §10 lleva la tabla generada entre marcas, y un test de core falla si no coincide."
+      "summary": "core/src/capabilities.ts: AGENT_CAPABILITIES (markers, guard, afterShell, afterCompaction, worktreeByName) con as const satisfies, el tipo GuardedAgent derivado, isGuardedAgent y capabilityTable(lang) en Markdown. ARCHITECTURE §10 lleva la tabla generada entre marcas, y un test de core falla si no coincide.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f21d513f654e64493f90a87015ef40b9221d8a90",
+      "startedAt": "2026-10-24T15:35:09.174Z",
+      "doneAt": "2026-10-24T15:37:36.847Z",
+      "summary": "La CLI lee la tabla: GuardTool es GuardedAgent e isGuardTool usa isGuardedAgent (enforce/actions.ts); init decide a qué herramientas no instala hooks con isGuardedAgent (sin WITH_HOOKS); agentTools detecta con los markers de AGENT_CAPABILITIES. Los tests de instalación, detección y guard pasan sin tocarlos."
     }
   },
   "pending": {

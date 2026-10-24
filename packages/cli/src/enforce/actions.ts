@@ -1,15 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import { resolve } from "node:path";
-import { patchPaths } from "@baquia-dev/specty-core";
+import {
+  type GuardedAgent,
+  isAgentTool,
+  isGuardedAgent,
+  patchPaths,
+} from "@baquia-dev/specty-core";
 import { isRecord } from "../io/files";
 import type { EnterRequest } from "./sessions";
 
-export type GuardTool = "claude-code" | "cursor" | "codex" | "opencode";
-
-const GUARD_TOOLS: readonly GuardTool[] = ["claude-code", "cursor", "codex", "opencode"];
+/** The agents with Specty's guard, as the capability table says (`AGENT_CAPABILITIES`). */
+export type GuardTool = GuardedAgent;
 
 export function isGuardTool(value: string): value is GuardTool {
-  return GUARD_TOOLS.some((tool) => tool === value);
+  return isAgentTool(value) && isGuardedAgent(value);
 }
 
 /** After a tool ran or failed: Cursor's names, and the others' (OpenCode's plugin sends these). */
