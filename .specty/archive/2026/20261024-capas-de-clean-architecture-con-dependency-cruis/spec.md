@@ -72,3 +72,25 @@ La configuración define las capas del proyecto (`checks.layers`: las rutas de c
 
 - R1: Una versión futura de dependency-cruiser cambia su JSON — la lectura es defensiva y un informe que no entiende deja la verificación sin correr, nunca en verde; el test fija la forma que comprobé.
 - R2: `--staged` le pasa a dependency-cruiser los archivos del disco, no los preparados — los imports suelen ser los mismos, y la verificación de `--changed` antes del commit los mira igual.
+
+## Cierre
+
+### Resumen
+
+`checks.layers` define las capas del proyecto: sus rutas, a qué capas puede importar cada una y qué paquetes no. En TypeScript y JavaScript, `layers` falla con cada import añadido que las cruza, con su línea. El dependency-cruiser del proyecto resuelve los imports, alias de `tsconfig` incluidos, y la regla de qué capa importa qué vive en el core (`layerViolations`), lista para el escáner de Dart. Lo probé con dependency-cruiser 18.7.0 real en un proyecto de prueba: detectó un dominio que importa infraestructura directamente y por alias, `zod` y `node:fs`.
+
+### Desviaciones
+
+- dependency-cruiser no aplica reglas propias (`forbidden`): solo resuelve, y Specty decide con las capas de su configuración, para que Dart use la misma regla.
+- La prueba real encontró dos cosas que el test fija ahora. dependency-cruiser llama `fs` a `node:fs`, así que la línea se busca de las dos formas. Y sin `--ts-pre-compilation-deps`, un import que no se usa no aparece.
+- Los hallazgos se ordenan por archivo y línea, y no en el orden en que dependency-cruiser da las dependencias.
+
+### Decisiones
+
+- `--max-depth` no se usa: su documentación lo desaconseja y solo vale con un archivo.
+- Una capa siempre puede importarse a sí misma y a lo que no está en ninguna capa; los imports que no se resuelven no cuentan.
+- La verificación solo aparece con capas configuradas y un stack TypeScript o JavaScript.
+
+### Pendientes
+
+- Del proveedor de TypeScript queda la regeneración del cliente de Prisma; luego, el proveedor de Flutter y Dart (corte 5), con su escáner de imports para `layers`.

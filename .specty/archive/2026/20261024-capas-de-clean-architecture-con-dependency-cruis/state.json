@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-capas-de-clean-architecture-con-dependency-cruis",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-capas-de-clean-architecture-con-dependency-cruis",
   "baseCommit": "a9fda3dd8bb770e242c07f781e7bcb985eef5e53",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:aba71e47ce2cd3bdcd2b5610f32a7567723421d19713ce910f51a21f164aec66",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d60dea41e4eabb8f791304abce826fa2ba65785d",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:43:48.540Z",
       "doneAt": "2026-10-24T21:46:02.556Z",
-      "summary": "formats §6 documenta checks.layers (ejemplo de Clean Architecture, may, forbiddenPackages, primera capa) y la verificación layers con dependency-cruiser; ARCHITECTURE la añade a la fila de specty check."
+      "summary": "formats §6 documenta checks.layers (ejemplo de Clean Architecture, may, forbiddenPackages, primera capa) y la verificación layers con dependency-cruiser; ARCHITECTURE la añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,5 +78,6 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T21:46:26.616Z"
 }

@@ -10,3 +10,6 @@
 {"ts":"2026-10-24T21:43:48.540Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"d60dea41e4eabb8f791304abce826fa2ba65785d"}}
 {"ts":"2026-10-24T21:46:02.554Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":115919,"tree":"sha256:74c34ff00b061e060d3dbd3624d9d68457f62c36de3ec3de4d1ac1b6c7978f1e"}}
 {"ts":"2026-10-24T21:46:02.557Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats §6 documenta checks.layers (ejemplo de Clean Architecture, may, forbiddenPackages, primera capa) y la verificación layers con dependency-cruiser; ARCHITECTURE la añade a la fila de specty check."}}
+{"ts":"2026-10-24T21:46:12.435Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T21:46:26.617Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:edec78c8dc728fc5fde852de4c192cdcd52254f0f674711cd01a436872124b7a","size":"L","warnings":1}}
+{"ts":"2026-10-24T21:47:38.587Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
