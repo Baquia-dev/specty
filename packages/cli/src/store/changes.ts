@@ -94,7 +94,8 @@ export function initialState(input: {
   };
 }
 
-async function listDir(path: string): Promise<string[]> {
+/** The folders inside `path`, sorted; none when it does not exist. */
+export async function listDir(path: string): Promise<string[]> {
   try {
     const entries = await readdir(path, { withFileTypes: true });
     return entries

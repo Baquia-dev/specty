@@ -53,7 +53,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Los cambios de todas las worktrees con la forma de la UI
+- [x] T1: Los cambios de todas las worktrees con la forma de la UI
   - files: packages/cli/src/server/records.ts, packages/cli/test/server.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts
