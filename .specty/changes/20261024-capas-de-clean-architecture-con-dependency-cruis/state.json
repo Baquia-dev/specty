@@ -6,6 +6,13 @@
   "branch": "specty/20261024-capas-de-clean-architecture-con-dependency-cruis",
   "baseCommit": "a9fda3dd8bb770e242c07f781e7bcb985eef5e53",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:aba71e47ce2cd3bdcd2b5610f32a7567723421d19713ce910f51a21f164aec66",
+    "at": "2026-10-24T21:39:45.591Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dd1eb0df68d568f71056e5356cf95a5ad33a7ae9",
+      "startedAt": "2026-10-24T21:39:46.094Z",
+      "doneAt": "2026-10-24T21:41:05.959Z",
+      "summary": "checks.layers (paths, may validado contra los nombres, forbiddenPackages) y core/checks/layers.ts puro: layerOf, packageName (con node:) y layerViolations sobre imports ya resueltos, para TypeScript y para el escáner de Dart."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:aba71e47ce2cd3bdcd2b5610f32a7567723421d19713ce910f51a21f164aec66",
-    "at": "2026-10-24T21:39:45.591Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

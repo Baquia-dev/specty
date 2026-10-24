@@ -55,7 +55,7 @@ La configuración define las capas del proyecto (`checks.layers`: las rutas de c
 
 ## Tareas
 
-- [ ] T1: Las capas en la configuración y su regla en el core
+- [x] T1: Las capas en la configuración y su regla en el core
   - files: packages/core/src/schema/checks.ts, packages/core/src/checks/layers.ts, packages/core/src/index.ts, packages/core/test/checks/layers.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/layers.test.ts

@@ -76,6 +76,13 @@ export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
 export {
+  type LayerViolation,
+  layerOf,
+  layerViolations,
+  packageName,
+  type ResolvedImport,
+} from "./checks/layers";
+export {
   focusedTests,
   type Mark,
   skippedTests,
@@ -173,6 +180,8 @@ export {
   type CommandCheck,
   checkLevel,
   DEFAULT_CHECKS,
+  type LayerRule,
+  type Layers,
   type TodoConfig,
 } from "./schema/checks";
 export {
