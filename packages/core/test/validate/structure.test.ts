@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
+import { DEFAULT_CONFIG, parseSpec, validateSpec } from "../../src";
 import { check, fixture, withConfig } from "../helpers";
 
 const STANDARD = fixture("standard.es.md");
@@ -70,6 +71,31 @@ describe("quick lane", () => {
     );
     expect(check(text)).toEqual(["quick-limits"]);
     expect(check(text, { config: withConfig({ lanes: { quick: { maxFiles: 4 } } }) })).toEqual([]);
+  });
+
+  it("counts only code files, with the matches of a glob", () => {
+    const files = [
+      "- modify src/components/sign-in-button.tsx — fix the label",
+      "- modify src/a.ts — a",
+      "- modify src/b.ts — b",
+      "- modify src/components/sign-in-button.test.tsx — the label",
+      "- modify test/a.test.ts — a",
+      "- modify docs/ui.md — the label",
+    ];
+    const text = QUICK.replace(
+      "- modify src/components/sign-in-button.tsx — fix the label",
+      files.join("\n"),
+    );
+    expect(check(text)).toEqual([]);
+    const glob = text.replace("- modify src/b.ts — b", "- modify src/lib/** — b");
+    // One match plus the glob itself: 4 code files.
+    const repo = { globMatches: { "src/lib/**": ["src/lib/b.ts"] } };
+    expect(check(glob)).toEqual([]);
+    const { spec } = parseSpec(glob);
+    const message = validateSpec(spec, { phase: "draft", config: DEFAULT_CONFIG, repo }).find(
+      (entry) => entry.code === "quick-limits",
+    )?.message;
+    expect(message).toContain("4 code files, max 3");
   });
 
   it("rejects sensitive paths", () => {

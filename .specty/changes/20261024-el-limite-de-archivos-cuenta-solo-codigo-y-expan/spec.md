@@ -59,7 +59,7 @@ El límite de archivos de una spec (15 en standard, 3 en quick) cuenta solo los 
   - files: packages/core/src/sizing/size.ts, packages/core/src/validate/limits.ts, packages/core/test/sizing/sizing.test.ts, packages/core/test/validate/quality.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing test/validate
-- [ ] T2: El carril quick cuenta solo código
+- [x] T2: El carril quick cuenta solo código
   - files: packages/core/src/validate/structure.ts, packages/core/test/validate/structure.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate
