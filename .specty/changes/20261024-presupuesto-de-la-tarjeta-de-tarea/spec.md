@@ -48,7 +48,7 @@ ARCHITECTURE §7 promete una tarjeta de tarea de unos 1.500 tokens, pero ningún
   - files: packages/core/src/cards/work.ts, packages/core/src/index.ts, packages/cli/src/commands/task.ts, packages/cli/test/findings.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/findings.test.ts
-- [ ] T2: El test del presupuesto de la tarjeta
+- [x] T2: El test del presupuesto de la tarjeta
   - files: packages/core/test/cards/budget.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/budget.test.ts
