@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261024-comentarios-html-en-la-spec-sin-cerrar-y-en-codi",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-comentarios-html-en-la-spec-sin-cerrar-y-en-codi",
+  "baseCommit": "b99c6604441b4c4fb17e9dbecaf472963e6d89b0",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:37766f23353a2385498d8d6f9ca1e447fd5040ca81c1db3471ea0877cb60047e",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:9841fce99efc591c1902c4bfdd712e3e8a882a7442d7d2570ec620f8b3c719d3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f3c5dec97f686592731fa22dcf3a3f91785b2a086d32a23b4e4a431dbefe3fa",
+    "at": "2026-10-24T21:16:26.918Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
