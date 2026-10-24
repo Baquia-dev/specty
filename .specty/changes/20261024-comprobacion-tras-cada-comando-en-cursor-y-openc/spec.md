@@ -59,7 +59,7 @@ En Claude Code y Codex, el guard compara el árbol antes y después de cada coma
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/enforce.test.ts
   - type: feat
-- [ ] T2: `init` y `doctor` en Cursor
+- [x] T2: `init` y `doctor` en Cursor
   - files: packages/cli/src/install/agents.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/cursor.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/setup.test.ts

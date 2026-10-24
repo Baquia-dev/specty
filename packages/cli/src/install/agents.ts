@@ -21,6 +21,16 @@ const CLAUDE_EVENTS: Readonly<Record<string, string | undefined>> = {
   WorktreeRemove: undefined,
   SessionStart: "compact",
 };
+/**
+ * The Cursor events the guard listens to, with the tools each one covers: before each write,
+ * delete or command, and after each command, whether it succeeded or failed.
+ */
+const CURSOR_EVENTS: Readonly<Record<string, string | undefined>> = {
+  preToolUse: "Write|Delete|Shell",
+  beforeShellExecution: undefined,
+  postToolUse: "Shell",
+  postToolUseFailure: "Shell",
+};
 /** Claude Code's worktree events: with them, `EnterWorktree` by name enters the change's folder. */
 export const CLAUDE_WORKTREE_EVENTS: readonly string[] = ["WorktreeCreate", "WorktreeRemove"];
 /** The Codex events the guard listens to; its `matcher` is a regular expression on `tool_name`. */
@@ -77,7 +87,10 @@ export async function installClaudeCode(
   return { file: target, local: !invocation.portable };
 }
 
-/** Cursor: `preToolUse` (Write, Delete, Shell) and `beforeShellExecution` in `.cursor/hooks.json`. */
+/**
+ * Cursor: `preToolUse` (Write, Delete, Shell), `beforeShellExecution`, and `postToolUse` and
+ * `postToolUseFailure` (Shell) in `.cursor/hooks.json`.
+ */
 export async function installCursor(
   root: string,
   git: Git,
@@ -122,6 +135,16 @@ export async function entersByName(root: string): Promise<boolean> {
     await readText(join(root, CLAUDE_LOCAL_SETTINGS)),
   ]);
   return !missing.some((event) => CLAUDE_WORKTREE_EVENTS.includes(event));
+}
+
+/** The Cursor events whose guard hook `.cursor/hooks.json` (its text) lacks. */
+export function missingCursorEvents(text: string | undefined): string[] {
+  const value: unknown = text === undefined ? undefined : parse(text);
+  const hooks = isRecord(value) && isRecord(value.hooks) ? value.hooks : {};
+  return Object.keys(CURSOR_EVENTS).filter((event) => {
+    const entries = hooks[event];
+    return !(Array.isArray(entries) && entries.some((entry: unknown) => isOurs(entry, "cursor")));
+  });
 }
 
 /** The Claude Code events whose guard hook none of these settings files (their text) installs. */
@@ -183,18 +206,15 @@ function withClaudePermissions(value: Entry): Entry {
 
 function withCursorHooks(value: Entry, command: string): Entry {
   const hooks = isRecord(value.hooks) ? value.hooks : {};
-  const event = (name: string, entry: Entry) => {
+  const updated = Object.entries(CURSOR_EVENTS).map(([name, matcher]) => {
     const current = Array.isArray(hooks[name]) ? hooks[name] : [];
-    return [...current.filter((item: unknown) => !isOurs(item, "cursor")), entry];
-  };
+    const entry = matcher === undefined ? { command } : { command, matcher };
+    return [name, [...current.filter((item: unknown) => !isOurs(item, "cursor")), entry]];
+  });
   return {
     ...value,
     version: typeof value.version === "number" ? value.version : 1,
-    hooks: {
-      ...hooks,
-      preToolUse: event("preToolUse", { command, matcher: "Write|Delete|Shell" }),
-      beforeShellExecution: event("beforeShellExecution", { command }),
-    },
+    hooks: { ...hooks, ...Object.fromEntries(updated) },
   };
 }
 

@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c4ba4c25cc9512b743f007231456d46d1fc9054c",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:51:44.030Z",
       "doneAt": "2026-10-24T10:55:56.060Z",
-      "summary": "La comprobación tras cada comando vale para las cuatro herramientas (sin checksAfterShell); el guard reconoce postToolUse y postToolUseFailure de Cursor y les responde {additional_context} o {}, con salida 0. La lectura del evento (cwdOf, toolUseId, isAfterTool) pasa a actions.ts para que guard.ts no pase de 300 líneas."
+      "summary": "La comprobación tras cada comando vale para las cuatro herramientas (sin checksAfterShell); el guard reconoce postToolUse y postToolUseFailure de Cursor y les responde {additional_context} o {}, con salida 0. La lectura del evento (cwdOf, toolUseId, isAfterTool) pasa a actions.ts para que guard.ts no pase de 300 líneas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "69b1906d6d0b122e1ad05e8cccaed1baa1dabe94",
+      "startedAt": "2026-10-24T10:55:56.380Z",
+      "doneAt": "2026-10-24T10:58:01.799Z",
+      "summary": "init escribe postToolUse y postToolUseFailure (matcher Shell) en .cursor/hooks.json, desde una tabla de eventos como la de Claude Code; missingCursorEvents dice cuáles faltan y doctor avisa aparte de la comprobación tras cada comando."
     }
   },
   "pending": {

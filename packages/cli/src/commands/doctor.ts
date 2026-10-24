@@ -8,6 +8,7 @@ import {
   codexHooksFile,
   hasGuard,
   missingClaudeEvents,
+  missingCursorEvents,
 } from "../install/agents";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { opencodePluginFile } from "../install/opencode";
@@ -90,13 +91,20 @@ export async function doctor(session: Session): Promise<Output> {
     }
   }
   if (tools.includes("cursor")) {
+    const missing = missingCursorEvents(await readText(join(root, ".cursor/hooks.json")));
+    const before = missing.includes("preToolUse") || missing.includes("beforeShellExecution");
     check(
-      hasGuard(await readText(join(root, ".cursor/hooks.json")), "cursor"),
+      missing.length === 0,
       t("Cursor: guard instalado.", "Cursor: guard installed."),
-      t(
-        `Cursor: falta el guard; ejecuta \`${COMMAND} init --tools cursor\`.`,
-        `Cursor: the guard is missing; run \`${COMMAND} init --tools cursor\`.`,
-      ),
+      before
+        ? t(
+            `Cursor: falta el guard; ejecuta \`${COMMAND} init --tools cursor\`.`,
+            `Cursor: the guard is missing; run \`${COMMAND} init --tools cursor\`.`,
+          )
+        : t(
+            `Cursor: falta la comprobación tras cada comando (${missing.join(", ")}); ejecuta \`${COMMAND} init --tools cursor\`.`,
+            `Cursor: the check after each command is missing (${missing.join(", ")}); run \`${COMMAND} init --tools cursor\`.`,
+          ),
     );
   }
   // Codex's guard lives in the user's configuration, shared by every repository.

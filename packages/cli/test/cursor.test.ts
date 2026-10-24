@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { APP, cli, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import { APP, cli, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
 async function implementing(): Promise<string> {
@@ -60,5 +60,26 @@ describe("the check after each command in Cursor", () => {
     expect(failed.additional_context).toContain("`src/third.ts` está fuera del alcance de T1.");
     // Without a snapshot from before the command, there is nothing to compare.
     expect(await answer(shell(root, "postToolUse", "unknown"))).toEqual({});
+  });
+});
+
+describe("installing the check in Cursor", () => {
+  it("writes `postToolUse` and `postToolUseFailure`, and doctor misses them (AC5)", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "cursor"])).code).toBe(0);
+    const config = JSON.parse(await read(root, ".cursor/hooks.json"));
+    for (const event of ["postToolUse", "postToolUseFailure"]) {
+      expect(config.hooks[event]).toEqual([
+        { command: expect.stringContaining("guard --tool cursor"), matcher: "Shell" },
+      ]);
+    }
+    expect((await cli(root, ["doctor"])).out).toContain("Cursor: guard instalado.");
+    const hooks = { ...config.hooks, postToolUseFailure: [] };
+    await writeFiles(root, { ".cursor/hooks.json": JSON.stringify({ ...config, hooks }) });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Cursor: falta la comprobación tras cada comando (postToolUseFailure); ejecuta `specty init --tools cursor`.",
+    );
   });
 });
