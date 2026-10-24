@@ -60,3 +60,22 @@ Mientras el agente ejecuta `specty task done`, la UI que sirve `specty ui` muest
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Mientras el agente ejecuta `specty task done`, la UI de `specty ui` muestra en vivo la verificación de esa tarea en Progreso. `task done` deja su ejecución en `specty/runs/<cambio>.json`, en el directorio común de git, reescrito como mucho cada 250 ms y borrado al terminar. El servidor lo lee cada medio segundo y lo emite con el evento `run`, con la tarea, igual que la verificación completa. Un archivo de un proceso que ya no existe se borra sin mostrarse. La UI no cambió: ya aceptaba ejecuciones con tarea.
+
+### Desviaciones
+
+- `verify.test.ts` cambió: ahora espera el final de la verificación completa después de su primer evento, porque el `run: null` de la última tarea completada en el test podía llegar antes y cumplir la espera.
+
+### Decisiones
+
+- Mientras corre una verificación completa de un cambio, los eventos de sus tareas se callan, y `current` da la completa: es la que la persona lanzó y está mirando.
+- La ejecución de la tarea se guarda en un archivo y no se envía al servidor, porque `task done` no sabe si hay un servidor ni en qué puerto, y el archivo sirve a cualquier worktree.
+
+### Pendientes
+
+- Ninguno de este punto.

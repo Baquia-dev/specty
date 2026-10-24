@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-verificaciones-de-las-tareas-en-vivo-en-la-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-verificaciones-de-las-tareas-en-vivo-en-la-ui",
   "baseCommit": "e864e063e6ad25c932ea4e2d2da4654d881e6f2a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:338ad5eb88f7d236ed886da9f55ba48c6380ba41951c497bc62802debc02d3c0",
@@ -52,12 +52,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2cc573668364e49fd3e230e3e869eb04e699e2b7",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:32:36.303Z",
       "doneAt": "2026-10-24T15:34:01.124Z",
-      "summary": "ARCHITECTURE §15: la verificación de las tareas en vivo (el archivo de specty/runs/, cada cuánto se escribe y se lee, la prioridad de la completa y los procesos que ya no existen); docs/ui.md (Progreso): con el servidor, la salida en vivo es la de specty task done"
+      "summary": "ARCHITECTURE §15: la verificación de las tareas en vivo (el archivo de specty/runs/, cada cuánto se escribe y se lee, la prioridad de la completa y los procesos que ya no existen); docs/ui.md (Progreso): con el servidor, la salida en vivo es la de specty task done",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:35:13.792Z"
 }

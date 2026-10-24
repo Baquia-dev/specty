@@ -10,3 +10,7 @@
 {"ts":"2026-10-24T15:32:36.305Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"2cc573668364e49fd3e230e3e869eb04e699e2b7"}}
 {"ts":"2026-10-24T15:34:01.122Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":58617}}
 {"ts":"2026-10-24T15:34:01.125Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §15: la verificación de las tareas en vivo (el archivo de specty/runs/, cada cuánto se escribe y se lee, la prioridad de la completa y los procesos que ya no existen); docs/ui.md (Progreso): con el servidor, la salida en vivo es la de specty task done"}}
+{"ts":"2026-10-24T15:35:04.572Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":57958}}
+{"ts":"2026-10-24T15:35:04.575Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T15:35:13.793Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:6d5deb958858c581debbe3bf27c201af79f7b3aee33c7d708115e22e0062cbf9","size":"M","warnings":0}}
+{"ts":"2026-10-24T15:36:22.038Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
