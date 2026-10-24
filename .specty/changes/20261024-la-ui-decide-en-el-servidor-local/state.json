@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-la-ui-decide-en-el-servidor-local",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-la-ui-decide-en-el-servidor-local",
   "baseCommit": "31572b8cd11503350269d9af1827f1f8703d2aaf",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f44411c2364115e24258b45a5fb4c8f21e3e34c4",
+      "attempts": 1,
       "startedAt": "2026-10-24T05:47:54.712Z",
       "doneAt": "2026-10-24T05:49:57.964Z",
-      "summary": "ServerData aprueba, decide supuestos y solicitudes de alcance, acepta, pide ajustes y confirma el cierre con POST a las acciones del servidor y el token CSRF de /api/session (pedido una vez); explica en el idioma de la persona el rechazo del flujo (409), el servidor de solo lectura, la falta de sesión, la petición no entendida y lo que el servidor aún no admite (comentarios, pedir cambios, verificación y diffs)"
+      "summary": "ServerData aprueba, decide supuestos y solicitudes de alcance, acepta, pide ajustes y confirma el cierre con POST a las acciones del servidor y el token CSRF de /api/session (pedido una vez); explica en el idioma de la persona el rechazo del flujo (409), el servidor de solo lectura, la falta de sesión, la petición no entendida y lo que el servidor aún no admite (comentarios, pedir cambios, verificación y diffs)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f4e6f02cb38437c0ab183702553a741b07e84d8e",
+      "startedAt": "2026-10-24T05:49:58.306Z",
+      "doneAt": "2026-10-24T05:52:55.586Z",
+      "summary": "ARCHITECTURE §15: las decisiones de la UI son POST a las acciones del servidor con el token CSRF y cada rechazo se muestra con su motivo; en lo que falta quedan comentarios, pedir cambios, el modo delegado, la verificación desde la UI, la edición de la spec y los diffs"
     }
   },
   "pending": {

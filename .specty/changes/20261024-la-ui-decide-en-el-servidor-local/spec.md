@@ -41,7 +41,7 @@ Servida por un `specty ui` que arrancó la persona, la UI deja de ser de solo le
   - files: packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts
-- [ ] T2: Documentar que la UI decide
+- [x] T2: Documentar que la UI decide
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm check
