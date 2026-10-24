@@ -74,3 +74,26 @@ En Claude Code y Codex, el guard compara el árbol antes y después de cada coma
 
 - R1: Ninguna de las dos herramientas está instalada en esta máquina, y su API puede cambiar — los tests usan las formas de su documentación y de su código (A1–A3), el plugin nunca lanza tras el comando, y sin aviso todo sigue como antes: `task done` es la puerta.
 - R2: Un comando más lento por la foto previa (unos 150 ms en Claude Code) — el mismo coste que ya se acepta en Claude Code y Codex, y solo en comandos de shell.
+
+## Cierre
+
+### Resumen
+
+La comprobación tras cada comando de shell vale ya para las cuatro herramientas con guard. En Cursor, `init` añade `postToolUse` y `postToolUseFailure` (matcher `Shell`) a `.cursor/hooks.json`, y el guard les responde `{"additional_context": …}` con el motivo y el SIGUIENTE, o `{}`, siempre con salida 0. En OpenCode, el plugin manda `PostToolUse` al guard tras cada `shell`/`bash` con el mismo `tool_use_id` que antes, y añade el aviso al resultado que lee el modelo: una parte de texto en `result.content` (OpenCode 2) o al final de `output.output` (OpenCode 1). `doctor` avisa si a `.cursor/hooks.json` le faltan los eventos posteriores o si el plugin de OpenCode es anterior a esta comprobación.
+
+### Desviaciones
+
+- **El resumen de T3 quedó como «x»:** su primera verificación (`pnpm check`) falló por algo intermitente con varias sesiones en la máquina, y al repetirla para ver el fallo pasó y completó la tarea con ese resumen. Lo que hizo T3 es lo que dice el Resumen: el plugin de OpenCode, su `doctor` y ARCHITECTURE §10.
+- **`checksAfterShell` desaparece:** con las cuatro herramientas comprobando, ya no distinguía nada. Para que `guard.ts` no pasara de 300 líneas, la lectura del evento (`cwdOf`, `toolUseId`, `isAfterTool`) pasó a `enforce/actions.ts`, que ya estaba en T1.
+
+### Decisiones
+
+- **Las formas de los eventos salen de la documentación de Cursor y del código de OpenCode** (A1–A3), porque ninguna de las dos herramientas está instalada aquí: los tests usan esos campos y cargan el plugin real.
+- **En OpenCode 2 se añade una parte de texto, no se reescribe la salida:** si la herramienta no dio partes, el plugin reconstruye la que OpenCode haría con `output` antes de añadir el aviso, para que el modelo no pierda el resultado.
+- **En OpenCode 2, una herramienta fallida no lleva aviso (A5),** pero el guard recoge igual su foto.
+- **`.cursor/hooks.json` sale de una tabla de eventos,** como la de Claude Code, y `missingCursorEvents` la usa para `doctor`.
+
+### Pendientes
+
+- **Probarlo en un Cursor y un OpenCode reales:** sin ellos instalados, solo los cubren las formas documentadas y el código consultado el 2026-10-24.
+- **Los repositorios con Cursor u OpenCode** necesitan volver a ejecutar `specty init` para recibir los hooks nuevos; `doctor` lo avisa.

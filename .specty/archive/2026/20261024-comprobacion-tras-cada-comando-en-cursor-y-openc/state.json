@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-comprobacion-tras-cada-comando-en-cursor-y-openc",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-comprobacion-tras-cada-comando-en-cursor-y-openc",
   "baseCommit": "800f1a4d6f5140b2d7438bee5dd6eebea77c9304",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:221b520da86c016c4b6bc3c5b9bca0f0ed566d2b33ae764b68c2532b87f56f36",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "1041728a94e9f25fb70f814afd185c4bd3751d2a",
+      "attempts": 2,
       "startedAt": "2026-10-24T10:58:02.104Z",
       "doneAt": "2026-10-24T11:04:53.392Z",
-      "summary": "x"
+      "summary": "x",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -81,5 +81,6 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T11:06:53.413Z"
 }
