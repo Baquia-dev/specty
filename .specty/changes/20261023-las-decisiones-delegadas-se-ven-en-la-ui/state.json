@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261023-las-decisiones-delegadas-se-ven-en-la-ui",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261023-las-decisiones-delegadas-se-ven-en-la-ui",
+  "baseCommit": "261a6a2e7e668c5e3a8b071704b0862ae59259ef",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fbabf626622e97dcacbdc9ff48544fc8d1968f1676e2c8cff74613e280ef9d7d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6e59182c70ffbcfa7367edea8a6527475b71251517c75965e02cbb23ce0b74fc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:95997d1aae0720390fc6e0796bf952dd352a48e5a80eca1fc391dd461f9c9912",
+    "at": "2026-10-24T05:00:01.510Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
