@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "20261024-modo-delegado-en-el-servidor-local",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-modo-delegado-en-el-servidor-local",
+  "baseCommit": "b9c7abab86a370eae51a503e4f0a26dad029d7e4",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:30cfe2414496776c4306610548ea4b1b5aaed308dd9cabc3ed5a444caa00e3ca",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f96d9484c3678a90983619cfce9a9684d0093af112e448de9e1fd07820006e36",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2f0a8b348e7f447c12aa12bfec450517a60d1bb3de1c226f735ad1098c0b46c8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ce8644db769136979a0c1882f610e19accd68536064c34a0bac9b2c54fc779bc",
+    "at": "2026-10-24T05:59:19.128Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
