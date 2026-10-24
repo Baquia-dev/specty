@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-comentarios-html-en-la-spec-sin-cerrar-y-en-codi",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-comentarios-html-en-la-spec-sin-cerrar-y-en-codi",
   "baseCommit": "b99c6604441b4c4fb17e9dbecaf472963e6d89b0",
   "revision": 1,
@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4d4cd5d86166eb7e5f65be9e0d44eaa2e430b972",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:16:27.994Z",
       "doneAt": "2026-10-24T21:18:26.109Z",
-      "summary": "readSource anota la línea donde se abre un comentario que no se cierra (commentUnclosed) y parse lo convierte en el error comment-unclosed, en español e inglés, con esa línea."
+      "summary": "readSource anota la línea donde se abre un comentario que no se cierra (commentUnclosed) y parse lo convierte en el error comment-unclosed, en español e inglés, con esa línea.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "75268bef5c77a437d01ca146ab237dbeb39270d6",
+      "startedAt": "2026-10-24T21:18:26.389Z",
+      "doneAt": "2026-10-24T21:20:39.475Z",
+      "summary": "removeComments salta el código en línea (series de comillas invertidas de la misma longitud en la línea): un comentario citado entre comillas es texto, en ítems, secciones y forma canónica; los demás se quitan como antes. formats.md §2."
     }
   },
   "pending": {

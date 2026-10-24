@@ -160,7 +160,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 
 ### Forma canónica y hash
 
-- Los comentarios HTML de la plantilla (pistas para el agente) se eliminan en `propose`, salvo dentro de bloques de código.
+- Los comentarios HTML de la plantilla (pistas para el agente) se eliminan en `propose`, salvo dentro de bloques de código y de código en línea: entre series de comillas invertidas de la misma longitud, en la misma línea, un comentario citado es texto. Un comentario que se abre y no se cierra es un error que señala su línea, porque ocultaría todo lo que sigue.
 - Las secciones se escriben en el orden canónico de la tabla anterior. Las estructuradas se reescriben en forma canónica; la prosa (Objetivo, Diseño, Cierre…) se conserva tal cual, salvo los espacios al final de línea y las líneas en blanco que la rodean.
 - Los saltos de línea se normalizan a LF y el texto a Unicode NFC, para que guardar el archivo desde otro editor o sistema no cambie el hash.
 - El hash de una revisión es el SHA-256 de la forma canónica, con las casillas normalizadas a `[ ]`. El estado de las tareas vive en `state.json`; Specty marca `[x]` en el archivo solo para que se lea bien.

@@ -43,7 +43,7 @@ Al leer una spec, Specty quita los comentarios HTML, que son las pistas de la pl
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec
   - type: fix
-- [ ] T2: El código en línea conserva sus comentarios
+- [x] T2: El código en línea conserva sus comentarios
   - files: packages/core/src/spec/source.ts, packages/core/test/spec/parse.test.ts, packages/core/test/spec/roundtrip.test.ts, docs/formats.md
   - ac: AC2, AC3, AC4
   - verify: pnpm check

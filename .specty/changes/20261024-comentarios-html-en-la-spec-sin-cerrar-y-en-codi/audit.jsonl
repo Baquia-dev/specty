@@ -4,3 +4,6 @@
 {"ts":"2026-10-24T21:16:27.998Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"4d4cd5d86166eb7e5f65be9e0d44eaa2e430b972"}}
 {"ts":"2026-10-24T21:18:26.015Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/spec","exit":0,"ms":935}}
 {"ts":"2026-10-24T21:18:26.110Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"readSource anota la línea donde se abre un comentario que no se cierra (commentUnclosed) y parse lo convierte en el error comment-unclosed, en español e inglés, con esa línea."}}
+{"ts":"2026-10-24T21:18:26.390Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"75268bef5c77a437d01ca146ab237dbeb39270d6"}}
+{"ts":"2026-10-24T21:20:39.356Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":72428}}
+{"ts":"2026-10-24T21:20:39.477Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"removeComments salta el código en línea (series de comillas invertidas de la misma longitud en la línea): un comentario citado entre comillas es texto, en ítems, secciones y forma canónica; los demás se quitan como antes. formats.md §2."}}

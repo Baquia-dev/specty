@@ -102,7 +102,10 @@ interface CleanedLine {
   readonly touched: boolean;
 }
 
-/** Removes `<!-- … -->` spans; `open` reports a comment that continues on the next line. */
+/**
+ * Removes `<!-- … -->` spans; `open` reports a comment that continues on the next line. A comment
+ * quoted as inline code, between runs of backticks of the same length, is text, not a comment.
+ */
 function removeComments(raw: string, startsInComment: boolean): CleanedLine {
   let text = "";
   let rest = raw;
@@ -119,6 +122,12 @@ function removeComments(raw: string, startsInComment: boolean): CleanedLine {
       continue;
     }
     const start = rest.indexOf("<!--");
+    const code = inlineCode(rest);
+    if (code !== undefined && (start === -1 || code.start < start)) {
+      text += rest.slice(0, code.end);
+      rest = rest.slice(code.end);
+      continue;
+    }
     if (start === -1) return { text: text + rest, open: false, opensHere: false, touched };
     text += rest.slice(0, start);
     rest = rest.slice(start + 4);
@@ -127,6 +136,22 @@ function removeComments(raw: string, startsInComment: boolean): CleanedLine {
     touched = true;
   }
   return { text, open, opensHere: open && opensHere, touched };
+}
+
+/**
+ * The first inline code span of `text`, or the first run of backticks that does not close on this
+ * line (copied as text): where it starts, and where the text after it begins.
+ */
+function inlineCode(text: string): { readonly start: number; readonly end: number } | undefined {
+  const opening = /`+/.exec(text);
+  if (opening === null) return undefined;
+  const after = opening.index + opening[0].length;
+  // The closing run has the same length: a longer or shorter one is part of the code.
+  const closing = new RegExp(`(?<!\`)${opening[0]}(?!\`)`).exec(text.slice(after));
+  return {
+    start: opening.index,
+    end: closing === null ? after : after + closing.index + closing[0].length,
+  };
 }
 
 function closesFence(raw: string, opening: string): boolean {

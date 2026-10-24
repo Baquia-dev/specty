@@ -63,6 +63,21 @@ describe("parseSpec", () => {
     expect(parseSpec(text).spec.sections.goal).toBe("Uno  dos.\nTres.");
   });
 
+  it("keeps comments quoted as inline code, and removes the others (AC2, AC3)", () => {
+    const goal =
+      "La pista es `<!-- pista -->` y ``a `<!--` b``; esta <!-- no --> se va. Un ` suelto <!-- x --> también.";
+    const item = "- A1: Se abre con `<!--` y se cierra con `-->`.";
+    const text = `${MINIMAL.replace("Algo.", goal)}\n## Supuestos\n\n${item}\n`;
+    const { spec, diagnostics } = parseSpec(text);
+    expect(diagnostics).toEqual([]);
+    expect(spec.sections.goal).toBe(
+      "La pista es `<!-- pista -->` y ``a `<!--` b``; esta  se va. Un ` suelto  también.",
+    );
+    expect(spec.sections.assumptions?.items[0]?.text).toBe(
+      "Se abre con `<!--` y se cierra con `-->`.",
+    );
+  });
+
   it("reports a comment that never closes, at the line where it opens (AC1)", () => {
     const body = "Algo.\nOtra <!-- a --> línea <!-- sin cierre\n\n## Archivos\n\n- crear a.ts — a";
     const text = MINIMAL.replace("Algo.", body);
