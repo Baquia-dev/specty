@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-avisar-cuando-nada-verifica-el-cambio-entero",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-avisar-cuando-nada-verifica-el-cambio-entero",
   "baseCommit": "fd5996d4a45e980bd9ab68b5672e3b9c796c7719",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c063ac5270dc222013497c29e8b6acdda3b01697",
+      "attempts": 1,
       "startedAt": "2026-10-24T16:44:57.475Z",
       "doneAt": "2026-10-24T16:46:45.982Z",
-      "summary": "accept avisa a la persona cuando nada verifica el cambio entero (sin verify.full ni verify.default), y la incorporación al cerrar dice que el merge no se verificó y por qué. No cambia qué se ejecuta."
+      "summary": "accept avisa a la persona cuando nada verifica el cambio entero (sin verify.full ni verify.default), y la incorporación al cerrar dice que el merge no se verificó y por qué. No cambia qué se ejecuta.",
+      "scopeExtra": []
     }
   },
   "pending": {

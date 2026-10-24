@@ -20,3 +20,9 @@ Una tarea no se aprueba sin `verify` si no hay `verify.default` (`propose` ya lo
   - files: packages/cli/src/commands/accept.ts, packages/cli/src/flow/integrate.ts, packages/cli/test/unverified.test.ts
   - verify: pnpm check
   - type: feat
+
+## Cierre
+
+### Resumen
+
+accept avisa a la persona cuando nada verifica el cambio entero (sin verify.full ni verify.default), y la incorporación al cerrar dice que el merge no se verificó y por qué. No cambia qué se ejecuta.
