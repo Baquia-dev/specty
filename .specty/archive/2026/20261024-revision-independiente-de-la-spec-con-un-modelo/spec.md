@@ -71,3 +71,25 @@ Antes de aprobar una spec grande o sensible, Specty puede pedir una segunda opin
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El ADR 0011 modifica la 0001: Specty puede pedir una revisión independiente al comando que configura la persona en `review.command`, por ejemplo Claude Code headless con Opus y sin herramientas. `specty review`, con la spec en revisión, le pasa por la entrada estándar las instrucciones y la spec, guarda la respuesta en `reviews/spec-r<n>.md` (protegida por el guard) y anota `review.completed`. La tarjeta muestra la respuesta y pide corregir lo que sea real o pedir la aprobación. `propose` la pide en su SIGUIENTE una vez por cambio, si la spec es L, XL o sensible y hay comando configurado. Sin la clave, nada cambia: ni se recomienda ni se ejecuta.
+
+### Desviaciones
+
+- La primera aceptación falló en `pnpm check` (tests de la CLI) con la máquina a una carga de 47 por las otras sesiones. Pasó al repetir `pnpm check` y la aceptación sin cambiar nada. La salida guardada no dice qué test fue.
+
+### Decisiones
+
+- Una revisión fallida también cuenta para no recomendar otra, así las revisiones nunca se encadenan.
+- El aviso de riesgo «ejecuta comandos a través de la shell» en `commands/review.ts` es esperado. El comando lo escribe la persona en `config.yaml`, que el agente no puede editar, como `verify`.
+
+### Pendientes
+
+- La revisión del resultado (el diff del cambio) antes de aceptar, con el mismo comando.
+- Que el modelo recomiende el esfuerzo de implementación y de revisión, sin poder bajarlo del que calcula Specty.
+- `packages/core/src/guard/decide.ts` queda en 299 líneas: hay que partirlo antes de añadirle nada, por ejemplo llevando la lista PROTECTED a su propio módulo.
+- Mostrar la revisión en la UI, con `review.completed` y el archivo de `reviews/`.
