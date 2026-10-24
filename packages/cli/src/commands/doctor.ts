@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import { hasBlock, headerOf, type Output, section, translator } from "@baquia-dev/specty-core";
+import {
+  hasBlock,
+  headerOf,
+  type Output,
+  section,
+  translator,
+  unfilledSections,
+} from "@baquia-dev/specty-core";
 import { formatterExclusions } from "../detect/formatters";
 import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
@@ -192,17 +199,30 @@ export async function doctor(session: Session): Promise<Output> {
       "verify.default is missing in .specty/config.yaml.",
     ),
   );
-  // Delegated mode is the person's choice, not a fault: a warning that never turns doctor red.
+  // Warnings never turn doctor red: what only the person can tell the agent and is still
+  // unwritten, and delegated mode, which is the person's choice rather than a fault.
+  const unfilled = agents === undefined ? [] : unfilledSections(agents);
+  const listed = (open: string, close: string, and: string) =>
+    unfilled.map((title) => `${open}${title}${close}`).join(` ${and} `);
   const delegation = await readDelegation(git);
-  const warnings =
-    delegation === undefined
+  const warnings = [
+    ...(unfilled.length === 0
+      ? []
+      : [
+          t(
+            `AGENTS.md tiene sin completar ${listed("«", "»", "y")}: el agente lo lee en cada sesión, así que escribe ahí lo que el código no dice (los directorios cuyo propósito no es obvio, lo que no se toca, las reglas que no aplica ningún linter).`,
+            `AGENTS.md has ${listed('"', '"', "and")} not filled in: the agent reads it every session, so write there what the code does not say (directories whose purpose is not obvious, what must not be touched, rules no linter enforces).`,
+          ),
+        ]),
+    ...(delegation === undefined
       ? []
       : [
           t(
             `Modo delegado activo desde el ${delegation.at.slice(0, 10)} (${delegation.by}): tu agente toma tus decisiones. Para desactivarlo: \`${COMMAND} delegate off\`.`,
             `Delegated mode on since ${delegation.at.slice(0, 10)} (${delegation.by}): your agent makes your decisions. To turn it off: \`${COMMAND} delegate off\`.`,
           ),
-        ];
+        ]),
+  ];
   return {
     status: problems.length === 0 ? "ok" : "invalid",
     header: headerOf("doctor"),

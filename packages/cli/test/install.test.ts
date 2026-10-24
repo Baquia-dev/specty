@@ -106,7 +106,7 @@ describe("hook managers", () => {
     await cli(root, ["init", "--language", "es", "--tools", "claude-code"]);
     const before = await cli(root, ["doctor"]);
     expect(before.code).toBe(0);
-    expect(before.out).not.toContain("AVISOS");
+    expect(before.out).not.toContain("Modo delegado");
 
     await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
     const after = await cli(root, ["doctor"]);
