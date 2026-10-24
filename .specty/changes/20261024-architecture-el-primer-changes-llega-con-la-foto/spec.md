@@ -14,7 +14,7 @@ ARCHITECTURE §15 dice que `/api/events` emite `changes` «al conectarse». Desd
 
 ## Tareas
 
-- [ ] T1: Precisar cuándo llega el primer changes
+- [x] T1: Precisar cuándo llega el primer changes
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
