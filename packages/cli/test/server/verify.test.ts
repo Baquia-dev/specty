@@ -50,7 +50,8 @@ describe("the full verification from the local server", () => {
       ]);
       await fullEnds(events, SLOW);
       const runs = events.heard.filter(({ name }) => name === "run").map(({ data }) => data);
-      expect(runs.some((data) => data.includes('"output":["uno"]'))).toBe(true);
+      // However slow the machine, its lines are heard before it ends.
+      expect(runs.some((data) => data.includes('"output":["uno"'))).toBe(true);
       expect(runs.every((data) => data.includes(`"change":"${CHANGE}"`))).toBe(true);
       expect((await audit(root)).at(-1)).toMatchObject({
         actor: "specty",

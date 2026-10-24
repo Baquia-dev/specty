@@ -7,17 +7,28 @@ import { readRuns } from "../src/store/runs";
 import { sessionAt } from "./server/support";
 import { AGENT, APP, tempRepo } from "./support";
 
-const wait = (ms: number) => new Promise((done) => setTimeout(done, ms));
+/** Waits for `check` to hold, up to 20 s of real time. */
+async function until(check: () => Promise<boolean>) {
+  const deadline = Date.now() + 20_000;
+  while (!(await check())) {
+    if (Date.now() > deadline) throw new Error("timed out");
+    await new Promise((done) => setTimeout(done, 50));
+  }
+}
 
 describe("a task's verification, live", () => {
   it("is in its file while it runs, and gone once it ends (AC1)", async () => {
     const session = await sessionAt(await tempRepo(APP), AGENT);
-    const running = runLive(session, "20261024-saludo", "T1", "echo uno && sleep 1 && echo dos");
-    await wait(600);
-    const live = (await readRuns(session.git)).get("20261024-saludo");
-    expect(live).toMatchObject({
+    const running = runLive(session, "20261024-saludo", "T1", "echo uno && sleep 2 && echo dos");
+    // While it sleeps, the file holds its first line.
+    let live: Awaited<ReturnType<typeof readRuns>> = new Map();
+    await until(async () => {
+      live = await readRuns(session.git);
+      return live.get("20261024-saludo")?.output.includes("uno") === true;
+    });
+    expect(live.get("20261024-saludo")).toMatchObject({
       task: "T1",
-      command: "echo uno && sleep 1 && echo dos",
+      command: "echo uno && sleep 2 && echo dos",
       startedAt: expect.any(String),
       output: ["uno"],
       pid: process.pid,

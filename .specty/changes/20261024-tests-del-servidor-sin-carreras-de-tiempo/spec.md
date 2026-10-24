@@ -46,7 +46,7 @@ La causa es una carrera que también tiene el producto. El servidor envía el pr
   - files: packages/cli/src/server/events.ts, packages/cli/test/server.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts test/server
-- [ ] T2: Las últimas líneas antes del final, y esperas que no dependen del tiempo
+- [x] T2: Las últimas líneas antes del final, y esperas que no dependen del tiempo
   - files: packages/cli/src/server/runs.ts, packages/cli/test/live-run.test.ts, packages/cli/test/server/live.test.ts, packages/cli/test/server/verify.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/live-run.test.ts test/server && pnpm sources

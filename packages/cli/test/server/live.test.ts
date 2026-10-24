@@ -48,9 +48,14 @@ describe("a task's verification in the local server", () => {
       const { git } = await sessionAt(root, AGENT);
       const gone = spawnSync("true").pid;
       await writeRun(git, CHANGE, { ...RUN, pid: gone });
-      await wait(1200);
+      // The server removes it on one of its looks, however slow; until then it never shows it.
+      const deadline = Date.now() + 20_000;
+      while ((await readRuns(git)).size > 0) {
+        expect((await call(server.port, path("run"), headers)).body).toBe("null");
+        if (Date.now() > deadline) throw new Error("timed out");
+        await wait(100);
+      }
       expect((await call(server.port, path("run"), headers)).body).toBe("null");
-      expect((await readRuns(git)).size).toBe(0);
     } finally {
       await server.close();
     }
