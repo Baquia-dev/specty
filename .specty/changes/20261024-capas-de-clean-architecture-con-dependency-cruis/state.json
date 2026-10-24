@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261024-capas-de-clean-architecture-con-dependency-cruis",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-capas-de-clean-architecture-con-dependency-cruis",
+  "baseCommit": "a9fda3dd8bb770e242c07f781e7bcb985eef5e53",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8fb16229eb0b86f0126bdb84b1c56c2eedc5af9e79ab1b5c099210d64f634789",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a8875368e29bbc14c966124a27ac4201ebc995e22f1b6c43e3c98c331f2a0f9d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3ace45d9afb60b70175c9d28740f9f0b206c44fda6c632324977b6bfdf458aee",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c698ee3bdd6c75e111d172a48546063143e2ffc5e788140627e5a1804f44afec",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:aba71e47ce2cd3bdcd2b5610f32a7567723421d19713ce910f51a21f164aec66",
+    "at": "2026-10-24T21:39:45.591Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
