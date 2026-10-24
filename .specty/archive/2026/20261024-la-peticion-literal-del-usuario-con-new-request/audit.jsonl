@@ -10,3 +10,7 @@
 {"ts":"2026-10-24T10:28:06.329Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"969ac3eb58bd55ed3b615195442af89aaeb0e3af"}}
 {"ts":"2026-10-24T10:29:21.565Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":58306}}
 {"ts":"2026-10-24T10:29:21.593Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats.md §4: request en change.created; ARCHITECTURE: --request en la tabla de comandos y para qué sirve"}}
+{"ts":"2026-10-24T10:30:29.361Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":64389}}
+{"ts":"2026-10-24T10:30:29.364Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T10:30:35.919Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:983aa9482aae36704211e932d5f2b0d7e8b820d8037f4a6aecc56045c37c0d84","size":"L","warnings":0}}
+{"ts":"2026-10-24T10:31:54.355Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

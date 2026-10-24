@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-la-peticion-literal-del-usuario-con-new-request",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-la-peticion-literal-del-usuario-con-new-request",
   "baseCommit": "2d7297ea1653e1d735ec5bff6759097529685b13",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:8bd4cb585f0a6921c9e86a34b4fc5632b185d84baf2431f0701eed10ea6caef1",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "969ac3eb58bd55ed3b615195442af89aaeb0e3af",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:28:06.328Z",
       "doneAt": "2026-10-24T10:29:21.576Z",
-      "summary": "formats.md §4: request en change.created; ARCHITECTURE: --request en la tabla de comandos y para qué sirve"
+      "summary": "formats.md §4: request en change.created; ARCHITECTURE: --request en la tabla de comandos y para qué sirve",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "A": 4,
     "AC": 5,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T10:30:35.918Z"
 }

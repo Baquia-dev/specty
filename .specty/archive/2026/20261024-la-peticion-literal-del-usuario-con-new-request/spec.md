@@ -63,3 +63,22 @@ kind: standard
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`specty new "<título>" --request "<petición literal>"` guarda la petición del usuario tal cual, sin más recorte que los espacios de los extremos, en `data.request` de la entrada `change.created` de la auditoría, también con `--worktree`. Mientras la spec está en borrador, `specty next` la muestra en «PETICIÓN DEL USUARIO», antes de la guía de redacción. La tarjeta sin cambio activo pide `--request` en su SIGUIENTE, y una petición vacía se rechaza con código 1 sin crear nada.
+
+### Desviaciones
+
+- El SIGUIENTE sin cambio activo también dice ahora «archivos de código» para el carril quick, como cuenta el límite desde el cambio anterior.
+
+### Decisiones
+
+- `changeView` lee la auditoría solo en borrador, y el lector de la auditoría quedó compartido con los comentarios pedidos.
+
+### Pendientes
+
+- Mostrar la petición en la UI junto al Objetivo: punto A6 de la sesión de la UI, con `change.created.data.request` de la auditoría que ya sirve `/api/changes`.
+- Capturar la petición con un hook `UserPromptSubmit` de Claude Code, sin depender del agente.
