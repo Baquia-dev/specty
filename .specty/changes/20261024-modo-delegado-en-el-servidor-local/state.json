@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-modo-delegado-en-el-servidor-local",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-modo-delegado-en-el-servidor-local",
   "baseCommit": "b9c7abab86a370eae51a503e4f0a26dad029d7e4",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "098483d8f6d147295b9cef3fdd78c2d60e7ae6b4",
+      "attempts": 1,
       "startedAt": "2026-10-24T05:59:19.649Z",
       "doneAt": "2026-10-24T06:01:38.225Z",
-      "summary": "GET /api/delegation da si el modo delegado está activo, quién lo activó y cuándo, y el aviso de delegate on en español e inglés; POST /api/delegation {on} es una acción de la persona que ejecuta delegate on|off con la terminal de la UI respondiendo sí al activarlo; el interruptor entra en la firma de los eventos"
+      "summary": "GET /api/delegation da si el modo delegado está activo, quién lo activó y cuándo, y el aviso de delegate on en español e inglés; POST /api/delegation {on} es una acción de la persona que ejecuta delegate on|off con la terminal de la UI respondiendo sí al activarlo; el interruptor entra en la firma de los eventos",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dfec0c4efc590d26d113ab943867b2ec5049188e",
+      "startedAt": "2026-10-24T06:01:38.565Z",
+      "doneAt": "2026-10-24T06:04:29.561Z",
+      "summary": "ARCHITECTURE §15 cuenta GET y POST /api/delegation, el aviso bilingüe y que el interruptor emite changes; queda pendiente el interruptor en la UI"
     }
   },
   "pending": {
