@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261024-architecture-el-primer-changes-llega-con-la-foto",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261024-architecture-el-primer-changes-llega-con-la-foto",
+  "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b5273c783037a3e62053b52d4f2d22f38cfc95bf079daeff18109128c58b7e05",
+    "at": "2026-10-24T16:16:38.604Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
