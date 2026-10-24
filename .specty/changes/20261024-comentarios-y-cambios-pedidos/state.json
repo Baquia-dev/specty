@@ -6,6 +6,13 @@
   "branch": "specty/20261024-comentarios-y-cambios-pedidos",
   "baseCommit": "db4ad02e1f8e754c918b4cf5f5e06eaa5affebb7",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:77971f1de0630420dd3f3594422ac83e9c473f926b3ff2653300553d81a95d66",
+    "at": "2026-10-24T06:46:05.482Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bfb2cacbc8159fb3553cc50b206abed7e1fe24c6",
+      "startedAt": "2026-10-24T06:46:06.117Z",
+      "doneAt": "2026-10-24T06:47:29.428Z",
+      "summary": "La vista del cambio trae los comentarios pedidos (CommentView) y la tarjeta de revisión los muestra al agente en «CAMBIOS PEDIDOS», cada uno con su ancla (ítem, o sección y cita), junto a los supuestos rechazados, y le pide corregir la spec y proponerla"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -47,12 +64,5 @@
     "A": 5,
     "AC": 4,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:77971f1de0630420dd3f3594422ac83e9c473f926b3ff2653300553d81a95d66",
-    "at": "2026-10-24T06:46:05.482Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

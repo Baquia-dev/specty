@@ -2,7 +2,7 @@
 import { headerOf, type Output, section } from "../output";
 import { integrationCard } from "./integration";
 import { draftingGuide, quoted, translator } from "./text";
-import type { CardContext, ChangeView } from "./view";
+import type { CardContext, ChangeView, CommentView } from "./view";
 import { acceptanceCard, adjustingCard, closingCard, implementingCard } from "./work";
 
 export { taskCard } from "./work";
@@ -104,6 +104,25 @@ function draftCard(change: ChangeView, ctx: CardContext): Output {
   };
 }
 
+/** The spec's sections by the keys comments use (formats.md §5), as the agent reads them. */
+const SECTIONS: Readonly<Record<string, readonly [string, string]>> = {
+  goal: ["Objetivo", "Goal"],
+  outOfScope: ["Fuera de alcance", "Out of scope"],
+  assumptions: ["Supuestos", "Assumptions"],
+  criteria: ["Criterios de aceptación", "Acceptance criteria"],
+  design: ["Diseño", "Design"],
+  files: ["Archivos", "Files"],
+  tasks: ["Tareas", "Tasks"],
+  risks: ["Riesgos", "Risks"],
+};
+
+/** Where a comment points: its item, or the section and the quote. */
+function anchorOf({ anchor }: CommentView, ctx: CardContext): string {
+  if ("item" in anchor) return anchor.item;
+  const [es, en] = SECTIONS[anchor.section] ?? [anchor.section, anchor.section];
+  return `${ctx.lang === "es" ? es : en} ${quoted(anchor.quote, ctx.lang)}`;
+}
+
 function reviewCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const header = headerOf(
@@ -111,15 +130,22 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
     "review",
     t(`revisión ${change.revision}`, `revision ${change.revision}`),
   );
-  if (change.rejected.length > 0) {
-    const lines = change.rejected.map(
+  const requested = change.requested ?? [];
+  if (change.rejected.length > 0 || requested.length > 0) {
+    const rejected = change.rejected.map(
       (item) =>
         `${item.id} ${quoted(item.text, ctx.lang)}${item.comment === undefined ? "" : ` — ${item.comment}`}`,
+    );
+    const comments = requested.map(
+      (comment) => `${comment.id} · ${anchorOf(comment, ctx)}: ${comment.body}`,
     );
     return {
       status: "ok",
       header,
-      blocks: section(t("SUPUESTOS RECHAZADOS", "REJECTED ASSUMPTIONS"), lines),
+      blocks: [
+        ...section(t("SUPUESTOS RECHAZADOS", "REJECTED ASSUMPTIONS"), rejected),
+        ...section(t("CAMBIOS PEDIDOS", "CHANGES REQUESTED"), comments),
+      ],
       next: t(
         `corrige ${change.specPath} y ejecuta \`${ctx.command} propose\`.`,
         `fix ${change.specPath} and run \`${ctx.command} propose\`.`,

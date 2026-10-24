@@ -74,6 +74,30 @@ describe("next cards", () => {
     expect(card).toContain("SIGUIENTE: implementa T2 y ejecuta `specty task done T2");
   });
 
+  it("gives the agent the changes the person asked for in the review", () => {
+    const requested: ChangeView["requested"] = [
+      { id: "c1", anchor: { item: "A2" }, body: "Por trimestres." },
+      { id: "c2", anchor: { section: "design", quote: "Container" }, body: "Usa CaChip." },
+      { id: "c3", anchor: { section: "extra", quote: "x" }, body: "Revisa." },
+    ];
+    const card = text({ ...view("review"), requested });
+    expect(card).toContain(
+      "CAMBIOS PEDIDOS:\n  c1 · A2: Por trimestres.\n  c2 · Diseño «Container»: Usa CaChip.\n  c3 · extra «x»: Revisa.",
+    );
+    expect(card).not.toContain("SUPUESTOS RECHAZADOS");
+    expect(card).toContain(
+      "SIGUIENTE: corrige .specty/changes/20261021-x/spec.md y ejecuta `specty propose`.",
+    );
+    const english = renderText(
+      nextCard({ change: { ...view("review"), requested }, dirty: [] }, { ...ES, lang: "en" }),
+      "en",
+    );
+    expect(english).toContain('c2 · Design "Container": Usa CaChip.');
+    expect(text({ ...view("review"), requested: [] })).toContain(
+      "Esperando la revisión del usuario",
+    );
+  });
+
   it("blocks when the approved spec was edited", () => {
     const card = nextCard(
       { change: { ...view("implementing", [task("T1", "active")]), specChanged: true }, dirty: [] },

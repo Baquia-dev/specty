@@ -50,6 +50,13 @@ export interface RejectedView {
   readonly comment?: string;
 }
 
+/** A person's comment on the spec (formats.md §5): on an item, or on a quote of a section. */
+export interface CommentView {
+  readonly id: string;
+  readonly anchor: { readonly item: string } | { readonly section: string; readonly quote: string };
+  readonly body: string;
+}
+
 /** An incorporation of the main branch that waits for the agent in the change's folder. */
 export interface IntegrationView {
   readonly target: string;
@@ -74,6 +81,8 @@ export interface ChangeView {
   readonly conventions: readonly string[];
   readonly pendingScope: readonly ScopeRequestView[];
   readonly rejected: readonly RejectedView[];
+  /** The unresolved comments, once the person asked for changes after the last proposal. */
+  readonly requested?: readonly CommentView[];
   /** The user's literal adjustment request, while adjusting. */
   readonly adjustment?: string;
   readonly closingSubmitted: boolean;

@@ -53,7 +53,7 @@ La revisión de una spec en la UI se completa: la persona comenta una sección o
 
 ## Tareas
 
-- [ ] T1: La tarjeta de revisión muestra los cambios pedidos
+- [x] T1: La tarjeta de revisión muestra los cambios pedidos
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/test/cards.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts
