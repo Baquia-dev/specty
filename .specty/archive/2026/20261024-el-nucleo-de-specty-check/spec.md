@@ -75,3 +75,25 @@ Primer corte de los quality gates (ADR 0012): `specty check` verifica, sin model
   - ac: AC6
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Primer corte de los quality gates (ADR 0012). `specty check` mira lo que cambió respecto al merge-base con la rama destino más lo nuevo (por defecto), lo preparado (`--staged`) o todo (`--all`). Nunca mira lo de `checks.exclude` (carpetas de dependencias y artefactos comunes a cualquier ecosistema), lo ignorado ni lo generado. Ejecuta las verificaciones de los proveedores que aplican al repositorio, cada una a su nivel de `checks.levels`. Muestra solo los fallos, agrupados con `ruta:línea` y recortados a `checks.maxFindings`, y termina en una línea de resumen. Con `--verbose` da el detalle, con `--json` el resultado para la CI, y sale con 1 si falla una de nivel error. La primera verificación es `max-lines`, con la regla `lines`.
+
+### Desviaciones
+
+- La épica de los quality gates se canceló, porque Specty todavía no la sostiene: una épica abierta ata la sesión a su carpeta y su tarjeta pide un `accept` que se rechaza. Los cortes van como cambios encadenados con `--follows`, y el plan queda en el ADR 0012.
+- T3 corrigió el import de zod de `schema/checks.ts` (ampliación aprobada sola): `import { z }` arrastraba sus locales al bundle de los hooks, y lo detectó el test del bundle.
+
+### Decisiones
+
+- La salida de `check` no lleva cabecera ni SIGUIENTE: termina en el resumen, como pidió el diseño, por un camino de salida propio en `program.ts` que respeta `--json`.
+- Si se piden varios modos, gana el más amplio: `--all`, luego `--staged`, luego `--changed`.
+
+### Pendientes
+
+- Arreglar el flujo de las épicas: su tarjeta en `implementing` (debe guiar por los cortes) y la regla de una sesión por worktree con sus cortes.
+- `specty check --all` ya avisa de `packages/cli/src/commands/init.ts` y `packages/cli/src/commands/task.ts`, con 307 líneas de código cada uno.
+- El corte siguiente: tests enfocados o deshabilitados, TODO sin referencia y secretos.

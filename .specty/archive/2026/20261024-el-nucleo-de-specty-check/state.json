@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-el-nucleo-de-specty-check",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-el-nucleo-de-specty-check",
   "baseCommit": "2e2fdcade0d1870b5cba3c80803c8ad2a4fad65f",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:06ab03ea476295ce909b5ff8e315a4047340aa6c5fa01db3afcece184ed92c18",
@@ -65,14 +65,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/schema/checks.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "dcf204f75d2d26696e19e3d1f1d94f5b8de7d926",
+      "attempts": 2,
       "startedAt": "2026-10-24T17:12:59.741Z",
       "doneAt": "2026-10-24T17:20:52.672Z",
-      "summary": "ADR 0012: el principio, las decisiones del usuario y los nueve cortes; ARCHITECTURE: specty check en la tabla de comandos; formats.md: la clave checks. schema/checks.ts importa zod como el resto de core, para no cargar sus locales en los hooks"
+      "summary": "ADR 0012: el principio, las decisiones del usuario y los nueve cortes; ARCHITECTURE: specty check en la tabla de comandos; formats.md: la clave checks. schema/checks.ts importa zod como el resto de core, para no cargar sus locales en los hooks",
+      "scopeExtra": [
+        "packages/core/src/schema/checks.ts"
+      ]
     }
   },
   "pending": {
@@ -83,5 +83,6 @@
     "A": 5,
     "AC": 6,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T17:22:14.367Z"
 }
