@@ -64,3 +64,23 @@ Dos comprobaciones de que ninguna salida de Specty deja al agente sin camino. Un
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Dos comprobaciones nuevas de que ninguna salida deja al agente sin camino. `commands-named.test.ts` busca en los textos de core y de la CLI, fuera de los comentarios, cada comando `specty …` entre comillas invertidas y lo pasa por el parser de la CLI: hoy los 60 existen, con sus opciones. `walk.ts` recorre un cambio siguiendo cada SIGUIENTE, con el trabajo guionizado y la persona como terminal, y `friction.test.ts` lo usa en cuatro recorridos: quick, standard, standard con cinco tropiezos y standard en modo delegado. Los tropiezos son código antes de la spec y un commit del agente (en el guard), una spec sin criterios, un archivo fuera del alcance y una verificación en rojo. Los cuatro llegan al final y los cinco bloqueos se resuelven: no hay callejones ni bloqueos sin continuación. Las cifras de fricción quedan fijadas en el test y en ARCHITECTURE §16.
+
+### Desviaciones
+
+- Ninguna: no hubo callejones que arreglar, así que el cambio no tocó código fuente (A5).
+
+### Decisiones
+
+- Un bloqueo cuenta como resuelto si una salida sin bloqueo llega en 4 pasos como máximo; un test aparte comprueba que un agente que repite un comando rechazado da «callejón».
+- La fricción se mide en comandos, no en tiempo: con el trabajo guionizado, el tiempo no dice nada del modelo.
+
+### Pendientes
+
+- Fricción que se puede ahorrar: tras `approve` y tras `accept`, el SIGUIENTE pide un `next` que solo trae la tarjeta siguiente. Si esas salidas trajeran ya la primera tarea y la guía del cierre, standard bajaría de 8 a 6 comandos del agente, y quick de 5 a 4.
+- Los mensajes de los hooks de git, y los carriles retro y de ajustes, no están en el recorrido.

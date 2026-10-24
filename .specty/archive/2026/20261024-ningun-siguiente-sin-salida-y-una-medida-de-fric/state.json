@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-ningun-siguiente-sin-salida-y-una-medida-de-fric",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-ningun-siguiente-sin-salida-y-una-medida-de-fric",
   "baseCommit": "800f1a4d6f5140b2d7438bee5dd6eebea77c9304",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:7699253aca4c37e6fc8c0ce5095cff699d32eae9d21767f5e32a06d0059b30f0",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4207c9bd864ac2347bbdfc279d26709ac6ea0600",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:57:50.097Z",
       "doneAt": "2026-10-24T10:59:20.846Z",
-      "summary": "ARCHITECTURE §16: las comprobaciones estática y dinámica de los SIGUIENTE, los tropiezos del recorrido, y la línea base de fricción por recorrido"
+      "summary": "ARCHITECTURE §16: las comprobaciones estática y dinámica de los SIGUIENTE, los tropiezos del recorrido, y la línea base de fricción por recorrido",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -80,5 +80,6 @@
     "A": 5,
     "AC": 5,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T11:00:40.022Z"
 }

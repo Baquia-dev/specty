@@ -10,3 +10,7 @@
 {"ts":"2026-10-24T10:57:50.098Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"4207c9bd864ac2347bbdfc279d26709ac6ea0600"}}
 {"ts":"2026-10-24T10:59:20.844Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":77733}}
 {"ts":"2026-10-24T10:59:20.847Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §16: las comprobaciones estática y dinámica de los SIGUIENTE, los tropiezos del recorrido, y la línea base de fricción por recorrido"}}
+{"ts":"2026-10-24T11:00:29.805Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":64953}}
+{"ts":"2026-10-24T11:00:29.807Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T11:00:40.024Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:3f6b868e8b341d677bde349a9544937692c51952e05babe2b0710384f9d9d8a1","size":"S","warnings":0}}
+{"ts":"2026-10-24T11:03:55.534Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
