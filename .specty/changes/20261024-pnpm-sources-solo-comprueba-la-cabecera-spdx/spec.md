@@ -18,7 +18,7 @@ El tamaño de los archivos lo vigila ahora Specty en `task done`, en cualquier l
 
 ## Tareas
 
-- [ ] T1: pnpm sources solo comprueba la cabecera SPDX
+- [x] T1: pnpm sources solo comprueba la cabecera SPDX
   - files: scripts/check-sources.mjs, packages/cli/test/sources.test.ts, AGENTS.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/sources.test.ts && pnpm sources
   - type: build

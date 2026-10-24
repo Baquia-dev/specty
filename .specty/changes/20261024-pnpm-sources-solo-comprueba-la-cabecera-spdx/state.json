@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261024-pnpm-sources-solo-comprueba-la-cabecera-spdx",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-pnpm-sources-solo-comprueba-la-cabecera-spdx",
   "baseCommit": "6c75421846d3b6b76689d225c306cf63e6b50fea",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48185533d340783af57cb1972391b5cc1d2585b25f5c4fd276720ee6efa5e9ae",
+    "at": "2026-10-24T16:30:28.876Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "732ed49dcdf7f41dd11871363262bcb82d984954",
+      "startedAt": "2026-10-24T16:30:29.331Z",
+      "doneAt": "2026-10-24T16:31:04.134Z",
+      "summary": "check-sources.mjs solo comprueba la cabecera SPDX: el tamaño es de Specty en task done; el test lo cubre; AGENTS.md describe la regla de Specty como criterio, con lines en config.yaml"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:48185533d340783af57cb1972391b5cc1d2585b25f5c4fd276720ee6efa5e9ae",
-    "at": "2026-10-24T16:30:28.876Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
