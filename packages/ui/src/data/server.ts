@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Injectable, type Type } from "@angular/core";
 import type { ResultDecision } from "./acceptance";
-import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "./records";
+import {
+  ActionError,
+  type Bilingual,
+  type ChangeRecord,
+  type Delegation,
+  SpectyData,
+} from "./records";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
 const MARK = 'meta[name="specty-data"][content="server"]';
@@ -41,6 +47,9 @@ interface ServerSession {
 @Injectable()
 export class ServerData extends SpectyData {
   private session: Promise<ServerSession> | undefined;
+  /** One event stream for every subscriber: the Inbox and delegated mode alike. */
+  private events: EventSource | undefined;
+  private readonly listeners = new Set<() => void>();
 
   override async changes(): Promise<readonly ChangeRecord[]> {
     const response = await fetch("/api/changes");
@@ -57,9 +66,31 @@ export class ServerData extends SpectyData {
   }
 
   override subscribe(listener: () => void): () => void {
-    const events = new EventSource("/api/events");
-    events.addEventListener("changes", listener);
-    return () => events.close();
+    this.listeners.add(listener);
+    if (this.events === undefined) {
+      this.events = new EventSource("/api/events");
+      this.events.addEventListener("changes", () => {
+        for (const heard of this.listeners) heard();
+      });
+    }
+    return () => {
+      this.listeners.delete(listener);
+      if (this.listeners.size > 0) return;
+      this.events?.close();
+      this.events = undefined;
+    };
+  }
+
+  override async delegation(): Promise<Delegation> {
+    const response = await fetch("/api/delegation");
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isDelegation(body)) throw new ActionError(UNEXPECTED);
+    return body;
+  }
+
+  override setDelegation(on: boolean): Promise<void> {
+    return this.post("/api/delegation", { on });
   }
 
   override approve(change: string, revision: number): Promise<void> {
@@ -112,11 +143,16 @@ export class ServerData extends SpectyData {
     return Promise.reject(new ActionError(NOT_YET));
   }
 
-  /** One of the person's actions: done (200) or refused with its reason. */
-  private async act(change: string, verb: string, body: object): Promise<void> {
+  /** One of the person's actions on a change. */
+  private act(change: string, verb: string, body: object): Promise<void> {
+    return this.post(`/api/changes/${encodeURIComponent(change)}/${verb}`, body);
+  }
+
+  /** A decision of the person: done (200) or refused with its reason. */
+  private async post(path: string, body: object): Promise<void> {
     const { actions, csrf } = await this.serverSession();
     if (!actions || csrf === undefined) throw new ActionError(READ_ONLY);
-    const response = await fetch(`/api/changes/${encodeURIComponent(change)}/${verb}`, {
+    const response = await fetch(path, {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-Specty-CSRF": csrf },
       body: JSON.stringify(body),
@@ -170,6 +206,21 @@ function outputText(body: unknown): string | undefined {
   const step = next === "" ? [] : [`${next.charAt(0).toUpperCase()}${next.slice(1)}`];
   const text = [...lines, ...step].join(" ");
   return text === "" ? undefined : text;
+}
+
+/** `GET /api/delegation`'s answer: on or off, who and when, and the warning in both languages. */
+function isDelegation(value: unknown): value is Delegation {
+  if (!isObject(value) || typeof value.on !== "boolean" || !isObject(value.warning)) return false;
+  const { es, en } = value.warning;
+  const optional = (field: unknown) => field === undefined || typeof field === "string";
+  return (
+    Array.isArray(es) &&
+    es.every(isText) &&
+    Array.isArray(en) &&
+    en.every(isText) &&
+    optional(value.by) &&
+    optional(value.at)
+  );
 }
 
 function isObject(value: unknown): value is Readonly<Record<string, unknown>> {

@@ -78,6 +78,46 @@ describe("ServerData", () => {
     expect(FakeEvents.last?.closed).toBe(true);
   });
 
+  it("shares one event stream between its subscribers (AC3)", () => {
+    vi.stubGlobal("EventSource", FakeEvents);
+    const data = new ServerData();
+    const [inbox, delegation] = [vi.fn(), vi.fn()];
+    const stopInbox = data.subscribe(inbox);
+    const stream = FakeEvents.last;
+    const stopDelegation = data.subscribe(delegation);
+    expect(FakeEvents.last).toBe(stream);
+    stream?.listeners.get("changes")?.();
+    expect([inbox.mock.calls.length, delegation.mock.calls.length]).toEqual([1, 1]);
+    stopInbox();
+    expect(stream?.closed).toBe(false);
+    stopDelegation();
+    expect(stream?.closed).toBe(true);
+  });
+
+  it("reads and switches delegated mode on the server (AC3)", async () => {
+    const view = {
+      on: true,
+      by: "Ana",
+      at: "2026-10-24T10:00:00Z",
+      warning: { es: ["a"], en: ["b"] },
+    };
+    const requests = serverAnswering({
+      "/api/delegation": [200, view],
+      "/api/session": SESSION,
+    });
+    const data = new ServerData();
+    expect(await data.delegation()).toEqual(view);
+    serverAnswering({ "/api/delegation": [200, { on: true }] });
+    await expect(data.delegation()).rejects.toThrow("The server returned unexpected data.");
+    const posted = serverAnswering({ "/api/session": SESSION, "/api/delegation": [200, {}] });
+    await data.setDelegation(false);
+    expect(requests.map(({ url }) => url)).toEqual(["/api/delegation"]);
+    expect(posted.map(({ url, init }) => [url, init?.method ?? "GET", init?.body ?? ""])).toEqual([
+      ["/api/session", "GET", ""],
+      ["/api/delegation", "POST", '{"on":false}'],
+    ]);
+  });
+
   it("is the source only of the page the local server serves (AC1)", async () => {
     const page = document.implementation.createHTMLDocument("Specty");
     expect(await dataSource(page)).toBe(FixtureData);

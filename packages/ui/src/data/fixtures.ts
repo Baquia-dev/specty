@@ -9,10 +9,12 @@ import {
   type ChangeRecord,
   type CommentAnchor,
   type CommentRecord,
+  type Delegation,
   SpectyData,
 } from "./records";
 import { decideResultIn } from "./sample-acceptance";
-import { sampleDiff } from "./sample-diffs";
+import { sampleDelegation } from "./sample-delegation";
+import { sampleDiffOf } from "./sample-diffs";
 import { decideScopeIn } from "./sample-progress";
 import { HASH, REVIEWER, sampleRecords } from "./sample-records";
 import {
@@ -33,6 +35,7 @@ export { REVIEWER, sampleRecords } from "./sample-records";
 @Injectable()
 export class FixtureData extends SpectyData {
   private records = sampleRecords(Date.now());
+  private delegated = sampleDelegation(false);
   private readonly listeners = new Set<() => void>();
   private failing = false;
   /** The next full verification fails: to see both results without the CLI. */
@@ -109,15 +112,17 @@ export class FixtureData extends SpectyData {
 
   /** The sample's diffs: those of «Panel de asistencia por curso»; the other changes show none. */
   override diff(change: string, task?: string): Promise<string> {
-    if (!this.records.some((record) => record.state.id === change)) {
-      return Promise.reject(
-        new ActionError({
-          es: `No existe el cambio ${change}.`,
-          en: `There is no change ${change}.`,
-        }),
-      );
-    }
-    return Promise.resolve(sampleDiff(change, task));
+    return sampleDiffOf(this.records, change, task);
+  }
+
+  override delegation(): Promise<Delegation> {
+    return Promise.resolve(this.delegated);
+  }
+
+  override setDelegation(on: boolean): Promise<void> {
+    this.delegated = sampleDelegation(on);
+    this.notify();
+    return Promise.resolve();
   }
 
   /** The full verification of a change in acceptance, line by line; one run at a time. */

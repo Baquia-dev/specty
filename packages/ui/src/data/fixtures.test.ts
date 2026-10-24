@@ -3,7 +3,7 @@ import { signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { ChangesStore, DERIVER } from "./changes-store";
 import { answer } from "./derive.worker";
-import { FixtureData, sampleRecords } from "./fixtures";
+import { FixtureData, REVIEWER, sampleRecords } from "./fixtures";
 import type { ChangeRecord as ChangeRecordForTest } from "./records";
 import { type ChangeRecord, SpectyData } from "./records";
 import { deriveViews } from "./views";
@@ -157,6 +157,19 @@ describe("FixtureData actions", () => {
     expect(view?.closing?.pending).toContain("La plantilla en inglés");
     const closed = (await fixtures.changes()).find((item) => item.state.id === mail);
     expect(closed?.audit?.at(-1)).toMatchObject({ actor: "human", event: "change.closed" });
+  });
+
+  it("switches delegated mode and tells the subscribers (AC3)", async () => {
+    const { fixtures } = setup();
+    const heard = vi.fn();
+    fixtures.subscribe(heard);
+    expect(await fixtures.delegation()).toMatchObject({ on: false });
+    await fixtures.setDelegation(true);
+    expect(await fixtures.delegation()).toMatchObject({ on: true, by: REVIEWER });
+    expect((await fixtures.delegation()).warning.es[0]).toContain("Con el modo delegado");
+    await fixtures.setDelegation(false);
+    expect((await fixtures.delegation()).on).toBe(false);
+    expect(heard).toHaveBeenCalledTimes(2);
   });
 });
 

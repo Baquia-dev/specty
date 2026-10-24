@@ -6,6 +6,13 @@
   "branch": "specty/20261024-el-modo-delegado-en-la-ui",
   "baseCommit": "61c29132dbebdcb0e26562c772609c9ab8f7dea6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:12bd741ce811667a379bfb10c513aade0d2ef8fcacc1bc32f438d731b25bbedb",
+    "at": "2026-10-24T06:08:25.388Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "77352f406c1e03f1b0fd9b506035d2f48a35bea5",
+      "startedAt": "2026-10-24T06:08:25.945Z",
+      "doneAt": "2026-10-24T06:11:24.165Z",
+      "summary": "SpectyData gana delegation() y setDelegation(on) con el tipo Delegation; ServerData los resuelve con GET y POST /api/delegation y comparte una sola conexión de eventos entre sus suscriptores; FixtureData guarda el modo delegado de ejemplo (sample-delegation.ts, con el aviso de la CLI) y la búsqueda del diff de ejemplo pasa a sample-diffs.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -41,12 +58,5 @@
     "A": 4,
     "AC": 3,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:12bd741ce811667a379bfb10c513aade0d2ef8fcacc1bc32f438d731b25bbedb",
-    "at": "2026-10-24T06:08:25.388Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

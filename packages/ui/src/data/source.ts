@@ -3,7 +3,7 @@
 // it): reading is required, every action is optional.
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
-import type { Bilingual, ChangeRecord, CommentAnchor } from "./records";
+import type { Bilingual, ChangeRecord, CommentAnchor, Delegation } from "./records";
 
 /** An action the source could not do, explained in both languages. */
 export class ActionError extends Error {
@@ -88,5 +88,15 @@ export abstract class SpectyData {
   /** The diff, as `git diff` writes it, of a task or, with none, of the whole change. */
   diff(_change: string, _task?: string): Promise<string> {
     return Promise.reject(new ActionError(NO_DIFFS));
+  }
+
+  /** Delegated mode as the source knows it; nothing when it cannot tell. */
+  delegation(): Promise<Delegation | undefined> {
+    return Promise.resolve(undefined);
+  }
+
+  /** Turns delegated mode on, once the person read the warning, or off. */
+  setDelegation(_on: boolean): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
   }
 }

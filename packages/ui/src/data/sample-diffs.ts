@@ -2,6 +2,7 @@
 // The diffs of the sample change «Panel de asistencia por curso», written out as `git diff` would:
 // T1 changes the repository and its test, T2 adds the panel and its test.
 // biome-ignore-all lint/suspicious/noTemplateCurlyInString: the `${…}` belong to the sample's Dart.
+import { ActionError, type ChangeRecord } from "./records";
 
 type Line = readonly [" " | "+" | "-", string];
 
@@ -237,4 +238,21 @@ export function sampleDiff(change: string, task?: string): string {
   const tasks = DIFFS[change] ?? {};
   const files = task === undefined ? Object.values(tasks).flat() : (tasks[task] ?? []);
   return files.map(unified).join("\n");
+}
+
+/** The sample's diff for the prototype's source: a change the sample does not have is refused. */
+export function sampleDiffOf(
+  records: readonly ChangeRecord[],
+  change: string,
+  task?: string,
+): Promise<string> {
+  if (!records.some((record) => record.state.id === change)) {
+    return Promise.reject(
+      new ActionError({
+        es: `No existe el cambio ${change}.`,
+        en: `There is no change ${change}.`,
+      }),
+    );
+  }
+  return Promise.resolve(sampleDiff(change, task));
 }

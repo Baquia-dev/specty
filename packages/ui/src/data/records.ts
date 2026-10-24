@@ -50,6 +50,18 @@ export interface CommentRecord {
 
 export type Bilingual = Readonly<Record<Lang, string>>;
 
+/**
+ * Delegated mode (ADR 0010): whether the agent takes the person's decisions, since when and who
+ * turned it on, and the warning to read before turning it on, in both languages.
+ */
+export interface Delegation {
+  readonly on: boolean;
+  readonly by?: string;
+  /** ISO time it was turned on. */
+  readonly at?: string;
+  readonly warning: Readonly<Record<Lang, readonly string[]>>;
+}
+
 export type ReviewSection =
   | "goal"
   | "outOfScope"

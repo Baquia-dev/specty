@@ -52,7 +52,7 @@ La persona ve y cambia el modo delegado desde la UI, como pidió: mientras está
 
 ## Tareas
 
-- [ ] T1: El modo delegado en las fuentes de datos
+- [x] T1: El modo delegado en las fuentes de datos
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server.test.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-delegation.ts, packages/ui/src/data/sample-diffs.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server.test.ts --include src/data/fixtures.test.ts
