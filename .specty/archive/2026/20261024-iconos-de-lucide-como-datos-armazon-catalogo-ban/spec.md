@@ -53,3 +53,21 @@ Segunda de las tres partes de «Iconos de Lucide como datos». `app/`, `catalog/
   - ac: AC1
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+`app/`, `catalog/`, `change/`, `inbox/` y `progress/` toman sus iconos de `components/icons.ts`. De `@lucide/angular` solo importan `LucideDynamicIcon` y el tipo `LucideIconInput`. Queda la tercera parte: `acceptance/` y `review/`.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Las importaciones se cambiaron con un script que separa los iconos del resto de lo que se importa de `@lucide/angular`, y Biome las ordenó después.
+
+### Pendientes
+
+- La tercera parte: `acceptance/` y `review/`, medir de nuevo el bundle e impedir que vuelvan a importarse clases de iconos.
