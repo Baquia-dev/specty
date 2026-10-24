@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-comentar-y-pedir-cambios-desde-la-ui",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-comentar-y-pedir-cambios-desde-la-ui",
   "baseCommit": "82c639af4510595bac478f24746d95eb23b46500",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9deb510f9ba89fd6fba96b44552e5b8dffbdc53214fb2e2b3d45de8492e6da30",
@@ -39,12 +39,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dfaf1ecc8808e31d3dcf20649411bc85fdd920ed",
+      "attempts": 1,
       "startedAt": "2026-10-24T07:07:26.731Z",
       "doneAt": "2026-10-24T07:10:20.465Z",
-      "summary": "ARCHITECTURE §15 cuenta comentar la spec y pedir los cambios entre las decisiones que la UI envía al servidor, deja solo verificar y los diffs como acciones que aún no existen allí, y explica que tras cada acción la UI se actualiza con el evento changes"
+      "summary": "ARCHITECTURE §15 cuenta comentar la spec y pedir los cambios entre las decisiones que la UI envía al servidor, deja solo verificar y los diffs como acciones que aún no existen allí, y explica que tras cada acción la UI se actualiza con el evento changes",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -55,5 +55,6 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T07:11:43.607Z"
 }

@@ -46,3 +46,22 @@ En la UI que sirve `specty ui`, la persona comenta la spec durante la revisión 
   - ac: AC3
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La UI que sirve `specty ui` ya comenta la spec y pide los cambios contra el servidor local: `ServerData` envía `POST /api/changes/<id>/comments` con el ancla y el texto, y `POST /api/changes/<id>/request-changes`, con la cookie y el token CSRF como las demás decisiones. Si el flujo lo rechaza, la UI muestra su motivo. Solo verificar el cambio y ver sus diffs siguen sin ruta en el servidor.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Tras comentar o pedir cambios, la UI no vuelve a leer nada: la actualiza el evento `changes`, cuya firma ya incluye `comments.json` y `audit.jsonl` (A1).
+
+### Pendientes
+
+- Mostrar en la revisión que los cambios ya se pidieron y que falta la revisión siguiente del agente: hoy «Pedir cambios» sigue activo mientras haya comentarios sin resolver, y pedirlos otra vez solo añade otra línea a la auditoría.
+- Ocultar o desactivar los botones de decisión cuando el servidor es de solo lectura.
