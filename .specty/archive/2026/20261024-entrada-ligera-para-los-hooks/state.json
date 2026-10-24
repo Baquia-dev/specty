@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "id": "20261024-entrada-ligera-para-los-hooks",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-entrada-ligera-para-los-hooks",
+  "baseCommit": "3cac524b0f1f5be561fd53c4d6cc1b00392cbbd6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:636250c9469e57ff214217169dd3e10bd0befe736dcf00b3cb1cbd99bec224d1",
+    "at": "2026-10-24T11:30:15.922Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:89c610e1dc6fefd019c3e41f9d83916a2cdd39ac0458bac288a880661d18fd35",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:839b4d7c8aaed291375d7b6c0ac4d108a7e63f91a824e1147c04b98fb00df209",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:af09af69dae5a6c4a973b3fe6ee2c5336851ed819794e0f79b2794b8bfe64785",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:f1898c99a76c10ad5b830c4f610803577e165f622b732c0bac25f2a9ac6bf10a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4776cb72d05de1f1a696f2aa51eae235b5535f4f",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:30:16.432Z",
+      "doneAt": "2026-10-24T11:30:52.208Z",
+      "summary": "schema/config.ts, schema/state.ts y spec/frontmatter.ts importan zod como espacio de nombres; el bundle de la CLI baja de 1,70 a 1,14 MB y ya no lleva las traducciones de zod.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "99b9faa74d4b2d7326a45f9eff218d48bca0f2f0",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:30:53.204Z",
+      "doneAt": "2026-10-24T11:33:29.005Z",
+      "summary": "enforce/entry.ts tiene guardCommand y hookCommand (las acciones de guard y hook, que commands.ts ahora llama) y runHook, que reconoce la forma exacta de los hooks y los ejecuta con una terminal sin prompts. main.ts no importa nada de forma estática: los hooks cargan solo su entrada y lo demás carga la CLI completa.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "bdd19b70565349599cc56fa0458a17af5157e67c",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:33:29.827Z",
+      "doneAt": "2026-10-24T11:37:55.740Z",
+      "summary": "build.mjs parte el bundle (splitting, trozos [name]-[hash] en dist/ junto a specty.mjs), borra los .mjs que la build no generó y guarda el metafile con --metafile. El test de bundle recorre los imports estáticos desde la entrada de los hooks: no llegan a commander, los prompts, program.ts, el servidor ni init; no hay traducciones de zod; el bundle partido responde al guard y a --help. ARCHITECTURE §2 y §10.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T14:44:32.253Z",
+  "integration": {
+    "target": "main",
+    "commit": "e17aa1d6ba48fb808266855fcb614254abcc0bbc",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/build.mjs",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/task.ts",
+      "packages/cli/src/enforce/commands.ts",
+      "packages/cli/src/enforce/entry.ts",
+      "packages/cli/src/flow/risk.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/main.ts",
+      "packages/cli/test/bundle.test.ts",
+      "packages/cli/test/hooks-entry.test.ts",
+      "packages/cli/test/risk.test.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/schema/state.ts",
+      "packages/core/src/scope/risk.ts",
+      "packages/core/src/sizing/size.ts",
+      "packages/core/src/spec/frontmatter.ts",
+      "packages/core/test/cards/tests.test.ts",
+      "packages/core/test/scope/risk.test.ts",
+      "packages/core/test/sizing/sizing.test.ts",
+      "packages/core/test/spec/messages.test.ts",
+      "packages/ui/package.json",
+      "packages/ui/src/components/badge.ts",
+      "packages/ui/src/components/button.test.ts",
+      "packages/ui/src/components/collapsible.ts",
+      "packages/ui/src/components/dialog.ts",
+      "packages/ui/src/components/diff-file.ts",
+      "packages/ui/src/components/empty-state.test.ts",
+      "packages/ui/src/components/field.ts",
+      "packages/ui/src/components/icons.test.ts",
+      "packages/ui/src/components/icons.ts",
+      "packages/ui/src/components/select.ts",
+      "packages/ui/src/components/toast.ts",
+      "pnpm-lock.yaml"
+    ],
+    "at": "2026-10-24T14:46:50.063Z",
+    "resolved": {
+      "commit": "6284c1c",
+      "at": "2026-10-24T14:52:30.553Z"
+    }
+  }
+}

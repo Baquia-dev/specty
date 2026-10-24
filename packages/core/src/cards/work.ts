@@ -63,6 +63,7 @@ export function taskCard(change: ChangeView, task: TaskView, ctx: CardContext): 
       ),
       ...section(t("CONVENCIONES", "CONVENTIONS"), change.conventions),
       ...section(t("HECHO", "DONE"), done),
+      ...section(t("HALLAZGOS", "FINDINGS"), findingLines(change.tasks)),
       ...section(t("ALCANCE PENDIENTE DE APROBACIÓN", "SCOPE AWAITING APPROVAL"), pending),
       ...section("TESTS", testLines(task, ctx)),
       ...section(undefined, [
@@ -80,6 +81,11 @@ export function taskCard(change: ChangeView, task: TaskView, ctx: CardContext): 
       `implement ${task.id} and run \`${ctx.command} task done ${task.id} --summary "<what you did>"\`.`,
     ),
   };
+}
+
+/** What the done tasks learned (`task done --finding`), one line each. */
+function findingLines(tasks: readonly TaskView[]): string[] {
+  return tasks.flatMap((task) => (task.findings ?? []).map((text) => `${task.id}: ${text}`));
 }
 
 /** Test first for new behaviour, and an existing failing test is a finding, not something to bend. */
@@ -249,16 +255,27 @@ export function closingCard(change: ChangeView, ctx: CardContext): Output {
           "### Resumen, ### Desviaciones (respecto al plan), ### Decisiones y ### Pendientes",
           "### Summary, ### Deviations (from the plan), ### Decisions and ### Follow-ups",
         );
+  const findings = findingLines(change.tasks);
+  const carry = t(
+    "Lleva a ### Pendientes los que sigan abiertos: un cambio que siga a este con `--follows` los verá.",
+    "Carry the open ones to ### Follow-ups: a change that follows this one with `--follows` will see them.",
+  );
   return {
     status: "ok",
     header: headerOf(change.id, "closing"),
-    blocks: section(t("CÓMO CERRAR", "HOW TO CLOSE"), [
-      t(
-        `Añade al final de ${change.specPath} la sección «## Cierre» con ${headings}.`,
-        `Add a "## Closing" section at the end of ${change.specPath} with ${headings}.`,
+    blocks: [
+      ...section(t("CÓMO CERRAR", "HOW TO CLOSE"), [
+        t(
+          `Añade al final de ${change.specPath} la sección «## Cierre» con ${headings}.`,
+          `Add a "## Closing" section at the end of ${change.specPath} with ${headings}.`,
+        ),
+        t("No cambies nada más de la spec.", "Do not change anything else in the spec."),
+      ]),
+      ...section(
+        t("HALLAZGOS DE LAS TAREAS", "FINDINGS OF THE TASKS"),
+        findings.length === 0 ? [] : [...findings, carry],
       ),
-      t("No cambies nada más de la spec.", "Do not change anything else in the spec."),
-    ]),
+    ],
     next: t(
       `escribe el cierre y ejecuta \`${ctx.command} propose\`.`,
       `write the closing and run \`${ctx.command} propose\`.`,

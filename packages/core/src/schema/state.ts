@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { z } from "zod";
+import * as z from "zod";
 import { CHANGE_ID } from "../ids";
 
 const Hash = z.string().regex(/^sha256:[0-9a-f]{64}$/);
