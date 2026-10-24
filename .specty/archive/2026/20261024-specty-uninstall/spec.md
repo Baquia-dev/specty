@@ -83,3 +83,26 @@ Segunda mitad del punto «init reversible y `specty uninstall`»: hoy no hay for
 
 - R1: Quitar algo que no es de Specty — solo toca lo que lleva sus marcas, enseña la lista antes de preguntar, guarda copia de cada archivo, y `--dry-run` deja verlo sin riesgo.
 - R2: Un agente que se quite la protección — el guard lo bloquea siempre (A1), y el comando exige una terminal real.
+
+## Cierre
+
+### Resumen
+
+`specty uninstall` quita lo que `init` instaló en el repositorio, reconocido por sus marcas: los bloques de AGENTS.md, las entradas del guard y los permisos de worktrees en los ajustes de Claude Code y de Cursor, el bloque de los hooks de git nativos o de husky y el comando `specty` de lefthook. Deja el resto de cada archivo como estaba y borra el que se queda vacío. Solo lo ejecuta una persona en su terminal: enseña la lista, pregunta (por defecto «No»), guarda copias como `init` y no hace commit. Dice qué se queda (`.specty/`, el `@AGENTS.md` de CLAUDE.md y el guard global de Codex y OpenCode). El guard se lo bloquea siempre al agente, también en modo delegado, y `--dry-run` solo lista. Los tests comprueban que, tras `init` y `uninstall`, AGENTS.md, los ajustes propios de la persona y sus hooks de husky y lefthook vuelven a ser exactamente los de antes.
+
+### Desviaciones
+
+- **`core/src/index.ts` entró en T1 (S1):** había que exportar `removeBlock` para la CLI.
+- **`install/files.ts` entró en T3:** la ampliación se aprobó sola porque ya estaba en Archivos. `removeAgentHooks` cambia `.cursor/hooks.json` y luego lo borra en la misma ejecución, y la lista decía «quitar lo de Specty de» en vez de «borrar»; ahora el borrado manda, también en el manifiesto.
+- **`rewriteJson` pasó de `agents.ts` a `files.ts`:** con `removeAgentHooks`, `agents.ts` llegaba a 304 líneas. Además ahora quita las claves que la actualización deja fuera, lo que `init` nunca hace con las de primer nivel, así que lo que escribe no cambia.
+
+### Decisiones
+
+- **El comando se registra desde `commands/uninstall.ts` (`uninstallCommand`),** como `enforcementCommands`, porque `program.ts` estaba en 295 líneas.
+- **Se quitan también los permisos `EnterWorktree` y `ExitWorktree`:** los puso Specty para sus worktrees.
+- **La lista se calcula con una simulación** y luego se aplica de verdad con el mismo código, así que lo que se enseña es lo que se hace.
+
+### Pendientes
+
+- **Restaurar una copia de `init` o `uninstall`:** sigue siendo a mano, con el `manifest.json`.
+- **simple-git-hooks:** `init` solo da la línea para añadir a mano, y `uninstall` tampoco la quita.

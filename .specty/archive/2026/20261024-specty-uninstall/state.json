@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-specty-uninstall",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-specty-uninstall",
   "baseCommit": "f78407745fe8969f8dd47efe82872057316e1853",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2cd7385a1145b579e9db9d224096072b76d06b857bc9e9a58d4f5b0a71e3c0ec",
@@ -67,14 +67,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/install/files.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "556a6c33af82eb535aaaa1aa59b912bee46e472e",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:23:34.611Z",
       "doneAt": "2026-10-24T15:28:04.276Z",
-      "summary": "commands/uninstall.ts: comprueba la terminal (salvo --dry-run), planea con un InstallFiles simulado, enseña la lista, pregunta (por defecto «No») y lo repite de verdad con copias; dice qué se queda (.specty/, CLAUDE.md, guard global de Codex y OpenCode) y no hace commit. program.ts lo registra con uninstallCommand. InstallFiles cuenta como borrado un archivo cambiado y luego borrado (S1). ARCHITECTURE §6 y §14, formats.md §1."
+      "summary": "commands/uninstall.ts: comprueba la terminal (salvo --dry-run), planea con un InstallFiles simulado, enseña la lista, pregunta (por defecto «No») y lo repite de verdad con copias; dice qué se queda (.specty/, CLAUDE.md, guard global de Codex y OpenCode) y no hace commit. program.ts lo registra con uninstallCommand. InstallFiles cuenta como borrado un archivo cambiado y luego borrado (S1). ARCHITECTURE §6 y §14, formats.md §1.",
+      "scopeExtra": [
+        "packages/cli/src/install/files.ts"
+      ]
     }
   },
   "pending": {
@@ -87,5 +87,6 @@
     "T": 3,
     "R": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:29:40.002Z"
 }
