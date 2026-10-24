@@ -50,7 +50,7 @@ Tres detalles pendientes de la UI. Las filas que se desplazan de lado (las fases
   - files: packages/ui/src/components/edge-fade.ts, packages/ui/src/components/edge-fade.test.ts, packages/ui/src/styles.css, packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/review/delta-review.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components --include src/inbox --include src/review && pnpm sources
-- [ ] T2: El menú del catálogo y la barra de la Bandeja
+- [x] T2: El menú del catálogo y la barra de la Bandeja
   - files: packages/ui/src/catalog/catalog.ts, packages/ui/src/catalog/catalog.test.ts, packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/catalog --include src/inbox && pnpm sources

@@ -4,8 +4,11 @@ import {
   Component,
   computed,
   DestroyRef,
+  ElementRef,
+  effect,
   inject,
   signal,
+  viewChild,
   viewChildren,
 } from "@angular/core";
 import {
@@ -113,6 +116,7 @@ export class Inbox {
   protected readonly empty = LucideInbox;
   protected readonly now = signal(Date.now());
   private readonly rows = viewChildren(InboxRow);
+  private readonly toolbar = viewChild(InboxToolbar, { read: ElementRef });
 
   protected readonly sections = computed(() =>
     inboxSections(this.store.all(), this.state.filters(), this.preferences.lang()),
@@ -168,7 +172,22 @@ export class Inbox {
       run: move(-1),
     });
     const timer = setInterval(() => this.now.set(Date.now()), TICK_MS);
-    inject(DestroyRef).onDestroy(() => clearInterval(timer));
+    // A row reached with j/k stays under the fixed bar, however tall the bar grows.
+    const host: HTMLElement = inject(ElementRef).nativeElement;
+    let resize: ResizeObserver | undefined;
+    effect(() => {
+      const bar: HTMLElement | undefined = this.toolbar()?.nativeElement;
+      resize?.disconnect();
+      if (bar === undefined || typeof ResizeObserver === "undefined") return;
+      resize = new ResizeObserver(() =>
+        host.style.setProperty("--sp-sticky-top", `${bar.offsetHeight}px`),
+      );
+      resize.observe(bar);
+    });
+    inject(DestroyRef).onDestroy(() => {
+      clearInterval(timer);
+      resize?.disconnect();
+    });
   }
 
   protected isSelected(change: ChangeView): boolean {

@@ -166,6 +166,26 @@ describe("Inbox", () => {
     expect(rows().at(-2)?.getAttribute("aria-current")).toBe("true");
   });
 
+  it("keeps a row reached with j/k under the fixed bar, as tall as it is (AC3)", async () => {
+    // jsdom measures nothing: this observer reports at once, and the bar is 120 px tall.
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        constructor(private readonly report: () => void) {}
+        observe(target: HTMLElement) {
+          Object.defineProperty(target, "offsetHeight", { value: 120 });
+          this.report();
+        }
+        disconnect() {}
+      },
+    );
+    const { element, rows } = await open();
+    const inbox = element.querySelector<HTMLElement>("sp-inbox");
+    expect(inbox?.style.getPropertyValue("--sp-sticky-top")).toBe("120px");
+    expect(rows()[0]?.className).toContain("scroll-mt-[calc(var(--sp-sticky-top,9rem)+0.5rem)]");
+    vi.unstubAllGlobals();
+  });
+
   it("finds by title or id, ignoring case and accents; / to search and Escape to clear (AC2)", async () => {
     const { fixture, rows, search, press, typeIn } = await open();
     press("/");

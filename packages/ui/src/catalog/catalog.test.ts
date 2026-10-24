@@ -73,6 +73,31 @@ describe("Catalog", () => {
     }
   });
 
+  it("brings the current page into view when the menu scrolls sideways (AC2)", async () => {
+    const { element, fixture } = await open("/catalog/colors");
+    const menu = element.querySelector<HTMLElement>("sp-catalog nav ul");
+    if (menu === null) throw new Error("no menu");
+    // jsdom lays out nothing: a 300 px menu showing 100 px, each link 50 px wide.
+    let left = 0;
+    Object.defineProperties(menu, {
+      scrollWidth: { value: 300 },
+      clientWidth: { value: 100 },
+      scrollLeft: { get: () => left, set: (value: number) => (left = value) },
+      getBoundingClientRect: { value: () => ({ left: -left }) },
+    });
+    const links = [...menu.querySelectorAll<HTMLElement>("a")];
+    for (const [index, link] of links.entries()) {
+      Object.defineProperties(link, {
+        offsetWidth: { value: 50 },
+        getBoundingClientRect: { value: () => ({ left: index * 50 - left }) },
+      });
+    }
+    await TestBed.inject(Router).navigateByUrl("/catalog/patterns");
+    await fixture.whenStable();
+    // The sixth link starts at 250 px: centered, the menu scrolls to 225 px.
+    expect(left).toBe(225);
+  });
+
   it("shows the colors as document rows under section dividers, without cards", async () => {
     const { element } = await open("/catalog/colors");
     const page = element.querySelector<HTMLElement>("sp-colors");

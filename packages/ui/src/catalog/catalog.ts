@@ -1,6 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/core";
-import { Router, RouterLink, RouterLinkActive, RouterOutlet, type Routes } from "@angular/router";
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  ElementRef,
+  Injector,
+  inject,
+} from "@angular/core";
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+  type Routes,
+} from "@angular/router";
 import {
   LucideComponent,
   LucideDynamicIcon,
@@ -12,6 +28,7 @@ import {
 } from "@lucide/angular";
 import { Commands } from "../components/command-palette";
 import { PAGE } from "../components/document";
+import { EdgeFade } from "../components/edge-fade";
 import { Preferences } from "../theme/preferences";
 
 /** Pages of the catalog, under `/catalog`; each loads on demand. */
@@ -53,14 +70,14 @@ export const CATALOG_ROUTES: Routes = [
 /** The design system catalog: a section of the app with its own navigation. */
 @Component({
   selector: "sp-catalog",
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideDynamicIcon],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, LucideDynamicIcon, EdgeFade],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- The common page width; the menu stays in view beside the page, or on a phone above it. -->
     <div [class]="page + ' flex flex-col gap-6 pt-6 md:flex-row md:gap-10 md:pt-10'">
       <nav class="md:w-60 md:shrink-0" [attr.aria-label]="t()('Catálogo', 'Catalog')">
         <!-- On a phone, one line that scrolls sideways, like the Inbox phases. -->
-        <ul class="-mx-6 my-0 flex list-none gap-1 overflow-x-auto px-6 py-0 scrollbar-none md:sticky md:top-10 md:mx-0 md:flex-col md:overflow-visible md:px-0">
+        <ul spEdgeFade class="-mx-6 my-0 flex list-none gap-1 overflow-x-auto px-6 py-0 scrollbar-none md:sticky md:top-10 md:mx-0 md:flex-col md:overflow-visible md:px-0">
           @for (page of pages(); track page.path) {
             <li class="shrink-0">
               <a
@@ -108,6 +125,15 @@ export class Catalog {
   constructor() {
     const commands = inject(Commands);
     const router = inject(Router);
+    const host: HTMLElement = inject(ElementRef).nativeElement;
+    const injector = inject(Injector);
+    // On a phone the menu scrolls sideways: each page brings its link into view.
+    const reveal = () => afterNextRender(() => revealActive(host), { injector });
+    reveal();
+    const navigations = router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) reveal();
+    });
+    inject(DestroyRef).onDestroy(() => navigations.unsubscribe());
     for (const page of [
       ["colors", "Colores", "Colors"],
       ["typography", "Tipografía", "Typography"],
@@ -124,4 +150,14 @@ export class Catalog {
       });
     }
   }
+}
+
+/** Centers the current page's link in the menu, when the menu scrolls sideways. */
+function revealActive(host: HTMLElement): void {
+  const menu = host.querySelector<HTMLElement>("nav ul");
+  const link = menu?.querySelector<HTMLElement>("a[aria-current=page]");
+  if (menu === null || menu === undefined || link === null || link === undefined) return;
+  if (menu.scrollWidth <= menu.clientWidth) return;
+  const offset = link.getBoundingClientRect().left - menu.getBoundingClientRect().left;
+  menu.scrollLeft += offset - (menu.clientWidth - link.offsetWidth) / 2;
 }
