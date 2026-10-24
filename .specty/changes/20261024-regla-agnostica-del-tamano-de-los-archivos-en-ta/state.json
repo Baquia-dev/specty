@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261024-regla-agnostica-del-tamano-de-los-archivos-en-ta",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-regla-agnostica-del-tamano-de-los-archivos-en-ta",
+  "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e0c16a565db47f739825e7aef1f894484bf88e954b8fa97e31ca00d1fcbc38c7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fbdeda98973039f3a042bfdd72bba4ba9ab404171388d6e853d7b45bf2642c4b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3daebca2ae597dbed77b0c681bf09e2b2b202029de8fe04cd540f3a843485cef",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e5ce2f43bfff6afae9513e4dcb2d3ab2a2b388fe4f8a8351441bd5740429924c",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ef2753284561fcd0c6c7953c85cdbf70f2ccd1e024080a8b68e650f2c0743c65",
+    "at": "2026-10-24T16:16:36.851Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
