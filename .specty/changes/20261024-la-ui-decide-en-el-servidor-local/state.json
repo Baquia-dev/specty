@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "20261024-la-ui-decide-en-el-servidor-local",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-la-ui-decide-en-el-servidor-local",
+  "baseCommit": "31572b8cd11503350269d9af1827f1f8703d2aaf",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5ed375b8e469f4c2cc69b48c479c7d02582393b1d0950bebd6fce520f5381e7d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:982cefdde6866350bb1f798513e87d13699fda0f8724ca03bf679257893b31ab",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b10f3d2476630ebff5dd8be36fbddee8c5670b00d19ae9abce0e5ff9f327f42e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6927d2a4190b2a07dddf02810067d07dfb43644a9532f2331717d67ee8aaca6d",
+    "at": "2026-10-24T05:47:54.152Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
