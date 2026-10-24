@@ -22,7 +22,14 @@ import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
-import { checksAfterShell, type GuardTool, type RawAction, toolAction } from "./actions";
+import {
+  cwdOf,
+  type GuardTool,
+  isAfterTool,
+  type RawAction,
+  toolAction,
+  toolUseId,
+} from "./actions";
 import { bindSession, enterAction } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 import { isWorktreeEvent, worktreeHook } from "./worktree-hooks";
@@ -34,8 +41,8 @@ export interface GuardReply {
 }
 
 /**
- * `specty guard --tool <id>`: called by the agent's hooks before each action and, in Claude
- * Code and Codex, after each Bash command; in Claude Code, also to create and remove worktrees
+ * `specty guard --tool <id>`: called by the agent's hooks before each action and after each shell
+ * command; in Claude Code, also to create and remove worktrees
  * and, after a compaction, to bring back what `specty next` says.
  * It fails open on its own errors (the git hooks and CI still apply) and never blocks outside
  * Specty repos.
@@ -60,8 +67,7 @@ export async function guard(
     if (tool === "claude-code" && event.hook_event_name === "SessionStart") {
       return { code: 0, stdout: renderText(await next(session), session.lang), stderr: "" };
     }
-    const after = checksAfterShell(tool);
-    if (after && isAfterTool(event)) return await afterShell(session, tool, event);
+    if (isAfterTool(event)) return await afterShell(session, tool, event);
     const raw = toolAction(tool, event);
     const action =
       raw.kind === "enter"
@@ -70,7 +76,7 @@ export async function guard(
     const decision = decideGuard(action, await guardContext(session));
     // One change at a time per session: the worktree it may enter becomes its own.
     if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
-    if (decision.allow && after) await beforeShell(session, event, action);
+    if (decision.allow) await beforeShell(session, event, action);
     return reply(tool, decision, session);
   } catch (error) {
     const message = `specty guard: ${error instanceof Error ? error.message : String(error)}`;
@@ -84,17 +90,7 @@ export async function guard(
   }
 }
 
-function isAfterTool(event: Record<string, unknown>): boolean {
-  return event.hook_event_name === "PostToolUse" || event.hook_event_name === "PostToolUseFailure";
-}
-
-/** The tool call that links the hooks before and after a command, safe as a file name. */
-function toolUseId(event: Record<string, unknown>): string | undefined {
-  const id = event.tool_use_id;
-  return typeof id === "string" && /^[\w-]{1,128}$/.test(id) ? id : undefined;
-}
-
-/** Before a Bash command it lets through, keeps a snapshot of the tree to compare afterwards. */
+/** Before a shell command it lets through, keeps a snapshot of the tree to compare afterwards. */
 async function beforeShell(
   session: Session,
   event: Record<string, unknown>,
@@ -112,7 +108,7 @@ async function beforeShell(
   }
 }
 
-/** After a Bash command, judges what it changed with the guard's own rules. */
+/** After a shell command, judges what it changed with the guard's own rules. */
 async function afterShell(
   session: Session,
   tool: GuardTool,
@@ -121,24 +117,17 @@ async function afterShell(
   const id = toolUseId(event);
   const before = id === undefined ? undefined : await takeSnapshot(session, id);
   await pruneSnapshots(session);
-  if (before === undefined) return allow(tool);
-  const changes = shellChanges(before, await treeSnapshot(session));
-  return reply(tool, decideAfterShell(changes, await guardContext(session)), session);
-}
-
-function cwdOf(event: Record<string, unknown>, fallback: string): string {
-  const roots = event.workspace_roots;
-  const base =
-    typeof event.cwd === "string" && event.cwd.length > 0
-      ? event.cwd
-      : Array.isArray(roots) && typeof roots[0] === "string"
-        ? roots[0]
-        : fallback;
-  // A command that names its own folder (OpenCode's `workdir`) runs there.
-  const input = isRecord(event.tool_input) ? event.tool_input : {};
-  return typeof input.workdir === "string" && input.workdir.length > 0
-    ? resolve(base, input.workdir)
-    : base;
+  const decision: GuardDecision =
+    before === undefined
+      ? { allow: true }
+      : decideAfterShell(
+          shellChanges(before, await treeSnapshot(session)),
+          await guardContext(session),
+        );
+  if (tool !== "cursor") return reply(tool, decision, session);
+  // Cursor's hooks after a tool cannot block: their context goes into the conversation.
+  const context = decision.allow ? {} : { additional_context: warning(decision, session) };
+  return { code: 0, stdout: JSON.stringify(context), stderr: "" };
 }
 
 /**
@@ -256,10 +245,15 @@ async function guardContext(session: Session) {
   return { ...base, change };
 }
 
+/** The reason and the next step, as the agent reads them. */
+function warning(decision: Extract<GuardDecision, { allow: false }>, session: Session): string {
+  const label = session.lang === "es" ? "SIGUIENTE" : "NEXT";
+  return `specty: ${decision.reason}\n${label}: ${decision.next}`;
+}
+
 function reply(tool: GuardTool, decision: GuardDecision, session: Session): GuardReply {
   if (decision.allow) return allow(tool);
-  const label = session.lang === "es" ? "SIGUIENTE" : "NEXT";
-  const text = `specty: ${decision.reason}\n${label}: ${decision.next}`;
+  const text = warning(decision, session);
   if (tool === "cursor") {
     return {
       code: 0,

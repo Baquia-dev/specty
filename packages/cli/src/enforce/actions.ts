@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { resolve } from "node:path";
 import { patchPaths } from "@baquia-dev/specty-core";
 import { isRecord } from "../io/files";
 import type { EnterRequest } from "./sessions";
@@ -11,9 +12,38 @@ export function isGuardTool(value: string): value is GuardTool {
   return GUARD_TOOLS.some((tool) => tool === value);
 }
 
-/** Tools whose hooks also run after each shell command, so the guard checks what it changed. */
-export function checksAfterShell(tool: GuardTool): boolean {
-  return tool === "claude-code" || tool === "codex";
+/** After a tool ran or failed: Cursor's names, and the others' (OpenCode's plugin sends these). */
+const AFTER_EVENTS: ReadonlySet<unknown> = new Set([
+  "PostToolUse",
+  "PostToolUseFailure",
+  "postToolUse",
+  "postToolUseFailure",
+]);
+
+export function isAfterTool(event: Record<string, unknown>): boolean {
+  return AFTER_EVENTS.has(event.hook_event_name);
+}
+
+/** The tool call that links the hooks before and after a command, safe as a file name. */
+export function toolUseId(event: Record<string, unknown>): string | undefined {
+  const id = event.tool_use_id;
+  return typeof id === "string" && /^[\w-]{1,128}$/.test(id) ? id : undefined;
+}
+
+/** The folder the event happens in. */
+export function cwdOf(event: Record<string, unknown>, fallback: string): string {
+  const roots = event.workspace_roots;
+  const base =
+    typeof event.cwd === "string" && event.cwd.length > 0
+      ? event.cwd
+      : Array.isArray(roots) && typeof roots[0] === "string"
+        ? roots[0]
+        : fallback;
+  // A command that names its own folder (OpenCode's `workdir`) runs there.
+  const input = isRecord(event.tool_input) ? event.tool_input : {};
+  return typeof input.workdir === "string" && input.workdir.length > 0
+    ? resolve(base, input.workdir)
+    : base;
 }
 
 /** A tool event, reduced to what the flow cares about. Paths are still as the tool sent them. */

@@ -54,7 +54,7 @@ En Claude Code y Codex, el guard compara el árbol antes y después de cada coma
 
 ## Tareas
 
-- [ ] T1: El guard tras cada comando en Cursor
+- [x] T1: El guard tras cada comando en Cursor
   - files: packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/cursor.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/enforce.test.ts
