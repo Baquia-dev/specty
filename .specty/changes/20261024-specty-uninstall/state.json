@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-specty-uninstall",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-specty-uninstall",
   "baseCommit": "f78407745fe8969f8dd47efe82872057316e1853",
   "revision": 1,
@@ -58,12 +58,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f4fa9ec908ee90a19d4748acf5cc6df01d2a711d",
+      "attempts": 1,
       "startedAt": "2026-10-24T15:20:39.524Z",
       "doneAt": "2026-10-24T15:23:33.938Z",
-      "summary": "InstallFiles sabe borrar (simulado o de verdad, con copia y removed en el manifiesto) y rewriteJson pasa a files.ts y quita las claves que la actualización deja fuera. Contrapartes: removeAgentHooks (hooks y permisos de worktrees en Claude Code y Cursor; borra el archivo si queda vacío), removeGitHooks (bloque de los hooks nativos o de husky, comando specty de lefthook) y removeAgentsBlocks."
+      "summary": "InstallFiles sabe borrar (simulado o de verdad, con copia y removed en el manifiesto) y rewriteJson pasa a files.ts y quita las claves que la actualización deja fuera. Contrapartes: removeAgentHooks (hooks y permisos de worktrees en Claude Code y Cursor; borra el archivo si queda vacío), removeGitHooks (bloque de los hooks nativos o de husky, comando specty de lefthook) y removeAgentsBlocks.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/install/files.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "556a6c33af82eb535aaaa1aa59b912bee46e472e",
+      "startedAt": "2026-10-24T15:23:34.611Z",
+      "doneAt": "2026-10-24T15:28:04.276Z",
+      "summary": "commands/uninstall.ts: comprueba la terminal (salvo --dry-run), planea con un InstallFiles simulado, enseña la lista, pregunta (por defecto «No») y lo repite de verdad con copias; dice qué se queda (.specty/, CLAUDE.md, guard global de Codex y OpenCode) y no hace commit. program.ts lo registra con uninstallCommand. InstallFiles cuenta como borrado un archivo cambiado y luego borrado (S1). ARCHITECTURE §6 y §14, formats.md §1."
     }
   },
   "pending": {

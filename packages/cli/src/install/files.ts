@@ -52,7 +52,16 @@ export function installFiles(options: InstallFilesOptions = {}): InstallFiles {
     planned.has(path) ? (planned.get(path) ?? undefined) : await readText(path);
 
   async function record(path: string, before: string | undefined, removed = false): Promise<void> {
-    if (changes.some((change) => change.path === path)) return;
+    const seen = changes.findIndex((change) => change.path === path);
+    if (seen !== -1) {
+      // Changed and then deleted in the same run: what counts is that it is gone.
+      if (!removed) return;
+      changes.splice(seen, 1, { ...(changes[seen] as FileChange), removed: true });
+      const entry = manifest.findIndex((item) => item.path === path);
+      if (entry !== -1)
+        manifest.splice(entry, 1, { ...(manifest[entry] as ManifestEntry), removed });
+      return saveManifest();
+    }
     const gone = removed ? { removed: true } : {};
     changes.push({ path, created: before === undefined, ...gone });
     const { backups } = options;
@@ -68,13 +77,14 @@ export function installFiles(options: InstallFilesOptions = {}): InstallFiles {
       ...gone,
       ...(copy !== undefined ? { copy } : {}),
     });
-    // Only files that existed make the folder worth having; created ones ride along.
-    if (copied) {
-      await writeText(
-        join(backups.folder, "manifest.json"),
-        `${JSON.stringify(manifest, null, 2)}\n`,
-      );
-    }
+    await saveManifest();
+  }
+
+  /** Only files that existed make the folder worth having; created ones ride along. */
+  async function saveManifest(): Promise<void> {
+    if (!copied || options.backups === undefined) return;
+    const text = `${JSON.stringify(manifest, null, 2)}\n`;
+    await writeText(join(options.backups.folder, "manifest.json"), text);
   }
 
   return {

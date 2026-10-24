@@ -73,7 +73,7 @@ Segunda mitad del punto «init reversible y `specty uninstall`»: hoy no hay for
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/install-files.test.ts test/setup.test.ts test/install.test.ts
   - type: feat
-- [ ] T3: El comando `specty uninstall`
+- [x] T3: El comando `specty uninstall`
   - files: packages/cli/src/commands/uninstall.ts, packages/cli/src/program.ts, packages/cli/test/uninstall.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm check
