@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T21:41:20.015Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261024-la-limpieza-respeta-la-carpeta-de-otra-sesion","request":"si realiza todo eneguida de forma autonoma las 12 observaciones"}}
+{"ts":"2026-10-24T21:41:41.843Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:b272be7ce01d32376598a46ae87d30c9271ff0a734068e6c9ecbb3844bd3f5af","size":"S","warnings":0}}
+{"ts":"2026-10-24T21:41:42.170Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:b272be7ce01d32376598a46ae87d30c9271ff0a734068e6c9ecbb3844bd3f5af","channel":"delegated","delegated":true}}
