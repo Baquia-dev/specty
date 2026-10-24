@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261024-los-comandos-del-proyecto-en-specty-check",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-los-comandos-del-proyecto-en-specty-check",
+  "baseCommit": "5d254a5bd534206907fe123fafa83bd6753a025e",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3c783e2e0ce1b3263c2d82b8b8f52016b239a7e59555f810865cd0057018ca15",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9b9c5034cfc725dcc46972bea16ece35281876334febe85207e984bb817f6517",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:aa2cfc2a3eb009e0c632c9f0017ea58b9e0f4b62ea26d61a019c518f603bd86a",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0fdda8919ba24680e7c815a44065954c6c6dbeee9b98c626f6104bb1a2bee974",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0f21e3650d466847d70967bfee2e8d265804b4e8c5807c228e862ac3fda33f16",
+    "at": "2026-10-24T20:45:29.443Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
