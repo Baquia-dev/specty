@@ -57,7 +57,7 @@ kind: standard
   - ac: AC1, AC2
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review && pnpm sources
   - type: refactor
-- [ ] T3: Documentar la migración terminada
+- [x] T3: Documentar la migración terminada
   - files: docs/ui.md
   - ac: AC3
   - verify: pnpm check

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-iconos-de-lucide-como-datos-aceptacion-y-revisio",
   "baseCommit": "69bfe9e590b99257dde6e00d852a3492b3eb30c6",
   "revision": 1,
@@ -40,12 +40,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a1f305e2f897250ba667d9247bc0f274059bfdb2",
+      "attempts": 1,
       "startedAt": "2026-10-24T14:50:03.537Z",
       "doneAt": "2026-10-24T14:52:23.492Z",
-      "summary": "comments, assumption-row, delta-review, review-actions, spec-review y spec-sections toman sus iconos de components/icons.ts; biome.json prohíbe en packages/ui/src importar de @lucide/angular algo distinto de LucideDynamicIcon, LucideIconData y LucideIconInput, con un error que dice de dónde tomar los iconos"
+      "summary": "comments, assumption-row, delta-review, review-actions, spec-review y spec-sections toman sus iconos de components/icons.ts; biome.json prohíbe en packages/ui/src importar de @lucide/angular algo distinto de LucideDynamicIcon, LucideIconData y LucideIconInput, con un error que dice de dónde tomar los iconos",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5678f3c2923103cc403798fc483e6d2a6629e124",
+      "startedAt": "2026-10-24T14:52:24.162Z",
+      "doneAt": "2026-10-24T14:54:29.628Z",
+      "summary": "docs/ui.md (Stack, Iconos): la migración terminada, la regla de Biome y lo medido (Lucide 215 → 24 KB en el chunk inicial, lo inicial 668 → 520 KB sin comprimir; comprimido apenas cambia)"
     }
   },
   "pending": {
