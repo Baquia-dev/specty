@@ -9,13 +9,18 @@ import type { Invocation } from "../session";
 
 /**
  * The Claude Code events the guard listens to, with the tools each one covers: before each
- * write or command, and after each Bash command, whether it succeeded or failed.
+ * write or command, after each Bash command, whether it succeeded or failed, and when Claude Code
+ * creates or removes a worktree, which takes no matcher.
  */
-const CLAUDE_EVENTS: Readonly<Record<string, string>> = {
+const CLAUDE_EVENTS: Readonly<Record<string, string | undefined>> = {
   PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
   PostToolUse: "Bash",
   PostToolUseFailure: "Bash",
+  WorktreeCreate: undefined,
+  WorktreeRemove: undefined,
 };
+/** Claude Code's worktree events: with them, `EnterWorktree` by name enters the change's folder. */
+export const CLAUDE_WORKTREE_EVENTS: readonly string[] = ["WorktreeCreate", "WorktreeRemove"];
 /** The Codex events the guard listens to; its `matcher` is a regular expression on `tool_name`. */
 const CODEX_EVENTS: Readonly<Record<string, string>> = {
   PreToolUse: "^(Bash|apply_patch)$",
@@ -44,8 +49,8 @@ export interface AgentInstall {
 }
 
 /**
- * Claude Code: a `PreToolUse` hook (matcher + `hooks: [{ type: "command" }]`) and the worktree
- * permissions. Machine-specific commands go to `.claude/settings.local.json`, which is never
+ * Claude Code: the guard in each of its events (matcher + `hooks: [{ type: "command" }]`) and the
+ * worktree permissions. Machine-specific commands go to `.claude/settings.local.json`, which is never
  * committed.
  */
 export async function installClaudeCode(
@@ -108,6 +113,15 @@ export function hasGuard(text: string | undefined, tool: GuardTool): boolean {
   return text?.includes(`guard --tool ${tool}`) === true;
 }
 
+/** Whether Claude Code's settings in `root` send `EnterWorktree` by name to the change's folder. */
+export async function entersByName(root: string): Promise<boolean> {
+  const missing = missingClaudeEvents([
+    await readText(join(root, CLAUDE_SETTINGS)),
+    await readText(join(root, CLAUDE_LOCAL_SETTINGS)),
+  ]);
+  return !missing.some((event) => CLAUDE_WORKTREE_EVENTS.includes(event));
+}
+
 /** The Claude Code events whose guard hook none of these settings files (their text) installs. */
 export function missingClaudeEvents(settings: readonly (string | undefined)[]): string[] {
   const installed = settings.map((text): unknown => (text === undefined ? undefined : parse(text)));
@@ -134,7 +148,7 @@ function isOurs(entry: unknown, tool: string): boolean {
  */
 function withHooks(
   value: Entry,
-  events: Readonly<Record<string, string>>,
+  events: Readonly<Record<string, string | undefined>>,
   tool: GuardTool,
   command: string | undefined,
 ): Entry {
@@ -142,7 +156,8 @@ function withHooks(
   const updated = Object.entries(events).flatMap(([event, matcher]): [string, unknown[]][] => {
     const current = Array.isArray(hooks[event]) ? hooks[event] : [];
     const kept = current.filter((entry: unknown) => !isOurs(entry, tool));
-    const ours = command === undefined ? [] : [{ matcher, hooks: [{ type: "command", command }] }];
+    const hook = { hooks: [{ type: "command", command }] };
+    const ours = command === undefined ? [] : [matcher === undefined ? hook : { matcher, ...hook }];
     const entries = [...kept, ...ours];
     return entries.length === 0 && !Object.hasOwn(hooks, event) ? [] : [[event, entries]];
   });

@@ -85,6 +85,8 @@ export interface ChangeView {
   readonly requested?: readonly CommentView[];
   /** The user's literal adjustment request, while adjusting. */
   readonly adjustment?: string;
+  /** The user's literal request the change was created for (`new --request`), while drafting. */
+  readonly request?: string;
   readonly closingSubmitted: boolean;
   /** `spec.md` no longer matches the approved revision. */
   readonly specChanged: boolean;

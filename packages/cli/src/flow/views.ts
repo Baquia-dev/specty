@@ -76,6 +76,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
     }),
     requested: state.phase === "review" ? await requested(change) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
+    ...(state.phase === "draft" ? await request(change) : {}),
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specChanged:
       state.phase === "implementing" &&
@@ -99,17 +100,27 @@ export async function changeView(session: Session, change: StoredChange): Promis
  * the last proposal; until then, the review is still theirs.
  */
 async function requested(change: StoredChange): Promise<NonNullable<ChangeView["requested"]>> {
-  const audit = ((await readText(change.files.audit)) ?? "").split("\n").flatMap((line) => {
-    const entry = parseJson(line);
-    return isRecord(entry) ? [entry] : [];
-  });
-  const last = audit.findLast(
+  const last = (await auditOf(change)).findLast(
     (entry) => entry.event === "spec.proposed" || entry.event === "review.changes_requested",
   );
   if (last?.event !== "review.changes_requested") return [];
   return (await readComments(change.files))
     .filter((comment) => comment.resolvedInRevision === undefined)
     .map(({ id, anchor, body }) => ({ id, anchor, body }));
+}
+
+/** The user's literal request, from the audit, where `new --request` left it. */
+async function request(change: StoredChange): Promise<Pick<ChangeView, "request">> {
+  const created = (await auditOf(change)).find((entry) => entry.event === "change.created");
+  const data = isRecord(created?.data) ? created.data : {};
+  return typeof data.request === "string" ? { request: data.request } : {};
+}
+
+async function auditOf(change: StoredChange): Promise<Record<string, unknown>[]> {
+  return ((await readText(change.files.audit)) ?? "").split("\n").flatMap((line) => {
+    const entry = parseJson(line);
+    return isRecord(entry) ? [entry] : [];
+  });
 }
 
 function criteriaOf(spec: Spec, ac: readonly string[] | "none" | undefined): TaskView["criteria"] {

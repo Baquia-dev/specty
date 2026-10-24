@@ -16,6 +16,7 @@ import { commitState, isFinished, resolveActive } from "../flow/active";
 import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
 import { addWorktree, parallelBase, prepareWorktree, worktreesHome } from "../flow/worktree";
+import { entersByName } from "../install/agents";
 import { exists, writeText } from "../io/files";
 import type { Session } from "../session";
 import { initialState, type StoredChange } from "../store/changes";
@@ -34,6 +35,8 @@ export interface NewOptions {
   readonly worktree?: boolean;
   /** With `worktree`, the branch to start from (by default, the main branch). */
   readonly from?: string;
+  /** The user's literal request, kept in the audit as they wrote it. */
+  readonly request?: string;
 }
 
 /** `specty new`: creates the change, its branch and the spec skeleton. */
@@ -41,14 +44,16 @@ export async function newChange(session: Session, options: NewOptions): Promise<
   const t = translator(session.lang);
   const { cards } = session;
   const title = options.title.trim();
-  if (title.length === 0) {
+  if (title.length === 0 || options.request?.trim() === "") {
     return {
       ...blockedCard(
         headerOf(),
-        t("Falta el título.", "The title is missing."),
+        title.length === 0
+          ? t("Falta el título.", "The title is missing.")
+          : t("La petición (--request) está vacía.", "The request (--request) is empty."),
         t(
-          `ejecuta \`${cards.command} new "<título>"\`.`,
-          `run \`${cards.command} new "<title>"\`.`,
+          `ejecuta \`${cards.command} new "<título>" --request "<petición literal del usuario>"\`.`,
+          `run \`${cards.command} new "<title>" --request "<the user's literal request>"\`.`,
         ),
       ),
       status: "invalid",
@@ -166,9 +171,16 @@ async function newInWorktree(
   const prepared = await prepareWorktree(session, folder);
   const from = `${base.name} (${base.commit.slice(0, 7)})`;
   const failed = prepared?.ok === false ? prepared : undefined;
+  // With Specty's worktree hooks, entering by name skips the prompt a folder outside `.claude` gets.
+  const byName = (await entersByName(session.root))
+    ? t(
+        `en Claude Code, \`EnterWorktree\` con \`name: "${id}"\`; `,
+        `in Claude Code, \`EnterWorktree\` with \`name: "${id}"\`; `,
+      )
+    : "";
   const carryOn = t(
-    `cambia allí la carpeta de trabajo de tu sesión (o abre allí un agente) y ejecuta \`${cards.command} next\`; esta carpeta sigue con su propio trabajo.`,
-    `switch your session's working folder there (or open an agent there) and run \`${cards.command} next\`; this folder carries on with its own work.`,
+    `cambia allí la carpeta de trabajo de tu sesión (${byName}o abre allí un agente) y ejecuta \`${cards.command} next\`; esta carpeta sigue con su propio trabajo.`,
+    `switch your session's working folder there (${byName}or open an agent there) and run \`${cards.command} next\`; this folder carries on with its own work.`,
   );
   return {
     status: "ok",
@@ -251,6 +263,7 @@ async function createChange(
     kind: options.kind,
     ...(branch !== undefined ? { branch } : {}),
     ...(options.follows.length > 0 ? { follows: options.follows } : {}),
+    ...(options.request !== undefined ? { request: options.request.trim() } : {}),
   });
 }
 

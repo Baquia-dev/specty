@@ -3,7 +3,12 @@ import { join } from "node:path";
 import { hasBlock, headerOf, type Output, section, translator } from "@baquia-dev/specty-core";
 import { formatterExclusions } from "../detect/formatters";
 import { detectProject } from "../detect/project";
-import { codexHooksFile, hasGuard, missingClaudeEvents } from "../install/agents";
+import {
+  CLAUDE_WORKTREE_EVENTS,
+  codexHooksFile,
+  hasGuard,
+  missingClaudeEvents,
+} from "../install/agents";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { opencodePluginFile } from "../install/opencode";
 import { execute } from "../io/exec";
@@ -43,19 +48,35 @@ export async function doctor(session: Session): Promise<Output> {
       await readText(join(root, ".claude/settings.json")),
       await readText(join(root, ".claude/settings.local.json")),
     ]);
-    check(
-      missing.length === 0,
-      t("Claude Code: guard instalado.", "Claude Code: guard installed."),
-      missing.includes("PreToolUse")
-        ? t(
-            `Claude Code: falta el guard; ejecuta \`${COMMAND} init\`.`,
-            `Claude Code: the guard is missing; run \`${COMMAND} init\`.`,
-          )
-        : t(
-            `Claude Code: falta la comprobación tras cada comando de Bash (${missing.join(", ")}); ejecuta \`${COMMAND} init\`.`,
-            `Claude Code: the check after each Bash command is missing (${missing.join(", ")}); run \`${COMMAND} init\`.`,
+    const worktrees = missing.filter((event) => CLAUDE_WORKTREE_EVENTS.includes(event));
+    const afterBash = missing.filter((event) => !worktrees.includes(event));
+    if (missing.length === 0)
+      ok.push(t("Claude Code: guard instalado.", "Claude Code: guard installed."));
+    else if (missing.includes("PreToolUse")) {
+      problems.push(
+        t(
+          `Claude Code: falta el guard; ejecuta \`${COMMAND} init\`.`,
+          `Claude Code: the guard is missing; run \`${COMMAND} init\`.`,
+        ),
+      );
+    } else {
+      if (afterBash.length > 0) {
+        problems.push(
+          t(
+            `Claude Code: falta la comprobación tras cada comando de Bash (${afterBash.join(", ")}); ejecuta \`${COMMAND} init\`.`,
+            `Claude Code: the check after each Bash command is missing (${afterBash.join(", ")}); run \`${COMMAND} init\`.`,
           ),
-    );
+        );
+      }
+      if (worktrees.length > 0) {
+        problems.push(
+          t(
+            `Claude Code: faltan los hooks de las worktrees (${worktrees.join(", ")}), así que \`EnterWorktree\` por nombre no entra en la carpeta del cambio; ejecuta \`${COMMAND} init\`.`,
+            `Claude Code: the worktree hooks are missing (${worktrees.join(", ")}), so \`EnterWorktree\` by name does not enter the change's folder; run \`${COMMAND} init\`.`,
+          ),
+        );
+      }
+    }
   }
   if (tools.includes("cursor")) {
     check(

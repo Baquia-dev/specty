@@ -80,8 +80,8 @@ function noChangeCard(dirty: readonly string[], ctx: CardContext): Output {
       ),
     ]),
     next: t(
-      `ejecuta \`${ctx.command} new "<título>"\` (añade \`--kind quick\` si son hasta ${ctx.quickMaxFiles} archivos sin rutas sensibles).`,
-      `run \`${ctx.command} new "<title>"\` (add \`--kind quick\` for up to ${ctx.quickMaxFiles} files without sensitive paths).`,
+      `ejecuta \`${ctx.command} new "<título>" --request "<petición literal del usuario>"\` (añade \`--kind quick\` si son hasta ${ctx.quickMaxFiles} archivos de código sin rutas sensibles).`,
+      `run \`${ctx.command} new "<title>" --request "<the user's literal request>"\` (add \`--kind quick\` for up to ${ctx.quickMaxFiles} code files without sensitive paths).`,
     ),
   };
 }
@@ -95,6 +95,11 @@ function draftCard(change: ChangeView, ctx: CardContext): Output {
       ...section(undefined, [
         t(`Spec en borrador: ${change.specPath}`, `Draft spec: ${change.specPath}`),
       ]),
+      // Verbatim, so the spec answers what the user asked rather than the agent's paraphrase.
+      ...section(
+        t("PETICIÓN DEL USUARIO", "THE USER'S REQUEST"),
+        change.request === undefined ? [] : change.request.split("\n"),
+      ),
       ...section(t("CÓMO REDACTARLA", "HOW TO WRITE IT"), draftingGuide(change, ctx)),
     ],
     next: t(
