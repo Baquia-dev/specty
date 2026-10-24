@@ -72,7 +72,7 @@ kind: standard
   - files: packages/cli/src/flow/risk.ts, packages/cli/src/commands/task.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/accept.ts, packages/cli/test/risk.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/risk.test.ts test/assertions.test.ts
-- [ ] T4: El tamaño solo sube, y documentarlo todo
+- [x] T4: El tamaño solo sube, y documentarlo todo
   - files: packages/core/src/sizing/size.ts, packages/core/test/sizing/sizing.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC3, AC4, AC5
   - verify: pnpm check

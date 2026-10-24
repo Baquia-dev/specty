@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-riesgo-segun-el-contenido-del-diff-y-el-tamano-s",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-riesgo-segun-el-contenido-del-diff-y-el-tamano-s",
   "baseCommit": "b68f47168b95796c2942bee43190c543fecb93d9",
   "revision": 1,
@@ -62,15 +62,26 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "e3a5e25a4d3de89de5f71913df103eda5318477f",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:24:12.406Z",
+      "doneAt": "2026-10-24T11:27:26.515Z",
+      "summary": "flow/risk.ts arma un árbol con el trabajo actual de los archivos gobernados (treeWith) y analiza git diff -U0 -M base..árbol, archivos nuevos incluidos; task done lo guarda en task.completed (risks) y lo avisa en AVISOS junto a las aserciones; changeView valida los riesgos de la auditoría con isRiskRule; accept los añade a su nota",
       "scopeExtra": [
         "packages/core/src/scope/risk.ts",
         "packages/core/src/index.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/spec/messages.test.ts"
       ],
       "attempts": 1,
-      "baseCommit": "e3a5e25a4d3de89de5f71913df103eda5318477f",
-      "startedAt": "2026-10-24T11:24:12.406Z",
-      "doneAt": "2026-10-24T11:27:26.515Z",
-      "summary": "flow/risk.ts arma un árbol con el trabajo actual de los archivos gobernados (treeWith) y analiza git diff -U0 -M base..árbol, archivos nuevos incluidos; task done lo guarda en task.completed (risks) y lo avisa en AVISOS junto a las aserciones; changeView valida los riesgos de la auditoría con isRiskRule; accept los añade a su nota"
+      "baseCommit": "c599d68a126fe18598d71bda3a78fdab8bacc03e",
+      "startedAt": "2026-10-24T11:27:27.023Z",
+      "doneAt": "2026-10-24T11:30:15.923Z",
+      "summary": "computeSize solo aplica adjust: 1; un -1 queda en las razones como «sin aplicar: el tamaño solo puede subir», y un XL que intenta bajarse sigue pidiendo dividirse; ARCHITECTURE §7 y §11 y formats.md §1 y §4: el catálogo de riesgos, risks y el ajuste que solo sube"
     }
   },
   "pending": {
