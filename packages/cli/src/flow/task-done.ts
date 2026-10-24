@@ -19,6 +19,7 @@ import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { changeTrailers, commitWithReceipt } from "./commits";
 import { runLive } from "./live-run";
+import { codeTree } from "./verified";
 import { taskVerification } from "./views";
 
 /**
@@ -53,6 +54,8 @@ export async function verifyTask(
   session.environment.io.err(
     `specty: ${translator(session.lang)("verificando", "verifying")} \`${command}\`…`,
   );
+  // The code it runs on, before it runs: `accept` need not verify it again (formats.md §4).
+  const tree = await codeTree(session);
   const started = Date.now();
   // Live while it runs, so the local server can show it.
   const result = await runLive(session, change.state.id, task.id, command);
@@ -81,6 +84,7 @@ export async function verifyTask(
       cmd: command,
       exit: result.code ?? null,
       ms: Date.now() - started,
+      ...(tree === undefined ? {} : { tree }),
       ...(passed ? {} : { outputTail: output.slice(-10) }),
     },
     "specty",

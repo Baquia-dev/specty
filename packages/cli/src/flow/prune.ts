@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { translator } from "@baquia-dev/specty-core";
+import { resolved } from "../io/git";
 import type { Session } from "../session";
+import { readBindings } from "../store/local";
 import { isFinished } from "./active";
 import { locateChanges } from "./changes";
 import { integrationOf, isIncorporated, reasonOf } from "./integrate";
@@ -13,20 +15,40 @@ export interface Cleanup {
   readonly kept: readonly string[];
 }
 
+/** A session's record stops counting a day after it was made: nothing deletes it at the end. */
+const SESSION_DAY = 24 * 60 * 60 * 1000;
+
 /**
  * Removes the worktrees of finished changes that no longer need one: closed and already in their
  * target branch (or not meant to be incorporated), or cancelled. Never the folder this process
- * runs in, which may be an agent's session, nor the main folder. The branches stay.
+ * runs in, nor one an agent session works in (as the guard recorded it), nor the main folder.
+ * The branches stay.
  */
 export async function removeFinished(session: Session): Promise<Cleanup> {
   const t = translator(session.lang);
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
+  const now = session.environment.now().getTime();
+  const working = await Promise.all(
+    (await readBindings(session.git))
+      .filter(({ at }) => now - Date.parse(at) < SESSION_DAY)
+      .map(({ folder }) => resolved(folder)),
+  );
   const removed: string[] = [];
   const kept: string[] = [];
   for (const { change, session: there } of await locateChanges(session)) {
     const { state } = change;
     if (!isFinished(state) || there.root === main) continue;
     if (await within(session.environment.cwd, there.root)) continue;
+    // Such as the session that closed its change from inside, in delegated mode.
+    if (working.includes(await resolved(there.root))) {
+      kept.push(
+        t(
+          `${there.root}: una sesión de agente trabaja en ella.`,
+          `${there.root}: an agent session works in it.`,
+        ),
+      );
+      continue;
+    }
     const plan = state.phase === "done" ? await integrationOf(there, state) : undefined;
     if (plan !== undefined && !(await isIncorporated(there, plan))) {
       kept.push(

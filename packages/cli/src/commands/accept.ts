@@ -20,7 +20,7 @@ import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
 import { absorbTarget, integrationOf } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
-import { recordFullVerification } from "../flow/verified";
+import { codeTree, passedOnThisCode, recordFullVerification } from "../flow/verified";
 import { changeView } from "../flow/views";
 import { execute, tail } from "../io/exec";
 import { writeText } from "../io/files";
@@ -75,7 +75,20 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
         : []),
     ].join("\n"),
   );
-  const full = epic ? undefined : session.config.verify.full;
+  const configured = epic ? undefined : session.config.verify.full;
+  // It need not run again when it already passed on this same code: in the last task, say.
+  const passed =
+    configured === undefined ? undefined : await passedOnThisCode(session, change, configured);
+  if (configured !== undefined && passed !== undefined) {
+    terminal.note(
+      t("Verificación completa", "Full verification"),
+      t(
+        `La verificación completa (\`${configured}\`) ya pasó con este mismo código ${passed.task === undefined ? "en una verificación anterior" : `en ${passed.task}`}: no se repite.`,
+        `The full verification (\`${configured}\`) already passed on this same code ${passed.task === undefined ? "in an earlier run" : `in ${passed.task}`}: it does not run again.`,
+      ),
+    );
+  }
+  const full = passed === undefined ? configured : undefined;
   // In delegated mode the agent always runs the full verification, and never accepts a failure.
   const delegated = session.actor === "agent";
   if (
@@ -89,6 +102,7 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
           ),
         ))))
   ) {
+    const tree = await codeTree(session);
     const started = Date.now();
     const result = await execute(full, [], {
       cwd: session.root,
@@ -101,6 +115,7 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
       code: result.code,
       ms: Date.now() - started,
       output: tail(result),
+      ...(tree === undefined ? {} : { tree }),
     });
     terminal.note(
       result.code === 0

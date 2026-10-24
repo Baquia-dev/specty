@@ -8,9 +8,11 @@ import {
   folderOf,
   git,
   inWorktree,
+  NOW,
   person,
   tempRepo,
   toClosing,
+  writeFiles,
 } from "./support";
 
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
@@ -49,6 +51,25 @@ describe("folders of finished changes", () => {
     expect(await exists(folderOf(root, OTHER))).toBe(true);
     expect(git(root, "branch", "--list", `specty/${CHANGE}`)).toContain(CHANGE);
     expect((await cli(root, ["new", "--worktree", "Cuarto"])).out).not.toContain(REMOVED);
+  });
+
+  it("stay while an agent session works in them, for a day", async () => {
+    const { root, folder } = await leftover();
+    // The guard's record of the session that closed the change from inside its folder.
+    const bound = (at: Date) =>
+      writeFiles(root, {
+        ".git/common/specty/sessions/s1.json": JSON.stringify({ folder, at: at.toISOString() }),
+      });
+    await bound(NOW);
+    const pruned = await cli(root, ["prune"]);
+    expect(pruned.out).toContain(`QUEDAN:\n  ${folder}: una sesión de agente trabaja en ella.`);
+    expect((await cli(root, ["new", "--worktree", "Tercero"])).out).not.toContain(REMOVED);
+    expect(await exists(folder)).toBe(true);
+    // Nothing deletes the record when the session ends: a day later, it no longer counts.
+    await bound(new Date(NOW.getTime() - 25 * 60 * 60 * 1000));
+    const later = await cli(root, ["new", "--worktree", "Cuarto"]);
+    expect(later.out).toContain(`${REMOVED}:\n  ${folder}`);
+    expect(await exists(folder)).toBe(false);
   });
 });
 

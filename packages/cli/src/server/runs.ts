@@ -2,7 +2,7 @@
 import { spawn } from "node:child_process";
 import { blockedCard, headerOf, type Output, section, translator } from "@baquia-dev/specty-core";
 import { locateChanges } from "../flow/changes";
-import { recordFullVerification } from "../flow/verified";
+import { codeTree, recordFullVerification } from "../flow/verified";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { clearRun, readRuns } from "../store/runs";
@@ -51,6 +51,8 @@ export function changeRuns(
   });
 
   function run(id: string, there: Session, change: StoredChange, command: string): void {
+    // The code it runs on, read as it starts: `accept` need not verify it again.
+    const tree = codeTree(there);
     const started = Date.now();
     const child = spawn(command, {
       cwd: there.root,
@@ -96,11 +98,13 @@ export function changeRuns(
       // The last lines first, so whoever follows it sees them before it ends.
       if (pending) heard(id, current);
       const output = current.output.filter((line) => line.length > 0);
+      const ran = await tree;
       await recordFullVerification(there, change, {
         command,
         code,
         ms: Date.now() - started,
         output,
+        ...(ran === undefined ? {} : { tree: ran }),
       }).catch(() => undefined);
       heard(id, undefined);
     };

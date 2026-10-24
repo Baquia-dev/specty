@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "20261024-la-verificacion-completa-no-se-repite-sobre-el-m",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-la-verificacion-completa-no-se-repite-sobre-el-m",
+  "baseCommit": "f5e3eba3bf60f169b3d9f7a14af990ea729a9c5e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a2a7019a2936622f2ad591cac8ded3b473adbab7c64951dbea89e7d0d4f110de",
+    "at": "2026-10-24T21:30:56.287Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:875c8bdec2ecc2483a9fb13156a46d67e59d404cfba93a85df02114cfd868fa5",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:4137cfa0536aee663482d7a1e9aa187589cb01d92f2f615c2c0841cf8f879995",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:86cae6678d36259fa1cae8f59bec20ab974cab5db5168377b5671ca8db918cb6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ac9f033ffda5415401a8070789943b5e34f728ff",
+      "attempts": 1,
+      "startedAt": "2026-10-24T21:30:57.496Z",
+      "doneAt": "2026-10-24T21:34:14.372Z",
+      "summary": "codeTree (flow/verified.ts): hash del árbol de trabajo sin .specty, tomado sin tocar el índice antes de verificar. task.verified y change.verified (accept y la UI) lo guardan como tree.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "054e6dfc11896047df0b445732207ccd8e8439d9",
+      "attempts": 2,
+      "startedAt": "2026-10-24T21:34:14.894Z",
+      "doneAt": "2026-10-24T21:38:10.258Z",
+      "summary": "accept no repite verify.full cuando la última verificación con ese comando (de una tarea, sola o tras verify.quick, o de la UI) pasó con el mismo tree: lo dice y sigue; si cambió el código o la última falló, corre. accept anota tree en su run. ARCHITECTURE §6 y formats.md §4.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-24T21:39:50.077Z"
+}
