@@ -6,6 +6,13 @@
   "branch": "specty/20261024-las-verificaciones-de-las-funciones",
   "baseCommit": "e35326fa5a7f8df239b710fb1191f9c0a58e31c4",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:09fba35e28f516a684173372657befdf4c8e49e5f0069a5ca8a387b68262c731",
+    "at": "2026-10-24T21:19:18.955Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c2a96b86278a87daa64d027e300e5cb156b0b5d8",
+      "startedAt": "2026-10-24T21:19:19.387Z",
+      "doneAt": "2026-10-24T21:25:49.987Z",
+      "summary": "check/functions.ts: function-lines y complexity con functionMetrics; solo cuentan las funciones tocadas que pasan del límite y son nuevas o crecieron respecto al punto de partida; fuera los tests; el resumen de check-commands y check-typescript suma las dos."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "AC": 5,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:09fba35e28f516a684173372657befdf4c8e49e5f0069a5ca8a387b68262c731",
-    "at": "2026-10-24T21:19:18.955Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

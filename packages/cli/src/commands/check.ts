@@ -11,6 +11,7 @@ import type { Command } from "commander";
 import { projectProvider } from "../check/commands";
 import { commonProvider } from "../check/common";
 import { checkContext } from "../check/files";
+import { functionsProvider } from "../check/functions";
 import { loadPlan, planProvider } from "../check/plan";
 import { type Provider, type ReportOutput, runChecks } from "../check/provider";
 import { typescriptProvider } from "../check/typescript";
@@ -18,7 +19,7 @@ import { detectStacks } from "../detect/stack";
 import type { Session } from "../session";
 
 /** Every provider `specty check` knows; each says whether it applies to the repository. */
-const PROVIDERS: readonly Provider[] = [typescriptProvider, commonProvider];
+const PROVIDERS: readonly Provider[] = [typescriptProvider, functionsProvider, commonProvider];
 // The project's own commands come first, from the stacks of each run.
 
 interface CheckOptions {
