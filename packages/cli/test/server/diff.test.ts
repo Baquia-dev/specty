@@ -40,7 +40,11 @@ describe("diffs in the local server", () => {
     try {
       // In review nothing has a commit yet.
       expect((await call(server.port, path("diff"), headers)).status).toBe(404);
-      await implemented(root, `${"una línea de texto bastante larga\n".repeat(20_000)}`);
+      // Generated, as huge files usually are: task done does not size it.
+      await implemented(
+        root,
+        `// @generated\n${"una línea de texto bastante larga\n".repeat(20_000)}`,
+      );
       const big = await call(server.port, path("diff"), headers);
       expect(big.status).toBe(413);
       expect(JSON.parse(big.body)).toEqual({

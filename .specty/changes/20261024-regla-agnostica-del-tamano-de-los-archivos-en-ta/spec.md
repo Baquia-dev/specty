@@ -70,7 +70,7 @@ La regla de los archivos cortos pasa a ser de Specty, para cualquier proyecto y 
   - files: packages/cli/src/flow/lines.ts, packages/cli/src/commands/task.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/accept.ts, packages/cli/test/lines.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/lines.test.ts test/assertions.test.ts test/risk.test.ts
-- [ ] T3: Documentar la regla
+- [x] T3: Documentar la regla
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC5
   - verify: pnpm check

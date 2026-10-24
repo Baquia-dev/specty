@@ -241,7 +241,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada |
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló |
-| `task.completed` | tarea, commit, resumen y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden |
+| `task.completed` | tarea, commit, resumen y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
 | `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
@@ -307,6 +307,11 @@ lanes:
   quick: { maxFiles: 3 }          # archivos de código: gobernados, sin contar tests
 split: { maxTasks: 8, maxFiles: 15, maxModules: 2, taskMaxFiles: 5 }  # maxFiles, como en quick
 size: { S: 4, M: 10, L: 18 }      # puntuación máxima de cada nivel; por encima de L es XL
+lines:                            # líneas de código de los archivos que toca una tarea, sin blancos ni comentarios
+  warn: 300                       # avisa si la tarea deja un archivo por encima y lo hizo crecer
+  fail: 500                       # bloquea si la tarea lo lleva por encima; false: nunca
+  tests: { warn: 400, fail: 600 }
+  exclude: ["**/fixtures/**", "**/mocks/**", "**/testdata/**", "**/migrations/**", "**/locales/**"]  # por defecto, también __fixtures__, __mocks__, i18n, l10n y translations
 policy:
   tests: recommended              # required | recommended | off
 retro:

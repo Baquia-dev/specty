@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-regla-agnostica-del-tamano-de-los-archivos-en-ta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-regla-agnostica-del-tamano-de-los-archivos-en-ta",
   "baseCommit": "83a0ad3e91415701f2e00b5f870839945c1cdb27",
   "revision": 1,
@@ -52,12 +52,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ab54f370358fd7a6796caa210a8b4d43296fbf6e",
+      "attempts": 1,
       "startedAt": "2026-10-24T16:20:31.839Z",
       "doneAt": "2026-10-24T16:22:58.179Z",
-      "summary": "flow/lines.ts lee cada archivo gobernado que la tarea crea o modifica en el commit base (git show) y en disco; task done bloquea con longFileCard antes de verificar si alguno cruza el máximo, y si no, guarda los avisos en task.completed.longFiles y los muestra con el consejo de no partir por el número; changeView los lee de la auditoría y accept los añade a su nota"
+      "summary": "flow/lines.ts lee cada archivo gobernado que la tarea crea o modifica en el commit base (git show) y en disco; task done bloquea con longFileCard antes de verificar si alguno cruza el máximo, y si no, guarda los avisos en task.completed.longFiles y los muestra con el consejo de no partir por el número; changeView los lee de la auditoría y accept los añade a su nota",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/server/diff.test.ts"
+      ],
+      "attempts": 3,
+      "baseCommit": "e28031cc1ae8275375e5e923c6c70244647eabdc",
+      "startedAt": "2026-10-24T16:22:58.448Z",
+      "doneAt": "2026-10-24T16:27:43.248Z",
+      "summary": "ARCHITECTURE §7: la regla del tamaño de los archivos, cómo cuenta en cualquier lenguaje, qué no mide, cuándo avisa y cuándo bloquea; formats.md §6: la clave lines con sus valores por defecto; §4: longFiles en task.completed. El diff enorme de server/diff.test.ts se marca como generado"
     }
   },
   "pending": {
