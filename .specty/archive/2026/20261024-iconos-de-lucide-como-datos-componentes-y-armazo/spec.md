@@ -64,3 +64,23 @@ Los iconos dejan de cargar una plantilla compilada cada uno. Hoy cada icono de `
   - ac: AC3
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La UI ya tiene sus 50 iconos como datos de `lucide` (`components/icons.ts`), con los nombres de siempre, y `components/` los toma de ahí: de `@lucide/angular` solo queda `LucideDynamicIcon`, que los dibuja con una sola plantilla. El resto de pantallas se migra en las dos partes siguientes. Cuando termine, el bundle inicial dejará de cargar una plantilla compilada por icono, unos 165 KB.
+
+### Desviaciones
+
+- `app/` salió de esta parte para que el cambio no fuera XL; va con la segunda.
+
+### Decisiones
+
+- Se añade `lucide` 1.55.0, de la misma versión que `@lucide/angular`, en lugar de copiar los dibujos al repositorio.
+- Los iconos renombrados en Lucide 1 conservan su nombre de exportación (`LucideFileQuestion`, `LucideTrash2`) con el dibujo nuevo (`file-question-mark`, `trash`), para no tocar las pantallas.
+
+### Pendientes
+
+- La segunda parte: `app/`, `catalog/`, `change/`, `inbox/` y `progress/`.
+- La tercera: `acceptance/` y `review/`, medir de nuevo el bundle y, si Biome lo permite, impedir que vuelvan a importarse clases de iconos de `@lucide/angular`.
