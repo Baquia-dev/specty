@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "20261024-revision-independiente-de-la-spec-con-un-modelo",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-revision-independiente-de-la-spec-con-un-modelo",
+  "baseCommit": "b1585c78af7a6016aa88b97ae874eb7e5ae2a0e2",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b080b1196f51d289f2bb0cfe2cca41a6b56c0f7cf8ab152c75c0067674fe68d5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c961ebf124e117090b08bc1bbc7a0005569003ccc08c2e90137b6c8d269425e2",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ed2171e3a56469d8ff2773d75f63e72f942688d96bed5303c4717bbc440fcff3",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:986434c0164dbbfeee95cf355fe43376ce09ad08746da23c41f16ff5f99f5c0b",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:01c31b58f6e6646f7e54ec8a6e4223d6cc2009b2b3015d8ae4b5d48a1d6386a0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c54a4415536e01d13f5e6ed1e88bffb4ec843bf07746e62573affc4eda2281a4",
+    "at": "2026-10-24T14:55:32.355Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
