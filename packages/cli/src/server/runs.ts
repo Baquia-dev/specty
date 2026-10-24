@@ -89,9 +89,12 @@ export function changeRuns(
       finished = true;
       add([rests.stdout, rests.stderr].filter((line) => line.trim() !== ""));
       clearTimeout(limit);
+      const pending = tell !== undefined;
       clearTimeout(tell);
       going.delete(id);
       if (closing) return;
+      // The last lines first, so whoever follows it sees them before it ends.
+      if (pending) heard(id, current);
       const output = current.output.filter((line) => line.length > 0);
       await recordFullVerification(there, change, {
         command,

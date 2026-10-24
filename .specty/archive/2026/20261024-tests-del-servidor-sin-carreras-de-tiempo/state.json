@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261024-tests-del-servidor-sin-carreras-de-tiempo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-tests-del-servidor-sin-carreras-de-tiempo",
+  "baseCommit": "3fa960c092121873d0c353f84ecc06ae24012b22",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7ca19681581f38e8d50356bf487f7a0eb4528855e2f451702dbd1c0037a63daa",
+    "at": "2026-10-24T15:45:01.358Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ec4072c8e016466a0e51864980cd07441a1552419c7e72d2ee1fdabf9fa0e459",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0feb9c369fa5884f1a8ffddd4667097e6a47ae5f",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:45:01.820Z",
+      "doneAt": "2026-10-24T15:47:43.632Z",
+      "summary": "server/events.ts: cada oyente nuevo oye su primer changes cuando termina la primera mirada (una promesa ready que se reinicia cuando no queda nadie), así lo que cambie después ya no puede quedar dentro de la foto inicial. server.test.ts: until mide tiempo real (20 s) y escribe en cuanto oye el primer changes; sin el arreglo ese test fallaba 2 de 3 veces con «timed out», con él pasa 5 de 5",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "1f2f900fe1799584497ec74d4aca034772aad9fc",
+      "attempts": 1,
+      "startedAt": "2026-10-24T15:47:44.248Z",
+      "doneAt": "2026-10-24T15:52:50.947Z",
+      "summary": "server/runs.ts: al terminar una verificación completa, si hay líneas sin avisar, las envía en un run antes de anotar el resultado y del run: null. Los tests esperan lo que comprueban, con límite en tiempo real: live-run.test.ts la primera línea en el archivo (con sleep 2 de margen), server/live.test.ts que el servidor borre el archivo del proceso muerto, y verify.test.ts la salida que empieza por «uno». Con carga (la suite de la CLI junto a todos los tests de la carpeta principal, carga 36) pasa entera dos veces",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 3,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-24T15:54:18.733Z"
+}
