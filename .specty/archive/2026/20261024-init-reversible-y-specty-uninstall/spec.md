@@ -65,3 +65,25 @@ kind: standard
 
 - R1: Cambiar cómo escriben los instaladores rompería `init` — T1 no cambia lo que se escribe (AC4), y los tests de instalación existentes lo comprueban.
 - R2: Las copias crecen con cada `init` — solo se copia lo que cambia, en una carpeta por ejecución, en la carpeta común de git, fuera del repositorio.
+
+## Cierre
+
+### Resumen
+
+Los instaladores escriben a través de `install/files.ts` (`InstallFiles`), que solo registra lo que cambia de verdad. En simulación no toca el disco y las lecturas siguientes ven lo planeado; si no, copia cada archivo existente antes de su primer cambio. `specty init --dry-run` lista «crear» o «cambiar» por archivo, sin escribir ni hacer commit, y dice «Nada que cambiar.» cuando ya está instalado. Sin `--dry-run`, las copias van a `common/specty/backups/<fecha>/` (`repo/…`, `outside/…` y un `manifest.json` que anota también los archivos creados), y la salida dice dónde; si todo lo que escribe es nuevo, no hay carpeta. Lo que `init` escribe no cambia: los tests de instalación existentes pasan sin tocarlos.
+
+### Desviaciones
+
+- **El punto se dividió en dos cambios:** la spec con `uninstall` salió XL y Specty exige dividirla; este cambio es la simulación y las copias, y `specty uninstall` va en el siguiente, sobre el mismo `InstallFiles`.
+- **La primera verificación de T2 falló por la carga de la máquina** (media de 77, con 45 procesos de vitest de otras sesiones): siete tests de la UI, que este cambio no toca, pasaron de los 5 s. Con la carga por debajo de 30 pasó entera.
+
+### Decisiones
+
+- **La simulación sí lista `.git/info/exclude`:** `init` no escribe nada (A2), pero la línea que añadiría también es un cambio que la persona debe ver.
+- **Los permisos de ejecución se aplican aunque el contenido no cambie,** como antes: un hook de git sin `+x` se repara, sin contar como cambio.
+- **El `manifest.json` solo existe cuando hay alguna copia (AC3),** pero anota todos los archivos de esa ejecución, también los creados, para saber qué borrar al volver atrás.
+
+### Pendientes
+
+- **`specty uninstall`:** el cambio siguiente; necesita que `InstallFiles` sepa borrar.
+- **Restaurar una copia:** hoy es a mano, con el `manifest.json` como guía.

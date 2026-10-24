@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-init-reversible-y-specty-uninstall",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-init-reversible-y-specty-uninstall",
   "baseCommit": "12d05ae2a06dbddc40150d0d4491f40968a59abc",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ad582ad798cde969bc7434e09358b7cb9af18471132ffb27cc04e7beed1f94dc",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "6ff22ef0eddb501ae4d598a6bab6375970e951d8",
+      "attempts": 2,
       "startedAt": "2026-10-24T15:00:51.373Z",
       "doneAt": "2026-10-24T15:15:21.590Z",
-      "summary": "init crea un InstallFiles (simulado con --dry-run; con copias en common/specty/backups/<fecha>/ si no) y lo pasa a todos los instaladores; con --dry-run no hace commit y lista «crear/cambiar <ruta>», y si no, la salida dice dónde está la copia. program.ts registra --dry-run. formats.md §1 y ARCHITECTURE §14."
+      "summary": "init crea un InstallFiles (simulado con --dry-run; con copias en common/specty/backups/<fecha>/ si no) y lo pasa a todos los instaladores; con --dry-run no hace commit y lista «crear/cambiar <ruta>», y si no, la salida dice dónde está la copia. program.ts registra --dry-run. formats.md §1 y ARCHITECTURE §14.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T15:16:43.970Z"
 }
