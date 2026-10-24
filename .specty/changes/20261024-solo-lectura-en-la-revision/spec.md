@@ -58,7 +58,7 @@ Cuando la UI corre sobre un servidor de solo lectura, porque lo arrancó el agen
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/spec-sections.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review && pnpm sources
-- [ ] T3: Documentar la revisión en solo lectura
+- [x] T3: Documentar la revisión en solo lectura
   - files: docs/ui.md
   - ac: AC5
   - verify: pnpm check
