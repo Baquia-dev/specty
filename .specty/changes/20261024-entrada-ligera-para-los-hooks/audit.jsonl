@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T11:29:30.092Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-entrada-ligera-para-los-hooks"}}
+{"ts":"2026-10-24T11:30:10.347Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:636250c9469e57ff214217169dd3e10bd0befe736dcf00b3cb1cbd99bec224d1","size":"L","warnings":0}}
+{"ts":"2026-10-24T11:30:15.933Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:636250c9469e57ff214217169dd3e10bd0befe736dcf00b3cb1cbd99bec224d1","channel":"delegated","delegated":true}}

@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261024-entrada-ligera-para-los-hooks",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-entrada-ligera-para-los-hooks",
+  "baseCommit": "3cac524b0f1f5be561fd53c4d6cc1b00392cbbd6",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:89c610e1dc6fefd019c3e41f9d83916a2cdd39ac0458bac288a880661d18fd35",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:839b4d7c8aaed291375d7b6c0ac4d108a7e63f91a824e1147c04b98fb00df209",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:af09af69dae5a6c4a973b3fe6ee2c5336851ed819794e0f79b2794b8bfe64785",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:f1898c99a76c10ad5b830c4f610803577e165f622b732c0bac25f2a9ac6bf10a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:636250c9469e57ff214217169dd3e10bd0befe736dcf00b3cb1cbd99bec224d1",
+    "at": "2026-10-24T11:30:15.922Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
