@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "id": "20261024-comprobacion-tras-cada-comando-en-cursor-y-openc",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-comprobacion-tras-cada-comando-en-cursor-y-openc",
+  "baseCommit": "800f1a4d6f5140b2d7438bee5dd6eebea77c9304",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:221b520da86c016c4b6bc3c5b9bca0f0ed566d2b33ae764b68c2532b87f56f36",
+    "at": "2026-10-24T10:51:42.752Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7f1867fe1e31953eead4fdf444568d938ed9eddda214da8ba0f00fc8476fcca0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:21851ccfe14161749a23c7bf57ebffc2953d9cc4e0e043f929dda561c9962df8",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:79959d37a83aa362dd8964b9dc0518ee8c969f0d0cfbe7712e50391ce91a5d1a",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:456579ca016c2a0bab90aeac8ab74731527a9feaa00a20bdc277a4ad5fff8a6b",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7790d32bf88cc336eb617c8af3c4def2db090e962dede052c5e5d156412ab2e2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c4ba4c25cc9512b743f007231456d46d1fc9054c",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:51:44.030Z",
+      "doneAt": "2026-10-24T10:55:56.060Z",
+      "summary": "La comprobación tras cada comando vale para las cuatro herramientas (sin checksAfterShell); el guard reconoce postToolUse y postToolUseFailure de Cursor y les responde {additional_context} o {}, con salida 0. La lectura del evento (cwdOf, toolUseId, isAfterTool) pasa a actions.ts para que guard.ts no pase de 300 líneas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "69b1906d6d0b122e1ad05e8cccaed1baa1dabe94",
+      "attempts": 1,
+      "startedAt": "2026-10-24T10:55:56.380Z",
+      "doneAt": "2026-10-24T10:58:01.799Z",
+      "summary": "init escribe postToolUse y postToolUseFailure (matcher Shell) en .cursor/hooks.json, desde una tabla de eventos como la de Claude Code; missingCursorEvents dice cuáles faltan y doctor avisa aparte de la comprobación tras cada comando.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "1041728a94e9f25fb70f814afd185c4bd3751d2a",
+      "attempts": 2,
+      "startedAt": "2026-10-24T10:58:02.104Z",
+      "doneAt": "2026-10-24T11:04:53.392Z",
+      "summary": "x",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-24T11:06:53.413Z"
+}

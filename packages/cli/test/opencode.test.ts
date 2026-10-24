@@ -126,6 +126,59 @@ describe("Specty's plugin for OpenCode", () => {
     const free = (await plugin.server({ directory: elsewhere }))["tool.execute.before"];
     await expect(free?.(info, { args: { command: "rm -rf src" } })).resolves.toBeUndefined();
   });
+
+  it("adds the warning after a command to the result in OpenCode 2 (AC2, AC4)", async () => {
+    const root = await implementing();
+    const plugin = await loadPlugin();
+    const hooks = new Map<string, Hook>();
+    const tool = { hook: async (name: string, run: Hook) => void hooks.set(name, run) };
+    await plugin.setup({ location: { directory: root }, tool });
+    const call = (id: string) => ({
+      tool: "shell",
+      sessionID: "s",
+      id,
+      input: { command: "make" },
+    });
+    const ok = () => [{ type: "text", text: "ok" }];
+    await hooks.get("execute.before")?.(call("c1"));
+    await writeFiles(root, { "src/other.ts": "generated\n" });
+    const warned = { ...call("c1"), status: "completed", result: { output: "ok", content: ok() } };
+    await hooks.get("execute.after")?.(warned);
+    expect(warned.result.content[0]).toEqual({ type: "text", text: "ok" });
+    expect(warned.result.content[1]?.text).toContain(
+      "`src/other.ts` está fuera del alcance de T1.",
+    );
+    // Nothing else changed outside the task, so the result stays as it was.
+    await hooks.get("execute.before")?.(call("c2"));
+    const quiet = { ...call("c2"), status: "completed", result: { content: ok() } };
+    await hooks.get("execute.after")?.(quiet);
+    expect(quiet.result.content).toEqual(ok());
+    // A failed tool gets no warning, and the hook never throws.
+    await hooks.get("execute.before")?.(call("c3"));
+    await writeFiles(root, { "src/third.ts": "x\n" });
+    const failed = { ...call("c3"), status: "error", error: new Error("x") };
+    await expect(hooks.get("execute.after")?.(failed)).resolves.toBeUndefined();
+  });
+
+  it("adds it to the output in OpenCode 1, only for shell commands in Specty (AC3, AC4)", async () => {
+    const root = await implementing();
+    const plugin = await loadPlugin();
+    const hooks = await plugin.server({ directory: root });
+    const info = { tool: "bash", sessionID: "s", callID: "c1", args: { command: "make" } };
+    await hooks["tool.execute.before"]?.(info, { args: info.args });
+    await writeFiles(root, { "src/other.ts": "generated\n" });
+    const output = { title: "make", output: "ok", metadata: {} };
+    await hooks["tool.execute.after"]?.(info, output);
+    expect(output.output).toMatch(/^ok\n\nspecty: El comando cambió lo que el flujo no permite/);
+    expect(output.output).toContain("`src/other.ts` está fuera del alcance de T1.");
+    const other = { title: "", output: "x", metadata: {} };
+    await hooks["tool.execute.after"]?.({ ...info, tool: "read", callID: "c2" }, other);
+    expect(other.output).toBe("x");
+    const elsewhere = await mkdtemp(join(tmpdir(), "specty-plain-"));
+    const plain = { title: "", output: "x", metadata: {} };
+    await (await plugin.server({ directory: elsewhere }))["tool.execute.after"]?.(info, plain);
+    expect(plain.output).toBe("x");
+  });
 });
 
 describe("installing the plugin in OpenCode", () => {
@@ -145,6 +198,10 @@ describe("installing the plugin in OpenCode", () => {
     await cli(root, ["init", "--language", "es"], { env });
     const doctor = await cli(root, ["doctor"], { env });
     expect(doctor.out).toContain(`OpenCode: plugin del guard en ${file}.`);
+    await writeFile(file, 'const GUARD = "specty guard --tool opencode";\n');
+    expect((await cli(root, ["doctor"], { env })).out).toContain(
+      "OpenCode: al plugin del guard le falta la comprobación tras cada comando; ejecuta `specty init --tools opencode`.",
+    );
     await writeFile(file, "export default {};\n");
     const missing = await cli(root, ["doctor"], { env });
     expect(missing.code).toBe(1);
