@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-medir-las-funciones-lineas-y-complejidad",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-medir-las-funciones-lineas-y-complejidad",
   "baseCommit": "653209b8e233ea37be4d05c0f3e8a1482d60fb02",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c61447aa79db99a03fefc301040a56d747b87824717f1fe7481475744222a9f7",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1c590bfae549e0b737c329f898bdc61ac1245d82",
+      "attempts": 1,
       "startedAt": "2026-10-24T21:11:11.685Z",
       "doneAt": "2026-10-24T21:15:30.093Z",
-      "summary": "core/checks/functions.ts: functionMetrics mide cada función de los lenguajes de llaves (cabeceras de varias líneas y Allman, llaves sin comentarios ni cadenas, anidadas aparte en la complejidad); checks.functions con maxLines 50 y complexity 10."
+      "summary": "core/checks/functions.ts: functionMetrics mide cada función de los lenguajes de llaves (cabeceras de varias líneas y Allman, llaves sin comentarios ni cadenas, anidadas aparte en la complejidad); checks.functions con maxLines 50 y complexity 10.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "AC": 5,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T21:17:02.681Z"
 }

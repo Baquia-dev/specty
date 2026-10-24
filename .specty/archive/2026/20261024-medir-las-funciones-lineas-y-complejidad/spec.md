@@ -62,3 +62,25 @@ El core sabe medir cada función de un archivo en los lenguajes de llaves (TypeS
 ## Riesgos
 
 - R1: Una sintaxis que la estimación no reconoce mide de más o de menos — el cambio siguiente solo mirará las funciones que el diff toca, usará ESLint cuando exista y dejará bajar el nivel de cada verificación.
+
+## Cierre
+
+### Resumen
+
+El core mide las funciones de los lenguajes de llaves con `functionMetrics`: su nombre, dónde empiezan y acaban, sus líneas de código y su complejidad ciclomática aproximada. Reconoce cabeceras de varias líneas y el estilo Allman, cuenta las llaves sin comentarios ni cadenas, y deja fuera de la complejidad las funciones anidadas. La configuración gana `checks.functions` (50 líneas y complejidad 10). El separador de código y comentarios que tenía `strict-types` es ahora `checks/code.ts` (`splitCode`), compartido por los dos. Sobre las fuentes de este repositorio, la estimación midió 1397 funciones: 51 pasan de 50 líneas (`runCli`, 258; `taskDone`, 146) y otras 51 de complejidad 10.
+
+### Desviaciones
+
+- El separador compartido se llama `splitCode` y no `codeLines`, porque `codeLines` ya existe en `sizing/lines.ts`.
+- `return when (x) {` mostró que una palabra de control puede ir delante de la condición sin abrir la línea, así que también se mira la palabra que precede al último grupo de paréntesis.
+- Para validar la estimación usé un test temporal que midió el repositorio entero, y lo borré antes de completar la tarea.
+
+### Decisiones
+
+- `functionMetrics` no mide los archivos que no son de un lenguaje de llaves (lo decide la extensión), ni las funciones sin cuerpo entre llaves.
+- Una clase, interfaz, struct, record u object no es una función aunque su cabecera acabe en `)` (`class User(val name: String) {`).
+- La complejidad cuenta `&&`, `||`, `??` y el ternario con espacios, además de `if`, `for`, `while`, `case`, `catch` y `guard`; no cuenta los brazos de `when` ni de `match`.
+
+### Pendientes
+
+- El cambio siguiente, las verificaciones `function-lines` y `complexity`: con `--changed` no deben bloquear por una función que ya pasaba del límite si el cambio no la hizo crecer, porque este repositorio tiene 51 así. Usarán las reglas de ESLint cuando el proyecto lo tenga.

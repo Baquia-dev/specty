@@ -7,3 +7,7 @@
 {"ts":"2026-10-24T21:11:11.685Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"1c590bfae549e0b737c329f898bdc61ac1245d82"}}
 {"ts":"2026-10-24T21:15:30.016Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/checks","exit":0,"ms":835}}
 {"ts":"2026-10-24T21:15:30.094Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"core/checks/functions.ts: functionMetrics mide cada función de los lenguajes de llaves (cabeceras de varias líneas y Allman, llaves sin comentarios ni cadenas, anidadas aparte en la complejidad); checks.functions con maxLines 50 y complexity 10.","findings":["Sobre este repo: 1397 funciones; 51 pasan de 50 líneas (runCli 258, taskDone 146) y 51 de complejidad 10. Con --changed, C4d no debe bloquear por una función que ya pasaba si el cambio no la hizo crecer."]}}
+{"ts":"2026-10-24T21:16:48.139Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":67296}}
+{"ts":"2026-10-24T21:16:48.141Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T21:17:02.682Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:9127cb7ba0d93db11bc229b5bb4b2c8e49830135a623e75eb1ffbdfd8460e65d","size":"M","warnings":1}}
+{"ts":"2026-10-24T21:18:13.794Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
