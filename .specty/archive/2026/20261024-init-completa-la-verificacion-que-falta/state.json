@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-init-completa-la-verificacion-que-falta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-init-completa-la-verificacion-que-falta",
   "baseCommit": "6bb41bd02850e9bee2355ad9cbe3695eaf3b7baf",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:6f3f1fa32520690037ddccca3ccba0052774f20a9bdf3898eca3c6ded5a5d994",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4def088f06a37e937061a0610f0719758a4d91e3",
+      "attempts": 1,
       "startedAt": "2026-10-24T16:52:34.557Z",
       "doneAt": "2026-10-24T16:55:51.821Z",
-      "summary": "verifyHints compara la detección de la carpeta del cambio con el verify de config.yaml; close y el accept quick, antes de incorporar, proponen specty init en la carpeta principal si falta algo. Test desde un repositorio vacío. ARCHITECTURE §14."
+      "summary": "verifyHints compara la detección de la carpeta del cambio con el verify de config.yaml; close y el accept quick, antes de incorporar, proponen specty init en la carpeta principal si falta algo. Test desde un repositorio vacío. ARCHITECTURE §14.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T16:57:38.165Z"
 }

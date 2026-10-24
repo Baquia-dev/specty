@@ -63,3 +63,23 @@ En un repositorio vacío, `init` deja `.specty/config.yaml` sin `verify`, porque
 
 - R1: Un comando detectado que no funciona quedaría como verificación — es el mismo que `init` escribe al crear el archivo, la salida lo nombra, y `doctor` comprueba que los comandos citados existen.
 - R2: El agente podría provocar un comando de verificación trivial para que `init` lo copie — el manifiesto que lo define es código gobernado, así que pasa por una tarea aprobada y su diff.
+
+## Cierre
+
+### Resumen
+
+Con `.specty/config.yaml` ya creado, `init` añade `verify.default` y `verify.full` cuando faltan y la detección los encuentra. Inserta sus líneas al final de `verify`, o un bloque `verify` al final del archivo, dice cuáles añadió, y no cambia nada más; lo hace a través de `InstallFiles`, así que lo cubren `--dry-run`, las copias y su commit. El aviso de que no hay tests solo sale si tampoco los tiene la configuración. Al cerrar un cambio (con `close` o el `accept` de uno quick), si con su código la detección encuentra una verificación que `config.yaml` no tiene, la salida la nombra y propone `specty init` en la carpeta principal. Probado de punta a punta: un repositorio vacío cuyo primer cambio crea un `package.json` recibe la propuesta al cerrarlo, y `init` añade los dos comandos.
+
+### Desviaciones
+
+- **El archivo se edita como texto, no con el documento de `yaml` (A2):** `toString` reescribía las listas en línea (`["**"]` como `[ "**" ]`, y `","` como `", "`), aun con sus opciones de formato. El documento solo sirve para saber qué falta y dónde acaba `verify`, y las líneas nuevas se insertan con la sangría de su primera clave. El test comprueba que todas las líneas anteriores siguen.
+
+### Decisiones
+
+- **Un `verify` que no es un mapa no se toca:** es de la persona, y la validación ya lo marca.
+- **La propuesta se calcula antes de incorporar,** porque después la worktree se borra (A3).
+- **`close` no escribe `config.yaml`:** solo propone `init`, que es quien lo escribe, con sus copias y su commit.
+
+### Pendientes
+
+- **El flujo de proyecto nuevo** (ARCHITECTURE §14): es el cambio siguiente.
