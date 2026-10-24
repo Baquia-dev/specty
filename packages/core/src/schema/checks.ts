@@ -15,9 +15,20 @@ export interface ChecksConfig {
   readonly todo: TodoConfig;
   /** Limits of each function: its lines of code and its cyclomatic complexity. */
   readonly functions: { readonly maxLines: number; readonly complexity: number };
+  /** The layers of the project, by name: their paths and what each one may import. */
+  readonly layers: Layers;
   /** The project's commands for the command checks, over the ones Specty detects. */
   readonly commands: Readonly<Partial<Record<CommandCheck, string>>>;
 }
+
+/** A layer: the files in it, the layers it may import besides itself, and the packages it may not. */
+export interface LayerRule {
+  readonly paths: readonly string[];
+  readonly may: readonly string[];
+  readonly forbiddenPackages: readonly string[];
+}
+
+export type Layers = Readonly<Record<string, LayerRule>>;
 
 /** The checks that run one of the project's own commands. */
 export const COMMAND_CHECKS = ["format", "lint", "typecheck", "tests"] as const;
@@ -54,6 +65,7 @@ export const DEFAULT_CHECKS: ChecksConfig = {
     reference: String.raw`#\d+|\b[A-Z][A-Z0-9]+-\d+\b|https?://\S+`,
   },
   functions: { maxLines: 50, complexity: 10 },
+  layers: {},
   commands: {},
 };
 
@@ -86,6 +98,29 @@ export const ChecksSchema = z.strictObject({
       complexity: z.number().int().positive().optional(),
     })
     .optional(),
+  layers: z
+    .record(
+      z.string().min(1),
+      z.strictObject({
+        paths: z.array(z.string().min(1)).min(1),
+        may: z.array(z.string().min(1)).optional(),
+        forbiddenPackages: z.array(z.string().min(1)).optional(),
+      }),
+    )
+    .superRefine((layers, context) => {
+      for (const [name, layer] of Object.entries(layers)) {
+        for (const other of layer.may ?? []) {
+          if (!Object.hasOwn(layers, other)) {
+            context.addIssue({
+              code: "custom",
+              path: [name, "may"],
+              message: `Unknown layer «${other}».`,
+            });
+          }
+        }
+      }
+    })
+    .optional(),
   commands: z
     .strictObject({
       format: z.string().min(1).optional(),
@@ -109,6 +144,16 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
       maxLines: input?.functions?.maxLines ?? DEFAULT_CHECKS.functions.maxLines,
       complexity: input?.functions?.complexity ?? DEFAULT_CHECKS.functions.complexity,
     },
+    layers: Object.fromEntries(
+      Object.entries(input?.layers ?? {}).map(([name, layer]) => [
+        name,
+        {
+          paths: layer.paths,
+          may: layer.may ?? [],
+          forbiddenPackages: layer.forbiddenPackages ?? [],
+        },
+      ]),
+    ),
     commands: Object.fromEntries(
       COMMAND_CHECKS.flatMap((id) => {
         const command = input?.commands?.[id];

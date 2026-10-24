@@ -12,15 +12,32 @@ import { projectProvider } from "../check/commands";
 import { commonProvider } from "../check/common";
 import { checkContext } from "../check/files";
 import { functionsProvider } from "../check/functions";
-import { loadPlan, planProvider } from "../check/plan";
+import { layersProvider } from "../check/layers";
+import { loadPlan, type Plan, planProvider } from "../check/plan";
 import { type Provider, type ReportOutput, runChecks } from "../check/provider";
 import { typescriptProvider } from "../check/typescript";
-import { detectStacks } from "../detect/stack";
+import { detectStacks, type Stack } from "../detect/stack";
 import type { Session } from "../session";
 
-/** Every provider `specty check` knows; each says whether it applies to the repository. */
-const PROVIDERS: readonly Provider[] = [typescriptProvider, functionsProvider, commonProvider];
-// The project's own commands come first, from the stacks of each run.
+/**
+ * The providers of a run, in the order of its report: the project's own commands, each stack's,
+ * those of every language with braces, the common ones and, with `--spec`, the plan's. Each one
+ * says whether it applies to the repository's stacks.
+ */
+function providersOf(
+  session: Session,
+  stacks: readonly Stack[],
+  plan: Plan | undefined,
+): Provider[] {
+  return [
+    projectProvider(stacks, session.config),
+    typescriptProvider,
+    layersProvider(session.config),
+    functionsProvider,
+    commonProvider,
+    ...(plan === undefined ? [] : [planProvider(plan)]),
+  ];
+}
 
 interface CheckOptions {
   readonly changed?: boolean;
@@ -69,12 +86,7 @@ export async function check(
     detectStacks(session.root),
     spec === undefined ? undefined : loadPlan(session, spec.id),
   ]);
-  const providers = [
-    projectProvider(stacks, session.config),
-    ...PROVIDERS,
-    ...(plan === undefined ? [] : [planProvider(plan)]),
-  ];
-  const report = await runChecks(context, providers, stacks);
+  const report = await runChecks(context, providersOf(session, stacks, plan), stacks);
   return {
     report: renderReport(report, {
       lang: session.lang,
