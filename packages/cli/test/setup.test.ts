@@ -41,6 +41,29 @@ describe("specty init", () => {
     expect((await cli(root, ["doctor"])).code).toBe(0);
   });
 
+  it("has doctor warn, without failing, of the Map and Conventions still empty (AC1, AC2)", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    const fresh = await cli(root, ["doctor"]);
+    expect(fresh.code).toBe(0);
+    expect(fresh.out).toContain(
+      "AVISOS:\n  AGENTS.md tiene sin completar «Mapa» y «Convenciones»: el agente lo lee en cada sesión",
+    );
+    const agents = await read(root, "AGENTS.md");
+    const map = agents.replace("## Mapa\n", "## Mapa\n\n- `gen/`: generado, no se toca.\n");
+    await writeFiles(root, { "AGENTS.md": map });
+    const half = (await cli(root, ["doctor"])).out;
+    expect(half).toContain("AGENTS.md tiene sin completar «Convenciones»:");
+    expect(half).not.toContain("«Mapa»");
+    const both = map.replace("## Convenciones\n", "## Convenciones\n\n- Un test por archivo.\n");
+    await writeFiles(root, { "AGENTS.md": both });
+    expect((await cli(root, ["doctor"])).out).not.toContain("sin completar");
+    // Without those sections there is nothing to warn of: the rest of AGENTS.md is the person's.
+    await writeFiles(root, { "AGENTS.md": agents.slice(0, agents.indexOf("## Mapa")) });
+    const without = await cli(root, ["doctor"]);
+    expect([without.code, without.out]).toEqual([0, expect.not.stringContaining("sin completar")]);
+  });
+
   it("installs the check after each Bash command, and doctor misses it (AC7)", async () => {
     const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
     expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);

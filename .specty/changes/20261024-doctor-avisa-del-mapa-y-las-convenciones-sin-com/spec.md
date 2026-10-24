@@ -46,7 +46,7 @@ kind: standard
   - files: packages/core/src/agents-md.ts, packages/core/src/index.ts, packages/core/test/agents-md.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
-- [ ] T2: doctor avisa de las secciones sin completar
+- [x] T2: doctor avisa de las secciones sin completar
   - files: packages/cli/src/commands/doctor.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check

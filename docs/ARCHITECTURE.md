@@ -162,7 +162,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check);
   - flujo: unas 8 líneas.
 
-  El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no aplica ningún linter.
+  El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no aplica ningún linter. Mientras sigan vacías, `specty doctor` lo avisa (ver §14).
 - **Punteros por herramienta**: solo para las herramientas detectadas o elegidas, y solo donde la herramienta no lee AGENTS.md por sí misma (por ejemplo, `CLAUDE.md` con `@AGENTS.md`). Nunca copian contenido.
 - **Tarjeta de tarea** (salida de `next` en `implementing`). Presupuesto: unos 1.500 tokens, estimados como caracteres ÷ 4. Incluye:
   - la tarea, sus archivos permitidos y los criterios que cubre;
@@ -428,6 +428,7 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 - que los comandos citados existen y funcionan;
 - que las rutas citadas existen;
 - el presupuesto de AGENTS.md;
+- que el «Mapa» y las «Convenciones» de AGENTS.md no sigan vacíos. Es un aviso, no un problema, y solo mira esas secciones, en español o en inglés, si AGENTS.md las tiene. Una sección está vacía si, hasta el siguiente encabezado de su nivel o de uno superior, solo tiene comentarios, como la pista de `init`, y espacios (`unfilledSections` en `core/src/agents-md.ts`);
 - los punteros y hooks instalados;
 - que la guía de otra herramienta no pida al agente lo que el guard bloquea: los bloques de flujo de gentle-ai (`agent-routing`, el de su ODD, que pide commits propios por unidad de trabajo, y `orchestrator`, `sdd-orchestrator` y `sdd`, los de su antiguo SDD) en AGENTS.md o CLAUDE.md del repositorio, o en los archivos globales donde gentle-ai los escribe (`~/.claude/CLAUDE.md`, el `AGENTS.md` de Codex y el de OpenCode, y `~/.cursor/rules/gentle-ai.mdc`);
 - la versión de Node y la configuración de CI.
