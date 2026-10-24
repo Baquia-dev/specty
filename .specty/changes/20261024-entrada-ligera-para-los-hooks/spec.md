@@ -57,7 +57,7 @@ Los hooks del agente llaman a `specty guard` antes de cada acción y después de
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core test
   - type: perf
-- [ ] T2: Los hooks tienen su propia entrada
+- [x] T2: Los hooks tienen su propia entrada
   - files: packages/cli/src/enforce/entry.ts, packages/cli/src/enforce/commands.ts, packages/cli/src/main.ts, packages/cli/test/hooks-entry.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/hooks-entry.test.ts test/enforce.test.ts

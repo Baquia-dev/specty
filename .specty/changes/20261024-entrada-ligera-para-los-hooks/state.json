@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4776cb72d05de1f1a696f2aa51eae235b5535f4f",
+      "attempts": 1,
       "startedAt": "2026-10-24T11:30:16.432Z",
       "doneAt": "2026-10-24T11:30:52.208Z",
-      "summary": "schema/config.ts, schema/state.ts y spec/frontmatter.ts importan zod como espacio de nombres; el bundle de la CLI baja de 1,70 a 1,14 MB y ya no lleva las traducciones de zod."
+      "summary": "schema/config.ts, schema/state.ts y spec/frontmatter.ts importan zod como espacio de nombres; el bundle de la CLI baja de 1,70 a 1,14 MB y ya no lleva las traducciones de zod.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "99b9faa74d4b2d7326a45f9eff218d48bca0f2f0",
+      "startedAt": "2026-10-24T11:30:53.204Z",
+      "doneAt": "2026-10-24T11:33:29.005Z",
+      "summary": "enforce/entry.ts tiene guardCommand y hookCommand (las acciones de guard y hook, que commands.ts ahora llama) y runHook, que reconoce la forma exacta de los hooks y los ejecuta con una terminal sin prompts. main.ts no importa nada de forma estática: los hooks cargan solo su entrada y lo demás carga la CLI completa."
     }
   },
   "pending": {
