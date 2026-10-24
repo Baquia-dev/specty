@@ -53,7 +53,7 @@ La Bandeja dice en qué carpeta (worktree) vive cada cambio y avisa cuando dos c
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-row.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox && pnpm sources
-- [ ] T3: Documentar la carpeta y los archivos compartidos en la Bandeja
+- [x] T3: Documentar la carpeta y los archivos compartidos en la Bandeja
   - files: docs/ui.md
   - ac: AC4
   - verify: pnpm check
