@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-modo-delegado-en-el-servidor-local",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-modo-delegado-en-el-servidor-local",
   "baseCommit": "b9c7abab86a370eae51a503e4f0a26dad029d7e4",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ce8644db769136979a0c1882f610e19accd68536064c34a0bac9b2c54fc779bc",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dfec0c4efc590d26d113ab943867b2ec5049188e",
+      "attempts": 1,
       "startedAt": "2026-10-24T06:01:38.565Z",
       "doneAt": "2026-10-24T06:04:29.561Z",
-      "summary": "ARCHITECTURE §15 cuenta GET y POST /api/delegation, el aviso bilingüe y que el interruptor emite changes; queda pendiente el interruptor en la UI"
+      "summary": "ARCHITECTURE §15 cuenta GET y POST /api/delegation, el aviso bilingüe y que el interruptor emite changes; queda pendiente el interruptor en la UI",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -63,5 +63,6 @@
     "A": 3,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-24T06:05:52.821Z"
 }

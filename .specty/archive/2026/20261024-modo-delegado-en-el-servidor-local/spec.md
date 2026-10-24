@@ -52,3 +52,22 @@ El servidor de `specty ui` dice si el modo delegado está activo (quién lo acti
   - ac: —
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`GET /api/delegation` dice si el modo delegado está activo, quién lo activó y cuándo, y da el aviso de `specty delegate on` en español y en inglés, sacado de las tarjetas del core. `POST /api/delegation` con `{ on }` lo activa o desactiva con `delegate on|off`, como acción de la persona (servidor arrancado por ella, `Origin`, cookie y token CSRF); al activarlo, la terminal de la UI responde «sí» a la pregunta del comando. El interruptor entra en la firma de los eventos, así que cambiarlo desde la UI o desde la terminal avisa a las vistas.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- La terminal de la UI ahora puede llevar la elección que la persona hizo en pantalla (`screen(choice)`); el resto de preguntas que piden elegir sigue aplazando la acción.
+- La firma incluye el contenido del interruptor (`readDelegation`) en vez de la hora de su archivo: así no hace falta exportar su ruta.
+
+### Pendientes
+
+- El interruptor en la UI: verlo en el armazón y activarlo con el aviso, o desactivarlo.

@@ -7,3 +7,6 @@
 {"ts":"2026-10-24T06:01:38.565Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"dfec0c4efc590d26d113ab943867b2ec5049188e"}}
 {"ts":"2026-10-24T06:04:29.560Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":67973}}
 {"ts":"2026-10-24T06:04:29.562Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"ARCHITECTURE §15 cuenta GET y POST /api/delegation, el aviso bilingüe y que el interruptor emite changes; queda pendiente el interruptor en la UI"}}
+{"ts":"2026-10-24T06:05:38.275Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-24T06:05:52.822Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:329bd4c85280cd4bf5d10b8683a5222d836a83473998ec4176e48383504869d1","size":"M","warnings":0}}
+{"ts":"2026-10-24T06:05:58.903Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
