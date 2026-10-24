@@ -70,7 +70,7 @@ Primer corte de los quality gates (ADR 0012): `specty check` verifica, sin model
   - files: packages/cli/src/check/provider.ts, packages/cli/src/check/files.ts, packages/cli/src/check/max-lines.ts, packages/cli/src/commands/check.ts, packages/cli/src/program.ts, packages/cli/test/check.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check.test.ts test/commands-named.test.ts
-- [ ] T3: El ADR y la documentación
+- [x] T3: El ADR y la documentación
   - files: docs/decisions/0012-lo-verificable-lo-verifica-specty.md, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC6
   - verify: pnpm check

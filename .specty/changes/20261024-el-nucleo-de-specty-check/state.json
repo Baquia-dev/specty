@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-el-nucleo-de-specty-check",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-el-nucleo-de-specty-check",
   "baseCommit": "2e2fdcade0d1870b5cba3c80803c8ad2a4fad65f",
   "revision": 1,
@@ -56,12 +56,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4eadcd963105c535aba4cb79847fb63bb085179e",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:10:37.490Z",
       "doneAt": "2026-10-24T17:12:59.463Z",
-      "summary": "Proveedores y runChecks por niveles; selección de --changed (merge-base con la rama destino), --staged y --all sin lo excluido; max-lines como proveedor común; el comando check con su propio informe, que respeta --json"
+      "summary": "Proveedores y runChecks por niveles; selección de --changed (merge-base con la rama destino), --staged y --all sin lo excluido; max-lines como proveedor común; el comando check con su propio informe, que respeta --json",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/schema/checks.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "dcf204f75d2d26696e19e3d1f1d94f5b8de7d926",
+      "startedAt": "2026-10-24T17:12:59.741Z",
+      "doneAt": "2026-10-24T17:20:52.672Z",
+      "summary": "ADR 0012: el principio, las decisiones del usuario y los nueve cortes; ARCHITECTURE: specty check en la tabla de comandos; formats.md: la clave checks. schema/checks.ts importa zod como el resto de core, para no cargar sus locales en los hooks"
     }
   },
   "pending": {

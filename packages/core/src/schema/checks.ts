@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { z } from "zod";
+import * as z from "zod";
 
 /** How a check counts: its failures fail `specty check`, only warn, or it does not run. */
 export type CheckLevel = "error" | "warn" | "off";
