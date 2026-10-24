@@ -54,7 +54,7 @@ Desde la UI que sirve `specty ui`, la persona ejecuta la verificación completa 
 
 ## Tareas
 
-- [ ] T1: `specty accept` anota la verificación completa
+- [x] T1: `specty accept` anota la verificación completa
   - files: packages/cli/src/flow/verified.ts, packages/cli/src/commands/accept.ts, packages/cli/test/commands.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/commands.test.ts test/delegate.test.ts

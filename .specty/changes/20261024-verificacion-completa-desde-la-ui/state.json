@@ -6,6 +6,13 @@
   "branch": "specty/20261024-verificacion-completa-desde-la-ui",
   "baseCommit": "501c20bae06873e18fe77f288bec6c835e00e2f5",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:673623971ab33b62a64b70cff115d3695057678951bcf0237e49d1a8f26eb278",
+    "at": "2026-10-24T10:02:10.230Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -26,7 +33,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7f0e2574b3dbcafed488df9604bc667f028b803d",
+      "startedAt": "2026-10-24T10:02:10.752Z",
+      "doneAt": "2026-10-24T10:02:57.720Z",
+      "summary": "flow/verified.ts anota change.verified (comando, código de salida, duración y, si falló, las últimas 10 líneas) como task.verified; specty accept lo anota cada vez que ejecuta la verificación completa en la terminal, también en modo delegado"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -35,12 +52,5 @@
     "A": 2,
     "AC": 6,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:673623971ab33b62a64b70cff115d3695057678951bcf0237e49d1a8f26eb278",
-    "at": "2026-10-24T10:02:10.230Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
