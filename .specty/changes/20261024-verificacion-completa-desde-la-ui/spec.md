@@ -62,7 +62,7 @@ Desde la UI que sirve `specty ui`, la persona ejecuta la verificación completa 
   - files: packages/cli/src/server/runs.ts, packages/cli/src/server/events.ts, packages/cli/src/server/http.ts, packages/cli/test/server/verify.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server && pnpm sources
-- [ ] T3: La UI verifica y sigue la ejecución
+- [x] T3: La UI verifica y sigue la ejecución
   - files: packages/ui/src/data/server-answers.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-runs.test.ts, packages/ui/src/data/server-actions.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources

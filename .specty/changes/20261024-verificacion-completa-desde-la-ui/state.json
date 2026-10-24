@@ -45,12 +45,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c33251bd9e88b08b91f1ca80f1c418f800426c12",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:02:58.049Z",
       "doneAt": "2026-10-24T10:05:53.800Z",
-      "summary": "server/runs.ts ejecuta verify.full con la shell en la carpeta del cambio, una por cambio, con su timeout; junta stdout y stderr por líneas (las últimas 1000), avisa cada 250 ms como mucho y al terminar anota change.verified; al cerrar el servidor termina las que siguen sin anotarlas. events.ts emite run ({change, run}, run: null al terminar); POST /api/changes/<id>/verify es una acción fuera de la cola (409 si no está en aceptación, no hay verify.full o ya corre; 403 en solo lectura) y GET /api/changes/<id>/run da la ejecución en curso"
+      "summary": "server/runs.ts ejecuta verify.full con la shell en la carpeta del cambio, una por cambio, con su timeout; junta stdout y stderr por líneas (las últimas 1000), avisa cada 250 ms como mucho y al terminar anota change.verified; al cerrar el servidor termina las que siguen sin anotarlas. events.ts emite run ({change, run}, run: null al terminar); POST /api/changes/<id>/verify es una acción fuera de la cola (409 si no está en aceptación, no hay verify.full o ya corre; 403 en solo lectura) y GET /api/changes/<id>/run da la ejecución en curso",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7ca460a93b83b32b4f3d5f0071a0ef459bec2ad8",
+      "startedAt": "2026-10-24T10:05:54.118Z",
+      "doneAt": "2026-10-24T10:07:58.777Z",
+      "summary": "ServerData.verifyChange hace POST /verify y watchRun escucha run en el flujo de eventos compartido (que se cierra cuando nadie escucha) y pide /run para empezar desde lo que lleva; si llega antes un evento, gana el evento. Las comprobaciones y los mensajes de las respuestas pasan a data/server-answers.ts (con isRun y runEvent), y server.ts baja a 230 líneas"
     }
   },
   "pending": {
