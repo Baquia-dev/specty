@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T15:44:36.783Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-ci-en-tres-sistemas-knip-y-publicacion-con-proce"}}
+{"ts":"2026-10-24T15:45:29.573Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:9d035f5cc0ea0cf130203b3a2a9f45f999726c67d1cc3db70f864ba27571ae2b","size":"M","warnings":0}}
+{"ts":"2026-10-24T15:45:36.022Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:9d035f5cc0ea0cf130203b3a2a9f45f999726c67d1cc3db70f864ba27571ae2b","channel":"delegated","delegated":true}}
