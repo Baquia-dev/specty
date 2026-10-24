@@ -9,9 +9,9 @@ import {
   inject,
   input,
 } from "@angular/core";
-import { LucideX } from "@lucide/angular";
 import { Preferences } from "../theme/preferences";
 import { IconButton } from "./button";
+import { LucideX } from "./icons";
 
 let nextId = 0;
 

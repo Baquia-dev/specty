@@ -53,7 +53,7 @@ export type {
   ScopeRequestView,
   TaskView,
 } from "./cards/view";
-export { assertionWarnings } from "./cards/work";
+export { assertionWarnings, riskWarnings } from "./cards/work";
 export {
   type Actor,
   EVENT_RULES,
@@ -141,6 +141,7 @@ export {
 export { type AssertionLoss, removedAssertions } from "./scope/assertions";
 export { isGoverned } from "./scope/governed";
 export { isLockfileFor, isManifest } from "./scope/lockfiles";
+export { contentRisks, isRiskRule, type RiskFinding, type RiskRule, riskLabel } from "./scope/risk";
 export {
   type AutoBasis,
   autoBasis,

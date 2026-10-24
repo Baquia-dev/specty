@@ -5,7 +5,9 @@ import {
   type ChangeView,
   dirname,
   isIntegrating,
+  isRiskRule,
   parseSpec,
+  type RiskFinding,
   recommendTaskEffort,
   type Spec,
   specHash,
@@ -35,13 +37,13 @@ export async function changeView(session: Session, change: StoredChange): Promis
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
   const commits = await taskCommits(session, state.id);
   const audit = await auditOf(change);
-  const removed = removedByTask(audit);
+  const findings = findingsByTask(audit);
   const tasks = (spec.sections.tasks?.items ?? []).map((task): TaskView => {
     const stored = state.tasks[task.id];
     const verify = taskVerification(session, task);
     const commit = commits.get(task.id);
     const rules = testRules(task, session.config.policy.tests);
-    const lost = removed.get(task.id) ?? [];
+    const { lost, risks } = findings.get(task.id) ?? { lost: [], risks: [] };
     return {
       id: task.id,
       title: task.title,
@@ -55,6 +57,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
       ...(commit !== undefined ? { commit } : {}),
       ...(rules !== undefined ? { testRules: rules } : {}),
       ...(lost.length > 0 ? { removedAssertions: lost } : {}),
+      ...(risks.length > 0 ? { risks } : {}),
     };
   });
   const active = tasks.find((task) => task.status === "active");
@@ -126,22 +129,43 @@ function request(audit: Audit): Pick<ChangeView, "request"> {
   return typeof data.request === "string" ? { request: data.request } : {};
 }
 
-/** The assertions each task removed from existing tests, as `task done` recorded them. */
-function removedByTask(audit: Audit): ReadonlyMap<string, readonly AssertionLoss[]> {
+interface TaskFindings {
+  readonly lost: readonly AssertionLoss[];
+  readonly risks: readonly RiskFinding[];
+}
+
+/** What each task's diff showed, as `task done` recorded it: removed assertions and risks. */
+function findingsByTask(audit: Audit): ReadonlyMap<string, TaskFindings> {
   return new Map(
     audit
       .filter((entry) => entry.event === "task.completed")
-      .flatMap((entry): [string, AssertionLoss[]][] => {
-        const { task, removedAssertions } = dataOf(entry);
-        if (typeof task !== "string" || !Array.isArray(removedAssertions)) return [];
-        const losses = removedAssertions.flatMap((loss: unknown) =>
-          isRecord(loss) && typeof loss.path === "string" && typeof loss.removed === "number"
+      .flatMap((entry): [string, TaskFindings][] => {
+        const { task, removedAssertions, risks } = dataOf(entry);
+        if (typeof task !== "string") return [];
+        const lost = listOf(removedAssertions).flatMap((loss) =>
+          typeof loss.path === "string" && typeof loss.removed === "number"
             ? [{ path: loss.path, removed: loss.removed }]
             : [],
         );
-        return [[task, losses]];
+        const found = listOf(risks).flatMap((risk): RiskFinding[] =>
+          typeof risk.path === "string" && isRiskRule(risk.rule)
+            ? [
+                {
+                  path: risk.path,
+                  rule: risk.rule,
+                  ...(typeof risk.cwe === "string" ? { cwe: risk.cwe } : {}),
+                  ...(typeof risk.line === "number" ? { line: risk.line } : {}),
+                },
+              ]
+            : [],
+        );
+        return [[task, { lost, risks: found }]];
       }),
   );
+}
+
+function listOf(value: unknown): Record<string, unknown>[] {
+  return Array.isArray(value) ? value.filter((item: unknown) => isRecord(item)) : [];
 }
 
 type Audit = readonly Record<string, unknown>[];

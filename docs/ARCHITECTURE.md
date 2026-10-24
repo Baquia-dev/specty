@@ -171,6 +171,19 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - la verificación y el esfuerzo sugerido.
 
   Como respaldo determinista de esa regla, `task done` compara los tests que ya existían en el commit base de la tarea con el árbol de trabajo (`git diff -U0 -M`) y cuenta, por archivo, las aserciones quitadas menos las añadidas (`expect(`, `assert…`, `XCTAssert…`, `.should`, `t.Error`…; una aserción comentada cuenta como quitada). Si alguno pierde aserciones, la salida lo avisa, `task.completed` lo guarda y la tarjeta de aceptación y la nota de `specty accept` lo muestran. Es un aviso, no un bloqueo.
+
+  `task done` avisa igual de los **riesgos del contenido**. Analiza lo que la tarea añade a los archivos gobernados que no son tests, con los nuevos incluidos: el diff va del commit base a un árbol con el trabajo actual (`treeWith`), sin tocar el índice. El catálogo (`core/src/scope/risk.ts`) tiene patrones de una línea con su CWE:
+  - verificación TLS desactivada (CWE-295);
+  - `eval` y `exec` (CWE-95);
+  - deserialización insegura (CWE-502);
+  - comandos por la shell (CWE-78);
+  - MD5 o SHA-1 (CWE-328);
+  - CORS abierto (CWE-942);
+  - permisos para todos (CWE-732);
+  - secretos en el código (CWE-798);
+  - HTML sin escapar (CWE-79).
+
+  También avisa de los archivos que pasan a modo 755 y de las rutas de pagos, webhooks o seguridad. Los patrones avisan de más antes que de menos, porque no bloquean: `task.completed` guarda `risks`, y la aceptación los muestra para que la persona los revise.
 - **Tras compactar** (Claude Code: `SessionStart` con el matcher `compact`, al mismo `specty guard --tool claude-code`): el guard responde con lo que imprimiría `next`, y Claude Code lo añade al contexto, así que la tarjeta vuelve entera aunque el resumen la haya recortado. Solo tras compactar: al empezar, reanudar o limpiar, AGENTS.md ya pide ejecutar `next`. Fuera de un repositorio con Specty no añade nada.
 - **Entre cambios**: un cambio de seguimiento carga la sección Cierre del anterior, no su historial.
 
@@ -309,7 +322,7 @@ En modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)), la persona renun
 - fan-in de los archivos tocados (cuántos archivos los importan);
 - ausencia de tests en la zona.
 
-La puntuación da un nivel `S`, `M`, `L` o `XL`, con umbrales configurables. El modelo puede ajustar un nivel con motivo (`estimate` en el frontmatter), y el ajuste queda visible en la UI.
+La puntuación da un nivel `S`, `M`, `L` o `XL`, con umbrales configurables. El modelo puede subir un nivel con motivo (`estimate` en el frontmatter), y el ajuste queda visible en la UI. No puede bajarlo: un `adjust: -1` no se aplica y las razones del tamaño lo dicen, porque bajar un `XL` le evitaría la división en una épica.
 
 **Recomendación de esfuerzo**, por fase y en niveles neutros (`low`, `medium`, `high`, `max`):
 

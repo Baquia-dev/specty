@@ -8,7 +8,7 @@ import {
   recommendTaskEffort,
   type Task,
 } from "../../src";
-import { fixture, specOf } from "../helpers";
+import { check, fixture, specOf } from "../helpers";
 
 const STANDARD = fixture("standard.es.md");
 
@@ -35,7 +35,7 @@ describe("computeSize", () => {
     ]);
   });
 
-  it("lets the model shift one level, with a visible reason", () => {
+  it("lets the model raise one level, with a visible reason", () => {
     const text = STANDARD.replace(
       "kind: standard",
       "kind: standard\nestimate:\n  adjust: 1\n  reason: Fechas ambiguas",
@@ -45,6 +45,29 @@ describe("computeSize", () => {
     expect(formatSizeReason(size.reasons.at(-1) ?? { code: "dependencies" }, "es")).toBe(
       "ajuste del modelo (+1): Fechas ambiguas",
     );
+  });
+
+  it("never lets the model lower the size, and says so", () => {
+    const text = STANDARD.replace(
+      "kind: standard",
+      "kind: standard\nestimate:\n  adjust: -1\n  reason: Solo copia",
+    );
+    const size = computeSize(specOf(text), DEFAULT_CONFIG);
+    expect(size).toMatchObject({ level: "M", baseLevel: "M", adjust: 0 });
+    expect(formatSizeReason(size.reasons.at(-1) ?? { code: "dependencies" }, "es")).toBe(
+      "ajuste del modelo (-1) sin aplicar: el tamaño solo puede subir",
+    );
+  });
+
+  it("keeps asking to split an XL change that tries to lower itself", () => {
+    const lowered = STANDARD.replace(
+      "kind: standard",
+      "kind: standard\nestimate:\n  adjust: -1\n  reason: Es fácil",
+    );
+    // A tiny size scale makes the example XL by its score.
+    const config = { ...DEFAULT_CONFIG, size: { S: 1, M: 2, L: 3 } };
+    expect(computeSize(specOf(lowered), config).level).toBe("XL");
+    expect(check(lowered, { config })).toContain("split-required");
   });
 
   it("counts as modules only governed paths, not documentation", () => {

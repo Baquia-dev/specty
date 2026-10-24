@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "id": "20261024-iconos-de-lucide-como-datos-componentes-y-armazo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261024-iconos-de-lucide-como-datos-componentes-y-armazo",
+  "baseCommit": "3cac524b0f1f5be561fd53c4d6cc1b00392cbbd6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5c2c871b32d6f64f610770d690d26f1e2db2f6713be3be955bd0679adf09e274",
+    "at": "2026-10-24T11:28:49.389Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cdcf67d4d73cbf4f05183287648dbf929efac5bc402d2512d990836673018c84",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7ef7c73af1bc85e8827671675cf95dfcacd38e333147240713bf5fa37b0a16c0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2fd5431177c81977800494d013bf143bdbbe0a88",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:28:49.923Z",
+      "doneAt": "2026-10-24T11:30:35.523Z",
+      "summary": "packages/ui añade lucide 1.55.0 (la misma versión que @lucide/angular); components/icons.ts exporta los 50 iconos de la UI como LucideIconData ({ name, node }) con sus nombres de siempre (LucideTriangleAlert…) y el dibujo de lucide, con los renombrados a su nombre nuevo (file-question-mark, trash); un test comprueba los 50 y que LucideDynamicIcon los dibuja",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "859f49f23229cdc3f6c20e178adf295144526ca8",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:30:36.271Z",
+      "doneAt": "2026-10-24T11:32:00.034Z",
+      "summary": "badge, collapsible, dialog, diff-file, field, select y toast (y los tests de button y empty-state) toman sus iconos de components/icons.ts; de @lucide/angular solo importan LucideDynamicIcon",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "8538cf49eee9cccbba974cdf4037f4a9e4279f52",
+      "attempts": 1,
+      "startedAt": "2026-10-24T11:32:00.394Z",
+      "doneAt": "2026-10-24T11:34:13.383Z",
+      "summary": "docs/ui.md (Stack): los iconos se dibujan con LucideDynamicIcon y sus dibujos son datos de lucide en components/icons.ts, por qué (una plantilla compilada por icono, unos 3 KB cada uno) y cómo añadir uno; mientras dure la migración conviven ambos",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-24T11:35:28.027Z"
+}

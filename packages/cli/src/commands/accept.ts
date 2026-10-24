@@ -8,6 +8,7 @@ import {
   nothingPendingCard,
   type Output,
   parseSpec,
+  riskWarnings,
   serializeSpec,
   transition,
   translator,
@@ -54,6 +55,7 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
           `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
       ),
       ...assertionWarnings(view.tasks, session.lang),
+      ...riskWarnings(view.tasks, session.lang),
     ].join("\n"),
   );
   const full = session.config.verify.full;
