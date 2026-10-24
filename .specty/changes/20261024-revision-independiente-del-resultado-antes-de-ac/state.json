@@ -6,6 +6,13 @@
   "branch": "specty/20261024-revision-independiente-del-resultado-antes-de-ac",
   "baseCommit": "72a4e4ae3c2240468f91d830ba14d4cbee53a084",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d4f4a816eca831193a22887038bc7a700ff12d9f0fb8f91da079a12681ea518e",
+    "at": "2026-10-24T15:13:34.967Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b4839851ca826b4445f125ad93b81efbd7ec3cf0",
+      "startedAt": "2026-10-24T15:13:36.048Z",
+      "doneAt": "2026-10-24T15:15:23.142Z",
+      "summary": "diffReviewPrompt (spec y diff, es/en) y ReviewedView.target, con su SIGUIENTE propio para el resultado; ChangeView.recommendReview hace que la tarjeta de aceptación pida specty review antes de la aceptación"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d4f4a816eca831193a22887038bc7a700ff12d9f0fb8f91da079a12681ea518e",
-    "at": "2026-10-24T15:13:34.967Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -54,7 +54,7 @@ La revisión independiente del ADR 0011 cubre también el resultado: con el camb
 
 ## Tareas
 
-- [ ] T1: La revisión del resultado en core
+- [x] T1: La revisión del resultado en core
   - files: packages/core/src/cards/review.ts, packages/core/src/cards/view.ts, packages/core/src/cards/work.ts, packages/core/src/index.ts, packages/core/test/cards/review.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards

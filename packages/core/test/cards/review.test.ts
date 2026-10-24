@@ -2,9 +2,12 @@
 import { describe, expect, it } from "vitest";
 import {
   type CardContext,
+  type ChangeView,
   computeSize,
   DEFAULT_CONFIG,
   decideGuard,
+  diffReviewPrompt,
+  nextCard,
   type ProposedView,
   proposedCard,
   recommendEffort,
@@ -54,6 +57,7 @@ describe("the independent review", () => {
   it("shows its answer and asks to fix what is real before the approval", () => {
     const view = {
       header: "SPECTY · 20261024-x · review",
+      target: "spec" as const,
       command: "claude -p --model opus",
       path: ".specty/changes/20261024-x/reviews/spec-r1.md",
       text: "- Alta: AC2 no se puede comprobar.\n- Baja: falta un test.",
@@ -82,5 +86,58 @@ describe("the independent review", () => {
     };
     const ctx = { config: DEFAULT_CONFIG, lang: "es" as const, command: "specty" };
     expect(decideGuard(write, ctx)).toMatchObject({ allow: false, rule: "protected" });
+  });
+});
+
+describe("the independent review of the result", () => {
+  const DIFF = "diff --git a/src/a.ts b/src/a.ts\n+export const a = eval(x);\n";
+  const change = (recommendReview: boolean): ChangeView => ({
+    id: "20261024-x",
+    kind: "standard",
+    phase: "acceptance",
+    title: "X",
+    specPath: ".specty/changes/20261024-x/spec.md",
+    revision: 1,
+    tasks: [],
+    conventions: [],
+    pendingScope: [],
+    rejected: [],
+    closingSubmitted: false,
+    specChanged: false,
+    ...(recommendReview ? { recommendReview } : {}),
+  });
+
+  it("gets instructions for code, the spec and the diff", () => {
+    const prompt = diffReviewPrompt(SPEC, DIFF, "es");
+    expect(prompt).toContain("Eres un revisor independiente de un cambio de código");
+    expect(prompt).toContain(
+      `<spec>\n${SPEC.trimEnd()}\n</spec>\n\n<diff>\n${DIFF.trimEnd()}\n</diff>`,
+    );
+    expect(diffReviewPrompt(SPEC, DIFF, "en")).toContain("criteria the diff does not meet");
+  });
+
+  it("is what the acceptance card asks for first, when it is recommended", () => {
+    const next = (recommended: boolean) =>
+      nextCard({ change: change(recommended), dirty: [] }, ES).next;
+    expect(next(true)).toBe(
+      "antes de pedir la aceptación, ejecuta `specty review`: una revisión independiente del resultado con un modelo más fuerte.",
+    );
+    expect(next(false)).toContain("`specty accept`");
+  });
+
+  it("asks to tell the user, and to accept or adjust", () => {
+    const view = {
+      header: "SPECTY · 20261024-x · acceptance",
+      target: "diff" as const,
+      command: "claude -p",
+      path: ".specty/changes/20261024-x/reviews/diff-1.md",
+      text: "- Alta: eval sobre la entrada.",
+    };
+    expect(reviewedCard(view, ES).next).toBe(
+      'cuéntale al usuario lo que encontró la revisión y pídele que acepte con `specty accept`, o, si pide arreglar algo, ejecuta `specty adjust "<petición literal>"`. La revisión es información: decide la persona.',
+    );
+    expect(reviewedCard(view, { ...ES, delegated: true }).next).toBe(
+      'si la revisión encontró un defecto real, pide el ajuste con `specty adjust "<qué arreglar>"`; si no, acepta tú con `specty accept`. La revisión es información.',
+    );
   });
 });
