@@ -70,7 +70,13 @@ export type {
   TaskView,
 } from "./cards/view";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
-export { focusedTests, type Mark, skippedTests, unreferencedTodos } from "./checks/markers";
+export {
+  focusedTests,
+  type Mark,
+  skippedTests,
+  testCases,
+  unreferencedTodos,
+} from "./checks/markers";
 export {
   type CheckMode,
   type CheckReport,

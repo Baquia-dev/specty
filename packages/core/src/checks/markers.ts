@@ -56,6 +56,29 @@ const SKIPPED: readonly RegExp[] = [
   /\b(?<m>Skip\s*=\s*"[^"]*")/,
 ];
 
+const CASES: readonly RegExp[] = [
+  // Jest, Vitest, Mocha, Jasmine, package:test
+  /(?<![\w.$'"`])(?:it|test|specify|testWidgets|testGoldens)(?:\.\w+)*\s*\(/,
+  // RSpec
+  /(?<![\w.$'"`])(?:it|specify|scenario)\s+['"]/,
+  // pytest, unittest
+  /^\s*(?:async\s+)?def\s+test\w*\s*\(/,
+  // Go, XCTest
+  /^func\s+Test\w*\s*\(/,
+  /\bfunc\s+test\w*\s*\(/,
+  // JUnit, TestNG
+  /@(?:Test|ParameterizedTest|RepeatedTest|TestFactory|TestTemplate)\b/,
+  // xUnit, NUnit, MSTest
+  /\[\s*(?:Fact|Theory|Test|TestCase|TestMethod|DataTestMethod)\b/,
+  // Rust
+  /#\[(?:\w+::)?test\]/,
+  // PHPUnit
+  /\bpublic\s+function\s+test\w*\s*\(/,
+];
+
+// A line that is all comment declares no case; `#[test]` is Rust, not a comment.
+const COMMENT_LINE = /^\s*(?:\/\/|\/\*|\*|#(?!\[)|--)/;
+
 // Where a comment starts in most languages; pending work is the first word of a comment.
 const OPENER = String.raw`(?:\/\/+|\/\*+|^\s*\*+|#+|<!--|--|;+|%+)`;
 
@@ -67,6 +90,17 @@ export function focusedTests(text: string): Mark[] {
 /** Tests switched off by a marker: `it.skip`, `xit`, `@Disabled`, `#[ignore]`… */
 export function skippedTests(text: string): Mark[] {
   return marks(text, (line) => firstMarker(SKIPPED, line));
+}
+
+/**
+ * The test cases a file declares, one per line, by the catalog of each family of frameworks:
+ * enough to see that a test file lost cases, not to measure them exactly.
+ */
+export function testCases(text: string): number {
+  return text
+    .split(/\r?\n/)
+    .filter((line) => !COMMENT_LINE.test(line) && CASES.some((pattern) => pattern.test(line)))
+    .length;
 }
 
 /** Comments that start with a marker of pending work and point to no issue. */

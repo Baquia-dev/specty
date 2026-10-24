@@ -6,6 +6,13 @@
   "branch": "specty/20261024-specty-check-spec-aprobacion-alcance-y-tests",
   "baseCommit": "6beba238efdc5f76b19b3a97a7f537a53db57737",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:43048a26643af1f1dcff3d3a7e107f452e9b07d8d4460e5f00d0b7d1fa0d0a5c",
+    "at": "2026-10-24T18:03:29.525Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3a5894e5170fed63db2b1f664269e144789b153c",
+      "startedAt": "2026-10-24T18:03:29.948Z",
+      "doneAt": "2026-10-24T18:04:46.341Z",
+      "summary": "testCases en core/checks/markers.ts cuenta las líneas que declaran un caso de test con un catálogo por familia de frameworks (JS, Dart, RSpec, pytest, Go, XCTest, JUnit, xUnit, Rust, PHPUnit), sin contar comentarios."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 6,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:43048a26643af1f1dcff3d3a7e107f452e9b07d8d4460e5f00d0b7d1fa0d0a5c",
-    "at": "2026-10-24T18:03:29.525Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

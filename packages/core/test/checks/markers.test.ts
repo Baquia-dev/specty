@@ -5,6 +5,7 @@ import {
   focusedTests,
   resolveConfig,
   skippedTests,
+  testCases,
   unreferencedTodos,
 } from "../../src";
 
@@ -187,6 +188,43 @@ describe("unreferencedTodos", () => {
         "// X.Y: escaped as it is",
       ),
     ).toEqual(["HACK", "HACK", "X.Y"]);
+  });
+});
+
+describe("testCases", () => {
+  it("counts one case per line that declares it, in each family of frameworks", () => {
+    const text = [
+      'it("adds", () => {});',
+      "  test('subtracts', () {});",
+      "  testWidgets('renders', (tester) async {});",
+      "  it.each([1, 2])('adds %i', (n) => {});",
+      "def test_parses():",
+      "    async def test_fetches():",
+      "func TestParse(t *testing.T) {",
+      "  @Test",
+      "  @ParameterizedTest",
+      "  [Fact]",
+      "  [TestMethod]",
+      "#[test]",
+      "#[tokio::test]",
+      '  it "adds" do',
+      "  func testParses() {",
+      "  public function testParses(): void",
+    ].join("\n");
+    expect(testCases(text)).toBe(16);
+  });
+
+  it("leaves out what only looks like a case", () => {
+    const text = [
+      "const it = 1;",
+      "model.test(x);",
+      'describe("suite", () => {',
+      '// it("commented out", () => {});',
+      "@Testable",
+      "def helper():",
+      "function testHelper() {}",
+    ].join("\n");
+    expect(testCases(text)).toBe(0);
   });
 });
 

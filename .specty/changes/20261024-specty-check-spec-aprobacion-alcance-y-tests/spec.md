@@ -59,7 +59,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: Contar los casos de un archivo de test
+- [x] T1: Contar los casos de un archivo de test
   - files: packages/core/src/checks/markers.ts, packages/core/src/index.ts, packages/core/test/checks/markers.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts
