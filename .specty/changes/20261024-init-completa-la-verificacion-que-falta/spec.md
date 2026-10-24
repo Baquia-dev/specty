@@ -48,7 +48,7 @@ En un repositorio vacío, `init` deja `.specty/config.yaml` sin `verify`, porque
 
 ## Tareas
 
-- [ ] T1: `init` completa `verify` en `config.yaml`
+- [x] T1: `init` completa `verify` en `config.yaml`
   - files: packages/cli/src/install/project-files.ts, packages/cli/src/commands/init.ts, packages/cli/test/config-fill.test.ts, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/config-fill.test.ts test/setup.test.ts test/init-reversible.test.ts

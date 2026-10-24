@@ -343,6 +343,8 @@ review:
 
 `verify.quick` es una comprobación rápida de todo el repositorio, como el formato o el tamaño de los archivos, que `task done` ejecuta antes de la verificación de cada tarea. Las dos van en un solo comando, `<quick> && <verify>`, que es también el que muestra la tarjeta de la tarea. Así un fallo aparece en la tarea que lo causó, no en otra posterior ni al aceptar. Sin la clave, cada tarea ejecuta solo su verificación.
 
+`specty init` escribe `verify.default` y `verify.full` con los comandos que detecta. Si el archivo ya existe, solo añade los que falten y la detección encuentre ahora (por ejemplo, tras el primer cambio de un repositorio vacío), insertando sus líneas al final de `verify` (o un bloque `verify` nuevo al final del archivo); nunca cambia un valor que ya está, y el resto del archivo, con sus comentarios, queda igual.
+
 La tabla de esfuerzo por herramienta (`presets/effort.yaml`) viene con Specty y se puede sobrescribir con una clave `effort:` en este archivo.
 
 `git.worktrees` (por defecto `true`) hace que `specty new` cree cada cambio en su propia worktree; con `false`, `new` cambia la rama de la carpeta actual (ARCHITECTURE §9). `git.setup` es el comando que prepara cada worktree nueva, normalmente instalando las dependencias. Sin la clave, Specty usa el del stack que detecta en la carpeta:

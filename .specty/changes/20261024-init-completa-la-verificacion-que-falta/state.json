@@ -6,6 +6,13 @@
   "branch": "specty/20261024-init-completa-la-verificacion-que-falta",
   "baseCommit": "6bb41bd02850e9bee2355ad9cbe3695eaf3b7baf",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f3f1fa32520690037ddccca3ccba0052774f20a9bdf3898eca3c6ded5a5d994",
+    "at": "2026-10-24T16:49:32.995Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5af7cb4a1e9814d17e2c4e58733704f49e398165",
+      "startedAt": "2026-10-24T16:49:33.409Z",
+      "doneAt": "2026-10-24T16:52:34.269Z",
+      "summary": "completeConfig inserta en config.yaml el verify.default y el verify.full que falten y la detección encuentre, sin tocar el resto del texto; init lo usa con un config existente (con --dry-run, copias y commit) y solo avisa de que no hay tests si tampoco los tiene la configuración. formats.md §6."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6f3f1fa32520690037ddccca3ccba0052774f20a9bdf3898eca3c6ded5a5d994",
-    "at": "2026-10-24T16:49:32.995Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

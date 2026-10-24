@@ -18,7 +18,12 @@ import { commitInstall } from "../install/commit";
 import { type FileChange, installFiles } from "../install/files";
 import { installGitHooks } from "../install/git-hooks";
 import { installOpencode } from "../install/opencode";
-import { renderConfig, writeAgentsMd, writeClaudePointer } from "../install/project-files";
+import {
+  completeConfig,
+  renderConfig,
+  writeAgentsMd,
+  writeClaudePointer,
+} from "../install/project-files";
 import { exists } from "../io/files";
 import { createGit, findRoot, pathsOf } from "../io/git";
 import { COMMAND, type Environment, systemLanguage } from "../session";
@@ -92,7 +97,15 @@ export async function init(environment: Environment, options: InitOptions): Prom
   const files = installFiles(
     options.dryRun === true ? { dryRun: true } : { backups: { folder: backups, root } },
   );
+  // An existing configuration only gains the verification it lacks and the detection now finds.
+  const completed =
+    existing.kind === "missing"
+      ? undefined
+      : completeConfig((await files.read(paths.config)) ?? "", detection);
   if (existing.kind === "missing") await files.write(paths.config, renderConfig(lang, detection));
+  else if (completed !== undefined && completed.added.length > 0) {
+    await files.write(paths.config, completed.text);
+  }
 
   const tools =
     options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
@@ -102,10 +115,15 @@ export async function init(environment: Environment, options: InitOptions): Prom
   const done: string[] = [
     existing.kind === "missing"
       ? t(".specty/config.yaml creado.", ".specty/config.yaml created.")
-      : t(
-          ".specty/config.yaml ya existía; no se tocó.",
-          ".specty/config.yaml already existed; left untouched.",
-        ),
+      : completed !== undefined && completed.added.length > 0
+        ? t(
+            `.specty/config.yaml: añadido ${completed.added.join(" y ")}; lo demás no se tocó.`,
+            `.specty/config.yaml: added ${completed.added.join(" and ")}; the rest was left untouched.`,
+          )
+        : t(
+            ".specty/config.yaml ya existía; no se tocó.",
+            ".specty/config.yaml already existed; left untouched.",
+          ),
     agents === "created"
       ? t("AGENTS.md creado con los bloques de Specty.", "AGENTS.md created with Specty's blocks.")
       : t("AGENTS.md: bloques de Specty actualizados.", "AGENTS.md: Specty's blocks updated."),
@@ -197,7 +215,8 @@ export async function init(environment: Environment, options: InitOptions): Prom
       ),
     );
   }
-  if (verifyCommands(detection.commands).default === undefined) {
+  const configured = existing.kind === "ok" && existing.config.verify.default !== undefined;
+  if (!configured && verifyCommands(detection.commands).default === undefined) {
     warnings.push(
       t(
         "No se detectó un comando de tests: define verify.default en .specty/config.yaml.",

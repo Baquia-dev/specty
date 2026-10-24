@@ -10,6 +10,7 @@ import {
   translator,
   upsertBlock,
 } from "@baquia-dev/specty-core";
+import { isMap, isNode, parseDocument } from "yaml";
 import type { Detection } from "../detect/project";
 import { projectFacts, verifyCommands } from "../detect/project";
 import { COMMAND } from "../session";
@@ -61,6 +62,42 @@ export function renderConfig(lang: Lang, detection: Detection): string {
     "  branchPerChange: true",
     "",
   ].join("\n");
+}
+
+/**
+ * Adds to an existing `.specty/config.yaml` the verification the detection finds and the file
+ * lacks (`verify.default`, `verify.full`). It inserts lines into the text, so everything already
+ * there, comments and formatting included, stays exactly as it was.
+ */
+export function completeConfig(
+  text: string,
+  detection: Detection,
+): { readonly text: string; readonly added: readonly string[] } {
+  const document = parseDocument(text);
+  const current = document.get("verify", true);
+  // Only a `verify` map, or none: anything else is the person's to fix, and validation says so.
+  if (current !== undefined && !isMap(current)) return { text, added: [] };
+  const detected = verifyCommands(detection.commands);
+  const missing = (["default", "full"] as const).flatMap((key) => {
+    const value = detected[key];
+    return value === undefined || document.hasIn(["verify", key]) ? [] : [{ key, value }];
+  });
+  const added = missing.map(({ key, value }) => `verify.${key} (\`${value}\`)`);
+  if (missing.length === 0) return { text, added };
+  const entries = missing.map(({ key, value }) => `${key}: ${JSON.stringify(value)}`);
+  if (current === undefined) {
+    const separator = text === "" || text.endsWith("\n") ? "" : "\n";
+    const block = entries.map((entry) => `  ${entry}`).join("\n");
+    return { text: `${text}${separator}verify:\n${block}\n`, added };
+  }
+  // After the map's last value, with the indentation of its first key.
+  const at = current.range?.[1] ?? text.length;
+  const first = current.items[0]?.key;
+  const start = isNode(first) ? (first.range?.[0] ?? at) : at;
+  const indent = " ".repeat(Math.max(start - (text.lastIndexOf("\n", start - 1) + 1), 2));
+  const inserted = entries.map((entry) => `\n${indent}${entry}`).join("");
+  const cut = text.slice(0, at).endsWith("\n") ? at - 1 : at;
+  return { text: `${text.slice(0, cut)}${inserted}${text.slice(cut)}`, added };
 }
 
 /** Writes or refreshes the managed blocks of AGENTS.md; the rest of the file is the user's. */
