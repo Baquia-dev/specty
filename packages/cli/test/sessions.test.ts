@@ -16,6 +16,17 @@ const enter = (cwd: string, path: string, session?: string) =>
     }),
   });
 
+/** The same hook for `EnterWorktree` by name, as Claude Code sends it to skip the prompt. */
+const enterByName = (cwd: string, name: string, session: string) =>
+  cli(cwd, ["guard", "--tool", "claude-code"], {
+    stdin: JSON.stringify({
+      cwd,
+      tool_name: "EnterWorktree",
+      tool_input: { name },
+      session_id: session,
+    }),
+  });
+
 /** A repository with two open changes, each in its own worktree. */
 async function twoChanges() {
   const root = await tempRepo(APP);
@@ -52,6 +63,18 @@ describe("one worktree per agent session", () => {
     await enter(root, third, "s3");
     git(root, "worktree", "remove", "--force", third);
     expect((await enter(root, second, "s3")).code).toBe(0);
+  });
+
+  it("binds a session that enters by name to the change's folder (AC4)", async () => {
+    const { root, first, second } = await twoChanges();
+    expect((await enterByName(root, CHANGE, "s1")).code).toBe(0);
+    const denied = await enter(first, second, "s1");
+    expect(denied.code).toBe(2);
+    expect(denied.err).toContain(
+      `Esta sesión trabaja en \`${first}\` (cambio ${CHANGE}, aún abierto)`,
+    );
+    // Any other name is Claude Code's own worktree, which the session may not enter either.
+    expect((await enterByName(first, "explorar", "s1")).code).toBe(2);
   });
 
   it("is installed by init in Claude Code's hook (AC5)", async () => {

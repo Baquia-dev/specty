@@ -58,7 +58,7 @@ En Claude Code, el agente entra en la carpeta que preparó `specty new` sin que 
 
 ## Tareas
 
-- [ ] T1: Los hooks de las worktrees y el guard con `name`
+- [x] T1: Los hooks de las worktrees y el guard con `name`
   - files: packages/cli/src/enforce/worktree-hooks.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/sessions.ts, packages/cli/test/worktree-hooks.test.ts, packages/cli/test/sessions.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktree-hooks.test.ts test/sessions.test.ts
