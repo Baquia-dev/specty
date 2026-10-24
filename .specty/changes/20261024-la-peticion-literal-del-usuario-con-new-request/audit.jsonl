@@ -1,0 +1,3 @@
+{"ts":"2026-10-24T10:25:17.263Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261024-la-peticion-literal-del-usuario-con-new-request"}}
+{"ts":"2026-10-24T10:25:46.466Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:8bd4cb585f0a6921c9e86a34b4fc5632b185d84baf2431f0701eed10ea6caef1","size":"L","warnings":0}}
+{"ts":"2026-10-24T10:25:51.117Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:8bd4cb585f0a6921c9e86a34b4fc5632b185d84baf2431f0701eed10ea6caef1","channel":"delegated","delegated":true}}
