@@ -66,7 +66,7 @@ Desde la UI que sirve `specty ui`, la persona ejecuta la verificación completa 
   - files: packages/ui/src/data/server-answers.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-runs.test.ts, packages/ui/src/data/server-actions.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data && pnpm sources
-- [ ] T4: Documentar la verificación desde la UI
+- [x] T4: Documentar la verificación desde la UI
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC6
   - verify: pnpm check
