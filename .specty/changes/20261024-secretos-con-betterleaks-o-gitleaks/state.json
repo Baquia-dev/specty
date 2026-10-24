@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-secretos-con-betterleaks-o-gitleaks",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-secretos-con-betterleaks-o-gitleaks",
   "baseCommit": "0cfa3a682dc5b3ccb6e6fbbfea90d7772ec63fc7",
   "revision": 1,
@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c753663fa06c01ae6d0274a3bc96d3be2d4a9c56",
+      "attempts": 1,
       "startedAt": "2026-10-24T17:53:14.300Z",
       "doneAt": "2026-10-24T17:55:30.691Z",
-      "summary": "check/secrets.ts: secrets con Betterleaks 2, Betterleaks 1 o gitleaks sobre una copia temporal de lo que ve el modo, con --redact, sus archivos de configuración y solo líneas añadidas; sin escáner no corre y dice qué instalar."
+      "summary": "check/secrets.ts: secrets con Betterleaks 2, Betterleaks 1 o gitleaks sobre una copia temporal de lo que ve el modo, con --redact, sus archivos de configuración y solo líneas añadidas; sin escáner no corre y dice qué instalar.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4431f757321452edad00696c1b7aa78542d0c340",
+      "startedAt": "2026-10-24T17:55:30.942Z",
+      "doneAt": "2026-10-24T17:57:54.753Z",
+      "summary": "formats §6 documenta secrets (escáneres y orden, copia con sus archivos, --config de Betterleaks, --redact, sin escáner no corre, cómo silenciar un falso positivo); ARCHITECTURE lo añade a la fila de specty check."
     }
   },
   "pending": {

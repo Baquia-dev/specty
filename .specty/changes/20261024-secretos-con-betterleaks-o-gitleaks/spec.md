@@ -60,7 +60,7 @@ follows:
   - files: packages/cli/src/check/secrets.ts, packages/cli/src/check/common.ts, packages/cli/test/check-secrets.test.ts, packages/cli/test/check.test.ts, packages/cli/test/check-markers.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-secrets.test.ts test/check.test.ts test/check-markers.test.ts
-- [ ] T2: La documentación
+- [x] T2: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC3, AC5
   - verify: pnpm check
