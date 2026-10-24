@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261024-init-completa-la-verificacion-que-falta",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261024-init-completa-la-verificacion-que-falta",
+  "baseCommit": "6bb41bd02850e9bee2355ad9cbe3695eaf3b7baf",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0e93b7bb4488a5b1697b48fd3a67e10c1a67e2d0fccf6a791739910f192d9cc2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8de2c7c7662e36ff7ca62a320dbcab88160564752d4f78393433f56b2cf593d9",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:3b892458f93359459634f591ccfb3cb94fe16ac9d3290335545781dcab414ea1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f3f1fa32520690037ddccca3ccba0052774f20a9bdf3898eca3c6ded5a5d994",
+    "at": "2026-10-24T16:49:32.995Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
