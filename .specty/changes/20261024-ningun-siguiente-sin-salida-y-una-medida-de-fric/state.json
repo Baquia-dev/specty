@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261024-ningun-siguiente-sin-salida-y-una-medida-de-fric",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-ningun-siguiente-sin-salida-y-una-medida-de-fric",
   "baseCommit": "800f1a4d6f5140b2d7438bee5dd6eebea77c9304",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "217143c8d4baa13b5a6e1808d1596f55dbc35185",
+      "attempts": 1,
       "startedAt": "2026-10-24T10:53:38.999Z",
       "doneAt": "2026-10-24T10:57:49.721Z",
-      "summary": "walk.ts sigue el SIGUIENTE de cada salida con un guion por fase, prueba llamadas del guard, clasifica los bloqueos (resuelto, sin continuación, callejón) y cuenta la fricción; friction.test.ts recorre quick, standard, standard con cinco tropiezos y delegado, todo resuelto, y fija las cifras"
+      "summary": "walk.ts sigue el SIGUIENTE de cada salida con un guion por fase, prueba llamadas del guard, clasifica los bloqueos (resuelto, sin continuación, callejón) y cuenta la fricción; friction.test.ts recorre quick, standard, standard con cinco tropiezos y delegado, todo resuelto, y fija las cifras",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4207c9bd864ac2347bbdfc279d26709ac6ea0600",
+      "startedAt": "2026-10-24T10:57:50.097Z",
+      "doneAt": "2026-10-24T10:59:20.846Z",
+      "summary": "ARCHITECTURE §16: las comprobaciones estática y dinámica de los SIGUIENTE, los tropiezos del recorrido, y la línea base de fricción por recorrido"
     }
   },
   "pending": {

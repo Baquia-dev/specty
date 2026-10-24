@@ -59,7 +59,7 @@ Dos comprobaciones de que ninguna salida de Specty deja al agente sin camino. Un
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/friction.test.ts
   - type: test
-- [ ] T3: Documentar las comprobaciones y la línea base
+- [x] T3: Documentar las comprobaciones y la línea base
   - files: docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm check
