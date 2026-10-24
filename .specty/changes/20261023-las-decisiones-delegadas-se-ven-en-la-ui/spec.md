@@ -46,7 +46,7 @@ En modo delegado, el agente toma las decisiones de la persona, y la auditoría y
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/revision.ts, packages/ui/src/data/revision.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/revision.test.ts --include src/data/views.test.ts
-- [ ] T2: Las decisiones delegadas en el historial
+- [x] T2: Las decisiones delegadas en el historial
   - files: packages/ui/src/data/history-text.ts, packages/ui/src/data/history.ts, packages/ui/src/data/history.test.ts, docs/ui.md
   - ac: AC2
   - verify: pnpm check

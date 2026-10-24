@@ -108,7 +108,7 @@ Las tareas, en el orden de la spec, como filas de documento (igual que los ítem
 
 ### Historial y trazabilidad
 
-- Línea de tiempo de eventos, con filtros por actor y tipo.
+- Línea de tiempo de eventos, con filtros por actor y tipo. Una decisión de la persona que tomó su agente en modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)) lleva el detalle «Por delegación: lo decidió el agente», y la nota de una aprobación delegada dice «Aprobada el … por el agente de …».
 - Exportación a Markdown, JSON, OpenSpec, Spec Kit y Kiro.
 - Vista de trazabilidad: un archivo con un margen tipo blame que enlaza cada bloque con su cambio, tarea y criterio.
 

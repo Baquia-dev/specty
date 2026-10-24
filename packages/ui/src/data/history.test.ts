@@ -178,4 +178,23 @@ describe("historyOf", () => {
     expect(entries[0]?.title.en).toBe("guard.blocked");
     expect(historyOf([])).toEqual([]);
   });
+
+  it("says which decisions the agent took for the person, in delegated mode (AC2)", () => {
+    const delegated = { delegated: true };
+    const audit = [
+      event("agent", "spec.approved", { revision: 1, channel: "delegated", ...delegated }),
+      event("agent", "scope.decided", { id: "S1", decision: "approved", ...delegated }),
+      event("agent", "change.accepted", { revision: 1, ...delegated }),
+      event("human", "change.closed", {}),
+    ];
+    expect(said(audit)).toEqual([
+      "Aprobó la revisión 1 · Por delegación: lo decidió el agente",
+      "Aprobó la solicitud S1 · Por delegación: lo decidió el agente",
+      "Aceptó el resultado · Revisión 1 · Por delegación: lo decidió el agente",
+      "Cerró el cambio",
+    ]);
+    expect(historyOf(audit)[0]?.details.map((detail) => detail.en)).toEqual([
+      "Delegated: the agent decided",
+    ]);
+  });
 });

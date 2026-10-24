@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261023-las-decisiones-delegadas-se-ven-en-la-ui",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261023-las-decisiones-delegadas-se-ven-en-la-ui",
   "baseCommit": "261a6a2e7e668c5e3a8b071704b0862ae59259ef",
   "revision": 1,
@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "aa3141338745e24192e21100892c667d858e4340",
+      "attempts": 1,
       "startedAt": "2026-10-24T05:00:02.038Z",
       "doneAt": "2026-10-24T05:01:09.949Z",
-      "summary": "La vista lleva approved.delegated cuando el canal es delegated, y la nota dice «Aprobada el 21 oct por el agente de Ana Gómez» («Approved on Oct 21 by Ana Gómez's agent»), o «· por el agente de …» para una revisión anterior"
+      "summary": "La vista lleva approved.delegated cuando el canal es delegated, y la nota dice «Aprobada el 21 oct por el agente de Ana Gómez» («Approved on Oct 21 by Ana Gómez's agent»), o «· por el agente de …» para una revisión anterior",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ae74f0648a5855e1cd0827e5b270d574225753c1",
+      "startedAt": "2026-10-24T05:01:10.280Z",
+      "doneAt": "2026-10-24T05:04:40.090Z",
+      "summary": "El historial añade «Por delegación: lo decidió el agente» a cada línea con data.delegated (aprobar, decidir el alcance, aceptar, cerrar, cancelar); las utilidades de texto pasan a history-text.ts y history.ts baja a 286 líneas; ui.md lo cuenta en Historial"
     }
   },
   "pending": {
