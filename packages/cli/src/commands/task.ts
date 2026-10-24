@@ -7,6 +7,9 @@ import {
   evaluateTaskScope,
   headerOf,
   isGoverned,
+  type LongFile,
+  longFileCard,
+  longFileWarnings,
   moduleOf,
   nextCard,
   type Output,
@@ -20,6 +23,7 @@ import {
   serializeSpec,
   shortHash,
   specHash,
+  splitAdvice,
   type Task,
   transition,
   translator,
@@ -29,6 +33,7 @@ import {
 import { commitState, resolveActive } from "../flow/active";
 import { assertionLosses } from "../flow/assertions";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
+import { longFilesOf } from "../flow/lines";
 import { runLive } from "../flow/live-run";
 import { riskFindings } from "../flow/risk";
 import { changeView, taskVerification } from "../flow/views";
@@ -122,6 +127,9 @@ export async function taskDone(
     rules: scopeRulesFrom(session.config),
   });
   if (!scope.ok) return outOfScopeCard(header, id, scope.outOfScope, cards);
+  const long = await longFilesOf(session, stored?.baseCommit, changed);
+  const tooLong = long.filter((file) => file.severity === "error");
+  if (tooLong.length > 0) return longFileCard(header, id, tooLong, cards);
 
   const verified = await verify(session, active, task);
   if (!verified.ok)
@@ -131,6 +139,7 @@ export async function taskDone(
     removedAssertions: await assertionLosses(session, stored?.baseCommit, changed),
     risks: await riskFindings(session, stored?.baseCommit, changed),
     findings: findings.map((finding) => finding.trim()),
+    longFiles: long,
   };
   const done = await complete(session, verified.change, spec, task, summary.trim(), notes);
   const following =
@@ -142,23 +151,23 @@ export async function taskDone(
     ...assertionWarnings(finished, session.lang),
     ...riskWarnings(finished, session.lang),
   ];
+  const longer = longFileWarnings(finished, session.lang);
+  const lines = [
+    ...warnings,
+    ...(warnings.length === 0
+      ? []
+      : [
+          t(
+            "Si no era parte de la tarea, explícaselo al usuario: lo verá al aceptar.",
+            "If it was not part of the task, explain it to the user: they will see it on acceptance.",
+          ),
+        ]),
+    ...longer,
+    ...(longer.length === 0 ? [] : [splitAdvice(session.lang)]),
+  ];
   return withLead(
     t(`${id} completada: commit ${done.commit}.`, `${id} done: commit ${done.commit}.`),
-    warnings.length === 0
-      ? card
-      : {
-          ...card,
-          blocks: [
-            ...section(t("AVISOS", "WARNINGS"), [
-              ...warnings,
-              t(
-                "Si no era parte de la tarea, explícaselo al usuario: lo verá al aceptar.",
-                "If it was not part of the task, explain it to the user: they will see it on acceptance.",
-              ),
-            ]),
-            ...card.blocks,
-          ],
-        },
+    { ...card, blocks: [...section(t("AVISOS", "WARNINGS"), lines), ...card.blocks] },
   );
 }
 
@@ -170,6 +179,8 @@ interface Notes {
   readonly removedAssertions: readonly AssertionLoss[];
   readonly risks: readonly RiskFinding[];
   readonly findings: readonly string[];
+  /** Files left past the warning line; a block never gets this far. */
+  readonly longFiles: readonly LongFile[];
 }
 
 type Verification =

@@ -5,6 +5,7 @@ import {
   closedCard,
   decisionCard,
   headerOf,
+  longFileWarnings,
   nothingPendingCard,
   type Output,
   parseSpec,
@@ -56,6 +57,7 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
       ),
       ...assertionWarnings(view.tasks, session.lang),
       ...riskWarnings(view.tasks, session.lang),
+      ...longFileWarnings(view.tasks, session.lang),
     ].join("\n"),
   );
   const full = session.config.verify.full;

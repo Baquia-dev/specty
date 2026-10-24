@@ -6,6 +6,7 @@ import {
   dirname,
   isIntegrating,
   isRiskRule,
+  type LongFile,
   parseSpec,
   type RiskFinding,
   recommendTaskEffort,
@@ -44,7 +45,12 @@ export async function changeView(session: Session, change: StoredChange): Promis
     const verify = taskVerification(session, task);
     const commit = commits.get(task.id);
     const rules = testRules(task, session.config.policy.tests);
-    const { lost, risks, notes } = findings.get(task.id) ?? { lost: [], risks: [], notes: [] };
+    const { lost, risks, notes, long } = findings.get(task.id) ?? {
+      lost: [],
+      risks: [],
+      notes: [],
+      long: [],
+    };
     return {
       id: task.id,
       title: task.title,
@@ -60,6 +66,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
       ...(lost.length > 0 ? { removedAssertions: lost } : {}),
       ...(risks.length > 0 ? { risks } : {}),
       ...(notes.length > 0 ? { findings: notes } : {}),
+      ...(long.length > 0 ? { longFiles: long } : {}),
     };
   });
   const active = tasks.find((task) => task.status === "active");
@@ -140,16 +147,17 @@ interface TaskFindings {
   readonly risks: readonly RiskFinding[];
   /** What the agent learned (`--finding`). */
   readonly notes: readonly string[];
+  readonly long: readonly LongFile[];
 }
 
-/** What `task done` recorded of each task: removed assertions, risks and findings. */
+/** What `task done` recorded of each task: removed assertions, risks, findings and long files. */
 function findingsByTask(audit: Audit): ReadonlyMap<string, TaskFindings> {
   const notes = findingsOf(audit);
   return new Map(
     audit
       .filter((entry) => entry.event === "task.completed")
       .flatMap((entry): [string, TaskFindings][] => {
-        const { task, removedAssertions, risks } = dataOf(entry);
+        const { task, removedAssertions, risks, longFiles } = dataOf(entry);
         if (typeof task !== "string") return [];
         const learned = notes.filter((note) => note.task === task).map((note) => note.text);
         const lost = listOf(removedAssertions).flatMap((loss) =>
@@ -169,7 +177,23 @@ function findingsByTask(audit: Audit): ReadonlyMap<string, TaskFindings> {
               ]
             : [],
         );
-        return [[task, { lost, risks: found, notes: learned }]];
+        const long = listOf(longFiles).flatMap((file): LongFile[] =>
+          typeof file.path === "string" &&
+          typeof file.lines === "number" &&
+          typeof file.before === "number" &&
+          typeof file.limit === "number"
+            ? [
+                {
+                  path: file.path,
+                  lines: file.lines,
+                  before: file.before,
+                  limit: file.limit,
+                  severity: "warning",
+                },
+              ]
+            : [],
+        );
+        return [[task, { lost, risks: found, notes: learned, long }]];
       }),
   );
 }

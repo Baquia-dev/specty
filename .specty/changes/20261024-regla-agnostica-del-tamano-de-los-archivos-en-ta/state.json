@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "49eaee74adfc738c51a59e0a712e692c75b7c780",
+      "attempts": 1,
       "startedAt": "2026-10-24T16:16:37.353Z",
       "doneAt": "2026-10-24T16:20:31.372Z",
-      "summary": "codeLines cuenta líneas de código sin blancos ni comentarios (//, #, -- , /* */, <!-- -->, --[[ ]]) con excepciones (directivas de C/C++/C#, atributos de Rust, selectores CSS, --i); longFiles avisa al crecer pasado warn y bloquea al cruzar fail, sin medir ignorados, generados, lockfiles, binarios ni lines.exclude; clave lines en la configuración; cards/lines.ts con avisos y bloqueo, y la aceptación los muestra"
+      "summary": "codeLines cuenta líneas de código sin blancos ni comentarios (//, #, -- , /* */, <!-- -->, --[[ ]]) con excepciones (directivas de C/C++/C#, atributos de Rust, selectores CSS, --i); longFiles avisa al crecer pasado warn y bloquea al cruzar fail, sin medir ignorados, generados, lockfiles, binarios ni lines.exclude; clave lines en la configuración; cards/lines.ts con avisos y bloqueo, y la aceptación los muestra",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ab54f370358fd7a6796caa210a8b4d43296fbf6e",
+      "startedAt": "2026-10-24T16:20:31.839Z",
+      "doneAt": "2026-10-24T16:22:58.179Z",
+      "summary": "flow/lines.ts lee cada archivo gobernado que la tarea crea o modifica en el commit base (git show) y en disco; task done bloquea con longFileCard antes de verificar si alguno cruza el máximo, y si no, guarda los avisos en task.completed.longFiles y los muestra con el consejo de no partir por el número; changeView los lee de la auditoría y accept los añade a su nota"
     }
   },
   "pending": {
