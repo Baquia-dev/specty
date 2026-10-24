@@ -67,7 +67,7 @@ follows:
   - files: packages/cli/src/check/provider.ts, packages/cli/src/check/files.ts, packages/cli/src/check/plan.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-plan.test.ts
   - ac: AC1, AC2, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-plan.test.ts test/check.test.ts
-- [ ] T3: `fix-tests` y `tests-removed`
+- [x] T3: `fix-tests` y `tests-removed`
   - files: packages/cli/src/check/plan-tests.ts, packages/cli/src/check/plan.ts, packages/cli/test/check-plan.test.ts
   - ac: AC3, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-plan.test.ts

@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ed4522f6066b142528a06f81c1858b907492b2da",
+      "attempts": 1,
       "startedAt": "2026-10-24T18:04:46.634Z",
       "doneAt": "2026-10-24T18:09:53.468Z",
-      "summary": "check --spec [id] carga el plan (el cambio dado o el activo) y añade spec-approved (sin contar el cierre) y scope (Archivos, files de las tareas y ampliaciones, con las reglas de task done); el contexto gana deleted y before; --spec con --all se rechaza."
+      "summary": "check --spec [id] carga el plan (el cambio dado o el activo) y añade spec-approved (sin contar el cierre) y scope (Archivos, files de las tareas y ampliaciones, con las reglas de task done); el contexto gana deleted y before; --spec con --all se rechaza.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e0606e81f25d20ad52dc37d7acf8649e69bd90a5",
+      "startedAt": "2026-10-24T18:09:53.733Z",
+      "doneAt": "2026-10-24T18:12:54.530Z",
+      "summary": "check/plan-tests.ts: fix-tests (cada fix activa o hecha trae un test suyo; con --staged solo la activa) y tests-removed (avisa de tests borrados o con menos casos); scope cuenta también los borrados. check --spec sobre este cambio: todo OK."
     }
   },
   "pending": {
