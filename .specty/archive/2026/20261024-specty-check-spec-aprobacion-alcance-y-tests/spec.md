@@ -80,3 +80,36 @@ follows:
 
 - R1: El alcance de `specty check` y el de `task done` divergen — los dos usan `evaluateTaskScope` y `scopeRulesFrom` del core, sin reglas propias.
 - R2: El catálogo de casos cuenta de menos o de más en un framework raro — solo compara el mismo archivo antes y después, y solo avisa.
+
+## Cierre
+
+### Resumen
+
+`specty check --spec [id]` suma las verificaciones del plan aprobado de un cambio, el activo si no se da el id:
+
+- `spec-approved`: la spec está aprobada y sin tocar; el cierre no cuenta.
+- `scope`: los archivos tocados y borrados están dentro del alcance, con las mismas reglas que `task done`.
+- `fix-tests`: cada `fix` activa o hecha trae un test suyo.
+- `tests-removed`: avisa, sin bloquear, de los tests borrados o con menos casos.
+
+El contexto de cada verificación sabe ahora qué borra el diff y cómo era cada archivo en el punto de partida. El core cuenta los casos de un test con un catálogo por familia de frameworks. Sobre este mismo cambio, `specty check --spec` dio todo en verde, salvo `secrets`, que no corrió por no haber escáner.
+
+### Desviaciones
+
+- `planProvider` no recibe verificaciones de fuera: cuando no hay cambio, solo trae `spec-approved`, y las demás reciben el plan ya cargado. Así `plan-tests.ts` importa de `plan.ts` solo un tipo y no hay un import circular.
+- `scope` cuenta también los archivos borrados, como hace `task done`; el diseño solo hablaba de los del diff.
+
+### Decisiones
+
+- `--spec` sin id usa el cambio activo de la carpeta, para que `task done` (corte 8) lo llame sin repetir el id.
+- `--spec` con `--all` se rechaza con un mensaje y sale con 1, porque sin el diff del cambio no hay alcance que comparar.
+- `tests-removed` da siempre avisos; su nivel en `checks.levels` solo sirve para apagarlo.
+
+### Pendientes
+
+- El cambio siguiente: `allowedDependencies` en la spec y la verificación de las dependencias nuevas en los manifiestos (`package.json`, `pubspec.yaml`).
+- Un comentario HTML sin cerrar en el cuerpo de una spec se traga el resto del archivo: `propose` solo dice que faltan secciones, sin señalar la línea.
+- `execute` guarda solo los últimos 512 KB de stdout: un diff mayor pierde sus primeros archivos (que entonces cuentan enteros) y un archivo preparado mayor se leería cortado.
+- `isTestFile` no reconoce los tests unitarios de Rust dentro de `src/` ni los `*.cy.ts` de Cypress.
+- Arreglar el flujo de las épicas: su tarjeta en `implementing` y la regla de una sesión por worktree con sus cortes.
+- `packages/cli/src/commands/init.ts` sigue con 307 líneas de código.
