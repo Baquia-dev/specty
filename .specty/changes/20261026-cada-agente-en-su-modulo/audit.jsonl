@@ -1,0 +1,3 @@
+{"ts":"2026-10-26T16:19:21.050Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261026-cada-agente-en-su-modulo","epic":"20261026-todos-los-agentes-al-nivel-de-claude-code","slice":"C1"}}
+{"ts":"2026-10-26T16:28:50.564Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:a3a1e893b3c1477847d81837ef0778d2f18380836af8fa67d66ff0cf0586c4b1","size":"L","warnings":8}}
+{"ts":"2026-10-26T16:32:05.924Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:a3a1e893b3c1477847d81837ef0778d2f18380836af8fa67d66ff0cf0586c4b1","channel":"delegated","delegated":true}}
