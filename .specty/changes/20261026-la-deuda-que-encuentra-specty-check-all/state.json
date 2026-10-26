@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-la-deuda-que-encuentra-specty-check-all",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-la-deuda-que-encuentra-specty-check-all",
+  "baseCommit": "f9f6ccc8db4ae7fd18c29d3a81ffd8683e2eb984",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:89124e1470e2d0b587f728f30818f8bdaf6731099f785430b8a2083df1039145",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:25611837151bd2e164bfb5b6d29f9795c20e2ef4ccc1fb532269364831eb8ba0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e3e42b9c2e3c044c710a7873c187ece75211c483f8d22a4fe476e89ed54f7944",
+    "at": "2026-10-26T16:50:57.592Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
