@@ -19,3 +19,9 @@ kind: quick
   - files: packages/core/src/cards/index.ts, packages/core/src/index.ts
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las exportaciones de las tarjetas pasan a cards/index.ts y index.ts las reexporta con export * (de 306 a 226 líneas de código); core exporta lo mismo, como comprueban los tipos de la CLI y knip.

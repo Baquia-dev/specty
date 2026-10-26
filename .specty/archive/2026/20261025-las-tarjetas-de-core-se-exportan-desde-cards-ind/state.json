@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-las-tarjetas-de-core-se-exportan-desde-cards-ind",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-las-tarjetas-de-core-se-exportan-desde-cards-ind",
   "baseCommit": "3257fe93085e67840702cf70cb4e22ac932750e7",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "949f2499368c4aedd4bbbe3382c8c8174cc99b14",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:28:59.987Z",
       "doneAt": "2026-10-26T02:31:00.015Z",
-      "summary": "Las exportaciones de las tarjetas pasan a cards/index.ts y index.ts las reexporta con export * (de 306 a 226 líneas de código); core exporta lo mismo, como comprueban los tipos de la CLI y knip."
+      "summary": "Las exportaciones de las tarjetas pasan a cards/index.ts y index.ts las reexporta con export * (de 306 a 226 líneas de código); core exporta lo mismo, como comprueban los tipos de la CLI y knip.",
+      "scopeExtra": []
     }
   },
   "pending": {
