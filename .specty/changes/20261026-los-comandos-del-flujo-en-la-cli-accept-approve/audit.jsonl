@@ -1,0 +1,3 @@
+{"ts":"2026-10-26T19:20:50.158Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261026-los-comandos-del-flujo-en-la-cli-accept-approve","epic":"20261026-las-funciones-de-specty-dentro-de-sus-limites","slice":"C4"}}
+{"ts":"2026-10-26T19:24:38.805Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:39f78595c4eb5e17d31ff3cbb00a6058a5d9c76b5a6ee25622a257e8ab615fb1","size":"M","warnings":5}}
+{"ts":"2026-10-26T19:24:39.239Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:39f78595c4eb5e17d31ff3cbb00a6058a5d9c76b5a6ee25622a257e8ab615fb1","channel":"delegated","delegated":true}}

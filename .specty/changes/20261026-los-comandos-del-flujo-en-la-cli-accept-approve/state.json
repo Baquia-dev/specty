@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
+  "baseCommit": "a3716f7143c6f2c56f5da78a29cbfb9e56a0e522",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:11cf0737a7ef712ced24c89ba151bf284522489e4ca99ed45df556de62892413",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a0034a0078e9f9c40caaefe030f9b8e82da02c262abdd030669913bb0db7d387",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39f78595c4eb5e17d31ff3cbb00a6058a5d9c76b5a6ee25622a257e8ab615fb1",
+    "at": "2026-10-26T19:24:39.228Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
