@@ -37,3 +37,22 @@ El primer CI en GitHub falló en `pnpm check` en los cuatro sistemas. Reproducid
   - ac: AC1, AC2
   - verify: pnpm check
   - type: build
+
+## Cierre
+
+### Resumen
+
+`pnpm test` prueba los paquetes de uno en uno, para que los tests de la UI no se queden sin CPU frente a los de la CLI en los runners de GitHub, que tienen 3 o 4 núcleos. En local, `pnpm test` tarda 130 s y pasa entero. AC2 se confirma con el CI del push a main que sigue a este cambio.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Se reprodujo el fallo en un clon superficial limpio, con `HOME` vacío y sin configuración global de git, como el runner; con la UI sola, ningún test llegaba a un segundo.
+- Se prefiere probar en serie a subir el límite de 5 segundos, que habría ocultado la lentitud sin quitarla.
+
+### Pendientes
+
+- Confirmar en GitHub que los trabajos de Linux y macOS pasan; Windows no bloquea hasta que pase una vez.

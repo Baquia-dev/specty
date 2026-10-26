@@ -4,3 +4,6 @@
 {"ts":"2026-10-26T17:59:50.081Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"c389ef0764b4886a395eea20c07485d90e3213ba"}}
 {"ts":"2026-10-26T18:04:00.072Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":96906,"tree":"sha256:e21182fbf702bbd14156b8db19bda9807a42424286c9f987a47957aa69ba4acb"}}
 {"ts":"2026-10-26T18:04:00.188Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"pnpm test usa --workspace-concurrency=1: core, exporters, ui y cli se prueban uno detrás de otro, cada uno con sus hilos. En local tarda 130 s y pasa entero; reproduce en serie lo que el CI no aguantaba en paralelo."}}
+{"ts":"2026-10-26T18:05:38.402Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T18:05:45.236Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:885e780f701b785d11c8045005d7388461b15fcb5fb70c0f926278786eac81c9","size":"S","warnings":0}}
+{"ts":"2026-10-26T18:05:50.228Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
