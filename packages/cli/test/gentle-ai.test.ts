@@ -35,7 +35,7 @@ describe("doctor and gentle-ai", () => {
       "gentle-ai: ~/.cursor/rules/gentle-ai.mdc tiene su guía de flujo (`sdd-orchestrator`)",
     );
     // Blocks that do not clash with Specty, such as the persona, are not named.
-    expect(doctor.out).not.toContain("persona");
+    expect(doctor.out).not.toContain("`persona`");
     expect(doctor.out).not.toContain(join(CODEX_HOME, "AGENTS.md"));
   });
 });

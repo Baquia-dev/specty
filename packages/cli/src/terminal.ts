@@ -1,14 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
+import { personAtTerminal } from "@baquia-dev/specty-core";
 import { confirm, isCancel, note, select, text } from "@clack/prompts";
 import type { Terminal } from "./session";
 
 /**
- * The person's terminal. `interactive` depends only on real TTYs: there is no variable or
- * flag that turns an agent's shell into a person (ARCHITECTURE §4, invariant).
+ * The person's terminal. `interactive` needs real TTYs and an environment that does not
+ * give an agent away: there is no variable or flag that turns an agent's shell into a
+ * person (ARCHITECTURE §4, invariant), and an agent's pseudo-terminal is still the agent's.
  */
-export function systemTerminal(): Terminal {
+export function systemTerminal(env: Readonly<Record<string, string | undefined>>): Terminal {
   return {
-    interactive: Boolean(process.stdin.isTTY && process.stdout.isTTY),
+    interactive: personAtTerminal(Boolean(process.stdin.isTTY && process.stdout.isTTY), env),
     async confirm(message) {
       const answer = await confirm({ message });
       return !isCancel(answer) && answer;

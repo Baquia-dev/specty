@@ -7,6 +7,7 @@ export {
   detectAgentTool,
   effortName,
   isAgentTool,
+  personAtTerminal,
 } from "./agents";
 export {
   citedPaths,

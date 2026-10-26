@@ -11,6 +11,7 @@ import {
   humanSections,
   nextCard,
   parseSpec,
+  personAtTerminal,
   removeBlock,
   renderText,
   type StatusEntry,
@@ -309,5 +310,19 @@ describe("agent detection", () => {
     expect(detectAgentTool({ SPECTY_AGENT: "cursor", CLAUDECODE: "1" })).toBe("cursor");
     expect(detectAgentTool({ SPECTY_AGENT: "constructor" })).toBeUndefined();
     expect(detectAgentTool({})).toBeUndefined();
+  });
+
+  it("recognizes Codex outside its sandbox", () => {
+    expect(detectAgentTool({ CODEX_SANDBOX: "seatbelt" })).toBe("codex");
+    expect(detectAgentTool({ CODEX_CI: "1" })).toBe("codex");
+    expect(detectAgentTool({ CODEX_THREAD_ID: "019a" })).toBe("codex");
+  });
+
+  it("counts a terminal as the person only without an agent's environment", () => {
+    expect(personAtTerminal(true, {})).toBe(true);
+    expect(personAtTerminal(false, {})).toBe(false);
+    expect(personAtTerminal(true, { CODEX_THREAD_ID: "019a" })).toBe(false);
+    expect(personAtTerminal(true, { CLAUDECODE: "1" })).toBe(false);
+    expect(personAtTerminal(true, { SPECTY_AGENT: "cursor" })).toBe(false);
   });
 });

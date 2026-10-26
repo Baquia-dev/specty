@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "20261026-una-terminal-de-agente-no-es-una-persona",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261026-una-terminal-de-agente-no-es-una-persona",
+  "baseCommit": "e8ab5b5dcab16212de99fae48f623f66e57bf60b",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d4934d96ef68734f57d4a7bd6d4fbbdd261ad10d08bd97854e2d5f8af2ce7e73",
+    "at": "2026-10-26T12:29:53.662Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c94159508748d9978d2b8d0bf02bdfbfb3600f27",
+      "attempts": 1,
+      "startedAt": "2026-10-26T12:33:35.712Z",
+      "doneAt": "2026-10-26T13:21:11.516Z",
+      "summary": "Codex se detecta también por CODEX_CI y CODEX_THREAD_ID; personAtTerminal (core) exige TTY sin entorno de agente y systemTerminal(env) la usa; ARCHITECTURE §4 lo explica. El test de gentle-ai ya no depende del nombre de la carpeta.",
+      "scopeExtra": [
+        "packages/core/src/index.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1,
+    "S": 1
+  }
+}

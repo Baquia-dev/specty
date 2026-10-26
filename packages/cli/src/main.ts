@@ -36,5 +36,9 @@ if (hooked !== undefined) {
   const invocation: Invocation = needsInvocation
     ? await resolveInvocation(process.argv[1], process.cwd())
     : { command: "specty", portable: true };
-  process.exitCode = await runCli(argv, { ...base, terminal: systemTerminal(), invocation });
+  process.exitCode = await runCli(argv, {
+    ...base,
+    terminal: systemTerminal(base.env),
+    invocation,
+  });
 }

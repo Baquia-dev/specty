@@ -90,6 +90,8 @@ specty/
 
 **Invariante:** el agente solo ejecuta transiciones que envían trabajo o reducen sus propios permisos. Ninguna variable de entorno, flag ni modo de prueba habilita una acción humana desde la CLI del agente; los tests usan inyección de dependencias. En el legacy, `VITEST=1` o `NODE_ENV=test` habilitaban la aprobación sin TTY, y el guard solo bloqueaba el texto `specty approve`.
 
+**Una TTY con el entorno de un agente es del agente.** Algunos agentes abren pseudo-terminales y escriben en ellas: Codex lo hace con `exec_command` (`tty: true`) y `write_stdin`, y no manda `PreToolUse` por lo que se escribe, así que el guard no ve ese `specty approve`. Por eso una terminal solo cuenta como persona si es una TTY real y además su entorno no delata a un agente: `CLAUDECODE`, `CURSOR_AGENT`, `GEMINI_CLI`, `OPENCODE`, `SPECTY_AGENT` o las de Codex (`CODEX_SANDBOX`, y `CODEX_CI` y `CODEX_THREAD_ID`, que Codex pone en todos sus comandos, también fuera del sandbox). Lo decide `personAtTerminal` en el core. Las variables solo quitan permisos: ninguna convierte al agente en persona, y quitarlas no es más que volver a la regla de la TTY.
+
 La única excepción es el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)). La persona lo activa desde su terminal con `specty delegate on`, después de leer una advertencia y confirmarla, y mientras dura el agente ejecuta esas acciones en su nombre. `delegate` en sí nunca lo ejecuta el agente: ni para activar el modo ni para desactivarlo.
 
 ## 5. Carriles
