@@ -66,8 +66,9 @@ export async function installHooks(options: {
     warnings.push(codexTrustWarning(lang));
   }
   if (tools.includes("opencode")) {
-    const file = await installOpencode(environment.env, environment.invocation, files);
-    done.push(opencodeGuardLine(file, lang));
+    const installed = await installOpencode(root, git, environment.invocation, files);
+    if (!installed.local) written.push(installed.file);
+    done.push(opencodeGuardLine(installed.file, installed.local, lang));
   }
   const unsupported = tools
     .filter((tool) => !isGuardedAgent(tool))

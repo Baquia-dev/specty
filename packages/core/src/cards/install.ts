@@ -33,11 +33,12 @@ export function codexTrustWarning(lang: Lang): string {
   );
 }
 
-/** OpenCode's guard plugin, in its global configuration: it serves every repository. */
-export function opencodeGuardLine(file: string, lang: Lang): string {
+/** OpenCode's guard plugin, in the project (ADR 0013): `local` when not committed. */
+export function opencodeGuardLine(file: string, local: boolean, lang: Lang): string {
+  const where = `${file}${local ? " (local)" : ""}`;
   return translator(lang)(
-    `OpenCode: plugin del guard en ${file}, tu configuración global: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
-    `OpenCode: guard plugin in ${file}, your global configuration: it applies to all your repositories and does nothing outside those using Specty.`,
+    `OpenCode: plugin del guard en ${where}.`,
+    `OpenCode: guard plugin in ${where}.`,
   );
 }
 

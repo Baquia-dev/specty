@@ -81,7 +81,7 @@ Specty deja de escribir en la carpeta del usuario. El guard de Codex pasa a `.co
   - files: packages/cli/src/install/agents.ts, packages/cli/src/install/hooks.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/detect/formatters.ts, packages/core/src/cards/install.ts, packages/cli/test/codex.test.ts
   - ac: AC1, AC3, AC6, AC8, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts test/worktrees.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
-- [ ] T3: `init` pone el plugin de OpenCode en `.opencode/plugins/specty.js` y `doctor` lo busca ahí
+- [x] T3: `init` pone el plugin de OpenCode en `.opencode/plugins/specty.js` y `doctor` lo busca ahí
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/install/hooks.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/detect/formatters.ts, packages/core/src/cards/install.ts, packages/cli/test/opencode.test.ts
   - ac: AC2, AC3, AC6, AC8, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/init-reversible.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards

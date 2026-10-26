@@ -34,8 +34,11 @@ describe("what `init` says about the hooks", () => {
     expect(codexTrustWarning("es")).toBe(
       "Codex solo ejecuta el guard cuando confías en el proyecto y en el hook: confía en el proyecto cuando Codex lo pregunte y revisa el hook con `/hooks`. Basta una vez por repositorio.",
     );
-    expect(opencodeGuardLine("~/.config/opencode/plugins/specty.js", "es")).toBe(
-      "OpenCode: plugin del guard en ~/.config/opencode/plugins/specty.js, tu configuración global: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.",
+    expect(opencodeGuardLine(".opencode/plugins/specty.js", false, "es")).toBe(
+      "OpenCode: plugin del guard en .opencode/plugins/specty.js.",
+    );
+    expect(opencodeGuardLine(".opencode/plugins/specty.js", true, "en")).toBe(
+      "OpenCode: guard plugin in .opencode/plugins/specty.js (local).",
     );
     expect(noHooksWarning(["Aider", "Zed"], "en")).toBe(
       "No hooks yet for: Aider, Zed. Git hooks and CI still protect them.",

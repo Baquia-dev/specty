@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0b1b9463954d4e8702fe3865b6490ee2b000d622",
+      "attempts": 1,
       "startedAt": "2026-10-26T11:09:15.033Z",
       "doneAt": "2026-10-26T11:15:08.158Z",
-      "summary": "init escribe el guard de Codex en .codex/hooks.json del proyecto (local si el comando lleva una ruta de la máquina, y entonces new lo copia a la worktree); doctor y los formateadores lo buscan ahí, y los textos explican la confianza por repositorio."
+      "summary": "init escribe el guard de Codex en .codex/hooks.json del proyecto (local si el comando lleva una ruta de la máquina, y entonces new lo copia a la worktree); doctor y los formateadores lo buscan ahí, y los textos explican la confianza por repositorio.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9551194ecae0ba0a3c420171c275c3072d56f2ca",
+      "startedAt": "2026-10-26T11:15:08.456Z",
+      "doneAt": "2026-10-26T11:22:52.896Z",
+      "summary": "init escribe el plugin de OpenCode en .opencode/plugins/specty.js del proyecto (local si el comando lleva una ruta de la máquina, y entonces new lo copia); doctor y los formateadores lo buscan ahí. El test de init reversible sin copias pasa a Gemini CLI, con el visto bueno del usuario."
     }
   },
   "pending": {
