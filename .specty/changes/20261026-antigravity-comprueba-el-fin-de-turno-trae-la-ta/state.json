@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
   "baseCommit": "d3fdaee4853b125901507db5f336810144eca489",
   "revision": 1,
@@ -75,12 +75,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "08af578e7e1ea1002ab4254352ecb0d68ae76a48",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:09:14.164Z",
       "doneAt": "2026-10-26T20:12:56.268Z",
-      "summary": "El matcher de PreToolUse de Antigravity incluye manage_task: con send_input, el guard juzga Input como un comando de shell (deniega un comando de la persona), y sus demás acciones pasan."
+      "summary": "El matcher de PreToolUse de Antigravity incluye manage_task: con send_input, el guard juzga Input como un comando de shell (deniega un comando de la persona), y sus demás acciones pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0c6f68eaef09512977c5f0e3d943267f1d72c0ff",
+      "startedAt": "2026-10-26T20:12:56.735Z",
+      "doneAt": "2026-10-26T20:17:24.765Z",
+      "summary": "La tabla marca el fin de turno, la exclusión y los permisos de Antigravity como sí, y la tarjeta como indirecto. ARCHITECTURE §10 cuenta su Stop, la tarjeta en cada turno, manage_task, .antigravityignore y permissionOverrides; formats.md, pending .stop."
     }
   },
   "pending": {

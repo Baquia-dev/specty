@@ -92,7 +92,7 @@ Este corte añade las cuatro. Como Antigravity no tiene evento de compactación,
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/test/antigravity.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts
-- [ ] T5: La tabla de capacidades y la documentación lo cuentan
+- [x] T5: La tabla de capacidades y la documentación lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

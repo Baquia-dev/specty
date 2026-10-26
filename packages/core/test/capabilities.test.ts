@@ -62,7 +62,9 @@ describe("the capability table", () => {
       "| OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
-    expect(es).toContain("| Antigravity | sí | indirecto | pendiente | no posible |");
+    expect(es).toContain(
+      "| Antigravity | sí | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
+    );
     expect(capabilityTable("en")).toContain(
       "| Cursor | yes | yes | indirect | not possible | yes | yes | yes | not possible |",
     );
@@ -76,6 +78,9 @@ describe("the capability table", () => {
     );
     expect(es).toContain(
       "- Aviso tras cada comando (Antigravity): su `PostToolUse` no responde al modelo, así que el aviso llega en su siguiente llamada al modelo (`PreInvocation`).",
+    );
+    expect(es).toContain(
+      "- Tarjeta tras compactar (Antigravity): no avisa cuando compacta, así que la tarjeta llega al empezar cada turno, con su primera llamada al modelo (`PreInvocation`).",
     );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
