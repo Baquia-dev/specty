@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
+  "baseCommit": "e3f23e4782f82e13a99b00cfd09d2a40ceaf2a7e",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b237aece4a36732538af9c05a86c049dd2a42d7b30df5eb1614a024dd247872d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fa22d74d726a22647476fa84e32aa3859ff9255c66dd2eabd48b18472559b2e7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4e477a5dba22773c4b31d1f3f8fa7d8a4afd5a32133176ed5ff07246e79a7bfc",
+    "at": "2026-10-26T16:40:58.430Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
