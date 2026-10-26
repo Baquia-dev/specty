@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-la-guia-de-las-verificaciones-en-espanol-e-ingle",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-guia-de-las-verificaciones-en-espanol-e-ingle",
   "baseCommit": "721005e6c510585fda49e5f7fff5e95637f2d863",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:42a08a67d04dc322770969f3ebea9c8ee939326ecbb8c97d34a2bacc9b1b4549",
@@ -34,12 +34,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d5145046b20c74f5b89e28bd238fbb7e5105ac38",
+      "attempts": 1,
       "startedAt": "2026-10-26T12:01:10.859Z",
       "doneAt": "2026-10-26T12:06:16.450Z",
-      "summary": "docs/checks.md y docs/checks.en.md explican cada verificación (qué, stacks, configuración y cómo desactivarla), dónde se ejecuta, --install y cómo añadir un proveedor con un ejemplo; un test compara sus títulos con los ids de una ejecución real."
+      "summary": "docs/checks.md y docs/checks.en.md explican cada verificación (qué, stacks, configuración y cómo desactivarla), dónde se ejecuta, --install y cómo añadir un proveedor con un ejemplo; un test compara sus títulos con los ids de una ejecución real.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -50,5 +50,6 @@
     "A": 2,
     "AC": 3,
     "T": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T12:07:53.561Z"
 }

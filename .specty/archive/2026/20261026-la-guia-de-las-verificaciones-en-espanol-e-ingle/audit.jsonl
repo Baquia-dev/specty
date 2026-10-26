@@ -4,3 +4,7 @@
 {"ts":"2026-10-26T12:01:10.860Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"d5145046b20c74f5b89e28bd238fbb7e5105ac38"}}
 {"ts":"2026-10-26T12:06:16.382Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts","exit":0,"ms":1570,"tree":"sha256:92b6a77a7f0c6fc99203fa4e577b58f0fb58cd3f86d557c9078fb7b4e35617d3"}}
 {"ts":"2026-10-26T12:06:16.452Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"docs/checks.md y docs/checks.en.md explican cada verificación (qué, stacks, configuración y cómo desactivarla), dónde se ejecuta, --install y cómo añadir un proveedor con un ejemplo; un test compara sus títulos con los ids de una ejecución real."}}
+{"ts":"2026-10-26T12:07:42.800Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":79813,"tree":"sha256:92b6a77a7f0c6fc99203fa4e577b58f0fb58cd3f86d557c9078fb7b4e35617d3"}}
+{"ts":"2026-10-26T12:07:42.803Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T12:07:53.562Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:cfa6b82bda01696afc3435646fb87708a992cff975dbfc6b04b70e019608201b","size":"S","warnings":0}}
+{"ts":"2026-10-26T12:07:53.733Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

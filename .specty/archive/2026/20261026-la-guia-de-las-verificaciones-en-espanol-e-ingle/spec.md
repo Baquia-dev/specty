@@ -41,3 +41,30 @@ Una guía en español y otra en inglés explican cada verificación de `specty c
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md, packages/cli/test/check-docs.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
+
+## Cierre
+
+### Resumen
+
+`docs/checks.md` y `docs/checks.en.md` explican las 20 verificaciones de `specty check`. De cada una dicen qué comprueba, en qué stacks, cómo se configura y cómo se desactiva. Explican también:
+- el uso, con un ejemplo de salida;
+- la configuración común;
+- dónde se ejecuta y `--install`;
+- cómo añadir un proveedor: lo que ya funciona en Java, Kotlin, PHP, Ruby y .NET, los pasos y un ejemplo para JVM.
+
+`formats.md` §6 enlaza las dos guías. `check-docs.test.ts` toma los ids de una ejecución real con todos los proveedores y los compara con los títulos de las dos guías.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- `secrets` se apaga en el repositorio del test, para no depender de un escáner instalado, y se añade a mano a los ids.
+- Las guías no enlazan Betterleaks: no confirmé la dirección de su repositorio.
+- `ARCHITECTURE.md` y `formats.md` siguen solo en español; las guías en inglés lo dicen al enlazarlos.
+
+### Pendientes
+
+- Los repositorios de ejemplo por stack (Angular, NestJS y Flutter), con un caso positivo y uno negativo de cada verificación: es el último criterio de aceptación de la tarea.
+- Los proveedores de Java, Kotlin, PHP, Ruby y .NET, y un lector de manifiestos para `dependencies` en cada uno.
