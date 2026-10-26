@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261026-specty-why-no-depende-del-idioma-de-git",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-specty-why-no-depende-del-idioma-de-git",
+  "baseCommit": "eb72767cd245b34732e7467054083d7761ae9472",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8169956176f0ccd987185a880bd2ad4b4a8b9c2ccb5fc2b984cefb70727820bc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cf75aa0113af0c6d133094cf36cefd1a52348961cfc5b095ec13e09106221518",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1703c1fb35385eb2eecd92c643990d8636673bce3bcd781d791e9d48977b963d",
+    "at": "2026-10-26T18:50:03.705Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
