@@ -1,0 +1,3 @@
+{"ts":"2026-10-26T01:07:25.208Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261025-specty-export-openspec-spec-kit-y-kiro","request":"si realiza todo eneguida de forma autonoma las 12 observaciones"}}
+{"ts":"2026-10-26T01:08:08.661Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:80161088da9741cf99b421dc5783496c144f8c492889be585d1196e1242161f7","size":"M","warnings":1}}
+{"ts":"2026-10-26T01:08:09.015Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:80161088da9741cf99b421dc5783496c144f8c492889be585d1196e1242161f7","channel":"delegated","delegated":true}}
