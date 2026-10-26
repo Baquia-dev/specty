@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261025-specty-why-de-donde-viene-una-linea",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-specty-why-de-donde-viene-una-linea",
+  "baseCommit": "91e8f0ea1bd32f1a00e30a7408fc47ed8564b20e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7ba4a782c9a34768af6a8a7f8743ff18bc5489915a3473abdba9d654c08d660a",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:d6f0f100c811252701dc11840a75432a523d16e6ac2f9d73832f3aa59dba9714",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f8646b5fec7928ea56d63034f41ecbb3fd645bd89f93b0e7c11b9589e2a18d2d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f33068594919b3fdcd9e4e9dab2a66cb02b8ad80219449843246cfb9378926de",
+    "at": "2026-10-26T00:36:40.194Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
