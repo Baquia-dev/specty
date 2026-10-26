@@ -1,0 +1,3 @@
+{"ts":"2026-10-26T10:39:26.115Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261026-guards-de-codex-y-opencode-en-el-proyecto","request":"Necesito que ajuste para que nada de specty escriba cosas en la carpeta de usuario, specty debe escribir cosas en la carpeta del proyecto"}}
+{"ts":"2026-10-26T10:49:00.725Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:5b45180e360d2010b90a2b2291846f294cc8e6f86adf5f215c1a69486c032862","size":"L","warnings":3}}
+{"ts":"2026-10-26T11:05:55.847Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:5b45180e360d2010b90a2b2291846f294cc8e6f86adf5f215c1a69486c032862","channel":"tty"}}

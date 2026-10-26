@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261026-guards-de-codex-y-opencode-en-el-proyecto",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-guards-de-codex-y-opencode-en-el-proyecto",
+  "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0aebb48f66ce5084e5d7f78f3ad63ca0ee423e0c9927f0cb54eff7c8b23149dd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:951fe65d4c566c71080e383c2a6da9bc06125fe50a6fe30e2dd701f2d7a6aa61",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:cf3da6b80576cc8ee23e2997bde98d22934ddc62aff1adc257672745e4eb078a",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:504cf12fbbedca4e953f07b1c46aa12e92ebb50945fd26ea20a3dc6cd81695ec",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:34e28568ee6bb73fec367de8d94ac9ef6311498a0aff68a1fbb1a9093c8ce3ce",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 9,
+    "T": 4,
+    "R": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5b45180e360d2010b90a2b2291846f294cc8e6f86adf5f215c1a69486c032862",
+    "at": "2026-10-26T11:05:55.831Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
