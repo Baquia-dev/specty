@@ -40,7 +40,7 @@ Cuarto cambio de la serie que lleva a core los textos de la CLI, con las primera
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de elegir el cambio y de aprobar o rechazar
+- [x] T1: Core tiene los textos de elegir el cambio y de aprobar o rechazar
   - files: packages/core/src/cards/refusals.ts, packages/core/src/cards/decide.ts, packages/core/src/cards/approve.ts, packages/core/src/cards/index.ts, packages/core/test/cards/decide.test.ts, packages/core/test/cards/approve.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-approve-y-reject-viven-en-core",
   "baseCommit": "9a0baae8d740f60213a7df98da033adee4207bb8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f4438d6bb59fe7918f0628a61042c1bdb522d315376fc8a834e1535e80dc4555",
+    "at": "2026-10-26T02:31:43.021Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6407b8e8d9694313195bab493a7df28a78c23c51",
+      "startedAt": "2026-10-26T02:31:43.345Z",
+      "doneAt": "2026-10-26T02:32:38.391Z",
+      "summary": "Core gana cards/approve.ts (spec y alcance: resumen, preguntas, rechazos y lo aprobado o pospuesto), cards/decide.ts (elegir el cambio de una decisión) y checkStatus y nothingChangedCard en refusals.ts, con tests en español e inglés."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 4,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f4438d6bb59fe7918f0628a61042c1bdb522d315376fc8a834e1535e80dc4555",
-    "at": "2026-10-26T02:31:43.021Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -3,11 +3,34 @@
 
 export { type AdjustRefusal, adjustRefusalCard } from "./adjust";
 export {
+  type ApprovalView,
+  approvalPostponedCard,
+  approvalSummary,
+  approveSpecQuestion,
+  askAgentNext,
+  assumptionChoices,
+  noScopeRequestCard,
+  rejectedAssumptionsLine,
+  rejectionQuestion,
+  type ScopeRequestDecided,
+  scopeDecidedLine,
+  scopeDecisionQuestion,
+  specApprovedLine,
+  specChangedCard,
+} from "./approve";
+export {
   type AuditEvent,
   type AuditTask,
   type AuditView,
   auditReport,
 } from "./audit";
+export {
+  decisionPostponedCard,
+  noSuchChangeCard,
+  nothingWaitsCard,
+  otherFolderNote,
+  whichChangeQuestion,
+} from "./decide";
 export { epicCard, sliceLines } from "./epic";
 export {
   blockedCard,
@@ -45,7 +68,12 @@ export {
   worktreeCreatedCard,
 } from "./new";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./next";
-export { type Asker, noActiveChangeCard } from "./refusals";
+export {
+  type Asker,
+  checkStatus,
+  noActiveChangeCard,
+  nothingChangedCard,
+} from "./refusals";
 export {
   type RetroRefusal,
   retroDoneCard,
