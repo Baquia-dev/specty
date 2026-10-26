@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261026-el-guard-de-gemini-cli-y-su-gemini-md",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-el-guard-de-gemini-cli-y-su-gemini-md",
+  "baseCommit": "3b678e4bfdd752c60ed2a4c3ae73b948919533c9",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5e56994ca9d7071357213c1086898a65a5ebdd7c6a0c2e5a30ab34787b0e9840",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0ef59e5b5ce50ecfba7e37537bed9230031f6ec1adc5919b5a0921c92dd853b1",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f846ae5a628a9d682e2139a723fcb54a58321ff11ccd31e7ecc2f544cf238803",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:f4114317632b6cd556ecf5f3e85145aa6f9c41cb60ddd2168dce0c2eaf7b042a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:89b14003aa9d9003fbc69eca88456a49878769f87a6697d706a71752980fb3b3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5ca1db982e12049c59167b3a7f65f223cd563ecf5b1d6ff73fc3761b5ace665f",
+    "at": "2026-10-26T20:37:41.020Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
