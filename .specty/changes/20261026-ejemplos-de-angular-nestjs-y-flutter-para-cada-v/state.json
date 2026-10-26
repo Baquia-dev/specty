@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261026-ejemplos-de-angular-nestjs-y-flutter-para-cada-v",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-ejemplos-de-angular-nestjs-y-flutter-para-cada-v",
+  "baseCommit": "560be9ed56d873610e408caea967648e493ec6a8",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6abb310e5f65619c413355250d646f205bf7a47372d98b910571ee93124215d8",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3833bade35fc7b634a94d0430e312a5135b7af6e1c85472cbf1e8dcf98ca909e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:bed0d83be52e22d9ed14e6c708480a49a8485a10cbdf65f04179fb87065c55c5",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b60ebcaf9a3c4111f3d8f923d9c25807ef2b4e56be8b06ebee7418d7c19b6290",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ad54428681d3e3ef728617ba5c0a4c0d2f3dca0675cfc0726bce2f0d70e7380f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1ef6fa4a5d8c9ef7ed494a0a0813b76046b8d6204c3ade76d58716fdce934b13",
+    "at": "2026-10-26T12:14:06.856Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
