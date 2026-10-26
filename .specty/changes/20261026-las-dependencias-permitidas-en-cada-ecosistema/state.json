@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0f6d2edd97ca77f2de9dfc5769a474abdeb58dad",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:56:21.184Z",
       "doneAt": "2026-10-26T14:59:06.206Z",
-      "summary": "Lector mínimo de TOML (pares con su tabla y línea, arrays de varias líneas, cadenas fuera de tablas en línea) y lectores de pyproject.toml (PEP 621, extras, grupos, Poetry), Cargo.toml y libs.versions.toml."
+      "summary": "Lector mínimo de TOML (pares con su tabla y línea, arrays de varias líneas, cadenas fuera de tablas en línea) y lectores de pyproject.toml (PEP 621, extras, grupos, Poetry), Cargo.toml y libs.versions.toml.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2f790ec51e0ccca9386cdd89071d69b5f713da3d",
+      "startedAt": "2026-10-26T14:59:06.492Z",
+      "doneAt": "2026-10-26T15:01:35.359Z",
+      "summary": "Lectores de XML: pom.xml (sin dependencyManagement, build, reporting ni comentarios), PackageReference de .csproj/.fsproj/.vbproj y PackageVersion/GlobalPackageReference de Directory.Packages.props."
     }
   },
   "pending": {

@@ -4,6 +4,7 @@ import { lookup } from "../lookup";
 import { basename } from "../paths";
 import { gemfile, goMod, gradleBuild, packageSwift, requirements } from "./manifests-text";
 import { cargo, pyproject, versionCatalog } from "./manifests-toml";
+import { msbuildProject, packagesProps, pom } from "./manifests-xml";
 
 /**
  * Dependencies a manifest declares, by the catalog of manifests Specty knows. Each reader gives
@@ -53,6 +54,8 @@ const READERS: Readonly<Record<string, Reader>> = {
   "pyproject.toml": pyproject,
   "Cargo.toml": cargo,
   "libs.versions.toml": versionCatalog,
+  "pom.xml": pom,
+  "Directory.Packages.props": packagesProps,
   "go.mod": goMod,
   Gemfile: gemfile,
   "Package.swift": packageSwift,
@@ -60,9 +63,10 @@ const READERS: Readonly<Record<string, Reader>> = {
   "build.gradle.kts": gradleBuild,
 };
 
-/** Manifests whose names vary: `requirements-dev.txt`. */
+/** Manifests whose names vary: `requirements-dev.txt`, `App.csproj`. */
 const PATTERNS: readonly (readonly [RegExp, Reader])[] = [
   [/^requirements[\w.-]*\.txt$/, requirements],
+  [/\.(?:cs|fs|vb)proj$/, msbuildProject],
 ];
 
 /** True when `path` is a manifest Specty knows how to read, in any folder. */

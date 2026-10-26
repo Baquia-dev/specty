@@ -181,6 +181,65 @@ describe("the manifests of each ecosystem", () => {
     ]);
   });
 
+  it("reads the dependencies of pom.xml, not the managed ones, the plugins' or comments", () => {
+    const dependency = (group: string, artifact: string) =>
+      `    <dependency>\n      <groupId>${group}</groupId>\n      <artifactId>${artifact}</artifactId>\n    </dependency>`;
+    expect(
+      added(
+        "pom.xml",
+        [
+          "<project><dependencies>",
+          dependency("org.slf4j", "slf4j-api"),
+          "</dependencies></project>",
+        ],
+        "<project>",
+        "  <dependencyManagement><dependencies>",
+        dependency("org.junit", "junit-bom"),
+        "  </dependencies></dependencyManagement>",
+        "  <dependencies>",
+        dependency("org.slf4j", "slf4j-api"),
+        dependency("com.google.guava", "guava"),
+        "    <!--",
+        dependency("org.old", "legacy"),
+        "    -->",
+        "  </dependencies>",
+        "  <build><plugins><plugin><dependencies>",
+        dependency("org.ow2.asm", "asm"),
+        "  </dependencies></plugin></plugins></build>",
+        "</project>",
+      ),
+    ).toEqual(["com.google.guava:guava@15"]);
+  });
+
+  it("reads the packages of MSBuild's project files and Directory.Packages.props", () => {
+    expect(
+      added(
+        "src/App/App.csproj",
+        ['<Project><ItemGroup><PackageReference Include="Serilog" /></ItemGroup></Project>'],
+        '<Project Sdk="Microsoft.NET.Sdk">',
+        "  <ItemGroup>",
+        '    <PackageReference Include="Serilog" Version="4.1.0" />',
+        '    <PackageReference Version="8.0.0" Include="Microsoft.Extensions.Http" />',
+        '    <!-- <PackageReference Include="Old.Package" /> -->',
+        "  </ItemGroup>",
+        "</Project>",
+      ),
+    ).toEqual(["Microsoft.Extensions.Http@4"]);
+    expect(readsDependencies("tests/App.Tests.fsproj")).toBe(true);
+    expect(
+      added(
+        "Directory.Packages.props",
+        undefined,
+        "<Project>",
+        "  <ItemGroup>",
+        '    <PackageVersion Include="xunit" Version="2.9.2" />',
+        '    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.6.143" />',
+        "  </ItemGroup>",
+        "</Project>",
+      ),
+    ).toEqual(["xunit@3", "Nerdbank.GitVersioning@4"]);
+  });
+
   it("reads composer.json without PHP's own platform packages", () => {
     const composer = (require: Record<string, string>) =>
       JSON.stringify({ require, "require-dev": { "phpunit/phpunit": "^11" } }, null, 2).split("\n");

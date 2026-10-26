@@ -59,7 +59,7 @@ La verificación `dependencies` de `specty check --spec` lee los manifiestos de 
   - files: packages/core/src/checks/manifests-toml.ts, packages/core/src/checks/dependencies.ts, packages/core/test/checks/manifests.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/manifests.test.ts test/checks/dependencies.test.ts
-- [ ] T3: Los lectores de XML
+- [x] T3: Los lectores de XML
   - files: packages/core/src/checks/manifests-xml.ts, packages/core/src/checks/dependencies.ts, packages/core/test/checks/manifests.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/manifests.test.ts test/checks/dependencies.test.ts
