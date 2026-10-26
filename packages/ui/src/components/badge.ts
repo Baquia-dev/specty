@@ -16,7 +16,7 @@ import {
 } from "./icons";
 
 /** Phases are never told apart by color alone: each one has its icon and its name. */
-export const PHASE_ICONS = {
+const PHASE_ICONS = {
   draft: LucidePencilLine,
   review: LucideEye,
   implementing: LucideCode,

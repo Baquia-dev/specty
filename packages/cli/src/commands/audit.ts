@@ -23,10 +23,7 @@ import { readSpec } from "../store/changes";
  * `specty audit [<id>]` (ARCHITECTURE §13): the report of a change, the active one by default,
  * from its files, its audit and git. It only reads, so the agent may run it too.
  */
-export async function audit(
-  session: Session,
-  id: string | undefined,
-): Promise<Output | ReportOutput> {
+async function audit(session: Session, id: string | undefined): Promise<Output | ReportOutput> {
   const t = translator(session.lang);
   const change = id === undefined ? await resolveActive(session) : await findChange(session, id);
   if (change === undefined) {

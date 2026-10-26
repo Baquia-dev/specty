@@ -219,7 +219,7 @@ export type DecisionKind = "review" | "scope" | "acceptance" | "closing";
 
 export type ChangeTab = "spec" | "progress" | "acceptance" | "history";
 
-export interface ScopeRequestView {
+interface ScopeRequestView {
   readonly id: string;
   readonly task: string;
   readonly paths: readonly string[];

@@ -56,7 +56,7 @@ export async function carriedOf(
 const FOLLOW_UPS = new Set(["### pendientes", "### follow-ups", "### follow ups"]);
 
 /** The bullets of the closing's `### Pendientes` (or `### Follow-ups`) subsection. */
-export function followUps(closing: string | undefined): string[] {
+function followUps(closing: string | undefined): string[] {
   const lines = (closing ?? "").split("\n");
   const start = lines.findIndex((line) => FOLLOW_UPS.has(line.trim().toLowerCase()));
   if (start < 0) return [];

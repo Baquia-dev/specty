@@ -26,7 +26,7 @@ const NAMES = { openspec: "OpenSpec", speckit: "Spec Kit", kiro: "Kiro" } as con
  * change's spec in OpenSpec, Spec Kit or Kiro, written in `.specty/exports/<format>/` unless the
  * person says where. It only writes those files, so the agent may run it too.
  */
-export async function exportChange(
+async function exportChange(
   session: Session,
   id: string | undefined,
   format: string | undefined,

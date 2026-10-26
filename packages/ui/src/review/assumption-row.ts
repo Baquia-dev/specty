@@ -54,7 +54,7 @@ import { BeforeLine, reportFailure, WordDiff } from "./spec-sections";
     </sp-dialog>
   `,
 })
-export class RejectAssumption {
+class RejectAssumption {
   protected readonly data = inject<{ change: string; id: string; text: string }>(DIALOG_DATA);
   private readonly ref = inject(DialogRef);
   private readonly source = inject(SpectyData);

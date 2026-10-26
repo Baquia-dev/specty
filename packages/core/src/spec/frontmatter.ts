@@ -8,7 +8,7 @@ import { CHANGE_KINDS, type ChangeKind, EFFORT_LEVELS, type Frontmatter } from "
 
 const ChangeId = z.string().regex(CHANGE_ID);
 
-export const FrontmatterSchema = z.strictObject({
+const FrontmatterSchema = z.strictObject({
   kind: z.enum(["quick", "standard", "spike", "retro", "epic"]),
   epic: ChangeId.optional(),
   slice: z

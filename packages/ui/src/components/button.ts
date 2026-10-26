@@ -25,7 +25,7 @@ function duration(element: Element, token: string, fallback: number): number {
  * A ripple from where the pointer pressed: it grows while the button is held and fades when
  * released. A disabled button gets no pointer events, so it never ripples.
  */
-export function ripple(event: PointerEvent): void {
+function ripple(event: PointerEvent): void {
   const button = event.currentTarget;
   if (!(button instanceof HTMLElement)) return;
   const view = button.ownerDocument.defaultView;

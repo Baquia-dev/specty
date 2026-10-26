@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "20261025-los-componentes-y-los-datos-de-la-ui-sin-exporta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-los-componentes-y-los-datos-de-la-ui-sin-exporta",
+  "baseCommit": "dc839877de8b9b27326e34417c3f7251c296b6d1",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:28d5f88a74b5da13f30bece18648ba30070dbacadd43de16bef769a623924adf",
+    "at": "2026-10-26T01:57:00.861Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f693240fb7bd1e218e27bbab0a341cf6cc0716a5c851494424740fc80227beda",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "308519fb5cfa1ac13c150a407bedee309e63371d",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:57:01.216Z",
+      "doneAt": "2026-10-26T01:57:16.129Z",
+      "summary": "Dejan de exportarse PHASE_ICONS, ripple, DIALOG_TITLE_ID, LONG_FILE, PREVIEW_LINES y Toast, que solo usa su componente.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2112beac88df4738dcdc7c311f6c59659606ce7a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:57:16.410Z",
+      "doneAt": "2026-10-26T01:57:29.197Z",
+      "summary": "Dejan de exportarse activeTask, changesRequestedOf, highImpactPending y ScopeRequestView, que solo usa su archivo de datos.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "51227a7dff31eda87d9343c8ce57e7e390c25a86",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:57:29.459Z",
+      "doneAt": "2026-10-26T01:59:00.846Z",
+      "summary": "Dejan de exportarse TextRange, HistoryType y LanguageId. Knip, con todas sus reglas, ya no marca nada de los componentes, los datos ni el resaltado de la UI; la UI se construye igual.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T02:00:32.050Z"
+}

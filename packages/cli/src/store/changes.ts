@@ -5,7 +5,7 @@ import { type ChangeKind, type ChangeState, parseChangeState } from "@baquia-dev
 import { appendLine, exists, isMissing, parseJson, readText, writeText } from "../io/files";
 import { type ChangeFiles, changeFiles, type RepoPaths } from "./paths";
 
-export class StoreError extends Error {}
+class StoreError extends Error {}
 
 export interface StoredChange {
   readonly files: ChangeFiles;

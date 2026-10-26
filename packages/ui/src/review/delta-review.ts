@@ -99,7 +99,7 @@ const CHIP_TONE = {
   },
   template: `<svg [lucideIcon]="mark().icon" size="13" aria-hidden="true"></svg>{{ t()(mark().es, mark().en) }}`,
 })
-export class ChangeMark {
+class ChangeMark {
   readonly change = input.required<Change>();
   protected readonly t = inject(Preferences).t;
   protected readonly mark = computed(() => MARKS[this.change()]);

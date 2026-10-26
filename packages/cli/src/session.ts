@@ -31,7 +31,7 @@ export interface Terminal {
   note(title: string, text: string): void;
 }
 
-export interface Io {
+interface Io {
   out(text: string): void;
   err(text: string): void;
 }
@@ -139,7 +139,7 @@ export function sessionFrom(
  * confirms, never picks an option or writes a text for them, and shows the summaries on stderr,
  * so `--json` stays clean. It is still not interactive: delegating does not make the shell a person.
  */
-export function delegatedTerminal(io: Io): Terminal {
+function delegatedTerminal(io: Io): Terminal {
   return {
     interactive: false,
     confirm: async () => true,

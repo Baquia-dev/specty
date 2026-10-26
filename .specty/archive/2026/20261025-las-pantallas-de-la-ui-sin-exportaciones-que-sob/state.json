@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261025-las-pantallas-de-la-ui-sin-exportaciones-que-sob",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-las-pantallas-de-la-ui-sin-exportaciones-que-sob",
+  "baseCommit": "2742f955f33199d88cdce8955e36615f19f226d4",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c53d6b75a09acfe4d46c2adea5d83c35e60992eba200cd7cef4ad5626148a304",
+    "at": "2026-10-26T02:01:07.334Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d90876c8d6f2513cacad0bd6129e300d10b4ffcff65cc2f7aa82bad0e28bd981",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "20ea18a70144d02dd8efe53cf41d0581daffa5b0",
+      "attempts": 1,
+      "startedAt": "2026-10-26T02:01:07.688Z",
+      "doneAt": "2026-10-26T02:01:22.376Z",
+      "summary": "Dejan de exportarse ConfirmClosing, AdjustResult, AcceptResult, DelegationState, TurnOnDelegation, TurnOffDelegation y ShortcutsHelp, que solo abre o inyecta su propio archivo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "457cd1e9f1a0c0151bbe2de2bbfaf64a2d0cdc1d",
+      "attempts": 1,
+      "startedAt": "2026-10-26T02:01:22.651Z",
+      "doneAt": "2026-10-26T02:02:56.023Z",
+      "summary": "Dejan de exportarse RejectScope, RejectAssumption y ChangeMark. Knip, con todas sus reglas, ya no marca nada de packages/ui, y la UI se construye igual.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-26T02:04:21.341Z"
+}

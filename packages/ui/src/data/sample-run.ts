@@ -22,7 +22,7 @@ export interface RunTarget {
 type Listener = (run: RunRecord | undefined) => void;
 
 /** The task in progress of a change, if any. */
-export function activeTask(state: ChangeState): string | undefined {
+function activeTask(state: ChangeState): string | undefined {
   return Object.entries(state.tasks).find(([, task]) => task.status === "active")?.[0];
 }
 

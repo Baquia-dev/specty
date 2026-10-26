@@ -79,7 +79,7 @@ export function call(
 }
 
 /** Opens the server's link and reads its session: the headers every action needs. */
-export async function enter(server: UiServer) {
+async function enter(server: UiServer) {
   const { pathname, search } = new URL(server.link);
   const cookie = (await call(server.port, `${pathname}${search}`)).headers["set-cookie"]?.[0];
   const headers = {
