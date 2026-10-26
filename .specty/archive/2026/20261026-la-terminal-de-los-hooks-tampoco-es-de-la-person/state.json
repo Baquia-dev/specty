@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261026-la-terminal-de-los-hooks-tampoco-es-de-la-person",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261026-la-terminal-de-los-hooks-tampoco-es-de-la-person",
+  "baseCommit": "5f21e50768bf71ea34dd151dba33bc2ccefbbf18",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4d69c4cf9c09357181aea0a11603535a6f5564ab58aa0a426435dee2b3f6b73d",
+    "at": "2026-10-26T13:42:24.936Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "59660e41772726762ddf7c87447d086436b6db3f",
+      "attempts": 1,
+      "startedAt": "2026-10-26T13:42:41.764Z",
+      "doneAt": "2026-10-26T13:46:23.800Z",
+      "summary": "hookTerminal(env) usa personAtTerminal como la terminal de la CLI; test/terminal.test.ts prueba las dos con una TTY simulada; testEnv quita CODEX_CI y CODEX_THREAD_ID; ARCHITECTURE §6 lo dice.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

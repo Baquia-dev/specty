@@ -121,7 +121,7 @@ Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `pro
 | `specty integrate` | Con una incorporación pendiente | Termina el merge de la rama principal que dejó el cierre: sin marcadores, dentro de sus archivos y con la verificación en verde, hace el commit de merge (§9) |
 | `specty retro [--into <id>]` | Cualquiera | Devuelve el protocolo para documentar cambios ya hechos |
 
-Comandos para la persona: `init`, `ui`, `status`, `prune`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor`, `uninstall` y `ci`. `prune` también lo puede ejecutar el agente, porque solo borra lo ya incorporado (§9). También `approve [<cambio>] [--scope <S>]`, `reject [<cambio>] --scope <S>`, `accept [<cambio>]`, `close [<cambio>]` y `cancel [<cambio>]`, que exigen una TTY real (ninguna variable la simula) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
+Comandos para la persona: `init`, `ui`, `status`, `prune`, `why <ruta>[:<línea>]`, `audit <id>`, `export <id> --to openspec|speckit|kiro`, `doctor`, `uninstall` y `ci`. `prune` también lo puede ejecutar el agente, porque solo borra lo ya incorporado (§9). También `approve [<cambio>] [--scope <S>]`, `reject [<cambio>] --scope <S>`, `accept [<cambio>]`, `close [<cambio>]` y `cancel [<cambio>]`, que exigen una TTY real sin el entorno de un agente (ninguna variable la simula; ver §4) y son, hasta la fase 2, la forma de decidir. `close`, y `accept` en un cambio quick, también incorporan el cambio a la rama principal (§9).
 
 Estas decisiones se toman desde cualquier carpeta del repo, porque cada cambio vive en su propia worktree. El comando elige el cambio en este orden:
 

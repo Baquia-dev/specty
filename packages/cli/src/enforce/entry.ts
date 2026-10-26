@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { personAtTerminal } from "@baquia-dev/specty-core";
 import type { CliEnvironment } from "../program";
 import { openSession, type Terminal } from "../session";
 import { type GuardTool, isGuardTool } from "./actions";
@@ -53,7 +54,7 @@ export async function runHook(
   // Hooks never ask: their terminal only knows whether a person is there.
   const environment: CliEnvironment = {
     ...base,
-    terminal: hookTerminal(),
+    terminal: hookTerminal(base.env),
     invocation: { command: "specty", portable: true },
   };
   if (command === "hook" && rest[0] !== undefined && !rest[0].startsWith("-")) {
@@ -73,9 +74,10 @@ function toolOf(args: readonly string[]): GuardTool | undefined {
   return value !== undefined && isGuardTool(value) ? value : undefined;
 }
 
-function hookTerminal(): Terminal {
+/** Like the CLI's terminal, a TTY whose environment gives an agent away is the agent's. */
+export function hookTerminal(env: Readonly<Record<string, string | undefined>>): Terminal {
   return {
-    interactive: Boolean(process.stdin.isTTY && process.stdout.isTTY),
+    interactive: personAtTerminal(Boolean(process.stdin.isTTY && process.stdout.isTTY), env),
     confirm: async () => false,
     choose: async () => undefined,
     ask: async () => undefined,
