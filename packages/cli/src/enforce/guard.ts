@@ -15,6 +15,8 @@ import {
   type ShellAnalysis,
   shellChanges,
 } from "@baquia-dev/specty-core";
+import { ADAPTERS } from "../agents";
+import type { Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
 import { placePaths } from "../flow/worktree";
@@ -22,28 +24,18 @@ import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
-import {
-  cwdOf,
-  type GuardTool,
-  isAfterTool,
-  type RawAction,
-  toolAction,
-  toolUseId,
-} from "./actions";
+import { cwdOf, type GuardReply, type GuardTool, type RawAction, toolUseId } from "./actions";
 import { bindSession, enterAction } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
-import { isWorktreeEvent, worktreeHook } from "./worktree-hooks";
+import { worktreeHook } from "./worktree-hooks";
 
-export interface GuardReply {
-  readonly code: number;
-  readonly stdout: string;
-  readonly stderr: string;
-}
+const ALLOW: Verdict = { allow: true };
 
 /**
  * `specty guard --tool <id>`: called by the agent's hooks before each action and after each shell
  * command; in Claude Code, also to create and remove worktrees
  * and, after a compaction, to bring back what `specty next` says.
+ * It reads and answers each agent through its module (`agents/`).
  * It fails open on its own errors (the git hooks and CI still apply) and never blocks outside
  * Specty repos.
  */
@@ -52,23 +44,23 @@ export async function guard(
   tool: GuardTool,
   stdin: string,
 ): Promise<GuardReply> {
+  const agent = ADAPTERS[tool];
   try {
     const event = parseJson(stdin);
-    if (!isRecord(event)) return allow(tool);
+    if (!isRecord(event)) return agent.reply(ALLOW, "before");
     const cwd = cwdOf(event, environment.cwd);
+    const kind = agent.kind(event);
     // They make and remove worktrees for Claude Code, so they answer even outside a session.
-    if (tool === "claude-code" && isWorktreeEvent(event)) {
-      return await worktreeHook(environment, event, cwd);
-    }
+    if (kind === "worktree") return await worktreeHook(environment, event, cwd);
     const opened = await openSession({ ...environment, cwd });
-    if (opened.kind !== "ok") return allow(tool);
+    if (opened.kind !== "ok") return agent.reply(ALLOW, "before");
     const session = opened.session;
-    // After a compaction Claude Code adds this to the context, so the task card comes back.
-    if (tool === "claude-code" && event.hook_event_name === "SessionStart") {
-      return { code: 0, stdout: renderText(await next(session), session.lang), stderr: "" };
+    // After a compaction the agent adds this to the context, so the task card comes back.
+    if (kind === "compact" && agent.card !== undefined) {
+      return agent.card(renderText(await next(session), session.lang));
     }
-    if (isAfterTool(event)) return await afterShell(session, tool, event);
-    const raw = toolAction(tool, event);
+    if (kind === "after") return agent.reply(await afterShell(session, event), "after");
+    const raw = agent.action(event);
     const action =
       raw.kind === "enter"
         ? await enterAction(environment, session, event, raw.request, cwd)
@@ -77,16 +69,9 @@ export async function guard(
     // One change at a time per session: the worktree it may enter becomes its own.
     if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
     if (decision.allow) await beforeShell(session, event, action);
-    return reply(tool, decision, session);
+    return agent.reply(verdict(decision, session), "before");
   } catch (error) {
-    const message = `specty guard: ${error instanceof Error ? error.message : String(error)}`;
-    return tool === "cursor"
-      ? {
-          code: 0,
-          stdout: JSON.stringify({ permission: "allow", user_message: message }),
-          stderr: "",
-        }
-      : { code: 1, stdout: "", stderr: message };
+    return agent.failed(`specty guard: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
@@ -109,25 +94,13 @@ async function beforeShell(
 }
 
 /** After a shell command, judges what it changed with the guard's own rules. */
-async function afterShell(
-  session: Session,
-  tool: GuardTool,
-  event: Record<string, unknown>,
-): Promise<GuardReply> {
+async function afterShell(session: Session, event: Record<string, unknown>): Promise<Verdict> {
   const id = toolUseId(event);
   const before = id === undefined ? undefined : await takeSnapshot(session, id);
   await pruneSnapshots(session);
-  const decision: GuardDecision =
-    before === undefined
-      ? { allow: true }
-      : decideAfterShell(
-          shellChanges(before, await treeSnapshot(session)),
-          await guardContext(session),
-        );
-  if (tool !== "cursor") return reply(tool, decision, session);
-  // Cursor's hooks after a tool cannot block: their context goes into the conversation.
-  const context = decision.allow ? {} : { additional_context: warning(decision, session) };
-  return { code: 0, stdout: JSON.stringify(context), stderr: "" };
+  if (before === undefined) return ALLOW;
+  const changes = shellChanges(before, await treeSnapshot(session));
+  return verdict(decideAfterShell(changes, await guardContext(session)), session);
 }
 
 /**
@@ -245,31 +218,10 @@ async function guardContext(session: Session) {
   return { ...base, change };
 }
 
-/** The reason and the next step, as the agent reads them. */
-function warning(decision: Extract<GuardDecision, { allow: false }>, session: Session): string {
+/** The decision as each agent's module answers it, with the reason and the next step. */
+function verdict(decision: GuardDecision, session: Session): Verdict {
+  if (decision.allow) return ALLOW;
   const label = session.lang === "es" ? "SIGUIENTE" : "NEXT";
-  return `specty: ${decision.reason}\n${label}: ${decision.next}`;
-}
-
-function reply(tool: GuardTool, decision: GuardDecision, session: Session): GuardReply {
-  if (decision.allow) return allow(tool);
-  const text = warning(decision, session);
-  if (tool === "cursor") {
-    return {
-      code: 0,
-      stdout: JSON.stringify({
-        permission: "deny",
-        user_message: `specty: ${decision.reason}`,
-        agent_message: text,
-      }),
-      stderr: "",
-    };
-  }
-  return { code: 2, stdout: "", stderr: text };
-}
-
-function allow(tool: GuardTool): GuardReply {
-  return tool === "cursor"
-    ? { code: 0, stdout: JSON.stringify({ permission: "allow" }), stderr: "" }
-    : { code: 0, stdout: "", stderr: "" };
+  const text = `specty: ${decision.reason}\n${label}: ${decision.next}`;
+  return { allow: false, reason: decision.reason, text };
 }

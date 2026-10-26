@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "id": "20261026-cada-agente-en-su-modulo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-cada-agente-en-su-modulo",
+  "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a3a1e893b3c1477847d81837ef0778d2f18380836af8fa67d66ff0cf0586c4b1",
+    "at": "2026-10-26T16:32:05.912Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b52260f617cc01bfeb49120905b04802b7b6ccac7377d98d839bcd226ce0fd5d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:629a10d7e521da2805d86978bc4cb446efefd6dad886502698b36769e3cded18",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b3f8cfdf5fcb570729c4ae467473cf25af0285d0a28606e600c9cd11fc3907da",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:96de85cc926aee9ecea32f7971db481485f28bda36a9f61862cb3b42a6f18cba",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "dbe5972db1ab12b19b1f7b848605180d420dd2e7",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:32:06.345Z",
+      "doneAt": "2026-10-26T16:39:18.135Z",
+      "summary": "Cada agente con guard tiene su módulo en agents/ con el contrato de adapter.ts (evento, acción, respuesta); el guard le pregunta en vez de ramificar por herramienta. actions.ts queda con lo común. Prueba nueva agents.test.ts; el guard tarda lo mismo que en main.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "40dbd9c35b15b4e5c92a38819772d2e62f532689",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:39:18.450Z",
+      "doneAt": "2026-10-26T16:41:19.604Z",
+      "summary": "El fin de turno de Claude Code, Codex y Cursor vive en su módulo (stop: cuándo actúa, qué responde y dónde va su hook); agent-stop y check --install recorren los módulos. Claude Code y Codex comparten blockingStop.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "0a63065887c749fccea87180d0b62935aa106510",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:41:19.910Z",
+      "doneAt": "2026-10-26T16:45:53.349Z",
+      "summary": "init instala por el módulo de cada agente: cada uno escribe su guard y sus reglas y devuelve sus líneas; install/hooks.ts los recorre y solo conserva el puntero CLAUDE.md. Las tablas de eventos siguen en install/agents.ts hasta T4.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "e9ea28ed3dd6c4d203b53a16cf3f2bea75f0821b",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:45:54.310Z",
+      "doneAt": "2026-10-26T16:54:33.550Z",
+      "summary": "doctor y uninstall pasan por el módulo de cada agente (doctor, remove, userFile); las tablas de eventos, las reglas de Claude Code y la de Codex viven en su módulo. install/agents.ts queda con rutas y ayudantes comunes (missingEvents, removeFromJson).",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "f4b539bd2f1c00cdffe23eef794eb3e82c46c2f8",
+      "attempts": 3,
+      "startedAt": "2026-10-26T16:54:33.917Z",
+      "doneAt": "2026-10-26T17:11:05.482Z",
+      "summary": "ARCHITECTURE §10 explica el módulo por agente (agents/, el contrato de adapter.ts y lo que comparten) y el mapa de AGENTS.md nombra agents/. Tres tipos de adapter.ts dejan de exportarse para que knip pase.",
+      "scopeExtra": [
+        "packages/cli/src/agents/adapter.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 5,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-26T17:13:06.255Z"
+}

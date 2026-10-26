@@ -304,6 +304,8 @@ Solo se incorporan los cambios `standard`, `quick` y `epic` con rama y en modo `
 3. Core decide.
 4. El adaptador responde en el formato de la herramienta: normalmente, código de salida 2 con el motivo y el siguiente paso.
 
+**Un módulo por agente.** Cada herramienta con guard tiene su módulo en `packages/cli/src/agents/`, con el contrato de `adapter.ts`. El módulo dice qué es cada evento (antes de una acción, después de un comando, tras compactar o, en Claude Code, una worktree), qué acción describe y cómo se responde en la forma de la herramienta. También dice cómo vuelve el agente al terminar el turno, qué instala `init`, qué comprueba `doctor`, qué quita `uninstall` y qué archivo suyo hay en la carpeta del usuario. El guard, `hook agent-stop`, `check --install`, `init`, `doctor` y `uninstall` recorren los módulos en vez de preguntar por cada herramienta, y el tipo de `ADAPTERS` (en `agents/index.ts`) obliga a que cada agente con guard en `AGENT_CAPABILITIES` tenga el suyo. Claude Code, Codex y el plugin de OpenCode comparten la respuesta por códigos de salida (`exitReply`), y Claude Code y Codex comparten el fin de turno (`blockingStop`). Las rutas de los archivos de cada agente y los ayudantes que escriben hooks en JSON están en `install/agents.ts`, que no importa ningún módulo de agente.
+
 El guard solo juzga rutas que puede ubicar dentro del repositorio y que git no ignora. El análisis de shell sigue los `cd` de cada comando y, como bash, se salta los comentarios y el cuerpo de los heredocs; dentro de `((…))` y `$((…))`, `<`, `>`, `&`, `|` y los paréntesis son aritmética, no redirecciones ni subshells. Lo que corre en un subshell (`(…)` o `$(…)` fuera de comillas) se analiza como el resto, y sus `cd` no salen de él. Una ruta con variables sin expandir, o una ruta relativa tras un `cd` a un destino desconocido, no se bloquea por alcance: la cubren los hooks de git y el CI. Un `git commit` que un `cd` o `git -C` llevan a una carpeta fuera de todas las worktrees del repositorio es de otro repositorio y no se juzga; si la carpeta no se puede ubicar, se juzga como de este.
 
 **Después de cada comando de shell** (Claude Code: `PostToolUse` y `PostToolUseFailure`, con el matcher `Bash`; Codex: `PostToolUse`, que también llega tras un comando fallido; Cursor: `postToolUse` y `postToolUseFailure`, con el matcher `Shell`; OpenCode: el plugin, con `execute.after` o `tool.execute.after`). Antes del comando, si lo permite y no es de Specty, el guard guarda una foto de los archivos que difieren de `HEAD`, con su tamaño y su fecha, en `.git/specty/shell/<tool_use_id>.json`. Al terminar, compara y juzga lo que cambió con las mismas reglas, así que también ve lo que escriben intérpretes, scripts y generadores, que el análisis de shell no puede prever. No lo deshace: el aviso le llega al modelo (en Claude Code y Codex, por la salida 2; en Cursor, como `additional_context`, que se añade a la conversación tras el resultado; en OpenCode, añadido al resultado del comando), y `task done` sigue siendo la puerta. Las fotos que nadie recoge se borran al cabo de un día.
@@ -322,19 +324,36 @@ Objetivo de rendimiento: p95 < 200 ms. Para acercarse, los hooks cargan solo su 
 
 Las reglas no cambian lo que Specty permite: sin modo delegado, el guard le bloquea al agente los comandos de la persona y la CLI pide una terminal real. `doctor` avisa si faltan, y `uninstall` las quita.
 
-**Capacidades por herramienta.** La tabla `AGENT_CAPABILITIES` de `core/src/capabilities.ts` dice qué hace Specty con cada agente, y de ella salen las herramientas a las que `init` instala hooks, las que atiende el guard (el tipo `GuardTool`) y los archivos con los que se detecta cada una. Esta tabla se genera con `capabilityTable("es")`, y un test de core falla si no coincide:
+**Capacidades por herramienta.** La tabla `AGENT_CAPABILITIES` de `core/src/capabilities.ts` dice qué hace Specty con cada agente, y de ella salen las herramientas a las que `init` instala hooks, las que atiende el guard (el tipo `GuardTool`: las que tienen el guard en «sí») y los archivos con los que se detecta cada una. Cada capacidad está en un estado:
+
+- **sí**: como en Claude Code;
+- **indirecto**: por otro evento de la herramienta, un poco más tarde;
+- **no posible**: la herramienta no tiene nada que Specty pueda usar;
+- **pendiente**: lo hace un corte de la épica «Todos los agentes al nivel de Claude Code»;
+- **—**: Specty no lo ofrece para esa herramienta.
+
+Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decisions/0013-specty-no-escribe-en-la-carpeta-del-usuario.md)); el aviso tras cada comando de shell; la tarjeta tras compactar; entrar en la worktree por nombre; `specty check` al terminar el turno; la exclusión de dependencias y código generado; que los permisos de la herramienta dejen decidir a Specty; y una prueba de extremo a extremo con la herramienta y un modelo simulado. Debajo de la tabla está cómo se hace cada capacidad indirecta y por qué no se puede cada una de las no posibles. Esta tabla se genera con `capabilityTable("es")`, y un test de core falla si no coincide:
 
 <!-- specty:capabilities:begin -->
-| Herramienta | Guard | Aviso tras cada comando | Tarjeta tras compactar | Worktree por nombre | Se detecta por |
-| --- | --- | --- | --- | --- | --- |
-| Claude Code | en el repositorio | sí | sí | sí | `.claude`, `CLAUDE.md` |
-| Cursor | en el repositorio | sí | — | — | `.cursor`, `.cursorrules` |
-| Codex | en el repositorio | sí | — | — | `.codex` |
-| OpenCode | en el repositorio | sí | — | — | `.opencode`, `opencode.json`, `opencode.jsonc` |
-| Gemini CLI | — | — | — | — | `.gemini`, `GEMINI.md` |
-| GitHub Copilot | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
-| Windsurf | — | — | — | — | `.windsurf`, `.windsurfrules` |
-| Antigravity | — | — | — | — | `.agents`, `.agent` |
+| Herramienta | Guard | Aviso tras cada comando | Tarjeta tras compactar | Worktree por nombre | Fin de turno | Exclusión | Permisos | Prueba de extremo a extremo | Se detecta por |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |
+| Cursor | sí | sí | pendiente | no posible | sí | sí | pendiente | no posible | `.cursor`, `.cursorrules` |
+| Codex | sí | sí | pendiente | no posible | sí | no posible | sí | pendiente | `.codex` |
+| OpenCode | sí | sí | pendiente | no posible | pendiente | pendiente | sí | pendiente | `.opencode`, `opencode.json`, `opencode.jsonc` |
+| Gemini CLI | pendiente | pendiente | pendiente | no posible | pendiente | sí | pendiente | pendiente | `.gemini`, `GEMINI.md` |
+| GitHub Copilot | — | — | — | — | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
+| Windsurf | pendiente | pendiente | no posible | no posible | no posible | sí | pendiente | no posible | `.windsurf`, `.windsurfrules` |
+| Antigravity | pendiente | pendiente | pendiente | no posible | pendiente | pendiente | pendiente | no posible | `.agents`, `.agent` |
+
+**No posible:**
+
+- Tarjeta tras compactar (Windsurf): no tiene eventos de sesión ni de compactación.
+- Worktree por nombre (Cursor, Codex, OpenCode, Gemini CLI, Windsurf, Antigravity): solo Claude Code tiene una herramienta para cambiar de carpeta en mitad de la sesión (`EnterWorktree`); con las demás se abre otro agente en la carpeta del cambio.
+- Fin de turno (Windsurf): sus hooks posteriores no responden al modelo ni lo hacen seguir.
+- Exclusión (Codex): lee los archivos por la shell y no tiene un archivo de exclusión.
+- Prueba de extremo a extremo (Cursor, Antigravity): su modelo va siempre por el servidor de la herramienta, así que no se puede simular.
+- Prueba de extremo a extremo (Windsurf): no tiene CLI.
 <!-- specty:capabilities:end -->
 
 **Soporte de hooks por herramienta** (revisado el 2026-10-21; se vuelve a verificar al implementar cada adaptador):

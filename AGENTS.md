@@ -50,7 +50,7 @@ Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-de
 - `packages/core/src/guard/`: análisis de comandos de shell y decisión del guard.
 - `packages/core/src/cards/`: textos que ve el agente (salida de cada comando).
 - `packages/ui/src/styles.css`: tokens del sistema de diseño (única fuente de valores); `theme/`: inventario de tokens y preferencias; `catalog/`: catálogo navegable. Los tests van junto a cada fuente (`*.test.ts`).
-- `packages/cli/src/commands/`: un archivo por comando; `enforce/`: hooks de git y guard; `install/`: lo que escribe `init`; `server/`: el servidor local de `specty ui`.
+- `packages/cli/src/commands/`: un archivo por comando; `enforce/`: hooks de git y guard; `agents/`: un módulo por agente con guard (lo que leen y responden sus hooks, lo que instala `init` y lo que miran `doctor` y `uninstall`); `install/`: lo que escribe `init`; `server/`: el servidor local de `specty ui`.
 - `packages/*/test/fixtures/`: specs de ejemplo; las canónicas deben seguir siéndolo.
 
 ## Convenciones
