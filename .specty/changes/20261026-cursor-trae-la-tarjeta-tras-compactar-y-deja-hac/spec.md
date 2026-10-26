@@ -69,7 +69,7 @@ En Cursor faltan dos cosas que Claude Code tiene. La primera es la tarjeta de la
   - files: packages/cli/src/agents/cursor.ts, packages/cli/src/install/agents.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/cursor.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/uninstall.test.ts test/install.test.ts
-- [ ] T3: La tabla de capacidades y la documentación lo cuentan
+- [x] T3: La tabla de capacidades y la documentación lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

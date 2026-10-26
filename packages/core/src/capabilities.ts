@@ -42,6 +42,7 @@ const yes = { state: "yes" } as const;
 const pending = { state: "pending" } as const;
 const unsupported = { state: "unsupported" } as const;
 const impossible = (es: string, en: string) => ({ state: "impossible", why: { es, en } }) as const;
+const indirect = (es: string, en: string) => ({ state: "indirect", how: { es, en } }) as const;
 
 const NO_ENTER_WORKTREE = impossible(
   "solo Claude Code tiene una herramienta para cambiar de carpeta en mitad de la sesión (`EnterWorktree`); con las demás se abre otro agente en la carpeta del cambio.",
@@ -72,11 +73,15 @@ export const AGENT_CAPABILITIES = {
     markers: [".cursor", ".cursorrules"],
     guard: yes,
     afterShell: yes,
-    afterCompaction: pending,
+    afterCompaction: indirect(
+      "`preCompact` solo observa, así que la tarjeta llega con el resultado del siguiente comando de shell.",
+      "`preCompact` only observes, so the card comes with the next shell command's result.",
+    ),
     worktreeByName: NO_ENTER_WORKTREE,
     endOfTurn: yes,
     exclusion: yes,
-    permissions: pending,
+    // `.cursor/sandbox.json` lets Specty's commits through from a change's folder.
+    permissions: yes,
     endToEnd: OWN_SERVER,
   },
   codex: {

@@ -60,18 +60,22 @@ describe("the capability table", () => {
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
     expect(capabilityTable("en")).toContain(
-      "| Cursor | yes | yes | pending | not possible | yes | yes | pending | not possible |",
+      "| Cursor | yes | yes | indirect | not possible | yes | yes | yes | not possible |",
     );
   });
 
-  it("lists below the table why each capability is not possible, one line per reason (AC2)", () => {
+  it("lists below the table how each indirect capability works and why each one is not possible, one line per text (AC2)", () => {
     const es = capabilityTable("es");
-    expect(es).toContain("**No posible:**");
+    expect(es).toContain("**Indirecto:**");
+    expect(es).toContain(
+      "- Tarjeta tras compactar (Cursor): `preCompact` solo observa, así que la tarjeta llega con el resultado del siguiente comando de shell.",
+    );
+    expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
     expect(es).toMatch(
       /- Worktree por nombre \(Cursor, Codex, OpenCode, Gemini CLI, Windsurf, Antigravity\): /,
     );
-    expect(es).not.toContain("**Indirecto:**");
+    expect(capabilityTable("en")).toContain("**Indirect:**");
     expect(capabilityTable("en")).toContain("**Not possible:**");
   });
 

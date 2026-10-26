@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
   "baseCommit": "313659d8ba065d7500b36bf800c831fe87dc9785",
   "revision": 1,
@@ -52,17 +52,26 @@
     },
     "T2": {
       "status": "done",
+      "baseCommit": "80233c00bf184f6c8f6d96e129aaa8fceaf92d5c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:02:33.684Z",
+      "doneAt": "2026-10-26T18:07:33.475Z",
+      "summary": "init escribe .cursor/sandbox.json (local) con la carpeta común de git y la de las worktrees en additionalReadwritePaths, conservando lo de la persona; uno versionado no se toca y se avisa. doctor lo comprueba, uninstall quita solo esas carpetas y new lo copia a cada worktree.",
       "scopeExtra": [
         "packages/cli/src/agents/adapter.ts",
         "packages/cli/src/agents/index.ts",
         "packages/cli/src/commands/doctor.ts",
         "packages/cli/src/commands/uninstall.ts"
-      ],
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "80233c00bf184f6c8f6d96e129aaa8fceaf92d5c",
-      "startedAt": "2026-10-26T18:02:33.684Z",
-      "doneAt": "2026-10-26T18:07:33.475Z",
-      "summary": "init escribe .cursor/sandbox.json (local) con la carpeta común de git y la de las worktrees en additionalReadwritePaths, conservando lo de la persona; uno versionado no se toca y se avisa. doctor lo comprueba, uninstall quita solo esas carpetas y new lo copia a cada worktree."
+      "baseCommit": "fecc652d1a5ec72ae7d797b3df3a8139a02160b2",
+      "startedAt": "2026-10-26T18:07:33.768Z",
+      "doneAt": "2026-10-26T18:08:54.181Z",
+      "summary": "La tarjeta tras compactar de Cursor pasa a «indirecto», con cómo se hace, y sus permisos a «sí». ARCHITECTURE cuenta preCompact y el sandbox (§7 y §10) y formats.md la carpeta specty/pending/."
     }
   },
   "pending": {
