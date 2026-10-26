@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261026-el-guard-de-antigravity",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-el-guard-de-antigravity",
+  "baseCommit": "87207b70f94ffa4b71df29b3ede80c64ac251925",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2dcd330abfcf1f84d8caf95ea7b0b963872a27d3750f7f9a022e80bed13bace6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:32d7d1f7e3d8f0bc88c7557eb807033262a6f3c6dda2f7169ebaa8318770288a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:595687bdc361f706ced1c52e8b12d378138eb585596e849834f9f02333bf39d5",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a058996fe2eb1cdf0e2ef8d26b00a49df232dd0c0a2d87377b3fe76a9fff4793",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:faf9e519b3b27c2773fce619803a9c39902f4dcc313f37ad658c0cec16a4ce57",
+    "at": "2026-10-26T19:11:01.919Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
