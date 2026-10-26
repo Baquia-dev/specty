@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-las-capas-en-java-kotlin-y-php",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-las-capas-en-java-kotlin-y-php",
+  "baseCommit": "a76a7c15d5b81eee7c2d62d642756520dc04db26",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7421c073968b60f1bdc93235daf7e1a89e424605720d5fbfb33499eed5f8727f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:954195182a15a042b19ce399dfc88477bcfed9e38652ad81bd5cf786421fc74c",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a2d67dada52c0f8f9971de8bb0f86c9b6e533bdd028c8f7981657e1f7e36596e",
+    "at": "2026-10-26T15:27:35.519Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
