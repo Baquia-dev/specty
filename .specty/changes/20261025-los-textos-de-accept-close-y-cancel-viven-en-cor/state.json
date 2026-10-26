@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-accept-close-y-cancel-viven-en-cor",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-los-textos-de-accept-close-y-cancel-viven-en-cor",
+  "baseCommit": "7dfc6c584d87d04e20b6792f335bfd6e80d595a1",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6f28b1d807a0fdaeff1f60683d3795e6be08dfa2cd9b5a40eb0454ba32698d93",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 4,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c48039ae8f71e8065dea4d99aaf3736d31ca0c96cb3e1fda35d6578710fd3d23",
+    "at": "2026-10-26T02:36:22.621Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
