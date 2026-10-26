@@ -43,7 +43,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: Las marcas en el catálogo
+- [x] T1: Las marcas en el catálogo
   - files: packages/core/src/checks/markers.ts, packages/core/test/checks/markers.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts

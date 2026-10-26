@@ -6,6 +6,13 @@
   "branch": "specty/20261026-mas-marcas-de-tests-enfocados-y-apagados",
   "baseCommit": "65910cbfc3042f0b4a04d63d59689914e97c98e8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b9f9a2567f165fac7cd0f684cf2fca95b982d10d5039e36b5d391677d43023db",
+    "at": "2026-10-26T17:11:07.525Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ea279ffd63e3fd14738d3553cafe2e9d1151a3df",
+      "startedAt": "2026-10-26T17:11:07.905Z",
+      "doneAt": "2026-10-26T17:12:31.914Z",
+      "summary": "markers.ts: Ginkgo F/P/X para It, Specify, Describe(Table(Subtree)), Context, When y Entry, y sus decoradores Focus y Pending; .disabled() de Swift Testing; ->only() y ->skip() de Pest, sin condición. Casos de cada marca y de las formas parecidas que no cuentan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -37,12 +54,5 @@
     "A": 3,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b9f9a2567f165fac7cd0f684cf2fca95b982d10d5039e36b5d391677d43023db",
-    "at": "2026-10-26T17:11:07.525Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

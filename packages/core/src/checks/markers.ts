@@ -23,6 +23,10 @@ const NAMED = String.raw`(?=\s*\(\s*['"\`]|\s+['"\`])`;
 // A named argument, alone on its line or after another one: `}, solo: true);`.
 const ARGUMENT = String.raw`(?:^\s*|,\s*)`;
 const ARGUMENT_END = String.raw`(?=\s*[),]|\s*$)`;
+// Ginkgo's nodes, which a prefix (`FIt`, `PIt`, `XIt`) or a decorator (`It("a", Focus, …)`) marks.
+const GINKGO = "(?:It|Specify|Describe(?:Table(?:Subtree)?)?|Context|When|Entry)";
+const ginkgoDecorator = (name: string) =>
+  new RegExp(String.raw`(?<![\w.])${GINKGO}\s*\(\s*"[^"]*".*?,\s*(?<m>${name})\s*[,)]`);
 
 const FOCUSED: readonly RegExp[] = [
   // Jest, Vitest, Mocha, Jasmine
@@ -34,7 +38,10 @@ const FOCUSED: readonly RegExp[] = [
   /,\s*(?<m>focus\s*:\s*true)(?=\s*(?:do\b|[{),]|$))/,
   /,\s*(?<m>:focus)\b/,
   // Ginkgo
-  /(?<![\w.])(?<m>F(?:It|Describe|Context|When|Entry|DescribeTable))\s*\(/,
+  new RegExp(String.raw`(?<![\w.])(?<m>F${GINKGO})\s*\(`),
+  ginkgoDecorator("Focus"),
+  // Pest, on a test or on the whole file; Laravel's `->only([…])` takes the keys it keeps.
+  /(?<m>->only\(\s*\))/,
 ];
 
 const SKIPPED: readonly RegExp[] = [
@@ -54,6 +61,13 @@ const SKIPPED: readonly RegExp[] = [
   // NUnit, MSTest, xUnit
   /[[,]\s*(?<m>Ignore)\b/,
   /\b(?<m>Skip\s*=\s*"[^"]*")/,
+  // Ginkgo
+  new RegExp(String.raw`(?<![\w.])(?<m>[PX]${GINKGO})\s*\(`),
+  ginkgoDecorator("Pending"),
+  // Swift Testing, with no reason or a written one; SwiftUI's `.disabled(flag)` is no test.
+  /(?<m>\.disabled\(\s*(?:"[^"]*")?\s*\))/,
+  // Pest, with no reason or a written one; a condition decides at run time.
+  /(?<m>->skip\(\s*(?:'[^']*'|"[^"]*")?\s*\))/,
 ];
 
 const CASES: readonly RegExp[] = [

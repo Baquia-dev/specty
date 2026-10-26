@@ -52,6 +52,27 @@ describe("focusedTests", () => {
     ]);
   });
 
+  it("finds the focus of Ginkgo's other nodes and decorator, and of Pest (AC1)", () => {
+    expect(
+      found(
+        focusedTests,
+        `  ${"F"}Specify("a", func() {})`,
+        `  ${"F"}DescribeTableSubtree("b", func(n int) {})`,
+        `  It("c", Label("db"), ${"Focus"}, func() {})`,
+        `Describe("d", ${"Focus"}, func() {})`,
+        `})->${"only"}();`,
+        `pest()->${"only"}();`,
+      ),
+    ).toEqual([
+      `${"F"}Specify`,
+      `${"F"}DescribeTableSubtree`,
+      "Focus",
+      "Focus",
+      `->${"only"}()`,
+      `->${"only"}()`,
+    ]);
+  });
+
   it("leaves out what only looks like a focus marker", () => {
     expect(
       found(
@@ -63,6 +84,9 @@ describe("focusedTests", () => {
         `runner${ONLY}("a");`,
         `this.describe${ONLY}("a");`,
         "solo: false,",
+        "$credentials = $request->only(['email', 'password']);",
+        "Expect(view.Focus).To(BeTrue())",
+        `client.${"F"}It("a")`,
       ),
     ).toEqual([]);
   });
@@ -108,6 +132,50 @@ describe("skippedTests", () => {
       `${"Ignore"}`,
       `Skip${' = "flaky"'}`,
     ]);
+  });
+
+  it("finds the skip markers of Ginkgo, Swift Testing and Pest (AC2)", () => {
+    expect(
+      found(
+        skippedTests,
+        `  ${"P"}It("a", func() {})`,
+        `  ${"X"}It("b", func() {})`,
+        `${"P"}Describe("c", func() {})`,
+        `  ${"X"}Entry("d", 1)`,
+        `  It("e", ${"Pending"})`,
+        `  It("f", Label("db"), ${"Pending"}, func() {})`,
+        `@Test(.${"disabled"}())`,
+        `@Suite("g", .${"disabled"}("flaky"))`,
+        `})->${"skip"}();`,
+        `})->${"skip"}('flaky on CI');`,
+      ),
+    ).toEqual([
+      `${"P"}It`,
+      `${"X"}It`,
+      `${"P"}Describe`,
+      `${"X"}Entry`,
+      "Pending",
+      "Pending",
+      `.${"disabled"}()`,
+      `.${"disabled"}("flaky")`,
+      `->${"skip"}()`,
+      `->${"skip"}('flaky on CI')`,
+    ]);
+  });
+
+  it("leaves out what decides or only looks like a skip (AC3)", () => {
+    expect(
+      found(
+        skippedTests,
+        "$users = User::query()->skip(10)->take(5)->get();",
+        `})->${"skip"}($isCi, 'slow on CI');`,
+        `})->${"skip"}(fn () => true);`,
+        `Button("Save").${"disabled"}(isLoading)`,
+        "@Test(.enabled(if: isCI))",
+        "Expect(job.State).To(Equal(Pending))",
+        "send(job, Pending)",
+      ),
+    ).toEqual([]);
   });
 
   it("leaves out the conditional skips, which run elsewhere", () => {
