@@ -47,7 +47,7 @@ Segundo cambio de la serie que lleva a core los textos de la CLI. `propose`, `ta
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: Core tiene los textos de task done y scope add
+- [x] T2: Core tiene los textos de task done y scope add
   - files: packages/core/src/cards/task.ts, packages/core/src/index.ts, packages/core/test/cards/task.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

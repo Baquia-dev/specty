@@ -78,6 +78,16 @@ export {
   reviewedCard,
   specReviewPrompt,
 } from "./cards/review";
+export {
+  type AutoApproved,
+  autoApprovedLead,
+  inScopeLead,
+  type ScopeAddRefusal,
+  scopeAddRefusalCard,
+  type TaskDoneRefusal,
+  taskDoneCard,
+  taskDoneRefusalCard,
+} from "./cards/task";
 export { effortLabel, effortLine, runNext, translator } from "./cards/text";
 export type {
   CardContext,

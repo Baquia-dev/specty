@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9078df95cd9015f0ea2836d565d390ae54bae5b8",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:14:20.004Z",
       "doneAt": "2026-10-26T02:15:32.141Z",
-      "summary": "Core gana runNext (text.ts), noActiveChangeCard con el SIGUIENTE del agente, la persona o la UI (cards/refusals.ts) y notProposableCard y revisionLabel junto a las demás tarjetas de propose (flow.ts), con tests en español e inglés."
+      "summary": "Core gana runNext (text.ts), noActiveChangeCard con el SIGUIENTE del agente, la persona o la UI (cards/refusals.ts) y notProposableCard y revisionLabel junto a las demás tarjetas de propose (flow.ts), con tests en español e inglés.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ea68ee2ba6b99e033efc34926b73d1214075712b",
+      "startedAt": "2026-10-26T02:15:32.432Z",
+      "doneAt": "2026-10-26T02:18:08.426Z",
+      "summary": "core/src/cards/task.ts tiene los textos de task done (taskDoneRefusalCard y taskDoneCard, con sus avisos) y de scope add (scopeAddRefusalCard, inScopeLead y autoApprovedLead), copiados letra a letra de la CLI, con tests en español e inglés."
     }
   },
   "pending": {
