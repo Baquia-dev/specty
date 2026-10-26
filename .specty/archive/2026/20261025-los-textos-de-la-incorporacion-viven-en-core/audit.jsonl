@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T03:03:36.766Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"c6db0bcce5004e1dad7b2401389627d0c68bd716"}}
 {"ts":"2026-10-26T03:07:29.572Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":78325,"tree":"sha256:6eaa6b64ffc7e9945ef78c11de16a4b4e311b15809f80d985bf1c34079da13a3"}}
 {"ts":"2026-10-26T03:07:29.805Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"flow/integrate.ts, commands/integrate.ts, flow/land.ts y flow/task-done.ts piden sus textos a core (cards/integration.ts, cards/land.ts y verifyingNote) y ya no llaman al traductor; sale askAgent. La salida es la misma, como comprueban los tests."}}
+{"ts":"2026-10-26T03:07:38.422Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T03:07:44.326Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:1d5803326298ff13de2074829e8fa15675a4b0ea7c6da93007fb057b793be3cd","size":"L","warnings":1}}
+{"ts":"2026-10-26T03:07:50.994Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

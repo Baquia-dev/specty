@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-la-incorporacion-viven-en-core",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-la-incorporacion-viven-en-core",
   "baseCommit": "7f1ae8a4c3357eb90df5d7a681f55dc594b01745",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:edc6420c0a94e539ad0921d2a6c7d46c728fb1c12016e123dae97e0222d084d5",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c6db0bcce5004e1dad7b2401389627d0c68bd716",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:03:36.765Z",
       "doneAt": "2026-10-26T03:07:29.803Z",
-      "summary": "flow/integrate.ts, commands/integrate.ts, flow/land.ts y flow/task-done.ts piden sus textos a core (cards/integration.ts, cards/land.ts y verifyingNote) y ya no llaman al traductor; sale askAgent. La salida es la misma, como comprueban los tests."
+      "summary": "flow/integrate.ts, commands/integrate.ts, flow/land.ts y flow/task-done.ts piden sus textos a core (cards/integration.ts, cards/land.ts y verifyingNote) y ya no llaman al traductor; sale askAgent. La salida es la misma, como comprueban los tests.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 4,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T03:07:44.325Z"
 }

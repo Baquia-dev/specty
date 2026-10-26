@@ -50,3 +50,21 @@ Décimo cambio de la serie que lleva a core los textos de la CLI, con la incorpo
   - ac: AC1, AC2, AC3
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de la incorporación viven en core: `cards/integration.ts` (traer la rama principal al cambio, lo que queda para el agente, `integrate` y los títulos de sus detalles, que ya usaba la tarjeta de `next`), `cards/land.ts` (llevar el cambio a la rama principal y salir de su carpeta) y `verifyingNote` en `text.ts`, que también usa `task done`. Los cuatro archivos de la CLI ya no llaman al traductor y sale `askAgent`; la salida es la misma: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `notYetLine` junta el «No se cerró / No se aceptó / No se incorporó» con lo que pasó después (nada cambió, o el merge espera al agente), que antes eran dos funciones de la CLI.
+
+### Pendientes
+
+- Siguen en la CLI los textos de `review`, de las épicas, `prune`, `ui`, `export`, del servidor, de los hooks y de `check`.
