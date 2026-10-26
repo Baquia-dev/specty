@@ -56,7 +56,7 @@ Cuando el cambio toca lo que alimenta un generador de código, o lo que genera, 
   - files: packages/core/src/schema/checks.ts, packages/core/src/index.ts, packages/cli/src/check/generated.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-generated.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-generated.test.ts
-- [ ] T2: La documentación
+- [x] T2: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm check
