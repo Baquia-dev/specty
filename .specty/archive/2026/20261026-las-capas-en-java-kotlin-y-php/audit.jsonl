@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T15:34:17.397Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"38052287fd0abea022218d1b5f28dbceb7d0b172"}}
 {"ts":"2026-10-26T15:35:57.602Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":77697,"tree":"sha256:1e4811d6dfd300001af8ea70ad7d0c1aeb63416ae475e0885cb506da6472e3b9"}}
 {"ts":"2026-10-26T15:35:57.604Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"Las guías y formats.md explican cómo layers lee los imports de Java, Kotlin y PHP y cómo nombra sus paquetes"}}
+{"ts":"2026-10-26T15:36:02.253Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T15:36:13.173Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:2594465639b19a255a2a6d51d38b0ca5df0fdf01dd1c2220d8d9e41973f1535d","size":"M","warnings":0}}
+{"ts":"2026-10-26T15:36:13.349Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

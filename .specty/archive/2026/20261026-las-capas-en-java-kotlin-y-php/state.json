@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-las-capas-en-java-kotlin-y-php",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-las-capas-en-java-kotlin-y-php",
   "baseCommit": "a76a7c15d5b81eee7c2d62d642756520dc04db26",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a2d67dada52c0f8f9971de8bb0f86c9b6e533bdd028c8f7981657e1f7e36596e",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "38052287fd0abea022218d1b5f28dbceb7d0b172",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:34:17.397Z",
       "doneAt": "2026-10-26T15:35:57.603Z",
-      "summary": "Las guías y formats.md explican cómo layers lee los imports de Java, Kotlin y PHP y cómo nombra sus paquetes"
+      "summary": "Las guías y formats.md explican cómo layers lee los imports de Java, Kotlin y PHP y cómo nombra sus paquetes",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,5 +69,6 @@
     "A": 2,
     "AC": 3,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T15:36:13.172Z"
 }

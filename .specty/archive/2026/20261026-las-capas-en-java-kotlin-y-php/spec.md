@@ -57,3 +57,31 @@ La verificación `layers` vigila también los imports de Java, Kotlin y PHP, con
   - ac: AC3
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`layers` vigila Java, Kotlin y PHP con escáneres propios del core.
+- Java y Kotlin: un índice de las carpetas que tienen archivos `.java` o `.kt` decide qué import es del proyecto. Cuentan los `import static`, los comodines y los alias.
+- PHP: el PSR-4 de `composer.json` (`autoload` y `autoload-dev`) decide qué `use` es del proyecto. Cuentan solo los de antes de la primera clase, con `function`, `const` y grupos.
+
+Los paquetes externos se llaman por su nombre completo: en Java y Kotlin con puntos, y en PHP con `/` en lugar de `\`. Las guías y `formats.md` lo explican.
+
+### Desviaciones
+
+- Las dos expresiones regulares de la primera versión fallaban:
+  - en JVM, el comodín perdía el `*`;
+  - en PHP, el grupo `use A\{…}` no casaba.
+
+  Los tests las cazaron y se corrigieron antes de completar T1.
+
+### Decisiones
+
+- Un import de JVM es del proyecto solo si coinciden al menos dos nombres. Así `java.util.List` no se confunde con la carpeta `src/main/java`.
+- En PHP gana el prefijo PSR-4 más largo, como en el autoloader de Composer. Si un prefijo lista varias carpetas, cuenta la primera.
+- El nombre de un paquete PHP usa `/`, para que los globs de `forbiddenPackages` funcionen igual que en los demás lenguajes.
+
+### Pendientes
+
+- S5c: C#, por un índice de namespaces.
