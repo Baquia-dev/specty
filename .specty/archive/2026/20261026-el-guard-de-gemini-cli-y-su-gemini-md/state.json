@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-el-guard-de-gemini-cli-y-su-gemini-md",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-el-guard-de-gemini-cli-y-su-gemini-md",
   "baseCommit": "3b678e4bfdd752c60ed2a4c3ae73b948919533c9",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:5ca1db982e12049c59167b3a7f65f223cd563ecf5b1d6ff73fc3761b5ace665f",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0b61042fa1aee00a93aba0e6f0388b5ba3b85c92",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:43:54.733Z",
       "doneAt": "2026-10-26T20:46:20.283Z",
-      "summary": "La tabla marca el guard y el aviso tras cada comando de Gemini CLI como sí; ARCHITECTURE cuenta sus hooks (§10), el aviso con additionalContext y el par antes/después sin id, GEMINI.md entre los punteros y lo que deja uninstall."
+      "summary": "La tabla marca el guard y el aviso tras cada comando de Gemini CLI como sí; ARCHITECTURE cuenta sus hooks (§10), el aviso con additionalContext y el par antes/después sin id, GEMINI.md entre los punteros y lo que deja uninstall.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,5 +82,6 @@
     "AC": 6,
     "T": 3,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T20:49:49.410Z"
 }

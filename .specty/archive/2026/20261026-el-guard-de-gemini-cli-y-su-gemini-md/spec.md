@@ -84,3 +84,28 @@ Gemini CLI no tiene el guard de Specty: su agente puede escribir fuera del alcan
 - R1: Si Gemini CLI resuelve `dir_path` desde otra carpeta que el `cwd` de su entrada, el guard situaría mal las rutas de ese comando. Mitigación: `resolve` respeta una ruta absoluta, y el aviso tras el comando mira el árbol entero, no las rutas del comando.
 - R2: Dos comandos idénticos a la vez en la misma sesión compartirían `tool_use_id`, y sus fotos del árbol se pisarían. Mitigación: Gemini CLI ejecuta los comandos de uno en uno; en el peor caso el aviso de uno de ellos se pierde, y `task done` sigue siendo la puerta.
 - R3: Nada de esto se ha probado con Gemini CLI de verdad en este corte. Mitigación: las pruebas usan los eventos con la forma que documenta Gemini CLI, y C12 añade la prueba con Gemini CLI y un modelo simulado.
+
+## Cierre
+
+### Resumen
+
+Gemini CLI tiene el guard de Specty. `init` pone `BeforeTool` (`run_shell_command`, `write_file` y `replace`) y `AfterTool` (`run_shell_command`) en `.gemini/settings.json` y conserva lo demás:
+- `BeforeTool` bloquea con salida 2, y el motivo y el SIGUIENTE le llegan al agente como error de la herramienta.
+- `AfterTool` añade el aviso tras un comando al resultado (`additionalContext`).
+
+Un comando corre en su `dir_path`, y el antes y el después se emparejan por la sesión y un hash de la entrada. `init` escribe también `GEMINI.md`, que empieza con `@./AGENTS.md`, y `uninstall` lo deja y lo dice. `doctor` avisa si falta un evento y `uninstall` quita los hooks. En la tabla de capacidades, el guard y el aviso tras cada comando de Gemini CLI pasan a «sí».
+
+### Desviaciones
+
+- La verificación de T2 nombraba `test/init.test.ts`, que no existe; antes de aprobar pasó a `test/install-files.test.ts` y `test/setup.test.ts`, que cubren el puntero de `CLAUDE.md`.
+- No hubo más: el cambio del test de `init` a Copilot y el fallo del test de la tabla entre T1 y T3 estaban en el diseño.
+
+### Decisiones
+
+- `@./AGENTS.md` y no `@AGENTS.md`: la documentación de Gemini CLI solo muestra rutas que empiezan por `./`, `../` o `/`.
+- Las líneas de `CLAUDE.md` siguen con sus nombres, y `GEMINI.md` tiene las suyas, para no tocar los tests del core que las usan.
+- Si el guard mismo falla, sale con 1, que Gemini CLI trata como un aviso que no bloquea, como en Claude Code.
+
+### Pendientes
+
+- C12: el fin de turno (`AfterAgent`), la tarjeta tras compactar (`PreCompress` solo avisa a la persona, así que irá por un camino indirecto), los permisos con su sandbox (`tools.sandboxAllowedPaths`) y la prueba con Gemini CLI y un modelo simulado.
