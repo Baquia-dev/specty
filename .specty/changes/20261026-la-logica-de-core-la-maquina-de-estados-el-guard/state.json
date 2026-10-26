@@ -6,6 +6,13 @@
   "branch": "specty/20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
   "baseCommit": "e937a882332a096930ceeab1c0ee630592cac1e3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f13cec7ca9e81efd7438ce5f03701a6f1605da53c5a29446dd78e48906ceba20",
+    "at": "2026-10-26T19:07:11.497Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -25,7 +32,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d36934fc3208f0077ca5de3637a79f04298c9b5c",
+      "startedAt": "2026-10-26T19:07:12.345Z",
+      "doneAt": "2026-10-26T19:07:50.724Z",
+      "summary": "machine.ts: transition comprueba actor y fase y deja el resultado a specOutcome (propose, requestChanges, approve con approveOutcome), taskOutcome y endOutcome, estrechados con Extract sin casts. Mismas transiciones; los 459 tests de core pasan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f13cec7ca9e81efd7438ce5f03701a6f1605da53c5a29446dd78e48906ceba20",
-    "at": "2026-10-26T19:07:11.497Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

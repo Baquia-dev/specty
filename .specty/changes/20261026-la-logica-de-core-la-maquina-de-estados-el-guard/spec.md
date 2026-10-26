@@ -43,7 +43,7 @@ Once funciones de la lógica de core pasan de los límites de Specty: `transitio
 
 ## Tareas
 
-- [ ] T1: La máquina de estados
+- [x] T1: La máquina de estados
   - files: packages/core/src/flow/machine.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
