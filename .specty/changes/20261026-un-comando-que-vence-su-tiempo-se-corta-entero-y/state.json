@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
   "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
   "revision": 1,
@@ -47,12 +47,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "91d099b6611ea0eca7995e431b58eef59903513e",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:27:02.373Z",
       "doneAt": "2026-10-26T18:28:46.844Z",
-      "summary": "testEnv quita LC_ALL y LC_MESSAGES del sistema, que ganaban al LANG de los tests; con LC_ALL=en_US.UTF-8, como en el runner de macOS, pasan los 432 tests de la CLI."
+      "summary": "testEnv quita LC_ALL y LC_MESSAGES del sistema, que ganaban al LANG de los tests; con LC_ALL=en_US.UTF-8, como en el runner de macOS, pasan los 432 tests de la CLI.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "52d7db7eee587e30cd8a5b128ae86a7740838ed3",
+      "startedAt": "2026-10-26T18:28:47.144Z",
+      "doneAt": "2026-10-26T18:30:41.512Z",
+      "summary": "formats.md §6: verify.timeoutSec dice que al vencer se corta el comando con todos los procesos que lanzó."
     }
   },
   "pending": {

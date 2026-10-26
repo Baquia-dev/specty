@@ -48,7 +48,7 @@ El CI de GitHub destapó dos fallos que en local no se veían. En Linux, un coma
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-language.test.ts test/commands.test.ts
   - type: test
-- [ ] T3: El tiempo límite en formats.md
+- [x] T3: El tiempo límite en formats.md
   - files: docs/formats.md
   - ac: AC3
   - verify: pnpm check
