@@ -53,12 +53,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7f277c0d1a40e28d37e99992db633d5c4b74c533",
+      "attempts": 1,
       "startedAt": "2026-10-26T23:39:20.311Z",
       "doneAt": "2026-10-26T23:45:37.363Z",
-      "summary": "check/install.ts: install decide entre el plan y la instalación, y deja a applyEdits las ediciones, a installDependencies las devDependencies y a installed el commit y el informe, con las mismas preguntas en el mismo orden. Los tests pasan."
+      "summary": "check/install.ts: install decide entre el plan y la instalación, y deja a applyEdits las ediciones, a installDependencies las devDependencies y a installed el commit y el informe, con las mismas preguntas en el mismo orden. Los tests pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3c3ec0d3351416c036a917749cb8087d69e21d80",
+      "startedAt": "2026-10-26T23:45:37.699Z",
+      "doneAt": "2026-10-26T23:53:37.532Z",
+      "summary": "install-ignores.ts: agentIgnores deja a addIgnores el archivo de cada agente. git-hooks.ts: removeLefthook deja a removedSpectyCommands los hooks de cada archivo. project-files.ts: completeConfig deja a intoMap la inserción en un verify existente. Los tests pasan."
     }
   },
   "pending": {

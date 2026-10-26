@@ -55,7 +55,7 @@ Nueve funciones de la instalación, de git y de las verificaciones de la CLI pas
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T4: Los ignores, Lefthook y la configuración
+- [x] T4: Los ignores, Lefthook y la configuración
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/src/install/git-hooks.ts, packages/cli/src/install/project-files.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
