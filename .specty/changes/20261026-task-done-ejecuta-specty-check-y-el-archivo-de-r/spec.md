@@ -32,6 +32,7 @@ follows:
 - AC3: CUANDO `check` solo da avisos ENTONCES `task done` completa la tarea y el informe aparece en la salida de error.
 - AC4: CUANDO `specty init` escribe AGENTS.md ENTONCES el bloque de Specty tiene el flujo y las 5 reglas, en español o en inglés según el idioma configurado.
 - AC5: CUANDO un AGENTS.md nuevo trae la sección «Convenciones» ENTONCES su pista dice que no se escriba ahí lo que verifica `specty check`.
+- AC6: CUANDO se ejecuta `specty check --changed --spec` sobre este cambio ENTONCES pasa, también `function-lines` y `complexity`: ninguna función que toca queda por encima de los límites ni crece si ya lo estaba.
 
 ## Diseño
 
@@ -64,6 +65,11 @@ follows:
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC4
   - verify: pnpm check
+- [ ] T4: Dividir `taskDone` y `flowBlock` por responsabilidad
+  - files: packages/cli/src/commands/task.ts, packages/core/src/agents-md.ts
+  - ac: AC6
+  - verify: pnpm --filter @baquia-dev/specty build && node packages/cli/dist/specty.mjs check --changed --spec
+  - type: refactor
 
 ## Riesgos
 

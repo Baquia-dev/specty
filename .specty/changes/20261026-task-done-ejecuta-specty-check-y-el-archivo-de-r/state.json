@@ -2,24 +2,25 @@
   "schema": 1,
   "id": "20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:ea54ce2110598803f22a710efa72fe140b9ea8de6881be8f5a18e71c9ca69682",
-    "at": "2026-10-26T10:26:34.078Z",
+    "revision": 2,
+    "hash": "sha256:f28c5190a70e4b636ac1d54f8389ebcb1b21f849910cf6e1b5318edc65cf074e",
+    "at": "2026-10-26T11:50:24.208Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
-    "level": "M",
-    "score": 10,
+    "level": "L",
+    "score": 11,
     "adjust": 0,
     "reasons": [
       "8 archivos",
-      "2 módulos"
+      "2 módulos",
+      "4 tareas"
     ]
   },
   "items": {
@@ -63,14 +64,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/test/cards.test.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "5f891a0a25400bddcb386ca2da49ad31382321a6",
+      "attempts": 2,
       "startedAt": "2026-10-26T11:45:45.677Z",
       "doneAt": "2026-10-26T11:47:53.100Z",
-      "summary": "formats.md explica que task done ejecuta specty check (qué deja fuera, cómo bloquea y cómo suavizarlo) y muestra el bloque con las 5 reglas; ARCHITECTURE añade check a la fila de task done."
+      "summary": "formats.md explica que task done ejecuta specty check (qué deja fuera, cómo bloquea y cómo suavizarlo) y muestra el bloque con las 5 reglas; ARCHITECTURE añade check a la fila de task done.",
+      "scopeExtra": [
+        "packages/core/test/cards.test.ts"
+      ]
     }
   },
   "pending": {
@@ -79,8 +80,8 @@
   },
   "maxIds": {
     "A": 4,
-    "AC": 5,
-    "T": 3,
+    "AC": 6,
+    "T": 4,
     "R": 2
   }
 }
