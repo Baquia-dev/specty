@@ -10,6 +10,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { parse as parseYaml } from "yaml";
 import { exists, isDirectory, isRecord, parseJson, readText } from "../io/files";
+import { pythonPrefix, qualityCommands } from "./quality";
 import { detectStacks, type Stack } from "./stack";
 
 export interface Commands {
@@ -70,31 +71,37 @@ export function scriptCommand(stack: Stack, script: string): string {
   return tool === "bun" ? `bun run ${script}` : `${tool} ${script}`;
 }
 
-/** What runs a Python tool inside the project's environment: `uv run `, or nothing. */
-export function pythonPrefix(stack: Stack): string {
-  const { tool } = stack;
-  if (tool === "uv" || tool === "poetry" || tool === "pdm") return `${tool} run `;
-  return tool === "pipenv" ? "pipenv run " : "";
+/** The lint and type commands of the quality tools a stack configures (`quality.ts`). */
+function lintAndTypes(stack: Stack): Pick<Commands, "lint" | "typecheck"> {
+  const { lint, typecheck } = qualityCommands(stack);
+  return {
+    ...(lint === undefined ? {} : { lint }),
+    ...(typecheck === undefined ? {} : { typecheck }),
+  };
+}
+
+/** A JavaScript or TypeScript project's commands are the scripts of its `package.json`. */
+function scriptCommands(stack: Stack): Commands {
+  const pick = (...names: string[]) => names.find((script) => stack.scripts[script] !== undefined);
+  const entry = (key: keyof Commands, ...names: string[]) => {
+    const script = pick(...names);
+    return script === undefined ? {} : { [key]: scriptCommand(stack, script) };
+  };
+  return {
+    ...entry("test", "test"),
+    ...entry("lint", "lint"),
+    ...entry("typecheck", "typecheck", "type-check", "tsc"),
+    ...entry("build", "build"),
+    ...entry("check", "check", "verify", "ci"),
+  };
 }
 
 export function commandsFor(stack: Stack): Commands {
   const { tool, scripts, frameworks } = stack;
   switch (stack.language) {
     case "typescript":
-    case "javascript": {
-      const pick = (...names: string[]) => names.find((script) => scripts[script] !== undefined);
-      const entry = (key: keyof Commands, ...names: string[]) => {
-        const script = pick(...names);
-        return script === undefined ? {} : { [key]: scriptCommand(stack, script) };
-      };
-      return {
-        ...entry("test", "test"),
-        ...entry("lint", "lint"),
-        ...entry("typecheck", "typecheck", "type-check", "tsc"),
-        ...entry("build", "build"),
-        ...entry("check", "check", "verify", "ci"),
-      };
-    }
+    case "javascript":
+      return scriptCommands(stack);
     case "dart":
       return tool === "flutter"
         ? { test: "flutter test", lint: "flutter analyze" }
@@ -104,10 +111,10 @@ export function commandsFor(stack: Stack): Commands {
       const test = frameworks.includes("django")
         ? `${prefix}python manage.py test`
         : `${prefix}pytest`;
-      return { test, ...(frameworks.includes("ruff") ? { lint: `${prefix}ruff check` } : {}) };
+      return { test, ...lintAndTypes(stack) };
     }
     case "go":
-      return { test: "go test ./...", lint: "go vet ./..." };
+      return { test: "go test ./...", lint: qualityCommands(stack).lint ?? "go vet ./..." };
     case "rust":
       return { test: "cargo test", lint: "cargo clippy -- -D warnings" };
     case "csharp":
@@ -118,7 +125,10 @@ export function commandsFor(stack: Stack): Commands {
         ? { test: "mvn test" }
         : { test: tool === "gradlew" ? "./gradlew test" : "gradle test" };
     case "ruby":
-      return { test: frameworks.includes("rails") ? "bin/rails test" : "bundle exec rspec" };
+      return {
+        test: frameworks.includes("rails") ? "bin/rails test" : "bundle exec rspec",
+        ...lintAndTypes(stack),
+      };
     case "php":
       return {
         test: frameworks.includes("laravel")
@@ -126,6 +136,7 @@ export function commandsFor(stack: Stack): Commands {
           : scripts.test !== undefined
             ? "composer test"
             : "vendor/bin/phpunit",
+        ...lintAndTypes(stack),
       };
     case "swift":
       return { test: "swift test" };

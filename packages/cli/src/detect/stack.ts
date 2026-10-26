@@ -3,6 +3,7 @@ import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { exists, isRecord, parseJson, readText } from "../io/files";
+import { qualityTools } from "./quality";
 
 /** A stack detected from manifest files in one directory. Inspired by the legacy detectors. */
 export interface Stack {
@@ -26,6 +27,8 @@ export interface Stack {
   readonly tool?: string;
   /** Scripts declared in package.json or composer.json. */
   readonly scripts: Readonly<Record<string, string>>;
+  /** The quality tools the project configures (`quality.ts`), when it has any. */
+  readonly tools?: readonly string[];
 }
 
 const JS_FRAMEWORKS = [
@@ -63,7 +66,13 @@ export async function detectStacks(dir: string): Promise<Stack[]> {
     simple(dir, "CMakeLists.txt", "cpp"),
     javascript(dir),
   ]);
-  return found.filter((stack): stack is Stack => stack !== undefined);
+  const stacks = found.filter((stack): stack is Stack => stack !== undefined);
+  return Promise.all(
+    stacks.map(async (stack) => {
+      const tools = await qualityTools(dir, stack);
+      return tools.length > 0 ? { ...stack, tools } : stack;
+    }),
+  );
 }
 
 async function javascript(dir: string): Promise<Stack | undefined> {

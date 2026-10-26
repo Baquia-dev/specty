@@ -6,6 +6,13 @@
   "branch": "specty/20261026-los-comandos-de-calidad-de-python-ruby-php-y-go",
   "baseCommit": "8f0271909a23aa71969a198b93444f8b6afafa85",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2615c929704f15e64fa078579702e3e5ed3323c4589710d9ec1e5c93406f5b8e",
+    "at": "2026-10-26T14:27:22.970Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -40,7 +47,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "249133420a42de35a8f8efc1ebf4e30e7c967d25",
+      "startedAt": "2026-10-26T14:27:23.390Z",
+      "doneAt": "2026-10-26T14:35:35.689Z",
+      "summary": "detect/quality.ts detecta las herramientas configuradas de Python, Ruby, PHP y Go (tools en cada stack) y da su formato, lint y tipos; commandsFor y formatCommand los usan. commandsFor saca los scripts de JS a su función para no crecer."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -50,12 +67,5 @@
     "AC": 4,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2615c929704f15e64fa078579702e3e5ed3323c4589710d9ec1e5c93406f5b8e",
-    "at": "2026-10-26T14:27:22.970Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

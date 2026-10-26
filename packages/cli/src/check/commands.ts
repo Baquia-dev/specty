@@ -7,7 +7,8 @@ import {
   type ResolvedConfig,
   translator,
 } from "@baquia-dev/specty-core";
-import { commandsFor, pythonPrefix, scriptCommand } from "../detect/project";
+import { commandsFor, scriptCommand } from "../detect/project";
+import { qualityCommands } from "../detect/quality";
 import type { Stack } from "../detect/stack";
 import { execute } from "../io/exec";
 import type { CheckDefinition, Provider } from "./provider";
@@ -63,9 +64,8 @@ function formatCommand(stack: Stack): string | undefined {
     case "rust":
       return "cargo fmt --check";
     case "python":
-      return stack.frameworks.includes("ruff")
-        ? `${pythonPrefix(stack)}ruff format --check`
-        : undefined;
+    case "php":
+      return qualityCommands(stack).format;
     case "csharp":
       return "dotnet format --verify-no-changes";
     default:
