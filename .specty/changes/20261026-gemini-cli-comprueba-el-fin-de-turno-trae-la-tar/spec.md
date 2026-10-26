@@ -69,7 +69,7 @@ Con el guard de C11, a Gemini CLI aún le falta lo demás que tiene Claude Code:
   - files: packages/cli/src/agents/gemini-cli.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/gemini-cli.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/uninstall.test.ts
-- [ ] T3: Gemini CLI sigue un guion con un modelo simulado
+- [x] T3: Gemini CLI sigue un guion con un modelo simulado
   - files: packages/cli/test/fake-gemini.ts, packages/cli/test/gemini-e2e.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-e2e.test.ts

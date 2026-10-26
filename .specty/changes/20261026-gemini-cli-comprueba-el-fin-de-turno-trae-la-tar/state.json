@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "566fb0376062280eb55c06d8cf14f07be4e5c26c",
+      "attempts": 1,
       "startedAt": "2026-10-26T21:01:13.161Z",
       "doneAt": "2026-10-26T21:04:54.095Z",
-      "summary": "init añade la carpeta común de git y la de las worktrees a tools.sandboxAllowedPaths cuando .gemini/settings.json es local y git no lo sigue (uninstall las quita); si va en git, no le pone rutas de la máquina y dice cuáles añadir."
+      "summary": "init añade la carpeta común de git y la de las worktrees a tools.sandboxAllowedPaths cuando .gemini/settings.json es local y git no lo sigue (uninstall las quita); si va en git, no le pone rutas de la máquina y dice cuáles añadir.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6764f1cb9fcc007b59321abda9ccf87b142b665a",
+      "startedAt": "2026-10-26T21:04:54.394Z",
+      "doneAt": "2026-10-26T21:08:31.634Z",
+      "summary": "Gemini CLI sigue un guion contra test/fake-gemini.ts, que imita la API de Gemini (GOOGLE_GEMINI_BASE_URL): guard, alcance, aviso tras un comando, tarjeta en el prompt y fin de turno; las 4 pruebas pasan con Gemini CLI 0.65.0 y se saltan sin él."
     }
   },
   "pending": {
