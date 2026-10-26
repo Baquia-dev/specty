@@ -155,18 +155,19 @@ Falla con cada comentario o anotación que el cambio añade para apagar el compi
 
 ### `layers`
 
-**Stack:** TypeScript, JavaScript, Dart, Flutter, Python, Go, Rust, Java, Kotlin y PHP, cuando hay capas configuradas.
+**Stack:** TypeScript, JavaScript, Dart, Flutter, Python, Go, Rust, Java, Kotlin, PHP y C#, cuando hay capas configuradas.
 
 Falla con cada import que cruza las capas de Clean Architecture: por ejemplo, el dominio que importa el framework, la infraestructura o la UI.
 
 - En TypeScript y JavaScript, los imports los resuelve el dependency-cruiser del proyecto, con los alias de `tsconfig.json`. Sin él, la verificación no corre, y `specty check --install` ofrece añadirlo con su versión exacta.
-- En Dart, Python, Go, Rust, Java, Kotlin y PHP, los lee un escáner propio de Specty, sin herramientas:
+- En Dart, Python, Go, Rust, Java, Kotlin, PHP y C#, los lee un escáner propio de Specty, sin herramientas:
   - Dart: los `import` y `export`; un `package:` con el nombre de `pubspec.yaml` es un archivo de `lib/`.
   - Python: `import a.b` y `from a.b import c`. Un módulo es del proyecto si es un archivo o una carpeta del repositorio, en la raíz o bajo `src/`; si no, es el paquete de su primer nombre (`requests`). Los relativos se resuelven desde la carpeta del archivo.
   - Go: los `import "ruta"`; una ruta bajo el `module` de `go.mod` es la carpeta `<carpeta>/*.go`, y cualquier otra es su paquete (`fmt`, `github.com/jackc/pgx`).
   - Rust: los `use` y `extern crate`; `crate::a::b` es `a/b` bajo el `src` del crate, `super::` y `self::` parten del módulo del archivo, y cualquier otro primer nombre es su crate (`std`, `sqlx`).
   - Java y Kotlin: los `import`, también `static` y con comodín. Un import es del proyecto si sus primeros nombres, dos al menos, terminan la ruta de una carpeta con archivos `.java` o `.kt`; si no, es el paquete con su nombre completo, que `org.springframework.*` cubre.
   - PHP: los `use` antes de la primera clase (dentro, `use` trae un trait), con `function`, `const` y grupos. Un nombre es del proyecto si lo cubre un prefijo PSR-4 de `composer.json`; si no, es el paquete con sus `\` como `/` (`Illuminate/Support/Facades/DB`), que `Illuminate/**` cubre.
+  - C#: los `using`, también `global`, `static` y los alias, pero no `using var` ni `using (…)`. Un nombre es del proyecto si es un namespace que declara alguno de sus archivos `.cs` (o lo es sin su último tramo), y va a `<carpeta>/*.cs`; si no, es el paquete con su nombre completo, que `Microsoft.EntityFrameworkCore*` cubre.
 
 **Configuración:**
 
@@ -398,7 +399,6 @@ Un proveedor añadiría:
 
 - su lint, formato y tipos, si Specty no los detecta; mientras, sirve `checks.commands`;
 - su tipado estricto, más allá de las supresiones: por ejemplo, el `!!` de Kotlin;
-- `layers` en C#, con un escáner de imports;
 
 ### Pasos
 

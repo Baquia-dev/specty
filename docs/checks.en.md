@@ -155,18 +155,19 @@ Fails on each comment or annotation the change adds to switch the compiler, the 
 
 ### `layers`
 
-**Stack:** TypeScript, JavaScript, Dart, Flutter, Python, Go, Rust, Java, Kotlin and PHP, when layers are configured.
+**Stack:** TypeScript, JavaScript, Dart, Flutter, Python, Go, Rust, Java, Kotlin, PHP and C#, when layers are configured.
 
 Fails on each import that crosses the Clean Architecture layers: for example, the domain importing the framework, the infrastructure or the UI.
 
 - In TypeScript and JavaScript, the project's dependency-cruiser resolves the imports, with the aliases of `tsconfig.json`. Without it, the check does not run, and `specty check --install` offers to add it with its exact version.
-- In Dart, Python, Go, Rust, Java, Kotlin and PHP, a scanner of Specty's own reads them, with no tools:
+- In Dart, Python, Go, Rust, Java, Kotlin, PHP and C#, a scanner of Specty's own reads them, with no tools:
   - Dart: the `import` and `export` directives; a `package:` with the name of `pubspec.yaml` is a file of `lib/`.
   - Python: `import a.b` and `from a.b import c`. A module is the project's when it is a file or a folder of the repository, at its root or under `src/`; otherwise it is the package of its first name (`requests`). Relative ones resolve from the file's folder.
   - Go: the `import "path"` specs; a path under the `module` of `go.mod` is the folder `<folder>/*.go`, and any other is its package (`fmt`, `github.com/jackc/pgx`).
   - Rust: the `use` and `extern crate` items; `crate::a::b` is `a/b` under the crate's `src`, `super::` and `self::` start at the file's module, and any other first name is its crate (`std`, `sqlx`).
   - Java and Kotlin: the `import` declarations, `static` and wildcard ones too. An import is the project's when its first names, two at least, end the path of a folder with `.java` or `.kt` files; otherwise it is the package by its full name, which `org.springframework.*` covers.
   - PHP: the `use` statements before the first class (inside one, `use` brings a trait), with `function`, `const` and groups. A name is the project's when a PSR-4 prefix of `composer.json` covers it; otherwise it is the package with its `\` as `/` (`Illuminate/Support/Facades/DB`), which `Illuminate/**` covers.
+  - C#: the `using` directives, `global`, `static` and aliases too, but not `using var` or `using (…)`. A name is the project's when it is a namespace one of its `.cs` files declares (or is one without its last part), and goes to `<folder>/*.cs`; otherwise it is the package by its full name, which `Microsoft.EntityFrameworkCore*` covers.
 
 **Configuration:**
 
@@ -398,7 +399,6 @@ A provider would add:
 
 - its lint, format and types, when Specty does not detect them; meanwhile, `checks.commands` works;
 - its strict typing beyond suppressions: Kotlin's `!!`, for example;
-- `layers` in C#, with an import scanner;
 
 ### Steps
 

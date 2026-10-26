@@ -51,7 +51,7 @@ La verificación `layers` vigila también los `using` de C#, con un escáner pro
   - files: packages/cli/src/check/layer-scanners.ts, packages/cli/src/check/layers.ts, packages/cli/test/check-layers-scanned.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-layers-scanned.test.ts test/check-layers.test.ts test/check-layers-dart.test.ts
-- [ ] T3: C# en las guías y en formats
+- [x] T3: C# en las guías y en formats
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md
   - ac: AC3
   - verify: pnpm check
