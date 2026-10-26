@@ -57,3 +57,22 @@ Segundo cambio de la serie que lleva a core los textos de la CLI. `propose`, `ta
   - ac: AC1, AC2, AC3
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `propose`, `task done` y `scope add` viven en core. `cards/refusals.ts` tiene `noActiveChangeCard`, con el SIGUIENTE del agente, la persona o la UI; `text.ts`, `runNext`; `flow.ts`, `notProposableCard` y `revisionLabel`; y `cards/task.ts`, las tarjetas de `task done` y `scope add`. Los tres comandos ya no llaman al traductor, y la salida es la misma: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `taskDoneCard` recibe la vista del cambio y arma ella misma la tarjeta siguiente y los avisos de la tarea, que ya salían de funciones de core.
+- Las tarjetas de rechazo reciben la cabecera de la CLI cuando depende del cambio activo, como `outOfScopeCard`.
+
+### Pendientes
+
+- `noActiveChangeCard` ya sirve a `adjust`, `approve`, `reject` y al servidor, que la usarán en los siguientes cambios de la serie.
