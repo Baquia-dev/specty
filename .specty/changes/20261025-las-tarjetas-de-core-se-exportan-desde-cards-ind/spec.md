@@ -15,7 +15,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Las tarjetas se exportan desde cards/index.ts
+- [x] T1: Las tarjetas se exportan desde cards/index.ts
   - files: packages/core/src/cards/index.ts, packages/core/src/index.ts
   - verify: pnpm check
   - type: refactor
