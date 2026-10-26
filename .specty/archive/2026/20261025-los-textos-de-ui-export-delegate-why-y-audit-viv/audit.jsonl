@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T03:21:18.648Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"779a463112e6c4227f6d304ce2441bbc40af4522"}}
 {"ts":"2026-10-26T03:24:00.517Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":114223,"tree":"sha256:bb5c4bc9c8658a9b62cf8fca2e8a95ac2131b1ba40a62c9f01ff838e1933fdd3"}}
 {"ts":"2026-10-26T03:24:00.688Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"why.ts y audit.ts piden sus rechazos a core (whyRefusalCard y auditRefusalCard) y ya no llaman al traductor; la salida es la misma, como comprueban sus tests sin cambios."}}
+{"ts":"2026-10-26T03:24:07.342Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T03:24:12.871Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:0d646dad6ce27be0b95e5de508dbaae2fe905b23cf1c9e306a1803741ddd8a0e","size":"L","warnings":3}}
+{"ts":"2026-10-26T03:24:18.403Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

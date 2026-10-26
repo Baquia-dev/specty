@@ -66,3 +66,22 @@ Pasan a dos módulos nuevos de core, `cards/ui.ts` y `cards/export.ts`, y a los 
   - ac: AC4
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `ui` (`cards/ui.ts`), `export` (`cards/export.ts`), la pregunta de `delegate` (`cards/human.ts`) y los rechazos de `why` y `audit` (`cards/why.ts` y `cards/audit.ts`) viven en core, con tests. Los cinco comandos ya no llaman al traductor, y la salida es la misma: sus tests pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Los nombres de los formatos de `export` siguen en la CLI y se pasan a la tarjeta, porque no se traducen.
+- Las respuestas de `delegate on` («No» primero, la opción por defecto) salen de core, como las de `uninstall`.
+
+### Pendientes
+
+- Siguen en la CLI los textos del servidor, de los hooks y de `check`.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-ui-export-delegate-why-y-audit-viv",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-ui-export-delegate-why-y-audit-viv",
   "baseCommit": "cede2ba71b56b9b2f021ec0af15ce45d6f69bf69",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:10892b55f3a100d6f5cc7e7b063299d5a35a27a4d6ced1cb16695af5e966a2e2",
@@ -49,12 +49,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "779a463112e6c4227f6d304ce2441bbc40af4522",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:21:18.648Z",
       "doneAt": "2026-10-26T03:24:00.685Z",
-      "summary": "why.ts y audit.ts piden sus rechazos a core (whyRefusalCard y auditRefusalCard) y ya no llaman al traductor; la salida es la misma, como comprueban sus tests sin cambios."
+      "summary": "why.ts y audit.ts piden sus rechazos a core (whyRefusalCard y auditRefusalCard) y ya no llaman al traductor; la salida es la misma, como comprueban sus tests sin cambios.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,5 +65,6 @@
     "A": 1,
     "AC": 5,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T03:24:12.869Z"
 }
