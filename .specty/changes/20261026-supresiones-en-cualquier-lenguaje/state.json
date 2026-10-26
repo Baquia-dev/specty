@@ -6,6 +6,13 @@
   "branch": "specty/20261026-supresiones-en-cualquier-lenguaje",
   "baseCommit": "29c375072708f67d04c7b72d2b22d254bdda4efe",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:0a2c93e3c0b7372205a66e756259d27de359de5dc237501d38bf0f4f7b09bec9",
+    "at": "2026-10-26T13:57:58.381Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -41,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a21a8d659afd1e3ed6c306710240d53aa249998d",
+      "startedAt": "2026-10-26T13:57:58.767Z",
+      "doneAt": "2026-10-26T14:01:02.562Z",
+      "summary": "Catálogo de supresiones en el core por familia de lenguajes (Python, Ruby, Elixir, JS/TS, Java, Kotlin, C#, Go, Rust, PHP, Swift, C/C++): las de comentario solo en comentarios y las de código sin cadenas; informa la primera por posición."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -51,12 +68,5 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:0a2c93e3c0b7372205a66e756259d27de359de5dc237501d38bf0f4f7b09bec9",
-    "at": "2026-10-26T13:57:58.381Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

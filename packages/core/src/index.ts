@@ -66,6 +66,7 @@ export {
   type StrictTypeViolation,
   strictTypeViolations,
 } from "./checks/strict-types";
+export { suppressions } from "./checks/suppressions";
 export {
   type Actor,
   EVENT_RULES,

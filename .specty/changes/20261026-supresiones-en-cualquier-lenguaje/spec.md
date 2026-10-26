@@ -58,7 +58,7 @@ Una verificación nueva, `suppressions`, falla con cada comentario o anotación 
 
 ## Tareas
 
-- [ ] T1: El catálogo de supresiones
+- [x] T1: El catálogo de supresiones
   - files: packages/core/src/checks/suppressions.ts, packages/core/src/index.ts, packages/core/test/checks/suppressions.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/suppressions.test.ts
