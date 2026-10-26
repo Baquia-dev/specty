@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dfcae4af51d94ba795b569f8a25286bee656e522",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:36:54.175Z",
       "doneAt": "2026-10-26T15:39:28.275Z",
-      "summary": "Escáner de C# en el core: using, global, static y alias, sin using var ni using (...); índice de los namespaces que declaran los archivos del proyecto."
+      "summary": "Escáner de C# en el core: using, global, static y alias, sin using var ni using (...); índice de los namespaces que declaran los archivos del proyecto.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "db34e440e2900fd74af96e7de808349c69c8f456",
+      "startedAt": "2026-10-26T15:39:28.560Z",
+      "doneAt": "2026-10-26T15:42:30.265Z",
+      "summary": "layers usa el escáner de C# con el índice de namespaces de los archivos .cs del repositorio"
     }
   },
   "pending": {

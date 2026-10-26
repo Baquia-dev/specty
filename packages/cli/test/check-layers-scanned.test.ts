@@ -6,7 +6,7 @@ import { CONFIG, cli, tempRepo, writeFiles } from "./support";
 const layers = (domain: string, infra: string, forbidden: string) =>
   [
     "checks:",
-    "  levels: { secrets: off, tests: off, lint: off }",
+    "  levels: { secrets: off, tests: off, lint: off, typecheck: off, format: off }",
     "  layers:",
     `    domain: { paths: ["${domain}"], forbiddenPackages: ["${forbidden}"] }`,
     `    infra: { paths: ["${infra}"], may: [domain] }`,
@@ -156,6 +156,34 @@ describe("layers in Python, Go and Rust (AC1, AC2, AC3)", () => {
         "FALLA layers",
         "  src/Domain/User.php:4 `domain` no puede importar `infra` (src/Infra/Db.php)",
         "  src/Domain/User.php:5 `domain` no puede importar el paquete `Illuminate/Support/Facades/DB`",
+      ].join("\n"),
+    );
+  });
+
+  it("reads C#'s using directives against the namespaces of the project (S5c)", async () => {
+    const root = await tempRepo({
+      "Shop.csproj": '<Project Sdk="Microsoft.NET.Sdk" />\n',
+      "src/Domain/User.cs": "namespace Shop.Domain;\n\npublic class User {}\n",
+      "src/Infra/Db.cs": "namespace Shop.Infra;\n\npublic class Db {}\n",
+      ".specty/config.yaml": `${CONFIG()}${layers("src/Domain/**", "src/Infra/**", "Microsoft.EntityFrameworkCore*")}`,
+    });
+    await writeFiles(root, {
+      "src/Domain/User.cs": [
+        "using System;",
+        "using Shop.Infra;",
+        "using Microsoft.EntityFrameworkCore;",
+        "",
+        "namespace Shop.Domain;",
+        "",
+        "public class User {}",
+        "",
+      ].join("\n"),
+    });
+    expect(await layersBlock(root)).toBe(
+      [
+        "FALLA layers",
+        "  src/Domain/User.cs:2 `domain` no puede importar `infra` (src/Infra/*.cs)",
+        "  src/Domain/User.cs:3 `domain` no puede importar el paquete `Microsoft.EntityFrameworkCore`",
       ].join("\n"),
     );
   });

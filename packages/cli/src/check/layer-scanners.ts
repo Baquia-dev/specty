@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
+  csharpImports,
+  csharpNamespaces,
   dartImports,
   goImports,
   jvmImports,
@@ -58,6 +60,20 @@ const SCANNERS: readonly Scanner[] = [
     async prepare({ session }) {
       const packages = jvmPackages(await session.git.files());
       return (path, text) => jvmImports(path, text, packages);
+    },
+  },
+  {
+    files: /\.cs$/,
+    async prepare({ session }) {
+      const files = (await session.git.files()).filter((path) => path.endsWith(".cs"));
+      const sources = await Promise.all(
+        files.map(async (path) => ({
+          path,
+          text: (await readText(join(session.root, path))) ?? "",
+        })),
+      );
+      const namespaces = csharpNamespaces(sources);
+      return (path, text) => csharpImports(path, text, namespaces);
     },
   },
   {

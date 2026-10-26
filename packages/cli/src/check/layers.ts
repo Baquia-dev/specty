@@ -35,6 +35,7 @@ const LANGUAGES: ReadonlySet<string> = new Set([
   "java",
   "kotlin",
   "php",
+  "csharp",
 ]);
 
 export function layersProvider(config: ResolvedConfig): Provider {
