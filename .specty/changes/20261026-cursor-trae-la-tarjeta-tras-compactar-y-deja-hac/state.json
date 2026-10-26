@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
+  "baseCommit": "313659d8ba065d7500b36bf800c831fe87dc9785",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:efb232363bf3bd4be1b226c1fc37f31cd381a3857de41d72440756dd3854eae6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ff6170d63ec1858685847f2abc579e9db4d4c9163ab3f09269a4f564849f0e5f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:29fcc17f95fada63e4cdf0c297322c78135048f1785cdefaaf7d3bc3991fda25",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:051cd9d7f13f98c74c0349b96549fd299a45b8e8f8e398973cbfa015382ae6d3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8cda1a063a35805fea494951579c2d9fa41ad9a934baf8a4df136c96d1eb8681",
+    "at": "2026-10-26T17:51:50.813Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
