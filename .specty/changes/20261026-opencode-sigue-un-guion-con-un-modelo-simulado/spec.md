@@ -44,6 +44,7 @@ Claude Code tiene una prueba que lo ejecuta de verdad contra un modelo simulado 
 - modificar packages/core/src/capabilities.ts — la prueba de extremo a extremo de OpenCode pasa a «sí»
 - modificar packages/core/test/capabilities.test.ts — la fila de OpenCode cambia (AC6)
 - modificar docs/ARCHITECTURE.md — la prueba de OpenCode junto a la de Claude Code (§16) y la tabla
+- modificar knip.json — `opencode` es una herramienta externa y opcional de la prueba, no una dependencia
 
 ## Tareas
 
@@ -56,6 +57,11 @@ Claude Code tiene una prueba que lo ejecuta de verdad contra un modelo simulado 
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
+- [ ] T3: knip no toma OpenCode por una dependencia que falta
+  - files: knip.json
+  - ac: AC6
+  - verify: pnpm knip
+  - type: fix
 
 ## Riesgos
 

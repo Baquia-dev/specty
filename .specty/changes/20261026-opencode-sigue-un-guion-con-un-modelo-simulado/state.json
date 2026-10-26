@@ -2,23 +2,24 @@
   "schema": 1,
   "id": "20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
   "baseCommit": "1a02854178ca122f70ebd9fc6790a62e7b7e63a5",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:414b18c54d1b100a67cb04023a94ec05f24a83c08e180fcbff745e6f33cd9b8f",
-    "at": "2026-10-26T18:45:19.873Z",
+    "revision": 2,
+    "hash": "sha256:b7349e75a7ad25325ad252ddbdf178ee7d55a552ad1eba98fbef3588ebd80663",
+    "at": "2026-10-26T19:01:23.404Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
-    "level": "S",
-    "score": 4,
+    "level": "M",
+    "score": 7,
     "adjust": 0,
     "reasons": [
-      "4 archivos"
+      "5 archivos",
+      "2 módulos"
     ]
   },
   "items": {
@@ -47,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e87f6e596d79023577c7151caf5dac7d85865604",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:59:26.941Z",
       "doneAt": "2026-10-26T19:00:01.024Z",
-      "summary": "La prueba de extremo a extremo de OpenCode pasa a «sí» en la tabla, y ARCHITECTURE §16 cuenta cómo corre (opencode run y opencode serve, aislado, con fake-chat.ts)."
+      "summary": "La prueba de extremo a extremo de OpenCode pasa a «sí» en la tabla, y ARCHITECTURE §16 cuenta cómo corre (opencode run y opencode serve, aislado, con fake-chat.ts).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -62,7 +63,7 @@
   "maxIds": {
     "A": 3,
     "AC": 6,
-    "T": 2,
+    "T": 3,
     "R": 2
   }
 }
