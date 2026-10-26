@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { translator } from "./cards/text";
+import { type Translate, translator } from "./cards/text";
 import { fold, LANGS, type Lang } from "./i18n";
 
 /** Facts that `specty init` detects and writes in the project block of AGENTS.md. */
@@ -18,6 +18,11 @@ export interface ProjectFacts {
  */
 export function flowBlock(lang: Lang, command: string): string {
   const t = translator(lang);
+  return [...flowLines(t, command), "", ...ruleLines(t, command)].join("\n");
+}
+
+/** Specty's flow: where to start, where to work, how to finish a task and what is the person's. */
+function flowLines(t: Translate, command: string): string[] {
   return [
     t("## Flujo de trabajo (Specty)", "## Workflow (Specty)"),
     t(
@@ -48,7 +53,12 @@ export function flowBlock(lang: Lang, command: string): string {
       "- Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.",
       "- If the `specty` command does not exist, use `npx -y @baquia-dev/specty <command>`. Never use `npx specty`: it is another package.",
     ),
-    "",
+  ];
+}
+
+/** The five rules no tool can verify, and the one that has the agent run `specty check`. */
+function ruleLines(t: Translate, command: string): string[] {
+  return [
     t("## Reglas (Specty)", "## Rules (Specty)"),
     t(
       `- Antes de reportar una tarea como terminada, ejecuta \`${command} check --changed --spec\` y corrige todos los fallos. No reportes con fallos pendientes.`,
@@ -70,7 +80,7 @@ export function flowBlock(lang: Lang, command: string): string {
       "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
       "- Brief final report: what changed, what was verified and what is pending.",
     ),
-  ].join("\n");
+  ];
 }
 
 export function projectBlock(facts: ProjectFacts, lang: Lang): string {

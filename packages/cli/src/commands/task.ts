@@ -1,17 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type ChangedFile,
   evaluateTaskScope,
   headerOf,
   isGoverned,
+  type LongFile,
   longFileCard,
   NOTE_MAX,
   nextCard,
   type Output,
   outOfScopeCard,
   parseSpec,
+  type ResolvedConfig,
   scopeRulesFrom,
   specHash,
   type Task,
+  type TaskDoneRefusal,
   taskDoneCard,
   taskDoneRefusalCard,
   verifyFailedCard,
@@ -24,7 +28,7 @@ import { riskFindings } from "../flow/risk";
 import { completeTask, type TaskNotes, verifyTask } from "../flow/task-done";
 import { changeView, taskVerification } from "../flow/views";
 import type { Session } from "../session";
-import { readSpec } from "../store/changes";
+import { readSpec, type StoredChange } from "../store/changes";
 import { taskChecks } from "./check";
 import { activateNextTask } from "./next";
 
@@ -48,31 +52,8 @@ export async function taskDone(
   if (state.tasks[id]?.status !== "active") {
     return taskDoneRefusalCard({ reason: "not-active", task: id }, header, cards);
   }
-  const emptyFinding = findings.some((finding) => finding.trim().length === 0);
-  // Every next task card repeats them: one or two sentences each, refused before verifying.
-  const longSummary = summary.trim().length > NOTE_MAX ? summary.trim().length : undefined;
-  const longFinding = findings.map((finding) => finding.trim().length).find((n) => n > NOTE_MAX);
-  if (longSummary !== undefined) {
-    return taskDoneRefusalCard(
-      { reason: "too-long", note: "summary", length: longSummary },
-      header,
-      cards,
-    );
-  }
-  if (longFinding !== undefined) {
-    return taskDoneRefusalCard(
-      { reason: "too-long", note: "finding", length: longFinding },
-      header,
-      cards,
-    );
-  }
-  if (summary.trim().length === 0 || emptyFinding) {
-    return taskDoneRefusalCard(
-      { reason: "empty", note: emptyFinding ? "finding" : "summary", task: id },
-      header,
-      cards,
-    );
-  }
+  const refusal = notesRefusal(id, summary, findings);
+  if (refusal !== undefined) return taskDoneRefusalCard(refusal, header, cards);
   const spec = parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const task = spec.sections.tasks?.items.find((item) => item.id === id);
   if (
@@ -82,49 +63,91 @@ export async function taskDone(
   ) {
     return nextCard({ change: await changeView(session, active), dirty: [] }, cards);
   }
-  const pending = state.pending.scopeRequests.find((request) => request.task === id);
-  if (pending !== undefined) {
-    return taskDoneRefusalCard(
-      { reason: "scope-pending", task: id, request: pending.id },
-      header,
-      cards,
-    );
-  }
-  const stored = state.tasks[id];
-  const changed = await session.git.changedSince(stored?.baseCommit);
-  const governed = changed.filter(
-    (file) =>
-      !file.path.startsWith(".specty/") &&
-      (isGoverned(file.path, session.config) ||
-        (file.from !== undefined && isGoverned(file.from, session.config))),
-  );
-  const scope = evaluateTaskScope({
-    changed: governed,
-    taskFiles: task.files,
-    extras: stored?.scopeExtra ?? [],
-    rules: scopeRulesFrom(session.config),
-  });
-  if (!scope.ok) return outOfScopeCard(header, id, scope.outOfScope, cards);
-  const long = await longFilesOf(session, stored?.baseCommit, changed);
-  const tooLong = long.filter((file) => file.severity === "error");
-  if (tooLong.length > 0) return longFileCard(header, id, tooLong, cards);
-  const failedCheck = await checkFails(session, state.id, task, header);
-  if (failedCheck !== undefined) return failedCheck;
+  const diff = await checkedDiff(session, active, task, header);
+  if ("card" in diff) return diff.card;
 
   const verified = await verifyTask(session, active, task);
   if (!verified.ok)
     return verifyFailedCard(header, id, verified.command, verified.code, verified.tail, cards);
 
   const notes: TaskNotes = {
-    removedAssertions: await assertionLosses(session, stored?.baseCommit, changed),
-    risks: await riskFindings(session, stored?.baseCommit, changed),
+    removedAssertions: await assertionLosses(session, diff.base, diff.changed),
+    risks: await riskFindings(session, diff.base, diff.changed),
     findings: findings.map((finding) => finding.trim()),
-    longFiles: long,
+    longFiles: diff.long,
   };
   const done = await completeTask(session, verified.change, spec, task, summary.trim(), notes);
   const following =
     done.state.phase === "implementing" ? await activateNextTask(session, done) : done;
   return taskDoneCard(await changeView(session, following), id, done.commit, cards);
+}
+
+/** Every next task card repeats the notes: one or two sentences each, refused before verifying. */
+function notesRefusal(
+  task: string,
+  summary: string,
+  findings: readonly string[],
+): TaskDoneRefusal | undefined {
+  const length = summary.trim().length;
+  if (length > NOTE_MAX) return { reason: "too-long", note: "summary", length };
+  const longFinding = findings.map((finding) => finding.trim().length).find((n) => n > NOTE_MAX);
+  if (longFinding !== undefined)
+    return { reason: "too-long", note: "finding", length: longFinding };
+  const emptyFinding = findings.some((finding) => finding.trim().length === 0);
+  if (length > 0 && !emptyFinding) return undefined;
+  return { reason: "empty", note: emptyFinding ? "finding" : "summary", task };
+}
+
+/** The task's diff from its base commit, once `checkedDiff` lets it through; or the card that stops it. */
+type CheckedDiff =
+  | {
+      readonly base: string | undefined;
+      readonly changed: readonly ChangedFile[];
+      readonly long: readonly LongFile[];
+    }
+  | { readonly card: Output };
+
+/**
+ * What `task done` checks on the task's diff before its verification: no scope request of the
+ * task still pending, every file within its scope, none past the maximum length and
+ * `specty check` passing.
+ */
+async function checkedDiff(
+  session: Session,
+  change: StoredChange,
+  task: Task,
+  header: string,
+): Promise<CheckedDiff> {
+  const { cards, config } = session;
+  const { state } = change;
+  const pending = state.pending.scopeRequests.find((request) => request.task === task.id);
+  if (pending !== undefined) {
+    const refusal = { reason: "scope-pending", task: task.id, request: pending.id } as const;
+    return { card: taskDoneRefusalCard(refusal, header, cards) };
+  }
+  const stored = state.tasks[task.id];
+  const base = stored?.baseCommit;
+  const changed = await session.git.changedSince(base);
+  const scope = evaluateTaskScope({
+    changed: changed.filter((file) => isGovernedChange(file, config)),
+    taskFiles: task.files,
+    extras: stored?.scopeExtra ?? [],
+    rules: scopeRulesFrom(config),
+  });
+  if (!scope.ok) return { card: outOfScopeCard(header, task.id, scope.outOfScope, cards) };
+  const long = await longFilesOf(session, base, changed);
+  const tooLong = long.filter((file) => file.severity === "error");
+  if (tooLong.length > 0) return { card: longFileCard(header, task.id, tooLong, cards) };
+  const failed = await checkFails(session, state.id, task, header);
+  return failed === undefined ? { base, changed, long } : { card: failed };
+}
+
+/** A change outside `.specty/` to a governed path, or renamed from one. */
+function isGovernedChange(file: ChangedFile, config: ResolvedConfig): boolean {
+  if (file.path.startsWith(".specty/")) return false;
+  return (
+    isGoverned(file.path, config) || (file.from !== undefined && isGoverned(file.from, config))
+  );
 }
 
 /**

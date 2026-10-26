@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
   "revision": 2,
@@ -72,6 +72,15 @@
       "scopeExtra": [
         "packages/core/test/cards.test.ts"
       ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8345e5b2cf0513c10c003754503b3bda8af8c239",
+      "startedAt": "2026-10-26T11:50:24.536Z",
+      "doneAt": "2026-10-26T11:54:39.386Z",
+      "summary": "taskDone pasa sus rechazos de notas a notesRefusal y lo que comprueba del diff antes de verificar a checkedDiff; flowBlock une flowLines y ruleLines. specty check --changed --spec pasa entero (secrets sin escáner)."
     }
   },
   "pending": {

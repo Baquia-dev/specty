@@ -65,7 +65,7 @@ follows:
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC4
   - verify: pnpm check
-- [ ] T4: Dividir `taskDone` y `flowBlock` por responsabilidad
+- [x] T4: Dividir `taskDone` y `flowBlock` por responsabilidad
   - files: packages/cli/src/commands/task.ts, packages/core/src/agents-md.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty build && node packages/cli/dist/specty.mjs check --changed --spec
