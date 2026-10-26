@@ -4,3 +4,4 @@
 {"ts":"2026-10-26T01:19:55.997Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"afeed7e3befe94ac935e95ff82826c238c6e6f6c"}}
 {"ts":"2026-10-26T01:23:18.248Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":159773,"tree":"sha256:619404e9782e78579b963c8279bb950edad7f16c4c430aad03bc0def85162516"}}
 {"ts":"2026-10-26T01:23:18.374Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"build.mjs copia LICENSE y NOTICE de la raíz junto al bundle en cada build, así el paquete npm (que solo publica dist) los lleva, como pide Apache-2.0; bundle.test.ts lo comprueba. ARCHITECTURE §16."}}
+{"ts":"2026-10-26T01:23:29.652Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

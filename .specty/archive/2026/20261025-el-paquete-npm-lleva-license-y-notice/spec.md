@@ -20,3 +20,9 @@ Specty es Apache-2.0, y la licencia pide entregar con cada distribución una cop
   - files: packages/cli/build.mjs, packages/cli/test/bundle.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: fix
+
+## Cierre
+
+### Resumen
+
+build.mjs copia LICENSE y NOTICE de la raíz junto al bundle en cada build, así el paquete npm (que solo publica dist) los lleva, como pide Apache-2.0; bundle.test.ts lo comprueba. ARCHITECTURE §16.
