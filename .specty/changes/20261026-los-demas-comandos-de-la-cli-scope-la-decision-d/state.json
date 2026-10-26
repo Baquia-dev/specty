@@ -53,12 +53,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9fb0a8d752b6f20d385a70457bc9f477b841a2b8",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:08:58.574Z",
       "doneAt": "2026-10-26T20:17:01.633Z",
-      "summary": "init.ts: init prepara (raíz, config, idioma, detección) y deja a install (installTarget, writeProjectFiles, hooks) y a committed el commit y la tarjeta, con el mismo orden de efectos. Los tests de la CLI pasan."
+      "summary": "init.ts: init prepara (raíz, config, idioma, detección) y deja a install (installTarget, writeProjectFiles, hooks) y a committed el commit y la tarjeta, con el mismo orden de efectos. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "095f8bda66c8cfda32012470db0f418d63c5b5f6",
+      "startedAt": "2026-10-26T20:17:02.135Z",
+      "doneAt": "2026-10-26T20:20:35.054Z",
+      "summary": "integrate.ts: integrate hace las guardas, mergeProblem prueba en orden markersLeft, outsideChanges y failedVerification, y commitMerge hace el commit y lo registra. Mismas tarjetas; los tests de la CLI pasan."
     }
   },
   "pending": {

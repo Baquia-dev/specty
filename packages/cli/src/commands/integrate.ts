@@ -42,65 +42,112 @@ const MARKER = /^(?:<{7}|>{7})(?:\s|$)|^={7}$/m;
  * together and the verification passes (ARCHITECTURE §9).
  */
 export async function integrate(session: Session): Promise<Output> {
-  const { cards, git, config, lang } = session;
+  const { cards, git, lang } = session;
   const change = await resolveActive(session);
   const integration = change?.state.integration;
   if (change === undefined || integration === undefined || !isIntegrating(change.state)) {
     return noIncorporationCard(headerOf(change?.state.id, change?.state.phase), cards);
   }
   const { state } = change;
-  const { target } = integration;
   const again = state.phase === "acceptance" ? "accept" : "close";
-  const header = headerOf(state.id, state.phase, mergingLabel(target, lang));
-  const refuse = (reason: string, details: OutputBlock, next = integrateRetry(cards)): Output => ({
-    status: "blocked",
-    header,
-    blocks: [...section(undefined, [reason]), details],
-    next,
-  });
   if ((await git.run(["rev-parse", "-q", "--verify", "MERGE_HEAD"])).code !== 0) {
     return blocked(state, [mergeAbortedLine(lang)], undefined, runAgainNext(again, cards));
   }
+  const problem = await mergeProblem(session, integration);
+  if (problem !== undefined) {
+    return {
+      status: "blocked",
+      header: headerOf(state.id, state.phase, mergingLabel(integration.target, lang)),
+      blocks: [...section(undefined, [problem.reason]), problem.details],
+      next: problem.next ?? integrateRetry(cards),
+    };
+  }
+  return commitMerge(session, change, integration, again);
+}
+
+type Integration = NonNullable<StoredChange["state"]["integration"]>;
+
+/** Why the merge cannot be committed yet, what to show, and what to do if not to retry. */
+interface MergeProblem {
+  readonly reason: string;
+  readonly details: OutputBlock;
+  readonly next?: string;
+}
+
+/** Conflict markers left, changes outside the files the merge brings together, or a failing verification. */
+async function mergeProblem(
+  session: Session,
+  integration: Integration,
+): Promise<MergeProblem | undefined> {
+  return (
+    (await markersLeft(session, integration)) ??
+    (await outsideChanges(session, integration)) ??
+    (await failedVerification(session))
+  );
+}
+
+async function markersLeft(
+  session: Session,
+  integration: Integration,
+): Promise<MergeProblem | undefined> {
   const marked: string[] = [];
   for (const path of integration.conflicts) {
     if (MARKER.test((await readText(join(session.root, path))) ?? "")) marked.push(path);
   }
-  if (marked.length > 0) {
-    return refuse(markersLeftLine(lang), {
-      title: incorporationTitle("markers", lang),
-      lines: marked,
-    });
-  }
+  if (marked.length === 0) return undefined;
+  return {
+    reason: markersLeftLine(session.lang),
+    details: { title: incorporationTitle("markers", session.lang), lines: marked },
+  };
+}
+
+async function outsideChanges(
+  session: Session,
+  integration: Integration,
+): Promise<MergeProblem | undefined> {
+  const { config, lang } = session;
   const rules = scopeRulesFrom(config);
-  const outside = pathsOf(await git.changedSince("HEAD")).filter(
+  const outside = pathsOf(await session.git.changedSince("HEAD")).filter(
     (path) =>
       !path.startsWith(".specty/") &&
       isGoverned(path, config) &&
       classifyPath(path, { taskFiles: integration.paths, extras: [], rules }) === "out-of-scope",
   );
-  if (outside.length > 0) {
-    return refuse(
-      outsideIncorporationLine(target, lang),
-      { title: incorporationTitle("outside", lang), lines: outside },
-      undoOutsideNext(cards),
-    );
-  }
+  if (outside.length === 0) return undefined;
+  return {
+    reason: outsideIncorporationLine(integration.target, lang),
+    details: { title: incorporationTitle("outside", lang), lines: outside },
+    next: undoOutsideNext(session.cards),
+  };
+}
+
+async function failedVerification(session: Session): Promise<MergeProblem | undefined> {
+  const { config, lang } = session;
   const command = config.verify.full ?? config.verify.default;
-  if (command !== undefined) {
-    session.environment.io.err(verifyingNote(command, lang));
-    const result = await execute(command, [], {
-      cwd: session.root,
-      shell: true,
-      env: session.environment.env,
-      timeoutMs: config.verify.timeoutSec * 1000,
-    });
-    if (result.code !== 0) {
-      return refuse(commandFailsLine(command, lang), {
-        title: incorporationTitle("verification", lang),
-        lines: tail(result, 15),
-      });
-    }
-  }
+  if (command === undefined) return undefined;
+  session.environment.io.err(verifyingNote(command, lang));
+  const result = await execute(command, [], {
+    cwd: session.root,
+    shell: true,
+    env: session.environment.env,
+    timeoutMs: config.verify.timeoutSec * 1000,
+  });
+  if (result.code === 0) return undefined;
+  return {
+    reason: commandFailsLine(command, lang),
+    details: { title: incorporationTitle("verification", lang), lines: tail(result, 15) },
+  };
+}
+
+/** The merge resolved: its commit, recorded in the change's state. */
+async function commitMerge(
+  session: Session,
+  change: StoredChange,
+  integration: Integration,
+  again: "accept" | "close",
+): Promise<Output> {
+  const { state } = change;
+  const { target } = integration;
   const commit = await commitWithReceipt(session, {
     subject: `Merge branch '${target}' into ${state.branch ?? state.id}`,
     trailers: changeTrailers(session, state.id),
@@ -118,8 +165,8 @@ export async function integrate(session: Session): Promise<Output> {
   return {
     status: "ok",
     header: headerOf(state.id, state.phase),
-    blocks: section(undefined, [integrationResolvedLine(target, commit, lang)]),
-    next: runAgainNext(again, cards),
+    blocks: section(undefined, [integrationResolvedLine(target, commit, session.lang)]),
+    next: runAgainNext(again, session.cards),
   };
 }
 
