@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261025-init-ts-instala-los-hooks-desde-su-propio-modulo",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261025-init-ts-instala-los-hooks-desde-su-propio-modulo",
+  "baseCommit": "d64c42502db5fde87fe0440591cf2908951eb885",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eb32847264cb6fa379c3181790133c38dcc4105e33602c220ecad8bc632a3fb0",
+    "at": "2026-10-26T01:41:48.812Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
