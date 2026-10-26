@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
+  citedPaths,
   hasBlock,
   headerOf,
   type Output,
@@ -199,13 +200,36 @@ export async function doctor(session: Session): Promise<Output> {
       "verify.default is missing in .specty/config.yaml.",
     ),
   );
+  const node = process.versions.node;
+  check(
+    supportsNode(node),
+    t(`Node ${node}.`, `Node ${node}.`),
+    t(
+      `Node ${node}: Specty necesita Node 22 o posterior.`,
+      `Node ${node}: Specty needs Node 22 or later.`,
+    ),
+  );
   // Warnings never turn doctor red: what only the person can tell the agent and is still
-  // unwritten, and delegated mode, which is the person's choice rather than a fault.
+  // unwritten, the paths AGENTS.md sends it to that are gone (built ones aside), and delegated
+  // mode, which is the person's choice rather than a fault.
   const unfilled = agents === undefined ? [] : unfilledSections(agents);
   const listed = (open: string, close: string, and: string) =>
     unfilled.map((title) => `${open}${title}${close}`).join(` ${and} `);
+  const cited = agents === undefined ? [] : citedPaths(agents);
+  const there = await Promise.all(cited.map((path) => exists(join(root, path))));
+  const missing = cited.filter((_, index) => there[index] !== true);
+  const built = new Set(await git.ignored(missing));
+  const gone = missing.filter((path) => !built.has(path)).map((path) => `\`${path}\``);
   const delegation = await readDelegation(git);
   const warnings = [
+    ...(gone.length === 0
+      ? []
+      : [
+          t(
+            `AGENTS.md cita rutas que no existen: ${gone.join(", ")}. Corrígelas o quítalas: el agente lee AGENTS.md en cada sesión.`,
+            `AGENTS.md cites paths that do not exist: ${gone.join(", ")}. Fix or remove them: the agent reads AGENTS.md every session.`,
+          ),
+        ]),
     ...(unfilled.length === 0
       ? []
       : [
@@ -242,4 +266,9 @@ export async function doctor(session: Session): Promise<Output> {
             "fix the problems and run `specty doctor` again.",
           ),
   };
+}
+
+/** Whether Specty runs on Node `version`: from 22 on, as its `engines` say. */
+export function supportsNode(version: string): boolean {
+  return Number(version.split(".")[0]) >= 22;
 }

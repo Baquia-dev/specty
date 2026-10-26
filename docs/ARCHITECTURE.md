@@ -433,14 +433,17 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 
 **`specty doctor`** comprueba:
 
-- que el comando `specty` resuelve a `@baquia-dev/specty`;
-- que los comandos citados existen y funcionan;
-- que las rutas citadas existen;
-- el presupuesto de AGENTS.md;
+- que `.specty/config.yaml` es válido, que AGENTS.md tiene el bloque de flujo y que hay `verify.default`;
+- que los hooks pueden ejecutar Specty;
+- la versión de Node: 22 o posterior, como dice `engines`; una anterior es un problema;
+- que las rutas que AGENTS.md cita como código existen. Es un aviso, no un problema, y cuenta las de dos tramos o más (`docs/formats.md`); no los fragmentos (`theme/`), los comandos, los globs, los marcadores, los paquetes ni las rutas que git ignora, como las de un build (`citedPaths` en `core/src/agents-md.ts`);
 - que el «Mapa» y las «Convenciones» de AGENTS.md no sigan vacíos. Es un aviso, no un problema, y solo mira esas secciones, en español o en inglés, si AGENTS.md las tiene. Una sección está vacía si, hasta el siguiente encabezado de su nivel o de uno superior, solo tiene comentarios, como la pista de `init`, y espacios (`unfilledSections` en `core/src/agents-md.ts`);
-- los punteros y hooks instalados;
+- los guards y hooks de cada herramienta, y los hooks de git;
+- que los formateadores del proyecto (Biome, Prettier) excluyen los archivos que escribe Specty;
 - que la guía de otra herramienta no pida al agente lo que el guard bloquea: los bloques de flujo de gentle-ai (`agent-routing`, el de su ODD, que pide commits propios por unidad de trabajo, y `orchestrator`, `sdd-orchestrator` y `sdd`, los de su antiguo SDD) en AGENTS.md o CLAUDE.md del repositorio, o en los archivos globales donde gentle-ai los escribe (`~/.claude/CLAUDE.md`, el `AGENTS.md` de Codex y el de OpenCode, y `~/.cursor/rules/gentle-ai.mdc`);
-- la versión de Node y la configuración de CI.
+- el modo delegado, si está activo: un aviso, porque es una decisión de la persona.
+
+No ejecuta los comandos que cita AGENTS.md, ni mide su tamaño, ni revisa la configuración de CI.
 
 ## 15. Servidor local y UI
 

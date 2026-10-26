@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
+import { supportsNode } from "../src/commands/doctor";
 import { commandsFor, setupCommand, verifyCommands } from "../src/detect/project";
 import type { Stack } from "../src/detect/stack";
 import { upsertShellBlock } from "../src/install/git-hooks";
@@ -39,6 +40,30 @@ describe("specty init", () => {
     expect(await read(root, ".git/info/exclude")).toContain("/.claude/settings.local.json");
     expect(await read(root, ".git/hooks/pre-commit")).toContain("hook pre-commit");
     expect((await cli(root, ["doctor"])).code).toBe(0);
+  });
+
+  it("has doctor warn of the paths AGENTS.md cites that are gone, and check Node", async () => {
+    const root = await tempRepo({
+      "package.json": '{"name":"x","scripts":{"test":"true"}}\n',
+      "src/app.ts": "1\n",
+      ".gitignore": "dist/\n",
+    });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    const notes =
+      "\n## Notas\n\n- `src/app.ts`, `docs/viejo.md`, `dist/app.js`, `theme/` y `pnpm exec vitest run test/a.test.ts`.\n";
+    await writeFiles(root, { "AGENTS.md": `${await read(root, "AGENTS.md")}${notes}` });
+    const doctor = await cli(root, ["doctor"]);
+    // A warning: AGENTS.md is the person's (AC1). Built files and fragments are fine (AC2).
+    expect(doctor.code).toBe(0);
+    expect(doctor.out).toContain("AGENTS.md cita rutas que no existen: `docs/viejo.md`.");
+    expect(doctor.out).not.toContain("`dist/app.js`");
+    expect(doctor.out).toContain(`Node ${process.versions.node}.`);
+    // From Node 22 on (AC3).
+    expect([supportsNode("22.0.0"), supportsNode("24.1.0"), supportsNode("20.11.1")]).toEqual([
+      true,
+      true,
+      false,
+    ]);
   });
 
   it("has doctor warn, without failing, of the Map and Conventions still empty (AC1, AC2)", async () => {
