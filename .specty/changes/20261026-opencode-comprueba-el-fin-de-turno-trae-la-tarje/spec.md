@@ -68,7 +68,7 @@ En la tabla de capacidades, las tres pasan a «sí» en OpenCode.
 
 ## Tareas
 
-- [ ] T1: El fin de turno de cada agente planifica su propio hook
+- [x] T1: El fin de turno de cada agente planifica su propio hook
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/cursor.ts, packages/cli/src/check/install-agents.ts, packages/cli/test/check-agent-stop.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/check-install.test.ts test/agents.test.ts
