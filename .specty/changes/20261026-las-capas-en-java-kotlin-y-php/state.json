@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1d532c66c03779950305580fbaabb2bbc8b82805",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:27:35.878Z",
       "doneAt": "2026-10-26T15:31:10.666Z",
-      "summary": "Escáneres del core para Java y Kotlin (índice de carpetas de paquetes, import static y comodines) y PHP (use de nivel superior, grupos, function y const, por PSR-4; los traits de una clase no cuentan)."
+      "summary": "Escáneres del core para Java y Kotlin (índice de carpetas de paquetes, import static y comodines) y PHP (use de nivel superior, grupos, function y const, por PSR-4; los traits de una clase no cuentan).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dbce511d1026a3190c4a3cd0d603c15137e7805f",
+      "startedAt": "2026-10-26T15:31:10.961Z",
+      "doneAt": "2026-10-26T15:34:17.112Z",
+      "summary": "layers usa los escáneres de Java y Kotlin (índice de paquetes de los archivos del repo) y de PHP (PSR-4 de autoload y autoload-dev de composer.json)"
     }
   },
   "pending": {

@@ -3,13 +3,16 @@ import { join } from "node:path";
 import {
   dartImports,
   goImports,
+  jvmImports,
+  jvmPackages,
+  phpImports,
   pythonImports,
   pythonProject,
   type ResolvedImport,
   rustImports,
 } from "@baquia-dev/specty-core";
 import { parse as parseYaml } from "yaml";
-import { isRecord, readText } from "../io/files";
+import { isRecord, parseJson, readText } from "../io/files";
 import type { CheckContext } from "./provider";
 
 /**
@@ -50,6 +53,20 @@ const SCANNERS: readonly Scanner[] = [
     },
   },
   { files: /\.rs$/, prepare: async () => rustImports },
+  {
+    files: /\.(?:java|kt)$/,
+    async prepare({ session }) {
+      const packages = jvmPackages(await session.git.files());
+      return (path, text) => jvmImports(path, text, packages);
+    },
+  },
+  {
+    files: /\.php$/,
+    async prepare({ session }) {
+      const psr4 = await composerPsr4(session.root);
+      return (path, text) => phpImports(path, text, psr4);
+    },
+  },
 ];
 
 /** The imports of each of `files` that a scanner reads, by the language of each. */
@@ -77,6 +94,23 @@ export async function scannedImports(
 async function pubspecName(root: string): Promise<string | undefined> {
   const pubspec: unknown = parseYaml((await readText(join(root, "pubspec.yaml"))) ?? "");
   return isRecord(pubspec) && typeof pubspec.name === "string" ? pubspec.name : undefined;
+}
+
+/** The PSR-4 prefixes of `composer.json`, its `autoload` and its `autoload-dev`; one folder each. */
+async function composerPsr4(root: string): Promise<Record<string, string>> {
+  const composer = parseJson((await readText(join(root, "composer.json"))) ?? "");
+  if (!isRecord(composer)) return {};
+  const sections = [composer.autoload, composer["autoload-dev"]].flatMap((section) =>
+    isRecord(section) && isRecord(section["psr-4"]) ? [section["psr-4"]] : [],
+  );
+  return Object.fromEntries(
+    sections.flatMap((psr4) =>
+      Object.entries(psr4).flatMap(([prefix, folders]) => {
+        const folder = Array.isArray(folders) ? folders[0] : folders;
+        return typeof folder === "string" ? [[prefix, folder]] : [];
+      }),
+    ),
+  );
 }
 
 /** The module `go.mod` declares at the root of the repository. */

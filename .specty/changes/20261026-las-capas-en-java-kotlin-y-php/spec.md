@@ -48,7 +48,7 @@ La verificación `layers` vigila también los imports de Java, Kotlin y PHP, con
   - files: packages/core/src/checks/imports-jvm.ts, packages/core/src/checks/imports-php.ts, packages/core/src/index.ts, packages/core/test/checks/imports.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/imports.test.ts
-- [ ] T2: La verificación con sus escáneres
+- [x] T2: La verificación con sus escáneres
   - files: packages/cli/src/check/layer-scanners.ts, packages/cli/src/check/layers.ts, packages/cli/test/check-layers-scanned.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-layers-scanned.test.ts test/check-layers.test.ts test/check-layers-dart.test.ts

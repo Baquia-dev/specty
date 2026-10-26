@@ -32,6 +32,9 @@ const LANGUAGES: ReadonlySet<string> = new Set([
   "python",
   "go",
   "rust",
+  "java",
+  "kotlin",
+  "php",
 ]);
 
 export function layersProvider(config: ResolvedConfig): Provider {

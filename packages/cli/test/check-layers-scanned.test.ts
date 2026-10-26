@@ -99,4 +99,64 @@ describe("layers in Python, Go and Rust (AC1, AC2, AC3)", () => {
       ].join("\n"),
     );
   });
+
+  it("reads Java's imports against the folders of the project's packages (S5b)", async () => {
+    const domain = "src/main/java/com/acme/domain";
+    const root = await tempRepo({
+      "build.gradle": "plugins {\n  id 'java'\n}\n",
+      [`${domain}/User.java`]: "package com.acme.domain;\n\npublic class User {}\n",
+      "src/main/java/com/acme/infra/Db.java": "package com.acme.infra;\n\npublic class Db {}\n",
+      ".specty/config.yaml": `${CONFIG()}${layers(`${domain}/**`, "src/main/java/com/acme/infra/**", "org.springframework.*")}`,
+    });
+    await writeFiles(root, {
+      [`${domain}/User.java`]: [
+        "package com.acme.domain;",
+        "",
+        "import java.util.List;",
+        "import com.acme.infra.Db;",
+        "import org.springframework.stereotype.Service;",
+        "",
+        "public class User {}",
+        "",
+      ].join("\n"),
+    });
+    expect(await layersBlock(root)).toBe(
+      [
+        "FALLA layers",
+        `  ${domain}/User.java:4 \`domain\` no puede importar \`infra\` (src/main/java/com/acme/infra/Db.java)`,
+        `  ${domain}/User.java:5 \`domain\` no puede importar el paquete \`org.springframework.stereotype.Service\``,
+      ].join("\n"),
+    );
+  });
+
+  it("reads PHP's use statements by the PSR-4 of composer.json (S5b)", async () => {
+    const root = await tempRepo({
+      "composer.json": JSON.stringify({ autoload: { "psr-4": { "App\\": "src/" } } }),
+      "src/Domain/User.php": "<?php\nnamespace App\\Domain;\n\nfinal class User {}\n",
+      "src/Infra/Db.php": "<?php\nnamespace App\\Infra;\n\nfinal class Db {}\n",
+      ".specty/config.yaml": `${CONFIG()}${layers("src/Domain/**", "src/Infra/**", "Illuminate/**")}`,
+    });
+    await writeFiles(root, {
+      "src/Domain/User.php": [
+        "<?php",
+        "namespace App\\Domain;",
+        "",
+        "use App\\Infra\\Db;",
+        "use Illuminate\\Support\\Facades\\DB;",
+        "",
+        "final class User",
+        "{",
+        "    use HasName;",
+        "}",
+        "",
+      ].join("\n"),
+    });
+    expect(await layersBlock(root)).toBe(
+      [
+        "FALLA layers",
+        "  src/Domain/User.php:4 `domain` no puede importar `infra` (src/Infra/Db.php)",
+        "  src/Domain/User.php:5 `domain` no puede importar el paquete `Illuminate/Support/Facades/DB`",
+      ].join("\n"),
+    );
+  });
 });
