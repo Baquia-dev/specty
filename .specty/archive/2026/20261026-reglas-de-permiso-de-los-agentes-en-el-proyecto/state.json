@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
   "baseCommit": "78bb5a3d546ee6aa0542b6d7fa58bd7fb20422b9",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:23d48cb01903812124bf1642606d323dea926df3d6473e657f33df220bd43d97",
@@ -73,12 +73,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "19c0a4d25fc6685452c9ff5ee36ceb92232d2e3a",
+      "attempts": 1,
       "startedAt": "2026-10-26T12:01:31.125Z",
       "doneAt": "2026-10-26T12:05:24.564Z",
-      "summary": "uninstall borra la regla de Codex de Specty y deja las de la persona (los permisos de Claude Code ya los quitaba, salen de la misma lista); ARCHITECTURE explica los permisos de cada herramienta. pnpm check en verde."
+      "summary": "uninstall borra la regla de Codex de Specty y deja las de la persona (los permisos de Claude Code ya los quitaba, salen de la misma lista); ARCHITECTURE explica los permisos de cada herramienta. pnpm check en verde.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -91,5 +91,6 @@
     "T": 4,
     "R": 4,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T12:14:12.568Z"
 }

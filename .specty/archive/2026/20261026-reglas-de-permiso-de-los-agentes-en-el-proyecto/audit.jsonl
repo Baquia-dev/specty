@@ -15,3 +15,7 @@
 {"ts":"2026-10-26T12:01:31.126Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"19c0a4d25fc6685452c9ff5ee36ceb92232d2e3a"}}
 {"ts":"2026-10-26T12:05:24.301Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/uninstall.test.ts","exit":0,"ms":17807,"tree":"sha256:daad8812e56c12d3232c4acdd097f6a8b6625d2bef6595904c03b79f3faaac1d"}}
 {"ts":"2026-10-26T12:05:24.568Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"uninstall borra la regla de Codex de Specty y deja las de la persona (los permisos de Claude Code ya los quitaba, salen de la misma lista); ARCHITECTURE explica los permisos de cada herramienta. pnpm check en verde."}}
+{"ts":"2026-10-26T12:13:28.977Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":75888,"tree":"sha256:daad8812e56c12d3232c4acdd097f6a8b6625d2bef6595904c03b79f3faaac1d"}}
+{"ts":"2026-10-26T12:13:31.461Z","actor":"human","event":"change.accepted","data":{"revision":1}}
+{"ts":"2026-10-26T12:14:12.569Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:3e510c30d981f86ac14dc82618b7d854c7d03ee5ea73b0ceba69daab7d04b0bc","size":"L","warnings":1}}
+{"ts":"2026-10-26T12:16:14.824Z","actor":"human","event":"change.closed","data":{}}

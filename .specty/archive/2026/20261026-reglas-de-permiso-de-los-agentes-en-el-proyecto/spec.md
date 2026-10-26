@@ -81,3 +81,28 @@ kind: standard
 - R2: La regla de Codex ejecuta fuera del sandbox cualquier comando de Specty, también `specty ui` o `check --install` — son comandos de Specty, que ya deciden quién los ejecuta; los que escriben en el proyecto ya pasan por el guard.
 - R3: Si la persona no confía en el proyecto en Codex, la regla no se carga y cada commit de Specty vuelve a pedir permiso — la salida de `init` ya pide confiar en el proyecto.
 - R4: A1 y A2 se verificaron en la documentación de Claude Code y en el código de Codex, no con las herramientas en marcha — se le pide al usuario que lo pruebe tras volver a ejecutar `specty init`.
+
+## Cierre
+
+### Resumen
+
+`specty init` escribe en el proyecto las reglas que dejan a Specty decidir los comandos del agente. En Claude Code, el archivo de su guard permite `Bash(specty approve *)`, `accept`, `close`, `cancel` y `reject`, sacados de `HUMAN_COMMANDS`, así que el clasificador del modo auto ya no los veta; `delegate` y `uninstall` no reciben regla. En Codex, `.codex/rules/specty.rules` lleva `prefix_rule(pattern = ["specty"], decision = "allow")`, así que los comandos de Specty no piden aprobación y se ejecutan fuera del sandbox, que deja `.git` en solo lectura; la regla se versiona aunque los hooks sean locales. El guard la protege, `doctor` avisa si faltan los permisos o la regla, y `uninstall` los quita conservando lo de la persona. Sin modo delegado, el guard sigue bloqueando al agente los comandos de la persona.
+
+### Desviaciones
+
+- `packages/core/src/cards/index.ts` entró en el alcance de T1 (S1): las líneas nuevas de `init` se exportan desde su lista explícita.
+- El test «lets the agent use worktrees without a prompt» de `setup.test.ts` espera ahora también las cinco reglas de los comandos de la persona, como pide AC1.
+- `uninstall` no necesitó cambios para Claude Code: `withoutClaudePermissions` quita la misma lista que `withClaudePermissions` añade.
+
+### Decisiones
+
+- Las reglas nombran `specty`, el comando que el agente escribe; la forma `npx -y @baquia-dev/specty …` queda fuera, porque Claude Code no quita `npx` antes de comparar las reglas.
+- En Codex la regla cubre todos los comandos de Specty, no solo los de la persona: `task done`, `new` o `integrate` también escriben en git o fuera de la carpeta del cambio.
+- OpenCode no recibe regla: no tiene sandbox ni clasificador, y sus permisos son los de la persona en `opencode.json`.
+- `doctor` busca los permisos de Claude Code en sus dos archivos de ajustes, y la regla de Codex por su `pattern`.
+
+### Pendientes
+
+- Para que este repositorio tenga las reglas, la persona vuelve a ejecutar `specty init` en la carpeta principal: el guard protege `.claude/settings.json`. Hasta entonces, el clasificador de Claude Code seguirá vetando `accept` y `close` al agente, como en este cambio.
+- Comprobar con Claude Code y con Codex en marcha que las reglas dejan avanzar al agente en modo delegado.
+- El hueco de Codex con `write_stdin`: el guard ve `exec_command` como `Bash`, pero no lo que el modelo escribe después en una pseudo-terminal abierta con `tty: true`, así que podría contestar el prompt de un comando de la persona. Propuesto como siguiente cambio.
