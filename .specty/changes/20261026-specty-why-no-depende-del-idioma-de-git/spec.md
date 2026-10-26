@@ -32,7 +32,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: La línea que falta, sin leer mensajes de git
+- [x] T1: La línea que falta, sin leer mensajes de git
   - files: packages/cli/src/commands/why.ts, packages/cli/test/why.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/why.test.ts
