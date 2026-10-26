@@ -45,7 +45,7 @@ Con todas sus reglas encendidas, knip marca en los componentes, los datos y el r
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck
   - type: refactor
-- [ ] T2: Las vistas y los registros exportan solo lo que se importa
+- [x] T2: Las vistas y los registros exportan solo lo que se importa
   - files: packages/ui/src/data/sample-run.ts, packages/ui/src/data/views.ts, packages/ui/src/data/records.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck

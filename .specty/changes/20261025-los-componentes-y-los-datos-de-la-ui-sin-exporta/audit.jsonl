@@ -4,3 +4,6 @@
 {"ts":"2026-10-26T01:57:01.217Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"308519fb5cfa1ac13c150a407bedee309e63371d"}}
 {"ts":"2026-10-26T01:57:16.052Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-ui typecheck","exit":0,"ms":4693,"tree":"sha256:28a605214ca1b929c8ee35a6e9d9813011c1e421aa7d12d30806536d617d4677"}}
 {"ts":"2026-10-26T01:57:16.131Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Dejan de exportarse PHASE_ICONS, ripple, DIALOG_TITLE_ID, LONG_FILE, PREVIEW_LINES y Toast, que solo usa su componente."}}
+{"ts":"2026-10-26T01:57:16.411Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"2112beac88df4738dcdc7c311f6c59659606ce7a"}}
+{"ts":"2026-10-26T01:57:29.129Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-ui typecheck","exit":0,"ms":4013,"tree":"sha256:0e6ec4d0b1d459e10b5405d730c791025d1189eac6ad3ca6595d214e474fe406"}}
+{"ts":"2026-10-26T01:57:29.198Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Dejan de exportarse activeTask, changesRequestedOf, highImpactPending y ScopeRequestView, que solo usa su archivo de datos."}}
