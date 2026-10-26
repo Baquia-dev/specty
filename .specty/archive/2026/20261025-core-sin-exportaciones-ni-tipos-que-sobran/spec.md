@@ -46,3 +46,21 @@ Con todas sus reglas encendidas, knip marca en `packages/core` diez exportacione
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+En core dejan de exportarse ocho símbolos que solo usaba su archivo, y diagnostics.ts ya no reexporta `MessageCatalog` ni `MessageParams`. Con todas sus reglas encendidas, knip ya no marca nada de `packages/core`.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La verificación de T1 fueron los tipos y los tests de core, y la de T2 `pnpm check`, porque quitar un `export` solo puede romper a quien lo importa.
+
+### Pendientes
+
+- Los cortes C2, C3 y C4 limpian la CLI y la UI; C5 enciende las reglas.
