@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
+  "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9cb0d1720f12366f3e778efd7733d75c210802f03898005e577b552408b4d201",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4ea173b6cae80cf8dad8b6854ecb442602e95e298bb156ffa706fdccb86b729a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:4f6b148515b2eac343ace3f221a48ccc081210e2326508c5ccec3f0c6b8bacb0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2b33dd38a7dd1d9af6ad0e32b7a73e1d4909c7edf28a9b0d02a8e55ab484c002",
+    "at": "2026-10-26T18:23:42.201Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
