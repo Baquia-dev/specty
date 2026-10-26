@@ -54,3 +54,21 @@ Pasan a un `cards/server.ts` nuevo y a `cards/hooks.ts`, junto al mensaje del co
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos del servidor de `specty ui` viven en un `cards/server.ts` nuevo: la verificación completa desde la UI, aprobar desde la UI y la página de la UI sin construir. Los de los hooks están en `cards/hooks.ts`: el hook de las worktrees y la línea del pre-commit. El servidor usa la tarjeta común de «No hay un cambio activo». Los cinco archivos de la CLI ya no llaman al traductor y la salida es la misma: los tests de la CLI, también el del bundle de los hooks, pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Los textos de `specty check` (`packages/cli/src/check/`) no entran en la serie: los está cambiando otra sesión, que tiene un plan de épica para `check`, y moverlos ahora chocaría con su trabajo.
+
+### Pendientes
+
+- `pnpm sources` debe impedir que la CLI vuelva a escribir textos propios, salvo en `check/`: el siguiente cambio.

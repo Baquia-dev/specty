@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T09:20:33.246Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"7ebca68e82b3ae9f6a7f38962571faef6e98ca0a"}}
 {"ts":"2026-10-26T09:24:07.783Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":88798,"tree":"sha256:47d18b5c4fcd6c75055d02e447120348442294a052c55ee6647bcc886c5587a4"}}
 {"ts":"2026-10-26T09:24:07.915Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"server/runs.ts, server/actions.ts, server/http.ts, enforce/worktree-hooks.ts y enforce/hook.ts piden sus textos a core (cards/server.ts, cards/hooks.ts y noActiveChangeCard) y ya no llaman al traductor; los tests pasan sin cambios."}}
+{"ts":"2026-10-26T09:24:23.243Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T09:24:29.425Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:d6a18e5e39d92f2d1b89d46ff4e5f1f9a516b689c1c462df20dc326045aa9fd3","size":"L","warnings":1}}
+{"ts":"2026-10-26T09:24:34.849Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
