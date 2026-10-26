@@ -153,6 +153,8 @@ async function newInWorktree(
       removed,
       // With Specty's worktree hooks, entering by name skips the prompt a folder outside `.claude` gets.
       byName: await entersByName(session.root),
+      // Any other agent carries on in a session of its own, which the card says how to open.
+      agent: session.tool,
     },
     cards,
   );

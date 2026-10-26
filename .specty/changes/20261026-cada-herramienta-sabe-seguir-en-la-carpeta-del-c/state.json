@@ -6,6 +6,13 @@
   "branch": "specty/20261026-cada-herramienta-sabe-seguir-en-la-carpeta-del-c",
   "baseCommit": "c03deef36ff8ceddb1fbddcd315f5c03ef239e1e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:65411fcd211ff5d0991313a559f0d1aafe9807171c3550b993ae565065fb2880",
+    "at": "2026-10-26T23:18:35.575Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "93c91d05b11d808d15ec6c45b31e097fe408f229",
+      "startedAt": "2026-10-26T23:18:36.363Z",
+      "doneAt": "2026-10-26T23:22:21.212Z",
+      "summary": "Si Specty reconoce por su entorno la herramienta que ejecutó new (Codex, OpenCode, Cursor, Gemini CLI, Antigravity CLI), el SIGUIENTE pide que la persona la abra en la carpeta del cambio con su comando; Claude Code y los demás siguen igual. testEnv quita la marca de Antigravity CLI."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -35,12 +52,5 @@
     "AC": 2,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:65411fcd211ff5d0991313a559f0d1aafe9807171c3550b993ae565065fb2880",
-    "at": "2026-10-26T23:18:35.575Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

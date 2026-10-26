@@ -46,7 +46,7 @@ Además, como ya no queda ninguna capacidad «pendiente», ese estado sale del t
 
 ## Tareas
 
-- [ ] T1: El SIGUIENTE de `new` dice cómo abrir cada herramienta en la carpeta del cambio
+- [x] T1: El SIGUIENTE de `new` dice cómo abrir cada herramienta en la carpeta del cambio
   - files: packages/core/src/cards/new.ts, packages/cli/src/commands/new.ts, packages/cli/test/support.ts, packages/core/test/cards/new.test.ts, packages/cli/test/worktrees.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { AGENT_NAMES, type AgentTool } from "../agents";
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
 import { CHANGE_KINDS } from "../spec/model";
@@ -157,7 +158,41 @@ export interface WorktreeCreated {
   readonly removed: readonly string[];
   /** With Specty's worktree hooks, Claude Code enters the folder by name, without a prompt. */
   readonly byName: boolean;
+  /** The agent that ran `new`, known by its environment: how it carries on in the folder. */
+  readonly agent?: AgentTool | undefined;
 }
+
+/**
+ * How the person opens each tool in a folder, for the agents that cannot move there in the middle
+ * of a session: all but Claude Code (`EnterWorktree`), and those Specty does not recognize.
+ */
+const OPEN_IN: Partial<Readonly<Record<AgentTool, (folder: string, t: Translate) => string>>> = {
+  codex: (folder, t) =>
+    t(
+      `Codex en esa carpeta (\`codex -C "${folder}"\`)`,
+      `Codex in that folder (\`codex -C "${folder}"\`)`,
+    ),
+  opencode: (folder, t) =>
+    t(
+      `OpenCode en esa carpeta (\`opencode "${folder}"\`)`,
+      `OpenCode in that folder (\`opencode "${folder}"\`)`,
+    ),
+  cursor: (folder, t) =>
+    t(
+      `una ventana de Cursor en esa carpeta (\`cursor "${folder}"\`)`,
+      `a Cursor window in that folder (\`cursor "${folder}"\`)`,
+    ),
+  "gemini-cli": (folder, t) =>
+    t(
+      `Gemini CLI en esa carpeta (\`cd "${folder}" && gemini\`)`,
+      `Gemini CLI in that folder (\`cd "${folder}" && gemini\`)`,
+    ),
+  antigravity: (folder, t) =>
+    t(
+      `Antigravity CLI en esa carpeta (\`cd "${folder}" && agy\`)`,
+      `Antigravity CLI in that folder (\`cd "${folder}" && agy\`)`,
+    ),
+};
 
 /**
  * `specty new` in a worktree: the change and where it lives, and how the session moves there,
@@ -211,21 +246,38 @@ function worktreeCreatedBlocks(created: WorktreeCreated, t: Translate): Output["
 /** Moving the session to the new folder, after preparing it again if that failed. */
 function worktreeCreatedNext(created: WorktreeCreated, ctx: CardContext): string {
   const t = translator(ctx.lang);
-  const { id, folder, prepared } = created;
-  const byName = created.byName
-    ? t(
-        `en Claude Code, \`EnterWorktree\` con \`name: "${id}"\`; `,
-        `in Claude Code, \`EnterWorktree\` with \`name: "${id}"\`; `,
-      )
-    : "";
-  const carryOn = t(
-    `cambia allí la carpeta de trabajo de tu sesión (${byName}o abre allí un agente) y ejecuta \`${ctx.command} next\`; esta carpeta sigue con su propio trabajo.`,
-    `switch your session's working folder there (${byName}or open an agent there) and run \`${ctx.command} next\`; this folder carries on with its own work.`,
-  );
+  const { folder, prepared } = created;
+  const carryOn = carryOnText(created, ctx, t);
   return prepared?.ok === false
     ? t(
         `en ${folder}, ejecuta \`${prepared.command}\`; después ${carryOn}`,
         `in ${folder}, run \`${prepared.command}\`; then ${carryOn}`,
       )
     : t(`continúa en ${folder}: ${carryOn}`, `carry on in ${folder}: ${carryOn}`);
+}
+
+/**
+ * How the session carries on in the change's folder: an agent that cannot move there asks the
+ * person to open its tool in it; Claude Code enters it, and an unknown agent hears both ways.
+ */
+function carryOnText(created: WorktreeCreated, ctx: CardContext, t: Translate): string {
+  const { id, folder, agent } = created;
+  const open = agent === undefined ? undefined : OPEN_IN[agent]?.(folder, t);
+  if (agent !== undefined && open !== undefined) {
+    const name = AGENT_NAMES[agent];
+    return t(
+      `${name} no cambia de carpeta en mitad de la sesión, así que pídele a la persona que abra ${open} y termina tu turno; allí, \`${ctx.command} next\` sigue con el cambio. Esta carpeta sigue con su propio trabajo.`,
+      `${name} cannot switch folders mid-session, so ask the person to open ${open} and end your turn; there, \`${ctx.command} next\` carries on with the change. This folder carries on with its own work.`,
+    );
+  }
+  const byName = created.byName
+    ? t(
+        `en Claude Code, \`EnterWorktree\` con \`name: "${id}"\`; `,
+        `in Claude Code, \`EnterWorktree\` with \`name: "${id}"\`; `,
+      )
+    : "";
+  return t(
+    `cambia allí la carpeta de trabajo de tu sesión (${byName}o abre allí un agente) y ejecuta \`${ctx.command} next\`; esta carpeta sigue con su propio trabajo.`,
+    `switch your session's working folder there (${byName}or open an agent there) and run \`${ctx.command} next\`; this folder carries on with its own work.`,
+  );
 }
