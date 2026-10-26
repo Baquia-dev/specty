@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
+  "baseCommit": "bf528064e4af69d1c46a08bb2c4339e967a52d84",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "1 ruta sensible"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:65789af7970ecb84480a56a47c64ec736ff830aa94d75b47c2cd34ff63fd5af0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6be884d1d6b81afe2a95df371dfdde707179b5b2169905ae8299c8480dcb7fc5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9205a3c062eec0a30b12cd9ad9477ce5d3f8fbb04cf580346a1dfd9e3d56191d",
+    "at": "2026-10-26T13:41:06.197Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
