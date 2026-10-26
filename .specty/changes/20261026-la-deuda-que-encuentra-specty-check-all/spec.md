@@ -40,7 +40,7 @@ follows:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/output.test.ts
   - type: refactor
-- [ ] T2: Los `${…}` escapados sin supresión
+- [x] T2: Los `${…}` escapados sin supresión
   - files: packages/ui/src/data/sample-diffs.ts, packages/cli/test/commands-named.test.ts
   - ac: AC1, AC3
   - verify: pnpm check
