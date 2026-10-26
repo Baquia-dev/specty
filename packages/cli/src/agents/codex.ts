@@ -13,18 +13,30 @@ import {
   codexHooksFile,
   excludeLocally,
   hasGuard,
+  missingEvents,
   removeFromJson,
   withHooks,
 } from "../install/agents";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
 import { COMMAND } from "../session";
-import { type AgentAdapter, blockingStop, doctorLines, exitFailed, exitReply } from "./adapter";
+import {
+  type AgentAdapter,
+  blockingStop,
+  doctorLines,
+  exitFailed,
+  exitReply,
+  textCard,
+} from "./adapter";
 
-/** The events the guard listens to; their `matcher` is a regular expression on `tool_name`. */
+/**
+ * The events the guard listens to. Each `matcher` is a regular expression on `tool_name` or, for
+ * `SessionStart`, on how the session started.
+ */
 const EVENTS: Readonly<Record<string, string>> = {
   PreToolUse: "^(Bash|apply_patch)$",
   PostToolUse: "^Bash$",
+  SessionStart: "^compact$",
 };
 /**
  * Codex's execpolicy rule for Specty's commands: an `allow` skips the approval and runs the
@@ -45,14 +57,21 @@ const RULE = [
 
 /**
  * Codex (ARCHITECTURE §10): `PreToolUse` with `Bash` and `apply_patch`, `PostToolUse` with `Bash`,
- * which also comes after a command that failed, and `Stop`. It reads them as Claude Code does.
+ * which also comes after a command that failed, `SessionStart` after a compaction, whose output it
+ * adds to the context, and `Stop`. It reads them as Claude Code does.
  */
 export const codex: AgentAdapter = {
   tool: "codex",
-  kind: (event) => (event.hook_event_name === "PostToolUse" ? "after" : "before"),
+  kind: (event) => {
+    if (event.hook_event_name === "PostToolUse") return "after";
+    // The matcher lets only a compaction through; the guard checks it again all the same.
+    if (event.hook_event_name === "SessionStart" && event.source === "compact") return "compact";
+    return "before";
+  },
   action,
   reply: exitReply,
   failed: exitFailed,
+  card: textCard,
   stop: blockingStop([CODEX_HOOKS]),
   // Codex 0.131 or later reads a linked worktree's project hooks from the main checkout, so the
   // person trusts them once per repository.
@@ -79,10 +98,12 @@ export const codex: AgentAdapter = {
     const rules = join(root, CODEX_RULES);
     if (isRule(await files.read(rules))) await files.remove(rules);
   },
-  doctor: async (root) =>
-    doctorLines([
+  doctor: async (root) => {
+    const hooks = await readText(join(root, CODEX_HOOKS));
+    const guard = hasGuard(hooks, "codex");
+    const lines = doctorLines([
       [
-        hasGuard(await readText(join(root, CODEX_HOOKS)), "codex"),
+        guard,
         { code: "codex-guard", file: CODEX_HOOKS },
         { code: "no-codex-guard", file: CODEX_HOOKS },
       ],
@@ -91,7 +112,14 @@ export const codex: AgentAdapter = {
         { code: "codex-rules", file: CODEX_RULES },
         { code: "no-codex-rules", file: CODEX_RULES },
       ],
-    ]),
+    ]);
+    // An install from before the card after a compaction has the guard without `SessionStart`.
+    if (!guard || missingEvents([hooks], ["SessionStart"], "codex").length === 0) return lines;
+    return {
+      ...lines,
+      problems: [...lines.problems, { code: "codex-compact", file: CODEX_HOOKS }],
+    };
+  },
   userFile: codexHooksFile,
 };
 

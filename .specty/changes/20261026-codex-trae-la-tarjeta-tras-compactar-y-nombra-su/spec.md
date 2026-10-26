@@ -55,7 +55,7 @@ Cuando Codex compacta la conversación, el agente pierde la tarjeta de la tarea,
 
 ## Tareas
 
-- [ ] T1: Codex trae la tarjeta tras compactar
+- [x] T1: Codex trae la tarjeta tras compactar
   - files: packages/cli/src/agents/codex.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/core/src/cards/doctor.ts, packages/cli/test/session-start.test.ts, packages/cli/test/codex.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-start.test.ts test/codex.test.ts test/agents.test.ts test/setup.test.ts

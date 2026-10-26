@@ -130,3 +130,8 @@ export function exitReply(verdict: Verdict): GuardReply {
 export function exitFailed(message: string): GuardReply {
   return { code: 1, stdout: "", stderr: message };
 }
+
+/** Claude Code's card after a compaction, which Codex shares: what stdout says goes to the context. */
+export function textCard(text: string): GuardReply {
+  return { code: 0, stdout: text, stderr: "" };
+}

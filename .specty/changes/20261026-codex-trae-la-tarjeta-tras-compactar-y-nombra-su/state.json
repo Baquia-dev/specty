@@ -6,6 +6,13 @@
   "branch": "specty/20261026-codex-trae-la-tarjeta-tras-compactar-y-nombra-su",
   "baseCommit": "2d9889e3ad35b97a70605a98a904833ffce17a66",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5781a36589e52d36f7f0f8f31677b978f3b6b523b3b48dbd7bc881a6df88ec57",
+    "at": "2026-10-26T17:25:06.199Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9f62816955bc0dfc7a71d7c331e9af964dc9328a",
+      "startedAt": "2026-10-26T17:25:06.590Z",
+      "doneAt": "2026-10-26T17:32:42.178Z",
+      "summary": "Codex trae la tarjeta tras compactar: init le instala SessionStart con ^compact$, el guard responde con lo que imprime specty next (textCard, compartida con Claude Code) solo con source compact, y doctor avisa con codex-compact. doctorLine pasa a una tabla de textos por código."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 5,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5781a36589e52d36f7f0f8f31677b978f3b6b523b3b48dbd7bc881a6df88ec57",
-    "at": "2026-10-26T17:25:06.199Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
