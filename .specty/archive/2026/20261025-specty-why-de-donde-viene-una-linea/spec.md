@@ -52,3 +52,22 @@ PRODUCT.md promete para la versión 1 la trazabilidad línea a línea, y ARCHITE
   - files: packages/cli/src/commands/why.ts, packages/cli/src/program.ts, packages/cli/test/why.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+`specty why <ruta>[:<línea>]` existe. Con una línea, `git blame` da su último commit, y sus trailers llevan al cambio con su título, la tarea con el suyo, los criterios que cubre con su texto y la revisión de la spec. Sin línea, da los cambios que tocaron el archivo, del más reciente al más antiguo, uno por cambio y como mucho 10. Un commit sin trailers no es de ningún cambio de Specty; una línea sin commit, una ruta sin historia o una línea que no existe se dicen. La tarjeta está en core (`cards/why.ts`) y el comando lee git con un solo `git log` por consulta.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El cambio se busca aquí, abierto en otra worktree y archivado en la carpeta principal, y cada uno una vez por consulta.
+- Un archivo lista una entrada por cambio, su commit más reciente; los commits fuera de Specty van cada uno por su cuenta.
+
+### Pendientes
+
+- `packages/cli/src/program.ts` quedó en 303 líneas de código (aviso a partir de 300). Propuesta de división por responsabilidad: registrar cada grupo de comandos en su módulo, como ya hace `enforcementCommands`: los del agente, los de la persona y los de instalación.

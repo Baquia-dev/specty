@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-specty-why-de-donde-viene-una-linea",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-specty-why-de-donde-viene-una-linea",
   "baseCommit": "91e8f0ea1bd32f1a00e30a7408fc47ed8564b20e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f33068594919b3fdcd9e4e9dab2a66cb02b8ad80219449843246cfb9378926de",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8be53dbec208633b8ca8599968384b9d849f031a",
+      "attempts": 1,
       "startedAt": "2026-10-26T00:37:59.612Z",
       "doneAt": "2026-10-26T00:41:58.370Z",
-      "summary": "specty why <ruta>[:<línea>] (commands/why.ts): con línea, blame y su commit con cambio, tarea, criterios y revisión de la spec por los trailers; sin línea, un cambio por entrada de git log (10 como máximo). Rechaza ruta sin historia y línea inexistente. ARCHITECTURE §6 y §13."
+      "summary": "specty why <ruta>[:<línea>] (commands/why.ts): con línea, blame y su commit con cambio, tarea, criterios y revisión de la spec por los trailers; sin línea, un cambio por entrada de git log (10 como máximo). Rechaza ruta sin historia y línea inexistente. ARCHITECTURE §6 y §13.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "A": 3,
     "AC": 5,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T00:42:31.145Z"
 }
