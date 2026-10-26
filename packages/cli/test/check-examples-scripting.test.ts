@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { type Dialect, describeExamples, indent, pascal, snake } from "./stack-dialect";
+import { type Dialect, describeExamples, indent, snake } from "./stack-dialect";
 import { repeat } from "./stack-examples";
 
 /**
  * A Python, a Ruby and a PHP repository (AC1, AC2, AC3). Their commands stand in for ruff, mypy
  * and pytest; RuboCop, Sorbet and RSpec, with no format of its own, which RuboCop checks as lint;
- * and PHP CS Fixer, PHP_CodeSniffer, PHPStan and PHPUnit. Neither pytest nor PHPUnit has a
- * focus marker, and PHPUnit skips with `markTestSkipped()`, a decision of the test that does not
- * count; Specty reads no layers in Ruby.
+ * and PHP CS Fixer, PHP_CodeSniffer, PHPStan and Pest. pytest has no focus marker, and Specty
+ * reads no layers in Ruby.
  */
 
 const IT = "it";
@@ -246,13 +245,13 @@ const PHP: Dialect = {
     },
     tests: {
       folder: "tests",
-      token: "assertSame(2, 1)",
+      token: "toBe(2)",
       output:
-        "1) Tests\\UserTest::testNamesTheUser\nFailed asserting that 1 is identical to 2.\n\n{abs}:{line}",
+        "  FAILED  Tests\\Domain\\UserTest > names the user\n  Failed asserting that 1 is identical to 2.\n\n  at {path}:{line}",
     },
   },
   layers: { domain: "src/Domain/**", forbidden: "Illuminate/**" },
-  markers: { focused: false, skipped: false },
+  markers: { focused: true, skipped: true },
   code: {
     comment: "//",
     cart: (discount) =>
@@ -308,22 +307,15 @@ const PHP: Dialect = {
         "}",
         "",
       ].join("\n"),
-    tests: (subject, cases) =>
+    tests: (_, cases) =>
       [
-        ...php("Tests"),
-        "use PHPUnit\\Framework\\TestCase;",
-        "",
-        `final class ${subject}Test extends TestCase`,
-        "{",
-        ...cases.flatMap((test, index) => [
-          ...(index > 0 ? [""] : []),
-          `    public function test${pascal(test.name)}(): void`,
-          "    {",
-          ...(test.skipped ? ["        $this->markTestSkipped('flaky');"] : []),
-          `        $this->assertSame(${test.fails ? 2 : 1}, 1);`,
-          "    }",
+        "<?php",
+        ...cases.flatMap((test) => [
+          "",
+          `test('${test.name}', function () {`,
+          `    expect(1)->toBe(${test.fails ? 2 : 1});`,
+          `})${test.focused ? `->${"only"}()` : test.skipped ? `->${"skip"}('flaky')` : ""};`,
         ]),
-        "}",
         "",
       ].join("\n"),
     leak: (token) => `${php("App").join("\n")}const GITHUB_TOKEN = '${token}';\n`,

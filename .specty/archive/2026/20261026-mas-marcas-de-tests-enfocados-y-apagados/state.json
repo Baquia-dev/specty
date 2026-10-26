@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "id": "20261026-mas-marcas-de-tests-enfocados-y-apagados",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-mas-marcas-de-tests-enfocados-y-apagados",
+  "baseCommit": "65910cbfc3042f0b4a04d63d59689914e97c98e8",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b9f9a2567f165fac7cd0f684cf2fca95b982d10d5039e36b5d391677d43023db",
+    "at": "2026-10-26T17:11:07.525Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a861330a6f015522bc0026f4807dace60569543a0f073608db8b9960c85b7fa6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8fa8499d150dd6d05668755264cb68890e918a613d924af854c70f0c5282b42e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8f3f180fbc789fdedcac2d56f0f5859a87de65a9b055891de021d39116eecdfd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ea279ffd63e3fd14738d3553cafe2e9d1151a3df",
+      "attempts": 1,
+      "startedAt": "2026-10-26T17:11:07.905Z",
+      "doneAt": "2026-10-26T17:12:31.914Z",
+      "summary": "markers.ts: Ginkgo F/P/X para It, Specify, Describe(Table(Subtree)), Context, When y Entry, y sus decoradores Focus y Pending; .disabled() de Swift Testing; ->only() y ->skip() de Pest, sin condición. Casos de cada marca y de las formas parecidas que no cuentan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c9e72c92865c51a0d23609390da0fe7e5b4b534c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T17:12:32.427Z",
+      "doneAt": "2026-10-26T17:14:42.333Z",
+      "summary": "El ejemplo de PHP usa Pest con only y skip, el de Swift usa Swift Testing con disabled, y Go cuenta su PIt. Al romperlo todo, skipped-tests falla en los tres y focused-tests en Go y PHP.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7752ece46d4de07e7d6e018b75cd2ec8b6ccdc68",
+      "attempts": 1,
+      "startedAt": "2026-10-26T17:14:42.819Z",
+      "doneAt": "2026-10-26T17:16:43.158Z",
+      "summary": "checks.md, checks.en.md y formats.md: las marcas nuevas de Ginkgo, Swift Testing y Pest, los saltos condicionales que no cuentan, los ejemplos de PHP con Pest y de Swift con Swift Testing, y lo que aun no comprueban.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T17:29:26.350Z"
+}

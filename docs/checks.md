@@ -231,7 +231,7 @@ Las líneas de código de cada archivo, sin blancos ni comentarios. Avisa por en
 
 **Stack:** cualquiera; solo mira los archivos de test.
 
-Un test enfocado deja sin correr a los demás: `describe.only`, `fit`, `fdescribe`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` de Ginkgo. Con `--changed` y `--staged`, solo en las líneas añadidas.
+Un test enfocado deja sin correr a los demás: `describe.only`, `fit`, `fdescribe`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` y el decorador `Focus` de Ginkgo, `->only()` de Pest. Con `--changed` y `--staged`, solo en las líneas añadidas.
 
 **Configuración:** no tiene.
 
@@ -241,7 +241,7 @@ Un test enfocado deja sin correr a los demás: `describe.only`, `fit`, `fdescrib
 
 **Stack:** cualquiera; solo mira los archivos de test.
 
-Un test apagado con una marca: `it.skip`, `xit`, `xdescribe`, `skip:` de Dart, `@pytest.mark.skip`, `#[ignore]`, `@Disabled`, `@Ignore`, `[Ignore]`… No cuentan los saltos condicionales que decide el propio test (`test.skipIf`, `@pytest.mark.skipif`, `t.Skip()`).
+Un test apagado con una marca: `it.skip`, `xit`, `xdescribe`, `skip:` de Dart, `@pytest.mark.skip`, `#[ignore]`, `@Disabled`, `@Ignore`, `[Ignore]`, `PIt`, `XIt` y el decorador `Pending` de Ginkgo, `.disabled()` de Swift Testing, `->skip()` de Pest… No cuentan los saltos condicionales que decide el propio test (`test.skipIf`, `@pytest.mark.skipif`, `t.Skip()`, `->skip($condición)`, `.enabled(if:)`).
 
 **Configuración:** no tiene.
 
@@ -367,13 +367,13 @@ Cada stack tiene un repositorio de ejemplo en `packages/cli/test/`, con un cambi
 | Flutter | `check-examples-flutter.test.ts` | `dart format`, `flutter analyze` y `flutter test` |
 | Python | `check-examples-scripting.test.ts` | ruff (formato y lint), mypy y pytest |
 | Ruby | `check-examples-scripting.test.ts` | RuboCop, Sorbet y RSpec |
-| PHP | `check-examples-scripting.test.ts` | PHP CS Fixer, PHP_CodeSniffer, PHPStan y PHPUnit |
+| PHP | `check-examples-scripting.test.ts` | PHP CS Fixer, PHP_CodeSniffer, PHPStan y Pest |
 | Java (Maven) | `check-examples-jvm.test.ts` | Spotless, Checkstyle y `mvn test` |
 | Kotlin (Gradle) | `check-examples-jvm.test.ts` | ktlint, detekt y `gradle test` |
 | C# (.NET) | `check-examples-jvm.test.ts` | `dotnet format`, `dotnet build` y `dotnet test` |
 | Go | `check-examples-native.test.ts` | golangci-lint y `go test` con Ginkgo |
 | Rust | `check-examples-native.test.ts` | `cargo fmt --check`, Clippy y `cargo test` |
-| Swift | `check-examples-native.test.ts` | swift-format, SwiftLint y `swift test` con XCTest |
+| Swift | `check-examples-native.test.ts` | swift-format, SwiftLint y `swift test` con Swift Testing |
 
 Los nueve últimos los arma `stack-dialect.ts` a partir de los datos de cada stack: sus rutas, su manifiesto, su sintaxis y sus herramientas.
 
@@ -382,8 +382,7 @@ Los comandos del proyecto son imitaciones de sus herramientas, porque las reales
 Lo que un ejemplo no comprueba:
 
 - `layers` sale «sin ejecutar» en TypeScript, porque los ejemplos no tienen dependency-cruiser, y no aparece en Ruby ni en Swift, cuyos imports Specty no lee.
-- `focused-tests` pasa también con el cambio que lo rompe todo en Python, PHP, Java, Kotlin, C#, Rust y Swift: sus frameworks de test no tienen una marca de foco.
-- `skipped-tests` pasa también ahí en PHP, Go y Swift: `markTestSkipped()` y `XCTSkip` son decisiones del propio test, y el `PIt` de Ginkgo no está en el catálogo.
+- `focused-tests` pasa también con el cambio que lo rompe todo en Python, Java, Kotlin, C#, Rust y Swift: sus frameworks de test no tienen una marca de foco.
 - `secrets` sale «sin ejecutar» si no hay un escáner en el PATH.
 
 ## Añadir un proveedor
@@ -413,7 +412,7 @@ Specty ya detecta esos stacks. Sin un proveedor propio funcionan:
 - el formato, el lint y los tipos que el proyecto configura: RuboCop, Standard, Sorbet y Steep en Ruby; PHPStan, Psalm, PHP_CodeSniffer, Pint y PHP CS Fixer en PHP; Spotless, Checkstyle, PMD, detekt y ktlint en Java y Kotlin; `dotnet build` en .NET;
 - `tests` con su comando: `mvn test` o `gradle test`, `composer test` o `php artisan test`, `bundle exec rspec` o `bin/rails test`, `dotnet test`;
 - `function-lines` y `complexity`;
-- `max-lines`, `focused-tests` y `skipped-tests`, que ya conocen `@Disabled`, `@Ignore`, `[Ignore]`, `Skip =` de xUnit y `focus: true` de RSpec;
+- `max-lines`, `focused-tests` y `skipped-tests`, que ya conocen `@Disabled`, `@Ignore`, `[Ignore]`, `Skip =` de xUnit, `focus: true` de RSpec y `->only()` y `->skip()` de Pest;
 - `todo`, `secrets` y `suppressions`, con las supresiones de cada lenguaje;
 - las del plan, con `dependencies` en sus manifiestos;
 - `generated`, con `checks.generators`.
