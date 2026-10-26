@@ -39,7 +39,7 @@ Nueve funciones de los comandos del flujo pasan de los límites de Specty: `acce
 
 ## Tareas
 
-- [ ] T1: La aceptación
+- [x] T1: La aceptación
   - files: packages/cli/src/commands/accept.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

@@ -6,6 +6,13 @@
   "branch": "specty/20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
   "baseCommit": "a3716f7143c6f2c56f5da78a29cbfb9e56a0e522",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39f78595c4eb5e17d31ff3cbb00a6058a5d9c76b5a6ee25622a257e8ab615fb1",
+    "at": "2026-10-26T19:24:39.228Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f360c6d13a037876802533d463f4386473c794cb",
+      "startedAt": "2026-10-26T19:24:39.587Z",
+      "doneAt": "2026-10-26T19:27:39.952Z",
+      "summary": "accept.ts: accept muestra el resumen y delega en verifyBeforeAccepting (verificationToRun decide si hace falta, runFullVerification la ejecuta y registra) y en accepted, que mueve la fase. Mismo orden de notas y preguntas; los tests de la CLI pasan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:39f78595c4eb5e17d31ff3cbb00a6058a5d9c76b5a6ee25622a257e8ab615fb1",
-    "at": "2026-10-26T19:24:39.228Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
