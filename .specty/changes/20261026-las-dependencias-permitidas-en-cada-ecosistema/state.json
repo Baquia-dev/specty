@@ -6,6 +6,13 @@
   "branch": "specty/20261026-las-dependencias-permitidas-en-cada-ecosistema",
   "baseCommit": "e3ba50557961221d5a10d3807a697c7dd3cf6824",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e695c5cce5b6a4d2fbd1247bca37f0e6a08aa2ce8309f3450cda8d19d19c9e53",
+    "at": "2026-10-26T14:54:55.827Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2b8fa84cb08034a42c55b544d7532e642b8aeefc",
+      "startedAt": "2026-10-26T14:54:56.229Z",
+      "doneAt": "2026-10-26T14:56:20.902Z",
+      "summary": "Cada lector de manifiestos da sus nombres con su línea; lectores por línea para requirements*.txt, go.mod sin indirectas, Gemfile, Package.swift y los scripts de Gradle; composer.json sin los paquetes de plataforma."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 3,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e695c5cce5b6a4d2fbd1247bca37f0e6a08aa2ce8309f3450cda8d19d19c9e53",
-    "at": "2026-10-26T14:54:55.827Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -2,11 +2,12 @@
 import { parse as parseYaml } from "yaml";
 import { lookup } from "../lookup";
 import { basename } from "../paths";
+import { gemfile, goMod, gradleBuild, packageSwift, requirements } from "./manifests-text";
 
 /**
  * Dependencies a manifest declares, by the catalog of manifests Specty knows. Each reader gives
- * the names of a manifest's sections; the line comes from the text, so a reader stays a few
- * lines. Adding an ecosystem means adding its reader here.
+ * the names a manifest declares, with the line of each when it knows it. Adding an ecosystem
+ * means adding its reader here.
  */
 
 /** A dependency a manifest gained, and the line that declares it. */
@@ -15,17 +16,14 @@ export interface AddedDependency {
   readonly line?: number;
 }
 
-interface Declared {
+/** A dependency a manifest declares, with its line when the reader knows it. */
+export interface Declared {
   readonly name: string;
-  readonly section: string;
+  readonly line?: number;
 }
 
-interface Reader {
-  /** The text of the key that opens a section and of the key of an entry: `"name"` or `name:`. */
-  readonly key: (name: string) => string;
-  /** What the manifest declares, or undefined when it cannot be read. */
-  readonly read: (text: string) => readonly Declared[] | undefined;
-}
+/** What a manifest declares, or undefined when it cannot be read. */
+type Reader = (text: string) => readonly Declared[] | undefined;
 
 const NPM_SECTIONS = [
   "dependencies",
@@ -34,18 +32,34 @@ const NPM_SECTIONS = [
   "optionalDependencies",
 ];
 const PUB_SECTIONS = ["dependencies", "dev_dependencies"];
+const COMPOSER_SECTIONS = ["require", "require-dev"];
+
+const jsonKey = (name: string) => `"${name}"`;
+const yamlKey = (name: string) => `${name}:`;
+
+/** PHP itself, its extensions and libraries, and Composer's API: no packages of the registry. */
+const isPlatform = (name: string) =>
+  name === "php" || /^(?:ext|lib)-/.test(name) || /^composer(?:-plugin|-runtime)?-api$/.test(name);
 
 const READERS: Readonly<Record<string, Reader>> = {
-  "package.json": {
-    key: (name) => `"${name}"`,
-    read: (text) => sectionsOf(parseJson(text), NPM_SECTIONS, () => true),
-  },
+  "package.json": (text) => keyed(text, parseJson(text), NPM_SECTIONS, jsonKey, () => true),
   // The SDK's own packages (`flutter: { sdk: flutter }`) come with Flutter, not from pub.
-  "pubspec.yaml": {
-    key: (name) => `${name}:`,
-    read: (text) => sectionsOf(parseYamlText(text), PUB_SECTIONS, (value) => !hasKey(value, "sdk")),
-  },
+  "pubspec.yaml": (text) =>
+    keyed(text, parseYamlText(text), PUB_SECTIONS, yamlKey, (_, value) => !hasKey(value, "sdk")),
+  "composer.json": (text) =>
+    keyed(text, parseJson(text), COMPOSER_SECTIONS, jsonKey, (name) => !isPlatform(name)),
+  "requirements.txt": requirements,
+  "go.mod": goMod,
+  Gemfile: gemfile,
+  "Package.swift": packageSwift,
+  "build.gradle": gradleBuild,
+  "build.gradle.kts": gradleBuild,
 };
+
+/** Manifests whose names vary: `requirements-dev.txt`. */
+const PATTERNS: readonly (readonly [RegExp, Reader])[] = [
+  [/^requirements[\w.-]*\.txt$/, requirements],
+];
 
 /** True when `path` is a manifest Specty knows how to read, in any folder. */
 export function readsDependencies(path: string): boolean {
@@ -64,22 +78,43 @@ export function addedDependencies(
 ): AddedDependency[] {
   const reader = readerOf(path);
   if (reader === undefined) return [];
-  const now = reader.read(after);
-  const then = before === undefined ? [] : reader.read(before);
+  const now = reader(after);
+  const then = before === undefined ? [] : reader(before);
   if (now === undefined || then === undefined) return [];
   const known = new Set(then.map((entry) => entry.name));
-  const lines = after.split(/\r?\n/);
   return now
     .filter((entry) => !known.has(entry.name))
     .filter((entry, index, all) => all.findIndex((other) => other.name === entry.name) === index)
-    .map((entry) => {
-      const line = lineOf(lines, reader.key(entry.section), reader.key(entry.name));
-      return line === undefined ? { name: entry.name } : { name: entry.name, line };
-    });
+    .map((entry) =>
+      entry.line === undefined ? { name: entry.name } : { name: entry.name, line: entry.line },
+    );
 }
 
 function readerOf(path: string): Reader | undefined {
-  return lookup(READERS, basename(path));
+  const name = basename(path);
+  return lookup(READERS, name) ?? PATTERNS.find(([pattern]) => pattern.test(name))?.[1];
+}
+
+/** The entries of a JSON or YAML manifest's `sections`, each on the line its key opens. */
+function keyed(
+  text: string,
+  manifest: unknown,
+  sections: readonly string[],
+  key: (name: string) => string,
+  counts: (name: string, value: unknown) => boolean,
+): Declared[] | undefined {
+  if (!isObject(manifest)) return undefined;
+  const lines = text.split(/\r?\n/);
+  return sections.flatMap((section) => {
+    const entries = manifest[section];
+    if (!isObject(entries)) return [];
+    return Object.entries(entries)
+      .filter(([name, value]) => counts(name, value))
+      .map(([name]) => {
+        const line = lineOf(lines, key(section), key(name));
+        return line === undefined ? { name } : { name, line };
+      });
+  });
 }
 
 /** The first line that opens `entry` after the one that opens `section`, from 1. */
@@ -90,21 +125,6 @@ function lineOf(lines: readonly string[], section: string, entry: string): numbe
     (line, index) => index > start && line.trimStart().startsWith(entry),
   );
   return found === -1 ? undefined : found + 1;
-}
-
-function sectionsOf(
-  manifest: unknown,
-  sections: readonly string[],
-  counts: (value: unknown) => boolean,
-): Declared[] | undefined {
-  if (!isObject(manifest)) return undefined;
-  return sections.flatMap((section) => {
-    const entries = manifest[section];
-    if (!isObject(entries)) return [];
-    return Object.entries(entries)
-      .filter(([, value]) => counts(value))
-      .map(([name]) => ({ name, section }));
-  });
 }
 
 function parseJson(text: string): unknown {

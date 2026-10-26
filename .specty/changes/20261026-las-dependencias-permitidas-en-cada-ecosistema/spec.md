@@ -51,7 +51,7 @@ La verificación `dependencies` de `specty check --spec` lee los manifiestos de 
 
 ## Tareas
 
-- [ ] T1: El catálogo con líneas y los lectores por línea
+- [x] T1: El catálogo con líneas y los lectores por línea
   - files: packages/core/src/checks/dependencies.ts, packages/core/src/checks/manifests-text.ts, packages/core/test/checks/manifests.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/manifests.test.ts test/checks/dependencies.test.ts
