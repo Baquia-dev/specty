@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "05846da91bc63422a1ca215ee0700d61a9b6a792",
+      "attempts": 1,
       "startedAt": "2026-10-26T23:33:41.460Z",
       "doneAt": "2026-10-26T23:39:19.988Z",
-      "summary": "install/files.ts: installFiles escribe, borra y registra los cambios, y deja a backupFolder las copias de los archivos que existían y su manifiesto, con las mismas escrituras y en el mismo orden. Los tests de la CLI pasan."
+      "summary": "install/files.ts: installFiles escribe, borra y registra los cambios, y deja a backupFolder las copias de los archivos que existían y su manifiesto, con las mismas escrituras y en el mismo orden. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7f277c0d1a40e28d37e99992db633d5c4b74c533",
+      "startedAt": "2026-10-26T23:39:20.311Z",
+      "doneAt": "2026-10-26T23:45:37.363Z",
+      "summary": "check/install.ts: install decide entre el plan y la instalación, y deja a applyEdits las ediciones, a installDependencies las devDependencies y a installed el commit y el informe, con las mismas preguntas en el mismo orden. Los tests pasan."
     }
   },
   "pending": {
