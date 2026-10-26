@@ -124,6 +124,7 @@ export {
   codexTrustWarning,
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
+  geminiPointerLine,
   geminiTrustWarning,
   gitHooksLine,
   gitHooksManualWarning,
@@ -242,6 +243,7 @@ export { effortLabel, effortLine, runNext, translator, verifyingNote } from "./t
 export { invalidPortCard, uiOpenedCard, uiStoppedCard } from "./ui";
 export {
   claudePointerStaysLine,
+  geminiPointerStaysLine,
   globalGuardStaysLine,
   historyStaysLine,
   nothingRemovedCard,

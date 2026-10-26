@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
-import { geminiTrustWarning, guardLine } from "@baquia-dev/specty-core";
+import { geminiPointerLine, geminiTrustWarning, guardLine } from "@baquia-dev/specty-core";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import {
   excludeLocally,
@@ -12,6 +12,7 @@ import {
   withHooks,
 } from "../install/agents";
 import { rewriteJson } from "../install/files";
+import { GEMINI_POINTER, writePointer } from "../install/project-files";
 import { isRecord, readText } from "../io/files";
 import { type AgentAdapter, exitFailed, exitReply } from "./adapter";
 
@@ -50,10 +51,15 @@ export const geminiCli: AgentAdapter = {
       files,
     );
     if (local) await excludeLocally(git, GEMINI_SETTINGS, files);
+    // Gemini CLI reads GEMINI.md, which imports AGENTS.md instead of copying it.
+    const pointed = await writePointer(root, "GEMINI.md", GEMINI_POINTER, files);
     return {
-      done: [guardLine("Gemini CLI", GEMINI_SETTINGS, local, lang)],
+      done: [
+        guardLine("Gemini CLI", GEMINI_SETTINGS, local, lang),
+        ...(pointed ? [geminiPointerLine(lang)] : []),
+      ],
       warnings: [geminiTrustWarning(lang)],
-      written: local ? [] : [GEMINI_SETTINGS],
+      written: [...(local ? [] : [GEMINI_SETTINGS]), "GEMINI.md"],
     };
   },
   remove: (root, files) =>

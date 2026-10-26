@@ -4,6 +4,7 @@ import {
   AGENT_NAMES,
   backupLine,
   claudePointerStaysLine,
+  geminiPointerStaysLine,
   globalGuardStaysLine,
   historyStaysLine,
   nothingRemovedCard,
@@ -24,7 +25,7 @@ import { isFinished, resolveActive } from "../flow/active";
 import { hasGuard } from "../install/agents";
 import { type FileChange, type InstallFiles, installFiles } from "../install/files";
 import { removeGitHooks } from "../install/git-hooks";
-import { removeAgentsBlocks } from "../install/project-files";
+import { GEMINI_POINTER, removeAgentsBlocks } from "../install/project-files";
 import { exists, readText } from "../io/files";
 import type { Session } from "../session";
 
@@ -102,6 +103,9 @@ async function remaining(session: Session): Promise<string[]> {
   }
   if (await exists(join(session.root, "CLAUDE.md"))) {
     stays.push(claudePointerStaysLine(session.lang));
+  }
+  if ((await readText(join(session.root, "GEMINI.md")))?.includes(GEMINI_POINTER) === true) {
+    stays.push(geminiPointerStaysLine(session.lang));
   }
   return stays;
 }

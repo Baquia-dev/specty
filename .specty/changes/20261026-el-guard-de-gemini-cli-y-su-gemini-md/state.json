@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c4922ea8f03da5279af6f29e694da838b4486b6e",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:37:41.389Z",
       "doneAt": "2026-10-26T20:41:47.780Z",
-      "summary": "Gemini CLI tiene su guard: agents/gemini-cli.ts instala BeforeTool y AfterTool en .gemini/settings.json, bloquea con salida 2 y añade el aviso tras un comando como additionalContext; doctor y uninstall lo cubren. El test de init sin guard pasa a Copilot."
+      "summary": "Gemini CLI tiene su guard: agents/gemini-cli.ts instala BeforeTool y AfterTool en .gemini/settings.json, bloquea con salida 2 y añade el aviso tras un comando como additionalContext; doctor y uninstall lo cubren. El test de init sin guard pasa a Copilot.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "67d955924e5189ca44fae170a074a8a024f87f41",
+      "startedAt": "2026-10-26T20:41:48.079Z",
+      "doneAt": "2026-10-26T20:43:54.455Z",
+      "summary": "init escribe GEMINI.md con @./AGENTS.md delante de lo que tuviera (writePointer generaliza el de CLAUDE.md), sin repetirlo, y uninstall lo deja y dice que sigue importando AGENTS.md."
     }
   },
   "pending": {

@@ -126,4 +126,19 @@ describe("installing the guard in Gemini CLI", () => {
     await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
     expect(JSON.parse(await read(root, SETTINGS))).toEqual(mine);
   });
+
+  it("writes a GEMINI.md that imports AGENTS.md, keeps what it had, and uninstall leaves it (AC5)", async () => {
+    const root = await tempRepo({ ...PACKAGE, "GEMINI.md": "Reglas mías.\n" });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    expect(init.out).toContain("GEMINI.md importa AGENTS.md.");
+    const pointed = "@./AGENTS.md\n\nReglas mías.\n";
+    expect(await read(root, "GEMINI.md")).toBe(pointed);
+    expect(git(root, "status", "--porcelain")).toBe("");
+    const again = await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    expect(again.out).not.toContain("GEMINI.md importa AGENTS.md.");
+    expect(await read(root, "GEMINI.md")).toBe(pointed);
+    const removed = await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(removed.out).toContain("GEMINI.md sigue importando AGENTS.md.");
+    expect(await read(root, "GEMINI.md")).toBe(pointed);
+  });
 });

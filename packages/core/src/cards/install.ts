@@ -9,6 +9,10 @@ export function claudePointerLine(lang: Lang): string {
   return translator(lang)("CLAUDE.md importa AGENTS.md.", "CLAUDE.md imports AGENTS.md.");
 }
 
+export function geminiPointerLine(lang: Lang): string {
+  return translator(lang)("GEMINI.md importa AGENTS.md.", "GEMINI.md imports AGENTS.md.");
+}
+
 /** The guard of an agent tool whose hooks live in the repository: `local` when not committed. */
 export function guardLine(tool: string, file: string, local: boolean, lang: Lang): string {
   const where = `${file}${local ? " (local)" : ""}`;
