@@ -33,6 +33,7 @@ export * from "./cards";
 export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
+export { csharpImports, csharpNamespaces } from "./checks/imports-csharp";
 export { goImports } from "./checks/imports-go";
 export { jvmImports, jvmPackages } from "./checks/imports-jvm";
 export { phpImports } from "./checks/imports-php";

@@ -43,7 +43,7 @@ La verificación `layers` vigila también los `using` de C#, con un escáner pro
 
 ## Tareas
 
-- [ ] T1: El escáner de C# en el core
+- [x] T1: El escáner de C# en el core
   - files: packages/core/src/checks/imports-csharp.ts, packages/core/src/index.ts, packages/core/test/checks/imports.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/imports.test.ts

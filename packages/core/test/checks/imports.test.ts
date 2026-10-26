@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  csharpImports,
+  csharpNamespaces,
   goImports,
   jvmImports,
   jvmPackages,
@@ -160,6 +162,41 @@ describe("the import scanners of layers", () => {
       "5 App\\Domain → src/Domain/*",
       "6 App\\Support\\format → src/Support/format.php",
       "7 Illuminate\\Support\\Facades\\DB → pkg:Illuminate/Support/Facades/DB",
+    ]);
+  });
+
+  it("read C#'s using directives against the namespaces the project declares", () => {
+    const namespaces = csharpNamespaces([
+      {
+        path: "src/Shop.Domain/User.cs",
+        text: "namespace Acme.Shop.Domain;\n\npublic class User {}\n",
+      },
+      {
+        path: "src/Shop.Infra/Db.cs",
+        text: "namespace Acme.Shop.Infra\n{\n    public class Db {}\n}\n",
+      },
+    ]);
+    const text = [
+      "using System;",
+      "global using Acme.Shop.Infra;",
+      "using static Acme.Shop.Infra.Db;",
+      "using Repo = Acme.Shop.Infra.Db;",
+      "using Microsoft.EntityFrameworkCore;",
+      "// using Acme.Shop.Old;",
+      "",
+      "namespace Acme.Shop.Domain;",
+      "",
+      "public class Order",
+      "{",
+      '    void Save() { using var stream = File.Open("x"); using (var db = new Db()) { } }',
+      "}",
+    ].join("\n");
+    expect(shown(csharpImports("src/Shop.Domain/Order.cs", text, namespaces))).toEqual([
+      "1 System → pkg:System",
+      "2 Acme.Shop.Infra → src/Shop.Infra/*.cs",
+      "3 Acme.Shop.Infra.Db → src/Shop.Infra/*.cs",
+      "4 Acme.Shop.Infra.Db → src/Shop.Infra/*.cs",
+      "5 Microsoft.EntityFrameworkCore → pkg:Microsoft.EntityFrameworkCore",
     ]);
   });
 });
