@@ -63,3 +63,27 @@ Cada stack que Specty soporta tiene un repositorio de ejemplo, como ya lo tienen
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Python, Ruby, PHP, Java, Kotlin, C#, Go, Rust y Swift tienen su repositorio de ejemplo de `specty check`, armado por `stack-dialect.ts` a partir de los datos de cada stack, con la spec, las tareas y los casos del de Flutter. En los nueve, el cambio que respeta el plan pasa todas las verificaciones, y el que lo rompe todo hace fallar todas las de su stack. Solo pasan `focused-tests` y `skipped-tests` donde el stack no tiene su marca, y `tests-removed` avisa. La guía lista los once ejemplos, los comandos que imita cada uno y lo que no comprueba cada stack.
+
+### Desviaciones
+
+- El test de usuario de Rust es `tests/domain/main.rs` y no `tests/user.rs`. Un test justo bajo `tests/` refleja todo `src/`, y `fix-tests` lo tomaba por un test del carrito, que es de otra tarea.
+- El test apagado de PHP usa `markTestSkipped()`, la forma real de PHPUnit, en vez de no marcarse; para eso T3 amplió su alcance al archivo de T1.
+- T4 quitó el `export` a cuatro tipos internos del constructor, que knip marcaba sin uso.
+
+### Decisiones
+
+- Cada ejemplo tiene solo los comandos que Specty detecta en su stack. Por eso no hay `format` en Ruby ni en Go, y `typecheck` solo está en Python, Ruby, PHP y C#.
+- Los ejemplos se agrupan en tres archivos de test, para que vitest los ejecute en paralelo: los de scripting, los de la JVM y .NET, y los nativos.
+- Go usa Ginkgo, cuyo `FIt` es la marca de foco del catálogo. Sus `It` no cuentan como casos, así que `tests-removed` avisa por el archivo borrado.
+- Las marcas de test, de pendiente y de supresión se escriben partidas en el código fuente, para que el `specty check` del propio repositorio no las detecte.
+
+### Pendientes
+
+- El catálogo de marcas no conoce el `PIt`, el `XIt` ni el `PDescribe` de Ginkgo, el `.disabled()` de Swift Testing, ni el `->only()` y el `->skip()` de Pest; añadirlos haría fallar esos casos en Go, Swift y PHP.
+- En la estructura plana de Rust (`src/*.rs` y `tests/*.rs`), cualquier test de integración cuenta como test de cualquier módulo raíz para `scope` y `fix-tests`, porque el espejo es por carpeta y no por archivo.

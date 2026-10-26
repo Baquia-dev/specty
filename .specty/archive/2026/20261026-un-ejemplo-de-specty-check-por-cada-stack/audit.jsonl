@@ -15,3 +15,6 @@
 {"ts":"2026-10-26T16:16:27.504Z","actor":"specty","event":"scope.decided","data":{"task":"T4","paths":["packages/cli/test/stack-dialect.ts"],"reason":"tipos sin exportar (knip)","decision":"auto","basis":{"packages/cli/test/stack-dialect.ts":"test"},"plannedFor":{}}}
 {"ts":"2026-10-26T16:18:12.719Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm check","exit":0,"ms":90301,"tree":"sha256:09aa441a192c7f998d3e3fe5b840a22c686f2fa92cbfcfa915b80a59b0fb2187"}}
 {"ts":"2026-10-26T16:18:12.832Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"«Ejemplos por stack» de la guía, en español e inglés: tabla con el archivo y los comandos que imita cada uno de los once, qué arma stack-dialect.ts y lo que no comprueba cada stack. Sin export los tipos internos del constructor (knip)."}}
+{"ts":"2026-10-26T16:19:54.482Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T16:20:14.741Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:5cc7ff546339e6bc2a6a0b0fa5a6d932f35f3aa54925848f9f6fa72e0f2b5c0e","size":"M","warnings":0}}
+{"ts":"2026-10-26T16:20:19.828Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
