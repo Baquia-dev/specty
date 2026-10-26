@@ -4,3 +4,4 @@
 {"ts":"2026-10-24T21:52:44.070Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"57d324e3752df69444987b496ebe04028def622a"}}
 {"ts":"2026-10-26T00:24:15.696Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":109472,"tree":"sha256:34038601ccbaa646b47aa490cca019e81f06175750d86dee6d3cce627e5f8af9"}}
 {"ts":"2026-10-26T00:24:15.809Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"execute tiene la opción whole y git la usa: un diff o un archivo de más de 512 KB llega entero (antes perdía su principio, y con él los primeros archivos del diff). Las verificaciones siguen con sus últimos 512 KB. ARCHITECTURE §15."}}
+{"ts":"2026-10-26T00:24:29.078Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

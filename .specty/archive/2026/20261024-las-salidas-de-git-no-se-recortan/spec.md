@@ -21,3 +21,9 @@ kind: quick
   - files: packages/cli/src/io/exec.ts, packages/cli/src/io/git.ts, packages/cli/test/exec.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: fix
+
+## Cierre
+
+### Resumen
+
+execute tiene la opción whole y git la usa: un diff o un archivo de más de 512 KB llega entero (antes perdía su principio, y con él los primeros archivos del diff). Las verificaciones siguen con sus últimos 512 KB. ARCHITECTURE §15.
