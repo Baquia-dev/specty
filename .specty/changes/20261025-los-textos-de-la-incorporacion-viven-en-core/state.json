@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-la-incorporacion-viven-en-core",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-la-incorporacion-viven-en-core",
   "baseCommit": "7f1ae8a4c3357eb90df5d7a681f55dc594b01745",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6451f65f312dcdee269b42c9d9ca9db94f00853d",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:01:35.885Z",
       "doneAt": "2026-10-26T03:03:36.502Z",
-      "summary": "Core tiene los textos de la incorporación: cards/integration.ts (traer la rama principal, lo que queda para el agente e integrate), cards/land.ts (llegar a la rama principal y salir de la carpeta) y verifyingNote en text.ts, con tests."
+      "summary": "Core tiene los textos de la incorporación: cards/integration.ts (traer la rama principal, lo que queda para el agente e integrate), cards/land.ts (llegar a la rama principal y salir de la carpeta) y verifyingNote en text.ts, con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c6db0bcce5004e1dad7b2401389627d0c68bd716",
+      "startedAt": "2026-10-26T03:03:36.765Z",
+      "doneAt": "2026-10-26T03:07:29.803Z",
+      "summary": "flow/integrate.ts, commands/integrate.ts, flow/land.ts y flow/task-done.ts piden sus textos a core (cards/integration.ts, cards/land.ts y verifyingNote) y ya no llaman al traductor; sale askAgent. La salida es la misma, como comprueban los tests."
     }
   },
   "pending": {

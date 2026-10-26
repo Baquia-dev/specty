@@ -1,20 +1,32 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
-  blockedCard,
   classifyPath,
+  commandFailsLine,
   headerOf,
+  incorporationTitle,
+  integrateRetry,
+  integrationResolvedLine,
   isGoverned,
   isIntegrating,
+  markersLeftLine,
+  mergeAbortedLine,
+  mergingLabel,
+  noIncorporationCard,
   type Output,
   type OutputBlock,
+  outsideIncorporationLine,
+  resolveIncorporationNext,
+  runAgainNext,
   scopeRulesFrom,
   section,
-  translator,
+  stillResolvingLine,
+  undoOutsideNext,
+  verifyingNote,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { changeTrailers, commitWithReceipt } from "../flow/commits";
-import { askAgent, blocked } from "../flow/integrate";
+import { blocked } from "../flow/integrate";
 import { execute, tail } from "../io/exec";
 import { readText } from "../io/files";
 import { pathsOf } from "../io/git";
@@ -30,51 +42,34 @@ const MARKER = /^(?:<{7}|>{7})(?:\s|$)|^={7}$/m;
  * together and the verification passes (ARCHITECTURE §9).
  */
 export async function integrate(session: Session): Promise<Output> {
-  const t = translator(session.lang);
-  const { cards, git, config } = session;
+  const { cards, git, config, lang } = session;
   const change = await resolveActive(session);
   const integration = change?.state.integration;
   if (change === undefined || integration === undefined || !isIntegrating(change.state)) {
-    return blockedCard(
-      headerOf(change?.state.id, change?.state.phase),
-      t("No hay ninguna incorporación pendiente.", "There is no pending incorporation."),
-      t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`),
-    );
+    return noIncorporationCard(headerOf(change?.state.id, change?.state.phase), cards);
   }
   const { state } = change;
   const { target } = integration;
   const again = state.phase === "acceptance" ? "accept" : "close";
-  const header = headerOf(state.id, state.phase, t(`incorporando ${target}`, `merging ${target}`));
-  const retry = t(
-    `corrígelo y vuelve a ejecutar \`${cards.command} integrate\`.`,
-    `fix it and run \`${cards.command} integrate\` again.`,
-  );
-  const refuse = (reason: string, details: OutputBlock, next = retry): Output => ({
+  const header = headerOf(state.id, state.phase, mergingLabel(target, lang));
+  const refuse = (reason: string, details: OutputBlock, next = integrateRetry(cards)): Output => ({
     status: "blocked",
     header,
     blocks: [...section(undefined, [reason]), details],
     next,
   });
   if ((await git.run(["rev-parse", "-q", "--verify", "MERGE_HEAD"])).code !== 0) {
-    return blocked(
-      state,
-      [
-        t(
-          "El merge ya no está en curso: alguien lo abortó.",
-          "The merge is no longer in progress: someone aborted it.",
-        ),
-      ],
-      undefined,
-      runAgain(session, again),
-    );
+    return blocked(state, [mergeAbortedLine(lang)], undefined, runAgainNext(again, cards));
   }
   const marked: string[] = [];
   for (const path of integration.conflicts) {
     if (MARKER.test((await readText(join(session.root, path))) ?? "")) marked.push(path);
   }
   if (marked.length > 0) {
-    const reason = t("Quedan marcadores de conflicto.", "Conflict markers are left.");
-    return refuse(reason, { title: t("CON MARCADORES", "WITH MARKERS"), lines: marked });
+    return refuse(markersLeftLine(lang), {
+      title: incorporationTitle("markers", lang),
+      lines: marked,
+    });
   }
   const rules = scopeRulesFrom(config);
   const outside = pathsOf(await git.changedSince("HEAD")).filter(
@@ -84,19 +79,15 @@ export async function integrate(session: Session): Promise<Output> {
       classifyPath(path, { taskFiles: integration.paths, extras: [], rules }) === "out-of-scope",
   );
   if (outside.length > 0) {
-    const reason = t(
-      `Hay cambios fuera de la incorporación de ${target}.`,
-      `There are changes outside the incorporation of ${target}.`,
+    return refuse(
+      outsideIncorporationLine(target, lang),
+      { title: incorporationTitle("outside", lang), lines: outside },
+      undoOutsideNext(cards),
     );
-    const next = t(
-      `deshaz esos cambios y vuelve a ejecutar \`${cards.command} integrate\`.`,
-      `undo those changes and run \`${cards.command} integrate\` again.`,
-    );
-    return refuse(reason, { title: t("FUERA", "OUTSIDE"), lines: outside }, next);
   }
   const command = config.verify.full ?? config.verify.default;
   if (command !== undefined) {
-    session.environment.io.err(`specty: ${t("verificando", "verifying")} \`${command}\`…`);
+    session.environment.io.err(verifyingNote(command, lang));
     const result = await execute(command, [], {
       cwd: session.root,
       shell: true,
@@ -104,11 +95,9 @@ export async function integrate(session: Session): Promise<Output> {
       timeoutMs: config.verify.timeoutSec * 1000,
     });
     if (result.code !== 0) {
-      const reason = t(`\`${command}\` falla.`, `\`${command}\` fails.`);
-      const output = tail(result, 15);
-      return refuse(reason, {
-        title: t("SALIDA DE LA VERIFICACIÓN", "VERIFICATION OUTPUT"),
-        lines: output,
+      return refuse(commandFailsLine(command, lang), {
+        title: incorporationTitle("verification", lang),
+        lines: tail(result, 15),
       });
     }
   }
@@ -129,29 +118,9 @@ export async function integrate(session: Session): Promise<Output> {
   return {
     status: "ok",
     header: headerOf(state.id, state.phase),
-    blocks: section(undefined, [
-      t(
-        `Incorporación de ${target} resuelta (merge ${commit}).`,
-        `Incorporation of ${target} resolved (merge ${commit}).`,
-      ),
-    ]),
-    next: runAgain(session, again),
+    blocks: section(undefined, [integrationResolvedLine(target, commit, lang)]),
+    next: runAgainNext(again, cards),
   };
-}
-
-/** Who runs `again` once the merge is done: the person, or the agent itself in delegated mode. */
-function runAgain(session: Session, again: "close" | "accept"): string {
-  const t = translator(session.lang);
-  const { command } = session.cards;
-  if (session.cards.delegated === true)
-    return t(
-      `modo delegado: vuelve a ejecutar tú \`${command} ${again}\` y sigue su salida.`,
-      `delegated mode: run \`${command} ${again}\` again yourself and follow its output.`,
-    );
-  return t(
-    `pide al usuario que vuelva a ejecutar \`${command} ${again}\` y termina tu turno.`,
-    `ask the user to run \`${command} ${again}\` again and end your turn.`,
-  );
 }
 
 export type Pending =
@@ -170,16 +139,10 @@ export async function pendingIntegration(
   const { integration, ...rest } = change.state;
   if (integration === undefined || integration.resolved !== undefined)
     return { kind: "go", change };
-  const t = translator(session.lang);
   if ((await session.git.run(["rev-parse", "-q", "--verify", "MERGE_HEAD"])).code === 0) {
-    const waiting = t(
-      `El agente aún resuelve la incorporación de ${integration.target} en esta carpeta.`,
-      `The agent is still resolving the incorporation of ${integration.target} in this folder.`,
-    );
-    return {
-      kind: "wait",
-      output: blocked(change.state, [waiting], undefined, askAgent(session, again)),
-    };
+    const waiting = stillResolvingLine(integration.target, session.lang);
+    const next = resolveIncorporationNext(again, session.cards);
+    return { kind: "wait", output: blocked(change.state, [waiting], undefined, next) };
   }
   const forgotten = await commitState(
     session,

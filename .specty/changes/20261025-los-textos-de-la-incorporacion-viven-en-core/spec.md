@@ -45,7 +45,7 @@ Décimo cambio de la serie que lleva a core los textos de la CLI, con la incorpo
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: La incorporación pide sus textos a core
+- [x] T2: La incorporación pide sus textos a core
   - files: packages/cli/src/flow/integrate.ts, packages/cli/src/commands/integrate.ts, packages/cli/src/flow/land.ts, packages/cli/src/flow/task-done.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm check
