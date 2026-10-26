@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2b8fa84cb08034a42c55b544d7532e642b8aeefc",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:54:56.229Z",
       "doneAt": "2026-10-26T14:56:20.902Z",
-      "summary": "Cada lector de manifiestos da sus nombres con su línea; lectores por línea para requirements*.txt, go.mod sin indirectas, Gemfile, Package.swift y los scripts de Gradle; composer.json sin los paquetes de plataforma."
+      "summary": "Cada lector de manifiestos da sus nombres con su línea; lectores por línea para requirements*.txt, go.mod sin indirectas, Gemfile, Package.swift y los scripts de Gradle; composer.json sin los paquetes de plataforma.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0f6d2edd97ca77f2de9dfc5769a474abdeb58dad",
+      "startedAt": "2026-10-26T14:56:21.184Z",
+      "doneAt": "2026-10-26T14:59:06.206Z",
+      "summary": "Lector mínimo de TOML (pares con su tabla y línea, arrays de varias líneas, cadenas fuera de tablas en línea) y lectores de pyproject.toml (PEP 621, extras, grupos, Poetry), Cargo.toml y libs.versions.toml."
     }
   },
   "pending": {

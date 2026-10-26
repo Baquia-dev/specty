@@ -104,6 +104,83 @@ describe("the manifests of each ecosystem", () => {
     ).toEqual(["org.projectlombok:lombok@2"]);
   });
 
+  it("reads pyproject.toml: PEP 621, its extras and groups, and Poetry", () => {
+    expect(
+      added(
+        "pyproject.toml",
+        ['[project]\ndependencies = ["requests>=2.32"]'],
+        "[project]",
+        'name = "app"',
+        "dependencies = [",
+        '  "requests>=2.33",',
+        '  "httpx[http2]>=0.27",  # the client',
+        "]",
+        "",
+        "[project.optional-dependencies]",
+        'docs = ["mkdocs"]',
+        "",
+        "[dependency-groups]",
+        'coverage = ["coverage[toml]"]',
+        'test = ["pytest>7", {include-group = "coverage"}]',
+        "",
+        "[tool.poetry.dependencies]",
+        'python = "^3.12"',
+        'fastapi = "^0.115"',
+        "",
+        "[tool.poetry.group.dev.dependencies]",
+        'ruff = "^0.8"',
+      ),
+    ).toEqual(["httpx@5", "mkdocs@9", "coverage@12", "pytest@13", "fastapi@17", "ruff@20"]);
+  });
+
+  it("reads Cargo.toml: every dependency table, by key or by header", () => {
+    expect(
+      added(
+        "crates/cli/Cargo.toml",
+        ['[dependencies]\nserde = "1"'],
+        "[package]",
+        'name = "cli"',
+        "",
+        "[dependencies]",
+        'serde = { version = "1.0.210", features = ["derive"] }',
+        "clap.workspace = true",
+        "",
+        "[dev-dependencies]",
+        'insta = "1"',
+        "",
+        "[target.'cfg(windows)'.dependencies]",
+        'winapi = "0.3"',
+        "",
+        "[dependencies.tokio]",
+        'version = "1"',
+      ),
+    ).toEqual(["clap@6", "insta@9", "winapi@12", "tokio@14"]);
+  });
+
+  it("reads the libraries of Gradle's version catalog in each of their forms", () => {
+    expect(
+      added(
+        "gradle/libs.versions.toml",
+        ["[libraries]", 'okhttp = "com.squareup.okhttp3:okhttp:4.12.0"'],
+        "[versions]",
+        'kotlin = "2.2.0"',
+        "",
+        "[libraries]",
+        'okhttp = "com.squareup.okhttp3:okhttp:4.12.0"',
+        'coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin" }',
+        'junit = { group = "org.junit.jupiter", name = "junit-jupiter", version = "5.11.0" }',
+        'mockk.module = "io.mockk:mockk"',
+        "",
+        "[plugins]",
+        'kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }',
+      ),
+    ).toEqual([
+      "org.jetbrains.kotlinx:kotlinx-coroutines-core@6",
+      "org.junit.jupiter:junit-jupiter@7",
+      "io.mockk:mockk@8",
+    ]);
+  });
+
   it("reads composer.json without PHP's own platform packages", () => {
     const composer = (require: Record<string, string>) =>
       JSON.stringify({ require, "require-dev": { "phpunit/phpunit": "^11" } }, null, 2).split("\n");

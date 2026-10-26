@@ -3,6 +3,7 @@ import { parse as parseYaml } from "yaml";
 import { lookup } from "../lookup";
 import { basename } from "../paths";
 import { gemfile, goMod, gradleBuild, packageSwift, requirements } from "./manifests-text";
+import { cargo, pyproject, versionCatalog } from "./manifests-toml";
 
 /**
  * Dependencies a manifest declares, by the catalog of manifests Specty knows. Each reader gives
@@ -49,6 +50,9 @@ const READERS: Readonly<Record<string, Reader>> = {
   "composer.json": (text) =>
     keyed(text, parseJson(text), COMPOSER_SECTIONS, jsonKey, (name) => !isPlatform(name)),
   "requirements.txt": requirements,
+  "pyproject.toml": pyproject,
+  "Cargo.toml": cargo,
+  "libs.versions.toml": versionCatalog,
   "go.mod": goMod,
   Gemfile: gemfile,
   "Package.swift": packageSwift,
