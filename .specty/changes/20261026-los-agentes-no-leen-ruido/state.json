@@ -6,6 +6,13 @@
   "branch": "specty/20261026-los-agentes-no-leen-ruido",
   "baseCommit": "eb699d2810711fc36fe36003c5709be08a67c49d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cbb4b8a78c7345799e167bd263d2aad47b5b11df9a93565d4de1da2b2f9e60fc",
+    "at": "2026-10-26T10:10:07.914Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3c4ece94c2d54f52f891ad01a443594ed00a8690",
+      "startedAt": "2026-10-26T10:10:08.345Z",
+      "doneAt": "2026-10-26T10:11:44.645Z",
+      "summary": "install-plan.ts: planInstall corre sus pasos uno tras otro sobre un InstallFiles en seco y saca una edición por archivo; install.ts solo enseña, pregunta, aplica y hace el commit; install-agents.ts escribe en esos archivos. Mismo comportamiento."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "AC": 5,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:cbb4b8a78c7345799e167bd263d2aad47b5b11df9a93565d4de1da2b2f9e60fc",
-    "at": "2026-10-26T10:10:07.914Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

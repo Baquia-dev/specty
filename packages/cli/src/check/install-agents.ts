@@ -2,8 +2,8 @@
 import { join } from "node:path";
 import { parse } from "jsonc-parser";
 import { codexHooksFile } from "../install/agents";
-import { installFiles, rewriteJson } from "../install/files";
-import { isRecord, readText } from "../io/files";
+import { type InstallFiles, rewriteJson } from "../install/files";
+import { isRecord } from "../io/files";
 import type { Session } from "../session";
 
 /**
@@ -13,13 +13,6 @@ import type { Session } from "../session";
  * Cursor from `stop`. An agent without the guard gets nothing, and one that has the hook, nothing
  * again.
  */
-
-/** An edit of an agent's file: repository-relative, or absolute outside the repository (Codex). */
-export interface AgentEdit {
-  readonly path: string;
-  readonly before: string;
-  readonly after: string;
-}
 
 type Entry = Record<string, unknown>;
 
@@ -42,44 +35,23 @@ const cursorHook: Hook = (command) => (value) => {
   return { ...value, hooks: { ...hooks, stop: [...current, { command }] } };
 };
 
-export async function agentStopEdits(session: Session): Promise<AgentEdit[]> {
+/** Plans the hook into `files`, the plan's files, for each agent whose guard is there. */
+export async function agentStopHooks(session: Session, files: InstallFiles): Promise<void> {
   const { root } = session;
-  const targets: readonly (readonly [string, string, string, Hook])[] = [
-    [join(root, ".claude/settings.json"), ".claude/settings.json", "claude-code", stopHook("Stop")],
-    [
-      join(root, ".claude/settings.local.json"),
-      ".claude/settings.local.json",
-      "claude-code",
-      stopHook("Stop"),
-    ],
-    [join(root, ".cursor/hooks.json"), ".cursor/hooks.json", "cursor", cursorHook],
+  const targets: readonly (readonly [string, string, Hook])[] = [
+    [join(root, ".claude/settings.json"), "claude-code", stopHook("Stop")],
+    [join(root, ".claude/settings.local.json"), "claude-code", stopHook("Stop")],
+    [join(root, ".cursor/hooks.json"), "cursor", cursorHook],
+    [codexHooksFile(session.environment.env), "codex", stopHook("Stop")],
   ];
-  const codex = codexHooksFile(session.environment.env);
-  const all = [...targets, [codex, codex, "codex", stopHook("Stop")] as const];
-  const found = await Promise.all(
-    all.map(([file, shown, tool, hook]) =>
-      edit(file, shown, tool, hook, session.config.verify.timeoutSec),
-    ),
-  );
-  return found.flatMap((item) => (item === undefined ? [] : [item]));
-}
-
-async function edit(
-  file: string,
-  shown: string,
-  tool: string,
-  hook: Hook,
-  timeout: number,
-): Promise<AgentEdit | undefined> {
-  const before = await readText(file);
-  if (before === undefined || before.includes(`hook agent-stop ${tool}`)) return undefined;
-  const prefix = guardPrefix(before, tool);
-  if (prefix === undefined) return undefined;
-  // Planned without writing, to show its diff first.
-  const files = installFiles({ dryRun: true });
-  await rewriteJson(file, hook(`${prefix} hook agent-stop ${tool}`, timeout), false, files);
-  const after = await files.read(file);
-  return after === undefined || after === before ? undefined : { path: shown, before, after };
+  for (const [file, tool, hook] of targets) {
+    const text = await files.read(file);
+    if (text === undefined || text.includes(`hook agent-stop ${tool}`)) continue;
+    const prefix = guardPrefix(text, tool);
+    if (prefix === undefined) continue;
+    const command = `${prefix} hook agent-stop ${tool}`;
+    await rewriteJson(file, hook(command, session.config.verify.timeoutSec), false, files);
+  }
 }
 
 /** How the guard calls Specty in this file (`specty`, `node "<path>"`…), if it is there. */

@@ -53,7 +53,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: El plan sobre unos archivos en seco, dividido de la aplicación
+- [x] T1: El plan sobre unos archivos en seco, dividido de la aplicación
   - files: packages/cli/src/check/install-plan.ts, packages/cli/src/check/install.ts, packages/cli/src/check/install-agents.ts, packages/cli/src/commands/check.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-install.test.ts test/check-agent-stop.test.ts

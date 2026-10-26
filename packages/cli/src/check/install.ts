@@ -1,194 +1,25 @@
 // SPDX-License-Identifier: Apache-2.0
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, isAbsolute, join } from "node:path";
-import { checkLevel, translator } from "@baquia-dev/specty-core";
-import { Document, parseDocument } from "yaml";
-import type { Stack } from "../detect/stack";
-import { targetBranch } from "../flow/worktree";
+import { dirname, join } from "node:path";
+import { translator } from "@baquia-dev/specty-core";
 import { commitInstall } from "../install/commit";
 import { execute, tail } from "../io/exec";
-import { exists, readText } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Session } from "../session";
-import { ciTemplates, spectyVersion } from "./ci";
-import { analyzerOptions, STRICT_MODES } from "./dart";
-import { agentStopEdits } from "./install-agents";
+import type { Edit, InstallPlan } from "./install-plan";
 import type { ReportOutput } from "./provider";
 
 /**
  * `specty check --install`: what the checks need in the project, decided by the person file by
- * file. Each edit shows its diff and waits for a yes; what the person already set differently is
- * a conflict, reported and never overwritten; and a second run finds nothing left to do.
+ * file. Each edit of the plan (`install-plan.ts`) shows its diff and waits for a yes; with
+ * `--dry-run`, the plan is only shown. What is applied goes into one commit with a receipt.
  */
-
-/** A file the install would write, repository-relative: its text before (none if new) and after. */
-interface Edit {
-  readonly path: string;
-  readonly before?: string;
-  readonly after: string;
-}
-
-interface DevDependency {
-  readonly name: string;
-  readonly version: string;
-  readonly command: string;
-}
-
-export interface InstallPlan {
-  readonly edits: readonly Edit[];
-  readonly conflicts: readonly string[];
-  readonly devDependencies: readonly DevDependency[];
-  /** What Specty cannot install, for the person to do. */
-  readonly hints: readonly string[];
-}
 
 type Translate = ReturnType<typeof translator>;
 
-/** The version Specty was checked with; installed exactly, never a range. */
-const DEPENDENCY_CRUISER = { name: "dependency-cruiser", version: "18.7.0" } as const;
-const ADD_DEV: Readonly<Record<string, (spec: string) => string>> = {
-  pnpm: (spec) => `pnpm add --save-dev --save-exact ${spec}`,
-  yarn: (spec) => `yarn add --dev --exact ${spec}`,
-  bun: (spec) => `bun add --dev --exact ${spec}`,
-};
-const npmAdd = (spec: string) => `npm install --save-dev --save-exact ${spec}`;
+/** The lockfiles a devDependency may change, committed with `package.json` if they had nothing of the person's. */
 const LOCKFILES = ["package-lock.json", "pnpm-lock.yaml", "yarn.lock", "bun.lock", "bun.lockb"];
-
-export async function planInstall(
-  session: Session,
-  stacks: readonly Stack[],
-): Promise<InstallPlan> {
-  const t = translator(session.lang);
-  const steps = await Promise.all([
-    preCommit(session, t),
-    ci(session, stacks, t),
-    dartStrict(session, stacks, t),
-    agentStopEdits(session).then((edits): Step => ({ edits, conflicts: [] })),
-  ]);
-  return {
-    edits: steps.flatMap((step) => step.edits),
-    conflicts: steps.flatMap((step) => step.conflicts),
-    devDependencies: await devDependencies(session, stacks),
-    hints: await hints(session, t),
-  };
-}
-
-interface Step {
-  readonly edits: readonly Edit[];
-  readonly conflicts: readonly string[];
-}
-
-async function preCommit(session: Session, t: Translate): Promise<Step> {
-  const path = ".specty/config.yaml";
-  const before = (await readText(join(session.root, path))) ?? "";
-  const document = parseDocument(before);
-  const current = document.getIn(["checks", "preCommit"]);
-  if (current === true) return { edits: [], conflicts: [] };
-  if (current === false) {
-    return {
-      edits: [],
-      conflicts: [
-        `${path}: ${t(
-          "`checks.preCommit` está en false; cámbialo tú si quieres las verificaciones en el pre-commit",
-          "`checks.preCommit` is false; change it yourself if you want the checks in the pre-commit",
-        )}`,
-      ],
-    };
-  }
-  document.setIn(["checks", "preCommit"], true);
-  return { edits: [{ path, before, after: document.toString() }], conflicts: [] };
-}
-
-async function ci(session: Session, stacks: readonly Stack[], t: Translate): Promise<Step> {
-  const branch = (await targetBranch(session.git, session.config.git.target)) ?? "main";
-  const templates = ciTemplates({
-    stack: stacks[0],
-    version: await spectyVersion(),
-    branch,
-    lang: session.lang,
-  });
-  const found = await Promise.all(
-    templates.map(async (template): Promise<Step> => {
-      const current = await readText(join(session.root, template.path));
-      if (current === undefined) {
-        return { edits: [{ path: template.path, after: template.text }], conflicts: [] };
-      }
-      if (current === template.text) return { edits: [], conflicts: [] };
-      const conflict = t(
-        "ya existe con otro contenido; no se pisa",
-        "already exists with other content; it is not overwritten",
-      );
-      return { edits: [], conflicts: [`${template.path}: ${conflict}`] };
-    }),
-  );
-  return {
-    edits: found.flatMap((step) => step.edits),
-    conflicts: found.flatMap((step) => step.conflicts),
-  };
-}
-
-/** The strict modes Dart's analyzer still lacks, set in `analysis_options.yaml`. */
-async function dartStrict(session: Session, stacks: readonly Stack[], t: Translate): Promise<Step> {
-  if (!stacks.some((stack) => stack.language === "dart")) return { edits: [], conflicts: [] };
-  const path = "analysis_options.yaml";
-  const before = await readText(join(session.root, path));
-  const document = documentOf(before ?? "");
-  const resolved = await analyzerOptions(session.root);
-  const conflicts: string[] = [];
-  const missing = STRICT_MODES.filter((mode) => {
-    if (document.getIn(["analyzer", "language", mode]) !== false)
-      return resolved.modes[mode] !== true;
-    conflicts.push(
-      `${path}: ${t(
-        `${mode} está en false en \`analyzer.language\`; cámbialo tú si quieres el modo estricto`,
-        `${mode} is false in \`analyzer.language\`; change it yourself if you want the strict mode`,
-      )}`,
-    );
-    return false;
-  });
-  if (missing.length === 0) return { edits: [], conflicts };
-  for (const mode of missing) document.setIn(["analyzer", "language", mode], true);
-  const edit = { path, after: document.toString(), ...(before !== undefined ? { before } : {}) };
-  return { edits: [edit], conflicts };
-}
-
-/** A YAML document to edit; an empty or missing file starts as an empty map. */
-function documentOf(text: string): Document {
-  return text.trim() === "" ? new Document({}) : parseDocument(text);
-}
-
-async function devDependencies(
-  session: Session,
-  stacks: readonly Stack[],
-): Promise<DevDependency[]> {
-  const scripts = stacks.find(
-    (stack) => stack.language === "typescript" || stack.language === "javascript",
-  );
-  const layered = Object.keys(session.config.checks.layers).length > 0;
-  const bin = join(session.root, "node_modules", ".bin", "depcruise");
-  if (scripts === undefined || !layered || (await exists(bin))) return [];
-  const tool = scripts.tool ?? "npm";
-  const add = Object.hasOwn(ADD_DEV, tool) ? (ADD_DEV[tool] ?? npmAdd) : npmAdd;
-  const { name, version } = DEPENDENCY_CRUISER;
-  return [{ name, version, command: add(`${name}@${version}`) }];
-}
-
-async function hints(session: Session, t: Translate): Promise<string[]> {
-  if (checkLevel(session.config, "secrets") === "off") return [];
-  const found = await Promise.all(
-    ["betterleaks", "gitleaks"].map(
-      async (program) => (await execute(program, ["version"], { cwd: session.root })).code !== 127,
-    ),
-  );
-  if (found.some(Boolean)) return [];
-  return [
-    t(
-      "Para `secrets`, instala Betterleaks (o gitleaks) en tu máquina y en la CI.",
-      "For `secrets`, install Betterleaks (or gitleaks) on your machine and in CI.",
-    ),
-  ];
-}
 
 /** Shows the plan with `dryRun`; otherwise asks for each step and applies what the person confirms. */
 export async function install(
@@ -219,10 +50,8 @@ export async function install(
         t(`¿Aplicar este cambio en ${edit.path}?`, `Apply this change to ${edit.path}?`),
       )
     ) {
-      // Codex's hooks live outside the repository, by their absolute path.
-      const file = isAbsolute(edit.path) ? edit.path : join(session.root, edit.path);
-      await mkdir(dirname(file), { recursive: true });
-      await writeFile(file, edit.after);
+      await mkdir(dirname(edit.file), { recursive: true });
+      await writeFile(edit.file, edit.after);
       applied.push(edit.path);
       written.push(edit.path);
     } else {
