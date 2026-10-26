@@ -209,18 +209,48 @@ describe("cancelling", () => {
 });
 
 describe("the quick lane", () => {
-  it("goes from a one-task spec to an archived change", async () => {
-    const root = await tempRepo({ "src/button.ts": "Sing in\n", ".specty/config.yaml": CONFIG() });
+  // Ids start with the date of the commands' clock, like CHANGE.
+  const id = `${CHANGE.slice(0, 8)}-corregir-boton`;
+  const spec = `.specty/changes/${id}/spec.md`;
+
+  /** A quick change that fixes the button, approved: its only task is next. */
+  async function approvedQuick(config: string): Promise<string> {
+    const root = await tempRepo({ "src/button.ts": "Sing in\n", ".specty/config.yaml": config });
     await cli(root, ["new", "Corregir botón", "--kind", "quick"]);
-    // Ids start with the date of the commands' clock, like CHANGE.
-    const id = `${CHANGE.slice(0, 8)}-corregir-boton`;
     await writeFiles(root, {
-      [`.specty/changes/${id}/spec.md`]:
+      [spec]:
         "---\nkind: quick\n---\n\n# Corregir botón\n\n## Objetivo\n\nDice «Sing in».\n\n## Archivos\n\n- modificar src/button.ts — texto\n\n## Tareas\n\n- [ ] T1: Corregir texto\n  - files: src/button.ts\n  - type: fix\n",
     });
     expect((await cli(root, ["propose"])).code).toBe(0);
     await cli(root, ["approve"], { terminal: person() });
     await cli(root, ["next"]);
+    return root;
+  }
+
+  it("is fixed by an adjustment when its full verification fails (AC3)", async () => {
+    // The full verification fails on a double space, as a formatter would.
+    const root = await approvedQuick(`${CONFIG()}  full: "! grep -q '  ' src/button.ts"\n`);
+    await writeFiles(root, { "src/button.ts": "Sign  in\n", "src/button.test.ts": BUTTON_TEST });
+    await cli(root, ["task", "done", "T1", "--summary", "Texto corregido"]);
+    const failed = await cli(root, ["accept"], { terminal: person({ confirm: [true, false] }) });
+    expect(failed.out).toContain("Nada cambió.");
+    expect((await cli(root, ["adjust", "Que pase la verificación completa"])).code).toBe(0);
+    const fix = "- [ ] T2: Quitar el espacio doble\n  - files: src/button.ts\n  - type: style\n";
+    await writeFiles(root, { [spec]: `${await read(root, spec)}${fix}` });
+    const proposed = await cli(root, ["propose"]);
+    expect(proposed.code, proposed.out).toBe(0);
+    expect((await cli(root, ["approve"], { terminal: person() })).code).toBe(0);
+    await cli(root, ["next"]);
+    await writeFiles(root, { "src/button.ts": "Sign in\n" });
+    await cli(root, ["task", "done", "T2", "--summary", "Sin espacio doble"]);
+    const accepted = await cli(root, ["accept"], { terminal: person() });
+    expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
+    expect(git(root, "branch", "--show-current")).toBe("main");
+    expect(await read(root, `${ARCHIVE}/${id}/spec.md`)).toContain("Sin espacio doble");
+  });
+
+  it("goes from a one-task spec to an archived change", async () => {
+    const root = await approvedQuick(CONFIG());
     await writeFiles(root, { "src/button.ts": "Sign in\n", "src/button.test.ts": BUTTON_TEST });
     await cli(root, ["task", "done", "T1", "--summary", "Texto corregido"]);
     const accepted = await cli(root, ["accept"], { terminal: person() });

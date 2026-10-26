@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261026-un-ejemplo-de-specty-check-por-cada-stack",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-un-ejemplo-de-specty-check-por-cada-stack",
+  "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d41afa01719782c8cf1713d2433a027e5b1f32f23955d6f7d127283a67b9332e",
+    "at": "2026-10-26T16:02:25.781Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6936de48cf286973abfe041335be2e8bbfd76d9bb093c45c645ad4165e377584",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6ac952d163216543c14e05fe8b3f077dadb5f58cd517e1bf44feebb76592e7db",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:61591f95658e3a752ef762cbd096ec51176c9458f4d56b1706b2810f7f6f3b26",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:674ee8058a294bf15f4044456e6ce5842206dfe4383c272a4863f60245a4b531",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "60f20ec996d7bf764c8365195a035101d596292a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:02:26.169Z",
+      "doneAt": "2026-10-26T16:07:45.639Z",
+      "summary": "stack-dialect.ts arma cada ejemplo desde los datos de su stack (rutas, manifiesto, sintaxis, herramientas imitadas, capas y marcas) con la spec y los casos de Flutter. Python, Ruby y PHP: todo pasa con el plan y todo falla al romperlo, salvo las marcas que su stack no tiene.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "98f4d13224f58dc7e43f8fa74463531ddcf1fc1f",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:07:45.917Z",
+      "doneAt": "2026-10-26T16:09:51.225Z",
+      "summary": "Java (Maven), Kotlin (Gradle) y C# (.NET): imitan Spotless, Checkstyle, ktlint, detekt, dotnet format, dotnet build y sus tests. Todo pasa con el plan y todo falla al romperlo; focused-tests pasa en los tres, que no tienen marca de foco.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f529a253955cb2a2c284631ed3f76fb1470e930e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:09:51.731Z",
+      "doneAt": "2026-10-26T16:14:55.736Z",
+      "summary": "Go (golangci-lint con gofmt, Ginkgo), Rust (cargo fmt, Clippy, cargo test) y Swift (swift-format, SwiftLint, XCTest). Todo pasa con el plan y todo falla al romperlo. PIt, XCTSkip y markTestSkipped de PHP quedan como saltos que no cuentan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "e7077e00882f9289b9199e1f25e1d56e3a99b4c8",
+      "attempts": 2,
+      "startedAt": "2026-10-26T16:14:56.093Z",
+      "doneAt": "2026-10-26T16:18:12.831Z",
+      "summary": "«Ejemplos por stack» de la guía, en español e inglés: tabla con el archivo y los comandos que imita cada uno de los once, qué arma stack-dialect.ts y lo que no comprueba cada stack. Sin export los tipos internos del constructor (knip).",
+      "scopeExtra": [
+        "packages/cli/test/stack-dialect.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-26T16:20:14.740Z"
+}

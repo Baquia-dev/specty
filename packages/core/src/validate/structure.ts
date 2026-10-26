@@ -83,11 +83,14 @@ export const checkSpikeClosing: Rule = (spec, ctx, lang) => {
       ];
 };
 
-/** The quick lane: one task, few code files, no sensitive paths. */
+/**
+ * The quick lane: one task, few code files, no sensitive paths. One task is the limit of the
+ * first plan: once approved, a quick change only gains tasks by an adjustment, which fixes it.
+ */
 export const checkQuickLane: Rule = (spec, ctx, lang) => {
   if (spec.frontmatter.kind !== "quick") return [];
   const files = spec.sections.files?.items ?? [];
-  const tasks = spec.sections.tasks?.items.length ?? 0;
+  const tasks = ctx.approved === undefined ? (spec.sections.tasks?.items.length ?? 0) : 0;
   const limit = ctx.config.lanes.quick.maxFiles;
   // Tests and documentation ride along; a glob counts its matches, as in the split limit.
   const { codeFiles } = collectSignals(spec, ctx.config, ctx.repo);

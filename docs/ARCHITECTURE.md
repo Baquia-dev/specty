@@ -104,7 +104,7 @@ La única excepción es el modo delegado ([ADR 0010](decisions/0010-modo-delegad
 | `retro` | Código sin spec, manual o de un agente sin hooks | Documenta cambios ya hechos; la persona confirma; habilita el commit |
 | `epic` | Alcance `XL` | No tiene tareas: define cortes con dependencias, y cada corte es un cambio hijo (`new --epic <id> --slice C1`), con su carpeta. Aprobada, su tarjeta lista los cortes y propone seguir el que está en curso o empezar el primero listo; cuando todos tienen un cambio cerrado, `next` la pasa a aceptación. Se acepta y se incorpora sin verificación completa, porque no tiene código propio |
 
-Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `propose` la rechaza e indica pasar a `standard`.
+Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `propose` la rechaza e indica pasar a `standard`. La tarea única es el límite del primer plan: si al aceptarlo falla la verificación completa, un ajuste le añade las tareas de corrección, como a un `standard`. Los límites de archivos y de rutas sensibles siguen en cada revisión.
 
 ## 6. Interfaz del agente
 

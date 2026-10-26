@@ -356,12 +356,35 @@ It never overwrites what you already decided differently: it reports it as a con
 
 ## Examples per stack
 
-There is an example repository for Angular and another for NestJS in `packages/cli/test/check-examples-ts.test.ts`, and one for Flutter in `packages/cli/test/check-examples-flutter.test.ts`. Each one has an approved change and runs `specty check --changed --spec` twice:
+Each stack has an example repository in `packages/cli/test/`, with an approved change, that runs `specty check --changed --spec` twice:
 
 - with a change that keeps to the plan, and every check passes;
 - with another that breaks every check at once, and they all fail.
 
-The project's commands are stand-ins for its tools, because the real ones need their dependencies installed. These show as `NOT RUN`: `layers` in TypeScript, because the examples have no dependency-cruiser, and `secrets` when there is no scanner on PATH.
+| Stack | File | Commands it stands in for |
+| --- | --- | --- |
+| Angular and NestJS | `check-examples-ts.test.ts` | Prettier, ESLint, tsc and their tests |
+| Flutter | `check-examples-flutter.test.ts` | `dart format`, `flutter analyze` and `flutter test` |
+| Python | `check-examples-scripting.test.ts` | ruff (format and lint), mypy and pytest |
+| Ruby | `check-examples-scripting.test.ts` | RuboCop, Sorbet and RSpec |
+| PHP | `check-examples-scripting.test.ts` | PHP CS Fixer, PHP_CodeSniffer, PHPStan and PHPUnit |
+| Java (Maven) | `check-examples-jvm.test.ts` | Spotless, Checkstyle and `mvn test` |
+| Kotlin (Gradle) | `check-examples-jvm.test.ts` | ktlint, detekt and `gradle test` |
+| C# (.NET) | `check-examples-jvm.test.ts` | `dotnet format`, `dotnet build` and `dotnet test` |
+| Go | `check-examples-native.test.ts` | golangci-lint and `go test` with Ginkgo |
+| Rust | `check-examples-native.test.ts` | `cargo fmt --check`, Clippy and `cargo test` |
+| Swift | `check-examples-native.test.ts` | swift-format, SwiftLint and `swift test` with XCTest |
+
+`stack-dialect.ts` builds the last nine from the data of each stack: its paths, its manifest, its syntax and its tools.
+
+The project's commands are stand-ins for its tools, because the real ones need their dependencies installed. Each example has the ones Specty detects in its stack: Ruby and Go have no `format`, because RuboCop and golangci-lint check their format, and `typecheck` only appears in TypeScript, Python, Ruby, PHP and C#; in the others, the analyzer or the compiler, which runs with the tests, checks the types.
+
+What an example does not check:
+
+- `layers` shows as `NOT RUN` in TypeScript, because the examples have no dependency-cruiser, and does not appear in Ruby or Swift, whose imports Specty does not read.
+- `focused-tests` passes with the change that breaks everything too in Python, PHP, Java, Kotlin, C#, Rust and Swift: their test frameworks have no focus marker.
+- `skipped-tests` passes there too in PHP, Go and Swift: `markTestSkipped()` and `XCTSkip` are decisions of the test itself, and Ginkgo's `PIt` is not in the catalog.
+- `secrets` shows as `NOT RUN` when there is no scanner on PATH.
 
 ## Adding a provider
 
