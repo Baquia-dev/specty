@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261026-pnpm-sources-vigila-que-los-textos-vivan-en-core",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261026-pnpm-sources-vigila-que-los-textos-vivan-en-core",
+  "baseCommit": "5bfe65a4a554d4900b42e1db88f237ba25e5689d",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:44c64d95672b7e55e26e0b0f62bf6cc86fd514435896ba2800a77455223a24bd",
+    "at": "2026-10-26T09:25:10.906Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
