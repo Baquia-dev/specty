@@ -80,7 +80,7 @@ Este corte añade las cuatro. Como Antigravity no tiene evento de compactación,
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/src/enforce/pending.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/antigravity-turn.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-turn.test.ts test/check-agent-stop.test.ts test/antigravity.test.ts test/agents.test.ts test/cursor.test.ts
-- [ ] T2: Antigravity no lee lo excluido
+- [x] T2: Antigravity no lee lo excluido
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/test/check-ignores.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts

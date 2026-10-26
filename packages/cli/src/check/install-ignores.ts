@@ -29,6 +29,8 @@ const IGNORE_FILES: readonly IgnoreFile[] = [
     names: [".devinignore", ".windsurfignore", ".codeiumignore"],
     create: ".codeiumignore",
   },
+  // Antigravity keeps these paths from its indexer and from its @ mentions.
+  { tool: "antigravity", names: [".antigravityignore"], create: ".antigravityignore" },
 ];
 
 /** Plans the exclusions into `files`, the plan's files, for each agent in use. */

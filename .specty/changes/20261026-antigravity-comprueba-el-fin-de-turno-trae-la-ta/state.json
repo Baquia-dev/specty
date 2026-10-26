@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e98efbbbe8cdad8d21201ddbbb02bf087b23c98f",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:55:33.889Z",
       "doneAt": "2026-10-26T20:01:30.661Z",
-      "summary": "El Stop de Antigravity va en el hook specty: con model_stop y el check fallando responde continue con el informe, y Specty cuenta por conversación el turno devuelto (pending .stop). El evento turn (PreInvocation 0) trae la tarjeta de next antes del aviso pendiente."
+      "summary": "El Stop de Antigravity va en el hook specty: con model_stop y el check fallando responde continue con el informe, y Specty cuenta por conversación el turno devuelto (pending .stop). El evento turn (PreInvocation 0) trae la tarjeta de next antes del aviso pendiente.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "38b3301b77f76c9b39bf0ecb4811aaa3e143dd6e",
+      "startedAt": "2026-10-26T20:01:30.956Z",
+      "doneAt": "2026-10-26T20:03:53.797Z",
+      "summary": "check --install escribe .antigravityignore con los globs de checks.exclude y scope.generated en los repositorios que usan Antigravity."
     }
   },
   "pending": {
