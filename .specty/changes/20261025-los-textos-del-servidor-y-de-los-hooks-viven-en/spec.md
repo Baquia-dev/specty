@@ -44,7 +44,7 @@ Pasan a un `cards/server.ts` nuevo y a `cards/hooks.ts`, junto al mensaje del co
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos del servidor y de los hooks
+- [x] T1: Core tiene los textos del servidor y de los hooks
   - files: packages/core/src/cards/server.ts, packages/core/src/cards/hooks.ts, packages/core/src/cards/index.ts, packages/core/test/cards/server.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
