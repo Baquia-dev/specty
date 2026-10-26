@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0d21830fbd8522722af7210cbdd6661c2d605415",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:05:15.812Z",
       "doneAt": "2026-10-26T01:06:56.257Z",
-      "summary": "core/checks/dart.ts: dartImports lee los import y export de un archivo Dart (fuera de comentarios y cadenas) y los resuelve: package: propio a lib/, otro package: o dart: como paquete, rutas relativas desde su carpeta; sin part."
+      "summary": "core/checks/dart.ts: dartImports lee los import y export de un archivo Dart (fuera de comentarios y cadenas) y los resuelve: package: propio a lib/, otro package: o dart: como paquete, rutas relativas desde su carpeta; sin part.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "912110690313df5e0eec44b8bef61782f84e22d8",
+      "startedAt": "2026-10-26T01:06:56.977Z",
+      "doneAt": "2026-10-26T01:08:23.346Z",
+      "summary": "check/layers.ts: layers se aplica también a Dart; reparte los archivos de la ejecución: los .dart van al escáner del core con el name del pubspec, los TS/JS a dependency-cruiser, que solo hace falta si los hay."
     }
   },
   "pending": {

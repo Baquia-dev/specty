@@ -52,7 +52,7 @@ La verificación `layers` funciona también en Dart y Flutter, sin herramientas 
   - files: packages/core/src/checks/dart.ts, packages/core/src/index.ts, packages/core/test/checks/dart.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/dart.test.ts
-- [ ] T2: `layers` en Dart
+- [x] T2: `layers` en Dart
   - files: packages/cli/src/check/layers.ts, packages/cli/test/check-layers-dart.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-layers-dart.test.ts test/check-layers.test.ts
