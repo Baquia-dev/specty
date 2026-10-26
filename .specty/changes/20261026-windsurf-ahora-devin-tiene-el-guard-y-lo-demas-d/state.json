@@ -6,6 +6,13 @@
   "branch": "specty/20261026-windsurf-ahora-devin-tiene-el-guard-y-lo-demas-d",
   "baseCommit": "aa9c8c4beb42427cdb1eb18f79f2ef4d16594e6b",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:99db2700b33907fe7f69ae88fa1911f101183b5c10730f8d61e075e89dc47ac3",
+    "at": "2026-10-26T22:52:18.548Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -42,7 +49,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "710683ee8046e48213a7a838e700223e023701b4",
+      "startedAt": "2026-10-26T22:52:19.240Z",
+      "doneAt": "2026-10-26T22:57:13.144Z",
+      "summary": "Devin tiene su guard: agents/windsurf.ts escribe PreToolUse y PostToolUse en la raíz de .devin/hooks.v1.json, bloquea con salida 2 (también write_to_process) y añade el aviso tras un comando como additionalContext; la fila pasa a llamarse Devin (Windsurf)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -52,12 +69,5 @@
     "AC": 7,
     "T": 5,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:99db2700b33907fe7f69ae88fa1911f101183b5c10730f8d61e075e89dc47ac3",
-    "at": "2026-10-26T22:52:18.548Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

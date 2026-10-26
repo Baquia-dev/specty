@@ -124,6 +124,7 @@ export {
   codexTrustWarning,
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
+  devinRestrictedWarning,
   geminiPointerLine,
   geminiSandboxLine,
   geminiSandboxVersionedWarning,

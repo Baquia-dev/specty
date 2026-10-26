@@ -18,7 +18,8 @@ export const AGENT_NAMES: Readonly<Record<AgentTool, string>> = {
   opencode: "OpenCode",
   "gemini-cli": "Gemini CLI",
   copilot: "GitHub Copilot",
-  windsurf: "Windsurf",
+  // Windsurf is Devin Desktop now, whose agent shares Devin CLI's hooks.
+  windsurf: "Devin (Windsurf)",
   antigravity: "Antigravity",
 };
 

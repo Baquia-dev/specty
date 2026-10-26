@@ -100,6 +100,14 @@ export function antigravityTrustWarning(lang: Lang): string {
   );
 }
 
+/** Devin Desktop runs no hook of a workspace open in restricted mode. */
+export function devinRestrictedWarning(lang: Lang): string {
+  return translator(lang)(
+    "Devin Desktop no carga los hooks en modo restringido: confía en la carpeta del proyecto cuando te lo pregunte.",
+    "Devin Desktop loads no hooks in restricted mode: trust the project's folder when it asks.",
+  );
+}
+
 /** Gemini CLI keeps a fingerprint of each project hook, and loads none from a folder not trusted. */
 export function geminiTrustWarning(lang: Lang): string {
   return translator(lang)(

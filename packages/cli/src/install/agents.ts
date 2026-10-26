@@ -19,6 +19,8 @@ export const CODEX_RULES = ".codex/rules/specty.rules";
 export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
 export const ANTIGRAVITY_HOOKS = ".agents/hooks.json";
 export const GEMINI_SETTINGS = ".gemini/settings.json";
+/** Devin's standalone hooks file, which Devin Desktop's agent and Devin CLI share. */
+export const DEVIN_HOOKS = ".devin/hooks.v1.json";
 
 /** Files where Specty installs agent hooks; `new --worktree` copies the ones git does not track. */
 export const AGENT_HOOK_FILES: readonly string[] = [
@@ -30,6 +32,7 @@ export const AGENT_HOOK_FILES: readonly string[] = [
   OPENCODE_PLUGIN,
   ANTIGRAVITY_HOOKS,
   GEMINI_SETTINGS,
+  DEVIN_HOOKS,
 ];
 
 export interface AgentInstall {

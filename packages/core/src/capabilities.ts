@@ -144,9 +144,10 @@ export const AGENT_CAPABILITIES = {
     endToEnd: unsupported,
   },
   windsurf: {
-    markers: [".windsurf", ".windsurfrules"],
-    guard: pending,
-    afterShell: pending,
+    markers: [".windsurf", ".windsurfrules", ".devin"],
+    guard: yes,
+    // `PostToolUse` adds it to the context (`additionalContext`).
+    afterShell: yes,
     afterCompaction: impossible(
       "no tiene eventos de sesión ni de compactación.",
       "it has no session or compaction events.",
