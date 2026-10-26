@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261025-program-ts-registra-los-comandos-por-grupos",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261025-program-ts-registra-los-comandos-por-grupos",
+  "baseCommit": "512ba3ab6d94f3337291756c5a78c180d21ca810",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d0e7832f4eeb4968f20f71c33ec140931a564672a3ab1ac097af9a71ed5b042a",
+    "at": "2026-10-26T01:35:24.186Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
