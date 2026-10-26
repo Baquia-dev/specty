@@ -40,7 +40,7 @@ Sexto cambio de la serie que lleva a core los textos de la CLI, el primero de la
 
 ## Tareas
 
-- [ ] T1: Core tiene las plantillas de config.yaml y de PRODUCT.md
+- [x] T1: Core tiene las plantillas de config.yaml y de PRODUCT.md
   - files: packages/core/src/templates.ts, packages/core/src/index.ts, packages/core/test/templates.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

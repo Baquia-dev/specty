@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
+import { translator } from "./cards/text";
 import type { Lang } from "./i18n";
+import { DEFAULT_CONFIG } from "./schema/config";
 import { type ChangeKind, type FileEntry, SECTION_ORDER, type SectionKey } from "./spec/model";
 import { fileLine, serializeSpec } from "./spec/serialize";
 import { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
@@ -107,4 +109,97 @@ export function specTemplate(options: TemplateOptions): string {
     return `## ${SECTION_TITLES[lang][key]}\n\n${prefilled}`;
   });
   return `${[header, ...sections].join("\n\n")}\n`;
+}
+
+/** What `init` detected, for the first `.specty/config.yaml`. */
+export interface ConfigTemplateOptions {
+  readonly lang: Lang;
+  /** The verification commands found in the project. */
+  readonly verify: { readonly default?: string; readonly full?: string };
+  /** Generated files, which tasks may change without asking. */
+  readonly generated: readonly string[];
+}
+
+/** `.specty/config.yaml` with the detected values and short comments (docs/formats.md §6). */
+export function configTemplate(options: ConfigTemplateOptions): string {
+  const { lang, verify } = options;
+  const t = translator(lang);
+  const list = (values: readonly string[]) => JSON.stringify(values);
+  const optional = (key: string, value: string | undefined) =>
+    value === undefined ? [] : [`  ${key}: ${JSON.stringify(value)}`];
+  return [
+    t(
+      "# Configuración de Specty. Referencia: docs/formats.md §6",
+      "# Specty configuration. Reference: docs/formats.md §6",
+    ),
+    "version: 1",
+    `language: ${lang}`,
+    "mode: individual",
+    t(
+      "# Rutas donde rige el flujo: código que necesita una spec aprobada.",
+      "# Paths under the flow: code that needs an approved spec.",
+    ),
+    `governed: ${list(DEFAULT_CONFIG.governed)}`,
+    t(
+      "# Rutas libres: documentación y archivos que no son código.",
+      "# Free paths: documentation and non-code files.",
+    ),
+    `ignored: ${list(DEFAULT_CONFIG.ignored)}`,
+    t(
+      "# Rutas que nunca se aprueban solas y que pesan en el tamaño.",
+      "# Paths never approved automatically, weighed in the size.",
+    ),
+    `sensitive: ${list(DEFAULT_CONFIG.sensitive)}`,
+    "verify:",
+    ...optional("default", verify.default),
+    ...optional("full", verify.full),
+    `  timeoutSec: ${DEFAULT_CONFIG.verify.timeoutSec}`,
+    "scope:",
+    "  implicitTests: true",
+    `  generated: ${list(options.generated)}`,
+    "  autoApprove: tests-and-generated",
+    "policy:",
+    "  tests: recommended",
+    "retro:",
+    "  mode: agent",
+    "git:",
+    "  branchPerChange: true",
+    "",
+  ].join("\n");
+}
+
+/** The brief interview of ARCHITECTURE §14: a section of PRODUCT.md and its question, per language. */
+const PRODUCT_QUESTIONS: Readonly<Record<Lang, readonly (readonly [string, string])[]>> = {
+  es: [
+    ["Qué es", "¿Qué vas a construir? Una o dos frases."],
+    ["Para quién", "¿Para quién es?"],
+    ["Alcance del MVP", "¿Qué tiene que hacer la primera versión?"],
+    ["Fuera de alcance", "¿Qué queda fuera, al menos por ahora?"],
+    ["Stack", "¿Con qué lenguaje y herramientas? (o «recomiéndame»)"],
+    ["Despliegue", "¿Dónde y cómo se va a usar o desplegar?"],
+    ["Restricciones", "¿Alguna restricción? (plazos, presupuesto, normas, compatibilidad…)"],
+  ],
+  en: [
+    ["What it is", "What are you building? One or two sentences."],
+    ["Who it is for", "Who is it for?"],
+    ["MVP scope", "What must the first version do?"],
+    ["Out of scope", "What stays out, at least for now?"],
+    ["Stack", 'Which language and tools? (or "recommend one")'],
+    ["Deployment", "Where and how will it be used or deployed?"],
+    ["Constraints", "Any constraints? (deadlines, budget, rules, compatibility…)"],
+  ],
+};
+
+/** The interview's sections of PRODUCT.md, each with its question. */
+export function productQuestions(lang: Lang): readonly (readonly [string, string])[] {
+  return PRODUCT_QUESTIONS[lang];
+}
+
+/** PRODUCT.md of a new project: one section per answer, and the question as a comment where none. */
+export function productTemplate(name: string, lang: Lang, answers: readonly string[]): string {
+  const sections = PRODUCT_QUESTIONS[lang].map(([heading, question], index) => {
+    const answer = answers[index] ?? "";
+    return `## ${heading}\n\n${answer === "" ? `<!-- ${question} -->` : answer}\n`;
+  });
+  return [`# ${name}\n`, ...sections].join("\n");
 }

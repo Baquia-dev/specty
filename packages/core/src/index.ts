@@ -224,6 +224,13 @@ export * from "./spec/model";
 export { type ParseOptions, type ParseResult, parseSpec } from "./spec/parse";
 export { hashUnits, serializeSpec } from "./spec/serialize";
 export { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
-export { specTemplate, type TemplateOptions } from "./templates";
+export {
+  type ConfigTemplateOptions,
+  configTemplate,
+  productQuestions,
+  productTemplate,
+  specTemplate,
+  type TemplateOptions,
+} from "./templates";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";
 export { type TestRules, testRules } from "./validate/quality";

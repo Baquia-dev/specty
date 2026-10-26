@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-init-y-sus-plantillas-viven-en-cor",
   "baseCommit": "98881ef124dfb5c1ff0e4da711a0e6c04d5898cd",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:adecd370ac9f76e39ef54cb2359e76aabb630fbd004d2d4f9811d140e9c8f17f",
+    "at": "2026-10-26T02:40:49.868Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bf1a5b2a69a30e558de20acc6c7e30fdcc223812",
+      "startedAt": "2026-10-26T02:40:50.234Z",
+      "doneAt": "2026-10-26T02:42:16.338Z",
+      "summary": "core/src/templates.ts gana configTemplate (el .specty/config.yaml inicial con sus comentarios), productQuestions y productTemplate (el PRODUCT.md de un proyecto nuevo), copiados letra a letra de la CLI, con tests que validan la configuración."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 3,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:adecd370ac9f76e39ef54cb2359e76aabb630fbd004d2d4f9811d140e9c8f17f",
-    "at": "2026-10-26T02:40:49.868Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
