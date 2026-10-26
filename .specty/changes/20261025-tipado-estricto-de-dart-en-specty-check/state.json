@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-tipado-estricto-de-dart-en-specty-check",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-tipado-estricto-de-dart-en-specty-check",
   "baseCommit": "0ed47d6d381638e290bceef8cf2eb4dd9b6d591e",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "be1768c7cce905f6df1c942e3ccc4997fe7f516a",
+      "attempts": 1,
       "startedAt": "2026-10-26T00:58:21.015Z",
       "doneAt": "2026-10-26T01:00:57.537Z",
-      "summary": "check/dart.ts: dartProvider con dart-strict; exige strict-casts, strict-inference y strict-raw-types siguiendo los include (package: por package_config.json, rutas relativas, lo propio gana), avisa si un include no se lee, y falla con los // ignore añadidos."
+      "summary": "check/dart.ts: dartProvider con dart-strict; exige strict-casts, strict-inference y strict-raw-types siguiendo los include (package: por package_config.json, rutas relativas, lo propio gana), avisa si un include no se lee, y falla con los // ignore añadidos.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6c6e0aa7063d1364d492b64db786d62a3f7cdf99",
+      "startedAt": "2026-10-26T01:00:57.890Z",
+      "doneAt": "2026-10-26T01:03:30.145Z",
+      "summary": "formats §6 documenta dart-strict (modos, include por package_config.json y ruta, lo propio gana, aviso sin pub get, // ignore añadidos); ARCHITECTURE la añade a la fila de specty check."
     }
   },
   "pending": {
