@@ -110,7 +110,8 @@ export const AGENT_CAPABILITIES = {
     exclusion: yes,
     // It has no sandbox nor classifier: its permissions are the person's rules.
     permissions: yes,
-    endToEnd: pending,
+    // `opencode-e2e.test.ts`, against a fake of OpenAI's chat API.
+    endToEnd: yes,
   },
   "gemini-cli": {
     markers: [".gemini", "GEMINI.md"],

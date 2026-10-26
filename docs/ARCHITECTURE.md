@@ -341,7 +341,7 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 | Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |
 | Cursor | sí | sí | indirecto | no posible | sí | sí | sí | no posible | `.cursor`, `.cursorrules` |
 | Codex | sí | sí | sí | no posible | sí | no posible | sí | pendiente | `.codex` |
-| OpenCode | sí | sí | sí | no posible | sí | sí | sí | pendiente | `.opencode`, `opencode.json`, `opencode.jsonc` |
+| OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |
 | Gemini CLI | pendiente | pendiente | pendiente | no posible | pendiente | sí | pendiente | pendiente | `.gemini`, `GEMINI.md` |
 | GitHub Copilot | — | — | — | — | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
 | Windsurf | pendiente | pendiente | no posible | no posible | no posible | sí | pendiente | no posible | `.windsurf`, `.windsurfrules` |
@@ -578,7 +578,14 @@ Claude Code se busca en `SPECTY_E2E_CLAUDE`, en el PATH y en las extensiones de 
 - `--setting-sources project,local`, porque con la ruta absoluta del bundle `init` pone los hooks en `.claude/settings.local.json`;
 - `--strict-mcp-config`, solo Write y Bash, y sin tráfico no esencial.
 
-Si Claude Code no llegara al servidor, la prueba falla, y la API real rechazaría la clave falsa. Claude Code exige leer un archivo antes de sobrescribirlo, y lo comprueba antes de los hooks; por eso el guion escribe archivos nuevos. Codex y OpenCode pueden usar el mismo servidor con la API compatible con OpenAI.
+Si Claude Code no llegara al servidor, la prueba falla, y la API real rechazaría la clave falsa. Claude Code exige leer un archivo antes de sobrescribirlo, y lo comprueba antes de los hooks; por eso el guion escribe archivos nuevos.
+
+**OpenCode con un modelo guionizado** (`opencode-e2e.test.ts`, con `fake-chat.ts`). La misma idea con OpenCode y el plugin que escribe `specty init`: el servidor imita la API de chat de OpenAI por streaming, responde una llamada a herramienta del guion por cada mensaje `tool` que trae la conversación, y guarda cada petición. OpenCode le habla con un proveedor `@ai-sdk/openai-compatible` y una clave falsa, configurado en su carpeta global aislada (`XDG_CONFIG_HOME`), sin tocar el `opencode.json` del repositorio; `HOME` y las carpetas `XDG_*` son temporales, salvo la caché de paquetes, que se comparte en la carpeta temporal del sistema para descargar el proveedor una sola vez.
+
+- Con `opencode run` (con stdin cerrado, porque si no lo espera): sin cambio activo, escribir código, `git commit` y `specty approve` vuelven con el SIGUIENTE del guard y el repositorio no cambia; con una tarea, un archivo de fuera vuelve con `specty scope add`; y un comando que escribe por un camino que el análisis de shell no prevé trae el aviso en su resultado.
+- Con `opencode serve`, manejado por HTTP, como lo corre su interfaz: tras compactar (`/summarize`), la siguiente petición al modelo trae la tarjeta; y con el fin de turno que activa `check --install`, si `specty check --changed` falla, el modelo recibe el informe una vez y el turno siguiente termina.
+
+OpenCode se busca en `SPECTY_E2E_OPENCODE` o en el PATH; si no está, la prueba se salta. Comprobado con OpenCode 1.19.4. Codex puede usar un servidor parecido con su API de respuestas, pero ejecutarlo sin confianza persistida en sus hooks pide `--dangerously-bypass-hook-trust`.
 
 ## 17. Portado desde el legacy
 
