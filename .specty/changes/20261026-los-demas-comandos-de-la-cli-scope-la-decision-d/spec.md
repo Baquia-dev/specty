@@ -41,7 +41,7 @@ Nueve funciones de los demás comandos de la CLI pasan de los límites de Specty
 
 ## Tareas
 
-- [ ] T1: Los registros de comandos y el programa
+- [x] T1: Los registros de comandos y el programa
   - files: packages/cli/src/commands/agent-commands.ts, packages/cli/src/commands/person-commands.ts, packages/cli/src/program.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

@@ -6,6 +6,13 @@
   "branch": "specty/20261026-los-demas-comandos-de-la-cli-scope-la-decision-d",
   "baseCommit": "eb76e25b573efb53ab79da0a35a905f19fcdee8f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:116333f99287412c9c5fe3018eb3719613d53158e6bd1e58f9a27ca89bbcb5fe",
+    "at": "2026-10-26T20:02:10.012Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -25,7 +32,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "68eb41254c21bc9f718fbc1f23f4dad8e641b5fe",
+      "startedAt": "2026-10-26T20:02:10.928Z",
+      "doneAt": "2026-10-26T20:05:18.425Z",
+      "summary": "agent-commands.ts: newCommand (con newOptions) y taskCommands, en el mismo orden. person-commands.ts: decider fuera del registro. program.ts: runCli usa emitter, sessionRunner y readingCommands con un RunState compartido. Los tests de la CLI pasan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:116333f99287412c9c5fe3018eb3719613d53158e6bd1e58f9a27ca89bbcb5fe",
-    "at": "2026-10-26T20:02:10.012Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
