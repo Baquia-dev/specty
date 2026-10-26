@@ -6,6 +6,13 @@
   "branch": "specty/20261025-el-paquete-de-exportadores-openspec-spec-kit-y-k",
   "baseCommit": "19c34537629c7a20ce85ccced2cd319ec4b04ca2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:024ec306441fa496c7d8dcd6b8cc182df9e9c2216250f3aaecb9f1807667f0fd",
+    "at": "2026-10-26T00:53:06.056Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -30,7 +37,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/exporters/src/parts.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "c94a9b0d1ca00b36be3b49803aff2218d04ba7cc",
+      "startedAt": "2026-10-26T00:53:06.440Z",
+      "doneAt": "2026-10-26T00:55:52.023Z",
+      "summary": "packages/exporters (@baquia-dev/specty-exporters, privado, 90 % de cobertura): exportSpec y OpenSpec (proposal, design, tasks y specs/<capacidad>/spec.md con ADDED Requirements y escenarios WHEN/THEN); scenario.ts parte un criterio y parts.ts tiene lo que comparten los formatos."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,13 +57,7 @@
   "maxIds": {
     "A": 3,
     "AC": 4,
-    "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:024ec306441fa496c7d8dcd6b8cc182df9e9c2216250f3aaecb9f1807667f0fd",
-    "at": "2026-10-26T00:53:06.056Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
+    "T": 2,
+    "S": 1
   }
 }

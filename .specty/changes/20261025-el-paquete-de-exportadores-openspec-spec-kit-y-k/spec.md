@@ -52,7 +52,7 @@ PRODUCT.md promete para la versión 1 exportar a OpenSpec, GitHub Spec Kit y Kir
 
 ## Tareas
 
-- [ ] T1: El paquete y OpenSpec
+- [x] T1: El paquete y OpenSpec
   - files: packages/exporters/package.json, packages/exporters/tsconfig.json, packages/exporters/tsconfig.test.json, packages/exporters/vitest.config.ts, packages/exporters/src/index.ts, packages/exporters/src/scenario.ts, packages/exporters/src/openspec.ts, packages/exporters/test/exporters.test.ts, pnpm-lock.yaml
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-exporters test
