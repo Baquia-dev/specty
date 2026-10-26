@@ -17,7 +17,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Las órdenes de git guardan su salida entera
+- [x] T1: Las órdenes de git guardan su salida entera
   - files: packages/cli/src/io/exec.ts, packages/cli/src/io/git.ts, packages/cli/test/exec.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: fix

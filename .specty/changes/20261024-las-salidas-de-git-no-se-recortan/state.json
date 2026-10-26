@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261024-las-salidas-de-git-no-se-recortan",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261024-las-salidas-de-git-no-se-recortan",
   "baseCommit": "a3f579fd11a5ea5cb06331607bf241dd0ab1e6b8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d5bad54c8dfe2fe8463f590fd93745788045d14e950c3a520c8f27f99fffe38a",
+    "at": "2026-10-24T21:52:43.676Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "57d324e3752df69444987b496ebe04028def622a",
+      "startedAt": "2026-10-24T21:52:44.070Z",
+      "doneAt": "2026-10-26T00:24:15.807Z",
+      "summary": "execute tiene la opción whole y git la usa: un diff o un archivo de más de 512 KB llega entero (antes perdía su principio, y con él los primeros archivos del diff). Las verificaciones siguen con sus últimos 512 KB. ARCHITECTURE §15."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d5bad54c8dfe2fe8463f590fd93745788045d14e950c3a520c8f27f99fffe38a",
-    "at": "2026-10-24T21:52:43.676Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
