@@ -6,6 +6,13 @@
   "branch": "specty/20261026-las-funciones-de-python-y-ruby",
   "baseCommit": "79acdd0588db715f888d3fa7aff43083d5f1763c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bac8da332061a87dc1673280422ed775f4e136cefba4cc16d15345f8e7ad0d17",
+    "at": "2026-10-26T15:05:13.976Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -29,7 +36,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/checks/function-spans.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "befbcb96b17e2def93a7c132369a4d4a0588ce56",
+      "startedAt": "2026-10-26T15:05:15.388Z",
+      "doneAt": "2026-10-26T15:09:03.967Z",
+      "summary": "Estimador de Python por indentación (def y async def, cabeceras de varias líneas, sin docstrings, cadenas ni comentarios); la medición pasa a function-spans.ts, compartida con el de llaves. El test de un lenguaje sin estimador usa ahora Elixir."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -37,13 +56,7 @@
   "maxIds": {
     "A": 3,
     "AC": 4,
-    "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:bac8da332061a87dc1673280422ed775f4e136cefba4cc16d15345f8e7ad0d17",
-    "at": "2026-10-26T15:05:13.976Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
+    "T": 3,
+    "S": 1
   }
 }

@@ -204,8 +204,8 @@ describe("functionMetrics", () => {
     ]);
   });
 
-  it("measures nothing in a language without braces", () => {
-    expect(functionMetrics("app.py", source("def f():", "    if x:", "        pass"))).toEqual([]);
+  it("measures nothing in a language it has no estimator for", () => {
+    expect(functionMetrics("lib/app.ex", source("def f do", "  if x, do: 1", "end"))).toEqual([]);
     expect(functionMetrics("README", source("function f() {", "}"))).toEqual([]);
   });
 });

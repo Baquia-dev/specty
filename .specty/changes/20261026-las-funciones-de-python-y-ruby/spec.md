@@ -43,7 +43,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: El estimador de Python
+- [x] T1: El estimador de Python
   - files: packages/core/src/checks/functions-python.ts, packages/core/src/checks/functions.ts, packages/core/test/checks/functions-scripts.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-scripts.test.ts test/checks/functions.test.ts

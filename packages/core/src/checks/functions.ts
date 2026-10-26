@@ -1,24 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { splitCode } from "./code";
+import { type FunctionMetric, measure } from "./function-spans";
+import { pythonFunctions } from "./functions-python";
 
 /**
- * The functions of a source in a language with braces, measured line by line: where each one
- * starts and ends, its lines of code and its cyclomatic complexity. It is an estimate without a
- * parser, the same for every language, so that the limits hold where there is no linter to ask.
+ * The functions of a source, measured line by line: where each one starts and ends, its lines of
+ * code and its cyclomatic complexity. It is an estimate without a parser: one for every language
+ * with braces, and its own for Python, whose functions are its indentation.
  */
 
-export interface FunctionMetric {
-  /** Its name, when the header gives one. */
-  readonly name?: string;
-  /** The line of its header, from 1; the first one when the header takes several. */
-  readonly start: number;
-  /** The line of its closing brace. */
-  readonly end: number;
-  /** Lines of code from the header to the closing brace, without blanks or comments. */
-  readonly lines: number;
-  /** 1 plus each branch, without the ones of the functions inside it. */
-  readonly complexity: number;
-}
+export type { FunctionMetric } from "./function-spans";
 
 const BRACES =
   /\.(?:[cm]?[jt]sx?|java|kts?|cs|go|rs|swift|dart|php|c|h|cc|cpp|cxx|hpp|hh|scala|groovy)$/;
@@ -62,6 +53,7 @@ const NOT_NAMES: ReadonlySet<string> = new Set([
 const BRANCHES = /\b(?:if|for|foreach|while|case|catch|guard)\b|&&|\|\||\?\?|\s\?\s/g;
 
 export function functionMetrics(path: string, text: string): FunctionMetric[] {
+  if (/\.pyi?$/.test(path)) return pythonFunctions(text);
   if (!BRACES.test(path)) return [];
   const lines = splitCode(text, { lifetimes: path.endsWith(".rs") }).map((line) =>
     line.code.trim(),
@@ -70,27 +62,7 @@ export function functionMetrics(path: string, text: string): FunctionMetric[] {
     const end = closingLine(lines, header.open);
     return end === undefined ? [] : [{ ...header, end }];
   });
-  return spans.map((span) => {
-    const inner = spans.filter(
-      (other) => other !== span && other.start > span.start && other.end <= span.end,
-    );
-    const own = (index: number) =>
-      !inner.some((other) => index >= other.start && index <= other.end);
-    let code = 0;
-    let branches = 0;
-    for (let index = span.start; index <= span.end; index += 1) {
-      const line = lines[index] ?? "";
-      if (line !== "") code += 1;
-      if (own(index)) branches += line.match(BRANCHES)?.length ?? 0;
-    }
-    return {
-      ...(span.name !== undefined ? { name: span.name } : {}),
-      start: span.start + 1,
-      end: span.end + 1,
-      lines: code,
-      complexity: 1 + branches,
-    };
-  });
+  return measure(lines, spans, BRANCHES);
 }
 
 interface Header {
