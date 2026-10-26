@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261025-el-paquete-npm-lleva-license-y-notice",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261025-el-paquete-npm-lleva-license-y-notice",
+  "baseCommit": "0f34f09794497cb5918f61d48418a7328ecb526c",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f01a9711dcf518a643b96834c960ea0d61e5509e41c214fd39929b04ab265384",
+    "at": "2026-10-26T01:19:54.824Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
