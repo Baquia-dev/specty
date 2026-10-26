@@ -43,3 +43,22 @@ El paquete `packages/exporters` ya convierte una spec en los archivos de OpenSpe
   - files: packages/cli/src/commands/export.ts, packages/cli/src/program.ts, packages/cli/package.json, pnpm-lock.yaml, packages/cli/test/export.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+`specty export [<id>] --to openspec|speckit|kiro [--out <carpeta>]` escribe la spec del cambio activo, o del que se nombra, en el formato elegido, y lista los archivos. Por defecto van a `.specty/exports/<formato>/`, fuera del código gobernado, con la estructura del formato dentro; con `--out`, donde diga la persona. El contexto (id, rama, fecha y petición literal) sale del estado y de `change.created`. Un formato que falta o que no existe, o un cambio que no está, se rechaza sin escribir nada. La CLI depende ahora de `@baquia-dev/specty-exporters`, y el comando se registra desde su módulo.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La carpeta por defecto no es el repositorio: escribir allí ensuciaría el árbol de trabajo con código gobernado, y el siguiente `specty new` lo rechazaría.
+- La primera verificación de la tarea falló por un test de la UI que se pasó de tiempo con la carga de la máquina en 80, ajeno a este cambio; con la carga por debajo de 20, pasó.
+
+### Pendientes
+
+- `packages/cli/src/program.ts` está en 307 líneas de código: su división por grupos de comandos va en el punto de deuda.

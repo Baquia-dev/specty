@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-specty-export-openspec-spec-kit-y-kiro",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-specty-export-openspec-spec-kit-y-kiro",
   "baseCommit": "82e4f174e411951df016254ef0898332325f262e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:80161088da9741cf99b421dc5783496c144f8c492889be585d1196e1242161f7",
@@ -40,12 +40,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "dff316d3133cc78af758ac3fddd895e8950dac7a",
+      "attempts": 2,
       "startedAt": "2026-10-26T01:08:09.418Z",
       "doneAt": "2026-10-26T01:16:53.329Z",
-      "summary": "specty export [<id>] --to openspec|speckit|kiro [--out <carpeta>] (commands/export.ts): escribe lo de exportSpec en .specty/exports/<formato>/ o en --out y lo lista; rechaza un formato o un cambio que no hay. La CLI depende de @baquia-dev/specty-exporters. ARCHITECTURE §6."
+      "summary": "specty export [<id>] --to openspec|speckit|kiro [--out <carpeta>] (commands/export.ts): escribe lo de exportSpec en .specty/exports/<formato>/ o en --out y lo lista; rechaza un formato o un cambio que no hay. La CLI depende de @baquia-dev/specty-exporters. ARCHITECTURE §6.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 3,
     "AC": 4,
     "T": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T01:17:23.016Z"
 }
