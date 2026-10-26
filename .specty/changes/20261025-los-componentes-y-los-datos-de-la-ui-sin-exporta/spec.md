@@ -40,7 +40,7 @@ Con todas sus reglas encendidas, knip marca en los componentes, los datos y el r
 
 ## Tareas
 
-- [ ] T1: Los componentes exportan solo lo que se importa
+- [x] T1: Los componentes exportan solo lo que se importa
   - files: packages/ui/src/components/badge.ts, packages/ui/src/components/button.ts, packages/ui/src/components/dialog.ts, packages/ui/src/components/diff-file.ts, packages/ui/src/components/toast.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck

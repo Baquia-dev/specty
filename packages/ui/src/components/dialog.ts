@@ -16,7 +16,7 @@ import { LucideX } from "./icons";
 let nextId = 0;
 
 /** Id of the open dialog's title, so the dialog is announced by it (`aria-labelledby`). */
-export const DIALOG_TITLE_ID = new InjectionToken<string>("DIALOG_TITLE_ID");
+const DIALOG_TITLE_ID = new InjectionToken<string>("DIALOG_TITLE_ID");
 
 /**
  * Opens dialogs on the CDK: focus moves in and stays there, the page behind is dimmed and

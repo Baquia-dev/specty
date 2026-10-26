@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-componentes-y-los-datos-de-la-ui-sin-exporta",
   "baseCommit": "dc839877de8b9b27326e34417c3f7251c296b6d1",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:28d5f88a74b5da13f30bece18648ba30070dbacadd43de16bef769a623924adf",
+    "at": "2026-10-26T01:57:00.861Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "308519fb5cfa1ac13c150a407bedee309e63371d",
+      "startedAt": "2026-10-26T01:57:01.216Z",
+      "doneAt": "2026-10-26T01:57:16.129Z",
+      "summary": "Dejan de exportarse PHASE_ICONS, ripple, DIALOG_TITLE_ID, LONG_FILE, PREVIEW_LINES y Toast, que solo usa su componente."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 2,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:28d5f88a74b5da13f30bece18648ba30070dbacadd43de16bef769a623924adf",
-    "at": "2026-10-26T01:57:00.861Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
