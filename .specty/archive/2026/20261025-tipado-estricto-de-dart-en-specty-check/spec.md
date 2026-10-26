@@ -67,3 +67,23 @@ En un proyecto Dart o Flutter, `specty check` falla si el analizador no está en
 ## Riesgos
 
 - R1: Un paquete de opciones conocido cambia de forma (`very_good_analysis`, `flutter_lints`) — se lee lo que trae de verdad, por su `package_config.json`, no una lista de paquetes que se suponen estrictos.
+
+## Cierre
+
+### Resumen
+
+En un proyecto Dart o Flutter, `specty check` trae `dart-strict`. Exige los tres modos estrictos del analizador en `analysis_options.yaml`, siguiendo sus `include` por `package:` (con `.dart_tool/package_config.json`) o por ruta, con lo propio por encima de lo incluido. Solo avisa cuando un `include` no se puede leer. Además falla con cada `// ignore:` o `// ignore_for_file:` que el cambio añade.
+
+### Desviaciones
+
+- Ninguna respecto al plan del cambio.
+
+### Decisiones
+
+- Un modo en `false` cuenta como uno que falta, y el mensaje dice cuáles hay que poner a `true`.
+- Sin `analysis_options.yaml`, la verificación falla igual que si le faltaran los tres modos: la instalación del corte 6 podrá crearlo.
+- Los comentarios que apagan el analizador se buscan con el mismo separador de código y comentarios que TypeScript, y solo cuentan al inicio de un comentario.
+
+### Pendientes
+
+- El escáner de imports de Dart para `layers`, con la misma regla de capas del core.

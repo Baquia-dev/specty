@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-tipado-estricto-de-dart-en-specty-check",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-tipado-estricto-de-dart-en-specty-check",
   "baseCommit": "0ed47d6d381638e290bceef8cf2eb4dd9b6d591e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c4470b91231e0e21b385cdbc4d1364608ae93a0ed867591825c6ce0ba5b241e9",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6c6e0aa7063d1364d492b64db786d62a3f7cdf99",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:00:57.890Z",
       "doneAt": "2026-10-26T01:03:30.145Z",
-      "summary": "formats §6 documenta dart-strict (modos, include por package_config.json y ruta, lo propio gana, aviso sin pub get, // ignore añadidos); ARCHITECTURE la añade a la fila de specty check."
+      "summary": "formats §6 documenta dart-strict (modos, include por package_config.json y ruta, lo propio gana, aviso sin pub get, // ignore añadidos); ARCHITECTURE la añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,6 @@
     "AC": 5,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T01:04:04.737Z"
 }
