@@ -341,6 +341,16 @@ Objetivo de rendimiento: p95 < 200 ms. Para acercarse, los hooks cargan solo su 
 | OpenCode (1.18.29 o posterior, y 2) | No tiene hooks de comando: un plugin de Specty registra `execute.before` (OpenCode 2, en `setup`) o `tool.execute.before` (OpenCode 1, en `server`), manda cada herramienta al guard con la forma de Claude Code (`tool_name`, `tool_input`) y la rechaza lanzando un error con el motivo cuando el guard responde 2 | `plugins/specty.js` en la configuración global (`$XDG_CONFIG_HOME/opencode`, o `~/.config/opencode`), no en el repositorio: sirve en todas las worktrees y los formateadores del proyecto no revisan su código | Implementado: `shell`/`bash` (en su `workdir`), `edit`, `write`, `multiedit` y `patch`/`apply_patch`. El plugin solo arranca el guard en carpetas con `.specty/config.yaml`. Aviso tras cada comando de shell: `execute.after` (OpenCode 2) añade una parte de texto a `result.content`, y `tool.execute.after` (OpenCode 1) lo añade al final de `output.output`; en OpenCode 2 no avisa si la herramienta falla, y nunca lanza tras el comando |
 | Resto (Aider, Zed, Cline, Continue…) | — | — | Solo capas 1, 3 y 4 |
 
+**Fin de turno** (revisado el 2026-10-26). Cuando el agente termina su turno, `specty hook agent-stop <agente>` ejecuta `specty check --changed`, con las verificaciones del plan si hay un cambio aprobado. Si falla, el agente recibe el informe y sigue en vez de dar la tarea por terminada. Lo instala `specty check --install`, con diff y confirmación, junto al guard de cada agente; fuera de un repositorio de Specty no hace nada.
+
+| Herramienta | Evento | Cómo sigue | Bucles |
+| --- | --- | --- | --- |
+| Claude Code | `Stop`, sin matcher, en el archivo del guard | `{"decision":"block","reason":…}` | con `stop_hook_active: true` deja terminar |
+| Codex | `Stop`, sin matcher, en su `hooks.json` del usuario | `{"decision":"block","reason":…}` | con `stop_hook_active: true` deja terminar |
+| Cursor | `stop`, en `.cursor/hooks.json` | `{"followup_message":…}`, solo con `status: "completed"` | su `loop_limit`, 5 por defecto |
+| Gemini CLI | `AfterAgent` documentado | — | Pendiente: Specty aún no le instala hooks |
+| OpenCode, Windsurf, Copilot, Antigravity | sin un fin de turno que haga seguir al agente | — | Respaldo: la regla escrita de AGENTS.md |
+
 ### Modelo de confianza
 
 Specty protege contra el agente impaciente (el que se salta pasos para ayudar) y contra el olvido humano. No protege contra una persona o un agente que quiera evadirlo deliberadamente con acceso de escritura al repositorio: en local, cualquier control se puede desactivar. Por eso las garantías fuertes viven en el servidor: el CI obligatorio y, en modo equipo, la revisión de PR. En la fase 4, la aprobación con presencia del usuario (WebAuthn, es decir, Touch ID o Windows Hello) eleva la barrera en local, porque el agente no puede generarla.

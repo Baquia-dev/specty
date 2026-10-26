@@ -53,6 +53,14 @@ export function checkStagedFailedLine(lang: Lang): string {
   );
 }
 
+/** The agent's end-of-turn line before the report of `specty check --changed`, when it fails. */
+export function checkChangedFailedLine(lang: Lang): string {
+  return translator(lang)(
+    "`specty check --changed` falla; corrígelo antes de terminar el turno:",
+    "`specty check --changed` fails; fix it before ending the turn:",
+  );
+}
+
 /** Why Claude Code's `WorktreeCreate` or `WorktreeRemove` hook refuses (ARCHITECTURE §10). */
 export type WorktreeHookRefusal =
   | { readonly reason: "no-repository"; readonly cwd: string }

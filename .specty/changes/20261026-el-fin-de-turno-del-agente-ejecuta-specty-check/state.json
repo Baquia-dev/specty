@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-el-fin-de-turno-del-agente-ejecuta-specty-check",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-el-fin-de-turno-del-agente-ejecuta-specty-check",
   "baseCommit": "ca9f2901b911ccf01839d1a03805c908a84c4c49",
   "revision": 1,
@@ -51,12 +51,26 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cb937067cd49556cea5b22c7b5f6316a66f38600",
+      "attempts": 1,
       "startedAt": "2026-10-26T10:01:19.995Z",
       "doneAt": "2026-10-26T10:02:55.350Z",
-      "summary": "check/install-agents.ts: check --install añade specty hook agent-stop junto al guard de Claude Code (Stop), Cursor (stop) y Codex (Stop, en su hooks.json de usuario), con el mismo comando, su diff y una sola vez; install.ts escribe rutas absolutas."
+      "summary": "check/install-agents.ts: check --install añade specty hook agent-stop junto al guard de Claude Code (Stop), Cursor (stop) y Codex (Stop, en su hooks.json de usuario), con el mismo comando, su diff y una sola vez; install.ts escribe rutas absolutas.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/hooks.ts",
+        "packages/core/src/index.ts",
+        "packages/cli/src/enforce/agent-stop.ts",
+        "packages/core/src/cards/index.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "9baf2cbd66a21932269d764ad74eccfa5ba016a7",
+      "startedAt": "2026-10-26T10:02:55.674Z",
+      "doneAt": "2026-10-26T10:07:07.384Z",
+      "summary": "ARCHITECTURE §10 documenta el fin de turno de cada agente y formats §6 el hook en check --install; la línea del hook pasa a core/cards/hooks.ts (checkChangedFailedLine), como pide la regla nueva de pnpm sources."
     }
   },
   "pending": {
@@ -67,6 +81,7 @@
     "A": 4,
     "AC": 5,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 2
   }
 }

@@ -79,6 +79,7 @@ export {
 export {
   type BlockedCommitView,
   blockedCommitMessage,
+  checkChangedFailedLine,
   checkStagedFailedLine,
   type WorktreeHookRefusal,
   worktreeHookRefusal,

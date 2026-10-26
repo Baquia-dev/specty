@@ -61,7 +61,7 @@ Cuando Claude Code, Cursor o Codex terminan su turno, un hook ejecuta `specty ch
   - files: packages/cli/src/check/install-agents.ts, packages/cli/src/check/install.ts, packages/cli/test/check-agent-stop.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/check-install.test.ts
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm check

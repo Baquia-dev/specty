@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { translator } from "@baquia-dev/specty-core";
+import { checkChangedFailedLine } from "@baquia-dev/specty-core";
 import { check } from "../commands/check";
 import { resolveActive } from "../flow/active";
 import { isRecord, parseJson } from "../io/files";
@@ -34,11 +34,7 @@ export async function agentStop(session: Session, tool: string, input: string): 
     planned ? { id: active.state.id } : undefined,
   );
   if (result.code === 0) return "";
-  const t = translator(session.lang);
-  const message = `${t(
-    "`specty check --changed` falla; corrígelo antes de terminar el turno:",
-    "`specty check --changed` fails; fix it before ending the turn:",
-  )}\n${result.report}`;
+  const message = `${checkChangedFailedLine(session.lang)}\n${result.report}`;
   return tool === "cursor"
     ? JSON.stringify({ followup_message: message })
     : JSON.stringify({ decision: "block", reason: message });
