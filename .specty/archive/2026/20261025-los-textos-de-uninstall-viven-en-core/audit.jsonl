@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T02:57:07.140Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"03c91cc1169a40061165d1ebcf2334518f42e5f6"}}
 {"ts":"2026-10-26T02:59:13.054Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":72520,"tree":"sha256:b6738c947bbc0f4bf5a5a0b89bdae41df977d62b871e7f78ebb41a55d6791429"}}
 {"ts":"2026-10-26T02:59:13.156Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"uninstall.ts pide sus textos a core (cards/uninstall.ts y backupLine) y ya no llama al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios."}}
+{"ts":"2026-10-26T02:59:41.918Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T02:59:49.412Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ca934f9b4676ab419da062789a08ce85af17bdd5d04a95abcd3d593a68fa843e","size":"M","warnings":1}}
+{"ts":"2026-10-26T03:00:02.300Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

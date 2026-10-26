@@ -43,3 +43,21 @@ Noveno cambio de la serie que lleva a core los textos de la CLI, con el último 
   - ac: AC1
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `uninstall` viven en `core/src/cards/uninstall.ts`, con tests: cada archivo, la simulación, la nota y la pregunta, el aviso de un cambio en curso, lo quitado y lo que se queda; la copia de seguridad usa `backupLine`, la de `init`. `uninstall.ts` ya no llama al traductor, y la salida es la misma: los tests de la CLI pasan sin cambios. Con este cambio, ningún comando de la instalación arma textos en la CLI.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Las respuestas de la pregunta de `uninstall` («No» primero, la opción por defecto) también salen de core, como las de `approve`.
+
+### Pendientes
+
+- Siguen en la CLI los textos de la incorporación (`integrate`, `flow/integrate.ts`, `flow/land.ts`), de `review` y de los demás comandos.

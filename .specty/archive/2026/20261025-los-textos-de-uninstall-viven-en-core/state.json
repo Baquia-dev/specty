@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-uninstall-viven-en-core",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-uninstall-viven-en-core",
   "baseCommit": "cf2a50116d1ee02a279b931d53911dd41f33466a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:59a5b7401707b479438b3bdb9bed7167e465966e4a55c108cff3d7c3a0472466",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "03c91cc1169a40061165d1ebcf2334518f42e5f6",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:57:07.140Z",
       "doneAt": "2026-10-26T02:59:13.155Z",
-      "summary": "uninstall.ts pide sus textos a core (cards/uninstall.ts y backupLine) y ya no llama al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios."
+      "summary": "uninstall.ts pide sus textos a core (cards/uninstall.ts y backupLine) y ya no llama al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T02:59:49.410Z"
 }
