@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-propose-task-done-y-scope-add-vive",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-propose-task-done-y-scope-add-vive",
   "baseCommit": "679d0b1c4bb0f6c43f2f137f96319ba3859aa0bf",
   "revision": 1,
@@ -40,12 +40,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ea68ee2ba6b99e033efc34926b73d1214075712b",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:15:32.432Z",
       "doneAt": "2026-10-26T02:18:08.426Z",
-      "summary": "core/src/cards/task.ts tiene los textos de task done (taskDoneRefusalCard y taskDoneCard, con sus avisos) y de scope add (scopeAddRefusalCard, inScopeLead y autoApprovedLead), copiados letra a letra de la CLI, con tests en español e inglés."
+      "summary": "core/src/cards/task.ts tiene los textos de task done (taskDoneRefusalCard y taskDoneCard, con sus avisos) y de scope add (scopeAddRefusalCard, inScopeLead y autoApprovedLead), copiados letra a letra de la CLI, con tests en español e inglés.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9cd1903cc80053c0b4c9d8a4721c6fb89c243b59",
+      "startedAt": "2026-10-26T02:18:08.723Z",
+      "doneAt": "2026-10-26T02:21:47.629Z",
+      "summary": "propose.ts, task.ts y scope.ts piden sus textos a core (noActiveChangeCard, notProposableCard, revisionLabel, runNext y las tarjetas de cards/task.ts) y ya no llaman al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios."
     }
   },
   "pending": {

@@ -1,20 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  autoApprovedLead,
   autoBasis,
-  blockedCard,
   type ChangeState,
   classifyPath,
   decideScopeRequest,
   headerOf,
+  inScopeLead,
   matchesAny,
   nextCard,
   normalizePath,
   type Output,
   parseSpec,
   pathProblem,
+  scopeAddRefusalCard,
   scopeRequestedCard,
   scopeRulesFrom,
-  translator,
   withLead,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
@@ -30,19 +31,10 @@ export async function scopeAdd(
   reason: string,
   taskOption: string | undefined,
 ): Promise<Output> {
-  const t = translator(session.lang);
   const { cards } = session;
-  const nextStep = t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`);
   const active = await resolveActive(session);
   if (active === undefined || active.state.phase !== "implementing") {
-    return blockedCard(
-      headerOf(),
-      t(
-        "Solo se amplía el alcance durante la implementación.",
-        "Scope is only extended during implementation.",
-      ),
-      nextStep,
-    );
+    return scopeAddRefusalCard({ reason: "not-implementing" }, headerOf(), cards);
   }
   const { state } = active;
   const header = headerOf(state.id, "implementing");
@@ -53,31 +45,19 @@ export async function scopeAdd(
   ).toUpperCase();
   const stored = state.tasks[taskId];
   if (stored?.status !== "active") {
-    return blockedCard(
-      header,
-      t(`${taskId || "La tarea"} no está activa.`, `${taskId || "The task"} is not active.`),
-      nextStep,
-    );
+    return scopeAddRefusalCard({ reason: "not-active", task: taskId }, header, cards);
   }
   const paths = rawPaths.map(normalizePath);
   const invalid = paths.filter((path) => pathProblem(path) !== undefined);
-  if (invalid.length > 0 || paths.length === 0 || reason.trim().length === 0) {
-    return {
-      ...blockedCard(
-        header,
-        invalid.length > 0
-          ? t(`Rutas no válidas: ${invalid.join(", ")}.`, `Invalid paths: ${invalid.join(", ")}.`)
-          : t(
-              "Indica al menos una ruta y el motivo (--reason).",
-              "Give at least one path and the reason (--reason).",
-            ),
-        t(
-          `ejecuta \`${cards.command} scope add <ruta> --task ${taskId} --reason "<motivo>"\`.`,
-          `run \`${cards.command} scope add <path> --task ${taskId} --reason "<reason>"\`.`,
-        ),
-      ),
-      status: "invalid",
-    };
+  if (invalid.length > 0) {
+    return scopeAddRefusalCard(
+      { reason: "invalid-paths", paths: invalid, task: taskId },
+      header,
+      cards,
+    );
+  }
+  if (paths.length === 0 || reason.trim().length === 0) {
+    return scopeAddRefusalCard({ reason: "incomplete", task: taskId }, header, cards);
   }
   const spec = parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const task = spec.sections.tasks?.items.find((item) => item.id === taskId);
@@ -89,7 +69,7 @@ export async function scopeAdd(
   );
   if (missing.length === 0) {
     return withLead(
-      t("Esas rutas ya están dentro del alcance.", "Those paths are already within the scope."),
+      inScopeLead(cards),
       nextCard({ change: await changeView(session, active), dirty: [] }, cards),
     );
   }
@@ -121,21 +101,13 @@ export async function scopeAdd(
       },
       "specty",
     );
-    const described = decided.map((entry) => {
-      if (entry.basis !== "planned") return entry.path;
-      const tasks = entry.tasks.join(", ");
-      return entry.tasks.length === 0
-        ? t(`${entry.path} (ya en Archivos)`, `${entry.path} (already in Files)`)
-        : t(
-            `${entry.path} (ya en Archivos, prevista para ${tasks})`,
-            `${entry.path} (already in Files, planned for ${tasks})`,
-          );
-    });
+    const approved = decided.map((entry) => ({
+      path: entry.path,
+      planned: entry.basis === "planned",
+      tasks: entry.tasks,
+    }));
     const card = withLead(
-      t(
-        `Ampliación aprobada por la política: ${described.join(", ")}.`,
-        `Extension approved by policy: ${described.join(", ")}.`,
-      ),
+      autoApprovedLead(approved, cards),
       nextCard({ change: await changeView(session, updated), dirty: [] }, cards),
     );
     return { ...card, blocks: [...card.blocks, ...shared] };
