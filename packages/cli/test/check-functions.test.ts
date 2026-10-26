@@ -73,12 +73,41 @@ describe("the function checks of specty check", () => {
         "OK 6/7 · FALLA: function-lines",
       ].join("\n"),
     );
-    const python = await tempRepo({
-      "pyproject.toml": '[project]\nname = "app"\n',
+    // Elixir has no estimator of its own: the two checks do not show.
+    const elixir = await tempRepo({
+      "mix.exs": "defmodule App.MixProject do\nend\n",
       ".specty/config.yaml": `${CONFIG()}checks:\n  levels: { secrets: off, tests: off }\n`,
     });
-    await writeFiles(python, { "app.py": "def f():\n    return 1\n" });
-    expect((await cli(python, ["check"])).out).toBe("OK 5/5");
+    await writeFiles(elixir, { "lib/app.ex": "defmodule App do\n  def f, do: 1\nend\n" });
+    expect((await cli(elixir, ["check"])).out).toBe("OK 5/5");
+  });
+
+  it("measure Python by its indentation and Ruby by def … end (S4 AC1)", async () => {
+    const root = await tempRepo({
+      "pyproject.toml": '[project]\nname = "app"\n',
+      Gemfile: 'source "https://rubygems.org"\n',
+      ".specty/config.yaml": `${CONFIG()}${CHECKS.replace("{ secrets: off }", "{ secrets: off, tests: off }")}`,
+    });
+    const branches = Array.from(
+      { length: 3 },
+      (_, index) => `    if x == ${index}: return ${index}`,
+    );
+    await writeFiles(root, {
+      "app/rules.py": ["def classify(x):", ...branches, "    return x", ""].join("\n"),
+      "lib/steps.rb": [
+        "def steps",
+        ...Array.from({ length: 5 }, (_, i) => `  step ${i}`),
+        "end",
+        "",
+      ].join("\n"),
+    });
+    const run = await cli(root, ["check"]);
+    expect(run.out).toContain(
+      "FALLA function-lines\n  lib/steps.rb:1 `steps` tiene 7 líneas de código (máximo 5)",
+    );
+    expect(run.out).toContain(
+      "FALLA complexity\n  app/rules.py:1 `classify` tiene complejidad 4 (máximo 3)",
+    );
   });
 
   it("says it in English", async () => {

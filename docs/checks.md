@@ -179,7 +179,7 @@ Cada capa tiene sus rutas (`paths`), las capas que puede importar (`may`; ella m
 
 ### `function-lines`
 
-**Stack:** los lenguajes de llaves; todos los stacks salvo Python, Ruby y Elixir.
+**Stack:** todos salvo Elixir. En los lenguajes de llaves, una función va de su cabecera a la llave que la cierra; en Python, de su `def` a la última línea más indentada; en Ruby, de su `def` al `end` que la cierra.
 
 Las líneas de código de cada función, sin blancos ni comentarios. Falla con una función que el cambio toca, que pasa del límite y que es nueva o creció. Una que ya lo pasaba y no creció no cuenta, salvo con `--all`. Los tests no se miden.
 
@@ -382,7 +382,7 @@ Specty ya detecta esos stacks. Sin un proveedor propio funcionan:
 
 - el formato, el lint y los tipos que el proyecto configura: RuboCop, Standard, Sorbet y Steep en Ruby; PHPStan, Psalm, PHP_CodeSniffer, Pint y PHP CS Fixer en PHP; Spotless, Checkstyle, PMD, detekt y ktlint en Java y Kotlin; `dotnet build` en .NET;
 - `tests` con su comando: `mvn test` o `gradle test`, `composer test` o `php artisan test`, `bundle exec rspec` o `bin/rails test`, `dotnet test`;
-- `function-lines` y `complexity`, salvo en Ruby;
+- `function-lines` y `complexity`;
 - `max-lines`, `focused-tests` y `skipped-tests`, que ya conocen `@Disabled`, `@Ignore`, `[Ignore]`, `Skip =` de xUnit y `focus: true` de RSpec;
 - `todo`, `secrets` y `suppressions`, con las supresiones de cada lenguaje;
 - las del plan, con `dependencies` en sus manifiestos;

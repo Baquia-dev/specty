@@ -179,7 +179,7 @@ Each layer has its paths (`paths`), the layers it may import (`may`; itself and 
 
 ### `function-lines`
 
-**Stack:** the languages with braces; every stack except Python, Ruby and Elixir.
+**Stack:** every stack except Elixir. In the languages with braces, a function goes from its header to the brace that closes it; in Python, from its `def` to its last line indented deeper; in Ruby, from its `def` to the `end` that closes it.
 
 The lines of code of each function, without blank lines or comments. It fails on a function the change touches that is over the limit and is new or grew. One that was already over and did not grow does not count, except with `--all`. Tests are not measured.
 
@@ -382,7 +382,7 @@ Specty already detects those stacks. Without a provider of their own, these work
 
 - the format, lint and types the project configures: RuboCop, Standard, Sorbet and Steep in Ruby; PHPStan, Psalm, PHP_CodeSniffer, Pint and PHP CS Fixer in PHP; Spotless, Checkstyle, PMD, detekt and ktlint in Java and Kotlin; `dotnet build` in .NET;
 - `tests` with its command: `mvn test` or `gradle test`, `composer test` or `php artisan test`, `bundle exec rspec` or `bin/rails test`, `dotnet test`;
-- `function-lines` and `complexity`, except in Ruby;
+- `function-lines` and `complexity`;
 - `max-lines`, `focused-tests` and `skipped-tests`, which already know `@Disabled`, `@Ignore`, `[Ignore]`, xUnit's `Skip =` and RSpec's `focus: true`;
 - `todo`, `secrets` and `suppressions`, with each language's suppressions;
 - the plan's checks, with `dependencies` in their manifests;

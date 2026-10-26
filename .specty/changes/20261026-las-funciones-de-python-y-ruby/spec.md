@@ -51,7 +51,7 @@ follows:
   - files: packages/core/src/checks/functions-ruby.ts, packages/core/src/checks/functions.ts, packages/core/test/checks/functions-scripts.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-scripts.test.ts test/checks/functions.test.ts
-- [ ] T3: Las verificaciones en los repositorios de Python y Ruby
+- [x] T3: Las verificaciones en los repositorios de Python y Ruby
   - files: packages/cli/src/check/functions.ts, docs/checks.md, docs/checks.en.md, docs/formats.md
   - ac: AC1, AC3, AC4
   - verify: pnpm check

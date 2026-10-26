@@ -25,12 +25,12 @@ interface Measured {
   readonly before?: FunctionMetric;
 }
 
-// The stacks whose languages have no braces, which `functionMetrics` does not measure.
-const WITHOUT_BRACES: ReadonlySet<Stack["language"]> = new Set(["python", "ruby", "elixir"]);
+// The stacks whose language `functionMetrics` has no estimator for.
+const UNMEASURED: ReadonlySet<Stack["language"]> = new Set(["elixir"]);
 
 export const functionsProvider: Provider = {
   id: "functions",
-  applies: (stacks) => stacks.some((stack) => !WITHOUT_BRACES.has(stack.language)),
+  applies: (stacks) => stacks.some((stack) => !UNMEASURED.has(stack.language)),
   checks: [check("function-lines", "lines"), check("complexity", "complexity")],
 };
 
