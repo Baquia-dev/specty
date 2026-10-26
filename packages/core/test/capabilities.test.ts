@@ -39,6 +39,17 @@ describe("the capability table", () => {
     expect(supports("claude-code").every((support) => support.state === "yes")).toBe(true);
   });
 
+  it("leaves nothing pending: each capability is yes, indirect, not possible or not offered", () => {
+    const states = Object.keys(AGENT_NAMES)
+      .filter(isAgentTool)
+      .flatMap((tool) => supports(tool).map((support) => support.state));
+    for (const state of states) {
+      expect(["yes", "indirect", "impossible", "unsupported"]).toContain(state);
+    }
+    expect(capabilityTable("es")).not.toContain("pendiente");
+    expect(capabilityTable("en")).not.toContain("pending");
+  });
+
   it("says why each capability is not possible, and how each indirect one works (AC2)", () => {
     for (const tool of Object.keys(AGENT_NAMES).filter(isAgentTool)) {
       for (const support of supports(tool)) {

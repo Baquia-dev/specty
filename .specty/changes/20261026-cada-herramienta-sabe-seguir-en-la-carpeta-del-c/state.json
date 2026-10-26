@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-cada-herramienta-sabe-seguir-en-la-carpeta-del-c",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-cada-herramienta-sabe-seguir-en-la-carpeta-del-c",
   "baseCommit": "c03deef36ff8ceddb1fbddcd315f5c03ef239e1e",
   "revision": 1,
@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "93c91d05b11d808d15ec6c45b31e097fe408f229",
+      "attempts": 1,
       "startedAt": "2026-10-26T23:18:36.363Z",
       "doneAt": "2026-10-26T23:22:21.212Z",
-      "summary": "Si Specty reconoce por su entorno la herramienta que ejecutó new (Codex, OpenCode, Cursor, Gemini CLI, Antigravity CLI), el SIGUIENTE pide que la persona la abra en la carpeta del cambio con su comando; Claude Code y los demás siguen igual. testEnv quita la marca de Antigravity CLI."
+      "summary": "Si Specty reconoce por su entorno la herramienta que ejecutó new (Codex, OpenCode, Cursor, Gemini CLI, Antigravity CLI), el SIGUIENTE pide que la persona la abra en la carpeta del cambio con su comando; Claude Code y los demás siguen igual. testEnv quita la marca de Antigravity CLI.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8d76156f100d058e52ac8ab59d714fc6bde07da7",
+      "startedAt": "2026-10-26T23:22:21.558Z",
+      "doneAt": "2026-10-26T23:25:35.857Z",
+      "summary": "Support ya no admite el estado pending (ni su texto en STATES), así que ninguna capacidad puede volver a quedar pendiente; el test lo fija y ARCHITECTURE §10 lo explica, junto con el SIGUIENTE de new por herramienta."
     }
   },
   "pending": {

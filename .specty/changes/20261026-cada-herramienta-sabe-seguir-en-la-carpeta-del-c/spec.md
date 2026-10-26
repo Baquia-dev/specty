@@ -50,7 +50,7 @@ Además, como ya no queda ninguna capacidad «pendiente», ese estado sale del t
   - files: packages/core/src/cards/new.ts, packages/cli/src/commands/new.ts, packages/cli/test/support.ts, packages/core/test/cards/new.test.ts, packages/cli/test/worktrees.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts
-- [ ] T2: La tabla queda sin pendientes
+- [x] T2: La tabla queda sin pendientes
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts test/cards/new.test.ts
