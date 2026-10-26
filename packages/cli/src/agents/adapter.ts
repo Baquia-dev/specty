@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { GuardReply, GuardTool, RawAction } from "../enforce/actions";
+import { isRecord } from "../io/files";
 
 type Event = Readonly<Record<string, unknown>>;
+
+/** A change to a JSON settings file, from its top-level object to the new one. */
+export type JsonUpdate = (value: Record<string, unknown>) => Record<string, unknown>;
 
 /**
  * What an event of an agent's hooks is: before an action, after a shell command, a session that
@@ -34,6 +38,39 @@ export interface AgentAdapter {
   readonly failed: (message: string) => GuardReply;
   /** The reply that brings the task card back after a compaction, for an agent that can. */
   readonly card?: (text: string) => GuardReply;
+  /** Its end of turn, for an agent whose end of turn can send it back to work (ADR 0012). */
+  readonly stop?: AgentStop;
+}
+
+/** `specty hook agent-stop <agent>`: when it runs, what it answers, and where it goes. */
+export interface AgentStop {
+  /** Whether this end of turn is one to check. */
+  readonly acts: (event: Event) => boolean;
+  /** What sends the agent back to work with the report. */
+  readonly reply: (message: string) => string;
+  /** The files where `check --install` puts the hook, next to Specty's guard. */
+  readonly files: readonly string[];
+  /** Adds the hook, with the command that runs it and the time limit in seconds. */
+  readonly hook: (command: string, timeout: number) => JsonUpdate;
+}
+
+/**
+ * Claude Code's end of turn, which Codex shares: `Stop` goes back to work on `{ decision: "block",
+ * reason }` and marks with `stop_hook_active` a turn it already sent back, which may end now so
+ * that it never loops. The hook goes in `Stop`, with no matcher, in `files`.
+ */
+export function blockingStop(files: readonly string[]): AgentStop {
+  return {
+    acts: (event) => event.stop_hook_active !== true,
+    reply: (message) => JSON.stringify({ decision: "block", reason: message }),
+    files,
+    hook: (command, timeout) => (value) => {
+      const hooks = isRecord(value.hooks) ? value.hooks : {};
+      const current: unknown[] = Array.isArray(hooks.Stop) ? hooks.Stop : [];
+      const entry = { hooks: [{ type: "command", command, timeout }] };
+      return { ...value, hooks: { ...hooks, Stop: [...current, entry] } };
+    },
+  };
 }
 
 /**

@@ -78,7 +78,7 @@ Lo que Specty hace con cada agente está hoy repartido en ocho archivos, con ram
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agents.test.ts test/enforce.test.ts test/cursor.test.ts test/codex.test.ts test/opencode.test.ts test/bundle.test.ts
   - type: refactor
   - notes: Medir la mediana del guard ante un `Bash` (20 ejecuciones) con el `dist` de main y con el de la rama (A2).
-- [ ] T2: El fin de turno por el módulo de cada agente
+- [x] T2: El fin de turno por el módulo de cada agente
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/agents/cursor.ts, packages/cli/src/agents/codex.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/src/check/install-agents.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/check-install.test.ts

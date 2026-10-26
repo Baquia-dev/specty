@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "dbe5972db1ab12b19b1f7b848605180d420dd2e7",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:32:06.345Z",
       "doneAt": "2026-10-26T16:39:18.135Z",
-      "summary": "Cada agente con guard tiene su módulo en agents/ con el contrato de adapter.ts (evento, acción, respuesta); el guard le pregunta en vez de ramificar por herramienta. actions.ts queda con lo común. Prueba nueva agents.test.ts; el guard tarda lo mismo que en main."
+      "summary": "Cada agente con guard tiene su módulo en agents/ con el contrato de adapter.ts (evento, acción, respuesta); el guard le pregunta en vez de ramificar por herramienta. actions.ts queda con lo común. Prueba nueva agents.test.ts; el guard tarda lo mismo que en main.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "40dbd9c35b15b4e5c92a38819772d2e62f532689",
+      "startedAt": "2026-10-26T16:39:18.450Z",
+      "doneAt": "2026-10-26T16:41:19.604Z",
+      "summary": "El fin de turno de Claude Code, Codex y Cursor vive en su módulo (stop: cuándo actúa, qué responde y dónde va su hook); agent-stop y check --install recorren los módulos. Claude Code y Codex comparten blockingStop."
     }
   },
   "pending": {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import { parse } from "jsonc-parser";
-import { CODEX_HOOKS } from "../install/agents";
+import { ADAPTERS } from "../agents";
 import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord } from "../io/files";
 import type { Session } from "../session";
@@ -9,48 +9,23 @@ import type { Session } from "../session";
 /**
  * The agents' end-of-turn hook for `specty check --install` (ADR 0012): next to Specty's guard,
  * in the same file and with the same command, each agent that has an end of turn which sends it
- * back to work gets `specty hook agent-stop <agent>`. Claude Code and Codex call it from `Stop`,
- * Cursor from `stop`. An agent without the guard gets nothing, and one that has the hook, nothing
- * again.
+ * back to work gets `specty hook agent-stop <agent>`, where and as its module says (`agents/`).
+ * An agent without the guard gets nothing, and one that has the hook, nothing again.
  */
-
-type Entry = Record<string, unknown>;
-
-/** Builds the hook entry from the command that runs it and the session's time limit. */
-type Hook = (command: string, timeout: number) => (value: Entry) => Entry;
-
-const stopHook =
-  (event: string): Hook =>
-  (command, timeout) =>
-  (value) => {
-    const hooks = isRecord(value.hooks) ? value.hooks : {};
-    const current: unknown[] = Array.isArray(hooks[event]) ? hooks[event] : [];
-    const entry = { hooks: [{ type: "command", command, timeout }] };
-    return { ...value, hooks: { ...hooks, [event]: [...current, entry] } };
-  };
-
-const cursorHook: Hook = (command) => (value) => {
-  const hooks = isRecord(value.hooks) ? value.hooks : {};
-  const current: unknown[] = Array.isArray(hooks.stop) ? hooks.stop : [];
-  return { ...value, hooks: { ...hooks, stop: [...current, { command }] } };
-};
 
 /** Plans the hook into `files`, the plan's files, for each agent whose guard is there. */
 export async function agentStopHooks(session: Session, files: InstallFiles): Promise<void> {
-  const { root } = session;
-  const targets: readonly (readonly [string, string, Hook])[] = [
-    [join(root, ".claude/settings.json"), "claude-code", stopHook("Stop")],
-    [join(root, ".claude/settings.local.json"), "claude-code", stopHook("Stop")],
-    [join(root, ".cursor/hooks.json"), "cursor", cursorHook],
-    [join(root, CODEX_HOOKS), "codex", stopHook("Stop")],
-  ];
-  for (const [file, tool, hook] of targets) {
-    const text = await files.read(file);
-    if (text === undefined || text.includes(`hook agent-stop ${tool}`)) continue;
-    const prefix = guardPrefix(text, tool);
-    if (prefix === undefined) continue;
-    const command = `${prefix} hook agent-stop ${tool}`;
-    await rewriteJson(file, hook(command, session.config.verify.timeoutSec), false, files);
+  for (const { tool, stop } of Object.values(ADAPTERS)) {
+    if (stop === undefined) continue;
+    for (const path of stop.files) {
+      const file = join(session.root, path);
+      const text = await files.read(file);
+      if (text === undefined || text.includes(`hook agent-stop ${tool}`)) continue;
+      const prefix = guardPrefix(text, tool);
+      if (prefix === undefined) continue;
+      const command = `${prefix} hook agent-stop ${tool}`;
+      await rewriteJson(file, stop.hook(command, session.config.verify.timeoutSec), false, files);
+    }
   }
 }
 

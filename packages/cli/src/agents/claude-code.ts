@@ -2,14 +2,15 @@
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { isWorktreeEvent } from "../enforce/worktree-hooks";
 import { isRecord } from "../io/files";
-import { type AgentAdapter, exitFailed, exitReply } from "./adapter";
+import { type AgentAdapter, blockingStop, exitFailed, exitReply } from "./adapter";
 
 /** After a Bash command, whether it succeeded or failed. */
 const AFTER: ReadonlySet<unknown> = new Set(["PostToolUse", "PostToolUseFailure"]);
 
 /**
  * Claude Code (ARCHITECTURE §10): `PreToolUse`, `PostToolUse` and `PostToolUseFailure`, the
- * worktree events, and `SessionStart` after a compaction, whose output it adds to the context.
+ * worktree events, `SessionStart` after a compaction, whose output it adds to the context, and
+ * `Stop` at the end of each turn.
  */
 export const claudeCode: AgentAdapter = {
   tool: "claude-code",
@@ -22,6 +23,7 @@ export const claudeCode: AgentAdapter = {
   reply: exitReply,
   failed: exitFailed,
   card: (text) => ({ code: 0, stdout: text, stderr: "" }),
+  stop: blockingStop([".claude/settings.json", ".claude/settings.local.json"]),
 };
 
 function action(event: Readonly<Record<string, unknown>>): RawAction {

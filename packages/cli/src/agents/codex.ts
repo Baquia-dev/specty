@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { patchPaths } from "@baquia-dev/specty-core";
 import type { RawAction } from "../enforce/actions";
+import { CODEX_HOOKS } from "../install/agents";
 import { isRecord } from "../io/files";
-import { type AgentAdapter, exitFailed, exitReply } from "./adapter";
+import { type AgentAdapter, blockingStop, exitFailed, exitReply } from "./adapter";
 
 /**
- * Codex (ARCHITECTURE §10): `PreToolUse` with `Bash` and `apply_patch`, and `PostToolUse` with
- * `Bash`, which also comes after a command that failed. It reads exit 2 as Claude Code does.
+ * Codex (ARCHITECTURE §10): `PreToolUse` with `Bash` and `apply_patch`, `PostToolUse` with `Bash`,
+ * which also comes after a command that failed, and `Stop`. It reads them as Claude Code does.
  */
 export const codex: AgentAdapter = {
   tool: "codex",
@@ -14,6 +15,7 @@ export const codex: AgentAdapter = {
   action,
   reply: exitReply,
   failed: exitFailed,
+  stop: blockingStop([CODEX_HOOKS]),
 };
 
 /** Codex sends a command and a patch alike in `tool_input.command`. */
