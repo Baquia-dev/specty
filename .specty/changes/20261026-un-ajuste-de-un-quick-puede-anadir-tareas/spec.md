@@ -38,7 +38,7 @@ Hoy un cambio quick cuya verificación completa falla al aceptarlo queda atascad
 
 ## Tareas
 
-- [ ] T1: El límite de tareas del quick, solo en el primer plan
+- [x] T1: El límite de tareas del quick, solo en el primer plan
   - files: packages/core/src/validate/structure.ts, packages/core/test/validate/structure.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/structure.test.ts

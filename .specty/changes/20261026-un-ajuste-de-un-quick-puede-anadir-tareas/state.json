@@ -6,6 +6,13 @@
   "branch": "specty/20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
   "baseCommit": "e3f23e4782f82e13a99b00cfd09d2a40ceaf2a7e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4e477a5dba22773c4b31d1f3f8fa7d8a4afd5a32133176ed5ff07246e79a7bfc",
+    "at": "2026-10-26T16:40:58.430Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "07738570b8f948d88a3fcf1a61edb6d221482aab",
+      "startedAt": "2026-10-26T16:40:58.848Z",
+      "doneAt": "2026-10-26T16:41:39.535Z",
+      "summary": "checkQuickLane solo limita a una tarea antes de la primera aprobación (sin revisión aprobada); los límites de archivos y rutas sensibles siguen. Test: un ajuste aprobado con T2 pasa en adjusting y review, y con más archivos sigue fallando."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4e477a5dba22773c4b31d1f3f8fa7d8a4afd5a32133176ed5ff07246e79a7bfc",
-    "at": "2026-10-26T16:40:58.430Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
