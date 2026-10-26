@@ -2,7 +2,7 @@
 import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
 import { geminiPointerLine, geminiTrustWarning, guardLine } from "@baquia-dev/specty-core";
-import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
+import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import {
   excludeLocally,
   GEMINI_SETTINGS,
@@ -14,33 +14,53 @@ import {
 import { rewriteJson } from "../install/files";
 import { GEMINI_POINTER, writePointer } from "../install/project-files";
 import { isRecord, readText } from "../io/files";
-import { type AgentAdapter, exitFailed, exitReply } from "./adapter";
+import { type AgentAdapter, exitFailed, exitReply, jsonStop } from "./adapter";
 
-/** The events the guard listens to, each with a regular expression on `tool_name`. */
-const EVENTS: Readonly<Record<string, string>> = {
+/**
+ * The events the guard listens to, each with a regular expression on `tool_name`; `BeforeAgent`,
+ * with none, starts each turn.
+ */
+const EVENTS: Readonly<Record<string, string | undefined>> = {
   BeforeTool: "run_shell_command|write_file|replace",
   AfterTool: "run_shell_command",
+  BeforeAgent: undefined,
 };
 
 /**
- * Gemini CLI (ARCHITECTURE §10): `BeforeTool` and `AfterTool` in its project settings, shaped as
- * Claude Code's hooks. Before an action it reads exit 2 as Claude Code does, and sends stderr to
- * the agent as the tool's error; after a command, the warning follows its result
- * (`additionalContext`). Its input brings no id for the tool call.
+ * Gemini CLI (ARCHITECTURE §10): `BeforeTool`, `AfterTool` and `BeforeAgent` in its project
+ * settings, shaped as Claude Code's hooks. Before an action it reads exit 2 as Claude Code does,
+ * and sends stderr to the agent as the tool's error; after a command, the warning follows its
+ * result (`additionalContext`). Its `PreCompress` comes before every attempt to compact, whether
+ * it compacts or not, so the card comes with each turn's prompt instead. Its input brings no id
+ * for the tool call.
  */
 export const geminiCli: AgentAdapter = {
   tool: "gemini-cli",
   normalize,
-  kind: (event) => (event.hook_event_name === "AfterTool" ? "after" : "before"),
+  kind: (event) => {
+    if (event.hook_event_name === "AfterTool") return "after";
+    return event.hook_event_name === "BeforeAgent" ? "turn" : "before";
+  },
   action,
   reply: (verdict, phase) => {
     if (phase === "before" || verdict.allow) return exitReply(verdict);
-    const output = {
-      hookSpecificOutput: { hookEventName: "AfterTool", additionalContext: verdict.text },
-    };
-    return { code: 0, stdout: JSON.stringify(output), stderr: "" };
+    return context("AfterTool", verdict.text);
   },
   failed: exitFailed,
+  inject: (texts) =>
+    texts.length === 0 ? exitReply({ allow: true }) : context("BeforeAgent", texts.join("\n\n")),
+  // `AfterAgent` sends the reason as a new prompt, and marks the turn it sent back.
+  stop: {
+    acts: (event) => event.stop_hook_active !== true,
+    reply: (message) => JSON.stringify({ decision: "deny", reason: message }),
+    plan: jsonStop([GEMINI_SETTINGS], (command, timeout) => (value) => {
+      const hooks = isRecord(value.hooks) ? value.hooks : {};
+      const current: unknown[] = Array.isArray(hooks.AfterAgent) ? hooks.AfterAgent : [];
+      // Gemini CLI counts a hook's time limit in milliseconds.
+      const entry = { hooks: [{ type: "command", command, timeout: timeout * 1000 }] };
+      return { ...value, hooks: { ...hooks, AfterAgent: [...current, entry] } };
+    }),
+  },
   install: async ({ root, git, invocation, files, lang }) => {
     const local = !invocation.portable;
     const command = `${invocation.command} guard --tool gemini-cli`;
@@ -97,6 +117,12 @@ function normalize(event: Record<string, unknown>): Record<string, unknown> {
     .digest("hex")
     .slice(0, 16);
   return { ...event, cwd, ...(session === undefined ? {} : { tool_use_id: `${session}-${call}` }) };
+}
+
+/** Text Gemini CLI adds for the agent: after a tool's result, or to the turn's prompt. */
+function context(event: "AfterTool" | "BeforeAgent", text: string): GuardReply {
+  const output = { hookSpecificOutput: { hookEventName: event, additionalContext: text } };
+  return { code: 0, stdout: JSON.stringify(output), stderr: "" };
 }
 
 function action(event: Readonly<Record<string, unknown>>): RawAction {

@@ -6,6 +6,13 @@
   "branch": "specty/20261026-gemini-cli-comprueba-el-fin-de-turno-trae-la-tar",
   "baseCommit": "94f91d91f6c49701d373032bca54bce4c94a198d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ecb9b958f544078633f50956316578f53f40c8d8caacc73edd3822c6953982a3",
+    "at": "2026-10-26T20:56:38.043Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -34,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b0f07305e1b245e35343c7500d5caf3b0a998d3b",
+      "startedAt": "2026-10-26T20:56:38.421Z",
+      "doneAt": "2026-10-26T21:01:12.851Z",
+      "summary": "Gemini CLI comprueba el fin de turno: AfterAgent (check --install, en milisegundos) responde decision deny con el informe y deja terminar con stop_hook_active. BeforeAgent es el evento turn y trae la tarjeta de next como additionalContext."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -44,12 +61,5 @@
     "AC": 6,
     "T": 4,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ecb9b958f544078633f50956316578f53f40c8d8caacc73edd3822c6953982a3",
-    "at": "2026-10-26T20:56:38.043Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

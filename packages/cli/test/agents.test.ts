@@ -121,7 +121,11 @@ describe("each agent's module", () => {
     expect(ADAPTERS.opencode.kind({ hook_event_name: "SessionStart", source: "compact" })).toBe(
       "compact",
     );
-    expect(kinds("gemini-cli", ["BeforeTool", "AfterTool"])).toEqual(["before", "after"]);
+    expect(kinds("gemini-cli", ["BeforeTool", "AfterTool", "BeforeAgent"])).toEqual([
+      "before",
+      "after",
+      "turn",
+    ]);
   });
 
   it("answers Gemini CLI as Claude Code before an action, and after a command in its result", () => {
@@ -136,6 +140,11 @@ describe("each agent's module", () => {
       hookSpecificOutput: { hookEventName: "AfterTool", additionalContext: deny.text },
     });
     expect(gemini.failed("specty guard: roto").code).not.toBe(2);
+    // The card goes with the turn's prompt; nothing to add says nothing.
+    expect(JSON.parse(gemini.inject?.(["TARJETA"]).stdout ?? "")).toEqual({
+      hookSpecificOutput: { hookEventName: "BeforeAgent", additionalContext: "TARJETA" },
+    });
+    expect(gemini.inject?.([])).toEqual(silent);
   });
 
   it("brings the card back after a compaction where the tool reads it: all but Cursor", () => {

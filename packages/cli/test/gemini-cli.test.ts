@@ -1,7 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, cli, git, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import {
+  APP,
+  CONFIG,
+  cli,
+  git,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
+
+// Put together from parts, so that this file does not trip `specty check`.
+const TODO = "TODO";
+const CHECKS = "checks:\n  levels: { secrets: off }\n";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
 async function implementing(): Promise<string> {
@@ -108,6 +123,7 @@ describe("installing the guard in Gemini CLI", () => {
     expect(settings.hooks).toEqual({
       BeforeTool: [lint, ours("run_shell_command|write_file|replace")],
       AfterTool: [ours("run_shell_command")],
+      BeforeAgent: [{ hooks: ours("").hooks }],
     });
     expect(await read(root, ".git/info/exclude")).toContain(`/${SETTINGS}`);
     expect(git(root, "status", "--porcelain")).toBe("");
@@ -140,5 +156,77 @@ describe("installing the guard in Gemini CLI", () => {
     const removed = await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
     expect(removed.out).toContain("GEMINI.md sigue importando AGENTS.md.");
     expect(await read(root, "GEMINI.md")).toBe(pointed);
+  });
+});
+
+describe("the end of Gemini CLI's turn", () => {
+  it("sends it back with the report while specty check --changed fails, once (AC1)", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${CHECKS}` });
+    await writeFiles(root, {
+      "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+    });
+    const stop = (active: boolean) =>
+      cli(root, ["hook", "agent-stop", "gemini-cli"], {
+        stdin: JSON.stringify({
+          session_id: "s1",
+          cwd: root,
+          hook_event_name: "AfterAgent",
+          prompt: "haz la tarea",
+          prompt_response: "hecho",
+          stop_hook_active: active,
+        }),
+      });
+    const back = await stop(false);
+    expect(back.code).toBe(0);
+    const reply = JSON.parse(back.out);
+    expect(reply.decision).toBe("deny");
+    expect(reply.reason).toContain(
+      "`specty check --changed` falla; corrígelo antes de terminar el turno:",
+    );
+    expect(reply.reason).toContain(`FALLA todo\n  src/app.ts:2 ${TODO} sin referencia a un issue`);
+    // Already sent back once: it may end now, so that it never loops.
+    expect(await stop(true)).toMatchObject({ code: 0, out: "" });
+  });
+
+  it("is offered by check --install next to the guard, once, in milliseconds (AC2)", async () => {
+    const root = await tempRepo(PACKAGE);
+    await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    const plan = await cli(root, ["check", "--install", "--dry-run"]);
+    expect(plan.out).toContain(`${SETTINGS} (modificar)`);
+    expect(plan.out).toContain("hook agent-stop gemini-cli");
+    expect((await cli(root, ["check", "--install"], { terminal: person() })).code).toBe(0);
+    const hooks = async () => JSON.parse(await read(root, SETTINGS)).hooks;
+    const turn = (await hooks()).AfterAgent;
+    expect(turn).toEqual([
+      {
+        hooks: [
+          {
+            type: "command",
+            command: expect.stringContaining("hook agent-stop gemini-cli"),
+            timeout: 600_000,
+          },
+        ],
+      },
+    ]);
+    expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain("agent-stop");
+    await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    expect((await hooks()).AfterAgent).toEqual(turn);
+  });
+});
+
+describe("the task card in Gemini CLI", () => {
+  it("comes with each turn's prompt, and nothing outside Specty (AC3)", async () => {
+    const root = await implementing();
+    const turn = await gemini(root, "BeforeAgent", { prompt: "sigue" });
+    expect(turn.code).toBe(0);
+    expect(JSON.parse(turn.out).hookSpecificOutput).toEqual({
+      hookEventName: "BeforeAgent",
+      additionalContext: expect.stringContaining("TAREA T1"),
+    });
+    const outside = await tempRepo({ "src/app.ts": "x\n" });
+    expect(await gemini(outside, "BeforeAgent", { prompt: "sigue" })).toMatchObject({
+      code: 0,
+      out: "",
+    });
   });
 });

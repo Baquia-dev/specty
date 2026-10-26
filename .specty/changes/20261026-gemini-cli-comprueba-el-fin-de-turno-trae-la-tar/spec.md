@@ -61,7 +61,7 @@ Con el guard de C11, a Gemini CLI aún le falta lo demás que tiene Claude Code:
 
 ## Tareas
 
-- [ ] T1: Gemini CLI comprueba el fin de turno y trae la tarjeta al empezar cada turno
+- [x] T1: Gemini CLI comprueba el fin de turno y trae la tarjeta al empezar cada turno
   - files: packages/cli/src/agents/gemini-cli.ts, packages/cli/test/gemini-cli.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/agents.test.ts test/check-agent-stop.test.ts
