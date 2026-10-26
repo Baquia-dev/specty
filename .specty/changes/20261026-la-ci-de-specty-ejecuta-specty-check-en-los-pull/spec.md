@@ -32,7 +32,7 @@ En cada pull request, la CI de Specty ejecuta su propio `specty check --changed`
 
 ## Tareas
 
-- [ ] T1: `--changed` en el checkout de un pull request
+- [x] T1: `--changed` en el checkout de un pull request
   - files: packages/cli/test/check-pull-request.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-pull-request.test.ts

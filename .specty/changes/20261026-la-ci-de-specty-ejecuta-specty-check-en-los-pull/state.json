@@ -6,6 +6,13 @@
   "branch": "specty/20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
   "baseCommit": "bf528064e4af69d1c46a08bb2c4339e967a52d84",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9205a3c062eec0a30b12cd9ad9477ce5d3f8fbb04cf580346a1dfd9e3d56191d",
+    "at": "2026-10-26T13:41:06.197Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3d94003853a13c07a3ca74d837cec8a926492bd7",
+      "startedAt": "2026-10-26T13:41:06.619Z",
+      "doneAt": "2026-10-26T13:42:01.206Z",
+      "summary": "Test de --changed en el checkout de un PR (HEAD separado en el merge): con main local ve solo lo que añade el PR; sin ella no ve nada, por eso el job la crea."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9205a3c062eec0a30b12cd9ad9477ce5d3f8fbb04cf580346a1dfd9e3d56191d",
-    "at": "2026-10-26T13:41:06.197Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
