@@ -54,7 +54,7 @@ export function specDelta(before: Spec, after: Spec): SpecDelta {
   return { entries, isEmpty: entries.length === 0 };
 }
 
-export function kindOf(key: string): DeltaKind {
+function kindOf(key: string): DeltaKind {
   if (key === "frontmatter" || key === "title") return key;
   if (key.startsWith("section:")) return "section";
   if (key.startsWith("file:")) return "file";

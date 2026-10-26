@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-core-sin-exportaciones-ni-tipos-que-sobran",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-core-sin-exportaciones-ni-tipos-que-sobran",
   "baseCommit": "efc50a3548c86c06ee07ad437cfae62a1d9cb5a3",
   "revision": 1,
@@ -30,12 +30,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "aa525ae368b74343664283df3b915b50732adefe",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:48:24.842Z",
       "doneAt": "2026-10-26T01:48:43.874Z",
-      "summary": "Dejan de exportarse normalizeText, SourceHeading y SourceSection (source.ts), FrontmatterSchema, readIdHead y ListProblem, que solo usa su archivo, y diagnostics.ts ya no reexporta MessageCatalog ni MessageParams, que nadie importaba desde ahí."
+      "summary": "Dejan de exportarse normalizeText, SourceHeading y SourceSection (source.ts), FrontmatterSchema, readIdHead y ListProblem, que solo usa su archivo, y diagnostics.ts ya no reexporta MessageCatalog ni MessageParams, que nadie importaba desde ahí.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6a122f2b5c3447572892b860b2fd05a04f85425c",
+      "startedAt": "2026-10-26T01:48:44.150Z",
+      "doneAt": "2026-10-26T01:50:21.134Z",
+      "summary": "kindOf (delta.ts) y serializeFrontmatter (serialize.ts) dejan de exportarse. Con todas sus reglas encendidas, knip ya no marca ninguna exportación ni tipo de packages/core."
     }
   },
   "pending": {

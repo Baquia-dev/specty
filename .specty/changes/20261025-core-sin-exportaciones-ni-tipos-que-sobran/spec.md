@@ -41,7 +41,7 @@ Con todas sus reglas encendidas, knip marca en `packages/core` diez exportacione
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: Lo que solo usan el delta y el serializador deja de exportarse
+- [x] T2: Lo que solo usan el delta y el serializador deja de exportarse
   - files: packages/core/src/spec/delta.ts, packages/core/src/spec/serialize.ts
   - ac: AC1, AC2
   - verify: pnpm check
