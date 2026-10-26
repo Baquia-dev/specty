@@ -342,7 +342,7 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |
 | Cursor | sí | sí | indirecto | no posible | sí | sí | sí | no posible | `.cursor`, `.cursorrules` |
-| Codex | sí | sí | sí | no posible | sí | no posible | sí | pendiente | `.codex` |
+| Codex | sí | sí | sí | no posible | sí | no posible | sí | sí | `.codex` |
 | OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |
 | Gemini CLI | sí | sí | indirecto | no posible | sí | sí | sí | sí | `.gemini`, `GEMINI.md` |
 | GitHub Copilot | — | — | — | — | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
@@ -601,7 +601,16 @@ OpenCode se busca en `SPECTY_E2E_OPENCODE` o en el PATH; si no está, la prueba 
 - Un comando que escribe por un camino que el análisis de shell no prevé trae el aviso en su resultado.
 - Con el fin de turno que activa `check --install`, si `specty check --changed` falla, el modelo recibe el informe una vez y luego termina.
 
-Gemini CLI se busca en `SPECTY_E2E_GEMINI` o en las carpetas del PATH, sin ejecutar nada para encontrarlo; si no está, la prueba se salta. Comprobado con Gemini CLI 0.65.0. Codex puede usar un servidor parecido con su API de respuestas, pero ejecutarlo sin confianza persistida en sus hooks pide `--dangerously-bypass-hook-trust`.
+Gemini CLI se busca en `SPECTY_E2E_GEMINI` o en las carpetas del PATH, sin ejecutar nada para encontrarlo; si no está, la prueba se salta. Comprobado con Gemini CLI 0.65.0.
+
+**Codex con un modelo guionizado** (`codex-e2e.test.ts`, con `fake-responses.ts`). El servidor imita `POST /v1/responses` de OpenAI por streaming, responde una llamada del guion (`exec_command` o `apply_patch`) por cada resultado de herramienta que trae la conversación, y guarda cada petición. Codex corre con `codex exec --ephemeral` y un `CODEX_HOME` temporal, con un proveedor `wire_api = "responses"` que apunta al servidor, una clave falsa y el repositorio de confianza; nada de la configuración de la persona interviene. Usa dos opciones que la persona autorizó para estos repositorios desechables (2026-10-26): `-s workspace-write`, para escribir en el repositorio, y `--dangerously-bypass-hook-trust`, para no revisar los hooks a mano.
+
+- Sin cambio activo, un parche de código, `git commit` y `specty approve` vuelven con el SIGUIENTE del guard y el repositorio no cambia.
+- Con una tarea, un archivo de fuera vuelve con `specty scope add`.
+- Un comando que escribe por un camino que el análisis de shell no prevé trae el aviso en lugar de su salida: la salida 2 de `PostToolUse` la sustituye.
+- Con el fin de turno que activa `check --install`, si `specty check --changed` falla, el modelo recibe el informe como un mensaje `<hook_prompt>` una vez y luego termina.
+
+Codex se busca en `SPECTY_E2E_CODEX` o en las carpetas del PATH, sin ejecutar nada para encontrarlo; si no está, la prueba se salta. Comprobado con Codex 0.164.0.
 
 ## 17. Portado desde el legacy
 
