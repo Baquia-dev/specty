@@ -3,7 +3,7 @@ import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
 import { CHANGE_KINDS } from "../spec/model";
 import { blockedCard } from "./flow";
-import { translator } from "./text";
+import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 /** Why `specty new` creates nothing. */
@@ -31,88 +31,99 @@ export type NewRefusal =
  */
 export function newRefusalCard(refusal: NewRefusal, ctx: CardContext): Output {
   const t = translator(ctx.lang);
-  const { command } = ctx;
-  const invalid = (reason: string, next: string): Output => ({
-    ...blockedCard(headerOf(), reason, next),
-    status: "invalid",
-  });
+  const header =
+    refusal.reason === "in-progress" ? headerOf(refusal.id, refusal.phase) : headerOf();
+  const card = blockedCard(
+    header,
+    newRefusalReason(refusal, t),
+    newRefusalNext(refusal, t, ctx.command),
+  );
+  return BLOCKED_BY_STATE.has(refusal.reason) ? card : { ...card, status: "invalid" };
+}
+
+// The refusals the repository's state or settings make; a wrong command makes the others.
+const BLOCKED_BY_STATE: ReadonlySet<NewRefusal["reason"]> = new Set([
+  "worktree-without-branches",
+  "unknown-base",
+  "in-progress",
+]);
+
+function newRefusalReason(refusal: NewRefusal, t: Translate): string {
   switch (refusal.reason) {
     case "unknown-kind":
-      return invalid(
-        t(`Tipo de cambio desconocido: ${refusal.kind}.`, `Unknown change kind: ${refusal.kind}.`),
-        `--kind ${CHANGE_KINDS.join("|")}`,
+      return t(
+        `Tipo de cambio desconocido: ${refusal.kind}.`,
+        `Unknown change kind: ${refusal.kind}.`,
       );
     case "bootstrap-quick":
-      return invalid(
-        t(
-          "Es el primer cambio de un proyecto nuevo: el esqueleto va en un cambio standard, no quick.",
-          "This is a new project's first change: the skeleton goes in a standard change, not a quick one.",
-        ),
-        t(
-          `ejecuta \`${command} new "${refusal.title}" --request "<petición literal del usuario>"\`, sin \`--kind quick\`.`,
-          `run \`${command} new "${refusal.title}" --request "<the user's literal request>"\`, without \`--kind quick\`.`,
-        ),
+      return t(
+        "Es el primer cambio de un proyecto nuevo: el esqueleto va en un cambio standard, no quick.",
+        "This is a new project's first change: the skeleton goes in a standard change, not a quick one.",
+      );
+    case "no-title":
+      return t("Falta el título.", "The title is missing.");
+    case "empty-request":
+      return t("La petición (--request) está vacía.", "The request (--request) is empty.");
+    case "from-without-worktree":
+      return t("`--from` solo vale con `--worktree`.", "`--from` only works with `--worktree`.");
+    case "worktree-without-branches":
+      return t(
+        "`--worktree` necesita una rama por cambio, y `git.branchPerChange` está desactivado.",
+        "`--worktree` needs a branch per change, and `git.branchPerChange` is off.",
+      );
+    case "unknown-base":
+      return t(
+        `\`${refusal.base}\` no es una rama ni un commit.`,
+        `\`${refusal.base}\` is neither a branch nor a commit.`,
+      );
+    case "in-progress":
+      return t(
+        `Ya hay un cambio en curso: ${refusal.id}.`,
+        `A change is already in progress: ${refusal.id}.`,
+      );
+  }
+}
+
+function newRefusalNext(refusal: NewRefusal, t: Translate, command: string): string {
+  switch (refusal.reason) {
+    case "unknown-kind":
+      return `--kind ${CHANGE_KINDS.join("|")}`;
+    case "bootstrap-quick":
+      return t(
+        `ejecuta \`${command} new "${refusal.title}" --request "<petición literal del usuario>"\`, sin \`--kind quick\`.`,
+        `run \`${command} new "${refusal.title}" --request "<the user's literal request>"\`, without \`--kind quick\`.`,
       );
     case "no-title":
     case "empty-request":
-      return invalid(
-        refusal.reason === "no-title"
-          ? t("Falta el título.", "The title is missing.")
-          : t("La petición (--request) está vacía.", "The request (--request) is empty."),
-        t(
-          `ejecuta \`${command} new "<título>" --request "<petición literal del usuario>"\`.`,
-          `run \`${command} new "<title>" --request "<the user's literal request>"\`.`,
-        ),
+      return t(
+        `ejecuta \`${command} new "<título>" --request "<petición literal del usuario>"\`.`,
+        `run \`${command} new "<title>" --request "<the user's literal request>"\`.`,
       );
     case "from-without-worktree":
-      return invalid(
-        t("`--from` solo vale con `--worktree`.", "`--from` only works with `--worktree`."),
-        t(
-          `ejecuta \`${command} new --worktree --from ${refusal.from} "<título>"\`.`,
-          `run \`${command} new --worktree --from ${refusal.from} "<title>"\`.`,
-        ),
+      return t(
+        `ejecuta \`${command} new --worktree --from ${refusal.from} "<título>"\`.`,
+        `run \`${command} new --worktree --from ${refusal.from} "<title>"\`.`,
       );
     case "worktree-without-branches":
-      return blockedCard(
-        headerOf(),
-        t(
-          "`--worktree` necesita una rama por cambio, y `git.branchPerChange` está desactivado.",
-          "`--worktree` needs a branch per change, and `git.branchPerChange` is off.",
-        ),
-        t(
-          `ejecuta \`${command} new "<título>"\` sin \`--worktree\`.`,
-          `run \`${command} new "<title>"\` without \`--worktree\`.`,
-        ),
+      return t(
+        `ejecuta \`${command} new "<título>"\` sin \`--worktree\`.`,
+        `run \`${command} new "<title>"\` without \`--worktree\`.`,
       );
     case "unknown-base":
-      return blockedCard(
-        headerOf(),
-        t(
-          `\`${refusal.base}\` no es una rama ni un commit.`,
-          `\`${refusal.base}\` is neither a branch nor a commit.`,
-        ),
-        t(
-          "indica una rama que exista con `--from <rama>`.",
-          "name an existing branch with `--from <branch>`.",
-        ),
+      return t(
+        "indica una rama que exista con `--from <rama>`.",
+        "name an existing branch with `--from <branch>`.",
       );
     case "in-progress":
-      return blockedCard(
-        headerOf(refusal.id, refusal.phase),
-        t(
-          `Ya hay un cambio en curso: ${refusal.id}.`,
-          `A change is already in progress: ${refusal.id}.`,
-        ),
-        refusal.branchPerChange
-          ? t(
-              `termínalo (\`${command} next\`) o crea el nuevo en paralelo, en otra carpeta: \`${command} new --worktree "<título>"\`.`,
-              `finish it (\`${command} next\`) or create the new one in parallel, in another folder: \`${command} new --worktree "<title>"\`.`,
-            )
-          : t(
-              `termínalo (\`${command} next\`) o cámbiate a otra rama antes de crear otro.`,
-              `finish it (\`${command} next\`) or switch to another branch before creating a new one.`,
-            ),
-      );
+      return refusal.branchPerChange
+        ? t(
+            `termínalo (\`${command} next\`) o crea el nuevo en paralelo, en otra carpeta: \`${command} new --worktree "<título>"\`.`,
+            `finish it (\`${command} next\`) or create the new one in parallel, in another folder: \`${command} new --worktree "<title>"\`.`,
+          )
+        : t(
+            `termínalo (\`${command} next\`) o cámbiate a otra rama antes de crear otro.`,
+            `finish it (\`${command} next\`) or switch to another branch before creating a new one.`,
+          );
   }
 }
 
@@ -153,8 +164,54 @@ export interface WorktreeCreated {
  * since this folder carries on with its own work. A failed preparation goes first in the way on.
  */
 export function worktreeCreatedCard(created: WorktreeCreated, ctx: CardContext): Output {
-  const t = translator(ctx.lang);
+  return {
+    status: "ok",
+    header: headerOf(created.id, "draft"),
+    blocks: worktreeCreatedBlocks(created, translator(ctx.lang)),
+    next: worktreeCreatedNext(created, ctx),
+  };
+}
+
+/** The change, its folder and how it was prepared, the hooks copied and the folders removed. */
+function worktreeCreatedBlocks(created: WorktreeCreated, t: Translate): Output["blocks"] {
   const { id, branch, folder, from, prepared } = created;
+  return [
+    {
+      lines: [
+        t(
+          `Cambio creado: ${id} (rama ${branch}) en ${folder}, desde ${from}.`,
+          `Change created: ${id} (branch ${branch}) in ${folder}, from ${from}.`,
+        ),
+        ...(prepared?.ok === true
+          ? [
+              t(
+                `Carpeta preparada con \`${prepared.command}\`.`,
+                `Folder prepared with \`${prepared.command}\`.`,
+              ),
+            ]
+          : []),
+      ],
+    },
+    ...section(t("HOOKS DEL AGENTE COPIADOS", "AGENT HOOKS COPIED"), created.copied),
+    ...section(
+      t("CARPETAS DE CAMBIOS TERMINADOS, BORRADAS", "FOLDERS OF FINISHED CHANGES, REMOVED"),
+      created.removed,
+    ),
+    ...(prepared?.ok === false
+      ? [
+          {
+            title: t(`FALLÓ \`${prepared.command}\``, `\`${prepared.command}\` FAILED`),
+            lines: prepared.output,
+          },
+        ]
+      : []),
+  ];
+}
+
+/** Moving the session to the new folder, after preparing it again if that failed. */
+function worktreeCreatedNext(created: WorktreeCreated, ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const { id, folder, prepared } = created;
   const byName = created.byName
     ? t(
         `en Claude Code, \`EnterWorktree\` con \`name: "${id}"\`; `,
@@ -165,46 +222,10 @@ export function worktreeCreatedCard(created: WorktreeCreated, ctx: CardContext):
     `cambia allí la carpeta de trabajo de tu sesión (${byName}o abre allí un agente) y ejecuta \`${ctx.command} next\`; esta carpeta sigue con su propio trabajo.`,
     `switch your session's working folder there (${byName}or open an agent there) and run \`${ctx.command} next\`; this folder carries on with its own work.`,
   );
-  return {
-    status: "ok",
-    header: headerOf(id, "draft"),
-    blocks: [
-      {
-        lines: [
-          t(
-            `Cambio creado: ${id} (rama ${branch}) en ${folder}, desde ${from}.`,
-            `Change created: ${id} (branch ${branch}) in ${folder}, from ${from}.`,
-          ),
-          ...(prepared?.ok === true
-            ? [
-                t(
-                  `Carpeta preparada con \`${prepared.command}\`.`,
-                  `Folder prepared with \`${prepared.command}\`.`,
-                ),
-              ]
-            : []),
-        ],
-      },
-      ...section(t("HOOKS DEL AGENTE COPIADOS", "AGENT HOOKS COPIED"), created.copied),
-      ...section(
-        t("CARPETAS DE CAMBIOS TERMINADOS, BORRADAS", "FOLDERS OF FINISHED CHANGES, REMOVED"),
-        created.removed,
-      ),
-      ...(prepared?.ok === false
-        ? [
-            {
-              title: t(`FALLÓ \`${prepared.command}\``, `\`${prepared.command}\` FAILED`),
-              lines: prepared.output,
-            },
-          ]
-        : []),
-    ],
-    next:
-      prepared?.ok === false
-        ? t(
-            `en ${folder}, ejecuta \`${prepared.command}\`; después ${carryOn}`,
-            `in ${folder}, run \`${prepared.command}\`; then ${carryOn}`,
-          )
-        : t(`continúa en ${folder}: ${carryOn}`, `carry on in ${folder}: ${carryOn}`),
-  };
+  return prepared?.ok === false
+    ? t(
+        `en ${folder}, ejecuta \`${prepared.command}\`; después ${carryOn}`,
+        `in ${folder}, run \`${prepared.command}\`; then ${carryOn}`,
+      )
+    : t(`continúa en ${folder}: ${carryOn}`, `carry on in ${folder}: ${carryOn}`);
 }

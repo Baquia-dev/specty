@@ -37,7 +37,7 @@ Once funciones de las tarjetas de core pasan de los límites de Specty: `newRefu
 
 ## Tareas
 
-- [ ] T1: La creación de un cambio
+- [x] T1: La creación de un cambio
   - files: packages/core/src/cards/new.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
