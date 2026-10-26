@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { mkdtemp, readFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
@@ -65,9 +64,9 @@ describe("a reversible init", () => {
   });
 
   it("makes no copy when every file it writes is new (AC3)", async () => {
-    const env = { XDG_CONFIG_HOME: await mkdtemp(join(tmpdir(), "specty-config-")) };
     const root = await tempRepo(PACKAGE);
-    const installed = await cli(root, ["init", "--language", "es", "--tools", "opencode"], { env });
+    // Gemini CLI has no guard: init writes only new files, and no exclusion in `.git/info/exclude`.
+    const installed = await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
     expect(installed.code).toBe(0);
     expect(installed.out).not.toContain("Copia de lo que había antes");
     expect(await exists(join(root, ".git/common/specty/backups"))).toBe(false);

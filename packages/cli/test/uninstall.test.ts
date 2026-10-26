@@ -1,4 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
+import { mkdtemp, readdir } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { cli, git, person, read, tempRepo, writeFiles } from "./support";
@@ -96,6 +99,28 @@ describe("specty uninstall", () => {
     expect(git(root, "status", "--porcelain")).toContain("AGENTS.md");
     const again = await cli(root, ["uninstall", "--dry-run"]);
     expect(again.out).toContain("No hay nada de Specty que quitar en este repositorio.");
+  });
+
+  it("takes the Codex guard and the OpenCode plugin out of the project, keeping the person's hooks (AC7, AC9)", async () => {
+    const homes = {
+      CODEX_HOME: await mkdtemp(join(tmpdir(), "specty-codex-home-")),
+      XDG_CONFIG_HOME: await mkdtemp(join(tmpdir(), "specty-config-")),
+    };
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    const stop = { hooks: [{ type: "command", command: "echo bye" }] };
+    await writeFiles(root, { ".codex/hooks.json": JSON.stringify({ hooks: { Stop: [stop] } }) });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "codex,opencode"], {
+      env: homes,
+    });
+    expect(init.code).toBe(0);
+    const planned = await cli(root, ["uninstall", "--dry-run"], { env: homes });
+    expect(planned.out).toContain("quitar lo de Specty de .codex/hooks.json");
+    expect(planned.out).toContain("borrar .opencode/plugins/specty.js");
+    const terminal = person({ choose: ["yes"] });
+    expect((await cli(root, ["uninstall"], { env: homes, terminal })).code).toBe(0);
+    expect(JSON.parse(await read(root, ".codex/hooks.json"))).toEqual({ hooks: { Stop: [stop] } });
+    expect(await exists(join(root, ".opencode/plugins/specty.js"))).toBe(false);
+    for (const home of Object.values(homes)) expect(await readdir(home), home).toEqual([]);
   });
 
   it("takes its part out of husky and lefthook hooks, keeping the person's (AC1, AC2)", async () => {

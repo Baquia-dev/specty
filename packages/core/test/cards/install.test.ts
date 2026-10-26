@@ -25,12 +25,20 @@ describe("what `init` says about the hooks", () => {
     expect(guardLine("Cursor", ".cursor/hooks.json", true, "en")).toBe(
       "Cursor: guard in .cursor/hooks.json (local).",
     );
-    expect(codexGuardLine("~/.codex/hooks.json", "en")).toBe(
-      "Codex: guard in ~/.codex/hooks.json, your user configuration: it applies to all your repositories and does nothing outside those using Specty.",
+    expect(codexGuardLine(".codex/hooks.json", false, "en")).toBe(
+      "Codex: guard in .codex/hooks.json; since Codex 0.131 it serves every worktree of the repository.",
     );
-    expect(codexTrustWarning("es")).toMatch(/^Codex solo ejecuta el guard cuando confías en él/);
-    expect(opencodeGuardLine("~/.config/opencode/plugins/specty.js", "es")).toBe(
-      "OpenCode: plugin del guard en ~/.config/opencode/plugins/specty.js, tu configuración global: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.",
+    expect(codexGuardLine(".codex/hooks.json", true, "es")).toBe(
+      "Codex: guard en .codex/hooks.json (local); desde Codex 0.131 sirve a todas las worktrees del repositorio.",
+    );
+    expect(codexTrustWarning("es")).toBe(
+      "Codex solo ejecuta el guard cuando confías en el proyecto y en el hook: confía en el proyecto cuando Codex lo pregunte y revisa el hook con `/hooks`. Basta una vez por repositorio.",
+    );
+    expect(opencodeGuardLine(".opencode/plugins/specty.js", false, "es")).toBe(
+      "OpenCode: plugin del guard en .opencode/plugins/specty.js.",
+    );
+    expect(opencodeGuardLine(".opencode/plugins/specty.js", true, "en")).toBe(
+      "OpenCode: guard plugin in .opencode/plugins/specty.js (local).",
     );
     expect(noHooksWarning(["Aider", "Zed"], "en")).toBe(
       "No hooks yet for: Aider, Zed. Git hooks and CI still protect them.",

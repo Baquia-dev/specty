@@ -55,6 +55,22 @@ const WRITTEN: readonly Written[] = [
     prettier: ".cursor/hooks.json",
     inPrettier: /^\/?\.cursor(?:\/hooks\.json|\/\*\*|\/)?$/,
   },
+  {
+    path: ".codex/hooks.json",
+    optional: true,
+    biome: '"!.codex/hooks.json"',
+    inBiome: /"!(?:\*\*\/)?\.codex(?:\/hooks\.json|\/\*\*|\/)?"/,
+    prettier: ".codex/hooks.json",
+    inPrettier: /^\/?\.codex(?:\/hooks\.json|\/\*\*|\/)?$/,
+  },
+  {
+    path: ".opencode/plugins/specty.js",
+    optional: true,
+    biome: '"!.opencode/plugins/specty.js"',
+    inBiome: /"!(?:\*\*\/)?\.opencode(?:\/plugins(?:\/specty\.js|\/\*\*|\/)?|\/\*\*|\/)?"/,
+    prettier: ".opencode/plugins/specty.js",
+    inPrettier: /^\/?\.opencode(?:\/plugins(?:\/specty\.js|\/\*\*|\/)?|\/\*\*|\/)?$/,
+  },
 ];
 
 const PRETTIER_CONFIG = /^(?:\.prettierrc(?:\.[\w]+)?|prettier\.config\.[cm]?[jt]s)$/;

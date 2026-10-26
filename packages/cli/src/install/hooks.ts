@@ -60,14 +60,15 @@ export async function installHooks(options: {
     done.push(guardLine("Cursor", installed.file, installed.local, lang));
   }
   if (tools.includes("codex")) {
-    // Outside the repository: nothing for init's commit.
-    const file = await installCodex(environment.env, environment.invocation, files);
-    done.push(codexGuardLine(file, lang));
+    const installed = await installCodex(root, git, environment.invocation, files);
+    if (!installed.local) written.push(installed.file);
+    done.push(codexGuardLine(installed.file, installed.local, lang));
     warnings.push(codexTrustWarning(lang));
   }
   if (tools.includes("opencode")) {
-    const file = await installOpencode(environment.env, environment.invocation, files);
-    done.push(opencodeGuardLine(file, lang));
+    const installed = await installOpencode(root, git, environment.invocation, files);
+    if (!installed.local) written.push(installed.file);
+    done.push(opencodeGuardLine(installed.file, installed.local, lang));
   }
   const unsupported = tools
     .filter((tool) => !isGuardedAgent(tool))

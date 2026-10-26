@@ -1,12 +1,30 @@
 // SPDX-License-Identifier: Apache-2.0
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, readdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it } from "vitest";
+import { installFiles } from "../src/install/files";
+import { installHooks } from "../src/install/hooks";
 import { installOpencode } from "../src/install/opencode";
-import { exists } from "../src/io/files";
-import { APP, cli, DIST, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import { createGit } from "../src/io/git";
+import {
+  AGENT,
+  APP,
+  CHANGE,
+  CONFIG,
+  cli,
+  DIST,
+  git,
+  NOW,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  testEnv,
+  writeFiles,
+} from "./support";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
 async function implementing(): Promise<string> {
@@ -72,11 +90,13 @@ describe("the guard in OpenCode", () => {
   });
 });
 
-/** A global OpenCode configuration of its own, as `XDG_CONFIG_HOME` points to it. */
+/** A global OpenCode configuration of its own, as `XDG_CONFIG_HOME` points to it: Specty leaves it empty. */
 async function opencodeConfig() {
   const config = await mkdtemp(join(tmpdir(), "specty-opencode-"));
-  return { env: { XDG_CONFIG_HOME: config }, file: join(config, "opencode/plugins/specty.js") };
+  return { env: { XDG_CONFIG_HOME: config }, config };
 }
+
+const PLUGIN = ".opencode/plugins/specty.js";
 
 type Hook = (...args: unknown[]) => Promise<void>;
 
@@ -87,11 +107,12 @@ interface Plugin {
   server(input: unknown): Promise<Record<string, Hook>>;
 }
 
-/** Loads the plugin `init` wrote, with the guard of this build. */
+/** Loads the plugin `init` writes, with the guard of this build. */
 async function loadPlugin(): Promise<Plugin> {
-  const { env } = await opencodeConfig();
-  const file = await installOpencode(env, { command: `node "${DIST}"`, portable: false });
-  const module: { default: Plugin } = await import(pathToFileURL(file).href);
+  const root = await tempRepo({ "README.md": "x\n" });
+  const invocation = { command: `node "${DIST}"`, portable: false };
+  const installed = await installOpencode(root, createGit(root), invocation);
+  const module: { default: Plugin } = await import(pathToFileURL(join(root, installed.file)).href);
   return module.default;
 }
 
@@ -181,32 +202,83 @@ describe("Specty's plugin for OpenCode", () => {
   });
 });
 
+const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
+
 describe("installing the plugin in OpenCode", () => {
-  it("writes it to the global configuration and leaves the repository alone (AC1)", async () => {
-    const { env, file } = await opencodeConfig();
-    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+  it("writes it to the project's .opencode/plugins/ and leaves the global configuration alone (AC2, AC9)", async () => {
+    const { env, config } = await opencodeConfig();
+    const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });
     const result = await cli(root, ["init", "--language", "es", "--tools", "opencode"], { env });
     expect(result.code).toBe(0);
-    expect(result.out).toContain(`OpenCode: plugin del guard en ${file}, tu configuración global`);
-    expect(await readFile(file, "utf8")).toContain(`"node \\"${DIST}\\" guard --tool opencode"`);
-    expect(await exists(join(root, ".opencode"))).toBe(false);
+    expect(result.out).toContain(
+      "OpenCode: plugin del guard en .opencode/plugins/specty.js (local).",
+    );
+    expect(await read(root, PLUGIN)).toContain(`"node \\"${DIST}\\" guard --tool opencode"`);
+    expect(await readdir(config)).toEqual([]);
+    // With a machine path, the plugin stays out of git, and new copies it to the worktree (AC3).
+    expect(await read(root, ".git/info/exclude")).toContain(`/${PLUGIN}`);
+    expect(git(root, "status", "--porcelain")).toBe("");
+    const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
+    expect(created.out).toContain(`HOOKS DEL AGENTE COPIADOS:\n  ${PLUGIN}`);
+    const folder = join(
+      dirname(root),
+      `${basename(root)}.worktrees`,
+      CHANGE.replace("saludo-personalizado", "otro-cambio"),
+    );
+    expect(await read(folder, PLUGIN)).toBe(await read(root, PLUGIN));
   });
 
-  it("installs it for a repository with opencode.json, and doctor checks it (AC4)", async () => {
-    const { env, file } = await opencodeConfig();
+  it("versions it, for init's commit, when the command is on PATH (AC3)", async () => {
+    const root = await tempRepo(PACKAGE);
+    const env = testEnv();
+    const installed = await installHooks({
+      environment: {
+        cwd: root,
+        env,
+        now: () => NOW,
+        terminal: AGENT,
+        io: { out: () => {}, err: () => {} },
+        invocation: { command: "specty", portable: true },
+      },
+      root,
+      git: createGit(root, env),
+      tools: ["opencode"],
+      lang: "es",
+      files: installFiles(),
+    });
+    expect(installed.written).toContain(PLUGIN);
+    expect(installed.done).toContain("OpenCode: plugin del guard en .opencode/plugins/specty.js.");
+    expect(await read(root, PLUGIN)).toContain('"specty guard --tool opencode"');
+    expect(await read(root, ".git/info/exclude")).not.toContain(PLUGIN);
+  });
+
+  it("installs it for a repository with opencode.json, and doctor looks for it there (AC6)", async () => {
+    const { env, config } = await opencodeConfig();
     const root = await tempRepo({ "opencode.json": "{}\n" });
     await cli(root, ["init", "--language", "es"], { env });
     const doctor = await cli(root, ["doctor"], { env });
-    expect(doctor.out).toContain(`OpenCode: plugin del guard en ${file}.`);
-    await writeFile(file, 'const GUARD = "specty guard --tool opencode";\n');
+    expect(doctor.out).toContain("OpenCode: plugin del guard en .opencode/plugins/specty.js.");
+    await writeFiles(root, { [PLUGIN]: 'const GUARD = "specty guard --tool opencode";\n' });
     expect((await cli(root, ["doctor"], { env })).out).toContain(
       "OpenCode: al plugin del guard le falta la comprobación tras cada comando; ejecuta `specty init --tools opencode`.",
     );
-    await writeFile(file, "export default {};\n");
+    await writeFiles(root, { [PLUGIN]: "export default {};\n" });
     const missing = await cli(root, ["doctor"], { env });
     expect(missing.code).toBe(1);
     expect(missing.out).toContain(
-      `OpenCode: falta el plugin del guard en ${file}; ejecuta \`specty init --tools opencode\`.`,
+      "OpenCode: falta el plugin del guard en .opencode/plugins/specty.js; ejecuta `specty init --tools opencode`.",
+    );
+    expect(await readdir(config)).toEqual([]);
+  });
+
+  it("names the formatter that would check the plugin (AC8)", async () => {
+    const root = await tempRepo({
+      ...PACKAGE,
+      "biome.json": '{"files":{"includes":["**","!.specty"]}}\n',
+    });
+    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
+    expect((await cli(root, ["doctor"])).out).toContain(
+      'Biome también revisa .opencode/plugins/specty.js, que escribe Specty: añade "!.opencode/plugins/specty.js" en biome.json (files.includes).',
     );
   });
 });

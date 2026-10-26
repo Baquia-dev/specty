@@ -2,8 +2,11 @@
 import { AGENT_NAMES, type AgentTool, isAgentTool } from "./agents";
 import type { Lang } from "./i18n";
 
-/** Where `init` installs an agent's guard: the repository, the user's configuration, or nowhere yet. */
-export type GuardSurface = "repository" | "user" | "none";
+/**
+ * Where `init` installs an agent's guard: the repository, or nowhere yet. Never the user's
+ * configuration (ADR 0013).
+ */
+export type GuardSurface = "repository" | "none";
 
 /** What Specty does with one agent. */
 export interface AgentCapabilities {
@@ -39,14 +42,14 @@ export const AGENT_CAPABILITIES = {
   },
   codex: {
     markers: [".codex"],
-    guard: "user",
+    guard: "repository",
     afterShell: true,
     afterCompaction: false,
     worktreeByName: false,
   },
   opencode: {
     markers: [".opencode", "opencode.json", "opencode.jsonc"],
-    guard: "user",
+    guard: "repository",
     afterShell: true,
     afterCompaction: false,
     worktreeByName: false,
@@ -96,7 +99,6 @@ export function capabilityTable(lang: Lang): string {
   const mark = (value: boolean) => (value ? t("sí", "yes") : "—");
   const guard: Readonly<Record<GuardSurface, string>> = {
     repository: t("en el repositorio", "in the repository"),
-    user: t("en la configuración del usuario", "in the user's configuration"),
     none: "—",
   };
   const rows = Object.keys(AGENT_NAMES)

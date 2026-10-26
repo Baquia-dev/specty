@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "20261026-guards-de-codex-y-opencode-en-el-proyecto",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-guards-de-codex-y-opencode-en-el-proyecto",
+  "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5b45180e360d2010b90a2b2291846f294cc8e6f86adf5f215c1a69486c032862",
+    "at": "2026-10-26T11:05:55.831Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0aebb48f66ce5084e5d7f78f3ad63ca0ee423e0c9927f0cb54eff7c8b23149dd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:951fe65d4c566c71080e383c2a6da9bc06125fe50a6fe30e2dd701f2d7a6aa61",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:cf3da6b80576cc8ee23e2997bde98d22934ddc62aff1adc257672745e4eb078a",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:504cf12fbbedca4e953f07b1c46aa12e92ebb50945fd26ea20a3dc6cd81695ec",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:34e28568ee6bb73fec367de8d94ac9ef6311498a0aff68a1fbb1a9093c8ce3ce",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ef7979c8880d98ee601c5631ebdc72693a76b235",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:06:28.029Z",
+      "doneAt": "2026-10-26T11:09:14.749Z",
+      "summary": "Codex y OpenCode tienen el guard en el repositorio en la tabla de capacidades, que pierde el valor user, y la tabla de ARCHITECTURE se regenera; el guard protege los hooks de Codex y el plugin de OpenCode también al borrarlos; la ADR 0013 recoge la decisión y su alcance.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "0b1b9463954d4e8702fe3865b6490ee2b000d622",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:09:15.033Z",
+      "doneAt": "2026-10-26T11:15:08.158Z",
+      "summary": "init escribe el guard de Codex en .codex/hooks.json del proyecto (local si el comando lleva una ruta de la máquina, y entonces new lo copia a la worktree); doctor y los formateadores lo buscan ahí, y los textos explican la confianza por repositorio.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "9551194ecae0ba0a3c420171c275c3072d56f2ca",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:15:08.456Z",
+      "doneAt": "2026-10-26T11:22:52.896Z",
+      "summary": "init escribe el plugin de OpenCode en .opencode/plugins/specty.js del proyecto (local si el comando lleva una ruta de la máquina, y entonces new lo copia); doctor y los formateadores lo buscan ahí. El test de init reversible sin copias pasa a Gemini CLI, con el visto bueno del usuario.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "48b1db5fe5cfad9e296479acf73375b419b4cbe5",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:22:53.196Z",
+      "doneAt": "2026-10-26T11:26:59.797Z",
+      "summary": "check --install pone el hook de fin de turno de Codex en .codex/hooks.json del proyecto, y uninstall quita de ahí el guard de Codex, conservando los demás hooks, y borra el plugin de OpenCode; la documentación ya no habla de archivos del usuario. pnpm check en verde.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 9,
+    "T": 4,
+    "R": 5
+  },
+  "closingSubmittedAt": "2026-10-26T11:33:55.850Z"
+}

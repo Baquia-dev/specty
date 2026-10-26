@@ -57,10 +57,24 @@ describe("decideGuard on files", () => {
       ".specty/config.yaml",
       ".specty/changes/20261021-x/state.json",
       ".claude/settings.json",
+      ".codex/hooks.json",
+      ".opencode/plugins/specty.js",
       ".git/hooks/pre-commit",
     ]) {
       expect(allowed(write(path), ctx(IMPLEMENTING)), path).toBe(false);
     }
+  });
+
+  it("protects the Codex and OpenCode guards from being deleted too (AC5)", () => {
+    for (const path of [".codex/hooks.json", ".opencode/plugins/specty.js"]) {
+      const decision = decideGuard({ kind: "delete", paths: [path] }, ctx(IMPLEMENTING));
+      expect(decision, path).toMatchObject({ allow: false, rule: "protected" });
+    }
+    // The rest of each tool's folder belongs to the person.
+    expect(allowed(write(".opencode/plugins/mine.js"), ctx(IMPLEMENTING))).toBe(false);
+    expect(decideGuard(write(".opencode/plugins/mine.js"), ctx(IMPLEMENTING))).not.toMatchObject({
+      rule: "protected",
+    });
   });
 
   it("lets the agent edit the spec only while the phase allows it", () => {

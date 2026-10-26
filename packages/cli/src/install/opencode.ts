@@ -1,27 +1,34 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
 import { join } from "node:path";
+import type { Git } from "../io/git";
 import type { Invocation } from "../session";
+import { type AgentInstall, excludeLocally, OPENCODE_PLUGIN } from "./agents";
 import { type InstallFiles, installFiles } from "./files";
 
 /**
- * Specty's plugin in OpenCode's global configuration (`$XDG_CONFIG_HOME/opencode`, or
- * `~/.config/opencode`), like Codex's hook: one install serves every worktree, and the project's
- * formatters and linters never see its code.
+ * OpenCode's global plugin file (`$XDG_CONFIG_HOME/opencode`, or `~/.config/opencode`), which
+ * Specty only reads: its plugin goes in the project (ADR 0013).
  */
 export function opencodePluginFile(env: NodeJS.ProcessEnv): string {
   const config = env.XDG_CONFIG_HOME || join(env.HOME ?? homedir(), ".config");
   return join(config, "opencode", "plugins", "specty.js");
 }
 
+/**
+ * Specty's plugin in the project's `.opencode/plugins/`, which OpenCode 1 and 2 load like the
+ * global one. A plugin with a machine path stays out of git, and `new` copies it to each worktree.
+ */
 export async function installOpencode(
-  env: NodeJS.ProcessEnv,
+  root: string,
+  git: Git,
   invocation: Invocation,
   files: InstallFiles = installFiles(),
-): Promise<string> {
-  const file = opencodePluginFile(env);
-  await files.write(file, opencodePlugin(`${invocation.command} guard --tool opencode`));
-  return file;
+): Promise<AgentInstall> {
+  const plugin = opencodePlugin(`${invocation.command} guard --tool opencode`);
+  await files.write(join(root, OPENCODE_PLUGIN), plugin);
+  if (!invocation.portable) await excludeLocally(git, OPENCODE_PLUGIN, files);
+  return { file: OPENCODE_PLUGIN, local: !invocation.portable };
 }
 
 /**

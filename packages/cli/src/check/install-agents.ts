@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import { parse } from "jsonc-parser";
-import { codexHooksFile } from "../install/agents";
+import { CODEX_HOOKS } from "../install/agents";
 import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord } from "../io/files";
 import type { Session } from "../session";
@@ -42,7 +42,7 @@ export async function agentStopHooks(session: Session, files: InstallFiles): Pro
     [join(root, ".claude/settings.json"), "claude-code", stopHook("Stop")],
     [join(root, ".claude/settings.local.json"), "claude-code", stopHook("Stop")],
     [join(root, ".cursor/hooks.json"), "cursor", cursorHook],
-    [codexHooksFile(session.environment.env), "codex", stopHook("Stop")],
+    [join(root, CODEX_HOOKS), "codex", stopHook("Stop")],
   ];
   for (const [file, tool, hook] of targets) {
     const text = await files.read(file);

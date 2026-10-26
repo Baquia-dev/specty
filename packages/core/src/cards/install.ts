@@ -14,26 +14,31 @@ export function guardLine(tool: string, file: string, local: boolean, lang: Lang
   return translator(lang)(`${tool}: guard en ${where}.`, `${tool}: guard in ${where}.`);
 }
 
-/** Codex's guard, in the user's configuration: it serves every repository. */
-export function codexGuardLine(file: string, lang: Lang): string {
+/**
+ * Codex's guard, in the project: Codex reads a linked worktree's hooks from the main checkout,
+ * so one file serves every change (ADR 0013).
+ */
+export function codexGuardLine(file: string, local: boolean, lang: Lang): string {
+  const where = `${file}${local ? " (local)" : ""}`;
   return translator(lang)(
-    `Codex: guard en ${file}, tu configuración de usuario: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
-    `Codex: guard in ${file}, your user configuration: it applies to all your repositories and does nothing outside those using Specty.`,
+    `Codex: guard en ${where}; desde Codex 0.131 sirve a todas las worktrees del repositorio.`,
+    `Codex: guard in ${where}; since Codex 0.131 it serves every worktree of the repository.`,
   );
 }
 
 export function codexTrustWarning(lang: Lang): string {
   return translator(lang)(
-    "Codex solo ejecuta el guard cuando confías en él: en Codex, abre `/hooks` y márcalo como de confianza. Basta una vez.",
-    "Codex runs the guard only once you trust it: in Codex, open `/hooks` and trust it. Once is enough.",
+    "Codex solo ejecuta el guard cuando confías en el proyecto y en el hook: confía en el proyecto cuando Codex lo pregunte y revisa el hook con `/hooks`. Basta una vez por repositorio.",
+    "Codex runs the guard only once you trust the project and the hook: trust the project when Codex asks, and review the hook with `/hooks`. Once per repository is enough.",
   );
 }
 
-/** OpenCode's guard plugin, in its global configuration: it serves every repository. */
-export function opencodeGuardLine(file: string, lang: Lang): string {
+/** OpenCode's guard plugin, in the project (ADR 0013): `local` when not committed. */
+export function opencodeGuardLine(file: string, local: boolean, lang: Lang): string {
+  const where = `${file}${local ? " (local)" : ""}`;
   return translator(lang)(
-    `OpenCode: plugin del guard en ${file}, tu configuración global: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
-    `OpenCode: guard plugin in ${file}, your global configuration: it applies to all your repositories and does nothing outside those using Specty.`,
+    `OpenCode: plugin del guard en ${where}.`,
+    `OpenCode: guard plugin in ${where}.`,
   );
 }
 

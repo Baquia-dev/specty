@@ -13,13 +13,13 @@ import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
 import {
   CLAUDE_WORKTREE_EVENTS,
-  codexHooksFile,
+  CODEX_HOOKS,
   hasGuard,
   missingClaudeEvents,
   missingCursorEvents,
+  OPENCODE_PLUGIN,
 } from "../install/agents";
 import { gitHooksInstalled } from "../install/git-hooks";
-import { opencodePluginFile } from "../install/opencode";
 import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
 import { COMMAND, type Session } from "../session";
@@ -70,27 +70,22 @@ export async function doctor(session: Session): Promise<Output> {
         : { code: "cursor-after-command", events: missing.join(", ") },
     );
   }
-  // Codex's guard lives in the user's configuration, shared by every repository.
-  const codex = codexHooksFile(session.environment.env);
-  const codexGuard = hasGuard(await readText(codex), "codex");
-  if (tools.includes("codex") || codexGuard) {
+  if (tools.includes("codex")) {
     check(
-      codexGuard,
-      { code: "codex-guard", file: codex },
-      { code: "no-codex-guard", file: codex },
+      hasGuard(await readText(join(root, CODEX_HOOKS)), "codex"),
+      { code: "codex-guard", file: CODEX_HOOKS },
+      { code: "no-codex-guard", file: CODEX_HOOKS },
     );
   }
-  // So does OpenCode's plugin, in its global configuration.
-  const plugin = opencodePluginFile(session.environment.env);
-  const pluginText = await readText(plugin);
-  const pluginGuard = hasGuard(pluginText, "opencode");
-  if (tools.includes("opencode") || pluginGuard) {
+  if (tools.includes("opencode")) {
+    const plugin = await readText(join(root, OPENCODE_PLUGIN));
+    const guard = hasGuard(plugin, "opencode");
     // A plugin from before the check after each command never sends `PostToolUse`.
-    const afterShell = pluginText?.includes('"PostToolUse"') === true;
+    const afterShell = plugin?.includes('"PostToolUse"') === true;
     check(
-      pluginGuard && afterShell,
-      { code: "opencode-guard", file: plugin },
-      { code: pluginGuard ? "opencode-after-command" : "no-opencode-guard", file: plugin },
+      guard && afterShell,
+      { code: "opencode-guard", file: OPENCODE_PLUGIN },
+      { code: guard ? "opencode-after-command" : "no-opencode-guard", file: OPENCODE_PLUGIN },
     );
   }
   // Another tool's guidance that tells the agent to do what the guard blocks.
