@@ -19,3 +19,9 @@ kind: quick
   - files: packages/cli/src/commands/init.ts, packages/cli/src/install/hooks.ts
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+init.ts (de 307 a 217 líneas de código) prepara el proyecto y pide los hooks a install/hooks.ts, que instala el guard de cada herramienta, los hooks de git y el aviso del PATH, y devuelve lo hecho, los avisos y los archivos del commit; mismos textos y orden.

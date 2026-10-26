@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-init-ts-instala-los-hooks-desde-su-propio-modulo",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-init-ts-instala-los-hooks-desde-su-propio-modulo",
   "baseCommit": "d64c42502db5fde87fe0440591cf2908951eb885",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5351a2c73dd9d9ba25e37dd22f7e9688be57837d",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:41:49.183Z",
       "doneAt": "2026-10-26T01:45:00.233Z",
-      "summary": "init.ts (de 307 a 217 líneas de código) prepara el proyecto y pide los hooks a install/hooks.ts, que instala el guard de cada herramienta, los hooks de git y el aviso del PATH, y devuelve lo hecho, los avisos y los archivos del commit; mismos textos y orden."
+      "summary": "init.ts (de 307 a 217 líneas de código) prepara el proyecto y pide los hooks a install/hooks.ts, que instala el guard de cada herramienta, los hooks de git y el aviso del PATH, y devuelve lo hecho, los avisos y los archivos del commit; mismos textos y orden.",
+      "scopeExtra": []
     }
   },
   "pending": {
