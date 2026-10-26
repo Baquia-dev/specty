@@ -6,6 +6,13 @@
   "branch": "specty/20261026-cada-agente-en-su-modulo",
   "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a3a1e893b3c1477847d81837ef0778d2f18380836af8fa67d66ff0cf0586c4b1",
+    "at": "2026-10-26T16:32:05.912Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dbe5972db1ab12b19b1f7b848605180d420dd2e7",
+      "startedAt": "2026-10-26T16:32:06.345Z",
+      "doneAt": "2026-10-26T16:39:18.135Z",
+      "summary": "Cada agente con guard tiene su módulo en agents/ con el contrato de adapter.ts (evento, acción, respuesta); el guard le pregunta en vez de ramificar por herramienta. actions.ts queda con lo común. Prueba nueva agents.test.ts; el guard tarda lo mismo que en main."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 3,
     "T": 5,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a3a1e893b3c1477847d81837ef0778d2f18380836af8fa67d66ff0cf0586c4b1",
-    "at": "2026-10-26T16:32:05.912Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

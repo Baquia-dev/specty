@@ -72,7 +72,7 @@ Lo que Specty hace con cada agente está hoy repartido en ocho archivos, con ram
 
 ## Tareas
 
-- [ ] T1: El guard lee y responde a cada agente por su módulo
+- [x] T1: El guard lee y responde a cada agente por su módulo
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/index.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/agents/cursor.ts, packages/cli/src/agents/codex.ts, packages/cli/src/agents/opencode.ts, packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/agents.test.ts test/enforce.test.ts test/cursor.test.ts test/codex.test.ts test/opencode.test.ts test/bundle.test.ts
