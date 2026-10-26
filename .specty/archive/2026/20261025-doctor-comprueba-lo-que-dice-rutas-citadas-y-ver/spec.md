@@ -47,3 +47,22 @@ ARCHITECTURE §14 dice que `specty doctor` comprueba cinco cosas que el código 
   - files: packages/cli/src/commands/doctor.ts, packages/cli/test/setup.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+`specty doctor` comprueba ahora lo que ARCHITECTURE §14 promete. Avisa de las rutas que AGENTS.md cita como código y ya no existen (`citedPaths` en core: las de dos tramos o más, sin fragmentos, comandos, globs, marcadores, paquetes ni direcciones), salvo las que git ignora, como las de un build. Y da un problema si Node es anterior a la 22, la versión de `engines`. Sobre el AGENTS.md de este repositorio, que cita muchas rutas, no da ningún aviso falso. La lista de §14 dice ahora lo que `doctor` hace, y lo que no: no ejecuta los comandos citados, no mide AGENTS.md ni revisa la CI.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Una ruta que falta es un aviso, no un problema: AGENTS.md es de la persona. Node antiguo sí es un problema, porque Specty no corre en él.
+- La lista de §14 se reescribió entera para que cada línea sea una comprobación que existe, también las que ya había (configuración, formateadores, modo delegado).
+
+### Pendientes
+
+- Ninguno.

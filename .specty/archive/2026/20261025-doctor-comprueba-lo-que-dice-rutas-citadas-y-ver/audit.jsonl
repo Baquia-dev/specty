@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T01:29:42.875Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"c516fd0b5f4a668af4ac19a4b4b78e02651a3f5f"}}
 {"ts":"2026-10-26T01:33:00.329Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":73742,"tree":"sha256:8391471ab60a754b5b3efe9cba7e34d8a50f04fd4efa9f16c29d5d324bacf52c"}}
 {"ts":"2026-10-26T01:33:00.441Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"doctor avisa de las rutas que AGENTS.md cita como código y no existen (salvo las que git ignora) y da un problema con Node anterior a la 22 (supportsNode); en este repositorio no da falsos avisos. ARCHITECTURE §14 dice lo que doctor hace, sin lo que no."}}
+{"ts":"2026-10-26T01:33:12.989Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T01:33:29.695Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ba77a0c79c60dcb0a9bafdf4f803fc574cc3e006b662b9fbc31d5eb432279056","size":"M","warnings":0}}
+{"ts":"2026-10-26T01:34:47.724Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

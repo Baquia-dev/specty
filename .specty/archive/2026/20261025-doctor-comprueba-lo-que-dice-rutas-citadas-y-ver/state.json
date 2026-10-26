@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-doctor-comprueba-lo-que-dice-rutas-citadas-y-ver",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-doctor-comprueba-lo-que-dice-rutas-citadas-y-ver",
   "baseCommit": "f860cd19929a2e0cf13b429fdf86f8078f39836f",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ace4070866ef01bc4db10c89ca35b95b46d67a48b34d1961c7dee31c0af3cf7c",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c516fd0b5f4a668af4ac19a4b4b78e02651a3f5f",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:29:42.875Z",
       "doneAt": "2026-10-26T01:33:00.440Z",
-      "summary": "doctor avisa de las rutas que AGENTS.md cita como código y no existen (salvo las que git ignora) y da un problema con Node anterior a la 22 (supportsNode); en este repositorio no da falsos avisos. ARCHITECTURE §14 dice lo que doctor hace, sin lo que no."
+      "summary": "doctor avisa de las rutas que AGENTS.md cita como código y no existen (salvo las que git ignora) y da un problema con Node anterior a la 22 (supportsNode); en este repositorio no da falsos avisos. ARCHITECTURE §14 dice lo que doctor hace, sin lo que no.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "A": 3,
     "AC": 4,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T01:33:29.694Z"
 }
