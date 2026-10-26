@@ -68,3 +68,33 @@ La verificación `dependencies` de `specty check --spec` lee los manifiestos de 
   - ac: AC3
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`dependencies` lee ahora los manifiestos de los nueve stacks del plan:
+- `requirements*.txt` y `pyproject.toml`;
+- `go.mod`, sin las dependencias indirectas;
+- `Cargo.toml`, `Gemfile` y `composer.json`;
+- `pom.xml`, los scripts de Gradle y su catálogo de versiones;
+- los proyectos de MSBuild y `Directory.Packages.props`;
+- `Package.swift`.
+
+Cada lector da los nombres con su línea. El catálogo admite nombres de archivo variables (`requirements*.txt`, `*.csproj`). Los formatos TOML y XML se leen con lectores mínimos propios, sin dependencias nuevas.
+
+### Desviaciones
+
+- Dos expectativas de los tests tenían mal la línea esperada (requirements y `pom.xml`), y el `pom.xml` del test anidaba mal `dependencyManagement`. El código no cambió por ello; se corrigieron los tests.
+- Un script por heredoc no llegó a ejecutarse en T3; los cambios se hicieron con ediciones directas.
+
+### Decisiones
+
+- En Java y Kotlin el nombre es `grupo:artefacto`, así que un glob como `com.squareup.okhttp3:*` permite un grupo entero. En Swift es el último tramo de la `url`.
+- Las referencias `libs.<alias>` de un script de Gradle no cuentan: la dependencia la declara el catálogo, que tiene su propio lector.
+- `composer.json` deja fuera `php`, `ext-*`, `lib-*` y las API de Composer, que no son paquetes del registro.
+
+### Pendientes
+
+- S4: `function-lines` y `complexity` en Python y Ruby.
+- S5: los escáneres de imports para `layers` en los demás lenguajes.

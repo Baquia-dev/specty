@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-las-dependencias-permitidas-en-cada-ecosistema",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-las-dependencias-permitidas-en-cada-ecosistema",
   "baseCommit": "e3ba50557961221d5a10d3807a697c7dd3cf6824",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e695c5cce5b6a4d2fbd1247bca37f0e6a08aa2ce8309f3450cda8d19d19c9e53",
@@ -66,12 +66,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bee5fc54c2759f2cfcd1e476f722bfe63f55c5ae",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:01:35.668Z",
       "doneAt": "2026-10-26T15:03:44.678Z",
-      "summary": "Las guías y formats.md listan los manifiestos que lee dependencies en cada ecosistema y el formato de sus nombres"
+      "summary": "Las guías y formats.md listan los manifiestos que lee dependencies en cada ecosistema y el formato de sus nombres",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,5 +82,6 @@
     "A": 3,
     "AC": 3,
     "T": 4
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T15:04:02.705Z"
 }
