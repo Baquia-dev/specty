@@ -113,6 +113,13 @@ export function claudePointerStaysLine(lang: Lang): string {
   );
 }
 
+export function geminiPointerStaysLine(lang: Lang): string {
+  return translator(lang)(
+    "GEMINI.md sigue importando AGENTS.md.",
+    "GEMINI.md still imports AGENTS.md.",
+  );
+}
+
 /** Removing Specty with a change in progress leaves its tasks without anything that watches them. */
 export function unwatchedChangeWarning(id: string, lang: Lang): string {
   return translator(lang)(

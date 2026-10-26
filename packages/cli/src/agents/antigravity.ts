@@ -6,12 +6,16 @@ import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enfo
 import { ANTIGRAVITY_HOOKS, excludeLocally, removeFromJson } from "../install/agents";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
-import type { AgentAdapter } from "./adapter";
+import { type AgentAdapter, jsonStop } from "./adapter";
 
 /** The name of Specty's hook among the person's in `.agents/hooks.json`. */
 const HOOK = "specty";
-/** Its tools that change the repository; there is none to delete a file. */
-const TOOLS = "run_command|write_to_file|replace_file_content|multi_replace_file_content";
+/**
+ * Its tools that change the repository (there is none to delete a file), and the one that types
+ * into a task running in the background.
+ */
+const TOOLS =
+  "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task";
 /**
  * The events the guard listens to, with the tools each one covers; `undefined` is an event that
  * takes a list of handlers, with no matcher.
@@ -34,23 +38,49 @@ export const antigravity: AgentAdapter = {
   normalize,
   kind: (event) => {
     if (event.hook_event_name === "PostToolUse") return "after";
-    return event.hook_event_name === "PreInvocation" ? "invocation" : "before";
+    if (event.hook_event_name !== "PreInvocation") return "before";
+    // Its count starts again at each message of the person: 0 is the first call of a turn.
+    return event.invocationNum === 0 ? "turn" : "invocation";
   },
   action,
   reply: (verdict, phase) => {
     if (phase === "after") return json({});
-    return json(verdict.allow ? { decision: "allow" } : { decision: "deny", reason: verdict.text });
+    if (!verdict.allow) return json({ decision: "deny", reason: verdict.text });
+    // Its terminal sandbox writes only in the workspace; these open Specty's folders as well.
+    const grants = (verdict.folders ?? []).map((folder) => `write_file(${folder})`);
+    return json(
+      grants.length === 0
+        ? { decision: "allow" }
+        : { decision: "allow", permissionOverrides: grants },
+    );
   },
   failed: () => json({ decision: "allow" }),
+  grants: true,
   late: "invocation",
   inject: (texts) =>
     json(
       texts.length === 0 ? {} : { injectSteps: texts.map((text) => ({ ephemeralMessage: text })) },
     ),
+  stop: {
+    // Only a turn the model ended: not one an error or its step limit stopped.
+    acts: (event) => event.terminationReason === "model_stop",
+    reply: (message) => JSON.stringify({ decision: "continue", reason: message }),
+    pass: JSON.stringify({ decision: "stop" }),
+    counts: true,
+    plan: jsonStop([ANTIGRAVITY_HOOKS], (command, timeout) => (value) => {
+      const ours = isRecord(value[HOOK]) ? value[HOOK] : {};
+      return { ...value, [HOOK]: { ...ours, Stop: [{ type: "command", command, timeout }] } };
+    }),
+  },
   install: async ({ root, git, invocation, files, lang }) => {
     const local = !invocation.portable;
     const command = `${invocation.command} guard --tool antigravity`;
-    const update = (value: Record<string, unknown>) => ({ ...value, [HOOK]: hookOf(command) });
+    const update = (value: Record<string, unknown>) => {
+      const ours = isRecord(value[HOOK]) ? value[HOOK] : {};
+      // `check --install` puts the end of turn in the same hook: rewriting the guard keeps it.
+      const turn = ours.Stop === undefined ? {} : { Stop: ours.Stop };
+      return { ...value, [HOOK]: { ...hookOf(command), ...turn } };
+    };
     await rewriteJson(join(root, ANTIGRAVITY_HOOKS), update, true, files);
     if (local) await excludeLocally(git, ANTIGRAVITY_HOOKS, files);
     return {
@@ -135,6 +165,9 @@ function action(event: Readonly<Record<string, unknown>>): RawAction {
   switch (event.tool_name) {
     case "run_command":
       return shellAction(input.CommandLine);
+    // What it types into a running task, which may be a shell, is judged as a command.
+    case "manage_task":
+      return input.Action === "send_input" ? shellAction(input.Input) : { kind: "other" };
     case "write_to_file":
     case "replace_file_content":
     case "multi_replace_file_content":

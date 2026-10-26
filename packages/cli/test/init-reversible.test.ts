@@ -65,8 +65,8 @@ describe("a reversible init", () => {
 
   it("makes no copy when every file it writes is new (AC3)", async () => {
     const root = await tempRepo(PACKAGE);
-    // Gemini CLI has no guard: init writes only new files, and no exclusion in `.git/info/exclude`.
-    const installed = await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    // Copilot has no guard: init writes only new files, and no exclusion in `.git/info/exclude`.
+    const installed = await cli(root, ["init", "--language", "es", "--tools", "copilot"]);
     expect(installed.code).toBe(0);
     expect(installed.out).not.toContain("Copia de lo que había antes");
     expect(await exists(join(root, ".git/common/specty/backups"))).toBe(false);

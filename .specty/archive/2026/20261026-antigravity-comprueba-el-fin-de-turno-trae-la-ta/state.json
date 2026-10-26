@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
+  "baseCommit": "d3fdaee4853b125901507db5f336810144eca489",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9d0664319cb60876d57f86a39f0a6a5edfecff5ba03021cd07d87e4d8e4ac86a",
+    "at": "2026-10-26T19:55:33.522Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fbebdf58e4a88b10d5fb3e2236b505bc959a07b8f7ff2d537948afabbf667b2c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d05db65c79ea95e97335b372419c722f6ed9d79adfc980cf16e987a20f5b12d9",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b583b5aa2a74b3df967b2bfead00e7cec82db640ea878a954baf1fc5da34a9fc",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e674818a24bd114b23b5fbae32e26bfa9d44cf2c25fa576dda5014c73d72f3f1",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:a38a0ea6f2526a8b4c8ed5b8396e786449e73213cc00930a26994682ff27dc0a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e98efbbbe8cdad8d21201ddbbb02bf087b23c98f",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:55:33.889Z",
+      "doneAt": "2026-10-26T20:01:30.661Z",
+      "summary": "El Stop de Antigravity va en el hook specty: con model_stop y el check fallando responde continue con el informe, y Specty cuenta por conversación el turno devuelto (pending .stop). El evento turn (PreInvocation 0) trae la tarjeta de next antes del aviso pendiente.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "38b3301b77f76c9b39bf0ecb4811aaa3e143dd6e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T20:01:30.956Z",
+      "doneAt": "2026-10-26T20:03:53.797Z",
+      "summary": "check --install escribe .antigravityignore con los globs de checks.exclude y scope.generated en los repositorios que usan Antigravity.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "8b42581d32b99016ea0636ea0eac111895d36be0",
+      "attempts": 1,
+      "startedAt": "2026-10-26T20:03:54.255Z",
+      "doneAt": "2026-10-26T20:09:13.865Z",
+      "summary": "Cada comando de shell que el guard deja pasar en Antigravity lleva permissionOverrides con write_file de la carpeta común de git y la de las worktrees; sharedFolders pasa de cursor.ts a flow/worktree.ts y el veredicto lleva las carpetas para un agente con grants.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "08af578e7e1ea1002ab4254352ecb0d68ae76a48",
+      "attempts": 1,
+      "startedAt": "2026-10-26T20:09:14.164Z",
+      "doneAt": "2026-10-26T20:12:56.268Z",
+      "summary": "El matcher de PreToolUse de Antigravity incluye manage_task: con send_input, el guard juzga Input como un comando de shell (deniega un comando de la persona), y sus demás acciones pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "0c6f68eaef09512977c5f0e3d943267f1d72c0ff",
+      "attempts": 1,
+      "startedAt": "2026-10-26T20:12:56.735Z",
+      "doneAt": "2026-10-26T20:17:24.765Z",
+      "summary": "La tabla marca el fin de turno, la exclusión y los permisos de Antigravity como sí, y la tarjeta como indirecto. ARCHITECTURE §10 cuenta su Stop, la tarjeta en cada turno, manage_task, .antigravityignore y permissionOverrides; formats.md, pending .stop.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 5,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-26T20:23:00.418Z"
+}

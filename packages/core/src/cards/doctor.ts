@@ -39,6 +39,10 @@ export type DoctorLine =
   | { readonly code: "antigravity-guard" | "no-antigravity-guard"; readonly file: string }
   /** Antigravity's guard is there, without the hooks of these events. */
   | { readonly code: "antigravity-hooks"; readonly file: string; readonly events: string }
+  /** Gemini CLI's guard in `file`, its project settings. */
+  | { readonly code: "gemini-guard" | "no-gemini-guard"; readonly file: string }
+  /** Gemini CLI's guard is there, without the hooks of these events. */
+  | { readonly code: "gemini-hooks"; readonly file: string; readonly events: string }
   /** gentle-ai's flow guidance, which asks the agent for what the guard blocks. */
   | { readonly code: "gentle-ai"; readonly file: string; readonly blocks: readonly string[] }
   | { readonly code: "formatter-excludes"; readonly name: string; readonly path: string }
@@ -179,6 +183,21 @@ const WRITERS: {
     t(
       `Antigravity: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools antigravity\`.`,
       `Antigravity: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools antigravity\`.`,
+    ),
+  "gemini-guard": (line, t) =>
+    t(
+      `Gemini CLI: guard en ${line.file}; Gemini CLI avisa antes de ejecutarlo si es nuevo o cambió.`,
+      `Gemini CLI: guard in ${line.file}; Gemini CLI asks before running it when it is new or changed.`,
+    ),
+  "no-gemini-guard": (line, t, command) =>
+    t(
+      `Gemini CLI: falta el guard en ${line.file}; ejecuta \`${command} init --tools gemini-cli\`.`,
+      `Gemini CLI: the guard is missing in ${line.file}; run \`${command} init --tools gemini-cli\`.`,
+    ),
+  "gemini-hooks": (line, t, command) =>
+    t(
+      `Gemini CLI: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools gemini-cli\`.`,
+      `Gemini CLI: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools gemini-cli\`.`,
     ),
   "opencode-compact": (_, t, command) =>
     t(

@@ -9,6 +9,10 @@ export function claudePointerLine(lang: Lang): string {
   return translator(lang)("CLAUDE.md importa AGENTS.md.", "CLAUDE.md imports AGENTS.md.");
 }
 
+export function geminiPointerLine(lang: Lang): string {
+  return translator(lang)("GEMINI.md importa AGENTS.md.", "GEMINI.md imports AGENTS.md.");
+}
+
 /** The guard of an agent tool whose hooks live in the repository: `local` when not committed. */
 export function guardLine(tool: string, file: string, local: boolean, lang: Lang): string {
   const where = `${file}${local ? " (local)" : ""}`;
@@ -93,6 +97,38 @@ export function antigravityTrustWarning(lang: Lang): string {
   return translator(lang)(
     "Antigravity solo carga .agents/hooks.json si confías en la carpeta del proyecto: confía en ella cuando te lo pregunte.",
     "Antigravity only loads .agents/hooks.json from a folder you trust: trust the project's folder when it asks.",
+  );
+}
+
+/** Gemini CLI keeps a fingerprint of each project hook, and loads none from a folder not trusted. */
+export function geminiTrustWarning(lang: Lang): string {
+  return translator(lang)(
+    "Gemini CLI avisa antes de ejecutar un hook nuevo o cambiado del proyecto: acepta los de Specty cuando te lo pregunte. Tampoco los carga en una carpeta en la que no confíes.",
+    "Gemini CLI asks before running a new or changed project hook: accept Specty's when it asks. It does not load them in a folder you do not trust either.",
+  );
+}
+
+/**
+ * Gemini CLI's sandbox, off unless the person turns it on, with Specty's folders in its local
+ * settings: the ones Specty's commands write in from a change's folder.
+ */
+export function geminiSandboxLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Gemini CLI: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
+    `Gemini CLI: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
+  );
+}
+
+/** Gemini CLI settings that go in git: no machine path, so Specty says what to add elsewhere. */
+export function geminiSandboxVersionedWarning(
+  file: string,
+  paths: readonly string[],
+  lang: Lang,
+): string {
+  const list = paths.map((path) => `\`${path}\``).join(", ");
+  return translator(lang)(
+    `Gemini CLI: ${file} va en git, así que Specty no le añade rutas de esta máquina; si activas su sandbox, añade ${list} a \`tools.sandboxAllowedPaths\` en tu configuración de usuario para que funcionen los commits de Specty.`,
+    `Gemini CLI: ${file} goes in git, so Specty adds no path of this machine to it; if you turn its sandbox on, add ${list} to \`tools.sandboxAllowedPaths\` in your user settings so Specty's commits work.`,
   );
 }
 

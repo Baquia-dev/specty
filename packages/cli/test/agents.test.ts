@@ -83,6 +83,10 @@ describe("each agent's module", () => {
       "after",
       "invocation",
     ]);
+    // The first model call of a turn: its count starts again at each message of the person.
+    const call = (invocationNum: number) =>
+      antigravity.kind({ hook_event_name: "PreInvocation", invocationNum });
+    expect([call(0), call(1)]).toEqual(["turn", "invocation"]);
   });
 
   it("tells each event apart in its tool's names", () => {
@@ -117,6 +121,30 @@ describe("each agent's module", () => {
     expect(ADAPTERS.opencode.kind({ hook_event_name: "SessionStart", source: "compact" })).toBe(
       "compact",
     );
+    expect(kinds("gemini-cli", ["BeforeTool", "AfterTool", "BeforeAgent"])).toEqual([
+      "before",
+      "after",
+      "turn",
+    ]);
+  });
+
+  it("answers Gemini CLI as Claude Code before an action, and after a command in its result", () => {
+    const gemini = ADAPTERS["gemini-cli"];
+    const silent = { code: 0, stdout: "", stderr: "" };
+    expect(gemini.reply(allow, "before")).toEqual(silent);
+    expect(gemini.reply(deny, "before")).toEqual({ code: 2, stdout: "", stderr: deny.text });
+    expect(gemini.reply(allow, "after")).toEqual(silent);
+    const warned = gemini.reply(deny, "after");
+    expect(warned.code).toBe(0);
+    expect(JSON.parse(warned.stdout)).toEqual({
+      hookSpecificOutput: { hookEventName: "AfterTool", additionalContext: deny.text },
+    });
+    expect(gemini.failed("specty guard: roto").code).not.toBe(2);
+    // The card goes with the turn's prompt; nothing to add says nothing.
+    expect(JSON.parse(gemini.inject?.(["TARJETA"]).stdout ?? "")).toEqual({
+      hookSpecificOutput: { hookEventName: "BeforeAgent", additionalContext: "TARJETA" },
+    });
+    expect(gemini.inject?.([])).toEqual(silent);
   });
 
   it("brings the card back after a compaction where the tool reads it: all but Cursor", () => {

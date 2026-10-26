@@ -23,7 +23,14 @@ describe("the capability table", () => {
   it("covers every agent, and guards those whose guard says yes (AC4)", () => {
     expect(Object.keys(AGENT_CAPABILITIES).toSorted()).toEqual(Object.keys(AGENT_NAMES).toSorted());
     const guarded = Object.keys(AGENT_NAMES).filter(isAgentTool).filter(isGuardedAgent);
-    expect(guarded).toEqual(["claude-code", "cursor", "codex", "opencode", "antigravity"]);
+    expect(guarded).toEqual([
+      "claude-code",
+      "cursor",
+      "codex",
+      "opencode",
+      "gemini-cli",
+      "antigravity",
+    ]);
     const yes = Object.keys(AGENT_NAMES)
       .filter(isAgentTool)
       .filter((tool) => AGENT_CAPABILITIES[tool].guard.state === "yes");
@@ -62,7 +69,10 @@ describe("the capability table", () => {
       "| OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
-    expect(es).toContain("| Antigravity | sí | indirecto | pendiente | no posible |");
+    expect(es).toContain("| Gemini CLI | sí | sí | indirecto | no posible | sí | sí | sí | sí |");
+    expect(es).toContain(
+      "| Antigravity | sí | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
+    );
     expect(capabilityTable("en")).toContain(
       "| Cursor | yes | yes | indirect | not possible | yes | yes | yes | not possible |",
     );
@@ -76,6 +86,12 @@ describe("the capability table", () => {
     );
     expect(es).toContain(
       "- Aviso tras cada comando (Antigravity): su `PostToolUse` no responde al modelo, así que el aviso llega en su siguiente llamada al modelo (`PreInvocation`).",
+    );
+    expect(es).toContain(
+      "- Tarjeta tras compactar (Antigravity): no avisa cuando compacta, así que la tarjeta llega al empezar cada turno, con su primera llamada al modelo (`PreInvocation`).",
+    );
+    expect(es).toContain(
+      "- Tarjeta tras compactar (Gemini CLI): dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
     );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");

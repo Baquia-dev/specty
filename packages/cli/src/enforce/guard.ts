@@ -19,7 +19,7 @@ import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
-import { placePaths } from "../flow/worktree";
+import { placePaths, sharedFolders } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
@@ -105,18 +105,28 @@ async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
       await leave(session, event, "warning", said.text);
       return agent.reply(ALLOW, "after", card);
     }
-    case "invocation": {
-      const conversation = conversationOf(event);
-      const warning =
-        conversation === undefined
-          ? undefined
-          : await takePending(session, conversation, "warning");
-      const texts = warning === undefined ? [] : [warning];
-      return agent.inject?.(texts) ?? agent.reply(ALLOW, "after");
-    }
+    case "invocation":
+    case "turn":
+      return await modelCall(kind, call);
     default:
       return await beforeAction(call);
   }
+}
+
+/**
+ * Before a model call, what waited for it: the warning a command left, and at the first call of
+ * a turn the task card, which no compaction of a tool that does not say when it compacts can cut.
+ */
+async function modelCall(
+  kind: "invocation" | "turn",
+  { agent, session, event }: Call,
+): Promise<GuardReply> {
+  const conversation = conversationOf(event);
+  const warning =
+    conversation === undefined ? undefined : await takePending(session, conversation, "warning");
+  const card = kind === "turn" ? [renderText(await next(session), session.lang)] : [];
+  const texts = [...card, ...(warning === undefined ? [] : [warning])];
+  return agent.inject?.(texts) ?? agent.reply(ALLOW, "after");
 }
 
 /** Leaves something for the event's conversation to take with its next event that can carry it. */
@@ -147,7 +157,11 @@ async function beforeAction({
   // One change at a time per session: the worktree it may enter becomes its own.
   if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
   if (decision.allow) await beforeShell(session, event, action);
-  return agent.reply(verdict(decision, session), "before");
+  const said = verdict(decision, session);
+  if (said.allow && agent.grants === true && action.kind === "shell") {
+    return agent.reply({ ...said, folders: await sharedFolders(session.git) }, "before");
+  }
+  return agent.reply(said, "before");
 }
 
 /** Before a shell command it lets through, keeps a snapshot of the tree to compare afterwards. */

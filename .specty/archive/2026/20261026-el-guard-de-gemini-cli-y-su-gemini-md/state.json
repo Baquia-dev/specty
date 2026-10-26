@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "20261026-el-guard-de-gemini-cli-y-su-gemini-md",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-el-guard-de-gemini-cli-y-su-gemini-md",
+  "baseCommit": "3b678e4bfdd752c60ed2a4c3ae73b948919533c9",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5ca1db982e12049c59167b3a7f65f223cd563ecf5b1d6ff73fc3761b5ace665f",
+    "at": "2026-10-26T20:37:41.020Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5e56994ca9d7071357213c1086898a65a5ebdd7c6a0c2e5a30ab34787b0e9840",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0ef59e5b5ce50ecfba7e37537bed9230031f6ec1adc5919b5a0921c92dd853b1",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f846ae5a628a9d682e2139a723fcb54a58321ff11ccd31e7ecc2f544cf238803",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:f4114317632b6cd556ecf5f3e85145aa6f9c41cb60ddd2168dce0c2eaf7b042a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:89b14003aa9d9003fbc69eca88456a49878769f87a6697d706a71752980fb3b3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c4922ea8f03da5279af6f29e694da838b4486b6e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T20:37:41.389Z",
+      "doneAt": "2026-10-26T20:41:47.780Z",
+      "summary": "Gemini CLI tiene su guard: agents/gemini-cli.ts instala BeforeTool y AfterTool en .gemini/settings.json, bloquea con salida 2 y añade el aviso tras un comando como additionalContext; doctor y uninstall lo cubren. El test de init sin guard pasa a Copilot.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "67d955924e5189ca44fae170a074a8a024f87f41",
+      "attempts": 1,
+      "startedAt": "2026-10-26T20:41:48.079Z",
+      "doneAt": "2026-10-26T20:43:54.455Z",
+      "summary": "init escribe GEMINI.md con @./AGENTS.md delante de lo que tuviera (writePointer generaliza el de CLAUDE.md), sin repetirlo, y uninstall lo deja y dice que sigue importando AGENTS.md.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "0b61042fa1aee00a93aba0e6f0388b5ba3b85c92",
+      "attempts": 1,
+      "startedAt": "2026-10-26T20:43:54.733Z",
+      "doneAt": "2026-10-26T20:46:20.283Z",
+      "summary": "La tabla marca el guard y el aviso tras cada comando de Gemini CLI como sí; ARCHITECTURE cuenta sus hooks (§10), el aviso con additionalContext y el par antes/después sin id, GEMINI.md entre los punteros y lo que deja uninstall.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 3,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-26T20:49:49.410Z"
+}

@@ -25,9 +25,10 @@ describe("specty check --install keeps the agents out of the noise", () => {
       "CLAUDE.md": "x\n",
       ".gemini/settings.json": "{}\n",
       ".windsurfrules": "x\n",
+      ".agents/rules/style.md": "x\n",
     });
     const plan = await cli(root, ["check", "--install", "--dry-run"]);
-    for (const file of [".cursorignore", ".geminiignore", ".codeiumignore"]) {
+    for (const file of [".cursorignore", ".geminiignore", ".codeiumignore", ".antigravityignore"]) {
       expect(plan.out).toContain(`${file} (crear)`);
     }
     expect(plan.out).toContain("+**/node_modules/**");

@@ -115,14 +115,21 @@ export const AGENT_CAPABILITIES = {
   },
   "gemini-cli": {
     markers: [".gemini", "GEMINI.md"],
-    guard: pending,
-    afterShell: pending,
-    afterCompaction: pending,
+    guard: yes,
+    // `AfterTool` adds it to the command's result (`additionalContext`).
+    afterShell: yes,
+    afterCompaction: indirect(
+      "dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
+      "it fires `PreCompress` before every attempt to compact, whether it compacts or not, so the card comes at the start of each turn, with its prompt (`BeforeAgent`).",
+    ),
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: pending,
+    // `AfterAgent`, checked with Gemini CLI 0.65.0.
+    endOfTurn: yes,
     exclusion: yes,
-    permissions: pending,
-    endToEnd: pending,
+    // Its sandbox, off by default, takes Specty's folders in `tools.sandboxAllowedPaths`.
+    permissions: yes,
+    // `gemini-e2e.test.ts`, against a fake of the Gemini API.
+    endToEnd: yes,
   },
   copilot: {
     markers: [".github/copilot-instructions.md", ".github/instructions"],
@@ -166,11 +173,17 @@ export const AGENT_CAPABILITIES = {
       "su `PostToolUse` no responde al modelo, así que el aviso llega en su siguiente llamada al modelo (`PreInvocation`).",
       "its `PostToolUse` does not reach the model, so the warning comes with its next model call (`PreInvocation`).",
     ),
-    afterCompaction: pending,
+    afterCompaction: indirect(
+      "no avisa cuando compacta, así que la tarjeta llega al empezar cada turno, con su primera llamada al modelo (`PreInvocation`).",
+      "it does not say when it compacts, so the card comes at the start of each turn, with its first model call (`PreInvocation`).",
+    ),
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: pending,
-    exclusion: pending,
-    permissions: pending,
+    // `Stop` with `decision: "continue"`; Specty counts the turns it sends back.
+    endOfTurn: yes,
+    // `.antigravityignore`.
+    exclusion: yes,
+    // `permissionOverrides` with each shell command opens Specty's folders in its sandbox.
+    permissions: yes,
     endToEnd: OWN_SERVER,
   },
 } as const satisfies Readonly<Record<AgentTool, AgentCapabilities>>;

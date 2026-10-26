@@ -68,10 +68,23 @@ describe("the guard in Antigravity", () => {
     expect(await answer(antigravity(root, "PreToolUse", view))).toEqual({ decision: "allow" });
   });
 
+  it("judges what its agent types into a running task as a command it runs (AC6)", async () => {
+    const root = await implementing();
+    const task = (index: number, args: Record<string, unknown>) =>
+      answer(antigravity(root, "PreToolUse", step(index, "manage_task", args)));
+    const typed = await task(1, { Action: "send_input", TaskId: "t1", Input: "specty approve\n" });
+    expect(typed.decision).toBe("deny");
+    expect(typed.reason).toMatch(/^SIGUIENTE: /m);
+    expect((await task(2, { Action: "send_input", TaskId: "t1", Input: "y\n" })).decision).toBe(
+      "allow",
+    );
+    expect(await task(3, { Action: "status", TaskId: "t1" })).toEqual({ decision: "allow" });
+  });
+
   it("gives the warning after a command with the conversation's next model call, once (AC2)", async () => {
     const root = await implementing();
     const command = step(7, "run_command", { CommandLine: "python3 gen.py", Cwd: root });
-    expect(await answer(antigravity(root, "PreToolUse", command))).toEqual({ decision: "allow" });
+    expect((await answer(antigravity(root, "PreToolUse", command))).decision).toBe("allow");
     await writeFiles(root, { "src/other.ts": "generated\n" });
     expect(await answer(antigravity(root, "PostToolUse", command))).toEqual({});
     const invocation = (index: number) =>
@@ -121,7 +134,8 @@ describe("installing the guard in Antigravity", () => {
     expect(hooks.specty).toEqual({
       PreToolUse: [
         {
-          matcher: "run_command|write_to_file|replace_file_content|multi_replace_file_content",
+          matcher:
+            "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task",
           hooks: [handler("PreToolUse")],
         },
       ],

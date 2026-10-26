@@ -16,14 +16,26 @@ export type JsonUpdate = (value: Record<string, unknown>) => Record<string, unkn
 /**
  * What an event of an agent's hooks is: before an action, after a shell command, a session that
  * starts again after a compaction, a compaction about to happen that cannot take the card (it
- * waits for the conversation's next command), a model call about to happen, or Claude Code making
- * or removing a worktree.
+ * waits for the conversation's next command), a model call about to happen, the first model call
+ * of a turn (which brings the task card, for a tool that cannot say when it compacts), or Claude
+ * Code making or removing a worktree.
  */
-export type EventKind = "before" | "after" | "compact" | "compacting" | "invocation" | "worktree";
+export type EventKind =
+  | "before"
+  | "after"
+  | "compact"
+  | "compacting"
+  | "invocation"
+  | "turn"
+  | "worktree";
 
 /** The guard's verdict before each agent's form: let it through, or stop it and say why. */
 export type Verdict =
-  | { readonly allow: true }
+  | {
+      readonly allow: true;
+      /** The folders outside its workspace a shell command may write in, for an agent with `grants`. */
+      readonly folders?: readonly string[];
+    }
   | {
       readonly allow: false;
       readonly reason: string;
@@ -52,6 +64,11 @@ export interface AgentAdapter {
   readonly reply: (verdict: Verdict, phase: "before" | "after", card?: string) => GuardReply;
   /** The reply when the guard itself fails: the action goes through, with every agent. */
   readonly failed: (message: string) => GuardReply;
+  /**
+   * For a tool whose terminal sandbox keeps to the workspace and that takes permissions with each
+   * action: every shell command the guard lets through brings Specty's folders (`Verdict.folders`).
+   */
+  readonly grants?: true;
   /** The reply that brings the task card back after a compaction, for an agent that can. */
   readonly card?: (text: string) => GuardReply;
   /**
@@ -110,6 +127,13 @@ export interface AgentStop {
   readonly acts: (event: Event) => boolean;
   /** What sends the agent back to work with the report. */
   readonly reply: (message: string) => string;
+  /** What lets the turn end, for a tool that wants an answer every time; nothing otherwise. */
+  readonly pass?: string;
+  /**
+   * For a tool that does not mark a turn it already sent back (`stop_hook_active`), Specty keeps
+   * the count for each conversation: the end that comes after sending it back may go through.
+   */
+  readonly counts?: true;
   /**
    * Writes the hook into the plan of `check --install`, next to Specty's guard and with its
    * command; nothing when the guard is not there, or the hook already is.
