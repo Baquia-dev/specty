@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
+  "baseCommit": "1a02854178ca122f70ebd9fc6790a62e7b7e63a5",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2844a1b93770f33ed19ce5eadaaa586cbdf74c9902871bd345092ecf4f8261a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f210857a4958a82e1bd26382672cbe2cb77618137fb42740fc34ab778e5e6584",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:39fc9f1362cda68f1f34bd3dc32cb50905f0f9bf8428fcd6b24ebd3d9f439c06",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:414b18c54d1b100a67cb04023a94ec05f24a83c08e180fcbff745e6f33cd9b8f",
+    "at": "2026-10-26T18:45:19.873Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
