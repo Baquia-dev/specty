@@ -33,7 +33,7 @@ Noveno cambio de la serie que lleva a core los textos de la CLI, con el último 
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de uninstall
+- [x] T1: Core tiene los textos de uninstall
   - files: packages/core/src/cards/uninstall.ts, packages/core/src/cards/index.ts, packages/core/test/cards/uninstall.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

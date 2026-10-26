@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-uninstall-viven-en-core",
   "baseCommit": "cf2a50116d1ee02a279b931d53911dd41f33466a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:59a5b7401707b479438b3bdb9bed7167e465966e4a55c108cff3d7c3a0472466",
+    "at": "2026-10-26T02:56:24.239Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3ce90e20df03ff2d17b3292af01eaf8dc54a229b",
+      "startedAt": "2026-10-26T02:56:24.590Z",
+      "doneAt": "2026-10-26T02:57:06.878Z",
+      "summary": "core/src/cards/uninstall.ts tiene los textos de uninstall: cada archivo, la simulación, la nota, la pregunta y sus respuestas, el aviso de un cambio en curso, lo quitado y lo que se queda, copiados letra a letra de la CLI, con tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:59a5b7401707b479438b3bdb9bed7167e465966e4a55c108cff3d7c3a0472466",
-    "at": "2026-10-26T02:56:24.239Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

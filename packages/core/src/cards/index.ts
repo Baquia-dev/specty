@@ -153,6 +153,20 @@ export {
   taskDoneRefusalCard,
 } from "./task";
 export { effortLabel, effortLine, runNext, translator } from "./text";
+export {
+  claudePointerStaysLine,
+  globalGuardStaysLine,
+  historyStaysLine,
+  nothingRemovedCard,
+  nothingToRemoveCard,
+  removalChoices,
+  removalLine,
+  removalNoteTitle,
+  removalPlanCard,
+  removalQuestion,
+  removedCard,
+  unwatchedChangeWarning,
+} from "./uninstall";
 export type {
   CardContext,
   ChangeView,
