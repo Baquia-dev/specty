@@ -12,7 +12,7 @@ import { CHANGE, CONFIG, cli, person, tempRepo, writeFiles } from "./support";
  * --spec` says how each check sees them.
  */
 
-export type Files = Readonly<Record<string, string>>;
+type Files = Readonly<Record<string, string>>;
 
 /** The markers, put together from parts so that this file does not trip `specty check`. */
 export const MARK = { only: ".only", skipped: ".skip", todo: "TODO", any: "any" } as const;

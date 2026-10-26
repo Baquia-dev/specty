@@ -52,7 +52,7 @@ Los tests montan un repositorio de ejemplo de Angular, otro de NestJS y otro de 
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-flutter.test.ts
   - type: test
-- [ ] T3: Dónde están los ejemplos en las guías
+- [x] T3: Dónde están los ejemplos en las guías
   - files: docs/checks.md, docs/checks.en.md
   - ac: AC1
   - verify: pnpm check

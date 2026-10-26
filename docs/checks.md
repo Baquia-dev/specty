@@ -294,6 +294,15 @@ Avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada archivo 
 
 Nunca pisa lo que ya decidiste distinto: lo informa como conflicto. Ejecutarlo dos veces no duplica nada.
 
+## Ejemplos por stack
+
+Hay un repositorio de ejemplo de Angular y otro de NestJS en `packages/cli/test/check-examples-ts.test.ts`, y uno de Flutter en `packages/cli/test/check-examples-flutter.test.ts`. Cada uno tiene un cambio aprobado y ejecuta `specty check --changed --spec` dos veces:
+
+- con un cambio que respeta el plan, y todas las verificaciones pasan;
+- con otro que rompe cada verificación a la vez, y todas fallan.
+
+Los comandos del proyecto son imitaciones de sus herramientas, porque las reales necesitan instalar dependencias. Salen «sin ejecutar» `layers` en TypeScript, porque los ejemplos no tienen dependency-cruiser, y `secrets` si no hay un escáner en el PATH.
+
 ## Añadir un proveedor
 
 Lo propio de cada stack vive en un proveedor con una interfaz común (`packages/cli/src/check/provider.ts`). Añadir un stack es añadir un proveedor, sin tocar el núcleo.

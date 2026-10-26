@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-ejemplos-de-angular-nestjs-y-flutter-para-cada-v",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-ejemplos-de-angular-nestjs-y-flutter-para-cada-v",
   "baseCommit": "560be9ed56d873610e408caea967648e493ec6a8",
   "revision": 1,
@@ -55,12 +55,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "401aa63d93093e017148cfd6addbaeb039f83bdd",
+      "attempts": 1,
       "startedAt": "2026-10-26T12:21:20.750Z",
       "doneAt": "2026-10-26T12:23:53.716Z",
-      "summary": "Ejemplo de Flutter: checks.commands apunta format, lint y tests a imitaciones de dart format, flutter analyze y flutter test; dart-strict, layers con el escáner propio y las demás pasan en un caso y fallan en otro."
+      "summary": "Ejemplo de Flutter: checks.commands apunta format, lint y tests a imitaciones de dart format, flutter analyze y flutter test; dart-strict, layers con el escáner propio y las demás pasan en un caso y fallan en otro.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/stack-examples.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "9652bb73774ba18030e6ab8e037329fabcae7bef",
+      "startedAt": "2026-10-26T12:23:54.000Z",
+      "doneAt": "2026-10-26T12:25:52.553Z",
+      "summary": "checks.md y checks.en.md explican dónde están los ejemplos por stack, qué ejecutan y por qué layers en TypeScript y secrets pueden salir sin ejecutar; Files deja de exportarse (knip)."
     }
   },
   "pending": {
