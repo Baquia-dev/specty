@@ -3,6 +3,7 @@ import { relative, resolve, sep } from "node:path";
 import {
   AGENT_NAMES,
   type AgentTool,
+  claudePermissionsLine,
   claudePointerLine,
   codexGuardLine,
   codexTrustWarning,
@@ -53,6 +54,7 @@ export async function installHooks(options: {
     const installed = await installClaudeCode(root, git, environment.invocation, files);
     written.push("CLAUDE.md", ...(installed.local ? [] : [installed.file]));
     done.push(guardLine("Claude Code", installed.file, installed.local, lang));
+    done.push(claudePermissionsLine(COMMAND, installed.file, installed.local, lang));
   }
   if (tools.includes("cursor")) {
     const installed = await installCursor(root, git, environment.invocation, files);

@@ -62,7 +62,7 @@ kind: standard
   - files: packages/core/src/guard/decide.ts, packages/core/src/cards/install.ts, packages/core/src/cards/doctor.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts test/cards
-- [ ] T2: `init` da a Claude Code los permisos de los comandos de la persona y `doctor` los comprueba
+- [x] T2: `init` da a Claude Code los permisos de los comandos de la persona y `doctor` los comprueba
   - files: packages/cli/src/install/agents.ts, packages/cli/src/install/hooks.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/setup.test.ts
   - ac: AC1, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts

@@ -44,14 +44,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/cards/index.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "541aaa74934a74b1f80f5cb4703152fa6808d6a9",
+      "attempts": 1,
       "startedAt": "2026-10-26T11:51:34.015Z",
       "doneAt": "2026-10-26T11:54:41.673Z",
-      "summary": "El guard protege .codex/rules/specty.rules, y el core tiene las líneas de init para los permisos de Claude Code (sacados de HUMAN_COMMANDS) y la regla de Codex, y los casos de doctor cuando faltan."
+      "summary": "El guard protege .codex/rules/specty.rules, y el core tiene las líneas de init para los permisos de Claude Code (sacados de HUMAN_COMMANDS) y la regla de Codex, y los casos de doctor cuando faltan.",
+      "scopeExtra": [
+        "packages/core/src/cards/index.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d54d7738af63222ff981f79067b1bf269091e7ef",
+      "startedAt": "2026-10-26T11:54:41.972Z",
+      "doneAt": "2026-10-26T11:59:29.377Z",
+      "summary": "init añade a los ajustes de Claude Code permisos para specty approve, accept, close, cancel y reject, sacados de HUMAN_COMMANDS, y doctor avisa si faltan; el guard los sigue bloqueando sin modo delegado. El test de permisos de worktrees espera ahora también esas reglas, como pide la spec."
     }
   },
   "pending": {

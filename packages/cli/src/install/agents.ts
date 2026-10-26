@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { HUMAN_COMMANDS } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import type { GuardTool } from "../enforce/actions";
 import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
-import type { Invocation } from "../session";
+import { COMMAND, type Invocation } from "../session";
 import { type InstallFiles, installFiles, rewriteJson } from "./files";
 
 /**
@@ -39,8 +40,16 @@ const CODEX_EVENTS: Readonly<Record<string, string>> = {
   PreToolUse: "^(Bash|apply_patch)$",
   PostToolUse: "^Bash$",
 };
-/** Each change lives in its own worktree: the agent enters, leaves and removes it without a prompt. */
-const CLAUDE_ALLOW: readonly string[] = ["EnterWorktree", "ExitWorktree"];
+/** The person's commands, as the agent types them: Specty decides who runs them, not Claude Code. */
+const CLAUDE_PERSON_RULES: readonly string[] = [...HUMAN_COMMANDS].map(
+  (name) => `Bash(${COMMAND} ${name} *)`,
+);
+/**
+ * Each change lives in its own worktree: the agent enters, leaves and removes it without a prompt.
+ * The person's commands get past auto mode's classifier, and the guard still blocks them for the
+ * agent unless the person delegated them (ADR 0010).
+ */
+const CLAUDE_ALLOW: readonly string[] = ["EnterWorktree", "ExitWorktree", ...CLAUDE_PERSON_RULES];
 /** The `ask` rule an earlier `init` wrote, which made removing a worktree ask. */
 const OLD_CLAUDE_ASK = "ExitWorktree(action:remove)";
 const CLAUDE_SETTINGS = ".claude/settings.json";
@@ -186,6 +195,16 @@ export function missingCursorEvents(text: string | undefined): string[] {
     const entries = hooks[event];
     return !(Array.isArray(entries) && entries.some((entry: unknown) => isOurs(entry, "cursor")));
   });
+}
+
+/** The rules for the person's commands that none of these settings files (their text) allows. */
+export function missingClaudePermissions(settings: readonly (string | undefined)[]): string[] {
+  const allowed = settings.flatMap((text): unknown[] => {
+    const value: unknown = text === undefined ? undefined : parse(text);
+    const permissions = isRecord(value) && isRecord(value.permissions) ? value.permissions : {};
+    return Array.isArray(permissions.allow) ? permissions.allow : [];
+  });
+  return CLAUDE_PERSON_RULES.filter((rule) => !allowed.includes(rule));
 }
 
 /** The Claude Code events whose guard hook none of these settings files (their text) installs. */
