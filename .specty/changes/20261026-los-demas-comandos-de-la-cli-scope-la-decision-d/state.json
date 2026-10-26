@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-los-demas-comandos-de-la-cli-scope-la-decision-d",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-los-demas-comandos-de-la-cli-scope-la-decision-d",
+  "baseCommit": "eb76e25b573efb53ab79da0a35a905f19fcdee8f",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fa836fe090156e78ffcc31e610c3e288e4f8708f5b0b01217dc60f14621ba0c6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e3acc7261a89a72e973b15727bb8cd9e7ce6ea49ae9263d4ad8ea0f488eb285d",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:116333f99287412c9c5fe3018eb3719613d53158e6bd1e58f9a27ca89bbcb5fe",
+    "at": "2026-10-26T20:02:10.012Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
