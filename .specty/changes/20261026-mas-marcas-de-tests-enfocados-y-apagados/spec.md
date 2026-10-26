@@ -47,7 +47,7 @@ follows:
   - files: packages/core/src/checks/markers.ts, packages/core/test/checks/markers.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts
-- [ ] T2: Los ejemplos de Go, PHP y Swift
+- [x] T2: Los ejemplos de Go, PHP y Swift
   - files: packages/cli/test/check-examples-scripting.test.ts, packages/cli/test/check-examples-native.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-scripting.test.ts test/check-examples-native.test.ts

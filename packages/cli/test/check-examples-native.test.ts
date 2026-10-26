@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { type Dialect, describeExamples, indent, pascal, snake } from "./stack-dialect";
+import { camel, type Dialect, describeExamples, indent, snake } from "./stack-dialect";
 import { repeat } from "./stack-examples";
 
 /**
  * A Go, a Rust and a Swift repository (AC1, AC2, AC3). Their commands stand in for golangci-lint,
  * whose gofmt checks the format, and `go test`; `cargo fmt --check`, Clippy and `cargo test`; and
  * swift-format, SwiftLint and `swift test`. The compilers run with the tests, so there is no
- * typecheck of its own. Go's tests use Ginkgo, whose `FIt` is the focus marker; its pending
- * `PIt`, XCTest's `XCTSkip` and the focus of Rust and XCTest are not in the catalog, and Specty
+ * typecheck of its own. Go's tests use Ginkgo, with `FIt` and `PIt`, and Swift's use Swift
+ * Testing, with `.disabled()`; neither Rust nor Swift Testing has a focus marker, and Specty
  * reads no layers in Swift.
  */
 
@@ -81,7 +81,7 @@ const GO: Dialect = {
     },
   },
   layers: { domain: "internal/shop/domain/**", forbidden: "net/http" },
-  markers: { focused: true, skipped: false },
+  markers: { focused: true, skipped: true },
   code: {
     comment: "//",
     cart: (discount) =>
@@ -310,12 +310,12 @@ const SWIFT: Dialect = {
     },
     tests: {
       folder: "Tests",
-      token: "XCTAssertEqual(2, 1)",
+      token: "1 == 2",
       output:
-        '{abs}:{line}: error: -[ShopTests.UserTests testNamesTheUser] : XCTAssertEqual failed: ("2") is not equal to ("1")',
+        "✘ Test namesTheUser() recorded an issue at {path}:{line}:9: Expectation failed: 1 == 2",
     },
   },
-  markers: { focused: false, skipped: false },
+  markers: { focused: false, skipped: true },
   code: {
     comment: "//",
     cart: (discount) =>
@@ -353,15 +353,14 @@ const SWIFT: Dialect = {
       ].join("\n"),
     tests: (subject, cases) =>
       [
-        "import XCTest",
+        "import Testing",
         "@testable import Shop",
         "",
-        `final class ${subject}Tests: XCTestCase {`,
+        `@Suite struct ${subject}Tests {`,
         ...cases.flatMap((test, index) => [
           ...(index > 0 ? [""] : []),
-          `    func test${pascal(test.name)}() throws {`,
-          ...(test.skipped ? ['        throw XCTSkip("flaky")'] : []),
-          `        XCTAssertEqual(${test.fails ? 2 : 1}, 1)`,
+          `    @Test${test.skipped ? `(.${"disabled"}("flaky"))` : ""} func ${camel(test.name)}() {`,
+          `        #expect(1 == ${test.fails ? 2 : 1})`,
           "    }",
         ]),
         "}",

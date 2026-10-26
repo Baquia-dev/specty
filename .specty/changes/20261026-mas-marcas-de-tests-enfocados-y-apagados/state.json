@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ea279ffd63e3fd14738d3553cafe2e9d1151a3df",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:11:07.905Z",
       "doneAt": "2026-10-26T17:12:31.914Z",
-      "summary": "markers.ts: Ginkgo F/P/X para It, Specify, Describe(Table(Subtree)), Context, When y Entry, y sus decoradores Focus y Pending; .disabled() de Swift Testing; ->only() y ->skip() de Pest, sin condición. Casos de cada marca y de las formas parecidas que no cuentan."
+      "summary": "markers.ts: Ginkgo F/P/X para It, Specify, Describe(Table(Subtree)), Context, When y Entry, y sus decoradores Focus y Pending; .disabled() de Swift Testing; ->only() y ->skip() de Pest, sin condición. Casos de cada marca y de las formas parecidas que no cuentan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c9e72c92865c51a0d23609390da0fe7e5b4b534c",
+      "startedAt": "2026-10-26T17:12:32.427Z",
+      "doneAt": "2026-10-26T17:14:42.333Z",
+      "summary": "El ejemplo de PHP usa Pest con only y skip, el de Swift usa Swift Testing con disabled, y Go cuenta su PIt. Al romperlo todo, skipped-tests falla en los tres y focused-tests en Go y PHP."
     }
   },
   "pending": {
