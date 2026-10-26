@@ -48,7 +48,7 @@ PRODUCT.md promete para la versión 1 un informe de auditoría, y ARCHITECTURE �
 
 ## Tareas
 
-- [ ] T1: El informe de auditoría en core
+- [x] T1: El informe de auditoría en core
   - files: packages/core/src/cards/audit.ts, packages/core/src/index.ts, packages/core/test/cards/audit.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/audit.test.ts

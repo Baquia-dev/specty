@@ -27,6 +27,12 @@ export {
   type GuardSurface,
   isGuardedAgent,
 } from "./capabilities";
+export {
+  type AuditEvent,
+  type AuditTask,
+  type AuditView,
+  auditReport,
+} from "./cards/audit";
 export { epicCard, sliceLines } from "./cards/epic";
 export {
   blockedCard,

@@ -6,6 +6,13 @@
   "branch": "specty/20261025-specty-audit-el-informe-de-un-cambio",
   "baseCommit": "bae0d7ca914493830e2d7169bfce2197fb9f31fd",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a1ba9cb8f21a4e5509f067cfd46191a1070dd274e79908ae28220e4d0b08a61a",
+    "at": "2026-10-26T00:44:16.097Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "071afd5e1b1b4e46a8a9d07b2b14426c0f09fd1c",
+      "startedAt": "2026-10-26T00:44:16.663Z",
+      "doneAt": "2026-10-26T00:46:35.028Z",
+      "summary": "core/cards/audit.ts: AuditView y auditReport, el informe en Markdown (datos del cambio, tareas con estado, commit y resumen, y línea de tiempo con cuándo, quién y qué, cada evento de formats.md §4 en palabras) y lo mismo como datos para --json."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 4,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a1ba9cb8f21a4e5509f067cfd46191a1070dd274e79908ae28220e4d0b08a61a",
-    "at": "2026-10-26T00:44:16.097Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
