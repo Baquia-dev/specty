@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261025-export-muestra-la-carpeta-entera-fuera-del-repos",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-export-muestra-la-carpeta-entera-fuera-del-repos",
   "baseCommit": "55fe1a9241792466a618119245ade579ea97065d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4182b08459add822e1bd20d33f3cb9d4c92beb05759bd42bbadc983b77e178d4",
+    "at": "2026-10-26T01:24:12.908Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "453fb0c9823936800e3f7c3e5cee22168034c10d",
+      "startedAt": "2026-10-26T01:24:13.852Z",
+      "doneAt": "2026-10-26T01:25:23.369Z",
+      "summary": "export muestra la carpeta relativa a la raíz cuando está dentro del repositorio y entera cuando está fuera, en vez de un ../../… largo; el test cubre los dos casos."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4182b08459add822e1bd20d33f3cb9d4c92beb05759bd42bbadc983b77e178d4",
-    "at": "2026-10-26T01:24:12.908Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

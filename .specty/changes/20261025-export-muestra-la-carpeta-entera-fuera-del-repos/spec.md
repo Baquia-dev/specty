@@ -15,7 +15,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: La carpeta entera cuando está fuera del repositorio
+- [x] T1: La carpeta entera cuando está fuera del repositorio
   - files: packages/cli/src/commands/export.ts, packages/cli/test/export.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/export.test.ts
   - type: fix

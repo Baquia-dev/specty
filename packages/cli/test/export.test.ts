@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
+import { mkdtemp } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
@@ -31,10 +33,15 @@ describe("specty export", () => {
 
   it("writes them where --out says, with the same layout (AC2)", async () => {
     const root = await proposed();
-    expect((await cli(root, ["export", "--to", "speckit", "--out", "otro"])).code).toBe(0);
+    const inside = await cli(root, ["export", "--to", "speckit", "--out", "otro"]);
+    expect(inside.out).toContain("EN Spec Kit, EN otro:");
     expect(await read(root, `otro/specs/${CHANGE}/spec.md`)).toContain(
       "# Feature Specification: Saludo personalizado",
     );
+    // Outside the repository, the folder is shown whole: a long `../../…` is hard to read.
+    const elsewhere = await mkdtemp(join(tmpdir(), "specty-export-"));
+    const outside = await cli(root, ["export", "--to", "kiro", "--out", elsewhere]);
+    expect(outside.out).toContain(`EN Kiro, EN ${elsewhere}:`);
   });
 
   it("refuses a missing or unknown format and a change that is not there (AC3)", async () => {

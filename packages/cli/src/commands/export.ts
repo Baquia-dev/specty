@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join, relative, resolve } from "node:path";
+import { isAbsolute, join, relative, resolve } from "node:path";
 import {
   blockedCard,
   headerOf,
@@ -74,7 +74,10 @@ export async function exportChange(
   });
   const folder = resolve(session.root, out ?? join(".specty", "exports", chosen));
   for (const file of files) await writeText(join(folder, file.path), file.content);
-  const shown = relative(session.root, folder) || ".";
+  // Inside the repository, relative to its root; outside, whole: a long `../../…` is hard to read.
+  const inside = relative(session.root, folder);
+  const shown =
+    inside === "" ? "." : inside.startsWith("..") || isAbsolute(inside) ? folder : inside;
   return {
     status: "ok",
     header: headerOf("export"),
