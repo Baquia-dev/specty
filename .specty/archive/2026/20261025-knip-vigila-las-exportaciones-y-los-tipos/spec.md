@@ -25,3 +25,9 @@ Con core, la CLI y la UI ya limpios (C1 a C4), knip enciende sus reglas de expor
   - files: knip.json, packages/cli/test/support.ts, packages/cli/test/server/support.ts, packages/cli/test/walk.ts, packages/cli/test/fake-model.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: chore
+
+## Cierre
+
+### Resumen
+
+knip enciende las reglas de exportaciones y tipos: pnpm check falla y nombra la que sobre (probado con una exportación de prueba). Los ayudantes de los tests de la CLI dejan de exportar los ocho que solo usa su archivo, y ARCHITECTURE lo cuenta.

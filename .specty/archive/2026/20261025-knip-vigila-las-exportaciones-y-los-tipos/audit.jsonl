@@ -4,3 +4,4 @@
 {"ts":"2026-10-26T02:05:27.360Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"bfe4c6ee327d55893445d34c4826c91f8816679a"}}
 {"ts":"2026-10-26T02:07:23.719Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":76611,"tree":"sha256:237fa43dd3a3d0b869bc62b9fde310226eb316586a8e34de1898b6933ef190e5"}}
 {"ts":"2026-10-26T02:07:23.840Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"knip enciende las reglas de exportaciones y tipos: pnpm check falla y nombra la que sobre (probado con una exportación de prueba). Los ayudantes de los tests de la CLI dejan de exportar los ocho que solo usa su archivo, y ARCHITECTURE lo cuenta."}}
+{"ts":"2026-10-26T02:07:31.857Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}
