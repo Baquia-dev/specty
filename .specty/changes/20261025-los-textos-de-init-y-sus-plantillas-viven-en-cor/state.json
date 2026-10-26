@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bf1a5b2a69a30e558de20acc6c7e30fdcc223812",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:40:50.234Z",
       "doneAt": "2026-10-26T02:42:16.338Z",
-      "summary": "core/src/templates.ts gana configTemplate (el .specty/config.yaml inicial con sus comentarios), productQuestions y productTemplate (el PRODUCT.md de un proyecto nuevo), copiados letra a letra de la CLI, con tests que validan la configuración."
+      "summary": "core/src/templates.ts gana configTemplate (el .specty/config.yaml inicial con sus comentarios), productQuestions y productTemplate (el PRODUCT.md de un proyecto nuevo), copiados letra a letra de la CLI, con tests que validan la configuración.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3b47b2c9f877dff97630db670263df75cd9e2462",
+      "startedAt": "2026-10-26T02:42:16.623Z",
+      "doneAt": "2026-10-26T02:43:29.539Z",
+      "summary": "core/src/cards/init.ts tiene los textos de init: sus rechazos, lo que hizo con cada archivo, su tarjeta final, su simulación y lo que sigue en un proyecto nuevo (newProjectNext), copiados letra a letra de la CLI, con tests."
     }
   },
   "pending": {
