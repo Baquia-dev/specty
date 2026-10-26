@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261026-la-terminal-de-los-hooks-tampoco-es-de-la-person",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261026-la-terminal-de-los-hooks-tampoco-es-de-la-person",
+  "baseCommit": "5f21e50768bf71ea34dd151dba33bc2ccefbbf18",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4d69c4cf9c09357181aea0a11603535a6f5564ab58aa0a426435dee2b3f6b73d",
+    "at": "2026-10-26T13:42:24.936Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
