@@ -46,7 +46,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: El servidor sirve el texto de las revisiones
+- [x] T1: El servidor sirve el texto de las revisiones
   - files: packages/cli/src/server/records.ts, packages/cli/test/server.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server.test.ts

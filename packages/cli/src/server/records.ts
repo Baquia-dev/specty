@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { stat } from "node:fs/promises";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import type { ChangeState, Phase } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
@@ -28,6 +28,17 @@ export interface ChangeRecord {
   readonly audit?: readonly Readonly<Record<string, unknown>>[];
   /** `verify.full` of the change's folder. */
   readonly verifyFull?: string;
+  /** The independent reviews that answered (`review.completed` with a `file`), oldest first. */
+  readonly reviews?: readonly ReviewRecord[];
+}
+
+/** An independent review (ADR 0011): of the spec or of the result, with what the reviewer said. */
+export interface ReviewRecord {
+  readonly target: "spec" | "diff";
+  readonly revision: number;
+  /** ISO time of its `review.completed`. */
+  readonly at: string;
+  readonly text: string;
 }
 
 /** The audit events that move a change into each phase: the last one says since when it is there. */
@@ -123,6 +134,7 @@ async function readRecord(
   const audit = auditLines(await readText(files.audit));
   const comments = parseJson(await readText(join(files.dir, "comments.json")));
   const approvedSpec = await readRevision(files, state.approved?.revision);
+  const reviews = await reviewsOf(audit, files.dir);
   return {
     spec,
     state,
@@ -133,7 +145,32 @@ async function readRecord(
     ...(approvedSpec !== undefined ? { approvedSpec } : {}),
     ...(audit.length > 0 ? { audit } : {}),
     ...(verifyFull !== undefined ? { verifyFull } : {}),
+    ...(reviews.length > 0 ? { reviews } : {}),
   };
+}
+
+/**
+ * Each `review.completed` with an answer, and the answer's text. It is read by its name from the
+ * change's own `reviews/` in `dir`: archiving moves the change, and nothing else is served.
+ */
+async function reviewsOf(
+  audit: readonly Readonly<Record<string, unknown>>[],
+  dir: string,
+): Promise<ReviewRecord[]> {
+  const reviews = await Promise.all(
+    audit.map(async (entry): Promise<ReviewRecord | undefined> => {
+      const data = isRecord(entry.data) ? entry.data : {};
+      const { target, revision, file } = data;
+      if (entry.event !== "review.completed" || typeof file !== "string") return undefined;
+      if ((target !== "spec" && target !== "diff") || typeof revision !== "number")
+        return undefined;
+      const text = (await readText(join(dir, "reviews", basename(file))))?.trimEnd();
+      return text === undefined || typeof entry.ts !== "string"
+        ? undefined
+        : { target, revision, at: entry.ts, text };
+    }),
+  );
+  return reviews.flatMap((review) => (review === undefined ? [] : [review]));
 }
 
 function auditLines(text: string | undefined): Readonly<Record<string, unknown>>[] {

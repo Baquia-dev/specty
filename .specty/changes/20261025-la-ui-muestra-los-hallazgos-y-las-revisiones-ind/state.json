@@ -6,6 +6,13 @@
   "branch": "specty/20261025-la-ui-muestra-los-hallazgos-y-las-revisiones-ind",
   "baseCommit": "6fd1d14b36002afe22b23738f684f811988b9e40",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:714f0770a37adad856c027bd1c6d9a206d3519ec56508444f8f16f7b8bb0fa81",
+    "at": "2026-10-26T00:26:33.869Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2dd5af0928d4a8f3d73b6f8c616b94ed5eb3f25f",
+      "startedAt": "2026-10-26T00:26:34.229Z",
+      "doneAt": "2026-10-26T00:29:06.797Z",
+      "summary": "El servidor sirve con cada cambio reviews: target, revisión, fecha y texto de cada review.completed con respuesta, leído por su nombre en reviews/ del propio cambio (sigue valiendo archivado y no sirve nada más)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:714f0770a37adad856c027bd1c6d9a206d3519ec56508444f8f16f7b8bb0fa81",
-    "at": "2026-10-26T00:26:33.869Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
