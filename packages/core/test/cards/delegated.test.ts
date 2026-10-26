@@ -189,8 +189,9 @@ describe("person cards in delegated mode", () => {
 describe("flow block", () => {
   it("lets the agent run the person's commands only when `NEXT:` says so", () => {
     for (const lang of ["es", "en"] as const) {
-      const block = flowBlock(lang, "specty");
-      expect(block.split("\n").length).toBeLessThanOrEqual(8);
+      // The flow itself, before the rules that follow it.
+      const [flow = ""] = flowBlock(lang, "specty").split("\n\n");
+      expect(flow.split("\n").length).toBeLessThanOrEqual(8);
     }
     expect(flowBlock("es", "specty")).toContain(
       "Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.",

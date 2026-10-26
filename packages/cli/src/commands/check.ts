@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   type CheckMode,
+  COMMAND_CHECKS,
   type Output,
   renderReport,
   reportExitCode,
@@ -92,12 +93,30 @@ async function installChecks(session: Session, dryRun: boolean): Promise<ReportO
   return install(session, await planInstall(session, stacks), dryRun);
 }
 
+/** What `task done` checks on its own, per task: its scope and the length of its files. */
+const TASK_DONE_CHECKS = ["scope", "max-lines"];
+
+/**
+ * The run of `task done` (ADR 0012): what changed, with the plan of `change`. It leaves out what
+ * `task done` checks itself and, when the task has a verification, the project's own commands:
+ * that verification is how the person runs them at each task, so the tests never run twice.
+ */
+export function taskChecks(
+  session: Session,
+  change: string,
+  verified: boolean,
+): Promise<ReportOutput> {
+  const skip = new Set([...TASK_DONE_CHECKS, ...(verified ? COMMAND_CHECKS : [])]);
+  return check(session, "changed", false, { id: change }, skip);
+}
+
 /** `specty check`: deterministic, with no model and no agent (ADR 0012). */
 export async function check(
   session: Session,
   mode: CheckMode,
   verbose: boolean,
   spec?: SpecOption,
+  skip: ReadonlySet<string> = new Set(),
 ): Promise<ReportOutput> {
   if (spec !== undefined && mode === "all") return withoutDiff(session);
   const [context, stacks, plan] = await Promise.all([
@@ -106,7 +125,11 @@ export async function check(
     spec === undefined ? undefined : loadPlan(session, spec.id),
   ]);
   const generators = await detectGenerators(session, stacks);
-  const report = await runChecks(context, providersOf(session, stacks, generators, plan), stacks);
+  const providers = providersOf(session, stacks, generators, plan).map((provider) => ({
+    ...provider,
+    checks: provider.checks.filter((definition) => !skip.has(definition.id)),
+  }));
+  const report = await runChecks(context, providers, stacks);
   return {
     report: renderReport(report, {
       lang: session.lang,

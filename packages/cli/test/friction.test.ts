@@ -1,6 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { CONFIG, cli, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import {
+  BUTTON_TEST,
+  CONFIG,
+  cli,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
 import { type Before, phaseOf, type Script, type Walk, walk } from "./walk";
 
 /** T2 of SPEC passes its verification only once `src/app.ts` says «bien». */
@@ -80,7 +90,10 @@ function quick(root: string): Script {
         return { argv: ["new", "--kind", "quick", "Corregir el botón", "--request", "Sign in"] };
       }
       if (verb === "propose") await writeFiles(root, { [draftPath(output)]: QUICK });
-      if (verb === "task") await writeFiles(root, { "src/button.ts": "Sign in\n" });
+      if (verb === "task") {
+        // A fix brings its test: `task done` runs `specty check --spec`.
+        await writeFiles(root, { "src/button.ts": "Sign in\n", "src/button.test.ts": BUTTON_TEST });
+      }
       return { argv: filled(argv) };
     },
   };

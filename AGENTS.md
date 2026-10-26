@@ -20,6 +20,13 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 - Si necesitas un archivo fuera del alcance de la tarea, pídelo con `specty scope add`.
 - Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno. Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.
 - Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.
+
+## Reglas (Specty)
+- Antes de reportar una tarea como terminada, ejecuta `specty check --changed --spec` y corrige todos los fallos. No reportes con fallos pendientes.
+- Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.
+- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.
+- Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.
+- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.
 <!-- specty:end id=flow -->
 
 Herramienta que hace cumplir el desarrollo guiado por especificaciones con cualquier agente de IA. Producto: [PRODUCT.md](PRODUCT.md). Diseño: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).

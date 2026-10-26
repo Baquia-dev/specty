@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
+  "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:f28c5190a70e4b636ac1d54f8389ebcb1b21f849910cf6e1b5318edc65cf074e",
+    "at": "2026-10-26T11:50:24.208Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5fbc33267a4174791e04250cf0d8a5c976a00231a86b056d56f3bff1b18b85ec",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0e9432275fb8db9a89eaa8ba687f8d5db8328b5f83c2a65e858bbfec7a3fc81e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:919fbd0e535d2a06c9b01ec503ef736289f7d9931f0d53dbd93fd106144cf6e2",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5374bcadb70d98298d54d64c686ea9bc897f945e2f890626e4bd1ad4d1530139",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "80f8077c43de04f5d1ef2f5bd79cb3f785ee4770",
+      "attempts": 1,
+      "startedAt": "2026-10-26T10:26:34.514Z",
+      "doneAt": "2026-10-26T11:42:34.238Z",
+      "summary": "task done ejecuta specty check --changed --spec antes de la verificación, sin scope ni max-lines y, con verificación, sin los comandos del proyecto; un fallo bloquea con su informe y los avisos van a stderr. Las tareas fix de los tests de flujo traen ahora su test.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a662ec1c5308684a2767341dde82ea4b2bae663c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:42:34.534Z",
+      "doneAt": "2026-10-26T11:45:45.389Z",
+      "summary": "El bloque flow de AGENTS.md añade las 5 reglas en es/en bajo «Reglas (Specty)», y la pista de «Convenciones» pide no escribir lo que verifica specty check. El test de delegado mide ahora solo la parte del flujo.",
+      "scopeExtra": [
+        "packages/core/test/cards/delegated.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5f891a0a25400bddcb386ca2da49ad31382321a6",
+      "attempts": 2,
+      "startedAt": "2026-10-26T11:45:45.677Z",
+      "doneAt": "2026-10-26T11:47:53.100Z",
+      "summary": "formats.md explica que task done ejecuta specty check (qué deja fuera, cómo bloquea y cómo suavizarlo) y muestra el bloque con las 5 reglas; ARCHITECTURE añade check a la fila de task done.",
+      "scopeExtra": [
+        "packages/core/test/cards.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "8345e5b2cf0513c10c003754503b3bda8af8c239",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:50:24.536Z",
+      "doneAt": "2026-10-26T11:54:39.386Z",
+      "summary": "taskDone pasa sus rechazos de notas a notesRefusal y lo que comprueba del diff antes de verificar a checkedDiff; flowBlock une flowLines y ruleLines. specty check --changed --spec pasa entero (secrets sin escáner).",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-26T11:56:47.361Z"
+}
