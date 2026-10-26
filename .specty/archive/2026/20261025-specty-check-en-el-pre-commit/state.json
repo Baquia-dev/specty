@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261025-specty-check-en-el-pre-commit",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-specty-check-en-el-pre-commit",
+  "baseCommit": "58e8c6e2e7e18a6f24b2a5f0b92609132cfad533",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4a87030e30c74fe43a0caba9fb84039738cd78781cd6fc09e6278a8338dd9211",
+    "at": "2026-10-26T01:16:02.182Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ad34b068efe85bb2d2b25aee8b23d8da54f06d723d91a106f1bc12935d1185f9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:93cc8647ac22f12f0e93b560ae6a93ca60e01272b8fcc7a054071b0df7cc84c5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:84055533406b3d88b8781d2587e766bcb69210100c68d8c409eea0d87228dfa8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "414c0a5b7ca0591bad31572b9d140d191881083c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:16:03.224Z",
+      "doneAt": "2026-10-26T01:18:08.274Z",
+      "summary": "checks.preCommit (false por defecto) y enforce/hook.ts: al permitir un cambio manual dentro del alcance, el pre-commit ejecuta specty check --staged y bloquea con su informe en stderr si falla; sin tocar los archivos de hooks.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "64973a8b91b4aedb3797b1d66d3ca4ee19ced60a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:18:08.986Z",
+      "doneAt": "2026-10-26T01:20:08.918Z",
+      "summary": "formats §6 documenta checks.preCommit y ARCHITECTURE §9 el paso de specty check --staged en el orden del pre-commit.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-26T01:20:31.094Z",
+  "integration": {
+    "target": "main",
+    "commit": "0f34f09794497cb5918f61d48418a7328ecb526c",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/package.json",
+      "packages/cli/src/commands/export.ts",
+      "packages/cli/src/enforce/hook.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/test/check-pre-commit.test.ts",
+      "packages/cli/test/export.test.ts",
+      "packages/core/src/schema/checks.ts",
+      "pnpm-lock.yaml"
+    ],
+    "at": "2026-10-26T01:22:50.761Z",
+    "resolved": {
+      "commit": "f36c51d",
+      "at": "2026-10-26T01:25:58.639Z"
+    }
+  }
+}

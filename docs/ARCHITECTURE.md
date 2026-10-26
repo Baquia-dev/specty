@@ -268,7 +268,7 @@ Solo se incorporan los cambios `standard`, `quick` y `epic` con rama y en modo `
 1. Hay un merge, rebase, cherry-pick o revert en curso → permitir.
 2. Hay un recibo válido → permitir.
 3. Todo lo preparado está fuera de las rutas gobernadas → permitir.
-4. Hay un cambio activo y lo preparado está dentro de su alcance → permitir como **cambio manual**. `prepare-commit-msg` añade `Specty-Change` y `Specty-Manual: true`, y el mensaje del commit es el motivo.
+4. Hay un cambio activo y lo preparado está dentro de su alcance → permitir como **cambio manual**, si con `checks.preCommit: true` pasa también `specty check --staged` (si no, bloquear con su informe). `prepare-commit-msg` añade `Specty-Change` y `Specty-Manual: true`, y el mensaje del commit es el motivo.
 5. Cualquier otro caso → bloquear y explicar el paso válido: `specty retro`, o `specty retro --into <id>` si hay un cambio activo.
 
 **Retro-specs.**

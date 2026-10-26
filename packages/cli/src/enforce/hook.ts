@@ -1,5 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-import { blockedCommitMessage, isGoverned, matchesAny, parseSpec } from "@baquia-dev/specty-core";
+import {
+  blockedCommitMessage,
+  isGoverned,
+  matchesAny,
+  parseSpec,
+  translator,
+} from "@baquia-dev/specty-core";
+import { check } from "../commands/check";
 import { isFinished, resolveActive } from "../flow/active";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Session } from "../session";
@@ -30,6 +37,7 @@ export async function preCommit(session: Session): Promise<number> {
     const scope = await changeScope(session, open);
     const outside = governed.filter((path) => !matchesAny(path, scope));
     if (outside.length === 0) {
+      if (session.config.checks.preCommit && !(await passesChecks(session))) return 1;
       await writeMarker(git, { tree, change: open.state.id, kind: "manual" });
       return 0;
     }
@@ -38,6 +46,20 @@ export async function preCommit(session: Session): Promise<number> {
   }
   session.environment.io.err(message(session, governed, undefined));
   return 1;
+}
+
+/** `specty check --staged` on a manual change, with `checks.preCommit`; its report goes to stderr. */
+async function passesChecks(session: Session): Promise<boolean> {
+  const result = await check(session, "staged", false);
+  if (result.code === 0) return true;
+  const t = translator(session.lang);
+  session.environment.io.err(
+    `${t(
+      "specty: el commit no pasa `specty check --staged`:",
+      "specty: the commit does not pass `specty check --staged`:",
+    )}\n${result.report}`,
+  );
+  return false;
 }
 
 /**

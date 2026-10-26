@@ -19,6 +19,8 @@ export interface ChecksConfig {
   readonly layers: Layers;
   /** Code generators besides the ones Specty detects, whose outputs must match what they make. */
   readonly generators: readonly GeneratorConfig[];
+  /** The `pre-commit` hook also runs `specty check --staged` on manual changes. */
+  readonly preCommit: boolean;
   /** The project's commands for the command checks, over the ones Specty detects. */
   readonly commands: Readonly<Partial<Record<CommandCheck, string>>>;
 }
@@ -77,6 +79,7 @@ export const DEFAULT_CHECKS: ChecksConfig = {
   functions: { maxLines: 50, complexity: 10 },
   layers: {},
   generators: [],
+  preCommit: false,
   commands: {},
 };
 
@@ -141,6 +144,7 @@ export const ChecksSchema = z.strictObject({
       }),
     )
     .optional(),
+  preCommit: z.boolean().optional(),
   commands: z
     .strictObject({
       format: z.string().min(1).optional(),
@@ -179,6 +183,7 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
       outputs: generator.outputs,
       ...(generator.inputs !== undefined ? { inputs: generator.inputs } : {}),
     })),
+    preCommit: input?.preCommit ?? DEFAULT_CHECKS.preCommit,
     commands: Object.fromEntries(
       COMMAND_CHECKS.flatMap((id) => {
         const command = input?.commands?.[id];
