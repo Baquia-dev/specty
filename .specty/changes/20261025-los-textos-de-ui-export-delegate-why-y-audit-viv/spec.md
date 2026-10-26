@@ -61,7 +61,7 @@ Pasan a dos módulos nuevos de core, `cards/ui.ts` y `cards/export.ts`, y a los 
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty typecheck
   - type: refactor
-- [ ] T3: why y audit piden sus textos a core
+- [x] T3: why y audit piden sus textos a core
   - files: packages/cli/src/commands/why.ts, packages/cli/src/commands/audit.ts
   - ac: AC4
   - verify: pnpm check
