@@ -32,7 +32,7 @@ El primer CI en GitHub falló en `pnpm check` en los cuatro sistemas. Reproducid
 
 ## Tareas
 
-- [ ] T1: Los paquetes, de uno en uno
+- [x] T1: Los paquetes, de uno en uno
   - files: package.json
   - ac: AC1, AC2
   - verify: pnpm check

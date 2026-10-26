@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261026-los-tests-de-los-paquetes-corren-de-uno-en-uno",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-los-tests-de-los-paquetes-corren-de-uno-en-uno",
   "baseCommit": "313659d8ba065d7500b36bf800c831fe87dc9785",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:42e53ff1294860858991005f23ffd64e07b825521ee645ef7951491c7d64865d",
+    "at": "2026-10-26T17:59:49.040Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c389ef0764b4886a395eea20c07485d90e3213ba",
+      "startedAt": "2026-10-26T17:59:50.079Z",
+      "doneAt": "2026-10-26T18:04:00.186Z",
+      "summary": "pnpm test usa --workspace-concurrency=1: core, exporters, ui y cli se prueban uno detrás de otro, cada uno con sus hilos. En local tarda 130 s y pasa entero; reproduce en serie lo que el CI no aguantaba en paralelo."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:42e53ff1294860858991005f23ffd64e07b825521ee645ef7951491c7d64865d",
-    "at": "2026-10-26T17:59:49.040Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
