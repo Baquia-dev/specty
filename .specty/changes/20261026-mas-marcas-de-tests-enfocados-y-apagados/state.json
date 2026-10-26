@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "20261026-mas-marcas-de-tests-enfocados-y-apagados",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-mas-marcas-de-tests-enfocados-y-apagados",
+  "baseCommit": "65910cbfc3042f0b4a04d63d59689914e97c98e8",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a861330a6f015522bc0026f4807dace60569543a0f073608db8b9960c85b7fa6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8fa8499d150dd6d05668755264cb68890e918a613d924af854c70f0c5282b42e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8f3f180fbc789fdedcac2d56f0f5859a87de65a9b055891de021d39116eecdfd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b9f9a2567f165fac7cd0f684cf2fca95b982d10d5039e36b5d391677d43023db",
+    "at": "2026-10-26T17:11:07.525Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
