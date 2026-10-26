@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-los-tests-de-los-paquetes-corren-de-uno-en-uno",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-los-tests-de-los-paquetes-corren-de-uno-en-uno",
+  "baseCommit": "313659d8ba065d7500b36bf800c831fe87dc9785",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:936e826ef6ebc023a4c2e4907b1ce25935461cd6e56c1d09e274781136b58ea9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b4b4cdae41d18ca5a4e4f2b3f8c5756cd819b37c97d3f6e228ca740091fe614d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:42e53ff1294860858991005f23ffd64e07b825521ee645ef7951491c7d64865d",
+    "at": "2026-10-26T17:59:49.040Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
