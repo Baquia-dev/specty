@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261025-specty-check-en-el-pre-commit",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-specty-check-en-el-pre-commit",
+  "baseCommit": "58e8c6e2e7e18a6f24b2a5f0b92609132cfad533",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ad34b068efe85bb2d2b25aee8b23d8da54f06d723d91a106f1bc12935d1185f9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:93cc8647ac22f12f0e93b560ae6a93ca60e01272b8fcc7a054071b0df7cc84c5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:84055533406b3d88b8781d2587e766bcb69210100c68d8c409eea0d87228dfa8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4a87030e30c74fe43a0caba9fb84039738cd78781cd6fc09e6278a8338dd9211",
+    "at": "2026-10-26T01:16:02.182Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
