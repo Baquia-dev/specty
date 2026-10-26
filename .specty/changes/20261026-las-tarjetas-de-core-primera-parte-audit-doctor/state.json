@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261026-las-tarjetas-de-core-primera-parte-audit-doctor",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-las-tarjetas-de-core-primera-parte-audit-doctor",
+  "baseCommit": "6e67966217f2f26744beae48caf0b3cfcb6523cd",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ec8c29ae30a0915e02c9acf8714236814f816bebddbec23c5d5e512bbd50b2d2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:160dda71ffd89e67164c3bd8edb6cacb41ac1d08894f4cb3ca58954f0b6a6552",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:78c4e46ba95a8d3a7ffef467e7b963baa2fac00c61781cd02516e34ab603c578",
+    "at": "2026-10-26T18:11:54.759Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
