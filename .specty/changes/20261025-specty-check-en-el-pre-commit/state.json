@@ -6,6 +6,13 @@
   "branch": "specty/20261025-specty-check-en-el-pre-commit",
   "baseCommit": "58e8c6e2e7e18a6f24b2a5f0b92609132cfad533",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4a87030e30c74fe43a0caba9fb84039738cd78781cd6fc09e6278a8338dd9211",
+    "at": "2026-10-26T01:16:02.182Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "414c0a5b7ca0591bad31572b9d140d191881083c",
+      "startedAt": "2026-10-26T01:16:03.224Z",
+      "doneAt": "2026-10-26T01:18:08.274Z",
+      "summary": "checks.preCommit (false por defecto) y enforce/hook.ts: al permitir un cambio manual dentro del alcance, el pre-commit ejecuta specty check --staged y bloquea con su informe en stderr si falla; sin tocar los archivos de hooks."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 4,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4a87030e30c74fe43a0caba9fb84039738cd78781cd6fc09e6278a8338dd9211",
-    "at": "2026-10-26T01:16:02.182Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

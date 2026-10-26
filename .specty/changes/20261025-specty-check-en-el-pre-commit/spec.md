@@ -46,7 +46,7 @@ Con `checks.preCommit: true`, el hook `pre-commit` que Specty ya instala (en hus
 
 ## Tareas
 
-- [ ] T1: `specty check --staged` en el pre-commit
+- [x] T1: `specty check --staged` en el pre-commit
   - files: packages/core/src/schema/checks.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/check-pre-commit.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-pre-commit.test.ts test/install.test.ts
