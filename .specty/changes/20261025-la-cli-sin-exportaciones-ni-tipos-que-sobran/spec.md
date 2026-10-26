@@ -56,7 +56,7 @@ Con todas sus reglas encendidas, knip marca en `packages/cli/src` 16 exportacion
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck
   - type: refactor
-- [ ] T3: La instalación, git, la sesión y el servidor exportan solo lo que se importa
+- [x] T3: La instalación, git, la sesión y el servidor exportan solo lo que se importa
   - files: packages/cli/src/install/git-hooks.ts, packages/cli/src/install/opencode.ts, packages/cli/src/io/git.ts, packages/cli/src/session.ts, packages/cli/src/server/records.ts
   - ac: AC1, AC2
   - verify: pnpm check

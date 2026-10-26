@@ -6,9 +6,9 @@ import type { Git } from "../io/git";
 import type { Invocation } from "../session";
 import { type InstallFiles, installFiles } from "./files";
 
-export type HookManager = "native" | "husky" | "lefthook" | "simple-git-hooks";
+type HookManager = "native" | "husky" | "lefthook" | "simple-git-hooks";
 
-export const GIT_HOOKS = ["pre-commit", "prepare-commit-msg"] as const;
+const GIT_HOOKS = ["pre-commit", "prepare-commit-msg"] as const;
 const LEFTHOOK_FILES = ["lefthook.yml", "lefthook.yaml", ".lefthook.yml", ".lefthook.yaml"];
 const BEGIN = "# >>> specty >>>";
 const END = "# <<< specty <<<";
@@ -21,7 +21,7 @@ export interface HookInstall {
   readonly manual?: string;
 }
 
-export async function detectHookManager(root: string, git: Git): Promise<HookManager> {
+async function detectHookManager(root: string, git: Git): Promise<HookManager> {
   const hooksPath = await git.config("core.hooksPath");
   if (hooksPath?.includes(".husky") === true || (await isDirectory(join(root, ".husky"))))
     return "husky";
@@ -63,7 +63,7 @@ export async function installGitHooks(
   }
 }
 
-export async function hooksDirectory(root: string, git: Git): Promise<string> {
+async function hooksDirectory(root: string, git: Git): Promise<string> {
   const configured = await git.config("core.hooksPath");
   if (configured !== undefined)
     return isAbsolute(configured) ? configured : resolve(root, configured);
@@ -103,7 +103,7 @@ export async function removeGitHooks(root: string, git: Git, files: InstallFiles
 }
 
 /** The text without Specty's block and the line break `upsertShellBlock` put after it. */
-export function removeShellBlock(text: string): string {
+function removeShellBlock(text: string): string {
   const start = text.indexOf(BEGIN);
   const stop = text.indexOf(END);
   if (start === -1 || stop < start) return text;

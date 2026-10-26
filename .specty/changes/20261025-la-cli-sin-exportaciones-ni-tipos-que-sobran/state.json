@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-la-cli-sin-exportaciones-ni-tipos-que-sobran",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-la-cli-sin-exportaciones-ni-tipos-que-sobran",
   "baseCommit": "36e8c5cb6f49833bb1cae2f65579ad4461746540",
   "revision": 1,
@@ -39,12 +39,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bf3deb3859b90793fb2872e6f576889edde46c3e",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:53:21.969Z",
       "doneAt": "2026-10-26T01:53:51.645Z",
-      "summary": "Dejan de exportarse followUps, mainBranch, sessionOf y StoreError, que solo usa su archivo, y se borra retroTrailers (flow/finish.ts), que nadie llamaba: los trailers de un retro los pone enforce/hook.ts."
+      "summary": "Dejan de exportarse followUps, mainBranch, sessionOf y StoreError, que solo usa su archivo, y se borra retroTrailers (flow/finish.ts), que nadie llamaba: los trailers de un retro los pone enforce/hook.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1749d7531c16e0d0fb55d0574437ad61d561d151",
+      "startedAt": "2026-10-26T01:53:51.936Z",
+      "doneAt": "2026-10-26T01:56:00.456Z",
+      "summary": "Dejan de exportarse GIT_HOOKS, HookManager, detectHookManager, hooksDirectory, removeShellBlock, opencodePlugin, GitError, RunOptions, Io, delegatedTerminal y ReviewRecord. Knip, con todas sus reglas, ya no marca nada de packages/cli/src."
     }
   },
   "pending": {
