@@ -189,7 +189,7 @@ export {
   type ScopeVerdict,
   scopeRulesFrom,
 } from "./scope/scope";
-export { isImplicitTest, isTestFile } from "./scope/tests";
+export { isImplicitTest, isTestFile, isTestOf } from "./scope/tests";
 export {
   type EffortLevel,
   type EffortRecommendation,

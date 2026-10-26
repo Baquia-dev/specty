@@ -8,6 +8,7 @@ import {
   evaluateTaskScope,
   isGoverned,
   isTestFile,
+  isTestOf,
   type ScopeRules,
   scopeRulesFrom,
 } from "../../src";
@@ -103,6 +104,32 @@ describe("evaluateTaskScope", () => {
     ];
     expect(outOfScope(["lib/new.dart"], rename)).toEqual(["lib/old.dart"]);
     expect(outOfScope(["lib/new.dart"], rename, RULES, ["lib/old.dart"])).toEqual([]);
+  });
+});
+
+describe("isTestOf", () => {
+  it("takes a test right under the mirror root only for the file of its name (AC1, AC2)", () => {
+    expect(isTestOf("tests/user.rs", ["src/cart.rs"])).toBe(false);
+    expect(isTestOf("tests/cart.rs", ["src/cart.rs"])).toBe(true);
+    expect(isTestOf("tests/test_cart.py", ["src/cart.py"])).toBe(true);
+    expect(isTestOf("test/cart_test.dart", ["lib/cart.dart"])).toBe(true);
+    expect(isTestOf("test/legacy_test.dart", ["lib/cart.dart"])).toBe(false);
+    expect(isTestOf("packages/core/test/parse.test.ts", ["packages/core/src/parse.ts"])).toBe(true);
+    const swift = ["Sources/Shop/Cart.swift"];
+    expect(isTestOf("Tests/ShopTests/CartTests.swift", swift)).toBe(true);
+    expect(isTestOf("Tests/ShopTests/UserTests.swift", swift)).toBe(false);
+  });
+
+  it("keeps the folder for deeper tests, tests next to the code and globs (AC3)", () => {
+    expect(isTestOf("tests/domain/test_other.py", ["src/domain/user.py"])).toBe(true);
+    expect(isTestOf("src/a/__tests__/c.test.ts", ["src/a/b.ts"])).toBe(true);
+    expect(isTestOf("pkg/x/a_test.go", ["pkg/x/b.go"])).toBe(true);
+    expect(isTestOf("tests/user.rs", ["src/**"])).toBe(true);
+    expect(isTestOf("tests/user.rs", ["src/cart.rs", "src/user.rs"])).toBe(true);
+    const java = ["src/main/java/com/acme/app/Cart.java"];
+    expect(isTestOf("src/test/java/com/acme/app/OtherTest.java", java)).toBe(true);
+    // Touching it is still within the task's scope.
+    expect(outOfScope(["src/cart.rs"], modified("tests/user.rs"))).toEqual([]);
   });
 });
 

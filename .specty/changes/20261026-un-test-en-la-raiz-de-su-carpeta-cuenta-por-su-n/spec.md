@@ -44,7 +44,7 @@ Hoy `fix-tests` da por buena una tarea `fix` con cualquier test de la carpeta qu
 
 ## Tareas
 
-- [ ] T1: El test de una tarea, por su nombre en la raíz del espejo
+- [x] T1: El test de una tarea, por su nombre en la raíz del espejo
   - files: packages/core/src/scope/tests.ts, packages/core/src/index.ts, packages/core/test/scope/scope.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope/scope.test.ts

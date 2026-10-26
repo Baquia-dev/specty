@@ -6,6 +6,13 @@
   "branch": "specty/20261026-un-test-en-la-raiz-de-su-carpeta-cuenta-por-su-n",
   "baseCommit": "6a570a68b00636a9db2257a6bf7e1a79a336aa30",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d7de4521a5f74a13f2c752feb43000ed7c4de14dbafc1daf0572bbd975c3bb53",
+    "at": "2026-10-26T17:33:35.989Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "49ae78b3d9720985e467c912fe75193bf4b32b99",
+      "startedAt": "2026-10-26T17:33:36.342Z",
+      "doneAt": "2026-10-26T17:35:17.098Z",
+      "summary": "isTestOf en core: un test implícito que, justo en la raíz de su espejo (tests, packages/x/test, Tests/XTests), solo cuenta para el archivo de su nombre, sin marcas de test; un comodín sigue cubriendo la carpeta. Casos de Rust, Python, Dart, TS, Swift, Java y Go."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d7de4521a5f74a13f2c752feb43000ed7c4de14dbafc1daf0572bbd975c3bb53",
-    "at": "2026-10-26T17:33:35.989Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
