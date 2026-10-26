@@ -50,3 +50,22 @@ Cuarto cambio de la serie que lleva a core los textos de la CLI, con las primera
   - ac: AC1, AC2, AC3
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `approve`, `reject` y de elegir el cambio al que se aplica una decisión viven en core: `cards/approve.ts` (spec y alcance), `cards/decide.ts` y, en `cards/refusals.ts`, `checkStatus` y `nothingChangedCard`. Los tres archivos de la CLI ya no llaman al traductor, y la salida es la misma: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Las preguntas de la terminal (confirmar, elegir, preguntar) también son textos de core, como las tarjetas.
+- `postponed` sigue en `human.ts` como envoltorio sin textos de `decisionPostponedCard`, porque también lo usan `accept.ts` y `finish.ts`.
+
+### Pendientes
+
+- Siguen en la CLI los textos de `accept`, `close` y `cancel`, de la instalación y de los demás comandos, que llegan en los siguientes cambios.

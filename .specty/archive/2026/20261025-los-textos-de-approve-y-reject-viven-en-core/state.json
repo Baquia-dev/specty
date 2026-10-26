@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-approve-y-reject-viven-en-core",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-approve-y-reject-viven-en-core",
   "baseCommit": "9a0baae8d740f60213a7df98da033adee4207bb8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f4438d6bb59fe7918f0628a61042c1bdb522d315376fc8a834e1535e80dc4555",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d74be268144310d1d71233d0b23b0e054db005bc",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:32:38.673Z",
       "doneAt": "2026-10-26T02:35:31.317Z",
-      "summary": "approve.ts, scope-decision.ts y human.ts piden sus textos a core (cards/approve.ts, cards/decide.ts, noActiveChangeCard, checkStatus y nothingChangedCard); postponed queda como envoltorio sin textos. La salida es la misma, como comprueban los tests sin cambios."
+      "summary": "approve.ts, scope-decision.ts y human.ts piden sus textos a core (cards/approve.ts, cards/decide.ts, noActiveChangeCard, checkStatus y nothingChangedCard); postponed queda como envoltorio sin textos. La salida es la misma, como comprueban los tests sin cambios.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 4,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T02:35:45.864Z"
 }
