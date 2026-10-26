@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-los-comandos-de-calidad-de-python-ruby-php-y-go",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-los-comandos-de-calidad-de-python-ruby-php-y-go",
   "baseCommit": "8f0271909a23aa71969a198b93444f8b6afafa85",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2615c929704f15e64fa078579702e3e5ed3323c4589710d9ec1e5c93406f5b8e",
@@ -59,12 +59,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e7dd7af550e5e0980106b4b8375a1962086f3584",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:35:36.110Z",
       "doneAt": "2026-10-26T14:38:10.697Z",
-      "summary": "Las guías dicen qué formato, lint y tipos detecta Specty en cada stack y qué pasa con una herramienta configurada sin instalar; formats.md describe la detección de detect/quality.ts."
+      "summary": "Las guías dicen qué formato, lint y tipos detecta Specty en cada stack y qué pasa con una herramienta configurada sin instalar; formats.md describe la detección de detect/quality.ts.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -76,5 +76,6 @@
     "AC": 4,
     "T": 2,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T14:38:32.644Z"
 }

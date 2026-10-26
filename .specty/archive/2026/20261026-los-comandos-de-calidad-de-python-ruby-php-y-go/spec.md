@@ -70,3 +70,30 @@ follows:
 ## Riesgos
 
 - R1: Una herramienta configurada pero no instalada hace fallar su verificación en cada ejecución. Es lo mismo que pasa con los scripts de JavaScript sin `node_modules`, y el informe muestra el código de salida del comando; `checks.commands` o `checks.levels` lo ajustan.
+
+## Cierre
+
+### Resumen
+
+`specty check` y `specty init` detectan el formato, el lint y los tipos que un proyecto de Python, Ruby, PHP o Go ya tiene configurados:
+- Python: black, flake8, mypy y pyright, además de ruff.
+- Ruby: Standard, RuboCop, Sorbet y Steep.
+- PHP: los scripts de composer, PHPStan, Psalm, PHP_CodeSniffer, Pint y PHP CS Fixer.
+- Go: golangci-lint, en lugar de `go vet`.
+
+Las herramientas se detectan por su archivo de configuración, su sección o su manifiesto, y se guardan en `tools` de cada stack. Las guías y `formats.md` lo documentan.
+
+### Desviaciones
+
+- `specty check` sobre el propio cambio encontró que `commandsFor` crecía por encima de 50 líneas y que la función `php` llegaba a complejidad 11. Los scripts de JavaScript pasaron a `scriptCommands`, y `php` usa un ayudante para las herramientas de reserva.
+- `pythonPrefix` se movió de `detect/project.ts` a `detect/quality.ts`, para que este no dependa de aquel.
+
+### Decisiones
+
+- El formato de Go se deja a `golangci-lint run`, que ejecuta los formateadores de su configuración. `gofmt -l` no falla por sí solo y necesitaría una shell POSIX.
+- `tools` solo aparece en un stack que tiene alguna herramienta, para no cambiar los stacks de los demás.
+- En PHP, los scripts de `composer.json` mandan sobre las herramientas detectadas, como los de `package.json` en JavaScript.
+
+### Pendientes
+
+- S2b: Java, Kotlin, C# y Swift (Spotless, Checkstyle, ktlint, detekt, `dotnet build`, SwiftLint, swift-format).

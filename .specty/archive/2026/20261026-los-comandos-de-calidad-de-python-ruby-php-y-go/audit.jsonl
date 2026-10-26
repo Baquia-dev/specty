@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T14:35:36.110Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"e7dd7af550e5e0980106b4b8375a1962086f3584"}}
 {"ts":"2026-10-26T14:38:10.696Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":96675,"tree":"sha256:b7f01fccbfbdf21d6aa4c603e1ae43a98b961cc9395635f4798510f8dfca29c7"}}
 {"ts":"2026-10-26T14:38:10.698Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Las guías dicen qué formato, lint y tipos detecta Specty en cada stack y qué pasa con una herramienta configurada sin instalar; formats.md describe la detección de detect/quality.ts."}}
+{"ts":"2026-10-26T14:38:17.581Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T14:38:32.646Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:1b58168d457be17bfdeb20b0f7e57b82cb80bb94bde5ef0934622a774652c16a","size":"M","warnings":0}}
+{"ts":"2026-10-26T14:38:32.839Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
