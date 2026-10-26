@@ -43,7 +43,7 @@ El guard de Codex, su aviso tras cada comando y su fin de turno solo se prueban 
 
 ## Tareas
 
-- [ ] T1: Codex sigue un guion con un modelo simulado
+- [x] T1: Codex sigue un guion con un modelo simulado
   - files: packages/cli/test/fake-responses.ts, packages/cli/test/codex-e2e.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex-e2e.test.ts
