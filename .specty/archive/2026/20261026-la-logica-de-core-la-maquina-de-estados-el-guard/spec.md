@@ -68,3 +68,22 @@ Once funciones de la lógica de core pasan de los límites de Specty: `transitio
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+`packages/core` ya no tiene ninguna función fuera de los límites de Specty, sin cambiar una sola decisión. La máquina de estados resuelve cada grupo de eventos aparte; el tokenizador del guard reparte cada carácter por su clase en el mismo orden, y el guard decide una ruta por etapas; los valores por defecto de la configuración y de `checks` se resuelven por sección; los recorridos de diff separan las cabeceras de los hunks; y el tamaño, el código y la validación de secciones se dividen por responsabilidad. `pnpm check` pasó al aceptar, con los tests de la CLI.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- La máquina estrecha cada grupo de eventos con `Extract` en el `switch`, sin una tabla por evento que habría pedido un cast.
+- Los recorridos de diff usan un cursor: inmutable en las aserciones, mutable y local en los riesgos, como el código que había.
+
+### Pendientes
+
+Ninguno.

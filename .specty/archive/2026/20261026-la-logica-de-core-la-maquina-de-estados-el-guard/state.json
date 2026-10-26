@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
   "baseCommit": "e937a882332a096930ceeab1c0ee630592cac1e3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f13cec7ca9e81efd7438ce5f03701a6f1605da53c5a29446dd78e48906ceba20",
@@ -71,12 +71,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "212952f3139cdb4412876ff04a815a877e2ab8d9",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:11:53.876Z",
       "doneAt": "2026-10-26T19:17:04.693Z",
-      "summary": "size.ts: formatSizeReason lee los sustantivos de COUNTED y deja la deriva del modelo a adjustedReason. code.ts: split avanza un Cursor con blockComment y codeChar. structure.ts: notAllowed informa las secciones que sobran. core ya no tiene funciones fuera de los límites."
+      "summary": "size.ts: formatSizeReason lee los sustantivos de COUNTED y deja la deriva del modelo a adjustedReason. code.ts: split avanza un Cursor con blockComment y codeChar. structure.ts: notAllowed informa las secciones que sobran. core ya no tiene funciones fuera de los límites.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,5 +87,6 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T19:19:01.464Z"
 }
