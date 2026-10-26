@@ -26,6 +26,8 @@ const PROTECTED: readonly string[] = [
   ".claude/settings.json",
   ".claude/settings.local.json",
   ".cursor/hooks.json",
+  ".codex/hooks.json",
+  ".opencode/plugins/specty.js",
   ".husky/pre-commit",
   ".husky/prepare-commit-msg",
   "lefthook.yml",

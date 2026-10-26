@@ -319,8 +319,8 @@ Objetivo de rendimiento: p95 < 200 ms. Para acercarse, los hooks cargan solo su 
 | --- | --- | --- | --- | --- | --- |
 | Claude Code | en el repositorio | sí | sí | sí | `.claude`, `CLAUDE.md` |
 | Cursor | en el repositorio | sí | — | — | `.cursor`, `.cursorrules` |
-| Codex | en la configuración del usuario | sí | — | — | `.codex` |
-| OpenCode | en la configuración del usuario | sí | — | — | `.opencode`, `opencode.json`, `opencode.jsonc` |
+| Codex | en el repositorio | sí | — | — | `.codex` |
+| OpenCode | en el repositorio | sí | — | — | `.opencode`, `opencode.json`, `opencode.jsonc` |
 | Gemini CLI | — | — | — | — | `.gemini`, `GEMINI.md` |
 | GitHub Copilot | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
 | Windsurf | — | — | — | — | `.windsurf`, `.windsurfrules` |

@@ -73,7 +73,7 @@ Specty deja de escribir en la carpeta del usuario. El guard de Codex pasa a `.co
 
 ## Tareas
 
-- [ ] T1: El core da a Codex y OpenCode el guard en el repositorio y protege sus archivos
+- [x] T1: El core da a Codex y OpenCode el guard en el repositorio y protege sus archivos
   - files: packages/core/src/capabilities.ts, packages/core/src/guard/decide.ts, docs/ARCHITECTURE.md, docs/decisions/0013-specty-no-escribe-en-la-carpeta-del-usuario.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts test/guard/decide.test.ts

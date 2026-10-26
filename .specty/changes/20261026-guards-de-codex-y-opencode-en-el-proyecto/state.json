@@ -6,6 +6,13 @@
   "branch": "specty/20261026-guards-de-codex-y-opencode-en-el-proyecto",
   "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5b45180e360d2010b90a2b2291846f294cc8e6f86adf5f215c1a69486c032862",
+    "at": "2026-10-26T11:05:55.831Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ef7979c8880d98ee601c5631ebdc72693a76b235",
+      "startedAt": "2026-10-26T11:06:28.029Z",
+      "doneAt": "2026-10-26T11:09:14.749Z",
+      "summary": "Codex y OpenCode tienen el guard en el repositorio en la tabla de capacidades, que pierde el valor user, y la tabla de ARCHITECTURE se regenera; el guard protege los hooks de Codex y el plugin de OpenCode también al borrarlos; la ADR 0013 recoge la decisión y su alcance."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 9,
     "T": 4,
     "R": 5
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5b45180e360d2010b90a2b2291846f294cc8e6f86adf5f215c1a69486c032862",
-    "at": "2026-10-26T11:05:55.831Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

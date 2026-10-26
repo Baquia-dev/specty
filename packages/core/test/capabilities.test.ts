@@ -27,7 +27,8 @@ describe("the capability table", () => {
   it("renders a row per agent, in Spanish and in English", () => {
     const es = capabilityTable("es").split("\n");
     expect(es).toHaveLength(2 + Object.keys(AGENT_NAMES).length);
-    expect(es).toContain("| Codex | en la configuración del usuario | sí | — | — | `.codex` |");
+    expect(es).toContain("| Codex | en el repositorio | sí | — | — | `.codex` |");
+    expect(es.some((row) => row.startsWith("| OpenCode | en el repositorio |"))).toBe(true);
     expect(capabilityTable("en")).toContain("| Cursor | in the repository | yes | — | — |");
   });
 
