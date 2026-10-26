@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-program-ts-registra-los-comandos-por-grupos",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-program-ts-registra-los-comandos-por-grupos",
   "baseCommit": "512ba3ab6d94f3337291756c5a78c180d21ca810",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6816ca8436f451ed82412d1676033a388b6341e7",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:35:24.534Z",
       "doneAt": "2026-10-26T01:38:55.479Z",
-      "summary": "program.ts (de 307 a 135 líneas de código) queda con la ejecución y los comandos de lectura e instalación; los del agente se registran desde commands/agent-commands.ts y las decisiones de la persona desde commands/person-commands.ts, sin cambiar nada."
+      "summary": "program.ts (de 307 a 135 líneas de código) queda con la ejecución y los comandos de lectura e instalación; los del agente se registran desde commands/agent-commands.ts y las decisiones de la persona desde commands/person-commands.ts, sin cambiar nada.",
+      "scopeExtra": []
     }
   },
   "pending": {

@@ -20,3 +20,9 @@ kind: quick
   - files: packages/cli/src/program.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/src/commands/person-commands.ts
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+program.ts (de 307 a 135 líneas de código) queda con la ejecución y los comandos de lectura e instalación; los del agente se registran desde commands/agent-commands.ts y las decisiones de la persona desde commands/person-commands.ts, sin cambiar nada.
