@@ -42,3 +42,23 @@ En cada pull request, la CI de Specty ejecuta su propio `specty check --changed`
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts
   - type: ci
+
+## Cierre
+
+### Resumen
+
+La CI tiene un job `specty-check` que solo corre en los pull requests. Descarga toda la historia, crea `main` desde `origin/main`, construye el CLI del PR y ejecuta su `specty check --changed`. Un test fija cómo se comporta `--changed` en el checkout de un PR: con `main` local ve solo lo que añade el PR; sin ella no ve nada.
+
+### Desviaciones
+
+- Ninguna respecto al plan. El comando del job, ejecutado aquí sobre esta rama, da `OK 10/11` (`secrets` sin escáner).
+
+### Decisiones
+
+- El job es aparte y solo corre en Ubuntu, en paralelo con `check`. Repite lint, tipos y tests porque `specty check` no tiene una opción para saltarlos.
+- Usa el CLI construido desde el PR, no el publicado, para que Specty se verifique con sus reglas de ese momento.
+
+### Pendientes
+
+- El job no ha corrido aún en GitHub: `origin/main` va muy por detrás de `main` y no hay PR abiertos.
+- Una opción de `specty check` para saltar verificaciones concretas evitaría repetir los tests en la CI.

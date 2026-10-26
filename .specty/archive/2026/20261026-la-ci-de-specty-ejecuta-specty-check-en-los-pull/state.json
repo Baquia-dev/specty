@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
   "baseCommit": "bf528064e4af69d1c46a08bb2c4339e967a52d84",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9205a3c062eec0a30b12cd9ad9477ce5d3f8fbb04cf580346a1dfd9e3d56191d",
@@ -44,12 +44,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "58b8cf10207f3e515aed0d6f6577cee33622d80b",
+      "attempts": 1,
       "startedAt": "2026-10-26T13:42:01.923Z",
       "doneAt": "2026-10-26T13:45:05.102Z",
-      "summary": "Job specty-check en ci.yml, solo en pull requests: checkout con historia completa, crea main desde origin/main, construye el CLI del PR y ejecuta specty check --changed; el test de workflows lo fija."
+      "summary": "Job specty-check en ci.yml, solo en pull requests: checkout con historia completa, crea main desde origin/main, construye el CLI del PR y ejecuta specty check --changed; el test de workflows lo fija.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -60,5 +60,6 @@
     "A": 2,
     "AC": 2,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T13:47:24.935Z"
 }

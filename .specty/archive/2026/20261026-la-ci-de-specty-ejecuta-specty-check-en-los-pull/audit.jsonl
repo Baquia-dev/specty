@@ -7,3 +7,7 @@
 {"ts":"2026-10-26T13:42:01.924Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"58b8cf10207f3e515aed0d6f6577cee33622d80b"}}
 {"ts":"2026-10-26T13:45:04.949Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts","exit":0,"ms":2268,"tree":"sha256:8f8362879541f50c24d11120c157ce4cbaddec4c5ab4926afdcebde7322a89f3"}}
 {"ts":"2026-10-26T13:45:05.106Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Job specty-check en ci.yml, solo en pull requests: checkout con historia completa, crea main desde origin/main, construye el CLI del PR y ejecuta specty check --changed; el test de workflows lo fija."}}
+{"ts":"2026-10-26T13:47:09.679Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":115639,"tree":"sha256:8f8362879541f50c24d11120c157ce4cbaddec4c5ab4926afdcebde7322a89f3"}}
+{"ts":"2026-10-26T13:47:09.681Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T13:47:24.936Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:d1d156554d88e6295fb783a2b980ffd914b443f5c9f462f7af51e6bcd133c4e7","size":"M","warnings":0}}
+{"ts":"2026-10-26T13:48:56.212Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
