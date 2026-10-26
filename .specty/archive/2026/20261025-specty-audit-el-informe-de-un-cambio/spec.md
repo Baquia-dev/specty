@@ -56,3 +56,23 @@ PRODUCT.md promete para la versión 1 un informe de auditoría, y ARCHITECTURE �
   - files: packages/cli/src/flow/find.ts, packages/cli/src/commands/why.ts, packages/cli/src/commands/audit.ts, packages/cli/src/program.ts, packages/cli/test/audit.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+`specty audit [<id>]` da el informe de un cambio, el activo por defecto. En Markdown lleva el título, el id, el carril, la fase, la rama, la petición literal y la aprobación; las tareas con su estado, su commit (por su trailer) y su resumen; y la línea de tiempo de la auditoría, con cuándo, quién y qué. Cada evento de formats.md §4 va en palabras, en español o en inglés, y uno desconocido por su nombre. Con `--json` da el cambio, las tareas y los eventos tal como están. El informe vive en core (`cards/audit.ts`); la CLI lo reúne y se registra desde su módulo, como `check`. `flow/find.ts` busca un cambio por id, y lo comparten `why` y `audit`.
+
+### Desviaciones
+
+- `packages/core/test/cards/audit.test.ts` y `packages/core/src/cards/audit.ts`, de T1, entraron en el alcance de T2 (aprobados por la política, ya en Archivos): el lint de `pnpm check` encontró un `forEach` que devolvía un valor y una concatenación que Biome prefiere como plantilla. T1 solo había ejecutado su test.
+
+### Decisiones
+
+- Quién actúa: la persona, el agente con su herramienta, el agente por delegación (las decisiones con `delegated`) o Specty.
+- `audit` y `why` no son decisiones de la persona: el agente también los ejecuta.
+
+### Pendientes
+
+- `packages/cli/src/program.ts` está en 305 líneas de código: la división por grupos de comandos que propuso el cierre de `why`.
+- Una tarea cuyo `verify` es solo el test de su archivo no pasa el lint: vale más `pnpm check` en la última tarea de cada cambio, o que `verify.quick` incluya el lint.

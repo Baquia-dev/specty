@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-specty-audit-el-informe-de-un-cambio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-specty-audit-el-informe-de-un-cambio",
   "baseCommit": "bae0d7ca914493830e2d7169bfce2197fb9f31fd",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a1ba9cb8f21a4e5509f067cfd46191a1070dd274e79908ae28220e4d0b08a61a",
@@ -48,15 +48,15 @@
     },
     "T2": {
       "status": "done",
+      "baseCommit": "1f063d4b13666417ab471233553bbffa5e9787c3",
+      "attempts": 2,
+      "startedAt": "2026-10-26T00:46:35.312Z",
+      "doneAt": "2026-10-26T00:50:50.632Z",
+      "summary": "specty audit [<id>] (commands/audit.ts, registrado desde su módulo): informe Markdown del cambio activo o nombrado, o datos con --json. flow/find.ts busca un cambio por id y lo usan why y audit. Rechaza un id que no está. ARCHITECTURE §6 y §13.",
       "scopeExtra": [
         "packages/core/test/cards/audit.test.ts",
         "packages/core/src/cards/audit.ts"
-      ],
-      "attempts": 2,
-      "baseCommit": "1f063d4b13666417ab471233553bbffa5e9787c3",
-      "startedAt": "2026-10-26T00:46:35.312Z",
-      "doneAt": "2026-10-26T00:50:50.632Z",
-      "summary": "specty audit [<id>] (commands/audit.ts, registrado desde su módulo): informe Markdown del cambio activo o nombrado, o datos con --json. flow/find.ts busca un cambio por id y lo usan why y audit. Rechaza un id que no está. ARCHITECTURE §6 y §13."
+      ]
     }
   },
   "pending": {
@@ -67,5 +67,6 @@
     "A": 3,
     "AC": 4,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T00:51:33.605Z"
 }
