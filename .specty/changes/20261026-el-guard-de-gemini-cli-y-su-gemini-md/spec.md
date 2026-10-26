@@ -74,7 +74,7 @@ Gemini CLI no tiene el guard de Specty: su agente puede escribir fuera del alcan
   - files: packages/cli/src/install/project-files.ts, packages/cli/src/agents/gemini-cli.ts, packages/cli/src/commands/uninstall.ts, packages/core/src/cards/install.ts, packages/core/src/cards/uninstall.ts, packages/core/src/cards/index.ts, packages/cli/test/gemini-cli.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/uninstall.test.ts test/install-files.test.ts test/setup.test.ts
-- [ ] T3: La tabla de capacidades y la documentación lo cuentan
+- [x] T3: La tabla de capacidades y la documentación lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

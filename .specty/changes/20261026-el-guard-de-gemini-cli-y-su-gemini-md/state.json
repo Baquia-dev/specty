@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-el-guard-de-gemini-cli-y-su-gemini-md",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-el-guard-de-gemini-cli-y-su-gemini-md",
   "baseCommit": "3b678e4bfdd752c60ed2a4c3ae73b948919533c9",
   "revision": 2,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "67d955924e5189ca44fae170a074a8a024f87f41",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:41:48.079Z",
       "doneAt": "2026-10-26T20:43:54.455Z",
-      "summary": "init escribe GEMINI.md con @./AGENTS.md delante de lo que tuviera (writePointer generaliza el de CLAUDE.md), sin repetirlo, y uninstall lo deja y dice que sigue importando AGENTS.md."
+      "summary": "init escribe GEMINI.md con @./AGENTS.md delante de lo que tuviera (writePointer generaliza el de CLAUDE.md), sin repetirlo, y uninstall lo deja y dice que sigue importando AGENTS.md.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0b61042fa1aee00a93aba0e6f0388b5ba3b85c92",
+      "startedAt": "2026-10-26T20:43:54.733Z",
+      "doneAt": "2026-10-26T20:46:20.283Z",
+      "summary": "La tabla marca el guard y el aviso tras cada comando de Gemini CLI como sí; ARCHITECTURE cuenta sus hooks (§10), el aviso con additionalContext y el par antes/después sin id, GEMINI.md entre los punteros y lo que deja uninstall."
     }
   },
   "pending": {
