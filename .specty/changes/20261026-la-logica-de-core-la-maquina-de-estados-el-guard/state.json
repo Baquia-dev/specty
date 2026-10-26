@@ -53,12 +53,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "41005f0a343e17a8e12f462d6a00d3fbd1e77611",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:10:24.376Z",
       "doneAt": "2026-10-26T19:11:06.619Z",
-      "summary": "config.ts: withDefaults compone verifyOf, scopeOf, limitsOf, linesOf, gitOf, teamOf, uiOf y reviewOf, cada sección con sus valores por defecto. checks.ts: resolveChecks toma layersOf, generatorsOf y commandsOf. Mismos valores."
+      "summary": "config.ts: withDefaults compone verifyOf, scopeOf, limitsOf, linesOf, gitOf, teamOf, uiOf y reviewOf, cada sección con sus valores por defecto. checks.ts: resolveChecks toma layersOf, generatorsOf y commandsOf. Mismos valores.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "39efaf430ca6582c1de8709bd5b68573de6e955d",
+      "startedAt": "2026-10-26T19:11:06.909Z",
+      "doneAt": "2026-10-26T19:11:53.576Z",
+      "summary": "assertions.ts: removedAssertions avanza un DiffCursor con header y cuenta cada línea de un hunk con count. risk.ts: filesOf lleva un DiffWalk con startFile, headerLine y hunkLine. Mismos resultados; los 459 tests de core pasan."
     }
   },
   "pending": {

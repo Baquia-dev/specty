@@ -58,7 +58,7 @@ Once funciones de la lógica de core pasan de los límites de Specty: `transitio
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
-- [ ] T4: Los diffs del alcance
+- [x] T4: Los diffs del alcance
   - files: packages/core/src/scope/assertions.ts, packages/core/src/scope/risk.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
