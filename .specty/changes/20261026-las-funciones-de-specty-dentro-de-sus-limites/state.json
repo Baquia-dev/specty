@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261026-las-funciones-de-specty-dentro-de-sus-limites",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261026-las-funciones-de-specty-dentro-de-sus-limites",
+  "baseCommit": "6e67966217f2f26744beae48caf0b3cfcb6523cd",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a2818004c93c6654bc3fc6b1890f907df59ddfc7e3faa3519545d1087fee1c8a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:52dc6fbc10a4b24d68e8978acd837f741d3f0ea5a343842b137848870961fe79",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:276f65a4c4b29e67b6428f771647c7bb8ce4b59dc86f4e9dde1887bf35c40a44",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "C": 9,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:21b5cc84e8118ce20b9eff47e8a33cf9fe5593ee5745beb9b3170dc2f61c9f73",
+    "at": "2026-10-26T18:07:40.341Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

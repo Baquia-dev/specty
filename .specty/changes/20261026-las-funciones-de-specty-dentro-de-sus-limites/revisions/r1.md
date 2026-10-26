@@ -1,0 +1,57 @@
+---
+kind: epic
+follows:
+  - 20261026-los-tests-de-los-paquetes-corren-de-uno-en-uno
+---
+
+# Las funciones de Specty dentro de sus límites
+
+## Objetivo
+
+`specty check --all` encuentra en el propio Specty unas 80 funciones fuera de sus límites: 49 de más de 50 líneas de código y 56 de complejidad mayor que 10, en los cuatro paquetes. La herramienta debe cumplir las reglas que implementa, así que cada una se divide por responsabilidad, o pasa a ser una tabla o un dato si eso es lo que es, sin cambiar lo que hace.
+
+## Fuera de alcance
+
+- Cambiar el comportamiento de cualquier comando, tarjeta, pantalla o texto.
+- Subir los límites de `checks.functions` o excluir archivos para que pasen.
+- Las funciones de los tests, que no se miden.
+
+## Supuestos
+
+- A1: Los tests que ya existen protegen el comportamiento: cada corte los deja pasar sin cambiar lo que comprueban, y solo añade tests donde una función nueva tenga lógica propia sin cubrir.
+  - impacto: alto
+- A2: Una función que es texto, datos o un registro (tarjetas, plantillas, ejemplos de la UI, el registro de comandos) pasa a ser una tabla o una constante, no a partirse en trozos sin nombre, como pide AGENTS.md.
+  - impacto: alto
+- A3: Cada corte vuelve a medir su paquete con `specty check --all` al empezar: lo que otras sesiones hayan añadido o ya arreglado entra o sale de su lista.
+
+## Criterios de aceptación
+
+- AC1: CUANDO se ejecuta `specty check --all` en el repositorio ENTONCES `function-lines` y `complexity` pasan.
+- AC2: CUANDO termina cada corte ENTONCES `pnpm check` pasa con los mismos tests que antes, sin cambiar lo que comprueban.
+- AC3: CUANDO se lee una función dividida ENTONCES cada parte tiene una responsabilidad con nombre, y los datos viven en tablas o constantes.
+
+## Cortes
+
+- C1: Las tarjetas de core, primera parte: audit, doctor, epic, flow y human
+  - ac: AC1, AC2, AC3
+- C2: Las tarjetas de core, segunda parte: new, next, review, task, text y work
+  - ac: AC1, AC2, AC3
+- C3: La lógica de core: la máquina de estados, el guard, los esquemas, el alcance, el tamaño, la validación y el código
+  - ac: AC1, AC2, AC3
+- C4: Los comandos del flujo en la CLI: accept, approve, propose, review, close, cancel, task, new y la sesión de la persona
+  - ac: AC1, AC2, AC3
+- C5: Los demás comandos de la CLI: scope, la decisión de alcance, integrate, export, init, doctor, los registros de comandos y el programa
+  - ac: AC1, AC2, AC3
+- C6: El flujo y el guard de la CLI: flow y enforce
+  - ac: AC1, AC2, AC3
+- C7: La instalación, git y las verificaciones de la CLI: install, io y check
+  - ac: AC1, AC2, AC3
+- C8: El servidor local: acciones, eventos, http y ejecuciones
+  - ac: AC1, AC2, AC3
+- C9: La UI y los exportadores
+  - ac: AC1, AC2, AC3
+
+## Riesgos
+
+- R1: Otras sesiones trabajan en paralelo sobre los mismos archivos — cada corte es pequeño, se cierra pronto y se incorpora con la rama principal al día.
+- R2: La máquina de estados, el guard y `accept` deciden permisos — su corte no cambia ninguna rama de decisión, y sus tests de flujo y del guard deben pasar intactos.
