@@ -217,7 +217,13 @@ function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): 
       ),
     );
   }
-  if (!isGoverned(path, ctx.config)) return ALLOW;
+  return isGoverned(path, ctx.config) ? decideGoverned(path, ctx) : ALLOW;
+}
+
+/** Governed code: only with a change implementing, or bringing in its target. */
+function decideGoverned(path: string, ctx: GuardContext): GuardDecision {
+  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
+  const { change } = ctx;
   if (change === undefined) {
     return deny(
       "no-change",
@@ -242,6 +248,12 @@ function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): 
       t(`ejecuta \`${ctx.command} next\`.`, `run \`${ctx.command} next\`.`),
     );
   }
+  return decideTaskScope(path, change, ctx);
+}
+
+/** While implementing: within the active task's scope, or a request to widen it. */
+function decideTaskScope(path: string, change: GuardChange, ctx: GuardContext): GuardDecision {
+  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
   const task = change.task;
   if (task === undefined) {
     return deny(

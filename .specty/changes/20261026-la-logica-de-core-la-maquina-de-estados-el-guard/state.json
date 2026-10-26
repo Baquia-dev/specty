@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d36934fc3208f0077ca5de3637a79f04298c9b5c",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:07:12.345Z",
       "doneAt": "2026-10-26T19:07:50.724Z",
-      "summary": "machine.ts: transition comprueba actor y fase y deja el resultado a specOutcome (propose, requestChanges, approve con approveOutcome), taskOutcome y endOutcome, estrechados con Extract sin casts. Mismas transiciones; los 459 tests de core pasan."
+      "summary": "machine.ts: transition comprueba actor y fase y deja el resultado a specOutcome (propose, requestChanges, approve con approveOutcome), taskOutcome y endOutcome, estrechados con Extract sin casts. Mismas transiciones; los 459 tests de core pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "324d343cce20a6e61f3f6efa6fa77d8fcc720f5d",
+      "startedAt": "2026-10-26T19:07:51.205Z",
+      "doneAt": "2026-10-26T19:10:24.073Z",
+      "summary": "tokens.ts: step reparte cada carácter entre opening, separating, grouping y redirecting en el mismo orden. shell.ts: spectyArgs delega en scriptArgs, packageArgs y managerArgs. decide.ts: decidePath pasa el código gobernado a decideGoverned y el alcance a decideTaskScope."
     }
   },
   "pending": {

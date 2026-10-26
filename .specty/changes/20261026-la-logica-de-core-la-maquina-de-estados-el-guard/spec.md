@@ -48,7 +48,7 @@ Once funciones de la lógica de core pasan de los límites de Specty: `transitio
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
-- [ ] T2: El guard
+- [x] T2: El guard
   - files: packages/core/src/guard/tokens.ts, packages/core/src/guard/shell.ts, packages/core/src/guard/decide.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
