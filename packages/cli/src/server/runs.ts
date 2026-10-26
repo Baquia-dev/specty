@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { spawn } from "node:child_process";
-import { blockedCard, headerOf, type Output, section, translator } from "@baquia-dev/specty-core";
+import { headerOf, type Output, runRefusalCard, runStartedCard } from "@baquia-dev/specty-core";
 import { locateChanges } from "../flow/changes";
 import { codeTree, recordFullVerification } from "../flow/verified";
 import type { Session } from "../session";
@@ -116,57 +116,19 @@ export function changeRuns(
   return {
     current: (id) => going.get(id)?.run ?? tasks.current(id),
     async start(id) {
-      const t = translator(session.lang);
+      const { cards } = session;
       const found = (await locateChanges(session)).find(({ change }) => change.state.id === id);
-      const reload = t("vuelve a cargar la UI.", "reload the UI.");
       if (found === undefined)
-        return blockedCard(
-          headerOf(),
-          t(`No hay ningún cambio ${id}.`, `There is no change ${id}.`),
-          reload,
-        );
+        return runRefusalCard({ reason: "no-change", id }, headerOf(), cards);
       const { change, session: there } = found;
       const header = headerOf(id, change.state.phase);
       const command = there.config.verify.full;
       if (change.state.phase !== "acceptance")
-        return blockedCard(
-          header,
-          t(
-            "La verificación completa se ejecuta con el cambio en aceptación.",
-            "The full verification runs with the change in acceptance.",
-          ),
-          reload,
-        );
-      if (command === undefined)
-        return blockedCard(
-          header,
-          t(
-            "Este proyecto no tiene verificación completa (`verify.full`).",
-            "This project has no full verification (`verify.full`).",
-          ),
-          t("añádela en .specty/config.yaml.", "add it in .specty/config.yaml."),
-        );
-      if (going.has(id))
-        return blockedCard(
-          header,
-          t(
-            "Ya corre la verificación completa de este cambio.",
-            "The full verification of this change is already running.",
-          ),
-          t("espera a que termine.", "wait for it to finish."),
-        );
+        return runRefusalCard({ reason: "not-in-acceptance" }, header, cards);
+      if (command === undefined) return runRefusalCard({ reason: "no-full-verify" }, header, cards);
+      if (going.has(id)) return runRefusalCard({ reason: "running" }, header, cards);
       run(id, there, change, command);
-      return {
-        status: "ok",
-        header,
-        blocks: section(undefined, [
-          t(
-            `Verificación completa en marcha: \`${command}\`.`,
-            `Full verification running: \`${command}\`.`,
-          ),
-        ]),
-        next: t("sigue su salida en la UI.", "follow its output in the UI."),
-      };
+      return runStartedCard(header, command, cards);
     },
     close() {
       closing = true;

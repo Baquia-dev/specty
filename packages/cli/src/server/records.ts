@@ -33,7 +33,7 @@ export interface ChangeRecord {
 }
 
 /** An independent review (ADR 0011): of the spec or of the result, with what the reviewer said. */
-export interface ReviewRecord {
+interface ReviewRecord {
   readonly target: "spec" | "diff";
   readonly revision: number;
   /** ISO time of its `review.completed`. */

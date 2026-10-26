@@ -9,6 +9,7 @@ export {
   isAgentTool,
 } from "./agents";
 export {
+  citedPaths,
   flowBlock,
   hasBlock,
   humanSections,
@@ -27,59 +28,7 @@ export {
   type GuardSurface,
   isGuardedAgent,
 } from "./capabilities";
-export {
-  type AuditEvent,
-  type AuditTask,
-  type AuditView,
-  auditReport,
-} from "./cards/audit";
-export { epicCard, sliceLines } from "./cards/epic";
-export {
-  blockedCard,
-  changeHeader,
-  deltaLine,
-  invalidSpecCard,
-  outOfScopeCard,
-  type ProposedView,
-  proposedCard,
-  retroCreatedCard,
-  scopeRequestedCard,
-  verifyFailedCard,
-  withLead,
-} from "./cards/flow";
-export { type BlockedCommitView, blockedCommitMessage } from "./cards/hooks";
-export {
-  cancelledCard,
-  closedCard,
-  decisionCard,
-  delegationCard,
-  delegationWarning,
-  nothingPendingCard,
-  notInteractiveCard,
-  type StatusEntry,
-  statusCard,
-} from "./cards/human";
-export { longFileCard, longFileWarnings, splitAdvice } from "./cards/lines";
-export { type NextView, nextCard, notInitializedCard, taskCard } from "./cards/next";
-export {
-  diffReviewPrompt,
-  type ReviewedView,
-  reviewedCard,
-  specReviewPrompt,
-} from "./cards/review";
-export { effortLabel, effortLine, translator } from "./cards/text";
-export type {
-  CardContext,
-  ChangeView,
-  CriterionView,
-  IntegrationView,
-  RejectedView,
-  ScopeRequestView,
-  SliceView,
-  TaskView,
-} from "./cards/view";
-export { type WhyCommit, type WhyView, whyCard } from "./cards/why";
-export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
+export * from "./cards";
 export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
@@ -275,6 +224,13 @@ export * from "./spec/model";
 export { type ParseOptions, type ParseResult, parseSpec } from "./spec/parse";
 export { hashUnits, serializeSpec } from "./spec/serialize";
 export { KIND_RULES, SECTION_TITLES } from "./spec/vocabulary";
-export { specTemplate, type TemplateOptions } from "./templates";
+export {
+  type ConfigTemplateOptions,
+  configTemplate,
+  productQuestions,
+  productTemplate,
+  specTemplate,
+  type TemplateOptions,
+} from "./templates";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";
 export { type TestRules, testRules } from "./validate/quality";

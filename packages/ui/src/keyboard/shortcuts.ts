@@ -122,7 +122,7 @@ export class Shortcuts {
     </sp-dialog>
   `,
 })
-export class ShortcutsHelp {
+class ShortcutsHelp {
   protected readonly shortcuts = inject(Shortcuts);
   private readonly preferences = inject(Preferences);
   protected readonly t = this.preferences.t;

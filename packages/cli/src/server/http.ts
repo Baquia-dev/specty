@@ -3,7 +3,7 @@ import { randomBytes, timingSafeEqual } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { extname, join, resolve, sep } from "node:path";
-import { type Output, translator } from "@baquia-dev/specty-core";
+import { notBuiltPage, type Output } from "@baquia-dev/specty-core";
 import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
 import { delegationView, parseAction, runAction, setDelegation } from "./actions";
@@ -244,7 +244,7 @@ async function readBody(request: IncomingMessage): Promise<unknown> {
 /** The built UI's files; app routes, and `index.html` itself, get the marked `index.html`. */
 async function serveUi(response: ServerResponse, context: Context, pathname: string) {
   const { ui } = context;
-  if (ui === undefined) return send(response, 200, HTML, notBuilt(context.session));
+  if (ui === undefined) return send(response, 200, HTML, notBuiltPage(context.session.lang));
   const file = resolve(ui, `.${decodeURIComponent(pathname)}`);
   if (!file.startsWith(`${ui}${sep}`) && file !== ui)
     return send(response, 404, TEXT, "specty: not found");
@@ -257,16 +257,8 @@ async function serveUi(response: ServerResponse, context: Context, pathname: str
   }
   const html = await readFile(index, "utf8").catch(() => undefined);
   return html === undefined
-    ? send(response, 200, HTML, notBuilt(context.session))
+    ? send(response, 200, HTML, notBuiltPage(context.session.lang))
     : send(response, 200, HTML, html.replace("</head>", `${MARKER}</head>`));
-}
-
-function notBuilt(session: Session): string {
-  const t = translator(session.lang);
-  return `<!doctype html><meta charset="utf-8"><title>Specty</title><p>${t(
-    "La UI no está construida: ejecuta <code>pnpm --filter @baquia-dev/specty-ui build</code> y vuelve a cargar esta página. Los datos siguen en <code>/api/changes</code>.",
-    "The UI is not built: run <code>pnpm --filter @baquia-dev/specty-ui build</code> and reload this page. The data is still at <code>/api/changes</code>.",
-  )}</p>`;
 }
 
 function isLocal(host: string | undefined, port: number): boolean {

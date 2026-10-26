@@ -1,22 +1,29 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  approvalPostponedCard,
+  approvalSummary,
+  approveSpecQuestion,
+  askAgentNext,
+  assumptionChoices,
   blockedCard,
   type ChangeState,
   decisionCard,
-  deltaLine,
-  effortLine,
-  formatSizeReason,
   headerOf,
+  noActiveChangeCard,
   nothingPendingCard,
   notInteractiveCard,
   type Output,
   parseSpec,
   recommendEffort,
+  rejectedAssumptionsLine,
+  rejectionQuestion,
+  revisionLabel,
   shortHash,
+  specApprovedLine,
+  specChangedCard,
   specDelta,
   specHash,
   transition,
-  translator,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
@@ -34,15 +41,8 @@ import { decideScope } from "./scope-decision";
 export async function approve(session: Session, scope: string | undefined): Promise<Output> {
   const { cards } = session;
   if (!canDecide(session)) return notInteractiveCard("approve", cards);
-  const t = translator(session.lang);
   const active = await resolveActive(session);
-  if (active === undefined) {
-    return blockedCard(
-      headerOf(),
-      t("No hay un cambio activo.", "There is no active change."),
-      t(`revisa \`${cards.command} status\`.`, `check \`${cards.command} status\`.`),
-    );
-  }
+  if (active === undefined) return noActiveChangeCard("person", cards);
   if (scope !== undefined) return decideScope(session, active, scope, "approve", undefined);
   if (active.state.phase !== "review")
     return nothingPendingCard(active.state.id, active.state.phase, "approve", cards);
@@ -50,28 +50,14 @@ export async function approve(session: Session, scope: string | undefined): Prom
 }
 
 async function approveSpec(session: Session, active: StoredChange): Promise<Output> {
-  const t = translator(session.lang);
+  const { cards } = session;
   const { state, files } = active;
   const { terminal } = session.environment;
-  const header = headerOf(
-    state.id,
-    "review",
-    t(`revisión ${state.revision}`, `revision ${state.revision}`),
-  );
+  const header = headerOf(state.id, "review", revisionLabel(state.revision, session.lang));
   const spec = parseSpec(await readSpec(files), { language: session.lang }).spec;
   const last = await readRevision(files, state.revision);
   if (last === undefined || specHash(parseSpec(last).spec) !== specHash(spec)) {
-    return blockedCard(
-      header,
-      t(
-        "La spec cambió desde la última propuesta.",
-        "The spec changed since it was last proposed.",
-      ),
-      t(
-        `pídele a tu agente que ejecute \`${session.cards.command} propose\`.`,
-        `ask your agent to run \`${session.cards.command} propose\`.`,
-      ),
-    );
+    return specChangedCard(header, cards);
   }
   const analysis = await analyzeChange(session, active, "review");
   const shared = await sharedFiles(session, state.id, listed(spec));
@@ -80,14 +66,18 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     approvedText === undefined ? [] : specDelta(parseSpec(approvedText).spec, spec).entries;
   terminal.note(
     spec.title,
-    [
-      `${session.paths.relative(files.spec)} · ${t("revisión", "revision")} ${state.revision}`,
-      `${t("Tamaño", "Size")} ${analysis.size.level}: ${analysis.size.reasons.map((reason) => formatSizeReason(reason, session.lang)).join(", ")}`,
-      effortLine(recommendEffort(analysis.size.level, analysis.spec), session.cards),
-      ...delta.map((entry) => `Δ ${deltaLine(entry, session.cards)}`),
-      ...analysis.diagnostics.map((entry) => `! ${entry.message}`),
-      ...sharedLines(session, shared).map((line) => `! ${t("Compartido", "Shared")}: ${line}`),
-    ].join("\n"),
+    approvalSummary(
+      {
+        specPath: session.paths.relative(files.spec),
+        revision: state.revision,
+        size: analysis.size,
+        effort: recommendEffort(analysis.size.level, analysis.spec),
+        delta,
+        diagnostics: analysis.diagnostics,
+        shared: sharedLines(session, shared),
+      },
+      cards,
+    ),
   );
 
   const items: ChangeState["items"] = { ...state.items };
@@ -100,14 +90,14 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     const choice =
       session.actor === "agent"
         ? "confirm"
-        : await terminal.choose(`${assumption.id}: ${assumption.text}`, [
-            { value: "confirm", label: t("Confirmar", "Confirm") },
-            { value: "reject", label: t("Rechazar", "Reject") },
-          ]);
-    if (choice === undefined) return postponed(session, header);
+        : await terminal.choose(
+            `${assumption.id}: ${assumption.text}`,
+            assumptionChoices(session.lang),
+          );
+    if (choice === undefined) return approvalPostponedCard(header, cards);
     const comment =
       choice === "reject"
-        ? await terminal.ask(t("¿Por qué? (lo leerá el agente)", "Why? (the agent will read it)"))
+        ? await terminal.ask(rejectionQuestion("assumption", session.lang))
         : undefined;
     items[assumption.id] = {
       hash: current.hash,
@@ -129,27 +119,11 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     );
     return thenNext(
       session,
-      decisionCard(
-        header,
-        [
-          t(
-            `Rechazaste ${rejected.join(", ")}; el agente debe corregir la spec.`,
-            `You rejected ${rejected.join(", ")}; the agent must fix the spec.`,
-          ),
-        ],
-        session.cards,
-      ),
+      decisionCard(header, [rejectedAssumptionsLine(rejected, session.lang)], cards),
     );
   }
-  if (
-    !(await terminal.confirm(
-      t(
-        `¿Aprobar la revisión ${state.revision} de «${spec.title}»?`,
-        `Approve revision ${state.revision} of "${spec.title}"?`,
-      ),
-    ))
-  ) {
-    return postponed(session, header);
+  if (!(await terminal.confirm(approveSpecQuestion(state.revision, spec.title, session.lang)))) {
+    return approvalPostponedCard(header, cards);
   }
   // Counted as `task done` counts them: with none left, the change goes to acceptance.
   const remainingTasks = (spec.sections.tasks?.items ?? []).filter(
@@ -166,15 +140,7 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
       remainingTasks,
     },
   });
-  if (!moved.ok)
-    return blockedCard(
-      header,
-      moved.code,
-      t(
-        `pídele a tu agente \`${session.cards.command} next\`.`,
-        `ask your agent for \`${session.cards.command} next\`.`,
-      ),
-    );
+  if (!moved.ok) return blockedCard(header, moved.code, askAgentNext(cards));
   const finalItems = Object.fromEntries(
     Object.entries(items).map(([id, item]) => [
       id,
@@ -219,28 +185,8 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     session,
     decisionCard(
       headerOf(state.id, moved.phase),
-      [
-        t(
-          `Revisión ${state.revision} aprobada (commit ${commit}).`,
-          `Revision ${state.revision} approved (commit ${commit}).`,
-        ),
-      ],
-      session.cards,
+      [specApprovedLine(state.revision, commit, session.lang)],
+      cards,
     ),
   );
-}
-
-function postponed(session: Session, header: string): Output {
-  const t = translator(session.lang);
-  return {
-    status: "ok",
-    header,
-    blocks: [
-      { lines: [t("Aprobación pospuesta; nada cambió.", "Approval postponed; nothing changed.")] },
-    ],
-    next: t(
-      `cuando estés listo, ejecuta \`${session.cards.command} approve\`.`,
-      `when you are ready, run \`${session.cards.command} approve\`.`,
-    ),
-  };
 }

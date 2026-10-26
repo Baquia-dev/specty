@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
+  "baseCommit": "bfa2cf2f30604b55465c192c21b9f9b1d9a4c603",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c957b6b53731e5bfc45f95a246595cbcecb9a9cacfe60434d0458bf57b0b5ec9",
+    "at": "2026-10-26T03:12:56.132Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5215583b5d04fa5b619c8c78563fa68743453bff4e787312ee3c7d176ce17277",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "99e5c730c8b43889bab59d5959f58945378c1bd2",
+      "attempts": 1,
+      "startedAt": "2026-10-26T03:12:57.016Z",
+      "doneAt": "2026-10-26T03:13:50.558Z",
+      "summary": "Core tiene los rechazos de new --epic --slice (sliceRefusalCard en cards/epic.ts), los textos del trabajo en paralelo (cards/parallel.ts: archivos compartidos, preparar la carpeta y prune) y la pista del cierre (verifyHintLine), con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "bc5973505dd517be0f7708e021f79ced6a3281a0",
+      "attempts": 1,
+      "startedAt": "2026-10-26T03:13:50.876Z",
+      "doneAt": "2026-10-26T03:15:05.443Z",
+      "summary": "flow/epic.ts (sliceRefusalCard), commands/prune.ts (pruneCard) y flow/prune.ts (por qué deja cada carpeta o rama) piden sus textos a core y ya no llaman al traductor; los tests de épicas y prune pasan sin cambios.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f9a7e76af608d26836173e41d3dd01ba88e00b31",
+      "attempts": 1,
+      "startedAt": "2026-10-26T03:15:05.745Z",
+      "doneAt": "2026-10-26T03:17:32.399Z",
+      "summary": "flow/shared.ts, flow/worktree.ts y flow/detected.ts piden sus textos a core (sharedLine, sharedTitle, preparingNote y verifyHintLine) y ya no llaman al traductor; la salida es la misma, como comprueban los tests.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T03:17:47.162Z"
+}

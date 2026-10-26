@@ -13,7 +13,7 @@ import type { CheckContext, CheckDefinition, Provider } from "./provider";
  */
 
 export const STRICT_MODES = ["strict-casts", "strict-inference", "strict-raw-types"] as const;
-export type StrictMode = (typeof STRICT_MODES)[number];
+type StrictMode = (typeof STRICT_MODES)[number];
 
 /** Includes followed at most, so that a cycle or a long chain ends. */
 const MAX_DEPTH = 5;

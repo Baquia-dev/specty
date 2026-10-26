@@ -31,7 +31,7 @@ export async function installOpencode(
  * command it asks the guard what changed, and adds its warning to the result the model reads; it
  * never throws there. If the guard cannot run, the tool goes through, as with every other agent.
  */
-export function opencodePlugin(command: string): string {
+function opencodePlugin(command: string): string {
   return `// Specty's guard for OpenCode. \`specty init\` writes this file and rewrites it.
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";

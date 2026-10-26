@@ -4,8 +4,6 @@ import type { MessageCatalog, MessageParams } from "./catalog";
 import { MESSAGES_EN } from "./messages.en";
 import { MESSAGES_ES } from "./messages.es";
 
-export type { MessageCatalog, MessageParams } from "./catalog";
-
 export type DiagnosticCode =
   | "frontmatter-missing"
   | "frontmatter-unclosed"

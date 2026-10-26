@@ -2,12 +2,10 @@
 import {
   type AuditEvent,
   type AuditView,
+  auditRefusalCard,
   auditReport,
-  blockedCard,
-  headerOf,
   type Output,
   parseSpec,
-  translator,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
@@ -23,29 +21,13 @@ import { readSpec } from "../store/changes";
  * `specty audit [<id>]` (ARCHITECTURE §13): the report of a change, the active one by default,
  * from its files, its audit and git. It only reads, so the agent may run it too.
  */
-export async function audit(
-  session: Session,
-  id: string | undefined,
-): Promise<Output | ReportOutput> {
-  const t = translator(session.lang);
+async function audit(session: Session, id: string | undefined): Promise<Output | ReportOutput> {
   const change = id === undefined ? await resolveActive(session) : await findChange(session, id);
   if (change === undefined) {
-    return {
-      ...blockedCard(
-        headerOf("audit"),
-        id === undefined
-          ? t(
-              "No hay un cambio activo en esta carpeta.",
-              "There is no active change in this folder.",
-            )
-          : t(`No hay ningún cambio ${id}.`, `There is no change ${id}.`),
-        t(
-          `di cuál con \`${session.cards.command} audit <id>\`; \`${session.cards.command} status\` lista los abiertos.`,
-          `name it with \`${session.cards.command} audit <id>\`; \`${session.cards.command} status\` lists the open ones.`,
-        ),
-      ),
-      status: "invalid",
-    };
+    return auditRefusalCard(
+      id === undefined ? { reason: "no-active" } : { reason: "no-change", id },
+      session.cards,
+    );
   }
   const { state } = change;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;

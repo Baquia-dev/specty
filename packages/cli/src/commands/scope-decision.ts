@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   blockedCard,
+  checkStatus,
   decisionCard,
   headerOf,
+  noActiveChangeCard,
+  noScopeRequestCard,
+  nothingChangedCard,
   nothingPendingCard,
   notInteractiveCard,
   type Output,
+  rejectionQuestion,
+  scopeDecidedLine,
+  scopeDecisionQuestion,
   transition,
-  translator,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import type { Session } from "../session";
@@ -24,15 +30,8 @@ export async function reject(
 ): Promise<Output> {
   const { cards } = session;
   if (!canDecide(session)) return notInteractiveCard("reject", cards);
-  const t = translator(session.lang);
   const active = await resolveActive(session);
-  if (active === undefined) {
-    return blockedCard(
-      headerOf(),
-      t("No hay un cambio activo.", "There is no active change."),
-      t(`revisa \`${cards.command} status\`.`, `check \`${cards.command} status\`.`),
-    );
-  }
+  if (active === undefined) return noActiveChangeCard("person", cards);
   return decideScope(session, active, scope, "reject", reason);
 }
 
@@ -43,73 +42,33 @@ export async function decideScope(
   decision: "approve" | "reject",
   reason: string | undefined,
 ): Promise<Output> {
-  const t = translator(session.lang);
+  const { cards } = session;
   const { state } = active;
   const { terminal } = session.environment;
   if (state.phase !== "implementing")
-    return nothingPendingCard(state.id, state.phase, decision, session.cards);
+    return nothingPendingCard(state.id, state.phase, decision, cards);
   const header = headerOf(state.id, "implementing");
   const request = state.pending.scopeRequests.find(
     (entry) => entry.id === scope.trim().toUpperCase(),
   );
-  if (request === undefined) {
-    return blockedCard(
-      header,
-      t(`No existe la solicitud ${scope}.`, `There is no request ${scope}.`),
-      t(
-        `revisa \`${session.cards.command} status\`.`,
-        `check \`${session.cards.command} status\`.`,
-      ),
-    );
-  }
+  if (request === undefined) return noScopeRequestCard(scope, header, cards);
   terminal.note(
     `${request.id} · ${request.task}`,
     `${request.paths.join("\n")}\n— ${request.reason}`,
   );
   const why =
     decision === "reject"
-      ? (reason ??
-        (await terminal.ask(
-          t(
-            "¿Por qué la rechazas? (lo leerá el agente)",
-            "Why do you reject it? (the agent will read it)",
-          ),
-        )))
+      ? (reason ?? (await terminal.ask(rejectionQuestion("scope", session.lang))))
       : undefined;
-  const confirmed = await terminal.confirm(
-    decision === "approve"
-      ? t(
-          `¿Aprobar ${request.id} para ${request.task}?`,
-          `Approve ${request.id} for ${request.task}?`,
-        )
-      : t(`¿Rechazar ${request.id}?`, `Reject ${request.id}?`),
-  );
-  if (!confirmed) {
-    return {
-      status: "ok",
-      header,
-      blocks: [{ lines: [t("Nada cambió.", "Nothing changed.")] }],
-      next: t(
-        `revisa \`${session.cards.command} status\`.`,
-        `check \`${session.cards.command} status\`.`,
-      ),
-    };
-  }
+  const confirmed = await terminal.confirm(scopeDecisionQuestion(decision, request, session.lang));
+  if (!confirmed) return nothingChangedCard(header, checkStatus(cards), cards);
   const moved = transition({
     phase: "implementing",
     kind: state.kind,
     actor: "human",
     event: { type: "decideScope" },
   });
-  if (!moved.ok)
-    return blockedCard(
-      header,
-      moved.code,
-      t(
-        `revisa \`${session.cards.command} status\`.`,
-        `check \`${session.cards.command} status\`.`,
-      ),
-    );
+  if (!moved.ok) return blockedCard(header, moved.code, checkStatus(cards));
   const remaining = state.pending.scopeRequests.filter((entry) => entry !== request);
   const base = { ...state, pending: { ...state.pending, scopeRequests: remaining } };
   const next = decision === "approve" ? withExtras(base, request.task, request.paths) : base;
@@ -127,17 +86,6 @@ export async function decideScope(
   );
   return thenNext(
     session,
-    decisionCard(
-      header,
-      [
-        decision === "approve"
-          ? t(
-              `${request.id} aprobada: ${request.paths.join(", ")} entra en el alcance de ${request.task}.`,
-              `${request.id} approved: ${request.paths.join(", ")} joins the scope of ${request.task}.`,
-            )
-          : t(`${request.id} rechazada.`, `${request.id} rejected.`),
-      ],
-      session.cards,
-    ),
+    decisionCard(header, [scopeDecidedLine(decision, request, session.lang)], cards),
   );
 }

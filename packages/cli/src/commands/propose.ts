@@ -7,18 +7,21 @@ import {
   headerOf,
   invalidSpecCard,
   itemHashes,
+  noActiveChangeCard,
+  notProposableCard,
   type Output,
   type ProposePhase,
   parseItemId,
   parseSpec,
   proposedCard,
   recommendEffort,
+  revisionLabel,
+  runNext,
   type SizeResult,
   type Spec,
   specDelta,
   specHash,
   transition,
-  translator,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
@@ -33,29 +36,13 @@ const PROPOSE_PHASES: readonly ProposePhase[] = ["draft", "review", "adjusting",
 
 /** `specty propose`: validates the spec, writes its canonical form and sends it to review. */
 export async function propose(session: Session): Promise<Output> {
-  const t = translator(session.lang);
   const { cards } = session;
   const active = await resolveActive(session);
-  if (active === undefined) {
-    return blockedCard(
-      headerOf(),
-      t("No hay un cambio activo.", "There is no active change."),
-      t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`),
-    );
-  }
+  if (active === undefined) return noActiveChangeCard("agent", cards);
   const { state, files } = active;
   const phase = PROPOSE_PHASES.find((candidate) => candidate === state.phase);
   const specPath = session.paths.relative(files.spec);
-  if (phase === undefined) {
-    return blockedCard(
-      headerOf(state.id, state.phase),
-      t(
-        `En la fase ${state.phase} la spec no se propone.`,
-        `The spec is not proposed in the ${state.phase} phase.`,
-      ),
-      t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`),
-    );
-  }
+  if (phase === undefined) return notProposableCard(state.id, state.phase, cards);
   const analysis = await analyzeChange(session, active, phase);
   if (!analysis.valid) {
     return invalidSpecCard(headerOf(state.id, phase), specPath, analysis.diagnostics, cards);
@@ -66,13 +53,7 @@ export async function propose(session: Session): Promise<Output> {
     actor: session.actor,
     event: { type: "propose", validationErrors: 0 },
   });
-  if (!moved.ok) {
-    return blockedCard(
-      headerOf(state.id, phase),
-      moved.code,
-      t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`),
-    );
-  }
+  if (!moved.ok) return blockedCard(headerOf(state.id, phase), moved.code, runNext(cards));
   const lastText = await readRevision(files, state.revision);
   const unchanged =
     lastText !== undefined &&
@@ -115,7 +96,7 @@ export async function propose(session: Session): Promise<Output> {
   const review = await reviewRecommended(session, active, analysis.size, effort, phase);
   const card = proposedCard(
     {
-      header: headerOf(state.id, moved.phase, t(`revisión ${revision}`, `revision ${revision}`)),
+      header: headerOf(state.id, moved.phase, revisionLabel(revision, session.lang)),
       specPath,
       size: analysis.size,
       effort,

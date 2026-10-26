@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Phase, WaitingFor } from "../flow/phases";
+import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import type { ChangeKind } from "../spec/model";
 import { translator } from "./text";
@@ -266,4 +267,24 @@ function humanAction(phase: Phase): string {
     default:
       return "approve --scope <S>";
   }
+}
+
+/** The title of the note with delegated mode's warning, before its question. */
+export function delegationNoteTitle(lang: Lang): string {
+  return translator(lang)("Modo delegado", "Delegated mode");
+}
+
+export function delegationQuestion(lang: Lang): string {
+  return translator(lang)("¿Activar el modo delegado?", "Turn delegated mode on?");
+}
+
+/** The answers to `delegationQuestion`: the first, deciding yourself, is the default. */
+export function delegationChoices(
+  lang: Lang,
+): readonly { readonly value: "no" | "yes"; readonly label: string }[] {
+  const t = translator(lang);
+  return [
+    { value: "no", label: t("No, sigo decidiendo yo", "No, I keep deciding") },
+    { value: "yes", label: t("Sí, que decida mi agente", "Yes, let my agent decide") },
+  ];
 }

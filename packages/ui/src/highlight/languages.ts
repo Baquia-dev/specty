@@ -38,7 +38,7 @@ const GRAMMARS = {
   svelte: () => import("shiki/langs/svelte.mjs"),
 } satisfies Record<string, Grammar>;
 
-export type LanguageId = keyof typeof GRAMMARS;
+type LanguageId = keyof typeof GRAMMARS;
 
 /** Extensions in lower case, without the dot; or whole names, as «Dockerfile». */
 const FILES: Readonly<Record<LanguageId, readonly string[]>> = {

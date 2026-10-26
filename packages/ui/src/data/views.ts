@@ -58,7 +58,7 @@ export function decisionOf(state: ChangeState): DecisionKind | undefined {
  * The changes the person asked for on the revision in review, while the agent owes the next one:
  * the last proposal or request in the audit is a request, as `specty next` reads it.
  */
-export function changesRequestedOf(
+function changesRequestedOf(
   state: ChangeState,
   audit: readonly AuditRecord[],
 ): ChangeView["changesRequested"] {
@@ -72,7 +72,7 @@ export function changesRequestedOf(
 }
 
 /** High-impact assumptions without a decision of the person. */
-export function highImpactPending(spec: Spec, state: ChangeState): number {
+function highImpactPending(spec: Spec, state: ChangeState): number {
   return (spec.sections.assumptions?.items ?? []).filter((assumption) => {
     if (assumption.impact !== "high") return false;
     const decision = state.items[assumption.id]?.decision;

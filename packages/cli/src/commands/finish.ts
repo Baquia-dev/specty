@@ -1,14 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  alreadyClosedLine,
   blockedCard,
+  cancelCommitSubject,
   cancelledCard,
+  cancelledLine,
+  cancelQuestion,
+  cancelReasonQuestion,
+  checkStatus,
+  closeCommitSubject,
   closedCard,
+  closedLine,
+  confirmCloseQuestion,
   headerOf,
+  landQuestion,
   nothingPendingCard,
   type Output,
   parseSpec,
+  resolvedIntegrationNote,
   transition,
-  translator,
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { verifyHints, withVerifyHints } from "../flow/detected";
@@ -21,10 +31,10 @@ import { writePointer } from "../store/local";
 import { humanChange, postponed } from "./human";
 import { pendingIntegration } from "./integrate";
 
+/** `specty close`: a person confirms the closing and the change is archived. */
 export async function close(session: Session): Promise<Output> {
   const guard = await humanChange(session, "close");
   if (guard.kind === "output") return guard.output;
-  const t = translator(session.lang);
   const found = guard.change.state;
   if (found.phase === "done") return landClosed(session, guard.change);
   if (found.phase !== "closing" || found.closingSubmittedAt === undefined) {
@@ -34,35 +44,19 @@ export async function close(session: Session): Promise<Output> {
   if (pending.kind === "wait") return pending.output;
   const { change } = pending;
   const { state } = change;
+  const { terminal } = session.environment;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
-  session.environment.terminal.note(spec.title, spec.sections.closing ?? "");
+  terminal.note(spec.title, spec.sections.closing ?? "");
   const resolved = state.integration?.resolved;
   if (state.integration !== undefined && resolved !== undefined) {
     const { target, conflicts } = state.integration;
-    session.environment.terminal.note(
-      t("Incorporación resuelta por el agente", "Incorporation resolved by the agent"),
-      [
-        t(
-          `${target} entró con el merge ${resolved.commit}.`,
-          `${target} came in with merge ${resolved.commit}.`,
-        ),
-        conflicts.length > 0
-          ? t(
-              `Conflictos resueltos: ${conflicts.join(", ")}.`,
-              `Conflicts resolved: ${conflicts.join(", ")}.`,
-            )
-          : t(
-              "Arregló lo que fallaba en la verificación.",
-              "It fixed what failed the verification.",
-            ),
-      ].join("\n"),
+    const note = resolvedIntegrationNote(
+      { target, commit: resolved.commit, conflicts },
+      session.lang,
     );
+    terminal.note(note.title, note.text);
   }
-  if (
-    !(await session.environment.terminal.confirm(
-      t("¿Confirmar el cierre?", "Confirm the closing?"),
-    ))
-  )
+  if (!(await terminal.confirm(confirmCloseQuestion(session.lang))))
     return postponed(session, state);
   // The main branch comes into the change before anything is archived: a refusal changes nothing.
   const plan = await integrationOf(session, state);
@@ -76,14 +70,7 @@ export async function close(session: Session): Promise<Output> {
     event: { type: "confirmClose", closingSubmitted: true },
   });
   if (!moved.ok)
-    return blockedCard(
-      headerOf(state.id, state.phase),
-      moved.code,
-      t(
-        `revisa \`${session.cards.command} status\`.`,
-        `check \`${session.cards.command} status\`.`,
-      ),
-    );
+    return blockedCard(headerOf(state.id, state.phase), moved.code, checkStatus(session.cards));
   const archived = await archive(
     session,
     change,
@@ -95,7 +82,7 @@ export async function close(session: Session): Promise<Output> {
     session,
     change,
     archived,
-    `docs(spec): ${t("cerrar", "close")} ${spec.title}`,
+    closeCommitSubject(spec.title, session.lang),
   );
   // Read while the folder exists: landing removes a worktree of its own.
   const hints = await verifyHints(session, plan?.main ?? session.root);
@@ -104,10 +91,7 @@ export async function close(session: Session): Promise<Output> {
     session,
     closedCard(
       headerOf(state.id, "done"),
-      t(
-        `Cambio cerrado y archivado (commit ${commit}).`,
-        `Change closed and archived (commit ${commit}).`,
-      ),
+      closedLine(commit, session.lang),
       landed?.landed === true ? undefined : state.branch,
       session.cards,
     ),
@@ -119,17 +103,13 @@ export async function close(session: Session): Promise<Output> {
 
 /** A closed change that did not reach the main branch (its landing failed): retries only that. */
 async function landClosed(session: Session, change: StoredChange): Promise<Output> {
-  const t = translator(session.lang);
   const { state } = change;
   const plan = await integrationOf(session, state);
   if (plan === undefined || (await isIncorporated(session, plan)))
     return nothingPendingCard(state.id, state.phase, "close", session.cards);
   if (
     !(await session.environment.terminal.confirm(
-      t(
-        `¿Incorporar ${plan.branch} a ${plan.target}?`,
-        `Merge ${plan.branch} into ${plan.target}?`,
-      ),
+      landQuestion(plan.branch, plan.target, session.lang),
     ))
   )
     return postponed(session, state);
@@ -140,7 +120,7 @@ async function landClosed(session: Session, change: StoredChange): Promise<Outpu
     session,
     closedCard(
       headerOf(state.id, "done"),
-      t("El cambio ya estaba cerrado y archivado.", "The change was already closed and archived."),
+      alreadyClosedLine(session.lang),
       landed.landed ? undefined : state.branch,
       session.cards,
     ),
@@ -154,12 +134,11 @@ export async function cancel(session: Session, reason: string | undefined): Prom
   const guard = await humanChange(session, "cancel");
   if (guard.kind === "output") return guard.output;
   const { change } = guard;
-  const t = translator(session.lang);
   const { state } = change;
   const { terminal } = session.environment;
   if (isFinished(state)) return nothingPendingCard(state.id, state.phase, "cancel", session.cards);
-  const why = reason ?? (await terminal.ask(t("¿Por qué lo cancelas?", "Why do you cancel it?")));
-  if (!(await terminal.confirm(t(`¿Cancelar ${state.id}?`, `Cancel ${state.id}?`))))
+  const why = reason ?? (await terminal.ask(cancelReasonQuestion(session.lang)));
+  if (!(await terminal.confirm(cancelQuestion(state.id, session.lang))))
     return postponed(session, state);
   const moved = transition({
     phase: state.phase,
@@ -168,14 +147,7 @@ export async function cancel(session: Session, reason: string | undefined): Prom
     event: { type: "cancel" },
   });
   if (!moved.ok)
-    return blockedCard(
-      headerOf(state.id, state.phase),
-      moved.code,
-      t(
-        `revisa \`${session.cards.command} status\`.`,
-        `check \`${session.cards.command} status\`.`,
-      ),
-    );
+    return blockedCard(headerOf(state.id, state.phase), moved.code, checkStatus(session.cards));
   const archived = await archive(
     session,
     change,
@@ -190,19 +162,14 @@ export async function cancel(session: Session, reason: string | undefined): Prom
     session,
     change,
     archived,
-    `docs(spec): ${t("cancelar", "cancel")} ${state.id}`,
+    cancelCommitSubject(state.id, session.lang),
   );
   // `task done` commits each task's code; the state cannot hold that commit's own hash.
   const withCode = Object.values(state.tasks).some((task) => task.status === "done");
   return cancelledCard(
     headerOf(state.id, "cancelled"),
-    t(
-      `Cambio cancelado y archivado (commit ${commit}).`,
-      `Change cancelled and archived (commit ${commit}).`,
-    ),
+    cancelledLine(commit, session.lang),
     state.branch === undefined ? undefined : { name: state.branch, withCode },
     session.cards,
   );
 }
-
-/** Quick lane: accepting closes the change, with the task summary as its closing. */

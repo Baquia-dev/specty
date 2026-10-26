@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
+import { headerOf, type Output, section } from "../output";
 import type { ChangeKind } from "../spec/model";
 import { translator } from "./text";
+import type { CardContext } from "./view";
 
 /** A line of `audit.jsonl` (formats.md §4), as it is. */
 export interface AuditEvent {
@@ -219,4 +221,27 @@ function duration(ms: unknown): string {
   return rest === 0
     ? `${Math.floor(seconds / 60)} min`
     : `${Math.floor(seconds / 60)} min ${rest} s`;
+}
+
+/** Why `specty audit` reports nothing: no change is active here, or none has that id. */
+export type AuditRefusal =
+  | { readonly reason: "no-active" }
+  | { readonly reason: "no-change"; readonly id: string };
+
+export function auditRefusalCard(refusal: AuditRefusal, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  const { command } = ctx;
+  return {
+    status: "invalid",
+    header: headerOf("audit"),
+    blocks: section(undefined, [
+      refusal.reason === "no-active"
+        ? t("No hay un cambio activo en esta carpeta.", "There is no active change in this folder.")
+        : t(`No hay ningún cambio ${refusal.id}.`, `There is no change ${refusal.id}.`),
+    ]),
+    next: t(
+      `di cuál con \`${command} audit <id>\`; \`${command} status\` lista los abiertos.`,
+      `name it with \`${command} audit <id>\`; \`${command} status\` lists the open ones.`,
+    ),
+  };
 }

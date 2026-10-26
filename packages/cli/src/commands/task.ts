@@ -1,25 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  assertionWarnings,
-  blockedCard,
   evaluateTaskScope,
   headerOf,
   isGoverned,
   longFileCard,
-  longFileWarnings,
   NOTE_MAX,
   nextCard,
   type Output,
   outOfScopeCard,
   parseSpec,
-  riskWarnings,
   scopeRulesFrom,
-  section,
   specHash,
-  splitAdvice,
-  translator,
+  taskDoneCard,
+  taskDoneRefusalCard,
   verifyFailedCard,
-  withLead,
 } from "@baquia-dev/specty-core";
 import { resolveActive } from "../flow/active";
 import { assertionLosses } from "../flow/assertions";
@@ -38,67 +32,43 @@ export async function taskDone(
   summary: string,
   findings: readonly string[] = [],
 ): Promise<Output> {
-  const t = translator(session.lang);
   const { cards } = session;
-  const nextStep = t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`);
   const active = await resolveActive(session);
   if (active === undefined || active.state.phase !== "implementing") {
     const header =
       active === undefined ? headerOf() : headerOf(active.state.id, active.state.phase);
-    return blockedCard(
-      header,
-      t("No hay ninguna tarea en implementación.", "No task is being implemented."),
-      nextStep,
-    );
+    return taskDoneRefusalCard({ reason: "not-implementing" }, header, cards);
   }
   const { state } = active;
   const header = headerOf(state.id, "implementing");
   const id = taskId.trim().toUpperCase();
   if (state.tasks[id]?.status !== "active") {
-    return blockedCard(
-      header,
-      t(`${id} no es la tarea activa.`, `${id} is not the active task.`),
-      nextStep,
-    );
+    return taskDoneRefusalCard({ reason: "not-active", task: id }, header, cards);
   }
   const emptyFinding = findings.some((finding) => finding.trim().length === 0);
   // Every next task card repeats them: one or two sentences each, refused before verifying.
   const longSummary = summary.trim().length > NOTE_MAX ? summary.trim().length : undefined;
   const longFinding = findings.map((finding) => finding.trim().length).find((n) => n > NOTE_MAX);
-  if (longSummary !== undefined || longFinding !== undefined) {
-    const [es, en] =
-      longSummary !== undefined
-        ? [`El resumen tiene ${longSummary}`, `The summary has ${longSummary}`]
-        : [`Un hallazgo tiene ${longFinding}`, `A finding has ${longFinding}`];
-    return {
-      ...blockedCard(
-        header,
-        t(
-          `${es} caracteres; el máximo es ${NOTE_MAX}, porque las tarjetas de las tareas siguientes lo repiten.`,
-          `${en} characters; the most is ${NOTE_MAX}, since the next task cards repeat it.`,
-        ),
-        t(
-          "dilo en una o dos frases (el detalle ya está en el commit) y vuelve a ejecutar `task done`.",
-          "say it in one or two sentences (the detail is in the commit) and run `task done` again.",
-        ),
-      ),
-      status: "invalid",
-    };
+  if (longSummary !== undefined) {
+    return taskDoneRefusalCard(
+      { reason: "too-long", note: "summary", length: longSummary },
+      header,
+      cards,
+    );
+  }
+  if (longFinding !== undefined) {
+    return taskDoneRefusalCard(
+      { reason: "too-long", note: "finding", length: longFinding },
+      header,
+      cards,
+    );
   }
   if (summary.trim().length === 0 || emptyFinding) {
-    return {
-      ...blockedCard(
-        header,
-        emptyFinding
-          ? t("Un hallazgo (--finding) está vacío.", "A finding (--finding) is empty.")
-          : t("Falta el resumen (--summary).", "The summary (--summary) is missing."),
-        t(
-          `ejecuta \`${cards.command} task done ${id} --summary "<qué hiciste>"\`.`,
-          `run \`${cards.command} task done ${id} --summary "<what you did>"\`.`,
-        ),
-      ),
-      status: "invalid",
-    };
+    return taskDoneRefusalCard(
+      { reason: "empty", note: emptyFinding ? "finding" : "summary", task: id },
+      header,
+      cards,
+    );
   }
   const spec = parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const task = spec.sections.tasks?.items.find((item) => item.id === id);
@@ -111,16 +81,10 @@ export async function taskDone(
   }
   const pending = state.pending.scopeRequests.find((request) => request.task === id);
   if (pending !== undefined) {
-    return blockedCard(
+    return taskDoneRefusalCard(
+      { reason: "scope-pending", task: id, request: pending.id },
       header,
-      t(
-        `${id} espera la decisión sobre ${pending.id}.`,
-        `${id} is waiting for the decision on ${pending.id}.`,
-      ),
-      t(
-        `sigue dentro del alcance y pide al usuario \`${cards.command} approve --scope ${pending.id}\`.`,
-        `keep working within the scope and ask the user for \`${cards.command} approve --scope ${pending.id}\`.`,
-      ),
+      cards,
     );
   }
   const stored = state.tasks[id];
@@ -155,29 +119,5 @@ export async function taskDone(
   const done = await completeTask(session, verified.change, spec, task, summary.trim(), notes);
   const following =
     done.state.phase === "implementing" ? await activateNextTask(session, done) : done;
-  const view = await changeView(session, following);
-  const card = nextCard({ change: view, dirty: [] }, cards);
-  const finished = view.tasks.filter((item) => item.id === id);
-  const warnings = [
-    ...assertionWarnings(finished, session.lang),
-    ...riskWarnings(finished, session.lang),
-  ];
-  const longer = longFileWarnings(finished, session.lang);
-  const lines = [
-    ...warnings,
-    ...(warnings.length === 0
-      ? []
-      : [
-          t(
-            "Si no era parte de la tarea, explícaselo al usuario: lo verá al aceptar.",
-            "If it was not part of the task, explain it to the user: they will see it on acceptance.",
-          ),
-        ]),
-    ...longer,
-    ...(longer.length === 0 ? [] : [splitAdvice(session.lang)]),
-  ];
-  return withLead(
-    t(`${id} completada: commit ${done.commit}.`, `${id} done: commit ${done.commit}.`),
-    { ...card, blocks: [...section(t("AVISOS", "WARNINGS"), lines), ...card.blocks] },
-  );
+  return taskDoneCard(await changeView(session, following), id, done.commit, cards);
 }

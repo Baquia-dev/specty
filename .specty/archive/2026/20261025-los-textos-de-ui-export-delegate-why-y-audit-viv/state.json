@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-ui-export-delegate-why-y-audit-viv",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-los-textos-de-ui-export-delegate-why-y-audit-viv",
+  "baseCommit": "cede2ba71b56b9b2f021ec0af15ce45d6f69bf69",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:10892b55f3a100d6f5cc7e7b063299d5a35a27a4d6ced1cb16695af5e966a2e2",
+    "at": "2026-10-26T03:18:37.206Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cd62be825e3f58f6b3cafa42dd3451ac199255d2bc5083ee01745d76053c635c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "96d12bc96407bf58c18e7cc1f5006ba883ef5a66",
+      "attempts": 1,
+      "startedAt": "2026-10-26T03:18:37.607Z",
+      "doneAt": "2026-10-26T03:20:06.579Z",
+      "summary": "Core tiene los textos de ui (cards/ui.ts), export (cards/export.ts), la pregunta de delegate (cards/human.ts) y los rechazos de why y audit (cards/why.ts y cards/audit.ts), copiados letra a letra de la CLI, con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "96a71cd618f78e429571e9e4f1e0d8461d0f6fae",
+      "attempts": 1,
+      "startedAt": "2026-10-26T03:20:06.887Z",
+      "doneAt": "2026-10-26T03:21:18.207Z",
+      "summary": "ui.ts, export.ts y delegate.ts piden sus textos a core (cards/ui.ts, cards/export.ts y la pregunta de delegate en cards/human.ts) y ya no llaman al traductor; sus tests pasan sin cambios.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "779a463112e6c4227f6d304ce2441bbc40af4522",
+      "attempts": 1,
+      "startedAt": "2026-10-26T03:21:18.648Z",
+      "doneAt": "2026-10-26T03:24:00.685Z",
+      "summary": "why.ts y audit.ts piden sus rechazos a core (whyRefusalCard y auditRefusalCard) y ya no llaman al traductor; la salida es la misma, como comprueban sus tests sin cambios.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 5,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T03:24:12.869Z"
+}

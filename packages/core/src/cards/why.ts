@@ -104,3 +104,26 @@ function behind(entry: WhyCommit, ctx: CardContext): string[] {
         ]),
   ];
 }
+
+/** Why `specty why` finds nothing: the file has no history, or not that line. */
+export type WhyRefusal =
+  | { readonly reason: "no-history"; readonly file: string }
+  | { readonly reason: "no-line"; readonly file: string; readonly line: string };
+
+export function whyRefusalCard(refusal: WhyRefusal, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  const { file } = refusal;
+  return {
+    status: "invalid",
+    header: headerOf("why"),
+    blocks: section(undefined, [
+      refusal.reason === "no-history"
+        ? t(`${file} no tiene historia en git.`, `${file} has no history in git.`)
+        : t(`${file} no tiene la línea ${refusal.line}.`, `${file} has no line ${refusal.line}.`),
+    ]),
+    next: t(
+      "revisa la ruta, relativa a la raíz del repositorio, y la línea.",
+      "check the path, relative to the repository's root, and the line.",
+    ),
+  };
+}

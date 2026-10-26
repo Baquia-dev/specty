@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { copyFile, mkdir } from "node:fs/promises";
 import { basename, dirname, isAbsolute, join, relative, sep } from "node:path";
-import { type ForeignPath, translator } from "@baquia-dev/specty-core";
+import { type ForeignPath, preparingNote } from "@baquia-dev/specty-core";
 import { setupCommand } from "../detect/project";
 import { detectStacks } from "../detect/stack";
 import { AGENT_HOOK_FILES } from "../install/agents";
@@ -46,7 +46,7 @@ export async function targetBranch(
 }
 
 /** The remote's default branch, or else the first local one of `init.defaultBranch`, `main`, `master`. */
-export async function mainBranch(git: Git): Promise<string | undefined> {
+async function mainBranch(git: Git): Promise<string | undefined> {
   const remote = await git.run(["symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"]);
   const candidates = [
     remote.code === 0 ? remote.stdout.trim().replace(/^origin\//, "") : undefined,
@@ -145,10 +145,7 @@ export async function prepareWorktree(
   const command =
     setup ?? (await detectStacks(folder)).map(setupCommand).find((found) => found !== undefined);
   if (command === undefined) return undefined;
-  const t = translator(session.lang);
-  session.environment.io.err(
-    `specty: ${t("preparando la carpeta con", "preparing the folder with")} \`${command}\`…`,
-  );
+  session.environment.io.err(preparingNote(command, session.lang));
   const result = await execute(command, [], {
     cwd: folder,
     shell: true,

@@ -14,7 +14,7 @@ export interface ToolUse {
 }
 
 /** What the agent sent back for one tool call: Specty's guard answers there when it blocks. */
-export interface ToolResult {
+interface ToolResult {
   readonly id: string;
   readonly isError: boolean;
   readonly text: string;

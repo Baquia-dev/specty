@@ -6,7 +6,7 @@ import { codeTokens, wordDiff } from "./word-diff";
 export type DiffLineKind = "context" | "added" | "removed";
 
 /** Where some words sit in a line: from `start` up to `end`, not included. */
-export interface TextRange {
+interface TextRange {
   readonly start: number;
   readonly end: number;
 }

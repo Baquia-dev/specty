@@ -10,7 +10,7 @@ import {
   shortHash,
   type Task,
   transition,
-  translator,
+  verifyingNote,
 } from "@baquia-dev/specty-core";
 import { tail } from "../io/exec";
 import { writeText } from "../io/files";
@@ -51,9 +51,7 @@ export async function verifyTask(
 ): Promise<TaskVerification> {
   const command = taskVerification(session, task);
   if (command === undefined) return { ok: true, change };
-  session.environment.io.err(
-    `specty: ${translator(session.lang)("verificando", "verifying")} \`${command}\`…`,
-  );
+  session.environment.io.err(verifyingNote(command, session.lang));
   // The code it runs on, before it runs: `accept` need not verify it again (formats.md §4).
   const tree = await codeTree(session);
   const started = Date.now();

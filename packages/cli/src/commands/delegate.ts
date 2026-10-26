@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   delegationCard,
+  delegationChoices,
+  delegationNoteTitle,
+  delegationQuestion,
   delegationWarning,
   notInteractiveCard,
   type Output,
-  translator,
 } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import { clearDelegation, readDelegation, writeDelegation } from "../store/local";
@@ -21,13 +23,12 @@ export async function delegate(session: Session, mode: "on" | "off"): Promise<Ou
     return delegationCard(false, session.cards);
   }
   if ((await readDelegation(session.git)) !== undefined) return delegationCard(true, session.cards);
-  const t = translator(session.lang);
-  terminal.note(t("Modo delegado", "Delegated mode"), delegationWarning(session.cards).join("\n"));
+  terminal.note(delegationNoteTitle(session.lang), delegationWarning(session.cards).join("\n"));
   // The first option is the default one: turning it on takes an explicit choice.
-  const answer = await terminal.choose(t("¿Activar el modo delegado?", "Turn delegated mode on?"), [
-    { value: "no", label: t("No, sigo decidiendo yo", "No, I keep deciding") },
-    { value: "yes", label: t("Sí, que decida mi agente", "Yes, let my agent decide") },
-  ]);
+  const answer = await terminal.choose(
+    delegationQuestion(session.lang),
+    delegationChoices(session.lang),
+  );
   if (answer !== "yes") return delegationCard(false, session.cards);
   await writeDelegation(session.git, {
     by: (await session.git.config("user.name")) ?? "unknown",

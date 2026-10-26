@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  blockedCard,
-  headerOf,
   type Output,
   parseSpec,
-  translator,
   type WhyCommit,
   whyCard,
+  whyRefusalCard,
 } from "@baquia-dev/specty-core";
 import { findChange } from "../flow/find";
 import type { Session } from "../session";
@@ -32,20 +30,8 @@ const FORMAT = [
  * reads, so the agent may run it too.
  */
 export async function why(session: Session, target: string): Promise<Output> {
-  const t = translator(session.lang);
   const [, file = target, number] = /^(.*?)(?::(\d+))?$/.exec(target) ?? [];
-  const refuse = (reason: string): Output => ({
-    ...blockedCard(
-      headerOf("why"),
-      reason,
-      t(
-        "revisa la ruta, relativa a la raíz del repositorio, y la línea.",
-        "check the path, relative to the repository's root, and the line.",
-      ),
-    ),
-    status: "invalid",
-  });
-  const noHistory = t(`${file} no tiene historia en git.`, `${file} has no history in git.`);
+  const noHistory = () => whyRefusalCard({ reason: "no-history", file }, session.cards);
   const changes = new ChangeSpecs(session);
   if (number !== undefined) {
     const blamed = await session.git.run([
@@ -57,11 +43,9 @@ export async function why(session: Session, target: string): Promise<Output> {
       file,
     ]);
     if (blamed.code !== 0) {
-      return refuse(
-        /has only \d+ lines?/.test(blamed.stderr)
-          ? t(`${file} no tiene la línea ${number}.`, `${file} has no line ${number}.`)
-          : noHistory,
-      );
+      return /has only \d+ lines?/.test(blamed.stderr)
+        ? whyRefusalCard({ reason: "no-line", file, line: number }, session.cards)
+        : noHistory();
     }
     const hash = blamed.stdout.split(" ")[0] ?? "";
     // A line not committed yet is blamed on the zero hash.
@@ -74,7 +58,7 @@ export async function why(session: Session, target: string): Promise<Output> {
     );
   }
   const history = await logged(session, ["--", file]);
-  if (history.length === 0) return refuse(noHistory);
+  if (history.length === 0) return noHistory();
   // One entry per change, its newest commit; each commit outside Specty on its own.
   const seen = new Set<string>();
   const entries = history.filter((commit) => {

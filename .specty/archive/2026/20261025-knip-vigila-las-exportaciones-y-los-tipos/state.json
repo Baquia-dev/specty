@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261025-knip-vigila-las-exportaciones-y-los-tipos",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261025-knip-vigila-las-exportaciones-y-los-tipos",
+  "baseCommit": "4673713f80c9fcc2244e29156e0790a81d0e7353",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:043e273f1cc1817ef56011716a365b2860027cdc6ebc271db8f10199eefa442c",
+    "at": "2026-10-26T02:05:26.982Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "bfe4c6ee327d55893445d34c4826c91f8816679a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T02:05:27.359Z",
+      "doneAt": "2026-10-26T02:07:23.839Z",
+      "summary": "knip enciende las reglas de exportaciones y tipos: pnpm check falla y nombra la que sobre (probado con una exportación de prueba). Los ayudantes de los tests de la CLI dejan de exportar los ocho que solo usa su archivo, y ARCHITECTURE lo cuenta.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

@@ -1,11 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  absorbedLine,
   type ChangeState,
   headerOf,
+  holderDirtyLine,
+  holderDirtyNext,
+  incorporationTitle,
+  type MergeVerification,
+  mergeByHandNext,
+  mergedVerifyFailsLine,
+  mergeFailedLine,
+  notYetLine,
   type Output,
   type OutputBlock,
+  resolveIncorporationNext,
   section,
-  translator,
+  targetConflictsLine,
+  verifyingNote,
 } from "@baquia-dev/specty-core";
 import { type ExecResult, execute, tail } from "../io/exec";
 import { type Git, resolved } from "../io/git";
@@ -70,58 +81,41 @@ export async function absorbTarget(
   change: StoredChange,
   again: "close" | "accept",
 ): Promise<Absorbed> {
-  const t = translator(session.lang);
-  const { git } = session;
+  const { git, cards, lang } = session;
   const { state } = change;
   const forAgent = state.phase !== "done";
-  const run = `\`${session.cards.command} ${again}\``;
   // Checked before anything moves: the fast-forward could overwrite those changes.
   const dirty =
     plan.holder === undefined
       ? []
       : lines((await git.run(["-C", plan.holder, "diff", "--name-only", "HEAD"])).stdout);
   if (plan.holder !== undefined && dirty.length > 0) {
-    const reason = t(
-      `${plan.target} está en ${plan.holder}, que tiene cambios sin commit: avanzarla podría pisarlos.`,
-      `${plan.target} is checked out in ${plan.holder}, which has uncommitted changes: moving it could overwrite them.`,
+    return refused(
+      session,
+      state,
+      holderDirtyLine(plan.target, plan.holder, lang),
+      holderDirtyNext(plan.holder, again, cards),
+      { title: incorporationTitle("uncommitted", lang), lines: dirty },
     );
-    const next = t(
-      `guarda o descarta esos cambios en ${plan.holder} y vuelve a ejecutar ${run}.`,
-      `commit or discard those changes in ${plan.holder} and run ${run} again.`,
-    );
-    return refused(session, state, reason, next, {
-      title: t("SIN COMMIT", "UNCOMMITTED"),
-      lines: dirty,
-    });
   }
   if (await contains(git, "HEAD", plan.target)) return { ok: true, lines: [] };
-  const byHand = t(
-    `incorpora ${plan.target} a mano en esta carpeta (\`git merge ${plan.target}\`, resuelve y haz el commit) y vuelve a ejecutar ${run}.`,
-    `merge ${plan.target} by hand in this folder (\`git merge ${plan.target}\`, resolve and commit) and run ${run} again.`,
-  );
+  const byHand = mergeByHandNext(plan.target, again, cards);
   const merged = await git.run(["merge", "--no-ff", "--no-commit", plan.target]);
   if (merged.code !== 0) {
     const conflicts = lines((await git.run(["diff", "--name-only", "--diff-filter=U"])).stdout);
-    const reason = t(
-      `${plan.target} choca con este cambio.`,
-      `${plan.target} conflicts with this change.`,
-    );
-    const details = { title: t("CONFLICTOS", "CONFLICTS"), lines: conflicts };
+    const reason = targetConflictsLine(plan.target, lang);
+    const details = { title: incorporationTitle("conflicts", lang), lines: conflicts };
     if (conflicts.length > 0 && forAgent)
       return leaveForAgent(session, plan, change, again, { reason, conflicts, details });
     await git.run(["merge", "--abort"]);
     if (conflicts.length > 0) return refused(session, state, reason, byHand, details);
-    const failure = t(
-      `No se pudo incorporar ${plan.target} a este cambio: ${reasonOf(merged)}`,
-      `Could not bring ${plan.target} into this change: ${reasonOf(merged)}`,
-    );
-    return refused(session, state, failure, byHand);
+    return refused(session, state, mergeFailedLine(plan.target, reasonOf(merged), lang), byHand);
   }
   // An epic has no code of its own: each of its slices was verified when it closed.
   const epic = state.kind === "epic";
   const command = epic ? undefined : (session.config.verify.full ?? session.config.verify.default);
   if (command !== undefined) {
-    session.environment.io.err(`specty: ${t("verificando", "verifying")} \`${command}\`…`);
+    session.environment.io.err(verifyingNote(command, lang));
     const result = await execute(command, [], {
       cwd: session.root,
       shell: true,
@@ -129,14 +123,8 @@ export async function absorbTarget(
       timeoutMs: session.config.verify.timeoutSec * 1000,
     });
     if (result.code !== 0) {
-      const reason = t(
-        `Con ${plan.target} incorporado, \`${command}\` falla.`,
-        `With ${plan.target} merged in, \`${command}\` fails.`,
-      );
-      const details = {
-        title: t("SALIDA DE LA VERIFICACIÓN", "VERIFICATION OUTPUT"),
-        lines: tail(result, 15),
-      };
+      const reason = mergedVerifyFailsLine(plan.target, command, lang);
+      const details = { title: incorporationTitle("verification", lang), lines: tail(result, 15) };
       if (forAgent)
         return leaveForAgent(session, plan, change, again, { reason, conflicts: [], details });
       await git.run(["merge", "--abort"]);
@@ -150,26 +138,12 @@ export async function absorbTarget(
     receipt: { change: plan.id, kind: "close" },
   });
   // Each task ran its own `verify`; with neither of these, nothing checked the merge.
-  const verified = epic
-    ? t(
-        " sin verificar: una épica no tiene código propio",
-        " without a verification: an epic has no code of its own",
-      )
+  const verification: MergeVerification = epic
+    ? { kind: "epic" }
     : command === undefined
-      ? t(
-          " sin verificar: .specty/config.yaml no tiene `verify.full` ni `verify.default`",
-          " without a verification: .specty/config.yaml has neither `verify.full` nor `verify.default`",
-        )
-      : t(` y \`${command}\` pasó`, ` and \`${command}\` passed`);
-  return {
-    ok: true,
-    lines: [
-      t(
-        `Antes, ${plan.target} se incorporó a la rama del cambio (merge ${commit})${verified}.`,
-        `First, ${plan.target} was merged into the change's branch (merge ${commit})${verified}.`,
-      ),
-    ],
-  };
+      ? { kind: "none" }
+      : { kind: "passed", command };
+  return { ok: true, lines: [absorbedLine(plan.target, commit, verification, lang)] };
 }
 
 /** Nothing moved: the change stays in its phase, its branch and its folder as they were. */
@@ -180,11 +154,7 @@ function refused(
   next: string,
   details?: OutputBlock,
 ): Absorbed {
-  const t = translator(session.lang);
-  const lead = t(
-    `${notYet(session, state)} y nada cambió.`,
-    `${notYet(session, state)}, and nothing changed.`,
-  );
+  const lead = notYetLine(state.phase, "unchanged", session.lang);
   return { ok: false, output: blocked(state, [lead, reason], details, next) };
 }
 
@@ -199,7 +169,6 @@ async function leaveForAgent(
   again: "close" | "accept",
   failure: { readonly reason: string; readonly conflicts: string[]; readonly details: OutputBlock },
 ): Promise<Absorbed> {
-  const t = translator(session.lang);
   const { git } = session;
   const base = await git.output(["merge-base", "HEAD", plan.target]);
   const changed = async (to: string) =>
@@ -227,38 +196,9 @@ async function leaveForAgent(
     { target: plan.target, commit, reason, conflicts: failure.conflicts },
     "specty",
   );
-  const lead = t(
-    `${notYet(session, state)}: el merge queda en esta carpeta para que lo resuelva el agente.`,
-    `${notYet(session, state)}: the merge waits in this folder for the agent to resolve it.`,
-  );
-  const next = askAgent(session, again);
+  const lead = notYetLine(state.phase, "waiting", session.lang);
+  const next = resolveIncorporationNext(again, session.cards);
   return { ok: false, output: blocked(state, [lead, failure.reason], failure.details, next) };
-}
-
-/**
- * What comes next while an incorporation waits for the agent: the person tells the agent to go
- * on, or, in delegated mode, the agent resolves it itself and then runs `again`.
- */
-export function askAgent(session: Session, again: "close" | "accept"): string {
-  const t = translator(session.lang);
-  const { command } = session.cards;
-  if (session.cards.delegated === true)
-    return t(
-      `modo delegado: resuélvela tú (\`${command} next\` te dice qué falta), termínala con \`${command} integrate\` y vuelve a ejecutar \`${command} ${again}\`.`,
-      `delegated mode: resolve it yourself (\`${command} next\` says what is missing), finish it with \`${command} integrate\` and run \`${command} ${again}\` again.`,
-    );
-  return t(
-    `dile a tu agente «continúa» (ejecutará \`${command} next\`); cuando termine, vuelve a ejecutar \`${command} ${again}\`.`,
-    `tell your agent "continue" (it will run \`${command} next\`); when it is done, run \`${command} ${again}\` again.`,
-  );
-}
-
-/** "Not closed", "Not accepted" (quick) or "Not merged" (a closed change), by phase. */
-function notYet(session: Session, state: ChangeState): string {
-  const t = translator(session.lang);
-  if (state.phase === "done") return t("No se incorporó", "Not merged");
-  if (state.phase === "acceptance") return t("No se aceptó", "Not accepted");
-  return t("No se cerró", "Not closed");
 }
 
 export function blocked(

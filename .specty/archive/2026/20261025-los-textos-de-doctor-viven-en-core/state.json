@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-doctor-viven-en-core",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-los-textos-de-doctor-viven-en-core",
+  "baseCommit": "7d6e0a7d52de90951f041a315bd2fae3199e77fb",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a373f9829286364dc1e9c96bb388901baaf4df75c71b32d53e0d97c533e92738",
+    "at": "2026-10-26T02:52:09.225Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bb0a3f0d49bd85f704151037fb74e3449a59c8ba69e9daedeac5e1bb8d3061e5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c61d06a1d544448c4c5332ca4b37cb0eee651a73",
+      "attempts": 1,
+      "startedAt": "2026-10-26T02:52:09.572Z",
+      "doneAt": "2026-10-26T02:52:53.097Z",
+      "summary": "core/src/cards/doctor.ts tiene una línea por cada código de comprobación de doctor (DoctorLine) y su tarjeta, y refusals.ts los rechazos de antes de abrir la sesión (notGitCard e invalidConfigCard), copiados letra a letra, con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "31676d21f309903c3d97e945e335d1da6aef526a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T02:52:53.361Z",
+      "doneAt": "2026-10-26T02:54:55.691Z",
+      "summary": "doctor.ts decide qué encontró cada comprobación (un DoctorLine) y pide sus textos a core (doctorCard), y program.ts usa notGitCard e invalidConfigCard; ninguno llama al traductor y la salida es la misma, como comprueban los tests.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 3,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-26T02:55:31.982Z"
+}

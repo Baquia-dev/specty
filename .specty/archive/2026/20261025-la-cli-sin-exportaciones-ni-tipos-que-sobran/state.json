@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "20261025-la-cli-sin-exportaciones-ni-tipos-que-sobran",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-la-cli-sin-exportaciones-ni-tipos-que-sobran",
+  "baseCommit": "36e8c5cb6f49833bb1cae2f65579ad4461746540",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6a7636d5b5cea8fb0d5f2b9490c63e9e68f7a727a978eaf1d1e1d284e7593290",
+    "at": "2026-10-26T01:52:40.855Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:71b82a4b724d4ef5267615c0e8d79be87d5dfaa7be544c205bdf4bb55d5b5916",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "819a62c5a29f5dae21bbd6e7247c43ffe53ee446",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:52:41.221Z",
+      "doneAt": "2026-10-26T01:53:21.686Z",
+      "summary": "Dejan de exportarse audit, exportChange, init, InitOptions, uninstall y CheckOutcome, que solo usa su archivo, e init.ts ya no reexporta Detection, que nadie importaba.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "bf3deb3859b90793fb2872e6f576889edde46c3e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:53:21.969Z",
+      "doneAt": "2026-10-26T01:53:51.645Z",
+      "summary": "Dejan de exportarse followUps, mainBranch, sessionOf y StoreError, que solo usa su archivo, y se borra retroTrailers (flow/finish.ts), que nadie llamaba: los trailers de un retro los pone enforce/hook.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "1749d7531c16e0d0fb55d0574437ad61d561d151",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:53:51.936Z",
+      "doneAt": "2026-10-26T01:56:00.456Z",
+      "summary": "Dejan de exportarse GIT_HOOKS, HookManager, detectHookManager, hooksDirectory, removeShellBlock, opencodePlugin, GitError, RunOptions, Io, delegatedTerminal y ReviewRecord. Knip, con todas sus reglas, ya no marca nada de packages/cli/src.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T01:56:18.783Z"
+}

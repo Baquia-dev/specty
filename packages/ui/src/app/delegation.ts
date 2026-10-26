@@ -26,7 +26,7 @@ import { Preferences } from "../theme/preferences";
 
 /** Delegated mode as the screens see it, read again whenever the source says something changed. */
 @Injectable({ providedIn: "root" })
-export class DelegationState {
+class DelegationState {
   private readonly data = inject(SpectyData);
   private readonly read = resource({ loader: () => this.data.delegation() });
   /** Nothing while it loads, when it failed, or when the source cannot tell. */
@@ -109,7 +109,7 @@ const when = (at: string | undefined, lang: Lang) =>
     </sp-dialog>
   `,
 })
-export class TurnOnDelegation {
+class TurnOnDelegation {
   private readonly ref = inject(DialogRef);
   private readonly state = inject(DelegationState);
   private readonly toasts = inject(Toasts);
@@ -152,7 +152,7 @@ export class TurnOnDelegation {
     </sp-dialog>
   `,
 })
-export class TurnOffDelegation {
+class TurnOffDelegation {
   private readonly ref = inject(DialogRef);
   private readonly state = inject(DelegationState);
   private readonly toasts = inject(Toasts);

@@ -8,7 +8,7 @@ import { exists, remove } from "./files";
 /** Hash of git's empty tree, used to diff against a repository without commits. */
 const EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
 
-export class GitError extends Error {
+class GitError extends Error {
   constructor(
     readonly args: readonly string[],
     readonly result: ExecResult,
@@ -17,7 +17,7 @@ export class GitError extends Error {
   }
 }
 
-export interface RunOptions {
+interface RunOptions {
   readonly env?: Readonly<Record<string, string>>;
   readonly input?: string;
 }

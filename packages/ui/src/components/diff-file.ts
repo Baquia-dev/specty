@@ -32,8 +32,8 @@ import { LucideChevronDown } from "./icons";
 export type DiffMode = "unified" | "split";
 
 /** Past this many lines a file shows only its first ones, until the person asks for the rest. */
-export const LONG_FILE = 60;
-export const PREVIEW_LINES = 40;
+const LONG_FILE = 60;
+const PREVIEW_LINES = 40;
 
 /** The hunks with only their first `limit` lines in all, and how many lines were left out. */
 export function firstLines(

@@ -34,7 +34,7 @@ export interface CheckContext {
 }
 
 /** What one check gives: its findings, or why it could not run (a missing tool, say). */
-export type CheckOutcome = { readonly findings: readonly Finding[] } | { readonly skipped: string };
+type CheckOutcome = { readonly findings: readonly Finding[] } | { readonly skipped: string };
 
 export interface CheckDefinition {
   /** Stable id: the key of its level in `checks.levels` and its name in the output. */

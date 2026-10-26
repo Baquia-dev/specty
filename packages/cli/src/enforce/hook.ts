@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   blockedCommitMessage,
+  checkStagedFailedLine,
   isGoverned,
   matchesAny,
   parseSpec,
-  translator,
 } from "@baquia-dev/specty-core";
 import { check } from "../commands/check";
 import { isFinished, resolveActive } from "../flow/active";
@@ -52,13 +52,7 @@ export async function preCommit(session: Session): Promise<number> {
 async function passesChecks(session: Session): Promise<boolean> {
   const result = await check(session, "staged", false);
   if (result.code === 0) return true;
-  const t = translator(session.lang);
-  session.environment.io.err(
-    `${t(
-      "specty: el commit no pasa `specty check --staged`:",
-      "specty: the commit does not pass `specty check --staged`:",
-    )}\n${result.report}`,
-  );
+  session.environment.io.err(`${checkStagedFailedLine(session.lang)}\n${result.report}`);
   return false;
 }
 

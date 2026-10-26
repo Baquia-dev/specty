@@ -14,7 +14,7 @@ export interface RawItem {
   readonly fields: readonly RawField[];
 }
 
-export interface ListProblem {
+interface ListProblem {
   readonly kind: "not-list" | "fenced" | "bad-field";
   readonly line: number;
 }

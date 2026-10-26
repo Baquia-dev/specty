@@ -33,7 +33,7 @@ interface ClosingData {
     </sp-dialog>
   `,
 })
-export class ConfirmClosing {
+class ConfirmClosing {
   private readonly data = inject<ClosingData>(DIALOG_DATA);
   private readonly ref = inject(DialogRef);
   private readonly source = inject(SpectyData);

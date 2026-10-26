@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  assumptionDecidedLine,
   blockedCard,
+  changesRequestedLine,
+  commentSavedLine,
   decisionCard,
+  emptyCommentCard,
   headerOf,
+  noAssumptionCard,
   nothingPendingCard,
+  nothingToRequestCard,
   type Output,
+  reloadNext,
   transition,
-  translator,
 } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
@@ -26,19 +32,12 @@ export async function decideAssumption(
   decision: "confirmed" | "rejected",
   comment: string | undefined,
 ): Promise<Output> {
-  const t = translator(session.lang);
   const { state } = change;
   if (state.phase !== "review")
     return nothingPendingCard(state.id, state.phase, "approve", session.cards);
   const header = headerOf(state.id, "review");
   const current = ASSUMPTION.test(item) ? state.items[item] : undefined;
-  if (current === undefined) {
-    return blockedCard(
-      header,
-      t(`La spec no tiene el supuesto ${item}.`, `The spec has no assumption ${item}.`),
-      t("vuelve a cargar la revisión.", "reload the review."),
-    );
-  }
+  if (current === undefined) return noAssumptionCard(item, header, session.cards);
   const reason = decision === "rejected" ? comment?.trim() || undefined : undefined;
   await commitState(
     session,
@@ -58,18 +57,7 @@ export async function decideAssumption(
     { item, decision, ...(reason === undefined ? {} : { comment: reason }) },
     "human",
   );
-  return decisionCard(
-    header,
-    [
-      decision === "confirmed"
-        ? t(`${item} confirmado.`, `${item} confirmed.`)
-        : t(
-            `${item} rechazado: el agente debe corregir la spec.`,
-            `${item} rejected: the agent must fix the spec.`,
-          ),
-    ],
-    session.cards,
-  );
+  return decisionCard(header, [assumptionDecidedLine(item, decision, session.lang)], session.cards);
 }
 
 /**
@@ -82,19 +70,12 @@ export async function addComment(
   anchor: CommentAnchor,
   body: string,
 ): Promise<Output> {
-  const t = translator(session.lang);
   const { state } = change;
   if (state.phase !== "review")
     return nothingPendingCard(state.id, state.phase, "approve", session.cards);
   const header = headerOf(state.id, "review");
   const text = body.trim();
-  if (text === "") {
-    return blockedCard(
-      header,
-      t("El comentario está vacío.", "The comment is empty."),
-      t("escribe qué debe cambiar.", "write what should change."),
-    );
-  }
+  if (text === "") return emptyCommentCard(header, session.cards);
   const comments = await readComments(change.files);
   const id = `c${comments.length + 1}`;
   await writeComments(change.files, [
@@ -108,16 +89,7 @@ export async function addComment(
       createdAt: session.environment.now().toISOString(),
     },
   ]);
-  return decisionCard(
-    header,
-    [
-      t(
-        `Comentario ${id} guardado; cuando termines, pide los cambios.`,
-        `Comment ${id} saved; when you are done, ask for the changes.`,
-      ),
-    ],
-    session.cards,
-  );
+  return decisionCard(header, [commentSavedLine(id, session.lang)], session.cards);
 }
 
 /**
@@ -125,7 +97,6 @@ export async function addComment(
  * which `specty next` shows it. The change stays in review.
  */
 export async function requestChanges(session: Session, change: StoredChange): Promise<Output> {
-  const t = translator(session.lang);
   const { state } = change;
   if (state.phase !== "review")
     return nothingPendingCard(state.id, state.phase, "approve", session.cards);
@@ -136,27 +107,15 @@ export async function requestChanges(session: Session, change: StoredChange): Pr
   const rejected = Object.entries(state.items)
     .filter(([, item]) => item.decision === "rejected")
     .map(([id]) => id);
-  if (open.length === 0 && rejected.length === 0) {
-    return blockedCard(
-      header,
-      t(
-        "No hay comentarios sin resolver ni supuestos rechazados que pedir.",
-        "There are no unresolved comments or rejected assumptions to ask for.",
-      ),
-      t(
-        "comenta lo que debe cambiar, o aprueba la spec.",
-        "comment on what should change, or approve the spec.",
-      ),
-    );
-  }
+  if (open.length === 0 && rejected.length === 0)
+    return nothingToRequestCard(header, session.cards);
   const moved = transition({
     phase: state.phase,
     kind: state.kind,
     actor: "human",
     event: { type: "requestChanges" },
   });
-  if (!moved.ok)
-    return blockedCard(header, moved.code, t("vuelve a cargar la UI.", "reload the UI."));
+  if (!moved.ok) return blockedCard(header, moved.code, reloadNext("ui", session.cards));
   await commitState(
     session,
     change,
@@ -167,12 +126,7 @@ export async function requestChanges(session: Session, change: StoredChange): Pr
   );
   return decisionCard(
     header,
-    [
-      t(
-        `Cambios pedidos al agente: ${[...open, ...rejected].join(", ")}.`,
-        `Changes asked of the agent: ${[...open, ...rejected].join(", ")}.`,
-      ),
-    ],
+    [changesRequestedLine([...open, ...rejected], session.lang)],
     session.cards,
   );
 }

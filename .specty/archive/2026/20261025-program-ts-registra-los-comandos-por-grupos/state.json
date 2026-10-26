@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261025-program-ts-registra-los-comandos-por-grupos",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261025-program-ts-registra-los-comandos-por-grupos",
+  "baseCommit": "512ba3ab6d94f3337291756c5a78c180d21ca810",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d0e7832f4eeb4968f20f71c33ec140931a564672a3ab1ac097af9a71ed5b042a",
+    "at": "2026-10-26T01:35:24.186Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6816ca8436f451ed82412d1676033a388b6341e7",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:35:24.534Z",
+      "doneAt": "2026-10-26T01:38:55.479Z",
+      "summary": "program.ts (de 307 a 135 líneas de código) queda con la ejecución y los comandos de lectura e instalación; los del agente se registran desde commands/agent-commands.ts y las decisiones de la persona desde commands/person-commands.ts, sin cambiar nada.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

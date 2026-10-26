@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { flowBlock, humanSections, unfilledSections, upsertBlock } from "../src";
+import { citedPaths, flowBlock, humanSections, unfilledSections, upsertBlock } from "../src";
 
 const agents = (...sections: string[]) => ["# Demo", ...sections].join("\n\n");
 const MAP = "## Mapa\n\n- `src/gen/`: generado, no se toca.";
@@ -37,5 +37,30 @@ describe("unfilledSections", () => {
     expect(unfilledSections(agents("## Comandos\n\n- `pnpm test`"))).toEqual([]);
     expect(unfilledSections(agents("## Mapas del sitio", "## Map of the API"))).toEqual([]);
     expect(unfilledSections("")).toEqual([]);
+  });
+});
+
+describe("citedPaths", () => {
+  it("finds the paths AGENTS.md cites as inline code, once each (AC1)", () => {
+    const text = agents(
+      "## Mapa",
+      "- `packages/core/src/spec/`: el modelo; `docs/formats.md` y `.specty/config.yaml`.",
+      "- Otra vez `docs/formats.md`.",
+    );
+    expect(citedPaths(text)).toEqual([
+      "packages/core/src/spec",
+      "docs/formats.md",
+      ".specty/config.yaml",
+    ]);
+  });
+
+  it("leaves out fragments, commands, globs, placeholders, packages and addresses (AC2)", () => {
+    const text = agents(
+      "- `theme/` y `src/`, relativos a lo de antes.",
+      "- `pnpm --filter @baquia-dev/specty-core exec vitest run test/a.test.ts`",
+      "- `packages/*/test/fixtures/`, `common/specty/sessions/<id>.json` y `@baquia-dev/specty`.",
+      "- `https://example.com/a/b`, `src/app.ts:12`, `../fuera/de/aqui` y `/raiz/absoluta`.",
+    );
+    expect(citedPaths(text)).toEqual([]);
   });
 });

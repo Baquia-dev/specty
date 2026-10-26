@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-propose-task-done-y-scope-add-vive",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-los-textos-de-propose-task-done-y-scope-add-vive",
+  "baseCommit": "679d0b1c4bb0f6c43f2f137f96319ba3859aa0bf",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:30605761348f127ccc69507b75b99f68320ce34e896e44d40e69677105108ab2",
+    "at": "2026-10-26T02:14:19.615Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ce24fd70089de0eb59ec91039040ba6d30ec0ca97f42a8116db1b5e2afaad047",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9078df95cd9015f0ea2836d565d390ae54bae5b8",
+      "attempts": 1,
+      "startedAt": "2026-10-26T02:14:20.004Z",
+      "doneAt": "2026-10-26T02:15:32.141Z",
+      "summary": "Core gana runNext (text.ts), noActiveChangeCard con el SIGUIENTE del agente, la persona o la UI (cards/refusals.ts) y notProposableCard y revisionLabel junto a las demás tarjetas de propose (flow.ts), con tests en español e inglés.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ea68ee2ba6b99e033efc34926b73d1214075712b",
+      "attempts": 1,
+      "startedAt": "2026-10-26T02:15:32.432Z",
+      "doneAt": "2026-10-26T02:18:08.426Z",
+      "summary": "core/src/cards/task.ts tiene los textos de task done (taskDoneRefusalCard y taskDoneCard, con sus avisos) y de scope add (scopeAddRefusalCard, inScopeLead y autoApprovedLead), copiados letra a letra de la CLI, con tests en español e inglés.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "9cd1903cc80053c0b4c9d8a4721c6fb89c243b59",
+      "attempts": 1,
+      "startedAt": "2026-10-26T02:18:08.723Z",
+      "doneAt": "2026-10-26T02:21:47.629Z",
+      "summary": "propose.ts, task.ts y scope.ts piden sus textos a core (noActiveChangeCard, notProposableCard, revisionLabel, runNext y las tarjetas de cards/task.ts) y ya no llaman al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T02:22:11.579Z"
+}

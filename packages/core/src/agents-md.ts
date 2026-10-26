@@ -117,6 +117,25 @@ export function unfilledSections(text: string): readonly string[] {
   });
 }
 
+/**
+ * The repository paths AGENTS.md cites as inline code, without a trailing `/`, once each: spans of
+ * at least two segments (`docs/formats.md`, `packages/core/src/`). Not a fragment (`theme/`, which
+ * is relative to the text around it), a command (with spaces), a glob or a placeholder (`*`,
+ * `<id>`), a package (`@scope/name`), an address (`:`) or a path that leaves the repository.
+ */
+export function citedPaths(text: string): readonly string[] {
+  const found = new Set<string>();
+  for (const [, code = ""] of text.matchAll(/`([^`\n]+)`/g)) {
+    const path = code.replace(/\/$/, "");
+    if (/[\s*?{}[\]<>:$~"'|]/.test(path) || /^[@/-]|^\.\.?\//.test(path)) continue;
+    const segments = path.split("/");
+    if (segments.length < 2 || segments.some((segment) => segment === "" || segment === ".."))
+      continue;
+    found.add(path);
+  }
+  return [...found];
+}
+
 /** A Markdown heading such as `## Title`, maybe closed with `#`s. */
 function headingOf(line: string): { readonly level: number; readonly title: string } | undefined {
   const [, hashes, title] = /^(#{1,6})[ \t]+(.*?)(?:[ \t]+#+)?[ \t]*$/.exec(line) ?? [];

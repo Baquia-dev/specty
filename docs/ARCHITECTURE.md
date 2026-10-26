@@ -151,7 +151,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - `1`: error de validación, con una lista accionable y números de línea.
   - `2`: bloqueado por el flujo, con el motivo y el paso válido.
 - `--json` devuelve lo mismo, estructurado.
-- Los textos viven en `core` y se prueban como interfaz pública. Un cambio de redacción puede cambiar el comportamiento de un modelo (ver la suite de cumplimiento en §16).
+- Los textos viven en `core` y se prueban como interfaz pública. Un cambio de redacción puede cambiar el comportamiento de un modelo (ver la suite de cumplimiento en §16). La CLI decide qué caso es y le pasa los datos a `core/src/cards/`, que escribe el texto en los dos idiomas: tarjetas, rechazos, preguntas de la terminal, avisos y asuntos de commit. `pnpm sources` falla si un archivo de `packages/cli/src` usa el traductor; solo los de `specty check` (`check/` y `commands/check.ts`) aún escriben los suyos.
 - Repetir `next` no cambia nada.
 - `next --wait[=<segundos>]` (opcional) espera, con límite, a que la persona actúe en la UI. Por defecto, el agente termina su turno con el enlace de la UI. Cuando la persona aprueba y escribe "continúa", el agente vuelve a ejecutar `next`.
 
@@ -433,14 +433,17 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 
 **`specty doctor`** comprueba:
 
-- que el comando `specty` resuelve a `@baquia-dev/specty`;
-- que los comandos citados existen y funcionan;
-- que las rutas citadas existen;
-- el presupuesto de AGENTS.md;
+- que `.specty/config.yaml` es válido, que AGENTS.md tiene el bloque de flujo y que hay `verify.default`;
+- que los hooks pueden ejecutar Specty;
+- la versión de Node: 22 o posterior, como dice `engines`; una anterior es un problema;
+- que las rutas que AGENTS.md cita como código existen. Es un aviso, no un problema, y cuenta las de dos tramos o más (`docs/formats.md`); no los fragmentos (`theme/`), los comandos, los globs, los marcadores, los paquetes ni las rutas que git ignora, como las de un build (`citedPaths` en `core/src/agents-md.ts`);
 - que el «Mapa» y las «Convenciones» de AGENTS.md no sigan vacíos. Es un aviso, no un problema, y solo mira esas secciones, en español o en inglés, si AGENTS.md las tiene. Una sección está vacía si, hasta el siguiente encabezado de su nivel o de uno superior, solo tiene comentarios, como la pista de `init`, y espacios (`unfilledSections` en `core/src/agents-md.ts`);
-- los punteros y hooks instalados;
+- los guards y hooks de cada herramienta, y los hooks de git;
+- que los formateadores del proyecto (Biome, Prettier) excluyen los archivos que escribe Specty;
 - que la guía de otra herramienta no pida al agente lo que el guard bloquea: los bloques de flujo de gentle-ai (`agent-routing`, el de su ODD, que pide commits propios por unidad de trabajo, y `orchestrator`, `sdd-orchestrator` y `sdd`, los de su antiguo SDD) en AGENTS.md o CLAUDE.md del repositorio, o en los archivos globales donde gentle-ai los escribe (`~/.claude/CLAUDE.md`, el `AGENTS.md` de Codex y el de OpenCode, y `~/.cursor/rules/gentle-ai.mdc`);
-- la versión de Node y la configuración de CI.
+- el modo delegado, si está activo: un aviso, porque es una decisión de la persona.
+
+No ejecuta los comandos que cita AGENTS.md, ni mide su tamaño, ni revisa la configuración de CI.
 
 ## 15. Servidor local y UI
 
@@ -485,7 +488,7 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
   - estática (`commands-named.test.ts`): cada comando `specty …` que nombran los textos de core y de la CLI, fuera de los comentarios, pasa por el parser de la CLI con su verbo, su subcomando y sus opciones. Los argumentos que falten no cuentan, porque los textos también mencionan comandos sin ellos;
   - dinámica (`friction.test.ts`, con `walk.ts`): un recorrido hace lo que haría un agente. Ejecuta `next` y luego el comando que nombra cada SIGUIENTE, con el trabajo de cada fase guionizado, y como persona los comandos de la persona. Recorre un cambio quick, uno standard, uno standard con tropiezos y uno en modo delegado. Los tropiezos son código antes de la spec y un commit del agente (ambos en el guard), una spec sin criterios, un archivo fuera del alcance y una verificación en rojo. Cada bloqueo debe quedar resuelto: una salida sin bloqueo en 4 pasos como máximo. Uno sin comando en su SIGUIENTE sería «sin continuación», y uno que no se despeja, «callejón».
 
-**CI y publicación** (`.github/workflows/`). `pnpm check` incluye knip (`knip.json`): falla si sobra un archivo, una dependencia o un binario, o si un import no se resuelve; las reglas de exportaciones y tipos siguen apagadas hasta limpiar las que sobran. El CI ejecuta `pnpm install --frozen-lockfile` y `pnpm check` en cada push a `main` y en cada pull request, en Linux, macOS y Windows con Node 22, y en Linux también con Node 24. Windows no bloquea (`continue-on-error`) hasta que pase una vez. Una etiqueta `v<versión>` que coincida con la de `@baquia-dev/specty` publica el paquete: tras `pnpm check`, el workflow ejecuta `npm publish --provenance --access public` en `packages/cli`, con `id-token: write`, para que npm registre qué workflow, commit y repositorio lo construyeron. Necesita el secreto `NPM_TOKEN`, y el `prepack` mete la UI en el paquete. Cada build del CLI copia LICENSE y NOTICE de la raíz junto al bundle, porque Apache-2.0 pide que cada distribución los lleve y el paquete solo publica `dist`. El `bin` se escribe sin `./` (`dist/specty.mjs`), porque npm 11 quita el otro al publicar; un test de `workflows.test.ts` lo fija junto a la forma de los dos workflows.
+**CI y publicación** (`.github/workflows/`). `pnpm check` incluye knip (`knip.json`): falla si sobra un archivo, una dependencia, un binario, una exportación o un tipo que ningún otro archivo importa, o si un import no se resuelve. Lo que solo usa su archivo no se exporta. Siguen apagadas las reglas de los miembros de espacios de nombres y de enums. El CI ejecuta `pnpm install --frozen-lockfile` y `pnpm check` en cada push a `main` y en cada pull request, en Linux, macOS y Windows con Node 22, y en Linux también con Node 24. Windows no bloquea (`continue-on-error`) hasta que pase una vez. Una etiqueta `v<versión>` que coincida con la de `@baquia-dev/specty` publica el paquete: tras `pnpm check`, el workflow ejecuta `npm publish --provenance --access public` en `packages/cli`, con `id-token: write`, para que npm registre qué workflow, commit y repositorio lo construyeron. Necesita el secreto `NPM_TOKEN`, y el `prepack` mete la UI en el paquete. Cada build del CLI copia LICENSE y NOTICE de la raíz junto al bundle, porque Apache-2.0 pide que cada distribución los lleve y el paquete solo publica `dist`. El `bin` se escribe sin `./` (`dist/specty.mjs`), porque npm 11 quita el otro al publicar; un test de `workflows.test.ts` lo fija junto a la forma de los dos workflows.
 
 **Fricción.** El mismo recorrido cuenta los comandos, y el test fija las cifras. Un cambio que añada o ahorre comandos las cambia a la vista. Línea base (octubre de 2026), en comandos del agente (con `next`) y de la persona:
 

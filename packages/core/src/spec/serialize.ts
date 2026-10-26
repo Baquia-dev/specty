@@ -85,7 +85,7 @@ export function hashUnits(spec: Spec): ReadonlyMap<string, string> {
   ]);
 }
 
-export function serializeFrontmatter(frontmatter: Frontmatter): string {
+function serializeFrontmatter(frontmatter: Frontmatter): string {
   const data = {
     kind: frontmatter.kind,
     ...(frontmatter.epic !== undefined ? { epic: frontmatter.epic } : {}),

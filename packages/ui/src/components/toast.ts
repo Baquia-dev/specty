@@ -119,7 +119,7 @@ const TONES: Readonly<Record<ToastKind, string>> = {
     />
   `,
 })
-export class Toast {
+class Toast {
   readonly toast = input.required<ToastItem>();
 
   protected readonly toasts = inject(Toasts);

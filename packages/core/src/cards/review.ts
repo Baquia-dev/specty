@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import { type Output, section } from "../output";
+import { blockedCard } from "./flow";
 import { translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -119,4 +120,76 @@ function afterResult(ctx: CardContext): string {
         `cuéntale al usuario lo que encontró la revisión y pídele que acepte con \`${ctx.command} accept\`, o, si pide arreglar algo, ejecuta \`${ctx.command} adjust "<petición literal>"\`. La revisión es información: decide la persona.`,
         `tell the user what the review found and ask them to accept with \`${ctx.command} accept\` or, if they ask to fix something, run \`${ctx.command} adjust "<literal request>"\`. The review is information: the person decides.`,
       );
+}
+
+/** Why `specty review` reviews nothing. It is optional, so the agent goes on with `next`. */
+export type ReviewRefusal =
+  /** No change, or one neither in review nor in acceptance. */
+  | { readonly reason: "not-reviewable" }
+  | { readonly reason: "not-configured" }
+  | { readonly reason: "too-large"; readonly range: string }
+  | { readonly reason: "no-diff" }
+  /** The reviewer's command failed or answered nothing. */
+  | { readonly reason: "failed"; readonly command: string; readonly code: number | undefined };
+
+export function reviewRefusalCard(
+  refusal: ReviewRefusal,
+  header: string,
+  ctx: CardContext,
+): Output {
+  const t = translator(ctx.lang);
+  const { command } = ctx;
+  const goOn = t(`sigue con \`${command} next\`.`, `go on with \`${command} next\`.`);
+  switch (refusal.reason) {
+    case "not-reviewable":
+      return blockedCard(
+        header,
+        t(
+          `La revisión independiente se pide con la spec en revisión, después de \`${command} propose\`, o con el resultado en aceptación.`,
+          `The independent review is asked for with the spec in review, after \`${command} propose\`, or with the result in acceptance.`,
+        ),
+        goOn,
+      );
+    case "not-configured":
+      return blockedCard(
+        header,
+        t(
+          "Este proyecto no tiene revisión independiente: la persona la configura con `review.command` en .specty/config.yaml.",
+          "This project has no independent review: the person sets it up with `review.command` in .specty/config.yaml.",
+        ),
+        goOn,
+      );
+    case "too-large":
+      return blockedCard(
+        header,
+        t(
+          `El diff del cambio es demasiado grande para revisarlo entero (${refusal.range}).`,
+          `The change's diff is too large to review whole (${refusal.range}).`,
+        ),
+        goOn,
+      );
+    case "no-diff":
+      return blockedCard(
+        header,
+        t("El cambio no tiene un diff que revisar.", "The change has no diff to review."),
+        goOn,
+      );
+    case "failed":
+      return blockedCard(
+        header,
+        t(
+          `La revisión falló (\`${refusal.command}\`, código ${refusal.code ?? "sin código"}).`,
+          `The review failed (\`${refusal.command}\`, code ${refusal.code ?? "none"}).`,
+        ),
+        t(
+          `díselo al usuario y sigue con \`${command} next\`: la revisión es opcional.`,
+          `tell the user and go on with \`${command} next\`: the review is optional.`,
+        ),
+      );
+  }
+}
+
+/** What Specty prints on stderr while the reviewer's command runs. */
+export function reviewingNote(command: string, lang: Lang): string {
+  return `specty: ${translator(lang)("revisando con", "reviewing with")} \`${command}\`…`;
 }

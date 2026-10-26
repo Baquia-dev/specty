@@ -1,13 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isAbsolute, join, relative, resolve } from "node:path";
-import {
-  blockedCard,
-  headerOf,
-  type Output,
-  parseSpec,
-  section,
-  translator,
-} from "@baquia-dev/specty-core";
+import { exportedCard, exportRefusalCard, type Output, parseSpec } from "@baquia-dev/specty-core";
 import { EXPORT_FORMATS, exportSpec } from "@baquia-dev/specty-exporters";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
@@ -26,40 +19,27 @@ const NAMES = { openspec: "OpenSpec", speckit: "Spec Kit", kiro: "Kiro" } as con
  * change's spec in OpenSpec, Spec Kit or Kiro, written in `.specty/exports/<format>/` unless the
  * person says where. It only writes those files, so the agent may run it too.
  */
-export async function exportChange(
+async function exportChange(
   session: Session,
   id: string | undefined,
   format: string | undefined,
   out: string | undefined,
 ): Promise<Output> {
-  const t = translator(session.lang);
-  const { command } = session.cards;
-  const refuse = (reason: string, next: string): Output => ({
-    ...blockedCard(headerOf("export"), reason, next),
-    status: "invalid",
-  });
+  const { cards } = session;
   const chosen = EXPORT_FORMATS.find((name) => name === format);
   if (chosen === undefined) {
-    return refuse(
-      format === undefined
-        ? t("Falta el formato.", "The format is missing.")
-        : t(`No conozco el formato ${format}.`, `I do not know the format ${format}.`),
-      t(
-        `elige uno: \`${command} export --to openspec\`, \`--to speckit\` o \`--to kiro\`.`,
-        `choose one: \`${command} export --to openspec\`, \`--to speckit\` or \`--to kiro\`.`,
-      ),
+    return exportRefusalCard(
+      format === undefined ? { reason: "no-format" } : { reason: "unknown-format", format },
+      cards,
     );
   }
   const change = id === undefined ? await resolveActive(session) : await findChange(session, id);
   if (change === undefined) {
-    return refuse(
+    return exportRefusalCard(
       id === undefined
-        ? t("No hay un cambio activo en esta carpeta.", "There is no active change in this folder.")
-        : t(`No hay ningún cambio ${id}.`, `There is no change ${id}.`),
-      t(
-        `di cuál con \`${command} export <id> --to ${chosen}\`.`,
-        `name it with \`${command} export <id> --to ${chosen}\`.`,
-      ),
+        ? { reason: "no-active", format: chosen }
+        : { reason: "no-change", id, format: chosen },
+      cards,
     );
   }
   const { state } = change;
@@ -78,17 +58,12 @@ export async function exportChange(
   const inside = relative(session.root, folder);
   const shown =
     inside === "" ? "." : inside.startsWith("..") || isAbsolute(inside) ? folder : inside;
-  return {
-    status: "ok",
-    header: headerOf("export"),
-    blocks: section(t(`EN ${NAMES[chosen]}, EN ${shown}`, `IN ${NAMES[chosen]}, IN ${shown}`), [
-      ...files.map((file) => file.path),
-    ]),
-    next: t(
-      "revísalos y cópialos donde los espere la herramienta; con `--out .` se escriben en la raíz del repositorio.",
-      "check them and copy them where the tool expects them; with `--out .` they go to the repository's root.",
-    ),
-  };
+  return exportedCard(
+    NAMES[chosen],
+    shown,
+    files.map((file) => file.path),
+    cards,
+  );
 }
 
 /** Registers `specty export`; `run` opens the session as for every command. */

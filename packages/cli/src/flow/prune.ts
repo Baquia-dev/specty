@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-import { translator } from "@baquia-dev/specty-core";
+import {
+  notInTargetBranchLine,
+  notInTargetFolderLine,
+  workingFolderLine,
+} from "@baquia-dev/specty-core";
 import { resolved } from "../io/git";
 import type { Session } from "../session";
 import { readBindings } from "../store/local";
@@ -25,7 +29,7 @@ const SESSION_DAY = 24 * 60 * 60 * 1000;
  * The branches stay.
  */
 export async function removeFinished(session: Session): Promise<Cleanup> {
-  const t = translator(session.lang);
+  const { lang } = session;
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
   const now = session.environment.now().getTime();
   const working = await Promise.all(
@@ -41,22 +45,12 @@ export async function removeFinished(session: Session): Promise<Cleanup> {
     if (await within(session.environment.cwd, there.root)) continue;
     // Such as the session that closed its change from inside, in delegated mode.
     if (working.includes(await resolved(there.root))) {
-      kept.push(
-        t(
-          `${there.root}: una sesión de agente trabaja en ella.`,
-          `${there.root}: an agent session works in it.`,
-        ),
-      );
+      kept.push(workingFolderLine(there.root, lang));
       continue;
     }
     const plan = state.phase === "done" ? await integrationOf(there, state) : undefined;
     if (plan !== undefined && !(await isIncorporated(there, plan))) {
-      kept.push(
-        t(
-          `${there.root}: ${state.id} aún no está en ${plan.target}.`,
-          `${there.root}: ${state.id} is not in ${plan.target} yet.`,
-        ),
-      );
+      kept.push(notInTargetFolderLine(there.root, state.id, plan.target, lang));
       continue;
     }
     const result = await session.git.run(["-C", main, "worktree", "remove", there.root]);
@@ -72,7 +66,6 @@ export async function removeFinished(session: Session): Promise<Cleanup> {
  * stay, such as a cancelled change's, which keeps its record.
  */
 export async function deleteMerged(session: Session): Promise<Cleanup> {
-  const t = translator(session.lang);
   const { git } = session;
   const target = await targetBranch(git, session.config.git.target);
   if (target === undefined) return { removed: [], kept: [] };
@@ -97,7 +90,7 @@ export async function deleteMerged(session: Session): Promise<Cleanup> {
     if ((await git.run(["branch", "-D", branch])).code === 0) removed.push(branch);
   }
   const kept = (await branches("--no-merged")).map((branch) =>
-    t(`${branch}: no está en ${target}.`, `${branch}: not in ${target}.`),
+    notInTargetBranchLine(branch, target, session.lang),
   );
   return { removed, kept };
 }

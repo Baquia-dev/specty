@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261025-knip-vigila-las-exportaciones-y-los-tipos-que-so",
+  "kind": "epic",
+  "phase": "done",
+  "branch": "specty/20261025-knip-vigila-las-exportaciones-y-los-tipos-que-so",
+  "baseCommit": "efc50a3548c86c06ee07ad437cfae62a1d9cb5a3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a2181ffab5e6910d945e329e85c9194d4157b01ce3d1e8c5eebd33a5bfaae15e",
+    "at": "2026-10-26T01:47:07.032Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:963003c0a2d94b6dbc8503edbd5890936850c1fc644bd64fcf9b7ab65613c8e6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b27d9fd0cd222eabf0e4967233fbbfe686e9e3e716a25506f34cb5fed83680bf",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "C": 5,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-26T02:07:52.440Z"
+}

@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261025-init-ts-instala-los-hooks-desde-su-propio-modulo",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261025-init-ts-instala-los-hooks-desde-su-propio-modulo",
+  "baseCommit": "d64c42502db5fde87fe0440591cf2908951eb885",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eb32847264cb6fa379c3181790133c38dcc4105e33602c220ecad8bc632a3fb0",
+    "at": "2026-10-26T01:41:48.812Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "5351a2c73dd9d9ba25e37dd22f7e9688be57837d",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:41:49.183Z",
+      "doneAt": "2026-10-26T01:45:00.233Z",
+      "summary": "init.ts (de 307 a 217 líneas de código) prepara el proyecto y pide los hooks a install/hooks.ts, que instala el guard de cada herramienta, los hooks de git y el aviso del PATH, y devuelve lo hecho, los avisos y los archivos del commit; mismos textos y orden.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}
