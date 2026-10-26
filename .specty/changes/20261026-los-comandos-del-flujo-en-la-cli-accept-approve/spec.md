@@ -54,7 +54,7 @@ Nueve funciones de los comandos del flujo pasan de los límites de Specty: `acce
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T4: El cierre y la cancelación
+- [x] T4: El cierre y la cancelación
   - files: packages/cli/src/commands/finish.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

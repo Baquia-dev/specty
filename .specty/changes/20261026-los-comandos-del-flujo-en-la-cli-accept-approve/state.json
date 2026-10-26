@@ -53,12 +53,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "25a05838b1d7c694a394c388f47c945cb90c272b",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:31:22.616Z",
       "doneAt": "2026-10-26T19:35:11.507Z",
-      "summary": "propose.ts: propose deja la revisión escrita y su estado a recordProposal y la tarjeta a proposalCard. review.ts: review hace las guardas y runReview ejecuta, guarda y registra la revisión. Mismo resultado; los tests de la CLI pasan."
+      "summary": "propose.ts: propose deja la revisión escrita y su estado a recordProposal y la tarjeta a proposalCard. review.ts: review hace las guardas y runReview ejecuta, guarda y registra la revisión. Mismo resultado; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e9888906a725e01d997be8407e2e3e2fd4ba400e",
+      "startedAt": "2026-10-26T19:35:12.275Z",
+      "doneAt": "2026-10-26T19:38:20.660Z",
+      "summary": "finish.ts: close muestra lo que se confirma con noteClosing y, confirmado, closeConfirmed incorpora, archiva y aterriza; cancel pregunta y cancelConfirmed archiva. Mismas preguntas, eventos y commits; los tests de la CLI pasan."
     }
   },
   "pending": {
