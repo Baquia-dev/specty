@@ -102,3 +102,33 @@ La fila de la tabla pasa a llamarse «Devin (Windsurf)». El corte también reco
 - R1: Nada de esto se puede probar con Devin de verdad. Mitigación: las pruebas usan los eventos con la forma que documenta Devin CLI, el módulo lee los dos nombres posibles de cada ruta, y ARCHITECTURE §10 dice qué no está comprobado.
 - R2: Si `PostCompaction` no llega en Devin Desktop, la tarjeta no vuelve tras compactar. Mitigación: AGENTS.md sigue pidiendo `specty next`, y el guard da el SIGUIENTE en cada bloqueo.
 - R3: `Exec(specty)` deja ejecutar sin preguntar cualquier comando de Specty. Mitigación: el guard decide antes que los permisos de Devin, y los comandos de la persona le siguen bloqueados al agente sin modo delegado.
+
+## Cierre
+
+### Resumen
+
+La fila de Windsurf pasa a llamarse «Devin (Windsurf)» y recibe todo lo que tiene Claude Code salvo la worktree por nombre y la prueba de extremo a extremo. Los hooks van en `.devin/hooks.v1.json`, que Devin Desktop y Devin CLI comparten:
+- **Guard:** bloquea con salida 2, también lo que el agente escribe en un proceso en marcha.
+- **Aviso tras cada comando:** llega como `additionalContext`.
+- **Fin de turno:** usa `Stop`.
+- **Tarjeta:** espera tras `PostCompaction` al siguiente comando.
+- **Permisos:** `init` escribe `Exec(specty)` en `.devin/config.json` y las carpetas de Specty como `Write(...)` en `.devin/config.local.json`.
+
+Specty reconoce además la terminal de Antigravity CLI por su entorno. En la tabla de capacidades ya no queda ninguna celda «pendiente».
+
+### Desviaciones
+
+- La constante `pending` de `capabilities.ts` salió en T5: sin ninguna celda pendiente, `tsc` la daba por no usada. El estado sigue en el tipo `Support` hasta C13.
+- El test de permisos versiona el `.devin/config.json` de la persona antes de `init`. Sin eso, `init` lo dejaba fuera de su commit, que es lo correcto con cambios de la persona.
+
+### Decisiones
+
+- El id sigue siendo `windsurf`, porque ya lo usan la configuración y `--tools`. Cambia el nombre que se ve, y `.devin` se suma a las marcas.
+- Las rutas de `write` y `edit` se leen de `file_path` o de `path`, y el parche de `apply_patch` del primer campo de texto que lo traiga, porque la documentación no los fija.
+- Como en Cursor, la tarjeta espera al siguiente comando: no consta que `PostCompaction` añada contexto.
+
+### Pendientes
+
+- Nada de Devin está probado con Devin de verdad (R1); conviene comprobar los nombres de los campos cuando haya acceso.
+- `uninstall` no quita el hook de fin de turno que pone `check --install`, en ningún agente, porque solo reconoce `guard --tool`. Venía de antes y no entra en este corte.
+- Devin carga también los hooks de `.claude/`: con los dos instalados, su fin de turno podría traer el informe dos veces (A5).
