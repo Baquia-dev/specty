@@ -79,7 +79,7 @@ Antigravity no tiene el guard de Specty: su agente puede escribir fuera del alca
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/index.ts, packages/cli/src/install/agents.ts, packages/core/src/capabilities.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/antigravity.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/agents.test.ts test/uninstall.test.ts
-- [ ] T3: La tabla de capacidades y la documentación lo cuentan
+- [x] T3: La tabla de capacidades y la documentación lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

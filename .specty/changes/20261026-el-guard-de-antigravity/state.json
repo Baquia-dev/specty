@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-el-guard-de-antigravity",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-el-guard-de-antigravity",
   "baseCommit": "87207b70f94ffa4b71df29b3ede80c64ac251925",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "51aea97ff4c59b064f7d6a1c55245b7bfed833f2",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:16:43.153Z",
       "doneAt": "2026-10-26T19:27:42.817Z",
-      "summary": "Antigravity tiene su guard: agents/antigravity.ts normaliza su entrada camelCase, responde JSON con salida 0 y deja el aviso tras un comando para su PreInvocation; init escribe el hook specty en .agents/hooks.json, y doctor y uninstall lo cubren."
+      "summary": "Antigravity tiene su guard: agents/antigravity.ts normaliza su entrada camelCase, responde JSON con salida 0 y deja el aviso tras un comando para su PreInvocation; init escribe el hook specty en .agents/hooks.json, y doctor y uninstall lo cubren.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "125d7c20528a450629598e7622769ed3be2551df",
+      "startedAt": "2026-10-26T19:27:43.123Z",
+      "doneAt": "2026-10-26T19:31:34.800Z",
+      "summary": "La tabla de capacidades marca el guard de Antigravity como sí y su aviso tras cada comando como indirecto; ARCHITECTURE §10 cuenta sus hooks y la entrega en PreInvocation, y formats.md el archivo pending/<conversación>.warning."
     }
   },
   "pending": {
