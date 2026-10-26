@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4b0f30c5f059adb36e736e10dd81525af0bc0b18",
+      "attempts": 1,
       "startedAt": "2026-10-26T12:14:07.218Z",
       "doneAt": "2026-10-26T12:21:20.457Z",
-      "summary": "Ejemplos de Angular y NestJS montados en un repo temporal como cambio aprobado: los scripts de package.json imitan Prettier, ESLint, tsc y el runner; cada verificación pasa en un caso y falla en otro, layers sin dependency-cruiser sale sin ejecutar."
+      "summary": "Ejemplos de Angular y NestJS montados en un repo temporal como cambio aprobado: los scripts de package.json imitan Prettier, ESLint, tsc y el runner; cada verificación pasa en un caso y falla en otro, layers sin dependency-cruiser sale sin ejecutar.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "401aa63d93093e017148cfd6addbaeb039f83bdd",
+      "startedAt": "2026-10-26T12:21:20.750Z",
+      "doneAt": "2026-10-26T12:23:53.716Z",
+      "summary": "Ejemplo de Flutter: checks.commands apunta format, lint y tests a imitaciones de dart format, flutter analyze y flutter test; dart-strict, layers con el escáner propio y las demás pasan en un caso y fallan en otro."
     }
   },
   "pending": {
