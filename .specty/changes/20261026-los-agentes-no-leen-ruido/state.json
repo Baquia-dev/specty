@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-los-agentes-no-leen-ruido",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-los-agentes-no-leen-ruido",
   "baseCommit": "eb699d2810711fc36fe36003c5709be08a67c49d",
   "revision": 1,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "10e0fdc77cfe9d5a17040f67344eac356ca6b848",
+      "attempts": 1,
       "startedAt": "2026-10-26T10:11:44.979Z",
       "doneAt": "2026-10-26T10:13:04.925Z",
-      "summary": "install-ignores.ts: check --install añade a cada agente en uso sus exclusiones (.cursorignore, .geminiignore, el de Windsurf, Read(...) en permissions.deny de Claude Code) con checks.exclude y scope.generated, solo lo que falta; el hook y las reglas de Claude dan un solo diff."
+      "summary": "install-ignores.ts: check --install añade a cada agente en uso sus exclusiones (.cursorignore, .geminiignore, el de Windsurf, Read(...) en permissions.deny de Claude Code) con checks.exclude y scope.generated, solo lo que falta; el hook y las reglas de Claude dan un solo diff.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "d4b3d42c16f754cfd3a00be78b13b95342947f9a",
+      "startedAt": "2026-10-26T10:13:05.250Z",
+      "doneAt": "2026-10-26T10:19:00.018Z",
+      "summary": "formats §6 documenta la exclusión de ruido y que los pasos de check --install planifican sobre los mismos archivos; ARCHITECTURE §10, el archivo de exclusión de cada agente."
     }
   },
   "pending": {

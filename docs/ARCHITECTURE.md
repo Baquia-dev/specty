@@ -351,6 +351,16 @@ Objetivo de rendimiento: p95 < 200 ms. Para acercarse, los hooks cargan solo su 
 | Gemini CLI | `AfterAgent` documentado | — | Pendiente: Specty aún no le instala hooks |
 | OpenCode, Windsurf, Copilot, Antigravity | sin un fin de turno que haga seguir al agente | — | Respaldo: la regla escrita de AGENTS.md |
 
+**Exclusión de ruido** (revisado el 2026-10-26). `specty check --install` añade a cada agente que el repositorio usa los globs de `checks.exclude` y `scope.generated`, para que no lea dependencias, artefactos de build ni código generado. Todos usan la sintaxis de `.gitignore`.
+
+| Herramienta | Dónde |
+| --- | --- |
+| Cursor | `.cursorignore` en la raíz: el agente y Tab no leen esas rutas |
+| Claude Code | `permissions.deny` con `Read(<patrón>)` en `.claude/settings.json`; también impide editarlas |
+| Gemini CLI | `.geminiignore` en la raíz |
+| Windsurf (ahora Devin) | `.devinignore`, o `.windsurfignore` o `.codeiumignore`, que aún lee; si no hay ninguno, se crea `.codeiumignore` |
+| Copilot, Codex, OpenCode, Antigravity | Sin un archivo de exclusión propio en el repositorio |
+
 ### Modelo de confianza
 
 Specty protege contra el agente impaciente (el que se salta pasos para ayudar) y contra el olvido humano. No protege contra una persona o un agente que quiera evadirlo deliberadamente con acceso de escritura al repositorio: en local, cualquier control se puede desactivar. Por eso las garantías fuertes viven en el servidor: el CI obligatorio y, en modo equipo, la revisión de PR. En la fase 4, la aprobación con presencia del usuario (WebAuthn, es decir, Touch ID o Windows Hello) eleva la barrera en local, porque el agente no puede generarla.

@@ -61,7 +61,7 @@ follows:
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/src/check/install-plan.ts, packages/cli/test/check-ignores.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts test/check-install.test.ts test/check-agent-stop.test.ts
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm check
