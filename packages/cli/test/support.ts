@@ -29,7 +29,7 @@ const GIT_ENV = {
 /** Codex's user configuration for the tests, so `init` never touches the real `~/.codex`. */
 export const CODEX_HOME = join(tmpdir(), `specty-codex-${process.pid}`);
 /** Where OpenCode's global configuration goes in the tests, instead of `~/.config`. */
-export const XDG_CONFIG_HOME = join(tmpdir(), `specty-config-${process.pid}`);
+const XDG_CONFIG_HOME = join(tmpdir(), `specty-config-${process.pid}`);
 
 export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
   const {

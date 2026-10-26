@@ -21,7 +21,7 @@ Con core, la CLI y la UI ya limpios (C1 a C4), knip enciende sus reglas de expor
 
 ## Tareas
 
-- [ ] T1: knip falla si sobra una exportación o un tipo
+- [x] T1: knip falla si sobra una exportación o un tipo
   - files: knip.json, packages/cli/test/support.ts, packages/cli/test/server/support.ts, packages/cli/test/walk.ts, packages/cli/test/fake-model.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: chore

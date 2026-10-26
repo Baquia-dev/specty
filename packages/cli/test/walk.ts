@@ -16,12 +16,12 @@ const RESOLVE_WITHIN = 4;
 const MAX_STEPS = 60;
 
 /** A tool call the agent tries, which the guard judges as Claude Code's hook would. */
-export interface ToolCall {
+interface ToolCall {
   readonly tool: string;
   readonly input: Readonly<Record<string, unknown>>;
 }
 
-export interface Step {
+interface Step {
   readonly who: "agent" | "person" | "guard";
   /** The command, or the tool the agent tried. */
   readonly what: string;
@@ -45,9 +45,9 @@ export interface Script {
   readonly first?: ToolCall;
 }
 
-export type Verdict = "resolved" | "no-continuation" | "dead-end";
+type Verdict = "resolved" | "no-continuation" | "dead-end";
 
-export interface Friction {
+interface Friction {
   /** Commands the agent ran, `next` included, and tool calls the guard blocked. */
   readonly agent: number;
   readonly person: number;
@@ -109,7 +109,7 @@ export async function walk(root: string, script: Script, delegated = false): Pro
 }
 
 /** The command the SIGUIENTE line of `output` names first, as an argument list. */
-export function nextCommand(output: string): string[] | undefined {
+function nextCommand(output: string): string[] | undefined {
   const line = output.split("\n").findLast((text) => text.startsWith("SIGUIENTE:"));
   const command = line === undefined ? undefined : /`specty ([^`]+)`/.exec(line)?.[1];
   if (command === undefined) return undefined;
