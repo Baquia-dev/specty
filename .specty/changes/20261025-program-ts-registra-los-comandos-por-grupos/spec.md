@@ -16,7 +16,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Cada grupo de comandos se registra desde su módulo
+- [x] T1: Cada grupo de comandos se registra desde su módulo
   - files: packages/cli/src/program.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/src/commands/person-commands.ts
   - verify: pnpm check
   - type: refactor
