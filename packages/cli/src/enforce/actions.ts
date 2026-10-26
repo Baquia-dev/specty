@@ -20,7 +20,15 @@ export interface GuardReply {
 
 /** The tool call that links the hooks before and after a command, safe as a file name. */
 export function toolUseId(event: Record<string, unknown>): string | undefined {
-  const id = event.tool_use_id;
+  return safeName(event.tool_use_id);
+}
+
+/** The agent's conversation the event belongs to (Cursor's `conversation_id`), safe as a file name. */
+export function conversationOf(event: Record<string, unknown>): string | undefined {
+  return safeName(event.session_id ?? event.conversation_id);
+}
+
+function safeName(id: unknown): string | undefined {
   return typeof id === "string" && /^[\w-]{1,128}$/.test(id) ? id : undefined;
 }
 

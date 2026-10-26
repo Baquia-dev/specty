@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import { guardLine } from "@baquia-dev/specty-core";
+import { type DoctorLine, guardLine } from "@baquia-dev/specty-core";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import {
   CURSOR_HOOKS,
@@ -12,32 +12,41 @@ import {
 } from "../install/agents";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
-import { type AgentAdapter, doctorLines } from "./adapter";
+import type { AgentAdapter } from "./adapter";
 
 /**
  * The events the guard listens to, with the tools each one covers: before each write, delete or
- * command, and after each command, whether it succeeded or failed.
+ * command, after each command, whether it succeeded or failed, and before each compaction.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
   preToolUse: "Write|Delete|Shell",
   beforeShellExecution: undefined,
   postToolUse: "Shell",
   postToolUseFailure: "Shell",
+  preCompact: undefined,
 };
 /** After a command, whether it succeeded or failed. */
 const AFTER: ReadonlySet<unknown> = new Set(["postToolUse", "postToolUseFailure"]);
 
 /**
  * Cursor (ARCHITECTURE §10): `preToolUse`, `beforeShellExecution`, `postToolUse`,
- * `postToolUseFailure` and `stop`. It always reads JSON: a `permission` before an action, and
- * after a command, which it cannot block, an `additional_context` that goes into the conversation.
+ * `postToolUseFailure`, `preCompact` and `stop`. It always reads JSON: a `permission` before an
+ * action, and after a command, which it cannot block, an `additional_context` that goes into the
+ * conversation. `preCompact` only observes, so the card after a compaction comes with the next
+ * command's result instead.
  */
 export const cursor: AgentAdapter = {
   tool: "cursor",
-  kind: (event) => (AFTER.has(event.hook_event_name) ? "after" : "before"),
+  kind: (event) => {
+    if (event.hook_event_name === "preCompact") return "compacting";
+    return AFTER.has(event.hook_event_name) ? "after" : "before";
+  },
   action,
-  reply: (verdict, phase) => {
-    if (phase === "after") return json(verdict.allow ? {} : { additional_context: verdict.text });
+  reply: (verdict, phase, card) => {
+    if (phase === "after") {
+      const said = [verdict.allow ? undefined : verdict.text, card].filter((part) => !!part);
+      return json(said.length === 0 ? {} : { additional_context: said.join("\n\n") });
+    }
     return json(
       verdict.allow
         ? { permission: "allow" }
@@ -81,16 +90,14 @@ export const cursor: AgentAdapter = {
   doctor: async (root) => {
     const hooks = await readText(join(root, CURSOR_HOOKS));
     const missing = missingEvents([hooks], Object.keys(EVENTS), "cursor");
-    const before = missing.includes("preToolUse") || missing.includes("beforeShellExecution");
-    return doctorLines([
-      [
-        missing.length === 0,
-        { code: "cursor-guard" },
-        before
-          ? { code: "no-cursor-guard" }
-          : { code: "cursor-after-command", events: missing.join(", ") },
-      ],
-    ]);
+    if (missing.includes("preToolUse") || missing.includes("beforeShellExecution")) {
+      return { ok: [], problems: [{ code: "no-cursor-guard" }] };
+    }
+    const after = missing.filter((event) => AFTER.has(event));
+    const problems: DoctorLine[] = [];
+    if (after.length > 0) problems.push({ code: "cursor-after-command", events: after.join(", ") });
+    if (missing.includes("preCompact")) problems.push({ code: "cursor-compact" });
+    return { ok: problems.length === 0 ? [{ code: "cursor-guard" }] : [], problems };
   },
 };
 

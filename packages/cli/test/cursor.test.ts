@@ -63,7 +63,63 @@ describe("the check after each command in Cursor", () => {
   });
 });
 
+/** Cursor's `preCompact` before it compacts conversation `c`: it only observes. */
+const compacting = (root: string) =>
+  cli(root, ["guard", "--tool", "cursor"], {
+    stdin: JSON.stringify({
+      hook_event_name: "preCompact",
+      conversation_id: "c",
+      workspace_roots: [root],
+      trigger: "auto",
+      context_usage_percent: 92,
+    }),
+  });
+
+describe("the card after a compaction in Cursor", () => {
+  it("comes with the next command's result, and only once (AC1, AC2)", async () => {
+    const root = await implementing();
+    expect(await answer(compacting(root))).toEqual({});
+    await shell(root, "preToolUse", "c5");
+    const after = await answer(shell(root, "postToolUse", "c5"));
+    expect(after.additional_context).toContain("TAREA T1: Saludar por nombre");
+    expect(after.additional_context).toBe((await cli(root, ["next"])).out);
+    await shell(root, "preToolUse", "c6");
+    expect(await answer(shell(root, "postToolUse", "c6"))).toEqual({});
+  });
+
+  it("comes after the command's own warning (AC1)", async () => {
+    const root = await implementing();
+    await compacting(root);
+    await shell(root, "preToolUse", "c7");
+    await writeFiles(root, { "src/other.ts": "generated\n" });
+    const after = await answer(shell(root, "postToolUse", "c7"));
+    expect(after.additional_context).toMatch(/^specty: El comando cambió/);
+    expect(after.additional_context).toContain("TAREA T1: Saludar por nombre");
+  });
+
+  it("is not left outside a repository with Specty (AC2)", async () => {
+    const root = await tempRepo({ "src/app.ts": "x\n" });
+    expect(await answer(compacting(root))).toEqual({});
+  });
+});
+
 describe("installing the check in Cursor", () => {
+  it("writes `preCompact`, and doctor misses it (AC3)", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    await cli(root, ["init", "--language", "es", "--tools", "cursor"]);
+    const config = JSON.parse(await read(root, ".cursor/hooks.json"));
+    expect(config.hooks.preCompact).toEqual([
+      { command: expect.stringContaining("guard --tool cursor") },
+    ]);
+    const hooks = { ...config.hooks, preCompact: [] };
+    await writeFiles(root, { ".cursor/hooks.json": JSON.stringify({ ...config, hooks }) });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Cursor: falta la tarjeta de Specty tras compactar (preCompact); ejecuta `specty init --tools cursor`.",
+    );
+  });
+
   it("writes `postToolUse` and `postToolUseFailure`, and doctor misses them (AC5)", async () => {
     const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
     expect((await cli(root, ["init", "--language", "es", "--tools", "cursor"])).code).toBe(0);

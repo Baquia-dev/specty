@@ -48,6 +48,11 @@ describe("each agent's module", () => {
     });
     expect(parsed(allow, "after")).toEqual({});
     expect(parsed(deny, "after")).toEqual({ additional_context: deny.text });
+    // A card left before a compaction comes after the command's own warning.
+    const withCard = (verdict: Verdict) =>
+      JSON.parse(cursor.reply(verdict, "after", "TARJETA").stdout);
+    expect(withCard(allow)).toEqual({ additional_context: "TARJETA" });
+    expect(withCard(deny)).toEqual({ additional_context: `${deny.text}\n\nTARJETA` });
     expect(JSON.parse(cursor.failed("specty guard: roto").stdout)).toEqual({
       permission: "allow",
       user_message: "specty guard: roto",
@@ -68,8 +73,14 @@ describe("each agent's module", () => {
       ]),
     ).toEqual(["before", "after", "after", "compact", "worktree", "worktree"]);
     expect(
-      kinds("cursor", ["preToolUse", "beforeShellExecution", "postToolUse", "postToolUseFailure"]),
-    ).toEqual(["before", "before", "after", "after"]);
+      kinds("cursor", [
+        "preToolUse",
+        "beforeShellExecution",
+        "postToolUse",
+        "postToolUseFailure",
+        "preCompact",
+      ]),
+    ).toEqual(["before", "before", "after", "after", "compacting"]);
     expect(kinds("codex", ["PreToolUse", "PostToolUse"])).toEqual(["before", "after"]);
     const codexStart = (source: string) =>
       ADAPTERS.codex.kind({ hook_event_name: "SessionStart", source });

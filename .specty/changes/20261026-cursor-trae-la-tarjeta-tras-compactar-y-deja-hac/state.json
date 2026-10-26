@@ -6,6 +6,13 @@
   "branch": "specty/20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
   "baseCommit": "313659d8ba065d7500b36bf800c831fe87dc9785",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8cda1a063a35805fea494951579c2d9fa41ad9a934baf8a4df136c96d1eb8681",
+    "at": "2026-10-26T17:51:50.813Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "138e8893bf0510dc364f78e429774ac51f6e4f74",
+      "startedAt": "2026-10-26T17:51:51.664Z",
+      "doneAt": "2026-10-26T18:02:33.372Z",
+      "summary": "La tarjeta de Cursor llega con el siguiente comando tras compactar: preCompact la deja pendiente (enforce/pending.ts, por conversación) y el siguiente postToolUse la añade tras el aviso del comando. doctor avisa sin preCompact. El guard se parte en guard, answer y beforeAction."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 5,
     "T": 3,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8cda1a063a35805fea494951579c2d9fa41ad9a934baf8a4df136c96d1eb8681",
-    "at": "2026-10-26T17:51:50.813Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

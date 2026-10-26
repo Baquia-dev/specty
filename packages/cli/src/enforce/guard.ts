@@ -16,7 +16,7 @@ import {
   shellChanges,
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
-import type { Verdict } from "../agents/adapter";
+import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
 import { placePaths } from "../flow/worktree";
@@ -24,12 +24,29 @@ import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
-import { cwdOf, type GuardReply, type GuardTool, type RawAction, toolUseId } from "./actions";
+import {
+  conversationOf,
+  cwdOf,
+  type GuardReply,
+  type GuardTool,
+  type RawAction,
+  toolUseId,
+} from "./actions";
+import { leavePending, takePending } from "./pending";
 import { bindSession, enterAction } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 import { worktreeHook } from "./worktree-hooks";
 
 const ALLOW: Verdict = { allow: true };
+
+/** One event the guard answers: the agent's module, its event, its session and its folder. */
+interface Call {
+  readonly agent: AgentAdapter;
+  readonly environment: Environment;
+  readonly session: Session;
+  readonly event: Record<string, unknown>;
+  readonly cwd: string;
+}
 
 /**
  * `specty guard --tool <id>`: called by the agent's hooks before each action and after each shell
@@ -53,26 +70,57 @@ export async function guard(
     // They make and remove worktrees for Claude Code, so they answer even outside a session.
     if (kind === "worktree") return await worktreeHook(environment, event, cwd);
     const opened = await openSession({ ...environment, cwd });
-    if (opened.kind !== "ok") return agent.reply(ALLOW, "before");
-    const session = opened.session;
-    // After a compaction the agent adds this to the context, so the task card comes back.
-    if (kind === "compact" && agent.card !== undefined) {
-      return agent.card(renderText(await next(session), session.lang));
-    }
-    if (kind === "after") return agent.reply(await afterShell(session, event), "after");
-    const raw = agent.action(event);
-    const action =
-      raw.kind === "enter"
-        ? await enterAction(environment, session, event, raw.request, cwd)
-        : await resolveAction(session, raw, cwd);
-    const decision = decideGuard(action, await guardContext(session));
-    // One change at a time per session: the worktree it may enter becomes its own.
-    if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
-    if (decision.allow) await beforeShell(session, event, action);
-    return agent.reply(verdict(decision, session), "before");
+    if (opened.kind !== "ok") return agent.reply(ALLOW, kind === "before" ? "before" : "after");
+    return await answer(kind, { agent, environment, session: opened.session, event, cwd });
   } catch (error) {
     return agent.failed(`specty guard: ${error instanceof Error ? error.message : String(error)}`);
   }
+}
+
+/** The answer to an event of a Specty session, by what the event is. */
+async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
+  const { agent, session, event } = call;
+  switch (kind) {
+    // After a compaction the agent adds this to the context, so the task card comes back.
+    case "compact":
+      return agent.card === undefined
+        ? agent.reply(ALLOW, "after")
+        : agent.card(renderText(await next(session), session.lang));
+    // A tool that cannot add it now gets it with the conversation's next command.
+    case "compacting": {
+      const conversation = conversationOf(event);
+      if (conversation !== undefined) await leavePending(session, conversation, "card");
+      return agent.reply(ALLOW, "after");
+    }
+    case "after":
+      return agent.reply(
+        await afterShell(session, event),
+        "after",
+        await pendingCard(session, event),
+      );
+    default:
+      return await beforeAction(call);
+  }
+}
+
+/** Before an action: what it would do, judged by the flow's rules. */
+async function beforeAction({
+  agent,
+  environment,
+  session,
+  event,
+  cwd,
+}: Call): Promise<GuardReply> {
+  const raw = agent.action(event);
+  const action =
+    raw.kind === "enter"
+      ? await enterAction(environment, session, event, raw.request, cwd)
+      : await resolveAction(session, raw, cwd);
+  const decision = decideGuard(action, await guardContext(session));
+  // One change at a time per session: the worktree it may enter becomes its own.
+  if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
+  if (decision.allow) await beforeShell(session, event, action);
+  return agent.reply(verdict(decision, session), "before");
 }
 
 /** Before a shell command it lets through, keeps a snapshot of the tree to compare afterwards. */
@@ -91,6 +139,17 @@ async function beforeShell(
   } catch {
     // Without a snapshot the check after the command stays silent.
   }
+}
+
+/** The card a compaction left for the conversation's next command; undefined without one. */
+async function pendingCard(
+  session: Session,
+  event: Record<string, unknown>,
+): Promise<string | undefined> {
+  const conversation = conversationOf(event);
+  if (conversation === undefined) return undefined;
+  if ((await takePending(session, conversation, "card")) === undefined) return undefined;
+  return renderText(await next(session), session.lang);
 }
 
 /** After a shell command, judges what it changed with the guard's own rules. */

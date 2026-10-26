@@ -19,6 +19,8 @@ export type DoctorLine =
   /** Claude Code's settings lack the permission for the person's commands. */
   | { readonly code: "no-claude-permissions" }
   | { readonly code: "cursor-guard" | "no-cursor-guard" }
+  /** Cursor's guard is there, without `preCompact`, which leaves the card for the next command. */
+  | { readonly code: "cursor-compact" }
   | { readonly code: "cursor-after-command"; readonly events: string }
   /** Codex's guard, its rule for Specty's commands and OpenCode's plugin, in the project: `file`. */
   | { readonly code: "codex-guard" | "no-codex-guard"; readonly file: string }
@@ -105,6 +107,11 @@ const WRITERS: {
     t(
       `Cursor: falta el guard; ejecuta \`${command} init --tools cursor\`.`,
       `Cursor: the guard is missing; run \`${command} init --tools cursor\`.`,
+    ),
+  "cursor-compact": (_, t, command) =>
+    t(
+      `Cursor: falta la tarjeta de Specty tras compactar (preCompact); ejecuta \`${command} init --tools cursor\`.`,
+      `Cursor: Specty's card after a compaction is missing (preCompact); run \`${command} init --tools cursor\`.`,
     ),
   "cursor-after-command": (line, t, command) =>
     t(
