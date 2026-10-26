@@ -51,12 +51,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a21a8d659afd1e3ed6c306710240d53aa249998d",
+      "attempts": 1,
       "startedAt": "2026-10-26T13:57:58.767Z",
       "doneAt": "2026-10-26T14:01:02.562Z",
-      "summary": "Catálogo de supresiones en el core por familia de lenguajes (Python, Ruby, Elixir, JS/TS, Java, Kotlin, C#, Go, Rust, PHP, Swift, C/C++): las de comentario solo en comentarios y las de código sin cadenas; informa la primera por posición."
+      "summary": "Catálogo de supresiones en el core por familia de lenguajes (Python, Ruby, Elixir, JS/TS, Java, Kotlin, C#, Go, Rust, PHP, Swift, C/C++): las de comentario solo en comentarios y las de código sin cadenas; informa la primera por posición.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/checks/suppressions.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "f4b232f41ba4a61cabb6d0866e98b477265e52a8",
+      "startedAt": "2026-10-26T14:01:02.927Z",
+      "doneAt": "2026-10-26T14:16:53.378Z",
+      "summary": "Verificación suppressions en la CLI con el catálogo del core, solo con un stack que no es Dart; recorrido compartido con las marcas; guías con su catálogo y un ejemplo de proveedor nuevo (!! de Kotlin); recuentos de los tests y ejemplos TS al día."
     }
   },
   "pending": {

@@ -110,6 +110,26 @@ Requires the analyzer in strict mode: `strict-casts`, `strict-inference` and `st
 
 **Disable:** `levels: { dart-strict: off }`.
 
+### `suppressions`
+
+**Stack:** any except Dart, whose `// ignore:` is watched by `dart-strict`. It looks at each file by its extension.
+
+Fails on each comment or annotation the change adds to switch the compiler, the type checker or the linter off: a silenced error is still there. Markers that are comments only count inside a comment, and those that are code, outside strings. With `--changed` and `--staged`, only on the added lines. The catalog:
+
+- Python: `# noqa`, `# ruff: noqa`, `# ruff: ignore`, `# ruff: disable` and `# ruff: file-ignore`, `# flake8: noqa`, `# type: ignore`, `# mypy: ignore-errors` and `# mypy: disable-error-code`, `# pyright: ignore`, `# pylint: disable`, `disable-next` and `skip-file`.
+- JavaScript and TypeScript: `eslint-disable`, `eslint-disable-line` and `eslint-disable-next-line`; `biome-ignore`, `biome-ignore-all` and `biome-ignore-start`. `@ts-ignore` and `@ts-nocheck` belong to `strict-types`.
+- Java: `@SuppressWarnings`, `@SuppressFBWarnings`, `NOSONAR`, `CHECKSTYLE:OFF`. Kotlin: `@Suppress`, `@file:Suppress`, `@SuppressWarnings`, `NOSONAR`.
+- C#: `#pragma warning disable`, `#nullable disable`, `SuppressMessage` and `UnconditionalSuppressMessage`, `ReSharper disable`, `NOSONAR`.
+- Go: `//nolint`, `//lint:ignore` and `//lint:file-ignore` (with no space after `//`, as golangci-lint and staticcheck read them), `#nosec`.
+- Rust: `#[allow(…)]` and `#[expect(…)]`, also as `#![…]`.
+- PHP: `@phpstan-ignore`, `@phpstan-ignore-line` and `@phpstan-ignore-next-line`, `phpcs:ignore`, `phpcs:disable` and `phpcs:ignoreFile`, `@psalm-suppress`, `@SuppressWarnings`, `NOSONAR`.
+- Ruby: `# rubocop:disable` and `# rubocop:todo`. Elixir: `# credo:disable-for-…`. Swift: `swiftlint:disable` and `swift-format-ignore`.
+- C and C++: `NOLINT`, `NOLINTNEXTLINE` and `NOLINTBEGIN`, `#pragma warning(disable…)`, `#pragma GCC diagnostic ignored` and `#pragma clang diagnostic ignored`.
+
+**Configuration:** none. If a project often needs a justified suppression, `warn` leaves it as a warning.
+
+**Disable:** `levels: { suppressions: off }`.
+
 ### `layers`
 
 **Stack:** TypeScript, JavaScript, Dart and Flutter, when layers are configured.
@@ -330,14 +350,14 @@ Specty already detects those stacks. Without a provider of their own, these work
 - `tests` with its command: `mvn test` or `gradle test`, `composer test` or `php artisan test`, `bundle exec rspec` or `bin/rails test`, `dotnet test`;
 - `function-lines` and `complexity`, except in Ruby;
 - `max-lines`, `focused-tests` and `skipped-tests`, which already know `@Disabled`, `@Ignore`, `[Ignore]`, xUnit's `Skip =` and RSpec's `focus: true`;
-- `todo` and `secrets`;
+- `todo`, `secrets` and `suppressions`, with each language's suppressions;
 - the plan's checks;
 - `generated`, with `checks.generators`.
 
 A provider would add:
 
 - its lint, format and types, when Specty does not detect them; meanwhile, `checks.commands` works;
-- its strict typing;
+- its strict typing beyond suppressions: Kotlin's `!!`, for example;
 - `layers`, with an import scanner;
 - a reader of its manifest for `dependencies`: `pom.xml`, `build.gradle`, `composer.json`, `Gemfile` or `*.csproj`, in `packages/core/src/checks/dependencies.ts`.
 
@@ -350,25 +370,25 @@ A provider would add:
 5. Write its tests with recorded outputs of the tool and, when it is installed, with the real one.
 6. Document each new check here and in [checks.md](checks.md), with its id as the heading: a test compares these headings with the checks that exist.
 
-An example for Java and Kotlin that forbids the `@SuppressWarnings` the change adds:
+An example for Kotlin that forbids the non-null assertions (`!!`) the change adds. To keep it short, it does not tell comments and strings apart:
 
 ```ts
 // SPDX-License-Identifier: Apache-2.0
 import { type Finding, translator } from "@baquia-dev/specty-core";
 import type { CheckDefinition, Provider } from "./provider";
 
-const suppressions: CheckDefinition = {
-  id: "jvm-suppressions",
+const nonNull: CheckDefinition = {
+  id: "kotlin-non-null",
   async run(context) {
     const t = translator(context.session.lang);
     const findings: Finding[] = [];
-    for (const path of context.files.filter((file) => /\.(java|kt)$/.test(file))) {
+    for (const path of context.files.filter((file) => /\.kts?$/.test(file))) {
       const added = context.added(path);
       const lines = ((await context.read(path)) ?? "").split("\n");
       lines.forEach((text, index) => {
         if (added !== undefined && !added.has(index + 1)) return;
-        if (!text.includes("@SuppressWarnings")) return;
-        const message = t("apaga avisos del compilador", "switches compiler warnings off");
+        if (!text.includes("!!")) return;
+        const message = t("aserción no nula (!!)", "non-null assertion (!!)");
         findings.push({ path, line: index + 1, message });
       });
     }
@@ -376,9 +396,9 @@ const suppressions: CheckDefinition = {
   },
 };
 
-export const jvmProvider: Provider = {
-  id: "jvm",
-  applies: (stacks) => stacks.some((stack) => ["java", "kotlin"].includes(stack.language)),
-  checks: [suppressions],
+export const kotlinProvider: Provider = {
+  id: "kotlin",
+  applies: (stacks) => stacks.some((stack) => stack.language === "kotlin"),
+  checks: [nonNull],
 };
 ```

@@ -62,7 +62,7 @@ Una verificación nueva, `suppressions`, falla con cada comentario o anotación 
   - files: packages/core/src/checks/suppressions.ts, packages/core/src/index.ts, packages/core/test/checks/suppressions.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/suppressions.test.ts
-- [ ] T2: La verificación suppressions
+- [x] T2: La verificación suppressions
   - files: packages/cli/src/check/markers.ts, packages/cli/src/check/suppressions.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-suppressions.test.ts, docs/checks.md, docs/checks.en.md
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

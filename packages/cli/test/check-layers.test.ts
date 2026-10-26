@@ -99,7 +99,7 @@ describe("the layers check of specty check", () => {
         "FALLA layers",
         "  src/domain/user.ts:2 `domain` no puede importar el paquete `@angular/core`",
         "  src/domain/user.ts:3 `domain` no puede importar `infrastructure` (src/infrastructure/cache.ts)",
-        "OK 7/8 · FALLA: layers",
+        "OK 8/9 · FALLA: layers",
       ].join("\n"),
     );
     expect(JSON.parse(await readFile(log, "utf8"))).toEqual([

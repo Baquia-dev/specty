@@ -46,7 +46,7 @@ describe("the function checks of specty check", () => {
         "  src/app.js:26 `fresh` tiene 7 líneas de código (máximo 5)",
         "FALLA complexity",
         "  src/app.js:26 `fresh` tiene complejidad 5 (máximo 3)",
-        "OK 4/6 · FALLA: function-lines, complexity",
+        "OK 5/7 · FALLA: function-lines, complexity",
       ].join("\n"),
     );
     const all = await cli(root, ["check", "--all"]);
@@ -70,7 +70,7 @@ describe("the function checks of specty check", () => {
       [
         "FALLA function-lines",
         "  src/run.js:1 una función de 8 líneas de código (máximo 5)",
-        "OK 5/6 · FALLA: function-lines",
+        "OK 6/7 · FALLA: function-lines",
       ].join("\n"),
     );
     const python = await tempRepo({
@@ -78,7 +78,7 @@ describe("the function checks of specty check", () => {
       ".specty/config.yaml": `${CONFIG()}checks:\n  levels: { secrets: off, tests: off }\n`,
     });
     await writeFiles(python, { "app.py": "def f():\n    return 1\n" });
-    expect((await cli(python, ["check"])).out).toBe("OK 4/4");
+    expect((await cli(python, ["check"])).out).toBe("OK 5/5");
   });
 
   it("says it in English", async () => {

@@ -20,14 +20,15 @@ import { planInstall } from "../check/install-plan";
 import { layersProvider } from "../check/layers";
 import { loadPlan, type Plan, planProvider } from "../check/plan";
 import { type Provider, type ReportOutput, runChecks } from "../check/provider";
+import { suppressionsProvider } from "../check/suppressions";
 import { typescriptProvider } from "../check/typescript";
 import { detectStacks, type Stack } from "../detect/stack";
 import type { Session } from "../session";
 
 /**
  * The providers of a run, in the order of its report: the project's own commands, each stack's,
- * those of every language with braces, the common ones and, with `--spec`, the plan's. Each one
- * says whether it applies to the repository's stacks.
+ * the suppressions of each language, those of every language with braces, the common ones and,
+ * with `--spec`, the plan's. Each one says whether it applies to the repository's stacks.
  */
 function providersOf(
   session: Session,
@@ -39,6 +40,7 @@ function providersOf(
     projectProvider(stacks, session.config),
     typescriptProvider,
     dartProvider,
+    suppressionsProvider,
     layersProvider(session.config),
     functionsProvider,
     generatedProvider(generators),

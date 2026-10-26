@@ -116,7 +116,9 @@ export function suppressions(path: string, text: string): Mark[] {
   const family = FAMILIES.find((candidate) => candidate.extensions.includes(extension));
   if (family === undefined) return [];
   const lines =
-    family.hash === true ? hashLines(text) : splitCode(text, { lifetimes: family.lifetimes === true });
+    family.hash === true
+      ? hashLines(text)
+      : splitCode(text, { lifetimes: family.lifetimes === true });
   return lines.flatMap((line, index) => {
     const marker =
       first(family.code ?? [], [line.code]) ?? first(family.comments ?? [], line.comments);

@@ -14,11 +14,11 @@ import type { CheckContext, CheckDefinition } from "./provider";
  * Checks that look for markers line by line, in any language: what `markers.ts` of the core
  * finds, in the run's files, on the lines the change adds.
  */
-async function scan(
+export async function scan(
   context: CheckContext,
   options: {
     readonly testsOnly: boolean;
-    readonly find: (text: string) => readonly Mark[];
+    readonly find: (text: string, path: string) => readonly Mark[];
     readonly message: (marker: string) => string;
   },
 ): Promise<{ readonly findings: readonly Finding[] }> {
@@ -29,7 +29,7 @@ async function scan(
       if (text === undefined) return [];
       const added = context.added(path);
       return options
-        .find(text)
+        .find(text, path)
         .filter((mark) => added === undefined || added.has(mark.line))
         .map((mark) => ({ path, line: mark.line, message: options.message(mark.marker) }));
     }),

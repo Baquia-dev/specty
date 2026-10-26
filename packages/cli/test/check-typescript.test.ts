@@ -81,7 +81,7 @@ describe("strict-types in specty check", () => {
         `  src/app.ts:2 ${ANY}`,
         `  src/app.ts:3 ${TS_COMMENT}`,
         `  src/app.ts:4 ${NON_NULL}`,
-        "OK 6/7 · FALLA: strict-types",
+        "OK 7/8 · FALLA: strict-types",
       ].join("\n"),
     );
     expect((await cli(root, ["check", "--all"])).out).toContain(`  src/app.ts:1 ${ANY}`);
@@ -145,6 +145,6 @@ describe("strict-types in specty check", () => {
       "src/app.js": "export const a = 1;\n",
       ".specty/config.yaml": `${CONFIG()}${CHECKS}`,
     });
-    expect((await cli(plain, ["check"])).out).toBe("OK 6/6");
+    expect((await cli(plain, ["check"])).out).toBe("OK 7/7");
   });
 });
