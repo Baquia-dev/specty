@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261026-codex-sigue-un-guion-con-un-modelo-simulado",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-codex-sigue-un-guion-con-un-modelo-simulado",
+  "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:de1ad4ea74d08c9e2ec96bb3c46c7b68e43f82c3cfd9a66b7e24c13f5bb8548f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:13677b5400e6d3004eb0518d4557be842772cb63e91c87aee2ea2cf4f523c0b2",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:4d72cb4b8105cd2a657faaaa030773cb653bf35c663bfe56b79b59ff2b21f6bf",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:74e9ec08be65a014c87cfa42ecbfdcc392c6998a727e5ba64495ec6b8faf0250",
+    "at": "2026-10-26T22:29:32.008Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
