@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261026-cada-herramienta-sabe-seguir-en-la-carpeta-del-c",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-cada-herramienta-sabe-seguir-en-la-carpeta-del-c",
+  "baseCommit": "c03deef36ff8ceddb1fbddcd315f5c03ef239e1e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d03bb2c219eb18f7e8da882a3ed89e19612f5b91da3f929ff7409391a461f09f",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:91e45d27a172729b461b6233ab930ba0eaee262e68b68bdd22c7048dbf65d551",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:65411fcd211ff5d0991313a559f0d1aafe9807171c3550b993ae565065fb2880",
+    "at": "2026-10-26T23:18:35.575Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
