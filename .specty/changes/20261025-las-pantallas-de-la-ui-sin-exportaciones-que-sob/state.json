@@ -6,6 +6,13 @@
   "branch": "specty/20261025-las-pantallas-de-la-ui-sin-exportaciones-que-sob",
   "baseCommit": "2742f955f33199d88cdce8955e36615f19f226d4",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c53d6b75a09acfe4d46c2adea5d83c35e60992eba200cd7cef4ad5626148a304",
+    "at": "2026-10-26T02:01:07.334Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "20ea18a70144d02dd8efe53cf41d0581daffa5b0",
+      "startedAt": "2026-10-26T02:01:07.688Z",
+      "doneAt": "2026-10-26T02:01:22.376Z",
+      "summary": "Dejan de exportarse ConfirmClosing, AdjustResult, AcceptResult, DelegationState, TurnOnDelegation, TurnOffDelegation y ShortcutsHelp, que solo abre o inyecta su propio archivo."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c53d6b75a09acfe4d46c2adea5d83c35e60992eba200cd7cef4ad5626148a304",
-    "at": "2026-10-26T02:01:07.334Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

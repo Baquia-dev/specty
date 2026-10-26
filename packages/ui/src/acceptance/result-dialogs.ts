@@ -116,7 +116,7 @@ const CLASSES = [
     </sp-dialog>
   `,
 })
-export class AdjustResult {
+class AdjustResult {
   private readonly data = inject<ResultData>(DIALOG_DATA);
   private readonly ref = inject(DialogRef);
   private readonly source = inject(SpectyData);
@@ -181,7 +181,7 @@ export class AdjustResult {
     </sp-dialog>
   `,
 })
-export class AcceptResult {
+class AcceptResult {
   private readonly data = inject<ResultData>(DIALOG_DATA);
   private readonly ref = inject(DialogRef);
   private readonly source = inject(SpectyData);

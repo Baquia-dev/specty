@@ -36,7 +36,7 @@ Con todas sus reglas encendidas, knip marca en las pantallas de `packages/ui/src
 
 ## Tareas
 
-- [ ] T1: La aceptación, la delegación y los atajos exportan solo lo que se importa
+- [x] T1: La aceptación, la delegación y los atajos exportan solo lo que se importa
   - files: packages/ui/src/acceptance/closing-actions.ts, packages/ui/src/acceptance/result-dialogs.ts, packages/ui/src/app/delegation.ts, packages/ui/src/keyboard/shortcuts.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck
