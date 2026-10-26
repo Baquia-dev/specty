@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-los-comandos-de-calidad-de-java-kotlin-c-y-swift",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-los-comandos-de-calidad-de-java-kotlin-c-y-swift",
   "baseCommit": "0e6ca8ab4cbb19376d04709989fb0de809af2e09",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a1e5e4922e97a88e9afec4e49c9c5f0ea949cdd632c1c94d176bdb725a40d565",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fc18cb7e9bf76695dc1dcbd412d0bcef96fe0eed",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:49:08.912Z",
       "doneAt": "2026-10-26T14:51:16.411Z",
-      "summary": "Las guías y formats.md añaden lo que se detecta en Java y Kotlin (Gradle y Maven), Swift y C#."
+      "summary": "Las guías y formats.md añaden lo que se detecta en Java y Kotlin (Gradle y Maven), Swift y C#.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -67,5 +67,6 @@
     "A": 4,
     "AC": 5,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T14:51:39.872Z"
 }

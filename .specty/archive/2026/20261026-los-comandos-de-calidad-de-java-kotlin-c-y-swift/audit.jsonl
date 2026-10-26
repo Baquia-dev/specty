@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T14:49:08.913Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"fc18cb7e9bf76695dc1dcbd412d0bcef96fe0eed"}}
 {"ts":"2026-10-26T14:51:16.410Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":94493,"tree":"sha256:b5c1c010fca97d5ce077a96449c42dff813b30b6131ea50d80b86d1caa7229d1"}}
 {"ts":"2026-10-26T14:51:16.412Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Las guías y formats.md añaden lo que se detecta en Java y Kotlin (Gradle y Maven), Swift y C#."}}
+{"ts":"2026-10-26T14:51:24.284Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T14:51:39.873Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:015474f057ca4a47910300d85b5c8c861e2b74842debae7cbd8cc3b0f0ea7679","size":"S","warnings":0}}
+{"ts":"2026-10-26T14:51:40.059Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

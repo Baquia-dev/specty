@@ -55,3 +55,24 @@ follows:
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`specty check` y `specty init` detectan, en Java y Kotlin, Spotless, Checkstyle, PMD, detekt y ktlint, con Gradle (con su wrapper) o con Maven. En Swift detectan SwiftLint y swift-format. En C#, `typecheck` ejecuta `dotnet build`. Las guías y `formats.md` lo documentan. Con S2a, el formato, el lint y los tipos quedan cubiertos en los nueve stacks del plan.
+
+### Desviaciones
+
+- `specty check` sobre el propio cambio volvió a encontrar `commandsFor` por encima de los límites (51 líneas, complejidad 19) y `formatCommand` con complejidad 12. Las dos pasaron de un `switch` por lenguaje a una tabla por lenguaje (`BASE`, `TOOLCHAIN_FORMAT`). Ahora `commandsFor` aplica las herramientas de calidad a cualquier stack que no sea JavaScript.
+- Ruby pasó a su propia función en `quality.ts`, con el ayudante `tool`, para que `qualityCommands` no creciera en complejidad.
+
+### Decisiones
+
+- En Gradle se llama a cada tarea por su nombre, no a `check -x test`. La documentación de ktlint-gradle no confirma que `ktlintCheck` se cuelgue de `check`.
+- `swiftlint lint` respeta la severidad que fije el proyecto. `swift format lint` lleva `--strict`, porque sin él una infracción de formato no falla.
+- Quedan fuera SpotBugs, que necesita compilar antes, y los plugins aplicados solo en subproyectos o en `buildSrc`.
+
+### Pendientes
+
+- S3: los lectores de dependencias de cada ecosistema, para `allowedDependencies`.
