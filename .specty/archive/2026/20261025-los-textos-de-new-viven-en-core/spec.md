@@ -43,3 +43,22 @@ ARCHITECTURE y AGENTS.md dicen que los textos que ve el agente viven en `package
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `specty new` viven en `core/src/cards/new.ts`: `newRefusalCard` (un caso por cada motivo por el que no crea nada), `changeCreatedLead` y `worktreeCreatedCard`, con tests en core. `new.ts` y `agent-commands.ts` ya no llaman al traductor, y la salida es la misma: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El tipo de cambio desconocido usa `bareCards`, porque se rechaza antes de abrir la sesión.
+- `worktreeCreatedCard` recibe el resultado de preparar la carpeta tal como lo da la CLI (comando, si fue bien y el final de su salida).
+
+### Pendientes
+
+- Siguen en la CLI los textos de los demás comandos: los siguientes cambios de la serie los llevan a core, por grupos.

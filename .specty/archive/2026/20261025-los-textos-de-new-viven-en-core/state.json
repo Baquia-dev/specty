@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-new-viven-en-core",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-new-viven-en-core",
   "baseCommit": "69498f3211020192a5bc8cc2806db2800169f752",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:7f5aab8e73af52bd64eeb6d62fb54d67517c91b906608a8ed62c42d034bb4c2d",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6df831dc0637f2451ae62af0202e28e791bb7f1c",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:09:42.544Z",
       "doneAt": "2026-10-26T02:12:38.722Z",
-      "summary": "new.ts y agent-commands.ts piden sus textos a core (newRefusalCard, changeCreatedLead y worktreeCreatedCard) y ya no llaman al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios."
+      "summary": "new.ts y agent-commands.ts piden sus textos a core (newRefusalCard, changeCreatedLead y worktreeCreatedCard) y ya no llaman al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T02:12:57.890Z"
 }
