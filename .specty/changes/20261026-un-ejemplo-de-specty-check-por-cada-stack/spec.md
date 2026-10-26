@@ -48,7 +48,7 @@ Cada stack que Specty soporta tiene un repositorio de ejemplo, como ya lo tienen
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-scripting.test.ts
   - type: test
-- [ ] T2: Los ejemplos de Java, Kotlin y C#
+- [x] T2: Los ejemplos de Java, Kotlin y C#
   - files: packages/cli/test/stack-dialect.ts, packages/cli/test/check-examples-jvm.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-jvm.test.ts

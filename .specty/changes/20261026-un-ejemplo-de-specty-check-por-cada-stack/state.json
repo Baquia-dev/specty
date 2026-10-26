@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "60f20ec996d7bf764c8365195a035101d596292a",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:02:26.169Z",
       "doneAt": "2026-10-26T16:07:45.639Z",
-      "summary": "stack-dialect.ts arma cada ejemplo desde los datos de su stack (rutas, manifiesto, sintaxis, herramientas imitadas, capas y marcas) con la spec y los casos de Flutter. Python, Ruby y PHP: todo pasa con el plan y todo falla al romperlo, salvo las marcas que su stack no tiene."
+      "summary": "stack-dialect.ts arma cada ejemplo desde los datos de su stack (rutas, manifiesto, sintaxis, herramientas imitadas, capas y marcas) con la spec y los casos de Flutter. Python, Ruby y PHP: todo pasa con el plan y todo falla al romperlo, salvo las marcas que su stack no tiene.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "98f4d13224f58dc7e43f8fa74463531ddcf1fc1f",
+      "startedAt": "2026-10-26T16:07:45.917Z",
+      "doneAt": "2026-10-26T16:09:51.225Z",
+      "summary": "Java (Maven), Kotlin (Gradle) y C# (.NET): imitan Spotless, Checkstyle, ktlint, detekt, dotnet format, dotnet build y sus tests. Todo pasa con el plan y todo falla al romperlo; focused-tests pasa en los tres, que no tienen marca de foco."
     }
   },
   "pending": {
