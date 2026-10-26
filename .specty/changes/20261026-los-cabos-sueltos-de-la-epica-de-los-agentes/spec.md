@@ -55,7 +55,7 @@ La épica «Todos los agentes al nivel de Claude Code» dejó cuatro cosas suelt
 
 ## Tareas
 
-- [ ] T1: uninstall quita también el fin de turno
+- [x] T1: uninstall quita también el fin de turno
   - files: packages/cli/src/install/agents.ts, packages/cli/src/agents/index.ts, packages/cli/test/uninstall.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/uninstall.test.ts test/check-agent-stop.test.ts
