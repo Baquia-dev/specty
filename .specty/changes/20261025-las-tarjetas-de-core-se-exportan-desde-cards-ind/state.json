@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261025-las-tarjetas-de-core-se-exportan-desde-cards-ind",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261025-las-tarjetas-de-core-se-exportan-desde-cards-ind",
+  "baseCommit": "3257fe93085e67840702cf70cb4e22ac932750e7",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:57aa74b55e4ddae6cee223e7ddc1eb40d7d91a3b2af4716c5c8724cb05090a6f",
+    "at": "2026-10-26T02:28:59.609Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
