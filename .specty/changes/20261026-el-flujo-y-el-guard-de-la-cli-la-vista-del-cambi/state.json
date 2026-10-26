@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
+  "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:271b0dae130322d6ef958668e6e95c88129e852ac6c938b3641d74e4813d3c7d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:30b789989b006d882780de89579528b984d125f4654d25dc984f218d68c1a130",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b77d3b18771d97e7fa5bbdc2c8a68bf0739ae86682e431965590e0c151d672d6",
+    "at": "2026-10-26T22:30:42.414Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
