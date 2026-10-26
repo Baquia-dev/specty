@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2dd5af0928d4a8f3d73b6f8c616b94ed5eb3f25f",
+      "attempts": 1,
       "startedAt": "2026-10-26T00:26:34.229Z",
       "doneAt": "2026-10-26T00:29:06.797Z",
-      "summary": "El servidor sirve con cada cambio reviews: target, revisión, fecha y texto de cada review.completed con respuesta, leído por su nombre en reviews/ del propio cambio (sigue valiendo archivado y no sirve nada más)."
+      "summary": "El servidor sirve con cada cambio reviews: target, revisión, fecha y texto de cada review.completed con respuesta, leído por su nombre en reviews/ del propio cambio (sigue valiendo archivado y no sirve nada más).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "81e267cb7dec36a03cd86329d807b916581fcb0a",
+      "startedAt": "2026-10-26T00:29:07.100Z",
+      "doneAt": "2026-10-26T00:31:05.063Z",
+      "summary": "La vista del cambio (UI) trae findings (findingsOf: los del último task.completed de cada tarea) y specReview/resultReview, la última revisión con respuesta de la spec y del resultado, de record.reviews."
     }
   },
   "pending": {

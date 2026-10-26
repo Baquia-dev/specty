@@ -15,9 +15,17 @@ import {
 import { requestOf } from "./asked";
 import { closingOf } from "./closing";
 import { deriveDelta } from "./delta";
+import { findingsOf } from "./findings";
 import { historyOf } from "./history";
 import { type AuditRecord, progressOf } from "./progress";
-import type { ChangeRecord, ChangeTab, ChangeView, DecisionKind, ReviewView } from "./records";
+import type {
+  ChangeRecord,
+  ChangeTab,
+  ChangeView,
+  DecisionKind,
+  ReviewRecord,
+  ReviewView,
+} from "./records";
 import { deriveReview } from "./review";
 import { sharedFiles } from "./shared";
 import { warningsOf } from "./warnings";
@@ -89,6 +97,12 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const requested = changesRequestedOf(state, record.audit ?? []);
   const request = requestOf(record.audit ?? []);
   const warnings = warningsOf(record.audit ?? []);
+  const findings = findingsOf(record.audit ?? []);
+  // The last review of each target that answered: the records come oldest first.
+  const last = (target: ReviewRecord["target"]) =>
+    (record.reviews ?? []).findLast((review) => review.target === target);
+  const specReview = last("spec");
+  const resultReview = last("diff");
   // Once the person asked for changes, the change waits for the agent, not for them.
   const decision = requested === undefined ? decisionOf(state) : undefined;
   return {
@@ -142,6 +156,9 @@ export function deriveView(record: ChangeRecord): ChangeView {
     progress: progressOf(spec, state, record.audit ?? [], record.verifyFull),
     ...closingIn(spec),
     ...(warnings.length === 0 ? {} : { warnings }),
+    ...(findings.length === 0 ? {} : { findings }),
+    ...(specReview === undefined ? {} : { specReview }),
+    ...(resultReview === undefined ? {} : { resultReview }),
     history: historyOf(record.audit ?? []),
   };
 }

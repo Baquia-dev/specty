@@ -191,6 +191,40 @@ describe("decisions and tabs", () => {
     expect([next.decision, next.changesRequested]).toEqual(["review", undefined]);
   });
 
+  it("carries the findings, and the last review of the spec and of the result (AC1, AC2, AC3)", () => {
+    const review = (target: "spec" | "diff", revision: number, at: string, text: string) => ({
+      target,
+      revision,
+      at,
+      text,
+    });
+    const view = deriveView({
+      ...record({ phase: "acceptance" }),
+      audit: [
+        {
+          ts: "2026-10-24T10:00:00Z",
+          actor: "agent",
+          event: "task.completed",
+          data: { task: "T1", findings: ["Falta un índice."] },
+        },
+      ],
+      reviews: [
+        review("spec", 1, "2026-10-20T10:00:00Z", "Primera."),
+        review("spec", 2, "2026-10-21T10:00:00Z", "Segunda."),
+        review("diff", 2, "2026-10-22T10:00:00Z", "El resultado."),
+      ],
+    });
+    expect(view.findings).toEqual([{ task: "T1", text: "Falta un índice." }]);
+    expect(view.specReview?.text).toBe("Segunda.");
+    expect(view.resultReview).toMatchObject({ revision: 2, text: "El resultado." });
+    const plain = deriveView(record());
+    expect([plain.findings, plain.specReview, plain.resultReview]).toEqual([
+      undefined,
+      undefined,
+      undefined,
+    ]);
+  });
+
   it("carries the history from the audit, oldest first", () => {
     expect(deriveView(record()).history).toEqual([]);
     const audit = [
