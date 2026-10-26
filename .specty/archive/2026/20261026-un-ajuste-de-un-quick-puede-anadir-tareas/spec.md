@@ -53,3 +53,22 @@ Hoy un cambio quick cuya verificación completa falla al aceptarlo queda atascad
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Un quick aprobado puede ganar tareas con un ajuste: el límite de una tarea solo se exige antes de la primera aprobación, y los de archivos y rutas sensibles siguen en cada revisión. Un test de punta a punta recorre el caso que se atascaba: la verificación completa falla al aceptar, un ajuste añade la corrección y el cambio queda archivado en main. formats.md y ARCHITECTURE.md lo explican.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Que el cambio ya se aprobó se lee de la revisión aprobada que recibe la validación, sin campos nuevos en el estado.
+- La tarea de corrección del test es `style`, que no exige un test propio como un `fix`.
+
+### Pendientes
+
+Ninguno.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
   "baseCommit": "e3f23e4782f82e13a99b00cfd09d2a40ceaf2a7e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4e477a5dba22773c4b31d1f3f8fa7d8a4afd5a32133176ed5ff07246e79a7bfc",
@@ -52,12 +52,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "19cd33247d2543788dbd0bef56d1ac9c1ada907f",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:43:08.505Z",
       "doneAt": "2026-10-26T16:45:18.973Z",
-      "summary": "ARCHITECTURE (carriles) y formats §2 (errores): la tarea única del quick es el límite del primer plan; tras una verificación fallida al aceptar, un ajuste añade tareas de corrección, y los límites de archivos y rutas sensibles siguen."
+      "summary": "ARCHITECTURE (carriles) y formats §2 (errores): la tarea única del quick es el límite del primer plan; tras una verificación fallida al aceptar, un ajuste añade tareas de corrección, y los límites de archivos y rutas sensibles siguen.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "A": 2,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T16:47:22.473Z"
 }
