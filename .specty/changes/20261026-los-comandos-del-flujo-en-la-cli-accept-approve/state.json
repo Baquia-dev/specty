@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f360c6d13a037876802533d463f4386473c794cb",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:24:39.587Z",
       "doneAt": "2026-10-26T19:27:39.952Z",
-      "summary": "accept.ts: accept muestra el resumen y delega en verifyBeforeAccepting (verificationToRun decide si hace falta, runFullVerification la ejecuta y registra) y en accepted, que mueve la fase. Mismo orden de notas y preguntas; los tests de la CLI pasan."
+      "summary": "accept.ts: accept muestra el resumen y delega en verifyBeforeAccepting (verificationToRun decide si hace falta, runFullVerification la ejecuta y registra) y en accepted, que mueve la fase. Mismo orden de notas y preguntas; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1b3ceee48e3e9954090ae060e9bfe6ccabc8e5e5",
+      "startedAt": "2026-10-26T19:27:40.252Z",
+      "doneAt": "2026-10-26T19:31:22.111Z",
+      "summary": "approve.ts: approveSpec comprueba la revisión y encadena noteApprovalSummary, decideAssumptions con decideAssumption, la confirmación y approved, que deja el registro y el commit a recordApproval. Mismo orden; los tests de la CLI pasan."
     }
   },
   "pending": {

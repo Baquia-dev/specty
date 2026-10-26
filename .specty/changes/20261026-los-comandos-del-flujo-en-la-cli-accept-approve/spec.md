@@ -44,7 +44,7 @@ Nueve funciones de los comandos del flujo pasan de los límites de Specty: `acce
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T2: La aprobación
+- [x] T2: La aprobación
   - files: packages/cli/src/commands/approve.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
