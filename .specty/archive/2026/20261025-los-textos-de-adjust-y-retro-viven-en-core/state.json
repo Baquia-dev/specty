@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-adjust-y-retro-viven-en-core",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-adjust-y-retro-viven-en-core",
   "baseCommit": "0828f1c8bc3691a301f8de9ea027da8c1ddb697e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:24ace09e594bc8bca24e6c6520eec351c6372240ff1718d44e43fc1ad347e533",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8165cc55db0748f8febf18a6be275a2c8700fd83",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:24:11.946Z",
       "doneAt": "2026-10-26T02:27:28.002Z",
-      "summary": "adjust.ts y retro.ts piden sus textos a core (noActiveChangeCard, adjustRefusalCard y las tarjetas de cards/retro.ts); retroDone queda como envoltorio sin textos para approve.ts. La salida es la misma, como comprueban los tests de la CLI sin cambios."
+      "summary": "adjust.ts y retro.ts piden sus textos a core (noActiveChangeCard, adjustRefusalCard y las tarjetas de cards/retro.ts); retroDone queda como envoltorio sin textos para approve.ts. La salida es la misma, como comprueban los tests de la CLI sin cambios.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T02:28:20.472Z"
 }

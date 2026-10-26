@@ -47,3 +47,21 @@ Tercer cambio de la serie que lleva a core los textos de la CLI, con los dos com
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `adjust` y `retro` viven en `core/src/cards/adjust.ts` y `cards/retro.ts`, con tests; `adjust` usa la tarjeta común de «No hay un cambio activo». Con este cambio, ningún comando del agente llama al traductor en la CLI, y la salida es la misma: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `retroDone` sigue en la CLI como envoltorio sin textos de `retroDoneCard`, porque también lo usa `approve.ts`, que tiene su propio cambio.
+
+### Pendientes
+
+- `packages/core/src/index.ts` pasó de 300 líneas de código (306) con las exportaciones de las tarjetas nuevas, y la serie añadirá más: el siguiente cambio las lleva a un `cards/index.ts`, por responsabilidad.
