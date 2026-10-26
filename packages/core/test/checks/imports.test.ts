@@ -2,6 +2,9 @@
 import { describe, expect, it } from "vitest";
 import {
   goImports,
+  jvmImports,
+  jvmPackages,
+  phpImports,
   pythonImports,
   pythonProject,
   type ResolvedImport,
@@ -96,6 +99,67 @@ describe("the import scanners of layers", () => {
     ]);
     expect(shown(rustImports("src/api/mod.rs", "use super::domain::User;"))).toEqual([
       "1 super::domain::User → src/domain/User.rs",
+    ]);
+  });
+
+  it("read Java's and Kotlin's imports against the folders of the project's packages", () => {
+    const packages = jvmPackages([
+      "app/src/main/java/com/acme/domain/User.java",
+      "app/src/main/java/com/acme/infra/Db.java",
+      "app/src/main/kotlin/com/acme/web/Api.kt",
+      "README.md",
+    ]);
+    const java = [
+      "package com.acme.domain;",
+      "",
+      "import java.util.List;",
+      "import com.acme.infra.Db;",
+      "import static com.acme.infra.Db.connect;",
+      "import com.acme.web.*;",
+      "import org.springframework.stereotype.Service;",
+      "// import com.acme.infra.Old;",
+    ].join("\n");
+    expect(
+      shown(jvmImports("app/src/main/java/com/acme/domain/Order.java", java, packages)),
+    ).toEqual([
+      "3 java.util.List → pkg:java.util.List",
+      "4 com.acme.infra.Db → app/src/main/java/com/acme/infra/Db.java",
+      "5 com.acme.infra.Db.connect → app/src/main/java/com/acme/infra/Db.java",
+      "6 com.acme.web.* → app/src/main/kotlin/com/acme/web/*",
+      "7 org.springframework.stereotype.Service → pkg:org.springframework.stereotype.Service",
+    ]);
+    const kotlin = [
+      "package com.acme.web",
+      "import com.acme.domain.User as DomainUser",
+      "import io.ktor.server.routing.*",
+    ].join("\n");
+    expect(shown(jvmImports("app/src/main/kotlin/com/acme/web/Api.kt", kotlin, packages))).toEqual([
+      "2 com.acme.domain.User → app/src/main/java/com/acme/domain/User.java",
+      "3 io.ktor.server.routing.* → pkg:io.ktor.server.routing.*",
+    ]);
+  });
+
+  it("read PHP's top-level use statements by PSR-4, and leave the traits of a class out", () => {
+    const text = [
+      "<?php",
+      "namespace App\\Domain;",
+      "",
+      "use App\\Infra\\Db;",
+      "use App\\Domain\\{User, Money};",
+      "use function App\\Support\\format;",
+      "use Illuminate\\Support\\Facades\\DB as Facade;",
+      "// use App\\Infra\\Old;",
+      "",
+      "final class Order",
+      "{",
+      "    use HasEvents;",
+      "}",
+    ].join("\n");
+    expect(shown(phpImports("src/Domain/Order.php", text, { "App\\": "src/" }))).toEqual([
+      "4 App\\Infra\\Db → src/Infra/Db.php",
+      "5 App\\Domain → src/Domain/*",
+      "6 App\\Support\\format → src/Support/format.php",
+      "7 Illuminate\\Support\\Facades\\DB → pkg:Illuminate/Support/Facades/DB",
     ]);
   });
 });

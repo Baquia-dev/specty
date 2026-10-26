@@ -34,6 +34,8 @@ export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
 export { goImports } from "./checks/imports-go";
+export { jvmImports, jvmPackages } from "./checks/imports-jvm";
+export { phpImports } from "./checks/imports-php";
 export { pythonImports, pythonProject } from "./checks/imports-python";
 export { rustImports } from "./checks/imports-rust";
 export {
