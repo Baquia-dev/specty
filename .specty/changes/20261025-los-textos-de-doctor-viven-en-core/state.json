@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-doctor-viven-en-core",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-doctor-viven-en-core",
   "baseCommit": "7d6e0a7d52de90951f041a315bd2fae3199e77fb",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c61d06a1d544448c4c5332ca4b37cb0eee651a73",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:52:09.572Z",
       "doneAt": "2026-10-26T02:52:53.097Z",
-      "summary": "core/src/cards/doctor.ts tiene una línea por cada código de comprobación de doctor (DoctorLine) y su tarjeta, y refusals.ts los rechazos de antes de abrir la sesión (notGitCard e invalidConfigCard), copiados letra a letra, con tests."
+      "summary": "core/src/cards/doctor.ts tiene una línea por cada código de comprobación de doctor (DoctorLine) y su tarjeta, y refusals.ts los rechazos de antes de abrir la sesión (notGitCard e invalidConfigCard), copiados letra a letra, con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "31676d21f309903c3d97e945e335d1da6aef526a",
+      "startedAt": "2026-10-26T02:52:53.361Z",
+      "doneAt": "2026-10-26T02:54:55.691Z",
+      "summary": "doctor.ts decide qué encontró cada comprobación (un DoctorLine) y pide sus textos a core (doctorCard), y program.ts usa notGitCard e invalidConfigCard; ninguno llama al traductor y la salida es la misma, como comprueban los tests."
     }
   },
   "pending": {

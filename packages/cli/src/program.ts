@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  blockedCard,
   EXIT_CODES,
-  headerOf,
+  invalidConfigCard,
   type Lang,
+  notGitCard,
   notInitializedCard,
   type Output,
   renderText,
-  translator,
 } from "@baquia-dev/specty-core";
 import { Command, CommanderError } from "commander";
 import type { ReportOutput } from "./check/provider";
@@ -54,31 +53,15 @@ export async function runCli(
   const run = (handler: (session: Session) => Promise<Output | ReportOutput>) => async () => {
     const opened = await openSession(environment);
     const cards = bareCards(environment.env);
-    const t = translator(cards.lang);
     switch (opened.kind) {
       case "no-git":
-        return emit(
-          blockedCard(
-            headerOf(),
-            t("Esto no es un repositorio git.", "This is not a git repository."),
-            t("ejecuta `git init`.", "run `git init`."),
-          ),
-          cards.lang,
-        );
+        return emit(notGitCard(cards), cards.lang);
       case "missing":
         return emit(notInitializedCard(cards), cards.lang);
-      case "invalid":
-        return emit(
-          {
-            ...blockedCard(
-              headerOf(),
-              opened.issues.map((issue) => `${issue.path}: ${issue.message}`).join("; "),
-              t("corrige .specty/config.yaml.", "fix .specty/config.yaml."),
-            ),
-            status: "invalid",
-          },
-          cards.lang,
-        );
+      case "invalid": {
+        const issues = opened.issues.map((issue) => `${issue.path}: ${issue.message}`).join("; ");
+        return emit(invalidConfigCard(issues, cards), cards.lang);
+      }
       case "ok":
         return emit(await handler(opened.session), opened.session.lang);
     }

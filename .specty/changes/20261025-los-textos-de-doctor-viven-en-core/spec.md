@@ -41,7 +41,7 @@ Octavo cambio de la serie que lleva a core los textos de la CLI. `doctor` arma e
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: doctor y program piden sus textos a core
+- [x] T2: doctor y program piden sus textos a core
   - files: packages/cli/src/commands/doctor.ts, packages/cli/src/program.ts
   - ac: AC1, AC2
   - verify: pnpm check
