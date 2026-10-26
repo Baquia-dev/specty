@@ -187,6 +187,7 @@ export {
   type CommandCheck,
   checkLevel,
   DEFAULT_CHECKS,
+  type GeneratorConfig,
   type LayerRule,
   type Layers,
   type TodoConfig,

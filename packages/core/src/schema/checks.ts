@@ -17,6 +17,8 @@ export interface ChecksConfig {
   readonly functions: { readonly maxLines: number; readonly complexity: number };
   /** The layers of the project, by name: their paths and what each one may import. */
   readonly layers: Layers;
+  /** Code generators besides the ones Specty detects, whose outputs must match what they make. */
+  readonly generators: readonly GeneratorConfig[];
   /** The project's commands for the command checks, over the ones Specty detects. */
   readonly commands: Readonly<Partial<Record<CommandCheck, string>>>;
 }
@@ -29,6 +31,14 @@ export interface LayerRule {
 }
 
 export type Layers = Readonly<Record<string, LayerRule>>;
+
+/** A code generator: its command, the files it writes and, if given, the ones it reads. */
+export interface GeneratorConfig {
+  readonly command: string;
+  readonly outputs: readonly string[];
+  /** Without them, the generator runs on any change. */
+  readonly inputs?: readonly string[];
+}
 
 /** The checks that run one of the project's own commands. */
 export const COMMAND_CHECKS = ["format", "lint", "typecheck", "tests"] as const;
@@ -66,6 +76,7 @@ export const DEFAULT_CHECKS: ChecksConfig = {
   },
   functions: { maxLines: 50, complexity: 10 },
   layers: {},
+  generators: [],
   commands: {},
 };
 
@@ -121,6 +132,15 @@ export const ChecksSchema = z.strictObject({
       }
     })
     .optional(),
+  generators: z
+    .array(
+      z.strictObject({
+        command: z.string().min(1),
+        outputs: z.array(z.string().min(1)).min(1),
+        inputs: z.array(z.string().min(1)).optional(),
+      }),
+    )
+    .optional(),
   commands: z
     .strictObject({
       format: z.string().min(1).optional(),
@@ -154,6 +174,11 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
         },
       ]),
     ),
+    generators: (input?.generators ?? []).map((generator) => ({
+      command: generator.command,
+      outputs: generator.outputs,
+      ...(generator.inputs !== undefined ? { inputs: generator.inputs } : {}),
+    })),
     commands: Object.fromEntries(
       COMMAND_CHECKS.flatMap((id) => {
         const command = input?.commands?.[id];
