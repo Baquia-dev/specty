@@ -83,6 +83,15 @@ describe("the CLI bundle", () => {
     expect(await exists(join(out, "ui"))).toBe(false);
   });
 
+  it("carries the license and the notice, as Apache-2.0 asks of every distribution", async () => {
+    const out = await mkdtemp(join(tmpdir(), "specty-bundle-"));
+    bundle(out);
+    for (const name of ["LICENSE", "NOTICE"]) {
+      const root = await readFile(join(PACKAGE, "..", "..", name), "utf8");
+      expect(await readFile(join(out, name), "utf8")).toBe(root);
+    }
+  });
+
   it("lets the hooks load none of the rest of the CLI, from this build's chunks only (AC1, AC2, AC4)", async () => {
     const out = await mkdtemp(join(tmpdir(), "specty-bundle-"));
     const metafile = join(await mkdtemp(join(tmpdir(), "specty-meta-")), "meta.json");

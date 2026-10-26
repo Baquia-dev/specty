@@ -1,0 +1,7 @@
+{"ts":"2026-10-26T01:19:29.330Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","branch":"specty/20261025-el-paquete-npm-lleva-license-y-notice","request":"si realiza todo eneguida de forma autonoma las 12 observaciones"}}
+{"ts":"2026-10-26T01:19:53.726Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:f01a9711dcf518a643b96834c960ea0d61e5509e41c214fd39929b04ab265384","size":"S","warnings":0}}
+{"ts":"2026-10-26T01:19:54.860Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:f01a9711dcf518a643b96834c960ea0d61e5509e41c214fd39929b04ab265384","channel":"delegated","delegated":true}}
+{"ts":"2026-10-26T01:19:55.997Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"afeed7e3befe94ac935e95ff82826c238c6e6f6c"}}
+{"ts":"2026-10-26T01:23:18.248Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":159773,"tree":"sha256:619404e9782e78579b963c8279bb950edad7f16c4c430aad03bc0def85162516"}}
+{"ts":"2026-10-26T01:23:18.374Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"build.mjs copia LICENSE y NOTICE de la raíz junto al bundle en cada build, así el paquete npm (que solo publica dist) los lleva, como pide Apache-2.0; bundle.test.ts lo comprueba. ARCHITECTURE §16."}}
+{"ts":"2026-10-26T01:23:29.652Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

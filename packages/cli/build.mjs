@@ -44,6 +44,10 @@ if (values.metafile !== undefined) {
   await writeFile(values.metafile, JSON.stringify(result.metafile));
 }
 
+// Apache-2.0 asks every distribution to carry the license and the notice, and the package
+// publishes only this folder (`files: ["dist"]`).
+for (const name of ["LICENSE", "NOTICE"]) await cp(join("..", "..", name), join(outdir, name));
+
 // Chunks of earlier builds, which nothing imports any more.
 const built = new Set(Object.keys(result.metafile.outputs).map((path) => basename(path)));
 for (const file of await readdir(outdir)) {

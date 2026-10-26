@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261025-el-paquete-npm-lleva-license-y-notice",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261025-el-paquete-npm-lleva-license-y-notice",
+  "baseCommit": "0f34f09794497cb5918f61d48418a7328ecb526c",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f01a9711dcf518a643b96834c960ea0d61e5509e41c214fd39929b04ab265384",
+    "at": "2026-10-26T01:19:54.824Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "afeed7e3befe94ac935e95ff82826c238c6e6f6c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:19:55.994Z",
+      "doneAt": "2026-10-26T01:23:18.371Z",
+      "summary": "build.mjs copia LICENSE y NOTICE de la raíz junto al bundle en cada build, así el paquete npm (que solo publica dist) los lleva, como pide Apache-2.0; bundle.test.ts lo comprueba. ARCHITECTURE §16.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}
