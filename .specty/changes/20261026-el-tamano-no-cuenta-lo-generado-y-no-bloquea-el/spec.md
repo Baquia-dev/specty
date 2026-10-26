@@ -56,7 +56,7 @@ Un cambio aprobado quedó atrapado en el cierre. Su *Files* tenía un glob sobre
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core test
   - type: fix
-- [ ] T3: La CLI marca lo generado y el cierre no se atasca
+- [x] T3: La CLI marca lo generado y el cierre no se atasca
   - files: packages/cli/src/flow/analysis.ts, packages/cli/src/commands/propose.ts, packages/cli/test/closing-size.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm check

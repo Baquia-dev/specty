@@ -7,6 +7,7 @@ import {
   headerOf,
   invalidSpecCard,
   itemHashes,
+  type Lang,
   noActiveChangeCard,
   notProposableCard,
   type Output,
@@ -67,24 +68,20 @@ export async function propose(session: Session): Promise<Output> {
     await resolveComments(files, revision);
   }
   const now = session.environment.now().toISOString();
+  const size = keptSize(state, analysis.size, phase, session.lang);
   const nextState: ChangeState = {
     ...state,
     phase: moved.phase,
     revision,
     items: decisions(state, analysis.spec),
     maxIds: maxIdsOf(state, analysis.spec),
-    size: {
-      level: analysis.size.level,
-      score: analysis.size.score,
-      adjust: analysis.size.adjust,
-      reasons: analysis.size.reasons.map((reason) => formatSizeReason(reason, session.lang)),
-    },
+    size,
     ...(phase === "closing" ? { closingSubmittedAt: now } : {}),
   };
   await commitState(session, active, nextState, "spec.proposed", {
     revision,
     hash: analysis.hash,
-    size: analysis.size.level,
+    size: size.level,
     warnings: analysis.diagnostics.length,
   });
   const approvedText = await readRevision(files, state.approved?.revision);
@@ -111,6 +108,25 @@ export async function propose(session: Session): Promise<Output> {
   if (phase === "closing") return card;
   const shared = await sharedFiles(session, state.id, listed(analysis.spec));
   return { ...card, blocks: [...card.blocks, ...sharedBlock(session, shared)] };
+}
+
+/**
+ * The size the state keeps. The closing keeps the approval's: it was decided then, and the closing
+ * no longer looks at it, however many files the change's globs match today.
+ */
+function keptSize(
+  state: ChangeState,
+  size: SizeResult,
+  phase: ProposePhase,
+  lang: Lang,
+): NonNullable<ChangeState["size"]> {
+  if (phase === "closing" && state.size !== undefined) return state.size;
+  return {
+    level: size.level,
+    score: size.score,
+    adjust: size.adjust,
+    reasons: size.reasons.map((reason) => formatSizeReason(reason, lang)),
+  };
 }
 
 /**

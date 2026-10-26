@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-el-tamano-no-cuenta-lo-generado-y-no-bloquea-el",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-el-tamano-no-cuenta-lo-generado-y-no-bloquea-el",
   "baseCommit": "2ae32014bf069b4d64d31dc250ec08bd288b834f",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2b9f9a19ea18204f8003d0507a30ec58b96617f4",
+      "attempts": 1,
       "startedAt": "2026-10-26T13:30:53.597Z",
       "doneAt": "2026-10-26T13:31:18.799Z",
-      "summary": "checkSplit no corre en el cierre: el tamaño se decidió al aprobar y el cierre no puede tocar Files, así que ni exige ni aconseja dividir aunque el cambio haya crecido."
+      "summary": "checkSplit no corre en el cierre: el tamaño se decidió al aprobar y el cierre no puede tocar Files, así que ni exige ni aconseja dividir aunque el cambio haya crecido.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ab60a5fac456929664a1c4ecde7d07e870cf3f3e",
+      "startedAt": "2026-10-26T13:31:19.075Z",
+      "doneAt": "2026-10-26T13:38:44.221Z",
+      "summary": "La CLI lee el principio de cada ruta y coincidencia de Files y le pasa a core las generadas o binarias; propose conserva en el cierre el tamaño aprobado. Test de integración: glob sobre carpeta ignorada con 70 archivos y glob gobernado que crece a XL se cierran; formats y ARCHITECTURE al día."
     }
   },
   "pending": {
