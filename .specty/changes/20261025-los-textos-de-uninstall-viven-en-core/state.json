@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-uninstall-viven-en-core",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-los-textos-de-uninstall-viven-en-core",
+  "baseCommit": "cf2a50116d1ee02a279b931d53911dd41f33466a",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cd9189ea2931bd0fa0d46113a86b1681b3bac339b22e8a94e07f5cdc881cb419",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:59a5b7401707b479438b3bdb9bed7167e465966e4a55c108cff3d7c3a0472466",
+    "at": "2026-10-26T02:56:24.239Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

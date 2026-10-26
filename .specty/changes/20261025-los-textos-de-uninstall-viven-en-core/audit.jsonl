@@ -1,0 +1,3 @@
+{"ts":"2026-10-26T02:55:52.190Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261025-los-textos-de-uninstall-viven-en-core","request":"si realiza todo eneguida de forma autonoma las 12 observaciones"}}
+{"ts":"2026-10-26T02:56:23.959Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:59a5b7401707b479438b3bdb9bed7167e465966e4a55c108cff3d7c3a0472466","size":"M","warnings":1}}
+{"ts":"2026-10-26T02:56:24.249Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:59a5b7401707b479438b3bdb9bed7167e465966e4a55c108cff3d7c3a0472466","channel":"delegated","delegated":true}}
