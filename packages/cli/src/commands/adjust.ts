@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  blockedCard,
+  adjustRefusalCard,
   headerOf,
   nextCard,
+  noActiveChangeCard,
   type Output,
   transition,
-  translator,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { changeView } from "../flow/views";
@@ -13,30 +13,13 @@ import type { Session } from "../session";
 
 /** `specty adjust`: records the user's literal request and returns the classification protocol. */
 export async function adjust(session: Session, request: string): Promise<Output> {
-  const t = translator(session.lang);
   const { cards } = session;
   const active = await resolveActive(session);
-  const nextStep = t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`);
-  if (active === undefined) {
-    return blockedCard(
-      headerOf(),
-      t("No hay un cambio activo.", "There is no active change."),
-      nextStep,
-    );
-  }
+  if (active === undefined) return noActiveChangeCard("agent", cards);
   const { state } = active;
+  const header = headerOf(state.id, state.phase);
   if (request.trim().length === 0) {
-    return {
-      ...blockedCard(
-        headerOf(state.id, state.phase),
-        t("Falta la petición del usuario.", "The user's request is missing."),
-        t(
-          `ejecuta \`${cards.command} adjust "<petición literal>"\`.`,
-          `run \`${cards.command} adjust "<literal request>"\`.`,
-        ),
-      ),
-      status: "invalid",
-    };
+    return adjustRefusalCard({ reason: "no-request" }, header, cards);
   }
   const moved = transition({
     phase: state.phase,
@@ -44,16 +27,7 @@ export async function adjust(session: Session, request: string): Promise<Output>
     actor: session.actor,
     event: { type: "adjust" },
   });
-  if (!moved.ok) {
-    return blockedCard(
-      headerOf(state.id, state.phase),
-      t(
-        "Los ajustes se piden cuando el resultado está en aceptación.",
-        "Adjustments are requested while the result is in acceptance.",
-      ),
-      nextStep,
-    );
-  }
+  if (!moved.ok) return adjustRefusalCard({ reason: "not-in-acceptance" }, header, cards);
   const at = session.environment.now().toISOString();
   const updated = await commitState(
     session,

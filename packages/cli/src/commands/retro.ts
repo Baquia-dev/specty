@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  blockedCard,
   type ChangedFile,
   type ChangeState,
   type FileEntry,
@@ -11,12 +10,15 @@ import {
   type Output,
   parseSpec,
   retroCreatedCard,
+  retroDoneCard,
+  retroReasonQuestion,
+  retroRefusalCard,
+  retroTitle,
   type Spec,
   serializeSpec,
   shortHash,
   specHash,
   specTemplate,
-  translator,
 } from "@baquia-dev/specty-core";
 import { commitState, isFinished } from "../flow/active";
 import { finishRetro } from "../flow/finish";
@@ -32,18 +34,13 @@ import { propose } from "./propose";
  * spec; with `--minimal` (if enabled) the person writes a one-line reason instead.
  */
 export async function retro(session: Session, minimal: boolean): Promise<Output> {
-  const t = translator(session.lang);
   const { cards } = session;
   const current = await readPointer(session.git, "retro");
   const existing = current === undefined ? undefined : await loadChange(session.paths, current);
   if (existing !== undefined && !isFinished(existing.state)) {
-    return blockedCard(
-      headerOf(existing.state.id, existing.state.phase),
-      t(
-        `Ya hay una retro en curso: ${existing.state.id}.`,
-        `A retro is already in progress: ${existing.state.id}.`,
-      ),
-      t(`ejecuta \`${cards.command} next\`.`, `run \`${cards.command} next\`.`),
+    return retroRefusalCard(
+      { reason: "in-progress", id: existing.state.id, phase: existing.state.phase },
+      cards,
     );
   }
   const staged = (await session.git.staged()).filter(
@@ -52,16 +49,7 @@ export async function retro(session: Session, minimal: boolean): Promise<Output>
       (isGoverned(file.path, session.config) ||
         (file.from !== undefined && isGoverned(file.from, session.config))),
   );
-  if (staged.length === 0) {
-    return blockedCard(
-      headerOf(),
-      t("No hay código gobernado preparado.", "There is no staged governed code."),
-      t(
-        `prepara los cambios con \`git add\` y vuelve a ejecutar \`${cards.command} retro\`.`,
-        `stage the changes with \`git add\` and run \`${cards.command} retro\` again.`,
-      ),
-    );
-  }
+  if (staged.length === 0) return retroRefusalCard({ reason: "nothing-staged" }, cards);
   if (minimal) return minimalRetro(session, staged);
   const change = await createRetro(session, staged);
   return retroCreatedCard(
@@ -76,7 +64,6 @@ async function createRetro(
   session: Session,
   staged: readonly ChangedFile[],
 ): Promise<StoredChange> {
-  const t = translator(session.lang);
   const tree = await session.git.writeTree();
   const modules = [...new Set(staged.map((file) => moduleOf(file.path)))].join(", ");
   const id = makeChangeId(session.environment.now(), `retro ${shortHash(tree)}`);
@@ -86,7 +73,7 @@ async function createRetro(
     specTemplate({
       kind: "retro",
       lang: session.lang,
-      title: t(`Cambios manuales en ${modules}`, `Manual changes in ${modules}`),
+      title: retroTitle(modules, session.lang),
       files: staged.map(entryOf),
     }),
   );
@@ -99,33 +86,13 @@ async function createRetro(
 }
 
 async function minimalRetro(session: Session, staged: readonly ChangedFile[]): Promise<Output> {
-  const t = translator(session.lang);
   const { terminal } = session.environment;
   if (!terminal.interactive || session.config.retro.mode !== "minimal") {
-    return blockedCard(
-      headerOf(),
-      t(
-        "El modo minimal no está activado (retro.mode: minimal) o no hay una persona en la terminal.",
-        "Minimal mode is not enabled (retro.mode: minimal) or there is no person at the terminal.",
-      ),
-      t(
-        "pídele a tu agente: «Documenta los cambios preparados con specty retro».",
-        'ask your agent: "Document the staged changes with specty retro".',
-      ),
-    );
+    return retroRefusalCard({ reason: "minimal-unavailable" }, session.cards);
   }
-  const reason = (
-    await terminal.ask(t("¿Por qué hiciste estos cambios?", "Why did you make these changes?"))
-  )?.trim();
+  const reason = (await terminal.ask(retroReasonQuestion(session.lang)))?.trim();
   if (reason === undefined || reason.length === 0) {
-    return blockedCard(
-      headerOf(),
-      t("Sin motivo no hay retro.", "No reason, no retro."),
-      t(
-        `vuelve a ejecutar \`${session.cards.command} retro --minimal\`.`,
-        `run \`${session.cards.command} retro --minimal\` again.`,
-      ),
-    );
+    return retroRefusalCard({ reason: "no-reason" }, session.cards);
   }
   const change = await createRetro(session, staged);
   const spec: Spec = {
@@ -159,22 +126,7 @@ async function minimalRetro(session: Session, staged: readonly ChangedFile[]): P
 
 /** The retro is documented: the person repeats their commit. */
 export function retroDone(session: Session, change: StoredChange): Output {
-  const t = translator(session.lang);
-  return {
-    status: "ok",
-    header: headerOf(change.state.id, "done"),
-    blocks: [
-      {
-        lines: [
-          t(
-            "Cambios documentados y preparados junto a tu commit.",
-            "Changes documented and staged with your commit.",
-          ),
-        ],
-      },
-    ],
-    next: t("vuelve a ejecutar `git commit`.", "run `git commit` again."),
-  };
+  return retroDoneCard(change.state.id, session.cards);
 }
 
 function entryOf(file: ChangedFile): FileEntry {

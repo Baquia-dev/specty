@@ -42,7 +42,7 @@ Tercer cambio de la serie que lleva a core los textos de la CLI, con los dos com
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: adjust y retro piden sus textos a core
+- [x] T2: adjust y retro piden sus textos a core
   - files: packages/cli/src/commands/adjust.ts, packages/cli/src/commands/retro.ts
   - ac: AC1, AC2
   - verify: pnpm check

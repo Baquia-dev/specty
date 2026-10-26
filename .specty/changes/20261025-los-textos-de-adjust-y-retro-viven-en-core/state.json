@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-adjust-y-retro-viven-en-core",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-adjust-y-retro-viven-en-core",
   "baseCommit": "0828f1c8bc3691a301f8de9ea027da8c1ddb697e",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f9c4a438ffb8cfd4630b5535f445cd7358f3ffa4",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:23:15.578Z",
       "doneAt": "2026-10-26T02:24:11.673Z",
-      "summary": "core/src/cards/adjust.ts (adjustRefusalCard) y cards/retro.ts (retroRefusalCard, retroTitle, retroReasonQuestion y retroDoneCard) tienen los textos de adjust y retro, copiados letra a letra de la CLI, con tests en español e inglés."
+      "summary": "core/src/cards/adjust.ts (adjustRefusalCard) y cards/retro.ts (retroRefusalCard, retroTitle, retroReasonQuestion y retroDoneCard) tienen los textos de adjust y retro, copiados letra a letra de la CLI, con tests en español e inglés.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8165cc55db0748f8febf18a6be275a2c8700fd83",
+      "startedAt": "2026-10-26T02:24:11.946Z",
+      "doneAt": "2026-10-26T02:27:28.002Z",
+      "summary": "adjust.ts y retro.ts piden sus textos a core (noActiveChangeCard, adjustRefusalCard y las tarjetas de cards/retro.ts); retroDone queda como envoltorio sin textos para approve.ts. La salida es la misma, como comprueban los tests de la CLI sin cambios."
     }
   },
   "pending": {
