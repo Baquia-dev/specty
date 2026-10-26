@@ -46,3 +46,21 @@ Con todas sus reglas encendidas, knip marca en las pantallas de `packages/ui/src
   - ac: AC1, AC2
   - verify: pnpm check && pnpm --filter @baquia-dev/specty-ui exec ng build
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+En las pantallas de la UI dejan de exportarse diez clases que solo abre, inyecta o importa su propio archivo: ocho diálogos, el servicio DelegationState y el componente ChangeMark. Con todas sus reglas encendidas, knip ya no marca nada de `packages/ui`, y la UI se construye igual.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Como en C3, la última tarea también construye la UI (`ng build`).
+
+### Pendientes
+
+- C5 limpia los ayudantes de los tests de la CLI y enciende las reglas.

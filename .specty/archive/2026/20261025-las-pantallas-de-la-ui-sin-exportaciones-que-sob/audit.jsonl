@@ -7,3 +7,7 @@
 {"ts":"2026-10-26T02:01:22.652Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"457cd1e9f1a0c0151bbe2de2bbfaf64a2d0cdc1d"}}
 {"ts":"2026-10-26T02:02:55.922Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check && pnpm --filter @baquia-dev/specty-ui exec ng build","exit":0,"ms":80289,"tree":"sha256:33b3aee41b198c1af8af085d7b88a630dc989cf96b207ae1dd2e2a235dd54523"}}
 {"ts":"2026-10-26T02:02:56.024Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Dejan de exportarse RejectScope, RejectAssumption y ChangeMark. Knip, con todas sus reglas, ya no marca nada de packages/ui, y la UI se construye igual."}}
+{"ts":"2026-10-26T02:04:16.850Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":71452,"tree":"sha256:33b3aee41b198c1af8af085d7b88a630dc989cf96b207ae1dd2e2a235dd54523"}}
+{"ts":"2026-10-26T02:04:16.853Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T02:04:21.342Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:8f05bff3c40e815c7e29d9c9e37d8b3dd0e208b7feb7abc1b14c3f68c120e5fb","size":"M","warnings":2}}
+{"ts":"2026-10-26T02:04:26.496Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
