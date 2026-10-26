@@ -45,3 +45,22 @@ follows:
   - ac: AC1, AC3
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+El repositorio de Specty ya no tiene supresiones de lint: el escape ANSI se construye por su código y los `${…}` de Dart y del texto de ejemplo van escapados en plantillas, con el mismo texto. `specty check --all` pasa `suppressions`.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Las funciones que pasan de los límites de líneas o de complejidad (49 de líneas y 56 de complejidad, unas 80 distintas) quedan para una épica aparte: son un refactor de los cuatro paquetes.
+
+### Pendientes
+
+- La épica de las funciones que `--all` encuentra fuera de los límites.
+- `change-page.closing.test.ts:55` falló una vez dentro de `check --all` y pasó al repetirlo, y también con `ng test` solo: parece intermitente bajo carga.

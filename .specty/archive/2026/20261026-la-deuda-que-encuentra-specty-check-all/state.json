@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-la-deuda-que-encuentra-specty-check-all",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-deuda-que-encuentra-specty-check-all",
   "baseCommit": "f9f6ccc8db4ae7fd18c29d3a81ffd8683e2eb984",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e3e42b9c2e3c044c710a7873c187ece75211c483f8d22a4fe476e89ed54f7944",
@@ -44,12 +44,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f8b107db96d53b22ac15debc8aa9439d86695636",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:51:11.588Z",
       "doneAt": "2026-10-26T17:07:26.660Z",
-      "summary": "Los tres ${…} de Dart de sample-diffs.ts y el marcador de commands-named.test.ts van escapados en plantillas, con el mismo texto; sin los biome-ignore, specty check --all pasa suppressions."
+      "summary": "Los tres ${…} de Dart de sample-diffs.ts y el marcador de commands-named.test.ts van escapados en plantillas, con el mismo texto; sin los biome-ignore, specty check --all pasa suppressions.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -60,5 +60,6 @@
     "A": 2,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T17:08:55.823Z"
 }
