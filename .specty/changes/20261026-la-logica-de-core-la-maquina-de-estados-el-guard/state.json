@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
+  "baseCommit": "e937a882332a096930ceeab1c0ee630592cac1e3",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:42872f0cf35d873fe98e2764b8d58d1757d2db37ce307f2e3a105fb88561941c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fee3d840cd4e2449dc0d174633b73ace4cfad4c99935e57a04656970348db784",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f13cec7ca9e81efd7438ce5f03701a6f1605da53c5a29446dd78e48906ceba20",
+    "at": "2026-10-26T19:07:11.497Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
