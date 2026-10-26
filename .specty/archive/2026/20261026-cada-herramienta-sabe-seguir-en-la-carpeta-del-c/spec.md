@@ -58,3 +58,24 @@ Además, como ya no queda ninguna capacidad «pendiente», ese estado sale del t
 ## Riesgos
 
 - R1: Un comando de una herramienta puede cambiar con su versión. Mitigación: la tarjeta da también la carpeta, y ARCHITECTURE dice con qué versiones se comprobó.
+
+## Cierre
+
+### Resumen
+
+Tras `specty new`, el SIGUIENTE ya no se queda en «abre allí un agente» cuando Specty reconoce la herramienta que lo ejecutó. Con Codex, OpenCode, Cursor, Gemini CLI o Antigravity CLI pide al agente que la persona abra esa herramienta en la carpeta del cambio, con su comando, y que termine su turno. Con Claude Code, o sin un agente reconocido, sigue como antes.
+
+El estado «pendiente» sale del tipo `Support`, así que ninguna capacidad puede volver a quedar a medias. Con esto la tabla de capacidades de la épica queda completa: cada celda es «sí», «indirecto», «no posible», con su motivo, o «—».
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- La tarjeta saca de una tabla, por agente, cómo se abre la herramienta en una carpeta. Los comandos de Codex y OpenCode se comprobaron con las versiones instaladas; Gemini CLI no tiene opción de carpeta, así que va tras `cd`.
+- `testEnv` quita también la marca de Antigravity CLI, para que la suite no tome por la del agente la terminal en que corre.
+
+### Pendientes
+
+- Devin y la app de Antigravity no dejan marca en su entorno, así que su SIGUIENTE sigue siendo el general.
