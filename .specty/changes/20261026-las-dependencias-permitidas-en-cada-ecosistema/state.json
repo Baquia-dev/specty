@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261026-las-dependencias-permitidas-en-cada-ecosistema",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-las-dependencias-permitidas-en-cada-ecosistema",
+  "baseCommit": "e3ba50557961221d5a10d3807a697c7dd3cf6824",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:eb43b7203937c66bc50862fbcf5614a949c9321ff30c7f27b77146507c3ebb0c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b81ee41e2319039c1abf89924921e84181d44fd9397800b4c77fc7b013469372",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:0184ff16f3e74e2d370f665e98d602e04d294d9ae208dd03f0d3b9793fdbd770",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e695c5cce5b6a4d2fbd1247bca37f0e6a08aa2ce8309f3450cda8d19d19c9e53",
+    "at": "2026-10-26T14:54:55.827Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
