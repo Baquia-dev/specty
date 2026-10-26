@@ -38,7 +38,7 @@ Noveno cambio de la serie que lleva a core los textos de la CLI, con el último 
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: uninstall pide sus textos a core
+- [x] T2: uninstall pide sus textos a core
   - files: packages/cli/src/commands/uninstall.ts
   - ac: AC1
   - verify: pnpm check

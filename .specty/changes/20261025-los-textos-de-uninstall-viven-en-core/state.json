@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-uninstall-viven-en-core",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-uninstall-viven-en-core",
   "baseCommit": "cf2a50116d1ee02a279b931d53911dd41f33466a",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3ce90e20df03ff2d17b3292af01eaf8dc54a229b",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:56:24.590Z",
       "doneAt": "2026-10-26T02:57:06.878Z",
-      "summary": "core/src/cards/uninstall.ts tiene los textos de uninstall: cada archivo, la simulación, la nota, la pregunta y sus respuestas, el aviso de un cambio en curso, lo quitado y lo que se queda, copiados letra a letra de la CLI, con tests."
+      "summary": "core/src/cards/uninstall.ts tiene los textos de uninstall: cada archivo, la simulación, la nota, la pregunta y sus respuestas, el aviso de un cambio en curso, lo quitado y lo que se queda, copiados letra a letra de la CLI, con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "03c91cc1169a40061165d1ebcf2334518f42e5f6",
+      "startedAt": "2026-10-26T02:57:07.140Z",
+      "doneAt": "2026-10-26T02:59:13.155Z",
+      "summary": "uninstall.ts pide sus textos a core (cards/uninstall.ts y backupLine) y ya no llama al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios."
     }
   },
   "pending": {
