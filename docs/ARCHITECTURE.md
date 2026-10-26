@@ -214,7 +214,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 - `task done` compara el árbol de trabajo con el commit base de la tarea, incluidos archivos nuevos sin seguimiento y borrados.
 - Permitido = `files` de la tarea + implícitos + ampliaciones aprobadas.
 - **Implícitos** (configurables):
-  - tests junto a los archivos del alcance, según el stack detectado (`*_test.dart`, `*.test.ts`, `test_*.py`…);
+  - tests junto a los archivos del alcance, según el stack detectado (`*_test.dart`, `*.test.ts`, `test_*.py`…), o en su carpeta espejo: `test/x` por `lib/x`, `src/x`, `app/x` o la raíz, también dentro de un paquete (`packages/a/test/x` por `packages/a/src/x`); `src/test/java/x` por `src/main/java/x` en Maven y Gradle; y `Tests/<Módulo>Tests/x` por `Sources/<Módulo>/x` en SwiftPM;
   - archivos generados declarados (`**/*.g.dart`, `**/*.freezed.dart`);
   - el lockfile, si el manifiesto (`package.json`, `pubspec.yaml`…) está en el alcance.
 - **Rutas sensibles** (migraciones, auth, CI, infraestructura, configuración de Specty): nunca se aprueban solas.

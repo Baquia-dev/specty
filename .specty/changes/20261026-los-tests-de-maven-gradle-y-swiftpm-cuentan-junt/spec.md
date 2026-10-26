@@ -40,7 +40,7 @@ Los tests de la estructura estándar de Maven y Gradle (`src/test/<lenguaje>/…
   - files: packages/core/src/scope/tests.ts, packages/core/test/scope/scope.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope/scope.test.ts
-- [ ] T2: Los tests implícitos en ARCHITECTURE
+- [x] T2: Los tests implícitos en ARCHITECTURE
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm check

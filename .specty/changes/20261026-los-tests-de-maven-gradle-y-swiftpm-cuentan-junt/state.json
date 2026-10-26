@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-los-tests-de-maven-gradle-y-swiftpm-cuentan-junt",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-los-tests-de-maven-gradle-y-swiftpm-cuentan-junt",
   "baseCommit": "e9424f589938e534032e528c9494ba5555824840",
   "revision": 1,
@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "71cb88a346c5ed6ed2e390283dc7885d2426ecf6",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:47:54.118Z",
       "doneAt": "2026-10-26T15:50:08.730Z",
-      "summary": "subjectDirectories refleja también en main (src/test/java/x → src/main/java/x, Maven y Gradle) y en el espejo de SwiftPM (Tests/ShopTests/x → Sources/Shop/x), en funciones aparte. Casos de Java, Kotlin, Swift y de otra carpeta que sigue fuera."
+      "summary": "subjectDirectories refleja también en main (src/test/java/x → src/main/java/x, Maven y Gradle) y en el espejo de SwiftPM (Tests/ShopTests/x → Sources/Shop/x), en funciones aparte. Casos de Java, Kotlin, Swift y de otra carpeta que sigue fuera.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1be0cacb30344a7b37214836c8d12b90e01b6542",
+      "startedAt": "2026-10-26T15:50:09.004Z",
+      "doneAt": "2026-10-26T15:51:55.867Z",
+      "summary": "ARCHITECTURE §8 describe los tests implícitos por carpeta espejo: test/x por lib, src, app o la raíz (también en paquetes), src/test/java por src/main/java en Maven y Gradle, y Tests/<Módulo>Tests por Sources/<Módulo> en SwiftPM."
     }
   },
   "pending": {
