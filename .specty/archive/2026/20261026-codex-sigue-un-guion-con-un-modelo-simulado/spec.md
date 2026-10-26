@@ -56,3 +56,28 @@ El guard de Codex, su aviso tras cada comando y su fin de turno solo se prueban 
 
 - R1: La prueba depende de la forma de la API de respuestas que lee Codex 0.164. Mitigación: se salta sin Codex, y ARCHITECTURE §16 dice con qué versión se comprobó.
 - R2: Las dos opciones de Codex saltan controles suyos. Mitigación: solo se usan en repositorios temporales, con un modelo falso y sin la configuración de la persona, y los hooks de Specty siguen decidiendo cada acción.
+
+## Cierre
+
+### Resumen
+
+Codex de verdad sigue un guion contra `fake-responses.ts`, un servidor que imita la API de respuestas de OpenAI, con los hooks que escribe `specty init`. Las cuatro pruebas pasan con Codex 0.164.0 (unos 13 s) y se saltan sin él:
+- sin cambio, el guard bloquea un parche de código, `git commit` y `specty approve` con el SIGUIENTE;
+- con una tarea, deja pasar sus archivos y para los demás;
+- el aviso tras un comando sustituye su salida;
+- el fin de turno devuelve el turno una vez mientras `specty check --changed` falla.
+
+En la tabla de capacidades, la prueba de extremo a extremo de Codex pasa a «sí».
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- `codex exec` corre con `-s workspace-write` y `--dangerously-bypass-hook-trust`, las dos opciones que la persona autorizó el 2026-10-26, y no con `--dangerously-bypass-approvals-and-sandbox`, que salta más controles de los necesarios.
+- Codex se busca recorriendo las carpetas del PATH, sin ejecutarlo, como Gemini CLI, para que knip no lo tome por una dependencia que falta.
+
+### Pendientes
+
+- La tarjeta tras compactar de Codex sigue sin prueba de extremo a extremo: `codex exec` no compacta a petición.

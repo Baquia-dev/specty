@@ -7,3 +7,7 @@
 {"ts":"2026-10-26T22:33:42.135Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"a55657a91eb8e6ffec7acb7b2f023ba4c57c6f2e"}}
 {"ts":"2026-10-26T22:40:31.363Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts","exit":0,"ms":1323,"tree":"sha256:a6eb843d6614533d600853000ed5cf5b500149d95484d3f439d1f7dbadfe5e3f"}}
 {"ts":"2026-10-26T22:40:31.526Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"La prueba de extremo a extremo de Codex pasa a sí en la tabla; ARCHITECTURE §16 cuenta cómo corre (codex exec con CODEX_HOME temporal, las dos opciones autorizadas) y qué comprueba, con Codex 0.164.0."}}
+{"ts":"2026-10-26T22:46:13.955Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":187134,"tree":"sha256:a6eb843d6614533d600853000ed5cf5b500149d95484d3f439d1f7dbadfe5e3f"}}
+{"ts":"2026-10-26T22:46:13.959Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T22:46:26.470Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:65d53ec6c157f62257e8f1c6339ee44d1f5ebceb937ab8f6fa3cb84f1fa3c954","size":"S","warnings":0}}
+{"ts":"2026-10-26T22:46:26.840Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

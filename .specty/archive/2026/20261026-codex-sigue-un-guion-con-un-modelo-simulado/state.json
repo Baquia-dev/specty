@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-codex-sigue-un-guion-con-un-modelo-simulado",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-codex-sigue-un-guion-con-un-modelo-simulado",
   "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:74e9ec08be65a014c87cfa42ecbfdcc392c6998a727e5ba64495ec6b8faf0250",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a55657a91eb8e6ffec7acb7b2f023ba4c57c6f2e",
+      "attempts": 1,
       "startedAt": "2026-10-26T22:33:42.134Z",
       "doneAt": "2026-10-26T22:40:31.524Z",
-      "summary": "La prueba de extremo a extremo de Codex pasa a sí en la tabla; ARCHITECTURE §16 cuenta cómo corre (codex exec con CODEX_HOME temporal, las dos opciones autorizadas) y qué comprueba, con Codex 0.164.0."
+      "summary": "La prueba de extremo a extremo de Codex pasa a sí en la tabla; ARCHITECTURE §16 cuenta cómo corre (codex exec con CODEX_HOME temporal, las dos opciones autorizadas) y qué comprueba, con Codex 0.164.0.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,5 +64,6 @@
     "AC": 2,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T22:46:26.466Z"
 }
