@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
+  "baseCommit": "d3fdaee4853b125901507db5f336810144eca489",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fbebdf58e4a88b10d5fb3e2236b505bc959a07b8f7ff2d537948afabbf667b2c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d05db65c79ea95e97335b372419c722f6ed9d79adfc980cf16e987a20f5b12d9",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b583b5aa2a74b3df967b2bfead00e7cec82db640ea878a954baf1fc5da34a9fc",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e674818a24bd114b23b5fbae32e26bfa9d44cf2c25fa576dda5014c73d72f3f1",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:a38a0ea6f2526a8b4c8ed5b8396e786449e73213cc00930a26994682ff27dc0a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 5,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9d0664319cb60876d57f86a39f0a6a5edfecff5ba03021cd07d87e4d8e4ac86a",
+    "at": "2026-10-26T19:55:33.522Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
