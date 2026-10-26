@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-instalar-las-verificaciones-con-diff-y-confirmac",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-instalar-las-verificaciones-con-diff-y-confirmac",
   "baseCommit": "f2e1f3d9dc89a02ca4a0953a9f4daa90659a351d",
   "revision": 1,
@@ -46,12 +46,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5add61a5bf9870ae36f97c0197a2c9abd39e9273",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:31:36.289Z",
       "doneAt": "2026-10-26T01:36:55.528Z",
-      "summary": "check --install [--dry-run]: plan (preCommit, plantilla de GitHub Actions, modo estricto de Dart, dependency-cruiser exacto) con el diff de cada archivo por git diff --no-index, una pregunta por paso, conflictos sin pisar, commit Specty-Init; solo la persona."
+      "summary": "check --install [--dry-run]: plan (preCommit, plantilla de GitHub Actions, modo estricto de Dart, dependency-cruiser exacto) con el diff de cada archivo por git diff --no-index, una pregunta por paso, conflictos sin pisar, commit Specty-Init; solo la persona.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c24d5d292458b78d7e34ef4543816beaeeee626e",
+      "startedAt": "2026-10-26T01:36:55.855Z",
+      "doneAt": "2026-10-26T01:39:44.259Z",
+      "summary": "formats §6 documenta specty check --install (pasos, diffs, --dry-run, conflictos, versión exacta, commit Specty-Init, idempotencia); ARCHITECTURE lo añade a la fila de specty check."
     }
   },
   "pending": {

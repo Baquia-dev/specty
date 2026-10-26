@@ -66,7 +66,7 @@ Muestra el diff de cada archivo y pregunta antes de tocarlo. Con `--dry-run` sol
   - files: packages/cli/src/check/ci.ts, packages/cli/src/check/install.ts, packages/cli/src/check/dart.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-install.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-install.test.ts
-- [ ] T2: La documentación
+- [x] T2: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm check

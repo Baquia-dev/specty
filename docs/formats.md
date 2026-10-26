@@ -395,6 +395,15 @@ Después vienen, para cualquier lenguaje, estas verificaciones, cada una con su 
 
 Las dos de tests solo miran los archivos de test (por nombre o por carpeta, como `scope.implicitTests`). Con `--changed` y `--staged`, las tres de marcas y `secrets` solo miran las líneas que el cambio añade según `git diff -U0`; con `--all`, todas. Con `--staged`, todas las verificaciones leen lo preparado, no lo que hay en el disco.
 
+`specty check --install` prepara el proyecto para sus verificaciones, y la persona decide cada paso en su terminal. Por cada archivo muestra el diff (`git diff --no-index` entre el antes y el después) y pregunta antes de escribirlo. Sin terminal interactiva se niega, porque escribe `.specty/config.yaml`, y con `--dry-run` solo enseña el plan, sin preguntar ni escribir. Los pasos son:
+
+- `.specty/config.yaml`: `checks.preCommit: true`, conservando el resto del archivo y sus comentarios.
+- `.github/workflows/specty-check.yml`: la plantilla de GitHub Actions. Prepara el stack (Node 22, pnpm, Flutter o Dart, y el comando de instalación detectado), ejecuta `npx -y @baquia-dev/specty@<versión> check --all --json` con la versión exacta del CLI que la escribe, y guarda el JSON como artefacto. Las demás plataformas de CI se añaden como plantillas en `check/ci.ts`.
+- En Dart, `analysis_options.yaml`: los modos estrictos que falten bajo `analyzer.language`, sin tocar sus `include` ni comentarios; si no existe, lo crea.
+- Con `checks.layers` en TypeScript o JavaScript y sin dependency-cruiser, este como devDependency con su versión exacta (`dependency-cruiser@18.7.0`), con el gestor del proyecto (`npm install --save-dev --save-exact`, `pnpm add --save-dev --save-exact`, `yarn add --dev --exact` o `bun add --dev --exact`), solo si la persona lo confirma.
+
+Lo que la persona ya decidió distinto (`checks.preCommit: false`, un modo estricto en `false`, una plantilla de CI con otro contenido) es un conflicto: se informa y no se toca. Lo que se aplica entra en un commit con recibo, `Specty-Init`, solo con los archivos que no tenían cambios de la persona y nunca dentro de un cambio activo. Ejecutarlo otra vez, con todo aplicado, dice que no hay nada que instalar. Betterleaks y gitleaks no son paquetes del proyecto: si faltan, el comando dice que se instalen.
+
 `specty check --spec [id]` añade las verificaciones del plan aprobado de un cambio: el de `id` o, sin él, el activo de la carpeta. Comparan el diff de la ejecución con el plan, así que no se combinan con `--all`. La aprobación sigue en `state.json`, que el agente no puede escribir, y el alcance es el mismo que usa `task done`:
 
 - `spec-approved`: la spec está aprobada y no cambió desde entonces; el cierre, que llega después, no cuenta. Falla si no está aprobada, si cambió, si el cambio está cancelado o si no existe. Sin cambio, es la única que aparece.
