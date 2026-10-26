@@ -13,7 +13,7 @@ import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
 import {
   CLAUDE_WORKTREE_EVENTS,
-  codexHooksFile,
+  CODEX_HOOKS,
   hasGuard,
   missingClaudeEvents,
   missingCursorEvents,
@@ -70,14 +70,11 @@ export async function doctor(session: Session): Promise<Output> {
         : { code: "cursor-after-command", events: missing.join(", ") },
     );
   }
-  // Codex's guard lives in the user's configuration, shared by every repository.
-  const codex = codexHooksFile(session.environment.env);
-  const codexGuard = hasGuard(await readText(codex), "codex");
-  if (tools.includes("codex") || codexGuard) {
+  if (tools.includes("codex")) {
     check(
-      codexGuard,
-      { code: "codex-guard", file: codex },
-      { code: "no-codex-guard", file: codex },
+      hasGuard(await readText(join(root, CODEX_HOOKS)), "codex"),
+      { code: "codex-guard", file: CODEX_HOOKS },
+      { code: "no-codex-guard", file: CODEX_HOOKS },
     );
   }
   // So does OpenCode's plugin, in its global configuration.

@@ -46,12 +46,16 @@ const OLD_CLAUDE_ASK = "ExitWorktree(action:remove)";
 const CLAUDE_SETTINGS = ".claude/settings.json";
 const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
 const CURSOR_HOOKS = ".cursor/hooks.json";
+export const CODEX_HOOKS = ".codex/hooks.json";
+export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
 
 /** Files where Specty installs agent hooks; `new --worktree` copies the ones git does not track. */
 export const AGENT_HOOK_FILES: readonly string[] = [
   CLAUDE_SETTINGS,
   CLAUDE_LOCAL_SETTINGS,
   CURSOR_HOOKS,
+  CODEX_HOOKS,
+  OPENCODE_PLUGIN,
 ];
 
 export interface AgentInstall {
@@ -108,9 +112,8 @@ export async function installCursor(
 }
 
 /**
- * Codex keeps its trust in each hook by the absolute path of the hook's file, so a hook inside
- * the repository would need trusting again in every worktree. The guard goes to the user's
- * configuration instead (`$CODEX_HOME`, or `~/.codex`): trusted once, and idle outside Specty repos.
+ * Codex's user hooks file (`$CODEX_HOME`, or `~/.codex`), which Specty only reads: its guard goes
+ * in the project (ADR 0013).
  */
 export function codexHooksFile(env: NodeJS.ProcessEnv): string {
   const home = env.CODEX_HOME !== undefined && env.CODEX_HOME !== "" ? env.CODEX_HOME : undefined;
@@ -139,17 +142,22 @@ export async function removeAgentHooks(root: string, files: InstallFiles): Promi
   }
 }
 
-/** Codex: `PreToolUse` (Bash, apply_patch) and `PostToolUse` (Bash) in its user `hooks.json`. */
+/**
+ * Codex: `PreToolUse` (Bash, apply_patch) and `PostToolUse` (Bash) in the project's
+ * `.codex/hooks.json`. Codex 0.131 or later reads a linked worktree's project hooks from the main
+ * checkout, so the person trusts them once per repository.
+ */
 export async function installCodex(
-  env: NodeJS.ProcessEnv,
+  root: string,
+  git: Git,
   invocation: Invocation,
   files: InstallFiles = installFiles(),
-): Promise<string> {
-  const file = codexHooksFile(env);
+): Promise<AgentInstall> {
   const command = `${invocation.command} guard --tool codex`;
   const update = (value: Entry) => withHooks(value, CODEX_EVENTS, "codex", command);
-  await rewriteJson(file, update, true, files);
-  return file;
+  await rewriteJson(join(root, CODEX_HOOKS), update, true, files);
+  if (!invocation.portable) await excludeLocally(git, CODEX_HOOKS, files);
+  return { file: CODEX_HOOKS, local: !invocation.portable };
 }
 
 export function hasGuard(text: string | undefined, tool: GuardTool): boolean {
@@ -270,7 +278,7 @@ function withCursorHooks(value: Entry, command: string): Entry {
 }
 
 /** Keeps a machine-specific file out of git without touching `.gitignore`. */
-async function excludeLocally(git: Git, file: string, files: InstallFiles): Promise<void> {
+export async function excludeLocally(git: Git, file: string, files: InstallFiles): Promise<void> {
   if (await git.isTracked(file)) return;
   const exclude = await git.gitPath("info/exclude");
   const text = (await files.read(exclude)) ?? "";

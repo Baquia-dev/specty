@@ -1,10 +1,27 @@
 // SPDX-License-Identifier: Apache-2.0
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, readdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { exists } from "../src/io/files";
-import { APP, cli, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import { installFiles } from "../src/install/files";
+import { installHooks } from "../src/install/hooks";
+import { createGit } from "../src/io/git";
+import {
+  AGENT,
+  APP,
+  CHANGE,
+  CONFIG,
+  cli,
+  git,
+  NOW,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  testEnv,
+  writeFiles,
+} from "./support";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
 async function implementing(): Promise<string> {
@@ -96,51 +113,110 @@ describe("the guard in Codex", () => {
   });
 });
 
-/** A Codex user configuration of its own, as `CODEX_HOME` points to it. */
+/** A Codex user configuration of its own, as `CODEX_HOME` points to it: Specty leaves it empty. */
 async function codexHome() {
   const home = await mkdtemp(join(tmpdir(), "specty-codex-home-"));
-  const file = join(home, "hooks.json");
-  const read = async () => JSON.parse(await readFile(file, "utf8"));
-  return { env: { CODEX_HOME: home }, file, read };
+  return { env: { CODEX_HOME: home }, home };
 }
 
 const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
+const HOOKS = ".codex/hooks.json";
+const hooksOf = async (root: string) => JSON.parse(await read(root, HOOKS));
 
 describe("installing the guard in Codex", () => {
-  it("writes it to the user's hooks.json, keeps other hooks and leaves the repository alone (AC1)", async () => {
-    const { env, file, read } = await codexHome();
-    const stop = { hooks: [{ type: "command", command: "echo bye" }] };
-    await writeFile(file, JSON.stringify({ description: "mine", hooks: { Stop: [stop] } }));
+  it("writes it to the project's .codex/hooks.json, keeps other hooks and leaves the user's configuration alone (AC1, AC9)", async () => {
+    const { env, home } = await codexHome();
     const root = await tempRepo(PACKAGE);
+    const stop = { hooks: [{ type: "command", command: "echo bye" }] };
+    await writeFiles(root, {
+      [HOOKS]: JSON.stringify({ description: "mine", hooks: { Stop: [stop] } }),
+    });
     const result = await cli(root, ["init", "--language", "es", "--tools", "codex"], { env });
     expect(result.code).toBe(0);
-    expect(result.out).toContain(`Codex: guard en ${file}, tu configuración de usuario`);
-    expect(result.out).toContain("en Codex, abre `/hooks` y márcalo como de confianza");
-    const hooks = await read();
+    expect(result.out).toContain("Codex: guard en .codex/hooks.json (local); desde Codex 0.131");
+    expect(result.out).toContain(
+      "confía en el proyecto cuando Codex lo pregunte y revisa el hook con `/hooks`",
+    );
+    const hooks = await hooksOf(root);
     expect(hooks).toMatchObject({ description: "mine", hooks: { Stop: [stop] } });
     const guard = { type: "command", command: expect.stringContaining("guard --tool codex") };
     expect(hooks.hooks.PreToolUse).toMatchObject([
       { matcher: "^(Bash|apply_patch)$", hooks: [guard] },
     ]);
     expect(hooks.hooks.PostToolUse).toMatchObject([{ matcher: "^Bash$", hooks: [guard] }]);
-    expect(await exists(join(root, ".codex"))).toBe(false);
+    expect(await readdir(home)).toEqual([]);
 
     await cli(root, ["init", "--tools", "codex"], { env });
-    expect((await read()).hooks.PreToolUse).toHaveLength(1);
+    expect((await hooksOf(root)).hooks.PreToolUse).toHaveLength(1);
   });
 
-  it("installs it for a repository with .codex/, and doctor checks it (AC4)", async () => {
-    const { env, file } = await codexHome();
+  it("keeps a hook with a machine path out of git, and new copies it to the change's worktree (AC3)", async () => {
+    const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "codex"])).code).toBe(0);
+    expect(await read(root, ".git/info/exclude")).toContain(`/${HOOKS}`);
+    expect(git(root, "status", "--porcelain")).toBe("");
+    const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
+    expect(created.out).toContain(`HOOKS DEL AGENTE COPIADOS:\n  ${HOOKS}`);
+    const folder = join(
+      dirname(root),
+      `${basename(root)}.worktrees`,
+      CHANGE.replace("saludo-personalizado", "otro-cambio"),
+    );
+    expect(await read(folder, HOOKS)).toBe(await read(root, HOOKS));
+  });
+
+  it("versions the hook, for init's commit, when the command is on PATH (AC3)", async () => {
+    const root = await tempRepo(PACKAGE);
+    const env = testEnv();
+    const installed = await installHooks({
+      environment: {
+        cwd: root,
+        env,
+        now: () => NOW,
+        terminal: AGENT,
+        io: { out: () => {}, err: () => {} },
+        invocation: { command: "specty", portable: true },
+      },
+      root,
+      git: createGit(root, env),
+      tools: ["codex"],
+      lang: "es",
+      files: installFiles(),
+    });
+    expect(installed.written).toContain(HOOKS);
+    expect(installed.done).toContain(
+      "Codex: guard en .codex/hooks.json; desde Codex 0.131 sirve a todas las worktrees del repositorio.",
+    );
+    expect((await hooksOf(root)).hooks.PreToolUse[0].hooks[0].command).toBe(
+      "specty guard --tool codex",
+    );
+    expect(await read(root, ".git/info/exclude")).not.toContain(HOOKS);
+  });
+
+  it("installs it for a repository with .codex/, and doctor looks for it there (AC6)", async () => {
+    const { env, home } = await codexHome();
     const root = await tempRepo({ ...PACKAGE, ".codex/config.toml": 'model = "gpt-5"\n' });
     await cli(root, ["init", "--language", "es"], { env });
     expect((await cli(root, ["doctor"], { env })).out).toContain(
-      `Codex: guard en ${file}; Codex lo ejecuta cuando confías en él con \`/hooks\`.`,
+      "Codex: guard en .codex/hooks.json; Codex lo ejecuta cuando confías en él con `/hooks`.",
     );
-    await writeFile(file, "{}\n");
+    await writeFiles(root, { [HOOKS]: "{}\n" });
     const missing = await cli(root, ["doctor"], { env });
     expect(missing.code).toBe(1);
     expect(missing.out).toContain(
-      `Codex: falta el guard en ${file}; ejecuta \`specty init --tools codex\`.`,
+      "Codex: falta el guard en .codex/hooks.json; ejecuta `specty init --tools codex`.",
+    );
+    expect(await readdir(home)).toEqual([]);
+  });
+
+  it("names the formatter that would check the hook file (AC8)", async () => {
+    const root = await tempRepo({
+      ...PACKAGE,
+      "biome.json": '{"files":{"includes":["**","!.specty"]}}\n',
+    });
+    await cli(root, ["init", "--language", "es", "--tools", "codex"]);
+    expect((await cli(root, ["doctor"])).out).toContain(
+      'Biome también revisa .codex/hooks.json, que escribe Specty: añade "!.codex/hooks.json" en biome.json (files.includes).',
     );
   });
 });
