@@ -48,7 +48,7 @@ Hoy un cambio quick cuya verificación completa falla al aceptarlo queda atascad
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts
   - type: test
-- [ ] T3: La regla en la documentación
+- [x] T3: La regla en la documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm check

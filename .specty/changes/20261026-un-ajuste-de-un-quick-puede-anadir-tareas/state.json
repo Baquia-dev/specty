@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
   "baseCommit": "e3f23e4782f82e13a99b00cfd09d2a40ceaf2a7e",
   "revision": 1,
@@ -43,12 +43,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8fe100855ad574b4b0b4cc1b0d3239b921ba4c98",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:41:39.838Z",
       "doneAt": "2026-10-26T16:43:08.195Z",
-      "summary": "flow.test.ts: un quick cuya verificación completa falla al aceptar se ajusta con T2 (style), se aprueba, se completa y se acepta archivado en main. approvedQuick comparte el arranque con el test del carril quick que ya había."
+      "summary": "flow.test.ts: un quick cuya verificación completa falla al aceptar se ajusta con T2 (style), se aprueba, se completa y se acepta archivado en main. approvedQuick comparte el arranque con el test del carril quick que ya había.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "19cd33247d2543788dbd0bef56d1ac9c1ada907f",
+      "startedAt": "2026-10-26T16:43:08.505Z",
+      "doneAt": "2026-10-26T16:45:18.973Z",
+      "summary": "ARCHITECTURE (carriles) y formats §2 (errores): la tarea única del quick es el límite del primer plan; tras una verificación fallida al aceptar, un ajuste añade tareas de corrección, y los límites de archivos y rutas sensibles siguen."
     }
   },
   "pending": {

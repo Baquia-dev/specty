@@ -150,7 +150,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - Hay una tarea sin `verify` y no existe una verificación por defecto.
 - En `adjusting`: se modifica o elimina una tarea completada.
 - En `closing`: hay cambios fuera de la sección Cierre.
-- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división.
+- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección.
 
 **Avisos**, que se muestran en la salida y en la UI:
 
