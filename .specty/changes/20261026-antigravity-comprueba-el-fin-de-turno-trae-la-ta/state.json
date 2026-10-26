@@ -6,6 +6,13 @@
   "branch": "specty/20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
   "baseCommit": "d3fdaee4853b125901507db5f336810144eca489",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9d0664319cb60876d57f86a39f0a6a5edfecff5ba03021cd07d87e4d8e4ac86a",
+    "at": "2026-10-26T19:55:33.522Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e98efbbbe8cdad8d21201ddbbb02bf087b23c98f",
+      "startedAt": "2026-10-26T19:55:33.889Z",
+      "doneAt": "2026-10-26T20:01:30.661Z",
+      "summary": "El Stop de Antigravity va en el hook specty: con model_stop y el check fallando responde continue con el informe, y Specty cuenta por conversación el turno devuelto (pending .stop). El evento turn (PreInvocation 0) trae la tarjeta de next antes del aviso pendiente."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 7,
     "T": 5,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9d0664319cb60876d57f86a39f0a6a5edfecff5ba03021cd07d87e4d8e4ac86a",
-    "at": "2026-10-26T19:55:33.522Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

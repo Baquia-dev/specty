@@ -8,11 +8,12 @@ import type { Session } from "../session";
  * What waits for the next event of a conversation that can carry it to the model, for an agent
  * that cannot take it when Claude Code does (ARCHITECTURE §10): Cursor's card after a compaction,
  * which its `preCompact` cannot add, and Antigravity's warning after a command, which its
- * `PostToolUse` cannot give. One file per conversation and kind, under the git directory:
- * `specty/pending/<conversation>.<kind>` (docs/formats.md §1). It is taken once.
+ * `PostToolUse` cannot give. A turn sent back to work (`stop`) waits too, for a tool that does
+ * not mark it: its next end goes through. One file per conversation and kind, under the git
+ * directory: `specty/pending/<conversation>.<kind>` (docs/formats.md §1). It is taken once.
  */
 
-export type PendingKind = "card" | "warning";
+export type PendingKind = "card" | "warning" | "stop";
 
 /** What nobody took in a day no longer belongs to the conversation, as with the shell snapshots. */
 const PENDING_TTL_MS = 24 * 60 * 60 * 1000;

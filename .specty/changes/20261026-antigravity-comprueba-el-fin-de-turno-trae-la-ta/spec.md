@@ -76,7 +76,7 @@ Este corte añade las cuatro. Como Antigravity no tiene evento de compactación,
 
 ## Tareas
 
-- [ ] T1: Antigravity comprueba el fin de turno y trae la tarjeta al empezar cada turno
+- [x] T1: Antigravity comprueba el fin de turno y trae la tarjeta al empezar cada turno
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/src/enforce/pending.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/antigravity-turn.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-turn.test.ts test/check-agent-stop.test.ts test/antigravity.test.ts test/agents.test.ts test/cursor.test.ts

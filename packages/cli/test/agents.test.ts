@@ -83,6 +83,10 @@ describe("each agent's module", () => {
       "after",
       "invocation",
     ]);
+    // The first model call of a turn: its count starts again at each message of the person.
+    const call = (invocationNum: number) =>
+      antigravity.kind({ hook_event_name: "PreInvocation", invocationNum });
+    expect([call(0), call(1)]).toEqual(["turn", "invocation"]);
   });
 
   it("tells each event apart in its tool's names", () => {

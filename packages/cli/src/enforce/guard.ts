@@ -105,18 +105,28 @@ async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
       await leave(session, event, "warning", said.text);
       return agent.reply(ALLOW, "after", card);
     }
-    case "invocation": {
-      const conversation = conversationOf(event);
-      const warning =
-        conversation === undefined
-          ? undefined
-          : await takePending(session, conversation, "warning");
-      const texts = warning === undefined ? [] : [warning];
-      return agent.inject?.(texts) ?? agent.reply(ALLOW, "after");
-    }
+    case "invocation":
+    case "turn":
+      return await modelCall(kind, call);
     default:
       return await beforeAction(call);
   }
+}
+
+/**
+ * Before a model call, what waited for it: the warning a command left, and at the first call of
+ * a turn the task card, which no compaction of a tool that does not say when it compacts can cut.
+ */
+async function modelCall(
+  kind: "invocation" | "turn",
+  { agent, session, event }: Call,
+): Promise<GuardReply> {
+  const conversation = conversationOf(event);
+  const warning =
+    conversation === undefined ? undefined : await takePending(session, conversation, "warning");
+  const card = kind === "turn" ? [renderText(await next(session), session.lang)] : [];
+  const texts = [...card, ...(warning === undefined ? [] : [warning])];
+  return agent.inject?.(texts) ?? agent.reply(ALLOW, "after");
 }
 
 /** Leaves something for the event's conversation to take with its next event that can carry it. */

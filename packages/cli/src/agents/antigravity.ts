@@ -6,7 +6,7 @@ import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enfo
 import { ANTIGRAVITY_HOOKS, excludeLocally, removeFromJson } from "../install/agents";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
-import type { AgentAdapter } from "./adapter";
+import { type AgentAdapter, jsonStop } from "./adapter";
 
 /** The name of Specty's hook among the person's in `.agents/hooks.json`. */
 const HOOK = "specty";
@@ -34,7 +34,9 @@ export const antigravity: AgentAdapter = {
   normalize,
   kind: (event) => {
     if (event.hook_event_name === "PostToolUse") return "after";
-    return event.hook_event_name === "PreInvocation" ? "invocation" : "before";
+    if (event.hook_event_name !== "PreInvocation") return "before";
+    // Its count starts again at each message of the person: 0 is the first call of a turn.
+    return event.invocationNum === 0 ? "turn" : "invocation";
   },
   action,
   reply: (verdict, phase) => {
@@ -47,10 +49,26 @@ export const antigravity: AgentAdapter = {
     json(
       texts.length === 0 ? {} : { injectSteps: texts.map((text) => ({ ephemeralMessage: text })) },
     ),
+  stop: {
+    // Only a turn the model ended: not one an error or its step limit stopped.
+    acts: (event) => event.terminationReason === "model_stop",
+    reply: (message) => JSON.stringify({ decision: "continue", reason: message }),
+    pass: JSON.stringify({ decision: "stop" }),
+    counts: true,
+    plan: jsonStop([ANTIGRAVITY_HOOKS], (command, timeout) => (value) => {
+      const ours = isRecord(value[HOOK]) ? value[HOOK] : {};
+      return { ...value, [HOOK]: { ...ours, Stop: [{ type: "command", command, timeout }] } };
+    }),
+  },
   install: async ({ root, git, invocation, files, lang }) => {
     const local = !invocation.portable;
     const command = `${invocation.command} guard --tool antigravity`;
-    const update = (value: Record<string, unknown>) => ({ ...value, [HOOK]: hookOf(command) });
+    const update = (value: Record<string, unknown>) => {
+      const ours = isRecord(value[HOOK]) ? value[HOOK] : {};
+      // `check --install` puts the end of turn in the same hook: rewriting the guard keeps it.
+      const turn = ours.Stop === undefined ? {} : { Stop: ours.Stop };
+      return { ...value, [HOOK]: { ...hookOf(command), ...turn } };
+    };
     await rewriteJson(join(root, ANTIGRAVITY_HOOKS), update, true, files);
     if (local) await excludeLocally(git, ANTIGRAVITY_HOOKS, files);
     return {
