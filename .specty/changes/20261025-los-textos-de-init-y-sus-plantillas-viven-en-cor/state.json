@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-init-y-sus-plantillas-viven-en-cor",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-los-textos-de-init-y-sus-plantillas-viven-en-cor",
+  "baseCommit": "98881ef124dfb5c1ff0e4da711a0e6c04d5898cd",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1e5b50f8d8588d28f523cfa0c736a2f97a0bcb6bf4654622c7f485da65074cec",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:adecd370ac9f76e39ef54cb2359e76aabb630fbd004d2d4f9811d140e9c8f17f",
+    "at": "2026-10-26T02:40:49.868Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
