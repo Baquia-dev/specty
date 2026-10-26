@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "20261025-core-sin-exportaciones-ni-tipos-que-sobran",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-core-sin-exportaciones-ni-tipos-que-sobran",
+  "baseCommit": "efc50a3548c86c06ee07ad437cfae62a1d9cb5a3",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0b9dd5e3e5aebdf7cf66cf1fa4ef349e85892d16f8095fc503a39d6ff7c8a363",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f7dde31e2c099fc84aa1fe814464e5bfed8a5741c1a5bb25cf56b9b295084565",
+    "at": "2026-10-26T01:48:24.472Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
