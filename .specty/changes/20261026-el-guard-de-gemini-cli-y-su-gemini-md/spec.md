@@ -66,7 +66,7 @@ Gemini CLI no tiene el guard de Specty: su agente puede escribir fuera del alcan
 
 ## Tareas
 
-- [ ] T1: Gemini CLI tiene su guard
+- [x] T1: Gemini CLI tiene su guard
   - files: packages/cli/src/agents/gemini-cli.ts, packages/cli/src/agents/index.ts, packages/cli/src/install/agents.ts, packages/core/src/capabilities.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/gemini-cli.test.ts, packages/cli/test/agents.test.ts, packages/cli/test/init-reversible.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/agents.test.ts test/init-reversible.test.ts test/uninstall.test.ts

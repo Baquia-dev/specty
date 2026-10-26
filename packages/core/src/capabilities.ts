@@ -115,8 +115,9 @@ export const AGENT_CAPABILITIES = {
   },
   "gemini-cli": {
     markers: [".gemini", "GEMINI.md"],
-    guard: pending,
-    afterShell: pending,
+    guard: yes,
+    // `AfterTool` adds it to the command's result (`additionalContext`).
+    afterShell: yes,
     afterCompaction: pending,
     worktreeByName: NO_ENTER_WORKTREE,
     endOfTurn: pending,

@@ -121,6 +121,21 @@ describe("each agent's module", () => {
     expect(ADAPTERS.opencode.kind({ hook_event_name: "SessionStart", source: "compact" })).toBe(
       "compact",
     );
+    expect(kinds("gemini-cli", ["BeforeTool", "AfterTool"])).toEqual(["before", "after"]);
+  });
+
+  it("answers Gemini CLI as Claude Code before an action, and after a command in its result", () => {
+    const gemini = ADAPTERS["gemini-cli"];
+    const silent = { code: 0, stdout: "", stderr: "" };
+    expect(gemini.reply(allow, "before")).toEqual(silent);
+    expect(gemini.reply(deny, "before")).toEqual({ code: 2, stdout: "", stderr: deny.text });
+    expect(gemini.reply(allow, "after")).toEqual(silent);
+    const warned = gemini.reply(deny, "after");
+    expect(warned.code).toBe(0);
+    expect(JSON.parse(warned.stdout)).toEqual({
+      hookSpecificOutput: { hookEventName: "AfterTool", additionalContext: deny.text },
+    });
+    expect(gemini.failed("specty guard: roto").code).not.toBe(2);
   });
 
   it("brings the card back after a compaction where the tool reads it: all but Cursor", () => {

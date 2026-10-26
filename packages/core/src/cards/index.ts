@@ -124,6 +124,7 @@ export {
   codexTrustWarning,
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
+  geminiTrustWarning,
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,

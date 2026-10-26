@@ -96,6 +96,14 @@ export function antigravityTrustWarning(lang: Lang): string {
   );
 }
 
+/** Gemini CLI keeps a fingerprint of each project hook, and loads none from a folder not trusted. */
+export function geminiTrustWarning(lang: Lang): string {
+  return translator(lang)(
+    "Gemini CLI avisa antes de ejecutar un hook nuevo o cambiado del proyecto: acepta los de Specty cuando te lo pregunte. Tampoco los carga en una carpeta en la que no confíes.",
+    "Gemini CLI asks before running a new or changed project hook: accept Specty's when it asks. It does not load them in a folder you do not trust either.",
+  );
+}
+
 /** OpenCode's guard plugin, in the project (ADR 0013): `local` when not committed. */
 export function opencodeGuardLine(file: string, local: boolean, lang: Lang): string {
   const where = `${file}${local ? " (local)" : ""}`;
