@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-guards-de-codex-y-opencode-en-el-proyecto",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-guards-de-codex-y-opencode-en-el-proyecto",
   "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9551194ecae0ba0a3c420171c275c3072d56f2ca",
+      "attempts": 1,
       "startedAt": "2026-10-26T11:15:08.456Z",
       "doneAt": "2026-10-26T11:22:52.896Z",
-      "summary": "init escribe el plugin de OpenCode en .opencode/plugins/specty.js del proyecto (local si el comando lleva una ruta de la máquina, y entonces new lo copia); doctor y los formateadores lo buscan ahí. El test de init reversible sin copias pasa a Gemini CLI, con el visto bueno del usuario."
+      "summary": "init escribe el plugin de OpenCode en .opencode/plugins/specty.js del proyecto (local si el comando lleva una ruta de la máquina, y entonces new lo copia); doctor y los formateadores lo buscan ahí. El test de init reversible sin copias pasa a Gemini CLI, con el visto bueno del usuario.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "48b1db5fe5cfad9e296479acf73375b419b4cbe5",
+      "startedAt": "2026-10-26T11:22:53.196Z",
+      "doneAt": "2026-10-26T11:26:59.797Z",
+      "summary": "check --install pone el hook de fin de turno de Codex en .codex/hooks.json del proyecto, y uninstall quita de ahí el guard de Codex, conservando los demás hooks, y borra el plugin de OpenCode; la documentación ya no habla de archivos del usuario. pnpm check en verde."
     }
   },
   "pending": {

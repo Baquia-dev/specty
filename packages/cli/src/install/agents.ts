@@ -121,8 +121,9 @@ export function codexHooksFile(env: NodeJS.ProcessEnv): string {
 }
 
 /**
- * Takes Specty's hooks and worktree permissions out of Claude Code's and Cursor's files in the
- * repository, leaving everything else; a file left with nothing else goes.
+ * Takes Specty's hooks and worktree permissions out of Claude Code's, Cursor's and Codex's files
+ * in the repository, leaving everything else; a file left with nothing else goes, and so does
+ * Specty's OpenCode plugin.
  */
 export async function removeAgentHooks(root: string, files: InstallFiles): Promise<void> {
   const claude = (value: Entry) =>
@@ -135,11 +136,15 @@ export async function removeAgentHooks(root: string, files: InstallFiles): Promi
   const cursor = (value: Entry) =>
     withoutEmpty(withHooks(value, CURSOR_EVENTS, "cursor", undefined));
   await rewriteJson(join(root, CURSOR_HOOKS), cursor, false, files);
-  for (const file of [CLAUDE_SETTINGS, CLAUDE_LOCAL_SETTINGS, CURSOR_HOOKS]) {
+  const codex = (value: Entry) => withoutEmpty(withHooks(value, CODEX_EVENTS, "codex", undefined));
+  await rewriteJson(join(root, CODEX_HOOKS), codex, false, files);
+  for (const file of [CLAUDE_SETTINGS, CLAUDE_LOCAL_SETTINGS, CURSOR_HOOKS, CODEX_HOOKS]) {
     const value: unknown = parse((await files.read(join(root, file))) ?? "null");
     const left = isRecord(value) ? Object.keys(value).filter((key) => key !== "version") : [];
     if (isRecord(value) && left.length === 0) await files.remove(join(root, file));
   }
+  const plugin = join(root, OPENCODE_PLUGIN);
+  if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
 }
 
 /**

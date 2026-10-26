@@ -79,16 +79,18 @@ describe("specty hook agent-stop", () => {
     });
   });
 
-  it("is offered by check --install next to each agent's guard, once", async () => {
+  it("is offered by check --install next to each agent's guard, once, in the project (AC4, AC9)", async () => {
     const codexHome = await mkdtemp(join(tmpdir(), "specty-codex-home-"));
     const hooks = (tool: string, event: string) =>
       `${JSON.stringify({ hooks: { [event]: [{ hooks: [{ type: "command", command: `specty guard --tool ${tool}` }] }] } }, null, 2)}\n`;
+    // A guard an earlier Specty left in the user's configuration: it stays as it is.
     await writeFiles(codexHome, { "hooks.json": hooks("codex", "PreToolUse") });
     const root = await tempRepo({
       ...APP,
       ".specty/config.yaml": `${CONFIG()}checks:\n  levels: { secrets: off }\n  preCommit: true\n`,
       ".claude/settings.json": hooks("claude-code", "PreToolUse"),
       ".cursor/hooks.json": `${JSON.stringify({ version: 1, hooks: { preToolUse: [{ command: "specty guard --tool cursor" }] } }, null, 2)}\n`,
+      ".codex/hooks.json": hooks("codex", "PreToolUse"),
     });
     const env = { CODEX_HOME: codexHome };
     const plan = await cli(root, ["check", "--install", "--dry-run"], { env });
@@ -96,7 +98,8 @@ describe("specty hook agent-stop", () => {
     expect(plan.out).toContain("specty hook agent-stop claude-code");
     expect(plan.out).toContain(".cursor/hooks.json (modificar)");
     expect(plan.out).toContain("specty hook agent-stop cursor");
-    expect(plan.out).toContain(`${join(codexHome, "hooks.json")} (modificar)`);
+    expect(plan.out).toContain(".codex/hooks.json (modificar)");
+    expect(plan.out).not.toContain(codexHome);
     const run = await cli(root, ["check", "--install"], { env, terminal: person() });
     expect(run.code).toBe(0);
     const claude = JSON.parse(await read(root, ".claude/settings.json"));
@@ -107,9 +110,10 @@ describe("specty hook agent-stop", () => {
     expect(JSON.parse(await read(root, ".cursor/hooks.json")).hooks.stop).toEqual([
       { command: "specty hook agent-stop cursor" },
     ]);
-    expect(JSON.parse(await read(codexHome, "hooks.json")).hooks.Stop[0].hooks[0].command).toBe(
+    expect(JSON.parse(await read(root, ".codex/hooks.json")).hooks.Stop[0].hooks[0].command).toBe(
       "specty hook agent-stop codex",
     );
+    expect(await read(codexHome, "hooks.json")).toBe(hooks("codex", "PreToolUse"));
     const again = await cli(root, ["check", "--install", "--dry-run"], { env });
     expect(again.out).not.toContain("agent-stop");
   });

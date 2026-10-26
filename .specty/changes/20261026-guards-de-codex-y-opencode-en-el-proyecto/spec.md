@@ -85,7 +85,7 @@ Specty deja de escribir en la carpeta del usuario. El guard de Codex pasa a `.co
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/install/hooks.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/detect/formatters.ts, packages/core/src/cards/install.ts, packages/cli/test/opencode.test.ts
   - ac: AC2, AC3, AC6, AC8, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/init-reversible.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
-- [ ] T4: `check --install` y `uninstall` usan los archivos del proyecto
+- [x] T4: `check --install` y `uninstall` usan los archivos del proyecto
   - files: packages/cli/src/check/install-agents.ts, packages/cli/src/install/agents.ts, packages/cli/test/check-agent-stop.test.ts, packages/cli/test/uninstall.test.ts
   - ac: AC4, AC7, AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/uninstall.test.ts
