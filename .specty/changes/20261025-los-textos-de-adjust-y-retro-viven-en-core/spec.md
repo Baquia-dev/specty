@@ -37,7 +37,7 @@ Tercer cambio de la serie que lleva a core los textos de la CLI, con los dos com
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de adjust y retro
+- [x] T1: Core tiene los textos de adjust y retro
   - files: packages/core/src/cards/adjust.ts, packages/core/src/cards/retro.ts, packages/core/src/index.ts, packages/core/test/cards/adjust.test.ts, packages/core/test/cards/retro.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

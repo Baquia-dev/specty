@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-adjust-y-retro-viven-en-core",
   "baseCommit": "0828f1c8bc3691a301f8de9ea027da8c1ddb697e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:24ace09e594bc8bca24e6c6520eec351c6372240ff1718d44e43fc1ad347e533",
+    "at": "2026-10-26T02:23:15.125Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f9c4a438ffb8cfd4630b5535f445cd7358f3ffa4",
+      "startedAt": "2026-10-26T02:23:15.578Z",
+      "doneAt": "2026-10-26T02:24:11.673Z",
+      "summary": "core/src/cards/adjust.ts (adjustRefusalCard) y cards/retro.ts (retroRefusalCard, retroTitle, retroReasonQuestion y retroDoneCard) tienen los textos de adjust y retro, copiados letra a letra de la CLI, con tests en español e inglés."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:24ace09e594bc8bca24e6c6520eec351c6372240ff1718d44e43fc1ad347e533",
-    "at": "2026-10-26T02:23:15.125Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

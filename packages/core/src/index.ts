@@ -28,6 +28,7 @@ export {
   type GuardSurface,
   isGuardedAgent,
 } from "./capabilities";
+export { type AdjustRefusal, adjustRefusalCard } from "./cards/adjust";
 export {
   type AuditEvent,
   type AuditTask,
@@ -72,6 +73,13 @@ export {
 } from "./cards/new";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./cards/next";
 export { type Asker, noActiveChangeCard } from "./cards/refusals";
+export {
+  type RetroRefusal,
+  retroDoneCard,
+  retroReasonQuestion,
+  retroRefusalCard,
+  retroTitle,
+} from "./cards/retro";
 export {
   diffReviewPrompt,
   type ReviewedView,
