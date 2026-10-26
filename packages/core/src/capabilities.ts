@@ -83,7 +83,7 @@ export const AGENT_CAPABILITIES = {
     markers: [".codex"],
     guard: yes,
     afterShell: yes,
-    afterCompaction: pending,
+    afterCompaction: yes,
     worktreeByName: NO_ENTER_WORKTREE,
     endOfTurn: yes,
     exclusion: impossible(

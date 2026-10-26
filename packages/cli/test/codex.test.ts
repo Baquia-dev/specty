@@ -145,6 +145,7 @@ describe("installing the guard in Codex", () => {
       { matcher: "^(Bash|apply_patch)$", hooks: [guard] },
     ]);
     expect(hooks.hooks.PostToolUse).toMatchObject([{ matcher: "^Bash$", hooks: [guard] }]);
+    expect(hooks.hooks.SessionStart).toMatchObject([{ matcher: "^compact$", hooks: [guard] }]);
     expect(await readdir(home)).toEqual([]);
 
     await cli(root, ["init", "--tools", "codex"], { env });
@@ -208,6 +209,23 @@ describe("installing the guard in Codex", () => {
       "Codex: falta el guard en .codex/hooks.json; ejecuta `specty init --tools codex`.",
     );
     expect(await readdir(home)).toEqual([]);
+  });
+
+  it("tells, with the guard there, that the card after a compaction is missing (AC3)", async () => {
+    const root = await tempRepo(PACKAGE);
+    await cli(root, ["init", "--language", "es", "--tools", "codex"]);
+    const hooks = await hooksOf(root);
+    await writeFiles(root, {
+      [HOOKS]: JSON.stringify({ hooks: { ...hooks.hooks, SessionStart: [] } }),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Codex: guard en .codex/hooks.json; Codex lo ejecuta cuando confías en él con `/hooks`.",
+    );
+    expect(doctor.out).toContain(
+      "Codex: falta la tarjeta de Specty tras compactar (SessionStart en .codex/hooks.json); ejecuta `specty init --tools codex`.",
+    );
   });
 
   it("writes the rule that runs Specty's commands outside the sandbox, versioned, and doctor checks it (AC2, AC5)", async () => {

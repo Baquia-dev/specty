@@ -21,7 +21,14 @@ import {
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
 import { COMMAND } from "../session";
-import { type AgentAdapter, blockingStop, exitFailed, exitReply, type JsonUpdate } from "./adapter";
+import {
+  type AgentAdapter,
+  blockingStop,
+  exitFailed,
+  exitReply,
+  type JsonUpdate,
+  textCard,
+} from "./adapter";
 
 /**
  * The events the guard listens to, with the tools each one covers: before each write or
@@ -66,7 +73,7 @@ export const claudeCode: AgentAdapter = {
   action,
   reply: exitReply,
   failed: exitFailed,
-  card: (text) => ({ code: 0, stdout: text, stderr: "" }),
+  card: textCard,
   stop: blockingStop([CLAUDE_SETTINGS, CLAUDE_LOCAL_SETTINGS]),
   // The guard in each event (matcher + `hooks: [{ type: "command" }]`) and the permissions. A
   // machine-specific command goes to `.claude/settings.local.json`, which is never committed.
