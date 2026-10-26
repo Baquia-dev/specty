@@ -3,10 +3,10 @@ import { mkdtemp, readdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { installFiles } from "../src/install/files";
 import { installHooks } from "../src/install/hooks";
-import { installOpencode } from "../src/install/opencode";
+import { installOpencode, planOpencodeStop } from "../src/install/opencode";
 import { createGit } from "../src/io/git";
 import {
   AGENT,
@@ -103,18 +103,31 @@ type Hook = (...args: unknown[]) => Promise<void>;
 /** The plugin's default export, as OpenCode 2 (`setup`) and 1 (`server`) call it. */
 interface Plugin {
   readonly id: string;
-  setup(ctx: unknown): Promise<void>;
+  setup(ctx: unknown): Promise<unknown>;
   server(input: unknown): Promise<Record<string, Hook>>;
 }
 
-/** Loads the plugin `init` writes, with the guard of this build. */
-async function loadPlugin(): Promise<Plugin> {
+/**
+ * Loads the plugin `init` writes, with the guard of this build; with `stop`, as `check --install`
+ * leaves it, checking the end of each turn.
+ */
+async function loadPlugin(stop?: number): Promise<Plugin> {
   const root = await tempRepo({ "README.md": "x\n" });
   const invocation = { command: `node "${DIST}"`, portable: false };
   const installed = await installOpencode(root, createGit(root), invocation);
+  if (stop !== undefined) await planOpencodeStop(root, installFiles(), stop);
   const module: { default: Plugin } = await import(pathToFileURL(join(root, installed.file)).href);
   return module.default;
 }
+
+/** OpenCode 1's client, keeping what the plugin sends to its sessions. */
+function client() {
+  const sent: unknown[] = [];
+  return { sent, session: { prompt: async (request: unknown) => void sent.push(request) } };
+}
+
+/** OpenCode 1's events for session `s`. */
+const sessionEvent = (type: string) => ({ event: { type, properties: { sessionID: "s" } } });
 
 describe("Specty's plugin for OpenCode", () => {
   it("rejects in OpenCode 2 what the guard denies, with its reason (AC2)", async () => {
@@ -202,9 +215,118 @@ describe("Specty's plugin for OpenCode", () => {
   });
 });
 
+// Put together from parts, so that this file does not trip `specty check`.
+const TODO = "TODO";
+
+/** A repository whose `specty check --changed` fails: a marker without an issue. */
+async function failing(): Promise<string> {
+  const config = `${CONFIG()}checks:\n  levels: { secrets: off }\n`;
+  const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
+  await writeFiles(root, {
+    "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+  });
+  return root;
+}
+
+describe("Specty's plugin and OpenCode's sessions", () => {
+  it("adds the card to OpenCode 1's session once it compacted, asking for no reply (AC1)", async () => {
+    const root = await implementing();
+    const plugin = await loadPlugin();
+    const opencode = client();
+    await (await plugin.server({ directory: root, client: opencode })).event?.(
+      sessionEvent("session.compacted"),
+    );
+    // The guard runs with the test's own environment, so only the card's content is compared.
+    const card = { type: "text", text: expect.stringContaining("TAREA T1: Saludar por nombre") };
+    expect(opencode.sent).toEqual([{ path: { id: "s" }, body: { noReply: true, parts: [card] } }]);
+    const elsewhere = await mkdtemp(join(tmpdir(), "specty-plain-"));
+    const outside = client();
+    await (await plugin.server({ directory: elsewhere, client: outside })).event?.(
+      sessionEvent("session.compacted"),
+    );
+    expect(outside.sent).toEqual([]);
+  });
+
+  it("puts the card in OpenCode 2's next model call after a compaction (AC1)", async () => {
+    const root = await implementing();
+    const plugin = await loadPlugin();
+    const hooks = new Map<string, Hook>();
+    const register = { hook: async (name: string, run: Hook) => void hooks.set(name, run) };
+    await plugin.setup({ location: { directory: root }, tool: register, session: register });
+    await hooks.get("compaction")?.({ sessionID: "s", messages: [], system: [] });
+    const call = { sessionID: "s", messages: [], system: [] as unknown[] };
+    await hooks.get("context")?.(call);
+    expect(call.system).toEqual([
+      { type: "text", text: expect.stringContaining("TAREA T1: Saludar por nombre") },
+    ]);
+    const later = { sessionID: "s", messages: [], system: [] as unknown[] };
+    await hooks.get("context")?.(later);
+    expect(later.system).toEqual([]);
+  });
+
+  it("sends OpenCode 1's session back to work while specty check --changed fails, once in a row (AC3)", async () => {
+    const root = await failing();
+    const opencode = client();
+    const hooks = await (await loadPlugin(600)).server({ directory: root, client: opencode });
+    await hooks.event?.(sessionEvent("session.idle"));
+    expect(opencode.sent).toHaveLength(1);
+    expect(opencode.sent[0]).toMatchObject({ path: { id: "s" } });
+    expect(JSON.stringify(opencode.sent[0])).toContain(
+      "`specty check --changed` falla; corrígelo antes de terminar el turno:",
+    );
+    // The turn it sent back may end; the next one is checked again.
+    await hooks.event?.(sessionEvent("session.idle"));
+    expect(opencode.sent).toHaveLength(1);
+    await hooks.event?.(sessionEvent("session.idle"));
+    expect(opencode.sent).toHaveLength(2);
+  });
+
+  it("checks no end of turn until check --install turns it on (AC2)", async () => {
+    const root = await failing();
+    const opencode = client();
+    await (await (await loadPlugin()).server({ directory: root, client: opencode })).event?.(
+      sessionEvent("session.idle"),
+    );
+    expect(opencode.sent).toEqual([]);
+  });
+
+  it("sends OpenCode 2's session back to work from its events (AC3)", async () => {
+    const root = await failing();
+    const plugin = await loadPlugin(600);
+    const sent: unknown[] = [];
+    const tool = { hook: async () => {} };
+    const session = {
+      hook: async () => {},
+      prompt: async (request: unknown) => void sent.push(request),
+    };
+    const event = {
+      subscribe: async function* () {
+        yield { type: "session.idle", properties: { sessionID: "s" } };
+      },
+    };
+    const stop = await plugin.setup({ location: { directory: root }, tool, session, event });
+    await vi.waitFor(() => expect(sent).toHaveLength(1), { timeout: 20_000 });
+    expect(sent[0]).toMatchObject({ sessionID: "s" });
+    expect(JSON.stringify(sent[0])).toContain("FALLA todo");
+    if (typeof stop === "function") stop();
+  });
+});
+
 const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
 
 describe("installing the plugin in OpenCode", () => {
+  it("tells doctor when the plugin lacks the card after a compaction (AC5)", async () => {
+    const root = await tempRepo({ ...PACKAGE, "opencode.json": "{}\n" });
+    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
+    const text = await read(root, PLUGIN);
+    await writeFiles(root, { [PLUGIN]: text.replaceAll("session.compacted", "session.other") });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "OpenCode: al plugin del guard le falta la tarjeta de Specty tras compactar; ejecuta `specty init --tools opencode`.",
+    );
+  });
+
   it("writes it to the project's .opencode/plugins/ and leaves the global configuration alone (AC2, AC9)", async () => {
     const { env, config } = await opencodeConfig();
     const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });

@@ -87,12 +87,16 @@ describe("each agent's module", () => {
     expect([codexStart("compact"), codexStart("startup")]).toEqual(["compact", "before"]);
     expect(ADAPTERS.opencode.kind({ tool_name: "bash" })).toBe("before");
     expect(kinds("opencode", ["PostToolUse"])).toEqual(["after"]);
+    // Specty's plugin asks for the card with Claude Code's `SessionStart`.
+    expect(ADAPTERS.opencode.kind({ hook_event_name: "SessionStart", source: "compact" })).toBe(
+      "compact",
+    );
   });
 
-  it("brings the card back after a compaction where the tool reads it: Claude Code and Codex", () => {
-    for (const tool of ["claude-code", "codex"] as const) {
+  it("brings the card back after a compaction where the tool reads it: all but Cursor", () => {
+    for (const tool of ["claude-code", "codex", "opencode"] as const) {
       expect(ADAPTERS[tool].card?.("TARJETA")).toEqual({ code: 0, stdout: "TARJETA", stderr: "" });
     }
-    expect([ADAPTERS.cursor.card, ADAPTERS.opencode.card]).toEqual([undefined, undefined]);
+    expect(ADAPTERS.cursor.card).toBeUndefined();
   });
 });

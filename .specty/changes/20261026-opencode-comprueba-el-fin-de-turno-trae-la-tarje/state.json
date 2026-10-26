@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "70b01cc98a67a3b9137239b5cb290753bd849785",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:24:48.728Z",
       "doneAt": "2026-10-26T18:26:12.276Z",
-      "summary": "El fin de turno de cada agente planifica su propio hook (plan): Claude Code, Codex y Cursor lo hacen con jsonStop, que busca el prefijo del guard en su JSON como antes; check --install solo recorre los plan."
+      "summary": "El fin de turno de cada agente planifica su propio hook (plan): Claude Code, Codex y Cursor lo hacen con jsonStop, que busca el prefijo del guard en su JSON como antes; check --install solo recorre los plan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "413d103760e0d3fe3392610a00065a9ccd9f9ce4",
+      "startedAt": "2026-10-26T18:26:12.747Z",
+      "doneAt": "2026-10-26T18:36:06.506Z",
+      "summary": "El plugin de OpenCode trae la tarjeta tras compactar (1: session.compacted y prompt sin respuesta; 2: compaction y context) y, con STOP activado por check --install, devuelve al agente al trabajo en session.idle si el check falla. init conserva STOP; doctor avisa."
     }
   },
   "pending": {

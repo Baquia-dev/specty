@@ -73,7 +73,7 @@ En la tabla de capacidades, las tres pasan a «sí» en OpenCode.
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/check-install.test.ts test/agents.test.ts
   - type: refactor
-- [ ] T2: El plugin de OpenCode trae la tarjeta tras compactar y comprueba el fin de turno
+- [x] T2: El plugin de OpenCode trae la tarjeta tras compactar y comprueba el fin de turno
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/agents/opencode.ts, packages/core/src/cards/doctor.ts, packages/cli/test/opencode.test.ts, packages/cli/test/check-agent-stop.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/check-agent-stop.test.ts test/agents.test.ts
