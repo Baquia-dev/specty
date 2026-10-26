@@ -9,6 +9,7 @@ import { codex } from "./codex";
 import { cursor } from "./cursor";
 import { geminiCli } from "./gemini-cli";
 import { opencode } from "./opencode";
+import { windsurf } from "./windsurf";
 
 /**
  * Each agent with Specty's guard and its module. The type asks for one module per agent the
@@ -21,6 +22,7 @@ export const ADAPTERS: Readonly<Record<GuardTool, AgentAdapter>> = {
   opencode,
   antigravity,
   "gemini-cli": geminiCli,
+  windsurf,
 };
 
 /**

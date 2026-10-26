@@ -121,11 +121,34 @@ describe("each agent's module", () => {
     expect(ADAPTERS.opencode.kind({ hook_event_name: "SessionStart", source: "compact" })).toBe(
       "compact",
     );
+    expect(kinds("windsurf", ["PreToolUse", "PostToolUse", "PostCompaction"])).toEqual([
+      "before",
+      "after",
+      "compacting",
+    ]);
     expect(kinds("gemini-cli", ["BeforeTool", "AfterTool", "BeforeAgent"])).toEqual([
       "before",
       "after",
       "turn",
     ]);
+  });
+
+  it("answers Devin as Claude Code before an action, and after a command with the card that waited", () => {
+    const devin = ADAPTERS.windsurf;
+    const silent = { code: 0, stdout: "", stderr: "" };
+    expect(devin.reply(allow, "before")).toEqual(silent);
+    expect(devin.reply(deny, "before")).toEqual({ code: 2, stdout: "", stderr: deny.text });
+    expect(devin.reply(allow, "after")).toEqual(silent);
+    const context = (reply: GuardReply) => JSON.parse(reply.stdout).hookSpecificOutput;
+    expect(context(devin.reply(deny, "after"))).toEqual({
+      hookEventName: "PostToolUse",
+      additionalContext: deny.text,
+    });
+    expect(context(devin.reply(deny, "after", "TARJETA")).additionalContext).toBe(
+      `${deny.text}\n\nTARJETA`,
+    );
+    expect(context(devin.reply(allow, "after", "TARJETA")).additionalContext).toBe("TARJETA");
+    expect(devin.failed("specty guard: roto").code).not.toBe(2);
   });
 
   it("answers Gemini CLI as Claude Code before an action, and after a command in its result", () => {

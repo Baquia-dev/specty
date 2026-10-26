@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "id": "20261026-windsurf-ahora-devin-tiene-el-guard-y-lo-demas-d",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-windsurf-ahora-devin-tiene-el-guard-y-lo-demas-d",
+  "baseCommit": "aa9c8c4beb42427cdb1eb18f79f2ef4d16594e6b",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:99db2700b33907fe7f69ae88fa1911f101183b5c10730f8d61e075e89dc47ac3",
+    "at": "2026-10-26T22:52:18.548Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:39851885953afaa4d45242c7a57902ae28576c4ef4b19b98aeec6faa30c61db4",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:824ad081cc56f887ddd903c5559e753fd1ad171f5a695b993ff7aef42985f10c",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:557fd4583537aa410fe81610b301222df5a3075782c266d58bc8575e50170970",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:77cd4f680f2af951996a661cf6c05b87084f9d480ffec73734ac27d6a87fb43a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ff984933464106c37d9c31230cac2160872284b6faeeefc59e93d185b6183f48",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:bf929646e99fb00fbdaa59eb280060ba550c7ca022c41d3949a8cf0d4da4df4c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "710683ee8046e48213a7a838e700223e023701b4",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:52:19.240Z",
+      "doneAt": "2026-10-26T22:57:13.144Z",
+      "summary": "Devin tiene su guard: agents/windsurf.ts escribe PreToolUse y PostToolUse en la raíz de .devin/hooks.v1.json, bloquea con salida 2 (también write_to_process) y añade el aviso tras un comando como additionalContext; la fila pasa a llamarse Devin (Windsurf).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "30c863123d3f210d1d4bc83d35283dcb6e077f04",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:57:13.701Z",
+      "doneAt": "2026-10-26T22:59:19.042Z",
+      "summary": "El Stop de Devin va en la raíz de .devin/hooks.v1.json (check --install, una vez, e init lo conserva): con el check fallando responde block con el informe y deja terminar con stop_hook_active. PostCompaction deja la tarjeta para el siguiente comando.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "db697d89f50557767294501ae9fc89f9805ecc49",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:59:19.668Z",
+      "doneAt": "2026-10-26T23:02:24.453Z",
+      "summary": "init escribe Exec(specty) en .devin/config.json, que se versiona, y las carpetas de Specty como Write(...) en .devin/config.local.json, excluido de git, para el sandbox de Devin; si ese archivo va en git, dice qué añadir. uninstall lo quita.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "defbde6f9489dd9a357a9fe6cb66a2c57cd92894",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:02:24.782Z",
+      "doneAt": "2026-10-26T23:03:14.238Z",
+      "summary": "detectAgentTool pasa a una tabla de marcas por agente, y reconoce la terminal de Antigravity CLI por HGEDITOR y JJ_EDITOR a false, así que una terminal suya no cuenta como la de la persona.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "21e3ffaeae1953e1c5867d8bca59a0113c3f9a36",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:03:14.788Z",
+      "doneAt": "2026-10-26T23:09:27.450Z",
+      "summary": "La fila Devin (Windsurf) marca el guard, el aviso, el fin de turno, la exclusión y los permisos como sí, la tarjeta como indirecto y la prueba E2E como no posible; ya no queda ninguna celda pendiente. ARCHITECTURE cuenta Devin y la marca de Antigravity CLI.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 7,
+    "T": 5,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-26T23:15:57.462Z"
+}

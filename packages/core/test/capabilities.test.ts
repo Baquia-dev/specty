@@ -29,6 +29,7 @@ describe("the capability table", () => {
       "codex",
       "opencode",
       "gemini-cli",
+      "windsurf",
       "antigravity",
     ]);
     const yes = Object.keys(AGENT_NAMES)
@@ -71,6 +72,9 @@ describe("the capability table", () => {
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
     expect(es).toContain("| Gemini CLI | sí | sí | indirecto | no posible | sí | sí | sí | sí |");
     expect(es).toContain(
+      "| Devin (Windsurf) | sí | sí | indirecto | no posible | sí | sí | sí | no posible |",
+    );
+    expect(es).toContain(
       "| Antigravity | sí | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
     );
     expect(capabilityTable("en")).toContain(
@@ -96,7 +100,7 @@ describe("the capability table", () => {
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
     expect(es).toMatch(
-      /- Worktree por nombre \(Cursor, Codex, OpenCode, Gemini CLI, Windsurf, Antigravity\): /,
+      /- Worktree por nombre \(Cursor, Codex, OpenCode, Gemini CLI, Devin \(Windsurf\), Antigravity\): /,
     );
     expect(capabilityTable("en")).toContain("**Indirect:**");
     expect(capabilityTable("en")).toContain("**Not possible:**");

@@ -327,6 +327,15 @@ describe("agent detection", () => {
     expect(detectAgentTool({ CODEX_THREAD_ID: "019a" })).toBe("codex");
   });
 
+  it("recognizes Antigravity CLI by the editors it turns off in its commands (AC6)", () => {
+    const antigravity = { GIT_EDITOR: "false", HGEDITOR: "false", JJ_EDITOR: "false" };
+    expect(detectAgentTool(antigravity)).toBe("antigravity");
+    expect(personAtTerminal(true, antigravity)).toBe(false);
+    // One editor turned off is a person's choice.
+    expect(detectAgentTool({ GIT_EDITOR: "false" })).toBeUndefined();
+    expect(detectAgentTool({ HGEDITOR: "false" })).toBeUndefined();
+  });
+
   it("counts a terminal as the person only without an agent's environment", () => {
     expect(personAtTerminal(true, {})).toBe(true);
     expect(personAtTerminal(false, {})).toBe(false);

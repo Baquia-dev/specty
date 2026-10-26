@@ -39,6 +39,10 @@ export type DoctorLine =
   | { readonly code: "antigravity-guard" | "no-antigravity-guard"; readonly file: string }
   /** Antigravity's guard is there, without the hooks of these events. */
   | { readonly code: "antigravity-hooks"; readonly file: string; readonly events: string }
+  /** Devin's guard in `file`, its standalone hooks. */
+  | { readonly code: "windsurf-guard" | "no-windsurf-guard"; readonly file: string }
+  /** Devin's guard is there, without the hooks of these events. */
+  | { readonly code: "windsurf-hooks"; readonly file: string; readonly events: string }
   /** Gemini CLI's guard in `file`, its project settings. */
   | { readonly code: "gemini-guard" | "no-gemini-guard"; readonly file: string }
   /** Gemini CLI's guard is there, without the hooks of these events. */
@@ -183,6 +187,21 @@ const WRITERS: {
     t(
       `Antigravity: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools antigravity\`.`,
       `Antigravity: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools antigravity\`.`,
+    ),
+  "windsurf-guard": (line, t) =>
+    t(
+      `Devin (Windsurf): guard en ${line.file}; Devin Desktop no lo ejecuta en modo restringido.`,
+      `Devin (Windsurf): guard in ${line.file}; Devin Desktop does not run it in restricted mode.`,
+    ),
+  "no-windsurf-guard": (line, t, command) =>
+    t(
+      `Devin (Windsurf): falta el guard en ${line.file}; ejecuta \`${command} init --tools windsurf\`.`,
+      `Devin (Windsurf): the guard is missing in ${line.file}; run \`${command} init --tools windsurf\`.`,
+    ),
+  "windsurf-hooks": (line, t, command) =>
+    t(
+      `Devin (Windsurf): faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools windsurf\`.`,
+      `Devin (Windsurf): Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools windsurf\`.`,
     ),
   "gemini-guard": (line, t) =>
     t(
