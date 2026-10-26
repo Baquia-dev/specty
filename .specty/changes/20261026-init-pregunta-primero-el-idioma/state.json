@@ -6,6 +6,13 @@
   "branch": "specty/20261026-init-pregunta-primero-el-idioma",
   "baseCommit": "29c375072708f67d04c7b72d2b22d254bdda4efe",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a7c4b13f5217cbedd257544ad9efadea76f4e4499c79186f5485d308bd9be3ac",
+    "at": "2026-10-26T14:05:02.411Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -41,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "57c206a8a490ad24bc37e3303f369379727549d1",
+      "startedAt": "2026-10-26T14:05:03.103Z",
+      "doneAt": "2026-10-26T14:09:39.485Z",
+      "summary": "Textos del idioma en core: la pregunta bilingüe languageQuestion con languageChoices (el detectado primero), languageLine para el idioma cambiado, la primera línea del bloque de flujo pide hablar con el usuario en el idioma configurado y el repositorio sin Specty pide init --language."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -50,12 +67,5 @@
     "A": 6,
     "AC": 5,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a7c4b13f5217cbedd257544ad9efadea76f4e4499c79186f5485d308bd9be3ac",
-    "at": "2026-10-26T14:05:02.411Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -48,8 +48,8 @@ export function notInitializedCard(ctx: CardContext): Output {
       t("Este repositorio no usa Specty todavía.", "This repository does not use Specty yet."),
     ]),
     next: t(
-      `si el usuario quiere usarlo, ejecuta \`${ctx.command} init\`.`,
-      `if the user wants to use it, run \`${ctx.command} init\`.`,
+      `si el usuario quiere usarlo, ejecuta \`${ctx.command} init --language <es|en>\` con el idioma en que te habla.`,
+      `if the user wants to use it, run \`${ctx.command} init --language <es|en>\` with the language they speak to you in.`,
     ),
   };
 }
