@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-las-capas-en-python-go-y-rust",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-las-capas-en-python-go-y-rust",
   "baseCommit": "8725b8aa5c6d1a44d19c854b38905d31bce0fb32",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:8bd49b5cf8dff8117e85e99498285b49afaa1ea229d986c7b31e8750fc961aaa",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bb24b7bec3f836bca70c4cd2494267b1da6cc29d",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:24:26.954Z",
       "doneAt": "2026-10-26T15:26:13.935Z",
-      "summary": "Las guías y formats.md explican cómo layers lee los imports de Python, Go y Rust y cómo nombra sus paquetes"
+      "summary": "Las guías y formats.md explican cómo layers lee los imports de Python, Go y Rust y cómo nombra sus paquetes",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T15:26:35.962Z"
 }

@@ -63,3 +63,23 @@ La verificación `layers` vigila también los imports de Python, Go y Rust, con 
   - ac: AC4
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`layers` vigila Python, Go y Rust con escáneres propios del core, sin herramientas, como ya hacía en Dart. Cada escáner da la línea de cada import y `layerViolations` la conserva. Así, con `--changed`, solo cuentan los imports añadidos, aunque el especificador no vaya entre comillas. En la CLI, `layer-scanners.ts` reúne los escáneres sin herramientas, el de Dart incluido, con lo que cada uno necesita del proyecto. Las guías y `formats.md` explican cómo se leen los imports y cómo se nombran los paquetes.
+
+### Desviaciones
+
+- El escáner de Dart pasó de `layers.ts` a `layer-scanners.ts`. Su comportamiento no cambió, y sus tests siguen pasando.
+
+### Decisiones
+
+- En Go, el destino de un import del proyecto es `<carpeta>/*.go`: la capa la decide la carpeta, y el mensaje lo muestra así.
+- En Rust, la ruta de destino junta todos los tramos (`src/infra/db/Pool.rs`), sin saber cuáles son módulos y cuáles elementos. Basta para que los globs de las capas acierten.
+- Python busca los módulos del proyecto en la raíz y bajo `src/`. Un paquete de espacio de nombres sin `__init__.py` cuenta si su carpeta existe.
+
+### Pendientes
+
+- S5b: Java, Kotlin y PHP. S5c: C#.
