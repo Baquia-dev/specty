@@ -63,7 +63,7 @@ Cuando Codex compacta la conversación, el agente pierde la tarjeta de la tarea,
   - files: packages/core/src/agents.ts, packages/core/test/cards.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts
-- [ ] T3: La tabla de capacidades y ARCHITECTURE lo cuentan
+- [x] T3: La tabla de capacidades y ARCHITECTURE lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

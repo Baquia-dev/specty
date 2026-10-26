@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-codex-trae-la-tarjeta-tras-compactar-y-nombra-su",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-codex-trae-la-tarjeta-tras-compactar-y-nombra-su",
   "baseCommit": "2d9889e3ad35b97a70605a98a904833ffce17a66",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5c62f9e51ad4a070a02d59624322a3eef78662b8",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:32:42.462Z",
       "doneAt": "2026-10-26T17:33:06.834Z",
-      "summary": "Las tarjetas nombran el esfuerzo con los niveles de Codex (model_reasoning_effort): low, medium, high y xhigh para el máximo."
+      "summary": "Las tarjetas nombran el esfuerzo con los niveles de Codex (model_reasoning_effort): low, medium, high y xhigh para el máximo.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "af7a6ade98652771473334222905641cb4c5c5e7",
+      "startedAt": "2026-10-26T17:33:07.183Z",
+      "doneAt": "2026-10-26T17:33:52.739Z",
+      "summary": "La tarjeta tras compactar de Codex pasa a «sí» en la tabla de capacidades; ARCHITECTURE cuenta su SessionStart (§7 y §10) y sus nombres de esfuerzo en EFFORT_NAMES (§11)."
     }
   },
   "pending": {
