@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje",
+  "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eca3fbf82dffbd55de199d715b211594e633ddc039c2be72d648b424d3a599ce",
+    "at": "2026-10-26T18:24:48.294Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2ba55bbebfb8de17af20366c03a71a05e0af04f83adf665ca468e37dc333a0a0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4cf9b0b6e7c06074a0415fad8016dd68453456dc12ae04e3ac98b78c815392eb",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8507c1dc2f8e83a47e4ff349cbf5eed6382dcc45951faed7de9ebcfd6973e0b0",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:dc26d2bb1917356d3eab11a69cd4885558cb28888f286b327391f7e7ee4f6c60",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "70b01cc98a67a3b9137239b5cb290753bd849785",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:24:48.728Z",
+      "doneAt": "2026-10-26T18:26:12.276Z",
+      "summary": "El fin de turno de cada agente planifica su propio hook (plan): Claude Code, Codex y Cursor lo hacen con jsonStop, que busca el prefijo del guard en su JSON como antes; check --install solo recorre los plan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "413d103760e0d3fe3392610a00065a9ccd9f9ce4",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:26:12.747Z",
+      "doneAt": "2026-10-26T18:36:06.506Z",
+      "summary": "El plugin de OpenCode trae la tarjeta tras compactar (1: session.compacted y prompt sin respuesta; 2: compaction y context) y, con STOP activado por check --install, devuelve al agente al trabajo en session.idle si el check falla. init conserva STOP; doctor avisa.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f835115dc867a3cdee69ea6233e8e4b44c6a81fd",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:36:06.809Z",
+      "doneAt": "2026-10-26T18:37:06.496Z",
+      "summary": "check --install añade a opencode.json (u opencode.jsonc) denegaciones en permission.read para checks.exclude y scope.generated, tras las reglas de la persona; los patrones con **/ van también sin él para cubrir la raíz.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "9ffcb14ccd653cbd86e9e339f0551b2d6912bcf1",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:37:06.784Z",
+      "doneAt": "2026-10-26T18:38:22.778Z",
+      "summary": "La tarjeta tras compactar, el fin de turno y la exclusión de OpenCode pasan a «sí»; ARCHITECTURE (§7 y §10) y formats.md cuentan el plugin, STOP y permission.read.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-26T18:40:42.569Z"
+}

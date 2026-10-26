@@ -118,6 +118,26 @@ describe("specty hook agent-stop", () => {
     expect(again.out).not.toContain("agent-stop");
   });
 
+  it("turns on OpenCode's end of turn in its plugin, and init keeps it (AC2)", async () => {
+    const root = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}checks:\n  levels: { secrets: off }\n  preCommit: true\n`,
+      "opencode.json": "{}\n",
+    });
+    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
+    const plugin = () => read(root, ".opencode/plugins/specty.js");
+    expect(await plugin()).toContain("const STOP = null;");
+    const plan = await cli(root, ["check", "--install", "--dry-run"]);
+    expect(plan.out).toContain(".opencode/plugins/specty.js (modificar)");
+    expect((await cli(root, ["check", "--install"], { terminal: person() })).code).toBe(0);
+    expect(await plugin()).toContain("const STOP = 600;");
+    await cli(root, ["init", "--tools", "opencode"]);
+    expect(await plugin()).toContain("const STOP = 600;");
+    expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain(
+      ".opencode/plugins/specty.js",
+    );
+  });
+
   it("adds the plan's checks while a change is approved, and speaks English", async () => {
     const root = await tempRepo({
       ...APP,

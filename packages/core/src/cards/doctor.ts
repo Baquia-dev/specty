@@ -33,6 +33,8 @@ export type DoctorLine =
       readonly code: "opencode-guard" | "opencode-after-command" | "no-opencode-guard";
       readonly file: string;
     }
+  /** OpenCode's plugin is there, without the card after a compaction. */
+  | { readonly code: "opencode-compact" }
   /** gentle-ai's flow guidance, which asks the agent for what the guard blocks. */
   | { readonly code: "gentle-ai"; readonly file: string; readonly blocks: readonly string[] }
   | { readonly code: "formatter-excludes"; readonly name: string; readonly path: string }
@@ -158,6 +160,11 @@ const WRITERS: {
     t(
       `OpenCode: al plugin del guard le falta la comprobación tras cada comando; ejecuta \`${command} init --tools opencode\`.`,
       `OpenCode: the guard plugin lacks the check after each command; run \`${command} init --tools opencode\`.`,
+    ),
+  "opencode-compact": (_, t, command) =>
+    t(
+      `OpenCode: al plugin del guard le falta la tarjeta de Specty tras compactar; ejecuta \`${command} init --tools opencode\`.`,
+      `OpenCode: the guard plugin lacks Specty's card after a compaction; run \`${command} init --tools opencode\`.`,
     ),
   "no-opencode-guard": (line, t, command) =>
     t(

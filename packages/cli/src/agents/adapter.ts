@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
+import { join } from "node:path";
 import type { DoctorLine, Lang } from "@baquia-dev/specty-core";
+import { parse } from "jsonc-parser";
 import type { GuardReply, GuardTool, RawAction } from "../enforce/actions";
-import type { InstallFiles } from "../install/files";
+import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
@@ -89,16 +91,60 @@ interface Installed {
   readonly written: readonly string[];
 }
 
-/** `specty hook agent-stop <agent>`: when it runs, what it answers, and where it goes. */
+/** `specty hook agent-stop <agent>`: when it runs, what it answers, and how it is installed. */
 export interface AgentStop {
   /** Whether this end of turn is one to check. */
   readonly acts: (event: Event) => boolean;
   /** What sends the agent back to work with the report. */
   readonly reply: (message: string) => string;
-  /** The files where `check --install` puts the hook, next to Specty's guard. */
-  readonly files: readonly string[];
-  /** Adds the hook, with the command that runs it and the time limit in seconds. */
-  readonly hook: (command: string, timeout: number) => JsonUpdate;
+  /**
+   * Writes the hook into the plan of `check --install`, next to Specty's guard and with its
+   * command; nothing when the guard is not there, or the hook already is.
+   */
+  readonly plan: (context: StopPlan) => Promise<void>;
+}
+
+/** What planning the end-of-turn hook takes: the time limit is in seconds. */
+interface StopPlan {
+  readonly root: string;
+  readonly files: InstallFiles;
+  readonly timeout: number;
+  readonly tool: GuardTool;
+}
+
+/**
+ * The end of turn of an agent whose hooks live in JSON files: in each of `files` that has
+ * Specty's guard, `hook` adds `specty hook agent-stop <agent>` with the guard's own command.
+ */
+export function jsonStop(
+  files: readonly string[],
+  hook: (command: string, timeout: number) => JsonUpdate,
+): AgentStop["plan"] {
+  return async ({ root, files: planned, timeout, tool }) => {
+    for (const path of files) {
+      const file = join(root, path);
+      const text = await planned.read(file);
+      if (text === undefined || text.includes(`hook agent-stop ${tool}`)) continue;
+      const prefix = guardPrefix(text, tool);
+      if (prefix === undefined) continue;
+      await rewriteJson(file, hook(`${prefix} hook agent-stop ${tool}`, timeout), false, planned);
+    }
+  };
+}
+
+/** How the guard calls Specty in a hooks file (`specty`, `node "<path>"`…), if it is there. */
+function guardPrefix(text: string, tool: GuardTool): string | undefined {
+  const marker = ` guard --tool ${tool}`;
+  const command = commandsIn(parse(text)).find((candidate) => candidate.includes(marker));
+  return command?.slice(0, command.indexOf(marker));
+}
+
+function commandsIn(value: unknown): string[] {
+  if (Array.isArray(value)) return value.flatMap(commandsIn);
+  if (!isRecord(value)) return [];
+  return Object.entries(value).flatMap(([key, item]) =>
+    key === "command" && typeof item === "string" ? [item] : commandsIn(item),
+  );
 }
 
 /**
@@ -110,13 +156,12 @@ export function blockingStop(files: readonly string[]): AgentStop {
   return {
     acts: (event) => event.stop_hook_active !== true,
     reply: (message) => JSON.stringify({ decision: "block", reason: message }),
-    files,
-    hook: (command, timeout) => (value) => {
+    plan: jsonStop(files, (command, timeout) => (value) => {
       const hooks = isRecord(value.hooks) ? value.hooks : {};
       const current: unknown[] = Array.isArray(hooks.Stop) ? hooks.Stop : [];
       const entry = { hooks: [{ type: "command", command, timeout }] };
       return { ...value, hooks: { ...hooks, Stop: [...current, entry] } };
-    },
+    }),
   };
 }
 

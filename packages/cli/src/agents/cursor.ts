@@ -22,7 +22,7 @@ import {
 import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
-import { type AgentAdapter, type DoctorLines, doctorLines } from "./adapter";
+import { type AgentAdapter, type DoctorLines, doctorLines, jsonStop } from "./adapter";
 
 /**
  * The events the guard listens to, with the tools each one covers: before each write, delete or
@@ -72,12 +72,11 @@ export const cursor: AgentAdapter = {
   stop: {
     acts: (event) => event.status === "completed",
     reply: (message) => JSON.stringify({ followup_message: message }),
-    files: [CURSOR_HOOKS],
-    hook: (command) => (value) => {
+    plan: jsonStop([CURSOR_HOOKS], (command) => (value) => {
       const hooks = isRecord(value.hooks) ? value.hooks : {};
       const current: unknown[] = Array.isArray(hooks.stop) ? hooks.stop : [];
       return { ...value, hooks: { ...hooks, stop: [...current, { command }] } };
-    },
+    }),
   },
   install: async ({ root, git, invocation, files, lang }) => {
     const local = !invocation.portable;
