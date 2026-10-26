@@ -57,7 +57,7 @@ Claude Code tiene una prueba que lo ejecuta de verdad contra un modelo simulado 
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
-- [ ] T3: knip no toma OpenCode por una dependencia que falta
+- [x] T3: knip no toma OpenCode por una dependencia que falta
   - files: knip.json
   - ac: AC6
   - verify: pnpm knip
