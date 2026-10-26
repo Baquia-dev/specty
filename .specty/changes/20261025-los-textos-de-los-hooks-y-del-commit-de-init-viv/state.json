@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-los-hooks-y-del-commit-de-init-viv",
   "baseCommit": "52d33b78bdc90b98479d845f87df672955807fce",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b5ed31b74e243e952a30f24893bca470763421e9986ad4c9560fae1d31effc2b",
+    "at": "2026-10-26T02:48:04.949Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0b457da802febc621ceade030665833d21e3e7a6",
+      "startedAt": "2026-10-26T02:48:05.428Z",
+      "doneAt": "2026-10-26T02:48:35.045Z",
+      "summary": "core/src/cards/install.ts tiene los textos de los hooks (guard de cada herramienta, hooks de git y sus avisos) y del commit de init (avisos, asunto y línea), copiados letra a letra de la CLI, con tests en español e inglés."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b5ed31b74e243e952a30f24893bca470763421e9986ad4c9560fae1d31effc2b",
-    "at": "2026-10-26T02:48:04.949Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -96,6 +96,21 @@ export {
   noTestCommandWarning,
   productLine,
 } from "./init";
+export {
+  changeInProgressWarning,
+  claudePointerLine,
+  codexGuardLine,
+  codexTrustWarning,
+  gitHooksLine,
+  gitHooksManualWarning,
+  guardLine,
+  installCommitLine,
+  installCommitSubject,
+  noHooksWarning,
+  notOnPathWarning,
+  opencodeGuardLine,
+  yoursUncommittedWarning,
+} from "./install";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
 export {
   changeCreatedLead,

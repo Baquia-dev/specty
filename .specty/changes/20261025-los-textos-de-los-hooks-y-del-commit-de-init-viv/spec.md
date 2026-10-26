@@ -35,7 +35,7 @@ Séptimo cambio de la serie que lleva a core los textos de la CLI, con lo que qu
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de los hooks y del commit de init
+- [x] T1: Core tiene los textos de los hooks y del commit de init
   - files: packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/core/test/cards/install.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
