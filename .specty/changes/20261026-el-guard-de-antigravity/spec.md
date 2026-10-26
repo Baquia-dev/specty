@@ -71,7 +71,7 @@ Antigravity no tiene el guard de Specty: su agente puede escribir fuera del alca
 
 ## Tareas
 
-- [ ] T1: El guard entiende el evento del argumento, normaliza la entrada y entrega más tarde lo que no pudo
+- [x] T1: El guard entiende el evento del argumento, normaliza la entrada y entrega más tarde lo que no pudo
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/pending.ts, packages/cli/src/enforce/entry.ts, packages/cli/src/enforce/commands.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enforce.test.ts test/cursor.test.ts test/hooks-entry.test.ts

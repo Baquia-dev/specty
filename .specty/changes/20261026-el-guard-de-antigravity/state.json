@@ -6,6 +6,13 @@
   "branch": "specty/20261026-el-guard-de-antigravity",
   "baseCommit": "87207b70f94ffa4b71df29b3ede80c64ac251925",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:faf9e519b3b27c2773fce619803a9c39902f4dcc313f37ad658c0cec16a4ce57",
+    "at": "2026-10-26T19:11:01.919Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "56e4427d06fd9774e8bdb1065d2b433f4d10c8bf",
+      "startedAt": "2026-10-26T19:11:02.308Z",
+      "doneAt": "2026-10-26T19:16:42.695Z",
+      "summary": "El guard toma el evento del argumento (--event) cuando la entrada no lo trae, normaliza la de cada agente (normalize) y, para un agente con late, deja el aviso tras un comando pendiente y lo entrega en su siguiente llamada al modelo (invocation, inject)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 5,
     "T": 3,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:faf9e519b3b27c2773fce619803a9c39902f4dcc313f37ad658c0cec16a4ce57",
-    "at": "2026-10-26T19:11:01.919Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
