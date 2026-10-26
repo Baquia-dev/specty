@@ -17,6 +17,6 @@ Desde «Una terminal de agente no es una persona», la terminal de la CLI solo c
 
 ## Tareas
 
-- [ ] T1: La terminal de los hooks aplica la misma regla que la de la CLI
+- [x] T1: La terminal de los hooks aplica la misma regla que la de la CLI
   - files: packages/cli/src/enforce/entry.ts, packages/cli/test/terminal.test.ts, packages/cli/test/support.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/terminal.test.ts test/hooks-entry.test.ts && pnpm --filter @baquia-dev/specty typecheck

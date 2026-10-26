@@ -37,6 +37,8 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
     CURSOR_AGENT: _b,
     GEMINI_CLI: _c,
     CODEX_SANDBOX: _d,
+    CODEX_CI: _g,
+    CODEX_THREAD_ID: _h,
     SPECTY_AGENT: _e,
     OPENCODE: _f,
     ...rest
