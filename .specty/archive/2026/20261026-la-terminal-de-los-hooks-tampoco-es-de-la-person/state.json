@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-la-terminal-de-los-hooks-tampoco-es-de-la-person",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-terminal-de-los-hooks-tampoco-es-de-la-person",
   "baseCommit": "5f21e50768bf71ea34dd151dba33bc2ccefbbf18",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "59660e41772726762ddf7c87447d086436b6db3f",
+      "attempts": 1,
       "startedAt": "2026-10-26T13:42:41.764Z",
       "doneAt": "2026-10-26T13:46:23.800Z",
-      "summary": "hookTerminal(env) usa personAtTerminal como la terminal de la CLI; test/terminal.test.ts prueba las dos con una TTY simulada; testEnv quita CODEX_CI y CODEX_THREAD_ID; ARCHITECTURE §6 lo dice."
+      "summary": "hookTerminal(env) usa personAtTerminal como la terminal de la CLI; test/terminal.test.ts prueba las dos con una TTY simulada; testEnv quita CODEX_CI y CODEX_THREAD_ID; ARCHITECTURE §6 lo dice.",
+      "scopeExtra": []
     }
   },
   "pending": {

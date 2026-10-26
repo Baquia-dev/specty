@@ -20,3 +20,9 @@ Desde «Una terminal de agente no es una persona», la terminal de la CLI solo c
 - [x] T1: La terminal de los hooks aplica la misma regla que la de la CLI
   - files: packages/cli/src/enforce/entry.ts, packages/cli/test/terminal.test.ts, packages/cli/test/support.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/terminal.test.ts test/hooks-entry.test.ts && pnpm --filter @baquia-dev/specty typecheck
+
+## Cierre
+
+### Resumen
+
+hookTerminal(env) usa personAtTerminal como la terminal de la CLI; test/terminal.test.ts prueba las dos con una TTY simulada; testEnv quita CODEX_CI y CODEX_THREAD_ID; ARCHITECTURE §6 lo dice.

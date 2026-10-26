@@ -4,3 +4,5 @@
 {"ts":"2026-10-26T13:42:41.768Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"59660e41772726762ddf7c87447d086436b6db3f"}}
 {"ts":"2026-10-26T13:46:23.615Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/terminal.test.ts test/hooks-entry.test.ts && pnpm --filter @baquia-dev/specty typecheck","exit":0,"ms":9241,"tree":"sha256:2024ad8a50fabbf3359a40cd8135beaa375be2a34d51f33f4b4819b12cfcc499"}}
 {"ts":"2026-10-26T13:46:23.803Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"hookTerminal(env) usa personAtTerminal como la terminal de la CLI; test/terminal.test.ts prueba las dos con una TTY simulada; testEnv quita CODEX_CI y CODEX_THREAD_ID; ARCHITECTURE §6 lo dice."}}
+{"ts":"2026-10-26T14:05:26.887Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":105970,"tree":"sha256:2024ad8a50fabbf3359a40cd8135beaa375be2a34d51f33f4b4819b12cfcc499"}}
+{"ts":"2026-10-26T14:09:47.350Z","actor":"human","event":"change.closed","data":{"lane":"quick"}}
