@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
-import { patchPaths } from "@baquia-dev/specty-core";
+import { opencodeGuardLine, patchPaths } from "@baquia-dev/specty-core";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
+import { installOpencode } from "../install/opencode";
 import { isRecord } from "../io/files";
 import { type AgentAdapter, exitFailed, exitReply } from "./adapter";
 
@@ -15,6 +16,14 @@ export const opencode: AgentAdapter = {
   action,
   reply: exitReply,
   failed: exitFailed,
+  install: async ({ root, git, invocation, files, lang }) => {
+    const { file, local } = await installOpencode(root, git, invocation, files);
+    return {
+      done: [opencodeGuardLine(file, local, lang)],
+      warnings: [],
+      written: local ? [] : [file],
+    };
+  },
 };
 
 /**

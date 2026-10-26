@@ -6,8 +6,8 @@ import { parse } from "jsonc-parser";
 import type { GuardTool } from "../enforce/actions";
 import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
-import { COMMAND, type Invocation } from "../session";
-import { type InstallFiles, installFiles, rewriteJson } from "./files";
+import { COMMAND } from "../session";
+import { type InstallFiles, rewriteJson } from "./files";
 
 /**
  * The Claude Code events the guard listens to, with the tools each one covers: before each
@@ -15,7 +15,7 @@ import { type InstallFiles, installFiles, rewriteJson } from "./files";
  * creates or removes a worktree, which takes no matcher, and when a session starts again after a
  * compaction.
  */
-const CLAUDE_EVENTS: Readonly<Record<string, string | undefined>> = {
+export const CLAUDE_EVENTS: Readonly<Record<string, string | undefined>> = {
   PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
   PostToolUse: "Bash",
   PostToolUseFailure: "Bash",
@@ -27,7 +27,7 @@ const CLAUDE_EVENTS: Readonly<Record<string, string | undefined>> = {
  * The Cursor events the guard listens to, with the tools each one covers: before each write,
  * delete or command, and after each command, whether it succeeded or failed.
  */
-const CURSOR_EVENTS: Readonly<Record<string, string | undefined>> = {
+export const CURSOR_EVENTS: Readonly<Record<string, string | undefined>> = {
   preToolUse: "Write|Delete|Shell",
   beforeShellExecution: undefined,
   postToolUse: "Shell",
@@ -36,7 +36,7 @@ const CURSOR_EVENTS: Readonly<Record<string, string | undefined>> = {
 /** Claude Code's worktree events: with them, `EnterWorktree` by name enters the change's folder. */
 export const CLAUDE_WORKTREE_EVENTS: readonly string[] = ["WorktreeCreate", "WorktreeRemove"];
 /** The Codex events the guard listens to; its `matcher` is a regular expression on `tool_name`. */
-const CODEX_EVENTS: Readonly<Record<string, string>> = {
+export const CODEX_EVENTS: Readonly<Record<string, string>> = {
   PreToolUse: "^(Bash|apply_patch)$",
   PostToolUse: "^Bash$",
 };
@@ -49,30 +49,16 @@ const CLAUDE_PERSON_RULES: readonly string[] = [...HUMAN_COMMANDS].map(
  * The person's commands get past auto mode's classifier, and the guard still blocks them for the
  * agent unless the person delegated them (ADR 0010).
  */
-const CLAUDE_ALLOW: readonly string[] = ["EnterWorktree", "ExitWorktree", ...CLAUDE_PERSON_RULES];
-/** The `ask` rule an earlier `init` wrote, which made removing a worktree ask. */
-const OLD_CLAUDE_ASK = "ExitWorktree(action:remove)";
-const CLAUDE_SETTINGS = ".claude/settings.json";
-const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
-const CURSOR_HOOKS = ".cursor/hooks.json";
+export const CLAUDE_ALLOW: readonly string[] = [
+  "EnterWorktree",
+  "ExitWorktree",
+  ...CLAUDE_PERSON_RULES,
+];
+export const CLAUDE_SETTINGS = ".claude/settings.json";
+export const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
+export const CURSOR_HOOKS = ".cursor/hooks.json";
 export const CODEX_HOOKS = ".codex/hooks.json";
 export const CODEX_RULES = ".codex/rules/specty.rules";
-/**
- * Codex's execpolicy rule for Specty's commands: an `allow` skips the approval and runs the
- * command outside the sandbox, which keeps `.git` read-only and so stopped every Specty commit.
- * It names the command as the agent types it, so it is versioned even when the hooks are local.
- */
-const CODEX_RULE = [
-  "# Specty's commands run without asking and outside Codex's sandbox: they commit to git, which",
-  "# the sandbox keeps read-only. Specty itself decides who runs each one (its guard, a real",
-  "# terminal or delegated mode). `specty init` writes this file and rewrites it.",
-  "prefix_rule(",
-  `    pattern = [${JSON.stringify(COMMAND)}],`,
-  '    decision = "allow",',
-  '    justification = "Specty decides who runs its commands; they commit to git, which the sandbox keeps read-only.",',
-  ")",
-  "",
-].join("\n");
 export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
 
 /** Files where Specty installs agent hooks; `new --worktree` copies the ones git does not track. */
@@ -88,53 +74,6 @@ export interface AgentInstall {
   readonly file: string;
   /** True when the file holds a machine path and was excluded from git locally. */
   readonly local: boolean;
-}
-
-/**
- * Claude Code: the guard in each of its events (matcher + `hooks: [{ type: "command" }]`) and the
- * worktree permissions. Machine-specific commands go to `.claude/settings.local.json`, which is never
- * committed.
- */
-export async function installClaudeCode(
-  root: string,
-  git: Git,
-  invocation: Invocation,
-  files: InstallFiles = installFiles(),
-): Promise<AgentInstall> {
-  const target = invocation.portable ? CLAUDE_SETTINGS : CLAUDE_LOCAL_SETTINGS;
-  const other = invocation.portable ? CLAUDE_LOCAL_SETTINGS : CLAUDE_SETTINGS;
-  await rewriteJson(
-    join(root, other),
-    (value) => withHooks(value, CLAUDE_EVENTS, "claude-code", undefined),
-    false,
-    files,
-  );
-  const command = `${invocation.command} guard --tool claude-code`;
-  await rewriteJson(
-    join(root, target),
-    (value) => withClaudePermissions(withHooks(value, CLAUDE_EVENTS, "claude-code", command)),
-    true,
-    files,
-  );
-  if (!invocation.portable) await excludeLocally(git, target, files);
-  return { file: target, local: !invocation.portable };
-}
-
-/**
- * Cursor: `preToolUse` (Write, Delete, Shell), `beforeShellExecution`, and `postToolUse` and
- * `postToolUseFailure` (Shell) in `.cursor/hooks.json`.
- */
-export async function installCursor(
-  root: string,
-  git: Git,
-  invocation: Invocation,
-  files: InstallFiles = installFiles(),
-): Promise<AgentInstall> {
-  const file = CURSOR_HOOKS;
-  const command = `${invocation.command} guard --tool cursor`;
-  await rewriteJson(join(root, file), (value) => withCursorHooks(value, command), true, files);
-  if (!invocation.portable) await excludeLocally(git, file, files);
-  return { file, local: !invocation.portable };
 }
 
 /**
@@ -173,26 +112,6 @@ export async function removeAgentHooks(root: string, files: InstallFiles): Promi
   if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
   const rules = join(root, CODEX_RULES);
   if (isCodexRule(await files.read(rules))) await files.remove(rules);
-}
-
-/**
- * Codex: `PreToolUse` (Bash, apply_patch) and `PostToolUse` (Bash) in the project's
- * `.codex/hooks.json`, and the rule for Specty's commands in `rules`. Codex 0.131 or later reads a
- * linked worktree's project hooks from the main checkout, so the person trusts them once per
- * repository.
- */
-export async function installCodex(
-  root: string,
-  git: Git,
-  invocation: Invocation,
-  files: InstallFiles = installFiles(),
-): Promise<AgentInstall & { readonly rules: string }> {
-  const command = `${invocation.command} guard --tool codex`;
-  const update = (value: Entry) => withHooks(value, CODEX_EVENTS, "codex", command);
-  await rewriteJson(join(root, CODEX_HOOKS), update, true, files);
-  if (!invocation.portable) await excludeLocally(git, CODEX_HOOKS, files);
-  await files.write(join(root, CODEX_RULES), CODEX_RULE);
-  return { file: CODEX_HOOKS, local: !invocation.portable, rules: CODEX_RULES };
 }
 
 /** Whether `text`, a rules file, is Specty's rule for its commands. */
@@ -249,7 +168,8 @@ export function missingClaudeEvents(settings: readonly (string | undefined)[]): 
 
 type Entry = Record<string, unknown>;
 
-function isOurs(entry: unknown, tool: string): boolean {
+/** Whether a hook entry is Specty's guard for `tool`. */
+export function isOurs(entry: unknown, tool: string): boolean {
   return JSON.stringify(entry).includes(`guard --tool ${tool}`);
 }
 
@@ -257,7 +177,7 @@ function isOurs(entry: unknown, tool: string): boolean {
  * Puts the guard in each event of a `hooks` object shaped like Claude Code's (Codex uses the same
  * one), or takes it out when `command` is undefined. Other hooks stay as they were.
  */
-function withHooks(
+export function withHooks(
   value: Entry,
   events: Readonly<Record<string, string | undefined>>,
   tool: GuardTool,
@@ -273,21 +193,6 @@ function withHooks(
     return entries.length === 0 && !Object.hasOwn(hooks, event) ? [] : [[event, entries]];
   });
   return { ...value, hooks: { ...hooks, ...Object.fromEntries(updated) } };
-}
-
-/**
- * Adds the worktree permissions after the rules the file already had, and drops the old `ask`
- * rule; an `ask` left empty goes too.
- */
-function withClaudePermissions(value: Entry): Entry {
-  const { ask, ...permissions } = isRecord(value.permissions) ? value.permissions : {};
-  const current: unknown[] = Array.isArray(permissions.allow) ? permissions.allow : [];
-  const allow = [...current, ...CLAUDE_ALLOW.filter((rule) => !current.includes(rule))];
-  const kept: unknown = Array.isArray(ask)
-    ? ask.filter((rule: unknown) => rule !== OLD_CLAUDE_ASK)
-    : ask;
-  const empty = kept === undefined || (Array.isArray(kept) && kept.length === 0);
-  return { ...value, permissions: { ...permissions, allow, ...(empty ? {} : { ask: kept }) } };
 }
 
 function withoutClaudePermissions(value: Entry): Entry {
@@ -311,20 +216,6 @@ function withoutEmpty(value: Entry): Entry {
     ([, item]) => item !== undefined && !(isRecord(item) && Object.keys(item).length === 0),
   );
   return { ...rest, ...Object.fromEntries(kept) };
-}
-
-function withCursorHooks(value: Entry, command: string): Entry {
-  const hooks = isRecord(value.hooks) ? value.hooks : {};
-  const updated = Object.entries(CURSOR_EVENTS).map(([name, matcher]) => {
-    const current = Array.isArray(hooks[name]) ? hooks[name] : [];
-    const entry = matcher === undefined ? { command } : { command, matcher };
-    return [name, [...current.filter((item: unknown) => !isOurs(item, "cursor")), entry]];
-  });
-  return {
-    ...value,
-    version: typeof value.version === "number" ? value.version : 1,
-    hooks: { ...hooks, ...Object.fromEntries(updated) },
-  };
 }
 
 /** Keeps a machine-specific file out of git without touching `.gitignore`. */

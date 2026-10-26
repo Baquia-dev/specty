@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { Lang } from "@baquia-dev/specty-core";
 import type { GuardReply, GuardTool, RawAction } from "../enforce/actions";
+import type { InstallFiles } from "../install/files";
 import { isRecord } from "../io/files";
+import type { Git } from "../io/git";
+import type { Invocation } from "../session";
 
 type Event = Readonly<Record<string, unknown>>;
 
@@ -40,6 +44,24 @@ export interface AgentAdapter {
   readonly card?: (text: string) => GuardReply;
   /** Its end of turn, for an agent whose end of turn can send it back to work (ADR 0012). */
   readonly stop?: AgentStop;
+  /** Writes its guard and its settings in the repository, never in the user's folder (ADR 0013). */
+  readonly install: (context: InstallContext) => Promise<Installed>;
+}
+
+/** Where `init` installs, and how it calls Specty. */
+export interface InstallContext {
+  readonly root: string;
+  readonly git: Git;
+  readonly invocation: Invocation;
+  readonly files: InstallFiles;
+  readonly lang: Lang;
+}
+
+/** What an agent's install says in `init`'s output, and the files git tracks that it wrote. */
+export interface Installed {
+  readonly done: readonly string[];
+  readonly warnings: readonly string[];
+  readonly written: readonly string[];
 }
 
 /** `specty hook agent-stop <agent>`: when it runs, what it answers, and where it goes. */

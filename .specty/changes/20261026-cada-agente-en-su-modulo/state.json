@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "40dbd9c35b15b4e5c92a38819772d2e62f532689",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:39:18.450Z",
       "doneAt": "2026-10-26T16:41:19.604Z",
-      "summary": "El fin de turno de Claude Code, Codex y Cursor vive en su módulo (stop: cuándo actúa, qué responde y dónde va su hook); agent-stop y check --install recorren los módulos. Claude Code y Codex comparten blockingStop."
+      "summary": "El fin de turno de Claude Code, Codex y Cursor vive en su módulo (stop: cuándo actúa, qué responde y dónde va su hook); agent-stop y check --install recorren los módulos. Claude Code y Codex comparten blockingStop.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0a63065887c749fccea87180d0b62935aa106510",
+      "startedAt": "2026-10-26T16:41:19.910Z",
+      "doneAt": "2026-10-26T16:45:53.349Z",
+      "summary": "init instala por el módulo de cada agente: cada uno escribe su guard y sus reglas y devuelve sus líneas; install/hooks.ts los recorre y solo conserva el puntero CLAUDE.md. Las tablas de eventos siguen en install/agents.ts hasta T4."
     }
   },
   "pending": {
