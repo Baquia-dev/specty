@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e33005b521140a53cd6dec1f5efb9ad7663bba8f",
+      "attempts": 1,
       "startedAt": "2026-10-26T00:57:46.928Z",
       "doneAt": "2026-10-26T00:58:20.705Z",
-      "summary": "core/checks/dart.ts: analyzerIgnores da cada comentario que empieza por ignore: o ignore_for_file: (línea o archivo), con splitCode, sin contar los que solo los nombran ni las cadenas."
+      "summary": "core/checks/dart.ts: analyzerIgnores da cada comentario que empieza por ignore: o ignore_for_file: (línea o archivo), con splitCode, sin contar los que solo los nombran ni las cadenas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "be1768c7cce905f6df1c942e3ccc4997fe7f516a",
+      "startedAt": "2026-10-26T00:58:21.015Z",
+      "doneAt": "2026-10-26T01:00:57.537Z",
+      "summary": "check/dart.ts: dartProvider con dart-strict; exige strict-casts, strict-inference y strict-raw-types siguiendo los include (package: por package_config.json, rutas relativas, lo propio gana), avisa si un include no se lee, y falla con los // ignore añadidos."
     }
   },
   "pending": {

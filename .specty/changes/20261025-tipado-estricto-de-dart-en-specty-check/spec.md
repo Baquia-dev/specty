@@ -55,7 +55,7 @@ En un proyecto Dart o Flutter, `specty check` falla si el analizador no está en
   - files: packages/core/src/checks/dart.ts, packages/core/src/index.ts, packages/core/test/checks/dart.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/dart.test.ts
-- [ ] T2: La verificación `dart-strict`
+- [x] T2: La verificación `dart-strict`
   - files: packages/cli/src/check/dart.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-dart.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-dart.test.ts
