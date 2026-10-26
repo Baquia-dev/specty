@@ -16,3 +16,7 @@
 {"ts":"2026-10-26T20:20:35.396Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T5","baseCommit":"bcc162e3d2e77567a9318db26fe08f3451db25f7"}}
 {"ts":"2026-10-26T20:29:13.592Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm --filter @baquia-dev/specty exec vitest run","exit":0,"ms":54577,"tree":"sha256:8ec05805434c0bf5857f542db852f1322eaf9c36f62307521d6fb79f39c9009f"}}
 {"ts":"2026-10-26T20:29:13.666Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"scope.ts: scopeAdd valida con requestRefusal y decide entre approveByPolicy y requestApproval. scope-decision.ts: decideScope pregunta y recordScopeDecision registra. Ningún comando de la CLI queda fuera de los límites; los tests pasan."}}
+{"ts":"2026-10-26T22:24:46.298Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":95638,"tree":"sha256:8ec05805434c0bf5857f542db852f1322eaf9c36f62307521d6fb79f39c9009f"}}
+{"ts":"2026-10-26T22:24:46.301Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T22:24:56.894Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:5d9d0cd3e5b1fe8ba84d35d57df2d46e9fbde7a514d4b786eb1fa5c2650bffc0","size":"L","warnings":5}}
+{"ts":"2026-10-26T22:26:35.566Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

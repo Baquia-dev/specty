@@ -66,3 +66,21 @@ Nueve funciones de los demás comandos de la CLI pasan de los límites de Specty
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los comandos de la CLI que quedaban fuera de los límites de funciones se dividieron por responsabilidad: los registros de comandos y `runCli`, `doctor`, `export`, `init`, `integrate`, `scope add` y la decisión de alcance. Mantienen el mismo orden de registro, de preguntas y de efectos, y las mismas tarjetas. Ninguna función de `commands/` ni de `program.ts` supera ya los límites; los 448 tests de la CLI y la verificación completa pasan.
+
+### Desviaciones
+
+- En `scope.ts`, la solicitud copia las rutas (`paths: [...wanted.paths]`) porque el estado guarda una lista mutable y `Wanted` las tiene de solo lectura.
+
+### Decisiones
+
+- El aviso CWE-78 en `integrate.ts` señala la misma ejecución por la shell de la verificación configurada que ya existía en `main`, solo movida a `failedVerification`. El usuario lo dio por bueno y acordó aceptar en adelante los avisos de llamadas existentes que solo se mueven, y parar solo ante ejecuciones nuevas.
+
+### Pendientes
+
+- Los cortes C6 a C9 de la épica: flujo y enforce de la CLI, install, io y check, el servidor, y la UI con los exportadores.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-los-demas-comandos-de-la-cli-scope-la-decision-d",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-los-demas-comandos-de-la-cli-scope-la-decision-d",
   "baseCommit": "eb76e25b573efb53ab79da0a35a905f19fcdee8f",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:116333f99287412c9c5fe3018eb3719613d53158e6bd1e58f9a27ca89bbcb5fe",
@@ -71,12 +71,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bcc162e3d2e77567a9318db26fe08f3451db25f7",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:20:35.396Z",
       "doneAt": "2026-10-26T20:29:13.665Z",
-      "summary": "scope.ts: scopeAdd valida con requestRefusal y decide entre approveByPolicy y requestApproval. scope-decision.ts: decideScope pregunta y recordScopeDecision registra. Ningún comando de la CLI queda fuera de los límites; los tests pasan."
+      "summary": "scope.ts: scopeAdd valida con requestRefusal y decide entre approveByPolicy y requestApproval. scope-decision.ts: decideScope pregunta y recordScopeDecision registra. Ningún comando de la CLI queda fuera de los límites; los tests pasan.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,5 +87,6 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T22:24:56.893Z"
 }
