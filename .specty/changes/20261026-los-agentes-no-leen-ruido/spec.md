@@ -57,7 +57,7 @@ follows:
   - files: packages/cli/src/check/install-plan.ts, packages/cli/src/check/install.ts, packages/cli/src/check/install-agents.ts, packages/cli/src/commands/check.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-install.test.ts test/check-agent-stop.test.ts
-- [ ] T2: La exclusión de ruido de cada agente
+- [x] T2: La exclusión de ruido de cada agente
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/src/check/install-plan.ts, packages/cli/test/check-ignores.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts test/check-install.test.ts test/check-agent-stop.test.ts

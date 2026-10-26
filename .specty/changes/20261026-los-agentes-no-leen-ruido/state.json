@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3c4ece94c2d54f52f891ad01a443594ed00a8690",
+      "attempts": 1,
       "startedAt": "2026-10-26T10:10:08.345Z",
       "doneAt": "2026-10-26T10:11:44.645Z",
-      "summary": "install-plan.ts: planInstall corre sus pasos uno tras otro sobre un InstallFiles en seco y saca una edición por archivo; install.ts solo enseña, pregunta, aplica y hace el commit; install-agents.ts escribe en esos archivos. Mismo comportamiento."
+      "summary": "install-plan.ts: planInstall corre sus pasos uno tras otro sobre un InstallFiles en seco y saca una edición por archivo; install.ts solo enseña, pregunta, aplica y hace el commit; install-agents.ts escribe en esos archivos. Mismo comportamiento.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "10e0fdc77cfe9d5a17040f67344eac356ca6b848",
+      "startedAt": "2026-10-26T10:11:44.979Z",
+      "doneAt": "2026-10-26T10:13:04.925Z",
+      "summary": "install-ignores.ts: check --install añade a cada agente en uso sus exclusiones (.cursorignore, .geminiignore, el de Windsurf, Read(...) en permissions.deny de Claude Code) con checks.exclude y scope.generated, solo lo que falta; el hook y las reglas de Claude dan un solo diff."
     }
   },
   "pending": {

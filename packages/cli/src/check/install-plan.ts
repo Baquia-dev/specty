@@ -11,6 +11,7 @@ import type { Session } from "../session";
 import { ciTemplates, spectyVersion } from "./ci";
 import { analyzerOptions, STRICT_MODES } from "./dart";
 import { agentStopHooks } from "./install-agents";
+import { agentIgnores } from "./install-ignores";
 
 /**
  * The plan of `specty check --install`: each step writes what it would change into one set of
@@ -70,6 +71,10 @@ export async function planInstall(
     (planned) => dartStrict(session, stacks, planned, t),
     async (planned) => {
       await agentStopHooks(session, planned);
+      return [];
+    },
+    async (planned) => {
+      await agentIgnores(session, planned);
       return [];
     },
   ];
