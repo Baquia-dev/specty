@@ -49,7 +49,7 @@ Pasan a un `cards/server.ts` nuevo y a `cards/hooks.ts`, junto al mensaje del co
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: El servidor y los hooks piden sus textos a core
+- [x] T2: El servidor y los hooks piden sus textos a core
   - files: packages/cli/src/server/runs.ts, packages/cli/src/server/actions.ts, packages/cli/src/server/http.ts, packages/cli/src/enforce/worktree-hooks.ts, packages/cli/src/enforce/hook.ts
   - ac: AC1, AC2
   - verify: pnpm check

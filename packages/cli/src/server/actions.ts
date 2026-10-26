@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  blockedCard,
   delegationWarning,
   headerOf,
+  noActiveChangeCard,
   type Output,
   parseSpec,
-  translator,
+  uiApprovalRefusalCard,
 } from "@baquia-dev/specty-core";
 import { accept } from "../commands/accept";
 import { adjust } from "../commands/adjust";
@@ -193,20 +193,16 @@ export async function runAction(session: Session, id: string, action: Action): P
  * `approve` would otherwise ask, and the UI does not answer for them.
  */
 async function approveRevision(session: Session, revision: number): Promise<Output> {
-  const t = translator(session.lang);
   const change = await resolveActive(session);
   if (change === undefined) return noChange(session);
   const { state } = change;
   if (state.phase === "review") {
     const header = headerOf(state.id, "review");
     if (state.revision !== revision) {
-      return blockedCard(
+      return uiApprovalRefusalCard(
+        { reason: "stale", current: state.revision, asked: revision },
         header,
-        t(
-          `La revisión vigente es la ${state.revision}, no la ${revision}.`,
-          `The current revision is ${state.revision}, not ${revision}.`,
-        ),
-        t("vuelve a cargarla antes de aprobar.", "reload it before approving."),
+        session.cards,
       );
     }
     const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
@@ -214,27 +210,12 @@ async function approveRevision(session: Session, revision: number): Promise<Outp
       .filter((item) => item.impact === "high" && state.items[item.id]?.decision !== "confirmed")
       .map((item) => item.id);
     if (open.length > 0) {
-      return blockedCard(
-        header,
-        t(
-          `Faltan por confirmar supuestos de alto impacto: ${open.join(", ")}.`,
-          `High-impact assumptions are not confirmed yet: ${open.join(", ")}.`,
-        ),
-        t(
-          "confírmalos o, si alguno está mal, recházalo y pide cambios al agente.",
-          "confirm them or, if one is wrong, reject it and ask the agent for changes.",
-        ),
-      );
+      return uiApprovalRefusalCard({ reason: "unconfirmed", ids: open }, header, session.cards);
     }
   }
   return approve(session, undefined);
 }
 
 function noChange(session: Session): Output {
-  const t = translator(session.lang);
-  return blockedCard(
-    headerOf(),
-    t("No hay un cambio activo.", "There is no active change."),
-    t("vuelve a cargar la UI.", "reload the UI."),
-  );
+  return noActiveChangeCard("ui", session.cards);
 }

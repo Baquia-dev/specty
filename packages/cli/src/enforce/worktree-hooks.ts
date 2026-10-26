@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join, resolve } from "node:path";
-import { translator } from "@baquia-dev/specty-core";
+import { type Lang, worktreeHookRefusal } from "@baquia-dev/specty-core";
 import { reasonOf } from "../flow/integrate";
 import { within } from "../flow/land";
 import { worktreesHome } from "../flow/worktree";
@@ -22,8 +22,6 @@ export interface NamedWorktree {
   /** Git already lists it as a worktree. */
   readonly listed: boolean;
 }
-
-type Translate = ReturnType<typeof translator>;
 
 /**
  * Where `EnterWorktree({ name })` goes: the folder `specty new` prepared for the change with that
@@ -52,28 +50,22 @@ export async function worktreeHook(
   cwd: string,
 ): Promise<HookReply> {
   const opened = await openSession({ ...environment, cwd });
-  const t = translator(
-    opened.kind === "ok" ? opened.session.lang : systemLanguage(environment.env),
-  );
+  const lang = opened.kind === "ok" ? opened.session.lang : systemLanguage(environment.env);
   const root = await findRoot(cwd);
   if (root === undefined) {
-    return refuse(
-      t(`${cwd} no está en un repositorio de git.`, `${cwd} is not in a git repository.`),
-    );
+    return refuse(worktreeHookRefusal({ reason: "no-repository", cwd }, lang));
   }
   const git = createGit(root, environment.env);
   const text = (value: unknown) => (typeof value === "string" ? value : "");
   return event.hook_event_name === "WorktreeCreate"
-    ? create(git, text(event.name), t)
-    : remove(git, text(event.worktree_path), t);
+    ? create(git, text(event.name), lang)
+    : remove(git, text(event.worktree_path), lang);
 }
 
 /** Answers with the folder's path, the only thing Claude Code reads from stdout. */
-async function create(git: Git, name: string, t: Translate): Promise<HookReply> {
+async function create(git: Git, name: string, lang: Lang): Promise<HookReply> {
   if (name.split("/").some((part) => part === "" || part === "." || part === "..")) {
-    return refuse(
-      t(`Nombre de worktree no válido: «${name}».`, `Invalid worktree name: "${name}".`),
-    );
+    return refuse(worktreeHookRefusal({ reason: "invalid-name", name }, lang));
   }
   const target = await namedWorktree(git, name);
   if (target.listed) return { code: 0, stdout: target.folder, stderr: "" };
@@ -89,19 +81,13 @@ async function create(git: Git, name: string, t: Translate): Promise<HookReply> 
 }
 
 /** A change's folder stays while its change is open; `close` removes it once it is merged. */
-async function remove(git: Git, path: string, t: Translate): Promise<HookReply> {
-  if (path === "")
-    return refuse(t("Falta la carpeta de la worktree.", "The worktree's folder is missing."));
+async function remove(git: Git, path: string, lang: Lang): Promise<HookReply> {
+  if (path === "") return refuse(worktreeHookRefusal({ reason: "no-folder" }, lang));
   const folder = await resolved(resolve(git.root, path));
   // `close` already removed it, once the change reached its target: nothing left to do.
   if (!(await exists(folder))) return { code: 0, stdout: "", stderr: "" };
   if (await within(folder, await worktreesHome(git))) {
-    return refuse(
-      t(
-        `${folder} es la carpeta de un cambio de Specty: se queda mientras el cambio siga abierto, y \`${COMMAND} close\` la borra al incorporarlo.`,
-        `${folder} is a Specty change's folder: it stays while the change is open, and \`${COMMAND} close\` removes it once the change is merged.`,
-      ),
-    );
+    return refuse(worktreeHookRefusal({ reason: "change-folder", folder, command: COMMAND }, lang));
   }
   const worktrees = await git.worktrees();
   const main = worktrees[0]?.folder ?? git.root;

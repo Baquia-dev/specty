@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-del-servidor-y-de-los-hooks-viven-en",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-del-servidor-y-de-los-hooks-viven-en",
   "baseCommit": "85fce2d9cfd4641be46619147fc8856634b31023",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "77595995bb1a5e970d54e674a50adff7d8cdc987",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:24:52.092Z",
       "doneAt": "2026-10-26T09:20:32.925Z",
-      "summary": "Core tiene los textos del servidor de la UI (cards/server.ts: verificación completa, aprobar desde la UI y la página sin construir) y de los hooks (cards/hooks.ts: worktrees y pre-commit), copiados letra a letra, con tests."
+      "summary": "Core tiene los textos del servidor de la UI (cards/server.ts: verificación completa, aprobar desde la UI y la página sin construir) y de los hooks (cards/hooks.ts: worktrees y pre-commit), copiados letra a letra, con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7ebca68e82b3ae9f6a7f38962571faef6e98ca0a",
+      "startedAt": "2026-10-26T09:20:33.245Z",
+      "doneAt": "2026-10-26T09:24:07.912Z",
+      "summary": "server/runs.ts, server/actions.ts, server/http.ts, enforce/worktree-hooks.ts y enforce/hook.ts piden sus textos a core (cards/server.ts, cards/hooks.ts y noActiveChangeCard) y ya no llaman al traductor; los tests pasan sin cambios."
     }
   },
   "pending": {
