@@ -42,7 +42,7 @@ Undécimo cambio de la serie que lleva a core los textos de la CLI. `specty revi
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: review y la revisión desde la UI piden sus textos a core
+- [x] T2: review y la revisión desde la UI piden sus textos a core
   - files: packages/cli/src/commands/review.ts, packages/cli/src/flow/review.ts
   - ac: AC1, AC2
   - verify: pnpm check

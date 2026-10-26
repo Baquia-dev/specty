@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
-  blockedCard,
   diffReviewPrompt,
   headerOf,
   type Output,
+  type ReviewRefusal,
   reviewedCard,
+  reviewingNote,
+  reviewRefusalCard,
   specReviewPrompt,
-  translator,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { dataOf, readAudit } from "../flow/carried";
@@ -22,42 +23,23 @@ import { readSpec, type StoredChange } from "../store/changes";
  * person set up (ADR 0011) and keeps its answer. It is information: it changes no phase.
  */
 export async function review(session: Session): Promise<Output> {
-  const t = translator(session.lang);
   const { cards } = session;
-  const nextStep = t(
-    `sigue con \`${cards.command} next\`.`,
-    `go on with \`${cards.command} next\`.`,
-  );
   const active = await resolveActive(session);
   const phase = active?.state.phase;
   if (active === undefined || (phase !== "review" && phase !== "acceptance")) {
-    return blockedCard(
-      active === undefined ? headerOf() : headerOf(active.state.id, active.state.phase),
-      t(
-        `La revisión independiente se pide con la spec en revisión, después de \`${cards.command} propose\`, o con el resultado en aceptación.`,
-        `The independent review is asked for with the spec in review, after \`${cards.command} propose\`, or with the result in acceptance.`,
-      ),
-      nextStep,
-    );
+    const header =
+      active === undefined ? headerOf() : headerOf(active.state.id, active.state.phase);
+    return reviewRefusalCard({ reason: "not-reviewable" }, header, cards);
   }
   const { state } = active;
   const header = headerOf(state.id, phase);
   const settings = session.config.review;
-  if (settings === undefined) {
-    return blockedCard(
-      header,
-      t(
-        "Este proyecto no tiene revisión independiente: la persona la configura con `review.command` en .specty/config.yaml.",
-        "This project has no independent review: the person sets it up with `review.command` in .specty/config.yaml.",
-      ),
-      nextStep,
-    );
-  }
+  if (settings === undefined) return reviewRefusalCard({ reason: "not-configured" }, header, cards);
   const target = phase === "review" ? "spec" : "diff";
   const input = await inputFor(session, active, target);
-  if (input.kind === "refused") return blockedCard(header, input.reason, nextStep);
+  if (input.kind === "refused") return reviewRefusalCard(input.refusal, header, cards);
   const { command } = settings;
-  session.environment.io.err(`specty: ${t("revisando con", "reviewing with")} \`${command}\`…`);
+  session.environment.io.err(reviewingNote(command, session.lang));
   const started = Date.now();
   const result = await execute(command, [], {
     cwd: session.root,
@@ -85,26 +67,15 @@ export async function review(session: Session): Promise<Output> {
     },
     "specty",
   );
-  if (!ok) {
-    return blockedCard(
-      header,
-      t(
-        `La revisión falló (\`${command}\`, código ${result.code ?? "sin código"}).`,
-        `The review failed (\`${command}\`, code ${result.code ?? "none"}).`,
-      ),
-      t(
-        `díselo al usuario y sigue con \`${cards.command} next\`: la revisión es opcional.`,
-        `tell the user and go on with \`${cards.command} next\`: the review is optional.`,
-      ),
-    );
-  }
+  if (!ok)
+    return reviewRefusalCard({ reason: "failed", command, code: result.code }, header, cards);
   const view = { header, target, command, path: session.paths.relative(path), text } as const;
   return reviewedCard(view, cards);
 }
 
 type Input =
   | { readonly kind: "text"; readonly text: string }
-  | { readonly kind: "refused"; readonly reason: string };
+  | { readonly kind: "refused"; readonly refusal: ReviewRefusal };
 
 /** What the reviewer reads: the spec, or the spec and the diff of the whole change. */
 async function inputFor(
@@ -112,7 +83,6 @@ async function inputFor(
   change: StoredChange,
   target: "spec" | "diff",
 ): Promise<Input> {
-  const t = translator(session.lang);
   const spec = await readSpec(change.files);
   if (target === "spec") return { kind: "text", text: specReviewPrompt(spec, session.lang) };
   const diff = await changeDiff(session, change.state.id);
@@ -120,18 +90,9 @@ async function inputFor(
     case "diff":
       return { kind: "text", text: diffReviewPrompt(spec, diff.text, session.lang) };
     case "too-large":
-      return {
-        kind: "refused",
-        reason: t(
-          `El diff del cambio es demasiado grande para revisarlo entero (${diff.range}).`,
-          `The change's diff is too large to review whole (${diff.range}).`,
-        ),
-      };
+      return { kind: "refused", refusal: { reason: "too-large", range: diff.range } };
     default:
-      return {
-        kind: "refused",
-        reason: t("El cambio no tiene un diff que revisar.", "The change has no diff to review."),
-      };
+      return { kind: "refused", refusal: { reason: "no-diff" } };
   }
 }
 

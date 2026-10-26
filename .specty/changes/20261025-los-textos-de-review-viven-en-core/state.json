@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-review-viven-en-core",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-review-viven-en-core",
   "baseCommit": "1d7571753428f7485b4520d14a36865eb2809ab8",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "48a02087d1851de799461f55dc2d36f6331e7f9a",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:08:24.284Z",
       "doneAt": "2026-10-26T03:09:22.703Z",
-      "summary": "Core tiene los rechazos de review y su aviso (cards/review.ts), la revisión de la persona desde la UI (cards/review-ui.ts) y reloadNext en refusals.ts, que ya usa la tarjeta de «No hay un cambio activo», con tests."
+      "summary": "Core tiene los rechazos de review y su aviso (cards/review.ts), la revisión de la persona desde la UI (cards/review-ui.ts) y reloadNext en refusals.ts, que ya usa la tarjeta de «No hay un cambio activo», con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9a7bc55af650a2164af6789ebf08bdc3d9b3378e",
+      "startedAt": "2026-10-26T03:09:22.976Z",
+      "doneAt": "2026-10-26T03:12:00.658Z",
+      "summary": "commands/review.ts y flow/review.ts piden sus textos a core (reviewRefusalCard, reviewingNote, cards/review-ui.ts y reloadNext); inputFor devuelve el motivo como dato. Ya no llaman al traductor y la salida es la misma, como comprueban los tests."
     }
   },
   "pending": {
