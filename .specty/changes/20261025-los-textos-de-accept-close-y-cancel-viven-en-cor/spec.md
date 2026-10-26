@@ -39,7 +39,7 @@ Quinto cambio de la serie que lleva a core los textos de la CLI, con las decisio
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de accept, close y cancel
+- [x] T1: Core tiene los textos de accept, close y cancel
   - files: packages/core/src/cards/accept.ts, packages/core/src/cards/close.ts, packages/core/src/cards/index.ts, packages/core/test/cards/accept.test.ts, packages/core/test/cards/close.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

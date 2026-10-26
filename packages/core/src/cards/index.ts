@@ -1,6 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 // The cards: every text the agent and the person see, as each command prints it.
 
+export {
+  acceptAnywayQuestion,
+  acceptanceSummary,
+  acceptedLine,
+  acceptQuestion,
+  delegatedFailureCard,
+  quickClosedLine,
+  quickClosing,
+  runVerificationQuestion,
+  verificationNoteTitle,
+  verificationReusedNote,
+} from "./accept";
 export { type AdjustRefusal, adjustRefusalCard } from "./adjust";
 export {
   type ApprovalView,
@@ -24,6 +36,18 @@ export {
   type AuditView,
   auditReport,
 } from "./audit";
+export {
+  alreadyClosedLine,
+  cancelCommitSubject,
+  cancelledLine,
+  cancelQuestion,
+  cancelReasonQuestion,
+  closeCommitSubject,
+  closedLine,
+  confirmCloseQuestion,
+  landQuestion,
+  resolvedIntegrationNote,
+} from "./close";
 export {
   decisionPostponedCard,
   noSuchChangeCard,
