@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-un-ejemplo-de-specty-check-por-cada-stack",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-un-ejemplo-de-specty-check-por-cada-stack",
   "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
   "revision": 1,
@@ -61,12 +61,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f529a253955cb2a2c284631ed3f76fb1470e930e",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:09:51.731Z",
       "doneAt": "2026-10-26T16:14:55.736Z",
-      "summary": "Go (golangci-lint con gofmt, Ginkgo), Rust (cargo fmt, Clippy, cargo test) y Swift (swift-format, SwiftLint, XCTest). Todo pasa con el plan y todo falla al romperlo. PIt, XCTSkip y markTestSkipped de PHP quedan como saltos que no cuentan."
+      "summary": "Go (golangci-lint con gofmt, Ginkgo), Rust (cargo fmt, Clippy, cargo test) y Swift (swift-format, SwiftLint, XCTest). Todo pasa con el plan y todo falla al romperlo. PIt, XCTSkip y markTestSkipped de PHP quedan como saltos que no cuentan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/stack-dialect.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "e7077e00882f9289b9199e1f25e1d56e3a99b4c8",
+      "startedAt": "2026-10-26T16:14:56.093Z",
+      "doneAt": "2026-10-26T16:18:12.831Z",
+      "summary": "«Ejemplos por stack» de la guía, en español e inglés: tabla con el archivo y los comandos que imita cada uno de los once, qué arma stack-dialect.ts y lo que no comprueba cada stack. Sin export los tipos internos del constructor (knip)."
     }
   },
   "pending": {

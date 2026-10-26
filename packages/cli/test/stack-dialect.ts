@@ -27,7 +27,7 @@ import {
 type Files = Readonly<Record<string, string>>;
 
 /** Where each file of the example lives. */
-export interface Paths {
+interface Paths {
   readonly manifest: string;
   readonly cart: string;
   readonly cartTest: string;
@@ -44,12 +44,12 @@ export interface Paths {
 }
 
 /** A stand-in of one of the project's tools, run on `folder`. */
-export interface Tool extends ToolRule {
+interface Tool extends ToolRule {
   readonly folder: string;
 }
 
 /** A test case: it passes unless it `fails`, and it may be focused or switched off. */
-export interface TestCase {
+interface TestCase {
   readonly name: string;
   readonly fails?: true;
   readonly focused?: true;
@@ -57,7 +57,7 @@ export interface TestCase {
 }
 
 /** The source of the example, in the stack's syntax. */
-export interface Code {
+interface Code {
   /** How a comment starts. */
   readonly comment: string;
   /** The cart: `total`, and the lines of `discount` after it. */

@@ -58,7 +58,7 @@ Cada stack que Specty soporta tiene un repositorio de ejemplo, como ya lo tienen
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-native.test.ts
   - type: test
-- [ ] T4: Los ejemplos en la guía
+- [x] T4: Los ejemplos en la guía
   - files: docs/checks.md, docs/checks.en.md
   - ac: AC4
   - verify: pnpm check
