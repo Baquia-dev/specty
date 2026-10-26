@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261026-la-tabla-de-capacidades-dice-que-es-directo-indi",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-la-tabla-de-capacidades-dice-que-es-directo-indi",
+  "baseCommit": "71084b1e1841f89671b2df3dd9ce8157a1d96eaf",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:461ac24ed39b107ef4d3849ad9e8309b9a918a7c1efde2d4e25835815a0fb5a0",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:5b28ecf82ab422d20d834446a8209ae202a5238c867bb04e291b7691488e9772",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a3449db28b4e5f35fe9029011244ea4f46c3ce36302ad000c7f8ef2610752bb3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 1,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e5dde6ba17efce60a3925e5aa45ab19b4c2e3745364eaf1e74c3974a4c319866",
+    "at": "2026-10-26T17:17:29.540Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
