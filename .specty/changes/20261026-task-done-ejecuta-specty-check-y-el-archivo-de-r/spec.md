@@ -52,7 +52,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: `task done` ejecuta `specty check`
+- [x] T1: `task done` ejecuta `specty check`
   - files: packages/cli/src/commands/check.ts, packages/cli/src/commands/task.ts, packages/cli/test/task-check.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

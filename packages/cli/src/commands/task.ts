@@ -11,18 +11,21 @@ import {
   parseSpec,
   scopeRulesFrom,
   specHash,
+  type Task,
   taskDoneCard,
   taskDoneRefusalCard,
   verifyFailedCard,
+  verifyingNote,
 } from "@baquia-dev/specty-core";
 import { resolveActive } from "../flow/active";
 import { assertionLosses } from "../flow/assertions";
 import { longFilesOf } from "../flow/lines";
 import { riskFindings } from "../flow/risk";
 import { completeTask, type TaskNotes, verifyTask } from "../flow/task-done";
-import { changeView } from "../flow/views";
+import { changeView, taskVerification } from "../flow/views";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
+import { taskChecks } from "./check";
 import { activateNextTask } from "./next";
 
 /** `specty task done`: checks scope, runs the verification, commits and moves on. */
@@ -105,6 +108,8 @@ export async function taskDone(
   const long = await longFilesOf(session, stored?.baseCommit, changed);
   const tooLong = long.filter((file) => file.severity === "error");
   if (tooLong.length > 0) return longFileCard(header, id, tooLong, cards);
+  const failedCheck = await checkFails(session, state.id, task, header);
+  if (failedCheck !== undefined) return failedCheck;
 
   const verified = await verifyTask(session, active, task);
   if (!verified.ok)
@@ -120,4 +125,25 @@ export async function taskDone(
   const following =
     done.state.phase === "implementing" ? await activateNextTask(session, done) : done;
   return taskDoneCard(await changeView(session, following), id, done.commit, cards);
+}
+
+/**
+ * `specty check --changed --spec` before the task's verification (ADR 0012): the card of a
+ * failure, or nothing. Warnings do not block, so their report goes to stderr, before the card.
+ */
+async function checkFails(
+  session: Session,
+  change: string,
+  task: Task,
+  header: string,
+): Promise<Output | undefined> {
+  const command = `${session.cards.command} check --changed --spec`;
+  session.environment.io.err(verifyingNote(command, session.lang));
+  const checked = await taskChecks(session, change, taskVerification(session, task) !== undefined);
+  const lines = checked.report.split("\n");
+  if (checked.code !== 0) {
+    return verifyFailedCard(header, task.id, command, checked.code, lines, session.cards);
+  }
+  if (lines.length > 1) session.environment.io.err(checked.report);
+  return undefined;
 }

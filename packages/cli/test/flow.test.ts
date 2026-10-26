@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import {
   ARCHIVE,
+  BUTTON_TEST,
   CHANGE,
   CONFIG,
   cli,
@@ -147,7 +148,8 @@ describe("a standard change from request to closing", () => {
     expect(reproposed.out).toContain("CAMBIOS RESPECTO A LO APROBADO:\n  T3: añadido");
     await cli(root, ["approve"], { terminal: person() });
     await cli(root, ["next"]);
-    await writeFiles(root, { "src/app.ts": "3\n" });
+    // T3 is a fix: `task done` runs `specty check --spec`, which asks it for its test.
+    await writeFiles(root, { "src/app.ts": "3\n", "src/app.test.ts": "it('shouts', () => {});\n" });
     expect((await cli(root, ["task", "done", "T3", "--summary", "Tres"])).out).toContain(
       "acceptance",
     );
@@ -219,7 +221,7 @@ describe("the quick lane", () => {
     expect((await cli(root, ["propose"])).code).toBe(0);
     await cli(root, ["approve"], { terminal: person() });
     await cli(root, ["next"]);
-    await writeFiles(root, { "src/button.ts": "Sign in\n" });
+    await writeFiles(root, { "src/button.ts": "Sign in\n", "src/button.test.ts": BUTTON_TEST });
     await cli(root, ["task", "done", "T1", "--summary", "Texto corregido"]);
     const accepted = await cli(root, ["accept"], { terminal: person() });
     expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");

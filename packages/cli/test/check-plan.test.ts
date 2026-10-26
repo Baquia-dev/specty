@@ -148,7 +148,11 @@ describe("specty check --spec", () => {
     expect(active.out).toContain(
       "FALLA fix-tests\n  T1 es un fix y el diff no trae ningún test suyo",
     );
+    // `task done` runs the same check, so the fix is done with its test, which then goes away.
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Saludo"])).code).toBe(2);
+    await writeFiles(root, { "src/app.test.ts": "it('greets', () => {});\n" });
     expect((await cli(root, ["task", "done", "T1", "--summary", "Saludo"])).code).toBe(0);
+    await rm(join(root, "src/app.test.ts"));
     expect((await planChecks(root, "--spec"))["fix-tests"]?.status).toBe("failed");
     expect((await planChecks(root, "--staged", "--spec"))["fix-tests"]?.status).toBe("passed");
     await writeFiles(root, { "src/app.test.ts": "it('greets', () => {});\n" });

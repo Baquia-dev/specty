@@ -225,6 +225,9 @@ export async function toClosing(folder: string): Promise<void> {
   expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
 }
 
+/** The test a fix of the button brings. */
+export const BUTTON_TEST = "it('says Sign in', () => {});\n";
+
 /** A quick change of `root`, in its own worktree, that writes `text` to the button: in acceptance. */
 export async function quickInWorktree(root: string, title: string, slug: string, text: string) {
   expect((await cli(root, ["new", "--worktree", "--kind", "quick", title])).code).toBe(0);
@@ -236,7 +239,9 @@ export async function quickInWorktree(root: string, title: string, slug: string,
   await cli(folder, ["propose"]);
   await cli(folder, ["approve"], { terminal: person() });
   await cli(folder, ["next"]);
-  await writeFiles(folder, { "src/button.ts": text });
+  // A fix brings its test, one of its own: `task done` runs `specty check --spec`.
+  const test = `it('says ${text.trim()}', () => {});\n`;
+  await writeFiles(folder, { "src/button.ts": text, "src/button.test.ts": test });
   await cli(folder, ["task", "done", "T1", "--summary", "Texto corregido"]);
   return { id, folder };
 }

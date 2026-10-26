@@ -6,6 +6,13 @@
   "branch": "specty/20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ea54ce2110598803f22a710efa72fe140b9ea8de6881be8f5a18e71c9ca69682",
+    "at": "2026-10-26T10:26:34.078Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "80f8077c43de04f5d1ef2f5bd79cb3f785ee4770",
+      "startedAt": "2026-10-26T10:26:34.514Z",
+      "doneAt": "2026-10-26T11:42:34.238Z",
+      "summary": "task done ejecuta specty check --changed --spec antes de la verificación, sin scope ni max-lines y, con verificación, sin los comandos del proyecto; un fallo bloquea con su informe y los avisos van a stderr. Las tareas fix de los tests de flujo traen ahora su test."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ea54ce2110598803f22a710efa72fe140b9ea8de6881be8f5a18e71c9ca69682",
-    "at": "2026-10-26T10:26:34.078Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
