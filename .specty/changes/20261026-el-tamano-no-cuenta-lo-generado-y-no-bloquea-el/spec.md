@@ -51,7 +51,7 @@ Un cambio aprobado quedó atrapado en el cierre. Su *Files* tenía un glob sobre
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: fix
-- [ ] T2: El cierre no exige dividir
+- [x] T2: El cierre no exige dividir
   - files: packages/core/src/validate/quality.ts, packages/core/test/validate/split-closing.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core test

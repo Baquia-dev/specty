@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4375ccb73f0d04412676e18ed4b39a6e17762f26",
+      "attempts": 1,
       "startedAt": "2026-10-26T13:25:04.752Z",
       "doneAt": "2026-10-26T13:30:53.314Z",
-      "summary": "El tamaño solo cuenta código escrito a mano: quita de archivos, acciones, módulos y archivos de código lo no gobernado, scope.generated, los lockfiles y lo que la CLI marque generado o binario (RepoSignals.generated). isGeneratedText, compartida con max-lines, reconoce las marcas de Dart y OpenAPI."
+      "summary": "El tamaño solo cuenta código escrito a mano: quita de archivos, acciones, módulos y archivos de código lo no gobernado, scope.generated, los lockfiles y lo que la CLI marque generado o binario (RepoSignals.generated). isGeneratedText, compartida con max-lines, reconoce las marcas de Dart y OpenAPI.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2b9f9a19ea18204f8003d0507a30ec58b96617f4",
+      "startedAt": "2026-10-26T13:30:53.597Z",
+      "doneAt": "2026-10-26T13:31:18.799Z",
+      "summary": "checkSplit no corre en el cierre: el tamaño se decidió al aprobar y el cierre no puede tocar Files, así que ni exige ni aconseja dividir aunque el cambio haya crecido."
     }
   },
   "pending": {
