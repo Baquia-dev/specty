@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { APP, CONFIG, cli, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
 
@@ -117,5 +118,28 @@ describe("the task card in Antigravity", () => {
     const again = await answer(invocation(0));
     expect(again.injectSteps).toHaveLength(1);
     expect(again.injectSteps[0].ephemeralMessage).toContain("TAREA T1");
+  });
+});
+
+describe("Antigravity's terminal sandbox", () => {
+  it("lets each command it allows write in git's folder and in the worktrees' one (AC5)", async () => {
+    const root = await implementing();
+    const run = (index: number, line: string) => ({
+      toolCall: { name: "run_command", args: { CommandLine: line, Cwd: root } },
+      stepIdx: index,
+    });
+    expect(await answer(guard(root, "PreToolUse", run(1, "pnpm test")))).toEqual({
+      decision: "allow",
+      permissionOverrides: [`write_file(${join(root, ".git")})`, `write_file(${root}.worktrees)`],
+    });
+    // Its file tools do not run in the terminal, and what it denies gets nothing.
+    const write = {
+      toolCall: { name: "write_to_file", args: { TargetFile: join(root, "src/app.ts") } },
+      stepIdx: 2,
+    };
+    expect(await answer(guard(root, "PreToolUse", write))).toEqual({ decision: "allow" });
+    const denied = await answer(guard(root, "PreToolUse", run(3, "specty approve")));
+    expect(denied.decision).toBe("deny");
+    expect(denied.permissionOverrides).toBeUndefined();
   });
 });

@@ -31,7 +31,11 @@ export type EventKind =
 
 /** The guard's verdict before each agent's form: let it through, or stop it and say why. */
 export type Verdict =
-  | { readonly allow: true }
+  | {
+      readonly allow: true;
+      /** The folders outside its workspace a shell command may write in, for an agent with `grants`. */
+      readonly folders?: readonly string[];
+    }
   | {
       readonly allow: false;
       readonly reason: string;
@@ -60,6 +64,11 @@ export interface AgentAdapter {
   readonly reply: (verdict: Verdict, phase: "before" | "after", card?: string) => GuardReply;
   /** The reply when the guard itself fails: the action goes through, with every agent. */
   readonly failed: (message: string) => GuardReply;
+  /**
+   * For a tool whose terminal sandbox keeps to the workspace and that takes permissions with each
+   * action: every shell command the guard lets through brings Specty's folders (`Verdict.folders`).
+   */
+  readonly grants?: true;
   /** The reply that brings the task card back after a compaction, for an agent that can. */
   readonly card?: (text: string) => GuardReply;
   /**

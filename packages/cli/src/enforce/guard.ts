@@ -19,7 +19,7 @@ import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
-import { placePaths } from "../flow/worktree";
+import { placePaths, sharedFolders } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
 import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
@@ -157,7 +157,11 @@ async function beforeAction({
   // One change at a time per session: the worktree it may enter becomes its own.
   if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
   if (decision.allow) await beforeShell(session, event, action);
-  return agent.reply(verdict(decision, session), "before");
+  const said = verdict(decision, session);
+  if (said.allow && agent.grants === true && action.kind === "shell") {
+    return agent.reply({ ...said, folders: await sharedFolders(session.git) }, "before");
+  }
+  return agent.reply(said, "before");
 }
 
 /** Before a shell command it lets through, keeps a snapshot of the tree to compare afterwards. */

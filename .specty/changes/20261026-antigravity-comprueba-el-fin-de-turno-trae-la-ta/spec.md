@@ -84,7 +84,7 @@ Este corte añade las cuatro. Como Antigravity no tiene evento de compactación,
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/test/check-ignores.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts
-- [ ] T3: El sandbox de Antigravity deja a Specty sus carpetas
+- [x] T3: El sandbox de Antigravity deja a Specty sus carpetas
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/cursor.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/flow/worktree.ts, packages/cli/test/antigravity-turn.test.ts, packages/cli/test/antigravity.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-turn.test.ts test/antigravity.test.ts test/cursor.test.ts

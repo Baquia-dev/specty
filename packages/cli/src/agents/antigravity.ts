@@ -41,9 +41,17 @@ export const antigravity: AgentAdapter = {
   action,
   reply: (verdict, phase) => {
     if (phase === "after") return json({});
-    return json(verdict.allow ? { decision: "allow" } : { decision: "deny", reason: verdict.text });
+    if (!verdict.allow) return json({ decision: "deny", reason: verdict.text });
+    // Its terminal sandbox writes only in the workspace; these open Specty's folders as well.
+    const grants = (verdict.folders ?? []).map((folder) => `write_file(${folder})`);
+    return json(
+      grants.length === 0
+        ? { decision: "allow" }
+        : { decision: "allow", permissionOverrides: grants },
+    );
   },
   failed: () => json({ decision: "allow" }),
+  grants: true,
   late: "invocation",
   inject: (texts) =>
     json(

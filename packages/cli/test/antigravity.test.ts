@@ -71,7 +71,7 @@ describe("the guard in Antigravity", () => {
   it("gives the warning after a command with the conversation's next model call, once (AC2)", async () => {
     const root = await implementing();
     const command = step(7, "run_command", { CommandLine: "python3 gen.py", Cwd: root });
-    expect(await answer(antigravity(root, "PreToolUse", command))).toEqual({ decision: "allow" });
+    expect((await answer(antigravity(root, "PreToolUse", command))).decision).toBe("allow");
     await writeFiles(root, { "src/other.ts": "generated\n" });
     expect(await answer(antigravity(root, "PostToolUse", command))).toEqual({});
     const invocation = (index: number) =>

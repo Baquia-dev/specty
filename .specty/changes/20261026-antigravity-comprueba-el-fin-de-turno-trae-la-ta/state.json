@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "38b3301b77f76c9b39bf0ecb4811aaa3e143dd6e",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:01:30.956Z",
       "doneAt": "2026-10-26T20:03:53.797Z",
-      "summary": "check --install escribe .antigravityignore con los globs de checks.exclude y scope.generated en los repositorios que usan Antigravity."
+      "summary": "check --install escribe .antigravityignore con los globs de checks.exclude y scope.generated en los repositorios que usan Antigravity.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8b42581d32b99016ea0636ea0eac111895d36be0",
+      "startedAt": "2026-10-26T20:03:54.255Z",
+      "doneAt": "2026-10-26T20:09:13.865Z",
+      "summary": "Cada comando de shell que el guard deja pasar en Antigravity lleva permissionOverrides con write_file de la carpeta común de git y la de las worktrees; sharedFolders pasa de cursor.ts a flow/worktree.ts y el veredicto lleva las carpetas para un agente con grants."
     }
   },
   "pending": {

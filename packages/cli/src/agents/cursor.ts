@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 import {
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
@@ -9,7 +9,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { worktreesHome } from "../flow/worktree";
+import { sharedFolders } from "../flow/worktree";
 import {
   CURSOR_HOOKS,
   CURSOR_SANDBOX,
@@ -95,7 +95,7 @@ export const cursor: AgentAdapter = {
     await removeFromJson(root, CURSOR_HOOKS, hooks, files);
     // A sandbox file the person keeps in git was never Specty's to change.
     if (await git.isTracked(CURSOR_SANDBOX)) return;
-    const folders = await sandboxFolders(git);
+    const folders = await sharedFolders(git);
     const sandbox = (value: Record<string, unknown>) => withFolders(value, folders, false);
     await removeFromJson(root, CURSOR_SANDBOX, sandbox, files);
   },
@@ -105,7 +105,7 @@ export const cursor: AgentAdapter = {
     const listed = readwritePaths(await readText(join(root, CURSOR_SANDBOX)));
     const sandbox = doctorLines([
       [
-        (await sandboxFolders(git)).every((folder) => listed.includes(folder)),
+        (await sharedFolders(git)).every((folder) => listed.includes(folder)),
         { code: "cursor-sandbox", file: CURSOR_SANDBOX },
         { code: "no-cursor-sandbox", file: CURSOR_SANDBOX },
       ],
@@ -127,14 +127,6 @@ function guardLines(missing: readonly string[]): DoctorLines {
 }
 
 /**
- * The folders Specty's commands write in that a change's folder leaves out of the sandbox: git's
- * common folder, where every worktree commits (its `config` lives there), and the worktrees' one.
- */
-async function sandboxFolders(git: Git): Promise<string[]> {
-  return [dirname(await git.gitPath("config")), await worktreesHome(git)];
-}
-
-/**
  * Cursor's sandbox with Specty's folders, kept out of git because they are machine paths. A file
  * the person keeps in git stays as it is, and `init` says what to add to it.
  */
@@ -144,7 +136,7 @@ async function installSandbox(
   files: InstallFiles,
   lang: Lang,
 ): Promise<{ readonly done: string[]; readonly warnings: string[] }> {
-  const folders = await sandboxFolders(git);
+  const folders = await sharedFolders(git);
   if (await git.isTracked(CURSOR_SANDBOX)) {
     const listed = readwritePaths(await files.read(join(root, CURSOR_SANDBOX)));
     const there = folders.every((folder) => listed.includes(folder));
