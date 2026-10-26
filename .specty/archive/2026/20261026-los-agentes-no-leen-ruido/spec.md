@@ -69,3 +69,31 @@ follows:
 ## Riesgos
 
 - R1: Un patrón que el agente sí necesita leer (los tipos de una dependencia en `node_modules`) — la persona ve cada diff y puede rechazarlo; los patrones salen de su propia configuración de `checks.exclude`.
+
+## Cierre
+
+### Resumen
+
+`specty check --install` configura también a cada agente que el repositorio usa para que no lea dependencias, artefactos de build ni código generado. Usa los globs de `checks.exclude` y `scope.generated`, en el sitio que cada uno documenta:
+- `.cursorignore` para Cursor;
+- `.geminiignore` para Gemini CLI;
+- el archivo de Windsurf que exista;
+- reglas `Read` en `permissions.deny` de `.claude/settings.json` para Claude Code.
+
+Solo añade lo que falta. Además, el plan quedó separado de su aplicación: los pasos escriben uno tras otro sobre unos mismos archivos en seco, así que dos pasos en un archivo dan un solo diff con los dos cambios.
+
+### Desviaciones
+
+- `check/install.ts`, que pasaba del aviso de tamaño, se dividió por responsabilidad, como se propuso en el cambio anterior: `install-plan.ts` planifica e `install.ts` enseña, pregunta y aplica.
+- La primera verificación de T3 falló con la máquina cargada (load 29); `pnpm check` pasó a mano y en el segundo intento.
+
+### Decisiones
+
+- Un agente se usa cuando está alguna de sus marcas de `AGENT_CAPABILITIES`, las mismas con las que `init` lo detecta.
+- En Windsurf se completa el archivo de exclusión que ya exista y, si no hay ninguno, se crea `.codeiumignore`, que leen las versiones antiguas y las nuevas.
+- Copilot, Codex, OpenCode y Antigravity no reciben nada: su documentación no confirma un archivo de exclusión propio en el repositorio.
+
+### Pendientes
+
+- C8: que `task done` use `specty check` y que el bloque de AGENTS.md quede en las 5 reglas.
+- C9: la documentación de las verificaciones en español e inglés.

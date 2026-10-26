@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-los-agentes-no-leen-ruido",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-los-agentes-no-leen-ruido",
   "baseCommit": "eb699d2810711fc36fe36003c5709be08a67c49d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:cbb4b8a78c7345799e167bd263d2aad47b5b11df9a93565d4de1da2b2f9e60fc",
@@ -60,12 +60,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "d4b3d42c16f754cfd3a00be78b13b95342947f9a",
+      "attempts": 2,
       "startedAt": "2026-10-26T10:13:05.250Z",
       "doneAt": "2026-10-26T10:19:00.018Z",
-      "summary": "formats §6 documenta la exclusión de ruido y que los pasos de check --install planifican sobre los mismos archivos; ARCHITECTURE §10, el archivo de exclusión de cada agente."
+      "summary": "formats §6 documenta la exclusión de ruido y que los pasos de check --install planifican sobre los mismos archivos; ARCHITECTURE §10, el archivo de exclusión de cada agente.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,5 +77,6 @@
     "AC": 5,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T10:19:25.547Z"
 }
