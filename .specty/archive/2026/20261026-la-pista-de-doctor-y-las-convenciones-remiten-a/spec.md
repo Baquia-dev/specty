@@ -40,3 +40,23 @@ La pista de `specty doctor` sobre las secciones de AGENTS.md sin completar pide 
   - ac: AC1, AC2
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`specty doctor` pide escribir en «Mapa» y «Convenciones» las reglas que no verifica `specty check`, en español y en inglés, y ARCHITECTURE lo describe igual. «Convenciones» del AGENTS.md de este repositorio conserva solo lo que ninguna herramienta verifica, con una línea que remite a las que sí. «Terminado» queda en `pnpm check` en verde.
+
+### Desviaciones
+
+- Rehace el cambio quick `20261026-doctor-y-agents-md-remiten-a-specty-check`, que el usuario canceló. Su verificación completa falló por el formato de un test, y no se podía ajustar: quick admite una sola tarea, y pasarlo a standard exige `ac` en la T1 completada, que no se puede modificar.
+
+### Decisiones
+
+- La línea de «Convenciones» que remite a las herramientas dice cuál verifica cada cosa, para que el agente sepa dónde fallará si se la salta.
+
+### Pendientes
+
+- El hueco del flujo: un cambio quick cuya verificación completa falla en la aceptación no se puede ajustar.
+- La CI de Specty con `specty check --changed` en los PR.
+- Proveedores para los stacks más populares, como pidió el usuario.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-la-pista-de-doctor-y-las-convenciones-remiten-a",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-pista-de-doctor-y-las-convenciones-remiten-a",
   "baseCommit": "5f21e50768bf71ea34dd151dba33bc2ccefbbf18",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:028efaa6dc867d93efc1c6a7297b315ddfd15c78682ba596c1d2976c4bf81f1c",
@@ -39,12 +39,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "05d885c20a3d2ad7e1a7cd1c361e433d76fd1207",
+      "attempts": 1,
       "startedAt": "2026-10-26T13:36:20.481Z",
       "doneAt": "2026-10-26T13:39:20.054Z",
-      "summary": "Convenciones de AGENTS.md conserva solo lo que ninguna herramienta verifica, con una línea que remite a las que sí; Terminado ya no repite la cobertura; ARCHITECTURE describe la pista nueva de doctor."
+      "summary": "Convenciones de AGENTS.md conserva solo lo que ninguna herramienta verifica, con una línea que remite a las que sí; Terminado ya no repite la cobertura; ARCHITECTURE describe la pista nueva de doctor.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -55,5 +55,6 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T13:39:52.012Z"
 }

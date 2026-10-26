@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T13:36:20.482Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"05d885c20a3d2ad7e1a7cd1c361e433d76fd1207"}}
 {"ts":"2026-10-26T13:39:20.053Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":155228,"tree":"sha256:fee71a14cc8a1923d62bea87d82ff6f993bc311d350fcc3400b774be31165b77"}}
 {"ts":"2026-10-26T13:39:20.056Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Convenciones de AGENTS.md conserva solo lo que ninguna herramienta verifica, con una línea que remite a las que sí; Terminado ya no repite la cobertura; ARCHITECTURE describe la pista nueva de doctor."}}
+{"ts":"2026-10-26T13:39:37.251Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T13:39:52.021Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:2e6077656ef15dea291a5a8a7926f5146e072bbcf8553271d57c90104e3af0cc","size":"S","warnings":0}}
+{"ts":"2026-10-26T13:39:52.661Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
