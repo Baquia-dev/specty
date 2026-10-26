@@ -39,7 +39,7 @@ ARCHITECTURE §14 dice que `specty doctor` comprueba cinco cosas que el código 
 
 ## Tareas
 
-- [ ] T1: Las rutas que cita AGENTS.md
+- [x] T1: Las rutas que cita AGENTS.md
   - files: packages/core/src/agents-md.ts, packages/core/src/index.ts, packages/core/test/agents-md.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts

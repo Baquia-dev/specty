@@ -9,6 +9,7 @@ export {
   isAgentTool,
 } from "./agents";
 export {
+  citedPaths,
   flowBlock,
   hasBlock,
   humanSections,
