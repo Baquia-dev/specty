@@ -32,7 +32,7 @@ Monorepo con pnpm workspaces, en `github.com/Baquia-dev/specty`. Solo se publica
 | `packages/core` (`@baquia-dev/specty-core`) | Esquema, parser, serializador, hash y delta de specs; máquina de estados; reglas de alcance; tamaño y esfuerzo; textos de salida | Sin IO ni APIs de Node: también se ejecuta en el navegador |
 | `packages/cli` (`@baquia-dev/specty`) | Comandos, almacén `.specty/`, git, hooks de git, adaptadores de agentes, detección, servidor local (HTTP + SSE), servidor MCP | El guard y los hooks usan un punto de entrada mínimo para arrancar rápido (`enforce/entry.ts`, §10) |
 | `packages/ui` (`@baquia-dev/specty-ui`) | App web de revisión, aprobación y auditoría | Capa de datos independiente del transporte |
-| `packages/exporters` (`@baquia-dev/specty-exporters`) | OpenSpec, Spec Kit, Kiro | Funciones puras sobre el modelo de core |
+| `packages/exporters` (`@baquia-dev/specty-exporters`) | OpenSpec, Spec Kit, Kiro: `exportSpec(spec, formato, contexto)` da las rutas y el contenido de cada archivo ([formats.md §10](formats.md#10-exportadores)) | Funciones puras sobre el modelo de core: no escriben nada |
 
 ```text
 specty/

@@ -516,10 +516,11 @@ SIGUIENTE: revierte ese archivo o pide ampliar el alcance con `specty scope add 
 
 | Specty | OpenSpec | Spec Kit | Kiro |
 | --- | --- | --- | --- |
-| Objetivo, Fuera de alcance | `proposal.md` | `spec.md` (resumen y alcance) | `requirements.md` (introducción) |
-| Supuestos | `design.md` | `spec.md` (supuestos) | `design.md` |
-| Criterios | `specs/<capacidad>/spec.md`: `ADDED Requirements` con escenarios WHEN/THEN | `spec.md` (requisitos funcionales y escenarios) | `requirements.md` (criterios EARS) |
-| Diseño, Archivos, Riesgos | `design.md` | `plan.md` | `design.md` |
-| Tareas | `tasks.md` | `tasks.md` (T001…, con rutas de archivo) | `tasks.md` (con referencias a requisitos) |
+| Carpeta | `openspec/changes/<id>/` | `specs/<id>/` | `.kiro/specs/<nombre>/` |
+| Objetivo, Fuera de alcance | `proposal.md`: Why, What Changes (los archivos), Impact y Out of Scope | `spec.md`: la historia de usuario y Out of Scope | `requirements.md`: Introduction |
+| Supuestos | `design.md`: Assumptions | `spec.md`: Assumptions | `design.md`: Assumptions |
+| Criterios | `specs/<nombre>/spec.md`: `ADDED Requirements`, un `### Requirement:` y un `#### Scenario:` con **WHEN** y **THEN** por criterio | `spec.md`: escenarios **When**/**Then** numerados y requisitos funcionales FR-001… | `requirements.md`: un requisito con su historia de usuario y criterios EARS numerados (`WHEN … THE SYSTEM SHALL …`) |
+| Diseño, Archivos, Riesgos | `design.md` | `plan.md`: Summary, Design, Project Structure y Risks | `design.md`: Overview, Architecture, Components and Interfaces y Risks |
+| Tareas | `tasks.md`: `- [x] 1.1 …`, marcadas si están hechas | `tasks.md`: `- [ ] T001 [US1] … in <rutas>` | `tasks.md`: `- [ ] 1. …`, con sus archivos y `_Requirements: 1.2_` |
 
-El mapeo parte de la documentación pública de cada formato y se valida contra su versión vigente al implementar cada exportador. La importación (al menos desde OpenSpec, para quienes vienen del legacy) usa el mapeo inverso.
+`<nombre>` es el id del cambio sin su fecha. Los encabezados y las palabras clave de cada formato (WHEN, THEN, SHALL) van en inglés, como los espera cada herramienta, y el texto de la spec va tal cual, en su idioma. Un criterio `CUANDO … ENTONCES …` (o `WHEN … THEN …`) se parte en su condición y su resultado; uno de otra forma va entero como resultado. Lo hace `packages/exporters` (`exportSpec`), que devuelve rutas y contenidos sin escribir nada. El mapeo parte de la documentación pública de cada formato, consultada al implementarlo (octubre de 2026). La importación (al menos desde OpenSpec, para quienes vienen del legacy) usa el mapeo inverso.

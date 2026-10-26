@@ -1,0 +1,19 @@
+{
+  "name": "@baquia-dev/specty-exporters",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Exporters of Specty specs to OpenSpec, GitHub Spec Kit and Kiro: pure functions over core's model.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json"
+  },
+  "dependencies": {
+    "@baquia-dev/specty-core": "workspace:*"
+  }
+}
