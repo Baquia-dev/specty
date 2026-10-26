@@ -70,12 +70,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "db697d89f50557767294501ae9fc89f9805ecc49",
+      "attempts": 1,
       "startedAt": "2026-10-26T22:59:19.668Z",
       "doneAt": "2026-10-26T23:02:24.453Z",
-      "summary": "init escribe Exec(specty) en .devin/config.json, que se versiona, y las carpetas de Specty como Write(...) en .devin/config.local.json, excluido de git, para el sandbox de Devin; si ese archivo va en git, dice qué añadir. uninstall lo quita."
+      "summary": "init escribe Exec(specty) en .devin/config.json, que se versiona, y las carpetas de Specty como Write(...) en .devin/config.local.json, excluido de git, para el sandbox de Devin; si ese archivo va en git, dice qué añadir. uninstall lo quita.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "defbde6f9489dd9a357a9fe6cb66a2c57cd92894",
+      "startedAt": "2026-10-26T23:02:24.782Z",
+      "doneAt": "2026-10-26T23:03:14.238Z",
+      "summary": "detectAgentTool pasa a una tabla de marcas por agente, y reconoce la terminal de Antigravity CLI por HGEDITOR y JJ_EDITOR a false, así que una terminal suya no cuenta como la de la persona."
     }
   },
   "pending": {

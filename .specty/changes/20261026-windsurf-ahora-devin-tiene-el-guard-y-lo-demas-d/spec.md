@@ -88,7 +88,7 @@ La fila de la tabla pasa a llamarse «Devin (Windsurf)». El corte también reco
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/src/install/agents.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/windsurf.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts test/uninstall.test.ts
-- [ ] T4: Specty reconoce la terminal de Antigravity CLI
+- [x] T4: Specty reconoce la terminal de Antigravity CLI
   - files: packages/core/src/agents.ts, packages/core/test/cards.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts
