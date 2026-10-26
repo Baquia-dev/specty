@@ -16,7 +16,7 @@ Specty es Apache-2.0, y la licencia pide entregar con cada distribución una cop
 
 ## Tareas
 
-- [ ] T1: Cada build copia LICENSE y NOTICE junto al bundle
+- [x] T1: Cada build copia LICENSE y NOTICE junto al bundle
   - files: packages/cli/build.mjs, packages/cli/test/bundle.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm check
   - type: fix
