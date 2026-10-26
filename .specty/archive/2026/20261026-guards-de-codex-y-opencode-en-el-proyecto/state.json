@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-guards-de-codex-y-opencode-en-el-proyecto",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-guards-de-codex-y-opencode-en-el-proyecto",
   "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5b45180e360d2010b90a2b2291846f294cc8e6f86adf5f215c1a69486c032862",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "48b1db5fe5cfad9e296479acf73375b419b4cbe5",
+      "attempts": 1,
       "startedAt": "2026-10-26T11:22:53.196Z",
       "doneAt": "2026-10-26T11:26:59.797Z",
-      "summary": "check --install pone el hook de fin de turno de Codex en .codex/hooks.json del proyecto, y uninstall quita de ahí el guard de Codex, conservando los demás hooks, y borra el plugin de OpenCode; la documentación ya no habla de archivos del usuario. pnpm check en verde."
+      "summary": "check --install pone el hook de fin de turno de Codex en .codex/hooks.json del proyecto, y uninstall quita de ahí el guard de Codex, conservando los demás hooks, y borra el plugin de OpenCode; la documentación ya no habla de archivos del usuario. pnpm check en verde.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,5 +92,6 @@
     "AC": 9,
     "T": 4,
     "R": 5
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T11:33:55.850Z"
 }

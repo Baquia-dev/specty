@@ -97,3 +97,29 @@ Specty deja de escribir en la carpeta del usuario. El guard de Codex pasa a `.co
 - R3: Los formateadores y linters del proyecto revisarán `.codex/hooks.json` y el JavaScript del plugin — `doctor` dice qué exclusión añadir (AC8).
 - R4: Si el proyecto ya versiona `.codex/hooks.json` y el comando de Specty no está en el PATH, el archivo versionado recibe una ruta de la máquina, como ya pasa con `.cursor/hooks.json` — `init` ya avisa de que `specty` no está en el PATH.
 - R5: A1 y A3 se verificaron leyendo el código de Codex y de OpenCode, no con las herramientas en marcha — los tests simulan sus eventos, y se le pide al usuario que lo pruebe con sus versiones.
+
+## Cierre
+
+### Resumen
+
+Specty ya no escribe en la carpeta del usuario. `init` pone el guard de Codex en `.codex/hooks.json` y el plugin de OpenCode en `.opencode/plugins/specty.js`, dentro del proyecto, como ya hacía con Claude Code y Cursor: se versionan cuando `specty` está en el PATH y entran en el commit de `init`, y si el comando lleva una ruta de la máquina quedan excluidos en local y `specty new` los copia a cada worktree. `check --install` pone el hook de fin de turno de Codex en el mismo archivo, `doctor` busca los dos en el proyecto y avisa del formateador que los revisaría, `uninstall` los quita conservando los demás hooks de la persona, y el guard impide al agente editarlos o borrarlos. La tabla de capacidades da a Codex y OpenCode el guard en el repositorio, y la ADR 0013 recoge la decisión y su alcance.
+
+### Desviaciones
+
+- El test «makes no copy when every file it writes is new» de `init-reversible.test.ts` falló en T3: usaba OpenCode porque su plugin se escribía fuera del repositorio, y ahora `init` añade el plugin a `.git/info/exclude`, que ya existía, y guarda su copia. Con el visto bueno del usuario, el test usa Gemini CLI, cuya instalación solo crea archivos nuevos.
+- Además de ARCHITECTURE §10, se corrigieron la fila del hook `Stop` de Codex, el párrafo de `uninstall` en ARCHITECTURE §14 y la línea del hook de fin de turno en formats.md, que hablaban del archivo del usuario.
+- Las exclusiones de los formateadores se prueban por la salida de `doctor` en los tests de Codex y de OpenCode, y no en `install.test.ts`, para que el cambio no pasara de L.
+
+### Decisiones
+
+- El aviso de un guard que una versión anterior dejara en la configuración del usuario se quitó del plan: Specty no está publicado en npm y en esta máquina no hay ninguno. `uninstall` sigue nombrando el que encuentre ahí.
+- `doctor` mira solo los archivos del proyecto: el marcador `.codex` u `.opencode` aparece en cuanto `init` los escribe, así que ya no hace falta leer la configuración del usuario para decidir si comprobarlos.
+- `codexHooksFile` y `opencodePluginFile` siguen existiendo solo para leer: la guía de gentle-ai y lo que `uninstall` dice que queda.
+- La carga de los hooks de una worktree desde la carpeta principal (Codex 0.131, PR #21969) y la carga de `.opencode/plugins/` del proyecto se verificaron en el código de Codex y de OpenCode, no con las herramientas en marcha.
+
+### Pendientes
+
+- Probar con Codex 0.131 o posterior y con OpenCode que el guard del proyecto corre en las worktrees de los cambios, con una sola revisión de `/hooks` por repositorio.
+- Siguiente cambio, pedido por el usuario: que `init` escriba en el proyecto las reglas de permiso de los agentes (Claude Code y Codex) para que el agente ejecute los comandos de Specty sin el veto de la herramienta y decida Specty. En Codex hace falta además para que los commits de `task done` no choquen con el sandbox, que deja `.git` en solo lectura.
+- Las worktrees junto al proyecto y las carpetas temporales de `specty check` en `$TMPDIR` siguen fuera de la carpeta del proyecto; la persona decidirá si entran en la ADR 0013.
+- `uninstall` no quita el hook de fin de turno (`hook agent-stop`) de Claude Code, Cursor ni Codex: solo reconoce las entradas con `guard --tool`.
