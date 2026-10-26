@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T03:15:05.745Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"f9a7e76af608d26836173e41d3dd01ba88e00b31"}}
 {"ts":"2026-10-26T03:17:32.264Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":88798,"tree":"sha256:654eb10a629e84ccbefe06ef319201a7085576d36ad3bada02f3e24776ae1147"}}
 {"ts":"2026-10-26T03:17:32.400Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"flow/shared.ts, flow/worktree.ts y flow/detected.ts piden sus textos a core (sharedLine, sharedTitle, preparingNote y verifyHintLine) y ya no llaman al traductor; la salida es la misma, como comprueban los tests."}}
+{"ts":"2026-10-26T03:17:41.433Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T03:17:47.164Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:3dfaf7fa115c24180ee7d01587c999b6d723f93789dc69ff7ceb4c1add294cb9","size":"L","warnings":2}}
+{"ts":"2026-10-26T03:17:53.070Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

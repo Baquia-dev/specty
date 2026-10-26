@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
   "baseCommit": "bfa2cf2f30604b55465c192c21b9f9b1d9a4c603",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c957b6b53731e5bfc45f95a246595cbcecb9a9cacfe60434d0458bf57b0b5ec9",
@@ -49,12 +49,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f9a7e76af608d26836173e41d3dd01ba88e00b31",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:15:05.745Z",
       "doneAt": "2026-10-26T03:17:32.399Z",
-      "summary": "flow/shared.ts, flow/worktree.ts y flow/detected.ts piden sus textos a core (sharedLine, sharedTitle, preparingNote y verifyHintLine) y ya no llaman al traductor; la salida es la misma, como comprueban los tests."
+      "summary": "flow/shared.ts, flow/worktree.ts y flow/detected.ts piden sus textos a core (sharedLine, sharedTitle, preparingNote y verifyHintLine) y ya no llaman al traductor; la salida es la misma, como comprueban los tests.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,5 +65,6 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T03:17:47.162Z"
 }

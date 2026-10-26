@@ -64,3 +64,21 @@ Pasan a `cards/epic.ts`, a un `cards/parallel.ts` nuevo y a `cards/close.ts`. La
   - ac: AC2, AC3
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los rechazos de `new --epic --slice` viven en `cards/epic.ts` (`sliceRefusalCard`); los textos del trabajo en paralelo (archivos compartidos, preparar la carpeta y `prune`), en un `cards/parallel.ts` nuevo; y la pista de la verificación detectada al cerrar, en `cards/close.ts`. Los seis archivos de la CLI ya no llaman al traductor, y la salida es la misma: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `sliceRefusal` sigue en la CLI decidiendo el caso (lee la épica y sus cortes); core solo escribe cada motivo con su estado y su SIGUIENTE.
+
+### Pendientes
+
+- Siguen en la CLI los textos de `ui`, `export`, `delegate`, `why`, `audit`, del servidor, de los hooks y de `check`.
