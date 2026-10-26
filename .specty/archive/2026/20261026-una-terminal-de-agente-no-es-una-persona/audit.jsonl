@@ -6,3 +6,5 @@
 {"ts":"2026-10-26T12:34:45.124Z","actor":"agent","tool":"claude-code","event":"scope.decided","data":{"id":"S1","decision":"approved","delegated":true}}
 {"ts":"2026-10-26T13:21:11.433Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts && pnpm --filter @baquia-dev/specty typecheck","exit":0,"ms":1700,"tree":"sha256:f1f40b578b07b5172329cee89f9b08ef81a9df30a22d7ad1346695ca0f9a9916"}}
 {"ts":"2026-10-26T13:21:11.517Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Codex se detecta también por CODEX_CI y CODEX_THREAD_ID; personAtTerminal (core) exige TTY sin entorno de agente y systemTerminal(env) la usa; ARCHITECTURE §4 lo explica. El test de gentle-ai ya no depende del nombre de la carpeta."}}
+{"ts":"2026-10-26T13:22:49.870Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":82164,"tree":"sha256:f1f40b578b07b5172329cee89f9b08ef81a9df30a22d7ad1346695ca0f9a9916"}}
+{"ts":"2026-10-26T13:24:14.065Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

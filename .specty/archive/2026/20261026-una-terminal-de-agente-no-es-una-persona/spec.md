@@ -21,3 +21,9 @@ Hasta ahora, Specty daba por hecho que una terminal real era la persona. Pero Co
 - [x] T1: Una terminal con el entorno de un agente no cuenta como persona
   - files: packages/core/src/agents.ts, packages/core/test/cards.test.ts, packages/cli/src/terminal.ts, packages/cli/src/main.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts && pnpm --filter @baquia-dev/specty typecheck
+
+## Cierre
+
+### Resumen
+
+Codex se detecta también por CODEX_CI y CODEX_THREAD_ID; personAtTerminal (core) exige TTY sin entorno de agente y systemTerminal(env) la usa; ARCHITECTURE §4 lo explica. El test de gentle-ai ya no depende del nombre de la carpeta.

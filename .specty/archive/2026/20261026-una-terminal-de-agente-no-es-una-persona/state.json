@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-una-terminal-de-agente-no-es-una-persona",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-una-terminal-de-agente-no-es-una-persona",
   "baseCommit": "e8ab5b5dcab16212de99fae48f623f66e57bf60b",
   "revision": 1,
@@ -26,14 +26,14 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/index.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "c94159508748d9978d2b8d0bf02bdfbfb3600f27",
+      "attempts": 1,
       "startedAt": "2026-10-26T12:33:35.712Z",
       "doneAt": "2026-10-26T13:21:11.516Z",
-      "summary": "Codex se detecta también por CODEX_CI y CODEX_THREAD_ID; personAtTerminal (core) exige TTY sin entorno de agente y systemTerminal(env) la usa; ARCHITECTURE §4 lo explica. El test de gentle-ai ya no depende del nombre de la carpeta."
+      "summary": "Codex se detecta también por CODEX_CI y CODEX_THREAD_ID; personAtTerminal (core) exige TTY sin entorno de agente y systemTerminal(env) la usa; ARCHITECTURE §4 lo explica. El test de gentle-ai ya no depende del nombre de la carpeta.",
+      "scopeExtra": [
+        "packages/core/src/index.ts"
+      ]
     }
   },
   "pending": {
