@@ -79,3 +79,25 @@ En Cursor faltan dos cosas que Claude Code tiene. La primera es la tarjeta de la
 - R1: Si el agente no ejecuta ningún comando de shell tras compactar, la tarjeta no llega. Mitigación: AGENTS.md ya le pide `specty next` al empezar a trabajar, que es un comando; y la tabla dice «indirecto» con cómo se hace.
 - R2: Dar al sandbox la carpeta común de git deja que cualquier comando escriba allí, como en la carpeta principal. Mitigación: el guard sigue bloqueando `git commit` y `--no-verify` antes de que se ejecuten, y los hooks de git rechazan un commit sin recibo.
 - R3: Nada de esto se puede probar con Cursor de verdad, porque su modelo va por su servidor. Mitigación: las pruebas usan los eventos con la forma que documenta Cursor, como las que ya tiene.
+
+## Cierre
+
+### Resumen
+
+Cursor recupera la tarjeta tras compactar por un camino indirecto. Su `preCompact` solo observa, así que el guard deja la tarjeta pendiente para esa conversación (`enforce/pending.ts`, en `specty/pending/` de la carpeta de git). El siguiente `postToolUse` de un comando la añade a `additional_context`, después del aviso del comando si lo hay, y solo una vez. Además, `init` escribe `.cursor/sandbox.json` con la carpeta común de git y la de las worktrees en `additionalReadwritePaths`, para que los commits de Specty funcionen dentro de su sandbox. El archivo va excluido de git, conserva lo que tuviera la persona y `new` lo copia a cada worktree. `doctor` comprueba `preCompact` y el sandbox, y `uninstall` quita solo las carpetas de Specty. En la tabla, la tarjeta de Cursor pasa a «indirecto» y sus permisos a «sí».
+
+### Desviaciones
+
+- T2 tocó también `agents/adapter.ts`, `agents/index.ts`, `commands/doctor.ts` y `commands/uninstall.ts` (con `scope add`): `doctor` y `remove` reciben `git` como último parámetro, porque las carpetas del sandbox se calculan con él. Los demás agentes no cambian.
+- `guard` subió a complejidad 15 con la tarjeta pendiente, así que se partió en tres funciones: `guard` (el evento y la sesión), `answer` (según el tipo de evento) y `beforeAction` (la acción antes de que ocurra).
+
+### Decisiones
+
+- Sin sesión de Specty, la respuesta tiene la forma de la fase del evento: tras un comando de Cursor, `{}` en vez de `{"permission":"allow"}`. Cursor ignoraba ese campo de más.
+- La tarjeta pendiente no guarda su texto: se genera al entregarla, para que diga lo de ese momento.
+- `conversationOf` lee `session_id` o `conversation_id`, y comparte con `toolUseId` el filtro de nombre de archivo.
+- La carpeta común de git sale de `gitPath("config")`, sin tocar `io/git.ts`.
+
+### Pendientes
+
+- Nada de esto se ha probado con Cursor de verdad (R3); las pruebas usan los eventos y los archivos con la forma que documenta Cursor.

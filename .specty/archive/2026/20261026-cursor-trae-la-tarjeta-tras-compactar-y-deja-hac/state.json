@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
   "baseCommit": "313659d8ba065d7500b36bf800c831fe87dc9785",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:8cda1a063a35805fea494951579c2d9fa41ad9a934baf8a4df136c96d1eb8681",
@@ -66,12 +66,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fecc652d1a5ec72ae7d797b3df3a8139a02160b2",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:07:33.768Z",
       "doneAt": "2026-10-26T18:08:54.181Z",
-      "summary": "La tarjeta tras compactar de Cursor pasa a «indirecto», con cómo se hace, y sus permisos a «sí». ARCHITECTURE cuenta preCompact y el sandbox (§7 y §10) y formats.md la carpeta specty/pending/."
+      "summary": "La tarjeta tras compactar de Cursor pasa a «indirecto», con cómo se hace, y sus permisos a «sí». ARCHITECTURE cuenta preCompact y el sandbox (§7 y §10) y formats.md la carpeta specty/pending/.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -84,5 +84,6 @@
     "T": 3,
     "R": 3,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T18:11:35.115Z"
 }

@@ -12,3 +12,7 @@
 {"ts":"2026-10-26T18:07:33.768Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"fecc652d1a5ec72ae7d797b3df3a8139a02160b2"}}
 {"ts":"2026-10-26T18:08:54.027Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts","exit":0,"ms":1278,"tree":"sha256:df92925eccb47744f4573654d51f1409bc7f9013725294f60567598f1ee59fc7"}}
 {"ts":"2026-10-26T18:08:54.183Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"La tarjeta tras compactar de Cursor pasa a «indirecto», con cómo se hace, y sus permisos a «sí». ARCHITECTURE cuenta preCompact y el sandbox (§7 y §10) y formats.md la carpeta specty/pending/."}}
+{"ts":"2026-10-26T18:11:13.591Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":135504,"tree":"sha256:df92925eccb47744f4573654d51f1409bc7f9013725294f60567598f1ee59fc7"}}
+{"ts":"2026-10-26T18:11:13.593Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T18:11:35.116Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:de9cbeb66b2fe7d6d262c556ed3617b900a7e52e34904ae03bb36b7514d6a7f5","size":"L","warnings":2}}
+{"ts":"2026-10-26T18:13:29.374Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
