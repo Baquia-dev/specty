@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-specty-check-en-el-pre-commit",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-specty-check-en-el-pre-commit",
   "baseCommit": "58e8c6e2e7e18a6f24b2a5f0b92609132cfad533",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "414c0a5b7ca0591bad31572b9d140d191881083c",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:16:03.224Z",
       "doneAt": "2026-10-26T01:18:08.274Z",
-      "summary": "checks.preCommit (false por defecto) y enforce/hook.ts: al permitir un cambio manual dentro del alcance, el pre-commit ejecuta specty check --staged y bloquea con su informe en stderr si falla; sin tocar los archivos de hooks."
+      "summary": "checks.preCommit (false por defecto) y enforce/hook.ts: al permitir un cambio manual dentro del alcance, el pre-commit ejecuta specty check --staged y bloquea con su informe en stderr si falla; sin tocar los archivos de hooks.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "64973a8b91b4aedb3797b1d66d3ca4ee19ced60a",
+      "startedAt": "2026-10-26T01:18:08.986Z",
+      "doneAt": "2026-10-26T01:20:08.918Z",
+      "summary": "formats §6 documenta checks.preCommit y ARCHITECTURE §9 el paso de specty check --staged en el orden del pre-commit."
     }
   },
   "pending": {

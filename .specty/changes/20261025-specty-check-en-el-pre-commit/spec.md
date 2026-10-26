@@ -50,7 +50,7 @@ Con `checks.preCommit: true`, el hook `pre-commit` que Specty ya instala (en hus
   - files: packages/core/src/schema/checks.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/check-pre-commit.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-pre-commit.test.ts test/install.test.ts
-- [ ] T2: La documentación
+- [x] T2: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC3
   - verify: pnpm check

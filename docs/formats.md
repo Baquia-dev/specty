@@ -329,6 +329,7 @@ checks:                           # specty check (ADR 0012)
     ui: { paths: ["src/ui/**"], may: [application, domain] }
   generators:                     # opcional: generadores de código además de los detectados
     - { command: "npm run openapi", outputs: ["src/api/**"], inputs: ["openapi.yaml"] }  # sin inputs, corre con cualquier cambio
+  preCommit: false                # true: el pre-commit ejecuta también `specty check --staged` sobre los cambios manuales
   commands:                       # opcional: los comandos del proyecto, por encima de los detectados
     tests: "pnpm test --run"      # format | lint | typecheck | tests
 policy:
