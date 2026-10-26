@@ -167,7 +167,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check);
   - flujo: unas 8 líneas.
 
-  El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no aplica ningún linter. Mientras sigan vacías, `specty doctor` lo avisa (ver §14).
+  El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no verifica `specty check`. Mientras sigan vacías, `specty doctor` lo avisa (ver §14).
 - **Punteros por herramienta**: solo para las herramientas detectadas o elegidas, y solo donde la herramienta no lee AGENTS.md por sí misma (por ejemplo, `CLAUDE.md` con `@AGENTS.md`). Nunca copian contenido.
 - **Tarjeta de tarea** (salida de `next` en `implementing`). Presupuesto: unos 1.500 tokens, estimados como caracteres ÷ 4. Incluye:
   - la tarea, sus archivos permitidos y los criterios que cubre;

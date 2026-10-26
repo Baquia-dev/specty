@@ -109,7 +109,7 @@ describe("the lines of `doctor`", () => {
       ],
       [
         { code: "unfilled-sections", sections: ["Mapa", "Convenciones"] },
-        "AGENTS.md tiene sin completar «Mapa» y «Convenciones»: el agente lo lee en cada sesión, así que escribe ahí lo que el código no dice (los directorios cuyo propósito no es obvio, lo que no se toca, las reglas que no aplica ningún linter).",
+        "AGENTS.md tiene sin completar «Mapa» y «Convenciones»: el agente lo lee en cada sesión, así que escribe ahí lo que el código no dice (los directorios cuyo propósito no es obvio, lo que no se toca, las reglas que no verifica `specty check`).",
       ],
       [
         { code: "delegated", since: "2026-10-23", by: "Ana" },
@@ -123,9 +123,12 @@ describe("the lines of `doctor`", () => {
     expect(doctorLine({ code: "no-git-hooks" }, EN)).toBe(
       "Git hooks are missing: run `specty init`.",
     );
-    expect(doctorLine({ code: "unfilled-sections", sections: ["Map", "Conventions"] }, EN)).toMatch(
-      /^AGENTS\.md has "Map" and "Conventions" not filled in:/,
+    const unfilled = doctorLine(
+      { code: "unfilled-sections", sections: ["Map", "Conventions"] },
+      EN,
     );
+    expect(unfilled).toMatch(/^AGENTS\.md has "Map" and "Conventions" not filled in:/);
+    expect(unfilled).toMatch(/rules `specty check` does not verify\)\.$/);
   });
 });
 
