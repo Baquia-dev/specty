@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isAbsolute, join, relative, sep } from "node:path";
 import {
+  AGENT_NAMES,
   backupLine,
   claudePointerStaysLine,
   globalGuardStaysLine,
@@ -18,11 +19,11 @@ import {
   unwatchedChangeWarning,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
+import { ADAPTERS, removeAgentHooks } from "../agents";
 import { isFinished, resolveActive } from "../flow/active";
-import { codexHooksFile, hasGuard, removeAgentHooks } from "../install/agents";
+import { hasGuard } from "../install/agents";
 import { type FileChange, type InstallFiles, installFiles } from "../install/files";
 import { removeGitHooks } from "../install/git-hooks";
-import { opencodePluginFile } from "../install/opencode";
 import { removeAgentsBlocks } from "../install/project-files";
 import { exists, readText } from "../io/files";
 import type { Session } from "../session";
@@ -94,13 +95,10 @@ function described(change: FileChange, session: Session): string {
 async function remaining(session: Session): Promise<string[]> {
   const env = session.environment.env;
   const stays = [historyStaysLine(session.lang)];
-  const global = [
-    { name: "Codex", file: codexHooksFile(env), tool: "codex" as const },
-    { name: "OpenCode", file: opencodePluginFile(env), tool: "opencode" as const },
-  ];
-  for (const { name, file, tool } of global) {
-    if (!hasGuard(await readText(file), tool)) continue;
-    stays.push(globalGuardStaysLine(name, file, session.lang));
+  for (const { tool, userFile } of Object.values(ADAPTERS)) {
+    const file = userFile?.(env);
+    if (file === undefined || !hasGuard(await readText(file), tool)) continue;
+    stays.push(globalGuardStaysLine(AGENT_NAMES[tool], file, session.lang));
   }
   if (await exists(join(session.root, "CLAUDE.md"))) {
     stays.push(claudePointerStaysLine(session.lang));

@@ -88,7 +88,7 @@ Lo que Specty hace con cada agente está hoy repartido en ocho archivos, con ram
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/install.test.ts test/codex.test.ts test/opencode.test.ts test/init-commit.test.ts test/init-reversible.test.ts
   - type: refactor
-- [ ] T4: doctor y uninstall por el módulo de cada agente
+- [x] T4: doctor y uninstall por el módulo de cada agente
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/index.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/agents/cursor.ts, packages/cli/src/agents/codex.ts, packages/cli/src/agents/opencode.ts, packages/cli/src/install/agents.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/commands/uninstall.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty test

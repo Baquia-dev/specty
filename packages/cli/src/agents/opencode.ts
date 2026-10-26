@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
+import { join } from "node:path";
 import { opencodeGuardLine, patchPaths } from "@baquia-dev/specty-core";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { installOpencode } from "../install/opencode";
-import { isRecord } from "../io/files";
-import { type AgentAdapter, exitFailed, exitReply } from "./adapter";
+import { hasGuard, OPENCODE_PLUGIN } from "../install/agents";
+import { installOpencode, opencodePluginFile } from "../install/opencode";
+import { isRecord, readText } from "../io/files";
+import { type AgentAdapter, doctorLines, exitFailed, exitReply } from "./adapter";
 
 /**
  * OpenCode, through Specty's plugin (`install/opencode.ts`, ARCHITECTURE §10): it sends each tool
@@ -24,6 +26,24 @@ export const opencode: AgentAdapter = {
       written: local ? [] : [file],
     };
   },
+  remove: async (root, files) => {
+    const plugin = join(root, OPENCODE_PLUGIN);
+    if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
+  },
+  doctor: async (root) => {
+    const plugin = await readText(join(root, OPENCODE_PLUGIN));
+    const guard = hasGuard(plugin, "opencode");
+    // A plugin from before the check after each command never sends `PostToolUse`.
+    const afterShell = plugin?.includes('"PostToolUse"') === true;
+    return doctorLines([
+      [
+        guard && afterShell,
+        { code: "opencode-guard", file: OPENCODE_PLUGIN },
+        { code: guard ? "opencode-after-command" : "no-opencode-guard", file: OPENCODE_PLUGIN },
+      ],
+    ]);
+  },
+  userFile: opencodePluginFile,
 };
 
 /**

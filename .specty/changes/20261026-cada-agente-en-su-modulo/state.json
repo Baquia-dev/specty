@@ -61,12 +61,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0a63065887c749fccea87180d0b62935aa106510",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:41:19.910Z",
       "doneAt": "2026-10-26T16:45:53.349Z",
-      "summary": "init instala por el módulo de cada agente: cada uno escribe su guard y sus reglas y devuelve sus líneas; install/hooks.ts los recorre y solo conserva el puntero CLAUDE.md. Las tablas de eventos siguen en install/agents.ts hasta T4."
+      "summary": "init instala por el módulo de cada agente: cada uno escribe su guard y sus reglas y devuelve sus líneas; install/hooks.ts los recorre y solo conserva el puntero CLAUDE.md. Las tablas de eventos siguen en install/agents.ts hasta T4.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e9ea28ed3dd6c4d203b53a16cf3f2bea75f0821b",
+      "startedAt": "2026-10-26T16:45:54.310Z",
+      "doneAt": "2026-10-26T16:54:33.550Z",
+      "summary": "doctor y uninstall pasan por el módulo de cada agente (doctor, remove, userFile); las tablas de eventos, las reglas de Claude Code y la de Codex viven en su módulo. install/agents.ts queda con rutas y ayudantes comunes (missingEvents, removeFromJson)."
     }
   },
   "pending": {

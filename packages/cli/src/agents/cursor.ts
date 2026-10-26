@@ -2,11 +2,28 @@
 import { join } from "node:path";
 import { guardLine } from "@baquia-dev/specty-core";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { CURSOR_EVENTS, CURSOR_HOOKS, excludeLocally, isOurs } from "../install/agents";
+import {
+  CURSOR_HOOKS,
+  excludeLocally,
+  isOurs,
+  missingEvents,
+  removeFromJson,
+  withHooks,
+} from "../install/agents";
 import { rewriteJson } from "../install/files";
-import { isRecord } from "../io/files";
-import type { AgentAdapter } from "./adapter";
+import { isRecord, readText } from "../io/files";
+import { type AgentAdapter, doctorLines } from "./adapter";
 
+/**
+ * The events the guard listens to, with the tools each one covers: before each write, delete or
+ * command, and after each command, whether it succeeded or failed.
+ */
+const EVENTS: Readonly<Record<string, string | undefined>> = {
+  preToolUse: "Write|Delete|Shell",
+  beforeShellExecution: undefined,
+  postToolUse: "Shell",
+  postToolUseFailure: "Shell",
+};
 /** After a command, whether it succeeded or failed. */
 const AFTER: ReadonlySet<unknown> = new Set(["postToolUse", "postToolUseFailure"]);
 
@@ -46,7 +63,7 @@ export const cursor: AgentAdapter = {
   install: async ({ root, git, invocation, files, lang }) => {
     const local = !invocation.portable;
     const command = `${invocation.command} guard --tool cursor`;
-    await rewriteJson(join(root, CURSOR_HOOKS), (value) => withHooks(value, command), true, files);
+    await rewriteJson(join(root, CURSOR_HOOKS), (value) => withGuard(value, command), true, files);
     if (local) await excludeLocally(git, CURSOR_HOOKS, files);
     return {
       done: [guardLine("Cursor", CURSOR_HOOKS, local, lang)],
@@ -54,12 +71,33 @@ export const cursor: AgentAdapter = {
       written: local ? [] : [CURSOR_HOOKS],
     };
   },
+  remove: (root, files) =>
+    removeFromJson(
+      root,
+      CURSOR_HOOKS,
+      (value) => withHooks(value, EVENTS, "cursor", undefined),
+      files,
+    ),
+  doctor: async (root) => {
+    const hooks = await readText(join(root, CURSOR_HOOKS));
+    const missing = missingEvents([hooks], Object.keys(EVENTS), "cursor");
+    const before = missing.includes("preToolUse") || missing.includes("beforeShellExecution");
+    return doctorLines([
+      [
+        missing.length === 0,
+        { code: "cursor-guard" },
+        before
+          ? { code: "no-cursor-guard" }
+          : { code: "cursor-after-command", events: missing.join(", ") },
+      ],
+    ]);
+  },
 };
 
 /** The guard in each of its events, in `.cursor/hooks.json` (`version: 1`). */
-function withHooks(value: Record<string, unknown>, command: string): Record<string, unknown> {
+function withGuard(value: Record<string, unknown>, command: string): Record<string, unknown> {
   const hooks = isRecord(value.hooks) ? value.hooks : {};
-  const updated = Object.entries(CURSOR_EVENTS).map(([name, matcher]) => {
+  const updated = Object.entries(EVENTS).map(([name, matcher]) => {
     const current = Array.isArray(hooks[name]) ? hooks[name] : [];
     const entry = matcher === undefined ? { command } : { command, matcher };
     return [name, [...current.filter((item: unknown) => !isOurs(item, "cursor")), entry]];

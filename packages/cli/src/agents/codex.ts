@@ -8,17 +8,24 @@ import {
 } from "@baquia-dev/specty-core";
 import type { RawAction } from "../enforce/actions";
 import {
-  CODEX_EVENTS,
   CODEX_HOOKS,
   CODEX_RULES,
+  codexHooksFile,
   excludeLocally,
+  hasGuard,
+  removeFromJson,
   withHooks,
 } from "../install/agents";
 import { rewriteJson } from "../install/files";
-import { isRecord } from "../io/files";
+import { isRecord, readText } from "../io/files";
 import { COMMAND } from "../session";
-import { type AgentAdapter, blockingStop, exitFailed, exitReply } from "./adapter";
+import { type AgentAdapter, blockingStop, doctorLines, exitFailed, exitReply } from "./adapter";
 
+/** The events the guard listens to; their `matcher` is a regular expression on `tool_name`. */
+const EVENTS: Readonly<Record<string, string>> = {
+  PreToolUse: "^(Bash|apply_patch)$",
+  PostToolUse: "^Bash$",
+};
 /**
  * Codex's execpolicy rule for Specty's commands: an `allow` skips the approval and runs the
  * command outside the sandbox, which keeps `.git` read-only and so stopped every Specty commit.
@@ -54,7 +61,7 @@ export const codex: AgentAdapter = {
     const command = `${invocation.command} guard --tool codex`;
     await rewriteJson(
       join(root, CODEX_HOOKS),
-      (value) => withHooks(value, CODEX_EVENTS, "codex", command),
+      (value) => withHooks(value, EVENTS, "codex", command),
       true,
       files,
     );
@@ -66,7 +73,32 @@ export const codex: AgentAdapter = {
       written: [...(local ? [] : [CODEX_HOOKS]), CODEX_RULES],
     };
   },
+  remove: async (root, files) => {
+    const update = (value: Record<string, unknown>) => withHooks(value, EVENTS, "codex", undefined);
+    await removeFromJson(root, CODEX_HOOKS, update, files);
+    const rules = join(root, CODEX_RULES);
+    if (isRule(await files.read(rules))) await files.remove(rules);
+  },
+  doctor: async (root) =>
+    doctorLines([
+      [
+        hasGuard(await readText(join(root, CODEX_HOOKS)), "codex"),
+        { code: "codex-guard", file: CODEX_HOOKS },
+        { code: "no-codex-guard", file: CODEX_HOOKS },
+      ],
+      [
+        isRule(await readText(join(root, CODEX_RULES))),
+        { code: "codex-rules", file: CODEX_RULES },
+        { code: "no-codex-rules", file: CODEX_RULES },
+      ],
+    ]),
+  userFile: codexHooksFile,
 };
+
+/** Whether `text`, a rules file, is Specty's rule for its commands. */
+function isRule(text: string | undefined): boolean {
+  return text?.includes(`pattern = [${JSON.stringify(COMMAND)}]`) === true;
+}
 
 /** Codex sends a command and a patch alike in `tool_input.command`. */
 function action(event: Readonly<Record<string, unknown>>): RawAction {

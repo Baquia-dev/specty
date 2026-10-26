@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { Lang } from "@baquia-dev/specty-core";
+import type { DoctorLine, Lang } from "@baquia-dev/specty-core";
 import type { GuardReply, GuardTool, RawAction } from "../enforce/actions";
 import type { InstallFiles } from "../install/files";
 import { isRecord } from "../io/files";
@@ -46,6 +46,27 @@ export interface AgentAdapter {
   readonly stop?: AgentStop;
   /** Writes its guard and its settings in the repository, never in the user's folder (ADR 0013). */
   readonly install: (context: InstallContext) => Promise<Installed>;
+  /** Takes them out again for `uninstall`, and leaves everything else as it was. */
+  readonly remove: (root: string, files: InstallFiles) => Promise<void>;
+  /** What `doctor` finds in place and what it finds missing. */
+  readonly doctor: (root: string) => Promise<DoctorLines>;
+  /** Its guard in the user's folder, which Specty only reads: `uninstall` says it stays there. */
+  readonly userFile?: (env: NodeJS.ProcessEnv) => string;
+}
+
+export interface DoctorLines {
+  readonly ok: readonly DoctorLine[];
+  readonly problems: readonly DoctorLine[];
+}
+
+/** Each check, as `doctor` reads it: whether it passed, and its line when it did and when not. */
+export function doctorLines(
+  checks: readonly (readonly [boolean, DoctorLine, DoctorLine])[],
+): DoctorLines {
+  return {
+    ok: checks.filter(([passed]) => passed).map(([, good]) => good),
+    problems: checks.filter(([passed]) => !passed).map(([, , bad]) => bad),
+  };
 }
 
 /** Where `init` installs, and how it calls Specty. */
