@@ -15,6 +15,7 @@ import type { ReportOutput } from "./check/provider";
 import { accept } from "./commands/accept";
 import { adjust } from "./commands/adjust";
 import { approve } from "./commands/approve";
+import { auditCommand } from "./commands/audit";
 import { checkCommand } from "./commands/check";
 import { delegate } from "./commands/delegate";
 import { doctor } from "./commands/doctor";
@@ -272,6 +273,7 @@ export async function runCli(
     .action((mode: string) => run((session) => delegate(session, mode === "on" ? "on" : "off"))());
   uninstallCommand(program, run);
   checkCommand(program, run);
+  auditCommand(program, run);
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
   program

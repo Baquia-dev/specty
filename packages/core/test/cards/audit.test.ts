@@ -118,7 +118,9 @@ describe("the audit report", () => {
         .filter((line) => line.startsWith("| 2026"));
       expect(lines).toHaveLength(named.length);
       // Each one in words, not by its name.
-      lines.forEach((line, index) => expect(line).not.toContain(named[index]?.[0] ?? ""));
+      for (const [index, line] of lines.entries()) {
+        expect(line).not.toContain(named[index]?.[0] ?? "");
+      }
     }
     const spanish = auditReport({ ...VIEW, tasks: [], events: [] }, "es").markdown;
     expect(spanish).toContain("## Tareas\n\nSin tareas.");

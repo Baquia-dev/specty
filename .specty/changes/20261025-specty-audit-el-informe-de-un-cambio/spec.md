@@ -52,7 +52,7 @@ PRODUCT.md promete para la versión 1 un informe de auditoría, y ARCHITECTURE �
   - files: packages/core/src/cards/audit.ts, packages/core/src/index.ts, packages/core/test/cards/audit.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/audit.test.ts
-- [ ] T2: El comando audit
+- [x] T2: El comando audit
   - files: packages/cli/src/flow/find.ts, packages/cli/src/commands/why.ts, packages/cli/src/commands/audit.ts, packages/cli/src/program.ts, packages/cli/test/audit.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check

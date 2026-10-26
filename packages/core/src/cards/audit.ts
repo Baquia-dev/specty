@@ -167,12 +167,10 @@ function what(entry: AuditEvent, t: T): string {
     case "task.completed":
       return t(`Completó ${text("task")}`, `Completed ${text("task")}`) + after("summary");
     case "scope.requested":
-      return (
-        t(
-          `Pidió ampliar el alcance de ${text("task")}`,
-          `Asked to widen the scope of ${text("task")}`,
-        ) + ` (${text("id")})${after("reason")}`
-      );
+      return `${t(
+        `Pidió ampliar el alcance de ${text("task")}`,
+        `Asked to widen the scope of ${text("task")}`,
+      )} (${text("id")})${after("reason")}`;
     case "scope.decided":
       return t(
         `Decidió ${text("id")}: ${value("decision")}`,

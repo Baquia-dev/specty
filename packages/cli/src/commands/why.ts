@@ -8,10 +8,9 @@ import {
   type WhyCommit,
   whyCard,
 } from "@baquia-dev/specty-core";
-import { locateChanges } from "../flow/changes";
+import { findChange } from "../flow/find";
 import type { Session } from "../session";
-import { loadChange, readSpec, type StoredChange } from "../store/changes";
-import { repoPaths } from "../store/paths";
+import { readSpec, type StoredChange } from "../store/changes";
 
 /** How many entries `why` lists for a file: one per change, the most recent ones. */
 const MAX_ENTRIES = 10;
@@ -160,19 +159,8 @@ class ChangeSpecs {
   private load(id: string): Promise<StoredChange | undefined> {
     const cached = this.found.get(id);
     if (cached !== undefined) return cached;
-    const loading = this.locate(id);
+    const loading = findChange(this.session, id);
     this.found.set(id, loading);
     return loading;
-  }
-
-  /** Here, open or archived; then open in another worktree; then in the main folder's archive. */
-  private async locate(id: string): Promise<StoredChange | undefined> {
-    const { session } = this;
-    const here = await loadChange(session.paths, id);
-    if (here !== undefined) return here;
-    const open = (await locateChanges(session)).find(({ change }) => change.state.id === id);
-    if (open !== undefined) return open.change;
-    const main = (await session.git.worktrees())[0]?.folder;
-    return main === undefined ? undefined : loadChange(repoPaths(main), id);
   }
 }
