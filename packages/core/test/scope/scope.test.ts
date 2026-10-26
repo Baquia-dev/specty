@@ -66,6 +66,23 @@ describe("evaluateTaskScope", () => {
     ]);
   });
 
+  it("allows the tests of Maven, Gradle and SwiftPM next to their code (AC1, AC2, AC3)", () => {
+    const java = ["src/main/java/com/acme/app/Cart.java"];
+    expect(outOfScope(java, modified("src/test/java/com/acme/app/CartTest.java"))).toEqual([]);
+    const kotlin = ["app/src/main/kotlin/com/acme/app/Cart.kt"];
+    expect(outOfScope(kotlin, modified("app/src/test/kotlin/com/acme/app/CartTest.kt"))).toEqual(
+      [],
+    );
+    expect(outOfScope(java, modified("src/test/java/com/acme/other/OtherTest.java"))).toEqual([
+      "src/test/java/com/acme/other/OtherTest.java",
+    ]);
+    const swift = ["Sources/Shop/Cart.swift"];
+    expect(outOfScope(swift, modified("Tests/ShopTests/CartTests.swift"))).toEqual([]);
+    expect(outOfScope(swift, modified("Tests/OtherTests/CartTests.swift"))).toEqual([
+      "Tests/OtherTests/CartTests.swift",
+    ]);
+  });
+
   it("can disable implicit tests", () => {
     const rules = { ...RULES, implicitTests: false };
     expect(outOfScope(["src/a/b.ts"], modified("src/a/b.test.ts"), rules)).toEqual([

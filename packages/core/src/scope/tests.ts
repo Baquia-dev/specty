@@ -27,7 +27,9 @@ const MIRROR_ROOTS: ReadonlySet<string> = new Set([
   "specs",
   "integration_test",
 ]);
-const SOURCE_ROOTS: readonly string[] = ["lib", "src", "app", ""];
+// `main` is Maven and Gradle's: `src/test/java/x` → `src/main/java/x`.
+const SOURCE_ROOTS: readonly string[] = ["lib", "src", "app", "main", ""];
+const SWIFT_TESTS = "Tests";
 
 /** True for test files by name (`*.test.ts`, `*_test.dart`…) or location (`test/`, `__tests__/`…). */
 export function isTestFile(path: string): boolean {
@@ -57,16 +59,33 @@ function subjectDirectories(path: string): string[] {
     .split("/")
     .filter((segment) => segment.length > 0);
   const trimmed = dropTrailing(segments, new Set(["__tests__", "__snapshots__"]));
-  const own = trimmed.join("/");
-  // The mirror root may be nested, as in a monorepo package: `packages/x/test/a` → `packages/x/src/a`.
-  const mirror = trimmed.findIndex((segment) => MIRROR_ROOTS.has(segment));
-  if (mirror < 0) return [own];
-  const prefix = trimmed.slice(0, mirror);
-  const rest = trimmed.slice(mirror + 1);
-  const mirrored = SOURCE_ROOTS.map((source) =>
-    [...prefix, source, ...rest].filter(Boolean).join("/"),
+  return [trimmed.join("/"), ...mirrored(trimmed), ...swiftPackageMirrored(trimmed)];
+}
+
+/** The mirror root may be nested, as in a monorepo package: `packages/x/test/a` → `packages/x/src/a`. */
+function mirrored(segments: readonly string[]): string[] {
+  const mirror = segments.findIndex((segment) => MIRROR_ROOTS.has(segment));
+  if (mirror < 0) return [];
+  const prefix = segments.slice(0, mirror);
+  const rest = segments.slice(mirror + 1);
+  return SOURCE_ROOTS.map((source) => [...prefix, source, ...rest].filter(Boolean).join("/"));
+}
+
+/** SwiftPM's convention: `Tests/ShopTests/a` → `Sources/Shop/a`. */
+function swiftPackageMirrored(segments: readonly string[]): string[] {
+  const at = segments.findIndex(
+    (segment, index) => segment === SWIFT_TESTS && isTestTarget(segments[index + 1]),
   );
-  return [own, ...mirrored];
+  const target = segments[at + 1];
+  if (at < 0 || target === undefined) return [];
+  const module = target.slice(0, -SWIFT_TESTS.length);
+  return [[...segments.slice(0, at), "Sources", module, ...segments.slice(at + 2)].join("/")];
+}
+
+function isTestTarget(segment: string | undefined): boolean {
+  return (
+    segment !== undefined && segment.length > SWIFT_TESTS.length && segment.endsWith(SWIFT_TESTS)
+  );
 }
 
 function dropTrailing(segments: readonly string[], names: ReadonlySet<string>): readonly string[] {

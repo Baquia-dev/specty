@@ -36,7 +36,7 @@ Los tests de la estructura estándar de Maven y Gradle (`src/test/<lenguaje>/…
 
 ## Tareas
 
-- [ ] T1: Los espejos de Maven, Gradle y SwiftPM
+- [x] T1: Los espejos de Maven, Gradle y SwiftPM
   - files: packages/core/src/scope/tests.ts, packages/core/test/scope/scope.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope/scope.test.ts
