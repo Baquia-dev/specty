@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "id": "20261026-init-pregunta-primero-el-idioma",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-init-pregunta-primero-el-idioma",
+  "baseCommit": "29c375072708f67d04c7b72d2b22d254bdda4efe",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a7c4b13f5217cbedd257544ad9efadea76f4e4499c79186f5485d308bd9be3ac",
+    "at": "2026-10-26T14:05:02.411Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3aaac7b2ce84fa40a6b29c05a39cae83b58e63f3bf2fbb3851b1fad78a35b6c9",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1535cb7e85276cda83c1f83982abd7da7d60ca73ab650f93c7a7392b7b163b37",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:0fb2ddf6c0f10f3ff6013d4ddc1fabd958df05fe6c28c8cd2e6588b2aee5d32a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:815468a86ebe2b1b7f9dd1ede0a78ff0f6381414db168f47eea7e8b71041650d",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:17497a6f4c482a1d166de992ce43646f7ad4d044be536ceba306d612309ac160",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:fb9a5ffd9fc8d46c49b6b41f8111c86eeeec09861f3cd5357ad03fae1626aad5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "57c206a8a490ad24bc37e3303f369379727549d1",
+      "attempts": 1,
+      "startedAt": "2026-10-26T14:05:03.103Z",
+      "doneAt": "2026-10-26T14:09:39.485Z",
+      "summary": "Textos del idioma en core: la pregunta bilingüe languageQuestion con languageChoices (el detectado primero), languageLine para el idioma cambiado, la primera línea del bloque de flujo pide hablar con el usuario en el idioma configurado y el repositorio sin Specty pide init --language.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "78a91c3da05384aecf89f899f1c187e787a6d3e9",
+      "attempts": 1,
+      "startedAt": "2026-10-26T14:09:40.006Z",
+      "doneAt": "2026-10-26T14:18:33.267Z",
+      "summary": "init pregunta primero el idioma a una persona, en los dos idiomas y con el detectado primero; lo elegido rige config, AGENTS.md, entrevista y salida. Con --language, agente o dry-run no pregunta; --language en un repo configurado cambia solo language y reescribe los bloques. Docs al día.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-26T14:18:56.178Z"
+}

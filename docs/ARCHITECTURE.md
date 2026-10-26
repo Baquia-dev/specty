@@ -433,16 +433,17 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
 
 **Proyecto existente** (`specty init`):
 
-1. Detecta stack, gestor de paquetes, monorepo, comandos (manifiestos y workflows de CI), herramientas de IA en uso (`.claude/`, `.cursor/`, `.gemini/`, `.windsurf/`, `.agents/`, `.github/copilot-instructions.md`…) y gestor de hooks.
-2. Valida los comandos ejecutándolos, con confirmación y timeout. Solo los que funcionan se escriben como verificados.
-3. Pregunta únicamente lo que falta.
-4. Genera:
+1. Con una persona en la terminal y sin configuración, lo primero que pregunta es el idioma en que trabaja Specty, en español y en inglés a la vez, con el que detecta del sistema como primera opción. `LANG` no basta: una terminal con `C.UTF-8`, como la de macOS o la de VS Code, daría inglés. Lo elegido rige la configuración, AGENTS.md, las preguntas siguientes y la salida. Con `--language`, en `--dry-run` o si lo ejecuta un agente, no pregunta: un agente pasa `--language` con el idioma en que le habla el usuario, como le pide `next` en un repositorio sin Specty. En un repositorio ya configurado, `--language` cambia solo la línea `language` de `config.yaml` y reescribe los bloques de AGENTS.md en ese idioma.
+2. Detecta stack, gestor de paquetes, monorepo, comandos (manifiestos y workflows de CI), herramientas de IA en uso (`.claude/`, `.cursor/`, `.gemini/`, `.windsurf/`, `.agents/`, `.github/copilot-instructions.md`…) y gestor de hooks.
+3. Valida los comandos ejecutándolos, con confirmación y timeout. Solo los que funcionan se escriben como verificados.
+4. Pregunta únicamente lo que falta.
+5. Genera:
    - `.specty/config.yaml`;
    - los bloques de AGENTS.md;
    - los punteros y hooks de las herramientas detectadas;
    - los hooks de git;
    - opcionalmente, el workflow de CI.
-5. Termina con `specty doctor`.
+6. Termina con `specty doctor`.
 
 Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiaría (solo los que cambiarían de verdad), sin escribir nada ni hacer commit. Sin `--dry-run`, antes de cambiar un archivo que ya existía, `init` guarda una copia en la carpeta común de git (`common/specty/backups/<fecha>/`, ver [formats.md §1](formats.md#1-estructura)) y la salida dice dónde; si todo lo que escribe es nuevo, no crea la carpeta. Los instaladores escriben a través de `install/files.ts`, que simula, compara y copia. `specty uninstall` lo deshace: quita lo que `init` instaló en el repositorio, reconocido por sus marcas (los bloques `specty:begin`/`specty:end` de AGENTS.md, el bloque `# >>> specty >>>` de los hooks de git, el comando `specty` de lefthook, las entradas con `guard --tool <id>`, el plugin de OpenCode, la regla de Codex y los permisos de Claude Code: `EnterWorktree`, `ExitWorktree` y los comandos de la persona), deja el resto de cada archivo y borra el que se queda vacío. Es de la persona, como `delegate`: necesita una terminal real y una confirmación cuya opción por defecto es «No», y el guard se lo bloquea siempre al agente, también en modo delegado. Enseña la lista antes de preguntar, guarda copias como `init` y no hace commit. Deja `.specty/` (el historial) y el `@AGENTS.md` de CLAUDE.md, y dice dónde están; si una versión anterior dejó el guard de Codex o el plugin de OpenCode en la configuración del usuario, lo nombra y lo deja, porque Specty no escribe allí ([ADR 0013](decisions/0013-specty-no-escribe-en-la-carpeta-del-usuario.md)). `--dry-run` solo lista lo que quitaría.
 

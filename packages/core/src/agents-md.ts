@@ -26,8 +26,8 @@ function flowLines(t: Translate, command: string): string[] {
   return [
     t("## Flujo de trabajo (Specty)", "## Workflow (Specty)"),
     t(
-      `Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta \`${command} next\` y sigue su salida hasta la línea \`SIGUIENTE:\`.`,
-      `This repository uses Specty. Before creating, modifying or deleting code, run \`${command} next\` and follow its output up to the \`NEXT:\` line.`,
+      `Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta \`${command} next\` y sigue su salida hasta la línea \`SIGUIENTE:\`. Habla con el usuario en español.`,
+      `This repository uses Specty. Before creating, modifying or deleting code, run \`${command} next\` and follow its output up to the \`NEXT:\` line. Talk to the user in English.`,
     ),
     t(
       `- Si el usuario pide un cambio y no hay uno activo, \`${command} next\` te indica cómo crear la spec.`,

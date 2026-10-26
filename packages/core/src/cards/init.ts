@@ -46,6 +46,30 @@ export function configLine(created: boolean, added: readonly string[], lang: Lan
       );
 }
 
+/** `init`'s first question to a person: in both languages, as neither is known yet. */
+export function languageQuestion(): string {
+  return "¿En qué idioma trabaja Specty? · Which language should Specty work in?";
+}
+
+/** The answers to `languageQuestion`, the detected language first. */
+export function languageChoices(
+  detected: Lang,
+): readonly { readonly value: Lang; readonly label: string }[] {
+  const choices = [
+    { value: "es", label: "Español" },
+    { value: "en", label: "English" },
+  ] as const;
+  return choices.toSorted((a, b) => Number(b.value === detected) - Number(a.value === detected));
+}
+
+/** `init --language` changed the language of an existing configuration. */
+export function languageLine(lang: Lang): string {
+  return translator(lang)(
+    ".specty/config.yaml: Specty trabaja ahora en español.",
+    ".specty/config.yaml: Specty now works in English.",
+  );
+}
+
 export function agentsMdLine(created: boolean, lang: Lang): string {
   const t = translator(lang);
   return created
