@@ -60,7 +60,7 @@ follows:
   - files: packages/core/src/agents-md.ts, packages/core/test/cards.test.ts, AGENTS.md
   - ac: AC4, AC5
   - verify: pnpm test
-- [ ] T3: La documentación
+- [x] T3: La documentación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC4
   - verify: pnpm check

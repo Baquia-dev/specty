@@ -414,6 +414,8 @@ Los pasos planifican uno tras otro sobre los mismos archivos, así que dos pasos
 - `fix-tests`: cada tarea `fix` activa o hecha tiene en el diff un test suyo, de sus `files`, de sus ampliaciones o junto a ellos. Con `--staged` solo cuenta la activa, porque la hecha ya hizo su commit.
 - `tests-removed`: avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada test con menos casos que en el punto de partida (el merge-base o HEAD). Los casos se cuentan con un catálogo de declaraciones por familia de frameworks (`it(`, `test(`, `testWidgets(`, `def test_`, `func Test`, `@Test`, `[Fact]`, `#[test]`…); su nivel solo sirve para apagarlo.
 
+`specty task done` ejecuta `specty check --changed --spec` con el cambio activo: tras comprobar el alcance de la tarea y el tamaño de sus archivos, y antes de su verificación, para que lo barato falle primero. Deja fuera `scope` y `max-lines`, que `task done` ya comprueba por tarea. Si la tarea tiene verificación, deja fuera también `format`, `lint`, `typecheck` y `tests`: esa verificación es como la persona ejecuta los comandos del proyecto en cada tarea, y así los tests no corren dos veces. `propose` exige una verificación a cada tarea, así que solo faltan si la persona quita `verify.default` después de aprobar. Si falla una verificación de nivel error, la tarea no se completa: la tarjeta es la de verificación fallida, con el comando y el informe como salida. Los avisos no bloquean, y su informe sale por la salida de error antes de la tarjeta. Cada verificación se suaviza con `checks.levels`; por ejemplo, `fix-tests: warn` deja completar una tarea `fix` sin test, con un aviso.
+
 `git.worktrees` (por defecto `true`) hace que `specty new` cree cada cambio en su propia worktree; con `false`, `new` cambia la rama de la carpeta actual (ARCHITECTURE §9). `git.setup` es el comando que prepara cada worktree nueva, normalmente instalando las dependencias. Sin la clave, Specty usa el del stack que detecta en la carpeta:
 
 - pnpm: `pnpm install --prefer-offline`; npm: `npm install`; yarn: `yarn install`; bun: `bun install`.
@@ -468,10 +470,17 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 - Si necesitas un archivo fuera del alcance de la tarea, pídelo con `specty scope add`.
 - Aprobar, aceptar y cerrar lo hace el usuario en su terminal; tú se lo pides y terminas tu turno. Solo si `SIGUIENTE:` te lo pide (modo delegado), los ejecutas tú.
 - Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.
+
+## Reglas (Specty)
+- Antes de reportar una tarea como terminada, ejecuta `specty check --changed --spec` y corrige todos los fallos. No reportes con fallos pendientes.
+- Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.
+- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.
+- Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.
+- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.
 <!-- specty:end id=flow -->
 ```
 
-Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modifica. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas para completarlas a mano. Cuando exista la UI (fase 2), la línea de aprobación remitirá también a ella. La línea de aprobar, aceptar y cerrar menciona el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)): mientras está activo, es el `SIGUIENTE:` de cada tarjeta el que le pide al agente que lo haga él.
+Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modifica. Las reglas del bloque son solo las que no puede verificar una herramienta: lo demás lo verifica `specty check`, que `task done` ejecuta (§6, [ADR 0012](decisions/0012-lo-verificable-lo-verifica-specty.md)). Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas para completarlas a mano; la de «Convenciones» pide no escribir lo que ya verifica `specty check`. Cuando exista la UI (fase 2), la línea de aprobación remitirá también a ella. La línea de aprobar, aceptar y cerrar menciona el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)): mientras está activo, es el `SIGUIENTE:` de cada tarjeta el que le pide al agente que lo haga él.
 
 ## 9. Salida de los comandos
 

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
   "revision": 1,
@@ -52,14 +52,25 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/test/cards/delegated.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "a662ec1c5308684a2767341dde82ea4b2bae663c",
+      "attempts": 1,
       "startedAt": "2026-10-26T11:42:34.534Z",
       "doneAt": "2026-10-26T11:45:45.389Z",
-      "summary": "El bloque flow de AGENTS.md añade las 5 reglas en es/en bajo «Reglas (Specty)», y la pista de «Convenciones» pide no escribir lo que verifica specty check. El test de delegado mide ahora solo la parte del flujo."
+      "summary": "El bloque flow de AGENTS.md añade las 5 reglas en es/en bajo «Reglas (Specty)», y la pista de «Convenciones» pide no escribir lo que verifica specty check. El test de delegado mide ahora solo la parte del flujo.",
+      "scopeExtra": [
+        "packages/core/test/cards/delegated.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/cards.test.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "5f891a0a25400bddcb386ca2da49ad31382321a6",
+      "startedAt": "2026-10-26T11:45:45.677Z",
+      "doneAt": "2026-10-26T11:47:53.100Z",
+      "summary": "formats.md explica que task done ejecuta specty check (qué deja fuera, cómo bloquea y cómo suavizarlo) y muestra el bloque con las 5 reglas; ARCHITECTURE añade check a la fila de task done."
     }
   },
   "pending": {
