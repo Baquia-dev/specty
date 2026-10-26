@@ -41,7 +41,7 @@ Con todas sus reglas encendidas, knip marca en las pantallas de `packages/ui/src
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck
   - type: refactor
-- [ ] T2: El progreso y la revisión exportan solo lo que se importa
+- [x] T2: El progreso y la revisión exportan solo lo que se importa
   - files: packages/ui/src/progress/scope-request.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/delta-review.ts
   - ac: AC1, AC2
   - verify: pnpm check && pnpm --filter @baquia-dev/specty-ui exec ng build

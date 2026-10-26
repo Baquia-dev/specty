@@ -39,7 +39,7 @@ interface RejectData {
     </sp-dialog>
   `,
 })
-export class RejectScope {
+class RejectScope {
   protected readonly data = inject<RejectData>(DIALOG_DATA);
   private readonly ref = inject(DialogRef);
   private readonly source = inject(SpectyData);
