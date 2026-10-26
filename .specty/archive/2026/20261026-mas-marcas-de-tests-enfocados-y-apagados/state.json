@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-mas-marcas-de-tests-enfocados-y-apagados",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-mas-marcas-de-tests-enfocados-y-apagados",
   "baseCommit": "65910cbfc3042f0b4a04d63d59689914e97c98e8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:b9f9a2567f165fac7cd0f684cf2fca95b982d10d5039e36b5d391677d43023db",
@@ -56,12 +56,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7752ece46d4de07e7d6e018b75cd2ec8b6ccdc68",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:14:42.819Z",
       "doneAt": "2026-10-26T17:16:43.158Z",
-      "summary": "checks.md, checks.en.md y formats.md: las marcas nuevas de Ginkgo, Swift Testing y Pest, los saltos condicionales que no cuentan, los ejemplos de PHP con Pest y de Swift con Swift Testing, y lo que aun no comprueban."
+      "summary": "checks.md, checks.en.md y formats.md: las marcas nuevas de Ginkgo, Swift Testing y Pest, los saltos condicionales que no cuentan, los ejemplos de PHP con Pest y de Swift con Swift Testing, y lo que aun no comprueban.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -72,5 +72,6 @@
     "A": 3,
     "AC": 5,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T17:29:26.350Z"
 }

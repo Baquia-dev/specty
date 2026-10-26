@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T17:14:42.820Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"7752ece46d4de07e7d6e018b75cd2ec8b6ccdc68"}}
 {"ts":"2026-10-26T17:16:43.158Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":87960,"tree":"sha256:577b71de6d10668e9e5c7487ca7c140155067569d900fffe59494b3e8c1bd788"}}
 {"ts":"2026-10-26T17:16:43.160Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"checks.md, checks.en.md y formats.md: las marcas nuevas de Ginkgo, Swift Testing y Pest, los saltos condicionales que no cuentan, los ejemplos de PHP con Pest y de Swift con Swift Testing, y lo que aun no comprueban."}}
+{"ts":"2026-10-26T17:27:32.985Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T17:29:26.351Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:512ed084743afc227c591f4d67d93ac4a08fe43fd8f7f5e64747f7accf63e397","size":"S","warnings":0}}
+{"ts":"2026-10-26T17:31:32.589Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

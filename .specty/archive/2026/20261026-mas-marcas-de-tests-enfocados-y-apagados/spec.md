@@ -57,3 +57,23 @@ follows:
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`focused-tests` y `skipped-tests` reconocen los prefijos F, P y X de todos los nodos de Ginkgo y sus decoradores Focus y Pending, el `.disabled()` de Swift Testing y el `->only()` y el `->skip()` de Pest, solo sin condición. Los ejemplos de PHP y Swift pasan a Pest y Swift Testing; al romperlo todo, `skipped-tests` falla en Go, PHP y Swift, y `focused-tests` en Go y PHP. La guía y formats.md lo explican.
+
+### Desviaciones
+
+- El comentario de cabecera de `check-examples-native.test.ts` menciona `.disabled()`, y el `specty check` construido con este cambio lo marca como test apagado. Los `task done` no lo vieron porque usan el `specty` instalado, anterior a las marcas nuevas; se corrige en el cambio siguiente.
+- El aviso de aserciones quitadas en T2 es un falso positivo: eran las aserciones de XCTest y PHPUnit dentro del código de ejemplo que generan los tests, que ahora usan Swift Testing y Pest. El usuario lo supo antes de aceptar.
+
+### Decisiones
+
+- Solo cuentan las formas sin argumentos o con un texto como motivo, para no tomar por tests el `->only([...])` de Laravel, el `->skip(10)` de una consulta ni el `.disabled(flag)` de SwiftUI.
+- Los decoradores de Ginkgo cuentan solo como argumento de un nodo con descripción en la misma línea.
+
+### Pendientes
+
+- Reescribir el comentario de `check-examples-native.test.ts` sin la marca.
