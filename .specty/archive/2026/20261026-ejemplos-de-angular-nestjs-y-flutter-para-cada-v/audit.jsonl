@@ -12,3 +12,6 @@
 {"ts":"2026-10-26T12:24:27.657Z","actor":"specty","event":"scope.decided","data":{"task":"T3","paths":["packages/cli/test/stack-examples.ts"],"reason":"Quitar el export del tipo Files, que knip marca sin usar","decision":"auto","basis":{"packages/cli/test/stack-examples.ts":"test"},"plannedFor":{}}}
 {"ts":"2026-10-26T12:25:52.457Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":76913,"tree":"sha256:e314f217d91edffeed17aba19a6809448aafa672886d23f96a44ceb1735d68ec"}}
 {"ts":"2026-10-26T12:25:52.554Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"checks.md y checks.en.md explican dónde están los ejemplos por stack, qué ejecutan y por qué layers en TypeScript y secrets pueden salir sin ejecutar; Files deja de exportarse (knip)."}}
+{"ts":"2026-10-26T12:25:56.865Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T12:26:22.579Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:860fd1255823b31c24fc1a984901d5e4346170a287d718934dc011536e689697","size":"M","warnings":0}}
+{"ts":"2026-10-26T12:27:39.892Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

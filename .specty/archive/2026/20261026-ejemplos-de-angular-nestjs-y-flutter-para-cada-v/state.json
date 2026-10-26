@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-ejemplos-de-angular-nestjs-y-flutter-para-cada-v",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-ejemplos-de-angular-nestjs-y-flutter-para-cada-v",
   "baseCommit": "560be9ed56d873610e408caea967648e493ec6a8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1ef6fa4a5d8c9ef7ed494a0a0813b76046b8d6204c3ade76d58716fdce934b13",
@@ -64,14 +64,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/stack-examples.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "9652bb73774ba18030e6ab8e037329fabcae7bef",
+      "attempts": 2,
       "startedAt": "2026-10-26T12:23:54.000Z",
       "doneAt": "2026-10-26T12:25:52.553Z",
-      "summary": "checks.md y checks.en.md explican dónde están los ejemplos por stack, qué ejecutan y por qué layers en TypeScript y secrets pueden salir sin ejecutar; Files deja de exportarse (knip)."
+      "summary": "checks.md y checks.en.md explican dónde están los ejemplos por stack, qué ejecutan y por qué layers en TypeScript y secrets pueden salir sin ejecutar; Files deja de exportarse (knip).",
+      "scopeExtra": [
+        "packages/cli/test/stack-examples.ts"
+      ]
     }
   },
   "pending": {
@@ -82,5 +82,6 @@
     "A": 5,
     "AC": 3,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T12:26:22.577Z"
 }

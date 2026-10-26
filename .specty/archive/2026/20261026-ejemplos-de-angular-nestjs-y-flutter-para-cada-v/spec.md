@@ -57,3 +57,25 @@ Los tests montan un repositorio de ejemplo de Angular, otro de NestJS y otro de 
   - ac: AC1
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Los tests montan un repositorio de ejemplo de Angular, de NestJS y de Flutter, cada uno con un cambio aprobado, y ejecutan `specty check --changed --spec --json` en dos casos. En el que respeta el plan pasan todas las verificaciones de su stack. En el que rompe cada una a la vez fallan todas, y `tests-removed` avisa. `layers` en TypeScript sale «sin ejecutar» porque falta dependency-cruiser, y `secrets`, sin escáner en el PATH. Las guías dicen dónde están los ejemplos.
+
+### Desviaciones
+
+- `specty check` sobre este mismo cambio encontró una clave `skip: ".skip"` en las marcas del test, que parecía un `skip:` de Dart: se renombró a `skipped`.
+- knip marcó el tipo `Files` exportado sin usar, y se corrigió en T3 con una ampliación de alcance.
+
+### Decisiones
+
+- En Angular y NestJS, Specty detecta y ejecuta con npm los scripts de su `package.json`, que son imitaciones de Prettier, ESLint, tsc y el runner con su formato de salida. En Flutter, `checks.commands` apunta a imitaciones de `dart format`, `flutter analyze` y `flutter test`.
+- `analysis_options.yaml` no está en «Archivos»: como no es un manifiesto, sería un tercer módulo y obligaría a dividir la spec. El caso que falla lo cambia fuera del alcance.
+- Los tests de las marcas de prueba están lejos de la tarea fix (en `src/domain/` o `test/domain/`), para que no cuenten como su test.
+- Con un escáner en el PATH, `secrets` debe fallar con un token de GitHub construido en el test. Esa rama no se ha podido probar aquí, porque no hay ningún escáner instalado.
+
+### Pendientes
+
+- Probar los ejemplos con Betterleaks o gitleaks instalados, y `layers` con dependency-cruiser.
