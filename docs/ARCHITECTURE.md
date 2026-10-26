@@ -141,7 +141,7 @@ El comando se ejecuta en la worktree del cambio y con su configuración, como si
 
 **La verificación completa no se repite sobre el mismo código.** Cada verificación anota en la auditoría el código sobre el que corrió (`tree`: un hash del árbol de trabajo sin `.specty/`). Si la última con el comando de `verify.full` pasó con el código que hay ahora, porque fue la de la última tarea o una lanzada desde la UI, `accept` no la ejecuta otra vez ni pregunta: dice dónde pasó. Con el código cambiado, o si esa última falló, corre como siempre. Ahorra una verificación completa por cambio, que en este repositorio son varios minutos. La auditoría registra esas decisiones como del agente, por delegación. Con TTY sigue decidiendo la persona, aunque el modo esté activo.
 
-Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, que se registra como retro aparte) y `init`, `status`, `doctor`, `approve`, `reject`, `accept`, `close` y `cancel`. `ui`, `why`, `audit`, `export`, `ci` y `next --wait` llegan en fases posteriores.
+Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, que se registra como retro aparte) y `init`, `status`, `doctor`, `approve`, `reject`, `accept`, `close` y `cancel`. Después llegaron `ui` (§15) y `why` (§13); `audit`, `export`, `ci` y `next --wait` llegan en fases posteriores.
 
 **Contrato de salida** (igual en CLI y MCP):
 
@@ -397,7 +397,7 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
 - **Se guarda** en `audit.jsonl` lo que git no puede derivar: aprobaciones (quién, hash, canal), decisiones sobre supuestos y alcance, peticiones de ajuste literales y su clasificación, resultados de verificación, reintentos, confirmaciones de retro-specs y la herramienta que declara el agente (útil como contexto, no como prueba).
 - **Se deriva de git** y no se duplica: commits por tarea, archivos, cambios manuales (por sus trailers) y tiempos.
 - `specty audit <id>` combina ambas fuentes en un informe Markdown o JSON. La UI muestra la misma línea de tiempo.
-- `specty why <ruta>[:<línea>]` recorre blame → commit → trailers → cambio, tarea y criterio, y muestra el porqué de esa línea.
+- `specty why <ruta>[:<línea>]` recorre blame → commit → trailers → cambio, tarea y criterio, y muestra el porqué de esa línea (`commands/why.ts`, tarjeta en `core/src/cards/why.ts`). Con una línea, da su último commit (hash, fecha, autor y asunto) y, por sus trailers `Specty-Change`, `Specty-Task` y `Specty-Spec`, el cambio con su título, la tarea con el suyo, los criterios que cubre con su texto y la revisión de la spec. Sin línea, da los cambios que tocaron el archivo según `git log`, del más reciente al más antiguo, uno por cambio y como mucho 10. El cambio se busca abierto o archivado en esta carpeta, abierto en otra worktree o archivado en la principal; si no está, dice su id. Un commit sin trailers no es de ningún cambio de Specty, y una línea sin commit lo dice. Solo lee, así que también lo ejecuta el agente.
 
 ## 14. Detección e inicio
 

@@ -48,7 +48,7 @@ PRODUCT.md promete para la versión 1 la trazabilidad línea a línea, y ARCHITE
   - files: packages/core/src/cards/why.ts, packages/core/src/index.ts, packages/core/test/cards/why.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/why.test.ts
-- [ ] T2: El comando why
+- [x] T2: El comando why
   - files: packages/cli/src/commands/why.ts, packages/cli/src/program.ts, packages/cli/test/why.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm check

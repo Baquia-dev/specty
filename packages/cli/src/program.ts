@@ -34,6 +34,7 @@ import { status } from "./commands/status";
 import { taskDone } from "./commands/task";
 import { ui } from "./commands/ui";
 import { uninstallCommand } from "./commands/uninstall";
+import { why } from "./commands/why";
 import { enforcementCommands } from "./enforce/commands";
 import { bareCards, type Environment, openSession, type Session, systemLanguage } from "./session";
 
@@ -287,6 +288,10 @@ export async function runCli(
     .command("prune")
     .description("remove the folders of finished changes and the branches already merged")
     .action(run(prune));
+  program
+    .command("why <target>")
+    .description("the change, task and criteria a file or a line (path:line) comes from")
+    .action((target: string) => run((session) => why(session, target))());
   program
     .command("ui")
     .description("serve the changes of every worktree on localhost, until Ctrl+C")
