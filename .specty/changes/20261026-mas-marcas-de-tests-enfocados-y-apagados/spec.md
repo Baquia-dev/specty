@@ -52,7 +52,7 @@ follows:
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-scripting.test.ts test/check-examples-native.test.ts
   - type: test
-- [ ] T3: Las marcas en la documentación
+- [x] T3: Las marcas en la documentación
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md
   - ac: AC5
   - verify: pnpm check

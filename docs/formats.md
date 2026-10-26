@@ -409,7 +409,7 @@ Las marcas que son comentarios solo cuentan dentro de un comentario, y las que s
 Después vienen, para cualquier lenguaje, estas verificaciones, cada una con su id en `checks.levels`:
 
 - `max-lines`: las líneas de código de cada archivo, con los límites de `lines`.
-- `focused-tests`: un test enfocado deja sin correr a los demás (`describe.only`, `fit`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` de Ginkgo).
+- `focused-tests`: un test enfocado deja sin correr a los demás (`describe.only`, `fit`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` y `Focus` de Ginkgo, `->only()` de Pest).
 - `skipped-tests`: un test apagado con una marca (`it.skip`, `xit`, `skip:` de Dart, `@pytest.mark.skip`, `@unittest.skip`, `#[ignore]`, `@Disabled`, `@Ignore`, `enabled = false` de TestNG, `[Ignore]`, `Skip = "…"` de xUnit). No cuentan los saltos condicionales, que decide el propio test (`test.skipIf`, `@pytest.mark.skipif`, `t.Skip()`, `pytest.skip()`).
 - `todo`: una marca de `checks.todo.markers` que empieza un comentario (`//`, `/*`, `*` a principio de línea, `#`, `--`, el de HTML, `;` o `%`) sin nada que case con `checks.todo.reference` en el resto de la línea. Por defecto vale `#12`, `acme/app#12`, una clave como `ABC-12` o un enlace. Una configuración con una `reference` que no es una expresión regular no se acepta.
 
