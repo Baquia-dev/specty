@@ -45,3 +45,23 @@ Los tests de la estructura estándar de Maven y Gradle (`src/test/<lenguaje>/…
   - ac: AC1, AC2
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Los tests de Maven y Gradle (`src/test/<lenguaje>/…`) cuentan como tests de `src/main/<lenguaje>/…`, y los de SwiftPM (`Tests/<Módulo>Tests/…`) como tests de `Sources/<Módulo>/…`, también dentro de un paquete. Un test de otra carpeta del espejo sigue fuera del alcance. ARCHITECTURE §8 describe cada espejo.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- `main` se suma a las raíces de código del espejo que ya había (`lib`, `src`, `app` y la raíz), así que el espejo de Maven y Gradle sale del mismo cálculo.
+- El espejo de SwiftPM exige `Tests` seguido de una carpeta `<Módulo>Tests`, con mayúsculas, para no tocar a otros lenguajes.
+- Cada espejo vive en su propia función, para que `subjectDirectories` siga dentro de los límites de función.
+
+### Pendientes
+
+Ninguno.

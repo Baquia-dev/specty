@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T15:50:09.004Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"1be0cacb30344a7b37214836c8d12b90e01b6542"}}
 {"ts":"2026-10-26T15:51:55.866Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":91080,"tree":"sha256:2a5b178078fc0bd5e0d396a70b95ff811355327e185e5f4fd957dfb1b9b6f790"}}
 {"ts":"2026-10-26T15:51:55.868Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"ARCHITECTURE §8 describe los tests implícitos por carpeta espejo: test/x por lib, src, app o la raíz (también en paquetes), src/test/java por src/main/java en Maven y Gradle, y Tests/<Módulo>Tests por Sources/<Módulo> en SwiftPM."}}
+{"ts":"2026-10-26T15:53:30.659Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T15:53:50.606Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ba5dd24625567e0e9a4face0b3d241768ad0544d824012a278c580630e7679f2","size":"S","warnings":0}}
+{"ts":"2026-10-26T15:53:54.119Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

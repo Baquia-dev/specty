@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-los-tests-de-maven-gradle-y-swiftpm-cuentan-junt",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-los-tests-de-maven-gradle-y-swiftpm-cuentan-junt",
   "baseCommit": "e9424f589938e534032e528c9494ba5555824840",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a50cdbe46410a424f61bb18b043026e798222b16ca02901c1ba747c3035d4551",
@@ -43,12 +43,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1be0cacb30344a7b37214836c8d12b90e01b6542",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:50:09.004Z",
       "doneAt": "2026-10-26T15:51:55.867Z",
-      "summary": "ARCHITECTURE §8 describe los tests implícitos por carpeta espejo: test/x por lib, src, app o la raíz (también en paquetes), src/test/java por src/main/java en Maven y Gradle, y Tests/<Módulo>Tests por Sources/<Módulo> en SwiftPM."
+      "summary": "ARCHITECTURE §8 describe los tests implícitos por carpeta espejo: test/x por lib, src, app o la raíz (también en paquetes), src/test/java por src/main/java en Maven y Gradle, y Tests/<Módulo>Tests por Sources/<Módulo> en SwiftPM.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -59,5 +59,6 @@
     "A": 2,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T15:53:50.604Z"
 }
