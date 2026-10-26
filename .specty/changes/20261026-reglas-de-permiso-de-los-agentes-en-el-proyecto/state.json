@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
+  "baseCommit": "78bb5a3d546ee6aa0542b6d7fa58bd7fb20422b9",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:87f119022106750c7476560ac17ccf3fae72e56fabe352ee352398805aa63b31",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:470998839349a5445e4f1816100e2398bac78a70b67362c0f1498f232b67cd93",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f6c1ae57ee3c14a250e7fbe37fe9faf3391d4e8aab4b982cb4c412b26b331614",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:729bfdd7cca4e5a5f9c8787238310f8024f9fc89396d0e309efdc769ae456250",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:23d48cb01903812124bf1642606d323dea926df3d6473e657f33df220bd43d97",
+    "at": "2026-10-26T11:51:33.641Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
