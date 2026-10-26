@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3687cb8d2a68c641e53ca2bcf6f141272e66aeb5",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:36:56.703Z",
       "doneAt": "2026-10-26T18:37:41.485Z",
-      "summary": "new.ts: newRefusalCard toma razón y paso de newRefusalReason y newRefusalNext, y su estado de BLOCKED_BY_STATE; worktreeCreatedCard se arma con worktreeCreatedBlocks y worktreeCreatedNext. Mismos textos."
+      "summary": "new.ts: newRefusalCard toma razón y paso de newRefusalReason y newRefusalNext, y su estado de BLOCKED_BY_STATE; worktreeCreatedCard se arma con worktreeCreatedBlocks y worktreeCreatedNext. Mismos textos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "72d502bd2c98de4838f650712b6c4e72de9c4507",
+      "startedAt": "2026-10-26T18:37:41.778Z",
+      "doneAt": "2026-10-26T18:38:32.112Z",
+      "summary": "next.ts: nextCard lee PHASE_CARDS por fase; noChangeCard elige withoutSpecCard, skeletonCard o idleCard; reviewCard deja a changesRequestedCard lo pedido. review.ts: la razón del rechazo sale de reviewRefusalReason. Mismos textos."
     }
   },
   "pending": {
