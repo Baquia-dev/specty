@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "20261025-los-componentes-y-los-datos-de-la-ui-sin-exporta",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-los-componentes-y-los-datos-de-la-ui-sin-exporta",
+  "baseCommit": "dc839877de8b9b27326e34417c3f7251c296b6d1",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f693240fb7bd1e218e27bbab0a341cf6cc0716a5c851494424740fc80227beda",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:28d5f88a74b5da13f30bece18648ba30070dbacadd43de16bef769a623924adf",
+    "at": "2026-10-26T01:57:00.861Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
