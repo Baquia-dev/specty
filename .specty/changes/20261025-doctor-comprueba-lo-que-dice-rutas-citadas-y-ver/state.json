@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261025-doctor-comprueba-lo-que-dice-rutas-citadas-y-ver",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-doctor-comprueba-lo-que-dice-rutas-citadas-y-ver",
+  "baseCommit": "f860cd19929a2e0cf13b429fdf86f8078f39836f",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a3af47d6076ce9d0e76531e0772e6ee51a441c3c63e6406747ae7e3dde801ac7",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:dfe3c18cdf75420825e2c08979434d3727becb3c3abcf95b8a5bda4789ddb1d7",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b903bf3beb3e640d513efde19915d5015dca93bf9a6ca65a62f35c5ad86cab95",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ace4070866ef01bc4db10c89ca35b95b46d67a48b34d1961c7dee31c0af3cf7c",
+    "at": "2026-10-26T01:28:26.623Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
