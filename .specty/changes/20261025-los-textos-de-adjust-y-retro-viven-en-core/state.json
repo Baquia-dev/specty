@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-adjust-y-retro-viven-en-core",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-los-textos-de-adjust-y-retro-viven-en-core",
+  "baseCommit": "0828f1c8bc3691a301f8de9ea027da8c1ddb697e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e393b759c22f8ef1c5f35bd5dcdcef17a1307d9cdff6721e2e8cc58893bb8169",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:24ace09e594bc8bca24e6c6520eec351c6372240ff1718d44e43fc1ad347e533",
+    "at": "2026-10-26T02:23:15.125Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
