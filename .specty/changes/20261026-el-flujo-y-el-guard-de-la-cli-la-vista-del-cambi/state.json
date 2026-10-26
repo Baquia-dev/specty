@@ -53,12 +53,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "60893a80db39bcb6be859e5c794f6024a1e07e03",
+      "attempts": 1,
       "startedAt": "2026-10-26T22:49:15.220Z",
       "doneAt": "2026-10-26T22:55:14.813Z",
-      "summary": "task-done.ts: completeTask marca la tarea y deja el commit a commitTask. hook.ts: preCommit deja a manualEdit la edición manual del cambio abierto, con las mismas comprobaciones y el mismo orden. Los tests de la CLI pasan."
+      "summary": "task-done.ts: completeTask marca la tarea y deja el commit a commitTask. hook.ts: preCommit deja a manualEdit la edición manual del cambio abierto, con las mismas comprobaciones y el mismo orden. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cef050ef77aa544874c9d30ae14f8579fc2f4ece",
+      "startedAt": "2026-10-26T22:55:15.226Z",
+      "doneAt": "2026-10-26T23:01:44.835Z",
+      "summary": "epic.ts: sliceRefusal comprueba la épica y deja a pickedSliceRefusal el corte pedido. childrenOf junta openChildren y archivedChildren, sin repetir cambios y en el mismo orden. Los tests de la CLI pasan."
     }
   },
   "pending": {

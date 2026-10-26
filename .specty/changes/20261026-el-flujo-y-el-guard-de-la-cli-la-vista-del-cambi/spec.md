@@ -54,7 +54,7 @@ Nueve funciones del flujo y del guard de la CLI pasan de los límites de Specty:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T4: Los cortes de una épica
+- [x] T4: Los cortes de una épica
   - files: packages/cli/src/flow/epic.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
