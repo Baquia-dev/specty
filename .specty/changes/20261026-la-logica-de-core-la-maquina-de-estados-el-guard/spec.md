@@ -63,7 +63,7 @@ Once funciones de la lógica de core pasan de los límites de Specty: `transitio
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
-- [ ] T5: El tamaño, el código y la validación
+- [x] T5: El tamaño, el código y la validación
   - files: packages/core/src/sizing/size.ts, packages/core/src/checks/code.ts, packages/core/src/validate/structure.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run

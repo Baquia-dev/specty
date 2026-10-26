@@ -179,38 +179,52 @@ export function computeSize(
 }
 
 export function formatSizeReason(reason: SizeReason, lang: Lang): string {
+  if ("count" in reason) {
+    const [one, many] = COUNTED[reason.code][lang];
+    return counted(reason.count, one, many);
+  }
   const es = lang === "es";
   switch (reason.code) {
-    case "files":
-      return es
-        ? counted(reason.count, "archivo", "archivos")
-        : counted(reason.count, "file", "files");
-    case "modules":
-      return es
-        ? counted(reason.count, "módulo", "módulos")
-        : counted(reason.count, "module", "modules");
-    case "sensitive":
-      return es
-        ? counted(reason.count, "ruta sensible", "rutas sensibles")
-        : counted(reason.count, "sensitive path", "sensitive paths");
-    case "tasks":
-      return es ? counted(reason.count, "tarea", "tareas") : counted(reason.count, "task", "tasks");
-    case "fan-in":
-      return es
-        ? counted(reason.count, "archivo muy importado", "archivos muy importados")
-        : counted(reason.count, "widely imported file", "widely imported files");
     case "dependencies":
       return es ? "cambia dependencias" : "changes dependencies";
     case "no-tests":
       return `${es ? "sin tests en" : "no tests in"} ${reason.modules.join(", ")}`;
     case "adjusted":
-      if (reason.adjust < 0) {
-        return es
-          ? "ajuste del modelo (-1) sin aplicar: el tamaño solo puede subir"
-          : "model adjustment (-1) not applied: the size can only go up";
-      }
-      return `${es ? "ajuste del modelo" : "model adjustment"} (+1): ${reason.reason}`;
+      return adjustedReason(reason, es);
   }
+}
+
+/** What each counted reason counts, in one and in many. */
+const COUNTED: Readonly<
+  Record<
+    Extract<SizeReason, { readonly count: number }>["code"],
+    Readonly<Record<Lang, readonly [string, string]>>
+  >
+> = {
+  files: { es: ["archivo", "archivos"], en: ["file", "files"] },
+  modules: { es: ["módulo", "módulos"], en: ["module", "modules"] },
+  sensitive: {
+    es: ["ruta sensible", "rutas sensibles"],
+    en: ["sensitive path", "sensitive paths"],
+  },
+  tasks: { es: ["tarea", "tareas"], en: ["task", "tasks"] },
+  "fan-in": {
+    es: ["archivo muy importado", "archivos muy importados"],
+    en: ["widely imported file", "widely imported files"],
+  },
+};
+
+/** The model's estimate: `+1` applies with its reason; `-1` is shown as not applied. */
+function adjustedReason(
+  reason: Extract<SizeReason, { readonly code: "adjusted" }>,
+  es: boolean,
+): string {
+  if (reason.adjust < 0) {
+    return es
+      ? "ajuste del modelo (-1) sin aplicar: el tamaño solo puede subir"
+      : "model adjustment (-1) not applied: the size can only go up";
+  }
+  return `${es ? "ajuste del modelo" : "model adjustment"} (+1): ${reason.reason}`;
 }
 
 function levelFor(score: number, thresholds: ResolvedConfig["size"]): SizeLevel {

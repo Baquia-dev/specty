@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
   "baseCommit": "e937a882332a096930ceeab1c0ee630592cac1e3",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "39efaf430ca6582c1de8709bd5b68573de6e955d",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:11:06.909Z",
       "doneAt": "2026-10-26T19:11:53.576Z",
-      "summary": "assertions.ts: removedAssertions avanza un DiffCursor con header y cuenta cada línea de un hunk con count. risk.ts: filesOf lleva un DiffWalk con startFile, headerLine y hunkLine. Mismos resultados; los 459 tests de core pasan."
+      "summary": "assertions.ts: removedAssertions avanza un DiffCursor con header y cuenta cada línea de un hunk con count. risk.ts: filesOf lleva un DiffWalk con startFile, headerLine y hunkLine. Mismos resultados; los 459 tests de core pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "212952f3139cdb4412876ff04a815a877e2ab8d9",
+      "startedAt": "2026-10-26T19:11:53.876Z",
+      "doneAt": "2026-10-26T19:17:04.693Z",
+      "summary": "size.ts: formatSizeReason lee los sustantivos de COUNTED y deja la deriva del modelo a adjustedReason. code.ts: split avanza un Cursor con blockComment y codeChar. structure.ts: notAllowed informa las secciones que sobran. core ya no tiene funciones fuera de los límites."
     }
   },
   "pending": {
