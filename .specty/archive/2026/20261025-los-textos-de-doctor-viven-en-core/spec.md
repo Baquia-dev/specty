@@ -46,3 +46,21 @@ Octavo cambio de la serie que lleva a core los textos de la CLI. `doctor` arma e
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `doctor` viven en `core/src/cards/doctor.ts`: la CLI decide qué encontró cada comprobación (un `DoctorLine`, con un código y sus datos), y core escribe cada línea y la tarjeta. Los dos rechazos de antes de abrir la sesión (fuera de git y `config.yaml` no válido) viven en `cards/refusals.ts`. `doctor.ts` y `program.ts` ya no llaman al traductor, y la salida es la misma: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `DoctorLine` es una unión con un caso por comprobación, así que un test de core recorre cada línea en español y comprueba su texto.
+
+### Pendientes
+
+- Siguen en la CLI los textos de `uninstall`, `integrate`, `review` y los demás comandos.

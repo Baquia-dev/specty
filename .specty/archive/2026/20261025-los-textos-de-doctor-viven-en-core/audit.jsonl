@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T02:52:53.361Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"31676d21f309903c3d97e945e335d1da6aef526a"}}
 {"ts":"2026-10-26T02:54:55.587Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":72136,"tree":"sha256:38aae4a5df4c05786575791c5d48650f6f68a59db9633c9789f17b4da6893123"}}
 {"ts":"2026-10-26T02:54:55.692Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"doctor.ts decide qué encontró cada comprobación (un DoctorLine) y pide sus textos a core (doctorCard), y program.ts usa notGitCard e invalidConfigCard; ninguno llama al traductor y la salida es la misma, como comprueban los tests."}}
+{"ts":"2026-10-26T02:55:23.913Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T02:55:31.983Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:3eea30312e28809b38af4103d03249446805076f26ff3d624fb78f08bba48873","size":"M","warnings":1}}
+{"ts":"2026-10-26T02:55:42.732Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
