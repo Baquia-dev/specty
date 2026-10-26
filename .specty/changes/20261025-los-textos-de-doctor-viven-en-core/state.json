@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-doctor-viven-en-core",
   "baseCommit": "7d6e0a7d52de90951f041a315bd2fae3199e77fb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a373f9829286364dc1e9c96bb388901baaf4df75c71b32d53e0d97c533e92738",
+    "at": "2026-10-26T02:52:09.225Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c61d06a1d544448c4c5332ca4b37cb0eee651a73",
+      "startedAt": "2026-10-26T02:52:09.572Z",
+      "doneAt": "2026-10-26T02:52:53.097Z",
+      "summary": "core/src/cards/doctor.ts tiene una línea por cada código de comprobación de doctor (DoctorLine) y su tarjeta, y refusals.ts los rechazos de antes de abrir la sesión (notGitCard e invalidConfigCard), copiados letra a letra, con tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a373f9829286364dc1e9c96bb388901baaf4df75c71b32d53e0d97c533e92738",
-    "at": "2026-10-26T02:52:09.225Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

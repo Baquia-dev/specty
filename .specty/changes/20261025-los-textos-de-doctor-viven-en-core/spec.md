@@ -36,7 +36,7 @@ Octavo cambio de la serie que lleva a core los textos de la CLI. `doctor` arma e
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de doctor y los rechazos de antes de abrir la sesión
+- [x] T1: Core tiene los textos de doctor y los rechazos de antes de abrir la sesión
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/refusals.ts, packages/core/src/cards/index.ts, packages/core/test/cards/doctor.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

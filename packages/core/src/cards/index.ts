@@ -55,6 +55,7 @@ export {
   otherFolderNote,
   whichChangeQuestion,
 } from "./decide";
+export { type DoctorLine, doctorCard, doctorLine } from "./doctor";
 export { epicCard, sliceLines } from "./epic";
 export {
   blockedCard,
@@ -123,7 +124,9 @@ export { type NextView, nextCard, notInitializedCard, taskCard } from "./next";
 export {
   type Asker,
   checkStatus,
+  invalidConfigCard,
   noActiveChangeCard,
+  notGitCard,
   nothingChangedCard,
 } from "./refusals";
 export {

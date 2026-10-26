@@ -39,3 +39,26 @@ export function nothingChangedCard(header: string, next: string, ctx: CardContex
     next,
   };
 }
+
+/** A command run outside a git repository: Specty needs one before anything else. */
+export function notGitCard(ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return blockedCard(
+    headerOf(),
+    t("Esto no es un repositorio git.", "This is not a git repository."),
+    t("ejecuta `git init`.", "run `git init`."),
+  );
+}
+
+/** `.specty/config.yaml` is not valid: `issues` says why, and no command runs until it is. */
+export function invalidConfigCard(issues: string, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return {
+    ...blockedCard(
+      headerOf(),
+      issues,
+      t("corrige .specty/config.yaml.", "fix .specty/config.yaml."),
+    ),
+    status: "invalid",
+  };
+}
