@@ -65,7 +65,7 @@ En Cursor faltan dos cosas que Claude Code tiene. La primera es la tarjeta de la
   - files: packages/cli/src/enforce/pending.ts, packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/agents/cursor.ts, packages/core/src/cards/doctor.ts, packages/cli/test/cursor.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/agents.test.ts test/enforce.test.ts
-- [ ] T2: El sandbox de Cursor deja escribir a Specty en la carpeta de git y en la de las worktrees
+- [x] T2: El sandbox de Cursor deja escribir a Specty en la carpeta de git y en la de las worktrees
   - files: packages/cli/src/agents/cursor.ts, packages/cli/src/install/agents.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/cursor.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/uninstall.test.ts test/install.test.ts

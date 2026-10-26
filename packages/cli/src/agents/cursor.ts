@@ -1,18 +1,28 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join } from "node:path";
-import { type DoctorLine, guardLine } from "@baquia-dev/specty-core";
+import { dirname, join } from "node:path";
+import {
+  cursorSandboxLine,
+  cursorSandboxTrackedWarning,
+  type DoctorLine,
+  guardLine,
+  type Lang,
+} from "@baquia-dev/specty-core";
+import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
+import { worktreesHome } from "../flow/worktree";
 import {
   CURSOR_HOOKS,
+  CURSOR_SANDBOX,
   excludeLocally,
   isOurs,
   missingEvents,
   removeFromJson,
   withHooks,
 } from "../install/agents";
-import { rewriteJson } from "../install/files";
+import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
-import type { AgentAdapter } from "./adapter";
+import type { Git } from "../io/git";
+import { type AgentAdapter, type DoctorLines, doctorLines } from "./adapter";
 
 /**
  * The events the guard listens to, with the tools each one covers: before each write, delete or
@@ -74,32 +84,106 @@ export const cursor: AgentAdapter = {
     const command = `${invocation.command} guard --tool cursor`;
     await rewriteJson(join(root, CURSOR_HOOKS), (value) => withGuard(value, command), true, files);
     if (local) await excludeLocally(git, CURSOR_HOOKS, files);
+    const sandbox = await installSandbox(root, git, files, lang);
     return {
-      done: [guardLine("Cursor", CURSOR_HOOKS, local, lang)],
-      warnings: [],
+      done: [guardLine("Cursor", CURSOR_HOOKS, local, lang), ...sandbox.done],
+      warnings: sandbox.warnings,
       written: local ? [] : [CURSOR_HOOKS],
     };
   },
-  remove: (root, files) =>
-    removeFromJson(
-      root,
-      CURSOR_HOOKS,
-      (value) => withHooks(value, EVENTS, "cursor", undefined),
-      files,
-    ),
-  doctor: async (root) => {
+  remove: async (root, files, git) => {
+    const hooks = (value: Record<string, unknown>) => withHooks(value, EVENTS, "cursor", undefined);
+    await removeFromJson(root, CURSOR_HOOKS, hooks, files);
+    // A sandbox file the person keeps in git was never Specty's to change.
+    if (await git.isTracked(CURSOR_SANDBOX)) return;
+    const folders = await sandboxFolders(git);
+    const sandbox = (value: Record<string, unknown>) => withFolders(value, folders, false);
+    await removeFromJson(root, CURSOR_SANDBOX, sandbox, files);
+  },
+  doctor: async (root, git) => {
     const hooks = await readText(join(root, CURSOR_HOOKS));
-    const missing = missingEvents([hooks], Object.keys(EVENTS), "cursor");
-    if (missing.includes("preToolUse") || missing.includes("beforeShellExecution")) {
-      return { ok: [], problems: [{ code: "no-cursor-guard" }] };
-    }
-    const after = missing.filter((event) => AFTER.has(event));
-    const problems: DoctorLine[] = [];
-    if (after.length > 0) problems.push({ code: "cursor-after-command", events: after.join(", ") });
-    if (missing.includes("preCompact")) problems.push({ code: "cursor-compact" });
-    return { ok: problems.length === 0 ? [{ code: "cursor-guard" }] : [], problems };
+    const guard = guardLines(missingEvents([hooks], Object.keys(EVENTS), "cursor"));
+    const listed = readwritePaths(await readText(join(root, CURSOR_SANDBOX)));
+    const sandbox = doctorLines([
+      [
+        (await sandboxFolders(git)).every((folder) => listed.includes(folder)),
+        { code: "cursor-sandbox", file: CURSOR_SANDBOX },
+        { code: "no-cursor-sandbox", file: CURSOR_SANDBOX },
+      ],
+    ]);
+    return { ok: [...guard.ok, ...sandbox.ok], problems: [...guard.problems, ...sandbox.problems] };
   },
 };
+
+/** What `doctor` says of the guard's hooks, from the events they lack. */
+function guardLines(missing: readonly string[]): DoctorLines {
+  if (missing.includes("preToolUse") || missing.includes("beforeShellExecution")) {
+    return { ok: [], problems: [{ code: "no-cursor-guard" }] };
+  }
+  const after = missing.filter((event) => AFTER.has(event));
+  const problems: DoctorLine[] = [];
+  if (after.length > 0) problems.push({ code: "cursor-after-command", events: after.join(", ") });
+  if (missing.includes("preCompact")) problems.push({ code: "cursor-compact" });
+  return { ok: problems.length === 0 ? [{ code: "cursor-guard" }] : [], problems };
+}
+
+/**
+ * The folders Specty's commands write in that a change's folder leaves out of the sandbox: git's
+ * common folder, where every worktree commits (its `config` lives there), and the worktrees' one.
+ */
+async function sandboxFolders(git: Git): Promise<string[]> {
+  return [dirname(await git.gitPath("config")), await worktreesHome(git)];
+}
+
+/**
+ * Cursor's sandbox with Specty's folders, kept out of git because they are machine paths. A file
+ * the person keeps in git stays as it is, and `init` says what to add to it.
+ */
+async function installSandbox(
+  root: string,
+  git: Git,
+  files: InstallFiles,
+  lang: Lang,
+): Promise<{ readonly done: string[]; readonly warnings: string[] }> {
+  const folders = await sandboxFolders(git);
+  if (await git.isTracked(CURSOR_SANDBOX)) {
+    const listed = readwritePaths(await files.read(join(root, CURSOR_SANDBOX)));
+    const there = folders.every((folder) => listed.includes(folder));
+    return {
+      done: [],
+      warnings: there ? [] : [cursorSandboxTrackedWarning(CURSOR_SANDBOX, folders, lang)],
+    };
+  }
+  const update = (value: Record<string, unknown>) => withFolders(value, folders, true);
+  await rewriteJson(join(root, CURSOR_SANDBOX), update, true, files);
+  await excludeLocally(git, CURSOR_SANDBOX, files);
+  return { done: [cursorSandboxLine(CURSOR_SANDBOX, lang)], warnings: [] };
+}
+
+/** The read-write paths a sandbox file (its text) lists. */
+function readwritePaths(text: string | undefined): unknown[] {
+  const value: unknown = text === undefined ? undefined : parse(text);
+  return isRecord(value) && Array.isArray(value.additionalReadwritePaths)
+    ? value.additionalReadwritePaths
+    : [];
+}
+
+/**
+ * Adds `folders` after the paths the file already listed, or takes them out; a list left empty
+ * goes too.
+ */
+function withFolders(
+  value: Record<string, unknown>,
+  folders: readonly string[],
+  add: boolean,
+): Record<string, unknown> {
+  const { additionalReadwritePaths: listed, ...rest } = value;
+  const current: unknown[] = Array.isArray(listed) ? listed : [];
+  const paths = add
+    ? [...current, ...folders.filter((folder) => !current.includes(folder))]
+    : current.filter((path) => !folders.includes(String(path)));
+  return paths.length === 0 ? rest : { ...rest, additionalReadwritePaths: paths };
+}
 
 /** The guard in each of its events, in `.cursor/hooks.json` (`version: 1`). */
 function withGuard(value: Record<string, unknown>, command: string): Record<string, unknown> {

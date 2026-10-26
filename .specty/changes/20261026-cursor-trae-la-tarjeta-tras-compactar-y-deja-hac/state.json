@@ -43,12 +43,26 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "138e8893bf0510dc364f78e429774ac51f6e4f74",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:51:51.664Z",
       "doneAt": "2026-10-26T18:02:33.372Z",
-      "summary": "La tarjeta de Cursor llega con el siguiente comando tras compactar: preCompact la deja pendiente (enforce/pending.ts, por conversación) y el siguiente postToolUse la añade tras el aviso del comando. doctor avisa sin preCompact. El guard se parte en guard, answer y beforeAction."
+      "summary": "La tarjeta de Cursor llega con el siguiente comando tras compactar: preCompact la deja pendiente (enforce/pending.ts, por conversación) y el siguiente postToolUse la añade tras el aviso del comando. doctor avisa sin preCompact. El guard se parte en guard, answer y beforeAction.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/agents/adapter.ts",
+        "packages/cli/src/agents/index.ts",
+        "packages/cli/src/commands/doctor.ts",
+        "packages/cli/src/commands/uninstall.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "80233c00bf184f6c8f6d96e129aaa8fceaf92d5c",
+      "startedAt": "2026-10-26T18:02:33.684Z",
+      "doneAt": "2026-10-26T18:07:33.475Z",
+      "summary": "init escribe .cursor/sandbox.json (local) con la carpeta común de git y la de las worktrees en additionalReadwritePaths, conservando lo de la persona; uno versionado no se toca y se avisa. doctor lo comprueba, uninstall quita solo esas carpetas y new lo copia a cada worktree."
     }
   },
   "pending": {
@@ -59,6 +73,7 @@
     "A": 4,
     "AC": 5,
     "T": 3,
-    "R": 3
+    "R": 3,
+    "S": 1
   }
 }

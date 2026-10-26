@@ -12,6 +12,8 @@ export const CLAUDE_WORKTREE_EVENTS: readonly string[] = ["WorktreeCreate", "Wor
 export const CLAUDE_SETTINGS = ".claude/settings.json";
 export const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
 export const CURSOR_HOOKS = ".cursor/hooks.json";
+/** Cursor's sandbox settings for the workspace: Specty's folders in it carry machine paths. */
+export const CURSOR_SANDBOX = ".cursor/sandbox.json";
 export const CODEX_HOOKS = ".codex/hooks.json";
 export const CODEX_RULES = ".codex/rules/specty.rules";
 export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
@@ -21,6 +23,7 @@ export const AGENT_HOOK_FILES: readonly string[] = [
   CLAUDE_SETTINGS,
   CLAUDE_LOCAL_SETTINGS,
   CURSOR_HOOKS,
+  CURSOR_SANDBOX,
   CODEX_HOOKS,
   OPENCODE_PLUGIN,
 ];

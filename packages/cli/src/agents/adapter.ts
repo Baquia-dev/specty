@@ -51,9 +51,9 @@ export interface AgentAdapter {
   /** Writes its guard and its settings in the repository, never in the user's folder (ADR 0013). */
   readonly install: (context: InstallContext) => Promise<Installed>;
   /** Takes them out again for `uninstall`, and leaves everything else as it was. */
-  readonly remove: (root: string, files: InstallFiles) => Promise<void>;
+  readonly remove: (root: string, files: InstallFiles, git: Git) => Promise<void>;
   /** What `doctor` finds in place and what it finds missing. */
-  readonly doctor: (root: string) => Promise<DoctorLines>;
+  readonly doctor: (root: string, git: Git) => Promise<DoctorLines>;
   /** Its guard in the user's folder, which Specty only reads: `uninstall` says it stays there. */
   readonly userFile?: (env: NodeJS.ProcessEnv) => string;
 }

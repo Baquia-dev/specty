@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
+import { basename, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, cli, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import { APP, cli, git, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
 async function implementing(): Promise<string> {
@@ -137,5 +138,74 @@ describe("installing the check in Cursor", () => {
     expect(doctor.out).toContain(
       "Cursor: falta la comprobación tras cada comando (postToolUseFailure); ejecuta `specty init --tools cursor`.",
     );
+  });
+});
+
+const SANDBOX = ".cursor/sandbox.json";
+const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
+/** The folders Specty's commands write in outside a change's folder: git's own and the worktrees'. */
+const foldersOf = (root: string) => [
+  join(root, ".git"),
+  join(dirname(root), `${basename(root)}.worktrees`),
+];
+const sandboxOf = async (root: string) => JSON.parse(await read(root, SANDBOX));
+
+describe("Cursor's sandbox and Specty's commits", () => {
+  it("lets Specty write in git's folder and the worktrees', kept out of git, and doctor checks it (AC4)", async () => {
+    const root = await tempRepo(PACKAGE);
+    const init = await cli(root, ["init", "--language", "es", "--tools", "cursor"]);
+    expect(init.out).toContain(
+      "Cursor: .cursor/sandbox.json (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees, que su sandbox deja fuera.",
+    );
+    expect((await sandboxOf(root)).additionalReadwritePaths).toEqual(foldersOf(root));
+    expect(await read(root, ".git/info/exclude")).toContain(`/${SANDBOX}`);
+    expect(git(root, "status", "--porcelain")).toBe("");
+    expect((await cli(root, ["doctor"])).out).toContain(
+      "Cursor: su sandbox deja escribir a Specty en la carpeta de git y en la de las worktrees (.cursor/sandbox.json).",
+    );
+
+    // What the person had stays, and running init again adds nothing twice.
+    const mine = { networkPolicy: { default: "deny" }, additionalReadwritePaths: ["/opt/cache"] };
+    await writeFiles(root, { [SANDBOX]: JSON.stringify(mine) });
+    await cli(root, ["init", "--tools", "cursor"]);
+    await cli(root, ["init", "--tools", "cursor"]);
+    expect(await sandboxOf(root)).toEqual({
+      networkPolicy: { default: "deny" },
+      additionalReadwritePaths: ["/opt/cache", ...foldersOf(root)],
+    });
+
+    await writeFiles(root, { [SANDBOX]: JSON.stringify(mine) });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Cursor: su sandbox no deja escribir a Specty en la carpeta de git de las worktrees, así que fallan sus commits; ejecuta `specty init --tools cursor`.",
+    );
+  });
+
+  it("leaves a sandbox.json the person versions alone, and says what to add (AC4)", async () => {
+    const root = await tempRepo({
+      ...PACKAGE,
+      [SANDBOX]: '{"networkPolicy":{"default":"deny"}}\n',
+    });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "cursor"]);
+    const [gitFolder, worktrees] = foldersOf(root);
+    expect(init.out).toContain(
+      `Cursor: .cursor/sandbox.json está en git, así que Specty no lo toca; añade \`${gitFolder}\`, \`${worktrees}\` a \`additionalReadwritePaths\` para que los commits de Specty funcionen en su sandbox.`,
+    );
+    expect(await sandboxOf(root)).toEqual({ networkPolicy: { default: "deny" } });
+  });
+
+  it("takes out only Specty's folders when uninstalling (AC4)", async () => {
+    const root = await tempRepo(PACKAGE);
+    await cli(root, ["init", "--language", "es", "--tools", "cursor"]);
+    const sandbox = await sandboxOf(root);
+    await writeFiles(root, {
+      [SANDBOX]: JSON.stringify({
+        ...sandbox,
+        additionalReadwritePaths: ["/opt/cache", ...sandbox.additionalReadwritePaths],
+      }),
+    });
+    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(await sandboxOf(root)).toEqual({ additionalReadwritePaths: ["/opt/cache"] });
   });
 });

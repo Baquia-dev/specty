@@ -21,6 +21,8 @@ export type DoctorLine =
   | { readonly code: "cursor-guard" | "no-cursor-guard" }
   /** Cursor's guard is there, without `preCompact`, which leaves the card for the next command. */
   | { readonly code: "cursor-compact" }
+  /** Whether Cursor's sandbox lets Specty write in git's folder and the worktrees' (`file`). */
+  | { readonly code: "cursor-sandbox" | "no-cursor-sandbox"; readonly file: string }
   | { readonly code: "cursor-after-command"; readonly events: string }
   /** Codex's guard, its rule for Specty's commands and OpenCode's plugin, in the project: `file`. */
   | { readonly code: "codex-guard" | "no-codex-guard"; readonly file: string }
@@ -112,6 +114,16 @@ const WRITERS: {
     t(
       `Cursor: falta la tarjeta de Specty tras compactar (preCompact); ejecuta \`${command} init --tools cursor\`.`,
       `Cursor: Specty's card after a compaction is missing (preCompact); run \`${command} init --tools cursor\`.`,
+    ),
+  "cursor-sandbox": (line, t) =>
+    t(
+      `Cursor: su sandbox deja escribir a Specty en la carpeta de git y en la de las worktrees (${line.file}).`,
+      `Cursor: its sandbox lets Specty write in the git folder and the worktrees' folder (${line.file}).`,
+    ),
+  "no-cursor-sandbox": (_, t, command) =>
+    t(
+      `Cursor: su sandbox no deja escribir a Specty en la carpeta de git de las worktrees, así que fallan sus commits; ejecuta \`${command} init --tools cursor\`.`,
+      `Cursor: its sandbox does not let Specty write in the worktrees' git folder, so its commits fail; run \`${command} init --tools cursor\`.`,
     ),
   "cursor-after-command": (line, t, command) =>
     t(
