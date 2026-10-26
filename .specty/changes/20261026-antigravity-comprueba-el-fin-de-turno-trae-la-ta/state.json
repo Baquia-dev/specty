@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8b42581d32b99016ea0636ea0eac111895d36be0",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:03:54.255Z",
       "doneAt": "2026-10-26T20:09:13.865Z",
-      "summary": "Cada comando de shell que el guard deja pasar en Antigravity lleva permissionOverrides con write_file de la carpeta común de git y la de las worktrees; sharedFolders pasa de cursor.ts a flow/worktree.ts y el veredicto lleva las carpetas para un agente con grants."
+      "summary": "Cada comando de shell que el guard deja pasar en Antigravity lleva permissionOverrides con write_file de la carpeta común de git y la de las worktrees; sharedFolders pasa de cursor.ts a flow/worktree.ts y el veredicto lleva las carpetas para un agente con grants.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "08af578e7e1ea1002ab4254352ecb0d68ae76a48",
+      "startedAt": "2026-10-26T20:09:14.164Z",
+      "doneAt": "2026-10-26T20:12:56.268Z",
+      "summary": "El matcher de PreToolUse de Antigravity incluye manage_task: con send_input, el guard juzga Input como un comando de shell (deniega un comando de la persona), y sus demás acciones pasan."
     }
   },
   "pending": {

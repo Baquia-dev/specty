@@ -88,7 +88,7 @@ Este corte añade las cuatro. Como Antigravity no tiene evento de compactación,
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/cursor.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/flow/worktree.ts, packages/cli/test/antigravity-turn.test.ts, packages/cli/test/antigravity.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity-turn.test.ts test/antigravity.test.ts test/cursor.test.ts
-- [ ] T4: El guard juzga lo que el agente de Antigravity escribe en una tarea en marcha
+- [x] T4: El guard juzga lo que el agente de Antigravity escribe en una tarea en marcha
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/test/antigravity.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts

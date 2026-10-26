@@ -10,8 +10,12 @@ import { type AgentAdapter, jsonStop } from "./adapter";
 
 /** The name of Specty's hook among the person's in `.agents/hooks.json`. */
 const HOOK = "specty";
-/** Its tools that change the repository; there is none to delete a file. */
-const TOOLS = "run_command|write_to_file|replace_file_content|multi_replace_file_content";
+/**
+ * Its tools that change the repository (there is none to delete a file), and the one that types
+ * into a task running in the background.
+ */
+const TOOLS =
+  "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task";
 /**
  * The events the guard listens to, with the tools each one covers; `undefined` is an event that
  * takes a list of handlers, with no matcher.
@@ -161,6 +165,9 @@ function action(event: Readonly<Record<string, unknown>>): RawAction {
   switch (event.tool_name) {
     case "run_command":
       return shellAction(input.CommandLine);
+    // What it types into a running task, which may be a shell, is judged as a command.
+    case "manage_task":
+      return input.Action === "send_input" ? shellAction(input.Input) : { kind: "other" };
     case "write_to_file":
     case "replace_file_content":
     case "multi_replace_file_content":
