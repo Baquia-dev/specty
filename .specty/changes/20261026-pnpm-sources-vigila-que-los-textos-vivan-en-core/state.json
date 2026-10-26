@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261026-pnpm-sources-vigila-que-los-textos-vivan-en-core",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-pnpm-sources-vigila-que-los-textos-vivan-en-core",
   "baseCommit": "5bfe65a4a554d4900b42e1db88f237ba25e5689d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:44c64d95672b7e55e26e0b0f62bf6cc86fd514435896ba2800a77455223a24bd",
+    "at": "2026-10-26T09:25:10.906Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d7a6a07c2ed3010654396f58fa8e2a9f1d6e57ca",
+      "startedAt": "2026-10-26T09:25:11.355Z",
+      "doneAt": "2026-10-26T09:27:45.240Z",
+      "summary": "pnpm sources falla y nombra el archivo si uno de packages/cli/src usa el traductor, salvo los de specty check (check/ y commands/check.ts), con su test; ARCHITECTURE y AGENTS.md cuentan que la CLI pide sus textos a core."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:44c64d95672b7e55e26e0b0f62bf6cc86fd514435896ba2800a77455223a24bd",
-    "at": "2026-10-26T09:25:10.906Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

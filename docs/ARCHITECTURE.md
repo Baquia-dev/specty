@@ -151,7 +151,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - `1`: error de validación, con una lista accionable y números de línea.
   - `2`: bloqueado por el flujo, con el motivo y el paso válido.
 - `--json` devuelve lo mismo, estructurado.
-- Los textos viven en `core` y se prueban como interfaz pública. Un cambio de redacción puede cambiar el comportamiento de un modelo (ver la suite de cumplimiento en §16).
+- Los textos viven en `core` y se prueban como interfaz pública. Un cambio de redacción puede cambiar el comportamiento de un modelo (ver la suite de cumplimiento en §16). La CLI decide qué caso es y le pasa los datos a `core/src/cards/`, que escribe el texto en los dos idiomas: tarjetas, rechazos, preguntas de la terminal, avisos y asuntos de commit. `pnpm sources` falla si un archivo de `packages/cli/src` usa el traductor; solo los de `specty check` (`check/` y `commands/check.ts`) aún escriben los suyos.
 - Repetir `next` no cambia nada.
 - `next --wait[=<segundos>]` (opcional) espera, con límite, a que la persona actúe en la UI. Por defecto, el agente termina su turno con el enlace de la UI. Cuando la persona aprueba y escribe "continúa", el agente vuelve a ejecutar `next`.
 

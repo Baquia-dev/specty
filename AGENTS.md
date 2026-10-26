@@ -52,7 +52,7 @@ Monorepo pnpm con TypeScript estricto, Node ≥ 22: `packages/core` (`@baquia-de
 - Cada archivo fuente empieza con `// SPDX-License-Identifier: Apache-2.0` (lo comprueba `pnpm sources`).
 - Archivos cortos, con una responsabilidad: si uno pasa de unas 300 líneas de código (sin líneas en blanco ni comentarios; en los tests, unas 400), propón cómo dividirlo por responsabilidad antes de seguir. Nunca lo partas solo para cumplir el número: un `parte2` o unos helpers sin cohesión son peores que un archivo largo. Lo vigila Specty en `task done`, en cualquier lenguaje: avisa a partir de ahí y no completa la tarea que lleve un archivo por encima de 500 (tests: 600). Los umbrales y las exclusiones están en `lines` de `.specty/config.yaml` (ARCHITECTURE §7).
 - Sin `any` ni casts inseguros; datos `readonly` e inmutables.
-- Todo texto visible tiene versión en español y en inglés.
+- Todo texto visible tiene versión en español y en inglés, y vive en `packages/core/src/cards/`: la CLI le pasa los datos a core y no usa el traductor (lo comprueba `pnpm sources`; aún no los de `specty check`).
 - Nada que conceda permisos sobre el código (aprobar, aceptar, cerrar) puede habilitarse con una variable de entorno: las pruebas inyectan una terminal.
 - Los formatos (`spec.md`, `state.json`, `config.yaml`) se definen en `docs/formats.md`; si cambias el código, actualiza ese documento.
 

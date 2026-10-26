@@ -38,4 +38,22 @@ describe("pnpm sources", () => {
     expect(result.status).toBe(0);
     expect(result.output).toContain("Sources OK (1 files: SPDX header).");
   });
+
+  it("keeps the texts in core: the CLI asks for them instead of using the translator", async () => {
+    const translated = `${HEADER}\nimport { translator } from "@baquia-dev/specty-core";\n`;
+    const result = await check({
+      "packages/cli/src/commands/own.ts": translated,
+      "packages/cli/src/check/pending.ts": translated,
+      "packages/cli/src/commands/check.ts": translated,
+      "packages/core/src/cards/card.ts": translated,
+      "packages/cli/test/fixture.test.ts": translated,
+    });
+    expect(result.status).toBe(1);
+    expect(result.output).toContain(
+      "packages/cli/src/commands/own.ts: its texts belong in packages/core/src/cards; ask core for them instead of using the translator",
+    );
+    for (const allowed of ["pending.ts", "commands/check.ts", "card.ts", "fixture.test.ts"]) {
+      expect(result.output).not.toContain(allowed);
+    }
+  });
 });

@@ -19,7 +19,7 @@ Con la serie de cambios anterior, los textos que ven el agente y la persona vive
 
 ## Tareas
 
-- [ ] T1: pnpm sources falla si la CLI escribe sus propios textos
+- [x] T1: pnpm sources falla si la CLI escribe sus propios textos
   - files: scripts/check-sources.mjs, packages/cli/test/sources.test.ts, docs/ARCHITECTURE.md, AGENTS.md
   - verify: pnpm check
   - type: feat
