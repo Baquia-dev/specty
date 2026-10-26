@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-componentes-y-los-datos-de-la-ui-sin-exporta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-componentes-y-los-datos-de-la-ui-sin-exporta",
   "baseCommit": "dc839877de8b9b27326e34417c3f7251c296b6d1",
   "revision": 1,
@@ -39,12 +39,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2112beac88df4738dcdc7c311f6c59659606ce7a",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:57:16.410Z",
       "doneAt": "2026-10-26T01:57:29.197Z",
-      "summary": "Dejan de exportarse activeTask, changesRequestedOf, highImpactPending y ScopeRequestView, que solo usa su archivo de datos."
+      "summary": "Dejan de exportarse activeTask, changesRequestedOf, highImpactPending y ScopeRequestView, que solo usa su archivo de datos.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "51227a7dff31eda87d9343c8ce57e7e390c25a86",
+      "startedAt": "2026-10-26T01:57:29.459Z",
+      "doneAt": "2026-10-26T01:59:00.846Z",
+      "summary": "Dejan de exportarse TextRange, HistoryType y LanguageId. Knip, con todas sus reglas, ya no marca nada de los componentes, los datos ni el resaltado de la UI; la UI se construye igual."
     }
   },
   "pending": {

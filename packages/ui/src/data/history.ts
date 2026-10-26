@@ -17,7 +17,7 @@ import {
 import { type AuditRecord, formatDuration } from "./progress";
 import type { Bilingual } from "./records";
 
-export type HistoryType =
+type HistoryType =
   | "spec"
   | "tasks"
   | "verifications"

@@ -50,7 +50,7 @@ Con todas sus reglas encendidas, knip marca en los componentes, los datos y el r
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck
   - type: refactor
-- [ ] T3: El diff, el historial y el resaltado exportan solo lo que se importa
+- [x] T3: El diff, el historial y el resaltado exportan solo lo que se importa
   - files: packages/ui/src/data/diff.ts, packages/ui/src/data/history.ts, packages/ui/src/highlight/languages.ts
   - ac: AC1, AC2
   - verify: pnpm check && pnpm --filter @baquia-dev/specty-ui exec ng build
