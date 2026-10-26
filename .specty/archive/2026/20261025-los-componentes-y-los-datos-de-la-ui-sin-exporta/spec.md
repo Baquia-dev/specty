@@ -55,3 +55,21 @@ Con todas sus reglas encendidas, knip marca en los componentes, los datos y el r
   - ac: AC1, AC2
   - verify: pnpm check && pnpm --filter @baquia-dev/specty-ui exec ng build
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+En los componentes, los datos y el resaltado de la UI dejan de exportarse nueve constantes, funciones y clases y cuatro tipos que solo usaba su archivo. Con todas sus reglas encendidas, knip ya no marca nada ahí, y la UI se construye igual.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La última tarea también construye la UI (`ng build`), porque `pnpm check` no compila la aplicación entera y un componente sin `export` solo podría fallar ahí.
+
+### Pendientes
+
+- C4 limpia las pantallas de la UI; C5 enciende las reglas.
