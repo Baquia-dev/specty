@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
+  "baseCommit": "bfa2cf2f30604b55465c192c21b9f9b1d9a4c603",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5215583b5d04fa5b619c8c78563fa68743453bff4e787312ee3c7d176ce17277",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c957b6b53731e5bfc45f95a246595cbcecb9a9cacfe60434d0458bf57b0b5ec9",
+    "at": "2026-10-26T03:12:56.132Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
