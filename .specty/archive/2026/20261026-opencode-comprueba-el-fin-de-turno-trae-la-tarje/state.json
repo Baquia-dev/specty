@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje",
   "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:eca3fbf82dffbd55de199d715b211594e633ddc039c2be72d648b424d3a599ce",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9ffcb14ccd653cbd86e9e339f0551b2d6912bcf1",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:37:06.784Z",
       "doneAt": "2026-10-26T18:38:22.778Z",
-      "summary": "La tarjeta tras compactar, el fin de turno y la exclusión de OpenCode pasan a «sí»; ARCHITECTURE (§7 y §10) y formats.md cuentan el plugin, STOP y permission.read."
+      "summary": "La tarjeta tras compactar, el fin de turno y la exclusión de OpenCode pasan a «sí»; ARCHITECTURE (§7 y §10) y formats.md cuentan el plugin, STOP y permission.read.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,5 +88,6 @@
     "AC": 6,
     "T": 4,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T18:40:42.569Z"
 }

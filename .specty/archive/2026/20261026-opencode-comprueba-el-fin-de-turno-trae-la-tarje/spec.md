@@ -90,3 +90,30 @@ En la tabla de capacidades, las tres pasan a «sí» en OpenCode.
 
 - R1: OpenCode 2 cambia el nombre del evento de inactividad o la forma de `prompt`, y su fin de turno no actúa. Mitigación: todo el código del plugin para OpenCode 2 va en `try` y nunca bloquea; la tabla anota que se comprobó con OpenCode 1.19.4.
 - R2: Un patrón de exclusión con otra sintaxis que la de `.gitignore` deniega de más o de menos. Mitigación: son los mismos patrones que ya van a `.cursorignore` y a `Read(...)` de Claude Code, y `check --install` los enseña en su diff antes de escribirlos.
+
+## Cierre
+
+### Resumen
+
+OpenCode tiene ya lo que le faltaba de Claude Code: la tarjeta tras compactar, el fin de turno y la exclusión de ruido.
+- **Tarjeta:** el plugin la pide al guard con el `SessionStart` (`compact`) de Claude Code. OpenCode 1 la recibe en `session.compacted` como mensaje que no pide respuesta; OpenCode 2, en las partes de sistema de la siguiente llamada al modelo.
+- **Fin de turno:** `check --install` vuelve a escribir el plugin con `STOP`, y desde entonces, en cada `session.idle`, ejecuta `specty hook agent-stop opencode` y manda el informe a la sesión. Un turno que ya devolvió puede terminar, e `init` conserva `STOP`.
+- **Exclusión:** `check --install` añade denegaciones en `permission.read` de `opencode.json`.
+
+El contrato del fin de turno pasó a `plan`, de modo que cada agente planifica su propio hook. La tabla marca las tres capacidades de OpenCode como «sí».
+
+### Desviaciones
+
+- La plantilla del plugin pasó a ser una constante del módulo con marcadores (`__SPECTY__`, `__GUARD__`, `__STOP__`): dentro de una función superaba el límite de líneas de `specty check`. `GUARD` sigue siendo una cadena completa, para que el plugin diga lo mismo que antes y las pruebas que ya lo buscaban no cambien.
+- Las dos pruebas nuevas de la tarjeta comparan su contenido y no el texto exacto: el guard que lanza el plugin hereda el entorno de quien ejecuta las pruebas, y dentro de un agente su línea de esfuerzo cambia.
+
+### Decisiones
+
+- Specty marcó `spawn(..., { shell: true })` del plugin (CWE-78). Ya estaba en el plugin anterior; ahora está en la plantilla. El comando es el de Specty que escribe `init` (`specty` o `node "<ruta>"`, que necesita la shell por las comillas), y el evento va por stdin, nunca por la shell.
+- El plugin recuerda en memoria las sesiones que devolvió, y manda `stop_hook_active` como Claude Code; el módulo de OpenCode reutiliza `blockingStop`, con su propio `plan`.
+- Un patrón de `permission.read` que la persona ya tenía no se cambia, aunque diga otra cosa; los nuevos van al final.
+
+### Pendientes
+
+- OpenCode 2 no se ha podido probar: no hay versión publicada. Sus nombres de evento no están documentados, y el plugin usa `session.idle`, como en la 1.
+- El fin de turno solo hace seguir al agente cuando OpenCode corre como servidor (su interfaz); `opencode run` termina antes. C7 lo prueba con `opencode serve`.

@@ -13,3 +13,7 @@
 {"ts":"2026-10-26T18:37:06.784Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"9ffcb14ccd653cbd86e9e339f0551b2d6912bcf1"}}
 {"ts":"2026-10-26T18:38:22.695Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts","exit":0,"ms":783,"tree":"sha256:d2bd9c5564616af55faeda5d1caee169a80325ea83eb5ae27f2b3fee479c141c"}}
 {"ts":"2026-10-26T18:38:22.779Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"La tarjeta tras compactar, el fin de turno y la exclusión de OpenCode pasan a «sí»; ARCHITECTURE (§7 y §10) y formats.md cuentan el plugin, STOP y permission.read."}}
+{"ts":"2026-10-26T18:40:18.748Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":104098,"tree":"sha256:d2bd9c5564616af55faeda5d1caee169a80325ea83eb5ae27f2b3fee479c141c"}}
+{"ts":"2026-10-26T18:40:18.751Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T18:40:42.570Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:dbd8b8b29ac21a62a6f4d631ef8470c4a627291ef3994d6acfd891e47322db14","size":"L","warnings":1}}
+{"ts":"2026-10-26T18:43:39.063Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
