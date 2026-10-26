@@ -42,3 +42,22 @@ kind: epic
 ## Riesgos
 
 - R1: La otra sesión incorpora código nuevo mientras tanto, con exportaciones que sobran. Mitigación: C5 vuelve a ejecutar knip con las reglas encendidas justo antes de activarlas y limpia lo que encuentre.
+
+## Cierre
+
+### Resumen
+
+Knip vigila las exportaciones y los tipos: `pnpm check` falla y nombra la exportación o el tipo que ningún otro archivo importa. Para llegar ahí, C1 a C4 quitaron el `export` a lo que solo usaba su archivo en core, la CLI y la UI, y borraron lo que nadie usaba (`retroTrailers` y dos reexportaciones); C5 limpió los ayudantes de los tests de la CLI y encendió las reglas.
+
+### Desviaciones
+
+- Los ayudantes de los tests de la CLI pasaron de C2 a C5, porque con ellos C2 llegaba a tamaño XL; R1 ya encargaba a C5 limpiar lo que quedara.
+
+### Decisiones
+
+- Cada corte comprobó su paquete con knip y todas las reglas desde una configuración temporal fuera del repositorio, sin tocar `knip.json` hasta C5.
+- Los cortes de la UI también construyeron la aplicación (`ng build`), que `pnpm check` no compila entera.
+
+### Pendientes
+
+- La rama de la otra sesión exporta `StrictMode` en `check/dart.ts` sin que nadie lo importe: al incorporarla, knip lo marcará y habrá que quitarle el `export`.
