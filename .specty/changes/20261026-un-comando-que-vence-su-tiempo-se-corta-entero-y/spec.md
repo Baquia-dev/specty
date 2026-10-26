@@ -38,7 +38,7 @@ El CI de GitHub destapó dos fallos que en local no se veían. En Linux, un coma
 
 ## Tareas
 
-- [ ] T1: El comando entero, al vencer el tiempo
+- [x] T1: El comando entero, al vencer el tiempo
   - files: packages/cli/src/io/exec.ts, packages/cli/test/exec.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec.test.ts test/check-commands.test.ts

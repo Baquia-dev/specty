@@ -6,6 +6,13 @@
   "branch": "specty/20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
   "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2b33dd38a7dd1d9af6ad0e32b7a73e1d4909c7edf28a9b0d02a8e55ab484c002",
+    "at": "2026-10-26T18:23:42.201Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "acb52a5940a0452dbf670247d930483447fb49c2",
+      "startedAt": "2026-10-26T18:23:42.596Z",
+      "doneAt": "2026-10-26T18:27:02.061Z",
+      "summary": "exec.ts: al vencer el tiempo, endTree corta el comando y sus descendientes, leídos de ps (SIGTERM y SIGKILL a los 2 s), o con taskkill /T en Windows. Test: node slow.js && echo done con 500 ms termina en segundos, no en 60."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -37,12 +54,5 @@
     "A": 3,
     "AC": 3,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2b33dd38a7dd1d9af6ad0e32b7a73e1d4909c7edf28a9b0d02a8e55ab484c002",
-    "at": "2026-10-26T18:23:42.201Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

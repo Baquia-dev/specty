@@ -27,3 +27,18 @@ describe("a command's output", () => {
     expect(result.stdout.endsWith("y")).toBe(true);
   });
 });
+
+describe("a command past its time limit", () => {
+  it("ends with every process it started, not only its shell (AC1)", async () => {
+    const root = await tempRepo({ "slow.js": "setTimeout(() => {}, 60000);\n" });
+    const started = Date.now();
+    // `&&` keeps the shell alive: killing it alone leaves `node` holding the output open.
+    const result = await execute("node slow.js && echo done", [], {
+      cwd: root,
+      shell: true,
+      timeoutMs: 500,
+    });
+    expect(result).toMatchObject({ code: undefined, timedOut: true });
+    expect(Date.now() - started).toBeLessThan(10_000);
+  }, 20_000);
+});
