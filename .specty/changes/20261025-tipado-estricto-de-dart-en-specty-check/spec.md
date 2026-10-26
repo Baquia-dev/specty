@@ -51,7 +51,7 @@ En un proyecto Dart o Flutter, `specty check` falla si el analizador no está en
 
 ## Tareas
 
-- [ ] T1: Los comentarios que apagan el analizador
+- [x] T1: Los comentarios que apagan el analizador
   - files: packages/core/src/checks/dart.ts, packages/core/src/index.ts, packages/core/test/checks/dart.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/dart.test.ts
