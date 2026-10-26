@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-las-tarjetas-de-core-segunda-parte-new-next-revi",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-las-tarjetas-de-core-segunda-parte-new-next-revi",
   "baseCommit": "ef514fe6e173f0b5c4a33bd9eddec798b46bc52b",
   "revision": 1,
@@ -53,12 +53,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "38e67a4dbd590e5bf7b8ae54873b31faea16b7c9",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:38:32.401Z",
       "doneAt": "2026-10-26T18:39:55.039Z",
-      "summary": "task.ts: los rechazos por un resumen o un hallazgo largo o vacío van en noteRefusalCard, con estado invalid. text.ts: draftingGuide une doubtsGuide, salvo en quick y retro, con la tabla KIND_GUIDES por tipo. Mismos textos y orden."
+      "summary": "task.ts: los rechazos por un resumen o un hallazgo largo o vacío van en noteRefusalCard, con estado invalid. text.ts: draftingGuide une doubtsGuide, salvo en quick y retro, con la tabla KIND_GUIDES por tipo. Mismos textos y orden.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a129860cd476f24cdc1dca7879d25da12585714a",
+      "startedAt": "2026-10-26T18:39:55.512Z",
+      "doneAt": "2026-10-26T18:42:55.794Z",
+      "summary": "work.ts: taskCard y acceptanceCard comparten doneLine; taskCard toma verificationLines; acceptanceCard, acceptanceWarnings y acceptanceNext; closingCard deja el cierre ya enviado a closingSubmittedCard. Ninguna función de cards queda fuera de los límites."
     }
   },
   "pending": {

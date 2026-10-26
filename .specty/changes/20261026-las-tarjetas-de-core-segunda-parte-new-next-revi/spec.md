@@ -52,7 +52,7 @@ Once funciones de las tarjetas de core pasan de los límites de Specty: `newRefu
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
-- [ ] T4: La tarea, la aceptación y el cierre
+- [x] T4: La tarea, la aceptación y el cierre
   - files: packages/core/src/cards/work.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
