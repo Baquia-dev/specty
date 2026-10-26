@@ -50,7 +50,7 @@ La verificación `layers` vigila también los imports de Python, Go y Rust, con 
 
 ## Tareas
 
-- [ ] T1: Los escáneres de Python, Go y Rust en el core
+- [x] T1: Los escáneres de Python, Go y Rust en el core
   - files: packages/core/src/checks/layers.ts, packages/core/src/checks/imports-python.ts, packages/core/src/checks/imports-go.ts, packages/core/src/checks/imports-rust.ts, packages/core/src/index.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/imports.test.ts test/checks/layers.test.ts

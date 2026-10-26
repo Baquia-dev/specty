@@ -6,6 +6,13 @@
   "branch": "specty/20261026-las-capas-en-python-go-y-rust",
   "baseCommit": "8725b8aa5c6d1a44d19c854b38905d31bce0fb32",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8bd49b5cf8dff8117e85e99498285b49afaa1ea229d986c7b31e8750fc961aaa",
+    "at": "2026-10-26T15:17:18.122Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "10c72091ab4df9783741d654b83c0b7bf2a852f0",
+      "startedAt": "2026-10-26T15:17:18.666Z",
+      "doneAt": "2026-10-26T15:20:55.116Z",
+      "summary": "Escáneres de imports del core para Python (módulos del repo en la raíz o en src, relativos), Go (contra el module de go.mod) y Rust (crate, super, self y crates externos); cada import lleva su línea y layerViolations la conserva."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8bd49b5cf8dff8117e85e99498285b49afaa1ea229d986c7b31e8750fc961aaa",
-    "at": "2026-10-26T15:17:18.122Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

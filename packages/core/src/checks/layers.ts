@@ -9,15 +9,17 @@ import type { Layers } from "../schema/checks";
  * that matches its `forbiddenPackages`.
  */
 
-/** One import of a file: to a file of the repository, or to a package. */
-export type ResolvedImport = { readonly from: string; readonly specifier: string } & (
-  | { readonly target: string }
-  | { readonly package: string }
-);
+/** One import of a file: to a file of the repository, or to a package; with its line, if known. */
+export type ResolvedImport = {
+  readonly from: string;
+  readonly specifier: string;
+  readonly line?: number;
+} & ({ readonly target: string } | { readonly package: string });
 
 export interface LayerViolation {
   readonly from: string;
   readonly specifier: string;
+  readonly line?: number;
   /** The layer of the file that imports. */
   readonly layer: string;
   readonly target: { readonly layer: string; readonly path: string } | { readonly package: string };
@@ -44,13 +46,14 @@ export function layerViolations(
     const rule = layer === undefined ? undefined : layers[layer];
     if (layer === undefined || rule === undefined) return [];
     const { from, specifier } = edge;
+    const at = edge.line === undefined ? {} : { line: edge.line };
     if ("package" in edge) {
       return matchesAny(edge.package, rule.forbiddenPackages)
-        ? [{ from, specifier, layer, target: { package: edge.package } }]
+        ? [{ from, specifier, ...at, layer, target: { package: edge.package } }]
         : [];
     }
     const target = layerOf(edge.target, layers);
     if (target === undefined || target === layer || rule.may.includes(target)) return [];
-    return [{ from, specifier, layer, target: { layer: target, path: edge.target } }];
+    return [{ from, specifier, ...at, layer, target: { layer: target, path: edge.target } }];
   });
 }
