@@ -80,7 +80,7 @@ export type {
 } from "./cards/view";
 export { type WhyCommit, type WhyView, whyCard } from "./cards/why";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
-export { type AnalyzerIgnore, analyzerIgnores } from "./checks/dart";
+export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
 export {

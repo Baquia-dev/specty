@@ -3,6 +3,7 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
+  dartImports,
   type Finding,
   globBase,
   type LayerViolation,
@@ -13,25 +14,25 @@ import {
   type ResolvedImport,
   translator,
 } from "@baquia-dev/specty-core";
+import { parse as parseYaml } from "yaml";
 import { execute, tail } from "../io/exec";
 import { exists, isRecord, parseJson, readText } from "../io/files";
 import type { CheckContext, CheckDefinition, Provider } from "./provider";
 
 /**
- * The layers of `checks.layers` in TypeScript and JavaScript (ADR 0012): the project's
- * dependency-cruiser resolves each import, the `tsconfig` aliases too, and the core decides
- * which layer may import which, as it does for the other stacks.
+ * The layers of `checks.layers` (ADR 0012). In TypeScript and JavaScript, the project's
+ * dependency-cruiser resolves each import, the `tsconfig` aliases too; in Dart, the core's own
+ * scanner reads them. Either way, the core decides which layer may import which.
  */
 
 const SCRIPTS = /\.(?:[cm]?[jt]sx?)$/;
+const LANGUAGES: ReadonlySet<string> = new Set(["typescript", "javascript", "dart"]);
 
 export function layersProvider(config: ResolvedConfig): Provider {
   const configured = Object.keys(config.checks.layers).length > 0;
   return {
     id: "layers",
-    applies: (stacks) =>
-      configured &&
-      stacks.some((stack) => stack.language === "typescript" || stack.language === "javascript"),
+    applies: (stacks) => configured && stacks.some((stack) => LANGUAGES.has(stack.language)),
     checks: [layers],
   };
 }
@@ -41,30 +42,18 @@ const layers: CheckDefinition = {
   async run(context) {
     const { session } = context;
     const t = translator(session.lang);
-    const bin = join(session.root, "node_modules", ".bin", "depcruise");
-    if (!(await exists(bin))) {
-      return {
-        skipped: t(
-          "dependency-cruiser no está instalado: añádelo como devDependency del proyecto para vigilar las capas",
-          "dependency-cruiser is not installed: add it as a devDependency of the project to watch the layers",
-        ),
-      };
-    }
     const { layers: rules } = session.config.checks;
-    const files = context.files.filter(
-      (path) => SCRIPTS.test(path) && layerOf(path, rules) !== undefined,
+    const inLayers = (path: string) => layerOf(path, rules) !== undefined;
+    const scripts = await scriptImports(
+      context,
+      context.files.filter((path) => SCRIPTS.test(path) && inLayers(path)),
     );
-    const sources =
-      context.mode === "all"
-        ? [...new Set(Object.values(rules).flatMap((layer) => layer.paths.map(globBase)))]
-        : files;
-    if (sources.length === 0) return { findings: [] };
-    const imports = await cruise(context, bin, sources);
-    const ours = context.mode === "all" ? undefined : new Set(files);
-    const violations = layerViolations(
-      imports.filter((edge) => ours === undefined || ours.has(edge.from)),
-      rules,
+    if ("skipped" in scripts) return scripts;
+    const dart = await dartImportsOf(
+      context,
+      context.files.filter((path) => path.endsWith(".dart") && inLayers(path)),
     );
+    const violations = layerViolations([...scripts.imports, ...dart], rules);
     const findings = await Promise.all(
       violations.map(async (violation): Promise<Finding[]> => {
         const line = lineOf((await context.read(violation.from)) ?? "", violation);
@@ -87,6 +76,52 @@ const layers: CheckDefinition = {
     return { findings: ordered };
   },
 };
+
+/**
+ * The imports of the run's TypeScript and JavaScript files in the layers, by dependency-cruiser:
+ * the files themselves, or the folders of the layers with `--all`. Without such files, it is not
+ * needed at all.
+ */
+async function scriptImports(
+  context: CheckContext,
+  files: readonly string[],
+): Promise<{ readonly imports: readonly ResolvedImport[] } | { readonly skipped: string }> {
+  if (files.length === 0) return { imports: [] };
+  const { session } = context;
+  const bin = join(session.root, "node_modules", ".bin", "depcruise");
+  if (!(await exists(bin))) {
+    return {
+      skipped: translator(session.lang)(
+        "dependency-cruiser no está instalado: añádelo como devDependency del proyecto para vigilar las capas",
+        "dependency-cruiser is not installed: add it as a devDependency of the project to watch the layers",
+      ),
+    };
+  }
+  const { layers: rules } = session.config.checks;
+  const sources =
+    context.mode === "all"
+      ? [...new Set(Object.values(rules).flatMap((layer) => layer.paths.map(globBase)))]
+      : files;
+  const ours = new Set(files);
+  return { imports: (await cruise(context, bin, sources)).filter((edge) => ours.has(edge.from)) };
+}
+
+/** The imports of the run's Dart files in the layers, by the core's scanner. */
+async function dartImportsOf(
+  context: CheckContext,
+  files: readonly string[],
+): Promise<ResolvedImport[]> {
+  if (files.length === 0) return [];
+  const pubspec = parseYaml((await readText(join(context.session.root, "pubspec.yaml"))) ?? "");
+  const own = isRecord(pubspec) && typeof pubspec.name === "string" ? pubspec.name : undefined;
+  const found = await Promise.all(
+    files.map(async (path) => {
+      const text = await context.read(path);
+      return text === undefined ? [] : dartImports(path, text, own);
+    }),
+  );
+  return found.flat();
+}
 
 /** The imports dependency-cruiser resolves from `sources`; its report goes to a file. */
 async function cruise(

@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "id": "20261025-capas-en-dart-con-un-escaner-de-imports",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-capas-en-dart-con-un-escaner-de-imports",
+  "baseCommit": "b2b3c9de3ac2fd5cd78ecc5af1286a3eea3d96c0",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eceaf57498a93ce30d6ba5e7a34fc66f38b23988c7000af9d3d04223c0ae87c0",
+    "at": "2026-10-26T01:05:15.379Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d59412cbbef67c468187398d82cae2fe4bf76dbb096e23c7db664c204e2747e5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:51ac7486fc205dc0dc30d89245277b8503c14fe1bf38110992374c1062b63751",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:205b1d236ab67e6068bb77ed33e3df4aaac91bc0ff7299c195ba2e71e2f94ca8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0d21830fbd8522722af7210cbdd6661c2d605415",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:05:15.812Z",
+      "doneAt": "2026-10-26T01:06:56.257Z",
+      "summary": "core/checks/dart.ts: dartImports lee los import y export de un archivo Dart (fuera de comentarios y cadenas) y los resuelve: package: propio a lib/, otro package: o dart: como paquete, rutas relativas desde su carpeta; sin part.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "912110690313df5e0eec44b8bef61782f84e22d8",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:06:56.977Z",
+      "doneAt": "2026-10-26T01:08:23.346Z",
+      "summary": "check/layers.ts: layers se aplica también a Dart; reparte los archivos de la ejecución: los .dart van al escáner del core con el name del pubspec, los TS/JS a dependency-cruiser, que solo hace falta si los hay.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "d9c69eec285d634c97f0c37ef90ed6ddd2f6476a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:08:23.742Z",
+      "doneAt": "2026-10-26T01:10:13.652Z",
+      "summary": "formats §6 documenta layers en Dart (el escáner de imports y cómo resuelve package:, dart: y rutas relativas; dependency-cruiser solo para TS/JS); ARCHITECTURE lo añade a la fila de specty check.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-26T01:10:39.158Z"
+}
