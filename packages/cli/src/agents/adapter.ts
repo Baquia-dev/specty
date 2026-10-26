@@ -16,9 +16,10 @@ export type JsonUpdate = (value: Record<string, unknown>) => Record<string, unkn
 /**
  * What an event of an agent's hooks is: before an action, after a shell command, a session that
  * starts again after a compaction, a compaction about to happen that cannot take the card (it
- * waits for the conversation's next command), or Claude Code making or removing a worktree.
+ * waits for the conversation's next command), a model call about to happen, or Claude Code making
+ * or removing a worktree.
  */
-export type EventKind = "before" | "after" | "compact" | "compacting" | "worktree";
+export type EventKind = "before" | "after" | "compact" | "compacting" | "invocation" | "worktree";
 
 /** The guard's verdict before each agent's form: let it through, or stop it and say why. */
 export type Verdict =
@@ -36,6 +37,11 @@ export type Verdict =
  */
 export interface AgentAdapter {
   readonly tool: GuardTool;
+  /**
+   * Brings the tool's event to the names the guard reads (`hook_event_name`, `session_id`, `cwd`,
+   * `tool_name`, `tool_input`, `tool_use_id`), for a tool that calls them otherwise.
+   */
+  readonly normalize?: (event: Record<string, unknown>) => Record<string, unknown>;
   readonly kind: (event: Event) => EventKind;
   /** The action an event before it describes. Paths are still as the tool sent them. */
   readonly action: (event: Event) => RawAction;
@@ -48,6 +54,13 @@ export interface AgentAdapter {
   readonly failed: (message: string) => GuardReply;
   /** The reply that brings the task card back after a compaction, for an agent that can. */
   readonly card?: (text: string) => GuardReply;
+  /**
+   * For a tool whose hooks after a command cannot reach the model: the warning waits for the
+   * conversation's next model call (`invocation`), which `inject` answers with it.
+   */
+  readonly late?: "invocation";
+  /** The reply before a model call, with what waited for it; nothing to add is an empty list. */
+  readonly inject?: (texts: readonly string[]) => GuardReply;
   /** Its end of turn, for an agent whose end of turn can send it back to work (ADR 0012). */
   readonly stop?: AgentStop;
   /** Writes its guard and its settings in the repository, never in the user's folder (ADR 0013). */

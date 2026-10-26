@@ -23,7 +23,7 @@ describe("the capability table", () => {
   it("covers every agent, and guards those whose guard says yes (AC4)", () => {
     expect(Object.keys(AGENT_CAPABILITIES).toSorted()).toEqual(Object.keys(AGENT_NAMES).toSorted());
     const guarded = Object.keys(AGENT_NAMES).filter(isAgentTool).filter(isGuardedAgent);
-    expect(guarded).toEqual(["claude-code", "cursor", "codex", "opencode"]);
+    expect(guarded).toEqual(["claude-code", "cursor", "codex", "opencode", "antigravity"]);
     const yes = Object.keys(AGENT_NAMES)
       .filter(isAgentTool)
       .filter((tool) => AGENT_CAPABILITIES[tool].guard.state === "yes");
@@ -62,6 +62,7 @@ describe("the capability table", () => {
       "| OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
+    expect(es).toContain("| Antigravity | sí | indirecto | pendiente | no posible |");
     expect(capabilityTable("en")).toContain(
       "| Cursor | yes | yes | indirect | not possible | yes | yes | yes | not possible |",
     );
@@ -72,6 +73,9 @@ describe("the capability table", () => {
     expect(es).toContain("**Indirecto:**");
     expect(es).toContain(
       "- Tarjeta tras compactar (Cursor): `preCompact` solo observa, así que la tarjeta llega con el resultado del siguiente comando de shell.",
+    );
+    expect(es).toContain(
+      "- Aviso tras cada comando (Antigravity): su `PostToolUse` no responde al modelo, así que el aviso llega en su siguiente llamada al modelo (`PreInvocation`).",
     );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");

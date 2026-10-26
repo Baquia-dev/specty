@@ -32,7 +32,7 @@ import {
   type RawAction,
   toolUseId,
 } from "./actions";
-import { leavePending, takePending } from "./pending";
+import { leavePending, type PendingKind, takePending } from "./pending";
 import { bindSession, enterAction } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 import { worktreeHook } from "./worktree-hooks";
@@ -52,7 +52,8 @@ interface Call {
  * `specty guard --tool <id>`: called by the agent's hooks before each action and after each shell
  * command; in Claude Code, also to create and remove worktrees
  * and, after a compaction, to bring back what `specty next` says.
- * It reads and answers each agent through its module (`agents/`).
+ * It reads and answers each agent through its module (`agents/`); a tool whose input does not
+ * name its event gets it from the hook's command (`--event`).
  * It fails open on its own errors (the git hooks and CI still apply) and never blocks outside
  * Specty repos.
  */
@@ -60,11 +61,17 @@ export async function guard(
   environment: Environment,
   tool: GuardTool,
   stdin: string,
+  named?: string,
 ): Promise<GuardReply> {
   const agent = ADAPTERS[tool];
   try {
-    const event = parseJson(stdin);
-    if (!isRecord(event)) return agent.reply(ALLOW, "before");
+    const parsed = parseJson(stdin);
+    if (!isRecord(parsed)) return agent.reply(ALLOW, "before");
+    const given =
+      named === undefined || "hook_event_name" in parsed
+        ? parsed
+        : { ...parsed, hook_event_name: named };
+    const event = agent.normalize?.(given) ?? given;
     const cwd = cwdOf(event, environment.cwd);
     const kind = agent.kind(event);
     // They make and remove worktrees for Claude Code, so they answer even outside a session.
@@ -87,20 +94,40 @@ async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
         ? agent.reply(ALLOW, "after")
         : agent.card(renderText(await next(session), session.lang));
     // A tool that cannot add it now gets it with the conversation's next command.
-    case "compacting": {
-      const conversation = conversationOf(event);
-      if (conversation !== undefined) await leavePending(session, conversation, "card");
+    case "compacting":
+      await leave(session, event, "card", "");
       return agent.reply(ALLOW, "after");
+    case "after": {
+      const said = await afterShell(session, event);
+      const card = await pendingCard(session, event);
+      if (agent.late === undefined || said.allow) return agent.reply(said, "after", card);
+      // A tool whose hook after a command cannot reach the model gets it with its next call.
+      await leave(session, event, "warning", said.text);
+      return agent.reply(ALLOW, "after", card);
     }
-    case "after":
-      return agent.reply(
-        await afterShell(session, event),
-        "after",
-        await pendingCard(session, event),
-      );
+    case "invocation": {
+      const conversation = conversationOf(event);
+      const warning =
+        conversation === undefined
+          ? undefined
+          : await takePending(session, conversation, "warning");
+      const texts = warning === undefined ? [] : [warning];
+      return agent.inject?.(texts) ?? agent.reply(ALLOW, "after");
+    }
     default:
       return await beforeAction(call);
   }
+}
+
+/** Leaves something for the event's conversation to take with its next event that can carry it. */
+async function leave(
+  session: Session,
+  event: Record<string, unknown>,
+  kind: PendingKind,
+  text: string,
+): Promise<void> {
+  const conversation = conversationOf(event);
+  if (conversation !== undefined) await leavePending(session, conversation, kind, text);
 }
 
 /** Before an action: what it would do, judged by the flow's rules. */

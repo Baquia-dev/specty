@@ -35,6 +35,10 @@ export type DoctorLine =
     }
   /** OpenCode's plugin is there, without the card after a compaction. */
   | { readonly code: "opencode-compact" }
+  /** Antigravity's guard in `file`, its hook named `specty`. */
+  | { readonly code: "antigravity-guard" | "no-antigravity-guard"; readonly file: string }
+  /** Antigravity's guard is there, without the hooks of these events. */
+  | { readonly code: "antigravity-hooks"; readonly file: string; readonly events: string }
   /** gentle-ai's flow guidance, which asks the agent for what the guard blocks. */
   | { readonly code: "gentle-ai"; readonly file: string; readonly blocks: readonly string[] }
   | { readonly code: "formatter-excludes"; readonly name: string; readonly path: string }
@@ -160,6 +164,21 @@ const WRITERS: {
     t(
       `OpenCode: al plugin del guard le falta la comprobación tras cada comando; ejecuta \`${command} init --tools opencode\`.`,
       `OpenCode: the guard plugin lacks the check after each command; run \`${command} init --tools opencode\`.`,
+    ),
+  "antigravity-guard": (line, t) =>
+    t(
+      `Antigravity: guard en ${line.file}; Antigravity lo ejecuta cuando confías en la carpeta.`,
+      `Antigravity: guard in ${line.file}; Antigravity runs it once you trust the folder.`,
+    ),
+  "no-antigravity-guard": (line, t, command) =>
+    t(
+      `Antigravity: falta el guard en ${line.file}; ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity: the guard is missing in ${line.file}; run \`${command} init --tools antigravity\`.`,
+    ),
+  "antigravity-hooks": (line, t, command) =>
+    t(
+      `Antigravity: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools antigravity\`.`,
     ),
   "opencode-compact": (_, t, command) =>
     t(

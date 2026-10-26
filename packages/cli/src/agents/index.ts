@@ -3,6 +3,7 @@ import type { GuardTool } from "../enforce/actions";
 import type { InstallFiles } from "../install/files";
 import type { Git } from "../io/git";
 import type { AgentAdapter } from "./adapter";
+import { antigravity } from "./antigravity";
 import { claudeCode } from "./claude-code";
 import { codex } from "./codex";
 import { cursor } from "./cursor";
@@ -17,6 +18,7 @@ export const ADAPTERS: Readonly<Record<GuardTool, AgentAdapter>> = {
   cursor,
   codex,
   opencode,
+  antigravity,
 };
 
 /**
