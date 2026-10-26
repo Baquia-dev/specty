@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "68eb41254c21bc9f718fbc1f23f4dad8e641b5fe",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:02:10.928Z",
       "doneAt": "2026-10-26T20:05:18.425Z",
-      "summary": "agent-commands.ts: newCommand (con newOptions) y taskCommands, en el mismo orden. person-commands.ts: decider fuera del registro. program.ts: runCli usa emitter, sessionRunner y readingCommands con un RunState compartido. Los tests de la CLI pasan."
+      "summary": "agent-commands.ts: newCommand (con newOptions) y taskCommands, en el mismo orden. person-commands.ts: decider fuera del registro. program.ts: runCli usa emitter, sessionRunner y readingCommands con un RunState compartido. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "851f6de3880abe746557f01d8fd88049eed8ac79",
+      "startedAt": "2026-10-26T20:05:18.727Z",
+      "doneAt": "2026-10-26T20:08:58.270Z",
+      "summary": "doctor.ts: doctor toma toolLines (guard de cada agente, gentle-ai, formateadores), reachable y doctorWarnings, con el mismo orden en cada lista. export.ts: exportChange usa exportFacts y shownFolder. Los tests de la CLI pasan."
     }
   },
   "pending": {

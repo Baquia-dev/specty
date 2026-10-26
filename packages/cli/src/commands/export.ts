@@ -9,7 +9,7 @@ import { dataOf, readAudit } from "../flow/carried";
 import { findChange } from "../flow/find";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
-import { readSpec } from "../store/changes";
+import { readSpec, type StoredChange } from "../store/changes";
 
 /** How each format is called in the output. */
 const NAMES = { openspec: "OpenSpec", speckit: "Spec Kit", kiro: "Kiro" } as const;
@@ -42,28 +42,36 @@ async function exportChange(
       cards,
     );
   }
-  const { state } = change;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
+  const files = exportSpec(spec, chosen, await exportFacts(change));
+  const folder = resolve(session.root, out ?? join(".specty", "exports", chosen));
+  for (const file of files) await writeText(join(folder, file.path), file.content);
+  return exportedCard(
+    NAMES[chosen],
+    shownFolder(session.root, folder),
+    files.map((file) => file.path),
+    cards,
+  );
+}
+
+/** What the export tells of the change: its id, branch, creation day and the user's request. */
+async function exportFacts(change: StoredChange): Promise<Parameters<typeof exportSpec>[2]> {
+  const { state } = change;
   const created = (await readAudit(change.files)).find((entry) => entry.event === "change.created");
   const { request } = dataOf(created);
-  const files = exportSpec(spec, chosen, {
+  return {
     id: state.id,
     ...(state.branch === undefined ? {} : { branch: state.branch }),
     ...(typeof created?.ts === "string" ? { created: created.ts.slice(0, 10) } : {}),
     ...(typeof request === "string" ? { request } : {}),
-  });
-  const folder = resolve(session.root, out ?? join(".specty", "exports", chosen));
-  for (const file of files) await writeText(join(folder, file.path), file.content);
-  // Inside the repository, relative to its root; outside, whole: a long `../../…` is hard to read.
-  const inside = relative(session.root, folder);
-  const shown =
-    inside === "" ? "." : inside.startsWith("..") || isAbsolute(inside) ? folder : inside;
-  return exportedCard(
-    NAMES[chosen],
-    shown,
-    files.map((file) => file.path),
-    cards,
-  );
+  };
+}
+
+/** Inside the repository, relative to its root; outside, whole: a long `../../…` is hard to read. */
+function shownFolder(root: string, folder: string): string {
+  const inside = relative(root, folder);
+  if (inside === "") return ".";
+  return inside.startsWith("..") || isAbsolute(inside) ? folder : inside;
 }
 
 /** Registers `specty export`; `run` opens the session as for every command. */

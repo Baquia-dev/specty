@@ -46,7 +46,7 @@ Nueve funciones de los demás comandos de la CLI pasan de los límites de Specty
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T2: doctor y export
+- [x] T2: doctor y export
   - files: packages/cli/src/commands/doctor.ts, packages/cli/src/commands/export.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
