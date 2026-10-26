@@ -10,3 +10,9 @@
 {"ts":"2026-10-26T17:33:07.183Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"af7a6ade98652771473334222905641cb4c5c5e7"}}
 {"ts":"2026-10-26T17:33:52.651Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts","exit":0,"ms":766,"tree":"sha256:687c9868e5f3c10c5fd6006219075008bca03ced2294098b1417f873c9728c5f"}}
 {"ts":"2026-10-26T17:33:52.740Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"La tarjeta tras compactar de Codex pasa a «sí» en la tabla de capacidades; ARCHITECTURE cuenta su SessionStart (§7 y §10) y sus nombres de esfuerzo en EFFORT_NAMES (§11)."}}
+{"ts":"2026-10-26T17:35:29.209Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":90340,"tree":"sha256:687c9868e5f3c10c5fd6006219075008bca03ced2294098b1417f873c9728c5f"}}
+{"ts":"2026-10-26T17:35:29.211Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T17:35:48.310Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:a0e999722727b03eaa3e5942ad33e3e59a05386e22a861aa419c4b47dc97273c","size":"L","warnings":1}}
+{"ts":"2026-10-26T17:38:47.939Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"6a570a68b00636a9db2257a6bf7e1a79a336aa30","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-26T17:44:06.287Z","actor":"agent","tool":"claude-code","event":"integration.resolved","data":{"commit":"50e11a1"}}
+{"ts":"2026-10-26T17:44:12.541Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

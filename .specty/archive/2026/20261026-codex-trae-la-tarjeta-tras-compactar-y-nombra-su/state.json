@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-codex-trae-la-tarjeta-tras-compactar-y-nombra-su",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-codex-trae-la-tarjeta-tras-compactar-y-nombra-su",
   "baseCommit": "2d9889e3ad35b97a70605a98a904833ffce17a66",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5781a36589e52d36f7f0f8f31677b978f3b6b523b3b48dbd7bc881a6df88ec57",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "af7a6ade98652771473334222905641cb4c5c5e7",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:33:07.183Z",
       "doneAt": "2026-10-26T17:33:52.739Z",
-      "summary": "La tarjeta tras compactar de Codex pasa a «sí» en la tabla de capacidades; ARCHITECTURE cuenta su SessionStart (§7 y §10) y sus nombres de esfuerzo en EFFORT_NAMES (§11)."
+      "summary": "La tarjeta tras compactar de Codex pasa a «sí» en la tabla de capacidades; ARCHITECTURE cuenta su SessionStart (§7 y §10) y sus nombres de esfuerzo en EFFORT_NAMES (§11).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,38 @@
     "AC": 5,
     "T": 3,
     "R": 1
+  },
+  "closingSubmittedAt": "2026-10-26T17:35:48.309Z",
+  "integration": {
+    "target": "main",
+    "commit": "6a570a68b00636a9db2257a6bf7e1a79a336aa30",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/checks.en.md",
+      "docs/checks.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/adapter.ts",
+      "packages/cli/src/agents/claude-code.ts",
+      "packages/cli/src/agents/codex.ts",
+      "packages/cli/test/agents.test.ts",
+      "packages/cli/test/check-examples-native.test.ts",
+      "packages/cli/test/check-examples-scripting.test.ts",
+      "packages/cli/test/codex.test.ts",
+      "packages/cli/test/session-start.test.ts",
+      "packages/core/src/agents.ts",
+      "packages/core/src/capabilities.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/checks/markers.ts",
+      "packages/core/test/capabilities.test.ts",
+      "packages/core/test/cards.test.ts",
+      "packages/core/test/checks/markers.test.ts"
+    ],
+    "at": "2026-10-26T17:38:47.935Z",
+    "resolved": {
+      "commit": "50e11a1",
+      "at": "2026-10-26T17:44:06.285Z"
+    }
   }
 }

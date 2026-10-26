@@ -71,3 +71,23 @@ Cuando Codex compacta la conversación, el agente pierde la tarjeta de la tarea,
 ## Riesgos
 
 - R1: Una instalación de Codex anterior a este cambio no tiene el hook de `SessionStart`, y su tarjeta no vuelve. Mitigación: `doctor` lo avisa (AC3) y `init` lo añade sin tocar el resto de hooks.
+
+## Cierre
+
+### Resumen
+
+Codex recupera la tarjeta de la tarea tras compactar, como Claude Code. `init` le instala `SessionStart` con el matcher `^compact$`, y el guard responde con lo que imprime `specty next`, solo cuando `source` es `compact`. `doctor` avisa si el guard está y falta ese hook. Las tarjetas nombran el esfuerzo recomendado con los niveles de Codex (`low`, `medium`, `high` y `xhigh`). En la tabla de capacidades, la tarjeta tras compactar de Codex pasa a «sí». ARCHITECTURE lo cuenta en §7, §10 y §11.
+
+### Desviaciones
+
+- `doctorLine` (en `core/src/cards/doctor.ts`) pasó de un `switch` de 159 líneas a una tabla con un texto por código. `specty check` no dejaba que la función creciera con la línea nueva, porque ya pasaba de los límites de líneas y de complejidad. Ahora cada código es una función pequeña, y TypeScript ata cada una a la forma de su línea sin casts. Los textos no cambian.
+
+### Decisiones
+
+- La tarjeta en stdout (`textCard`) está en `agents/adapter.ts` y la comparten Claude Code y Codex.
+- El guard de Codex comprueba `source` además del matcher, por si una versión de Codex no filtra `SessionStart`: cualquier otro inicio de sesión pasa sin texto.
+- La sección §11 citaba un `presets/effort.yaml` que no existe; ahora nombra `EFFORT_NAMES`, que es donde están los niveles de cada herramienta.
+
+### Pendientes
+
+- La prueba de Codex con un modelo simulado es C4.
