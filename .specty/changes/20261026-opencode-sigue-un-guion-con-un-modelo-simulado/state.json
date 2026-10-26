@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
   "baseCommit": "1a02854178ca122f70ebd9fc6790a62e7b7e63a5",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fd92b247372d4b9bbcd7708839860618765e3f4b",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:45:20.266Z",
       "doneAt": "2026-10-26T18:59:26.657Z",
-      "summary": "OpenCode de verdad sigue un guion contra fake-chat.ts (API de chat de OpenAI): guard, scope, aviso tras un comando (opencode run) y tarjeta tras compactar y fin de turno (opencode serve). Pasan las 5 con OpenCode 1.19.4 y se saltan sin él."
+      "summary": "OpenCode de verdad sigue un guion contra fake-chat.ts (API de chat de OpenAI): guard, scope, aviso tras un comando (opencode run) y tarjeta tras compactar y fin de turno (opencode serve). Pasan las 5 con OpenCode 1.19.4 y se saltan sin él.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e87f6e596d79023577c7151caf5dac7d85865604",
+      "startedAt": "2026-10-26T18:59:26.941Z",
+      "doneAt": "2026-10-26T19:00:01.024Z",
+      "summary": "La prueba de extremo a extremo de OpenCode pasa a «sí» en la tabla, y ARCHITECTURE §16 cuenta cómo corre (opencode run y opencode serve, aislado, con fake-chat.ts)."
     }
   },
   "pending": {

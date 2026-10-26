@@ -52,7 +52,7 @@ Claude Code tiene una prueba que lo ejecuta de verdad contra un modelo simulado 
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-e2e.test.ts
   - type: test
-- [ ] T2: La tabla de capacidades y ARCHITECTURE la cuentan
+- [x] T2: La tabla de capacidades y ARCHITECTURE la cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
