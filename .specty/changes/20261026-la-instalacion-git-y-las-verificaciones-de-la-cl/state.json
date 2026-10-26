@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
+  "baseCommit": "c03deef36ff8ceddb1fbddcd315f5c03ef239e1e",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1d0f6d39834aa069580a5668e235f76e163f02408f6a033efe2bfdfa9d0a4a7d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0b7c6e1e9ef62feb7404a270f7270e9486e7f470b076d00a09adc673ecf69250",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:cdd4dc81552ff0268fbfd85f56ef3756f0e4599798c9ebd8946b65a81acb0a3a",
+    "at": "2026-10-26T23:22:35.936Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
