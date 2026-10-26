@@ -83,3 +83,29 @@ Con el guard de C11, a Gemini CLI aún le falta lo demás que tiene Claude Code:
 - R1: La tarjeta en cada turno queda en el historial y gasta contexto en una sesión larga. Mitigación: es la misma tarjeta que da `next`, y la compactación de Gemini CLI resume las antiguas.
 - R2: La prueba depende de la forma de la API de Gemini que lee Gemini CLI 0.65. Mitigación: se salta sin Gemini CLI, y ARCHITECTURE §16 dice con qué versión se comprobó.
 - R3: Un `.gemini/settings.json` local con rutas de la máquina en `tools.sandboxAllowedPaths` no sirve en otra máquina. Mitigación: va excluido de git, como el resto de ese archivo local, y `new` lo copia a cada worktree.
+
+## Cierre
+
+### Resumen
+
+Gemini CLI queda al nivel de Claude Code en todo lo que sus hooks permiten:
+- Fin de turno: `check --install` pone `AfterAgent`, que con `specty check --changed` fallando responde `{"decision":"deny","reason":…}` y deja terminar con `stop_hook_active`.
+- Tarjeta: llega al empezar cada turno, con `BeforeAgent` (`additionalContext`).
+- Permisos: `init` añade la carpeta común de git y la de las worktrees a `tools.sandboxAllowedPaths` de un `.gemini/settings.json` local; si va en git, dice cuáles añadir.
+- Prueba: `gemini-e2e.test.ts` y `fake-gemini.ts`, que imita la API de Gemini. Las cuatro pruebas pasan con Gemini CLI 0.65.0 (unos 12 s) y se saltan sin él.
+
+En la tabla de capacidades, Gemini CLI ya no tiene nada «pendiente»: la tarjeta tras compactar es «indirecto», y lo demás, «sí», salvo la worktree por nombre.
+
+### Desviaciones
+
+- El primer borrador tocaba `knip.json` para que knip no tomara `gemini` por una dependencia, y el cambio sumaba un tercer módulo. La prueba busca Gemini CLI recorriendo las carpetas del PATH, sin ejecutar nada, así que knip no lo ve y `knip.json` no cambió.
+
+### Decisiones
+
+- Antes de la spec, un spike con Gemini CLI 0.65.0 y un modelo simulado comprobó los supuestos A1 a A3, y mostró que `PreCompress` salta antes de cada llamada al modelo.
+- La razón del fin de turno usa `deny`, el valor que documenta `AfterAgent`.
+- Las rutas del sandbox se quitan también cuando el archivo pasa a ir en git, para no versionar rutas de la máquina.
+
+### Pendientes
+
+- La tarjeta queda en el historial en cada turno (R1). Si Gemini CLI llega a decir cuándo compacta, se podrá dar solo entonces.

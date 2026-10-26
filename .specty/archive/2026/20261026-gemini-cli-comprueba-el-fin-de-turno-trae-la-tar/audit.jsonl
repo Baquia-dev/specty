@@ -13,3 +13,7 @@
 {"ts":"2026-10-26T21:08:31.937Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"c0a60359d6ae2c84c0f38ad478c4745594cf3e36"}}
 {"ts":"2026-10-26T21:11:30.725Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts","exit":0,"ms":795,"tree":"sha256:d5ab04d67df92d2b0543435af4f2885c99f745a12da9faae4a9d599581742e85"}}
 {"ts":"2026-10-26T21:11:30.810Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"La tabla marca el fin de turno, los permisos y la prueba de extremo a extremo de Gemini CLI como sí, y la tarjeta como indirecto (BeforeAgent). ARCHITECTURE cuenta su tarjeta, sus hooks, su sandbox, su fin de turno y la prueba (§16); formats.md, AfterAgent."}}
+{"ts":"2026-10-26T21:14:47.363Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":93561,"tree":"sha256:d5ab04d67df92d2b0543435af4f2885c99f745a12da9faae4a9d599581742e85"}}
+{"ts":"2026-10-26T21:14:47.366Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T21:15:04.801Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:c03bf445128ee37010935b64363c2ae6f5d1f9e7300a126ecea516694c928dd3","size":"L","warnings":0}}
+{"ts":"2026-10-26T21:15:04.977Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

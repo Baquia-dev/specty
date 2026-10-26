@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-gemini-cli-comprueba-el-fin-de-turno-trae-la-tar",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-gemini-cli-comprueba-el-fin-de-turno-trae-la-tar",
   "baseCommit": "94f91d91f6c49701d373032bca54bce4c94a198d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ecb9b958f544078633f50956316578f53f40c8d8caacc73edd3822c6953982a3",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c0a60359d6ae2c84c0f38ad478c4745594cf3e36",
+      "attempts": 1,
       "startedAt": "2026-10-26T21:08:31.937Z",
       "doneAt": "2026-10-26T21:11:30.809Z",
-      "summary": "La tabla marca el fin de turno, los permisos y la prueba de extremo a extremo de Gemini CLI como sí, y la tarjeta como indirecto (BeforeAgent). ARCHITECTURE cuenta su tarjeta, sus hooks, su sandbox, su fin de turno y la prueba (§16); formats.md, AfterAgent."
+      "summary": "La tabla marca el fin de turno, los permisos y la prueba de extremo a extremo de Gemini CLI como sí, y la tarjeta como indirecto (BeforeAgent). ARCHITECTURE cuenta su tarjeta, sus hooks, su sandbox, su fin de turno y la prueba (§16); formats.md, AfterAgent.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,5 +88,6 @@
     "AC": 6,
     "T": 4,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T21:15:04.800Z"
 }
