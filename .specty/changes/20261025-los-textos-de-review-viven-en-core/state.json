@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-review-viven-en-core",
   "baseCommit": "1d7571753428f7485b4520d14a36865eb2809ab8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:13d19f4a2deecc652a969c72b89f5bc416ecbc88e94b0917e473ee5bcf2f8eee",
+    "at": "2026-10-26T03:08:23.874Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "48a02087d1851de799461f55dc2d36f6331e7f9a",
+      "startedAt": "2026-10-26T03:08:24.284Z",
+      "doneAt": "2026-10-26T03:09:22.703Z",
+      "summary": "Core tiene los rechazos de review y su aviso (cards/review.ts), la revisión de la persona desde la UI (cards/review-ui.ts) y reloadNext en refusals.ts, que ya usa la tarjeta de «No hay un cambio activo», con tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:13d19f4a2deecc652a969c72b89f5bc416ecbc88e94b0917e473ee5bcf2f8eee",
-    "at": "2026-10-26T03:08:23.874Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

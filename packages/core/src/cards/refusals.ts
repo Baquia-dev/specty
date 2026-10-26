@@ -15,6 +15,14 @@ export function checkStatus(ctx: CardContext): string {
   );
 }
 
+/** When what the UI shows is out of date: the person reloads the review, or the whole UI. */
+export function reloadNext(what: "review" | "ui", ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  return what === "review"
+    ? t("vuelve a cargar la revisión.", "reload the review.")
+    : t("vuelve a cargar la UI.", "reload the UI.");
+}
+
 /**
  * No change is active in this folder. The agent asks `next` what to do, the person looks at
  * `status`, and the UI reloads, since the change it showed is gone.
@@ -24,7 +32,7 @@ export function noActiveChangeCard(asker: Asker, ctx: CardContext): Output {
   const next = {
     agent: runNext(ctx),
     person: checkStatus(ctx),
-    ui: t("vuelve a cargar la UI.", "reload the UI."),
+    ui: reloadNext("ui", ctx),
   }[asker];
   return blockedCard(headerOf(), t("No hay un cambio activo.", "There is no active change."), next);
 }

@@ -37,7 +37,7 @@ Undécimo cambio de la serie que lleva a core los textos de la CLI. `specty revi
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de review y de la revisión desde la UI
+- [x] T1: Core tiene los textos de review y de la revisión desde la UI
   - files: packages/core/src/cards/review.ts, packages/core/src/cards/review-ui.ts, packages/core/src/cards/refusals.ts, packages/core/src/cards/index.ts, packages/core/test/cards/review-texts.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
