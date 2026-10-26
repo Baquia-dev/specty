@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261025-los-textos-de-doctor-viven-en-core",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-los-textos-de-doctor-viven-en-core",
+  "baseCommit": "7d6e0a7d52de90951f041a315bd2fae3199e77fb",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bb0a3f0d49bd85f704151037fb74e3449a59c8ba69e9daedeac5e1bb8d3061e5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a373f9829286364dc1e9c96bb388901baaf4df75c71b32d53e0d97c533e92738",
+    "at": "2026-10-26T02:52:09.225Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
