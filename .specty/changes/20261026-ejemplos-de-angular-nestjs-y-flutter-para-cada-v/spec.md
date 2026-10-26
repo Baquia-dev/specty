@@ -42,7 +42,7 @@ Los tests montan un repositorio de ejemplo de Angular, otro de NestJS y otro de 
 
 ## Tareas
 
-- [ ] T1: Los ejemplos de Angular y NestJS
+- [x] T1: Los ejemplos de Angular y NestJS
   - files: packages/cli/test/stack-examples.ts, packages/cli/test/check-examples-ts.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-ts.test.ts
