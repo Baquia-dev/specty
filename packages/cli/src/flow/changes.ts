@@ -63,15 +63,19 @@ export async function awaits(
       return requested;
     case "accept":
       return state.phase === "acceptance";
-    case "close": {
-      if (state.phase === "closing") return state.closingSubmittedAt !== undefined;
-      if (state.phase !== "done") return false;
-      const plan = await integrationOf(session, state);
-      return plan !== undefined && !(await isIncorporated(session, plan));
-    }
+    case "close":
+      return awaitsClose(session, state);
     case "cancel":
       return !isFinished(state);
   }
+}
+
+/** A submitted closing, or a closed change that did not reach its target branch. */
+async function awaitsClose(session: Session, state: StoredChange["state"]): Promise<boolean> {
+  if (state.phase === "closing") return state.closingSubmittedAt !== undefined;
+  if (state.phase !== "done") return false;
+  const plan = await integrationOf(session, state);
+  return plan !== undefined && !(await isIncorporated(session, plan));
 }
 
 /** A session in another worktree, as `openSession` opens it there; nothing when Specty is not set up. */

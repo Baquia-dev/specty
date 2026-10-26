@@ -59,7 +59,7 @@ Nueve funciones del flujo y del guard de la CLI pasan de los límites de Specty:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T5: Lo que espera a la persona y la limpieza
+- [x] T5: Lo que espera a la persona y la limpieza
   - files: packages/cli/src/flow/changes.ts, packages/cli/src/flow/prune.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

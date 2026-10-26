@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
   "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cef050ef77aa544874c9d30ae14f8579fc2f4ece",
+      "attempts": 1,
       "startedAt": "2026-10-26T22:55:15.226Z",
       "doneAt": "2026-10-26T23:01:44.835Z",
-      "summary": "epic.ts: sliceRefusal comprueba la épica y deja a pickedSliceRefusal el corte pedido. childrenOf junta openChildren y archivedChildren, sin repetir cambios y en el mismo orden. Los tests de la CLI pasan."
+      "summary": "epic.ts: sliceRefusal comprueba la épica y deja a pickedSliceRefusal el corte pedido. childrenOf junta openChildren y archivedChildren, sin repetir cambios y en el mismo orden. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e055e33df84ebe890c990af177da7cb326405410",
+      "startedAt": "2026-10-26T23:01:45.142Z",
+      "doneAt": "2026-10-26T23:09:35.790Z",
+      "summary": "changes.ts: awaits deja el cierre a awaitsClose. prune.ts: removeFinished pregunta a keptBecause por qué se queda una carpeta. Ninguna función de flow ni de enforce pasa de los límites; los tests de la CLI pasan."
     }
   },
   "pending": {
