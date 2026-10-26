@@ -1,8 +1,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import { translator } from "./text";
+import type { CardContext } from "./view";
 
 // The texts of a person's `close` and `cancel`, and of the commits that archive a change.
+
+/**
+ * The verification the closing detects and `.specty/config.yaml` lacks (`missing`, such as
+ * "verify.default (`pnpm test`)"): `init` in the main folder adds it.
+ */
+export function verifyHintLine(missing: readonly string[], main: string, ctx: CardContext): string {
+  return translator(ctx.lang)(
+    `Specty detecta ahora ${missing.join(" y ")}, que .specty/config.yaml no tiene: \`${ctx.command} init\` en ${main} lo añade.`,
+    `Specty now detects ${missing.join(" and ")}, which .specty/config.yaml lacks: \`${ctx.command} init\` in ${main} adds it.`,
+  );
+}
 
 /** The subject of the commit that archives a closed change. */
 export function closeCommitSubject(title: string, lang: Lang): string {

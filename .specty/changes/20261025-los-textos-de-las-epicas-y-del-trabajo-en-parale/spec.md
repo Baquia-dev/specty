@@ -49,7 +49,7 @@ Pasan a `cards/epic.ts`, a un `cards/parallel.ts` nuevo y a `cards/close.ts`. La
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de las épicas, del trabajo en paralelo y de la pista del cierre
+- [x] T1: Core tiene los textos de las épicas, del trabajo en paralelo y de la pista del cierre
   - files: packages/core/src/cards/epic.ts, packages/core/src/cards/parallel.ts, packages/core/src/cards/close.ts, packages/core/src/cards/index.ts, packages/core/test/cards/parallel.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

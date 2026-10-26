@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
   "baseCommit": "bfa2cf2f30604b55465c192c21b9f9b1d9a4c603",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c957b6b53731e5bfc45f95a246595cbcecb9a9cacfe60434d0458bf57b0b5ec9",
+    "at": "2026-10-26T03:12:56.132Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "99e5c730c8b43889bab59d5959f58945378c1bd2",
+      "startedAt": "2026-10-26T03:12:57.016Z",
+      "doneAt": "2026-10-26T03:13:50.558Z",
+      "summary": "Core tiene los rechazos de new --epic --slice (sliceRefusalCard en cards/epic.ts), los textos del trabajo en paralelo (cards/parallel.ts: archivos compartidos, preparar la carpeta y prune) y la pista del cierre (verifyHintLine), con tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c957b6b53731e5bfc45f95a246595cbcecb9a9cacfe60434d0458bf57b0b5ec9",
-    "at": "2026-10-26T03:12:56.132Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -47,6 +47,7 @@ export {
   confirmCloseQuestion,
   landQuestion,
   resolvedIntegrationNote,
+  verifyHintLine,
 } from "./close";
 export {
   decisionPostponedCard,
@@ -56,7 +57,7 @@ export {
   whichChangeQuestion,
 } from "./decide";
 export { type DoctorLine, doctorCard, doctorLine } from "./doctor";
-export { epicCard, sliceLines } from "./epic";
+export { epicCard, type SliceRefusal, sliceLines, sliceRefusalCard } from "./epic";
 export {
   blockedCard,
   changeHeader,
@@ -155,6 +156,15 @@ export {
   worktreeCreatedCard,
 } from "./new";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./next";
+export {
+  notInTargetBranchLine,
+  notInTargetFolderLine,
+  preparingNote,
+  pruneCard,
+  sharedLine,
+  sharedTitle,
+  workingFolderLine,
+} from "./parallel";
 export {
   type Asker,
   checkStatus,
