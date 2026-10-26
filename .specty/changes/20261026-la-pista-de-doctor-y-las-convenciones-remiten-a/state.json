@@ -6,6 +6,13 @@
   "branch": "specty/20261026-la-pista-de-doctor-y-las-convenciones-remiten-a",
   "baseCommit": "5f21e50768bf71ea34dd151dba33bc2ccefbbf18",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:028efaa6dc867d93efc1c6a7297b315ddfd15c78682ba596c1d2976c4bf81f1c",
+    "at": "2026-10-26T13:35:45.136Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e5cde06f3b77bdaad377813236c7170966d438da",
+      "startedAt": "2026-10-26T13:35:46.262Z",
+      "doneAt": "2026-10-26T13:36:20.015Z",
+      "summary": "La pista de doctor sobre las secciones de AGENTS.md sin completar pide las reglas que no verifica specty check, en español y en inglés."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:028efaa6dc867d93efc1c6a7297b315ddfd15c78682ba596c1d2976c4bf81f1c",
-    "at": "2026-10-26T13:35:45.136Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

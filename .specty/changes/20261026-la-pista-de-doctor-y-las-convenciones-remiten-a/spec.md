@@ -31,7 +31,7 @@ La pista de `specty doctor` sobre las secciones de AGENTS.md sin completar pide 
 
 ## Tareas
 
-- [ ] T1: La pista de doctor
+- [x] T1: La pista de doctor
   - files: packages/core/src/cards/doctor.ts, packages/core/test/cards/doctor.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts

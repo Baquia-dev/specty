@@ -191,8 +191,8 @@ export function doctorLine(line: DoctorLine, ctx: CardContext): string {
       const listed = (open: string, close: string, and: string) =>
         line.sections.map((title) => `${open}${title}${close}`).join(` ${and} `);
       return t(
-        `AGENTS.md tiene sin completar ${listed("«", "»", "y")}: el agente lo lee en cada sesión, así que escribe ahí lo que el código no dice (los directorios cuyo propósito no es obvio, lo que no se toca, las reglas que no aplica ningún linter).`,
-        `AGENTS.md has ${listed('"', '"', "and")} not filled in: the agent reads it every session, so write there what the code does not say (directories whose purpose is not obvious, what must not be touched, rules no linter enforces).`,
+        `AGENTS.md tiene sin completar ${listed("«", "»", "y")}: el agente lo lee en cada sesión, así que escribe ahí lo que el código no dice (los directorios cuyo propósito no es obvio, lo que no se toca, las reglas que no verifica \`specty check\`).`,
+        `AGENTS.md has ${listed('"', '"', "and")} not filled in: the agent reads it every session, so write there what the code does not say (directories whose purpose is not obvious, what must not be touched, rules \`specty check\` does not verify).`,
       );
     }
     case "delegated":
