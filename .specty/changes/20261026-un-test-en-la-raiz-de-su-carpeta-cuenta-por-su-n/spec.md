@@ -52,7 +52,7 @@ Hoy `fix-tests` da por buena una tarea `fix` con cualquier test de la carpeta qu
   - files: packages/cli/src/check/plan-tests.ts, packages/cli/test/check-examples-native.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-native.test.ts test/check-plan.test.ts
-- [ ] T3: La regla en la documentación
+- [x] T3: La regla en la documentación
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md
   - ac: AC5
   - verify: pnpm check

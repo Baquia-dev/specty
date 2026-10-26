@@ -318,7 +318,7 @@ Cada dependencia que el diff añade a un manifiesto está en `allowedDependencie
 
 **Con:** `--spec`.
 
-Cada tarea `type: fix`, activa o hecha, trae en el diff un test suyo: de sus `files`, de sus ampliaciones o junto a ellos.
+Cada tarea `type: fix`, activa o hecha, trae en el diff un test suyo: de sus `files`, de sus ampliaciones o junto a ellos. Un test justo en la raíz de su carpeta de tests (`tests/cart.rs`, `test/cart_test.dart`, `Tests/ShopTests/CartTests.swift`) refleja toda la raíz del código, así que solo cuenta para el archivo de su nombre, sin las marcas de test (`test_`, `_test`, `.test`, `Test`…); en una subcarpeta, o si la tarea tiene un comodín, cuenta cualquier test de la carpeta. `scope` sigue permitiendo tocar cualquiera.
 
 **Configuración:** no tiene.
 

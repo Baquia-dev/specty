@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-un-test-en-la-raiz-de-su-carpeta-cuenta-por-su-n",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-un-test-en-la-raiz-de-su-carpeta-cuenta-por-su-n",
   "baseCommit": "6a570a68b00636a9db2257a6bf7e1a79a336aa30",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "aea0080fcd674087a63766b305bea92f040de0a6",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:35:17.530Z",
       "doneAt": "2026-10-26T17:39:59.347Z",
-      "summary": "fix-tests usa isTestOf. El ejemplo de Rust vuelve a tests/user.rs, plano, y su cambio roto hace fallar fix-tests; el comentario del ejemplo nativo ya no lleva la marca de Swift Testing."
+      "summary": "fix-tests usa isTestOf. El ejemplo de Rust vuelve a tests/user.rs, plano, y su cambio roto hace fallar fix-tests; el comentario del ejemplo nativo ya no lleva la marca de Swift Testing.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "09864582f5b9219a30df27708f61b9d7e84f6ae8",
+      "startedAt": "2026-10-26T17:40:00.192Z",
+      "doneAt": "2026-10-26T17:46:25.230Z",
+      "summary": "La guía en español e inglés y formats.md: en la raíz de la carpeta de tests, fix-tests solo cuenta el test con el nombre de un archivo de la tarea; en subcarpetas o con comodines, cualquiera; scope no cambia."
     }
   },
   "pending": {

@@ -318,7 +318,7 @@ Each dependency the diff adds to a manifest is in `allowedDependencies` of the s
 
 **With:** `--spec`.
 
-Each `type: fix` task, active or done, brings a test of its own in the diff: from its `files`, from its extensions or next to them.
+Each `type: fix` task, active or done, brings a test of its own in the diff: from its `files`, from its extensions or next to them. A test right under the root of its test folder (`tests/cart.rs`, `test/cart_test.dart`, `Tests/ShopTests/CartTests.swift`) mirrors the whole source root, so it only counts for the file of its name, without the test marks (`test_`, `_test`, `.test`, `Test`…); in a subfolder, or when the task has a glob, any test of the folder counts. `scope` still lets the task touch any of them.
 
 **Configuration:** none.
 
