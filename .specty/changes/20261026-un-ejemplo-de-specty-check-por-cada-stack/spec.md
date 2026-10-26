@@ -43,7 +43,7 @@ Cada stack que Specty soporta tiene un repositorio de ejemplo, como ya lo tienen
 
 ## Tareas
 
-- [ ] T1: El constructor y los ejemplos de Python, Ruby y PHP
+- [x] T1: El constructor y los ejemplos de Python, Ruby y PHP
   - files: packages/cli/test/stack-dialect.ts, packages/cli/test/check-examples-scripting.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-scripting.test.ts

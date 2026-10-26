@@ -6,6 +6,13 @@
   "branch": "specty/20261026-un-ejemplo-de-specty-check-por-cada-stack",
   "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d41afa01719782c8cf1713d2433a027e5b1f32f23955d6f7d127283a67b9332e",
+    "at": "2026-10-26T16:02:25.781Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "60f20ec996d7bf764c8365195a035101d596292a",
+      "startedAt": "2026-10-26T16:02:26.169Z",
+      "doneAt": "2026-10-26T16:07:45.639Z",
+      "summary": "stack-dialect.ts arma cada ejemplo desde los datos de su stack (rutas, manifiesto, sintaxis, herramientas imitadas, capas y marcas) con la spec y los casos de Flutter. Python, Ruby y PHP: todo pasa con el plan y todo falla al romperlo, salvo las marcas que su stack no tiene."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 4,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d41afa01719782c8cf1713d2433a027e5b1f32f23955d6f7d127283a67b9332e",
-    "at": "2026-10-26T16:02:25.781Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
