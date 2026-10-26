@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-codex-sigue-un-guion-con-un-modelo-simulado",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-codex-sigue-un-guion-con-un-modelo-simulado",
   "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8443e69141eeb7f6b8a6a35e0ed710f118b67f3c",
+      "attempts": 1,
       "startedAt": "2026-10-26T22:29:32.405Z",
       "doneAt": "2026-10-26T22:33:41.780Z",
-      "summary": "Codex sigue un guion contra test/fake-responses.ts, que imita la API de respuestas de OpenAI: guard, alcance, aviso tras un comando y fin de turno, con codex exec -s workspace-write --dangerously-bypass-hook-trust; las 4 pruebas pasan con Codex 0.164.0 y se saltan sin él."
+      "summary": "Codex sigue un guion contra test/fake-responses.ts, que imita la API de respuestas de OpenAI: guard, alcance, aviso tras un comando y fin de turno, con codex exec -s workspace-write --dangerously-bypass-hook-trust; las 4 pruebas pasan con Codex 0.164.0 y se saltan sin él.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a55657a91eb8e6ffec7acb7b2f023ba4c57c6f2e",
+      "startedAt": "2026-10-26T22:33:42.134Z",
+      "doneAt": "2026-10-26T22:40:31.524Z",
+      "summary": "La prueba de extremo a extremo de Codex pasa a sí en la tabla; ARCHITECTURE §16 cuenta cómo corre (codex exec con CODEX_HOME temporal, las dos opciones autorizadas) y qué comprueba, con Codex 0.164.0."
     }
   },
   "pending": {

@@ -96,7 +96,8 @@ export const AGENT_CAPABILITIES = {
       "it reads files through the shell and has no exclusion file.",
     ),
     permissions: yes,
-    endToEnd: pending,
+    // `codex-e2e.test.ts`, against a fake of OpenAI's Responses API.
+    endToEnd: yes,
   },
   opencode: {
     markers: [".opencode", "opencode.json", "opencode.jsonc"],

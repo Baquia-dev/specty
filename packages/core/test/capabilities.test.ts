@@ -63,7 +63,7 @@ describe("the capability table", () => {
       "| Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |",
     );
     expect(es).toContain(
-      "| Codex | sí | sí | sí | no posible | sí | no posible | sí | pendiente | `.codex` |",
+      "| Codex | sí | sí | sí | no posible | sí | no posible | sí | sí | `.codex` |",
     );
     expect(es).toContain(
       "| OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",

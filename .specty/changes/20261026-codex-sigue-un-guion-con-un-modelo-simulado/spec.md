@@ -47,7 +47,7 @@ El guard de Codex, su aviso tras cada comando y su fin de turno solo se prueban 
   - files: packages/cli/test/fake-responses.ts, packages/cli/test/codex-e2e.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex-e2e.test.ts
-- [ ] T2: La tabla de capacidades y la documentación lo cuentan
+- [x] T2: La tabla de capacidades y la documentación lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
