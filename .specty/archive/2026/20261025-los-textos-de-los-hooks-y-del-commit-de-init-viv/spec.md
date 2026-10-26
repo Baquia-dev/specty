@@ -45,3 +45,21 @@ Séptimo cambio de la serie que lleva a core los textos de la CLI, con lo que qu
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de los hooks (`install/hooks.ts`) y del commit de `init` (`install/commit.ts`) viven en `core/src/cards/install.ts`, con tests: el guard de cada herramienta, los hooks de git, sus avisos, y los avisos, el asunto y la línea del commit. Con este cambio, `init` y lo que instala ya no llaman al traductor, y la salida y el commit son los mismos: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Claude Code y Cursor comparten `guardLine`, con el nombre de la herramienta como parámetro, porque los nombres no se traducen.
+
+### Pendientes
+
+- Mientras corría `task done` en segundo plano, el guard atribuyó a un `sed -n` (que solo lee) los cambios que el propio `task done` hacía en `state.json` y `audit.jsonl`. La comprobación tras cada comando debería ignorar lo que escribe Specty a la vez.

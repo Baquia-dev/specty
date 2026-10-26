@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-los-hooks-y-del-commit-de-init-viv",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-los-hooks-y-del-commit-de-init-viv",
   "baseCommit": "52d33b78bdc90b98479d845f87df672955807fce",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:b5ed31b74e243e952a30f24893bca470763421e9986ad4c9560fae1d31effc2b",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5a18b8c679655ba525ac84a8d5b8fef577eebf64",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:48:35.312Z",
       "doneAt": "2026-10-26T02:50:47.973Z",
-      "summary": "install/hooks.ts e install/commit.ts piden sus textos a core (cards/install.ts) y ya no llaman al traductor; la salida y el commit de init son los mismos, como comprueban los tests de la CLI sin cambios."
+      "summary": "install/hooks.ts e install/commit.ts piden sus textos a core (cards/install.ts) y ya no llaman al traductor; la salida y el commit de init son los mismos, como comprueban los tests de la CLI sin cambios.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T02:51:14.378Z"
 }

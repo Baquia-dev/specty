@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T02:48:35.313Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"5a18b8c679655ba525ac84a8d5b8fef577eebf64"}}
 {"ts":"2026-10-26T02:50:47.868Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":77607,"tree":"sha256:5be2ec53bb1f3312be6bdd73f0e4a9b557838aa6d0a8bb341bf513a3b20fbe4d"}}
 {"ts":"2026-10-26T02:50:47.974Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"install/hooks.ts e install/commit.ts piden sus textos a core (cards/install.ts) y ya no llaman al traductor; la salida y el commit de init son los mismos, como comprueban los tests de la CLI sin cambios."}}
+{"ts":"2026-10-26T02:51:07.541Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T02:51:14.379Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:f781a8027b42131a787cfbd6adc76dd69c4e2c4ce06a8dc8bc4a4a9ca8eda30d","size":"M","warnings":1}}
+{"ts":"2026-10-26T02:51:19.759Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
