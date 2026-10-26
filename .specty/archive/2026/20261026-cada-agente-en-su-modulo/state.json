@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-cada-agente-en-su-modulo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-cada-agente-en-su-modulo",
   "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a3a1e893b3c1477847d81837ef0778d2f18380836af8fa67d66ff0cf0586c4b1",
@@ -79,14 +79,14 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/agents/adapter.ts"
-      ],
-      "attempts": 3,
       "baseCommit": "f4b539bd2f1c00cdffe23eef794eb3e82c46c2f8",
+      "attempts": 3,
       "startedAt": "2026-10-26T16:54:33.917Z",
       "doneAt": "2026-10-26T17:11:05.482Z",
-      "summary": "ARCHITECTURE §10 explica el módulo por agente (agents/, el contrato de adapter.ts y lo que comparten) y el mapa de AGENTS.md nombra agents/. Tres tipos de adapter.ts dejan de exportarse para que knip pase."
+      "summary": "ARCHITECTURE §10 explica el módulo por agente (agents/, el contrato de adapter.ts y lo que comparten) y el mapa de AGENTS.md nombra agents/. Tres tipos de adapter.ts dejan de exportarse para que knip pase.",
+      "scopeExtra": [
+        "packages/cli/src/agents/adapter.ts"
+      ]
     }
   },
   "pending": {
@@ -98,5 +98,6 @@
     "AC": 3,
     "T": 5,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T17:13:06.255Z"
 }

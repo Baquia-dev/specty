@@ -102,3 +102,29 @@ Lo que Specty hace con cada agente está hoy repartido en ocho archivos, con ram
 
 - R1: Una respuesta cambia sin que ninguna prueba lo note, por ejemplo la de Cursor tras un comando fuera de un repositorio de Specty. Mitigación: AC3 fija en `agents.test.ts` la respuesta de cada módulo, y el guard conserva la forma de «permitir» de hoy cuando no hay sesión.
 - R2: Otra sesión cambia el guard o la instalación mientras tanto. Mitigación: se incorpora `main` antes de cerrar y se vuelve a pasar `pnpm check`.
+
+## Cierre
+
+### Resumen
+
+Claude Code, Cursor, Codex y OpenCode tienen cada uno su módulo en `packages/cli/src/agents/`, con el contrato de `adapter.ts`: qué es cada evento, qué acción describe, cómo se responde, cómo vuelve al terminar el turno, qué instala, qué comprueba `doctor` y qué quita `uninstall`. El guard, `hook agent-stop`, `check --install`, `init`, `doctor` y `uninstall` recorren los módulos, y solo queda una rama por herramienta: el puntero `CLAUDE.md` de `init`. Las pruebas que ya existían pasan sin cambios, `agents.test.ts` fija la respuesta de cada módulo y `pnpm check` está en verde. El guard tarda lo mismo que en `main`: 99,5 ms de mediana en 30 ejecuciones de cada uno.
+
+### Desviaciones
+
+- T5 tocó también `agents/adapter.ts` (pedido con `scope add`), porque knip marcó `EventKind`, `InstallContext` e `Installed` como exportaciones que nadie importa.
+- En T3, las tablas de eventos se quedaron un paso más en `install/agents.ts`, porque `doctor` y `uninstall` eran de T4; T4 las llevó a su módulo.
+- `uninstall` quita y lista lo de cada agente seguido, así que la regla de Codex sale antes que el plugin de OpenCode (A4).
+
+### Decisiones
+
+- `actions.ts` suma `sentPaths` y `shellAction`, que comparten las lecturas de varios agentes.
+- `agents/index.ts` se importa como `../agents`; es el primer índice de carpeta de la CLI.
+- Cada módulo reconoce solo los nombres de evento de su herramienta; antes, los cuatro nombres de «después de un comando» valían para todas.
+- Sin sesión de Specty, el guard responde como antes con la forma de «permitir antes de una acción», también tras un comando de Cursor (R1).
+- `install/agents.ts` conserva las rutas de los archivos de cada agente y los ayudantes comunes (`withHooks`, `missingEvents`, `removeFromJson`, `excludeLocally`), y no importa ningún módulo de agente, así que no hay ciclos.
+
+### Pendientes
+
+- El puntero `CLAUDE.md` sigue en `init`: C11 lo generaliza para `GEMINI.md`.
+- Las exclusiones de `check --install` (`install-ignores.ts`) siguen fuera de los módulos, porque también cubren herramientas sin guard.
+- Con la máquina muy cargada (media de 50 a 90 por otras sesiones), la verificación de `task done` falló dos veces en pruebas de la UI por tiempo; pasaron solas y al reintentar con la carga baja.
