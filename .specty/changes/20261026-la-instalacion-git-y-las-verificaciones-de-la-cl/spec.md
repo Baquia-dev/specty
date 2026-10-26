@@ -45,7 +45,7 @@ Nueve funciones de la instalación, de git y de las verificaciones de la CLI pas
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T2: Las escrituras de la instalación
+- [x] T2: Las escrituras de la instalación
   - files: packages/cli/src/install/files.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
