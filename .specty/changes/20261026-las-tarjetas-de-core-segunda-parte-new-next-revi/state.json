@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-las-tarjetas-de-core-segunda-parte-new-next-revi",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-las-tarjetas-de-core-segunda-parte-new-next-revi",
+  "baseCommit": "ef514fe6e173f0b5c4a33bd9eddec798b46bc52b",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:911be14629419847744dbf8aff82fd48e845b67707ee5082f126ccc63edd56c3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cf939212dbf4f9d8b075fc9c2991b19a787a7972e9e38255d0af5403e4155ee8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2477d0205e3601a659d7642c6a84f94354218e869c24fd28f3931319888a9779",
+    "at": "2026-10-26T18:36:56.268Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
