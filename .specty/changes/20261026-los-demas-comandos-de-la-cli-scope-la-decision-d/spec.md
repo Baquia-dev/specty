@@ -61,7 +61,7 @@ Nueve funciones de los demás comandos de la CLI pasan de los límites de Specty
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T5: El alcance y su decisión
+- [x] T5: El alcance y su decisión
   - files: packages/cli/src/commands/scope.ts, packages/cli/src/commands/scope-decision.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

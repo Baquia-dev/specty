@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-los-demas-comandos-de-la-cli-scope-la-decision-d",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-los-demas-comandos-de-la-cli-scope-la-decision-d",
   "baseCommit": "eb76e25b573efb53ab79da0a35a905f19fcdee8f",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "095f8bda66c8cfda32012470db0f418d63c5b5f6",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:17:02.135Z",
       "doneAt": "2026-10-26T20:20:35.054Z",
-      "summary": "integrate.ts: integrate hace las guardas, mergeProblem prueba en orden markersLeft, outsideChanges y failedVerification, y commitMerge hace el commit y lo registra. Mismas tarjetas; los tests de la CLI pasan."
+      "summary": "integrate.ts: integrate hace las guardas, mergeProblem prueba en orden markersLeft, outsideChanges y failedVerification, y commitMerge hace el commit y lo registra. Mismas tarjetas; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bcc162e3d2e77567a9318db26fe08f3451db25f7",
+      "startedAt": "2026-10-26T20:20:35.396Z",
+      "doneAt": "2026-10-26T20:29:13.665Z",
+      "summary": "scope.ts: scopeAdd valida con requestRefusal y decide entre approveByPolicy y requestApproval. scope-decision.ts: decideScope pregunta y recordScopeDecision registra. Ningún comando de la CLI queda fuera de los límites; los tests pasan."
     }
   },
   "pending": {

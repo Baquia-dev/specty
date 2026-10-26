@@ -13,6 +13,8 @@ import {
   type Output,
   parseSpec,
   pathProblem,
+  type ScopeAddRefusal,
+  type Spec,
   scopeAddRefusalCard,
   scopeRequestedCard,
   scopeRulesFrom,
@@ -22,7 +24,7 @@ import { commitState, resolveActive } from "../flow/active";
 import { listed, sharedBlock, sharedFiles } from "../flow/shared";
 import { changeView } from "../flow/views";
 import type { Session } from "../session";
-import { readSpec } from "../store/changes";
+import { readSpec, type StoredChange } from "../store/changes";
 
 /** `specty scope add`: extends the active task's scope, by policy or on a person's approval. */
 export async function scopeAdd(
@@ -48,17 +50,8 @@ export async function scopeAdd(
     return scopeAddRefusalCard({ reason: "not-active", task: taskId }, header, cards);
   }
   const paths = rawPaths.map(normalizePath);
-  const invalid = paths.filter((path) => pathProblem(path) !== undefined);
-  if (invalid.length > 0) {
-    return scopeAddRefusalCard(
-      { reason: "invalid-paths", paths: invalid, task: taskId },
-      header,
-      cards,
-    );
-  }
-  if (paths.length === 0 || reason.trim().length === 0) {
-    return scopeAddRefusalCard({ reason: "incomplete", task: taskId }, header, cards);
-  }
+  const refusal = requestRefusal(paths, reason, taskId);
+  if (refusal !== undefined) return scopeAddRefusalCard(refusal, header, cards);
   const spec = parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const task = spec.sections.tasks?.items.find((item) => item.id === taskId);
   const rules = scopeRulesFrom(session.config);
@@ -73,47 +66,95 @@ export async function scopeAdd(
       nextCard({ change: await changeView(session, active), dirty: [] }, cards),
     );
   }
+  const wanted: Wanted = { task: taskId, paths: missing, reason: reason.trim() };
   // The change's scope: what the approved spec lists in Files, both sides of each rename.
   const planned = listed(spec);
   // Requested files another open change also lists, shown whatever the decision.
   const shared = sharedBlock(session, await sharedFiles(session, state.id, missing));
-  if (decideScopeRequest(missing, rules, planned) === "auto") {
-    const decided = missing.map((path) => ({
-      path,
-      basis: autoBasis(path, rules, planned),
-      tasks: (spec.sections.tasks?.items ?? [])
-        .filter((item) => item.id !== taskId && matchesAny(path, item.files))
-        .map((item) => item.id),
-    }));
-    const foreseen = decided.filter((entry) => entry.basis === "planned");
-    const updated = await commitState(
-      session,
-      active,
-      withExtras(state, taskId, missing),
-      "scope.decided",
-      {
-        task: taskId,
-        paths: missing,
-        reason: reason.trim(),
-        decision: "auto",
-        basis: Object.fromEntries(decided.map((entry) => [entry.path, entry.basis])),
-        plannedFor: Object.fromEntries(foreseen.map((entry) => [entry.path, entry.tasks])),
-      },
-      "specty",
-    );
-    const approved = decided.map((entry) => ({
-      path: entry.path,
-      planned: entry.basis === "planned",
-      tasks: entry.tasks,
-    }));
-    const card = withLead(
-      autoApprovedLead(approved, cards),
-      nextCard({ change: await changeView(session, updated), dirty: [] }, cards),
-    );
-    return { ...card, blocks: [...card.blocks, ...shared] };
-  }
+  const card =
+    decideScopeRequest(missing, rules, planned) === "auto"
+      ? await approveByPolicy(session, active, spec, wanted, planned)
+      : await requestApproval(session, active, header, wanted);
+  return { ...card, blocks: [...card.blocks, ...shared] };
+}
+
+/** The paths a task asks for, outside its scope, and why. */
+interface Wanted {
+  readonly task: string;
+  readonly paths: readonly string[];
+  readonly reason: string;
+}
+
+/** Paths that are not valid ones, or a request without paths or a reason. */
+function requestRefusal(
+  paths: readonly string[],
+  reason: string,
+  task: string,
+): ScopeAddRefusal | undefined {
+  const invalid = paths.filter((path) => pathProblem(path) !== undefined);
+  if (invalid.length > 0) return { reason: "invalid-paths", paths: invalid, task };
+  if (paths.length === 0 || reason.trim().length === 0) return { reason: "incomplete", task };
+  return undefined;
+}
+
+/** The policy approves the paths: each with why it qualifies and the other tasks that plan it. */
+async function approveByPolicy(
+  session: Session,
+  active: StoredChange,
+  spec: Spec,
+  wanted: Wanted,
+  planned: readonly string[],
+): Promise<Output> {
+  const rules = scopeRulesFrom(session.config);
+  const decided = wanted.paths.map((path) => ({
+    path,
+    basis: autoBasis(path, rules, planned),
+    tasks: (spec.sections.tasks?.items ?? [])
+      .filter((item) => item.id !== wanted.task && matchesAny(path, item.files))
+      .map((item) => item.id),
+  }));
+  const foreseen = decided.filter((entry) => entry.basis === "planned");
+  const updated = await commitState(
+    session,
+    active,
+    withExtras(active.state, wanted.task, wanted.paths),
+    "scope.decided",
+    {
+      task: wanted.task,
+      paths: wanted.paths,
+      reason: wanted.reason,
+      decision: "auto",
+      basis: Object.fromEntries(decided.map((entry) => [entry.path, entry.basis])),
+      plannedFor: Object.fromEntries(foreseen.map((entry) => [entry.path, entry.tasks])),
+    },
+    "specty",
+  );
+  const approved = decided.map((entry) => ({
+    path: entry.path,
+    planned: entry.basis === "planned",
+    tasks: entry.tasks,
+  }));
+  return withLead(
+    autoApprovedLead(approved, session.cards),
+    nextCard({ change: await changeView(session, updated), dirty: [] }, session.cards),
+  );
+}
+
+/** A request the person decides on, numbered after the change's last one. */
+async function requestApproval(
+  session: Session,
+  active: StoredChange,
+  header: string,
+  wanted: Wanted,
+): Promise<Output> {
+  const { state } = active;
   const number = (state.maxIds.S ?? 0) + 1;
-  const request = { id: `S${number}`, task: taskId, paths: missing, reason: reason.trim() };
+  const request = {
+    id: `S${number}`,
+    task: wanted.task,
+    paths: [...wanted.paths],
+    reason: wanted.reason,
+  };
   await commitState(
     session,
     active,
@@ -125,8 +166,7 @@ export async function scopeAdd(
     "scope.requested",
     request,
   );
-  const card = scopeRequestedCard(header, request.id, missing, cards);
-  return { ...card, blocks: [...card.blocks, ...shared] };
+  return scopeRequestedCard(header, request.id, wanted.paths, session.cards);
 }
 
 export function withExtras(
