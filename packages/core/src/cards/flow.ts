@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { Phase } from "../flow/phases";
+import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import type { EffortRecommendation } from "../sizing/effort";
 import type { SizeResult } from "../sizing/size";
@@ -6,12 +8,30 @@ import { formatSizeReason } from "../sizing/size";
 import type { DeltaEntry } from "../spec/delta";
 import type { Diagnostic } from "../spec/diagnostics";
 import { SECTION_TITLES } from "../spec/vocabulary";
-import { effortLine, translator } from "./text";
+import { effortLine, runNext, translator } from "./text";
 import type { CardContext } from "./view";
 
 /** A command that cannot run in the current state, with the valid way forward. */
 export function blockedCard(header: string, reason: string, next: string): Output {
   return { status: "blocked", header, blocks: section(undefined, [reason]), next };
+}
+
+/** `specty propose` in a phase without a spec to propose. */
+export function notProposableCard(id: string, phase: Phase, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return blockedCard(
+    headerOf(id, phase),
+    t(
+      `En la fase ${phase} la spec no se propone.`,
+      `The spec is not proposed in the ${phase} phase.`,
+    ),
+    runNext(ctx),
+  );
+}
+
+/** `revisión 3`, for the header of a proposed spec. */
+export function revisionLabel(revision: number, lang: Lang): string {
+  return translator(lang)(`revisión ${revision}`, `revision ${revision}`);
 }
 
 /** `specty propose` with validation errors. */

@@ -42,7 +42,7 @@ Segundo cambio de la serie que lleva a core los textos de la CLI. `propose`, `ta
 
 ## Tareas
 
-- [ ] T1: Core tiene los rechazos comunes y los textos de propose
+- [x] T1: Core tiene los rechazos comunes y los textos de propose
   - files: packages/core/src/cards/refusals.ts, packages/core/src/cards/text.ts, packages/core/src/cards/flow.ts, packages/core/src/index.ts, packages/core/test/cards/refusals.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

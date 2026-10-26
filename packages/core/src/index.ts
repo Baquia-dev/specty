@@ -40,10 +40,12 @@ export {
   changeHeader,
   deltaLine,
   invalidSpecCard,
+  notProposableCard,
   outOfScopeCard,
   type ProposedView,
   proposedCard,
   retroCreatedCard,
+  revisionLabel,
   scopeRequestedCard,
   verifyFailedCard,
   withLead,
@@ -69,13 +71,14 @@ export {
   worktreeCreatedCard,
 } from "./cards/new";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./cards/next";
+export { type Asker, noActiveChangeCard } from "./cards/refusals";
 export {
   diffReviewPrompt,
   type ReviewedView,
   reviewedCard,
   specReviewPrompt,
 } from "./cards/review";
-export { effortLabel, effortLine, translator } from "./cards/text";
+export { effortLabel, effortLine, runNext, translator } from "./cards/text";
 export type {
   CardContext,
   ChangeView,

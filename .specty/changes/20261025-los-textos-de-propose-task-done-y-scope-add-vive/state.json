@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-propose-task-done-y-scope-add-vive",
   "baseCommit": "679d0b1c4bb0f6c43f2f137f96319ba3859aa0bf",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:30605761348f127ccc69507b75b99f68320ce34e896e44d40e69677105108ab2",
+    "at": "2026-10-26T02:14:19.615Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9078df95cd9015f0ea2836d565d390ae54bae5b8",
+      "startedAt": "2026-10-26T02:14:20.004Z",
+      "doneAt": "2026-10-26T02:15:32.141Z",
+      "summary": "Core gana runNext (text.ts), noActiveChangeCard con el SIGUIENTE del agente, la persona o la UI (cards/refusals.ts) y notProposableCard y revisionLabel junto a las demás tarjetas de propose (flow.ts), con tests en español e inglés."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 4,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:30605761348f127ccc69507b75b99f68320ce34e896e44d40e69677105108ab2",
-    "at": "2026-10-26T02:14:19.615Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
