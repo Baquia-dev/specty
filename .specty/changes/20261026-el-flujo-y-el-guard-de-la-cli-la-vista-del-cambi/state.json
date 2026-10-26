@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2610f6b0f6716c53a194e4a2437b75126f28ce9c",
+      "attempts": 1,
       "startedAt": "2026-10-26T22:40:52.440Z",
       "doneAt": "2026-10-26T22:49:14.902Z",
-      "summary": "flow/integrate.ts: absorbTarget hace las guardas y la fusión, y deja a holderDirty la carpeta con cambios, a mergeStopped la fusión detenida, a failedVerification la verificación y a commitAbsorbed el commit. Mismas tarjetas; los tests pasan."
+      "summary": "flow/integrate.ts: absorbTarget hace las guardas y la fusión, y deja a holderDirty la carpeta con cambios, a mergeStopped la fusión detenida, a failedVerification la verificación y a commitAbsorbed el commit. Mismas tarjetas; los tests pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "60893a80db39bcb6be859e5c794f6024a1e07e03",
+      "startedAt": "2026-10-26T22:49:15.220Z",
+      "doneAt": "2026-10-26T22:55:14.813Z",
+      "summary": "task-done.ts: completeTask marca la tarea y deja el commit a commitTask. hook.ts: preCommit deja a manualEdit la edición manual del cambio abierto, con las mismas comprobaciones y el mismo orden. Los tests de la CLI pasan."
     }
   },
   "pending": {

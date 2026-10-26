@@ -49,7 +49,7 @@ Nueve funciones del flujo y del guard de la CLI pasan de los límites de Specty:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T3: La tarea hecha y el hook pre-commit
+- [x] T3: La tarea hecha y el hook pre-commit
   - files: packages/cli/src/flow/task-done.ts, packages/cli/src/enforce/hook.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
