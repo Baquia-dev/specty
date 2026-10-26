@@ -1,0 +1,3 @@
+{"ts":"2026-10-26T18:23:45.474Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje","epic":"20261026-todos-los-agentes-al-nivel-de-claude-code","slice":"C6"}}
+{"ts":"2026-10-26T18:24:40.297Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:eca3fbf82dffbd55de199d715b211594e633ddc039c2be72d648b424d3a599ce","size":"L","warnings":1}}
+{"ts":"2026-10-26T18:24:48.305Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:eca3fbf82dffbd55de199d715b211594e633ddc039c2be72d648b424d3a599ce","channel":"delegated","delegated":true}}

@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje",
+  "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2ba55bbebfb8de17af20366c03a71a05e0af04f83adf665ca468e37dc333a0a0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4cf9b0b6e7c06074a0415fad8016dd68453456dc12ae04e3ac98b78c815392eb",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8507c1dc2f8e83a47e4ff349cbf5eed6382dcc45951faed7de9ebcfd6973e0b0",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:dc26d2bb1917356d3eab11a69cd4885558cb28888f286b327391f7e7ee4f6c60",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eca3fbf82dffbd55de199d715b211594e633ddc039c2be72d648b424d3a599ce",
+    "at": "2026-10-26T18:24:48.294Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
