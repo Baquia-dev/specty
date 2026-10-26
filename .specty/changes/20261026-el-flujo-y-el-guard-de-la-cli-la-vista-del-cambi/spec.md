@@ -39,7 +39,7 @@ Nueve funciones del flujo y del guard de la CLI pasan de los límites de Specty:
 
 ## Tareas
 
-- [ ] T1: La vista del cambio
+- [x] T1: La vista del cambio
   - files: packages/cli/src/flow/views.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

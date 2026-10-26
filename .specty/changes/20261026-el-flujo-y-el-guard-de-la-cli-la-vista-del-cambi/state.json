@@ -6,6 +6,13 @@
   "branch": "specty/20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
   "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b77d3b18771d97e7fa5bbdc2c8a68bf0739ae86682e431965590e0c151d672d6",
+    "at": "2026-10-26T22:30:42.414Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -25,7 +32,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0b0e61bb12d26a05a36fbc0aeb61a5ea34f2c07c",
+      "startedAt": "2026-10-26T22:30:42.808Z",
+      "doneAt": "2026-10-26T22:40:52.103Z",
+      "summary": "views.ts: changeView lee spec, commits y auditoría, y deja cada tarea a taskView (con recordedFindings), y a rejectedAssumptions, phaseFacts e integrationView el resto, con el mismo orden de campos y lecturas. Los tests de la CLI pasan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b77d3b18771d97e7fa5bbdc2c8a68bf0739ae86682e431965590e0c151d672d6",
-    "at": "2026-10-26T22:30:42.414Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
