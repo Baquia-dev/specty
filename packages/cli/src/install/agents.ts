@@ -56,6 +56,23 @@ const CLAUDE_SETTINGS = ".claude/settings.json";
 const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
 const CURSOR_HOOKS = ".cursor/hooks.json";
 export const CODEX_HOOKS = ".codex/hooks.json";
+export const CODEX_RULES = ".codex/rules/specty.rules";
+/**
+ * Codex's execpolicy rule for Specty's commands: an `allow` skips the approval and runs the
+ * command outside the sandbox, which keeps `.git` read-only and so stopped every Specty commit.
+ * It names the command as the agent types it, so it is versioned even when the hooks are local.
+ */
+const CODEX_RULE = [
+  "# Specty's commands run without asking and outside Codex's sandbox: they commit to git, which",
+  "# the sandbox keeps read-only. Specty itself decides who runs each one (its guard, a real",
+  "# terminal or delegated mode). `specty init` writes this file and rewrites it.",
+  "prefix_rule(",
+  `    pattern = [${JSON.stringify(COMMAND)}],`,
+  '    decision = "allow",',
+  '    justification = "Specty decides who runs its commands; they commit to git, which the sandbox keeps read-only.",',
+  ")",
+  "",
+].join("\n");
 export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
 
 /** Files where Specty installs agent hooks; `new --worktree` copies the ones git does not track. */
@@ -158,20 +175,27 @@ export async function removeAgentHooks(root: string, files: InstallFiles): Promi
 
 /**
  * Codex: `PreToolUse` (Bash, apply_patch) and `PostToolUse` (Bash) in the project's
- * `.codex/hooks.json`. Codex 0.131 or later reads a linked worktree's project hooks from the main
- * checkout, so the person trusts them once per repository.
+ * `.codex/hooks.json`, and the rule for Specty's commands in `rules`. Codex 0.131 or later reads a
+ * linked worktree's project hooks from the main checkout, so the person trusts them once per
+ * repository.
  */
 export async function installCodex(
   root: string,
   git: Git,
   invocation: Invocation,
   files: InstallFiles = installFiles(),
-): Promise<AgentInstall> {
+): Promise<AgentInstall & { readonly rules: string }> {
   const command = `${invocation.command} guard --tool codex`;
   const update = (value: Entry) => withHooks(value, CODEX_EVENTS, "codex", command);
   await rewriteJson(join(root, CODEX_HOOKS), update, true, files);
   if (!invocation.portable) await excludeLocally(git, CODEX_HOOKS, files);
-  return { file: CODEX_HOOKS, local: !invocation.portable };
+  await files.write(join(root, CODEX_RULES), CODEX_RULE);
+  return { file: CODEX_HOOKS, local: !invocation.portable, rules: CODEX_RULES };
+}
+
+/** Whether `text`, a rules file, is Specty's rule for its commands. */
+export function isCodexRule(text: string | undefined): boolean {
+  return text?.includes(`pattern = [${JSON.stringify(COMMAND)}]`) === true;
 }
 
 export function hasGuard(text: string | undefined, tool: GuardTool): boolean {

@@ -14,7 +14,9 @@ import { detectProject } from "../detect/project";
 import {
   CLAUDE_WORKTREE_EVENTS,
   CODEX_HOOKS,
+  CODEX_RULES,
   hasGuard,
+  isCodexRule,
   missingClaudeEvents,
   missingClaudePermissions,
   missingCursorEvents,
@@ -80,6 +82,11 @@ export async function doctor(session: Session): Promise<Output> {
       hasGuard(await readText(join(root, CODEX_HOOKS)), "codex"),
       { code: "codex-guard", file: CODEX_HOOKS },
       { code: "no-codex-guard", file: CODEX_HOOKS },
+    );
+    check(
+      isCodexRule(await readText(join(root, CODEX_RULES))),
+      { code: "codex-rules", file: CODEX_RULES },
+      { code: "no-codex-rules", file: CODEX_RULES },
     );
   }
   if (tools.includes("opencode")) {

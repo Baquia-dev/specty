@@ -6,6 +6,7 @@ import {
   claudePermissionsLine,
   claudePointerLine,
   codexGuardLine,
+  codexRulesLine,
   codexTrustWarning,
   gitHooksLine,
   gitHooksManualWarning,
@@ -64,7 +65,9 @@ export async function installHooks(options: {
   if (tools.includes("codex")) {
     const installed = await installCodex(root, git, environment.invocation, files);
     if (!installed.local) written.push(installed.file);
+    written.push(installed.rules);
     done.push(codexGuardLine(installed.file, installed.local, lang));
+    done.push(codexRulesLine(installed.rules, lang));
     warnings.push(codexTrustWarning(lang));
   }
   if (tools.includes("opencode")) {

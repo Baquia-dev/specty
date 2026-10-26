@@ -66,7 +66,7 @@ kind: standard
   - files: packages/cli/src/install/agents.ts, packages/cli/src/install/hooks.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/setup.test.ts
   - ac: AC1, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts
-- [ ] T3: `init` escribe la regla de Codex y `doctor` la comprueba
+- [x] T3: `init` escribe la regla de Codex y `doctor` la comprueba
   - files: packages/cli/src/install/agents.ts, packages/cli/src/install/hooks.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/codex.test.ts
   - ac: AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts
