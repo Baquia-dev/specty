@@ -46,7 +46,7 @@ Un cambio aprobado quedó atrapado en el cierre. Su *Files* tenía un glob sobre
 
 ## Tareas
 
-- [ ] T1: El tamaño solo cuenta código escrito a mano
+- [x] T1: El tamaño solo cuenta código escrito a mano
   - files: packages/core/src/sizing/lines.ts, packages/core/src/sizing/size.ts, packages/core/src/index.ts, packages/core/test/sizing/hand-written.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
