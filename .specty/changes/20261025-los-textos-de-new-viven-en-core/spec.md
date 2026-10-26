@@ -33,7 +33,7 @@ ARCHITECTURE y AGENTS.md dicen que los textos que ve el agente viven en `package
 
 ## Tareas
 
-- [ ] T1: Core tiene las tarjetas de new
+- [x] T1: Core tiene las tarjetas de new
   - files: packages/core/src/cards/new.ts, packages/core/src/index.ts, packages/core/test/cards/new.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

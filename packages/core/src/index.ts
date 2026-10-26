@@ -61,6 +61,13 @@ export {
   statusCard,
 } from "./cards/human";
 export { longFileCard, longFileWarnings, splitAdvice } from "./cards/lines";
+export {
+  changeCreatedLead,
+  type NewRefusal,
+  newRefusalCard,
+  type WorktreeCreated,
+  worktreeCreatedCard,
+} from "./cards/new";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./cards/next";
 export {
   diffReviewPrompt,
