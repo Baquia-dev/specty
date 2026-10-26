@@ -37,7 +37,7 @@ En cada pull request, la CI de Specty ejecuta su propio `specty check --changed`
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-pull-request.test.ts
   - type: test
-- [ ] T2: El job de la CI
+- [x] T2: El job de la CI
   - files: .github/workflows/ci.yml, packages/cli/test/workflows.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/workflows.test.ts

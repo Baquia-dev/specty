@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
   "baseCommit": "bf528064e4af69d1c46a08bb2c4339e967a52d84",
   "revision": 1,
@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3d94003853a13c07a3ca74d837cec8a926492bd7",
+      "attempts": 1,
       "startedAt": "2026-10-26T13:41:06.619Z",
       "doneAt": "2026-10-26T13:42:01.206Z",
-      "summary": "Test de --changed en el checkout de un PR (HEAD separado en el merge): con main local ve solo lo que añade el PR; sin ella no ve nada, por eso el job la crea."
+      "summary": "Test de --changed en el checkout de un PR (HEAD separado en el merge): con main local ve solo lo que añade el PR; sin ella no ve nada, por eso el job la crea.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "58b8cf10207f3e515aed0d6f6577cee33622d80b",
+      "startedAt": "2026-10-26T13:42:01.923Z",
+      "doneAt": "2026-10-26T13:45:05.102Z",
+      "summary": "Job specty-check en ci.yml, solo en pull requests: checkout con historia completa, crea main desde origin/main, construye el CLI del PR y ejecuta specty check --changed; el test de workflows lo fija."
     }
   },
   "pending": {
