@@ -50,3 +50,21 @@ Las tarjetas de auditoría, de épica, de propuesta y de estado tienen funciones
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las tarjetas de auditoría, épica, propuesta y estado de core quedan dentro de los límites de Specty sin cambiar ningún texto: la auditoría se arma por bloques y describe cada evento con una tabla leída con `lookup`; el corte rechazado separa su estado, su razón y su paso; la propuesta separa la del cierre y la de la spec; y el estado separa la línea de cada cambio y el paso siguiente.
+
+### Desviaciones
+
+- `doctorLine` ya no estaba fuera de los límites al empezar el corte, así que doctor.ts no se tocó.
+
+### Decisiones
+
+- Las descripciones de los eventos son una tabla, como pedía el supuesto A2; el corte rechazado sigue con `switch`, partido por responsabilidad, para no necesitar un cast con una tabla por motivo.
+
+### Pendientes
+
+Ninguno.

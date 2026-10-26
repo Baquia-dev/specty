@@ -10,3 +10,7 @@
 {"ts":"2026-10-26T18:15:32.111Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"05dab407ccf3a9229a9509e5278a43deaa5f0ad9"}}
 {"ts":"2026-10-26T18:17:27.336Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run","exit":0,"ms":2074,"tree":"sha256:611fc8a9ea624d229dc7e887b5ec6c1fc782a7add5c3867c86f076bfc3f5e942"}}
 {"ts":"2026-10-26T18:17:27.418Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"human.ts: statusCard arma el bloque de cambios con statusLine y su paso con statusNext. Mismos textos; los 459 tests de core pasan y specty check del cambio queda en verde."}}
+{"ts":"2026-10-26T18:19:47.590Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":95176,"tree":"sha256:611fc8a9ea624d229dc7e887b5ec6c1fc782a7add5c3867c86f076bfc3f5e942"}}
+{"ts":"2026-10-26T18:19:47.592Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T18:19:55.480Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:77f9e9f8cfdc0af5b8e6085b56fecbef9393e29d94b82c1fc56b2cda69a3db72","size":"S","warnings":3}}
+{"ts":"2026-10-26T18:21:43.608Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

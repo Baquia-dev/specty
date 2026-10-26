@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-las-tarjetas-de-core-primera-parte-audit-doctor",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-las-tarjetas-de-core-primera-parte-audit-doctor",
   "baseCommit": "6e67966217f2f26744beae48caf0b3cfcb6523cd",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:78c4e46ba95a8d3a7ffef467e7b963baa2fac00c61781cd02516e34ab603c578",
@@ -52,12 +52,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "05dab407ccf3a9229a9509e5278a43deaa5f0ad9",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:15:32.110Z",
       "doneAt": "2026-10-26T18:17:27.417Z",
-      "summary": "human.ts: statusCard arma el bloque de cambios con statusLine y su paso con statusNext. Mismos textos; los 459 tests de core pasan y specty check del cambio queda en verde."
+      "summary": "human.ts: statusCard arma el bloque de cambios con statusLine y su paso con statusNext. Mismos textos; los 459 tests de core pasan y specty check del cambio queda en verde.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "A": 2,
     "AC": 2,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T18:19:55.479Z"
 }
