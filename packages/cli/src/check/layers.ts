@@ -3,7 +3,6 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
-  dartImports,
   type Finding,
   globBase,
   type LayerViolation,
@@ -14,9 +13,9 @@ import {
   type ResolvedImport,
   translator,
 } from "@baquia-dev/specty-core";
-import { parse as parseYaml } from "yaml";
 import { execute, tail } from "../io/exec";
 import { exists, isRecord, parseJson, readText } from "../io/files";
+import { scannedImports } from "./layer-scanners";
 import type { CheckContext, CheckDefinition, Provider } from "./provider";
 
 /**
@@ -26,7 +25,14 @@ import type { CheckContext, CheckDefinition, Provider } from "./provider";
  */
 
 const SCRIPTS = /\.(?:[cm]?[jt]sx?)$/;
-const LANGUAGES: ReadonlySet<string> = new Set(["typescript", "javascript", "dart"]);
+const LANGUAGES: ReadonlySet<string> = new Set([
+  "typescript",
+  "javascript",
+  "dart",
+  "python",
+  "go",
+  "rust",
+]);
 
 export function layersProvider(config: ResolvedConfig): Provider {
   const configured = Object.keys(config.checks.layers).length > 0;
@@ -49,14 +55,12 @@ const layers: CheckDefinition = {
       context.files.filter((path) => SCRIPTS.test(path) && inLayers(path)),
     );
     if ("skipped" in scripts) return scripts;
-    const dart = await dartImportsOf(
-      context,
-      context.files.filter((path) => path.endsWith(".dart") && inLayers(path)),
-    );
-    const violations = layerViolations([...scripts.imports, ...dart], rules);
+    const scanned = await scannedImports(context, context.files.filter(inLayers));
+    const violations = layerViolations([...scripts.imports, ...scanned], rules);
     const findings = await Promise.all(
       violations.map(async (violation): Promise<Finding[]> => {
-        const line = lineOf((await context.read(violation.from)) ?? "", violation);
+        const line =
+          violation.line ?? lineOf((await context.read(violation.from)) ?? "", violation);
         if (line !== undefined && context.added(violation.from)?.has(line) === false) return [];
         return [
           {
@@ -104,23 +108,6 @@ async function scriptImports(
       : files;
   const ours = new Set(files);
   return { imports: (await cruise(context, bin, sources)).filter((edge) => ours.has(edge.from)) };
-}
-
-/** The imports of the run's Dart files in the layers, by the core's scanner. */
-async function dartImportsOf(
-  context: CheckContext,
-  files: readonly string[],
-): Promise<ResolvedImport[]> {
-  if (files.length === 0) return [];
-  const pubspec = parseYaml((await readText(join(context.session.root, "pubspec.yaml"))) ?? "");
-  const own = isRecord(pubspec) && typeof pubspec.name === "string" ? pubspec.name : undefined;
-  const found = await Promise.all(
-    files.map(async (path) => {
-      const text = await context.read(path);
-      return text === undefined ? [] : dartImports(path, text, own);
-    }),
-  );
-  return found.flat();
 }
 
 /** The imports dependency-cruiser resolves from `sources`; its report goes to a file. */

@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "10c72091ab4df9783741d654b83c0b7bf2a852f0",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:17:18.666Z",
       "doneAt": "2026-10-26T15:20:55.116Z",
-      "summary": "Escáneres de imports del core para Python (módulos del repo en la raíz o en src, relativos), Go (contra el module de go.mod) y Rust (crate, super, self y crates externos); cada import lleva su línea y layerViolations la conserva."
+      "summary": "Escáneres de imports del core para Python (módulos del repo en la raíz o en src, relativos), Go (contra el module de go.mod) y Rust (crate, super, self y crates externos); cada import lleva su línea y layerViolations la conserva.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b60e58df81c6f57926f3a224c542dda5c5dc84db",
+      "startedAt": "2026-10-26T15:20:55.427Z",
+      "doneAt": "2026-10-26T15:24:26.671Z",
+      "summary": "layer-scanners.ts reúne los escáneres sin herramientas (Dart, Python con los archivos del repo, Go con el module de go.mod, Rust); layers los usa para Python, Go y Rust y toma la línea que da cada escáner."
     }
   },
   "pending": {
