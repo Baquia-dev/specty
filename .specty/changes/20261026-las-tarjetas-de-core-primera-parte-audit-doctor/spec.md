@@ -45,7 +45,7 @@ Las tarjetas de auditoría, de épica, de propuesta y de estado tienen funciones
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
-- [ ] T3: El estado de los cambios
+- [x] T3: El estado de los cambios
   - files: packages/core/src/cards/human.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
