@@ -40,7 +40,7 @@ Las tarjetas de auditoría, de épica, de propuesta y de estado tienen funciones
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
-- [ ] T2: El corte rechazado y la propuesta
+- [x] T2: El corte rechazado y la propuesta
   - files: packages/core/src/cards/epic.ts, packages/core/src/cards/flow.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run

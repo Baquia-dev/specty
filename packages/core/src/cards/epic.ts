@@ -2,7 +2,7 @@
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
 import { blockedCard } from "./flow";
-import { translator } from "./text";
+import { type Translate, translator } from "./text";
 import type { CardContext, ChangeView, SliceView } from "./view";
 
 /**
@@ -95,76 +95,78 @@ export type SliceRefusal =
 /** A slice that cannot start: `invalid` when the command names it wrong, `blocked` by the epic. */
 export function sliceRefusalCard(refusal: SliceRefusal, ctx: CardContext): Output {
   const t = translator(ctx.lang);
-  const { command } = ctx;
-  const refuse = (status: "invalid" | "blocked", reason: string, next: string): Output => ({
-    ...blockedCard(headerOf(), reason, next),
-    status,
-  });
-  const resume = t(
-    `ejecuta \`${command} next\` en la carpeta de la épica, que dice qué corte sigue.`,
-    `run \`${command} next\` in the epic's folder, which says which slice comes next.`,
-  );
+  return {
+    ...blockedCard(
+      headerOf(),
+      sliceRefusalReason(refusal, t),
+      sliceRefusalNext(refusal, t, ctx.command),
+    ),
+    status: NAMED_WRONG.has(refusal.reason) ? "invalid" : "blocked",
+  };
+}
+
+// The refusals of a command that names the epic or the slice wrong; the epic blocks the others.
+const NAMED_WRONG: ReadonlySet<SliceRefusal["reason"]> = new Set([
+  "incomplete",
+  "no-epic",
+  "no-slice",
+]);
+
+function sliceRefusalReason(refusal: SliceRefusal, t: Translate): string {
   switch (refusal.reason) {
     case "incomplete":
-      return refuse(
-        "invalid",
-        t(
-          "`--epic` y `--slice` van juntos: la épica y el corte que implementa el cambio.",
-          "`--epic` and `--slice` go together: the epic and the slice the change implements.",
-        ),
-        t(
-          `ejecuta \`${command} new "<título>" --epic <épica> --slice <corte>\`.`,
-          `run \`${command} new "<title>" --epic <epic> --slice <slice>\`.`,
-        ),
+      return t(
+        "`--epic` y `--slice` van juntos: la épica y el corte que implementa el cambio.",
+        "`--epic` and `--slice` go together: the epic and the slice the change implements.",
       );
     case "no-epic":
-      return refuse(
-        "invalid",
-        t(
-          `No hay ninguna épica abierta ${refusal.epic}.`,
-          `There is no open epic ${refusal.epic}.`,
-        ),
-        t(`revisa su id con \`${command} status\`.`, `check its id with \`${command} status\`.`),
+      return t(
+        `No hay ninguna épica abierta ${refusal.epic}.`,
+        `There is no open epic ${refusal.epic}.`,
       );
     case "not-approved":
-      return refuse(
-        "blocked",
-        t(
-          `La épica ${refusal.epic} aún no está aprobada (fase ${refusal.phase}).`,
-          `Epic ${refusal.epic} is not approved yet (phase ${refusal.phase}).`,
-        ),
-        resume,
+      return t(
+        `La épica ${refusal.epic} aún no está aprobada (fase ${refusal.phase}).`,
+        `Epic ${refusal.epic} is not approved yet (phase ${refusal.phase}).`,
       );
     case "no-slice": {
       const ids = refusal.slices.join(", ");
-      return refuse(
-        "invalid",
-        t(
-          `La épica ${refusal.epic} no tiene el corte ${refusal.slice}; sus cortes: ${ids}.`,
-          `Epic ${refusal.epic} has no slice ${refusal.slice}; its slices: ${ids}.`,
-        ),
-        resume,
+      return t(
+        `La épica ${refusal.epic} no tiene el corte ${refusal.slice}; sus cortes: ${ids}.`,
+        `Epic ${refusal.epic} has no slice ${refusal.slice}; its slices: ${ids}.`,
       );
     }
     case "taken":
-      return refuse(
-        "blocked",
-        t(
-          `El corte ${refusal.slice} ya tiene un cambio: ${refusal.child.id}, en ${refusal.child.phase}.`,
-          `Slice ${refusal.slice} already has a change: ${refusal.child.id}, in ${refusal.child.phase}.`,
-        ),
-        resume,
+      return t(
+        `El corte ${refusal.slice} ya tiene un cambio: ${refusal.child.id}, en ${refusal.child.phase}.`,
+        `Slice ${refusal.slice} already has a change: ${refusal.child.id}, in ${refusal.child.phase}.`,
       );
     case "waiting": {
       const waiting = refusal.waiting.join(", ");
-      return refuse(
-        "blocked",
-        t(
-          `El corte ${refusal.slice} depende de cortes que aún no están cerrados: ${waiting}.`,
-          `Slice ${refusal.slice} depends on slices that are not closed yet: ${waiting}.`,
-        ),
-        resume,
+      return t(
+        `El corte ${refusal.slice} depende de cortes que aún no están cerrados: ${waiting}.`,
+        `Slice ${refusal.slice} depends on slices that are not closed yet: ${waiting}.`,
       );
     }
+  }
+}
+
+function sliceRefusalNext(refusal: SliceRefusal, t: Translate, command: string): string {
+  switch (refusal.reason) {
+    case "incomplete":
+      return t(
+        `ejecuta \`${command} new "<título>" --epic <épica> --slice <corte>\`.`,
+        `run \`${command} new "<title>" --epic <epic> --slice <slice>\`.`,
+      );
+    case "no-epic":
+      return t(
+        `revisa su id con \`${command} status\`.`,
+        `check its id with \`${command} status\`.`,
+      );
+    default:
+      return t(
+        `ejecuta \`${command} next\` en la carpeta de la épica, que dice qué corte sigue.`,
+        `run \`${command} next\` in the epic's folder, which says which slice comes next.`,
+      );
   }
 }

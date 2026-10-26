@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6c6ee5ad4174bd83f448c5b4b6753f0a007389aa",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:11:55.543Z",
       "doneAt": "2026-10-26T18:14:43.106Z",
-      "summary": "audit.ts: auditReport se arma con headerLines, taskLines y timelineLines; what lee una tabla EVENTS con lookup y las palabras de cada evento salen de eventWords. Mismos textos; los 459 tests de core pasan."
+      "summary": "audit.ts: auditReport se arma con headerLines, taskLines y timelineLines; what lee una tabla EVENTS con lookup y las palabras de cada evento salen de eventWords. Mismos textos; los 459 tests de core pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c66a55452edffc6792a9cf237203466d8f7b0f99",
+      "startedAt": "2026-10-26T18:14:43.398Z",
+      "doneAt": "2026-10-26T18:15:31.816Z",
+      "summary": "epic.ts: sliceRefusalCard toma la razón de sliceRefusalReason, el paso de sliceRefusalNext y el estado de NAMED_WRONG. flow.ts: proposedCard elige closingProposedCard o specProposedCard, cuyo paso da specProposedNext. Mismos textos."
     }
   },
   "pending": {
