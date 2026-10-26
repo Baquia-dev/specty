@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-ui-export-delegate-why-y-audit-viv",
   "baseCommit": "cede2ba71b56b9b2f021ec0af15ce45d6f69bf69",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:10892b55f3a100d6f5cc7e7b063299d5a35a27a4d6ced1cb16695af5e966a2e2",
+    "at": "2026-10-26T03:18:37.206Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "96d12bc96407bf58c18e7cc1f5006ba883ef5a66",
+      "startedAt": "2026-10-26T03:18:37.607Z",
+      "doneAt": "2026-10-26T03:20:06.579Z",
+      "summary": "Core tiene los textos de ui (cards/ui.ts), export (cards/export.ts), la pregunta de delegate (cards/human.ts) y los rechazos de why y audit (cards/why.ts y cards/audit.ts), copiados letra a letra de la CLI, con tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 5,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:10892b55f3a100d6f5cc7e7b063299d5a35a27a4d6ced1cb16695af5e966a2e2",
-    "at": "2026-10-26T03:18:37.206Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

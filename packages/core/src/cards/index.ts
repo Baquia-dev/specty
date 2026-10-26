@@ -32,8 +32,10 @@ export {
 } from "./approve";
 export {
   type AuditEvent,
+  type AuditRefusal,
   type AuditTask,
   type AuditView,
+  auditRefusalCard,
   auditReport,
 } from "./audit";
 export {
@@ -58,6 +60,7 @@ export {
 } from "./decide";
 export { type DoctorLine, doctorCard, doctorLine } from "./doctor";
 export { epicCard, type SliceRefusal, sliceLines, sliceRefusalCard } from "./epic";
+export { type ExportRefusal, exportedCard, exportRefusalCard } from "./export";
 export {
   blockedCard,
   changeHeader,
@@ -79,6 +82,9 @@ export {
   closedCard,
   decisionCard,
   delegationCard,
+  delegationChoices,
+  delegationNoteTitle,
+  delegationQuestion,
   delegationWarning,
   nothingPendingCard,
   notInteractiveCard,
@@ -209,6 +215,7 @@ export {
   taskDoneRefusalCard,
 } from "./task";
 export { effortLabel, effortLine, runNext, translator, verifyingNote } from "./text";
+export { invalidPortCard, uiOpenedCard, uiStoppedCard } from "./ui";
 export {
   claudePointerStaysLine,
   globalGuardStaysLine,
@@ -233,5 +240,11 @@ export type {
   SliceView,
   TaskView,
 } from "./view";
-export { type WhyCommit, type WhyView, whyCard } from "./why";
+export {
+  type WhyCommit,
+  type WhyRefusal,
+  type WhyView,
+  whyCard,
+  whyRefusalCard,
+} from "./why";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./work";

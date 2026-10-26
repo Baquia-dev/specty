@@ -51,7 +51,7 @@ Pasan a dos módulos nuevos de core, `cards/ui.ts` y `cards/export.ts`, y a los 
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de ui, export, delegate, why y audit
+- [x] T1: Core tiene los textos de ui, export, delegate, why y audit
   - files: packages/core/src/cards/ui.ts, packages/core/src/cards/export.ts, packages/core/src/cards/human.ts, packages/core/src/cards/why.ts, packages/core/src/cards/audit.ts, packages/core/src/cards/index.ts, packages/core/test/cards/commands.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
