@@ -1,19 +1,26 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  assertionWarnings,
+  acceptAnywayQuestion,
+  acceptanceSummary,
+  acceptedLine,
+  acceptQuestion,
   blockedCard,
+  checkStatus,
+  closeCommitSubject,
   closedCard,
   decisionCard,
+  delegatedFailureCard,
   headerOf,
-  longFileWarnings,
   nothingPendingCard,
   type Output,
   parseSpec,
-  riskWarnings,
+  quickClosedLine,
+  quickClosing,
+  runVerificationQuestion,
   serializeSpec,
-  sliceLines,
   transition,
-  translator,
+  verificationNoteTitle,
+  verificationReusedNote,
 } from "@baquia-dev/specty-core";
 import { commitState } from "../flow/active";
 import { verifyHints, withVerifyHints } from "../flow/detected";
@@ -37,14 +44,9 @@ import { thenNext } from "./next";
 export async function accept(session: Session, verify?: boolean): Promise<Output> {
   const guard = await humanChange(session, "accept");
   if (guard.kind === "output") return guard.output;
-  const t = translator(session.lang);
+  const { cards } = session;
   if (guard.change.state.phase !== "acceptance")
-    return nothingPendingCard(
-      guard.change.state.id,
-      guard.change.state.phase,
-      "accept",
-      session.cards,
-    );
+    return nothingPendingCard(guard.change.state.id, guard.change.state.phase, "accept", cards);
   const pending = await pendingIntegration(session, guard.change, "accept");
   if (pending.kind === "wait") return pending.output;
   const { change } = pending;
@@ -53,55 +55,25 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   const view = await changeView(session, change);
   // An epic has no code of its own: each of its slices was verified when it closed.
   const epic = state.kind === "epic";
-  terminal.note(
-    view.title,
-    [
-      ...sliceLines(view.slices ?? [], session.cards),
-      ...view.tasks.map(
-        (task) =>
-          `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
-      ),
-      ...assertionWarnings(view.tasks, session.lang),
-      ...riskWarnings(view.tasks, session.lang),
-      ...longFileWarnings(view.tasks, session.lang),
-      ...(!epic &&
-      session.config.verify.full === undefined &&
-      session.config.verify.default === undefined
-        ? [
-            t(
-              "Nada verifica el cambio entero: .specty/config.yaml no tiene `verify.full` ni `verify.default`, así que solo se ejecutó el `verify` de cada tarea.",
-              "Nothing verifies the whole change: .specty/config.yaml has neither `verify.full` nor `verify.default`, so only each task's `verify` ran.",
-            ),
-          ]
-        : []),
-    ].join("\n"),
-  );
+  const unverified =
+    !epic &&
+    session.config.verify.full === undefined &&
+    session.config.verify.default === undefined;
+  terminal.note(view.title, acceptanceSummary(view, unverified, cards));
   const configured = epic ? undefined : session.config.verify.full;
   // It need not run again when it already passed on this same code: in the last task, say.
   const passed =
     configured === undefined ? undefined : await passedOnThisCode(session, change, configured);
   if (configured !== undefined && passed !== undefined) {
-    terminal.note(
-      t("Verificación completa", "Full verification"),
-      t(
-        `La verificación completa (\`${configured}\`) ya pasó con este mismo código ${passed.task === undefined ? "en una verificación anterior" : `en ${passed.task}`}: no se repite.`,
-        `The full verification (\`${configured}\`) already passed on this same code ${passed.task === undefined ? "in an earlier run" : `in ${passed.task}`}: it does not run again.`,
-      ),
-    );
+    const note = verificationReusedNote(configured, passed.task, session.lang);
+    terminal.note(note.title, note.text);
   }
   const full = passed === undefined ? configured : undefined;
   // In delegated mode the agent always runs the full verification, and never accepts a failure.
   const delegated = session.actor === "agent";
   if (
     full !== undefined &&
-    (delegated ||
-      (verify ??
-        (await terminal.confirm(
-          t(
-            `¿Ejecutar antes la verificación completa (\`${full}\`)?`,
-            `Run the full verification (\`${full}\`) first?`,
-          ),
-        ))))
+    (delegated || (verify ?? (await terminal.confirm(runVerificationQuestion(full, session.lang)))))
   ) {
     const tree = await codeTree(session);
     const started = Date.now();
@@ -119,34 +91,15 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
       ...(tree === undefined ? {} : { tree }),
     });
     terminal.note(
-      result.code === 0
-        ? t("Verificación correcta", "Verification passed")
-        : t("Verificación fallida", "Verification failed"),
+      verificationNoteTitle(result.code === 0, session.lang),
       tail(result, 15).join("\n"),
     );
     if (result.code !== 0 && delegated)
-      return blockedCard(
-        headerOf(state.id, state.phase),
-        t(
-          `La verificación completa (\`${full}\`) falló: en modo delegado no se acepta.`,
-          `The full verification (\`${full}\`) failed: in delegated mode it is not accepted.`,
-        ),
-        t(
-          `corrige el fallo: ejecuta \`${session.cards.command} adjust "<qué falla>"\` y sigue su salida.`,
-          `fix the failure: run \`${session.cards.command} adjust "<what fails>"\` and follow its output.`,
-        ),
-      );
-    if (
-      result.code !== 0 &&
-      !(await terminal.confirm(t("¿Aceptar de todos modos?", "Accept anyway?")))
-    )
+      return delegatedFailureCard(headerOf(state.id, state.phase), full, cards);
+    if (result.code !== 0 && !(await terminal.confirm(acceptAnywayQuestion(session.lang))))
       return postponed(session, state);
   }
-  if (
-    !(await terminal.confirm(
-      t(`¿Aceptar el resultado de «${view.title}»?`, `Accept the result of "${view.title}"?`),
-    ))
-  )
+  if (!(await terminal.confirm(acceptQuestion(view.title, session.lang))))
     return postponed(session, state);
   const moved = transition({
     phase: "acceptance",
@@ -155,14 +108,7 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
     event: { type: "accept" },
   });
   if (!moved.ok)
-    return blockedCard(
-      headerOf(state.id, state.phase),
-      moved.code,
-      t(
-        `revisa \`${session.cards.command} status\`.`,
-        `check \`${session.cards.command} status\`.`,
-      ),
-    );
+    return blockedCard(headerOf(state.id, state.phase), moved.code, checkStatus(cards));
   if (moved.phase === "done")
     return closeQuick(
       session,
@@ -179,34 +125,23 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   );
   return thenNext(
     session,
-    decisionCard(
-      headerOf(state.id, moved.phase),
-      [
-        t(
-          "Resultado aceptado; el agente redactará el cierre.",
-          "Result accepted; the agent will write the closing.",
-        ),
-      ],
-      session.cards,
-    ),
+    decisionCard(headerOf(state.id, moved.phase), [acceptedLine(session.lang)], cards),
   );
 }
 
-/** `specty close`: a person confirms the closing and the change is archived. */
-
+/** Quick lane: accepting closes the change, with the task summary as its closing. */
 async function closeQuick(
   session: Session,
   change: StoredChange,
   summaries: readonly string[],
 ): Promise<Output> {
-  const t = translator(session.lang);
   // As when closing: the main branch comes in first, and a refusal leaves it in acceptance.
   const plan = await integrationOf(session, change.state);
   const absorbed =
     plan === undefined ? undefined : await absorbTarget(session, plan, change, "accept");
   if (absorbed?.ok === false) return absorbed.output;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
-  const closing = `### ${t("Resumen", "Summary")}\n\n${summaries.join("\n")}`;
+  const closing = quickClosing(summaries, session.lang);
   await writeText(
     change.files.spec,
     serializeSpec({ ...spec, sections: { ...spec.sections, closing } }),
@@ -222,7 +157,7 @@ async function closeQuick(
     session,
     change,
     archived,
-    `docs(spec): ${t("cerrar", "close")} ${spec.title}`,
+    closeCommitSubject(spec.title, session.lang),
   );
   // Read while the folder exists: landing removes a worktree of its own.
   const hints = await verifyHints(session, plan?.main ?? session.root);
@@ -231,10 +166,7 @@ async function closeQuick(
     session,
     closedCard(
       headerOf(change.state.id, "done"),
-      t(
-        `Cambio aceptado, cerrado y archivado (commit ${commit}).`,
-        `Change accepted, closed and archived (commit ${commit}).`,
-      ),
+      quickClosedLine(commit, session.lang),
       landed?.landed === true ? undefined : change.state.branch,
       session.cards,
     ),

@@ -44,7 +44,7 @@ Quinto cambio de la serie que lleva a core los textos de la CLI, con las decisio
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: accept, close y cancel piden sus textos a core
+- [x] T2: accept, close y cancel piden sus textos a core
   - files: packages/cli/src/commands/accept.ts, packages/cli/src/commands/finish.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm check
