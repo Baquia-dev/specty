@@ -13,9 +13,10 @@ export type JsonUpdate = (value: Record<string, unknown>) => Record<string, unkn
 
 /**
  * What an event of an agent's hooks is: before an action, after a shell command, a session that
- * starts again after a compaction, or Claude Code making or removing a worktree.
+ * starts again after a compaction, a compaction about to happen that cannot take the card (it
+ * waits for the conversation's next command), or Claude Code making or removing a worktree.
  */
-type EventKind = "before" | "after" | "compact" | "worktree";
+export type EventKind = "before" | "after" | "compact" | "compacting" | "worktree";
 
 /** The guard's verdict before each agent's form: let it through, or stop it and say why. */
 export type Verdict =
@@ -36,8 +37,11 @@ export interface AgentAdapter {
   readonly kind: (event: Event) => EventKind;
   /** The action an event before it describes. Paths are still as the tool sent them. */
   readonly action: (event: Event) => RawAction;
-  /** The reply before an action, or after a shell command. */
-  readonly reply: (verdict: Verdict, phase: "before" | "after") => GuardReply;
+  /**
+   * The reply before an action, or after a shell command, with the card a compaction left for
+   * it when there is one.
+   */
+  readonly reply: (verdict: Verdict, phase: "before" | "after", card?: string) => GuardReply;
   /** The reply when the guard itself fails: the action goes through, with every agent. */
   readonly failed: (message: string) => GuardReply;
   /** The reply that brings the task card back after a compaction, for an agent that can. */
@@ -47,9 +51,9 @@ export interface AgentAdapter {
   /** Writes its guard and its settings in the repository, never in the user's folder (ADR 0013). */
   readonly install: (context: InstallContext) => Promise<Installed>;
   /** Takes them out again for `uninstall`, and leaves everything else as it was. */
-  readonly remove: (root: string, files: InstallFiles) => Promise<void>;
+  readonly remove: (root: string, files: InstallFiles, git: Git) => Promise<void>;
   /** What `doctor` finds in place and what it finds missing. */
-  readonly doctor: (root: string) => Promise<DoctorLines>;
+  readonly doctor: (root: string, git: Git) => Promise<DoctorLines>;
   /** Its guard in the user's folder, which Specty only reads: `uninstall` says it stays there. */
   readonly userFile?: (env: NodeJS.ProcessEnv) => string;
 }

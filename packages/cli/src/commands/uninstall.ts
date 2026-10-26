@@ -80,7 +80,7 @@ async function uninstall(session: Session, dryRun: boolean): Promise<Output> {
 /** Everything `init` installed in the repository, taken out through `files`. */
 async function removeSpecty(session: Session, files: InstallFiles): Promise<void> {
   await removeAgentsBlocks(session.root, files);
-  await removeAgentHooks(session.root, files);
+  await removeAgentHooks(session.root, files, session.git);
   await removeGitHooks(session.root, session.git, files);
 }
 

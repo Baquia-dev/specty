@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { GuardTool } from "../enforce/actions";
 import type { InstallFiles } from "../install/files";
+import type { Git } from "../io/git";
 import type { AgentAdapter } from "./adapter";
 import { claudeCode } from "./claude-code";
 import { codex } from "./codex";
@@ -22,6 +23,6 @@ export const ADAPTERS: Readonly<Record<GuardTool, AgentAdapter>> = {
  * Takes Specty's hooks and settings out of each agent's files in the repository, leaving
  * everything else; a file left with nothing else goes.
  */
-export async function removeAgentHooks(root: string, files: InstallFiles): Promise<void> {
-  for (const agent of Object.values(ADAPTERS)) await agent.remove(root, files);
+export async function removeAgentHooks(root: string, files: InstallFiles, git: Git): Promise<void> {
+  for (const agent of Object.values(ADAPTERS)) await agent.remove(root, files, git);
 }

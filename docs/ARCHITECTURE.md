@@ -205,7 +205,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - no se mide lo que no es código escrito a mano: lo ignorado, lo generado (`scope.generated`, o una marca `@generated`, `DO NOT EDIT`, `DO NOT MODIFY`, `GENERATED CODE`, `auto-generated` o `Code generated` en sus primeras líneas), los lockfiles, los binarios y lo de `lines.exclude`. El tamaño del cambio (§11) sigue la misma regla.
 
   Si la tarea deja un archivo por encima de `lines.warn` (300; tests, 400) y lo hizo crecer, la salida lo avisa y pide proponer cómo dividirlo por responsabilidad, nunca partirlo solo para cumplir el número. `task.completed` guarda `longFiles`, y la aceptación los muestra. Si la tarea lo lleva por encima de `lines.fail` (500; tests, 600), `task done` no la completa hasta que se divida, o hasta que la persona suba el máximo. Un archivo que ya pasaba el máximo y crece solo avisa, y con `fail: false` no se bloquea nunca.
-- **Tras compactar** (Claude Code: `SessionStart` con el matcher `compact`, al mismo `specty guard --tool claude-code`; Codex: `SessionStart` con el matcher `^compact$`, y el guard comprueba además que `source` sea `compact`): el guard responde con lo que imprimiría `next`, y la herramienta lo añade al contexto, así que la tarjeta vuelve entera aunque el resumen la haya recortado. Solo tras compactar: al empezar, reanudar o limpiar, AGENTS.md ya pide ejecutar `next`. Fuera de un repositorio con Specty no añade nada.
+- **Tras compactar** (Claude Code: `SessionStart` con el matcher `compact`, al mismo `specty guard --tool claude-code`; Codex: `SessionStart` con el matcher `^compact$`, y el guard comprueba además que `source` sea `compact`): el guard responde con lo que imprimiría `next`, y la herramienta lo añade al contexto, así que la tarjeta vuelve entera aunque el resumen la haya recortado. Solo tras compactar: al empezar, reanudar o limpiar, AGENTS.md ya pide ejecutar `next`. Fuera de un repositorio con Specty no añade nada. Cursor solo avisa antes de compactar (`preCompact`, sin matcher) y no deja añadir nada en ese momento, así que el guard deja la tarjeta pendiente para esa conversación (`specty/pending/<conversación>.card` en la carpeta de git) y la añade al `additional_context` del siguiente comando de shell, después del aviso del comando si lo hay; se entrega una sola vez y caduca en un día.
 - **Hallazgos**: lo que el agente descubre en una tarea y deben saber las siguientes, o el cambio que venga después, lo deja con `task done <T> --finding "<texto>"` (repetible), en `task.completed`. Las tarjetas de las tareas siguientes lo muestran en HALLAZGOS. La del cierre pide llevar a `### Pendientes` los que sigan abiertos.
 - **Entre cambios**: un cambio de seguimiento (`new --follows <id>`) carga en su borrador los Pendientes del Cierre del anterior y los hallazgos de sus tareas, no su historial. Lo busca entre los cambios abiertos y archivados de su carpeta; si no lo encuentra, por ejemplo porque sigue abierto en otra worktree, el borrador lo dice.
 
@@ -320,6 +320,7 @@ Objetivo de rendimiento: p95 < 200 ms. Para acercarse, los hooks cargan solo su 
 
 - **Claude Code:** en el archivo de su guard, `permissions.allow` lleva `Bash(specty <comando> *)` para cada comando de la persona (`HUMAN_COMMANDS`: `approve`, `accept`, `close`, `cancel` y `reject`). En modo auto, una acción que casa con una regla `allow` no pasa por el clasificador, que antes bloqueaba el `specty approve` del agente aunque la persona lo hubiera delegado: la orden venía de la salida de Specty, no de la persona. `delegate` y `uninstall` no reciben regla.
 - **Codex:** `.codex/rules/specty.rules` lleva `prefix_rule(pattern = ["specty"], decision = "allow")`. Así los comandos de Specty no piden aprobación y se ejecutan fuera del sandbox, que deja `.git` en solo lectura y frenaba cada commit de `task done`, `approve`, `accept` o `close`. Codex carga las reglas del proyecto cuando la persona confía en él, y el sandbox deja `.codex/` en solo lectura para el agente. La regla no lleva rutas de la máquina, así que se versiona aunque los hooks sean locales.
+- **Cursor:** su sandbox solo deja escribir en el espacio de trabajo, y en la carpeta de un cambio la carpeta común de git queda fuera, así que fallaban los commits de `task done`. `init` escribe `.cursor/sandbox.json` con esa carpeta (la de `config`) y la de las worktrees en `additionalReadwritePaths`, después de las rutas que la persona tuviera. Lleva rutas de la máquina, así que va excluido de git y `new` lo copia a cada worktree; si la persona ya lo versiona, `init` no lo toca y le dice qué añadir.
 - **OpenCode** no tiene sandbox ni clasificador: sus permisos son las reglas `permission` de la persona en `opencode.json`, que Specty no toca.
 
 Las reglas no cambian lo que Specty permite: sin modo delegado, el guard le bloquea al agente los comandos de la persona y la CLI pide una terminal real. `doctor` avisa si faltan, y `uninstall` las quita.
@@ -338,13 +339,17 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 | Herramienta | Guard | Aviso tras cada comando | Tarjeta tras compactar | Worktree por nombre | Fin de turno | Exclusión | Permisos | Prueba de extremo a extremo | Se detecta por |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |
-| Cursor | sí | sí | pendiente | no posible | sí | sí | pendiente | no posible | `.cursor`, `.cursorrules` |
+| Cursor | sí | sí | indirecto | no posible | sí | sí | sí | no posible | `.cursor`, `.cursorrules` |
 | Codex | sí | sí | sí | no posible | sí | no posible | sí | pendiente | `.codex` |
 | OpenCode | sí | sí | pendiente | no posible | pendiente | pendiente | sí | pendiente | `.opencode`, `opencode.json`, `opencode.jsonc` |
 | Gemini CLI | pendiente | pendiente | pendiente | no posible | pendiente | sí | pendiente | pendiente | `.gemini`, `GEMINI.md` |
 | GitHub Copilot | — | — | — | — | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
 | Windsurf | pendiente | pendiente | no posible | no posible | no posible | sí | pendiente | no posible | `.windsurf`, `.windsurfrules` |
 | Antigravity | pendiente | pendiente | pendiente | no posible | pendiente | pendiente | pendiente | no posible | `.agents`, `.agent` |
+
+**Indirecto:**
+
+- Tarjeta tras compactar (Cursor): `preCompact` solo observa, así que la tarjeta llega con el resultado del siguiente comando de shell.
 
 **No posible:**
 
@@ -362,7 +367,7 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 | --- | --- | --- | --- |
 | Claude Code | `PreToolUse` (`matcher` + `hooks: [{ type: "command" }]`; salida 2 bloquea), `PostToolUse` y `PostToolUseFailure` con `Bash` (salida 2: el modelo ve el aviso), y `SessionStart` con `compact` (su salida va al contexto) | `.claude/settings.json`, o `settings.local.json` si el comando lleva una ruta local | Implementado (F1); aviso tras cada comando de Bash. En el mismo archivo, `init` permite `EnterWorktree` y `ExitWorktree` e instala `WorktreeCreate` y `WorktreeRemove`: las worktrees son transparentes para la persona, y el agente entra (por nombre), sale y las borra sin preguntar. También permite los comandos de la persona, para que decida Specty (ver «Permisos de la herramienta») |
 | Antigravity | `PreToolUse` | `.agents/hooks.json` | El legacy lo instala; verificar |
-| Cursor | `preToolUse` (`Write`, `Delete`, `Shell`) y `beforeShellExecution`; responde JSON con `permission` | `.cursor/hooks.json` (`version: 1`) | Implementado (F1); aviso tras cada comando con `postToolUse` y `postToolUseFailure` (`Shell`), que responden `additional_context`. No existe un evento previo a editar: `Write` cubre las escrituras del agente |
+| Cursor | `preToolUse` (`Write`, `Delete`, `Shell`) y `beforeShellExecution`; responde JSON con `permission` | `.cursor/hooks.json` (`version: 1`) | Implementado (F1); aviso tras cada comando con `postToolUse` y `postToolUseFailure` (`Shell`), que responden `additional_context`. `preCompact`, que solo observa, deja la tarjeta para el siguiente comando. No existe un evento previo a editar: `Write` cubre las escrituras del agente. `.cursor/sandbox.json` deja escribir a Specty en la carpeta de git y en la de las worktrees (ver «Permisos de la herramienta») |
 | Windsurf | `pre_write_code`, `pre_run_command` | `.windsurf/hooks.json` | Documentado |
 | Gemini CLI | `BeforeTool` | `.gemini/settings.json` | Experimental; hay que activarlo |
 | GitHub Copilot | `preToolUse` | `.github/hooks/*.json` | Parcial; verificar |

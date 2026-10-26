@@ -64,6 +64,30 @@ export function codexRulesLine(file: string, lang: Lang): string {
   );
 }
 
+/**
+ * Cursor's sandbox settings, local because they carry machine paths: the folders Specty's commands
+ * write in from a change's folder, which the sandbox leaves out.
+ */
+export function cursorSandboxLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Cursor: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees, que su sandbox deja fuera.`,
+    `Cursor: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder, which its sandbox leaves out.`,
+  );
+}
+
+/** A sandbox file the person keeps in git: Specty leaves it alone and says what to add. */
+export function cursorSandboxTrackedWarning(
+  file: string,
+  paths: readonly string[],
+  lang: Lang,
+): string {
+  const list = paths.map((path) => `\`${path}\``).join(", ");
+  return translator(lang)(
+    `Cursor: ${file} está en git, así que Specty no lo toca; añade ${list} a \`additionalReadwritePaths\` para que los commits de Specty funcionen en su sandbox.`,
+    `Cursor: ${file} is in git, so Specty leaves it alone; add ${list} to \`additionalReadwritePaths\` so Specty's commits work in its sandbox.`,
+  );
+}
+
 /** OpenCode's guard plugin, in the project (ADR 0013): `local` when not committed. */
 export function opencodeGuardLine(file: string, local: boolean, lang: Lang): string {
   const where = `${file}${local ? " (local)" : ""}`;

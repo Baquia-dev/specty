@@ -37,7 +37,7 @@ export async function doctor(session: Session): Promise<Output> {
   // Each agent's guard, as its module checks it (`agents/`).
   for (const agent of Object.values(ADAPTERS)) {
     if (!tools.includes(agent.tool)) continue;
-    const lines = await agent.doctor(root);
+    const lines = await agent.doctor(root, git);
     ok.push(...lines.ok);
     problems.push(...lines.problems);
   }
