@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-las-dependencias-permitidas-en-cada-ecosistema",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-las-dependencias-permitidas-en-cada-ecosistema",
   "baseCommit": "e3ba50557961221d5a10d3807a697c7dd3cf6824",
   "revision": 1,
@@ -57,12 +57,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2f790ec51e0ccca9386cdd89071d69b5f713da3d",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:59:06.492Z",
       "doneAt": "2026-10-26T15:01:35.359Z",
-      "summary": "Lectores de XML: pom.xml (sin dependencyManagement, build, reporting ni comentarios), PackageReference de .csproj/.fsproj/.vbproj y PackageVersion/GlobalPackageReference de Directory.Packages.props."
+      "summary": "Lectores de XML: pom.xml (sin dependencyManagement, build, reporting ni comentarios), PackageReference de .csproj/.fsproj/.vbproj y PackageVersion/GlobalPackageReference de Directory.Packages.props.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bee5fc54c2759f2cfcd1e476f722bfe63f55c5ae",
+      "startedAt": "2026-10-26T15:01:35.668Z",
+      "doneAt": "2026-10-26T15:03:44.678Z",
+      "summary": "Las guías y formats.md listan los manifiestos que lee dependencies en cada ecosistema y el formato de sus nombres"
     }
   },
   "pending": {

@@ -63,7 +63,7 @@ La verificación `dependencies` de `specty check --spec` lee los manifiestos de 
   - files: packages/core/src/checks/manifests-xml.ts, packages/core/src/checks/dependencies.ts, packages/core/test/checks/manifests.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/manifests.test.ts test/checks/dependencies.test.ts
-- [ ] T4: Los manifiestos en las guías y en formats
+- [x] T4: Los manifiestos en las guías y en formats
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md
   - ac: AC3
   - verify: pnpm check

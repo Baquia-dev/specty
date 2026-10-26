@@ -291,9 +291,19 @@ Cada archivo que el diff toca o borra está en «Archivos» de la spec, en los `
 
 **Con:** `--spec`.
 
-Cada dependencia que el diff añade a un `package.json` o a un `pubspec.yaml` está en `allowedDependencies` del frontmatter de la spec, por nombre o por glob. Un cambio de versión no cuenta.
+Cada dependencia que el diff añade a un manifiesto está en `allowedDependencies` del frontmatter de la spec, por nombre o por glob. Un cambio de versión no cuenta, y un manifiesto nuevo cuenta con todas sus dependencias. Lee estos manifiestos, en cualquier carpeta:
 
-**Configuración:** en la spec, `allowedDependencies: [zod, "@angular/*"]`.
+- JavaScript y TypeScript: `package.json` (`dependencies`, `devDependencies`, `peerDependencies` y `optionalDependencies`).
+- Dart y Flutter: `pubspec.yaml`, sin los paquetes del SDK.
+- Python: `requirements.txt` y `requirements*.txt`; `pyproject.toml` (`[project] dependencies`, `[project.optional-dependencies]`, `[dependency-groups]` y las tablas de Poetry, salvo `python`).
+- Go: `go.mod`, sin las dependencias que marca `// indirect`.
+- Rust: `Cargo.toml`, todas sus tablas de dependencias.
+- Ruby: `Gemfile`. PHP: `composer.json`, sin `php`, `ext-*` ni `lib-*`.
+- Java y Kotlin, como `grupo:artefacto`: `pom.xml` (sin `<dependencyManagement>` ni los plugins), `build.gradle` y `build.gradle.kts`, y el catálogo `gradle/libs.versions.toml`.
+- .NET: los `PackageReference` de cada `.csproj`, `.fsproj` o `.vbproj`, y `Directory.Packages.props`.
+- Swift: `Package.swift`, por el último tramo de la `url` de cada paquete.
+
+**Configuración:** en la spec, `allowedDependencies: [zod, "@angular/*", "com.squareup.okhttp3:*"]`.
 
 **Desactivar:** `levels: { dependencies: off }`.
 
@@ -375,7 +385,7 @@ Specty ya detecta esos stacks. Sin un proveedor propio funcionan:
 - `function-lines` y `complexity`, salvo en Ruby;
 - `max-lines`, `focused-tests` y `skipped-tests`, que ya conocen `@Disabled`, `@Ignore`, `[Ignore]`, `Skip =` de xUnit y `focus: true` de RSpec;
 - `todo`, `secrets` y `suppressions`, con las supresiones de cada lenguaje;
-- las del plan;
+- las del plan, con `dependencies` en sus manifiestos;
 - `generated`, con `checks.generators`.
 
 Un proveedor añadiría:
@@ -383,7 +393,6 @@ Un proveedor añadiría:
 - su lint, formato y tipos, si Specty no los detecta; mientras, sirve `checks.commands`;
 - su tipado estricto, más allá de las supresiones: por ejemplo, el `!!` de Kotlin;
 - `layers`, con un escáner de imports;
-- un lector de su manifiesto para `dependencies`: `pom.xml`, `build.gradle`, `composer.json`, `Gemfile` o `*.csproj`, en `packages/core/src/checks/dependencies.ts`.
 
 ### Pasos
 
