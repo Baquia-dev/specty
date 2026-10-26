@@ -47,7 +47,7 @@ Once funciones de las tarjetas de core pasan de los límites de Specty: `newRefu
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
-- [ ] T3: El rechazo de una tarea y la guía de redacción
+- [x] T3: El rechazo de una tarea y la guía de redacción
   - files: packages/core/src/cards/task.ts, packages/core/src/cards/text.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run

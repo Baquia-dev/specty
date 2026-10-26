@@ -36,40 +36,9 @@ export function taskDoneRefusalCard(
         t(`${refusal.task} no es la tarea activa.`, `${refusal.task} is not the active task.`),
         runNext(ctx),
       );
-    case "too-long": {
-      const [es, en] =
-        refusal.note === "summary"
-          ? [`El resumen tiene ${refusal.length}`, `The summary has ${refusal.length}`]
-          : [`Un hallazgo tiene ${refusal.length}`, `A finding has ${refusal.length}`];
-      return {
-        ...blockedCard(
-          header,
-          t(
-            `${es} caracteres; el máximo es ${NOTE_MAX}, porque las tarjetas de las tareas siguientes lo repiten.`,
-            `${en} characters; the most is ${NOTE_MAX}, since the next task cards repeat it.`,
-          ),
-          t(
-            "dilo en una o dos frases (el detalle ya está en el commit) y vuelve a ejecutar `task done`.",
-            "say it in one or two sentences (the detail is in the commit) and run `task done` again.",
-          ),
-        ),
-        status: "invalid",
-      };
-    }
+    case "too-long":
     case "empty":
-      return {
-        ...blockedCard(
-          header,
-          refusal.note === "finding"
-            ? t("Un hallazgo (--finding) está vacío.", "A finding (--finding) is empty.")
-            : t("Falta el resumen (--summary).", "The summary (--summary) is missing."),
-          t(
-            `ejecuta \`${ctx.command} task done ${refusal.task} --summary "<qué hiciste>"\`.`,
-            `run \`${ctx.command} task done ${refusal.task} --summary "<what you did>"\`.`,
-          ),
-        ),
-        status: "invalid",
-      };
+      return { ...noteRefusalCard(refusal, header, ctx), status: "invalid" };
     case "scope-pending":
       return blockedCard(
         header,
@@ -83,6 +52,42 @@ export function taskDoneRefusalCard(
         ),
       );
   }
+}
+
+/** A summary or a finding that is too long or empty. */
+function noteRefusalCard(
+  refusal: Extract<TaskDoneRefusal, { readonly reason: "too-long" | "empty" }>,
+  header: string,
+  ctx: CardContext,
+): Output {
+  const t = translator(ctx.lang);
+  if (refusal.reason === "empty") {
+    return blockedCard(
+      header,
+      refusal.note === "finding"
+        ? t("Un hallazgo (--finding) está vacío.", "A finding (--finding) is empty.")
+        : t("Falta el resumen (--summary).", "The summary (--summary) is missing."),
+      t(
+        `ejecuta \`${ctx.command} task done ${refusal.task} --summary "<qué hiciste>"\`.`,
+        `run \`${ctx.command} task done ${refusal.task} --summary "<what you did>"\`.`,
+      ),
+    );
+  }
+  const [es, en] =
+    refusal.note === "summary"
+      ? [`El resumen tiene ${refusal.length}`, `The summary has ${refusal.length}`]
+      : [`Un hallazgo tiene ${refusal.length}`, `A finding has ${refusal.length}`];
+  return blockedCard(
+    header,
+    t(
+      `${es} caracteres; el máximo es ${NOTE_MAX}, porque las tarjetas de las tareas siguientes lo repiten.`,
+      `${en} characters; the most is ${NOTE_MAX}, since the next task cards repeat it.`,
+    ),
+    t(
+      "dilo en una o dos frases (el detalle ya está en el commit) y vuelve a ejecutar `task done`.",
+      "say it in one or two sentences (the detail is in the commit) and run `task done` again.",
+    ),
+  );
 }
 
 /**

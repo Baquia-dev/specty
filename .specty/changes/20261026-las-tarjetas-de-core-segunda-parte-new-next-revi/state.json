@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "72d502bd2c98de4838f650712b6c4e72de9c4507",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:37:41.778Z",
       "doneAt": "2026-10-26T18:38:32.112Z",
-      "summary": "next.ts: nextCard lee PHASE_CARDS por fase; noChangeCard elige withoutSpecCard, skeletonCard o idleCard; reviewCard deja a changesRequestedCard lo pedido. review.ts: la razón del rechazo sale de reviewRefusalReason. Mismos textos."
+      "summary": "next.ts: nextCard lee PHASE_CARDS por fase; noChangeCard elige withoutSpecCard, skeletonCard o idleCard; reviewCard deja a changesRequestedCard lo pedido. review.ts: la razón del rechazo sale de reviewRefusalReason. Mismos textos.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "38e67a4dbd590e5bf7b8ae54873b31faea16b7c9",
+      "startedAt": "2026-10-26T18:38:32.401Z",
+      "doneAt": "2026-10-26T18:39:55.039Z",
+      "summary": "task.ts: los rechazos por un resumen o un hallazgo largo o vacío van en noteRefusalCard, con estado invalid. text.ts: draftingGuide une doubtsGuide, salvo en quick y retro, con la tabla KIND_GUIDES por tipo. Mismos textos y orden."
     }
   },
   "pending": {
