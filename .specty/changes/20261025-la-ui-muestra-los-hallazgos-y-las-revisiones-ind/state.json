@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-la-ui-muestra-los-hallazgos-y-las-revisiones-ind",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-la-ui-muestra-los-hallazgos-y-las-revisiones-ind",
   "baseCommit": "6fd1d14b36002afe22b23738f684f811988b9e40",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "81e267cb7dec36a03cd86329d807b916581fcb0a",
+      "attempts": 1,
       "startedAt": "2026-10-26T00:29:07.100Z",
       "doneAt": "2026-10-26T00:31:05.063Z",
-      "summary": "La vista del cambio (UI) trae findings (findingsOf: los del último task.completed de cada tarea) y specReview/resultReview, la última revisión con respuesta de la spec y del resultado, de record.reviews."
+      "summary": "La vista del cambio (UI) trae findings (findingsOf: los del último task.completed de cada tarea) y specReview/resultReview, la última revisión con respuesta de la spec y del resultado, de record.reviews.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cc8510f2eaf6796d72c0d93bfdcebb932f6985e3",
+      "startedAt": "2026-10-26T00:31:05.355Z",
+      "doneAt": "2026-10-26T00:34:43.832Z",
+      "summary": "Aceptación muestra Hallazgos (acceptance-findings) y la revisión independiente del resultado, y la pestaña Spec la de la spec (review/independent-review: texto tal cual, con revisión y fecha; es información). docs/ui.md y ARCHITECTURE §15."
     }
   },
   "pending": {

@@ -54,7 +54,7 @@ kind: standard
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/findings.ts, packages/ui/src/data/findings.test.ts, packages/ui/src/data/views.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/findings.test.ts --include src/data/views.test.ts
-- [ ] T3: Aceptación y Spec los muestran
+- [x] T3: Aceptación y Spec los muestran
   - files: packages/ui/src/acceptance/acceptance-findings.ts, packages/ui/src/acceptance/acceptance-findings.test.ts, packages/ui/src/review/independent-review.ts, packages/ui/src/review/independent-review.test.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/review/spec-review.ts, docs/ui.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
