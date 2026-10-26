@@ -15,7 +15,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: init instala los hooks desde install/hooks.ts
+- [x] T1: init instala los hooks desde install/hooks.ts
   - files: packages/cli/src/commands/init.ts, packages/cli/src/install/hooks.ts
   - verify: pnpm check
   - type: refactor
