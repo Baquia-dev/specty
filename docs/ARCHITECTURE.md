@@ -324,19 +324,36 @@ Objetivo de rendimiento: p95 < 200 ms. Para acercarse, los hooks cargan solo su 
 
 Las reglas no cambian lo que Specty permite: sin modo delegado, el guard le bloquea al agente los comandos de la persona y la CLI pide una terminal real. `doctor` avisa si faltan, y `uninstall` las quita.
 
-**Capacidades por herramienta.** La tabla `AGENT_CAPABILITIES` de `core/src/capabilities.ts` dice qué hace Specty con cada agente, y de ella salen las herramientas a las que `init` instala hooks, las que atiende el guard (el tipo `GuardTool`) y los archivos con los que se detecta cada una. Esta tabla se genera con `capabilityTable("es")`, y un test de core falla si no coincide:
+**Capacidades por herramienta.** La tabla `AGENT_CAPABILITIES` de `core/src/capabilities.ts` dice qué hace Specty con cada agente, y de ella salen las herramientas a las que `init` instala hooks, las que atiende el guard (el tipo `GuardTool`: las que tienen el guard en «sí») y los archivos con los que se detecta cada una. Cada capacidad está en un estado:
+
+- **sí**: como en Claude Code;
+- **indirecto**: por otro evento de la herramienta, un poco más tarde;
+- **no posible**: la herramienta no tiene nada que Specty pueda usar;
+- **pendiente**: lo hace un corte de la épica «Todos los agentes al nivel de Claude Code»;
+- **—**: Specty no lo ofrece para esa herramienta.
+
+Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decisions/0013-specty-no-escribe-en-la-carpeta-del-usuario.md)); el aviso tras cada comando de shell; la tarjeta tras compactar; entrar en la worktree por nombre; `specty check` al terminar el turno; la exclusión de dependencias y código generado; que los permisos de la herramienta dejen decidir a Specty; y una prueba de extremo a extremo con la herramienta y un modelo simulado. Debajo de la tabla está cómo se hace cada capacidad indirecta y por qué no se puede cada una de las no posibles. Esta tabla se genera con `capabilityTable("es")`, y un test de core falla si no coincide:
 
 <!-- specty:capabilities:begin -->
-| Herramienta | Guard | Aviso tras cada comando | Tarjeta tras compactar | Worktree por nombre | Se detecta por |
-| --- | --- | --- | --- | --- | --- |
-| Claude Code | en el repositorio | sí | sí | sí | `.claude`, `CLAUDE.md` |
-| Cursor | en el repositorio | sí | — | — | `.cursor`, `.cursorrules` |
-| Codex | en el repositorio | sí | — | — | `.codex` |
-| OpenCode | en el repositorio | sí | — | — | `.opencode`, `opencode.json`, `opencode.jsonc` |
-| Gemini CLI | — | — | — | — | `.gemini`, `GEMINI.md` |
-| GitHub Copilot | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
-| Windsurf | — | — | — | — | `.windsurf`, `.windsurfrules` |
-| Antigravity | — | — | — | — | `.agents`, `.agent` |
+| Herramienta | Guard | Aviso tras cada comando | Tarjeta tras compactar | Worktree por nombre | Fin de turno | Exclusión | Permisos | Prueba de extremo a extremo | Se detecta por |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |
+| Cursor | sí | sí | pendiente | no posible | sí | sí | pendiente | no posible | `.cursor`, `.cursorrules` |
+| Codex | sí | sí | pendiente | no posible | sí | no posible | sí | pendiente | `.codex` |
+| OpenCode | sí | sí | pendiente | no posible | pendiente | pendiente | sí | pendiente | `.opencode`, `opencode.json`, `opencode.jsonc` |
+| Gemini CLI | pendiente | pendiente | pendiente | no posible | pendiente | sí | pendiente | pendiente | `.gemini`, `GEMINI.md` |
+| GitHub Copilot | — | — | — | — | — | — | — | — | `.github/copilot-instructions.md`, `.github/instructions` |
+| Windsurf | pendiente | pendiente | no posible | no posible | no posible | sí | pendiente | no posible | `.windsurf`, `.windsurfrules` |
+| Antigravity | pendiente | pendiente | pendiente | no posible | pendiente | pendiente | pendiente | no posible | `.agents`, `.agent` |
+
+**No posible:**
+
+- Tarjeta tras compactar (Windsurf): no tiene eventos de sesión ni de compactación.
+- Worktree por nombre (Cursor, Codex, OpenCode, Gemini CLI, Windsurf, Antigravity): solo Claude Code tiene una herramienta para cambiar de carpeta en mitad de la sesión (`EnterWorktree`); con las demás se abre otro agente en la carpeta del cambio.
+- Fin de turno (Windsurf): sus hooks posteriores no responden al modelo ni lo hacen seguir.
+- Exclusión (Codex): lee los archivos por la shell y no tiene un archivo de exclusión.
+- Prueba de extremo a extremo (Cursor, Antigravity): su modelo va siempre por el servidor de la herramienta, así que no se puede simular.
+- Prueba de extremo a extremo (Windsurf): no tiene CLI.
 <!-- specty:capabilities:end -->
 
 **Soporte de hooks por herramienta** (revisado el 2026-10-21; se vuelve a verificar al implementar cada adaptador):

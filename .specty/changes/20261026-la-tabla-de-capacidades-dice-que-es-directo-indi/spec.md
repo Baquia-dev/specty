@@ -46,7 +46,7 @@ La tabla `AGENT_CAPABILITIES` y su copia en ARCHITECTURE §10 dicen hoy sí o no
 
 ## Tareas
 
-- [ ] T1: Cada capacidad con su estado y su motivo
+- [x] T1: Cada capacidad con su estado y su motivo
   - files: packages/core/src/capabilities.ts, packages/core/src/index.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/agents.test.ts
