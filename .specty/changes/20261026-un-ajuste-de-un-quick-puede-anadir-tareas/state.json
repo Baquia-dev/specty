@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "07738570b8f948d88a3fcf1a61edb6d221482aab",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:40:58.848Z",
       "doneAt": "2026-10-26T16:41:39.535Z",
-      "summary": "checkQuickLane solo limita a una tarea antes de la primera aprobación (sin revisión aprobada); los límites de archivos y rutas sensibles siguen. Test: un ajuste aprobado con T2 pasa en adjusting y review, y con más archivos sigue fallando."
+      "summary": "checkQuickLane solo limita a una tarea antes de la primera aprobación (sin revisión aprobada); los límites de archivos y rutas sensibles siguen. Test: un ajuste aprobado con T2 pasa en adjusting y review, y con más archivos sigue fallando.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8fe100855ad574b4b0b4cc1b0d3239b921ba4c98",
+      "startedAt": "2026-10-26T16:41:39.838Z",
+      "doneAt": "2026-10-26T16:43:08.195Z",
+      "summary": "flow.test.ts: un quick cuya verificación completa falla al aceptar se ajusta con T2 (style), se aprueba, se completa y se acepta archivado en main. approvedQuick comparte el arranque con el test del carril quick que ya había."
     }
   },
   "pending": {

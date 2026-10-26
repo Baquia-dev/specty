@@ -43,7 +43,7 @@ Hoy un cambio quick cuya verificación completa falla al aceptarlo queda atascad
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/structure.test.ts
   - type: fix
-- [ ] T2: Un quick se corrige tras fallar al aceptarlo
+- [x] T2: Un quick se corrige tras fallar al aceptarlo
   - files: packages/cli/test/flow.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts
