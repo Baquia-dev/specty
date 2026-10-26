@@ -39,7 +39,6 @@ export interface AgentCapabilities {
 }
 
 const yes = { state: "yes" } as const;
-const pending = { state: "pending" } as const;
 const unsupported = { state: "unsupported" } as const;
 const impossible = (es: string, en: string) => ({ state: "impossible", why: { es, en } }) as const;
 const indirect = (es: string, en: string) => ({ state: "indirect", how: { es, en } }) as const;
@@ -148,18 +147,17 @@ export const AGENT_CAPABILITIES = {
     guard: yes,
     // `PostToolUse` adds it to the context (`additionalContext`).
     afterShell: yes,
-    afterCompaction: impossible(
-      "no tiene eventos de sesión ni de compactación.",
-      "it has no session or compaction events.",
+    afterCompaction: indirect(
+      "no consta que su `PostCompaction` pueda añadir contexto, así que la tarjeta llega con el resultado del siguiente comando de shell.",
+      "its `PostCompaction` is not documented to add context, so the card comes with the next shell command's result.",
     ),
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: impossible(
-      "sus hooks posteriores no responden al modelo ni lo hacen seguir.",
-      "its post hooks neither reach the model nor make it go on.",
-    ),
+    // `Stop`, as Claude Code's.
+    endOfTurn: yes,
     exclusion: yes,
-    permissions: pending,
-    endToEnd: impossible("no tiene CLI.", "it has no CLI."),
+    // `Exec(specty)` in `.devin/config.json`, and Specty's folders as `Write(...)` for its sandbox.
+    permissions: yes,
+    endToEnd: OWN_SERVER,
   },
   antigravity: {
     // Its own files: Codex keeps its skills in `.agents` too.

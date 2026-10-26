@@ -92,7 +92,7 @@ La fila de la tabla pasa a llamarse «Devin (Windsurf)». El corte también reco
   - files: packages/core/src/agents.ts, packages/core/test/cards.test.ts
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts
-- [ ] T5: La tabla de capacidades y la documentación lo cuentan
+- [x] T5: La tabla de capacidades y la documentación lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
