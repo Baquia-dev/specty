@@ -48,7 +48,7 @@ La verificación `layers` funciona también en Dart y Flutter, sin herramientas 
 
 ## Tareas
 
-- [ ] T1: El escáner de imports de Dart
+- [x] T1: El escáner de imports de Dart
   - files: packages/core/src/checks/dart.ts, packages/core/src/index.ts, packages/core/test/checks/dart.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/dart.test.ts
