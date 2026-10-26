@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { CliEnvironment } from "../program";
-import { type Environment, openSession, type Terminal } from "../session";
+import { openSession, type Terminal } from "../session";
 import { type GuardTool, isGuardTool } from "./actions";
+import { agentStop } from "./agent-stop";
 import { guard } from "./guard";
 import { preCommit, prepareCommitMsg } from "./hook";
 
@@ -16,15 +17,23 @@ export async function guardCommand(environment: CliEnvironment, tool: GuardTool)
   return reply.code;
 }
 
-/** `specty hook <name> [args…]`, from git's hooks. Outside a Specty repository, git goes on. */
+/**
+ * `specty hook <name> [args…]`, from git's hooks and from the agents' end of turn (`agent-stop
+ * <agent>`, with the event on stdin). Outside a Specty repository, git and the agent go on.
+ */
 export async function hookCommand(
-  environment: Environment,
+  environment: CliEnvironment,
   name: string,
   args: readonly string[],
 ): Promise<number> {
   const opened = await openSession(environment);
   if (opened.kind !== "ok") return 0;
   if (name === "pre-commit") return preCommit(opened.session);
+  if (name === "agent-stop") {
+    const reply = await agentStop(opened.session, args[0] ?? "", await environment.stdin());
+    if (reply.length > 0) environment.io.out(reply);
+    return 0;
+  }
   if (name === "prepare-commit-msg") {
     return prepareCommitMsg(opened.session, args[0] ?? "", args[1]);
   }

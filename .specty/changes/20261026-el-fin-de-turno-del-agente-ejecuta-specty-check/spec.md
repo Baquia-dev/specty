@@ -53,7 +53,7 @@ Cuando Claude Code, Cursor o Codex terminan su turno, un hook ejecuta `specty ch
 
 ## Tareas
 
-- [ ] T1: El hook de fin de turno
+- [x] T1: El hook de fin de turno
   - files: packages/cli/src/enforce/agent-stop.ts, packages/cli/src/enforce/entry.ts, packages/cli/test/check-agent-stop.test.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/hooks-entry.test.ts

@@ -6,6 +6,13 @@
   "branch": "specty/20261026-el-fin-de-turno-del-agente-ejecuta-specty-check",
   "baseCommit": "ca9f2901b911ccf01839d1a03805c908a84c4c49",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:23c00f4effd940fdae536a5e1a09039c6618fd5528e5b36aec78754ffe547d80",
+    "at": "2026-10-26T09:59:45.908Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ac40898284a9de9912f292b5a53defa487d8e61b",
+      "startedAt": "2026-10-26T09:59:46.488Z",
+      "doneAt": "2026-10-26T10:01:19.683Z",
+      "summary": "enforce/agent-stop.ts y hook agent-stop <agente>: al terminar el turno ejecuta check --changed (con --spec si hay un cambio aprobado) y devuelve el informe como decision block (Claude Code, Codex) o followup_message (Cursor); sin bucles; silencioso fuera de Specty."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:23c00f4effd940fdae536a5e1a09039c6618fd5528e5b36aec78754ffe547d80",
-    "at": "2026-10-26T09:59:45.908Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
