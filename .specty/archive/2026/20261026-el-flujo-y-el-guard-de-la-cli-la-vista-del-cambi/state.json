@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
   "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:b77d3b18771d97e7fa5bbdc2c8a68bf0739ae86682e431965590e0c151d672d6",
@@ -71,12 +71,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e055e33df84ebe890c990af177da7cb326405410",
+      "attempts": 1,
       "startedAt": "2026-10-26T23:01:45.142Z",
       "doneAt": "2026-10-26T23:09:35.790Z",
-      "summary": "changes.ts: awaits deja el cierre a awaitsClose. prune.ts: removeFinished pregunta a keptBecause por qué se queda una carpeta. Ninguna función de flow ni de enforce pasa de los límites; los tests de la CLI pasan."
+      "summary": "changes.ts: awaits deja el cierre a awaitsClose. prune.ts: removeFinished pregunta a keptBecause por qué se queda una carpeta. Ninguna función de flow ni de enforce pasa de los límites; los tests de la CLI pasan.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,5 +87,6 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T23:13:16.928Z"
 }

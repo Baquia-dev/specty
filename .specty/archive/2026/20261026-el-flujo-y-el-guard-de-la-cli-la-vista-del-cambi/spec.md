@@ -64,3 +64,22 @@ Nueve funciones del flujo y del guard de la CLI pasan de los límites de Specty:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las nueve funciones del flujo y del guard de la CLI que pasaban de los límites se dividieron en los pasos que ya seguían: la vista del cambio (cada tarea, lo que trae la fase, las suposiciones rechazadas y la incorporación), la incorporación de la rama destino (la carpeta con cambios, la fusión detenida, su verificación y su commit), el commit de la tarea, la edición manual del hook pre-commit, el corte pedido y los cambios de cada corte de una épica, el cierre que espera a la persona y por qué se queda una carpeta en `prune`. Ninguna función de `flow/` ni de `enforce/` pasa ya de los límites; los tests de la CLI y la verificación completa pasan.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- La vista del cambio conserva el orden de sus campos y de sus lecturas: `phaseFacts` agrupa los campos de la fase, que ya iban seguidos.
+- El aviso CWE-78 en `flow/integrate.ts` es la misma ejecución de la verificación configurada que había en `main`, solo movida a `failedVerification`; se aceptó por la regla acordada con el usuario.
+
+### Pendientes
+
+- Los cortes C7 a C9 de la épica: install, io y check de la CLI, el servidor, y la UI con los exportadores.

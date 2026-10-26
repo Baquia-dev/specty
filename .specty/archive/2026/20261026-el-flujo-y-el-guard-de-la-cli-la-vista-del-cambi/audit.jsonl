@@ -16,3 +16,7 @@
 {"ts":"2026-10-26T23:01:45.142Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T5","baseCommit":"e055e33df84ebe890c990af177da7cb326405410"}}
 {"ts":"2026-10-26T23:09:35.657Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm --filter @baquia-dev/specty exec vitest run","exit":0,"ms":112333,"tree":"sha256:d617d676da8f556da56a6d76dd88d9a5e60258c218569da76b7e2d74d25786fb"}}
 {"ts":"2026-10-26T23:09:35.792Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"changes.ts: awaits deja el cierre a awaitsClose. prune.ts: removeFinished pregunta a keptBecause por qué se queda una carpeta. Ninguna función de flow ni de enforce pasa de los límites; los tests de la CLI pasan."}}
+{"ts":"2026-10-26T23:13:09.807Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":208363,"tree":"sha256:d617d676da8f556da56a6d76dd88d9a5e60258c218569da76b7e2d74d25786fb"}}
+{"ts":"2026-10-26T23:13:09.811Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T23:13:16.930Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:18c7dc32cf90dd290a46aa754a9471bcc07c57b06cefb9dcf1707d6304264da7","size":"M","warnings":5}}
+{"ts":"2026-10-26T23:16:19.759Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
