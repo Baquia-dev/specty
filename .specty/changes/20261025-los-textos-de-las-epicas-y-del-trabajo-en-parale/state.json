@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "99e5c730c8b43889bab59d5959f58945378c1bd2",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:12:57.016Z",
       "doneAt": "2026-10-26T03:13:50.558Z",
-      "summary": "Core tiene los rechazos de new --epic --slice (sliceRefusalCard en cards/epic.ts), los textos del trabajo en paralelo (cards/parallel.ts: archivos compartidos, preparar la carpeta y prune) y la pista del cierre (verifyHintLine), con tests."
+      "summary": "Core tiene los rechazos de new --epic --slice (sliceRefusalCard en cards/epic.ts), los textos del trabajo en paralelo (cards/parallel.ts: archivos compartidos, preparar la carpeta y prune) y la pista del cierre (verifyHintLine), con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bc5973505dd517be0f7708e021f79ced6a3281a0",
+      "startedAt": "2026-10-26T03:13:50.876Z",
+      "doneAt": "2026-10-26T03:15:05.443Z",
+      "summary": "flow/epic.ts (sliceRefusalCard), commands/prune.ts (pruneCard) y flow/prune.ts (por qué deja cada carpeta o rama) piden sus textos a core y ya no llaman al traductor; los tests de épicas y prune pasan sin cambios."
     }
   },
   "pending": {

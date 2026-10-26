@@ -54,7 +54,7 @@ Pasan a `cards/epic.ts`, a un `cards/parallel.ts` nuevo y a `cards/close.ts`. La
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: Las épicas y prune piden sus textos a core
+- [x] T2: Las épicas y prune piden sus textos a core
   - files: packages/cli/src/flow/epic.ts, packages/cli/src/commands/prune.ts, packages/cli/src/flow/prune.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck
