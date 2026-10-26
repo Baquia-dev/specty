@@ -168,29 +168,43 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
       maxLines: input?.functions?.maxLines ?? DEFAULT_CHECKS.functions.maxLines,
       complexity: input?.functions?.complexity ?? DEFAULT_CHECKS.functions.complexity,
     },
-    layers: Object.fromEntries(
-      Object.entries(input?.layers ?? {}).map(([name, layer]) => [
-        name,
-        {
-          paths: layer.paths,
-          may: layer.may ?? [],
-          forbiddenPackages: layer.forbiddenPackages ?? [],
-        },
-      ]),
-    ),
-    generators: (input?.generators ?? []).map((generator) => ({
-      command: generator.command,
-      outputs: generator.outputs,
-      ...(generator.inputs !== undefined ? { inputs: generator.inputs } : {}),
-    })),
+    layers: layersOf(input),
+    generators: generatorsOf(input),
     preCommit: input?.preCommit ?? DEFAULT_CHECKS.preCommit,
-    commands: Object.fromEntries(
-      COMMAND_CHECKS.flatMap((id) => {
-        const command = input?.commands?.[id];
-        return command === undefined ? [] : [[id, command]];
-      }),
-    ),
+    commands: commandsOf(input),
   };
+}
+
+/** Each layer, with no allowed layer and no forbidden package unless it names them. */
+function layersOf(input: z.infer<typeof ChecksSchema> | undefined): ChecksConfig["layers"] {
+  return Object.fromEntries(
+    Object.entries(input?.layers ?? {}).map(([name, layer]) => [
+      name,
+      {
+        paths: layer.paths,
+        may: layer.may ?? [],
+        forbiddenPackages: layer.forbiddenPackages ?? [],
+      },
+    ]),
+  );
+}
+
+function generatorsOf(input: z.infer<typeof ChecksSchema> | undefined): ChecksConfig["generators"] {
+  return (input?.generators ?? []).map((generator) => ({
+    command: generator.command,
+    outputs: generator.outputs,
+    ...(generator.inputs !== undefined ? { inputs: generator.inputs } : {}),
+  }));
+}
+
+/** The project's commands it names, without the ones it leaves out. */
+function commandsOf(input: z.infer<typeof ChecksSchema> | undefined): ChecksConfig["commands"] {
+  return Object.fromEntries(
+    COMMAND_CHECKS.flatMap((id) => {
+      const command = input?.commands?.[id];
+      return command === undefined ? [] : [[id, command]];
+    }),
+  );
 }
 
 /** The level of the check `id`: what the configuration says, or `error`. */

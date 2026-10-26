@@ -46,12 +46,7 @@ export function taskCard(change: ChangeView, task: TaskView, ctx: CardContext): 
   const implicit = ctx.implicitTests
     ? [t("+ tests y archivos generados junto a ellos", "+ tests and generated files next to them")]
     : [];
-  const done = change.tasks
-    .filter((item) => item.status === "done")
-    .map(
-      (item) =>
-        `${item.id} ${item.summary ?? item.title}${item.commit === undefined ? "" : ` (${item.commit})`}`,
-    );
+  const done = change.tasks.filter((item) => item.status === "done").map(doneLine);
   const pending = change.pendingScope
     .filter((request) => request.task === task.id)
     .map((request) => `${request.id}: ${request.paths.join(", ")} — ${request.reason}`);
@@ -76,21 +71,32 @@ export function taskCard(change: ChangeView, task: TaskView, ctx: CardContext): 
       ...section(t("HALLAZGOS", "FINDINGS"), findingLines(change.tasks)),
       ...section(t("ALCANCE PENDIENTE DE APROBACIÓN", "SCOPE AWAITING APPROVAL"), pending),
       ...section("TESTS", testLines(task, ctx)),
-      ...section(undefined, [
-        ...(task.verify === undefined
-          ? []
-          : [t(`VERIFICACIÓN: ${task.verify}`, `VERIFICATION: ${task.verify}`)]),
-        t(
-          `ESFUERZO SUGERIDO: ${effortLabel(task.effort, ctx)}`,
-          `SUGGESTED EFFORT: ${effortLabel(task.effort, ctx)}`,
-        ),
-      ]),
+      ...section(undefined, verificationLines(task, ctx)),
     ],
     next: t(
       `implementa ${task.id} y ejecuta \`${ctx.command} task done ${task.id} --summary "<qué hiciste>"\`.`,
       `implement ${task.id} and run \`${ctx.command} task done ${task.id} --summary "<what you did>"\`.`,
     ),
   };
+}
+
+/** A done task: its summary, or its title, and its commit. */
+function doneLine(task: TaskView): string {
+  return `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`;
+}
+
+/** How the task is verified, and the effort it suggests. */
+function verificationLines(task: TaskView, ctx: CardContext): string[] {
+  const t = translator(ctx.lang);
+  return [
+    ...(task.verify === undefined
+      ? []
+      : [t(`VERIFICACIÓN: ${task.verify}`, `VERIFICATION: ${task.verify}`)]),
+    t(
+      `ESFUERZO SUGERIDO: ${effortLabel(task.effort, ctx)}`,
+      `SUGGESTED EFFORT: ${effortLabel(task.effort, ctx)}`,
+    ),
+  ];
 }
 
 /** What the done tasks learned (`task done --finding`), one line each. */
@@ -143,58 +149,66 @@ export function riskWarnings(tasks: readonly TaskView[], lang: Lang): string[] {
 
 export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
-  const done = change.tasks.map(
-    (task) =>
-      `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
-  );
-  const assertions = assertionWarnings(change.tasks, ctx.lang);
-  const risks = riskWarnings(change.tasks, ctx.lang);
-  const long = longFileWarnings(change.tasks, ctx.lang);
   return {
     status: "ok",
     header: headerOf(change.id, "acceptance"),
     blocks: [
       ...section(t("CORTES", "SLICES"), sliceLines(change.slices ?? [], ctx)),
-      ...section(t("TAREAS HECHAS", "DONE TASKS"), done),
-      ...section(t("AVISOS", "WARNINGS"), [
-        ...assertions,
-        ...(assertions.length === 0
-          ? []
-          : [
-              t(
-                "Cuéntaselo al usuario antes de que acepte: un test debilitado puede ocultar un fallo.",
-                "Tell the user before they accept: a weakened test can hide a defect.",
-              ),
-            ]),
-        ...risks,
-        ...(risks.length === 0
-          ? []
-          : [
-              t(
-                "Revísalo con el usuario antes de que acepte: son patrones de riesgo conocidos, no fallos seguros.",
-                "Review them with the user before they accept: they are known risky patterns, not sure defects.",
-              ),
-            ]),
-        ...long,
-        ...(long.length === 0 ? [] : [splitAdvice(ctx.lang)]),
-      ]),
+      ...section(t("TAREAS HECHAS", "DONE TASKS"), change.tasks.map(doneLine)),
+      ...section(t("AVISOS", "WARNINGS"), acceptanceWarnings(change, ctx)),
     ],
-    next:
-      change.recommendReview === true
-        ? t(
-            `antes de pedir la aceptación, ejecuta \`${ctx.command} review\`: una revisión independiente del resultado con un modelo más fuerte.`,
-            `before asking for the acceptance, run \`${ctx.command} review\`: an independent review of the result by a stronger model.`,
-          )
-        : ctx.delegated === true
-          ? t(
-              `modo delegado: acepta tú el resultado con \`${ctx.command} accept\` y sigue su salida. Si el usuario pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
-              `delegated mode: accept the result yourself with \`${ctx.command} accept\` and follow its output. If the user asks for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
-            )
-          : t(
-              `pide al usuario que revise el resultado y lo acepte con \`${ctx.command} accept\`. Si pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
-              `ask the user to review the result and accept it with \`${ctx.command} accept\`. If they ask for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
-            ),
+    next: acceptanceNext(change, ctx),
   };
+}
+
+/** What the person should know before accepting, each kind with what to do about it. */
+function acceptanceWarnings(change: ChangeView, ctx: CardContext): string[] {
+  const t = translator(ctx.lang);
+  const assertions = assertionWarnings(change.tasks, ctx.lang);
+  const risks = riskWarnings(change.tasks, ctx.lang);
+  const long = longFileWarnings(change.tasks, ctx.lang);
+  return [
+    ...assertions,
+    ...(assertions.length === 0
+      ? []
+      : [
+          t(
+            "Cuéntaselo al usuario antes de que acepte: un test debilitado puede ocultar un fallo.",
+            "Tell the user before they accept: a weakened test can hide a defect.",
+          ),
+        ]),
+    ...risks,
+    ...(risks.length === 0
+      ? []
+      : [
+          t(
+            "Revísalo con el usuario antes de que acepte: son patrones de riesgo conocidos, no fallos seguros.",
+            "Review them with the user before they accept: they are known risky patterns, not sure defects.",
+          ),
+        ]),
+    ...long,
+    ...(long.length === 0 ? [] : [splitAdvice(ctx.lang)]),
+  ];
+}
+
+/** An independent review first, if it is due; then the acceptance, the agent's or the person's. */
+function acceptanceNext(change: ChangeView, ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  if (change.recommendReview === true) {
+    return t(
+      `antes de pedir la aceptación, ejecuta \`${ctx.command} review\`: una revisión independiente del resultado con un modelo más fuerte.`,
+      `before asking for the acceptance, run \`${ctx.command} review\`: an independent review of the result by a stronger model.`,
+    );
+  }
+  return ctx.delegated === true
+    ? t(
+        `modo delegado: acepta tú el resultado con \`${ctx.command} accept\` y sigue su salida. Si el usuario pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
+        `delegated mode: accept the result yourself with \`${ctx.command} accept\` and follow its output. If the user asks for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
+      )
+    : t(
+        `pide al usuario que revise el resultado y lo acepte con \`${ctx.command} accept\`. Si pide ajustes, ejecuta \`${ctx.command} adjust "<petición literal>"\`.`,
+        `ask the user to review the result and accept it with \`${ctx.command} accept\`. If they ask for adjustments, run \`${ctx.command} adjust "<literal request>"\`.`,
+      );
 }
 
 export function adjustingCard(change: ChangeView, ctx: CardContext): Output {
@@ -233,40 +247,39 @@ export function adjustingCard(change: ChangeView, ctx: CardContext): Output {
   };
 }
 
+/** The closing is written and waits for its confirmation: the agent's, delegated, or the person's. */
+function closingSubmittedCard(change: ChangeView, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  const delegated = ctx.delegated === true;
+  return {
+    status: "ok",
+    header: headerOf(change.id, "closing"),
+    blocks: section(undefined, [
+      delegated
+        ? t(
+            "Cierre enviado; en modo delegado lo confirmas tú.",
+            "Closing submitted; in delegated mode you confirm it.",
+          )
+        : t(
+            "Cierre enviado; falta la confirmación del usuario.",
+            "Closing submitted; waiting for the user's confirmation.",
+          ),
+    ]),
+    next: delegated
+      ? t(
+          `modo delegado: confirma tú el cierre con \`${ctx.command} close\` y sigue su salida.`,
+          `delegated mode: confirm the closing yourself with \`${ctx.command} close\` and follow its output.`,
+        )
+      : t(
+          `pide al usuario que lo confirme con \`${ctx.command} close\` y termina tu turno.`,
+          `ask the user to confirm it with \`${ctx.command} close\` and end your turn.`,
+        ),
+  };
+}
+
 export function closingCard(change: ChangeView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
-  if (change.closingSubmitted && ctx.delegated === true) {
-    return {
-      status: "ok",
-      header: headerOf(change.id, "closing"),
-      blocks: section(undefined, [
-        t(
-          "Cierre enviado; en modo delegado lo confirmas tú.",
-          "Closing submitted; in delegated mode you confirm it.",
-        ),
-      ]),
-      next: t(
-        `modo delegado: confirma tú el cierre con \`${ctx.command} close\` y sigue su salida.`,
-        `delegated mode: confirm the closing yourself with \`${ctx.command} close\` and follow its output.`,
-      ),
-    };
-  }
-  if (change.closingSubmitted) {
-    return {
-      status: "ok",
-      header: headerOf(change.id, "closing"),
-      blocks: section(undefined, [
-        t(
-          "Cierre enviado; falta la confirmación del usuario.",
-          "Closing submitted; waiting for the user's confirmation.",
-        ),
-      ]),
-      next: t(
-        `pide al usuario que lo confirme con \`${ctx.command} close\` y termina tu turno.`,
-        `ask the user to confirm it with \`${ctx.command} close\` and end your turn.`,
-      ),
-    };
-  }
+  if (change.closingSubmitted) return closingSubmittedCard(change, ctx);
   const headings =
     change.kind === "spike"
       ? t("### Hallazgos y ### Decisión", "### Findings and ### Decision")

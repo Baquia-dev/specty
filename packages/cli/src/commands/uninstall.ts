@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isAbsolute, join, relative, sep } from "node:path";
 import {
+  AGENT_NAMES,
   backupLine,
   claudePointerStaysLine,
+  geminiPointerStaysLine,
   globalGuardStaysLine,
   historyStaysLine,
   nothingRemovedCard,
@@ -18,12 +20,12 @@ import {
   unwatchedChangeWarning,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
+import { ADAPTERS, removeAgentHooks } from "../agents";
 import { isFinished, resolveActive } from "../flow/active";
-import { codexHooksFile, hasGuard, removeAgentHooks } from "../install/agents";
+import { hasGuard } from "../install/agents";
 import { type FileChange, type InstallFiles, installFiles } from "../install/files";
 import { removeGitHooks } from "../install/git-hooks";
-import { opencodePluginFile } from "../install/opencode";
-import { removeAgentsBlocks } from "../install/project-files";
+import { GEMINI_POINTER, removeAgentsBlocks } from "../install/project-files";
 import { exists, readText } from "../io/files";
 import type { Session } from "../session";
 
@@ -79,7 +81,7 @@ async function uninstall(session: Session, dryRun: boolean): Promise<Output> {
 /** Everything `init` installed in the repository, taken out through `files`. */
 async function removeSpecty(session: Session, files: InstallFiles): Promise<void> {
   await removeAgentsBlocks(session.root, files);
-  await removeAgentHooks(session.root, files);
+  await removeAgentHooks(session.root, files, session.git);
   await removeGitHooks(session.root, session.git, files);
 }
 
@@ -94,16 +96,16 @@ function described(change: FileChange, session: Session): string {
 async function remaining(session: Session): Promise<string[]> {
   const env = session.environment.env;
   const stays = [historyStaysLine(session.lang)];
-  const global = [
-    { name: "Codex", file: codexHooksFile(env), tool: "codex" as const },
-    { name: "OpenCode", file: opencodePluginFile(env), tool: "opencode" as const },
-  ];
-  for (const { name, file, tool } of global) {
-    if (!hasGuard(await readText(file), tool)) continue;
-    stays.push(globalGuardStaysLine(name, file, session.lang));
+  for (const { tool, userFile } of Object.values(ADAPTERS)) {
+    const file = userFile?.(env);
+    if (file === undefined || !hasGuard(await readText(file), tool)) continue;
+    stays.push(globalGuardStaysLine(AGENT_NAMES[tool], file, session.lang));
   }
   if (await exists(join(session.root, "CLAUDE.md"))) {
     stays.push(claudePointerStaysLine(session.lang));
+  }
+  if ((await readText(join(session.root, "GEMINI.md")))?.includes(GEMINI_POINTER) === true) {
+    stays.push(geminiPointerStaysLine(session.lang));
   }
   return stays;
 }

@@ -64,6 +64,19 @@ describe("quick lane", () => {
     expect(check(text)).toEqual(["quick-limits"]);
   });
 
+  it("lets an adjustment add tasks, but not files, once approved (AC1, AC2)", () => {
+    const approved = parseSpec(QUICK).spec;
+    const fix = `${QUICK}- [ ] T2: Format the label\n  - files: src/components/sign-in-button.tsx\n  - verify: pnpm test\n`;
+    for (const phase of ["adjusting", "review"] as const) {
+      expect(check(fix, { phase, approved }), phase).toEqual([]);
+    }
+    const files = fix.replace(
+      "- modify src/components/sign-in-button.tsx — fix the label",
+      "- modify src/components/sign-in-button.tsx — fix the label\n- modify src/a.ts — a\n- modify src/b.ts — b\n- modify src/c.ts — c",
+    );
+    expect(check(files, { phase: "adjusting", approved })).toContain("quick-limits");
+  });
+
   it("limits the number of files", () => {
     const text = QUICK.replace(
       "- modify src/components/sign-in-button.tsx — fix the label",

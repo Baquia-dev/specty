@@ -223,6 +223,15 @@ describe("effort", () => {
       "RECOMMENDED EFFORT (Claude Code): implementation medium · spec and scope reviews: high",
     );
   });
+
+  it("names the levels as Codex does, its maximum being `xhigh` (AC4)", () => {
+    expect(effortLine({ plan: "max", implement: "high" }, { ...ES, tool: "codex" })).toBe(
+      "ESFUERZO RECOMENDADO (Codex): implementación high · revisiones de la spec y del alcance: xhigh",
+    );
+    expect(
+      effortLine({ plan: "medium", implement: "low" }, { ...ES, lang: "en", tool: "codex" }),
+    ).toBe("RECOMMENDED EFFORT (Codex): implementation low · spec and scope reviews: medium");
+  });
 });
 
 describe("AGENTS.md blocks", () => {
@@ -316,6 +325,15 @@ describe("agent detection", () => {
     expect(detectAgentTool({ CODEX_SANDBOX: "seatbelt" })).toBe("codex");
     expect(detectAgentTool({ CODEX_CI: "1" })).toBe("codex");
     expect(detectAgentTool({ CODEX_THREAD_ID: "019a" })).toBe("codex");
+  });
+
+  it("recognizes Antigravity CLI by the editors it turns off in its commands (AC6)", () => {
+    const antigravity = { GIT_EDITOR: "false", HGEDITOR: "false", JJ_EDITOR: "false" };
+    expect(detectAgentTool(antigravity)).toBe("antigravity");
+    expect(personAtTerminal(true, antigravity)).toBe(false);
+    // One editor turned off is a person's choice.
+    expect(detectAgentTool({ GIT_EDITOR: "false" })).toBeUndefined();
+    expect(detectAgentTool({ HGEDITOR: "false" })).toBeUndefined();
   });
 
   it("counts a terminal as the person only without an agent's environment", () => {

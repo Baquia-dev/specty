@@ -224,9 +224,7 @@ export function resolveConfig(input: unknown): ConfigResult {
 
 function withDefaults(input: ConfigInput): ResolvedConfig {
   const base = DEFAULT_CONFIG;
-  const verifyDefault = input.verify?.default;
-  const verifyFull = input.verify?.full;
-  const verifyQuick = input.verify?.quick;
+  const review = reviewOf(input);
   return {
     version: 1,
     language: input.language ?? base.language,
@@ -234,17 +232,43 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     governed: input.governed ?? base.governed,
     ignored: input.ignored ?? base.ignored,
     sensitive: input.sensitive ?? base.sensitive,
-    verify: {
-      ...(verifyDefault !== undefined ? { default: verifyDefault } : {}),
-      ...(verifyFull !== undefined ? { full: verifyFull } : {}),
-      ...(verifyQuick !== undefined ? { quick: verifyQuick } : {}),
-      timeoutSec: input.verify?.timeoutSec ?? base.verify.timeoutSec,
-    },
-    scope: {
-      implicitTests: input.scope?.implicitTests ?? base.scope.implicitTests,
-      generated: input.scope?.generated ?? base.scope.generated,
-      autoApprove: input.scope?.autoApprove ?? base.scope.autoApprove,
-    },
+    verify: verifyOf(input),
+    scope: scopeOf(input),
+    ...limitsOf(input),
+    lines: linesOf(input),
+    checks: resolveChecks(input.checks),
+    policy: { tests: input.policy?.tests ?? base.policy.tests },
+    retro: { mode: input.retro?.mode ?? base.retro.mode },
+    git: gitOf(input),
+    team: teamOf(input),
+    ui: uiOf(input),
+    ...(review !== undefined ? { review } : {}),
+  };
+}
+
+function verifyOf(input: ConfigInput): ResolvedConfig["verify"] {
+  const { verify } = input;
+  return {
+    ...(verify?.default !== undefined ? { default: verify.default } : {}),
+    ...(verify?.full !== undefined ? { full: verify.full } : {}),
+    ...(verify?.quick !== undefined ? { quick: verify.quick } : {}),
+    timeoutSec: verify?.timeoutSec ?? DEFAULT_CONFIG.verify.timeoutSec,
+  };
+}
+
+function scopeOf(input: ConfigInput): ResolvedConfig["scope"] {
+  const base = DEFAULT_CONFIG.scope;
+  return {
+    implicitTests: input.scope?.implicitTests ?? base.implicitTests,
+    generated: input.scope?.generated ?? base.generated,
+    autoApprove: input.scope?.autoApprove ?? base.autoApprove,
+  };
+}
+
+/** The limits of a change: the quick lane's, when it must be split, and its size levels. */
+function limitsOf(input: ConfigInput): Pick<ResolvedConfig, "lanes" | "split" | "size"> {
+  const base = DEFAULT_CONFIG;
+  return {
     lanes: { quick: { maxFiles: input.lanes?.quick?.maxFiles ?? base.lanes.quick.maxFiles } },
     split: {
       maxTasks: input.split?.maxTasks ?? base.split.maxTasks,
@@ -257,40 +281,52 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
       M: input.size?.M ?? base.size.M,
       L: input.size?.L ?? base.size.L,
     },
-    lines: {
-      warn: input.lines?.warn ?? base.lines.warn,
-      fail: input.lines?.fail ?? base.lines.fail,
-      tests: {
-        warn: input.lines?.tests?.warn ?? base.lines.tests.warn,
-        fail: input.lines?.tests?.fail ?? base.lines.tests.fail,
-      },
-      exclude: input.lines?.exclude ?? base.lines.exclude,
+  };
+}
+
+function linesOf(input: ConfigInput): ResolvedConfig["lines"] {
+  const base = DEFAULT_CONFIG.lines;
+  return {
+    warn: input.lines?.warn ?? base.warn,
+    fail: input.lines?.fail ?? base.fail,
+    tests: {
+      warn: input.lines?.tests?.warn ?? base.tests.warn,
+      fail: input.lines?.tests?.fail ?? base.tests.fail,
     },
-    checks: resolveChecks(input.checks),
-    policy: { tests: input.policy?.tests ?? base.policy.tests },
-    retro: { mode: input.retro?.mode ?? base.retro.mode },
-    git: {
-      branchPerChange: input.git?.branchPerChange ?? base.git.branchPerChange,
-      worktrees: input.git?.worktrees ?? base.git.worktrees,
-      ...(input.git?.setup !== undefined ? { setup: input.git.setup } : {}),
-      ...(input.git?.target !== undefined ? { target: input.git.target } : {}),
-    },
-    team: {
-      approvers: input.team?.approvers ?? base.team.approvers,
-      requirePrReview: input.team?.requirePrReview ?? base.team.requirePrReview,
-    },
-    ui: {
-      port: input.ui?.port ?? base.ui.port,
-      requireUserPresence: input.ui?.requireUserPresence ?? base.ui.requireUserPresence,
-    },
-    ...(input.review !== undefined
-      ? {
-          review: {
-            command: input.review.command,
-            timeoutSec:
-              input.review.timeoutSec ?? input.verify?.timeoutSec ?? base.verify.timeoutSec,
-          },
-        }
-      : {}),
+    exclude: input.lines?.exclude ?? base.exclude,
+  };
+}
+
+function gitOf(input: ConfigInput): ResolvedConfig["git"] {
+  const { git } = input;
+  return {
+    branchPerChange: git?.branchPerChange ?? DEFAULT_CONFIG.git.branchPerChange,
+    worktrees: git?.worktrees ?? DEFAULT_CONFIG.git.worktrees,
+    ...(git?.setup !== undefined ? { setup: git.setup } : {}),
+    ...(git?.target !== undefined ? { target: git.target } : {}),
+  };
+}
+
+function teamOf(input: ConfigInput): ResolvedConfig["team"] {
+  return {
+    approvers: input.team?.approvers ?? DEFAULT_CONFIG.team.approvers,
+    requirePrReview: input.team?.requirePrReview ?? DEFAULT_CONFIG.team.requirePrReview,
+  };
+}
+
+function uiOf(input: ConfigInput): ResolvedConfig["ui"] {
+  return {
+    port: input.ui?.port ?? DEFAULT_CONFIG.ui.port,
+    requireUserPresence: input.ui?.requireUserPresence ?? DEFAULT_CONFIG.ui.requireUserPresence,
+  };
+}
+
+/** The independent review, when configured; without its own time limit, verification's. */
+function reviewOf(input: ConfigInput): ResolvedConfig["review"] {
+  if (input.review === undefined) return undefined;
+  return {
+    command: input.review.command,
+    timeoutSec:
+      input.review.timeoutSec ?? input.verify?.timeoutSec ?? DEFAULT_CONFIG.verify.timeoutSec,
   };
 }

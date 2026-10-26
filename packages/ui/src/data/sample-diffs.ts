@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The diffs of the sample change «Panel de asistencia por curso», written out as `git diff` would:
 // T1 changes the repository and its test, T2 adds the panel and its test.
-// biome-ignore-all lint/suspicious/noTemplateCurlyInString: the `${…}` belong to the sample's Dart.
+// The `${…}` of the sample's Dart go escaped in template literals.
 import { ActionError, type ChangeRecord } from "./records";
 
 type Line = readonly [" " | "+" | "-", string];
@@ -154,14 +154,14 @@ const PANEL: SampleFile = {
         "        return Column(",
         "          crossAxisAlignment: CrossAxisAlignment.start,",
         "          children: [",
-        "            Text('${percentage.toStringAsFixed(0)} %', style: Theme.of(context).textTheme.displaySmall),",
-        "            Text('Asistencia de la semana ${week.label}'),",
+        `            Text('\${percentage.toStringAsFixed(0)} %', style: Theme.of(context).textTheme.displaySmall),`,
+        `            Text('Asistencia de la semana \${week.label}'),`,
         "            const SizedBox(height: 16),",
         "            for (final student in highlighted)",
         "              ListTile(",
         "                leading: const Icon(Icons.warning_amber),",
         "                title: Text(student.name),",
-        "                trailing: Text('${student.count} ausencias'),",
+        `                trailing: Text('\${student.count} ausencias'),`,
         "                tileColor: Theme.of(context).colorScheme.errorContainer,",
         "              ),",
         "          ],",

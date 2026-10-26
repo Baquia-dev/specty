@@ -2,6 +2,7 @@
 import {
   alreadyClosedLine,
   blockedCard,
+  type ChangeState,
   cancelCommitSubject,
   cancelledCard,
   cancelledLine,
@@ -18,6 +19,7 @@ import {
   type Output,
   parseSpec,
   resolvedIntegrationNote,
+  type Spec,
   transition,
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
@@ -43,21 +45,30 @@ export async function close(session: Session): Promise<Output> {
   const pending = await pendingIntegration(session, guard.change, "close");
   if (pending.kind === "wait") return pending.output;
   const { change } = pending;
-  const { state } = change;
-  const { terminal } = session.environment;
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
+  noteClosing(session, change.state, spec);
+  if (!(await session.environment.terminal.confirm(confirmCloseQuestion(session.lang))))
+    return postponed(session, change.state);
+  return closeConfirmed(session, change, spec);
+}
+
+/** What the person confirms: the closing, and how the incorporation was resolved, if it was. */
+function noteClosing(session: Session, state: ChangeState, spec: Spec): void {
+  const { terminal } = session.environment;
   terminal.note(spec.title, spec.sections.closing ?? "");
   const resolved = state.integration?.resolved;
-  if (state.integration !== undefined && resolved !== undefined) {
-    const { target, conflicts } = state.integration;
-    const note = resolvedIntegrationNote(
-      { target, commit: resolved.commit, conflicts },
-      session.lang,
-    );
-    terminal.note(note.title, note.text);
-  }
-  if (!(await terminal.confirm(confirmCloseQuestion(session.lang))))
-    return postponed(session, state);
+  if (state.integration === undefined || resolved === undefined) return;
+  const { target, conflicts } = state.integration;
+  const note = resolvedIntegrationNote(
+    { target, commit: resolved.commit, conflicts },
+    session.lang,
+  );
+  terminal.note(note.title, note.text);
+}
+
+/** The closing confirmed: the main branch comes in, the change is archived and lands. */
+async function closeConfirmed(session: Session, change: StoredChange, spec: Spec): Promise<Output> {
+  const { state } = change;
   // The main branch comes into the change before anything is archived: a refusal changes nothing.
   const plan = await integrationOf(session, state);
   const absorbed =
@@ -140,6 +151,16 @@ export async function cancel(session: Session, reason: string | undefined): Prom
   const why = reason ?? (await terminal.ask(cancelReasonQuestion(session.lang)));
   if (!(await terminal.confirm(cancelQuestion(state.id, session.lang))))
     return postponed(session, state);
+  return cancelConfirmed(session, change, why?.trim());
+}
+
+/** The cancellation confirmed: the change is archived as cancelled; its branch keeps its work. */
+async function cancelConfirmed(
+  session: Session,
+  change: StoredChange,
+  why: string | undefined,
+): Promise<Output> {
+  const { state } = change;
   const moved = transition({
     phase: state.phase,
     kind: state.kind,
@@ -153,9 +174,7 @@ export async function cancel(session: Session, reason: string | undefined): Prom
     change,
     { ...state, phase: moved.phase },
     "change.cancelled",
-    {
-      ...(why !== undefined && why.trim().length > 0 ? { reason: why.trim() } : {}),
-    },
+    { ...(why !== undefined && why.length > 0 ? { reason: why } : {}) },
   );
   if (state.kind === "retro") await writePointer(session.git, "retro", undefined);
   const commit = await commitArchive(

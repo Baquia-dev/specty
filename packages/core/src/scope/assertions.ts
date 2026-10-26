@@ -21,29 +21,41 @@ const COMMENT = /^\s*(?:\/\/|\/\*|\*|#|--)/;
  */
 export function removedAssertions(diff: string): readonly AssertionLoss[] {
   const net = new Map<string, number>();
-  let from: string | undefined;
-  let to: string | undefined;
-  let inHunk = false;
+  let cursor: DiffCursor = { from: undefined, to: undefined, inHunk: false };
   for (const line of diff.split("\n")) {
-    if (line.startsWith("diff --git ")) {
-      [from, to, inHunk] = [undefined, undefined, false];
-    } else if (!inHunk) {
-      // File headers come before the first hunk; inside it, `--- x` is a removed line.
-      if (line.startsWith("--- ")) from = side(line.slice(4), "a/");
-      else if (line.startsWith("+++ ")) to = side(line.slice(4), "b/");
-      else if (line.startsWith("@@")) inHunk = true;
-    } else {
-      const path = to ?? from;
-      const sign = line.startsWith("-") ? 1 : line.startsWith("+") ? -1 : 0;
-      if (path !== undefined && sign !== 0 && isAssertion(line.slice(1))) {
-        net.set(path, (net.get(path) ?? 0) + sign);
-      }
-    }
+    if (cursor.inHunk && !line.startsWith("diff --git ")) count(net, cursor, line);
+    else cursor = header(cursor, line);
   }
   return [...net]
     .filter(([, removed]) => removed > 0)
     .map(([path, removed]) => ({ path, removed }))
     .toSorted((a, b) => a.path.localeCompare(b.path));
+}
+
+/** Where a diff walk is: the file's two sides, and whether its hunks started. */
+interface DiffCursor {
+  readonly from: string | undefined;
+  readonly to: string | undefined;
+  readonly inHunk: boolean;
+}
+
+/** A new file, its headers or its first hunk. File headers come before the first hunk. */
+function header(cursor: DiffCursor, line: string): DiffCursor {
+  if (line.startsWith("diff --git ")) return { from: undefined, to: undefined, inHunk: false };
+  if (line.startsWith("--- ")) return { ...cursor, from: side(line.slice(4), "a/") };
+  if (line.startsWith("+++ ")) return { ...cursor, to: side(line.slice(4), "b/") };
+  if (line.startsWith("@@")) return { ...cursor, inHunk: true };
+  return cursor;
+}
+
+/** A line of a hunk: a removed assertion counts one, an added one takes one back. */
+function count(net: Map<string, number>, cursor: DiffCursor, line: string): void {
+  // Inside a hunk, `--- x` is a removed line, not a header.
+  const path = cursor.to ?? cursor.from;
+  const sign = line.startsWith("-") ? 1 : line.startsWith("+") ? -1 : 0;
+  if (path !== undefined && sign !== 0 && isAssertion(line.slice(1))) {
+    net.set(path, (net.get(path) ?? 0) + sign);
+  }
 }
 
 function isAssertion(code: string): boolean {

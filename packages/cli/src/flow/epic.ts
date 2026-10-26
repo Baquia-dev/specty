@@ -4,6 +4,7 @@ import {
   type Output,
   type Phase,
   parseSpec,
+  type SliceRefusal,
   type SliceView,
   type Spec,
   sliceRefusalCard,
@@ -94,18 +95,26 @@ export async function sliceRefusal(
     return sliceRefusalCard({ reason: "not-approved", epic, phase }, cards);
   const spec = parseSpec(await readSpec(found.change.files), { language: session.lang }).spec;
   const slices = await sliceViews(found.session, found.change, spec);
+  const refusal = pickedSliceRefusal(slices, epic, slice);
+  return refusal === undefined ? undefined : sliceRefusalCard(refusal, cards);
+}
+
+/** The slice is not one of the epic's, already has a change, or depends on a slice not closed. */
+function pickedSliceRefusal(
+  slices: readonly SliceView[],
+  epic: string,
+  slice: string,
+): SliceRefusal | undefined {
   const target = slices.find((item) => item.id === slice);
   if (target === undefined) {
     const ids = slices.map(({ id }) => id);
-    return sliceRefusalCard({ reason: "no-slice", epic, slice, slices: ids }, cards);
+    return { reason: "no-slice", epic, slice, slices: ids };
   }
-  if (target.child !== undefined) {
-    return sliceRefusalCard({ reason: "taken", slice, child: target.child }, cards);
-  }
+  if (target.child !== undefined) return { reason: "taken", slice, child: target.child };
   if (target.status === "waiting") {
     const closed = new Set(slices.filter((item) => item.status === "done").map(({ id }) => id));
     const waiting = target.depends.filter((id) => !closed.has(id));
-    return sliceRefusalCard({ reason: "waiting", slice, waiting }, cards);
+    return { reason: "waiting", slice, waiting };
   }
   return undefined;
 }
@@ -137,6 +146,13 @@ export async function finishEpic(session: Session, epic: StoredChange): Promise<
  * this folder and of the main one, where a closed change lands once it is incorporated.
  */
 async function childrenOf(session: Session, epic: string): Promise<Child[]> {
+  const open = await openChildren(session, epic);
+  const known = new Set([epic, ...open.map(({ id }) => id)]);
+  return [...open, ...(await archivedChildren(session, epic, known))];
+}
+
+/** The change of each worktree whose spec names `epic`, with its folder while it is open. */
+async function openChildren(session: Session, epic: string): Promise<Child[]> {
   const children: Child[] = [];
   const seen = new Set<string>([epic]);
   for (const { change, session: there } of await locateChanges(session)) {
@@ -151,6 +167,17 @@ async function childrenOf(session: Session, epic: string): Promise<Child[]> {
       ...(isFinished(change.state) ? {} : { folder: there.root }),
     });
   }
+  return children;
+}
+
+/** The archived changes whose spec names `epic`, here and in the main folder, but the `known` ones. */
+async function archivedChildren(
+  session: Session,
+  epic: string,
+  known: ReadonlySet<string>,
+): Promise<Child[]> {
+  const children: Child[] = [];
+  const seen = new Set(known);
   const main = (await session.git.worktrees())[0]?.folder ?? session.root;
   for (const archive of new Set([session.paths.archive, repoPaths(main).archive])) {
     for (const year of await listDir(archive)) {

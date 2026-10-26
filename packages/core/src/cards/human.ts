@@ -3,7 +3,7 @@ import type { Phase, WaitingFor } from "../flow/phases";
 import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import type { ChangeKind } from "../spec/model";
-import { translator } from "./text";
+import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 /** Messages for people: approvals, acceptance, closing, cancellation and status. */
@@ -203,26 +203,7 @@ export interface StatusEntry {
 /** Open changes of every worktree; a person's decision can be taken from any folder. */
 export function statusCard(entries: readonly StatusEntry[], ctx: CardContext): Output {
   const t = translator(ctx.lang);
-  const who = {
-    agent: t("al agente", "the agent"),
-    human: t("a ti", "you"),
-    nobody: t("a —", "—"),
-  };
-  const lines = entries.map((entry) => {
-    const marker = entry.current ? "▸" : " ";
-    const scope =
-      entry.pendingScope.length === 0
-        ? ""
-        : t(
-            ` · alcance: ${entry.pendingScope.join(", ")}`,
-            ` · scope: ${entry.pendingScope.join(", ")}`,
-          );
-    const where = entry.folder === undefined ? "" : ` · ${t("en", "in")} ${entry.folder}`;
-    return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}`;
-  });
-  const waiting =
-    entries.find((entry) => entry.current && entry.waitingFor === "human") ??
-    entries.find((entry) => entry.waitingFor === "human");
+  const lines = entries.map((entry) => statusLine(entry, t));
   return {
     status: "ok",
     header: headerOf(t("estado", "status")),
@@ -243,17 +224,44 @@ export function statusCard(entries: readonly StatusEntry[], ctx: CardContext): O
           : [],
       ),
     ],
-    next:
-      waiting === undefined
-        ? t(
-            `pídele a tu agente que continúe con \`${ctx.command} next\`.`,
-            `ask your agent to continue with \`${ctx.command} next\`.`,
-          )
-        : t(
-            `te toca decidir en ${waiting.id}: \`${ctx.command} ${humanAction(waiting.phase)}\`.`,
-            `${waiting.id} waits for your decision: \`${ctx.command} ${humanAction(waiting.phase)}\`.`,
-          ),
+    next: statusNext(entries, ctx),
   };
+}
+
+/** One open change: the one here marked, who it waits for, its pending scope and its folder. */
+function statusLine(entry: StatusEntry, t: Translate): string {
+  const who = {
+    agent: t("al agente", "the agent"),
+    human: t("a ti", "you"),
+    nobody: t("a —", "—"),
+  };
+  const marker = entry.current ? "▸" : " ";
+  const scope =
+    entry.pendingScope.length === 0
+      ? ""
+      : t(
+          ` · alcance: ${entry.pendingScope.join(", ")}`,
+          ` · scope: ${entry.pendingScope.join(", ")}`,
+        );
+  const where = entry.folder === undefined ? "" : ` · ${t("en", "in")} ${entry.folder}`;
+  return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}`;
+}
+
+/** The person's decision, the one here first; with none, the agent goes on. */
+function statusNext(entries: readonly StatusEntry[], ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const waiting =
+    entries.find((entry) => entry.current && entry.waitingFor === "human") ??
+    entries.find((entry) => entry.waitingFor === "human");
+  return waiting === undefined
+    ? t(
+        `pídele a tu agente que continúe con \`${ctx.command} next\`.`,
+        `ask your agent to continue with \`${ctx.command} next\`.`,
+      )
+    : t(
+        `te toca decidir en ${waiting.id}: \`${ctx.command} ${humanAction(waiting.phase)}\`.`,
+        `${waiting.id} waits for your decision: \`${ctx.command} ${humanAction(waiting.phase)}\`.`,
+      );
 }
 
 function humanAction(phase: Phase): string {

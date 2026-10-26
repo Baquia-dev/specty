@@ -24,8 +24,9 @@ export function enforcementCommands(
   program
     .command("guard", { hidden: true })
     .requiredOption("--tool <tool>")
-    .action(async (options: { tool: string }) => {
+    .option("--event <event>")
+    .action(async (options: { tool: string; event?: string }) => {
       if (!isGuardTool(options.tool)) return;
-      exit(await guardCommand(environment, options.tool));
+      exit(await guardCommand(environment, options.tool, options.event));
     });
 }

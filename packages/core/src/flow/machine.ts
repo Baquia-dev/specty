@@ -95,24 +95,62 @@ export function transition({ phase, kind, actor, event }: TransitionInput): Tran
   if (!rule.from.includes(phase)) return reject("phase-not-allowed");
   switch (event.type) {
     case "propose":
+    case "requestChanges":
+    case "approve":
+      return specOutcome(event, phase, kind);
+    case "taskDone":
+    case "scopeRequest":
+    case "decideScope":
+      return taskOutcome(event, kind);
+    default:
+      return endOutcome(event, kind);
+  }
+}
+
+type EventOf<T extends FlowEventType> = Extract<FlowEvent, { readonly type: T }>;
+
+/** The spec: proposed, sent back by the person, or approved. */
+function specOutcome(
+  event: EventOf<"propose" | "requestChanges" | "approve">,
+  phase: Phase,
+  kind: ChangeKind,
+): TransitionResult {
+  switch (event.type) {
+    case "propose":
       if (event.validationErrors > 0) return reject("validation-errors");
       return to(phase === "closing" ? "closing" : "review");
     case "requestChanges":
       return to("review");
     case "approve":
-      if (event.validationErrors > 0) return reject("validation-errors");
-      if (event.pendingHighImpact > 0) return reject("pending-assumptions");
-      if (kind === "retro") return to("done");
-      // An epic advances through its children; any other change with every task done (a
-      // withdrawn adjustment, say) goes straight to acceptance, as after its last task.
-      return to(kind === "epic" || event.remainingTasks > 0 ? "implementing" : "acceptance");
-    case "taskDone":
-      if (WITHOUT_TASKS.has(kind)) return reject("kind-not-allowed");
-      return to(event.remainingTasks > 0 ? "implementing" : "acceptance");
-    case "scopeRequest":
-    case "decideScope":
-      if (WITHOUT_TASKS.has(kind)) return reject("kind-not-allowed");
-      return to("implementing");
+      return approveOutcome(event, kind);
+  }
+}
+
+function approveOutcome(event: EventOf<"approve">, kind: ChangeKind): TransitionResult {
+  if (event.validationErrors > 0) return reject("validation-errors");
+  if (event.pendingHighImpact > 0) return reject("pending-assumptions");
+  if (kind === "retro") return to("done");
+  // An epic advances through its children; any other change with every task done (a
+  // withdrawn adjustment, say) goes straight to acceptance, as after its last task.
+  return to(kind === "epic" || event.remainingTasks > 0 ? "implementing" : "acceptance");
+}
+
+/** The work on the tasks, which epics and retros do not have. */
+function taskOutcome(
+  event: EventOf<"taskDone" | "scopeRequest" | "decideScope">,
+  kind: ChangeKind,
+): TransitionResult {
+  if (WITHOUT_TASKS.has(kind)) return reject("kind-not-allowed");
+  if (event.type !== "taskDone") return to("implementing");
+  return to(event.remainingTasks > 0 ? "implementing" : "acceptance");
+}
+
+/** Past the tasks: adjusting, accepting, closing, an epic's slices done, or cancelling. */
+function endOutcome(
+  event: EventOf<"adjust" | "accept" | "confirmClose" | "childrenDone" | "cancel">,
+  kind: ChangeKind,
+): TransitionResult {
+  switch (event.type) {
     case "adjust":
       return to("adjusting");
     case "accept":

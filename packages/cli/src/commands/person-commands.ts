@@ -12,10 +12,9 @@ import { reject } from "./scope-decision";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
 
-/** Registers the person's decisions (ARCHITECTURE §6), and turning delegated mode on or off. */
-export function personCommands(program: Command, run: Run): void {
-  /** A person's decision runs in the folder of the change it applies to, from any folder. */
-  const decide = (
+/** A person's decision runs in the folder of the change it applies to, from any folder. */
+function decider(run: Run) {
+  return (
     action: PersonAction,
     options: { readonly id: string | undefined; readonly scope?: string | undefined },
     handler: (session: Session) => Promise<Output>,
@@ -24,6 +23,11 @@ export function personCommands(program: Command, run: Run): void {
       const chosen = await personSession(session, action, options);
       return chosen.kind === "output" ? chosen.output : handler(chosen.session);
     })();
+}
+
+/** Registers the person's decisions (ARCHITECTURE §6), and turning delegated mode on or off. */
+export function personCommands(program: Command, run: Run): void {
+  const decide = decider(run);
   const CHANGE = ["[change]", "the change's id (default: the one waiting)"] as const;
   program
     .command("approve")

@@ -29,6 +29,8 @@ const IGNORE_FILES: readonly IgnoreFile[] = [
     names: [".devinignore", ".windsurfignore", ".codeiumignore"],
     create: ".codeiumignore",
   },
+  // Antigravity keeps these paths from its indexer and from its @ mentions.
+  { tool: "antigravity", names: [".antigravityignore"], create: ".antigravityignore" },
 ];
 
 /** Plans the exclusions into `files`, the plan's files, for each agent in use. */
@@ -65,6 +67,45 @@ export async function agentIgnores(session: Session, files: InstallFiles): Promi
       files,
     );
   }
+  if (await uses(root, "opencode")) {
+    const jsonc = (await files.read(join(root, "opencode.jsonc"))) !== undefined;
+    const file = join(root, jsonc ? "opencode.jsonc" : "opencode.json");
+    const denied = opencodePatterns(patterns);
+    await rewriteJson(file, (value) => withReadDenied(value, denied), true, files);
+  }
+}
+
+/**
+ * OpenCode matches `permission.read` against the path relative to the project, where `*` is any
+ * text: a `**\/` pattern also goes without it, so that it covers the root too.
+ */
+function opencodePatterns(patterns: readonly string[]): string[] {
+  const both = patterns.flatMap((pattern) =>
+    pattern.startsWith("**/") ? [pattern, pattern.slice(3)] : [pattern],
+  );
+  return [...new Set(both)];
+}
+
+/**
+ * OpenCode's denials to read, after the rules the person had, because the last rule that matches
+ * wins; a single rule for every read becomes the first one (`*`), and a pattern the person
+ * already ruled on stays as theirs.
+ */
+function withReadDenied(
+  value: Record<string, unknown>,
+  patterns: readonly string[],
+): Record<string, unknown> {
+  const permission = isRecord(value.permission) ? value.permission : {};
+  const read = permission.read;
+  const rules: Record<string, unknown> = isRecord(read)
+    ? read
+    : typeof read === "string"
+      ? { "*": read }
+      : {};
+  const missing = patterns.filter((pattern) => !Object.hasOwn(rules, pattern));
+  if (missing.length === 0) return value;
+  const denied = Object.fromEntries(missing.map((pattern) => [pattern, "deny"]));
+  return { ...value, permission: { ...permission, read: { ...rules, ...denied } } };
 }
 
 /** The agent is in use when one of its markers is in the repository. */

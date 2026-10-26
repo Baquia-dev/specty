@@ -26,8 +26,8 @@ export {
   type AgentCapabilities,
   capabilityTable,
   type GuardedAgent,
-  type GuardSurface,
   isGuardedAgent,
+  type Support,
 } from "./capabilities";
 export * from "./cards";
 export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
@@ -189,7 +189,7 @@ export {
   type ScopeVerdict,
   scopeRulesFrom,
 } from "./scope/scope";
-export { isImplicitTest, isTestFile } from "./scope/tests";
+export { isImplicitTest, isTestFile, isTestOf } from "./scope/tests";
 export {
   type EffortLevel,
   type EffortRecommendation,

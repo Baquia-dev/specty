@@ -21,6 +21,9 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 ├─ receipts.json               # recibos de commit
 ├─ active                      # cambio activo cuando no hay rama por cambio
 ├─ shell/<tool_use_id>.json    # foto del árbol antes de cada comando de Bash del agente
+├─ pending/<conversación>.card # tarjeta que una compactación dejó para el siguiente comando (Cursor); se entrega una vez y caduca en un día
+├─ pending/<conversación>.warning # aviso tras un comando que la herramienta no deja dar en el momento (Antigravity); va en la siguiente llamada al modelo, una vez, y caduca en un día
+├─ pending/<conversación>.stop # turno que el fin de turno devolvió al trabajo, para una herramienta que no lo marca (Antigravity): su siguiente fin de turno termina; caduca en un día
 └─ server.json                 # puerto y token de la UI en ejecución
 
 .git/common/specty/            # local, compartido por todas las worktrees, nunca versionado
@@ -150,7 +153,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - Hay una tarea sin `verify` y no existe una verificación por defecto.
 - En `adjusting`: se modifica o elimina una tarea completada.
 - En `closing`: hay cambios fuera de la sección Cierre.
-- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división.
+- Un cambio `quick` supera sus límites, o un cambio supera los umbrales de división. La tarea única de `quick` solo se exige antes de la primera aprobación: después, un ajuste puede añadir tareas de corrección.
 
 **Avisos**, que se muestran en la salida y en la UI:
 
@@ -300,7 +303,7 @@ verify:
   default: flutter test
   full: flutter analyze && flutter test
   quick: dart format --output=none --set-exit-if-changed .  # antes de la verificación de cada tarea
-  timeoutSec: 600
+  timeoutSec: 600                 # al vencer, se corta el comando con todos los procesos que lanzó
 scope:
   implicitTests: true             # tests junto a los archivos del alcance
   generated: ["**/*.g.dart", "**/*.freezed.dart"]
@@ -409,7 +412,7 @@ Las marcas que son comentarios solo cuentan dentro de un comentario, y las que s
 Después vienen, para cualquier lenguaje, estas verificaciones, cada una con su id en `checks.levels`:
 
 - `max-lines`: las líneas de código de cada archivo, con los límites de `lines`.
-- `focused-tests`: un test enfocado deja sin correr a los demás (`describe.only`, `fit`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` de Ginkgo).
+- `focused-tests`: un test enfocado deja sin correr a los demás (`describe.only`, `fit`, `solo: true` de Dart, `focus: true` de RSpec, `FIt` y `Focus` de Ginkgo, `->only()` de Pest).
 - `skipped-tests`: un test apagado con una marca (`it.skip`, `xit`, `skip:` de Dart, `@pytest.mark.skip`, `@unittest.skip`, `#[ignore]`, `@Disabled`, `@Ignore`, `enabled = false` de TestNG, `[Ignore]`, `Skip = "…"` de xUnit). No cuentan los saltos condicionales, que decide el propio test (`test.skipIf`, `@pytest.mark.skipif`, `t.Skip()`, `pytest.skip()`).
 - `todo`: una marca de `checks.todo.markers` que empieza un comentario (`//`, `/*`, `*` a principio de línea, `#`, `--`, el de HTML, `;` o `%`) sin nada que case con `checks.todo.reference` en el resto de la línea. Por defecto vale `#12`, `acme/app#12`, una clave como `ABC-12` o un enlace. Una configuración con una `reference` que no es una expresión regular no se acepta.
 
@@ -422,8 +425,8 @@ Las dos de tests solo miran los archivos de test (por nombre o por carpeta, como
 - `.specty/config.yaml`: `checks.preCommit: true`, conservando el resto del archivo y sus comentarios.
 - `.github/workflows/specty-check.yml`: la plantilla de GitHub Actions. Prepara el stack (Node 22, pnpm, Flutter o Dart, y el comando de instalación detectado), ejecuta `npx -y @baquia-dev/specty@<versión> check --all --json` con la versión exacta del CLI que la escribe, y guarda el JSON como artefacto. Las demás plataformas de CI se añaden como plantillas en `check/ci.ts`.
 - En Dart, `analysis_options.yaml`: los modos estrictos que falten bajo `analyzer.language`, sin tocar sus `include` ni comentarios; si no existe, lo crea.
-- Junto al guard de Claude Code (`Stop`), Cursor (`stop`) y Codex (`Stop`, en `.codex/hooks.json` del proyecto): el hook de fin de turno `specty hook agent-stop <agente>`, con el mismo comando de Specty que el guard y el tiempo límite de `verify.timeoutSec` (ARCHITECTURE §10).
-- Para cada agente que el repositorio usa (por sus marcas de ARCHITECTURE §10), sus exclusiones con los globs de `checks.exclude` y `scope.generated`, para que no lea dependencias, artefactos de build ni código generado. Van en `.cursorignore` (Cursor), en `.geminiignore` (Gemini CLI), en el archivo de Windsurf que exista (`.devinignore`, `.windsurfignore` o `.codeiumignore`; si no hay ninguno, `.codeiumignore`) y como reglas `Read(<patrón>)` en `permissions.deny` de `.claude/settings.json` (Claude Code). Solo se añaden los patrones que faltan, y lo demás queda. Copilot, Codex, OpenCode y Antigravity no tienen un archivo de exclusión propio en el repositorio.
+- Junto al guard de Claude Code (`Stop`), Cursor (`stop`), Codex (`Stop`, en `.codex/hooks.json` del proyecto), Gemini CLI (`AfterAgent`, en `.gemini/settings.json`, con el límite en milisegundos), Devin (`Stop`, en la raíz de `.devin/hooks.v1.json`) y Antigravity (`Stop`, en el hook `specty` de `.agents/hooks.json`): el hook de fin de turno `specty hook agent-stop <agente>`, con el mismo comando de Specty que el guard y el tiempo límite de `verify.timeoutSec` (ARCHITECTURE §10). En OpenCode, el plugin de Specty se vuelve a escribir con `STOP` igual a ese tiempo límite, y desde entonces ejecuta el hook en cada `session.idle`.
+- Para cada agente que el repositorio usa (por sus marcas de ARCHITECTURE §10), sus exclusiones con los globs de `checks.exclude` y `scope.generated`, para que no lea dependencias, artefactos de build ni código generado. Van en `.cursorignore` (Cursor), en `.geminiignore` (Gemini CLI), en `.antigravityignore` (Antigravity), en el archivo de Windsurf que exista (`.devinignore`, `.windsurfignore` o `.codeiumignore`; si no hay ninguno, `.codeiumignore`), como reglas `Read(<patrón>)` en `permissions.deny` de `.claude/settings.json` (Claude Code) y como `"<patrón>": "deny"` en `permission.read` de `opencode.json` u `opencode.jsonc` (OpenCode, que también recibe cada patrón con `**/` sin ese prefijo). Solo se añaden los patrones que faltan, y lo demás queda. Copilot y Codex no tienen un archivo de exclusión propio en el repositorio.
 - Con `checks.layers` en TypeScript o JavaScript y sin dependency-cruiser, este como devDependency con su versión exacta (`dependency-cruiser@18.7.0`), con el gestor del proyecto (`npm install --save-dev --save-exact`, `pnpm add --save-dev --save-exact`, `yarn add --dev --exact` o `bun add --dev --exact`), solo si la persona lo confirma.
 
 Los pasos planifican uno tras otro sobre los mismos archivos, así que dos pasos que tocan el mismo archivo (el hook de fin de turno y las reglas `Read` de Claude Code) dan un solo diff. Lo que la persona ya decidió distinto (`checks.preCommit: false`, un modo estricto en `false`, una plantilla de CI con otro contenido) es un conflicto: se informa y no se toca. Lo que se aplica entra en un commit con recibo, `Specty-Init`, solo con los archivos que no tenían cambios de la persona y nunca dentro de un cambio activo. Ejecutarlo otra vez, con todo aplicado, dice que no hay nada que instalar. Betterleaks y gitleaks no son paquetes del proyecto: si faltan, el comando dice que se instalen.
@@ -433,7 +436,7 @@ Los pasos planifican uno tras otro sobre los mismos archivos, así que dos pasos
 - `spec-approved`: la spec está aprobada y no cambió desde entonces; el cierre, que llega después, no cuenta. Falla si no está aprobada, si cambió, si el cambio está cancelado o si no existe. Sin cambio, es la única que aparece.
 - `scope`: cada archivo que el diff toca o borra está en «Archivos» (con el origen de los renombrados), en los `files` de alguna tarea o en una ampliación aprobada; los tests implícitos y los generados entran solos. Lista cada ruta que queda fuera.
 - `dependencies`: cada dependencia que el diff añade a un manifiesto casa con `allowedDependencies` del frontmatter, por nombre o por glob. Lee, en cualquier carpeta, `package.json` (`dependencies`, `devDependencies`, `peerDependencies` y `optionalDependencies`), `pubspec.yaml` (`dependencies` y `dev_dependencies`, sin los paquetes del SDK como `sdk: flutter`), `requirements*.txt`, `pyproject.toml` (PEP 621, sus extras, los grupos de PEP 735 sin `include-group` y Poetry), `go.mod` (sin `// indirect`), `Cargo.toml`, `Gemfile`, `composer.json` (sin los paquetes de plataforma), `pom.xml` (sin `<dependencyManagement>`, `<build>` ni `<reporting>`), `build.gradle(.kts)`, `gradle/libs.versions.toml`, los `.csproj`, `.fsproj` y `.vbproj`, `Directory.Packages.props` y `Package.swift`. En Java y Kotlin el nombre es `grupo:artefacto`, y en Swift, el último tramo de la `url` del paquete. Los lectores de TOML y XML (`core/src/checks/manifests-*.ts`) leen solo lo que necesitan, sin un parser completo. Solo cuentan los nombres nuevos respecto al punto de partida: un cambio de versión no; un manifiesto nuevo, con todas sus dependencias. Un manifiesto que no se puede leer no da ninguna. Cada ecosistema nuevo es un lector más en `core/src/checks/dependencies.ts`.
-- `fix-tests`: cada tarea `fix` activa o hecha tiene en el diff un test suyo, de sus `files`, de sus ampliaciones o junto a ellos. Con `--staged` solo cuenta la activa, porque la hecha ya hizo su commit.
+- `fix-tests`: cada tarea `fix` activa o hecha tiene en el diff un test suyo, de sus `files`, de sus ampliaciones o junto a ellos; justo en la raíz de la carpeta de tests, solo el que lleva el nombre de uno de sus archivos. Con `--staged` solo cuenta la activa, porque la hecha ya hizo su commit.
 - `tests-removed`: avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada test con menos casos que en el punto de partida (el merge-base o HEAD). Los casos se cuentan con un catálogo de declaraciones por familia de frameworks (`it(`, `test(`, `testWidgets(`, `def test_`, `func Test`, `@Test`, `[Fact]`, `#[test]`…); su nivel solo sirve para apagarlo.
 
 `specty task done` ejecuta `specty check --changed --spec` con el cambio activo: tras comprobar el alcance de la tarea y el tamaño de sus archivos, y antes de su verificación, para que lo barato falle primero. Deja fuera `scope` y `max-lines`, que `task done` ya comprueba por tarea. Si la tarea tiene verificación, deja fuera también `format`, `lint`, `typecheck` y `tests`: esa verificación es como la persona ejecuta los comandos del proyecto en cada tarea, y así los tests no corren dos veces. `propose` exige una verificación a cada tarea, así que solo faltan si la persona quita `verify.default` después de aprobar. Si falla una verificación de nivel error, la tarea no se completa: la tarjeta es la de verificación fallida, con el comando y el informe como salida. Los avisos no bloquean, y su informe sale por la salida de error antes de la tarjeta. Cada verificación se suaviza con `checks.levels`; por ejemplo, `fix-tests: warn` deja completar una tarea `fix` sin test, con un aviso.

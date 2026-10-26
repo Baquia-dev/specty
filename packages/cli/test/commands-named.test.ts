@@ -74,8 +74,8 @@ const REJECTED =
 
 describe("commands named in texts", () => {
   it("split placeholders, brackets and alternatives", () => {
-    // biome-ignore lint/suspicious/noTemplateCurlyInString: a placeholder as the sources write it.
-    expect(argvsOf('task done ${id} --summary "<qué hiciste>"')).toEqual([
+    // A placeholder as the sources write it.
+    expect(argvsOf(`task done \${id} --summary "<qué hiciste>"`)).toEqual([
       ["task", "done", "x", "--summary", "x"],
     ]);
     expect(argvsOf("delegate on|off")).toEqual([

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   type Finding,
-  isImplicitTest,
   isTestFile,
+  isTestOf,
   matchesAny,
   testCases,
   translator,
@@ -32,7 +32,7 @@ export function fixTests(plan: LoadedPlan): CheckDefinition {
         })
         .filter((task) => {
           const scope = [...task.files, ...(plan.state.tasks[task.id]?.scopeExtra ?? [])];
-          return !tests.some((path) => matchesAny(path, scope) || isImplicitTest(path, scope));
+          return !tests.some((path) => matchesAny(path, scope) || isTestOf(path, scope));
         })
         .map(
           (task): Finding => ({

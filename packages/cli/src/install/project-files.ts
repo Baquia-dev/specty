@@ -92,14 +92,30 @@ export async function removeAgentsBlocks(root: string, files: InstallFiles): Pro
   else await files.write(path, left);
 }
 
+/** How GEMINI.md imports AGENTS.md: Gemini CLI documents only paths that start with `./`. */
+export const GEMINI_POINTER = "@./AGENTS.md";
+
 /** Claude Code reads CLAUDE.md: it imports AGENTS.md instead of copying it. */
-export async function writeClaudePointer(
+export function writeClaudePointer(
   root: string,
   files: InstallFiles = installFiles(),
 ): Promise<boolean> {
-  const path = join(root, "CLAUDE.md");
+  return writePointer(root, "CLAUDE.md", "@AGENTS.md", files);
+}
+
+/**
+ * An agent's own instructions file starts with `line`, which imports AGENTS.md, and keeps what it
+ * had; false when it already imports it.
+ */
+export async function writePointer(
+  root: string,
+  file: string,
+  line: string,
+  files: InstallFiles = installFiles(),
+): Promise<boolean> {
+  const path = join(root, file);
   const current = await files.read(path);
-  if (current?.split("\n").some((line) => line.trim() === "@AGENTS.md") === true) return false;
-  await files.write(path, current === undefined ? "@AGENTS.md\n" : `@AGENTS.md\n\n${current}`);
+  if (current?.split("\n").some((text) => text.trim() === line) === true) return false;
+  await files.write(path, current === undefined ? `${line}\n` : `${line}\n\n${current}`);
   return true;
 }

@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-cursor-trae-la-tarjeta-tras-compactar-y-deja-hac",
+  "baseCommit": "313659d8ba065d7500b36bf800c831fe87dc9785",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8cda1a063a35805fea494951579c2d9fa41ad9a934baf8a4df136c96d1eb8681",
+    "at": "2026-10-26T17:51:50.813Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:efb232363bf3bd4be1b226c1fc37f31cd381a3857de41d72440756dd3854eae6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ff6170d63ec1858685847f2abc579e9db4d4c9163ab3f09269a4f564849f0e5f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:29fcc17f95fada63e4cdf0c297322c78135048f1785cdefaaf7d3bc3991fda25",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:051cd9d7f13f98c74c0349b96549fd299a45b8e8f8e398973cbfa015382ae6d3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "138e8893bf0510dc364f78e429774ac51f6e4f74",
+      "attempts": 1,
+      "startedAt": "2026-10-26T17:51:51.664Z",
+      "doneAt": "2026-10-26T18:02:33.372Z",
+      "summary": "La tarjeta de Cursor llega con el siguiente comando tras compactar: preCompact la deja pendiente (enforce/pending.ts, por conversación) y el siguiente postToolUse la añade tras el aviso del comando. doctor avisa sin preCompact. El guard se parte en guard, answer y beforeAction.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "80233c00bf184f6c8f6d96e129aaa8fceaf92d5c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:02:33.684Z",
+      "doneAt": "2026-10-26T18:07:33.475Z",
+      "summary": "init escribe .cursor/sandbox.json (local) con la carpeta común de git y la de las worktrees en additionalReadwritePaths, conservando lo de la persona; uno versionado no se toca y se avisa. doctor lo comprueba, uninstall quita solo esas carpetas y new lo copia a cada worktree.",
+      "scopeExtra": [
+        "packages/cli/src/agents/adapter.ts",
+        "packages/cli/src/agents/index.ts",
+        "packages/cli/src/commands/doctor.ts",
+        "packages/cli/src/commands/uninstall.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "fecc652d1a5ec72ae7d797b3df3a8139a02160b2",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:07:33.768Z",
+      "doneAt": "2026-10-26T18:08:54.181Z",
+      "summary": "La tarjeta tras compactar de Cursor pasa a «indirecto», con cómo se hace, y sus permisos a «sí». ARCHITECTURE cuenta preCompact y el sandbox (§7 y §10) y formats.md la carpeta specty/pending/.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 3,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-26T18:11:35.115Z"
+}

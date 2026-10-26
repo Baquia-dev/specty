@@ -199,24 +199,35 @@ function subcommand(args: readonly string[]): string {
 /** Arguments after the Specty program, for any way of invoking it. */
 function spectyArgs(program: string, args: readonly string[]): readonly string[] | undefined {
   if (program === "specty") return args;
-  if (RUNNERS.has(program)) {
-    const script = args.findIndex((arg) => !arg.startsWith("-"));
-    const path = args[script] ?? "";
-    return SPECTY_SCRIPT.test(path) || path.includes("/specty/dist/")
-      ? args.slice(script + 1)
-      : undefined;
-  }
+  if (RUNNERS.has(program)) return scriptArgs(args);
   const runner = packageRunner(program, args);
-  if (runner !== undefined) {
-    const index = runner.findIndex((arg) => !arg.startsWith("-"));
-    return SPECTY_PACKAGE.test(runner[index] ?? "") ? runner.slice(index + 1) : undefined;
-  }
-  if (program === "pnpm" || program === "npm" || program === "yarn") {
-    const [first, second, ...rest] = args;
-    if (first === "specty")
-      return [second, ...rest].filter((arg): arg is string => arg !== undefined);
-    if ((first === "exec" || first === "run") && second === "specty") return rest;
-  }
+  if (runner !== undefined) return packageArgs(runner);
+  return PACKAGE_MANAGERS.has(program) ? managerArgs(args) : undefined;
+}
+
+const PACKAGE_MANAGERS: ReadonlySet<string> = new Set(["pnpm", "npm", "yarn"]);
+
+/** `node …/specty.mjs …`: the arguments after Specty's script. */
+function scriptArgs(args: readonly string[]): readonly string[] | undefined {
+  const script = args.findIndex((arg) => !arg.startsWith("-"));
+  const path = args[script] ?? "";
+  return SPECTY_SCRIPT.test(path) || path.includes("/specty/dist/")
+    ? args.slice(script + 1)
+    : undefined;
+}
+
+/** `npx @baquia-dev/specty …`: the arguments after Specty's package. */
+function packageArgs(runner: readonly string[]): readonly string[] | undefined {
+  const index = runner.findIndex((arg) => !arg.startsWith("-"));
+  return SPECTY_PACKAGE.test(runner[index] ?? "") ? runner.slice(index + 1) : undefined;
+}
+
+/** `pnpm specty …`, `npm exec specty …` or `yarn run specty …`. */
+function managerArgs(args: readonly string[]): readonly string[] | undefined {
+  const [first, second, ...rest] = args;
+  if (first === "specty")
+    return [second, ...rest].filter((arg): arg is string => arg !== undefined);
+  if ((first === "exec" || first === "run") && second === "specty") return rest;
   return undefined;
 }
 

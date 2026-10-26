@@ -21,8 +21,10 @@ const LOCATION = new RegExp(
 );
 const BARE_PATH = new RegExp(String.raw`^\s*(?<path>${PATH})\s*$`);
 const ESLINT_ENTRY = /^\s+(?<line>\d+):\d+\s+(?<message>\S.*)$/;
-// biome-ignore lint/suspicious/noControlCharactersInRegex: the escape that starts a colour.
-const ANSI = /\u001b\[[0-9;]*[A-Za-z]/g;
+// The escape that starts a colour, by its code: written in a regex, a control character reads
+// as a mistake.
+const ESC = String.fromCharCode(0x1b);
+const ANSI = new RegExp(String.raw`${ESC}\[[0-9;]*[A-Za-z]`, "g");
 const SEPARATORS = /^[\s:\-–•·|›>❯]+|[\s:\-–•·|›>❯]+$/g;
 const RULES = /[━─│┃]+/g;
 

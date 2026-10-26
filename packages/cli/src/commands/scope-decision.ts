@@ -22,6 +22,8 @@ import { canDecide } from "./human";
 import { thenNext } from "./next";
 import { withExtras } from "./scope";
 
+type ScopeRequest = StoredChange["state"]["pending"]["scopeRequests"][number];
+
 /** `specty reject --scope S`: a person turns down a scope request. */
 export async function reject(
   session: Session,
@@ -62,6 +64,23 @@ export async function decideScope(
       : undefined;
   const confirmed = await terminal.confirm(scopeDecisionQuestion(decision, request, session.lang));
   if (!confirmed) return nothingChangedCard(header, checkStatus(cards), cards);
+  return recordScopeDecision(session, active, request, { decision, header, why });
+}
+
+/** The decision taken: the request leaves the queue and, approved, widens its task's scope. */
+async function recordScopeDecision(
+  session: Session,
+  active: StoredChange,
+  request: ScopeRequest,
+  taken: {
+    readonly decision: "approve" | "reject";
+    readonly header: string;
+    readonly why: string | undefined;
+  },
+): Promise<Output> {
+  const { state } = active;
+  const { decision, header, why } = taken;
+  const { cards } = session;
   const moved = transition({
     phase: "implementing",
     kind: state.kind,

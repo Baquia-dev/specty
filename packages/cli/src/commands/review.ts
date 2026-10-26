@@ -38,15 +38,36 @@ export async function review(session: Session): Promise<Output> {
   const target = phase === "review" ? "spec" : "diff";
   const input = await inputFor(session, active, target);
   if (input.kind === "refused") return reviewRefusalCard(input.refusal, header, cards);
-  const { command } = settings;
+  return runReview(session, active, {
+    command: settings.command,
+    timeoutSec: settings.timeoutSec,
+    target,
+    text: input.text,
+    header,
+  });
+}
+
+/** One review to run: its command and time limit, what it reviews and reads, and the card's header. */
+interface ReviewRun {
+  readonly command: string;
+  readonly timeoutSec: number;
+  readonly target: "spec" | "diff";
+  readonly text: string;
+  readonly header: string;
+}
+
+/** Runs the reviewer, keeps its answer in the change's `reviews/` and records it in the audit. */
+async function runReview(session: Session, active: StoredChange, run: ReviewRun): Promise<Output> {
+  const { state } = active;
+  const { command, target, header } = run;
   session.environment.io.err(reviewingNote(command, session.lang));
   const started = Date.now();
   const result = await execute(command, [], {
     cwd: session.root,
     shell: true,
     env: session.environment.env,
-    input: input.text,
-    timeoutMs: settings.timeoutSec * 1000,
+    input: run.text,
+    timeoutMs: run.timeoutSec * 1000,
   });
   const text = result.stdout.trim();
   const ok = result.code === 0 && text.length > 0;
@@ -68,9 +89,13 @@ export async function review(session: Session): Promise<Output> {
     "specty",
   );
   if (!ok)
-    return reviewRefusalCard({ reason: "failed", command, code: result.code }, header, cards);
+    return reviewRefusalCard(
+      { reason: "failed", command, code: result.code },
+      header,
+      session.cards,
+    );
   const view = { header, target, command, path: session.paths.relative(path), text } as const;
-  return reviewedCard(view, cards);
+  return reviewedCard(view, session.cards);
 }
 
 type Input =

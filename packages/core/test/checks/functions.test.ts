@@ -204,6 +204,19 @@ describe("functionMetrics", () => {
     ]);
   });
 
+  it("counts `guard` as Swift's `guard … else`, not as a name", () => {
+    const text = source(
+      "async function accept(session: Session) {",
+      "  const guard = await humanChange(session);",
+      "  if (guard.kind === 'output') return guard.output;",
+      "  return decide(guard.change, guard);",
+      "}",
+    );
+    expect(functionMetrics("src/accept.ts", text)).toEqual([
+      { name: "accept", start: 1, end: 5, lines: 5, complexity: 2 },
+    ]);
+  });
+
   it("measures nothing in a language it has no estimator for", () => {
     expect(functionMetrics("lib/app.ex", source("def f do", "  if x, do: 1", "end"))).toEqual([]);
     expect(functionMetrics("README", source("function f() {", "}"))).toEqual([]);

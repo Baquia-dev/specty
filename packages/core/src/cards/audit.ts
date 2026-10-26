@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
+import { lookup } from "../lookup";
 import { headerOf, type Output, section } from "../output";
 import type { ChangeKind } from "../spec/model";
 import { translator } from "./text";
@@ -53,13 +54,21 @@ export function auditReport(
 ): { readonly markdown: string; readonly json: unknown } {
   const t = translator(lang);
   const { tasks, events, ...change } = view;
-  const { approved } = view;
-  const status = {
-    pending: t("pendiente", "pending"),
-    active: t("en curso", "in progress"),
-    done: t("hecha", "done"),
-  };
   const markdown = [
+    ...headerLines(view, t),
+    "",
+    ...taskLines(tasks, t),
+    "",
+    ...timelineLines(events, t),
+    "",
+  ].join("\n");
+  return { markdown, json: { change, tasks, events } };
+}
+
+/** The title and the facts of the change: id, kind, phase, branch, request and approval. */
+function headerLines(view: AuditView, t: T): string[] {
+  const { approved } = view;
+  return [
     t(`# Auditoría: ${view.title}`, `# Audit: ${view.title}`),
     "",
     t(
@@ -80,7 +89,16 @@ export function auditReport(
             `- Approved: revision ${approved.revision}, ${when(approved.at)}, by ${approved.by} (${approved.channel})`,
           ),
         ]),
-    "",
+  ];
+}
+
+function taskLines(tasks: readonly AuditTask[], t: T): string[] {
+  const status = {
+    pending: t("pendiente", "pending"),
+    active: t("en curso", "in progress"),
+    done: t("hecha", "done"),
+  };
+  return [
     t("## Tareas", "## Tasks"),
     "",
     ...(tasks.length === 0
@@ -93,7 +111,11 @@ export function auditReport(
               `| ${cell(`${task.id} ${task.title}`)} | ${status[task.status]} | ${task.commit ?? "—"} | ${cell(task.summary ?? "—")} |`,
           ),
         ]),
-    "",
+  ];
+}
+
+function timelineLines(events: readonly AuditEvent[], t: T): string[] {
+  return [
     t("## Línea de tiempo", "## Timeline"),
     "",
     t("| Cuándo | Quién | Qué |", "| When | Who | What |"),
@@ -101,9 +123,7 @@ export function auditReport(
     ...events.map(
       (entry) => `| ${when(entry.ts)} | ${cell(who(entry, t))} | ${cell(what(entry, t))} |`,
     ),
-    "",
-  ].join("\n");
-  return { markdown, json: { change, tasks, events } };
+  ];
 }
 
 /** `2026-10-24 10:10`, from an ISO time. */
@@ -125,91 +145,88 @@ function who(entry: AuditEvent, t: T): string {
   return entry.actor === "human" ? t("persona", "person") : entry.actor;
 }
 
+/** What the words of an event need: the translator and the event's data, read as text. */
+interface EventWords {
+  readonly t: T;
+  /** The string at `key`, or "". */
+  text(key: string): string;
+  /** Any value at `key`, or "—". */
+  value(key: string): string;
+  /** `: <the string at key>`, or nothing without it. */
+  after(key: string): string;
+  /** The command an event ran, with its exit code and its duration. */
+  ran(): string;
+}
+
+/** Each event of formats.md §4 in words. */
+const EVENTS: Readonly<Record<string, (words: EventWords) => string>> = {
+  "change.created": ({ t, text }) =>
+    t("Creó el cambio", "Created the change") + (text("kind") === "" ? "" : ` (${text("kind")})`),
+  "spec.proposed": ({ t, value }) =>
+    t(`Propuso la revisión ${value("revision")}`, `Proposed revision ${value("revision")}`),
+  "assumption.decided": ({ t }) => t("Decidió los supuestos", "Decided the assumptions"),
+  "review.changes_requested": ({ t, value }) =>
+    t(
+      `Pidió cambios en la revisión ${value("revision")}`,
+      `Asked for changes to revision ${value("revision")}`,
+    ),
+  "spec.approved": ({ t, text, value }) =>
+    t(`Aprobó la revisión ${value("revision")}`, `Approved revision ${value("revision")}`) +
+    (text("channel") === "" ? "" : ` (${text("channel")})`),
+  "task.started": ({ t, text }) => t(`Empezó ${text("task")}`, `Started ${text("task")}`),
+  "task.verified": ({ t, text, ran }) =>
+    t(`Verificó ${text("task")}: `, `Verified ${text("task")}: `) + ran(),
+  "task.completed": ({ t, text, after }) =>
+    t(`Completó ${text("task")}`, `Completed ${text("task")}`) + after("summary"),
+  "scope.requested": ({ t, text, after }) =>
+    `${t(
+      `Pidió ampliar el alcance de ${text("task")}`,
+      `Asked to widen the scope of ${text("task")}`,
+    )} (${text("id")})${after("reason")}`,
+  "scope.decided": ({ t, text, value }) =>
+    t(`Decidió ${text("id")}: ${value("decision")}`, `Decided ${text("id")}: ${value("decision")}`),
+  "epic.slicesDone": ({ t }) => t("Todos los cortes quedaron cerrados", "Every slice was closed"),
+  "adjust.requested": ({ t, after }) =>
+    t("Pidió un ajuste", "Asked for an adjustment") + after("request"),
+  "adjust.classified": ({ t }) => t("Clasificó el ajuste", "Classified the adjustment"),
+  "review.completed": ({ t, text, value }) =>
+    (text("target") === "spec"
+      ? t("Revisión independiente de la spec", "Independent review of the spec")
+      : t("Revisión independiente del resultado", "Independent review of the result")) +
+    t(`: código ${value("exit")}`, `: code ${value("exit")}`),
+  "change.verified": ({ t, ran }) => t("Verificación completa: ", "Full verification: ") + ran(),
+  "change.accepted": ({ t }) => t("Aceptó el resultado", "Accepted the result"),
+  "retro.confirmed": ({ t }) => t("Confirmó la retro", "Confirmed the retro"),
+  "change.closed": ({ t }) => t("Cerró el cambio", "Closed the change"),
+  "change.cancelled": ({ t, after }) =>
+    t("Canceló el cambio", "Cancelled the change") + after("reason"),
+  "integration.started": ({ t, text }) =>
+    t(`Empezó a incorporar ${text("target")}`, `Started bringing in ${text("target")}`),
+  "integration.resolved": ({ t }) => t("Resolvió la incorporación", "Resolved the incorporation"),
+  "integration.abandoned": ({ t }) => t("Abandonó la incorporación", "Abandoned the incorporation"),
+};
+
 /** Each event of formats.md §4 in words; one Specty does not know yet, by its name. */
 function what(entry: AuditEvent, t: T): string {
-  const { data } = entry;
+  const words = lookup(EVENTS, entry.event);
+  return words === undefined ? entry.event : words(eventWords(entry.data, t));
+}
+
+function eventWords(data: AuditEvent["data"], t: T): EventWords {
   const text = (key: string) => (typeof data[key] === "string" ? String(data[key]) : "");
   const value = (key: string) =>
     data[key] === undefined || data[key] === null ? "—" : String(data[key]);
-  const after = (key: string) => (text(key) === "" ? "" : `: ${text(key)}`);
-  const ran = () =>
-    t(
-      `\`${text("cmd")}\`, código ${value("exit")}, ${duration(data.ms)}`,
-      `\`${text("cmd")}\`, code ${value("exit")}, ${duration(data.ms)}`,
-    );
-  switch (entry.event) {
-    case "change.created":
-      return (
-        t("Creó el cambio", "Created the change") +
-        (text("kind") === "" ? "" : ` (${text("kind")})`)
-      );
-    case "spec.proposed":
-      return t(
-        `Propuso la revisión ${value("revision")}`,
-        `Proposed revision ${value("revision")}`,
-      );
-    case "assumption.decided":
-      return t("Decidió los supuestos", "Decided the assumptions");
-    case "review.changes_requested":
-      return t(
-        `Pidió cambios en la revisión ${value("revision")}`,
-        `Asked for changes to revision ${value("revision")}`,
-      );
-    case "spec.approved": {
-      const channel = text("channel") === "" ? "" : ` (${text("channel")})`;
-      return (
-        t(`Aprobó la revisión ${value("revision")}`, `Approved revision ${value("revision")}`) +
-        channel
-      );
-    }
-    case "task.started":
-      return t(`Empezó ${text("task")}`, `Started ${text("task")}`);
-    case "task.verified":
-      return t(`Verificó ${text("task")}: `, `Verified ${text("task")}: `) + ran();
-    case "task.completed":
-      return t(`Completó ${text("task")}`, `Completed ${text("task")}`) + after("summary");
-    case "scope.requested":
-      return `${t(
-        `Pidió ampliar el alcance de ${text("task")}`,
-        `Asked to widen the scope of ${text("task")}`,
-      )} (${text("id")})${after("reason")}`;
-    case "scope.decided":
-      return t(
-        `Decidió ${text("id")}: ${value("decision")}`,
-        `Decided ${text("id")}: ${value("decision")}`,
-      );
-    case "epic.slicesDone":
-      return t("Todos los cortes quedaron cerrados", "Every slice was closed");
-    case "adjust.requested":
-      return t("Pidió un ajuste", "Asked for an adjustment") + after("request");
-    case "adjust.classified":
-      return t("Clasificó el ajuste", "Classified the adjustment");
-    case "review.completed":
-      return (
-        (text("target") === "spec"
-          ? t("Revisión independiente de la spec", "Independent review of the spec")
-          : t("Revisión independiente del resultado", "Independent review of the result")) +
-        t(`: código ${value("exit")}`, `: code ${value("exit")}`)
-      );
-    case "change.verified":
-      return t("Verificación completa: ", "Full verification: ") + ran();
-    case "change.accepted":
-      return t("Aceptó el resultado", "Accepted the result");
-    case "retro.confirmed":
-      return t("Confirmó la retro", "Confirmed the retro");
-    case "change.closed":
-      return t("Cerró el cambio", "Closed the change");
-    case "change.cancelled":
-      return t("Canceló el cambio", "Cancelled the change") + after("reason");
-    case "integration.started":
-      return t(`Empezó a incorporar ${text("target")}`, `Started bringing in ${text("target")}`);
-    case "integration.resolved":
-      return t("Resolvió la incorporación", "Resolved the incorporation");
-    case "integration.abandoned":
-      return t("Abandonó la incorporación", "Abandoned the incorporation");
-    default:
-      return entry.event;
-  }
+  return {
+    t,
+    text,
+    value,
+    after: (key) => (text(key) === "" ? "" : `: ${text(key)}`),
+    ran: () =>
+      t(
+        `\`${text("cmd")}\`, código ${value("exit")}, ${duration(data.ms)}`,
+        `\`${text("cmd")}\`, code ${value("exit")}, ${duration(data.ms)}`,
+      ),
+  };
 }
 
 /** `2 min 5 s` or `41 s`, from milliseconds. */

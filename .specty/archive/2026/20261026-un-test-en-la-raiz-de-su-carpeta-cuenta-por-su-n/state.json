@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261026-un-test-en-la-raiz-de-su-carpeta-cuenta-por-su-n",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-un-test-en-la-raiz-de-su-carpeta-cuenta-por-su-n",
+  "baseCommit": "6a570a68b00636a9db2257a6bf7e1a79a336aa30",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d7de4521a5f74a13f2c752feb43000ed7c4de14dbafc1daf0572bbd975c3bb53",
+    "at": "2026-10-26T17:33:35.989Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3cc3757780e7697549cc5af63bab2feefe909f5d309c59400a5e34430add53c5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bdb6c84abbec225863d29092eecca44b9ea15d92d8322be4c3e207bf781bc814",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:030632ebf7793f5ed853d21fd805c3ac17cb90f7e634c77a202476d9a65400ac",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "49ae78b3d9720985e467c912fe75193bf4b32b99",
+      "attempts": 1,
+      "startedAt": "2026-10-26T17:33:36.342Z",
+      "doneAt": "2026-10-26T17:35:17.098Z",
+      "summary": "isTestOf en core: un test implícito que, justo en la raíz de su espejo (tests, packages/x/test, Tests/XTests), solo cuenta para el archivo de su nombre, sin marcas de test; un comodín sigue cubriendo la carpeta. Casos de Rust, Python, Dart, TS, Swift, Java y Go.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "aea0080fcd674087a63766b305bea92f040de0a6",
+      "attempts": 1,
+      "startedAt": "2026-10-26T17:35:17.530Z",
+      "doneAt": "2026-10-26T17:39:59.347Z",
+      "summary": "fix-tests usa isTestOf. El ejemplo de Rust vuelve a tests/user.rs, plano, y su cambio roto hace fallar fix-tests; el comentario del ejemplo nativo ya no lleva la marca de Swift Testing.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "09864582f5b9219a30df27708f61b9d7e84f6ae8",
+      "attempts": 2,
+      "startedAt": "2026-10-26T17:40:00.192Z",
+      "doneAt": "2026-10-26T17:46:25.230Z",
+      "summary": "La guía en español e inglés y formats.md: en la raíz de la carpeta de tests, fix-tests solo cuenta el test con el nombre de un archivo de la tarea; en subcarpetas o con comodines, cualquiera; scope no cambia.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T17:48:12.930Z"
+}

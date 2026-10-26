@@ -2,6 +2,7 @@
 import { join } from "node:path";
 import {
   type AssertionLoss,
+  type ChangeState,
   type ChangeView,
   dirname,
   isIntegrating,
@@ -40,38 +41,11 @@ export async function changeView(session: Session, change: StoredChange): Promis
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
   const commits = await taskCommits(session, state.id);
   const audit = await readAudit(change.files);
-  const findings = findingsByTask(audit);
-  const tasks = (spec.sections.tasks?.items ?? []).map((task): TaskView => {
-    const stored = state.tasks[task.id];
-    const verify = taskVerification(session, task);
-    const commit = commits.get(task.id);
-    const rules = testRules(task, session.config.policy.tests);
-    const { lost, risks, notes, long } = findings.get(task.id) ?? {
-      lost: [],
-      risks: [],
-      notes: [],
-      long: [],
-    };
-    return {
-      id: task.id,
-      title: task.title,
-      status: stored?.status ?? "pending",
-      files: task.files,
-      extras: stored?.scopeExtra ?? [],
-      criteria: criteriaOf(spec, task.ac),
-      effort: recommendTaskEffort(task, session.config),
-      ...(verify !== undefined ? { verify } : {}),
-      ...(stored?.summary !== undefined ? { summary: stored.summary } : {}),
-      ...(commit !== undefined ? { commit } : {}),
-      ...(rules !== undefined ? { testRules: rules } : {}),
-      ...(lost.length > 0 ? { removedAssertions: lost } : {}),
-      ...(risks.length > 0 ? { risks } : {}),
-      ...(notes.length > 0 ? { findings: notes } : {}),
-      ...(long.length > 0 ? { longFiles: long } : {}),
-    };
-  });
+  const records: TaskRecords = { commits, findings: findingsByTask(audit) };
+  const tasks = (spec.sections.tasks?.items ?? []).map((task) =>
+    taskView(session, spec, state, task, records),
+  );
   const active = tasks.find((task) => task.status === "active");
-  const assumptions = spec.sections.assumptions?.items ?? [];
   return {
     id: state.id,
     kind: state.kind,
@@ -84,17 +58,93 @@ export async function changeView(session: Session, change: StoredChange): Promis
     conventions:
       active === undefined ? [] : await conventions(session, [...active.files, ...active.extras]),
     pendingScope: state.pending.scopeRequests,
-    rejected: assumptions.flatMap((item) => {
-      const decision = state.items[item.id];
-      if (decision?.decision !== "rejected") return [];
-      return [
-        {
-          id: item.id,
-          text: item.text,
-          ...(decision.comment !== undefined ? { comment: decision.comment } : {}),
-        },
-      ];
-    }),
+    rejected: rejectedAssumptions(spec, state),
+    ...(await phaseFacts(session, change, spec, { tasks, audit })),
+    closingSubmitted: state.closingSubmittedAt !== undefined,
+    specChanged:
+      state.phase === "implementing" &&
+      state.approved !== undefined &&
+      specHash(spec) !== state.approved.hash,
+    ...integrationView(state),
+    ...(state.kind === "epic" ? { slices: await sliceViews(session, change, spec) } : {}),
+  };
+}
+
+/** What git and the audit hold of the change's tasks: each one's commit and what `task done` recorded. */
+interface TaskRecords {
+  readonly commits: ReadonlyMap<string, string>;
+  readonly findings: ReadonlyMap<string, TaskFindings>;
+}
+
+/** A task as the cards show it: its spec, its state, its verification and what it recorded. */
+function taskView(
+  session: Session,
+  spec: Spec,
+  state: ChangeState,
+  task: Task,
+  records: TaskRecords,
+): TaskView {
+  const stored = state.tasks[task.id];
+  const verify = taskVerification(session, task);
+  const commit = records.commits.get(task.id);
+  const rules = testRules(task, session.config.policy.tests);
+  return {
+    id: task.id,
+    title: task.title,
+    status: stored?.status ?? "pending",
+    files: task.files,
+    extras: stored?.scopeExtra ?? [],
+    criteria: criteriaOf(spec, task.ac),
+    effort: recommendTaskEffort(task, session.config),
+    ...(verify !== undefined ? { verify } : {}),
+    ...(stored?.summary !== undefined ? { summary: stored.summary } : {}),
+    ...(commit !== undefined ? { commit } : {}),
+    ...(rules !== undefined ? { testRules: rules } : {}),
+    ...recordedFindings(records.findings.get(task.id)),
+  };
+}
+
+/** What `task done` recorded of a task, only the kinds there are. */
+function recordedFindings(
+  found: TaskFindings | undefined,
+): Pick<TaskView, "removedAssertions" | "risks" | "findings" | "longFiles"> {
+  const { lost, risks, notes, long } = found ?? { lost: [], risks: [], notes: [], long: [] };
+  return {
+    ...(lost.length > 0 ? { removedAssertions: lost } : {}),
+    ...(risks.length > 0 ? { risks } : {}),
+    ...(notes.length > 0 ? { findings: notes } : {}),
+    ...(long.length > 0 ? { longFiles: long } : {}),
+  };
+}
+
+/** The assumptions the person rejected, each with their comment. */
+function rejectedAssumptions(spec: Spec, state: ChangeState): ChangeView["rejected"] {
+  return (spec.sections.assumptions?.items ?? []).flatMap((item) => {
+    const decision = state.items[item.id];
+    if (decision?.decision !== "rejected") return [];
+    return [
+      {
+        id: item.id,
+        text: item.text,
+        ...(decision.comment !== undefined ? { comment: decision.comment } : {}),
+      },
+    ];
+  });
+}
+
+/**
+ * What the change's phase brings: the comments to answer in review, the adjustment asked for,
+ * the draft's request and what it carries over, and a review recommended before acceptance.
+ */
+async function phaseFacts(
+  session: Session,
+  change: StoredChange,
+  spec: Spec,
+  read: { readonly tasks: readonly TaskView[]; readonly audit: Audit },
+) {
+  const { state } = change;
+  const { tasks, audit } = read;
+  return {
     requested: state.phase === "review" ? await requested(change, audit) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     ...(state.phase === "draft" ? request(audit) : {}),
@@ -102,23 +152,14 @@ export async function changeView(session: Session, change: StoredChange): Promis
     ...(state.phase === "acceptance" && resultReview(session, change, tasks, audit)
       ? { recommendReview: true }
       : {}),
-    closingSubmitted: state.closingSubmittedAt !== undefined,
-    specChanged:
-      state.phase === "implementing" &&
-      state.approved !== undefined &&
-      specHash(spec) !== state.approved.hash,
-    ...(state.integration !== undefined && isIntegrating(state)
-      ? {
-          integration: {
-            target: state.integration.target,
-            reason: state.integration.reason,
-            conflicts: state.integration.conflicts,
-            paths: state.integration.paths,
-          },
-        }
-      : {}),
-    ...(state.kind === "epic" ? { slices: await sliceViews(session, change, spec) } : {}),
   };
+}
+
+/** The incorporation of the target branch the agent is resolving, if any. */
+function integrationView(state: ChangeState): Pick<ChangeView, "integration"> {
+  if (state.integration === undefined || !isIntegrating(state)) return {};
+  const { target, reason, conflicts, paths } = state.integration;
+  return { integration: { target, reason, conflicts, paths } };
 }
 
 /**

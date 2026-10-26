@@ -32,37 +32,53 @@ interface Parts extends CodeLine {
 }
 
 function split(line: string, startsInBlock: boolean, options: CodeOptions): Parts {
-  let code = "";
-  const comments: string[] = [];
-  let inBlock = startsInBlock;
-  let index = 0;
-  while (index < line.length) {
-    if (inBlock) {
-      const end = line.indexOf("*/", index);
-      comments.push(line.slice(index, end === -1 ? line.length : end));
-      if (end === -1) break;
-      inBlock = false;
-      index = end + 2;
-      code += " ";
-    } else if (line.startsWith("//", index)) {
-      comments.push(line.slice(index + 2));
-      break;
-    } else if (line.startsWith("/*", index)) {
-      inBlock = true;
-      index += 2;
-    } else {
-      const char = line.charAt(index);
-      const close = char === '"' || char === "'" || char === "`" ? closing(line, index) : -1;
-      if (close === -1 || (options.lifetimes === true && char === "'" && close > index + 3)) {
-        code += char;
-        index += 1;
-      } else {
-        code += `${char}${char}`;
-        index = close + 1;
-      }
-    }
+  const cursor: Cursor = { code: "", comments: [], inBlock: startsInBlock, index: 0, ended: false };
+  while (cursor.index < line.length && !cursor.ended) {
+    if (cursor.inBlock) blockComment(line, cursor);
+    else if (line.startsWith("//", cursor.index)) {
+      cursor.comments.push(line.slice(cursor.index + 2));
+      cursor.ended = true;
+    } else if (line.startsWith("/*", cursor.index)) {
+      cursor.inBlock = true;
+      cursor.index += 2;
+    } else codeChar(line, cursor, options);
   }
-  return { code, comments, inBlock };
+  return { code: cursor.code, comments: cursor.comments, inBlock: cursor.inBlock };
+}
+
+/** Where `split` is in a line: what it kept, and whether a line comment or an open block ended it. */
+interface Cursor {
+  code: string;
+  readonly comments: string[];
+  inBlock: boolean;
+  index: number;
+  ended: boolean;
+}
+
+/** The rest of a block comment: up to its `*\/`, or the whole line while it stays open. */
+function blockComment(line: string, cursor: Cursor): void {
+  const end = line.indexOf("*/", cursor.index);
+  cursor.comments.push(line.slice(cursor.index, end === -1 ? line.length : end));
+  if (end === -1) {
+    cursor.ended = true;
+    return;
+  }
+  cursor.inBlock = false;
+  cursor.index = end + 2;
+  cursor.code += " ";
+}
+
+/** A character of code, or a whole string left as an empty pair of quotes. */
+function codeChar(line: string, cursor: Cursor, options: CodeOptions): void {
+  const char = line.charAt(cursor.index);
+  const close = char === '"' || char === "'" || char === "`" ? closing(line, cursor.index) : -1;
+  if (close === -1 || (options.lifetimes === true && char === "'" && close > cursor.index + 3)) {
+    cursor.code += char;
+    cursor.index += 1;
+  } else {
+    cursor.code += `${char}${char}`;
+    cursor.index = close + 1;
+  }
 }
 
 /** Where the string that opens at `start` closes; a string left open runs to the end of the line. */

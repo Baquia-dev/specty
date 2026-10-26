@@ -115,12 +115,23 @@ export {
   productLine,
 } from "./init";
 export {
+  antigravityTrustWarning,
   changeInProgressWarning,
   claudePermissionsLine,
   claudePointerLine,
   codexGuardLine,
   codexRulesLine,
   codexTrustWarning,
+  cursorSandboxLine,
+  cursorSandboxTrackedWarning,
+  devinCommandsLine,
+  devinRestrictedWarning,
+  devinSandboxLine,
+  devinSandboxTrackedWarning,
+  geminiPointerLine,
+  geminiSandboxLine,
+  geminiSandboxVersionedWarning,
+  geminiTrustWarning,
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,
@@ -238,6 +249,7 @@ export { effortLabel, effortLine, runNext, translator, verifyingNote } from "./t
 export { invalidPortCard, uiOpenedCard, uiStoppedCard } from "./ui";
 export {
   claudePointerStaysLine,
+  geminiPointerStaysLine,
   globalGuardStaysLine,
   historyStaysLine,
   nothingRemovedCard,

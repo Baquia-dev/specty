@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-un-ajuste-de-un-quick-puede-anadir-tareas",
+  "baseCommit": "e3f23e4782f82e13a99b00cfd09d2a40ceaf2a7e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4e477a5dba22773c4b31d1f3f8fa7d8a4afd5a32133176ed5ff07246e79a7bfc",
+    "at": "2026-10-26T16:40:58.430Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b237aece4a36732538af9c05a86c049dd2a42d7b30df5eb1614a024dd247872d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fa22d74d726a22647476fa84e32aa3859ff9255c66dd2eabd48b18472559b2e7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "07738570b8f948d88a3fcf1a61edb6d221482aab",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:40:58.848Z",
+      "doneAt": "2026-10-26T16:41:39.535Z",
+      "summary": "checkQuickLane solo limita a una tarea antes de la primera aprobación (sin revisión aprobada); los límites de archivos y rutas sensibles siguen. Test: un ajuste aprobado con T2 pasa en adjusting y review, y con más archivos sigue fallando.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8fe100855ad574b4b0b4cc1b0d3239b921ba4c98",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:41:39.838Z",
+      "doneAt": "2026-10-26T16:43:08.195Z",
+      "summary": "flow.test.ts: un quick cuya verificación completa falla al aceptar se ajusta con T2 (style), se aprueba, se completa y se acepta archivado en main. approvedQuick comparte el arranque con el test del carril quick que ya había.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "19cd33247d2543788dbd0bef56d1ac9c1ada907f",
+      "attempts": 1,
+      "startedAt": "2026-10-26T16:43:08.505Z",
+      "doneAt": "2026-10-26T16:45:18.973Z",
+      "summary": "ARCHITECTURE (carriles) y formats §2 (errores): la tarea única del quick es el límite del primer plan; tras una verificación fallida al aceptar, un ajuste añade tareas de corrección, y los límites de archivos y rutas sensibles siguen.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T16:47:22.473Z"
+}
