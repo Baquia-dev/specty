@@ -189,7 +189,14 @@ export {
   recommendEffort,
   recommendTaskEffort,
 } from "./sizing/effort";
-export { codeLines, fileSize, type LongFile, longFiles, type SizedFile } from "./sizing/lines";
+export {
+  codeLines,
+  fileSize,
+  isGeneratedText,
+  type LongFile,
+  longFiles,
+  type SizedFile,
+} from "./sizing/lines";
 export {
   collectSignals,
   computeSize,

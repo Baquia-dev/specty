@@ -25,8 +25,13 @@ const BLOCKS: readonly (readonly [string, string])[] = [
 const HASH_CODE =
   /^#(?:(?:include|import|define|undef|if|ifdef|ifndef|elif|else|endif|pragma|error|warning|line|region|endregion|nullable)\b|!?\[|[A-Za-z_][\w-]*.*(?:\{|,\s*$))/;
 
-/** Marks that tools write at the top of what they generate. */
-const GENERATED = /@generated|DO NOT EDIT|auto-?generated|Code generated/i;
+/**
+ * Marks that tools write at the top of what they generate: protoc and Go (`DO NOT EDIT`), Rails
+ * and OpenAPI (`auto-generated`, `auto generated`), Dart's build_runner (`GENERATED CODE - DO NOT
+ * MODIFY BY HAND`)…
+ */
+const GENERATED =
+  /@generated|DO NOT EDIT|DO NOT MODIFY|GENERATED CODE|auto[- ]?generated|Code generated/i;
 const GENERATED_HEAD = 10;
 
 /** Lines with code: blank lines and comments do not count, in the usual syntaxes. */
@@ -111,6 +116,10 @@ function sized(path: string, text: string, config: ResolvedConfig): boolean {
   if (matchesAny(path, config.scope.generated) || matchesAny(path, config.lines.exclude)) {
     return false;
   }
-  if (isLockfile(path) || text.includes("\0")) return false;
-  return !GENERATED.test(text.split("\n", GENERATED_HEAD).join("\n"));
+  return !isLockfile(path) && !isGeneratedText(text);
+}
+
+/** Generated or binary, by its content: a mark in its first lines, or a null byte. */
+export function isGeneratedText(text: string): boolean {
+  return text.includes("\0") || GENERATED.test(text.split("\n", GENERATED_HEAD).join("\n"));
 }
