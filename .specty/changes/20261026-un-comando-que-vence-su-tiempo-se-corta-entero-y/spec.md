@@ -43,7 +43,7 @@ El CI de GitHub destapó dos fallos que en local no se veían. En Linux, un coma
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec.test.ts test/check-commands.test.ts
   - type: fix
-- [ ] T2: El idioma de los tests
+- [x] T2: El idioma de los tests
   - files: packages/cli/test/support.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-language.test.ts test/commands.test.ts

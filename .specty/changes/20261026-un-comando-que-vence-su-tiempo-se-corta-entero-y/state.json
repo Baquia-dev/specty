@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "acb52a5940a0452dbf670247d930483447fb49c2",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:23:42.596Z",
       "doneAt": "2026-10-26T18:27:02.061Z",
-      "summary": "exec.ts: al vencer el tiempo, endTree corta el comando y sus descendientes, leídos de ps (SIGTERM y SIGKILL a los 2 s), o con taskkill /T en Windows. Test: node slow.js && echo done con 500 ms termina en segundos, no en 60."
+      "summary": "exec.ts: al vencer el tiempo, endTree corta el comando y sus descendientes, leídos de ps (SIGTERM y SIGKILL a los 2 s), o con taskkill /T en Windows. Test: node slow.js && echo done con 500 ms termina en segundos, no en 60.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "91d099b6611ea0eca7995e431b58eef59903513e",
+      "startedAt": "2026-10-26T18:27:02.373Z",
+      "doneAt": "2026-10-26T18:28:46.844Z",
+      "summary": "testEnv quita LC_ALL y LC_MESSAGES del sistema, que ganaban al LANG de los tests; con LC_ALL=en_US.UTF-8, como en el runner de macOS, pasan los 432 tests de la CLI."
     }
   },
   "pending": {
