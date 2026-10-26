@@ -71,6 +71,13 @@ async function createNew(session: Session, options: NewOptions): Promise<Output>
     return newRefusalCard({ reason: "from-without-worktree", from: options.from }, cards);
   }
   if (inWorktree) return newInWorktree(session, options, title);
+  return newInFolder(session, options, title);
+}
+
+/** Without worktrees: the change starts in this folder, which must hold no other one. */
+async function newInFolder(session: Session, options: NewOptions, title: string): Promise<Output> {
+  const { cards } = session;
+  const settings = session.config.git;
   const active = await resolveActive(session);
   if (active !== undefined && !isFinished(active.state)) {
     return newRefusalCard(

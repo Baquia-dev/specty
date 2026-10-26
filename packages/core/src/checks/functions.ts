@@ -50,8 +50,10 @@ const NOT_NAMES: ReadonlySet<string> = new Set([
   "new",
 ]);
 
-// Each branch: a condition, a loop, a case, a catch, a logical operator or a ternary.
-const BRANCHES = /\b(?:if|for|foreach|while|case|catch|guard)\b|&&|\|\||\?\?|\s\?\s/g;
+// Each branch: a condition, a loop, a case, a catch, a logical operator or a ternary. `guard` is
+// Swift's `guard … else`, not a name that other languages give a variable.
+const BRANCHES =
+  /\b(?:if|for|foreach|while|case|catch)\b|\bguard\b(?=.*\belse\b)|&&|\|\||\?\?|\s\?\s/g;
 
 export function functionMetrics(path: string, text: string): FunctionMetric[] {
   if (/\.pyi?$/.test(path)) return pythonFunctions(text);

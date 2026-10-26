@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
   "baseCommit": "a3716f7143c6f2c56f5da78a29cbfb9e56a0e522",
   "revision": 1,
@@ -62,12 +62,23 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e9888906a725e01d997be8407e2e3e2fd4ba400e",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:35:12.275Z",
       "doneAt": "2026-10-26T19:38:20.660Z",
-      "summary": "finish.ts: close muestra lo que se confirma con noteClosing y, confirmado, closeConfirmed incorpora, archiva y aterriza; cancel pregunta y cancelConfirmed archiva. Mismas preguntas, eventos y commits; los tests de la CLI pasan."
+      "summary": "finish.ts: close muestra lo que se confirma con noteClosing y, confirmado, closeConfirmed incorpora, archiva y aterriza; cancel pregunta y cancelConfirmed archiva. Mismas preguntas, eventos y commits; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/checks/functions.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "ef75d39ab0bdb26d31844a407151c5cc3434364f",
+      "startedAt": "2026-10-26T19:38:20.962Z",
+      "doneAt": "2026-10-26T19:48:46.114Z",
+      "summary": "task.ts: taskToComplete hace las comprobaciones previas. new.ts: newInFolder crea el cambio sin worktree. human.ts: namedChange y pickChange. Y complexity contaba cualquier guard; ahora solo el guard...else de Swift, con su test."
     }
   },
   "pending": {
@@ -77,6 +88,7 @@
   "maxIds": {
     "A": 2,
     "AC": 2,
-    "T": 5
+    "T": 5,
+    "S": 1
   }
 }

@@ -59,7 +59,7 @@ Nueve funciones de los comandos del flujo pasan de los límites de Specty: `acce
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T5: La tarea, el cambio nuevo y la sesión de la persona
+- [x] T5: La tarea, el cambio nuevo y la sesión de la persona
   - files: packages/cli/src/commands/task.ts, packages/cli/src/commands/new.ts, packages/cli/src/commands/human.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
