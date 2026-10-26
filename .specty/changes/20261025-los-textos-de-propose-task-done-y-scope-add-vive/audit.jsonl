@@ -1,0 +1,3 @@
+{"ts":"2026-10-26T02:13:43.120Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261025-los-textos-de-propose-task-done-y-scope-add-vive","request":"si realiza todo eneguida de forma autonoma las 12 observaciones"}}
+{"ts":"2026-10-26T02:14:16.752Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:30605761348f127ccc69507b75b99f68320ce34e896e44d40e69677105108ab2","size":"L","warnings":1}}
+{"ts":"2026-10-26T02:14:19.626Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:30605761348f127ccc69507b75b99f68320ce34e896e44d40e69677105108ab2","channel":"delegated","delegated":true}}
