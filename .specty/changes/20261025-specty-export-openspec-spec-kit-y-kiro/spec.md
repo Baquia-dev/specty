@@ -39,7 +39,7 @@ El paquete `packages/exporters` ya convierte una spec en los archivos de OpenSpe
 
 ## Tareas
 
-- [ ] T1: El comando export
+- [x] T1: El comando export
   - files: packages/cli/src/commands/export.ts, packages/cli/src/program.ts, packages/cli/package.json, pnpm-lock.yaml, packages/cli/test/export.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check

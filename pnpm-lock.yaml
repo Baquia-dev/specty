@@ -224,6 +224,9 @@ importers:
       '@baquia-dev/specty-core':
         specifier: workspace:*
         version: link:../core
+      '@baquia-dev/specty-exporters':
+        specifier: workspace:*
+        version: link:../exporters
       '@clack/prompts':
         specifier: 1.8.1
         version: 1.8.1
