@@ -58,7 +58,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: El core protege la regla de Codex y tiene los textos de los permisos
+- [x] T1: El core protege la regla de Codex y tiene los textos de los permisos
   - files: packages/core/src/guard/decide.ts, packages/core/src/cards/install.ts, packages/core/src/cards/doctor.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts test/cards

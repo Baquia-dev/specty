@@ -35,6 +35,10 @@ describe("the lines of `doctor`", () => {
         { code: "claude-compact", events: "SessionStart" },
         "Claude Code: falta la tarjeta de Specty tras compactar (SessionStart); ejecuta `specty init`.",
       ],
+      [
+        { code: "no-claude-permissions" },
+        "Claude Code: faltan los permisos de los comandos de la persona, así que su modo auto puede vetárselos al agente aunque Specty se los permita; ejecuta `specty init`.",
+      ],
       [{ code: "cursor-guard" }, "Cursor: guard instalado."],
       [
         { code: "no-cursor-guard" },
@@ -51,6 +55,14 @@ describe("the lines of `doctor`", () => {
       [
         { code: "no-codex-guard", file: "~/.codex/hooks.json" },
         "Codex: falta el guard en ~/.codex/hooks.json; ejecuta `specty init --tools codex`.",
+      ],
+      [
+        { code: "codex-rules", file: ".codex/rules/specty.rules" },
+        "Codex: regla de Specty en .codex/rules/specty.rules.",
+      ],
+      [
+        { code: "no-codex-rules", file: ".codex/rules/specty.rules" },
+        "Codex: falta la regla de Specty en .codex/rules/specty.rules, así que cada commit de Specty pide permiso; ejecuta `specty init --tools codex`.",
       ],
       [{ code: "opencode-guard", file: "p.js" }, "OpenCode: plugin del guard en p.js."],
       [

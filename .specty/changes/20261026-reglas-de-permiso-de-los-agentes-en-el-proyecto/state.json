@@ -6,6 +6,13 @@
   "branch": "specty/20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
   "baseCommit": "78bb5a3d546ee6aa0542b6d7fa58bd7fb20422b9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:23d48cb01903812124bf1642606d323dea926df3d6473e657f33df220bd43d97",
+    "at": "2026-10-26T11:51:33.641Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -34,7 +41,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/index.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "541aaa74934a74b1f80f5cb4703152fa6808d6a9",
+      "startedAt": "2026-10-26T11:51:34.015Z",
+      "doneAt": "2026-10-26T11:54:41.673Z",
+      "summary": "El guard protege .codex/rules/specty.rules, y el core tiene las líneas de init para los permisos de Claude Code (sacados de HUMAN_COMMANDS) y la regla de Codex, y los casos de doctor cuando faltan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,13 +62,7 @@
     "A": 4,
     "AC": 6,
     "T": 4,
-    "R": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:23d48cb01903812124bf1642606d323dea926df3d6473e657f33df220bd43d97",
-    "at": "2026-10-26T11:51:33.641Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
+    "R": 4,
+    "S": 1
   }
 }
