@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261025-specty-export-openspec-spec-kit-y-kiro",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-specty-export-openspec-spec-kit-y-kiro",
+  "baseCommit": "82e4f174e411951df016254ef0898332325f262e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:80161088da9741cf99b421dc5783496c144f8c492889be585d1196e1242161f7",
+    "at": "2026-10-26T01:08:09.003Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:38c8aeef7db007cedae54b00eb23d4d3950e12ccea94460adc87094ef3f0c063",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:91d2c69fada1357273fabd2b95cbe63b86da60c8aeda308d447502f68c7d341f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c1cfad7496d9eec346c472ec25257f22ca77937e10f18a5993b46db0912892dd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "dff316d3133cc78af758ac3fddd895e8950dac7a",
+      "attempts": 2,
+      "startedAt": "2026-10-26T01:08:09.418Z",
+      "doneAt": "2026-10-26T01:16:53.329Z",
+      "summary": "specty export [<id>] --to openspec|speckit|kiro [--out <carpeta>] (commands/export.ts): escribe lo de exportSpec en .specty/exports/<formato>/ o en --out y lo lista; rechaza un formato o un cambio que no hay. La CLI depende de @baquia-dev/specty-exporters. ARCHITECTURE §6.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 1
+  },
+  "closingSubmittedAt": "2026-10-26T01:17:23.016Z"
+}

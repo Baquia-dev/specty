@@ -19,6 +19,7 @@ import { auditCommand } from "./commands/audit";
 import { checkCommand } from "./commands/check";
 import { delegate } from "./commands/delegate";
 import { doctor } from "./commands/doctor";
+import { exportCommand } from "./commands/export";
 import { cancel, close } from "./commands/finish";
 import { type PersonAction, personSession } from "./commands/human";
 import { initCommand } from "./commands/init";
@@ -274,6 +275,7 @@ export async function runCli(
   uninstallCommand(program, run);
   checkCommand(program, run);
   auditCommand(program, run);
+  exportCommand(program, run);
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
   program

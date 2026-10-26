@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@baquia-dev/specty-core": "workspace:*",
+    "@baquia-dev/specty-exporters": "workspace:*",
     "@clack/prompts": "1.8.1",
     "commander": "15.0.0",
     "esbuild": "0.28.2",
