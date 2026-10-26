@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
   "baseCommit": "1a02854178ca122f70ebd9fc6790a62e7b7e63a5",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:b7349e75a7ad25325ad252ddbdf178ee7d55a552ad1eba98fbef3588ebd80663",
@@ -57,14 +57,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/opencode-e2e.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "3be571568df6b80c246f99eaf36d0cde1d43a04e",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:01:23.741Z",
       "doneAt": "2026-10-26T19:04:07.044Z",
-      "summary": "knip.json declara opencode en ignoreBinaries: la prueba de extremo a extremo lo busca en el PATH como herramienta externa opcional, no como dependencia."
+      "summary": "knip.json declara opencode en ignoreBinaries: la prueba de extremo a extremo lo busca en el PATH como herramienta externa opcional, no como dependencia.",
+      "scopeExtra": [
+        "packages/cli/test/opencode-e2e.test.ts"
+      ]
     }
   },
   "pending": {
@@ -76,5 +76,6 @@
     "AC": 6,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T19:06:33.864Z"
 }

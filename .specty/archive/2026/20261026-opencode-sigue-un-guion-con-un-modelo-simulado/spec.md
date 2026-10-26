@@ -67,3 +67,28 @@ Claude Code tiene una prueba que lo ejecuta de verdad contra un modelo simulado 
 
 - R1: La primera ejecución descarga `@ai-sdk/openai-compatible` y tarda. Mitigación: la caché compartida en la carpeta temporal del sistema, y un tiempo límite amplio por prueba.
 - R2: Una versión nueva de OpenCode cambia su API de servidor y la prueba falla sin que Specty haya cambiado. Mitigación: la prueba solo corre donde OpenCode está instalado, y su fallo nombra la versión.
+
+## Cierre
+
+### Resumen
+
+OpenCode de verdad sigue un guion contra `fake-chat.ts`, un servidor que imita la API de chat de OpenAI, con el plugin que escribe `specty init`. Las cinco pruebas pasan con OpenCode 1.19.4 (unos 75 s) y se saltan sin OpenCode:
+- con `opencode run`: el guard sin cambio activo, el alcance con una tarea y el aviso tras un comando;
+- con `opencode serve`, manejado por HTTP: la tarjeta tras compactar y el fin de turno.
+
+En la tabla de capacidades, la prueba de extremo a extremo de OpenCode pasa a «sí», y ARCHITECTURE §16 explica cómo corre.
+
+### Desviaciones
+
+- Se añadió T3 (con `specty adjust`): knip marcaba `opencode` como binario no declarado. `knip.json` lo declara en `ignoreBinaries`, porque es una herramienta externa y opcional, no una dependencia. La tarea iba a ser `fix`, pero `fix-tests` pide un test suyo, y su test es la propia prueba de extremo a extremo, que entró en su alcance con `scope add`.
+- R2 decía que el fallo nombraría la versión de OpenCode; la prueba no lo hace, y lo dice §16 («Comprobado con OpenCode 1.19.4»).
+
+### Decisiones
+
+- `opencode run` se lanza con stdin cerrado: con una tubería abierta, OpenCode espera a que acabe para añadirla al mensaje, y no llegaba nunca al modelo.
+- La configuración del proveedor va en la carpeta global aislada de OpenCode, y la caché de paquetes se comparte en la carpeta temporal del sistema (`specty-e2e-opencode-cache`), para descargar el proveedor una sola vez.
+- El servidor de `opencode serve` usa un puerto libre que la prueba pide al sistema.
+
+### Pendientes
+
+- Codex (C4) necesita autorización para ejecutarse con `--dangerously-bypass-hook-trust` en una prueba como esta.
