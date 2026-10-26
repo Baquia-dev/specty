@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T18:28:47.147Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"52d7db7eee587e30cd8a5b128ae86a7740838ed3"}}
 {"ts":"2026-10-26T18:30:41.511Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":103680,"tree":"sha256:b2d06f350c2c197dd165393fd18318803697fa93bae3ffc40b7a981cf888336d"}}
 {"ts":"2026-10-26T18:30:41.513Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats.md §6: verify.timeoutSec dice que al vencer se corta el comando con todos los procesos que lanzó."}}
+{"ts":"2026-10-26T18:30:47.026Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T18:30:56.355Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:a6126e4a5d0eafadf35ae65fd79ef40d87f06a62e7d9e8d3c20e2dbe0d0ae000","size":"S","warnings":0}}
+{"ts":"2026-10-26T18:31:00.964Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

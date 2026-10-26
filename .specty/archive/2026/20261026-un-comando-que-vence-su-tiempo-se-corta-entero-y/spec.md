@@ -53,3 +53,22 @@ El CI de GitHub destapó dos fallos que en local no se veían. En Linux, un coma
   - ac: AC3
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Un comando de verificación que vence su tiempo se corta con todos los procesos que lanzó, leídos con `ps` en ese momento (`taskkill /T` en Windows): antes, en Linux o con un comando compuesto, Specty mataba solo la shell y esperaba a que el proceso hijo terminara. Los tests ya no heredan `LC_ALL` ni `LC_MESSAGES` del sistema, que en el runner de macOS ganaban al `LANG` con que eligen su idioma. formats.md lo cuenta en `verify.timeoutSec`.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Se corta el árbol solo al vencer el tiempo, sin cambiar el grupo de procesos del comando, para que Ctrl+C le siga llegando como hasta ahora.
+- El fallo de Linux se reprodujo en macOS con `node slow.js && echo done`, que impide a la shell sustituirse por el comando.
+
+### Pendientes
+
+- Confirmar en el CI de GitHub que Linux y macOS pasan; Windows sigue sin bloquear.

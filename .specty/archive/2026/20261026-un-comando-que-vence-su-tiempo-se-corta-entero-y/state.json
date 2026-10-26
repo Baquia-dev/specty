@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
   "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2b33dd38a7dd1d9af6ad0e32b7a73e1d4909c7edf28a9b0d02a8e55ab484c002",
@@ -56,12 +56,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "52d7db7eee587e30cd8a5b128ae86a7740838ed3",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:28:47.144Z",
       "doneAt": "2026-10-26T18:30:41.512Z",
-      "summary": "formats.md §6: verify.timeoutSec dice que al vencer se corta el comando con todos los procesos que lanzó."
+      "summary": "formats.md §6: verify.timeoutSec dice que al vencer se corta el comando con todos los procesos que lanzó.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -72,5 +72,6 @@
     "A": 3,
     "AC": 3,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T18:30:56.354Z"
 }
