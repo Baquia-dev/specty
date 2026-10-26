@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-el-paquete-de-exportadores-openspec-spec-kit-y-k",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-el-paquete-de-exportadores-openspec-spec-kit-y-k",
   "baseCommit": "19c34537629c7a20ce85ccced2cd319ec4b04ca2",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:024ec306441fa496c7d8dcd6b8cc182df9e9c2216250f3aaecb9f1807667f0fd",
@@ -51,15 +51,15 @@
     },
     "T2": {
       "status": "done",
+      "baseCommit": "124a83123ad40895de6b9cf4ef8533fa75931f91",
+      "attempts": 2,
+      "startedAt": "2026-10-26T00:55:52.598Z",
+      "doneAt": "2026-10-26T01:00:58.363Z",
+      "summary": "Spec Kit (specs/<id>/: spec.md con historia, escenarios When/Then y FR-001…, plan.md y tasks.md con T001…) y Kiro (.kiro/specs/<nombre>/: requisitos EARS, design.md y tareas con _Requirements: 1.n_). formats.md §10 y ARCHITECTURE §2.",
       "scopeExtra": [
         "packages/exporters/src/scenario.ts",
         "packages/exporters/src/openspec.ts"
-      ],
-      "attempts": 2,
-      "baseCommit": "124a83123ad40895de6b9cf4ef8533fa75931f91",
-      "startedAt": "2026-10-26T00:55:52.598Z",
-      "doneAt": "2026-10-26T01:00:58.363Z",
-      "summary": "Spec Kit (specs/<id>/: spec.md con historia, escenarios When/Then y FR-001…, plan.md y tasks.md con T001…) y Kiro (.kiro/specs/<nombre>/: requisitos EARS, design.md y tareas con _Requirements: 1.n_). formats.md §10 y ARCHITECTURE §2."
+      ]
     }
   },
   "pending": {
@@ -71,5 +71,6 @@
     "AC": 4,
     "T": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T01:01:38.592Z"
 }

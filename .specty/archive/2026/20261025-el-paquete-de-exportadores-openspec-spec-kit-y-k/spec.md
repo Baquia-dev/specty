@@ -60,3 +60,24 @@ PRODUCT.md promete para la versión 1 exportar a OpenSpec, GitHub Spec Kit y Kir
   - files: packages/exporters/src/index.ts, packages/exporters/src/speckit.ts, packages/exporters/src/kiro.ts, packages/exporters/test/exporters.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC2, AC3, AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+El paquete `packages/exporters` (`@baquia-dev/specty-exporters`) existe, privado y con sus tests, al 100 % de líneas y casi al 92 % de ramas. `exportSpec(spec, formato, contexto)` da las rutas y el contenido de cada archivo, sin escribir nada. Para OpenSpec, `openspec/changes/<id>/` con propuesta, diseño, tareas y un delta con un requisito y un escenario WHEN/THEN por criterio. Para Spec Kit, `specs/<id>/` con la spec (historia de usuario, escenarios y FR-001…), el plan y las tareas T001…. Para Kiro, `.kiro/specs/<nombre>/` con requisitos EARS, diseño y tareas que citan sus criterios. formats.md §10 tiene el mapeo tal como quedó, y ARCHITECTURE §2 el paquete.
+
+### Desviaciones
+
+- `packages/exporters/src/parts.ts` entró en el alcance de T1 (S1, aprobada en modo delegado): lo que comparten los tres formatos (las líneas de archivos, supuestos y riesgos, y el nombre sin fecha).
+- `scenario.ts` y `openspec.ts`, de T1, entraron en T2 (aprobados por la política, ya en Archivos): Biome rechaza objetos con una propiedad `then`, que parecen promesas, y el escenario pasó a `condition` y `result`.
+
+### Decisiones
+
+- Los encabezados y las palabras clave de cada formato van en inglés, y el texto de la spec, en su idioma.
+- Kiro usa la forma de su documentación, `WHEN … THE SYSTEM SHALL …`, y OpenSpec da a cada requisito la palabra SHALL que espera su validador.
+- La estructura de cada formato se consultó en su documentación pública (octubre de 2026); lo exportado no se valida con sus herramientas.
+
+### Pendientes
+
+- El comando `specty export`, que escribe estos archivos: es el cambio siguiente.
