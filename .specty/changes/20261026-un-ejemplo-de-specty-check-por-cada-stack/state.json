@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261026-un-ejemplo-de-specty-check-por-cada-stack",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-un-ejemplo-de-specty-check-por-cada-stack",
+  "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6936de48cf286973abfe041335be2e8bbfd76d9bb093c45c645ad4165e377584",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6ac952d163216543c14e05fe8b3f077dadb5f58cd517e1bf44feebb76592e7db",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:61591f95658e3a752ef762cbd096ec51176c9458f4d56b1706b2810f7f6f3b26",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:674ee8058a294bf15f4044456e6ce5842206dfe4383c272a4863f60245a4b531",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d41afa01719782c8cf1713d2433a027e5b1f32f23955d6f7d127283a67b9332e",
+    "at": "2026-10-26T16:02:25.781Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
