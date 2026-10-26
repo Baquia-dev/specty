@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-antigravity-comprueba-el-fin-de-turno-trae-la-ta",
   "baseCommit": "d3fdaee4853b125901507db5f336810144eca489",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9d0664319cb60876d57f86a39f0a6a5edfecff5ba03021cd07d87e4d8e4ac86a",
@@ -84,12 +84,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0c6f68eaef09512977c5f0e3d943267f1d72c0ff",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:12:56.735Z",
       "doneAt": "2026-10-26T20:17:24.765Z",
-      "summary": "La tabla marca el fin de turno, la exclusión y los permisos de Antigravity como sí, y la tarjeta como indirecto. ARCHITECTURE §10 cuenta su Stop, la tarjeta en cada turno, manage_task, .antigravityignore y permissionOverrides; formats.md, pending .stop."
+      "summary": "La tabla marca el fin de turno, la exclusión y los permisos de Antigravity como sí, y la tarjeta como indirecto. ARCHITECTURE §10 cuenta su Stop, la tarjeta en cada turno, manage_task, .antigravityignore y permissionOverrides; formats.md, pending .stop.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -101,5 +101,6 @@
     "AC": 7,
     "T": 5,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T20:23:00.418Z"
 }

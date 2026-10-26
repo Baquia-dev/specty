@@ -102,3 +102,36 @@ Este corte añade las cuatro. Como Antigravity no tiene evento de compactación,
 - R1: Si `invocationNum` no volviera a 0 en cada turno (A2), la tarjeta solo llegaría al empezar la conversación. Mitigación: nada se rompe, solo llega menos veces; ARCHITECTURE §10 dice de dónde sale el dato.
 - R2: Si una conversación se corta justo después de volver, su `pending/<conversación>.stop` dejaría terminar sin comprobar su siguiente turno. Mitigación: caduca en un día, como los demás pendientes, y `task done` sigue siendo la puerta.
 - R3: Nadie ha probado `permissionOverrides` con el sandbox de Antigravity de verdad: si no le abriera las carpetas, `task done` fallaría en la carpeta de un cambio. Mitigación: ARCHITECTURE §10 dice qué dos carpetas añadir a mano en sus permisos (`write_file`).
+
+## Cierre
+
+### Resumen
+
+Antigravity tiene lo que sus hooks permiten de Claude Code:
+- Fin de turno: `check --install` pone `Stop` en el hook `specty` de `.agents/hooks.json`, e `init` lo conserva. Con `model_stop` y `specty check --changed` fallando, responde `{"decision":"continue","reason":…}` con el informe; Specty marca la conversación (`pending/<conversación>.stop`) y deja terminar su siguiente fin de turno.
+- Tarjeta: al empezar cada turno (`PreInvocation` con `invocationNum` 0), el guard inyecta la tarjeta de `next`, antes del aviso pendiente.
+- Exclusión: `check --install` escribe `.antigravityignore`.
+- Permisos: cada comando de shell que el guard deja pasar lleva `permissionOverrides` con `write_file` de la carpeta común de git y la de las worktrees.
+- `manage_task` con `send_input` se juzga como un comando de shell, así que el agente no puede escribir un comando de la persona en una tarea en marcha.
+
+En la tabla de capacidades, Antigravity queda con el fin de turno, la exclusión y los permisos en «sí», y la tarjeta tras compactar en «indirecto».
+
+### Desviaciones
+
+- El primer plan también reconocía la terminal de Antigravity CLI por su entorno, y el cambio salía de tamaño XL. Esa parte pasa a C10, que también reconoce la de Windsurf, y el fin de turno y la tarjeta se juntaron en T1.
+- Dos tests de C8 cambiaron como decía la spec: el matcher exacto, que ahora incluye `manage_task`, y la respuesta a un comando permitido, que ahora lleva las carpetas.
+
+### Decisiones
+
+- El fin de turno solo comprueba con `terminationReason: "model_stop"`: tras un error o el límite de pasos, deja terminar.
+- Para dejar terminar responde `{"decision":"stop"}` (`pass`), porque Antigravity espera una respuesta y cualquier valor distinto de `continue` deja terminar.
+- Las carpetas solo van con los comandos de shell: sus herramientas de archivos no corren en el sandbox de la terminal.
+- Sin `auto_approve`: el modo de revisión de la persona sigue mandando.
+- `sharedFolders` pasa a `flow/worktree.ts`, y la usan Cursor y el guard.
+
+### Pendientes
+
+- C10: reconocer la terminal de Antigravity CLI por `HGEDITOR=false` y `JJ_EDITOR=false` (su changelog, 1.3.6), junto con la de Windsurf.
+- R3: `permissionOverrides` con `write_file` está sin probar con Antigravity de verdad.
+- Fuera de un repositorio con Specty, `hook agent-stop` no imprime nada, tampoco para Antigravity, que espera una respuesta; el hook solo se instala en repositorios con Specty.
+- De C8: `isNewProject` ya no cuenta `.agents/skills` como archivos de agente.

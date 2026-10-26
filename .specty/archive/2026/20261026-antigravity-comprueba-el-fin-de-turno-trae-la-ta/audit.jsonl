@@ -16,3 +16,7 @@
 {"ts":"2026-10-26T20:12:56.736Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T5","baseCommit":"0c6f68eaef09512977c5f0e3d943267f1d72c0ff"}}
 {"ts":"2026-10-26T20:17:24.672Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts","exit":0,"ms":840,"tree":"sha256:ecb10b5303f0018dbc3d32efbf49363bb37727e960e2572ea697e0e9dd3a5ef7"}}
 {"ts":"2026-10-26T20:17:24.766Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"La tabla marca el fin de turno, la exclusión y los permisos de Antigravity como sí, y la tarjeta como indirecto. ARCHITECTURE §10 cuenta su Stop, la tarjeta en cada turno, manage_task, .antigravityignore y permissionOverrides; formats.md, pending .stop."}}
+{"ts":"2026-10-26T20:22:45.115Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":123188,"tree":"sha256:ecb10b5303f0018dbc3d32efbf49363bb37727e960e2572ea697e0e9dd3a5ef7"}}
+{"ts":"2026-10-26T20:22:45.120Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T20:23:00.421Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:bf56b218716bf4cfc18be26616356c881e9f6966cc69afb7a87db3205a205f55","size":"L","warnings":2}}
+{"ts":"2026-10-26T20:26:41.487Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
