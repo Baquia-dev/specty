@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261026-codex-trae-la-tarjeta-tras-compactar-y-nombra-su",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-codex-trae-la-tarjeta-tras-compactar-y-nombra-su",
+  "baseCommit": "2d9889e3ad35b97a70605a98a904833ffce17a66",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7326b7becfa22b981dd4d4c224a1db0940cf4edfba545ed7bcd0b886b02d5c93",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:01fe2fb1429a2642061a94e228566ad743544c379648c6bc74eb05e0d4a1172a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:dd745426ef4bdcace0eaaa1d24fd8a5f38c29a8bee17fb43375325b1ed32c6b5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5781a36589e52d36f7f0f8f31677b978f3b6b523b3b48dbd7bc881a6df88ec57",
+    "at": "2026-10-26T17:25:06.199Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
