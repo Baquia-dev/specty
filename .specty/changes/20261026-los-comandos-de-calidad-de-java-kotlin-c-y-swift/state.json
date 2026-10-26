@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261026-los-comandos-de-calidad-de-java-kotlin-c-y-swift",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-los-comandos-de-calidad-de-java-kotlin-c-y-swift",
+  "baseCommit": "0e6ca8ab4cbb19376d04709989fb0de809af2e09",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a798a2e0143e2162865a45b4a698cf7bce0a9692282d193f82306a4029d7a5d5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f41676ddaa6653b609290cc20ae875cbc2c944e56323a5e61dd47f310224237f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:9920f57e2a3f330f675c03764cea9e9f5a73b8cf9e7a66e03cab12a51d42a124",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:b807ab0d29ce345584f06d1f3cc47aa9fae101bf3d27e6e9dd835aee3a5857f2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a1e5e4922e97a88e9afec4e49c9c5f0ea949cdd632c1c94d176bdb725a40d565",
+    "at": "2026-10-26T14:41:01.538Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
