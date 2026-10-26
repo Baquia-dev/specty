@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9f62816955bc0dfc7a71d7c331e9af964dc9328a",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:25:06.590Z",
       "doneAt": "2026-10-26T17:32:42.178Z",
-      "summary": "Codex trae la tarjeta tras compactar: init le instala SessionStart con ^compact$, el guard responde con lo que imprime specty next (textCard, compartida con Claude Code) solo con source compact, y doctor avisa con codex-compact. doctorLine pasa a una tabla de textos por código."
+      "summary": "Codex trae la tarjeta tras compactar: init le instala SessionStart con ^compact$, el guard responde con lo que imprime specty next (textCard, compartida con Claude Code) solo con source compact, y doctor avisa con codex-compact. doctorLine pasa a una tabla de textos por código.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5c62f9e51ad4a070a02d59624322a3eef78662b8",
+      "startedAt": "2026-10-26T17:32:42.462Z",
+      "doneAt": "2026-10-26T17:33:06.834Z",
+      "summary": "Las tarjetas nombran el esfuerzo con los niveles de Codex (model_reasoning_effort): low, medium, high y xhigh para el máximo."
     }
   },
   "pending": {

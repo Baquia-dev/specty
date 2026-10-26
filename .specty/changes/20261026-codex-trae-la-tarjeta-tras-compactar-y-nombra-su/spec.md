@@ -59,7 +59,7 @@ Cuando Codex compacta la conversación, el agente pierde la tarjeta de la tarea,
   - files: packages/cli/src/agents/codex.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/core/src/cards/doctor.ts, packages/cli/test/session-start.test.ts, packages/cli/test/codex.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-start.test.ts test/codex.test.ts test/agents.test.ts test/setup.test.ts
-- [ ] T2: Las tarjetas nombran el esfuerzo de Codex
+- [x] T2: Las tarjetas nombran el esfuerzo de Codex
   - files: packages/core/src/agents.ts, packages/core/test/cards.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts

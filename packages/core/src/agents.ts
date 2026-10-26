@@ -24,10 +24,12 @@ export const AGENT_NAMES: Readonly<Record<AgentTool, string>> = {
 
 /**
  * Names each tool uses for the neutral effort levels. Only tools whose settings are known
- * are listed; the table changes with model releases (ARCHITECTURE §11).
+ * are listed; the table changes with model releases (ARCHITECTURE §11). Codex's is its
+ * `model_reasoning_effort`, whose highest level is `xhigh`.
  */
 const EFFORT_NAMES: Readonly<Partial<Record<AgentTool, Readonly<Record<EffortLevel, string>>>>> = {
   "claude-code": { low: "low", medium: "medium", high: "high", max: "max" },
+  codex: { low: "low", medium: "medium", high: "high", max: "xhigh" },
 };
 
 export function isAgentTool(value: string | undefined): value is AgentTool {

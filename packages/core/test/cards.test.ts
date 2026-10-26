@@ -223,6 +223,15 @@ describe("effort", () => {
       "RECOMMENDED EFFORT (Claude Code): implementation medium · spec and scope reviews: high",
     );
   });
+
+  it("names the levels as Codex does, its maximum being `xhigh` (AC4)", () => {
+    expect(effortLine({ plan: "max", implement: "high" }, { ...ES, tool: "codex" })).toBe(
+      "ESFUERZO RECOMENDADO (Codex): implementación high · revisiones de la spec y del alcance: xhigh",
+    );
+    expect(
+      effortLine({ plan: "medium", implement: "low" }, { ...ES, lang: "en", tool: "codex" }),
+    ).toBe("RECOMMENDED EFFORT (Codex): implementation low · spec and scope reviews: medium");
+  });
 });
 
 describe("AGENTS.md blocks", () => {
