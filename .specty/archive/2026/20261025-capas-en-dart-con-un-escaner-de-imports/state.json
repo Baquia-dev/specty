@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-capas-en-dart-con-un-escaner-de-imports",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-capas-en-dart-con-un-escaner-de-imports",
   "baseCommit": "b2b3c9de3ac2fd5cd78ecc5af1286a3eea3d96c0",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:eceaf57498a93ce30d6ba5e7a34fc66f38b23988c7000af9d3d04223c0ae87c0",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d9c69eec285d634c97f0c37ef90ed6ddd2f6476a",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:08:23.742Z",
       "doneAt": "2026-10-26T01:10:13.652Z",
-      "summary": "formats §6 documenta layers en Dart (el escáner de imports y cómo resuelve package:, dart: y rutas relativas; dependency-cruiser solo para TS/JS); ARCHITECTURE lo añade a la fila de specty check."
+      "summary": "formats §6 documenta layers en Dart (el escáner de imports y cómo resuelve package:, dart: y rutas relativas; dependency-cruiser solo para TS/JS); ARCHITECTURE lo añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,6 @@
     "AC": 4,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T01:10:39.158Z"
 }

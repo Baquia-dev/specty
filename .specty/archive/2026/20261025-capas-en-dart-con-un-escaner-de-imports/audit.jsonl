@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T01:08:23.742Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"d9c69eec285d634c97f0c37ef90ed6ddd2f6476a"}}
 {"ts":"2026-10-26T01:10:13.651Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":99589,"tree":"sha256:225a4d5b678c1c0ee9b704fae664b9f3f913eb72850c49d42d945eaa29621af6"}}
 {"ts":"2026-10-26T01:10:13.654Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats §6 documenta layers en Dart (el escáner de imports y cómo resuelve package:, dart: y rutas relativas; dependency-cruiser solo para TS/JS); ARCHITECTURE lo añade a la fila de specty check."}}
+{"ts":"2026-10-26T01:10:24.811Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T01:10:39.161Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:59c319c8c53e92c1476654c510a1c535e6f126373e1d203f6d1407d2d4e1882f","size":"M","warnings":1}}
+{"ts":"2026-10-26T01:13:44.449Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -64,3 +64,22 @@ La verificación `layers` funciona también en Dart y Flutter, sin herramientas 
 ## Riesgos
 
 - R1: Una directiva escrita en varias líneas con el URI en la segunda no se ve — el formateador de Dart deja el URI en la línea de `import`, y `dart format` corre en la misma ejecución.
+
+## Cierre
+
+### Resumen
+
+La verificación `layers` funciona en Dart y Flutter sin herramientas externas. El core gana `dartImports`, un escáner que lee los `import` y `export` de cada archivo `.dart` y los resuelve: el propio paquete va a `lib/`, los demás quedan como paquetes, `dart:` como paquete del SDK y las rutas relativas se resuelven desde el archivo. `layers` reparte los archivos: los de Dart van al escáner y los de TypeScript o JavaScript a dependency-cruiser, que solo hace falta si los hay. La regla de las capas del core es la misma para los dos.
+
+### Desviaciones
+
+- Ninguna respecto al plan del cambio.
+
+### Decisiones
+
+- Un `package:` de otro paquete del repositorio cuenta como paquete, no como archivo: los workspaces con varios `pubspec.yaml` quedan para más adelante.
+- Un `pubspec.yaml` sin `name` hace que todo `package:` cuente como paquete.
+
+### Pendientes
+
+- Con esto queda completo el proveedor de Flutter y Dart del ADR 0012: formato, `flutter analyze`, tests, `skip:`, funciones, build_runner, modo estricto, `// ignore:` y capas. Lo siguiente es el corte 6: la instalación con diff y confirmación, el pre-commit y la plantilla de CI.
