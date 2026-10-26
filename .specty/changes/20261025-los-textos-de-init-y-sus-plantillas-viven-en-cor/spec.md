@@ -50,7 +50,7 @@ Sexto cambio de la serie que lleva a core los textos de la CLI, el primero de la
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T3: init pide sus textos y sus plantillas a core
+- [x] T3: init pide sus textos y sus plantillas a core
   - files: packages/cli/src/commands/init.ts, packages/cli/src/install/project-files.ts, packages/cli/src/install/product.ts
   - ac: AC1, AC2
   - verify: pnpm check
