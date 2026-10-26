@@ -57,3 +57,21 @@ Once funciones de las tarjetas de core pasan de los límites de Specty: `newRefu
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Ninguna función de las tarjetas de core queda fuera de los límites de Specty, sin cambiar ningún texto. Los rechazos de `new`, de la revisión y de `task done` separan su razón, su paso y su estado; `next` elige la tarjeta de cada fase en una tabla y separa las de sin cambio y de revisión; la guía de redacción es una tabla por tipo; y la tarea, la aceptación y el cierre se arman por partes.
+
+### Desviaciones
+
+- La guía de cada tipo de cambio empezó como una función con `switch`, de 54 líneas; pasó a la tabla `KIND_GUIDES`, que es lo que es.
+
+### Decisiones
+
+- `nextCard` usa una tabla `Record<Phase, …>`, que TypeScript comprueba completa, en lugar del `switch` por fase.
+
+### Pendientes
+
+Ninguno.

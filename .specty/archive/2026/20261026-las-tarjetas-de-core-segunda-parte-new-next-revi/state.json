@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-las-tarjetas-de-core-segunda-parte-new-next-revi",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-las-tarjetas-de-core-segunda-parte-new-next-revi",
   "baseCommit": "ef514fe6e173f0b5c4a33bd9eddec798b46bc52b",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2477d0205e3601a659d7642c6a84f94354218e869c24fd28f3931319888a9779",
@@ -62,12 +62,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a129860cd476f24cdc1dca7879d25da12585714a",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:39:55.512Z",
       "doneAt": "2026-10-26T18:42:55.794Z",
-      "summary": "work.ts: taskCard y acceptanceCard comparten doneLine; taskCard toma verificationLines; acceptanceCard, acceptanceWarnings y acceptanceNext; closingCard deja el cierre ya enviado a closingSubmittedCard. Ninguna función de cards queda fuera de los límites."
+      "summary": "work.ts: taskCard y acceptanceCard comparten doneLine; taskCard toma verificationLines; acceptanceCard, acceptanceWarnings y acceptanceNext; closingCard deja el cierre ya enviado a closingSubmittedCard. Ninguna función de cards queda fuera de los límites.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,5 +78,6 @@
     "A": 2,
     "AC": 2,
     "T": 4
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T18:47:55.348Z"
 }
