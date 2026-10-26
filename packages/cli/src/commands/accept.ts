@@ -5,6 +5,7 @@ import {
   acceptedLine,
   acceptQuestion,
   blockedCard,
+  type ChangeView,
   checkStatus,
   closeCommitSubject,
   closedCard,
@@ -50,57 +51,96 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   const pending = await pendingIntegration(session, guard.change, "accept");
   if (pending.kind === "wait") return pending.output;
   const { change } = pending;
-  const { state } = change;
   const { terminal } = session.environment;
   const view = await changeView(session, change);
   // An epic has no code of its own: each of its slices was verified when it closed.
-  const epic = state.kind === "epic";
   const unverified =
-    !epic &&
+    change.state.kind !== "epic" &&
     session.config.verify.full === undefined &&
     session.config.verify.default === undefined;
   terminal.note(view.title, acceptanceSummary(view, unverified, cards));
-  const configured = epic ? undefined : session.config.verify.full;
-  // It need not run again when it already passed on this same code: in the last task, say.
-  const passed =
-    configured === undefined ? undefined : await passedOnThisCode(session, change, configured);
-  if (configured !== undefined && passed !== undefined) {
-    const note = verificationReusedNote(configured, passed.task, session.lang);
-    terminal.note(note.title, note.text);
-  }
-  const full = passed === undefined ? configured : undefined;
+  const stopped = await verifyBeforeAccepting(session, change, verify);
+  if (stopped !== undefined) return stopped;
+  if (!(await terminal.confirm(acceptQuestion(view.title, session.lang))))
+    return postponed(session, change.state);
+  return accepted(session, change, view);
+}
+
+/**
+ * The full verification before accepting, unless it already passed on this code or the person
+ * declines to run it: what stops the acceptance, or nothing.
+ */
+async function verifyBeforeAccepting(
+  session: Session,
+  change: StoredChange,
+  verify: boolean | undefined,
+): Promise<Output | undefined> {
+  const full = await verificationToRun(session, change);
+  if (full === undefined) return undefined;
   // In delegated mode the agent always runs the full verification, and never accepts a failure.
   const delegated = session.actor === "agent";
-  if (
-    full !== undefined &&
-    (delegated || (verify ?? (await terminal.confirm(runVerificationQuestion(full, session.lang)))))
-  ) {
-    const tree = await codeTree(session);
-    const started = Date.now();
-    const result = await execute(full, [], {
-      cwd: session.root,
-      shell: true,
-      env: session.environment.env,
-      timeoutMs: session.config.verify.timeoutSec * 1000,
-    });
-    await recordFullVerification(session, change, {
-      command: full,
-      code: result.code,
-      ms: Date.now() - started,
-      output: tail(result),
-      ...(tree === undefined ? {} : { tree }),
-    });
-    terminal.note(
-      verificationNoteTitle(result.code === 0, session.lang),
-      tail(result, 15).join("\n"),
-    );
-    if (result.code !== 0 && delegated)
-      return delegatedFailureCard(headerOf(state.id, state.phase), full, cards);
-    if (result.code !== 0 && !(await terminal.confirm(acceptAnywayQuestion(session.lang))))
-      return postponed(session, state);
-  }
-  if (!(await terminal.confirm(acceptQuestion(view.title, session.lang))))
-    return postponed(session, state);
+  const run =
+    delegated ||
+    (verify ??
+      (await session.environment.terminal.confirm(runVerificationQuestion(full, session.lang))));
+  return run ? runFullVerification(session, change, full, delegated) : undefined;
+}
+
+/** The configured full verification, unless the change is an epic or it passed on this code. */
+async function verificationToRun(
+  session: Session,
+  change: StoredChange,
+): Promise<string | undefined> {
+  // An epic has no code of its own: each of its slices was verified when it closed.
+  const configured = change.state.kind === "epic" ? undefined : session.config.verify.full;
+  if (configured === undefined) return undefined;
+  // It need not run again when it already passed on this same code: in the last task, say.
+  const passed = await passedOnThisCode(session, change, configured);
+  if (passed === undefined) return configured;
+  const note = verificationReusedNote(configured, passed.task, session.lang);
+  session.environment.terminal.note(note.title, note.text);
+  return undefined;
+}
+
+/** Runs and records the full verification; a failure stops the agent, and asks the person. */
+async function runFullVerification(
+  session: Session,
+  change: StoredChange,
+  full: string,
+  delegated: boolean,
+): Promise<Output | undefined> {
+  const { state } = change;
+  const { terminal } = session.environment;
+  const tree = await codeTree(session);
+  const started = Date.now();
+  const result = await execute(full, [], {
+    cwd: session.root,
+    shell: true,
+    env: session.environment.env,
+    timeoutMs: session.config.verify.timeoutSec * 1000,
+  });
+  await recordFullVerification(session, change, {
+    command: full,
+    code: result.code,
+    ms: Date.now() - started,
+    output: tail(result),
+    ...(tree === undefined ? {} : { tree }),
+  });
+  terminal.note(
+    verificationNoteTitle(result.code === 0, session.lang),
+    tail(result, 15).join("\n"),
+  );
+  if (result.code === 0) return undefined;
+  if (delegated) return delegatedFailureCard(headerOf(state.id, state.phase), full, session.cards);
+  return (await terminal.confirm(acceptAnywayQuestion(session.lang)))
+    ? undefined
+    : postponed(session, state);
+}
+
+/** The person accepted: a quick change closes; any other goes on to its closing. */
+async function accepted(session: Session, change: StoredChange, view: ChangeView): Promise<Output> {
+  const { state } = change;
+  const { cards } = session;
   const moved = transition({
     phase: "acceptance",
     kind: state.kind,

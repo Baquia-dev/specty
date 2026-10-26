@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type Analysis,
   blockedCard,
   type ChangeState,
   type EffortRecommendation,
@@ -11,6 +12,7 @@ import {
   noActiveChangeCard,
   notProposableCard,
   type Output,
+  type Phase,
   type ProposePhase,
   parseItemId,
   parseSpec,
@@ -42,10 +44,10 @@ export async function propose(session: Session): Promise<Output> {
   if (active === undefined) return noActiveChangeCard("agent", cards);
   const { state, files } = active;
   const phase = PROPOSE_PHASES.find((candidate) => candidate === state.phase);
-  const specPath = session.paths.relative(files.spec);
   if (phase === undefined) return notProposableCard(state.id, state.phase, cards);
   const analysis = await analyzeChange(session, active, phase);
   if (!analysis.valid) {
+    const specPath = session.paths.relative(files.spec);
     return invalidSpecCard(headerOf(state.id, phase), specPath, analysis.diagnostics, cards);
   }
   const moved = transition({
@@ -55,11 +57,27 @@ export async function propose(session: Session): Promise<Output> {
     event: { type: "propose", validationErrors: 0 },
   });
   if (!moved.ok) return blockedCard(headerOf(state.id, phase), moved.code, runNext(cards));
+  const revision = await recordProposal(session, active, analysis, phase, moved.phase);
+  return proposalCard(session, active, analysis, { phase, moved: moved.phase, revision });
+}
+
+/**
+ * Writes the spec in its canonical form and, when it changed, a new revision that answers the
+ * comments still open; the state records it. Returns the revision.
+ */
+async function recordProposal(
+  session: Session,
+  active: StoredChange,
+  analysis: Analysis,
+  phase: ProposePhase,
+  moved: Phase,
+): Promise<number> {
+  const { state, files } = active;
   const lastText = await readRevision(files, state.revision);
   const unchanged =
     lastText !== undefined &&
     specHash(parseSpec(lastText).spec) === analysis.hash &&
-    moved.phase === state.phase;
+    moved === state.phase;
   const revision = unchanged ? state.revision : state.revision + 1;
   await writeText(files.spec, analysis.text);
   if (!unchanged) {
@@ -71,7 +89,7 @@ export async function propose(session: Session): Promise<Output> {
   const size = keptSize(state, analysis.size, phase, session.lang);
   const nextState: ChangeState = {
     ...state,
-    phase: moved.phase,
+    phase: moved,
     revision,
     items: decisions(state, analysis.spec),
     maxIds: maxIdsOf(state, analysis.spec),
@@ -84,6 +102,18 @@ export async function propose(session: Session): Promise<Output> {
     size: size.level,
     warnings: analysis.diagnostics.length,
   });
+  return revision;
+}
+
+/** The proposal's card: size, effort, the changes since the approval, warnings and shared files. */
+async function proposalCard(
+  session: Session,
+  active: StoredChange,
+  analysis: Analysis,
+  proposal: { readonly phase: ProposePhase; readonly moved: Phase; readonly revision: number },
+): Promise<Output> {
+  const { state, files } = active;
+  const { phase } = proposal;
   const approvedText = await readRevision(files, state.approved?.revision);
   const delta =
     approvedText === undefined || phase === "closing"
@@ -93,8 +123,8 @@ export async function propose(session: Session): Promise<Output> {
   const review = await reviewRecommended(session, active, analysis.size, effort, phase);
   const card = proposedCard(
     {
-      header: headerOf(state.id, moved.phase, revisionLabel(revision, session.lang)),
-      specPath,
+      header: headerOf(state.id, proposal.moved, revisionLabel(proposal.revision, session.lang)),
+      specPath: session.paths.relative(files.spec),
       size: analysis.size,
       effort,
       warnings: analysis.diagnostics.filter((entry) => entry.severity === "warning"),
@@ -102,7 +132,7 @@ export async function propose(session: Session): Promise<Output> {
       closing: phase === "closing",
       ...(review ? { review } : {}),
     },
-    cards,
+    session.cards,
   );
   // Files another open change also lists: seen while planning, not when the merge collides.
   if (phase === "closing") return card;

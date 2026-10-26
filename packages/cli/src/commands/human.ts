@@ -58,30 +58,39 @@ export async function personSession(
   action: PersonAction,
   options: { readonly id?: string | undefined; readonly scope?: string | undefined },
 ): Promise<Chosen> {
-  const { cards } = session;
-  const { terminal } = session.environment;
-  if (!terminal.interactive) return { kind: "session", session };
+  if (!session.environment.terminal.interactive) return { kind: "session", session };
   const located = await locateChanges(session);
-  if (options.id !== undefined) {
-    const named = located.find(({ change }) => change.state.id === options.id);
-    if (named !== undefined) return chosen(session, named);
-    return { kind: "output", output: noSuchChangeCard(options.id, cards) };
-  }
+  if (options.id !== undefined) return namedChange(session, located, options.id);
   const waiting: Located[] = [];
   for (const candidate of located) {
     if (await awaits(action, candidate, options.scope)) waiting.push(candidate);
   }
-  const here = waiting.find(({ current }) => current);
-  if (here !== undefined) return { kind: "session", session };
+  if (waiting.some(({ current }) => current)) return { kind: "session", session };
   const [only] = waiting;
   if (only === undefined) {
     // This folder's change answers as before: nothing pending in its phase.
     if (located.some(({ current }) => current)) return { kind: "session", session };
-    return { kind: "output", output: nothingWaitsCard(action, cards) };
+    return { kind: "output", output: nothingWaitsCard(action, session.cards) };
   }
   if (waiting.length === 1) return chosen(session, only);
+  return pickChange(session, waiting);
+}
+
+/** The change the person named by its id, wherever it lives. */
+async function namedChange(
+  session: Session,
+  located: readonly Located[],
+  id: string,
+): Promise<Chosen> {
+  const named = located.find(({ change }) => change.state.id === id);
+  if (named !== undefined) return chosen(session, named);
+  return { kind: "output", output: noSuchChangeCard(id, session.cards) };
+}
+
+/** Several changes wait for the decision: the person picks one, or none. */
+async function pickChange(session: Session, waiting: readonly Located[]): Promise<Chosen> {
   const titles = await Promise.all(waiting.map(titleOf));
-  const picked = await terminal.choose(
+  const picked = await session.environment.terminal.choose(
     whichChangeQuestion(session.lang),
     waiting.map(({ change }, index) => ({
       value: change.state.id,
@@ -90,7 +99,10 @@ export async function personSession(
   );
   const match = waiting.find(({ change }) => change.state.id === picked);
   if (match === undefined) {
-    return { kind: "output", output: nothingChangedCard(headerOf(), checkStatus(cards), cards) };
+    return {
+      kind: "output",
+      output: nothingChangedCard(headerOf(), checkStatus(session.cards), session.cards),
+    };
   }
   return chosen(session, match);
 }
