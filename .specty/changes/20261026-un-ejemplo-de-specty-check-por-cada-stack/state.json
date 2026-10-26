@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "98f4d13224f58dc7e43f8fa74463531ddcf1fc1f",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:07:45.917Z",
       "doneAt": "2026-10-26T16:09:51.225Z",
-      "summary": "Java (Maven), Kotlin (Gradle) y C# (.NET): imitan Spotless, Checkstyle, ktlint, detekt, dotnet format, dotnet build y sus tests. Todo pasa con el plan y todo falla al romperlo; focused-tests pasa en los tres, que no tienen marca de foco."
+      "summary": "Java (Maven), Kotlin (Gradle) y C# (.NET): imitan Spotless, Checkstyle, ktlint, detekt, dotnet format, dotnet build y sus tests. Todo pasa con el plan y todo falla al romperlo; focused-tests pasa en los tres, que no tienen marca de foco.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f529a253955cb2a2c284631ed3f76fb1470e930e",
+      "startedAt": "2026-10-26T16:09:51.731Z",
+      "doneAt": "2026-10-26T16:14:55.736Z",
+      "summary": "Go (golangci-lint con gofmt, Ginkgo), Rust (cargo fmt, Clippy, cargo test) y Swift (swift-format, SwiftLint, XCTest). Todo pasa con el plan y todo falla al romperlo. PIt, XCTSkip y markTestSkipped de PHP quedan como saltos que no cuentan."
     }
   },
   "pending": {

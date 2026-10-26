@@ -53,7 +53,7 @@ Cada stack que Specty soporta tiene un repositorio de ejemplo, como ya lo tienen
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-jvm.test.ts
   - type: test
-- [ ] T3: Los ejemplos de Go, Rust y Swift
+- [x] T3: Los ejemplos de Go, Rust y Swift
   - files: packages/cli/test/stack-dialect.ts, packages/cli/test/check-examples-native.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-native.test.ts

@@ -7,7 +7,8 @@ import { repeat } from "./stack-examples";
  * A Python, a Ruby and a PHP repository (AC1, AC2, AC3). Their commands stand in for ruff, mypy
  * and pytest; RuboCop, Sorbet and RSpec, with no format of its own, which RuboCop checks as lint;
  * and PHP CS Fixer, PHP_CodeSniffer, PHPStan and PHPUnit. Neither pytest nor PHPUnit has a
- * focus marker, nor PHPUnit a skip marker; Specty reads no layers in Ruby.
+ * focus marker, and PHPUnit skips with `markTestSkipped()`, a decision of the test that does not
+ * count; Specty reads no layers in Ruby.
  */
 
 const IT = "it";
@@ -318,6 +319,7 @@ const PHP: Dialect = {
           ...(index > 0 ? [""] : []),
           `    public function test${pascal(test.name)}(): void`,
           "    {",
+          ...(test.skipped ? ["        $this->markTestSkipped('flaky');"] : []),
           `        $this->assertSame(${test.fails ? 2 : 1}, 1);`,
           "    }",
         ]),
