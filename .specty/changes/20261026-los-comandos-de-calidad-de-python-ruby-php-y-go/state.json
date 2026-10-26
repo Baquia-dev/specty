@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-los-comandos-de-calidad-de-python-ruby-php-y-go",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-los-comandos-de-calidad-de-python-ruby-php-y-go",
   "baseCommit": "8f0271909a23aa71969a198b93444f8b6afafa85",
   "revision": 1,
@@ -50,12 +50,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "249133420a42de35a8f8efc1ebf4e30e7c967d25",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:27:23.390Z",
       "doneAt": "2026-10-26T14:35:35.689Z",
-      "summary": "detect/quality.ts detecta las herramientas configuradas de Python, Ruby, PHP y Go (tools en cada stack) y da su formato, lint y tipos; commandsFor y formatCommand los usan. commandsFor saca los scripts de JS a su función para no crecer."
+      "summary": "detect/quality.ts detecta las herramientas configuradas de Python, Ruby, PHP y Go (tools en cada stack) y da su formato, lint y tipos; commandsFor y formatCommand los usan. commandsFor saca los scripts de JS a su función para no crecer.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e7dd7af550e5e0980106b4b8375a1962086f3584",
+      "startedAt": "2026-10-26T14:35:36.110Z",
+      "doneAt": "2026-10-26T14:38:10.697Z",
+      "summary": "Las guías dicen qué formato, lint y tipos detecta Specty en cada stack y qué pasa con una herramienta configurada sin instalar; formats.md describe la detección de detect/quality.ts."
     }
   },
   "pending": {

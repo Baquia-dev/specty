@@ -61,7 +61,7 @@ follows:
   - files: packages/cli/src/detect/quality.ts, packages/cli/src/detect/stack.ts, packages/cli/src/detect/project.ts, packages/cli/src/check/commands.ts, packages/cli/test/detect-quality.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
-- [ ] T2: Lo que se detecta, en las guías y en formats
+- [x] T2: Lo que se detecta, en las guías y en formats
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md
   - ac: AC4
   - verify: pnpm check

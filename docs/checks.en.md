@@ -52,13 +52,16 @@ They show in this order: the project's commands, each stack's, those for any lan
 
 ### `format`
 
-Checks the format with the project's command, only in its checking form, never the one that rewrites files. Specty detects it in these cases:
+Checks the format with the project's command, only in its checking form, never the one that rewrites files. Specty detects it when the project already configures the tool:
 
 - TypeScript or JavaScript: the `format:check`, `fmt:check` or `check:format` script.
 - Dart: `dart format --output=none --set-exit-if-changed .`.
 - Rust: `cargo fmt --check`.
-- Python with ruff: `ruff format --check`.
+- Python: `ruff format --check` with ruff or, otherwise, `black --check .` with `[tool.black]` or black in the manifests. Like everything in Python, with the manager's prefix (`uv run`, `poetry run`…).
+- PHP: the `cs:check`, `format:check`, `check:format` or `fmt:check` script of `composer.json`; otherwise, `vendor/bin/pint --test` with `pint.json` or `laravel/pint`, or `vendor/bin/php-cs-fixer check` with `.php-cs-fixer.php` or `.php-cs-fixer.dist.php`.
 - .NET: `dotnet format --verify-no-changes`.
+
+In Go, `golangci-lint run` checks the format with the formatters of its configuration (see `lint`).
 
 **Configuration:** `checks.commands.format` sets or replaces it. Without a command, the check does not show.
 
@@ -66,7 +69,17 @@ Checks the format with the project's command, only in its checking form, never t
 
 ### `lint`
 
-Runs the project's lint: the `lint` script of `package.json`, `flutter analyze` or `dart analyze`, `ruff check`, `go vet ./...` or `cargo clippy -- -D warnings`. It passes when it exits with 0. Otherwise it turns the output into `path:line` findings, whatever the tool.
+Runs the lint the project has:
+
+- TypeScript or JavaScript: the `lint` script of `package.json`.
+- Dart: `flutter analyze` or `dart analyze`.
+- Python: `ruff check` with ruff or, otherwise, `flake8` with `.flake8` or `[flake8]` in `setup.cfg` or `tox.ini`.
+- Go: `golangci-lint run` with `.golangci.yml`, `.yaml`, `.toml` or `.json`; otherwise, `go vet ./...`.
+- Rust: `cargo clippy -- -D warnings`.
+- Ruby: `bundle exec standardrb` with `.standard.yml` or the `standard` gem; otherwise, `bundle exec rubocop` with `.rubocop.yml` or the `rubocop` gem.
+- PHP: the `lint`, `phpcs` or `cs` script of `composer.json`; otherwise, `vendor/bin/phpcs` with `.phpcs.xml`, `phpcs.xml` or their `.dist`.
+
+It passes when it exits with 0. Otherwise it turns the output into `path:line` findings, whatever the tool.
 
 **Configuration:** `checks.commands.lint`.
 
@@ -74,7 +87,12 @@ Runs the project's lint: the `lint` script of `package.json`, `flutter analyze` 
 
 ### `typecheck`
 
-Runs the project's type check: the `typecheck`, `type-check` or `tsc` script of `package.json`.
+Runs the type check the project has:
+
+- TypeScript: the `typecheck`, `type-check` or `tsc` script of `package.json`.
+- Python: `mypy .` with `mypy.ini`, `.mypy.ini`, `[tool.mypy]` or `[mypy]` in `setup.cfg`; otherwise, `pyright` with `pyrightconfig.json` or `[tool.pyright]`.
+- Ruby: `bundle exec srb tc` with `sorbet/config`; otherwise, `bundle exec steep check` with `Steepfile`.
+- PHP: the `analyse`, `analyze`, `phpstan`, `psalm` or `stan` script of `composer.json`; otherwise, `vendor/bin/phpstan analyse --no-progress` with `phpstan.neon`, `phpstan.neon.dist` or `phpstan.dist.neon`, or `vendor/bin/psalm --no-progress` with `psalm.xml` or `psalm.xml.dist`.
 
 **Configuration:** `checks.commands.typecheck`.
 
@@ -88,7 +106,7 @@ Runs the project's tests with the command Specty detects for each stack: `pnpm t
 
 **Disable:** `levels: { tests: off }`.
 
-The four commands look at the whole project, because a change can break files it did not touch, and they have the time limit of `verify.timeoutSec`. `specty task done` does not run them when the task already has a verification (see "Where it runs").
+The four commands look at the whole project, because a change can break files it did not touch, and they have the time limit of `verify.timeoutSec`. Specty only runs a tool the project configures and never adds one; when it is configured but not installed, its check fails with the command's exit code, and `checks.commands` or `checks.levels` adjust that. `specty task done` does not run them when the task already has a verification (see "Where it runs").
 
 ### `strict-types`
 
@@ -347,6 +365,7 @@ The context brings the run's files, already without what is excluded (`files`, `
 
 Specty already detects those stacks. Without a provider of their own, these work:
 
+- in Ruby and PHP, the format, lint and types the project configures (RuboCop, Standard, Sorbet, Steep, PHPStan, Psalm, PHP_CodeSniffer, Pint, PHP CS Fixer);
 - `tests` with its command: `mvn test` or `gradle test`, `composer test` or `php artisan test`, `bundle exec rspec` or `bin/rails test`, `dotnet test`;
 - `function-lines` and `complexity`, except in Ruby;
 - `max-lines`, `focused-tests` and `skipped-tests`, which already know `@Disabled`, `@Ignore`, `[Ignore]`, xUnit's `Skip =` and RSpec's `focus: true`;
