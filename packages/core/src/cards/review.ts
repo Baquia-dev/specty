@@ -2,7 +2,7 @@
 import type { Lang } from "../i18n";
 import { type Output, section } from "../output";
 import { blockedCard } from "./flow";
-import { translator } from "./text";
+import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
 /**
@@ -139,52 +139,41 @@ export function reviewRefusalCard(
 ): Output {
   const t = translator(ctx.lang);
   const { command } = ctx;
-  const goOn = t(`sigue con \`${command} next\`.`, `go on with \`${command} next\`.`);
-  switch (refusal.reason) {
-    case "not-reviewable":
-      return blockedCard(
-        header,
-        t(
-          `La revisión independiente se pide con la spec en revisión, después de \`${command} propose\`, o con el resultado en aceptación.`,
-          `The independent review is asked for with the spec in review, after \`${command} propose\`, or with the result in acceptance.`,
-        ),
-        goOn,
-      );
-    case "not-configured":
-      return blockedCard(
-        header,
-        t(
-          "Este proyecto no tiene revisión independiente: la persona la configura con `review.command` en .specty/config.yaml.",
-          "This project has no independent review: the person sets it up with `review.command` in .specty/config.yaml.",
-        ),
-        goOn,
-      );
-    case "too-large":
-      return blockedCard(
-        header,
-        t(
-          `El diff del cambio es demasiado grande para revisarlo entero (${refusal.range}).`,
-          `The change's diff is too large to review whole (${refusal.range}).`,
-        ),
-        goOn,
-      );
-    case "no-diff":
-      return blockedCard(
-        header,
-        t("El cambio no tiene un diff que revisar.", "The change has no diff to review."),
-        goOn,
-      );
-    case "failed":
-      return blockedCard(
-        header,
-        t(
-          `La revisión falló (\`${refusal.command}\`, código ${refusal.code ?? "sin código"}).`,
-          `The review failed (\`${refusal.command}\`, code ${refusal.code ?? "none"}).`,
-        ),
-        t(
+  return blockedCard(
+    header,
+    reviewRefusalReason(refusal, t, command),
+    refusal.reason === "failed"
+      ? t(
           `díselo al usuario y sigue con \`${command} next\`: la revisión es opcional.`,
           `tell the user and go on with \`${command} next\`: the review is optional.`,
-        ),
+        )
+      : t(`sigue con \`${command} next\`.`, `go on with \`${command} next\`.`),
+  );
+}
+
+function reviewRefusalReason(refusal: ReviewRefusal, t: Translate, command: string): string {
+  switch (refusal.reason) {
+    case "not-reviewable":
+      return t(
+        `La revisión independiente se pide con la spec en revisión, después de \`${command} propose\`, o con el resultado en aceptación.`,
+        `The independent review is asked for with the spec in review, after \`${command} propose\`, or with the result in acceptance.`,
+      );
+    case "not-configured":
+      return t(
+        "Este proyecto no tiene revisión independiente: la persona la configura con `review.command` en .specty/config.yaml.",
+        "This project has no independent review: the person sets it up with `review.command` in .specty/config.yaml.",
+      );
+    case "too-large":
+      return t(
+        `El diff del cambio es demasiado grande para revisarlo entero (${refusal.range}).`,
+        `The change's diff is too large to review whole (${refusal.range}).`,
+      );
+    case "no-diff":
+      return t("El cambio no tiene un diff que revisar.", "The change has no diff to review.");
+    case "failed":
+      return t(
+        `La revisión falló (\`${refusal.command}\`, código ${refusal.code ?? "sin código"}).`,
+        `The review failed (\`${refusal.command}\`, code ${refusal.code ?? "none"}).`,
       );
   }
 }

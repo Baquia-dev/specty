@@ -1,6 +1,30 @@
 // SPDX-License-Identifier: Apache-2.0
+import { execFileSync } from "node:child_process";
+import { chmod, mkdtemp, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { delimiter, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CHANGE, CONFIG, cli, person, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+
+/**
+ * A git that gives `blame`'s error in Spanish, as a translated git does, and leaves the rest to
+ * the real one: the machine running the tests may have no catalogs to translate it.
+ */
+async function spanishGit(): Promise<Record<string, string>> {
+  const bin = await mkdtemp(join(tmpdir(), "specty-git-"));
+  const real = execFileSync("which", ["git"], { encoding: "utf8" }).trim();
+  const shim = [
+    "#!/usr/bin/env node",
+    'const { spawnSync } = require("node:child_process");',
+    `const run = spawnSync(${JSON.stringify(real)}, process.argv.slice(2), { stdio: ["inherit", "inherit", "pipe"] });`,
+    'process.stderr.write(String(run.stderr).replace(/has only (\\d+) lines?/, "solo tiene $1 líneas"));',
+    "process.exit(run.status ?? 1);",
+    "",
+  ].join("\n");
+  await writeFile(join(bin, "git"), shim);
+  await chmod(join(bin, "git"), 0o755);
+  return { PATH: `${bin}${delimiter}${process.env.PATH ?? ""}` };
+}
 
 const GREET = "export const greet = (name: string) => 'Hola, ' + name;\n// por defecto\n";
 
@@ -65,4 +89,22 @@ describe("specty why", () => {
       expect.stringContaining("src/app.ts no tiene la línea 99."),
     ]);
   });
+
+  it.skipIf(process.platform === "win32")(
+    "tells a missing line from a file with no history in any language of git (AC1, AC2)",
+    async () => {
+      const root = await oneTask();
+      const env = await spanishGit();
+      const beyond = await cli(root, ["why", "src/app.ts:99"], { env });
+      expect([beyond.code, beyond.out]).toEqual([
+        1,
+        expect.stringContaining("src/app.ts no tiene la línea 99."),
+      ]);
+      const missing = await cli(root, ["why", "src/otro.ts:1"], { env });
+      expect([missing.code, missing.out]).toEqual([
+        1,
+        expect.stringContaining("src/otro.ts no tiene historia en git."),
+      ]);
+    },
+  );
 });
