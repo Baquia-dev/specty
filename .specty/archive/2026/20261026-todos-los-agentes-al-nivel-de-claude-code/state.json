@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261026-todos-los-agentes-al-nivel-de-claude-code",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261026-todos-los-agentes-al-nivel-de-claude-code",
   "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:902095b7b2021a2268e2918676e77c73564c386215ba8c104ebe299f0090784c",
+    "at": "2026-10-26T16:19:08.907Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -71,11 +78,5 @@
     "C": 13,
     "R": 8
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:902095b7b2021a2268e2918676e77c73564c386215ba8c104ebe299f0090784c",
-    "at": "2026-10-26T16:19:08.907Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-10-26T23:45:46.227Z"
 }

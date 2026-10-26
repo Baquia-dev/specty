@@ -111,3 +111,44 @@ Hoy solo Claude Code tiene todo lo que Specty hace con un agente: el guard antes
 - R6: Con una ruta de la máquina en el comando, el hook iría a un archivo que la persona puede tener versionado con otros ajustes (`.gemini/settings.json`, `.agents/hooks.json`). Mitigación: el corte de esa herramienta lo detecta y, en ese caso, pide tener `specty` en el PATH en vez de escribir la ruta.
 - R7: La tarjeta al empezar cada turno en Antigravity gasta contexto en todos los turnos. Mitigación: solo se inyecta con un cambio activo en la carpeta, y como mensaje efímero, que no se acumula.
 - R8: Varios cortes en paralelo editan las mismas secciones de ARCHITECTURE §10 y de formats.md. Mitigación: cada corte edita solo las filas y los párrafos de su herramienta, y los conflictos se resuelven al incorporar (`specty integrate`).
+
+## Cierre
+
+### Resumen
+
+Los seis agentes quedan al nivel de Claude Code en todo lo que sus hooks permiten. La tabla de capacidades de ARCHITECTURE §10 ya no tiene ninguna celda «pendiente», y el tipo `Support` ya no admite ese estado:
+- Cada agente vive en su módulo (`agents/`), y `AGENT_CAPABILITIES` dice qué es «sí», «indirecto» (y cómo) o «no posible» (y por qué).
+- Codex tiene la tarjeta tras compactar, sus nombres de esfuerzo y una prueba con Codex 0.164.0 y un modelo simulado.
+- Cursor tiene la tarjeta tras compactar (indirecta), y su sandbox deja hacer commits a Specty.
+- OpenCode tiene el fin de turno, la tarjeta, la exclusión y una prueba con OpenCode 1.19.4.
+- Antigravity tiene:
+  - el guard;
+  - el aviso tras cada comando y la tarjeta, los dos indirectos;
+  - el fin de turno, la exclusión y los permisos con cada acción;
+  - el reconocimiento de la terminal de Antigravity CLI.
+- Gemini CLI tiene el guard, `GEMINI.md`, el fin de turno, la tarjeta (indirecta), su sandbox y una prueba con Gemini CLI 0.65.0.
+- Devin (Windsurf) tiene el guard, el aviso, el fin de turno, la tarjeta (indirecta) y los permisos, con los hooks de Devin CLI que comparte Devin Desktop.
+- `specty new` dice cómo abrir cada herramienta reconocida en la carpeta del cambio.
+
+### Desviaciones
+
+- C10: Devin Desktop retiró Cascade en la 3.9.19. Con el visto bueno de la persona, el corte cubrió los hooks de Devin CLI (`.devin/hooks.v1.json`) en lugar de los de Cascade, así que R5 dejó de aplicar, y la fila pasó a llamarse «Devin (Windsurf)».
+- El reconocimiento de la terminal de Antigravity CLI pasó de C9 a C10, para que C9 no pasara del tamaño L.
+- Frente a R7, la tarjeta de Antigravity llega al empezar cada turno también sin un cambio activo; entonces dice cómo empezar uno.
+- R6 no se hizo como se planeó: con una ruta de la máquina, el hook va a un archivo local excluido de git. Si la persona ya versiona ese archivo, la ruta queda en él, como con los demás agentes.
+- La tarjeta de Gemini CLI va en cada turno (`BeforeAgent`), porque su `PreCompress` salta antes de cada llamada al modelo, compacte o no.
+- C4 necesitó que la persona autorizara dos opciones de Codex, solo en repositorios desechables y con un modelo falso.
+
+### Decisiones
+
+- Lo que un camino indirecto deja para otro evento se guarda por conversación en `.git/specty/pending/`: la tarjeta, el aviso y el turno devuelto, con caducidad de un día.
+- Las pruebas de extremo a extremo buscan la herramienta en una variable de entorno o en las carpetas del PATH, sin ejecutarla, y se saltan sin ella.
+
+### Pendientes
+
+- Cursor, Antigravity y Devin no se pueden probar con la herramienta de verdad, porque su modelo va por su servidor.
+- Un cambio aparte arregla lo que quedó suelto:
+  - `uninstall` no quita el hook de fin de turno;
+  - Devin carga los hooks de Claude Code;
+  - `hook agent-stop` no responde fuera de Specty;
+  - `.agents/` cuenta como código en un proyecto nuevo.
