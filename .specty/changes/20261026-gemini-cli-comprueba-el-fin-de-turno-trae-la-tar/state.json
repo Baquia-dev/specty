@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b0f07305e1b245e35343c7500d5caf3b0a998d3b",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:56:38.421Z",
       "doneAt": "2026-10-26T21:01:12.851Z",
-      "summary": "Gemini CLI comprueba el fin de turno: AfterAgent (check --install, en milisegundos) responde decision deny con el informe y deja terminar con stop_hook_active. BeforeAgent es el evento turn y trae la tarjeta de next como additionalContext."
+      "summary": "Gemini CLI comprueba el fin de turno: AfterAgent (check --install, en milisegundos) responde decision deny con el informe y deja terminar con stop_hook_active. BeforeAgent es el evento turn y trae la tarjeta de next como additionalContext.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "566fb0376062280eb55c06d8cf14f07be4e5c26c",
+      "startedAt": "2026-10-26T21:01:13.161Z",
+      "doneAt": "2026-10-26T21:04:54.095Z",
+      "summary": "init añade la carpeta común de git y la de las worktrees a tools.sandboxAllowedPaths cuando .gemini/settings.json es local y git no lo sigue (uninstall las quita); si va en git, no le pone rutas de la máquina y dice cuáles añadir."
     }
   },
   "pending": {

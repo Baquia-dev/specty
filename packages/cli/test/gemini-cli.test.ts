@@ -230,3 +230,31 @@ describe("the task card in Gemini CLI", () => {
     });
   });
 });
+
+describe("Gemini CLI's sandbox", () => {
+  it("lets Specty's commits through from local settings, after the person's paths (AC4)", async () => {
+    const root = await tempRepo(PACKAGE);
+    const mine = { tools: { sandboxAllowedPaths: ["/opt/cache"] } };
+    await writeFiles(root, { [SETTINGS]: JSON.stringify(mine) });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    expect(init.out).toContain(
+      "Gemini CLI: .gemini/settings.json (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.",
+    );
+    const allowed = async () => JSON.parse(await read(root, SETTINGS)).tools.sandboxAllowedPaths;
+    const folders = ["/opt/cache", join(root, ".git"), `${root}.worktrees`];
+    expect(await allowed()).toEqual(folders);
+    await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    expect(await allowed()).toEqual(folders);
+    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(JSON.parse(await read(root, SETTINGS))).toEqual(mine);
+  });
+
+  it("adds no machine path to settings kept in git, and says which to add (AC4)", async () => {
+    const root = await tempRepo({ ...PACKAGE, [SETTINGS]: "{}\n" });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    expect(init.out).toContain(
+      `Gemini CLI: .gemini/settings.json va en git, así que Specty no le añade rutas de esta máquina; si activas su sandbox, añade \`${join(root, ".git")}\`, \`${root}.worktrees\` a \`tools.sandboxAllowedPaths\` en tu configuración de usuario para que funcionen los commits de Specty.`,
+    );
+    expect(JSON.parse(await read(root, SETTINGS)).tools).toBeUndefined();
+  });
+});

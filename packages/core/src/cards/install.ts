@@ -108,6 +108,30 @@ export function geminiTrustWarning(lang: Lang): string {
   );
 }
 
+/**
+ * Gemini CLI's sandbox, off unless the person turns it on, with Specty's folders in its local
+ * settings: the ones Specty's commands write in from a change's folder.
+ */
+export function geminiSandboxLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Gemini CLI: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
+    `Gemini CLI: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
+  );
+}
+
+/** Gemini CLI settings that go in git: no machine path, so Specty says what to add elsewhere. */
+export function geminiSandboxVersionedWarning(
+  file: string,
+  paths: readonly string[],
+  lang: Lang,
+): string {
+  const list = paths.map((path) => `\`${path}\``).join(", ");
+  return translator(lang)(
+    `Gemini CLI: ${file} va en git, así que Specty no le añade rutas de esta máquina; si activas su sandbox, añade ${list} a \`tools.sandboxAllowedPaths\` en tu configuración de usuario para que funcionen los commits de Specty.`,
+    `Gemini CLI: ${file} goes in git, so Specty adds no path of this machine to it; if you turn its sandbox on, add ${list} to \`tools.sandboxAllowedPaths\` in your user settings so Specty's commits work.`,
+  );
+}
+
 /** OpenCode's guard plugin, in the project (ADR 0013): `local` when not committed. */
 export function opencodeGuardLine(file: string, local: boolean, lang: Lang): string {
   const where = `${file}${local ? " (local)" : ""}`;

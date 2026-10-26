@@ -1,8 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
-import { geminiPointerLine, geminiTrustWarning, guardLine } from "@baquia-dev/specty-core";
+import {
+  geminiPointerLine,
+  geminiSandboxLine,
+  geminiSandboxVersionedWarning,
+  geminiTrustWarning,
+  guardLine,
+} from "@baquia-dev/specty-core";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
+import { sharedFolders } from "../flow/worktree";
 import {
   excludeLocally,
   GEMINI_SETTINGS,
@@ -64,9 +71,12 @@ export const geminiCli: AgentAdapter = {
   install: async ({ root, git, invocation, files, lang }) => {
     const local = !invocation.portable;
     const command = `${invocation.command} guard --tool gemini-cli`;
+    // The sandbox's folders are machine paths: they go only in settings git does not keep.
+    const open = local && !(await git.isTracked(GEMINI_SETTINGS));
+    const folders = await sharedFolders(git);
     await rewriteJson(
       join(root, GEMINI_SETTINGS),
-      (value) => withHooks(value, EVENTS, "gemini-cli", command),
+      (value) => withSandbox(withHooks(value, EVENTS, "gemini-cli", command), folders, open),
       true,
       files,
     );
@@ -76,19 +86,22 @@ export const geminiCli: AgentAdapter = {
     return {
       done: [
         guardLine("Gemini CLI", GEMINI_SETTINGS, local, lang),
+        ...(open ? [geminiSandboxLine(GEMINI_SETTINGS, lang)] : []),
         ...(pointed ? [geminiPointerLine(lang)] : []),
       ],
-      warnings: [geminiTrustWarning(lang)],
+      warnings: [
+        geminiTrustWarning(lang),
+        ...(open ? [] : [geminiSandboxVersionedWarning(GEMINI_SETTINGS, folders, lang)]),
+      ],
       written: [...(local ? [] : [GEMINI_SETTINGS]), "GEMINI.md"],
     };
   },
-  remove: (root, files) =>
-    removeFromJson(
-      root,
-      GEMINI_SETTINGS,
-      (value) => withHooks(value, EVENTS, "gemini-cli", undefined),
-      files,
-    ),
+  remove: async (root, files, git) => {
+    const folders = await sharedFolders(git);
+    const update = (value: Record<string, unknown>) =>
+      withSandbox(withHooks(value, EVENTS, "gemini-cli", undefined), folders, false);
+    await removeFromJson(root, GEMINI_SETTINGS, update, files);
+  },
   doctor: async (root) => {
     const text = await readText(join(root, GEMINI_SETTINGS));
     const file = GEMINI_SETTINGS;
@@ -117,6 +130,27 @@ function normalize(event: Record<string, unknown>): Record<string, unknown> {
     .digest("hex")
     .slice(0, 16);
   return { ...event, cwd, ...(session === undefined ? {} : { tool_use_id: `${session}-${call}` }) };
+}
+
+/**
+ * Specty's folders in `tools.sandboxAllowedPaths`, after the person's ones, or taken out of it;
+ * `tools` goes when nothing is left in it.
+ */
+function withSandbox(
+  value: Record<string, unknown>,
+  folders: readonly string[],
+  add: boolean,
+): Record<string, unknown> {
+  const tools = isRecord(value.tools) ? value.tools : {};
+  const current: unknown[] = Array.isArray(tools.sandboxAllowedPaths)
+    ? tools.sandboxAllowedPaths
+    : [];
+  const kept = current.filter((path) => typeof path !== "string" || !folders.includes(path));
+  const paths = add ? [...kept, ...folders] : kept;
+  const { sandboxAllowedPaths: _, ...others } = tools;
+  const updated = paths.length === 0 ? others : { ...others, sandboxAllowedPaths: paths };
+  const { tools: __, ...rest } = value;
+  return Object.keys(updated).length === 0 ? rest : { ...value, tools: updated };
 }
 
 /** Text Gemini CLI adds for the agent: after a tool's result, or to the turn's prompt. */

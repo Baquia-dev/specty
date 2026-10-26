@@ -65,7 +65,7 @@ Con el guard de C11, a Gemini CLI aún le falta lo demás que tiene Claude Code:
   - files: packages/cli/src/agents/gemini-cli.ts, packages/cli/test/gemini-cli.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/agents.test.ts test/check-agent-stop.test.ts
-- [ ] T2: El sandbox de Gemini CLI deja a Specty sus carpetas
+- [x] T2: El sandbox de Gemini CLI deja a Specty sus carpetas
   - files: packages/cli/src/agents/gemini-cli.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/gemini-cli.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/uninstall.test.ts

@@ -125,6 +125,8 @@ export {
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
   geminiPointerLine,
+  geminiSandboxLine,
+  geminiSandboxVersionedWarning,
   geminiTrustWarning,
   gitHooksLine,
   gitHooksManualWarning,
