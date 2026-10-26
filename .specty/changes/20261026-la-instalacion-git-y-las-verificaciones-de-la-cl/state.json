@@ -6,6 +6,13 @@
   "branch": "specty/20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
   "baseCommit": "c03deef36ff8ceddb1fbddcd315f5c03ef239e1e",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:cdd4dc81552ff0268fbfd85f56ef3756f0e4599798c9ebd8946b65a81acb0a3a",
+    "at": "2026-10-26T23:22:35.936Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -25,7 +32,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1017a4d759b6fcffb2b0227bd9c225ddf575b153",
+      "startedAt": "2026-10-26T23:22:36.473Z",
+      "doneAt": "2026-10-26T23:33:41.132Z",
+      "summary": "io: createGit compone runner, worktreeQueries, changeQueries (con untracked), commitOperations y fileQueries; devuelve el mismo Git. parseNameStatus deja a statusOf la letra de cada ruta. Los tests de la CLI pasan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:cdd4dc81552ff0268fbfd85f56ef3756f0e4599798c9ebd8946b65a81acb0a3a",
-    "at": "2026-10-26T23:22:35.936Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -40,7 +40,7 @@ Nueve funciones de la instalación, de git y de las verificaciones de la CLI pas
 
 ## Tareas
 
-- [ ] T1: git
+- [x] T1: git
   - files: packages/cli/src/io/git.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

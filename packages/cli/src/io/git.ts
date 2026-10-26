@@ -64,6 +64,39 @@ export async function findRoot(cwd: string): Promise<string | undefined> {
 }
 
 export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env): Git {
+  const git = runner(root, baseEnv);
+  const head = () => git.optional(["rev-parse", "--verify", "-q", "HEAD"]);
+  const gitPath = async (name: string) => {
+    const path = await git.output(["rev-parse", "--git-path", name]);
+    return isAbsolute(path) ? path : resolve(root, path);
+  };
+  const repository: Repository = { ...git, head, gitPath, ...worktreeQueries(git) };
+  return {
+    root,
+    run: git.run,
+    output: git.output,
+    head,
+    branch: () => git.optional(["symbolic-ref", "--short", "-q", "HEAD"]),
+    gitPath,
+    ...changeQueries(repository),
+    ...commitOperations(repository),
+    ...fileQueries(git),
+    config: (key) => git.optional(["config", "--get", key]),
+    worktrees: repository.worktrees,
+    nestedWorktrees: repository.nestedWorktrees,
+  };
+}
+
+/** Runs git in one repository. */
+interface Runner extends Pick<Git, "root" | "run" | "output"> {
+  /** Trimmed stdout when git succeeds with some; otherwise undefined. */
+  optional(args: readonly string[]): Promise<string | undefined>;
+}
+
+/** A runner that also knows HEAD, the git directory and the worktrees. */
+type Repository = Runner & Pick<Git, "head" | "gitPath" | "worktrees" | "nestedWorktrees">;
+
+function runner(root: string, baseEnv: NodeJS.ProcessEnv): Runner {
   const run = (args: readonly string[], options: RunOptions = {}) =>
     execute("git", args, {
       cwd: root,
@@ -82,15 +115,14 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
     const value = result.stdout.trim();
     return result.code === 0 && value.length > 0 ? value : undefined;
   };
-  const gitPath = async (name: string) => {
-    const path = await output(["rev-parse", "--git-path", name]);
-    return isAbsolute(path) ? path : resolve(root, path);
-  };
-  const head = () => optional(["rev-parse", "--verify", "-q", "HEAD"]);
+  return { root, run, output, optional };
+}
+
+function worktreeQueries(git: Runner): Pick<Git, "worktrees" | "nestedWorktrees"> {
   // `--porcelain` prints one block per worktree: `worktree <folder>`, then `branch refs/heads/…`
   // unless it is detached.
   const worktrees = async () =>
-    (await output(["worktree", "list", "--porcelain"])).split("\n\n").flatMap((block) => {
+    (await git.output(["worktree", "list", "--porcelain"])).split("\n\n").flatMap((block) => {
       const lines = block.split("\n");
       const value = (prefix: string) =>
         lines.find((line) => line.startsWith(prefix))?.slice(prefix.length);
@@ -100,7 +132,7 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
       return [branch === undefined ? { folder } : { folder, branch }];
     });
   const nestedWorktrees = async () => {
-    const own = await resolved(root);
+    const own = await resolved(git.root);
     const folders = await Promise.all(
       (await worktrees()).map((worktree) => resolved(worktree.folder)),
     );
@@ -111,53 +143,62 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
         : [inner.split(sep).join("/")];
     });
   };
-  const untracked = async () => {
-    const paths = (await output(["ls-files", "--others", "--exclude-standard", "-z"]))
-      .split("\0")
-      .filter((path) => path.length > 0);
-    // git lists a nested repository as `dir/`; a worktree of this repository there belongs to
-    // another change, not to this one.
-    const nested = paths.some((path) => path.endsWith("/"))
-      ? new Set((await nestedWorktrees()).map((folder) => `${folder}/`))
-      : new Set<string>();
-    return paths
-      .filter((path) => !nested.has(path))
-      .map((path): ChangedFile => ({ path, status: "added" }));
-  };
+  return { worktrees, nestedWorktrees };
+}
 
+function changeQueries(git: Repository): Pick<Git, "changedSince" | "staged"> {
   return {
-    root,
-    run,
-    output,
-    head,
-    branch: () => optional(["symbolic-ref", "--short", "-q", "HEAD"]),
-    gitPath,
     async changedSince(base) {
-      const tracked = await output(["diff", "--name-status", "-z", "-M", base ?? EMPTY_TREE]);
-      return [...parseNameStatus(tracked), ...(await untracked())];
+      const tracked = await git.output(["diff", "--name-status", "-z", "-M", base ?? EMPTY_TREE]);
+      return [...parseNameStatus(tracked), ...(await untracked(git))];
     },
     async staged() {
-      const base = (await head()) ?? EMPTY_TREE;
-      return parseNameStatus(await output(["diff", "--cached", "--name-status", "-z", "-M", base]));
+      const base = (await git.head()) ?? EMPTY_TREE;
+      return parseNameStatus(
+        await git.output(["diff", "--cached", "--name-status", "-z", "-M", base]),
+      );
     },
-    writeTree: (options) => output(["write-tree"], options),
+  };
+}
+
+async function untracked(git: Repository): Promise<ChangedFile[]> {
+  const paths = (await git.output(["ls-files", "--others", "--exclude-standard", "-z"]))
+    .split("\0")
+    .filter((path) => path.length > 0);
+  // git lists a nested repository as `dir/`; a worktree of this repository there belongs to
+  // another change, not to this one.
+  const nested = paths.some((path) => path.endsWith("/"))
+    ? new Set((await git.nestedWorktrees()).map((folder) => `${folder}/`))
+    : new Set<string>();
+  return paths
+    .filter((path) => !nested.has(path))
+    .map((path): ChangedFile => ({ path, status: "added" }));
+}
+
+function commitOperations(
+  git: Repository,
+): Pick<Git, "writeTree" | "treeWith" | "commit" | "operationInProgress"> {
+  return {
+    writeTree: (options) => git.output(["write-tree"], options),
     async treeWith(paths) {
-      const index = await gitPath(`specty/index-${process.pid}-${Date.now()}`);
+      const index = await git.gitPath(`specty/index-${process.pid}-${Date.now()}`);
       const env = { GIT_INDEX_FILE: index };
       await mkdir(dirname(index), { recursive: true });
       try {
-        const base = await head();
-        await output(base === undefined ? ["read-tree", "--empty"] : ["read-tree", base], { env });
-        await output(["add", "-A", "--", ...paths], { env });
-        return await output(["write-tree"], { env });
+        const base = await git.head();
+        await git.output(base === undefined ? ["read-tree", "--empty"] : ["read-tree", base], {
+          env,
+        });
+        await git.output(["add", "-A", "--", ...paths], { env });
+        return await git.output(["write-tree"], { env });
       } finally {
         await remove(index);
       }
     },
     async commit(message, paths) {
       const args = ["commit", "-q", "-F", "-", ...(paths === undefined ? [] : ["--", ...paths])];
-      await output(args, { input: message });
-      return output(["rev-parse", "HEAD"]);
+      await git.output(args, { input: message });
+      return git.output(["rev-parse", "HEAD"]);
     },
     async operationInProgress() {
       const markers = [
@@ -167,14 +208,23 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
         "rebase-merge",
         "rebase-apply",
       ];
-      const found = await Promise.all(markers.map(async (marker) => exists(await gitPath(marker))));
+      const found = await Promise.all(
+        markers.map(async (marker) => exists(await git.gitPath(marker))),
+      );
       return found.some(Boolean);
     },
+  };
+}
+
+function fileQueries(git: Runner): Pick<Git, "isTracked" | "files" | "ignored"> {
+  return {
     async isTracked(path) {
-      return (await run(["ls-files", "--error-unmatch", "--", path])).code === 0;
+      return (await git.run(["ls-files", "--error-unmatch", "--", path])).code === 0;
     },
     async files() {
-      const paths = (await output(["ls-files", "-z", "--cached", "--others", "--exclude-standard"]))
+      const paths = (
+        await git.output(["ls-files", "-z", "--cached", "--others", "--exclude-standard"])
+      )
         .split("\0")
         // A nested repository or worktree is listed as `dir/`: it is not a file of this one.
         .filter((path) => path.length > 0 && !path.endsWith("/"));
@@ -184,15 +234,12 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
     async ignored(paths) {
       if (paths.length === 0) return [];
       // One call for every path; exit 1 only means that none is ignored.
-      const result = await run(["check-ignore", "-z", "--stdin"], {
+      const result = await git.run(["check-ignore", "-z", "--stdin"], {
         input: `${paths.join("\0")}\0`,
       });
       if (result.code !== 0 && result.code !== 1) throw new GitError(["check-ignore"], result);
       return result.stdout.split("\0").filter((path) => path.length > 0);
     },
-    config: (key) => optional(["config", "--get", key]),
-    worktrees,
-    nestedWorktrees,
   };
 }
 
@@ -215,11 +262,15 @@ export function parseNameStatus(output: string): ChangedFile[] {
       index += 3;
       continue;
     }
-    const status = code === "A" ? "added" : code === "D" ? "deleted" : "modified";
-    files.push({ path: tokens[index + 1] ?? "", status });
+    files.push({ path: tokens[index + 1] ?? "", status: statusOf(code) });
     index += 2;
   }
   return files;
+}
+
+/** What the letter of a path that is neither renamed nor copied says of it. */
+function statusOf(code: string): ChangedFile["status"] {
+  return code === "A" ? "added" : code === "D" ? "deleted" : "modified";
 }
 
 /** Every path a change touches, both sides of renames included. */
