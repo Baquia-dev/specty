@@ -46,7 +46,7 @@ Con todas sus reglas encendidas, knip marca en `packages/cli/src` 16 exportacion
 
 ## Tareas
 
-- [ ] T1: Los comandos y los proveedores de check exportan solo lo que se importa
+- [x] T1: Los comandos y los proveedores de check exportan solo lo que se importa
   - files: packages/cli/src/commands/audit.ts, packages/cli/src/commands/export.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/uninstall.ts, packages/cli/src/check/provider.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck

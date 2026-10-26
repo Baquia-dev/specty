@@ -38,7 +38,7 @@ export function uninstallCommand(
  * and keeps the rest of each file, the history in `.specty/` and the global guards. Only a person
  * at a real terminal runs it, after seeing the list; `--dry-run` only shows it. No commit.
  */
-export async function uninstall(session: Session, dryRun: boolean): Promise<Output> {
+async function uninstall(session: Session, dryRun: boolean): Promise<Output> {
   const t = translator(session.lang);
   const { terminal } = session.environment;
   if (!dryRun && !terminal.interactive) return notInteractiveCard("uninstall", session.cards);

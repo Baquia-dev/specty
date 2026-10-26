@@ -11,7 +11,7 @@ import {
   section,
   translator,
 } from "@baquia-dev/specty-core";
-import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
+import { detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { commitInstall } from "../install/commit";
 import { type FileChange, installFiles } from "../install/files";
 import { installHooks } from "../install/hooks";
@@ -23,7 +23,7 @@ import { COMMAND, type Environment, systemLanguage } from "../session";
 import { loadConfig } from "../store/config";
 import { repoPaths } from "../store/paths";
 
-export interface InitOptions {
+interface InitOptions {
   readonly language?: Lang;
   /** Agent tools to configure; by default, the ones detected in the repository. */
   readonly tools?: readonly AgentTool[];
@@ -51,7 +51,7 @@ export async function initCommand(
 }
 
 /** `specty init`: detects the project and installs config, AGENTS.md blocks and hooks. Idempotent. */
-export async function init(environment: Environment, options: InitOptions): Promise<Output> {
+async function init(environment: Environment, options: InitOptions): Promise<Output> {
   const fallback = options.language ?? systemLanguage(environment.env);
   const root = await findRoot(environment.cwd);
   const early = translator(fallback);
@@ -231,5 +231,3 @@ function planned(
     ),
   };
 }
-
-export type { Detection };

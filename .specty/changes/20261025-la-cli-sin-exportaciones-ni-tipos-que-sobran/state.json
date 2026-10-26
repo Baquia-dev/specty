@@ -6,6 +6,13 @@
   "branch": "specty/20261025-la-cli-sin-exportaciones-ni-tipos-que-sobran",
   "baseCommit": "36e8c5cb6f49833bb1cae2f65579ad4461746540",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6a7636d5b5cea8fb0d5f2b9490c63e9e68f7a727a978eaf1d1e1d284e7593290",
+    "at": "2026-10-26T01:52:40.855Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "819a62c5a29f5dae21bbd6e7247c43ffe53ee446",
+      "startedAt": "2026-10-26T01:52:41.221Z",
+      "doneAt": "2026-10-26T01:53:21.686Z",
+      "summary": "Dejan de exportarse audit, exportChange, init, InitOptions, uninstall y CheckOutcome, que solo usa su archivo, e init.ts ya no reexporta Detection, que nadie importaba."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 2,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6a7636d5b5cea8fb0d5f2b9490c63e9e68f7a727a978eaf1d1e1d284e7593290",
-    "at": "2026-10-26T01:52:40.855Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
