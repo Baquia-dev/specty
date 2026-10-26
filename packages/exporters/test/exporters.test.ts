@@ -64,12 +64,12 @@ const exported = (format: ExportFormat) =>
 describe("a criterion's scenario", () => {
   it("is its condition and its result, or nothing when it has no such form (AC1)", () => {
     expect(scenarioOf("CUANDO llueve ENTONCES se moja")).toEqual({
-      when: "llueve",
-      then: "se moja",
+      condition: "llueve",
+      result: "se moja",
     });
     expect(scenarioOf("WHEN it rains THEN it gets wet")).toEqual({
-      when: "it rains",
-      then: "it gets wet",
+      condition: "it rains",
+      result: "it gets wet",
     });
     expect(scenarioOf("Siempre funciona")).toBeUndefined();
   });
@@ -189,5 +189,109 @@ El módulo vive en su sitio.
       "openspec/changes/nada/proposal.md",
       "openspec/changes/nada/tasks.md",
     ]);
+  });
+});
+
+describe("exportSpec to Spec Kit", () => {
+  const dir = "specs/20261024-saludo-personalizado";
+  const out = exported("speckit");
+
+  it("writes the spec, the plan and the tasks of a feature (AC2)", () => {
+    expect([...out.keys()]).toEqual([`${dir}/spec.md`, `${dir}/plan.md`, `${dir}/tasks.md`]);
+    const feature = out.get(`${dir}/spec.md`);
+    for (const part of [
+      "# Feature Specification: Saludo personalizado",
+      "**Feature Branch**: `specty/20261024-saludo-personalizado`",
+      "**Created**: 2026-10-24",
+      '**Input**: User description: "que salude por nombre"',
+      "### User Story 1 - Saludo personalizado (Priority: P1)\n\nLa app saluda por nombre.",
+      "1. **When** se pasa «Ana», **Then** imprime «Hola, Ana».",
+      "2. **When** no se pasa nombre, **Then** imprime «Hola, mundo».",
+      "- **FR-001**: CUANDO se pasa «Ana» ENTONCES imprime «Hola, Ana». (AC1)",
+      "## Assumptions\n\n- A1: El nombre llega como argumento. (high impact)",
+      "## Out of Scope\n\n- Traducciones.",
+    ]) {
+      expect(feature).toContain(part);
+    }
+    const plan = out.get(`${dir}/plan.md`);
+    expect(plan).toContain("# Implementation Plan: Saludo personalizado");
+    expect(plan).toContain("## Project Structure\n\n- Modify `src/app.ts`: saludo");
+    expect(plan).toContain("## Risks\n\n- R1: Un nombre vacío");
+    expect(out.get(`${dir}/tasks.md`)).toBe(
+      [
+        "# Tasks: Saludo personalizado",
+        "",
+        "- [x] T001 [US1] Saludar por nombre in `src/app.ts`, `src/app.test.ts`",
+        "- [ ] T002 [US1] Mensaje por defecto in `src/app.ts`",
+        "",
+      ].join("\n"),
+    );
+  });
+});
+
+describe("exportSpec to Kiro", () => {
+  const dir = ".kiro/specs/saludo-personalizado";
+  const out = exported("kiro");
+
+  it("writes requirements in EARS, the design and tasks that cite them (AC3)", () => {
+    expect([...out.keys()]).toEqual([
+      `${dir}/requirements.md`,
+      `${dir}/design.md`,
+      `${dir}/tasks.md`,
+    ]);
+    expect(out.get(`${dir}/requirements.md`)).toBe(
+      [
+        "# Requirements Document",
+        "",
+        "## Introduction",
+        "",
+        "La app saluda por nombre.",
+        "",
+        "## Requirements",
+        "",
+        "### Requirement 1",
+        "",
+        "**User Story:** que salude por nombre",
+        "",
+        "#### Acceptance Criteria",
+        "",
+        "1. WHEN se pasa «Ana» THE SYSTEM SHALL imprime «Hola, Ana».",
+        "2. WHEN no se pasa nombre THE SYSTEM SHALL imprime «Hola, mundo».",
+        "",
+      ].join("\n"),
+    );
+    const design = out.get(`${dir}/design.md`);
+    expect(design).toContain("# Design Document\n\n## Overview\n\nLa app saluda por nombre.");
+    expect(design).toContain("## Components and Interfaces\n\n- Modify `src/app.ts`: saludo");
+    expect(out.get(`${dir}/tasks.md`)).toBe(
+      [
+        "# Implementation Plan",
+        "",
+        "- [x] 1. Saludar por nombre",
+        "  - Files: `src/app.ts`, `src/app.test.ts`",
+        "  - _Requirements: 1.1_",
+        "- [ ] 2. Mensaje por defecto",
+        "  - Files: `src/app.ts`",
+        "  - _Requirements: 1.2_",
+        "",
+      ].join("\n"),
+    );
+  });
+
+  it("keeps a task without criteria without them, and the title as the user story (AC3)", () => {
+    const bare = parseSpec(
+      "---\nkind: quick\n---\n\n# Ajuste\n\n## Objetivo\n\nAjustar.\n\n## Archivos\n\n- modificar a.ts — ajuste\n\n## Tareas\n\n- [ ] T1: Ajustar\n  - files: a.ts\n  - verify: true\n",
+    ).spec;
+    const files = new Map(
+      exportSpec(bare, "kiro", { id: "ajuste" }).map((file) => [file.path, file.content]),
+    );
+    expect(files.get(".kiro/specs/ajuste/requirements.md")).toContain("**User Story:** Ajuste");
+    expect(files.get(".kiro/specs/ajuste/tasks.md")).toBe(
+      "# Implementation Plan\n\n- [ ] 1. Ajustar\n  - Files: `a.ts`\n",
+    );
+    const speckit = exportSpec(bare, "speckit", { id: "ajuste" });
+    const feature = speckit.find((file) => file.path.endsWith("spec.md"))?.content;
+    expect(feature).not.toContain("**Input**");
+    expect(feature).not.toContain("## Requirements");
   });
 });

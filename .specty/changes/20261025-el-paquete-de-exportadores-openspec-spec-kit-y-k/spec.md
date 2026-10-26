@@ -56,7 +56,7 @@ PRODUCT.md promete para la versión 1 exportar a OpenSpec, GitHub Spec Kit y Kir
   - files: packages/exporters/package.json, packages/exporters/tsconfig.json, packages/exporters/tsconfig.test.json, packages/exporters/vitest.config.ts, packages/exporters/src/index.ts, packages/exporters/src/scenario.ts, packages/exporters/src/openspec.ts, packages/exporters/test/exporters.test.ts, pnpm-lock.yaml
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-exporters test
-- [ ] T2: Spec Kit y Kiro
+- [x] T2: Spec Kit y Kiro
   - files: packages/exporters/src/index.ts, packages/exporters/src/speckit.ts, packages/exporters/src/kiro.ts, packages/exporters/test/exporters.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC2, AC3, AC4
   - verify: pnpm check

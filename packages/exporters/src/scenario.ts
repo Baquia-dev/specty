@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
-/** A criterion's condition and result. */
+/** A criterion's condition (its WHEN) and result (its THEN). */
 export interface Scenario {
-  readonly when: string;
-  readonly then: string;
+  readonly condition: string;
+  readonly result: string;
 }
 
 /**
@@ -11,7 +11,7 @@ export interface Scenario {
  * result; undefined when it does not have that form, and the formats then keep it whole.
  */
 export function scenarioOf(text: string): Scenario | undefined {
-  const [, when, then] =
+  const [, condition, result] =
     /^\s*(?:CUANDO|WHEN)\s+([\s\S]+?)\s+(?:ENTONCES|THEN)\s+([\s\S]+?)\s*$/.exec(text) ?? [];
-  return when === undefined || then === undefined ? undefined : { when, then };
+  return condition === undefined || result === undefined ? undefined : { condition, result };
 }

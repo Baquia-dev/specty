@@ -47,7 +47,7 @@ export function openSpec(spec: Spec, context: ExportContext): ExportedFile[] {
       "",
       ...(scenario === undefined
         ? [`- **THEN** ${criterion.text}`]
-        : [`- **WHEN** ${scenario.when}`, `- **THEN** ${scenario.then}`]),
+        : [`- **WHEN** ${scenario.condition}`, `- **THEN** ${scenario.result}`]),
       "",
     ];
   });

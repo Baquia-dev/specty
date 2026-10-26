@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-el-paquete-de-exportadores-openspec-spec-kit-y-k",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-el-paquete-de-exportadores-openspec-spec-kit-y-k",
   "baseCommit": "19c34537629c7a20ce85ccced2cd319ec4b04ca2",
   "revision": 1,
@@ -40,14 +40,26 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/exporters/src/parts.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "c94a9b0d1ca00b36be3b49803aff2218d04ba7cc",
+      "attempts": 1,
       "startedAt": "2026-10-26T00:53:06.440Z",
       "doneAt": "2026-10-26T00:55:52.023Z",
-      "summary": "packages/exporters (@baquia-dev/specty-exporters, privado, 90 % de cobertura): exportSpec y OpenSpec (proposal, design, tasks y specs/<capacidad>/spec.md con ADDED Requirements y escenarios WHEN/THEN); scenario.ts parte un criterio y parts.ts tiene lo que comparten los formatos."
+      "summary": "packages/exporters (@baquia-dev/specty-exporters, privado, 90 % de cobertura): exportSpec y OpenSpec (proposal, design, tasks y specs/<capacidad>/spec.md con ADDED Requirements y escenarios WHEN/THEN); scenario.ts parte un criterio y parts.ts tiene lo que comparten los formatos.",
+      "scopeExtra": [
+        "packages/exporters/src/parts.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/exporters/src/scenario.ts",
+        "packages/exporters/src/openspec.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "124a83123ad40895de6b9cf4ef8533fa75931f91",
+      "startedAt": "2026-10-26T00:55:52.598Z",
+      "doneAt": "2026-10-26T01:00:58.363Z",
+      "summary": "Spec Kit (specs/<id>/: spec.md con historia, escenarios When/Then y FR-001…, plan.md y tasks.md con T001…) y Kiro (.kiro/specs/<nombre>/: requisitos EARS, design.md y tareas con _Requirements: 1.n_). formats.md §10 y ARCHITECTURE §2."
     }
   },
   "pending": {
