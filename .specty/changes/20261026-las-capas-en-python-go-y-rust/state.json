@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-las-capas-en-python-go-y-rust",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-las-capas-en-python-go-y-rust",
   "baseCommit": "8725b8aa5c6d1a44d19c854b38905d31bce0fb32",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b60e58df81c6f57926f3a224c542dda5c5dc84db",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:20:55.427Z",
       "doneAt": "2026-10-26T15:24:26.671Z",
-      "summary": "layer-scanners.ts reúne los escáneres sin herramientas (Dart, Python con los archivos del repo, Go con el module de go.mod, Rust); layers los usa para Python, Go y Rust y toma la línea que da cada escáner."
+      "summary": "layer-scanners.ts reúne los escáneres sin herramientas (Dart, Python con los archivos del repo, Go con el module de go.mod, Rust); layers los usa para Python, Go y Rust y toma la línea que da cada escáner.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bb24b7bec3f836bca70c4cd2494267b1da6cc29d",
+      "startedAt": "2026-10-26T15:24:26.954Z",
+      "doneAt": "2026-10-26T15:26:13.935Z",
+      "summary": "Las guías y formats.md explican cómo layers lee los imports de Python, Go y Rust y cómo nombra sus paquetes"
     }
   },
   "pending": {
