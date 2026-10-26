@@ -2,16 +2,15 @@
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
-  blockedCard,
-  headerOf,
+  invalidPortCard,
   type Output,
   renderText,
-  section,
-  translator,
+  uiOpenedCard,
+  uiStoppedCard,
 } from "@baquia-dev/specty-core";
 import { exists } from "../io/files";
 import { startServer } from "../server/http";
-import { COMMAND, type Session } from "../session";
+import type { Session } from "../session";
 
 const DEFAULT_PORT = 4173;
 
@@ -41,54 +40,16 @@ export async function ui(
   port: string | undefined,
   stop: Promise<void> = stopRequested(),
 ): Promise<Output> {
-  const t = translator(session.lang);
   const first = port === undefined ? DEFAULT_PORT : Number(port);
   if (!Number.isInteger(first) || first < 0 || first > 65_535) {
-    return {
-      ...blockedCard(
-        headerOf("ui"),
-        t(`Puerto no válido: ${port ?? ""}.`, `Invalid port: ${port ?? ""}.`),
-        t(
-          "usa `--port` con un número de 1 a 65535.",
-          "use `--port` with a number from 1 to 65535.",
-        ),
-      ),
-      status: "invalid",
-    };
+    return invalidPortCard(port ?? "", session.cards);
   }
   // Only the person decides from the UI: an agent that starts the server would see the link.
   const actions = session.environment.terminal.interactive;
   const server = await startServer({ session, port: first, ui: await uiFolder(), actions });
-  const opened: Output = {
-    status: "ok",
-    header: headerOf("ui"),
-    blocks: section(undefined, [
-      t(
-        `Los cambios de todas las worktrees, en ${server.link}`,
-        `The changes of every worktree, at ${server.link}`,
-      ),
-      actions
-        ? t(
-            "Desde la UI puedes aprobar, decidir el alcance, aceptar y cerrar.",
-            "From the UI you can approve, decide scope, accept and close.",
-          )
-        : t(
-            "Solo lectura: lo arrancó el agente. Para decidir desde la UI, arráncalo tú con `specty ui`.",
-            "Read only: the agent started it. To decide from the UI, start it yourself with `specty ui`.",
-          ),
-    ]),
-    next: t(
-      "abre el enlace en tu navegador; Ctrl+C cierra el servidor.",
-      "open the link in your browser; Ctrl+C stops the server.",
-    ),
-  };
+  const opened = uiOpenedCard(server.link, actions, session.cards);
   session.environment.io.out(renderText(opened, session.lang));
   await stop;
   await server.close();
-  return {
-    status: "ok",
-    header: headerOf("ui"),
-    blocks: section(undefined, [t("Servidor cerrado.", "Server stopped.")]),
-    next: t(`ábrelo otra vez con \`${COMMAND} ui\`.`, `open it again with \`${COMMAND} ui\`.`),
-  };
+  return uiStoppedCard(session.cards);
 }

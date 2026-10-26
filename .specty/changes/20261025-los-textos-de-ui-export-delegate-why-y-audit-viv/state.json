@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "96d12bc96407bf58c18e7cc1f5006ba883ef5a66",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:18:37.607Z",
       "doneAt": "2026-10-26T03:20:06.579Z",
-      "summary": "Core tiene los textos de ui (cards/ui.ts), export (cards/export.ts), la pregunta de delegate (cards/human.ts) y los rechazos de why y audit (cards/why.ts y cards/audit.ts), copiados letra a letra de la CLI, con tests."
+      "summary": "Core tiene los textos de ui (cards/ui.ts), export (cards/export.ts), la pregunta de delegate (cards/human.ts) y los rechazos de why y audit (cards/why.ts y cards/audit.ts), copiados letra a letra de la CLI, con tests.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "96a71cd618f78e429571e9e4f1e0d8461d0f6fae",
+      "startedAt": "2026-10-26T03:20:06.887Z",
+      "doneAt": "2026-10-26T03:21:18.207Z",
+      "summary": "ui.ts, export.ts y delegate.ts piden sus textos a core (cards/ui.ts, cards/export.ts y la pregunta de delegate en cards/human.ts) y ya no llaman al traductor; sus tests pasan sin cambios."
     }
   },
   "pending": {

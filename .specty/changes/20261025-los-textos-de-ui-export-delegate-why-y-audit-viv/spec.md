@@ -56,7 +56,7 @@ Pasan a dos módulos nuevos de core, `cards/ui.ts` y `cards/export.ts`, y a los 
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: ui, export y delegate piden sus textos a core
+- [x] T2: ui, export y delegate piden sus textos a core
   - files: packages/cli/src/commands/ui.ts, packages/cli/src/commands/export.ts, packages/cli/src/commands/delegate.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty typecheck
