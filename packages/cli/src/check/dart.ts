@@ -12,13 +12,13 @@ import type { CheckContext, CheckDefinition, Provider } from "./provider";
  * switches it off added by the change.
  */
 
-const STRICT_MODES = ["strict-casts", "strict-inference", "strict-raw-types"] as const;
-type StrictMode = (typeof STRICT_MODES)[number];
+export const STRICT_MODES = ["strict-casts", "strict-inference", "strict-raw-types"] as const;
+export type StrictMode = (typeof STRICT_MODES)[number];
 
 /** Includes followed at most, so that a cycle or a long chain ends. */
 const MAX_DEPTH = 5;
 
-interface Options {
+export interface AnalyzerOptions {
   readonly modes: Readonly<Partial<Record<StrictMode, boolean>>>;
   /** Includes that could not be read. */
   readonly unresolved: readonly string[];
@@ -28,8 +28,7 @@ const dartStrict: CheckDefinition = {
   id: "dart-strict",
   async run(context) {
     const t = translator(context.session.lang);
-    const file = join(context.session.root, "analysis_options.yaml");
-    const options = await optionsOf(context.session.root, file, 0, new Set());
+    const options = await analyzerOptions(context.session.root);
     return { findings: [...modeFindings(options, t), ...(await ignoreFindings(context, t))] };
   },
 };
@@ -40,7 +39,7 @@ export const dartProvider: Provider = {
   checks: [dartStrict],
 };
 
-function modeFindings(options: Options, t: ReturnType<typeof translator>): Finding[] {
+function modeFindings(options: AnalyzerOptions, t: ReturnType<typeof translator>): Finding[] {
   const missing = STRICT_MODES.filter((mode) => options.modes[mode] !== true);
   if (missing.length === 0) return [];
   const path = "analysis_options.yaml";
@@ -100,12 +99,17 @@ async function ignoreFindings(
 }
 
 /** The modes of `file` and of what it includes; its own options win over the included ones. */
+/** The strict modes the root's `analysis_options.yaml` ends up with, through its includes. */
+export function analyzerOptions(root: string): Promise<AnalyzerOptions> {
+  return optionsOf(root, join(root, "analysis_options.yaml"), 0, new Set());
+}
+
 async function optionsOf(
   root: string,
   file: string,
   depth: number,
   seen: Set<string>,
-): Promise<Options> {
+): Promise<AnalyzerOptions> {
   const parsed = safeYaml(await readText(file));
   if (parsed === undefined) return { modes: {}, unresolved: [] };
   seen.add(file);

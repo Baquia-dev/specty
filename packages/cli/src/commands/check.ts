@@ -14,6 +14,7 @@ import { dartProvider } from "../check/dart";
 import { checkContext } from "../check/files";
 import { functionsProvider } from "../check/functions";
 import { detectGenerators, type Generator, generatedProvider } from "../check/generated";
+import { install, planInstall } from "../check/install";
 import { layersProvider } from "../check/layers";
 import { loadPlan, type Plan, planProvider } from "../check/plan";
 import { type Provider, type ReportOutput, runChecks } from "../check/provider";
@@ -51,6 +52,8 @@ interface CheckOptions {
   readonly verbose?: boolean;
   /** `true` for `--spec` alone: the active change. */
   readonly spec?: string | boolean;
+  readonly install?: boolean;
+  readonly dryRun?: boolean;
 }
 
 /** The change whose plan `--spec` checks: the one named, or the active one with no id. */
@@ -71,11 +74,21 @@ export function checkCommand(
     .option("--all", "everything git tracks, for CI")
     .option("--spec [id]", "also what the approved plan of a change allows (the active one)")
     .option("--verbose", "every finding, what passed and why a check did not run")
+    .option("--install", "prepare the project for its checks, showing each diff and asking first")
+    .option("--dry-run", "with --install: only show what it would change")
     .action((options: CheckOptions) =>
       run((session) =>
-        check(session, modeOf(options), options.verbose === true, specOf(options)),
+        options.install === true
+          ? installChecks(session, options.dryRun === true)
+          : check(session, modeOf(options), options.verbose === true, specOf(options)),
       )(),
     );
+}
+
+/** `specty check --install`: the person decides each file; `--dry-run` only shows the plan. */
+async function installChecks(session: Session, dryRun: boolean): Promise<ReportOutput> {
+  const stacks = await detectStacks(session.root);
+  return install(session, await planInstall(session, stacks), dryRun);
 }
 
 /** `specty check`: deterministic, with no model and no agent (ADR 0012). */

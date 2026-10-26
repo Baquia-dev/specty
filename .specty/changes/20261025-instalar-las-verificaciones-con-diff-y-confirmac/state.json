@@ -6,6 +6,13 @@
   "branch": "specty/20261025-instalar-las-verificaciones-con-diff-y-confirmac",
   "baseCommit": "f2e1f3d9dc89a02ca4a0953a9f4daa90659a351d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8284c27821593a4245b61e324797ef650cf26f5c100e23a8616850be71447341",
+    "at": "2026-10-26T01:31:35.922Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -36,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5add61a5bf9870ae36f97c0197a2c9abd39e9273",
+      "startedAt": "2026-10-26T01:31:36.289Z",
+      "doneAt": "2026-10-26T01:36:55.528Z",
+      "summary": "check --install [--dry-run]: plan (preCommit, plantilla de GitHub Actions, modo estricto de Dart, dependency-cruiser exacto) con el diff de cada archivo por git diff --no-index, una pregunta por paso, conflictos sin pisar, commit Specty-Init; solo la persona."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -46,12 +63,5 @@
     "AC": 7,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8284c27821593a4245b61e324797ef650cf26f5c100e23a8616850be71447341",
-    "at": "2026-10-26T01:31:35.922Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

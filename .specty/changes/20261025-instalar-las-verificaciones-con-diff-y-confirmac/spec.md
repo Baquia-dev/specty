@@ -62,7 +62,7 @@ Muestra el diff de cada archivo y pregunta antes de tocarlo. Con `--dry-run` sol
 
 ## Tareas
 
-- [ ] T1: El plan de instalación y la plantilla de CI
+- [x] T1: El plan de instalación y la plantilla de CI
   - files: packages/cli/src/check/ci.ts, packages/cli/src/check/install.ts, packages/cli/src/check/dart.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-install.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-install.test.ts
