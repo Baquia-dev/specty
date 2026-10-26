@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-los-comandos-de-calidad-de-java-kotlin-c-y-swift",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-los-comandos-de-calidad-de-java-kotlin-c-y-swift",
   "baseCommit": "0e6ca8ab4cbb19376d04709989fb0de809af2e09",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "91ab0e48946e1b28f5e8656d5ed8550203199f86",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:41:01.925Z",
       "doneAt": "2026-10-26T14:49:08.396Z",
-      "summary": "Gradle (Spotless, Checkstyle, PMD, detekt, ktlint), Maven (spotless/checkstyle/pmd:check), SwiftLint y swift-format detectados; C# typecheck dotnet build. commandsFor y formatCommand pasan de switch a tablas por lenguaje para no pasar de los límites."
+      "summary": "Gradle (Spotless, Checkstyle, PMD, detekt, ktlint), Maven (spotless/checkstyle/pmd:check), SwiftLint y swift-format detectados; C# typecheck dotnet build. commandsFor y formatCommand pasan de switch a tablas por lenguaje para no pasar de los límites.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fc18cb7e9bf76695dc1dcbd412d0bcef96fe0eed",
+      "startedAt": "2026-10-26T14:49:08.912Z",
+      "doneAt": "2026-10-26T14:51:16.411Z",
+      "summary": "Las guías y formats.md añaden lo que se detecta en Java y Kotlin (Gradle y Maven), Swift y C#."
     }
   },
   "pending": {

@@ -59,6 +59,8 @@ Checks the format with the project's command, only in its checking form, never t
 - Rust: `cargo fmt --check`.
 - Python: `ruff format --check` with ruff or, otherwise, `black --check .` with `[tool.black]` or black in the manifests. Like everything in Python, with the manager's prefix (`uv run`, `poetry run`…).
 - PHP: the `cs:check`, `format:check`, `check:format` or `fmt:check` script of `composer.json`; otherwise, `vendor/bin/pint --test` with `pint.json` or `laravel/pint`, or `vendor/bin/php-cs-fixer check` with `.php-cs-fixer.php` or `.php-cs-fixer.dist.php`.
+- Java and Kotlin: Gradle's `spotlessCheck` task (with `./gradlew` when it exists) or `mvn spotless:check`, with Spotless configured.
+- Swift: `swift format lint --strict --recursive .` with `.swift-format`; without `--strict`, a format violation does not fail.
 - .NET: `dotnet format --verify-no-changes`.
 
 In Go, `golangci-lint run` checks the format with the formatters of its configuration (see `lint`).
@@ -78,6 +80,8 @@ Runs the lint the project has:
 - Rust: `cargo clippy -- -D warnings`.
 - Ruby: `bundle exec standardrb` with `.standard.yml` or the `standard` gem; otherwise, `bundle exec rubocop` with `.rubocop.yml` or the `rubocop` gem.
 - PHP: the `lint`, `phpcs` or `cs` script of `composer.json`; otherwise, `vendor/bin/phpcs` with `.phpcs.xml`, `phpcs.xml` or their `.dist`.
+- Java and Kotlin: with Gradle, one call with the configured tasks: `checkstyleMain`, `pmdMain`, `detekt` and `ktlintCheck`. With Maven, `mvn checkstyle:check pmd:check`, depending on what `pom.xml` has. Plugins are looked for in the root build file, by their id or their version-catalog alias.
+- Swift: `swiftlint lint` with `.swiftlint.yml`, with the severity its configuration sets (`strict: true` turns warnings into errors).
 
 It passes when it exits with 0. Otherwise it turns the output into `path:line` findings, whatever the tool.
 
@@ -93,6 +97,7 @@ Runs the type check the project has:
 - Python: `mypy .` with `mypy.ini`, `.mypy.ini`, `[tool.mypy]` or `[mypy]` in `setup.cfg`; otherwise, `pyright` with `pyrightconfig.json` or `[tool.pyright]`.
 - Ruby: `bundle exec srb tc` with `sorbet/config`; otherwise, `bundle exec steep check` with `Steepfile`.
 - PHP: the `analyse`, `analyze`, `phpstan`, `psalm` or `stan` script of `composer.json`; otherwise, `vendor/bin/phpstan analyse --no-progress` with `phpstan.neon`, `phpstan.neon.dist` or `phpstan.dist.neon`, or `vendor/bin/psalm --no-progress` with `psalm.xml` or `psalm.xml.dist`.
+- C#: `dotnet build`.
 
 **Configuration:** `checks.commands.typecheck`.
 
@@ -365,7 +370,7 @@ The context brings the run's files, already without what is excluded (`files`, `
 
 Specty already detects those stacks. Without a provider of their own, these work:
 
-- in Ruby and PHP, the format, lint and types the project configures (RuboCop, Standard, Sorbet, Steep, PHPStan, Psalm, PHP_CodeSniffer, Pint, PHP CS Fixer);
+- the format, lint and types the project configures: RuboCop, Standard, Sorbet and Steep in Ruby; PHPStan, Psalm, PHP_CodeSniffer, Pint and PHP CS Fixer in PHP; Spotless, Checkstyle, PMD, detekt and ktlint in Java and Kotlin; `dotnet build` in .NET;
 - `tests` with its command: `mvn test` or `gradle test`, `composer test` or `php artisan test`, `bundle exec rspec` or `bin/rails test`, `dotnet test`;
 - `function-lines` and `complexity`, except in Ruby;
 - `max-lines`, `focused-tests` and `skipped-tests`, which already know `@Disabled`, `@Ignore`, `[Ignore]`, xUnit's `Skip =` and RSpec's `focus: true`;
