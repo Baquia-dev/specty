@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T00:31:05.355Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"cc8510f2eaf6796d72c0d93bfdcebb932f6985e3"}}
 {"ts":"2026-10-26T00:34:43.736Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":72556,"tree":"sha256:f19a62482f7a22ec6b35df1d0756bfe7ffea2d49fe1ff98dfdf18fbe14901e44"}}
 {"ts":"2026-10-26T00:34:43.833Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"Aceptación muestra Hallazgos (acceptance-findings) y la revisión independiente del resultado, y la pestaña Spec la de la spec (review/independent-review: texto tal cual, con revisión y fecha; es información). docs/ui.md y ARCHITECTURE §15."}}
+{"ts":"2026-10-26T00:34:55.277Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T00:35:14.755Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:afa01d333cbcee91a7f73e31a3ac902c2f245e23fe5b78635e640bfd065bfb79","size":"L","warnings":1}}
+{"ts":"2026-10-26T00:35:20.256Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

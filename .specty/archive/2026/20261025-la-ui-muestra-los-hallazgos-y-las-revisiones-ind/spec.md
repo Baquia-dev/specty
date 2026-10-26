@@ -58,3 +58,22 @@ kind: standard
   - files: packages/ui/src/acceptance/acceptance-findings.ts, packages/ui/src/acceptance/acceptance-findings.test.ts, packages/ui/src/review/independent-review.ts, packages/ui/src/review/independent-review.test.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/review/spec-review.ts, docs/ui.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+La persona ya ve en la UI lo que el agente veía en sus tarjetas. El servidor sirve con cada cambio sus revisiones independientes con su texto (`reviews`), y la vista del cambio trae los hallazgos de las tareas (`findingsOf`, del último `task.completed` de cada una) y la última revisión que respondió de la spec y del resultado. Aceptación muestra la sección Hallazgos tras los avisos y la revisión del resultado; la pestaña Spec, la de la spec, encima de las secciones. El texto de una revisión va tal cual, como texto y nunca como marcado, con su revisión y cuándo se hizo, y una línea que recuerda que decide la persona.
+
+### Desviaciones
+
+- `packages/ui/src/data/views.test.ts`, dentro del alcance como test: comprueba la última revisión de cada objetivo.
+
+### Decisiones
+
+- El servidor lee el texto por el nombre del archivo en `reviews/` del propio cambio, no por la ruta anotada: archivar mueve el cambio, y así no puede servir ningún otro archivo.
+- Las dos revisiones comparten componente (`review/independent-review.ts`); solo cambia el título.
+
+### Pendientes
+
+- Ninguno.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-la-ui-muestra-los-hallazgos-y-las-revisiones-ind",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-la-ui-muestra-los-hallazgos-y-las-revisiones-ind",
   "baseCommit": "6fd1d14b36002afe22b23738f684f811988b9e40",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:714f0770a37adad856c027bd1c6d9a206d3519ec56508444f8f16f7b8bb0fa81",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cc8510f2eaf6796d72c0d93bfdcebb932f6985e3",
+      "attempts": 1,
       "startedAt": "2026-10-26T00:31:05.355Z",
       "doneAt": "2026-10-26T00:34:43.832Z",
-      "summary": "Aceptación muestra Hallazgos (acceptance-findings) y la revisión independiente del resultado, y la pestaña Spec la de la spec (review/independent-review: texto tal cual, con revisión y fecha; es información). docs/ui.md y ARCHITECTURE §15."
+      "summary": "Aceptación muestra Hallazgos (acceptance-findings) y la revisión independiente del resultado, y la pestaña Spec la de la spec (review/independent-review: texto tal cual, con revisión y fecha; es información). docs/ui.md y ARCHITECTURE §15.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,5 +73,6 @@
     "A": 3,
     "AC": 4,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T00:35:14.753Z"
 }
