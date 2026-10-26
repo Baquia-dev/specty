@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261026-los-cabos-sueltos-de-la-epica-de-los-agentes",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-los-cabos-sueltos-de-la-epica-de-los-agentes",
+  "baseCommit": "66abf1e361cb7e1d6a6fe218584114f9dcfd0cfb",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7973e8bbb7938f89941df6c13aec6c3ba97d5312aa8459cb0aa44cb07e598344",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a3d5daf7a289c09326f00edc9d047f8b24b3e1dff4f5ac7bf546195b8b448fae",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:424502c3cc3b7a4903be0e82d57aba2dd11e6f9607656bc07b20486998f8df0e",
+    "at": "2026-10-26T23:47:08.968Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
