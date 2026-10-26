@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "id": "20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-un-comando-que-vence-su-tiempo-se-corta-entero-y",
+  "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2b33dd38a7dd1d9af6ad0e32b7a73e1d4909c7edf28a9b0d02a8e55ab484c002",
+    "at": "2026-10-26T18:23:42.201Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9cb0d1720f12366f3e778efd7733d75c210802f03898005e577b552408b4d201",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4ea173b6cae80cf8dad8b6854ecb442602e95e298bb156ffa706fdccb86b729a",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:4f6b148515b2eac343ace3f221a48ccc081210e2326508c5ccec3f0c6b8bacb0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "acb52a5940a0452dbf670247d930483447fb49c2",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:23:42.596Z",
+      "doneAt": "2026-10-26T18:27:02.061Z",
+      "summary": "exec.ts: al vencer el tiempo, endTree corta el comando y sus descendientes, leídos de ps (SIGTERM y SIGKILL a los 2 s), o con taskkill /T en Windows. Test: node slow.js && echo done con 500 ms termina en segundos, no en 60.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "91d099b6611ea0eca7995e431b58eef59903513e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:27:02.373Z",
+      "doneAt": "2026-10-26T18:28:46.844Z",
+      "summary": "testEnv quita LC_ALL y LC_MESSAGES del sistema, que ganaban al LANG de los tests; con LC_ALL=en_US.UTF-8, como en el runner de macOS, pasan los 432 tests de la CLI.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "52d7db7eee587e30cd8a5b128ae86a7740838ed3",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:28:47.144Z",
+      "doneAt": "2026-10-26T18:30:41.512Z",
+      "summary": "formats.md §6: verify.timeoutSec dice que al vencer se corta el comando con todos los procesos que lanzó.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T18:30:56.354Z"
+}

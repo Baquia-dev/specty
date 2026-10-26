@@ -301,7 +301,7 @@ verify:
   default: flutter test
   full: flutter analyze && flutter test
   quick: dart format --output=none --set-exit-if-changed .  # antes de la verificación de cada tarea
-  timeoutSec: 600
+  timeoutSec: 600                 # al vencer, se corta el comando con todos los procesos que lanzó
 scope:
   implicitTests: true             # tests junto a los archivos del alcance
   generated: ["**/*.g.dart", "**/*.freezed.dart"]

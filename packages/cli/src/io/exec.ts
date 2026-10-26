@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { spawn } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 
 export interface ExecOptions {
   readonly cwd: string;
@@ -58,8 +58,7 @@ export function execute(
         ? undefined
         : setTimeout(() => {
             timedOut = true;
-            child.kill("SIGTERM");
-            setTimeout(() => child.kill("SIGKILL"), 2000).unref();
+            void endTree(child.pid);
           }, options.timeoutMs);
     child.on("error", (error) => {
       clearTimeout(timer);
@@ -71,6 +70,51 @@ export function execute(
     });
     child.stdin.on("error", () => undefined);
     child.stdin.end(options.input ?? "");
+  });
+}
+
+/**
+ * Ends a command and every process under it: a shell that runs `a && b` stays alive, and what it
+ * started would keep the output open, and the command running, if only the shell were killed.
+ * The tree is the one at that moment, asked to stop first and forced 2 s later.
+ */
+async function endTree(pid: number | undefined): Promise<void> {
+  if (pid === undefined) return;
+  if (process.platform === "win32") {
+    spawn("taskkill", ["/pid", String(pid), "/T", "/F"], { stdio: "ignore" }).on("error", () => {});
+    return;
+  }
+  const tree = [pid, ...descendants(pid, await childrenTable())];
+  signal(tree, "SIGTERM");
+  setTimeout(() => signal(tree, "SIGKILL"), 2000).unref();
+}
+
+function signal(pids: readonly number[], name: NodeJS.Signals): void {
+  for (const pid of pids) {
+    try {
+      process.kill(pid, name);
+    } catch {
+      // It already ended.
+    }
+  }
+}
+
+function descendants(pid: number, children: ReadonlyMap<number, readonly number[]>): number[] {
+  return (children.get(pid) ?? []).flatMap((child) => [child, ...descendants(child, children)]);
+}
+
+/** The children of each process, from `ps`; without it, none, and only the command itself ends. */
+function childrenTable(): Promise<ReadonlyMap<number, readonly number[]>> {
+  return new Promise((resolve) => {
+    execFile("ps", ["-A", "-o", "pid=,ppid="], (error, stdout) => {
+      const children = new Map<number, number[]>();
+      const rows = error === null ? stdout.split("\n") : [];
+      for (const [pid, parent] of rows.map((row) => row.trim().split(/\s+/).map(Number))) {
+        if (pid === undefined || parent === undefined || Number.isNaN(pid)) continue;
+        children.set(parent, [...(children.get(parent) ?? []), pid]);
+      }
+      resolve(children);
+    });
   });
 }
 
