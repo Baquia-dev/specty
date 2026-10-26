@@ -113,8 +113,10 @@ export {
 } from "./init";
 export {
   changeInProgressWarning,
+  claudePermissionsLine,
   claudePointerLine,
   codexGuardLine,
+  codexRulesLine,
   codexTrustWarning,
   gitHooksLine,
   gitHooksManualWarning,

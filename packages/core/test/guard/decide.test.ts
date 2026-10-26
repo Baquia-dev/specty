@@ -70,7 +70,20 @@ describe("decideGuard on files", () => {
       const decision = decideGuard({ kind: "delete", paths: [path] }, ctx(IMPLEMENTING));
       expect(decision, path).toMatchObject({ allow: false, rule: "protected" });
     }
+    // So is Codex's rule for Specty's commands, written or deleted (AC4).
+    for (const action of [
+      write(".codex/rules/specty.rules"),
+      { kind: "delete" as const, paths: [".codex/rules/specty.rules"] },
+    ]) {
+      expect(decideGuard(action, ctx(IMPLEMENTING))).toMatchObject({
+        allow: false,
+        rule: "protected",
+      });
+    }
     // The rest of each tool's folder belongs to the person.
+    expect(decideGuard(write(".codex/rules/mine.rules"), ctx(IMPLEMENTING))).not.toMatchObject({
+      rule: "protected",
+    });
     expect(allowed(write(".opencode/plugins/mine.js"), ctx(IMPLEMENTING))).toBe(false);
     expect(decideGuard(write(".opencode/plugins/mine.js"), ctx(IMPLEMENTING))).not.toMatchObject({
       rule: "protected",

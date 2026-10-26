@@ -14,8 +14,11 @@ import { detectProject } from "../detect/project";
 import {
   CLAUDE_WORKTREE_EVENTS,
   CODEX_HOOKS,
+  CODEX_RULES,
   hasGuard,
+  isCodexRule,
   missingClaudeEvents,
+  missingClaudePermissions,
   missingCursorEvents,
   OPENCODE_PLUGIN,
 } from "../install/agents";
@@ -42,10 +45,11 @@ export async function doctor(session: Session): Promise<Output> {
   check(await gitHooksInstalled(root, git), { code: "git-hooks" }, { code: "no-git-hooks" });
   const tools = (await detectProject(root, "")).tools;
   if (tools.includes("claude-code")) {
-    const missing = missingClaudeEvents([
+    const settings = [
       await readText(join(root, ".claude/settings.json")),
       await readText(join(root, ".claude/settings.local.json")),
-    ]);
+    ];
+    const missing = missingClaudeEvents(settings);
     const lacking = (events: readonly string[]) =>
       missing.filter((event) => events.includes(event)).join(", ");
     const afterBash = lacking(["PostToolUse", "PostToolUseFailure"]);
@@ -57,6 +61,9 @@ export async function doctor(session: Session): Promise<Output> {
       if (afterBash !== "") problems.push({ code: "claude-after-bash", events: afterBash });
       if (worktrees !== "") problems.push({ code: "claude-worktrees", events: worktrees });
       if (compact !== "") problems.push({ code: "claude-compact", events: compact });
+    }
+    if (missingClaudePermissions(settings).length > 0) {
+      problems.push({ code: "no-claude-permissions" });
     }
   }
   if (tools.includes("cursor")) {
@@ -75,6 +82,11 @@ export async function doctor(session: Session): Promise<Output> {
       hasGuard(await readText(join(root, CODEX_HOOKS)), "codex"),
       { code: "codex-guard", file: CODEX_HOOKS },
       { code: "no-codex-guard", file: CODEX_HOOKS },
+    );
+    check(
+      isCodexRule(await readText(join(root, CODEX_RULES))),
+      { code: "codex-rules", file: CODEX_RULES },
+      { code: "no-codex-rules", file: CODEX_RULES },
     );
   }
   if (tools.includes("opencode")) {

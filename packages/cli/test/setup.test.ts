@@ -12,6 +12,11 @@ import { exists } from "../src/io/files";
 import { parseNameStatus } from "../src/io/git";
 import { cli, read, tempRepo, writeFiles } from "./support";
 
+/** The rules that leave the person's commands to Specty in Claude Code's auto mode. */
+const PERSON_COMMANDS = ["approve", "accept", "close", "cancel", "reject"].map(
+  (name) => `Bash(specty ${name} *)`,
+);
+
 describe("specty init", () => {
   it("detects a pnpm project and writes config, AGENTS.md, CLAUDE.md and hooks", async () => {
     const root = await tempRepo({
@@ -175,7 +180,7 @@ describe("specty init", () => {
     expect((await cli(root, ["init"])).code).toBe(0);
     const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
     expect(settings.permissions).toEqual({
-      allow: ["Bash(npm test)", "EnterWorktree", "ExitWorktree"],
+      allow: ["Bash(npm test)", "EnterWorktree", "ExitWorktree", ...PERSON_COMMANDS],
       deny: ["Read(.env)"],
       ask: ["Bash(rm *)"],
     });
@@ -190,8 +195,40 @@ describe("specty init", () => {
     });
     expect((await cli(root, ["init"])).code).toBe(0);
     expect(JSON.parse(await read(root, ".claude/settings.local.json")).permissions).toEqual({
-      allow: ["EnterWorktree", "ExitWorktree"],
+      allow: ["EnterWorktree", "ExitWorktree", ...PERSON_COMMANDS],
     });
+  });
+
+  it("leaves the person's commands to Specty, which still blocks them without delegation (AC1, AC3, AC5)", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "claude-code"]);
+    expect(init.out).toContain(
+      "Claude Code: permisos en .claude/settings.local.json (local) para que el agente ejecute `specty approve`, `accept`, `close`, `cancel` y `reject` sin el veto de Claude Code; Specty se los bloquea salvo en modo delegado.",
+    );
+    const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
+    expect(settings.permissions.allow).toEqual(expect.arrayContaining([...PERSON_COMMANDS]));
+    expect(JSON.stringify(settings.permissions)).not.toMatch(/delegate|uninstall/);
+    // Claude Code lets the command through, and Specty's guard still decides (AC3).
+    const approve = await cli(root, ["guard", "--tool", "claude-code"], {
+      stdin: JSON.stringify({
+        cwd: root,
+        tool_name: "Bash",
+        tool_input: { command: "specty approve" },
+      }),
+    });
+    expect(approve.code).toBe(2);
+    expect(approve.err).toContain("`specty approve` lo ejecuta el usuario en su terminal");
+    expect((await cli(root, ["doctor"])).out).not.toContain("faltan los permisos");
+
+    const allow = ["EnterWorktree", "ExitWorktree", "Bash(specty approve *)"];
+    await writeFiles(root, {
+      ".claude/settings.local.json": JSON.stringify({ ...settings, permissions: { allow } }),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Claude Code: faltan los permisos de los comandos de la persona, así que su modo auto puede vetárselos al agente aunque Specty se los permita; ejecuta `specty init`.",
+    );
   });
 
   it("is idempotent and keeps what people wrote", async () => {

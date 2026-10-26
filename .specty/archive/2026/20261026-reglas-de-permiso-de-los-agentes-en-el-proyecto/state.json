@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "id": "20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
+  "baseCommit": "78bb5a3d546ee6aa0542b6d7fa58bd7fb20422b9",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:23d48cb01903812124bf1642606d323dea926df3d6473e657f33df220bd43d97",
+    "at": "2026-10-26T11:51:33.641Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:87f119022106750c7476560ac17ccf3fae72e56fabe352ee352398805aa63b31",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:470998839349a5445e4f1816100e2398bac78a70b67362c0f1498f232b67cd93",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f6c1ae57ee3c14a250e7fbe37fe9faf3391d4e8aab4b982cb4c412b26b331614",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:729bfdd7cca4e5a5f9c8787238310f8024f9fc89396d0e309efdc769ae456250",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "541aaa74934a74b1f80f5cb4703152fa6808d6a9",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:51:34.015Z",
+      "doneAt": "2026-10-26T11:54:41.673Z",
+      "summary": "El guard protege .codex/rules/specty.rules, y el core tiene las líneas de init para los permisos de Claude Code (sacados de HUMAN_COMMANDS) y la regla de Codex, y los casos de doctor cuando faltan.",
+      "scopeExtra": [
+        "packages/core/src/cards/index.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d54d7738af63222ff981f79067b1bf269091e7ef",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:54:41.972Z",
+      "doneAt": "2026-10-26T11:59:29.377Z",
+      "summary": "init añade a los ajustes de Claude Code permisos para specty approve, accept, close, cancel y reject, sacados de HUMAN_COMMANDS, y doctor avisa si faltan; el guard los sigue bloqueando sin modo delegado. El test de permisos de worktrees espera ahora también esas reglas, como pide la spec.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "9b0320f17ee59efdc1ecc255631ea5bfb658a52c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T11:59:29.661Z",
+      "doneAt": "2026-10-26T12:01:30.846Z",
+      "summary": "init escribe .codex/rules/specty.rules con prefix_rule(pattern=[specty], decision=allow), versionada aunque los hooks sean locales, y lo dice; doctor avisa si falta la regla.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "19c0a4d25fc6685452c9ff5ee36ceb92232d2e3a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T12:01:31.125Z",
+      "doneAt": "2026-10-26T12:05:24.564Z",
+      "summary": "uninstall borra la regla de Codex de Specty y deja las de la persona (los permisos de Claude Code ya los quitaba, salen de la misma lista); ARCHITECTURE explica los permisos de cada herramienta. pnpm check en verde.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 4,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-26T12:14:12.568Z"
+}

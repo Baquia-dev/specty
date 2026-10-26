@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { HUMAN_COMMANDS } from "../guard/human";
 import type { Lang } from "../i18n";
 import { translator } from "./text";
 
@@ -30,6 +31,36 @@ export function codexTrustWarning(lang: Lang): string {
   return translator(lang)(
     "Codex solo ejecuta el guard cuando confías en el proyecto y en el hook: confía en el proyecto cuando Codex lo pregunte y revisa el hook con `/hooks`. Basta una vez por repositorio.",
     "Codex runs the guard only once you trust the project and the hook: trust the project when Codex asks, and review the hook with `/hooks`. Once per repository is enough.",
+  );
+}
+
+/**
+ * Claude Code's permission for the person's commands, so its auto mode leaves them to Specty:
+ * the guard still blocks them for the agent unless the person delegated (ADR 0010).
+ */
+export function claudePermissionsLine(
+  command: string,
+  file: string,
+  local: boolean,
+  lang: Lang,
+): string {
+  const t = translator(lang);
+  const where = `${file}${local ? " (local)" : ""}`;
+  const names = [...HUMAN_COMMANDS].map((name, index) =>
+    index === 0 ? `\`${command} ${name}\`` : `\`${name}\``,
+  );
+  const list = `${names.slice(0, -1).join(", ")} ${t("y", "and")} ${names.at(-1) ?? ""}`;
+  return t(
+    `Claude Code: permisos en ${where} para que el agente ejecute ${list} sin el veto de Claude Code; Specty se los bloquea salvo en modo delegado.`,
+    `Claude Code: permissions in ${where} so the agent runs ${list} without Claude Code's veto; Specty blocks them except in delegated mode.`,
+  );
+}
+
+/** Codex's rule for Specty's commands: they commit to git, which its sandbox keeps read-only. */
+export function codexRulesLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Codex: regla en ${file} para que los comandos de Specty se ejecuten sin preguntar y fuera del sandbox, que deja \`.git\` en solo lectura; Specty decide quién ejecuta cada uno.`,
+    `Codex: rule in ${file} so Specty's commands run without asking and outside the sandbox, which keeps \`.git\` read-only; Specty decides who runs each one.`,
   );
 }
 

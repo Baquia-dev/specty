@@ -16,10 +16,13 @@ export type DoctorLine =
       readonly code: "claude-after-bash" | "claude-worktrees" | "claude-compact";
       readonly events: string;
     }
+  /** Claude Code's settings lack the permission for the person's commands. */
+  | { readonly code: "no-claude-permissions" }
   | { readonly code: "cursor-guard" | "no-cursor-guard" }
   | { readonly code: "cursor-after-command"; readonly events: string }
-  /** Codex's guard and OpenCode's plugin live in the user's configuration: `file`. */
+  /** Codex's guard, its rule for Specty's commands and OpenCode's plugin, in the project: `file`. */
   | { readonly code: "codex-guard" | "no-codex-guard"; readonly file: string }
+  | { readonly code: "codex-rules" | "no-codex-rules"; readonly file: string }
   | {
       readonly code: "opencode-guard" | "opencode-after-command" | "no-opencode-guard";
       readonly file: string;
@@ -87,6 +90,11 @@ export function doctorLine(line: DoctorLine, ctx: CardContext): string {
         `Claude Code: falta la tarjeta de Specty tras compactar (${line.events}); ejecuta \`${command} init\`.`,
         `Claude Code: Specty's card after a compaction is missing (${line.events}); run \`${command} init\`.`,
       );
+    case "no-claude-permissions":
+      return t(
+        `Claude Code: faltan los permisos de los comandos de la persona, así que su modo auto puede vetárselos al agente aunque Specty se los permita; ejecuta \`${command} init\`.`,
+        `Claude Code: the permissions for the person's commands are missing, so its auto mode may veto them for the agent even when Specty allows them; run \`${command} init\`.`,
+      );
     case "cursor-guard":
       return t("Cursor: guard instalado.", "Cursor: guard installed.");
     case "no-cursor-guard":
@@ -108,6 +116,13 @@ export function doctorLine(line: DoctorLine, ctx: CardContext): string {
       return t(
         `Codex: falta el guard en ${line.file}; ejecuta \`${command} init --tools codex\`.`,
         `Codex: the guard is missing in ${line.file}; run \`${command} init --tools codex\`.`,
+      );
+    case "codex-rules":
+      return t(`Codex: regla de Specty en ${line.file}.`, `Codex: Specty's rule in ${line.file}.`);
+    case "no-codex-rules":
+      return t(
+        `Codex: falta la regla de Specty en ${line.file}, así que cada commit de Specty pide permiso; ejecuta \`${command} init --tools codex\`.`,
+        `Codex: Specty's rule is missing in ${line.file}, so each of Specty's commits asks for permission; run \`${command} init --tools codex\`.`,
       );
     case "opencode-guard":
       return t(

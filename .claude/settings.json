@@ -68,7 +68,12 @@
   "permissions": {
     "allow": [
       "EnterWorktree",
-      "ExitWorktree"
+      "ExitWorktree",
+      "Bash(specty approve *)",
+      "Bash(specty accept *)",
+      "Bash(specty close *)",
+      "Bash(specty cancel *)",
+      "Bash(specty reject *)"
     ]
   }
 }

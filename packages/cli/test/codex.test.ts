@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { mkdtemp, readdir } from "node:fs/promises";
+import { mkdtemp, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -121,6 +121,7 @@ async function codexHome() {
 
 const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
 const HOOKS = ".codex/hooks.json";
+const RULES = ".codex/rules/specty.rules";
 const hooksOf = async (root: string) => JSON.parse(await read(root, HOOKS));
 
 describe("installing the guard in Codex", () => {
@@ -207,6 +208,30 @@ describe("installing the guard in Codex", () => {
       "Codex: falta el guard en .codex/hooks.json; ejecuta `specty init --tools codex`.",
     );
     expect(await readdir(home)).toEqual([]);
+  });
+
+  it("writes the rule that runs Specty's commands outside the sandbox, versioned, and doctor checks it (AC2, AC5)", async () => {
+    const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "codex"]);
+    expect(init.out).toContain(
+      "Codex: regla en .codex/rules/specty.rules para que los comandos de Specty se ejecuten sin preguntar y fuera del sandbox",
+    );
+    const rule = await read(root, RULES);
+    expect(rule).toContain('pattern = ["specty"]');
+    expect(rule).toContain('decision = "allow"');
+    // The hooks carry a machine path and stay local; the rule names none, and is versioned.
+    expect(git(root, "ls-files", HOOKS)).toBe("");
+    expect(git(root, "ls-files", RULES)).toBe(RULES);
+    expect(git(root, "status", "--porcelain")).toBe("");
+    expect((await cli(root, ["doctor"])).out).toContain(
+      "Codex: regla de Specty en .codex/rules/specty.rules.",
+    );
+    await rm(join(root, RULES));
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      "Codex: falta la regla de Specty en .codex/rules/specty.rules, así que cada commit de Specty pide permiso; ejecuta `specty init --tools codex`.",
+    );
   });
 
   it("names the formatter that would check the hook file (AC8)", async () => {

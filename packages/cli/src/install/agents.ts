@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
 import { join } from "node:path";
+import { HUMAN_COMMANDS } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import type { GuardTool } from "../enforce/actions";
 import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
-import type { Invocation } from "../session";
+import { COMMAND, type Invocation } from "../session";
 import { type InstallFiles, installFiles, rewriteJson } from "./files";
 
 /**
@@ -39,14 +40,39 @@ const CODEX_EVENTS: Readonly<Record<string, string>> = {
   PreToolUse: "^(Bash|apply_patch)$",
   PostToolUse: "^Bash$",
 };
-/** Each change lives in its own worktree: the agent enters, leaves and removes it without a prompt. */
-const CLAUDE_ALLOW: readonly string[] = ["EnterWorktree", "ExitWorktree"];
+/** The person's commands, as the agent types them: Specty decides who runs them, not Claude Code. */
+const CLAUDE_PERSON_RULES: readonly string[] = [...HUMAN_COMMANDS].map(
+  (name) => `Bash(${COMMAND} ${name} *)`,
+);
+/**
+ * Each change lives in its own worktree: the agent enters, leaves and removes it without a prompt.
+ * The person's commands get past auto mode's classifier, and the guard still blocks them for the
+ * agent unless the person delegated them (ADR 0010).
+ */
+const CLAUDE_ALLOW: readonly string[] = ["EnterWorktree", "ExitWorktree", ...CLAUDE_PERSON_RULES];
 /** The `ask` rule an earlier `init` wrote, which made removing a worktree ask. */
 const OLD_CLAUDE_ASK = "ExitWorktree(action:remove)";
 const CLAUDE_SETTINGS = ".claude/settings.json";
 const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
 const CURSOR_HOOKS = ".cursor/hooks.json";
 export const CODEX_HOOKS = ".codex/hooks.json";
+export const CODEX_RULES = ".codex/rules/specty.rules";
+/**
+ * Codex's execpolicy rule for Specty's commands: an `allow` skips the approval and runs the
+ * command outside the sandbox, which keeps `.git` read-only and so stopped every Specty commit.
+ * It names the command as the agent types it, so it is versioned even when the hooks are local.
+ */
+const CODEX_RULE = [
+  "# Specty's commands run without asking and outside Codex's sandbox: they commit to git, which",
+  "# the sandbox keeps read-only. Specty itself decides who runs each one (its guard, a real",
+  "# terminal or delegated mode). `specty init` writes this file and rewrites it.",
+  "prefix_rule(",
+  `    pattern = [${JSON.stringify(COMMAND)}],`,
+  '    decision = "allow",',
+  '    justification = "Specty decides who runs its commands; they commit to git, which the sandbox keeps read-only.",',
+  ")",
+  "",
+].join("\n");
 export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
 
 /** Files where Specty installs agent hooks; `new --worktree` copies the ones git does not track. */
@@ -121,9 +147,9 @@ export function codexHooksFile(env: NodeJS.ProcessEnv): string {
 }
 
 /**
- * Takes Specty's hooks and worktree permissions out of Claude Code's, Cursor's and Codex's files
- * in the repository, leaving everything else; a file left with nothing else goes, and so does
- * Specty's OpenCode plugin.
+ * Takes Specty's hooks and permissions out of Claude Code's, Cursor's and Codex's files in the
+ * repository, leaving everything else; a file left with nothing else goes, and so do Specty's
+ * OpenCode plugin and Codex rule.
  */
 export async function removeAgentHooks(root: string, files: InstallFiles): Promise<void> {
   const claude = (value: Entry) =>
@@ -145,24 +171,33 @@ export async function removeAgentHooks(root: string, files: InstallFiles): Promi
   }
   const plugin = join(root, OPENCODE_PLUGIN);
   if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
+  const rules = join(root, CODEX_RULES);
+  if (isCodexRule(await files.read(rules))) await files.remove(rules);
 }
 
 /**
  * Codex: `PreToolUse` (Bash, apply_patch) and `PostToolUse` (Bash) in the project's
- * `.codex/hooks.json`. Codex 0.131 or later reads a linked worktree's project hooks from the main
- * checkout, so the person trusts them once per repository.
+ * `.codex/hooks.json`, and the rule for Specty's commands in `rules`. Codex 0.131 or later reads a
+ * linked worktree's project hooks from the main checkout, so the person trusts them once per
+ * repository.
  */
 export async function installCodex(
   root: string,
   git: Git,
   invocation: Invocation,
   files: InstallFiles = installFiles(),
-): Promise<AgentInstall> {
+): Promise<AgentInstall & { readonly rules: string }> {
   const command = `${invocation.command} guard --tool codex`;
   const update = (value: Entry) => withHooks(value, CODEX_EVENTS, "codex", command);
   await rewriteJson(join(root, CODEX_HOOKS), update, true, files);
   if (!invocation.portable) await excludeLocally(git, CODEX_HOOKS, files);
-  return { file: CODEX_HOOKS, local: !invocation.portable };
+  await files.write(join(root, CODEX_RULES), CODEX_RULE);
+  return { file: CODEX_HOOKS, local: !invocation.portable, rules: CODEX_RULES };
+}
+
+/** Whether `text`, a rules file, is Specty's rule for its commands. */
+export function isCodexRule(text: string | undefined): boolean {
+  return text?.includes(`pattern = [${JSON.stringify(COMMAND)}]`) === true;
 }
 
 export function hasGuard(text: string | undefined, tool: GuardTool): boolean {
@@ -186,6 +221,16 @@ export function missingCursorEvents(text: string | undefined): string[] {
     const entries = hooks[event];
     return !(Array.isArray(entries) && entries.some((entry: unknown) => isOurs(entry, "cursor")));
   });
+}
+
+/** The rules for the person's commands that none of these settings files (their text) allows. */
+export function missingClaudePermissions(settings: readonly (string | undefined)[]): string[] {
+  const allowed = settings.flatMap((text): unknown[] => {
+    const value: unknown = text === undefined ? undefined : parse(text);
+    const permissions = isRecord(value) && isRecord(value.permissions) ? value.permissions : {};
+    return Array.isArray(permissions.allow) ? permissions.allow : [];
+  });
+  return CLAUDE_PERSON_RULES.filter((rule) => !allowed.includes(rule));
 }
 
 /** The Claude Code events whose guard hook none of these settings files (their text) installs. */

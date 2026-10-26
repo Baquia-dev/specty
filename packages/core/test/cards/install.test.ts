@@ -2,8 +2,10 @@
 import { describe, expect, it } from "vitest";
 import {
   changeInProgressWarning,
+  claudePermissionsLine,
   claudePointerLine,
   codexGuardLine,
+  codexRulesLine,
   codexTrustWarning,
   gitHooksLine,
   gitHooksManualWarning,
@@ -42,6 +44,21 @@ describe("what `init` says about the hooks", () => {
     );
     expect(noHooksWarning(["Aider", "Zed"], "en")).toBe(
       "No hooks yet for: Aider, Zed. Git hooks and CI still protect them.",
+    );
+  });
+
+  it("names the permission rules that leave the person's commands to Specty", () => {
+    expect(claudePermissionsLine("specty", ".claude/settings.json", false, "es")).toBe(
+      "Claude Code: permisos en .claude/settings.json para que el agente ejecute `specty approve`, `accept`, `close`, `cancel` y `reject` sin el veto de Claude Code; Specty se los bloquea salvo en modo delegado.",
+    );
+    expect(claudePermissionsLine("specty", ".claude/settings.local.json", true, "en")).toBe(
+      "Claude Code: permissions in .claude/settings.local.json (local) so the agent runs `specty approve`, `accept`, `close`, `cancel` and `reject` without Claude Code's veto; Specty blocks them except in delegated mode.",
+    );
+    expect(codexRulesLine(".codex/rules/specty.rules", "es")).toBe(
+      "Codex: regla en .codex/rules/specty.rules para que los comandos de Specty se ejecuten sin preguntar y fuera del sandbox, que deja `.git` en solo lectura; Specty decide quién ejecuta cada uno.",
+    );
+    expect(codexRulesLine(".codex/rules/specty.rules", "en")).toBe(
+      "Codex: rule in .codex/rules/specty.rules so Specty's commands run without asking and outside the sandbox, which keeps `.git` read-only; Specty decides who runs each one.",
     );
   });
 
