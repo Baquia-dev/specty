@@ -54,3 +54,24 @@ La tabla `AGENT_CAPABILITIES` y su copia en ARCHITECTURE §10 dicen hoy sí o no
 ## Riesgos
 
 - R1: Con diez columnas, la tabla se lee mal en un editor estrecho. Mitigación: los motivos y los «cómo» van en listas debajo, y las celdas solo dicen el estado.
+
+## Cierre
+
+### Resumen
+
+Cada capacidad de cada agente tiene un estado en `AGENT_CAPABILITIES`: «sí», «indirecto», «no posible» (con su motivo en español y en inglés), «pendiente» o «—». La tabla suma el fin de turno, la exclusión, los permisos y la prueba de extremo a extremo, y muestra la verdad de hoy: Claude Code con «sí» en todo; Cursor, Codex y OpenCode con lo que les falta en «pendiente»; Gemini CLI, Windsurf y Antigravity sin guard todavía; y Copilot con «—». Debajo de la tabla, los motivos de lo no posible se agrupan por capacidad y motivo. ARCHITECTURE §10 la muestra y explica cada estado. `GuardedAgent` sale de los agentes con el guard en «sí».
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Copilot, fuera de la épica, tiene «—» (`unsupported`) en todas sus capacidades, en vez de «pendiente» o «no posible», que no serían verdad.
+- Los motivos se agrupan: una línea por capacidad y motivo, con todas las herramientas a las que se aplica (por ejemplo, «worktree por nombre» de seis herramientas en una línea).
+- La lista «Indirecto» solo se dibuja cuando hay alguna; hoy no hay ninguna.
+- `GuardSurface` desaparece: el guard siempre va en el repositorio, y su capacidad es un estado más.
+
+### Pendientes
+
+- Cada corte siguiente cambia las celdas de su herramienta; C13 quita «pendiente» del tipo `Support`.

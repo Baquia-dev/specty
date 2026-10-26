@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-la-tabla-de-capacidades-dice-que-es-directo-indi",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-tabla-de-capacidades-dice-que-es-directo-indi",
   "baseCommit": "71084b1e1841f89671b2df3dd9ce8157a1d96eaf",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e5dde6ba17efce60a3925e5aa45ab19b4c2e3745364eaf1e74c3974a4c319866",
@@ -38,12 +38,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "58d14216a8827cd8d2caead5f6e2912e57798561",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:17:29.931Z",
       "doneAt": "2026-10-26T17:20:16.463Z",
-      "summary": "Cada capacidad tiene un estado (sí, indirecto, no posible con su motivo, pendiente o —) y la tabla suma fin de turno, exclusión, permisos y prueba de extremo a extremo, con la verdad de hoy; debajo, los motivos agrupados. ARCHITECTURE §10 la muestra y explica los estados."
+      "summary": "Cada capacidad tiene un estado (sí, indirecto, no posible con su motivo, pendiente o —) y la tabla suma fin de turno, exclusión, permisos y prueba de extremo a extremo, con la verdad de hoy; debajo, los motivos agrupados. ARCHITECTURE §10 la muestra y explica los estados.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -55,5 +55,6 @@
     "AC": 4,
     "T": 1,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T17:22:20.017Z"
 }
