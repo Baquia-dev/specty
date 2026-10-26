@@ -65,3 +65,24 @@ Cuando el cambio toca lo que alimenta un generador de código, o lo que genera, 
 
 - R1: Un generador escribe también fuera de sus salidas (cachés, `.dart_tool`) — eso queda ignorado por git o fuera del repositorio, y solo se restaura lo que se compara.
 - R2: build_runner tarda — solo corre cuando el cambio toca un archivo con un `part` generado, el `pubspec.yaml` o el `build.yaml`, y su nivel se baja en `checks.levels`.
+
+## Cierre
+
+### Resumen
+
+`specty check` trae `generated`. Cuando el cambio toca lo que alimenta a un generador, o lo que genera, guarda sus salidas, lo ejecuta, las compara byte a byte y lo restaura todo: falla con cada salida que no coincide, falta o ya no se genera, y no deja nada cambiado. Detecta el cliente de Prisma con `output` en el repositorio y build_runner en Dart, y `checks.generators` añade cualquier otro. Para que nadie lea archivos a medias, `runChecks` ejecuta ahora las verificaciones exclusivas solas, después de las demás.
+
+### Desviaciones
+
+- `check/provider.ts` entró en T1 con `scope add`, aprobado en modo delegado, para las verificaciones exclusivas; el plan no lo preveía.
+- La aceptación esperó a la persona por el aviso «ejecuta comandos a través de la shell (CWE-78)» en `generated.ts`. Los comandos son fijos o vienen de `.specty/config.yaml`, que el guard protege, y la persona aceptó.
+
+### Decisiones
+
+- Solo cuentan las salidas que git ve, como en `git diff --exit-code`; una salida ignorada no está en el repositorio.
+- Las salidas se restauran también si el generador falla. Si el proceso muere entre regenerar y restaurar, quedan regeneradas, y solo se perderían retoques a mano sin commit en archivos generados.
+- Un generador configurado sin `inputs` corre con cualquier cambio.
+
+### Pendientes
+
+- El proveedor de Flutter y Dart (corte 5): los modos estrictos del analizador, los `// ignore:` nuevos y el escáner de imports para `layers`.

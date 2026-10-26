@@ -9,3 +9,6 @@
 {"ts":"2026-10-26T00:21:16.525Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"11f3314e8749cc90fb4c86cbad9fa21b4bcd5466"}}
 {"ts":"2026-10-26T00:23:14.616Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":92514,"tree":"sha256:ab9f58d5434cfbd13d1c23d154eea24d1b504681283ce8b0f9bf754c38219a07"}}
 {"ts":"2026-10-26T00:23:14.620Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"formats §6 documenta checks.generators y la verificación generated (guardar, regenerar, comparar, restaurar; Prisma y build_runner; cuándo corre); ARCHITECTURE la añade a la fila de specty check."}}
+{"ts":"2026-10-26T00:54:34.237Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T00:54:48.403Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:11ac6520fd5c2f8ea16c3dab735c9f13ef7a3f5df6863b8ae43ac3a70883304f","size":"M","warnings":1}}
+{"ts":"2026-10-26T00:56:05.079Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

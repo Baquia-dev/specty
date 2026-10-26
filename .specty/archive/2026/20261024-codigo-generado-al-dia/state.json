@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261024-codigo-generado-al-dia",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261024-codigo-generado-al-dia",
   "baseCommit": "cf3fe378ec7c358b15911e40e704681d6a9b7394",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f70c6c4dfc33e8df6561bdf7e543e70c26f39e3245af9ba4e52b1f86477330da",
@@ -54,12 +54,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "11f3314e8749cc90fb4c86cbad9fa21b4bcd5466",
+      "attempts": 1,
       "startedAt": "2026-10-26T00:21:16.524Z",
       "doneAt": "2026-10-26T00:23:14.617Z",
-      "summary": "formats §6 documenta checks.generators y la verificación generated (guardar, regenerar, comparar, restaurar; Prisma y build_runner; cuándo corre); ARCHITECTURE la añade a la fila de specty check."
+      "summary": "formats §6 documenta checks.generators y la verificación generated (guardar, regenerar, comparar, restaurar; Prisma y build_runner; cuándo corre); ARCHITECTURE la añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -72,5 +72,6 @@
     "T": 2,
     "R": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T00:54:48.402Z"
 }
