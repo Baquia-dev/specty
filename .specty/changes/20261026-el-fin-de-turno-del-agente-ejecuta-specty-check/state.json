@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ac40898284a9de9912f292b5a53defa487d8e61b",
+      "attempts": 1,
       "startedAt": "2026-10-26T09:59:46.488Z",
       "doneAt": "2026-10-26T10:01:19.683Z",
-      "summary": "enforce/agent-stop.ts y hook agent-stop <agente>: al terminar el turno ejecuta check --changed (con --spec si hay un cambio aprobado) y devuelve el informe como decision block (Claude Code, Codex) o followup_message (Cursor); sin bucles; silencioso fuera de Specty."
+      "summary": "enforce/agent-stop.ts y hook agent-stop <agente>: al terminar el turno ejecuta check --changed (con --spec si hay un cambio aprobado) y devuelve el informe como decision block (Claude Code, Codex) o followup_message (Cursor); sin bucles; silencioso fuera de Specty.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cb937067cd49556cea5b22c7b5f6316a66f38600",
+      "startedAt": "2026-10-26T10:01:19.995Z",
+      "doneAt": "2026-10-26T10:02:55.350Z",
+      "summary": "check/install-agents.ts: check --install añade specty hook agent-stop junto al guard de Claude Code (Stop), Cursor (stop) y Codex (Stop, en su hooks.json de usuario), con el mismo comando, su diff y una sola vez; install.ts escribe rutas absolutas."
     }
   },
   "pending": {

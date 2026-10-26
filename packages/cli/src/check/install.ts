@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { dirname, join } from "node:path";
+import { dirname, isAbsolute, join } from "node:path";
 import { checkLevel, translator } from "@baquia-dev/specty-core";
 import { Document, parseDocument } from "yaml";
 import type { Stack } from "../detect/stack";
@@ -13,6 +13,7 @@ import { pathsOf } from "../io/git";
 import { COMMAND, type Session } from "../session";
 import { ciTemplates, spectyVersion } from "./ci";
 import { analyzerOptions, STRICT_MODES } from "./dart";
+import { agentStopEdits } from "./install-agents";
 import type { ReportOutput } from "./provider";
 
 /**
@@ -63,6 +64,7 @@ export async function planInstall(
     preCommit(session, t),
     ci(session, stacks, t),
     dartStrict(session, stacks, t),
+    agentStopEdits(session).then((edits): Step => ({ edits, conflicts: [] })),
   ]);
   return {
     edits: steps.flatMap((step) => step.edits),
@@ -217,8 +219,10 @@ export async function install(
         t(`¿Aplicar este cambio en ${edit.path}?`, `Apply this change to ${edit.path}?`),
       )
     ) {
-      await mkdir(dirname(join(session.root, edit.path)), { recursive: true });
-      await writeFile(join(session.root, edit.path), edit.after);
+      // Codex's hooks live outside the repository, by their absolute path.
+      const file = isAbsolute(edit.path) ? edit.path : join(session.root, edit.path);
+      await mkdir(dirname(file), { recursive: true });
+      await writeFile(file, edit.after);
       applied.push(edit.path);
       written.push(edit.path);
     } else {
