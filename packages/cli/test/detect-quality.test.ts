@@ -121,6 +121,74 @@ describe("the project's own quality tools", () => {
     expect(commandsFor(plain)).toEqual({ test: "go test ./...", lint: "go vet ./..." });
   });
 
+  it("in Gradle: Spotless for the format and one call with the configured lint tasks (S2b AC1, AC4)", async () => {
+    const kotlin = await stackOf("kotlin", {
+      "build.gradle.kts": [
+        "plugins {",
+        '  kotlin("jvm") version "2.2.0"',
+        '  id("com.diffplug.spotless") version "7.2.1"',
+        '  id("io.gitlab.arturbosch.detekt") version "1.23.8"',
+        "  alias(libs.plugins.ktlint)",
+        "}",
+        "spotless { kotlin { ktlint() } }",
+        "",
+      ].join("\n"),
+      gradlew: "#!/bin/sh\n",
+    });
+    expect(qualityCommands(kotlin)).toEqual({
+      format: "./gradlew spotlessCheck",
+      lint: "./gradlew detekt ktlintCheck",
+    });
+    const java = await stackOf("java", {
+      "build.gradle": "plugins {\n  id 'java'\n  id 'checkstyle'\n  id 'pmd'\n}\n",
+    });
+    expect(commandsFor(java)).toEqual({
+      test: "gradle test",
+      lint: "gradle checkstyleMain pmdMain",
+    });
+    // A ktlint step of Spotless is no ktlint-gradle plugin.
+    const spotlessOnly = await stackOf("kotlin", {
+      "build.gradle.kts":
+        'plugins {\n  kotlin("jvm")\n  id("com.diffplug.spotless")\n}\nspotless { kotlin { ktlint() } }\n',
+    });
+    expect(qualityCommands(spotlessOnly)).toEqual({ format: "gradle spotlessCheck" });
+  });
+
+  it("in Maven: spotless:check, and the checkstyle and pmd check goals (S2b AC1)", async () => {
+    const stack = await stackOf("java", {
+      "pom.xml": [
+        "<project><build><plugins>",
+        "<plugin><artifactId>spotless-maven-plugin</artifactId></plugin>",
+        "<plugin><artifactId>maven-checkstyle-plugin</artifactId></plugin>",
+        "<plugin><artifactId>maven-pmd-plugin</artifactId></plugin>",
+        "</plugins></build></project>",
+        "",
+      ].join("\n"),
+    });
+    expect(qualityCommands(stack)).toEqual({
+      format: "mvn spotless:check",
+      lint: "mvn checkstyle:check pmd:check",
+    });
+    const plain = await stackOf("java", { "pom.xml": "<project/>\n" });
+    expect(commandsFor(plain)).toEqual({ test: "mvn test" });
+  });
+
+  it("in Swift: SwiftLint and swift-format, and in C#: dotnet build as the type check (S2b AC2, AC3)", async () => {
+    const swift = await stackOf("swift", {
+      "Package.swift": "// swift-tools-version:6.0\n",
+      ".swiftlint.yml": "strict: true\n",
+      ".swift-format": '{ "version": 1 }\n',
+    });
+    expect(commandsFor(swift)).toEqual({ test: "swift test", lint: "swiftlint lint" });
+    expect(qualityCommands(swift).format).toBe("swift format lint --strict --recursive .");
+    const csharp = await stackOf("csharp", { "App.csproj": "<Project/>\n" });
+    expect(commandsFor(csharp)).toEqual({
+      test: "dotnet test",
+      build: "dotnet build",
+      typecheck: "dotnet build",
+    });
+  });
+
   it("run in specty check, with the command the project has (AC1)", async () => {
     const root = await tempRepo({
       Gemfile: 'source "https://rubygems.org"\n',

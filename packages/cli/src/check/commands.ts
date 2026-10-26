@@ -49,28 +49,22 @@ function projectCommands(
   );
 }
 
+/** The format checks that come with a stack's own toolchain. */
+const TOOLCHAIN_FORMAT: Partial<Record<Stack["language"], string>> = {
+  dart: "dart format --output=none --set-exit-if-changed .",
+  rust: "cargo fmt --check",
+  csharp: "dotnet format --verify-no-changes",
+};
+
 /** Only a command that checks the format, never one that rewrites the files. */
 function formatCommand(stack: Stack): string | undefined {
-  switch (stack.language) {
-    case "typescript":
-    case "javascript": {
-      const script = ["format:check", "fmt:check", "check:format"].find(
-        (name) => stack.scripts[name] !== undefined,
-      );
-      return script === undefined ? undefined : scriptCommand(stack, script);
-    }
-    case "dart":
-      return "dart format --output=none --set-exit-if-changed .";
-    case "rust":
-      return "cargo fmt --check";
-    case "python":
-    case "php":
-      return qualityCommands(stack).format;
-    case "csharp":
-      return "dotnet format --verify-no-changes";
-    default:
-      return undefined;
+  if (stack.language === "typescript" || stack.language === "javascript") {
+    const script = ["format:check", "fmt:check", "check:format"].find(
+      (name) => stack.scripts[name] !== undefined,
+    );
+    return script === undefined ? undefined : scriptCommand(stack, script);
   }
+  return TOOLCHAIN_FORMAT[stack.language] ?? qualityCommands(stack).format;
 }
 
 function commandCheck(id: CommandCheck, command: string): CheckDefinition {

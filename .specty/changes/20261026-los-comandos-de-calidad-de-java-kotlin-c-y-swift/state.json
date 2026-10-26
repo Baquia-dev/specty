@@ -6,6 +6,13 @@
   "branch": "specty/20261026-los-comandos-de-calidad-de-java-kotlin-c-y-swift",
   "baseCommit": "0e6ca8ab4cbb19376d04709989fb0de809af2e09",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a1e5e4922e97a88e9afec4e49c9c5f0ea949cdd632c1c94d176bdb725a40d565",
+    "at": "2026-10-26T14:41:01.538Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "91ab0e48946e1b28f5e8656d5ed8550203199f86",
+      "startedAt": "2026-10-26T14:41:01.925Z",
+      "doneAt": "2026-10-26T14:49:08.396Z",
+      "summary": "Gradle (Spotless, Checkstyle, PMD, detekt, ktlint), Maven (spotless/checkstyle/pmd:check), SwiftLint y swift-format detectados; C# typecheck dotnet build. commandsFor y formatCommand pasan de switch a tablas por lenguaje para no pasar de los límites."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -41,12 +58,5 @@
     "A": 4,
     "AC": 5,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a1e5e4922e97a88e9afec4e49c9c5f0ea949cdd632c1c94d176bdb725a40d565",
-    "at": "2026-10-26T14:41:01.538Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

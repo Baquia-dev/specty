@@ -96,55 +96,48 @@ function scriptCommands(stack: Stack): Commands {
   };
 }
 
+/** The commands of each stack besides JavaScript's, before the quality tools it configures. */
+const BASE: Readonly<
+  Record<Exclude<Stack["language"], "typescript" | "javascript">, (stack: Stack) => Commands>
+> = {
+  dart: ({ tool }) =>
+    tool === "flutter"
+      ? { test: "flutter test", lint: "flutter analyze" }
+      : { test: "dart test", lint: "dart analyze" },
+  python: (stack) => ({
+    test: `${pythonPrefix(stack)}${stack.frameworks.includes("django") ? "python manage.py test" : "pytest"}`,
+  }),
+  go: () => ({ test: "go test ./...", lint: "go vet ./..." }),
+  rust: () => ({ test: "cargo test", lint: "cargo clippy -- -D warnings" }),
+  csharp: () => ({ test: "dotnet test", build: "dotnet build", typecheck: "dotnet build" }),
+  java: jvmTests,
+  kotlin: jvmTests,
+  ruby: ({ frameworks }) => ({
+    test: frameworks.includes("rails") ? "bin/rails test" : "bundle exec rspec",
+  }),
+  php: phpTests,
+  swift: () => ({ test: "swift test" }),
+  elixir: () => ({ test: "mix test" }),
+  cpp: () => ({ test: "ctest --test-dir build" }),
+};
+
+function jvmTests({ tool }: Stack): Commands {
+  return {
+    test: tool === "maven" ? "mvn test" : tool === "gradlew" ? "./gradlew test" : "gradle test",
+  };
+}
+
+function phpTests({ frameworks, scripts }: Stack): Commands {
+  if (frameworks.includes("laravel")) return { test: "php artisan test" };
+  return { test: scripts.test !== undefined ? "composer test" : "vendor/bin/phpunit" };
+}
+
+/** The project's commands: its scripts, or each stack's own with the quality tools it configures. */
 export function commandsFor(stack: Stack): Commands {
-  const { tool, scripts, frameworks } = stack;
-  switch (stack.language) {
-    case "typescript":
-    case "javascript":
-      return scriptCommands(stack);
-    case "dart":
-      return tool === "flutter"
-        ? { test: "flutter test", lint: "flutter analyze" }
-        : { test: "dart test", lint: "dart analyze" };
-    case "python": {
-      const prefix = pythonPrefix(stack);
-      const test = frameworks.includes("django")
-        ? `${prefix}python manage.py test`
-        : `${prefix}pytest`;
-      return { test, ...lintAndTypes(stack) };
-    }
-    case "go":
-      return { test: "go test ./...", lint: qualityCommands(stack).lint ?? "go vet ./..." };
-    case "rust":
-      return { test: "cargo test", lint: "cargo clippy -- -D warnings" };
-    case "csharp":
-      return { test: "dotnet test", build: "dotnet build" };
-    case "java":
-    case "kotlin":
-      return tool === "maven"
-        ? { test: "mvn test" }
-        : { test: tool === "gradlew" ? "./gradlew test" : "gradle test" };
-    case "ruby":
-      return {
-        test: frameworks.includes("rails") ? "bin/rails test" : "bundle exec rspec",
-        ...lintAndTypes(stack),
-      };
-    case "php":
-      return {
-        test: frameworks.includes("laravel")
-          ? "php artisan test"
-          : scripts.test !== undefined
-            ? "composer test"
-            : "vendor/bin/phpunit",
-        ...lintAndTypes(stack),
-      };
-    case "swift":
-      return { test: "swift test" };
-    case "elixir":
-      return { test: "mix test" };
-    case "cpp":
-      return { test: "ctest --test-dir build" };
+  if (stack.language === "typescript" || stack.language === "javascript") {
+    return scriptCommands(stack);
   }
+  return { ...BASE[stack.language](stack), ...lintAndTypes(stack) };
 }
 
 /** Install commands by tool, for stacks whose builds do not fetch dependencies on their own. */

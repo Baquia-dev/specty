@@ -39,6 +39,37 @@ function requirement(name: string): Present {
 
 const gem = (name: string) => contains("Gemfile", new RegExp(`^\\s*gem\\s+["']${name}["']`, "m"));
 
+/** The root's Gradle build file matches `pattern`. */
+const gradle = (pattern: RegExp) =>
+  either(contains("build.gradle.kts", pattern), contains("build.gradle", pattern));
+
+/** A plugin of Gradle's core, by its id or alone in the `plugins` block. */
+const corePlugin = (name: string) =>
+  gradle(
+    new RegExp(
+      String.raw`(?:^\s*${name}\s*$|\bid\s*\(?\s*["']${name}["']|apply\s*\(?\s*plugin\s*[:=]\s*["']${name}["'])`,
+      "m",
+    ),
+  );
+
+const mavenPlugin = (artifact: string) =>
+  contains("pom.xml", new RegExp(`<artifactId>${artifact}</artifactId>`));
+
+/** Java and Kotlin: by the plugin's id or its version-catalog alias, or by its Maven plugin. */
+const JVM: readonly (readonly [string, Present])[] = [
+  [
+    "spotless",
+    either(
+      gradle(/com\.diffplug\.spotless|plugins\.spotless/),
+      mavenPlugin("spotless-maven-plugin"),
+    ),
+  ],
+  ["checkstyle", either(corePlugin("checkstyle"), mavenPlugin("maven-checkstyle-plugin"))],
+  ["pmd", either(corePlugin("pmd"), mavenPlugin("maven-pmd-plugin"))],
+  ["detekt", gradle(/io\.gitlab\.arturbosch\.detekt|["']dev\.detekt["']|plugins\.detekt/)],
+  ["ktlint", gradle(/org\.jlleitschuh\.gradle\.ktlint|plugins\.ktlint/)],
+];
+
 const TOOLS: Partial<Record<Stack["language"], readonly (readonly [string, Present])[]>> = {
   python: [
     ["black", either(contains("pyproject.toml", /^\[tool\.black\]/m), requirement("black"))],
@@ -82,6 +113,12 @@ const TOOLS: Partial<Record<Stack["language"], readonly (readonly [string, Prese
       anyFile(".golangci.yml", ".golangci.yaml", ".golangci.toml", ".golangci.json"),
     ],
   ],
+  java: JVM,
+  kotlin: JVM,
+  swift: [
+    ["swiftlint", anyFile(".swiftlint.yml")],
+    ["swift-format", anyFile(".swift-format")],
+  ],
 };
 
 /** The quality tools configured in `dir` for `stack`, by name. */
@@ -104,32 +141,60 @@ export function pythonPrefix(stack: Stack): string {
   return tool === "pipenv" ? "pipenv run " : "";
 }
 
+/** `command` when the stack has `name`. */
+type Tool = (name: string, command: string) => string | undefined;
+
 /** The format, lint and type commands of the tools `stack` has, each tool before its fallback. */
 export function qualityCommands(stack: Stack): QualityCommands {
-  const has = (tool: string) => stack.tools?.includes(tool) === true;
+  const has = (name: string) => stack.tools?.includes(name) === true;
+  const tool: Tool = (name, command) => (has(name) ? command : undefined);
   switch (stack.language) {
     case "python":
       return python(stack, has);
     case "ruby":
-      return defined("", {
-        lint: has("standard")
-          ? "bundle exec standardrb"
-          : has("rubocop")
-            ? "bundle exec rubocop"
-            : undefined,
-        typecheck: has("sorbet")
-          ? "bundle exec srb tc"
-          : has("steep")
-            ? "bundle exec steep check"
-            : undefined,
-      });
+      return ruby(tool);
     case "php":
       return php(stack, has);
     case "go":
-      return defined("", { lint: has("golangci-lint") ? "golangci-lint run" : undefined });
+      return defined("", { lint: tool("golangci-lint", "golangci-lint run") });
+    case "java":
+    case "kotlin":
+      return jvm(stack, tool);
+    case "swift":
+      return defined("", {
+        format: tool("swift-format", "swift format lint --strict --recursive ."),
+        lint: tool("swiftlint", "swiftlint lint"),
+      });
     default:
       return {};
   }
+}
+
+function ruby(tool: Tool): QualityCommands {
+  return defined("", {
+    lint: tool("standard", "bundle exec standardrb") ?? tool("rubocop", "bundle exec rubocop"),
+    typecheck: tool("sorbet", "bundle exec srb tc") ?? tool("steep", "bundle exec steep check"),
+  });
+}
+
+/** Gradle runs the configured tasks in one call, with its wrapper if there is one; Maven, its check goals. */
+function jvm(stack: Stack, tool: Tool): QualityCommands {
+  const maven = stack.tool === "maven";
+  const runner = maven ? "mvn" : stack.tool === "gradlew" ? "./gradlew" : "gradle";
+  const tasks = (
+    maven
+      ? [tool("checkstyle", "checkstyle:check"), tool("pmd", "pmd:check")]
+      : [
+          tool("checkstyle", "checkstyleMain"),
+          tool("pmd", "pmdMain"),
+          tool("detekt", "detekt"),
+          tool("ktlint", "ktlintCheck"),
+        ]
+  ).filter((task): task is string => task !== undefined);
+  return defined("", {
+    format: tool("spotless", `${runner} ${maven ? "spotless:check" : "spotlessCheck"}`),
+    lint: tasks.length > 0 ? `${runner} ${tasks.join(" ")}` : undefined,
+  });
 }
 
 function python(stack: Stack, has: (tool: string) => boolean): QualityCommands {

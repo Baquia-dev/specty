@@ -46,7 +46,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: Las herramientas de Gradle, Maven, Swift y C#
+- [x] T1: Las herramientas de Gradle, Maven, Swift y C#
   - files: packages/cli/src/detect/quality.ts, packages/cli/src/detect/project.ts, packages/cli/src/check/commands.ts, packages/cli/test/detect-quality.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
