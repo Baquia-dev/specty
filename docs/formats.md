@@ -386,6 +386,20 @@ Con `checks.layers`, en un proyecto TypeScript o JavaScript, `layers` falla con 
 
 En los lenguajes de llaves (todos los stacks salvo Python, Ruby y Elixir), `function-lines` y `complexity` miden cada función con la estimación propia del core, la misma para todos, sin un linter. Cuentan las líneas de código de la cabecera a la llave de cierre, sin blancos ni comentarios, y la complejidad ciclomática: 1 más cada `if`, `for`, `while`, `case`, `catch`, `guard`, `&&`, `||`, `??` y ternario, sin los de las funciones anidadas. Una función falla si el cambio la tocó, pasa de `checks.functions` (`maxLines`, `complexity`) y es nueva o creció respecto al punto de partida, emparejada por nombre y por orden entre las de ese nombre. Una que ya pasaba del límite y el cambio no agrandó no cuenta; con `--all`, cuentan todas. Los archivos de test no se miden. No usan las reglas de ESLint, porque ESLint no sabe cómo era la función antes del cambio.
 
+En cualquier stack salvo Dart, `suppressions` falla con cada comentario o anotación que el cambio añade para apagar el compilador, el comprobador de tipos o el linter. Usa un catálogo por familia de lenguajes, según la extensión de cada archivo (`core/src/checks/suppressions.ts`), sacado de la documentación de cada herramienta:
+- Python: ruff, flake8, mypy, pyright y pylint.
+- JavaScript y TypeScript: ESLint y Biome.
+- Java y Kotlin: `@SuppressWarnings`, `@Suppress`, SpotBugs, Checkstyle y Sonar.
+- C#: `#pragma warning disable`, `#nullable disable`, `SuppressMessage` y ReSharper.
+- Go: golangci-lint, staticcheck y gosec.
+- Rust: `#[allow]` y `#[expect]`.
+- PHP: PHPStan, PHP_CodeSniffer, Psalm y PHPMD.
+- Ruby y Elixir: RuboCop y Credo.
+- Swift: SwiftLint y swift-format.
+- C y C++: clang-tidy y los `#pragma`.
+
+Las marcas que son comentarios solo cuentan dentro de un comentario, y las que son código, fuera de las cadenas. En Python, Ruby y Elixir, el comentario empieza en el primer `#` fuera de una cadena de una línea. Una directiva de herramienta debe abrir el comentario, salvo `NOSONAR`, `NOLINT` y `#nosec`, que cuentan en cualquier punto. `@ts-ignore` y `@ts-nocheck` son de `strict-types`, y el `// ignore:` de Dart, de `dart-strict`. La lista completa está en la guía ([checks.md](checks.md)).
+
 Después vienen, para cualquier lenguaje, estas verificaciones, cada una con su id en `checks.levels`:
 
 - `max-lines`: las líneas de código de cada archivo, con los límites de `lines`.

@@ -66,7 +66,7 @@ Una verificación nueva, `suppressions`, falla con cada comentario o anotación 
   - files: packages/cli/src/check/markers.ts, packages/cli/src/check/suppressions.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-suppressions.test.ts, docs/checks.md, docs/checks.en.md
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
-- [ ] T3: La documentación de referencia
+- [x] T3: La documentación de referencia
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm check

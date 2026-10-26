@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-supresiones-en-cualquier-lenguaje",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-supresiones-en-cualquier-lenguaje",
   "baseCommit": "29c375072708f67d04c7b72d2b22d254bdda4efe",
   "revision": 2,
@@ -60,14 +60,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/checks/suppressions.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "f4b232f41ba4a61cabb6d0866e98b477265e52a8",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:01:02.927Z",
       "doneAt": "2026-10-26T14:16:53.378Z",
-      "summary": "Verificación suppressions en la CLI con el catálogo del core, solo con un stack que no es Dart; recorrido compartido con las marcas; guías con su catálogo y un ejemplo de proveedor nuevo (!! de Kotlin); recuentos de los tests y ejemplos TS al día."
+      "summary": "Verificación suppressions en la CLI con el catálogo del core, solo con un stack que no es Dart; recorrido compartido con las marcas; guías con su catálogo y un ejemplo de proveedor nuevo (!! de Kotlin); recuentos de los tests y ejemplos TS al día.",
+      "scopeExtra": [
+        "packages/core/src/checks/suppressions.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "af3dbf911447e2c6f1d16eae015e9d3969778eca",
+      "startedAt": "2026-10-26T14:16:54.211Z",
+      "doneAt": "2026-10-26T14:19:31.591Z",
+      "summary": "formats.md describe suppressions con su catálogo por familia de lenguajes y sus reglas de comentarios y código; ARCHITECTURE la añade a la fila de specty check."
     }
   },
   "pending": {
