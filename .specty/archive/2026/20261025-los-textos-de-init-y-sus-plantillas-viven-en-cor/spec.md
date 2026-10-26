@@ -55,3 +55,22 @@ Sexto cambio de la serie que lleva a core los textos de la CLI, el primero de la
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `init` viven en `core/src/cards/init.ts` (rechazos, líneas de cada archivo, tarjeta final, simulación y lo que sigue en un proyecto nuevo), y sus plantillas en `core/src/templates.ts`, junto a la de la spec: `configTemplate` para el `.specty/config.yaml` inicial, y `productQuestions` y `productTemplate` para `PRODUCT.md`. Salen de la CLI `renderConfig` y `newProjectNext`. La salida y los archivos de `init` son los mismos: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Las preguntas de `PRODUCT.md` también pasaron a core, aunque no usaban el traductor sino un registro por idioma, porque son texto que ve la persona.
+- Un test de core valida con `resolveConfig` que la plantilla de `config.yaml` es una configuración válida.
+
+### Pendientes
+
+- Siguen en la CLI los textos de los hooks (`install/hooks.ts`) y del commit de `init` (`install/commit.ts`): el siguiente cambio.
