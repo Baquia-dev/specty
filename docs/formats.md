@@ -291,7 +291,7 @@ Un ancla puede ser un ítem (`{ "item": "A1" }`) o una cita dentro de una secci�
 
 ```yaml
 version: 1
-language: es
+language: es                      # es | en; `init` lo pregunta primero
 mode: individual                  # individual | team
 governed: ["lib/**", "test/**"]   # rutas donde rige el flujo
 ignored: ["**/*.md", "docs/**", "assets/**"]
@@ -465,7 +465,7 @@ Specty-Agent: claude-code
 
 <!-- specty:begin id=flow -->
 ## Flujo de trabajo (Specty)
-Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta `specty next` y sigue su salida hasta la línea `SIGUIENTE:`.
+Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta `specty next` y sigue su salida hasta la línea `SIGUIENTE:`. Habla con el usuario en español.
 - Si el usuario pide un cambio y no hay uno activo, `specty next` te indica cómo crear la spec.
 - Cada cambio vive en su propia carpeta (una worktree): tras `specty new`, trabaja en la carpeta que indica, no en la principal.
 - Completa cada tarea con `specty task done <id>`; no ejecutes `git commit` tú mismo.
@@ -482,7 +482,7 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 <!-- specty:end id=flow -->
 ```
 
-Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modifica. Las reglas del bloque son solo las que no puede verificar una herramienta: lo demás lo verifica `specty check`, que `task done` ejecuta (§6, [ADR 0012](decisions/0012-lo-verificable-lo-verifica-specty.md)). Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas para completarlas a mano; la de «Convenciones» pide no escribir lo que ya verifica `specty check`. Cuando exista la UI (fase 2), la línea de aprobación remitirá también a ella. La línea de aprobar, aceptar y cerrar menciona el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)): mientras está activo, es el `SIGUIENTE:` de cada tarjeta el que le pide al agente que lo haga él.
+Lo que está fuera de los marcadores pertenece a la persona y Specty no lo modifica. Los bloques van en el idioma de `language`, y la primera línea le pide al agente hablar con el usuario en ese idioma, el mismo de las salidas de Specty. Las reglas del bloque son solo las que no puede verificar una herramienta: lo demás lo verifica `specty check`, que `task done` ejecuta (§6, [ADR 0012](decisions/0012-lo-verificable-lo-verifica-specty.md)). Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas para completarlas a mano; la de «Convenciones» pide no escribir lo que ya verifica `specty check`. Cuando exista la UI (fase 2), la línea de aprobación remitirá también a ella. La línea de aprobar, aceptar y cerrar menciona el modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)): mientras está activo, es el `SIGUIENTE:` de cada tarjeta el que le pide al agente que lo haga él.
 
 ## 9. Salida de los comandos
 

@@ -9,20 +9,25 @@ import {
   configTemplate,
   DEFAULT_CONFIG,
   dryRunCard,
+  type InitRefusal,
   initCard,
   initRefusalCard,
   isAgentTool,
   type Lang,
+  languageChoices,
+  languageLine,
+  languageQuestion,
   noTestCommandWarning,
   type Output,
   productLine,
+  type ResolvedConfig,
 } from "@baquia-dev/specty-core";
-import { detectProject, projectFacts, verifyCommands } from "../detect/project";
+import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { commitInstall } from "../install/commit";
-import { installFiles } from "../install/files";
+import { type InstallFiles, installFiles } from "../install/files";
 import { installHooks } from "../install/hooks";
 import { isNewProject, writeProduct } from "../install/product";
-import { completeConfig, writeAgentsMd } from "../install/project-files";
+import { completeConfig, withLanguage, writeAgentsMd } from "../install/project-files";
 import { exists } from "../io/files";
 import { createGit, findRoot, pathsOf } from "../io/git";
 import { bareCards, type Environment, systemLanguage } from "../session";
@@ -48,19 +53,28 @@ export async function initCommand(
     ?.split(",")
     .map((tool) => tool.trim())
     .filter(isAgentTool);
-  const output = await init(environment, {
+  return init(environment, {
     ...(language !== undefined ? { language } : {}),
     ...(tools !== undefined ? { tools } : {}),
     ...(options.dryRun === true ? { dryRun: true } : {}),
   });
-  return { output, lang: language ?? systemLanguage(environment.env) };
 }
 
-/** `specty init`: detects the project and installs config, AGENTS.md blocks and hooks. Idempotent. */
-async function init(environment: Environment, options: InitOptions): Promise<Output> {
+/**
+ * `specty init`: detects the project and installs config, AGENTS.md blocks and hooks. Idempotent.
+ * Its output goes in the language it worked in.
+ */
+async function init(
+  environment: Environment,
+  options: InitOptions,
+): Promise<{ readonly output: Output; readonly lang: Lang }> {
   const fallback = options.language ?? systemLanguage(environment.env);
+  const refused = (refusal: InitRefusal) => ({
+    output: initRefusalCard(refusal, fallback),
+    lang: fallback,
+  });
   const root = await findRoot(environment.cwd);
-  if (root === undefined) return initRefusalCard({ reason: "no-git" }, fallback);
+  if (root === undefined) return refused({ reason: "no-git" });
   const paths = repoPaths(root);
   const git = createGit(root, environment.env);
   // What already had changes stays out of init's commit: it is the person's work.
@@ -68,9 +82,13 @@ async function init(environment: Environment, options: InitOptions): Promise<Out
   const existing = await loadConfig(paths);
   if (existing.kind === "invalid") {
     const issues = existing.issues.map((issue) => `${issue.path}: ${issue.message}`).join("; ");
-    return initRefusalCard({ reason: "invalid-config", issues }, fallback);
+    return refused({ reason: "invalid-config", issues });
   }
-  const lang = existing.kind === "ok" ? existing.config.language : fallback;
+  const lang = await languageOf(
+    environment,
+    options,
+    existing.kind === "ok" ? existing.config : undefined,
+  );
   const cards: CardContext = { ...bareCards(environment.env), lang };
   const detection = await detectProject(root, basename(root));
   // Read before init writes anything: whether there is a project yet.
@@ -89,21 +107,11 @@ async function init(environment: Environment, options: InitOptions): Promise<Out
   const files = installFiles(
     options.dryRun === true ? { dryRun: true } : { backups: { folder: backups, root } },
   );
-  // An existing configuration only gains the verification it lacks and the detection now finds.
-  const completed =
-    existing.kind === "missing"
-      ? undefined
-      : completeConfig((await files.read(paths.config)) ?? "", detection);
-  if (existing.kind === "missing") {
-    const verify = verifyCommands(detection.commands);
-    await files.write(
-      paths.config,
-      configTemplate({ lang, verify, generated: detection.generated }),
-    );
-  } else if (completed !== undefined && completed.added.length > 0) {
-    await files.write(paths.config, completed.text);
-  }
-
+  const configLines = await writeConfig(files, paths.config, detection, {
+    created: existing.kind === "missing",
+    lang,
+    ...(options.language !== undefined ? { relanguage: options.language } : {}),
+  });
   const tools =
     options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
   const agents = await writeAgentsMd(root, lang, detection, files);
@@ -125,7 +133,7 @@ async function init(environment: Environment, options: InitOptions): Promise<Out
     ...(product === undefined ? [] : ["PRODUCT.md"]),
   ];
   const done: string[] = [
-    configLine(existing.kind === "missing", completed?.added ?? [], lang),
+    ...configLines,
     agentsMdLine(agents === "created", lang),
     ...(product === undefined ? [] : [productLine(product === "interviewed", lang)]),
   ];
@@ -142,25 +150,65 @@ async function init(environment: Environment, options: InitOptions): Promise<Out
       path: shown(root, change.path),
       created: change.created,
     }));
-    return dryRunCard(planned, warnings, cards);
+    return { output: dryRunCard(planned, warnings, cards), lang };
   }
   const committed = await commitInstall(environment, written, before, existing.kind === "missing");
   done.push(...committed.done);
   if (await exists(backups)) done.push(backupLine(backups, lang));
   warnings.push(...committed.warnings);
   const facts = projectFacts(detection);
-  return initCard(
-    {
-      done,
-      detected: [
-        ...facts.stacks,
-        ...facts.commands.map((entry) => `${entry.label}: ${entry.command}`),
-      ],
-      warnings,
-      ...(product === undefined ? {} : { product }),
-    },
-    cards,
-  );
+  const detected = [
+    ...facts.stacks,
+    ...facts.commands.map((entry) => `${entry.label}: ${entry.command}`),
+  ];
+  const view = { done, detected, warnings, ...(product === undefined ? {} : { product }) };
+  return { output: initCard(view, cards), lang };
+}
+
+/**
+ * The language Specty works in: the one `--language` asks for, the configuration's, or, for a new
+ * one, a person's answer to init's first question. An agent cannot be asked: the system's.
+ */
+async function languageOf(
+  environment: Environment,
+  options: InitOptions,
+  config: ResolvedConfig | undefined,
+): Promise<Lang> {
+  if (options.language !== undefined) return options.language;
+  if (config !== undefined) return config.language;
+  const detected = systemLanguage(environment.env);
+  if (!environment.terminal.interactive || options.dryRun === true) return detected;
+  const chosen = await environment.terminal.choose(languageQuestion(), languageChoices(detected));
+  return chosen ?? detected;
+}
+
+/**
+ * Writes `.specty/config.yaml`: a new one, or the existing one with the verification it lacks and
+ * the language `--language` asks for. Returns the lines that say what it did.
+ */
+async function writeConfig(
+  files: InstallFiles,
+  path: string,
+  detection: Detection,
+  options: { readonly created: boolean; readonly lang: Lang; readonly relanguage?: Lang },
+): Promise<readonly string[]> {
+  const { lang } = options;
+  if (options.created) {
+    const verify = verifyCommands(detection.commands);
+    await files.write(path, configTemplate({ lang, verify, generated: detection.generated }));
+    return [configLine(true, [], lang)];
+  }
+  // An existing configuration only gains the verification it lacks and the detection now finds.
+  const current = (await files.read(path)) ?? "";
+  const completed = completeConfig(current, detection);
+  const text =
+    options.relanguage === undefined
+      ? completed.text
+      : withLanguage(completed.text, options.relanguage);
+  if (text !== current) await files.write(path, text);
+  if (text === completed.text) return [configLine(false, completed.added, lang)];
+  const added = completed.added.length > 0 ? [configLine(false, completed.added, lang)] : [];
+  return [languageLine(lang), ...added];
 }
 
 /** A path as the person reads it: relative to the repository, or whole when outside it. */

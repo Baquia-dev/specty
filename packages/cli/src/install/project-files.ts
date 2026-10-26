@@ -8,7 +8,7 @@ import {
   removeBlock,
   upsertBlock,
 } from "@baquia-dev/specty-core";
-import { isMap, isNode, parseDocument } from "yaml";
+import { isMap, isNode, isScalar, parseDocument } from "yaml";
 import type { Detection } from "../detect/project";
 import { projectFacts, verifyCommands } from "../detect/project";
 import { COMMAND } from "../session";
@@ -48,6 +48,22 @@ export function completeConfig(
   const inserted = entries.map((entry) => `\n${indent}${entry}`).join("");
   const cut = text.slice(0, at).endsWith("\n") ? at - 1 : at;
   return { text: `${text.slice(0, cut)}${inserted}${text.slice(cut)}`, added };
+}
+
+/**
+ * Sets `language` in an existing `.specty/config.yaml`: it replaces only the value, or adds the
+ * key after `version`, so comments and formatting stay. Unchanged when it already says `lang`.
+ */
+export function withLanguage(text: string, lang: Lang): string {
+  const node = parseDocument(text).get("language", true);
+  if (isScalar(node)) {
+    if (node.value === lang || node.range === undefined || node.range === null) return text;
+    const [start, end] = node.range;
+    return `${text.slice(0, start)}${lang}${text.slice(end)}`;
+  }
+  const version = /^version:.*\n/m.exec(text);
+  const at = version === null ? 0 : version.index + version[0].length;
+  return `${text.slice(0, at)}language: ${lang}\n${text.slice(at)}`;
 }
 
 /** Writes or refreshes the managed blocks of AGENTS.md; the rest of the file is the user's. */

@@ -52,7 +52,7 @@ Hoy `specty init` deduce el idioma de `LANG`, y una terminal con `LANG=C.UTF-8` 
   - files: packages/core/src/cards/init.ts, packages/core/src/cards/next.ts, packages/core/src/cards/index.ts, packages/core/src/agents-md.ts, packages/core/test/cards/language.test.ts
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
-- [ ] T2: init pregunta primero el idioma y lo cambia con --language
+- [x] T2: init pregunta primero el idioma y lo cambia con --language
   - files: packages/cli/src/commands/init.ts, packages/cli/src/install/project-files.ts, packages/cli/test/init-language.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check
