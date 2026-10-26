@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261026-las-capas-en-python-go-y-rust",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-las-capas-en-python-go-y-rust",
+  "baseCommit": "8725b8aa5c6d1a44d19c854b38905d31bce0fb32",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a856fd92fe05af94748ba6a60494a568c9311ccb63668e95ad1d1d10ddc5a899",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:78054611927c5c0564f870be3a9f7a33a4ae407a69cabfc1ec96fc48e3da68fe",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:5091c2a4b19a57b0ece91e53099990f63fafaab5e6e1510ed6ff9b053ed86e12",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:ff0b9f6b207a7e9d3d1cba1f8b2e967e5fd9373f4c06283a768f50173aaa2e8f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8bd49b5cf8dff8117e85e99498285b49afaa1ea229d986c7b31e8750fc961aaa",
+    "at": "2026-10-26T15:17:18.122Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
