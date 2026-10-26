@@ -6,7 +6,7 @@ import { appendAudit, type StoredChange, saveState } from "../store/changes";
 import { addReceipt, writePointer } from "../store/local";
 import { changeFiles } from "../store/paths";
 import { auditEntry } from "./active";
-import { changeTrailers, commitWithReceipt, decisionTrailers } from "./commits";
+import { commitWithReceipt, decisionTrailers } from "./commits";
 
 /**
  * Moves a finished change to `.specty/archive/<year>/<id>` with its final state. Only a person's
@@ -70,8 +70,4 @@ export async function finishRetro(
   });
   await writePointer(session.git, "retro", undefined);
   return archived;
-}
-
-export function retroTrailers(session: Session, id: string): Record<string, string> {
-  return changeTrailers(session, id, { "Specty-Retro": "true" });
 }

@@ -16,7 +16,7 @@ export interface EnterRequest {
 }
 
 /** The agent session of a Claude Code event, safe as a file name. */
-export function sessionOf(event: Record<string, unknown>): string | undefined {
+function sessionOf(event: Record<string, unknown>): string | undefined {
   const id = event.session_id;
   return typeof id === "string" && /^[\w-]{1,128}$/.test(id) ? id : undefined;
 }

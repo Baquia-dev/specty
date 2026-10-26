@@ -51,7 +51,7 @@ Con todas sus reglas encendidas, knip marca en `packages/cli/src` 16 exportacion
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck
   - type: refactor
-- [ ] T2: El flujo y el almacén exportan solo lo que se importa, sin retroTrailers
+- [x] T2: El flujo y el almacén exportan solo lo que se importa, sin retroTrailers
   - files: packages/cli/src/flow/carried.ts, packages/cli/src/flow/finish.ts, packages/cli/src/flow/worktree.ts, packages/cli/src/enforce/sessions.ts, packages/cli/src/store/changes.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck

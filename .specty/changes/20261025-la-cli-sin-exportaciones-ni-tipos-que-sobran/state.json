@@ -30,12 +30,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "819a62c5a29f5dae21bbd6e7247c43ffe53ee446",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:52:41.221Z",
       "doneAt": "2026-10-26T01:53:21.686Z",
-      "summary": "Dejan de exportarse audit, exportChange, init, InitOptions, uninstall y CheckOutcome, que solo usa su archivo, e init.ts ya no reexporta Detection, que nadie importaba."
+      "summary": "Dejan de exportarse audit, exportChange, init, InitOptions, uninstall y CheckOutcome, que solo usa su archivo, e init.ts ya no reexporta Detection, que nadie importaba.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bf3deb3859b90793fb2872e6f576889edde46c3e",
+      "startedAt": "2026-10-26T01:53:21.969Z",
+      "doneAt": "2026-10-26T01:53:51.645Z",
+      "summary": "Dejan de exportarse followUps, mainBranch, sessionOf y StoreError, que solo usa su archivo, y se borra retroTrailers (flow/finish.ts), que nadie llamaba: los trailers de un retro los pone enforce/hook.ts."
     }
   },
   "pending": {

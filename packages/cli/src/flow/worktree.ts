@@ -46,7 +46,7 @@ export async function targetBranch(
 }
 
 /** The remote's default branch, or else the first local one of `init.defaultBranch`, `main`, `master`. */
-export async function mainBranch(git: Git): Promise<string | undefined> {
+async function mainBranch(git: Git): Promise<string | undefined> {
   const remote = await git.run(["symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"]);
   const candidates = [
     remote.code === 0 ? remote.stdout.trim().replace(/^origin\//, "") : undefined,
