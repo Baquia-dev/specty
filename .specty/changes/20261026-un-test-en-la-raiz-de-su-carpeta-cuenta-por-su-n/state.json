@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "49ae78b3d9720985e467c912fe75193bf4b32b99",
+      "attempts": 1,
       "startedAt": "2026-10-26T17:33:36.342Z",
       "doneAt": "2026-10-26T17:35:17.098Z",
-      "summary": "isTestOf en core: un test implícito que, justo en la raíz de su espejo (tests, packages/x/test, Tests/XTests), solo cuenta para el archivo de su nombre, sin marcas de test; un comodín sigue cubriendo la carpeta. Casos de Rust, Python, Dart, TS, Swift, Java y Go."
+      "summary": "isTestOf en core: un test implícito que, justo en la raíz de su espejo (tests, packages/x/test, Tests/XTests), solo cuenta para el archivo de su nombre, sin marcas de test; un comodín sigue cubriendo la carpeta. Casos de Rust, Python, Dart, TS, Swift, Java y Go.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "aea0080fcd674087a63766b305bea92f040de0a6",
+      "startedAt": "2026-10-26T17:35:17.530Z",
+      "doneAt": "2026-10-26T17:39:59.347Z",
+      "summary": "fix-tests usa isTestOf. El ejemplo de Rust vuelve a tests/user.rs, plano, y su cambio roto hace fallar fix-tests; el comentario del ejemplo nativo ya no lleva la marca de Swift Testing."
     }
   },
   "pending": {

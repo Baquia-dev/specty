@@ -7,9 +7,10 @@ import { repeat } from "./stack-examples";
  * A Go, a Rust and a Swift repository (AC1, AC2, AC3). Their commands stand in for golangci-lint,
  * whose gofmt checks the format, and `go test`; `cargo fmt --check`, Clippy and `cargo test`; and
  * swift-format, SwiftLint and `swift test`. The compilers run with the tests, so there is no
- * typecheck of its own. Go's tests use Ginkgo, with `FIt` and `PIt`, and Swift's use Swift
- * Testing, with `.disabled()`; neither Rust nor Swift Testing has a focus marker, and Specty
- * reads no layers in Swift.
+ * typecheck of its own. Go's tests use Ginkgo, with its focus and pending prefixes, and Swift's
+ * use Swift Testing, with its `disabled` trait; neither Rust nor Swift Testing has a focus
+ * marker, and Specty reads no layers in Swift. Rust's tests sit right under `tests/`, where each
+ * one counts for the file of its name.
  */
 
 const GINKGO = ["import (", '\t. "github.com/onsi/ginkgo/v2"', '\t. "github.com/onsi/gomega"', ")"];
@@ -162,9 +163,7 @@ const RUST: Dialect = {
     prices: "src/prices.json",
     pricesData: "src/prices.rs",
     user: "src/domain/user.rs",
-    // Cargo finds `tests/*/main.rs` too. A test right under `tests/` mirrors all of `src/`, and
-    // `fix-tests` would take it for one of the cart's.
-    userTest: "tests/domain/main.rs",
+    userTest: "tests/user.rs",
     legacyTest: "tests/legacy.rs",
     leak: "src/settings.rs",
   },

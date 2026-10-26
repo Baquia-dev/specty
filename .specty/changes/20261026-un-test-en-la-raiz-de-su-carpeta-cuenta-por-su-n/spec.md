@@ -48,7 +48,7 @@ Hoy `fix-tests` da por buena una tarea `fix` con cualquier test de la carpeta qu
   - files: packages/core/src/scope/tests.ts, packages/core/src/index.ts, packages/core/test/scope/scope.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope/scope.test.ts
-- [ ] T2: fix-tests lo usa, con el ejemplo de Rust plano
+- [x] T2: fix-tests lo usa, con el ejemplo de Rust plano
   - files: packages/cli/src/check/plan-tests.ts, packages/cli/test/check-examples-native.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-examples-native.test.ts test/check-plan.test.ts
