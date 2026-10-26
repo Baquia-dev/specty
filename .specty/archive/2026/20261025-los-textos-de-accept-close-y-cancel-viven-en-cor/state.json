@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-accept-close-y-cancel-viven-en-cor",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-accept-close-y-cancel-viven-en-cor",
   "baseCommit": "7dfc6c584d87d04e20b6792f335bfd6e80d595a1",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c48039ae8f71e8065dea4d99aaf3736d31ca0c96cb3e1fda35d6578710fd3d23",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c340821e3e158393e6dea8ee84b716077b934db2",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:37:00.186Z",
       "doneAt": "2026-10-26T02:39:40.696Z",
-      "summary": "accept.ts y finish.ts piden sus textos a core (cards/accept.ts, cards/close.ts y checkStatus) y ya no llaman al traductor; la salida y los asuntos de los commits son los mismos, como comprueban los tests de la CLI sin cambios."
+      "summary": "accept.ts y finish.ts piden sus textos a core (cards/accept.ts, cards/close.ts y checkStatus) y ya no llaman al traductor; la salida y los asuntos de los commits son los mismos, como comprueban los tests de la CLI sin cambios.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 4,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T02:40:00.479Z"
 }

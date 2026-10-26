@@ -49,3 +49,22 @@ Quinto cambio de la serie que lleva a core los textos de la CLI, con las decisio
   - ac: AC1, AC2, AC3
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `accept`, `close` y `cancel` viven en `core/src/cards/accept.ts` y `cards/close.ts`, con tests: el resumen previo, la verificación completa, las preguntas, lo aceptado, cerrado o cancelado, el cierre de un cambio quick y los asuntos de los commits que archivan. `accept.ts` y `finish.ts` ya no llaman al traductor, y la salida es la misma: los tests de la CLI pasan sin cambios. Con este cambio, ninguna decisión de la persona arma textos en la CLI.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Los asuntos de los commits que archivan un cambio (`docs(spec): cerrar …`) también son textos de core, porque se leen en el historial.
+- Los comentarios de documentación de `close` y de `closeQuick` estaban cambiados de sitio; ahora cada uno está sobre su función.
+
+### Pendientes
+
+- Siguen en la CLI los textos de la instalación (`init`, `install/`, `doctor`, `uninstall`) y de `integrate`, `review` y los demás comandos.
