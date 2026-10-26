@@ -89,3 +89,31 @@ Antigravity no tiene el guard de Specty: su agente puede escribir fuera del alca
 - R1: Un error del guard bloquearía todas las herramientas de Antigravity, porque cierra en fallo. Mitigación: el guard captura sus errores y responde «permitir» con salida 0, y la prueba lo fija (AC3).
 - R2: `PreInvocation` corre antes de cada llamada al modelo y suma el tiempo del guard a cada una. Mitigación: sin aviso pendiente, el guard solo mira un archivo y responde `{}`.
 - R3: Nada de esto se puede probar con Antigravity de verdad, porque su modelo va por su servidor. Mitigación: las pruebas usan los eventos con la forma que documenta Antigravity.
+
+## Cierre
+
+### Resumen
+
+Antigravity tiene el guard de Specty. `init` escribe el hook `specty` en `.agents/hooks.json`, junto a los de la persona, y cada evento llama al guard con `--event`, porque la entrada no lo nombra:
+- `PreToolUse`, con `run_command` y las tres herramientas de escritura, deniega con el motivo y el SIGUIENTE;
+- `PostToolUse`, con `run_command`, responde `{}`;
+- `PreInvocation` trae el aviso tras un comando en la siguiente llamada al modelo de esa conversación, una sola vez.
+
+El guard pasa la entrada en camelCase a los nombres que lee y responde siempre JSON con salida 0, también cuando falla él. `doctor` avisa si falta un evento y `uninstall` quita solo el hook `specty`. En la tabla de capacidades, el guard de Antigravity pasa a «sí» y su aviso tras cada comando, a «indirecto».
+
+### Desviaciones
+
+- T2 ya cambió `capabilities.ts` (el guard a «sí»), porque el tipo de `ADAPTERS` pide un módulo por cada agente con guard. Por eso el test de la tabla del core falló entre T2 y T3; `task done T2` pasó porque ejecuta la verificación de la tarea en lugar de `pnpm test`.
+- El test de T2 cambia `src/app.ts` antes del `git commit`: el guard solo deniega un commit que incluiría código gobernado, como fija el test de Claude Code.
+
+### Decisiones
+
+- Antigravity se detecta por archivos suyos (`.agents/hooks.json`, `.agents/rules`, `.agents/workflows`, `.agent` y `.antigravityignore`), no por `.agents`, donde Codex guarda sus skills.
+- El aviso pendiente va en `.git/specty/pending/<conversación>.warning`, como la tarjeta de Cursor: se entrega una vez y caduca en un día.
+- La carpeta del evento es el `Cwd` del comando o, si no lo trae, la primera del espacio de trabajo.
+
+### Pendientes
+
+- C9: el fin de turno de Antigravity (`Stop` con `decision: "continue"`), la tarjeta por un camino indirecto (no tiene evento de compactación), `.antigravityignore` y sus permisos.
+- Antigravity no documenta una variable de entorno en sus comandos, así que Specty no reconoce su terminal como la de un agente (ARCHITECTURE §4). En C9 hay que comprobar si tiene una herramienta para escribir en un comando en marcha, como `write_stdin` de Codex, que el guard no vería.
+- `isNewProject` toma las marcas de la tabla como archivos de agente: con las nuevas, `.agents/skills` ya no cuenta como tal al decidir si un proyecto es nuevo.

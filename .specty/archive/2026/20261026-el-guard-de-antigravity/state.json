@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-el-guard-de-antigravity",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-el-guard-de-antigravity",
   "baseCommit": "87207b70f94ffa4b71df29b3ede80c64ac251925",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:faf9e519b3b27c2773fce619803a9c39902f4dcc313f37ad658c0cec16a4ce57",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "125d7c20528a450629598e7622769ed3be2551df",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:27:43.123Z",
       "doneAt": "2026-10-26T19:31:34.800Z",
-      "summary": "La tabla de capacidades marca el guard de Antigravity como sí y su aviso tras cada comando como indirecto; ARCHITECTURE §10 cuenta sus hooks y la entrega en PreInvocation, y formats.md el archivo pending/<conversación>.warning."
+      "summary": "La tabla de capacidades marca el guard de Antigravity como sí y su aviso tras cada comando como indirecto; ARCHITECTURE §10 cuenta sus hooks y la entrega en PreInvocation, y formats.md el archivo pending/<conversación>.warning.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,5 +78,6 @@
     "AC": 5,
     "T": 3,
     "R": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T19:38:18.424Z"
 }

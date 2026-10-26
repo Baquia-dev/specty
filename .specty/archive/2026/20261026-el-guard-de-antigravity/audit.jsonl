@@ -10,3 +10,7 @@
 {"ts":"2026-10-26T19:27:43.123Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"125d7c20528a450629598e7622769ed3be2551df"}}
 {"ts":"2026-10-26T19:31:34.712Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts","exit":0,"ms":876,"tree":"sha256:e03339910fc17cc0412f94c7d246b6cd691db8ea3dc8d0b9b54d72ae6fbfaa2a"}}
 {"ts":"2026-10-26T19:31:34.801Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"La tabla de capacidades marca el guard de Antigravity como sí y su aviso tras cada comando como indirecto; ARCHITECTURE §10 cuenta sus hooks y la entrega en PreInvocation, y formats.md el archivo pending/<conversación>.warning."}}
+{"ts":"2026-10-26T19:37:12.993Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":156662,"tree":"sha256:e03339910fc17cc0412f94c7d246b6cd691db8ea3dc8d0b9b54d72ae6fbfaa2a"}}
+{"ts":"2026-10-26T19:37:12.997Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T19:38:18.426Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:d490545efea0629798bd0fa90649ebea46c216df5ab9b8769655a92c985f7fca","size":"L","warnings":2}}
+{"ts":"2026-10-26T19:40:37.927Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
