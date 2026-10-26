@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261026-supresiones-en-cualquier-lenguaje",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-supresiones-en-cualquier-lenguaje",
+  "baseCommit": "29c375072708f67d04c7b72d2b22d254bdda4efe",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bddb33aa3ba097cf6a334598f771aca1782c2198a9028b55fdc8f7f1e1ea4ca0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:91df0dd02c37860e8507f69a9268fe20d8b0a9aab2913fb2fa273cf63dae6bb5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:842443b0cf50ab413795c5b64c46d2cd3f8ad3c8aebae21543d4d6f5f842e31b",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:3d9c2e8f1f68047c8c493da626dd77a49f75ae03d6cc7d891e61697522190e3d",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:0ffbe3ad5086e7692fd0ae7573dbafb58319bf0acd9308e1782732415bb2ba27",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ce217325c6478d1d5a0b471acb28bc05e02ab02ac0d61cf6792166d9d568b3ee",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:0a2c93e3c0b7372205a66e756259d27de359de5dc237501d38bf0f4f7b09bec9",
+    "at": "2026-10-26T13:57:58.381Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
