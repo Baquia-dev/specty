@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261026-los-agentes-no-leen-ruido",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-los-agentes-no-leen-ruido",
+  "baseCommit": "eb699d2810711fc36fe36003c5709be08a67c49d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:34fcb123a6f92274ccdc332822b8b3c0e91b9a97cd34b94270e23076784e2f52",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f4da20bd3ad13d259a8c0450e7ebe8bcee669d3171ac6e3cda6628b5f9b13c2d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a3ef4b09564573bfdb10d12ce9675980cd582861453e7aba563c8a888f30f751",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b1afc07033532a38d26ab8b5203a8bb33fb4b5e3e4ad0db9bc6a5211990ded3c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cbb4b8a78c7345799e167bd263d2aad47b5b11df9a93565d4de1da2b2f9e60fc",
+    "at": "2026-10-26T10:10:07.914Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
