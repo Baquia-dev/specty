@@ -80,7 +80,7 @@ La fila de la tabla pasa a llamarse «Devin (Windsurf)». El corte también reco
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/src/agents/index.ts, packages/cli/src/install/agents.ts, packages/core/src/capabilities.ts, packages/core/src/agents.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/windsurf.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts test/agents.test.ts test/uninstall.test.ts test/check-ignores.test.ts
-- [ ] T2: Devin comprueba el fin de turno y trae la tarjeta tras compactar
+- [x] T2: Devin comprueba el fin de turno y trae la tarjeta tras compactar
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/test/windsurf.test.ts, packages/cli/test/agents.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts test/agents.test.ts test/check-agent-stop.test.ts

@@ -121,7 +121,11 @@ describe("each agent's module", () => {
     expect(ADAPTERS.opencode.kind({ hook_event_name: "SessionStart", source: "compact" })).toBe(
       "compact",
     );
-    expect(kinds("windsurf", ["PreToolUse", "PostToolUse"])).toEqual(["before", "after"]);
+    expect(kinds("windsurf", ["PreToolUse", "PostToolUse", "PostCompaction"])).toEqual([
+      "before",
+      "after",
+      "compacting",
+    ]);
     expect(kinds("gemini-cli", ["BeforeTool", "AfterTool", "BeforeAgent"])).toEqual([
       "before",
       "after",

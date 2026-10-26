@@ -1,7 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, cli, git, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import {
+  APP,
+  CONFIG,
+  cli,
+  git,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
+
+// Put together from parts, so that this file does not trip `specty check`.
+const TODO = "TODO";
+const CHECKS = "checks:\n  levels: { secrets: off }\n";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
 async function implementing(): Promise<string> {
@@ -101,6 +116,7 @@ describe("installing the guard in Devin", () => {
       ours("^(exec|write|edit|notebook_edit|apply_patch|write_to_process)$"),
     ]);
     expect(hooks.PostToolUse).toEqual([lint, ours("^exec$")]);
+    expect(hooks.PostCompaction).toEqual([{ hooks: ours("").hooks }]);
     expect(await read(root, ".git/info/exclude")).toContain(`/${HOOKS}`);
     expect(git(root, "status", "--porcelain")).toBe("");
     expect((await cli(root, ["doctor"])).out).toContain(
@@ -116,5 +132,71 @@ describe("installing the guard in Devin", () => {
 
     await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
     expect(JSON.parse(await read(root, HOOKS))).toEqual({ PostToolUse: [lint] });
+  });
+});
+
+describe("the task card in Devin", () => {
+  it("comes back with the next command's result after a compaction, once (AC3)", async () => {
+    const root = await implementing();
+    const compacted = await devin(root, "PostCompaction", { summary: "Resumen." });
+    expect(compacted).toMatchObject({ code: 0, out: "" });
+    const run = async (id: string, command: string) => {
+      const call = tool("exec", { command, shell_id: "main" }, id);
+      await devin(root, "PreToolUse", call);
+      return devin(root, "PostToolUse", { ...call, tool_response: { success: true, output: "" } });
+    };
+    const after = await run("call_2", "ls");
+    expect(JSON.parse(after.out).hookSpecificOutput.additionalContext).toContain("TAREA T1");
+    expect(await run("call_3", "ls -a")).toMatchObject({ code: 0, out: "" });
+  });
+});
+
+describe("the end of Devin's turn", () => {
+  it("sends it back with the report while specty check --changed fails, once (AC4)", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${CHECKS}` });
+    await writeFiles(root, {
+      "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+    });
+    const stop = (active: boolean) =>
+      cli(root, ["hook", "agent-stop", "windsurf"], {
+        stdin: JSON.stringify({
+          session_id: "s1",
+          prompt_id: "p1",
+          hook_event_name: "Stop",
+          stop_hook_active: active,
+        }),
+      });
+    const back = await stop(false);
+    expect(back.code).toBe(0);
+    const reply = JSON.parse(back.out);
+    expect(reply.decision).toBe("block");
+    expect(reply.reason).toContain(`FALLA todo\n  src/app.ts:2 ${TODO} sin referencia a un issue`);
+    // Already sent back once: it may end now, so that it never loops.
+    expect(await stop(true)).toMatchObject({ code: 0, out: "" });
+  });
+
+  it("is offered by check --install next to the guard, once, and init keeps it (AC4)", async () => {
+    const root = await tempRepo(PACKAGE);
+    await cli(root, ["init", "--language", "es", "--tools", "windsurf"]);
+    const plan = await cli(root, ["check", "--install", "--dry-run"]);
+    expect(plan.out).toContain(`${HOOKS} (modificar)`);
+    expect(plan.out).toContain("hook agent-stop windsurf");
+    expect((await cli(root, ["check", "--install"], { terminal: person() })).code).toBe(0);
+    const hooks = async () => JSON.parse(await read(root, HOOKS));
+    const turn = (await hooks()).Stop;
+    expect(turn).toEqual([
+      {
+        hooks: [
+          {
+            type: "command",
+            command: expect.stringContaining("hook agent-stop windsurf"),
+            timeout: 600,
+          },
+        ],
+      },
+    ]);
+    expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain("agent-stop");
+    await cli(root, ["init", "--language", "es", "--tools", "windsurf"]);
+    expect((await hooks()).Stop).toEqual(turn);
   });
 });
