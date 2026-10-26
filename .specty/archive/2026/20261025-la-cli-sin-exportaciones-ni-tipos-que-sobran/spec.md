@@ -61,3 +61,21 @@ Con todas sus reglas encendidas, knip marca en `packages/cli/src` 16 exportacion
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+En `packages/cli/src` dejan de exportarse 15 funciones, constantes y clases y 6 tipos que solo usaba su archivo; se borran `retroTrailers`, que nadie llamaba, y la reexportación de `Detection`. Con todas sus reglas encendidas, knip ya no marca nada de `packages/cli/src`.
+
+### Desviaciones
+
+- Los ayudantes de los tests de la CLI salieron de este corte antes de aprobarlo, porque con ellos llegaba a tamaño XL: quedan para C5, con 3 exportaciones y 5 tipos.
+
+### Decisiones
+
+- T1 y T2 se verificaron con la comprobación de tipos de la CLI y T3 con `pnpm check`, porque quitar un `export` solo puede romper a quien lo importa.
+
+### Pendientes
+
+- C5 limpia los ayudantes de los tests de la CLI antes de encender las reglas.
