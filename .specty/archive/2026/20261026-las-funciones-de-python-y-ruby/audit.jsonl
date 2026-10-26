@@ -13,3 +13,6 @@
 {"ts":"2026-10-26T15:12:08.087Z","actor":"specty","event":"scope.decided","data":{"task":"T3","paths":["packages/cli/test/check-functions.test.ts"],"reason":"El test del proveedor de funciones, que ahora mide Python y Ruby","decision":"auto","basis":{"packages/cli/test/check-functions.test.ts":"test"},"plannedFor":{}}}
 {"ts":"2026-10-26T15:14:26.845Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":85516,"tree":"sha256:410dd65192bfb5e75840dad6098c56995f3251be376e90edf274f7d5d0ee926d"}}
 {"ts":"2026-10-26T15:14:26.952Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"El proveedor de funciones solo deja fuera Elixir; un test de la CLI mide Python y Ruby y el de un stack sin estimador usa Elixir; guías, formats y ARCHITECTURE explican los dos estimadores"}}
+{"ts":"2026-10-26T15:14:34.636Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T15:14:46.211Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ed7b57c3663b0e656f3332013290158556c11c6f25277aab3636fdb4293e7bdc","size":"M","warnings":1}}
+{"ts":"2026-10-26T15:14:46.382Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

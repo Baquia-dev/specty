@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-las-funciones-de-python-y-ruby",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-las-funciones-de-python-y-ruby",
   "baseCommit": "79acdd0588db715f888d3fa7aff43083d5f1763c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:bac8da332061a87dc1673280422ed775f4e136cefba4cc16d15345f8e7ad0d17",
@@ -59,14 +59,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/check-functions.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "616f3e969c3794b65e5ec852836560d13b81c303",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:11:43.085Z",
       "doneAt": "2026-10-26T15:14:26.951Z",
-      "summary": "El proveedor de funciones solo deja fuera Elixir; un test de la CLI mide Python y Ruby y el de un stack sin estimador usa Elixir; guías, formats y ARCHITECTURE explican los dos estimadores"
+      "summary": "El proveedor de funciones solo deja fuera Elixir; un test de la CLI mide Python y Ruby y el de un stack sin estimador usa Elixir; guías, formats y ARCHITECTURE explican los dos estimadores",
+      "scopeExtra": [
+        "packages/cli/test/check-functions.test.ts"
+      ]
     }
   },
   "pending": {
@@ -78,5 +78,6 @@
     "AC": 4,
     "T": 3,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T15:14:46.210Z"
 }

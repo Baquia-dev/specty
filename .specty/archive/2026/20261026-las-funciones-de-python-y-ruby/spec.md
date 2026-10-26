@@ -55,3 +55,29 @@ follows:
   - files: packages/cli/src/check/functions.ts, docs/checks.md, docs/checks.en.md, docs/formats.md
   - ac: AC1, AC3, AC4
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+`function-lines` y `complexity` miden también Python y Ruby:
+- Python, por su indentación: `def` y `async def`, cabeceras de varias líneas, sin docstrings, cadenas ni comentarios.
+- Ruby, por `def … end`: cuenta los bloques que se abren y se cierran por el camino; `def x = expr` ocupa una línea, y los modificadores y ternarios cuentan como ramas.
+
+La medición de cada función, común a los tres estimadores, vive en `function-spans.ts`. Ahora solo Elixir queda sin medir.
+
+### Desviaciones
+
+- `function-spans.ts`, con `FunctionMetric` y `measure`, no estaba en el plan. Entró por la ampliación S1, para no repetir la medición en cada estimador.
+- El test del core «mide nada en un lenguaje sin llaves» usaba Python, que este cambio pasa a medir; ahora usa Elixir. En la CLI, el caso de un stack sin estimador también pasó de Python a Elixir.
+- `docs/ARCHITECTURE.md` tampoco estaba en «Archivos»: es documentación libre, y repetía la frase de los lenguajes de llaves.
+
+### Decisiones
+
+- Elixir queda fuera: no está entre los nueve stacks del plan, y sus `do … end` y `fn … end` necesitan otro estimador.
+- En Python, las líneas de un docstring o de una cadena de varias líneas no cuentan como código.
+- En Ruby, una sentencia abre bloque por su palabra clave al principio o tras `=`, nunca como modificador. Un heredoc con `end` dentro puede confundir al estimador.
+
+### Pendientes
+
+- S5: los escáneres de imports para `layers` en Python, Go, Rust, Java, Kotlin, PHP y C#.
