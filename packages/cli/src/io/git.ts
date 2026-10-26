@@ -68,6 +68,8 @@ export function createGit(root: string, baseEnv: NodeJS.ProcessEnv = process.env
     execute("git", args, {
       cwd: root,
       env: { ...baseEnv, ...options.env },
+      // A diff or a file is read whole: cut, it would lose its beginning.
+      whole: true,
       ...(options.input !== undefined ? { input: options.input } : {}),
     });
   const output = async (args: readonly string[], options: RunOptions = {}) => {

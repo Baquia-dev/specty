@@ -26,6 +26,7 @@ import { Preferences } from "../theme/preferences";
 import { AssumptionRow } from "./assumption-row";
 import { ReviewComments, SECTION_LABELS, selectionAnchor } from "./comments";
 import { ReviewDelta } from "./delta-review";
+import { IndependentReview } from "./independent-review";
 import { Markdown } from "./markdown";
 import { SECTION_META, sectionNumber, sectionProgress } from "./section-meta";
 import { ReviewItems } from "./spec-sections";
@@ -69,6 +70,7 @@ const SECTION =
     ReviewComments,
     ReviewDelta,
     UserRequest,
+    IndependentReview,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Positioned, so absolute screen-reader text inside stays within the scrolling area.
@@ -98,6 +100,10 @@ const SECTION =
       }
 
       <article #center class="flex min-w-0 flex-[999_1_480px] flex-col gap-6">
+        <!-- What another model said about the spec (specty review), before the person reads it. -->
+        @if (change().specReview; as independent) {
+          <sp-independent-review [review]="independent" />
+        }
         @if (review().delta; as delta) {
           @if (mode() === 'delta') {
             <sp-review-delta [change]="change()" [delta]="delta" [editable]="editable()" (comment)="anchor.set($event)" (showFull)="show('full')" />

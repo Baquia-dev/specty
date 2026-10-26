@@ -18,6 +18,7 @@ import {
   inWorktree,
   NOW,
   person,
+  read,
   testEnv,
   toClosing,
   writeFiles,
@@ -68,6 +69,29 @@ describe("the changes the server gives", () => {
     // The same answer from the other worktree.
     const there = await changeRecords(await sessionAt(other));
     expect(there.map(({ state }) => state.id)).toEqual([OTHER, CHANGE]);
+  });
+
+  it("bring the text of each independent review that answered (AC4)", async () => {
+    const { root, other } = await twoChanges();
+    const dir = `.specty/changes/${OTHER}`;
+    const at = "2026-10-24T11:00:00.000Z";
+    const reviewed = (data: Record<string, unknown>) =>
+      JSON.stringify({ ts: at, actor: "specty", event: "review.completed", data });
+    const answered = { target: "spec", revision: 1, cmd: "r", exit: 0, ms: 5 };
+    await writeFiles(other, {
+      [`${dir}/reviews/spec-r1.md`]: "Falta un criterio para el error.\n",
+      [`${dir}/audit.jsonl`]: [
+        (await read(other, `${dir}/audit.jsonl`)).trimEnd(),
+        reviewed({ ...answered, file: `${dir}/reviews/spec-r1.md` }),
+        // A review that failed has no answer, so there is nothing to show of it.
+        reviewed({ target: "diff", revision: 1, cmd: "r", exit: 1, ms: 5 }),
+        "",
+      ].join("\n"),
+    });
+    const [open] = await changeRecords(await sessionAt(root));
+    expect(open?.reviews).toEqual([
+      { target: "spec", revision: 1, at, text: "Falta un criterio para el error." },
+    ]);
   });
 
   it("leave out an archived change whose state cannot be read", async () => {

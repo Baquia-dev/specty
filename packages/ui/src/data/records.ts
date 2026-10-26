@@ -33,6 +33,23 @@ export interface ChangeRecord {
   readonly verifyFull?: string;
   /** The worktree whose files these are, as the local server says it. */
   readonly folder?: string;
+  /** The independent reviews that answered, with their text, oldest first (ADR 0011). */
+  readonly reviews?: readonly ReviewRecord[];
+}
+
+/** An independent review (`specty review`): of the spec or of the result, and what it said. */
+export interface ReviewRecord {
+  readonly target: "spec" | "diff";
+  readonly revision: number;
+  /** ISO time it was done. */
+  readonly at: string;
+  readonly text: string;
+}
+
+/** What the agent learned in a task (`task done --finding`), for the closing and what follows. */
+export interface FindingView {
+  readonly task: string;
+  readonly text: string;
 }
 
 /** A warning `task done` left on a task: a risky pattern it added, or assertions it removed. */
@@ -253,6 +270,11 @@ export interface ChangeView {
   readonly progress: ProgressView;
   /** What `task done` warned about the tasks, to review before accepting; none when nothing. */
   readonly warnings?: readonly WarningView[];
+  /** What the tasks learned; none when nothing. */
+  readonly findings?: readonly FindingView[];
+  /** The last independent review of the spec, and of the result, that answered. */
+  readonly specReview?: ReviewRecord;
+  readonly resultReview?: ReviewRecord;
   /** The closing the agent wrote (`## Cierre`), in its parts; none until it writes it. */
   readonly closing?: ClosingParts;
   /** What happened, from `audit.jsonl`, oldest first. */

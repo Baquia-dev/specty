@@ -28,6 +28,7 @@ import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { humanChange, postponed } from "./human";
 import { pendingIntegration } from "./integrate";
+import { thenNext } from "./next";
 
 /**
  * `specty accept`: a person accepts the result; quick changes close right away. `verify` answers
@@ -176,15 +177,18 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
     { revision: state.revision },
     "human",
   );
-  return decisionCard(
-    headerOf(state.id, moved.phase),
-    [
-      t(
-        "Resultado aceptado; el agente redactará el cierre.",
-        "Result accepted; the agent will write the closing.",
-      ),
-    ],
-    session.cards,
+  return thenNext(
+    session,
+    decisionCard(
+      headerOf(state.id, moved.phase),
+      [
+        t(
+          "Resultado aceptado; el agente redactará el cierre.",
+          "Result accepted; the agent will write the closing.",
+        ),
+      ],
+      session.cards,
+    ),
   );
 }
 

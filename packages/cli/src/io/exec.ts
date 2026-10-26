@@ -10,6 +10,8 @@ export interface ExecOptions {
   readonly shell?: boolean;
   /** Hears each piece of stdout and stderr as it comes, for a live view of the output. */
   readonly onOutput?: (stream: "stdout" | "stderr", text: string) => void;
+  /** Keep all of the output, as for git, whose output is data rather than a log. */
+  readonly whole?: boolean;
 }
 
 export interface ExecResult {
@@ -20,10 +22,10 @@ export interface ExecResult {
   readonly timedOut: boolean;
 }
 
-/** What `execute` keeps of each stream: an output this long lost its beginning. */
+/** What `execute` keeps of each stream, unless `whole`: an output this long lost its beginning. */
 export const MAX_OUTPUT = 512 * 1024;
 
-/** Runs a process and collects its output (the last 512 KB of each stream). */
+/** Runs a process and collects its output: the last 512 KB of each stream, or all with `whole`. */
 export function execute(
   command: string,
   args: readonly string[],
@@ -39,7 +41,8 @@ export function execute(
     let stdout = "";
     let stderr = "";
     let timedOut = false;
-    const keep = (text: string) => (text.length > MAX_OUTPUT ? text.slice(-MAX_OUTPUT) : text);
+    const keep = (text: string) =>
+      options.whole === true || text.length <= MAX_OUTPUT ? text : text.slice(-MAX_OUTPUT);
     child.stdout.on("data", (chunk: Buffer) => {
       const text = chunk.toString("utf8");
       stdout = keep(stdout + text);

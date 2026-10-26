@@ -19,7 +19,9 @@ import { Select } from "../components/select";
 import { evidenceOf, summaryOf } from "../data/acceptance";
 import { Decisions } from "../data/decisions";
 import type { ChangeView } from "../data/records";
+import { IndependentReview } from "../review/independent-review";
 import { Preferences } from "../theme/preferences";
+import { AcceptanceFindings } from "./acceptance-findings";
 import { AcceptanceWarnings } from "./acceptance-warnings";
 import { ChangesView, WHOLE_CHANGE } from "./changes-view";
 import { ClosingView } from "./closing-view";
@@ -50,6 +52,8 @@ const VIEW_KEY = "specty.acceptance.view";
     ChangesView,
     ClosingView,
     AcceptanceWarnings,
+    AcceptanceFindings,
+    IndependentReview,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
@@ -70,6 +74,13 @@ const VIEW_KEY = "specty.acceptance.view";
       <!-- What task done warned about: risky patterns added and assertions removed. -->
       @if (change().warnings; as warnings) {
         <sp-acceptance-warnings [warnings]="warnings" />
+      }
+      <!-- What the tasks learned, and what another model said about the result (specty review). -->
+      @if (change().findings; as findings) {
+        <sp-acceptance-findings [findings]="findings" />
+      }
+      @if (change().resultReview; as review) {
+        <sp-independent-review [review]="review" />
       }
       <!-- Only when the project has a full verification (verify.full). -->
       @if (change().progress.full; as full) {

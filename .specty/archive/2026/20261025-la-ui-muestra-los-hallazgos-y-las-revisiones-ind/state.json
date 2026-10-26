@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261025-la-ui-muestra-los-hallazgos-y-las-revisiones-ind",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-la-ui-muestra-los-hallazgos-y-las-revisiones-ind",
+  "baseCommit": "6fd1d14b36002afe22b23738f684f811988b9e40",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:714f0770a37adad856c027bd1c6d9a206d3519ec56508444f8f16f7b8bb0fa81",
+    "at": "2026-10-26T00:26:33.869Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:068c3c2675dfa762236b4495b53668626bb1fbcd6917cb846920a8476b9a5df3",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:d4aa3b1e7d5423438150a9b852551c14e15f093812904bc0504b7fd59f66b195",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c8b8cc27ab024c501e35be9989e4af1a21ab6801d3be7a5fe1e346a354899338",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2dd5af0928d4a8f3d73b6f8c616b94ed5eb3f25f",
+      "attempts": 1,
+      "startedAt": "2026-10-26T00:26:34.229Z",
+      "doneAt": "2026-10-26T00:29:06.797Z",
+      "summary": "El servidor sirve con cada cambio reviews: target, revisión, fecha y texto de cada review.completed con respuesta, leído por su nombre en reviews/ del propio cambio (sigue valiendo archivado y no sirve nada más).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "81e267cb7dec36a03cd86329d807b916581fcb0a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T00:29:07.100Z",
+      "doneAt": "2026-10-26T00:31:05.063Z",
+      "summary": "La vista del cambio (UI) trae findings (findingsOf: los del último task.completed de cada tarea) y specReview/resultReview, la última revisión con respuesta de la spec y del resultado, de record.reviews.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cc8510f2eaf6796d72c0d93bfdcebb932f6985e3",
+      "attempts": 1,
+      "startedAt": "2026-10-26T00:31:05.355Z",
+      "doneAt": "2026-10-26T00:34:43.832Z",
+      "summary": "Aceptación muestra Hallazgos (acceptance-findings) y la revisión independiente del resultado, y la pestaña Spec la de la spec (review/independent-review: texto tal cual, con revisión y fecha; es información). docs/ui.md y ARCHITECTURE §15.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T00:35:14.753Z"
+}

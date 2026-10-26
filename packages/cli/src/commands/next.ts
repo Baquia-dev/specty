@@ -29,6 +29,17 @@ export async function next(session: Session): Promise<Output> {
   return nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
 }
 
+/**
+ * A person's decision that the agent takes in delegated mode, and what comes after it at once:
+ * the decision's lines, then what `next` says, so no `next` is needed only to bring the card. A
+ * person's own decision, or one that did not go through, stays as it is.
+ */
+export async function thenNext(session: Session, decided: Output): Promise<Output> {
+  if (session.actor !== "agent" || decided.status !== "ok") return decided;
+  const card = await next(session);
+  return { ...card, blocks: [...decided.blocks, ...card.blocks] };
+}
+
 /** Marks the first pending task as active, unless one already is. */
 export async function activateNextTask(
   session: Session,

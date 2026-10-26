@@ -13,6 +13,7 @@ import { commitState, resolveActive } from "../flow/active";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { canDecide } from "./human";
+import { thenNext } from "./next";
 import { withExtras } from "./scope";
 
 /** `specty reject --scope S`: a person turns down a scope request. */
@@ -124,16 +125,19 @@ export async function decideScope(
     },
     "human",
   );
-  return decisionCard(
-    header,
-    [
-      decision === "approve"
-        ? t(
-            `${request.id} aprobada: ${request.paths.join(", ")} entra en el alcance de ${request.task}.`,
-            `${request.id} approved: ${request.paths.join(", ")} joins the scope of ${request.task}.`,
-          )
-        : t(`${request.id} rechazada.`, `${request.id} rejected.`),
-    ],
-    session.cards,
+  return thenNext(
+    session,
+    decisionCard(
+      header,
+      [
+        decision === "approve"
+          ? t(
+              `${request.id} aprobada: ${request.paths.join(", ")} entra en el alcance de ${request.task}.`,
+              `${request.id} approved: ${request.paths.join(", ")} joins the scope of ${request.task}.`,
+            )
+          : t(`${request.id} rechazada.`, `${request.id} rejected.`),
+      ],
+      session.cards,
+    ),
   );
 }
