@@ -64,3 +64,22 @@ Nueve funciones de los comandos del flujo pasan de los límites de Specty: `acce
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los comandos del flujo de la CLI quedan dentro de los límites de Specty, en los pasos que ya seguían y en el mismo orden de preguntas, registros y commits: `accept`, `approveSpec`, `propose`, `review`, `close`, `cancel`, `taskDone`, `createNew` y `personSession`. Además, `complexity` contaba como rama cualquier `guard`, también una variable de TypeScript con ese nombre; ahora solo cuenta el `guard … else` de Swift. `pnpm check` pasó al aceptar.
+
+### Desviaciones
+
+- T5 amplió su alcance (S1) al estimador de `complexity` en core y a su test: `accept` y `close` seguían por encima solo porque cada mención de su variable `guard` contaba como rama.
+- El aviso de riesgo de T1 (`accept.ts` ejecuta comandos por la shell, CWE-78) no se revisó con el usuario antes de aceptar, por un error del agente: es la misma llamada a `execute(full, [], { shell: true })` que ya había, movida a `runFullVerification`. Se le explicó antes de cerrar.
+
+### Decisiones
+
+- Arreglar el estimador en vez de renombrar la variable, que habría escondido el fallo para cualquier proyecto con un `guard`.
+
+### Pendientes
+
+Ninguno.

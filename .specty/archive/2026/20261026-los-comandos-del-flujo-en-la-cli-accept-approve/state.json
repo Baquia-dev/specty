@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
   "baseCommit": "a3716f7143c6f2c56f5da78a29cbfb9e56a0e522",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:39f78595c4eb5e17d31ff3cbb00a6058a5d9c76b5a6ee25622a257e8ab615fb1",
@@ -71,14 +71,14 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/checks/functions.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "ef75d39ab0bdb26d31844a407151c5cc3434364f",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:38:20.962Z",
       "doneAt": "2026-10-26T19:48:46.114Z",
-      "summary": "task.ts: taskToComplete hace las comprobaciones previas. new.ts: newInFolder crea el cambio sin worktree. human.ts: namedChange y pickChange. Y complexity contaba cualquier guard; ahora solo el guard...else de Swift, con su test."
+      "summary": "task.ts: taskToComplete hace las comprobaciones previas. new.ts: newInFolder crea el cambio sin worktree. human.ts: namedChange y pickChange. Y complexity contaba cualquier guard; ahora solo el guard...else de Swift, con su test.",
+      "scopeExtra": [
+        "packages/core/src/checks/functions.ts"
+      ]
     }
   },
   "pending": {
@@ -90,5 +90,6 @@
     "AC": 2,
     "T": 5,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T19:50:50.812Z"
 }

@@ -18,3 +18,7 @@
 {"ts":"2026-10-26T19:43:15.958Z","actor":"agent","tool":"claude-code","event":"scope.decided","data":{"id":"S1","decision":"approved","delegated":true}}
 {"ts":"2026-10-26T19:48:46.021Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm --filter @baquia-dev/specty exec vitest run","exit":0,"ms":55223,"tree":"sha256:584c0ad940c753878cd88b2f33d1ab983be3c650b39a7051b43ac7231a7ae192"}}
 {"ts":"2026-10-26T19:48:46.115Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"task.ts: taskToComplete hace las comprobaciones previas. new.ts: newInFolder crea el cambio sin worktree. human.ts: namedChange y pickChange. Y complexity contaba cualquier guard; ahora solo el guard...else de Swift, con su test."}}
+{"ts":"2026-10-26T19:50:27.870Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":95271,"tree":"sha256:584c0ad940c753878cd88b2f33d1ab983be3c650b39a7051b43ac7231a7ae192"}}
+{"ts":"2026-10-26T19:50:27.872Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T19:50:50.813Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:e2791b0440f9848bfdb04f8015cf20fcdbfdb351d9b803ce801ce704ca000787","size":"M","warnings":5}}
+{"ts":"2026-10-26T19:57:47.428Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
