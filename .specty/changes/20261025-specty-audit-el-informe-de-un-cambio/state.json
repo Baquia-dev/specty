@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261025-specty-audit-el-informe-de-un-cambio",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-specty-audit-el-informe-de-un-cambio",
+  "baseCommit": "bae0d7ca914493830e2d7169bfce2197fb9f31fd",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:217084619c23b6e1f93aa283bb4b5bf70471e98b49635a45ef38956ce5d63821",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:5c67c1bbe55e3b48140409cb90b5a93adc48b052fe6b74a084b82b8386f38353",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ca49a97680be67074d62d77851f0f10c1e02ed39e3f16716329281bbfa48b726",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a1ba9cb8f21a4e5509f067cfd46191a1070dd274e79908ae28220e4d0b08a61a",
+    "at": "2026-10-26T00:44:16.097Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
