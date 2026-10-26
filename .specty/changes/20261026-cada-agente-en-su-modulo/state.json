@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-cada-agente-en-su-modulo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-cada-agente-en-su-modulo",
   "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
   "revision": 1,
@@ -70,12 +70,23 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e9ea28ed3dd6c4d203b53a16cf3f2bea75f0821b",
+      "attempts": 1,
       "startedAt": "2026-10-26T16:45:54.310Z",
       "doneAt": "2026-10-26T16:54:33.550Z",
-      "summary": "doctor y uninstall pasan por el módulo de cada agente (doctor, remove, userFile); las tablas de eventos, las reglas de Claude Code y la de Codex viven en su módulo. install/agents.ts queda con rutas y ayudantes comunes (missingEvents, removeFromJson)."
+      "summary": "doctor y uninstall pasan por el módulo de cada agente (doctor, remove, userFile); las tablas de eventos, las reglas de Claude Code y la de Codex viven en su módulo. install/agents.ts queda con rutas y ayudantes comunes (missingEvents, removeFromJson).",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/agents/adapter.ts"
+      ],
+      "attempts": 3,
+      "baseCommit": "f4b539bd2f1c00cdffe23eef794eb3e82c46c2f8",
+      "startedAt": "2026-10-26T16:54:33.917Z",
+      "doneAt": "2026-10-26T17:11:05.482Z",
+      "summary": "ARCHITECTURE §10 explica el módulo por agente (agents/, el contrato de adapter.ts y lo que comparten) y el mapa de AGENTS.md nombra agents/. Tres tipos de adapter.ts dejan de exportarse para que knip pase."
     }
   },
   "pending": {

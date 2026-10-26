@@ -15,7 +15,7 @@ export type JsonUpdate = (value: Record<string, unknown>) => Record<string, unkn
  * What an event of an agent's hooks is: before an action, after a shell command, a session that
  * starts again after a compaction, or Claude Code making or removing a worktree.
  */
-export type EventKind = "before" | "after" | "compact" | "worktree";
+type EventKind = "before" | "after" | "compact" | "worktree";
 
 /** The guard's verdict before each agent's form: let it through, or stop it and say why. */
 export type Verdict =
@@ -70,7 +70,7 @@ export function doctorLines(
 }
 
 /** Where `init` installs, and how it calls Specty. */
-export interface InstallContext {
+interface InstallContext {
   readonly root: string;
   readonly git: Git;
   readonly invocation: Invocation;
@@ -79,7 +79,7 @@ export interface InstallContext {
 }
 
 /** What an agent's install says in `init`'s output, and the files git tracks that it wrote. */
-export interface Installed {
+interface Installed {
   readonly done: readonly string[];
   readonly warnings: readonly string[];
   readonly written: readonly string[];

@@ -93,7 +93,7 @@ Lo que Specty hace con cada agente está hoy repartido en ocho archivos, con ram
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty test
   - type: refactor
-- [ ] T5: La documentación dice dónde vive cada agente
+- [x] T5: La documentación dice dónde vive cada agente
   - files: docs/ARCHITECTURE.md, AGENTS.md
   - ac: —
   - type: docs
