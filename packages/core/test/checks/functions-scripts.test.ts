@@ -55,3 +55,61 @@ describe("functionMetrics in Python", () => {
     expect(functionMetrics("settings.py", "DEBUG = True\nif DEBUG:\n    LEVEL = 1\n")).toEqual([]);
   });
 });
+
+describe("functionMetrics in Ruby", () => {
+  it("measures each def to the end that closes it, with its modifiers among the branches", () => {
+    const text = [
+      "class Cart",
+      "  def total(items)",
+      "    # if items were empty",
+      "    sum = 0",
+      "    items.each do |item|",
+      "      next if item.nil?",
+      "      sum += item.price unless item.free?",
+      "    end",
+      "    sum > 100 ? sum * 0.9 : sum",
+      "  end",
+      "",
+      "  def self.build(params)",
+      "    case params[:kind]",
+      "    when :a then new",
+      "    when :b then new",
+      "    end",
+      "  rescue ArgumentError",
+      "    nil",
+      "  end",
+      "",
+      '  def name = "cart"',
+      "",
+      "  def name=(value)",
+      "    @name = value",
+      "  end",
+      "end",
+    ].join("\n");
+    expect(functionMetrics("app/models/cart.rb", text)).toEqual([
+      { name: "total", start: 2, end: 10, lines: 8, complexity: 4 },
+      { name: "build", start: 12, end: 19, lines: 8, complexity: 4 },
+      { name: "name", start: 21, end: 21, lines: 1, complexity: 1 },
+      { name: "name=", start: 23, end: 25, lines: 3, complexity: 1 },
+    ]);
+  });
+
+  it("knows a modifier from a block, and a string or a comment from code", () => {
+    const text = [
+      "def check(user)",
+      '  log("if this and that end")',
+      "  return false if user.nil? # unless never",
+      "  result = if user.admin? && user.active?",
+      "    :all",
+      "  else",
+      "    :own",
+      "  end",
+      "  [1, 2].map { |n| n * 2 }",
+      "  result",
+      "end",
+    ].join("\n");
+    expect(functionMetrics("lib/tasks/check.rake", text)).toEqual([
+      { name: "check", start: 1, end: 11, lines: 11, complexity: 4 },
+    ]);
+  });
+});

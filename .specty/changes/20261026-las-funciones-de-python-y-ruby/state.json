@@ -39,14 +39,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/checks/function-spans.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "befbcb96b17e2def93a7c132369a4d4a0588ce56",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:05:15.388Z",
       "doneAt": "2026-10-26T15:09:03.967Z",
-      "summary": "Estimador de Python por indentación (def y async def, cabeceras de varias líneas, sin docstrings, cadenas ni comentarios); la medición pasa a function-spans.ts, compartida con el de llaves. El test de un lenguaje sin estimador usa ahora Elixir."
+      "summary": "Estimador de Python por indentación (def y async def, cabeceras de varias líneas, sin docstrings, cadenas ni comentarios); la medición pasa a function-spans.ts, compartida con el de llaves. El test de un lenguaje sin estimador usa ahora Elixir.",
+      "scopeExtra": [
+        "packages/core/src/checks/function-spans.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9890202a657797c45ba4d2226684221651ed8b0f",
+      "startedAt": "2026-10-26T15:09:04.257Z",
+      "doneAt": "2026-10-26T15:11:42.803Z",
+      "summary": "Estimador de Ruby: cada def hasta el end que la cierra, contando bloques abiertos por palabra clave al inicio o tras =, o por do; def de una línea y setters; modificadores y ternarios cuentan como ramas."
     }
   },
   "pending": {

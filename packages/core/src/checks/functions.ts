@@ -2,11 +2,12 @@
 import { splitCode } from "./code";
 import { type FunctionMetric, measure } from "./function-spans";
 import { pythonFunctions } from "./functions-python";
+import { rubyFunctions } from "./functions-ruby";
 
 /**
  * The functions of a source, measured line by line: where each one starts and ends, its lines of
  * code and its cyclomatic complexity. It is an estimate without a parser: one for every language
- * with braces, and its own for Python, whose functions are its indentation.
+ * with braces, and their own for Python, by indentation, and for Ruby, by `def … end`.
  */
 
 export type { FunctionMetric } from "./function-spans";
@@ -54,6 +55,7 @@ const BRANCHES = /\b(?:if|for|foreach|while|case|catch|guard)\b|&&|\|\||\?\?|\s\
 
 export function functionMetrics(path: string, text: string): FunctionMetric[] {
   if (/\.pyi?$/.test(path)) return pythonFunctions(text);
+  if (/\.(?:rb|rake)$/.test(path)) return rubyFunctions(text);
   if (!BRACES.test(path)) return [];
   const lines = splitCode(text, { lifetimes: path.endsWith(".rs") }).map((line) =>
     line.code.trim(),
