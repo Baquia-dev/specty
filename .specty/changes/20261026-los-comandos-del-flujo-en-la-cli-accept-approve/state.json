@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1b3ceee48e3e9954090ae060e9bfe6ccabc8e5e5",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:27:40.252Z",
       "doneAt": "2026-10-26T19:31:22.111Z",
-      "summary": "approve.ts: approveSpec comprueba la revisión y encadena noteApprovalSummary, decideAssumptions con decideAssumption, la confirmación y approved, que deja el registro y el commit a recordApproval. Mismo orden; los tests de la CLI pasan."
+      "summary": "approve.ts: approveSpec comprueba la revisión y encadena noteApprovalSummary, decideAssumptions con decideAssumption, la confirmación y approved, que deja el registro y el commit a recordApproval. Mismo orden; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "25a05838b1d7c694a394c388f47c945cb90c272b",
+      "startedAt": "2026-10-26T19:31:22.616Z",
+      "doneAt": "2026-10-26T19:35:11.507Z",
+      "summary": "propose.ts: propose deja la revisión escrita y su estado a recordProposal y la tarjeta a proposalCard. review.ts: review hace las guardas y runReview ejecuta, guarda y registra la revisión. Mismo resultado; los tests de la CLI pasan."
     }
   },
   "pending": {

@@ -49,7 +49,7 @@ Nueve funciones de los comandos del flujo pasan de los límites de Specty: `acce
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T3: La propuesta y la revisión independiente
+- [x] T3: La propuesta y la revisión independiente
   - files: packages/cli/src/commands/propose.ts, packages/cli/src/commands/review.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
