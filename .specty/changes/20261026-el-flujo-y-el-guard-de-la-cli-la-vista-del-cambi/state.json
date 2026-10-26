@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0b0e61bb12d26a05a36fbc0aeb61a5ea34f2c07c",
+      "attempts": 1,
       "startedAt": "2026-10-26T22:30:42.808Z",
       "doneAt": "2026-10-26T22:40:52.103Z",
-      "summary": "views.ts: changeView lee spec, commits y auditoría, y deja cada tarea a taskView (con recordedFindings), y a rejectedAssumptions, phaseFacts e integrationView el resto, con el mismo orden de campos y lecturas. Los tests de la CLI pasan."
+      "summary": "views.ts: changeView lee spec, commits y auditoría, y deja cada tarea a taskView (con recordedFindings), y a rejectedAssumptions, phaseFacts e integrationView el resto, con el mismo orden de campos y lecturas. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2610f6b0f6716c53a194e4a2437b75126f28ce9c",
+      "startedAt": "2026-10-26T22:40:52.440Z",
+      "doneAt": "2026-10-26T22:49:14.902Z",
+      "summary": "flow/integrate.ts: absorbTarget hace las guardas y la fusión, y deja a holderDirty la carpeta con cambios, a mergeStopped la fusión detenida, a failedVerification la verificación y a commitAbsorbed el commit. Mismas tarjetas; los tests pasan."
     }
   },
   "pending": {
