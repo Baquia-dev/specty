@@ -88,6 +88,14 @@ export function cursorSandboxTrackedWarning(
   );
 }
 
+/** Antigravity loads the workspace's hooks only from a folder the person trusts. */
+export function antigravityTrustWarning(lang: Lang): string {
+  return translator(lang)(
+    "Antigravity solo carga .agents/hooks.json si confías en la carpeta del proyecto: confía en ella cuando te lo pregunte.",
+    "Antigravity only loads .agents/hooks.json from a folder you trust: trust the project's folder when it asks.",
+  );
+}
+
 /** OpenCode's guard plugin, in the project (ADR 0013): `local` when not committed. */
 export function opencodeGuardLine(file: string, local: boolean, lang: Lang): string {
   const where = `${file}${local ? " (local)" : ""}`;

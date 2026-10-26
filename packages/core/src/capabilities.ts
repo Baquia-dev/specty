@@ -153,9 +153,19 @@ export const AGENT_CAPABILITIES = {
     endToEnd: impossible("no tiene CLI.", "it has no CLI."),
   },
   antigravity: {
-    markers: [".agents", ".agent"],
-    guard: pending,
-    afterShell: pending,
+    // Its own files: Codex keeps its skills in `.agents` too.
+    markers: [
+      ".agents/hooks.json",
+      ".agents/rules",
+      ".agents/workflows",
+      ".agent",
+      ".antigravityignore",
+    ],
+    guard: yes,
+    afterShell: indirect(
+      "su `PostToolUse` no responde al modelo, así que el aviso llega en su siguiente llamada al modelo (`PreInvocation`).",
+      "its `PostToolUse` does not reach the model, so the warning comes with its next model call (`PreInvocation`).",
+    ),
     afterCompaction: pending,
     worktreeByName: NO_ENTER_WORKTREE,
     endOfTurn: pending,

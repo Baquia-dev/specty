@@ -115,6 +115,7 @@ export {
   productLine,
 } from "./init";
 export {
+  antigravityTrustWarning,
   changeInProgressWarning,
   claudePermissionsLine,
   claudePointerLine,

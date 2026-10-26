@@ -3,6 +3,7 @@ import { AGENT_CAPABILITIES, isAgentTool, isGuardedAgent } from "@baquia-dev/spe
 import { describe, expect, it } from "vitest";
 import { ADAPTERS } from "../src/agents";
 import type { Verdict } from "../src/agents/adapter";
+import type { GuardReply } from "../src/enforce/actions";
 
 const allow: Verdict = { allow: true };
 const deny: Verdict = {
@@ -57,6 +58,31 @@ describe("each agent's module", () => {
       permission: "allow",
       user_message: "specty guard: roto",
     });
+  });
+
+  it("answers Antigravity always in JSON and with exit 0, since it blocks the tool otherwise", () => {
+    const { antigravity } = ADAPTERS;
+    const parsed = (reply: GuardReply | undefined) => {
+      expect([reply?.code, reply?.stderr]).toEqual([0, ""]);
+      return JSON.parse(reply?.stdout ?? "");
+    };
+    expect(parsed(antigravity.reply(allow, "before"))).toEqual({ decision: "allow" });
+    expect(parsed(antigravity.reply(deny, "before"))).toEqual({
+      decision: "deny",
+      reason: deny.text,
+    });
+    expect(parsed(antigravity.reply(deny, "after"))).toEqual({});
+    expect(parsed(antigravity.failed("specty guard: roto"))).toEqual({ decision: "allow" });
+    expect(parsed(antigravity.inject?.(["AVISO"]))).toEqual({
+      injectSteps: [{ ephemeralMessage: "AVISO" }],
+    });
+    expect(parsed(antigravity.inject?.([]))).toEqual({});
+    const named = (hook_event_name: string) => antigravity.kind({ hook_event_name });
+    expect(["PreToolUse", "PostToolUse", "PreInvocation"].map(named)).toEqual([
+      "before",
+      "after",
+      "invocation",
+    ]);
   });
 
   it("tells each event apart in its tool's names", () => {

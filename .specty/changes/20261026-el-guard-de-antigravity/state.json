@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "56e4427d06fd9774e8bdb1065d2b433f4d10c8bf",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:11:02.308Z",
       "doneAt": "2026-10-26T19:16:42.695Z",
-      "summary": "El guard toma el evento del argumento (--event) cuando la entrada no lo trae, normaliza la de cada agente (normalize) y, para un agente con late, deja el aviso tras un comando pendiente y lo entrega en su siguiente llamada al modelo (invocation, inject)."
+      "summary": "El guard toma el evento del argumento (--event) cuando la entrada no lo trae, normaliza la de cada agente (normalize) y, para un agente con late, deja el aviso tras un comando pendiente y lo entrega en su siguiente llamada al modelo (invocation, inject).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "51aea97ff4c59b064f7d6a1c55245b7bfed833f2",
+      "startedAt": "2026-10-26T19:16:43.153Z",
+      "doneAt": "2026-10-26T19:27:42.817Z",
+      "summary": "Antigravity tiene su guard: agents/antigravity.ts normaliza su entrada camelCase, responde JSON con salida 0 y deja el aviso tras un comando para su PreInvocation; init escribe el hook specty en .agents/hooks.json, y doctor y uninstall lo cubren."
     }
   },
   "pending": {

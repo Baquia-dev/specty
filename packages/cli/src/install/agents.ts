@@ -17,6 +17,7 @@ export const CURSOR_SANDBOX = ".cursor/sandbox.json";
 export const CODEX_HOOKS = ".codex/hooks.json";
 export const CODEX_RULES = ".codex/rules/specty.rules";
 export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
+export const ANTIGRAVITY_HOOKS = ".agents/hooks.json";
 
 /** Files where Specty installs agent hooks; `new --worktree` copies the ones git does not track. */
 export const AGENT_HOOK_FILES: readonly string[] = [
@@ -26,6 +27,7 @@ export const AGENT_HOOK_FILES: readonly string[] = [
   CURSOR_SANDBOX,
   CODEX_HOOKS,
   OPENCODE_PLUGIN,
+  ANTIGRAVITY_HOOKS,
 ];
 
 export interface AgentInstall {

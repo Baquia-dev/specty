@@ -75,7 +75,7 @@ Antigravity no tiene el guard de Specty: su agente puede escribir fuera del alca
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/pending.ts, packages/cli/src/enforce/entry.ts, packages/cli/src/enforce/commands.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enforce.test.ts test/cursor.test.ts test/hooks-entry.test.ts
-- [ ] T2: Antigravity tiene su guard
+- [x] T2: Antigravity tiene su guard
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/index.ts, packages/cli/src/install/agents.ts, packages/core/src/capabilities.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/antigravity.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/agents.test.ts test/uninstall.test.ts
