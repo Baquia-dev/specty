@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-gemini-cli-comprueba-el-fin-de-turno-trae-la-tar",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-gemini-cli-comprueba-el-fin-de-turno-trae-la-tar",
   "baseCommit": "94f91d91f6c49701d373032bca54bce4c94a198d",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6764f1cb9fcc007b59321abda9ccf87b142b665a",
+      "attempts": 1,
       "startedAt": "2026-10-26T21:04:54.394Z",
       "doneAt": "2026-10-26T21:08:31.634Z",
-      "summary": "Gemini CLI sigue un guion contra test/fake-gemini.ts, que imita la API de Gemini (GOOGLE_GEMINI_BASE_URL): guard, alcance, aviso tras un comando, tarjeta en el prompt y fin de turno; las 4 pruebas pasan con Gemini CLI 0.65.0 y se saltan sin él."
+      "summary": "Gemini CLI sigue un guion contra test/fake-gemini.ts, que imita la API de Gemini (GOOGLE_GEMINI_BASE_URL): guard, alcance, aviso tras un comando, tarjeta en el prompt y fin de turno; las 4 pruebas pasan con Gemini CLI 0.65.0 y se saltan sin él.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c0a60359d6ae2c84c0f38ad478c4745594cf3e36",
+      "startedAt": "2026-10-26T21:08:31.937Z",
+      "doneAt": "2026-10-26T21:11:30.809Z",
+      "summary": "La tabla marca el fin de turno, los permisos y la prueba de extremo a extremo de Gemini CLI como sí, y la tarjeta como indirecto (BeforeAgent). ARCHITECTURE cuenta su tarjeta, sus hooks, su sandbox, su fin de turno y la prueba (§16); formats.md, AfterAgent."
     }
   },
   "pending": {

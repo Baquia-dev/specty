@@ -73,7 +73,7 @@ Con el guard de C11, a Gemini CLI aún le falta lo demás que tiene Claude Code:
   - files: packages/cli/test/fake-gemini.ts, packages/cli/test/gemini-e2e.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-e2e.test.ts
-- [ ] T4: La tabla de capacidades y la documentación lo cuentan
+- [x] T4: La tabla de capacidades y la documentación lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

@@ -118,12 +118,18 @@ export const AGENT_CAPABILITIES = {
     guard: yes,
     // `AfterTool` adds it to the command's result (`additionalContext`).
     afterShell: yes,
-    afterCompaction: pending,
+    afterCompaction: indirect(
+      "dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
+      "it fires `PreCompress` before every attempt to compact, whether it compacts or not, so the card comes at the start of each turn, with its prompt (`BeforeAgent`).",
+    ),
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: pending,
+    // `AfterAgent`, checked with Gemini CLI 0.65.0.
+    endOfTurn: yes,
     exclusion: yes,
-    permissions: pending,
-    endToEnd: pending,
+    // Its sandbox, off by default, takes Specty's folders in `tools.sandboxAllowedPaths`.
+    permissions: yes,
+    // `gemini-e2e.test.ts`, against a fake of the Gemini API.
+    endToEnd: yes,
   },
   copilot: {
     markers: [".github/copilot-instructions.md", ".github/instructions"],

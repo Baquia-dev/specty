@@ -69,7 +69,7 @@ describe("the capability table", () => {
       "| OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
-    expect(es).toContain("| Gemini CLI | sí | sí | pendiente | no posible | pendiente | sí |");
+    expect(es).toContain("| Gemini CLI | sí | sí | indirecto | no posible | sí | sí | sí | sí |");
     expect(es).toContain(
       "| Antigravity | sí | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
     );
@@ -89,6 +89,9 @@ describe("the capability table", () => {
     );
     expect(es).toContain(
       "- Tarjeta tras compactar (Antigravity): no avisa cuando compacta, así que la tarjeta llega al empezar cada turno, con su primera llamada al modelo (`PreInvocation`).",
+    );
+    expect(es).toContain(
+      "- Tarjeta tras compactar (Gemini CLI): dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
     );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
