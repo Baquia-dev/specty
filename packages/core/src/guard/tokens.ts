@@ -57,6 +57,24 @@ function step(state: State, chars: readonly string[], index: number): number {
   const char = chars[index] ?? "";
   const next = chars[index + 1];
   if (state.quote !== undefined) return quoted(state, char, next, index);
+  // In this order: a quote or an escape, a separator, a grouping, a redirection.
+  const handled =
+    opening(state, char, next, index) ??
+    separating(state, chars, index) ??
+    grouping(state, char, next, index) ??
+    redirecting(state, chars, index);
+  if (handled !== undefined) return handled;
+  append(state, char);
+  return index;
+}
+
+/** A quote that opens, or a character escaped with a backslash. */
+function opening(
+  state: State,
+  char: string,
+  next: string | undefined,
+  index: number,
+): number | undefined {
   if (char === "'" || char === '"') {
     state.quote = char;
     state.started = true;
@@ -66,6 +84,12 @@ function step(state: State, chars: readonly string[], index: number): number {
     append(state, next);
     return index + 1;
   }
+  return undefined;
+}
+
+/** A blank that ends a word, or a newline, `;` or comment that ends a command. */
+function separating(state: State, chars: readonly string[], index: number): number | undefined {
+  const char = chars[index];
   if (char === " " || char === "\t") {
     flush(state);
     return index;
@@ -73,6 +97,16 @@ function step(state: State, chars: readonly string[], index: number): number {
   if (char === "\n") return skipHeredocs(state, chars, split(state, index));
   if (char === ";") return split(state, index);
   if (char === "#" && !state.started) return lineEnd(chars, index);
+  return undefined;
+}
+
+/** Arithmetic `((…))` and what it holds, or a subshell that opens or closes. */
+function grouping(
+  state: State,
+  char: string,
+  next: string | undefined,
+  index: number,
+): number | undefined {
   if (char === "(" && next === "(") return arithmetic(state, 1, index);
   if (char === ")" && next === ")" && state.arithmetic > 0) return arithmetic(state, -1, index);
   if (state.arithmetic > 0 && ARITHMETIC.has(char)) {
@@ -80,11 +114,16 @@ function step(state: State, chars: readonly string[], index: number): number {
     return index;
   }
   if (char === "(" || char === ")") return subshell(state, char, index);
-  if (char === ">") return redirect(state, next, index);
+  return undefined;
+}
+
+/** A redirection, an input or a heredoc, or `&` and `|` between commands. */
+function redirecting(state: State, chars: readonly string[], index: number): number | undefined {
+  const char = chars[index];
+  if (char === ">") return redirect(state, chars[index + 1], index);
   if (char === "<") return input(state, chars, index);
   if (char === "&" || char === "|") return ampersandOrPipe(state, char, chars, index);
-  append(state, char);
-  return index;
+  return undefined;
 }
 
 function quoted(state: State, char: string, next: string | undefined, index: number): number {
