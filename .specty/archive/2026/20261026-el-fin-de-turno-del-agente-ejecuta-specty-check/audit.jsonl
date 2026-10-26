@@ -15,3 +15,6 @@
 {"ts":"2026-10-26T10:04:40.718Z","actor":"agent","tool":"claude-code","event":"scope.decided","data":{"id":"S2","decision":"approved","delegated":true}}
 {"ts":"2026-10-26T10:07:07.283Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":111309,"tree":"sha256:50988ef9a0f2c114ba705ebe7290ebd80ad58fc05a393b21cccccd18b8c623d1"}}
 {"ts":"2026-10-26T10:07:07.386Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §10 documenta el fin de turno de cada agente y formats §6 el hook en check --install; la línea del hook pasa a core/cards/hooks.ts (checkChangedFailedLine), como pide la regla nueva de pnpm sources.","findings":["main añadió a pnpm sources que el CLI no use translator fuera de check/: los textos nuevos de enforce/ van a core/src/cards (cards/index.ts los agrupa)."]}}
+{"ts":"2026-10-26T10:07:24.111Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T10:07:38.496Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:71ce832410eb74667becb5f60d8fcd15710c4f91e7bea472df874fd61cd85397","size":"M","warnings":1}}
+{"ts":"2026-10-26T10:07:38.692Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -70,3 +70,25 @@ Cuando Claude Code, Cursor o Codex terminan su turno, un hook ejecuta `specty ch
 
 - R1: Los tests del proyecto hacen lento cada fin de turno — el hook solo existe si la persona lo instala, y `checks.levels.tests` apaga los tests si estorban.
 - R2: Un agente cambia el formato de su hook — cada formato vive en una función de `agent-stop.ts` con su test, y un `tool` desconocido no hace nada.
+
+## Cierre
+
+### Resumen
+
+Cuando Claude Code, Cursor o Codex terminan su turno, `specty hook agent-stop <agente>` ejecuta `specty check --changed`, con las verificaciones del plan si hay un cambio aprobado, y si falla le devuelve el informe en el formato que su documentación da: `decision: block` en Claude Code y Codex, `followup_message` en Cursor. El agente sigue corrigiendo en vez de dar la tarea por terminada. No entra en bucles: respeta `stop_hook_active` y el `loop_limit` de Cursor. Fuera de un repositorio de Specty no hace nada. `specty check --install` lo añade, con diff y confirmación, junto al guard de cada agente y con el mismo comando, una sola vez.
+
+### Desviaciones
+
+- `main` añadió a `pnpm sources` que el CLI pida sus textos al core. La línea del hook pasó a `core/src/cards/hooks.ts` (`checkChangedFailedLine`), con `scope add` aprobados para `cards/hooks.ts`, `cards/index.ts` y `agent-stop.ts`.
+- `check/install.ts` quedó en 303 líneas de código, por encima del aviso. Mezcla dos responsabilidades, planificar los pasos y presentarlos y aplicarlos, así que se divide en `install-plan.ts` e `install.ts` en el cambio siguiente, que añade otro paso al plan.
+
+### Decisiones
+
+- El hook vive en la entrada ligera de los hooks (`specty hook`), como los de git, y no en el guard.
+- Gemini CLI tiene `AfterAgent`, pero Specty aún no le instala hooks. OpenCode, Windsurf, Copilot y Antigravity no tienen un fin de turno que haga seguir al agente, así que su respaldo es la regla escrita de AGENTS.md (corte 8).
+- El tiempo límite del hook es el de `verify.timeoutSec`.
+
+### Pendientes
+
+- La exclusión de ruido para los agentes (`.cursorignore`, `permissions.deny` de Claude Code, `.codeiumignore`) y la división de `check/install.ts`.
+- Un instalador de hooks para Gemini CLI, si se quiere su `AfterAgent`.
