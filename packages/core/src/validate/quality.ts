@@ -143,6 +143,8 @@ export const checkFileReasons: Rule = (spec, ctx, lang) => {
 export const checkSplit: Rule = (spec, ctx, lang) => {
   const { kind } = spec.frontmatter;
   if (kind === "epic" || kind === "retro" || kind === "quick") return [];
+  // The size was decided at the approval, and the closing cannot touch Files to split anything.
+  if (ctx.phase === "closing") return [];
   const { exceeded, near } = splitBreaches(computeSize(spec, ctx.config, ctx.repo), ctx.config);
   if (exceeded.length > 0) {
     const detail = exceeded.map((breach) => formatBreach(breach, lang)).join("; ");

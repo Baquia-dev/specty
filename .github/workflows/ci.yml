@@ -40,3 +40,27 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+
+  # Specty checks itself with the pull request's own `specty check --changed`: only what the PR
+  # adds or makes grow fails, so functions that were already long do not block it.
+  specty-check:
+    name: specty check --changed
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      # `--changed` starts at the merge-base with the local main, which the checkout does not
+      # create: without it, the run would compare with HEAD and see nothing.
+      - run: git branch main origin/main
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @baquia-dev/specty build
+      - run: node packages/cli/dist/specty.mjs check --changed

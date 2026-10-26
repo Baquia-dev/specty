@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-la-ci-de-specty-ejecuta-specty-check-en-los-pull",
+  "baseCommit": "bf528064e4af69d1c46a08bb2c4339e967a52d84",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9205a3c062eec0a30b12cd9ad9477ce5d3f8fbb04cf580346a1dfd9e3d56191d",
+    "at": "2026-10-26T13:41:06.197Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "1 ruta sensible"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:65789af7970ecb84480a56a47c64ec736ff830aa94d75b47c2cd34ff63fd5af0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6be884d1d6b81afe2a95df371dfdde707179b5b2169905ae8299c8480dcb7fc5",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3d94003853a13c07a3ca74d837cec8a926492bd7",
+      "attempts": 1,
+      "startedAt": "2026-10-26T13:41:06.619Z",
+      "doneAt": "2026-10-26T13:42:01.206Z",
+      "summary": "Test de --changed en el checkout de un PR (HEAD separado en el merge): con main local ve solo lo que añade el PR; sin ella no ve nada, por eso el job la crea.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "58b8cf10207f3e515aed0d6f6577cee33622d80b",
+      "attempts": 1,
+      "startedAt": "2026-10-26T13:42:01.923Z",
+      "doneAt": "2026-10-26T13:45:05.102Z",
+      "summary": "Job specty-check en ci.yml, solo en pull requests: checkout con historia completa, crea main desde origin/main, construye el CLI del PR y ejecuta specty check --changed; el test de workflows lo fija.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-26T13:47:24.935Z"
+}

@@ -14,11 +14,13 @@ interface Workflow {
   readonly jobs: Record<
     string,
     {
+      readonly if?: string;
       readonly "continue-on-error"?: string | boolean;
       readonly strategy?: { readonly matrix: Record<string, unknown> };
       readonly steps: readonly {
         readonly run?: string;
         readonly uses?: string;
+        readonly with?: Record<string, unknown>;
         readonly "working-directory"?: string;
       }[];
     }
@@ -51,6 +53,23 @@ describe("the CI", () => {
     );
     // Only Windows may fail without blocking, until it passes once.
     expect(String(check?.["continue-on-error"])).toContain("matrix.os == 'windows-latest'");
+  });
+
+  it("runs the pull request's own specty check --changed against a local main (AC1)", async () => {
+    const job = (await workflow("ci.yml")).jobs["specty-check"];
+    expect(job?.if).toBe("github.event_name == 'pull_request'");
+    const steps = job?.steps ?? [];
+    const checkout = steps.find((step) => step.uses?.startsWith("actions/checkout@"));
+    expect(checkout?.with).toEqual({ "fetch-depth": 0 });
+    const commands = runs(steps);
+    const at = (text: string) => commands.findIndex((command) => command.includes(text));
+    expect(at("git branch main origin/main")).toBeGreaterThanOrEqual(0);
+    expect(at("pnpm --filter @baquia-dev/specty build")).toBeGreaterThan(
+      at("pnpm install --frozen-lockfile"),
+    );
+    expect(at("node packages/cli/dist/specty.mjs check --changed")).toBeGreaterThan(
+      at("pnpm --filter @baquia-dev/specty build"),
+    );
   });
 });
 

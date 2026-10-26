@@ -79,7 +79,8 @@ describe("computeSize", () => {
     );
     const size = computeSize(specOf(text), DEFAULT_CONFIG);
     expect(size.signals.modules).toEqual(["analytics", "home"]);
-    expect(size.signals.fileCount).toBe(5);
+    // Nor files: what is not governed does not weigh in the size.
+    expect(size.signals.fileCount).toBe(3);
     const governed = computeSize(specOf(text), { ...DEFAULT_CONFIG, ignored: [] });
     expect(governed.signals.modules).toEqual(["analytics", "docs", "home", "lib"]);
   });
@@ -111,7 +112,7 @@ describe("computeSize", () => {
       "- modificar docs/ARCHITECTURE.md — diseño\n- modificar pubspec.yaml — dependencia\n\n## Tareas",
     );
     const size = computeSize(specOf(text), DEFAULT_CONFIG);
-    expect(size.signals.fileCount).toBe(5);
+    expect(size.signals.fileCount).toBe(4);
     expect(size.signals.codeFiles).toBe(3);
   });
 

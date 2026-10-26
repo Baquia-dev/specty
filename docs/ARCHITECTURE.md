@@ -167,7 +167,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check);
   - flujo: unas 8 líneas.
 
-  El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no aplica ningún linter. Mientras sigan vacías, `specty doctor` lo avisa (ver §14).
+  El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no verifica `specty check`. Mientras sigan vacías, `specty doctor` lo avisa (ver §14).
 - **Punteros por herramienta**: solo para las herramientas detectadas o elegidas, y solo donde la herramienta no lee AGENTS.md por sí misma (por ejemplo, `CLAUDE.md` con `@AGENTS.md`). Nunca copian contenido.
 - **Tarjeta de tarea** (salida de `next` en `implementing`). Presupuesto: unos 1.500 tokens, estimados como caracteres ÷ 4. Incluye:
   - la tarea, sus archivos permitidos y los criterios que cubre;
@@ -202,7 +202,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   **El tamaño de los archivos.** Los archivos cortos rinden mejor con un agente: gastan menos contexto, las ediciones por reemplazo fallan menos y hay menos riesgo de romper algo ajeno a la tarea. `task done` mide en líneas de código los archivos gobernados que la tarea crea o modifica, en cualquier lenguaje (`core/src/sizing/lines.ts`):
   - no cuentan las líneas en blanco ni las de comentario: las que empiezan por `//`, `#` o `-- `, y los bloques `/* */`, `<!-- -->` y `--[[ ]]`;
   - sí cuentan las que solo lo parecen: las directivas pegadas a `#` de C, C++ y C# (`#include`, `#define`, `#if`, `#pragma`, `#region`…), los atributos de Rust (`#[…]`), los selectores de CSS (`#id {`) y `--i`. Otros comentarios (`;`, `%`, docstrings) cuentan como código: el error es avisar de más;
-  - no se mide lo que no es código escrito a mano: lo ignorado, lo generado (`scope.generated`, o una marca `@generated`, `DO NOT EDIT`, `auto-generated` o `Code generated` en sus primeras líneas), los lockfiles, los binarios y lo de `lines.exclude`.
+  - no se mide lo que no es código escrito a mano: lo ignorado, lo generado (`scope.generated`, o una marca `@generated`, `DO NOT EDIT`, `DO NOT MODIFY`, `GENERATED CODE`, `auto-generated` o `Code generated` en sus primeras líneas), los lockfiles, los binarios y lo de `lines.exclude`. El tamaño del cambio (§11) sigue la misma regla.
 
   Si la tarea deja un archivo por encima de `lines.warn` (300; tests, 400) y lo hizo crecer, la salida lo avisa y pide proponer cómo dividirlo por responsabilidad, nunca partirlo solo para cumplir el número. `task.completed` guarda `longFiles`, y la aceptación los muestra. Si la tarea lo lleva por encima de `lines.fail` (500; tests, 600), `task done` no la completa hasta que se divida, o hasta que la persona suba el máximo. Un archivo que ya pasaba el máximo y crece solo avisa, y con `fail: false` no se bloquea nunca.
 - **Tras compactar** (Claude Code: `SessionStart` con el matcher `compact`, al mismo `specty guard --tool claude-code`): el guard responde con lo que imprimiría `next`, y Claude Code lo añade al contexto, así que la tarjeta vuelve entera aunque el resumen la haya recortado. Solo tras compactar: al empezar, reanudar o limpiar, AGENTS.md ya pide ejecutar `next`. Fuera de un repositorio con Specty no añade nada.
@@ -381,7 +381,7 @@ En modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)), la persona renun
 
 **Señales deterministas** que calcula `propose`:
 
-- archivos por acción (crear, modificar, borrar) y módulos distintos tocados (solo cuentan las rutas gobernadas: la documentación y lo demás de `ignored` no suma módulos). Un glob cuenta como sus coincidencias actuales más una: la CLI las busca entre lo que git sigue y lo no ignorado sin seguir, y se las pasa a core, que no lee el disco;
+- archivos por acción (crear, modificar, borrar) y módulos distintos tocados. Solo cuenta el código escrito a mano, con la regla de `max-lines` (§7): lo que no está gobernado (la documentación y lo demás de `ignored`), lo generado (`scope.generated` o una marca en sus primeras líneas), los lockfiles y los binarios no suman archivos, acciones ni módulos. Un glob cuenta como sus coincidencias actuales más una: la CLI las busca entre lo que git sigue y lo no ignorado sin seguir. También lee el principio de cada ruta y de cada coincidencia que existe, y le dice a core cuáles son generadas o binarias; core no lee el disco. Así un glob sobre una carpeta de iconos o de código generado no hace `XL` un cambio;
 - rutas sensibles: migraciones, auth, pagos, CI, infraestructura;
 - dependencias nuevas o cambios de API pública;
 - fan-in de los archivos tocados (cuántos archivos los importan);
@@ -398,7 +398,7 @@ El modelo que redacta la spec puede subir esas recomendaciones con su motivo, co
 
 La tabla `presets/effort.yaml` traduce los niveles a cada herramienta (por ejemplo, el nivel de esfuerzo de Claude Code o el *reasoning effort* de Codex). Se actualiza con cada versión de Specty, porque cambia con cada lanzamiento de modelos. `propose` imprime la recomendación para la herramienta detectada y el agente se la transmite a la persona. Specty no cambia el esfuerzo del modelo: lo recomienda.
 
-**Dividir.** Si el cambio es `XL` o supera los umbrales (por defecto: más de 8 tareas, más de 15 archivos de código o más de 2 módulos), `propose` lo rechaza y propone una épica. Los archivos de código son los gobernados que no son tests, con los globs expandidos; los tests y la documentación no cuentan en el límite, pero sí en la puntuación, y por tanto en el nivel `XL`. El límite de 3 archivos del carril `quick` cuenta igual. Al dividir conviene:
+**Dividir.** Si el cambio es `XL` o supera los umbrales (por defecto: más de 8 tareas, más de 15 archivos de código o más de 2 módulos), `propose` lo rechaza y propone una épica. Los archivos de código son los escritos a mano que no son tests, con los globs expandidos; los tests no cuentan en el límite, pero sí en la puntuación, y por tanto en el nivel `XL`. El límite de 3 archivos del carril `quick` cuenta igual. El tamaño se decide al aprobar: el cierre no vuelve a exigir ni a aconsejar la división, porque en esa fase *Archivos* ya no se puede tocar, y `propose` conserva en el estado el tamaño aprobado aunque los globs coincidan hoy con más archivos. Al dividir conviene:
 
 - cortes verticales que funcionen de punta a punta;
 - contratos primero, si los cortes van en paralelo;

@@ -4,9 +4,9 @@ import { counted, type Lang } from "../i18n";
 import { moduleOf } from "../paths";
 import type { ResolvedConfig } from "../schema/config";
 import { isGoverned } from "../scope/governed";
-import { isManifest } from "../scope/lockfiles";
+import { isLockfile, isManifest } from "../scope/lockfiles";
 import { isTestFile } from "../scope/tests";
-import type { FileAction, Spec } from "../spec/model";
+import type { FileAction, FileEntry, Spec } from "../spec/model";
 
 export type SizeLevel = "S" | "M" | "L" | "XL";
 
@@ -20,15 +20,20 @@ export interface RepoSignals {
   readonly modulesWithoutTests?: readonly string[];
   /** Repository paths each glob of the Files section matches today. */
   readonly globMatches?: Readonly<Record<string, readonly string[]>>;
+  /** Paths of the Files section, or matches of its globs, generated or binary by their content. */
+  readonly generated?: readonly string[];
 }
 
 export interface SizeSignals {
   readonly files: Readonly<Record<FileAction, number>>;
-  /** Every file, with a glob counted as its current matches plus one. */
+  /**
+   * Every hand-written file, with a glob counted as its current matches plus one: what is not
+   * governed, generated, a lockfile or binary adds nothing.
+   */
   readonly fileCount: number;
-  /** The governed non-test files among them: what the split and quick limits count. */
+  /** The non-test files among them: what the split and quick limits count. */
   readonly codeFiles: number;
-  /** Modules of the governed non-test files: documentation and other ignored paths add none. */
+  /** Modules of the hand-written non-test files: documentation and generated paths add none. */
   readonly modules: readonly string[];
   readonly sensitive: readonly string[];
   readonly manifests: readonly string[];
@@ -72,21 +77,12 @@ export function collectSignals(
       ),
     ),
   ];
-  // A glob counts as its current matches plus one (formats.md §1); a path listed twice, once.
-  const units = new Map<string, FileAction>();
-  for (const entry of entries) {
-    const matches = isGlob(entry.path) ? (repo.globMatches?.[entry.path] ?? []) : [];
-    for (const unit of [...matches, entry.path]) {
-      if (!units.has(unit)) units.set(unit, entry.action);
-    }
-  }
+  const handWritten = handWrittenIn(config, repo);
+  const units = unitsOf(entries, repo, handWritten);
   const actions = [...units.values()];
   const count = (action: FileAction): number => actions.filter((other) => other === action).length;
   // Tests mirror their modules and manifests already weigh as dependencies: neither adds a module.
-  // Neither does what is not governed, such as documentation: it is not code.
-  const code = paths.filter(
-    (path) => !isTestFile(path) && !isManifest(path) && isGoverned(path, config),
-  );
+  const code = paths.filter((path) => !isTestFile(path) && !isManifest(path) && handWritten(path));
   const modules = [...new Set(code.map(moduleOf))].toSorted();
   return {
     files: {
@@ -96,7 +92,7 @@ export function collectSignals(
       rename: count("rename"),
     },
     fileCount: units.size,
-    codeFiles: [...units.keys()].filter((path) => isCode(path, config)).length,
+    codeFiles: [...units.keys()].filter((path) => !isTestFile(path)).length,
     modules,
     sensitive: paths.filter((path) => matchesAny(path, config.sensitive)),
     manifests: paths.filter(isManifest),
@@ -106,6 +102,38 @@ export function collectSignals(
       modules.includes(module),
     ),
   };
+}
+
+/**
+ * Only hand-written code weighs, as in max-lines: governed, and neither generated, a lockfile nor
+ * binary. An ignored folder a glob fills with generated icons must not make a change XL.
+ */
+function handWrittenIn(config: ResolvedConfig, repo: RepoSignals): (path: string) => boolean {
+  const generated = new Set(repo.generated);
+  return (path) =>
+    isGoverned(path, config) &&
+    !matchesAny(path, config.scope.generated) &&
+    !isLockfile(path) &&
+    !generated.has(path);
+}
+
+/**
+ * The hand-written files a change touches, with the action of the first entry that names each:
+ * a glob counts as its current matches plus one (formats.md §1), a path listed twice, once.
+ */
+function unitsOf(
+  entries: readonly FileEntry[],
+  repo: RepoSignals,
+  handWritten: (path: string) => boolean,
+): ReadonlyMap<string, FileAction> {
+  const units = new Map<string, FileAction>();
+  for (const entry of entries) {
+    const matches = isGlob(entry.path) ? (repo.globMatches?.[entry.path] ?? []) : [];
+    for (const unit of [...matches, entry.path]) {
+      if (!units.has(unit) && handWritten(unit)) units.set(unit, entry.action);
+    }
+  }
+  return units;
 }
 
 /** Deterministic size of a change; the model may raise it one level through `estimate`. */
@@ -183,11 +211,6 @@ export function formatSizeReason(reason: SizeReason, lang: Lang): string {
       }
       return `${es ? "ajuste del modelo" : "model adjustment"} (+1): ${reason.reason}`;
   }
-}
-
-/** Governed and not a test: what the file limits count. */
-function isCode(path: string, config: ResolvedConfig): boolean {
-  return !isTestFile(path) && isGoverned(path, config);
 }
 
 function levelFor(score: number, thresholds: ResolvedConfig["size"]): SizeLevel {
