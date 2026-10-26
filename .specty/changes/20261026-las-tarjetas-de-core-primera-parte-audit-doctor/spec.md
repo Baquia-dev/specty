@@ -35,7 +35,7 @@ Las tarjetas de auditoría, de épica, de propuesta y de estado tienen funciones
 
 ## Tareas
 
-- [ ] T1: La auditoría, por eventos y por bloques
+- [x] T1: La auditoría, por eventos y por bloques
   - files: packages/core/src/cards/audit.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run

@@ -6,6 +6,13 @@
   "branch": "specty/20261026-las-tarjetas-de-core-primera-parte-audit-doctor",
   "baseCommit": "6e67966217f2f26744beae48caf0b3cfcb6523cd",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:78c4e46ba95a8d3a7ffef467e7b963baa2fac00c61781cd02516e34ab603c578",
+    "at": "2026-10-26T18:11:54.759Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -24,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6c6ee5ad4174bd83f448c5b4b6753f0a007389aa",
+      "startedAt": "2026-10-26T18:11:55.543Z",
+      "doneAt": "2026-10-26T18:14:43.106Z",
+      "summary": "audit.ts: auditReport se arma con headerLines, taskLines y timelineLines; what lee una tabla EVENTS con lookup y las palabras de cada evento salen de eventWords. Mismos textos; los 459 tests de core pasan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 2,
     "T": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:78c4e46ba95a8d3a7ffef467e7b963baa2fac00c61781cd02516e34ab603c578",
-    "at": "2026-10-26T18:11:54.759Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
