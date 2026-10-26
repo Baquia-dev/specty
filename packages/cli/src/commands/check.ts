@@ -12,6 +12,7 @@ import { projectProvider } from "../check/commands";
 import { commonProvider } from "../check/common";
 import { checkContext } from "../check/files";
 import { functionsProvider } from "../check/functions";
+import { detectGenerators, type Generator, generatedProvider } from "../check/generated";
 import { layersProvider } from "../check/layers";
 import { loadPlan, type Plan, planProvider } from "../check/plan";
 import { type Provider, type ReportOutput, runChecks } from "../check/provider";
@@ -27,6 +28,7 @@ import type { Session } from "../session";
 function providersOf(
   session: Session,
   stacks: readonly Stack[],
+  generators: readonly Generator[],
   plan: Plan | undefined,
 ): Provider[] {
   return [
@@ -34,6 +36,7 @@ function providersOf(
     typescriptProvider,
     layersProvider(session.config),
     functionsProvider,
+    generatedProvider(generators),
     commonProvider,
     ...(plan === undefined ? [] : [planProvider(plan)]),
   ];
@@ -86,7 +89,8 @@ export async function check(
     detectStacks(session.root),
     spec === undefined ? undefined : loadPlan(session, spec.id),
   ]);
-  const report = await runChecks(context, providersOf(session, stacks, plan), stacks);
+  const generators = await detectGenerators(session, stacks);
+  const report = await runChecks(context, providersOf(session, stacks, generators, plan), stacks);
   return {
     report: renderReport(report, {
       lang: session.lang,

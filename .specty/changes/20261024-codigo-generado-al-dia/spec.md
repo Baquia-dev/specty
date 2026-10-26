@@ -52,7 +52,7 @@ Cuando el cambio toca lo que alimenta un generador de código, o lo que genera, 
 
 ## Tareas
 
-- [ ] T1: La verificación `generated` y sus generadores
+- [x] T1: La verificación `generated` y sus generadores
   - files: packages/core/src/schema/checks.ts, packages/core/src/index.ts, packages/cli/src/check/generated.ts, packages/cli/src/commands/check.ts, packages/cli/test/check-generated.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-generated.test.ts

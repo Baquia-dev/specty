@@ -39,6 +39,8 @@ export type CheckOutcome = { readonly findings: readonly Finding[] } | { readonl
 export interface CheckDefinition {
   /** Stable id: the key of its level in `checks.levels` and its name in the output. */
   readonly id: string;
+  /** It changes files while it runs, so it runs alone, after the others. */
+  readonly exclusive?: boolean;
   run(context: CheckContext): Promise<CheckOutcome>;
 }
 
@@ -70,21 +72,35 @@ export async function runChecks(
     .filter((provider) => provider.applies(stacks))
     .flatMap((provider) => provider.checks)
     .filter((check, index, all) => all.findIndex((other) => other.id === check.id) === index);
-  const results = await Promise.all(
-    checks.map(async (check): Promise<CheckResult[]> => {
-      const level = checkLevel(context.session.config, check.id);
-      if (level === "off") return [];
-      const outcome = await check.run(context).catch(
-        (error: unknown): CheckOutcome => ({
-          skipped: error instanceof Error ? error.message : String(error),
-        }),
-      );
-      return [
-        "skipped" in outcome
-          ? { id: check.id, level, findings: [], skipped: outcome.skipped }
-          : { id: check.id, level, findings: outcome.findings },
-      ];
+  const together = await Promise.all(
+    checks.filter((check) => check.exclusive !== true).map((check) => runOne(context, check)),
+  );
+  // One that rewrites files for a while runs alone, once the others are done.
+  const alone: CheckResult[][] = [];
+  for (const check of checks.filter((candidate) => candidate.exclusive === true)) {
+    alone.push(await runOne(context, check));
+  }
+  const byId = new Map([...together, ...alone].flat().map((result) => [result.id, result]));
+  return {
+    mode: context.mode,
+    results: checks.flatMap((check) => {
+      const result = byId.get(check.id);
+      return result === undefined ? [] : [result];
+    }),
+  };
+}
+
+async function runOne(context: CheckContext, check: CheckDefinition): Promise<CheckResult[]> {
+  const level = checkLevel(context.session.config, check.id);
+  if (level === "off") return [];
+  const outcome = await check.run(context).catch(
+    (error: unknown): CheckOutcome => ({
+      skipped: error instanceof Error ? error.message : String(error),
     }),
   );
-  return { mode: context.mode, results: results.flat() };
+  return [
+    "skipped" in outcome
+      ? { id: check.id, level, findings: [], skipped: outcome.skipped }
+      : { id: check.id, level, findings: outcome.findings },
+  ];
 }
