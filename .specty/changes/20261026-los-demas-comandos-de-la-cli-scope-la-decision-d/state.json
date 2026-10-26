@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "851f6de3880abe746557f01d8fd88049eed8ac79",
+      "attempts": 1,
       "startedAt": "2026-10-26T20:05:18.727Z",
       "doneAt": "2026-10-26T20:08:58.270Z",
-      "summary": "doctor.ts: doctor toma toolLines (guard de cada agente, gentle-ai, formateadores), reachable y doctorWarnings, con el mismo orden en cada lista. export.ts: exportChange usa exportFacts y shownFolder. Los tests de la CLI pasan."
+      "summary": "doctor.ts: doctor toma toolLines (guard de cada agente, gentle-ai, formateadores), reachable y doctorWarnings, con el mismo orden en cada lista. export.ts: exportChange usa exportFacts y shownFolder. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9fb0a8d752b6f20d385a70457bc9f477b841a2b8",
+      "startedAt": "2026-10-26T20:08:58.574Z",
+      "doneAt": "2026-10-26T20:17:01.633Z",
+      "summary": "init.ts: init prepara (raíz, config, idioma, detección) y deja a install (installTarget, writeProjectFiles, hooks) y a committed el commit y la tarjeta, con el mismo orden de efectos. Los tests de la CLI pasan."
     }
   },
   "pending": {

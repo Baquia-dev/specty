@@ -51,7 +51,7 @@ Nueve funciones de los demás comandos de la CLI pasan de los límites de Specty
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T3: init
+- [x] T3: init
   - files: packages/cli/src/commands/init.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

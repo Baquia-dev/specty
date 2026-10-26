@@ -29,7 +29,7 @@ import { installHooks } from "../install/hooks";
 import { isNewProject, writeProduct } from "../install/product";
 import { completeConfig, withLanguage, writeAgentsMd } from "../install/project-files";
 import { exists } from "../io/files";
-import { createGit, findRoot, pathsOf } from "../io/git";
+import { createGit, findRoot, type Git, pathsOf } from "../io/git";
 import { bareCards, type Environment, systemLanguage } from "../session";
 import { loadConfig } from "../store/config";
 import { repoPaths } from "../store/paths";
@@ -75,45 +75,117 @@ async function init(
   });
   const root = await findRoot(environment.cwd);
   if (root === undefined) return refused({ reason: "no-git" });
-  const paths = repoPaths(root);
   const git = createGit(root, environment.env);
   // What already had changes stays out of init's commit: it is the person's work.
   const before = new Set(pathsOf(await git.changedSince(await git.head())));
-  const existing = await loadConfig(paths);
+  const existing = await loadConfig(repoPaths(root));
   if (existing.kind === "invalid") {
     const issues = existing.issues.map((issue) => `${issue.path}: ${issue.message}`).join("; ");
     return refused({ reason: "invalid-config", issues });
   }
-  const lang = await languageOf(
-    environment,
-    options,
-    existing.kind === "ok" ? existing.config : undefined,
-  );
-  const cards: CardContext = { ...bareCards(environment.env), lang };
+  const config = existing.kind === "ok" ? existing.config : undefined;
+  const lang = await languageOf(environment, options, config);
   const detection = await detectProject(root, basename(root));
   // Read before init writes anything: whether there is a project yet.
-  const fresh = isNewProject(
+  const fresh = isNewProject(detection, await git.files(), config ?? DEFAULT_CONFIG);
+  const setup: InitSetup = {
+    environment,
+    options,
+    root,
+    git,
+    lang,
     detection,
-    await git.files(),
-    existing.kind === "ok" ? existing.config : DEFAULT_CONFIG,
-  );
-  const stamp = environment
+    config,
+    created: existing.kind === "missing",
+  };
+  const installed = await install(setup, fresh);
+  const cards: CardContext = { ...bareCards(environment.env), lang };
+  if (options.dryRun === true) {
+    const planned = installed.files.changes.map((change) => ({
+      path: shown(root, change.path),
+      created: change.created,
+    }));
+    return { output: dryRunCard(planned, installed.warnings, cards), lang };
+  }
+  return { output: await committed(setup, installed, before, cards), lang };
+}
+
+/** What init works with once it knows the repository, its language and its project. */
+interface InitSetup {
+  readonly environment: Environment;
+  readonly options: InitOptions;
+  readonly root: string;
+  readonly git: Git;
+  readonly lang: Lang;
+  readonly detection: Detection;
+  /** The configuration there was, when it was valid. */
+  readonly config: ResolvedConfig | undefined;
+  /** Whether init creates `.specty/config.yaml`. */
+  readonly created: boolean;
+}
+
+/** What init installed, or only planned in a dry run, and what it has to say about it. */
+interface Installed {
+  readonly files: InstallFiles;
+  readonly backups: string;
+  readonly product: Awaited<ReturnType<typeof writeProduct>> | undefined;
+  readonly done: readonly string[];
+  /** Repository-relative files init writes that git tracks: they go into its commit. */
+  readonly written: readonly string[];
+  readonly warnings: readonly string[];
+}
+
+/** The configuration, AGENTS.md, PRODUCT.md for a new project, and each agent's hooks. */
+async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
+  const { environment, options, root, git, lang, detection } = setup;
+  const { files, backups } = await installTarget(setup);
+  const project = await writeProjectFiles(setup, fresh, files);
+  const tools =
+    options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
+  const hooks = await installHooks({ environment, root, git, tools, lang, files });
+  const noTests =
+    setup.config?.verify.default === undefined &&
+    verifyCommands(detection.commands).default === undefined;
+  return {
+    files,
+    backups,
+    product: project.product,
+    done: [...project.done, ...hooks.done],
+    written: [...project.written, ...hooks.written],
+    warnings: [...hooks.warnings, ...(noTests ? [noTestCommandWarning(lang)] : [])],
+  };
+}
+
+/** Where init writes: a dry run only plans; otherwise every file that existed is copied first. */
+async function installTarget(
+  setup: InitSetup,
+): Promise<{ readonly files: InstallFiles; readonly backups: string }> {
+  const stamp = setup.environment
     .now()
     .toISOString()
     .replace(/\.\d+Z$/, "Z")
     .replaceAll(":", "-");
-  const backups = await git.gitPath(`common/specty/backups/${stamp}`);
-  // A dry run only plans; otherwise every file that existed is copied before it changes.
+  const backups = await setup.git.gitPath(`common/specty/backups/${stamp}`);
   const files = installFiles(
-    options.dryRun === true ? { dryRun: true } : { backups: { folder: backups, root } },
+    setup.options.dryRun === true
+      ? { dryRun: true }
+      : { backups: { folder: backups, root: setup.root } },
   );
-  const configLines = await writeConfig(files, paths.config, detection, {
-    created: existing.kind === "missing",
+  return { files, backups };
+}
+
+/** `.specty/config.yaml`, AGENTS.md and, in a new project, PRODUCT.md. */
+async function writeProjectFiles(
+  setup: InitSetup,
+  fresh: boolean,
+  files: InstallFiles,
+): Promise<Pick<Installed, "product" | "done" | "written">> {
+  const { environment, options, root, lang, detection } = setup;
+  const configLines = await writeConfig(files, repoPaths(root).config, detection, {
+    created: setup.created,
     lang,
     ...(options.language !== undefined ? { relanguage: options.language } : {}),
   });
-  const tools =
-    options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
   const agents = await writeAgentsMd(root, lang, detection, files);
   // A new project starts with what it is for: the interview with a person, or its questions.
   const product = fresh
@@ -126,43 +198,41 @@ async function init(
         files,
       })
     : undefined;
-  // Repository-relative files init writes that git tracks: they go into its commit.
-  const written = [
-    ".specty/config.yaml",
-    "AGENTS.md",
-    ...(product === undefined ? [] : ["PRODUCT.md"]),
+  return {
+    product,
+    done: [
+      ...configLines,
+      agentsMdLine(agents === "created", lang),
+      ...(product === undefined ? [] : [productLine(product === "interviewed", lang)]),
+    ],
+    written: [".specty/config.yaml", "AGENTS.md", ...(product === undefined ? [] : ["PRODUCT.md"])],
+  };
+}
+
+/** Commits what init wrote, and says what it did, what it detected and what to watch. */
+async function committed(
+  setup: InitSetup,
+  installed: Installed,
+  before: ReadonlySet<string>,
+  cards: CardContext,
+): Promise<Output> {
+  const { environment, lang, detection } = setup;
+  const result = await commitInstall(environment, installed.written, before, setup.created);
+  const backedUp = await exists(installed.backups);
+  const done = [
+    ...installed.done,
+    ...result.done,
+    ...(backedUp ? [backupLine(installed.backups, lang)] : []),
   ];
-  const done: string[] = [
-    ...configLines,
-    agentsMdLine(agents === "created", lang),
-    ...(product === undefined ? [] : [productLine(product === "interviewed", lang)]),
-  ];
-  const hooks = await installHooks({ environment, root, git, tools, lang, files });
-  done.push(...hooks.done);
-  written.push(...hooks.written);
-  const warnings = [...hooks.warnings];
-  const configured = existing.kind === "ok" && existing.config.verify.default !== undefined;
-  if (!configured && verifyCommands(detection.commands).default === undefined) {
-    warnings.push(noTestCommandWarning(lang));
-  }
-  if (options.dryRun === true) {
-    const planned = files.changes.map((change) => ({
-      path: shown(root, change.path),
-      created: change.created,
-    }));
-    return { output: dryRunCard(planned, warnings, cards), lang };
-  }
-  const committed = await commitInstall(environment, written, before, existing.kind === "missing");
-  done.push(...committed.done);
-  if (await exists(backups)) done.push(backupLine(backups, lang));
-  warnings.push(...committed.warnings);
+  const warnings = [...installed.warnings, ...result.warnings];
   const facts = projectFacts(detection);
   const detected = [
     ...facts.stacks,
     ...facts.commands.map((entry) => `${entry.label}: ${entry.command}`),
   ];
+  const { product } = installed;
   const view = { done, detected, warnings, ...(product === undefined ? {} : { product }) };
-  return { output: initCard(view, cards), lang };
+  return initCard(view, cards);
 }
 
 /**
