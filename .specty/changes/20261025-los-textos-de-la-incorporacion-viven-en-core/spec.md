@@ -40,7 +40,7 @@ Décimo cambio de la serie que lleva a core los textos de la CLI, con la incorpo
 
 ## Tareas
 
-- [ ] T1: Core tiene los textos de la incorporación
+- [x] T1: Core tiene los textos de la incorporación
   - files: packages/core/src/cards/integration.ts, packages/core/src/cards/text.ts, packages/core/src/cards/land.ts, packages/core/src/cards/index.ts, packages/core/test/cards/incorporation.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

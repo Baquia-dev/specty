@@ -112,6 +112,40 @@ export {
   opencodeGuardLine,
   yoursUncommittedWarning,
 } from "./install";
+export {
+  absorbedLine,
+  commandFailsLine,
+  holderDirtyLine,
+  holderDirtyNext,
+  incorporationTitle,
+  integrateRetry,
+  integrationResolvedLine,
+  type MergeVerification,
+  markersLeftLine,
+  mergeAbortedLine,
+  mergeByHandNext,
+  mergedVerifyFailsLine,
+  mergeFailedLine,
+  mergingLabel,
+  noIncorporationCard,
+  notYetLine,
+  outsideIncorporationLine,
+  resolveIncorporationNext,
+  runAgainNext,
+  stillResolvingLine,
+  targetConflictsLine,
+  undoOutsideNext,
+} from "./integration";
+export {
+  backOnTargetLine,
+  folderRemovedLine,
+  folderStaysLine,
+  landedLine,
+  leaveFolderNext,
+  notLandedLine,
+  retryLandingNext,
+  targetAheadLine,
+} from "./land";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
 export {
   changeCreatedLead,
@@ -152,7 +186,7 @@ export {
   taskDoneCard,
   taskDoneRefusalCard,
 } from "./task";
-export { effortLabel, effortLine, runNext, translator } from "./text";
+export { effortLabel, effortLine, runNext, translator, verifyingNote } from "./text";
 export {
   claudePointerStaysLine,
   globalGuardStaysLine,

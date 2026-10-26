@@ -6,6 +6,13 @@
   "branch": "specty/20261025-los-textos-de-la-incorporacion-viven-en-core",
   "baseCommit": "7f1ae8a4c3357eb90df5d7a681f55dc594b01745",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:edc6420c0a94e539ad0921d2a6c7d46c728fb1c12016e123dae97e0222d084d5",
+    "at": "2026-10-26T03:01:35.539Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6451f65f312dcdee269b42c9d9ca9db94f00853d",
+      "startedAt": "2026-10-26T03:01:35.885Z",
+      "doneAt": "2026-10-26T03:03:36.502Z",
+      "summary": "Core tiene los textos de la incorporación: cards/integration.ts (traer la rama principal, lo que queda para el agente e integrate), cards/land.ts (llegar a la rama principal y salir de la carpeta) y verifyingNote en text.ts, con tests."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 4,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:edc6420c0a94e539ad0921d2a6c7d46c728fb1c12016e123dae97e0222d084d5",
-    "at": "2026-10-26T03:01:35.539Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -54,6 +54,11 @@ export function runNext(ctx: CardContext): string {
   return translator(ctx.lang)(`ejecuta \`${ctx.command} next\`.`, `run \`${ctx.command} next\`.`);
 }
 
+/** What Specty prints on stderr before a verification, which may take a while. */
+export function verifyingNote(command: string, lang: Lang): string {
+  return `specty: ${translator(lang)("verificando", "verifying")} \`${command}\`…`;
+}
+
 /** Instructions to write or revise a spec, adapted to the kind of change. */
 export function draftingGuide(change: ChangeView, ctx: CardContext): string[] {
   const t = translator(ctx.lang);
