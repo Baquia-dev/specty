@@ -47,7 +47,7 @@ Claude Code tiene una prueba que lo ejecuta de verdad contra un modelo simulado 
 
 ## Tareas
 
-- [ ] T1: OpenCode sigue un guion contra un modelo simulado
+- [x] T1: OpenCode sigue un guion contra un modelo simulado
   - files: packages/cli/test/fake-chat.ts, packages/cli/test/opencode-e2e.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-e2e.test.ts

@@ -6,6 +6,13 @@
   "branch": "specty/20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
   "baseCommit": "1a02854178ca122f70ebd9fc6790a62e7b7e63a5",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:414b18c54d1b100a67cb04023a94ec05f24a83c08e180fcbff745e6f33cd9b8f",
+    "at": "2026-10-26T18:45:19.873Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -28,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fd92b247372d4b9bbcd7708839860618765e3f4b",
+      "startedAt": "2026-10-26T18:45:20.266Z",
+      "doneAt": "2026-10-26T18:59:26.657Z",
+      "summary": "OpenCode de verdad sigue un guion contra fake-chat.ts (API de chat de OpenAI): guard, scope, aviso tras un comando (opencode run) y tarjeta tras compactar y fin de turno (opencode serve). Pasan las 5 con OpenCode 1.19.4 y se saltan sin él."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "AC": 6,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:414b18c54d1b100a67cb04023a94ec05f24a83c08e180fcbff745e6f33cd9b8f",
-    "at": "2026-10-26T18:45:19.873Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
