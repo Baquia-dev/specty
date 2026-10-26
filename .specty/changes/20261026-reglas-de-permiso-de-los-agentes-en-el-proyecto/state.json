@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-reglas-de-permiso-de-los-agentes-en-el-proyecto",
   "baseCommit": "78bb5a3d546ee6aa0542b6d7fa58bd7fb20422b9",
   "revision": 1,
@@ -64,12 +64,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9b0320f17ee59efdc1ecc255631ea5bfb658a52c",
+      "attempts": 1,
       "startedAt": "2026-10-26T11:59:29.661Z",
       "doneAt": "2026-10-26T12:01:30.846Z",
-      "summary": "init escribe .codex/rules/specty.rules con prefix_rule(pattern=[specty], decision=allow), versionada aunque los hooks sean locales, y lo dice; doctor avisa si falta la regla."
+      "summary": "init escribe .codex/rules/specty.rules con prefix_rule(pattern=[specty], decision=allow), versionada aunque los hooks sean locales, y lo dice; doctor avisa si falta la regla.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "19c0a4d25fc6685452c9ff5ee36ceb92232d2e3a",
+      "startedAt": "2026-10-26T12:01:31.125Z",
+      "doneAt": "2026-10-26T12:05:24.564Z",
+      "summary": "uninstall borra la regla de Codex de Specty y deja las de la persona (los permisos de Claude Code ya los quitaba, salen de la misma lista); ARCHITECTURE explica los permisos de cada herramienta. pnpm check en verde."
     }
   },
   "pending": {

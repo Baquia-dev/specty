@@ -70,7 +70,7 @@ kind: standard
   - files: packages/cli/src/install/agents.ts, packages/cli/src/install/hooks.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/codex.test.ts
   - ac: AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts
-- [ ] T4: `uninstall` quita los permisos y la regla, y ARCHITECTURE lo documenta
+- [x] T4: `uninstall` quita los permisos y la regla, y ARCHITECTURE lo documenta
   - files: packages/cli/src/install/agents.ts, packages/cli/test/uninstall.test.ts, docs/ARCHITECTURE.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/uninstall.test.ts

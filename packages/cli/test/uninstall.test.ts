@@ -108,7 +108,10 @@ describe("specty uninstall", () => {
     };
     const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
     const stop = { hooks: [{ type: "command", command: "echo bye" }] };
-    await writeFiles(root, { ".codex/hooks.json": JSON.stringify({ hooks: { Stop: [stop] } }) });
+    await writeFiles(root, {
+      ".codex/hooks.json": JSON.stringify({ hooks: { Stop: [stop] } }),
+      ".codex/rules/mine.rules": 'prefix_rule(pattern = ["make"])\n',
+    });
     const init = await cli(root, ["init", "--language", "es", "--tools", "codex,opencode"], {
       env: homes,
     });
@@ -116,10 +119,14 @@ describe("specty uninstall", () => {
     const planned = await cli(root, ["uninstall", "--dry-run"], { env: homes });
     expect(planned.out).toContain("quitar lo de Specty de .codex/hooks.json");
     expect(planned.out).toContain("borrar .opencode/plugins/specty.js");
+    expect(planned.out).toContain("borrar .codex/rules/specty.rules");
     const terminal = person({ choose: ["yes"] });
     expect((await cli(root, ["uninstall"], { env: homes, terminal })).code).toBe(0);
     expect(JSON.parse(await read(root, ".codex/hooks.json"))).toEqual({ hooks: { Stop: [stop] } });
     expect(await exists(join(root, ".opencode/plugins/specty.js"))).toBe(false);
+    // Specty's rule goes, and the person's rules stay (AC6).
+    expect(await exists(join(root, ".codex/rules/specty.rules"))).toBe(false);
+    expect(await read(root, ".codex/rules/mine.rules")).toBe('prefix_rule(pattern = ["make"])\n');
     for (const home of Object.values(homes)) expect(await readdir(home), home).toEqual([]);
   });
 

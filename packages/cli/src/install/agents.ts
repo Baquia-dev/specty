@@ -147,9 +147,9 @@ export function codexHooksFile(env: NodeJS.ProcessEnv): string {
 }
 
 /**
- * Takes Specty's hooks and worktree permissions out of Claude Code's, Cursor's and Codex's files
- * in the repository, leaving everything else; a file left with nothing else goes, and so does
- * Specty's OpenCode plugin.
+ * Takes Specty's hooks and permissions out of Claude Code's, Cursor's and Codex's files in the
+ * repository, leaving everything else; a file left with nothing else goes, and so do Specty's
+ * OpenCode plugin and Codex rule.
  */
 export async function removeAgentHooks(root: string, files: InstallFiles): Promise<void> {
   const claude = (value: Entry) =>
@@ -171,6 +171,8 @@ export async function removeAgentHooks(root: string, files: InstallFiles): Promi
   }
   const plugin = join(root, OPENCODE_PLUGIN);
   if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
+  const rules = join(root, CODEX_RULES);
+  if (isCodexRule(await files.read(rules))) await files.remove(rules);
 }
 
 /**
