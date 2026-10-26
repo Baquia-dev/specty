@@ -4,3 +4,4 @@
 {"ts":"2026-10-26T09:25:11.356Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"d7a6a07c2ed3010654396f58fa8e2a9f1d6e57ca"}}
 {"ts":"2026-10-26T09:27:45.118Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm check","exit":0,"ms":91821,"tree":"sha256:c34fb94556b93441756b2967d5f2e9cc123411014d7f08256ef9d86a760658b1"}}
 {"ts":"2026-10-26T09:27:45.242Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"pnpm sources falla y nombra el archivo si uno de packages/cli/src usa el traductor, salvo los de specty check (check/ y commands/check.ts), con su test; ARCHITECTURE y AGENTS.md cuentan que la CLI pide sus textos a core."}}
+{"ts":"2026-10-26T09:27:56.227Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

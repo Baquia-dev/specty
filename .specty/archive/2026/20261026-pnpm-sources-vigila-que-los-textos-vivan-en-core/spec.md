@@ -23,3 +23,9 @@ Con la serie de cambios anterior, los textos que ven el agente y la persona vive
   - files: scripts/check-sources.mjs, packages/cli/test/sources.test.ts, docs/ARCHITECTURE.md, AGENTS.md
   - verify: pnpm check
   - type: feat
+
+## Cierre
+
+### Resumen
+
+pnpm sources falla y nombra el archivo si uno de packages/cli/src usa el traductor, salvo los de specty check (check/ y commands/check.ts), con su test; ARCHITECTURE y AGENTS.md cuentan que la CLI pide sus textos a core.
