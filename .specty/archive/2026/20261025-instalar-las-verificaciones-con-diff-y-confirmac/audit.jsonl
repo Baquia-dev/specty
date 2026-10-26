@@ -7,3 +7,8 @@
 {"ts":"2026-10-26T01:36:55.855Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"c24d5d292458b78d7e34ef4543816beaeeee626e"}}
 {"ts":"2026-10-26T01:39:44.258Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":147039,"tree":"sha256:314a166b2af5eb3844fe8dccbf58df268bd1968770d717ec003159028590cd6f"}}
 {"ts":"2026-10-26T01:39:44.260Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"formats §6 documenta specty check --install (pasos, diffs, --dry-run, conflictos, versión exacta, commit Specty-Init, idempotencia); ARCHITECTURE lo añade a la fila de specty check."}}
+{"ts":"2026-10-26T09:51:51.626Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T09:52:04.326Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:f021955966cb35139fe7b69fa87f9b1c9a1cae524d944f261309eda64bf50f7f","size":"M","warnings":1}}
+{"ts":"2026-10-26T09:52:19.604Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"a0597fb1f7c0669356bf7b617066bd230326a3cf","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-26T09:56:19.918Z","actor":"agent","tool":"claude-code","event":"integration.resolved","data":{"commit":"3ee8a17"}}
+{"ts":"2026-10-26T09:56:20.136Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

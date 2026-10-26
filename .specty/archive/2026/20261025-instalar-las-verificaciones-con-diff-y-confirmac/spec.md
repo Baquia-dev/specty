@@ -75,3 +75,32 @@ Muestra el diff de cada archivo y pregunta antes de tocarlo. Con `--dry-run` sol
 
 - R1: El comando del gestor falla o cambia más de lo esperado (el lockfile) — solo corre tras confirmarlo, su salida se muestra si falla, y el commit solo lleva `package.json` y el lockfile si no tenían cambios previos de la persona.
 - R2: La plantilla no sirve para un monorepo o un stack raro — es un punto de partida editable; si la persona la cambia, una nueva ejecución la informa como conflicto y no la pisa.
+
+## Cierre
+
+### Resumen
+
+`specty check --install` prepara el proyecto para sus verificaciones, y la persona decide cada paso en su terminal:
+- activa `checks.preCommit`;
+- escribe la plantilla de GitHub Actions con `npx -y @baquia-dev/specty@<versión> check --all --json`;
+- pone el analizador de Dart en modo estricto;
+- con capas en TypeScript, ofrece dependency-cruiser con su versión exacta.
+
+Cada archivo enseña su diff y espera un sí. `--dry-run` solo muestra el plan, y lo puede pedir cualquiera, también el agente. Lo que la persona ya decidió distinto es un conflicto que se informa y no se toca. Lo aplicado entra en un commit `Specty-Init`, y una segunda ejecución no tiene nada que hacer.
+
+### Desviaciones
+
+- `check/dart.ts` exporta ahora `analyzerOptions`, `STRICT_MODES` y sus tipos, para que la instalación sepa qué modos faltan siguiendo los `include`.
+- La aceptación esperó a la persona por el aviso «ejecuta comandos a través de la shell (CWE-78)» en `install.ts`. El comando sale de plantillas fijas, con nombre y versión fijos, y solo corre tras confirmarlo en una terminal; la persona aceptó.
+
+### Decisiones
+
+- La versión de Specty de la plantilla se lee del `package.json` de `@baquia-dev/specty`, junto al código del CLI, para fijarla exacta.
+- Un archivo YAML vacío o que no existe empieza como un mapa vacío. Los que existen se editan con `parseDocument`, que conserva comentarios y orden.
+- Betterleaks y gitleaks no se instalan: no son paquetes del proyecto, y el comando solo dice que hacen falta.
+
+### Pendientes
+
+- C7, los hooks de fin de turno de los agentes y las exclusiones de ruido.
+- C8: que `task done` use `specty check` y el archivo de reglas quede en 5.
+- C9: la documentación en español e inglés.
