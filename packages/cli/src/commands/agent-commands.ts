@@ -1,14 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-import {
-  blockedCard,
-  CHANGE_KINDS,
-  headerOf,
-  type Output,
-  translator,
-} from "@baquia-dev/specty-core";
+import { CHANGE_KINDS, newRefusalCard, type Output } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
-import { type Session, systemLanguage } from "../session";
+import { bareCards, type Session } from "../session";
 import { adjust } from "./adjust";
 import { integrate } from "./integrate";
 import { newChange } from "./new";
@@ -60,18 +54,7 @@ export function agentCommands(
       ) => {
         const kind = CHANGE_KINDS.find((candidate) => candidate === options.kind);
         if (kind === undefined) {
-          const t = translator(systemLanguage(env));
-          refuse({
-            ...blockedCard(
-              headerOf(),
-              t(
-                `Tipo de cambio desconocido: ${options.kind}.`,
-                `Unknown change kind: ${options.kind}.`,
-              ),
-              `--kind ${CHANGE_KINDS.join("|")}`,
-            ),
-            status: "invalid",
-          });
+          refuse(newRefusalCard({ reason: "unknown-kind", kind: options.kind }, bareCards(env)));
           return Promise.resolve();
         }
         return run((session) =>

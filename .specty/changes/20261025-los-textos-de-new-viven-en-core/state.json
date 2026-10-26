@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-new-viven-en-core",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-new-viven-en-core",
   "baseCommit": "69498f3211020192a5bc8cc2806db2800169f752",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f69b5a6c2382c37963574f2bc6997a06db6b0d8e",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:08:49.608Z",
       "doneAt": "2026-10-26T02:09:42.270Z",
-      "summary": "core/src/cards/new.ts tiene los textos de new: newRefusalCard (un caso por cada motivo por el que no crea nada, invalid o blocked), changeCreatedLead y worktreeCreatedCard, copiados letra a letra de la CLI, con tests en español e inglés."
+      "summary": "core/src/cards/new.ts tiene los textos de new: newRefusalCard (un caso por cada motivo por el que no crea nada, invalid o blocked), changeCreatedLead y worktreeCreatedCard, copiados letra a letra de la CLI, con tests en español e inglés.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6df831dc0637f2451ae62af0202e28e791bb7f1c",
+      "startedAt": "2026-10-26T02:09:42.544Z",
+      "doneAt": "2026-10-26T02:12:38.722Z",
+      "summary": "new.ts y agent-commands.ts piden sus textos a core (newRefusalCard, changeCreatedLead y worktreeCreatedCard) y ya no llaman al traductor; la salida es la misma, como comprueban los tests de la CLI sin cambios."
     }
   },
   "pending": {

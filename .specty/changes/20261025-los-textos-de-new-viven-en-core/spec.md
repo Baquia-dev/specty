@@ -38,7 +38,7 @@ ARCHITECTURE y AGENTS.md dicen que los textos que ve el agente viven en `package
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: new pide sus textos a core
+- [x] T2: new pide sus textos a core
   - files: packages/cli/src/commands/new.ts, packages/cli/src/commands/agent-commands.ts
   - ac: AC1, AC2
   - verify: pnpm check
