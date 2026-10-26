@@ -108,6 +108,35 @@ export function devinRestrictedWarning(lang: Lang): string {
   );
 }
 
+/** Devin's rule for Specty's commands, shared like Codex's: Specty decides who runs each one. */
+export function devinCommandsLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Devin (Windsurf): regla en ${file} para que los comandos de Specty se ejecuten sin preguntar; Specty decide quién ejecuta cada uno.`,
+    `Devin (Windsurf): rule in ${file} so Specty's commands run without asking; Specty decides who runs each one.`,
+  );
+}
+
+/** Devin's sandbox, opt-in, with Specty's folders as `Write(...)` scopes in its local settings. */
+export function devinSandboxLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Devin (Windsurf): ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
+    `Devin (Windsurf): ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
+  );
+}
+
+/** Devin's local settings kept in git: no machine path, so Specty says what to add elsewhere. */
+export function devinSandboxTrackedWarning(
+  file: string,
+  rules: readonly string[],
+  lang: Lang,
+): string {
+  const list = rules.map((rule) => `\`${rule}\``).join(", ");
+  return translator(lang)(
+    `Devin (Windsurf): ${file} está en git, así que Specty no le añade rutas de esta máquina; si activas su sandbox, añade ${list} a \`permissions.allow\` en tu configuración de usuario para que funcionen los commits de Specty.`,
+    `Devin (Windsurf): ${file} is in git, so Specty adds no path of this machine to it; if you turn its sandbox on, add ${list} to \`permissions.allow\` in your user settings so Specty's commits work.`,
+  );
+}
+
 /** Gemini CLI keeps a fingerprint of each project hook, and loads none from a folder not trusted. */
 export function geminiTrustWarning(lang: Lang): string {
   return translator(lang)(

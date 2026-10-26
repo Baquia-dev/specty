@@ -3,16 +3,33 @@ import { createHash } from "node:crypto";
 import { join } from "node:path";
 import {
   AGENT_NAMES,
+  devinCommandsLine,
   devinRestrictedWarning,
+  devinSandboxLine,
+  devinSandboxTrackedWarning,
   guardLine,
+  type Lang,
   patchPaths,
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { DEVIN_HOOKS, excludeLocally, removeFromJson, withHooks } from "../install/agents";
-import { rewriteJson } from "../install/files";
+import { sharedFolders } from "../flow/worktree";
+import {
+  DEVIN_CONFIG,
+  DEVIN_HOOKS,
+  DEVIN_LOCAL_CONFIG,
+  excludeLocally,
+  removeFromJson,
+  withHooks,
+} from "../install/agents";
+import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
+import type { Git } from "../io/git";
+import { COMMAND } from "../session";
 import { type AgentAdapter, exitFailed, exitReply, jsonStop } from "./adapter";
+
+/** Devin's rule for Specty's commands, by the name the agent types them with. */
+const RUN = `Exec(${COMMAND})`;
 
 /**
  * The events the guard listens to, each with a regular expression on `tool_name`;
@@ -66,14 +83,24 @@ export const windsurf: AgentAdapter = {
     const update = (value: Record<string, unknown>) => withDevinHooks(value, command);
     await rewriteJson(join(root, DEVIN_HOOKS), update, true, files);
     if (local) await excludeLocally(git, DEVIN_HOOKS, files);
+    const permissions = await installPermissions(root, git, files, lang);
     return {
-      done: [guardLine(AGENT_NAMES.windsurf, DEVIN_HOOKS, local, lang)],
-      warnings: [devinRestrictedWarning(lang)],
-      written: local ? [] : [DEVIN_HOOKS],
+      done: [guardLine(AGENT_NAMES.windsurf, DEVIN_HOOKS, local, lang), ...permissions.done],
+      warnings: [devinRestrictedWarning(lang), ...permissions.warnings],
+      written: [...(local ? [] : [DEVIN_HOOKS]), DEVIN_CONFIG],
     };
   },
-  remove: (root, files) =>
-    removeFromJson(root, DEVIN_HOOKS, (value) => withDevinHooks(value, undefined), files),
+  remove: async (root, files, git) => {
+    await removeFromJson(root, DEVIN_HOOKS, (value) => withDevinHooks(value, undefined), files);
+    await removeFromJson(root, DEVIN_CONFIG, (value) => withAllowed(value, [RUN], false), files);
+    const scopes = await writeScopes(git);
+    await removeFromJson(
+      root,
+      DEVIN_LOCAL_CONFIG,
+      (value) => withAllowed(value, scopes, false),
+      files,
+    );
+  },
   doctor: async (root) => {
     const value: unknown = parse((await readText(join(root, DEVIN_HOOKS))) ?? "null");
     const hooks = isRecord(value) ? value : {};
@@ -89,6 +116,51 @@ export const windsurf: AgentAdapter = {
       : { ok: [], problems: [{ code: "windsurf-hooks", file, events: missing.join(", ") }] };
   },
 };
+
+/**
+ * Devin's permissions for Specty: its commands run without asking (`Exec(specty)`), in the shared
+ * settings like Codex's rule, and its sandbox writes in Specty's folders (`Write(...)`), in the
+ * local ones, since they are machine paths. Local settings the person keeps in git stay as they
+ * are, and `init` says what to add.
+ */
+async function installPermissions(
+  root: string,
+  git: Git,
+  files: InstallFiles,
+  lang: Lang,
+): Promise<{ readonly done: readonly string[]; readonly warnings: readonly string[] }> {
+  const allow = (rules: readonly string[]) => (value: Record<string, unknown>) =>
+    withAllowed(value, rules, true);
+  await rewriteJson(join(root, DEVIN_CONFIG), allow([RUN]), true, files);
+  const commands = devinCommandsLine(DEVIN_CONFIG, lang);
+  const scopes = await writeScopes(git);
+  if (await git.isTracked(DEVIN_LOCAL_CONFIG)) {
+    return {
+      done: [commands],
+      warnings: [devinSandboxTrackedWarning(DEVIN_LOCAL_CONFIG, scopes, lang)],
+    };
+  }
+  await rewriteJson(join(root, DEVIN_LOCAL_CONFIG), allow(scopes), true, files);
+  await excludeLocally(git, DEVIN_LOCAL_CONFIG, files);
+  return { done: [commands, devinSandboxLine(DEVIN_LOCAL_CONFIG, lang)], warnings: [] };
+}
+
+/** Specty's folders as Devin's `Write(...)` scopes, which also widen its sandbox. */
+async function writeScopes(git: Git): Promise<string[]> {
+  return (await sharedFolders(git)).map((folder) => `Write(${folder}/**)`);
+}
+
+/** `rules` in `permissions.allow`, after the person's ones, or taken out of it. */
+function withAllowed(
+  value: Record<string, unknown>,
+  rules: readonly string[],
+  add: boolean,
+): Record<string, unknown> {
+  const permissions = isRecord(value.permissions) ? value.permissions : {};
+  const current: unknown[] = Array.isArray(permissions.allow) ? permissions.allow : [];
+  const kept = current.filter((rule) => typeof rule !== "string" || !rules.includes(rule));
+  return { ...value, permissions: { ...permissions, allow: add ? [...kept, ...rules] : kept } };
+}
 
 /**
  * Devin's standalone hooks file holds the events at its top, shaped as Claude Code's `hooks`: the

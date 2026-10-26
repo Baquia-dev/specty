@@ -84,7 +84,7 @@ La fila de la tabla pasa a llamarse «Devin (Windsurf)». El corte también reco
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/test/windsurf.test.ts, packages/cli/test/agents.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts test/agents.test.ts test/check-agent-stop.test.ts
-- [ ] T3: Los permisos de Devin dejan decidir a Specty
+- [x] T3: Los permisos de Devin dejan decidir a Specty
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/src/install/agents.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/windsurf.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts test/uninstall.test.ts

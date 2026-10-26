@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
@@ -97,6 +98,8 @@ describe("the guard in Devin", () => {
 
 const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
 const HOOKS = ".devin/hooks.v1.json";
+const CONFIG_FILE = ".devin/config.json";
+const LOCAL_FILE = ".devin/config.local.json";
 
 describe("installing the guard in Devin", () => {
   it("writes it next to the person's hooks, out of git, and doctor and uninstall find it (AC5)", async () => {
@@ -132,6 +135,35 @@ describe("installing the guard in Devin", () => {
 
     await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
     expect(JSON.parse(await read(root, HOOKS))).toEqual({ PostToolUse: [lint] });
+  });
+});
+
+describe("Devin's permissions", () => {
+  it("let Specty's commands run without asking, and its sandbox write in Specty's folders (AC5)", async () => {
+    const mine = { permissions: { allow: ["Exec(npm test)"] } };
+    const root = await tempRepo({ ...PACKAGE, [CONFIG_FILE]: JSON.stringify(mine) });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "windsurf"]);
+    expect(init.out).toContain(
+      "Devin (Windsurf): regla en .devin/config.json para que los comandos de Specty se ejecuten sin preguntar; Specty decide quién ejecuta cada uno.",
+    );
+    expect(init.out).toContain(
+      "Devin (Windsurf): .devin/config.local.json (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.",
+    );
+    const allowed = async (file: string) => JSON.parse(await read(root, file)).permissions.allow;
+    const shared = ["Exec(npm test)", "Exec(specty)"];
+    expect(await allowed(CONFIG_FILE)).toEqual(shared);
+    expect(await allowed(LOCAL_FILE)).toEqual([
+      `Write(${join(root, ".git")}/**)`,
+      `Write(${root}.worktrees/**)`,
+    ]);
+    expect(await read(root, ".git/info/exclude")).toContain(`/${LOCAL_FILE}`);
+    expect(git(root, "status", "--porcelain")).toBe("");
+    await cli(root, ["init", "--language", "es", "--tools", "windsurf"]);
+    expect(await allowed(CONFIG_FILE)).toEqual(shared);
+
+    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(JSON.parse(await read(root, CONFIG_FILE))).toEqual(mine);
+    expect(existsSync(join(root, LOCAL_FILE))).toBe(false);
   });
 });
 
