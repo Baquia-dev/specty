@@ -6,6 +6,13 @@
   "branch": "specty/20261025-specty-why-de-donde-viene-una-linea",
   "baseCommit": "91e8f0ea1bd32f1a00e30a7408fc47ed8564b20e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f33068594919b3fdcd9e4e9dab2a66cb02b8ad80219449843246cfb9378926de",
+    "at": "2026-10-26T00:36:40.194Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d4f9dc225aa10dbf14f0424748bd64ade26a6745",
+      "startedAt": "2026-10-26T00:36:40.550Z",
+      "doneAt": "2026-10-26T00:37:59.328Z",
+      "summary": "core/cards/why.ts: WhyView y whyCard, cada commit (hash, fecha, autor, asunto) con su cambio, tarea, criterios y revisión de la spec; los commits fuera de Specty, los cambios que no están en la carpeta y la línea sin commit, dichos."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -38,12 +55,5 @@
     "A": 3,
     "AC": 5,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f33068594919b3fdcd9e4e9dab2a66cb02b8ad80219449843246cfb9378926de",
-    "at": "2026-10-26T00:36:40.194Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

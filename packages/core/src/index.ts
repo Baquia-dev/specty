@@ -72,6 +72,7 @@ export type {
   SliceView,
   TaskView,
 } from "./cards/view";
+export { type WhyCommit, type WhyView, whyCard } from "./cards/why";
 export { assertionWarnings, NOTE_MAX, riskWarnings } from "./cards/work";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";

@@ -44,7 +44,7 @@ PRODUCT.md promete para la versión 1 la trazabilidad línea a línea, y ARCHITE
 
 ## Tareas
 
-- [ ] T1: La tarjeta de why
+- [x] T1: La tarjeta de why
   - files: packages/core/src/cards/why.ts, packages/core/src/index.ts, packages/core/test/cards/why.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/why.test.ts
