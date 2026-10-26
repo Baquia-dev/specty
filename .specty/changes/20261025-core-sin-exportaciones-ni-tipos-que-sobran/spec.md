@@ -36,7 +36,7 @@ Con todas sus reglas encendidas, knip marca en `packages/core` diez exportacione
 
 ## Tareas
 
-- [ ] T1: Lo que solo usa la lectura de la spec deja de exportarse
+- [x] T1: Lo que solo usa la lectura de la spec deja de exportarse
   - files: packages/core/src/spec/source.ts, packages/core/src/spec/frontmatter.ts, packages/core/src/spec/read-helpers.ts, packages/core/src/spec/list.ts, packages/core/src/spec/diagnostics.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test

@@ -7,12 +7,12 @@ export interface SourceLine {
   readonly fenced: boolean;
 }
 
-export interface SourceHeading {
+interface SourceHeading {
   readonly text: string;
   readonly line: number;
 }
 
-export interface SourceSection {
+interface SourceSection {
   readonly heading: SourceHeading;
   readonly body: readonly SourceLine[];
 }
@@ -34,7 +34,7 @@ const FENCE_CLOSE = /^ {0,3}(`{3,}|~{3,})\s*$/;
 const HEADING = /^ {0,3}(#{1,2})(?=[ \t]|$)(.*)$/;
 
 /** Removes a BOM, converts line endings to LF and Unicode to NFC. */
-export function normalizeText(text: string): string {
+function normalizeText(text: string): string {
   return text.replace(/^﻿/, "").replace(/\r\n?/g, "\n").normalize("NFC");
 }
 

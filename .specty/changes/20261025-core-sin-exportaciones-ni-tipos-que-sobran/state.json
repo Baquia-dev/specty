@@ -6,6 +6,13 @@
   "branch": "specty/20261025-core-sin-exportaciones-ni-tipos-que-sobran",
   "baseCommit": "efc50a3548c86c06ee07ad437cfae62a1d9cb5a3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f7dde31e2c099fc84aa1fe814464e5bfed8a5741c1a5bb25cf56b9b295084565",
+    "at": "2026-10-26T01:48:24.472Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "aa525ae368b74343664283df3b915b50732adefe",
+      "startedAt": "2026-10-26T01:48:24.842Z",
+      "doneAt": "2026-10-26T01:48:43.874Z",
+      "summary": "Dejan de exportarse normalizeText, SourceHeading y SourceSection (source.ts), FrontmatterSchema, readIdHead y ListProblem, que solo usa su archivo, y diagnostics.ts ya no reexporta MessageCatalog ni MessageParams, que nadie importaba desde ahí."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -29,12 +46,5 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f7dde31e2c099fc84aa1fe814464e5bfed8a5741c1a5bb25cf56b9b295084565",
-    "at": "2026-10-26T01:48:24.472Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

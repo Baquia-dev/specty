@@ -86,7 +86,7 @@ export function prelude(
 const ID_HEAD = /^([A-Za-z]+\d+)[ \t]*:[ \t]*(.*)$/;
 
 /** Reads `ID: text`, checking the prefix expected by the section. */
-export function readIdHead(
+function readIdHead(
   head: string,
   line: number,
   prefix: ItemPrefix,
