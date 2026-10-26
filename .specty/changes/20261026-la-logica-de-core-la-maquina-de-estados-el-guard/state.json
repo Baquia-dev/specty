@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "324d343cce20a6e61f3f6efa6fa77d8fcc720f5d",
+      "attempts": 1,
       "startedAt": "2026-10-26T19:07:51.205Z",
       "doneAt": "2026-10-26T19:10:24.073Z",
-      "summary": "tokens.ts: step reparte cada carácter entre opening, separating, grouping y redirecting en el mismo orden. shell.ts: spectyArgs delega en scriptArgs, packageArgs y managerArgs. decide.ts: decidePath pasa el código gobernado a decideGoverned y el alcance a decideTaskScope."
+      "summary": "tokens.ts: step reparte cada carácter entre opening, separating, grouping y redirecting en el mismo orden. shell.ts: spectyArgs delega en scriptArgs, packageArgs y managerArgs. decide.ts: decidePath pasa el código gobernado a decideGoverned y el alcance a decideTaskScope.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "41005f0a343e17a8e12f462d6a00d3fbd1e77611",
+      "startedAt": "2026-10-26T19:10:24.376Z",
+      "doneAt": "2026-10-26T19:11:06.619Z",
+      "summary": "config.ts: withDefaults compone verifyOf, scopeOf, limitsOf, linesOf, gitOf, teamOf, uiOf y reviewOf, cada sección con sus valores por defecto. checks.ts: resolveChecks toma layersOf, generatorsOf y commandsOf. Mismos valores."
     }
   },
   "pending": {

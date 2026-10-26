@@ -53,7 +53,7 @@ Once funciones de la lógica de core pasan de los límites de Specty: `transitio
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: refactor
-- [ ] T3: Los esquemas de la configuración
+- [x] T3: Los esquemas de la configuración
   - files: packages/core/src/schema/config.ts, packages/core/src/schema/checks.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
