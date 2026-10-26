@@ -57,3 +57,22 @@ Hoy `fix-tests` da por buena una tarea `fix` con cualquier test de la carpeta qu
   - ac: AC5
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`fix-tests` ya no da por buena una corrección con cualquier test de la raíz de la carpeta de tests: ahí solo cuenta el que lleva el nombre de un archivo de la tarea (`tests/cart.rs` para `src/cart.rs`), mientras que en subcarpetas, junto al código o con un comodín, cuenta por carpeta como antes, y `scope` no cambia. El ejemplo de Rust vuelve a la estructura plana y lo demuestra, y el comentario del ejemplo nativo ya no lleva la marca que lo hacía fallar.
+
+### Desviaciones
+
+- El primer `pnpm check` de T3 falló en los tests y pasó al repetirlo sin cambios: es el test intermitente de la UI ya anotado.
+
+### Decisiones
+
+- La regla está en `isTestOf`, aparte de `isImplicitTest`: lo que permite tocar un archivo (`scope`) y lo que prueba una corrección (`fix-tests`) son preguntas distintas.
+- El nombre se compara sin extensiones, sin las marcas de test y sin distinguir mayúsculas.
+
+### Pendientes
+
+Ninguno.
