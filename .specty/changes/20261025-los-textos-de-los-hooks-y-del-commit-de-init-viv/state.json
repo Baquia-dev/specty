@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-los-hooks-y-del-commit-de-init-viv",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-los-hooks-y-del-commit-de-init-viv",
   "baseCommit": "52d33b78bdc90b98479d845f87df672955807fce",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0b457da802febc621ceade030665833d21e3e7a6",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:48:05.428Z",
       "doneAt": "2026-10-26T02:48:35.045Z",
-      "summary": "core/src/cards/install.ts tiene los textos de los hooks (guard de cada herramienta, hooks de git y sus avisos) y del commit de init (avisos, asunto y línea), copiados letra a letra de la CLI, con tests en español e inglés."
+      "summary": "core/src/cards/install.ts tiene los textos de los hooks (guard de cada herramienta, hooks de git y sus avisos) y del commit de init (avisos, asunto y línea), copiados letra a letra de la CLI, con tests en español e inglés.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5a18b8c679655ba525ac84a8d5b8fef577eebf64",
+      "startedAt": "2026-10-26T02:48:35.312Z",
+      "doneAt": "2026-10-26T02:50:47.973Z",
+      "summary": "install/hooks.ts e install/commit.ts piden sus textos a core (cards/install.ts) y ya no llaman al traductor; la salida y el commit de init son los mismos, como comprueban los tests de la CLI sin cambios."
     }
   },
   "pending": {

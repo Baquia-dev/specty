@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { translator } from "@baquia-dev/specty-core";
+import {
+  changeInProgressWarning,
+  installCommitLine,
+  installCommitSubject,
+  yoursUncommittedWarning,
+} from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
 import { commitWithReceipt } from "../flow/commits";
 import { pathsOf } from "../io/git";
@@ -26,48 +31,23 @@ export async function commitInstall(
   const opened = await openSession(environment);
   if (opened.kind !== "ok") return { done: [], warnings: [] };
   const { session } = opened;
-  const t = translator(session.lang);
+  const { lang } = session;
   const active = await resolveActive(session);
   if (active !== undefined && !isFinished(active.state)) {
-    const id = active.state.id;
-    return {
-      done: [],
-      warnings: [
-        t(
-          `Esta carpeta tiene un cambio activo (${id}): los archivos de Specty quedan sin commit. Ejecuta \`${COMMAND} init\` en la carpeta principal.`,
-          `This folder has a change in progress (${id}): Specty's files stay uncommitted. Run \`${COMMAND} init\` in the main folder.`,
-        ),
-      ],
-    };
+    return { done: [], warnings: [changeInProgressWarning(active.state.id, COMMAND, lang)] };
   }
   const changed = new Set(pathsOf(await session.git.changedSince(await session.git.head())));
   const candidates = [...new Set(written)].filter((path) => changed.has(path)).toSorted();
   const mine = candidates.filter((path) => !before.has(path));
   const yours = candidates.filter((path) => before.has(path));
-  const warnings =
-    yours.length === 0
-      ? []
-      : [
-          t(
-            `Ya tenían cambios tuyos y quedan sin commit: ${yours.join(", ")}.`,
-            `They already had your changes and stay uncommitted: ${yours.join(", ")}.`,
-          ),
-        ];
+  const warnings = yours.length === 0 ? [] : [yoursUncommittedWarning(yours, lang)];
   if (mine.length === 0) return { done: [], warnings };
   const commit = await commitWithReceipt(session, {
-    subject: first
-      ? t("chore(specty): instalar Specty", "chore(specty): install Specty")
-      : t(
-          "chore(specty): actualizar la instalación de Specty",
-          "chore(specty): update Specty's installation",
-        ),
+    subject: installCommitSubject(first, lang),
     trailers: { "Specty-Init": "true" },
     stage: [mine],
     only: mine,
     receipt: { change: "", kind: "init" },
   });
-  const done = [
-    t(`Commit ${commit}: ${mine.join(", ")}.`, `Commit ${commit}: ${mine.join(", ")}.`),
-  ];
-  return { done, warnings };
+  return { done: [installCommitLine(commit, mine, lang)], warnings };
 }

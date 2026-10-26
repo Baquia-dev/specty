@@ -40,7 +40,7 @@ Séptimo cambio de la serie que lleva a core los textos de la CLI, con lo que qu
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: Los hooks y el commit de init piden sus textos a core
+- [x] T2: Los hooks y el commit de init piden sus textos a core
   - files: packages/cli/src/install/hooks.ts, packages/cli/src/install/commit.ts
   - ac: AC1, AC2
   - verify: pnpm check

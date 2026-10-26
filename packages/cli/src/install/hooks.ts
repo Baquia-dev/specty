@@ -3,9 +3,17 @@ import { relative, resolve, sep } from "node:path";
 import {
   AGENT_NAMES,
   type AgentTool,
+  claudePointerLine,
+  codexGuardLine,
+  codexTrustWarning,
+  gitHooksLine,
+  gitHooksManualWarning,
+  guardLine,
   isGuardedAgent,
   type Lang,
-  translator,
+  noHooksWarning,
+  notOnPathWarning,
+  opencodeGuardLine,
 } from "@baquia-dev/specty-core";
 import type { Git } from "../io/git";
 import { COMMAND, type Environment } from "../session";
@@ -36,96 +44,42 @@ export async function installHooks(options: {
   readonly lang: Lang;
   readonly files: InstallFiles;
 }): Promise<HooksInstall> {
-  const { environment, root, git, tools, files } = options;
-  const t = translator(options.lang);
+  const { environment, root, git, tools, lang, files } = options;
   const done: string[] = [];
   const warnings: string[] = [];
   const written: string[] = [];
   if (tools.includes("claude-code")) {
-    if (await writeClaudePointer(root, files))
-      done.push(t("CLAUDE.md importa AGENTS.md.", "CLAUDE.md imports AGENTS.md."));
+    if (await writeClaudePointer(root, files)) done.push(claudePointerLine(lang));
     const installed = await installClaudeCode(root, git, environment.invocation, files);
     written.push("CLAUDE.md", ...(installed.local ? [] : [installed.file]));
-    done.push(
-      t(
-        `Claude Code: guard en ${installed.file}${installed.local ? " (local)" : ""}.`,
-        `Claude Code: guard in ${installed.file}${installed.local ? " (local)" : ""}.`,
-      ),
-    );
+    done.push(guardLine("Claude Code", installed.file, installed.local, lang));
   }
   if (tools.includes("cursor")) {
     const installed = await installCursor(root, git, environment.invocation, files);
     if (!installed.local) written.push(installed.file);
-    done.push(
-      t(
-        `Cursor: guard en ${installed.file}${installed.local ? " (local)" : ""}.`,
-        `Cursor: guard in ${installed.file}${installed.local ? " (local)" : ""}.`,
-      ),
-    );
+    done.push(guardLine("Cursor", installed.file, installed.local, lang));
   }
   if (tools.includes("codex")) {
     // Outside the repository: nothing for init's commit.
     const file = await installCodex(environment.env, environment.invocation, files);
-    done.push(
-      t(
-        `Codex: guard en ${file}, tu configuración de usuario: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
-        `Codex: guard in ${file}, your user configuration: it applies to all your repositories and does nothing outside those using Specty.`,
-      ),
-    );
-    warnings.push(
-      t(
-        "Codex solo ejecuta el guard cuando confías en él: en Codex, abre `/hooks` y márcalo como de confianza. Basta una vez.",
-        "Codex runs the guard only once you trust it: in Codex, open `/hooks` and trust it. Once is enough.",
-      ),
-    );
+    done.push(codexGuardLine(file, lang));
+    warnings.push(codexTrustWarning(lang));
   }
   if (tools.includes("opencode")) {
     const file = await installOpencode(environment.env, environment.invocation, files);
-    done.push(
-      t(
-        `OpenCode: plugin del guard en ${file}, tu configuración global: vale para todos tus repositorios y fuera de los que usan Specty no hace nada.`,
-        `OpenCode: guard plugin in ${file}, your global configuration: it applies to all your repositories and does nothing outside those using Specty.`,
-      ),
-    );
+    done.push(opencodeGuardLine(file, lang));
   }
   const unsupported = tools
     .filter((tool) => !isGuardedAgent(tool))
     .map((tool) => AGENT_NAMES[tool]);
-  if (unsupported.length > 0) {
-    warnings.push(
-      t(
-        `Sin hooks todavía para: ${unsupported.join(", ")}. Los protegen los hooks de git y el CI.`,
-        `No hooks yet for: ${unsupported.join(", ")}. Git hooks and CI still protect them.`,
-      ),
-    );
-  }
+  if (unsupported.length > 0) warnings.push(noHooksWarning(unsupported, lang));
   const hooks = await installGitHooks(root, git, environment.invocation, files);
   // Hooks inside the git directory are not in the tree; husky's and lefthook's files are.
   written.push(
     ...hooks.files.map((file) => relative(root, resolve(root, file)).split(sep).join("/")),
   );
-  if (hooks.manual === undefined) {
-    done.push(
-      t(
-        `Git: hooks pre-commit y prepare-commit-msg (${hooks.manager}).`,
-        `Git: pre-commit and prepare-commit-msg hooks (${hooks.manager}).`,
-      ),
-    );
-  } else {
-    warnings.push(
-      t(
-        `Añade a la configuración de ${hooks.manager}: ${hooks.manual}`,
-        `Add to the ${hooks.manager} configuration: ${hooks.manual}`,
-      ),
-    );
-  }
-  if (!environment.invocation.portable) {
-    warnings.push(
-      t(
-        `\`${COMMAND}\` no está en el PATH: los hooks usan la ruta de este script. Instálalo con \`npm i -g @baquia-dev/specty\` para que funcionen en cualquier máquina.`,
-        `\`${COMMAND}\` is not on PATH: hooks use this script's path. Install it with \`npm i -g @baquia-dev/specty\` so they work on any machine.`,
-      ),
-    );
-  }
+  if (hooks.manual === undefined) done.push(gitHooksLine(hooks.manager, lang));
+  else warnings.push(gitHooksManualWarning(hooks.manager, hooks.manual, lang));
+  if (!environment.invocation.portable) warnings.push(notOnPathWarning(COMMAND, lang));
   return { done, warnings, written };
 }
