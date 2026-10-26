@@ -10,6 +10,7 @@ import {
 import type { Command } from "commander";
 import { projectProvider } from "../check/commands";
 import { commonProvider } from "../check/common";
+import { dartProvider } from "../check/dart";
 import { checkContext } from "../check/files";
 import { functionsProvider } from "../check/functions";
 import { detectGenerators, type Generator, generatedProvider } from "../check/generated";
@@ -34,6 +35,7 @@ function providersOf(
   return [
     projectProvider(stacks, session.config),
     typescriptProvider,
+    dartProvider,
     layersProvider(session.config),
     functionsProvider,
     generatedProvider(generators),

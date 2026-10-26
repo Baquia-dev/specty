@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "id": "20261025-tipado-estricto-de-dart-en-specty-check",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261025-tipado-estricto-de-dart-en-specty-check",
+  "baseCommit": "0ed47d6d381638e290bceef8cf2eb4dd9b6d591e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c4470b91231e0e21b385cdbc4d1364608ae93a0ed867591825c6ce0ba5b241e9",
+    "at": "2026-10-26T00:57:46.504Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cab219f96d914bc95f1ad2ee68d847376ebe0c960623dd544ef0a1054407094d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:303f63dca9ad4a92b5490ba7a32e8a909dead0e320e6c66c0e422f3120cb9aa6",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:5764b66715ec23507e61608472178ee7e3796a83973c391e06de3cc57593b6f8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e33005b521140a53cd6dec1f5efb9ad7663bba8f",
+      "attempts": 1,
+      "startedAt": "2026-10-26T00:57:46.928Z",
+      "doneAt": "2026-10-26T00:58:20.705Z",
+      "summary": "core/checks/dart.ts: analyzerIgnores da cada comentario que empieza por ignore: o ignore_for_file: (línea o archivo), con splitCode, sin contar los que solo los nombran ni las cadenas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "be1768c7cce905f6df1c942e3ccc4997fe7f516a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T00:58:21.015Z",
+      "doneAt": "2026-10-26T01:00:57.537Z",
+      "summary": "check/dart.ts: dartProvider con dart-strict; exige strict-casts, strict-inference y strict-raw-types siguiendo los include (package: por package_config.json, rutas relativas, lo propio gana), avisa si un include no se lee, y falla con los // ignore añadidos.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6c6e0aa7063d1364d492b64db786d62a3f7cdf99",
+      "attempts": 1,
+      "startedAt": "2026-10-26T01:00:57.890Z",
+      "doneAt": "2026-10-26T01:03:30.145Z",
+      "summary": "formats §6 documenta dart-strict (modos, include por package_config.json y ruta, lo propio gana, aviso sin pub get, // ignore añadidos); ARCHITECTURE la añade a la fila de specty check.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-26T01:04:04.737Z"
+}
