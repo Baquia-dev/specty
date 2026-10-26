@@ -35,7 +35,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: El color ANSI sin supresión
+- [x] T1: El color ANSI sin supresión
   - files: packages/core/src/checks/output.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/output.test.ts

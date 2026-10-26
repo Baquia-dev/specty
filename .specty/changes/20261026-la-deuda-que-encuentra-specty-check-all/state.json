@@ -6,6 +6,13 @@
   "branch": "specty/20261026-la-deuda-que-encuentra-specty-check-all",
   "baseCommit": "f9f6ccc8db4ae7fd18c29d3a81ffd8683e2eb984",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e3e42b9c2e3c044c710a7873c187ece75211c483f8d22a4fe476e89ed54f7944",
+    "at": "2026-10-26T16:50:57.592Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e04bc7f0c586d0e136471f84b4ce5336c18435f1",
+      "startedAt": "2026-10-26T16:50:58.307Z",
+      "doneAt": "2026-10-26T16:51:11.107Z",
+      "summary": "output.ts construye el escape ANSI con String.fromCharCode(0x1b) en una RegExp, sin el biome-ignore; output.test.ts, que ya cubría los colores, sigue pasando."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 3,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e3e42b9c2e3c044c710a7873c187ece75211c483f8d22a4fe476e89ed54f7944",
-    "at": "2026-10-26T16:50:57.592Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
