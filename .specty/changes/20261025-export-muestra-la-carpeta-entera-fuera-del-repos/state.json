@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261025-export-muestra-la-carpeta-entera-fuera-del-repos",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261025-export-muestra-la-carpeta-entera-fuera-del-repos",
+  "baseCommit": "55fe1a9241792466a618119245ade579ea97065d",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4182b08459add822e1bd20d33f3cb9d4c92beb05759bd42bbadc983b77e178d4",
+    "at": "2026-10-26T01:24:12.908Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
