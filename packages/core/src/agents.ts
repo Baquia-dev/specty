@@ -40,7 +40,8 @@ export function effortName(level: EffortLevel, tool: AgentTool | undefined): str
 
 /**
  * Best-effort detection of the agent running a command, from its environment. It is
- * metadata for trailers and recommendations, never proof (ARCHITECTURE §13).
+ * metadata for trailers and recommendations, never proof (ARCHITECTURE §13): it can only
+ * take permissions away (see `personAtTerminal`), never grant them.
  */
 export function detectAgentTool(
   env: Readonly<Record<string, string | undefined>>,
@@ -49,7 +50,26 @@ export function detectAgentTool(
   if (env.CLAUDECODE === "1") return "claude-code";
   if (env.CURSOR_AGENT === "1") return "cursor";
   if (env.GEMINI_CLI === "1") return "gemini-cli";
-  if (env.CODEX_SANDBOX !== undefined) return "codex";
+  // Codex sets CODEX_SANDBOX only inside its sandbox; the other two reach every command.
+  if (
+    env.CODEX_SANDBOX !== undefined ||
+    env.CODEX_CI !== undefined ||
+    env.CODEX_THREAD_ID !== undefined
+  ) {
+    return "codex";
+  }
   if (env.OPENCODE === "1") return "opencode";
   return undefined;
+}
+
+/**
+ * Whether a terminal belongs to the person: a real TTY whose environment does not give
+ * an agent away. Some agents open pseudo-terminals and type into them (Codex's
+ * `write_stdin`), so a TTY alone is not enough (ARCHITECTURE §4).
+ */
+export function personAtTerminal(
+  tty: boolean,
+  env: Readonly<Record<string, string | undefined>>,
+): boolean {
+  return tty && detectAgentTool(env) === undefined;
 }
