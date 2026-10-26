@@ -37,3 +37,21 @@ follows:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/why.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+`specty why <ruta>:<línea>` decide si falta la línea por la historia del archivo y ya no por el mensaje en inglés de `git blame`, así que con un git traducido deja de decir que un archivo con historia no la tiene. Un test con un git falso, que da ese error en español, lo reproduce en cualquier máquina.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Un git falso al principio del PATH, en lugar de forzar el idioma de git: el fallo era leer un mensaje, y ningún otro comando de Specty los lee.
+
+### Pendientes
+
+- Confirmar en el CI de macOS que `why.test.ts` pasa.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-specty-why-no-depende-del-idioma-de-git",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-specty-why-no-depende-del-idioma-de-git",
   "baseCommit": "eb72767cd245b34732e7467054083d7761ae9472",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1703c1fb35385eb2eecd92c643990d8636673bce3bcd781d791e9d48977b963d",
@@ -34,12 +34,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f0ce7a40437504402d10cafbe5ec9b14df5e2677",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:50:04.068Z",
       "doneAt": "2026-10-26T18:52:48.815Z",
-      "summary": "why decide si falta la línea por la historia del archivo (git log -1 -- ruta), no por el mensaje en inglés de git blame. Test con un git falso que da el error de blame en español: falla antes del arreglo y pasa después."
+      "summary": "why decide si falta la línea por la historia del archivo (git log -1 -- ruta), no por el mensaje en inglés de git blame. Test con un git falso que da el error de blame en español: falla antes del arreglo y pasa después.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -50,5 +50,6 @@
     "A": 2,
     "AC": 2,
     "T": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T18:54:40.397Z"
 }
