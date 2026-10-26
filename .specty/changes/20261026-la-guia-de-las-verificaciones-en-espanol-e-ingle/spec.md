@@ -37,7 +37,7 @@ Una guía en español y otra en inglés explican cada verificación de `specty c
 
 ## Tareas
 
-- [ ] T1: Las guías de las verificaciones y su test
+- [x] T1: Las guías de las verificaciones y su test
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md, packages/cli/test/check-docs.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
