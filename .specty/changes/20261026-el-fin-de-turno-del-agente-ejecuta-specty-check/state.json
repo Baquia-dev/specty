@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261026-el-fin-de-turno-del-agente-ejecuta-specty-check",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-el-fin-de-turno-del-agente-ejecuta-specty-check",
+  "baseCommit": "ca9f2901b911ccf01839d1a03805c908a84c4c49",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:788eaf27d716ff2070af97936d73589a8e3eb5f783d94557f7b78c45a2882cb3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1c6ba20249bcef72a1f7f3e55e13bf62b675a58efdfe845e2a5fce623f164a4e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f8bb9fc84fbed0a36298623c5405fd90f28d903bbf77ba4de95ca79664452118",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:6a475192b76dbf66da45249ad5108c1021bfd46722563a574fd62c4830c69d4e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:23c00f4effd940fdae536a5e1a09039c6618fd5528e5b36aec78754ffe547d80",
+    "at": "2026-10-26T09:59:45.908Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
