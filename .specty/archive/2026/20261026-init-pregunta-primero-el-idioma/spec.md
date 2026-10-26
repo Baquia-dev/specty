@@ -56,3 +56,21 @@ Hoy `specty init` deduce el idioma de `LANG`, y una terminal con `LANG=C.UTF-8` 
   - files: packages/cli/src/commands/init.ts, packages/cli/src/install/project-files.ts, packages/cli/test/init-language.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm check
+
+## Cierre
+
+### Resumen
+
+Con una persona en la terminal y sin configuración, `specty init` pregunta primero el idioma, en español y en inglés a la vez, con el detectado como primera opción. Lo elegido rige la configuración, AGENTS.md, la entrevista de un proyecto nuevo y la salida, también la palabra `SIGUIENTE`. Con `--language`, en `--dry-run` o si lo ejecuta un agente, no pregunta. En un repositorio ya configurado, `init --language` cambia solo la línea `language` y reescribe los bloques de AGENTS.md. La primera línea del bloque de flujo pide hablar con el usuario en el idioma configurado, y la salida de un repositorio sin Specty le pide al agente pasar `--language`.
+
+### Desviaciones
+
+El AGENTS.md de este repositorio también recibió la frase nueva del bloque de flujo, para que siga igual al que escribe `init`; está ignorado, así que no hizo falta ampliar el alcance. Para no alargar `init`, la escritura de la configuración y la elección del idioma salieron a `writeConfig` y `languageOf`.
+
+### Decisiones
+
+La opción por defecto sigue siendo el idioma que da `LANG`, aunque con `C.UTF-8` sea inglés: la pregunta lo corrige, y leer el idioma de macOS quedó fuera de alcance. Sin `--language`, una configuración que no tiene `language` no gana la clave en cada ejecución.
+
+### Pendientes
+
+Un repositorio configurado antes en inglés se pasa a español con `specty init --language es`.
