@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
+  "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5fbc33267a4174791e04250cf0d8a5c976a00231a86b056d56f3bff1b18b85ec",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0e9432275fb8db9a89eaa8ba687f8d5db8328b5f83c2a65e858bbfec7a3fc81e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:919fbd0e535d2a06c9b01ec503ef736289f7d9931f0d53dbd93fd106144cf6e2",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5374bcadb70d98298d54d64c686ea9bc897f945e2f890626e4bd1ad4d1530139",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ea54ce2110598803f22a710efa72fe140b9ea8de6881be8f5a18e71c9ca69682",
+    "at": "2026-10-26T10:26:34.078Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
