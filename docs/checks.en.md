@@ -294,6 +294,15 @@ Warns, without ever failing, about each test the diff deletes and each test file
 
 It never overwrites what you already decided differently: it reports it as a conflict. Running it twice duplicates nothing.
 
+## Examples per stack
+
+There is an example repository for Angular and another for NestJS in `packages/cli/test/check-examples-ts.test.ts`, and one for Flutter in `packages/cli/test/check-examples-flutter.test.ts`. Each one has an approved change and runs `specty check --changed --spec` twice:
+
+- with a change that keeps to the plan, and every check passes;
+- with another that breaks every check at once, and they all fail.
+
+The project's commands are stand-ins for its tools, because the real ones need their dependencies installed. These show as `NOT RUN`: `layers` in TypeScript, because the examples have no dependency-cruiser, and `secrets` when there is no scanner on PATH.
+
 ## Adding a provider
 
 What belongs to each stack lives in a provider with a common interface (`packages/cli/src/check/provider.ts`). Adding a stack means adding a provider, without touching the core.

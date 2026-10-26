@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "20261026-ejemplos-de-angular-nestjs-y-flutter-para-cada-v",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-ejemplos-de-angular-nestjs-y-flutter-para-cada-v",
+  "baseCommit": "560be9ed56d873610e408caea967648e493ec6a8",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1ef6fa4a5d8c9ef7ed494a0a0813b76046b8d6204c3ade76d58716fdce934b13",
+    "at": "2026-10-26T12:14:06.856Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6abb310e5f65619c413355250d646f205bf7a47372d98b910571ee93124215d8",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3833bade35fc7b634a94d0430e312a5135b7af6e1c85472cbf1e8dcf98ca909e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:bed0d83be52e22d9ed14e6c708480a49a8485a10cbdf65f04179fb87065c55c5",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b60ebcaf9a3c4111f3d8f923d9c25807ef2b4e56be8b06ebee7418d7c19b6290",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ad54428681d3e3ef728617ba5c0a4c0d2f3dca0675cfc0726bce2f0d70e7380f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4b0f30c5f059adb36e736e10dd81525af0bc0b18",
+      "attempts": 1,
+      "startedAt": "2026-10-26T12:14:07.218Z",
+      "doneAt": "2026-10-26T12:21:20.457Z",
+      "summary": "Ejemplos de Angular y NestJS montados en un repo temporal como cambio aprobado: los scripts de package.json imitan Prettier, ESLint, tsc y el runner; cada verificación pasa en un caso y falla en otro, layers sin dependency-cruiser sale sin ejecutar.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "401aa63d93093e017148cfd6addbaeb039f83bdd",
+      "attempts": 1,
+      "startedAt": "2026-10-26T12:21:20.750Z",
+      "doneAt": "2026-10-26T12:23:53.716Z",
+      "summary": "Ejemplo de Flutter: checks.commands apunta format, lint y tests a imitaciones de dart format, flutter analyze y flutter test; dart-strict, layers con el escáner propio y las demás pasan en un caso y fallan en otro.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "9652bb73774ba18030e6ab8e037329fabcae7bef",
+      "attempts": 2,
+      "startedAt": "2026-10-26T12:23:54.000Z",
+      "doneAt": "2026-10-26T12:25:52.553Z",
+      "summary": "checks.md y checks.en.md explican dónde están los ejemplos por stack, qué ejecutan y por qué layers en TypeScript y secrets pueden salir sin ejecutar; Files deja de exportarse (knip).",
+      "scopeExtra": [
+        "packages/cli/test/stack-examples.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-26T12:26:22.577Z"
+}
