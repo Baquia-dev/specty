@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-task-done-ejecuta-specty-check-y-el-archivo-de-r",
   "baseCommit": "490c281d61d7499375920a69d2f5880cc83f8aa6",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:f28c5190a70e4b636ac1d54f8389ebcb1b21f849910cf6e1b5318edc65cf074e",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8345e5b2cf0513c10c003754503b3bda8af8c239",
+      "attempts": 1,
       "startedAt": "2026-10-26T11:50:24.536Z",
       "doneAt": "2026-10-26T11:54:39.386Z",
-      "summary": "taskDone pasa sus rechazos de notas a notesRefusal y lo que comprueba del diff antes de verificar a checkedDiff; flowBlock une flowLines y ruleLines. specty check --changed --spec pasa entero (secrets sin escáner)."
+      "summary": "taskDone pasa sus rechazos de notas a notesRefusal y lo que comprueba del diff antes de verificar a checkedDiff; flowBlock une flowLines y ruleLines. specty check --changed --spec pasa entero (secrets sin escáner).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,5 +92,6 @@
     "AC": 6,
     "T": 4,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T11:56:47.361Z"
 }

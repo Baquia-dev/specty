@@ -75,3 +75,29 @@ follows:
 
 - R1: Un fallo previo de la rama que `check --changed` ve en archivos de tareas anteriores bloquea la tarea actual — esas tareas ya pasaron la misma compuerta, y `checks.levels` permite bajar a `warn` u `off` cada verificación.
 - R2: Las pruebas de la CLI que completan tareas pasan ahora también por `check` y tardan más o fallan por sus fixtures — T1 ejecuta toda la batería de la CLI.
+
+## Cierre
+
+### Resumen
+
+`task done` ejecuta `specty check --changed --spec` tras el alcance y el tamaño de los archivos, y antes de la verificación de la tarea. Deja fuera `scope` y `max-lines`. Si la tarea tiene verificación, deja fuera también los comandos del proyecto, así que los tests no corren dos veces. Un fallo bloquea la tarea y su tarjeta muestra el informe; los avisos salen por la salida de error. El bloque de AGENTS.md añade las 5 reglas, en español y en inglés, bajo «Reglas (Specty)». La pista de «Convenciones» pide no escribir lo que ya verifica `specty check`.
+
+### Desviaciones
+
+- Seis tests de la CLI completaban tareas `fix` sin test, y `fix-tests` ahora las bloquea. Paré y lo consulté; el usuario decidió mantener el bloqueo («sigue así»), y esas tareas traen ahora su test. El de `check-plan` hace la tarea con su test y lo borra después, para seguir probando `--staged`.
+- `cards/delegated.test.ts` limitaba a 8 líneas todo el bloque `flow`. Ese límite pasó a la parte del flujo (ampliación S1).
+- Al ejecutar `specty check --changed --spec` sobre este mismo cambio, `function-lines` y `complexity` fallaban: `taskDone` ya pasaba de los límites y creció, y `flowBlock` llegó a 56 líneas. Lo ajusté con la restricción literal de la tarea («El código de la herramienta también cumple…»), con AC6 y T4. Ahora pasa entero.
+- La ordenación de imports de `cards.test.ts` (de T2) se corrigió en T3, con una ampliación de alcance.
+
+### Decisiones
+
+- `propose` exige una verificación a cada tarea, así que en `task done` los comandos del proyecto solo corren si la persona quita `verify.default` después de aprobar.
+- La primera regla dice `specty check --changed --spec` sin `<id>`: `--spec` solo toma el cambio activo de la carpeta.
+- Las reglas van en el bloque `flow` que ya existía, así que `init`, `uninstall` y `doctor` no cambian. El bloque del proyecto, con sus comandos, se queda: son datos, no reglas.
+- La tarjeta de un fallo es la de verificación fallida, con el comando de `check` y su informe.
+
+### Pendientes
+
+- C9: la documentación de cada verificación en español e inglés y cómo añadir un proveedor.
+- La sección «Convenciones» del AGENTS.md de este repositorio, que es texto de la persona, repite reglas que ya verifica `specty check` (300 líneas, `any`, cobertura…). Puede recortarse.
+- La pista de `doctor` sobre las secciones sin completar aún habla de «las reglas que no aplica ningún linter».
