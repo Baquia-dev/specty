@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261025-capas-en-dart-con-un-escaner-de-imports",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261025-capas-en-dart-con-un-escaner-de-imports",
+  "baseCommit": "b2b3c9de3ac2fd5cd78ecc5af1286a3eea3d96c0",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d59412cbbef67c468187398d82cae2fe4bf76dbb096e23c7db664c204e2747e5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:51ac7486fc205dc0dc30d89245277b8503c14fe1bf38110992374c1062b63751",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:205b1d236ab67e6068bb77ed33e3df4aaac91bc0ff7299c195ba2e71e2f94ca8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eceaf57498a93ce30d6ba5e7a34fc66f38b23988c7000af9d3d04223c0ae87c0",
+    "at": "2026-10-26T01:05:15.379Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
