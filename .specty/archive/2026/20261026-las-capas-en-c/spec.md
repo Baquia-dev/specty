@@ -56,3 +56,22 @@ La verificación `layers` vigila también los `using` de C#, con un escáner pro
   - ac: AC3
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+`layers` vigila los `using` de C#, con un escáner del core y un índice de los namespaces que declaran los archivos `.cs` del repositorio. Cuentan `global using`, `using static` y los alias. No cuentan `using var` ni `using (…)`. Con esto, las capas funcionan en los nueve stacks del plan, además de TypeScript, JavaScript y Dart. Las guías ya no piden un escáner de imports a quien añada un proveedor.
+
+### Desviaciones
+
+- El test de la CLI apaga también `typecheck` y `format`: en C# ejecutarían `dotnet build` y `dotnet format`, que no hacen falta para probar las capas.
+
+### Decisiones
+
+- Un `using` va a `<carpeta>/*.cs`, la carpeta del primer archivo que declara su namespace. La capa la decide esa carpeta.
+- El nombre sin su último tramo también vale. Así un `using static` o un alias de un tipo resuelve a su namespace.
+
+### Pendientes
+
+- Con `--staged`, el índice de namespaces sale de los archivos del disco, no de lo preparado.

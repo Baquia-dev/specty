@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T15:42:30.551Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"f8a28d05339ea53c05a3d500f457f06f7b5cbc61"}}
 {"ts":"2026-10-26T15:44:09.886Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":80978,"tree":"sha256:92ccfd638f76c1bd2a933e7f914c3d762bd8104094fc4382c306bf4fea19f080"}}
 {"ts":"2026-10-26T15:44:09.888Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"Las guías y formats.md explican cómo layers lee los using de C# y cómo nombra sus paquetes"}}
+{"ts":"2026-10-26T15:44:14.695Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T15:44:24.720Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:e19fa7dfd47a733c802347c1365621697cffabf1e05c12a8269be604e002dc9f","size":"M","warnings":0}}
+{"ts":"2026-10-26T15:44:24.893Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

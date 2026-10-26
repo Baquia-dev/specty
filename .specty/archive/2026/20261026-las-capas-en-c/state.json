@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-las-capas-en-c",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-las-capas-en-c",
   "baseCommit": "47c47023578ba4476890542d7a47932d2a479050",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:8ad4f7c360d8b1b83637e023746c8e347b204868036d7ce453e33fe29fb635ad",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f8a28d05339ea53c05a3d500f457f06f7b5cbc61",
+      "attempts": 1,
       "startedAt": "2026-10-26T15:42:30.551Z",
       "doneAt": "2026-10-26T15:44:09.887Z",
-      "summary": "Las guías y formats.md explican cómo layers lee los using de C# y cómo nombra sus paquetes"
+      "summary": "Las guías y formats.md explican cómo layers lee los using de C# y cómo nombra sus paquetes",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,5 +69,6 @@
     "A": 2,
     "AC": 3,
     "T": 3
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T15:44:24.718Z"
 }
