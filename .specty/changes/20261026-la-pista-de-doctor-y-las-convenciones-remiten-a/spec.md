@@ -35,7 +35,7 @@ La pista de `specty doctor` sobre las secciones de AGENTS.md sin completar pide 
   - files: packages/core/src/cards/doctor.ts, packages/core/test/cards/doctor.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts
-- [ ] T2: Las convenciones de este repositorio y ARCHITECTURE
+- [x] T2: Las convenciones de este repositorio y ARCHITECTURE
   - files: AGENTS.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm check
