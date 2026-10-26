@@ -47,3 +47,21 @@ Undécimo cambio de la serie que lleva a core los textos de la CLI. `specty revi
   - ac: AC1, AC2
   - verify: pnpm check
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Los textos de `review` viven en core: sus rechazos y el aviso «revisando con…» en `cards/review.ts`, junto a los prompts y la tarjeta de la revisión independiente, y la revisión de la persona desde la UI en `cards/review-ui.ts`. «vuelve a cargar» es ahora un solo texto, `reloadNext`, que también usa la tarjeta de «No hay un cambio activo». Los dos archivos de la CLI ya no llaman al traductor, y la salida es la misma: los tests de la CLI pasan sin cambios.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `inputFor` devuelve el motivo del rechazo como dato (`ReviewRefusal`), no como texto, y `review` arma la tarjeta con core.
+
+### Pendientes
+
+- Siguen en la CLI los textos de las épicas, `prune`, `ui`, `export`, `why`, `audit`, `delegate`, del servidor, de los hooks y de `check`.

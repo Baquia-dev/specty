@@ -7,3 +7,6 @@
 {"ts":"2026-10-26T03:09:22.976Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"9a7bc55af650a2164af6789ebf08bdc3d9b3378e"}}
 {"ts":"2026-10-26T03:12:00.537Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm check","exit":0,"ms":89074,"tree":"sha256:608a8987020fa780a6eb36b123ee3555ded9768669d1bfd2451cbda5ca3cec67"}}
 {"ts":"2026-10-26T03:12:00.659Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"commands/review.ts y flow/review.ts piden sus textos a core (reviewRefusalCard, reviewingNote, cards/review-ui.ts y reloadNext); inputFor devuelve el motivo como dato. Ya no llaman al traductor y la salida es la misma, como comprueban los tests."}}
+{"ts":"2026-10-26T03:12:09.745Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T03:12:15.277Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:698d10ed9bd1b37e5ed6763d0d5be1881dacb6c86251d34b4e8745db57c531c3","size":"M","warnings":1}}
+{"ts":"2026-10-26T03:12:20.678Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

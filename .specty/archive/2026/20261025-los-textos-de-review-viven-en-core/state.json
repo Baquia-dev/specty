@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-los-textos-de-review-viven-en-core",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-los-textos-de-review-viven-en-core",
   "baseCommit": "1d7571753428f7485b4520d14a36865eb2809ab8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:13d19f4a2deecc652a969c72b89f5bc416ecbc88e94b0917e473ee5bcf2f8eee",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9a7bc55af650a2164af6789ebf08bdc3d9b3378e",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:09:22.976Z",
       "doneAt": "2026-10-26T03:12:00.658Z",
-      "summary": "commands/review.ts y flow/review.ts piden sus textos a core (reviewRefusalCard, reviewingNote, cards/review-ui.ts y reloadNext); inputFor devuelve el motivo como dato. Ya no llaman al traductor y la salida es la misma, como comprueban los tests."
+      "summary": "commands/review.ts y flow/review.ts piden sus textos a core (reviewRefusalCard, reviewingNote, cards/review-ui.ts y reloadNext); inputFor devuelve el motivo como dato. Ya no llaman al traductor y la salida es la misma, como comprueban los tests.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 3,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T03:12:15.276Z"
 }
