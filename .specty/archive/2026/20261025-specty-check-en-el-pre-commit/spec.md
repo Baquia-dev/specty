@@ -58,3 +58,22 @@ Con `checks.preCommit: true`, el hook `pre-commit` que Specty ya instala (en hus
 ## Riesgos
 
 - R1: Los tests del proyecto hacen lento cada commit manual — `checks.levels.tests` los apaga solo si se quiere, y `checks.preCommit` entero se desactiva; el corte 6 lo activa con confirmación.
+
+## Cierre
+
+### Resumen
+
+Con `checks.preCommit: true`, el `pre-commit` que Specty ya instala en cualquier gestor de hooks ejecuta `specty check --staged` cuando va a permitir un cambio manual dentro del alcance, y lo bloquea con el informe en stderr si alguna verificación de nivel error falla. No escribe hooks nuevos ni añade dependencias. Los commits del propio Specty, las operaciones de git en curso y lo que queda fuera de las rutas gobernadas siguen como antes.
+
+### Desviaciones
+
+- Ninguna respecto al plan del cambio.
+
+### Decisiones
+
+- `checks.preCommit` es `false` por defecto: un repositorio que ya usa Specty no empieza a ejecutar sus tests en cada commit sin decidirlo.
+- Las verificaciones corren antes de dejar la marca del cambio manual, así que un commit bloqueado no se lleva sus trailers.
+
+### Pendientes
+
+- `specty check --install`, que activa `checks.preCommit` y escribe la plantilla de CI, el modo estricto de Dart y dependency-cruiser, con el diff de cada archivo y confirmación (cambio siguiente).

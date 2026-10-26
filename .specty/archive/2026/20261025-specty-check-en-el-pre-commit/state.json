@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261025-specty-check-en-el-pre-commit",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261025-specty-check-en-el-pre-commit",
   "baseCommit": "58e8c6e2e7e18a6f24b2a5f0b92609132cfad533",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4a87030e30c74fe43a0caba9fb84039738cd78781cd6fc09e6278a8338dd9211",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "64973a8b91b4aedb3797b1d66d3ca4ee19ced60a",
+      "attempts": 1,
       "startedAt": "2026-10-26T01:18:08.986Z",
       "doneAt": "2026-10-26T01:20:08.918Z",
-      "summary": "formats §6 documenta checks.preCommit y ARCHITECTURE §9 el paso de specty check --staged en el orden del pre-commit."
+      "summary": "formats §6 documenta checks.preCommit y ARCHITECTURE §9 el paso de specty check --staged en el orden del pre-commit.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,5 +65,29 @@
     "AC": 4,
     "T": 2,
     "R": 1
+  },
+  "closingSubmittedAt": "2026-10-26T01:20:31.094Z",
+  "integration": {
+    "target": "main",
+    "commit": "0f34f09794497cb5918f61d48418a7328ecb526c",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/package.json",
+      "packages/cli/src/commands/export.ts",
+      "packages/cli/src/enforce/hook.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/test/check-pre-commit.test.ts",
+      "packages/cli/test/export.test.ts",
+      "packages/core/src/schema/checks.ts",
+      "pnpm-lock.yaml"
+    ],
+    "at": "2026-10-26T01:22:50.761Z",
+    "resolved": {
+      "commit": "f36c51d",
+      "at": "2026-10-26T01:25:58.639Z"
+    }
   }
 }
