@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261026-el-tamano-no-cuenta-lo-generado-y-no-bloquea-el",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-el-tamano-no-cuenta-lo-generado-y-no-bloquea-el",
+  "baseCommit": "2ae32014bf069b4d64d31dc250ec08bd288b834f",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:955a3d2c2fe96aea5d58a3f3ae35aab63fab692957a36ba674344130ed625c27",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:66dd09fb8111c16a53dd55cd014ed7b0c00fa3a312888f64ae01d6275042943c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f78b877d46a6d3887bd7cd431ef44c932e358ad46bafc616106635b1f5927915",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d33798cac522a444931b85011e63a27919aa83ff524528b20add1b5c7c37fe88",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:710d6d417f78a02dc5f4f391da52cc8df90bc7ab1adb2b4b7b3637d3dbd4c568",
+    "at": "2026-10-26T13:25:04.401Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
