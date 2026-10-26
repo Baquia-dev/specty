@@ -61,3 +61,21 @@ Un cambio aprobado quedó atrapado en el cierre. Su *Files* tenía un glob sobre
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm check
   - type: fix
+
+## Cierre
+
+### Resumen
+
+El tamaño solo cuenta código escrito a mano, con la misma regla que `max-lines`: lo no gobernado, `scope.generated`, los lockfiles y lo que tiene una marca de generado o es binario no suman archivos, acciones, módulos ni archivos de código. La CLI lee el principio de cada ruta y de cada coincidencia de los globs y le dice a core cuáles son generadas o binarias. En el cierre, `checkSplit` no corre y `propose` conserva el tamaño aprobado. El test de integración reproduce el bloqueo: un glob sobre una carpeta ignorada que se llena con 70 archivos, y un glob gobernado que crece hasta XL; los dos se proponen y se cierran.
+
+### Desviaciones
+
+Dos aserciones de `sizing.test.ts` fijaban que la documentación explícita sumaba al número de archivos; pasaron de 5 a 3 y de 5 a 4, como pide A3. `collectSignals` y `propose` superaban los límites de complejidad y de líneas por función: salieron `handWrittenIn`, `unitsOf` y `keptSize`. Las marcas de generado añaden también `auto generated` con espacio, la que escribe OpenAPI Generator.
+
+### Decisiones
+
+Un glob sigue contando uno aunque todas sus coincidencias sean generadas, como un glob sin coincidencias; solo deja de contar si el propio patrón no está gobernado o cae en `scope.generated`. La CLI lee los archivos de uno en uno, hasta 8 KB cada uno, porque un glob puede coincidir con miles y abrirlos a la vez agotaría los descriptores.
+
+### Pendientes
+
+Ninguno en este repositorio. El proyecto bloqueado se desbloquea con esta versión de la CLI: `specty propose` y `specty close` en la carpeta de su cambio.

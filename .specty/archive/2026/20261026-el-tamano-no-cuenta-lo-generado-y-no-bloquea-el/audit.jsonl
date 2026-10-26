@@ -10,3 +10,6 @@
 {"ts":"2026-10-26T13:31:19.076Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"ab60a5fac456929664a1c4ecde7d07e870cf3f3e"}}
 {"ts":"2026-10-26T13:38:44.013Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":131376,"tree":"sha256:6c4c96e6ae1a8804d39d8acca176e854227110f5a0f3b6c98db28c8625ed1197"}}
 {"ts":"2026-10-26T13:38:44.224Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"La CLI lee el principio de cada ruta y coincidencia de Files y le pasa a core las generadas o binarias; propose conserva en el cierre el tamaño aprobado. Test de integración: glob sobre carpeta ignorada con 70 archivos y glob gobernado que crece a XL se cierran; formats y ARCHITECTURE al día."}}
+{"ts":"2026-10-26T13:38:59.472Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-26T13:39:08.821Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:908d3a90d8b0cd6b588a331adcd8ebb41adc280d3ef1f31a0e2cccb871c1cc91","size":"L","warnings":0}}
+{"ts":"2026-10-26T13:41:07.489Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
