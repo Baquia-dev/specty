@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261026-los-comandos-de-calidad-de-python-ruby-php-y-go",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-los-comandos-de-calidad-de-python-ruby-php-y-go",
+  "baseCommit": "8f0271909a23aa71969a198b93444f8b6afafa85",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e2b0584a6797d0a0692c96adb7493d3fc130ed5cac0388ae0bbf8ef5123e031c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b76d8d3f41e54e1552462b9e6c240798eb92e9ad814b192b5e08c00c5d1bfc7e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:279e08298f1870225364a3d883dad6d865c620acab78441e34bbf0f4080af806",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:d81e6f30323bfe526c00d4998cb52cecb513b91571d2129c5a02a90b2cf33256",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:0b6acf65267dffbe163c4b5235ae22acbe5304fa7e874d40e12be1c271737e92",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:a7fbad9d618c88761b944bc96e2f4859b163ecac1021c4eaf1ef26796f7584ed",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2615c929704f15e64fa078579702e3e5ed3323c4589710d9ec1e5c93406f5b8e",
+    "at": "2026-10-26T14:27:22.970Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
