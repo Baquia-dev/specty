@@ -19,3 +19,9 @@ kind: quick
   - files: packages/cli/src/commands/export.ts, packages/cli/test/export.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/export.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+export muestra la carpeta relativa a la raíz cuando está dentro del repositorio y entera cuando está fuera, en vez de un ../../… largo; el test cubre los dos casos.
