@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import { relative } from "node:path";
 import {
-  blockedCard,
   type ChangeState,
+  checkStatus,
+  decisionPostponedCard,
   headerOf,
+  noActiveChangeCard,
+  noSuchChangeCard,
+  nothingChangedCard,
+  nothingWaitsCard,
   notInteractiveCard,
   type Output,
+  otherFolderNote,
   parseSpec,
-  translator,
+  whichChangeQuestion,
 } from "@baquia-dev/specty-core";
 import { resolveActive } from "../flow/active";
 import { awaits, type Located, locateChanges, type PersonAction } from "../flow/changes";
@@ -28,22 +34,11 @@ export type Guarded =
   | { readonly kind: "change"; readonly change: StoredChange };
 
 export async function humanChange(session: Session, action: string): Promise<Guarded> {
-  const t = translator(session.lang);
   if (!canDecide(session))
     return { kind: "output", output: notInteractiveCard(action, session.cards) };
   const change = await resolveActive(session);
   if (change === undefined) {
-    return {
-      kind: "output",
-      output: blockedCard(
-        headerOf(),
-        t("No hay un cambio activo.", "There is no active change."),
-        t(
-          `revisa \`${session.cards.command} status\`.`,
-          `check \`${session.cards.command} status\`.`,
-        ),
-      ),
-    };
+    return { kind: "output", output: noActiveChangeCard("person", session.cards) };
   }
   return { kind: "change", change };
 }
@@ -63,19 +58,14 @@ export async function personSession(
   action: PersonAction,
   options: { readonly id?: string | undefined; readonly scope?: string | undefined },
 ): Promise<Chosen> {
-  const t = translator(session.lang);
+  const { cards } = session;
   const { terminal } = session.environment;
   if (!terminal.interactive) return { kind: "session", session };
   const located = await locateChanges(session);
-  const status = t(
-    `revisa \`${session.cards.command} status\`.`,
-    `check \`${session.cards.command} status\`.`,
-  );
   if (options.id !== undefined) {
     const named = located.find(({ change }) => change.state.id === options.id);
     if (named !== undefined) return chosen(session, named);
-    const missing = t(`No hay ningún cambio ${options.id}.`, `There is no change ${options.id}.`);
-    return { kind: "output", output: blockedCard(headerOf(), missing, status) };
+    return { kind: "output", output: noSuchChangeCard(options.id, cards) };
   }
   const waiting: Located[] = [];
   for (const candidate of located) {
@@ -87,13 +77,12 @@ export async function personSession(
   if (only === undefined) {
     // This folder's change answers as before: nothing pending in its phase.
     if (located.some(({ current }) => current)) return { kind: "session", session };
-    const none = t(`Ningún cambio espera \`${action}\`.`, `No change waits for \`${action}\`.`);
-    return { kind: "output", output: blockedCard(headerOf(), none, status) };
+    return { kind: "output", output: nothingWaitsCard(action, cards) };
   }
   if (waiting.length === 1) return chosen(session, only);
   const titles = await Promise.all(waiting.map(titleOf));
   const picked = await terminal.choose(
-    t("¿En qué cambio?", "Which change?"),
+    whichChangeQuestion(session.lang),
     waiting.map(({ change }, index) => ({
       value: change.state.id,
       label: `${change.state.id} · ${change.state.phase} — ${titles[index] ?? ""}`,
@@ -101,11 +90,7 @@ export async function personSession(
   );
   const match = waiting.find(({ change }) => change.state.id === picked);
   if (match === undefined) {
-    const nothing = [t("Nada cambió.", "Nothing changed.")];
-    return {
-      kind: "output",
-      output: { status: "ok", header: headerOf(), blocks: [{ lines: nothing }], next: status },
-    };
+    return { kind: "output", output: nothingChangedCard(headerOf(), checkStatus(cards), cards) };
   }
   return chosen(session, match);
 }
@@ -113,15 +98,15 @@ export async function personSession(
 /** The session of the chosen change; when it lives in another folder, the person is told. */
 async function chosen(session: Session, located: Located): Promise<Chosen> {
   if (located.current) return { kind: "session", session };
-  const t = translator(session.lang);
-  const folder = relative(session.root, located.session.root);
-  session.environment.terminal.note(
-    t("Cambio", "Change"),
-    t(
-      `${located.change.state.id} — ${await titleOf(located)}, en ${folder}`,
-      `${located.change.state.id} — ${await titleOf(located)}, in ${folder}`,
-    ),
+  const note = otherFolderNote(
+    {
+      id: located.change.state.id,
+      title: await titleOf(located),
+      folder: relative(session.root, located.session.root),
+    },
+    session.lang,
   );
+  session.environment.terminal.note(note.title, note.text);
   return { kind: "session", session: located.session };
 }
 
@@ -130,14 +115,5 @@ async function titleOf({ change, session }: Located): Promise<string> {
 }
 
 export function postponed(session: Session, state: ChangeState): Output {
-  const t = translator(session.lang);
-  return {
-    status: "ok",
-    header: headerOf(state.id, state.phase),
-    blocks: [{ lines: [t("Nada cambió.", "Nothing changed.")] }],
-    next: t(
-      `revisa \`${session.cards.command} status\` cuando quieras decidir.`,
-      `check \`${session.cards.command} status\` when you want to decide.`,
-    ),
-  };
+  return decisionPostponedCard(state.id, state.phase, session.cards);
 }

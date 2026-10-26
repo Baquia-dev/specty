@@ -45,7 +45,7 @@ Cuarto cambio de la serie que lleva a core los textos de la CLI, con las primera
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core test
   - type: refactor
-- [ ] T2: approve, reject y la elección del cambio piden sus textos a core
+- [x] T2: approve, reject y la elección del cambio piden sus textos a core
   - files: packages/cli/src/commands/approve.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/src/commands/human.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm check

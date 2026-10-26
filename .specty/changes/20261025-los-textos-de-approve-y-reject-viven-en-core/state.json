@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-approve-y-reject-viven-en-core",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-approve-y-reject-viven-en-core",
   "baseCommit": "9a0baae8d740f60213a7df98da033adee4207bb8",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6407b8e8d9694313195bab493a7df28a78c23c51",
+      "attempts": 1,
       "startedAt": "2026-10-26T02:31:43.345Z",
       "doneAt": "2026-10-26T02:32:38.391Z",
-      "summary": "Core gana cards/approve.ts (spec y alcance: resumen, preguntas, rechazos y lo aprobado o pospuesto), cards/decide.ts (elegir el cambio de una decisión) y checkStatus y nothingChangedCard en refusals.ts, con tests en español e inglés."
+      "summary": "Core gana cards/approve.ts (spec y alcance: resumen, preguntas, rechazos y lo aprobado o pospuesto), cards/decide.ts (elegir el cambio de una decisión) y checkStatus y nothingChangedCard en refusals.ts, con tests en español e inglés.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d74be268144310d1d71233d0b23b0e054db005bc",
+      "startedAt": "2026-10-26T02:32:38.673Z",
+      "doneAt": "2026-10-26T02:35:31.317Z",
+      "summary": "approve.ts, scope-decision.ts y human.ts piden sus textos a core (cards/approve.ts, cards/decide.ts, noActiveChangeCard, checkStatus y nothingChangedCard); postponed queda como envoltorio sin textos. La salida es la misma, como comprueban los tests sin cambios."
     }
   },
   "pending": {
