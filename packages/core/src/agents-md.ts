@@ -12,7 +12,10 @@ export interface ProjectFacts {
   readonly commands: readonly { readonly label: string; readonly command: string }[];
 }
 
-/** The flow block (docs/formats.md §8): about eight lines, always loaded by the agent. */
+/**
+ * The flow block (docs/formats.md §8), always loaded by the agent: Specty's flow in eight lines
+ * and the five rules no tool can verify. What a tool can verify, `specty check` does (ADR 0012).
+ */
 export function flowBlock(lang: Lang, command: string): string {
   const t = translator(lang);
   return [
@@ -44,6 +47,28 @@ export function flowBlock(lang: Lang, command: string): string {
     t(
       "- Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.",
       "- If the `specty` command does not exist, use `npx -y @baquia-dev/specty <command>`. Never use `npx specty`: it is another package.",
+    ),
+    "",
+    t("## Reglas (Specty)", "## Rules (Specty)"),
+    t(
+      `- Antes de reportar una tarea como terminada, ejecuta \`${command} check --changed --spec\` y corrige todos los fallos. No reportes con fallos pendientes.`,
+      `- Before reporting a task as done, run \`${command} check --changed --spec\` and fix every failure. Do not report with failures pending.`,
+    ),
+    t(
+      "- Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.",
+      "- Before creating a module, use case, component or screen, look for an equivalent one in the repo and replicate its structure.",
+    ),
+    t(
+      "- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.",
+      "- Find code with targeted searches by symbol or text and read only the fragments you need, not whole files.",
+    ),
+    t(
+      "- Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.",
+      "- Edit with targeted changes; do not rewrite whole files for small changes.",
+    ),
+    t(
+      "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
+      "- Brief final report: what changed, what was verified and what is pending.",
     ),
   ].join("\n");
 }
@@ -85,8 +110,8 @@ export function humanSections(lang: Lang): string {
     t("## Convenciones", "## Conventions"),
     "",
     t(
-      "<!-- Solo lo que no se deduce del código ni lo aplica un linter. Cada regla, verificable. -->",
-      "<!-- Only what cannot be inferred from the code and no linter enforces. Every rule, verifiable. -->",
+      "<!-- Solo lo que no se deduce del código ni verifica `specty check` (formato, lint, tipos, tests, tamaño, capas…). -->",
+      "<!-- Only what cannot be inferred from the code and `specty check` does not verify (format, lint, types, tests, size, layers…). -->",
     ),
   ].join("\n");
 }

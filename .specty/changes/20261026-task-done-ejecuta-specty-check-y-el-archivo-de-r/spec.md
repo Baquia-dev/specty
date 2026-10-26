@@ -56,7 +56,7 @@ follows:
   - files: packages/cli/src/commands/check.ts, packages/cli/src/commands/task.ts, packages/cli/test/task-check.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
-- [ ] T2: Las 5 reglas en el bloque de AGENTS.md
+- [x] T2: Las 5 reglas en el bloque de AGENTS.md
   - files: packages/core/src/agents-md.ts, packages/core/test/cards.test.ts, AGENTS.md
   - ac: AC4, AC5
   - verify: pnpm test

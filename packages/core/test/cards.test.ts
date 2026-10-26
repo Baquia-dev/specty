@@ -7,6 +7,7 @@ import {
   type EffortRecommendation,
   effortLine,
   flowBlock,
+  humanSections,
   hasBlock,
   nextCard,
   parseSpec,
@@ -245,8 +246,30 @@ describe("AGENTS.md blocks", () => {
     expect(removeBlock(human, "flow")).toBe(human);
   });
 
-  it("keeps the flow block to a few lines", () => {
-    expect(flowBlock("es", "specty").split("\n").length).toBeLessThanOrEqual(8);
+  it("keeps the flow block to the flow and the five rules no tool can verify (AC4)", () => {
+    const es = flowBlock("es", "specty").split("\n");
+    expect(es.length).toBeLessThanOrEqual(15);
+    expect(es.slice(-6)).toEqual([
+      "## Reglas (Specty)",
+      "- Antes de reportar una tarea como terminada, ejecuta `specty check --changed --spec` y corrige todos los fallos. No reportes con fallos pendientes.",
+      "- Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.",
+      "- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.",
+      "- Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.",
+      "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
+    ]);
+    expect(flowBlock("en", "specty").split("\n").slice(-6)).toEqual([
+      "## Rules (Specty)",
+      "- Before reporting a task as done, run `specty check --changed --spec` and fix every failure. Do not report with failures pending.",
+      "- Before creating a module, use case, component or screen, look for an equivalent one in the repo and replicate its structure.",
+      "- Find code with targeted searches by symbol or text and read only the fragments you need, not whole files.",
+      "- Edit with targeted changes; do not rewrite whole files for small changes.",
+      "- Brief final report: what changed, what was verified and what is pending.",
+    ]);
+  });
+
+  it("asks people not to write in Conventions what specty check verifies (AC5)", () => {
+    expect(humanSections("es")).toContain("ni verifica `specty check`");
+    expect(humanSections("en")).toContain("`specty check` does not verify");
   });
 
   it("tells the agent to work in the change's own folder", () => {
