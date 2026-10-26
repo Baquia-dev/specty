@@ -77,7 +77,7 @@ En la tabla de capacidades, las tres pasan a «sí» en OpenCode.
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/agents/opencode.ts, packages/core/src/cards/doctor.ts, packages/cli/test/opencode.test.ts, packages/cli/test/check-agent-stop.test.ts, packages/cli/test/agents.test.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/check-agent-stop.test.ts test/agents.test.ts
-- [ ] T3: OpenCode deja de leer lo excluido
+- [x] T3: OpenCode deja de leer lo excluido
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/test/check-ignores.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts test/check-install.test.ts

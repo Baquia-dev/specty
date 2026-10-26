@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "413d103760e0d3fe3392610a00065a9ccd9f9ce4",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:26:12.747Z",
       "doneAt": "2026-10-26T18:36:06.506Z",
-      "summary": "El plugin de OpenCode trae la tarjeta tras compactar (1: session.compacted y prompt sin respuesta; 2: compaction y context) y, con STOP activado por check --install, devuelve al agente al trabajo en session.idle si el check falla. init conserva STOP; doctor avisa."
+      "summary": "El plugin de OpenCode trae la tarjeta tras compactar (1: session.compacted y prompt sin respuesta; 2: compaction y context) y, con STOP activado por check --install, devuelve al agente al trabajo en session.idle si el check falla. init conserva STOP; doctor avisa.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f835115dc867a3cdee69ea6233e8e4b44c6a81fd",
+      "startedAt": "2026-10-26T18:36:06.809Z",
+      "doneAt": "2026-10-26T18:37:06.496Z",
+      "summary": "check --install añade a opencode.json (u opencode.jsonc) denegaciones en permission.read para checks.exclude y scope.generated, tras las reglas de la persona; los patrones con **/ van también sin él para cubrir la raíz."
     }
   },
   "pending": {
