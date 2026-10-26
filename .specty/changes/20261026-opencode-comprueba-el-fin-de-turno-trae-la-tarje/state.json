@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-opencode-comprueba-el-fin-de-turno-trae-la-tarje",
   "baseCommit": "224ba7705ada0d2725828e94151677e9a6e24764",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f835115dc867a3cdee69ea6233e8e4b44c6a81fd",
+      "attempts": 1,
       "startedAt": "2026-10-26T18:36:06.809Z",
       "doneAt": "2026-10-26T18:37:06.496Z",
-      "summary": "check --install añade a opencode.json (u opencode.jsonc) denegaciones en permission.read para checks.exclude y scope.generated, tras las reglas de la persona; los patrones con **/ van también sin él para cubrir la raíz."
+      "summary": "check --install añade a opencode.json (u opencode.jsonc) denegaciones en permission.read para checks.exclude y scope.generated, tras las reglas de la persona; los patrones con **/ van también sin él para cubrir la raíz.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9ffcb14ccd653cbd86e9e339f0551b2d6912bcf1",
+      "startedAt": "2026-10-26T18:37:06.784Z",
+      "doneAt": "2026-10-26T18:38:22.778Z",
+      "summary": "La tarjeta tras compactar, el fin de turno y la exclusión de OpenCode pasan a «sí»; ARCHITECTURE (§7 y §10) y formats.md cuentan el plugin, STOP y permission.read."
     }
   },
   "pending": {

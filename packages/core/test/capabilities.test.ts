@@ -58,6 +58,9 @@ describe("the capability table", () => {
     expect(es).toContain(
       "| Codex | sí | sí | sí | no posible | sí | no posible | sí | pendiente | `.codex` |",
     );
+    expect(es).toContain(
+      "| OpenCode | sí | sí | sí | no posible | sí | sí | sí | pendiente | `.opencode`, `opencode.json`, `opencode.jsonc` |",
+    );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
     expect(capabilityTable("en")).toContain(
       "| Cursor | yes | yes | indirect | not possible | yes | yes | yes | not possible |",

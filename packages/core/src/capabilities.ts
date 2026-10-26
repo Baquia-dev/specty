@@ -102,10 +102,12 @@ export const AGENT_CAPABILITIES = {
     markers: [".opencode", "opencode.json", "opencode.jsonc"],
     guard: yes,
     afterShell: yes,
-    afterCompaction: pending,
+    // Specty's plugin, checked with OpenCode 1.19.4: `session.compacted` and `session.idle`.
+    afterCompaction: yes,
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: pending,
-    exclusion: pending,
+    endOfTurn: yes,
+    // `permission.read` in `opencode.json`.
+    exclusion: yes,
     // It has no sandbox nor classifier: its permissions are the person's rules.
     permissions: yes,
     endToEnd: pending,

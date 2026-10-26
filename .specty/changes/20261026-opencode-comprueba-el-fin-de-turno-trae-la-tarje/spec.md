@@ -81,7 +81,7 @@ En la tabla de capacidades, las tres pasan a «sí» en OpenCode.
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/test/check-ignores.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts test/check-install.test.ts
-- [ ] T4: La tabla de capacidades y la documentación lo cuentan
+- [x] T4: La tabla de capacidades y la documentación lo cuentan
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
