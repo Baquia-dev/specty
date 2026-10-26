@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-supresiones-en-cualquier-lenguaje",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-supresiones-en-cualquier-lenguaje",
   "baseCommit": "29c375072708f67d04c7b72d2b22d254bdda4efe",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:0a2c93e3c0b7372205a66e756259d27de359de5dc237501d38bf0f4f7b09bec9",
@@ -71,12 +71,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "af3dbf911447e2c6f1d16eae015e9d3969778eca",
+      "attempts": 1,
       "startedAt": "2026-10-26T14:16:54.211Z",
       "doneAt": "2026-10-26T14:19:31.591Z",
-      "summary": "formats.md describe suppressions con su catálogo por familia de lenguajes y sus reglas de comentarios y código; ARCHITECTURE la añade a la fila de specty check."
+      "summary": "formats.md describe suppressions con su catálogo por familia de lenguajes y sus reglas de comentarios y código; ARCHITECTURE la añade a la fila de specty check.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,5 +88,6 @@
     "AC": 4,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-26T14:20:02.756Z"
 }

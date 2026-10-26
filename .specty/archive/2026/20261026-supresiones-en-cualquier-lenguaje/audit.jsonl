@@ -12,3 +12,6 @@
 {"ts":"2026-10-26T14:16:54.214Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"af3dbf911447e2c6f1d16eae015e9d3969778eca"}}
 {"ts":"2026-10-26T14:19:31.589Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm check","exit":0,"ms":132259,"tree":"sha256:092705c811724329365abcc3cc58077260fa352a5c60d3edf187a763705168eb"}}
 {"ts":"2026-10-26T14:19:31.599Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats.md describe suppressions con su catálogo por familia de lenguajes y sus reglas de comentarios y código; ARCHITECTURE la añade a la fila de specty check."}}
+{"ts":"2026-10-26T14:19:43.671Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":2,"delegated":true}}
+{"ts":"2026-10-26T14:20:02.765Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:7ce1305e196b83acced30d0153e211deb7d1c6043d41e8209794c459ffc96622","size":"M","warnings":1}}
+{"ts":"2026-10-26T14:22:08.805Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

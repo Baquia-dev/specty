@@ -76,3 +76,26 @@ Una verificación nueva, `suppressions`, falla con cada comentario o anotación 
 
 - R1: Los tests de `specty check` en repositorios con stack fijan el recuento del resumen (`OK n/m`) y cambiarán con una verificación más — T2 ejecuta toda la batería de la CLI y actualiza esos recuentos y los ejemplos de TypeScript, que ganan su caso de `suppressions`.
 - R2: Un falso positivo en un lenguaje concreto bloquea la tarea — cada marca exige su prefijo de directiva y solo cuenta en comentarios o en código según su tipo; `checks.levels` la baja a `warn`.
+
+## Cierre
+
+### Resumen
+
+`specty check` tiene una verificación nueva, `suppressions`. Falla con cada comentario o anotación que el cambio añade para apagar el compilador, el comprobador de tipos o el linter. Cubre Python, Ruby, Elixir, JavaScript, TypeScript, Java, Kotlin, C#, Go, Rust, PHP, Swift, C y C++. El catálogo vive en el core y sale de la documentación vigente de cada herramienta. Las marcas de comentario solo cuentan en comentarios, y las de código, fuera de las cadenas. La verificación aparece con cualquier stack que no sea Dart, y está documentada en las dos guías, en `formats.md` y en ARCHITECTURE.
+
+### Desviaciones
+
+- En el ejemplo de proveedor de las guías, la regla de `@SuppressWarnings` pasó a ser el `!!` de Kotlin, porque `suppressions` ya cubre la primera.
+- Con dos marcas en una línea, se informa la primera por posición, no por orden del catálogo.
+- El formato que pidió Biome en `core/src/checks/suppressions.ts` se corrigió en T2, con una ampliación de alcance.
+
+### Decisiones
+
+- Va en un proveedor propio, que aplica cuando hay un stack distinto de Dart. Así los repositorios sin stack no cambian, y el `// ignore:` de Dart sigue siendo de `dart-strict`.
+- Cuenta en todos los archivos, también en los tests, y cualquier supresión, aunque lleve justificación. Quien la necesite a menudo la baja a `warn`.
+- Se dejan fuera `@ts-expect-error`, porque la política de TypeScript es de `strict-types`, y las supresiones de los archivos de configuración.
+
+### Pendientes
+
+- `specty check --all` sobre Specty encuentra 3 `biome-ignore` que ya existían: `commands-named.test.ts:77`, `core/src/checks/output.ts:24` y `ui/src/data/sample-diffs.ts:4`. No bloquean `--changed`.
+- S2: los comandos de formato, lint y tipos detectados en cada stack.
