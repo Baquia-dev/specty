@@ -6,7 +6,8 @@ import {
   parseSpec,
   type Spec,
   section,
-  translator,
+  sharedLine,
+  sharedTitle,
 } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
@@ -61,14 +62,10 @@ export function listed(spec: Spec): string[] {
 
 /** One line per shared file: the file and the other changes that list it. */
 export function sharedLines(session: Session, shared: readonly Shared[]): string[] {
-  const t = translator(session.lang);
-  return shared.map(({ path, changes }) =>
-    t(`${path} — también en ${changes.join(", ")}`, `${path} — also in ${changes.join(", ")}`),
-  );
+  return shared.map(({ path, changes }) => sharedLine(path, changes, session.lang));
 }
 
 /** The "shared files" block of an output, or nothing when no file is shared. */
 export function sharedBlock(session: Session, shared: readonly Shared[]): OutputBlock[] {
-  const t = translator(session.lang);
-  return section(t("ARCHIVOS COMPARTIDOS", "SHARED FILES"), sharedLines(session, shared));
+  return section(sharedTitle(session.lang), sharedLines(session, shared));
 }

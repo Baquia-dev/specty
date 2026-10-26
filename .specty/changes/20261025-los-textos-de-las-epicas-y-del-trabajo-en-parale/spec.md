@@ -59,7 +59,7 @@ Pasan a `cards/epic.ts`, a un `cards/parallel.ts` nuevo y a `cards/close.ts`. La
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck
   - type: refactor
-- [ ] T3: Los archivos compartidos, la preparación de la carpeta y la pista piden sus textos a core
+- [x] T3: Los archivos compartidos, la preparación de la carpeta y la pista piden sus textos a core
   - files: packages/cli/src/flow/shared.ts, packages/cli/src/flow/worktree.ts, packages/cli/src/flow/detected.ts
   - ac: AC2, AC3
   - verify: pnpm check

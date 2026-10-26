@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261025-los-textos-de-las-epicas-y-del-trabajo-en-parale",
   "baseCommit": "bfa2cf2f30604b55465c192c21b9f9b1d9a4c603",
   "revision": 1,
@@ -40,12 +40,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bc5973505dd517be0f7708e021f79ced6a3281a0",
+      "attempts": 1,
       "startedAt": "2026-10-26T03:13:50.876Z",
       "doneAt": "2026-10-26T03:15:05.443Z",
-      "summary": "flow/epic.ts (sliceRefusalCard), commands/prune.ts (pruneCard) y flow/prune.ts (por qué deja cada carpeta o rama) piden sus textos a core y ya no llaman al traductor; los tests de épicas y prune pasan sin cambios."
+      "summary": "flow/epic.ts (sliceRefusalCard), commands/prune.ts (pruneCard) y flow/prune.ts (por qué deja cada carpeta o rama) piden sus textos a core y ya no llaman al traductor; los tests de épicas y prune pasan sin cambios.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f9a7e76af608d26836173e41d3dd01ba88e00b31",
+      "startedAt": "2026-10-26T03:15:05.745Z",
+      "doneAt": "2026-10-26T03:17:32.399Z",
+      "summary": "flow/shared.ts, flow/worktree.ts y flow/detected.ts piden sus textos a core (sharedLine, sharedTitle, preparingNote y verifyHintLine) y ya no llaman al traductor; la salida es la misma, como comprueban los tests."
     }
   },
   "pending": {
