@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "20261026-la-pista-de-doctor-y-las-convenciones-remiten-a",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-la-pista-de-doctor-y-las-convenciones-remiten-a",
+  "baseCommit": "5f21e50768bf71ea34dd151dba33bc2ccefbbf18",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:5a167aff9bf14a644713051396960b75259d20a55d4124a29bda17872ea87cc9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:028efaa6dc867d93efc1c6a7297b315ddfd15c78682ba596c1d2976c4bf81f1c",
+    "at": "2026-10-26T13:35:45.136Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
