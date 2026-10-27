@@ -159,7 +159,10 @@ export const AGENT_CAPABILITIES = {
       "no consta que su `PostCompaction` pueda añadir contexto, así que la tarjeta llega con el resultado del siguiente comando de shell.",
       "its `PostCompaction` is not documented to add context, so the card comes with the next shell command's result.",
     ),
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, los parches y los comandos de sus herramientas (`updatedInput`).",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder and moves its tools' paths, patches and commands there (`updatedInput`).",
+    ),
     // `Stop`, as Claude Code's.
     endOfTurn: yes,
     exclusion: yes,
@@ -185,7 +188,10 @@ export const AGENT_CAPABILITIES = {
       "no avisa cuando compacta, así que la tarjeta llega al empezar cada turno, con su primera llamada al modelo (`PreInvocation`).",
       "it does not say when it compacts, so the card comes at the start of each turn, with its first model call (`PreInvocation`).",
     ),
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y bloquea con la ruta buena lo que haría o leería fuera; no reescribe sus acciones, porque su `overwrite` se descarta cuando pide permiso.",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder and blocks what it would do or read elsewhere, with the right path; it does not rewrite its actions, since its `overwrite` is dropped when it asks for permission.",
+    ),
     // `Stop` with `decision: "continue"`; Specty counts the turns it sends back.
     endOfTurn: yes,
     // `.antigravityignore`.

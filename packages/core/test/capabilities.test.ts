@@ -83,10 +83,10 @@ describe("the capability table", () => {
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
     expect(es).toContain("| Gemini CLI | sí | sí | indirecto | indirecto | sí | sí | sí | sí |");
     expect(es).toContain(
-      "| Devin (Windsurf) | sí | sí | indirecto | no posible | sí | sí | sí | no posible |",
+      "| Devin (Windsurf) | sí | sí | indirecto | indirecto | sí | sí | sí | no posible |",
     );
     expect(es).toContain(
-      "| Antigravity | sí | indirecto | indirecto | no posible | sí | sí | sí | no posible |",
+      "| Antigravity | sí | indirecto | indirecto | indirecto | sí | sí | sí | no posible |",
     );
     expect(capabilityTable("en")).toContain(
       "| Cursor | yes | yes | indirect | not possible | yes | yes | yes | not possible |",
@@ -116,7 +116,7 @@ describe("the capability table", () => {
     );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
-    expect(es).toMatch(/- Worktree por nombre \(Cursor, Devin \(Windsurf\), Antigravity\): /);
+    expect(es).toMatch(/- Worktree por nombre \(Cursor\): /);
     expect(capabilityTable("en")).toContain("**Indirect:**");
     expect(capabilityTable("en")).toContain("**Not possible:**");
   });

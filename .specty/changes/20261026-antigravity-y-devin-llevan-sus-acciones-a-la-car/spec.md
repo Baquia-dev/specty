@@ -69,7 +69,7 @@ Con C2 a C4, Gemini CLI, OpenCode y Codex llevan a la carpeta del cambio las acc
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/test/windsurf.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts
-- [ ] T4: La tabla dice cómo entran Antigravity y Devin
+- [x] T4: La tabla dice cómo entran Antigravity y Devin
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts
