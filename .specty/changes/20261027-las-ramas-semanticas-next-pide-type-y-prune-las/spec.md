@@ -52,7 +52,7 @@ Con `git.flow`, la rama de un cambio lleva su tipo, pero el agente no sabe que d
 
 ## Tareas
 
-- [ ] T1: next pide --type cuando el flujo nombra las ramas por tipo
+- [x] T1: next pide --type cuando el flujo nombra las ramas por tipo
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/test/cards.test.ts, packages/cli/src/session.ts, packages/cli/test/branch-names.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/branch-names.test.ts

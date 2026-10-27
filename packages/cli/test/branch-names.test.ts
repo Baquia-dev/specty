@@ -3,12 +3,10 @@ import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { APP, CHANGE, cli, folderOf, git, read, stateIn, tempRepo } from "./support";
 
-/** A repository whose changes go in worktrees, with branches named as `flow` says. */
-const repo = (flow: string) =>
-  tempRepo({
-    ...APP,
-    ".specty/config.yaml": `version: 1\nlanguage: es\ngit:\n  flow: ${flow}\nverify:\n  default: "true"\n`,
-  });
+/** A configuration whose changes go in worktrees, with branches named as `flow` says. */
+const configOf = (flow: string) =>
+  `version: 1\nlanguage: es\ngit:\n  flow: ${flow}\nverify:\n  default: "true"\n`;
+const repo = (flow: string) => tempRepo({ ...APP, ".specty/config.yaml": configOf(flow) });
 const idOf = (slug: string) => `${CHANGE.slice(0, 8)}-${slug}`;
 const LOGIN = idOf("login-con-google");
 /** What git's configuration ties `branch` to. */
@@ -95,5 +93,19 @@ describe("the change of a semantic branch", () => {
     git(root, "config", "--unset", "branch.fix/login-con-google.specty");
     const next = await cli(folderOf(root, LOGIN), ["next"]);
     expect(next.out).toContain(`SPECTY · ${LOGIN} · draft`);
+  });
+});
+
+describe("next before a change", () => {
+  it("asks for --type when the flow names the branches by it, and not otherwise (AC1)", async () => {
+    for (const flow of ["github", "trunk", "gitflow"]) {
+      const next = await cli(await repo(flow), ["next"]);
+      expect(next.out, flow).toContain('`specty new "<título>" --type <tipo> --request');
+    }
+    for (const config of [APP[".specty/config.yaml"], configOf("specty")]) {
+      const next = await cli(await tempRepo({ ...APP, ".specty/config.yaml": config }), ["next"]);
+      expect(next.out).toContain('`specty new "<título>" --request');
+      expect(next.out).not.toContain("--type");
+    }
   });
 });

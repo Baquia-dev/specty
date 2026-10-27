@@ -6,6 +6,13 @@
   "branch": "specty/20261027-las-ramas-semanticas-next-pide-type-y-prune-las",
   "baseCommit": "53c04665141c1d80bbeb386026ef6bf13b1193f6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1c0536942ec6a13a855c13250c3f33a915d4101a8a0e52ed9c0314cb70c2488e",
+    "at": "2026-10-27T23:18:45.232Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0788dc7d8da6dfade910a8a336d738e50c563e85",
+      "startedAt": "2026-10-27T23:18:45.660Z",
+      "doneAt": "2026-10-27T23:21:21.051Z",
+      "summary": "Con un git.flow que nombra por tipo (github, trunk, gitflow), session.ts marca branchTypes y el SIGUIENTE de next sin cambio propone new --type <tipo> con los tipos válidos; con specty o sin la clave, el texto de siempre."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -35,12 +52,5 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1c0536942ec6a13a855c13250c3f33a915d4101a8a0e52ed9c0314cb70c2488e",
-    "at": "2026-10-27T23:18:45.232Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
