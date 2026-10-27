@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261027-init-guarda-el-flujo-de-git-con-git-flow",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-init-guarda-el-flujo-de-git-con-git-flow",
+  "baseCommit": "2b92e418e8e3f055d927c143ccf7779e6bd1baa1",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b3d6e55c3945dc5738fe12b884246e2cb69b69cbe39f5bdac2d05f3210587a59",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:0217dbcec76cdafb39ad85752f150faaead581498f80f4b0e3e85ca2a18d1be0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cd4e830cfbb5d29b1d73b30421cf2a7b2e6657c9600aa918f891f24929375b48",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:013337f045080d55a84f4f006379f289de4ab996faf25cc07d10fcf48e46164c",
+    "at": "2026-10-27T23:44:26.184Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
