@@ -53,7 +53,7 @@ Doce funciones de la UI y de los exportadores pasan de los límites de Specty: `
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch
   - type: refactor
-- [ ] T3: La revisión y el delta
+- [x] T3: La revisión y el delta
   - files: packages/ui/src/data/review.ts, packages/ui/src/data/delta.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch

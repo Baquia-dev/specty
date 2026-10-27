@@ -79,26 +79,23 @@ function sectionOf(entry: DeltaEntry): ReviewSection | "title" | undefined {
   return SECTION_BY_KIND[entry.kind];
 }
 
+/** The text of each kind of unit, by its id; a file line is read from its hash unit instead. */
+const TEXT_OF: Readonly<
+  Partial<Record<DeltaEntry["kind"], (spec: Spec, id: string) => string | undefined>>
+> = {
+  title: (spec) => spec.title,
+  assumption: (spec, id) => spec.sections.assumptions?.items.find((item) => item.id === id)?.text,
+  criterion: (spec, id) => spec.sections.criteria?.items.find((item) => item.id === id)?.text,
+  risk: (spec, id) => spec.sections.risks?.items.find((item) => item.id === id)?.text,
+  task: (spec, id) => taskOf(spec, id)?.title,
+  section: (spec, id) => SECTION_TEXT[id]?.(spec),
+};
+
 /** The text a unit shows: an item's text, a task's title, a section's prose or a file line. */
 function textOf(spec: Spec, entry: DeltaEntry): string {
-  const id = entry.key;
-  const { sections } = spec;
-  switch (entry.kind) {
-    case "title":
-      return spec.title;
-    case "assumption":
-      return sections.assumptions?.items.find((item) => item.id === id)?.text ?? "";
-    case "criterion":
-      return sections.criteria?.items.find((item) => item.id === id)?.text ?? "";
-    case "risk":
-      return sections.risks?.items.find((item) => item.id === id)?.text ?? "";
-    case "task":
-      return taskOf(spec, id)?.title ?? "";
-    case "section":
-      return SECTION_TEXT[id]?.(spec) ?? "";
-    default:
-      return readable(hashUnits(spec).get(entry.key) ?? "");
-  }
+  const text = TEXT_OF[entry.kind];
+  if (text === undefined) return readable(hashUnits(spec).get(entry.key) ?? "");
+  return text(spec, entry.key) ?? "";
 }
 
 function taskOf(spec: Spec, id: string): Task | undefined {

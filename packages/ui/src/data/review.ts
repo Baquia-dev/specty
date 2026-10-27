@@ -46,10 +46,14 @@ export function sectionOf(anchor: CommentRecord["anchor"]): ReviewSection {
   return (parsed && SECTION_BY_PREFIX[parsed.prefix]) || "assumptions";
 }
 
+/** A diagnostic of the spec, with its message in both languages. */
+interface Found {
+  readonly found: Diagnostic;
+  readonly text: Bilingual;
+}
+
 /** Diagnostics in both languages: the same rules, run once per language, in the same order. */
-function diagnostics(
-  spec: Spec,
-): readonly { readonly found: Diagnostic; readonly text: Bilingual }[] {
+function diagnostics(spec: Spec): readonly Found[] {
   const context = { phase: "review", config: DEFAULT_CONFIG } as const;
   const es = validateSpec({ ...spec, language: "es" }, context);
   const en = validateSpec({ ...spec, language: "en" }, context);
@@ -69,7 +73,44 @@ export function deriveReview(
   const warningsFor = (id: string) =>
     found.filter((item) => item.found.severity === "warning" && item.found.target === id);
 
-  const assumptions = (sections.assumptions?.items ?? []).map((item): AssumptionView => {
+  const assumptions = assumptionViews(spec, state);
+  const criteria = (sections.criteria?.items ?? []).map((item) => ({
+    id: item.id,
+    text: item.text,
+    warnings: warningsFor(item.id).map((warning) => warning.text),
+  }));
+  const groups = fileGroups(spec);
+  const tasks = taskViews(spec, state, warningsFor);
+  const reviewComments = commentViews(comments);
+
+  const present: Readonly<Record<ReviewSection, boolean>> = {
+    goal: Boolean(sections.goal),
+    outOfScope: Boolean(sections.outOfScope),
+    assumptions: assumptions.length > 0,
+    criteria: criteria.length > 0,
+    files: groups.size > 0,
+    tasks: tasks.length > 0,
+    risks: (sections.risks?.items.length ?? 0) > 0,
+    design: Boolean(sections.design),
+  };
+  return {
+    goal: sections.goal ?? sections.reason ?? "",
+    outOfScope: sections.outOfScope ?? "",
+    design: sections.design ?? "",
+    assumptions,
+    criteria,
+    files: [...groups].map(([module, files]) => ({ module, files })),
+    tasks,
+    risks: (sections.risks?.items ?? []).map((risk) => ({ id: risk.id, text: risk.text })),
+    comments: reviewComments,
+    index: sectionIndex(present, assumptions, reviewComments, found),
+    errors: found.filter((item) => item.found.severity === "error").map((item) => item.text),
+  };
+}
+
+/** Each assumption with its impact and the person's decision on it. */
+function assumptionViews(spec: Spec, state: ChangeState): AssumptionView[] {
+  return (spec.sections.assumptions?.items ?? []).map((item): AssumptionView => {
     const decided = state.items[item.id];
     return {
       id: item.id,
@@ -79,13 +120,12 @@ export function deriveReview(
       ...(decided?.comment === undefined ? {} : { comment: decided.comment }),
     };
   });
-  const criteria = (sections.criteria?.items ?? []).map((item) => ({
-    id: item.id,
-    text: item.text,
-    warnings: warningsFor(item.id).map((warning) => warning.text),
-  }));
+}
+
+/** The spec's files by module, in the order they first appear. */
+function fileGroups(spec: Spec): Map<string, FileView[]> {
   const groups = new Map<string, FileView[]>();
-  for (const entry of sections.files?.items ?? []) {
+  for (const entry of spec.sections.files?.items ?? []) {
     const module = moduleOf(entry.path);
     groups.set(module, [
       ...(groups.get(module) ?? []),
@@ -98,7 +138,16 @@ export function deriveReview(
       },
     ]);
   }
-  const tasks = (sections.tasks?.items ?? []).map((task) => ({
+  return groups;
+}
+
+/** Each task with its status, its criteria, its files and its warnings. */
+function taskViews(
+  spec: Spec,
+  state: ChangeState,
+  warningsFor: (id: string) => readonly Found[],
+): ReviewView["tasks"] {
+  return (spec.sections.tasks?.items ?? []).map((task) => ({
     id: task.id,
     title: task.title,
     status: state.tasks[task.id]?.status ?? (task.done ? "done" : "pending"),
@@ -106,7 +155,11 @@ export function deriveReview(
     files: task.files,
     warnings: warningsFor(task.id).map((warning) => warning.text),
   }));
-  const reviewComments = comments
+}
+
+/** The comments with their section, the open ones first and each group from the oldest. */
+function commentViews(comments: readonly CommentRecord[]): CommentView[] {
+  return comments
     .map(
       (comment): CommentView => ({
         ...comment,
@@ -117,18 +170,16 @@ export function deriveReview(
     .toSorted(
       (a, b) => Number(a.resolved) - Number(b.resolved) || a.createdAt.localeCompare(b.createdAt),
     );
+}
 
-  const present: Readonly<Record<ReviewSection, boolean>> = {
-    goal: Boolean(sections.goal),
-    outOfScope: Boolean(sections.outOfScope),
-    assumptions: assumptions.length > 0,
-    criteria: criteria.length > 0,
-    files: groups.size > 0,
-    tasks: tasks.length > 0,
-    risks: (sections.risks?.items.length ?? 0) > 0,
-    design: Boolean(sections.design),
-  };
-  const index = SECTIONS.map(
+/** Each section in order: whether it is there, its pending decisions, open comments and warnings. */
+function sectionIndex(
+  present: Readonly<Record<ReviewSection, boolean>>,
+  assumptions: readonly AssumptionView[],
+  comments: readonly CommentView[],
+  found: readonly Found[],
+): SectionIndexView[] {
+  return SECTIONS.map(
     (key): SectionIndexView => ({
       key,
       present: present[key],
@@ -137,8 +188,7 @@ export function deriveReview(
           ? assumptions.filter((item) => item.impact === "high" && item.decision === "pending")
               .length
           : 0,
-      comments: reviewComments.filter((comment) => !comment.resolved && comment.section === key)
-        .length,
+      comments: comments.filter((comment) => !comment.resolved && comment.section === key).length,
       warnings: found.filter(
         (item) =>
           item.found.severity === "warning" &&
@@ -148,18 +198,4 @@ export function deriveReview(
       ).length,
     }),
   );
-
-  return {
-    goal: sections.goal ?? sections.reason ?? "",
-    outOfScope: sections.outOfScope ?? "",
-    design: sections.design ?? "",
-    assumptions,
-    criteria,
-    files: [...groups].map(([module, files]) => ({ module, files })),
-    tasks,
-    risks: (sections.risks?.items ?? []).map((risk) => ({ id: risk.id, text: risk.text })),
-    comments: reviewComments,
-    index,
-    errors: found.filter((item) => item.found.severity === "error").map((item) => item.text),
-  };
 }
