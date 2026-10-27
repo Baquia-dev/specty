@@ -51,7 +51,7 @@ En Windows, Specty muestra con `\` las rutas relativas que en Linux y macOS mues
   - files: packages/cli/src/store/paths.ts, packages/cli/test/paths.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/paths.test.ts
-- [ ] T2: Las rutas de los archivos que tocan `check --install`, `init` y `uninstall`, con `/`
+- [x] T2: Las rutas de los archivos que tocan `check --install`, `init` y `uninstall`, con `/`
   - files: packages/cli/src/check/install-plan.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/uninstall.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-install.test.ts test/check-ignores.test.ts test/check-agent-stop.test.ts test/init-commit.test.ts test/install.test.ts test/uninstall.test.ts
