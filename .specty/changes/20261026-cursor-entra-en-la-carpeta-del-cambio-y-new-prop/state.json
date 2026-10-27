@@ -6,6 +6,13 @@
   "branch": "specty/20261026-cursor-entra-en-la-carpeta-del-cambio-y-new-prop",
   "baseCommit": "db270f91b80715e95b02b7ea9d293c4c12caea16",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b2dcc0f83a8e6452aa448ee153e1a5ae36fb828957eefb0f1c51aa31c0064d5b",
+    "at": "2026-10-27T04:11:40.352Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "85645c94100cea7b98334b79f2cd3749f6ca3417",
+      "startedAt": "2026-10-27T04:11:40.714Z",
+      "doneAt": "2026-10-27T04:17:06.981Z",
+      "summary": "Cursor: preToolUse reescribe Shell con un cd a la carpeta del cambio (o a la misma subcarpeta de working_directory) y responde con updated_input; beforeShellExecution juzga el comando tal cual; Write, Delete, Read y Grep fuera de la carpeta se bloquean con la ruta buena."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b2dcc0f83a8e6452aa448ee153e1a5ae36fb828957eefb0f1c51aa31c0064d5b",
-    "at": "2026-10-27T04:11:40.352Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

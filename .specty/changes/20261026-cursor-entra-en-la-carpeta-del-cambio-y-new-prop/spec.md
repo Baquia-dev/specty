@@ -50,7 +50,7 @@ Con C2 a C5, las demás herramientas con guard llevan a la carpeta del cambio la
 
 ## Tareas
 
-- [ ] T1: Cursor lleva sus comandos a la carpeta de la conversación y bloquea con la ruta buena lo demás
+- [x] T1: Cursor lleva sus comandos a la carpeta de la conversación y bloquea con la ruta buena lo demás
   - files: packages/cli/src/agents/cursor.ts, packages/cli/test/cursor.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/enter.test.ts

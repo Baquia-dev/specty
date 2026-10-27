@@ -1,7 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import { basename, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, cli, git, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import {
+  APP,
+  CHANGE,
+  cli,
+  folderOf,
+  git,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
 async function implementing(): Promise<string> {
@@ -33,6 +45,83 @@ const answer = async (reply: Promise<{ code: number; out: string }>) => {
   expect(code).toBe(0);
   return JSON.parse(out);
 };
+
+/** Cursor's hook before one of its tools, for the conversation `c`. */
+const before = (root: string, tool: string, input: Record<string, unknown>, event = "preToolUse") =>
+  cli(root, ["guard", "--tool", "cursor"], {
+    stdin: JSON.stringify({
+      hook_event_name: event,
+      conversation_id: "c",
+      workspace_roots: [root],
+      cwd: root,
+      tool_name: tool,
+      tool_input: input,
+      tool_use_id: "t1",
+      ...(event === "beforeShellExecution" ? { command: input.command } : {}),
+    }),
+  });
+
+/** A repository with a change in its own folder, which Cursor's conversation `c` entered. */
+async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
+  const root = await tempRepo(APP);
+  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+  const enter = await answer(before(root, "Shell", { command: `specty enter ${CHANGE}` }));
+  expect(enter.permission).toBe("allow");
+  return { root, folder: folderOf(root) };
+}
+
+describe("Cursor in the folder of the change its conversation entered", () => {
+  it("runs each command there, or in the same folder inside it, after a cd (C6 AC1)", async () => {
+    const { root, folder } = await entered();
+    expect(await answer(before(root, "Shell", { command: "pnpm test" }))).toEqual({
+      permission: "allow",
+      updated_input: { command: `cd '${folder}' && pnpm test` },
+    });
+    const inner = { command: "ls", working_directory: join(root, "src") };
+    expect(await answer(before(root, "Shell", inner))).toEqual({
+      permission: "allow",
+      updated_input: { ...inner, command: `cd '${join(folder, "src")}' && ls` },
+    });
+    const code = await answer(before(root, "Shell", { command: "echo x > src/app.ts" }));
+    expect(code.permission).toBe("deny");
+    expect(code.agent_message).toContain(`El cambio ${CHANGE} está en fase`);
+  });
+
+  it("judges the command as it comes before it runs, which cannot be rewritten (C6 AC2)", async () => {
+    const { root, folder } = await entered();
+    const elsewhere = await answer(
+      before(root, "Shell", { command: "pnpm test" }, "beforeShellExecution"),
+    );
+    expect(elsewhere.permission).toBe("deny");
+    expect(elsewhere.agent_message).toContain(
+      `SIGUIENTE: ejecútalo allí: \`cd '${folder}' && pnpm test\`.`,
+    );
+    const there = { command: `cd '${folder}' && pnpm test` };
+    expect(await answer(before(root, "Shell", there, "beforeShellExecution"))).toEqual({
+      permission: "allow",
+    });
+  });
+
+  it("blocks writing, deleting or reading outside that folder, with the same path inside (C6 AC3)", async () => {
+    const { root, folder } = await entered();
+    for (const [tool, input] of [
+      ["Write", { file_path: join(root, "notas.md") }],
+      ["Delete", { path: join(root, "src/app.ts") }],
+      ["Read", { target_file: join(root, "src/app.ts") }],
+      ["Grep", { path: join(root, "src") }],
+    ] as const) {
+      const denied = await answer(before(root, tool, input));
+      expect(denied.permission).toBe("deny");
+      expect(denied.agent_message).toContain("SIGUIENTE: usa la misma ruta dentro de ella: `");
+      expect(denied.agent_message).toContain(folder);
+    }
+    // Inside it, a read goes through, and a conversation that entered nothing reads anywhere.
+    const inside = { target_file: join(folder, "src/app.ts") };
+    expect((await answer(before(root, "Read", inside))).permission).toBe("allow");
+    const free = await answer(before(await tempRepo(APP), "Read", inside));
+    expect(free).toEqual({ permission: "allow" });
+  });
+});
 
 describe("the check after each command in Cursor", () => {
   it("adds to the conversation what a command changed outside the task (AC1)", async () => {
