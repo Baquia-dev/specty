@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261026-la-ui-y-los-exportadores",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-la-ui-y-los-exportadores",
+  "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cb51c82b7d4cdf8fe605b6c7acabffd1900cab571539afb1f45305e2b44ccfa7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:abc50f948e8ce2edbab547690dd6a169285cc3e2a51929558ce2e4a787f239ad",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:18d430a51b12fa3281ea450a863aa0aafa8e8a6d19cf55775a2808c22f27abf2",
+    "at": "2026-10-27T00:48:05.779Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
