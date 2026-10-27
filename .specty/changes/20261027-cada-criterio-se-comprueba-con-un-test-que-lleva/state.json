@@ -6,6 +6,13 @@
   "branch": "specty/20261027-cada-criterio-se-comprueba-con-un-test-que-lleva",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:e33e2cf159f9218a4e47b39123fb9b7a7d4ded4fcbd44a0c9adf12e6f109f9f6",
+    "at": "2026-10-27T06:58:46.841Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -34,7 +41,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "068706cc2428000f97392432e4d060ce15401f7b",
+      "startedAt": "2026-10-27T06:59:00.227Z",
+      "doneAt": "2026-10-27T10:40:40.412Z",
+      "summary": "Un criterio admite el campo test: manual (modelo, vocabulario es/en, parser con field-invalid para otros valores, forma canónica y pista en la plantilla); tests de parse, hash y arbitrarios ampliados; docs/formats.md y ADR 0014 con las decisiones de la épica."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -44,12 +61,5 @@
     "AC": 7,
     "T": 4,
     "R": 3
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:e33e2cf159f9218a4e47b39123fb9b7a7d4ded4fcbd44a0c9adf12e6f109f9f6",
-    "at": "2026-10-27T06:58:46.841Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "ui"
   }
 }

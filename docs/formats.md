@@ -125,7 +125,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - R1: Con 12 puntos y 4 series, el gráfico puede desbordar en pantallas pequeñas. Mitigación: probarlo a 320 px de ancho.
 ```
 
-- **Criterios**: `CUANDO … ENTONCES …` o `WHEN … THEN …`; opcionalmente `DADO` / `GIVEN`.
+- **Criterios**: `CUANDO … ENTONCES …` o `WHEN … THEN …`; opcionalmente `DADO` / `GIVEN`. Un criterio que ningún test puede comprobar lleva debajo el campo `test: manual`, igual en los dos idiomas y con `manual` como único valor: ningún test tiene que llevar su id, y lo comprueba la persona al aceptar ([ADR 0014](decisions/0014-los-tests-como-contrato.md)).
 - **Archivos**: una acción, una ruta o glob y el motivo. Acciones: `crear`, `modificar`, `borrar` o `renombrar origen -> destino` (también en inglés: create, modify, delete, rename). Se prefieren rutas explícitas; para el tamaño, un glob cuenta como sus coincidencias actuales más una, y una ruta que también cubre un glob cuenta una vez. El tamaño solo cuenta código escrito a mano, con la regla de `lines`: ni las rutas ni las coincidencias que no están gobernadas, caen en `scope.generated`, son lockfiles, tienen una marca de generado en sus primeras líneas o son binarias. Los límites de archivos (`split.maxFiles` y `lanes.quick.maxFiles`) cuentan además solo los que no son tests; la puntuación cuenta también los tests. El cierre no vuelve a mirar el tamaño (ARCHITECTURE §11).
 - **Campos de tarea**:
   - `files` (obligatorio): rutas o globs incluidos en Archivos.

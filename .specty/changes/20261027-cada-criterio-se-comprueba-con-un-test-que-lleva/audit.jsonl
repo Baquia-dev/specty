@@ -6,3 +6,6 @@
 {"ts":"2026-10-27T06:47:33.608Z","actor":"human","event":"assumption.decided","data":{"item":"A3","decision":"confirmed"}}
 {"ts":"2026-10-27T06:47:34.552Z","actor":"human","event":"assumption.decided","data":{"item":"A4","decision":"confirmed"}}
 {"ts":"2026-10-27T06:58:46.850Z","actor":"human","event":"spec.approved","data":{"revision":2,"hash":"sha256:e33e2cf159f9218a4e47b39123fb9b7a7d4ded4fcbd44a0c9adf12e6f109f9f6","channel":"ui"}}
+{"ts":"2026-10-27T06:59:00.228Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"068706cc2428000f97392432e4d060ce15401f7b"}}
+{"ts":"2026-10-27T10:40:40.208Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/spec test/templates.test.ts","exit":0,"ms":1553,"tree":"sha256:006f32710657bdf8362cc6b1215b8c1ffb49598076e92385b0296ba12eae405d"}}
+{"ts":"2026-10-27T10:40:40.415Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Un criterio admite el campo test: manual (modelo, vocabulario es/en, parser con field-invalid para otros valores, forma canónica y pista en la plantilla); tests de parse, hash y arbitrarios ampliados; docs/formats.md y ADR 0014 con las decisiones de la épica."}}

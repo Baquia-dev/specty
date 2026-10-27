@@ -291,6 +291,12 @@ describe("AGENTS.md blocks", () => {
 });
 
 describe("templates", () => {
+  it("tell how to mark a criterion that no test can check (AC1)", () => {
+    for (const lang of ["es", "en"] as const) {
+      expect(specTemplate({ kind: "standard", lang, title: "X" })).toContain('"  - test: manual"');
+    }
+  });
+
   it("produce specs that only lack their content", () => {
     for (const kind of ["quick", "standard", "spike", "retro", "epic"] as const) {
       const { diagnostics, spec } = parseSpec(specTemplate({ kind, lang: "en", title: "X" }));

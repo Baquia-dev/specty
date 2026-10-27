@@ -16,7 +16,8 @@ const HINTS: Readonly<Record<Lang, Readonly<Record<SectionKey, string>>>> = {
       'Lo que este cambio NO hará, en viñetas. Escribe "- Ninguno" solo si de verdad no hay nada.',
     assumptions:
       'Lo que das por cierto sin confirmarlo: "- A1: …". Debajo, "  - impacto: alto" si cambiaría el diseño.',
-    criteria: 'Resultados observables: "- AC1: CUANDO … ENTONCES …".',
+    criteria:
+      'Resultados observables: "- AC1: CUANDO … ENTONCES …". Debajo, "  - test: manual" si ningún test puede comprobarlo.',
     design: "Opcional: decisiones técnicas, componentes y datos. Borra la sección si no aplica.",
     files: 'Cada ruta que tocarás: "- crear|modificar|borrar ruta — motivo".',
     tasks:
@@ -33,7 +34,8 @@ const HINTS: Readonly<Record<Lang, Readonly<Record<SectionKey, string>>>> = {
     outOfScope: 'What this change will NOT do, as bullets. Write "- None" only if nothing applies.',
     assumptions:
       'What you take for granted without confirmation: "- A1: …". Below it, "  - impact: high" if it would change the design.',
-    criteria: 'Observable outcomes: "- AC1: WHEN … THEN …".',
+    criteria:
+      'Observable outcomes: "- AC1: WHEN … THEN …". Below it, "  - test: manual" if no test can check it.',
     design: "Optional: technical decisions, components and data. Remove the section if unused.",
     files: 'Every path you will touch: "- create|modify|delete path — reason".',
     tasks:

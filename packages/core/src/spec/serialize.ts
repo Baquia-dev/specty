@@ -3,6 +3,7 @@ import { stringify } from "yaml";
 import type { Lang } from "../i18n";
 import {
   type Assumption,
+  type Criterion,
   type FileEntry,
   type Frontmatter,
   type ItemList,
@@ -18,6 +19,7 @@ import {
   IMPACT_WORDS,
   NONE_WORD,
   SECTION_TITLES,
+  TEST_KEY,
 } from "./vocabulary";
 
 /** Writes the canonical form of a spec. `serializeSpec(parseSpec(x).spec)` is idempotent. */
@@ -60,7 +62,7 @@ export function hashUnits(spec: Spec): ReadonlyMap<string, string> {
     ...pairs(
       sections.criteria,
       (item) => item.id,
-      (item) => idLine(item.id, item.text),
+      (item) => criterionLines(item).join("\n"),
     ),
     ...pairs(
       sections.tasks,
@@ -119,7 +121,7 @@ function sectionBody(spec: Spec, key: SectionKey, lang: Lang): string | undefine
     case "assumptions":
       return listBody(sections.assumptions, lang, (item) => assumptionLines(item, lang));
     case "criteria":
-      return listBody(sections.criteria, lang, (item) => [idLine(item.id, item.text)]);
+      return listBody(sections.criteria, lang, criterionLines);
     case "files":
       return listBody(sections.files, lang, (item) => [fileLine(item, lang)]);
     case "tasks":
@@ -149,6 +151,11 @@ function listBody<T>(
 
 function idLine(id: string, text: string): string {
   return `- ${id}: ${text}`;
+}
+
+function criterionLines(item: Criterion): string[] {
+  const test = item.test === undefined ? [] : [`  - ${TEST_KEY}: ${item.test}`];
+  return [idLine(item.id, item.text), ...test];
 }
 
 function assumptionLines(item: Assumption, lang: Lang): string[] {

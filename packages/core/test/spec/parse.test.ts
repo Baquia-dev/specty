@@ -180,4 +180,40 @@ describe("parseSpec", () => {
       "frontmatter-invalid",
     ]);
   });
+
+  it("reads `test: manual` under a criterion, in Spanish and in English, and writes it back (AC1)", () => {
+    const criteria =
+      "\n## Criterios de aceptación\n\n- AC1: CUANDO x ENTONCES y.\n  - test: manual\n- AC2: CUANDO a ENTONCES b.\n";
+    const { spec, diagnostics } = parseSpec(`${MINIMAL}${criteria}`);
+    expect(diagnostics).toEqual([]);
+    expect(spec.sections.criteria?.items).toEqual([
+      { id: "AC1", text: "CUANDO x ENTONCES y.", test: "manual" },
+      { id: "AC2", text: "CUANDO a ENTONCES b." },
+    ]);
+    expect(serializeSpec(spec)).toContain(
+      "- AC1: CUANDO x ENTONCES y.\n  - test: manual\n- AC2: CUANDO a ENTONCES b.\n",
+    );
+    const english = parseSpec(
+      "---\nkind: quick\n---\n\n# Title\n\n## Goal\n\nSomething.\n\n## Acceptance criteria\n\n- AC1: WHEN x THEN y.\n  - Test: Manual\n",
+    );
+    expect(english.diagnostics).toEqual([]);
+    expect(english.spec.sections.criteria?.items).toEqual([
+      { id: "AC1", text: "WHEN x THEN y.", test: "manual" },
+    ]);
+    expect(serializeSpec(english.spec)).toContain("- AC1: WHEN x THEN y.\n  - test: manual\n");
+  });
+
+  it("reports another value of a criterion's `test` at its line, with `manual` as the valid one (AC2)", () => {
+    const text = `${MINIMAL}\n## Criterios de aceptación\n\n- AC1: CUANDO x ENTONCES y.\n  - test: a veces\n`;
+    const [found, ...rest] = parseSpec(text).diagnostics;
+    expect(rest).toEqual([]);
+    expect(found && label(found)).toBe("field-invalid:AC1");
+    expect(found?.line).toBe(lineOf(text, "  - test: a veces"));
+    expect(found?.message).toContain("manual");
+    expect(
+      codes(
+        `${MINIMAL}\n## Criterios de aceptación\n\n- AC1: CUANDO x ENTONCES y.\n  - impacto: alto\n`,
+      ),
+    ).toEqual(["field-unknown:AC1"]);
+  });
 });

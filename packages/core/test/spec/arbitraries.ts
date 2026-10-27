@@ -199,11 +199,14 @@ const assumptions = numbered(
 
 const criteriaList = numbered(
   "AC",
-  fc.oneof(
-    sentence,
-    fc.tuple(phrase, phrase).map(([when, then]) => `CUANDO ${when} ENTONCES ${then}.`),
+  fc.tuple(
+    fc.oneof(
+      sentence,
+      fc.tuple(phrase, phrase).map(([when, then]) => `CUANDO ${when} ENTONCES ${then}.`),
+    ),
+    fc.boolean(),
   ),
-  (text, id): Criterion => ({ id, text }),
+  ([text, manual], id): Criterion => ({ id, text, ...(manual ? { test: "manual" as const } : {}) }),
 );
 
 const risks = numbered("R", sentence, (text, id): Risk => ({ id, text }));

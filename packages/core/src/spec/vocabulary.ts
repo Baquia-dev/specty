@@ -145,6 +145,14 @@ export function isImpactKey(key: string): boolean {
   return Object.values(IMPACT_KEY).includes(fold(key));
 }
 
+/** The field of a criterion that no test can check, the same in both languages: `test: manual`. */
+export const TEST_KEY = "test";
+export const MANUAL_TEST = "manual";
+
+export function isTestKey(key: string): boolean {
+  return fold(key) === TEST_KEY;
+}
+
 const NONE_MARKERS: ReadonlySet<string> = new Set([
   "ninguno",
   "ninguna",

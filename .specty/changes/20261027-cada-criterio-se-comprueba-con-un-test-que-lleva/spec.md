@@ -78,7 +78,7 @@ Es el primer corte de la épica «Tests como contrato y vocabulario del dominio�
 
 ## Tareas
 
-- [ ] T1: Un criterio puede llevar test: manual
+- [x] T1: Un criterio puede llevar test: manual
   - files: packages/core/src/spec/model.ts, packages/core/src/spec/vocabulary.ts, packages/core/src/spec/read-items.ts, packages/core/src/spec/serialize.ts, packages/core/src/templates.ts
   - ac: AC1, AC2, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec test/templates.test.ts
