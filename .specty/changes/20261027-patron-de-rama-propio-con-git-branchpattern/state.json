@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261027-patron-de-rama-propio-con-git-branchpattern",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-patron-de-rama-propio-con-git-branchpattern",
+  "baseCommit": "25e9ecd09de5fa8e644cc72364ca22230fa3b6b2",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:09ad681357659a02583198d73b8a441c4f9d0f24dd30e5d043a791e5fe7a1d9c",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:820f6dea5d950fd44350f2c9275b619c1a4e53bc9782d9ae0401eb993bc1db1f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ecf89310f0f5d00490ee6cb24c2c63c19200c87adc24453031b93494c83c1a04",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:83af4b6eab386f807db59e9d74870b21f8322b2056b318ab61292526bff76f84",
+    "at": "2026-10-27T23:30:45.418Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
