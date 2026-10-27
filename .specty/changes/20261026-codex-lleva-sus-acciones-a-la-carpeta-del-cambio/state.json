@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261026-codex-lleva-sus-acciones-a-la-carpeta-del-cambio",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-codex-lleva-sus-acciones-a-la-carpeta-del-cambio",
+  "baseCommit": "20c07cdddad56529a15bd35b818b3153ac0b7cd3",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3967870d69a71b1712960d8c3e36d84a3cd72f29af694da1beb747ba6be2eb5a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c4062f1811867f9c88eaf78d3174212aa2df0f695fe62c294a0309eb398c230e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:813fba32bf708fa1c47014d4fb5c839ea45dafc603b44866ce20d27d5e81c265",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:054117ed9e79c1c3f83f3220320d8bdaa30298936761364775ae0305695c378b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0615823a4c4f72ee354d4145829a8645ef186e6a22723f2a300115864141ef62",
+    "at": "2026-10-27T03:26:55.479Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
