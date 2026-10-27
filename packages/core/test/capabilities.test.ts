@@ -78,7 +78,7 @@ describe("the capability table", () => {
       "| Codex | sí | sí | sí | no posible | sí | no posible | sí | sí | `.codex` |",
     );
     expect(es).toContain(
-      "| OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
+      "| OpenCode | sí | sí | sí | indirecto | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
     expect(es).toContain("| Gemini CLI | sí | sí | indirecto | indirecto | sí | sí | sí | sí |");
@@ -111,10 +111,13 @@ describe("the capability table", () => {
     expect(es).toContain(
       "- Worktree por nombre (Gemini CLI): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio",
     );
+    expect(es).toContain(
+      "- Worktree por nombre (OpenCode): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, y el plugin de Specty",
+    );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
     expect(es).toMatch(
-      /- Worktree por nombre \(Cursor, Codex, OpenCode, Devin \(Windsurf\), Antigravity\): /,
+      /- Worktree por nombre \(Cursor, Codex, Devin \(Windsurf\), Antigravity\): /,
     );
     expect(capabilityTable("en")).toContain("**Indirect:**");
     expect(capabilityTable("en")).toContain("**Not possible:**");

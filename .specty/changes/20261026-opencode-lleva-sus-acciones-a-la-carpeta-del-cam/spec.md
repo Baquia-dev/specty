@@ -71,7 +71,7 @@ Con C2, el guard sabe reescribir la entrada de una herramienta para que la acci√
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/agents/opencode.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/opencode.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts
-- [ ] T4: OpenCode entra y trabaja en la carpeta del cambio con la herramienta de verdad, y la tabla lo dice
+- [x] T4: OpenCode entra y trabaja en la carpeta del cambio con la herramienta de verdad, y la tabla lo dice
   - files: packages/cli/test/opencode-e2e.test.ts, packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-e2e.test.ts

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-opencode-lleva-sus-acciones-a-la-carpeta-del-cam",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-opencode-lleva-sus-acciones-a-la-carpeta-del-cam",
   "baseCommit": "e7d6d6bcdf16484d495669da7323ce5154fda765",
   "revision": 1,
@@ -58,12 +58,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fbeed9edadf008974d9bcb09e5986b33eb88c20c",
+      "attempts": 1,
       "startedAt": "2026-10-27T02:25:25.152Z",
       "doneAt": "2026-10-27T02:30:50.486Z",
-      "summary": "init permite a OpenCode la carpeta de las worktrees en .opencode/opencode.jsonc (permission.external_directory, fuera de git, tras una regla general de la persona); si va en git, dice qué añadir; uninstall la quita. Los tests de instalación pasan a opencode-install.test.ts."
+      "summary": "init permite a OpenCode la carpeta de las worktrees en .opencode/opencode.jsonc (permission.external_directory, fuera de git, tras una regla general de la persona); si va en git, dice qué añadir; uninstall la quita. Los tests de instalación pasan a opencode-install.test.ts.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 3,
+      "baseCommit": "c893d0079f6ade10bdb832ad66cf9f63e2e05a32",
+      "startedAt": "2026-10-27T02:30:50.789Z",
+      "doneAt": "2026-10-27T03:21:50.382Z",
+      "summary": "Prueba E2E con OpenCode 1.19.4 y modelo simulado: entra con specty enter y escribe, lee y ejecuta en la carpeta del cambio; el arnés comparte la caché de npm. Celda Worktree por nombre de OpenCode a indirecto, tabla regenerada y ARCHITECTURE 10."
     }
   },
   "pending": {

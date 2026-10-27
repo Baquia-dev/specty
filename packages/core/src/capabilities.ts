@@ -103,7 +103,10 @@ export const AGENT_CAPABILITIES = {
     afterShell: yes,
     // Specty's plugin, checked with OpenCode 1.19.4: `session.compacted` and `session.idle`.
     afterCompaction: yes,
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, y el plugin de Specty lleva allí las rutas, los parches, las búsquedas y los comandos de sus herramientas.",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder, and Specty's plugin moves its tools' paths, patches, searches and commands there.",
+    ),
     endOfTurn: yes,
     // `permission.read` in `opencode.json`.
     exclusion: yes,
