@@ -78,3 +78,25 @@ Con C2 a C4, Gemini CLI, OpenCode y Codex llevan a la carpeta del cambio las acc
 
 - R1: Si Devin no aplicara `updatedInput` a una herramienta, la acción iría a la carpeta principal después de que el guard la juzgara en la del cambio. Mitigación: su documentación dice que la fusiona en los argumentos; ARCHITECTURE §10 dice que no está comprobado.
 - R2: Las lecturas de Antigravity pasan ahora por el guard, que suma su arranque a cada una. Mitigación: sin una conversación ligada, el guard solo abre la sesión y lee la ligadura.
+
+## Cierre
+
+### Resumen
+
+Core gana la acción `read`: leer es libre, y solo se bloquea, con la ruta buena, lo que lee fuera de su carpeta una conversación que entró en un cambio. Devin lleva a la carpeta del cambio sus comandos (tras un `cd`), sus archivos y las rutas de sus parches con `updatedInput`, y sus ajustes locales le dejan leer la carpeta de las worktrees. Antigravity no reescribe, porque su `overwrite` se descarta cuando pide permiso: el guard ve también sus lecturas, bloquea con la ruta buena lo que haría o leería fuera, y da a cada acción de la conversación ligada `read_file` y `write_file` de las carpetas de Specty.
+
+### Desviaciones
+
+- `place.ts` solo cambió un comentario: ya ubicaba las rutas de una lectura como las de una escritura.
+- Los tests de instalación de Antigravity y de Devin fijaban su matcher de `PreToolUse`, que cambió con las herramientas de lectura que pedía el diseño.
+- Por la complejidad, las herramientas de archivos de Devin pasan a una tabla (`FILE_TOOLS`).
+
+### Decisiones
+
+- Antigravity no reescribe nada, según el riesgo R4 de la épica: donde no consta que la entrada reescrita se aplique, el guard bloquea con la ruta buena.
+- A Devin no se le añade una carpeta a una búsqueda que no la trae, porque no consta el nombre del campo; sigue en la de su espacio de trabajo.
+
+### Pendientes
+
+- Comprobar Antigravity y Devin con la herramienta de verdad, cuando se pueda simular su modelo.
+- Volver a mirar el `overwrite` de Antigravity si corrigen el fallo.
