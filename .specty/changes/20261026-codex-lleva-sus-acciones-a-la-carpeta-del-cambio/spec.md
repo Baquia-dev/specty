@@ -58,7 +58,7 @@ Con C2 y C3, el guard reescribe la entrada de una herramienta para que la acció
   - files: packages/cli/src/agents/codex.ts, packages/cli/test/codex.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts test/enter.test.ts
-- [ ] T2: init deja al sandbox de Codex escribir en la carpeta de las worktrees
+- [x] T2: init deja al sandbox de Codex escribir en la carpeta de las worktrees
   - files: packages/cli/src/agents/codex.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/codex.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts

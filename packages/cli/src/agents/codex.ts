@@ -3,11 +3,14 @@ import { join, resolve } from "node:path";
 import {
   codexGuardLine,
   codexRulesLine,
+  codexSandboxKeptWarning,
+  codexSandboxLine,
   codexTrustWarning,
   movePatch,
   patchPaths,
 } from "@baquia-dev/specty-core";
 import type { RawAction } from "../enforce/actions";
+import { worktreesHome } from "../flow/worktree";
 import {
   CODEX_HOOKS,
   CODEX_RULES,
@@ -18,8 +21,9 @@ import {
   removeFromJson,
   withHooks,
 } from "../install/agents";
-import { rewriteJson } from "../install/files";
+import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
+import type { Git } from "../io/git";
 import { COMMAND } from "../session";
 import {
   type AgentAdapter,
@@ -103,9 +107,17 @@ export const codex: AgentAdapter = {
     );
     if (local) await excludeLocally(git, CODEX_HOOKS, files);
     await files.write(join(root, CODEX_RULES), RULE);
+    const { home, open } = await openWorktrees(root, git, files);
     return {
-      done: [codexGuardLine(CODEX_HOOKS, local, lang), codexRulesLine(CODEX_RULES, lang)],
-      warnings: [codexTrustWarning(lang)],
+      done: [
+        codexGuardLine(CODEX_HOOKS, local, lang),
+        codexRulesLine(CODEX_RULES, lang),
+        ...(open ? [codexSandboxLine(CODEX_CONFIG, lang)] : []),
+      ],
+      warnings: [
+        codexTrustWarning(lang),
+        ...(open ? [] : [codexSandboxKeptWarning(CODEX_CONFIG, home, lang)]),
+      ],
       written: [...(local ? [] : [CODEX_HOOKS]), CODEX_RULES],
     };
   },
@@ -114,6 +126,8 @@ export const codex: AgentAdapter = {
     await removeFromJson(root, CODEX_HOOKS, update, files);
     const rules = join(root, CODEX_RULES);
     if (isRule(await files.read(rules))) await files.remove(rules);
+    const config = join(root, CODEX_CONFIG);
+    if ((await files.read(config))?.startsWith(CONFIG_MARK) === true) await files.remove(config);
   },
   doctor: async (root) => {
     const hooks = await readText(join(root, CODEX_HOOKS));
@@ -139,6 +153,39 @@ export const codex: AgentAdapter = {
   },
   userFile: codexHooksFile,
 };
+
+/** Codex's project settings, which it reads in a trusted project. */
+const CODEX_CONFIG = ".codex/config.toml";
+/** How the settings Specty writes start, so `init` and `uninstall` know them. */
+const CONFIG_MARK = "# Specty: Codex's sandbox also writes in the worktrees' folder";
+
+/**
+ * Lets Codex's sandbox write in the worktrees' folder, for a session that entered a change's
+ * folder there (`writable_roots`): in the project's `.codex/config.toml`, out of git as it holds
+ * a machine path, only while there is none or it is Specty's. The folder must exist.
+ */
+async function openWorktrees(
+  root: string,
+  git: Git,
+  files: InstallFiles,
+): Promise<{ readonly home: string; readonly open: boolean }> {
+  const home = await worktreesHome(git);
+  await files.folder(home);
+  const path = join(root, CODEX_CONFIG);
+  const text = await files.read(path);
+  const theirs = text !== undefined && !text.startsWith(CONFIG_MARK);
+  if (theirs || (await git.isTracked(CODEX_CONFIG))) return { home, open: false };
+  const settings = [
+    `${CONFIG_MARK}, where a session that entered a`,
+    "# change works (`specty enter`). `specty init` writes this file, and `specty uninstall` removes it.",
+    "[sandbox_workspace_write]",
+    `writable_roots = [${JSON.stringify(home)}]`,
+    "",
+  ];
+  await files.write(path, settings.join("\n"));
+  await excludeLocally(git, CODEX_CONFIG, files);
+  return { home, open: true };
+}
 
 /** Whether `text`, a rules file, is Specty's rule for its commands. */
 function isRule(text: string | undefined): boolean {

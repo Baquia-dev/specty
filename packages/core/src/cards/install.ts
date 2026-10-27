@@ -68,6 +68,22 @@ export function codexRulesLine(file: string, lang: Lang): string {
   );
 }
 
+/** Codex's project settings let its sandbox write in the worktrees' folder (`specty enter`). */
+export function codexSandboxLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Codex: ${file} (local) deja escribir a su sandbox en la carpeta de las worktrees (\`writable_roots\`), para trabajar en la de un cambio desde la misma sesión (\`specty enter\`).`,
+    `Codex: ${file} (local) lets its sandbox write in the worktrees' folder (\`writable_roots\`), to work in a change's from the same session (\`specty enter\`).`,
+  );
+}
+
+/** Codex's project settings are the person's: Specty says what to add to them. */
+export function codexSandboxKeptWarning(file: string, folder: string, lang: Lang): string {
+  return translator(lang)(
+    `Codex: Specty no escribe en ${file}, que ya existe; para que su sandbox escriba en la carpeta de un cambio desde la misma sesión (\`specty enter\`), añade \`${folder}\` a \`writable_roots\` en \`[sandbox_workspace_write]\`.`,
+    `Codex: Specty does not write to ${file}, which already exists; for its sandbox to write in a change's folder from the same session (\`specty enter\`), add \`${folder}\` to \`writable_roots\` in \`[sandbox_workspace_write]\`.`,
+  );
+}
+
 /**
  * Cursor's sandbox settings, local because they carry machine paths: the folders Specty's commands
  * write in from a change's folder, which the sandbox leaves out.
