@@ -76,3 +76,26 @@ La épica «Todos los agentes al nivel de Claude Code» dejó cuatro cosas suelt
 
 - R1: Si Devin no pusiera `DEVIN_PROJECT_DIR` en los hooks de `.claude/`, el fin de turno seguiría trayendo el informe dos veces. Mitigación: es lo que pasa hoy, sin bucle; nada empeora.
 - R2: Una persona que ejecuta Claude Code con `DEVIN_PROJECT_DIR` en su entorno se quedaría sin sus hooks. Mitigación: Devin la pone para sus hooks, no para las terminales; ARCHITECTURE §10 lo dice.
+
+## Cierre
+
+### Resumen
+
+Los cuatro cabos sueltos de la épica quedan cerrados:
+- `uninstall` quita también el fin de turno que puso `check --install`: las entradas con `hook agent-stop`, en `hooks` o en la raíz del archivo. Lo de la persona queda, y el archivo que se vacía desaparece.
+- Bajo Devin (`DEVIN_PROJECT_DIR`), el guard y el fin de turno de Claude Code no responden, así que el informe llega una sola vez, por los hooks de Devin.
+- Fuera de un repositorio con Specty, `hook agent-stop` le da a Antigravity la respuesta que deja terminar el turno.
+- Un repositorio con solo archivos de `.agents/` (skills, reglas) vuelve a contar como proyecto nuevo.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- El fin de turno se quita por su comando (`hook agent-stop`) en todos los archivos de hooks JSON, en vez de que cada módulo de agente sepa quitar el suyo. El de OpenCode y el de Antigravity ya salían con su plugin y con su hook `specty`.
+- `borrowed` va en el contrato de los agentes y no en el guard, para que el guard no pregunte por herramientas concretas.
+
+### Pendientes
+
+- Cursor, Antigravity y Devin siguen sin poder probarse con la herramienta de verdad, porque su modelo va por su servidor.

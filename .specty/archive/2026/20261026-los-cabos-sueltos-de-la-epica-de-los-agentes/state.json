@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-los-cabos-sueltos-de-la-epica-de-los-agentes",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-los-cabos-sueltos-de-la-epica-de-los-agentes",
   "baseCommit": "66abf1e361cb7e1d6a6fe218584114f9dcfd0cfb",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:424502c3cc3b7a4903be0e82d57aba2dd11e6f9607656bc07b20486998f8df0e",
@@ -62,12 +62,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b9fa9c8cfe6e6bb1208d8ec2abe24ddeb1ecd5b1",
+      "attempts": 1,
       "startedAt": "2026-10-27T00:02:52.323Z",
       "doneAt": "2026-10-27T00:06:08.533Z",
-      "summary": "isNewProject cuenta .agents/ como archivos de agente, además de las marcas de la tabla, así que un proyecto con solo skills ahí sigue siendo nuevo. ARCHITECTURE cuenta los cuatro arreglos: uninstall, Devin con Claude Code, el fin de turno fuera de Specty y .agents/."
+      "summary": "isNewProject cuenta .agents/ como archivos de agente, además de las marcas de la tabla, así que un proyecto con solo skills ahí sigue siendo nuevo. ARCHITECTURE cuenta los cuatro arreglos: uninstall, Devin con Claude Code, el fin de turno fuera de Specty y .agents/.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -79,5 +79,6 @@
     "AC": 4,
     "T": 4,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T00:12:19.480Z"
 }
