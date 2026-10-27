@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4172007107c36aeaaf39a9d3c2e1428f37dfa94e",
+      "attempts": 1,
       "startedAt": "2026-10-26T23:47:09.783Z",
       "doneAt": "2026-10-26T23:53:03.867Z",
-      "summary": "uninstall quita también el fin de turno que puso check --install: removeAgentStops borra de los archivos de hooks JSON las entradas con hook agent-stop, en hooks o en la raíz, y las listas que eso deja vacías; lo de la persona queda."
+      "summary": "uninstall quita también el fin de turno que puso check --install: removeAgentStops borra de los archivos de hooks JSON las entradas con hook agent-stop, en hooks o en la raíz, y las listas que eso deja vacías; lo de la persona queda.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "37bf1cad35c25583921066d2c43d4820b70b481e",
+      "startedAt": "2026-10-26T23:53:04.484Z",
+      "doneAt": "2026-10-27T00:00:00.646Z",
+      "summary": "El contrato gana borrowed: si otra herramienta ejecuta los hooks de un agente como suyos, el guard y el fin de turno callan. Claude Code lo es con DEVIN_PROJECT_DIR, así que con Devin solo responden los hooks de Devin y el informe no llega dos veces."
     }
   },
   "pending": {

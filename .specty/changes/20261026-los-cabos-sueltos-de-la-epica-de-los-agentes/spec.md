@@ -59,7 +59,7 @@ La épica «Todos los agentes al nivel de Claude Code» dejó cuatro cosas suelt
   - files: packages/cli/src/install/agents.ts, packages/cli/src/agents/index.ts, packages/cli/test/uninstall.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/uninstall.test.ts test/check-agent-stop.test.ts
-- [ ] T2: Bajo Devin, los hooks de Claude Code no responden
+- [x] T2: Bajo Devin, los hooks de Claude Code no responden
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/test/check-agent-stop.test.ts, packages/cli/test/enforce.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/enforce.test.ts test/agents.test.ts
