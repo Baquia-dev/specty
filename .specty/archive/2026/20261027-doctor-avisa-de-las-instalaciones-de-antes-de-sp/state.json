@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261027-doctor-avisa-de-las-instalaciones-de-antes-de-sp",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261027-doctor-avisa-de-las-instalaciones-de-antes-de-sp",
   "baseCommit": "54c6d3e663126b0f2dfddc60693028ce66dabef3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:b432dba1536a733cff0ffcf4d29bf93335b0b4112ef4360b13073252edbaad48",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "612dc72791251febfa53e3b9352d1c5245ec365b",
+      "attempts": 1,
       "startedAt": "2026-10-27T05:27:12.386Z",
       "doneAt": "2026-10-27T05:32:21.749Z",
-      "summary": "ARCHITECTURE §10 da el plugin de OpenCode por comprobado con 1.19.4 y la beta de OpenCode 2, explica qué avisa doctor de una instalación de antes de specty enter, y pone en la tabla de hooks las lecturas de Antigravity, Cursor y Devin. §14 lo nombra."
+      "summary": "ARCHITECTURE §10 da el plugin de OpenCode por comprobado con 1.19.4 y la beta de OpenCode 2, explica qué avisa doctor de una instalación de antes de specty enter, y pone en la tabla de hooks las lecturas de Antigravity, Cursor y Devin. §14 lo nombra.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,5 +70,6 @@
     "AC": 4,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T05:34:59.018Z"
 }

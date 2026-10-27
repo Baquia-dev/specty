@@ -10,3 +10,7 @@
 {"ts":"2026-10-27T05:27:12.386Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"612dc72791251febfa53e3b9352d1c5245ec365b"}}
 {"ts":"2026-10-27T05:32:21.748Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm test","exit":0,"ms":98826,"tree":"sha256:10bafa89fcb0004ee1e7ca010ae0fffa4e10fe7c0410f62c828dca4a465481bb"}}
 {"ts":"2026-10-27T05:32:21.750Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §10 da el plugin de OpenCode por comprobado con 1.19.4 y la beta de OpenCode 2, explica qué avisa doctor de una instalación de antes de specty enter, y pone en la tabla de hooks las lecturas de Antigravity, Cursor y Devin. §14 lo nombra."}}
+{"ts":"2026-10-27T05:34:24.114Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":111091,"tree":"sha256:10bafa89fcb0004ee1e7ca010ae0fffa4e10fe7c0410f62c828dca4a465481bb"}}
+{"ts":"2026-10-27T05:34:24.117Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-27T05:34:59.019Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:95348f70e4c8e06a3024f38ce778eaa66fb3d8110b9b84aac014bce7b63bb5b7","size":"L","warnings":1}}
+{"ts":"2026-10-27T05:36:55.009Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -66,3 +66,27 @@ La épica de `specty enter` cambió lo que `init` instala para cada herramienta:
 ## Riesgos
 
 - R1: Un cambio futuro de un matcher volvería a dar por anticuadas las instalaciones de hoy. Mitigación: es lo que debe pasar: `doctor` compara con lo que escribe `init` en esa versión, y `init` lo arregla.
+
+## Cierre
+
+### Resumen
+
+`doctor` dice, con el archivo, qué instalación de Gemini CLI, OpenCode, Codex, Antigravity, Devin o Cursor es de antes de `specty enter`, pide `specty init --tools <herramienta>` y sale con 1. Compara con lo que escribe `init` hoy: el matcher del guard con las lecturas, `redirects` en el plugin de OpenCode, la regla de `cd` de Codex y, en los ajustes que git no sigue, la carpeta de las worktrees. Con una instalación al día no dice nada, y no da por anticuados los ajustes que van en git o son de la persona. ARCHITECTURE §10 lo explica, y da el plugin de OpenCode por comprobado con OpenCode 1.19.4 y con la beta de OpenCode 2.
+
+### Desviaciones
+
+- En Gemini CLI, la carpeta de las worktrees solo se busca en unos ajustes que git ignora, no en todos los que no sigue. `init` solo se la pone a los locales, que excluye de git; con un comando portátil, los deja para versionar sin ella. Así `doctor` no pide un `init` que no lo arreglaría.
+- En Devin, los ajustes locales se comparan con todos los scopes que les pone `init` (`Write(...)` y `Read(...)`), no solo con el `Read(...)`.
+- T3 también puso al día la tabla de hooks de §10, que daba los matchers de Antigravity, Cursor y Devin sin las lecturas, la versión de OpenCode comprobada en las pruebas de extremo a extremo y la lista de `doctor` de §14.
+
+### Decisiones
+
+- Cada archivo anticuado se dice una vez: el matcher solo se compara cuando el guard tiene todos sus eventos, y la regla de `cd` solo cuando el archivo de reglas es el de Specty, porque si no, otra línea ya pide `init`.
+- Se compara con la carpeta de las worktrees de hoy, así que los ajustes de un repositorio que cambió de sitio también salen como anticuados, y `init` los arregla.
+- `codex.ts` comparte con `init` la línea `writable_roots` (`writableRoots`), para que `doctor` busque la misma que se escribe.
+- `packages/core/src/cards/doctor.ts` pasa de 300 líneas de código (306), y no se divide: tiene una sola responsabilidad, los textos de `doctor`.
+
+### Pendientes
+
+- Probar con Antigravity, Devin y Cursor de verdad, y ver si `beforeShellExecution` de Cursor recibe el comando reescrito (siguen de la épica).
+- Volver a comprobar OpenCode 2 cuando salga de beta.
