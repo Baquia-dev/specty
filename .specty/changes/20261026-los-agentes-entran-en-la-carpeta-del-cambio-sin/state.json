@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261026-los-agentes-entran-en-la-carpeta-del-cambio-sin",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261026-los-agentes-entran-en-la-carpeta-del-cambio-sin",
+  "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ac85950c07b85b513166d0f67da9a8ee87c279e9b8a3256d8ec4cc024393a59e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2257ba1aa8f54009fda60622740d394ac5b90413555fea40577ac42535a76b49",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:12f39f924796a16acc1f4132296f1f4d7da7201d4ddb65655efdef3e30161cd4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c9282e337acf326f3c95ef21a887d7ec98f713592752687ea99f8c8b44f9f735",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 8,
+    "C": 6,
+    "R": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e4a953495a4518c3a6dc42145ea3f054a17c2df1b432906e0812ad332c25df83",
+    "at": "2026-10-27T00:46:45.089Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
