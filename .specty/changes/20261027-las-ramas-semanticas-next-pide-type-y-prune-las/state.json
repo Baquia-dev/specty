@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261027-las-ramas-semanticas-next-pide-type-y-prune-las",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-las-ramas-semanticas-next-pide-type-y-prune-las",
+  "baseCommit": "53c04665141c1d80bbeb386026ef6bf13b1193f6",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:47afc23bb94b6e12acafcfe1bfe3ac1e1b8eb71315ba4a7569a67cdbea415763",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:dec6b42b35cfc0790111b92116f89cc1033608207804a18893e6352401182493",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1c0536942ec6a13a855c13250c3f33a915d4101a8a0e52ed9c0314cb70c2488e",
+    "at": "2026-10-27T23:18:45.232Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
