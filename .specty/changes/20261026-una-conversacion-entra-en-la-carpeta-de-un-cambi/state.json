@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261026-una-conversacion-entra-en-la-carpeta-de-un-cambi",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-una-conversacion-entra-en-la-carpeta-de-un-cambi",
+  "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0928ed548ed5b45d78ada8e2ef54a7556a7f3a1e1a2b475e79ee67d1d2e97daa",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:dfa255a59f72a5bc5344fce375bd2b2dcc15fa727599031767080784f630a3c3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e3af9f90d45709e31509a56e7cc156e1c42ad230c54f15779fe50461f761a97e",
+    "at": "2026-10-27T00:50:21.862Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
