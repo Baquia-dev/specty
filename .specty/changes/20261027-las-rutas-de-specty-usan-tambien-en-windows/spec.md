@@ -55,7 +55,7 @@ En Windows, Specty muestra con `\` las rutas relativas que en Linux y macOS mues
   - files: packages/cli/src/check/install-plan.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/uninstall.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-install.test.ts test/check-ignores.test.ts test/check-agent-stop.test.ts test/init-commit.test.ts test/install.test.ts test/uninstall.test.ts
-- [ ] T3: Las carpetas de `status`, `export` y los comandos de la persona, y los archivos de gentle-ai, con `/`
+- [x] T3: Las carpetas de `status`, `export` y los comandos de la persona, y los archivos de gentle-ai, con `/`
   - files: packages/cli/src/commands/export.ts, packages/cli/src/commands/status.ts, packages/cli/src/commands/human.ts, packages/cli/src/detect/gentle-ai.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/anywhere.test.ts test/export.test.ts test/gentle-ai.test.ts

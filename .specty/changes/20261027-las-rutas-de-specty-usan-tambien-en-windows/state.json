@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c8b6ae7dfe0201f0e0d50f78c1b48395f88b5fbb",
+      "attempts": 1,
       "startedAt": "2026-10-27T05:13:45.870Z",
       "doneAt": "2026-10-27T05:16:51.011Z",
-      "summary": "check/install-plan, init y uninstall muestran la ruta de cada archivo con shownPath: relativa con / dentro del repositorio, entera fuera. init pierde su shown y uninstall su copia de la misma lógica."
+      "summary": "check/install-plan, init y uninstall muestran la ruta de cada archivo con shownPath: relativa con / dentro del repositorio, entera fuera. init pierde su shown y uninstall su copia de la misma lógica.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4afded14bb8e0c0dd92e88f809554ffc4de0b17a",
+      "startedAt": "2026-10-27T05:16:51.318Z",
+      "doneAt": "2026-10-27T05:20:44.765Z",
+      "summary": "status y la nota de los comandos de la persona muestran la carpeta del cambio con posixRelative; export usa shownPath (y . en la raíz); gentle-ai muestra sus archivos con shownPath, también bajo ~/, en vez de comparar con root + /."
     }
   },
   "pending": {

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
-import { dirname, join, relative } from "node:path";
+import { dirname, join } from "node:path";
 import { codexHooksFile } from "../install/agents";
 import { opencodePluginFile } from "../install/opencode";
 import { readText } from "../io/files";
+import { shownPath } from "../store/paths";
 
 /**
  * gentle-ai's flow guidance: its ODD (`agent-routing`), which asks the agent for its own
@@ -44,6 +45,9 @@ export async function gentleAiGuidance(
 }
 
 function shown(file: string, root: string, home: string): string {
-  if (file.startsWith(`${root}/`)) return relative(root, file);
-  return file.startsWith(`${home}/`) ? `~/${relative(home, file)}` : file;
+  // `shownPath` gives the file whole when it is outside the folder.
+  const inRepository = shownPath(root, file);
+  if (inRepository !== file) return inRepository;
+  const inHome = shownPath(home, file);
+  return inHome === file ? file : `~/${inHome}`;
 }

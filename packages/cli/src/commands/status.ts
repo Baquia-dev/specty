@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: Apache-2.0
-import { relative } from "node:path";
 import {
   isIntegrating,
   type Output,
@@ -12,6 +11,7 @@ import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
+import { posixRelative } from "../store/paths";
 
 /** `specty status`: the open changes of every worktree, their phase and who they wait for. */
 export async function status(session: Session): Promise<Output> {
@@ -20,7 +20,7 @@ export async function status(session: Session): Promise<Output> {
     located.map(async ({ change, session: there, current }): Promise<StatusEntry> => {
       const { state } = change;
       const title = parseSpec(await readSpec(change.files), { language: there.lang }).spec.title;
-      const folder = relative(session.root, there.root);
+      const folder = posixRelative(session.root, there.root);
       return {
         id: state.id,
         kind: state.kind,
