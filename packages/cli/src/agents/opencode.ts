@@ -1,9 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join } from "node:path";
-import { opencodeGuardLine, patchPaths } from "@baquia-dev/specty-core";
+import { join, resolve } from "node:path";
+import {
+  movePatch,
+  opencodeGuardLine,
+  opencodeWorktreesLine,
+  opencodeWorktreesVersionedWarning,
+  patchPaths,
+} from "@baquia-dev/specty-core";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { hasGuard, OPENCODE_PLUGIN } from "../install/agents";
-import { installOpencode, opencodePluginFile, planOpencodeStop } from "../install/opencode";
+import {
+  closeWorktrees,
+  installOpencode,
+  OPENCODE_SETTINGS,
+  opencodePluginFile,
+  openWorktrees,
+  planOpencodeStop,
+} from "../install/opencode";
 import { isRecord, readText } from "../io/files";
 import {
   type AgentAdapter,
@@ -11,6 +24,7 @@ import {
   doctorLines,
   exitFailed,
   exitReply,
+  type Redirect,
   textCard,
 } from "./adapter";
 
@@ -29,7 +43,12 @@ export const opencode: AgentAdapter = {
     return "before";
   },
   action,
-  reply: exitReply,
+  redirect,
+  // The plugin runs the tool with the input the guard gives back on stdout.
+  reply: (verdict, phase) =>
+    phase === "before" && verdict.allow && verdict.input !== undefined
+      ? { code: 0, stdout: JSON.stringify({ tool_input: verdict.input }), stderr: "" }
+      : exitReply(verdict),
   failed: exitFailed,
   card: textCard,
   // `check --install` turns it on in the plugin, which keeps it once a turn went back to work.
@@ -39,15 +58,21 @@ export const opencode: AgentAdapter = {
   },
   install: async ({ root, git, invocation, files, lang }) => {
     const { file, local } = await installOpencode(root, git, invocation, files);
+    // A session that entered a change's folder works there: OpenCode would ask for each action.
+    const { pattern, open } = await openWorktrees(root, git, files);
     return {
-      done: [opencodeGuardLine(file, local, lang)],
-      warnings: [],
+      done: [
+        opencodeGuardLine(file, local, lang),
+        ...(open ? [opencodeWorktreesLine(OPENCODE_SETTINGS, lang)] : []),
+      ],
+      warnings: open ? [] : [opencodeWorktreesVersionedWarning(OPENCODE_SETTINGS, pattern, lang)],
       written: local ? [] : [file],
     };
   },
-  remove: async (root, files) => {
+  remove: async (root, files, git) => {
     const plugin = join(root, OPENCODE_PLUGIN);
     if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
+    await closeWorktrees(root, git, files);
   },
   doctor: async (root) => {
     const plugin = await readText(join(root, OPENCODE_PLUGIN));
@@ -67,6 +92,56 @@ export const opencode: AgentAdapter = {
   },
   userFile: opencodePluginFile,
 };
+
+/** The fields that name a tool's file or folder, in OpenCode 2 and 1. */
+const PLACES: readonly string[] = ["filePath", "path", "workdir"];
+
+/** The tools that run in a folder, and the field that names it. */
+const FOLDERS: Readonly<Record<string, string>> = {
+  shell: "workdir",
+  bash: "workdir",
+  glob: "path",
+  grep: "path",
+};
+
+/**
+ * The tool's input with its files, its folder and its patch's paths in the conversation's
+ * folder: OpenCode resolves a relative one from the project's folder (the event's `cwd`). A
+ * search or a command without a folder gets the conversation's, when it works in another. Only
+ * for a plugin that runs the tool with it (`redirects`): an older one would run the tool where
+ * it was, after the guard judged it in the change's folder.
+ */
+function redirect(
+  event: Readonly<Record<string, unknown>>,
+  to: Redirect,
+): Record<string, unknown> | undefined {
+  if (event.redirects !== true) return undefined;
+  const input = isRecord(event.tool_input) ? event.tool_input : {};
+  const base = typeof event.cwd === "string" ? event.cwd : "";
+  const moved = movedPaths(input, (path) => {
+    const there = to.path(resolve(base, path));
+    return there === resolve(base, path) ? path : there;
+  });
+  const folder = FOLDERS[String(event.tool_name)];
+  if (folder !== undefined && moved[folder] === undefined && to.folder !== base) {
+    moved[folder] = to.folder;
+  }
+  return Object.keys(moved).some((key) => moved[key] !== input[key]) ? moved : undefined;
+}
+
+/** The input with each file or folder it names, and each path of its patch, as `move` gives it. */
+function movedPaths(
+  input: Record<string, unknown>,
+  move: (path: string) => string,
+): Record<string, unknown> {
+  const moved: Record<string, unknown> = { ...input };
+  for (const key of PLACES) {
+    const value = input[key];
+    if (typeof value === "string" && value !== "") moved[key] = move(value);
+  }
+  if (typeof input.patchText === "string") moved.patchText = movePatch(input.patchText, move);
+  return moved;
+}
 
 /**
  * The plugin sends the tool and its arguments as `tool_name` and `tool_input`, with the names of

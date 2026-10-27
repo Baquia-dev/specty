@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // The progress of a change's tasks (docs/ui.md, Progreso): the spec's tasks joined with their
 // state and their verifications. Only types come from core, so screens may import the helpers.
-import type { ChangeState, Lang, Spec } from "@baquia-dev/specty-core";
+import type { ChangeState, Lang, Spec, Task } from "@baquia-dev/specty-core";
 
 /** A line of `audit.jsonl` (formats.md §4), as the data source gives it. */
 export interface AuditRecord {
@@ -113,41 +113,64 @@ export function progressOf(
   const lastFull = audit
     .flatMap((record) => (record.event === "change.verified" ? (runOf(record) ?? []) : []))
     .at(-1);
-  const tasks = (spec.sections.tasks?.items ?? []).map((task): TaskProgressView => {
-    const stored = state.tasks[task.id];
-    const last = verifications.filter((run) => run.task === task.id).at(-1);
-    return {
-      id: task.id,
-      title: task.title,
-      status: stored?.status ?? (task.done ? "done" : "pending"),
-      ...(stored?.summary === undefined ? {} : { summary: stored.summary }),
-      ...(stored?.baseCommit === undefined ? {} : { baseCommit: stored.baseCommit }),
-      ...(stored?.commit === undefined ? {} : { commit: stored.commit }),
-      files: task.files,
-      criteria: task.ac === undefined || task.ac === "none" ? [] : task.ac,
-      attempts: stored?.attempts ?? 0,
-      ...(stored?.startedAt === undefined ? {} : { startedAt: stored.startedAt }),
-      ...(stored?.doneAt === undefined ? {} : { doneAt: stored.doneAt }),
-      ...(last === undefined
-        ? {}
-        : {
-            verification: {
-              at: last.at,
-              command: last.command,
-              passed: last.passed,
-              ms: last.ms,
-              output: last.output,
-            },
-          }),
-      scopeRequests: state.pending.scopeRequests
-        .filter((request) => request.task === task.id)
-        .map(({ id, paths, reason }) => ({ id, paths, reason })),
-    };
-  });
+  const tasks = (spec.sections.tasks?.items ?? []).map((task) =>
+    taskProgress(task, state, verifications.filter((run) => run.task === task.id).at(-1)),
+  );
   if (verifyFull === undefined) return { tasks };
   return {
     tasks,
     full: { command: verifyFull, ...(lastFull === undefined ? {} : { last: lastFull }) },
+  };
+}
+
+/** A task as the progress shows it: what Specty keeps of it, its last verification and its scope requests. */
+function taskProgress(
+  task: Task,
+  state: ChangeState,
+  last: VerificationView | undefined,
+): TaskProgressView {
+  const stored = state.tasks[task.id];
+  return {
+    id: task.id,
+    title: task.title,
+    status: stored?.status ?? (task.done ? "done" : "pending"),
+    ...(stored?.summary === undefined ? {} : { summary: stored.summary }),
+    ...(stored?.baseCommit === undefined ? {} : { baseCommit: stored.baseCommit }),
+    ...(stored?.commit === undefined ? {} : { commit: stored.commit }),
+    files: task.files,
+    criteria: task.ac === undefined || task.ac === "none" ? [] : task.ac,
+    attempts: stored?.attempts ?? 0,
+    ...timesOf(stored),
+    ...lastVerification(last),
+    scopeRequests: state.pending.scopeRequests
+      .filter((request) => request.task === task.id)
+      .map(({ id, paths, reason }) => ({ id, paths, reason })),
+  };
+}
+
+/** When the task started and when it was done, as far as it got. */
+function timesOf(
+  stored: ChangeState["tasks"][string] | undefined,
+): Pick<TaskProgressView, "startedAt" | "doneAt"> {
+  return {
+    ...(stored?.startedAt === undefined ? {} : { startedAt: stored.startedAt }),
+    ...(stored?.doneAt === undefined ? {} : { doneAt: stored.doneAt }),
+  };
+}
+
+/** The task's last verification, if it had one. */
+function lastVerification(
+  last: VerificationView | undefined,
+): Pick<TaskProgressView, "verification"> {
+  if (last === undefined) return {};
+  return {
+    verification: {
+      at: last.at,
+      command: last.command,
+      passed: last.passed,
+      ms: last.ms,
+      output: last.output,
+    },
   };
 }
 

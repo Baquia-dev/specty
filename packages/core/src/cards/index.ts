@@ -59,6 +59,7 @@ export {
   whichChangeQuestion,
 } from "./decide";
 export { type DoctorLine, doctorCard, doctorLine } from "./doctor";
+export { enteredCard, noFolderCard } from "./enter";
 export { epicCard, type SliceRefusal, sliceLines, sliceRefusalCard } from "./epic";
 export { type ExportRefusal, exportedCard, exportRefusalCard } from "./export";
 export {
@@ -121,6 +122,8 @@ export {
   claudePointerLine,
   codexGuardLine,
   codexRulesLine,
+  codexSandboxKeptWarning,
+  codexSandboxLine,
   codexTrustWarning,
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
@@ -132,6 +135,8 @@ export {
   geminiSandboxLine,
   geminiSandboxVersionedWarning,
   geminiTrustWarning,
+  geminiWorkspaceLine,
+  geminiWorkspaceVersionedWarning,
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,
@@ -140,6 +145,8 @@ export {
   noHooksWarning,
   notOnPathWarning,
   opencodeGuardLine,
+  opencodeWorktreesLine,
+  opencodeWorktreesVersionedWarning,
   yoursUncommittedWarning,
 } from "./install";
 export {

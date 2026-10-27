@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "id": "20261026-codex-lleva-sus-acciones-a-la-carpeta-del-cambio",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-codex-lleva-sus-acciones-a-la-carpeta-del-cambio",
+  "baseCommit": "20c07cdddad56529a15bd35b818b3153ac0b7cd3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0615823a4c4f72ee354d4145829a8645ef186e6a22723f2a300115864141ef62",
+    "at": "2026-10-27T03:26:55.479Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3967870d69a71b1712960d8c3e36d84a3cd72f29af694da1beb747ba6be2eb5a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c4062f1811867f9c88eaf78d3174212aa2df0f695fe62c294a0309eb398c230e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:813fba32bf708fa1c47014d4fb5c839ea45dafc603b44866ce20d27d5e81c265",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:054117ed9e79c1c3f83f3220320d8bdaa30298936761364775ae0305695c378b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e1f7f09dac2949bb85a6019210065441aac666e1",
+      "attempts": 1,
+      "startedAt": "2026-10-27T03:26:55.863Z",
+      "doneAt": "2026-10-27T03:32:48.124Z",
+      "summary": "Codex: redirect pone cd a la carpeta del cambio delante de cada Bash de una conversación ligada y lleva las rutas de apply_patch allí (movePatch); responde con permissionDecision allow y updatedInput. Los tests de C1 del bloqueo con la ruta buena usan ahora un plugin de OpenCode sin redirects.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8ff4b4bbc5f48b763d9aff1fa66430597d099e35",
+      "attempts": 1,
+      "startedAt": "2026-10-27T03:32:48.412Z",
+      "doneAt": "2026-10-27T03:36:34.091Z",
+      "summary": "init escribe .codex/config.toml (fuera de git) con la carpeta de las worktrees en writable_roots del sandbox, solo si no existe o es el de Specty, y crea esa carpeta; si es de la persona dice qué añadir; uninstall borra el de Specty.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "3a5a07dd10089fa7f5e391481f497189b9eab7bb",
+      "attempts": 1,
+      "startedAt": "2026-10-27T03:36:34.388Z",
+      "doneAt": "2026-10-27T03:44:01.684Z",
+      "summary": "Prueba E2E con Codex 0.164 y modelo simulado: entra con specty enter, el parche relativo escribe en la carpeta del cambio y specty task done hace su commit allí; la regla de Specty no valía tras el cd, así que specty.rules permite también cd. Celda indirecto, tabla y ARCHITECTURE 10.",
+      "scopeExtra": [
+        "packages/cli/src/agents/codex.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-27T03:49:42.045Z"
+}

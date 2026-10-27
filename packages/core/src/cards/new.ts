@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AGENT_NAMES, type AgentTool } from "../agents";
+import { AGENT_CAPABILITIES } from "../capabilities";
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
 import { CHANGE_KINDS } from "../spec/model";
@@ -163,8 +164,8 @@ export interface WorktreeCreated {
 }
 
 /**
- * How the person opens each tool in a folder, for the agents that cannot move there in the middle
- * of a session: all but Claude Code (`EnterWorktree`), and those Specty does not recognize.
+ * How the person opens each tool in a folder, for a session of its own there: the other way for
+ * an agent that enters the change's folder with `specty enter`.
  */
 const OPEN_IN: Partial<Readonly<Record<AgentTool, (folder: string, t: Translate) => string>>> = {
   codex: (folder, t) =>
@@ -257,17 +258,24 @@ function worktreeCreatedNext(created: WorktreeCreated, ctx: CardContext): string
 }
 
 /**
- * How the session carries on in the change's folder: an agent that cannot move there asks the
- * person to open its tool in it; Claude Code enters it, and an unknown agent hears both ways.
+ * How the session carries on in the change's folder: an agent with Specty's guard enters it from
+ * the same session (`specty enter`), or the person opens its tool there; Claude Code enters it on
+ * its own, and an unknown agent hears both ways.
  */
 function carryOnText(created: WorktreeCreated, ctx: CardContext, t: Translate): string {
   const { id, folder, agent } = created;
-  const open = agent === undefined ? undefined : OPEN_IN[agent]?.(folder, t);
-  if (agent !== undefined && open !== undefined) {
-    const name = AGENT_NAMES[agent];
+  if (agent !== undefined && AGENT_CAPABILITIES[agent].worktreeByName.state === "indirect") {
+    const open = OPEN_IN[agent]?.(folder, t);
+    const other =
+      open === undefined
+        ? ""
+        : t(
+            ` Si la persona prefiere otra sesión, pídele que abra ${open} y termina tu turno.`,
+            ` If the person would rather have another session, ask them to open ${open} and end your turn.`,
+          );
     return t(
-      `${name} no cambia de carpeta en mitad de la sesión, así que pídele a la persona que abra ${open} y termina tu turno; allí, \`${ctx.command} next\` sigue con el cambio. Esta carpeta sigue con su propio trabajo.`,
-      `${name} cannot switch folders mid-session, so ask the person to open ${open} and end your turn; there, \`${ctx.command} next\` carries on with the change. This folder carries on with its own work.`,
+      `${AGENT_NAMES[agent]} entra en ella desde esta misma sesión: ejecuta \`${ctx.command} enter ${id}\` y sigue su salida.${other} Esta carpeta sigue con su propio trabajo.`,
+      `${AGENT_NAMES[agent]} enters it from this same session: run \`${ctx.command} enter ${id}\` and follow its output.${other} This folder carries on with its own work.`,
     );
   }
   const byName = created.byName

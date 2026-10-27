@@ -50,7 +50,7 @@ export function cwdOf(event: Record<string, unknown>, fallback: string): string 
 
 /** A tool event, reduced to what the flow cares about. Paths are still as the tool sent them. */
 export type RawAction =
-  | { readonly kind: "write" | "delete"; readonly paths: readonly string[] }
+  | { readonly kind: "write" | "delete" | "read"; readonly paths: readonly string[] }
   | {
       readonly kind: "files";
       readonly writes: readonly string[];

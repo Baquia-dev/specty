@@ -1,39 +1,30 @@
 // SPDX-License-Identifier: Apache-2.0
-import { resolve } from "node:path";
 import {
   analyzeShell,
   decideAfterShell,
   decideGuard,
-  type ForeignPath,
   type GuardAction,
   type GuardChange,
+  type GuardContext,
   type GuardDecision,
-  isGoverned,
   isIntegrating,
+  nativeEnterDenial,
   parseSpec,
   renderText,
-  type ShellAnalysis,
   shellChanges,
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
-import { placePaths, sharedFolders } from "../flow/worktree";
+import { sharedFolders, worktreesHome } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
-import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
-import {
-  conversationOf,
-  cwdOf,
-  type GuardReply,
-  type GuardTool,
-  type RawAction,
-  toolUseId,
-} from "./actions";
+import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { leavePending, type PendingKind, takePending } from "./pending";
-import { bindSession, enterAction } from "./sessions";
+import { redirection, resolveAction } from "./place";
+import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 import { worktreeHook } from "./worktree-hooks";
 
@@ -46,6 +37,10 @@ interface Call {
   readonly session: Session;
   readonly event: Record<string, unknown>;
   readonly cwd: string;
+  /** The change's folder the conversation entered (`specty enter`): its session is that one. */
+  readonly bound?: string;
+  /** What the agent's module rewrote in the tool's input (`redirect`), sent back if it passes. */
+  readonly input?: Readonly<Record<string, unknown>>;
 }
 
 /**
@@ -80,10 +75,26 @@ export async function guard(
     if (kind === "worktree") return await worktreeHook(environment, event, cwd);
     const opened = await openSession({ ...environment, cwd });
     if (opened.kind !== "ok") return agent.reply(ALLOW, kind === "before" ? "before" : "after");
-    return await answer(kind, { agent, environment, session: opened.session, event, cwd });
+    // A conversation that entered a change's folder is answered in that folder's session.
+    const entered = await enteredSession(agent.tool, opened.session, event);
+    const call = { agent, environment, event, cwd, ...entered };
+    return await answer(kind, kind === "before" ? await redirected(call, given) : call);
   } catch (error) {
     return agent.failed(`specty guard: ${error instanceof Error ? error.message : String(error)}`);
   }
+}
+
+/**
+ * Before an action, the tool's input as the agent's module rewrites it so the action happens in
+ * the conversation's folder (`redirect`): the rewritten action is the one judged, and the one
+ * that runs if it goes through.
+ */
+async function redirected(call: Call, given: Record<string, unknown>): Promise<Call> {
+  const input = call.agent.redirect?.(given, await redirection(call));
+  if (input === undefined) return call;
+  const moved = { ...given, tool_input: input };
+  const event = call.agent.normalize?.(moved) ?? moved;
+  return { ...call, event, cwd: cwdOf(event, call.environment.cwd), input };
 }
 
 /** The answer to an event of a Specty session, by what the event is. */
@@ -143,27 +154,69 @@ async function leave(
 }
 
 /** Before an action: what it would do, judged by the flow's rules. */
-async function beforeAction({
-  agent,
-  environment,
-  session,
-  event,
-  cwd,
-}: Call): Promise<GuardReply> {
+async function beforeAction(call: Call): Promise<GuardReply> {
+  const { agent, environment, session, event, cwd } = call;
   const raw = agent.action(event);
   const action =
     raw.kind === "enter"
       ? await enterAction(environment, session, event, raw.request, cwd)
-      : await resolveAction(session, raw, cwd);
-  const decision = decideGuard(action, await guardContext(session));
-  // One change at a time per session: the worktree it may enter becomes its own.
-  if (decision.allow && action.kind === "enter") await bindSession(session, event, action.target);
+      : await resolveAction(call, raw);
+  const ctx = await guardContext(session);
+  const entry = raw.kind === "shell" ? await enterCommand(call, raw.command, ctx) : undefined;
+  const decision = entry?.decision.allow === false ? entry.decision : decideGuard(action, ctx);
+  // One change at a time per conversation: the worktree it may enter becomes its own.
+  const target = action.kind === "enter" ? action.target : entry?.target;
+  if (decision.allow && target !== undefined) await bindSession(session, event, target);
   if (decision.allow) await beforeShell(session, event, action);
+  return await replyBefore(call, decision, action);
+}
+
+/**
+ * The reply before an action. What goes through brings the input the agent's module rewrote and,
+ * for an agent with `grants`, Specty's folders: with a command, and with each action of a
+ * conversation that entered a change's folder, which may also read the worktrees' folder.
+ */
+async function replyBefore(
+  { agent, session, input, bound }: Call,
+  decision: GuardDecision,
+  action: GuardAction,
+): Promise<GuardReply> {
   const said = verdict(decision, session);
-  if (said.allow && agent.grants === true && action.kind === "shell") {
-    return agent.reply({ ...said, folders: await sharedFolders(session.git) }, "before");
+  if (!said.allow) return agent.reply(said, "before");
+  // A conversation that entered a change's folder works outside the tool's workspace.
+  const entered = agent.grants === true && bound !== undefined;
+  const grants = entered || (agent.grants === true && action.kind === "shell");
+  return agent.reply(
+    {
+      ...said,
+      ...(input === undefined ? {} : { input }),
+      ...(grants ? { folders: await sharedFolders(session.git) } : {}),
+      ...(entered ? { readable: [await worktreesHome(session.git)] } : {}),
+    },
+    "before",
+  );
+}
+
+/**
+ * A command with `specty enter <id>`: like `EnterWorktree` by name, the conversation enters that
+ * change's folder if it may, and the rest of the command is judged as usual. Claude Code is told
+ * to use its own tool. Undefined without one, or for a change without a folder: the command says so.
+ */
+async function enterCommand(
+  call: Call,
+  command: string,
+  ctx: GuardContext,
+): Promise<{ readonly decision: GuardDecision; readonly target?: string } | undefined> {
+  const id = analyzeShell(command).enters.at(-1);
+  if (id === undefined) return undefined;
+  if (entersOnItsOwn(call.agent.tool)) {
+    const { reason, next } = nativeEnterDenial(id, ctx.lang);
+    return { decision: { allow: false, rule: "session", reason, next } };
   }
-  return agent.reply(said, "before");
+  const enter = await enterChange(call.environment, call.session, call.event, id);
+  return enter === undefined
+    ? undefined
+    : { decision: decideGuard(enter, ctx), target: enter.target };
 }
 
 /** Before a shell command it lets through, keeps a snapshot of the tree to compare afterwards. */
@@ -203,89 +256,6 @@ async function afterShell(session: Session, event: Record<string, unknown>): Pro
   if (before === undefined) return ALLOW;
   const changes = shellChanges(before, await treeSnapshot(session));
   return verdict(decideAfterShell(changes, await guardContext(session)), session);
-}
-
-/**
- * Turns tool paths into repository-relative ones, and keeps apart those inside another worktree:
- * they belong to another change. Paths outside every worktree and paths git ignores
- * (`node_modules/`, caches, builds) are not governed code, so they are dropped.
- */
-async function inRepo(
-  session: Session,
-  cwd: string,
-  paths: readonly string[],
-): Promise<{ readonly inside: string[]; readonly foreign: readonly ForeignPath[] }> {
-  const placed = await placePaths(
-    session.git,
-    paths.map((path) => resolve(cwd, path)),
-  );
-  // The root itself (`rm -rf .`) is never ignored, and git rejects an empty pathspec.
-  const ignored = new Set(await session.git.ignored(placed.inside.filter((path) => path !== "")));
-  return { inside: placed.inside.filter((path) => !ignored.has(path)), foreign: placed.foreign };
-}
-
-async function resolveAction(
-  session: Session,
-  raw: Exclude<RawAction, { readonly kind: "enter" }>,
-  cwd: string,
-): Promise<GuardAction> {
-  if (raw.kind === "other") return raw;
-  if (raw.kind === "files") return { kind: "files", ...(await placeFiles(session, cwd, raw)) };
-  if (raw.kind !== "shell") {
-    const { inside, foreign } = await inRepo(session, cwd, raw.paths);
-    return { kind: raw.kind, paths: inside, foreign };
-  }
-  // Paths the analysis cannot place (shell variables, `cd` to an unknown place) are not judged.
-  const analysis = analyzeShell(raw.command);
-  const committedGoverned = (await commitsHere(session, cwd, analysis.commits))
-    ? pathsOf([
-        ...(await session.git.staged()),
-        ...(await session.git.changedSince(await session.git.head())),
-      ]).filter((path) => !path.startsWith(".specty/") && isGoverned(path, session.config))
-    : [];
-  return {
-    kind: "shell",
-    facts: {
-      specty: analysis.specty,
-      unscopedNpx: analysis.unscopedNpx,
-      bypass: analysis.bypass,
-      committedGoverned,
-      ...(await placeFiles(session, cwd, analysis)),
-    },
-  };
-}
-
-/**
- * Whether a commit of the command is this repository's: one whose folder the analysis cannot
- * name, or one inside any of its worktrees. A folder outside them all is another repository,
- * even if it does not exist yet (`cd /tmp/x && git init && git commit`).
- */
-async function commitsHere(
-  session: Session,
-  cwd: string,
-  commits: ShellAnalysis["commits"],
-): Promise<boolean> {
-  if (commits.some((commit) => commit.directory === undefined)) return true;
-  const placed = await placePaths(
-    session.git,
-    commits.map((commit) => resolve(cwd, commit.directory ?? "")),
-  );
-  return placed.inside.length > 0 || placed.foreign.length > 0;
-}
-
-/** What a command or a patch writes and deletes here, and apart, what it would change elsewhere. */
-async function placeFiles(
-  session: Session,
-  cwd: string,
-  files: { readonly writes: readonly string[]; readonly deletes: readonly string[] },
-) {
-  const writes = await inRepo(session, cwd, files.writes);
-  const deletes = await inRepo(session, cwd, files.deletes);
-  return {
-    writes: writes.inside,
-    deletes: deletes.inside,
-    foreign: [...writes.foreign, ...deletes.foreign],
-  };
 }
 
 async function guardContext(session: Session) {

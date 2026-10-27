@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { patchPaths } from "../../src";
+import { movePatch, patchPaths } from "../../src";
 
 describe("patchPaths", () => {
   it("writes added and updated files, and deletes removed ones", () => {
@@ -49,5 +49,37 @@ describe("patchPaths", () => {
     ].join("\n");
     expect(patchPaths(patch)).toEqual({ writes: ["docs/patches.md", "src/a.ts"], deletes: [] });
     expect(patchPaths("ls -la")).toEqual({ writes: [], deletes: [] });
+  });
+});
+
+describe("movePatch", () => {
+  it("moves the path of each header, and leaves the contents as they were (AC1)", () => {
+    const patch = [
+      "*** Begin Patch",
+      "*** Add File: src/new.ts",
+      "+*** Add File: not/a/header.ts",
+      "*** Update File: src/app.ts",
+      "*** Move to: src/moved.ts",
+      "@@ export function greet() {",
+      '-  return "Hi";',
+      '+  return "Hello";',
+      "*** Delete File: src/old.ts",
+      "*** End Patch",
+    ].join("\n");
+    const moved = movePatch(patch, (path) => `/w/cambio/${path}`);
+    expect(moved.split("\n")).toEqual([
+      "*** Begin Patch",
+      "*** Add File: /w/cambio/src/new.ts",
+      "+*** Add File: not/a/header.ts",
+      "*** Update File: /w/cambio/src/app.ts",
+      "*** Move to: /w/cambio/src/moved.ts",
+      "@@ export function greet() {",
+      '-  return "Hi";',
+      '+  return "Hello";',
+      "*** Delete File: /w/cambio/src/old.ts",
+      "*** End Patch",
+    ]);
+    expect(patchPaths(moved).writes).toEqual(["/w/cambio/src/new.ts", "/w/cambio/src/moved.ts"]);
+    expect(movePatch(patch, (path) => path)).toBe(patch);
   });
 });

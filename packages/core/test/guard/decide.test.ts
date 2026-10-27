@@ -334,4 +334,24 @@ describe("decideGuard on another worktree", () => {
     );
     expect(allowed(shell({ writes: ["src/a.ts"], foreign: [] }), ctx(IMPLEMENTING))).toBe(true);
   });
+
+  it("blocks a read there only for a conversation that entered another change's folder (C5 AC2)", () => {
+    const read = (foreign: readonly ForeignPath[]): GuardAction => ({
+      kind: "read",
+      paths: [".specty/changes/20261021-x/state.json", "src/a.ts"],
+      foreign,
+    });
+    // Reading is free: Specty's own files, governed code, another worktree.
+    for (const context of [ctx(), ctx(change("draft"))]) {
+      expect(allowed(read([]), context)).toBe(true);
+      expect(allowed(read([OTHER]), context)).toBe(true);
+    }
+    const instead = { ...OTHER, instead: "/w/cambio/src/a.ts" };
+    expect(decideGuard(read([instead]), ctx())).toEqual({
+      allow: false,
+      rule: "worktree",
+      reason: "`/w/otra/src/a.ts` está fuera de la carpeta en la que trabaja esta conversación.",
+      next: "usa la misma ruta dentro de ella: `/w/cambio/src/a.ts`.",
+    });
+  });
 });

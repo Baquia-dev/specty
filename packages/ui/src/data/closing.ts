@@ -36,6 +36,16 @@ function partOf(heading: string): Part | undefined {
 }
 
 /**
+ * The fence open after a line that may open or close one: a fence closes with the same
+ * character, at least as long as the one that opened it.
+ */
+function fenceAfter(fence: string | undefined, opener: string | undefined): string | undefined {
+  if (opener === undefined) return fence;
+  if (fence === undefined) return opener;
+  return opener[0] === fence[0] && opener.length >= fence.length ? undefined : fence;
+}
+
+/**
  * Splits a closing by its level-3 headings. A part written twice keeps both; nothing is lost:
  * text before the first heading, or under a heading that is no part, goes to `other`. Headings
  * inside a fenced code block are code, not headings.
@@ -52,11 +62,7 @@ export function closingOf(text: string): ClosingParts {
   let fence: string | undefined;
   for (const line of text.replace(/\r\n?/g, "\n").split("\n")) {
     const opener = FENCE.exec(line)?.[1];
-    if (opener !== undefined) {
-      // A fence closes with the same character, at least as long as the one that opened it.
-      if (fence === undefined) fence = opener;
-      else if (opener[0] === fence[0] && opener.length >= fence.length) fence = undefined;
-    }
+    fence = fenceAfter(fence, opener);
     const heading =
       fence === undefined && opener === undefined ? HEADING.exec(line)?.[1] : undefined;
     if (heading === undefined) {

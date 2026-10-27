@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import {
   cursorSandboxLine,
   cursorSandboxTrackedWarning,
@@ -8,7 +8,7 @@ import {
   type Lang,
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
-import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
+import { cwdOf, type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { sharedFolders } from "../flow/worktree";
 import {
   CURSOR_HOOKS,
@@ -22,14 +22,20 @@ import {
 import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
-import { type AgentAdapter, type DoctorLines, doctorLines, jsonStop } from "./adapter";
+import {
+  type AgentAdapter,
+  type DoctorLines,
+  doctorLines,
+  jsonStop,
+  type Redirect,
+} from "./adapter";
 
 /**
  * The events the guard listens to, with the tools each one covers: before each write, delete or
  * command, after each command, whether it succeeded or failed, and before each compaction.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
-  preToolUse: "Write|Delete|Shell",
+  preToolUse: "Write|Delete|Shell|Read|Grep",
   beforeShellExecution: undefined,
   postToolUse: "Shell",
   postToolUseFailure: "Shell",
@@ -52,6 +58,7 @@ export const cursor: AgentAdapter = {
     return AFTER.has(event.hook_event_name) ? "after" : "before";
   },
   action,
+  redirect,
   reply: (verdict, phase, card) => {
     if (phase === "after") {
       const said = [verdict.allow ? undefined : verdict.text, card].filter((part) => !!part);
@@ -59,7 +66,10 @@ export const cursor: AgentAdapter = {
     }
     return json(
       verdict.allow
-        ? { permission: "allow" }
+        ? {
+            permission: "allow",
+            ...(verdict.input === undefined ? {} : { updated_input: verdict.input }),
+          }
         : {
             permission: "deny",
             user_message: `specty: ${verdict.reason}`,
@@ -191,22 +201,45 @@ function withGuard(value: Record<string, unknown>, command: string): Record<stri
   };
 }
 
-function json(value: Readonly<Record<string, string>>): GuardReply {
+function json(value: Readonly<Record<string, unknown>>): GuardReply {
   return { code: 0, stdout: JSON.stringify(value), stderr: "" };
 }
+
+/**
+ * A command of its `Shell` tool after a `cd` to the conversation's folder, or to the same folder
+ * inside it that its `working_directory` names. Its forum says Cursor applies `updated_input`
+ * only to `Shell`, so its files are blocked with the right path instead. `beforeShellExecution`
+ * cannot rewrite: the guard judges the command as it comes, which passes once it goes there.
+ */
+function redirect(
+  event: Readonly<Record<string, unknown>>,
+  to: Redirect,
+): Record<string, unknown> | undefined {
+  if (event.hook_event_name !== "preToolUse" || event.tool_name !== "Shell") return undefined;
+  const input = isRecord(event.tool_input) ? event.tool_input : {};
+  if (typeof input.command !== "string") return undefined;
+  const base = cwdOf(event, "");
+  const named = typeof input.working_directory === "string" && input.working_directory !== "";
+  const current = named ? resolve(base, String(input.working_directory)) : base;
+  const folder = named ? to.path(current) : to.folder;
+  if (folder === current) return undefined;
+  return { ...input, command: `cd '${folder.replaceAll("'", `'\\''`)}' && ${input.command}` };
+}
+
+/** Its tools that write, delete or read a file, by the action each one is. */
+const FILE_TOOLS: Readonly<Record<string, "write" | "delete" | "read">> = {
+  Write: "write",
+  Delete: "delete",
+  Read: "read",
+  Grep: "read",
+};
 
 function action(event: Readonly<Record<string, unknown>>): RawAction {
   if (event.hook_event_name === "beforeShellExecution") return shellAction(event.command);
   const input = isRecord(event.tool_input) ? event.tool_input : {};
+  if (event.tool_name === "Shell") return shellAction(input.command);
+  const files = FILE_TOOLS[String(event.tool_name)];
+  if (files === undefined) return { kind: "other" };
   const paths = [input.file_path, input.path, input.target_file, input.filePath].flatMap(sentPaths);
-  switch (event.tool_name) {
-    case "Shell":
-      return shellAction(input.command);
-    case "Write":
-      return { kind: "write", paths };
-    case "Delete":
-      return { kind: "delete", paths };
-    default:
-      return { kind: "other" };
-  }
+  return { kind: files, paths };
 }

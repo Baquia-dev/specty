@@ -17,6 +17,16 @@ import { scenarioOf } from "./scenario";
  */
 export function specKit(spec: Spec, context: ExportContext): ExportedFile[] {
   const dir = `specs/${context.id}`;
+  const tasks = taskLines(spec);
+  return [
+    { path: `${dir}/spec.md`, content: featureLines(spec, context).join("\n") },
+    { path: `${dir}/plan.md`, content: planLines(spec, context).join("\n") },
+    { path: `${dir}/tasks.md`, content: [`# Tasks: ${spec.title}`, "", ...tasks, ""].join("\n") },
+  ];
+}
+
+/** The feature's spec: its one user story, its acceptance scenarios and its requirements. */
+function featureLines(spec: Spec, context: ExportContext): string[] {
   const criteria = spec.sections.criteria?.items ?? [];
   const scenarios = criteria.map((criterion, index) => {
     const scenario = scenarioOf(criterion.text);
@@ -28,7 +38,7 @@ export function specKit(spec: Spec, context: ExportContext): ExportedFile[] {
     (criterion, index) =>
       `- **FR-${String(index + 1).padStart(3, "0")}**: ${criterion.text} (${criterion.id})`,
   );
-  const feature = [
+  return [
     `# Feature Specification: ${spec.title}`,
     "",
     `**Feature Branch**: \`${context.branch ?? context.id}\``,
@@ -50,7 +60,11 @@ export function specKit(spec: Spec, context: ExportContext): ExportedFile[] {
     ...block("## Assumptions", assumptionLines(spec)),
     ...block("## Out of Scope", textLines(spec.sections.outOfScope)),
   ];
-  const plan = [
+}
+
+/** The implementation plan: its summary, design, project structure and risks. */
+function planLines(spec: Spec, context: ExportContext): string[] {
+  return [
     `# Implementation Plan: ${spec.title}`,
     "",
     `**Branch**: \`${context.branch ?? context.id}\`${context.created === undefined ? "" : ` | **Date**: ${context.created}`} | **Spec**: [spec.md](./spec.md)`,
@@ -60,14 +74,13 @@ export function specKit(spec: Spec, context: ExportContext): ExportedFile[] {
     ...block("## Project Structure", fileLines(spec)),
     ...block("## Risks", riskLines(spec)),
   ];
-  const tasks = (spec.sections.tasks?.items ?? []).map((task, index) => {
+}
+
+/** One line per task, numbered as Spec Kit does, with the files it works on. */
+function taskLines(spec: Spec): string[] {
+  return (spec.sections.tasks?.items ?? []).map((task, index) => {
     const paths = task.files.map((path) => `\`${path}\``).join(", ");
     const id = `T${String(index + 1).padStart(3, "0")}`;
     return `- [${task.done ? "x" : " "}] ${id} [US1] ${task.title}${paths === "" ? "" : ` in ${paths}`}`;
   });
-  return [
-    { path: `${dir}/spec.md`, content: feature.join("\n") },
-    { path: `${dir}/plan.md`, content: plan.join("\n") },
-    { path: `${dir}/tasks.md`, content: [`# Tasks: ${spec.title}`, "", ...tasks, ""].join("\n") },
-  ];
 }

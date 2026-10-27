@@ -42,10 +42,6 @@ const unsupported = { state: "unsupported" } as const;
 const impossible = (es: string, en: string) => ({ state: "impossible", why: { es, en } }) as const;
 const indirect = (es: string, en: string) => ({ state: "indirect", how: { es, en } }) as const;
 
-const NO_ENTER_WORKTREE = impossible(
-  "solo Claude Code tiene una herramienta para cambiar de carpeta en mitad de la sesión (`EnterWorktree`); con las demás se abre otro agente en la carpeta del cambio.",
-  "only Claude Code has a tool to change folders mid-session (`EnterWorktree`); with the others, another agent opens in the change's folder.",
-);
 const OWN_SERVER = impossible(
   "su modelo va siempre por el servidor de la herramienta, así que no se puede simular.",
   "its model always goes through the tool's own server, so it cannot be scripted.",
@@ -75,7 +71,10 @@ export const AGENT_CAPABILITIES = {
       "`preCompact` solo observa, así que la tarjeta llega con el resultado del siguiente comando de shell.",
       "`preCompact` only observes, so the card comes with the next shell command's result.",
     ),
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, pone un `cd` a ella delante de cada comando (`updated_input`) y bloquea con la ruta buena lo que escribiría o leería fuera, porque Cursor no reescribe sus archivos.",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder, puts a `cd` to it before each command (`updated_input`) and blocks what it would write or read elsewhere, with the right path, since Cursor does not rewrite its files.",
+    ),
     endOfTurn: yes,
     exclusion: yes,
     // `.cursor/sandbox.json` lets Specty's commits through from a change's folder.
@@ -87,7 +86,10 @@ export const AGENT_CAPABILITIES = {
     guard: yes,
     afterShell: yes,
     afterCompaction: yes,
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, pone un `cd` a ella delante de cada comando y lleva allí las rutas de cada parche (`updatedInput`).",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder, puts a `cd` to it before each command and moves each patch's paths there (`updatedInput`).",
+    ),
     endOfTurn: yes,
     exclusion: impossible(
       "lee los archivos por la shell y no tiene un archivo de exclusión.",
@@ -103,7 +105,10 @@ export const AGENT_CAPABILITIES = {
     afterShell: yes,
     // Specty's plugin, checked with OpenCode 1.19.4: `session.compacted` and `session.idle`.
     afterCompaction: yes,
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, y el plugin de Specty lleva allí las rutas, los parches, las búsquedas y los comandos de sus herramientas.",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder, and Specty's plugin moves its tools' paths, patches, searches and commands there.",
+    ),
     endOfTurn: yes,
     // `permission.read` in `opencode.json`.
     exclusion: yes,
@@ -121,7 +126,10 @@ export const AGENT_CAPABILITIES = {
       "dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
       "it fires `PreCompress` before every attempt to compact, whether it compacts or not, so the card comes at the start of each turn, with its prompt (`BeforeAgent`).",
     ),
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, las búsquedas y los comandos de sus herramientas (`hookSpecificOutput.tool_input`).",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder and moves its tools' paths, searches and commands there (`hookSpecificOutput.tool_input`).",
+    ),
     // `AfterAgent`, checked with Gemini CLI 0.65.0.
     endOfTurn: yes,
     exclusion: yes,
@@ -150,7 +158,10 @@ export const AGENT_CAPABILITIES = {
       "no consta que su `PostCompaction` pueda añadir contexto, así que la tarjeta llega con el resultado del siguiente comando de shell.",
       "its `PostCompaction` is not documented to add context, so the card comes with the next shell command's result.",
     ),
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, los parches y los comandos de sus herramientas (`updatedInput`).",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder and moves its tools' paths, patches and commands there (`updatedInput`).",
+    ),
     // `Stop`, as Claude Code's.
     endOfTurn: yes,
     exclusion: yes,
@@ -176,7 +187,10 @@ export const AGENT_CAPABILITIES = {
       "no avisa cuando compacta, así que la tarjeta llega al empezar cada turno, con su primera llamada al modelo (`PreInvocation`).",
       "it does not say when it compacts, so the card comes at the start of each turn, with its first model call (`PreInvocation`).",
     ),
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y bloquea con la ruta buena lo que haría o leería fuera; no reescribe sus acciones, porque su `overwrite` se descarta cuando pide permiso.",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder and blocks what it would do or read elsewhere, with the right path; it does not rewrite its actions, since its `overwrite` is dropped when it asks for permission.",
+    ),
     // `Stop` with `decision: "continue"`; Specty counts the turns it sends back.
     endOfTurn: yes,
     // `.antigravityignore`.

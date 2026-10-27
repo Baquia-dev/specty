@@ -1,28 +1,24 @@
 // SPDX-License-Identifier: Apache-2.0
-import { mkdtemp, readdir } from "node:fs/promises";
+import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, expect, it, vi } from "vitest";
 import { installFiles } from "../src/install/files";
-import { installHooks } from "../src/install/hooks";
 import { installOpencode, planOpencodeStop } from "../src/install/opencode";
 import { createGit } from "../src/io/git";
 import {
-  AGENT,
   APP,
   CHANGE,
   CONFIG,
   cli,
   DIST,
-  git,
-  NOW,
+  folderOf,
   person,
-  read,
+  type Run,
   SPEC,
   SPEC_PATH,
   tempRepo,
-  testEnv,
   writeFiles,
 } from "./support";
 
@@ -89,14 +85,6 @@ describe("the guard in OpenCode", () => {
     expect((await opencode(root, "shell", {})).code).toBe(0);
   });
 });
-
-/** A global OpenCode configuration of its own, as `XDG_CONFIG_HOME` points to it: Specty leaves it empty. */
-async function opencodeConfig() {
-  const config = await mkdtemp(join(tmpdir(), "specty-opencode-"));
-  return { env: { XDG_CONFIG_HOME: config }, config };
-}
-
-const PLUGIN = ".opencode/plugins/specty.js";
 
 type Hook = (...args: unknown[]) => Promise<void>;
 
@@ -312,95 +300,99 @@ describe("Specty's plugin and OpenCode's sessions", () => {
   });
 });
 
-const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
+/** A repository with a change in its own folder, which OpenCode's session `s1` entered. */
+async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
+  const root = await tempRepo(APP);
+  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+  expect((await opencode(root, "bash", { command: `specty enter ${CHANGE}` })).code).toBe(0);
+  return { root, folder: folderOf(root) };
+}
 
-describe("installing the plugin in OpenCode", () => {
-  it("tells doctor when the plugin lacks the card after a compaction (AC5)", async () => {
-    const root = await tempRepo({ ...PACKAGE, "opencode.json": "{}\n" });
-    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
-    const text = await read(root, PLUGIN);
-    await writeFiles(root, { [PLUGIN]: text.replaceAll("session.compacted", "session.other") });
-    const doctor = await cli(root, ["doctor"]);
-    expect(doctor.code).toBe(1);
-    expect(doctor.out).toContain(
-      "OpenCode: al plugin del guard le falta la tarjeta de Specty tras compactar; ejecuta `specty init --tools opencode`.",
-    );
+/** The guard's answer to a plugin that runs the tool with the input it gives back. */
+const redirected = (root: string, tool: string, input: Record<string, unknown>) =>
+  cli(root, ["guard", "--tool", "opencode"], {
+    stdin: JSON.stringify({
+      cwd: root,
+      session_id: "s1",
+      tool_use_id: "c1",
+      tool_name: tool,
+      tool_input: input,
+      redirects: true,
+    }),
   });
 
-  it("writes it to the project's .opencode/plugins/ and leaves the global configuration alone (AC2, AC9)", async () => {
-    const { env, config } = await opencodeConfig();
-    const root = await tempRepo({ "src/app.ts": "x\n", ".specty/config.yaml": CONFIG() });
-    const result = await cli(root, ["init", "--language", "es", "--tools", "opencode"], { env });
-    expect(result.code).toBe(0);
-    expect(result.out).toContain(
-      "OpenCode: plugin del guard en .opencode/plugins/specty.js (local).",
-    );
-    expect(await read(root, PLUGIN)).toContain(`"node \\"${DIST}\\" guard --tool opencode"`);
-    expect(await readdir(config)).toEqual([]);
-    // With a machine path, the plugin stays out of git, and new copies it to the worktree (AC3).
-    expect(await read(root, ".git/info/exclude")).toContain(`/${PLUGIN}`);
-    expect(git(root, "status", "--porcelain")).toBe("");
-    const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
-    expect(created.out).toContain(`HOOKS DEL AGENTE COPIADOS:\n  ${PLUGIN}`);
-    const folder = join(
-      dirname(root),
-      `${basename(root)}.worktrees`,
-      CHANGE.replace("saludo-personalizado", "otro-cambio"),
-    );
-    expect(await read(folder, PLUGIN)).toBe(await read(root, PLUGIN));
-  });
+const inputOf = async (run: Promise<Run>): Promise<unknown> => {
+  const { out } = await run;
+  return out === "" ? undefined : JSON.parse(out).tool_input;
+};
 
-  it("versions it, for init's commit, when the command is on PATH (AC3)", async () => {
-    const root = await tempRepo(PACKAGE);
-    const env = testEnv();
-    const installed = await installHooks({
-      environment: {
-        cwd: root,
-        env,
-        now: () => NOW,
-        terminal: AGENT,
-        io: { out: () => {}, err: () => {} },
-        invocation: { command: "specty", portable: true },
-      },
-      root,
-      git: createGit(root, env),
-      tools: ["opencode"],
-      lang: "es",
-      files: installFiles(),
+describe("OpenCode in the folder of the change its conversation entered", () => {
+  it("moves files and patches to the change's folder, judged by its rules (AC1)", async () => {
+    const { root, folder } = await entered();
+    const written = { filePath: SPEC_PATH, content: "x" };
+    expect(await inputOf(redirected(root, "write", written))).toEqual({
+      filePath: join(folder, SPEC_PATH),
+      content: "x",
     });
-    expect(installed.written).toContain(PLUGIN);
-    expect(installed.done).toContain("OpenCode: plugin del guard en .opencode/plugins/specty.js.");
-    expect(await read(root, PLUGIN)).toContain('"specty guard --tool opencode"');
-    expect(await read(root, ".git/info/exclude")).not.toContain(PLUGIN);
-  });
-
-  it("installs it for a repository with opencode.json, and doctor looks for it there (AC6)", async () => {
-    const { env, config } = await opencodeConfig();
-    const root = await tempRepo({ "opencode.json": "{}\n" });
-    await cli(root, ["init", "--language", "es"], { env });
-    const doctor = await cli(root, ["doctor"], { env });
-    expect(doctor.out).toContain("OpenCode: plugin del guard en .opencode/plugins/specty.js.");
-    await writeFiles(root, { [PLUGIN]: 'const GUARD = "specty guard --tool opencode";\n' });
-    expect((await cli(root, ["doctor"], { env })).out).toContain(
-      "OpenCode: al plugin del guard le falta la comprobación tras cada comando; ejecuta `specty init --tools opencode`.",
-    );
-    await writeFiles(root, { [PLUGIN]: "export default {};\n" });
-    const missing = await cli(root, ["doctor"], { env });
-    expect(missing.code).toBe(1);
-    expect(missing.out).toContain(
-      "OpenCode: falta el plugin del guard en .opencode/plugins/specty.js; ejecuta `specty init --tools opencode`.",
-    );
-    expect(await readdir(config)).toEqual([]);
-  });
-
-  it("names the formatter that would check the plugin (AC8)", async () => {
-    const root = await tempRepo({
-      ...PACKAGE,
-      "biome.json": '{"files":{"includes":["**","!.specty"]}}\n',
+    expect(await inputOf(redirected(root, "read", { path: join(root, "src/app.ts") }))).toEqual({
+      path: join(folder, "src/app.ts"),
     });
-    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
-    expect((await cli(root, ["doctor"])).out).toContain(
-      'Biome también revisa .opencode/plugins/specty.js, que escribe Specty: añade "!.opencode/plugins/specty.js" en biome.json (files.includes).',
+    const moved = await inputOf(redirected(root, "apply_patch", { patchText: patch(SPEC_PATH) }));
+    expect(moved).toEqual({ patchText: patch(join(folder, SPEC_PATH)) });
+    // Already there, or outside the repository: nothing moves.
+    expect((await redirected(root, "read", { filePath: join(folder, "src/app.ts") })).out).toBe("");
+    expect((await redirected(root, "read", { filePath: "/etc/hosts" })).out).toBe("");
+    const code = await redirected(root, "edit", {
+      filePath: "src/app.ts",
+      oldString: "hola",
+      newString: "adiós",
+    });
+    expect(code.code).toBe(2);
+    expect(code.err).toContain(`El cambio ${CHANGE} está en fase`);
+  });
+
+  it("runs searches and commands in the change's folder, or the same folder inside it (AC2)", async () => {
+    const { root, folder } = await entered();
+    expect(await inputOf(redirected(root, "glob", { pattern: "*.ts" }))).toEqual({
+      pattern: "*.ts",
+      path: folder,
+    });
+    expect(await inputOf(redirected(root, "grep", { pattern: "x", path: "src" }))).toEqual({
+      pattern: "x",
+      path: join(folder, "src"),
+    });
+    expect(await inputOf(redirected(root, "bash", { command: "ls" }))).toEqual({
+      command: "ls",
+      workdir: folder,
+    });
+    // A conversation that entered nothing searches and runs where it was.
+    const other = await tempRepo(APP);
+    expect((await redirected(other, "glob", { pattern: "*.ts" })).out).toBe("");
+    expect((await redirected(other, "bash", { command: "ls" })).out).toBe("");
+  });
+
+  it("leaves an older plugin's tools as they were, blocking with the path inside (AC3)", async () => {
+    const { root, folder } = await entered();
+    const written = await opencode(root, "write", { filePath: "notas.md", content: "x" });
+    expect(written).toMatchObject({ code: 2, out: "" });
+    expect(written.err).toContain(
+      `SIGUIENTE: usa la misma ruta dentro de ella: \`${join(folder, "notas.md")}\`.`,
     );
+  });
+
+  it("makes the plugin run each tool with the input the guard gives back (AC1)", async () => {
+    const { root, folder } = await entered();
+    const plugin = await loadPlugin();
+    const before = (await plugin.server({ directory: root }))["tool.execute.before"];
+    const info = { tool: "write", sessionID: "s1", callID: "c2" };
+    const args = { filePath: "notas.md", content: "x" };
+    await before?.(info, { args });
+    expect(args).toEqual({ filePath: join(folder, "notas.md"), content: "x" });
+    const hooks = new Map<string, Hook>();
+    const tool = { hook: async (name: string, run: Hook) => void hooks.set(name, run) };
+    await plugin.setup({ location: { directory: root }, tool });
+    const input: Record<string, unknown> = { command: "ls", workdir: "src" };
+    await hooks.get("execute.before")?.({ tool: "shell", sessionID: "s1", id: "c3", input });
+    expect(input).toEqual({ command: "ls", workdir: join(folder, "src") });
   });
 });

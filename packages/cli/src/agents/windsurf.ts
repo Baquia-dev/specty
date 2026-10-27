@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createHash } from "node:crypto";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import {
   AGENT_NAMES,
   devinCommandsLine,
@@ -9,11 +9,12 @@ import {
   devinSandboxTrackedWarning,
   guardLine,
   type Lang,
+  movePatch,
   patchPaths,
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { sharedFolders } from "../flow/worktree";
+import { sharedFolders, worktreesHome } from "../flow/worktree";
 import {
   DEVIN_CONFIG,
   DEVIN_HOOKS,
@@ -26,7 +27,7 @@ import { type InstallFiles, rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
 import type { Git } from "../io/git";
 import { COMMAND } from "../session";
-import { type AgentAdapter, exitFailed, exitReply, jsonStop } from "./adapter";
+import { type AgentAdapter, exitFailed, exitReply, jsonStop, type Redirect } from "./adapter";
 
 /** Devin's rule for Specty's commands, by the name the agent types them with. */
 const RUN = `Exec(${COMMAND})`;
@@ -36,7 +37,8 @@ const RUN = `Exec(${COMMAND})`;
  * `PostCompaction`, with none, comes once Devin compacts.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
-  PreToolUse: "^(exec|write|edit|notebook_edit|apply_patch|write_to_process)$",
+  PreToolUse:
+    "^(exec|write|edit|notebook_edit|apply_patch|write_to_process|read|notebook_read|grep|glob)$",
   PostToolUse: "^exec$",
   PostCompaction: undefined,
 };
@@ -57,7 +59,15 @@ export const windsurf: AgentAdapter = {
     return event.hook_event_name === "PostCompaction" ? "compacting" : "before";
   },
   action,
+  redirect,
   reply: (verdict, phase, card) => {
+    if (phase === "before" && verdict.allow && verdict.input !== undefined) {
+      // Devin merges these fields into the tool's arguments before it runs.
+      const output = {
+        hookSpecificOutput: { hookEventName: "PreToolUse", updatedInput: verdict.input },
+      };
+      return { code: 0, stdout: JSON.stringify(output), stderr: "" };
+    }
     if (phase === "before") return exitReply(verdict);
     const texts = [...(verdict.allow ? [] : [verdict.text]), ...(card === undefined ? [] : [card])];
     if (texts.length === 0) return exitReply({ allow: true });
@@ -145,9 +155,13 @@ async function installPermissions(
   return { done: [commands, devinSandboxLine(DEVIN_LOCAL_CONFIG, lang)], warnings: [] };
 }
 
-/** Specty's folders as Devin's `Write(...)` scopes, which also widen its sandbox. */
+/**
+ * Specty's folders as Devin's `Write(...)` scopes, which also widen its sandbox, and the
+ * worktrees' folder as a `Read(...)` one, for a session that entered a change's folder there.
+ */
 async function writeScopes(git: Git): Promise<string[]> {
-  return (await sharedFolders(git)).map((folder) => `Write(${folder}/**)`);
+  const writes = (await sharedFolders(git)).map((folder) => `Write(${folder}/**)`);
+  return [...writes, `Read(${await worktreesHome(git)}/**)`];
 }
 
 /** `rules` in `permissions.allow`, after the person's ones, or taken out of it. */
@@ -195,18 +209,27 @@ function normalize(event: Record<string, unknown>): Record<string, unknown> {
   return { ...event, tool_use_id: `${event.session_id}-${call}` };
 }
 
+/** Its tools that write a file, and those that read or search, by the action each one is. */
+const FILE_TOOLS: Readonly<Record<string, "write" | "read">> = {
+  write: "write",
+  edit: "write",
+  notebook_edit: "write",
+  read: "read",
+  notebook_read: "read",
+  grep: "read",
+  glob: "read",
+};
+
 function action(event: Readonly<Record<string, unknown>>): RawAction {
   const input = isRecord(event.tool_input) ? event.tool_input : {};
+  const files = FILE_TOOLS[String(event.tool_name)];
+  if (files !== undefined) return { kind: files, paths: sentPaths(input.file_path ?? input.path) };
   switch (event.tool_name) {
     case "exec":
       return shellAction(input.command);
     // What it types into a running process, which may be a shell, is judged as a command.
     case "write_to_process":
       return shellAction(firstText(input, ["input", "chars", "text", "data"]));
-    case "write":
-    case "edit":
-    case "notebook_edit":
-      return { kind: "write", paths: sentPaths(input.file_path ?? input.path) };
     case "apply_patch": {
       const patch = firstText(input, ["input", "patch", "command"]);
       return patch === undefined ? { kind: "other" } : { kind: "files", ...patchPaths(patch) };
@@ -214,6 +237,48 @@ function action(event: Readonly<Record<string, unknown>>): RawAction {
     default:
       return { kind: "other" };
   }
+}
+
+/**
+ * The tool's input in the conversation's folder: a `cd` to it before a command, when the
+ * conversation works in another one, and its files, folders and patch's paths there. Devin's
+ * documentation names only `command` (`exec`); for the others, the fields the guard reads.
+ */
+function redirect(
+  event: Readonly<Record<string, unknown>>,
+  to: Redirect,
+): Record<string, unknown> | undefined {
+  const input = isRecord(event.tool_input) ? event.tool_input : {};
+  const base = typeof event.cwd === "string" ? event.cwd : "";
+  if (event.tool_name === "exec") {
+    if (typeof input.command !== "string" || to.folder === base) return undefined;
+    const folder = to.folder.replaceAll("'", `'\\''`);
+    return { ...input, command: `cd '${folder}' && ${input.command}` };
+  }
+  const moved = movedPaths(String(event.tool_name), input, (path) => {
+    const there = to.path(resolve(base, path));
+    return there === resolve(base, path) ? path : there;
+  });
+  return Object.keys(moved).some((key) => moved[key] !== input[key]) ? moved : undefined;
+}
+
+/** The input with its file or folder, and a patch's paths, as `move` gives them. */
+function movedPaths(
+  tool: string,
+  input: Record<string, unknown>,
+  move: (path: string) => string,
+): Record<string, unknown> {
+  const moved: Record<string, unknown> = { ...input };
+  for (const key of ["file_path", "path"]) {
+    const value = input[key];
+    if (typeof value === "string" && value !== "") moved[key] = move(value);
+  }
+  if (tool !== "apply_patch") return moved;
+  for (const key of ["input", "patch", "command"]) {
+    const value = input[key];
+    if (typeof value === "string") moved[key] = movePatch(value, move);
+  }
+  return moved;
 }
 
 /** The first of `keys` that holds text: the documentation does not fix these fields' names. */

@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261026-antigravity-y-devin-llevan-sus-acciones-a-la-car",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-antigravity-y-devin-llevan-sus-acciones-a-la-car",
+  "baseCommit": "2716a95c4d7c96284e23b34db7cab6936c59c988",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ae3f26f5b4888bda11ebbd95d837655177a12547b5c29d7e2856a1e64d0c1598",
+    "at": "2026-10-27T03:52:34.856Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7ec11f5174ae7ceddf8cc8a7b2fee5ed9e078351294b41b4418b41d8004e6d80",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6b3bbbfa288fbcffd48e4b6e240d980bc557f3c79a7d9e709e0732405b4548ed",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:5e2e3561b03c25e47a21a98bf3a58ea1576623e9ce8da97098753126989d72d1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e228ba17d397f92de26a3b6bd21dc7865383d23c",
+      "attempts": 1,
+      "startedAt": "2026-10-27T03:52:35.247Z",
+      "doneAt": "2026-10-27T03:56:13.800Z",
+      "summary": "Core gana la acción read: leer es libre y solo se bloquea, con la ruta buena, lo que lee fuera de su carpeta una conversación que entró en un cambio (ForeignPath.instead). La CLI ubica sus rutas como las de una escritura.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c59f62ecebe1e4821ab2474e2fcf8c9d5fbf1c1f",
+      "attempts": 1,
+      "startedAt": "2026-10-27T03:56:14.098Z",
+      "doneAt": "2026-10-27T04:00:12.785Z",
+      "summary": "Antigravity: el guard ve sus lecturas y las bloquea con la ruta buena para una conversación ligada; cada acción de esa conversación que deja pasar lleva write_file y read_file de las carpetas de Specty (Verdict.readable). No reescribe: su overwrite puede descartarse.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "1e55b5cc255145b2c7545ca75afc664346d1973d",
+      "attempts": 1,
+      "startedAt": "2026-10-27T04:00:13.089Z",
+      "doneAt": "2026-10-27T04:05:42.839Z",
+      "summary": "Devin: redirect pone cd a la carpeta del cambio delante de exec y lleva file_path, path y las rutas del parche allí; responde con updatedInput. Sus lecturas pasan por el guard (acción read) y sus ajustes locales añaden Read de la carpeta de las worktrees.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "81c8a5ac500f56c764dcfdbcf153aa4166f7118e",
+      "attempts": 1,
+      "startedAt": "2026-10-27T04:05:43.130Z",
+      "doneAt": "2026-10-27T04:08:22.086Z",
+      "summary": "Celdas Worktree por nombre de Antigravity y Devin a indirecto (Antigravity bloquea con la ruta buena, sin reescribir; Devin reescribe con updatedInput), tabla regenerada y ARCHITECTURE 10 con las lecturas y los permisos de ambos.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-27T04:10:30.376Z"
+}

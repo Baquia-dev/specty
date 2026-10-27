@@ -1,7 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, cli, git, person, read, SPEC, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import {
+  APP,
+  CHANGE,
+  cli,
+  folderOf,
+  git,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
 
 /** A repository whose change is implementing T1 (`src/app.ts`, `src/app.test.ts`). */
 async function implementing(): Promise<string> {
@@ -110,6 +122,56 @@ describe("the guard in Antigravity", () => {
   });
 });
 
+/** A repository with a change in its own folder, which Antigravity's conversation `c1` entered. */
+async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
+  const root = await tempRepo(APP);
+  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+  const enter = step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root });
+  expect((await answer(antigravity(root, "PreToolUse", enter))).decision).toBe("allow");
+  return { root, folder: folderOf(root) };
+}
+
+describe("Antigravity in the folder of the change its conversation entered", () => {
+  it("blocks what it would read outside that folder, with the same path inside (C5 AC2)", async () => {
+    const { root, folder } = await entered();
+    const reads = [
+      ["view_file", { AbsolutePath: join(root, "src/app.ts") }, "src/app.ts"],
+      ["list_dir", { DirectoryPath: join(root, "src") }, "src"],
+      ["grep_search", { SearchPath: join(root, "src"), Query: "greet" }, "src"],
+      ["find_by_name", { SearchDirectory: join(root, "src"), Pattern: "*.ts" }, "src"],
+    ] as const;
+    for (const [index, [name, args, inside]] of reads.entries()) {
+      const denied = await answer(antigravity(root, "PreToolUse", step(index + 2, name, args)));
+      expect(denied.decision).toBe("deny");
+      expect(denied.reason).toContain(
+        `SIGUIENTE: usa la misma ruta dentro de ella: \`${join(folder, inside)}\`.`,
+      );
+    }
+    // A conversation that entered nothing reads anywhere.
+    const free = step(9, "view_file", { AbsolutePath: join(folder, "src/app.ts") });
+    expect(
+      await answer(antigravity(root, "PreToolUse", { ...free, conversationId: "c2" })),
+    ).toEqual({ decision: "allow" });
+  });
+
+  it("lets it read and write in the worktrees' folder with each action it allows (C5 AC3)", async () => {
+    const { root, folder } = await entered();
+    const view = step(10, "view_file", { AbsolutePath: join(folder, "src/app.ts") });
+    expect(await answer(antigravity(root, "PreToolUse", view))).toEqual({
+      decision: "allow",
+      permissionOverrides: [
+        `write_file(${join(root, ".git")})`,
+        `write_file(${root}.worktrees)`,
+        `read_file(${root}.worktrees)`,
+      ],
+    });
+    const write = step(11, "write_to_file", { TargetFile: join(folder, "notas.md") });
+    expect((await answer(antigravity(root, "PreToolUse", write))).permissionOverrides).toContain(
+      `read_file(${root}.worktrees)`,
+    );
+  });
+});
+
 const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
 const HOOKS = ".agents/hooks.json";
 
@@ -135,7 +197,7 @@ describe("installing the guard in Antigravity", () => {
       PreToolUse: [
         {
           matcher:
-            "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task",
+            "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task|view_file|list_dir|grep_search|find_by_name",
           hooks: [handler("PreToolUse")],
         },
       ],

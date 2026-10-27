@@ -8,8 +8,11 @@ import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { type FakeChat, fakeChat, type ToolCall } from "./fake-chat";
 import {
+  CHANGE,
   CONFIG,
   cli,
+  DIST,
+  folderOf,
   git,
   person,
   read,
@@ -82,6 +85,8 @@ async function isolated(chat: FakeChat): Promise<NodeJS.ProcessEnv> {
     XDG_DATA_HOME: join(home, "data"),
     XDG_STATE_HOME: join(home, "state"),
     XDG_CACHE_HOME: CACHE,
+    // OpenCode 1.19 installs its plugin's packages with npm, whose cache would live in `HOME`.
+    npm_config_cache: join(CACHE, "npm"),
     OPENCODE_DISABLE_AUTOUPDATE: "1",
     LANG: "es_ES.UTF-8",
   };
@@ -196,6 +201,29 @@ describe.skipIf(OPENCODE === undefined)(
       ]);
       expect(chat.results()[0]).toContain("`src/otro.ts` está fuera del alcance de T1.");
     });
+
+    it(
+      "enters a change with specty enter, and writes, reads and runs in its folder (C3 AC5)",
+      LONG,
+      async () => {
+        const root = await initialized();
+        expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+        const folder = folderOf(root);
+        const chat = await opencodeRun(root, [
+          bash(`node "${DIST}" enter ${CHANGE}`),
+          write(SPEC_PATH, "# Plan del saludo\n"),
+          { name: "read", arguments: { filePath: SPEC_PATH } },
+          bash("pwd"),
+        ]);
+        const [entered, written, shown, ran] = chat.results();
+        expect(entered).toContain(`Esta conversación trabaja ahora en \`${folder}\``);
+        expect(written).not.toMatch(/SIGUIENTE: |rejected|denied/i);
+        expect(await read(folder, SPEC_PATH)).toBe("# Plan del saludo\n");
+        expect(existsSync(join(root, SPEC_PATH))).toBe(false);
+        expect(shown).toContain("# Plan del saludo");
+        expect(ran).toContain(folder);
+      },
+    );
 
     it("brings the card back in the request after a compaction (AC4)", LONG, async () => {
       const root = await implementing();

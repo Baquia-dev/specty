@@ -29,12 +29,32 @@ export type EventKind =
   | "turn"
   | "worktree";
 
+/**
+ * Where a conversation's actions go: the folder of the change it entered (`specty enter`), or
+ * otherwise its tool's own folder.
+ */
+export interface Redirect {
+  readonly folder: string;
+  /**
+   * The same absolute path in that folder, for one in another worktree of the repository; any
+   * other path stays as it is. Without a change entered, nothing moves.
+   */
+  readonly path: (absolute: string) => string;
+}
+
 /** The guard's verdict before each agent's form: let it through, or stop it and say why. */
 export type Verdict =
   | {
       readonly allow: true;
-      /** The folders outside its workspace a shell command may write in, for an agent with `grants`. */
+      /**
+       * The folders outside its workspace the action may write in, for an agent with `grants`: a
+       * shell command's, and any action of a conversation that entered a change's folder.
+       */
       readonly folders?: readonly string[];
+      /** The folders outside its workspace that conversation's tools may read, too. */
+      readonly readable?: readonly string[];
+      /** The tool's input as the agent's module rewrote it (`redirect`), to send back. */
+      readonly input?: Readonly<Record<string, unknown>>;
     }
   | {
       readonly allow: false;
@@ -57,6 +77,12 @@ export interface AgentAdapter {
   readonly kind: (event: Event) => EventKind;
   /** The action an event before it describes. Paths are still as the tool sent them. */
   readonly action: (event: Event) => RawAction;
+  /**
+   * The tool's whole input, rewritten so the action happens in the conversation's folder;
+   * undefined when nothing changes. It reads the event as the tool sent it. The guard judges the
+   * action with this input, and sends it back for the tool to run instead.
+   */
+  readonly redirect?: (event: Event, to: Redirect) => Record<string, unknown> | undefined;
   /**
    * The reply before an action, or after a shell command, with the card a compaction left for
    * it when there is one.

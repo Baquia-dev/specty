@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { chmod, rm } from "node:fs/promises";
+import { chmod, mkdir, rm } from "node:fs/promises";
 import { isAbsolute, join, relative, sep } from "node:path";
 import { applyEdits, modify, parse } from "jsonc-parser";
 import { isRecord, readText, writeText } from "../io/files";
@@ -20,6 +20,8 @@ export interface InstallFiles {
   write(path: string, text: string, options?: { readonly executable?: boolean }): Promise<void>;
   /** Deletes the file, if there is one. */
   remove(path: string): Promise<void>;
+  /** Creates the folder, if there is none: an empty folder has nothing to copy or undo. */
+  folder(path: string): Promise<void>;
   /** What changed so far, each file once, in order. */
   readonly changes: readonly FileChange[];
 }
@@ -83,6 +85,9 @@ export function installFiles(options: InstallFilesOptions = {}): InstallFiles {
       await record(path, before, true);
       if (options.dryRun === true) planned.set(path, null);
       else await rm(path, { force: true });
+    },
+    async folder(path) {
+      if (options.dryRun !== true) await mkdir(path, { recursive: true });
     },
     changes,
   };

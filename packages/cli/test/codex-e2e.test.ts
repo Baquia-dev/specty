@@ -1,14 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { type CodexCall, type FakeResponses, fakeResponses } from "./fake-responses";
 import {
+  CHANGE,
   CONFIG,
   cli,
+  DIST,
+  folderOf,
   git,
   person,
   read,
@@ -82,8 +85,12 @@ async function isolated(responses: FakeResponses, root: string): Promise<NodeJS.
     "",
   ].join("\n");
   await writeFile(join(codexHome, "config.toml"), config);
+  // The model types `specty`, as Specty's rule for Codex names it: this build answers it.
+  const bin = join(home, "bin");
+  await mkdir(bin, { recursive: true });
+  await writeFile(join(bin, "specty"), `#!/bin/sh\nexec node "${DIST}" "$@"\n`, { mode: 0o755 });
   return {
-    PATH: process.env.PATH ?? "",
+    PATH: `${bin}${delimiter}${process.env.PATH ?? ""}`,
     HOME: home,
     CODEX_HOME: codexHome,
     SPECTY_E2E_KEY: "sk-specty-e2e",
@@ -176,6 +183,36 @@ describe.skipIf(CODEX === undefined)(
       ]);
       expect(responses.results()[0]).toContain("`src/otro.ts` está fuera del alcance de T1.");
     });
+
+    it(
+      "enters a change with specty enter, and patches and completes a task in its folder (C4 AC4)",
+      LONG,
+      async () => {
+        const root = await initialized();
+        expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+        const folder = folderOf(root);
+        // `new` prepared the folder with `npm install`, whose lock the task does not list.
+        await rm(join(folder, "package-lock.json"), { force: true });
+        await writeFiles(folder, { [SPEC_PATH]: SPEC });
+        expect((await cli(folder, ["propose"])).code).toBe(0);
+        await cli(folder, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+        expect((await cli(folder, ["next"])).out).toContain("TAREA T1");
+        const commits = git(folder, "rev-list", "--count", "HEAD");
+        const responses = await codexRun(root, [
+          shell(`specty enter ${CHANGE}`),
+          patch("src/app.test.ts", "expect(greet('Ana')).toBe('Hola, Ana');"),
+          shell("specty task done T1 --summary 'Saludo por nombre'"),
+        ]);
+        const [entered, patched, done] = responses.results();
+        expect(entered).toContain(`Esta conversación trabaja ahora en \`${folder}\``);
+        expect(patched).not.toMatch(/SIGUIENTE: /);
+        expect(await read(folder, "src/app.test.ts")).toContain("Hola, Ana");
+        expect(existsSync(join(root, "src/app.test.ts"))).toBe(false);
+        // Specty's command made its commit in the change's folder, outside Codex's sandbox.
+        expect(done).toContain("T1 completada");
+        expect(Number(git(folder, "rev-list", "--count", "HEAD"))).toBe(Number(commits) + 1);
+      },
+    );
 
     it("sends the turn back once while specty check --changed fails (AC1)", LONG, async () => {
       const root = await initialized("checks:\n  levels: { secrets: off }\n");

@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261026-opencode-lleva-sus-acciones-a-la-carpeta-del-cam",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-opencode-lleva-sus-acciones-a-la-carpeta-del-cam",
+  "baseCommit": "e7d6d6bcdf16484d495669da7323ce5154fda765",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:219b97eecb7888d6b553d58d607110ae2e090db572b777bd10443e51a7222455",
+    "at": "2026-10-27T02:16:57.394Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e7bfa4bf65b3cd0b34c1704093a88c1db5604a17cce452d0c8bfa37eafef4f02",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9aa5fd6949812618e08674e1e9d0154f186bd5da16957fe28e57009cb1093ebe",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:154d0efe8673ca2c5c6c391dbfe7681b8f92695b5d643e1b79298083395d67fa",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "49275debc839bec01938be76782c4387d7a6c12c",
+      "attempts": 1,
+      "startedAt": "2026-10-27T02:16:57.765Z",
+      "doneAt": "2026-10-27T02:19:18.098Z",
+      "summary": "movePatch en core (guard/patch.ts): el parche con la ruta de cada cabecera (Add, Update, Delete, Move to) como la da move, y el contenido igual; exportado para OpenCode y Codex.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "89c28339d84e342003e292a2d389cb9b95a00186",
+      "attempts": 1,
+      "startedAt": "2026-10-27T02:19:18.392Z",
+      "doneAt": "2026-10-27T02:25:24.868Z",
+      "summary": "OpenCode: redirect lleva filePath, path, workdir y las rutas de patchText (movePatch) a la carpeta del cambio, y da carpeta a búsquedas y comandos de una conversación ligada; solo si el plugin manda redirects. El plugin copia en el sitio la entrada que devuelve el guard (OpenCode 1 y 2).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "fbeed9edadf008974d9bcb09e5986b33eb88c20c",
+      "attempts": 1,
+      "startedAt": "2026-10-27T02:25:25.152Z",
+      "doneAt": "2026-10-27T02:30:50.486Z",
+      "summary": "init permite a OpenCode la carpeta de las worktrees en .opencode/opencode.jsonc (permission.external_directory, fuera de git, tras una regla general de la persona); si va en git, dice qué añadir; uninstall la quita. Los tests de instalación pasan a opencode-install.test.ts.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "c893d0079f6ade10bdb832ad66cf9f63e2e05a32",
+      "attempts": 3,
+      "startedAt": "2026-10-27T02:30:50.789Z",
+      "doneAt": "2026-10-27T03:21:50.382Z",
+      "summary": "Prueba E2E con OpenCode 1.19.4 y modelo simulado: entra con specty enter y escribe, lee y ejecuta en la carpeta del cambio; el arnés comparte la caché de npm. Celda Worktree por nombre de OpenCode a indirecto, tabla regenerada y ARCHITECTURE 10.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-27T03:24:30.866Z"
+}

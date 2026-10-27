@@ -8,6 +8,7 @@ import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
 import { conversationOf, isGuardTool } from "./actions";
 import { leavePending, takePending } from "./pending";
+import { enteredSession } from "./sessions";
 
 /**
  * `specty hook agent-stop <agent>` (ADR 0012): when the agent ends its turn, `specty check
@@ -34,7 +35,9 @@ export async function agentStop(session: Session, tool: string, input: string): 
   const parsed = parseJson(input);
   const given = isRecord(parsed) ? parsed : {};
   const event = agent.normalize?.(given) ?? given;
-  const report = stop.acts(event) ? await turnReport(session, stop, event) : undefined;
+  // A conversation that entered a change's folder ends its turn there.
+  const there = (await enteredSession(agent.tool, session, event)).session;
+  const report = stop.acts(event) ? await turnReport(there, stop, event) : undefined;
   return report === undefined ? (stop.pass ?? "") : stop.reply(report);
 }
 
