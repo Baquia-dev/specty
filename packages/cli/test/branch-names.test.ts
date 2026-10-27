@@ -77,3 +77,23 @@ describe("the branch of a new change", () => {
     expect(git(root, "branch", "--list", "bug/*")).toBe("");
   });
 });
+
+describe("the change of a semantic branch", () => {
+  it("is the active one in its folder, a spike's too (AC7)", async () => {
+    const root = await repo("gitflow");
+    await cli(root, ["new", "Login con Google", "--type", "fix"]);
+    await cli(root, ["new", "Probar la caché", "--kind", "spike", "--timebox", "2h"]);
+    expect((await cli(folderOf(root, LOGIN), ["next"])).out).toContain(`SPECTY · ${LOGIN} · draft`);
+    // spike/<slug> does not name an id, as Specty's own spike/<id> does.
+    const spike = idOf("probar-la-cache");
+    expect((await cli(folderOf(root, spike), ["next"])).out).toContain(`SPECTY · ${spike} · draft`);
+  });
+
+  it("is found by its state when the branch came without the mark, as from another clone (AC7)", async () => {
+    const root = await repo("github");
+    await cli(root, ["new", "Login con Google", "--type", "fix"]);
+    git(root, "config", "--unset", "branch.fix/login-con-google.specty");
+    const next = await cli(folderOf(root, LOGIN), ["next"]);
+    expect(next.out).toContain(`SPECTY · ${LOGIN} · draft`);
+  });
+});

@@ -1,5 +1,30 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Git } from "../io/git";
+import type { Session } from "../session";
+import { listOpenChanges, loadChange, type StoredChange } from "../store/changes";
+
+/** Specty's own names, which carry the id. */
+const NAMED_BY_ID = /^(?:specty|spike)\/(.+)$/;
+
+/**
+ * The change whose branch is `branch`: by its name (`specty/<id>`, `spike/<id>`), else by the
+ * mark `new` left, else the open change whose state names it, such as a branch that came from
+ * another clone. In that order, so Specty's own names cost no more than before.
+ */
+export async function changeOfBranch(
+  session: Session,
+  branch: string,
+): Promise<StoredChange | undefined> {
+  const { paths } = session;
+  const named = NAMED_BY_ID.exec(branch)?.[1];
+  // A spike/<slug> of another flow names no id.
+  const byName = named === undefined ? undefined : await loadChange(paths, named);
+  if (byName !== undefined) return byName;
+  const marked = await session.git.config(`branch.${branch}.specty`);
+  const byMark = marked === undefined ? undefined : await loadChange(paths, marked);
+  if (byMark !== undefined) return byMark;
+  return (await listOpenChanges(paths)).find((change) => change.state.branch === branch);
+}
 
 /**
  * `name`, or the first of `name-2`, `name-3`… that no branch here nor in a remote uses: a

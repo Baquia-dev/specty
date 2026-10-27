@@ -79,7 +79,7 @@ Hoy cada cambio vive en `specty/<id>`, un nombre que no sigue el flujo de git de
   - files: packages/core/src/cards/new.ts, packages/core/test/cards/new.test.ts, packages/cli/src/flow/branches.ts, packages/cli/src/commands/new.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/branch-names.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/branch-names.test.ts
-- [ ] T3: el cambio activo se reconoce en una rama semántica
+- [x] T3: el cambio activo se reconoce en una rama semántica
   - files: packages/cli/src/flow/branches.ts, packages/cli/src/flow/active.ts, packages/cli/test/branch-names.test.ts
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/branch-names.test.ts

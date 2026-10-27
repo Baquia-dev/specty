@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "eb198a323c176a11500fbd08a0b159fe5cbc6044",
+      "attempts": 1,
       "startedAt": "2026-10-27T11:13:40.269Z",
       "doneAt": "2026-10-27T11:25:16.822Z",
-      "summary": "new --type (feat por defecto; rechazo unknown-type con los válidos) nombra la rama con branchName según git.flow, toma la primera libre (-2, -3…) entre las locales y remotas y la marca en git (branch.<rama>.specty = id), en la worktree y en la carpeta actual."
+      "summary": "new --type (feat por defecto; rechazo unknown-type con los válidos) nombra la rama con branchName según git.flow, toma la primera libre (-2, -3…) entre las locales y remotas y la marca en git (branch.<rama>.specty = id), en la worktree y en la carpeta actual.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e46711c7e499c32f74ac5737b1244a61a70fa0e7",
+      "startedAt": "2026-10-27T11:25:17.422Z",
+      "doneAt": "2026-10-27T11:29:41.447Z",
+      "summary": "resolveActive busca el cambio de la rama con changeOfBranch: por el nombre specty/<id> o spike/<id> si ese cambio existe, si no por la marca de git y si no por el cambio abierto cuyo state.json nombra la rama (otro clon)."
     }
   },
   "pending": {
