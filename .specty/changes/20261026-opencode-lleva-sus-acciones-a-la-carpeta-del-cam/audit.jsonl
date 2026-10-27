@@ -1,0 +1,3 @@
+{"ts":"2026-10-27T02:16:11.685Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261026-opencode-lleva-sus-acciones-a-la-carpeta-del-cam","epic":"20261026-los-agentes-entran-en-la-carpeta-del-cambio-sin","slice":"C3"}}
+{"ts":"2026-10-27T02:16:53.221Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:219b97eecb7888d6b553d58d607110ae2e090db572b777bd10443e51a7222455","size":"L","warnings":0}}
+{"ts":"2026-10-27T02:16:57.404Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:219b97eecb7888d6b553d58d607110ae2e090db572b777bd10443e51a7222455","channel":"delegated","delegated":true}}
