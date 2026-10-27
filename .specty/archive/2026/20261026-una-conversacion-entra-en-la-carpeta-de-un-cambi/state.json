@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-una-conversacion-entra-en-la-carpeta-de-un-cambi",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-una-conversacion-entra-en-la-carpeta-de-un-cambi",
   "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:e3af9f90d45709e31509a56e7cc156e1c42ad230c54f15779fe50461f761a97e",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4dd8d18b59c26d4d4b7694378fe8db1547b6ac30",
+      "attempts": 1,
       "startedAt": "2026-10-27T01:14:21.102Z",
       "doneAt": "2026-10-27T01:21:38.603Z",
-      "summary": "Nuevo comando specty enter: dice dónde trabaja ahora la conversación y lo que diría specty next en la carpeta del cambio; sin carpeta propia lo dice y no se liga nada. Tarjetas enteredCard y noFolderCard; ARCHITECTURE 6 y 10 y formats (sessions) documentados."
+      "summary": "Nuevo comando specty enter: dice dónde trabaja ahora la conversación y lo que diría specty next en la carpeta del cambio; sin carpeta propia lo dice y no se liga nada. Tarjetas enteredCard y noFolderCard; ARCHITECTURE 6 y 10 y formats (sessions) documentados.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,5 +70,6 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T01:25:04.339Z"
 }

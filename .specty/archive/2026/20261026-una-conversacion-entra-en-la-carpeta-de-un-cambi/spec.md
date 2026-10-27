@@ -78,3 +78,25 @@ Desde ahí, el guard la mantiene en esa carpeta. Juzga cada acción con las regl
 
 - R1: Una conversación ligada que el agente olvida queda en la carpeta del cambio mientras ese cambio siga abierto. Mitigación: es la regla de `EnterWorktree`, y al cerrarse el cambio la carpeta desaparece y la ligadura deja de contar.
 - R2: Sin reescritura (este corte), el agente tiene que usar las rutas y los `cd` de la carpeta del cambio. Mitigación: cada bloqueo le da la ruta o el comando exactos, y los cortes C2 a C6 lo hacen solos.
+
+## Cierre
+
+### Resumen
+
+`specty enter <id>` liga la conversación de cualquier herramienta con guard, salvo Claude Code, a la carpeta del cambio, con la regla de `EnterWorktree`: una conversación, un cambio abierto, salvo los cortes de su épica. Desde entonces el guard responde a cada evento de esa conversación con la sesión de esa carpeta. Bloquea un archivo de fuera con la misma ruta dentro, y un comando que correría fuera con `cd '<carpeta>' && …`. El comando dice dónde trabaja ahora la conversación y lo que diría allí `specty next`; sin carpeta propia, lo dice y no se liga nada. A Claude Code el guard le pide `EnterWorktree` con `name`.
+
+### Desviaciones
+
+- La denegación para Claude Code no nombra `specty enter`: el test de los comandos citados exige que cada uno exista, y el comando llegó en T3. Dice que Claude Code entra con su propia herramienta.
+- El comando que correría fuera se juzga justo después de las acciones de la persona y antes que el resto: dónde corre va antes que lo que hace.
+
+### Decisiones
+
+- Un comando cuya carpeta el análisis no sabe nombrar (un `cd` a una variable) no cuenta como de fuera, igual que las rutas que el guard no puede ubicar.
+- `specty enter` corre en cualquier carpeta, porque es lo que mueve la conversación; el resto del mismo comando se juzga como siempre.
+- La ruta equivalente se da para cualquier ruta de otra worktree, también de otro cambio.
+
+### Pendientes
+
+- `packages/cli/src/enforce/guard.ts` pasa el aviso de tamaño (316 líneas de código). C2 lo divide por responsabilidad al añadir la reescritura de acciones: lo que ubica rutas y comandos irá a su propio módulo.
+- Las lecturas aún no pasan por el guard, y cada herramienta llevará sola sus acciones a la carpeta en los cortes C2 a C6.
