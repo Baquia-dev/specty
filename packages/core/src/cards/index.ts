@@ -143,6 +143,8 @@ export {
   noHooksWarning,
   notOnPathWarning,
   opencodeGuardLine,
+  opencodeWorktreesLine,
+  opencodeWorktreesVersionedWarning,
   yoursUncommittedWarning,
 } from "./install";
 export {

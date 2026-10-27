@@ -49,12 +49,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "89c28339d84e342003e292a2d389cb9b95a00186",
+      "attempts": 1,
       "startedAt": "2026-10-27T02:19:18.392Z",
       "doneAt": "2026-10-27T02:25:24.868Z",
-      "summary": "OpenCode: redirect lleva filePath, path, workdir y las rutas de patchText (movePatch) a la carpeta del cambio, y da carpeta a búsquedas y comandos de una conversación ligada; solo si el plugin manda redirects. El plugin copia en el sitio la entrada que devuelve el guard (OpenCode 1 y 2)."
+      "summary": "OpenCode: redirect lleva filePath, path, workdir y las rutas de patchText (movePatch) a la carpeta del cambio, y da carpeta a búsquedas y comandos de una conversación ligada; solo si el plugin manda redirects. El plugin copia en el sitio la entrada que devuelve el guard (OpenCode 1 y 2).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fbeed9edadf008974d9bcb09e5986b33eb88c20c",
+      "startedAt": "2026-10-27T02:25:25.152Z",
+      "doneAt": "2026-10-27T02:30:50.486Z",
+      "summary": "init permite a OpenCode la carpeta de las worktrees en .opencode/opencode.jsonc (permission.external_directory, fuera de git, tras una regla general de la persona); si va en git, dice qué añadir; uninstall la quita. Los tests de instalación pasan a opencode-install.test.ts."
     }
   },
   "pending": {

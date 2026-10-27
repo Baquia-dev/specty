@@ -67,7 +67,7 @@ Con C2, el guard sabe reescribir la entrada de una herramienta para que la acci√
   - files: packages/cli/src/agents/opencode.ts, packages/cli/src/install/opencode.ts, packages/cli/test/opencode.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/enter.test.ts
-- [ ] T3: init deja a OpenCode trabajar en la carpeta de las worktrees
+- [x] T3: init deja a OpenCode trabajar en la carpeta de las worktrees
   - files: packages/cli/src/install/opencode.ts, packages/cli/src/agents/opencode.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/opencode.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts

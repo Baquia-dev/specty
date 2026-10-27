@@ -1,9 +1,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join, resolve } from "node:path";
-import { movePatch, opencodeGuardLine, patchPaths } from "@baquia-dev/specty-core";
+import {
+  movePatch,
+  opencodeGuardLine,
+  opencodeWorktreesLine,
+  opencodeWorktreesVersionedWarning,
+  patchPaths,
+} from "@baquia-dev/specty-core";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { hasGuard, OPENCODE_PLUGIN } from "../install/agents";
-import { installOpencode, opencodePluginFile, planOpencodeStop } from "../install/opencode";
+import {
+  closeWorktrees,
+  installOpencode,
+  OPENCODE_SETTINGS,
+  opencodePluginFile,
+  openWorktrees,
+  planOpencodeStop,
+} from "../install/opencode";
 import { isRecord, readText } from "../io/files";
 import {
   type AgentAdapter,
@@ -45,15 +58,21 @@ export const opencode: AgentAdapter = {
   },
   install: async ({ root, git, invocation, files, lang }) => {
     const { file, local } = await installOpencode(root, git, invocation, files);
+    // A session that entered a change's folder works there: OpenCode would ask for each action.
+    const { pattern, open } = await openWorktrees(root, git, files);
     return {
-      done: [opencodeGuardLine(file, local, lang)],
-      warnings: [],
+      done: [
+        opencodeGuardLine(file, local, lang),
+        ...(open ? [opencodeWorktreesLine(OPENCODE_SETTINGS, lang)] : []),
+      ],
+      warnings: open ? [] : [opencodeWorktreesVersionedWarning(OPENCODE_SETTINGS, pattern, lang)],
       written: local ? [] : [file],
     };
   },
-  remove: async (root, files) => {
+  remove: async (root, files, git) => {
     const plugin = join(root, OPENCODE_PLUGIN);
     if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
+    await closeWorktrees(root, git, files);
   },
   doctor: async (root) => {
     const plugin = await readText(join(root, OPENCODE_PLUGIN));

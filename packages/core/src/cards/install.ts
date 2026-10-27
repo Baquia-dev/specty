@@ -194,6 +194,26 @@ export function opencodeGuardLine(file: string, local: boolean, lang: Lang): str
   );
 }
 
+/** OpenCode's local settings let it work in the worktrees' folder (`specty enter`). */
+export function opencodeWorktreesLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `OpenCode: ${file} (local) le deja trabajar en la carpeta de las worktrees (\`permission.external_directory\`), para entrar en la de un cambio desde la misma sesión (\`specty enter\`).`,
+    `OpenCode: ${file} (local) lets it work in the worktrees' folder (\`permission.external_directory\`), to enter a change's from the same session (\`specty enter\`).`,
+  );
+}
+
+/** OpenCode settings that go in git: Specty says what to allow elsewhere. */
+export function opencodeWorktreesVersionedWarning(
+  file: string,
+  pattern: string,
+  lang: Lang,
+): string {
+  return translator(lang)(
+    `OpenCode: ${file} va en git, así que Specty no le añade la carpeta de las worktrees; para trabajar en la de un cambio desde la misma sesión (\`specty enter\`), permite \`${pattern}\` en \`permission.external_directory\` de tu configuración de usuario.`,
+    `OpenCode: ${file} goes in git, so Specty does not add the worktrees' folder to it; to work in a change's from the same session (\`specty enter\`), allow \`${pattern}\` in \`permission.external_directory\` of your user settings.`,
+  );
+}
+
 /** Agent tools Specty has no hooks for yet: the other layers still protect them. */
 export function noHooksWarning(tools: readonly string[], lang: Lang): string {
   return translator(lang)(

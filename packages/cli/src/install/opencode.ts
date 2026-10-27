@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { homedir } from "node:os";
 import { join } from "node:path";
-import { parseJson } from "../io/files";
+import { worktreesHome } from "../flow/worktree";
+import { isRecord, parseJson } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
-import { type AgentInstall, excludeLocally, OPENCODE_PLUGIN } from "./agents";
-import { type InstallFiles, installFiles } from "./files";
+import { type AgentInstall, excludeLocally, OPENCODE_PLUGIN, removeFromJson } from "./agents";
+import { type InstallFiles, installFiles, rewriteJson } from "./files";
 
 /**
  * OpenCode's global plugin file (`$XDG_CONFIG_HOME/opencode`, or `~/.config/opencode`), which
@@ -32,6 +33,54 @@ export async function installOpencode(
   await files.write(path, opencodePlugin(invocation.command, stop));
   if (!invocation.portable) await excludeLocally(git, OPENCODE_PLUGIN, files);
   return { file: OPENCODE_PLUGIN, local: !invocation.portable };
+}
+
+/** OpenCode's settings in the project's `.opencode/`, which it reads with `opencode.json`. */
+export const OPENCODE_SETTINGS = ".opencode/opencode.jsonc";
+
+/**
+ * Lets OpenCode work in the worktrees' folder (`permission.external_directory`), for a session
+ * that entered a change's folder there: in `.opencode/opencode.jsonc`, out of git, since the rule
+ * holds a machine path. A file git keeps gets nothing. The rule's pattern, and whether it went in.
+ */
+export async function openWorktrees(
+  root: string,
+  git: Git,
+  files: InstallFiles,
+): Promise<{ readonly pattern: string; readonly open: boolean }> {
+  const pattern = `${await worktreesHome(git)}/**`;
+  if (await git.isTracked(OPENCODE_SETTINGS)) return { pattern, open: false };
+  const path = join(root, OPENCODE_SETTINGS);
+  await rewriteJson(path, (value) => withWorktrees(value, pattern, true), true, files);
+  await excludeLocally(git, OPENCODE_SETTINGS, files);
+  return { pattern, open: true };
+}
+
+/** `uninstall`: takes the rule out, and the file once nothing is left in it. */
+export async function closeWorktrees(root: string, git: Git, files: InstallFiles): Promise<void> {
+  const pattern = `${await worktreesHome(git)}/**`;
+  const update = (value: Record<string, unknown>) => withWorktrees(value, pattern, false);
+  await removeFromJson(root, OPENCODE_SETTINGS, update, files);
+}
+
+/**
+ * The rule that allows `pattern`, after the person's ones, or taken out; what is left empty goes.
+ * A rule the person gave every folder stays first (`*`), since the last one that matches wins.
+ */
+function withWorktrees(
+  value: Record<string, unknown>,
+  pattern: string,
+  add: boolean,
+): Record<string, unknown> {
+  const permission = isRecord(value.permission) ? value.permission : {};
+  const current = permission.external_directory;
+  const rules = isRecord(current) ? current : typeof current === "string" ? { "*": current } : {};
+  const { [pattern]: _, ...others } = rules;
+  const updated = add ? { ...others, [pattern]: "allow" } : others;
+  const { external_directory: __, ...rest } = permission;
+  const kept = Object.keys(updated).length === 0 ? rest : { ...rest, external_directory: updated };
+  const { permission: ___, ...settings } = value;
+  return Object.keys(kept).length === 0 ? settings : { ...settings, permission: kept };
 }
 
 /**
