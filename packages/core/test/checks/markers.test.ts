@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  criterionMarks,
   DEFAULT_CHECKS,
   focusedTests,
   resolveConfig,
@@ -293,6 +294,31 @@ describe("testCases", () => {
       "function testHelper() {}",
     ].join("\n");
     expect(testCases(text)).toBe(0);
+  });
+});
+
+describe("criterionMarks", () => {
+  it("AC3: finds each id where a line carries it, as the spec writes it", () => {
+    const text = [
+      'it("AC1: greets by name", () => {});',
+      "  // AC2, and AC1 again",
+      "it('AC20 is another criterion', () => {});",
+      "def test_AC3_parses():",
+      "func TestAC2Greets(t *testing.T) {",
+      "it('ac1 in lower case', () => {});",
+      "const XAC1 = 1;",
+    ].join("\n");
+    expect(criterionMarks(text, ["AC1", "AC2", "AC3"])).toEqual([
+      { line: 1, marker: "AC1" },
+      { line: 2, marker: "AC2" },
+      { line: 2, marker: "AC1" },
+      { line: 4, marker: "AC3" },
+      { line: 5, marker: "AC2" },
+    ]);
+  });
+
+  it("finds nothing without ids", () => {
+    expect(criterionMarks("it('AC1: greets', () => {});", [])).toEqual([]);
   });
 });
 

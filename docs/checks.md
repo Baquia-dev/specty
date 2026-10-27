@@ -324,6 +324,16 @@ Cada tarea `type: fix`, activa o hecha, trae en el diff un test suyo: de sus `fi
 
 **Desactivar:** `levels: { fix-tests: off }`, o `warn` para que una tarea `fix` sin test solo avise.
 
+### `criteria-tested`
+
+**Con:** `--spec`.
+
+Avisa, sin hacer fallar, de cada criterio de aceptación de una tarea `feat` o `fix` (o sin `type`, que es `feat`), activa o hecha, que no tiene un test con su id: ninguna línea que el diff añade a un archivo de test lo contiene. El id cuenta en cualquier parte de la línea (el nombre del test, su descripción o un comentario), escrito como en la spec: `it("AC2: saluda sin nombre", …)`. `AC2` no cuenta para `AC20`. No lo necesita un criterio con `test: manual`, que comprueba la persona, ni el que solo cubren tareas de otros tipos. Con `--staged`, solo cuenta la tarea activa, porque la hecha ya hizo su commit.
+
+**Configuración:** con `policy.tests: off` no avisa de ningún criterio.
+
+**Desactivar:** `levels: { criteria-tested: off }`.
+
 ### `tests-removed`
 
 **Con:** `--spec`.

@@ -47,6 +47,7 @@ export {
   type ResolvedImport,
 } from "./checks/layers";
 export {
+  criterionMarks,
   focusedTests,
   type Mark,
   skippedTests,

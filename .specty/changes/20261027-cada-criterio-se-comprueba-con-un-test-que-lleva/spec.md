@@ -83,7 +83,7 @@ Es el primer corte de la épica «Tests como contrato y vocabulario del dominio�
   - ac: AC1, AC2, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec test/templates.test.ts
   - notes: documenta el campo en docs/formats.md §2 y escribe el ADR 0014.
-- [ ] T2: criteria-tested avisa del criterio que ningún test nombra
+- [x] T2: criteria-tested avisa del criterio que ningún test nombra
   - files: packages/core/src/checks/markers.ts, packages/core/src/index.ts, packages/cli/src/check/plan.ts, packages/cli/src/flow/criteria-tests.ts, packages/cli/test/criteria-tests.test.ts
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/criteria-tests.test.ts test/check-plan.test.ts test/check-docs.test.ts

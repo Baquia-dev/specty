@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "068706cc2428000f97392432e4d060ce15401f7b",
+      "attempts": 1,
       "startedAt": "2026-10-27T06:59:00.227Z",
       "doneAt": "2026-10-27T10:40:40.412Z",
-      "summary": "Un criterio admite el campo test: manual (modelo, vocabulario es/en, parser con field-invalid para otros valores, forma canónica y pista en la plantilla); tests de parse, hash y arbitrarios ampliados; docs/formats.md y ADR 0014 con las decisiones de la épica."
+      "summary": "Un criterio admite el campo test: manual (modelo, vocabulario es/en, parser con field-invalid para otros valores, forma canónica y pista en la plantilla); tests de parse, hash y arbitrarios ampliados; docs/formats.md y ADR 0014 con las decisiones de la épica.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7b11d1b5d10ee6fd0669959397cf79527449ba7a",
+      "startedAt": "2026-10-27T10:40:40.953Z",
+      "doneAt": "2026-10-27T11:09:23.643Z",
+      "summary": "criteria-tested avisa del criterio de una tarea feat o fix sin test: manual que ninguna línea de test añadida nombra; su texto va en check/plan.ts (pnpm sources). Documentado, y los tests de catálogo incluyen la verificación."
     }
   },
   "pending": {
