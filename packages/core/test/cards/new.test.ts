@@ -89,12 +89,12 @@ describe("a change created by `new`", () => {
     );
   });
 
-  it("tells an agent that cannot switch folders how the person opens its tool there (AC1)", () => {
+  it("tells an agent that enters a change's folder to run specty enter, or how the person opens its tool there (C6 AC4)", () => {
     const folder = "/repo.worktrees/20261020-saludo";
     const next = (agent: WorktreeCreated["agent"]) =>
       worktreeCreatedCard({ ...CREATED, byName: false, agent }, ES).next;
     expect(next("codex")).toBe(
-      `continúa en ${folder}: Codex no cambia de carpeta en mitad de la sesión, así que pídele a la persona que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno; allí, \`specty next\` sigue con el cambio. Esta carpeta sigue con su propio trabajo.`,
+      `continúa en ${folder}: Codex entra en ella desde esta misma sesión: ejecuta \`specty enter 20261020-saludo\` y sigue su salida. Si la persona prefiere otra sesión, pídele que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno. Esta carpeta sigue con su propio trabajo.`,
     );
     expect(next("opencode")).toContain(`(\`opencode "${folder}"\`)`);
     expect(next("cursor")).toContain(
@@ -102,11 +102,15 @@ describe("a change created by `new`", () => {
     );
     expect(next("gemini-cli")).toContain(`(\`cd "${folder}" && gemini\`)`);
     expect(next("antigravity")).toContain(`(\`cd "${folder}" && agy\`)`);
+    // Devin has no way to be opened that Specty knows: it enters, and that is all.
+    expect(next("windsurf")).toBe(
+      `continúa en ${folder}: Devin (Windsurf) entra en ella desde esta misma sesión: ejecuta \`specty enter 20261020-saludo\` y sigue su salida. Esta carpeta sigue con su propio trabajo.`,
+    );
     // Claude Code enters by name, and an agent Specty does not recognize gets the general way on.
     expect(next("claude-code")).toBe(next(undefined));
     expect(next(undefined)).toContain("o abre allí un agente");
     expect(worktreeCreatedCard({ ...CREATED, agent: "codex" }, EN).next).toContain(
-      `Codex cannot switch folders mid-session, so ask the person to open Codex in that folder (\`codex -C "${folder}"\`) and end your turn`,
+      `Codex enters it from this same session: run \`specty enter 20261020-saludo\` and follow its output. If the person would rather have another session, ask them to open Codex in that folder (\`codex -C "${folder}"\`) and end your turn.`,
     );
   });
 

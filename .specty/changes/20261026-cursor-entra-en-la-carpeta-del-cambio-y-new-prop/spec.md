@@ -54,7 +54,7 @@ Con C2 a C5, las demás herramientas con guard llevan a la carpeta del cambio la
   - files: packages/cli/src/agents/cursor.ts, packages/cli/test/cursor.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts test/enter.test.ts
-- [ ] T2: new propone specty enter a una herramienta que sabe entrar
+- [x] T2: new propone specty enter a una herramienta que sabe entrar
   - files: packages/core/src/cards/new.ts, packages/core/test/cards/new.test.ts, packages/cli/test/worktrees.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/new.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts

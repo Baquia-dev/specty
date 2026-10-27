@@ -58,7 +58,7 @@ describe("specty new --worktree", () => {
     expect(await read(root, "src/app.ts")).toBe("a medias\n");
   });
 
-  it("tells Codex's agent how the person opens Codex in the change's folder (AC1)", async () => {
+  it("tells Codex's agent to enter the change's folder with specty enter (C6 AC4)", async () => {
     const root = await tempRepo(FILES);
     const created = await cli(root, ["new", "--worktree", "Otro cambio"], {
       env: { CODEX_THREAD_ID: "019a" },
@@ -66,7 +66,7 @@ describe("specty new --worktree", () => {
     expect(created.code).toBe(0);
     const folder = join(home(root), CHANGE.replace("saludo-personalizado", "otro-cambio"));
     expect(created.out).toContain(
-      `SIGUIENTE: continúa en ${folder}: Codex no cambia de carpeta en mitad de la sesión, así que pídele a la persona que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno;`,
+      `SIGUIENTE: continúa en ${folder}: Codex entra en ella desde esta misma sesión: ejecuta \`specty enter ${CHANGE.replace("saludo-personalizado", "otro-cambio")}\` y sigue su salida. Si la persona prefiere otra sesión, pídele que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno.`,
     );
   });
 

@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "85645c94100cea7b98334b79f2cd3749f6ca3417",
+      "attempts": 1,
       "startedAt": "2026-10-27T04:11:40.714Z",
       "doneAt": "2026-10-27T04:17:06.981Z",
-      "summary": "Cursor: preToolUse reescribe Shell con un cd a la carpeta del cambio (o a la misma subcarpeta de working_directory) y responde con updated_input; beforeShellExecution juzga el comando tal cual; Write, Delete, Read y Grep fuera de la carpeta se bloquean con la ruta buena."
+      "summary": "Cursor: preToolUse reescribe Shell con un cd a la carpeta del cambio (o a la misma subcarpeta de working_directory) y responde con updated_input; beforeShellExecution juzga el comando tal cual; Write, Delete, Read y Grep fuera de la carpeta se bloquean con la ruta buena.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fa7432d12ece19bbeef366811aa9b5f455e3f08e",
+      "startedAt": "2026-10-27T04:17:07.259Z",
+      "doneAt": "2026-10-27T04:21:02.003Z",
+      "summary": "La tarjeta de new propone specty enter a una herramienta cuya Worktree por nombre es indirecta, con la manera de abrirla en la carpeta como alternativa; los tests del SIGUIENTE desde Codex cambian en consecuencia."
     }
   },
   "pending": {
