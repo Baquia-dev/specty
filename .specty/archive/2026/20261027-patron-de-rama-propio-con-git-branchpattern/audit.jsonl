@@ -10,3 +10,7 @@
 {"ts":"2026-10-27T23:36:21.647Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"ccf7c4075f25352fe0b31adb8cc6c4418f90390a"}}
 {"ts":"2026-10-27T23:38:46.879Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm test","exit":0,"ms":117500,"tree":"sha256:c96ce158061beee49c8a38b858ecb71e6aafa2aa3a35689d4f84ad81c14c79e3"}}
 {"ts":"2026-10-27T23:38:46.880Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"formats §6 trae git.branchPattern en el ejemplo y describe sus marcadores, qué patrones rechaza y que gana a git.flow; ARCHITECTURE §9 lo resume junto a cuándo pide next --type."}}
+{"ts":"2026-10-27T23:40:58.596Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":125153,"tree":"sha256:c96ce158061beee49c8a38b858ecb71e6aafa2aa3a35689d4f84ad81c14c79e3"}}
+{"ts":"2026-10-27T23:40:58.599Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-27T23:41:18.037Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:c8e72f13ecea6060f25ea0358cca0b57a30b7e9b59c8c82aa034a04da5c4866d","size":"M","warnings":0}}
+{"ts":"2026-10-27T23:41:18.229Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

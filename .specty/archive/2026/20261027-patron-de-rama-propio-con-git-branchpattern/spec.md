@@ -68,3 +68,25 @@ Los flujos de `git.flow` cubren los nombres más comunes, pero hay equipos con c
 ## Riesgos
 
 - R1: Las reglas de git para nombres de rama son más que las que comprueba Specty. Mitigación: se cubren las de `git check-ref-format` que un patrón puede romper; si aun así git rechaza la rama, `new` falla con su mensaje.
+
+## Cierre
+
+### Resumen
+
+`config.yaml` acepta `git.branchPattern`, un patrón con `{type}` (el tipo de commit tal cual, `spike` en un spike), `{slug}` e `{id}` que nombra las ramas por encima de `git.flow`: `team/{type}-{slug}` da `team/fix-login-con-google`. Un patrón sin `{slug}` ni `{id}`, con otro marcador o que git no admitiría hace inválida la configuración, y la salida dice `git.branchPattern:` con el motivo. `next` pide `--type` solo si el patrón lleva `{type}` (`branchUsesType`). formats §6 y ARCHITECTURE §9 lo describen.
+
+### Desviaciones
+
+- La comprobación de nombres también rechaza un `-` al principio, que `git check-ref-format --branch` no admite y la spec no listaba.
+- Un patrón vacío da dos motivos (vacío y sin `{slug}` ni `{id}`); el test comprueba que apuntan a `git.branchPattern` en vez de esperar uno solo.
+
+### Decisiones
+
+- Los motivos van en inglés, como los demás de `config.yaml` (A3).
+- Un marcador es lo que va entre llaves sin otras llaves dentro, así `a@{{slug}` se rechaza por `@{` y no como marcador desconocido.
+- `core/src/schema/config.ts` pasa a 302 líneas de código, con aviso desde 300: sigue siendo una sola responsabilidad, y la validación del patrón vive en `branches.ts`.
+
+### Pendientes
+
+- Cambio 2b: `init` detecta o pregunta el flujo (y puede ofrecer el patrón), un proyecto nuevo debe elegirlo y Git Flow escribe `git.target: develop`.
+- Si `schema/config.ts` sigue creciendo, separar el esquema de `git` (flujo, patrón, worktrees) en su propio archivo, como ya está `checks.ts`.
