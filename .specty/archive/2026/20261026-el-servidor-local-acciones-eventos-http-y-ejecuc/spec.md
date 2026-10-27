@@ -56,3 +56,21 @@ Siete funciones del servidor local de `specty ui` pasan de los límites de Spect
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las siete funciones del servidor local que pasaban de los límites se dividieron en sus piezas: `parseAction` toma de una tabla la lectura de cada verbo y `runAction` deja a `reviewAction` las acciones sobre la spec en revisión; `handle` separa el enlace con el token, las lecturas de la API y las de un cambio, y `act` pregunta a `actionRefusal` por qué se rechaza, con las mismas comprobaciones en el mismo orden y las mismas respuestas; `changeEvents` deja la vigilancia de la huella a `fingerprintWatch`; y `changeRuns` deja la verificación completa a `runFull`, su salida en vivo a `liveRun` y su final a `ended`. Ya no queda ninguna función de `packages/cli/src` fuera de los límites; los tests de la CLI y la verificación completa pasan.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El aviso CWE-78 en `server/runs.ts` es el mismo `spawn` de `verify.full` con la shell que había en `main`, solo movido a `runFull`; se aceptó por la regla acordada con el usuario.
+
+### Pendientes
+
+- El corte C9 de la épica: la UI y los exportadores; después, la aceptación de la épica.
