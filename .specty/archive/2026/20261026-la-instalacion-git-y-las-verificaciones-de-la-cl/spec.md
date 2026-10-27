@@ -65,3 +65,21 @@ Nueve funciones de la instalación, de git y de las verificaciones de la CLI pas
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las nueve funciones de la instalación, de git y de las verificaciones de la CLI que pasaban de los límites se dividieron por sus responsabilidades: `createGit` se compone de grupos (ejecutar git, las worktrees, los cambios, el índice y los commits, los archivos) y sigue devolviendo el mismo `Git`; las copias de seguridad de la instalación van aparte de sus escrituras; `check --install` separa las ediciones, las devDependencies y el informe con su commit; y los ignores de cada agente, Lefthook, la verificación añadida a la configuración, los argumentos de cada escáner de secretos, las cabeceras del diff y la letra de `--name-status` tienen su propia función. Ninguna función de `install/`, `io/` ni `check/` pasa ya de los límites; los tests de la CLI y la verificación completa pasan.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El aviso de ruta de seguridad en `check/secrets.ts` cubre un diff que solo mueve las listas de argumentos de Betterleaks y gitleaks, sin cambiarlas; el usuario lo revisó y pidió aceptar y cerrar.
+
+### Pendientes
+
+- Los cortes C8 y C9 de la épica: el servidor local, y la UI con los exportadores.

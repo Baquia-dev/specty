@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
   "baseCommit": "c03deef36ff8ceddb1fbddcd315f5c03ef239e1e",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:cdd4dc81552ff0268fbfd85f56ef3756f0e4599798c9ebd8946b65a81acb0a3a",
@@ -71,12 +71,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1d87342cf8254b7d87ba9c10d96f2d8f5358ae01",
+      "attempts": 1,
       "startedAt": "2026-10-26T23:53:37.855Z",
       "doneAt": "2026-10-27T00:01:22.886Z",
-      "summary": "secrets.ts: scan toma los argumentos de betterleaksArgs y gitleaksArgs, en el mismo orden de escáneres. files.ts: parseAddedLines deja a headerFile el archivo de cada cabecera. Ninguna función de install, io ni check pasa de los límites; los tests pasan."
+      "summary": "secrets.ts: scan toma los argumentos de betterleaksArgs y gitleaksArgs, en el mismo orden de escáneres. files.ts: parseAddedLines deja a headerFile el archivo de cada cabecera. Ninguna función de install, io ni check pasa de los límites; los tests pasan.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,5 +87,6 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T00:07:55.417Z"
 }
