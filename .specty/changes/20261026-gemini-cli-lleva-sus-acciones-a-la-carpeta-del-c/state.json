@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "20e47e91b85e5aa93fc5dbdc944079c07db8f6c6",
+      "attempts": 1,
       "startedAt": "2026-10-27T01:36:08.979Z",
       "doneAt": "2026-10-27T01:40:04.136Z",
-      "summary": "La ubicación de las acciones (resolveAction, inRepo, placeFiles, commitsHere y runsOutside) pasa de enforce/guard.ts a enforce/place.ts, con el tipo Place; el guard solo la usa. Sin cambios de comportamiento: los tests del guard siguen en verde."
+      "summary": "La ubicación de las acciones (resolveAction, inRepo, placeFiles, commitsHere y runsOutside) pasa de enforce/guard.ts a enforce/place.ts, con el tipo Place; el guard solo la usa. Sin cambios de comportamiento: los tests del guard siguen en verde.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b37e13a84a4492496f4d5016fcf62c9af7387148",
+      "startedAt": "2026-10-27T01:40:04.428Z",
+      "doneAt": "2026-10-27T01:43:39.048Z",
+      "summary": "enteredSession (en sessions.ts, con entersOnItsOwn) da la sesión de la carpeta del cambio en el que entró la conversación; la usan el guard y el fin de turno, así que specty check --changed corre en esa carpeta al terminar el turno de una conversación ligada."
     }
   },
   "pending": {

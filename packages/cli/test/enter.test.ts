@@ -1,7 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { APP, CHANGE, cli, folderOf, person, SPEC_PATH, tempRepo, writeFiles } from "./support";
+import {
+  APP,
+  CHANGE,
+  CONFIG,
+  cli,
+  folderOf,
+  person,
+  SPEC_PATH,
+  tempRepo,
+  writeFiles,
+} from "./support";
 
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
 const EPIC = CHANGE.replace("saludo-personalizado", "panel");
@@ -179,5 +189,30 @@ describe("specty enter, as the guard judges it", () => {
       tool_input: { file_path: join(root, "src/app.ts") },
     });
     expect(written.err).toContain("No hay un cambio activo y `src/app.ts` es código gobernado");
+  });
+});
+
+// Put together from parts, so that this file does not trip `specty check`.
+const TODO = "TODO";
+
+describe("the end of the turn of a conversation that entered a change", () => {
+  it("runs specty check --changed in that change's folder (AC4)", async () => {
+    const checks = "checks:\n  levels: { secrets: off }\n";
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${checks}` });
+    expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+    await writeFiles(folderOf(root), {
+      "src/app.ts": `export const greet = () => 'hola';\n// ${TODO}: later\n`,
+    });
+    await bash(root, "s1", `specty enter ${CHANGE}`);
+    const stop = (session: string) =>
+      cli(root, ["hook", "agent-stop", "codex"], {
+        stdin: JSON.stringify({ hook_event_name: "Stop", session_id: session, cwd: root }),
+      });
+    const sent = await stop("s1");
+    expect(JSON.parse(sent.out).reason).toContain(
+      `FALLA todo\n  src/app.ts:2 ${TODO} sin referencia a un issue`,
+    );
+    // Another conversation works in the main folder, where nothing fails.
+    expect((await stop("s2")).out).toBe("");
   });
 });

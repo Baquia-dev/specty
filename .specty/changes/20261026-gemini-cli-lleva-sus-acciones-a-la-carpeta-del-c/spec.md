@@ -69,7 +69,7 @@ Desde C1, una conversación de Gemini CLI que entra en un cambio (`specty enter 
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enter.test.ts test/enforce.test.ts test/codex.test.ts test/worktrees.test.ts
   - type: refactor
-- [ ] T2: El fin de turno de una conversación ligada comprueba la carpeta de su cambio
+- [x] T2: El fin de turno de una conversación ligada comprueba la carpeta de su cambio
   - files: packages/cli/src/enforce/sessions.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/test/enter.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enter.test.ts test/check-agent-stop.test.ts

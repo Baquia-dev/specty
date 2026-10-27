@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  AGENT_CAPABILITIES,
   analyzeShell,
   decideAfterShell,
   decideGuard,
@@ -25,7 +24,7 @@ import { readSpec } from "../store/changes";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { leavePending, type PendingKind, takePending } from "./pending";
 import { resolveAction } from "./place";
-import { bindSession, boundFolder, enterAction, enterChange } from "./sessions";
+import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 import { worktreeHook } from "./worktree-hooks";
 
@@ -74,29 +73,20 @@ export async function guard(
     if (kind === "worktree") return await worktreeHook(environment, event, cwd);
     const opened = await openSession({ ...environment, cwd });
     if (opened.kind !== "ok") return agent.reply(ALLOW, kind === "before" ? "before" : "after");
-    const call = await entered({ agent, environment, session: opened.session, event, cwd });
+    // A conversation that entered a change's folder is answered in that folder's session.
+    const { session, bound } = await enteredSession(agent.tool, opened.session, event);
+    const call = {
+      agent,
+      environment,
+      session,
+      event,
+      cwd,
+      ...(bound === undefined ? {} : { bound }),
+    };
     return await answer(kind, call);
   } catch (error) {
     return agent.failed(`specty guard: ${error instanceof Error ? error.message : String(error)}`);
   }
-}
-
-/** Claude Code enters a change's folder with its own tool (`EnterWorktree`), not `specty enter`. */
-function entersOnItsOwn(agent: AgentAdapter): boolean {
-  return AGENT_CAPABILITIES[agent.tool].worktreeByName.state === "yes";
-}
-
-/**
- * A conversation that entered a change's folder works there, whatever folder its tool works in:
- * the event is answered in that folder's session.
- */
-async function entered(call: Call): Promise<Call> {
-  if (entersOnItsOwn(call.agent)) return call;
-  const bound = await boundFolder(call.session, call.event);
-  if (bound === undefined) return call;
-  if (bound === call.session.root) return { ...call, bound };
-  const opened = await openSession({ ...call.environment, cwd: bound });
-  return opened.kind === "ok" ? { ...call, session: opened.session, bound } : call;
 }
 
 /** The answer to an event of a Specty session, by what the event is. */
@@ -189,7 +179,7 @@ async function enterCommand(
 ): Promise<{ readonly decision: GuardDecision; readonly target?: string } | undefined> {
   const id = analyzeShell(command).enters.at(-1);
   if (id === undefined) return undefined;
-  if (entersOnItsOwn(call.agent)) {
+  if (entersOnItsOwn(call.agent.tool)) {
     const { reason, next } = nativeEnterDenial(id, ctx.lang);
     return { decision: { allow: false, rule: "session", reason, next } };
   }

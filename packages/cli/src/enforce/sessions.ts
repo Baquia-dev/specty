@@ -1,13 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import { resolve } from "node:path";
-import { type BoundSession, type GuardAction, parseSpec } from "@baquia-dev/specty-core";
+import {
+  AGENT_CAPABILITIES,
+  type BoundSession,
+  type GuardAction,
+  parseSpec,
+} from "@baquia-dev/specty-core";
 import { isFinished, resolveActive } from "../flow/active";
 import { exists } from "../io/files";
 import { resolved } from "../io/git";
 import { type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
 import { readBinding, type SessionBinding, writeBinding } from "../store/local";
-import { conversationOf } from "./actions";
+import { conversationOf, type GuardTool } from "./actions";
 import { namedWorktree } from "./worktree-hooks";
 
 /** `EnterWorktree` as Claude Code sends it: a folder to enter, or a name for a new one. */
@@ -68,13 +73,29 @@ async function enterInto(
   return { kind: "enter", target, bound, ...(epic !== undefined ? { epic } : {}) };
 }
 
-/** The folder of the change the event's conversation entered, while that folder exists. */
-export async function boundFolder(
+/** Claude Code enters a change's folder with its own tool (`EnterWorktree`), not `specty enter`. */
+export function entersOnItsOwn(tool: GuardTool): boolean {
+  return AGENT_CAPABILITIES[tool].worktreeByName.state === "yes";
+}
+
+/**
+ * The session of the change's folder the event's conversation entered with `specty enter`, and
+ * that folder, whatever folder its tool works in; otherwise, `session` as it was. Claude Code
+ * moves its whole session there itself, and goes on where it is after `ExitWorktree`.
+ */
+export async function enteredSession(
+  tool: GuardTool,
   session: Session,
   event: Record<string, unknown>,
-): Promise<string | undefined> {
+): Promise<{ readonly session: Session; readonly bound?: string }> {
+  if (entersOnItsOwn(tool)) return { session };
   const binding = await bindingOf(session, event);
-  return binding !== undefined && (await exists(binding.folder)) ? binding.folder : undefined;
+  const bound =
+    binding !== undefined && (await exists(binding.folder)) ? binding.folder : undefined;
+  if (bound === undefined) return { session };
+  if (bound === session.root) return { session, bound };
+  const opened = await openSession({ ...session.environment, cwd: bound });
+  return opened.kind === "ok" ? { session: opened.session, bound } : { session };
 }
 
 async function bindingOf(
