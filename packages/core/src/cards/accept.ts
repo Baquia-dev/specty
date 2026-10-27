@@ -27,10 +27,10 @@ export function acceptanceSummary(
       (task) =>
         `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
     ),
-    ...criteriaWarnings(change.criteriaTests ?? [], ctx.lang, "person"),
     ...assertionWarnings(change.tasks, ctx.lang),
     ...riskWarnings(change.tasks, ctx.lang),
     ...longFileWarnings(change.tasks, ctx.lang),
+    ...criteriaWarnings(change.criteriaTests ?? [], ctx.lang, "person"),
     ...(unverified
       ? [
           t(

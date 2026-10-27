@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-cada-criterio-se-comprueba-con-un-test-que-lleva",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-cada-criterio-se-comprueba-con-un-test-que-lleva",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
   "revision": 2,
@@ -62,12 +62,24 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e018bf2a0e572e3d105bca83cb602f6c541af550",
+      "attempts": 1,
       "startedAt": "2026-10-27T11:09:23.969Z",
       "doneAt": "2026-10-27T11:15:42.402Z",
-      "summary": "La regla de tests pide el id del criterio en el nombre del test; cards/criteria.ts pinta «CRITERIOS Y TESTS» en aceptación y avisa (agente y persona) de los criterios test: manual y de los que deben test y no lo tienen."
+      "summary": "La regla de tests pide el id del criterio en el nombre del test; cards/criteria.ts pinta «CRITERIOS Y TESTS» en aceptación y avisa (agente y persona) de los criterios test: manual y de los que deben test y no lo tienen.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/work.ts",
+        "packages/core/src/cards/accept.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "f1fc00cc6445d84a8da60bec4c8d614d9baf5762",
+      "startedAt": "2026-10-27T11:15:42.727Z",
+      "doneAt": "2026-10-27T11:29:51.100Z",
+      "summary": "En aceptación, criteria-tests.ts une cada criterio con las líneas de test con su id que añadió un commit de una tarea (git show + git blame) y views.ts lo pasa a la tarjeta y a accept; avisos de criterios al final. Documentado en ARCHITECTURE §13."
     }
   },
   "pending": {

@@ -22,6 +22,7 @@ import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
 import { type Audit, carriedOf, dataOf, findingsOf, readAudit } from "./carried";
+import { criteriaTests } from "./criteria-tests";
 import { sliceViews } from "./epic";
 
 /**
@@ -59,7 +60,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
       active === undefined ? [] : await conventions(session, [...active.files, ...active.extras]),
     pendingScope: state.pending.scopeRequests,
     rejected: rejectedAssumptions(spec, state),
-    ...(await phaseFacts(session, change, spec, { tasks, audit })),
+    ...(await phaseFacts(session, change, spec, { tasks, audit, commits })),
     closingSubmitted: state.closingSubmittedAt !== undefined,
     specChanged:
       state.phase === "implementing" &&
@@ -134,16 +135,21 @@ function rejectedAssumptions(spec: Spec, state: ChangeState): ChangeView["reject
 
 /**
  * What the change's phase brings: the comments to answer in review, the adjustment asked for,
- * the draft's request and what it carries over, and a review recommended before acceptance.
+ * the draft's request and what it carries over, and, in acceptance, a review recommended first
+ * and each criterion with its tests (an epic's criteria are its slices').
  */
 async function phaseFacts(
   session: Session,
   change: StoredChange,
   spec: Spec,
-  read: { readonly tasks: readonly TaskView[]; readonly audit: Audit },
+  read: {
+    readonly tasks: readonly TaskView[];
+    readonly audit: Audit;
+    readonly commits: ReadonlyMap<string, string>;
+  },
 ) {
   const { state } = change;
-  const { tasks, audit } = read;
+  const { tasks, audit, commits } = read;
   return {
     requested: state.phase === "review" ? await requested(change, audit) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
@@ -151,6 +157,9 @@ async function phaseFacts(
     ...(state.phase === "draft" ? await carriedOf(session, spec.frontmatter.follows) : {}),
     ...(state.phase === "acceptance" && resultReview(session, change, tasks, audit)
       ? { recommendReview: true }
+      : {}),
+    ...(state.phase === "acceptance" && state.kind !== "epic"
+      ? { criteriaTests: await criteriaTests(session, spec, commits) }
       : {}),
   };
 }

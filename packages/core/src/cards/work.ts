@@ -173,7 +173,6 @@ function acceptanceWarnings(change: ChangeView, ctx: CardContext): string[] {
   const risks = riskWarnings(change.tasks, ctx.lang);
   const long = longFileWarnings(change.tasks, ctx.lang);
   return [
-    ...criteriaWarnings(change.criteriaTests ?? [], ctx.lang, "agent"),
     ...assertions,
     ...(assertions.length === 0
       ? []
@@ -194,6 +193,8 @@ function acceptanceWarnings(change: ChangeView, ctx: CardContext): string[] {
         ]),
     ...long,
     ...(long.length === 0 ? [] : [splitAdvice(ctx.lang)]),
+    // The tasks' own warnings first; the criteria are the whole change's.
+    ...criteriaWarnings(change.criteriaTests ?? [], ctx.lang, "agent"),
   ];
 }
 

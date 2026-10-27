@@ -93,7 +93,7 @@ Es el primer corte de la épica «Tests como contrato y vocabulario del dominio�
   - ac: AC4, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
   - notes: documenta la regla de la tarjeta en ARCHITECTURE §7. Sus tests van en packages/core/test/cards/, que entran como tests implícitos de esta carpeta; listarlos haría el cambio XL.
-- [ ] T4: La aceptación encuentra el test y el commit de cada criterio
+- [x] T4: La aceptación encuentra el test y el commit de cada criterio
   - files: packages/cli/src/flow/views.ts, packages/cli/src/flow/criteria-tests.ts, packages/cli/test/criteria-tests.test.ts
   - ac: AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/criteria-tests.test.ts test/flow.test.ts

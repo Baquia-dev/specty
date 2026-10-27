@@ -13,6 +13,12 @@ const TWO = SPEC.replace(
   "imprime «Hola, Ana».\n- AC2: CUANDO no se pasa nombre ENTONCES imprime «Hola, mundo».\n",
 ).replace("  - ac: AC1\n- [ ] T2", "  - ac: AC1, AC2\n- [ ] T2");
 
+/** TWO with a third criterion, which the person checks by hand and T1 covers too. */
+const THREE = TWO.replace(
+  "«Hola, mundo».\n",
+  "«Hola, mundo».\n- AC3: CUANDO se lee el saludo ENTONCES suena natural.\n  - test: manual\n",
+).replace("  - ac: AC1, AC2\n", "  - ac: AC1, AC2, AC3\n");
+
 /** A repository with `files` on main and the change of `spec` approved, with T1 active. */
 async function approvedChange(
   spec: string,
@@ -100,5 +106,49 @@ describe("criteria-tested", () => {
       "AC1 (T1) has no test with its id in the diff",
       "AC2 (T1) has no test with its id in the diff",
     ]);
+  });
+});
+
+describe("the acceptance matrix", () => {
+  it("AC5: shows each criterion's tests with their task and commit, never a line from main", async () => {
+    const onMain = "// AC2: a line already on main\n";
+    const root = await approvedChange(THREE, { files: { "src/app.test.ts": onMain } });
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name: string) => 'Hola, ' + name;\n",
+      "src/app.test.ts": `${onMain}it('AC1: greets Ana', () => {});\n`,
+    });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Saludo"])).code).toBe(0);
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name: string) => '¡Hola, ' + name;\n",
+    });
+    const last = await cli(root, ["task", "done", "T2", "--summary", "Mensaje"]);
+    const commit = /T1 Saludo \((\w+)\)/.exec(last.out)?.[1];
+    expect(commit).toBeDefined();
+    expect(last.out).toContain(
+      [
+        "CRITERIOS Y TESTS:",
+        `  AC1: src/app.test.ts:2 (T1, ${commit})`,
+        "  AC2: sin test",
+        "  AC3: a mano (test: manual)",
+        "AVISOS:",
+        "  A comprobar a mano (test: manual): AC3.",
+        "  Pide al usuario que los compruebe antes de aceptar.",
+        "  Sin un test con su id, aunque los cubre una tarea feat o fix: AC2.",
+        "  Cuéntaselo al usuario antes de que acepte: ningún test comprueba esos criterios.",
+      ].join("\n"),
+    );
+  });
+
+  it("AC6: names to the person the criteria to check by hand and those without their test", async () => {
+    const root = await approvedChange(THREE);
+    await writeFiles(root, { "src/app.test.ts": "it('AC1: greets Ana', () => {});\n" });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Saludo"])).code).toBe(0);
+    await writeFiles(root, { "src/app.ts": "export const greet = () => '¡hola!';\n" });
+    expect((await cli(root, ["task", "done", "T2", "--summary", "Mensaje"])).code).toBe(0);
+    const terminal = person();
+    await cli(root, ["accept"], { terminal });
+    expect(terminal.notes[0]).toContain(
+      "A comprobar a mano (test: manual): AC3.\nSin un test con su id, aunque los cubre una tarea feat o fix: AC2.",
+    );
   });
 });
