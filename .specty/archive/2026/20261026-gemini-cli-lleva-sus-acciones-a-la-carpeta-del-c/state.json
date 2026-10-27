@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-gemini-cli-lleva-sus-acciones-a-la-carpeta-del-c",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-gemini-cli-lleva-sus-acciones-a-la-carpeta-del-c",
   "baseCommit": "e70d0f4debb3a51ab3b5d823d4dfe570b3fbb1f9",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:940c56d142d9242a717631787f56997f4942e22c7264cebea129fb5d50af7d30",
@@ -82,16 +82,16 @@
     },
     "T5": {
       "status": "done",
+      "baseCommit": "1d059933a73b426b68a10a03c07cb303ee4f037f",
+      "attempts": 1,
+      "startedAt": "2026-10-27T01:57:17.851Z",
+      "doneAt": "2026-10-27T02:10:26.047Z",
+      "summary": "Prueba E2E con Gemini CLI 0.65 y modelo simulado: entra con specty enter y escribe, lee, ejecuta y busca en la carpeta del cambio. Gemini sustituye la entrada: se devuelve entera y el comando va tras un cd relativo. Celda indirecto, tabla y ARCHITECTURE 10.",
       "scopeExtra": [
         "packages/cli/src/agents/gemini-cli.ts",
         "packages/cli/src/enforce/guard.ts",
         "packages/cli/src/agents/adapter.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "1d059933a73b426b68a10a03c07cb303ee4f037f",
-      "startedAt": "2026-10-27T01:57:17.851Z",
-      "doneAt": "2026-10-27T02:10:26.047Z",
-      "summary": "Prueba E2E con Gemini CLI 0.65 y modelo simulado: entra con specty enter y escribe, lee, ejecuta y busca en la carpeta del cambio. Gemini sustituye la entrada: se devuelve entera y el comando va tras un cd relativo. Celda indirecto, tabla y ARCHITECTURE 10."
+      ]
     }
   },
   "pending": {
@@ -104,5 +104,6 @@
     "T": 5,
     "R": 3,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T02:13:01.506Z"
 }

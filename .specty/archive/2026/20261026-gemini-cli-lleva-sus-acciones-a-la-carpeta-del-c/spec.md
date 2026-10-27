@@ -91,3 +91,27 @@ Desde C1, una conversación de Gemini CLI que entra en un cambio (`specty enter 
 - R1: Si la carpeta de las worktrees desaparece porque la borra la persona, Gemini CLI no arranca. Mitigación: Specty nunca la borra, `init` la vuelve a crear, y ARCHITECTURE §10 lo dice.
 - R2: Con la carpeta de las worktrees en su espacio de trabajo, el contexto inicial de Gemini CLI también lista su árbol. Mitigación: las búsquedas sin carpeta se quedan en la de la conversación (AC3), y escribir en otra worktree sigue bloqueado.
 - R3: Las lecturas y búsquedas pasan ahora por el guard, que suma su arranque a cada una. Mitigación: sin una conversación ligada, el guard solo abre la sesión y lee la ligadura antes de dejarla pasar.
+
+## Cierre
+
+### Resumen
+
+El guard lleva a la carpeta del cambio las acciones de una conversación de Gemini CLI que entró en él. Cambia `file_path` y `dir_path` por la misma ruta allí, da a las búsquedas sin carpeta la de la conversación, pone cada comando tras un `cd` a esa carpeta y juzga la acción reescrita, que es la que corre. `init` abre a Gemini CLI la carpeta de las worktrees (`context.includeDirectories`) y la crea si falta. El fin de turno de una conversación ligada comprueba la carpeta de su cambio, con cualquier herramienta. Una prueba con Gemini CLI 0.65 y un modelo simulado entra con `specty enter` y escribe, lee, ejecuta y busca en la carpeta del cambio.
+
+### Desviaciones
+
+- A1 era falso en dos puntos, y la prueba de extremo a extremo lo mostró. Gemini CLI 0.65 construye la herramienta solo con la entrada del hook, sin fusionarla, así que el módulo la devuelve entera y el guard juzga esa entrada tal cual. Y no ejecuta un `dir_path` fuera de la carpeta del proyecto, así que el comando va tras un `cd` relativo a ella. Para eso T5 amplió su alcance a `gemini-cli.ts`, `guard.ts` y `adapter.ts`.
+- El `cd` es relativo porque Gemini CLI pide permiso, y sin terminal lo niega, ante una ruta absoluta que ya salió en la salida de otro comando, y `specty enter` imprime la carpeta.
+- El test de instalación de Gemini CLI fijaba el matcher de `BeforeTool`, que cambió con las herramientas de lectura que pedía el diseño.
+- `packages/core/src/cards/index.ts` entró en el alcance de T4 (S1) para exportar los dos textos nuevos.
+- Por la complejidad, la respuesta salió de `beforeAction` a `replyBefore`, y el comando de `redirect` a `commandIn`.
+
+### Decisiones
+
+- Una búsqueda sin carpeta de una conversación que no entró en ningún cambio también se ancla a la carpeta de la herramienta, para que la de las worktrees no se cuele en sus resultados.
+- `init` crea la carpeta de las worktrees aunque los ajustes vayan en git, porque la persona puede añadirla a su configuración y Gemini CLI no arranca sin ella.
+
+### Pendientes
+
+- OpenCode (C3), Codex (C4), Antigravity y Devin (C5) y Cursor (C6) usarán el mismo `redirect`.
+- El bloqueo de un comando que correría fuera (C1) sugiere un `cd` absoluto, que en Gemini CLI pediría permiso. Con la reescritura ya no salta para un comando normal, solo para uno con su propio `cd` fuera de la carpeta.
