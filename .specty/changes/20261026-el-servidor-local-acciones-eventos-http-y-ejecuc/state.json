@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2cf46bc8b950136a3a703dc317da306d78067f24",
+      "attempts": 1,
       "startedAt": "2026-10-27T00:13:18.346Z",
       "doneAt": "2026-10-27T00:20:06.868Z",
-      "summary": "actions.ts: parseAction toma de PARSERS la lectura de su verbo, con las mismas condiciones. runAction deja a reviewAction las acciones sobre la spec en revisión. Los tests de la CLI pasan."
+      "summary": "actions.ts: parseAction toma de PARSERS la lectura de su verbo, con las mismas condiciones. runAction deja a reviewAction las acciones sobre la spec en revisión. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f954e2ac1af26f1e2871f8a7d89c1904e63ae37c",
+      "startedAt": "2026-10-27T00:20:07.249Z",
+      "doneAt": "2026-10-27T00:26:43.377Z",
+      "summary": "http.ts: handle deja a signIn el enlace con el token, a readApi las lecturas de la API y a readChange las de un cambio; act pregunta a actionRefusal, con las mismas comprobaciones en el mismo orden y las mismas respuestas. Los tests pasan."
     }
   },
   "pending": {

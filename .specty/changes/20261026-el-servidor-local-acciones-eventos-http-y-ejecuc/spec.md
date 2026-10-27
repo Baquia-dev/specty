@@ -41,7 +41,7 @@ Siete funciones del servidor local de `specty ui` pasan de los límites de Spect
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
   - type: refactor
-- [ ] T2: Las peticiones
+- [x] T2: Las peticiones
   - files: packages/cli/src/server/http.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run
