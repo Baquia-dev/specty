@@ -14,3 +14,7 @@
 {"ts":"2026-10-27T06:18:43.668Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"8f368245eae3918a6e48f05357f78113978c1517"}}
 {"ts":"2026-10-27T06:22:22.521Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm test","exit":0,"ms":99371,"tree":"sha256:aaab58520dec6dd9634559b3d0f513f16a1aed5cb2807406fd89d7ad994202d6"}}
 {"ts":"2026-10-27T06:22:22.523Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"ARCHITECTURE §14: de dónde salen los agentes de init (marcas y agente del entorno, sumados), que .agents/ no marca ninguno, la pregunta o Claude Code con aviso, --tools, y qué secciones nombra su SIGUIENTE."}}
+{"ts":"2026-10-27T06:24:52.637Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":104715,"tree":"sha256:aaab58520dec6dd9634559b3d0f513f16a1aed5cb2807406fd89d7ad994202d6"}}
+{"ts":"2026-10-27T06:24:52.640Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":2,"delegated":true}}
+{"ts":"2026-10-27T06:25:01.525Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:6f49d61c449745ed161c7a89897099ae3c9cfb1ad522aeefd48fc5c78cc77bd0","size":"M","warnings":0}}
+{"ts":"2026-10-27T06:25:26.176Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

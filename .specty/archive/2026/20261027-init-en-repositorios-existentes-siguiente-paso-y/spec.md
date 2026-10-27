@@ -81,3 +81,25 @@ En un repositorio que ya existía, `specty init` falla en dos cosas. Su SIGUIENT
 
 - R1: Los tests que ejecutan `init` sin `--tools` en un repositorio sin agentes reciben ahora el aviso de AC5. Mitigación: es lo que debe pasar; los que comparan los avisos exactos se ajustan.
 - R2: Una variable de entorno de otro agente que quedó en la terminal de la persona añadiría su guard. Mitigación: `detectAgentTool` ya decide con esas marcas quién es una persona, y un guard de más solo quita permisos; `uninstall` o `--tools` lo corrigen.
+
+## Cierre
+
+### Resumen
+
+El SIGUIENTE de `specty init` solo pide completar las secciones «Mapa» y «Convenciones» que AGENTS.md tiene y siguen vacías, por su título y con el criterio de `doctor`. Sin ninguna, como en un AGENTS.md que ya existía, pide revisar `.specty/config.yaml` y ejecutar `specty doctor`. `init` instala el guard del agente que lo ejecuta, reconocido por su entorno, además de los que detecta por sus archivos: Codex, en un repositorio con solo AGENTS.md y `.agents/skills/`, recibe el suyo y no el de Claude Code. Si no encuentra ninguno, le pregunta a la persona en la terminal con qué agente trabaja; si nadie puede responder, instala Claude Code y avisa de cómo elegir otro con `--tools`. ARCHITECTURE §14 lo explica.
+
+### Desviaciones
+
+- T1 cambió una entrada del test de la tarjeta que ya existía: `InitView` gana `unfilled` como campo obligatorio, así que la llamada recibe `unfilled: ["Mapa", "Convenciones"]` y la salida que comprueba es la misma.
+- La pregunta del agente va antes de la entrevista de un proyecto nuevo, justo después del idioma, y no al instalar los hooks.
+
+### Decisiones
+
+- `agentsToInstall` vive en `install/hooks.ts`, junto a la instalación de los hooks de cada agente, y no en `commands/init.ts`, que ya pasa de 280 líneas.
+- La pregunta ofrece todas las herramientas de `AGENT_NAMES`, también GitHub Copilot, que no tiene guard: elegirlo da el aviso de siempre de las herramientas sin hooks.
+- Si la persona no elige nada, se instala Claude Code, como antes.
+- Comprobado con el CLI compilado en dos repositorios de prueba: Codex ejecutando `init` instala solo el guard de Codex, y sin agente reconocible ni persona instala el de Claude Code con el aviso.
+
+### Pendientes
+
+- Ninguno.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261027-init-en-repositorios-existentes-siguiente-paso-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261027-init-en-repositorios-existentes-siguiente-paso-y",
   "baseCommit": "49f7f30ee9008ed6248a68f24da6632b819a7fe5",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:f15465762d88834cecaa8ad6e841a655f2d10f6714d560364e5d126168376be4",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8f368245eae3918a6e48f05357f78113978c1517",
+      "attempts": 1,
       "startedAt": "2026-10-27T06:18:43.668Z",
       "doneAt": "2026-10-27T06:22:22.522Z",
-      "summary": "ARCHITECTURE §14: de dónde salen los agentes de init (marcas y agente del entorno, sumados), que .agents/ no marca ninguno, la pregunta o Claude Code con aviso, --tools, y qué secciones nombra su SIGUIENTE."
+      "summary": "ARCHITECTURE §14: de dónde salen los agentes de init (marcas y agente del entorno, sumados), que .agents/ no marca ninguno, la pregunta o Claude Code con aviso, --tools, y qué secciones nombra su SIGUIENTE.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,5 +88,6 @@
     "AC": 7,
     "T": 4,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T06:25:01.524Z"
 }
