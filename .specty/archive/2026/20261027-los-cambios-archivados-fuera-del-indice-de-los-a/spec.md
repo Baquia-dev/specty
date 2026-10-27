@@ -21,3 +21,9 @@ Cada cambio cerrado deja su spec, sus revisiones y su auditoría en `.specty/arc
 - [x] T1: Los cambios archivados, fuera del índice de Cursor y Antigravity
   - files: packages/cli/src/check/install-ignores.ts, packages/cli/test/check-ignores.test.ts, docs/formats.md, docs/ARCHITECTURE.md, AGENTS.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-ignores.test.ts && pnpm --filter @baquia-dev/specty typecheck
+
+## Cierre
+
+### Resumen
+
+check --install pone .specty/archive/** solo en .cursorindexingignore y .antigravityignore, con su comentario y aunque no haya ruido que excluir; nunca en las exclusiones que impiden leer. Documentado en formats §6, ARCHITECTURE §10 y Convenciones.

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-los-cambios-archivados-fuera-del-indice-de-los-a",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261027-los-cambios-archivados-fuera-del-indice-de-los-a",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6db6b07bdc6df8dea6972acd678bb34db8d9f707",
+      "attempts": 1,
       "startedAt": "2026-10-27T10:38:42.936Z",
       "doneAt": "2026-10-27T10:49:59.927Z",
-      "summary": "check --install pone .specty/archive/** solo en .cursorindexingignore y .antigravityignore, con su comentario y aunque no haya ruido que excluir; nunca en las exclusiones que impiden leer. Documentado en formats §6, ARCHITECTURE §10 y Convenciones."
+      "summary": "check --install pone .specty/archive/** solo en .cursorindexingignore y .antigravityignore, con su comentario y aunque no haya ruido que excluir; nunca en las exclusiones que impiden leer. Documentado en formats §6, ARCHITECTURE §10 y Convenciones.",
+      "scopeExtra": []
     }
   },
   "pending": {
