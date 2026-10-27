@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261027-init-en-repositorios-existentes-siguiente-paso-y",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-init-en-repositorios-existentes-siguiente-paso-y",
+  "baseCommit": "49f7f30ee9008ed6248a68f24da6632b819a7fe5",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:057ced54e723e67ce2c923dc0fb333758cd98fbdaf4dd6c9a048a512bc7dae07",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b7204c036531760bbb5a3a4f2e3faba13a701afeafbbe63339b4262ddf88b806",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f00462dca628a024db0aa60de5cb3ee0d857c435f53e7c49493f5dfb41f54f75",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d6d6e0fd1397fd4b2070dbf3cdc44770b208630a829d78a0df2dd76f6da47752",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:f15465762d88834cecaa8ad6e841a655f2d10f6714d560364e5d126168376be4",
+    "at": "2026-10-27T06:07:10.805Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  }
+}
