@@ -1,0 +1,3 @@
+{"ts":"2026-10-27T03:50:59.457Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261026-antigravity-y-devin-llevan-sus-acciones-a-la-car","epic":"20261026-los-agentes-entran-en-la-carpeta-del-cambio-sin","slice":"C5"}}
+{"ts":"2026-10-27T03:52:31.782Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:ae3f26f5b4888bda11ebbd95d837655177a12547b5c29d7e2856a1e64d0c1598","size":"L","warnings":0}}
+{"ts":"2026-10-27T03:52:34.866Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:ae3f26f5b4888bda11ebbd95d837655177a12547b5c29d7e2856a1e64d0c1598","channel":"delegated","delegated":true}}
