@@ -71,7 +71,7 @@ Hoy `specty init` solo pregunta por el agente cuando no detecta ninguno, y la pe
   - files: packages/cli/src/session.ts, packages/cli/src/terminal.ts, packages/cli/src/enforce/entry.ts, packages/cli/src/server/actions.ts, packages/cli/test/support.ts, packages/cli/test/server-actions.test.ts
   - ac: AC1, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-actions.test.ts
-- [ ] T3: init pregunta siempre los agentes a una persona, con los detectados marcados
+- [x] T3: init pregunta siempre los agentes a una persona, con los detectados marcados
   - files: packages/cli/src/install/hooks.ts, packages/cli/test/init-agents.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agents.test.ts

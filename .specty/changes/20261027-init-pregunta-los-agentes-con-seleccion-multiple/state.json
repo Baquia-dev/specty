@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "da7704bc31e7bd70fc4a1da519d10fe05e26001d",
+      "attempts": 1,
       "startedAt": "2026-10-27T06:57:39.936Z",
       "doneAt": "2026-10-27T07:01:33.345Z",
-      "summary": "Terminal gana chooseMany(mensaje, opciones, marcadas): la del sistema usa multiselect de clack con al menos una; la delegada, la de los hooks y la pantalla de la UI no eligen. La persona de prueba responde lo guionizado, lo marcado o la primera opción."
+      "summary": "Terminal gana chooseMany(mensaje, opciones, marcadas): la del sistema usa multiselect de clack con al menos una; la delegada, la de los hooks y la pantalla de la UI no eligen. La persona de prueba responde lo guionizado, lo marcado o la primera opción.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0d0aec1dfb4997ace6a82b4d40ca8bbc432951a0",
+      "startedAt": "2026-10-27T07:01:33.649Z",
+      "doneAt": "2026-10-27T10:43:42.746Z",
+      "summary": "init pregunta siempre a una persona con chooseMany, con los detectados marcados; instala los marcados y, si cancela, los detectados o Claude Code. Sin persona, con --dry-run o --tools, igual que antes. El test de «no detecta ninguno» se ajustó a la pregunta múltiple (R1)."
     }
   },
   "pending": {
