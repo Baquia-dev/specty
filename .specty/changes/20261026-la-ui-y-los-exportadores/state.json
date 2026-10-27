@@ -6,6 +6,13 @@
   "branch": "specty/20261026-la-ui-y-los-exportadores",
   "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:18d430a51b12fa3281ea450a863aa0aafa8e8a6d19cf55775a2808c22f27abf2",
+    "at": "2026-10-27T00:48:05.779Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -26,7 +33,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0e9bb8afbb723195352df0db41552fb9819b7590",
+      "startedAt": "2026-10-27T00:48:06.174Z",
+      "doneAt": "2026-10-27T00:52:06.930Z",
+      "summary": "openspec.ts: openSpec arma los archivos con proposalLines, designLines y requirementLines. speckit.ts: specKit con featureLines, planLines y taskLines. Mismos archivos y mismo texto; los tests de los exportadores pasan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -35,12 +52,5 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:18d430a51b12fa3281ea450a863aa0aafa8e8a6d19cf55775a2808c22f27abf2",
-    "at": "2026-10-27T00:48:05.779Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

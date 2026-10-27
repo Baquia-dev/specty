@@ -43,7 +43,7 @@ Doce funciones de la UI y de los exportadores pasan de los límites de Specty: `
 
 ## Tareas
 
-- [ ] T1: Los exportadores
+- [x] T1: Los exportadores
   - files: packages/exporters/src/openspec.ts, packages/exporters/src/speckit.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-exporters exec vitest run
