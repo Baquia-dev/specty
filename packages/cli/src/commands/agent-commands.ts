@@ -2,6 +2,9 @@
 import {
   CHANGE_KINDS,
   type ChangeKind,
+  COMMIT_TYPES,
+  type CommitType,
+  type NewRefusal,
   newRefusalCard,
   type Output,
 } from "@baquia-dev/specty-core";
@@ -68,6 +71,7 @@ export function agentCommands(
 /** `specty new`'s options as commander reads them. */
 interface NewFlags {
   readonly kind: string;
+  readonly type: string;
   readonly follows?: string[];
   readonly epic?: string;
   readonly slice?: string;
@@ -77,7 +81,7 @@ interface NewFlags {
   readonly request?: string;
 }
 
-/** `specty new`, which refuses an unknown kind before any session opens. */
+/** `specty new`, which refuses an unknown kind or type before any session opens. */
 function newCommand(
   program: Command,
   run: Run,
@@ -89,6 +93,11 @@ function newCommand(
     .description("create a change and its spec")
     .argument("<title>")
     .option("--kind <kind>", `one of ${CHANGE_KINDS.join(", ")}`, "standard")
+    .option(
+      "--type <type>",
+      `what the change is, which names its branch under git.flow: one of ${COMMIT_TYPES.join(", ")}`,
+      "feat",
+    )
     .option("--follows <ids...>", "changes this one continues")
     .option("--epic <id>")
     .option("--slice <id>")
@@ -97,19 +106,34 @@ function newCommand(
     .option("--from <branch>", "with --worktree, the branch to start from (default: the main one)")
     .option("--request <text>", "the user's literal request, kept in the audit as written")
     .action((title: string, options: NewFlags) => {
-      const kind = CHANGE_KINDS.find((candidate) => candidate === options.kind);
-      if (kind === undefined) {
-        refuse(newRefusalCard({ reason: "unknown-kind", kind: options.kind }, bareCards(env)));
+      const given = kindAndType(options);
+      if ("reason" in given) {
+        refuse(newRefusalCard(given, bareCards(env)));
         return Promise.resolve();
       }
-      return run((session) => newChange(session, newOptions(title, kind, options)))();
+      return run((session) => newChange(session, newOptions(title, given, options)))();
     });
 }
 
-function newOptions(title: string, kind: ChangeKind, options: NewFlags): NewOptions {
+interface KindAndType {
+  readonly kind: ChangeKind;
+  readonly type: CommitType;
+}
+
+/** The kind and type `new` was given, or why they are refused. */
+function kindAndType(options: NewFlags): KindAndType | NewRefusal {
+  const kind = CHANGE_KINDS.find((candidate) => candidate === options.kind);
+  if (kind === undefined) return { reason: "unknown-kind", kind: options.kind };
+  const type = COMMIT_TYPES.find((candidate) => candidate === options.type);
+  if (type === undefined) return { reason: "unknown-type", type: options.type };
+  return { kind, type };
+}
+
+function newOptions(title: string, given: KindAndType, options: NewFlags): NewOptions {
   return {
     title,
-    kind,
+    kind: given.kind,
+    type: given.type,
     follows: options.follows ?? [],
     ...(options.epic !== undefined ? { epic: options.epic } : {}),
     ...(options.slice !== undefined ? { slice: options.slice } : {}),

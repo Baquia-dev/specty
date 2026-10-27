@@ -3,7 +3,7 @@ import { AGENT_NAMES, type AgentTool } from "../agents";
 import { AGENT_CAPABILITIES } from "../capabilities";
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
-import { CHANGE_KINDS } from "../spec/model";
+import { CHANGE_KINDS, COMMIT_TYPES } from "../spec/model";
 import { blockedCard } from "./flow";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
@@ -11,6 +11,8 @@ import type { CardContext } from "./view";
 /** Why `specty new` creates nothing. */
 export type NewRefusal =
   | { readonly reason: "unknown-kind"; readonly kind: string }
+  /** `--type`, which names the branch under `git.flow`, is not a commit type. */
+  | { readonly reason: "unknown-type"; readonly type: string }
   /** A new project's first change is its skeleton: standard, so the scaffolding is traced. */
   | { readonly reason: "bootstrap-quick"; readonly title: string }
   | { readonly reason: "no-title" }
@@ -57,6 +59,11 @@ function newRefusalReason(refusal: NewRefusal, t: Translate): string {
         `Tipo de cambio desconocido: ${refusal.kind}.`,
         `Unknown change kind: ${refusal.kind}.`,
       );
+    case "unknown-type":
+      return t(
+        `Tipo de commit desconocido: ${refusal.type}.`,
+        `Unknown commit type: ${refusal.type}.`,
+      );
     case "bootstrap-quick":
       return t(
         "Es el primer cambio de un proyecto nuevo: el esqueleto va en un cambio standard, no quick.",
@@ -90,6 +97,8 @@ function newRefusalNext(refusal: NewRefusal, t: Translate, command: string): str
   switch (refusal.reason) {
     case "unknown-kind":
       return `--kind ${CHANGE_KINDS.join("|")}`;
+    case "unknown-type":
+      return `--type ${COMMIT_TYPES.join("|")}`;
     case "bootstrap-quick":
       return t(
         `ejecuta \`${command} new "${refusal.title}" --request "<petición literal del usuario>"\`, sin \`--kind quick\`.`,

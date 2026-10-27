@@ -75,7 +75,7 @@ Hoy cada cambio vive en `specty/<id>`, un nombre que no sigue el flujo de git de
   - files: packages/core/src/branches.ts, packages/core/src/index.ts, packages/core/test/branches.test.ts, packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/branches.test.ts test/schema/schema.test.ts
-- [ ] T2: new crea la rama semántica, libre y marcada, y rechaza un tipo desconocido
+- [x] T2: new crea la rama semántica, libre y marcada, y rechaza un tipo desconocido
   - files: packages/core/src/cards/new.ts, packages/core/test/cards/new.test.ts, packages/cli/src/flow/branches.ts, packages/cli/src/commands/new.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/branch-names.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/branch-names.test.ts
