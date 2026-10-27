@@ -67,7 +67,7 @@ Hoy `specty init` solo pregunta por el agente cuando no detecta ninguno, y la pe
   - files: packages/core/src/cards/init.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/init.test.ts
-- [ ] T2: la terminal sabe preguntar con selección múltiple
+- [x] T2: la terminal sabe preguntar con selección múltiple
   - files: packages/cli/src/session.ts, packages/cli/src/terminal.ts, packages/cli/src/enforce/entry.ts, packages/cli/src/server/actions.ts, packages/cli/test/support.ts, packages/cli/test/server-actions.test.ts
   - ac: AC1, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server-actions.test.ts

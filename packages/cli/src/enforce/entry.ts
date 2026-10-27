@@ -102,6 +102,7 @@ export function hookTerminal(env: Readonly<Record<string, string | undefined>>):
     interactive: personAtTerminal(Boolean(process.stdin.isTTY && process.stdout.isTTY), env),
     confirm: async () => false,
     choose: async () => undefined,
+    chooseMany: async () => undefined,
     ask: async () => undefined,
     note: () => undefined,
   };
