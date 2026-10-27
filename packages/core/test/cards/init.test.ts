@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  AGENT_NAMES,
+  agentChoices,
+  agentQuestion,
   agentsMdLine,
   backupLine,
   type CardContext,
@@ -9,6 +12,7 @@ import {
   initCard,
   initRefusalCard,
   newProjectNext,
+  noAgentWarning,
   noTestCommandWarning,
   productLine,
   renderText,
@@ -26,6 +30,29 @@ describe("a refused `init`", () => {
     expect(invalid.status).toBe("blocked");
     expect(renderText(invalid, "en")).toBe(
       "SPECTY · init\n.specty/config.yaml is invalid: mode: no válido\nNEXT: fix it and run `specty init` again.",
+    );
+  });
+});
+
+describe("the agent `init` installs", () => {
+  it("asks a person which one, Claude Code first (AC4)", () => {
+    expect(agentQuestion("es")).toBe(
+      "No se detectó ningún agente. ¿Con cuál trabajas en este repositorio?",
+    );
+    expect(agentQuestion("en")).toBe(
+      "No agent detected. Which one do you work with in this repository?",
+    );
+    const choices = agentChoices();
+    expect(choices[0]).toEqual({ value: "claude-code", label: "Claude Code" });
+    expect(choices.map((choice) => choice.value)).toEqual(Object.keys(AGENT_NAMES));
+  });
+
+  it("warns when nobody could say, and how to choose another (AC5)", () => {
+    expect(noAgentWarning("specty", "es")).toBe(
+      "No se detectó ningún agente: se instaló el guard de Claude Code. Si usas otro, ejecuta `specty init --tools <herramienta>` con alguna de estas: claude-code, cursor, codex, opencode, gemini-cli, copilot, windsurf, antigravity.",
+    );
+    expect(noAgentWarning("specty", "en")).toBe(
+      "No agent detected: Claude Code's guard was installed. If you use another, run `specty init --tools <tool>` with any of: claude-code, cursor, codex, opencode, gemini-cli, copilot, windsurf, antigravity.",
     );
   });
 });

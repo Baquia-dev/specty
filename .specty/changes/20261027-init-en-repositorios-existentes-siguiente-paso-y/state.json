@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6b2fbf36761be9945b231a69461ebdf7161c5e7a",
+      "attempts": 1,
       "startedAt": "2026-10-27T06:07:32.727Z",
       "doneAt": "2026-10-27T06:12:15.460Z",
-      "summary": "initCard recibe las secciones vacías de AGENTS.md (unfilledSections del archivo que escribió init) y su SIGUIENTE solo nombra esas, en singular o plural; sin ninguna, pide revisar config.yaml y doctor"
+      "summary": "initCard recibe las secciones vacías de AGENTS.md (unfilledSections del archivo que escribió init) y su SIGUIENTE solo nombra esas, en singular o plural; sin ninguna, pide revisar config.yaml y doctor",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "330de7d226cfe74e1c830402f5f54be6cf99ab08",
+      "startedAt": "2026-10-27T06:12:15.759Z",
+      "doneAt": "2026-10-27T06:14:40.161Z",
+      "summary": "core: agentQuestion(lang), agentChoices() (todas las herramientas de AGENT_NAMES, Claude Code primero) y noAgentWarning(command, lang) con la lista de --tools; exportados en cards/index.ts"
     }
   },
   "pending": {

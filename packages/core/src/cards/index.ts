@@ -100,6 +100,8 @@ export {
   statusCard,
 } from "./human";
 export {
+  agentChoices,
+  agentQuestion,
   agentsMdLine,
   backupLine,
   configLine,
@@ -112,6 +114,7 @@ export {
   languageLine,
   languageQuestion,
   newProjectNext,
+  noAgentWarning,
   noTestCommandWarning,
   productLine,
 } from "./init";

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { AGENT_NAMES, type AgentTool, isAgentTool } from "../agents";
 import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { blockedCard } from "./flow";
@@ -44,6 +45,31 @@ export function configLine(created: boolean, added: readonly string[], lang: Lan
         ".specty/config.yaml ya existía; no se tocó.",
         ".specty/config.yaml already existed; left untouched.",
       );
+}
+
+/** Every agent tool, in the order of `AGENT_NAMES`: Claude Code first. */
+const AGENT_TOOLS = Object.keys(AGENT_NAMES).filter(isAgentTool);
+
+/** `init`'s question to a person when it detects no agent, after the language. */
+export function agentQuestion(lang: Lang): string {
+  return translator(lang)(
+    "No se detectó ningún agente. ¿Con cuál trabajas en este repositorio?",
+    "No agent detected. Which one do you work with in this repository?",
+  );
+}
+
+/** The answers to `agentQuestion`: every agent tool, Claude Code first. */
+export function agentChoices(): readonly { readonly value: AgentTool; readonly label: string }[] {
+  return AGENT_TOOLS.map((tool) => ({ value: tool, label: AGENT_NAMES[tool] }));
+}
+
+/** No agent was detected and nobody could be asked: Claude Code's guard went in. */
+export function noAgentWarning(command: string, lang: Lang): string {
+  const tools = AGENT_TOOLS.join(", ");
+  return translator(lang)(
+    `No se detectó ningún agente: se instaló el guard de Claude Code. Si usas otro, ejecuta \`${command} init --tools <herramienta>\` con alguna de estas: ${tools}.`,
+    `No agent detected: Claude Code's guard was installed. If you use another, run \`${command} init --tools <tool>\` with any of: ${tools}.`,
+  );
 }
 
 /** `init`'s first question to a person: in both languages, as neither is known yet. */

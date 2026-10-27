@@ -64,7 +64,7 @@ En un repositorio que ya existía, `specty init` falla en dos cosas. Su SIGUIENT
   - files: packages/core/src/cards/init.ts, packages/core/test/cards/init.test.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-agents.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agents.test.ts
-- [ ] T2: los textos de la pregunta del agente y del aviso sin agente
+- [x] T2: los textos de la pregunta del agente y del aviso sin agente
   - files: packages/core/src/cards/init.ts, packages/core/src/cards/index.ts, packages/core/test/cards/init.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/init.test.ts
