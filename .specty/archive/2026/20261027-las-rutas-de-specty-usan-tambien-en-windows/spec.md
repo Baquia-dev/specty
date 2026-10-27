@@ -67,3 +67,24 @@ En Windows, Specty muestra con `\` las rutas relativas que en Linux y macOS mues
 ## Riesgos
 
 - R1: Quedan rutas con `\` que la auditoría no vio, porque la CI solo muestra 10 fallos por paso — se verá en la CI de Windows con la versión 1, que ya no bloquea.
+
+## Cierre
+
+### Resumen
+
+`store/paths.ts` gana `posixRelative` y `shownPath`, probadas con `path.win32`. `check --install`, `init`, `uninstall`, `export`, `status`, la nota de los comandos de la persona y los archivos de gentle-ai muestran con ellas las rutas relativas con `/` en cualquier sistema. `WorktreeCreate` compara la carpeta preparada con la lista de worktrees tras `resolve()`, así que en Windows entra en la carpeta del cambio.
+
+### Desviaciones
+
+- T2 se dividió en dos tareas (T2 y T3) por el aviso de `propose` sobre su número de archivos; la de `WorktreeCreate` pasó a ser T4.
+- T2 se verificó con `init-commit.test.ts` e `install.test.ts`, porque `init.test.ts` no existe.
+
+### Decisiones
+
+- `init` y `uninstall` usan `shownPath`, en vez de tener cada uno su copia de la misma lógica.
+- Las demás conversiones a `/` que ya eran correctas (`install/hooks.ts`, `io/git.ts`, `check/secrets.ts`, `check/typescript.ts`, `flow/worktree.ts`) se dejaron como estaban.
+
+### Pendientes
+
+- Los fallos de Windows que no son de separadores, que se ven con el log completo de la CI: el test que enlaza `git` y `npm` en un `PATH` propio, el de Prisma sin `prisma.cmd`, el plazo de `check` que no corta el comando, y `close` desde la carpeta principal, que deja la carpeta del cambio.
+- Comprobar en la CI de Windows, con la versión 1, que no quedan rutas con `\`.
