@@ -4,10 +4,13 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   APP,
+  CHANGE,
   CONFIG,
   cli,
+  folderOf,
   git,
   person,
+  type Run,
   read,
   SPEC,
   SPEC_PATH,
@@ -97,6 +100,57 @@ describe("the guard in Devin", () => {
 });
 
 const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
+/** A repository with a change in its own folder, which Devin's session `s1` entered. */
+async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
+  const root = await tempRepo(APP);
+  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+  const enter = tool("exec", { command: `specty enter ${CHANGE}` });
+  expect((await devin(root, "PreToolUse", enter)).code).toBe(0);
+  return { root, folder: folderOf(root) };
+}
+
+/** What the guard gives Devin to merge into the tool's arguments; undefined when nothing. */
+const rewritten = (run: Run): unknown =>
+  run.out === "" ? undefined : JSON.parse(run.out).hookSpecificOutput.updatedInput;
+
+describe("Devin in the folder of the change its conversation entered", () => {
+  it("moves files, searches, patches and commands to that folder, judged by its rules (C5 AC1)", async () => {
+    const { root, folder } = await entered();
+    const before = (name: string, input: Record<string, unknown>) =>
+      devin(root, "PreToolUse", tool(name, input, "call_2"));
+    expect(rewritten(await before("write", { file_path: "notas.md", content: "x" }))).toEqual({
+      file_path: join(folder, "notas.md"),
+      content: "x",
+    });
+    expect(rewritten(await before("read", { path: join(root, "src/app.ts") }))).toEqual({
+      path: join(folder, "src/app.ts"),
+    });
+    expect(rewritten(await before("grep", { pattern: "greet", path: "src" }))).toEqual({
+      pattern: "greet",
+      path: join(folder, "src"),
+    });
+    const patch = (path: string) => ["*** Begin Patch", `*** Add File: ${path}`, "+x"].join("\n");
+    expect(rewritten(await before("apply_patch", { input: patch("notas.md") }))).toEqual({
+      input: patch(join(folder, "notas.md")),
+    });
+    expect(rewritten(await before("exec", { command: "pnpm test", shell_id: "main" }))).toEqual({
+      command: `cd '${folder}' && pnpm test`,
+      shell_id: "main",
+    });
+    const code = await before("edit", {
+      file_path: "src/app.ts",
+      old_string: "a",
+      new_string: "b",
+    });
+    expect(code.code).toBe(2);
+    expect(code.err).toContain(`El cambio ${CHANGE} está en fase`);
+    // A conversation that entered nothing works where it was.
+    const other = await tempRepo(APP);
+    const free = await devin(other, "PreToolUse", tool("exec", { command: "pnpm test" }));
+    expect(free).toMatchObject({ code: 0, out: "" });
+  });
+});
+
 const HOOKS = ".devin/hooks.v1.json";
 const CONFIG_FILE = ".devin/config.json";
 const LOCAL_FILE = ".devin/config.local.json";
@@ -116,7 +170,9 @@ describe("installing the guard in Devin", () => {
       hooks: [{ type: "command", command: expect.stringContaining("guard --tool windsurf") }],
     });
     expect(hooks.PreToolUse).toEqual([
-      ours("^(exec|write|edit|notebook_edit|apply_patch|write_to_process)$"),
+      ours(
+        "^(exec|write|edit|notebook_edit|apply_patch|write_to_process|read|notebook_read|grep|glob)$",
+      ),
     ]);
     expect(hooks.PostToolUse).toEqual([lint, ours("^exec$")]);
     expect(hooks.PostCompaction).toEqual([{ hooks: ours("").hooks }]);
@@ -155,6 +211,7 @@ describe("Devin's permissions", () => {
     expect(await allowed(LOCAL_FILE)).toEqual([
       `Write(${join(root, ".git")}/**)`,
       `Write(${root}.worktrees/**)`,
+      `Read(${root}.worktrees/**)`,
     ]);
     expect(await read(root, ".git/info/exclude")).toContain(`/${LOCAL_FILE}`);
     expect(git(root, "status", "--porcelain")).toBe("");

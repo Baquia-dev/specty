@@ -65,7 +65,7 @@ Con C2 a C4, Gemini CLI, OpenCode y Codex llevan a la carpeta del cambio las acc
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/antigravity.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/antigravity-turn.test.ts test/enter.test.ts
-- [ ] T3: Devin lleva sus acciones a la carpeta de la conversación
+- [x] T3: Devin lleva sus acciones a la carpeta de la conversación
   - files: packages/cli/src/agents/windsurf.ts, packages/cli/test/windsurf.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts
