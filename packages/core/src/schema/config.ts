@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as z from "zod";
-import { GIT_FLOWS, type GitFlow } from "../branches";
+import { branchPatternIssue, GIT_FLOWS, type GitFlow } from "../branches";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 
@@ -66,6 +66,8 @@ export interface ResolvedConfig {
     readonly target?: string;
     /** How the changes' branches are named (`branchName`). Unset: Specty's own, `specty/<id>`. */
     readonly flow?: GitFlow;
+    /** A name with `{type}`, `{slug}` and `{id}` for the changes' branches, over `flow`. */
+    readonly branchPattern?: string;
   };
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
@@ -176,6 +178,14 @@ export const ConfigSchema = z.strictObject({
       setup: z.union([z.string().min(1), z.literal(false)]).optional(),
       target: z.string().min(1).optional(),
       flow: z.enum(GIT_FLOWS).optional(),
+      branchPattern: z
+        .string()
+        .min(1)
+        .superRefine((pattern, context) => {
+          const issue = branchPatternIssue(pattern);
+          if (issue !== undefined) context.addIssue({ code: "custom", message: issue });
+        })
+        .optional(),
     })
     .optional(),
   team: z
@@ -309,6 +319,7 @@ function gitOf(input: ConfigInput): ResolvedConfig["git"] {
     ...(git?.setup !== undefined ? { setup: git.setup } : {}),
     ...(git?.target !== undefined ? { target: git.target } : {}),
     ...(git?.flow !== undefined ? { flow: git.flow } : {}),
+    ...(git?.branchPattern !== undefined ? { branchPattern: git.branchPattern } : {}),
   };
 }
 

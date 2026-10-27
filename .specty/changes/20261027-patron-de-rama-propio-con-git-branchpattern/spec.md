@@ -52,7 +52,7 @@ Los flujos de `git.flow` cubren los nombres más comunes, pero hay equipos con c
 
 ## Tareas
 
-- [ ] T1: el patrón nombra la rama y se valida
+- [x] T1: el patrón nombra la rama y se valida
   - files: packages/core/src/branches.ts, packages/core/src/index.ts, packages/core/test/branches.test.ts, packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/branches.test.ts test/schema/schema.test.ts

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { branchName } from "../src";
+import { branchName, branchPatternIssue, branchUsesType } from "../src";
 
 const change = {
   kind: "standard",
@@ -41,5 +41,55 @@ describe("the branch of a new change", () => {
     expect(branchName({ ...change, flow: "specty", kind: "spike" })).toBe(
       "spike/20261027-login-con-google",
     );
+  });
+});
+
+describe("a branch pattern", () => {
+  it("names the branch over the flow, with the commit type as is (AC1)", () => {
+    const pattern = "team/{type}-{slug}";
+    expect(branchName({ ...change, flow: "gitflow", type: "fix", pattern })).toBe(
+      "team/fix-login-con-google",
+    );
+    expect(branchName({ ...change, flow: "specty", pattern: "JIRA/{id}" })).toBe(
+      "JIRA/20261027-login-con-google",
+    );
+    expect(branchName({ ...change, flow: "github", kind: "spike", pattern })).toBe(
+      "team/spike-login-con-google",
+    );
+  });
+
+  it("is refused without {slug} or {id}, with another placeholder or as a bad branch name (AC2)", () => {
+    for (const valid of ["{type}/{slug}", "users/ana/{slug}", "JIRA-{id}", "{slug}"]) {
+      expect(branchPatternIssue(valid), valid).toBeUndefined();
+    }
+    expect(branchPatternIssue("{type}/fijo")).toContain("{slug} or {id}");
+    expect(branchPatternIssue("{user}/{slug}")).toContain("{user}");
+    for (const bad of [
+      "mi rama/{slug}",
+      "a..{slug}",
+      "{slug}~1",
+      "a:{slug}",
+      "{slug}?",
+      "a*/{slug}",
+      "[x]{slug}",
+      "a\\{slug}",
+      "a//{slug}",
+      "/{slug}",
+      "{slug}/",
+      "{slug}.",
+      "{slug}.lock",
+      "a/.{slug}",
+      "a@{{slug}",
+    ]) {
+      expect(branchPatternIssue(bad), bad).toContain("not a valid branch name");
+    }
+  });
+
+  it("decides whether the type names the branch: by {type} with a pattern, by the flow without (AC3)", () => {
+    expect(branchUsesType({ flow: "github" })).toBe(true);
+    expect(branchUsesType({ flow: "specty" })).toBe(false);
+    expect(branchUsesType({})).toBe(false);
+    expect(branchUsesType({ flow: "github", branchPattern: "users/ana/{slug}" })).toBe(false);
+    expect(branchUsesType({ branchPattern: "{type}/{slug}" })).toBe(true);
   });
 });

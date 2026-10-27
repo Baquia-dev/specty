@@ -102,6 +102,20 @@ describe("resolveConfig", () => {
     expect(flow({ flow: "svn" })).toEqual(["git.flow"]);
   });
 
+  it("takes an optional branch pattern, and refuses one that gives no valid branches (AC2)", () => {
+    const pattern = (git: unknown) => {
+      const result = resolveConfig({ version: 1, git });
+      return result.ok ? result.config.git.branchPattern : result.issues;
+    };
+    expect(pattern({ branchPattern: "team/{type}-{slug}" })).toBe("team/{type}-{slug}");
+    expect(pattern({})).toBeUndefined();
+    expect(pattern({ branchPattern: "{type}/fijo" })).toEqual([
+      { path: "git.branchPattern", message: expect.stringContaining("{slug} or {id}") },
+    ]);
+    const empty = pattern({ branchPattern: "" });
+    expect(Array.isArray(empty) && empty.map((issue) => issue.path)).toContain("git.branchPattern");
+  });
+
   it("reports unknown keys, bad values and inconsistent thresholds", () => {
     const issues = (input: unknown) => (resolveConfig(input).ok ? [] : ["invalid"]);
     expect(issues({ version: 1, colour: "blue" })).toEqual(["invalid"]);
