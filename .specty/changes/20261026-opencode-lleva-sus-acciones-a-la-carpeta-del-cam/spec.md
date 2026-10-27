@@ -59,7 +59,7 @@ Con C2, el guard sabe reescribir la entrada de una herramienta para que la acciÃ
 
 ## Tareas
 
-- [ ] T1: Un parche se puede llevar a otra carpeta
+- [x] T1: Un parche se puede llevar a otra carpeta
   - files: packages/core/src/guard/patch.ts, packages/core/src/index.ts, packages/core/test/guard/patch.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/patch.test.ts

@@ -32,3 +32,20 @@ export function patchPaths(text: string): PatchPaths {
   }
   return { writes: [...new Set(writes)], deletes: [...new Set(deletes)] };
 }
+
+/**
+ * The patch with the path of each header as `move` gives it, and its contents as they were: a
+ * patch the agent wrote for one folder, applied in another.
+ */
+export function movePatch(text: string, move: (path: string) => string): string {
+  return text
+    .split("\n")
+    .map((line) => {
+      const [, header, raw] = HEADER.exec(line.trimEnd()) ?? [];
+      const path = raw?.trim() ?? "";
+      if (header === undefined || path === "") return line;
+      const moved = move(path);
+      return moved === path ? line : `*** ${header}: ${moved}`;
+    })
+    .join("\n");
+}

@@ -113,7 +113,7 @@ export {
   type ShellFacts,
 } from "./guard/decide";
 export type { GuardIntegration } from "./guard/integration";
-export { type PatchPaths, patchPaths } from "./guard/patch";
+export { movePatch, type PatchPaths, patchPaths } from "./guard/patch";
 export type { BoundSession } from "./guard/session";
 export { analyzeShell, type ShellAnalysis } from "./guard/shell";
 export { type ForeignPath, nativeEnterDenial } from "./guard/worktrees";

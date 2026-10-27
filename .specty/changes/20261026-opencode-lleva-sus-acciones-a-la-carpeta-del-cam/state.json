@@ -6,6 +6,13 @@
   "branch": "specty/20261026-opencode-lleva-sus-acciones-a-la-carpeta-del-cam",
   "baseCommit": "e7d6d6bcdf16484d495669da7323ce5154fda765",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:219b97eecb7888d6b553d58d607110ae2e090db572b777bd10443e51a7222455",
+    "at": "2026-10-27T02:16:57.394Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -30,7 +37,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "49275debc839bec01938be76782c4387d7a6c12c",
+      "startedAt": "2026-10-27T02:16:57.765Z",
+      "doneAt": "2026-10-27T02:19:18.098Z",
+      "summary": "movePatch en core (guard/patch.ts): el parche con la ruta de cada cabecera (Add, Update, Delete, Move to) como la da move, y el contenido igual; exportado para OpenCode y Codex."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -40,12 +57,5 @@
     "AC": 6,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:219b97eecb7888d6b553d58d607110ae2e090db572b777bd10443e51a7222455",
-    "at": "2026-10-27T02:16:57.394Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
