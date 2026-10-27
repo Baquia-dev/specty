@@ -47,7 +47,7 @@ En Windows, Specty muestra con `\` las rutas relativas que en Linux y macOS mues
 
 ## Tareas
 
-- [ ] T1: Las funciones de rutas con `/` en cualquier sistema
+- [x] T1: Las funciones de rutas con `/` en cualquier sistema
   - files: packages/cli/src/store/paths.ts, packages/cli/test/paths.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/paths.test.ts

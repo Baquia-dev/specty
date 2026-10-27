@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join, relative, sep } from "node:path";
+import { isAbsolute, join, relative, sep } from "node:path";
 
 /** Locations of Specty's files inside a repository (docs/formats.md §1). */
 export interface RepoPaths {
@@ -26,8 +26,19 @@ export function repoPaths(root: string): RepoPaths {
     archive: join(specty, "archive"),
     changeDir: (id) => join(specty, "changes", id),
     archivedDir: (id, year) => join(specty, "archive", String(year), id),
-    relative: (path) => relative(root, path).split(sep).join("/"),
+    relative: (path) => posixRelative(root, path),
   };
+}
+
+/** `relative()` with `/` on every system, as Specty shows and stores paths. */
+export function posixRelative(from: string, to: string): string {
+  return relative(from, to).split(sep).join("/");
+}
+
+/** A path as the person reads it: relative to the repository, or whole when outside it. */
+export function shownPath(root: string, path: string): string {
+  const inner = relative(root, path);
+  return inner.startsWith("..") || isAbsolute(inner) ? path : inner.split(sep).join("/");
 }
 
 /** Files of one change, inside its directory (open or archived). */
