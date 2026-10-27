@@ -36,12 +36,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0e9bb8afbb723195352df0db41552fb9819b7590",
+      "attempts": 1,
       "startedAt": "2026-10-27T00:48:06.174Z",
       "doneAt": "2026-10-27T00:52:06.930Z",
-      "summary": "openspec.ts: openSpec arma los archivos con proposalLines, designLines y requirementLines. speckit.ts: specKit con featureLines, planLines y taskLines. Mismos archivos y mismo texto; los tests de los exportadores pasan."
+      "summary": "openspec.ts: openSpec arma los archivos con proposalLines, designLines y requirementLines. speckit.ts: specKit con featureLines, planLines y taskLines. Mismos archivos y mismo texto; los tests de los exportadores pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "62de5f0a0eb4eaceccc6a35c42b4809320de77e3",
+      "startedAt": "2026-10-27T00:52:07.226Z",
+      "doneAt": "2026-10-27T01:02:00.223Z",
+      "summary": "diff.ts: parseDiff deja a takeLine las líneas del hunk, a openHunk su apertura y a readHeader (tabla HEADERS) las cabeceras; markWords a markPair cada par. word-diff.ts: heaviestCommon y walk. highlight.ts: pieceSpans. Los tests de la UI pasan."
     }
   },
   "pending": {

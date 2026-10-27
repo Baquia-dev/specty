@@ -52,6 +52,18 @@ export function wordDiff(
       { text: after, change: "added" },
     ]);
   }
+  return merge(tidy(walk(a, b, heaviestCommon(a, b))));
+}
+
+/** The heaviest common subsequence of two token lists, as a table read from any pair of positions. */
+interface Common {
+  /** Weight of the best common subsequence of a[i..] and b[j..]. */
+  at(i: number, j: number): number;
+  /** That weight through a[i] and b[j] matched; -1 when they differ. */
+  match(i: number, j: number): number;
+}
+
+function heaviestCommon(a: readonly string[], b: readonly string[]): Common {
   const width = b.length + 1;
   // common[i * width + j]: weight of the best common subsequence of a[i..] and b[j..].
   const common = new Uint32Array((a.length + 1) * width);
@@ -63,6 +75,11 @@ export function wordDiff(
       common[i * width + j] = Math.max(match(i, j), at(i + 1, j), at(i, j + 1));
     }
   }
+  return { at, match };
+}
+
+/** The tokens along the heaviest common subsequence: kept, removed or added, in order. */
+function walk(a: readonly string[], b: readonly string[], { at, match }: Common): DiffPart[] {
   const parts: DiffPart[] = [];
   let i = 0;
   let j = 0;
@@ -77,9 +94,11 @@ export function wordDiff(
       parts.push({ text: b[j++] ?? "", change: "added" });
     }
   }
-  for (; i < a.length; i++) parts.push({ text: a[i] ?? "", change: "removed" });
-  for (; j < b.length; j++) parts.push({ text: b[j] ?? "", change: "added" });
-  return merge(tidy(parts));
+  return [
+    ...parts,
+    ...a.slice(i).map((token): DiffPart => ({ text: token, change: "removed" })),
+    ...b.slice(j).map((token): DiffPart => ({ text: token, change: "added" })),
+  ];
 }
 
 /**

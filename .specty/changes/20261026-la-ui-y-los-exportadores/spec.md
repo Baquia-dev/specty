@@ -48,7 +48,7 @@ Doce funciones de la UI y de los exportadores pasan de los límites de Specty: `
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-exporters exec vitest run
   - type: refactor
-- [ ] T2: El diff y su resaltado
+- [x] T2: El diff y su resaltado
   - files: packages/ui/src/data/diff.ts, packages/ui/src/data/word-diff.ts, packages/ui/src/highlight/highlight.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch

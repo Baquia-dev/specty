@@ -38,25 +38,37 @@ export function spansOf(line: DiffLine, tokens?: readonly CodeToken[]): readonly
   const pieces: readonly CodeToken[] = fits ? tokens : [{ text: line.text }];
   const spans: LineSpan[] = [];
   let at = 0;
-  for (const { text, color, italic } of pieces) {
-    const end = at + text.length;
-    const inside = ranges.flatMap(({ start, end: stop }) => [start, stop]);
-    const cuts = [at, ...inside.filter((cut) => cut > at && cut < end), end].toSorted(
-      (a, b) => a - b,
-    );
-    for (let k = 0; k + 1 < cuts.length; k++) {
-      const [from, to] = [cuts[k] ?? 0, cuts[k + 1] ?? 0];
-      if (from === to) continue;
-      spans.push({
-        text: line.text.slice(from, to),
-        changed: ranges.some(({ start, end: stop }) => start <= from && to <= stop),
-        ...(color === undefined ? {} : { color }),
-        ...(italic ? { italic } : {}),
-      });
-    }
-    at = end;
+  for (const piece of pieces) {
+    spans.push(...pieceSpans(line, ranges, piece, at));
+    at += piece.text.length;
   }
   return spans.length > 0 ? spans : [{ text: line.text, changed: false }];
+}
+
+/** A piece of the line that starts at `at`, cut wherever a changed range begins or ends. */
+function pieceSpans(
+  line: DiffLine,
+  ranges: NonNullable<DiffLine["changed"]>,
+  { text, color, italic }: CodeToken,
+  at: number,
+): LineSpan[] {
+  const end = at + text.length;
+  const inside = ranges.flatMap(({ start, end: stop }) => [start, stop]);
+  const cuts = [at, ...inside.filter((cut) => cut > at && cut < end), end].toSorted(
+    (a, b) => a - b,
+  );
+  const spans: LineSpan[] = [];
+  for (let k = 0; k + 1 < cuts.length; k++) {
+    const [from, to] = [cuts[k] ?? 0, cuts[k + 1] ?? 0];
+    if (from === to) continue;
+    spans.push({
+      text: line.text.slice(from, to),
+      changed: ranges.some(({ start, end: stop }) => start <= from && to <= stop),
+      ...(color === undefined ? {} : { color }),
+      ...(italic ? { italic } : {}),
+    });
+  }
+  return spans;
 }
 
 /** Past this many lines, a file shows plain: highlighting it would hold the page. */
