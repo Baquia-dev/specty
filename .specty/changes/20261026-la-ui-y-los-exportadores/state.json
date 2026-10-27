@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-la-ui-y-los-exportadores",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-la-ui-y-los-exportadores",
   "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
   "revision": 2,
@@ -63,12 +63,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cbd8bc5b8d15b309d61af083d3b99ce41e165185",
+      "attempts": 1,
       "startedAt": "2026-10-27T01:12:38.201Z",
       "doneAt": "2026-10-27T01:17:02.223Z",
-      "summary": "progress.ts: progressOf deja cada tarea a taskProgress, con timesOf y lastVerification, en el mismo orden de campos. closing.ts: closingOf pregunta a fenceAfter por la valla abierta. sample-progress.ts: boletinesTasks y boletinesAudit. Los tests de la UI pasan."
+      "summary": "progress.ts: progressOf deja cada tarea a taskProgress, con timesOf y lastVerification, en el mismo orden de campos. closing.ts: closingOf pregunta a fenceAfter por la valla abierta. sample-progress.ts: boletinesTasks y boletinesAudit. Los tests de la UI pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "101ef2f1c81ee1008ec19d3a0f034257154c1fe2",
+      "startedAt": "2026-10-27T01:17:02.542Z",
+      "doneAt": "2026-10-27T01:23:08.239Z",
+      "summary": "shell.ts: el constructor de Shell inyecta y llama a followNavigation, goBackWithBackspace y registerCommands, en su contexto de inyección y con los mismos comandos. Ninguna función de la UI ni de los exportadores pasa de los límites; los tests pasan."
     }
   },
   "pending": {

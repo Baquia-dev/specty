@@ -63,7 +63,7 @@ Doce funciones de la UI y de los exportadores pasan de los límites de Specty: `
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch
   - type: refactor
-- [ ] T5: El shell
+- [x] T5: El shell
   - files: packages/ui/src/app/shell.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch
