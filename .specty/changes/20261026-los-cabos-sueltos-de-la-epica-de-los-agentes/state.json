@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-los-cabos-sueltos-de-la-epica-de-los-agentes",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-los-cabos-sueltos-de-la-epica-de-los-agentes",
   "baseCommit": "66abf1e361cb7e1d6a6fe218584114f9dcfd0cfb",
   "revision": 1,
@@ -53,12 +53,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9617b67346f17311ebd490733d66c5dcb56de9e0",
+      "attempts": 1,
       "startedAt": "2026-10-27T00:00:00.960Z",
       "doneAt": "2026-10-27T00:02:52.008Z",
-      "summary": "Fuera de un repositorio con Specty, hook agent-stop da la respuesta que deja terminar a un agente que la espera siempre (Antigravity recibe decision stop); los demás siguen sin recibir nada."
+      "summary": "Fuera de un repositorio con Specty, hook agent-stop da la respuesta que deja terminar a un agente que la espera siempre (Antigravity recibe decision stop); los demás siguen sin recibir nada.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b9fa9c8cfe6e6bb1208d8ec2abe24ddeb1ecd5b1",
+      "startedAt": "2026-10-27T00:02:52.323Z",
+      "doneAt": "2026-10-27T00:06:08.533Z",
+      "summary": "isNewProject cuenta .agents/ como archivos de agente, además de las marcas de la tabla, así que un proyecto con solo skills ahí sigue siendo nuevo. ARCHITECTURE cuenta los cuatro arreglos: uninstall, Devin con Claude Code, el fin de turno fuera de Specty y .agents/."
     }
   },
   "pending": {

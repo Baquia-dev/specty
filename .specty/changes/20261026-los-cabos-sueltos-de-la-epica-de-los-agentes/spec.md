@@ -67,7 +67,7 @@ La épica «Todos los agentes al nivel de Claude Code» dejó cuatro cosas suelt
   - files: packages/cli/src/enforce/entry.ts, packages/cli/test/check-agent-stop.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/hooks-entry.test.ts
-- [ ] T4: Un proyecto con solo archivos de .agents sigue siendo nuevo
+- [x] T4: Un proyecto con solo archivos de .agents sigue siendo nuevo
   - files: packages/cli/src/install/product.ts, packages/cli/test/new-project.test.ts, docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/new-project.test.ts test/antigravity.test.ts

@@ -17,10 +17,16 @@ import type { InstallFiles } from "./files";
 const METADATA =
   /^(?:\.gitignore|\.gitattributes|\.editorconfig|(?:LICENSE|LICENCE|COPYING|NOTICE)(?:\.[^/]*)?)$/i;
 
-/** The agents' own files (`.claude/`, `.cursor/`…), from the capability table. */
-const AGENT_PATHS: readonly string[] = Object.keys(AGENT_CAPABILITIES)
-  .filter(isAgentTool)
-  .flatMap((tool) => AGENT_CAPABILITIES[tool].markers);
+/**
+ * The agents' own files (`.claude/`, `.cursor/`…), from the capability table, and `.agents/`,
+ * which several agents share (Codex's skills, Antigravity's rules and hooks), so it marks none.
+ */
+const AGENT_PATHS: readonly string[] = [
+  ...Object.keys(AGENT_CAPABILITIES)
+    .filter(isAgentTool)
+    .flatMap((tool) => AGENT_CAPABILITIES[tool].markers),
+  ".agents",
+];
 
 /**
  * A new project: the detection finds no stack, and the repository has no governed code besides
