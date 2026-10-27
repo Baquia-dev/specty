@@ -44,75 +44,12 @@ export function changeRuns(
   session: Session,
   heard: (id: string, run: Run | undefined) => void,
 ): Runs {
-  const going = new Map<string, { run: Run; stop: () => void }>();
+  const going: Going = new Map();
   let closing = false;
   const tasks = taskRuns(session, (id, run) => {
     if (!going.has(id)) heard(id, run);
   });
-
-  function run(id: string, there: Session, change: StoredChange, command: string): void {
-    // The code it runs on, read as it starts: `accept` need not verify it again.
-    const tree = codeTree(there);
-    const started = Date.now();
-    const child = spawn(command, {
-      cwd: there.root,
-      env: there.environment.env,
-      shell: true,
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    let current: Run = { command, startedAt: there.environment.now().toISOString(), output: [] };
-    const stop = () => {
-      child.kill("SIGTERM");
-      setTimeout(() => child.kill("SIGKILL"), 2000).unref();
-    };
-    going.set(id, { run: current, stop });
-    let tell: NodeJS.Timeout | undefined;
-    const add = (lines: readonly string[]) => {
-      if (lines.length === 0) return;
-      current = { ...current, output: [...current.output, ...lines].slice(-KEPT) };
-      going.set(id, { run: current, stop });
-      tell ??= setTimeout(() => {
-        tell = undefined;
-        heard(id, current);
-      }, EVERY);
-    };
-    const rests = { stdout: "", stderr: "" };
-    for (const stream of ["stdout", "stderr"] as const) {
-      child[stream].on("data", (chunk: Buffer) => {
-        const lines = `${rests[stream]}${chunk.toString("utf8")}`.split("\n");
-        rests[stream] = lines.pop() ?? "";
-        add(lines.map((line) => line.trimEnd()));
-      });
-    }
-    const limit = setTimeout(stop, there.config.verify.timeoutSec * 1000);
-    let finished = false;
-    const finish = async (code: number | undefined) => {
-      if (finished) return;
-      finished = true;
-      add([rests.stdout, rests.stderr].filter((line) => line.trim() !== ""));
-      clearTimeout(limit);
-      const pending = tell !== undefined;
-      clearTimeout(tell);
-      going.delete(id);
-      if (closing) return;
-      // The last lines first, so whoever follows it sees them before it ends.
-      if (pending) heard(id, current);
-      const output = current.output.filter((line) => line.length > 0);
-      const ran = await tree;
-      await recordFullVerification(there, change, {
-        command,
-        code,
-        ms: Date.now() - started,
-        output,
-        ...(ran === undefined ? {} : { tree: ran }),
-      }).catch(() => undefined);
-      heard(id, undefined);
-    };
-    child.on("error", () => void finish(127));
-    child.on("close", (code) => void finish(code ?? undefined));
-    heard(id, current);
-  }
-
+  const target: RunTarget = { going, heard, closing: () => closing };
   return {
     current: (id) => going.get(id)?.run ?? tasks.current(id),
     async start(id) {
@@ -127,7 +64,7 @@ export function changeRuns(
         return runRefusalCard({ reason: "not-in-acceptance" }, header, cards);
       if (command === undefined) return runRefusalCard({ reason: "no-full-verify" }, header, cards);
       if (going.has(id)) return runRefusalCard({ reason: "running" }, header, cards);
-      run(id, there, change, command);
+      runFull(target, { id, there, change, command });
       return runStartedCard(header, command, cards);
     },
     close() {
@@ -136,6 +73,124 @@ export function changeRuns(
       for (const { stop } of going.values()) stop();
     },
   };
+}
+
+/** The full verifications going on, by change, each with how to stop it. */
+type Going = Map<string, { run: Run; stop: () => void }>;
+
+/** Where a full verification reports: the runs going on, the listener, and whether the server closes. */
+interface RunTarget {
+  readonly going: Going;
+  readonly heard: (id: string, run: Run | undefined) => void;
+  readonly closing: () => boolean;
+}
+
+/** A full verification to run: change `id`'s, in its folder, with its command. */
+interface FullRun {
+  readonly id: string;
+  readonly there: Session;
+  readonly change: StoredChange;
+  readonly command: string;
+}
+
+function runFull(target: RunTarget, job: FullRun): void {
+  const { id, there, command } = job;
+  // The code it runs on, read as it starts: `accept` need not verify it again.
+  const tree = codeTree(there);
+  const started = Date.now();
+  const child = spawn(command, {
+    cwd: there.root,
+    env: there.environment.env,
+    shell: true,
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  const stop = () => {
+    child.kill("SIGTERM");
+    setTimeout(() => child.kill("SIGKILL"), 2000).unref();
+  };
+  const startedAt = there.environment.now().toISOString();
+  const live = liveRun(target, id, { command, startedAt, output: [] }, stop);
+  const rests = { stdout: "", stderr: "" };
+  for (const stream of ["stdout", "stderr"] as const) {
+    child[stream].on("data", (chunk: Buffer) => {
+      const lines = `${rests[stream]}${chunk.toString("utf8")}`.split("\n");
+      rests[stream] = lines.pop() ?? "";
+      live.add(lines.map((line) => line.trimEnd()));
+    });
+  }
+  const limit = setTimeout(stop, there.config.verify.timeoutSec * 1000);
+  let finished = false;
+  const finish = async (code: number | undefined) => {
+    if (finished) return;
+    finished = true;
+    live.add([rests.stdout, rests.stderr].filter((line) => line.trim() !== ""));
+    clearTimeout(limit);
+    await ended(target, job, live, { code, started, tree });
+  };
+  child.on("error", () => void finish(127));
+  child.on("close", (code) => void finish(code ?? undefined));
+  target.heard(id, live.current());
+}
+
+/** A run's output as it comes: kept among the runs going on, and heard at most every `EVERY` ms. */
+interface LiveRun {
+  add(lines: readonly string[]): void;
+  /** The run as it is now. */
+  current(): Run;
+  /** Cancels the notice that was due; whether there was one. */
+  settle(): boolean;
+}
+
+function liveRun(target: RunTarget, id: string, first: Run, stop: () => void): LiveRun {
+  let current = first;
+  target.going.set(id, { run: current, stop });
+  let tell: NodeJS.Timeout | undefined;
+  return {
+    add(lines) {
+      if (lines.length === 0) return;
+      current = { ...current, output: [...current.output, ...lines].slice(-KEPT) };
+      target.going.set(id, { run: current, stop });
+      tell ??= setTimeout(() => {
+        tell = undefined;
+        target.heard(id, current);
+      }, EVERY);
+    },
+    current: () => current,
+    settle() {
+      const pending = tell !== undefined;
+      clearTimeout(tell);
+      return pending;
+    },
+  };
+}
+
+/** The run ended: it leaves the runs going on and, unless the server is closing, goes to the audit. */
+async function ended(
+  target: RunTarget,
+  job: FullRun,
+  live: LiveRun,
+  end: {
+    readonly code: number | undefined;
+    readonly started: number;
+    readonly tree: ReturnType<typeof codeTree>;
+  },
+): Promise<void> {
+  const { id, there, change, command } = job;
+  const pending = live.settle();
+  target.going.delete(id);
+  if (target.closing()) return;
+  // The last lines first, so whoever follows it sees them before it ends.
+  if (pending) target.heard(id, live.current());
+  const output = live.current().output.filter((line) => line.length > 0);
+  const ran = await end.tree;
+  await recordFullVerification(there, change, {
+    command,
+    code: end.code,
+    ms: Date.now() - end.started,
+    output,
+    ...(ran === undefined ? {} : { tree: ran }),
+  }).catch(() => undefined);
+  target.heard(id, undefined);
 }
 
 /**
