@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   type AgentTool,
+  branchUsesType,
   type CardContext,
   type ConfigIssue,
   detectAgentTool,
@@ -139,8 +140,7 @@ export function sessionFrom(
       quickMaxFiles: config.lanes.quick.maxFiles,
       implicitTests: config.scope.implicitTests,
       ...(delegated ? { delegated: true } : {}),
-      // Specty's own names carry the id, not the type.
-      ...((config.git.flow ?? "specty") !== "specty" ? { branchTypes: true } : {}),
+      ...(branchUsesType(config.git) ? { branchTypes: true } : {}),
     },
   };
 }

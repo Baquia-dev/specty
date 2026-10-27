@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "395b5005a64730f918a62595d2ef76b69828b9a0",
+      "attempts": 1,
       "startedAt": "2026-10-27T23:30:45.818Z",
       "doneAt": "2026-10-27T23:35:02.203Z",
-      "summary": "branchName acepta pattern ({type}, {slug}, {id}; el de un spike es spike) por encima del flujo; branchPatternIssue rechaza patrones sin {slug} ni {id}, con otros marcadores o que git no admite; branchUsesType decide si next pide --type. config.yaml acepta git.branchPattern validado."
+      "summary": "branchName acepta pattern ({type}, {slug}, {id}; el de un spike es spike) por encima del flujo; branchPatternIssue rechaza patrones sin {slug} ni {id}, con otros marcadores o que git no admite; branchUsesType decide si next pide --type. config.yaml acepta git.branchPattern validado.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b9d70c815ab488271e3281863a48e7727762eca0",
+      "startedAt": "2026-10-27T23:35:02.503Z",
+      "doneAt": "2026-10-27T23:36:21.353Z",
+      "summary": "new pasa git.branchPattern a branchName (gana a git.flow) y session.ts calcula branchTypes con branchUsesType, así next pide --type solo si el patrón lleva {type}. Un patrón inválido para cualquier comando con git.branchPattern y el motivo."
     }
   },
   "pending": {

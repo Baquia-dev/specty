@@ -3,10 +3,11 @@ import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import { APP, CHANGE, cli, folderOf, git, read, stateIn, tempRepo } from "./support";
 
-/** A configuration whose changes go in worktrees, with branches named as `flow` says. */
-const configOf = (flow: string) =>
-  `version: 1\nlanguage: es\ngit:\n  flow: ${flow}\nverify:\n  default: "true"\n`;
-const repo = (flow: string) => tempRepo({ ...APP, ".specty/config.yaml": configOf(flow) });
+/** A configuration whose changes go in worktrees, with branches named as `flow` (or `pattern`) says. */
+const configOf = (flow: string, pattern?: string) =>
+  `version: 1\nlanguage: es\ngit:\n  flow: ${flow}\n${pattern === undefined ? "" : `  branchPattern: ${JSON.stringify(pattern)}\n`}verify:\n  default: "true"\n`;
+const repo = (flow: string, pattern?: string) =>
+  tempRepo({ ...APP, ".specty/config.yaml": configOf(flow, pattern) });
 const idOf = (slug: string) => `${CHANGE.slice(0, 8)}-${slug}`;
 const LOGIN = idOf("login-con-google");
 /** What git's configuration ties `branch` to. */
@@ -107,5 +108,26 @@ describe("next before a change", () => {
       expect(next.out).toContain('`specty new "<título>" --request');
       expect(next.out).not.toContain("--type");
     }
+  });
+});
+
+describe("a branch pattern", () => {
+  it("names the branch over the flow, and next asks for --type only if it has {type} (AC1, AC3)", async () => {
+    const root = await repo("gitflow", "team/{type}-{slug}");
+    expect((await cli(root, ["next"])).out).toContain("--type <tipo>");
+    expect((await cli(root, ["new", "Login con Google", "--type", "fix"])).code).toBe(0);
+    expect(git(folderOf(root, LOGIN), "branch", "--show-current")).toBe(
+      "team/fix-login-con-google",
+    );
+    const untyped = await cli(await repo("github", "users/ana/{slug}"), ["next"]);
+    expect(untyped.out).not.toContain("--type");
+  });
+
+  it("stops every command when it gives no valid branches, and says why (AC2)", async () => {
+    const root = await repo("github", "{type}/fijo");
+    const next = await cli(root, ["next"]);
+    expect(next.code).toBe(1);
+    expect(next.out).toContain("git.branchPattern: The pattern needs {slug} or {id}");
+    expect(next.out).toContain("corrige .specty/config.yaml");
   });
 });

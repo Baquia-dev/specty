@@ -168,11 +168,16 @@ async function newInWorktree(
   );
 }
 
-/** The change's branch, as `git.flow` names it (Specty's own when unset), and free. */
+/**
+ * The change's branch, as `git.branchPattern` or else `git.flow` names it (Specty's own when
+ * neither is set), and free.
+ */
 async function branchFor(session: Session, options: NewOptions, id: string): Promise<string> {
-  const flow = session.config.git.flow ?? "specty";
+  const { flow = "specty", branchPattern } = session.config.git;
   const { kind, type } = options;
-  return freeBranch(session.git, branchName({ flow, kind, type, id, title: options.title.trim() }));
+  const title = options.title.trim();
+  const pattern = branchPattern !== undefined ? { pattern: branchPattern } : {};
+  return freeBranch(session.git, branchName({ flow, kind, type, id, title, ...pattern }));
 }
 
 /** Writes the spec skeleton and the initial state of a new change in `target.dir`. */
