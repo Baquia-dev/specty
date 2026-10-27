@@ -83,3 +83,25 @@ Así una sesión pasa de un cambio a otro como en Claude Code, sin abrir otra, y
 - R2: Pasar las lecturas por el guard suma su tiempo a cada lectura. Mitigación: sin una conversación ligada, el guard responde enseguida, y el camino rápido de `entry.ts` carga lo mínimo.
 - R3: Antigravity, Devin y Cursor no se pueden probar con la herramienta de verdad. Mitigación: sus pruebas usan los eventos que documentan, y ARCHITECTURE §10 dice qué queda sin comprobar.
 - R4: Si una herramienta ignora la entrada reescrita (Cursor al escribir archivos), la acción iría a la carpeta principal. Mitigación: donde no consta que se aplique, el guard no reescribe: bloquea y da la ruta.
+
+## Cierre
+
+### Resumen
+
+Las herramientas con guard que no son Claude Code entran en la carpeta de un cambio sin abrir otra sesión. `specty enter <id>` liga la conversación a esa carpeta, con la regla de `EnterWorktree`: una conversación, un cambio abierto, salvo los cortes de su épica. Desde ahí, el guard responde a esa conversación con la sesión de la carpeta del cambio, también al terminar su turno. Gemini CLI, OpenCode, Codex, Devin y los comandos de Cursor reciben su entrada reescrita para que cada acción ocurra allí. Antigravity y los archivos de Cursor se bloquean con la ruta buena, también al leer. `init` abre a cada herramienta la carpeta de las worktrees desde el proyecto, sin tocar la carpeta del usuario. `specty new` propone `specty enter`, y en la tabla ninguna herramienta con guard queda en «no posible» para «Worktree por nombre». Gemini CLI, OpenCode y Codex se comprobaron de extremo a extremo con un modelo simulado.
+
+### Desviaciones
+
+- Las pruebas con la herramienta de verdad mostraron lo que su documentación no decía. Gemini CLI sustituye la entrada en vez de fusionarla, y no ejecuta un `dir_path` fuera del proyecto, así que el comando va tras un `cd` relativo (C2). OpenCode instala con npm los paquetes de su plugin en cada sesión aislada, y el arnés comparte su caché (C3). En Codex, la regla de Specty no vale detrás de un `cd`, así que su archivo de reglas permite también `cd` (C4).
+- Antigravity no reescribe, al contrario de lo que preveía el diseño: un fallo conocido descarta su `overwrite` cuando pide permiso, y el guard bloquea con la ruta buena (C5).
+- El fin de turno de una conversación ligada en la carpeta de su cambio, y la acción `read` del core, no estaban en el diseño de la épica: salieron en C2 y en C5.
+
+### Decisiones
+
+- Leer es libre: solo se bloquea, con la ruta buena, lo que lee fuera de su carpeta una conversación que entró en un cambio.
+- Donde la herramienta podría ignorar la entrada reescrita, el guard juzga la acción tal como va a correr, como `beforeShellExecution` en Cursor.
+
+### Pendientes
+
+- Comprobar Antigravity, Devin y Cursor con la herramienta de verdad cuando se pueda simular su modelo, y OpenCode 2 cuando salga de beta.
+- `doctor` no avisa de una instalación anterior a la épica, como un plugin de OpenCode sin `redirects` o un matcher sin las lecturas; `init` la reescribe.

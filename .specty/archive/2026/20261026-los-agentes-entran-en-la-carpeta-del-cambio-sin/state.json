@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261026-los-agentes-entran-en-la-carpeta-del-cambio-sin",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261026-los-agentes-entran-en-la-carpeta-del-cambio-sin",
   "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e4a953495a4518c3a6dc42145ea3f054a17c2df1b432906e0812ad332c25df83",
+    "at": "2026-10-27T00:46:45.089Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -43,11 +50,5 @@
     "C": 6,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e4a953495a4518c3a6dc42145ea3f054a17c2df1b432906e0812ad332c25df83",
-    "at": "2026-10-27T00:46:45.089Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-10-27T04:28:06.643Z"
 }
