@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-las-rutas-de-specty-usan-tambien-en-windows",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-las-rutas-de-specty-usan-tambien-en-windows",
   "baseCommit": "54c6d3e663126b0f2dfddc60693028ce66dabef3",
   "revision": 2,
@@ -57,12 +57,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4afded14bb8e0c0dd92e88f809554ffc4de0b17a",
+      "attempts": 1,
       "startedAt": "2026-10-27T05:16:51.318Z",
       "doneAt": "2026-10-27T05:20:44.765Z",
-      "summary": "status y la nota de los comandos de la persona muestran la carpeta del cambio con posixRelative; export usa shownPath (y . en la raíz); gentle-ai muestra sus archivos con shownPath, también bajo ~/, en vez de comparar con root + /."
+      "summary": "status y la nota de los comandos de la persona muestran la carpeta del cambio con posixRelative; export usa shownPath (y . en la raíz); gentle-ai muestra sus archivos con shownPath, también bajo ~/, en vez de comparar con root + /.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8e7ec04dec45e0e3f693903317ccd622786808e5",
+      "startedAt": "2026-10-27T05:20:45.217Z",
+      "doneAt": "2026-10-27T05:23:01.374Z",
+      "summary": "namedWorktree compara tras resolve() la carpeta preparada con las que lista el repositorio: en Windows la lista da C:/… y join da C:\\…, y EnterWorktree acababa en .claude/worktrees en vez de en la carpeta del cambio."
     }
   },
   "pending": {

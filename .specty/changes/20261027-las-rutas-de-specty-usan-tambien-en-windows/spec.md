@@ -59,7 +59,7 @@ En Windows, Specty muestra con `\` las rutas relativas que en Linux y macOS mues
   - files: packages/cli/src/commands/export.ts, packages/cli/src/commands/status.ts, packages/cli/src/commands/human.ts, packages/cli/src/detect/gentle-ai.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/anywhere.test.ts test/export.test.ts test/gentle-ai.test.ts
-- [ ] T4: `WorktreeCreate` reconoce la carpeta preparada con cualquier separador
+- [x] T4: `WorktreeCreate` reconoce la carpeta preparada con cualquier separador
   - files: packages/cli/src/enforce/worktree-hooks.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktree-hooks.test.ts
