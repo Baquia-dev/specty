@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
@@ -334,6 +335,29 @@ describe("Gemini CLI's sandbox", () => {
     expect(JSON.parse(await read(root, SETTINGS))).toEqual(mine);
   });
 
+  it("opens the worktrees' folder to its tools from local settings, creating it (AC5)", async () => {
+    const root = await tempRepo(PACKAGE);
+    const home = `${root}.worktrees`;
+    const mine = { context: { includeDirectories: ["/opt/libs"] } };
+    await writeFiles(root, { [SETTINGS]: JSON.stringify(mine) });
+    const args = ["init", "--language", "es", "--tools", "gemini-cli"];
+    expect((await cli(root, [...args, "--dry-run"])).code).toBe(0);
+    expect(existsSync(home)).toBe(false);
+    const init = await cli(root, args);
+    expect(init.out).toContain(
+      "Gemini CLI: .gemini/settings.json (local) abre a sus herramientas la carpeta de las worktrees (`context.includeDirectories`), para trabajar en la de un cambio desde la misma sesión (`specty enter`); Gemini CLI puede preguntar una vez si confías en ella.",
+    );
+    const included = async () => JSON.parse(await read(root, SETTINGS)).context.includeDirectories;
+    expect(await included()).toEqual(["/opt/libs", home]);
+    // Gemini CLI does not start when a folder of its workspace is missing.
+    expect(existsSync(home)).toBe(true);
+    await cli(root, args);
+    expect(await included()).toEqual(["/opt/libs", home]);
+    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(JSON.parse(await read(root, SETTINGS))).toEqual(mine);
+    expect(existsSync(home)).toBe(true);
+  });
+
   it("adds no machine path to settings kept in git, and says which to add (AC4)", async () => {
     const root = await tempRepo({ ...PACKAGE, [SETTINGS]: "{}\n" });
     const init = await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
@@ -341,5 +365,15 @@ describe("Gemini CLI's sandbox", () => {
       `Gemini CLI: .gemini/settings.json va en git, así que Specty no le añade rutas de esta máquina; si activas su sandbox, añade \`${join(root, ".git")}\`, \`${root}.worktrees\` a \`tools.sandboxAllowedPaths\` en tu configuración de usuario para que funcionen los commits de Specty.`,
     );
     expect(JSON.parse(await read(root, SETTINGS)).tools).toBeUndefined();
+  });
+
+  it("says which folder to open to its tools when the settings are kept in git (AC5)", async () => {
+    const root = await tempRepo({ ...PACKAGE, [SETTINGS]: "{}\n" });
+    const init = await cli(root, ["init", "--language", "es", "--tools", "gemini-cli"]);
+    expect(init.out).toContain(
+      `Gemini CLI: .gemini/settings.json va en git, así que Specty no le añade la carpeta de las worktrees; para trabajar en la de un cambio desde la misma sesión (\`specty enter\`), añade \`${root}.worktrees\` a \`context.includeDirectories\` en tu configuración de usuario.`,
+    );
+    expect(JSON.parse(await read(root, SETTINGS)).context).toBeUndefined();
+    expect(existsSync(`${root}.worktrees`)).toBe(true);
   });
 });

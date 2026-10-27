@@ -133,6 +133,8 @@ export {
   geminiSandboxLine,
   geminiSandboxVersionedWarning,
   geminiTrustWarning,
+  geminiWorkspaceLine,
+  geminiWorkspaceVersionedWarning,
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,

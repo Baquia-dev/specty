@@ -77,7 +77,7 @@ Desde C1, una conversación de Gemini CLI que entra en un cambio (`specty enter 
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/place.ts, packages/cli/src/agents/gemini-cli.ts, packages/cli/test/gemini-cli.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/enter.test.ts
-- [ ] T4: init abre a Gemini CLI la carpeta de las worktrees
+- [x] T4: init abre a Gemini CLI la carpeta de las worktrees
   - files: packages/cli/src/agents/gemini-cli.ts, packages/cli/src/install/files.ts, packages/core/src/cards/install.ts, packages/cli/test/gemini-cli.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/install-files.test.ts

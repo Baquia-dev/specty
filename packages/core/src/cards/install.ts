@@ -156,6 +156,22 @@ export function geminiSandboxLine(file: string, lang: Lang): string {
   );
 }
 
+/** Gemini CLI's local settings open the worktrees' folder to its tools (`specty enter`). */
+export function geminiWorkspaceLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Gemini CLI: ${file} (local) abre a sus herramientas la carpeta de las worktrees (\`context.includeDirectories\`), para trabajar en la de un cambio desde la misma sesión (\`specty enter\`); Gemini CLI puede preguntar una vez si confías en ella.`,
+    `Gemini CLI: ${file} (local) opens the worktrees' folder to its tools (\`context.includeDirectories\`), to work in a change's from the same session (\`specty enter\`); Gemini CLI may ask once whether you trust it.`,
+  );
+}
+
+/** Gemini CLI settings that go in git: Specty says which folder to open to its tools elsewhere. */
+export function geminiWorkspaceVersionedWarning(file: string, folder: string, lang: Lang): string {
+  return translator(lang)(
+    `Gemini CLI: ${file} va en git, así que Specty no le añade la carpeta de las worktrees; para trabajar en la de un cambio desde la misma sesión (\`specty enter\`), añade \`${folder}\` a \`context.includeDirectories\` en tu configuración de usuario.`,
+    `Gemini CLI: ${file} goes in git, so Specty does not add the worktrees' folder to it; to work in a change's from the same session (\`specty enter\`), add \`${folder}\` to \`context.includeDirectories\` in your user settings.`,
+  );
+}
+
 /** Gemini CLI settings that go in git: no machine path, so Specty says what to add elsewhere. */
 export function geminiSandboxVersionedWarning(
   file: string,

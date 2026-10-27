@@ -62,12 +62,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "632c13193ed7512eaec734188ab54128c0d485ef",
+      "attempts": 1,
       "startedAt": "2026-10-27T01:43:39.335Z",
       "doneAt": "2026-10-27T01:52:00.440Z",
-      "summary": "Contrato redirect y Verdict.input; el guard juzga la acción reescrita (redirection en place.ts) y la devuelve. Gemini CLI lleva file_path y dir_path a la carpeta del cambio, ancla las búsquedas sin carpeta y responde con tool_input; BeforeTool incluye las lecturas."
+      "summary": "Contrato redirect y Verdict.input; el guard juzga la acción reescrita (redirection en place.ts) y la devuelve. Gemini CLI lleva file_path y dir_path a la carpeta del cambio, ancla las búsquedas sin carpeta y responde con tool_input; BeforeTool incluye las lecturas.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/index.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "c5f144a5eb80eb01562b9c619063313fd08882b4",
+      "startedAt": "2026-10-27T01:52:00.744Z",
+      "doneAt": "2026-10-27T01:57:17.555Z",
+      "summary": "init (ajustes locales) añade la carpeta de las worktrees a context.includeDirectories de Gemini CLI y la crea si falta (InstallFiles.folder, nada con --dry-run); con ajustes versionados dice qué añadir; uninstall quita la entrada y deja la carpeta. withSandbox pasa a withPaths."
     }
   },
   "pending": {
@@ -78,6 +89,7 @@
     "A": 4,
     "AC": 7,
     "T": 5,
-    "R": 3
+    "R": 3,
+    "S": 1
   }
 }
