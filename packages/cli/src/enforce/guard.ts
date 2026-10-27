@@ -1,42 +1,30 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join, relative, resolve } from "node:path";
 import {
   AGENT_CAPABILITIES,
   analyzeShell,
   decideAfterShell,
   decideGuard,
-  type ForeignPath,
   type GuardAction,
   type GuardChange,
   type GuardContext,
   type GuardDecision,
-  isGoverned,
   isIntegrating,
   nativeEnterDenial,
   parseSpec,
   renderText,
-  type ShellAnalysis,
   shellChanges,
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
-import { within } from "../flow/land";
-import { placePaths, sharedFolders } from "../flow/worktree";
+import { sharedFolders } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
-import { pathsOf } from "../io/git";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
-import {
-  conversationOf,
-  cwdOf,
-  type GuardReply,
-  type GuardTool,
-  type RawAction,
-  toolUseId,
-} from "./actions";
+import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { leavePending, type PendingKind, takePending } from "./pending";
+import { resolveAction } from "./place";
 import { bindSession, boundFolder, enterAction, enterChange } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 import { worktreeHook } from "./worktree-hooks";
@@ -248,113 +236,6 @@ async function afterShell(session: Session, event: Record<string, unknown>): Pro
   if (before === undefined) return ALLOW;
   const changes = shellChanges(before, await treeSnapshot(session));
   return verdict(decideAfterShell(changes, await guardContext(session)), session);
-}
-
-/** Where the guard places an event's paths: its session, its tool's folder, the folder it entered. */
-type Place = Pick<Call, "session" | "cwd" | "bound">;
-
-/**
- * Turns tool paths into repository-relative ones, and keeps apart those inside another worktree:
- * they belong to another change, and a conversation that entered a change's folder is given the
- * same path there. Paths outside every worktree and paths git ignores (`node_modules/`, caches,
- * builds) are not governed code, so they are dropped.
- */
-async function inRepo(
-  { session, cwd, bound }: Place,
-  paths: readonly string[],
-): Promise<{ readonly inside: string[]; readonly foreign: readonly ForeignPath[] }> {
-  const placed = await placePaths(
-    session.git,
-    paths.map((path) => resolve(cwd, path)),
-  );
-  // The root itself (`rm -rf .`) is never ignored, and git rejects an empty pathspec.
-  const ignored = new Set(await session.git.ignored(placed.inside.filter((path) => path !== "")));
-  const foreign =
-    bound === undefined
-      ? placed.foreign
-      : placed.foreign.map((path) => ({
-          ...path,
-          instead: join(bound, relative(path.worktree, path.path)),
-        }));
-  return { inside: placed.inside.filter((path) => !ignored.has(path)), foreign };
-}
-
-async function resolveAction(
-  place: Place,
-  raw: Exclude<RawAction, { readonly kind: "enter" }>,
-): Promise<GuardAction> {
-  const { session, cwd, bound } = place;
-  if (raw.kind === "other") return raw;
-  if (raw.kind === "files") return { kind: "files", ...(await placeFiles(place, raw)) };
-  if (raw.kind !== "shell") {
-    const { inside, foreign } = await inRepo(place, raw.paths);
-    return { kind: raw.kind, paths: inside, foreign };
-  }
-  // Paths the analysis cannot place (shell variables, `cd` to an unknown place) are not judged.
-  const analysis = analyzeShell(raw.command);
-  const committedGoverned = (await commitsHere(session, cwd, analysis.commits))
-    ? pathsOf([
-        ...(await session.git.staged()),
-        ...(await session.git.changedSince(await session.git.head())),
-      ]).filter((path) => !path.startsWith(".specty/") && isGoverned(path, session.config))
-    : [];
-  return {
-    kind: "shell",
-    facts: {
-      specty: analysis.specty,
-      unscopedNpx: analysis.unscopedNpx,
-      bypass: analysis.bypass,
-      committedGoverned,
-      ...(await placeFiles(place, analysis)),
-      ...(bound !== undefined && (await runsOutside(analysis, cwd, bound))
-        ? { elsewhere: { folder: bound, command: raw.command } }
-        : {}),
-    },
-  };
-}
-
-/**
- * Whether a command would run outside the change's folder its conversation entered, wherever the
- * analysis can tell. `specty enter` runs anywhere: it moves the conversation.
- */
-async function runsOutside(analysis: ShellAnalysis, cwd: string, bound: string): Promise<boolean> {
-  if (analysis.enters.length > 0) return false;
-  const known = analysis.runsIn.flatMap((folder) =>
-    folder === undefined ? [] : [resolve(cwd, folder)],
-  );
-  return (await Promise.all(known.map((folder) => within(folder, bound)))).includes(false);
-}
-
-/**
- * Whether a commit of the command is this repository's: one whose folder the analysis cannot
- * name, or one inside any of its worktrees. A folder outside them all is another repository,
- * even if it does not exist yet (`cd /tmp/x && git init && git commit`).
- */
-async function commitsHere(
-  session: Session,
-  cwd: string,
-  commits: ShellAnalysis["commits"],
-): Promise<boolean> {
-  if (commits.some((commit) => commit.directory === undefined)) return true;
-  const placed = await placePaths(
-    session.git,
-    commits.map((commit) => resolve(cwd, commit.directory ?? "")),
-  );
-  return placed.inside.length > 0 || placed.foreign.length > 0;
-}
-
-/** What a command or a patch writes and deletes here, and apart, what it would change elsewhere. */
-async function placeFiles(
-  place: Place,
-  files: { readonly writes: readonly string[]; readonly deletes: readonly string[] },
-) {
-  const writes = await inRepo(place, files.writes);
-  const deletes = await inRepo(place, files.deletes);
-  return {
-    writes: writes.inside,
-    deletes: deletes.inside,
-    foreign: [...writes.foreign, ...deletes.foreign],
-  };
 }
 
 async function guardContext(session: Session) {

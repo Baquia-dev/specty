@@ -6,6 +6,13 @@
   "branch": "specty/20261026-gemini-cli-lleva-sus-acciones-a-la-carpeta-del-c",
   "baseCommit": "e70d0f4debb3a51ab3b5d823d4dfe570b3fbb1f9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:940c56d142d9242a717631787f56997f4942e22c7264cebea129fb5d50af7d30",
+    "at": "2026-10-27T01:36:08.563Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -34,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "20e47e91b85e5aa93fc5dbdc944079c07db8f6c6",
+      "startedAt": "2026-10-27T01:36:08.979Z",
+      "doneAt": "2026-10-27T01:40:04.136Z",
+      "summary": "La ubicación de las acciones (resolveAction, inRepo, placeFiles, commitsHere y runsOutside) pasa de enforce/guard.ts a enforce/place.ts, con el tipo Place; el guard solo la usa. Sin cambios de comportamiento: los tests del guard siguen en verde."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -44,12 +61,5 @@
     "AC": 7,
     "T": 5,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:940c56d142d9242a717631787f56997f4942e22c7264cebea129fb5d50af7d30",
-    "at": "2026-10-27T01:36:08.563Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

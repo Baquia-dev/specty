@@ -64,7 +64,7 @@ Desde C1, una conversación de Gemini CLI que entra en un cambio (`specty enter 
 
 ## Tareas
 
-- [ ] T1: La ubicación de las acciones sale del guard a su módulo
+- [x] T1: La ubicación de las acciones sale del guard a su módulo
   - files: packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/place.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enter.test.ts test/enforce.test.ts test/codex.test.ts test/worktrees.test.ts
