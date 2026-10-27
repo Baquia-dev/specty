@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261027-las-ramas-semanticas-next-pide-type-y-prune-las",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261027-las-ramas-semanticas-next-pide-type-y-prune-las",
   "baseCommit": "53c04665141c1d80bbeb386026ef6bf13b1193f6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1c0536942ec6a13a855c13250c3f33a915d4101a8a0e52ed9c0314cb70c2488e",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3db56819943e391b2e8ff47e5a1761a682a5ada5",
+      "attempts": 1,
       "startedAt": "2026-10-27T23:22:49.711Z",
       "doneAt": "2026-10-27T23:27:13.043Z",
-      "summary": "ARCHITECTURE §9 dice que next pide --type con un flujo por tipo y que prune borra también las ramas marcadas ya incorporadas, nunca las de la persona; formats §6 lo resume."
+      "summary": "ARCHITECTURE §9 dice que next pide --type con un flujo por tipo y que prune borra también las ramas marcadas ya incorporadas, nunca las de la persona; formats §6 lo resume.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,5 +70,6 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T23:29:33.032Z"
 }

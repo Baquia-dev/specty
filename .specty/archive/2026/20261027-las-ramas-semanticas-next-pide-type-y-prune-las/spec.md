@@ -69,3 +69,24 @@ Con `git.flow`, la rama de un cambio lleva su tipo, pero el agente no sabe que d
 
 - R1: `git config --get-regexp` sale con 1 cuando no hay ninguna marca. Mitigación: se lee con `git.run` y una salida distinta de 0 cuenta como ninguna.
 - R2: Un nombre marcado con caracteres de patrón (`*`, `?`, `[`) en `git branch --list`. Mitigación: los nombres de `new` salen de `slugify` y de los prefijos fijos, sin esos caracteres.
+
+## Cierre
+
+### Resumen
+
+Con `git.flow` en `github`, `trunk` o `gitflow`, el SIGUIENTE de `next` sin cambio activo propone `new "<título>" --type <tipo> --request "…"` y nombra los tipos válidos; con `specty` o sin la clave no cambia. `specty prune` borra también las ramas que `new` ligó a su cambio en la configuración de git (`markedBranches`), cuando ya están en la rama destino y en ninguna worktree; deja las demás con su motivo y nunca toca las de la persona, aunque sigan el flujo. ARCHITECTURE §9 y formats §6 lo describen.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- `branchTypes` se calcula en `session.ts` (un flujo distinto de `specty`) en vez de con un ayudante del core; el cambio siguiente lo ampliará con `git.branchPattern`.
+- El SIGUIENTE con tipo separa en ayudantes el texto de `--kind quick`, común a las dos versiones.
+- El test de `branch-names.test.ts` saca la configuración a `configOf(flow)` para reutilizarla.
+
+### Pendientes
+
+- Cambio siguiente (2a-iii): `git.branchPattern` con `{type}`, `{slug}` e `{id}`, validado, y que también active `branchTypes` cuando lleve `{type}`.
+- Cambio 2b: `init` detecta o pregunta el flujo, un proyecto nuevo debe elegirlo y Git Flow escribe `git.target: develop`.

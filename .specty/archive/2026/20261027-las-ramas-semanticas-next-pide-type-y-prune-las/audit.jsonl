@@ -10,3 +10,7 @@
 {"ts":"2026-10-27T23:22:49.712Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"3db56819943e391b2e8ff47e5a1761a682a5ada5"}}
 {"ts":"2026-10-27T23:27:13.042Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm test","exit":0,"ms":115886,"tree":"sha256:3f5602bbd8e622da3ffe415707c96670ea73df2318f721744e105b90eb1dccab"}}
 {"ts":"2026-10-27T23:27:13.044Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE §9 dice que next pide --type con un flujo por tipo y que prune borra también las ramas marcadas ya incorporadas, nunca las de la persona; formats §6 lo resume."}}
+{"ts":"2026-10-27T23:29:22.842Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":123887,"tree":"sha256:3f5602bbd8e622da3ffe415707c96670ea73df2318f721744e105b90eb1dccab"}}
+{"ts":"2026-10-27T23:29:22.844Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-27T23:29:33.033Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:fdc3bb1d6b48fbc0db58f9b31904a950312650e929038ce2bee2e751fa607815","size":"M","warnings":0}}
+{"ts":"2026-10-27T23:29:33.226Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
