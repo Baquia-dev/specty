@@ -15,3 +15,7 @@
 {"ts":"2026-10-27T10:43:43.311Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"50913c41eecafc7692731ab4a2ef000194aa8550"}}
 {"ts":"2026-10-27T10:52:31.627Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm test","exit":0,"ms":283476,"tree":"sha256:e6791a480f20cd8b23d1e861e527cb680f4b59e83cbd8b4bc0bc6f1b0a718ef7"}}
 {"ts":"2026-10-27T10:52:31.631Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"ARCHITECTURE §14 dice que la persona en la terminal siempre elige los agentes en una lista múltiple con los detectados marcados, qué se instala si cancela y que sin persona, con --dry-run o --tools todo sigue igual."}}
+{"ts":"2026-10-27T10:56:43.310Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":234223,"tree":"sha256:e6791a480f20cd8b23d1e861e527cb680f4b59e83cbd8b4bc0bc6f1b0a718ef7"}}
+{"ts":"2026-10-27T10:56:43.315Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-27T10:57:18.880Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:046940950cbe02b493117786dd2433a0a82584efc5dae7b6a89acde583b44a0e","size":"L","warnings":1}}
+{"ts":"2026-10-27T10:59:35.312Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
