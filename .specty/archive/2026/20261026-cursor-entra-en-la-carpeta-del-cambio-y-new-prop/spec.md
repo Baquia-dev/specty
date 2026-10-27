@@ -67,3 +67,23 @@ Con C2 a C5, las demás herramientas con guard llevan a la carpeta del cambio la
 
 - R1: Si Cursor no aplicara `updated_input` a `Shell`, el comando correría en la carpeta principal después de que el guard lo juzgara en la del cambio. Mitigación: `beforeShellExecution`, que llega después, juzga el comando tal como va a correr y lo bloquea con el `cd` bueno.
 - R2: Si `beforeShellExecution` recibiera el comando sin reescribir aunque Cursor lo aplique, bloquearía un comando que sí iba a la carpeta del cambio. Mitigación: el bloqueo da el `cd` exacto, con el que el comando pasa.
+
+## Cierre
+
+### Resumen
+
+Cursor lleva a la carpeta del cambio los comandos de una conversación que entró en él: `preToolUse` le devuelve cada `Shell` tras un `cd` a esa carpeta, con `updated_input`, y `beforeShellExecution` juzga el comando tal como va a correr. Sus archivos y sus lecturas fuera de la carpeta se bloquean con la ruta buena. `specty new` propone `specty enter <id>` a una herramienta que entra así, con la manera de abrirla allí como alternativa. En la tabla, ninguna herramienta con guard queda en «no posible» para «Worktree por nombre».
+
+### Desviaciones
+
+- La rama de la tarjeta de `new` que pedía abrir otra sesión se mantuvo en T2, porque Cursor seguía en «no posible» hasta T3, y T3 la quitó al quedarse sin uso; para ello amplió su alcance a `cards/new.ts`.
+- `NO_ENTER_WORKTREE` se borró, como preveía el diseño.
+
+### Decisiones
+
+- Un comando que llega a `beforeShellExecution` sin el `cd` se bloquea aunque `preToolUse` lo hubiera reescrito: así nunca corre en la carpeta principal algo que el guard juzgó en la del cambio.
+- El SIGUIENTE de `new` para una herramienta que Specty no reconoce no cambia.
+
+### Pendientes
+
+- Comprobar con Cursor de verdad si `beforeShellExecution` recibe el comando reescrito.
