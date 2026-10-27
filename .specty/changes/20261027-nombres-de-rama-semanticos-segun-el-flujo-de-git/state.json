@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-nombres-de-rama-semanticos-segun-el-flujo-de-git",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-nombres-de-rama-semanticos-segun-el-flujo-de-git",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e46711c7e499c32f74ac5737b1244a61a70fa0e7",
+      "attempts": 1,
       "startedAt": "2026-10-27T11:25:17.422Z",
       "doneAt": "2026-10-27T11:29:41.447Z",
-      "summary": "resolveActive busca el cambio de la rama con changeOfBranch: por el nombre specty/<id> o spike/<id> si ese cambio existe, si no por la marca de git y si no por el cambio abierto cuyo state.json nombra la rama (otro clon)."
+      "summary": "resolveActive busca el cambio de la rama con changeOfBranch: por el nombre specty/<id> o spike/<id> si ese cambio existe, si no por la marca de git y si no por el cambio abierto cuyo state.json nombra la rama (otro clon).",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ad58152f55df7af753c13c29373675c349775d2a",
+      "startedAt": "2026-10-27T11:29:41.777Z",
+      "doneAt": "2026-10-27T11:34:37.572Z",
+      "summary": "formats §6 describe git.flow (ejemplo y nombres de cada flujo, -2 y la marca) y ARCHITECTURE §9 trae la tabla de nombres por flujo y cómo se reconoce el cambio de una rama; la fila de new nombra --type."
     }
   },
   "pending": {

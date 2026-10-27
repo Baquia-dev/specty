@@ -83,7 +83,7 @@ Hoy cada cambio vive en `specty/<id>`, un nombre que no sigue el flujo de git de
   - files: packages/cli/src/flow/branches.ts, packages/cli/src/flow/active.ts, packages/cli/test/branch-names.test.ts
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/branch-names.test.ts
-- [ ] T4: formats y ARCHITECTURE describen los flujos y las ramas
+- [x] T4: formats y ARCHITECTURE describen los flujos y las ramas
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC8
   - type: docs

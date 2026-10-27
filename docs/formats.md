@@ -345,6 +345,7 @@ git:
   worktrees: true                 # cada cambio en su propia worktree (necesita branchPerChange)
   setup: "pnpm install --prefer-offline"  # prepara cada worktree nueva; false: nada; sin la clave: el comando del stack
   target: develop                 # rama de la que parten los cambios y a la que se incorporan; sin la clave: la principal
+  flow: gitflow                   # specty | github | trunk | gitflow: cómo se nombran las ramas; sin la clave: specty/<id>
 team:                             # solo con mode: team
   approvers: []
   requirePrReview: true
@@ -452,6 +453,8 @@ Los pasos planifican uno tras otro sobre los mismos archivos, así que dos pasos
 Los demás stacks no lo necesitan, porque su build trae las dependencias. Con `false`, no se ejecuta nada.
 
 `git.target` es la rama de la que parten los cambios nuevos y a la que se incorporan al cerrar. Sin la clave, es la rama principal detectada (ARCHITECTURE §9). Si la clave nombra una rama que no existe en local, `new` se bloquea y `close` cierra sin incorporar: Specty no recurre a la principal.
+
+`git.flow` dice cómo nombra `new` la rama de cada cambio, con el tipo de `--type` (un tipo de commit, `feat` por defecto) y el título sin la fecha. `specty`, el valor sin la clave: `specty/<id>`. `github` y `trunk`: `<tipo>/<slug>`, como `fix/login-con-google`. `gitflow`: `bugfix/<slug>` para un `fix` y `feature/<slug>` para los demás. Un spike va en `spike/<id>` con `specty` y en `spike/<slug>` con los otros. Si la rama ya existe, en local o en un remoto, `new` le añade `-2`, `-3`…; el id del cambio no cambia. Cada rama queda ligada a su cambio en la configuración de git (`branch.<rama>.specty`), que es como Specty sabe el cambio de una rama que no lleva el id (ARCHITECTURE §9).
 
 ## 7. Trailers de commit
 
