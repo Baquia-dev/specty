@@ -81,29 +81,37 @@ export interface ProposedView {
 
 /** `specty propose` accepted: the spec (or the closing) waits for the user. */
 export function proposedCard(view: ProposedView, ctx: CardContext): Output {
+  return view.closing ? closingProposedCard(view, ctx) : specProposedCard(view, ctx);
+}
+
+function closingProposedCard(view: ProposedView, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return {
+    status: "ok",
+    header: view.header,
+    blocks: [
+      ...section(undefined, [t("Cierre válido.", "Valid closing.")]),
+      ...section(
+        t("AVISOS", "WARNINGS"),
+        view.warnings.map((entry) => entry.message),
+      ),
+    ],
+    next:
+      ctx.delegated === true
+        ? t(
+            `modo delegado: confirma tú el cierre con \`${ctx.command} close\` y sigue su salida.`,
+            `delegated mode: confirm the closing yourself with \`${ctx.command} close\` and follow its output.`,
+          )
+        : t(
+            `pide al usuario que confirme el cierre con \`${ctx.command} close\` y termina tu turno.`,
+            `ask the user to confirm the closing with \`${ctx.command} close\` and end your turn.`,
+          ),
+  };
+}
+
+function specProposedCard(view: ProposedView, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const reasons = view.size.reasons.map((reason) => formatSizeReason(reason, ctx.lang)).join(", ");
-  const warnings = view.warnings.map((entry) => entry.message);
-  if (view.closing) {
-    return {
-      status: "ok",
-      header: view.header,
-      blocks: [
-        ...section(undefined, [t("Cierre válido.", "Valid closing.")]),
-        ...section(t("AVISOS", "WARNINGS"), warnings),
-      ],
-      next:
-        ctx.delegated === true
-          ? t(
-              `modo delegado: confirma tú el cierre con \`${ctx.command} close\` y sigue su salida.`,
-              `delegated mode: confirm the closing yourself with \`${ctx.command} close\` and follow its output.`,
-            )
-          : t(
-              `pide al usuario que confirme el cierre con \`${ctx.command} close\` y termina tu turno.`,
-              `ask the user to confirm the closing with \`${ctx.command} close\` and end your turn.`,
-            ),
-    };
-  }
   return {
     status: "ok",
     header: view.header,
@@ -119,24 +127,33 @@ export function proposedCard(view: ProposedView, ctx: CardContext): Output {
         t("CAMBIOS RESPECTO A LO APROBADO", "CHANGES SINCE THE APPROVED REVISION"),
         view.delta.map((entry) => deltaLine(entry, ctx)),
       ),
-      ...section(t("AVISOS", "WARNINGS"), warnings),
+      ...section(
+        t("AVISOS", "WARNINGS"),
+        view.warnings.map((entry) => entry.message),
+      ),
     ],
-    next:
-      view.review === true
-        ? t(
-            `antes de pedir la aprobación, ejecuta \`${ctx.command} review\`: una revisión independiente de la spec con un modelo más fuerte.`,
-            `before asking for the approval, run \`${ctx.command} review\`: an independent review of the spec by a stronger model.`,
-          )
-        : ctx.delegated === true
-          ? t(
-              `modo delegado: aprueba tú la spec con \`${ctx.command} approve\` y sigue su salida.`,
-              `delegated mode: approve the spec yourself with \`${ctx.command} approve\` and follow its output.`,
-            )
-          : t(
-              `dile al usuario que la spec está lista en ${view.specPath}, con su tamaño y el esfuerzo recomendado, y que la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
-              `tell the user the spec is ready at ${view.specPath}, with its size and recommended effort, and that they approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
-            ),
+    next: specProposedNext(view, ctx),
   };
+}
+
+/** An independent review first, if it is due; then the approval, the agent's or the user's. */
+function specProposedNext(view: ProposedView, ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  if (view.review === true) {
+    return t(
+      `antes de pedir la aprobación, ejecuta \`${ctx.command} review\`: una revisión independiente de la spec con un modelo más fuerte.`,
+      `before asking for the approval, run \`${ctx.command} review\`: an independent review of the spec by a stronger model.`,
+    );
+  }
+  return ctx.delegated === true
+    ? t(
+        `modo delegado: aprueba tú la spec con \`${ctx.command} approve\` y sigue su salida.`,
+        `delegated mode: approve the spec yourself with \`${ctx.command} approve\` and follow its output.`,
+      )
+    : t(
+        `dile al usuario que la spec está lista en ${view.specPath}, con su tamaño y el esfuerzo recomendado, y que la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
+        `tell the user the spec is ready at ${view.specPath}, with its size and recommended effort, and that they approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
+      );
 }
 
 export function deltaLine(entry: DeltaEntry, ctx: CardContext): string {

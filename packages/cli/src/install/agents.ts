@@ -12,17 +12,31 @@ export const CLAUDE_WORKTREE_EVENTS: readonly string[] = ["WorktreeCreate", "Wor
 export const CLAUDE_SETTINGS = ".claude/settings.json";
 export const CLAUDE_LOCAL_SETTINGS = ".claude/settings.local.json";
 export const CURSOR_HOOKS = ".cursor/hooks.json";
+/** Cursor's sandbox settings for the workspace: Specty's folders in it carry machine paths. */
+export const CURSOR_SANDBOX = ".cursor/sandbox.json";
 export const CODEX_HOOKS = ".codex/hooks.json";
 export const CODEX_RULES = ".codex/rules/specty.rules";
 export const OPENCODE_PLUGIN = ".opencode/plugins/specty.js";
+export const ANTIGRAVITY_HOOKS = ".agents/hooks.json";
+export const GEMINI_SETTINGS = ".gemini/settings.json";
+/** Devin's standalone hooks file, which Devin Desktop's agent and Devin CLI share. */
+export const DEVIN_HOOKS = ".devin/hooks.v1.json";
+/** Devin's shared settings, and its local ones, which hold machine paths. */
+export const DEVIN_CONFIG = ".devin/config.json";
+export const DEVIN_LOCAL_CONFIG = ".devin/config.local.json";
 
 /** Files where Specty installs agent hooks; `new --worktree` copies the ones git does not track. */
 export const AGENT_HOOK_FILES: readonly string[] = [
   CLAUDE_SETTINGS,
   CLAUDE_LOCAL_SETTINGS,
   CURSOR_HOOKS,
+  CURSOR_SANDBOX,
   CODEX_HOOKS,
   OPENCODE_PLUGIN,
+  ANTIGRAVITY_HOOKS,
+  GEMINI_SETTINGS,
+  DEVIN_HOOKS,
+  DEVIN_LOCAL_CONFIG,
 ];
 
 export interface AgentInstall {
@@ -96,6 +110,44 @@ export function withHooks(
     return entries.length === 0 && !Object.hasOwn(hooks, event) ? [] : [[event, entries]];
   });
   return { ...value, hooks: { ...hooks, ...Object.fromEntries(updated) } };
+}
+
+/**
+ * The JSON hook files where `check --install` puts an agent's end of turn, next to its guard.
+ * OpenCode's goes inside its plugin, and Antigravity's inside its `specty` hook, which their
+ * guards' removal takes whole.
+ */
+const STOP_FILES: readonly string[] = [
+  CLAUDE_SETTINGS,
+  CLAUDE_LOCAL_SETTINGS,
+  CURSOR_HOOKS,
+  CODEX_HOOKS,
+  GEMINI_SETTINGS,
+  DEVIN_HOOKS,
+];
+
+/** Takes each agent's end of turn out of the repository, for `uninstall`. */
+export async function removeAgentStops(root: string, files: InstallFiles): Promise<void> {
+  for (const file of STOP_FILES) await removeFromJson(root, file, withoutAgentStop, files);
+}
+
+/**
+ * Drops the entries whose command is Specty's end of turn (`hook agent-stop`), in a `hooks` object
+ * or at the top of a standalone hooks file, and the lists that leaves empty; the person's stay.
+ */
+function withoutAgentStop(value: Entry): Entry {
+  const prune = (record: Readonly<Record<string, unknown>>): Entry =>
+    Object.fromEntries(
+      Object.entries(record).flatMap(([key, item]): [string, unknown][] => {
+        if (!Array.isArray(item)) return [[key, item]];
+        const kept = item.filter(
+          (entry: unknown) => !JSON.stringify(entry).includes(" hook agent-stop "),
+        );
+        return kept.length === 0 && item.length > 0 ? [] : [[key, kept]];
+      }),
+    );
+  const top = prune(value);
+  return isRecord(top.hooks) ? { ...top, hooks: prune(top.hooks) } : top;
 }
 
 /**

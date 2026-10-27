@@ -143,36 +143,63 @@ export function contentRisks(diff: string): readonly RiskFinding[] {
 }
 
 function filesOf(diff: string): FileDiff[] {
-  const files: FileDiff[] = [];
-  let current: { path: string; executable: boolean; added: FileDiff["added"][number][] } | null =
-    null;
-  let inHunk = false;
-  let next = 0;
+  const walk: DiffWalk = { files: [], current: undefined, inHunk: false, next: 0 };
   for (const line of diff.split("\n")) {
     if (line.startsWith("diff --git ")) {
-      if (current !== null) files.push(current);
-      // Mode-only changes have no `+++` header: the path comes from this line.
-      current = { path: line.slice(line.lastIndexOf(" b/") + 3), executable: false, added: [] };
-      inHunk = false;
+      startFile(walk, line);
       continue;
     }
-    if (current === null) continue;
-    if (!inHunk) {
-      if (/^new (?:file )?mode 100755$/.test(line)) current.executable = true;
-      else if (line.startsWith("+++ b/")) current.path = line.slice(6).replace(/\t$/, "");
-      const hunk = /^@@ -\d+(?:,\d+)? \+(\d+)/.exec(line);
-      if (hunk !== null) [inHunk, next] = [true, Number(hunk[1])];
-    } else if (line.startsWith("@@")) {
-      next = Number(/^@@ -\d+(?:,\d+)? \+(\d+)/.exec(line)?.[1] ?? next);
-    } else if (line.startsWith("+")) {
-      current.added.push({ line: next, text: line.slice(1) });
-      next += 1;
-    } else if (line.startsWith(" ")) {
-      next += 1;
-    }
+    const file = walk.current;
+    if (file === undefined) continue;
+    if (walk.inHunk) hunkLine(walk, file, line);
+    else headerLine(walk, file, line);
   }
-  if (current !== null) files.push(current);
-  return files;
+  if (walk.current !== undefined) walk.files.push(walk.current);
+  return walk.files;
+}
+
+/** A file of the diff being read. */
+interface OpenFile {
+  path: string;
+  executable: boolean;
+  readonly added: FileDiff["added"][number][];
+}
+
+/** Where a walk of a diff is: the files read, the open one, its hunks and the next added line. */
+interface DiffWalk {
+  readonly files: FileDiff[];
+  current: OpenFile | undefined;
+  inHunk: boolean;
+  next: number;
+}
+
+const HUNK = /^@@ -\d+(?:,\d+)? \+(\d+)/;
+
+function startFile(walk: DiffWalk, line: string): void {
+  if (walk.current !== undefined) walk.files.push(walk.current);
+  // Mode-only changes have no `+++` header: the path comes from this line.
+  walk.current = { path: line.slice(line.lastIndexOf(" b/") + 3), executable: false, added: [] };
+  walk.inHunk = false;
+}
+
+/** Before the first hunk: an executable mode, the path of `+++`, and where the hunk starts. */
+function headerLine(walk: DiffWalk, file: OpenFile, line: string): void {
+  if (/^new (?:file )?mode 100755$/.test(line)) file.executable = true;
+  else if (line.startsWith("+++ b/")) file.path = line.slice(6).replace(/\t$/, "");
+  const hunk = HUNK.exec(line);
+  if (hunk !== null) {
+    walk.inHunk = true;
+    walk.next = Number(hunk[1]);
+  }
+}
+
+/** Inside the hunks: where another one starts, an added line with its number, or context. */
+function hunkLine(walk: DiffWalk, file: OpenFile, line: string): void {
+  if (line.startsWith("@@")) walk.next = Number(HUNK.exec(line)?.[1] ?? walk.next);
+  else if (line.startsWith("+")) {
+    file.added.push({ line: walk.next, text: line.slice(1) });
+    walk.next += 1;
+  } else if (line.startsWith(" ")) walk.next += 1;
 }
 
 function applies(rule: ContentRule, path: string): boolean {

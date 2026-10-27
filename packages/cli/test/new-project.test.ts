@@ -36,6 +36,18 @@ describe("init in a new project", () => {
     expect(git(root, "show", "--name-only", "--format=", "HEAD")).toContain("PRODUCT.md");
   });
 
+  it("is still new with only agents' files, also the skills in .agents (AC4)", async () => {
+    const root = await tempRepo({
+      "README.md": "# Notas\n",
+      ".agents/skills/lint/SKILL.md": "# Lint\n",
+      ".agents/skills/lint/scripts/check.sh": "#!/bin/sh\nnpm run lint\n",
+    });
+    const done = await cli(root, INIT);
+    expect(done.out).toContain(
+      "Proyecto nuevo: PRODUCT.md creado con las preguntas por responder.",
+    );
+  });
+
   it("leaves the questions for the agent to ask in the chat (AC2)", async () => {
     const root = await tempRepo({ "README.md": "# Notas\n" });
     const done = await cli(root, INIT);

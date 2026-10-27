@@ -89,6 +89,27 @@ describe("a change created by `new`", () => {
     );
   });
 
+  it("tells an agent that cannot switch folders how the person opens its tool there (AC1)", () => {
+    const folder = "/repo.worktrees/20261020-saludo";
+    const next = (agent: WorktreeCreated["agent"]) =>
+      worktreeCreatedCard({ ...CREATED, byName: false, agent }, ES).next;
+    expect(next("codex")).toBe(
+      `continúa en ${folder}: Codex no cambia de carpeta en mitad de la sesión, así que pídele a la persona que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno; allí, \`specty next\` sigue con el cambio. Esta carpeta sigue con su propio trabajo.`,
+    );
+    expect(next("opencode")).toContain(`(\`opencode "${folder}"\`)`);
+    expect(next("cursor")).toContain(
+      `una ventana de Cursor en esa carpeta (\`cursor "${folder}"\`)`,
+    );
+    expect(next("gemini-cli")).toContain(`(\`cd "${folder}" && gemini\`)`);
+    expect(next("antigravity")).toContain(`(\`cd "${folder}" && agy\`)`);
+    // Claude Code enters by name, and an agent Specty does not recognize gets the general way on.
+    expect(next("claude-code")).toBe(next(undefined));
+    expect(next(undefined)).toContain("o abre allí un agente");
+    expect(worktreeCreatedCard({ ...CREATED, agent: "codex" }, EN).next).toContain(
+      `Codex cannot switch folders mid-session, so ask the person to open Codex in that folder (\`codex -C "${folder}"\`) and end your turn`,
+    );
+  });
+
   it("in a worktree that needs no preparation, goes straight on", () => {
     const { prepared: _, ...unprepared } = CREATED;
     const card = worktreeCreatedCard(unprepared, ES);

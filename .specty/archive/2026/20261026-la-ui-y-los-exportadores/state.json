@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261026-la-ui-y-los-exportadores",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-la-ui-y-los-exportadores",
+  "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:18d430a51b12fa3281ea450a863aa0aafa8e8a6d19cf55775a2808c22f27abf2",
+    "at": "2026-10-27T00:48:05.779Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cb51c82b7d4cdf8fe605b6c7acabffd1900cab571539afb1f45305e2b44ccfa7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:abc50f948e8ce2edbab547690dd6a169285cc3e2a51929558ce2e4a787f239ad",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0e9bb8afbb723195352df0db41552fb9819b7590",
+      "attempts": 1,
+      "startedAt": "2026-10-27T00:48:06.174Z",
+      "doneAt": "2026-10-27T00:52:06.930Z",
+      "summary": "openspec.ts: openSpec arma los archivos con proposalLines, designLines y requirementLines. speckit.ts: specKit con featureLines, planLines y taskLines. Mismos archivos y mismo texto; los tests de los exportadores pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "62de5f0a0eb4eaceccc6a35c42b4809320de77e3",
+      "attempts": 1,
+      "startedAt": "2026-10-27T00:52:07.226Z",
+      "doneAt": "2026-10-27T01:02:00.223Z",
+      "summary": "diff.ts: parseDiff deja a takeLine las líneas del hunk, a openHunk su apertura y a readHeader (tabla HEADERS) las cabeceras; markWords a markPair cada par. word-diff.ts: heaviestCommon y walk. highlight.ts: pieceSpans. Los tests de la UI pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "d8b48129cd7dfdbd0520ddc4eb4337d947e86743",
+      "attempts": 1,
+      "startedAt": "2026-10-27T01:02:00.541Z",
+      "doneAt": "2026-10-27T01:12:37.868Z",
+      "summary": "review.ts: deriveReview junta assumptionViews, fileGroups, taskViews, commentViews y sectionIndex con los mismos campos. delta.ts: textOf toma de la tabla TEXT_OF el texto de cada clase de unidad. Los tests de la UI pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "cbd8bc5b8d15b309d61af083d3b99ce41e165185",
+      "attempts": 1,
+      "startedAt": "2026-10-27T01:12:38.201Z",
+      "doneAt": "2026-10-27T01:17:02.223Z",
+      "summary": "progress.ts: progressOf deja cada tarea a taskProgress, con timesOf y lastVerification, en el mismo orden de campos. closing.ts: closingOf pregunta a fenceAfter por la valla abierta. sample-progress.ts: boletinesTasks y boletinesAudit. Los tests de la UI pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "101ef2f1c81ee1008ec19d3a0f034257154c1fe2",
+      "attempts": 1,
+      "startedAt": "2026-10-27T01:17:02.542Z",
+      "doneAt": "2026-10-27T01:23:08.239Z",
+      "summary": "shell.ts: el constructor de Shell inyecta y llama a followNavigation, goBackWithBackspace y registerCommands, en su contexto de inyección y con los mismos comandos. Ninguna función de la UI ni de los exportadores pasa de los límites; los tests pasan.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "closingSubmittedAt": "2026-10-27T01:25:42.878Z"
+}

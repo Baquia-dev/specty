@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-la-logica-de-core-la-maquina-de-estados-el-guard",
+  "baseCommit": "e937a882332a096930ceeab1c0ee630592cac1e3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f13cec7ca9e81efd7438ce5f03701a6f1605da53c5a29446dd78e48906ceba20",
+    "at": "2026-10-26T19:07:11.497Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:42872f0cf35d873fe98e2764b8d58d1757d2db37ce307f2e3a105fb88561941c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fee3d840cd4e2449dc0d174633b73ace4cfad4c99935e57a04656970348db784",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d36934fc3208f0077ca5de3637a79f04298c9b5c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:07:12.345Z",
+      "doneAt": "2026-10-26T19:07:50.724Z",
+      "summary": "machine.ts: transition comprueba actor y fase y deja el resultado a specOutcome (propose, requestChanges, approve con approveOutcome), taskOutcome y endOutcome, estrechados con Extract sin casts. Mismas transiciones; los 459 tests de core pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "324d343cce20a6e61f3f6efa6fa77d8fcc720f5d",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:07:51.205Z",
+      "doneAt": "2026-10-26T19:10:24.073Z",
+      "summary": "tokens.ts: step reparte cada carácter entre opening, separating, grouping y redirecting en el mismo orden. shell.ts: spectyArgs delega en scriptArgs, packageArgs y managerArgs. decide.ts: decidePath pasa el código gobernado a decideGoverned y el alcance a decideTaskScope.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "41005f0a343e17a8e12f462d6a00d3fbd1e77611",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:10:24.376Z",
+      "doneAt": "2026-10-26T19:11:06.619Z",
+      "summary": "config.ts: withDefaults compone verifyOf, scopeOf, limitsOf, linesOf, gitOf, teamOf, uiOf y reviewOf, cada sección con sus valores por defecto. checks.ts: resolveChecks toma layersOf, generatorsOf y commandsOf. Mismos valores.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "39efaf430ca6582c1de8709bd5b68573de6e955d",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:11:06.909Z",
+      "doneAt": "2026-10-26T19:11:53.576Z",
+      "summary": "assertions.ts: removedAssertions avanza un DiffCursor con header y cuenta cada línea de un hunk con count. risk.ts: filesOf lleva un DiffWalk con startFile, headerLine y hunkLine. Mismos resultados; los 459 tests de core pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "212952f3139cdb4412876ff04a815a877e2ab8d9",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:11:53.876Z",
+      "doneAt": "2026-10-26T19:17:04.693Z",
+      "summary": "size.ts: formatSizeReason lee los sustantivos de COUNTED y deja la deriva del modelo a adjustedReason. code.ts: split avanza un Cursor con blockComment y codeChar. structure.ts: notAllowed informa las secciones que sobran. core ya no tiene funciones fuera de los límites.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "closingSubmittedAt": "2026-10-26T19:19:01.464Z"
+}

@@ -25,9 +25,10 @@ describe("specty check --install keeps the agents out of the noise", () => {
       "CLAUDE.md": "x\n",
       ".gemini/settings.json": "{}\n",
       ".windsurfrules": "x\n",
+      ".agents/rules/style.md": "x\n",
     });
     const plan = await cli(root, ["check", "--install", "--dry-run"]);
-    for (const file of [".cursorignore", ".geminiignore", ".codeiumignore"]) {
+    for (const file of [".cursorignore", ".geminiignore", ".codeiumignore", ".antigravityignore"]) {
       expect(plan.out).toContain(`${file} (crear)`);
     }
     expect(plan.out).toContain("+**/node_modules/**");
@@ -74,6 +75,32 @@ describe("specty check --install keeps the agents out of the noise", () => {
     const settings = JSON.parse(await read(root, ".claude/settings.json"));
     expect(settings.hooks.Stop[0].hooks[0].command).toBe("specty hook agent-stop claude-code");
     expect(settings.permissions.deny).toContain("Read(**/node_modules/**)");
+  });
+
+  it("denies OpenCode reading them in opencode.json, after the person's rules and at the root too (AC4)", async () => {
+    const schema = "https://opencode.ai/config.json";
+    const mine = { $schema: schema, permission: { read: { "*.env": "deny" } } };
+    const root = await repo({ "opencode.json": `${JSON.stringify(mine, null, 2)}\n` });
+    expect((await cli(root, ["check", "--install"], { terminal: person() })).code).toBe(0);
+    const config = JSON.parse(await read(root, "opencode.json"));
+    expect(config.$schema).toBe(schema);
+    const rules = config.permission.read;
+    // The last rule that matches wins, so the person's stay first.
+    expect(Object.keys(rules)[0]).toBe("*.env");
+    for (const pattern of ["**/node_modules/**", "node_modules/**", "**/*.g.dart", "*.g.dart"]) {
+      expect(rules[pattern], pattern).toBe("deny");
+    }
+    expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain(
+      "opencode.json",
+    );
+  });
+
+  it("keeps a single rule for every read as the first one, in opencode.jsonc if that is the file (AC4)", async () => {
+    const root = await repo({ "opencode.jsonc": '{ "permission": { "read": "ask" } }\n' });
+    await cli(root, ["check", "--install"], { terminal: person() });
+    const rules = JSON.parse(await read(root, "opencode.jsonc")).permission.read;
+    expect(Object.entries(rules)[0]).toEqual(["*", "ask"]);
+    expect(rules["node_modules/**"]).toBe("deny");
   });
 
   it("explains the patterns in English", async () => {

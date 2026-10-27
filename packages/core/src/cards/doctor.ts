@@ -19,6 +19,10 @@ export type DoctorLine =
   /** Claude Code's settings lack the permission for the person's commands. */
   | { readonly code: "no-claude-permissions" }
   | { readonly code: "cursor-guard" | "no-cursor-guard" }
+  /** Cursor's guard is there, without `preCompact`, which leaves the card for the next command. */
+  | { readonly code: "cursor-compact" }
+  /** Whether Cursor's sandbox lets Specty write in git's folder and the worktrees' (`file`). */
+  | { readonly code: "cursor-sandbox" | "no-cursor-sandbox"; readonly file: string }
   | { readonly code: "cursor-after-command"; readonly events: string }
   /** Codex's guard, its rule for Specty's commands and OpenCode's plugin, in the project: `file`. */
   | { readonly code: "codex-guard" | "no-codex-guard"; readonly file: string }
@@ -29,6 +33,20 @@ export type DoctorLine =
       readonly code: "opencode-guard" | "opencode-after-command" | "no-opencode-guard";
       readonly file: string;
     }
+  /** OpenCode's plugin is there, without the card after a compaction. */
+  | { readonly code: "opencode-compact" }
+  /** Antigravity's guard in `file`, its hook named `specty`. */
+  | { readonly code: "antigravity-guard" | "no-antigravity-guard"; readonly file: string }
+  /** Antigravity's guard is there, without the hooks of these events. */
+  | { readonly code: "antigravity-hooks"; readonly file: string; readonly events: string }
+  /** Devin's guard in `file`, its standalone hooks. */
+  | { readonly code: "windsurf-guard" | "no-windsurf-guard"; readonly file: string }
+  /** Devin's guard is there, without the hooks of these events. */
+  | { readonly code: "windsurf-hooks"; readonly file: string; readonly events: string }
+  /** Gemini CLI's guard in `file`, its project settings. */
+  | { readonly code: "gemini-guard" | "no-gemini-guard"; readonly file: string }
+  /** Gemini CLI's guard is there, without the hooks of these events. */
+  | { readonly code: "gemini-hooks"; readonly file: string; readonly events: string }
   /** gentle-ai's flow guidance, which asks the agent for what the guard blocks. */
   | { readonly code: "gentle-ai"; readonly file: string; readonly blocks: readonly string[] }
   | { readonly code: "formatter-excludes"; readonly name: string; readonly path: string }
@@ -106,6 +124,21 @@ const WRITERS: {
       `Cursor: falta el guard; ejecuta \`${command} init --tools cursor\`.`,
       `Cursor: the guard is missing; run \`${command} init --tools cursor\`.`,
     ),
+  "cursor-compact": (_, t, command) =>
+    t(
+      `Cursor: falta la tarjeta de Specty tras compactar (preCompact); ejecuta \`${command} init --tools cursor\`.`,
+      `Cursor: Specty's card after a compaction is missing (preCompact); run \`${command} init --tools cursor\`.`,
+    ),
+  "cursor-sandbox": (line, t) =>
+    t(
+      `Cursor: su sandbox deja escribir a Specty en la carpeta de git y en la de las worktrees (${line.file}).`,
+      `Cursor: its sandbox lets Specty write in the git folder and the worktrees' folder (${line.file}).`,
+    ),
+  "no-cursor-sandbox": (_, t, command) =>
+    t(
+      `Cursor: su sandbox no deja escribir a Specty en la carpeta de git de las worktrees, así que fallan sus commits; ejecuta \`${command} init --tools cursor\`.`,
+      `Cursor: its sandbox does not let Specty write in the worktrees' git folder, so its commits fail; run \`${command} init --tools cursor\`.`,
+    ),
   "cursor-after-command": (line, t, command) =>
     t(
       `Cursor: falta la comprobación tras cada comando (${line.events}); ejecuta \`${command} init --tools cursor\`.`,
@@ -139,6 +172,56 @@ const WRITERS: {
     t(
       `OpenCode: al plugin del guard le falta la comprobación tras cada comando; ejecuta \`${command} init --tools opencode\`.`,
       `OpenCode: the guard plugin lacks the check after each command; run \`${command} init --tools opencode\`.`,
+    ),
+  "antigravity-guard": (line, t) =>
+    t(
+      `Antigravity: guard en ${line.file}; Antigravity lo ejecuta cuando confías en la carpeta.`,
+      `Antigravity: guard in ${line.file}; Antigravity runs it once you trust the folder.`,
+    ),
+  "no-antigravity-guard": (line, t, command) =>
+    t(
+      `Antigravity: falta el guard en ${line.file}; ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity: the guard is missing in ${line.file}; run \`${command} init --tools antigravity\`.`,
+    ),
+  "antigravity-hooks": (line, t, command) =>
+    t(
+      `Antigravity: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools antigravity\`.`,
+    ),
+  "windsurf-guard": (line, t) =>
+    t(
+      `Devin (Windsurf): guard en ${line.file}; Devin Desktop no lo ejecuta en modo restringido.`,
+      `Devin (Windsurf): guard in ${line.file}; Devin Desktop does not run it in restricted mode.`,
+    ),
+  "no-windsurf-guard": (line, t, command) =>
+    t(
+      `Devin (Windsurf): falta el guard en ${line.file}; ejecuta \`${command} init --tools windsurf\`.`,
+      `Devin (Windsurf): the guard is missing in ${line.file}; run \`${command} init --tools windsurf\`.`,
+    ),
+  "windsurf-hooks": (line, t, command) =>
+    t(
+      `Devin (Windsurf): faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools windsurf\`.`,
+      `Devin (Windsurf): Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools windsurf\`.`,
+    ),
+  "gemini-guard": (line, t) =>
+    t(
+      `Gemini CLI: guard en ${line.file}; Gemini CLI avisa antes de ejecutarlo si es nuevo o cambió.`,
+      `Gemini CLI: guard in ${line.file}; Gemini CLI asks before running it when it is new or changed.`,
+    ),
+  "no-gemini-guard": (line, t, command) =>
+    t(
+      `Gemini CLI: falta el guard en ${line.file}; ejecuta \`${command} init --tools gemini-cli\`.`,
+      `Gemini CLI: the guard is missing in ${line.file}; run \`${command} init --tools gemini-cli\`.`,
+    ),
+  "gemini-hooks": (line, t, command) =>
+    t(
+      `Gemini CLI: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools gemini-cli\`.`,
+      `Gemini CLI: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools gemini-cli\`.`,
+    ),
+  "opencode-compact": (_, t, command) =>
+    t(
+      `OpenCode: al plugin del guard le falta la tarjeta de Specty tras compactar; ejecuta \`${command} init --tools opencode\`.`,
+      `OpenCode: the guard plugin lacks Specty's card after a compaction; run \`${command} init --tools opencode\`.`,
     ),
   "no-opencode-guard": (line, t, command) =>
     t(

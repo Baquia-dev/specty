@@ -131,10 +131,17 @@ export async function completeTask(
     // Only the notes there are: `removedAssertions`, `risks`, `findings`.
     ...Object.fromEntries(Object.entries(notes).filter(([, list]) => list.length > 0)),
   });
+  const commit = await commitTask(session, change, task);
+  return { ...updated, commit };
+}
+
+/** Commits the task's code with its spec and state, under its type and its files' module. */
+async function commitTask(session: Session, change: StoredChange, task: Task): Promise<string> {
+  const { state } = change;
   const relativeDir = session.paths.relative(change.files.dir);
   const scope = moduleOf(task.files[0] ?? "");
   const subject = `${task.type ?? "feat"}${scope === "(root)" ? "" : `(${scope})`}: ${task.title}`;
-  const commit = await commitWithReceipt(session, {
+  return commitWithReceipt(session, {
     subject,
     trailers: changeTrailers(session, state.id, {
       "Specty-Task": task.id,
@@ -143,7 +150,6 @@ export async function completeTask(
     stage: [[".", ":(exclude).specty"], [relativeDir]],
     receipt: { change: state.id, kind: "task", task: task.id },
   });
-  return { ...updated, commit };
 }
 
 function withoutStatus(stored: ChangeState["tasks"][string] | undefined) {

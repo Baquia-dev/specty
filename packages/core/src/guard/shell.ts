@@ -25,6 +25,13 @@ export interface ShellAnalysis {
   readonly deletes: readonly string[];
   /** Written or removed paths it cannot place: shell variables, `~`, or after `cd` to an unknown directory. */
   readonly unresolved: readonly string[];
+  /** The change each `specty enter <id>` names. */
+  readonly enters: readonly string[];
+  /**
+   * Where each simple command but `cd` runs: relative to where the command starts (`""` is
+   * there), absolute, or undefined after a `cd` somewhere the analysis cannot name.
+   */
+  readonly runsIn: readonly (string | undefined)[];
 }
 
 /** Directory relative to where the command starts (`""`), absolute, or unknown (`undefined`). */
@@ -45,10 +52,12 @@ const EMPTY: ShellAnalysis = {
   writes: [],
   deletes: [],
   unresolved: [],
+  enters: [],
+  runsIn: [],
 };
 
 /** What one simple command does, before placing its paths and commits. */
-type Segment = Omit<ShellAnalysis, "unresolved" | "commits"> & {
+type Segment = Omit<ShellAnalysis, "unresolved" | "commits" | "runsIn"> & {
   readonly commits: readonly GitCommit[];
 };
 
@@ -78,6 +87,7 @@ export function analyzeShell(command: string): ShellAnalysis {
       writes: writes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       deletes: deletes.flatMap((item) => (item.path === undefined ? [] : [item.path])),
       unresolved: unresolved.map((item) => item.raw),
+      runsIn: isCd(tokens) ? [] : [directory],
     });
     directory = changeDirectory(directory, tokens);
   }
@@ -91,6 +101,10 @@ function locate(directory: Directory, raw: string): { raw: string; path: string 
   if (raw.startsWith("/")) return { raw, path: raw };
   if (directory === undefined) return { raw, path: undefined };
   return { raw, path: directory === "" ? raw : `${directory}/${raw}` };
+}
+
+function isCd(tokens: readonly Token[]): boolean {
+  return tokens.find((token) => !token.operator)?.text === "cd";
 }
 
 /** The directory after this segment: it only changes on `cd`. */
@@ -135,6 +149,7 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
   const specty = spectyArgs(program, args);
   return {
     specty: specty === undefined ? [] : [subcommand(specty)].filter((name) => name.length > 0),
+    enters: specty === undefined ? [] : entered(specty),
     unscopedNpx: isUnscopedNpx(program, args),
     commits: git.commits,
     bypass: bypassByEnv || git.bypass,
@@ -152,7 +167,16 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     writes: [...a.writes, ...b.writes],
     deletes: [...a.deletes, ...b.deletes],
     unresolved: [...a.unresolved, ...b.unresolved],
+    enters: [...a.enters, ...b.enters],
+    runsIn: [...a.runsIn, ...b.runsIn],
   };
+}
+
+/** The change `specty enter <id>` names: the first word after `enter` that is not an option. */
+function entered(args: readonly string[]): string[] {
+  if (subcommand(args) !== "enter") return [];
+  const id = args.slice(args.indexOf("enter") + 1).find((arg) => !arg.startsWith("-"));
+  return id === undefined ? [] : [id];
 }
 
 function splitRedirections(tokens: readonly Token[]): { words: string[]; redirected: string[] } {
@@ -199,24 +223,35 @@ function subcommand(args: readonly string[]): string {
 /** Arguments after the Specty program, for any way of invoking it. */
 function spectyArgs(program: string, args: readonly string[]): readonly string[] | undefined {
   if (program === "specty") return args;
-  if (RUNNERS.has(program)) {
-    const script = args.findIndex((arg) => !arg.startsWith("-"));
-    const path = args[script] ?? "";
-    return SPECTY_SCRIPT.test(path) || path.includes("/specty/dist/")
-      ? args.slice(script + 1)
-      : undefined;
-  }
+  if (RUNNERS.has(program)) return scriptArgs(args);
   const runner = packageRunner(program, args);
-  if (runner !== undefined) {
-    const index = runner.findIndex((arg) => !arg.startsWith("-"));
-    return SPECTY_PACKAGE.test(runner[index] ?? "") ? runner.slice(index + 1) : undefined;
-  }
-  if (program === "pnpm" || program === "npm" || program === "yarn") {
-    const [first, second, ...rest] = args;
-    if (first === "specty")
-      return [second, ...rest].filter((arg): arg is string => arg !== undefined);
-    if ((first === "exec" || first === "run") && second === "specty") return rest;
-  }
+  if (runner !== undefined) return packageArgs(runner);
+  return PACKAGE_MANAGERS.has(program) ? managerArgs(args) : undefined;
+}
+
+const PACKAGE_MANAGERS: ReadonlySet<string> = new Set(["pnpm", "npm", "yarn"]);
+
+/** `node …/specty.mjs …`: the arguments after Specty's script. */
+function scriptArgs(args: readonly string[]): readonly string[] | undefined {
+  const script = args.findIndex((arg) => !arg.startsWith("-"));
+  const path = args[script] ?? "";
+  return SPECTY_SCRIPT.test(path) || path.includes("/specty/dist/")
+    ? args.slice(script + 1)
+    : undefined;
+}
+
+/** `npx @baquia-dev/specty …`: the arguments after Specty's package. */
+function packageArgs(runner: readonly string[]): readonly string[] | undefined {
+  const index = runner.findIndex((arg) => !arg.startsWith("-"));
+  return SPECTY_PACKAGE.test(runner[index] ?? "") ? runner.slice(index + 1) : undefined;
+}
+
+/** `pnpm specty …`, `npm exec specty …` or `yarn run specty …`. */
+function managerArgs(args: readonly string[]): readonly string[] | undefined {
+  const [first, second, ...rest] = args;
+  if (first === "specty")
+    return [second, ...rest].filter((arg): arg is string => arg !== undefined);
+  if ((first === "exec" || first === "run") && second === "specty") return rest;
   return undefined;
 }
 

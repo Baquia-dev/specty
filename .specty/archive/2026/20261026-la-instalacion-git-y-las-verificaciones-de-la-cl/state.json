@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
+  "baseCommit": "c03deef36ff8ceddb1fbddcd315f5c03ef239e1e",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:cdd4dc81552ff0268fbfd85f56ef3756f0e4599798c9ebd8946b65a81acb0a3a",
+    "at": "2026-10-26T23:22:35.936Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1d0f6d39834aa069580a5668e235f76e163f02408f6a033efe2bfdfa9d0a4a7d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0b7c6e1e9ef62feb7404a270f7270e9486e7f470b076d00a09adc673ecf69250",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "1017a4d759b6fcffb2b0227bd9c225ddf575b153",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:22:36.473Z",
+      "doneAt": "2026-10-26T23:33:41.132Z",
+      "summary": "io: createGit compone runner, worktreeQueries, changeQueries (con untracked), commitOperations y fileQueries; devuelve el mismo Git. parseNameStatus deja a statusOf la letra de cada ruta. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "05846da91bc63422a1ca215ee0700d61a9b6a792",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:33:41.460Z",
+      "doneAt": "2026-10-26T23:39:19.988Z",
+      "summary": "install/files.ts: installFiles escribe, borra y registra los cambios, y deja a backupFolder las copias de los archivos que existían y su manifiesto, con las mismas escrituras y en el mismo orden. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7f277c0d1a40e28d37e99992db633d5c4b74c533",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:39:20.311Z",
+      "doneAt": "2026-10-26T23:45:37.363Z",
+      "summary": "check/install.ts: install decide entre el plan y la instalación, y deja a applyEdits las ediciones, a installDependencies las devDependencies y a installed el commit y el informe, con las mismas preguntas en el mismo orden. Los tests pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "3c3ec0d3351416c036a917749cb8087d69e21d80",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:45:37.699Z",
+      "doneAt": "2026-10-26T23:53:37.532Z",
+      "summary": "install-ignores.ts: agentIgnores deja a addIgnores el archivo de cada agente. git-hooks.ts: removeLefthook deja a removedSpectyCommands los hooks de cada archivo. project-files.ts: completeConfig deja a intoMap la inserción en un verify existente. Los tests pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "1d87342cf8254b7d87ba9c10d96f2d8f5358ae01",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:53:37.855Z",
+      "doneAt": "2026-10-27T00:01:22.886Z",
+      "summary": "secrets.ts: scan toma los argumentos de betterleaksArgs y gitleaksArgs, en el mismo orden de escáneres. files.ts: parseAddedLines deja a headerFile el archivo de cada cabecera. Ninguna función de install, io ni check pasa de los límites; los tests pasan.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "closingSubmittedAt": "2026-10-27T00:07:55.417Z"
+}

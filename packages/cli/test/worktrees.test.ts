@@ -58,6 +58,18 @@ describe("specty new --worktree", () => {
     expect(await read(root, "src/app.ts")).toBe("a medias\n");
   });
 
+  it("tells Codex's agent how the person opens Codex in the change's folder (AC1)", async () => {
+    const root = await tempRepo(FILES);
+    const created = await cli(root, ["new", "--worktree", "Otro cambio"], {
+      env: { CODEX_THREAD_ID: "019a" },
+    });
+    expect(created.code).toBe(0);
+    const folder = join(home(root), CHANGE.replace("saludo-personalizado", "otro-cambio"));
+    expect(created.out).toContain(
+      `SIGUIENTE: continúa en ${folder}: Codex no cambia de carpeta en mitad de la sesión, así que pídele a la persona que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno;`,
+    );
+  });
+
   it("starts from the branch given with --from, and refuses one that does not exist", async () => {
     const root = await tempRepo(FILES);
     git(root, "switch", "-q", "-c", "base");

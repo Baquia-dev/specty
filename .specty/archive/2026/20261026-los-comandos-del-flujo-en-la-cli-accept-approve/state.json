@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "id": "20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-los-comandos-del-flujo-en-la-cli-accept-approve",
+  "baseCommit": "a3716f7143c6f2c56f5da78a29cbfb9e56a0e522",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39f78595c4eb5e17d31ff3cbb00a6058a5d9c76b5a6ee25622a257e8ab615fb1",
+    "at": "2026-10-26T19:24:39.228Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:11cf0737a7ef712ced24c89ba151bf284522489e4ca99ed45df556de62892413",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a0034a0078e9f9c40caaefe030f9b8e82da02c262abdd030669913bb0db7d387",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f360c6d13a037876802533d463f4386473c794cb",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:24:39.587Z",
+      "doneAt": "2026-10-26T19:27:39.952Z",
+      "summary": "accept.ts: accept muestra el resumen y delega en verifyBeforeAccepting (verificationToRun decide si hace falta, runFullVerification la ejecuta y registra) y en accepted, que mueve la fase. Mismo orden de notas y preguntas; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "1b3ceee48e3e9954090ae060e9bfe6ccabc8e5e5",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:27:40.252Z",
+      "doneAt": "2026-10-26T19:31:22.111Z",
+      "summary": "approve.ts: approveSpec comprueba la revisión y encadena noteApprovalSummary, decideAssumptions con decideAssumption, la confirmación y approved, que deja el registro y el commit a recordApproval. Mismo orden; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "25a05838b1d7c694a394c388f47c945cb90c272b",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:31:22.616Z",
+      "doneAt": "2026-10-26T19:35:11.507Z",
+      "summary": "propose.ts: propose deja la revisión escrita y su estado a recordProposal y la tarjeta a proposalCard. review.ts: review hace las guardas y runReview ejecuta, guarda y registra la revisión. Mismo resultado; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "e9888906a725e01d997be8407e2e3e2fd4ba400e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:35:12.275Z",
+      "doneAt": "2026-10-26T19:38:20.660Z",
+      "summary": "finish.ts: close muestra lo que se confirma con noteClosing y, confirmado, closeConfirmed incorpora, archiva y aterriza; cancel pregunta y cancelConfirmed archiva. Mismas preguntas, eventos y commits; los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "ef75d39ab0bdb26d31844a407151c5cc3434364f",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:38:20.962Z",
+      "doneAt": "2026-10-26T19:48:46.114Z",
+      "summary": "task.ts: taskToComplete hace las comprobaciones previas. new.ts: newInFolder crea el cambio sin worktree. human.ts: namedChange y pickChange. Y complexity contaba cualquier guard; ahora solo el guard...else de Swift, con su test.",
+      "scopeExtra": [
+        "packages/core/src/checks/functions.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-26T19:50:50.812Z"
+}

@@ -34,23 +34,74 @@ export async function runCli(
   argv: readonly string[],
   environment: CliEnvironment,
 ): Promise<number> {
-  let code = 0;
-  let json = false;
-  const emit = (output: Output | ReportOutput, lang: Lang) => {
+  const result: RunState = { code: 0, json: false };
+  const emit = emitter(environment, result);
+  const run = sessionRunner(environment, emit);
+  const program = new Command("specty")
+    .description("Spec-driven development, enforced, for any AI coding agent.")
+    .option("--json", "print the output as JSON")
+    .exitOverride()
+    .configureOutput({
+      writeOut: (text) => environment.io.out(text.trimEnd()),
+      writeErr: (text) => environment.io.err(text.trimEnd()),
+    })
+    .hook("preAction", (command) => {
+      result.json = command.opts<{ json?: boolean }>().json === true;
+    });
+
+  // Each group of commands registers itself from its module; here, reading and setting up.
+  agentCommands(program, run, environment.env, (output) =>
+    emit(output, systemLanguage(environment.env)),
+  );
+  personCommands(program, run);
+  uninstallCommand(program, run);
+  checkCommand(program, run);
+  auditCommand(program, run);
+  exportCommand(program, run);
+  readingCommands(program, run, environment, emit);
+  enforcementCommands(program, environment, (exit) => {
+    result.code = exit;
+  });
+
+  try {
+    await program.parseAsync([...argv], { from: "user" });
+  } catch (error) {
+    if (error instanceof CommanderError) return error.exitCode === 0 ? 0 : 1;
+    throw error;
+  }
+  return result.code;
+}
+
+/** What a run ends with: its exit code, and whether `--json` asked for JSON. */
+interface RunState {
+  code: number;
+  json: boolean;
+}
+
+type Emit = (output: Output | ReportOutput, lang: Lang) => void;
+type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
+
+/** Prints an output, as text or JSON, and keeps its exit code. */
+function emitter(environment: CliEnvironment, result: RunState): Emit {
+  return (output, lang) => {
     // `specty check` prints its own report, which ends in its summary line, not a card.
     if ("report" in output) {
-      environment.io.out(json ? JSON.stringify(output.json) : output.report);
-      code = output.code;
+      environment.io.out(result.json ? JSON.stringify(output.json) : output.report);
+      result.code = output.code;
       return;
     }
     environment.io.out(
-      json
+      result.json
         ? JSON.stringify({ ...output, exitCode: EXIT_CODES[output.status] })
         : renderText(output, lang),
     );
-    code = EXIT_CODES[output.status];
+    result.code = EXIT_CODES[output.status];
   };
-  const run = (handler: (session: Session) => Promise<Output | ReportOutput>) => async () => {
+}
+
+/** Runs a command in its session; without one, the card that says why. */
+function sessionRunner(environment: CliEnvironment, emit: Emit): Run {
+  return (handler) => async () => {
     const opened = await openSession(environment);
     const cards = bareCards(environment.env);
     switch (opened.kind) {
@@ -66,27 +117,15 @@ export async function runCli(
         return emit(await handler(opened.session), opened.session.lang);
     }
   };
-  const program = new Command("specty")
-    .description("Spec-driven development, enforced, for any AI coding agent.")
-    .option("--json", "print the output as JSON")
-    .exitOverride()
-    .configureOutput({
-      writeOut: (text) => environment.io.out(text.trimEnd()),
-      writeErr: (text) => environment.io.err(text.trimEnd()),
-    })
-    .hook("preAction", (command) => {
-      json = command.opts<{ json?: boolean }>().json === true;
-    });
+}
 
-  // Each group of commands registers itself from its module; here, reading and setting up.
-  agentCommands(program, run, environment.env, (output) =>
-    emit(output, systemLanguage(environment.env)),
-  );
-  personCommands(program, run);
-  uninstallCommand(program, run);
-  checkCommand(program, run);
-  auditCommand(program, run);
-  exportCommand(program, run);
+/** Reading the state and setting up: status, doctor, init, prune, why and ui. */
+function readingCommands(
+  program: Command,
+  run: Run,
+  environment: CliEnvironment,
+  emit: Emit,
+): void {
   program.command("status").description("open changes and pending decisions").action(run(status));
   program.command("doctor").description("check configuration and hooks").action(run(doctor));
   program
@@ -112,15 +151,4 @@ export async function runCli(
     .description("serve the changes of every worktree on localhost, until Ctrl+C")
     .option("--port <port>", "the port to try first (default: 4173)")
     .action((options: { port?: string }) => run((session) => ui(session, options.port))());
-  enforcementCommands(program, environment, (exit) => {
-    code = exit;
-  });
-
-  try {
-    await program.parseAsync([...argv], { from: "user" });
-  } catch (error) {
-    if (error instanceof CommanderError) return error.exitCode === 0 ? 0 : 1;
-    throw error;
-  }
-  return code;
 }

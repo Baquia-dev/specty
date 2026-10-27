@@ -29,6 +29,8 @@ const IGNORE_FILES: readonly IgnoreFile[] = [
     names: [".devinignore", ".windsurfignore", ".codeiumignore"],
     create: ".codeiumignore",
   },
+  // Antigravity keeps these paths from its indexer and from its @ mentions.
+  { tool: "antigravity", names: [".antigravityignore"], create: ".antigravityignore" },
 ];
 
 /** Plans the exclusions into `files`, the plan's files, for each agent in use. */
@@ -37,24 +39,7 @@ export async function agentIgnores(session: Session, files: InstallFiles): Promi
   const patterns = [...new Set([...config.checks.exclude, ...config.scope.generated])];
   if (patterns.length === 0) return;
   for (const ignore of IGNORE_FILES) {
-    if (!(await uses(root, ignore.tool))) continue;
-    const found = await Promise.all(
-      ignore.names.map(async (name) =>
-        (await files.read(join(root, name))) === undefined ? [] : [name],
-      ),
-    );
-    const file = join(root, found.flat()[0] ?? ignore.create);
-    const text = (await files.read(file)) ?? "";
-    const present = new Set(text.split(/\r?\n/).map((line) => line.trim()));
-    const missing = patterns.filter((pattern) => !present.has(pattern));
-    if (missing.length === 0) continue;
-    const comment = `# ${translator(session.lang)(
-      "Specty: dependencias, artefactos de build y código generado (specty check --install)",
-      "Specty: dependencies, build output and generated code (specty check --install)",
-    )}`;
-    const block = [...(present.has(comment) ? [] : [comment]), ...missing].join("\n");
-    const lead = text === "" ? "" : text.endsWith("\n") ? "\n" : "\n\n";
-    await files.write(file, `${text}${lead}${block}\n`);
+    if (await uses(root, ignore.tool)) await addIgnores(session, files, ignore, patterns);
   }
   if (await uses(root, "claude-code")) {
     const deny = patterns.map((pattern) => `Read(${pattern})`);
@@ -65,6 +50,72 @@ export async function agentIgnores(session: Session, files: InstallFiles): Promi
       files,
     );
   }
+  if (await uses(root, "opencode")) {
+    const jsonc = (await files.read(join(root, "opencode.jsonc"))) !== undefined;
+    const file = join(root, jsonc ? "opencode.jsonc" : "opencode.json");
+    const denied = opencodePatterns(patterns);
+    await rewriteJson(file, (value) => withReadDenied(value, denied), true, files);
+  }
+}
+
+/** Adds to the agent's ignore file, or to a new one, the patterns missing there, under Specty's comment. */
+async function addIgnores(
+  session: Session,
+  files: InstallFiles,
+  ignore: IgnoreFile,
+  patterns: readonly string[],
+): Promise<void> {
+  const { root } = session;
+  const found = await Promise.all(
+    ignore.names.map(async (name) =>
+      (await files.read(join(root, name))) === undefined ? [] : [name],
+    ),
+  );
+  const file = join(root, found.flat()[0] ?? ignore.create);
+  const text = (await files.read(file)) ?? "";
+  const present = new Set(text.split(/\r?\n/).map((line) => line.trim()));
+  const missing = patterns.filter((pattern) => !present.has(pattern));
+  if (missing.length === 0) return;
+  const comment = `# ${translator(session.lang)(
+    "Specty: dependencias, artefactos de build y código generado (specty check --install)",
+    "Specty: dependencies, build output and generated code (specty check --install)",
+  )}`;
+  const block = [...(present.has(comment) ? [] : [comment]), ...missing].join("\n");
+  const lead = text === "" ? "" : text.endsWith("\n") ? "\n" : "\n\n";
+  await files.write(file, `${text}${lead}${block}\n`);
+}
+
+/**
+ * OpenCode matches `permission.read` against the path relative to the project, where `*` is any
+ * text: a `**\/` pattern also goes without it, so that it covers the root too.
+ */
+function opencodePatterns(patterns: readonly string[]): string[] {
+  const both = patterns.flatMap((pattern) =>
+    pattern.startsWith("**/") ? [pattern, pattern.slice(3)] : [pattern],
+  );
+  return [...new Set(both)];
+}
+
+/**
+ * OpenCode's denials to read, after the rules the person had, because the last rule that matches
+ * wins; a single rule for every read becomes the first one (`*`), and a pattern the person
+ * already ruled on stays as theirs.
+ */
+function withReadDenied(
+  value: Record<string, unknown>,
+  patterns: readonly string[],
+): Record<string, unknown> {
+  const permission = isRecord(value.permission) ? value.permission : {};
+  const read = permission.read;
+  const rules: Record<string, unknown> = isRecord(read)
+    ? read
+    : typeof read === "string"
+      ? { "*": read }
+      : {};
+  const missing = patterns.filter((pattern) => !Object.hasOwn(rules, pattern));
+  if (missing.length === 0) return value;
+  const denied = Object.fromEntries(missing.map((pattern) => [pattern, "deny"]));
+  return { ...value, permission: { ...permission, read: { ...rules, ...denied } } };
 }
 
 /** The agent is in use when one of its markers is in the repository. */

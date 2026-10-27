@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type Analysis,
   approvalPostponedCard,
   approvalSummary,
   approveSpecQuestion,
@@ -18,6 +19,7 @@ import {
   rejectedAssumptionsLine,
   rejectionQuestion,
   revisionLabel,
+  type Spec,
   shortHash,
   specApprovedLine,
   specChangedCard,
@@ -52,7 +54,6 @@ export async function approve(session: Session, scope: string | undefined): Prom
 async function approveSpec(session: Session, active: StoredChange): Promise<Output> {
   const { cards } = session;
   const { state, files } = active;
-  const { terminal } = session.environment;
   const header = headerOf(state.id, "review", revisionLabel(state.revision, session.lang));
   const spec = parseSpec(await readSpec(files), { language: session.lang }).spec;
   const last = await readRevision(files, state.revision);
@@ -60,51 +61,9 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     return specChangedCard(header, cards);
   }
   const analysis = await analyzeChange(session, active, "review");
-  const shared = await sharedFiles(session, state.id, listed(spec));
-  const approvedText = await readRevision(files, state.approved?.revision);
-  const delta =
-    approvedText === undefined ? [] : specDelta(parseSpec(approvedText).spec, spec).entries;
-  terminal.note(
-    spec.title,
-    approvalSummary(
-      {
-        specPath: session.paths.relative(files.spec),
-        revision: state.revision,
-        size: analysis.size,
-        effort: recommendEffort(analysis.size.level, analysis.spec),
-        delta,
-        diagnostics: analysis.diagnostics,
-        shared: sharedLines(session, shared),
-      },
-      cards,
-    ),
-  );
-
-  const items: ChangeState["items"] = { ...state.items };
-  for (const assumption of (spec.sections.assumptions?.items ?? []).filter(
-    (item) => item.impact === "high",
-  )) {
-    const current = items[assumption.id];
-    if (current === undefined || current.decision === "confirmed") continue;
-    // In delegated mode the agent decides for the person: it confirms what it wrote.
-    const choice =
-      session.actor === "agent"
-        ? "confirm"
-        : await terminal.choose(
-            `${assumption.id}: ${assumption.text}`,
-            assumptionChoices(session.lang),
-          );
-    if (choice === undefined) return approvalPostponedCard(header, cards);
-    const comment =
-      choice === "reject"
-        ? await terminal.ask(rejectionQuestion("assumption", session.lang))
-        : undefined;
-    items[assumption.id] = {
-      hash: current.hash,
-      decision: choice === "reject" ? "rejected" : "confirmed",
-      ...(comment !== undefined && comment.trim().length > 0 ? { comment: comment.trim() } : {}),
-    };
-  }
+  await noteApprovalSummary(session, active, spec, analysis);
+  const items = await decideAssumptions(session, spec, state.items);
+  if (items === undefined) return approvalPostponedCard(header, cards);
   const rejected = Object.entries(items)
     .filter(([, item]) => item.decision === "rejected")
     .map(([id]) => id);
@@ -122,9 +81,97 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
       decisionCard(header, [rejectedAssumptionsLine(rejected, session.lang)], cards),
     );
   }
-  if (!(await terminal.confirm(approveSpecQuestion(state.revision, spec.title, session.lang)))) {
+  const question = approveSpecQuestion(state.revision, spec.title, session.lang);
+  if (!(await session.environment.terminal.confirm(question))) {
     return approvalPostponedCard(header, cards);
   }
+  return approved(session, active, spec, analysis, items, header);
+}
+
+/** What the person approves: the spec's path, revision, size, effort, delta, warnings and shared files. */
+async function noteApprovalSummary(
+  session: Session,
+  active: StoredChange,
+  spec: Spec,
+  analysis: Analysis,
+): Promise<void> {
+  const { state, files } = active;
+  const shared = await sharedFiles(session, state.id, listed(spec));
+  const approvedText = await readRevision(files, state.approved?.revision);
+  const delta =
+    approvedText === undefined ? [] : specDelta(parseSpec(approvedText).spec, spec).entries;
+  session.environment.terminal.note(
+    spec.title,
+    approvalSummary(
+      {
+        specPath: session.paths.relative(files.spec),
+        revision: state.revision,
+        size: analysis.size,
+        effort: recommendEffort(analysis.size.level, analysis.spec),
+        delta,
+        diagnostics: analysis.diagnostics,
+        shared: sharedLines(session, shared),
+      },
+      session.cards,
+    ),
+  );
+}
+
+/**
+ * The person's decision on each high-impact assumption not confirmed yet, or undefined when they
+ * left without deciding. In delegated mode the agent decides for the person: it confirms what it
+ * wrote.
+ */
+async function decideAssumptions(
+  session: Session,
+  spec: Spec,
+  current: ChangeState["items"],
+): Promise<ChangeState["items"] | undefined> {
+  const items: ChangeState["items"] = { ...current };
+  for (const assumption of (spec.sections.assumptions?.items ?? []).filter(
+    (item) => item.impact === "high",
+  )) {
+    const item = items[assumption.id];
+    if (item === undefined || item.decision === "confirmed") continue;
+    const decided = await decideAssumption(session, `${assumption.id}: ${assumption.text}`, item);
+    if (decided === undefined) return undefined;
+    items[assumption.id] = decided;
+  }
+  return items;
+}
+
+async function decideAssumption(
+  session: Session,
+  label: string,
+  item: ChangeState["items"][string],
+): Promise<ChangeState["items"][string] | undefined> {
+  const { terminal } = session.environment;
+  const choice =
+    session.actor === "agent"
+      ? "confirm"
+      : await terminal.choose(label, assumptionChoices(session.lang));
+  if (choice === undefined) return undefined;
+  const comment =
+    choice === "reject"
+      ? await terminal.ask(rejectionQuestion("assumption", session.lang))
+      : undefined;
+  return {
+    hash: item.hash,
+    decision: choice === "reject" ? "rejected" : "confirmed",
+    ...(comment !== undefined && comment.trim().length > 0 ? { comment: comment.trim() } : {}),
+  };
+}
+
+/** The spec approved: its state records who, when and how, and its revision is committed. */
+async function approved(
+  session: Session,
+  active: StoredChange,
+  spec: Spec,
+  analysis: Analysis,
+  items: ChangeState["items"],
+  header: string,
+): Promise<Output> {
+  const { state } = active;
   // Counted as `task done` counts them: with none left, the change goes to acceptance.
   const remainingTasks = (spec.sections.tasks?.items ?? []).filter(
     (item) => state.tasks[item.id]?.status !== "done",
@@ -140,19 +187,19 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
       remainingTasks,
     },
   });
-  if (!moved.ok) return blockedCard(header, moved.code, askAgentNext(cards));
-  const finalItems = Object.fromEntries(
-    Object.entries(items).map(([id, item]) => [
-      id,
-      item.decision === "pending" ? { ...item, decision: "implicit" as const } : item,
-    ]),
-  );
+  if (!moved.ok) return blockedCard(header, moved.code, askAgentNext(session.cards));
   // The person who delegated stays as `by`; the channel records that the agent approved.
-  const channel = session.actor === "agent" ? "delegated" : (terminal.channel ?? "tty");
+  const channel =
+    session.actor === "agent" ? "delegated" : (session.environment.terminal.channel ?? "tty");
   const approvedState: ChangeState = {
     ...state,
     phase: moved.phase,
-    items: finalItems,
+    items: Object.fromEntries(
+      Object.entries(items).map(([id, item]) => [
+        id,
+        item.decision === "pending" ? { ...item, decision: "implicit" as const } : item,
+      ]),
+    ),
     approved: {
       revision: state.revision,
       hash: analysis.hash,
@@ -162,6 +209,18 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
     },
     pending: { ...state.pending, adjustment: null },
   };
+  return recordApproval(session, active, spec, analysis, approvedState, channel);
+}
+
+async function recordApproval(
+  session: Session,
+  active: StoredChange,
+  spec: Spec,
+  analysis: Analysis,
+  approvedState: ChangeState,
+  channel: string,
+): Promise<Output> {
+  const { state, files } = active;
   const updated = await commitState(
     session,
     active,
@@ -184,9 +243,9 @@ async function approveSpec(session: Session, active: StoredChange): Promise<Outp
   return thenNext(
     session,
     decisionCard(
-      headerOf(state.id, moved.phase),
+      headerOf(state.id, approvedState.phase),
       [specApprovedLine(state.revision, commit, session.lang)],
-      cards,
+      session.cards,
     ),
   );
 }

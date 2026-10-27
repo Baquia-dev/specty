@@ -46,8 +46,10 @@ export function installFiles(options: InstallFilesOptions = {}): InstallFiles {
   // What a dry run wrote, or `null` for what it deleted.
   const planned = new Map<string, string | null>();
   const changes: FileChange[] = [];
-  const manifest: ManifestEntry[] = [];
-  let copied = false;
+  const backups =
+    options.backups === undefined || options.dryRun === true
+      ? undefined
+      : backupFolder(options.backups);
   const read = async (path: string) =>
     planned.has(path) ? (planned.get(path) ?? undefined) : await readText(path);
 
@@ -57,34 +59,10 @@ export function installFiles(options: InstallFilesOptions = {}): InstallFiles {
       // Changed and then deleted in the same run: what counts is that it is gone.
       if (!removed) return;
       changes.splice(seen, 1, { ...(changes[seen] as FileChange), removed: true });
-      const entry = manifest.findIndex((item) => item.path === path);
-      if (entry !== -1)
-        manifest.splice(entry, 1, { ...(manifest[entry] as ManifestEntry), removed });
-      return saveManifest();
+      return backups?.removed(path);
     }
-    const gone = removed ? { removed: true } : {};
-    changes.push({ path, created: before === undefined, ...gone });
-    const { backups } = options;
-    if (backups === undefined || options.dryRun === true) return;
-    const copy = before === undefined ? undefined : copyName(backups.root, path);
-    if (copy !== undefined && before !== undefined) {
-      await writeText(join(backups.folder, copy), before);
-      copied = true;
-    }
-    manifest.push({
-      path,
-      created: before === undefined,
-      ...gone,
-      ...(copy !== undefined ? { copy } : {}),
-    });
-    await saveManifest();
-  }
-
-  /** Only files that existed make the folder worth having; created ones ride along. */
-  async function saveManifest(): Promise<void> {
-    if (!copied || options.backups === undefined) return;
-    const text = `${JSON.stringify(manifest, null, 2)}\n`;
-    await writeText(join(options.backups.folder, "manifest.json"), text);
+    changes.push({ path, created: before === undefined, ...(removed ? { removed: true } : {}) });
+    await backups?.add(path, before, removed);
   }
 
   return {
@@ -107,6 +85,47 @@ export function installFiles(options: InstallFilesOptions = {}): InstallFiles {
       else await rm(path, { force: true });
     },
     changes,
+  };
+}
+
+/** Where an install keeps what it changes: each existing file's copy and the manifest of all. */
+interface BackupFolder {
+  /** Records a change, copying the file first when it existed. */
+  add(path: string, before: string | undefined, removed: boolean): Promise<void>;
+  /** Marks a recorded change as deleted. */
+  removed(path: string): Promise<void>;
+}
+
+function backupFolder(backups: NonNullable<InstallFilesOptions["backups"]>): BackupFolder {
+  const manifest: ManifestEntry[] = [];
+  let copied = false;
+  /** Only files that existed make the folder worth having; created ones ride along. */
+  const save = async (): Promise<void> => {
+    if (!copied) return;
+    const text = `${JSON.stringify(manifest, null, 2)}\n`;
+    await writeText(join(backups.folder, "manifest.json"), text);
+  };
+  return {
+    async add(path, before, removed) {
+      const copy = before === undefined ? undefined : copyName(backups.root, path);
+      if (copy !== undefined && before !== undefined) {
+        await writeText(join(backups.folder, copy), before);
+        copied = true;
+      }
+      manifest.push({
+        path,
+        created: before === undefined,
+        ...(removed ? { removed: true } : {}),
+        ...(copy !== undefined ? { copy } : {}),
+      });
+      await save();
+    },
+    async removed(path) {
+      const entry = manifest.findIndex((item) => item.path === path);
+      if (entry !== -1)
+        manifest.splice(entry, 1, { ...(manifest[entry] as ManifestEntry), removed: true });
+      await save();
+    },
   };
 }
 

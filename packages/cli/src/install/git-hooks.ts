@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isAbsolute, join, resolve } from "node:path";
-import { isMap, parseDocument } from "yaml";
+import { type Document, isMap, parseDocument } from "yaml";
 import { exists, isDirectory, isRecord, parseJson, readText } from "../io/files";
 import type { Git } from "../io/git";
 import type { Invocation } from "../session";
@@ -116,19 +116,24 @@ async function removeLefthook(root: string, files: InstallFiles): Promise<void> 
     const text = await files.read(path);
     if (text === undefined) continue;
     const document = parseDocument(text);
-    const ours = GIT_HOOKS.filter((hook) => document.hasIn([hook, "commands", "specty"]));
-    if (ours.length === 0) continue;
-    for (const hook of ours) {
-      document.deleteIn([hook, "commands", "specty"]);
-      for (const key of [[hook, "commands"], [hook]]) {
-        const node = document.getIn(key, true);
-        if (isMap(node) && node.items.length === 0) document.deleteIn(key);
-      }
-    }
+    if (!removedSpectyCommands(document)) continue;
     const rest = document.contents;
     if (rest === null || (isMap(rest) && rest.items.length === 0)) await files.remove(path);
     else await files.write(path, document.toString());
   }
+}
+
+/** Deletes Specty's command from each hook of a Lefthook file, and what it leaves empty; whether there was one. */
+function removedSpectyCommands(document: Document): boolean {
+  const ours = GIT_HOOKS.filter((hook) => document.hasIn([hook, "commands", "specty"]));
+  for (const hook of ours) {
+    document.deleteIn([hook, "commands", "specty"]);
+    for (const key of [[hook, "commands"], [hook]]) {
+      const node = document.getIn(key, true);
+      if (isMap(node) && node.items.length === 0) document.deleteIn(key);
+    }
+  }
+  return ours.length > 0;
 }
 
 /** Committed hook files cannot hold machine paths: they call `specty` from PATH. */

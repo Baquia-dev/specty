@@ -42,8 +42,9 @@ export async function why(session: Session, target: string): Promise<Output> {
       "--",
       file,
     ]);
+    // By the file's history, not by git's message, which a translated git words otherwise.
     if (blamed.code !== 0) {
-      return /has only \d+ lines?/.test(blamed.stderr)
+      return (await logged(session, ["-1", "--", file])).length > 0
         ? whyRefusalCard({ reason: "no-line", file, line: number }, session.cards)
         : noHistory();
     }

@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "id": "20261026-el-servidor-local-acciones-eventos-http-y-ejecuc",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-el-servidor-local-acciones-eventos-http-y-ejecuc",
+  "baseCommit": "1db3b2bc478f0b89ad3832f49b9401ae766d9111",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bc2d3b1abbc2533918e76c7f3e1a3e349bed7f2989479fca92b5ff8e2a2f6a99",
+    "at": "2026-10-27T00:13:17.493Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ec2a241f78b85421544476e87d01779ce7b681fbd1bf846efc7f7e49126d30eb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b8ffeabf087e76db6743b472ca084e29df21bd5b89092f8447be4c3be5881e67",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "2cf46bc8b950136a3a703dc317da306d78067f24",
+      "attempts": 1,
+      "startedAt": "2026-10-27T00:13:18.346Z",
+      "doneAt": "2026-10-27T00:20:06.868Z",
+      "summary": "actions.ts: parseAction toma de PARSERS la lectura de su verbo, con las mismas condiciones. runAction deja a reviewAction las acciones sobre la spec en revisión. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f954e2ac1af26f1e2871f8a7d89c1904e63ae37c",
+      "attempts": 1,
+      "startedAt": "2026-10-27T00:20:07.249Z",
+      "doneAt": "2026-10-27T00:26:43.377Z",
+      "summary": "http.ts: handle deja a signIn el enlace con el token, a readApi las lecturas de la API y a readChange las de un cambio; act pregunta a actionRefusal, con las mismas comprobaciones en el mismo orden y las mismas respuestas. Los tests pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7fea03668266019adf90cf3f60d0391a4ba0b417",
+      "attempts": 1,
+      "startedAt": "2026-10-27T00:26:43.748Z",
+      "doneAt": "2026-10-27T00:32:46.143Z",
+      "summary": "events.ts: changeEvents lleva a quienes escuchan y deja a fingerprintWatch la vigilancia de la huella (la primera mirada, el intervalo y su parada), con el mismo orden: cada uno oye changes tras la primera mirada. Los tests pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "9449b821ea23061f1aff1fd1f8ac1b856abd950e",
+      "attempts": 1,
+      "startedAt": "2026-10-27T00:32:46.483Z",
+      "doneAt": "2026-10-27T00:39:32.936Z",
+      "summary": "runs.ts: changeRuns lleva las ejecuciones y deja a runFull la verificación completa, a liveRun su salida en vivo y a ended su final y su registro, en el mismo orden. Ninguna función del servidor pasa de los límites; los tests pasan.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-27T00:41:32.388Z"
+}

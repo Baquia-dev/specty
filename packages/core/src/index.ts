@@ -116,7 +116,7 @@ export type { GuardIntegration } from "./guard/integration";
 export { type PatchPaths, patchPaths } from "./guard/patch";
 export type { BoundSession } from "./guard/session";
 export { analyzeShell, type ShellAnalysis } from "./guard/shell";
-export type { ForeignPath } from "./guard/worktrees";
+export { type ForeignPath, nativeEnterDenial } from "./guard/worktrees";
 export { hashText, type Sha256Hash, shortHash } from "./hash";
 export { fold, LANGS, type Lang } from "./i18n";
 export {

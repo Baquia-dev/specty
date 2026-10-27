@@ -104,8 +104,13 @@ export class Shell {
     const location = inject(Location);
     const store = inject(ChangesStore);
     const destroyRef = inject(DestroyRef);
+    this.followNavigation(router, destroyRef);
+    this.goBackWithBackspace(router, location, destroyRef);
+    this.registerCommands(router, store, destroyRef);
+  }
 
-    // A new page starts at the top, with focus on the content so the keys scroll it.
+  /** A new page starts at the top, with focus on the content so the keys scroll it. */
+  private followNavigation(router: Router, destroyRef: DestroyRef): void {
     router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -118,6 +123,10 @@ export class Shell {
         content.scrollTop = 0;
         content.focus({ preventScroll: true });
       });
+  }
+
+  /** Backspace goes back, or to the Inbox when the app has no page to go back to. */
+  private goBackWithBackspace(router: Router, location: Location, destroyRef: DestroyRef): void {
     inject(Shortcuts).register(
       {
         keys: "backspace",
@@ -130,6 +139,10 @@ export class Shell {
       },
       destroyRef,
     );
+  }
+
+  /** The palette's commands: the pages, the theme, the language and one "Open" per change. */
+  private registerCommands(router: Router, store: ChangesStore, destroyRef: DestroyRef): void {
     const add = (id: string, es: string, en: string, run: () => void) =>
       this.commands.register({ id, label: { es, en }, run }, destroyRef);
     add("go:inbox", "Ir a la Bandeja", "Go to the Inbox", () => void router.navigateByUrl("/"));

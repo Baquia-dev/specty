@@ -73,6 +73,8 @@ export const claudeCode: AgentAdapter = {
   action,
   reply: exitReply,
   failed: exitFailed,
+  // Devin loads `.claude/` hooks too, and sets DEVIN_PROJECT_DIR for every hook it runs.
+  borrowed: (env) => env.DEVIN_PROJECT_DIR !== undefined,
   card: textCard,
   stop: blockingStop([CLAUDE_SETTINGS, CLAUDE_LOCAL_SETTINGS]),
   // The guard in each event (matcher + `hooks: [{ type: "command" }]`) and the permissions. A

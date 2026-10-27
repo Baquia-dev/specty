@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261026-gemini-cli-comprueba-el-fin-de-turno-trae-la-tar",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-gemini-cli-comprueba-el-fin-de-turno-trae-la-tar",
+  "baseCommit": "94f91d91f6c49701d373032bca54bce4c94a198d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ecb9b958f544078633f50956316578f53f40c8d8caacc73edd3822c6953982a3",
+    "at": "2026-10-26T20:56:38.043Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:162fda0a4cafc0e07d39356fb26c837999193b5f213e96b897adf6eb91c5d418",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c3d6b48463d0e01a77df7d461d57fb0296f5da2c6e18e60cf228b8f6b6439cb8",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e91ce36f420953922ae6e33c3ff0b441a8fa9c040b5aad1d6b62e5f3ab008295",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:7b0bd93f8251611a7b69f7681564843c022e878a2e7302ef4bd15be17e483efa",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b0f07305e1b245e35343c7500d5caf3b0a998d3b",
+      "attempts": 1,
+      "startedAt": "2026-10-26T20:56:38.421Z",
+      "doneAt": "2026-10-26T21:01:12.851Z",
+      "summary": "Gemini CLI comprueba el fin de turno: AfterAgent (check --install, en milisegundos) responde decision deny con el informe y deja terminar con stop_hook_active. BeforeAgent es el evento turn y trae la tarjeta de next como additionalContext.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "566fb0376062280eb55c06d8cf14f07be4e5c26c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T21:01:13.161Z",
+      "doneAt": "2026-10-26T21:04:54.095Z",
+      "summary": "init añade la carpeta común de git y la de las worktrees a tools.sandboxAllowedPaths cuando .gemini/settings.json es local y git no lo sigue (uninstall las quita); si va en git, no le pone rutas de la máquina y dice cuáles añadir.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6764f1cb9fcc007b59321abda9ccf87b142b665a",
+      "attempts": 1,
+      "startedAt": "2026-10-26T21:04:54.394Z",
+      "doneAt": "2026-10-26T21:08:31.634Z",
+      "summary": "Gemini CLI sigue un guion contra test/fake-gemini.ts, que imita la API de Gemini (GOOGLE_GEMINI_BASE_URL): guard, alcance, aviso tras un comando, tarjeta en el prompt y fin de turno; las 4 pruebas pasan con Gemini CLI 0.65.0 y se saltan sin él.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "c0a60359d6ae2c84c0f38ad478c4745594cf3e36",
+      "attempts": 1,
+      "startedAt": "2026-10-26T21:08:31.937Z",
+      "doneAt": "2026-10-26T21:11:30.809Z",
+      "summary": "La tabla marca el fin de turno, los permisos y la prueba de extremo a extremo de Gemini CLI como sí, y la tarjeta como indirecto (BeforeAgent). ARCHITECTURE cuenta su tarjeta, sus hooks, su sandbox, su fin de turno y la prueba (§16); formats.md, AfterAgent.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-26T21:15:04.800Z"
+}

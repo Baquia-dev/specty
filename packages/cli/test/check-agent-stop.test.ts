@@ -65,6 +65,21 @@ describe("specty hook agent-stop", () => {
     });
   });
 
+  it("leaves Claude Code's end of turn silent when Devin runs it, since Devin's own answers (AC2)", async () => {
+    const root = await failing();
+    const run = await cli(root, ["hook", "agent-stop", "claude-code"], {
+      stdin: JSON.stringify({ hook_event_name: "Stop", stop_hook_active: false }),
+      env: { DEVIN_PROJECT_DIR: root },
+    });
+    expect(run).toMatchObject({ code: 0, out: "" });
+    // Devin's own end of turn still sends the turn back.
+    const devin = await stop(root, "windsurf", {
+      hook_event_name: "Stop",
+      stop_hook_active: false,
+    });
+    expect(JSON.parse(devin.out).decision).toBe("block");
+  });
+
   it("says nothing when the checks pass, and outside a Specty repository", async () => {
     const clean = await tempRepo({ ...APP, ".specty/config.yaml": `${CONFIG()}${CHECKS}` });
     expect(await stop(clean, "claude-code", { stop_hook_active: false })).toMatchObject({
@@ -76,6 +91,12 @@ describe("specty hook agent-stop", () => {
     expect(await stop(elsewhere, "codex", { stop_hook_active: false })).toMatchObject({
       code: 0,
       out: "",
+    });
+    // Antigravity wants an answer every time: outside Specty too, the one that lets it end (AC3).
+    const turn = { conversationId: "c1", terminationReason: "model_stop", fullyIdle: true };
+    expect(await stop(elsewhere, "antigravity", turn)).toMatchObject({
+      code: 0,
+      out: '{"decision":"stop"}',
     });
   });
 
@@ -116,6 +137,26 @@ describe("specty hook agent-stop", () => {
     expect(await read(codexHome, "hooks.json")).toBe(hooks("codex", "PreToolUse"));
     const again = await cli(root, ["check", "--install", "--dry-run"], { env });
     expect(again.out).not.toContain("agent-stop");
+  });
+
+  it("turns on OpenCode's end of turn in its plugin, and init keeps it (AC2)", async () => {
+    const root = await tempRepo({
+      ...APP,
+      ".specty/config.yaml": `${CONFIG()}checks:\n  levels: { secrets: off }\n  preCommit: true\n`,
+      "opencode.json": "{}\n",
+    });
+    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
+    const plugin = () => read(root, ".opencode/plugins/specty.js");
+    expect(await plugin()).toContain("const STOP = null;");
+    const plan = await cli(root, ["check", "--install", "--dry-run"]);
+    expect(plan.out).toContain(".opencode/plugins/specty.js (modificar)");
+    expect((await cli(root, ["check", "--install"], { terminal: person() })).code).toBe(0);
+    expect(await plugin()).toContain("const STOP = 600;");
+    await cli(root, ["init", "--tools", "opencode"]);
+    expect(await plugin()).toContain("const STOP = 600;");
+    expect((await cli(root, ["check", "--install", "--dry-run"])).out).not.toContain(
+      ".opencode/plugins/specty.js",
+    );
   });
 
   it("adds the plan's checks while a change is approved, and speaks English", async () => {

@@ -8,7 +8,7 @@ import {
   removeBlock,
   upsertBlock,
 } from "@baquia-dev/specty-core";
-import { isMap, isNode, isScalar, parseDocument } from "yaml";
+import { isMap, isNode, isScalar, parseDocument, type YAMLMap } from "yaml";
 import type { Detection } from "../detect/project";
 import { projectFacts, verifyCommands } from "../detect/project";
 import { COMMAND } from "../session";
@@ -40,14 +40,18 @@ export function completeConfig(
     const block = entries.map((entry) => `  ${entry}`).join("\n");
     return { text: `${text}${separator}verify:\n${block}\n`, added };
   }
-  // After the map's last value, with the indentation of its first key.
-  const at = current.range?.[1] ?? text.length;
-  const first = current.items[0]?.key;
+  return { text: intoMap(text, current, entries), added };
+}
+
+/** The entries after the map's last value, with the indentation of its first key. */
+function intoMap(text: string, map: YAMLMap, entries: readonly string[]): string {
+  const at = map.range?.[1] ?? text.length;
+  const first = map.items[0]?.key;
   const start = isNode(first) ? (first.range?.[0] ?? at) : at;
   const indent = " ".repeat(Math.max(start - (text.lastIndexOf("\n", start - 1) + 1), 2));
   const inserted = entries.map((entry) => `\n${indent}${entry}`).join("");
   const cut = text.slice(0, at).endsWith("\n") ? at - 1 : at;
-  return { text: `${text.slice(0, cut)}${inserted}${text.slice(cut)}`, added };
+  return `${text.slice(0, cut)}${inserted}${text.slice(cut)}`;
 }
 
 /**
@@ -92,14 +96,30 @@ export async function removeAgentsBlocks(root: string, files: InstallFiles): Pro
   else await files.write(path, left);
 }
 
+/** How GEMINI.md imports AGENTS.md: Gemini CLI documents only paths that start with `./`. */
+export const GEMINI_POINTER = "@./AGENTS.md";
+
 /** Claude Code reads CLAUDE.md: it imports AGENTS.md instead of copying it. */
-export async function writeClaudePointer(
+export function writeClaudePointer(
   root: string,
   files: InstallFiles = installFiles(),
 ): Promise<boolean> {
-  const path = join(root, "CLAUDE.md");
+  return writePointer(root, "CLAUDE.md", "@AGENTS.md", files);
+}
+
+/**
+ * An agent's own instructions file starts with `line`, which imports AGENTS.md, and keeps what it
+ * had; false when it already imports it.
+ */
+export async function writePointer(
+  root: string,
+  file: string,
+  line: string,
+  files: InstallFiles = installFiles(),
+): Promise<boolean> {
+  const path = join(root, file);
   const current = await files.read(path);
-  if (current?.split("\n").some((line) => line.trim() === "@AGENTS.md") === true) return false;
-  await files.write(path, current === undefined ? "@AGENTS.md\n" : `@AGENTS.md\n\n${current}`);
+  if (current?.split("\n").some((text) => text.trim() === line) === true) return false;
+  await files.write(path, current === undefined ? `${line}\n` : `${line}\n\n${current}`);
   return true;
 }

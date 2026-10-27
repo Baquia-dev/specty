@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { matchesAny } from "../glob";
-import { fold } from "../i18n";
+import { fold, type Lang } from "../i18n";
 import { collectSignals } from "../sizing/size";
-import { SECTION_ORDER, type SectionKey, type Spec } from "../spec/model";
+import type { Diagnostic } from "../spec/diagnostics";
+import { type ChangeKind, SECTION_ORDER, type SectionKey, type Spec } from "../spec/model";
 import { KIND_RULES, SECTION_TITLES } from "../spec/vocabulary";
-import { type Rule, report, sectionLine } from "./context";
+import { type Rule, report, sectionLine, type ValidationContext } from "./context";
 import { formatQuickProblem, type QuickProblem } from "./limits";
 
 /** Required, allowed and non-empty sections for the kind and phase. */
@@ -34,20 +35,7 @@ export const checkSections: Rule = (spec, ctx, lang) => {
     );
   const extra = present
     .filter((key) => !allowed.has(key))
-    .map((key) =>
-      key === "closing"
-        ? report(lang, {
-            code: "closing-premature",
-            line: sectionLine(ctx, key),
-            target: "section:closing",
-          })
-        : report(lang, {
-            code: "section-not-allowed",
-            params: { section: name(key), kind },
-            line: sectionLine(ctx, key),
-            target: `section:${key}`,
-          }),
-    );
+    .map((key) => notAllowed(key, kind, ctx, lang));
   const empty = present
     .filter((key) => allowed.has(key) && isEmpty(spec, key))
     .map((key) =>
@@ -60,6 +48,27 @@ export const checkSections: Rule = (spec, ctx, lang) => {
     );
   return [...missing, ...extra, ...empty];
 };
+
+/** A section the kind does not take; the Closing, one written before its time. */
+function notAllowed(
+  key: SectionKey,
+  kind: ChangeKind,
+  ctx: ValidationContext,
+  lang: Lang,
+): Diagnostic {
+  return key === "closing"
+    ? report(lang, {
+        code: "closing-premature",
+        line: sectionLine(ctx, key),
+        target: "section:closing",
+      })
+    : report(lang, {
+        code: "section-not-allowed",
+        params: { section: SECTION_TITLES[lang][key], kind },
+        line: sectionLine(ctx, key),
+        target: `section:${key}`,
+      });
+}
 
 /** A spike closes with its findings and decision. */
 export const checkSpikeClosing: Rule = (spec, ctx, lang) => {

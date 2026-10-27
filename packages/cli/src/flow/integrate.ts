@@ -81,56 +81,112 @@ export async function absorbTarget(
   change: StoredChange,
   again: "close" | "accept",
 ): Promise<Absorbed> {
-  const { git, cards, lang } = session;
+  const { git, cards } = session;
   const { state } = change;
-  const forAgent = state.phase !== "done";
   // Checked before anything moves: the fast-forward could overwrite those changes.
-  const dirty =
-    plan.holder === undefined
-      ? []
-      : lines((await git.run(["-C", plan.holder, "diff", "--name-only", "HEAD"])).stdout);
-  if (plan.holder !== undefined && dirty.length > 0) {
-    return refused(
-      session,
-      state,
-      holderDirtyLine(plan.target, plan.holder, lang),
-      holderDirtyNext(plan.holder, again, cards),
-      { title: incorporationTitle("uncommitted", lang), lines: dirty },
-    );
-  }
+  const dirty = await holderDirty(session, plan, state, again);
+  if (dirty !== undefined) return dirty;
   if (await contains(git, "HEAD", plan.target)) return { ok: true, lines: [] };
-  const byHand = mergeByHandNext(plan.target, again, cards);
+  const absorbing: Absorbing = {
+    plan,
+    change,
+    again,
+    forAgent: state.phase !== "done",
+    byHand: mergeByHandNext(plan.target, again, cards),
+  };
   const merged = await git.run(["merge", "--no-ff", "--no-commit", plan.target]);
-  if (merged.code !== 0) {
-    const conflicts = lines((await git.run(["diff", "--name-only", "--diff-filter=U"])).stdout);
-    const reason = targetConflictsLine(plan.target, lang);
-    const details = { title: incorporationTitle("conflicts", lang), lines: conflicts };
-    if (conflicts.length > 0 && forAgent)
-      return leaveForAgent(session, plan, change, again, { reason, conflicts, details });
-    await git.run(["merge", "--abort"]);
-    if (conflicts.length > 0) return refused(session, state, reason, byHand, details);
-    return refused(session, state, mergeFailedLine(plan.target, reasonOf(merged), lang), byHand);
-  }
+  if (merged.code !== 0) return mergeStopped(session, absorbing, merged);
   // An epic has no code of its own: each of its slices was verified when it closed.
   const epic = state.kind === "epic";
   const command = epic ? undefined : (session.config.verify.full ?? session.config.verify.default);
   if (command !== undefined) {
-    session.environment.io.err(verifyingNote(command, lang));
-    const result = await execute(command, [], {
-      cwd: session.root,
-      shell: true,
-      env: session.environment.env,
-      timeoutMs: session.config.verify.timeoutSec * 1000,
-    });
-    if (result.code !== 0) {
-      const reason = mergedVerifyFailsLine(plan.target, command, lang);
-      const details = { title: incorporationTitle("verification", lang), lines: tail(result, 15) };
-      if (forAgent)
-        return leaveForAgent(session, plan, change, again, { reason, conflicts: [], details });
-      await git.run(["merge", "--abort"]);
-      return refused(session, state, reason, byHand, details);
-    }
+    const failed = await failedVerification(session, absorbing, command);
+    if (failed !== undefined) return failed;
   }
+  return commitAbsorbed(session, plan, epic, command);
+}
+
+/** A merge of the target branch under way, and what follows when it cannot be committed. */
+interface Absorbing {
+  readonly plan: Integration;
+  readonly change: StoredChange;
+  readonly again: "close" | "accept";
+  /** An open change's merge stays in progress for the agent; a closed one's is aborted. */
+  readonly forAgent: boolean;
+  /** What the person does once the merge is aborted. */
+  readonly byHand: string;
+}
+
+/** The folder that holds the target branch has uncommitted changes: nothing moves. */
+async function holderDirty(
+  session: Session,
+  plan: Integration,
+  state: ChangeState,
+  again: "close" | "accept",
+): Promise<Absorbed | undefined> {
+  if (plan.holder === undefined) return undefined;
+  const { git, cards, lang } = session;
+  const dirty = lines((await git.run(["-C", plan.holder, "diff", "--name-only", "HEAD"])).stdout);
+  if (dirty.length === 0) return undefined;
+  return refused(
+    session,
+    state,
+    holderDirtyLine(plan.target, plan.holder, lang),
+    holderDirtyNext(plan.holder, again, cards),
+    { title: incorporationTitle("uncommitted", lang), lines: dirty },
+  );
+}
+
+/** The merge stopped: its conflicts go to the agent of an open change; otherwise it is aborted. */
+async function mergeStopped(
+  session: Session,
+  absorbing: Absorbing,
+  merged: ExecResult,
+): Promise<Absorbed> {
+  const { git, lang } = session;
+  const { plan, change, again, byHand } = absorbing;
+  const conflicts = lines((await git.run(["diff", "--name-only", "--diff-filter=U"])).stdout);
+  const reason = targetConflictsLine(plan.target, lang);
+  const details = { title: incorporationTitle("conflicts", lang), lines: conflicts };
+  if (conflicts.length > 0 && absorbing.forAgent)
+    return leaveForAgent(session, plan, change, again, { reason, conflicts, details });
+  await git.run(["merge", "--abort"]);
+  if (conflicts.length > 0) return refused(session, change.state, reason, byHand, details);
+  const failed = mergeFailedLine(plan.target, reasonOf(merged), lang);
+  return refused(session, change.state, failed, byHand);
+}
+
+/** Runs the verification on the merged code; when it fails, as when the merge stops. */
+async function failedVerification(
+  session: Session,
+  absorbing: Absorbing,
+  command: string,
+): Promise<Absorbed | undefined> {
+  const { git, lang } = session;
+  const { plan, change, again, byHand } = absorbing;
+  session.environment.io.err(verifyingNote(command, lang));
+  const result = await execute(command, [], {
+    cwd: session.root,
+    shell: true,
+    env: session.environment.env,
+    timeoutMs: session.config.verify.timeoutSec * 1000,
+  });
+  if (result.code === 0) return undefined;
+  const reason = mergedVerifyFailsLine(plan.target, command, lang);
+  const details = { title: incorporationTitle("verification", lang), lines: tail(result, 15) };
+  if (absorbing.forAgent)
+    return leaveForAgent(session, plan, change, again, { reason, conflicts: [], details });
+  await git.run(["merge", "--abort"]);
+  return refused(session, change.state, reason, byHand, details);
+}
+
+/** Commits the merge, and says what checked it. */
+async function commitAbsorbed(
+  session: Session,
+  plan: Integration,
+  epic: boolean,
+  command: string | undefined,
+): Promise<Absorbed> {
   const commit = await commitWithReceipt(session, {
     subject: `Merge branch '${plan.target}' into ${plan.branch}`,
     trailers: decisionTrailers(session, plan.id),
@@ -143,7 +199,7 @@ export async function absorbTarget(
     : command === undefined
       ? { kind: "none" }
       : { kind: "passed", command };
-  return { ok: true, lines: [absorbedLine(plan.target, commit, verification, lang)] };
+  return { ok: true, lines: [absorbedLine(plan.target, commit, verification, session.lang)] };
 }
 
 /** Nothing moved: the change stays in its phase, its branch and its folder as they were. */

@@ -92,29 +92,11 @@ async function scan(
       env: session.environment.env,
       timeoutMs: session.config.verify.timeoutSec * 1000,
     });
-  const gitleaksForm = [
-    "dir",
-    ".",
-    "--report-format",
-    "json",
-    "--report-path",
-    report,
-    "--redact",
-    "--no-banner",
-    "--exit-code",
-    "0",
-  ];
-  const betterleaks = await run("betterleaks", [
-    "--no-banner",
-    "fs",
-    ".",
-    "--redact",
-    "--output",
-    report,
-    "--exit-code",
-    "0",
-    ...(await betterleaksConfig(session)),
-  ]);
+  const gitleaksForm = gitleaksArgs(report);
+  const betterleaks = await run(
+    "betterleaks",
+    betterleaksArgs(report, await betterleaksConfig(session)),
+  );
   if (betterleaks.code === 0) return { leaks: await leaksIn(report, target) };
   if (betterleaks.code !== NOT_INSTALLED) {
     if ((await run("betterleaks", gitleaksForm)).code === 0) {
@@ -132,6 +114,27 @@ async function scan(
       "Neither Betterleaks nor gitleaks is on PATH: install Betterleaks (or gitleaks) to look for secrets",
     ),
   };
+}
+
+/** Betterleaks 2's form: a redacted JSON report, whatever it finds. */
+function betterleaksArgs(report: string, config: readonly string[]): string[] {
+  return ["--no-banner", "fs", ".", "--redact", "--output", report, "--exit-code", "0", ...config];
+}
+
+/** Gitleaks' form, which Betterleaks 1 also speaks: a redacted JSON report, whatever it finds. */
+function gitleaksArgs(report: string): string[] {
+  return [
+    "dir",
+    ".",
+    "--report-format",
+    "json",
+    "--report-path",
+    report,
+    "--redact",
+    "--no-banner",
+    "--exit-code",
+    "0",
+  ];
 }
 
 /** Betterleaks loads no configuration by itself: the repository's, unless the environment has one. */

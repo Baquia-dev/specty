@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
 import { integrationCard } from "./integration";
 import { draftingGuide, quoted, translator } from "./text";
@@ -20,24 +21,20 @@ export function nextCard(view: NextView, ctx: CardContext): Output {
   const { change } = view;
   if (change === undefined) return noChangeCard(view.dirty, ctx, view.fresh === true);
   if (change.integration !== undefined) return integrationCard(change, change.integration, ctx);
-  switch (change.phase) {
-    case "draft":
-      return draftCard(change, ctx);
-    case "review":
-      return reviewCard(change, ctx);
-    case "implementing":
-      return implementingCard(change, ctx);
-    case "acceptance":
-      return acceptanceCard(change, ctx);
-    case "adjusting":
-      return adjustingCard(change, ctx);
-    case "closing":
-      return closingCard(change, ctx);
-    case "done":
-    case "cancelled":
-      return finishedCard(change, ctx);
-  }
+  return PHASE_CARDS[change.phase](change, ctx);
 }
+
+/** The card of each phase of a change. */
+const PHASE_CARDS: Readonly<Record<Phase, (change: ChangeView, ctx: CardContext) => Output>> = {
+  draft: draftCard,
+  review: reviewCard,
+  implementing: implementingCard,
+  acceptance: acceptanceCard,
+  adjusting: adjustingCard,
+  closing: closingCard,
+  done: finishedCard,
+  cancelled: finishedCard,
+};
 
 export function notInitializedCard(ctx: CardContext): Output {
   const t = translator(ctx.lang);
@@ -55,39 +52,49 @@ export function notInitializedCard(ctx: CardContext): Output {
 }
 
 function noChangeCard(dirty: readonly string[], ctx: CardContext, fresh: boolean): Output {
-  const t = translator(ctx.lang);
-  if (dirty.length > 0) {
-    return {
-      status: "blocked",
-      header: headerOf(),
-      blocks: section(t("CAMBIOS SIN SPEC", "CHANGES WITHOUT A SPEC"), dirty),
-      next: t(
-        `documéntalos: prepáralos con \`git add\` y ejecuta \`${ctx.command} retro\`.`,
-        `document them: stage them with \`git add\` and run \`${ctx.command} retro\`.`,
-      ),
-    };
-  }
+  if (dirty.length > 0) return withoutSpecCard(dirty, ctx);
   // ARCHITECTURE §14: the skeleton is the first change, standard, so the scaffolding is traced.
-  if (fresh) {
-    return {
-      status: "ok",
-      header: headerOf(),
-      blocks: section(undefined, [
-        t(
-          "No hay un cambio activo, y es un proyecto nuevo: aún no hay código.",
-          "There is no active change, and this is a new project: there is no code yet.",
-        ),
-        t(
-          "El primer cambio es el esqueleto del proyecto, a partir de PRODUCT.md; si tiene preguntas sin responder, házselas antes al usuario.",
-          "The first change is the project's skeleton, from PRODUCT.md; if it has unanswered questions, ask the user first.",
-        ),
-      ]),
-      next: t(
-        `ejecuta \`${ctx.command} new "Esqueleto del proyecto" --request "<petición literal del usuario>"\`.`,
-        `run \`${ctx.command} new "Project skeleton" --request "<the user's literal request>"\`.`,
+  return fresh ? skeletonCard(ctx) : idleCard(ctx);
+}
+
+/** Governed code changed with no change active: it is documented with a retro. */
+function withoutSpecCard(dirty: readonly string[], ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return {
+    status: "blocked",
+    header: headerOf(),
+    blocks: section(t("CAMBIOS SIN SPEC", "CHANGES WITHOUT A SPEC"), dirty),
+    next: t(
+      `documéntalos: prepáralos con \`git add\` y ejecuta \`${ctx.command} retro\`.`,
+      `document them: stage them with \`git add\` and run \`${ctx.command} retro\`.`,
+    ),
+  };
+}
+
+function skeletonCard(ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  return {
+    status: "ok",
+    header: headerOf(),
+    blocks: section(undefined, [
+      t(
+        "No hay un cambio activo, y es un proyecto nuevo: aún no hay código.",
+        "There is no active change, and this is a new project: there is no code yet.",
       ),
-    };
-  }
+      t(
+        "El primer cambio es el esqueleto del proyecto, a partir de PRODUCT.md; si tiene preguntas sin responder, házselas antes al usuario.",
+        "The first change is the project's skeleton, from PRODUCT.md; if it has unanswered questions, ask the user first.",
+      ),
+    ]),
+    next: t(
+      `ejecuta \`${ctx.command} new "Esqueleto del proyecto" --request "<petición literal del usuario>"\`.`,
+      `run \`${ctx.command} new "Project skeleton" --request "<the user's literal request>"\`.`,
+    ),
+  };
+}
+
+function idleCard(ctx: CardContext): Output {
+  const t = translator(ctx.lang);
   return {
     status: "ok",
     header: headerOf(),
@@ -193,25 +200,7 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
   );
   const requested = change.requested ?? [];
   if (change.rejected.length > 0 || requested.length > 0) {
-    const rejected = change.rejected.map(
-      (item) =>
-        `${item.id} ${quoted(item.text, ctx.lang)}${item.comment === undefined ? "" : ` — ${item.comment}`}`,
-    );
-    const comments = requested.map(
-      (comment) => `${comment.id} · ${anchorOf(comment, ctx)}: ${comment.body}`,
-    );
-    return {
-      status: "ok",
-      header,
-      blocks: [
-        ...section(t("SUPUESTOS RECHAZADOS", "REJECTED ASSUMPTIONS"), rejected),
-        ...section(t("CAMBIOS PEDIDOS", "CHANGES REQUESTED"), comments),
-      ],
-      next: t(
-        `corrige ${change.specPath} y ejecuta \`${ctx.command} propose\`.`,
-        `fix ${change.specPath} and run \`${ctx.command} propose\`.`,
-      ),
-    };
+    return changesRequestedCard(change, header, ctx);
   }
   if (ctx.delegated === true) {
     return {
@@ -241,6 +230,30 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
     next: t(
       `pide al usuario que revise la spec y la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
       `ask the user to review the spec and approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
+    ),
+  };
+}
+
+/** The person rejected assumptions or asked for changes: the agent fixes the spec. */
+function changesRequestedCard(change: ChangeView, header: string, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  const rejected = change.rejected.map(
+    (item) =>
+      `${item.id} ${quoted(item.text, ctx.lang)}${item.comment === undefined ? "" : ` — ${item.comment}`}`,
+  );
+  const comments = (change.requested ?? []).map(
+    (comment) => `${comment.id} · ${anchorOf(comment, ctx)}: ${comment.body}`,
+  );
+  return {
+    status: "ok",
+    header,
+    blocks: [
+      ...section(t("SUPUESTOS RECHAZADOS", "REJECTED ASSUMPTIONS"), rejected),
+      ...section(t("CAMBIOS PEDIDOS", "CHANGES REQUESTED"), comments),
+    ],
+    next: t(
+      `corrige ${change.specPath} y ejecuta \`${ctx.command} propose\`.`,
+      `fix ${change.specPath} and run \`${ctx.command} propose\`.`,
     ),
   };
 }

@@ -94,16 +94,20 @@ function markWords(lines: DiffLine[]): DiffLine[] {
     while (out[i]?.kind === "added") added.push(i++);
     if (removed.length === 0 && added.length === 0) i++;
     for (let k = 0; k < Math.min(removed.length, added.length); k++) {
-      const [left, right] = [removed[k] ?? 0, added[k] ?? 0];
-      const [oldLine, newLine] = [out[left], out[right]];
-      if (oldLine === undefined || newLine === undefined) continue;
-      const pair = rangesOf(oldLine.text, newLine.text);
-      if (pair === undefined) continue;
-      out[left] = { ...oldLine, changed: pair.before };
-      out[right] = { ...newLine, changed: pair.after };
+      markPair(out, removed[k] ?? 0, added[k] ?? 0);
     }
   }
   return out;
+}
+
+/** Marks the changed words of a removed line and the added line it pairs with, if they are similar. */
+function markPair(out: DiffLine[], left: number, right: number): void {
+  const [oldLine, newLine] = [out[left], out[right]];
+  if (oldLine === undefined || newLine === undefined) return;
+  const pair = rangesOf(oldLine.text, newLine.text);
+  if (pair === undefined) return;
+  out[left] = { ...oldLine, changed: pair.before };
+  out[right] = { ...newLine, changed: pair.after };
 }
 
 /** The changed words of a pair, by where they sit in each text; nothing if they share too little. */
@@ -149,68 +153,141 @@ function finish(draft: Draft): DiffFile {
 export function parseDiff(text: string): readonly DiffFile[] {
   const files: DiffFile[] = [];
   let draft: Draft | undefined;
-  let lines: DiffLine[] | undefined;
-  let [oldLeft, newLeft, oldAt, newAt] = [0, 0, 0, 0];
-  for (const raw of text.split("\n")) {
-    const line = raw.endsWith("\r") ? raw.slice(0, -1) : raw;
+  let cursor: HunkCursor | undefined;
+  for (const line of text.split("\n").map((raw) => raw.replace(/\r$/, ""))) {
     if (line.startsWith("diff --git ")) {
       if (draft !== undefined) files.push(finish(draft));
-      const [a, b] = gitPaths(line.slice("diff --git ".length));
-      draft = { path: b ?? a ?? "", oldPath: a, status: "modified", binary: false, hunks: [] };
-      lines = undefined;
+      draft = draftOf(line.slice("diff --git ".length));
+      cursor = undefined;
       continue;
     }
     if (draft === undefined || line.startsWith("\\")) continue;
-    if (lines !== undefined && (oldLeft > 0 || newLeft > 0)) {
-      const sign = line[0] ?? " ";
-      const body = line.slice(1);
-      if (sign === " " && oldLeft > 0 && newLeft > 0) {
-        lines.push({ kind: "context", text: body, oldNumber: oldAt++, newNumber: newAt++ });
-        [oldLeft, newLeft] = [oldLeft - 1, newLeft - 1];
-        continue;
-      }
-      if (sign === "-" && oldLeft > 0) {
-        lines.push({ kind: "removed", text: body, oldNumber: oldAt++ });
-        oldLeft--;
-        continue;
-      }
-      if (sign === "+" && newLeft > 0) {
-        lines.push({ kind: "added", text: body, newNumber: newAt++ });
-        newLeft--;
-        continue;
-      }
-      // A line the counts did not expect ends the hunk; it is read as anything else.
-      [oldLeft, newLeft] = [0, 0];
-    }
+    if (cursor !== undefined && takeLine(cursor, line)) continue;
     const hunk = HUNK.exec(line);
-    if (hunk !== null) {
-      // «@@ -3 +3 @@»: a count left out is one line.
-      const count = (group: string | undefined) => (group === undefined ? 1 : Number(group));
-      [oldAt, oldLeft] = [Number(hunk[1]), count(hunk[2])];
-      [newAt, newLeft] = [Number(hunk[3]), count(hunk[4])];
-      lines = [];
-      draft.hunks.push({
-        oldStart: oldAt,
-        oldLines: oldLeft,
-        newStart: newAt,
-        newLines: newLeft,
-        section: hunk[5] ?? "",
-        lines,
-      });
-    } else if (line.startsWith("new file mode")) draft.status = "added";
-    else if (line.startsWith("deleted file mode")) draft.status = "deleted";
-    else if (line.startsWith("rename from ")) {
-      draft.status = "renamed";
-      draft.oldPath = pathOf(line.slice("rename from ".length));
-    } else if (line.startsWith("rename to ")) {
-      draft.status = "renamed";
-      draft.path = pathOf(line.slice("rename to ".length)) ?? draft.path;
-    } else if (line.startsWith("Binary files ") || line === "GIT binary patch") draft.binary = true;
-    else if (line.startsWith("--- ")) draft.oldPath = pathOf(line.slice(4)) ?? draft.oldPath;
-    else if (line.startsWith("+++ ")) draft.path = pathOf(line.slice(4)) ?? draft.path;
+    if (hunk !== null) cursor = openHunk(draft, hunk);
+    else readHeader(draft, line);
   }
   if (draft !== undefined) files.push(finish(draft));
   return files;
+}
+
+/** A file as «diff --git a/x b/y» starts it: modified until its headers say otherwise. */
+function draftOf(paths: string): Draft {
+  const [a, b] = gitPaths(paths);
+  return { path: b ?? a ?? "", oldPath: a, status: "modified", binary: false, hunks: [] };
+}
+
+/** A hunk being read: its lines, what its counts still expect, and the next number on each side. */
+interface HunkCursor {
+  readonly lines: DiffLine[];
+  oldLeft: number;
+  newLeft: number;
+  oldAt: number;
+  newAt: number;
+}
+
+/** A hunk's header opens it in the file: a count left out, as in «@@ -3 +3 @@», is one line. */
+function openHunk(draft: Draft, hunk: RegExpExecArray): HunkCursor {
+  const count = (group: string | undefined) => (group === undefined ? 1 : Number(group));
+  const cursor: HunkCursor = {
+    lines: [],
+    oldAt: Number(hunk[1]),
+    oldLeft: count(hunk[2]),
+    newAt: Number(hunk[3]),
+    newLeft: count(hunk[4]),
+  };
+  draft.hunks.push({
+    oldStart: cursor.oldAt,
+    oldLines: cursor.oldLeft,
+    newStart: cursor.newAt,
+    newLines: cursor.newLeft,
+    section: hunk[5] ?? "",
+    lines: cursor.lines,
+  });
+  return cursor;
+}
+
+/** Takes a line into the hunk when its counts expect it; whether it did. */
+function takeLine(cursor: HunkCursor, line: string): boolean {
+  const kind = expected(line[0] ?? " ", cursor);
+  if (kind === undefined) {
+    // A line the counts did not expect ends the hunk; it is read as anything else.
+    cursor.oldLeft = 0;
+    cursor.newLeft = 0;
+    return false;
+  }
+  const old = kind === "added" ? {} : { oldNumber: cursor.oldAt++ };
+  const now = kind === "removed" ? {} : { newNumber: cursor.newAt++ };
+  cursor.lines.push({ kind, text: line.slice(1), ...old, ...now });
+  if (kind !== "added") cursor.oldLeft--;
+  if (kind !== "removed") cursor.newLeft--;
+  return true;
+}
+
+/** What a hunk line is by its sign, when the counts still expect one of its kind. */
+function expected(sign: string, cursor: HunkCursor): DiffLineKind | undefined {
+  if (sign === " " && cursor.oldLeft > 0 && cursor.newLeft > 0) return "context";
+  if (sign === "-" && cursor.oldLeft > 0) return "removed";
+  if (sign === "+" && cursor.newLeft > 0) return "added";
+  return undefined;
+}
+
+/** What each header line says of its file, by how the line starts. */
+const HEADERS: readonly (readonly [string, (draft: Draft, rest: string) => void])[] = [
+  [
+    "new file mode",
+    (draft) => {
+      draft.status = "added";
+    },
+  ],
+  [
+    "deleted file mode",
+    (draft) => {
+      draft.status = "deleted";
+    },
+  ],
+  [
+    "rename from ",
+    (draft, rest) => {
+      draft.status = "renamed";
+      draft.oldPath = pathOf(rest);
+    },
+  ],
+  [
+    "rename to ",
+    (draft, rest) => {
+      draft.status = "renamed";
+      draft.path = pathOf(rest) ?? draft.path;
+    },
+  ],
+  [
+    "Binary files ",
+    (draft) => {
+      draft.binary = true;
+    },
+  ],
+  [
+    "--- ",
+    (draft, rest) => {
+      draft.oldPath = pathOf(rest) ?? draft.oldPath;
+    },
+  ],
+  [
+    "+++ ",
+    (draft, rest) => {
+      draft.path = pathOf(rest) ?? draft.path;
+    },
+  ],
+];
+
+/** A line outside the hunks: what its header says of the file, if it is one. */
+function readHeader(draft: Draft, line: string): void {
+  if (line === "GIT binary patch") {
+    draft.binary = true;
+    return;
+  }
+  const header = HEADERS.find(([start]) => line.startsWith(start));
+  header?.[1](draft, line.slice(header[0].length));
 }
 
 /**

@@ -50,16 +50,52 @@ export function changeEvents(
   headers: Readonly<Record<string, string>>,
 ): ChangeEvents {
   const listeners = new Set<ServerResponse>();
+  const tell = (listener: ServerResponse) => listener.write("event: changes\ndata: {}\n\n");
+  const watch = fingerprintWatch(session, interval, () => listeners.forEach(tell));
+  return {
+    add(response) {
+      response.writeHead(200, { ...headers, "Content-Type": "text/event-stream" });
+      listeners.add(response);
+      response.on("close", () => {
+        listeners.delete(response);
+        if (listeners.size === 0) watch.stop();
+      });
+      // It hears `changes` once the first look is done: whatever it reads then is in that look,
+      // so anything that moves later is heard, however slow the look was.
+      void watch.start().then(() => {
+        if (listeners.has(response)) tell(response);
+      });
+    },
+    send(event, data) {
+      const text = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+      for (const listener of listeners) listener.write(text);
+    },
+    close() {
+      watch.stop();
+      for (const listener of listeners) listener.end();
+      listeners.clear();
+    },
+  };
+}
+
+/** The fingerprint looked at every `interval` while started; `moved` hears when it changes. */
+interface Watch {
+  /** Starts looking, unless it already does; resolves once the first look is done. */
+  start(): Promise<void>;
+  /** Stops looking and forgets the last fingerprint. */
+  stop(): void;
+}
+
+function fingerprintWatch(session: Session, interval: number, moved: () => void): Watch {
   let timer: NodeJS.Timeout | undefined;
   let last: string | undefined;
   let looking = false;
-  const tell = (listener: ServerResponse) => listener.write("event: changes\ndata: {}\n\n");
   const look = async () => {
     if (looking) return;
     looking = true;
     try {
       const now = await fingerprint(session);
-      if (last !== undefined && now !== last) listeners.forEach(tell);
+      if (last !== undefined && now !== last) moved();
       last = now;
     } catch {
       // A failed look waits for the next one.
@@ -69,36 +105,17 @@ export function changeEvents(
   };
   /** The first look while someone listens: until it is done, nothing can tell what moved. */
   let ready: Promise<void> | undefined;
-  const stop = () => {
-    clearInterval(timer);
-    timer = undefined;
-    last = undefined;
-    ready = undefined;
-  };
   return {
-    add(response) {
-      response.writeHead(200, { ...headers, "Content-Type": "text/event-stream" });
-      listeners.add(response);
-      response.on("close", () => {
-        listeners.delete(response);
-        if (listeners.size === 0) stop();
-      });
+    start() {
       ready ??= look();
       timer ??= setInterval(() => void look(), interval);
-      // It hears `changes` once the first look is done: whatever it reads then is in that look,
-      // so anything that moves later is heard, however slow the look was.
-      void ready.then(() => {
-        if (listeners.has(response)) tell(response);
-      });
+      return ready;
     },
-    send(event, data) {
-      const text = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
-      for (const listener of listeners) listener.write(text);
-    },
-    close() {
-      stop();
-      for (const listener of listeners) listener.end();
-      listeners.clear();
+    stop() {
+      clearInterval(timer);
+      timer = undefined;
+      last = undefined;
+      ready = undefined;
     },
   };
 }

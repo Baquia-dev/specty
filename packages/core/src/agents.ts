@@ -18,7 +18,8 @@ export const AGENT_NAMES: Readonly<Record<AgentTool, string>> = {
   opencode: "OpenCode",
   "gemini-cli": "Gemini CLI",
   copilot: "GitHub Copilot",
-  windsurf: "Windsurf",
+  // Windsurf is Devin Desktop now, whose agent shares Devin CLI's hooks.
+  windsurf: "Devin (Windsurf)",
   antigravity: "Antigravity",
 };
 
@@ -49,20 +50,29 @@ export function detectAgentTool(
   env: Readonly<Record<string, string | undefined>>,
 ): AgentTool | undefined {
   if (isAgentTool(env.SPECTY_AGENT)) return env.SPECTY_AGENT;
-  if (env.CLAUDECODE === "1") return "claude-code";
-  if (env.CURSOR_AGENT === "1") return "cursor";
-  if (env.GEMINI_CLI === "1") return "gemini-cli";
-  // Codex sets CODEX_SANDBOX only inside its sandbox; the other two reach every command.
-  if (
-    env.CODEX_SANDBOX !== undefined ||
-    env.CODEX_CI !== undefined ||
-    env.CODEX_THREAD_ID !== undefined
-  ) {
-    return "codex";
-  }
-  if (env.OPENCODE === "1") return "opencode";
-  return undefined;
+  return MARKS.find(([, marked]) => marked(env))?.[0];
 }
+
+type Env = Readonly<Record<string, string | undefined>>;
+
+/** What each agent leaves in the environment of the commands it runs, in the order they are tried. */
+const MARKS: readonly (readonly [AgentTool, (env: Env) => boolean])[] = [
+  ["claude-code", (env) => env.CLAUDECODE === "1"],
+  ["cursor", (env) => env.CURSOR_AGENT === "1"],
+  ["gemini-cli", (env) => env.GEMINI_CLI === "1"],
+  // Codex sets CODEX_SANDBOX only inside its sandbox; the other two reach every command.
+  [
+    "codex",
+    (env) =>
+      env.CODEX_SANDBOX !== undefined ||
+      env.CODEX_CI !== undefined ||
+      env.CODEX_THREAD_ID !== undefined,
+  ],
+  ["opencode", (env) => env.OPENCODE === "1"],
+  // Antigravity CLI (1.3.6 or later) turns off the editors of Mercurial and Jujutsu, with git's,
+  // in its commands, so that they fail instead of waiting; no person turns off both.
+  ["antigravity", (env) => env.HGEDITOR === "false" && env.JJ_EDITOR === "false"],
+];
 
 /**
  * Whether a terminal belongs to the person: a real TTY whose environment does not give

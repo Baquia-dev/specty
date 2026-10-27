@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "20261026-codex-sigue-un-guion-con-un-modelo-simulado",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-codex-sigue-un-guion-con-un-modelo-simulado",
+  "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:74e9ec08be65a014c87cfa42ecbfdcc392c6998a727e5ba64495ec6b8faf0250",
+    "at": "2026-10-26T22:29:32.008Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:de1ad4ea74d08c9e2ec96bb3c46c7b68e43f82c3cfd9a66b7e24c13f5bb8548f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:13677b5400e6d3004eb0518d4557be842772cb63e91c87aee2ea2cf4f523c0b2",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:4d72cb4b8105cd2a657faaaa030773cb653bf35c663bfe56b79b59ff2b21f6bf",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8443e69141eeb7f6b8a6a35e0ed710f118b67f3c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:29:32.405Z",
+      "doneAt": "2026-10-26T22:33:41.780Z",
+      "summary": "Codex sigue un guion contra test/fake-responses.ts, que imita la API de respuestas de OpenAI: guard, alcance, aviso tras un comando y fin de turno, con codex exec -s workspace-write --dangerously-bypass-hook-trust; las 4 pruebas pasan con Codex 0.164.0 y se saltan sin él.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a55657a91eb8e6ffec7acb7b2f023ba4c57c6f2e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:33:42.134Z",
+      "doneAt": "2026-10-26T22:40:31.524Z",
+      "summary": "La prueba de extremo a extremo de Codex pasa a sí en la tabla; ARCHITECTURE §16 cuenta cómo corre (codex exec con CODEX_HOME temporal, las dos opciones autorizadas) y qué comprueba, con Codex 0.164.0.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-26T22:46:26.466Z"
+}

@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "id": "20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-opencode-sigue-un-guion-con-un-modelo-simulado",
+  "baseCommit": "1a02854178ca122f70ebd9fc6790a62e7b7e63a5",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:b7349e75a7ad25325ad252ddbdf178ee7d55a552ad1eba98fbef3588ebd80663",
+    "at": "2026-10-26T19:01:23.404Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2844a1b93770f33ed19ce5eadaaa586cbdf74c9902871bd345092ecf4f8261a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f210857a4958a82e1bd26382672cbe2cb77618137fb42740fc34ab778e5e6584",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:39fc9f1362cda68f1f34bd3dc32cb50905f0f9bf8428fcd6b24ebd3d9f439c06",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "fd92b247372d4b9bbcd7708839860618765e3f4b",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:45:20.266Z",
+      "doneAt": "2026-10-26T18:59:26.657Z",
+      "summary": "OpenCode de verdad sigue un guion contra fake-chat.ts (API de chat de OpenAI): guard, scope, aviso tras un comando (opencode run) y tarjeta tras compactar y fin de turno (opencode serve). Pasan las 5 con OpenCode 1.19.4 y se saltan sin él.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "e87f6e596d79023577c7151caf5dac7d85865604",
+      "attempts": 1,
+      "startedAt": "2026-10-26T18:59:26.941Z",
+      "doneAt": "2026-10-26T19:00:01.024Z",
+      "summary": "La prueba de extremo a extremo de OpenCode pasa a «sí» en la tabla, y ARCHITECTURE §16 cuenta cómo corre (opencode run y opencode serve, aislado, con fake-chat.ts).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "3be571568df6b80c246f99eaf36d0cde1d43a04e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T19:01:23.741Z",
+      "doneAt": "2026-10-26T19:04:07.044Z",
+      "summary": "knip.json declara opencode en ignoreBinaries: la prueba de extremo a extremo lo busca en el PATH como herramienta externa opcional, no como dependencia.",
+      "scopeExtra": [
+        "packages/cli/test/opencode-e2e.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-26T19:06:33.864Z"
+}

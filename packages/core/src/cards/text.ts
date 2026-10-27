@@ -61,8 +61,16 @@ export function verifyingNote(command: string, lang: Lang): string {
 
 /** Instructions to write or revise a spec, adapted to the kind of change. */
 export function draftingGuide(change: ChangeView, ctx: CardContext): string[] {
-  const t = translator(ctx.lang);
-  const common = [
+  const own = KIND_GUIDES[change.kind](translator(ctx.lang), ctx);
+  // A quick change and a retro ask nothing: they are small, or already done.
+  return change.kind === "quick" || change.kind === "retro"
+    ? own
+    : [...doubtsGuide(translator(ctx.lang)), ...own];
+}
+
+/** Ask what changes the design; write the rest as assumptions. */
+function doubtsGuide(t: Translate): string[] {
+  return [
     t(
       "Si una duda cambia el diseño, pregúntale al usuario antes de escribir (3 preguntas como máximo).",
       "If a doubt changes the design, ask the user before writing (3 questions at most).",
@@ -72,58 +80,57 @@ export function draftingGuide(change: ChangeView, ctx: CardContext): string[] {
       'Write everything else as assumptions; mark with "impact: high" those that would change the design if false.',
     ),
   ];
-  const dependencies = t(
+}
+
+/** What a spec of each kind holds. */
+const KIND_GUIDES: Readonly<
+  Record<ChangeView["kind"], (t: Translate, ctx: CardContext) => string[]>
+> = {
+  quick: (t, ctx) => [
+    t(
+      `Quick: objetivo, archivos (hasta ${ctx.quickMaxFiles}, sin rutas sensibles) y una sola tarea con \`verify\`.`,
+      `Quick: goal, files (up to ${ctx.quickMaxFiles}, no sensitive paths) and a single task with \`verify\`.`,
+    ),
+    dependenciesGuide(t),
+  ],
+  spike: (t) => [
+    t(
+      "Spike: la pregunta, lo que no harás y un prototipo desechable; al cerrar, Hallazgos y Decisión.",
+      "Spike: the question, what you will not do and a throwaway prototype; when closing, Findings and Decision.",
+    ),
+  ],
+  epic: (t) => [
+    t(
+      "Épica: cortes verticales que funcionen de punta a punta, cada uno con `ac` y `depends`.",
+      "Epic: vertical slices that work end to end, each with `ac` and `depends`.",
+    ),
+  ],
+  retro: (t) => [
+    t(
+      "Retro: qué cambió (Objetivo), por qué (Motivo) y qué podría romperse (Riesgos).",
+      "Retro: what changed (Goal), why (Reason) and what could break (Risks).",
+    ),
+  ],
+  standard: (t) => [
+    t(
+      "Fuera de alcance: lo que no harás. Criterios: CUANDO … ENTONCES …, observables.",
+      "Out of scope: what you will not do. Criteria: WHEN … THEN …, observable.",
+    ),
+    t(
+      "Archivos: cada ruta que tocarás, con su motivo. Tareas: pequeñas, con `files`, `ac` y `verify`.",
+      "Files: every path you will touch, with its reason. Tasks: small, with `files`, `ac` and `verify`.",
+    ),
+    dependenciesGuide(t),
+    t(
+      "Borra las secciones opcionales que no uses.",
+      "Remove the optional sections you do not use.",
+    ),
+  ],
+};
+
+function dependenciesGuide(t: Translate): string {
+  return t(
     "Si el cambio añade dependencias a un manifiesto, nómbralas en `allowedDependencies` del frontmatter: `specty check --spec` rechaza las demás.",
     "If the change adds dependencies to a manifest, name them in the frontmatter's `allowedDependencies`: `specty check --spec` rejects the rest.",
   );
-  switch (change.kind) {
-    case "quick":
-      return [
-        t(
-          `Quick: objetivo, archivos (hasta ${ctx.quickMaxFiles}, sin rutas sensibles) y una sola tarea con \`verify\`.`,
-          `Quick: goal, files (up to ${ctx.quickMaxFiles}, no sensitive paths) and a single task with \`verify\`.`,
-        ),
-        dependencies,
-      ];
-    case "spike":
-      return [
-        ...common,
-        t(
-          "Spike: la pregunta, lo que no harás y un prototipo desechable; al cerrar, Hallazgos y Decisión.",
-          "Spike: the question, what you will not do and a throwaway prototype; when closing, Findings and Decision.",
-        ),
-      ];
-    case "epic":
-      return [
-        ...common,
-        t(
-          "Épica: cortes verticales que funcionen de punta a punta, cada uno con `ac` y `depends`.",
-          "Epic: vertical slices that work end to end, each with `ac` and `depends`.",
-        ),
-      ];
-    case "retro":
-      return [
-        t(
-          "Retro: qué cambió (Objetivo), por qué (Motivo) y qué podría romperse (Riesgos).",
-          "Retro: what changed (Goal), why (Reason) and what could break (Risks).",
-        ),
-      ];
-    case "standard":
-      return [
-        ...common,
-        t(
-          "Fuera de alcance: lo que no harás. Criterios: CUANDO … ENTONCES …, observables.",
-          "Out of scope: what you will not do. Criteria: WHEN … THEN …, observable.",
-        ),
-        t(
-          "Archivos: cada ruta que tocarás, con su motivo. Tareas: pequeñas, con `files`, `ac` y `verify`.",
-          "Files: every path you will touch, with its reason. Tasks: small, with `files`, `ac` and `verify`.",
-        ),
-        dependencies,
-        t(
-          "Borra las secciones opcionales que no uses.",
-          "Remove the optional sections you do not use.",
-        ),
-      ];
-  }
 }

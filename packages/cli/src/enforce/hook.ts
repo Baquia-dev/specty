@@ -34,17 +34,30 @@ export async function preCommit(session: Session): Promise<number> {
   const active = await resolveActive(session);
   const open = active !== undefined && !isFinished(active.state) ? active : undefined;
   if (open !== undefined && open.state.phase !== "draft") {
-    const scope = await changeScope(session, open);
-    const outside = governed.filter((path) => !matchesAny(path, scope));
-    if (outside.length === 0) {
-      if (session.config.checks.preCommit && !(await passesChecks(session))) return 1;
-      await writeMarker(git, { tree, change: open.state.id, kind: "manual" });
-      return 0;
-    }
-    session.environment.io.err(message(session, outside, open.state.id));
-    return 1;
+    return manualEdit(session, open, governed, tree);
   }
   session.environment.io.err(message(session, governed, undefined));
+  return 1;
+}
+
+/**
+ * A manual edit of the open change: inside its scope it passes, after `specty check --staged`
+ * with `checks.preCommit`; outside it, it is blocked.
+ */
+async function manualEdit(
+  session: Session,
+  open: StoredChange,
+  governed: readonly string[],
+  tree: string,
+): Promise<number> {
+  const scope = await changeScope(session, open);
+  const outside = governed.filter((path) => !matchesAny(path, scope));
+  if (outside.length === 0) {
+    if (session.config.checks.preCommit && !(await passesChecks(session))) return 1;
+    await writeMarker(session.git, { tree, change: open.state.id, kind: "manual" });
+    return 0;
+  }
+  session.environment.io.err(message(session, outside, open.state.id));
   return 1;
 }
 

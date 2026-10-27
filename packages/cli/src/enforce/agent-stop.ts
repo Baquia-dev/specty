@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { checkChangedFailedLine } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
+import type { AgentStop } from "../agents/adapter";
 import { check } from "../commands/check";
 import { resolveActive } from "../flow/active";
 import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
-import { isGuardTool } from "./actions";
+import { conversationOf, isGuardTool } from "./actions";
+import { leavePending, takePending } from "./pending";
 
 /**
  * `specty hook agent-stop <agent>` (ADR 0012): when the agent ends its turn, `specty check
@@ -22,11 +24,37 @@ const APPROVED_PHASES: ReadonlySet<string> = new Set([
   "closing",
 ]);
 
-/** What to print for the agent: its reply, or nothing to let the turn end. */
+/** What to print for the agent: its reply, or what lets the turn end (nothing, for most). */
 export async function agentStop(session: Session, tool: string, input: string): Promise<string> {
-  const stop = isGuardTool(tool) ? ADAPTERS[tool].stop : undefined;
-  const event = parseJson(input);
-  if (stop === undefined || !stop.acts(isRecord(event) ? event : {})) return "";
+  const agent = isGuardTool(tool) ? ADAPTERS[tool] : undefined;
+  const stop = agent?.stop;
+  if (agent === undefined || stop === undefined) return "";
+  // Another tool runs these hooks as its own, and its own end of turn answers.
+  if (agent.borrowed?.(session.environment.env) === true) return "";
+  const parsed = parseJson(input);
+  const given = isRecord(parsed) ? parsed : {};
+  const event = agent.normalize?.(given) ?? given;
+  const report = stop.acts(event) ? await turnReport(session, stop, event) : undefined;
+  return report === undefined ? (stop.pass ?? "") : stop.reply(report);
+}
+
+/**
+ * What sends the turn back: `specty check --changed` failing, with the plan's checks while a
+ * change is approved. For a tool that does not mark a turn it sent back, Specty keeps the count
+ * by conversation: the end that follows goes through, as `stop_hook_active` lets Claude Code's.
+ */
+async function turnReport(
+  session: Session,
+  stop: AgentStop,
+  event: Record<string, unknown>,
+): Promise<string | undefined> {
+  const conversation = stop.counts === true ? conversationOf(event) : undefined;
+  if (
+    conversation !== undefined &&
+    (await takePending(session, conversation, "stop")) !== undefined
+  ) {
+    return undefined;
+  }
   const active = await resolveActive(session);
   const planned = active !== undefined && APPROVED_PHASES.has(active.state.phase);
   const result = await check(
@@ -35,6 +63,7 @@ export async function agentStop(session: Session, tool: string, input: string): 
     false,
     planned ? { id: active.state.id } : undefined,
   );
-  if (result.code === 0) return "";
-  return stop.reply(`${checkChangedFailedLine(session.lang)}\n${result.report}`);
+  if (result.code === 0) return undefined;
+  if (conversation !== undefined) await leavePending(session, conversation, "stop");
+  return `${checkChangedFailedLine(session.lang)}\n${result.report}`;
 }

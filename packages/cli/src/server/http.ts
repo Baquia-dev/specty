@@ -131,49 +131,64 @@ async function handle(request: IncomingMessage, response: ServerResponse, contex
     return act(request, response, context, url.pathname);
   if (request.method !== "GET") return send(response, 405, TEXT, "specty: method");
   const token = url.searchParams.get("token");
-  if (token !== null) {
-    if (!same(token, context.token)) return send(response, 403, TEXT, "specty: link");
-    response.writeHead(303, {
-      ...SAFE,
-      Location: "/",
-      "Set-Cookie": `${context.cookie}=${context.token}; HttpOnly; SameSite=Strict; Path=/`,
-    });
-    return response.end();
-  }
-  if (url.pathname.startsWith("/api/")) {
-    const origin = request.headers.origin;
-    const foreign =
-      origin !== undefined && !isLocal(origin.replace(/^http:\/\//, ""), context.port);
-    if (foreign || !hasSession(request.headers.cookie, context))
-      return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
-    if (url.pathname === "/api/changes")
-      return send(response, 200, JSON_TYPE, JSON.stringify(await changeRecords(context.session)));
-    if (url.pathname === "/api/events") return context.events.add(response);
-    if (url.pathname === "/api/session") {
-      const actions = context.actions === true;
-      return send(
-        response,
-        200,
-        JSON_TYPE,
-        JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
-      );
-    }
-    if (url.pathname === "/api/delegation") {
-      const view = await delegationView(context.session);
-      return send(response, 200, JSON_TYPE, JSON.stringify(view));
-    }
-    const [, id, part] = /^\/api\/changes\/([^/]+)\/(diff|run)$/.exec(url.pathname) ?? [];
-    if (id !== undefined && part === "run") {
-      const run = context.runs.current(decodeURIComponent(id)) ?? null;
-      return send(response, 200, JSON_TYPE, JSON.stringify(run));
-    }
-    if (id !== undefined) {
-      const task = url.searchParams.get("task") ?? undefined;
-      return sendDiff(response, await changeDiff(context.session, decodeURIComponent(id), task));
-    }
-    return send(response, 404, JSON_TYPE, '{"error":"not found"}');
-  }
+  if (token !== null) return signIn(response, context, token);
+  if (url.pathname.startsWith("/api/")) return readApi(request, response, context, url);
   return serveUi(response, context, url.pathname);
+}
+
+/** The link with the server's token: it sets the session's cookie and goes to the UI. */
+function signIn(response: ServerResponse, context: Context, token: string) {
+  if (!same(token, context.token)) return send(response, 403, TEXT, "specty: link");
+  response.writeHead(303, {
+    ...SAFE,
+    Location: "/",
+    "Set-Cookie": `${context.cookie}=${context.token}; HttpOnly; SameSite=Strict; Path=/`,
+  });
+  return response.end();
+}
+
+/** A read of the API: from this origin and with the session. */
+async function readApi(
+  request: IncomingMessage,
+  response: ServerResponse,
+  context: Context,
+  url: URL,
+) {
+  const origin = request.headers.origin;
+  const foreign = origin !== undefined && !isLocal(origin.replace(/^http:\/\//, ""), context.port);
+  if (foreign || !hasSession(request.headers.cookie, context))
+    return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
+  if (url.pathname === "/api/changes")
+    return send(response, 200, JSON_TYPE, JSON.stringify(await changeRecords(context.session)));
+  if (url.pathname === "/api/events") return context.events.add(response);
+  if (url.pathname === "/api/session") {
+    const actions = context.actions === true;
+    return send(
+      response,
+      200,
+      JSON_TYPE,
+      JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
+    );
+  }
+  if (url.pathname === "/api/delegation") {
+    const view = await delegationView(context.session);
+    return send(response, 200, JSON_TYPE, JSON.stringify(view));
+  }
+  return readChange(response, context, url);
+}
+
+/** A change's verification going on, or its diff, whole or of one task. */
+async function readChange(response: ServerResponse, context: Context, url: URL) {
+  const [, id, part] = /^\/api\/changes\/([^/]+)\/(diff|run)$/.exec(url.pathname) ?? [];
+  if (id !== undefined && part === "run") {
+    const run = context.runs.current(decodeURIComponent(id)) ?? null;
+    return send(response, 200, JSON_TYPE, JSON.stringify(run));
+  }
+  if (id !== undefined) {
+    const task = url.searchParams.get("task") ?? undefined;
+    return sendDiff(response, await changeDiff(context.session, decodeURIComponent(id), task));
+  }
+  return send(response, 404, JSON_TYPE, '{"error":"not found"}');
 }
 
 /**
@@ -186,14 +201,8 @@ async function act(
   context: Context,
   pathname: string,
 ) {
-  const origin = request.headers.origin;
-  const here = origin !== undefined && isLocal(origin.replace(/^http:\/\//, ""), context.port);
-  if (!here || !hasSession(request.headers.cookie, context))
-    return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
-  if (context.actions !== true) return send(response, 403, JSON_TYPE, '{"error":"read-only"}');
-  const csrf = request.headers["x-specty-csrf"];
-  if (typeof csrf !== "string" || !same(csrf, context.csrf))
-    return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
+  const refused = actionRefusal(request, context);
+  if (refused !== undefined) return send(response, 403, JSON_TYPE, refused);
   const body = await readBody(request);
   const bad = () => send(response, 400, JSON_TYPE, '{"error":"bad request"}');
   const done = (output: Output) =>
@@ -212,6 +221,20 @@ async function act(
   );
   if (parsed === undefined) return bad();
   return done(await context.serial(() => runAction(context.session, parsed.id, parsed.action)));
+}
+
+/**
+ * Why an action is refused, as the body of its 403: from another origin or without the session,
+ * on a read-only server, or without the CSRF token.
+ */
+function actionRefusal(request: IncomingMessage, context: Context): string | undefined {
+  const origin = request.headers.origin;
+  const here = origin !== undefined && isLocal(origin.replace(/^http:\/\//, ""), context.port);
+  if (!here || !hasSession(request.headers.cookie, context)) return '{"error":"forbidden"}';
+  if (context.actions !== true) return '{"error":"read-only"}';
+  const csrf = request.headers["x-specty-csrf"];
+  if (typeof csrf !== "string" || !same(csrf, context.csrf)) return '{"error":"forbidden"}';
+  return undefined;
 }
 
 /** A diff as text; without one, why: 404 no commits, 413 too large (with its range), 500 git. */

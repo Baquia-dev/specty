@@ -9,6 +9,10 @@ export function claudePointerLine(lang: Lang): string {
   return translator(lang)("CLAUDE.md importa AGENTS.md.", "CLAUDE.md imports AGENTS.md.");
 }
 
+export function geminiPointerLine(lang: Lang): string {
+  return translator(lang)("GEMINI.md importa AGENTS.md.", "GEMINI.md imports AGENTS.md.");
+}
+
 /** The guard of an agent tool whose hooks live in the repository: `local` when not committed. */
 export function guardLine(tool: string, file: string, local: boolean, lang: Lang): string {
   const where = `${file}${local ? " (local)" : ""}`;
@@ -61,6 +65,107 @@ export function codexRulesLine(file: string, lang: Lang): string {
   return translator(lang)(
     `Codex: regla en ${file} para que los comandos de Specty se ejecuten sin preguntar y fuera del sandbox, que deja \`.git\` en solo lectura; Specty decide quién ejecuta cada uno.`,
     `Codex: rule in ${file} so Specty's commands run without asking and outside the sandbox, which keeps \`.git\` read-only; Specty decides who runs each one.`,
+  );
+}
+
+/**
+ * Cursor's sandbox settings, local because they carry machine paths: the folders Specty's commands
+ * write in from a change's folder, which the sandbox leaves out.
+ */
+export function cursorSandboxLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Cursor: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees, que su sandbox deja fuera.`,
+    `Cursor: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder, which its sandbox leaves out.`,
+  );
+}
+
+/** A sandbox file the person keeps in git: Specty leaves it alone and says what to add. */
+export function cursorSandboxTrackedWarning(
+  file: string,
+  paths: readonly string[],
+  lang: Lang,
+): string {
+  const list = paths.map((path) => `\`${path}\``).join(", ");
+  return translator(lang)(
+    `Cursor: ${file} está en git, así que Specty no lo toca; añade ${list} a \`additionalReadwritePaths\` para que los commits de Specty funcionen en su sandbox.`,
+    `Cursor: ${file} is in git, so Specty leaves it alone; add ${list} to \`additionalReadwritePaths\` so Specty's commits work in its sandbox.`,
+  );
+}
+
+/** Antigravity loads the workspace's hooks only from a folder the person trusts. */
+export function antigravityTrustWarning(lang: Lang): string {
+  return translator(lang)(
+    "Antigravity solo carga .agents/hooks.json si confías en la carpeta del proyecto: confía en ella cuando te lo pregunte.",
+    "Antigravity only loads .agents/hooks.json from a folder you trust: trust the project's folder when it asks.",
+  );
+}
+
+/** Devin Desktop runs no hook of a workspace open in restricted mode. */
+export function devinRestrictedWarning(lang: Lang): string {
+  return translator(lang)(
+    "Devin Desktop no carga los hooks en modo restringido: confía en la carpeta del proyecto cuando te lo pregunte.",
+    "Devin Desktop loads no hooks in restricted mode: trust the project's folder when it asks.",
+  );
+}
+
+/** Devin's rule for Specty's commands, shared like Codex's: Specty decides who runs each one. */
+export function devinCommandsLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Devin (Windsurf): regla en ${file} para que los comandos de Specty se ejecuten sin preguntar; Specty decide quién ejecuta cada uno.`,
+    `Devin (Windsurf): rule in ${file} so Specty's commands run without asking; Specty decides who runs each one.`,
+  );
+}
+
+/** Devin's sandbox, opt-in, with Specty's folders as `Write(...)` scopes in its local settings. */
+export function devinSandboxLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Devin (Windsurf): ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
+    `Devin (Windsurf): ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
+  );
+}
+
+/** Devin's local settings kept in git: no machine path, so Specty says what to add elsewhere. */
+export function devinSandboxTrackedWarning(
+  file: string,
+  rules: readonly string[],
+  lang: Lang,
+): string {
+  const list = rules.map((rule) => `\`${rule}\``).join(", ");
+  return translator(lang)(
+    `Devin (Windsurf): ${file} está en git, así que Specty no le añade rutas de esta máquina; si activas su sandbox, añade ${list} a \`permissions.allow\` en tu configuración de usuario para que funcionen los commits de Specty.`,
+    `Devin (Windsurf): ${file} is in git, so Specty adds no path of this machine to it; if you turn its sandbox on, add ${list} to \`permissions.allow\` in your user settings so Specty's commits work.`,
+  );
+}
+
+/** Gemini CLI keeps a fingerprint of each project hook, and loads none from a folder not trusted. */
+export function geminiTrustWarning(lang: Lang): string {
+  return translator(lang)(
+    "Gemini CLI avisa antes de ejecutar un hook nuevo o cambiado del proyecto: acepta los de Specty cuando te lo pregunte. Tampoco los carga en una carpeta en la que no confíes.",
+    "Gemini CLI asks before running a new or changed project hook: accept Specty's when it asks. It does not load them in a folder you do not trust either.",
+  );
+}
+
+/**
+ * Gemini CLI's sandbox, off unless the person turns it on, with Specty's folders in its local
+ * settings: the ones Specty's commands write in from a change's folder.
+ */
+export function geminiSandboxLine(file: string, lang: Lang): string {
+  return translator(lang)(
+    `Gemini CLI: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
+    `Gemini CLI: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
+  );
+}
+
+/** Gemini CLI settings that go in git: no machine path, so Specty says what to add elsewhere. */
+export function geminiSandboxVersionedWarning(
+  file: string,
+  paths: readonly string[],
+  lang: Lang,
+): string {
+  const list = paths.map((path) => `\`${path}\``).join(", ");
+  return translator(lang)(
+    `Gemini CLI: ${file} va en git, así que Specty no le añade rutas de esta máquina; si activas su sandbox, añade ${list} a \`tools.sandboxAllowedPaths\` en tu configuración de usuario para que funcionen los commits de Specty.`,
+    `Gemini CLI: ${file} goes in git, so Specty adds no path of this machine to it; if you turn its sandbox on, add ${list} to \`tools.sandboxAllowedPaths\` in your user settings so Specty's commits work.`,
   );
 }
 

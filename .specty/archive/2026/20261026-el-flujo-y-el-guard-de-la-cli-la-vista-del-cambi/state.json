@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-el-flujo-y-el-guard-de-la-cli-la-vista-del-cambi",
+  "baseCommit": "793412f92f80ff3f948e971ab46e0265aab6762d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b77d3b18771d97e7fa5bbdc2c8a68bf0739ae86682e431965590e0c151d672d6",
+    "at": "2026-10-26T22:30:42.414Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:271b0dae130322d6ef958668e6e95c88129e852ac6c938b3641d74e4813d3c7d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:30b789989b006d882780de89579528b984d125f4654d25dc984f218d68c1a130",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0b0e61bb12d26a05a36fbc0aeb61a5ea34f2c07c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:30:42.808Z",
+      "doneAt": "2026-10-26T22:40:52.103Z",
+      "summary": "views.ts: changeView lee spec, commits y auditoría, y deja cada tarea a taskView (con recordedFindings), y a rejectedAssumptions, phaseFacts e integrationView el resto, con el mismo orden de campos y lecturas. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2610f6b0f6716c53a194e4a2437b75126f28ce9c",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:40:52.440Z",
+      "doneAt": "2026-10-26T22:49:14.902Z",
+      "summary": "flow/integrate.ts: absorbTarget hace las guardas y la fusión, y deja a holderDirty la carpeta con cambios, a mergeStopped la fusión detenida, a failedVerification la verificación y a commitAbsorbed el commit. Mismas tarjetas; los tests pasan.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "60893a80db39bcb6be859e5c794f6024a1e07e03",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:49:15.220Z",
+      "doneAt": "2026-10-26T22:55:14.813Z",
+      "summary": "task-done.ts: completeTask marca la tarea y deja el commit a commitTask. hook.ts: preCommit deja a manualEdit la edición manual del cambio abierto, con las mismas comprobaciones y el mismo orden. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "cef050ef77aa544874c9d30ae14f8579fc2f4ece",
+      "attempts": 1,
+      "startedAt": "2026-10-26T22:55:15.226Z",
+      "doneAt": "2026-10-26T23:01:44.835Z",
+      "summary": "epic.ts: sliceRefusal comprueba la épica y deja a pickedSliceRefusal el corte pedido. childrenOf junta openChildren y archivedChildren, sin repetir cambios y en el mismo orden. Los tests de la CLI pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "e055e33df84ebe890c990af177da7cb326405410",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:01:45.142Z",
+      "doneAt": "2026-10-26T23:09:35.790Z",
+      "summary": "changes.ts: awaits deja el cierre a awaitsClose. prune.ts: removeFinished pregunta a keptBecause por qué se queda una carpeta. Ninguna función de flow ni de enforce pasa de los límites; los tests de la CLI pasan.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 5
+  },
+  "closingSubmittedAt": "2026-10-26T23:13:16.928Z"
+}

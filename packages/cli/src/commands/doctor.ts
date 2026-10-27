@@ -33,32 +33,12 @@ export async function doctor(session: Session): Promise<Output> {
     { code: "no-flow-block" },
   );
   check(await gitHooksInstalled(root, git), { code: "git-hooks" }, { code: "no-git-hooks" });
-  const tools = (await detectProject(root, "")).tools;
-  // Each agent's guard, as its module checks it (`agents/`).
-  for (const agent of Object.values(ADAPTERS)) {
-    if (!tools.includes(agent.tool)) continue;
-    const lines = await agent.doctor(root);
-    ok.push(...lines.ok);
-    problems.push(...lines.problems);
-  }
-  // Another tool's guidance that tells the agent to do what the guard blocks.
-  for (const { file, blocks } of await gentleAiGuidance(root, session.environment.env)) {
-    problems.push({ code: "gentle-ai", file, blocks });
-  }
-  for (const { name, path, add, file, excluded } of await formatterExclusions(root)) {
-    check(
-      excluded,
-      { code: "formatter-excludes", name, path },
-      { code: "formatter-checks", name, path, add, file },
-    );
-  }
+  const tools = await toolLines(session);
+  ok.push(...tools.ok);
+  problems.push(...tools.problems);
   const command = session.environment.invocation;
-  const reachable =
-    command.script !== undefined
-      ? await exists(command.script)
-      : (await execute("sh", ["-c", `command -v ${COMMAND}`], { cwd: root })).code === 0;
   check(
-    reachable,
+    await reachable(session),
     { code: "specty-reachable", command: command.command },
     { code: "specty-unreachable" },
   );
@@ -70,9 +50,52 @@ export async function doctor(session: Session): Promise<Output> {
   );
   const version = process.versions.node;
   check(supportsNode(version), { code: "node", version }, { code: "old-node", version });
-  // Warnings never turn doctor red: what only the person can tell the agent and is still
-  // unwritten, the paths AGENTS.md sends it to that are gone (built ones aside), and delegated
-  // mode, which is the person's choice rather than a fault.
+  const warnings = await doctorWarnings(session, agents);
+  return doctorCard({ ok, warnings, problems }, session.cards);
+}
+
+/**
+ * Each agent's guard, as its module checks it (`agents/`); another tool's guidance that tells the
+ * agent to do what the guard blocks; and the formatters that would rewrite Specty's files.
+ */
+async function toolLines(
+  session: Session,
+): Promise<{ readonly ok: DoctorLine[]; readonly problems: DoctorLine[] }> {
+  const { root, git } = session;
+  const ok: DoctorLine[] = [];
+  const problems: DoctorLine[] = [];
+  const tools = (await detectProject(root, "")).tools;
+  for (const agent of Object.values(ADAPTERS)) {
+    if (!tools.includes(agent.tool)) continue;
+    const lines = await agent.doctor(root, git);
+    ok.push(...lines.ok);
+    problems.push(...lines.problems);
+  }
+  for (const { file, blocks } of await gentleAiGuidance(root, session.environment.env)) {
+    problems.push({ code: "gentle-ai", file, blocks });
+  }
+  for (const { name, path, add, file, excluded } of await formatterExclusions(root)) {
+    if (excluded) ok.push({ code: "formatter-excludes", name, path });
+    else problems.push({ code: "formatter-checks", name, path, add, file });
+  }
+  return { ok, problems };
+}
+
+/** Whether the `specty` command the agent runs can be found: its script, or the one on PATH. */
+async function reachable(session: Session): Promise<boolean> {
+  const command = session.environment.invocation;
+  return command.script !== undefined
+    ? exists(command.script)
+    : (await execute("sh", ["-c", `command -v ${COMMAND}`], { cwd: session.root })).code === 0;
+}
+
+/**
+ * Warnings never turn doctor red: what only the person can tell the agent and is still unwritten,
+ * the paths AGENTS.md sends it to that are gone (built ones aside), and delegated mode, which is
+ * the person's choice rather than a fault.
+ */
+async function doctorWarnings(session: Session, agents: string | undefined): Promise<DoctorLine[]> {
+  const { root, git } = session;
   const unfilled = agents === undefined ? [] : unfilledSections(agents);
   const cited = agents === undefined ? [] : citedPaths(agents);
   const there = await Promise.all(cited.map((path) => exists(join(root, path))));
@@ -80,14 +103,13 @@ export async function doctor(session: Session): Promise<Output> {
   const built = new Set(await git.ignored(missing));
   const gone = missing.filter((path) => !built.has(path));
   const delegation = await readDelegation(git);
-  const warnings: DoctorLine[] = [
+  return [
     ...(gone.length === 0 ? [] : [{ code: "missing-paths", paths: gone } as const]),
     ...(unfilled.length === 0 ? [] : [{ code: "unfilled-sections", sections: unfilled } as const]),
     ...(delegation === undefined
       ? []
       : [{ code: "delegated", since: delegation.at.slice(0, 10), by: delegation.by } as const]),
   ];
-  return doctorCard({ ok, warnings, problems }, session.cards);
 }
 
 /** Whether Specty runs on Node `version`: from 22 on, as its `engines` say. */

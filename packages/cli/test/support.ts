@@ -41,6 +41,13 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
     CODEX_THREAD_ID: _h,
     SPECTY_AGENT: _e,
     OPENCODE: _f,
+    // Antigravity CLI's mark, with both editors turned off.
+    HGEDITOR: _k,
+    JJ_EDITOR: _l,
+    // The tests choose their language with LANG, which these would override (macOS runners set
+    // LC_ALL).
+    LC_ALL: _i,
+    LC_MESSAGES: _j,
     ...rest
   } = process.env;
   return { ...rest, ...GIT_ENV, LANG: "es_ES.UTF-8", CODEX_HOME, XDG_CONFIG_HOME, ...extra };

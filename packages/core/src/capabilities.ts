@@ -6,14 +6,13 @@ type Texts = Readonly<Record<Lang, string>>;
 
 /**
  * How Specty offers a capability with one agent: as Claude Code does, through another event of
- * the tool (a little later), not at all because the tool has nothing to use, still to do in the
- * epic «Todos los agentes al nivel de Claude Code», or not for this agent.
+ * the tool (a little later), not at all because the tool has nothing to use, or not for this
+ * agent. There is no «still to do»: every capability says where it stands.
  */
 export type Support =
   | { readonly state: "yes" }
   | { readonly state: "indirect"; readonly how: Texts }
   | { readonly state: "impossible"; readonly why: Texts }
-  | { readonly state: "pending" }
   | { readonly state: "unsupported" };
 
 /** What Specty does with one agent. */
@@ -39,9 +38,9 @@ export interface AgentCapabilities {
 }
 
 const yes = { state: "yes" } as const;
-const pending = { state: "pending" } as const;
 const unsupported = { state: "unsupported" } as const;
 const impossible = (es: string, en: string) => ({ state: "impossible", why: { es, en } }) as const;
+const indirect = (es: string, en: string) => ({ state: "indirect", how: { es, en } }) as const;
 
 const NO_ENTER_WORKTREE = impossible(
   "solo Claude Code tiene una herramienta para cambiar de carpeta en mitad de la sesión (`EnterWorktree`); con las demás se abre otro agente en la carpeta del cambio.",
@@ -72,11 +71,15 @@ export const AGENT_CAPABILITIES = {
     markers: [".cursor", ".cursorrules"],
     guard: yes,
     afterShell: yes,
-    afterCompaction: pending,
+    afterCompaction: indirect(
+      "`preCompact` solo observa, así que la tarjeta llega con el resultado del siguiente comando de shell.",
+      "`preCompact` only observes, so the card comes with the next shell command's result.",
+    ),
     worktreeByName: NO_ENTER_WORKTREE,
     endOfTurn: yes,
     exclusion: yes,
-    permissions: pending,
+    // `.cursor/sandbox.json` lets Specty's commits through from a change's folder.
+    permissions: yes,
     endToEnd: OWN_SERVER,
   },
   codex: {
@@ -91,30 +94,41 @@ export const AGENT_CAPABILITIES = {
       "it reads files through the shell and has no exclusion file.",
     ),
     permissions: yes,
-    endToEnd: pending,
+    // `codex-e2e.test.ts`, against a fake of OpenAI's Responses API.
+    endToEnd: yes,
   },
   opencode: {
     markers: [".opencode", "opencode.json", "opencode.jsonc"],
     guard: yes,
     afterShell: yes,
-    afterCompaction: pending,
+    // Specty's plugin, checked with OpenCode 1.19.4: `session.compacted` and `session.idle`.
+    afterCompaction: yes,
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: pending,
-    exclusion: pending,
+    endOfTurn: yes,
+    // `permission.read` in `opencode.json`.
+    exclusion: yes,
     // It has no sandbox nor classifier: its permissions are the person's rules.
     permissions: yes,
-    endToEnd: pending,
+    // `opencode-e2e.test.ts`, against a fake of OpenAI's chat API.
+    endToEnd: yes,
   },
   "gemini-cli": {
     markers: [".gemini", "GEMINI.md"],
-    guard: pending,
-    afterShell: pending,
-    afterCompaction: pending,
+    guard: yes,
+    // `AfterTool` adds it to the command's result (`additionalContext`).
+    afterShell: yes,
+    afterCompaction: indirect(
+      "dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
+      "it fires `PreCompress` before every attempt to compact, whether it compacts or not, so the card comes at the start of each turn, with its prompt (`BeforeAgent`).",
+    ),
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: pending,
+    // `AfterAgent`, checked with Gemini CLI 0.65.0.
+    endOfTurn: yes,
     exclusion: yes,
-    permissions: pending,
-    endToEnd: pending,
+    // Its sandbox, off by default, takes Specty's folders in `tools.sandboxAllowedPaths`.
+    permissions: yes,
+    // `gemini-e2e.test.ts`, against a fake of the Gemini API.
+    endToEnd: yes,
   },
   copilot: {
     markers: [".github/copilot-instructions.md", ".github/instructions"],
@@ -128,31 +142,47 @@ export const AGENT_CAPABILITIES = {
     endToEnd: unsupported,
   },
   windsurf: {
-    markers: [".windsurf", ".windsurfrules"],
-    guard: pending,
-    afterShell: pending,
-    afterCompaction: impossible(
-      "no tiene eventos de sesión ni de compactación.",
-      "it has no session or compaction events.",
+    markers: [".windsurf", ".windsurfrules", ".devin"],
+    guard: yes,
+    // `PostToolUse` adds it to the context (`additionalContext`).
+    afterShell: yes,
+    afterCompaction: indirect(
+      "no consta que su `PostCompaction` pueda añadir contexto, así que la tarjeta llega con el resultado del siguiente comando de shell.",
+      "its `PostCompaction` is not documented to add context, so the card comes with the next shell command's result.",
     ),
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: impossible(
-      "sus hooks posteriores no responden al modelo ni lo hacen seguir.",
-      "its post hooks neither reach the model nor make it go on.",
-    ),
+    // `Stop`, as Claude Code's.
+    endOfTurn: yes,
     exclusion: yes,
-    permissions: pending,
-    endToEnd: impossible("no tiene CLI.", "it has no CLI."),
+    // `Exec(specty)` in `.devin/config.json`, and Specty's folders as `Write(...)` for its sandbox.
+    permissions: yes,
+    endToEnd: OWN_SERVER,
   },
   antigravity: {
-    markers: [".agents", ".agent"],
-    guard: pending,
-    afterShell: pending,
-    afterCompaction: pending,
+    // Its own files: Codex keeps its skills in `.agents` too.
+    markers: [
+      ".agents/hooks.json",
+      ".agents/rules",
+      ".agents/workflows",
+      ".agent",
+      ".antigravityignore",
+    ],
+    guard: yes,
+    afterShell: indirect(
+      "su `PostToolUse` no responde al modelo, así que el aviso llega en su siguiente llamada al modelo (`PreInvocation`).",
+      "its `PostToolUse` does not reach the model, so the warning comes with its next model call (`PreInvocation`).",
+    ),
+    afterCompaction: indirect(
+      "no avisa cuando compacta, así que la tarjeta llega al empezar cada turno, con su primera llamada al modelo (`PreInvocation`).",
+      "it does not say when it compacts, so the card comes at the start of each turn, with its first model call (`PreInvocation`).",
+    ),
     worktreeByName: NO_ENTER_WORKTREE,
-    endOfTurn: pending,
-    exclusion: pending,
-    permissions: pending,
+    // `Stop` with `decision: "continue"`; Specty counts the turns it sends back.
+    endOfTurn: yes,
+    // `.antigravityignore`.
+    exclusion: yes,
+    // `permissionOverrides` with each shell command opens Specty's folders in its sandbox.
+    permissions: yes,
     endToEnd: OWN_SERVER,
   },
 } as const satisfies Readonly<Record<AgentTool, AgentCapabilities>>;
@@ -186,7 +216,6 @@ const STATES: Readonly<Record<Support["state"], Texts>> = {
   yes: { es: "sí", en: "yes" },
   indirect: { es: "indirecto", en: "indirect" },
   impossible: { es: "no posible", en: "not possible" },
-  pending: { es: "pendiente", en: "pending" },
   unsupported: { es: "—", en: "—" },
 };
 

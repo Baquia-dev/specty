@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type Lang,
   notInTargetBranchLine,
   notInTargetFolderLine,
   workingFolderLine,
 } from "@baquia-dev/specty-core";
 import { resolved } from "../io/git";
 import type { Session } from "../session";
+import type { StoredChange } from "../store/changes";
 import { readBindings } from "../store/local";
 import { isFinished } from "./active";
 import { locateChanges } from "./changes";
@@ -43,14 +45,9 @@ export async function removeFinished(session: Session): Promise<Cleanup> {
     const { state } = change;
     if (!isFinished(state) || there.root === main) continue;
     if (await within(session.environment.cwd, there.root)) continue;
-    // Such as the session that closed its change from inside, in delegated mode.
-    if (working.includes(await resolved(there.root))) {
-      kept.push(workingFolderLine(there.root, lang));
-      continue;
-    }
-    const plan = state.phase === "done" ? await integrationOf(there, state) : undefined;
-    if (plan !== undefined && !(await isIncorporated(there, plan))) {
-      kept.push(notInTargetFolderLine(there.root, state.id, plan.target, lang));
+    const reason = await keptBecause(there, state, working, lang);
+    if (reason !== undefined) {
+      kept.push(reason);
       continue;
     }
     const result = await session.git.run(["-C", main, "worktree", "remove", there.root]);
@@ -58,6 +55,22 @@ export async function removeFinished(session: Session): Promise<Cleanup> {
     else kept.push(`${there.root}: ${reasonOf(result)}`);
   }
   return { removed, kept };
+}
+
+/** Why a finished change's folder stays: an agent session works in it, or it is not in its target. */
+async function keptBecause(
+  there: Session,
+  state: StoredChange["state"],
+  working: readonly string[],
+  lang: Lang,
+): Promise<string | undefined> {
+  // Such as the session that closed its change from inside, in delegated mode.
+  if (working.includes(await resolved(there.root))) return workingFolderLine(there.root, lang);
+  const plan = state.phase === "done" ? await integrationOf(there, state) : undefined;
+  if (plan !== undefined && !(await isIncorporated(there, plan))) {
+    return notInTargetFolderLine(there.root, state.id, plan.target, lang);
+  }
+  return undefined;
 }
 
 /**
