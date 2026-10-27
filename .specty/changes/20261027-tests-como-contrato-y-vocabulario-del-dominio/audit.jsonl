@@ -1,0 +1,10 @@
+{"ts":"2026-10-27T06:11:28.263Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"epic","branch":"specty/20261027-tests-como-contrato-y-vocabulario-del-dominio","request":"devido a que sdd es batante protocolario y existiendo otras metodologias como TDD Y FDD, me gustaria sacr lo mejor de estas tres metodologias aplicandolas a el desarrollo de software asistido por IA, necesito que me indiques como aplicar una metodologia hibrida a specty — de las deciciones que me tocan el gate 2 solo en features, desbloquear test debe quedar fuera del modo delegado, y contract empieza como opción y pasa a ser el valor por defecto después de probarlo en Specty"}}
+{"ts":"2026-10-27T06:13:37.523Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:43213605cba22688d4510f2e4a710e1715237b8429415ac45ad7091f2eaf3d3d","size":"S","warnings":0}}
+{"ts":"2026-10-27T06:21:54.768Z","actor":"human","event":"assumption.decided","data":{"item":"A1","decision":"confirmed"}}
+{"ts":"2026-10-27T06:22:16.520Z","actor":"human","event":"assumption.decided","data":{"item":"A2","decision":"confirmed"}}
+{"ts":"2026-10-27T06:22:44.295Z","actor":"human","event":"assumption.decided","data":{"item":"A3","decision":"confirmed"}}
+{"ts":"2026-10-27T06:23:33.500Z","actor":"human","event":"assumption.decided","data":{"item":"A4","decision":"confirmed"}}
+{"ts":"2026-10-27T06:23:57.642Z","actor":"human","event":"assumption.decided","data":{"item":"A5","decision":"confirmed"}}
+{"ts":"2026-10-27T06:24:16.753Z","actor":"human","event":"assumption.decided","data":{"item":"A6","decision":"confirmed"}}
+{"ts":"2026-10-27T06:24:42.258Z","actor":"human","event":"assumption.decided","data":{"item":"A7","decision":"confirmed"}}
+{"ts":"2026-10-27T06:26:26.585Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:43213605cba22688d4510f2e4a710e1715237b8429415ac45ad7091f2eaf3d3d","channel":"ui"}}

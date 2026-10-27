@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "20261027-tests-como-contrato-y-vocabulario-del-dominio",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261027-tests-como-contrato-y-vocabulario-del-dominio",
+  "baseCommit": "49f7f30ee9008ed6248a68f24da6632b819a7fe5",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:84fb760e39ebaef38279e8811f76213b88a748d28e2ac0f2d182c0ef7f6d2667",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1ae05a778f02181c8fd213b3abeab7468e2fb1e91822ad6ab5b1227b298128e2",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:32a6a9304657b95a88d9ab01bd2c667bffb88d244e7ca58671358594a469689e",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:d16c7b854209a13f1bef972cc4b0f7fca3487a783f2bd7d95e252b6d48ba02bf",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:fba96bdb69e7301c325e039f0bba73277070faa9ce8633811c43f76874c03fe7",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:b84fc2e8c0d40237ba60bd93ffebcd40c16898db6d2040b61522773dc6d350c8",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:6a92058498b2cc31c47054b8316f361501c4d355e3184b4d895b6da956ee34bc",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 19,
+    "C": 6,
+    "R": 6
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:43213605cba22688d4510f2e4a710e1715237b8429415ac45ad7091f2eaf3d3d",
+    "at": "2026-10-27T06:26:26.576Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  }
+}
