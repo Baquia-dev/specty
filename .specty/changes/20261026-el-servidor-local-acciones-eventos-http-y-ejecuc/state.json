@@ -6,6 +6,13 @@
   "branch": "specty/20261026-el-servidor-local-acciones-eventos-http-y-ejecuc",
   "baseCommit": "1db3b2bc478f0b89ad3832f49b9401ae766d9111",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bc2d3b1abbc2533918e76c7f3e1a3e349bed7f2989479fca92b5ff8e2a2f6a99",
+    "at": "2026-10-27T00:13:17.493Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -25,7 +32,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2cf46bc8b950136a3a703dc317da306d78067f24",
+      "startedAt": "2026-10-27T00:13:18.346Z",
+      "doneAt": "2026-10-27T00:20:06.868Z",
+      "summary": "actions.ts: parseAction toma de PARSERS la lectura de su verbo, con las mismas condiciones. runAction deja a reviewAction las acciones sobre la spec en revisión. Los tests de la CLI pasan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -34,12 +51,5 @@
     "A": 2,
     "AC": 2,
     "T": 4
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:bc2d3b1abbc2533918e76c7f3e1a3e349bed7f2989479fca92b5ff8e2a2f6a99",
-    "at": "2026-10-27T00:13:17.493Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

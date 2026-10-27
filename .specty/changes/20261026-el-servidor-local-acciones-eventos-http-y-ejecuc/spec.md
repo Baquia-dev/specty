@@ -36,7 +36,7 @@ Siete funciones del servidor local de `specty ui` pasan de los límites de Spect
 
 ## Tareas
 
-- [ ] T1: Las acciones de la persona
+- [x] T1: Las acciones de la persona
   - files: packages/cli/src/server/actions.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run

@@ -50,42 +50,79 @@ export function parseAction(
 ): { readonly id: string; readonly action: Action } | undefined {
   const [api, changes, id, verb, target, ...rest] = segments;
   if (api !== "api" || changes !== "changes" || id === undefined || rest.length > 0) return;
-  const data = isRecord(body) ? body : {};
-  const text = (key: string) => (typeof data[key] === "string" ? data[key] : undefined);
-  const action = ((): Action | undefined => {
-    if (verb === "approve" && target === undefined && Number.isInteger(data.revision))
-      return { kind: "approve", revision: Number(data.revision) };
-    if (verb === "assumptions" && target !== undefined && isOneOf(data.decision, DECISIONS)) {
-      const comment = text("comment");
+  const parse = verb === undefined ? undefined : PARSERS.get(verb);
+  const action = parse?.(target, isRecord(body) ? body : {});
+  return action === undefined ? undefined : { id: decodeURIComponent(id), action };
+}
+
+/** How a verb reads its action from the route's target and the body: nothing if malformed. */
+type ActionParser = (
+  target: string | undefined,
+  data: Readonly<Record<string, unknown>>,
+) => Action | undefined;
+
+/** A string field of the body. */
+function text(data: Readonly<Record<string, unknown>>, key: string): string | undefined {
+  const value = data[key];
+  return typeof value === "string" ? value : undefined;
+}
+
+const PARSERS: ReadonlyMap<string, ActionParser> = new Map<string, ActionParser>([
+  [
+    "approve",
+    (target, data) =>
+      target === undefined && Number.isInteger(data.revision)
+        ? { kind: "approve", revision: Number(data.revision) }
+        : undefined,
+  ],
+  [
+    "assumptions",
+    (target, data) => {
+      if (target === undefined || !isOneOf(data.decision, DECISIONS)) return undefined;
+      const comment = text(data, "comment");
       return {
         kind: "assumption",
         item: target,
         decision: data.decision,
         ...(comment === undefined ? {} : { comment }),
       };
-    }
-    if (verb === "scope" && target !== undefined && isOneOf(data.decision, SCOPE_DECISIONS)) {
-      const reason = text("reason");
+    },
+  ],
+  [
+    "scope",
+    (target, data) => {
+      if (target === undefined || !isOneOf(data.decision, SCOPE_DECISIONS)) return undefined;
+      const reason = text(data, "reason");
       return {
         kind: "scope",
         request: target,
         decision: data.decision,
         ...(reason === undefined ? {} : { reason }),
       };
-    }
-    const body = text("body");
-    if (verb === "comments" && target === undefined && isAnchor(data.anchor) && body !== undefined)
-      return { kind: "comment", anchor: data.anchor, body };
-    if (verb === "request-changes" && target === undefined) return { kind: "requestChanges" };
-    const request = text("request")?.trim();
-    if (verb === "adjust" && target === undefined && request !== undefined && request !== "")
-      return { kind: "adjust", request };
-    if (verb === "accept" && target === undefined) return { kind: "accept" };
-    if (verb === "close" && target === undefined) return { kind: "close" };
-    return undefined;
-  })();
-  return action === undefined ? undefined : { id: decodeURIComponent(id), action };
-}
+    },
+  ],
+  [
+    "comments",
+    (target, data) => {
+      const body = text(data, "body");
+      return target === undefined && isAnchor(data.anchor) && body !== undefined
+        ? { kind: "comment", anchor: data.anchor, body }
+        : undefined;
+    },
+  ],
+  ["request-changes", (target) => (target === undefined ? { kind: "requestChanges" } : undefined)],
+  [
+    "adjust",
+    (target, data) => {
+      const request = text(data, "request")?.trim();
+      return target === undefined && request !== undefined && request !== ""
+        ? { kind: "adjust", request }
+        : undefined;
+    },
+  ],
+  ["accept", (target) => (target === undefined ? { kind: "accept" } : undefined)],
+  ["close", (target) => (target === undefined ? { kind: "close" } : undefined)],
+]);
 
 const DECISIONS = ["confirmed", "rejected"] as const;
 const SCOPE_DECISIONS = ["approved", "rejected"] as const;
@@ -166,15 +203,6 @@ export async function runAction(session: Session, id: string, action: Action): P
   switch (action.kind) {
     case "approve":
       return approveRevision(there, action.revision);
-    case "assumption":
-    case "comment":
-    case "requestChanges": {
-      const change = await resolveActive(there);
-      if (change === undefined) return noChange(there);
-      if (action.kind === "comment") return addComment(there, change, action.anchor, action.body);
-      if (action.kind === "requestChanges") return requestChanges(there, change);
-      return decideAssumption(there, change, action.item, action.decision, action.comment);
-    }
     case "scope":
       return action.decision === "approved"
         ? approve(there, action.request)
@@ -185,7 +213,21 @@ export async function runAction(session: Session, id: string, action: Action): P
       return adjust(there, action.request);
     case "close":
       return close(there);
+    default:
+      return reviewAction(there, action);
   }
+}
+
+/** An action on the spec under review: an assumption's decision, a comment or asking for changes. */
+async function reviewAction(
+  session: Session,
+  action: Extract<Action, { kind: "assumption" | "comment" | "requestChanges" }>,
+): Promise<Output> {
+  const change = await resolveActive(session);
+  if (change === undefined) return noChange(session);
+  if (action.kind === "comment") return addComment(session, change, action.anchor, action.body);
+  if (action.kind === "requestChanges") return requestChanges(session, change);
+  return decideAssumption(session, change, action.item, action.decision, action.comment);
 }
 
 /**
