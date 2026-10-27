@@ -88,7 +88,7 @@ Es el primer corte de la épica «Tests como contrato y vocabulario del dominio�
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/criteria-tests.test.ts test/check-plan.test.ts test/check-docs.test.ts
   - notes: documenta la verificación en docs/checks.md, docs/checks.en.md y ARCHITECTURE §6.
-- [ ] T3: Las tarjetas piden el id en el test y nombran los criterios sin test
+- [x] T3: Las tarjetas piden el id en el test y nombran los criterios sin test
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/criteria.ts, packages/core/src/cards/work.ts, packages/core/src/cards/accept.ts
   - ac: AC4, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards

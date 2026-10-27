@@ -175,7 +175,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
   - punteros a las convenciones de esas rutas (AGENTS.md anidados);
   - las tareas previas resumidas, con su commit, y los hallazgos que anotaron;
   - las solicitudes de alcance pendientes;
-  - las reglas de tests, según el tipo de la tarea y salvo con `policy.tests: off`: en `feat` y `fix`, primero el test que comprueba cada criterio, visto fallar; en `feat`, `fix`, `refactor` y `perf`, un test que ya existía y falla no se cambia para que pase: el agente para y se lo explica al usuario;
+  - las reglas de tests, según el tipo de la tarea y salvo con `policy.tests: off`: en `feat` y `fix`, primero el test que comprueba cada criterio, con el id del criterio en su nombre (`AC1: …`, lo que buscan `criteria-tested` y la aceptación; ADR 0014), visto fallar; en `feat`, `fix`, `refactor` y `perf`, un test que ya existía y falla no se cambia para que pase: el agente para y se lo explica al usuario;
   - la verificación y el esfuerzo sugerido.
 
   Lo que más crece es lo que se repite: cada tarjeta lleva el resumen y los hallazgos de todas las tareas anteriores. El presupuesto se sostiene con tres piezas:

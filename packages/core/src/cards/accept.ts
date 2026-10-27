@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import type { Output } from "../output";
+import { criteriaWarnings } from "./criteria";
 import { sliceLines } from "./epic";
 import { blockedCard } from "./flow";
 import { longFileWarnings } from "./lines";
@@ -26,6 +27,7 @@ export function acceptanceSummary(
       (task) =>
         `${task.id} ${task.summary ?? task.title}${task.commit === undefined ? "" : ` (${task.commit})`}`,
     ),
+    ...criteriaWarnings(change.criteriaTests ?? [], ctx.lang, "person"),
     ...assertionWarnings(change.tasks, ctx.lang),
     ...riskWarnings(change.tasks, ctx.lang),
     ...longFileWarnings(change.tasks, ctx.lang),

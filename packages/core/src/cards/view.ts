@@ -26,6 +26,25 @@ export interface CriterionView {
   readonly text: string;
 }
 
+/** A line of a test that carries a criterion's id, and the task whose commit added it. */
+export interface CriterionTestView {
+  readonly path: string;
+  readonly line: number;
+  readonly task: string;
+  /** Short SHA of the commit that added the line. */
+  readonly commit: string;
+}
+
+/** A criterion in acceptance, with the tests that carry its id (ADR 0014). */
+export interface CriterionTestsView {
+  readonly id: string;
+  /** `test: manual`: the person checks it by hand. */
+  readonly manual: boolean;
+  /** A `feat` or `fix` task covers it, so a test should carry its id. */
+  readonly owed: boolean;
+  readonly tests: readonly CriterionTestView[];
+}
+
 export interface TaskView {
   readonly id: string;
   readonly title: string;
@@ -125,6 +144,8 @@ export interface ChangeView {
   readonly carried?: readonly CarriedView[];
   /** In acceptance, an independent review of the result (ADR 0011) should come first. */
   readonly recommendReview?: boolean;
+  /** In acceptance, each criterion of the spec with the tests that carry its id. */
+  readonly criteriaTests?: readonly CriterionTestsView[];
   readonly closingSubmitted: boolean;
   /** `spec.md` no longer matches the approved revision. */
   readonly specChanged: boolean;

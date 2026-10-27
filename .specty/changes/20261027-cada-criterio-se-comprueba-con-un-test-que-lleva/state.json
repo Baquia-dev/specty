@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7b11d1b5d10ee6fd0669959397cf79527449ba7a",
+      "attempts": 1,
       "startedAt": "2026-10-27T10:40:40.953Z",
       "doneAt": "2026-10-27T11:09:23.643Z",
-      "summary": "criteria-tested avisa del criterio de una tarea feat o fix sin test: manual que ninguna línea de test añadida nombra; su texto va en check/plan.ts (pnpm sources). Documentado, y los tests de catálogo incluyen la verificación."
+      "summary": "criteria-tested avisa del criterio de una tarea feat o fix sin test: manual que ninguna línea de test añadida nombra; su texto va en check/plan.ts (pnpm sources). Documentado, y los tests de catálogo incluyen la verificación.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e018bf2a0e572e3d105bca83cb602f6c541af550",
+      "startedAt": "2026-10-27T11:09:23.969Z",
+      "doneAt": "2026-10-27T11:15:42.402Z",
+      "summary": "La regla de tests pide el id del criterio en el nombre del test; cards/criteria.ts pinta «CRITERIOS Y TESTS» en aceptación y avisa (agente y persona) de los criterios test: manual y de los que deben test y no lo tienen."
     }
   },
   "pending": {

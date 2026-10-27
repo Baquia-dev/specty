@@ -2,6 +2,7 @@
 import { counted, type Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { riskLabel } from "../scope/risk";
+import { criteriaTestLines, criteriaWarnings } from "./criteria";
 import { epicCard, sliceLines } from "./epic";
 import { longFileWarnings, splitAdvice } from "./lines";
 import { effortLabel, progressOf, translator } from "./text";
@@ -112,8 +113,8 @@ function testLines(task: TaskView, ctx: CardContext): string[] {
     ...(task.testRules === "first"
       ? [
           t(
-            "Primero el test: escribe el que comprueba cada criterio y míralo fallar; después, el código.",
-            "Test first: write the test that checks each criterion and watch it fail; then the code.",
+            "Primero el test: escribe el que comprueba cada criterio, con su id en el nombre (`AC1: …`), y míralo fallar; después, el código.",
+            "Test first: write the test that checks each criterion, with its id in the name (`AC1: …`), and watch it fail; then the code.",
           ),
         ]
       : []),
@@ -155,6 +156,10 @@ export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
     blocks: [
       ...section(t("CORTES", "SLICES"), sliceLines(change.slices ?? [], ctx)),
       ...section(t("TAREAS HECHAS", "DONE TASKS"), change.tasks.map(doneLine)),
+      ...section(
+        t("CRITERIOS Y TESTS", "CRITERIA AND TESTS"),
+        criteriaTestLines(change.criteriaTests ?? [], ctx.lang),
+      ),
       ...section(t("AVISOS", "WARNINGS"), acceptanceWarnings(change, ctx)),
     ],
     next: acceptanceNext(change, ctx),
@@ -168,6 +173,7 @@ function acceptanceWarnings(change: ChangeView, ctx: CardContext): string[] {
   const risks = riskWarnings(change.tasks, ctx.lang);
   const long = longFileWarnings(change.tasks, ctx.lang);
   return [
+    ...criteriaWarnings(change.criteriaTests ?? [], ctx.lang, "agent"),
     ...assertions,
     ...(assertions.length === 0
       ? []
