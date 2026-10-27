@@ -50,3 +50,10 @@ export async function freeBranch(git: Git, name: string, attempt = 1): Promise<s
 export async function markBranch(git: Git, branch: string, id: string): Promise<void> {
   await git.output(["config", `branch.${branch}.specty`, id]);
 }
+
+/** The branches `markBranch` tied to a change; git exits with 1 when there is none. */
+export async function markedBranches(git: Git): Promise<string[]> {
+  const marks = await git.run(["config", "--get-regexp", "^branch\\..*\\.specty$"]);
+  if (marks.code !== 0) return [];
+  return marks.stdout.split("\n").flatMap((line) => /^branch\.(.+)\.specty /.exec(line)?.[1] ?? []);
+}

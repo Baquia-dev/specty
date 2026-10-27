@@ -115,4 +115,28 @@ describe("specty prune", () => {
     const clean = await cli(await tempRepo(APP), ["prune"]);
     expect(clean.out).toContain("No había nada que limpiar.");
   });
+
+  it("removes the merged branches Specty named by the flow, never the person's (AC2, AC3, AC4)", async () => {
+    const config = 'version: 1\nlanguage: es\ngit:\n  flow: github\nverify:\n  default: "true"\n';
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
+    await cli(root, ["new", "Login con Google", "--type", "fix"]);
+    await cli(root, ["new", "Exportar CSV"]);
+    // The person's own branch, named by the same flow and already in main.
+    git(root, "branch", "feat/mio");
+    // fix/login-con-google is in main; feat/exportar-csv has a commit of its own. Neither has a folder.
+    const day = CHANGE.slice(0, 8);
+    git(root, "worktree", "remove", "--force", folderOf(root, `${day}-login-con-google`));
+    const csv = folderOf(root, `${day}-exportar-csv`);
+    git(csv, "commit", "-q", "--allow-empty", "-m", "trabajo en curso");
+    git(root, "worktree", "remove", "--force", csv);
+    const pruned = await cli(root, ["prune"]);
+    expect(pruned.code).toBe(0);
+    expect(pruned.out).toContain("RAMAS BORRADAS:\n  fix/login-con-google\n");
+    expect(pruned.out).toContain("QUEDAN:\n  feat/exportar-csv: no está en main.");
+    expect(pruned.out).not.toContain("feat/mio");
+    expect(git(root, "branch", "--list", "fix/login-con-google")).toBe("");
+    expect(git(root, "branch", "--list", "feat/mio")).toContain("feat/mio");
+    // git drops the mark with the branch.
+    expect(git(root, "config", "--get-regexp", "^branch\\..*\\.specty$")).not.toContain("login");
+  });
 });

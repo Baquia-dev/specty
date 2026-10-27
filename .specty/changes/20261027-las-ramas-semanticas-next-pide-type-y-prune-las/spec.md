@@ -56,7 +56,7 @@ Con `git.flow`, la rama de un cambio lleva su tipo, pero el agente no sabe que d
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/test/cards.test.ts, packages/cli/src/session.ts, packages/cli/test/branch-names.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/branch-names.test.ts
-- [ ] T2: prune borra las ramas semánticas que creó Specty
+- [x] T2: prune borra las ramas semánticas que creó Specty
   - files: packages/cli/src/flow/branches.ts, packages/cli/src/flow/prune.ts, packages/cli/test/prune.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune.test.ts
