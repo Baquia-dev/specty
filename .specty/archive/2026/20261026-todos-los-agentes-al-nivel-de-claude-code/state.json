@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261026-todos-los-agentes-al-nivel-de-claude-code",
+  "kind": "epic",
+  "phase": "done",
+  "branch": "specty/20261026-todos-los-agentes-al-nivel-de-claude-code",
+  "baseCommit": "aff1a63ffce38e60c2b25e12105893da5a9ca32e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:902095b7b2021a2268e2918676e77c73564c386215ba8c104ebe299f0090784c",
+    "at": "2026-10-26T16:19:08.907Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ca58aaa44afd98518228e06466980ad0ac6a28c562a7b881a71fe593683fb402",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:635faec92a5ab266253676f782fe60a5872242cdc464f377e8697f2e895f92ec",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:bd1ac0494320771a3ef3769bef1e3a21c20fdaca3263ab75a134c6a4ec308f4a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:0999d8ba580de82b30baa94d6c3bc982131cec1b11a9ad454f93eaf3ed706754",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:a5be346ee53bd24943a783f66f05eae7c9517853e45c434d0de871edb688899a",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:e0e4299b72f97b11f49f8eb8dc3d19b36318b08969225f533a9d121a8c3423e9",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:3d3d929cf319d5f8f3589a5406266d5783e901ef10a1f95fa494285720f97484",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:4f8e28c9245df5be63e7dbc96340a0ab9417b92e5986c7bfe9885f59827106fa",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:fadbb068214a0cf792805422df79e77cb7e83a0fa754efd45ec0d9bf7f754ed3",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:98dcedd294bc2eac717e48016ea3b2d6c8eddc2ec89bd5cb3961ec67cfc98b21",
+      "decision": "implicit"
+    },
+    "A11": {
+      "hash": "sha256:2fa89678ed45274526a4d498972541861439d693ae9bcd734bf65615afa76cab",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 11,
+    "AC": 14,
+    "C": 13,
+    "R": 8
+  },
+  "closingSubmittedAt": "2026-10-26T23:45:46.227Z"
+}

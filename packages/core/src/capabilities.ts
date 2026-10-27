@@ -6,14 +6,13 @@ type Texts = Readonly<Record<Lang, string>>;
 
 /**
  * How Specty offers a capability with one agent: as Claude Code does, through another event of
- * the tool (a little later), not at all because the tool has nothing to use, still to do in the
- * epic «Todos los agentes al nivel de Claude Code», or not for this agent.
+ * the tool (a little later), not at all because the tool has nothing to use, or not for this
+ * agent. There is no «still to do»: every capability says where it stands.
  */
 export type Support =
   | { readonly state: "yes" }
   | { readonly state: "indirect"; readonly how: Texts }
   | { readonly state: "impossible"; readonly why: Texts }
-  | { readonly state: "pending" }
   | { readonly state: "unsupported" };
 
 /** What Specty does with one agent. */
@@ -217,7 +216,6 @@ const STATES: Readonly<Record<Support["state"], Texts>> = {
   yes: { es: "sí", en: "yes" },
   indirect: { es: "indirecto", en: "indirect" },
   impossible: { es: "no posible", en: "not possible" },
-  pending: { es: "pendiente", en: "pending" },
   unsupported: { es: "—", en: "—" },
 };
 
