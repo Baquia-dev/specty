@@ -13,3 +13,7 @@
 {"ts":"2026-10-27T11:29:41.777Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"ad58152f55df7af753c13c29373675c349775d2a"}}
 {"ts":"2026-10-27T11:34:37.571Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm test","exit":0,"ms":116433,"tree":"sha256:f7de668e1d6d3d1c70a19a2a77c56720bf6a67ea7f972b93277df5d93a253a34"}}
 {"ts":"2026-10-27T11:34:37.573Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"formats §6 describe git.flow (ejemplo y nombres de cada flujo, -2 y la marca) y ARCHITECTURE §9 trae la tabla de nombres por flujo y cómo se reconoce el cambio de una rama; la fila de new nombra --type."}}
+{"ts":"2026-10-27T11:36:47.840Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":123013,"tree":"sha256:f7de668e1d6d3d1c70a19a2a77c56720bf6a67ea7f972b93277df5d93a253a34"}}
+{"ts":"2026-10-27T11:36:47.842Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-27T11:37:03.836Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:6ce8d2a359f9abf2d935ee8091852cc04ecdd2f234fb5122941071e1a38c2fe1","size":"L","warnings":1}}
+{"ts":"2026-10-27T11:39:10.182Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

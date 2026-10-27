@@ -93,3 +93,26 @@ Hoy cada cambio vive en `specty/<id>`, un nombre que no sigue el flujo de git de
 - R1: El guard resuelve el cambio activo en cada acción, y ahora puede costar una llamada más a git y leer los `state.json` abiertos. Mitigación: primero el nombre (`specty/<id>`), luego la marca, y solo al final los cambios abiertos, que son pocos.
 - R2: git no deja crear `feat/x` si existe una rama `feat`, y `-2` no lo arregla. Mitigación: `new` falla con el mensaje de git, que nombra la rama; es raro, y el cambio siguiente trae `git.branchPattern`.
 - R3: Muchos tests comprueban `specty/<id>`. Mitigación: el flujo por defecto es `specty`, así que no cambian.
+
+## Cierre
+
+### Resumen
+
+`config.yaml` acepta `git.flow` (`specty`, `github`, `trunk`, `gitflow`), y `specty new --type <tipo>` (`feat` por defecto) nombra la rama con el tipo y el título sin la fecha: `fix/login-con-google` en GitHub Flow y trunk, `bugfix/` o `feature/` en Git Flow y `spike/<slug>` para un spike. Sin la clave, todo sigue en `specty/<id>`. Si la rama existe en local o en un remoto, toma la primera libre con `-2`, `-3`…; un tipo desconocido no crea nada. `new` liga cada rama a su cambio en la configuración de git (`branch.<rama>.specty`), y el cambio activo se encuentra por el nombre, por esa marca o por el `state.json` del cambio abierto. formats §6 y ARCHITECTURE §9 lo describen.
+
+### Desviaciones
+
+- `git.flow` queda opcional en la configuración resuelta, y sin él se usa `specty`, en vez de rellenarse con `specty` por defecto: así los tests que comparan `DEFAULT_CONFIG.git` exactamente no cambian, como `target` y `setup`.
+- `changeOfBranch` solo acepta el id de un nombre `spike/<x>` o `specty/<x>` si ese cambio existe, porque en los otros flujos `spike/<slug>` no lleva el id; un test lo comprueba. Devuelve el cambio, no el id.
+- El rechazo `unknown-type` se comprueba dentro del test de los rechazos de un comando mal escrito de `cards/new.test.ts`, que ganó aserciones sin cambiar las que tenía.
+
+### Decisiones
+
+- La rama libre se busca con `git for-each-ref` en `refs/heads/<nombre>` y `refs/remotes/*/<nombre>`.
+- `--type` se comprueba antes de abrir la sesión, como `--kind`, y `change.created` guarda el tipo en cualquier flujo.
+- La marca se escribe después de crear la rama, para no dejarla si git falla.
+
+### Pendientes
+
+- Cambio siguiente (2a-ii): `git.branchPattern` con `{type}`, `{slug}` e `{id}`; que el SIGUIENTE de `next` pida `--type` cuando el flujo nombra por tipo; y que `prune` borre las ramas marcadas ya incorporadas. Hasta entonces, las ramas semánticas quedan tras cerrar, como las de la persona.
+- Cambio 2b: `init` detecta o pregunta el flujo, un proyecto nuevo debe elegirlo y Git Flow escribe `git.target: develop`.
