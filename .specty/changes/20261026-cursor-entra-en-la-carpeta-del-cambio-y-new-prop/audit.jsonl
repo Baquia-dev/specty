@@ -1,0 +1,3 @@
+{"ts":"2026-10-27T04:10:46.045Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261026-cursor-entra-en-la-carpeta-del-cambio-y-new-prop","epic":"20261026-los-agentes-entran-en-la-carpeta-del-cambio-sin","slice":"C6"}}
+{"ts":"2026-10-27T04:11:36.141Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:b2dcc0f83a8e6452aa448ee153e1a5ae36fb828957eefb0f1c51aa31c0064d5b","size":"M","warnings":0}}
+{"ts":"2026-10-27T04:11:40.362Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:b2dcc0f83a8e6452aa448ee153e1a5ae36fb828957eefb0f1c51aa31c0064d5b","channel":"delegated","delegated":true}}

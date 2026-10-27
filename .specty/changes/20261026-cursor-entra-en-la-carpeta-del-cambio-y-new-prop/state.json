@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261026-cursor-entra-en-la-carpeta-del-cambio-y-new-prop",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-cursor-entra-en-la-carpeta-del-cambio-y-new-prop",
+  "baseCommit": "db270f91b80715e95b02b7ea9d293c4c12caea16",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0d6b9fbc2f8d0220fd16134faf7d54daa99b225011601e2f742da33eaae406a0",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:20755167e1fe4d097fb5c09ac09a0d2c0b5788c5e58c32ccc73d16c8dbdca81b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:caa57aff74d383b75890149e2e372b3516ba601c201d1594af4a88b6f5b68be4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b2dcc0f83a8e6452aa448ee153e1a5ae36fb828957eefb0f1c51aa31c0064d5b",
+    "at": "2026-10-27T04:11:40.352Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
