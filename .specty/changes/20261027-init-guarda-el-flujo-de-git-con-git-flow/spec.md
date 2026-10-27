@@ -68,7 +68,7 @@ Hoy `git.flow` solo se puede poner a mano en `config.yaml`. Con este cambio, `sp
   - files: docs/ARCHITECTURE.md
   - ac: AC6
   - type: docs
-- [ ] T5: los ayudantes de config.yaml dejan de exportarse
+- [x] T5: los ayudantes de config.yaml dejan de exportarse
   - files: packages/cli/src/install/project-files.ts
   - ac: AC2
   - verify: pnpm knip

@@ -24,7 +24,7 @@ import { type InstallFiles, installFiles } from "./files";
  * lacks (`verify.default`, `verify.full`). It inserts lines into the text, so everything already
  * there, comments and formatting included, stays exactly as it was.
  */
-export function completeConfig(
+function completeConfig(
   text: string,
   detection: Detection,
 ): { readonly text: string; readonly added: readonly string[] } {
@@ -66,7 +66,7 @@ function intoMap(text: string, map: YAMLMap, entries: readonly string[]): string
  * Sets `language` in an existing `.specty/config.yaml`: it replaces only the value, or adds the
  * key after `version`, so comments and formatting stay. Unchanged when it already says `lang`.
  */
-export function withLanguage(text: string, lang: Lang): string {
+function withLanguage(text: string, lang: Lang): string {
   const node = parseDocument(text).get("language", true);
   if (isScalar(node)) {
     if (node.value === lang || node.range === undefined || node.range === null) return text;
@@ -83,7 +83,7 @@ export function withLanguage(text: string, lang: Lang): string {
  * no target yet: it replaces only the value or inserts the keys, so comments and formatting stay.
  * A `git` that is not a map is the person's to fix, and validation says so.
  */
-export function withGitFlow(text: string, flow: GitFlow): string {
+function withGitFlow(text: string, flow: GitFlow): string {
   const node = parseDocument(text).getIn(["git", "flow"], true);
   const replaced =
     isScalar(node) && node.range

@@ -21,3 +21,6 @@
 {"ts":"2026-10-27T23:58:08.500Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:013337f045080d55a84f4f006379f289de4ab996faf25cc07d10fcf48e46164c","size":"M","warnings":0}}
 {"ts":"2026-10-27T23:58:24.925Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:3a33323e1db0ea8e68ed0c7f14d7d6b9ee96d9e86d28b9bfb856fd23910afb25","size":"L","warnings":1}}
 {"ts":"2026-10-27T23:58:29.345Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":3,"hash":"sha256:3a33323e1db0ea8e68ed0c7f14d7d6b9ee96d9e86d28b9bfb856fd23910afb25","channel":"delegated","delegated":true}}
+{"ts":"2026-10-27T23:58:29.689Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T5","baseCommit":"28c5e9804be9523156e76932448162cd798253ca"}}
+{"ts":"2026-10-27T23:58:49.170Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm knip","exit":0,"ms":863,"tree":"sha256:dc7b86f0e269f3038544b07edb13d98a1d5d8e9b7e44f7256f55b88306446565"}}
+{"ts":"2026-10-27T23:58:49.254Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"completeConfig, withLanguage y withGitFlow dejan de exportarse: tras mudar writeConfig solo los usa install/project-files.ts, y knip pasa."}}
