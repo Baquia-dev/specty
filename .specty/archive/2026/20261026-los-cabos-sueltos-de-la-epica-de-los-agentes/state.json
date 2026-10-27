@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "id": "20261026-los-cabos-sueltos-de-la-epica-de-los-agentes",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261026-los-cabos-sueltos-de-la-epica-de-los-agentes",
+  "baseCommit": "66abf1e361cb7e1d6a6fe218584114f9dcfd0cfb",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:424502c3cc3b7a4903be0e82d57aba2dd11e6f9607656bc07b20486998f8df0e",
+    "at": "2026-10-26T23:47:08.968Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7973e8bbb7938f89941df6c13aec6c3ba97d5312aa8459cb0aa44cb07e598344",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a3d5daf7a289c09326f00edc9d047f8b24b3e1dff4f5ac7bf546195b8b448fae",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4172007107c36aeaaf39a9d3c2e1428f37dfa94e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:47:09.783Z",
+      "doneAt": "2026-10-26T23:53:03.867Z",
+      "summary": "uninstall quita también el fin de turno que puso check --install: removeAgentStops borra de los archivos de hooks JSON las entradas con hook agent-stop, en hooks o en la raíz, y las listas que eso deja vacías; lo de la persona queda.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "37bf1cad35c25583921066d2c43d4820b70b481e",
+      "attempts": 1,
+      "startedAt": "2026-10-26T23:53:04.484Z",
+      "doneAt": "2026-10-27T00:00:00.646Z",
+      "summary": "El contrato gana borrowed: si otra herramienta ejecuta los hooks de un agente como suyos, el guard y el fin de turno callan. Claude Code lo es con DEVIN_PROJECT_DIR, así que con Devin solo responden los hooks de Devin y el informe no llega dos veces.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "9617b67346f17311ebd490733d66c5dcb56de9e0",
+      "attempts": 1,
+      "startedAt": "2026-10-27T00:00:00.960Z",
+      "doneAt": "2026-10-27T00:02:52.008Z",
+      "summary": "Fuera de un repositorio con Specty, hook agent-stop da la respuesta que deja terminar a un agente que la espera siempre (Antigravity recibe decision stop); los demás siguen sin recibir nada.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "b9fa9c8cfe6e6bb1208d8ec2abe24ddeb1ecd5b1",
+      "attempts": 1,
+      "startedAt": "2026-10-27T00:02:52.323Z",
+      "doneAt": "2026-10-27T00:06:08.533Z",
+      "summary": "isNewProject cuenta .agents/ como archivos de agente, además de las marcas de la tabla, así que un proyecto con solo skills ahí sigue siendo nuevo. ARCHITECTURE cuenta los cuatro arreglos: uninstall, Devin con Claude Code, el fin de turno fuera de Specty y .agents/.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-27T00:12:19.480Z"
+}

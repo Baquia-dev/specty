@@ -144,4 +144,21 @@ describe("specty uninstall", () => {
       "pre-commit:\n  commands:\n    lint:\n      run: npm run lint\n",
     );
   });
+
+  it("takes out the end of turn that check --install put next to each guard (AC1)", async () => {
+    const root = await installed();
+    const tools = "claude-code,cursor,gemini-cli,windsurf";
+    expect((await cli(root, ["init", "--language", "es", "--tools", tools])).code).toBe(0);
+    expect((await cli(root, ["check", "--install"], { terminal: person() })).code).toBe(0);
+    const files = [
+      ".claude/settings.local.json",
+      ".cursor/hooks.json",
+      ".gemini/settings.json",
+      ".devin/hooks.v1.json",
+    ];
+    for (const file of files) expect(await read(root, file), file).toContain("hook agent-stop");
+    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(JSON.parse(await read(root, ".claude/settings.local.json"))).toEqual(MINE);
+    for (const file of files.slice(1)) expect(await exists(join(root, file)), file).toBe(false);
+  });
 });

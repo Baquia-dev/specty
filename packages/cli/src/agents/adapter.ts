@@ -65,6 +65,11 @@ export interface AgentAdapter {
   /** The reply when the guard itself fails: the action goes through, with every agent. */
   readonly failed: (message: string) => GuardReply;
   /**
+   * Whether these hooks run inside another tool that loads them as its own (Devin loads Claude
+   * Code's): that tool's own hooks answer, so the guard and the end of turn say nothing.
+   */
+  readonly borrowed?: (env: NodeJS.ProcessEnv) => boolean;
+  /**
    * For a tool whose terminal sandbox keeps to the workspace and that takes permissions with each
    * action: every shell command the guard lets through brings Specty's folders (`Verdict.folders`).
    */

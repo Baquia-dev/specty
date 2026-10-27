@@ -29,6 +29,8 @@ export async function agentStop(session: Session, tool: string, input: string): 
   const agent = isGuardTool(tool) ? ADAPTERS[tool] : undefined;
   const stop = agent?.stop;
   if (agent === undefined || stop === undefined) return "";
+  // Another tool runs these hooks as its own, and its own end of turn answers.
+  if (agent.borrowed?.(session.environment.env) === true) return "";
   const parsed = parseJson(input);
   const given = isRecord(parsed) ? parsed : {};
   const event = agent.normalize?.(given) ?? given;

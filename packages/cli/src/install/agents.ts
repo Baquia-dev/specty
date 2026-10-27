@@ -113,6 +113,44 @@ export function withHooks(
 }
 
 /**
+ * The JSON hook files where `check --install` puts an agent's end of turn, next to its guard.
+ * OpenCode's goes inside its plugin, and Antigravity's inside its `specty` hook, which their
+ * guards' removal takes whole.
+ */
+const STOP_FILES: readonly string[] = [
+  CLAUDE_SETTINGS,
+  CLAUDE_LOCAL_SETTINGS,
+  CURSOR_HOOKS,
+  CODEX_HOOKS,
+  GEMINI_SETTINGS,
+  DEVIN_HOOKS,
+];
+
+/** Takes each agent's end of turn out of the repository, for `uninstall`. */
+export async function removeAgentStops(root: string, files: InstallFiles): Promise<void> {
+  for (const file of STOP_FILES) await removeFromJson(root, file, withoutAgentStop, files);
+}
+
+/**
+ * Drops the entries whose command is Specty's end of turn (`hook agent-stop`), in a `hooks` object
+ * or at the top of a standalone hooks file, and the lists that leaves empty; the person's stay.
+ */
+function withoutAgentStop(value: Entry): Entry {
+  const prune = (record: Readonly<Record<string, unknown>>): Entry =>
+    Object.fromEntries(
+      Object.entries(record).flatMap(([key, item]): [string, unknown][] => {
+        if (!Array.isArray(item)) return [[key, item]];
+        const kept = item.filter(
+          (entry: unknown) => !JSON.stringify(entry).includes(" hook agent-stop "),
+        );
+        return kept.length === 0 && item.length > 0 ? [] : [[key, kept]];
+      }),
+    );
+  const top = prune(value);
+  return isRecord(top.hooks) ? { ...top, hooks: prune(top.hooks) } : top;
+}
+
+/**
  * Takes Specty's part out of a JSON file in the repository with `update`, and drops what that
  * left empty; a file left with nothing else goes.
  */

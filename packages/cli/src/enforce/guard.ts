@@ -64,6 +64,8 @@ export async function guard(
   named?: string,
 ): Promise<GuardReply> {
   const agent = ADAPTERS[tool];
+  // Another tool runs these hooks as its own, and its own guard decides.
+  if (agent.borrowed?.(environment.env) === true) return agent.reply(ALLOW, "before");
   try {
     const parsed = parseJson(stdin);
     if (!isRecord(parsed)) return agent.reply(ALLOW, "before");

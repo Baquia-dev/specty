@@ -97,6 +97,22 @@ describe("git hooks", () => {
 });
 
 describe("agent guard", () => {
+  it("says nothing for Claude Code when Devin runs its hooks, whose own guard decides (AC2)", async () => {
+    const root = await initialized();
+    const devin = { DEVIN_PROJECT_DIR: root };
+    const run = (event: Record<string, unknown>) =>
+      cli(root, ["guard", "--tool", "claude-code"], {
+        stdin: JSON.stringify({ cwd: root, ...event }),
+        env: devin,
+      });
+    const write = { tool_name: "Write", tool_input: { file_path: `${root}/src/app.ts` } };
+    expect(await run(write)).toMatchObject({ code: 0, out: "", err: "" });
+    const compact = { hook_event_name: "SessionStart", source: "compact" };
+    expect(await run(compact)).toMatchObject({ code: 0, out: "" });
+    // Without Devin, the same write stops.
+    expect((await claude(root, "Write", write.tool_input)).code).toBe(2);
+  });
+
   it("answers Claude Code with exit code 2 and the next step", async () => {
     const root = await initialized();
     const denied = await claude(root, "Write", { file_path: `${root}/src/app.ts` });
