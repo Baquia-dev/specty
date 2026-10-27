@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { exists } from "../src/io/files";
-import { cli, read, tempRepo, writeFiles } from "./support";
+import { cli, git, read, tempRepo, writeFiles } from "./support";
 
 const CODE = { "src/app.ts": "export const a = 1;\n" };
 const init = (root: string, ...flags: string[]) =>
@@ -63,5 +63,46 @@ describe("init --git-flow", () => {
     expect(refused.out).toContain("Flujo de git desconocido: svn.");
     expect(refused.out).toContain("--git-flow specty|github|trunk|gitflow");
     expect(await exists(`${root}/.specty/config.yaml`)).toBe(false);
+  });
+});
+
+describe("init --git-flow gitflow and develop", () => {
+  const develop = (root: string) => git(root, "branch", "--list", "develop");
+
+  it("creates develop from where init committed, and says so (AC4)", async () => {
+    const root = await tempRepo(CODE);
+    const done = await init(root, "--git-flow", "gitflow");
+    expect(done.out).toContain(
+      "Rama develop creada desde main: ahí empiezan y terminan los cambios.",
+    );
+    expect(git(root, "rev-parse", "develop")).toBe(git(root, "rev-parse", "main"));
+    expect(git(root, "log", "-1", "--format=%s", "develop")).toContain("Specty");
+    // An existing develop stays as it is.
+    expect((await init(root, "--git-flow", "gitflow")).out).not.toContain("Rama develop creada");
+  });
+
+  it("takes the remote's develop when there is one (AC4)", async () => {
+    const root = await tempRepo(CODE);
+    const before = git(root, "rev-parse", "HEAD");
+    git(root, "remote", "add", "origin", "https://example.com/app.git");
+    git(root, "update-ref", "refs/remotes/origin/develop", before);
+    const done = await init(root, "--git-flow", "gitflow");
+    expect(done.out).toContain("Rama develop creada desde origin/develop");
+    expect(git(root, "rev-parse", "develop")).toBe(before);
+    // It follows the remote's.
+    expect(git(root, "config", "--get", "branch.develop.merge")).toBe("refs/heads/develop");
+  });
+
+  it("creates no branch in a dry run, nor when changes go elsewhere (AC4)", async () => {
+    const dry = await tempRepo(CODE);
+    await init(dry, "--git-flow", "gitflow", "--dry-run");
+    expect(develop(dry)).toBe("");
+    const elsewhere = await tempRepo(CODE);
+    await init(elsewhere);
+    await writeFiles(elsewhere, {
+      ".specty/config.yaml": `${await configOf(elsewhere)}  target: main\n`,
+    });
+    await init(elsewhere, "--git-flow", "gitflow");
+    expect(develop(elsewhere)).toBe("");
   });
 });

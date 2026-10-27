@@ -25,6 +25,7 @@ import {
 import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { commitInstall } from "../install/commit";
 import { type InstallFiles, installFiles } from "../install/files";
+import { ensureDevelop } from "../install/git-flow";
 import { agentsToInstall, installHooks } from "../install/hooks";
 import { isNewProject, writeProduct } from "../install/product";
 import { writeAgentsMd, writeConfig } from "../install/project-files";
@@ -251,9 +252,13 @@ async function committed(
   const { environment, lang, detection } = setup;
   const result = await commitInstall(environment, installed.written, before, setup.created);
   const backedUp = await exists(installed.backups);
+  // Git Flow's target, unless the configuration already sent changes elsewhere.
+  const toDevelop =
+    setup.options.gitFlow === "gitflow" && (setup.config?.git.target ?? "develop") === "develop";
   const done = [
     ...installed.done,
     ...result.done,
+    ...(toDevelop ? await ensureDevelop(setup.git, lang) : []),
     ...(backedUp ? [backupLine(installed.backups, lang)] : []),
   ];
   const warnings = [...installed.warnings, ...result.warnings];

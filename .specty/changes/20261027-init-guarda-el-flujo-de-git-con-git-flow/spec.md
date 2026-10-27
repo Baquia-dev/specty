@@ -60,7 +60,7 @@ Hoy `git.flow` solo se puede poner a mano en `config.yaml`. Con este cambio, `sp
   - files: packages/cli/src/install/project-files.ts, packages/cli/src/commands/init.ts, packages/cli/src/program.ts, packages/cli/test/init-git-flow.test.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-git-flow.test.ts test/init-language.test.ts
-- [ ] T3: con Git Flow, init crea la rama develop
+- [x] T3: con Git Flow, init crea la rama develop
   - files: packages/cli/src/install/git-flow.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-git-flow.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-git-flow.test.ts

@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c42ef9aad7ad5ff47e083ab443d228470f09de4c",
+      "attempts": 1,
       "startedAt": "2026-10-27T23:46:02.180Z",
       "doneAt": "2026-10-27T23:51:09.481Z",
-      "summary": "init --git-flow escribe git.flow con withGitFlow (cambia el valor o lo inserta en git, sin tocar lo demás) y, con gitflow y sin destino, git.target: develop; rechaza un flujo desconocido. writeConfig se mudó a install/project-files.ts."
+      "summary": "init --git-flow escribe git.flow con withGitFlow (cambia el valor o lo inserta en git, sin tocar lo demás) y, con gitflow y sin destino, git.target: develop; rechaza un flujo desconocido. writeConfig se mudó a install/project-files.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0dcbac0a214991d51e0011d13eecd60a27e5881b",
+      "startedAt": "2026-10-27T23:51:09.777Z",
+      "doneAt": "2026-10-27T23:55:14.293Z",
+      "summary": "Con --git-flow gitflow y destino develop, init crea develop tras su commit (install/git-flow.ts): desde origin/develop, siguiéndola, si existe, y si no desde la rama actual; no la toca si ya existe, ni en --dry-run, ni con otro git.target."
     }
   },
   "pending": {
