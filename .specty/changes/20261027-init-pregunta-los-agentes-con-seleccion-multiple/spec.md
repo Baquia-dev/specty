@@ -75,7 +75,7 @@ Hoy `specty init` solo pregunta por el agente cuando no detecta ninguno, y la pe
   - files: packages/cli/src/install/hooks.ts, packages/cli/test/init-agents.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agents.test.ts
-- [ ] T4: ARCHITECTURE dice que la persona elige los agentes en una lista múltiple
+- [x] T4: ARCHITECTURE dice que la persona elige los agentes en una lista múltiple
   - files: docs/ARCHITECTURE.md
   - ac: AC6
   - type: docs

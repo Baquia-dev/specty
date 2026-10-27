@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-init-pregunta-los-agentes-con-seleccion-multiple",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-init-pregunta-los-agentes-con-seleccion-multiple",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
   "revision": 1,
@@ -65,12 +65,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0d0aec1dfb4997ace6a82b4d40ca8bbc432951a0",
+      "attempts": 1,
       "startedAt": "2026-10-27T07:01:33.649Z",
       "doneAt": "2026-10-27T10:43:42.746Z",
-      "summary": "init pregunta siempre a una persona con chooseMany, con los detectados marcados; instala los marcados y, si cancela, los detectados o Claude Code. Sin persona, con --dry-run o --tools, igual que antes. El test de «no detecta ninguno» se ajustó a la pregunta múltiple (R1)."
+      "summary": "init pregunta siempre a una persona con chooseMany, con los detectados marcados; instala los marcados y, si cancela, los detectados o Claude Code. Sin persona, con --dry-run o --tools, igual que antes. El test de «no detecta ninguno» se ajustó a la pregunta múltiple (R1).",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "50913c41eecafc7692731ab4a2ef000194aa8550",
+      "startedAt": "2026-10-27T10:43:43.309Z",
+      "doneAt": "2026-10-27T10:52:31.628Z",
+      "summary": "ARCHITECTURE §14 dice que la persona en la terminal siempre elige los agentes en una lista múltiple con los detectados marcados, qué se instala si cancela y que sin persona, con --dry-run o --tools todo sigue igual."
     }
   },
   "pending": {
