@@ -60,7 +60,7 @@ En un repositorio que ya existía, `specty init` falla en dos cosas. Su SIGUIENT
 
 ## Tareas
 
-- [ ] T1: el SIGUIENTE de init nombra solo las secciones vacías de AGENTS.md
+- [x] T1: el SIGUIENTE de init nombra solo las secciones vacías de AGENTS.md
   - files: packages/core/src/cards/init.ts, packages/core/test/cards/init.test.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-agents.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-agents.test.ts

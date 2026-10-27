@@ -6,6 +6,13 @@
   "branch": "specty/20261027-init-en-repositorios-existentes-siguiente-paso-y",
   "baseCommit": "49f7f30ee9008ed6248a68f24da6632b819a7fe5",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:f15465762d88834cecaa8ad6e841a655f2d10f6714d560364e5d126168376be4",
+    "at": "2026-10-27T06:07:10.805Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "tty"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -34,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6b2fbf36761be9945b231a69461ebdf7161c5e7a",
+      "startedAt": "2026-10-27T06:07:32.727Z",
+      "doneAt": "2026-10-27T06:12:15.460Z",
+      "summary": "initCard recibe las secciones vacías de AGENTS.md (unfilledSections del archivo que escribió init) y su SIGUIENTE solo nombra esas, en singular o plural; sin ninguna, pide revisar config.yaml y doctor"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -44,12 +61,5 @@
     "AC": 7,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:f15465762d88834cecaa8ad6e841a655f2d10f6714d560364e5d126168376be4",
-    "at": "2026-10-27T06:07:10.805Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "tty"
   }
 }

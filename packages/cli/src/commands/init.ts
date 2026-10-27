@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename } from "node:path";
+import { basename, join } from "node:path";
 import {
   type AgentTool,
   agentsMdLine,
@@ -21,6 +21,7 @@ import {
   type Output,
   productLine,
   type ResolvedConfig,
+  unfilledSections,
 } from "@baquia-dev/specty-core";
 import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { commitInstall } from "../install/commit";
@@ -133,6 +134,8 @@ interface Installed {
   /** Repository-relative files init writes that git tracks: they go into its commit. */
   readonly written: readonly string[];
   readonly warnings: readonly string[];
+  /** The sections of AGENTS.md people complete by hand that are still empty. */
+  readonly unfilled: readonly string[];
 }
 
 /** The configuration, AGENTS.md, PRODUCT.md for a new project, and each agent's hooks. */
@@ -152,6 +155,7 @@ async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
     product: project.product,
     done: [...project.done, ...hooks.done],
     written: [...project.written, ...hooks.written],
+    unfilled: project.unfilled,
     warnings: [...hooks.warnings, ...(noTests ? [noTestCommandWarning(lang)] : [])],
   };
 }
@@ -179,7 +183,7 @@ async function writeProjectFiles(
   setup: InitSetup,
   fresh: boolean,
   files: InstallFiles,
-): Promise<Pick<Installed, "product" | "done" | "written">> {
+): Promise<Pick<Installed, "product" | "done" | "written" | "unfilled">> {
   const { environment, options, root, lang, detection } = setup;
   const configLines = await writeConfig(files, repoPaths(root).config, detection, {
     created: setup.created,
@@ -206,6 +210,7 @@ async function writeProjectFiles(
       ...(product === undefined ? [] : [productLine(product === "interviewed", lang)]),
     ],
     written: [".specty/config.yaml", "AGENTS.md", ...(product === undefined ? [] : ["PRODUCT.md"])],
+    unfilled: unfilledSections((await files.read(join(root, "AGENTS.md"))) ?? ""),
   };
 }
 
@@ -230,8 +235,14 @@ async function committed(
     ...facts.stacks,
     ...facts.commands.map((entry) => `${entry.label}: ${entry.command}`),
   ];
-  const { product } = installed;
-  const view = { done, detected, warnings, ...(product === undefined ? {} : { product }) };
+  const { product, unfilled } = installed;
+  const view = {
+    done,
+    detected,
+    warnings,
+    unfilled,
+    ...(product === undefined ? {} : { product }),
+  };
   return initCard(view, cards);
 }
 

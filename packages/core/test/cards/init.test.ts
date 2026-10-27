@@ -59,6 +59,7 @@ describe("what `init` did", () => {
         done: [".specty/config.yaml creado."],
         detected: ["TypeScript (pnpm)", "Tests: pnpm test"],
         warnings: ["Codex solo ejecuta el guard cuando confías en él."],
+        unfilled: ["Mapa", "Convenciones"],
       },
       ES,
     );
@@ -78,9 +79,23 @@ describe("what `init` did", () => {
     );
   });
 
+  it("names only the sections of AGENTS.md still empty, as written (AC1, AC2)", () => {
+    const next = (unfilled: readonly string[], ctx: CardContext) =>
+      initCard({ done: [], detected: [], warnings: [], unfilled }, ctx).next;
+    expect(next(["Convenciones"], ES)).toBe(
+      "completa la sección «Convenciones» de AGENTS.md con lo que no se deduce del código, revisa .specty/config.yaml y ejecuta `specty doctor`.",
+    );
+    expect(next(["Map", "Conventions"], EN)).toBe(
+      'complete the "Map" and "Conventions" sections of AGENTS.md with what cannot be inferred from the code, review .specty/config.yaml and run `specty doctor`.',
+    );
+    expect(next([], ES)).toBe("revisa .specty/config.yaml y ejecuta `specty doctor`.");
+    expect(next([], EN)).toBe("review .specty/config.yaml and run `specty doctor`.");
+  });
+
   it("in a new project, sends the agent to the first change", () => {
     expect(
-      initCard({ done: [], detected: [], warnings: [], product: "interviewed" }, EN).next,
+      initCard({ done: [], detected: [], warnings: [], unfilled: [], product: "interviewed" }, EN)
+        .next,
     ).toBe("ask your agent for the first change: the project's skeleton, from PRODUCT.md.");
     expect(newProjectNext(false, ES)).toBe(
       'es un proyecto nuevo: hazle al usuario las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con `specty new "Esqueleto del proyecto" --request "<petición literal del usuario>"`.',

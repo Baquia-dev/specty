@@ -112,6 +112,8 @@ export interface InitView {
   /** The stacks and the commands it detected. */
   readonly detected: readonly string[];
   readonly warnings: readonly string[];
+  /** The sections of AGENTS.md people complete by hand that are still empty, as written. */
+  readonly unfilled: readonly string[];
   /** In a new project, how PRODUCT.md was written. */
   readonly product?: "interviewed" | "skeleton";
 }
@@ -129,12 +131,29 @@ export function initCard(view: InitView, ctx: CardContext): Output {
     ],
     next:
       view.product === undefined
-        ? t(
-            `completa las secciones «Mapa» y «Convenciones» de AGENTS.md con lo que no se deduce del código, revisa .specty/config.yaml y ejecuta \`${ctx.command} doctor\`.`,
-            `complete the "Map" and "Conventions" sections of AGENTS.md with what cannot be inferred from the code, review .specty/config.yaml and run \`${ctx.command} doctor\`.`,
-          )
+        ? existingProjectNext(view.unfilled, ctx)
         : newProjectNext(view.product === "interviewed", ctx),
   };
+}
+
+/** What comes after `init` in a project that exists: the empty sections of AGENTS.md, if any. */
+function existingProjectNext(unfilled: readonly string[], ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const review = t(
+    `revisa .specty/config.yaml y ejecuta \`${ctx.command} doctor\`.`,
+    `review .specty/config.yaml and run \`${ctx.command} doctor\`.`,
+  );
+  if (unfilled.length === 0) return review;
+  const listed = (open: string, close: string, and: string) =>
+    unfilled.map((title) => `${open}${title}${close}`).join(` ${and} `);
+  const sections =
+    unfilled.length === 1
+      ? t(`la sección ${listed("«", "»", "y")}`, `the ${listed('"', '"', "and")} section`)
+      : t(`las secciones ${listed("«", "»", "y")}`, `the ${listed('"', '"', "and")} sections`);
+  return t(
+    `completa ${sections} de AGENTS.md con lo que no se deduce del código, ${review}`,
+    `complete ${sections} of AGENTS.md with what cannot be inferred from the code, ${review}`,
+  );
 }
 
 /** What comes after `init` in a new project, for whoever ran it. */
