@@ -54,7 +54,7 @@ Con C2 y C3, el guard reescribe la entrada de una herramienta para que la acció
 
 ## Tareas
 
-- [ ] T1: Codex lleva sus comandos y sus parches a la carpeta de la conversación
+- [x] T1: Codex lleva sus comandos y sus parches a la carpeta de la conversación
   - files: packages/cli/src/agents/codex.ts, packages/cli/test/codex.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts test/enter.test.ts

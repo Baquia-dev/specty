@@ -26,13 +26,28 @@ const codex = (cwd: string, session: string, tool: Record<string, unknown>) =>
 const bash = (cwd: string, session: string, command: string) =>
   codex(cwd, session, { tool_name: "Bash", tool_input: { command } });
 
-/** Codex's `apply_patch` adding `path`. */
+/**
+ * The hook of a tool that cannot run the input the guard gives back: OpenCode's plugin from before
+ * it could (`redirects`). For such a tool, the guard blocks what would go elsewhere.
+ */
+const older = (cwd: string, session: string, tool: string, input: Record<string, unknown>) =>
+  cli(cwd, ["guard", "--tool", "opencode"], {
+    stdin: JSON.stringify({
+      cwd,
+      session_id: session,
+      tool_use_id: "c1",
+      tool_name: tool,
+      tool_input: input,
+    }),
+  });
+
+const olderBash = (cwd: string, session: string, command: string) =>
+  older(cwd, session, "bash", { command });
+
+/** That tool's `apply_patch` adding `path`. */
 const add = (cwd: string, session: string, path: string) =>
-  codex(cwd, session, {
-    tool_name: "apply_patch",
-    tool_input: {
-      command: ["*** Begin Patch", `*** Add File: ${path}`, "+x", "*** End Patch"].join("\n"),
-    },
+  older(cwd, session, "apply_patch", {
+    patchText: ["*** Begin Patch", `*** Add File: ${path}`, "+x", "*** End Patch"].join("\n"),
   });
 
 /** A repository with two open changes, each in its own folder. */
@@ -146,17 +161,17 @@ describe("specty enter, as the guard judges it", () => {
   it("blocks a command that would run outside the change's folder, with how to run it there (AC4)", async () => {
     const { root, first } = await twoChanges();
     await bash(root, "s1", `specty enter ${CHANGE}`);
-    const denied = await bash(root, "s1", "pnpm test");
+    const denied = await olderBash(root, "s1", "pnpm test");
     expect(denied.code).toBe(2);
     expect(denied.err).toContain(
       `Esta conversación trabaja en \`${first}\`: este comando correría fuera de esa carpeta.`,
     );
     expect(denied.err).toContain(`SIGUIENTE: ejecútalo allí: \`cd '${first}' && pnpm test\`.`);
-    expect((await bash(root, "s1", `cd '${first}' && pnpm test`)).code).toBe(0);
-    expect((await bash(first, "s1", "pnpm test")).code).toBe(0);
-    expect((await bash(first, "s1", `cd '${root}' && ls`)).code).toBe(2);
+    expect((await olderBash(root, "s1", `cd '${first}' && pnpm test`)).code).toBe(0);
+    expect((await olderBash(first, "s1", "pnpm test")).code).toBe(0);
+    expect((await olderBash(first, "s1", `cd '${root}' && ls`)).code).toBe(2);
     // There, its change's rules judge the command.
-    const code = await bash(first, "s1", "echo x > src/app.ts");
+    const code = await olderBash(first, "s1", "echo x > src/app.ts");
     expect(code.err).toContain(`El cambio ${CHANGE} está en fase`);
   });
 

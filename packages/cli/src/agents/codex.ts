@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import {
   codexGuardLine,
   codexRulesLine,
   codexTrustWarning,
+  movePatch,
   patchPaths,
 } from "@baquia-dev/specty-core";
 import type { RawAction } from "../enforce/actions";
@@ -26,6 +27,7 @@ import {
   doctorLines,
   exitFailed,
   exitReply,
+  type Redirect,
   textCard,
 } from "./adapter";
 
@@ -69,7 +71,22 @@ export const codex: AgentAdapter = {
     return "before";
   },
   action,
-  reply: exitReply,
+  redirect,
+  // Codex runs the tool with `updatedInput`, which it takes only with `allow`.
+  reply: (verdict, phase) =>
+    phase === "before" && verdict.allow && verdict.input !== undefined
+      ? {
+          code: 0,
+          stdout: JSON.stringify({
+            hookSpecificOutput: {
+              hookEventName: "PreToolUse",
+              permissionDecision: "allow",
+              updatedInput: verdict.input,
+            },
+          }),
+          stderr: "",
+        }
+      : exitReply(verdict),
   failed: exitFailed,
   card: textCard,
   stop: blockingStop([CODEX_HOOKS]),
@@ -126,6 +143,31 @@ export const codex: AgentAdapter = {
 /** Whether `text`, a rules file, is Specty's rule for its commands. */
 function isRule(text: string | undefined): boolean {
   return text?.includes(`pattern = [${JSON.stringify(COMMAND)}]`) === true;
+}
+
+/**
+ * A patch with the paths of its headers in the conversation's folder (`movePatch`), and a
+ * command after a `cd` to that folder when the conversation works in another one. Codex takes
+ * both back as the tool's `command`. Its hook does not see a folder the model gives
+ * `exec_command`, so the `cd` names the folder's whole path.
+ */
+function redirect(
+  event: Readonly<Record<string, unknown>>,
+  to: Redirect,
+): Record<string, unknown> | undefined {
+  const input = isRecord(event.tool_input) ? event.tool_input : {};
+  if (typeof input.command !== "string") return undefined;
+  const base = typeof event.cwd === "string" ? event.cwd : "";
+  if (event.tool_name === "apply_patch") {
+    const moved = movePatch(input.command, (path) => {
+      const there = to.path(resolve(base, path));
+      return there === resolve(base, path) ? path : there;
+    });
+    return moved === input.command ? undefined : { ...input, command: moved };
+  }
+  if (event.tool_name !== "Bash" || to.folder === base) return undefined;
+  const folder = to.folder.replaceAll("'", `'\\''`);
+  return { ...input, command: `cd '${folder}' && ${input.command}` };
 }
 
 /** Codex sends a command and a patch alike in `tool_input.command`. */

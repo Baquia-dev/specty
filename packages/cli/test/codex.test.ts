@@ -12,9 +12,11 @@ import {
   CHANGE,
   CONFIG,
   cli,
+  folderOf,
   git,
   NOW,
   person,
+  type Run,
   read,
   SPEC,
   SPEC_PATH,
@@ -110,6 +112,50 @@ describe("the guard in Codex", () => {
     const after = await bash("PostToolUse", "call_3", "python3 gen.py");
     expect(after.code).toBe(2);
     expect(after.err).toContain("`src/generated.ts` está fuera del alcance de T1.");
+  });
+});
+
+const bash = (root: string, command: string) =>
+  codex(root, { tool_name: "Bash", tool_use_id: "call_2", tool_input: { command } });
+
+/** A repository with a change in its own folder, which Codex's session `s1` entered. */
+async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
+  const root = await tempRepo(APP);
+  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+  expect((await bash(root, `specty enter ${CHANGE}`)).code).toBe(0);
+  return { root, folder: folderOf(root) };
+}
+
+/** What Codex runs instead (`updatedInput`), with the decision it needs; undefined when nothing. */
+function rewritten(run: Run): unknown {
+  if (run.out === "") return undefined;
+  const output = JSON.parse(run.out).hookSpecificOutput;
+  expect(output).toMatchObject({ hookEventName: "PreToolUse", permissionDecision: "allow" });
+  return output.updatedInput;
+}
+
+describe("Codex in the folder of the change its conversation entered", () => {
+  it("runs each command there, after a cd, judged by that change's rules (AC1)", async () => {
+    const { root, folder } = await entered();
+    expect(rewritten(await bash(root, "pnpm test"))).toEqual({
+      command: `cd '${folder}' && pnpm test`,
+    });
+    const code = await bash(root, "echo x > src/app.ts");
+    expect(code.code).toBe(2);
+    expect(code.err).toContain(`El cambio ${CHANGE} está en fase`);
+    // From the change's folder itself, or for a conversation that entered nothing: as it was.
+    expect((await bash(folder, "pnpm test")).out).toBe("");
+    expect((await bash(await tempRepo(APP), "pnpm test")).out).toBe("");
+  });
+
+  it("writes a patch's files at the same paths inside the change's folder (AC2)", async () => {
+    const { root, folder } = await entered();
+    const added = await applyPatch(root, patch("*** Add File: notas.md", "+x"));
+    expect(rewritten(added)).toEqual({
+      command: patch(`*** Add File: ${join(folder, "notas.md")}`, "+x"),
+    });
+    const outside = await applyPatch(root, patch("*** Add File: /tmp/specty-notas.md", "+x"));
+    expect(outside).toMatchObject({ code: 0, out: "" });
   });
 });
 
