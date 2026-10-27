@@ -65,7 +65,7 @@ Desde ahí, el guard la mantiene en esa carpeta. Juzga cada acción con las regl
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
-- [ ] T2: El guard liga la conversación y la mantiene en la carpeta del cambio
+- [x] T2: El guard liga la conversación y la mantiene en la carpeta del cambio
   - files: packages/core/src/guard/decide.ts, packages/core/src/guard/worktrees.ts, packages/core/src/index.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/sessions.ts, packages/cli/test/enter.test.ts
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enter.test.ts test/enforce.test.ts test/worktrees.test.ts test/worktree-hooks.test.ts

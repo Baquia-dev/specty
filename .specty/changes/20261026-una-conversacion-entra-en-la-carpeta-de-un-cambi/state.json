@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3f90735617d896ec56db4a54607571b3c22a1c7d",
+      "attempts": 1,
       "startedAt": "2026-10-27T00:50:22.496Z",
       "doneAt": "2026-10-27T00:56:28.603Z",
-      "summary": "analyzeShell anota el id de cada specty enter (enters) y la carpeta donde corre cada comando que no es cd (runsIn: relativa, absoluta o desconocida tras un cd que no sabe nombrar), siguiendo los cd y los subshells."
+      "summary": "analyzeShell anota el id de cada specty enter (enters) y la carpeta donde corre cada comando que no es cd (runsIn: relativa, absoluta o desconocida tras un cd que no sabe nombrar), siguiendo los cd y los subshells.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "46dd0ad3010d1067e965bc8bfbc4ce700d1b3dfe",
+      "startedAt": "2026-10-27T00:56:29.062Z",
+      "doneAt": "2026-10-27T01:14:20.622Z",
+      "summary": "El guard trata specty enter como EnterWorktree por nombre (sessionDenial y ligadura por conversationOf); una conversación ligada se juzga en la carpeta de su cambio, con la ruta equivalente (instead) y el cd a esa carpeta para comandos fuera; a Claude Code le pide EnterWorktree."
     }
   },
   "pending": {

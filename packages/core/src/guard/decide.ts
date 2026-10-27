@@ -9,7 +9,7 @@ import type { ChangeKind } from "../spec/model";
 import { humanDenial } from "./human";
 import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
 import { type BoundSession, sessionDenial } from "./session";
-import { type ForeignPath, foreignDenial } from "./worktrees";
+import { type Elsewhere, elsewhereDenial, type ForeignPath, foreignDenial } from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
 
@@ -74,6 +74,8 @@ export interface ShellFacts {
   readonly deletes: readonly string[];
   /** What the command would change inside another worktree of the repository. */
   readonly foreign?: readonly ForeignPath[];
+  /** The command would run outside the change's folder the conversation entered. */
+  readonly elsewhere?: Elsewhere;
 }
 
 export type GuardAction =
@@ -153,6 +155,11 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
   const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
   const human = humanDenial(facts.specty, ctx);
   if (human !== undefined) return deny("human", human.reason, human.next);
+  // Where it runs comes first: there, the rest is judged by that folder's change.
+  if (facts.elsewhere !== undefined) {
+    const denial = elsewhereDenial(facts.elsewhere, ctx.lang);
+    return deny("worktree", denial.reason, denial.next);
+  }
   if (facts.unscopedNpx) {
     return deny(
       "package",
