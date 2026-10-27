@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261026-el-servidor-local-acciones-eventos-http-y-ejecuc",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-el-servidor-local-acciones-eventos-http-y-ejecuc",
+  "baseCommit": "1db3b2bc478f0b89ad3832f49b9401ae766d9111",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ec2a241f78b85421544476e87d01779ce7b681fbd1bf846efc7f7e49126d30eb",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b8ffeabf087e76db6743b472ca084e29df21bd5b89092f8447be4c3be5881e67",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bc2d3b1abbc2533918e76c7f3e1a3e349bed7f2989479fca92b5ff8e2a2f6a99",
+    "at": "2026-10-27T00:13:17.493Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
