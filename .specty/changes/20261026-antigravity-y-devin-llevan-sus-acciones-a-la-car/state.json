@@ -40,12 +40,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e228ba17d397f92de26a3b6bd21dc7865383d23c",
+      "attempts": 1,
       "startedAt": "2026-10-27T03:52:35.247Z",
       "doneAt": "2026-10-27T03:56:13.800Z",
-      "summary": "Core gana la acción read: leer es libre y solo se bloquea, con la ruta buena, lo que lee fuera de su carpeta una conversación que entró en un cambio (ForeignPath.instead). La CLI ubica sus rutas como las de una escritura."
+      "summary": "Core gana la acción read: leer es libre y solo se bloquea, con la ruta buena, lo que lee fuera de su carpeta una conversación que entró en un cambio (ForeignPath.instead). La CLI ubica sus rutas como las de una escritura.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c59f62ecebe1e4821ab2474e2fcf8c9d5fbf1c1f",
+      "startedAt": "2026-10-27T03:56:14.098Z",
+      "doneAt": "2026-10-27T04:00:12.785Z",
+      "summary": "Antigravity: el guard ve sus lecturas y las bloquea con la ruta buena para una conversación ligada; cada acción de esa conversación que deja pasar lleva write_file y read_file de las carpetas de Specty (Verdict.readable). No reescribe: su overwrite puede descartarse."
     }
   },
   "pending": {

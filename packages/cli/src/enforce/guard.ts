@@ -17,7 +17,7 @@ import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
-import { sharedFolders } from "../flow/worktree";
+import { sharedFolders, worktreesHome } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
@@ -173,21 +173,25 @@ async function beforeAction(call: Call): Promise<GuardReply> {
 
 /**
  * The reply before an action. What goes through brings the input the agent's module rewrote and,
- * for a command of an agent with `grants`, Specty's folders.
+ * for an agent with `grants`, Specty's folders: with a command, and with each action of a
+ * conversation that entered a change's folder, which may also read the worktrees' folder.
  */
 async function replyBefore(
-  { agent, session, input }: Call,
+  { agent, session, input, bound }: Call,
   decision: GuardDecision,
   action: GuardAction,
 ): Promise<GuardReply> {
   const said = verdict(decision, session);
   if (!said.allow) return agent.reply(said, "before");
-  const grants = agent.grants === true && action.kind === "shell";
+  // A conversation that entered a change's folder works outside the tool's workspace.
+  const entered = agent.grants === true && bound !== undefined;
+  const grants = entered || (agent.grants === true && action.kind === "shell");
   return agent.reply(
     {
       ...said,
       ...(input === undefined ? {} : { input }),
       ...(grants ? { folders: await sharedFolders(session.git) } : {}),
+      ...(entered ? { readable: [await worktreesHome(session.git)] } : {}),
     },
     "before",
   );

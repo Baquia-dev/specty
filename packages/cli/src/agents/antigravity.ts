@@ -15,7 +15,18 @@ const HOOK = "specty";
  * into a task running in the background.
  */
 const TOOLS =
-  "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task";
+  "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task|view_file|list_dir|grep_search|find_by_name";
+
+/**
+ * Its tools that read or search, with the field that names the file or the folder: the guard
+ * sees them so that a conversation that entered a change's folder reads that folder's files.
+ */
+const READS: Readonly<Record<string, string>> = {
+  view_file: "AbsolutePath",
+  list_dir: "DirectoryPath",
+  grep_search: "SearchPath",
+  find_by_name: "SearchDirectory",
+};
 /**
  * The events the guard listens to, with the tools each one covers; `undefined` is an event that
  * takes a list of handlers, with no matcher.
@@ -46,8 +57,12 @@ export const antigravity: AgentAdapter = {
   reply: (verdict, phase) => {
     if (phase === "after") return json({});
     if (!verdict.allow) return json({ decision: "deny", reason: verdict.text });
-    // Its terminal sandbox writes only in the workspace; these open Specty's folders as well.
-    const grants = (verdict.folders ?? []).map((folder) => `write_file(${folder})`);
+    // Its terminal sandbox and its file tools work only in the workspace; these open Specty's
+    // folders as well.
+    const grants = [
+      ...(verdict.folders ?? []).map((folder) => `write_file(${folder})`),
+      ...(verdict.readable ?? []).map((folder) => `read_file(${folder})`),
+    ];
     return json(
       grants.length === 0
         ? { decision: "allow" }
@@ -162,6 +177,8 @@ function json(value: Readonly<Record<string, unknown>>): GuardReply {
 
 function action(event: Readonly<Record<string, unknown>>): RawAction {
   const input = isRecord(event.tool_input) ? event.tool_input : {};
+  const read = READS[String(event.tool_name)];
+  if (read !== undefined) return { kind: "read", paths: sentPaths(input[read]) };
   switch (event.tool_name) {
     case "run_command":
       return shellAction(input.CommandLine);

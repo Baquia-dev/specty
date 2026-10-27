@@ -46,8 +46,13 @@ export interface Redirect {
 export type Verdict =
   | {
       readonly allow: true;
-      /** The folders outside its workspace a shell command may write in, for an agent with `grants`. */
+      /**
+       * The folders outside its workspace the action may write in, for an agent with `grants`: a
+       * shell command's, and any action of a conversation that entered a change's folder.
+       */
       readonly folders?: readonly string[];
+      /** The folders outside its workspace that conversation's tools may read, too. */
+      readonly readable?: readonly string[];
       /** The tool's input as the agent's module rewrote it (`redirect`), to send back. */
       readonly input?: Readonly<Record<string, unknown>>;
     }

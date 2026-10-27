@@ -61,7 +61,7 @@ Con C2 a C4, Gemini CLI, OpenCode y Codex llevan a la carpeta del cambio las acc
   - files: packages/core/src/guard/decide.ts, packages/core/test/guard/decide.test.ts, packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/place.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts
-- [ ] T2: Antigravity bloquea con la ruta buena y deja leer y escribir en la carpeta de las worktrees
+- [x] T2: Antigravity bloquea con la ruta buena y deja leer y escribir en la carpeta de las worktrees
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/antigravity.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/antigravity-turn.test.ts test/enter.test.ts
