@@ -40,14 +40,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/cards/index.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "e7cb5ffec64dd07bae28131ccabd9ce82d5ee5f7",
+      "attempts": 1,
       "startedAt": "2026-10-27T23:44:26.570Z",
       "doneAt": "2026-10-27T23:46:01.895Z",
-      "summary": "cards/init.ts: negativa unknown-flow con los flujos válidos, flowLine (cómo se llamarán las ramas con cada flujo) y developLine; exportadas desde cards/index.ts (S1)."
+      "summary": "cards/init.ts: negativa unknown-flow con los flujos válidos, flowLine (cómo se llamarán las ramas con cada flujo) y developLine; exportadas desde cards/index.ts (S1).",
+      "scopeExtra": [
+        "packages/core/src/cards/index.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c42ef9aad7ad5ff47e083ab443d228470f09de4c",
+      "startedAt": "2026-10-27T23:46:02.180Z",
+      "doneAt": "2026-10-27T23:51:09.481Z",
+      "summary": "init --git-flow escribe git.flow con withGitFlow (cambia el valor o lo inserta en git, sin tocar lo demás) y, con gitflow y sin destino, git.target: develop; rechaza un flujo desconocido. writeConfig se mudó a install/project-files.ts."
     }
   },
   "pending": {

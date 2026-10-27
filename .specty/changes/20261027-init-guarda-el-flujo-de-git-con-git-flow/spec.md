@@ -56,7 +56,7 @@ Hoy `git.flow` solo se puede poner a mano en `config.yaml`. Con este cambio, `sp
   - files: packages/core/src/cards/init.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/init.test.ts
-- [ ] T2: init --git-flow escribe git.flow y, con Git Flow, git.target
+- [x] T2: init --git-flow escribe git.flow y, con Git Flow, git.target
   - files: packages/cli/src/install/project-files.ts, packages/cli/src/commands/init.ts, packages/cli/src/program.ts, packages/cli/test/init-git-flow.test.ts
   - ac: AC1, AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-git-flow.test.ts test/init-language.test.ts

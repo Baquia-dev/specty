@@ -5,17 +5,16 @@ import {
   agentsMdLine,
   backupLine,
   type CardContext,
-  configLine,
-  configTemplate,
   DEFAULT_CONFIG,
   dryRunCard,
+  GIT_FLOWS,
+  type GitFlow,
   type InitRefusal,
   initCard,
   initRefusalCard,
   isAgentTool,
   type Lang,
   languageChoices,
-  languageLine,
   languageQuestion,
   noTestCommandWarning,
   type Output,
@@ -28,7 +27,7 @@ import { commitInstall } from "../install/commit";
 import { type InstallFiles, installFiles } from "../install/files";
 import { agentsToInstall, installHooks } from "../install/hooks";
 import { isNewProject, writeProduct } from "../install/product";
-import { completeConfig, withLanguage, writeAgentsMd } from "../install/project-files";
+import { writeAgentsMd, writeConfig } from "../install/project-files";
 import { exists } from "../io/files";
 import { createGit, findRoot, type Git, pathsOf } from "../io/git";
 import { bareCards, type Environment, systemLanguage } from "../session";
@@ -39,6 +38,8 @@ interface InitOptions {
   readonly language?: Lang;
   /** Agent tools to configure; by default, the ones detected in the repository. */
   readonly tools?: readonly AgentTool[];
+  /** How the changes' branches are named (`git.flow`); by default, left as it is. */
+  readonly gitFlow?: GitFlow;
   /** Only say what it would create or change: nothing is written or committed. */
   readonly dryRun?: boolean;
 }
@@ -46,7 +47,12 @@ interface InitOptions {
 /** `specty init` as typed: reads its options, and says which language its output uses. */
 export async function initCommand(
   environment: Environment,
-  options: { readonly language?: string; readonly tools?: string; readonly dryRun?: boolean },
+  options: {
+    readonly language?: string;
+    readonly tools?: string;
+    readonly gitFlow?: string;
+    readonly dryRun?: boolean;
+  },
 ): Promise<{ readonly output: Output; readonly lang: Lang }> {
   const language =
     options.language === "es" || options.language === "en" ? options.language : undefined;
@@ -54,9 +60,18 @@ export async function initCommand(
     ?.split(",")
     .map((tool) => tool.trim())
     .filter(isAgentTool);
+  const gitFlow = GIT_FLOWS.find((flow) => flow === options.gitFlow);
+  if (options.gitFlow !== undefined && gitFlow === undefined) {
+    const lang = language ?? systemLanguage(environment.env);
+    return {
+      output: initRefusalCard({ reason: "unknown-flow", flow: options.gitFlow }, lang),
+      lang,
+    };
+  }
   return init(environment, {
     ...(language !== undefined ? { language } : {}),
     ...(tools !== undefined ? { tools } : {}),
+    ...(gitFlow !== undefined ? { gitFlow } : {}),
     ...(options.dryRun === true ? { dryRun: true } : {}),
   });
 }
@@ -200,6 +215,7 @@ async function writeProjectFiles(
     created: setup.created,
     lang,
     ...(options.language !== undefined ? { relanguage: options.language } : {}),
+    ...(options.gitFlow !== undefined ? { flow: options.gitFlow } : {}),
   });
   const agents = await writeAgentsMd(root, lang, detection, files);
   // A new project starts with what it is for: the interview with a person, or its questions.
@@ -272,33 +288,4 @@ async function languageOf(
   if (!environment.terminal.interactive || options.dryRun === true) return detected;
   const chosen = await environment.terminal.choose(languageQuestion(), languageChoices(detected));
   return chosen ?? detected;
-}
-
-/**
- * Writes `.specty/config.yaml`: a new one, or the existing one with the verification it lacks and
- * the language `--language` asks for. Returns the lines that say what it did.
- */
-async function writeConfig(
-  files: InstallFiles,
-  path: string,
-  detection: Detection,
-  options: { readonly created: boolean; readonly lang: Lang; readonly relanguage?: Lang },
-): Promise<readonly string[]> {
-  const { lang } = options;
-  if (options.created) {
-    const verify = verifyCommands(detection.commands);
-    await files.write(path, configTemplate({ lang, verify, generated: detection.generated }));
-    return [configLine(true, [], lang)];
-  }
-  // An existing configuration only gains the verification it lacks and the detection now finds.
-  const current = (await files.read(path)) ?? "";
-  const completed = completeConfig(current, detection);
-  const text =
-    options.relanguage === undefined
-      ? completed.text
-      : withLanguage(completed.text, options.relanguage);
-  if (text !== current) await files.write(path, text);
-  if (text === completed.text) return [configLine(false, completed.added, lang)];
-  const added = completed.added.length > 0 ? [configLine(false, completed.added, lang)] : [];
-  return [languageLine(lang), ...added];
 }
