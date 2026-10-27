@@ -40,12 +40,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "49275debc839bec01938be76782c4387d7a6c12c",
+      "attempts": 1,
       "startedAt": "2026-10-27T02:16:57.765Z",
       "doneAt": "2026-10-27T02:19:18.098Z",
-      "summary": "movePatch en core (guard/patch.ts): el parche con la ruta de cada cabecera (Add, Update, Delete, Move to) como la da move, y el contenido igual; exportado para OpenCode y Codex."
+      "summary": "movePatch en core (guard/patch.ts): el parche con la ruta de cada cabecera (Add, Update, Delete, Move to) como la da move, y el contenido igual; exportado para OpenCode y Codex.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "89c28339d84e342003e292a2d389cb9b95a00186",
+      "startedAt": "2026-10-27T02:19:18.392Z",
+      "doneAt": "2026-10-27T02:25:24.868Z",
+      "summary": "OpenCode: redirect lleva filePath, path, workdir y las rutas de patchText (movePatch) a la carpeta del cambio, y da carpeta a búsquedas y comandos de una conversación ligada; solo si el plugin manda redirects. El plugin copia en el sitio la entrada que devuelve el guard (OpenCode 1 y 2)."
     }
   },
   "pending": {

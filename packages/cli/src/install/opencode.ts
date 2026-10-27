@@ -132,11 +132,31 @@ function run(command, directory, event, seconds) {
   });
 }
 
+// \`redirects\`: this plugin runs the tool with the input the guard gives back.
 async function check(directory, tool, input, session, call) {
   if (typeof directory !== "string" || !usesSpecty(directory)) return;
-  const event = { cwd: directory, session_id: session, tool_use_id: call, tool_name: tool, tool_input: input };
-  const { code, stderr } = await run(GUARD, directory, event);
+  const event = {
+    cwd: directory,
+    session_id: session,
+    tool_use_id: call,
+    tool_name: tool,
+    tool_input: input,
+    redirects: true,
+  };
+  const { code, stdout, stderr } = await run(GUARD, directory, event);
   if (code === 2) throw new Error(stderr.trim() || "specty: blocked");
+  redirect(input, stdout);
+}
+
+// The guard moved the tool to the folder of the change its conversation entered: OpenCode runs
+// it with this same object, so it changes in place.
+function redirect(input, stdout) {
+  try {
+    const moved = JSON.parse(stdout.trim() || "null")?.tool_input;
+    if (!moved || typeof moved !== "object" || !input || typeof input !== "object") return;
+    for (const key of Object.keys(input)) if (!(key in moved)) delete input[key];
+    Object.assign(input, moved);
+  } catch {}
 }
 
 async function warning(directory, tool, input, session, call) {

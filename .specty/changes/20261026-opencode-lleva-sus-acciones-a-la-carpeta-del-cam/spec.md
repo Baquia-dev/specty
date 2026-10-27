@@ -63,7 +63,7 @@ Con C2, el guard sabe reescribir la entrada de una herramienta para que la acci�
   - files: packages/core/src/guard/patch.ts, packages/core/src/index.ts, packages/core/test/guard/patch.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/patch.test.ts
-- [ ] T2: OpenCode lleva sus acciones a la carpeta de la conversación
+- [x] T2: OpenCode lleva sus acciones a la carpeta de la conversación
   - files: packages/cli/src/agents/opencode.ts, packages/cli/src/install/opencode.ts, packages/cli/test/opencode.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode.test.ts test/enter.test.ts
