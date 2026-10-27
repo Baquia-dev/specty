@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-doctor-avisa-de-las-instalaciones-de-antes-de-sp",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-doctor-avisa-de-las-instalaciones-de-antes-de-sp",
   "baseCommit": "54c6d3e663126b0f2dfddc60693028ce66dabef3",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "674e65839ce5d4a49f74a95d280f18e0e9271563",
+      "attempts": 1,
       "startedAt": "2026-10-27T05:22:03.567Z",
       "doneAt": "2026-10-27T05:27:12.083Z",
-      "summary": "doctor da enter-outdated si el hook de Antigravity, los de Devin o los de Cursor no tienen el matcher con las lecturas que pone init hoy, o si los ajustes locales de Devin fuera de git no tienen sus permisos, entre ellos el Read de la carpeta de las worktrees."
+      "summary": "doctor da enter-outdated si el hook de Antigravity, los de Devin o los de Cursor no tienen el matcher con las lecturas que pone init hoy, o si los ajustes locales de Devin fuera de git no tienen sus permisos, entre ellos el Read de la carpeta de las worktrees.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "612dc72791251febfa53e3b9352d1c5245ec365b",
+      "startedAt": "2026-10-27T05:27:12.386Z",
+      "doneAt": "2026-10-27T05:32:21.749Z",
+      "summary": "ARCHITECTURE §10 da el plugin de OpenCode por comprobado con 1.19.4 y la beta de OpenCode 2, explica qué avisa doctor de una instalación de antes de specty enter, y pone en la tabla de hooks las lecturas de Antigravity, Cursor y Devin. §14 lo nombra."
     }
   },
   "pending": {

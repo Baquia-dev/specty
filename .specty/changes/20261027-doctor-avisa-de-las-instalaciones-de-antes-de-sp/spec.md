@@ -58,7 +58,7 @@ La épica de `specty enter` cambió lo que `init` instala para cada herramienta:
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/src/agents/windsurf.ts, packages/cli/src/agents/cursor.ts, packages/cli/test/doctor-enter.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-enter.test.ts
-- [ ] T3: ARCHITECTURE dice qué avisa doctor y que OpenCode 2 está comprobado
+- [x] T3: ARCHITECTURE dice qué avisa doctor y que OpenCode 2 está comprobado
   - files: docs/ARCHITECTURE.md
   - ac: AC4
   - type: docs
