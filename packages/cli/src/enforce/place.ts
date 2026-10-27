@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { join, relative, resolve } from "node:path";
+import { isAbsolute, join, relative, resolve } from "node:path";
 import {
   analyzeShell,
   type ForeignPath,
@@ -7,6 +7,7 @@ import {
   isGoverned,
   type ShellAnalysis,
 } from "@baquia-dev/specty-core";
+import type { Redirect } from "../agents/adapter";
 import { within } from "../flow/land";
 import { placePaths } from "../flow/worktree";
 import { pathsOf } from "../io/git";
@@ -59,6 +60,35 @@ export async function resolveAction(
         : {}),
     },
   };
+}
+
+/**
+ * Where the actions of a conversation go (`AgentAdapter.redirect`): the change's folder it
+ * entered, where a path of another worktree becomes the same path; otherwise its tool's folder,
+ * and nothing moves.
+ */
+export async function redirection({ session, cwd, bound }: Place): Promise<Redirect> {
+  if (bound === undefined) return { folder: cwd, path: (path) => path };
+  const worktrees = (await session.git.worktrees()).map(({ folder }) => folder);
+  return {
+    folder: bound,
+    path: (path) => {
+      if (contains(bound, path)) return path;
+      // A worktree nested in another owns its files.
+      const owner = worktrees
+        .filter((folder) => contains(folder, path))
+        .reduce<string | undefined>(
+          (best, folder) => (best === undefined || folder.length > best.length ? folder : best),
+          undefined,
+        );
+      return owner === undefined ? path : join(bound, relative(owner, path));
+    },
+  };
+}
+
+function contains(folder: string, path: string): boolean {
+  const inner = relative(folder, path);
+  return !inner.startsWith("..") && !isAbsolute(inner);
 }
 
 /**

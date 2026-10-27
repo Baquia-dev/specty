@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b37e13a84a4492496f4d5016fcf62c9af7387148",
+      "attempts": 1,
       "startedAt": "2026-10-27T01:40:04.428Z",
       "doneAt": "2026-10-27T01:43:39.048Z",
-      "summary": "enteredSession (en sessions.ts, con entersOnItsOwn) da la sesión de la carpeta del cambio en el que entró la conversación; la usan el guard y el fin de turno, así que specty check --changed corre en esa carpeta al terminar el turno de una conversación ligada."
+      "summary": "enteredSession (en sessions.ts, con entersOnItsOwn) da la sesión de la carpeta del cambio en el que entró la conversación; la usan el guard y el fin de turno, así que specty check --changed corre en esa carpeta al terminar el turno de una conversación ligada.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "632c13193ed7512eaec734188ab54128c0d485ef",
+      "startedAt": "2026-10-27T01:43:39.335Z",
+      "doneAt": "2026-10-27T01:52:00.440Z",
+      "summary": "Contrato redirect y Verdict.input; el guard juzga la acción reescrita (redirection en place.ts) y la devuelve. Gemini CLI lleva file_path y dir_path a la carpeta del cambio, ancla las búsquedas sin carpeta y responde con tool_input; BeforeTool incluye las lecturas."
     }
   },
   "pending": {

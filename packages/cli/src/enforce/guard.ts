@@ -23,7 +23,7 @@ import { COMMAND, type Environment, openSession, type Session } from "../session
 import { readSpec } from "../store/changes";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { leavePending, type PendingKind, takePending } from "./pending";
-import { resolveAction } from "./place";
+import { redirection, resolveAction } from "./place";
 import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
 import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
 import { worktreeHook } from "./worktree-hooks";
@@ -39,6 +39,8 @@ interface Call {
   readonly cwd: string;
   /** The change's folder the conversation entered (`specty enter`): its session is that one. */
   readonly bound?: string;
+  /** What the agent's module rewrote in the tool's input (`redirect`), sent back if it passes. */
+  readonly input?: Readonly<Record<string, unknown>>;
 }
 
 /**
@@ -74,19 +76,26 @@ export async function guard(
     const opened = await openSession({ ...environment, cwd });
     if (opened.kind !== "ok") return agent.reply(ALLOW, kind === "before" ? "before" : "after");
     // A conversation that entered a change's folder is answered in that folder's session.
-    const { session, bound } = await enteredSession(agent.tool, opened.session, event);
-    const call = {
-      agent,
-      environment,
-      session,
-      event,
-      cwd,
-      ...(bound === undefined ? {} : { bound }),
-    };
-    return await answer(kind, call);
+    const entered = await enteredSession(agent.tool, opened.session, event);
+    const call = { agent, environment, event, cwd, ...entered };
+    return await answer(kind, kind === "before" ? await redirected(call, given) : call);
   } catch (error) {
     return agent.failed(`specty guard: ${error instanceof Error ? error.message : String(error)}`);
   }
+}
+
+/**
+ * Before an action, the tool's input as the agent's module rewrites it so the action happens in
+ * the conversation's folder (`redirect`): the rewritten action is the one judged, and the one
+ * that runs if it goes through.
+ */
+async function redirected(call: Call, given: Record<string, unknown>): Promise<Call> {
+  const input = call.agent.redirect?.(given, await redirection(call));
+  if (input === undefined) return call;
+  const sent = isRecord(given.tool_input) ? given.tool_input : {};
+  const moved = { ...given, tool_input: { ...sent, ...input } };
+  const event = call.agent.normalize?.(moved) ?? moved;
+  return { ...call, event, cwd: cwdOf(event, call.environment.cwd), input };
 }
 
 /** The answer to an event of a Specty session, by what the event is. */
@@ -160,11 +169,29 @@ async function beforeAction(call: Call): Promise<GuardReply> {
   const target = action.kind === "enter" ? action.target : entry?.target;
   if (decision.allow && target !== undefined) await bindSession(session, event, target);
   if (decision.allow) await beforeShell(session, event, action);
+  return await replyBefore(call, decision, action);
+}
+
+/**
+ * The reply before an action. What goes through brings the input the agent's module rewrote and,
+ * for a command of an agent with `grants`, Specty's folders.
+ */
+async function replyBefore(
+  { agent, session, input }: Call,
+  decision: GuardDecision,
+  action: GuardAction,
+): Promise<GuardReply> {
   const said = verdict(decision, session);
-  if (said.allow && agent.grants === true && action.kind === "shell") {
-    return agent.reply({ ...said, folders: await sharedFolders(session.git) }, "before");
-  }
-  return agent.reply(said, "before");
+  if (!said.allow) return agent.reply(said, "before");
+  const grants = agent.grants === true && action.kind === "shell";
+  return agent.reply(
+    {
+      ...said,
+      ...(input === undefined ? {} : { input }),
+      ...(grants ? { folders: await sharedFolders(session.git) } : {}),
+    },
+    "before",
+  );
 }
 
 /**

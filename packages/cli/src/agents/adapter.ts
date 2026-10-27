@@ -29,12 +29,27 @@ export type EventKind =
   | "turn"
   | "worktree";
 
+/**
+ * Where a conversation's actions go: the folder of the change it entered (`specty enter`), or
+ * otherwise its tool's own folder.
+ */
+export interface Redirect {
+  readonly folder: string;
+  /**
+   * The same absolute path in that folder, for one in another worktree of the repository; any
+   * other path stays as it is. Without a change entered, nothing moves.
+   */
+  readonly path: (absolute: string) => string;
+}
+
 /** The guard's verdict before each agent's form: let it through, or stop it and say why. */
 export type Verdict =
   | {
       readonly allow: true;
       /** The folders outside its workspace a shell command may write in, for an agent with `grants`. */
       readonly folders?: readonly string[];
+      /** The tool's input as the agent's module rewrote it (`redirect`), to send back. */
+      readonly input?: Readonly<Record<string, unknown>>;
     }
   | {
       readonly allow: false;
@@ -57,6 +72,12 @@ export interface AgentAdapter {
   readonly kind: (event: Event) => EventKind;
   /** The action an event before it describes. Paths are still as the tool sent them. */
   readonly action: (event: Event) => RawAction;
+  /**
+   * The fields of the tool's input to send back so the action happens in the conversation's
+   * folder, in the form the tool takes them; undefined when nothing changes. It reads the event
+   * as the tool sent it. The guard judges the action with them, and they go back with the reply.
+   */
+  readonly redirect?: (event: Event, to: Redirect) => Record<string, unknown> | undefined;
   /**
    * The reply before an action, or after a shell command, with the card a compaction left for
    * it when there is one.

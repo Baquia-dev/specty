@@ -3,10 +3,13 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   APP,
+  CHANGE,
   CONFIG,
   cli,
+  folderOf,
   git,
   person,
+  type Run,
   read,
   SPEC,
   SPEC_PATH,
@@ -101,6 +104,85 @@ describe("the guard in Gemini CLI", () => {
   });
 });
 
+/** A repository with a change in its own folder, which the conversation `s1` entered. */
+async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
+  const root = await tempRepo(APP);
+  expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+  const enter = tool("run_shell_command", { command: `specty enter ${CHANGE}` });
+  expect((await gemini(root, "BeforeTool", enter)).code).toBe(0);
+  return { root, folder: folderOf(root) };
+}
+
+/** What the guard gives Gemini CLI to merge into the tool's input; undefined when nothing. */
+const inputOf = (run: Run): unknown =>
+  run.out === "" ? undefined : JSON.parse(run.out).hookSpecificOutput.tool_input;
+
+const before = (root: string, name: string, input: Record<string, unknown>) =>
+  gemini(root, "BeforeTool", tool(name, input));
+
+describe("Gemini CLI in the folder of the change its conversation entered", () => {
+  it("moves each path to the change's folder, judged by that change's rules (AC1)", async () => {
+    const { root, folder } = await entered();
+    for (const path of [SPEC_PATH, join(root, SPEC_PATH)]) {
+      const written = await before(root, "write_file", { file_path: path, content: "x" });
+      expect(written.code).toBe(0);
+      expect(inputOf(written)).toEqual({ file_path: join(folder, SPEC_PATH) });
+    }
+    const read = await before(root, "read_file", { file_path: "src/app.ts" });
+    expect(inputOf(read)).toEqual({ file_path: join(folder, "src/app.ts") });
+    const listed = await before(root, "list_directory", { dir_path: "." });
+    expect(inputOf(listed)).toEqual({ dir_path: folder });
+    // Already in the change's folder, or outside the repository: nothing moves.
+    const there = await before(root, "read_file", { file_path: join(folder, "src/app.ts") });
+    expect(there).toMatchObject({ code: 0, out: "" });
+    expect((await before(root, "read_file", { file_path: "/etc/hosts" })).out).toBe("");
+    const code = await before(root, "replace", {
+      file_path: "src/app.ts",
+      old_string: "hola",
+      new_string: "adiós",
+    });
+    expect(code.code).toBe(2);
+    expect(code.err).toContain(`El cambio ${CHANGE} está en fase`);
+  });
+
+  it("runs searches and commands in the change's folder, or the same folder inside it (AC2)", async () => {
+    const { root, folder } = await entered();
+    expect(inputOf(await before(root, "grep_search", { pattern: "greet" }))).toEqual({
+      dir_path: folder,
+    });
+    const nested = await before(root, "glob", { pattern: "*.ts", dir_path: "src" });
+    expect(inputOf(nested)).toEqual({ dir_path: join(folder, "src") });
+    const command = { command: "python3 gen.py" };
+    expect(inputOf(await before(root, "run_shell_command", command))).toEqual({
+      dir_path: folder,
+    });
+    // After it, with the input Gemini CLI ran, the guard compares the change's folder.
+    await writeFiles(folder, { "src/other.ts": "generated\n" });
+    const after = await gemini(root, "AfterTool", {
+      ...tool("run_shell_command", { ...command, dir_path: folder }),
+      tool_response: { llmContent: "" },
+    });
+    expect(JSON.parse(after.out).hookSpecificOutput.additionalContext).toContain(
+      `El cambio ${CHANGE} está en fase draft`,
+    );
+  });
+
+  it("keeps a search without a folder in the tool's own when the conversation entered none (AC3)", async () => {
+    const root = await tempRepo(APP);
+    expect(inputOf(await before(root, "grep_search", { pattern: "greet" }))).toEqual({
+      dir_path: root,
+    });
+    for (const [name, input] of [
+      ["glob", { pattern: "*.ts", dir_path: "src" }],
+      ["run_shell_command", { command: "ls" }],
+      ["read_file", { file_path: "src/app.ts" }],
+      ["write_file", { file_path: "notas.md", content: "x" }],
+    ] as const) {
+      expect(await before(root, name, input)).toMatchObject({ code: 0, out: "" });
+    }
+  });
+});
+
 const PACKAGE = { "package.json": '{"name":"x","scripts":{"test":"true"}}\n' };
 const SETTINGS = ".gemini/settings.json";
 
@@ -121,7 +203,10 @@ describe("installing the guard in Gemini CLI", () => {
       hooks: [{ type: "command", command: expect.stringContaining("guard --tool gemini-cli") }],
     });
     expect(settings.hooks).toEqual({
-      BeforeTool: [lint, ours("run_shell_command|write_file|replace")],
+      BeforeTool: [
+        lint,
+        ours("run_shell_command|write_file|replace|read_file|list_directory|glob|grep_search"),
+      ],
       AfterTool: [ours("run_shell_command")],
       BeforeAgent: [{ hooks: ours("").hooks }],
     });

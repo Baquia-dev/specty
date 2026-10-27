@@ -73,7 +73,7 @@ Desde C1, una conversación de Gemini CLI que entra en un cambio (`specty enter 
   - files: packages/cli/src/enforce/sessions.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/test/enter.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enter.test.ts test/check-agent-stop.test.ts
-- [ ] T3: Gemini CLI lleva sus acciones a la carpeta de la conversación
+- [x] T3: Gemini CLI lleva sus acciones a la carpeta de la conversación
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/place.ts, packages/cli/src/agents/gemini-cli.ts, packages/cli/test/gemini-cli.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/enter.test.ts

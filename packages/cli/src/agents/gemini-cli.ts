@@ -21,16 +21,27 @@ import {
 import { rewriteJson } from "../install/files";
 import { GEMINI_POINTER, writePointer } from "../install/project-files";
 import { isRecord, readText } from "../io/files";
-import { type AgentAdapter, exitFailed, exitReply, jsonStop } from "./adapter";
+import { type AgentAdapter, exitFailed, exitReply, jsonStop, type Redirect } from "./adapter";
 
 /**
  * The events the guard listens to, each with a regular expression on `tool_name`; `BeforeAgent`,
  * with none, starts each turn.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
-  BeforeTool: "run_shell_command|write_file|replace",
+  BeforeTool: "run_shell_command|write_file|replace|read_file|list_directory|glob|grep_search",
   AfterTool: "run_shell_command",
   BeforeAgent: undefined,
+};
+
+/** The field of each tool that names its file or its folder. */
+const PATHS: Readonly<Record<string, string>> = {
+  write_file: "file_path",
+  replace: "file_path",
+  read_file: "file_path",
+  list_directory: "dir_path",
+  glob: "dir_path",
+  grep_search: "dir_path",
+  run_shell_command: "dir_path",
 };
 
 /**
@@ -49,7 +60,15 @@ export const geminiCli: AgentAdapter = {
     return event.hook_event_name === "BeforeAgent" ? "turn" : "before";
   },
   action,
+  redirect,
   reply: (verdict, phase) => {
+    if (phase === "before" && verdict.allow && verdict.input !== undefined) {
+      // Gemini CLI merges these fields into the tool's input, and tells the model which changed.
+      const output = {
+        hookSpecificOutput: { hookEventName: "BeforeTool", tool_input: verdict.input },
+      };
+      return { code: 0, stdout: JSON.stringify(output), stderr: "" };
+    }
     if (phase === "before" || verdict.allow) return exitReply(verdict);
     return context("AfterTool", verdict.text);
   },
@@ -157,6 +176,33 @@ function withSandbox(
 function context(event: "AfterTool" | "BeforeAgent", text: string): GuardReply {
   const output = { hookSpecificOutput: { hookEventName: event, additionalContext: text } };
   return { code: 0, stdout: JSON.stringify(output), stderr: "" };
+}
+
+/**
+ * The file or folder of each tool, in the conversation's folder. Gemini CLI resolves a relative
+ * one from its project's folder (the hook's `cwd`). Without a folder it searches every folder of
+ * its workspace, which holds the worktrees' one, so a search always gets the conversation's; a
+ * command, only when the conversation works in another folder.
+ */
+function redirect(
+  event: Readonly<Record<string, unknown>>,
+  to: Redirect,
+): Record<string, unknown> | undefined {
+  const name = String(event.tool_name);
+  const key = PATHS[name];
+  if (key === undefined) return undefined;
+  const input = isRecord(event.tool_input) ? event.tool_input : {};
+  const base = typeof event.cwd === "string" ? event.cwd : "";
+  const value = input[key];
+  if (typeof value === "string" && value !== "") {
+    const path = resolve(base, value);
+    const there = to.path(path);
+    return there === path ? undefined : { [key]: there };
+  }
+  const searches = name === "glob" || name === "grep_search";
+  return key === "dir_path" && (searches || to.folder !== base)
+    ? { dir_path: to.folder }
+    : undefined;
 }
 
 function action(event: Readonly<Record<string, unknown>>): RawAction {
