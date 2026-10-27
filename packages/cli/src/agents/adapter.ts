@@ -73,9 +73,9 @@ export interface AgentAdapter {
   /** The action an event before it describes. Paths are still as the tool sent them. */
   readonly action: (event: Event) => RawAction;
   /**
-   * The fields of the tool's input to send back so the action happens in the conversation's
-   * folder, in the form the tool takes them; undefined when nothing changes. It reads the event
-   * as the tool sent it. The guard judges the action with them, and they go back with the reply.
+   * The tool's whole input, rewritten so the action happens in the conversation's folder;
+   * undefined when nothing changes. It reads the event as the tool sent it. The guard judges the
+   * action with this input, and sends it back for the tool to run instead.
    */
   readonly redirect?: (event: Event, to: Redirect) => Record<string, unknown> | undefined;
   /**

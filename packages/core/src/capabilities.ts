@@ -121,7 +121,10 @@ export const AGENT_CAPABILITIES = {
       "dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
       "it fires `PreCompress` before every attempt to compact, whether it compacts or not, so the card comes at the start of each turn, with its prompt (`BeforeAgent`).",
     ),
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, las búsquedas y los comandos de sus herramientas (`hookSpecificOutput.tool_input`).",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder and moves its tools' paths, searches and commands there (`hookSpecificOutput.tool_input`).",
+    ),
     // `AfterAgent`, checked with Gemini CLI 0.65.0.
     endOfTurn: yes,
     exclusion: yes,

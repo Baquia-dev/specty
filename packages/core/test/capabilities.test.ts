@@ -81,7 +81,7 @@ describe("the capability table", () => {
       "| OpenCode | sí | sí | sí | no posible | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
     );
     expect(es).toContain("| GitHub Copilot | — | — | — | — | — | — | — | — |");
-    expect(es).toContain("| Gemini CLI | sí | sí | indirecto | no posible | sí | sí | sí | sí |");
+    expect(es).toContain("| Gemini CLI | sí | sí | indirecto | indirecto | sí | sí | sí | sí |");
     expect(es).toContain(
       "| Devin (Windsurf) | sí | sí | indirecto | no posible | sí | sí | sí | no posible |",
     );
@@ -108,10 +108,13 @@ describe("the capability table", () => {
     expect(es).toContain(
       "- Tarjeta tras compactar (Gemini CLI): dispara `PreCompress` antes de cada intento de compactar, compacte o no, así que la tarjeta llega al empezar cada turno, con su prompt (`BeforeAgent`).",
     );
+    expect(es).toContain(
+      "- Worktree por nombre (Gemini CLI): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio",
+    );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
     expect(es).toMatch(
-      /- Worktree por nombre \(Cursor, Codex, OpenCode, Gemini CLI, Devin \(Windsurf\), Antigravity\): /,
+      /- Worktree por nombre \(Cursor, Codex, OpenCode, Devin \(Windsurf\), Antigravity\): /,
     );
     expect(capabilityTable("en")).toContain("**Indirect:**");
     expect(capabilityTable("en")).toContain("**Not possible:**");

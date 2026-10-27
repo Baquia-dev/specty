@@ -81,7 +81,7 @@ Desde C1, una conversación de Gemini CLI que entra en un cambio (`specty enter 
   - files: packages/cli/src/agents/gemini-cli.ts, packages/cli/src/install/files.ts, packages/core/src/cards/install.ts, packages/cli/test/gemini-cli.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/install-files.test.ts
-- [ ] T5: Gemini CLI entra y trabaja en la carpeta del cambio con la herramienta de verdad, y la tabla lo dice
+- [x] T5: Gemini CLI entra y trabaja en la carpeta del cambio con la herramienta de verdad, y la tabla lo dice
   - files: packages/cli/test/gemini-e2e.test.ts, packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-e2e.test.ts

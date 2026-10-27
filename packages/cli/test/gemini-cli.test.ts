@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   APP,
@@ -127,10 +127,11 @@ describe("Gemini CLI in the folder of the change its conversation entered", () =
     for (const path of [SPEC_PATH, join(root, SPEC_PATH)]) {
       const written = await before(root, "write_file", { file_path: path, content: "x" });
       expect(written.code).toBe(0);
-      expect(inputOf(written)).toEqual({ file_path: join(folder, SPEC_PATH) });
+      // Gemini CLI builds the tool from the hook's input alone: it goes back whole.
+      expect(inputOf(written)).toEqual({ file_path: join(folder, SPEC_PATH), content: "x" });
     }
-    const read = await before(root, "read_file", { file_path: "src/app.ts" });
-    expect(inputOf(read)).toEqual({ file_path: join(folder, "src/app.ts") });
+    const read = await before(root, "read_file", { file_path: "src/app.ts", start_line: 2 });
+    expect(inputOf(read)).toEqual({ file_path: join(folder, "src/app.ts"), start_line: 2 });
     const listed = await before(root, "list_directory", { dir_path: "." });
     expect(inputOf(listed)).toEqual({ dir_path: folder });
     // Already in the change's folder, or outside the repository: nothing moves.
@@ -149,18 +150,23 @@ describe("Gemini CLI in the folder of the change its conversation entered", () =
   it("runs searches and commands in the change's folder, or the same folder inside it (AC2)", async () => {
     const { root, folder } = await entered();
     expect(inputOf(await before(root, "grep_search", { pattern: "greet" }))).toEqual({
+      pattern: "greet",
       dir_path: folder,
     });
     const nested = await before(root, "glob", { pattern: "*.ts", dir_path: "src" });
-    expect(inputOf(nested)).toEqual({ dir_path: join(folder, "src") });
-    const command = { command: "python3 gen.py" };
-    expect(inputOf(await before(root, "run_shell_command", command))).toEqual({
-      dir_path: folder,
+    expect(inputOf(nested)).toEqual({ pattern: "*.ts", dir_path: join(folder, "src") });
+    // Gemini CLI refuses a `dir_path` outside its project's folder: the command goes after a `cd`.
+    const moved = { command: `cd '${relative(root, folder)}' && python3 gen.py` };
+    const command = await before(root, "run_shell_command", { command: "python3 gen.py" });
+    expect(inputOf(command)).toEqual(moved);
+    const inner = { command: "ls", dir_path: "src" };
+    expect(inputOf(await before(root, "run_shell_command", inner))).toEqual({
+      command: `cd '${relative(root, join(folder, "src"))}' && ls`,
     });
     // After it, with the input Gemini CLI ran, the guard compares the change's folder.
     await writeFiles(folder, { "src/other.ts": "generated\n" });
     const after = await gemini(root, "AfterTool", {
-      ...tool("run_shell_command", { ...command, dir_path: folder }),
+      ...tool("run_shell_command", moved),
       tool_response: { llmContent: "" },
     });
     expect(JSON.parse(after.out).hookSpecificOutput.additionalContext).toContain(
@@ -171,6 +177,7 @@ describe("Gemini CLI in the folder of the change its conversation entered", () =
   it("keeps a search without a folder in the tool's own when the conversation entered none (AC3)", async () => {
     const root = await tempRepo(APP);
     expect(inputOf(await before(root, "grep_search", { pattern: "greet" }))).toEqual({
+      pattern: "greet",
       dir_path: root,
     });
     for (const [name, input] of [

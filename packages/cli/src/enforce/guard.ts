@@ -92,8 +92,7 @@ export async function guard(
 async function redirected(call: Call, given: Record<string, unknown>): Promise<Call> {
   const input = call.agent.redirect?.(given, await redirection(call));
   if (input === undefined) return call;
-  const sent = isRecord(given.tool_input) ? given.tool_input : {};
-  const moved = { ...given, tool_input: { ...sent, ...input } };
+  const moved = { ...given, tool_input: input };
   const event = call.agent.normalize?.(moved) ?? moved;
   return { ...call, event, cwd: cwdOf(event, call.environment.cwd), input };
 }

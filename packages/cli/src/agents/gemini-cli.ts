@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createHash } from "node:crypto";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import {
   geminiPointerLine,
   geminiSandboxLine,
@@ -65,7 +65,7 @@ export const geminiCli: AgentAdapter = {
   redirect,
   reply: (verdict, phase) => {
     if (phase === "before" && verdict.allow && verdict.input !== undefined) {
-      // Gemini CLI merges these fields into the tool's input, and tells the model which changed.
+      // Gemini CLI runs the tool with this input, and tells the model a hook changed it.
       const output = {
         hookSpecificOutput: { hookEventName: "BeforeTool", tool_input: verdict.input },
       };
@@ -207,10 +207,10 @@ function context(event: "AfterTool" | "BeforeAgent", text: string): GuardReply {
 }
 
 /**
- * The file or folder of each tool, in the conversation's folder. Gemini CLI resolves a relative
- * one from its project's folder (the hook's `cwd`). Without a folder it searches every folder of
- * its workspace, which holds the worktrees' one, so a search always gets the conversation's; a
- * command, only when the conversation works in another folder.
+ * The tool's whole input, with its file or folder in the conversation's folder: Gemini CLI builds
+ * the tool again from the hook's input alone. It resolves a relative path from its project's
+ * folder (the hook's `cwd`). Without a folder it searches every folder of its workspace, which
+ * holds the worktrees' one, so a search always gets the conversation's.
  */
 function redirect(
   event: Readonly<Record<string, unknown>>,
@@ -221,16 +221,38 @@ function redirect(
   if (key === undefined) return undefined;
   const input = isRecord(event.tool_input) ? event.tool_input : {};
   const base = typeof event.cwd === "string" ? event.cwd : "";
-  const value = input[key];
-  if (typeof value === "string" && value !== "") {
-    const path = resolve(base, value);
-    const there = to.path(path);
-    return there === path ? undefined : { [key]: there };
+  const given = pathOf(input[key], base);
+  if (name === "run_shell_command") return commandIn(input, base, given, to);
+  if (given === undefined) {
+    const searches = name === "glob" || name === "grep_search";
+    return searches ? { ...input, dir_path: to.folder } : undefined;
   }
-  const searches = name === "glob" || name === "grep_search";
-  return key === "dir_path" && (searches || to.folder !== base)
-    ? { dir_path: to.folder }
-    : undefined;
+  const there = to.path(given);
+  return there === given ? undefined : { ...input, [key]: there };
+}
+
+/** A path the tool sent, from its project's folder; undefined when it sent none. */
+function pathOf(value: unknown, base: string): string | undefined {
+  return typeof value === "string" && value !== "" ? resolve(base, value) : undefined;
+}
+
+/**
+ * A command in the conversation's folder, or the same folder inside it as its `dir_path`. Gemini
+ * CLI refuses a `dir_path` outside its project's folder, so the command goes after a `cd`,
+ * relative to that folder: it asks before a command with an absolute path that a command's
+ * output showed, and `specty enter` shows it.
+ */
+function commandIn(
+  input: Record<string, unknown>,
+  base: string,
+  given: string | undefined,
+  to: Redirect,
+): Record<string, unknown> | undefined {
+  const folder = given === undefined ? to.folder : to.path(given);
+  if (folder === (given ?? base) || typeof input.command !== "string") return undefined;
+  const { dir_path: _, ...rest } = input;
+  const there = relative(base, folder).replaceAll("'", `'\\''`);
+  return { ...rest, command: `cd '${there}' && ${input.command}` };
 }
 
 function action(event: Readonly<Record<string, unknown>>): RawAction {

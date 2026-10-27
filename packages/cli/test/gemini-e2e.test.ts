@@ -7,8 +7,11 @@ import { delimiter, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { type FakeGemini, fakeGemini, type GeminiCall } from "./fake-gemini";
 import {
+  CHANGE,
   CONFIG,
   cli,
+  DIST,
+  folderOf,
   git,
   person,
   read,
@@ -163,6 +166,31 @@ describe.skipIf(GEMINI === undefined)(
       ]);
       expect(gemini.results()[0]).toContain("`src/otro.ts` está fuera del alcance de T1.");
     });
+
+    it(
+      "enters a change with specty enter, and writes, reads and runs in its folder (C2 AC6)",
+      LONG,
+      async () => {
+        const root = await initialized();
+        expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+        const folder = folderOf(root);
+        const gemini = await geminiRun(root, [
+          shell(`node "${DIST}" enter ${CHANGE}`),
+          write(SPEC_PATH, "# Plan del saludo\n"),
+          { name: "read_file", args: { file_path: SPEC_PATH } },
+          shell("pwd"),
+          { name: "grep_search", args: { pattern: "Plan del saludo" } },
+        ]);
+        const [entered, written, shown, ran, found] = gemini.results();
+        expect(entered).toContain(`Esta conversación trabaja ahora en \`${folder}\``);
+        expect(written).not.toMatch(/SIGUIENTE: /);
+        expect(await read(folder, SPEC_PATH)).toBe("# Plan del saludo\n");
+        expect(existsSync(join(root, SPEC_PATH))).toBe(false);
+        expect(shown).toContain("# Plan del saludo");
+        expect(ran).toContain(folder);
+        expect(found).toContain("Found 1 match");
+      },
+    );
 
     it("sends the turn back once while specty check --changed fails (AC5)", LONG, async () => {
       const root = await initialized("checks:\n  levels: { secrets: off }\n");
