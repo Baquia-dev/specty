@@ -39,24 +39,7 @@ export async function agentIgnores(session: Session, files: InstallFiles): Promi
   const patterns = [...new Set([...config.checks.exclude, ...config.scope.generated])];
   if (patterns.length === 0) return;
   for (const ignore of IGNORE_FILES) {
-    if (!(await uses(root, ignore.tool))) continue;
-    const found = await Promise.all(
-      ignore.names.map(async (name) =>
-        (await files.read(join(root, name))) === undefined ? [] : [name],
-      ),
-    );
-    const file = join(root, found.flat()[0] ?? ignore.create);
-    const text = (await files.read(file)) ?? "";
-    const present = new Set(text.split(/\r?\n/).map((line) => line.trim()));
-    const missing = patterns.filter((pattern) => !present.has(pattern));
-    if (missing.length === 0) continue;
-    const comment = `# ${translator(session.lang)(
-      "Specty: dependencias, artefactos de build y código generado (specty check --install)",
-      "Specty: dependencies, build output and generated code (specty check --install)",
-    )}`;
-    const block = [...(present.has(comment) ? [] : [comment]), ...missing].join("\n");
-    const lead = text === "" ? "" : text.endsWith("\n") ? "\n" : "\n\n";
-    await files.write(file, `${text}${lead}${block}\n`);
+    if (await uses(root, ignore.tool)) await addIgnores(session, files, ignore, patterns);
   }
   if (await uses(root, "claude-code")) {
     const deny = patterns.map((pattern) => `Read(${pattern})`);
@@ -73,6 +56,33 @@ export async function agentIgnores(session: Session, files: InstallFiles): Promi
     const denied = opencodePatterns(patterns);
     await rewriteJson(file, (value) => withReadDenied(value, denied), true, files);
   }
+}
+
+/** Adds to the agent's ignore file, or to a new one, the patterns missing there, under Specty's comment. */
+async function addIgnores(
+  session: Session,
+  files: InstallFiles,
+  ignore: IgnoreFile,
+  patterns: readonly string[],
+): Promise<void> {
+  const { root } = session;
+  const found = await Promise.all(
+    ignore.names.map(async (name) =>
+      (await files.read(join(root, name))) === undefined ? [] : [name],
+    ),
+  );
+  const file = join(root, found.flat()[0] ?? ignore.create);
+  const text = (await files.read(file)) ?? "";
+  const present = new Set(text.split(/\r?\n/).map((line) => line.trim()));
+  const missing = patterns.filter((pattern) => !present.has(pattern));
+  if (missing.length === 0) return;
+  const comment = `# ${translator(session.lang)(
+    "Specty: dependencias, artefactos de build y código generado (specty check --install)",
+    "Specty: dependencies, build output and generated code (specty check --install)",
+  )}`;
+  const block = [...(present.has(comment) ? [] : [comment]), ...missing].join("\n");
+  const lead = text === "" ? "" : text.endsWith("\n") ? "\n" : "\n\n";
+  await files.write(file, `${text}${lead}${block}\n`);
 }
 
 /**

@@ -39,11 +39,35 @@ export async function install(
   const empty = plan.edits.length === 0 && plan.devDependencies.length === 0;
   if (dryRun || empty) return planned(plan, t);
   const before = new Set(pathsOf(await session.git.changedSince(await session.git.head())));
+  const edits = await applyEdits(session, plan.edits, t);
+  const dependencies = await installDependencies(session, plan.devDependencies, t);
+  const outcome: Outcome = {
+    applied: [...edits.applied, ...dependencies.applied],
+    declined: [...edits.declined, ...dependencies.declined],
+    failed: dependencies.failed,
+    written: [...edits.written, ...dependencies.written],
+  };
+  return installed(session, plan, outcome, before, t);
+}
+
+/** What the person's answers did, and the files to commit. */
+interface Outcome {
+  readonly applied: readonly string[];
+  readonly declined: readonly string[];
+  readonly failed: readonly string[];
+  readonly written: readonly string[];
+}
+
+/** Each edit with its diff, written when the person says yes. */
+async function applyEdits(
+  session: Session,
+  edits: readonly Edit[],
+  t: Translate,
+): Promise<Outcome> {
+  const { terminal } = session.environment;
   const applied: string[] = [];
   const declined: string[] = [];
-  const failed: string[] = [];
-  const written: string[] = [];
-  for (const edit of plan.edits) {
+  for (const edit of edits) {
     terminal.note(titleOf(edit, t), await diffOf(edit));
     if (
       await terminal.confirm(
@@ -53,12 +77,25 @@ export async function install(
       await mkdir(dirname(edit.file), { recursive: true });
       await writeFile(edit.file, edit.after);
       applied.push(edit.path);
-      written.push(edit.path);
     } else {
       declined.push(edit.path);
     }
   }
-  for (const dependency of plan.devDependencies) {
+  return { applied, declined, failed: [], written: applied };
+}
+
+/** Each devDependency with its command, installed when the person says yes. */
+async function installDependencies(
+  session: Session,
+  dependencies: InstallPlan["devDependencies"],
+  t: Translate,
+): Promise<Outcome> {
+  const { terminal } = session.environment;
+  const applied: string[] = [];
+  const declined: string[] = [];
+  const failed: string[] = [];
+  const written: string[] = [];
+  for (const dependency of dependencies) {
     const label = `${dependency.name}@${dependency.version}`;
     terminal.note(
       t(`${label} como devDependency`, `${label} as a devDependency`),
@@ -81,6 +118,18 @@ export async function install(
       failed.push(`${label}: ${tail(result, 1)[0] ?? `exit ${result.code ?? "?"}`}`);
     }
   }
+  return { applied, declined, failed, written };
+}
+
+/** Commits what was written, and reports what was applied, declined, failed or left to the person. */
+async function installed(
+  session: Session,
+  plan: InstallPlan,
+  outcome: Outcome,
+  before: ReadonlySet<string>,
+  t: Translate,
+): Promise<ReportOutput> {
+  const { applied, declined, failed, written } = outcome;
   const commit =
     written.length === 0
       ? { done: [], warnings: [] }
