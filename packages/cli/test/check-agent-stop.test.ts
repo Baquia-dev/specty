@@ -92,6 +92,12 @@ describe("specty hook agent-stop", () => {
       code: 0,
       out: "",
     });
+    // Antigravity wants an answer every time: outside Specty too, the one that lets it end (AC3).
+    const turn = { conversationId: "c1", terminationReason: "model_stop", fullyIdle: true };
+    expect(await stop(elsewhere, "antigravity", turn)).toMatchObject({
+      code: 0,
+      out: '{"decision":"stop"}',
+    });
   });
 
   it("is offered by check --install next to each agent's guard, once, in the project (AC4, AC9)", async () => {

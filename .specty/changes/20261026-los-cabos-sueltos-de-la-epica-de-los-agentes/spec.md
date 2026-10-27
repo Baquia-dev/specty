@@ -63,7 +63,7 @@ La épica «Todos los agentes al nivel de Claude Code» dejó cuatro cosas suelt
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/agent-stop.ts, packages/cli/test/check-agent-stop.test.ts, packages/cli/test/enforce.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/enforce.test.ts test/agents.test.ts
-- [ ] T3: El fin de turno responde fuera de Specty a quien espera respuesta
+- [x] T3: El fin de turno responde fuera de Specty a quien espera respuesta
   - files: packages/cli/src/enforce/entry.ts, packages/cli/test/check-agent-stop.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-agent-stop.test.ts test/hooks-entry.test.ts

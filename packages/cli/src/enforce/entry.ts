@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { personAtTerminal } from "@baquia-dev/specty-core";
+import { ADAPTERS } from "../agents";
 import type { CliEnvironment } from "../program";
 import { openSession, type Terminal } from "../session";
 import { type GuardTool, isGuardTool } from "./actions";
@@ -36,7 +37,12 @@ export async function hookCommand(
   args: readonly string[],
 ): Promise<number> {
   const opened = await openSession(environment);
-  if (opened.kind !== "ok") return 0;
+  if (opened.kind !== "ok") {
+    // The turn ends; a tool that wants an answer every time gets the one that says so.
+    const pass = name === "agent-stop" ? stopPass(args[0]) : undefined;
+    if (pass !== undefined) environment.io.out(pass);
+    return 0;
+  }
   if (name === "pre-commit") return preCommit(opened.session);
   if (name === "agent-stop") {
     const reply = await agentStop(opened.session, args[0] ?? "", await environment.stdin());
@@ -47,6 +53,11 @@ export async function hookCommand(
     return prepareCommitMsg(opened.session, args[0] ?? "", args[1]);
   }
   return 0;
+}
+
+/** What lets an agent's turn end, for a tool that wants an answer every time (Antigravity). */
+function stopPass(tool: string | undefined): string | undefined {
+  return tool !== undefined && isGuardTool(tool) ? ADAPTERS[tool].stop?.pass : undefined;
 }
 
 /**

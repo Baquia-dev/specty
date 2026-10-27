@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "37bf1cad35c25583921066d2c43d4820b70b481e",
+      "attempts": 1,
       "startedAt": "2026-10-26T23:53:04.484Z",
       "doneAt": "2026-10-27T00:00:00.646Z",
-      "summary": "El contrato gana borrowed: si otra herramienta ejecuta los hooks de un agente como suyos, el guard y el fin de turno callan. Claude Code lo es con DEVIN_PROJECT_DIR, así que con Devin solo responden los hooks de Devin y el informe no llega dos veces."
+      "summary": "El contrato gana borrowed: si otra herramienta ejecuta los hooks de un agente como suyos, el guard y el fin de turno callan. Claude Code lo es con DEVIN_PROJECT_DIR, así que con Devin solo responden los hooks de Devin y el informe no llega dos veces.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9617b67346f17311ebd490733d66c5dcb56de9e0",
+      "startedAt": "2026-10-27T00:00:00.960Z",
+      "doneAt": "2026-10-27T00:02:52.008Z",
+      "summary": "Fuera de un repositorio con Specty, hook agent-stop da la respuesta que deja terminar a un agente que la espera siempre (Antigravity recibe decision stop); los demás siguen sin recibir nada."
     }
   },
   "pending": {
