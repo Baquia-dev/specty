@@ -10,11 +10,13 @@ import {
   geminiWorkspaceVersionedWarning,
   guardLine,
 } from "@baquia-dev/specty-core";
+import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { sharedFolders, worktreesHome } from "../flow/worktree";
 import {
   excludeLocally,
   GEMINI_SETTINGS,
+  guardMatcher,
   hasGuard,
   missingEvents,
   removeFromJson,
@@ -23,6 +25,7 @@ import {
 import { rewriteJson } from "../install/files";
 import { GEMINI_POINTER, writePointer } from "../install/project-files";
 import { isRecord, readText } from "../io/files";
+import type { Git } from "../io/git";
 import { type AgentAdapter, exitFailed, exitReply, jsonStop, type Redirect } from "./adapter";
 
 /**
@@ -133,18 +136,38 @@ export const geminiCli: AgentAdapter = {
       withSpecty(value, undefined, { folders, home, add: false });
     await removeFromJson(root, GEMINI_SETTINGS, update, files);
   },
-  doctor: async (root) => {
+  doctor: async (root, git) => {
     const text = await readText(join(root, GEMINI_SETTINGS));
     const file = GEMINI_SETTINGS;
     if (!hasGuard(text, "gemini-cli")) {
       return { ok: [], problems: [{ code: "no-gemini-guard", file }] };
     }
     const missing = missingEvents([text], Object.keys(EVENTS), "gemini-cli");
-    return missing.length === 0
-      ? { ok: [{ code: "gemini-guard", file }], problems: [] }
-      : { ok: [], problems: [{ code: "gemini-hooks", file, events: missing.join(", ") }] };
+    if (missing.length > 0) {
+      return { ok: [], problems: [{ code: "gemini-hooks", file, events: missing.join(", ") }] };
+    }
+    const outdated = await beforeEnter(text, git);
+    return {
+      ok: [{ code: "gemini-guard", file }],
+      problems: outdated ? [{ code: "enter-outdated", tool: "gemini-cli", file }] : [],
+    };
   },
 };
+
+/**
+ * Whether the settings (their text) are from before `specty enter`: the guard does not see the
+ * reads, or settings kept on this machine do not give the tools the worktrees' folder.
+ */
+async function beforeEnter(text: string | undefined, git: Git): Promise<boolean> {
+  const value: unknown = parse(text ?? "");
+  const settings = isRecord(value) ? value : {};
+  if (guardMatcher(settings.hooks, "BeforeTool", "gemini-cli") !== EVENTS.BeforeTool) return true;
+  // `init` gives the folder only to settings it keeps out of git.
+  if ((await git.ignored([GEMINI_SETTINGS])).length === 0) return false;
+  const context = isRecord(settings.context) ? settings.context : {};
+  const folders = context.includeDirectories;
+  return !Array.isArray(folders) || !folders.includes(await worktreesHome(git));
+}
 
 /**
  * Its input, in the names the guard reads: a command runs in its `dir_path`, and a tool call is

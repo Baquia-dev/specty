@@ -6,6 +6,7 @@ import {
   codexSandboxKeptWarning,
   codexSandboxLine,
   codexTrustWarning,
+  type DoctorLine,
   movePatch,
   patchPaths,
 } from "@baquia-dev/specty-core";
@@ -136,8 +137,9 @@ export const codex: AgentAdapter = {
     const config = join(root, CODEX_CONFIG);
     if ((await files.read(config))?.startsWith(CONFIG_MARK) === true) await files.remove(config);
   },
-  doctor: async (root) => {
+  doctor: async (root, git) => {
     const hooks = await readText(join(root, CODEX_HOOKS));
+    const rules = await readText(join(root, CODEX_RULES));
     const guard = hasGuard(hooks, "codex");
     const lines = doctorLines([
       [
@@ -146,25 +148,53 @@ export const codex: AgentAdapter = {
         { code: "no-codex-guard", file: CODEX_HOOKS },
       ],
       [
-        isRule(await readText(join(root, CODEX_RULES))),
+        isRule(rules),
         { code: "codex-rules", file: CODEX_RULES },
         { code: "no-codex-rules", file: CODEX_RULES },
       ],
     ]);
+    if (!guard) return lines;
     // An install from before the card after a compaction has the guard without `SessionStart`.
-    if (!guard || missingEvents([hooks], ["SessionStart"], "codex").length === 0) return lines;
+    const compact = missingEvents([hooks], ["SessionStart"], "codex").length === 0;
     return {
       ...lines,
-      problems: [...lines.problems, { code: "codex-compact", file: CODEX_HOOKS }],
+      problems: [
+        ...lines.problems,
+        ...(compact ? [] : [{ code: "codex-compact", file: CODEX_HOOKS } as const]),
+        ...(await beforeEnter(rules, root, git)),
+      ],
     };
   },
   userFile: codexHooksFile,
 };
 
+/**
+ * What of the install is from before `specty enter`: Specty's rules without the one for `cd`, and
+ * no settings that let the sandbox write in the worktrees' folder where `init` writes them.
+ */
+async function beforeEnter(
+  rules: string | undefined,
+  root: string,
+  git: Git,
+): Promise<DoctorLine[]> {
+  const cd = !isRule(rules) || rules?.includes('pattern = ["cd"]') === true;
+  const config = await readText(join(root, CODEX_CONFIG));
+  const theirs = config !== undefined && !config.startsWith(CONFIG_MARK);
+  const open =
+    theirs ||
+    config?.includes(writableRoots(await worktreesHome(git))) === true ||
+    (await git.isTracked(CODEX_CONFIG));
+  return [...(cd ? [] : [CODEX_RULES]), ...(open ? [] : [CODEX_CONFIG])].map(
+    (file): DoctorLine => ({ code: "enter-outdated", tool: "codex", file }),
+  );
+}
+
 /** Codex's project settings, which it reads in a trusted project. */
 const CODEX_CONFIG = ".codex/config.toml";
 /** How the settings Specty writes start, so `init` and `uninstall` know them. */
 const CONFIG_MARK = "# Specty: Codex's sandbox also writes in the worktrees' folder";
+/** The line of those settings that lets the sandbox write in `home`. */
+const writableRoots = (home: string) => `writable_roots = [${JSON.stringify(home)}]`;
 
 /**
  * Lets Codex's sandbox write in the worktrees' folder, for a session that entered a change's
@@ -186,7 +216,7 @@ async function openWorktrees(
     `${CONFIG_MARK}, where a session that entered a`,
     "# change works (`specty enter`). `specty init` writes this file, and `specty uninstall` removes it.",
     "[sandbox_workspace_write]",
-    `writable_roots = [${JSON.stringify(home)}]`,
+    writableRoots(home),
     "",
   ];
   await files.write(path, settings.join("\n"));

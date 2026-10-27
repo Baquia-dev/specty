@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join, resolve } from "node:path";
 import {
+  type DoctorLine,
   movePatch,
   opencodeGuardLine,
   opencodeWorktreesLine,
   opencodeWorktreesVersionedWarning,
   patchPaths,
 } from "@baquia-dev/specty-core";
+import { parse } from "jsonc-parser";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
+import { worktreesHome } from "../flow/worktree";
 import { hasGuard, OPENCODE_PLUGIN } from "../install/agents";
 import {
   closeWorktrees,
@@ -18,6 +21,7 @@ import {
   planOpencodeStop,
 } from "../install/opencode";
 import { isRecord, readText } from "../io/files";
+import type { Git } from "../io/git";
 import {
   type AgentAdapter,
   blockingStop,
@@ -74,7 +78,7 @@ export const opencode: AgentAdapter = {
     if (hasGuard(await files.read(plugin), "opencode")) await files.remove(plugin);
     await closeWorktrees(root, git, files);
   },
-  doctor: async (root) => {
+  doctor: async (root, git) => {
     const plugin = await readText(join(root, OPENCODE_PLUGIN));
     const guard = hasGuard(plugin, "opencode");
     // A plugin from before the check after each command never sends `PostToolUse`, and one from
@@ -87,11 +91,36 @@ export const opencode: AgentAdapter = {
         { code: guard ? "opencode-after-command" : "no-opencode-guard", file: OPENCODE_PLUGIN },
       ],
     ]);
-    if (!guard || plugin?.includes("session.compacted") === true) return lines;
-    return { ...lines, problems: [...lines.problems, { code: "opencode-compact" }] };
+    if (!guard) return lines;
+    const compact = plugin?.includes("session.compacted") === true;
+    return {
+      ...lines,
+      problems: [
+        ...lines.problems,
+        ...(compact ? [] : [{ code: "opencode-compact" } as const]),
+        ...(await beforeEnter(plugin ?? "", root, git)),
+      ],
+    };
   },
   userFile: opencodePluginFile,
 };
+
+/**
+ * What of the install is from before `specty enter`: a plugin that does not run the tool with the
+ * input the guard gives back (`redirects`), and settings out of git without the worktrees' folder.
+ */
+async function beforeEnter(plugin: string, root: string, git: Git): Promise<DoctorLine[]> {
+  const settings: unknown = parse((await readText(join(root, OPENCODE_SETTINGS))) ?? "");
+  const permission = isRecord(settings) && isRecord(settings.permission) ? settings.permission : {};
+  const rules = permission.external_directory;
+  const pattern = `${await worktreesHome(git)}/**`;
+  const open =
+    (isRecord(rules) && Object.hasOwn(rules, pattern)) || (await git.isTracked(OPENCODE_SETTINGS));
+  return [
+    ...(plugin.includes("redirects: true") ? [] : [OPENCODE_PLUGIN]),
+    ...(open ? [] : [OPENCODE_SETTINGS]),
+  ].map((file): DoctorLine => ({ code: "enter-outdated", tool: "opencode", file }));
+}
 
 /** The fields that name a tool's file or folder, in OpenCode 2 and 1. */
 const PLACES: readonly string[] = ["filePath", "path", "workdir"];

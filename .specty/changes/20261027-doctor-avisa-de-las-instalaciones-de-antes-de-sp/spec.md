@@ -50,7 +50,7 @@ La épica de `specty enter` cambió lo que `init` instala para cada herramienta:
 
 ## Tareas
 
-- [ ] T1: doctor dice qué instalación de Gemini CLI, OpenCode y Codex es de antes de specty enter
+- [x] T1: doctor dice qué instalación de Gemini CLI, OpenCode y Codex es de antes de specty enter
   - files: packages/core/src/cards/doctor.ts, packages/cli/src/install/agents.ts, packages/cli/src/agents/gemini-cli.ts, packages/cli/src/agents/opencode.ts, packages/cli/src/agents/codex.ts, packages/cli/test/doctor-enter.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-enter.test.ts

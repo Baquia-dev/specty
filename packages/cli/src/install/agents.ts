@@ -91,6 +91,18 @@ export function isOurs(entry: unknown, tool: string): boolean {
 }
 
 /**
+ * The matcher of Specty's guard for `tool` under `event` of `hooks`, an object of events, as an
+ * install left it: `doctor` compares it with the one `init` writes now.
+ */
+export function guardMatcher(hooks: unknown, event: string, tool: GuardTool): unknown {
+  const entries = isRecord(hooks) ? hooks[event] : undefined;
+  const ours = Array.isArray(entries)
+    ? entries.find((entry: unknown) => isOurs(entry, tool))
+    : undefined;
+  return isRecord(ours) ? ours.matcher : undefined;
+}
+
+/**
  * Puts the guard in each event of a `hooks` object shaped like Claude Code's (Codex uses the same
  * one), or takes it out when `command` is undefined. Other hooks stay as they were.
  */

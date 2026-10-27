@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { AGENT_NAMES, type AgentTool } from "../agents";
 import { headerOf, type Output, section } from "../output";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
@@ -47,6 +48,11 @@ export type DoctorLine =
   | { readonly code: "gemini-guard" | "no-gemini-guard"; readonly file: string }
   /** Gemini CLI's guard is there, without the hooks of these events. */
   | { readonly code: "gemini-hooks"; readonly file: string; readonly events: string }
+  /**
+   * An agent's `file` as `init` wrote it before `specty enter`: the agent does not carry the
+   * actions of a conversation that entered a change's folder there, or fails in it.
+   */
+  | { readonly code: "enter-outdated"; readonly tool: AgentTool; readonly file: string }
   /** gentle-ai's flow guidance, which asks the agent for what the guard blocks. */
   | { readonly code: "gentle-ai"; readonly file: string; readonly blocks: readonly string[] }
   | { readonly code: "formatter-excludes"; readonly name: string; readonly path: string }
@@ -217,6 +223,11 @@ const WRITERS: {
     t(
       `Gemini CLI: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools gemini-cli\`.`,
       `Gemini CLI: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools gemini-cli\`.`,
+    ),
+  "enter-outdated": (line, t, command) =>
+    t(
+      `${AGENT_NAMES[line.tool]}: ${line.file} es de antes de \`${command} enter\`, así que no lleva sus acciones a la carpeta de un cambio; ejecuta \`${command} init --tools ${line.tool}\`.`,
+      `${AGENT_NAMES[line.tool]}: ${line.file} predates \`${command} enter\`, so it does not carry its actions to a change's folder; run \`${command} init --tools ${line.tool}\`.`,
     ),
   "opencode-compact": (_, t, command) =>
     t(
