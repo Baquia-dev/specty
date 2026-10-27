@@ -6,6 +6,13 @@
   "branch": "specty/20261027-init-guarda-el-flujo-de-git-con-git-flow",
   "baseCommit": "2b92e418e8e3f055d927c143ccf7779e6bd1baa1",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:013337f045080d55a84f4f006379f289de4ab996faf25cc07d10fcf48e46164c",
+    "at": "2026-10-27T23:44:26.184Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -30,7 +37,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/index.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "e7cb5ffec64dd07bae28131ccabd9ce82d5ee5f7",
+      "startedAt": "2026-10-27T23:44:26.570Z",
+      "doneAt": "2026-10-27T23:46:01.895Z",
+      "summary": "cards/init.ts: negativa unknown-flow con los flujos válidos, flowLine (cómo se llamarán las ramas con cada flujo) y developLine; exportadas desde cards/index.ts (S1)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,13 +58,7 @@
     "A": 3,
     "AC": 6,
     "T": 4,
-    "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:013337f045080d55a84f4f006379f289de4ab996faf25cc07d10fcf48e46164c",
-    "at": "2026-10-27T23:44:26.184Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
+    "R": 2,
+    "S": 1
   }
 }

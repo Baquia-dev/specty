@@ -8,7 +8,9 @@ import {
   backupLine,
   type CardContext,
   configLine,
+  developLine,
   dryRunCard,
+  flowLine,
   initCard,
   initRefusalCard,
   newProjectNext,
@@ -30,6 +32,43 @@ describe("a refused `init`", () => {
     expect(invalid.status).toBe("blocked");
     expect(renderText(invalid, "en")).toBe(
       "SPECTY · init\n.specty/config.yaml is invalid: mode: no válido\nNEXT: fix it and run `specty init` again.",
+    );
+  });
+
+  it("names the valid git flows when --git-flow is not one (AC5)", () => {
+    const flow = initRefusalCard({ reason: "unknown-flow", flow: "svn" }, "es");
+    expect(flow.status).toBe("invalid");
+    expect(renderText(flow, "es")).toBe(
+      "SPECTY · init\nFlujo de git desconocido: svn.\nSIGUIENTE: usa `--git-flow specty|github|trunk|gitflow`.",
+    );
+    expect(renderText(initRefusalCard({ reason: "unknown-flow", flow: "svn" }, "en"), "en")).toBe(
+      "SPECTY · init\nUnknown git flow: svn.\nNEXT: use `--git-flow specty|github|trunk|gitflow`.",
+    );
+  });
+});
+
+describe("the git flow `init` writes", () => {
+  it("says how the changes' branches will be named (AC1)", () => {
+    expect(flowLine("gitflow", "es")).toBe(
+      ".specty/config.yaml: git.flow es gitflow; las ramas de los cambios serán feature/<slug> y bugfix/<slug>.",
+    );
+    expect(flowLine("github", "es")).toBe(
+      ".specty/config.yaml: git.flow es github; las ramas de los cambios serán <tipo>/<slug>, como feat/<slug>.",
+    );
+    expect(flowLine("trunk", "en")).toBe(
+      ".specty/config.yaml: git.flow is trunk; the changes' branches will be <type>/<slug>, such as feat/<slug>.",
+    );
+    expect(flowLine("specty", "en")).toBe(
+      ".specty/config.yaml: git.flow is specty; the changes' branches will be specty/<id>.",
+    );
+  });
+
+  it("says where develop came from (AC4)", () => {
+    expect(developLine("origin/develop", "es")).toBe(
+      "Rama develop creada desde origin/develop: ahí empiezan y terminan los cambios.",
+    );
+    expect(developLine("main", "en")).toBe(
+      "Branch develop created from main: changes start from it and go to it.",
     );
   });
 });

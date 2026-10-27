@@ -52,7 +52,7 @@ Hoy `git.flow` solo se puede poner a mano en `config.yaml`. Con este cambio, `sp
 
 ## Tareas
 
-- [ ] T1: los textos de init para el flujo de git
+- [x] T1: los textos de init para el flujo de git
   - files: packages/core/src/cards/init.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/init.test.ts
