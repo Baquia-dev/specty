@@ -56,6 +56,24 @@ describe("analyzeShell", () => {
     expect(analyzeShell("sudo specty next").specty).toEqual(["next"]);
   });
 
+  it("names the change each `specty enter` enters (AC1)", () => {
+    expect(analyzeShell("specty enter 20261026-saludo").enters).toEqual(["20261026-saludo"]);
+    expect(analyzeShell('node "/x/dist/specty.mjs" enter --x 2026-a && ls').enters).toEqual([
+      "2026-a",
+    ]);
+    expect(analyzeShell("specty next").enters).toEqual([]);
+    expect(analyzeShell("specty enter").enters).toEqual([]);
+  });
+
+  it("says where each command runs, following its `cd`s, but not the `cd`s (AC4)", () => {
+    expect(analyzeShell("pnpm test").runsIn).toEqual([""]);
+    expect(analyzeShell("cd /w/x && pnpm test; ls").runsIn).toEqual(["/w/x", "/w/x"]);
+    expect(analyzeShell("cd src && cat a.ts").runsIn).toEqual(["src"]);
+    expect(analyzeShell("(cd /w/x && make) && ls").runsIn).toEqual(["/w/x", ""]);
+    expect(analyzeShell("cd $HOME && ls").runsIn).toEqual([undefined]);
+    expect(analyzeShell("cd /w/x").runsIn).toEqual([]);
+  });
+
   it("flags the unrelated `specty` npm package", () => {
     expect(analyzeShell("npx specty next").unscopedNpx).toBe(true);
     expect(analyzeShell("pnpm dlx specty@latest").unscopedNpx).toBe(true);

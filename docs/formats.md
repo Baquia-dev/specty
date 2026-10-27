@@ -28,6 +28,7 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 
 .git/common/specty/            # local, compartido por todas las worktrees, nunca versionado
 ├─ delegated.json              # modo delegado activo (ADR 0010): { "by", "at" }, quién lo activó y cuándo
+├─ sessions/<conversación>.json # { "folder", "at" }: la worktree en la que trabaja una conversación de agente, desde que entró con `EnterWorktree` (Claude Code) o `specty enter` (las demás); el guard la escribe y la lee
 └─ backups/<fecha>/            # lo que había antes de que `init` o `uninstall` lo cambiaran (una carpeta por ejecución)
    ├─ repo/<ruta>              # copia de un archivo del repositorio
    ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)

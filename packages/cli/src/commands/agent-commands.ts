@@ -9,6 +9,7 @@ import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
 import { bareCards, type Session } from "../session";
 import { adjust } from "./adjust";
+import { enter } from "./enter";
 import { integrate } from "./integrate";
 import { type NewOptions, newChange } from "./new";
 import { next } from "./next";
@@ -31,6 +32,11 @@ export function agentCommands(
   refuse: (output: Output) => void,
 ): void {
   program.command("next").description("what to do now").action(run(next));
+  program
+    .command("enter")
+    .description("go on in a change's folder from this conversation")
+    .argument("<id>")
+    .action((id: string) => run((session) => enter(session, id))());
   newCommand(program, run, env, refuse);
   program
     .command("propose")

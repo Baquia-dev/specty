@@ -6,7 +6,8 @@ import { exists } from "../io/files";
 import { resolved } from "../io/git";
 import { type Environment, openSession, type Session } from "../session";
 import { readSpec } from "../store/changes";
-import { readBinding, writeBinding } from "../store/local";
+import { readBinding, type SessionBinding, writeBinding } from "../store/local";
+import { conversationOf } from "./actions";
 import { namedWorktree } from "./worktree-hooks";
 
 /** `EnterWorktree` as Claude Code sends it: a folder to enter, or a name for a new one. */
@@ -15,11 +16,7 @@ export interface EnterRequest {
   readonly name?: string;
 }
 
-/** The agent session of a Claude Code event, safe as a file name. */
-function sessionOf(event: Record<string, unknown>): string | undefined {
-  const id = event.session_id;
-  return typeof id === "string" && /^[\w-]{1,128}$/.test(id) ? id : undefined;
-}
+type EnterAction = Extract<GuardAction, { readonly kind: "enter" }>;
 
 /**
  * `EnterWorktree` as the guard judges it: the folder the session moves into and, when the session
@@ -39,13 +36,53 @@ export async function enterAction(
       : request.name !== undefined
         ? (await namedWorktree(session.git, request.name)).folder
         : undefined;
-  if (target === undefined) return { kind: "other" };
-  const id = sessionOf(event);
-  const binding = id === undefined ? undefined : await readBinding(session.git, id);
+  return target === undefined
+    ? { kind: "other" }
+    : await enterInto(environment, session, event, target);
+}
+
+/**
+ * `specty enter <id>` as the guard judges it: `EnterWorktree` by name for the other agents, only
+ * into the folder `specty new` prepared for the change. Undefined without one: the command says so.
+ */
+export async function enterChange(
+  environment: Environment,
+  session: Session,
+  event: Record<string, unknown>,
+  id: string,
+): Promise<EnterAction | undefined> {
+  const named = await namedWorktree(session.git, id);
+  return named.prepared ? await enterInto(environment, session, event, named.folder) : undefined;
+}
+
+async function enterInto(
+  environment: Environment,
+  session: Session,
+  event: Record<string, unknown>,
+  target: string,
+): Promise<EnterAction> {
+  const binding = await bindingOf(session, event);
   if (binding === undefined) return { kind: "enter", target };
   const bound = await boundTo(environment, binding.folder);
   const epic = (await openChange(environment, target))?.epic;
   return { kind: "enter", target, bound, ...(epic !== undefined ? { epic } : {}) };
+}
+
+/** The folder of the change the event's conversation entered, while that folder exists. */
+export async function boundFolder(
+  session: Session,
+  event: Record<string, unknown>,
+): Promise<string | undefined> {
+  const binding = await bindingOf(session, event);
+  return binding !== undefined && (await exists(binding.folder)) ? binding.folder : undefined;
+}
+
+async function bindingOf(
+  session: Session,
+  event: Record<string, unknown>,
+): Promise<SessionBinding | undefined> {
+  const id = conversationOf(event);
+  return id === undefined ? undefined : await readBinding(session.git, id);
 }
 
 /** The session's folder, with its change only while that change is open there. */
@@ -68,13 +105,13 @@ async function openChange(
   return { id: change.state.id, ...(epic !== undefined ? { epic } : {}) };
 }
 
-/** Once the session may enter `target`, that worktree is the one it works in. */
+/** Once the conversation may enter `target`, that worktree is the one it works in. */
 export async function bindSession(
   session: Session,
   event: Record<string, unknown>,
   target: string,
 ): Promise<void> {
-  const id = sessionOf(event);
+  const id = conversationOf(event);
   if (id === undefined) return;
   await writeBinding(session.git, id, {
     folder: target,
