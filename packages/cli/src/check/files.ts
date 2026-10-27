@@ -129,20 +129,33 @@ function parseAddedLines(diff: string): Map<string, Set<number>> {
       continue;
     }
     const hunk = HUNK.exec(line);
-    if (hunk !== null) {
-      const start = Number(hunk[2]);
-      const count = Number(hunk[3] ?? "1");
-      for (let offset = 0; offset < count; offset += 1) current?.add(start + offset);
-      pending = Number(hunk[1] ?? "1") + count;
-    } else if (line.startsWith("diff --git ")) {
-      current = undefined;
-    } else if (line.startsWith("rename to ")) {
-      current = fileIn(added, line.slice("rename to ".length));
-    } else if (line.startsWith("+++ ")) {
-      current = line.startsWith("+++ b/") ? fileIn(added, line.slice("+++ b/".length)) : undefined;
+    if (hunk === null) {
+      current = headerFile(added, line, current);
+      continue;
     }
+    const start = Number(hunk[2]);
+    const count = Number(hunk[3] ?? "1");
+    for (let offset = 0; offset < count; offset += 1) current?.add(start + offset);
+    pending = Number(hunk[1] ?? "1") + count;
   }
   return added;
+}
+
+/**
+ * The file whose lines follow a header line: none after `diff --git` or a `+++` without a `b/`
+ * side; `current` after any other line.
+ */
+function headerFile(
+  added: Map<string, Set<number>>,
+  line: string,
+  current: Set<number> | undefined,
+): Set<number> | undefined {
+  if (line.startsWith("diff --git ")) return undefined;
+  if (line.startsWith("rename to ")) return fileIn(added, line.slice("rename to ".length));
+  if (line.startsWith("+++ ")) {
+    return line.startsWith("+++ b/") ? fileIn(added, line.slice("+++ b/".length)) : undefined;
+  }
+  return current;
 }
 
 /** The set of `path`, which git ends with a tab when it has spaces; none for a quoted path. */

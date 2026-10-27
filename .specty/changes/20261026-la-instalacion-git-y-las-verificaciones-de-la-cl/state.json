@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-la-instalacion-git-y-las-verificaciones-de-la-cl",
   "baseCommit": "c03deef36ff8ceddb1fbddcd315f5c03ef239e1e",
   "revision": 2,
@@ -62,12 +62,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3c3ec0d3351416c036a917749cb8087d69e21d80",
+      "attempts": 1,
       "startedAt": "2026-10-26T23:45:37.699Z",
       "doneAt": "2026-10-26T23:53:37.532Z",
-      "summary": "install-ignores.ts: agentIgnores deja a addIgnores el archivo de cada agente. git-hooks.ts: removeLefthook deja a removedSpectyCommands los hooks de cada archivo. project-files.ts: completeConfig deja a intoMap la inserción en un verify existente. Los tests pasan."
+      "summary": "install-ignores.ts: agentIgnores deja a addIgnores el archivo de cada agente. git-hooks.ts: removeLefthook deja a removedSpectyCommands los hooks de cada archivo. project-files.ts: completeConfig deja a intoMap la inserción en un verify existente. Los tests pasan.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1d87342cf8254b7d87ba9c10d96f2d8f5358ae01",
+      "startedAt": "2026-10-26T23:53:37.855Z",
+      "doneAt": "2026-10-27T00:01:22.886Z",
+      "summary": "secrets.ts: scan toma los argumentos de betterleaksArgs y gitleaksArgs, en el mismo orden de escáneres. files.ts: parseAddedLines deja a headerFile el archivo de cada cabecera. Ninguna función de install, io ni check pasa de los límites; los tests pasan."
     }
   },
   "pending": {
