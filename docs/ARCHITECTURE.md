@@ -417,16 +417,16 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 | Devin (Windsurf) | `Stop`, sin matcher, en la raíz de `.devin/hooks.v1.json`, junto al guard; `init` lo conserva | `{"decision":"block","reason":…}` | con `stop_hook_active: true` deja terminar |
 | Copilot | sin un fin de turno que haga seguir al agente | — | Respaldo: la regla escrita de AGENTS.md |
 
-**Exclusión de ruido** (revisado el 2026-10-26). `specty check --install` añade a cada agente que el repositorio usa los globs de `checks.exclude` y `scope.generated`, para que no lea dependencias, artefactos de build ni código generado. Todos usan la sintaxis de `.gitignore`.
+**Exclusión de ruido** (revisado el 2026-10-26). `specty check --install` añade a cada agente que el repositorio usa los globs de `checks.exclude` y `scope.generated`, para que no lea dependencias, artefactos de build ni código generado. Todos usan la sintaxis de `.gitignore`. Los cambios archivados (`.specty/archive/**`) describen el código como era y llenan la búsqueda de resultados viejos, pero el agente aún puede necesitar abrir uno: salen solo del índice, en `.cursorindexingignore` y `.antigravityignore`, y nunca de lo que impide leer.
 
 | Herramienta | Dónde |
 | --- | --- |
-| Cursor | `.cursorignore` en la raíz: el agente y Tab no leen esas rutas |
+| Cursor | `.cursorignore` en la raíz: el agente y Tab no leen esas rutas. `.cursorindexingignore`, solo para los cambios archivados: salen del índice y de la búsqueda, pero el agente puede abrirlos |
 | Claude Code | `permissions.deny` con `Read(<patrón>)` en `.claude/settings.json`; también impide editarlas |
 | Gemini CLI | `.geminiignore` en la raíz |
 | Devin (Windsurf) | `.devinignore`, o `.windsurfignore` o `.codeiumignore`, que aún lee; si no hay ninguno, se crea `.codeiumignore` |
 | OpenCode | `permission.read` en `opencode.json` (u `opencode.jsonc`): cada patrón con `deny`, después de las reglas de la persona, porque gana la última que coincide. OpenCode compara con la ruta relativa al proyecto, así que un patrón `**/x/**` va también como `x/**`, para la raíz. `glob`, `grep` y `list` no se filtran |
-| Antigravity | `.antigravityignore` en la raíz: su indexador y sus menciones con @ no ven esas rutas; no consta que impida leer una de ellas si el agente la pide por su ruta |
+| Antigravity | `.antigravityignore` en la raíz: su indexador y sus menciones con @ no ven esas rutas; no consta que impida leer una de ellas si el agente la pide por su ruta. Por eso también lleva los cambios archivados |
 | Copilot, Codex | Sin un archivo de exclusión propio en el repositorio |
 
 ### Modelo de confianza

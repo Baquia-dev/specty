@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261027-los-cambios-archivados-fuera-del-indice-de-los-a",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-los-cambios-archivados-fuera-del-indice-de-los-a",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d9c84187638adb6a4cf23ec7c607618c7732760d53a416887ad4cafb8370c8e7",
+    "at": "2026-10-27T10:38:41.508Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6db6b07bdc6df8dea6972acd678bb34db8d9f707",
+      "startedAt": "2026-10-27T10:38:42.936Z",
+      "doneAt": "2026-10-27T10:49:59.927Z",
+      "summary": "check --install pone .specty/archive/** solo en .cursorindexingignore y .antigravityignore, con su comentario y aunque no haya ruido que excluir; nunca en las exclusiones que impiden leer. Documentado en formats §6, ARCHITECTURE §10 y Convenciones."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d9c84187638adb6a4cf23ec7c607618c7732760d53a416887ad4cafb8370c8e7",
-    "at": "2026-10-27T10:38:41.508Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
