@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { antigravityTrustWarning, guardLine } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { ANTIGRAVITY_HOOKS, excludeLocally, removeFromJson } from "../install/agents";
+import { ANTIGRAVITY_HOOKS, excludeLocally, guardMatcher, removeFromJson } from "../install/agents";
 import { rewriteJson } from "../install/files";
 import { isRecord, readText } from "../io/files";
 import { type AgentAdapter, jsonStop } from "./adapter";
@@ -121,9 +121,18 @@ export const antigravity: AgentAdapter = {
     if (missing.includes("PreToolUse")) {
       return { ok: [], problems: [{ code: "no-antigravity-guard", file }] };
     }
-    return missing.length === 0
-      ? { ok: [{ code: "antigravity-guard", file }], problems: [] }
-      : { ok: [], problems: [{ code: "antigravity-hooks", file, events: missing.join(", ") }] };
+    if (missing.length > 0) {
+      return {
+        ok: [],
+        problems: [{ code: "antigravity-hooks", file, events: missing.join(", ") }],
+      };
+    }
+    // A hook from before `specty enter` does not see the reads.
+    const outdated = guardMatcher(ours, "PreToolUse", "antigravity") !== TOOLS;
+    return {
+      ok: [{ code: "antigravity-guard", file }],
+      problems: outdated ? [{ code: "enter-outdated", tool: "antigravity", file }] : [],
+    };
   },
 };
 

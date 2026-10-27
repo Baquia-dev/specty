@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { join, resolve } from "node:path";
 import {
   AGENT_NAMES,
+  type DoctorLine,
   devinCommandsLine,
   devinRestrictedWarning,
   devinSandboxLine,
@@ -20,6 +21,7 @@ import {
   DEVIN_HOOKS,
   DEVIN_LOCAL_CONFIG,
   excludeLocally,
+  guardMatcher,
   removeFromJson,
   withHooks,
 } from "../install/agents";
@@ -111,7 +113,7 @@ export const windsurf: AgentAdapter = {
       files,
     );
   },
-  doctor: async (root) => {
+  doctor: async (root, git) => {
     const value: unknown = parse((await readText(join(root, DEVIN_HOOKS))) ?? "null");
     const hooks = isRecord(value) ? value : {};
     const missing = Object.keys(EVENTS).filter(
@@ -121,11 +123,36 @@ export const windsurf: AgentAdapter = {
     if (missing.includes("PreToolUse")) {
       return { ok: [], problems: [{ code: "no-windsurf-guard", file }] };
     }
-    return missing.length === 0
-      ? { ok: [{ code: "windsurf-guard", file }], problems: [] }
-      : { ok: [], problems: [{ code: "windsurf-hooks", file, events: missing.join(", ") }] };
+    if (missing.length > 0) {
+      return { ok: [], problems: [{ code: "windsurf-hooks", file, events: missing.join(", ") }] };
+    }
+    return {
+      ok: [{ code: "windsurf-guard", file }],
+      problems: await beforeEnter(hooks, root, git),
+    };
   },
 };
+
+/**
+ * What of the install is from before `specty enter`: hooks that do not see the reads, and local
+ * settings out of git without the scopes `init` gives them, the worktrees' folder among them.
+ */
+async function beforeEnter(
+  hooks: Readonly<Record<string, unknown>>,
+  root: string,
+  git: Git,
+): Promise<DoctorLine[]> {
+  const value: unknown = parse((await readText(join(root, DEVIN_LOCAL_CONFIG))) ?? "null");
+  const permissions = isRecord(value) && isRecord(value.permissions) ? value.permissions : {};
+  const allowed: unknown[] = Array.isArray(permissions.allow) ? permissions.allow : [];
+  const scopes = await writeScopes(git);
+  const open =
+    scopes.every((scope) => allowed.includes(scope)) || (await git.isTracked(DEVIN_LOCAL_CONFIG));
+  return [
+    ...(guardMatcher(hooks, "PreToolUse", "windsurf") === EVENTS.PreToolUse ? [] : [DEVIN_HOOKS]),
+    ...(open ? [] : [DEVIN_LOCAL_CONFIG]),
+  ].map((file): DoctorLine => ({ code: "enter-outdated", tool: "windsurf", file }));
+}
 
 /**
  * Devin's permissions for Specty: its commands run without asking (`Exec(specty)`), in the shared

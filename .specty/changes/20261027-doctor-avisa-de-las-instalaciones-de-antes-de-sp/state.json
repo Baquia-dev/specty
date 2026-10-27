@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c7a144dcddc09fc61d05932cc85ebd949c48e7b9",
+      "attempts": 1,
       "startedAt": "2026-10-27T05:10:25.005Z",
       "doneAt": "2026-10-27T05:22:03.127Z",
-      "summary": "Línea enter-outdated (es/en) y guardMatcher. doctor avisa si Gemini CLI no tiene el matcher de lecturas o la carpeta de las worktrees en ajustes locales; si el plugin de OpenCode no manda redirects o falta su regla fuera de git; si Codex no tiene la regla de cd o su config.toml."
+      "summary": "Línea enter-outdated (es/en) y guardMatcher. doctor avisa si Gemini CLI no tiene el matcher de lecturas o la carpeta de las worktrees en ajustes locales; si el plugin de OpenCode no manda redirects o falta su regla fuera de git; si Codex no tiene la regla de cd o su config.toml.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "674e65839ce5d4a49f74a95d280f18e0e9271563",
+      "startedAt": "2026-10-27T05:22:03.567Z",
+      "doneAt": "2026-10-27T05:27:12.083Z",
+      "summary": "doctor da enter-outdated si el hook de Antigravity, los de Devin o los de Cursor no tienen el matcher con las lecturas que pone init hoy, o si los ajustes locales de Devin fuera de git no tienen sus permisos, entre ellos el Read de la carpeta de las worktrees."
     }
   },
   "pending": {

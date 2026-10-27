@@ -121,4 +121,64 @@ describe("doctor and an install from before specty enter", () => {
     await init(root, "codex");
     expect(await says(root, outdated("Codex", ".codex/config.toml", "codex"))).toBe(false);
   });
+
+  it("names Antigravity's hook without the reads (AC1, AC2)", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "antigravity");
+    const file = ".agents/hooks.json";
+    const line = outdated("Antigravity", file, "antigravity");
+    expect(await says(root, line)).toBe(false);
+    const older =
+      "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task";
+    await rewrite(root, file, (value) => ({
+      ...value,
+      specty: withMatcher(value.specty, "PreToolUse", "antigravity", older),
+    }));
+    expect(await says(root, line)).toBe(true);
+    await init(root, "antigravity");
+    expect(await says(root, line)).toBe(false);
+  });
+
+  it("names Devin's hooks without the reads, and its local settings without the worktrees (AC1, AC2)", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "windsurf");
+    const hooks = ".devin/hooks.v1.json";
+    const line = outdated("Devin (Windsurf)", hooks, "windsurf");
+    expect(await says(root, line)).toBe(false);
+    const older = "^(exec|write|edit|notebook_edit|apply_patch|write_to_process)$";
+    await rewrite(root, hooks, (value) => withMatcher(value, "PreToolUse", "windsurf", older));
+    expect(await says(root, line)).toBe(true);
+    await init(root, "windsurf");
+    expect(await says(root, line)).toBe(false);
+    const local = ".devin/config.local.json";
+    await rewrite(root, local, (value) => {
+      const permissions = isObject(value.permissions) ? value.permissions : {};
+      const allow = Array.isArray(permissions.allow) ? permissions.allow : [];
+      const writes = allow.filter((rule) => !String(rule).startsWith("Read("));
+      return { ...value, permissions: { ...permissions, allow: writes } };
+    });
+    expect(await says(root, outdated("Devin (Windsurf)", local, "windsurf"))).toBe(true);
+  });
+
+  it("leaves Devin's local settings kept in git (AC3)", async () => {
+    const root = await tempRepo({ ...PACKAGE, ".devin/config.local.json": "{}\n" });
+    await init(root, "windsurf");
+    const line = outdated("Devin (Windsurf)", ".devin/config.local.json", "windsurf");
+    expect(await says(root, line)).toBe(false);
+  });
+
+  it("names Cursor's hooks without the reads (AC1, AC2)", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "cursor");
+    const file = ".cursor/hooks.json";
+    const line = outdated("Cursor", file, "cursor");
+    expect(await says(root, line)).toBe(false);
+    await rewrite(root, file, (value) => ({
+      ...value,
+      hooks: withMatcher(value.hooks, "preToolUse", "cursor", "Write|Delete|Shell"),
+    }));
+    expect(await says(root, line)).toBe(true);
+    await init(root, "cursor");
+    expect(await says(root, line)).toBe(false);
+  });
 });

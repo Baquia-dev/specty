@@ -14,6 +14,7 @@ import {
   CURSOR_HOOKS,
   CURSOR_SANDBOX,
   excludeLocally,
+  guardMatcher,
   isOurs,
   missingEvents,
   removeFromJson,
@@ -110,8 +111,7 @@ export const cursor: AgentAdapter = {
     await removeFromJson(root, CURSOR_SANDBOX, sandbox, files);
   },
   doctor: async (root, git) => {
-    const hooks = await readText(join(root, CURSOR_HOOKS));
-    const guard = guardLines(missingEvents([hooks], Object.keys(EVENTS), "cursor"));
+    const guard = guardLines(await readText(join(root, CURSOR_HOOKS)));
     const listed = readwritePaths(await readText(join(root, CURSOR_SANDBOX)));
     const sandbox = doctorLines([
       [
@@ -124,8 +124,12 @@ export const cursor: AgentAdapter = {
   },
 };
 
-/** What `doctor` says of the guard's hooks, from the events they lack. */
-function guardLines(missing: readonly string[]): DoctorLines {
+/**
+ * What `doctor` says of the guard's hooks (their file's text): the events they lack, and a
+ * `preToolUse` from before `specty enter`, which does not see the reads.
+ */
+function guardLines(text: string | undefined): DoctorLines {
+  const missing = missingEvents([text], Object.keys(EVENTS), "cursor");
   if (missing.includes("preToolUse") || missing.includes("beforeShellExecution")) {
     return { ok: [], problems: [{ code: "no-cursor-guard" }] };
   }
@@ -133,6 +137,12 @@ function guardLines(missing: readonly string[]): DoctorLines {
   const problems: DoctorLine[] = [];
   if (after.length > 0) problems.push({ code: "cursor-after-command", events: after.join(", ") });
   if (missing.includes("preCompact")) problems.push({ code: "cursor-compact" });
+  const value: unknown = parse(text ?? "");
+  if (
+    guardMatcher(isRecord(value) ? value.hooks : {}, "preToolUse", "cursor") !== EVENTS.preToolUse
+  ) {
+    problems.push({ code: "enter-outdated", tool: "cursor", file: CURSOR_HOOKS });
+  }
   return { ok: problems.length === 0 ? [{ code: "cursor-guard" }] : [], problems };
 }
 
