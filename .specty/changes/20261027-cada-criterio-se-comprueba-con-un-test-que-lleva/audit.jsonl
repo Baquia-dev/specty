@@ -1,0 +1,8 @@
+{"ts":"2026-10-27T06:27:34.021Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261027-cada-criterio-se-comprueba-con-un-test-que-lleva","epic":"20261027-tests-como-contrato-y-vocabulario-del-dominio","slice":"C1"}}
+{"ts":"2026-10-27T06:40:39.998Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:92ca251e93388d9e570004c56905b4c2e2b570af240404a2b176a526dc63cd5a","size":"L","warnings":1}}
+{"ts":"2026-10-27T06:41:19.010Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:e33e2cf159f9218a4e47b39123fb9b7a7d4ded4fcbd44a0c9adf12e6f109f9f6","size":"L","warnings":1}}
+{"ts":"2026-10-27T06:47:32.055Z","actor":"human","event":"assumption.decided","data":{"item":"A1","decision":"confirmed"}}
+{"ts":"2026-10-27T06:47:32.786Z","actor":"human","event":"assumption.decided","data":{"item":"A2","decision":"confirmed"}}
+{"ts":"2026-10-27T06:47:33.608Z","actor":"human","event":"assumption.decided","data":{"item":"A3","decision":"confirmed"}}
+{"ts":"2026-10-27T06:47:34.552Z","actor":"human","event":"assumption.decided","data":{"item":"A4","decision":"confirmed"}}
+{"ts":"2026-10-27T06:58:46.850Z","actor":"human","event":"spec.approved","data":{"revision":2,"hash":"sha256:e33e2cf159f9218a4e47b39123fb9b7a7d4ded4fcbd44a0c9adf12e6f109f9f6","channel":"ui"}}

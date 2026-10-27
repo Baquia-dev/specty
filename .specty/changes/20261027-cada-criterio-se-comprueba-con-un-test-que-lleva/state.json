@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261027-cada-criterio-se-comprueba-con-un-test-que-lleva",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-cada-criterio-se-comprueba-con-un-test-que-lleva",
+  "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8c523a392724118a062512e1d3367d09efa7d314c061d4e548d7a4fba5db7bba",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:68f1e1db17db5450877f975394ca6f515f79e53d733686996d27907f612d49de",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e200dd79d78f0e398fff7257254019e397c9590d633d59a5f34001472c8c631c",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0ce199ac772ddc328b6e8094f712e5ec40a31d375434c2d550908012136447e7",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:e33e2cf159f9218a4e47b39123fb9b7a7d4ded4fcbd44a0c9adf12e6f109f9f6",
+    "at": "2026-10-27T06:58:46.841Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  }
+}
