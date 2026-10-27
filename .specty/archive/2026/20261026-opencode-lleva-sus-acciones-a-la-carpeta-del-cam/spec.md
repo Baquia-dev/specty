@@ -80,3 +80,24 @@ Con C2, el guard sabe reescribir la entrada de una herramienta para que la acci�
 
 - R1: Si la persona versiona `.opencode/opencode.jsonc`, OpenCode pide permiso para cada acción en la carpeta del cambio, y `opencode run` la rechaza. Mitigación: `init` dice qué añadir en la configuración del usuario.
 - R2: OpenCode 2 cambia su plugin a menudo. Mitigación: el plugin copia la entrada en el mismo objeto que recibe, en las dos versiones, y la prueba de extremo a extremo usa la versión instalada.
+
+## Cierre
+
+### Resumen
+
+El plugin de OpenCode manda `redirects: true` y ejecuta cada herramienta con la entrada que le devuelve el guard. Con una conversación que entró en un cambio, el guard lleva a la carpeta de ese cambio `filePath`, `path`, `workdir` y las cabeceras de un parche, con `movePatch`, que es nuevo en core. También da esa carpeta a las búsquedas y los comandos que no traen una. `init` permite `external_directory` en la carpeta de las worktrees desde `.opencode/opencode.jsonc`, fuera de git. Una prueba con OpenCode 1.19.4 y un modelo simulado entra con `specty enter` y escribe, lee y ejecuta en la carpeta del cambio, y las otras cinco pruebas de OpenCode siguen pasando.
+
+### Desviaciones
+
+- Los tests de instalación pasaron de `opencode.test.ts` a `opencode-install.test.ts`, porque el primero pasaba el aviso de tamaño. La aceptación cuenta 20 aserciones quitadas de `opencode.test.ts`: son esas, que siguen en el archivo nuevo, y no se borró ningún caso.
+- El arnés de la prueba de extremo a extremo comparte ahora la caché de npm entre pruebas (`npm_config_cache`). OpenCode 1.19 instala con npm los paquetes de su plugin, y cada prueba los volvía a descargar. Con la red lenta, las seis pruebas pasaban de los 600 segundos que tiene una verificación.
+
+### Decisiones
+
+- Sin `redirects` en el evento, el guard no reescribe nada: un plugin anterior ejecutaría la acción donde estaba, después de que el guard la juzgara en la carpeta del cambio. Bloquea con la ruta buena, como en C1.
+- La beta de OpenCode 2 no quedó comprobada: su prueba de extremo a extremo no avanzó en un tiempo razonable y se paró. ARCHITECTURE §10 solo da por comprobada la 1.19.4.
+
+### Pendientes
+
+- `doctor` no avisa de un plugin anterior a este corte, sin `redirects`; `init` lo reescribe.
+- Comprobar OpenCode 2 cuando salga de beta.

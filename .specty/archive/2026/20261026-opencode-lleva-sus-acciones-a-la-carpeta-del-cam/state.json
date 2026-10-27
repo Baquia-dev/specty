@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-opencode-lleva-sus-acciones-a-la-carpeta-del-cam",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-opencode-lleva-sus-acciones-a-la-carpeta-del-cam",
   "baseCommit": "e7d6d6bcdf16484d495669da7323ce5154fda765",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:219b97eecb7888d6b553d58d607110ae2e090db572b777bd10443e51a7222455",
@@ -67,12 +67,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 3,
       "baseCommit": "c893d0079f6ade10bdb832ad66cf9f63e2e05a32",
+      "attempts": 3,
       "startedAt": "2026-10-27T02:30:50.789Z",
       "doneAt": "2026-10-27T03:21:50.382Z",
-      "summary": "Prueba E2E con OpenCode 1.19.4 y modelo simulado: entra con specty enter y escribe, lee y ejecuta en la carpeta del cambio; el arnés comparte la caché de npm. Celda Worktree por nombre de OpenCode a indirecto, tabla regenerada y ARCHITECTURE 10."
+      "summary": "Prueba E2E con OpenCode 1.19.4 y modelo simulado: entra con specty enter y escribe, lee y ejecuta en la carpeta del cambio; el arnés comparte la caché de npm. Celda Worktree por nombre de OpenCode a indirecto, tabla regenerada y ARCHITECTURE 10.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -84,5 +84,6 @@
     "AC": 6,
     "T": 4,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T03:24:30.866Z"
 }
