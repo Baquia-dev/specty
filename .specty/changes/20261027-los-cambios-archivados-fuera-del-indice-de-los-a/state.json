@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261027-los-cambios-archivados-fuera-del-indice-de-los-a",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261027-los-cambios-archivados-fuera-del-indice-de-los-a",
+  "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d9c84187638adb6a4cf23ec7c607618c7732760d53a416887ad4cafb8370c8e7",
+    "at": "2026-10-27T10:38:41.508Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
