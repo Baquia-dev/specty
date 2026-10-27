@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-la-ui-y-los-exportadores",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-la-ui-y-los-exportadores",
   "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:18d430a51b12fa3281ea450a863aa0aafa8e8a6d19cf55775a2808c22f27abf2",
@@ -72,12 +72,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "101ef2f1c81ee1008ec19d3a0f034257154c1fe2",
+      "attempts": 1,
       "startedAt": "2026-10-27T01:17:02.542Z",
       "doneAt": "2026-10-27T01:23:08.239Z",
-      "summary": "shell.ts: el constructor de Shell inyecta y llama a followNavigation, goBackWithBackspace y registerCommands, en su contexto de inyección y con los mismos comandos. Ninguna función de la UI ni de los exportadores pasa de los límites; los tests pasan."
+      "summary": "shell.ts: el constructor de Shell inyecta y llama a followNavigation, goBackWithBackspace y registerCommands, en su contexto de inyección y con los mismos comandos. Ninguna función de la UI ni de los exportadores pasa de los límites; los tests pasan.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,5 +88,6 @@
     "A": 2,
     "AC": 2,
     "T": 5
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T01:25:42.878Z"
 }

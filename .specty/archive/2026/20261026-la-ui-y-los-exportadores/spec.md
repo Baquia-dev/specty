@@ -68,3 +68,22 @@ Doce funciones de la UI y de los exportadores pasan de los límites de Specty: `
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Las doce funciones de la UI y de los exportadores que pasaban de los límites se dividieron en sus piezas: cada exportador arma sus archivos por documento; el diff separa las líneas de un hunk, su apertura y las cabeceras (en una tabla), y el diff por palabras su tabla y su recorrido; el resaltado corta cada trozo aparte; la revisión junta suposiciones, archivos, tareas, comentarios e índice; el delta toma de una tabla el texto de cada clase de unidad; el progreso arma cada tarea con sus tiempos y su última verificación; el cierre separa la valla abierta; los datos de ejemplo separan tareas y auditoría; y el constructor de `Shell` llama a la navegación, la vuelta atrás y los comandos de la paleta. Ya no queda ninguna función de ningún paquete fuera de los límites; los tests y la verificación completa pasan.
+
+### Desviaciones
+
+- `parseDiff` quita el retorno de carro de cada línea con `replace(/\r$/, "")` en vez de un ternario: hace lo mismo, quitar un `\r` final.
+- `deriveReview` también deja la vista de las tareas a `taskViews`: el estimador cuenta las ramas de los callbacks en línea dentro de la función que los contiene.
+
+### Decisiones
+
+- Las funciones del constructor de `Shell` se llaman de forma síncrona, así que siguen en el contexto de inyección de Angular (`inject` y `effect`).
+
+### Pendientes
+
+- La aceptación de la épica.
