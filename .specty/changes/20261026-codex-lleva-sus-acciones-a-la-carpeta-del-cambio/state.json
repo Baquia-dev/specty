@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-codex-lleva-sus-acciones-a-la-carpeta-del-cambio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-codex-lleva-sus-acciones-a-la-carpeta-del-cambio",
   "baseCommit": "20c07cdddad56529a15bd35b818b3153ac0b7cd3",
   "revision": 1,
@@ -52,12 +52,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8ff4b4bbc5f48b763d9aff1fa66430597d099e35",
+      "attempts": 1,
       "startedAt": "2026-10-27T03:32:48.412Z",
       "doneAt": "2026-10-27T03:36:34.091Z",
-      "summary": "init escribe .codex/config.toml (fuera de git) con la carpeta de las worktrees en writable_roots del sandbox, solo si no existe o es el de Specty, y crea esa carpeta; si es de la persona dice qué añadir; uninstall borra el de Specty."
+      "summary": "init escribe .codex/config.toml (fuera de git) con la carpeta de las worktrees en writable_roots del sandbox, solo si no existe o es el de Specty, y crea esa carpeta; si es de la persona dice qué añadir; uninstall borra el de Specty.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/agents/codex.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "3a5a07dd10089fa7f5e391481f497189b9eab7bb",
+      "startedAt": "2026-10-27T03:36:34.388Z",
+      "doneAt": "2026-10-27T03:44:01.684Z",
+      "summary": "Prueba E2E con Codex 0.164 y modelo simulado: entra con specty enter, el parche relativo escribe en la carpeta del cambio y specty task done hace su commit allí; la regla de Specty no valía tras el cd, así que specty.rules permite también cd. Celda indirecto, tabla y ARCHITECTURE 10."
     }
   },
   "pending": {

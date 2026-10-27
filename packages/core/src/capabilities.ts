@@ -87,7 +87,10 @@ export const AGENT_CAPABILITIES = {
     guard: yes,
     afterShell: yes,
     afterCompaction: yes,
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, pone un `cd` a ella delante de cada comando y lleva allí las rutas de cada parche (`updatedInput`).",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder, puts a `cd` to it before each command and moves each patch's paths there (`updatedInput`).",
+    ),
     endOfTurn: yes,
     exclusion: impossible(
       "lee los archivos por la shell y no tiene un archivo de exclusión.",

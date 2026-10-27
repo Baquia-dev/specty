@@ -75,7 +75,7 @@ describe("the capability table", () => {
       "| Claude Code | sí | sí | sí | sí | sí | sí | sí | sí | `.claude`, `CLAUDE.md` |",
     );
     expect(es).toContain(
-      "| Codex | sí | sí | sí | no posible | sí | no posible | sí | sí | `.codex` |",
+      "| Codex | sí | sí | sí | indirecto | sí | no posible | sí | sí | `.codex` |",
     );
     expect(es).toContain(
       "| OpenCode | sí | sí | sí | indirecto | sí | sí | sí | sí | `.opencode`, `opencode.json`, `opencode.jsonc` |",
@@ -116,9 +116,7 @@ describe("the capability table", () => {
     );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
-    expect(es).toMatch(
-      /- Worktree por nombre \(Cursor, Codex, Devin \(Windsurf\), Antigravity\): /,
-    );
+    expect(es).toMatch(/- Worktree por nombre \(Cursor, Devin \(Windsurf\), Antigravity\): /);
     expect(capabilityTable("en")).toContain("**Indirect:**");
     expect(capabilityTable("en")).toContain("**Not possible:**");
   });

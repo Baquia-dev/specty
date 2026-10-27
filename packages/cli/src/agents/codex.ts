@@ -58,6 +58,13 @@ const RULE = [
   '    decision = "allow",',
   '    justification = "Specty decides who runs its commands; they commit to git, which the sandbox keeps read-only.",',
   ")",
+  "# A `cd` changes nothing, and the guard puts one before each command of a session that entered",
+  "# a change's folder (`specty enter`): without this rule, Specty's commands would run sandboxed.",
+  "prefix_rule(",
+  '    pattern = ["cd"],',
+  '    decision = "allow",',
+  '    justification = "A cd changes nothing; Specty puts one before the commands of a session that entered a change\'s folder.",',
+  ")",
   "",
 ].join("\n");
 

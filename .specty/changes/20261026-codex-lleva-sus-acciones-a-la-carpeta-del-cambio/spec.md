@@ -62,7 +62,7 @@ Con C2 y C3, el guard reescribe la entrada de una herramienta para que la acció
   - files: packages/cli/src/agents/codex.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/codex.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts
-- [ ] T3: Codex entra y trabaja en la carpeta del cambio con la herramienta de verdad, y la tabla lo dice
+- [x] T3: Codex entra y trabaja en la carpeta del cambio con la herramienta de verdad, y la tabla lo dice
   - files: packages/cli/test/codex-e2e.test.ts, packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex-e2e.test.ts
