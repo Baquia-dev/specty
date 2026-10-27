@@ -69,7 +69,7 @@ Desde ahí, el guard la mantiene en esa carpeta. Juzga cada acción con las regl
   - files: packages/core/src/guard/decide.ts, packages/core/src/guard/worktrees.ts, packages/core/src/index.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/sessions.ts, packages/cli/test/enter.test.ts
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enter.test.ts test/enforce.test.ts test/worktrees.test.ts test/worktree-hooks.test.ts
-- [ ] T3: specty enter imprime la tarjeta del cambio en su carpeta
+- [x] T3: specty enter imprime la tarjeta del cambio en su carpeta
   - files: packages/core/src/cards/enter.ts, packages/core/src/cards/index.ts, packages/cli/src/commands/enter.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/enter.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/enter.test.ts

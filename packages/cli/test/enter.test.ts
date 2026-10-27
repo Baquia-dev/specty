@@ -72,10 +72,34 @@ describe("specty enter, as the guard judges it", () => {
       `Esta sesión trabaja en \`${first}\` (cambio ${CHANGE}, aún abierto): una sesión trabaja un solo cambio a la vez.`,
     );
     expect(denied.err).toContain(`abre otra sesión en \`${second}\` para trabajar en ese.`);
-    // Another conversation is free; a change without a folder binds nothing (the command says so).
     expect((await bash(root, "s2", `specty enter ${OTHER}`)).code).toBe(0);
-    expect((await bash(root, "s3", "specty enter 20260101-sin-carpeta")).code).toBe(0);
-    expect((await bash(root, "s3", "pnpm test")).code).toBe(0);
+  });
+
+  it("says where the conversation works now, with what `next` says there (AC1)", async () => {
+    const { root, first } = await twoChanges();
+    const entered = await cli(root, ["enter", CHANGE]);
+    expect(entered.code).toBe(0);
+    const lines = entered.out.split("\n");
+    expect(lines[0]).toContain(`SPECTY · ${CHANGE}`);
+    expect(lines[1]).toBe(
+      `Esta conversación trabaja ahora en \`${first}\`: lee, escribe y ejecuta los comandos allí, con las rutas de esa carpeta.`,
+    );
+    expect(entered.out).toBe(
+      `${lines[0]}\n${lines[1]}\n${(await cli(first, ["next"])).out.split("\n").slice(1).join("\n")}`,
+    );
+  });
+
+  it("says when the change has no folder of its own, and binds nothing (AC2)", async () => {
+    const { root } = await twoChanges();
+    const id = "20260101-sin-carpeta";
+    expect((await bash(root, "s1", `specty enter ${id}`)).code).toBe(0);
+    expect((await bash(root, "s1", "pnpm test")).code).toBe(0);
+    const said = await cli(root, ["enter", id]);
+    expect(said.code).toBe(2);
+    expect(said.out).toContain(`El cambio ${id} no tiene carpeta propia en \``);
+    expect(said.out).toContain(
+      "SIGUIENTE: comprueba el id con `specty status`; si el cambio vive en esta carpeta, sigue con `specty next`.",
+    );
   });
 
   it("lets the conversation of an epic enter its slices", async () => {

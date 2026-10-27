@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-una-conversacion-entra-en-la-carpeta-de-un-cambi",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-una-conversacion-entra-en-la-carpeta-de-un-cambi",
   "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "46dd0ad3010d1067e965bc8bfbc4ce700d1b3dfe",
+      "attempts": 1,
       "startedAt": "2026-10-27T00:56:29.062Z",
       "doneAt": "2026-10-27T01:14:20.622Z",
-      "summary": "El guard trata specty enter como EnterWorktree por nombre (sessionDenial y ligadura por conversationOf); una conversación ligada se juzga en la carpeta de su cambio, con la ruta equivalente (instead) y el cd a esa carpeta para comandos fuera; a Claude Code le pide EnterWorktree."
+      "summary": "El guard trata specty enter como EnterWorktree por nombre (sessionDenial y ligadura por conversationOf); una conversación ligada se juzga en la carpeta de su cambio, con la ruta equivalente (instead) y el cd a esa carpeta para comandos fuera; a Claude Code le pide EnterWorktree.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4dd8d18b59c26d4d4b7694378fe8db1547b6ac30",
+      "startedAt": "2026-10-27T01:14:21.102Z",
+      "doneAt": "2026-10-27T01:21:38.603Z",
+      "summary": "Nuevo comando specty enter: dice dónde trabaja ahora la conversación y lo que diría specty next en la carpeta del cambio; sin carpeta propia lo dice y no se liga nada. Tarjetas enteredCard y noFolderCard; ARCHITECTURE 6 y 10 y formats (sessions) documentados."
     }
   },
   "pending": {
