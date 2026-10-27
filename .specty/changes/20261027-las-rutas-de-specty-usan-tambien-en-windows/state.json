@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261027-las-rutas-de-specty-usan-tambien-en-windows",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-las-rutas-de-specty-usan-tambien-en-windows",
+  "baseCommit": "54c6d3e663126b0f2dfddc60693028ce66dabef3",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:09a365dcb840c18f0f47d0d15a10f7507b13c542983efa75bf06ce0daa8a87df",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9518efbd09a7025ad1b02fbc34a12d7290a08d591ddea8520229a99fb0264747",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:a285f5746d5b5f5842f3e459eda5115bada57fc8147dfcc14cbfd18f35c0ef74",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:5ad246012eb084400da128c4674234cf3f04b545c8bc5936173b5545e043b323",
+    "at": "2026-10-27T05:11:11.139Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

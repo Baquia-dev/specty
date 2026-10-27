@@ -1,0 +1,4 @@
+{"ts":"2026-10-27T05:09:57.546Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","branch":"specty/20261027-las-rutas-de-specty-usan-tambien-en-windows","request":"procede con los separadores de windows y luego borras la rama antigua"}}
+{"ts":"2026-10-27T05:10:39.259Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:e7a215edc379b33b5a99829d4204349383f63d648927cb78757fca1994e7b575","size":"M","warnings":3}}
+{"ts":"2026-10-27T05:11:02.623Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:5ad246012eb084400da128c4674234cf3f04b545c8bc5936173b5545e043b323","size":"L","warnings":3}}
+{"ts":"2026-10-27T05:11:11.151Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":2,"hash":"sha256:5ad246012eb084400da128c4674234cf3f04b545c8bc5936173b5545e043b323","channel":"delegated","delegated":true}}
