@@ -60,7 +60,7 @@ Los flujos de `git.flow` cubren los nombres más comunes, pero hay equipos con c
   - files: packages/cli/src/commands/new.ts, packages/cli/src/session.ts, packages/cli/test/branch-names.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/branch-names.test.ts
-- [ ] T3: formats y ARCHITECTURE describen el patrón
+- [x] T3: formats y ARCHITECTURE describen el patrón
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - type: docs

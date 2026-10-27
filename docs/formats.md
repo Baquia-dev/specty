@@ -346,6 +346,7 @@ git:
   setup: "pnpm install --prefer-offline"  # prepara cada worktree nueva; false: nada; sin la clave: el comando del stack
   target: develop                 # rama de la que parten los cambios y a la que se incorporan; sin la clave: la principal
   flow: gitflow                   # specty | github | trunk | gitflow: cómo se nombran las ramas; sin la clave: specty/<id>
+  branchPattern: "team/{type}-{slug}"  # opcional: nombre propio con {type}, {slug} e {id}; gana a flow
 team:                             # solo con mode: team
   approvers: []
   requirePrReview: true
@@ -455,6 +456,8 @@ Los demás stacks no lo necesitan, porque su build trae las dependencias. Con `f
 `git.target` es la rama de la que parten los cambios nuevos y a la que se incorporan al cerrar. Sin la clave, es la rama principal detectada (ARCHITECTURE §9). Si la clave nombra una rama que no existe en local, `new` se bloquea y `close` cierra sin incorporar: Specty no recurre a la principal.
 
 `git.flow` dice cómo nombra `new` la rama de cada cambio, con el tipo de `--type` (un tipo de commit, `feat` por defecto) y el título sin la fecha. `specty`, el valor sin la clave: `specty/<id>`. `github` y `trunk`: `<tipo>/<slug>`, como `fix/login-con-google`. `gitflow`: `bugfix/<slug>` para un `fix` y `feature/<slug>` para los demás. Un spike va en `spike/<id>` con `specty` y en `spike/<slug>` con los otros. Si la rama ya existe, en local o en un remoto, `new` le añade `-2`, `-3`…; el id del cambio no cambia. Cada rama queda ligada a su cambio en la configuración de git (`branch.<rama>.specty`), que es como Specty sabe el cambio de una rama que no lleva el id y cuáles borra `specty prune` cuando ya están incorporadas (ARCHITECTURE §9). Con `github`, `trunk` o `gitflow`, el SIGUIENTE de `next` sin cambio activo pide `--type`.
+
+`git.branchPattern` nombra las ramas con un patrón propio, por encima de `git.flow`: `{type}` es el tipo de commit tal cual (`fix`, no `bugfix`; `spike` en un spike), `{slug}` el título sin la fecha y `{id}` el id del cambio. Así, `team/{type}-{slug}` da `team/fix-login-con-google` y `JIRA/{id}` da `JIRA/20261027-login-con-google`. El patrón tiene que llevar `{slug}` o `{id}`, ningún otro marcador, y formar un nombre que git admita: sin espacios, `..`, `~^:?*[\`, `//` ni `@{`, sin `/` ni `-` al principio, sin `/` ni `.` al final, y sin un componente que empiece por `.` o termine en `.lock`. Si no, la configuración no es válida y ningún comando se ejecuta. `next` pide `--type` si el patrón lleva `{type}`, sea cual sea `git.flow`.
 
 ## 7. Trailers de commit
 
