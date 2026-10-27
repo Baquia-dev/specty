@@ -89,7 +89,7 @@ describe("the capability table", () => {
       "| Antigravity | sí | indirecto | indirecto | indirecto | sí | sí | sí | no posible |",
     );
     expect(capabilityTable("en")).toContain(
-      "| Cursor | yes | yes | indirect | not possible | yes | yes | yes | not possible |",
+      "| Cursor | yes | yes | indirect | indirect | yes | yes | yes | not possible |",
     );
   });
 
@@ -116,7 +116,11 @@ describe("the capability table", () => {
     );
     expect(es.indexOf("**Indirecto:**")).toBeLessThan(es.indexOf("**No posible:**"));
     expect(es).toContain("- Exclusión (Codex): lee los archivos por la shell");
-    expect(es).toMatch(/- Worktree por nombre \(Cursor\): /);
+    // Every agent with the guard enters a change's folder now, Claude Code on its own.
+    expect(es.slice(es.indexOf("**No posible:**"))).not.toContain("Worktree por nombre");
+    expect(es).toContain(
+      "- Worktree por nombre (Cursor): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, pone un `cd`",
+    );
     expect(capabilityTable("en")).toContain("**Indirect:**");
     expect(capabilityTable("en")).toContain("**Not possible:**");
   });

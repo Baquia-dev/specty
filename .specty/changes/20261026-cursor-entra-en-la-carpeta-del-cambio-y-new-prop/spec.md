@@ -58,7 +58,7 @@ Con C2 a C5, las demás herramientas con guard llevan a la carpeta del cambio la
   - files: packages/core/src/cards/new.ts, packages/core/test/cards/new.test.ts, packages/cli/test/worktrees.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/new.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts
-- [ ] T3: La tabla dice cómo entra Cursor
+- [x] T3: La tabla dice cómo entra Cursor
   - files: packages/core/src/capabilities.ts, packages/core/test/capabilities.test.ts, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts

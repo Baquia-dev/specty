@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261026-cursor-entra-en-la-carpeta-del-cambio-y-new-prop",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261026-cursor-entra-en-la-carpeta-del-cambio-y-new-prop",
   "baseCommit": "db270f91b80715e95b02b7ea9d293c4c12caea16",
   "revision": 1,
@@ -48,12 +48,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fa7432d12ece19bbeef366811aa9b5f455e3f08e",
+      "attempts": 1,
       "startedAt": "2026-10-27T04:17:07.259Z",
       "doneAt": "2026-10-27T04:21:02.003Z",
-      "summary": "La tarjeta de new propone specty enter a una herramienta cuya Worktree por nombre es indirecta, con la manera de abrirla en la carpeta como alternativa; los tests del SIGUIENTE desde Codex cambian en consecuencia."
+      "summary": "La tarjeta de new propone specty enter a una herramienta cuya Worktree por nombre es indirecta, con la manera de abrirla en la carpeta como alternativa; los tests del SIGUIENTE desde Codex cambian en consecuencia.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/new.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "7ad7bfe4a7931d97c3c49fc526ae53d51dfb805a",
+      "startedAt": "2026-10-27T04:21:02.300Z",
+      "doneAt": "2026-10-27T04:24:29.070Z",
+      "summary": "Celda Worktree por nombre de Cursor a indirecto, sin herramientas con guard en no posible (NO_ENTER_WORKTREE desaparece); tabla regenerada, ARCHITECTURE 10 con Cursor y el SIGUIENTE de new, y fuera la rama de new que pedía abrir otra sesión."
     }
   },
   "pending": {

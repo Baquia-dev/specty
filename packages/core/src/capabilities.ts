@@ -42,10 +42,6 @@ const unsupported = { state: "unsupported" } as const;
 const impossible = (es: string, en: string) => ({ state: "impossible", why: { es, en } }) as const;
 const indirect = (es: string, en: string) => ({ state: "indirect", how: { es, en } }) as const;
 
-const NO_ENTER_WORKTREE = impossible(
-  "solo Claude Code tiene una herramienta para cambiar de carpeta en mitad de la sesión (`EnterWorktree`); con las demás se abre otro agente en la carpeta del cambio.",
-  "only Claude Code has a tool to change folders mid-session (`EnterWorktree`); with the others, another agent opens in the change's folder.",
-);
 const OWN_SERVER = impossible(
   "su modelo va siempre por el servidor de la herramienta, así que no se puede simular.",
   "its model always goes through the tool's own server, so it cannot be scripted.",
@@ -75,7 +71,10 @@ export const AGENT_CAPABILITIES = {
       "`preCompact` solo observa, así que la tarjeta llega con el resultado del siguiente comando de shell.",
       "`preCompact` only observes, so the card comes with the next shell command's result.",
     ),
-    worktreeByName: NO_ENTER_WORKTREE,
+    worktreeByName: indirect(
+      "con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, pone un `cd` a ella delante de cada comando (`updated_input`) y bloquea con la ruta buena lo que escribiría o leería fuera, porque Cursor no reescribe sus archivos.",
+      "with `specty enter <id>`: the guard binds the conversation to the change's folder, puts a `cd` to it before each command (`updated_input`) and blocks what it would write or read elsewhere, with the right path, since Cursor does not rewrite its files.",
+    ),
     endOfTurn: yes,
     exclusion: yes,
     // `.cursor/sandbox.json` lets Specty's commits through from a change's folder.

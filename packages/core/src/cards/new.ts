@@ -264,8 +264,8 @@ function worktreeCreatedNext(created: WorktreeCreated, ctx: CardContext): string
  */
 function carryOnText(created: WorktreeCreated, ctx: CardContext, t: Translate): string {
   const { id, folder, agent } = created;
-  const open = agent === undefined ? undefined : OPEN_IN[agent]?.(folder, t);
   if (agent !== undefined && AGENT_CAPABILITIES[agent].worktreeByName.state === "indirect") {
+    const open = OPEN_IN[agent]?.(folder, t);
     const other =
       open === undefined
         ? ""
@@ -276,13 +276,6 @@ function carryOnText(created: WorktreeCreated, ctx: CardContext, t: Translate): 
     return t(
       `${AGENT_NAMES[agent]} entra en ella desde esta misma sesión: ejecuta \`${ctx.command} enter ${id}\` y sigue su salida.${other} Esta carpeta sigue con su propio trabajo.`,
       `${AGENT_NAMES[agent]} enters it from this same session: run \`${ctx.command} enter ${id}\` and follow its output.${other} This folder carries on with its own work.`,
-    );
-  }
-  if (agent !== undefined && open !== undefined) {
-    const name = AGENT_NAMES[agent];
-    return t(
-      `${name} no cambia de carpeta en mitad de la sesión, así que pídele a la persona que abra ${open} y termina tu turno; allí, \`${ctx.command} next\` sigue con el cambio. Esta carpeta sigue con su propio trabajo.`,
-      `${name} cannot switch folders mid-session, so ask the person to open ${open} and end your turn; there, \`${ctx.command} next\` carries on with the change. This folder carries on with its own work.`,
     );
   }
   const byName = created.byName
