@@ -6,6 +6,13 @@
   "branch": "specty/20261026-una-conversacion-entra-en-la-carpeta-de-un-cambi",
   "baseCommit": "b38d2602e33e1366aa65ef5465e87c515a2ed208",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e3af9f90d45709e31509a56e7cc156e1c42ad230c54f15779fe50461f761a97e",
+    "at": "2026-10-27T00:50:21.862Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -25,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3f90735617d896ec56db4a54607571b3c22a1c7d",
+      "startedAt": "2026-10-27T00:50:22.496Z",
+      "doneAt": "2026-10-27T00:56:28.603Z",
+      "summary": "analyzeShell anota el id de cada specty enter (enters) y la carpeta donde corre cada comando que no es cd (runsIn: relativa, absoluta o desconocida tras un cd que no sabe nombrar), siguiendo los cd y los subshells."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -35,12 +52,5 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e3af9f90d45709e31509a56e7cc156e1c42ad230c54f15779fe50461f761a97e",
-    "at": "2026-10-27T00:50:21.862Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

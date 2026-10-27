@@ -61,7 +61,7 @@ Desde ahí, el guard la mantiene en esa carpeta. Juzga cada acción con las regl
 
 ## Tareas
 
-- [ ] T1: El análisis de shell anota specty enter y dónde corre cada comando
+- [x] T1: El análisis de shell anota specty enter y dónde corre cada comando
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
