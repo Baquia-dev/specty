@@ -510,7 +510,7 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
 3. Valida los comandos ejecutándolos, con confirmación y timeout. Solo los que funcionan se escriben como verificados.
 4. Pregunta únicamente lo que falta.
 5. Genera:
-   - `.specty/config.yaml`;
+   - `.specty/config.yaml`; con `--git-flow <specty|github|trunk|gitflow>`, con ese `git.flow` (§9). En una configuración que ya existe, cambia o añade solo esa clave, sin tocar comentarios ni formato (`withGitFlow`, en `install/project-files.ts`); sin la opción, no toca el flujo. Un flujo desconocido no instala nada. Con `gitflow`, añade `git.target: develop` si no había destino y, si ese es el destino y `develop` no existe en local, la crea tras su commit: desde `origin/develop`, siguiéndola, si existe, y si no desde la rama actual (`ensureDevelop`, en `install/git-flow.ts`). El simulacro no crea ramas;
    - los bloques de AGENTS.md;
    - los punteros y hooks de las herramientas detectadas;
    - los hooks de git;

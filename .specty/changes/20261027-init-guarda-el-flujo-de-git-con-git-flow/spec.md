@@ -64,7 +64,7 @@ Hoy `git.flow` solo se puede poner a mano en `config.yaml`. Con este cambio, `sp
   - files: packages/cli/src/install/git-flow.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-git-flow.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-git-flow.test.ts
-- [ ] T4: ARCHITECTURE dice qué hace init --git-flow
+- [x] T4: ARCHITECTURE dice qué hace init --git-flow
   - files: docs/ARCHITECTURE.md
   - ac: AC6
   - type: docs
