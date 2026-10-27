@@ -50,17 +50,33 @@ export function configLine(created: boolean, added: readonly string[], lang: Lan
 /** Every agent tool, in the order of `AGENT_NAMES`: Claude Code first. */
 const AGENT_TOOLS = Object.keys(AGENT_NAMES).filter(isAgentTool);
 
-/** `init`'s question to a person when it detects no agent, after the language. */
-export function agentQuestion(lang: Lang): string {
-  return translator(lang)(
-    "No se detectó ningún agente. ¿Con cuál trabajas en este repositorio?",
-    "No agent detected. Which one do you work with in this repository?",
-  );
+/**
+ * `init`'s question to a person, after the language: which agents they work with, several
+ * allowed. Whether it `detected` any says if some come already checked.
+ */
+export function agentQuestion(detected: boolean, lang: Lang): string {
+  const t = translator(lang);
+  return detected
+    ? t(
+        "¿Con qué agentes trabajas en este repositorio? Los detectados ya están marcados; puedes marcar varios.",
+        "Which agents do you work with in this repository? The detected ones are already checked; you can check several.",
+      )
+    : t(
+        "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",
+        "No agent detected. Which ones do you work with in this repository? You can check several.",
+      );
 }
 
-/** The answers to `agentQuestion`: every agent tool, Claude Code first. */
-export function agentChoices(): readonly { readonly value: AgentTool; readonly label: string }[] {
-  return AGENT_TOOLS.map((tool) => ({ value: tool, label: AGENT_NAMES[tool] }));
+/** The answers to `agentQuestion`: every agent tool, Claude Code first; the `detected` say so. */
+export function agentChoices(
+  detected: readonly AgentTool[],
+  lang: Lang,
+): readonly { readonly value: AgentTool; readonly label: string }[] {
+  const mark = translator(lang)("detectado", "detected");
+  return AGENT_TOOLS.map((tool) => ({
+    value: tool,
+    label: detected.includes(tool) ? `${AGENT_NAMES[tool]} (${mark})` : AGENT_NAMES[tool],
+  }));
 }
 
 /** No agent was detected and nobody could be asked: Claude Code's guard went in. */

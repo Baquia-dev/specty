@@ -63,7 +63,7 @@ Hoy `specty init` solo pregunta por el agente cuando no detecta ninguno, y la pe
 
 ## Tareas
 
-- [ ] T1: los textos de la pregunta múltiple y las opciones con los detectados marcados
+- [x] T1: los textos de la pregunta múltiple y las opciones con los detectados marcados
   - files: packages/core/src/cards/init.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/init.test.ts

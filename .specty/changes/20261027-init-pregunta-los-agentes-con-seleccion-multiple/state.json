@@ -6,6 +6,13 @@
   "branch": "specty/20261027-init-pregunta-los-agentes-con-seleccion-multiple",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39458b66e8a9538715c632e52225ce48aa953f09109784d53b19b7626ab61442",
+    "at": "2026-10-27T06:51:25.183Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -34,7 +41,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/install/hooks.ts",
+        "packages/cli/test/init-agents.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "d40ca5934e44a33e49772884dc112efc6950d2f4",
+      "startedAt": "2026-10-27T06:51:25.577Z",
+      "doneAt": "2026-10-27T06:57:39.642Z",
+      "summary": "agentQuestion(detectados, lang) admite varios y dice si no hay detectados; agentChoices(detectados, lang) marca «(detectado)». Su llamada en install/hooks.ts se adaptó sin cambiar qué hace, y el test de AC4 ajustó el texto de la pregunta (R1)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -44,12 +64,5 @@
     "AC": 6,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:39458b66e8a9538715c632e52225ce48aa953f09109784d53b19b7626ab61442",
-    "at": "2026-10-27T06:51:25.183Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

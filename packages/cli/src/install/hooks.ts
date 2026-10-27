@@ -50,7 +50,7 @@ export async function agentsToInstall(options: {
   if (found.length > 0) return { tools: found, warnings: [] };
   const { terminal } = environment;
   if (terminal.interactive && !options.dryRun) {
-    const chosen = await terminal.choose(agentQuestion(lang), agentChoices());
+    const chosen = await terminal.choose(agentQuestion(false, lang), agentChoices([], lang));
     return { tools: [chosen ?? "claude-code"], warnings: [] };
   }
   return { tools: ["claude-code"], warnings: [noAgentWarning(COMMAND, lang)] };

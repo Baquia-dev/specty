@@ -72,7 +72,7 @@ describe("the agents init installs", () => {
     expect(done.code).toBe(0);
     expect(asked.map((question) => question.message)).toEqual([
       "¿En qué idioma trabaja Specty? · Which language should Specty work in?",
-      "No se detectó ningún agente. ¿Con cuál trabajas en este repositorio?",
+      "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",
     ]);
     expect(asked[1]?.values[0]).toBe("claude-code");
     expect(await has(root, ".cursor/hooks.json")).toBe(true);
