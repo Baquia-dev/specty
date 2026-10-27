@@ -16,6 +16,6 @@ La marca de generado de las primeras 10 líneas no distingue mayúsculas, así q
 
 ## Tareas
 
-- [ ] T1: La marca de generado distingue mayúsculas
+- [x] T1: La marca de generado distingue mayúsculas
   - files: packages/core/src/sizing/lines.ts, packages/core/test/sizing/hand-written.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/sizing && pnpm --filter @baquia-dev/specty-core typecheck
