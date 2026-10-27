@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261027-init-pregunta-los-agentes-con-seleccion-multiple",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-init-pregunta-los-agentes-con-seleccion-multiple",
+  "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ab5f85fdf55f83f87082d5b2c1fe948cfaf69b9b34ac3469ae1d5e9086c86888",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7d54addd1cb6f67975d3b8d914b62b8d00e8f1c11e21e5508a85d2ee6e2f7cb8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7f4aee2a95381d89d613a7c8695adfbd8f7f8eebbcec4fdc2bdbb69ab084b38b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:eb3394c8b20d7dfff32c73fc95dabf572798011fb60f4ae912e08f26860561a4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39458b66e8a9538715c632e52225ce48aa953f09109784d53b19b7626ab61442",
+    "at": "2026-10-27T06:51:25.183Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
