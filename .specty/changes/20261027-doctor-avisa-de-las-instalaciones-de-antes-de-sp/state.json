@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261027-doctor-avisa-de-las-instalaciones-de-antes-de-sp",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-doctor-avisa-de-las-instalaciones-de-antes-de-sp",
+  "baseCommit": "54c6d3e663126b0f2dfddc60693028ce66dabef3",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6b84d6b39ea58d3d0f964ba903030fd4eacf9fdbedbb050de89ee696f35647d0",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2050e8c8c6566ae3c2f25202ff30216394144e2217236bd87283efada07802f8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b432dba1536a733cff0ffcf4d29bf93335b0b4112ef4360b13073252edbaad48",
+    "at": "2026-10-27T05:10:24.567Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
