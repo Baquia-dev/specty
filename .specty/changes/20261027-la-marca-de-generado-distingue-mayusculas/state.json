@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261027-la-marca-de-generado-distingue-mayusculas",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261027-la-marca-de-generado-distingue-mayusculas",
+  "baseCommit": "a31b4bc0e136f25587d42cb396ee92fe258d5a59",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:25cb945af01beb19484be7a72d66a1c95755259e25d9e46f25199dc18fa9b65c",
+    "at": "2026-10-27T11:05:00.730Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
