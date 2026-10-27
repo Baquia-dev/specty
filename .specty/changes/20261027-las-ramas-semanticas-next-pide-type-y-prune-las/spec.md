@@ -60,7 +60,7 @@ Con `git.flow`, la rama de un cambio lleva su tipo, pero el agente no sabe que d
   - files: packages/cli/src/flow/branches.ts, packages/cli/src/flow/prune.ts, packages/cli/test/prune.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune.test.ts
-- [ ] T3: formats y ARCHITECTURE dicen qué pide next y qué borra prune
+- [x] T3: formats y ARCHITECTURE dicen qué pide next y qué borra prune
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC5
   - type: docs
