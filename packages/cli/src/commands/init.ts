@@ -26,7 +26,7 @@ import {
 import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { commitInstall } from "../install/commit";
 import { type InstallFiles, installFiles } from "../install/files";
-import { installHooks } from "../install/hooks";
+import { agentsToInstall, installHooks } from "../install/hooks";
 import { isNewProject, writeProduct } from "../install/product";
 import { completeConfig, withLanguage, writeAgentsMd } from "../install/project-files";
 import { exists } from "../io/files";
@@ -142,9 +142,16 @@ interface Installed {
 async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
   const { environment, options, root, git, lang, detection } = setup;
   const { files, backups } = await installTarget(setup);
+  // Asked right after the language, before a new project's interview.
+  const agents = await agentsToInstall({
+    environment,
+    given: options.tools,
+    detected: detection.tools,
+    lang,
+    dryRun: options.dryRun === true,
+  });
   const project = await writeProjectFiles(setup, fresh, files);
-  const tools =
-    options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
+  const { tools } = agents;
   const hooks = await installHooks({ environment, root, git, tools, lang, files });
   const noTests =
     setup.config?.verify.default === undefined &&
@@ -156,7 +163,11 @@ async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
     done: [...project.done, ...hooks.done],
     written: [...project.written, ...hooks.written],
     unfilled: project.unfilled,
-    warnings: [...hooks.warnings, ...(noTests ? [noTestCommandWarning(lang)] : [])],
+    warnings: [
+      ...agents.warnings,
+      ...hooks.warnings,
+      ...(noTests ? [noTestCommandWarning(lang)] : []),
+    ],
   };
 }
 

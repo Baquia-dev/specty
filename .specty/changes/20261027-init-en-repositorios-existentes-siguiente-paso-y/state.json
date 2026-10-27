@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "330de7d226cfe74e1c830402f5f54be6cf99ab08",
+      "attempts": 1,
       "startedAt": "2026-10-27T06:12:15.759Z",
       "doneAt": "2026-10-27T06:14:40.161Z",
-      "summary": "core: agentQuestion(lang), agentChoices() (todas las herramientas de AGENT_NAMES, Claude Code primero) y noAgentWarning(command, lang) con la lista de --tools; exportados en cards/index.ts"
+      "summary": "core: agentQuestion(lang), agentChoices() (todas las herramientas de AGENT_NAMES, Claude Code primero) y noAgentWarning(command, lang) con la lista de --tools; exportados en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d0b7d671aaee144386348ed1bb9c47a52defc94c",
+      "startedAt": "2026-10-27T06:14:40.468Z",
+      "doneAt": "2026-10-27T06:18:43.366Z",
+      "summary": "install/hooks.ts gana agentsToInstall: con --tools, esas; si no, las detectadas por sus archivos más la del entorno (detectAgentTool); sin ninguna, pregunta a la persona tras el idioma o instala Claude Code con noAgentWarning. init.ts la usa."
     }
   },
   "pending": {

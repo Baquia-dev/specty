@@ -3,11 +3,15 @@ import { relative, resolve, sep } from "node:path";
 import {
   AGENT_NAMES,
   type AgentTool,
+  agentChoices,
+  agentQuestion,
   claudePointerLine,
+  detectAgentTool,
   gitHooksLine,
   gitHooksManualWarning,
   isGuardedAgent,
   type Lang,
+  noAgentWarning,
   noHooksWarning,
   notOnPathWarning,
 } from "@baquia-dev/specty-core";
@@ -24,6 +28,32 @@ interface HooksInstall {
   readonly warnings: readonly string[];
   /** Repository-relative files written that git tracks: they go into init's commit. */
   readonly written: readonly string[];
+}
+
+/**
+ * The agent tools `init` installs: the ones `given`; otherwise the ones their files show
+ * (`detected`) and the one running `init`, by its environment. With none, a person at the
+ * terminal is asked; when nobody can be, Claude Code's goes in, with a warning that says so.
+ */
+export async function agentsToInstall(options: {
+  readonly environment: Environment;
+  readonly given: readonly AgentTool[] | undefined;
+  readonly detected: readonly AgentTool[];
+  readonly lang: Lang;
+  readonly dryRun: boolean;
+}): Promise<{ readonly tools: readonly AgentTool[]; readonly warnings: readonly string[] }> {
+  const { environment, given, detected, lang } = options;
+  if (given !== undefined) return { tools: given, warnings: [] };
+  const running = detectAgentTool(environment.env);
+  const found =
+    running === undefined || detected.includes(running) ? detected : [...detected, running];
+  if (found.length > 0) return { tools: found, warnings: [] };
+  const { terminal } = environment;
+  if (terminal.interactive && !options.dryRun) {
+    const chosen = await terminal.choose(agentQuestion(lang), agentChoices());
+    return { tools: [chosen ?? "claude-code"], warnings: [] };
+  }
+  return { tools: ["claude-code"], warnings: [noAgentWarning(COMMAND, lang)] };
 }
 
 /**
