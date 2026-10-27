@@ -71,3 +71,24 @@ Con C2 y C3, el guard reescribe la entrada de una herramienta para que la acció
 
 - R1: Si la regla de Specty no vale detrás de un `cd` (A3), sus commits fallan en el sandbox desde una conversación ligada. Mitigación: la prueba de extremo a extremo completa una tarea así, y si falla, el corte añade una regla para `cd`, que no escribe nada.
 - R2: Un `workdir` que el modelo dé a `exec_command` se pierde con el `cd` a la carpeta del cambio. Mitigación: el comando corre igual en la carpeta del cambio, y el modelo ve en su salida dónde corrió.
+
+## Cierre
+
+### Resumen
+
+El guard lleva a la carpeta del cambio las acciones de una conversación de Codex que entró en él, con `updatedInput`: cada comando va tras un `cd` a esa carpeta, y cada parche escribe allí (`movePatch`). `init` crea `.codex/config.toml`, fuera de git, con la carpeta de las worktrees en `writable_roots`, y la regla de Specty para Codex permite también `cd`. Una prueba con Codex 0.164 y un modelo simulado entra con `specty enter`, aplica un parche con una ruta relativa y completa T1 con `specty task done`, que hace su commit en la carpeta del cambio.
+
+### Desviaciones
+
+- A3 era falso, y la prueba de extremo a extremo lo mostró: tras el `cd` que pone el guard, la regla de Specty ya no valía, y `specty task done` corría en el sandbox sin poder escribir en `.git`. Como preveía R1, la regla permite también `cd`, que no escribe nada; un comando compuesto solo sale del sandbox si todas sus partes tienen regla. T3 amplió su alcance a `codex.ts` para ello.
+- Los tests de C1 del bloqueo con la ruta buena (AC3 y AC4) usaban Codex como herramienta que no reescribe. Ahora usan el plugin de OpenCode sin `redirects`, con las mismas aserciones.
+- La prueba de extremo a extremo pone en el PATH un `specty` que llama al build de las pruebas, y quita el `package-lock.json` que deja el `npm install` con el que `new` prepara la carpeta del cambio.
+
+### Decisiones
+
+- El `cd` lleva la ruta entera de la carpeta, porque el hook no ve el `workdir` que el modelo dé a `exec_command`.
+- Specty solo escribe `.codex/config.toml` si no existe o es el suyo, porque no tiene un editor de TOML; si es de la persona, dice qué añadir.
+
+### Pendientes
+
+- Un `workdir` que el modelo dé a `exec_command` se pierde con el `cd` (R2).

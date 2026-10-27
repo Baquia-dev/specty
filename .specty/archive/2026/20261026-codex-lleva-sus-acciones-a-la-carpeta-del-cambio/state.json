@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261026-codex-lleva-sus-acciones-a-la-carpeta-del-cambio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261026-codex-lleva-sus-acciones-a-la-carpeta-del-cambio",
   "baseCommit": "20c07cdddad56529a15bd35b818b3153ac0b7cd3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:0615823a4c4f72ee354d4145829a8645ef186e6a22723f2a300115864141ef62",
@@ -61,14 +61,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/agents/codex.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "3a5a07dd10089fa7f5e391481f497189b9eab7bb",
+      "attempts": 1,
       "startedAt": "2026-10-27T03:36:34.388Z",
       "doneAt": "2026-10-27T03:44:01.684Z",
-      "summary": "Prueba E2E con Codex 0.164 y modelo simulado: entra con specty enter, el parche relativo escribe en la carpeta del cambio y specty task done hace su commit allí; la regla de Specty no valía tras el cd, así que specty.rules permite también cd. Celda indirecto, tabla y ARCHITECTURE 10."
+      "summary": "Prueba E2E con Codex 0.164 y modelo simulado: entra con specty enter, el parche relativo escribe en la carpeta del cambio y specty task done hace su commit allí; la regla de Specty no valía tras el cd, así que specty.rules permite también cd. Celda indirecto, tabla y ARCHITECTURE 10.",
+      "scopeExtra": [
+        "packages/cli/src/agents/codex.ts"
+      ]
     }
   },
   "pending": {
@@ -80,5 +80,6 @@
     "AC": 5,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-27T03:49:42.045Z"
 }
