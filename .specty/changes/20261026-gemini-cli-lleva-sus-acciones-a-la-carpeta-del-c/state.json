@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261026-gemini-cli-lleva-sus-acciones-a-la-carpeta-del-c",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261026-gemini-cli-lleva-sus-acciones-a-la-carpeta-del-c",
+  "baseCommit": "e70d0f4debb3a51ab3b5d823d4dfe570b3fbb1f9",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a6b6f385c37955e778d571e612108fd4c84c008962975d4c308d9e3c1a4e914f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c53577ee6979d05ffbec7ae4145eca223d175d8d9ba1bca652a4b98c2b10cf42",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e23a4da6efa978eff4455ebfff55605b58a44a725ec31a3b001f95bc3534b788",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:cf6a2154da4f5b6e639494f9141e15b89f961650fd3a8c1328865e0081395693",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 5,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:940c56d142d9242a717631787f56997f4942e22c7264cebea129fb5d50af7d30",
+    "at": "2026-10-27T01:36:08.563Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
