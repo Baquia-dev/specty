@@ -28,11 +28,12 @@ export interface NamedWorktree {
  * id or, for any other name, `.claude/worktrees/<name>` in this worktree, as Claude Code does.
  */
 export async function namedWorktree(git: Git, name: string): Promise<NamedWorktree> {
-  const listed = (await git.worktrees()).map(({ folder }) => folder);
+  // Git lists `C:/…` on Windows, where `join` gives `C:\…`: they are compared resolved.
+  const listed = (await git.worktrees()).map(({ folder }) => resolve(folder));
   const prepared = join(await worktreesHome(git), name);
-  if (listed.includes(prepared)) return { folder: prepared, prepared: true, listed: true };
+  if (listed.includes(resolve(prepared))) return { folder: prepared, prepared: true, listed: true };
   const own = join(git.root, ".claude", "worktrees", name);
-  return { folder: own, prepared: false, listed: listed.includes(own) };
+  return { folder: own, prepared: false, listed: listed.includes(resolve(own)) };
 }
 
 export function isWorktreeEvent(event: Record<string, unknown>): boolean {

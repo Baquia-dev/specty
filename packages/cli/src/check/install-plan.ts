@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { isAbsolute, join, relative } from "node:path";
+import { join } from "node:path";
 import { checkLevel, translator } from "@baquia-dev/specty-core";
 import { Document, parseDocument } from "yaml";
 import type { Stack } from "../detect/stack";
@@ -8,6 +8,7 @@ import { type InstallFiles, installFiles } from "../install/files";
 import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
 import type { Session } from "../session";
+import { shownPath } from "../store/paths";
 import { ciTemplates, spectyVersion } from "./ci";
 import { analyzerOptions, STRICT_MODES } from "./dart";
 import { agentStopHooks } from "./install-agents";
@@ -96,8 +97,7 @@ async function editsOf(session: Session, files: InstallFiles): Promise<Edit[]> {
       const before = await readText(file);
       const after = await files.read(file);
       if (after === undefined || after === before) return [];
-      const inside = relative(session.root, file);
-      const path = inside.startsWith("..") || isAbsolute(inside) ? file : inside;
+      const path = shownPath(session.root, file);
       return [{ file, path, after, ...(before !== undefined ? { before } : {}) }];
     }),
   );

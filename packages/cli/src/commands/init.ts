@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename, isAbsolute, relative, sep } from "node:path";
+import { basename } from "node:path";
 import {
   type AgentTool,
   agentsMdLine,
@@ -32,7 +32,7 @@ import { exists } from "../io/files";
 import { createGit, findRoot, type Git, pathsOf } from "../io/git";
 import { bareCards, type Environment, systemLanguage } from "../session";
 import { loadConfig } from "../store/config";
-import { repoPaths } from "../store/paths";
+import { repoPaths, shownPath } from "../store/paths";
 
 interface InitOptions {
   readonly language?: Lang;
@@ -102,7 +102,7 @@ async function init(
   const cards: CardContext = { ...bareCards(environment.env), lang };
   if (options.dryRun === true) {
     const planned = installed.files.changes.map((change) => ({
-      path: shown(root, change.path),
+      path: shownPath(root, change.path),
       created: change.created,
     }));
     return { output: dryRunCard(planned, installed.warnings, cards), lang };
@@ -279,10 +279,4 @@ async function writeConfig(
   if (text === completed.text) return [configLine(false, completed.added, lang)];
   const added = completed.added.length > 0 ? [configLine(false, completed.added, lang)] : [];
   return [languageLine(lang), ...added];
-}
-
-/** A path as the person reads it: relative to the repository, or whole when outside it. */
-function shown(root: string, path: string): string {
-  const inner = relative(root, path);
-  return inner.startsWith("..") || isAbsolute(inner) ? path : inner.split(sep).join("/");
 }

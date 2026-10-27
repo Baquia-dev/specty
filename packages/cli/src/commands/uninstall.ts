@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { isAbsolute, join, relative, sep } from "node:path";
+import { join } from "node:path";
 import {
   AGENT_NAMES,
   backupLine,
@@ -28,6 +28,7 @@ import { removeGitHooks } from "../install/git-hooks";
 import { GEMINI_POINTER, removeAgentsBlocks } from "../install/project-files";
 import { exists, readText } from "../io/files";
 import type { Session } from "../session";
+import { shownPath } from "../store/paths";
 
 /** Registers `specty uninstall [--dry-run]`; `run` opens the session as for every command. */
 export function uninstallCommand(
@@ -86,9 +87,7 @@ async function removeSpecty(session: Session, files: InstallFiles): Promise<void
 }
 
 function described(change: FileChange, session: Session): string {
-  const inner = relative(session.root, change.path);
-  const path =
-    inner.startsWith("..") || isAbsolute(inner) ? change.path : inner.split(sep).join("/");
+  const path = shownPath(session.root, change.path);
   return removalLine(path, change.removed === true, session.lang);
 }
 

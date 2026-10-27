@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: Apache-2.0
-import { relative } from "node:path";
 import {
   type ChangeState,
   checkStatus,
@@ -19,6 +18,7 @@ import { resolveActive } from "../flow/active";
 import { awaits, type Located, locateChanges, type PersonAction } from "../flow/changes";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
+import { posixRelative } from "../store/paths";
 
 // Shared by the commands only a person may run.
 
@@ -114,7 +114,7 @@ async function chosen(session: Session, located: Located): Promise<Chosen> {
     {
       id: located.change.state.id,
       title: await titleOf(located),
-      folder: relative(session.root, located.session.root),
+      folder: posixRelative(session.root, located.session.root),
     },
     session.lang,
   );

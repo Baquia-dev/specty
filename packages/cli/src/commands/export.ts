@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { isAbsolute, join, relative, resolve } from "node:path";
+import { join, resolve } from "node:path";
 import { exportedCard, exportRefusalCard, type Output, parseSpec } from "@baquia-dev/specty-core";
 import { EXPORT_FORMATS, exportSpec } from "@baquia-dev/specty-exporters";
 import type { Command } from "commander";
@@ -10,6 +10,7 @@ import { findChange } from "../flow/find";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
+import { shownPath } from "../store/paths";
 
 /** How each format is called in the output. */
 const NAMES = { openspec: "OpenSpec", speckit: "Spec Kit", kiro: "Kiro" } as const;
@@ -69,9 +70,8 @@ async function exportFacts(change: StoredChange): Promise<Parameters<typeof expo
 
 /** Inside the repository, relative to its root; outside, whole: a long `../../…` is hard to read. */
 function shownFolder(root: string, folder: string): string {
-  const inside = relative(root, folder);
-  if (inside === "") return ".";
-  return inside.startsWith("..") || isAbsolute(inside) ? folder : inside;
+  const shown = shownPath(root, folder);
+  return shown === "" ? "." : shown;
 }
 
 /** Registers `specty export`; `run` opens the session as for every command. */
