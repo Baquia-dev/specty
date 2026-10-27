@@ -57,7 +57,7 @@ Con C2 a C4, Gemini CLI, OpenCode y Codex llevan a la carpeta del cambio las acc
 
 ## Tareas
 
-- [ ] T1: El guard bloquea con la ruta buena lo que lee fuera de su carpeta una conversación que entró en un cambio
+- [x] T1: El guard bloquea con la ruta buena lo que lee fuera de su carpeta una conversación que entró en un cambio
   - files: packages/core/src/guard/decide.ts, packages/core/test/guard/decide.test.ts, packages/cli/src/enforce/actions.ts, packages/cli/src/enforce/place.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/decide.test.ts

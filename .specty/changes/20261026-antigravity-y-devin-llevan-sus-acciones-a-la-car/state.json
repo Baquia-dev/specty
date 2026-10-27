@@ -6,6 +6,13 @@
   "branch": "specty/20261026-antigravity-y-devin-llevan-sus-acciones-a-la-car",
   "baseCommit": "2716a95c4d7c96284e23b34db7cab6936c59c988",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ae3f26f5b4888bda11ebbd95d837655177a12547b5c29d7e2856a1e64d0c1598",
+    "at": "2026-10-27T03:52:34.856Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -30,7 +37,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e228ba17d397f92de26a3b6bd21dc7865383d23c",
+      "startedAt": "2026-10-27T03:52:35.247Z",
+      "doneAt": "2026-10-27T03:56:13.800Z",
+      "summary": "Core gana la acción read: leer es libre y solo se bloquea, con la ruta buena, lo que lee fuera de su carpeta una conversación que entró en un cambio (ForeignPath.instead). La CLI ubica sus rutas como las de una escritura."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -40,12 +57,5 @@
     "AC": 5,
     "T": 4,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ae3f26f5b4888bda11ebbd95d837655177a12547b5c29d7e2856a1e64d0c1598",
-    "at": "2026-10-27T03:52:34.856Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

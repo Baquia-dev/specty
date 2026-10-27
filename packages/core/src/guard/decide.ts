@@ -85,6 +85,15 @@ export type GuardAction =
       /** Paths inside another worktree of the repository, kept apart from `paths`. */
       readonly foreign?: readonly ForeignPath[];
     }
+  /**
+   * What a tool reads or searches. Reading is free; only a conversation that entered a change's
+   * folder reads that folder's files (`ForeignPath.instead`).
+   */
+  | {
+      readonly kind: "read";
+      readonly paths: readonly string[];
+      readonly foreign?: readonly ForeignPath[];
+    }
   | { readonly kind: "shell"; readonly facts: ShellFacts }
   /** An edit that writes and deletes files at once, such as a patch (Codex, OpenCode). */
   | ({ readonly kind: "files" } & Pick<ShellFacts, "writes" | "deletes" | "foreign">)
@@ -130,6 +139,10 @@ const ALLOW: GuardDecision = { allow: true };
 /** Decides whether an agent action respects the flow. Paths are repository-relative. */
 export function decideGuard(action: GuardAction, ctx: GuardContext): GuardDecision {
   if (action.kind === "other") return ALLOW;
+  if (action.kind === "read") {
+    const elsewhere = (action.foreign ?? []).filter((path) => path.instead !== undefined);
+    return denyForeign(elsewhere, ctx) ?? ALLOW;
+  }
   if (action.kind === "shell") return decideShell(action.facts, ctx);
   if (action.kind === "files") return decideFiles(action, ctx);
   if (action.kind === "enter") {

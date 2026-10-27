@@ -25,8 +25,8 @@ export interface Place {
 }
 
 /**
- * A tool's action as the guard judges it: its paths placed in the repository's worktrees, and a
- * command's commits and the folders it runs in.
+ * A tool's action as the guard judges it: the paths it writes, deletes or reads placed in the
+ * repository's worktrees, and a command's commits and the folders it runs in.
  */
 export async function resolveAction(
   place: Place,
