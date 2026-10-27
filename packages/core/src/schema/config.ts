@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as z from "zod";
+import { GIT_FLOWS, type GitFlow } from "../branches";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 
@@ -63,6 +64,8 @@ export interface ResolvedConfig {
     readonly setup?: string | false;
     /** The branch changes start from and go to when finished. Unset: the main branch. */
     readonly target?: string;
+    /** How the changes' branches are named (`branchName`). Unset: Specty's own, `specty/<id>`. */
+    readonly flow?: GitFlow;
   };
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
@@ -172,6 +175,7 @@ export const ConfigSchema = z.strictObject({
       worktrees: z.boolean().optional(),
       setup: z.union([z.string().min(1), z.literal(false)]).optional(),
       target: z.string().min(1).optional(),
+      flow: z.enum(GIT_FLOWS).optional(),
     })
     .optional(),
   team: z
@@ -304,6 +308,7 @@ function gitOf(input: ConfigInput): ResolvedConfig["git"] {
     worktrees: git?.worktrees ?? DEFAULT_CONFIG.git.worktrees,
     ...(git?.setup !== undefined ? { setup: git.setup } : {}),
     ...(git?.target !== undefined ? { target: git.target } : {}),
+    ...(git?.flow !== undefined ? { flow: git.flow } : {}),
   };
 }
 

@@ -71,7 +71,7 @@ Hoy cada cambio vive en `specty/<id>`, un nombre que no sigue el flujo de git de
 
 ## Tareas
 
-- [ ] T1: el nombre de la rama según el flujo y el tipo, y la clave git.flow
+- [x] T1: el nombre de la rama según el flujo y el tipo, y la clave git.flow
   - files: packages/core/src/branches.ts, packages/core/src/index.ts, packages/core/test/branches.test.ts, packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/branches.test.ts test/schema/schema.test.ts

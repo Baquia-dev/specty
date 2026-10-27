@@ -6,6 +6,13 @@
   "branch": "specty/20261027-nombres-de-rama-semanticos-segun-el-flujo-de-git",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b88a519093f5614398d4d6cc6bd7e2cd2497c42ea9ccd519676dd33bac235889",
+    "at": "2026-10-27T11:08:25.713Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -38,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0dec11a58f111d2ba1ddc7d2091b3fcf02f6d00c",
+      "startedAt": "2026-10-27T11:08:27.955Z",
+      "doneAt": "2026-10-27T11:13:39.921Z",
+      "summary": "core/branches.ts: GIT_FLOWS y branchName (specty/<id>; <tipo>/<slug> en github y trunk; bugfix/ o feature/ en gitflow; spike/<slug>). config.yaml acepta git.flow, opcional (sin él, el de Specty)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -48,12 +65,5 @@
     "AC": 8,
     "T": 4,
     "R": 3
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b88a519093f5614398d4d6cc6bd7e2cd2497c42ea9ccd519676dd33bac235889",
-    "at": "2026-10-27T11:08:25.713Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
