@@ -26,37 +26,8 @@ const event = (
 /** "Exportar boletines en PDF": two tasks done (one at the second try), the third failing. */
 export function boletinesProgress(now: number): Progress {
   const at = (minutes: number) => ago(now, minutes);
-  const cmd = "flutter test test/reports";
   return {
-    tasks: {
-      T1: {
-        status: "done",
-        baseCommit: "9f1c2e7",
-        commit: "a1b2c3d",
-        attempts: 1,
-        startedAt: at(45),
-        doneAt: at(31),
-        summary: "Plantilla del boletín con notas, promedios y observaciones.",
-        scopeExtra: [],
-      },
-      T2: {
-        status: "done",
-        baseCommit: "a1b2c3d",
-        commit: "7e4f9a0",
-        attempts: 2,
-        startedAt: at(30),
-        doneAt: at(19),
-        summary: "Botón «Descargar PDF» en la ficha del boletín.",
-        scopeExtra: [],
-      },
-      T3: {
-        status: "active",
-        baseCommit: "7e4f9a0",
-        attempts: 1,
-        startedAt: at(12),
-        scopeExtra: [],
-      },
-    },
+    tasks: boletinesTasks(at),
     pending: {
       scopeRequests: [
         {
@@ -68,40 +39,79 @@ export function boletinesProgress(now: number): Progress {
       ],
       adjustment: null,
     },
-    audit: [
-      event(at(45), "agent", "task.started", { task: "T1", baseCommit: "9f1c2e7" }),
-      event(at(32), "specty", "task.verified", { task: "T1", cmd, exit: 0, ms: 18_000 }),
-      event(at(31), "agent", "task.completed", { task: "T1", commit: "a1b2c3d" }),
-      event(at(30), "agent", "task.started", { task: "T2", baseCommit: "a1b2c3d" }),
-      event(at(23), "specty", "task.verified", {
-        task: "T2",
-        cmd,
-        exit: 1,
-        ms: 12_000,
-        outputTail: [
-          "00:12 +6 -1: download button shows its label [E]",
-          "  Expected: 'Descargar PDF'",
-          "    Actual: 'Descargar'",
-        ],
-      }),
-      event(at(20), "specty", "task.verified", { task: "T2", cmd, exit: 0, ms: 9_000 }),
-      event(at(19), "agent", "task.completed", { task: "T2", commit: "7e4f9a0" }),
-      event(at(12), "agent", "task.started", { task: "T3", baseCommit: "7e4f9a0" }),
-      event(at(4), "specty", "task.verified", {
-        task: "T3",
-        cmd,
-        exit: 1,
-        ms: 7_000,
-        outputTail: [
-          "00:07 +6 -1: report card footer shows the signature [E]",
-          "  Error: Couldn't resolve 'package:boletines/shared/pdf/layout.dart'.",
-          "  lib/reports/pdf/report_card.dart:12:8",
-          "00:07 +6 -1: Some tests failed.",
-        ],
-      }),
-      event(at(3), "agent", "scope.requested", { request: "S1", task: "T3" }),
-    ],
+    audit: boletinesAudit(at),
   };
+}
+
+/** What state.json keeps of the boletines tasks. */
+function boletinesTasks(at: (minutes: number) => string): Progress["tasks"] {
+  return {
+    T1: {
+      status: "done",
+      baseCommit: "9f1c2e7",
+      commit: "a1b2c3d",
+      attempts: 1,
+      startedAt: at(45),
+      doneAt: at(31),
+      summary: "Plantilla del boletín con notas, promedios y observaciones.",
+      scopeExtra: [],
+    },
+    T2: {
+      status: "done",
+      baseCommit: "a1b2c3d",
+      commit: "7e4f9a0",
+      attempts: 2,
+      startedAt: at(30),
+      doneAt: at(19),
+      summary: "Botón «Descargar PDF» en la ficha del boletín.",
+      scopeExtra: [],
+    },
+    T3: {
+      status: "active",
+      baseCommit: "7e4f9a0",
+      attempts: 1,
+      startedAt: at(12),
+      scopeExtra: [],
+    },
+  };
+}
+
+/** What audit.jsonl logs of the boletines tasks: their starts, verifications and completions. */
+function boletinesAudit(at: (minutes: number) => string): Progress["audit"] {
+  const cmd = "flutter test test/reports";
+  return [
+    event(at(45), "agent", "task.started", { task: "T1", baseCommit: "9f1c2e7" }),
+    event(at(32), "specty", "task.verified", { task: "T1", cmd, exit: 0, ms: 18_000 }),
+    event(at(31), "agent", "task.completed", { task: "T1", commit: "a1b2c3d" }),
+    event(at(30), "agent", "task.started", { task: "T2", baseCommit: "a1b2c3d" }),
+    event(at(23), "specty", "task.verified", {
+      task: "T2",
+      cmd,
+      exit: 1,
+      ms: 12_000,
+      outputTail: [
+        "00:12 +6 -1: download button shows its label [E]",
+        "  Expected: 'Descargar PDF'",
+        "    Actual: 'Descargar'",
+      ],
+    }),
+    event(at(20), "specty", "task.verified", { task: "T2", cmd, exit: 0, ms: 9_000 }),
+    event(at(19), "agent", "task.completed", { task: "T2", commit: "7e4f9a0" }),
+    event(at(12), "agent", "task.started", { task: "T3", baseCommit: "7e4f9a0" }),
+    event(at(4), "specty", "task.verified", {
+      task: "T3",
+      cmd,
+      exit: 1,
+      ms: 7_000,
+      outputTail: [
+        "00:07 +6 -1: report card footer shows the signature [E]",
+        "  Error: Couldn't resolve 'package:boletines/shared/pdf/layout.dart'.",
+        "  lib/reports/pdf/report_card.dart:12:8",
+        "00:07 +6 -1: Some tests failed.",
+      ],
+    }),
+    event(at(3), "agent", "scope.requested", { request: "S1", task: "T3" }),
+  ];
 }
 
 /** "Login con Google": the provider done, the button in progress with no verification yet. */

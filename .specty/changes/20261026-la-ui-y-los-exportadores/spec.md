@@ -58,7 +58,7 @@ Doce funciones de la UI y de los exportadores pasan de los límites de Specty: `
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch
   - type: refactor
-- [ ] T4: El progreso y el cierre
+- [x] T4: El progreso y el cierre
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/closing.ts, packages/ui/src/data/sample-progress.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch
