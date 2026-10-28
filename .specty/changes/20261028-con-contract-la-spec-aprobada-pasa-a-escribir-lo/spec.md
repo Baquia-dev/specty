@@ -62,7 +62,7 @@ El cambio anterior dejó la fase `testing` en el modelo y en cada vista, pero si
   - ac: AC1, AC2, AC3
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/validate test/flow && pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts
   - notes: el evento `approve` cambia de forma, así que `approve.ts` va en la misma tarea para que los tipos sigan en verde.
-- [ ] T2: En testing, el guard solo deja escribir los tests del cambio
+- [x] T2: En testing, el guard solo deja escribir los tests del cambio
   - files: packages/core/src/flow/phases.ts, packages/core/src/guard/decide.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/testing-phase.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard test/flow && pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts

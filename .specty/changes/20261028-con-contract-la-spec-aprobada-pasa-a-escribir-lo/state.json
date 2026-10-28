@@ -39,12 +39,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "75316401287dcdc91f07472bcbd091514ae0d771",
+      "attempts": 1,
       "startedAt": "2026-10-28T05:49:07.032Z",
       "doneAt": "2026-10-28T05:57:27.025Z",
-      "summary": "policy.tests: contract (sin tests es error, como required); testsFirst(spec, policy) en validate/quality.ts; approve lleva testsFirst y, con tareas pendientes, va de review a testing; approve.ts lo calcula con la spec."
+      "summary": "policy.tests: contract (sin tests es error, como required); testsFirst(spec, policy) en validate/quality.ts; approve lleva testsFirst y, con tareas pendientes, va de review a testing; approve.ts lo calcula con la spec.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/guard/testing.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "ede00b10824d1a63bd0c0a30d231e1b61f883e5f",
+      "startedAt": "2026-10-28T05:57:27.362Z",
+      "doneAt": "2026-10-28T06:03:14.302Z",
+      "summary": "En testing el código se abre a los tests (CodeAccess tests); guard/testing.ts deja escribir solo los tests de los archivos del cambio (declarados o implícitos) y rechaza lo demás con la regla phase y un SIGUIENTE a propose; enforce/guard.ts le pasa los archivos."
     }
   },
   "pending": {
@@ -55,6 +66,7 @@
     "A": 3,
     "AC": 6,
     "T": 3,
-    "R": 1
+    "R": 1,
+    "S": 1
   }
 }

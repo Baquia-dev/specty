@@ -210,6 +210,14 @@ describe("phasePermissions", () => {
     expect(open).toEqual(["implementing"]);
   });
 
+  it("AC4: opens code only to the change's tests in the testing phase", () => {
+    expect(phasePermissions("testing")).toEqual({
+      code: "tests",
+      spec: "locked",
+      waitingFor: "agent",
+    });
+  });
+
   it("knows who the change is waiting for", () => {
     expect(phasePermissions("review").waitingFor).toBe("human");
     expect(phasePermissions("closing").waitingFor).toBe("agent");

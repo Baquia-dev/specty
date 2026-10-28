@@ -56,3 +56,24 @@ describe("entering the testing phase", () => {
     expect(approval.out).toContain(`SPECTY · ${CHANGE} · implementing`);
   });
 });
+
+/** What the guard answers Claude Code when it is about to write `path`. */
+const writing = (root: string, path: string) =>
+  cli(root, ["guard", "--tool", "claude-code"], {
+    stdin: JSON.stringify({ cwd: root, tool_name: "Write", tool_input: { file_path: path } }),
+  });
+
+describe("the guard in the testing phase", () => {
+  it("AC4: lets the agent write the change's tests and nothing else of the code", async () => {
+    const { root } = await approved(CONTRACT);
+    expect((await writing(root, `${root}/src/app.test.ts`)).code).toBe(0);
+    expect((await writing(root, `${root}/src/__tests__/greet.ts`)).code).toBe(0);
+    for (const path of ["src/app.ts", "lib/other.test.ts"]) {
+      const denied = await writing(root, `${root}/${path}`);
+      expect(denied.code, path).toBe(2);
+      expect(denied.err).toContain("fase de tests");
+      expect(denied.err).toContain("SIGUIENTE:");
+      expect(denied.err).toContain("`specty propose`");
+    }
+  });
+});
