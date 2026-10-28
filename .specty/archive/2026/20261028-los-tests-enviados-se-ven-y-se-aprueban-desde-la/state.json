@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
   "baseCommit": "3b93a0cfb50a432f95ce7e2117526425fc6b35ce",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1a0d341dae466ba9b0c754dc150619e5481ab6396aaa15066392faee7908cca4",
@@ -78,12 +78,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "412acbdae8c2ea67745e8d377b67468ad334a649",
+      "attempts": 1,
       "startedAt": "2026-10-28T11:09:20.078Z",
       "doneAt": "2026-10-28T11:14:33.677Z",
-      "summary": "docs/ui.md: los tests por aprobar en la Bandeja, la sección de tests de Progreso con su rojo, y «Aprobar los tests» con su diálogo en la cabecera y la barra"
+      "summary": "docs/ui.md: los tests por aprobar en la Bandeja, la sección de tests de Progreso con su rojo, y «Aprobar los tests» con su diálogo en la cabecera y la barra",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -94,5 +94,6 @@
     "A": 3,
     "AC": 6,
     "T": 5
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T11:17:33.304Z"
 }

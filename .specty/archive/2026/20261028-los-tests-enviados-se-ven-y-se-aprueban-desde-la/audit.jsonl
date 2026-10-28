@@ -17,3 +17,7 @@
 {"ts":"2026-10-28T11:09:20.079Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T5","baseCommit":"412acbdae8c2ea67745e8d377b67468ad334a649"}}
 {"ts":"2026-10-28T11:14:33.677Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm test","exit":0,"ms":141796,"tree":"sha256:96aa7d1ef31a7b0dff28563b7314c0bf8aa8196be0bb7d9f3b998083cf4dd118"}}
 {"ts":"2026-10-28T11:14:33.679Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"docs/ui.md: los tests por aprobar en la Bandeja, la sección de tests de Progreso con su rojo, y «Aprobar los tests» con su diálogo en la cabecera y la barra"}}
+{"ts":"2026-10-28T11:17:10.955Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":149415,"tree":"sha256:96aa7d1ef31a7b0dff28563b7314c0bf8aa8196be0bb7d9f3b998083cf4dd118"}}
+{"ts":"2026-10-28T11:17:10.956Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T11:17:33.305Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ff20acdcac34f30cd83ea292fb29aee7569c1166e0118213691fae679ae52886","size":"L","warnings":0}}
+{"ts":"2026-10-28T11:17:37.482Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -83,3 +83,26 @@ Con `policy.tests: contract`, el agente envía los tests de una feature antes de
   - files: docs/ui.md
   - ac: AC6
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La UI ya acompaña el gate 2 de `contract`. La Bandeja pone un cambio con los tests enviados entre lo que espera a la persona («Tests por aprobar · 2 tests nuevos»), y la cabecera dice «Espera que apruebes los tests». Progreso muestra arriba cada test nuevo por su ruta y cada comando en rojo con su salida, o que el agente aún los escribe. «Aprobar los tests», en la cabecera y en la barra compacta, confirma en un diálogo que los tests quedan bloqueados y aprueba la revisión vigente con la acción `approve` de siempre. El servidor fecha la implementación por `tests.approved` o `tests.locked`.
+
+### Desviaciones (respecto al plan)
+
+- El cambio de ejemplo en `testing` del prototipo salió de este cambio para que cupiera en tamaño L. Va al corte C6, con los ejemplos de bloqueos.
+- T1 se amplió con `change/change-page.ts` (su `WAITING` es un `Record` de `DecisionKind` y no compilaba sin la entrada `tests`), y T4 con `test/server/support.ts` (`serving` acepta otra spec). Las dos estaban en Archivos.
+- La página se prueba en un archivo propio, `change/change-page.tests.test.ts`, como ya tenía el cierre. Lleva el cambio de ejemplo del login de vuelta a `testing`, porque un test no puede exportar.
+- En T2, el test de la sección se escribió antes que el componente, pero no se ejecutó en rojo antes de escribirlo.
+- AC4 ya funcionaba: el servidor llevaba `approve` a la aprobación de los tests en `testing`. El test lo fija.
+
+### Decisiones
+
+- No hay «Pedir cambios» de los tests (A1): si no son lo esperado, la persona se lo dice al agente, que puede enviarlos de nuevo. El diálogo lo recuerda.
+- Del rojo se muestra el comando y su código de salida, que es lo que guarda `tests.proposed`; un `exit` nulo se lee «no terminó».
+
+### Pendientes
+
+- Corte C6: los tests bloqueados, las solicitudes de desbloqueo marcadas, la matriz criterio → tests con los criterios manuales, los textos del historial para `tests.*` y el desbloqueo, y el cambio de ejemplo en `testing` del prototipo.
