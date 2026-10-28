@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
   "baseCommit": "c3b7acbad4ee89df66d71cd148aaf39967b0fa55",
   "revision": 1,
@@ -59,6 +59,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-28T18:42:55.904Z"
+  "lockedTests": {
+    "packages/vscode/test/extension.test.ts": "sha256:51043c2a07eab7f255bcbea552178ce7f1953635b14f38ada2fdf4b5c3e45435",
+    "packages/vscode/test/specty.test.ts": "sha256:be2e82601999e75f5df2671da4c96be7d49ebf14b7696be2a65c86ed92ea064a",
+    "packages/vscode/test/view.test.ts": "sha256:214368dd293ace8541aedfdf618e305f94c3e7a1633b984940792c78212d89ed"
+  }
 }
