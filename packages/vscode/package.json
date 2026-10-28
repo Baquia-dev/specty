@@ -1,0 +1,71 @@
+{
+  "name": "specty-vscode",
+  "displayName": "Specty",
+  "description": "%description%",
+  "version": "0.1.0",
+  "publisher": "baquia-dev",
+  "private": true,
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Baquia-dev/specty.git",
+    "directory": "packages/vscode"
+  },
+  "type": "module",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:.specty/config.yaml"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    },
+    "virtualWorkspaces": false
+  },
+  "main": "./dist/extension.cjs",
+  "contributes": {
+    "commands": [
+      {
+        "command": "specty.openUi",
+        "title": "%command.openUi%",
+        "category": "Specty"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "specty.openUi",
+          "when": "specty.active"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Specty",
+      "properties": {
+        "specty.path": {
+          "type": "string",
+          "default": "specty",
+          "scope": "machine",
+          "markdownDescription": "%configuration.path%"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "package": "node build.mjs --vsix",
+    "test": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@baquia-dev/specty-core": "workspace:*",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "4.0.0",
+    "esbuild": "0.28.2"
+  }
+}

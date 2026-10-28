@@ -48,7 +48,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "pnpm-workspace.yaml"
+      ],
+      "attempts": 1,
+      "baseCommit": "be072eb9ec1ac0ef6e3c6eb192e4ef9d42b045db",
+      "startedAt": "2026-10-28T18:46:14.526Z",
+      "doneAt": "2026-10-28T18:50:11.095Z",
+      "summary": "El paquete specty-vscode (manifiesto, tipos, Vitest) y src/specty.ts, que lee el estado con specty --json status y arranca specty ui sin shell"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -57,7 +69,8 @@
     "A": 6,
     "AC": 5,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/vscode/test/extension.test.ts": "sha256:51043c2a07eab7f255bcbea552178ce7f1953635b14f38ada2fdf4b5c3e45435",

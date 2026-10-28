@@ -4,9 +4,11 @@ packages:
   - "evals"
 
 # esbuild, @parcel/watcher, lmdb and msgpackr-extract ship prebuilt binaries
-# (platform packages or prebuilds); their install scripts are not needed.
+# (platform packages or prebuilds); their install scripts are not needed. vsce's
+# @vscode/vsce-sign signs extensions for the Marketplace, which `pnpm package` does not do.
 allowBuilds:
   esbuild: false
   "@parcel/watcher": false
   lmdb: false
   msgpackr-extract: false
+  "@vscode/vsce-sign": false

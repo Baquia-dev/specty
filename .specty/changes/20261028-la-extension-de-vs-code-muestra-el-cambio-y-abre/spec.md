@@ -70,7 +70,7 @@ Quien trabaja en VS Code no ve en qué fase está su cambio ni si le espera una 
 
 ## Tareas
 
-- [ ] T1: El paquete de la extensión y su conversación con el CLI
+- [x] T1: El paquete de la extensión y su conversación con el CLI
   - files: packages/vscode/package.json, packages/vscode/tsconfig.json, packages/vscode/vitest.config.ts, packages/vscode/src/specty.ts, packages/vscode/test/specty.test.ts, pnpm-lock.yaml
   - ac: AC3, AC4
   - verify: pnpm exec vitest run --root packages/vscode test/specty.test.ts && pnpm lint

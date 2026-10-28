@@ -1,0 +1,8 @@
+{
+  // The extension and its tests run in Node, inside VS Code: both see Node's and VS Code's APIs.
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node", "vscode"]
+  },
+  "include": ["src", "test", "vitest.config.ts"]
+}
