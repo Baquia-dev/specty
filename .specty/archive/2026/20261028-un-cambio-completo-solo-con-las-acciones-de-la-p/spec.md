@@ -19,3 +19,9 @@ El criterio de salida de la fase F2 (ARCHITECTURE §18) es «un cambio completo 
   - files: packages/cli/test/server/lifecycle.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/server/lifecycle.test.ts
   - type: test
+
+## Cierre
+
+### Resumen
+
+lifecycle.test.ts recorre un cambio con contract de review a done con la persona solo en el servidor de la UI (supuesto, spec, tests, alcance, aceptar, cerrar); pasa a la primera; ARCHITECTURE §18: F2 hecha
