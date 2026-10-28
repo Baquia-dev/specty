@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261028-solo-un-comando-toma-el-bloqueo-de-un-proceso-qu",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-solo-un-comando-toma-el-bloqueo-de-un-proceso-qu",
+  "baseCommit": "a6a925429249e841d15f6588d783c134e4c03ad8",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0052efbec0d8b1855ad4f8bd9f4ae4f365f90fdc171b4f9bc4f518a465f84876",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:36b47c9f9003b2f103d24ca3046e798aada383c31575c60865874e7388a6b98b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 2,
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8d0f0ea1abd5c04dc16510d797fd29db1f0500df0261b25dc6c4e6a104a6cc94",
+    "at": "2026-10-28T08:55:25.660Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
