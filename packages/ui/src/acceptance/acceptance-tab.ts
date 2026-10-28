@@ -133,7 +133,11 @@ export class AcceptanceTab {
   private readonly injector = inject(Injector);
 
   protected readonly evidence = computed(() =>
-    evidenceOf(this.change().review.criteria, this.change().progress.tasks),
+    evidenceOf(
+      this.change().review.criteria,
+      this.change().progress.tasks,
+      this.change().criteriaTests,
+    ),
   );
   private readonly summary = computed(() =>
     summaryOf(this.evidence(), this.change().progress.tasks),

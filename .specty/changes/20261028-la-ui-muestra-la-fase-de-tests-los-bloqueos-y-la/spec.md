@@ -69,7 +69,7 @@ El corte C6 de la épica «Tests como contrato» lleva a la UI lo que la termina
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/review.ts, packages/ui/src/data/views.ts, packages/ui/src/data/acceptance.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data
-- [ ] T3: Cada criterio muestra sus tests en Aceptación
+- [x] T3: Cada criterio muestra sus tests en Aceptación
   - files: packages/ui/src/acceptance/criterion-row.ts, packages/ui/src/acceptance/criterion-row.test.ts, packages/ui/src/acceptance/acceptance-tab.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance

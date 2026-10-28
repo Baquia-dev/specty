@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4be405d8e7ec501d51578e48f4966a03e7b52076",
+      "attempts": 1,
       "startedAt": "2026-10-28T11:59:45.343Z",
       "doneAt": "2026-10-28T12:04:32.068Z",
-      "summary": "La vista pasa criteriaTests del servidor; cada criterio sabe si es manual (de la spec) y su evidencia trae como mucho 3 tests, cuántos más hay y si debía un test que no tiene"
+      "summary": "La vista pasa criteriaTests del servidor; cada criterio sabe si es manual (de la spec) y su evidencia trae como mucho 3 tests, cuántos más hay y si debía un test que no tiene",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bb813a1a103751f54f78867b5016ddfa5a22185c",
+      "startedAt": "2026-10-28T12:04:32.376Z",
+      "doneAt": "2026-10-28T12:08:52.548Z",
+      "summary": "Cada criterio de Aceptación lista, bajo sus tareas, los tests con su id (ruta:línea · tarea · commit, como mucho 3 y cuántos más), o dice «A comprobar a mano» o avisa «Sin test con su id»; la pestaña pasa criteriaTests a la evidencia"
     }
   },
   "pending": {

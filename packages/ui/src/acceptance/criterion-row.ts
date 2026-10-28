@@ -7,6 +7,8 @@ import {
   LucideCircleCheck,
   LucideCircleDashed,
   LucideCircleDot,
+  LucideEye,
+  LucideFlaskConical,
   LucideGitCommitHorizontal,
   LucideTriangleAlert,
   LucideX,
@@ -60,7 +62,8 @@ export function verdictOf(task: TaskProgressView): Mark {
 
 /**
  * A criterion as a document row: its text, the tasks that cover it with their commit and last
- * verification, and its state. In acceptance, «No se cumple…» asks for adjustments about it.
+ * verification, the tests that carry its id, and its state. In acceptance, «No se cumple…» asks
+ * for adjustments about it.
  */
 @Component({
   selector: "sp-criterion-row",
@@ -99,6 +102,31 @@ export function verdictOf(task: TaskProgressView): Mark {
           }
         </ul>
       }
+      <!-- The tests that carry its id (ADR 0014), when the source knows them. -->
+      @if (evidence().manual) {
+        <p class="m-0 flex items-center gap-1.5 text-[13px] text-text-muted" data-manual>
+          <svg [lucideIcon]="manualIcon" size="13" aria-hidden="true"></svg>{{ t()('A comprobar a mano', 'To check by hand') }}
+        </p>
+      } @else if (evidence().untested) {
+        <p class="m-0 flex items-center gap-1.5 text-[13px]" style="color: var(--color-phase-review)" data-untested>
+          <svg [lucideIcon]="warningIcon" size="13" aria-hidden="true"></svg>{{ t()('Sin test con su id', 'No test with its id') }}
+        </p>
+      }
+      @if (evidence().tests; as tests) {
+        @if (tests.length > 0) {
+          <ul class="m-0 flex list-none flex-col gap-1 p-0 text-[13px]" [attr.aria-label]="t()('Tests de ', 'Tests of ') + evidence().id" data-tests>
+            @for (test of tests; track test.path + ':' + test.line) {
+              <li class="flex items-start gap-1.5" data-test-line>
+                <svg class="mt-0.5 shrink-0 text-text-muted" [lucideIcon]="testIcon" size="13" aria-hidden="true"></svg>
+                <span class="min-w-0"><code class="font-mono text-xs break-all">{{ test.path }}:{{ test.line }}</code>&ngsp;<span class="font-mono text-xs text-text-muted">· {{ test.task }} · {{ test.commit }}</span></span>
+              </li>
+            }
+            @if (evidence().more; as more) {
+              <li class="pl-5 text-text-muted" data-more>{{ t()('y ' + more + ' más', 'and ' + more + ' more') }}</li>
+            }
+          </ul>
+        }
+      }
     </div>
     <!--
       The state and, under it, the action that shows on the row: it adds no height of its own. On
@@ -129,6 +157,9 @@ export class CriterionRow {
   protected readonly row = ROW;
   protected readonly reveal = REVEAL;
   protected readonly commitIcon = LucideGitCommitHorizontal;
+  protected readonly testIcon = LucideFlaskConical;
+  protected readonly manualIcon = LucideEye;
+  protected readonly warningIcon = LucideTriangleAlert;
   protected readonly mark = computed(() => MARKS[this.evidence().status]);
   protected readonly verdict = verdictOf;
 
