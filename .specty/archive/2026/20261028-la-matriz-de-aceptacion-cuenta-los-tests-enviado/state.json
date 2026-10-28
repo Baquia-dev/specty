@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-la-matriz-de-aceptacion-cuenta-los-tests-enviado",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-la-matriz-de-aceptacion-cuenta-los-tests-enviado",
   "baseCommit": "42ed259fe6bbbaa2ff288ccc72228278db001ca1",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f20ac73362b17a4da63f610fe3ed6b3a57637ee723b2edb4196dc3d45bf7c1cb",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b6be067399ff51322074c2185caf2ec15f3fb42c",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:03:14.696Z",
       "doneAt": "2026-10-28T15:06:54.636Z",
-      "summary": "formats 7 y ARCHITECTURE 13 describen Specty-Tests y la matriz"
+      "summary": "formats 7 y ARCHITECTURE 13 describen Specty-Tests y la matriz",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,6 +68,7 @@
     "AC": 2,
     "T": 2
   },
+  "closingSubmittedAt": "2026-10-28T15:09:58.824Z",
   "lockedTests": {
     "packages/cli/test/contract-matrix.test.ts": "sha256:a2226ca2ef61a10e1cbea8fed11e6ae62716ada5bba2d2f14c45d82d8119d9af"
   }

@@ -54,3 +54,21 @@ Con `policy.tests: contract`, los tests de los criterios se envían en la fase d
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El commit con el que Specty envía los tests en la fase de tests lleva `Specty-Tests: true`, y la matriz de aceptación cuenta sus líneas junto a las de las tareas, con la etiqueta `tests`. La tarjeta de aceptación y la UI dejan de avisar de criterios «sin test» cuando sus tests llegaron antes del código.
+
+### Desviaciones
+
+- La matriz de este mismo cambio aún marcó AC1 y AC2 «sin test»: su commit de tests lo hizo el CLI de main, anterior al arreglo, sin el trailer, como prevé «Fuera de alcance». La prueba nueva recorre el flujo completo con el CLI arreglado y lo comprueba.
+
+### Decisiones
+
+- `criteriaTests` recibe el id del cambio y busca sus commits de tests con `git log`; los commits se tratan como pares etiqueta y commit, porque puede haber varios envíos.
+
+### Pendientes
+
+- Ninguno.

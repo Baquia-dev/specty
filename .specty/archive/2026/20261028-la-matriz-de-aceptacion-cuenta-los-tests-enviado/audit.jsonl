@@ -9,3 +9,7 @@
 {"ts":"2026-10-28T15:03:14.696Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"b6be067399ff51322074c2185caf2ec15f3fb42c"}}
 {"ts":"2026-10-28T15:06:54.635Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm test","exit":0,"ms":152670,"tree":"sha256:32f28e1705347a44949dd8bde6f1fa195ee13af1603432e1fa87dd147b6384a5"}}
 {"ts":"2026-10-28T15:06:54.637Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"formats 7 y ARCHITECTURE 13 describen Specty-Tests y la matriz"}}
+{"ts":"2026-10-28T15:09:47.136Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":161833,"tree":"sha256:32f28e1705347a44949dd8bde6f1fa195ee13af1603432e1fa87dd147b6384a5"}}
+{"ts":"2026-10-28T15:09:47.137Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T15:09:58.825Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:4de18baf3732a3e09749a85aee58f2f477015059b6e8036ee6a630cb3a3e69d4","size":"M","warnings":0}}
+{"ts":"2026-10-28T15:10:06.567Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
