@@ -320,6 +320,63 @@ describe("criterionMarks", () => {
   it("finds nothing without ids", () => {
     expect(criterionMarks("it('AC1: greets', () => {});", [])).toEqual([]);
   });
+
+  /** The ids `criterionMarks` finds in `lines`, with their line. */
+  const named = (...lines: string[]) =>
+    criterionMarks(
+      lines.join("\n"),
+      Array.from({ length: 12 }, (_, index) => `AC${index + 1}`),
+    ).map((mark) => `${mark.line} ${mark.marker}`);
+
+  it("AC1: counts an id in a test's or a group's name, after an annotation, or in a comment", () => {
+    expect(
+      named(
+        "describe('AC1: greets', () => {",
+        "  it('AC2 by name', () => {});",
+        "  @Test",
+        '  @DisplayName("AC3: adds")',
+        "  void addsAC4() {",
+        "#[test]",
+        "fn adds_AC5() {",
+        'var _ = Describe("AC6 cart", func() {',
+        '  It("AC7 adds", func() {',
+        't.Run("AC8: subtest", func(t *testing.T) {',
+        'test "AC9 in Elixir" do',
+        "  # AC10 in a comment",
+        "  // AC11 too",
+        "  [Fact]",
+        "  public void AddsAC12()",
+      ),
+    ).toEqual([
+      "1 AC1",
+      "2 AC2",
+      "4 AC3",
+      "5 AC4",
+      "7 AC5",
+      "8 AC6",
+      "9 AC7",
+      "10 AC8",
+      "11 AC9",
+      "12 AC10",
+      "13 AC11",
+      "15 AC12",
+    ]);
+  });
+
+  it("AC2: leaves out an id in a fixture or in a test's body", () => {
+    expect(
+      named(
+        "it('parses', () => {",
+        "  const spec = '- AC1: CUANDO se pasa «Ana» ENTONCES imprime «Hola, Ana».';",
+        "  expect(ids).toEqual(['AC2']);",
+        "});",
+        "  @Test",
+        "  void adds() {",
+        '    assertEquals("AC3", id);',
+        "const TWO = SPEC.replace('- AC4', '- AC5');",
+      ),
+    ).toEqual([]);
+  });
 });
 
 describe("checks.todo", () => {

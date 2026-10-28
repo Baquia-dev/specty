@@ -48,7 +48,7 @@ Hoy `criteria-tested` y la matriz de aceptación cuentan el id de un criterio en
 
 ## Tareas
 
-- [ ] T1: El id solo cuenta en el nombre de un test o en un comentario
+- [x] T1: El id solo cuenta en el nombre de un test o en un comentario
   - files: packages/core/src/checks/markers.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/markers.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/criteria-tests.test.ts test/check-examples-ts.test.ts test/check-examples-flutter.test.ts test/check-examples-jvm.test.ts test/check-examples-native.test.ts test/check-examples-scripting.test.ts

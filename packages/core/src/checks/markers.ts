@@ -93,6 +93,21 @@ const CASES: readonly RegExp[] = [
 // A line that is all comment declares no case; `#[test]` is Rust, not a comment.
 const COMMENT_LINE = /^\s*(?:\/\/|\/\*|\*|#(?!\[)|--)/;
 
+// Where a test takes its name besides its case: its group, Ginkgo's nodes and Go's subtests.
+const NAMING: readonly RegExp[] = [
+  ...CASES,
+  // Jest, Vitest, Mocha, Jasmine, package:test
+  /(?<![\w.$'"`])(?:describe|context|suite|group)(?:\.\w+)*\s*\(/,
+  // RSpec, ExUnit
+  /(?<![\w.$'"`])(?:describe|context|test)\s+['"]/,
+  // Ginkgo, Go
+  new RegExp(String.raw`(?<![\w.])${GINKGO}\s*\(`),
+  /\.Run\(\s*"/,
+];
+
+// A test declared by an annotation takes its name on the annotations after it and its signature.
+const ANNOTATION = /^\s*(?:@|\[|#\[)/;
+
 // Where a comment starts in most languages; pending work is the first word of a comment.
 const OPENER = String.raw`(?:\/\/+|\/\*+|^\s*\*+|#+|<!--|--|;+|%+)`;
 
@@ -118,18 +133,33 @@ export function testCases(text: string): number {
 }
 
 /**
- * The lines that carry one of `ids`, once per id, as the spec writes it: anywhere in the line (the
- * name, the description or a comment), also inside a name (`TestAC2Greets`, `test_AC2_greets`);
- * `AC2` does not count for `AC20` nor `XAC2`.
+ * The lines that carry one of `ids` in a test's name or in a comment, once per id, as the spec
+ * writes it, also inside a name (`TestAC2Greets`, `test_AC2_greets`); `AC2` does not count for
+ * `AC20` nor `XAC2`, and an id in a fixture or in a test's body does not count.
  */
 export function criterionMarks(text: string, ids: readonly string[]): Mark[] {
   if (ids.length === 0) return [];
   const id = new RegExp(`(?<![A-Z0-9])(?:${ids.map(escaped).join("|")})(?![0-9])`, "g");
-  return text
-    .split(/\r?\n/)
-    .flatMap((source, index) =>
-      [...new Set(source.match(id))].map((marker) => ({ line: index + 1, marker })),
-    );
+  const lines = text.split(/\r?\n/);
+  const naming = namingLines(lines);
+  return lines.flatMap((source, index) =>
+    naming.has(index)
+      ? [...new Set(source.match(id))].map((marker) => ({ line: index + 1, marker }))
+      : [],
+  );
+}
+
+/** The lines, from 0, that name a test or its group, or are all comment. */
+function namingLines(lines: readonly string[]): ReadonlySet<number> {
+  const naming = new Set<number>();
+  let signature = false;
+  for (const [index, line] of lines.entries()) {
+    const comment = COMMENT_LINE.test(line);
+    const declares = !comment && NAMING.some((pattern) => pattern.test(line));
+    if (comment || declares || signature) naming.add(index);
+    signature = declares ? ANNOTATION.test(line) : signature && (comment || ANNOTATION.test(line));
+  }
+  return naming;
 }
 
 /** Comments that start with a marker of pending work and point to no issue. */

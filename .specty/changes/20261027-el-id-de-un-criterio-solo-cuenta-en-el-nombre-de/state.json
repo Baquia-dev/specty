@@ -6,6 +6,13 @@
   "branch": "specty/20261027-el-id-de-un-criterio-solo-cuenta-en-el-nombre-de",
   "baseCommit": "0f0fffbe29d90abaa8aaa54deda5bab6139836ce",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:47447304f6f8c05ad8c1e6386b3374c2ab18ff53420c62652d82d2ac8ab6d84a",
+    "at": "2026-10-28T04:16:26.329Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -32,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7c4ba929b0775c1fa81a8f0f69ffbbdb9d352d78",
+      "startedAt": "2026-10-28T04:16:26.740Z",
+      "doneAt": "2026-10-28T04:23:36.213Z",
+      "summary": "criterionMarks solo cuenta el id en el nombre de un test o de su grupo (catálogo de testCases, describe, Ginkgo, t.Run, ExUnit; tras una anotación, sus anotaciones y la firma) o en un comentario; documentado en checks, formats y ARCHITECTURE §13."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:47447304f6f8c05ad8c1e6386b3374c2ab18ff53420c62652d82d2ac8ab6d84a",
-    "at": "2026-10-28T04:16:26.329Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
