@@ -5,13 +5,13 @@
   "phase": "acceptance",
   "branch": "specty/20261027-cada-criterio-se-comprueba-con-un-test-que-lleva",
   "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
-  "revision": 2,
+  "revision": 3,
   "approved": {
-    "revision": 2,
+    "revision": 3,
     "hash": "sha256:e33e2cf159f9218a4e47b39123fb9b7a7d4ded4fcbd44a0c9adf12e6f109f9f6",
-    "at": "2026-10-27T06:58:46.841Z",
+    "at": "2026-10-28T00:35:52.708Z",
     "by": "Jorge Palacio Barcinilla",
-    "channel": "ui"
+    "channel": "delegated"
   },
   "size": {
     "level": "L",
@@ -71,15 +71,15 @@
     },
     "T4": {
       "status": "done",
+      "baseCommit": "f1fc00cc6445d84a8da60bec4c8d614d9baf5762",
+      "attempts": 1,
+      "startedAt": "2026-10-27T11:15:42.727Z",
+      "doneAt": "2026-10-27T11:29:51.100Z",
+      "summary": "En aceptación, criteria-tests.ts une cada criterio con las líneas de test con su id que añadió un commit de una tarea (git show + git blame) y views.ts lo pasa a la tarjeta y a accept; avisos de criterios al final. Documentado en ARCHITECTURE §13.",
       "scopeExtra": [
         "packages/core/src/cards/work.ts",
         "packages/core/src/cards/accept.ts"
-      ],
-      "attempts": 1,
-      "baseCommit": "f1fc00cc6445d84a8da60bec4c8d614d9baf5762",
-      "startedAt": "2026-10-27T11:15:42.727Z",
-      "doneAt": "2026-10-27T11:29:51.100Z",
-      "summary": "En aceptación, criteria-tests.ts une cada criterio con las líneas de test con su id que añadió un commit de una tarea (git show + git blame) y views.ts lo pasa a la tarjeta y a accept; avisos de criterios al final. Documentado en ARCHITECTURE §13."
+      ]
     }
   },
   "pending": {
