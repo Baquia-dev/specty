@@ -22,3 +22,9 @@ La persona puede dejar archivos concretos fuera del límite de líneas listándo
   - files: packages/core/src/schema/config.ts, packages/core/test/schema/schema.test.ts, docs/formats.md, docs/checks.md, docs/checks.en.md
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/sizing
   - type: feat
+
+## Cierre
+
+### Resumen
+
+lines.exclude se suma a las carpetas por defecto (sin duplicados); test en schema.test.ts visto en rojo antes del código; formats §6 y checks.md/en
