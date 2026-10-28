@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "baseCommit": "edb43bd3094859ee92c940acab964d048810a6e4",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:38826f96e38e845335366f132abb32ef39b6e5328ec34a2712d0fb24c01441dd",
@@ -68,12 +68,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "01f0cb50cfbe0d7b112bc1af25026073ded59ea2",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:44:32.285Z",
       "doneAt": "2026-10-28T15:44:44.928Z",
-      "summary": "Args ya no se exporta; knip pasa"
+      "summary": "Args ya no se exporta; knip pasa",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -86,6 +86,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-28T15:47:43.907Z",
   "lockedTests": {
     "packages/cli/test/mcp.test.ts": "sha256:5e8cf22f63c7ace577e3ca8495f7cb1eb634c69b0fa966b84f57e72ab3f0fa48"
   }

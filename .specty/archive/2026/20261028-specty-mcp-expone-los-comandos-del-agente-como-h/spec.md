@@ -73,3 +73,23 @@ Hoy un agente solo llega a Specty por la shell. `specty mcp` es un servidor MCP 
 
 - R1: `task done` y `accept` corren la verificación, que puede tardar minutos, y un cliente MCP puede cortar la llamada antes. Mitigación: la documentación lo dice; la verificación sigue y su resultado queda en la auditoría, y `specty_next` lo muestra.
 - R2: Un `console.log` o una salida que se escape a stdout rompería el protocolo. Mitigación: la salida del comando se captura siempre, y la prueba lee stdout línea a línea como JSON.
+
+## Cierre
+
+### Resumen
+
+`specty mcp` es un servidor MCP por stdio, sin SDK. Responde a `initialize` con la versión del protocolo del cliente o la más reciente que conoce, a `ping`, a `tools/list` y a `tools/call`, y da los errores de JSON-RPC. Ofrece diez herramientas, una por comando del agente que trabaja en una carpeta, cada una con su esquema y un `folder` opcional. Cada llamada ejecuta `runCli` en esa carpeta con la salida capturada y una terminal que nunca responde, así que devuelve la misma tarjeta que la CLI, con `isError` si sale con 1 o 2. Las acciones de la persona no tienen herramienta. Probado también por stdio real con el bundle.
+
+### Desviaciones
+
+- La primera aceptación falló en knip: el tipo `Args` de `mcp/tools.ts` estaba exportado sin uso. Un ajuste (revisión 3, T3 `refactor`) lo dejó sin exportar. En la revisión 2 la tarea no llegó a la spec, porque la edición falló; la revisión 3 la añadió.
+
+### Decisiones
+
+- `runCli` llega a `commands/mcp.ts` como parámetro desde `program.ts`, para que los módulos no formen un ciclo.
+- `CliEnvironment.input` lleva stdin como flujo, y `main.ts` le pasa `process.stdin`.
+
+### Pendientes
+
+- Registrar el servidor en cada agente, y que `doctor` y `uninstall` lo conozcan: corte C5.
+- Antes de aceptar un corte que añade módulos, ejecutar `pnpm knip`, que solo corre en la verificación completa.
