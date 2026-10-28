@@ -22,8 +22,8 @@ import { exists, isRecord, readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
+import { acceptanceFacts } from "./acceptance";
 import { type Audit, carriedOf, dataOf, findingsOf, readAudit } from "./carried";
-import { criteriaTests } from "./criteria-tests";
 import { sliceViews } from "./epic";
 
 /**
@@ -159,36 +159,14 @@ async function phaseFacts(
   },
 ) {
   const { state } = change;
-  const { tasks, audit, commits } = read;
+  const { audit } = read;
   return {
     requested: state.phase === "review" ? await requested(change, audit) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     ...(state.phase === "draft" ? request(audit) : {}),
     ...(state.phase === "draft" ? await carriedOf(session, spec.frontmatter.follows) : {}),
-    ...(state.phase === "acceptance" && resultReview(session, change, tasks, audit)
-      ? { recommendReview: true }
-      : {}),
-    ...(state.phase === "acceptance" && state.kind !== "epic"
-      ? { criteriaTests: await criteriaTests(session, spec, commits) }
-      : {}),
-    ...(state.phase === "acceptance" ? unlockedTests(audit) : {}),
+    ...(state.phase === "acceptance" ? await acceptanceFacts(session, change, spec, read) : {}),
   };
-}
-
-/** Each approved test a person unlocked (`scope.decided` with `unlock`), for the acceptance. */
-function unlockedTests(audit: Audit): {
-  readonly unlockedTests?: NonNullable<ChangeView["unlockedTests"]>;
-} {
-  const unlocked = audit.flatMap((entry) => {
-    const data = dataOf(entry);
-    if (entry.event !== "scope.decided" || !Array.isArray(data.unlock)) return [];
-    const { id, task } = data;
-    if (typeof id !== "string" || typeof task !== "string") return [];
-    return data.unlock.flatMap((path) =>
-      typeof path === "string" ? [{ path, request: id, task }] : [],
-    );
-  });
-  return unlocked.length > 0 ? { unlockedTests: unlocked } : {};
 }
 
 /** The incorporation of the target branch the agent is resolving, if any. */
@@ -279,29 +257,6 @@ function findingsByTask(audit: Audit): ReadonlyMap<string, TaskFindings> {
 
 function listOf(value: unknown): Record<string, unknown>[] {
   return Array.isArray(value) ? value.filter((item: unknown) => isRecord(item)) : [];
-}
-
-/**
- * An independent review of the result (ADR 0011) comes before the acceptance of a large change,
- * or of one whose tasks removed assertions or added risks, until one follows its last task.
- */
-function resultReview(
-  session: Session,
-  change: StoredChange,
-  tasks: readonly TaskView[],
-  audit: Audit,
-): boolean {
-  if (session.config.review === undefined) return false;
-  const level = change.state.size?.level;
-  const warned = tasks.some(
-    (task) => (task.risks?.length ?? 0) > 0 || (task.removedAssertions?.length ?? 0) > 0,
-  );
-  if (level !== "L" && level !== "XL" && !warned) return false;
-  const lastTask = audit.findLastIndex((entry) => entry.event === "task.completed");
-  const lastReview = audit.findLastIndex(
-    (entry) => entry.event === "review.completed" && dataOf(entry).target === "diff",
-  );
-  return lastReview < lastTask;
 }
 
 function criteriaOf(spec: Spec, ac: readonly string[] | "none" | undefined): TaskView["criteria"] {

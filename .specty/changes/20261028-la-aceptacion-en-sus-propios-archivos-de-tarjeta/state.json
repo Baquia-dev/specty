@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-aceptacion-en-sus-propios-archivos-de-tarjeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-la-aceptacion-en-sus-propios-archivos-de-tarjeta",
   "baseCommit": "aa9e93297d3f12bdc77adaa5eb0691d1a749b432",
   "revision": 1,
@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a0fc00b9c97d99693c3c30acf0c0bc1b768961eb",
+      "attempts": 1,
       "startedAt": "2026-10-28T09:23:36.097Z",
       "doneAt": "2026-10-28T09:27:46.477Z",
-      "summary": "cards/acceptance.ts tiene acceptanceCard, sus avisos y su SIGUIENTE, y doneLine, assertionWarnings y riskWarnings; work.ts, next.ts, accept.ts, task.ts e index.ts importan de ahí, sin ciclo; los tests de cards, sin cambios."
+      "summary": "cards/acceptance.ts tiene acceptanceCard, sus avisos y su SIGUIENTE, y doneLine, assertionWarnings y riskWarnings; work.ts, next.ts, accept.ts, task.ts e index.ts importan de ahí, sin ciclo; los tests de cards, sin cambios.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f79351c353cfb4ed220b55581941a50c2c31a331",
+      "startedAt": "2026-10-28T09:27:46.789Z",
+      "doneAt": "2026-10-28T09:32:03.931Z",
+      "summary": "flow/acceptance.ts tiene acceptanceFacts (revisión recomendada, matriz de criterios y tests desbloqueados); views.ts la usa en la aceptación y baja de 300 líneas; los tests, sin cambios."
     }
   },
   "pending": {

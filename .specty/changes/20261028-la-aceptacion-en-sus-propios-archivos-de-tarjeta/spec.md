@@ -46,7 +46,7 @@ follows:
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm typecheck
   - type: refactor
-- [ ] T2: Los datos de la aceptación en flow/acceptance.ts
+- [x] T2: Los datos de la aceptación en flow/acceptance.ts
   - files: packages/cli/src/flow/views.ts, packages/cli/src/flow/acceptance.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts test/test-locks.test.ts test/criteria-tests.test.ts
