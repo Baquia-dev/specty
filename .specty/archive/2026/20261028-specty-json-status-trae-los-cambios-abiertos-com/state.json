@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-specty-json-status-trae-los-cambios-abiertos-com",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-specty-json-status-trae-los-cambios-abiertos-com",
   "baseCommit": "f6ae81c304671ff48dd9cecba45d984c652baebf",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8643ce0b3f84d389c7488b451fd452b3829fff0c",
+      "attempts": 1,
       "startedAt": "2026-10-28T19:08:48.302Z",
       "doneAt": "2026-10-28T19:11:10.909Z",
-      "summary": "statusCard trae changes y delegated junto a la tarjeta, así que specty --json status los da como datos; el texto de specty status no cambia; ARCHITECTURE lo documenta"
+      "summary": "statusCard trae changes y delegated junto a la tarjeta, así que specty --json status los da como datos; el texto de specty status no cambia; ARCHITECTURE lo documenta",
+      "scopeExtra": []
     }
   },
   "pending": {

@@ -4,3 +4,5 @@
 {"ts":"2026-10-28T19:08:48.302Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"8643ce0b3f84d389c7488b451fd452b3829fff0c"}}
 {"ts":"2026-10-28T19:11:10.805Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/status-json.test.ts && pnpm lint","exit":0,"ms":2723,"tree":"sha256:f20da5d05c9c6a5ca88c7edcfb30490180454078e1d71beeaf7da54a55561230"}}
 {"ts":"2026-10-28T19:11:10.910Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"statusCard trae changes y delegated junto a la tarjeta, así que specty --json status los da como datos; el texto de specty status no cambia; ARCHITECTURE lo documenta"}}
+{"ts":"2026-10-28T19:15:57.274Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":231778,"tree":"sha256:f20da5d05c9c6a5ca88c7edcfb30490180454078e1d71beeaf7da54a55561230"}}
+{"ts":"2026-10-28T19:15:57.374Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}
