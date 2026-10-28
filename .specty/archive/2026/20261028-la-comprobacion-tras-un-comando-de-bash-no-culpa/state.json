@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-comprobacion-tras-un-comando-de-bash-no-culpa",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-la-comprobacion-tras-un-comando-de-bash-no-culpa",
   "baseCommit": "02935a2c27dbc39c7f422e176eb8cfb29b47370e",
   "revision": 1,
@@ -34,12 +34,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a385f28cec5a5ecc1dd0ab40d9910279943ddc52",
+      "attempts": 1,
       "startedAt": "2026-10-28T08:37:17.426Z",
       "doneAt": "2026-10-28T08:44:18.703Z",
-      "summary": "withoutSpecty quita de lo que cambió un comando de Bash lo de la carpeta del cambio activo mientras un proceso vivo de Specty tiene su bloqueo (liveHolder en store/lock.ts); ARCHITECTURE §10."
+      "summary": "withoutSpecty quita de lo que cambió un comando de Bash lo de la carpeta del cambio activo mientras un proceso vivo de Specty tiene su bloqueo (liveHolder en store/lock.ts); ARCHITECTURE §10.",
+      "scopeExtra": []
     }
   },
   "pending": {

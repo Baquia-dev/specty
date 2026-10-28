@@ -39,3 +39,9 @@ Tras cada comando de Bash, el guard compara la carpeta con la foto de antes y ju
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/shell-snapshot.test.ts test/enforce.test.ts test/lock.test.ts
   - type: fix
   - notes: documenta en ARCHITECTURE §10 que, mientras un proceso de Specty tiene el bloqueo del cambio, lo que cambia en su carpeta no cuenta.
+
+## Cierre
+
+### Resumen
+
+withoutSpecty quita de lo que cambió un comando de Bash lo de la carpeta del cambio activo mientras un proceso vivo de Specty tiene su bloqueo (liveHolder en store/lock.ts); ARCHITECTURE §10.
