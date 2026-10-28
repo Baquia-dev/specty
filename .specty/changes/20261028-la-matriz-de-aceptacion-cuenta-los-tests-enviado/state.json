@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-la-matriz-de-aceptacion-cuenta-los-tests-enviado",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261028-la-matriz-de-aceptacion-cuenta-los-tests-enviado",
   "baseCommit": "42ed259fe6bbbaa2ff288ccc72228278db001ca1",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f20ac73362b17a4da63f610fe3ed6b3a57637ee723b2edb4196dc3d45bf7c1cb",
+    "at": "2026-10-28T15:00:38.694Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -42,12 +49,7 @@
     "AC": 2,
     "T": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f20ac73362b17a4da63f610fe3ed6b3a57637ee723b2edb4196dc3d45bf7c1cb",
-    "at": "2026-10-28T15:00:38.694Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/contract-matrix.test.ts": "sha256:a2226ca2ef61a10e1cbea8fed11e6ae62716ada5bba2d2f14c45d82d8119d9af"
+  }
 }
