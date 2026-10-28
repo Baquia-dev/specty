@@ -6,6 +6,13 @@
   "branch": "specty/20261028-los-archivos-largos-divididos-por-responsabilida",
   "baseCommit": "386c1c021deec1423506e8570bb7cde64ce991af",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6bb54eccdc9a396cbf9b93256f988087e80c3be66b811be5e0f0cdf8824b75bd",
+    "at": "2026-10-28T17:39:46.843Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "aead6bbf6a3a42be2af21c236f61e6706466cc0d",
+      "startedAt": "2026-10-28T17:39:47.275Z",
+      "doneAt": "2026-10-28T17:45:09.419Z",
+      "summary": "init.ts se queda con el comando (opciones, idioma, migración, commit, informe); install, installTarget, writeProjectFiles y sus tipos pasan a install/install.ts sin cambios; tests de init sin tocar"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -31,12 +48,5 @@
     "AC": 2,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6bb54eccdc9a396cbf9b93256f988087e80c3be66b811be5e0f0cdf8824b75bd",
-    "at": "2026-10-28T17:39:46.843Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -44,7 +44,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Lo que instala init, en su propio archivo
+- [x] T1: Lo que instala init, en su propio archivo
   - files: packages/cli/src/commands/init.ts, packages/cli/src/install/install.ts, packages/cli/test/init-reversible.test.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/init-agents.test.ts test/init-commit.test.ts test/init-git-flow.test.ts test/init-language.test.ts test/init-reversible.test.ts
