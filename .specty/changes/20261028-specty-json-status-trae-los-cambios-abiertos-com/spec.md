@@ -16,6 +16,6 @@ La extensión de VS Code lee el estado de `specty --json status`, pero hoy esa s
 
 ## Tareas
 
-- [ ] T1: El estado como datos en `specty --json status`
+- [x] T1: El estado como datos en `specty --json status`
   - files: packages/core/src/cards/human.ts, packages/cli/test/status-json.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/status-json.test.ts && pnpm lint

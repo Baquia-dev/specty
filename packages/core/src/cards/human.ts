@@ -200,8 +200,17 @@ export interface StatusEntry {
   readonly folder?: string;
 }
 
+/**
+ * `specty status`'s card, with the open changes and delegated mode as data too: `--json` prints
+ * them, and the VS Code extension reads them.
+ */
+interface StatusOutput extends Output {
+  readonly changes: readonly StatusEntry[];
+  readonly delegated: boolean;
+}
+
 /** Open changes of every worktree; a person's decision can be taken from any folder. */
-export function statusCard(entries: readonly StatusEntry[], ctx: CardContext): Output {
+export function statusCard(entries: readonly StatusEntry[], ctx: CardContext): StatusOutput {
   const t = translator(ctx.lang);
   const lines = entries.map((entry) => statusLine(entry, t));
   return {
@@ -225,6 +234,8 @@ export function statusCard(entries: readonly StatusEntry[], ctx: CardContext): O
       ),
     ],
     next: statusNext(entries, ctx),
+    changes: entries,
+    delegated: ctx.delegated === true,
   };
 }
 

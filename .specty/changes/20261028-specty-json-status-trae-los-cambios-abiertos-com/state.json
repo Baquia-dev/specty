@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-specty-json-status-trae-los-cambios-abiertos-com",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-specty-json-status-trae-los-cambios-abiertos-com",
   "baseCommit": "f6ae81c304671ff48dd9cecba45d984c652baebf",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bbf8db3e8fd67b390162f11281c62ef67e7642e008dea0f281b7b6822b7d92ab",
+    "at": "2026-10-28T19:08:47.833Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8643ce0b3f84d389c7488b451fd452b3829fff0c",
+      "startedAt": "2026-10-28T19:08:48.302Z",
+      "doneAt": "2026-10-28T19:11:10.909Z",
+      "summary": "statusCard trae changes y delegated junto a la tarjeta, así que specty --json status los da como datos; el texto de specty status no cambia; ARCHITECTURE lo documenta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:bbf8db3e8fd67b390162f11281c62ef67e7642e008dea0f281b7b6822b7d92ab",
-    "at": "2026-10-28T19:08:47.833Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
