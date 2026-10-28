@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261028-la-matriz-de-aceptacion-cuenta-los-tests-enviado",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261028-la-matriz-de-aceptacion-cuenta-los-tests-enviado",
+  "baseCommit": "42ed259fe6bbbaa2ff288ccc72228278db001ca1",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6635f7941441e5a4622827364f53492f83e9f1503c599885ce06eb7cd8e8bb9d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:295922b23081a72a7166b31c6a21bbf15ab5f3ee10fff3c2389911c54c3e44b7",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:a7e447c857a1dc464b2b2afdc7e8be8732f0341b904362c807ecae4302a23568",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c8007649689aa66d42b14511d5b26238a30779facdd99f4afc688ed022a5531a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f20ac73362b17a4da63f610fe3ed6b3a57637ee723b2edb4196dc3d45bf7c1cb",
+    "at": "2026-10-28T15:00:38.694Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "bug"
+}
