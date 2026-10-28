@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-init-migra-una-instalacion-del-legacy",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261028-init-migra-una-instalacion-del-legacy",
   "baseCommit": "1b31ebcbaaf392930ff10c943fd85335f116b57d",
   "revision": 1,
@@ -59,6 +59,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-28T16:32:30.801Z"
+  "lockedTests": {
+    "packages/cli/test/legacy.test.ts": "sha256:8b43949822743de6d2b7759a037b6b8a192e29e91e16532b6a0bc169ed683b5b",
+    "packages/core/test/cards/legacy.test.ts": "sha256:d402d5b08ec3307e7136144cdb54049c220db71d8820a66a447a8438db8a321f"
+  }
 }
