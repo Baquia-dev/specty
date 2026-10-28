@@ -64,7 +64,7 @@ La capa 4 de cumplimiento (ARCHITECTURE §10) es la única que el agente no pued
   - files: packages/core/src/cards/ci.ts, packages/core/src/cards/index.ts, packages/core/test/cards/ci.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/ci.test.ts
-- [ ] T2: El comando y los hechos de cada commit
+- [x] T2: El comando y los hechos de cada commit
   - files: packages/cli/src/flow/ci-commits.ts, packages/cli/src/commands/ci.ts, packages/cli/src/program.ts, packages/cli/test/ci.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/ci.test.ts

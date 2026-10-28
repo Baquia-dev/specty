@@ -13,6 +13,7 @@ import type { ReportOutput } from "./check/provider";
 import { agentCommands } from "./commands/agent-commands";
 import { auditCommand } from "./commands/audit";
 import { checkCommand } from "./commands/check";
+import { ciCommand } from "./commands/ci";
 import { doctor } from "./commands/doctor";
 import { exportCommand } from "./commands/export";
 import { initCommand } from "./commands/init";
@@ -56,6 +57,7 @@ export async function runCli(
   personCommands(program, run);
   uninstallCommand(program, run);
   checkCommand(program, run);
+  ciCommand(program, run);
   auditCommand(program, run);
   exportCommand(program, run);
   readingCommands(program, run, environment, emit);

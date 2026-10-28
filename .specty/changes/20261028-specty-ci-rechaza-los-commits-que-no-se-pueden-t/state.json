@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3375a6c07fa5c41faaa73330c4ae1036cc86036f",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:14:14.275Z",
       "doneAt": "2026-10-28T15:14:49.971Z",
-      "summary": "ciReport en core: traced, task-approval y no-spike con sus textos, como un CheckReport"
+      "summary": "ciReport en core: traced, task-approval y no-spike con sus textos, como un CheckReport",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "32c04bce54bae663d8d85181b182541230e9022c",
+      "startedAt": "2026-10-28T15:14:50.326Z",
+      "doneAt": "2026-10-28T15:18:28.459Z",
+      "summary": "specty ci: flow/ci-commits reúne con git los trailers, archivos, cambio y aprobación de cada commit del rango; el comando da el informe y el JSON de specty check"
     }
   },
   "pending": {
