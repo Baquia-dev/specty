@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-los-tests-aprobados-no-se-pueden-cambiar-sin-per",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-los-tests-aprobados-no-se-pueden-cambiar-sin-per",
   "baseCommit": "b3deec3f669201638899dae710bc9c71746cc416",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:ad93519543dcdcc95eca68a24def2bd946b029454222caed8616827d970ede6c",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9e63483e09794b4fd10748cc58fde76be5dbb596",
+      "attempts": 1,
       "startedAt": "2026-10-28T09:09:33.725Z",
       "doneAt": "2026-10-28T09:16:04.319Z",
-      "summary": "task done vuelve a bloquear cada test desbloqueado de la tarea con el hash de su versión nueva (relock); la aceptación lista TESTS DESBLOQUEADOS desde scope.decided con unlock; formats, ARCHITECTURE §4 y §8 y checks lo documentan."
+      "summary": "task done vuelve a bloquear cada test desbloqueado de la tarea con el hash de su versión nueva (relock); la aceptación lista TESTS DESBLOQUEADOS desde scope.decided con unlock; formats, ARCHITECTURE §4 y §8 y checks lo documentan.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,6 @@
     "AC": 7,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T09:19:19.520Z"
 }

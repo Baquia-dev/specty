@@ -87,3 +87,31 @@ Los tests que aprueba la persona con `policy.tests: contract` ya quedan bloquead
 
 - R1: Un desbloqueo deja la puerta abierta a debilitar el test para que pase. Mitigación: lo decide solo la persona, con la razón del agente delante, y la aceptación lo muestra.
 - R2: `cards/index.ts` ya pasa de 300 líneas y crece con la exportación nueva. Mitigación: es la lista explícita de la API de textos de core; está anotado como pendiente.
+
+## Cierre
+
+### Resumen
+
+Con este corte, C3 queda completo. Un test que aprobó la persona solo cambia con su permiso:
+- `specty scope add` sobre el test crea una solicitud de desbloqueo aunque el archivo esté en el alcance de la tarea, y nunca se aprueba sola;
+- `approve --scope` y `reject --scope` se la niegan al agente en modo delegado (`unlockRefusedCard`);
+- aprobada, el test queda en las ampliaciones de su tarea, abierto para el guard y para `tests-locked` mientras la tarea está activa;
+- al completar la tarea, `relock` guarda el hash de su versión nueva;
+- la aceptación lista los tests desbloqueados («TESTS DESBLOQUEADOS») con su solicitud y su tarea;
+- el SIGUIENTE del guard nombra la solicitud de desbloqueo.
+
+formats, ARCHITECTURE §4 y §8 y checks lo documentan.
+
+### Desviaciones
+
+- En T3 escribí el código antes que sus tests, así que no los vi fallar primero. Los tests (AC4 y AC5 en `test-locks.test.ts`) recorren todo el desbloqueo y pasan.
+- `scope.decided` guarda `unlock` y la tarea solo cuando la persona aprueba el desbloqueo, para que la aceptación los lea de la auditoría sin cambiar el esquema de las solicitudes.
+
+### Decisiones
+
+- El desbloqueo se reconoce por la ruta, que está en `lockedTests`, y no por un campo nuevo de la solicitud: así lo ven igual `scope add`, la decisión, el guard y `tests-locked`.
+
+### Pendientes
+
+- `flow/views.ts` (306), `cards/work.ts` (302) y `cards/index.ts` (303) pasan del aviso de 300 líneas. Propuesta: sacar los datos de la aceptación (`criteriaTests`, `unlockedTests`, `resultReview`) a `flow/acceptance.ts`, y la tarjeta de aceptación con sus avisos a `cards/acceptance.ts`, antes de C4.
+- Desbloquear fuera de una tarea en curso, y los ciclos de bugs, refactors y ajustes (C4); la UI de los bloqueos (C6).
