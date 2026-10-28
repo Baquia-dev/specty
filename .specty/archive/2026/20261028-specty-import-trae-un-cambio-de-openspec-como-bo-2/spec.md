@@ -85,3 +85,24 @@ Hoy Specty exporta a OpenSpec, pero quien ya trabaja con OpenSpec no puede traer
 
 - R1: Una propuesta escrita a mano no sigue la plantilla de OpenSpec. Mitigación: lo que no se reconoce va tal cual al Diseño, y `propose` valida la spec antes de que la vea la persona.
 - R2: Un cambio de OpenSpec con decenas de escenarios daría una spec que supera los umbrales de división. Mitigación: `propose` lo dice, como con cualquier spec, y el agente la divide.
+
+## Cierre
+
+### Resumen
+
+`specty import <carpeta>` trae un cambio de OpenSpec como un cambio nuevo en borrador, creado como con `new`. Su spec ya trae el título de `proposal.md`, el objetivo (Why y What Changes), un criterio `DADO … CUANDO … ENTONCES …` por escenario completo y una tarea por tarea pendiente. Al Diseño va lo que no encaja: `design.md`, las otras partes de la propuesta, los requisitos sin escenario, los quitados y las tareas hechas. La carpeta de origen no cambia. Sin carpeta, lista los cambios importables de `openspec/changes/`. `parseOpenSpec` (`packages/exporters`) lee los archivos, `importedSections` (`core/src/cards/import.ts`) los pone en las palabras de la spec, y `specTemplate` acepta secciones ya escritas (`prefilled`).
+
+### Desviaciones
+
+- El primer intento (`20261028-specty-import-trae-un-cambio-de-openspec-como-bo`) se canceló en la aceptación. El campo `then` del escenario rompía la regla `noThenProperty` de Biome en tests ya aprobados, que solo la persona puede desbloquear. Este cambio lo rehízo con el campo `outcome` y la misma implementación.
+- En el primer intento, T1 necesitó una ampliación para el tipo de core. En este, T1 la incluye desde el principio, y cada tarea de código ejecuta `pnpm lint` en su verificación.
+- `agentCommands` y `createChange` pasaban de los límites: el registro de `import` va en su módulo, y la plantilla de `new` en `skeleton`.
+
+### Decisiones
+
+- El análisis (`exporters`) y las palabras de la spec (`core/src/cards/`) van separados, porque todo texto visible vive en `cards/` y en los dos idiomas.
+
+### Pendientes
+
+- La migración del legacy (corte C7) mostrará en la lista de `specty import` los cambios que mueva a `.specty/legacy/changes/`.
+- `packages/core/src/cards/index.ts` sigue por encima del aviso de `max-lines`.

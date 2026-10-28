@@ -15,3 +15,7 @@
 {"ts":"2026-10-28T16:21:43.219Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"48d2b2a448a9d56f8c5265cb76fbe1be182a4996"}}
 {"ts":"2026-10-28T16:21:53.586Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/import.test.ts","exit":0,"ms":1700,"tree":"sha256:d31eed8150f3fac73f6557fe47f9038b01d9f2a3e99f22f43eb620d5dfec5de7"}}
 {"ts":"2026-10-28T16:21:53.587Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"ARCHITECTURE 6 nombra specty import y formats 10 tabula el mapeo inverso"}}
+{"ts":"2026-10-28T16:24:51.327Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":170548,"tree":"sha256:d31eed8150f3fac73f6557fe47f9038b01d9f2a3e99f22f43eb620d5dfec5de7"}}
+{"ts":"2026-10-28T16:24:51.329Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T16:25:05.509Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:b38139a60d3afade08ea10b4a0a2bc8bb0c5a0e95e8153e2d178667229c36795","size":"L","warnings":0}}
+{"ts":"2026-10-28T16:25:11.790Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
