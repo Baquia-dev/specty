@@ -17,3 +17,7 @@
 {"ts":"2026-10-28T12:21:18.851Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T5","baseCommit":"b39c549b09fb65c584f9b237fb1f963ed4a9aee7"}}
 {"ts":"2026-10-28T12:26:32.153Z","actor":"specty","event":"task.verified","data":{"task":"T5","cmd":"pnpm test","exit":0,"ms":143271,"tree":"sha256:556e19e393f25d53c1abf1f05cc41d4dea521e8bc6ac9adf43d2fae1218a7123"}}
 {"ts":"2026-10-28T12:26:32.154Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T5","summary":"docs/ui.md describe los tests de cada criterio en Aceptación y el cambio en testing del prototipo; ARCHITECTURE §15, criteriaTests del servidor y desde cuándo está en implementing con contract"}}
+{"ts":"2026-10-28T12:29:12.571Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":151109,"tree":"sha256:556e19e393f25d53c1abf1f05cc41d4dea521e8bc6ac9adf43d2fae1218a7123"}}
+{"ts":"2026-10-28T12:29:12.572Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T12:29:43.262Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:e195591f129c93b0d6ebaf477bb3662ea500d01dda18c4740dfe1f3ee290866d","size":"L","warnings":2}}
+{"ts":"2026-10-28T12:29:43.492Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

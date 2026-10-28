@@ -81,3 +81,27 @@ El corte C6 de la épica «Tests como contrato» lleva a la UI lo que la termina
   - files: docs/ui.md, docs/ARCHITECTURE.md
   - ac: AC4
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El corte C6 queda completo con este cambio y los dos que lo preparan. En Aceptación, cada criterio lista los tests que llevan su id, con su archivo y línea, su tarea y su commit, como mucho 3. Un criterio manual dice «A comprobar a mano» y uno que debía un test sin tenerlo avisa «Sin test con su id». El servidor local sirve esos tests (`criteriaTests`) para los cambios en aceptación con la misma función que la tarjeta de la CLI. El prototipo trae «Avisos de nuevas calificaciones» en `testing`, con dos tests enviados en rojo que se aprueban y quedan bloqueados, y el cambio en aceptación trae los tests de sus criterios.
+
+### Desviaciones (respecto al plan)
+
+- El cambio de ejemplo iba a ser «Justificantes de faltas», pero el proyecto ya tenía un cambio sobre justificar faltas. Pasó a «Avisos de nuevas calificaciones», aprobado hace 9 minutos para no empatar con «Modo oscuro» en el orden por recientes.
+- Como preveía A4, los tests que cuentan el proyecto de ejemplo pasaron de 9 a 10 cambios y de 5 a 6 decisiones, con la fase «Tests» en sus listas, sin quitar aserciones: `fixtures.test.ts`, `inbox-toolbar.test.ts`, `inbox-view.test.ts` e `inbox.test.ts` (los tres de la Bandeja, ampliación aprobada por la política). `inbox-view.test.ts` ganó la aserción del recuento de `testing`.
+- `sampleRecords` pasó de 50 líneas con el ejemplo nuevo: su construcción va en `testingSample`, en el mismo archivo.
+- La historia del ejemplo empieza en `change.created` y `spec.proposed`, como pide el test de los datos de ejemplo.
+- `fixtures.ts` queda en 303 líneas (aviso de `max-lines`).
+
+### Decisiones
+
+- `approveTestsIn` recibe el hash del ejemplo como argumento, para que `sample-tests.ts` no importe `sample-records.ts`, que ya lo importa a él.
+- Sin los tests del servidor, la fila no dice nada de tests salvo el criterio manual, que sale de la spec.
+
+### Pendientes
+
+- A7 de la épica: la persona activa `policy.tests: contract` en este repositorio, ahora que está todo en main.
+- `fixtures.ts` en 303 líneas: si crece, sus acciones de ejemplo (aprobar, decidir, cerrar) pueden ir junto a sus ejemplos, como `decideResultIn`.
