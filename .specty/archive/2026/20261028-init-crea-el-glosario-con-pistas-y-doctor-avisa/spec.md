@@ -68,3 +68,24 @@ Las tarjetas ya traen las definiciones del glosario del dominio, pero ningún pr
 ## Riesgos
 
 - R1: Volver a ejecutar `init` en un repositorio existente le añade un archivo nuevo en `docs/`. Mitigación: solo si falta, entra en el commit de `init` con su recibo y `init` lo dice.
+
+## Cierre
+
+### Resumen
+
+`specty init` crea el glosario del dominio donde falta, en un proyecto nuevo o existente. Lo pone en la ruta de `glossary` o, sin la clave, en la del idioma, con un título y el formato de una línea con un ejemplo en un comentario. Lo dice («Glosario del dominio creado con pistas: …») y lo incluye en su commit. Un glosario que existe no se toca. `specty doctor` avisa, sin ponerse en rojo, mientras el glosario existe y no define ningún término, y dice cómo se escribe uno. formats.md §6 y ARCHITECTURE §14 lo documentan. Con esto queda hecho el AC15 de la épica.
+
+### Desviaciones
+
+- `glossaryLine` se exporta desde el `index.ts` del core, porque `cards/index.ts` no estaba en el alcance de T1.
+- T2 amplió su alcance al `index.ts` del core (aprobado por la política, porque ya estaba en «Archivos») para exportar `defaultGlossary`. `init` lo necesita cuando crea `config.yaml` en ese mismo momento.
+- `init-commit.test.ts` incluye ahora el glosario en el commit de `init` y en su mensaje, en orden alfabético, como preveía la spec.
+
+### Decisiones
+
+- `init` usa la ruta de la configuración que ya había, si era válida, o la del idioma elegido si la crea.
+- `cards/doctor.ts` queda en 312 líneas de código, por encima del aviso. Se deja así porque solo tiene los textos de `doctor`.
+
+### Pendientes
+
+- Ninguno.
