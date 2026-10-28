@@ -6,6 +6,13 @@
   "branch": "specty/20261028-specty-ci-rechaza-los-commits-que-no-se-pueden-t",
   "baseCommit": "d0b1d42a3b4b71010a26e413e2222400429dff69",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:171ec8df8bcf135edf23018eb6fa6cde54ab70da0525237d2d22ae2c83738cb3",
+    "at": "2026-10-28T15:11:40.701Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:171ec8df8bcf135edf23018eb6fa6cde54ab70da0525237d2d22ae2c83738cb3",
-    "at": "2026-10-28T15:11:40.701Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T15:14:10.687Z"
 }
