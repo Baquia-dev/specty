@@ -56,7 +56,7 @@ Dos comandos que cambian el mismo cambio pueden correr a la vez, desde dos sesio
 
 ## Tareas
 
-- [ ] T1: El bloqueo de un cambio y su tarjeta
+- [x] T1: El bloqueo de un cambio y su tarjeta
   - files: packages/cli/src/store/lock.ts, packages/cli/src/flow/active.ts, packages/core/src/cards/lock.ts, packages/core/src/cards/index.ts, packages/cli/test/lock.test.ts
   - ac: AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/lock.test.ts
