@@ -6,6 +6,13 @@
   "branch": "specty/20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
   "baseCommit": "c3b7acbad4ee89df66d71cd148aaf39967b0fa55",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1c8e6e9ecc11200c313553c3cb757e1335b006bd076ad86c564cfa90e4aacb3e",
+    "at": "2026-10-28T18:38:48.130Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1c8e6e9ecc11200c313553c3cb757e1335b006bd076ad86c564cfa90e4aacb3e",
-    "at": "2026-10-28T18:38:48.130Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T18:42:55.904Z"
 }
