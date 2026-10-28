@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-las-reglas-del-guard-sobre-la-spec-y-los-archivo",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-las-reglas-del-guard-sobre-la-spec-y-los-archivo",
   "baseCommit": "4eb864333549c91c173f5a9d718cd2f4fb71ed8f",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "818078d2669ae9bd9c08b12bb72a9af30d55865f",
+      "attempts": 1,
       "startedAt": "2026-10-28T08:15:35.865Z",
       "doneAt": "2026-10-28T08:19:14.422Z",
-      "summary": "guard/spec.ts tiene PROTECTED, protectedDenial y specDenial; decide.ts los usa con las mismas reglas y textos y baja de 300 líneas de código."
+      "summary": "guard/spec.ts tiene PROTECTED, protectedDenial y specDenial; decide.ts los usa con las mismas reglas y textos y baja de 300 líneas de código.",
+      "scopeExtra": []
     }
   },
   "pending": {

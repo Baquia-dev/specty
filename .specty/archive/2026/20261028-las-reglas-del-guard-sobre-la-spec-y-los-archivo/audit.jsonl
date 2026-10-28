@@ -4,3 +4,5 @@
 {"ts":"2026-10-28T08:15:35.866Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"818078d2669ae9bd9c08b12bb72a9af30d55865f"}}
 {"ts":"2026-10-28T08:19:14.326Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/guard && pnpm --filter @baquia-dev/specty-core typecheck","exit":0,"ms":1794,"tree":"sha256:a42c294bd83df497c464adfdfa1e8efd9fb00ccd2df59437c8ffe84478b4e52e"}}
 {"ts":"2026-10-28T08:19:14.423Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"guard/spec.ts tiene PROTECTED, protectedDenial y specDenial; decide.ts los usa con las mismas reglas y textos y baja de 300 líneas de código."}}
+{"ts":"2026-10-28T08:21:49.491Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":154295,"tree":"sha256:a42c294bd83df497c464adfdfa1e8efd9fb00ccd2df59437c8ffe84478b4e52e"}}
+{"ts":"2026-10-28T08:21:49.583Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

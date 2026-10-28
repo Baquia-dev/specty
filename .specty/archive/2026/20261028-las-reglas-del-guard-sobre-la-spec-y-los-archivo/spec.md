@@ -19,3 +19,9 @@ kind: quick
   - files: packages/core/src/guard/decide.ts, packages/core/src/guard/spec.ts
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard && pnpm --filter @baquia-dev/specty-core typecheck
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+guard/spec.ts tiene PROTECTED, protectedDenial y specDenial; decide.ts los usa con las mismas reglas y textos y baja de 300 líneas de código.
