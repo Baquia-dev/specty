@@ -94,7 +94,7 @@ El corte C6 queda completo con este cambio y los dos que lo preparan. En Aceptac
 - Como preveía A4, los tests que cuentan el proyecto de ejemplo pasaron de 9 a 10 cambios y de 5 a 6 decisiones, con la fase «Tests» en sus listas, sin quitar aserciones: `fixtures.test.ts`, `inbox-toolbar.test.ts`, `inbox-view.test.ts` e `inbox.test.ts` (los tres de la Bandeja, ampliación aprobada por la política). `inbox-view.test.ts` ganó la aserción del recuento de `testing`.
 - `sampleRecords` pasó de 50 líneas con el ejemplo nuevo: su construcción va en `testingSample`, en el mismo archivo.
 - La historia del ejemplo empieza en `change.created` y `spec.proposed`, como pide el test de los datos de ejemplo.
-- `fixtures.ts` queda en 303 líneas (aviso de `max-lines`).
+- `fixtures.ts` queda en 303 líneas, pero menos de 300 de código: no da aviso de `max-lines`.
 
 ### Decisiones
 
