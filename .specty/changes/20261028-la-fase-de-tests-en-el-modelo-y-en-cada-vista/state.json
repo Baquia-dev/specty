@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261028-la-fase-de-tests-en-el-modelo-y-en-cada-vista",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-la-fase-de-tests-en-el-modelo-y-en-cada-vista",
+  "baseCommit": "9aa860c474b4bb06f1bfa26bbd0e83f15721b4e0",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:23b39344f16a50d2081d70c9b96944f5b9a2eae9b690dfc2cf1fd150554bbfaf",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f17bb8be72ecdeb040efc172cad262b96427240f83cb52089e7e58bd7cce9def",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:799803799bf0ffde7a563cba3a6dd085d69865d6886e0832491253882c7f7557",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:387f63b92279a0f8459f57262ff9f647f8886ea9005d328797774221a46625e7",
+    "at": "2026-10-28T05:25:22.659Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
