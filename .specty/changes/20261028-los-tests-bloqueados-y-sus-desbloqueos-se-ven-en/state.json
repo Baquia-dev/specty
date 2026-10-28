@@ -2,24 +2,24 @@
   "schema": 1,
   "id": "20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "baseCommit": "6477c7d222a97eda066f7ddc4c347134174c2749",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:5d26c087683965bbd7e842c229bf0b608aae510b692a4ae4b1de49c8c46434c3",
-    "at": "2026-10-28T11:20:47.645Z",
+    "revision": 2,
+    "hash": "sha256:ed1f55467177742d5047e58bfebdbe26a90ce1517701554240548f7389588c40",
+    "at": "2026-10-28T11:46:14.888Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 15,
+    "score": 16,
     "adjust": 0,
     "reasons": [
       "13 archivos",
-      "5 tareas"
+      "6 tareas"
     ]
   },
   "items": {
@@ -81,12 +81,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9b34898e04f314bcc26ba4eeba973cb977a3cd5e",
+      "attempts": 1,
       "startedAt": "2026-10-28T11:40:01.937Z",
       "doneAt": "2026-10-28T11:45:10.231Z",
-      "summary": "docs/ui.md describe la solicitud de desbloqueo, la sección «Tests bloqueados» en Progreso y Aceptación, y los textos del historial de los tests"
+      "summary": "docs/ui.md describe la solicitud de desbloqueo, la sección «Tests bloqueados» en Progreso y Aceptación, y los textos del historial de los tests",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -96,7 +96,7 @@
   "maxIds": {
     "A": 4,
     "AC": 4,
-    "T": 5,
+    "T": 6,
     "S": 1
   }
 }
