@@ -85,3 +85,27 @@ Comprobar que los tests fallan antes de aceptarlos llega con el corte C2.
 
 - R1: Un envío sin comprobar el rojo deja pasar tests que ya pasan. Mitigación: `contract` es opcional y nadie lo usa todavía; el corte C2, que sigue a este, exige el rojo.
 - R2: Un commit de tests a medias si el agente envía antes de terminar. Mitigación: puede volver a enviar (A1), y la persona aprueba lo último.
+
+## Cierre
+
+### Resumen
+
+En `testing`, `specty propose` envía los tests (`commands/tests.ts`). Hace un commit solo con los tests nuevos de los archivos del cambio, `test(<módulo>): <título>` con recibo `tests`, anota `testsSubmittedAt` y `tests.proposed`, y el cambio espera a la persona. Si no hay tests nuevos, o cambió otro código gobernado, no envía nada y dice qué falta o qué sobra. `specty approve` es el gate 2: la persona confirma, o el agente en modo delegado (canal `delegated`). El cambio pasa a `implementing`, `tests.approved` anota el canal y `test(spec): <título>` guarda el estado. La máquina gana `approveTests` y `propose` en `testing`. `specty status` y `approve` desde otra carpeta saben que un cambio con los tests enviados espera a la persona, y `specty audit` dice los dos eventos con palabras. formats y ARCHITECTURE §4 lo documentan.
+
+### Desviaciones
+
+- `approveTests` se resuelve dentro de `specOutcome`, junto a `approve`: como `case` propio en `transition`, la función pasaba de complejidad 10 a 11.
+- `tests.proposed` guarda `count` además de `files`, para que `specty audit` diga cuántos tests se enviaron con las palabras de cada evento.
+- La vuelta de `testing` a `implementing` va en una línea bajo el diagrama de ARCHITECTURE §4: dentro del dibujo no cabía sin romper sus columnas.
+
+### Decisiones
+
+- Tras enviar los tests, el agente aún puede escribirlos: si la persona pide cambios en la conversación, los corrige y los vuelve a enviar con otro commit (A1). Por eso el código sigue abierto a los tests mientras espera a la persona.
+- `testsSubmittedAt` se borra al aprobar, así que solo existe mientras los tests esperan, y `status` no lo confunde con un cierre enviado.
+
+### Pendientes
+
+- `cards/index.ts` quedó en 302 líneas (aviso desde 300): es la lista explícita de la API de textos de core y crece con cada texto. Si molesta, que `max-lines` no cuente las líneas de `export` de un barrel.
+- `server/records.ts` no cuenta `tests.approved` entre los eventos que llevan a `implementing`: la UI fecha la implementación desde la aprobación de la spec (C6).
+- Exigir el rojo al enviar, el error de `criteria-tested` con `contract` y el test de fricción: el corte C2.
+- Aprobar los tests desde la UI (C6).

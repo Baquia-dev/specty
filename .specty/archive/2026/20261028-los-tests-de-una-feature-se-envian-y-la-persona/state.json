@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-los-tests-de-una-feature-se-envian-y-la-persona",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-los-tests-de-una-feature-se-envian-y-la-persona",
   "baseCommit": "ce370dc124673595b08e75eb6e3b0d90e7d3431e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:9ad300c054dfe09c0c5883979c89cddac78c993e0d4fdcdfcc92fe8d41ee83ea",
@@ -57,12 +57,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f4c0375366c5d359dc6d9ecd4f63149dd62b8390",
+      "attempts": 1,
       "startedAt": "2026-10-28T06:38:36.033Z",
       "doneAt": "2026-10-28T06:50:56.490Z",
-      "summary": "commands/tests.ts: propose en testing hace un commit solo con los tests nuevos del cambio (recibo tests) y espera a la persona, o dice qué falta; approve en testing es el gate 2 (también delegado) y pasa a implementing; approve los encuentra desde otra carpeta; formats y ARCHITECTURE §4."
+      "summary": "commands/tests.ts: propose en testing hace un commit solo con los tests nuevos del cambio (recibo tests) y espera a la persona, o dice qué falta; approve en testing es el gate 2 (también delegado) y pasa a implementing; approve los encuentra desde otra carpeta; formats y ARCHITECTURE §4.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -74,5 +74,6 @@
     "AC": 7,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T06:53:55.099Z"
 }
