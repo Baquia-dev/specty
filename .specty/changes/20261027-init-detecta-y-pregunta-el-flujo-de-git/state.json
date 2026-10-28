@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-init-detecta-y-pregunta-el-flujo-de-git",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-init-detecta-y-pregunta-el-flujo-de-git",
   "baseCommit": "0445983eeb54af55bce9cca2794c24005f924c23",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c66b6b4fe4a22a1e8e3a5103456a73af569cf094",
+      "attempts": 1,
       "startedAt": "2026-10-28T00:09:03.997Z",
       "doneAt": "2026-10-28T00:43:27.617Z",
-      "summary": "init detecta el flujo por las ramas y la configuración de git-flow y, solo al crear config.yaml, lo pregunta a la persona o usa el detectado; avisa si un proyecto nuevo queda sin flujo. 7 tests existentes ajustados con permiso del usuario (R1)."
+      "summary": "init detecta el flujo por las ramas y la configuración de git-flow y, solo al crear config.yaml, lo pregunta a la persona o usa el detectado; avisa si un proyecto nuevo queda sin flujo. 7 tests existentes ajustados con permiso del usuario (R1).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7d2af46430213976d765341a8a206106be42bd9e",
+      "startedAt": "2026-10-28T00:43:28.133Z",
+      "doneAt": "2026-10-28T00:47:17.048Z",
+      "summary": "ARCHITECTURE §14 dice cómo detecta init el flujo, que solo lo pregunta o detecta al crear config.yaml (como el idioma), qué pasa si se cancela y el aviso y SIGUIENTE de un proyecto nuevo sin flujo."
     }
   },
   "pending": {
