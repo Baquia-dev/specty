@@ -66,7 +66,7 @@ Las pruebas de extremo a extremo de hoy usan un modelo guionizado: demuestran qu
 
 ## Tareas
 
-- [ ] T1: El paquete de la suite y sus cuatro escenarios
+- [x] T1: El paquete de la suite y sus cuatro escenarios
   - files: pnpm-workspace.yaml, package.json, knip.json, pnpm-lock.yaml, evals/package.json, evals/tsconfig.json, evals/vitest.config.ts, evals/src/repo.ts, evals/src/scenarios.ts, evals/test/scenarios.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm exec vitest run --root evals test/scenarios.test.ts && pnpm exec tsc -p evals/tsconfig.json && pnpm lint

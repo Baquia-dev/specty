@@ -1,6 +1,11 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "ignoreBinaries": ["opencode"],
+  "workspaces": {
+    "evals": {
+      "entry": ["run/*.eval.ts"]
+    }
+  },
   "rules": {
     "nsExports": "off",
     "nsTypes": "off",

@@ -19,7 +19,8 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm -r --workspace-concurrency=1 --if-present test",
     "sources": "node scripts/check-sources.mjs",
-    "knip": "knip"
+    "knip": "knip",
+    "evals": "pnpm --filter @baquia-dev/specty build && SPECTY_EVALS=1 pnpm --filter @baquia-dev/specty-evals exec vitest run"
   },
   "devEngines": {
     "packageManager": {
