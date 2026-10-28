@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-fase-3-auditoria-y-ecosistema",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261028-fase-3-auditoria-y-ecosistema",
   "baseCommit": "f654d6ae32c2e1cc73bdecc5d630d533ad66c6a6",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d4b98af08c688a054b11965d109b894cc92ccc16de0bf5432c0b4e9d422854b8",
+    "at": "2026-10-28T14:29:32.023Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -87,11 +94,5 @@
     "C": 9,
     "R": 6
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d4b98af08c688a054b11965d109b894cc92ccc16de0bf5432c0b4e9d422854b8",
-    "at": "2026-10-28T14:29:32.023Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-10-28T17:34:46.568Z"
 }

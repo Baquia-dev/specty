@@ -121,3 +121,37 @@ Completar la fase 3 del plan (ARCHITECTURE §18) con lo que aún falta: `why`, `
 - R4: Las ejecuciones con modelos reales no son deterministas y cuestan. Mitigación: cada escenario se repite un número fijo de veces con un límite de turnos, el informe da tasas y no un aprobado único, y la suite solo corre a mano.
 - R5: La migración del legacy toca archivos de la persona (hooks, AGENTS.md, configuración). Mitigación: muestra la diferencia, pregunta por cada paso, mueve en vez de borrar y no toca lo que no reconoce.
 - R6: Una propuesta de OpenSpec escrita a mano no sigue la plantilla. Mitigación: lo que el importador no reconoce va tal cual al Diseño, y `propose` valida la spec antes de que la persona la vea.
+
+## Cierre
+
+### Resumen
+
+Toda la fase 3 del plan está construida, en nueve cortes cerrados en main:
+
+- `retro --into` documenta como ampliación del cambio activo lo preparado fuera de su alcance (C1).
+- `specty ci` rechaza los commits que no se pueden trazar, con las verificaciones `traced`, `task-approval` y `no-spike` (C2). Lo ejecutan la GitHub Action de `action.yml`, la plantilla de `check --install` y la CI de Specty, y en GitHub Actions lee el evento (C3).
+- `specty mcp` ofrece los comandos del agente como herramientas MCP por stdio (C4), y `init --mcp` lo registra en cada agente con configuración MCP de proyecto, con `doctor` y `uninstall` (C5).
+- `specty import` trae un cambio de OpenSpec como borrador (C6), e `init` migra una instalación del legacy a `.specty/legacy/` (C7).
+- La suite de cumplimiento (`evals/`, `pnpm evals`) pone a agentes reales ante cuatro escenarios (C8). Con Claude Code cumplió en las cinco ejecuciones, sin violaciones (C9).
+
+### Desviaciones
+
+- Tres cortes se rehicieron en un cambio nuevo, con la misma implementación:
+  - C5: un test aprobado de `uninstall` no elegía «sí».
+  - C6: un campo `then` rompía la regla `noThenProperty` de Biome en tests aprobados.
+  - C8: su verificación no podía fallar antes de que existiera el paquete.
+
+  En C5 y C6, desbloquear un test aprobado es solo de la persona.
+- Un cambio fuera de la épica arregló la matriz de aceptación, que no contaba los tests enviados en la fase de tests (`Specty-Tests: true`).
+- El modo automático de Claude Code denegó lanzar un agente real hasta que el usuario lo autorizó en el chat.
+
+### Decisiones
+
+- AC19 se cumple a medias: §16 y §18 muestran los resultados y que la fase 3 sigue abierta. Su criterio de salida, una suite estable con al menos cuatro agentes, no se pudo medir: en esta máquina solo Claude Code tiene sesión.
+
+### Pendientes
+
+- Ejecutar `pnpm evals` con Codex, Gemini CLI, OpenCode y Cursor CLI, y repetir los escenarios, para cerrar la fase 3.
+- Publicar la Action con una etiqueta `v<versión>` en el próximo release.
+- Leer los comandos de la CI del proyecto en la detección (ARCHITECTURE §17).
+- Dividir `packages/core/src/cards/index.ts` y `cards/doctor.ts`, que están sobre el aviso de `max-lines`.
