@@ -134,5 +134,4 @@ Los seis cortes están en main:
 
 - Probar `contract` en este repositorio (A7) y decidir después, en un cambio aparte, si pasa a ser el valor por defecto. Antes conviene revisar si el bloqueo por archivo estorba (R4).
 - Leer el rojo test a test con JUnit XML, si nombrar el test en la salida del comando se queda corto (R2).
-- Specty no tiene glosario propio: hasta que lo tenga, sus tarjetas no traen términos.
-- Avisos de `max-lines` que quedan: `fixtures.ts` de la UI, `cards/index.ts`, `cards/doctor.ts` y `schema/config.ts`.
+- Avisos de `max-lines` que quedan: `cards/doctor.ts`, `cards/index.ts` y `schema/config.ts`.
