@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-suite-de-cumplimiento-con-agentes-reales-2",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261028-la-suite-de-cumplimiento-con-agentes-reales-2",
   "baseCommit": "680a8daf896d0e6238cc24a4d8a6d81ab5dee4d5",
   "revision": 1,
@@ -60,6 +60,8 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-28T16:51:11.423Z"
+  "lockedTests": {
+    "evals/test/report.test.ts": "sha256:1919481b4a02ea095e646c4333e5d98754071eb4d8fc720cc40cd1eb06e93a94",
+    "evals/test/scenarios.test.ts": "sha256:67a6ebf442e79f0a85fbff1a187cbc4cb7893fa2a6db9d5bf2cce45ad737f31f"
+  }
 }
