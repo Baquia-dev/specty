@@ -17,6 +17,7 @@ import { ciCommand } from "./commands/ci";
 import { doctor } from "./commands/doctor";
 import { exportCommand } from "./commands/export";
 import { initCommand } from "./commands/init";
+import { mcpCommand } from "./commands/mcp";
 import { personCommands } from "./commands/person-commands";
 import { prune } from "./commands/prune";
 import { status } from "./commands/status";
@@ -28,6 +29,8 @@ import { bareCards, type Environment, openSession, type Session, systemLanguage 
 
 export interface CliEnvironment extends Environment {
   readonly stdin: () => Promise<string>;
+  /** Stdin as it arrives, for `specty mcp`, which answers each line while it reads the next. */
+  readonly input?: AsyncIterable<string | Uint8Array>;
 }
 
 /** Runs one command and returns its exit code (0 ok, 1 invalid, 2 blocked by the flow). */
@@ -58,6 +61,7 @@ export async function runCli(
   uninstallCommand(program, run);
   checkCommand(program, run);
   ciCommand(program, run);
+  mcpCommand(program, environment, runCli);
   auditCommand(program, run);
   exportCommand(program, run);
   readingCommands(program, run, environment, emit);

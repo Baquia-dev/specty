@@ -15,6 +15,7 @@ const base = {
     for await (const chunk of process.stdin) chunks.push(Buffer.from(chunk));
     return Buffer.concat(chunks).toString("utf8");
   },
+  input: process.stdin,
 };
 
 // The hooks run on every agent action and every commit: they load only their own entry.

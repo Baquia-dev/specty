@@ -54,7 +54,7 @@ Hoy un agente solo llega a Specty por la shell. `specty mcp` es un servidor MCP 
 
 ## Tareas
 
-- [ ] T1: El servidor MCP y sus herramientas
+- [x] T1: El servidor MCP y sus herramientas
   - files: packages/cli/src/mcp/protocol.ts, packages/cli/src/mcp/tools.ts, packages/cli/src/commands/mcp.ts, packages/cli/src/program.ts, packages/cli/src/main.ts, packages/cli/test/mcp.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/mcp.test.ts
