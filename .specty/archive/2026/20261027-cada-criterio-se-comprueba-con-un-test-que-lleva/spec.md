@@ -104,3 +104,30 @@ Es el primer corte de la épica «Tests como contrato y vocabulario del dominio�
 - R1: `git blame` en aceptación tarda con archivos de test grandes. Mitigación: solo los archivos que tocaron las tareas y que tienen algún id, una vez por archivo.
 - R2: Un texto que contiene `AC2` sin ser un test de ese criterio, como un fixture o un comentario ajeno, cuenta como test. Mitigación: es un aviso, y la matriz enseña la línea para que el agente y la persona la vean.
 - R3: Cambiar la regla de la tarjeta de tarea cambia lo que hace el modelo. Mitigación: la frase solo añade el id, y el test de presupuesto y los de las tarjetas la fijan.
+
+## Cierre
+
+### Resumen
+
+Un criterio puede llevar `test: manual`, y su test lleva el id del criterio en el nombre (`AC1: …`). `specty check --spec` avisa con `criteria-tested` de cada criterio de una tarea `feat` o `fix` que ninguna línea de test añadida nombra, salvo con `policy.tests: off`. La tarjeta de tarea pide el id en el nombre del test. La aceptación muestra «CRITERIOS Y TESTS»: cada criterio con sus tests, cada uno con su archivo, su línea, su tarea y su commit (por `git show` y `git blame`). Sus avisos y la nota de `specty accept` nombran los criterios `test: manual` y los que se quedan sin test. El ADR 0014 recoge la épica, y formats.md, checks.md, checks.en.md y ARCHITECTURE §6, §7 y §13 lo documentan.
+
+### Desviaciones
+
+- El texto del aviso de `criteria-tested` está en `check/plan.ts`, no en `flow/criteria-tests.ts`, porque `pnpm sources` solo admite el traductor en `check/`. `criteria-tests.ts` da los criterios sin test.
+- Un id cuenta también dentro de un nombre (`TestAC2Greets`, `test_AC2_greets`), siempre que no lo preceda una mayúscula ni un dígito. Hace falta en Go, XCTest o PHPUnit, donde el nombre del test es un identificador.
+- Con el visto bueno de la persona, los tests de catálogo (`stack-dialect.ts`, `check-examples-ts`, `check-examples-flutter` y `task-check`) incluyen `criteria-tested`, y sus tests llevan `AC1`. El resumen de `task-check` pasó de «OK 6/7» a «OK 7/8».
+- T3 cambió el test que fijaba la frase anterior de la regla de tests, como pedía AC4.
+- T4 amplió su alcance a `cards/work.ts` y `cards/accept.ts`, con aprobación de la política, para poner los avisos de criterios después de los de cada tarea, que es lo que fijan `assertions.test.ts` y `risk.test.ts`.
+- En aceptación se pidió un ajuste: contar el id solo en el nombre de un test o en un comentario, enseñar como mucho 3 tests por criterio y marcar AC7 como `test: manual`. Se retiró porque una tarea más hacía el cambio XL y el `specty` instalado aún no conoce `test: manual`. Va a un cambio de seguimiento.
+
+### Decisiones
+
+- `criteria-tested` solo avisa; que falle con `policy.tests: contract` es de C2.
+- Deben test los criterios de las tareas a las que la tarjeta pide el test primero (`testRules` da `first`), así que una tarea sin `type` cuenta como `feat`.
+- La matriz solo hace `git blame` de los archivos de test con algún id, una vez por archivo (R1). Una épica no la tiene, porque sus criterios los comprueban sus cortes.
+- Comprobado con el CLI compilado sobre este mismo cambio: la matriz encuentra los tests de cada criterio, con su tarea y su commit.
+
+### Pendientes
+
+- La matriz y `criteria-tested` cuentan el id en cualquier línea de un test, también en los fixtures: en este repositorio, AC1 sale con 45 líneas, casi todas de specs de ejemplo. El id debe contar solo en el nombre de un test o en un comentario. El nombre está en la línea de su declaración y, tras una anotación (`@Test`, `[Fact]`, `#[test]`), en las anotaciones que la siguen y en la firma; también cuentan `It`, `Specify` y `Entry` de Ginkgo. La matriz debe enseñar como mucho 3 tests por criterio, con «y N más».
+- AC7, el de la documentación, quedó sin test. Con el `specty` instalado al día, un criterio así se marca `test: manual`.
