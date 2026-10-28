@@ -7,3 +7,12 @@
 {"ts":"2026-10-28T04:23:36.901Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"0a1fc18ef601f2e8c4d7d2bba8b0c99f9d65d4c5"}}
 {"ts":"2026-10-28T04:35:05.208Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/cards","exit":0,"ms":2684,"tree":"sha256:21b539da4c44c8522406f7001e5f5118a53ed9a439cfa52c5ef2f39c727bd963"}}
 {"ts":"2026-10-28T04:35:05.493Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"criteriaTestLines enseña los 3 primeros tests de cada criterio, por archivo y línea, y «y N más»; documentado en ARCHITECTURE §13."}}
+{"ts":"2026-10-28T04:38:50.240Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":142488,"tree":"sha256:21b539da4c44c8522406f7001e5f5118a53ed9a439cfa52c5ef2f39c727bd963"}}
+{"ts":"2026-10-28T04:38:50.242Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T04:39:14.160Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:9286b89a825db2350f6985771282202d92f6d1333a8aabe06c0d143d9dda2d93","size":"S","warnings":2}}
+{"ts":"2026-10-28T04:40:25.900Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"178426a21d66193854f220c5d176171b575dd48a","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-28T04:41:14.662Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":145718,"tree":"sha256:21b539da4c44c8522406f7001e5f5118a53ed9a439cfa52c5ef2f39c727bd963"}}
+{"ts":"2026-10-28T04:41:14.664Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T04:41:52.511Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:9286b89a825db2350f6985771282202d92f6d1333a8aabe06c0d143d9dda2d93","size":"S","warnings":2}}
+{"ts":"2026-10-28T04:43:58.876Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"178426a21d66193854f220c5d176171b575dd48a","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-28T04:44:57.884Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

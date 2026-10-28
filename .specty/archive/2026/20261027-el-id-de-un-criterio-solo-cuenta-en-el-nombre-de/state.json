@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261027-el-id-de-un-criterio-solo-cuenta-en-el-nombre-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261027-el-id-de-un-criterio-solo-cuenta-en-el-nombre-de",
   "baseCommit": "0f0fffbe29d90abaa8aaa54deda5bab6139836ce",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:47447304f6f8c05ad8c1e6386b3374c2ab18ff53420c62652d82d2ac8ab6d84a",
@@ -51,12 +51,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0a1fc18ef601f2e8c4d7d2bba8b0c99f9d65d4c5",
+      "attempts": 1,
       "startedAt": "2026-10-28T04:23:36.899Z",
       "doneAt": "2026-10-28T04:35:05.490Z",
-      "summary": "criteriaTestLines enseña los 3 primeros tests de cada criterio, por archivo y línea, y «y N más»; documentado en ARCHITECTURE §13."
+      "summary": "criteriaTestLines enseña los 3 primeros tests de cada criterio, por archivo y línea, y «y N más»; documentado en ARCHITECTURE §13.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -68,5 +68,6 @@
     "AC": 4,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T04:41:52.509Z"
 }

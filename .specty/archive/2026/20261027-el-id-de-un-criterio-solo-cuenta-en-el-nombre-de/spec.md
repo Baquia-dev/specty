@@ -65,3 +65,24 @@ Hoy `criteria-tested` y la matriz de aceptación cuentan el id de un criterio en
 
 - R1: Un test cuyo nombre no está en ninguna de esas líneas deja de contar y da un aviso. Mitigación: es solo un aviso, el id en un comentario siempre cuenta, y la tarjeta pide el id en el nombre del test.
 - R2: Una línea de datos justo después de una anotación que declara un test cuenta como su firma. Mitigación: solo pasa con anotaciones (`@`, `[`, `#[`), y lo habitual es que la firma esté justo ahí.
+
+## Cierre
+
+### Resumen
+
+`criterionMarks` solo cuenta el id de un criterio en el nombre de un test o de su grupo, o en una línea de comentario. El nombre está en la línea que declara el test (el catálogo de `testCases`, más `describe`, `context`, `suite` y `group`, los nodos de Ginkgo, `t.Run("…"` de Go y `test "…"` de Elixir) y, tras una declaración que es una anotación, en las anotaciones que la siguen y en la firma. Así, `criteria-tested` y la matriz de aceptación ya no cuentan los datos de un fixture ni el cuerpo de un test. La matriz enseña como mucho 3 tests por criterio, por archivo y línea, con «y N más». checks.md, checks.en.md, formats.md y ARCHITECTURE §13 lo documentan.
+
+### Desviaciones
+
+- El catálogo de grupos incluye también `group(` de package:test (Dart), que A1 no nombraba.
+- El catálogo se llama `NAMING`, porque `NAMED` ya era el nombre de la búsqueda del nombre de un test enfocado.
+
+### Decisiones
+
+- `testCases` no cambia: los grupos, Ginkgo y `t.Run` solo cuentan para dónde va el nombre, no como casos de `tests-removed`.
+- La matriz ordena los tests por archivo y línea en la tarjeta, aunque la CLI ya los da en ese orden.
+- Comprobado con el CLI compilado sobre este mismo cambio: la matriz pasa de 45 líneas para AC1, en el cambio anterior, a un test por criterio. Queda una línea de datos de los tests del propio detector que contiene a su vez la declaración de un test (`it('AC2 by name'…`).
+
+### Pendientes
+
+- Ninguno.
