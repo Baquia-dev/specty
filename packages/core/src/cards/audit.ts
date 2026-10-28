@@ -175,6 +175,8 @@ const EVENTS: Readonly<Record<string, (words: EventWords) => string>> = {
     (text("channel") === "" ? "" : ` (${text("channel")})`),
   "tests.proposed": ({ t, value }) =>
     t(`Envió ${value("count")} tests para aprobar`, `Sent ${value("count")} tests for approval`),
+  "tests.locked": ({ t, value }) =>
+    t(`Bloqueó ${value("count")} tests en rojo`, `Locked ${value("count")} red tests`),
   "tests.approved": ({ t, text }) =>
     t("Aprobó los tests", "Approved the tests") +
     (text("channel") === "" ? "" : ` (${text("channel")})`),

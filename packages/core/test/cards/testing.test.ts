@@ -10,6 +10,7 @@ import {
   statusCard,
   type TaskView,
   testsApprovedLine,
+  testsLockedLead,
   testsRefusedCard,
   testsSubmittedCard,
   unlockRefusedCard,
@@ -174,6 +175,15 @@ describe("the tests sent", () => {
     expect(approveTestsQuestion("Saludo", "en")).toBe('Approve the tests of "Saludo"?');
     expect(testsApprovedLine("abc1234", "es")).toBe("Tests aprobados (commit abc1234).");
     expect(testsApprovedLine("abc1234", "en")).toBe("Tests approved (commit abc1234).");
+  });
+
+  it("AC2: says a bug's red tests are locked and the fix comes next", () => {
+    expect(testsLockedLead("abc1234", "es")).toBe(
+      "Tests en rojo y bloqueados (commit abc1234): el fallo queda reproducido; ahora, el arreglo.",
+    );
+    expect(testsLockedLead("abc1234", "en")).toBe(
+      "Tests red and locked (commit abc1234): the defect is reproduced; now, the fix.",
+    );
   });
 });
 

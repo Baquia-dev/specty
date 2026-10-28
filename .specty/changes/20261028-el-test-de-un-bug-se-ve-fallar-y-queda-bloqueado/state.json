@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "aad899db06f331a1d202c9177018c1d4ada63a72",
+      "attempts": 1,
       "startedAt": "2026-10-28T09:37:47.528Z",
       "doneAt": "2026-10-28T09:48:32.994Z",
-      "summary": "testCycle(spec, policy, done) sustituye a testsFirst: feature con una feat pendiente en standard, bug con solo fix pendientes (también quick); approve lo calcula con las tareas hechas; la máquina gana confirmRed (Specty, testing → implementing) y transition elige el grupo con guardas de tipo."
+      "summary": "testCycle(spec, policy, done) sustituye a testsFirst: feature con una feat pendiente en standard, bug con solo fix pendientes (también quick); approve lo calcula con las tareas hechas; la máquina gana confirmRed (Specty, testing → implementing) y transition elige el grupo con guardas de tipo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f577850706fd556ec3a19601c031d11ae33105fa",
+      "startedAt": "2026-10-28T09:48:33.336Z",
+      "doneAt": "2026-10-28T09:54:41.906Z",
+      "summary": "En el ciclo de un bug, proposeTests bloquea los tests en rojo (lockRed: confirmRed de Specty, hashes, tests.proposed y tests.locked) y sigue con la tarjeta de la primera tarea tras testsLockedLead; la feature sigue esperando a la persona (sendForApproval)."
     }
   },
   "pending": {

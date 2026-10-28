@@ -85,3 +85,34 @@ describe("the cycle of tests a change follows", () => {
     expect((await stateOf(root)).phase).toBe("implementing");
   });
 });
+
+const auditOf = async (
+  root: string,
+): Promise<{ readonly event: string; readonly actor: string }[]> =>
+  (await read(root, `.specty/changes/${CHANGE}/audit.jsonl`))
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+
+describe("a bug's red test", () => {
+  it("AC2: is committed and locked as soon as it fails, and the fix starts with no person", async () => {
+    for (const [spec, kind] of [
+      [typed("fix"), "standard"],
+      [quick("fix"), "quick"],
+    ] as const) {
+      const root = await approved(spec, kind);
+      await writeFiles(root, { "src/app.test.ts": TEST });
+      const sent = await cli(root, ["propose"]);
+      expect(sent.code, sent.out).toBe(0);
+      expect(sent.out).toMatch(/Tests en rojo y bloqueados \(commit [0-9a-f]{7}\)/);
+      expect(sent.out).toContain("TAREA T1");
+      const state = await stateOf(root);
+      expect(state.phase, kind).toBe("implementing");
+      expect(Object.keys(state.lockedTests)).toEqual(["src/app.test.ts"]);
+      const events = (await auditOf(root)).map(({ event, actor }) => `${actor} ${event}`);
+      expect(events).toContain("agent tests.proposed");
+      expect(events).toContain("specty tests.locked");
+      expect(events).not.toContain("human tests.approved");
+    }
+  });
+});

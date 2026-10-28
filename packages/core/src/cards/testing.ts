@@ -228,6 +228,14 @@ export function approveTestsQuestion(title: string, lang: Lang): string {
   return translator(lang)(`¿Aprobar los tests de «${title}»?`, `Approve the tests of "${title}"?`);
 }
 
+/** A bug's red tests, locked by themselves (ADR 0014): what comes before the task's card. */
+export function testsLockedLead(commit: string, lang: Lang): string {
+  return translator(lang)(
+    `Tests en rojo y bloqueados (commit ${commit}): el fallo queda reproducido; ahora, el arreglo.`,
+    `Tests red and locked (commit ${commit}): the defect is reproduced; now, the fix.`,
+  );
+}
+
 /** The tests approved, with the commit that records it. */
 export function testsApprovedLine(commit: string, lang: Lang): string {
   return translator(lang)(

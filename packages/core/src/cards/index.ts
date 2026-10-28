@@ -266,6 +266,7 @@ export {
   approveTestsQuestion,
   type TestsRefusal,
   testsApprovedLine,
+  testsLockedLead,
   testsRefusedCard,
   testsSubmittedCard,
   unlockRefusedCard,

@@ -63,7 +63,7 @@ Con `policy.tests: contract`, solo una feature pasa por la fase de tests, y lo d
   - files: packages/core/src/validate/quality.ts, packages/core/src/flow/machine.ts, packages/core/src/index.ts, packages/cli/src/commands/approve.ts, packages/cli/test/bug-cycle.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/validate test/flow && pnpm --filter @baquia-dev/specty exec vitest run test/bug-cycle.test.ts test/testing-phase.test.ts
-- [ ] T2: Los tests en rojo de un bug quedan bloqueados solos
+- [x] T2: Los tests en rojo de un bug quedan bloqueados solos
   - files: packages/core/src/cards/audit.ts, packages/core/src/cards/testing.ts, packages/core/src/cards/index.ts, packages/cli/src/commands/tests.ts, packages/cli/test/bug-cycle.test.ts
   - ac: AC2, AC5
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/bug-cycle.test.ts

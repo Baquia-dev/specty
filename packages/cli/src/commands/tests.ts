@@ -24,11 +24,14 @@ import {
   scopeRulesFrom,
   shortHash,
   type TestsRefusal,
+  testCycle,
   testRules,
   testsApprovedLine,
+  testsLockedLead,
   testsRefusedCard,
   testsSubmittedCard,
   transition,
+  withLead,
 } from "@baquia-dev/specty-core";
 import { checkContext } from "../check/files";
 import { commitState } from "../flow/active";
@@ -39,7 +42,7 @@ import { runLive } from "../flow/live-run";
 import { readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
-import { thenNext } from "./next";
+import { next, thenNext } from "./next";
 
 // The tests of a feature, sent and approved before its code (ADR 0014).
 
@@ -64,6 +67,28 @@ export async function proposeTests(session: Session, active: StoredChange): Prom
   }
   const red = await redOf(session, state.id, spec, tests);
   if (red.kind === "refused") return testsRefusedCard(state.id, red.refusal, cards);
+  const sending: Sending = { spec, tests, red: red.failed };
+  // A bug's red test locks by itself; a feature's waits for the person (ADR 0014).
+  return testCycle(spec, session.config.policy.tests, doneTasks(state)) === "bug"
+    ? lockRed(session, active, sending)
+    : sendForApproval(session, active, sending);
+}
+
+/** The tests on their way: the spec they answer to, their paths and the red commands. */
+interface Sending {
+  readonly spec: Spec;
+  readonly tests: readonly string[];
+  readonly red: readonly { readonly cmd: string; readonly exit: number | null }[];
+}
+
+/** A feature's tests, committed and waiting for the person's gate 2. */
+async function sendForApproval(
+  session: Session,
+  active: StoredChange,
+  sending: Sending,
+): Promise<Output> {
+  const { cards } = session;
+  const { state } = active;
   const moved = transition({
     phase: "testing",
     kind: state.kind,
@@ -72,21 +97,59 @@ export async function proposeTests(session: Session, active: StoredChange): Prom
   });
   if (!moved.ok) return blockedCard(headerOf(state.id, "testing"), moved.code, runNext(cards));
   const sent: ChangeState = { ...state, testsSubmittedAt: session.environment.now().toISOString() };
-  await commitState(session, active, sent, "tests.proposed", {
-    count: tests.length,
-    files: tests,
-    red: red.failed,
+  await commitState(session, active, sent, "tests.proposed", proposedData(sending));
+  const commit = await commitTests(session, active, sending);
+  return testsSubmittedCard(state.id, { commit, files: sending.tests }, cards);
+}
+
+/** A bug's red tests, committed and locked at once: the fix starts with no person (ADR 0014). */
+async function lockRed(session: Session, active: StoredChange, sending: Sending): Promise<Output> {
+  const { cards } = session;
+  const { state } = active;
+  const moved = transition({
+    phase: "testing",
+    kind: state.kind,
+    actor: "specty",
+    event: { type: "confirmRed" },
   });
+  if (!moved.ok) return blockedCard(headerOf(state.id, "testing"), moved.code, runNext(cards));
+  const { tests } = sending;
+  await commitState(session, active, state, "tests.proposed", proposedData(sending));
+  const lockedTests = { ...state.lockedTests, ...(await hashesOf(session, tests)) };
+  const locked: ChangeState = { ...state, phase: moved.phase, lockedTests };
+  const data = { count: tests.length, files: tests };
+  await commitState(session, active, locked, "tests.locked", data, "specty");
+  const commit = await commitTests(session, active, sending);
+  return withLead(testsLockedLead(commit, session.lang), await next(session));
+}
+
+function proposedData({ tests, red }: Sending): Record<string, unknown> {
+  return { count: tests.length, files: tests, red };
+}
+
+/** Commits the tests alone, with the change's files, under the change's trailers. */
+async function commitTests(
+  session: Session,
+  active: StoredChange,
+  { spec, tests }: Sending,
+): Promise<string> {
+  const { state, files } = active;
   const dir = session.paths.relative(files.dir);
   const scope = moduleOf(tests[0] ?? "");
-  const commit = await commitWithReceipt(session, {
+  return commitWithReceipt(session, {
     subject: `test${scope === "(root)" ? "" : `(${scope})`}: ${spec.title}`,
     trailers: changeTrailers(session, state.id, { "Specty-Spec": specTrailer(state) }),
     stage: [tests, [dir]],
     only: [...tests, dir],
     receipt: { change: state.id, kind: "tests" },
   });
-  return testsSubmittedCard(state.id, { commit, files: tests }, cards);
+}
+
+/** The ids of the tasks already done. */
+function doneTasks(state: ChangeState): ReadonlySet<string> {
+  return new Set(
+    Object.entries(state.tasks).flatMap(([id, task]) => (task.status === "done" ? [id] : [])),
+  );
 }
 
 /** The tests are red, with the commands that failed; or why they cannot be sent yet. */
@@ -214,13 +277,23 @@ async function sentHashes(
     (entry) => entry.event === "tests.proposed",
   );
   const paths = dataOf(sent).files;
+  const listed = Array.isArray(paths) ? paths : [];
+  return hashesOf(
+    session,
+    listed.filter((path): path is string => typeof path === "string"),
+  );
+}
+
+/** The hash of each of `paths` as it is now; one that does not exist is left out. */
+async function hashesOf(
+  session: Session,
+  paths: readonly string[],
+): Promise<Record<string, Sha256Hash>> {
   const hashes = await Promise.all(
-    (Array.isArray(paths) ? paths : [])
-      .filter((path): path is string => typeof path === "string")
-      .map(async (path) => {
-        const text = await readText(join(session.root, path));
-        return text === undefined ? [] : [[path, hashText(text)] as const];
-      }),
+    paths.map(async (path) => {
+      const text = await readText(join(session.root, path));
+      return text === undefined ? [] : [[path, hashText(text)] as const];
+    }),
   );
   return Object.fromEntries(hashes.flat());
 }
