@@ -15,8 +15,11 @@ import {
   writeFiles,
 } from "./support";
 
+/** A verification that fails and names the test, as a runner does while the code is missing. */
+const RED = `node -e "console.log('FAIL src/app.test.ts'); process.exit(1)"`;
 /** The tests of a feature are written and approved before its code (ADR 0014). */
-const CONTRACT = `${CONFIG()}policy:\n  tests: contract\n`;
+const contract = (verify = RED) => `${CONFIG(verify)}policy:\n  tests: contract\n`;
+const CONTRACT = contract();
 
 /** SPEC with a test in every task, as `contract` requires to propose it. */
 const FEATURE = SPEC.replace(
@@ -24,11 +27,11 @@ const FEATURE = SPEC.replace(
   "  - files: src/app.ts, src/app.test.ts\n  - ac: AC1\n  - type: refactor",
 );
 
-/** FEATURE's change, proposed and approved by the person, under `config`. */
-async function approved(config: string) {
+/** `spec`'s change, FEATURE's by default, proposed and approved by the person, under `config`. */
+async function approved(config: string, spec = FEATURE) {
   const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
   await cli(root, ["new", "Saludo personalizado"]);
-  await writeFiles(root, { [SPEC_PATH]: FEATURE });
+  await writeFiles(root, { [SPEC_PATH]: spec });
   const proposed = await cli(root, ["propose"]);
   expect(proposed.code, proposed.out).toBe(0);
   const approval = await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
@@ -153,6 +156,45 @@ describe("sending the tests", () => {
   });
 });
 
+describe("the red the tests are sent with", () => {
+  const refused = async (config: string, test = TEST) => {
+    const root = await withTests(config);
+    await writeFiles(root, { "src/app.test.ts": test });
+    const sent = await cli(root, ["propose"]);
+    expect(sent.code).not.toBe(0);
+    expect((await stateOf(root)).testsSubmittedAt).toBeUndefined();
+    return sent.out;
+  };
+
+  it("AC1: sends nothing while the verification of the tasks passes", async () => {
+    expect(await refused(contract("true"))).toContain(
+      "Los tests nuevos no fallan: pasó su verificación:\n  true",
+    );
+  });
+
+  it("AC2: sends nothing when the failing verification does not name a new test", async () => {
+    const silent = contract(`node -e "process.exit(1)"`);
+    expect(await refused(silent)).toContain(
+      "La verificación falla, pero su salida no nombra estos tests nuevos:\n  src/app.test.ts",
+    );
+  });
+
+  it("AC3: sends nothing while a criterion has no new test with its id", async () => {
+    const out = await refused(CONTRACT, "it('saluda a Ana', () => {});\n");
+    expect(out).toContain("Estos criterios no tienen un test nuevo con su id:\n  AC1");
+  });
+
+  it("AC4: sends the tests once they are red, and records each red command", async () => {
+    const root = await withTests();
+    const sent = await cli(root, ["propose"]);
+    expect(sent.code, sent.out).toBe(0);
+    expect(await lastAudit(root)).toMatchObject({
+      event: "tests.proposed",
+      data: { count: 1, files: ["src/app.test.ts"], red: [{ cmd: RED, exit: 1 }] },
+    });
+  });
+});
+
 describe("approving the tests", () => {
   it("AC3: the person's approval starts the implementation and records who and how", async () => {
     const root = await withTests();
@@ -203,5 +245,34 @@ describe("approving the tests", () => {
     const approval = await cli(root, ["approve"], { terminal: person() });
     expect(approval.code, approval.out).toBe(0);
     expect((await stateOf(folder)).phase).toBe("implementing");
+  });
+});
+
+/** FEATURE with a `fix` in T1: no `feat`, so it skips the testing phase, but still owes its test. */
+const FIX = FEATURE.replace(
+  "- [ ] T1: Saludar por nombre\n  - files: src/app.ts, src/app.test.ts\n  - ac: AC1",
+  "- [ ] T1: Saludar por nombre\n  - files: src/app.ts, src/app.test.ts\n  - ac: AC1\n  - type: fix",
+);
+
+describe("criteria-tested under contract", () => {
+  const untested = async (config: string) => {
+    const { root } = await approved(`${config}checks:\n  levels: { secrets: off }\n`, FIX);
+    expect(await phaseOf(root)).toBe("implementing");
+    await cli(root, ["next"]);
+    // The fix brings a test, as `fix-tests` asks, but not one named after AC1.
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name) => 'Hola, ' + name;\n",
+      "src/app.test.ts": "it('saluda a Ana', () => {});\n",
+    });
+    return cli(root, ["check", "--changed", "--spec"]);
+  };
+
+  it("AC5: fails with contract, and only warns otherwise", async () => {
+    const failing = await untested(CONTRACT);
+    expect(failing.code).not.toBe(0);
+    expect(failing.out).toContain("FALLA criteria-tested");
+    const warned = await untested(CONFIG());
+    expect(warned.code).toBe(0);
+    expect(warned.out).toContain("AVISO criteria-tested");
   });
 });

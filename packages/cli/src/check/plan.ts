@@ -94,12 +94,16 @@ function approvalProblem(plan: Plan, t: Translate): string | undefined {
   );
 }
 
-/** Each criterion of a `feat` or `fix` task has a test with its id; only a warning (ADR 0014). */
+/**
+ * Each criterion of a `feat` or `fix` task has a test with its id: an error under
+ * `policy.tests: contract`, where tests are the contract, and a warning otherwise (ADR 0014).
+ */
 function criteriaTested(plan: LoadedPlan): CheckDefinition {
   return {
     id: "criteria-tested",
     async run(context) {
       const t = translator(context.session.lang);
+      const severity = context.session.config.policy.tests === "contract" ? "error" : "warning";
       const untested = await untestedCriteria(plan, context);
       const findings = untested.map(({ id, tasks }): Finding => {
         const covered = `${id} (${tasks.join(", ")})`;
@@ -108,7 +112,7 @@ function criteriaTested(plan: LoadedPlan): CheckDefinition {
             `${covered} no tiene en el diff ningún test con su id`,
             `${covered} has no test with its id in the diff`,
           ),
-          severity: "warning",
+          severity,
         };
       });
       return { findings };

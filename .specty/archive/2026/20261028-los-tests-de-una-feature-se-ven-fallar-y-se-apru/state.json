@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
+  "baseCommit": "2d2ceff6979d2bec7e6894504a5e7ae81ade6f3c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6343fe370405642103c5b7a5b0492366ed113299a14f2d910571330ea8f9c7d3",
+    "at": "2026-10-28T07:00:09.945Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:27ec93e9f771fe047eaf1ff09ac3055332be00b4e0f534cd9024761e4a74aa1d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c7329481e397d3f493c47d6168dde1cc3ab9987af92424b00e5e984065faedce",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:0870dedf5f0bf1024daca991493b1b7ef1ad8360fe2db87bb76ad9c4dbdcb317",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:109570f3b998a9bf47aeb2e50192498f9b7921fd9595609464529c0e5c677959",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "f24c2e2543bb6edf56eeb4de7bae1668d8b8f563",
+      "attempts": 1,
+      "startedAt": "2026-10-28T07:00:10.371Z",
+      "doneAt": "2026-10-28T07:08:12.038Z",
+      "summary": "TestsRefusal gana untested, green y unnamed, con sus textos en una tabla; CriterionView.manual desde test: manual, y la tarjeta de la fase de tests deja fuera esos criterios.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "74d96f27d77f4fc04d763348c31404d0d4c71403",
+      "attempts": 1,
+      "startedAt": "2026-10-28T07:08:12.398Z",
+      "doneAt": "2026-10-28T07:13:54.656Z",
+      "summary": "proposeTests exige, antes del commit, un test nuevo con su id por criterio (untestedBeforeCode, sobre las líneas que añade el cambio) y el rojo: la verificación de las tareas feat y fix falla y nombra cada test nuevo; tests.proposed guarda los comandos rojos.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "21540ae88e620cd9f35bd019ead632873cabe4f7",
+      "attempts": 1,
+      "startedAt": "2026-10-28T07:13:55.005Z",
+      "doneAt": "2026-10-28T07:20:26.733Z",
+      "summary": "criteria-tested es un error con contract y un aviso con las demás políticas; friction.test.ts recorre una feature con contract sin bloqueos (agente 10, persona 4: +2 y +1 sobre la estándar); ARCHITECTURE §4 y §16, formats y checks documentan el rojo y la gravedad.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 8,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-28T07:24:32.065Z"
+}

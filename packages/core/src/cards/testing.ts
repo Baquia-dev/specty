@@ -27,7 +27,10 @@ export function testingCard(change: ChangeView, ctx: CardContext): Output {
           "TESTING PHASE: the tests of the criteria come before the code.",
         ),
       ]),
-      ...section(t("CRITERIOS", "CRITERIA"), criteriaOf(owing.flatMap((task) => task.criteria))),
+      ...section(
+        t("CRITERIOS", "CRITERIA"),
+        criteriaOf(owing.flatMap((task) => task.criteria).filter((criterion) => !criterion.manual)),
+      ),
       ...termsSection(
         change.glossary,
         owing.flatMap((task) => task.criteria.map((criterion) => criterion.text)),
@@ -95,10 +98,16 @@ export function testsSubmittedCard(
   };
 }
 
-/** Why `propose` sent nothing in the testing phase: no new tests, or code changed with them. */
+/**
+ * Why `propose` sent nothing in the testing phase: no new tests, code changed with them, a
+ * criterion without its test, or tests that are not red.
+ */
 export type TestsRefusal =
   | { readonly reason: "no-tests" }
-  | { readonly reason: "code"; readonly paths: readonly string[] };
+  | { readonly reason: "code"; readonly paths: readonly string[] }
+  | { readonly reason: "untested"; readonly criteria: readonly string[] }
+  | { readonly reason: "green"; readonly commands: readonly string[] }
+  | { readonly reason: "unnamed"; readonly paths: readonly string[] };
 
 export function testsRefusedCard(id: string, refusal: TestsRefusal, ctx: CardContext): Output {
   const t = translator(ctx.lang);
@@ -106,37 +115,89 @@ export function testsRefusedCard(id: string, refusal: TestsRefusal, ctx: CardCon
     `vuelve a ejecutar \`${ctx.command} propose\``,
     `run \`${ctx.command} propose\` again`,
   );
-  return refusal.reason === "no-tests"
-    ? {
-        status: "blocked",
-        header: headerOf(id, "testing"),
-        blocks: section(undefined, [
-          t(
-            "No hay tests nuevos de los archivos del cambio que enviar.",
-            "There are no new tests of the change's files to send.",
-          ),
-        ]),
-        next: t(
-          `escribe los tests de los criterios y ${again}.`,
-          `write the tests of the criteria and ${again}.`,
-        ),
-      }
-    : {
-        status: "blocked",
-        header: headerOf(id, "testing"),
-        blocks: section(
-          t(
-            "En la fase de tests solo se envían tests; cambió este código",
-            "In the testing phase only tests are sent; this code changed",
-          ),
-          refusal.paths,
-        ),
-        next: t(
-          `deshaz esos cambios, porque el código va después de que la persona apruebe los tests, y ${again}.`,
-          `undo those changes, since the code comes after the person approves the tests, and ${again}.`,
-        ),
-      };
+  const { title, next } = REFUSALS[refusal.reason](t, again);
+  const items = itemsOf(refusal);
+  return {
+    status: "blocked",
+    header: headerOf(id, "testing"),
+    blocks: items === undefined ? section(undefined, [title]) : section(title, items),
+    next,
+  };
 }
+
+/** What a refusal is about: the paths, the criteria or the commands, when it lists any. */
+function itemsOf(refusal: TestsRefusal): readonly string[] | undefined {
+  switch (refusal.reason) {
+    case "code":
+    case "unnamed":
+      return refusal.paths;
+    case "untested":
+      return refusal.criteria;
+    case "green":
+      return refusal.commands;
+    case "no-tests":
+      return undefined;
+  }
+}
+
+type Words = (
+  t: ReturnType<typeof translator>,
+  again: string,
+) => { readonly title: string; readonly next: string };
+
+/** Each refusal in words: what is wrong, and what to do. */
+const REFUSALS: Readonly<Record<TestsRefusal["reason"], Words>> = {
+  "no-tests": (t, again) => ({
+    title: t(
+      "No hay tests nuevos de los archivos del cambio que enviar.",
+      "There are no new tests of the change's files to send.",
+    ),
+    next: t(
+      `escribe los tests de los criterios y ${again}.`,
+      `write the tests of the criteria and ${again}.`,
+    ),
+  }),
+  code: (t, again) => ({
+    title: t(
+      "En la fase de tests solo se envían tests; cambió este código",
+      "In the testing phase only tests are sent; this code changed",
+    ),
+    next: t(
+      `deshaz esos cambios, porque el código va después de que la persona apruebe los tests, y ${again}.`,
+      `undo those changes, since the code comes after the person approves the tests, and ${again}.`,
+    ),
+  }),
+  untested: (t, again) => ({
+    title: t(
+      "Estos criterios no tienen un test nuevo con su id",
+      "These criteria have no new test with their id",
+    ),
+    next: t(
+      `escribe un test por criterio, con su id en el nombre (\`AC1: …\`), y ${again}.`,
+      `write one test per criterion, with its id in the name (\`AC1: …\`), and ${again}.`,
+    ),
+  }),
+  green: (t, again) => ({
+    title: t(
+      "Los tests nuevos no fallan: pasó su verificación",
+      "The new tests do not fail: their verification passed",
+    ),
+    next: t(
+      `escribe los tests de modo que fallen sin el código y ${again}.`,
+      `write the tests so that they fail without the code and ${again}.`,
+    ),
+  }),
+  unnamed: (t, again) => ({
+    title: t(
+      "La verificación falla, pero su salida no nombra estos tests nuevos",
+      "The verification fails, but its output does not name these new tests",
+    ),
+    next: t(
+      `comprueba que la verificación de su tarea los ejecuta y que fallan sin el código, y ${again}.`,
+      `check that their task's verification runs them and that they fail without the code, and ${again}.`,
+    ),
+  }),
+};
 
 /** What `specty approve` asks the person in the testing phase. */
 export function approveTestsQuestion(title: string, lang: Lang): string {

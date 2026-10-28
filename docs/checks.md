@@ -330,7 +330,7 @@ Cada tarea `type: fix`, activa o hecha, trae en el diff un test suyo: de sus `fi
 
 Avisa, sin hacer fallar, de cada criterio de aceptación de una tarea `feat` o `fix` (o sin `type`, que es `feat`), activa o hecha, que no tiene un test con su id: ninguna línea que el diff añade a un archivo de test lo contiene. El id cuenta en el nombre de un test o de su grupo, o en una línea de comentario, escrito como en la spec: `it("AC2: saluda sin nombre", …)`. El nombre está en la línea que declara el test (`it(`, `test(`, `describe(`, `def test_`, `func Test`, `t.Run("…"`, los nodos de Ginkgo…) y, si la declaración es una anotación (`@Test`, `[Fact]`, `#[test]`), en las anotaciones que la siguen y en la firma. No cuenta en los datos de un fixture ni en el cuerpo del test, y `AC2` no cuenta para `AC20`. No lo necesita un criterio con `test: manual`, que comprueba la persona, ni el que solo cubren tareas de otros tipos. Con `--staged`, solo cuenta la tarea activa, porque la hecha ya hizo su commit.
 
-**Configuración:** con `policy.tests: off` no avisa de ningún criterio.
+**Configuración:** con `policy.tests: off` no avisa de ningún criterio. Con `policy.tests: contract`, donde los tests son el contrato, no avisa: falla.
 
 **Desactivar:** `levels: { criteria-tested: off }`.
 

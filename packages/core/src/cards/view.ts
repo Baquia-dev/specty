@@ -27,6 +27,8 @@ export interface CardContext {
 export interface CriterionView {
   readonly id: string;
   readonly text: string;
+  /** `test: manual`: the person checks it, so it needs no test (ADR 0014). */
+  readonly manual?: boolean;
 }
 
 /** A line of a test that carries a criterion's id, and the task whose commit added it. */

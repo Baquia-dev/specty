@@ -290,7 +290,15 @@ function resultReview(
 function criteriaOf(spec: Spec, ac: readonly string[] | "none" | undefined): TaskView["criteria"] {
   if (ac === undefined || ac === "none") return [];
   const criteria = spec.sections.criteria?.items ?? [];
-  return ac.flatMap((id) => criteria.filter((criterion) => criterion.id === id));
+  return ac.flatMap((id) =>
+    criteria
+      .filter((criterion) => criterion.id === id)
+      .map(({ id: _id, text, test }) => ({
+        id,
+        text,
+        ...(test === "manual" ? { manual: true } : {}),
+      })),
+  );
 }
 
 /** Short SHA of each task's commit, found through the `Specty-Task` trailer. */

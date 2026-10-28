@@ -3,6 +3,7 @@ import {
   approvalPostponedCard,
   approveTestsQuestion,
   askAgentNext,
+  basename,
   blockedCard,
   type ChangeState,
   classifyPath,
@@ -18,13 +19,18 @@ import {
   type Spec,
   scopeRulesFrom,
   shortHash,
+  type TestsRefusal,
+  testRules,
   testsApprovedLine,
   testsRefusedCard,
   testsSubmittedCard,
   transition,
 } from "@baquia-dev/specty-core";
+import { checkContext } from "../check/files";
 import { commitState } from "../flow/active";
 import { changeTrailers, commitWithReceipt, decisionTrailers } from "../flow/commits";
+import { untestedBeforeCode } from "../flow/criteria-tests";
+import { runLive } from "../flow/live-run";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { thenNext } from "./next";
@@ -46,6 +52,12 @@ export async function proposeTests(session: Session, active: StoredChange): Prom
   const code = changed.filter((path) => !tests.includes(path));
   if (code.length > 0) return testsRefusedCard(state.id, { reason: "code", paths: code }, cards);
   if (tests.length === 0) return testsRefusedCard(state.id, { reason: "no-tests" }, cards);
+  const untested = await untestedBeforeCode(spec, await checkContext(session, "changed"));
+  if (untested.length > 0) {
+    return testsRefusedCard(state.id, { reason: "untested", criteria: untested }, cards);
+  }
+  const red = await redOf(session, state.id, spec, tests);
+  if (red.kind === "refused") return testsRefusedCard(state.id, red.refusal, cards);
   const moved = transition({
     phase: "testing",
     kind: state.kind,
@@ -54,7 +66,11 @@ export async function proposeTests(session: Session, active: StoredChange): Prom
   });
   if (!moved.ok) return blockedCard(headerOf(state.id, "testing"), moved.code, runNext(cards));
   const sent: ChangeState = { ...state, testsSubmittedAt: session.environment.now().toISOString() };
-  await commitState(session, active, sent, "tests.proposed", { count: tests.length, files: tests });
+  await commitState(session, active, sent, "tests.proposed", {
+    count: tests.length,
+    files: tests,
+    red: red.failed,
+  });
   const dir = session.paths.relative(files.dir);
   const scope = moduleOf(tests[0] ?? "");
   const commit = await commitWithReceipt(session, {
@@ -65,6 +81,54 @@ export async function proposeTests(session: Session, active: StoredChange): Prom
     receipt: { change: state.id, kind: "tests" },
   });
   return testsSubmittedCard(state.id, { commit, files: tests }, cards);
+}
+
+/** The tests are red, with the commands that failed; or why they cannot be sent yet. */
+type Red =
+  | {
+      readonly kind: "red";
+      readonly failed: readonly { readonly cmd: string; readonly exit: number | null }[];
+    }
+  | { readonly kind: "refused"; readonly refusal: TestsRefusal };
+
+/**
+ * The verification of the tasks that ask for their test first, each command once and without
+ * `verify.quick`: it must fail, and its output must name each new test (A5 of ADR 0014's epic).
+ */
+async function redOf(
+  session: Session,
+  id: string,
+  spec: Spec,
+  tests: readonly string[],
+): Promise<Red> {
+  const { policy, verify } = session.config;
+  const commands = [
+    ...new Set(
+      (spec.sections.tasks?.items ?? [])
+        .filter((task) => testRules(task, policy.tests) === "first")
+        .flatMap((task) => task.verify ?? verify.default ?? []),
+    ),
+  ];
+  const failed: { readonly cmd: string; readonly exit: number | null }[] = [];
+  const output: string[] = [];
+  for (const cmd of commands) {
+    const result = await runLive(session, id, "tests", cmd);
+    if (result.code === 0) continue;
+    failed.push({ cmd, exit: result.code ?? null });
+    output.push(result.stdout, result.stderr);
+  }
+  if (failed.length === 0) return { kind: "refused", refusal: { reason: "green", commands } };
+  const said = output.join("\n");
+  const unnamed = tests.filter((path) => !namesOf(path).some((name) => said.includes(name)));
+  return unnamed.length > 0
+    ? { kind: "refused", refusal: { reason: "unnamed", paths: unnamed } }
+    : { kind: "red", failed };
+}
+
+/** How a runner names a test file: its path, its name, or its name without the extension. */
+function namesOf(path: string): readonly string[] {
+  const name = basename(path);
+  return [path, name, name.replace(/\.[^.]+$/, "")];
 }
 
 /** A test the testing phase lets the agent write: of a file in Files or in a task, or next to one. */
