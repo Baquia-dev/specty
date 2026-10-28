@@ -10,3 +10,7 @@
 {"ts":"2026-10-28T09:54:42.221Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"cd360fb48d07ad31d11d9055197149e8f3e13a7d"}}
 {"ts":"2026-10-28T09:59:35.529Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/friction.test.ts","exit":0,"ms":21250,"tree":"sha256:bdaae5166539053b6678277e36d84c002a04ff45d000e364b8df2ec2b7321f76"}}
 {"ts":"2026-10-28T09:59:35.624Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"friction.test.ts recorre un bug quick con contract sin bloqueos (agente 6, persona 2: +1 y +0 sobre el quick); formats y ARCHITECTURE §4 dicen qué ciclo sigue cada cambio y el evento tests.locked."}}
+{"ts":"2026-10-28T10:02:08.825Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":152429,"tree":"sha256:bdaae5166539053b6678277e36d84c002a04ff45d000e364b8df2ec2b7321f76"}}
+{"ts":"2026-10-28T10:02:08.827Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T10:02:59.607Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:7aaabf2926255bad83bc83a4b5de19ce7b5ac62cca38c7c1dc565544a93517d0","size":"L","warnings":0}}
+{"ts":"2026-10-28T10:02:59.838Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

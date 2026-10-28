@@ -75,3 +75,29 @@ Con `policy.tests: contract`, solo una feature pasa por la fase de tests, y lo d
 ## Riesgos
 
 - R1: Sin la persona, un test de bug mal escrito queda bloqueado. Mitigación: tiene que fallar nombrado por la verificación, la persona lo ve en la aceptación y puede desbloquearlo con `scope add` (C3).
+
+## Cierre
+
+### Resumen
+
+`testCycle(spec, policy, done)` sustituye a `testsFirst` y decide el ciclo de tests por las tareas pendientes:
+- una `feat` en un `standard` es una feature, con el gate 2;
+- solo `fix`, también en un `quick`, es un bug.
+
+En el ciclo de un bug, `propose` bloquea los tests en cuanto están en rojo (`lockRed`): el evento `confirmRed` es solo de Specty, se anotan `tests.proposed` y `tests.locked`, y el cambio sigue con la tarjeta de la primera tarea tras `testsLockedLead`. Un ajuste que no añade tareas `feat` ni `fix` ya no vuelve a la fase de tests. El recorrido de fricción de un bug con `contract` llega al final con un comando más del agente y ninguno más de la persona. formats, ARCHITECTURE §4 y el glosario lo documentan.
+
+### Desviaciones
+
+- `transition` elige el grupo de eventos con dos guardas de tipo (`isSpecEvent`, `isTaskEvent`) en vez de un `switch`: con la etiqueta de `confirmRed`, el `switch` llegaba a complejidad 11.
+- El test AC5 de `criteria-tested` en `testing-phase.test.ts` (C2) contaba con que una tarea `fix` se saltara la fase de tests. Ahora aprueba sin `contract` y lo pone después, para ver la gravedad del error; la aserción no cambió.
+- Los tests de `testsFirst` de `quality.test.ts` pasan a ser de `testCycle`, con un caso más para cada ciclo.
+- El glosario gana «Test aprobado» y «Ciclo de tests».
+
+### Decisiones
+
+- El ciclo mira solo las tareas pendientes: así lo decide igual una spec nueva y un ajuste, y una feature ya implementada no vuelve a la fase de tests por un refactor añadido.
+
+### Pendientes
+
+- Que un `refactor` o un `perf` no pueda quitar aserciones con `contract`, y que un ajuste desbloquee los tests de sus criterios modificados y vuelva a la fase de tests: los cambios siguientes del corte C4.
+- `cards/index.ts` está en 305 líneas.

@@ -9,6 +9,8 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.
 - **Recibo** (`Receipt`): lo que deja Specty para que el pre-commit acepte su commit.
 - **Bloqueo** (`LockHolder`): qué comando está cambiando un cambio; uno a la vez.
+- **Test aprobado** (`lockedTests`): un test que aprobó la persona, o el rojo de un bug; solo cambia con un desbloqueo.
+- **Ciclo de tests** (`TestCycle`): con `contract`, el de una feature (gate 2) o el de un bug (su rojo se bloquea solo).
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.
 - **Retro-spec**: la spec que documenta después cambios hechos sin spec.
 - **Hallazgo**: lo que una tarea aprendió (`task done --finding`) para las siguientes.
