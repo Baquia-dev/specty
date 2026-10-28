@@ -36,6 +36,19 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
    └─ manifest.json            # [{ "path", "created", "removed"?, "copy"? }]: cada archivo creado, cambiado o borrado
 ```
 
+**El servidor MCP en cada agente** (`specty init --mcp`, ARCHITECTURE §6). La entrada se llama `specty`, ejecuta `specty mcp` y se escribe solo con `specty` en el PATH, en la configuración MCP de proyecto de cada agente que el repositorio usa. Lo demás del archivo no cambia:
+
+| Agente | Archivo | Entrada |
+| --- | --- | --- |
+| Claude Code | `.mcp.json` | `"mcpServers": { "specty": { "command": "specty", "args": ["mcp"] } }` |
+| Cursor | `.cursor/mcp.json` | la misma |
+| Gemini CLI | `.gemini/settings.json` | la misma |
+| Devin (Windsurf) | `.devin/config.json` | la misma |
+| OpenCode | `opencode.json` | `"mcp": { "specty": { "type": "local", "command": ["specty", "mcp"], "enabled": true } }` |
+| Codex | `.codex/config.toml` | la tabla `[mcp_servers.specty]` con `command = "specty"` y `args = ["mcp"]`; Codex la lee en un proyecto de confianza |
+
+Antigravity solo lee los servidores MCP de la carpeta del usuario, donde Specty no escribe: `init` y `doctor` dicen cómo añadirlo. `uninstall` quita la entrada de todos esos archivos y borra el que se queda vacío.
+
 ### Identificadores
 
 - Cambio: `AAAAMMDD-slug`, por ejemplo `20261020-evolucion-academica`.

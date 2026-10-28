@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-init-mcp-registra-el-servidor-en-los-agentes-y-d-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-init-mcp-registra-el-servidor-en-los-agentes-y-d-2",
   "baseCommit": "3c5750ef91e42b9b950a1a5b0c972414d3ff6fae",
   "revision": 1,
@@ -56,12 +56,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1ef54be110ec519add89455e6a4f882d2b3e6d05",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:58:30.473Z",
       "doneAt": "2026-10-28T16:02:09.823Z",
-      "summary": "install/mcp.ts registra, revisa y quita la entrada specty de cada agente; init --mcp, doctor y uninstall la usan"
+      "summary": "install/mcp.ts registra, revisa y quita la entrada specty de cada agente; init --mcp, doctor y uninstall la usan",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e15e8103a2a0ce1ea88dd712842ee07bfabb1ae4",
+      "startedAt": "2026-10-28T16:02:10.130Z",
+      "doneAt": "2026-10-28T16:02:45.254Z",
+      "summary": "formats 1 tabula la entrada de cada agente y ARCHITECTURE 6 explica el registro opcional"
     }
   },
   "pending": {

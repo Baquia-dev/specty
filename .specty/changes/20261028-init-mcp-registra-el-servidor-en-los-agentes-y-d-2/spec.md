@@ -67,7 +67,7 @@ slice: C5
   - files: packages/cli/src/install/mcp.ts, packages/cli/src/commands/init.ts, packages/cli/src/program.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/commands/uninstall.ts, packages/cli/test/mcp-install.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/mcp-install.test.ts test/bootstrap.test.ts test/doctor-enter.test.ts test/uninstall.test.ts
-- [ ] T3: Documentar el registro
+- [x] T3: Documentar el registro
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-install.test.ts
