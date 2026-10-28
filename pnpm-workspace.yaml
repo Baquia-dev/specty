@@ -1,5 +1,7 @@
 packages:
   - "packages/*"
+  # The compliance suite with real agents (ARCHITECTURE §16): `pnpm evals`.
+  - "evals"
 
 # esbuild, @parcel/watcher, lmdb and msgpackr-extract ship prebuilt binaries
 # (platform packages or prebuilds); their install scripts are not needed.
