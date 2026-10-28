@@ -60,3 +60,29 @@ Desde que `packages/core/src/spec/` cuenta como código y no como tests, `specty
 ## Riesgos
 
 - R1: Un cambio de comportamiento escondido en la división. Mitigación: los tests de `spec` no cambian, y la verificación completa al aceptar ejecuta todos los de core, cli y ui, que leen y escriben specs.
+
+## Cierre
+
+### Resumen
+
+Las cinco funciones del parser quedan dentro de `checks.functions`:
+- `parseSpec` delega el recorrido de las secciones en `readSections`;
+- `readFrontmatter` delega la construcción del frontmatter válido en `frontmatterOf`;
+- `readList` aplica lo que `readLine` y `fieldOf` dicen de cada línea;
+- `readEntry` delega en `readAction` y `readPaths`;
+- `sectionBody` toma la prosa directamente y las listas de `LIST_BODIES`.
+
+`specty check --all`, con el CLI construido sobre el cambio, no tiene hallazgos de `function-lines` ni de `complexity` en todo el repositorio. Los 37 tests de `spec` pasan sin cambios.
+
+### Desviaciones
+
+- `readLine` llegó a complejidad 11, así que la lectura de un campo salió a `fieldOf`.
+- Las tareas no llevan `type: refactor`, así que sus commits salieron como `feat(core)`, aunque el cambio se creó con `--type refactor`. Me di cuenta después de aprobar, con la spec ya bloqueada.
+
+### Decisiones
+
+- Los problemas de una entrada de «Archivos» se informan en el mismo orden que antes: primero la ruta de destino y después el origen de un renombrado.
+
+### Pendientes
+
+- `max-lines` avisa de cuatro archivos: `cards/doctor.ts` (306), `cards/index.ts` (302), `guard/decide.ts` (302) y `schema/config.ts` (310, que creció con el glosario de C5). Hay que proponer cómo dividir `config.ts`, por ejemplo con el esquema de `git` en su propio archivo.
