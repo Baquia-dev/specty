@@ -18,6 +18,7 @@ import { Preferences } from "../theme/preferences";
 import { LiveOutput } from "./live-output";
 import { ScopeRequest } from "./scope-request";
 import { TaskRow } from "./task-row";
+import { TestsSent } from "./tests-sent";
 
 const TICK_MS = 30_000;
 
@@ -31,11 +32,11 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
 /**
  * The Progress tab (docs/ui.md, Progreso): the tasks in the spec's order as document rows. A task
  * waiting for the person's decision leaves its place for «Te espera» at the top and goes back to
- * it once decided.
+ * it once decided. In `testing`, the tests the agent writes or sent go first.
  */
 @Component({
   selector: "sp-progress-tab",
-  imports: [SectionDivider, EmptyState, TaskRow, ScopeRequest, LiveOutput],
+  imports: [SectionDivider, EmptyState, TaskRow, ScopeRequest, LiveOutput, TestsSent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-8" },
   template: `
@@ -52,6 +53,9 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
           }
         </div>
       </div>
+      @if (change().tests; as tests) {
+        <sp-tests-sent [tests]="tests" [now]="now()" />
+      }
       @if (waiting().length > 0) {
         <section aria-labelledby="progress-waiting" data-waiting>
           <sp-section-divider [heading]="t()('Te espera', 'Waiting for you')" headingId="progress-waiting" [meta]="waiting().length" [level]="2" />

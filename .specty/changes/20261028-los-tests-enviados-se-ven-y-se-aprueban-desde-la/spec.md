@@ -67,7 +67,7 @@ Con `policy.tests: contract`, el agente envía los tests de una feature antes de
   - files: packages/ui/src/data/tests.ts, packages/ui/src/data/tests.test.ts, packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/inbox/inbox-row.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data --include src/inbox
-- [ ] T2: La sección de los tests enviados en Progreso
+- [x] T2: La sección de los tests enviados en Progreso
   - files: packages/ui/src/progress/tests-sent.ts, packages/ui/src/progress/tests-sent.test.ts, packages/ui/src/progress/progress-tab.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress
