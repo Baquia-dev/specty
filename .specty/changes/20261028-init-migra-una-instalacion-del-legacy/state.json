@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261028-init-migra-una-instalacion-del-legacy",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261028-init-migra-una-instalacion-del-legacy",
+  "baseCommit": "1b31ebcbaaf392930ff10c943fd85335f116b57d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:332367710aefb6a42d535790c3864ecdcaed6a18cc2974dcf90119fc79e50019",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ff3aa2eed77ff9ac298c3daf2297596e4fcdeeb7c6e2206007f9d9b2b03f339b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f1d2aae25774131c000a8edf74d1586385893ad94d32de022d4204e3296e866b",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:8994642a6096a0fd637034f8bb0893e35ccd6c5b238b622e4022214036e72745",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:5cdbd7492304c538f1c07b3b417c1339016f9904934513eab04e33a862e1036e",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:74c14954adca1a0db94795661797bffce0bc6ad4c7737888627876a9d9895ff4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:51ca392e829bce315bbaddeaa1e99bf0965911baaa511f0ba4616b8e4d7d3c84",
+    "at": "2026-10-28T16:30:49.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
