@@ -82,3 +82,29 @@ Un repositorio con el Specty anterior (`@barcidev/specty`) tiene un `.specty/con
 
 - R1: La configuración del legacy tiene campos que no se traducen y la persona los pierde de vista. Mitigación: se mueve entera a `.specty/legacy/config.yaml` y la nota del primer paso muestra la configuración nueva antes de confirmar.
 - R2: Quitar un bloque o un hook podría llevarse líneas de la persona. Mitigación: solo se quita lo que está entre los marcadores del legacy, y cada paso muestra las líneas antes de preguntar.
+
+## Cierre
+
+### Resumen
+
+`specty init` reconoce una instalación del legacy (`.specty/config.yaml` con `spec_engine`, `governance` o `scopes`) y la migra antes de leer la configuración, en tres pasos con nota y pregunta:
+
+1. Mueve `.specty/` a `.specty/legacy/` y escribe la configuración traducida: idioma, `governed`, `ignored`, `verify.default` y `verify.full`. Este paso es obligatorio.
+2. Quita sus hooks de git de `.husky/` y de la carpeta de hooks.
+3. Quita sus bloques con hash de AGENTS.md.
+
+Después sigue el `init` de siempre, y su commit lleva las rutas movidas. Sin terminal, lo rechaza y dice cómo hacerlo; `--dry-run` muestra el plan. `specty import` lista también los cambios de `.specty/legacy/changes/`. El código está en `install/legacy.ts` y los textos en `core/src/cards/legacy.ts`; `configTemplate` acepta `governed` e `ignored`.
+
+### Desviaciones
+
+- `init` pasaba de las 50 líneas con la migración: la llamada va en `migrate`, y la suma de lo hecho en `withMigration`.
+- No hubo una instalación real del legacy con la que probarlo (`../specty-legacy` no tiene una): la prueba la recrea con su configuración, una regla, un cambio, un bloque y un hook.
+
+### Decisiones
+
+- Mover es renombrar en disco, así que los archivos binarios del legacy (su índice SQLite) también pasan.
+
+### Pendientes
+
+- Los archivos que los adaptadores del legacy generaron fuera de `.specty/`, y sus comandos en `lefthook.yml` o `simple-git-hooks`, quedan para la persona.
+- `packages/core/src/cards/index.ts` está en 332 líneas, sobre el aviso de `max-lines`.
