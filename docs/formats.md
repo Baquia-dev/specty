@@ -218,6 +218,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - `closingSubmittedAt` (opcional) indica que el cierre ya se envió y espera la confirmación de la persona.
 - `testsSubmittedAt` (opcional), en la fase `testing`, indica que el agente envió los tests y esperan la aprobación de la persona; se borra al aprobarlos.
 - `lockedTests` (opcional): los tests que aprobó la persona en la fase `testing`, cada ruta con el hash de su contenido al aprobarlos. El guard no deja escribirlos ni borrarlos, y `tests-locked` falla si alguno cambia (ARCHITECTURE §4). Un test que la persona desbloquea para una tarea (`scope add` sobre él, que decide solo la persona) queda abierto mientras la tarea está activa, y al completarla `lockedTests` guarda el hash de su versión nueva; si ya no existe, deja de estar bloqueado.
+- `testCycle` (opcional), en la fase `testing`, guarda el ciclo que decidió su aprobación: `feature` (los tests esperan a la persona) o `bug` (su rojo se bloquea solo). Se borra al salir de la fase.
 - `integration` (opcional) registra una incorporación de la rama principal que no salió sola: el merge dio conflictos o, con su resultado, la verificación falla, y el merge espera en la carpeta del cambio a que el agente lo termine (ARCHITECTURE §9). Mientras no tiene `resolved`, el agente solo puede tocar los archivos de `paths`:
 
   ```json
@@ -247,7 +248,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `spec.proposed` | revisión, hash, tamaño, avisos |
 | `assumption.decided` | ítem, decisión, comentario |
 | `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |
-| `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada |
+| `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada; si un ajuste desbloqueó tests aprobados, `unlocked` (sus rutas) |
 | `tests.proposed` | en la fase `testing`, el agente envió los tests: `count` y `files`, los que van en el commit, y `red`: cada comando de la verificación que falló, `{ cmd, exit }` |
 | `tests.approved` | la persona aprobó los tests enviados (el gate 2 de ADR 0014): canal (`tty`, `ui` o `delegated`) |
 | `tests.locked` | en el ciclo de un bug, Specty bloqueó los tests en rojo sin esperar a la persona: `count` y `files` |

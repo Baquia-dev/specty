@@ -58,7 +58,7 @@ Los dos cambios anteriores de C4 ya dan su ciclo a los bugs y a los refactors co
   - files: packages/core/src/schema/state.ts, packages/cli/src/flow/adjusted-tests.ts, packages/cli/src/commands/approve.ts, packages/cli/src/commands/tests.ts, packages/cli/test/adjusted-tests.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema && pnpm --filter @baquia-dev/specty exec vitest run test/adjusted-tests.test.ts test/bug-cycle.test.ts test/testing-phase.test.ts
-- [ ] T2: La documentación de los ajustes con contract
+- [x] T2: La documentación de los ajustes con contract
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4
   - type: docs

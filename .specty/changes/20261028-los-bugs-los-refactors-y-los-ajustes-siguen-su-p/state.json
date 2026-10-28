@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-los-bugs-los-refactors-y-los-ajustes-siguen-su-p",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-los-bugs-los-refactors-y-los-ajustes-siguen-su-p",
   "baseCommit": "58cab00cd2eab26142fb0fea7f7f0cee8cca37e0",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a957e8b209b4dedc69ca4140b03c4f644cd16ab1",
+      "attempts": 1,
       "startedAt": "2026-10-28T10:14:45.589Z",
       "doneAt": "2026-10-28T10:26:11.366Z",
-      "summary": "flow/adjusted-tests.ts: un ajuste que modifica un criterio desbloquea los tests con su id y va al ciclo de una feature; si no, decide testCycle (un defecto, el de un bug). approve guarda testCycle y anota unlocked en spec.approved; tests.ts usa cycleOf y borra testCycle al salir de testing."
+      "summary": "flow/adjusted-tests.ts: un ajuste que modifica un criterio desbloquea los tests con su id y va al ciclo de una feature; si no, decide testCycle (un defecto, el de un bug). approve guarda testCycle y anota unlocked en spec.approved; tests.ts usa cycleOf y borra testCycle al salir de testing.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "05b19fd72cc7d878273e02517cffa49dfc91cf94",
+      "startedAt": "2026-10-28T10:26:11.676Z",
+      "doneAt": "2026-10-28T10:31:16.632Z",
+      "summary": "formats nombra testCycle y unlocked de spec.approved; ARCHITECTURE §4 y §12 explican el ciclo de los ajustes con contract."
     }
   },
   "pending": {
