@@ -63,7 +63,7 @@ Hoy Specty exporta a OpenSpec, pero quien ya trabaja con OpenSpec no puede traer
 
 ## Tareas
 
-- [ ] T1: El importador de OpenSpec
+- [x] T1: El importador de OpenSpec
   - files: packages/exporters/src/import-openspec.ts, packages/exporters/src/index.ts, packages/exporters/test/import-openspec.test.ts, packages/core/src/cards/import.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC2
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty-exporters typecheck && pnpm --filter @baquia-dev/specty-exporters exec vitest run test/import-openspec.test.ts

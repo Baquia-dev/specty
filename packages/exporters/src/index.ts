@@ -7,6 +7,7 @@ import { openSpec } from "./openspec";
 import type { ExportContext, ExportedFile } from "./parts";
 import { specKit } from "./speckit";
 
+export { type OpenSpecFiles, parseOpenSpec } from "./import-openspec";
 export type { ExportContext, ExportedFile } from "./parts";
 export { type Scenario, scenarioOf } from "./scenario";
 

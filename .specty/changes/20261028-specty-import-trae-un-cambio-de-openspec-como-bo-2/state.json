@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "030f9b9236f3b3fdc70c77b5a6ecbcf166c46965",
+      "startedAt": "2026-10-28T16:20:48.027Z",
+      "doneAt": "2026-10-28T16:21:16.124Z",
+      "summary": "parseOpenSpec lee proposal, tasks, design y specs de un cambio de OpenSpec en un ImportedChange de core, con given, when y outcome"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
