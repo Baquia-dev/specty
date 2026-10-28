@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-la-pestana-historial-muestra-la-linea-de-tiempo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-la-pestana-historial-muestra-la-linea-de-tiempo",
   "baseCommit": "bfd12da5c6c6886f3759798aecfa9362f3848bc8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:49f6aa5968d77ab6e68bd3aef3c597f102a899cc88dff7de124c04bdf888318c",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1de2540278bb41f2cf6dcb4f202b02a99659d0a0",
+      "attempts": 1,
       "startedAt": "2026-10-28T18:10:33.552Z",
       "doneAt": "2026-10-28T18:14:08.814Z",
-      "summary": "docs/ui.md describe la línea de tiempo y sus filtros, y deja la exportación y la trazabilidad para más adelante"
+      "summary": "docs/ui.md describe la línea de tiempo y sus filtros, y deja la exportación y la trazabilidad para más adelante",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,6 +64,7 @@
     "AC": 3,
     "T": 2
   },
+  "closingSubmittedAt": "2026-10-28T18:18:05.188Z",
   "lockedTests": {
     "packages/ui/src/history/history-tab.test.ts": "sha256:f85d5ba3af80c272d50eb6f3be439732243e2c9bc9807dc2c7ffc7a50a298e42"
   }

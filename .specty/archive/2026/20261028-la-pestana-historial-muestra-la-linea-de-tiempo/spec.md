@@ -53,3 +53,23 @@ La pestaña Historial de un cambio solo dice «El historial y la trazabilidad ll
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-tab.test.ts
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La pestaña Historial de un cambio ya no dice que llega en la fase 3: `history/history-tab.ts` (`sp-history-tab`) muestra los eventos de `audit.jsonl` en orden de tiempo, agrupados por día en la hora local, cada uno con su hora, su título, quién lo hizo (la persona, el agente con su herramienta o Specty), sus detalles y su tipo. «Quién» y «Tipo» filtran la lista, el resumen dice cuántos de cuántos, una línea ofrece quitar los filtros si ninguno coincide y un estado vacío cubre el cambio sin eventos. `change-page.ts` la pone en el panel Historial y docs/ui.md la describe.
+
+### Desviaciones
+
+Ninguna respecto al plan. La fila usa la rejilla de las filas de documento (la hora en la columna fija y el tipo como `sp-badge` a la derecha), que el diseño no detallaba.
+
+### Decisiones
+
+- Los nombres de las herramientas del agente (Claude Code, Codex, Cursor…) se traducen en el componente; una herramienta desconocida se muestra con su id tal cual.
+- Cada día lleva en su divisor el número de eventos que muestra con los filtros aplicados.
+
+### Pendientes
+
+- La exportación a Markdown, JSON, OpenSpec, Spec Kit y Kiro desde la UI.
+- La vista de trazabilidad con un margen tipo blame.
