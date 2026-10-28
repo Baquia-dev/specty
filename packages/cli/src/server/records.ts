@@ -45,6 +45,7 @@ interface ReviewRecord {
 const ENTERS: Readonly<Record<Phase, readonly string[]>> = {
   draft: ["change.created"],
   review: ["spec.proposed"],
+  testing: ["spec.approved"],
   implementing: ["spec.approved"],
   adjusting: ["adjust.requested"],
   acceptance: ["task.completed", "spec.approved"],

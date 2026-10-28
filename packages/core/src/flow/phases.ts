@@ -3,6 +3,7 @@
 export type Phase =
   | "draft"
   | "review"
+  | "testing"
   | "implementing"
   | "acceptance"
   | "adjusting"
@@ -13,6 +14,7 @@ export type Phase =
 export const PHASES: readonly Phase[] = [
   "draft",
   "review",
+  "testing",
   "implementing",
   "acceptance",
   "adjusting",
@@ -44,6 +46,8 @@ export interface PhasePermissions {
 const PERMISSIONS: Readonly<Record<Exclude<Phase, "closing">, PhasePermissions>> = {
   draft: { code: "blocked", spec: "free", waitingFor: "agent" },
   review: { code: "blocked", spec: "free", waitingFor: "human" },
+  // ADR 0014: the tests of the criteria before the code. No change enters it yet.
+  testing: { code: "blocked", spec: "locked", waitingFor: "agent" },
   implementing: { code: "active-task", spec: "locked", waitingFor: "agent" },
   acceptance: { code: "blocked", spec: "locked", waitingFor: "human" },
   adjusting: { code: "blocked", spec: "append-only", waitingFor: "agent" },

@@ -112,7 +112,7 @@ describe("Catalog", () => {
     expect(dividers.map(label)).toEqual([
       `Base y acento ${TOKENS.filter((token) => token.group === "color").length}`,
       "Usos del acento",
-      "Fases 8",
+      "Fases 9",
     ]);
     expect(page?.querySelector(".rounded-xl")).toBeNull();
     const first = page?.querySelector<HTMLElement>("[aria-labelledby=colors-base] li");

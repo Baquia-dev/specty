@@ -33,6 +33,7 @@ import { warningsOf } from "./warnings";
 const TABS: Readonly<Record<Phase, ChangeTab>> = {
   draft: "spec",
   review: "spec",
+  testing: "progress",
   implementing: "progress",
   adjusting: "progress",
   acceptance: "acceptance",

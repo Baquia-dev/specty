@@ -43,6 +43,10 @@ describe("tokens", () => {
     expect(PHASES.every((phase) => PHASE_LABELS[phase].es && PHASE_LABELS[phase].en)).toBe(true);
   });
 
+  it("AC4: calls the testing phase «Tests» in both languages", () => {
+    expect(PHASE_LABELS.testing).toEqual({ es: "Tests", en: "Tests" });
+  });
+
   it.each([
     ["light", light],
     ["dark", dark],

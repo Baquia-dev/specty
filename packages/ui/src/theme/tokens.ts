@@ -21,6 +21,7 @@ const token = (name: `--${string}`, group: TokenGroup, es: string, en: string): 
 export const PHASE_LABELS: Readonly<Record<Phase, Readonly<Record<Lang, string>>>> = {
   draft: { es: "Borrador", en: "Draft" },
   review: { es: "Revisión", en: "Review" },
+  testing: { es: "Tests", en: "Tests" },
   implementing: { es: "Implementación", en: "Implementing" },
   adjusting: { es: "Ajustes", en: "Adjusting" },
   acceptance: { es: "Aceptación", en: "Acceptance" },

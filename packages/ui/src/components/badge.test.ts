@@ -52,6 +52,13 @@ describe("PhaseBadge and Badge", () => {
     }
     expect(element.querySelector("sp-badge")?.textContent?.trim()).toBe("M");
   });
+
+  it("AC4: names the testing phase «Tests» with its flask icon", async () => {
+    const { element } = await render("es");
+    const badge = element.querySelector<HTMLElement>('sp-phase-badge[data-phase="testing"]');
+    expect(badge?.textContent?.trim()).toBe("Tests");
+    expect(badge?.querySelector("svg")?.getAttribute("class")).toContain("flask-conical");
+  });
 });
 
 describe("Card", () => {

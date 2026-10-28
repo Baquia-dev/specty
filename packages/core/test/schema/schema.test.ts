@@ -192,8 +192,12 @@ describe("parseChangeState", () => {
     if (!wrong.ok) expect(wrong.issues[0]).toMatch(/^integration\.reason/);
   });
 
+  it("AC1: accepts a change in the testing phase", () => {
+    expect(parseChangeState({ ...state, phase: "testing" }).ok).toBe(true);
+  });
+
   it("rejects malformed states with readable issues", () => {
-    const result = parseChangeState({ ...state, phase: "testing", revision: -1 });
+    const result = parseChangeState({ ...state, phase: "tested", revision: -1 });
     expect(result.ok).toBe(false);
     if (!result.ok)
       expect(result.issues.map((issue) => issue.split(":")[0])).toEqual(["phase", "revision"]);

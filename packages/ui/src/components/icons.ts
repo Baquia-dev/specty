@@ -23,6 +23,7 @@ import {
   Eye,
   FilePlus,
   FileQuestionMark,
+  FlaskConical,
   GitCommitHorizontal,
   GitCompareArrows,
   Hourglass,
@@ -78,6 +79,7 @@ export const LucideDownload = icon("download", Download);
 export const LucideEye = icon("eye", Eye);
 export const LucideFilePlus = icon("file-plus", FilePlus);
 export const LucideFileQuestion = icon("file-question-mark", FileQuestionMark);
+export const LucideFlaskConical = icon("flask-conical", FlaskConical);
 export const LucideGitCommitHorizontal = icon("git-commit-horizontal", GitCommitHorizontal);
 export const LucideGitCompareArrows = icon("git-compare-arrows", GitCompareArrows);
 export const LucideHourglass = icon("hourglass", Hourglass);

@@ -10,6 +10,7 @@ import {
   LucideCircleCheck,
   LucideCode,
   LucideEye,
+  LucideFlaskConical,
   LucideListChecks,
   LucidePencilLine,
   LucideWrench,
@@ -19,6 +20,7 @@ import {
 const PHASE_ICONS = {
   draft: LucidePencilLine,
   review: LucideEye,
+  testing: LucideFlaskConical,
   implementing: LucideCode,
   adjusting: LucideWrench,
   acceptance: LucideListChecks,

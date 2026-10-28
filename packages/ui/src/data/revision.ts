@@ -9,6 +9,7 @@ type RevisionOf = Pick<ChangeView, "phase" | "revision" | "approved" | "decision
 const STATES: Readonly<Record<Phase, Bilingual>> = {
   draft: { es: "sin proponer", en: "not proposed" },
   review: { es: "por aprobar", en: "to approve" },
+  testing: { es: "aprobada", en: "approved" },
   adjusting: { es: "aprobada, en ajuste", en: "approved, being adjusted" },
   implementing: { es: "aprobada", en: "approved" },
   acceptance: { es: "aprobada", en: "approved" },

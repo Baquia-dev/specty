@@ -57,7 +57,7 @@ El corte C2 de la épica «Tests como contrato» añade la fase `testing`, entre
 
 ## Tareas
 
-- [ ] T1: La fase testing en el modelo, su tarjeta, el servidor y la UI
+- [x] T1: La fase testing en el modelo, su tarjeta, el servidor y la UI
   - files: packages/core/src/flow/phases.ts, packages/core/src/schema/state.ts, packages/core/src/cards/next.ts, packages/core/src/cards/testing.ts, packages/cli/src/server/records.ts, packages/cli/test/server/records.test.ts, packages/ui/src/components/badge.ts, packages/ui/src/components/icons.ts, packages/ui/src/theme/tokens.ts, packages/ui/src/data/views.ts, packages/ui/src/data/revision.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/server/records.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data --include src/theme --include src/components
