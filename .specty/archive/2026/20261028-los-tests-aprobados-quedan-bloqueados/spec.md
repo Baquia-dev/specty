@@ -72,3 +72,22 @@ Desbloquear un test, que solo decide la persona, llega con el cambio siguiente, 
 ## Riesgos
 
 - R1: Hasta el cambio siguiente, un test aprobado que está mal no se puede corregir sin cancelar el cambio. Mitigación: `contract` es opcional y nadie lo usa todavía; el corte C3, que sigue a este, añade el desbloqueo.
+
+## Cierre
+
+### Resumen
+
+Al aprobar los tests, `state.json` guarda en `lockedTests` el hash de cada test del último envío. El guard rechaza escribir o borrar un test bloqueado en cualquier fase, con la regla `locked` y textos en `guard/testing.ts`: no cambiarlo, explicárselo al usuario, y los tests nuevos en archivos nuevos. La comprobación común `tests-locked` (`check/locked.ts`) compara cada test bloqueado de los cambios abiertos de la carpeta con su hash, con `--spec` y sin él, así que también la ve la CI de un PR. checks, formats y ARCHITECTURE §4 lo documentan.
+
+### Desviaciones
+
+- `packages/cli/src/check/provider.ts` (S1): una comprobación puede responder `inapplicable` y queda fuera del informe, como una apagada. `tests-locked` lo hace donde no hay tests bloqueados. Contarla en todos los proyectos cambiaba la salida de cualquier `specty check` sin `contract` y rompía 52 tests que fijan el recuento.
+- `packages/cli/test/check-docs.test.ts` (S2): como `tests-locked` solo aparece con tests bloqueados, la lista de comprobaciones documentadas la añade a mano, igual que `secrets`.
+
+### Decisiones
+
+- El bloqueo es del archivo entero y vale en cualquier fase: lo comprueba el guard antes que la fase y el alcance de la tarea, y solo la incorporación de la rama principal decide antes que él.
+
+### Pendientes
+
+- Pedir y decidir el desbloqueo de un test (solo la persona), que el hash nuevo sustituya al aprobado al completar la tarea, y que la aceptación lo muestre: el corte C3, que sigue a este. Allí el SIGUIENTE del guard nombrará la solicitud de desbloqueo.
