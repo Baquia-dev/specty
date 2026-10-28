@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
   "baseCommit": "4316fca24392e8c5161b5a72b3df1c94142a4f89",
   "revision": 1,
@@ -50,6 +50,7 @@
     "T": 1,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-28T18:14:52.507Z"
+  "lockedTests": {
+    "packages/cli/test/detect-ci.test.ts": "sha256:74f224dc0ca0368fa025af2e1a018c81012cff1db869e73fcf8b3a1d759f81f0"
+  }
 }

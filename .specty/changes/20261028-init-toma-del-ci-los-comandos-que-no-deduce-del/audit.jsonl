@@ -2,3 +2,4 @@
 {"ts":"2026-10-28T18:13:21.073Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:4c3faec201db3e88789711382ed10dd6fd764282f1ddffe72b92f7d33959e3d0","size":"S","warnings":0}}
 {"ts":"2026-10-28T18:13:27.162Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:4c3faec201db3e88789711382ed10dd6fd764282f1ddffe72b92f7d33959e3d0","channel":"delegated","delegated":true}}
 {"ts":"2026-10-28T18:14:52.507Z","actor":"agent","tool":"claude-code","event":"tests.proposed","data":{"count":1,"files":["packages/cli/test/detect-ci.test.ts"],"red":[{"cmd":"pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/detect-ci.test.ts test/detect-quality.test.ts","exit":1}]}}
+{"ts":"2026-10-28T18:14:57.700Z","actor":"agent","tool":"claude-code","event":"tests.approved","data":{"channel":"delegated","delegated":true}}
