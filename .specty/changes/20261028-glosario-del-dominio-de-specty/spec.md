@@ -14,7 +14,7 @@ Specty ya trae a las tarjetas las definiciones del glosario del dominio, pero su
 
 ## Tareas
 
-- [ ] T1: El glosario del dominio de Specty
+- [x] T1: El glosario del dominio de Specty
   - files: docs/dominio.md
   - ac: —
   - verify: specty doctor
