@@ -65,7 +65,7 @@ El corte C6 de la épica «Tests como contrato» lleva a la UI lo que la termina
   - files: packages/cli/src/server/records.ts, packages/cli/test/server/records.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server
-- [ ] T2: Los tests de cada criterio en los datos de la UI
+- [x] T2: Los tests de cada criterio en los datos de la UI
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/review.ts, packages/ui/src/data/views.ts, packages/ui/src/data/acceptance.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data

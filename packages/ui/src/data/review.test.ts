@@ -107,6 +107,12 @@ describe("deriveReview", () => {
     ]);
   });
 
+  it("AC1: marks the criteria the person checks by hand", () => {
+    const manual = SPEC.replace(/(- AC1: [^\n]*\n)/, "$1  - test: manual\n");
+    const [first, second] = deriveReview(parseSpec(manual).spec, STATE, COMMENTS).criteria;
+    expect([first?.manual, second?.manual]).toEqual([true, undefined]);
+  });
+
   it("puts warnings next to vague criteria, in both languages (AC3)", () => {
     const [clear, vague] = review().criteria;
     expect(clear?.warnings).toEqual([]);

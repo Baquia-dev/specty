@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "284c146d228c11359744119caf79fa4ea698218b",
+      "attempts": 1,
       "startedAt": "2026-10-28T11:55:10.755Z",
       "doneAt": "2026-10-28T11:59:45.041Z",
-      "summary": "El servidor guarda la sesión de cada cambio abierto y, con los commits de sus tareas, da criteriaTests a los que están en aceptación (no a las épicas), con la función de la tarjeta de aceptación"
+      "summary": "El servidor guarda la sesión de cada cambio abierto y, con los commits de sus tareas, da criteriaTests a los que están en aceptación (no a las épicas), con la función de la tarjeta de aceptación",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4be405d8e7ec501d51578e48f4966a03e7b52076",
+      "startedAt": "2026-10-28T11:59:45.343Z",
+      "doneAt": "2026-10-28T12:04:32.068Z",
+      "summary": "La vista pasa criteriaTests del servidor; cada criterio sabe si es manual (de la spec) y su evidencia trae como mucho 3 tests, cuántos más hay y si debía un test que no tiene"
     }
   },
   "pending": {

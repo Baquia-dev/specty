@@ -37,6 +37,26 @@ export interface ChangeRecord {
   readonly folder?: string;
   /** The independent reviews that answered, with their text, oldest first (ADR 0011). */
   readonly reviews?: readonly ReviewRecord[];
+  /** In acceptance, each criterion with the tests that carry its id, from the server (ADR 0014). */
+  readonly criteriaTests?: readonly CriterionTests[];
+}
+
+/** A test line that carries a criterion's id, added by a task's commit. */
+export interface CriterionTest {
+  readonly path: string;
+  readonly line: number;
+  readonly task: string;
+  readonly commit: string;
+}
+
+/** A criterion with its tests, as the acceptance card of the CLI reads them. */
+export interface CriterionTests {
+  readonly id: string;
+  /** `test: manual`: the person checks it by hand. */
+  readonly manual: boolean;
+  /** A `feat` or `fix` task covers it, so a test should carry its id. */
+  readonly owed: boolean;
+  readonly tests: readonly CriterionTest[];
 }
 
 /** An independent review (`specty review`): of the spec or of the result, and what it said. */
@@ -123,6 +143,8 @@ export interface CriterionView {
   readonly id: string;
   readonly text: string;
   readonly warnings: readonly Bilingual[];
+  /** `test: manual`: the person checks it by hand. */
+  readonly manual?: true;
 }
 
 export interface FileView {
@@ -277,6 +299,8 @@ export interface ChangeView {
   /** The last independent review of the spec, and of the result, that answered. */
   readonly specReview?: ReviewRecord;
   readonly resultReview?: ReviewRecord;
+  /** In acceptance, each criterion with its tests, when the source has them. */
+  readonly criteriaTests?: readonly CriterionTests[];
   /** The closing the agent wrote (`## Cierre`), in its parts; none until it writes it. */
   readonly closing?: ClosingParts;
   /** In `testing`: the tests the agent sent for the person's approval, or none yet. */

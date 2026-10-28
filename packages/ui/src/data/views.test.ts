@@ -201,6 +201,20 @@ describe("decisions and tabs", () => {
     expect(deriveView(record({ phase: "review" })).tests).toBeUndefined();
   });
 
+  it("AC1: carries the tests of each criterion the server sent, as they came", () => {
+    const criteriaTests = [
+      {
+        id: "AC1",
+        manual: false,
+        owed: true,
+        tests: [{ path: "test/trimestre_test.dart", line: 4, task: "T1", commit: "a1b2c3d" }],
+      },
+    ];
+    const accepting = { ...record({ phase: "acceptance" }), criteriaTests };
+    expect(deriveView(accepting).criteriaTests).toEqual(criteriaTests);
+    expect(deriveView(record({ phase: "acceptance" })).criteriaTests).toBeUndefined();
+  });
+
   it("AC1: carries the approved tests it locked, only when there are some", () => {
     const lockedTests = { "test/trimestre_test.dart": HASH };
     expect(deriveView(record({ phase: "implementing", lockedTests })).lockedTests).toEqual([

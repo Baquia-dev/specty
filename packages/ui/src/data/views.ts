@@ -163,6 +163,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
     ...closingIn(spec),
     ...(tests === undefined ? {} : { tests }),
     ...(locked.length === 0 ? {} : { lockedTests: locked }),
+    ...(record.criteriaTests === undefined ? {} : { criteriaTests: record.criteriaTests }),
     ...(warnings.length === 0 ? {} : { warnings }),
     ...(findings.length === 0 ? {} : { findings }),
     ...(specReview === undefined ? {} : { specReview }),
