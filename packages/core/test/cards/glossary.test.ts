@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   type CardContext,
   type ChangeView,
+  doctorLine,
+  glossaryLine,
   nextCard,
   parseGlossary,
   renderText,
@@ -118,5 +120,25 @@ describe("the domain terms in the cards", () => {
       "If the change introduced or renamed domain terms, add or fix them in docs/dominio.md, one line per term like the ones it has.",
     );
     expect(card(bare(change("closing")))).not.toContain("términos del dominio");
+  });
+});
+
+describe("the glossary in init and doctor", () => {
+  it("AC1: init says it created the glossary with its hints", () => {
+    expect(glossaryLine("docs/dominio.md", "es")).toBe(
+      "Glosario del dominio creado con pistas: docs/dominio.md.",
+    );
+    expect(glossaryLine("docs/domain.md", "en")).toBe(
+      "Domain glossary created with hints: docs/domain.md.",
+    );
+  });
+
+  it("AC3: doctor warns that the glossary defines no term, and how to write one", () => {
+    expect(doctorLine({ code: "empty-glossary", path: "docs/dominio.md" }, ES)).toBe(
+      "El glosario (`docs/dominio.md`) no define ningún término: añade una línea por término con la forma «- **Término** (`NombreEnElCódigo`): definición.», y las tarjetas traerán las definiciones de los que usen.",
+    );
+    expect(doctorLine({ code: "empty-glossary", path: "docs/domain.md" }, EN)).toBe(
+      'The glossary (`docs/domain.md`) defines no term: add one line per term shaped "- **Term** (`CodeName`): definition.", and the cards will bring the definitions of the ones they use.',
+    );
   });
 });

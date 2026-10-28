@@ -6,6 +6,13 @@
   "branch": "specty/20261028-init-crea-el-glosario-con-pistas-y-doctor-avisa",
   "baseCommit": "2d2ceff6979d2bec7e6894504a5e7ae81ade6f3c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:53d185ccffbb7de64d1881b6990edfba93cbcb66406c5f65ddcd095ebdcfd26c",
+    "at": "2026-10-28T07:19:46.672Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "52be748c1b7f2f770724171b3d6cc51a5c885cdc",
+      "startedAt": "2026-10-28T07:19:47.483Z",
+      "doneAt": "2026-10-28T07:25:46.245Z",
+      "summary": "glossaryTemplate (título y pistas del formato en un comentario, es/en), glossaryLine para init y el aviso empty-glossary de doctor, en el core."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 4,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:53d185ccffbb7de64d1881b6990edfba93cbcb66406c5f65ddcd095ebdcfd26c",
-    "at": "2026-10-28T07:19:46.672Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

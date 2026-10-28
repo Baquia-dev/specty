@@ -55,7 +55,7 @@ Las tarjetas ya traen las definiciones del glosario del dominio, pero ningún pr
 
 ## Tareas
 
-- [ ] T1: Los textos del glosario nuevo, de init y de doctor
+- [x] T1: Los textos del glosario nuevo, de init y de doctor
   - files: packages/core/src/glossary.ts, packages/core/src/index.ts, packages/core/src/cards/init.ts, packages/core/src/cards/doctor.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/glossary.test.ts test/cards
