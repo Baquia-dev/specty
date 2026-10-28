@@ -20,7 +20,7 @@ const GIT_FLOW_PREFIXES = ["feature/", "bugfix/", "release/", "hotfix/"];
  * git-flow's configuration, `develop` or its prefixes; GitHub Flow by branches named after a
  * commit type; Specty's own by `specty/` branches. Trunk leaves no trace, so it is never found.
  */
-export async function detectFlow(git: Git): Promise<GitFlow | undefined> {
+async function detectFlow(git: Git): Promise<GitFlow | undefined> {
   if ((await git.config("gitflow.branch.develop")) !== undefined) return "gitflow";
   const refs = await git.output([
     "for-each-ref",

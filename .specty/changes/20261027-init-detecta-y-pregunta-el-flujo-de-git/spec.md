@@ -72,7 +72,7 @@ kind: standard
   - files: docs/ARCHITECTURE.md
   - ac: AC7
   - type: docs
-- [ ] T4: detectFlow deja de exportarse
+- [x] T4: detectFlow deja de exportarse
   - files: packages/cli/src/install/git-flow.ts
   - ac: AC2
   - verify: pnpm knip

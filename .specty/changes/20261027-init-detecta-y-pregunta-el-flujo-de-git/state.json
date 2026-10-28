@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-init-detecta-y-pregunta-el-flujo-de-git",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-init-detecta-y-pregunta-el-flujo-de-git",
   "baseCommit": "0445983eeb54af55bce9cca2794c24005f924c23",
   "revision": 2,
@@ -68,6 +68,15 @@
       "doneAt": "2026-10-28T00:47:17.048Z",
       "summary": "ARCHITECTURE §14 dice cómo detecta init el flujo, que solo lo pregunta o detecta al crear config.yaml (como el idioma), qué pasa si se cancela y el aviso y SIGUIENTE de un proyecto nuevo sin flujo.",
       "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "81872dd27cee21b1d29dbca5464d717d8204eddc",
+      "startedAt": "2026-10-28T00:48:30.143Z",
+      "doneAt": "2026-10-28T00:48:43.484Z",
+      "summary": "detectFlow deja de exportarse: solo la usa flowToWrite en install/git-flow.ts, y knip pasa."
     }
   },
   "pending": {
