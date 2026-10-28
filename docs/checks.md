@@ -358,8 +358,18 @@ Avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada archivo 
 
 - **`specty task done`** ejecuta `specty check --changed --spec` antes de la verificación de la tarea, y no la completa con fallos. Deja fuera `scope` y `max-lines`, que ya comprueba por tarea. Si la tarea tiene verificación, deja fuera también los cuatro comandos del proyecto, para que los tests no corran dos veces.
 - **El pre-commit** ejecuta `specty check --staged` sobre los cambios manuales con `checks.preCommit: true`.
-- **La CI** ejecuta `specty check --all --json` con la plantilla de GitHub Actions.
+- **La CI** ejecuta `specty check --all --json` con la plantilla de GitHub Actions, y `specty ci` (abajo) sobre los commits del pull request o del push.
 - **El fin de turno del agente** ejecuta `specty check --changed`, con `--spec` si hay un cambio aprobado. Si falla, el agente recibe el informe y sigue en vez de dar la tarea por terminada. Funciona en Claude Code, Cursor y Codex, que tienen un hook de fin de turno documentado. En los demás agentes, la regla escrita del bloque de AGENTS.md es el respaldo.
+
+## Commits trazables: `specty ci`
+
+`specty ci [--base <ref>] [--into <rama>] [--head-ref <rama>] [--verbose]` es la capa 4 de cumplimiento (ARCHITECTURE §10). No mira el código, sino los commits de `<base>..HEAD` que no son de merge. `--base` es la rama de destino del pull request o el commit anterior a un push; sin él, la rama destino, como `--changed`. Da el mismo informe y, con `--json`, el mismo JSON que `specty check`, y sus tres verificaciones respetan `checks.levels`:
+
+- **`traced`**: un commit que toca rutas gobernadas (fuera de `.specty/`) lleva `Specty-Change` o, si es la instalación de Specty, `Specty-Init: true`. El informe nombra el commit, su asunto y sus archivos, y pide documentarlo con `specty retro`.
+- **`task-approval`**: el cambio que nombra un commit de código gobernado existe en ese commit o en `HEAD`, abierto o archivado. En un commit de tarea (`Specty-Task`), además, el `state.json` de ese commit tiene una aprobación, la forma canónica de su `spec.md` da ese hash y el `Specty-Spec` del commit lo nombra.
+- **`no-spike`**: ningún commit con `Specty-Kind: spike`, ni la rama `spike/…` del pull request (`--head-ref`), va a la rama destino del repositorio (`git.target` o la principal). El destino es `--into` o la rama que nombra `--base`, sin su remoto. Si no se puede saber, porque `--base` es un commit, se trata como la rama destino.
+
+Los recibos viven en `.git` de cada clon, así que `specty ci` no los comprueba: un trailer copiado a mano pasa. La garantía con identidad llega con el modo equipo. Solo lee, así que también lo ejecuta el agente.
 
 ## Preparar el proyecto
 

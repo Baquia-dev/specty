@@ -68,7 +68,7 @@ La capa 4 de cumplimiento (ARCHITECTURE §10) es la única que el agente no pued
   - files: packages/cli/src/flow/ci-commits.ts, packages/cli/src/commands/ci.ts, packages/cli/src/program.ts, packages/cli/test/ci.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/ci.test.ts
-- [ ] T3: Documentar `specty ci`
+- [x] T3: Documentar `specty ci`
   - files: docs/ARCHITECTURE.md, docs/checks.md, docs/checks.en.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts

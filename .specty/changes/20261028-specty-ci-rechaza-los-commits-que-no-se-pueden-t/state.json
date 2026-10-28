@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-specty-ci-rechaza-los-commits-que-no-se-pueden-t",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-specty-ci-rechaza-los-commits-que-no-se-pueden-t",
   "baseCommit": "d0b1d42a3b4b71010a26e413e2222400429dff69",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "32c04bce54bae663d8d85181b182541230e9022c",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:14:50.326Z",
       "doneAt": "2026-10-28T15:18:28.459Z",
-      "summary": "specty ci: flow/ci-commits reúne con git los trailers, archivos, cambio y aprobación de cada commit del rango; el comando da el informe y el JSON de specty check"
+      "summary": "specty ci: flow/ci-commits reúne con git los trailers, archivos, cambio y aprobación de cada commit del rango; el comando da el informe y el JSON de specty check",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "49377315f81084a263cec42e7d484c34f5e8db71",
+      "startedAt": "2026-10-28T15:18:29.096Z",
+      "doneAt": "2026-10-28T15:19:31.616Z",
+      "summary": "checks.md, checks.en.md y ARCHITECTURE 6 y 10 describen specty ci"
     }
   },
   "pending": {
