@@ -46,7 +46,8 @@ const ENTERS: Readonly<Record<Phase, readonly string[]>> = {
   draft: ["change.created"],
   review: ["spec.proposed"],
   testing: ["spec.approved"],
-  implementing: ["spec.approved"],
+  // With contract, it leaves `testing` once the person approves the tests or a bug's red locks.
+  implementing: ["spec.approved", "tests.approved", "tests.locked"],
   adjusting: ["adjust.requested"],
   acceptance: ["task.completed", "spec.approved"],
   closing: ["change.accepted"],

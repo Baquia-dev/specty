@@ -40,4 +40,30 @@ describe("the phase the server says a change is in", () => {
     expect(record?.state.phase).toBe("testing");
     expect(record?.phaseSince).toBe(APPROVED_AT);
   });
+
+  it("AC5: dates the implementation from the tests' approval, or from a bug's red locking", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": CONFIG() });
+    await cli(root, ["new", "Saludo personalizado"]);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    expect((await cli(root, ["propose"])).code).toBe(0);
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    const lines = (await read(root, `${CHANGE_DIR}/audit.jsonl`)).trim().split("\n");
+    const audit = lines
+      .map((line) => JSON.parse(line))
+      .map((entry) => (entry.event === "spec.approved" ? { ...entry, ts: APPROVED_AT } : entry));
+    const LATER = "2026-10-20T11:00:00.000Z";
+    for (const event of ["tests.approved", "tests.locked"]) {
+      // Approved at APPROVED_AT, it went through testing and left it later, by `event`.
+      const left = [...audit, { ts: LATER, actor: "human", event, data: {} }];
+      await writeFiles(root, {
+        [`${CHANGE_DIR}/audit.jsonl`]: `${left.map((entry) => JSON.stringify(entry)).join("\n")}\n`,
+      });
+      const [record] = await changeRecords(await sessionAt(root, AGENT));
+      expect([event, record?.state.phase, record?.phaseSince]).toEqual([
+        event,
+        "implementing",
+        LATER,
+      ]);
+    }
+  });
 });

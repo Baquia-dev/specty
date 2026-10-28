@@ -7,10 +7,12 @@ import {
   APP,
   ARCHIVE,
   CHANGE,
+  CONFIG,
   cli,
   git,
   person,
   read,
+  SPEC,
   SPEC_PATH,
   tempRepo,
   writeFiles,
@@ -53,6 +55,36 @@ describe("the person's actions in the local server", () => {
         approved: { channel: "ui" },
       });
       expect(git(root, "log", "-1", "--format=%s")).toBe("docs(spec): Saludo personalizado");
+    } finally {
+      await server.close();
+    }
+  });
+
+  it("AC4: approve the tests the agent sent, as specty approve from the UI", async () => {
+    // With contract, a verification that fails naming the test, and a test in the task.
+    const red = `node -e "console.log('FAIL src/app.test.ts'); process.exit(1)"`;
+    const contract = `${CONFIG(red)}policy:\n  tests: contract\n`;
+    const feature = SPEC.replace(
+      "  - files: src/app.ts\n",
+      "  - files: src/app.ts, src/app.test.ts\n",
+    );
+    const { root, server, headers } = await serving(true, contract, feature);
+    try {
+      await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+      await writeFiles(root, { "src/app.test.ts": "it('AC1: saluda a Ana', () => {});\n" });
+      const sent = await cli(root, ["propose"]);
+      expect([sent.code, (await state(root)).phase], sent.out).toEqual([0, "testing"]);
+      const approved = await call(server.port, path("approve"), headers, { revision: 1 });
+      expect(approved.status, approved.body).toBe(200);
+      expect(await state(root)).toMatchObject({
+        phase: "implementing",
+        lockedTests: { "src/app.test.ts": expect.stringMatching(/^sha256:/) },
+      });
+      const audit = (await read(root, `.specty/changes/${CHANGE}/audit.jsonl`)).trim().split("\n");
+      expect(JSON.parse(audit.at(-1) ?? "{}")).toMatchObject({
+        event: "tests.approved",
+        data: { channel: "ui" },
+      });
     } finally {
       await server.close();
     }

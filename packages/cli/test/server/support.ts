@@ -90,11 +90,11 @@ async function enter(server: UiServer) {
   return { session, headers: { ...headers, "x-specty-csrf": session.csrf ?? "" } };
 }
 
-/** SPEC's change in review, and a server the person started there (or the agent: read only). */
-export async function serving(actions = true, config = CONFIG()) {
+/** `spec`'s change in review, and a server the person started there (or the agent: read only). */
+export async function serving(actions = true, config = CONFIG(), spec = SPEC) {
   const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
   await cli(root, ["new", "Saludo personalizado"]);
-  await writeFiles(root, { [SPEC_PATH]: SPEC });
+  await writeFiles(root, { [SPEC_PATH]: spec });
   expect((await cli(root, ["propose"])).code).toBe(0);
   const server = await startServer({
     session: await sessionAt(root, AGENT),

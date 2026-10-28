@@ -60,12 +60,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cd01e2e76fe513b632973344d211c178b224996a",
+      "attempts": 1,
       "startedAt": "2026-10-28T10:56:46.153Z",
       "doneAt": "2026-10-28T11:03:15.542Z",
-      "summary": "sp-tests-actions: «Aprobar los tests» en la cabecera y, compacto, en la barra, con un diálogo que dice que quedan bloqueados; aprueba la revisión vigente con source.approve y avisa; si la fuente falla, el diálogo sigue; en solo lectura, desactivado. La página lo prueba en change-page.tests.test.ts"
+      "summary": "sp-tests-actions: «Aprobar los tests» en la cabecera y, compacto, en la barra, con un diálogo que dice que quedan bloqueados; aprueba la revisión vigente con source.approve y avisa; si la fuente falla, el diálogo sigue; en solo lectura, desactivado. La página lo prueba en change-page.tests.test.ts",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "aecefd8bf1c3906e0901d66aeeff3e6e8b561094",
+      "startedAt": "2026-10-28T11:03:15.851Z",
+      "doneAt": "2026-10-28T11:09:19.777Z",
+      "summary": "ENTERS.implementing añade tests.approved y tests.locked: el servidor fecha la implementación por el último; un test del servidor aprueba los tests enviados con contract (tests.approved, canal ui, lockedTests). AC4 ya funcionaba: el test lo fija. serving acepta otra spec"
     }
   },
   "pending": {

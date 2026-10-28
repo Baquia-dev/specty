@@ -75,7 +75,7 @@ Con `policy.tests: contract`, el agente envía los tests de una feature antes de
   - files: packages/ui/src/progress/tests-actions.ts, packages/ui/src/progress/tests-actions.test.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/change-bar.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress --include src/change
-- [ ] T4: El servidor aprueba los tests y fecha la implementación por ellos
+- [x] T4: El servidor aprueba los tests y fecha la implementación por ellos
   - files: packages/cli/src/server/records.ts, packages/cli/test/server/actions.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server
