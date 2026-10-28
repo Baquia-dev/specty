@@ -212,6 +212,14 @@ export function agentsMdLine(created: boolean, lang: Lang): string {
     : t("AGENTS.md: bloques de Specty actualizados.", "AGENTS.md: Specty's blocks updated.");
 }
 
+/** The glossary of the domain, created with the hints of its format (formats.md §6). */
+export function glossaryLine(path: string, lang: Lang): string {
+  return translator(lang)(
+    `Glosario del dominio creado con pistas: ${path}.`,
+    `Domain glossary created with hints: ${path}.`,
+  );
+}
+
 /** A new project's PRODUCT.md: from the person's answers, or with the questions to answer. */
 export function productLine(interviewed: boolean, lang: Lang): string {
   const t = translator(lang);

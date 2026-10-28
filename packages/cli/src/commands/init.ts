@@ -6,9 +6,11 @@ import {
   backupLine,
   type CardContext,
   DEFAULT_CONFIG,
+  defaultGlossary,
   dryRunCard,
   GIT_FLOWS,
   type GitFlow,
+  glossaryLine,
   type InitRefusal,
   initCard,
   initRefusalCard,
@@ -28,7 +30,7 @@ import { type InstallFiles, installFiles } from "../install/files";
 import { ensureDevelop, flowToWrite, noFlowWarnings } from "../install/git-flow";
 import { agentsToInstall, installHooks } from "../install/hooks";
 import { isNewProject, writeProduct } from "../install/product";
-import { writeAgentsMd, writeConfig } from "../install/project-files";
+import { writeAgentsMd, writeConfig, writeGlossary } from "../install/project-files";
 import { exists } from "../io/files";
 import { createGit, findRoot, type Git, pathsOf } from "../io/git";
 import { bareCards, type Environment, systemLanguage } from "../session";
@@ -224,7 +226,7 @@ async function installTarget(
   return { files, backups };
 }
 
-/** `.specty/config.yaml`, AGENTS.md and, in a new project, PRODUCT.md. */
+/** `.specty/config.yaml`, AGENTS.md, the glossary where it is missing and, in a new project, PRODUCT.md. */
 async function writeProjectFiles(
   setup: InitSetup,
   fresh: boolean,
@@ -239,6 +241,8 @@ async function writeProjectFiles(
     ...(flow !== undefined ? { flow } : {}),
   });
   const agents = await writeAgentsMd(root, lang, detection, files);
+  const glossary = setup.config?.glossary ?? defaultGlossary(lang);
+  const glossaryCreated = await writeGlossary(root, glossary, lang, files);
   // A new project starts with what it is for: the interview with a person, or its questions.
   const product = fresh
     ? await writeProduct({
@@ -255,9 +259,15 @@ async function writeProjectFiles(
     done: [
       ...configLines,
       agentsMdLine(agents === "created", lang),
+      ...(glossaryCreated ? [glossaryLine(glossary, lang)] : []),
       ...(product === undefined ? [] : [productLine(product === "interviewed", lang)]),
     ],
-    written: [".specty/config.yaml", "AGENTS.md", ...(product === undefined ? [] : ["PRODUCT.md"])],
+    written: [
+      ".specty/config.yaml",
+      "AGENTS.md",
+      ...(glossaryCreated ? [glossary] : []),
+      ...(product === undefined ? [] : ["PRODUCT.md"]),
+    ],
     unfilled: unfilledSections((await files.read(join(root, "AGENTS.md"))) ?? ""),
   };
 }

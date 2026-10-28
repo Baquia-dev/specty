@@ -37,6 +37,7 @@ export {
   type Support,
 } from "./capabilities";
 export * from "./cards";
+export { glossaryLine } from "./cards/init";
 export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
@@ -103,7 +104,13 @@ export {
   type WaitingFor,
 } from "./flow/phases";
 export { globBase, isGlob, matchesAny, matchesPattern } from "./glob";
-export { type GlossaryEntry, parseGlossary, termsIn } from "./glossary";
+export {
+  defaultGlossary,
+  type GlossaryEntry,
+  glossaryTemplate,
+  parseGlossary,
+  termsIn,
+} from "./glossary";
 export {
   DELETED,
   decideAfterShell,

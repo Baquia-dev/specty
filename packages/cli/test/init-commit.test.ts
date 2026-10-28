@@ -59,9 +59,14 @@ describe("specty init commits what it writes", () => {
     expect(git(root, "log", "-1", "--format=%s%n%n%b")).toBe(
       "chore(specty): instalar Specty\n\nSpecty-Init: true",
     );
-    expect(committed(root)).toEqual([".specty/config.yaml", "AGENTS.md", "CLAUDE.md"]);
+    expect(committed(root)).toEqual([
+      ".specty/config.yaml",
+      "AGENTS.md",
+      "CLAUDE.md",
+      "docs/dominio.md",
+    ]);
     expect(result.out).toMatch(
-      /Commit [0-9a-f]{7}: \.specty\/config\.yaml, AGENTS\.md, CLAUDE\.md\./,
+      /Commit [0-9a-f]{7}: \.specty\/config\.yaml, AGENTS\.md, CLAUDE\.md, docs\/dominio\.md\./,
     );
     // The machine-specific hook file and the native git hooks stay local.
     expect(git(root, "status", "--porcelain")).toBe("");

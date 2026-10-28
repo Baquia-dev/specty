@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { parseGlossary, resolveConfig, termsIn } from "../src";
+import { glossaryTemplate, parseGlossary, resolveConfig, termsIn } from "../src";
 
 const GLOSSARY = [
   "# Dominio",
@@ -49,6 +49,15 @@ describe("the glossary", () => {
     ).toEqual([]);
     expect(parseGlossary("")).toEqual([]);
     expect(termsIn([], ["Pedido"])).toEqual([]);
+  });
+
+  it("AC1: starts with a title and the hints of its format, which define no term", () => {
+    const es = glossaryTemplate("es");
+    expect(es).toMatch(/^# Glosario del dominio\n\n<!--\n/);
+    expect(es).toContain("- **Pedido** (`Order`): lo que un cliente compra en una visita.");
+    expect(glossaryTemplate("en")).toMatch(/^# Domain glossary\n\n<!--\n/);
+    expect(parseGlossary(es)).toEqual([]);
+    expect(parseGlossary(glossaryTemplate("en"))).toEqual([]);
   });
 
   it("lives where `glossary` says or, without it, by the project's language", () => {

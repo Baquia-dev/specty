@@ -20,6 +20,38 @@ const ENTRY =
 // Not part of a longer word: letters and digits of any script, and `_` or `$` in names.
 const EDGE = String.raw`[\p{L}\p{N}_$]`;
 
+/**
+ * The glossary `init` creates: a title and, in a comment that defines no term, the format of a
+ * line with an example.
+ */
+export function glossaryTemplate(lang: Lang): string {
+  return lang === "es"
+    ? [
+        "# Glosario del dominio",
+        "",
+        "<!--",
+        "Una línea por término del dominio, con su nombre en el código si lo tiene:",
+        "",
+        "- **Pedido** (`Order`): lo que un cliente compra en una visita.",
+        "",
+        "Las tarjetas de Specty traen la definición de los términos que usa cada tarea. Escribe los que un agente podría nombrar mal.",
+        "-->",
+        "",
+      ].join("\n")
+    : [
+        "# Domain glossary",
+        "",
+        "<!--",
+        "One line per domain term, with its name in the code if it has one:",
+        "",
+        "- **Basket** (`Cart`): what a customer is about to buy.",
+        "",
+        "Specty's cards bring the definitions of the terms each task uses. Write the ones an agent could misname.",
+        "-->",
+        "",
+      ].join("\n");
+}
+
 /** Where the glossary lives when `glossary` does not say: by the project's language. */
 export function defaultGlossary(lang: Lang): string {
   return lang === "es" ? "docs/dominio.md" : "docs/domain.md";

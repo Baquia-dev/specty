@@ -72,6 +72,8 @@ export type DoctorLine =
   | { readonly code: "missing-paths"; readonly paths: readonly string[] }
   /** Sections of AGENTS.md only the person can fill in, still empty. */
   | { readonly code: "unfilled-sections"; readonly sections: readonly string[] }
+  /** The glossary exists and defines no term yet: only its hints. */
+  | { readonly code: "empty-glossary"; readonly path: string }
   | { readonly code: "delegated"; readonly since: string; readonly by: string };
 
 type Code = DoctorLine["code"];
@@ -294,6 +296,11 @@ const WRITERS: {
       `AGENTS.md has ${listed('"', '"', "and")} not filled in: the agent reads it every session, so write there what the code does not say (directories whose purpose is not obvious, what must not be touched, rules \`specty check\` does not verify).`,
     );
   },
+  "empty-glossary": (line, t) =>
+    t(
+      `El glosario (\`${line.path}\`) no define ningún término: añade una línea por término con la forma «- **Término** (\`NombreEnElCódigo\`): definición.», y las tarjetas traerán las definiciones de los que usen.`,
+      `The glossary (\`${line.path}\`) defines no term: add one line per term shaped "- **Term** (\`CodeName\`): definition.", and the cards will bring the definitions of the ones they use.`,
+    ),
   delegated: (line, t, command) =>
     t(
       `Modo delegado activo desde el ${line.since} (${line.by}): tu agente toma tus decisiones. Para desactivarlo: \`${command} delegate off\`.`,
