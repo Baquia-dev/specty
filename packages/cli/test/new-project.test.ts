@@ -54,8 +54,9 @@ describe("init in a new project", () => {
     expect(done.out).toContain(
       "Proyecto nuevo: PRODUCT.md creado con las preguntas por responder.",
     );
+    // A new project chooses its git flow first.
     expect(done.out).toContain(
-      'SIGUIENTE: es un proyecto nuevo: hazle al usuario las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con `specty new "Esqueleto del proyecto" --request "<petición literal del usuario>"`.',
+      'SIGUIENTE: es un proyecto nuevo: pregúntale al usuario qué flujo de git seguirá (specty, github, trunk o gitflow) y ejecuta `specty init --git-flow <flujo>`; luego hazle las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con `specty new "Esqueleto del proyecto" --request "<petición literal del usuario>"`.',
     );
     const product = await read(root, "PRODUCT.md");
     expect(product.match(/<!-- /g)).toHaveLength(7);

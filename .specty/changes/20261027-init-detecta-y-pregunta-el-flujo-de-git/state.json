@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "400932dfe9ecfa457aa40d355c5a51563889377c",
+      "attempts": 1,
       "startedAt": "2026-10-28T00:06:57.544Z",
       "doneAt": "2026-10-28T00:09:03.706Z",
-      "summary": "cards/init.ts: flowQuestion y flowChoices (los cuatro flujos con sus ramas; el detectado primero y marcado; sin él, Specty primero), noFlowWarning, e InitView.chooseFlow para que el SIGUIENTE de un proyecto nuevo pida elegir el flujo con init --git-flow."
+      "summary": "cards/init.ts: flowQuestion y flowChoices (los cuatro flujos con sus ramas; el detectado primero y marcado; sin él, Specty primero), noFlowWarning, e InitView.chooseFlow para que el SIGUIENTE de un proyecto nuevo pida elegir el flujo con init --git-flow.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c66b6b4fe4a22a1e8e3a5103456a73af569cf094",
+      "startedAt": "2026-10-28T00:09:03.997Z",
+      "doneAt": "2026-10-28T00:43:27.617Z",
+      "summary": "init detecta el flujo por las ramas y la configuración de git-flow y, solo al crear config.yaml, lo pregunta a la persona o usa el detectado; avisa si un proyecto nuevo queda sin flujo. 7 tests existentes ajustados con permiso del usuario (R1)."
     }
   },
   "pending": {

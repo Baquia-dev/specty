@@ -62,7 +62,7 @@ kind: standard
   - files: packages/core/src/cards/init.ts, packages/core/src/cards/index.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC2, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/init.test.ts
-- [ ] T2: init detecta el flujo, lo pregunta y lo escribe
+- [x] T2: init detecta el flujo, lo pregunta y lo escribe
   - files: packages/cli/src/install/git-flow.ts, packages/cli/src/commands/init.ts, packages/cli/test/init-git-flow.test.ts, packages/cli/test/init-agents.test.ts, packages/cli/test/init-language.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-git-flow.test.ts test/init-agents.test.ts test/init-language.test.ts
