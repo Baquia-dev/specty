@@ -8,3 +8,7 @@
 {"ts":"2026-10-27T06:24:16.753Z","actor":"human","event":"assumption.decided","data":{"item":"A6","decision":"confirmed"}}
 {"ts":"2026-10-27T06:24:42.258Z","actor":"human","event":"assumption.decided","data":{"item":"A7","decision":"confirmed"}}
 {"ts":"2026-10-27T06:26:26.585Z","actor":"human","event":"spec.approved","data":{"revision":1,"hash":"sha256:43213605cba22688d4510f2e4a710e1715237b8429415ac45ad7091f2eaf3d3d","channel":"ui"}}
+{"ts":"2026-10-28T12:30:01.573Z","actor":"specty","event":"epic.slicesDone","data":{"slices":{"C1":"20261027-cada-criterio-se-comprueba-con-un-test-que-lleva","C2":"20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru","C3":"20261028-los-tests-aprobados-no-se-pueden-cambiar-sin-per","C4":"20261028-los-bugs-los-refactors-y-los-ajustes-siguen-su-p","C5":"20261028-el-vocabulario-del-dominio-llega-con-las-tarjeta","C6":"20261028-la-ui-muestra-la-fase-de-tests-los-bloqueos-y-la"}}}
+{"ts":"2026-10-28T14:15:08.000Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T14:16:41.109Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:e9e657c6530b6cb25fae3111adcc192647448225bcbc612f21422c3fbe279c1e","size":"S","warnings":0}}
+{"ts":"2026-10-28T14:17:14.898Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

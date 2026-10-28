@@ -103,3 +103,36 @@ La ceremonia depende del tipo de trabajo: el gate 2 solo en features, el bloqueo
 - R4: El bloqueo por archivo obliga a poner en archivos aparte los tests que añade la implementación (A3). Mitigación: la tarjeta lo dice, y si estorba al probarlo en Specty (A7), se revisa antes de hacer `contract` el valor por defecto.
 - R5: Las reglas de tests y el glosario hacen crecer las tarjetas. Mitigación: el test de presupuesto del core (1.500 tokens) y un límite de términos por tarjeta.
 - R6: La fase nueva toca a la vez la máquina de estados, el guard, los comandos, los textos y la UI. Mitigación: los cortes separan el core y la CLI de la UI, y cada corte cumple los límites de división.
+
+## Cierre
+
+### Resumen
+
+Los seis cortes están en main:
+- C1: cada criterio enlaza con los tests que llevan su id, con su tarea y su commit; `criteria-tested` avisa de los criterios sin test, y `test: manual` los deja a la persona. ADR 0014.
+- C2: con `policy.tests: contract`, una feature aprobada pasa a `testing`, donde solo se escriben tests; `specty propose` exige que fallen nombrando cada test nuevo y hace un commit solo con ellos, y `specty approve` es el gate 2.
+- C3: los tests aprobados quedan bloqueados por hash, en el guard y en `tests-locked`; solo la persona desbloquea uno, y al terminar la tarea vuelve a bloquearse.
+- C4: un bug ve fallar su test y lo bloquea sin esperar a la persona, un refactor o un perf no quita aserciones, y un ajuste que modifica un criterio desbloquea sus tests y vuelve al gate 2.
+- C5: el glosario llega a las tarjetas del borrador, de los tests y de la tarea con los términos que usan, y la del cierre pide actualizarlo; `init` lo crea con pistas y `doctor` avisa mientras solo las tenga.
+- C6: la UI enseña los tests enviados con su rojo y deja aprobarlos, los tests bloqueados y sus desbloqueos, y los tests de cada criterio en Aceptación.
+
+### Desviaciones (respecto al plan)
+
+- Los cortes C2, C3, C4 y C6 llevaron cambios previos para caber en los límites de división. La fase `testing` toca un `Record<Phase>` en core, la CLI y la UI, así que la persona subió `split.maxModules` a 3.
+- AC15 salió de C5 por tamaño y se hizo en un cambio de seguimiento. C1 también tuvo uno: el id cuenta solo en el nombre de un test o en un comentario, y la matriz enseña como mucho 3 tests por criterio.
+- A7 no se cumplió como estaba escrito: `contract` no se activó en este repositorio tras C3, así que C4, C5 y C6 se trabajaron con `recommended`. La persona lo activa al cerrar la épica.
+- En dos tareas (T3 del corte C3 y T2 del primer cambio previo de C6) los tests se escribieron sin verlos fallar antes del código. Está anotado en sus cierres.
+
+### Decisiones
+
+- El ciclo de tests se decide al aprobar la spec y se guarda en `state.json`, porque al enviar los tests ya no queda la revisión anterior para comparar criterios.
+- Un desbloqueo se reconoce por la ruta del test bloqueado, no por un campo nuevo de la solicitud: así lo leen igual `scope add`, el guard, `tests-locked` y la UI.
+- `tests-locked` es una comprobación común: se ejecuta también sin `--spec` y en la CI.
+- Cada tarjeta trae como mucho 3 términos del glosario, en líneas de 100 caracteres, para no pasar del presupuesto de 1.500 tokens.
+
+### Pendientes
+
+- Probar `contract` en este repositorio (A7) y decidir después, en un cambio aparte, si pasa a ser el valor por defecto. Antes conviene revisar si el bloqueo por archivo estorba (R4).
+- Leer el rojo test a test con JUnit XML, si nombrar el test en la salida del comando se queda corto (R2).
+- Specty no tiene glosario propio: hasta que lo tenga, sus tarjetas no traen términos.
+- Avisos de `max-lines` que quedan: `fixtures.ts` de la UI, `cards/index.ts`, `cards/doctor.ts` y `schema/config.ts`.
