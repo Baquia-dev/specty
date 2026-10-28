@@ -6,6 +6,13 @@
   "branch": "specty/20261028-la-suite-de-cumplimiento-con-agentes-reales-2",
   "baseCommit": "680a8daf896d0e6238cc24a4d8a6d81ab5dee4d5",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5f236422c8d29085049d17177e98bc55876c6defaa666d9d1179cb299c1f161b",
+    "at": "2026-10-28T16:49:12.645Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -53,12 +60,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5f236422c8d29085049d17177e98bc55876c6defaa666d9d1179cb299c1f161b",
-    "at": "2026-10-28T16:49:12.645Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T16:51:11.423Z"
 }
