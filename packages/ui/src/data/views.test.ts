@@ -201,6 +201,14 @@ describe("decisions and tabs", () => {
     expect(deriveView(record({ phase: "review" })).tests).toBeUndefined();
   });
 
+  it("AC1: carries the approved tests it locked, only when there are some", () => {
+    const lockedTests = { "test/trimestre_test.dart": HASH };
+    expect(deriveView(record({ phase: "implementing", lockedTests })).lockedTests).toEqual([
+      { path: "test/trimestre_test.dart", unlocks: [] },
+    ]);
+    expect(deriveView(record({ phase: "implementing" })).lockedTests).toBeUndefined();
+  });
+
   it("waits for the agent once the person asked for changes, until the next proposal (AC1, AC3)", () => {
     const step = (ts: string, event: string, revision: number) => ({
       ts,

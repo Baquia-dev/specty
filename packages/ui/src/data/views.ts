@@ -17,6 +17,7 @@ import { closingOf } from "./closing";
 import { deriveDelta } from "./delta";
 import { findingsOf } from "./findings";
 import { historyOf } from "./history";
+import { lockedOf } from "./locks";
 import { type AuditRecord, progressOf } from "./progress";
 import type {
   ChangeRecord,
@@ -102,6 +103,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const warnings = warningsOf(record.audit ?? []);
   const findings = findingsOf(record.audit ?? []);
   const tests = testsOf(state, record.audit ?? []);
+  const locked = lockedOf(state, record.audit ?? []);
   // The last review of each target that answered: the records come oldest first.
   const last = (target: ReviewRecord["target"]) =>
     (record.reviews ?? []).findLast((review) => review.target === target);
@@ -160,6 +162,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
     progress: progressOf(spec, state, record.audit ?? [], record.verifyFull),
     ...closingIn(spec),
     ...(tests === undefined ? {} : { tests }),
+    ...(locked.length === 0 ? {} : { lockedTests: locked }),
     ...(warnings.length === 0 ? {} : { warnings }),
     ...(findings.length === 0 ? {} : { findings }),
     ...(specReview === undefined ? {} : { specReview }),

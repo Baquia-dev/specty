@@ -11,6 +11,7 @@ import type {
 } from "@baquia-dev/specty-core";
 import type { ClosingParts } from "./closing";
 import type { HistoryEntry } from "./history";
+import type { LockedTestView } from "./locks";
 import type { AuditRecord, ProgressView } from "./progress";
 import type { TestsView } from "./tests";
 
@@ -280,6 +281,8 @@ export interface ChangeView {
   readonly closing?: ClosingParts;
   /** In `testing`: the tests the agent sent for the person's approval, or none yet. */
   readonly tests?: TestsView;
+  /** The approved tests it locked, with their unlocks; none when it locked none. */
+  readonly lockedTests?: readonly LockedTestView[];
   /** What happened, from `audit.jsonl`, oldest first. */
   readonly history: readonly HistoryEntry[];
 }

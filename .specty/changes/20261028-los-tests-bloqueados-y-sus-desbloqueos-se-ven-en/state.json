@@ -6,6 +6,13 @@
   "branch": "specty/20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "baseCommit": "6477c7d222a97eda066f7ddc4c347134174c2749",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5d26c087683965bbd7e842c229bf0b608aae510b692a4ae4b1de49c8c46434c3",
+    "at": "2026-10-28T11:20:47.645Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ad81208f8914be810fb3d38ecdb63711569df8ce",
+      "startedAt": "2026-10-28T11:20:48.030Z",
+      "doneAt": "2026-10-28T11:26:06.306Z",
+      "summary": "data/locks.ts: lockedOf da cada test bloqueado por su ruta, desbloqueado para la tarea en curso si está en su scopeExtra, con los desbloqueos de scope.decided; unlocksOf marca las rutas bloqueadas de cada solicitud (TaskScopeRequest.unlocks); la vista lleva lockedTests"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -42,12 +59,5 @@
     "A": 4,
     "AC": 4,
     "T": 5
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:5d26c087683965bbd7e842c229bf0b608aae510b692a4ae4b1de49c8c46434c3",
-    "at": "2026-10-28T11:20:47.645Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

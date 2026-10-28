@@ -58,7 +58,7 @@ Con `policy.tests: contract`, los tests aprobados quedan bloqueados y solo la pe
 
 ## Tareas
 
-- [ ] T1: Los tests bloqueados y las solicitudes de desbloqueo en los datos de la UI
+- [x] T1: Los tests bloqueados y las solicitudes de desbloqueo en los datos de la UI
   - files: packages/ui/src/data/locks.ts, packages/ui/src/data/locks.test.ts, packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/progress.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data

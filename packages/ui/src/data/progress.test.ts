@@ -145,6 +145,21 @@ describe("progressOf", () => {
     ]);
   });
 
+  it("AC2: marks the approved tests a scope request asks to unlock", () => {
+    const test = "test/boletin_test.dart";
+    const state: ChangeState = {
+      ...STATE,
+      lockedTests: { [test]: `sha256:${"c".repeat(64)}` },
+      pending: {
+        scopeRequests: [{ id: "S2", task: "T2", paths: [test], reason: "Esperaba otro título." }],
+        adjustment: null,
+      },
+    };
+    expect(progressOf(SPEC, state, []).tasks[1]?.scopeRequests).toEqual([
+      { id: "S2", paths: [test], reason: "Esperaba otro título.", unlocks: [test] },
+    ]);
+  });
+
   it("marks a task ticked in the spec as done even without state", () => {
     const state: ChangeState = { ...STATE, tasks: {} };
     expect(progressOf(SPEC, state, []).tasks.map((task) => task.status)).toEqual([
