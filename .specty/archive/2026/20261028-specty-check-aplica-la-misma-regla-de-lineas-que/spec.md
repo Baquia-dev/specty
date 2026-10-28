@@ -21,3 +21,9 @@ kind: quick
   - files: packages/cli/src/check/max-lines.ts, packages/cli/test/check.test.ts, docs/checks.md, docs/checks.en.md
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/check.test.ts test/check-examples-ts.test.ts test/check-examples-flutter.test.ts
   - type: feat
+
+## Cierre
+
+### Resumen
+
+max-lines de specty check usa longFiles de core con el texto de partida del modo: solo falla lo que el cambio lleva por encima de lines.fail; --all cuenta todo; test visto en rojo; checks.md/en

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-specty-check-aplica-la-misma-regla-de-lineas-que",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-specty-check-aplica-la-misma-regla-de-lineas-que",
   "baseCommit": "aea15f12ea2840c2a9da0391db10ec9f996a62cd",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a2ca903d932071ea6386a89ea9e9d621d9057217",
+      "attempts": 1,
       "startedAt": "2026-10-28T17:12:23.728Z",
       "doneAt": "2026-10-28T17:17:25.780Z",
-      "summary": "max-lines de specty check usa longFiles de core con el texto de partida del modo: solo falla lo que el cambio lleva por encima de lines.fail; --all cuenta todo; test visto en rojo; checks.md/en"
+      "summary": "max-lines de specty check usa longFiles de core con el texto de partida del modo: solo falla lo que el cambio lleva por encima de lines.fail; --all cuenta todo; test visto en rojo; checks.md/en",
+      "scopeExtra": []
     }
   },
   "pending": {
