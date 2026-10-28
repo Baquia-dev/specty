@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261028-el-vocabulario-del-dominio-llega-con-las-tarjeta",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-el-vocabulario-del-dominio-llega-con-las-tarjeta",
+  "baseCommit": "2c9de7580f7c4e6a64b7e3515319106f686e9811",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f10fdcbfe88c9335f281570a1ac5e46b725035ec117081e30f3d5587de5b1c3d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f9bea5469dbb90e65222bec6d68f4ec8e2abcb7e4c4eaff562bd2dce572c6eb0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:01000d4f650b48009e87f5647d2a8c931a49a1b4c1eb4724cb7905e350d86cfa",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:00a7803401c28edd359d2dd207c6d7ec0bf944337a3b2636447c5c009432625f",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dcc38e0de5695ce336c4673bb6691624f6623ead61dc6c68bad0237c6a15bdc6",
+    "at": "2026-10-28T06:08:15.251Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
