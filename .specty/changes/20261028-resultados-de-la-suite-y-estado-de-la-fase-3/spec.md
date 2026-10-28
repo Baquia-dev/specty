@@ -34,7 +34,7 @@ La suite de cumplimiento ya corrió con un agente real. ARCHITECTURE debe decir 
 
 ## Tareas
 
-- [ ] T1: Los resultados de la suite y el estado de la fase 3
+- [x] T1: Los resultados de la suite y el estado de la fase 3
   - files: docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
