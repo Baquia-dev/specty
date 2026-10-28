@@ -116,6 +116,11 @@ describe("resolveConfig", () => {
     expect(Array.isArray(empty) && empty.map((issue) => issue.path)).toContain("git.branchPattern");
   });
 
+  it("AC1: accepts the contract tests policy", () => {
+    const resolved = resolveConfig({ version: 1, policy: { tests: "contract" } });
+    expect(resolved.ok && resolved.config.policy.tests).toBe("contract");
+  });
+
   it("reports unknown keys, bad values and inconsistent thresholds", () => {
     const issues = (input: unknown) => (resolveConfig(input).ok ? [] : ["invalid"]);
     expect(issues({ version: 1, colour: "blue" })).toEqual(["invalid"]);

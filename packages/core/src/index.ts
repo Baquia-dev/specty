@@ -256,4 +256,4 @@ export {
   type TemplateOptions,
 } from "./templates";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";
-export { type TestRules, testRules } from "./validate/quality";
+export { type TestRules, testRules, testsFirst } from "./validate/quality";

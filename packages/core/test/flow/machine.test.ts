@@ -23,7 +23,13 @@ const ACTORS: readonly Actor[] = ["agent", "human", "specty"];
 const PASSING: Readonly<Record<FlowEventType, FlowEvent>> = {
   propose: { type: "propose", validationErrors: 0 },
   requestChanges: { type: "requestChanges" },
-  approve: { type: "approve", validationErrors: 0, pendingHighImpact: 0, remainingTasks: 0 },
+  approve: {
+    type: "approve",
+    validationErrors: 0,
+    pendingHighImpact: 0,
+    remainingTasks: 0,
+    testsFirst: false,
+  },
   taskDone: { type: "taskDone", remainingTasks: 0 },
   scopeRequest: { type: "scopeRequest" },
   decideScope: { type: "decideScope" },
@@ -125,6 +131,20 @@ describe("transition", () => {
     }
   });
 
+  it("AC2: approving a spec whose tests come first starts the testing phase", () => {
+    const approve = (remainingTasks: number) => ({
+      type: "approve" as const,
+      validationErrors: 0,
+      pendingHighImpact: 0,
+      remainingTasks,
+      testsFirst: true,
+    });
+    const base = { phase: "review" as const, kind: "standard" as const, actor: "human" as const };
+    expect(transition({ ...base, event: approve(2) })).toEqual({ ok: true, phase: "testing" });
+    // With nothing left to build, there is nothing to test first either.
+    expect(transition({ ...base, event: approve(0) })).toEqual({ ok: true, phase: "acceptance" });
+  });
+
   it("never lets the agent run an event that grants permissions", () => {
     for (const event of FLOW_EVENTS) {
       const rule = EVENT_RULES[event];
@@ -141,7 +161,13 @@ describe("transition", () => {
     expect(
       transition({
         ...base,
-        event: { type: "approve", validationErrors: 0, pendingHighImpact: 1, remainingTasks: 2 },
+        event: {
+          type: "approve",
+          validationErrors: 0,
+          pendingHighImpact: 1,
+          remainingTasks: 2,
+          testsFirst: false,
+        },
       }),
     ).toEqual({ ok: false, code: "pending-assumptions" });
     // With tasks to do, approving starts the implementation (AC2).
@@ -150,7 +176,13 @@ describe("transition", () => {
         transition({
           ...base,
           kind,
-          event: { type: "approve", validationErrors: 0, pendingHighImpact: 0, remainingTasks: 2 },
+          event: {
+            type: "approve",
+            validationErrors: 0,
+            pendingHighImpact: 0,
+            remainingTasks: 2,
+            testsFirst: false,
+          },
         }),
         kind,
       ).toEqual({ ok: true, phase: "implementing" });

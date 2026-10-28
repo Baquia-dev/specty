@@ -4,7 +4,7 @@ import type { TestsPolicy } from "../schema/config";
 import { isTestFile } from "../scope/tests";
 import { computeSize } from "../sizing/size";
 import type { Diagnostic } from "../spec/diagnostics";
-import type { CommitType, Task } from "../spec/model";
+import type { CommitType, Spec, Task } from "../spec/model";
 import { fileLine, itemLine, type Rule, report } from "./context";
 import { formatBreach, splitBreaches } from "./limits";
 
@@ -69,6 +69,18 @@ export function testRules(task: Pick<Task, "type">, policy: TestsPolicy): TestRu
   return type === "feat" || type === "fix" ? "first" : "keep";
 }
 
+/**
+ * A change whose tests come first goes through the testing phase before its code (ADR 0014): a
+ * standard change with a `feat` task, the default type, under `policy.tests: contract`.
+ */
+export function testsFirst(spec: Spec, policy: TestsPolicy): boolean {
+  return (
+    policy === "contract" &&
+    spec.frontmatter.kind === "standard" &&
+    (spec.sections.tasks?.items ?? []).some((task) => (task.type ?? "feat") === "feat")
+  );
+}
+
 /** Criteria name an observable outcome, in WHEN … THEN … form. */
 export const checkCriteria: Rule = (spec, ctx, lang) =>
   (spec.sections.criteria?.items ?? []).flatMap((criterion): Diagnostic[] => {
@@ -115,7 +127,8 @@ export const checkTaskQuality: Rule = (spec, ctx, lang) => {
             report(lang, {
               code: "task-no-tests",
               params: { id: task.id, policy: policy.tests },
-              severity: policy.tests === "required" ? "error" : "warning",
+              severity:
+                policy.tests === "required" || policy.tests === "contract" ? "error" : "warning",
               ...at,
             }),
           ]

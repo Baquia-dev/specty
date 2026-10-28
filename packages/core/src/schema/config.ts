@@ -4,7 +4,8 @@ import { branchPatternIssue, GIT_FLOWS, type GitFlow } from "../branches";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 
-export type TestsPolicy = "required" | "recommended" | "off";
+/** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
+export type TestsPolicy = "contract" | "required" | "recommended" | "off";
 
 /** `.specty/config.yaml` with every default applied. */
 /** Lines of code: a warning past `warn`, a block past `fail`, or never with `false`. */
@@ -168,7 +169,7 @@ export const ConfigSchema = z.strictObject({
     .optional(),
   checks: ChecksSchema.optional(),
   policy: z
-    .strictObject({ tests: z.enum(["required", "recommended", "off"]).optional() })
+    .strictObject({ tests: z.enum(["contract", "required", "recommended", "off"]).optional() })
     .optional(),
   retro: z.strictObject({ mode: z.enum(["agent", "minimal"]).optional() }).optional(),
   git: z

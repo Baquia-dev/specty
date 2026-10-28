@@ -14,6 +14,8 @@ export type FlowEvent =
       readonly pendingHighImpact: number;
       /** Tasks of the approved spec not done yet: with none, there is nothing to implement. */
       readonly remainingTasks: number;
+      /** The change's tests are written and approved before its code (`testsFirst`, ADR 0014). */
+      readonly testsFirst: boolean;
     }
   | { readonly type: "taskDone"; readonly remainingTasks: number }
   | { readonly type: "scopeRequest" }
@@ -133,7 +135,8 @@ function approveOutcome(event: EventOf<"approve">, kind: ChangeKind): Transition
   if (kind === "retro") return to("done");
   // An epic advances through its children; any other change with every task done (a
   // withdrawn adjustment, say) goes straight to acceptance, as after its last task.
-  return to(kind === "epic" || event.remainingTasks > 0 ? "implementing" : "acceptance");
+  if (kind !== "epic" && event.remainingTasks === 0) return to("acceptance");
+  return to(event.testsFirst && kind !== "epic" ? "testing" : "implementing");
 }
 
 /** The work on the tasks, which epics and retros do not have. */

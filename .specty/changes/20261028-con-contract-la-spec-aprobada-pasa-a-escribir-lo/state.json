@@ -6,6 +6,13 @@
   "branch": "specty/20261028-con-contract-la-spec-aprobada-pasa-a-escribir-lo",
   "baseCommit": "f34257247769a9e00ff21d651fffd295eb14c8d2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e8271350ca555aeab0550490b2c125d1b7f8cc2b011d854f9420912c2c48f42e",
+    "at": "2026-10-28T05:49:06.282Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "75316401287dcdc91f07472bcbd091514ae0d771",
+      "startedAt": "2026-10-28T05:49:07.032Z",
+      "doneAt": "2026-10-28T05:57:27.025Z",
+      "summary": "policy.tests: contract (sin tests es error, como required); testsFirst(spec, policy) en validate/quality.ts; approve lleva testsFirst y, con tareas pendientes, va de review a testing; approve.ts lo calcula con la spec."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 6,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e8271350ca555aeab0550490b2c125d1b7f8cc2b011d854f9420912c2c48f42e",
-    "at": "2026-10-28T05:49:06.282Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

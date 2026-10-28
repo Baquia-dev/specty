@@ -57,7 +57,7 @@ El cambio anterior dejó la fase `testing` en el modelo y en cada vista, pero si
 
 ## Tareas
 
-- [ ] T1: Con contract, aprobar la spec de una feature lleva a testing
+- [x] T1: Con contract, aprobar la spec de una feature lleva a testing
   - files: packages/core/src/schema/config.ts, packages/core/src/validate/quality.ts, packages/core/src/flow/machine.ts, packages/core/src/index.ts, packages/cli/src/commands/approve.ts, packages/cli/test/testing-phase.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/validate test/flow && pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts
