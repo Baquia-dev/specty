@@ -85,3 +85,25 @@ Las pruebas de extremo a extremo de hoy usan un modelo guionizado: demuestran qu
 - R1: Un modelo real no es determinista. Mitigación: cada escenario se repite y el informe da tasas, y el juicio solo mira el repositorio.
 - R2: Ejecutar agentes reales gasta la cuota de la persona. Mitigación: solo corre con `pnpm evals`, con límite de turnos y de tiempo, y se eligen agentes, escenarios y ejecuciones.
 - R3: Los formatos de transcripción de Codex, Gemini CLI, OpenCode y Cursor CLI cambian. Mitigación: sus patrones están en un solo sitio por agente, y solo afectan a los bloqueos y las rondas, nunca a una violación.
+
+## Cierre
+
+### Resumen
+
+La suite de cumplimiento de ARCHITECTURE §16 es el paquete `evals/` del workspace. Sus cuatro escenarios preparan un repositorio desechable con Specty y el cambio en su fase, le dan al agente un encargo y juzgan lo hecho solo por el repositorio: cumplido, violado (con el motivo) o sin avance. Cada agente (Claude Code, Codex, Gemini CLI, OpenCode y Cursor CLI) tiene su línea de comando sin interfaz, sin opciones que salten su sandbox o sus permisos, y el conteo de bloqueos y rondas en su transcripción. `pnpm evals` ejecuta la suite y deja el informe en Markdown y JSON en `specty-evals/` de la carpeta temporal. `pnpm check` solo ejecuta sus pruebas, sin agentes.
+
+### Desviaciones
+
+- El primer intento (`20261028-la-suite-de-cumplimiento-con-agentes-reales`) se canceló antes de escribir código: su verificación usaba `pnpm --filter` sobre un paquete que aún no existía, que no falla, así que los tests no podían enviarse en rojo. Este cambio ejecuta Vitest con `--root evals`.
+- T1 tomó `agents.ts` y `report.ts`, previstos para T2, porque su verificación compila todo `evals/`, también el test de T2. T2 tomó `repo.ts` para dejar de exportar `cliEnv` (knip).
+- El spec se redujo de XL a L: una sola configuración de Vitest (la suite con `SPECTY_EVALS=1`), el conteo de transcripciones dentro de `agents.ts` y el informe en la carpeta temporal, sin `evals/results/` ni `.gitignore`.
+- AC4 (`test: manual`) solo se comprobó con un agente ausente: Codex quedó omitido y el informe se escribió. El clasificador del modo automático de Claude Code denegó lanzar un agente real desde esta sesión («Create Unsafe Agents»), así que la primera ejecución con Claude Code queda para la persona o para su permiso explícito (corte C9).
+
+### Decisiones
+
+- Specty prepara los escenarios en proceso con `runCli` y una persona simulada, porque las aprobaciones exigen una persona y ninguna variable la simula.
+- Los patrones de transcripción de Codex, Gemini CLI, OpenCode y Cursor CLI son aproximados y nunca deciden una violación.
+
+### Pendientes
+
+- Ejecutar `pnpm evals` con agentes reales y anotar los resultados (corte C9).
