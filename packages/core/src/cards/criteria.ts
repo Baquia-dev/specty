@@ -5,12 +5,25 @@ import type { CriterionTestsView } from "./view";
 
 // Each criterion and the tests that carry its id (ADR 0014), as the acceptance shows them.
 
-/** One line per criterion: where each of its tests is, with its task and commit, or why none. */
+/** The tests a criterion's line shows; the rest it only counts. */
+const SHOWN_TESTS = 3;
+
+/**
+ * One line per criterion: where its first tests are, by file and line, with their task and
+ * commit, and how many more there are; or why none.
+ */
 export function criteriaTestLines(criteria: readonly CriterionTestsView[], lang: Lang): string[] {
   const t = translator(lang);
   return criteria.map((criterion) => {
+    const tests = criterion.tests
+      .toSorted((a, b) => a.path.localeCompare(b.path) || a.line - b.line)
+      .map((test) => `${test.path}:${test.line} (${test.task}, ${test.commit})`);
+    const more = tests.length - SHOWN_TESTS;
+    const shown =
+      tests.slice(0, SHOWN_TESTS).join(", ") +
+      (more > 0 ? t(` y ${more} más`, ` and ${more} more`) : "");
     const where = [
-      ...criterion.tests.map((test) => `${test.path}:${test.line} (${test.task}, ${test.commit})`),
+      ...(shown === "" ? [] : [shown]),
       ...(criterion.manual ? [t("a mano (test: manual)", "by hand (test: manual)")] : []),
     ];
     return `${criterion.id}: ${where.length === 0 ? t("sin test", "no test") : where.join(", ")}`;

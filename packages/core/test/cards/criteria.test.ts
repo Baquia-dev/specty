@@ -99,4 +99,23 @@ describe("criteria and their tests in acceptance", () => {
     ]);
     expect(acceptanceSummary(change([TESTED]), false, ES)).toBe("T1 Saluda por nombre (a1b2c3d)");
   });
+
+  it("AC3: show the first 3 tests of a criterion, by file and line, and how many more", () => {
+    const test = (path: string, line: number) => ({ path, line, task: "T1", commit: "a1b2c3d" });
+    const many: CriterionTests = {
+      id: "AC1",
+      manual: false,
+      owed: true,
+      tests: [test("src/b.test.ts", 2), test("src/a.test.ts", 9), test("src/a.test.ts", 3)].concat(
+        test("src/c.test.ts", 1),
+        test("src/c.test.ts", 5),
+      ),
+    };
+    expect(card(change([many]))).toContain(
+      "  AC1: src/a.test.ts:3 (T1, a1b2c3d), src/a.test.ts:9 (T1, a1b2c3d), src/b.test.ts:2 (T1, a1b2c3d) y 2 más\n",
+    );
+    expect(card(change([{ ...many, manual: true }]), EN)).toContain(
+      "src/b.test.ts:2 (T1, a1b2c3d) and 2 more, by hand (test: manual)\n",
+    );
+  });
 });
