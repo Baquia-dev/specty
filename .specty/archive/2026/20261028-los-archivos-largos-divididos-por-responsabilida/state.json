@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "20261028-los-archivos-largos-divididos-por-responsabilida",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-los-archivos-largos-divididos-por-responsabilida",
+  "baseCommit": "386c1c021deec1423506e8570bb7cde64ce991af",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6bb54eccdc9a396cbf9b93256f988087e80c3be66b811be5e0f0cdf8824b75bd",
+    "at": "2026-10-28T17:39:46.843Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1098e81beede798eafe186a5a37c0ea920222bb30754462b983a729b7359e8ba",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "aead6bbf6a3a42be2af21c236f61e6706466cc0d",
+      "attempts": 1,
+      "startedAt": "2026-10-28T17:39:47.275Z",
+      "doneAt": "2026-10-28T17:45:09.419Z",
+      "summary": "init.ts se queda con el comando (opciones, idioma, migración, commit, informe); install, installTarget, writeProjectFiles y sus tipos pasan a install/install.ts sin cambios; tests de init sin tocar",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "163536cf2424a450c13aeab42fef22b575309d85",
+      "attempts": 1,
+      "startedAt": "2026-10-28T17:45:09.743Z",
+      "doneAt": "2026-10-28T17:49:52.136Z",
+      "summary": "Los textos de doctor de cada agente pasan a cards/doctor-agents.ts (AGENT_WRITERS, como MCP_WRITERS); DoctorLine sigue entero en doctor.ts; tests de cards sin tocar",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "4f7f3db03bd5a982c122d374c1bc9063abfa0b13",
+      "attempts": 1,
+      "startedAt": "2026-10-28T17:49:52.512Z",
+      "doneAt": "2026-10-28T18:00:23.566Z",
+      "summary": "La sección git de la configuración pasa a schema/git.ts (GitConfig, DEFAULT_GIT, GitSchema, resolveGit), como checks.ts; check --all ya solo avisa de cards/index.ts",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-28T18:03:58.644Z"
+}

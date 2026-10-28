@@ -1,16 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename, join } from "node:path";
+import { basename } from "node:path";
 import {
-  type AgentTool,
-  agentsMdLine,
   backupLine,
   type CardContext,
   DEFAULT_CONFIG,
-  defaultGlossary,
   dryRunCard,
   GIT_FLOWS,
-  type GitFlow,
-  glossaryLine,
   type InitRefusal,
   initCard,
   initRefusalCard,
@@ -18,38 +13,20 @@ import {
   type Lang,
   languageChoices,
   languageQuestion,
-  noTestCommandWarning,
   type Output,
-  productLine,
   type ResolvedConfig,
-  unfilledSections,
 } from "@baquia-dev/specty-core";
-import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
+import { detectProject, projectFacts } from "../detect/project";
 import { commitInstall } from "../install/commit";
-import { type InstallFiles, installFiles } from "../install/files";
-import { ensureDevelop, flowToWrite, noFlowWarnings } from "../install/git-flow";
-import { agentsToInstall, installHooks } from "../install/hooks";
+import { ensureDevelop } from "../install/git-flow";
+import { type InitOptions, type InitSetup, type Installed, install } from "../install/install";
 import { type Migration, migrateLegacy } from "../install/legacy";
-import { installMcp } from "../install/mcp";
-import { isNewProject, writeProduct } from "../install/product";
-import { writeAgentsMd, writeConfig, writeGlossary } from "../install/project-files";
+import { isNewProject } from "../install/product";
 import { exists } from "../io/files";
 import { createGit, findRoot, type Git, pathsOf } from "../io/git";
 import { bareCards, type Environment, systemLanguage } from "../session";
 import { loadConfig } from "../store/config";
 import { repoPaths, shownPath } from "../store/paths";
-
-interface InitOptions {
-  readonly language?: Lang;
-  /** Agent tools to configure; by default, the ones detected in the repository. */
-  readonly tools?: readonly AgentTool[];
-  /** How the changes' branches are named (`git.flow`); by default, left as it is. */
-  readonly gitFlow?: GitFlow;
-  /** Only say what it would create or change: nothing is written or committed. */
-  readonly dryRun?: boolean;
-  /** Also register Specty's MCP server in each agent's project configuration. */
-  readonly mcp?: boolean;
-}
 
 /** `specty init` as typed: reads its options, and says which language its output uses. */
 export async function initCommand(
@@ -173,155 +150,6 @@ function withMigration(installed: Installed, migration: Migration): Installed {
     ...installed,
     done: [...migration.done, ...installed.done],
     written: [...installed.written, ...migration.written],
-  };
-}
-
-/** What init works with once it knows the repository, its language and its project. */
-interface InitSetup {
-  readonly environment: Environment;
-  readonly options: InitOptions;
-  readonly root: string;
-  readonly git: Git;
-  readonly lang: Lang;
-  readonly detection: Detection;
-  /** The configuration there was, when it was valid. */
-  readonly config: ResolvedConfig | undefined;
-  /** Whether init creates `.specty/config.yaml`. */
-  readonly created: boolean;
-}
-
-/** What init installed, or only planned in a dry run, and what it has to say about it. */
-interface Installed {
-  readonly files: InstallFiles;
-  readonly backups: string;
-  readonly product: Awaited<ReturnType<typeof writeProduct>> | undefined;
-  readonly done: readonly string[];
-  /** Repository-relative files init writes that git tracks: they go into its commit. */
-  readonly written: readonly string[];
-  readonly warnings: readonly string[];
-  /** The sections of AGENTS.md people complete by hand that are still empty. */
-  readonly unfilled: readonly string[];
-  /** The git flow init wrote, if any. */
-  readonly flow: GitFlow | undefined;
-  /** A new project ended without a flow: its next step chooses one. */
-  readonly chooseFlow: boolean;
-}
-
-/** The configuration, AGENTS.md, PRODUCT.md for a new project, and each agent's hooks. */
-async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
-  const { environment, options, root, git, lang, detection } = setup;
-  const { files, backups } = await installTarget(setup);
-  const dryRun = options.dryRun === true;
-  // Asked right after the language, before a new project's interview.
-  const agents = await agentsToInstall({
-    environment,
-    given: options.tools,
-    detected: detection.tools,
-    lang,
-    dryRun,
-  });
-  // Then the flow, which goes in config.yaml before PRODUCT.md is written.
-  const flow = await flowToWrite({
-    environment,
-    git,
-    given: options.gitFlow,
-    configured: setup.config?.git.flow,
-    created: setup.created,
-    dryRun,
-    lang,
-  });
-  const project = await writeProjectFiles(setup, fresh, files, flow.flow);
-  const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
-  const { tools } = agents;
-  const hooks = await installHooks({ environment, root, git, tools, lang, files });
-  const { invocation } = environment;
-  const mcp =
-    options.mcp === true
-      ? await installMcp({ root, tools, invocation, files, lang })
-      : { done: [], warnings: [], written: [] };
-  const noTests =
-    setup.config?.verify.default === undefined &&
-    verifyCommands(detection.commands).default === undefined;
-  return {
-    files,
-    backups,
-    product: project.product,
-    done: [...project.done, ...hooks.done, ...mcp.done],
-    written: [...project.written, ...hooks.written, ...mcp.written],
-    unfilled: project.unfilled,
-    flow: flow.flow,
-    chooseFlow: noFlow.length > 0,
-    warnings: [
-      ...agents.warnings,
-      ...noFlow,
-      ...hooks.warnings,
-      ...mcp.warnings,
-      ...(noTests ? [noTestCommandWarning(lang)] : []),
-    ],
-  };
-}
-
-/** Where init writes: a dry run only plans; otherwise every file that existed is copied first. */
-async function installTarget(
-  setup: InitSetup,
-): Promise<{ readonly files: InstallFiles; readonly backups: string }> {
-  const stamp = setup.environment
-    .now()
-    .toISOString()
-    .replace(/\.\d+Z$/, "Z")
-    .replaceAll(":", "-");
-  const backups = await setup.git.gitPath(`common/specty/backups/${stamp}`);
-  const files = installFiles(
-    setup.options.dryRun === true
-      ? { dryRun: true }
-      : { backups: { folder: backups, root: setup.root } },
-  );
-  return { files, backups };
-}
-
-/** `.specty/config.yaml`, AGENTS.md, the glossary where it is missing and, in a new project, PRODUCT.md. */
-async function writeProjectFiles(
-  setup: InitSetup,
-  fresh: boolean,
-  files: InstallFiles,
-  flow: GitFlow | undefined,
-): Promise<Pick<Installed, "product" | "done" | "written" | "unfilled">> {
-  const { environment, options, root, lang, detection } = setup;
-  const configLines = await writeConfig(files, repoPaths(root).config, detection, {
-    created: setup.created,
-    lang,
-    ...(options.language !== undefined ? { relanguage: options.language } : {}),
-    ...(flow !== undefined ? { flow } : {}),
-  });
-  const agents = await writeAgentsMd(root, lang, detection, files);
-  const glossary = setup.config?.glossary ?? defaultGlossary(lang);
-  const glossaryCreated = await writeGlossary(root, glossary, lang, files);
-  // A new project starts with what it is for: the interview with a person, or its questions.
-  const product = fresh
-    ? await writeProduct({
-        root,
-        name: detection.name,
-        lang,
-        terminal: environment.terminal,
-        ask: environment.terminal.interactive && options.dryRun !== true,
-        files,
-      })
-    : undefined;
-  return {
-    product,
-    done: [
-      ...configLines,
-      agentsMdLine(agents === "created", lang),
-      ...(glossaryCreated ? [glossaryLine(glossary, lang)] : []),
-      ...(product === undefined ? [] : [productLine(product === "interviewed", lang)]),
-    ],
-    written: [
-      ".specty/config.yaml",
-      "AGENTS.md",
-      ...(glossaryCreated ? [glossary] : []),
-      ...(product === undefined ? [] : ["PRODUCT.md"]),
-    ],
-    unfilled: unfilledSections((await files.read(join(root, "AGENTS.md"))) ?? ""),
   };
 }
 
