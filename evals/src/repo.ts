@@ -42,7 +42,7 @@ const AGENT_MARKS = [
  * The environment Specty and git run with: isolated git, Spanish, and the agents' user folders
  * (Codex, OpenCode) in temporary ones, so `init` never writes in the person's.
  */
-export function cliEnv(): NodeJS.ProcessEnv {
+function cliEnv(): NodeJS.ProcessEnv {
   const env: NodeJS.ProcessEnv = { ...process.env, ...GIT_ENV, LANG: "es_ES.UTF-8" };
   for (const mark of [...AGENT_MARKS, "LC_ALL", "LC_MESSAGES"]) delete env[mark];
   return {

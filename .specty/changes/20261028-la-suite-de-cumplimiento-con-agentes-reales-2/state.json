@@ -52,15 +52,26 @@
   "tasks": {
     "T1": {
       "status": "done",
+      "baseCommit": "2d130c37eef95288e997d16ae7463b3a17a3da50",
+      "attempts": 2,
+      "startedAt": "2026-10-28T16:51:15.282Z",
+      "doneAt": "2026-10-28T16:56:48.548Z",
+      "summary": "Paquete evals, repositorio desechable con runCli, los cuatro escenarios, los agentes con su conteo de transcripción y el informe",
       "scopeExtra": [
         "evals/src/agents.ts",
         "evals/src/report.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "evals/src/repo.ts"
       ],
-      "attempts": 2,
-      "baseCommit": "2d130c37eef95288e997d16ae7463b3a17a3da50",
-      "startedAt": "2026-10-28T16:51:15.282Z",
-      "doneAt": "2026-10-28T16:56:48.548Z",
-      "summary": "Paquete evals, repositorio desechable con runCli, los cuatro escenarios, los agentes con su conteo de transcripción y el informe"
+      "attempts": 1,
+      "baseCommit": "e7a9d2530ed4e8ba918ecf2860f2353102d2e5db",
+      "startedAt": "2026-10-28T16:56:48.867Z",
+      "doneAt": "2026-10-28T16:58:55.402Z",
+      "summary": "run/compliance.eval.ts ejecuta cada agente en cada escenario con su sesión y un envoltorio de specty, y escribe el informe en la carpeta temporal"
     }
   },
   "pending": {
