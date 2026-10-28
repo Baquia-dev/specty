@@ -164,4 +164,24 @@ describe("unlocking an approved test", () => {
     await writeFiles(root, { "src/app.test.ts": "it('AC1: saluda a Ana', () => {}); // Hola\n" });
     expect((await cli(root, ["check", "--changed"])).out).not.toContain("FALLA tests-locked");
   });
+
+  it("AC4 AC5: locks the new version when its task is done, and the acceptance shows the unlock", async () => {
+    const { root } = await unlockRequested();
+    await cli(root, ["approve", "--scope", "S1"], { terminal: person() });
+    const fixed = "it('AC1: saluda a Ana', () => {}); // Hola, Ana\n";
+    await writeFiles(root, {
+      "src/app.test.ts": fixed,
+      "src/app.ts": "export const greet = (name) => 'Hola, ' + name;\n",
+    });
+    const t1 = await cli(root, ["task", "done", "T1", "--summary", "Saluda por nombre"]);
+    expect(t1.code, t1.out).toBe(0);
+    expect((await stateOf(root)).lockedTests).toEqual({ "src/app.test.ts": hashText(fixed) });
+    // T2 is active now, and the test is locked for it again.
+    expect((await guard(root, "Write", { file_path: `${root}/src/app.test.ts` })).code).toBe(2);
+    const t2 = await cli(root, ["task", "done", "T2", "--summary", "Sin cambios"]);
+    expect(t2.code, t2.out).toBe(0);
+    expect((await cli(root, ["next"])).out).toContain(
+      "TESTS DESBLOQUEADOS:\n  src/app.test.ts (S1, T1)",
+    );
+  });
 });

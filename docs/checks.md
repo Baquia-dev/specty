@@ -268,7 +268,7 @@ checks:
 
 **Stack:** cualquiera.
 
-Falla si un test que aprobó la persona con `policy.tests: contract` ya no coincide con el hash que guardó `state.json` al aprobarlo (`lockedTests`), o si falta. Mira todos los cambios abiertos de la carpeta, por sus `state.json` y sea cual sea la rama, así que también falla en la CI de un PR. Con `--staged` compara lo preparado. Donde ningún cambio tiene tests aprobados, no aparece en el informe ([ADR 0014](decisions/0014-los-tests-como-contrato.md)).
+Falla si un test que aprobó la persona con `policy.tests: contract` ya no coincide con el hash que guardó `state.json` al aprobarlo (`lockedTests`), o si falta. Mira todos los cambios abiertos de la carpeta, por sus `state.json` y sea cual sea la rama, así que también falla en la CI de un PR. Con `--staged` compara lo preparado. Deja fuera un test que la persona desbloqueó para la tarea activa de su cambio, hasta que la tarea se completa. Donde ningún cambio tiene tests aprobados, no aparece en el informe ([ADR 0014](decisions/0014-los-tests-como-contrato.md)).
 
 **Configuración:** no tiene.
 

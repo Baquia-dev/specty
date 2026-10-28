@@ -166,6 +166,12 @@ export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
         t("CRITERIOS Y TESTS", "CRITERIA AND TESTS"),
         criteriaTestLines(change.criteriaTests ?? [], ctx.lang),
       ),
+      ...section(
+        t("TESTS DESBLOQUEADOS", "UNLOCKED TESTS"),
+        (change.unlockedTests ?? []).map(
+          ({ path, request, task }) => `${path} (${request}, ${task})`,
+        ),
+      ),
       ...section(t("AVISOS", "WARNINGS"), acceptanceWarnings(change, ctx)),
     ],
     next: acceptanceNext(change, ctx),

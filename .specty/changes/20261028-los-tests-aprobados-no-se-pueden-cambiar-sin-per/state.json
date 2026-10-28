@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-los-tests-aprobados-no-se-pueden-cambiar-sin-per",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-los-tests-aprobados-no-se-pueden-cambiar-sin-per",
   "baseCommit": "b3deec3f669201638899dae710bc9c71746cc416",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0bb19cf819f2c9584b34b6243229b9e520304b86",
+      "attempts": 1,
       "startedAt": "2026-10-28T09:02:00.448Z",
       "doneAt": "2026-10-28T09:09:33.409Z",
-      "summary": "scope add sobre un test bloqueado crea una solicitud aunque esté en el alcance, nunca aprobada por política; approve/reject --scope la rechazan al agente delegado; aprobada, el guard y tests-locked dejan abierto el test para su tarea activa; scope.decided guarda unlock y la tarea."
+      "summary": "scope add sobre un test bloqueado crea una solicitud aunque esté en el alcance, nunca aprobada por política; approve/reject --scope la rechazan al agente delegado; aprobada, el guard y tests-locked dejan abierto el test para su tarea activa; scope.decided guarda unlock y la tarea.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9e63483e09794b4fd10748cc58fde76be5dbb596",
+      "startedAt": "2026-10-28T09:09:33.725Z",
+      "doneAt": "2026-10-28T09:16:04.319Z",
+      "summary": "task done vuelve a bloquear cada test desbloqueado de la tarea con el hash de su versión nueva (relock); la aceptación lista TESTS DESBLOQUEADOS desde scope.decided con unlock; formats, ARCHITECTURE §4 y §8 y checks lo documentan."
     }
   },
   "pending": {

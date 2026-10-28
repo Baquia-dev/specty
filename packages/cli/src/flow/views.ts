@@ -171,7 +171,24 @@ async function phaseFacts(
     ...(state.phase === "acceptance" && state.kind !== "epic"
       ? { criteriaTests: await criteriaTests(session, spec, commits) }
       : {}),
+    ...(state.phase === "acceptance" ? unlockedTests(audit) : {}),
   };
+}
+
+/** Each approved test a person unlocked (`scope.decided` with `unlock`), for the acceptance. */
+function unlockedTests(audit: Audit): {
+  readonly unlockedTests?: NonNullable<ChangeView["unlockedTests"]>;
+} {
+  const unlocked = audit.flatMap((entry) => {
+    const data = dataOf(entry);
+    if (entry.event !== "scope.decided" || !Array.isArray(data.unlock)) return [];
+    const { id, task } = data;
+    if (typeof id !== "string" || typeof task !== "string") return [];
+    return data.unlock.flatMap((path) =>
+      typeof path === "string" ? [{ path, request: id, task }] : [],
+    );
+  });
+  return unlocked.length > 0 ? { unlockedTests: unlocked } : {};
 }
 
 /** The incorporation of the target branch the agent is resolving, if any. */

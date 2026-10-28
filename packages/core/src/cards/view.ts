@@ -151,6 +151,12 @@ export interface ChangeView {
   readonly recommendReview?: boolean;
   /** In acceptance, each criterion of the spec with the tests that carry its id. */
   readonly criteriaTests?: readonly CriterionTestsView[];
+  /** In acceptance, each approved test a person unlocked, with its request and its task. */
+  readonly unlockedTests?: readonly {
+    readonly path: string;
+    readonly request: string;
+    readonly task: string;
+  }[];
   readonly closingSubmitted: boolean;
   /** In the testing phase, the tests were sent and wait for the person (ADR 0014). */
   readonly testsSubmitted?: boolean;

@@ -217,7 +217,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - `maxIds` guarda el número más alto usado por cada prefijo (también `S`, las solicitudes de alcance), para que un id borrado nunca se reutilice con otro significado.
 - `closingSubmittedAt` (opcional) indica que el cierre ya se envió y espera la confirmación de la persona.
 - `testsSubmittedAt` (opcional), en la fase `testing`, indica que el agente envió los tests y esperan la aprobación de la persona; se borra al aprobarlos.
-- `lockedTests` (opcional): los tests que aprobó la persona en la fase `testing`, cada ruta con el hash de su contenido al aprobarlos. El guard no deja escribirlos ni borrarlos, y `tests-locked` falla si alguno cambia (ARCHITECTURE §4).
+- `lockedTests` (opcional): los tests que aprobó la persona en la fase `testing`, cada ruta con el hash de su contenido al aprobarlos. El guard no deja escribirlos ni borrarlos, y `tests-locked` falla si alguno cambia (ARCHITECTURE §4). Un test que la persona desbloquea para una tarea (`scope add` sobre él, que decide solo la persona) queda abierto mientras la tarea está activa, y al completarla `lockedTests` guarda el hash de su versión nueva; si ya no existe, deja de estar bloqueado.
 - `integration` (opcional) registra una incorporación de la rama principal que no salió sola: el merge dio conflictos o, con su resultado, la verificación falla, y el merge espera en la carpeta del cambio a que el agente lo termine (ARCHITECTURE §9). Mientras no tiene `resolved`, el agente solo puede tocar los archivos de `paths`:
 
   ```json
@@ -253,7 +253,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló, y `tree`: el código sobre el que corrió, un hash del árbol de trabajo sin `.specty/` tomado antes de verificar |
 | `task.completed` | tarea, commit, resumen (300 caracteres como máximo) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
-| `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban) |
+| `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban); si la persona aprueba el desbloqueo de tests aprobados, `unlock` (sus rutas) y `task` |
 | `epic.slicesDone` | todos los cortes de una épica tienen un cambio cerrado, y `specty next` la pasa a aceptación (actor `specty`): `slices`, el cambio de cada corte |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
