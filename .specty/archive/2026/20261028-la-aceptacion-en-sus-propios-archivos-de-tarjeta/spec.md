@@ -51,3 +51,21 @@ follows:
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts test/test-locks.test.ts test/criteria-tests.test.ts
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+`cards/acceptance.ts` tiene la tarjeta de aceptación, sus avisos y su SIGUIENTE, y `doneLine`, `assertionWarnings` y `riskWarnings`, que comparte con las tarjetas de tarea. `work.ts`, `next.ts`, `accept.ts`, `task.ts` e `index.ts` importan de ahí, y `acceptance.ts` no importa de `work.ts`. `flow/acceptance.ts` tiene `acceptanceFacts`: la revisión recomendada, la matriz de criterios y los tests desbloqueados. `views.ts` la usa en la aceptación. Ni `cards/work.ts` ni `flow/views.ts` pasan ya del aviso de 300 líneas, y ningún texto ni ningún test cambió.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- `doneLine` va con la aceptación, que la usa en «TAREAS HECHAS», y la tarjeta de tarea la importa de allí: así no hay un ciclo entre los dos archivos.
+
+### Pendientes
+
+- `cards/index.ts` está en 304 líneas: es la lista explícita de la API de textos de core.

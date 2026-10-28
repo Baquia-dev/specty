@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-la-aceptacion-en-sus-propios-archivos-de-tarjeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-la-aceptacion-en-sus-propios-archivos-de-tarjeta",
   "baseCommit": "aa9e93297d3f12bdc77adaa5eb0691d1a749b432",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c5fd9807c32475c6e0814125ebebaf72a2041b7e5db5dd5437f1a2d7f3c34885",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f79351c353cfb4ed220b55581941a50c2c31a331",
+      "attempts": 1,
       "startedAt": "2026-10-28T09:27:46.789Z",
       "doneAt": "2026-10-28T09:32:03.931Z",
-      "summary": "flow/acceptance.ts tiene acceptanceFacts (revisión recomendada, matriz de criterios y tests desbloqueados); views.ts la usa en la aceptación y baja de 300 líneas; los tests, sin cambios."
+      "summary": "flow/acceptance.ts tiene acceptanceFacts (revisión recomendada, matriz de criterios y tests desbloqueados); views.ts la usa en la aceptación y baja de 300 líneas; los tests, sin cambios.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T09:35:24.983Z"
 }

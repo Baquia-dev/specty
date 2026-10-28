@@ -7,3 +7,7 @@
 {"ts":"2026-10-28T09:27:46.790Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"f79351c353cfb4ed220b55581941a50c2c31a331"}}
 {"ts":"2026-10-28T09:32:03.852Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/flow.test.ts test/test-locks.test.ts test/criteria-tests.test.ts","exit":0,"ms":28602,"tree":"sha256:89186f1a95588210353bc67f197cddf2a169ce2ea2c2277b5636f89e27c75d27"}}
 {"ts":"2026-10-28T09:32:03.933Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"flow/acceptance.ts tiene acceptanceFacts (revisión recomendada, matriz de criterios y tests desbloqueados); views.ts la usa en la aceptación y baja de 300 líneas; los tests, sin cambios."}}
+{"ts":"2026-10-28T09:34:51.818Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":167007,"tree":"sha256:89186f1a95588210353bc67f197cddf2a169ce2ea2c2277b5636f89e27c75d27"}}
+{"ts":"2026-10-28T09:34:51.819Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T09:35:24.984Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:8b8db15944f293d55b9fc9d380a9a355ab6f8aae5943b509dd1f9369ee3d9bc9","size":"M","warnings":3}}
+{"ts":"2026-10-28T09:35:25.237Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
