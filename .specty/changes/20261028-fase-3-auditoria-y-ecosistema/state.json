@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "20261028-fase-3-auditoria-y-ecosistema",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261028-fase-3-auditoria-y-ecosistema",
+  "baseCommit": "f654d6ae32c2e1cc73bdecc5d630d533ad66c6a6",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:51b54339b3f7df623de04639510a820ef9b1667a54e4a7872ae77fc44e830d96",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ed375db6c2848e0b45ba7918d8ead22868266c7cee04db631988faf1b9baae13",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:4a61425700d08880f1fd6e59fadeb490c4a564d5710dce37a0f6beb022c3cb7f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5a2624cef22363504a61a18b2f21f408d82a4d3771b5cc28d77b637e66bbba7c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:a2384454c9fcbd77afa5d3d7d766c88defb2943b392fc9359eefbeec02a5ae96",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:8af995283496b13b6c4b7b028938f25dc5d47bd4870624af67f60ca4c9860105",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:a10c3a52b667e1c2cde9ac5305b09efb15ab363e2150a7d3a400d6c7e61580cb",
+      "decision": "confirmed"
+    },
+    "A8": {
+      "hash": "sha256:c35caaf47c022aa6b2bb151229e6b722b1201dffc08d1d3eb183af14af53ce1e",
+      "decision": "confirmed"
+    },
+    "A9": {
+      "hash": "sha256:ee766d818f6599fceb28c6ce769583369ce9e8a89ab114af166cad3d55b44f80",
+      "decision": "confirmed"
+    },
+    "A10": {
+      "hash": "sha256:4b9e69c57b887f01d75746cf524545e2ccc1444e2e978d55c28a1ca237339f27",
+      "decision": "implicit"
+    },
+    "A11": {
+      "hash": "sha256:4178996d2fb50f6216307c399b7419cd0178fec0056f8683d915c3d26ce50c92",
+      "decision": "implicit"
+    },
+    "A12": {
+      "hash": "sha256:520c3f9f1718ee622a8f1fa30c1e4a985d4f16a246748737ed874d778d1b2afc",
+      "decision": "implicit"
+    },
+    "A13": {
+      "hash": "sha256:7e5c6e71682b6e362c08d46bb4b5eb35b8f2178c75f850db39123e1c081e6934",
+      "decision": "confirmed"
+    },
+    "A14": {
+      "hash": "sha256:ede5783c3d4774d8f23d06e3294b563964e9978cfdbd08b110ec30ff64f849ab",
+      "decision": "confirmed"
+    },
+    "A15": {
+      "hash": "sha256:cfaa97ba4fe77e52a8eaf5869a68481c70242cfb4c0aa4d1a776912bb1c726d0",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 15,
+    "AC": 19,
+    "C": 9,
+    "R": 6
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d4b98af08c688a054b11965d109b894cc92ccc16de0bf5432c0b4e9d422854b8",
+    "at": "2026-10-28T14:29:32.023Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
