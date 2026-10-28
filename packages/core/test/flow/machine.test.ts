@@ -31,6 +31,7 @@ const PASSING: Readonly<Record<FlowEventType, FlowEvent>> = {
     testsFirst: false,
   },
   approveTests: { type: "approveTests", testsSubmitted: true },
+  confirmRed: { type: "confirmRed" },
   taskDone: { type: "taskDone", remainingTasks: 0 },
   scopeRequest: { type: "scopeRequest" },
   decideScope: { type: "decideScope" },
@@ -62,6 +63,7 @@ const TABLE: Readonly<Record<FlowEventType, Row>> = {
   },
   requestChanges: { actors: ["human"], next: { review: "review" } },
   approveTests: { actors: ["human"], next: { testing: "implementing" } },
+  confirmRed: { actors: ["specty"], next: { testing: "implementing" } },
   approve: {
     actors: ["human"],
     next: { review: { retro: "done", epic: "implementing", other: "acceptance" } },
@@ -170,6 +172,20 @@ describe("transition", () => {
     expect(transition({ ...base, event: approve(2) })).toEqual({ ok: true, phase: "testing" });
     // With nothing left to build, there is nothing to test first either.
     expect(transition({ ...base, event: approve(0) })).toEqual({ ok: true, phase: "acceptance" });
+  });
+
+  it("AC1: implements a bug once its test is red, without the person, and only Specty says so", () => {
+    const base = { phase: "testing" as const, kind: "quick" as const };
+    expect(transition({ ...base, actor: "specty", event: { type: "confirmRed" } })).toEqual({
+      ok: true,
+      phase: "implementing",
+    });
+    for (const actor of ["agent", "human"] as const) {
+      expect(transition({ ...base, actor, event: { type: "confirmRed" } })).toEqual({
+        ok: false,
+        code: "actor-not-allowed",
+      });
+    }
   });
 
   it("never lets the agent run an event that grants permissions", () => {

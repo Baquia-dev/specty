@@ -59,7 +59,7 @@ Con `policy.tests: contract`, solo una feature pasa por la fase de tests, y lo d
 
 ## Tareas
 
-- [ ] T1: El ciclo de tests por las tareas pendientes y el evento confirmRed
+- [x] T1: El ciclo de tests por las tareas pendientes y el evento confirmRed
   - files: packages/core/src/validate/quality.ts, packages/core/src/flow/machine.ts, packages/core/src/index.ts, packages/cli/src/commands/approve.ts, packages/cli/test/bug-cycle.test.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/validate test/flow && pnpm --filter @baquia-dev/specty exec vitest run test/bug-cycle.test.ts test/testing-phase.test.ts

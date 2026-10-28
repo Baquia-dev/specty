@@ -69,16 +69,25 @@ export function testRules(task: Pick<Task, "type">, policy: TestsPolicy): TestRu
   return type === "feat" || type === "fix" ? "first" : "keep";
 }
 
+/** How a change's tests come before its code (ADR 0014): a feature's wait for the person; a bug's red test locks by itself. */
+export type TestCycle = "feature" | "bug";
+
 /**
- * A change whose tests come first goes through the testing phase before its code (ADR 0014): a
- * standard change with a `feat` task, the default type, under `policy.tests: contract`.
+ * The cycle of tests a change follows under `policy.tests: contract`, by its tasks not `done`
+ * yet: a standard change with a `feat` task, the default type, is a feature; one with `fix`
+ * tasks and no `feat`, also a quick one, is a bug; any other has no testing phase.
  */
-export function testsFirst(spec: Spec, policy: TestsPolicy): boolean {
-  return (
-    policy === "contract" &&
-    spec.frontmatter.kind === "standard" &&
-    (spec.sections.tasks?.items ?? []).some((task) => (task.type ?? "feat") === "feat")
-  );
+export function testCycle(
+  spec: Spec,
+  policy: TestsPolicy,
+  done: ReadonlySet<string> = new Set(),
+): TestCycle | undefined {
+  const { kind } = spec.frontmatter;
+  if (policy !== "contract" || (kind !== "standard" && kind !== "quick")) return undefined;
+  const pending = (spec.sections.tasks?.items ?? []).filter((task) => !done.has(task.id));
+  const types = new Set(pending.map((task) => task.type ?? "feat"));
+  if (kind === "standard" && types.has("feat")) return "feature";
+  return types.has("fix") ? "bug" : undefined;
 }
 
 /** Criteria name an observable outcome, in WHEN … THEN … form. */

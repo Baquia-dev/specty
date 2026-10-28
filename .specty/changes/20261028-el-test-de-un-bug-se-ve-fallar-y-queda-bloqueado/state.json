@@ -6,6 +6,13 @@
   "branch": "specty/20261028-el-test-de-un-bug-se-ve-fallar-y-queda-bloqueado",
   "baseCommit": "fa1b639f3e43aa27feb14b545cde7cdcc63bcd72",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:10e23e3a93ceede4201c978e5a07117964171c55fc391d6d916dbbb4d7fa7bb5",
+    "at": "2026-10-28T09:37:47.124Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "aad899db06f331a1d202c9177018c1d4ada63a72",
+      "startedAt": "2026-10-28T09:37:47.528Z",
+      "doneAt": "2026-10-28T09:48:32.994Z",
+      "summary": "testCycle(spec, policy, done) sustituye a testsFirst: feature con una feat pendiente en standard, bug con solo fix pendientes (también quick); approve lo calcula con las tareas hechas; la máquina gana confirmRed (Specty, testing → implementing) y transition elige el grupo con guardas de tipo."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 7,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:10e23e3a93ceede4201c978e5a07117964171c55fc391d6d916dbbb4d7fa7bb5",
-    "at": "2026-10-28T09:37:47.124Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { DEFAULT_CONFIG, parseSpec, testsFirst, validateSpec } from "../../src";
+import { DEFAULT_CONFIG, parseSpec, testCycle, validateSpec } from "../../src";
 import { check, fixture, withConfig } from "../helpers";
 
 const STANDARD = fixture("standard.es.md");
@@ -51,24 +51,39 @@ describe("tests policy", () => {
   });
 });
 
-describe("testsFirst", () => {
+describe("testCycle", () => {
   const { spec } = parseSpec(STANDARD);
   const typed = (type: string) =>
     parseSpec(STANDARD.replace(/( {2}- ac: .+)/g, `$1\n  - type: ${type}`)).spec;
-
-  it("AC2: sends a standard change with a feat task through the testing phase under contract", () => {
-    expect(spec.sections.tasks?.items.every((task) => task.type === undefined)).toBe(true);
-    expect(testsFirst(spec, "contract")).toBe(true);
-    expect(testsFirst(typed("feat"), "contract")).toBe(true);
+  const quick = (type: string) => ({
+    ...typed(type),
+    frontmatter: { ...spec.frontmatter, kind: "quick" as const },
   });
 
-  it("AC3: does not without contract, without a feat task or for another kind of change", () => {
+  it("AC1: gives a feature's cycle to a pending feat task, and a bug's to fix tasks alone", () => {
+    expect(spec.sections.tasks?.items.every((task) => task.type === undefined)).toBe(true);
+    expect(testCycle(spec, "contract")).toBe("feature");
+    expect(testCycle(typed("feat"), "contract")).toBe("feature");
+    expect(testCycle(typed("fix"), "contract")).toBe("bug");
+    expect(testCycle(quick("fix"), "contract")).toBe("bug");
+  });
+
+  it("AC3: gives none without contract, without feat or fix tasks, or to a quick feat", () => {
     for (const policy of ["required", "recommended", "off"] as const) {
-      expect(testsFirst(spec, policy), policy).toBe(false);
+      expect(testCycle(spec, policy), policy).toBeUndefined();
     }
-    expect(testsFirst(typed("fix"), "contract")).toBe(false);
-    const quick = { ...spec, frontmatter: { ...spec.frontmatter, kind: "quick" as const } };
-    expect(testsFirst(quick, "contract")).toBe(false);
+    expect(testCycle(typed("refactor"), "contract")).toBeUndefined();
+    expect(testCycle(quick("feat"), "contract")).toBeUndefined();
+  });
+
+  it("AC4: looks only at the tasks not done yet, as after an adjustment", () => {
+    const done = new Set(["T1", "T2"]);
+    expect(testCycle(spec, "contract", done)).toBeUndefined();
+    expect(testCycle(spec, "contract", new Set(["T1"]))).toBe("feature");
+    const mixed = parseSpec(
+      STANDARD.replace(/(T2: .+\n {2}- files: .+\n {2}- ac: .+)/, "$1\n  - type: fix"),
+    ).spec;
+    expect(testCycle(mixed, "contract", new Set(["T1"]))).toBe("bug");
   });
 });
 

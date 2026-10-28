@@ -14,11 +14,13 @@ export type FlowEvent =
       readonly pendingHighImpact: number;
       /** Tasks of the approved spec not done yet: with none, there is nothing to implement. */
       readonly remainingTasks: number;
-      /** The change's tests are written and approved before its code (`testsFirst`, ADR 0014). */
+      /** The change's tests come before its code (`testCycle`, ADR 0014). */
       readonly testsFirst: boolean;
     }
   /** The person approves the tests sent in the testing phase: the gate 2 of ADR 0014. */
   | { readonly type: "approveTests"; readonly testsSubmitted: boolean }
+  /** A bug's test is red, so it is locked and the fix starts, with no person (ADR 0014). */
+  | { readonly type: "confirmRed" }
   | { readonly type: "taskDone"; readonly remainingTasks: number }
   | { readonly type: "scopeRequest" }
   | { readonly type: "decideScope" }
@@ -58,6 +60,7 @@ export const EVENT_RULES: Readonly<Record<FlowEventType, EventRule>> = {
   requestChanges: { actors: HUMAN, from: ["review"], grantsPermission: false },
   approve: { actors: HUMAN, from: ["review"], grantsPermission: true },
   approveTests: { actors: HUMAN, from: ["testing"], grantsPermission: true },
+  confirmRed: { actors: ["specty"], from: ["testing"], grantsPermission: true },
   taskDone: { actors: ANYONE, from: ["implementing"], grantsPermission: false },
   scopeRequest: { actors: ANYONE, from: ["implementing"], grantsPermission: false },
   decideScope: { actors: HUMAN, from: ["implementing"], grantsPermission: true },
@@ -100,29 +103,41 @@ export function transition({ phase, kind, actor, event }: TransitionInput): Tran
   const rule = EVENT_RULES[event.type];
   if (!rule.actors.includes(actor)) return reject("actor-not-allowed");
   if (!rule.from.includes(phase)) return reject("phase-not-allowed");
-  switch (event.type) {
-    case "propose":
-    case "requestChanges":
-    case "approve":
-    case "approveTests":
-      return specOutcome(event, phase, kind);
-    case "taskDone":
-    case "scopeRequest":
-    case "decideScope":
-      return taskOutcome(event, kind);
-    default:
-      return endOutcome(event, kind);
-  }
+  if (isSpecEvent(event)) return specOutcome(event, phase, kind);
+  if (isTaskEvent(event)) return taskOutcome(event, kind);
+  return endOutcome(event, kind);
 }
 
 type EventOf<T extends FlowEventType> = Extract<FlowEvent, { readonly type: T }>;
 
+/** The events about the spec and its tests. */
+type SpecEvent = EventOf<"propose" | "requestChanges" | "approve" | "approveTests" | "confirmRed">;
+const SPEC_EVENTS: ReadonlySet<FlowEventType> = new Set<SpecEvent["type"]>([
+  "propose",
+  "requestChanges",
+  "approve",
+  "approveTests",
+  "confirmRed",
+]);
+
+function isSpecEvent(event: FlowEvent): event is SpecEvent {
+  return SPEC_EVENTS.has(event.type);
+}
+
+/** The events about the tasks. */
+type TaskEvent = EventOf<"taskDone" | "scopeRequest" | "decideScope">;
+const TASK_EVENTS: ReadonlySet<FlowEventType> = new Set<TaskEvent["type"]>([
+  "taskDone",
+  "scopeRequest",
+  "decideScope",
+]);
+
+function isTaskEvent(event: FlowEvent): event is TaskEvent {
+  return TASK_EVENTS.has(event.type);
+}
+
 /** The spec and its tests: proposed, sent back by the person, or approved. */
-function specOutcome(
-  event: EventOf<"propose" | "requestChanges" | "approve" | "approveTests">,
-  phase: Phase,
-  kind: ChangeKind,
-): TransitionResult {
+function specOutcome(event: SpecEvent, phase: Phase, kind: ChangeKind): TransitionResult {
   switch (event.type) {
     case "propose":
       if (event.validationErrors > 0) return reject("validation-errors");
@@ -134,6 +149,8 @@ function specOutcome(
       return approveOutcome(event, kind);
     case "approveTests":
       return event.testsSubmitted ? to("implementing") : reject("tests-not-submitted");
+    case "confirmRed":
+      return to("implementing");
   }
 }
 
@@ -148,10 +165,7 @@ function approveOutcome(event: EventOf<"approve">, kind: ChangeKind): Transition
 }
 
 /** The work on the tasks, which epics and retros do not have. */
-function taskOutcome(
-  event: EventOf<"taskDone" | "scopeRequest" | "decideScope">,
-  kind: ChangeKind,
-): TransitionResult {
+function taskOutcome(event: TaskEvent, kind: ChangeKind): TransitionResult {
   if (WITHOUT_TASKS.has(kind)) return reject("kind-not-allowed");
   if (event.type !== "taskDone") return to("implementing");
   return to(event.remainingTasks > 0 ? "implementing" : "acceptance");

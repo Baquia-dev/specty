@@ -25,7 +25,7 @@ import {
   specChangedCard,
   specDelta,
   specHash,
-  testsFirst,
+  testCycle,
   transition,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
@@ -179,8 +179,11 @@ async function approved(
 ): Promise<Output> {
   const { state } = active;
   // Counted as `task done` counts them: with none left, the change goes to acceptance.
+  const done = new Set(
+    Object.entries(state.tasks).flatMap(([id, task]) => (task.status === "done" ? [id] : [])),
+  );
   const remainingTasks = (spec.sections.tasks?.items ?? []).filter(
-    (item) => state.tasks[item.id]?.status !== "done",
+    (item) => !done.has(item.id),
   ).length;
   const moved = transition({
     phase: "review",
@@ -191,7 +194,8 @@ async function approved(
       validationErrors: analysis.valid ? 0 : 1,
       pendingHighImpact: 0,
       remainingTasks,
-      testsFirst: testsFirst(spec, session.config.policy.tests),
+      // By the tasks still to do: an adjustment's tests come first only if it brings any.
+      testsFirst: testCycle(spec, session.config.policy.tests, done) !== undefined,
     },
   });
   if (!moved.ok) return blockedCard(header, moved.code, askAgentNext(session.cards));

@@ -248,16 +248,19 @@ describe("approving the tests", () => {
   });
 });
 
-/** FEATURE with a `fix` in T1: no `feat`, so it skips the testing phase, but still owes its test. */
+/** FEATURE with a `fix` in T1: its criterion still owes a test with its id. */
 const FIX = FEATURE.replace(
   "- [ ] T1: Saludar por nombre\n  - files: src/app.ts, src/app.test.ts\n  - ac: AC1",
   "- [ ] T1: Saludar por nombre\n  - files: src/app.ts, src/app.test.ts\n  - ac: AC1\n  - type: fix",
 );
 
 describe("criteria-tested under contract", () => {
+  // Approved without contract, so it skips the testing phase; the run then reads `config`.
   const untested = async (config: string) => {
-    const { root } = await approved(`${config}checks:\n  levels: { secrets: off }\n`, FIX);
+    const checks = "checks:\n  levels: { secrets: off }\n";
+    const { root } = await approved(`${CONFIG()}${checks}`, FIX);
     expect(await phaseOf(root)).toBe("implementing");
+    await writeFiles(root, { ".specty/config.yaml": `${config}${checks}` });
     await cli(root, ["next"]);
     // The fix brings a test, as `fix-tests` asks, but not one named after AC1.
     await writeFiles(root, {
