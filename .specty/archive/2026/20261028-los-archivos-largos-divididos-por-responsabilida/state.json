@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-los-archivos-largos-divididos-por-responsabilida",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-los-archivos-largos-divididos-por-responsabilida",
   "baseCommit": "386c1c021deec1423506e8570bb7cde64ce991af",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:6bb54eccdc9a396cbf9b93256f988087e80c3be66b811be5e0f0cdf8824b75bd",
@@ -49,12 +49,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4f7f3db03bd5a982c122d374c1bc9063abfa0b13",
+      "attempts": 1,
       "startedAt": "2026-10-28T17:49:52.512Z",
       "doneAt": "2026-10-28T18:00:23.566Z",
-      "summary": "La sección git de la configuración pasa a schema/git.ts (GitConfig, DEFAULT_GIT, GitSchema, resolveGit), como checks.ts; check --all ya solo avisa de cards/index.ts"
+      "summary": "La sección git de la configuración pasa a schema/git.ts (GitConfig, DEFAULT_GIT, GitSchema, resolveGit), como checks.ts; check --all ya solo avisa de cards/index.ts",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -66,5 +66,6 @@
     "AC": 2,
     "T": 3,
     "R": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T18:03:58.644Z"
 }

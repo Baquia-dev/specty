@@ -63,3 +63,28 @@ kind: standard
 ## Riesgos
 
 - R1: Un import circular entre `doctor.ts` y `doctor-agents.ts`, o entre `config.ts` y `git.ts`. Mitigación: los archivos nuevos no importan de los que se dividen; los tipos comunes van en el nuevo o en `cards/text.ts`.
+
+## Cierre
+
+### Resumen
+
+`specty check --all` ya solo avisa de `cards/index.ts` (332 líneas de código), que quedó fuera de alcance. Los otros tres archivos se dividieron por responsabilidad sin cambiar lo que hacen:
+- `commands/init.ts` (de 380 a 208 líneas) se queda con el comando, y `install/install.ts` tiene lo que instala `init` y en qué orden.
+- `cards/doctor.ts` se queda con las líneas del proyecto y la tarjeta, y `cards/doctor-agents.ts` tiene los textos de cada agente (`AGENT_WRITERS`).
+- `schema/config.ts` deja la sección `git` en `schema/git.ts` (`GitConfig`, `DEFAULT_GIT`, `GitSchema` y `resolveGit`), como `schema/checks.ts`.
+
+Ningún test cambió, y `pnpm check` pasó al aceptar.
+
+### Desviaciones (respecto al plan)
+
+- `DoctorLine` se queda entero en `doctor.ts`, y a `doctor-agents.ts` solo van los textos, igual que ya hacía `MCP_WRITERS` en `cards/mcp.ts`. `doctor-agents.ts` importa ese tipo con `import type`, que no crea un ciclo al ejecutar.
+- Con `contract`, cada tarea de código tiene que listar un test, también un refactor. Cada tarea lista en Archivos el test que fija su contrato, marcado «debe pasar sin cambios», y ninguno se tocó.
+
+### Decisiones
+
+- Los textos se movieron tal cual, línea a línea, y la tabla de `doctor.ts` los mezcla con `...AGENT_WRITERS`. El tipo sigue exigiendo un texto por cada código, así que un código sin texto no compila.
+
+### Pendientes
+
+- `cards/index.ts`, la lista de exportaciones de los textos, sigue avisando. Partirla daría dos listas sin criterio; la persona puede añadirla a `lines.exclude`.
+- Con `contract`, un refactor tiene que listar como «modificar» un test que no cambia. Si se repite, conviene que la regla acepte en un refactor los tests que ya existen sin declararlos.
