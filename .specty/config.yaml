@@ -5,9 +5,10 @@ mode: individual
 # Rutas donde rige el flujo: código que necesita una spec aprobada.
 governed: ["**"]
 # Rutas libres: documentación y archivos que no son código.
-ignored: ["**/*.md","docs/**"]
+ignored: ["**/*.md", "docs/**"]
 # Rutas que nunca se aprueban solas y que pesan en el tamaño.
-sensitive: ["**/migrations/**","**/auth/**",".github/**","**/.env*","**/infra/**"]
+sensitive:
+  ["**/migrations/**", "**/auth/**", ".github/**", "**/.env*", "**/infra/**"]
 verify:
   default: "pnpm test"
   full: "pnpm check"
@@ -22,3 +23,5 @@ retro:
   mode: agent
 git:
   branchPerChange: true
+split:
+  maxModules: 3
