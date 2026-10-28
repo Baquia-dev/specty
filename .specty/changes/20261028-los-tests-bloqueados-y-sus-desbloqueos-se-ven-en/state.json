@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
+  "baseCommit": "6477c7d222a97eda066f7ddc4c347134174c2749",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:669c4522b62dcbe2f4c180b35a4c9e1dcc46874be66db5395e52a6bf963b76d6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e270f03e5388c2fa3d9f8e7e17a6ed013a707070c6fa8e55cd9fb8af1055b5a4",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:1b1aa34302863a38b35de84e05ccff9b8c39f298658ae65e8cc053c45a4aa6df",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c1b891c269a6b7fc3ac39b9a3587b3101c549dc82812da82dac139c5de21819d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5d26c087683965bbd7e842c229bf0b608aae510b692a4ae4b1de49c8c46434c3",
+    "at": "2026-10-28T11:20:47.645Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
