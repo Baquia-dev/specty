@@ -66,7 +66,7 @@ Cuando alguien prepara a mano código fuera del alcance del cambio activo, hoy e
 - [x] T1: Tarjetas de `retro --into` y el mensaje del bloqueo
   - files: packages/core/src/schema/state.ts, packages/core/src/cards/retro-into.ts, packages/core/src/cards/hooks.ts, packages/core/src/cards/index.ts, packages/core/test/cards/retro-into.test.ts, packages/core/test/cards/hooks.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
-- [ ] T2: El comando, la aprobación con recibo y el hook
+- [x] T2: El comando, la aprobación con recibo y el hook
   - files: packages/cli/src/commands/retro-into.ts, packages/cli/src/flow/retro-into.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/src/enforce/hook.ts, packages/cli/test/retro-into.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
 - [ ] T3: Documentación de `retro --into`
