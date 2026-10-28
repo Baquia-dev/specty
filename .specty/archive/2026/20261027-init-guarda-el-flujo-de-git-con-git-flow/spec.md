@@ -78,3 +78,24 @@ Hoy `git.flow` solo se puede poner a mano en `config.yaml`. Con este cambio, `sp
 
 - R1: `commands/init.ts` está en el límite de tamaño. Mitigación: `writeConfig` se muda a `install/project-files.ts`, donde ya viven los que editan `config.yaml`.
 - R2: Un `git:` que no es un mapa en `config.yaml`. Mitigación: `withGitFlow` no lo toca, como `completeConfig` con `verify`, y la validación lo dice.
+
+## Cierre
+
+### Resumen
+
+`specty init --git-flow <specty|github|trunk|gitflow>` escribe `git.flow` en una configuración nueva o cambia solo esa clave en la existente, sin tocar comentarios ni formato, y dice cómo se llamarán las ramas; un flujo desconocido no instala nada. Con `gitflow`, añade `git.target: develop` si no había destino y, si ese es el destino y `develop` no existe, la crea tras el commit de `init`: desde `origin/develop`, siguiéndola, o desde la rama actual. Sin la opción, `init` no toca el flujo. ARCHITECTURE §14 lo describe.
+
+### Desviaciones
+
+- `packages/core/src/cards/index.ts` entró por la ampliación S1, para exportar `flowLine` y `developLine`.
+- La primera verificación completa falló en knip: tras mudar `writeConfig`, `completeConfig`, `withLanguage` y `withGitFlow` ya no se usaban fuera de su archivo. Se añadió T5 (revisión 3), que les quita el `export`.
+- `completeConfig` usa ahora el ayudante `withBlock`, que comparte con `withGitFlow`, para añadir un mapa nuevo al final.
+
+### Decisiones
+
+- `develop` sigue a `origin/develop` (`--track`) cuando sale de ella; el test añade el remoto `origin`, como en un repositorio real.
+- Si `develop` no se puede crear (por ejemplo, sin ningún commit), `init` no dice nada de ella y sigue.
+
+### Pendientes
+
+- Cambio 2b-ii: `init` detecta el flujo del repositorio (configuración de git-flow, rama `develop`, prefijos de las ramas), se lo pregunta a la persona con el detectado primero, y en un proyecto nuevo exige elegirlo (al agente, con un aviso y su SIGUIENTE).

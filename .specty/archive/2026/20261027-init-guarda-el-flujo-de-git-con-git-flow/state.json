@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261027-init-guarda-el-flujo-de-git-con-git-flow",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261027-init-guarda-el-flujo-de-git-con-git-flow",
   "baseCommit": "2b92e418e8e3f055d927c143ccf7779e6bd1baa1",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:3a33323e1db0ea8e68ed0c7f14d7d6b9ee96d9e86d28b9bfb856fd23910afb25",
@@ -78,12 +78,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "28c5e9804be9523156e76932448162cd798253ca",
+      "attempts": 1,
       "startedAt": "2026-10-27T23:58:29.688Z",
       "doneAt": "2026-10-27T23:58:49.253Z",
-      "summary": "completeConfig, withLanguage y withGitFlow dejan de exportarse: tras mudar writeConfig solo los usa install/project-files.ts, y knip pasa."
+      "summary": "completeConfig, withLanguage y withGitFlow dejan de exportarse: tras mudar writeConfig solo los usa install/project-files.ts, y knip pasa.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -96,5 +96,6 @@
     "T": 5,
     "R": 2,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T00:04:30.026Z"
 }
