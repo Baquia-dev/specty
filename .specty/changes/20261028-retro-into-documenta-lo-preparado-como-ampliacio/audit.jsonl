@@ -2,3 +2,4 @@
 {"ts":"2026-10-28T14:34:28.142Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:289b5030b2b9e8b0a2d5a209c6840892c4082747970816fdd9d9dcd237d4f2db","size":"L","warnings":2}}
 {"ts":"2026-10-28T14:34:37.655Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:a038e9333d59e0a3fe262bc71513d3b0f40d1ac1ef673c0a39189770b7466022","size":"L","warnings":2}}
 {"ts":"2026-10-28T14:34:50.402Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":2,"hash":"sha256:a038e9333d59e0a3fe262bc71513d3b0f40d1ac1ef673c0a39189770b7466022","channel":"delegated","delegated":true}}
+{"ts":"2026-10-28T14:37:22.261Z","actor":"agent","tool":"claude-code","event":"tests.proposed","data":{"count":3,"files":["packages/cli/test/retro-into.test.ts","packages/core/test/cards/hooks.test.ts","packages/core/test/cards/retro-into.test.ts"],"red":[{"cmd":"pnpm test","exit":1}]}}

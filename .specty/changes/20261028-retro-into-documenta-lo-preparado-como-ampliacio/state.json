@@ -6,6 +6,13 @@
   "branch": "specty/20261028-retro-into-documenta-lo-preparado-como-ampliacio",
   "baseCommit": "f654d6ae32c2e1cc73bdecc5d630d533ad66c6a6",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a038e9333d59e0a3fe262bc71513d3b0f40d1ac1ef673c0a39189770b7466022",
+    "at": "2026-10-28T14:34:50.391Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:a038e9333d59e0a3fe262bc71513d3b0f40d1ac1ef673c0a39189770b7466022",
-    "at": "2026-10-28T14:34:50.391Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T14:37:22.260Z"
 }
