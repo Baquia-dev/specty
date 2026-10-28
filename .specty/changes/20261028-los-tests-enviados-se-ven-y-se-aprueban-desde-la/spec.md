@@ -63,7 +63,7 @@ Con `policy.tests: contract`, el agente envía los tests de una feature antes de
 
 ## Tareas
 
-- [ ] T1: La decisión de los tests en los datos de la UI
+- [x] T1: La decisión de los tests en los datos de la UI
   - files: packages/ui/src/data/tests.ts, packages/ui/src/data/tests.test.ts, packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/inbox/inbox-row.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data --include src/inbox

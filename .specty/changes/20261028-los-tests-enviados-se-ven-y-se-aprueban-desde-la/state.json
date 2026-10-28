@@ -6,6 +6,13 @@
   "branch": "specty/20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
   "baseCommit": "3b93a0cfb50a432f95ce7e2117526425fc6b35ce",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1a0d341dae466ba9b0c754dc150619e5481ab6396aaa15066392faee7908cca4",
+    "at": "2026-10-28T10:45:58.574Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -30,7 +37,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/change/change-page.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "c06926e540550dacd23247e78e01468a14849911",
+      "startedAt": "2026-10-28T10:45:58.957Z",
+      "doneAt": "2026-10-28T10:52:12.799Z",
+      "summary": "La vista del cambio lleva los tests enviados y su rojo (data/tests.ts, desde el último tests.proposed), la decisión tests en testing con testsSubmittedAt, y la Bandeja dice «Tests por aprobar · N tests nuevos»; la cabecera nombra la espera"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +58,5 @@
     "A": 3,
     "AC": 6,
     "T": 5
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1a0d341dae466ba9b0c754dc150619e5481ab6396aaa15066392faee7908cca4",
-    "at": "2026-10-28T10:45:58.574Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

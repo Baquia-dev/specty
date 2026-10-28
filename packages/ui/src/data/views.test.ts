@@ -170,6 +170,37 @@ describe("decisions and tabs", () => {
     ).toBe("closing");
   });
 
+  it("AC1: a change in testing waits for the person only once the agent sent its tests", () => {
+    const sentAt = "2026-10-28T10:00:00.000Z";
+    expect(decisionOf(state({ phase: "testing" }))).toBeUndefined();
+    expect(decisionOf(state({ phase: "testing", testsSubmittedAt: sentAt }))).toBe("tests");
+    const audit = [
+      {
+        ts: sentAt,
+        actor: "agent" as const,
+        event: "tests.proposed",
+        data: {
+          count: 1,
+          files: ["test/trimestre_test.dart"],
+          red: [{ cmd: "flutter test", exit: 1 }],
+        },
+      },
+    ];
+    const view = deriveView({
+      ...record({ phase: "testing", revision: 1, testsSubmittedAt: sentAt }),
+      audit,
+    });
+    expect([view.decision, view.tests]).toEqual([
+      "tests",
+      {
+        submittedAt: sentAt,
+        files: ["test/trimestre_test.dart"],
+        red: [{ cmd: "flutter test", exit: 1 }],
+      },
+    ]);
+    expect(deriveView(record({ phase: "review" })).tests).toBeUndefined();
+  });
+
   it("waits for the agent once the person asked for changes, until the next proposal (AC1, AC3)", () => {
     const step = (ts: string, event: string, revision: number) => ({
       ts,

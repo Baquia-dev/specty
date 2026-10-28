@@ -65,6 +65,7 @@ const EFFORT: Readonly<Record<EffortLevel, { es: string; en: string }>> = {
 
 const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
   review: { es: "Espera tu revisión de la spec", en: "Waiting for your spec review" },
+  tests: { es: "Espera que apruebes los tests", en: "Waiting for you to approve the tests" },
   scope: { es: "Espera tu decisión sobre el alcance", en: "Waiting for your scope decision" },
   acceptance: { es: "Espera que aceptes el resultado", en: "Waiting for you to accept the result" },
   closing: { es: "Espera que confirmes el cierre", en: "Waiting for you to confirm the closing" },

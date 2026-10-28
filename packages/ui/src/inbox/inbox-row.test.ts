@@ -64,4 +64,19 @@ describe("InboxRow", () => {
       "Comparte lib/auth/session.dart, lib/app.dart con «Boletines en PDF», «Modo oscuro»",
     );
   });
+
+  it("AC1: a change whose tests were sent waits as «Tests por aprobar», with how many", async () => {
+    const { element, fixture, host } = await render();
+    const tests = {
+      submittedAt: new Date().toISOString(),
+      files: ["test/login_test.dart", "test/sesion_test.dart"],
+      red: [{ cmd: "flutter test", exit: 1 }],
+    };
+    // Without its size, the line says only what it waits for.
+    const { size: _size, ...login } = viewOf(LOGIN);
+    host.change.set({ ...login, phase: "testing", decision: "tests", tests });
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-waits]"))).toBe("Tests por aprobar · 2 tests nuevos");
+    expect(text(element.querySelector("sp-button"))).toBe("Aprobar tests");
+  });
 });

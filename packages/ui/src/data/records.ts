@@ -12,6 +12,7 @@ import type {
 import type { ClosingParts } from "./closing";
 import type { HistoryEntry } from "./history";
 import type { AuditRecord, ProgressView } from "./progress";
+import type { TestsView } from "./tests";
 
 /** The data source lives in source.ts; it is exported here too, where the screens look for it. */
 export { ActionError, SpectyData } from "./source";
@@ -215,7 +216,7 @@ export interface ReviewView {
 }
 
 /** What a change waits for from the person, if anything. */
-export type DecisionKind = "review" | "scope" | "acceptance" | "closing";
+export type DecisionKind = "review" | "tests" | "scope" | "acceptance" | "closing";
 
 export type ChangeTab = "spec" | "progress" | "acceptance" | "history";
 
@@ -277,6 +278,8 @@ export interface ChangeView {
   readonly resultReview?: ReviewRecord;
   /** The closing the agent wrote (`## Cierre`), in its parts; none until it writes it. */
   readonly closing?: ClosingParts;
+  /** In `testing`: the tests the agent sent for the person's approval, or none yet. */
+  readonly tests?: TestsView;
   /** What happened, from `audit.jsonl`, oldest first. */
   readonly history: readonly HistoryEntry[];
 }
