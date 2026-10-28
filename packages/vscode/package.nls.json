@@ -1,0 +1,5 @@
+{
+  "description": "Spec-driven development, enforced: your change's phase in the status bar, and its UI one click away.",
+  "command.openUi": "Open the UI",
+  "configuration.path": "The `specty` command the extension runs: its path, or a name on the `PATH`. A setting of this machine, never of a repository."
+}

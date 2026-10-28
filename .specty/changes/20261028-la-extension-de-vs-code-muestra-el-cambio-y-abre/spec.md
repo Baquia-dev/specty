@@ -74,7 +74,7 @@ Quien trabaja en VS Code no ve en qué fase está su cambio ni si le espera una 
   - files: packages/vscode/package.json, packages/vscode/tsconfig.json, packages/vscode/vitest.config.ts, packages/vscode/src/specty.ts, packages/vscode/test/specty.test.ts, pnpm-lock.yaml
   - ac: AC3, AC4
   - verify: pnpm exec vitest run --root packages/vscode test/specty.test.ts && pnpm lint
-- [ ] T2: La barra de estado y el comando que abre la UI
+- [x] T2: La barra de estado y el comando que abre la UI
   - files: packages/vscode/src/view.ts, packages/vscode/src/extension.ts, packages/vscode/package.nls.json, packages/vscode/package.nls.es.json, packages/vscode/test/view.test.ts, packages/vscode/test/extension.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm exec vitest run --root packages/vscode --coverage && pnpm --filter specty-vscode typecheck && pnpm lint && pnpm knip

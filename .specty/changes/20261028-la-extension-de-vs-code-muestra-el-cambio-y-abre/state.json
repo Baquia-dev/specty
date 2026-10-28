@@ -51,14 +51,25 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "pnpm-workspace.yaml"
-      ],
-      "attempts": 1,
       "baseCommit": "be072eb9ec1ac0ef6e3c6eb192e4ef9d42b045db",
+      "attempts": 1,
       "startedAt": "2026-10-28T18:46:14.526Z",
       "doneAt": "2026-10-28T18:50:11.095Z",
-      "summary": "El paquete specty-vscode (manifiesto, tipos, Vitest) y src/specty.ts, que lee el estado con specty --json status y arranca specty ui sin shell"
+      "summary": "El paquete specty-vscode (manifiesto, tipos, Vitest) y src/specty.ts, que lee el estado con specty --json status y arranca specty ui sin shell",
+      "scopeExtra": [
+        "pnpm-workspace.yaml"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/vscode/build.mjs"
+      ],
+      "attempts": 1,
+      "baseCommit": "983d7d2a724bdc5c1ffbbaef8f256717f08dfd85",
+      "startedAt": "2026-10-28T18:50:11.453Z",
+      "doneAt": "2026-10-28T18:55:17.026Z",
+      "summary": "La barra de estado con el cambio de la carpeta, su fase y a quién espera, que se actualiza con state.json, el foco y specty.path; el comando que abre la UI una vez por ventana y la para al cerrarse; los avisos con el ajuste; los textos del manifiesto en español e inglés y build.mjs"
     }
   },
   "pending": {
