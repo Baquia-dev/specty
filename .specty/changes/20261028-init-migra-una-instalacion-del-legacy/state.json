@@ -6,6 +6,13 @@
   "branch": "specty/20261028-init-migra-una-instalacion-del-legacy",
   "baseCommit": "1b31ebcbaaf392930ff10c943fd85335f116b57d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:51ca392e829bce315bbaddeaa1e99bf0965911baaa511f0ba4616b8e4d7d3c84",
+    "at": "2026-10-28T16:30:49.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:51ca392e829bce315bbaddeaa1e99bf0965911baaa511f0ba4616b8e4d7d3c84",
-    "at": "2026-10-28T16:30:49.634Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T16:32:30.801Z"
 }
