@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "babf5569531752209fd1bf48d6f1ee7519b2dac2",
+      "startedAt": "2026-10-28T18:00:14.103Z",
+      "doneAt": "2026-10-28T18:10:33.237Z",
+      "summary": "La pestaña Historial muestra la línea de tiempo por día con filtros por actor y tipo, el resumen de cuántos de cuántos y el estado vacío"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
