@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "baseCommit": "6477c7d222a97eda066f7ddc4c347134174c2749",
   "revision": 1,
@@ -70,14 +70,23 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/data/history-text.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "ad1a6084a06b0471d04970c5493e5831a54977df",
+      "attempts": 1,
       "startedAt": "2026-10-28T11:35:01.341Z",
       "doneAt": "2026-10-28T11:40:01.631Z",
-      "summary": "El historial nombra el envío, la aprobación y el bloqueo de los tests (data/history-tests.ts) y los desbloqueos de una solicitud o de un ajuste; HistoryType, Told y CHANNELS pasan a history-text.ts"
+      "summary": "El historial nombra el envío, la aprobación y el bloqueo de los tests (data/history-tests.ts) y los desbloqueos de una solicitud o de un ajuste; HistoryType, Told y CHANNELS pasan a history-text.ts",
+      "scopeExtra": [
+        "packages/ui/src/data/history-text.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9b34898e04f314bcc26ba4eeba973cb977a3cd5e",
+      "startedAt": "2026-10-28T11:40:01.937Z",
+      "doneAt": "2026-10-28T11:45:10.231Z",
+      "summary": "docs/ui.md describe la solicitud de desbloqueo, la sección «Tests bloqueados» en Progreso y Aceptación, y los textos del historial de los tests"
     }
   },
   "pending": {

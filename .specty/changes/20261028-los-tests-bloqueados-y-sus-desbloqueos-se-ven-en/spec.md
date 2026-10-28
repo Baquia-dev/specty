@@ -74,7 +74,7 @@ Con `policy.tests: contract`, los tests aprobados quedan bloqueados y solo la pe
   - files: packages/ui/src/data/history-tests.ts, packages/ui/src/data/history.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data
-- [ ] T5: Los tests bloqueados en docs/ui.md
+- [x] T5: Los tests bloqueados en docs/ui.md
   - files: docs/ui.md
   - ac: AC4
   - type: docs
