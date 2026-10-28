@@ -18,7 +18,7 @@ type Property =
     };
 
 /** Arguments already checked against their tool's schema. */
-export type Args = Readonly<Record<string, string | boolean | readonly string[]>>;
+type Args = Readonly<Record<string, string | boolean | readonly string[]>>;
 
 interface Tool {
   readonly name: string;

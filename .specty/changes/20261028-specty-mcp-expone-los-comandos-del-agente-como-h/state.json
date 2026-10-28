@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "baseCommit": "edb43bd3094859ee92c940acab964d048810a6e4",
   "revision": 3,
@@ -65,6 +65,15 @@
       "doneAt": "2026-10-28T15:43:04.260Z",
       "summary": "ARCHITECTURE 6 describe el servidor MCP, sus herramientas y sus límites",
       "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "01f0cb50cfbe0d7b112bc1af25026073ded59ea2",
+      "startedAt": "2026-10-28T15:44:32.285Z",
+      "doneAt": "2026-10-28T15:44:44.928Z",
+      "summary": "Args ya no se exporta; knip pasa"
     }
   },
   "pending": {
