@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "baseCommit": "edb43bd3094859ee92c940acab964d048810a6e4",
   "revision": 1,
@@ -58,6 +58,7 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-28T15:40:06.617Z"
+  "lockedTests": {
+    "packages/cli/test/mcp.test.ts": "sha256:5e8cf22f63c7ace577e3ca8495f7cb1eb634c69b0fa966b84f57e72ab3f0fa48"
+  }
 }

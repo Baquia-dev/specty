@@ -2,3 +2,4 @@
 {"ts":"2026-10-28T15:39:10.794Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:92b02508c390ac32ea96bfcc89b2d3acd1a3c47380ce926f3e00dd32513f713a","size":"M","warnings":1}}
 {"ts":"2026-10-28T15:39:11.195Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:92b02508c390ac32ea96bfcc89b2d3acd1a3c47380ce926f3e00dd32513f713a","channel":"delegated","delegated":true}}
 {"ts":"2026-10-28T15:40:06.617Z","actor":"agent","tool":"claude-code","event":"tests.proposed","data":{"count":1,"files":["packages/cli/test/mcp.test.ts"],"red":[{"cmd":"pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/mcp.test.ts","exit":1}]}}
+{"ts":"2026-10-28T15:40:07.110Z","actor":"agent","tool":"claude-code","event":"tests.approved","data":{"channel":"delegated","delegated":true}}
