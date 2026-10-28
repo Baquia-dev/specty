@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261027-init-detecta-y-pregunta-el-flujo-de-git",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-init-detecta-y-pregunta-el-flujo-de-git",
+  "baseCommit": "0445983eeb54af55bce9cca2794c24005f924c23",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c74839126c39b177387686be3af1ec6a8b3a3f8a5397400856159957fb3b56f6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:d867f84b84810e191f0d89f22f6a41f33ea0533ca2cc5570ad62e3f2eaa8b797",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:513d6b86588ad69b937b334a815cd046fea545b0cc603d97422e7c2cd2ae1a52",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:600a6ce2bd7170f348d67394d1f4c36e85ea66af7101ec4b6bcca5c0a3bbfbc9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f22df1f881583c0c676405728e2cd8852bcf1656fcaca0e24bff3583cc52607",
+    "at": "2026-10-28T00:06:57.145Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
