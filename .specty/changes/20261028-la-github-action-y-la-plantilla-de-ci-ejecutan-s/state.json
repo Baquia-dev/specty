@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-github-action-y-la-plantilla-de-ci-ejecutan-s",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261028-la-github-action-y-la-plantilla-de-ci-ejecutan-s",
   "baseCommit": "88ca2ecd962895e166dbc3663ae2fa0e9c7ed2bb",
   "revision": 1,
@@ -56,6 +56,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-28T15:32:59.437Z"
+  "lockedTests": {
+    "packages/cli/test/action.test.ts": "sha256:b4ded6d0e20a283baccfd3d2090a9fe3cde41fb470f73fd09998cc04698d1071",
+    "packages/cli/test/ci-github.test.ts": "sha256:3d01b18146c9e70b60926b0188c02ab171d0feb0f0390d8d9107a85f32f4c52e"
+  }
 }
