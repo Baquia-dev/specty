@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-matriz-de-aceptacion-cuenta-los-tests-enviado",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-la-matriz-de-aceptacion-cuenta-los-tests-enviado",
   "baseCommit": "42ed259fe6bbbaa2ff288ccc72228278db001ca1",
   "revision": 1,
@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "972c8b16ae7060e0f7146569673112f6e4a28130",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:01:40.304Z",
       "doneAt": "2026-10-28T15:03:14.390Z",
-      "summary": "El commit de los tests lleva Specty-Tests y la matriz cuenta sus lineas con la etiqueta tests"
+      "summary": "El commit de los tests lleva Specty-Tests y la matriz cuenta sus lineas con la etiqueta tests",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b6be067399ff51322074c2185caf2ec15f3fb42c",
+      "startedAt": "2026-10-28T15:03:14.696Z",
+      "doneAt": "2026-10-28T15:06:54.636Z",
+      "summary": "formats 7 y ARCHITECTURE 13 describen Specty-Tests y la matriz"
     }
   },
   "pending": {

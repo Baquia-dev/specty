@@ -50,7 +50,7 @@ Con `policy.tests: contract`, los tests de los criterios se envían en la fase d
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/contract-matrix.test.ts test/criteria-tests.test.ts test/testing-phase.test.ts test/server.test.ts
   - type: fix
-- [ ] T2: Documentar el trailer y la matriz
+- [x] T2: Documentar el trailer y la matriz
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - type: docs
