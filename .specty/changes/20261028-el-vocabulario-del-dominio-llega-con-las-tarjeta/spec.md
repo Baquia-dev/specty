@@ -68,7 +68,7 @@ Es el corte C5 de la épica «Tests como contrato y vocabulario del dominio».
   - ac: AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/glossary.test.ts test/schema
   - notes: documenta la clave y el formato en docs/formats.md.
-- [ ] T2: Las tarjetas traen las definiciones de sus términos
+- [x] T2: Las tarjetas traen las definiciones de sus términos
   - files: packages/core/src/cards/view.ts, packages/core/src/cards/glossary.ts, packages/core/src/cards/next.ts, packages/core/src/cards/testing.ts, packages/core/src/cards/work.ts
   - ac: AC1, AC2, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards

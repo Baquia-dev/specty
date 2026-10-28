@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { AgentTool } from "../agents";
 import type { Phase } from "../flow/phases";
+import type { GlossaryEntry } from "../glossary";
 import type { Lang } from "../i18n";
 import type { AssertionLoss } from "../scope/assertions";
 import type { RiskFinding } from "../scope/risk";
@@ -155,4 +156,9 @@ export interface ChangeView {
   readonly integration?: IntegrationView;
   /** An epic's slices, in the order of its spec. */
   readonly slices?: readonly SliceView[];
+  /** The project's glossary, when it defines some term (formats.md §6). */
+  readonly glossary?: {
+    readonly path: string;
+    readonly entries: readonly GlossaryEntry[];
+  };
 }

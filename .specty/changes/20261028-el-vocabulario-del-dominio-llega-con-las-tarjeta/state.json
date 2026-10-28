@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5db9a25d1cddb560595b2ec253e40b36a371d6a2",
+      "attempts": 1,
       "startedAt": "2026-10-28T06:08:15.676Z",
       "doneAt": "2026-10-28T06:17:19.163Z",
-      "summary": "core/glossary.ts lee el glosario (una línea por término, nombre en el código opcional, sin comentarios HTML) y termsIn encuentra sus términos (mayúsculas, plural s/es, palabra entera, código tal cual); clave glossary en config con valor por defecto según el idioma; formats.md §6."
+      "summary": "core/glossary.ts lee el glosario (una línea por término, nombre en el código opcional, sin comentarios HTML) y termsIn encuentra sus términos (mayúsculas, plural s/es, palabra entera, código tal cual); clave glossary en config con valor por defecto según el idioma; formats.md §6.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "60b4e261c6b85f1e6bb15a5c25ad612beb48fb39",
+      "startedAt": "2026-10-28T06:17:19.496Z",
+      "doneAt": "2026-10-28T06:25:36.110Z",
+      "summary": "cards/glossary.ts: «TÉRMINOS DEL DOMINIO» con los 3 primeros términos que usa el texto (líneas de 100 caracteres) en las tarjetas del borrador, de tests y de la tarea, y la línea del cierre; ChangeView.glossary; el test de presupuesto incluye 3 términos largos; ARCHITECTURE §7."
     }
   },
   "pending": {
