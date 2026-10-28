@@ -18,7 +18,7 @@ La persona deja rutas fuera de `specty check` listándolas en `checks.exclude`. 
 
 ## Tareas
 
-- [ ] T1: Los archivos de checks.exclude se suman a los excluidos por defecto
+- [x] T1: Los archivos de checks.exclude se suman a los excluidos por defecto
   - files: packages/core/src/schema/checks.ts, packages/core/test/schema/schema.test.ts, docs/formats.md, docs/checks.md, docs/checks.en.md
   - verify: pnpm typecheck && pnpm lint && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/checks
   - type: feat

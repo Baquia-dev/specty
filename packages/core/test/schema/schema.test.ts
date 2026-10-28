@@ -136,6 +136,14 @@ describe("resolveConfig", () => {
     expect(fileSize("src/legacy/other.ts", big, resolved.config)).toMatchObject({ lines: 900 });
   });
 
+  it("adds the person's check exclusions to the default ones", () => {
+    const resolved = resolveConfig({ version: 1, checks: { exclude: ["legacy/**"] } });
+    if (!resolved.ok) throw new Error("invalid config");
+    expect(resolved.config.checks.exclude).toContain("legacy/**");
+    expect(resolved.config.checks.exclude).toContain("**/node_modules/**");
+    expect(resolved.config.checks.exclude).toContain("**/dist/**");
+  });
+
   it("reports unknown keys, bad values and inconsistent thresholds", () => {
     const issues = (input: unknown) => (resolveConfig(input).ok ? [] : ["invalid"]);
     expect(issues({ version: 1, colour: "blue" })).toEqual(["invalid"]);

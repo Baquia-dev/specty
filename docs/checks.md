@@ -39,11 +39,11 @@ Todo va bajo `checks` en `.specty/config.yaml`:
 checks:
   levels: { todo: warn, secrets: off }  # error | warn | off por verificación; sin la clave, error
   maxFindings: 10                       # fallos que se muestran por verificación antes de «… y N más»
-  exclude: ["**/node_modules/**", "**/build/**"]  # lo que ninguna verificación mira
+  exclude: ["legacy/**", "tools/vendored.ts"]  # lo que ninguna verificación mira, además de lo de por defecto
 ```
 
 - **Desactivar una verificación:** `checks.levels: { <id>: off }`. Con `warn`, sus fallos solo avisan. Es lo mismo para todas; cada sección de abajo dice además si hay otra forma.
-- **Lo que nunca se mira:** `checks.exclude` (por defecto `node_modules`, `build`, `dist`, `.dart_tool`, `out`, `target`, `coverage`, `vendor`, `.next`, `.angular` y `.gradle`), las rutas de `ignored` y el código generado de `scope.generated`.
+- **Lo que nunca se mira:** `checks.exclude`, las rutas de `ignored` y el código generado de `scope.generated`. Lo que pones en `checks.exclude` se suma a las carpetas que siempre quedan fuera: `node_modules`, `build`, `dist`, `.dart_tool`, `out`, `target`, `coverage`, `vendor`, `.next`, `.angular` y `.gradle`.
 - **Mensajes:** en el idioma de `language` (`es` o `en`).
 
 ## Las verificaciones

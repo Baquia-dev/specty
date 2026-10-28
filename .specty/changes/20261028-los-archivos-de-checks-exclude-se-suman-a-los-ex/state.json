@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-los-archivos-de-checks-exclude-se-suman-a-los-ex",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-los-archivos-de-checks-exclude-se-suman-a-los-ex",
   "baseCommit": "680a8daf896d0e6238cc24a4d8a6d81ab5dee4d5",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:de0d91a7b0358c93a7b45257af90a52db96d6991edca9e58d9c5e1f8cce07b01",
+    "at": "2026-10-28T16:51:11.333Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,24 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/check-ignores.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "5336c35f82fae9c7a098293df9ca219408d622da",
+      "startedAt": "2026-10-28T16:51:11.776Z",
+      "doneAt": "2026-10-28T17:02:24.912Z",
+      "summary": "checks.exclude se suma a las carpetas por defecto (sin duplicados); test nuevo visto en rojo; check-ignores.test.ts adaptado con permiso del usuario; formats §6 y checks.md/en"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:de0d91a7b0358c93a7b45257af90a52db96d6991edca9e58d9c5e1f8cce07b01",
-    "at": "2026-10-28T16:51:11.333Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -133,7 +133,7 @@ describe("specty check --install keeps the agents out of the noise", () => {
     );
   });
 
-  it("keeps the archived changes out of the index with no noise to exclude", async () => {
+  it("keeps the archived changes out of the index, and an empty checks.exclude keeps the defaults", async () => {
     const quiet = READY.replace("checks:", "checks:\n  exclude: []").replace(
       '["**/*.g.dart"]',
       "[]",
@@ -149,8 +149,9 @@ describe("specty check --install keeps the agents out of the noise", () => {
     expect(plan.out).toContain(".cursorindexingignore (crear)");
     expect(plan.out).toContain(".antigravityignore (crear)");
     expect(plan.out).toContain("+.specty/archive/**");
-    expect(plan.out).not.toContain(".cursorignore");
-    expect(plan.out).not.toContain("node_modules");
+    // The person's list adds to the default folders, so an empty one still leaves them out.
+    expect(plan.out).toContain(".cursorignore (crear)");
+    expect(plan.out).toContain("+**/node_modules/**");
   });
 
   it("explains the patterns in English", async () => {

@@ -39,11 +39,11 @@ Everything goes under `checks` in `.specty/config.yaml`:
 checks:
   levels: { todo: warn, secrets: off }  # error | warn | off per check; without the key, error
   maxFindings: 10                       # failures shown per check before "… and N more"
-  exclude: ["**/node_modules/**", "**/build/**"]  # what no check looks at
+  exclude: ["legacy/**", "tools/vendored.ts"]  # what no check looks at, on top of the defaults
 ```
 
 - **Turning a check off:** `checks.levels: { <id>: off }`. With `warn`, its failures only warn. It works the same for every check; each section below also says whether there is another way.
-- **What is never looked at:** `checks.exclude` (by default `node_modules`, `build`, `dist`, `.dart_tool`, `out`, `target`, `coverage`, `vendor`, `.next`, `.angular` and `.gradle`), the `ignored` paths and the generated code of `scope.generated`.
+- **What is never looked at:** `checks.exclude`, the `ignored` paths and the generated code of `scope.generated`. What you put in `checks.exclude` adds to the folders that always stay out: `node_modules`, `build`, `dist`, `.dart_tool`, `out`, `target`, `coverage`, `vendor`, `.next`, `.angular` and `.gradle`.
 - **Messages:** in the `language` of the configuration (`es` or `en`).
 
 ## The checks
