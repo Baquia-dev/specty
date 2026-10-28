@@ -70,3 +70,27 @@ El corte C2 de la épica «Tests como contrato» añade la fase `testing`, entre
 ## Riesgos
 
 - R1: Una fase a la que no se llega es código que no se usa hasta el cambio siguiente. Mitigación: la épica ya planea los cambios siguientes, y los tests de core y de la UI la ejercitan con un `state.json` en `testing`.
+
+## Cierre
+
+### Resumen
+
+La fase `testing` existe entre `review` e `implementing`. Está en `Phase`, `PHASES` y `PhaseSchema`, con todo bloqueado y esperando al agente, y en las fases que se pueden cancelar. Tiene su tarjeta en `cards/testing.ts`, que pide un test por criterio con su id en el nombre, solo tests, y enviarlos con `specty propose`. El servidor la fecha por `spec.approved`. La UI la llama «Tests», con el icono `flask-conical`, colores propios en los dos temas, la pestaña de progreso y la revisión «aprobada». formats §2 y ARCHITECTURE §4 y §15 la documentan; todavía no se entra en ella.
+
+### Desviaciones
+
+- `packages/ui/src/styles.css` (S1): cada fase tiene sus colores `--color-phase-<fase>` y `-bg` en los dos temas, y el inventario de tokens los exige. `testing` usa un verde azulado: `#115e59` sobre `#ccfbf1` (6,7:1) y `#8fd1c7` sobre `#2b3a39` (6,9:1).
+- El cambio de `OPEN` en `flow/machine.ts` pasó de T2 a T1 (S2). La tabla de `machine.test.ts` deriva de `PHASES` que se puede cancelar desde toda fase abierta, así que T1 no pasaba sin él. T2 quedó con el test explícito de AC1 y la documentación.
+- Tres tests existentes enumeran las fases o los iconos y se actualizaron sin quitar aserciones: el ejemplo de fase inválida de `schema.test.ts` (`testing` → `tested`), 50 → 51 iconos en `icons.test.ts` y «Fases 9» en `catalog.test.ts` (S3).
+- La tarjeta lista los criterios de las tareas que piden el test primero (`testRules: first`, es decir `feat` y `fix`), como `criteria-tested`, y no solo los de las `feat` que dice AC2.
+- ARCHITECTURE §4 nombra la fase en la tabla y en un párrafo propio, pero no en el diagrama: el diagrama dibuja transiciones, y a `testing` todavía no lleva ninguna.
+
+### Decisiones
+
+- La fase entra en una sola tarea de 11 archivos: cada `Record<Phase, …>` de core, cli y ui la exige a la vez, y repartida dejaría los tipos en rojo entre tareas.
+- La persona subió `split.maxModules` a 3 (9aa860c) para que la fase pudiera llegar a los tres paquetes en un cambio.
+
+### Pendientes
+
+- La tarjeta de `testing` también lista los criterios con `test: manual`, porque `CriterionView` no lo lleva; hay que arreglarlo en el cambio que entre en la fase.
+- Entrar en la fase con `contract`, abrir el código a los tests, el envío con `propose`, el gate 2 y el rojo: los cambios siguientes del corte C2. El diagrama de ARCHITECTURE §4 recibe la fase cuando haya una transición que lleve a ella.

@@ -11,3 +11,7 @@
 {"ts":"2026-10-28T05:37:49.725Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"6fe54053f8e1e1c181bfc727731746ff0a4f87fe"}}
 {"ts":"2026-10-28T05:41:29.620Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/flow","exit":0,"ms":833,"tree":"sha256:ebc2431c8cde2ee61e761ca985494e9ad50ad5ebe38da637a32603ec29d99106"}}
 {"ts":"2026-10-28T05:41:29.722Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"Test de AC1: en testing solo se puede cancelar (el cambio de OPEN entró en T1); formats §2 nombra las fases de state.json y ARCHITECTURE §4 y §15 la fase de tests, que aún no tiene entrada."}}
+{"ts":"2026-10-28T05:45:02.111Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":205753,"tree":"sha256:ebc2431c8cde2ee61e761ca985494e9ad50ad5ebe38da637a32603ec29d99106"}}
+{"ts":"2026-10-28T05:45:02.117Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T05:45:51.522Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:9b13186647eb35cd49a763d4b8ffe5a6367743e76783db04ec140d906b992db5","size":"L","warnings":2}}
+{"ts":"2026-10-28T05:45:57.385Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

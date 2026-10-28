@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-la-fase-de-tests-en-el-modelo-y-en-cada-vista",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-la-fase-de-tests-en-el-modelo-y-en-cada-vista",
   "baseCommit": "9aa860c474b4bb06f1bfa26bbd0e83f15721b4e0",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:387f63b92279a0f8459f57262ff9f647f8886ea9005d328797774221a46625e7",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6fe54053f8e1e1c181bfc727731746ff0a4f87fe",
+      "attempts": 1,
       "startedAt": "2026-10-28T05:37:49.725Z",
       "doneAt": "2026-10-28T05:41:29.721Z",
-      "summary": "Test de AC1: en testing solo se puede cancelar (el cambio de OPEN entró en T1); formats §2 nombra las fases de state.json y ARCHITECTURE §4 y §15 la fase de tests, que aún no tiene entrada."
+      "summary": "Test de AC1: en testing solo se puede cancelar (el cambio de OPEN entró en T1); formats §2 nombra las fases de state.json y ARCHITECTURE §4 y §15 la fase de tests, que aún no tiene entrada.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,5 +70,6 @@
     "T": 2,
     "R": 1,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T05:45:51.519Z"
 }
