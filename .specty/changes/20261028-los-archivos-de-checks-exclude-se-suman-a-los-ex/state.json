@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261028-los-archivos-de-checks-exclude-se-suman-a-los-ex",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-los-archivos-de-checks-exclude-se-suman-a-los-ex",
+  "baseCommit": "680a8daf896d0e6238cc24a4d8a6d81ab5dee4d5",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:de0d91a7b0358c93a7b45257af90a52db96d6991edca9e58d9c5e1f8cce07b01",
+    "at": "2026-10-28T16:51:11.333Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

@@ -1,0 +1,3 @@
+{"ts":"2026-10-28T16:50:47.245Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","type":"feat","branch":"specty/20261028-los-archivos-de-checks-exclude-se-suman-a-los-ex","request":"si comienza con eso y luego me dices con que sigues"}}
+{"ts":"2026-10-28T16:51:03.042Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:de0d91a7b0358c93a7b45257af90a52db96d6991edca9e58d9c5e1f8cce07b01","size":"S","warnings":0}}
+{"ts":"2026-10-28T16:51:11.347Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:de0d91a7b0358c93a7b45257af90a52db96d6991edca9e58d9c5e1f8cce07b01","channel":"delegated","delegated":true}}
