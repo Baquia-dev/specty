@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
+  "baseCommit": "edb43bd3094859ee92c940acab964d048810a6e4",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6af5c1b2b97a4e3bb05c85c5807515cbc6679b6409ea22c2c5f0ddb88933d1d6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:95b8b12d71298f86eab0716c54b9e4521de06d3183703314c3506479d58a6d78",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8070a87ca87e647ef3678d6c86406d94760eb76f8d9cc1486bd36b8c0bfc82c4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:7121ac9853df39910a12c867495261fabc5e015136c5994a2ce09457f6ea295c",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:ede68c0880c3da52130b047122354999837c04e9e2448cc9693aff7c671c86e0",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:68726b630612a49c623558d7547a88185a1f6f40993e8cf848b7a25fa5b404e8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:92b02508c390ac32ea96bfcc89b2d3acd1a3c47380ce926f3e00dd32513f713a",
+    "at": "2026-10-28T15:39:11.184Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
