@@ -82,3 +82,26 @@ kind: standard
 
 - R1: Siete tests que ya existían notan la pregunta o el SIGUIENTE nuevos, y el usuario aprobó ajustarlos (2026-10-27): cuatro comparan la lista exacta de preguntas u opciones (`init-agents.test.ts` AC1 y AC2, `init-language.test.ts` AC1 dos veces), dos comprueban con una terminal que falla ante cualquier pregunta que `--tools` o `--language` no preguntan nada (`init-agents.test.ts` AC6, `init-language.test.ts` AC2), y uno espera el SIGUIENTE exacto de un proyecto nuevo de un agente (`new-project.test.ts` AC2, ampliación S1). Mitigación: a las listas solo se añade la pregunta del flujo; los dos de «nada» pasan `--git-flow specty`, así siguen sin preguntar nada; y el de `new-project` espera el SIGUIENTE de AC6. La persona de prueba responde la primera opción, la de Specty, así que lo que instalan no cambia.
 - R2: Otros tests que ejecutan `init` con una persona y después `new`. Mitigación: con la de Specty primero, sus ramas siguen siendo `specty/<id>`; la suite completa lo comprueba.
+
+## Cierre
+
+### Resumen
+
+Al crear `.specty/config.yaml`, `init` detecta el flujo de git del repositorio (Git Flow por la configuración de git-flow, `develop` o sus prefijos; GitHub Flow por ramas con un tipo de commit; el de Specty por `specty/`) y, con una persona en la terminal, se lo pregunta tras los agentes, con el detectado primero y marcado o, sin detección, con el de Specty primero. Si cancela o nadie puede responder, se queda el detectado. En una configuración que ya existe no pregunta ni detecta: el flujo se cambia con `--git-flow`. Un proyecto nuevo que acaba sin flujo lo avisa, y su SIGUIENTE pide preguntárselo al usuario. ARCHITECTURE §14 lo describe.
+
+### Desviaciones
+
+- La revisión 1 preguntaba también en una configuración que ya existía sin `git.flow`. Eso rompía un octavo test (repetir `init` no toca nada) y preguntaba en cada `init` de las instalaciones existentes, así que el usuario decidió preguntar solo al crear la configuración, como el idioma. La revisión 2 corrige AC1, AC5, A2 y el diseño.
+- El aviso de proyecto nuevo sin flujo depende de que `init` escriba `PRODUCT.md`, no solo de que no haya código: un repositorio con `PRODUCT.md` y sin código no es nuevo para `init`, como ya decía un test de `new-project.test.ts`.
+- Siete tests que ya existían se ajustaron con permiso del usuario (R1); `new-project.test.ts` entró por la ampliación S1.
+- La primera verificación completa falló en knip: `detectFlow` solo se usa en su archivo; T4 le quita el `export`. Otra falló por `test/server/verify.test.ts:85`, ajeno al cambio (leyó la auditoría antes de que se escribiera la verificación); al repetirla pasó, y `pnpm check` pasó entero.
+
+### Decisiones
+
+- La pregunta va tras la de los agentes y antes de la entrevista, porque el flujo se escribe en `config.yaml` antes que `PRODUCT.md`.
+- Elegir «Specty» escribe `git.flow: specty`.
+
+### Pendientes
+
+- `test/server/verify.test.ts:85` es intermitente: lee la auditoría antes de que el servidor escriba `change.verified`. Conviene esperar a esa línea en un cambio aparte.
+- Probar a mano la pregunta del flujo en una terminal real con el CLI compilado, junto con la de los agentes del cambio 1.
