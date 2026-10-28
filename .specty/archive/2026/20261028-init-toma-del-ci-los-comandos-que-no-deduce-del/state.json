@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
   "baseCommit": "4316fca24392e8c5161b5a72b3df1c94142a4f89",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4c3faec201db3e88789711382ed10dd6fd764282f1ddffe72b92f7d33959e3d0",
@@ -42,12 +42,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "92d75af41663273443f2783999c55ecbe9c6373b",
+      "attempts": 1,
       "startedAt": "2026-10-28T18:14:58.111Z",
       "doneAt": "2026-10-28T18:21:12.843Z",
-      "summary": "detect/ci.ts lee run/script/command de GitHub Actions, GitLab, CircleCI, Bitbucket y Azure, clasifica tests/lint/tipos por palabras genéricas y descarta variables, instalaciones, comentarios y líneas partidas; detectProject: la pila por encima del CI; ARCHITECTURE §7 y §17"
+      "summary": "detect/ci.ts lee run/script/command de GitHub Actions, GitLab, CircleCI, Bitbucket y Azure, clasifica tests/lint/tipos por palabras genéricas y descarta variables, instalaciones, comentarios y líneas partidas; detectProject: la pila por encima del CI; ARCHITECTURE §7 y §17",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -60,6 +60,7 @@
     "T": 1,
     "R": 1
   },
+  "closingSubmittedAt": "2026-10-28T18:25:56.713Z",
   "lockedTests": {
     "packages/cli/test/detect-ci.test.ts": "sha256:74f224dc0ca0368fa025af2e1a018c81012cff1db869e73fcf8b3a1d759f81f0"
   }

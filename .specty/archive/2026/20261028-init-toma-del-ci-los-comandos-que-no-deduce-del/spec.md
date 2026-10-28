@@ -55,3 +55,23 @@ La detección de `init` saca los comandos del proyecto (tests, lint y tipos) de 
 ## Riesgos
 
 - R1: Una palabra genérica clasifica mal un comando, por ejemplo un script `lint-staged` o un `run: ./scripts/test-e2e.sh` lento como tests. Mitigación: la pila sigue por encima, solo se rellena lo que falta, y la persona ve y puede cambiar `verify` en `config.yaml`.
+
+## Cierre
+
+### Resumen
+
+La detección lee los comandos que ejecuta el CI del proyecto y con ellos rellena los de tests, lint y tipos que la pila no da. `detect/ci.ts` recoge los valores de `run`, `script` y `command` de GitHub Actions, GitLab CI, CircleCI, Bitbucket Pipelines y Azure Pipelines. Los clasifica por palabras genéricas y descarta los que usan variables o expresiones, instalan, son comentarios o siguen en la línea siguiente. `detectProject` pone la pila por encima. Con esto, un proyecto en un lenguaje que Specty no conoce sale de `init` con su `verify.default` y su `verify.full`. Los cuatro criterios tienen su test, que se vio en rojo antes del código y se aprobó en el gate 2; `pnpm check` pasó al aceptar.
+
+### Desviaciones (respecto al plan)
+
+- `latest` no cuenta como palabra de tests aunque termine en `test`: es la etiqueta de una imagen o de un paquete (`node:latest`), y A1 la habría tomado por un comando de tests.
+
+### Decisiones
+
+- La pila gana siempre, también sobre un comando del CI más preciso (por ejemplo `go test -race ./...`): el cambio no altera lo que ya detectaba Specty.
+- Los archivos se leen ordenados por ruta, y de cada categoría gana el primer comando.
+
+### Pendientes
+
+- `init` no dice de dónde salió cada comando. Si confunde a alguien, el informe de lo detectado puede marcar con «(CI)» los que vienen del CI.
+- Un comando con `||` (`make test || true`) cuenta entero. Si aparece en proyectos reales, conviene descartarlo, porque siempre pasa.
