@@ -88,3 +88,31 @@ Quien trabaja en VS Code no ve en qué fase está su cambio ni si le espera una 
 
 - R1: La línea con el enlace de `specty ui` puede cambiar de redacción. Mitigación: la extensión busca solo la URL con su token y, si no llega en 20 s, para el proceso y lo dice.
 - R2: Un `specty` anterior no trae `changes` en `--json status`. Mitigación: la barra de estado dice que hay que actualizar Specty en lugar de fallar en silencio.
+
+## Cierre
+
+### Resumen
+
+Hay una primera extensión de VS Code en `packages/vscode` (`specty-vscode`). Se activa en las carpetas con `.specty/config.yaml` y muestra en la barra de estado el cambio de la carpeta, con su fase y si espera a la persona; sin cambio propio, cuántos hay abiertos y cuántos la esperan, con todos en el tooltip. Lee el estado de `specty --json status` y lo vuelve a leer cuando cambia un `state.json`, cuando la ventana recupera el foco y cuando cambia `specty.path`. Un clic, o «Specty: Abrir la UI», arranca `specty ui` una vez por ventana y abre su enlace en el navegador; el servidor se para al cerrarse la ventana. Si falta `specty`, o no da el estado como datos, lo avisa y ofrece el ajuste. `pnpm --filter specty-vscode package` deja `dist/specty.vsix`, con el bundle, el manifiesto, sus textos en español e inglés, el README y la licencia.
+
+### Desviaciones
+
+- `specty --json status` aún no trae `changes`: el plan lo dejó en un cambio rápido aparte para que este no fuera XL. Hasta que se cierre, la extensión muestra en la barra el aviso de actualizar Specty (comprobado cargando el bundle con el `specty` actual).
+- `build.mjs` pasó de T3 a T2 (S2): knip, en la verificación de T2, daba esbuild y vsce por no usados sin él.
+- `pnpm-workspace.yaml` entró en T1 (S1): `@vscode/vsce-sign` va a `allowBuilds` con `false`, porque no firmamos.
+- `@vscode/vsce` es la 4.0.0 y no la 4.1.0, publicada el mismo día: pnpm la excluía de su antigüedad mínima.
+
+### Decisiones
+
+- El servidor que arranca la extensión no tiene terminal, así que la UI solo lee: la extensión no abre ninguna vía nueva para que se concedan permisos.
+- La UI se abre en el navegador del sistema y no en el navegador simple de VS Code, donde no viajaría la cookie `SameSite=Strict` de la sesión.
+- `specty.path` es un ajuste de la máquina, y la extensión no arranca en espacios de trabajo no confiables.
+- La cobertura exigida es la del CLI (80/80/80/70): es código que habla con procesos y con VS Code.
+- El `.vsix` se monta en `dist/vsix` solo con lo que se publica, sin `.vscodeignore` ni una copia de la licencia en el paquete.
+
+### Pendientes
+
+- El cambio rápido que hace que `specty --json status` traiga `changes` y `delegated`, sin el cual la extensión no muestra el estado.
+- Decidir desde VS Code: la webview con `postMessage` de F4.
+- Publicar la extensión (Marketplace y Open VSX) y Windows.
+- Instalar el `.vsix` y probarlo a mano en VS Code, Cursor, Windsurf y Antigravity.

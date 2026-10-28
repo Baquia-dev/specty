@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
   "baseCommit": "c3b7acbad4ee89df66d71cd148aaf39967b0fa55",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1c8e6e9ecc11200c313553c3cb757e1335b006bd076ad86c564cfa90e4aacb3e",
@@ -73,12 +73,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8fa32d18335fb52d2e3388e27acf9d3f7d7b27d7",
+      "attempts": 1,
       "startedAt": "2026-10-28T18:55:17.361Z",
       "doneAt": "2026-10-28T18:59:34.726Z",
-      "summary": "build.mjs monta en dist/vsix solo lo que se publica y lo empaqueta en dist/specty.vsix con vsce; README de la extensión en inglés y español; F4 en ARCHITECTURE con lo hecho y lo que falta"
+      "summary": "build.mjs monta en dist/vsix solo lo que se publica y lo empaqueta en dist/specty.vsix con vsce; README de la extensión en inglés y español; F4 en ARCHITECTURE con lo hecho y lo que falta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -92,6 +92,7 @@
     "R": 2,
     "S": 1
   },
+  "closingSubmittedAt": "2026-10-28T19:03:43.238Z",
   "lockedTests": {
     "packages/vscode/test/extension.test.ts": "sha256:51043c2a07eab7f255bcbea552178ce7f1953635b14f38ada2fdf4b5c3e45435",
     "packages/vscode/test/specty.test.ts": "sha256:be2e82601999e75f5df2671da4c96be7d49ebf14b7696be2a65c86ed92ea064a",
