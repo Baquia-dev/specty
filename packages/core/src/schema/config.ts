@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as z from "zod";
 import { branchPatternIssue, GIT_FLOWS, type GitFlow } from "../branches";
+import { defaultGlossary } from "../glossary";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 
@@ -53,6 +54,8 @@ export interface ResolvedConfig {
   /** What `specty check` runs and how much it prints (ADR 0012). */
   readonly checks: ChecksConfig;
   readonly policy: { readonly tests: TestsPolicy };
+  /** The project's glossary (formats.md §6); unset, the default of its language. */
+  readonly glossary: string;
   readonly retro: { readonly mode: "agent" | "minimal" };
   readonly git: {
     readonly branchPerChange: boolean;
@@ -111,6 +114,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   },
   checks: DEFAULT_CHECKS,
   policy: { tests: "recommended" },
+  glossary: defaultGlossary("en"),
   retro: { mode: "agent" },
   git: { branchPerChange: true, worktrees: true },
   team: { approvers: [], requirePrReview: true },
@@ -171,6 +175,7 @@ export const ConfigSchema = z.strictObject({
   policy: z
     .strictObject({ tests: z.enum(["contract", "required", "recommended", "off"]).optional() })
     .optional(),
+  glossary: z.string().min(1).optional(),
   retro: z.strictObject({ mode: z.enum(["agent", "minimal"]).optional() }).optional(),
   git: z
     .strictObject({
@@ -253,12 +258,17 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     lines: linesOf(input),
     checks: resolveChecks(input.checks),
     policy: { tests: input.policy?.tests ?? base.policy.tests },
+    glossary: glossaryOf(input),
     retro: { mode: input.retro?.mode ?? base.retro.mode },
     git: gitOf(input),
     team: teamOf(input),
     ui: uiOf(input),
     ...(review !== undefined ? { review } : {}),
   };
+}
+
+function glossaryOf(input: ConfigInput): string {
+  return input.glossary ?? defaultGlossary(input.language ?? DEFAULT_CONFIG.language);
 }
 
 function verifyOf(input: ConfigInput): ResolvedConfig["verify"] {

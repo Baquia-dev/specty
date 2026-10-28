@@ -2,6 +2,7 @@
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
 import { COMMIT_TYPES } from "../spec/model";
+import { termsSection } from "./glossary";
 import { integrationCard } from "./integration";
 import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
@@ -161,6 +162,7 @@ function draftCard(change: ChangeView, ctx: CardContext): Output {
           carriedLines(carried, ctx),
         ),
       ),
+      ...termsSection(change.glossary, [change.title, change.request], ctx.lang),
       ...section(t("CÓMO REDACTARLA", "HOW TO WRITE IT"), draftingGuide(change, ctx)),
     ],
     next: t(

@@ -8,6 +8,7 @@ import {
   isIntegrating,
   isRiskRule,
   type LongFile,
+  parseGlossary,
   parseSpec,
   type RiskFinding,
   recommendTaskEffort,
@@ -17,7 +18,7 @@ import {
   type TaskView,
   testRules,
 } from "@baquia-dev/specty-core";
-import { exists, isRecord } from "../io/files";
+import { exists, isRecord, readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
@@ -69,7 +70,15 @@ export async function changeView(session: Session, change: StoredChange): Promis
       specHash(spec) !== state.approved.hash,
     ...integrationView(state),
     ...(state.kind === "epic" ? { slices: await sliceViews(session, change, spec) } : {}),
+    ...(await glossaryView(session)),
   };
+}
+
+/** The project's glossary (formats.md §6), when its file defines some term. */
+async function glossaryView(session: Session): Promise<Pick<ChangeView, "glossary">> {
+  const path = session.config.glossary;
+  const entries = parseGlossary((await readText(join(session.root, path))) ?? "");
+  return entries.length === 0 ? {} : { glossary: { path, entries } };
 }
 
 /** What git and the audit hold of the change's tasks: each one's commit and what `task done` recorded. */

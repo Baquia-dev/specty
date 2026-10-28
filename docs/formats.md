@@ -343,6 +343,7 @@ checks:                           # specty check (ADR 0012)
     tests: "pnpm test --run"      # format | lint | typecheck | tests
 policy:
   tests: recommended              # contract | required | recommended | off; contract: los tests de una feature, antes del código (ARCHITECTURE §4)
+glossary: docs/dominio.md         # el glosario del dominio; sin la clave: docs/dominio.md (es) o docs/domain.md (en)
 retro:
   mode: agent                     # agent | minimal
 git:
@@ -371,6 +372,15 @@ review:
 ```
 
 `specty review` le pasa a `command` por la entrada estándar las instrucciones y la spec, y guarda su salida en `reviews/spec-r<revisión>.md`. En aceptación le pasa también el diff de todo el cambio, y la salida va a `reviews/diff-<n>.md`, con `n` el número de la revisión del resultado. Sin `review`, Specty no recomienda ni ejecuta revisiones.
+
+`glossary` es la ruta del glosario del dominio (ADR 0014), un archivo del proyecto con una línea por término:
+
+```markdown
+- **Pedido** (`Order`): lo que un cliente compra en una visita.
+- **Línea de pedido**: un producto y su cantidad dentro de un pedido.
+```
+
+El nombre en el código, entre paréntesis, es opcional. Las demás líneas y los comentarios HTML no cuentan, así que las pistas pueden ir en un comentario. Un término aparece en un texto sin importar mayúsculas, como palabra entera y también en plural con `s` o `es`; su nombre en el código aparece tal cual (`parseGlossary` y `termsIn` en `core/src/glossary.ts`). Si el archivo no existe, no hay glosario.
 
 `verify.quick` es una comprobación rápida de todo el repositorio, como el formato o el tamaño de los archivos, que `task done` ejecuta antes de la verificación de cada tarea. Las dos van en un solo comando, `<quick> && <verify>`, que es también el que muestra la tarjeta de la tarea. Así un fallo aparece en la tarea que lo causó, no en otra posterior ni al aceptar. Sin la clave, cada tarea ejecuta solo su verificación.
 

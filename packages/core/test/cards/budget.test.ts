@@ -77,6 +77,15 @@ function largest(summary: number): ChangeView {
     rejected: [],
     closingSubmitted: false,
     specChanged: false,
+    // As many terms as a card brings, each past the longest line it shows.
+    glossary: {
+      path: "docs/dominio.md",
+      entries: ["Tarea", "Servidor", "Persona"].map((term) => ({
+        term,
+        code: `${term}Repository`,
+        definition: prose(200),
+      })),
+    },
   };
 }
 
@@ -89,8 +98,24 @@ describe("the task card's budget", () => {
       const text = card(largest(NOTE_MAX), ctx);
       // Every block is there: the card measured is the full one.
       for (const block of ctx.lang === "es"
-        ? ["ARCHIVOS PERMITIDOS:", "CRITERIOS:", "CONVENCIONES:", "HECHO:", "HALLAZGOS:", "TESTS:"]
-        : ["ALLOWED FILES:", "CRITERIA:", "CONVENTIONS:", "DONE:", "FINDINGS:", "TESTS:"]) {
+        ? [
+            "ARCHIVOS PERMITIDOS:",
+            "CRITERIOS:",
+            "TÉRMINOS DEL DOMINIO:",
+            "CONVENCIONES:",
+            "HECHO:",
+            "HALLAZGOS:",
+            "TESTS:",
+          ]
+        : [
+            "ALLOWED FILES:",
+            "CRITERIA:",
+            "DOMAIN TERMS:",
+            "CONVENTIONS:",
+            "DONE:",
+            "FINDINGS:",
+            "TESTS:",
+          ]) {
         expect(text).toContain(block);
       }
       expect(tokens(text)).toBeLessThanOrEqual(BUDGET);

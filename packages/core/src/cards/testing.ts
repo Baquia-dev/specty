@@ -2,6 +2,7 @@
 import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { isTestFile } from "../scope/tests";
+import { termsSection } from "./glossary";
 import { translator } from "./text";
 import type { CardContext, ChangeView, CriterionView } from "./view";
 
@@ -27,6 +28,11 @@ export function testingCard(change: ChangeView, ctx: CardContext): Output {
         ),
       ]),
       ...section(t("CRITERIOS", "CRITERIA"), criteriaOf(owing.flatMap((task) => task.criteria))),
+      ...termsSection(
+        change.glossary,
+        owing.flatMap((task) => task.criteria.map((criterion) => criterion.text)),
+        ctx.lang,
+      ),
       ...section(t("ARCHIVOS PERMITIDOS", "ALLOWED FILES"), [...tests, ...implicit]),
       ...section("TESTS", [
         t(

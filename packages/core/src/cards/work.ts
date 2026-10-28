@@ -4,6 +4,7 @@ import { headerOf, type Output, section } from "../output";
 import { riskLabel } from "../scope/risk";
 import { criteriaTestLines, criteriaWarnings } from "./criteria";
 import { epicCard, sliceLines } from "./epic";
+import { glossaryClosingLines, termsSection } from "./glossary";
 import { longFileWarnings, splitAdvice } from "./lines";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
@@ -66,6 +67,11 @@ export function taskCard(change: ChangeView, task: TaskView, ctx: CardContext): 
       ...section(
         t("CRITERIOS", "CRITERIA"),
         task.criteria.map((criterion) => `${criterion.id}: ${criterion.text}`),
+      ),
+      ...termsSection(
+        change.glossary,
+        [task.title, ...task.criteria.map((criterion) => criterion.text)],
+        ctx.lang,
       ),
       ...section(t("CONVENCIONES", "CONVENTIONS"), change.conventions),
       ...section(t("HECHO", "DONE"), done),
@@ -309,6 +315,7 @@ export function closingCard(change: ChangeView, ctx: CardContext): Output {
           `Add a "## Closing" section at the end of ${change.specPath} with ${headings}.`,
         ),
         t("No cambies nada más de la spec.", "Do not change anything else in the spec."),
+        ...glossaryClosingLines(change.glossary, ctx.lang),
       ]),
       ...section(
         t("HALLAZGOS DE LAS TAREAS", "FINDINGS OF THE TASKS"),

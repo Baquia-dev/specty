@@ -177,6 +177,7 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 - **Punteros por herramienta**: solo para las herramientas detectadas o elegidas, y solo donde la herramienta no lee AGENTS.md por sí misma (`CLAUDE.md` con `@AGENTS.md`, y `GEMINI.md` con `@./AGENTS.md`, la forma que documenta Gemini CLI). Nunca copian contenido.
 - **Tarjeta de tarea** (salida de `next` en `implementing`). Presupuesto: unos 1.500 tokens, estimados como caracteres ÷ 4. Incluye:
   - la tarea, sus archivos permitidos y los criterios que cubre;
+  - las definiciones de los términos del glosario (`glossary`, [formats.md §6](formats.md#6-configyaml)) que aparecen en su título o en sus criterios: como mucho 3, en el orden del glosario y en líneas de 100 caracteres (`core/src/cards/glossary.ts`). Las tarjetas del borrador (por su título y la petición) y de la fase de tests (por sus criterios) las traen igual, y la del cierre pide añadir al glosario los términos que el cambio introdujo o renombró, que `close` incluye en su commit (`commitArchive`). Es contexto justo a tiempo: AGENTS.md no crece;
   - punteros a las convenciones de esas rutas (AGENTS.md anidados);
   - las tareas previas resumidas, con su commit, y los hallazgos que anotaron;
   - las solicitudes de alcance pendientes;
