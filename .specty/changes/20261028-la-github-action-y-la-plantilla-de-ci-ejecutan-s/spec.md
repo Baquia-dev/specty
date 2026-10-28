@@ -64,7 +64,7 @@ slice: C3
   - files: packages/cli/src/flow/ci-github.ts, packages/cli/src/commands/ci.ts, packages/cli/test/ci-github.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/ci-github.test.ts test/ci.test.ts
-- [ ] T2: La Action, la plantilla y la CI de Specty
+- [x] T2: La Action, la plantilla y la CI de Specty
   - files: action.yml, packages/cli/src/check/ci.ts, .github/workflows/ci.yml, packages/cli/test/action.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/action.test.ts test/check-install.test.ts

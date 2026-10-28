@@ -64,3 +64,5 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @baquia-dev/specty build
       - run: node packages/cli/dist/specty.mjs check --changed
+      # Each commit of the pull request traces back to an approved change; it reads the event.
+      - run: node packages/cli/dist/specty.mjs ci

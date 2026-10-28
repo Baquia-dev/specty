@@ -1,0 +1,48 @@
+# Specty's fourth layer of compliance (docs/ARCHITECTURE.md §10): `specty ci` on the commits of the
+# pull request or the push that triggered the workflow. `specty ci` reads the event itself.
+name: Specty CI
+description: Check that every commit of a pull request or a push traces back to an approved Specty change.
+author: Baquia
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  version:
+    description: >-
+      Exact version of @baquia-dev/specty to run. By default, the one the tag of this action names
+      (`uses: Baquia-dev/specty@v0.2.0` runs 0.2.0).
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v5
+      with:
+        node-version: 22
+    # `specty ci` needs the history of the branches: a shallow clone is completed first.
+    - name: Fetch the history
+      shell: bash
+      run: |
+        if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+          git fetch --no-tags --unshallow origin
+        fi
+    # The expressions go through `env`, never into the script, so no input can inject a command.
+    - name: specty ci
+      shell: bash
+      env:
+        SPECTY_VERSION: ${{ inputs.version }}
+        ACTION_REF: ${{ github.action_ref }}
+      run: |
+        version="$SPECTY_VERSION"
+        if [ -z "$version" ]; then
+          case "$ACTION_REF" in
+            v[0-9]*) version="${ACTION_REF#v}" ;;
+          esac
+        fi
+        if [ -z "$version" ]; then
+          echo "::error::Specty CI needs an exact version: use the action by its tag (Baquia-dev/specty@v<version>) or set the input 'version'."
+          exit 1
+        fi
+        npx -y "@baquia-dev/specty@$version" ci

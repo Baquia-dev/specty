@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "542c555041c59dacc075baf2cceee4df730f817e",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:33:00.285Z",
       "doneAt": "2026-10-28T15:33:51.559Z",
-      "summary": "flow/ci-github traduce el evento de pull request o push a CiOptions, y specty ci lo usa sin --base"
+      "summary": "flow/ci-github traduce el evento de pull request o push a CiOptions, y specty ci lo usa sin --base",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "18c4a6b49f06b4f6c1f930e940b45d634550f3e3",
+      "startedAt": "2026-10-28T15:33:51.876Z",
+      "doneAt": "2026-10-28T15:34:35.527Z",
+      "summary": "action.yml compuesta con Node 22, historia completa y la versión exacta; la plantilla y la CI de Specty ejecutan specty ci"
     }
   },
   "pending": {
