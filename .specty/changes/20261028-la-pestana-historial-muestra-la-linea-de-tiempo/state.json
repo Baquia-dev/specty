@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-pestana-historial-muestra-la-linea-de-tiempo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-la-pestana-historial-muestra-la-linea-de-tiempo",
   "baseCommit": "bfd12da5c6c6886f3759798aecfa9362f3848bc8",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "babf5569531752209fd1bf48d6f1ee7519b2dac2",
+      "attempts": 1,
       "startedAt": "2026-10-28T18:00:14.103Z",
       "doneAt": "2026-10-28T18:10:33.237Z",
-      "summary": "La pestaña Historial muestra la línea de tiempo por día con filtros por actor y tipo, el resumen de cuántos de cuántos y el estado vacío"
+      "summary": "La pestaña Historial muestra la línea de tiempo por día con filtros por actor y tipo, el resumen de cuántos de cuántos y el estado vacío",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1de2540278bb41f2cf6dcb4f202b02a99659d0a0",
+      "startedAt": "2026-10-28T18:10:33.552Z",
+      "doneAt": "2026-10-28T18:14:08.814Z",
+      "summary": "docs/ui.md describe la línea de tiempo y sus filtros, y deja la exportación y la trazabilidad para más adelante"
     }
   },
   "pending": {
