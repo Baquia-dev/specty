@@ -78,3 +78,22 @@ La capa 4 de cumplimiento (ARCHITECTURE §10) es la única que el agente no pued
 
 - R1: En un repositorio grande, leer el estado y la spec de cada commit de tarea con `git show` puede tardar. Mitigación: solo se leen los commits de tarea del rango, una vez por commit, y el rango es el del evento.
 - R2: Un historial que adopta Specty con trabajo a medias trae commits sin trailers en su primer pull request. Mitigación: la línea de `traced` dice cómo documentarlo (`specty retro`), y la verificación se puede bajar a aviso con `checks.levels`.
+
+## Cierre
+
+### Resumen
+
+`specty ci [--base <ref>] [--into <rama>] [--head-ref <rama>]` revisa los commits de `<base>..HEAD` sin los de merge y da el informe y el JSON de `specty check` con tres verificaciones: `traced` (código gobernado sin `Specty-Change`), `task-approval` (un cambio que no existe, o un commit de tarea sin su spec aprobada para el hash de su `Specty-Spec`) y `no-spike` (un spike hacia la rama destino). El informe es puro, en `core/src/cards/ci.ts`, y la CLI reúne con git los hechos de cada commit (`flow/ci-commits.ts`). Sobre los últimos 60 commits de este repositorio pasa en unos 4 segundos.
+
+### Desviaciones
+
+- `branchOf` empezó quitando el remoto del texto de `--base` y tomaba `HEAD` por una rama. Ahora pregunta a git (`rev-parse --symbolic-full-name`) y solo cuenta una rama local o remota; un commit, un tag o `HEAD` dejan el destino sin saber, y se trata como la rama destino.
+
+### Decisiones
+
+- `ciReport` recibe los niveles de `checks.levels` como una función y deja fuera las verificaciones en `off`.
+- Una `--base` que git no conoce hace fallar el comando con el error de `git log`, en vez de dar un informe vacío que pasaría.
+
+### Pendientes
+
+- `packages/core/src/cards/index.ts` sigue creciendo (314 líneas); es la lista de exportaciones de textos y no mezcla responsabilidades, así que no se dividió.

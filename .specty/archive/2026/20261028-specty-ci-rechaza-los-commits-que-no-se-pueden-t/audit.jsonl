@@ -12,3 +12,7 @@
 {"ts":"2026-10-28T15:18:29.097Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"49377315f81084a263cec42e7d484c34f5e8db71"}}
 {"ts":"2026-10-28T15:19:31.616Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts","exit":0,"ms":2023,"tree":"sha256:23ddcb2c14d0c5f09c3e4d40291e5d5cf2e4f89f1e5be46660774050185ca7e6"}}
 {"ts":"2026-10-28T15:19:31.617Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"checks.md, checks.en.md y ARCHITECTURE 6 y 10 describen specty ci"}}
+{"ts":"2026-10-28T15:25:09.004Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":325427,"tree":"sha256:23ddcb2c14d0c5f09c3e4d40291e5d5cf2e4f89f1e5be46660774050185ca7e6"}}
+{"ts":"2026-10-28T15:25:09.007Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T15:25:21.493Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:6a16470bfd23ac973b0468e2e0da9a19723c686e4f224d2c458f181a05833718","size":"M","warnings":0}}
+{"ts":"2026-10-28T15:28:06.881Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

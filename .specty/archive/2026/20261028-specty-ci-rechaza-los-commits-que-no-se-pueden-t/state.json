@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-specty-ci-rechaza-los-commits-que-no-se-pueden-t",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-specty-ci-rechaza-los-commits-que-no-se-pueden-t",
   "baseCommit": "d0b1d42a3b4b71010a26e413e2222400429dff69",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:171ec8df8bcf135edf23018eb6fa6cde54ab70da0525237d2d22ae2c83738cb3",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "49377315f81084a263cec42e7d484c34f5e8db71",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:18:29.096Z",
       "doneAt": "2026-10-28T15:19:31.616Z",
-      "summary": "checks.md, checks.en.md y ARCHITECTURE 6 y 10 describen specty ci"
+      "summary": "checks.md, checks.en.md y ARCHITECTURE 6 y 10 describen specty ci",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,6 +87,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-28T15:25:21.493Z",
   "lockedTests": {
     "packages/cli/test/ci.test.ts": "sha256:eb43f506a3c6ba2d7fd35feba8e15873c6af64ddbd86dd721a841ae0da6f6df1",
     "packages/core/test/cards/ci.test.ts": "sha256:33d36a993a5d7711babab15560d967f0a0279169612ff1cb80cc26372b0722fc"
