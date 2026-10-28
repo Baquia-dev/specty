@@ -6,6 +6,13 @@
   "branch": "specty/20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "baseCommit": "edb43bd3094859ee92c940acab964d048810a6e4",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:92b02508c390ac32ea96bfcc89b2d3acd1a3c47380ce926f3e00dd32513f713a",
+    "at": "2026-10-28T15:39:11.184Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 6,
@@ -51,12 +58,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:92b02508c390ac32ea96bfcc89b2d3acd1a3c47380ce926f3e00dd32513f713a",
-    "at": "2026-10-28T15:39:11.184Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T15:40:06.617Z"
 }
