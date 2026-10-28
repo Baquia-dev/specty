@@ -29,6 +29,7 @@ import { commitInstall } from "../install/commit";
 import { type InstallFiles, installFiles } from "../install/files";
 import { ensureDevelop, flowToWrite, noFlowWarnings } from "../install/git-flow";
 import { agentsToInstall, installHooks } from "../install/hooks";
+import { installMcp } from "../install/mcp";
 import { isNewProject, writeProduct } from "../install/product";
 import { writeAgentsMd, writeConfig, writeGlossary } from "../install/project-files";
 import { exists } from "../io/files";
@@ -45,6 +46,8 @@ interface InitOptions {
   readonly gitFlow?: GitFlow;
   /** Only say what it would create or change: nothing is written or committed. */
   readonly dryRun?: boolean;
+  /** Also register Specty's MCP server in each agent's project configuration. */
+  readonly mcp?: boolean;
 }
 
 /** `specty init` as typed: reads its options, and says which language its output uses. */
@@ -55,6 +58,7 @@ export async function initCommand(
     readonly tools?: string;
     readonly gitFlow?: string;
     readonly dryRun?: boolean;
+    readonly mcp?: boolean;
   },
 ): Promise<{ readonly output: Output; readonly lang: Lang }> {
   const language =
@@ -75,8 +79,19 @@ export async function initCommand(
     ...(language !== undefined ? { language } : {}),
     ...(tools !== undefined ? { tools } : {}),
     ...(gitFlow !== undefined ? { gitFlow } : {}),
-    ...(options.dryRun === true ? { dryRun: true } : {}),
+    ...switches(options),
   });
+}
+
+/** The switches of `init` that are on, and only those. */
+function switches(options: {
+  readonly dryRun?: boolean;
+  readonly mcp?: boolean;
+}): Pick<InitOptions, "dryRun" | "mcp"> {
+  return {
+    ...(options.dryRun === true ? { dryRun: true } : {}),
+    ...(options.mcp === true ? { mcp: true } : {}),
+  };
 }
 
 /**
@@ -187,6 +202,11 @@ async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
   const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
   const { tools } = agents;
   const hooks = await installHooks({ environment, root, git, tools, lang, files });
+  const { invocation } = environment;
+  const mcp =
+    options.mcp === true
+      ? await installMcp({ root, tools, invocation, files, lang })
+      : { done: [], warnings: [], written: [] };
   const noTests =
     setup.config?.verify.default === undefined &&
     verifyCommands(detection.commands).default === undefined;
@@ -194,8 +214,8 @@ async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
     files,
     backups,
     product: project.product,
-    done: [...project.done, ...hooks.done],
-    written: [...project.written, ...hooks.written],
+    done: [...project.done, ...hooks.done, ...mcp.done],
+    written: [...project.written, ...hooks.written, ...mcp.written],
     unfilled: project.unfilled,
     flow: flow.flow,
     chooseFlow: noFlow.length > 0,
@@ -203,6 +223,7 @@ async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
       ...agents.warnings,
       ...noFlow,
       ...hooks.warnings,
+      ...mcp.warnings,
       ...(noTests ? [noTestCommandWarning(lang)] : []),
     ],
   };

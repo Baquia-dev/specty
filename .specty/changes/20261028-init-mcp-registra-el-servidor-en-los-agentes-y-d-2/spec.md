@@ -63,7 +63,7 @@ slice: C5
   - files: packages/core/src/cards/mcp.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/index.ts, packages/core/test/cards/mcp.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/mcp.test.ts test/cards/doctor.test.ts
-- [ ] T2: `init --mcp`, `doctor` y `uninstall`
+- [x] T2: `init --mcp`, `doctor` y `uninstall`
   - files: packages/cli/src/install/mcp.ts, packages/cli/src/commands/init.ts, packages/cli/src/program.ts, packages/cli/src/commands/doctor.ts, packages/cli/src/commands/uninstall.ts, packages/cli/test/mcp-install.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/mcp-install.test.ts test/bootstrap.test.ts test/doctor-enter.test.ts test/uninstall.test.ts

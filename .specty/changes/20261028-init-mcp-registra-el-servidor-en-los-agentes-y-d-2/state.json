@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "344517241fdf63e309a427a546e9794e52cc55a6",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:58:15.937Z",
       "doneAt": "2026-10-28T15:58:30.168Z",
-      "summary": "cards/mcp.ts: línea de init, avisos y líneas de doctor del servidor MCP, sumadas a los WRITERS de doctor"
+      "summary": "cards/mcp.ts: línea de init, avisos y líneas de doctor del servidor MCP, sumadas a los WRITERS de doctor",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1ef54be110ec519add89455e6a4f882d2b3e6d05",
+      "startedAt": "2026-10-28T15:58:30.473Z",
+      "doneAt": "2026-10-28T16:02:09.823Z",
+      "summary": "install/mcp.ts registra, revisa y quita la entrada specty de cada agente; init --mcp, doctor y uninstall la usan"
     }
   },
   "pending": {

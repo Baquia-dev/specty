@@ -25,6 +25,7 @@ import { isFinished, resolveActive } from "../flow/active";
 import { hasGuard } from "../install/agents";
 import { type FileChange, type InstallFiles, installFiles } from "../install/files";
 import { removeGitHooks } from "../install/git-hooks";
+import { removeMcp } from "../install/mcp";
 import { GEMINI_POINTER, removeAgentsBlocks } from "../install/project-files";
 import { exists, readText } from "../io/files";
 import type { Session } from "../session";
@@ -83,6 +84,7 @@ async function uninstall(session: Session, dryRun: boolean): Promise<Output> {
 async function removeSpecty(session: Session, files: InstallFiles): Promise<void> {
   await removeAgentsBlocks(session.root, files);
   await removeAgentHooks(session.root, files, session.git);
+  await removeMcp(session.root, files);
   await removeGitHooks(session.root, session.git, files);
 }
 

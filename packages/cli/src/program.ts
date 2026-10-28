@@ -141,12 +141,14 @@ function readingCommands(
     .option("--tools <list>", "comma-separated agent tools, for example claude-code,cursor")
     .option("--git-flow <flow>", "how change branches are named: specty, github, trunk or gitflow")
     .option("--dry-run", "only list what init would create or change")
+    .option("--mcp", "also register Specty's MCP server in each agent's project configuration")
     .action(
       async (options: {
         language?: string;
         tools?: string;
         gitFlow?: string;
         dryRun?: boolean;
+        mcp?: boolean;
       }) => {
         const { output, lang } = await initCommand(environment, options);
         emit(output, lang);
