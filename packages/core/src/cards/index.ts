@@ -13,6 +13,7 @@ export {
   verificationNoteTitle,
   verificationReusedNote,
 } from "./accept";
+export { assertionWarnings, riskWarnings } from "./acceptance";
 export { type AdjustRefusal, adjustRefusalCard } from "./adjust";
 export {
   type ApprovalView,
@@ -303,4 +304,4 @@ export {
   whyCard,
   whyRefusalCard,
 } from "./why";
-export { assertionWarnings, NOTE_MAX, riskWarnings } from "./work";
+export { NOTE_MAX } from "./work";

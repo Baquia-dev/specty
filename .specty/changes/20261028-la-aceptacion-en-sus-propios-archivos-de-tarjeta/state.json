@@ -6,6 +6,13 @@
   "branch": "specty/20261028-la-aceptacion-en-sus-propios-archivos-de-tarjeta",
   "baseCommit": "aa9e93297d3f12bdc77adaa5eb0691d1a749b432",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c5fd9807c32475c6e0814125ebebaf72a2041b7e5db5dd5437f1a2d7f3c34885",
+    "at": "2026-10-28T09:23:35.679Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -21,7 +28,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a0fc00b9c97d99693c3c30acf0c0bc1b768961eb",
+      "startedAt": "2026-10-28T09:23:36.097Z",
+      "doneAt": "2026-10-28T09:27:46.477Z",
+      "summary": "cards/acceptance.ts tiene acceptanceCard, sus avisos y su SIGUIENTE, y doneLine, assertionWarnings y riskWarnings; work.ts, next.ts, accept.ts, task.ts e index.ts importan de ahí, sin ciclo; los tests de cards, sin cambios."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c5fd9807c32475c6e0814125ebebaf72a2041b7e5db5dd5437f1a2d7f3c34885",
-    "at": "2026-10-28T09:23:35.679Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

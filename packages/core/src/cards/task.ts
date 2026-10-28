@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { type Output, section } from "../output";
+import { assertionWarnings, riskWarnings } from "./acceptance";
 import { blockedCard, withLead } from "./flow";
 import { longFileWarnings, splitAdvice } from "./lines";
 import { nextCard } from "./next";
 import { runNext, translator } from "./text";
 import type { CardContext, ChangeView } from "./view";
-import { assertionWarnings, NOTE_MAX, riskWarnings } from "./work";
+import { NOTE_MAX } from "./work";
 
 /** Why `specty task done` completes nothing. */
 export type TaskDoneRefusal =

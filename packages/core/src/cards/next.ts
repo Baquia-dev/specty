@@ -2,12 +2,13 @@
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
 import { COMMIT_TYPES } from "../spec/model";
+import { acceptanceCard } from "./acceptance";
 import { termsSection } from "./glossary";
 import { integrationCard } from "./integration";
 import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
-import { acceptanceCard, adjustingCard, closingCard, implementingCard } from "./work";
+import { adjustingCard, closingCard, implementingCard } from "./work";
 
 export { taskCard } from "./work";
 

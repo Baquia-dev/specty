@@ -41,7 +41,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: La tarjeta de aceptación en cards/acceptance.ts
+- [x] T1: La tarjeta de aceptación en cards/acceptance.ts
   - files: packages/core/src/cards/work.ts, packages/core/src/cards/acceptance.ts, packages/core/src/cards/next.ts, packages/core/src/cards/accept.ts, packages/core/src/cards/task.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm typecheck
