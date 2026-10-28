@@ -12,3 +12,7 @@
 {"ts":"2026-10-28T15:34:35.835Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"00a1f7c2e41cd53015418209c7e5e0f343956755"}}
 {"ts":"2026-10-28T15:35:08.334Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts","exit":0,"ms":1803,"tree":"sha256:333bceba03a5cc74044c091f8eaacab8cbeef4b4cfa40168be872614cb7b270e"}}
 {"ts":"2026-10-28T15:35:08.335Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"checks.md y checks.en.md explican el evento y la Action; formats y ARCHITECTURE 10 la nombran"}}
+{"ts":"2026-10-28T15:38:00.291Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":162518,"tree":"sha256:333bceba03a5cc74044c091f8eaacab8cbeef4b4cfa40168be872614cb7b270e"}}
+{"ts":"2026-10-28T15:38:00.293Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T15:38:12.918Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:1583b2cd7cb836631b96fc02f3df2a33de40820684acf30b8b790fba09fdebcb","size":"L","warnings":0}}
+{"ts":"2026-10-28T15:38:22.275Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

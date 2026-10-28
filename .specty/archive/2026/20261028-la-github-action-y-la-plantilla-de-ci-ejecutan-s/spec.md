@@ -78,3 +78,21 @@ slice: C3
 
 - R1: Con un clon superficial, `origin/<rama base>` o `before` no existen y `git log` falla. Mitigación: la Action completa la historia antes, y `specty ci` falla con el error de git en vez de pasar con un rango vacío.
 - R2: La primera versión publicada con la Action aún no tiene etiqueta. Mitigación: hasta el release, se usa con el input `version` o con la plantilla, que ejecuta el CLI de npm.
+
+## Cierre
+
+### Resumen
+
+En GitHub Actions y sin `--base`, `specty ci` deduce el rango del evento (`flow/ci-github.ts`). En un pull request revisa `origin/<base>..HEAD`, hacia la base y desde su rama. En un push, desde `before`, o desde `origin/<rama por defecto>` si el push crea la rama. Las opciones explícitas ganan. `action.yml`, en la raíz, prepara Node 22, completa la historia de un clon superficial y ejecuta `npx -y @baquia-dev/specty@<versión> ci` con su input `version` o la versión de su etiqueta; sin ninguna, falla y pide el input. La plantilla de `check --install` y el job `specty-check` de la CI de Specty también lo ejecutan.
+
+### Desviaciones
+
+- El test del evento fija `origin/HEAD` con `git remote set-head`: desde git 2.48, `git fetch` lo crea apuntando a la rama actual del origen, que en el test es el propio repositorio en una rama de spike.
+
+### Decisiones
+
+- Las expresiones de GitHub (`inputs.version`, `github.action_ref`) llegan al script de la Action por `env`, nunca dentro del script, para que ningún input pueda inyectar un comando.
+
+### Pendientes
+
+- La Action solo se puede usar por su etiqueta después del próximo release (`v<versión>`); hasta entonces, con el input `version` o con la plantilla.
