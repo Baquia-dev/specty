@@ -71,7 +71,7 @@ Con `policy.tests: contract`, el agente envía los tests de una feature antes de
   - files: packages/ui/src/progress/tests-sent.ts, packages/ui/src/progress/tests-sent.test.ts, packages/ui/src/progress/progress-tab.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress
-- [ ] T3: Aprobar los tests desde la cabecera y la barra compacta
+- [x] T3: Aprobar los tests desde la cabecera y la barra compacta
   - files: packages/ui/src/progress/tests-actions.ts, packages/ui/src/progress/tests-actions.test.ts, packages/ui/src/change/change-page.ts, packages/ui/src/change/change-bar.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress --include src/change

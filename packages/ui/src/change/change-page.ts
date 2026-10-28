@@ -39,6 +39,7 @@ import {
   relativeTime,
 } from "../data/records";
 import { ProgressTab } from "../progress/progress-tab";
+import { TestsActions } from "../progress/tests-actions";
 import { ReviewActions } from "../review/review-actions";
 import { SpecReview } from "../review/spec-review";
 import { Preferences } from "../theme/preferences";
@@ -90,6 +91,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     AcceptanceTab,
     AcceptanceActions,
     ClosingActions,
+    TestsActions,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -122,14 +124,17 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               <h1 class="mt-3 mb-0 max-w-4xl text-[1.75rem] leading-[1.15] font-semibold tracking-[-0.028em] sm:text-[2.375rem]">{{ change.title }}</h1>
             </div>
             <!--
-              Beside the title: the decision waiting (on the spec in review, on the result in
-              acceptance, on the closing once the agent sent it) and, as a suggestion rather than a
-              fact of the change, the effort for the agent. Under the title, at its edge.
+              Beside the title: the decision waiting (on the spec in review, on the tests once the
+              agent sent them, on the result in acceptance, on the closing once the agent sent it)
+              and, as a suggestion rather than a fact of the change, the effort for the agent.
+              Under the title, at its edge.
             -->
-            @if (change.phase === 'review' || change.phase === 'acceptance' || change.decision === 'closing' || (showEffort && change.effort)) {
+            @if (change.phase === 'review' || change.phase === 'acceptance' || change.decision === 'closing' || change.decision === 'tests' || (showEffort && change.effort)) {
               <div class="mt-1 flex flex-col items-end gap-3 max-lg:items-start">
                 @if (change.phase === 'review') {
                   <sp-review-actions class="max-lg:items-start" [change]="change" />
+                } @else if (change.decision === 'tests') {
+                  <sp-tests-actions [change]="change" />
                 } @else if (change.phase === 'acceptance') {
                   <sp-acceptance-actions class="flex-wrap" [change]="change" />
                 } @else if (change.decision === 'closing') {

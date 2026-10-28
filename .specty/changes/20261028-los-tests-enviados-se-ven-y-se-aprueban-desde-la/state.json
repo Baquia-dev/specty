@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5ac7a8fe52af318f83db347527c4ed4917440fe4",
+      "attempts": 1,
       "startedAt": "2026-10-28T10:52:13.107Z",
       "doneAt": "2026-10-28T10:56:45.846Z",
-      "summary": "sp-tests-sent: en testing, Progreso muestra arriba «Tests por aprobar» con cada test por su ruta, cada comando en rojo con su salida y qué implica aprobarlos; mientras el agente los escribe, lo dice. El test se escribió antes que el componente, pero no se ejecutó en rojo antes de escribirlo"
+      "summary": "sp-tests-sent: en testing, Progreso muestra arriba «Tests por aprobar» con cada test por su ruta, cada comando en rojo con su salida y qué implica aprobarlos; mientras el agente los escribe, lo dice. El test se escribió antes que el componente, pero no se ejecutó en rojo antes de escribirlo",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cd01e2e76fe513b632973344d211c178b224996a",
+      "startedAt": "2026-10-28T10:56:46.153Z",
+      "doneAt": "2026-10-28T11:03:15.542Z",
+      "summary": "sp-tests-actions: «Aprobar los tests» en la cabecera y, compacto, en la barra, con un diálogo que dice que quedan bloqueados; aprueba la revisión vigente con source.approve y avisa; si la fuente falla, el diálogo sigue; en solo lectura, desactivado. La página lo prueba en change-page.tests.test.ts"
     }
   },
   "pending": {
