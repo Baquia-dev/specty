@@ -6,6 +6,13 @@
   "branch": "specty/20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
   "baseCommit": "4316fca24392e8c5161b5a72b3df1c94142a4f89",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4c3faec201db3e88789711382ed10dd6fd764282f1ddffe72b92f7d33959e3d0",
+    "at": "2026-10-28T18:13:27.130Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -43,12 +50,6 @@
     "T": 1,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4c3faec201db3e88789711382ed10dd6fd764282f1ddffe72b92f7d33959e3d0",
-    "at": "2026-10-28T18:13:27.130Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T18:14:52.507Z"
 }
