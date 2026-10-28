@@ -60,7 +60,7 @@ La capa 4 de cumplimiento (ARCHITECTURE §10) es la única que el agente no pued
 
 ## Tareas
 
-- [ ] T1: El informe de `specty ci`
+- [x] T1: El informe de `specty ci`
   - files: packages/core/src/cards/ci.ts, packages/core/src/cards/index.ts, packages/core/test/cards/ci.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/ci.test.ts

@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3375a6c07fa5c41faaa73330c4ae1036cc86036f",
+      "startedAt": "2026-10-28T15:14:14.275Z",
+      "doneAt": "2026-10-28T15:14:49.971Z",
+      "summary": "ciReport en core: traced, task-approval y no-spike con sus textos, como un CheckReport"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
