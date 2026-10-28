@@ -316,7 +316,7 @@ Solo se incorporan los cambios `standard`, `quick` y `epic` con rama y en modo `
 | 1. Instrucciones (AGENTS.md y salida de Specty) | Guía | Sí |
 | 2. Hooks del agente (guard) | Bloquea escrituras fuera de alcance (o, con una incorporación pendiente, fuera de los archivos que junta), `git commit` directo, acciones humanas (salvo en modo delegado, y nunca `delegate`) y edición de archivos protegidos; al terminar cada comando de shell, avisa de lo que cambió sin permiso, no deja que una sesión entre en otra worktree mientras su cambio sigue abierto, y mantiene en la carpeta de su cambio a la conversación que entró con `specty enter` | Sí, con shell indirecta; el aviso posterior llega con el cambio ya hecho |
 | 3. Hooks de git | Bloquea commits sin recibo ni spec | Sí, con `--no-verify` |
-| 4. CI (`specty ci` como check obligatorio) | Rechaza commits no trazables, specs sin aprobación válida para su hash y ramas `spike/` hacia la principal (`commands/ci.ts`, [checks.md](checks.md#commits-trazables-specty-ci)) | No, salvo copiando a mano los trailers: los recibos son locales |
+| 4. CI (`specty ci` como check obligatorio) | Rechaza commits no trazables, specs sin aprobación válida para su hash y ramas `spike/` hacia la principal (`commands/ci.ts`, [checks.md](checks.md#commits-trazables-specty-ci)). En GitHub Actions lee el evento; lo ejecutan la Action de `action.yml`, la plantilla de `check --install` y la CI de Specty | No, salvo copiando a mano los trailers: los recibos son locales |
 | 5. Revisión de PR (modo equipo) | Aprobación con identidad verificada por el servidor | No |
 
 **Guard.** Un único punto de entrada, `specty guard --tool <id>`:

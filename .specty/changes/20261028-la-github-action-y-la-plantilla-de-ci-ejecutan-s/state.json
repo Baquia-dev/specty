@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-github-action-y-la-plantilla-de-ci-ejecutan-s",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-la-github-action-y-la-plantilla-de-ci-ejecutan-s",
   "baseCommit": "88ca2ecd962895e166dbc3663ae2fa0e9c7ed2bb",
   "revision": 1,
@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "18c4a6b49f06b4f6c1f930e940b45d634550f3e3",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:33:51.876Z",
       "doneAt": "2026-10-28T15:34:35.527Z",
-      "summary": "action.yml compuesta con Node 22, historia completa y la versión exacta; la plantilla y la CI de Specty ejecutan specty ci"
+      "summary": "action.yml compuesta con Node 22, historia completa y la versión exacta; la plantilla y la CI de Specty ejecutan specty ci",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "00a1f7c2e41cd53015418209c7e5e0f343956755",
+      "startedAt": "2026-10-28T15:34:35.835Z",
+      "doneAt": "2026-10-28T15:35:08.334Z",
+      "summary": "checks.md y checks.en.md explican el evento y la Action; formats y ARCHITECTURE 10 la nombran"
     }
   },
   "pending": {

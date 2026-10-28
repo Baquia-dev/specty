@@ -68,7 +68,7 @@ slice: C3
   - files: action.yml, packages/cli/src/check/ci.ts, .github/workflows/ci.yml, packages/cli/test/action.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/action.test.ts test/check-install.test.ts
-- [ ] T3: Documentar la Action
+- [x] T3: Documentar la Action
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts

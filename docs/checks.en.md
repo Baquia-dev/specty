@@ -371,6 +371,25 @@ Warns, without ever failing, about each test the diff deletes and each test file
 
 Receipts live in each clone's `.git`, so `specty ci` does not check them: a trailer copied by hand passes. The guarantee with identity comes with team mode. It only reads, so the agent runs it too.
 
+**In GitHub Actions** (`GITHUB_ACTIONS=true`) and without `--base`, `specty ci` reads the event (`flow/ci-github.ts`). The options on the command line win over what the event gives.
+
+- **Pull request:** it checks `origin/<base branch>..HEAD`, into the base branch, with the pull request's branch as `--head-ref`.
+- **Push:** it checks from the event's `before`, into the branch pushed. When the push creates the branch, it starts at `origin/<default branch>`.
+
+There are two ways to run it:
+
+- The template of `specty check --install` runs it on pull requests, with the CLI's exact version.
+- The Action at the root of Specty's repository (`action.yml`):
+
+  ```yaml
+  - uses: actions/checkout@v5
+    with:
+      fetch-depth: 0
+  - uses: Baquia-dev/specty@v0.2.0   # runs @baquia-dev/specty@0.2.0; or the input `version`
+  ```
+
+  The Action sets up Node 22, completes the history of a shallow clone and runs `npx -y @baquia-dev/specty@<version> ci`. Without a version tag or `version`, it fails and asks for the input.
+
 ## Preparing the project
 
 `specty check --install` prepares the project for its checks. It shows the diff of each file and asks before writing it; with `--dry-run` it only shows the plan. It can do this:
