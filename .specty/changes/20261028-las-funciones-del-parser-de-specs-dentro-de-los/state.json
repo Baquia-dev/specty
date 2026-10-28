@@ -30,12 +30,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e3eeee63fab7cb518e512e13d4a707741fcb64a5",
+      "attempts": 1,
       "startedAt": "2026-10-28T07:26:34.391Z",
       "doneAt": "2026-10-28T07:30:27.697Z",
-      "summary": "parseSpec delega el recorrido de las secciones en readSections, y readFrontmatter la construcción del frontmatter válido en frontmatterOf; los tests de spec, sin cambios."
+      "summary": "parseSpec delega el recorrido de las secciones en readSections, y readFrontmatter la construcción del frontmatter válido en frontmatterOf; los tests de spec, sin cambios.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "84ca05228f687faff35dd05604cf6c4d1449ede5",
+      "startedAt": "2026-10-28T07:30:28.017Z",
+      "doneAt": "2026-10-28T07:40:06.612Z",
+      "summary": "readList aplica lo que clasifican readLine y fieldOf para cada línea; readEntry delega en readAction (la acción) y readPaths (las rutas y el origen de un renombrado), con los problemas en el mismo orden."
     }
   },
   "pending": {

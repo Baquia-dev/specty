@@ -48,7 +48,7 @@ Desde que `packages/core/src/spec/` cuenta como código y no como tests, `specty
   - files: packages/core/src/spec/parse.ts, packages/core/src/spec/frontmatter.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec
-- [ ] T2: readList y readEntry, divididas
+- [x] T2: readList y readEntry, divididas
   - files: packages/core/src/spec/list.ts, packages/core/src/spec/read-files.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec
