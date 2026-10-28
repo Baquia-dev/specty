@@ -6,6 +6,13 @@
   "branch": "specty/20261028-la-github-action-y-la-plantilla-de-ci-ejecutan-s",
   "baseCommit": "88ca2ecd962895e166dbc3663ae2fa0e9c7ed2bb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e2ab73b3ec4c411f0b75308fd7fbfb8b8a10baba7453e9a1f12c8993dbe0c73e",
+    "at": "2026-10-28T15:29:46.986Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -49,12 +56,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:e2ab73b3ec4c411f0b75308fd7fbfb8b8a10baba7453e9a1f12c8993dbe0c73e",
-    "at": "2026-10-28T15:29:46.986Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T15:32:59.437Z"
 }
