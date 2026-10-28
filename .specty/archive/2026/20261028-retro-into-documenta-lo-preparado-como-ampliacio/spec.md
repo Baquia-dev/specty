@@ -78,3 +78,25 @@ Cuando alguien prepara a mano código fuera del alcance del cambio activo, hoy e
 
 - R1: Mover el alcance del cambio fuera de `enforce/hook.ts` podría cambiar lo que deja pasar el hook. Mitigación: la función se mueve sin cambios, y las pruebas actuales del hook siguen igual.
 - R2: Preparar el estado del cambio en el commit de la persona mezcla el estado con su código. Mitigación: es lo mismo que hace una retro aparte con su spec, y solo se prepara la carpeta de ese cambio.
+
+## Cierre
+
+### Resumen
+
+`specty retro --into <id> --reason "<motivo>"` documenta el código preparado fuera del alcance del cambio activo como la solicitud `S<n>` de su tarea activa, con la huella de lo preparado en `retro`. Ninguna política la aprueba sola. Al aprobarla con la huella intacta, los archivos entran en el alcance, la auditoría registra `retro.confirmed`, se prepara el estado del cambio y un recibo `retro` deja pasar el commit con `Specty-Change` y `Specty-Retro: true`; con la huella cambiada, Specty la rechaza y pide repetirla. El hook `pre-commit` propone `--into` cuando el cambio está en `implementing` con una tarea activa.
+
+### Desviaciones
+
+- El código de T2 entró en T1 con una ampliación aprobada por la política (archivos previstos): la verificación de T1 era `pnpm test`, que corre los tests aprobados de la CLI, y no podía pasar sin él. T2 solo cerró su estado.
+- `retroIntoRefusalCard` y `retroInto` se dividieron (rechazos de la línea de comando y del cambio; `targetOf`) para cumplir `function-lines` y `complexity`.
+
+### Decisiones
+
+- El alcance del cambio que usa el hook se movió sin cambios a `flow/retro-into.ts`, junto a la huella y la confirmación, para que el hook, el comando y la aprobación compartan la misma regla.
+- La confirmación vive en `decideScope`, así que vale igual desde la terminal, la UI y el modo delegado.
+
+### Pendientes
+
+- La matriz de aceptación marcó AC1–AC5 «sin test» aunque sus tests llevan el id: solo cuenta los commits con `Specty-Task`, y con `policy.tests: contract` los tests van en el commit de la fase de tests. Es un fallo de Specty, que va en un cambio aparte.
+- Con `contract`, cada tarea necesita un `verify` que solo corra sus tests (hallazgo de T1).
+- `packages/core/src/cards/index.ts` sigue por encima del aviso de `max-lines` (313 líneas).

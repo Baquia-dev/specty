@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-retro-into-documenta-lo-preparado-como-ampliacio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-retro-into-documenta-lo-preparado-como-ampliacio",
   "baseCommit": "f654d6ae32c2e1cc73bdecc5d630d533ad66c6a6",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:a038e9333d59e0a3fe262bc71513d3b0f40d1ac1ef673c0a39189770b7466022",
@@ -71,12 +71,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bf957636eb6cee77c38a49bbdf06bfa0f74fd4de",
+      "attempts": 1,
       "startedAt": "2026-10-28T14:51:11.240Z",
       "doneAt": "2026-10-28T14:54:13.523Z",
-      "summary": "ARCHITECTURE 6 y 9 y formats 3 y 4 describen retro --into, su huella y su confirmación"
+      "summary": "ARCHITECTURE 6 y 9 y formats 3 y 4 describen retro --into, su huella y su confirmación",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -89,6 +89,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-28T14:57:41.222Z",
   "lockedTests": {
     "packages/cli/test/retro-into.test.ts": "sha256:c7f7580ccfebedf3bdf1e376ccb24f0f2e4ad5dd757f287342e06c75aa0a0b61",
     "packages/core/test/cards/hooks.test.ts": "sha256:8e0da3578c17c1b006666a088b712f2c23f2398c9ba0c1d9f6824ada42906c86",

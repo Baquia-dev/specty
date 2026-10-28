@@ -14,3 +14,7 @@
 {"ts":"2026-10-28T14:51:11.240Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"bf957636eb6cee77c38a49bbdf06bfa0f74fd4de"}}
 {"ts":"2026-10-28T14:54:13.522Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm test","exit":0,"ms":145517,"tree":"sha256:b8289dbba36cef157b0e0076301d8b14b83a46be895b92fef3db80e507e0b631"}}
 {"ts":"2026-10-28T14:54:13.524Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE 6 y 9 y formats 3 y 4 describen retro --into, su huella y su confirmación"}}
+{"ts":"2026-10-28T14:57:20.773Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":153081,"tree":"sha256:b8289dbba36cef157b0e0076301d8b14b83a46be895b92fef3db80e507e0b631"}}
+{"ts":"2026-10-28T14:57:20.775Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":2,"delegated":true}}
+{"ts":"2026-10-28T14:57:41.223Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:071fcee14e6809aba157a9457b1c44734a230c83b9164a504299c96ed94c005f","size":"L","warnings":2}}
+{"ts":"2026-10-28T14:57:50.215Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
