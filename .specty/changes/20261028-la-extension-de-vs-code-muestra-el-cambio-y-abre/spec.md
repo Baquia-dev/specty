@@ -78,7 +78,7 @@ Quien trabaja en VS Code no ve en qué fase está su cambio ni si le espera una 
   - files: packages/vscode/src/view.ts, packages/vscode/src/extension.ts, packages/vscode/package.nls.json, packages/vscode/package.nls.es.json, packages/vscode/test/view.test.ts, packages/vscode/test/extension.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm exec vitest run --root packages/vscode --coverage && pnpm --filter specty-vscode typecheck && pnpm lint && pnpm knip
-- [ ] T3: Empaquetar la extensión en un `.vsix` y documentarla
+- [x] T3: Empaquetar la extensión en un `.vsix` y documentarla
   - files: packages/vscode/build.mjs, packages/vscode/README.md, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter specty-vscode package && unzip -l packages/vscode/dist/specty.vsix && pnpm lint

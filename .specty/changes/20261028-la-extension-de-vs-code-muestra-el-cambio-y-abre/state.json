@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
   "baseCommit": "c3b7acbad4ee89df66d71cd148aaf39967b0fa55",
   "revision": 1,
@@ -62,14 +62,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/vscode/build.mjs"
-      ],
-      "attempts": 1,
       "baseCommit": "983d7d2a724bdc5c1ffbbaef8f256717f08dfd85",
+      "attempts": 1,
       "startedAt": "2026-10-28T18:50:11.453Z",
       "doneAt": "2026-10-28T18:55:17.026Z",
-      "summary": "La barra de estado con el cambio de la carpeta, su fase y a quién espera, que se actualiza con state.json, el foco y specty.path; el comando que abre la UI una vez por ventana y la para al cerrarse; los avisos con el ajuste; los textos del manifiesto en español e inglés y build.mjs"
+      "summary": "La barra de estado con el cambio de la carpeta, su fase y a quién espera, que se actualiza con state.json, el foco y specty.path; el comando que abre la UI una vez por ventana y la para al cerrarse; los avisos con el ajuste; los textos del manifiesto en español e inglés y build.mjs",
+      "scopeExtra": [
+        "packages/vscode/build.mjs"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8fa32d18335fb52d2e3388e27acf9d3f7d7b27d7",
+      "startedAt": "2026-10-28T18:55:17.361Z",
+      "doneAt": "2026-10-28T18:59:34.726Z",
+      "summary": "build.mjs monta en dist/vsix solo lo que se publica y lo empaqueta en dist/specty.vsix con vsce; README de la extensión en inglés y español; F4 en ARCHITECTURE con lo hecho y lo que falta"
     }
   },
   "pending": {
