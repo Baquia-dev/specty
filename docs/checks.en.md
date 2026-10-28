@@ -223,7 +223,7 @@ Checks that the generated code matches what its generator produces, like a `git 
 
 The lines of code of each file, without blank lines or comments. It warns above `lines.warn` and fails above `lines.fail`.
 
-**Configuration:** the `lines` rule: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` and `exclude`.
+**Configuration:** the `lines` rule: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` and `exclude`. To leave out a specific file, put its path or a glob in `lines.exclude`; it adds to the data folders that are left out by default (fixtures, mocks, migrations, i18n…).
 
 **Disable:** `levels: { max-lines: off }`, or `lines.fail: false` so that it only warns.
 
