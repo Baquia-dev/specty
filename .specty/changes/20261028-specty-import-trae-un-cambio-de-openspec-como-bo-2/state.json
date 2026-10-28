@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261028-specty-import-trae-un-cambio-de-openspec-como-bo-2",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261028-specty-import-trae-un-cambio-de-openspec-como-bo-2",
+  "baseCommit": "6739bf86d4838e486917f11ccd66ea4b2011a89e",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "3 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ceb2b5954cc67b264f32ed463cddd017838c6f166e692f1ef91f9c8f7a5b3f00",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:82d90af89161022c44e47bcabd490d72c04e4d00194fe6708fe5e1851c7d3f48",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7a4701e84fff955cbd9496d4fa1b8f6d90c75af52bbd84fc98ad7ebbb62f2245",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:4924cd29acb88d414bc50d96e1799eea593978c17aa55b4b9bf9f9853b2e0857",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:686f623692951e70276acb2c7556be0ea5ee9943a76629f79aae83cd295916dc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bf958f1142c61c83576f3ad84349eb1edb137898b975ad0772e3fd604554ff11",
+    "at": "2026-10-28T16:19:58.426Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
