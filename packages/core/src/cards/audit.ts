@@ -173,6 +173,11 @@ const EVENTS: Readonly<Record<string, (words: EventWords) => string>> = {
   "spec.approved": ({ t, text, value }) =>
     t(`Aprobó la revisión ${value("revision")}`, `Approved revision ${value("revision")}`) +
     (text("channel") === "" ? "" : ` (${text("channel")})`),
+  "tests.proposed": ({ t, value }) =>
+    t(`Envió ${value("count")} tests para aprobar`, `Sent ${value("count")} tests for approval`),
+  "tests.approved": ({ t, text }) =>
+    t("Aprobó los tests", "Approved the tests") +
+    (text("channel") === "" ? "" : ` (${text("channel")})`),
   "task.started": ({ t, text }) => t(`Empezó ${text("task")}`, `Started ${text("task")}`),
   "task.verified": ({ t, text, ran }) =>
     t(`Verificó ${text("task")}: `, `Verified ${text("task")}: `) + ran(),

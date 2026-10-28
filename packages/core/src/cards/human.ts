@@ -267,6 +267,7 @@ function statusNext(entries: readonly StatusEntry[], ctx: CardContext): string {
 function humanAction(phase: Phase): string {
   switch (phase) {
     case "review":
+    case "testing":
       return "approve";
     case "acceptance":
       return "accept";

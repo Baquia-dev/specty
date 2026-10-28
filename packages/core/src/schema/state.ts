@@ -101,6 +101,8 @@ export const ChangeStateSchema = z.strictObject({
   /** Highest number ever used per prefix (items and `S` scope requests): ids are never reused. */
   maxIds: z.partialRecord(z.enum(["A", "AC", "T", "R", "C", "S"]), Count),
   closingSubmittedAt: Timestamp.optional(),
+  /** In the testing phase, the tests were sent and wait for the person's approval (ADR 0014). */
+  testsSubmittedAt: Timestamp.optional(),
   integration: IntegrationSchema.optional(),
 });
 

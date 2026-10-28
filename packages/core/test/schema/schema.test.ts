@@ -201,6 +201,12 @@ describe("parseChangeState", () => {
     expect(parseChangeState({ ...state, phase: "testing" }).ok).toBe(true);
   });
 
+  it("AC5: keeps when the tests were sent for approval", () => {
+    const sent = { ...state, phase: "testing", testsSubmittedAt: "2026-10-28T10:00:00.000Z" };
+    expect(parseChangeState(sent).ok).toBe(true);
+    expect(parseChangeState({ ...sent, testsSubmittedAt: "ayer" }).ok).toBe(false);
+  });
+
   it("rejects malformed states with readable issues", () => {
     const result = parseChangeState({ ...state, phase: "tested", revision: -1 });
     expect(result.ok).toBe(false);

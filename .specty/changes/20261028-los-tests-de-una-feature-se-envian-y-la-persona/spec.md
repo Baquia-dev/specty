@@ -68,7 +68,7 @@ Comprobar que los tests fallan antes de aceptarlos llega con el corte C2.
 
 ## Tareas
 
-- [ ] T1: El modelo del envío y de la aprobación de los tests
+- [x] T1: El modelo del envío y de la aprobación de los tests
   - files: packages/core/src/schema/state.ts, packages/core/src/flow/machine.ts, packages/core/src/flow/phases.ts, packages/core/src/cards/human.ts, packages/core/src/cards/audit.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/flow test/cards

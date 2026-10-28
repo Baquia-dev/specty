@@ -56,17 +56,21 @@ const PERMISSIONS: Readonly<Record<Exclude<Phase, "closing">, PhasePermissions>>
 };
 
 /**
- * What each phase allows (ARCHITECTURE §4). A pending incorporation (`integrating`) keeps the
- * phase and its spec access, opens the files it brings together and waits for the agent.
+ * What each phase allows (ARCHITECTURE §4). Once the agent sent the closing or the tests
+ * (`submitted`), the phase waits for the person. A pending incorporation (`integrating`) keeps
+ * the phase and its spec access, opens the files it brings together and waits for the agent.
  */
 export function phasePermissions(
   phase: Phase,
-  closingSubmitted = false,
+  submitted = false,
   integrating = false,
 ): PhasePermissions {
+  const waitingFor = submitted ? "human" : "agent";
   const permissions: PhasePermissions =
     phase === "closing"
-      ? { code: "blocked", spec: "closing-only", waitingFor: closingSubmitted ? "human" : "agent" }
-      : PERMISSIONS[phase];
+      ? { code: "blocked", spec: "closing-only", waitingFor }
+      : phase === "testing"
+        ? { ...PERMISSIONS.testing, waitingFor }
+        : PERMISSIONS[phase];
   return integrating ? { ...permissions, code: "integration", waitingFor: "agent" } : permissions;
 }

@@ -17,6 +17,8 @@ export type FlowEvent =
       /** The change's tests are written and approved before its code (`testsFirst`, ADR 0014). */
       readonly testsFirst: boolean;
     }
+  /** The person approves the tests sent in the testing phase: the gate 2 of ADR 0014. */
+  | { readonly type: "approveTests"; readonly testsSubmitted: boolean }
   | { readonly type: "taskDone"; readonly remainingTasks: number }
   | { readonly type: "scopeRequest" }
   | { readonly type: "decideScope" }
@@ -50,11 +52,12 @@ const HUMAN: readonly Actor[] = ["human"];
 export const EVENT_RULES: Readonly<Record<FlowEventType, EventRule>> = {
   propose: {
     actors: ANYONE,
-    from: ["draft", "review", "adjusting", "closing"],
+    from: ["draft", "review", "testing", "adjusting", "closing"],
     grantsPermission: false,
   },
   requestChanges: { actors: HUMAN, from: ["review"], grantsPermission: false },
   approve: { actors: HUMAN, from: ["review"], grantsPermission: true },
+  approveTests: { actors: HUMAN, from: ["testing"], grantsPermission: true },
   taskDone: { actors: ANYONE, from: ["implementing"], grantsPermission: false },
   scopeRequest: { actors: ANYONE, from: ["implementing"], grantsPermission: false },
   decideScope: { actors: HUMAN, from: ["implementing"], grantsPermission: true },
@@ -75,7 +78,8 @@ export type RejectionCode =
   | "kind-not-allowed"
   | "validation-errors"
   | "pending-assumptions"
-  | "closing-not-submitted";
+  | "closing-not-submitted"
+  | "tests-not-submitted";
 
 export type TransitionResult =
   | { readonly ok: true; readonly phase: Phase }
@@ -100,6 +104,7 @@ export function transition({ phase, kind, actor, event }: TransitionInput): Tran
     case "propose":
     case "requestChanges":
     case "approve":
+    case "approveTests":
       return specOutcome(event, phase, kind);
     case "taskDone":
     case "scopeRequest":
@@ -112,20 +117,23 @@ export function transition({ phase, kind, actor, event }: TransitionInput): Tran
 
 type EventOf<T extends FlowEventType> = Extract<FlowEvent, { readonly type: T }>;
 
-/** The spec: proposed, sent back by the person, or approved. */
+/** The spec and its tests: proposed, sent back by the person, or approved. */
 function specOutcome(
-  event: EventOf<"propose" | "requestChanges" | "approve">,
+  event: EventOf<"propose" | "requestChanges" | "approve" | "approveTests">,
   phase: Phase,
   kind: ChangeKind,
 ): TransitionResult {
   switch (event.type) {
     case "propose":
       if (event.validationErrors > 0) return reject("validation-errors");
-      return to(phase === "closing" ? "closing" : "review");
+      // The closing and the tests are sent, and wait in their own phase for the person.
+      return to(phase === "closing" || phase === "testing" ? phase : "review");
     case "requestChanges":
       return to("review");
     case "approve":
       return approveOutcome(event, kind);
+    case "approveTests":
+      return event.testsSubmitted ? to("implementing") : reject("tests-not-submitted");
   }
 }
 

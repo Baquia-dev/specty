@@ -6,6 +6,13 @@
   "branch": "specty/20261028-los-tests-de-una-feature-se-envian-y-la-persona",
   "baseCommit": "ce370dc124673595b08e75eb6e3b0d90e7d3431e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9ad300c054dfe09c0c5883979c89cddac78c993e0d4fdcdfcc92fe8d41ee83ea",
+    "at": "2026-10-28T06:20:13.548Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4093c5da645e43e3a3d06b4fdfef5ef72b6e2d80",
+      "startedAt": "2026-10-28T06:20:13.948Z",
+      "doneAt": "2026-10-28T06:30:16.476Z",
+      "summary": "testsSubmittedAt en state.json; propose sigue en testing y approveTests (solo la persona, con los tests enviados) pasa a implementing; testing espera a la persona tras el envío; humanAction de testing es approve; tests.proposed y tests.approved en palabras."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 7,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9ad300c054dfe09c0c5883979c89cddac78c993e0d4fdcdfcc92fe8d41ee83ea",
-    "at": "2026-10-28T06:20:13.548Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

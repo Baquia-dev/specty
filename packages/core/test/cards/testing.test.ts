@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { type CardContext, type ChangeView, nextCard, renderText, type TaskView } from "../../src";
+import {
+  type CardContext,
+  type ChangeView,
+  nextCard,
+  renderText,
+  statusCard,
+  type TaskView,
+} from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
 const EN: CardContext = { ...ES, lang: "en" };
@@ -70,5 +77,25 @@ describe("the card of the testing phase", () => {
     expect(text).toContain("with its id in the name (`AC1: …`)");
     expect(text).toContain("neither production code nor its signatures");
     expect(text).toMatch(/NEXT: .*`specty propose`/);
+  });
+});
+
+describe("the person's decision on the tests", () => {
+  it("AC5: names `approve` as what the person owes once the tests are sent", () => {
+    const card = statusCard(
+      [
+        {
+          id: "20261028-saludo",
+          kind: "standard",
+          phase: "testing",
+          title: "Saludo",
+          waitingFor: "human",
+          current: true,
+          pendingScope: [],
+        },
+      ],
+      ES,
+    );
+    expect(card.next).toBe("te toca decidir en 20261028-saludo: `specty approve`.");
   });
 });
