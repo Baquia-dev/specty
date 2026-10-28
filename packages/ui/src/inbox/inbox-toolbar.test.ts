@@ -110,9 +110,10 @@ describe("Inbox toolbar", () => {
     const { element, rows, settle } = await open();
     const chips = () => [...element.querySelectorAll<HTMLButtonElement>("[data-phases] button")];
     expect(chips().map(text)).toEqual([
-      "Todas 9",
+      "Todas 10",
       "Borrador 1",
       "Revisión 2",
+      "Tests 1",
       "Implementación 2",
       "Aceptación 1",
       "Cierre 1",
@@ -128,7 +129,7 @@ describe("Inbox toolbar", () => {
     expect(chips()[2]?.getAttribute("aria-pressed")).toBe("true");
     chips()[2]?.click();
     await settle();
-    expect(rows()).toHaveLength(9);
+    expect(rows()).toHaveLength(10);
   });
 
   it("groups by phase or not at all, and sorts by title (AC4)", async () => {
@@ -139,6 +140,7 @@ describe("Inbox toolbar", () => {
     expect(sections()).toEqual([
       "Borrador 1",
       "Revisión 2",
+      "Tests 1",
       "Implementación 2",
       "Aceptación 1",
       "Cierre 1",
@@ -156,7 +158,7 @@ describe("Inbox toolbar", () => {
     await settle();
     expect(text(element.querySelector("[data-sort] [data-select]"))).toBe("Título, de la A a la Z");
     expect(localStorage.getItem("specty.inbox.sort")).toBe("title");
-    expect(sections()).toEqual(["Todos los cambios 9"]);
+    expect(sections()).toEqual(["Todos los cambios 10"]);
     const titles = rows().map((item) => text(item.querySelector("a")));
     expect(titles).toEqual(titles.toSorted((a, b) => a.localeCompare(b, "es")));
   });
@@ -166,13 +168,13 @@ describe("Inbox toolbar", () => {
     await typeIn("correo");
     // The count rides in the pinned bar, next to the phases.
     const shown = element.querySelector("sp-inbox-toolbar [data-shown]");
-    expect(text(shown)).toBe("1 de 9 cambios · Limpiar filtros");
+    expect(text(shown)).toBe("1 de 10 cambios · Limpiar filtros");
     await typeIn("nada parecido");
     const empty = element.querySelector("sp-empty-state");
     expect(text(empty?.querySelector("h2"))).toBe("Ningún cambio coincide");
     empty?.querySelector<HTMLButtonElement>("sp-button button")?.click();
     await settle();
-    expect(rows()).toHaveLength(9);
+    expect(rows()).toHaveLength(10);
     expect(element.querySelector("[data-shown]")).toBeNull();
   });
 });

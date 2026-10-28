@@ -20,7 +20,7 @@ const ids = (changes: readonly { readonly id: string }[]) =>
 describe("inbox view", () => {
   it("tells what waits for the person, what is in progress and what finished", () => {
     const by = (state: string) => CHANGES.filter((change) => stateOf(change) === state);
-    expect(by("decision")).toHaveLength(5);
+    expect(by("decision")).toHaveLength(6);
     expect(ids(by("active")).toSorted()).toEqual(["login-google", "modo-oscuro"]);
     expect(ids(by("recent")).toSorted()).toEqual(["chat-docentes", "redondeo-promedios"]);
   });
@@ -28,7 +28,7 @@ describe("inbox view", () => {
   it("groups by state by default, what has waited longest first (AC4)", () => {
     const sections = inboxSections(CHANGES, DEFAULTS, "es");
     expect(sections.map((section) => `${section.label.es} ${section.changes.length}`)).toEqual([
-      "Esperan tu decisión 5",
+      "Esperan tu decisión 6",
       "En curso 2",
       "Recientes 2",
     ]);
@@ -37,6 +37,7 @@ describe("inbox view", () => {
       "recordatorios-correo",
       "justificar-faltas",
       "evolucion-trimestre",
+      "avisos-calificaciones",
       "boletines-pdf",
     ]);
   });
@@ -57,8 +58,9 @@ describe("inbox view", () => {
       "justificar-faltas",
     ]);
     const counts = phaseCounts(CHANGES, "");
-    expect(counts.get("all")).toBe(9);
+    expect(counts.get("all")).toBe(10);
     expect(counts.get("review")).toBe(2);
+    expect(counts.get("testing")).toBe(1);
     expect(counts.get("implementing")).toBe(2);
     expect(counts.get("adjusting")).toBe(0);
     expect(phaseCounts(CHANGES, "correo").get("closing")).toBe(1);
@@ -70,6 +72,7 @@ describe("inbox view", () => {
     expect(byPhase.map((section) => section.key)).toEqual([
       "draft",
       "review",
+      "testing",
       "implementing",
       "acceptance",
       "closing",
@@ -79,7 +82,7 @@ describe("inbox view", () => {
     expect(byPhase[1]?.label.es).toBe("Revisión");
     const none = inboxSections(CHANGES, { ...DEFAULTS, group: "none" }, "es");
     expect(none.map((section) => [section.label.es, section.changes.length])).toEqual([
-      ["Todos los cambios", 9],
+      ["Todos los cambios", 10],
     ]);
     expect(inboxSections(CHANGES, { ...DEFAULTS, query: "nada parecido" }, "es")).toEqual([]);
   });

@@ -73,7 +73,7 @@ El corte C6 de la épica «Tests como contrato» lleva a la UI lo que la termina
   - files: packages/ui/src/acceptance/criterion-row.ts, packages/ui/src/acceptance/criterion-row.test.ts, packages/ui/src/acceptance/acceptance-tab.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance
-- [ ] T4: El prototipo trae un cambio en testing y los tests de los criterios
+- [x] T4: El prototipo trae un cambio en testing y los tests de los criterios
   - files: packages/ui/src/data/sample-tests.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-acceptance.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch

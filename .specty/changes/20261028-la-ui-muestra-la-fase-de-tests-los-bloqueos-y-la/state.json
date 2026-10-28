@@ -62,12 +62,25 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bb813a1a103751f54f78867b5016ddfa5a22185c",
+      "attempts": 1,
       "startedAt": "2026-10-28T12:04:32.376Z",
       "doneAt": "2026-10-28T12:08:52.548Z",
-      "summary": "Cada criterio de Aceptación lista, bajo sus tareas, los tests con su id (ruta:línea · tarea · commit, como mucho 3 y cuántos más), o dice «A comprobar a mano» o avisa «Sin test con su id»; la pestaña pasa criteriaTests a la evidencia"
+      "summary": "Cada criterio de Aceptación lista, bajo sus tareas, los tests con su id (ruta:línea · tarea · commit, como mucho 3 y cuántos más), o dice «A comprobar a mano» o avisa «Sin test con su id»; la pestaña pasa criteriaTests a la evidencia",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/inbox/inbox-toolbar.test.ts",
+        "packages/ui/src/inbox/inbox-view.test.ts",
+        "packages/ui/src/inbox/inbox.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "87d6a5761376b9af598db6ccf6332ee3d9f930f6",
+      "startedAt": "2026-10-28T12:08:52.863Z",
+      "doneAt": "2026-10-28T12:21:18.511Z",
+      "summary": "El prototipo trae un cambio en testing con dos tests en rojo, que se aprueban y bloquean, y el cambio en aceptación trae los tests de sus criterios; los tests que cuentan el ejemplo pasan a 10 cambios y 6 decisiones (A4)"
     }
   },
   "pending": {

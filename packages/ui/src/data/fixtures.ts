@@ -26,6 +26,7 @@ import {
   runTarget,
   verifiedIn,
 } from "./sample-run";
+import { approveTestsIn } from "./sample-tests";
 
 export { REVIEWER, sampleRecords } from "./sample-records";
 
@@ -202,6 +203,8 @@ export class FixtureData extends SpectyData {
           en: `The spec changed: it is now revision ${record.state.revision}. Review it again.`,
         });
       }
+      // In testing, the approval is the tests' (the gate 2), as on the server.
+      if (record.state.phase === "testing") return approveTestsIn(record, Date.now(), HASH);
       const at = new Date().toISOString();
       return {
         ...record,
