@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
   "baseCommit": "2d2ceff6979d2bec7e6894504a5e7ae81ade6f3c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:6343fe370405642103c5b7a5b0492366ed113299a14f2d910571330ea8f9c7d3",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "21540ae88e620cd9f35bd019ead632873cabe4f7",
+      "attempts": 1,
       "startedAt": "2026-10-28T07:13:55.005Z",
       "doneAt": "2026-10-28T07:20:26.733Z",
-      "summary": "criteria-tested es un error con contract y un aviso con las demás políticas; friction.test.ts recorre una feature con contract sin bloqueos (agente 10, persona 4: +2 y +1 sobre la estándar); ARCHITECTURE §4 y §16, formats y checks documentan el rojo y la gravedad."
+      "summary": "criteria-tested es un error con contract y un aviso con las demás políticas; friction.test.ts recorre una feature con contract sin bloqueos (agente 10, persona 4: +2 y +1 sobre la estándar); ARCHITECTURE §4 y §16, formats y checks documentan el rojo y la gravedad.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,5 +78,6 @@
     "AC": 8,
     "T": 3,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T07:24:32.065Z"
 }

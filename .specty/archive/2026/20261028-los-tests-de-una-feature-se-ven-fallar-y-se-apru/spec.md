@@ -84,3 +84,30 @@ Con `policy.tests: contract`, los tests de una feature ya se escriben, se envía
 
 - R1: Una salida que nombra un test que pasa, porque el runner lista también los que pasan, deja pasar ese test como rojo. Mitigación: el comando tiene que fallar, la persona ve los tests en el gate 2, y leer el rojo test a test queda como seguimiento.
 - R2: La verificación de las tareas puede ser lenta, y el envío la ejecuta entera. Mitigación: cada comando distinto se ejecuta una sola vez, y es la misma verificación que correrá cada tarea.
+
+## Cierre
+
+### Resumen
+
+El corte C2 de la épica queda completo, sumando los tres cambios que lo prepararon. Con `policy.tests: contract`, una feature pasa por `testing`: el agente escribe solo los tests y los envía con `specty propose`. Specty los envía en un commit propio solo si se cumple todo esto:
+- no cambió otro código;
+- cada criterio de una tarea `feat` o `fix` sin `test: manual` tiene un test nuevo con su id;
+- la verificación de esas tareas falla;
+- su salida nombra cada test nuevo.
+
+La persona los aprueba con `specty approve` (el gate 2) y el cambio pasa a `implementing`. `tests.proposed` guarda los comandos rojos. Con `contract`, `criteria-tested` es un error. La tarjeta de la fase deja fuera los criterios manuales. El test de fricción recorre una feature con `contract` sin bloqueos, con 10 comandos del agente y 4 de la persona: dos y uno más que la estándar.
+
+### Desviaciones
+
+- Los textos de los rechazos van en una tabla (`REFUSALS`) en vez de un `switch`: como función, `refusalText` tenía 67 líneas de código, y el máximo es 50.
+- El test de AC5 usa una tarea `fix`, que no pasa por la fase de tests, con un test sin el id del criterio. Con `contract`, una feature solo llega a implementarse con cada criterio ya probado, así que es la manera de ver `criteria-tested` en rojo.
+
+### Decisiones
+
+- El rojo se ejecuta con `runLive` y la etiqueta `tests`, como la verificación de una tarea, así que la UI lo ve en vivo.
+- Para nombrar un test basta con que lo nombre uno de los comandos que fallan: su ruta, su nombre de archivo o ese nombre sin la extensión (A2).
+
+### Pendientes
+
+- Un runner que lista también los tests que pasan puede nombrar uno que no falla (R1). Leer el rojo test a test, con JUnit XML, queda como seguimiento de la épica.
+- Los ciclos de los bugs, los refactors y los ajustes, y su recorrido de fricción (C4); el bloqueo de los tests aprobados (C3); la UI de la fase de tests (C6).
