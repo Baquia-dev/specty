@@ -52,7 +52,7 @@ Desde que `packages/core/src/spec/` cuenta como código y no como tests, `specty
   - files: packages/core/src/spec/list.ts, packages/core/src/spec/read-files.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec
-- [ ] T3: sectionBody con una tabla
+- [x] T3: sectionBody con una tabla
   - files: packages/core/src/spec/serialize.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-las-funciones-del-parser-de-specs-dentro-de-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-las-funciones-del-parser-de-specs-dentro-de-los",
   "baseCommit": "00645350eb197da70c9d9b5bca3a4c00383c6ec3",
   "revision": 1,
@@ -39,12 +39,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "84ca05228f687faff35dd05604cf6c4d1449ede5",
+      "attempts": 1,
       "startedAt": "2026-10-28T07:30:28.017Z",
       "doneAt": "2026-10-28T07:40:06.612Z",
-      "summary": "readList aplica lo que clasifican readLine y fieldOf para cada línea; readEntry delega en readAction (la acción) y readPaths (las rutas y el origen de un renombrado), con los problemas en el mismo orden."
+      "summary": "readList aplica lo que clasifican readLine y fieldOf para cada línea; readEntry delega en readAction (la acción) y readPaths (las rutas y el origen de un renombrado), con los problemas en el mismo orden.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "47dada13c5ad1c8c97bfab4de00c8abf6312dc97",
+      "startedAt": "2026-10-28T07:40:06.956Z",
+      "doneAt": "2026-10-28T07:49:23.704Z",
+      "summary": "sectionBody: la prosa sale directa y cada sección de lista de la tabla LIST_BODIES. check --all con el CLI de este cambio: function-lines y complexity sin hallazgos en todo el repositorio."
     }
   },
   "pending": {

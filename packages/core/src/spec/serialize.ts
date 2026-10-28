@@ -7,6 +7,8 @@ import {
   type FileEntry,
   type Frontmatter,
   type ItemList,
+  isProseSection,
+  type ListSectionKey,
   SECTION_ORDER,
   type SectionKey,
   type Slice,
@@ -109,29 +111,22 @@ function serializeFrontmatter(frontmatter: Frontmatter): string {
 }
 
 function sectionBody(spec: Spec, key: SectionKey, lang: Lang): string | undefined {
-  const { sections } = spec;
-  switch (key) {
-    case "goal":
-    case "question":
-    case "reason":
-    case "outOfScope":
-    case "design":
-    case "closing":
-      return sections[key];
-    case "assumptions":
-      return listBody(sections.assumptions, lang, (item) => assumptionLines(item, lang));
-    case "criteria":
-      return listBody(sections.criteria, lang, criterionLines);
-    case "files":
-      return listBody(sections.files, lang, (item) => [fileLine(item, lang)]);
-    case "tasks":
-      return listBody(sections.tasks, lang, taskLines);
-    case "slices":
-      return listBody(sections.slices, lang, sliceLines);
-    case "risks":
-      return listBody(sections.risks, lang, (item) => [idLine(item.id, item.text)]);
-  }
+  return isProseSection(key) ? spec.sections[key] : LIST_BODIES[key](spec, lang);
 }
+
+/** The body of each list section, item by item in its canonical form. */
+const LIST_BODIES: Readonly<
+  Record<ListSectionKey, (spec: Spec, lang: Lang) => string | undefined>
+> = {
+  assumptions: ({ sections }, lang) =>
+    listBody(sections.assumptions, lang, (item) => assumptionLines(item, lang)),
+  criteria: ({ sections }, lang) => listBody(sections.criteria, lang, criterionLines),
+  files: ({ sections }, lang) => listBody(sections.files, lang, (item) => [fileLine(item, lang)]),
+  tasks: ({ sections }, lang) => listBody(sections.tasks, lang, taskLines),
+  slices: ({ sections }, lang) => listBody(sections.slices, lang, sliceLines),
+  risks: ({ sections }, lang) =>
+    listBody(sections.risks, lang, (item) => [idLine(item.id, item.text)]),
+};
 
 function sectionUnit(spec: Spec, key: SectionKey): string | undefined {
   const value = spec.sections[key];
