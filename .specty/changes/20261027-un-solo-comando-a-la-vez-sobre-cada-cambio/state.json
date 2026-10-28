@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261027-un-solo-comando-a-la-vez-sobre-cada-cambio",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261027-un-solo-comando-a-la-vez-sobre-cada-cambio",
+  "baseCommit": "e9abd207bffefbfe25412bb1c97e3f6ee6a1fac3",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4db11f1f76efccd81e635b20decc0da6318b1791c95eda9e1f78bc746bb0df25",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:cbb1004a85bc438dec924981088b2d22f46178969743059919906ec633e92311",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:cdb0457f6836218ce72ad895762f4e6240db6604e8d68af24f74f009274f2c64",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b75d46951b2df0439d1c076b3850f331cedda15387f024681b923178589163dd",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:fc0e2d53e8550dc0b9c76333b0a1de0a62d66b9c8a7a338ddce3646beb724f43",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1853ceffcd7842c843f7b7f1a421dc4dde85852fbd440eadad5c6412febef9a0",
+    "at": "2026-10-28T05:14:03.372Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
