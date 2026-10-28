@@ -207,6 +207,13 @@ describe("parseChangeState", () => {
     expect(parseChangeState({ ...locked, lockedTests: { "test/a.test.ts": "x" } }).ok).toBe(false);
   });
 
+  it("AC1: keeps the cycle an approval decided for the testing phase", () => {
+    for (const testCycle of ["feature", "bug"]) {
+      expect(parseChangeState({ ...state, phase: "testing", testCycle }).ok).toBe(true);
+    }
+    expect(parseChangeState({ ...state, phase: "testing", testCycle: "spike" }).ok).toBe(false);
+  });
+
   it("AC5: keeps when the tests were sent for approval", () => {
     const sent = { ...state, phase: "testing", testsSubmittedAt: "2026-10-28T10:00:00.000Z" };
     expect(parseChangeState(sent).ok).toBe(true);

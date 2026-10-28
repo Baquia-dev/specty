@@ -6,6 +6,13 @@
   "branch": "specty/20261028-los-bugs-los-refactors-y-los-ajustes-siguen-su-p",
   "baseCommit": "58cab00cd2eab26142fb0fea7f7f0cee8cca37e0",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f946f8e0c9f3ad52e6e7992e961058f5e61fcbd09441c491bac22728d1caed3f",
+    "at": "2026-10-28T10:14:45.210Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a957e8b209b4dedc69ca4140b03c4f644cd16ab1",
+      "startedAt": "2026-10-28T10:14:45.589Z",
+      "doneAt": "2026-10-28T10:26:11.366Z",
+      "summary": "flow/adjusted-tests.ts: un ajuste que modifica un criterio desbloquea los tests con su id y va al ciclo de una feature; si no, decide testCycle (un defecto, el de un bug). approve guarda testCycle y anota unlocked en spec.approved; tests.ts usa cycleOf y borra testCycle al salir de testing."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 4,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f946f8e0c9f3ad52e6e7992e961058f5e61fcbd09441c491bac22728d1caed3f",
-    "at": "2026-10-28T10:14:45.210Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

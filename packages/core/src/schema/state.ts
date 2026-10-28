@@ -105,6 +105,8 @@ export const ChangeStateSchema = z.strictObject({
   testsSubmittedAt: Timestamp.optional(),
   /** The tests the person approved, locked by path to the hash of their content (ADR 0014). */
   lockedTests: z.record(z.string().min(1), Hash).optional(),
+  /** In the testing phase, the cycle its approval decided: a feature's or a bug's (ADR 0014). */
+  testCycle: z.enum(["feature", "bug"]).optional(),
   integration: IntegrationSchema.optional(),
 });
 

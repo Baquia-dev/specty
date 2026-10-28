@@ -24,7 +24,6 @@ import {
   scopeRulesFrom,
   shortHash,
   type TestsRefusal,
-  testCycle,
   testRules,
   testsApprovedLine,
   testsLockedLead,
@@ -35,6 +34,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { checkContext } from "../check/files";
 import { commitState } from "../flow/active";
+import { cycleOf } from "../flow/adjusted-tests";
 import { dataOf, readAudit } from "../flow/carried";
 import { changeTrailers, commitWithReceipt, decisionTrailers } from "../flow/commits";
 import { untestedBeforeCode } from "../flow/criteria-tests";
@@ -69,7 +69,7 @@ export async function proposeTests(session: Session, active: StoredChange): Prom
   if (red.kind === "refused") return testsRefusedCard(state.id, red.refusal, cards);
   const sending: Sending = { spec, tests, red: red.failed };
   // A bug's red test locks by itself; a feature's waits for the person (ADR 0014).
-  return testCycle(spec, session.config.policy.tests, doneTasks(state)) === "bug"
+  return cycleOf(session, state, spec) === "bug"
     ? lockRed(session, active, sending)
     : sendForApproval(session, active, sending);
 }
@@ -116,7 +116,8 @@ async function lockRed(session: Session, active: StoredChange, sending: Sending)
   const { tests } = sending;
   await commitState(session, active, state, "tests.proposed", proposedData(sending));
   const lockedTests = { ...state.lockedTests, ...(await hashesOf(session, tests)) };
-  const locked: ChangeState = { ...state, phase: moved.phase, lockedTests };
+  const { testCycle: _cycle, ...rest } = state;
+  const locked: ChangeState = { ...rest, phase: moved.phase, lockedTests };
   const data = { count: tests.length, files: tests };
   await commitState(session, active, locked, "tests.locked", data, "specty");
   const commit = await commitTests(session, active, sending);
@@ -143,13 +144,6 @@ async function commitTests(
     only: [...tests, dir],
     receipt: { change: state.id, kind: "tests" },
   });
-}
-
-/** The ids of the tasks already done. */
-function doneTasks(state: ChangeState): ReadonlySet<string> {
-  return new Set(
-    Object.entries(state.tasks).flatMap(([id, task]) => (task.status === "done" ? [id] : [])),
-  );
 }
 
 /** The tests are red, with the commands that failed; or why they cannot be sent yet. */
@@ -241,7 +235,7 @@ export async function approveTests(session: Session, active: StoredChange): Prom
   // The person who delegated stays the decision's; the channel records that the agent approved.
   const channel =
     session.actor === "agent" ? "delegated" : (session.environment.terminal.channel ?? "tty");
-  const { testsSubmittedAt: _sent, ...rest } = state;
+  const { testsSubmittedAt: _sent, testCycle: _cycle, ...rest } = state;
   const lockedTests = { ...state.lockedTests, ...(await sentHashes(session, active)) };
   await commitState(
     session,
