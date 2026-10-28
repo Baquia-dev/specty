@@ -16,8 +16,11 @@ import {
   writeFiles,
 } from "./support";
 
-/** A verification that fails and names the test, as a runner does while the code is missing. */
-const RED = `node -e "console.log('FAIL src/app.test.ts'); process.exit(1)"`;
+/**
+ * A verification that fails and names the test until `src/app.ts` greets with «Hola», as a
+ * runner does while the code is missing.
+ */
+const RED = `node -e "if(!require('fs').readFileSync('src/app.ts','utf8').includes('Hola')){console.log('FAIL src/app.test.ts');process.exit(1)}"`;
 /** Under contract, a feature's tests are approved before its code (ADR 0014). */
 const CONTRACT = `${CONFIG(RED)}policy:\n  tests: contract\nchecks:\n  levels: { secrets: off }\n`;
 /** SPEC with a test in every task, as `contract` requires to propose it. */
@@ -70,6 +73,8 @@ describe("approving the tests locks them", () => {
       expect(denied.code, tool).toBe(2);
       expect(denied.err).toContain("`src/app.test.ts` es un test aprobado");
       expect(denied.err).toContain("explícaselo al usuario");
+      // AC6: and how to ask for its unlock, which only the person decides.
+      expect(denied.err).toContain("`specty scope add src/app.test.ts --task T1 --reason");
     }
     // The task's code, and a new test in its own file, stay open.
     expect((await guard(root, "Write", { file_path: `${root}/src/app.ts` })).code).toBe(0);
@@ -101,5 +106,62 @@ describe("tests-locked", () => {
     expect((await cli(root, ["check", "--changed"])).out).not.toContain("tests-locked");
     const plain = await tempRepo({ ...APP, ".specty/config.yaml": CONTRACT });
     expect((await cli(plain, ["check", "--changed"])).out).not.toContain("tests-locked");
+  });
+});
+
+const REASON = "El test espera «Hola, Ana» y el criterio dice «Hola Ana»";
+
+/** FEATURE's change with T1 active and an unlock of its approved test requested. */
+async function unlockRequested() {
+  const root = await approvedTests();
+  await cli(root, ["next"]);
+  const asked = await cli(root, [
+    "scope",
+    "add",
+    "src/app.test.ts",
+    "--task",
+    "T1",
+    "--reason",
+    REASON,
+  ]);
+  return { root, asked };
+}
+
+describe("unlocking an approved test", () => {
+  it("AC1: requests it for an in-scope test, and the request never approves itself", async () => {
+    const { root, asked } = await unlockRequested();
+    expect(asked.out).toContain("SOLICITUD S1 (desbloquea tests aprobados):\n  src/app.test.ts");
+    expect(asked.out).toContain("lo decide solo la persona");
+    const state = await stateOf(root);
+    expect(state.pending.scopeRequests).toMatchObject([
+      { id: "S1", task: "T1", paths: ["src/app.test.ts"], reason: REASON },
+    ]);
+    expect(state.tasks.T1.scopeExtra).toEqual([]);
+  });
+
+  it("AC2: lets no delegated agent approve or reject it", async () => {
+    const { root } = await unlockRequested();
+    const on = await cli(root, ["delegate", "on"], { terminal: person({ choose: ["yes"] }) });
+    expect(on.code).toBe(0);
+    for (const argv of [
+      ["approve", "--scope", "S1"],
+      ["reject", "--scope", "S1", "--reason", "no"],
+    ]) {
+      const refused = await cli(root, argv);
+      expect(refused.out, argv[0]).toContain(
+        "S1 desbloquea un test aprobado: lo decide solo la persona, también en modo delegado.",
+      );
+    }
+    expect((await stateOf(root)).pending.scopeRequests).toHaveLength(1);
+  });
+
+  it("AC3: once the person approves it, the test is open for its task and tests-locked keeps quiet", async () => {
+    const { root } = await unlockRequested();
+    const approval = await cli(root, ["approve", "--scope", "S1"], { terminal: person() });
+    expect(approval.code, approval.out).toBe(0);
+    expect((await stateOf(root)).tasks.T1.scopeExtra).toEqual(["src/app.test.ts"]);
+    expect((await guard(root, "Write", { file_path: `${root}/src/app.test.ts` })).code).toBe(0);
+    await writeFiles(root, { "src/app.test.ts": "it('AC1: saluda a Ana', () => {}); // Hola\n" });
+    expect((await cli(root, ["check", "--changed"])).out).not.toContain("FALLA tests-locked");
   });
 });

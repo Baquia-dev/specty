@@ -296,7 +296,14 @@ async function guardContext(session: Session) {
       ? { task: { id: taskEntry[0], files, extras: taskEntry[1].scopeExtra } }
       : {}),
     ...(testing ? { files: planned } : {}),
-    ...(state.lockedTests !== undefined ? { locked: Object.keys(state.lockedTests) } : {}),
+    // An approved test the person unlocked for the active task is open for it (ADR 0014).
+    ...(state.lockedTests !== undefined
+      ? {
+          locked: Object.keys(state.lockedTests).filter(
+            (path) => taskEntry?.[1].scopeExtra.includes(path) !== true,
+          ),
+        }
+      : {}),
     ...(state.integration !== undefined && isIntegrating(state)
       ? { integration: { target: state.integration.target, paths: state.integration.paths } }
       : {}),

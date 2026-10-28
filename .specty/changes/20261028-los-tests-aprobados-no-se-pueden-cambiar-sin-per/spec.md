@@ -74,7 +74,7 @@ Los tests que aprueba la persona con `policy.tests: contract` ya quedan bloquead
   - files: packages/core/src/guard/testing.ts, packages/core/src/guard/decide.ts, packages/core/src/cards/flow.ts, packages/core/src/cards/testing.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC2, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard test/cards && pnpm --filter @baquia-dev/specty-core typecheck
-- [ ] T2: Pedir y decidir el desbloqueo
+- [x] T2: Pedir y decidir el desbloqueo
   - files: packages/cli/src/commands/scope.ts, packages/cli/src/commands/scope-decision.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/check/locked.ts, packages/cli/test/test-locks.test.ts
   - ac: AC1, AC2, AC3, AC6
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/test-locks.test.ts

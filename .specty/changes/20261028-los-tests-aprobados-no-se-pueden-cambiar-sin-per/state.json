@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7f818c9ca054702d437a058d91683d5b247f9bf1",
+      "attempts": 1,
       "startedAt": "2026-10-28T08:55:53.721Z",
       "doneAt": "2026-10-28T09:01:59.864Z",
-      "summary": "lockedDenial nombra la solicitud de desbloqueo con scope add para la tarea activa; scopeRequestedCard gana la variante unlocks, que pide a la persona decidirla; unlockRefusedCard para el agente en modo delegado."
+      "summary": "lockedDenial nombra la solicitud de desbloqueo con scope add para la tarea activa; scopeRequestedCard gana la variante unlocks, que pide a la persona decidirla; unlockRefusedCard para el agente en modo delegado.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0bb19cf819f2c9584b34b6243229b9e520304b86",
+      "startedAt": "2026-10-28T09:02:00.448Z",
+      "doneAt": "2026-10-28T09:09:33.409Z",
+      "summary": "scope add sobre un test bloqueado crea una solicitud aunque esté en el alcance, nunca aprobada por política; approve/reject --scope la rechazan al agente delegado; aprobada, el guard y tests-locked dejan abierto el test para su tarea activa; scope.decided guarda unlock y la tarea."
     }
   },
   "pending": {

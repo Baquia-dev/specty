@@ -16,8 +16,17 @@ export const testsLocked: CheckDefinition = {
     const locked = changes.flatMap(({ state }) => Object.entries(state.lockedTests ?? {}));
     // Without approved tests here, as without `policy.tests: contract`, it is not reported at all.
     if (locked.length === 0) return { inapplicable: true };
+    // A test the person unlocked for an active task may change until that task is done.
+    const unlocked = new Set(
+      changes.flatMap(({ state }) =>
+        Object.values(state.tasks).flatMap((task) =>
+          task.status === "active" ? task.scopeExtra : [],
+        ),
+      ),
+    );
     const findings = await Promise.all(
       locked.map(async ([path, hash]): Promise<Finding[]> => {
+        if (unlocked.has(path)) return [];
         const text = await context.read(path);
         if (text !== undefined && hashText(text) === hash) return [];
         const message =
