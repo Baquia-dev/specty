@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-aprobados-quedan-bloqueados",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-los-tests-aprobados-quedan-bloqueados",
+  "baseCommit": "68c27e34df6c1abc0d219ddd4d543cb3d1cd43d2",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3852e55b6d994e919cb46c5386510ec9a36b89bc46d1f56cb49923aa3022975d",
+    "at": "2026-10-28T08:24:39.488Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3e40533fa3ca9a81d48859400b26d3bd240329d918a98af2a7aeb054375e7b3c",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:9f219151a56e5d704f97285335fde4abc335e168243d1b21c468e70f7448cdce",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:5cf7e8e7bff722e52cdb3ab3b4174e07ebc205e6fd1910666b0540bd4bdcd8c6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "07203a6e967e65a9d35599abc77aa1d15956d148",
+      "attempts": 1,
+      "startedAt": "2026-10-28T08:24:39.926Z",
+      "doneAt": "2026-10-28T08:34:22.544Z",
+      "summary": "lockedTests en state.json con el hash de cada test del último tests.proposed al aprobarlos; el guard rechaza escribir o borrar un test bloqueado (regla locked, textos en guard/testing.ts) en cualquier fase; enforce/guard.ts le pasa las rutas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "5def0d43081a39817a1b579a3f8684c8665a05c0",
+      "attempts": 1,
+      "startedAt": "2026-10-28T08:34:22.871Z",
+      "doneAt": "2026-10-28T08:47:43.137Z",
+      "summary": "check/locked.ts: tests-locked compara cada test de lockedTests de los cambios abiertos de la carpeta con su hash, con --spec y sin él; sin tests bloqueados no aplica y queda fuera del informe (nuevo resultado inapplicable en provider.ts). Documentado en checks, formats y ARCHITECTURE §4.",
+      "scopeExtra": [
+        "packages/cli/src/check/provider.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 2,
+    "R": 1,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-28T08:51:14.462Z"
+}

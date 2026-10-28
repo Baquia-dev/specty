@@ -9,7 +9,7 @@ import { humanDenial } from "./human";
 import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
 import { type BoundSession, sessionDenial } from "./session";
 import { protectedDenial, specDenial } from "./spec";
-import { testingDenial } from "./testing";
+import { lockedDenial, testingDenial } from "./testing";
 import { type Elsewhere, elsewhereDenial, type ForeignPath, foreignDenial } from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
@@ -28,6 +28,8 @@ export interface GuardChange {
   };
   /** In the testing phase, the files of the approved spec: only their tests may be written. */
   readonly files?: readonly string[];
+  /** The tests the person approved: nobody writes or deletes them (ADR 0014). */
+  readonly locked?: readonly string[];
   /** A pending incorporation of the main branch: it alone decides about code, in any phase. */
   readonly integration?: GuardIntegration;
 }
@@ -102,7 +104,8 @@ export type GuardRule =
   | "scope"
   | "worktree"
   | "integration"
-  | "session";
+  | "session"
+  | "locked";
 
 export type GuardDecision =
   | { readonly allow: true }
@@ -227,6 +230,10 @@ function decideGoverned(path: string, ctx: GuardContext): GuardDecision {
   if (change.integration !== undefined) {
     const denial = integrationDenial(path, change.integration, ctx.config, ctx.lang, ctx.command);
     return denial === undefined ? ALLOW : deny("integration", denial.reason, denial.next);
+  }
+  if (change.locked?.includes(path) === true) {
+    const denial = lockedDenial(path, ctx.lang);
+    return deny("locked", denial.reason, denial.next);
   }
   if (change.phase === "testing") {
     const denial = testingDenial(path, change.files ?? [], ctx.config, ctx.lang, ctx.command);

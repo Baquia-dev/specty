@@ -34,3 +34,24 @@ export function testingDenial(
     ),
   };
 }
+
+/**
+ * Why an approved test may not be written or deleted: the tests the person approved are the
+ * contract (ADR 0014), and the implementation's own tests go in new files.
+ */
+export function lockedDenial(
+  path: string,
+  lang: Lang,
+): { readonly reason: string; readonly next: string } {
+  const t = (es: string, en: string) => (lang === "es" ? es : en);
+  return {
+    reason: t(
+      `\`${path}\` es un test aprobado y está bloqueado: los tests que aprobó la persona son el contrato.`,
+      `\`${path}\` is an approved test and it is locked: the tests the person approved are the contract.`,
+    ),
+    next: t(
+      "no lo cambies; si crees que el test está mal, para y explícaselo al usuario. Los tests nuevos van en archivos nuevos.",
+      "do not change it; if you think the test is wrong, stop and explain it to the user. New tests go in new files.",
+    ),
+  };
+}

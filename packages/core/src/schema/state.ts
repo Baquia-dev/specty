@@ -103,6 +103,8 @@ export const ChangeStateSchema = z.strictObject({
   closingSubmittedAt: Timestamp.optional(),
   /** In the testing phase, the tests were sent and wait for the person's approval (ADR 0014). */
   testsSubmittedAt: Timestamp.optional(),
+  /** The tests the person approved, locked by path to the hash of their content (ADR 0014). */
+  lockedTests: z.record(z.string().min(1), Hash).optional(),
   integration: IntegrationSchema.optional(),
 });
 
