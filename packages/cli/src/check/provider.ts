@@ -33,8 +33,14 @@ export interface CheckContext {
   added(path: string): ReadonlySet<number> | undefined;
 }
 
-/** What one check gives: its findings, or why it could not run (a missing tool, say). */
-type CheckOutcome = { readonly findings: readonly Finding[] } | { readonly skipped: string };
+/**
+ * What one check gives: its findings, why it could not run (a missing tool, say), or that there
+ * is nothing for it here (`inapplicable`), which leaves it out of the report as one set to `off`.
+ */
+type CheckOutcome =
+  | { readonly findings: readonly Finding[] }
+  | { readonly skipped: string }
+  | { readonly inapplicable: true };
 
 export interface CheckDefinition {
   /** Stable id: the key of its level in `checks.levels` and its name in the output. */
@@ -98,6 +104,7 @@ async function runOne(context: CheckContext, check: CheckDefinition): Promise<Ch
       skipped: error instanceof Error ? error.message : String(error),
     }),
   );
+  if ("inapplicable" in outcome) return [];
   return [
     "skipped" in outcome
       ? { id: check.id, level, findings: [], skipped: outcome.skipped }

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { testsLocked } from "./locked";
 import { focusedTests, skippedTests, todo } from "./markers";
 import { maxLines } from "./max-lines";
 import type { Provider } from "./provider";
@@ -8,5 +9,5 @@ import { secrets } from "./secrets";
 export const commonProvider: Provider = {
   id: "common",
   applies: () => true,
-  checks: [maxLines, focusedTests, skippedTests, todo, secrets],
+  checks: [maxLines, focusedTests, skippedTests, todo, testsLocked, secrets],
 };

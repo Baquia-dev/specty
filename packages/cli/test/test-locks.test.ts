@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
+import { rm } from "node:fs/promises";
+import { join } from "node:path";
 import { hashText } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
 import {
@@ -72,5 +74,32 @@ describe("approving the tests locks them", () => {
     // The task's code, and a new test in its own file, stay open.
     expect((await guard(root, "Write", { file_path: `${root}/src/app.ts` })).code).toBe(0);
     expect((await guard(root, "Write", { file_path: `${root}/src/greet.test.ts` })).code).toBe(0);
+  });
+});
+
+describe("tests-locked", () => {
+  it("AC3: fails when an approved test changed or is gone, with --spec and without it", async () => {
+    const root = await approvedTests();
+    // Past the guard, as a shell command or a person could.
+    await writeFiles(root, { "src/app.test.ts": "it('AC1: saluda', () => {});\n" });
+    for (const argv of [
+      ["check", "--changed", "--spec"],
+      ["check", "--changed"],
+    ]) {
+      const run = await cli(root, argv);
+      expect(run.code, argv.join(" ")).not.toBe(0);
+      expect(run.out).toContain("FALLA tests-locked\n  src/app.test.ts");
+    }
+    await rm(join(root, "src/app.test.ts"));
+    expect((await cli(root, ["check", "--changed"])).out).toMatch(
+      /FALLA tests-locked\n {2}src\/app\.test\.ts .*falta/,
+    );
+  });
+
+  it("AC4: says nothing while the approved tests are as approved, or none is locked", async () => {
+    const root = await approvedTests();
+    expect((await cli(root, ["check", "--changed"])).out).not.toContain("tests-locked");
+    const plain = await tempRepo({ ...APP, ".specty/config.yaml": CONTRACT });
+    expect((await cli(plain, ["check", "--changed"])).out).not.toContain("tests-locked");
   });
 });

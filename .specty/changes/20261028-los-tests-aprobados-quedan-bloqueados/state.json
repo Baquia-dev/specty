@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-los-tests-aprobados-quedan-bloqueados",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-los-tests-aprobados-quedan-bloqueados",
   "baseCommit": "68c27e34df6c1abc0d219ddd4d543cb3d1cd43d2",
   "revision": 1,
@@ -39,12 +39,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "07203a6e967e65a9d35599abc77aa1d15956d148",
+      "attempts": 1,
       "startedAt": "2026-10-28T08:24:39.926Z",
       "doneAt": "2026-10-28T08:34:22.544Z",
-      "summary": "lockedTests en state.json con el hash de cada test del último tests.proposed al aprobarlos; el guard rechaza escribir o borrar un test bloqueado (regla locked, textos en guard/testing.ts) en cualquier fase; enforce/guard.ts le pasa las rutas."
+      "summary": "lockedTests en state.json con el hash de cada test del último tests.proposed al aprobarlos; el guard rechaza escribir o borrar un test bloqueado (regla locked, textos en guard/testing.ts) en cualquier fase; enforce/guard.ts le pasa las rutas.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/check/provider.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "5def0d43081a39817a1b579a3f8684c8665a05c0",
+      "startedAt": "2026-10-28T08:34:22.871Z",
+      "doneAt": "2026-10-28T08:47:43.137Z",
+      "summary": "check/locked.ts: tests-locked compara cada test de lockedTests de los cambios abiertos de la carpeta con su hash, con --spec y sin él; sin tests bloqueados no aplica y queda fuera del informe (nuevo resultado inapplicable en provider.ts). Documentado en checks, formats y ARCHITECTURE §4."
     }
   },
   "pending": {
@@ -55,6 +66,7 @@
     "A": 3,
     "AC": 5,
     "T": 2,
-    "R": 1
+    "R": 1,
+    "S": 1
   }
 }

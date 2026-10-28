@@ -64,7 +64,7 @@ Desbloquear un test, que solo decide la persona, llega con el cambio siguiente, 
   - files: packages/core/src/schema/state.ts, packages/core/src/guard/decide.ts, packages/core/src/guard/testing.ts, packages/cli/src/commands/tests.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/test-locks.test.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/guard && pnpm --filter @baquia-dev/specty exec vitest run test/test-locks.test.ts
-- [ ] T2: tests-locked compara los tests bloqueados con su hash
+- [x] T2: tests-locked compara los tests bloqueados con su hash
   - files: packages/cli/src/check/locked.ts, packages/cli/src/check/common.ts, packages/cli/test/test-locks.test.ts, docs/formats.md, docs/ARCHITECTURE.md, docs/checks.md, docs/checks.en.md
   - ac: AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/test-locks.test.ts test/check-docs.test.ts test/check.test.ts

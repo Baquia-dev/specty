@@ -264,6 +264,16 @@ checks:
 
 **Disable:** `levels: { todo: off }`.
 
+### `tests-locked`
+
+**Stack:** any.
+
+Fails when a test the person approved under `policy.tests: contract` no longer matches the hash `state.json` kept when they approved it (`lockedTests`), or when it is missing. It looks at every change open in the folder, by its `state.json` and whatever the branch, so it also fails in a pull request's CI. With `--staged` it compares what is staged. Where no change has approved tests, it is left out of the report ([ADR 0014](decisions/0014-los-tests-como-contrato.md)).
+
+**Configuration:** none.
+
+**Disable:** `levels: { tests-locked: off }`.
+
 ### `secrets`
 
 **Stack:** any.
