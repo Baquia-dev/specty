@@ -5,6 +5,23 @@ import type { Bilingual } from "./records";
 
 export type Data = Readonly<Record<string, unknown>>;
 
+/** What kind of event an entry is, to filter the history by. */
+export type HistoryType =
+  | "spec"
+  | "tasks"
+  | "verifications"
+  | "scope"
+  | "adjustments"
+  | "closing"
+  | "other";
+
+/** How the history tells an event: its type, its title and the details it could read. */
+export interface Told {
+  readonly type: HistoryType;
+  readonly title: Bilingual;
+  readonly details?: readonly (Bilingual | undefined)[];
+}
+
 export const both = (es: string, en: string): Bilingual => ({ es, en });
 export const text = (data: Data, key: string) => {
   const value = data[key];
@@ -21,6 +38,12 @@ export const texts = (data: Data, key: string): string[] => {
 };
 export const isData = (value: unknown): value is Data =>
   typeof value === "object" && value !== null && !Array.isArray(value);
+/** Where the person decided, by the `channel` of the event. */
+export const CHANNELS: Readonly<Record<string, Bilingual>> = {
+  ui: both("Desde la UI", "From the UI"),
+  tty: both("En la terminal", "In the terminal"),
+  pr: both("En una pull request", "In a pull request"),
+};
 /** A detail only when its value is there. */
 export const when = (value: string | undefined, say: (value: string) => Bilingual) =>
   value === undefined ? undefined : say(value);

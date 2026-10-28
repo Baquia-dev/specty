@@ -61,12 +61,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2ac0b588005bbf1be13528043f3fec986cfa8ddc",
+      "attempts": 1,
       "startedAt": "2026-10-28T11:30:41.813Z",
       "doneAt": "2026-10-28T11:35:01.026Z",
-      "summary": "La solicitud que pide un test aprobado se titula «Desbloquear un test aprobado», con el candado abierto, marca cada ruta bloqueada «(test aprobado)» y explica que la tarea podrá cambiarlo, que vuelve a bloquearse al terminarla y que solo lo decide la persona"
+      "summary": "La solicitud que pide un test aprobado se titula «Desbloquear un test aprobado», con el candado abierto, marca cada ruta bloqueada «(test aprobado)» y explica que la tarea podrá cambiarlo, que vuelve a bloquearse al terminarla y que solo lo decide la persona",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/data/history-text.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "ad1a6084a06b0471d04970c5493e5831a54977df",
+      "startedAt": "2026-10-28T11:35:01.341Z",
+      "doneAt": "2026-10-28T11:40:01.631Z",
+      "summary": "El historial nombra el envío, la aprobación y el bloqueo de los tests (data/history-tests.ts) y los desbloqueos de una solicitud o de un ajuste; HistoryType, Told y CHANNELS pasan a history-text.ts"
     }
   },
   "pending": {
@@ -76,6 +87,7 @@
   "maxIds": {
     "A": 4,
     "AC": 4,
-    "T": 5
+    "T": 5,
+    "S": 1
   }
 }
