@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { stat } from "node:fs/promises";
 import { basename, join } from "node:path";
-import type { ChangeState, Phase } from "@baquia-dev/specty-core";
+import { type ChangeState, type ChangeView, type Phase, parseSpec } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { locateChanges } from "../flow/changes";
+import { criteriaTests } from "../flow/criteria-tests";
 import { isRecord, parseJson, readText } from "../io/files";
 import type { Session } from "../session";
 import { listDir, loadState, readRevision } from "../store/changes";
@@ -30,6 +31,8 @@ export interface ChangeRecord {
   readonly verifyFull?: string;
   /** The independent reviews that answered (`review.completed` with a `file`), oldest first. */
   readonly reviews?: readonly ReviewRecord[];
+  /** In acceptance, each criterion with the tests that carry its id (ADR 0014). */
+  readonly criteriaTests?: NonNullable<ChangeView["criteriaTests"]>;
 }
 
 /** An independent review (ADR 0011): of the spec or of the result, with what the reviewer said. */
@@ -66,9 +69,12 @@ export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
     if (record !== undefined && !records.some((seen) => seen.state.id === record.state.id))
       records.push(record);
   };
+  // The session of each open change, in its folder: its criteria's tests are read there.
+  const sessions = new Map<string, Session>();
   for (const { change, session: there } of await locateChanges(session)) {
-    if (!isFinished(change.state))
-      add(await readRecord(change.files, there.root, there.config.verify.full));
+    if (isFinished(change.state)) continue;
+    add(await readRecord(change.files, there.root, there.config.verify.full));
+    sessions.set(change.state.id, there);
   }
   for (const { folder } of await session.git.worktrees()) {
     const { archive } = repoPaths(folder);
@@ -80,7 +86,29 @@ export async function changeRecords(session: Session): Promise<ChangeRecord[]> {
     }
   }
   const commits = await taskCommits(session);
-  return records.map((record) => withCommits(record, commits.get(record.state.id)));
+  return Promise.all(
+    records.map((record) => {
+      const tasks = commits.get(record.state.id);
+      const there = sessions.get(record.state.id);
+      const withTasks = withCommits(record, tasks);
+      return there === undefined ? withTasks : withCriteriaTests(there, withTasks, tasks);
+    }),
+  );
+}
+
+/**
+ * In acceptance, each criterion with the tests that carry its id, as the acceptance card reads
+ * them (`flow/criteria-tests.ts`); an epic's criteria are checked by its slices.
+ */
+async function withCriteriaTests(
+  there: Session,
+  record: ChangeRecord,
+  commits: ReadonlyMap<string, string> | undefined,
+): Promise<ChangeRecord> {
+  const { state } = record;
+  if (state.phase !== "acceptance" || state.kind === "epic") return record;
+  const spec = parseSpec(record.spec, { language: there.lang }).spec;
+  return { ...record, criteriaTests: await criteriaTests(there, spec, commits ?? new Map()) };
 }
 
 /**

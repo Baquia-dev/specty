@@ -61,7 +61,7 @@ El corte C6 de la épica «Tests como contrato» lleva a la UI lo que la termina
 
 ## Tareas
 
-- [ ] T1: El servidor da los tests de cada criterio en aceptación
+- [x] T1: El servidor da los tests de cada criterio en aceptación
   - files: packages/cli/src/server/records.ts, packages/cli/test/server/records.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server

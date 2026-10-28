@@ -41,6 +41,43 @@ describe("the phase the server says a change is in", () => {
     expect(record?.phaseSince).toBe(APPROVED_AT);
   });
 
+  it("AC2: serves the tests of each criterion of a change in acceptance, as its card sees them", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": CONFIG() });
+    await cli(root, ["new", "Saludo personalizado"]);
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    expect((await cli(root, ["propose"])).code).toBe(0);
+    await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
+    await cli(root, ["next"]);
+    const record = async () => (await changeRecords(await sessionAt(root, AGENT)))[0];
+    expect((await record())?.criteriaTests).toBeUndefined();
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name: string) => 'Hola, ' + name;\n",
+      "src/app.test.ts": "it('AC1: saluda a Ana', () => {});\n",
+    });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Hecho"])).code).toBe(0);
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name = 'mundo') => 'Hola, ' + name;\n",
+    });
+    expect((await cli(root, ["task", "done", "T2", "--summary", "Hecho"])).code).toBe(0);
+    const accepting = await record();
+    expect(accepting?.state.phase).toBe("acceptance");
+    expect(accepting?.criteriaTests).toEqual([
+      {
+        id: "AC1",
+        manual: false,
+        owed: true,
+        tests: [
+          {
+            path: "src/app.test.ts",
+            line: 1,
+            task: "T1",
+            commit: accepting?.state.tasks.T1?.commit,
+          },
+        ],
+      },
+    ]);
+  });
+
   it("AC5: dates the implementation from the tests' approval, or from a bug's red locking", async () => {
     const root = await tempRepo({ ...APP, ".specty/config.yaml": CONFIG() });
     await cli(root, ["new", "Saludo personalizado"]);
