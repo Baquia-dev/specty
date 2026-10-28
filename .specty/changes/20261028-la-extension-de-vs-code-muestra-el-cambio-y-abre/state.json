@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261028-la-extension-de-vs-code-muestra-el-cambio-y-abre",
+  "baseCommit": "c3b7acbad4ee89df66d71cd148aaf39967b0fa55",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4c39c73f2c133989f7befb09c12320819d64c8a561a30f9c7f2c10e5fd0530c8",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0784b11c4e4db95c674a3adbfb5336e97c9ccc1c113612938be590872e01e132",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8e17ac0e49a22e50f7f2efedb050741665e48910c1cce014b91fc89165652d3f",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ae8d7b4d790bd38076784e2946be3fcc173f0985fe117e932935991969d1a8d2",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:355029c5964d4ebd5e929e3ba14f2034aecf865aaca28f86cd10fdd966dc1ac4",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:fc41e47323e3b636ea4b8fe316838c7e4c771bd9a1494ba802a991925fed14ab",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1c8e6e9ecc11200c313553c3cb757e1335b006bd076ad86c564cfa90e4aacb3e",
+    "at": "2026-10-28T18:38:48.130Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
