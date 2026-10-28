@@ -82,3 +82,25 @@ Es el corte C5 de la épica «Tests como contrato y vocabulario del dominio».
 
 - R1: Un término corto o común («pedido», «test») aparece en casi todo y ocupa los 3 huecos. Mitigación: la persona controla el glosario, y el orden del glosario decide cuáles van primero.
 - R2: Los términos hacen crecer las tarjetas. Mitigación: como mucho 3, en líneas de 100 caracteres, y el test de presupuesto los incluye.
+
+## Cierre
+
+### Resumen
+
+El proyecto puede tener un glosario del dominio (`glossary` en `config.yaml`; por defecto `docs/dominio.md` o `docs/domain.md`, según el idioma), con una línea por término: `- **Término** (\`NombreEnElCódigo\`): definición.`. Las tarjetas del borrador, de la fase de tests y de la tarea traen en «TÉRMINOS DEL DOMINIO» las definiciones de los términos que aparecen en su texto. Son como mucho 3, en el orden del glosario y en líneas de 100 caracteres. Un término cuenta sin importar mayúsculas, en plural con `s` o `es` y por su nombre en el código. La tarjeta del cierre pide añadir los términos que el cambio introdujo o renombró, y `close` los incluye en su commit. Sin glosario, o con solo pistas, las tarjetas no cambian. formats.md §6 y ARCHITECTURE §7 lo documentan.
+
+### Desviaciones
+
+- T3 amplió su alcance a `flow/finish.ts` (S1, aprobada en el chat). El commit del cierre solo llevaba la carpeta del cambio, así que los términos que la tarjeta del cierre pide añadir se habrían quedado sin commit y perdido al borrar la carpeta. `commitArchive` incluye ahora el glosario cuando el cambio se cierra.
+- `withDefaults` de `schema/config.ts` pasaba de la complejidad máxima con la clave nueva, así que su valor por defecto va en `glossaryOf`, como las demás secciones.
+
+### Decisiones
+
+- El límite de 3 términos y 100 caracteres sale de medir la tarjeta más grande del test de presupuesto: 1.411 de 1.500 tokens antes del glosario. Con los 3 términos queda por debajo.
+- La lógica del glosario vive en archivos propios (`core/src/glossary.ts` y `core/src/cards/glossary.ts`), porque `next.ts`, `work.ts` y `views.ts` ya pasaban de 300 líneas.
+- `schema/config.ts` queda en 310 líneas de código, por encima del aviso. Se deja así porque su única responsabilidad es la configuración.
+
+### Pendientes
+
+- AC15 de la épica: que `init` cree el glosario con pistas y que `doctor` avise mientras solo tenga pistas. Quedó fuera por tamaño y va en un cambio de seguimiento.
+- El repositorio de Specty no tiene glosario propio: hasta que lo tenga, sus tarjetas no traen términos.

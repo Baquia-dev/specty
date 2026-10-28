@@ -12,3 +12,9 @@
 {"ts":"2026-10-28T06:28:53.899Z","actor":"agent","tool":"claude-code","event":"scope.decided","data":{"id":"S1","decision":"approved","delegated":true}}
 {"ts":"2026-10-28T06:39:00.365Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/glossary.test.ts test/flow.test.ts","exit":0,"ms":25939,"tree":"sha256:e25ae2697812e276fd246961b792a58d349990409547bcb15663eac8ec623dd8"}}
 {"ts":"2026-10-28T06:39:00.469Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"flow/views.ts lee el glosario configurado en ChangeView.glossary cuando define algún término, y commitArchive lleva el glosario en el commit del cierre (S1); test de punta a punta del glosario hasta main."}}
+{"ts":"2026-10-28T06:42:43.427Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":150177,"tree":"sha256:e25ae2697812e276fd246961b792a58d349990409547bcb15663eac8ec623dd8"}}
+{"ts":"2026-10-28T06:42:43.433Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T06:43:07.418Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:926af92cff5067a261e38d611a7b0d68969042c5a98b9efca512614036b72849","size":"L","warnings":2}}
+{"ts":"2026-10-28T06:43:13.355Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"ce370dc124673595b08e75eb6e3b0d90e7d3431e","reason":"conflicts","conflicts":["docs/formats.md"]}}
+{"ts":"2026-10-28T06:50:47.512Z","actor":"agent","tool":"claude-code","event":"integration.resolved","data":{"commit":"7f9dd91"}}
+{"ts":"2026-10-28T06:50:53.017Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-el-vocabulario-del-dominio-llega-con-las-tarjeta",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-el-vocabulario-del-dominio-llega-con-las-tarjeta",
   "baseCommit": "2c9de7580f7c4e6a64b7e3515319106f686e9811",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:dcc38e0de5695ce336c4673bb6691624f6623ead61dc6c68bad0237c6a15bdc6",
@@ -61,14 +61,14 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/flow/finish.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "3295f72600364032bd4ca69099f4ee08cc901b6c",
+      "attempts": 1,
       "startedAt": "2026-10-28T06:25:36.742Z",
       "doneAt": "2026-10-28T06:39:00.466Z",
-      "summary": "flow/views.ts lee el glosario configurado en ChangeView.glossary cuando define algún término, y commitArchive lleva el glosario en el commit del cierre (S1); test de punta a punta del glosario hasta main."
+      "summary": "flow/views.ts lee el glosario configurado en ChangeView.glossary cuando define algún término, y commitArchive lleva el glosario en el commit del cierre (S1); test de punta a punta del glosario hasta main.",
+      "scopeExtra": [
+        "packages/cli/src/flow/finish.ts"
+      ]
     }
   },
   "pending": {
@@ -81,5 +81,50 @@
     "T": 3,
     "R": 2,
     "S": 1
+  },
+  "closingSubmittedAt": "2026-10-28T06:43:07.417Z",
+  "integration": {
+    "target": "main",
+    "commit": "ce370dc124673595b08e75eb6e3b0d90e7d3431e",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/formats.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/commands/approve.ts",
+      "packages/cli/src/enforce/agent-stop.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/flow/finish.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/test/glossary.test.ts",
+      "packages/cli/test/testing-phase.test.ts",
+      "packages/core/src/cards/glossary.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/testing.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/flow/machine.ts",
+      "packages/core/src/flow/phases.ts",
+      "packages/core/src/glossary.ts",
+      "packages/core/src/guard/decide.ts",
+      "packages/core/src/guard/testing.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/validate/quality.ts",
+      "packages/core/test/cards/budget.test.ts",
+      "packages/core/test/cards/glossary.test.ts",
+      "packages/core/test/flow/machine.test.ts",
+      "packages/core/test/glossary.test.ts",
+      "packages/core/test/guard/decide.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/validate/quality.test.ts"
+    ],
+    "at": "2026-10-28T06:43:13.355Z",
+    "resolved": {
+      "commit": "7f9dd91",
+      "at": "2026-10-28T06:50:47.512Z"
+    }
   }
 }
