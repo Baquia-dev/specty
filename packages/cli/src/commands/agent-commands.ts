@@ -14,6 +14,7 @@ import { withChangeLock } from "../flow/active";
 import { bareCards, type Session } from "../session";
 import { adjust } from "./adjust";
 import { enter } from "./enter";
+import { importCommand } from "./import";
 import { integrate } from "./integrate";
 import { type NewOptions, newChange } from "./new";
 import { next } from "./next";
@@ -47,6 +48,7 @@ export function agentCommands(
     .argument("<id>")
     .action((id: string) => run((session) => enter(session, id))());
   newCommand(program, run, env, refuse);
+  importCommand(program, run);
   program
     .command("propose")
     .description("validate the spec and send it to review")

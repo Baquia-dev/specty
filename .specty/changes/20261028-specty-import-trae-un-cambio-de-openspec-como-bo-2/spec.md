@@ -71,7 +71,7 @@ Hoy Specty exporta a OpenSpec, pero quien ya trabaja con OpenSpec no puede traer
   - files: packages/core/src/templates.ts, packages/core/src/cards/import.ts, packages/core/src/cards/index.ts, packages/core/test/cards/import.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/import.test.ts
-- [ ] T3: El comando `specty import`
+- [x] T3: El comando `specty import`
   - files: packages/cli/src/commands/import.ts, packages/cli/src/commands/new.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/import.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty typecheck && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/import.test.ts test/epic.test.ts

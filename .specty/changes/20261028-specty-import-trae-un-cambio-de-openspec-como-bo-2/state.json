@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a3ec7ed6957755ed0c33d5093445a344067904c4",
+      "attempts": 1,
       "startedAt": "2026-10-28T16:21:16.467Z",
       "doneAt": "2026-10-28T16:21:27.824Z",
-      "summary": "specTemplate acepta secciones ya escritas (bodyOf); los textos de la importación entraron con T1"
+      "summary": "specTemplate acepta secciones ya escritas (bodyOf); los textos de la importación entraron con T1",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2c79e30a07aa3b043be725cfbd3316b461856bc8",
+      "startedAt": "2026-10-28T16:21:28.171Z",
+      "doneAt": "2026-10-28T16:21:42.873Z",
+      "summary": "specty import lista los cambios de OpenSpec o crea uno como borrador con new y las secciones importadas"
     }
   },
   "pending": {
