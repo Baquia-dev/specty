@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-init-mcp-registra-el-servidor-en-los-agentes-y-d-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-init-mcp-registra-el-servidor-en-los-agentes-y-d-2",
   "baseCommit": "3c5750ef91e42b9b950a1a5b0c972414d3ff6fae",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:34e597db4156a3a09fe50401b6aa9d4199d794097bff4f0bd10471da0dbca213",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e15e8103a2a0ce1ea88dd712842ee07bfabb1ae4",
+      "attempts": 1,
       "startedAt": "2026-10-28T16:02:10.130Z",
       "doneAt": "2026-10-28T16:02:45.254Z",
-      "summary": "formats 1 tabula la entrada de cada agente y ARCHITECTURE 6 explica el registro opcional"
+      "summary": "formats 1 tabula la entrada de cada agente y ARCHITECTURE 6 explica el registro opcional",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-28T16:05:44.947Z",
   "lockedTests": {
     "packages/cli/test/mcp-install.test.ts": "sha256:461c37dfad9489635bfe8aec51417e3e8c1832d8feb318aed6fd86877fa06456",
     "packages/core/test/cards/mcp.test.ts": "sha256:a3573caa9a982ac0c110e84414b5f860196000449c9a7e4c0acae0059ba424da"

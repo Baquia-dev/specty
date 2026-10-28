@@ -77,3 +77,29 @@ slice: C5
 
 - R1: Un agente cambia dónde lee su configuración MCP. Mitigación: la tabla de `install/mcp.ts` es el único sitio que lo sabe, y A1 dice la fecha de la revisión.
 - R2: Editar `.codex/config.toml` como texto podría romper el TOML de la persona. Mitigación: solo se añade o se quita el bloque de `[mcp_servers.specty]`, y la prueba lo hace con un archivo que ya tiene otras claves.
+
+## Cierre
+
+### Resumen
+
+`specty init --mcp` registra la entrada `specty` (`specty mcp`) en la configuración MCP de proyecto de cada agente del repositorio, solo con `specty` en el PATH y sin tocar lo demás del archivo:
+
+- `mcpServers` en `.mcp.json`, `.cursor/mcp.json`, `.gemini/settings.json` y `.devin/config.json`;
+- `mcp` en `opencode.json`;
+- la tabla `[mcp_servers.specty]` en `.codex/config.toml`.
+
+Antigravity recibe un aviso con los pasos, porque solo lee la carpeta del usuario. `doctor` confirma la entrada y da un problema donde falta o ejecuta otro comando, una vez que algún agente la tiene. `uninstall` la quita y borra los archivos que se quedan vacíos. Todo está en `install/mcp.ts`, y los textos en `core/src/cards/mcp.ts`.
+
+### Desviaciones
+
+- El primer intento del corte (`20261028-init-mcp-registra-el-servidor-en-los-agentes-y-d`) se canceló. Su test aprobado de `uninstall` usaba la terminal por defecto, cuya opción por defecto es «no», y desbloquear un test aprobado es solo de la persona. Este cambio lo rehízo con el test corregido (`person({ choose: ["yes"] })`) y la misma implementación.
+- `initCommand` pasó de la complejidad máxima con la opción nueva; los interruptores (`--dry-run`, `--mcp`) pasaron a `switches`.
+
+### Decisiones
+
+- El repositorio pide el servidor cuando algún archivo tiene la entrada `specty`; solo entonces `doctor` pide la de los demás agentes.
+- Las líneas de `doctor` del servidor van en `cards/mcp.ts` y se suman a `WRITERS`, así que `cards/doctor.ts` solo gana sus códigos.
+
+### Pendientes
+
+- `packages/core/src/cards/doctor.ts` está en 320 líneas, sobre el aviso: una propuesta es separar sus `WRITERS` por agente, como hizo este corte con los de MCP.
