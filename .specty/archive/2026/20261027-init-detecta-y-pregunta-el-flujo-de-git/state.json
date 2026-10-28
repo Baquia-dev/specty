@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261027-init-detecta-y-pregunta-el-flujo-de-git",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261027-init-detecta-y-pregunta-el-flujo-de-git",
+  "baseCommit": "0445983eeb54af55bce9cca2794c24005f924c23",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:6baf09311be440c16d3b22891f7ec1ee9b0d2b20bb823a98e3412d56c88dd3a6",
+    "at": "2026-10-28T00:48:29.748Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c74839126c39b177387686be3af1ec6a8b3a3f8a5397400856159957fb3b56f6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7897bbe4c25b6f48e003e34d014c6d24ea4d04d867371659ba7b1262e454f34a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:513d6b86588ad69b937b334a815cd046fea545b0cc603d97422e7c2cd2ae1a52",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:600a6ce2bd7170f348d67394d1f4c36e85ea66af7101ec4b6bcca5c0a3bbfbc9",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "400932dfe9ecfa457aa40d355c5a51563889377c",
+      "attempts": 1,
+      "startedAt": "2026-10-28T00:06:57.544Z",
+      "doneAt": "2026-10-28T00:09:03.706Z",
+      "summary": "cards/init.ts: flowQuestion y flowChoices (los cuatro flujos con sus ramas; el detectado primero y marcado; sin él, Specty primero), noFlowWarning, e InitView.chooseFlow para que el SIGUIENTE de un proyecto nuevo pida elegir el flujo con init --git-flow.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c66b6b4fe4a22a1e8e3a5103456a73af569cf094",
+      "attempts": 1,
+      "startedAt": "2026-10-28T00:09:03.997Z",
+      "doneAt": "2026-10-28T00:43:27.617Z",
+      "summary": "init detecta el flujo por las ramas y la configuración de git-flow y, solo al crear config.yaml, lo pregunta a la persona o usa el detectado; avisa si un proyecto nuevo queda sin flujo. 7 tests existentes ajustados con permiso del usuario (R1).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "7d2af46430213976d765341a8a206106be42bd9e",
+      "attempts": 1,
+      "startedAt": "2026-10-28T00:43:28.133Z",
+      "doneAt": "2026-10-28T00:47:17.048Z",
+      "summary": "ARCHITECTURE §14 dice cómo detecta init el flujo, que solo lo pregunta o detecta al crear config.yaml (como el idioma), qué pasa si se cancela y el aviso y SIGUIENTE de un proyecto nuevo sin flujo.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "81872dd27cee21b1d29dbca5464d717d8204eddc",
+      "attempts": 1,
+      "startedAt": "2026-10-28T00:48:30.143Z",
+      "doneAt": "2026-10-28T00:48:43.484Z",
+      "summary": "detectFlow deja de exportarse: solo la usa flowToWrite en install/git-flow.ts, y knip pasa.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-28T00:56:48.717Z"
+}

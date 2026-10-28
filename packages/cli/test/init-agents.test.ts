@@ -62,6 +62,10 @@ function recorded(answers: readonly string[], checks: readonly (readonly string[
   return { terminal, asked };
 }
 
+/** The question of the git flow, asked after the agents' when init creates the configuration. */
+const FLOW_QUESTION =
+  "¿Qué flujo de git sigue este repositorio? Specty nombrará así las ramas de los cambios.";
+
 /** A person at the terminal who must not be asked anything. */
 const UNASKED: Terminal = {
   ...person(),
@@ -98,6 +102,7 @@ describe("the agents init installs", () => {
     expect(asked.map((question) => question.message)).toEqual([
       "¿En qué idioma trabaja Specty? · Which language should Specty work in?",
       "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",
+      FLOW_QUESTION,
     ]);
     expect(asked[1]?.values[0]).toBe("claude-code");
     expect(asked[1]?.initial).toEqual([]);
@@ -113,10 +118,10 @@ describe("the agents init installs", () => {
     const { terminal, asked } = recorded([], [["claude-code", "cursor"]]);
     const done = await cli(root, ["init", "--language", "es"], { terminal });
     expect(done.code).toBe(0);
-    expect(asked).toHaveLength(1);
-    expect(asked[0]?.message).toBe(
+    expect(asked.map((question) => question.message)).toEqual([
       "¿Con qué agentes trabajas en este repositorio? Los detectados ya están marcados; puedes marcar varios.",
-    );
+      FLOW_QUESTION,
+    ]);
     expect(asked[0]?.initial).toEqual(["claude-code", "cursor"]);
     expect(asked[0]?.labels.slice(0, 2)).toEqual(["Claude Code (detectado)", "Cursor (detectado)"]);
     expect(asked[0]?.labels).toContain("Codex");
@@ -165,10 +170,15 @@ describe("the agents init installs", () => {
 
   it("installs only the tools given, without asking or adding the running agent (AC6)", async () => {
     const root = await tempRepo(CODE);
-    const done = await cli(root, ["init", "--language", "es", "--tools", "cursor"], {
-      terminal: UNASKED,
-      env: CODEX,
-    });
+    // With the flow given too, nothing is left to ask.
+    const done = await cli(
+      root,
+      ["init", "--language", "es", "--tools", "cursor", "--git-flow", "specty"],
+      {
+        terminal: UNASKED,
+        env: CODEX,
+      },
+    );
     expect(done.code).toBe(0);
     expect(await has(root, ".cursor/hooks.json")).toBe(true);
     expect(await has(root, ".codex/hooks.json")).toBe(false);

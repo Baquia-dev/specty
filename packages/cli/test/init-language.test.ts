@@ -40,8 +40,12 @@ describe("init asks first which language Specty works in", () => {
     const { terminal, questions, offered } = recorded("es");
     const done = await cli(root, ["init", "--tools", "claude-code"], { terminal, env: C_LOCALE });
     expect(done.code).toBe(0);
-    // The question, then the interview of a new project, already in Spanish.
-    expect(questions.slice(0, 2)).toEqual([QUESTION, "¿Qué vas a construir? Una o dos frases."]);
+    // The question, the git flow's, then the interview of a new project, already in Spanish.
+    expect(questions.slice(0, 3)).toEqual([
+      QUESTION,
+      "¿Qué flujo de git sigue este repositorio? Specty nombrará así las ramas de los cambios.",
+      "¿Qué vas a construir? Una o dos frases.",
+    ]);
     // The C locale detects English: offered first, and the person picked Spanish.
     expect(offered[0]).toEqual(["en", "es"]);
     expect(parse(await read(root, ".specty/config.yaml")).language).toBe("es");
@@ -56,7 +60,11 @@ describe("init asks first which language Specty works in", () => {
     const root = await tempRepo({ "src/app.ts": "export const a = 1;\n" });
     const { terminal, offered } = recorded("en");
     const done = await cli(root, ["init", "--tools", "claude-code"], { terminal });
-    expect(offered).toEqual([["es", "en"]]);
+    // The languages, then the git flows.
+    expect(offered).toEqual([
+      ["es", "en"],
+      ["specty", "github", "gitflow", "trunk"],
+    ]);
     expect(parse(await read(root, ".specty/config.yaml")).language).toBe("en");
     expect(await read(root, "AGENTS.md")).toContain("Talk to the user in English.");
     expect(done.out).toContain("NEXT:");
@@ -65,10 +73,12 @@ describe("init asks first which language Specty works in", () => {
   it("is not asked with --language, by an agent or in a dry run (AC2)", async () => {
     const files = { "src/app.ts": "export const a = 1;\n" };
     const chosen = await tempRepo(files);
-    const given = await cli(chosen, ["init", "--language", "es", "--tools", "claude-code"], {
-      terminal: UNASKED,
-      env: C_LOCALE,
-    });
+    // With the agents and the flow given too, nothing is left to ask.
+    const given = await cli(
+      chosen,
+      ["init", "--language", "es", "--tools", "claude-code", "--git-flow", "specty"],
+      { terminal: UNASKED, env: C_LOCALE },
+    );
     expect(given.code).toBe(0);
     expect(parse(await read(chosen, ".specty/config.yaml")).language).toBe("es");
     const planned = await cli(await tempRepo(files), ["init", "--dry-run"], { terminal: UNASKED });

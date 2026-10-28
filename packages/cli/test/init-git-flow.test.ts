@@ -2,12 +2,115 @@
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { exists } from "../src/io/files";
-import { cli, git, read, tempRepo, writeFiles } from "./support";
+import type { Terminal } from "../src/session";
+import { cli, git, person, read, tempRepo, writeFiles } from "./support";
 
 const CODE = { "src/app.ts": "export const a = 1;\n" };
 const init = (root: string, ...flags: string[]) =>
   cli(root, ["init", "--language", "es", "--tools", "claude-code", ...flags]);
 const configOf = async (root: string) => read(root, ".specty/config.yaml");
+const flowOf = async (root: string) => parse(await configOf(root)).git.flow;
+
+/**
+ * A person who answers `answer` to the one question with a single answer init asks here, the
+ * flow (`undefined` cancels it), and whose questions of that kind are recorded.
+ */
+function asking(answer: string | undefined) {
+  const asked: { readonly message: string; readonly labels: readonly string[] }[] = [];
+  const base = person({ choose: answer === undefined ? [] : [answer] });
+  const terminal: Terminal = {
+    ...base,
+    choose: (message, options) => {
+      asked.push({ message, labels: options.map((option) => option.label) });
+      return answer === undefined ? Promise.resolve(undefined) : base.choose(message, options);
+    },
+  };
+  return { terminal, asked };
+}
+const byPerson = (root: string, terminal: Terminal, ...flags: string[]) =>
+  cli(root, ["init", "--language", "es", "--tools", "claude-code", ...flags], { terminal });
+/** A person who must not be asked anything with a single answer. */
+const UNASKED: Terminal = {
+  ...person(),
+  choose: () => Promise.reject(new Error("no debe preguntar el flujo")),
+};
+
+describe("init asks a person for the git flow", () => {
+  it("after the agents, with the detected one first, and writes the answer (AC1, AC2)", async () => {
+    const root = await tempRepo(CODE);
+    git(root, "branch", "develop");
+    const { terminal, asked } = asking("github");
+    expect((await byPerson(root, terminal)).code).toBe(0);
+    expect(asked.map((question) => question.message)).toEqual([
+      "¿Qué flujo de git sigue este repositorio? El detectado va primero; Specty nombrará así las ramas de los cambios.",
+    ]);
+    expect(asked[0]?.labels[0]).toBe("Git Flow: feature/<slug> y bugfix/<slug> (detectado)");
+    expect(await flowOf(root)).toBe("github");
+  });
+
+  it("offers Specty's first when nothing is detected, and Git Flow prepares develop (AC1, AC2)", async () => {
+    const root = await tempRepo(CODE);
+    const { terminal, asked } = asking("gitflow");
+    await byPerson(root, terminal);
+    expect(asked[0]?.message).toBe(
+      "¿Qué flujo de git sigue este repositorio? Specty nombrará así las ramas de los cambios.",
+    );
+    expect(asked[0]?.labels[0]).toBe("Specty: specty/<id>");
+    expect(parse(await configOf(root)).git).toMatchObject({ flow: "gitflow", target: "develop" });
+    expect(git(root, "branch", "--list", "develop")).toContain("develop");
+  });
+
+  it("writes the detected one when the person cancels, or none (AC3)", async () => {
+    const detected = await tempRepo(CODE);
+    git(detected, "branch", "feat/login");
+    await byPerson(detected, asking(undefined).terminal);
+    expect(await flowOf(detected)).toBe("github");
+    const nothing = await tempRepo(CODE);
+    await byPerson(nothing, asking(undefined).terminal);
+    expect(await flowOf(nothing)).toBeUndefined();
+  });
+
+  it("does not ask with --git-flow, nor in a configuration that exists (AC5)", async () => {
+    const root = await tempRepo(CODE);
+    expect((await byPerson(root, UNASKED, "--git-flow", "trunk")).code).toBe(0);
+    expect((await byPerson(root, UNASKED)).code).toBe(0);
+    expect(await flowOf(root)).toBe("trunk");
+    // One without a flow keeps it so: --git-flow chooses one.
+    const without = await tempRepo(CODE);
+    await init(without);
+    git(without, "branch", "feat/login");
+    expect((await byPerson(without, UNASKED)).code).toBe(0);
+    expect(await flowOf(without)).toBeUndefined();
+  });
+});
+
+describe("init without a person to ask for the git flow", () => {
+  it("writes the detected one only when it creates the configuration (AC4)", async () => {
+    const created = await tempRepo(CODE);
+    git(created, "branch", "hotfix/caida");
+    await init(created);
+    expect(await flowOf(created)).toBe("gitflow");
+    const existing = await tempRepo(CODE);
+    await init(existing);
+    git(existing, "branch", "feat/login");
+    await init(existing);
+    expect(await flowOf(existing)).toBeUndefined();
+  });
+
+  it("warns a new project with none, and its next step asks the user for it (AC6)", async () => {
+    const root = await tempRepo({ "README.md": "# Notas\n" });
+    const done = await init(root);
+    expect(done.out).toContain(
+      "Proyecto nuevo sin flujo de git: las ramas de los cambios serán specty/<id> hasta que lo elijas con",
+    );
+    expect(done.out).toContain(
+      "SIGUIENTE: es un proyecto nuevo: pregúntale al usuario qué flujo de git seguirá",
+    );
+    const person = await tempRepo({ "README.md": "# Notas\n" });
+    const cancelled = await byPerson(person, asking(undefined).terminal);
+    expect(cancelled.out).toContain("SIGUIENTE: elige el flujo de git con `");
+  });
+});
 
 describe("init --git-flow", () => {
   it("creates the configuration with the flow, and says how branches will be named (AC1)", async () => {

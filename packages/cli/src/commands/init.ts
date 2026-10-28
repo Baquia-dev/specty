@@ -25,7 +25,7 @@ import {
 import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { commitInstall } from "../install/commit";
 import { type InstallFiles, installFiles } from "../install/files";
-import { ensureDevelop } from "../install/git-flow";
+import { ensureDevelop, flowToWrite, noFlowWarnings } from "../install/git-flow";
 import { agentsToInstall, installHooks } from "../install/hooks";
 import { isNewProject, writeProduct } from "../install/product";
 import { writeAgentsMd, writeConfig } from "../install/project-files";
@@ -152,21 +152,37 @@ interface Installed {
   readonly warnings: readonly string[];
   /** The sections of AGENTS.md people complete by hand that are still empty. */
   readonly unfilled: readonly string[];
+  /** The git flow init wrote, if any. */
+  readonly flow: GitFlow | undefined;
+  /** A new project ended without a flow: its next step chooses one. */
+  readonly chooseFlow: boolean;
 }
 
 /** The configuration, AGENTS.md, PRODUCT.md for a new project, and each agent's hooks. */
 async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
   const { environment, options, root, git, lang, detection } = setup;
   const { files, backups } = await installTarget(setup);
+  const dryRun = options.dryRun === true;
   // Asked right after the language, before a new project's interview.
   const agents = await agentsToInstall({
     environment,
     given: options.tools,
     detected: detection.tools,
     lang,
-    dryRun: options.dryRun === true,
+    dryRun,
   });
-  const project = await writeProjectFiles(setup, fresh, files);
+  // Then the flow, which goes in config.yaml before PRODUCT.md is written.
+  const flow = await flowToWrite({
+    environment,
+    git,
+    given: options.gitFlow,
+    configured: setup.config?.git.flow,
+    created: setup.created,
+    dryRun,
+    lang,
+  });
+  const project = await writeProjectFiles(setup, fresh, files, flow.flow);
+  const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
   const { tools } = agents;
   const hooks = await installHooks({ environment, root, git, tools, lang, files });
   const noTests =
@@ -179,8 +195,11 @@ async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
     done: [...project.done, ...hooks.done],
     written: [...project.written, ...hooks.written],
     unfilled: project.unfilled,
+    flow: flow.flow,
+    chooseFlow: noFlow.length > 0,
     warnings: [
       ...agents.warnings,
+      ...noFlow,
       ...hooks.warnings,
       ...(noTests ? [noTestCommandWarning(lang)] : []),
     ],
@@ -210,13 +229,14 @@ async function writeProjectFiles(
   setup: InitSetup,
   fresh: boolean,
   files: InstallFiles,
+  flow: GitFlow | undefined,
 ): Promise<Pick<Installed, "product" | "done" | "written" | "unfilled">> {
   const { environment, options, root, lang, detection } = setup;
   const configLines = await writeConfig(files, repoPaths(root).config, detection, {
     created: setup.created,
     lang,
     ...(options.language !== undefined ? { relanguage: options.language } : {}),
-    ...(options.gitFlow !== undefined ? { flow: options.gitFlow } : {}),
+    ...(flow !== undefined ? { flow } : {}),
   });
   const agents = await writeAgentsMd(root, lang, detection, files);
   // A new project starts with what it is for: the interview with a person, or its questions.
@@ -254,7 +274,7 @@ async function committed(
   const backedUp = await exists(installed.backups);
   // Git Flow's target, unless the configuration already sent changes elsewhere.
   const toDevelop =
-    setup.options.gitFlow === "gitflow" && (setup.config?.git.target ?? "develop") === "develop";
+    installed.flow === "gitflow" && (setup.config?.git.target ?? "develop") === "develop";
   const done = [
     ...installed.done,
     ...result.done,
@@ -274,6 +294,7 @@ async function committed(
     warnings,
     unfilled,
     ...(product === undefined ? {} : { product }),
+    ...(installed.chooseFlow ? { chooseFlow: true } : {}),
   };
   return initCard(view, cards);
 }

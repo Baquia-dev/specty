@@ -10,11 +10,14 @@ import {
   configLine,
   developLine,
   dryRunCard,
+  flowChoices,
   flowLine,
+  flowQuestion,
   initCard,
   initRefusalCard,
   newProjectNext,
   noAgentWarning,
+  noFlowWarning,
   noTestCommandWarning,
   productLine,
   renderText,
@@ -43,6 +46,39 @@ describe("a refused `init`", () => {
     );
     expect(renderText(initRefusalCard({ reason: "unknown-flow", flow: "svn" }, "en"), "en")).toBe(
       "SPECTY · init\nUnknown git flow: svn.\nNEXT: use `--git-flow specty|github|trunk|gitflow`.",
+    );
+  });
+});
+
+describe("the git flow `init` asks for", () => {
+  it("offers the four flows by their branches, Specty's first when none was detected (AC1, AC2)", () => {
+    expect(flowQuestion(undefined, "es")).toBe(
+      "¿Qué flujo de git sigue este repositorio? Specty nombrará así las ramas de los cambios.",
+    );
+    const none = flowChoices(undefined, "es");
+    expect(none.map((choice) => choice.value)).toEqual(["specty", "github", "gitflow", "trunk"]);
+    expect(none.map((choice) => choice.label)).toEqual([
+      "Specty: specty/<id>",
+      "GitHub Flow: <tipo>/<slug>, como feat/<slug>",
+      "Git Flow: feature/<slug> y bugfix/<slug>",
+      "Trunk: <tipo>/<slug>, como feat/<slug>",
+    ]);
+  });
+
+  it("puts the detected one first, and says so (AC2)", () => {
+    expect(flowQuestion("gitflow", "en")).toBe(
+      "Which git flow does this repository follow? The detected one comes first; Specty will name the changes' branches by it.",
+    );
+    const detected = flowChoices("gitflow", "en");
+    expect(detected.map((choice) => choice.value)).toEqual([
+      "gitflow",
+      "specty",
+      "github",
+      "trunk",
+    ]);
+    expect(detected[0]?.label).toBe("Git Flow: feature/<slug> and bugfix/<slug> (detected)");
+    expect(flowChoices("github", "es")[0]?.label).toBe(
+      "GitHub Flow: <tipo>/<slug>, como feat/<slug> (detectado)",
     );
   });
 });
@@ -171,6 +207,19 @@ describe("what `init` did", () => {
     );
     expect(next([], ES)).toBe("revisa .specty/config.yaml y ejecuta `specty doctor`.");
     expect(next([], EN)).toBe("review .specty/config.yaml and run `specty doctor`.");
+  });
+
+  it("in a new project without a git flow, warns and asks for one first (AC6)", () => {
+    expect(noFlowWarning("specty", "es")).toBe(
+      "Proyecto nuevo sin flujo de git: las ramas de los cambios serán specty/<id> hasta que lo elijas con `specty init --git-flow <specty|github|trunk|gitflow>`.",
+    );
+    expect(newProjectNext(false, ES, true)).toBe(
+      'es un proyecto nuevo: pregúntale al usuario qué flujo de git seguirá (specty, github, trunk o gitflow) y ejecuta `specty init --git-flow <flujo>`; luego hazle las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con `specty new "Esqueleto del proyecto" --request "<petición literal del usuario>"`.',
+    );
+    const interviewed = { done: [], detected: [], warnings: [], unfilled: [] } as const;
+    expect(initCard({ ...interviewed, product: "interviewed", chooseFlow: true }, EN).next).toBe(
+      "choose the git flow with `specty init --git-flow <specty|github|trunk|gitflow>` and ask your agent for the first change: the project's skeleton, from PRODUCT.md.",
+    );
   });
 
   it("in a new project, sends the agent to the first change", () => {
