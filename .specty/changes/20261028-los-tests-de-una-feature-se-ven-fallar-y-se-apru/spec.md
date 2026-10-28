@@ -71,7 +71,7 @@ Con `policy.tests: contract`, los tests de una feature ya se escriben, se envía
   - files: packages/core/src/cards/testing.ts, packages/core/src/cards/view.ts, packages/cli/src/flow/views.ts
   - ac: AC6
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
-- [ ] T2: El envío exige los criterios y el rojo
+- [x] T2: El envío exige los criterios y el rojo
   - files: packages/cli/src/commands/tests.ts, packages/cli/src/flow/criteria-tests.ts, packages/cli/test/testing-phase.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts test/criteria-tests.test.ts

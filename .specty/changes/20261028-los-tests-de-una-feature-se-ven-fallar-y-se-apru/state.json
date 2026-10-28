@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f24c2e2543bb6edf56eeb4de7bae1668d8b8f563",
+      "attempts": 1,
       "startedAt": "2026-10-28T07:00:10.371Z",
       "doneAt": "2026-10-28T07:08:12.038Z",
-      "summary": "TestsRefusal gana untested, green y unnamed, con sus textos en una tabla; CriterionView.manual desde test: manual, y la tarjeta de la fase de tests deja fuera esos criterios."
+      "summary": "TestsRefusal gana untested, green y unnamed, con sus textos en una tabla; CriterionView.manual desde test: manual, y la tarjeta de la fase de tests deja fuera esos criterios.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "74d96f27d77f4fc04d763348c31404d0d4c71403",
+      "startedAt": "2026-10-28T07:08:12.398Z",
+      "doneAt": "2026-10-28T07:13:54.656Z",
+      "summary": "proposeTests exige, antes del commit, un test nuevo con su id por criterio (untestedBeforeCode, sobre las líneas que añade el cambio) y el rojo: la verificación de las tareas feat y fix falla y nombra cada test nuevo; tests.proposed guarda los comandos rojos."
     }
   },
   "pending": {

@@ -43,12 +43,32 @@ export async function untestedCriteria(
   return owed.filter((criterion) => !tested.has(criterion.id));
 }
 
+/**
+ * In the testing phase, the ids of the criteria of every `feat` and `fix` task that no test line
+ * the change adds carries yet: the tests come before the code (ADR 0014).
+ */
+export async function untestedBeforeCode(
+  spec: Spec,
+  context: CheckContext,
+): Promise<readonly string[]> {
+  const owed = owedBy(spec, owingTasks(spec, context.session.config.policy.tests)).map(
+    (criterion) => criterion.id,
+  );
+  const tested = await testedIds(context, owed);
+  return owed.filter((id) => !tested.has(id));
+}
+
 function owedCriteria(plan: LoadedPlan, { session, mode }: CheckContext): UntestedCriterion[] {
   const tasks = owingTasks(plan.spec, session.config.policy.tests).filter((task) => {
     const status = plan.state.tasks[task.id]?.status;
     return status === "active" || (status === "done" && mode !== "staged");
   });
-  return (plan.spec.sections.criteria?.items ?? [])
+  return owedBy(plan.spec, tasks);
+}
+
+/** The criteria of `spec` that `tasks` cover and that a test checks: not `test: manual`. */
+function owedBy(spec: Spec, tasks: readonly Task[]): UntestedCriterion[] {
+  return (spec.sections.criteria?.items ?? [])
     .filter((criterion) => criterion.test !== "manual")
     .map((criterion) => ({
       id: criterion.id,
