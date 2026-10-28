@@ -66,7 +66,7 @@ Con `policy.tests: contract`, los tests aprobados quedan bloqueados y solo la pe
   - files: packages/ui/src/progress/locked-tests.ts, packages/ui/src/progress/locked-tests.test.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/components/icons.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress --include src/acceptance --include src/components
-- [ ] T3: La solicitud de desbloqueo dice lo que es
+- [x] T3: La solicitud de desbloqueo dice lo que es
   - files: packages/ui/src/progress/scope-request.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress
