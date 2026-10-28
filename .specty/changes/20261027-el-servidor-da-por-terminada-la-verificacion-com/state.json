@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261027-el-servidor-da-por-terminada-la-verificacion-com",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-el-servidor-da-por-terminada-la-verificacion-com",
   "baseCommit": "94c82d8cc021b482ab82a700e4a332368808b032",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:05e4b5b4eab0e5f4a6f41f5deba305f02b0333e6a61430ee1c6dd918504446f3",
+    "at": "2026-10-28T04:19:41.438Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7fcb307bd4d61b94d4dcc3f901a40a31a3b3cb63",
+      "startedAt": "2026-10-28T04:19:42.391Z",
+      "doneAt": "2026-10-28T04:28:22.413Z",
+      "summary": "Al empezar la verificación completa de un cambio, la vigilancia de las tareas olvida lo que vio de él (forget), así solo la completa anuncia el fin, una vez y con change.verified ya anotado. Test determinista con el reloj de la vigilancia simulado."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:05e4b5b4eab0e5f4a6f41f5deba305f02b0333e6a61430ee1c6dd918504446f3",
-    "at": "2026-10-28T04:19:41.438Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

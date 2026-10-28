@@ -15,7 +15,7 @@ El servidor local vigila las verificaciones de las tareas y recuerda la última 
 
 ## Tareas
 
-- [ ] T1: la verificación completa termina una sola vez y después de anotarse
+- [x] T1: la verificación completa termina una sola vez y después de anotarse
   - files: packages/cli/src/server/runs.ts, packages/cli/test/server/runs.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/runs.test.ts test/server/verify.test.ts test/server/live.test.ts
   - type: fix
