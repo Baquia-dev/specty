@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261028-la-pestana-historial-muestra-la-linea-de-tiempo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261028-la-pestana-historial-muestra-la-linea-de-tiempo",
+  "baseCommit": "bfd12da5c6c6886f3759798aecfa9362f3848bc8",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:53ad908ba0e877ea30e4d6f8ee5fa607e44c71c9232312e0ff9e9cdd9ba822a9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:1cd28b6fc033ad51dacaa3768b97fe72211b95304aaf44c4e395ac63599a60a8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:448b556289e3280c9eaf5e75865dcbbbf7b199261800db9fa3d02e59fb4f9093",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:49f6aa5968d77ab6e68bd3aef3c597f102a899cc88dff7de124c04bdf888318c",
+    "at": "2026-10-28T17:59:12.498Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
