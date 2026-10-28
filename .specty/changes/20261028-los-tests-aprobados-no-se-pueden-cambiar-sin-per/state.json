@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-aprobados-no-se-pueden-cambiar-sin-per",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-los-tests-aprobados-no-se-pueden-cambiar-sin-per",
+  "baseCommit": "b3deec3f669201638899dae710bc9c71746cc416",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8a721c10fdbff1fbc6e81dbfa604f04b61c4d2b12cd7d5941ba738f6ca58b03b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:96358c7fde8e5f1d48d287d8666e87bbef4d46840d0e105a4136a361cfa6d18b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c9ffb42ba74321a1cfaec0c385fca8864162bf38db27b518a721eea9e70e3400",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ad93519543dcdcc95eca68a24def2bd946b029454222caed8616827d970ede6c",
+    "at": "2026-10-28T08:55:53.309Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
