@@ -45,7 +45,7 @@ Con `policy.tests: contract`, los tests de los criterios se envían en la fase d
 
 ## Tareas
 
-- [ ] T1: La matriz cuenta los commits de tests del cambio
+- [x] T1: La matriz cuenta los commits de tests del cambio
   - files: packages/cli/src/commands/tests.ts, packages/cli/src/flow/criteria-tests.ts, packages/cli/src/flow/acceptance.ts, packages/cli/src/server/records.ts, packages/cli/test/contract-matrix.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/contract-matrix.test.ts test/criteria-tests.test.ts test/testing-phase.test.ts test/server.test.ts

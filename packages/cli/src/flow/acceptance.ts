@@ -23,7 +23,7 @@ export async function acceptanceFacts(
   return {
     ...(resultReview(session, change, tasks, audit) ? { recommendReview: true } : {}),
     ...(change.state.kind !== "epic"
-      ? { criteriaTests: await criteriaTests(session, spec, commits) }
+      ? { criteriaTests: await criteriaTests(session, spec, commits, change.state.id) }
       : {}),
     ...unlockedTests(audit),
   };

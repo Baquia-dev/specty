@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "972c8b16ae7060e0f7146569673112f6e4a28130",
+      "startedAt": "2026-10-28T15:01:40.304Z",
+      "doneAt": "2026-10-28T15:03:14.390Z",
+      "summary": "El commit de los tests lleva Specty-Tests y la matriz cuenta sus lineas con la etiqueta tests"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

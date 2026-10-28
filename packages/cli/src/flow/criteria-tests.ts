@@ -88,22 +88,27 @@ function covers(task: Task, id: string): boolean {
 
 type CriterionTests = NonNullable<ChangeView["criteriaTests"]>[number];
 type TestLine = CriterionTests["tests"][number] & { readonly id: string };
+/** The commits whose lines count, each with its label: its task, or `tests`. */
+type Sources = readonly (readonly [string, string])[];
 
 /**
  * In acceptance, each criterion of `spec` with the test lines that carry its id: in the test
- * files the commits of the tasks (`commits`, by task) touched, only the lines one of those
- * commits added, by `git blame`; a line from the main branch or by hand does not count.
+ * files the commits of the tasks (`commits`, by task) or the change's tests commits touched,
+ * only the lines one of those commits added, by `git blame`; a line from the main branch or by
+ * hand does not count.
  */
 export async function criteriaTests(
   session: Session,
   spec: Spec,
   commits: ReadonlyMap<string, string>,
+  change: string,
 ): Promise<CriterionTests[]> {
   const criteria = spec.sections.criteria?.items ?? [];
+  const sent = await testsCommits(session, change);
   const lines = await taskTestLines(
     session,
     criteria.map((criterion) => criterion.id),
-    commits,
+    [...commits, ...sent.map((sha) => ["tests", sha] as const)],
   );
   const owing = owingTasks(spec, session.config.policy.tests);
   return criteria.map((criterion) => ({
@@ -114,14 +119,38 @@ export async function criteriaTests(
   }));
 }
 
-/** The lines with an id that a task's commit added to a test file it touched. */
+/**
+ * The commits that sent `change`'s tests in the testing phase, every one of them: sending them
+ * again keeps the lines it does not touch from the first.
+ */
+async function testsCommits(session: Session, change: string): Promise<string[]> {
+  const result = await session.git.run([
+    "log",
+    "-n",
+    "500",
+    "--grep=Specty-Tests:",
+    "--format=%h%x1f%(trailers:key=Specty-Change,valueonly,separator=%x2C)%x1f%(trailers:key=Specty-Tests,valueonly,separator=%x2C)",
+  ]);
+  if (result.code !== 0) return [];
+  return result.stdout.split("\n").flatMap((line) => {
+    const [sha, owner, tests] = line.split("\x1f").map((part) => part.trim());
+    return sha !== undefined && owner === change && tests === "true" ? [sha] : [];
+  });
+}
+
+/** The lines with an id that a task's commit, or a tests commit, added to a test file it touched. */
 async function taskTestLines(
   session: Session,
   ids: readonly string[],
-  commits: ReadonlyMap<string, string>,
+  commits: Sources,
 ): Promise<TestLine[]> {
-  if (ids.length === 0 || commits.size === 0) return [];
-  const shown = await session.git.run(["show", "--name-only", "--format=", ...commits.values()]);
+  if (ids.length === 0 || commits.length === 0) return [];
+  const shown = await session.git.run([
+    "show",
+    "--name-only",
+    "--format=",
+    ...commits.map(([, sha]) => sha),
+  ]);
   if (shown.code !== 0) return [];
   const files = new Set(shown.stdout.split("\n").filter((path) => path !== "" && isTestFile(path)));
   const found = await Promise.all(
@@ -135,7 +164,7 @@ async function fileTestLines(
   session: Session,
   path: string,
   ids: readonly string[],
-  commits: ReadonlyMap<string, string>,
+  commits: Sources,
 ): Promise<TestLine[]> {
   const text = await readText(join(session.root, path));
   const marks = text === undefined ? [] : criterionMarks(text, ids);
@@ -143,7 +172,7 @@ async function fileTestLines(
   const blamed = await blame(session, path);
   return marks.flatMap((mark): TestLine[] => {
     const sha = blamed.get(mark.line);
-    const task = [...commits].find(([, short]) => sha?.startsWith(short) === true);
+    const task = commits.find(([, short]) => sha?.startsWith(short) === true);
     if (task === undefined) return [];
     const [id, commit] = task;
     return [{ id: mark.marker, path, line: mark.line, task: id, commit }];
