@@ -2,14 +2,14 @@
   "schema": 1,
   "id": "20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "baseCommit": "edb43bd3094859ee92c940acab964d048810a6e4",
-  "revision": 2,
+  "revision": 3,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:92b02508c390ac32ea96bfcc89b2d3acd1a3c47380ce926f3e00dd32513f713a",
-    "at": "2026-10-28T15:43:59.263Z",
+    "revision": 3,
+    "hash": "sha256:38826f96e38e845335366f132abb32ef39b6e5328ec34a2712d0fb24c01441dd",
+    "at": "2026-10-28T15:44:31.931Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
@@ -74,7 +74,7 @@
   "maxIds": {
     "A": 6,
     "AC": 4,
-    "T": 2,
+    "T": 3,
     "R": 2
   },
   "lockedTests": {

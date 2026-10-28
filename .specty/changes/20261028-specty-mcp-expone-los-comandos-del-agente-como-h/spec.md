@@ -63,6 +63,11 @@ Hoy un agente solo llega a Specty por la shell. `specty mcp` es un servidor MCP 
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp.test.ts
   - type: docs
+- [ ] T3: `Args` deja de exportarse, porque solo lo usa su módulo
+  - files: packages/cli/src/mcp/tools.ts, packages/cli/test/mcp.test.ts
+  - ac: —
+  - verify: pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/mcp.test.ts
+  - type: refactor
 
 ## Riesgos
 
