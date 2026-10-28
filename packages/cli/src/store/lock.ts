@@ -41,13 +41,8 @@ export async function lockChange(git: Git, id: string, holder: LockHolder): Prom
   if (!(await create(path, holder))) {
     const current = await readHolder(path);
     if (current !== undefined && alive(current.pid)) return { kind: "busy", holder: current };
-    await unlink(path).catch(() => undefined);
-    if (!(await create(path, holder))) {
-      // Another command took it in between.
-      const winner = await readHolder(path);
-      if (winner !== undefined) return { kind: "busy", holder: winner };
-      throw new Error(`${path}: the lock could not be taken`);
-    }
+    const busy = await replaceDead(path, holder);
+    if (busy !== undefined) return busy;
   }
   held.add(path);
   return {
@@ -59,6 +54,37 @@ export async function lockChange(git: Git, id: string, holder: LockHolder): Prom
         await unlink(path).catch(() => undefined);
     },
   };
+}
+
+type Busy = Extract<Lock, { readonly kind: "busy" }>;
+
+/**
+ * Replaces a lock whose process no longer exists under a short exclusive claim (`<lock>.claim`),
+ * so two commands never both replace it: nothing once replaced, or who holds the claim or the
+ * lock by then.
+ */
+async function replaceDead(path: string, holder: LockHolder): Promise<Busy | undefined> {
+  const claim = `${path}.claim`;
+  const claimant = await exclusive(claim, holder);
+  if (claimant !== true) return { kind: "busy", holder: claimant };
+  try {
+    // With the claim, look again: another command may have replaced it in between.
+    const current = await exclusive(path, holder);
+    return current === true ? undefined : { kind: "busy", holder: current };
+  } finally {
+    await unlink(claim).catch(() => undefined);
+  }
+}
+
+/** Creates `path` for `holder`, replacing it only when its process no longer exists: true, or who holds it. */
+async function exclusive(path: string, holder: LockHolder): Promise<true | LockHolder> {
+  for (const _attempt of [1, 2]) {
+    if (await create(path, holder)) return true;
+    const current = await readHolder(path);
+    if (current !== undefined && alive(current.pid)) return current;
+    await unlink(path).catch(() => undefined);
+  }
+  throw new Error(`${path}: the lock could not be taken`);
 }
 
 /** Who holds the lock of change `id`, when its process is alive. */

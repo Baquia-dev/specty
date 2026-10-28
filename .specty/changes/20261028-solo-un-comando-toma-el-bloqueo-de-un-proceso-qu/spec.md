@@ -33,7 +33,7 @@ El bloqueo de un cambio cuyo proceso ya no existe no cuenta, y el siguiente coma
 
 ## Tareas
 
-- [ ] T1: Reemplazar un bloqueo muerto pide un permiso exclusivo
+- [x] T1: Reemplazar un bloqueo muerto pide un permiso exclusivo
   - files: packages/cli/src/store/lock.ts, packages/cli/test/lock.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/lock.test.ts test/shell-snapshot.test.ts
