@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261028-glosario-del-dominio-de-specty",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-glosario-del-dominio-de-specty",
+  "baseCommit": "4eb864333549c91c173f5a9d718cd2f4fb71ed8f",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1c4ff75109baba632b53d78ce8862059a8d31ac4ba35597bd387e63b8a43e31b",
+    "at": "2026-10-28T08:25:31.225Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
