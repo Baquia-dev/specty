@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261028-specty-check-aplica-la-misma-regla-de-lineas-que",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-specty-check-aplica-la-misma-regla-de-lineas-que",
+  "baseCommit": "aea15f12ea2840c2a9da0391db10ec9f996a62cd",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:56e9264a54d18cadb014a5cd9dcd942b19f0b6d189f8befe8c1c84cdbfdabd07",
+    "at": "2026-10-28T17:12:23.292Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
