@@ -124,9 +124,9 @@ Las tareas, en el orden de la spec, como filas de documento (igual que los ítem
 
 ### Historial y trazabilidad
 
-- Línea de tiempo de eventos, con filtros por actor y tipo. Una decisión de la persona que tomó su agente en modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)) lleva el detalle «Por delegación: lo decidió el agente», y la nota de una aprobación delegada dice «Aprobada el … por el agente de …». Con `contract`, el envío de los tests («Envió 2 tests para aprobar», con sus rutas y los comandos en rojo), su aprobación, el bloqueo del rojo de un bug y cada desbloqueo (de una solicitud, para su tarea, o de un ajuste que modificó criterios) tienen su texto (`data/history-tests.ts`).
-- Exportación a Markdown, JSON, OpenSpec, Spec Kit y Kiro.
-- Vista de trazabilidad: un archivo con un margen tipo blame que enlaza cada bloque con su cambio, tarea y criterio.
+- **Línea de tiempo** (`history/history-tab.ts`): los eventos de `audit.jsonl` en orden de tiempo, como los cuenta `specty audit`, agrupados por día en la hora local de quien mira, cada día bajo su divisor con el número de eventos. Cada evento es una fila de documento: la hora en la columna fija, el título y, debajo, quién lo hizo («Persona», «Agente · Claude Code» con la herramienta que declaró, como contexto y no como prueba, o «Specty») y sus detalles; su tipo va a la derecha. Encima, «Quién» (Todos, Persona, Agente, Specty) y «Tipo» (todos o uno de los siete) filtran la lista, y el resumen dice «5 eventos» o, con un filtro, «2 de 5 eventos». Si ninguno coincide, lo dice y ofrece «Quitar los filtros»; sin eventos, un estado vacío dice que aún no los hay. Una decisión de la persona que tomó su agente en modo delegado ([ADR 0010](decisions/0010-modo-delegado.md)) lleva el detalle «Por delegación: lo decidió el agente», y la nota de una aprobación delegada dice «Aprobada el … por el agente de …». Con `contract`, el envío de los tests («Envió 2 tests para aprobar», con sus rutas y los comandos en rojo), su aprobación, el bloqueo del rojo de un bug y cada desbloqueo (de una solicitud, para su tarea, o de un ajuste que modificó criterios) tienen su texto (`data/history-tests.ts`).
+- Más adelante: la exportación a Markdown, JSON, OpenSpec, Spec Kit y Kiro.
+- Más adelante: la vista de trazabilidad, un archivo con un margen tipo blame que enlaza cada bloque con su cambio, tarea y criterio.
 
 ### Carga, estados vacíos y errores
 

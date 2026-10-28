@@ -38,6 +38,7 @@ import {
   type ReviewSection,
   relativeTime,
 } from "../data/records";
+import { HistoryTab } from "../history/history-tab";
 import { ProgressTab } from "../progress/progress-tab";
 import { TestsActions } from "../progress/tests-actions";
 import { ReviewActions } from "../review/review-actions";
@@ -92,6 +93,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     AcceptanceActions,
     ClosingActions,
     TestsActions,
+    HistoryTab,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -170,7 +172,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               <sp-acceptance-tab class="pt-2" [change]="change" />
             </sp-tab-panel>
             <sp-tab-panel value="history" [label]="t()('Historial', 'History')">
-              <p class="m-0 text-sm text-text-muted">{{ t()('El historial y la trazabilidad llegan en la fase 3.', 'History and traceability come in phase 3.') }}</p>
+              <sp-history-tab class="pt-2" [history]="change.history" />
             </sp-tab-panel>
           </sp-tabs>
         </div>
