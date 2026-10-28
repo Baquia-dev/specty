@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
+import { join } from "node:path";
 import type { ChangeState } from "@baquia-dev/specty-core";
-import { move } from "../io/files";
+import { exists, move } from "../io/files";
 import type { Session } from "../session";
 import { appendAudit, type StoredChange, saveState } from "../store/changes";
 import { addReceipt, writePointer } from "../store/local";
@@ -27,7 +28,10 @@ export async function archive(
   return { files: changeFiles(target), state, archived: true };
 }
 
-/** Commits the move of a change into the archive (close or cancel). */
+/**
+ * Commits the move of a change into the archive (close or cancel). A closed change carries the
+ * glossary too, where its closing added the terms it introduced or renamed (ADR 0014).
+ */
 export async function commitArchive(
   session: Session,
   before: StoredChange,
@@ -36,9 +40,12 @@ export async function commitArchive(
 ): Promise<string> {
   // A change never approved was never committed: git does not know its old folder.
   const old = session.paths.relative(before.files.dir);
+  const { glossary } = session.config;
+  const terms = after.state.phase === "done" && (await exists(join(session.root, glossary)));
   const paths = [
     ...((await session.git.isTracked(old)) ? [old] : []),
     session.paths.relative(after.files.dir),
+    ...(terms ? [glossary] : []),
   ];
   return commitWithReceipt(session, {
     subject,

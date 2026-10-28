@@ -73,7 +73,7 @@ Es el corte C5 de la épica «Tests como contrato y vocabulario del dominio».
   - ac: AC1, AC2, AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
   - notes: documenta en ARCHITECTURE §7 qué tarjetas traen los términos y el límite.
-- [ ] T3: Los comandos leen el glosario del proyecto
+- [x] T3: Los comandos leen el glosario del proyecto
   - files: packages/cli/src/flow/views.ts, packages/cli/test/glossary.test.ts
   - ac: AC1, AC5, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/glossary.test.ts test/flow.test.ts

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-el-vocabulario-del-dominio-llega-con-las-tarjeta",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-el-vocabulario-del-dominio-llega-con-las-tarjeta",
   "baseCommit": "2c9de7580f7c4e6a64b7e3515319106f686e9811",
   "revision": 1,
@@ -52,12 +52,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "60b4e261c6b85f1e6bb15a5c25ad612beb48fb39",
+      "attempts": 1,
       "startedAt": "2026-10-28T06:17:19.496Z",
       "doneAt": "2026-10-28T06:25:36.110Z",
-      "summary": "cards/glossary.ts: «TÉRMINOS DEL DOMINIO» con los 3 primeros términos que usa el texto (líneas de 100 caracteres) en las tarjetas del borrador, de tests y de la tarea, y la línea del cierre; ChangeView.glossary; el test de presupuesto incluye 3 términos largos; ARCHITECTURE §7."
+      "summary": "cards/glossary.ts: «TÉRMINOS DEL DOMINIO» con los 3 primeros términos que usa el texto (líneas de 100 caracteres) en las tarjetas del borrador, de tests y de la tarea, y la línea del cierre; ChangeView.glossary; el test de presupuesto incluye 3 términos largos; ARCHITECTURE §7.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/flow/finish.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "3295f72600364032bd4ca69099f4ee08cc901b6c",
+      "startedAt": "2026-10-28T06:25:36.742Z",
+      "doneAt": "2026-10-28T06:39:00.466Z",
+      "summary": "flow/views.ts lee el glosario configurado en ChangeView.glossary cuando define algún término, y commitArchive lleva el glosario en el commit del cierre (S1); test de punta a punta del glosario hasta main."
     }
   },
   "pending": {
@@ -68,6 +79,7 @@
     "A": 4,
     "AC": 7,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 1
   }
 }
