@@ -64,7 +64,7 @@ Un repositorio con el Specty anterior (`@barcidev/specty`) tiene un `.specty/con
 
 ## Tareas
 
-- [ ] T1: Los textos de la migración y la configuración traducida
+- [x] T1: Los textos de la migración y la configuración traducida
   - files: packages/core/src/templates.ts, packages/core/src/cards/legacy.ts, packages/core/src/cards/index.ts, packages/core/test/cards/legacy.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/legacy.test.ts

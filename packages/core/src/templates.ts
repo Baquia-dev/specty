@@ -129,6 +129,9 @@ export interface ConfigTemplateOptions {
   readonly verify: { readonly default?: string; readonly full?: string };
   /** Generated files, which tasks may change without asking. */
   readonly generated: readonly string[];
+  /** Paths under the flow and free paths, when they come from elsewhere (the legacy's). */
+  readonly governed?: readonly string[];
+  readonly ignored?: readonly string[];
 }
 
 /** `.specty/config.yaml` with the detected values and short comments (docs/formats.md §6). */
@@ -150,12 +153,12 @@ export function configTemplate(options: ConfigTemplateOptions): string {
       "# Rutas donde rige el flujo: código que necesita una spec aprobada.",
       "# Paths under the flow: code that needs an approved spec.",
     ),
-    `governed: ${list(DEFAULT_CONFIG.governed)}`,
+    `governed: ${list(options.governed ?? DEFAULT_CONFIG.governed)}`,
     t(
       "# Rutas libres: documentación y archivos que no son código.",
       "# Free paths: documentation and non-code files.",
     ),
-    `ignored: ${list(DEFAULT_CONFIG.ignored)}`,
+    `ignored: ${list(options.ignored ?? DEFAULT_CONFIG.ignored)}`,
     t(
       "# Rutas que nunca se aprueban solas y que pesan en el tamaño.",
       "# Paths never approved automatically, weighed in the size.",

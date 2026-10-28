@@ -201,6 +201,15 @@ export {
   retryLandingNext,
   targetAheadLine,
 } from "./land";
+export {
+  legacyDoneLines,
+  legacyMoveBody,
+  legacyPlanCard,
+  legacyRefusalCard,
+  legacyRemovalBody,
+  legacyStepQuestion,
+  legacyStepTitle,
+} from "./legacy";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
 export { busyChangeCard, type LockHolderView } from "./lock";
 export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";

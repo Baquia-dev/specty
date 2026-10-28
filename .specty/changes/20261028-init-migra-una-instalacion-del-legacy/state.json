@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "93742b4da37e88ab3aa765421110a02d301a7e43",
+      "startedAt": "2026-10-28T16:32:31.798Z",
+      "doneAt": "2026-10-28T16:33:27.242Z",
+      "summary": "configTemplate acepta governed e ignored; cards/legacy.ts tiene los pasos, sus notas y preguntas, las líneas de lo hecho, el rechazo y el plan"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
