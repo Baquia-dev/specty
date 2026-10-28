@@ -232,7 +232,7 @@ function decideGoverned(path: string, ctx: GuardContext): GuardDecision {
     return denial === undefined ? ALLOW : deny("integration", denial.reason, denial.next);
   }
   if (change.locked?.includes(path) === true) {
-    const denial = lockedDenial(path, ctx.lang);
+    const denial = lockedDenial(path, change.task?.id, ctx.lang, ctx.command);
     return deny("locked", denial.reason, denial.next);
   }
   if (change.phase === "testing") {

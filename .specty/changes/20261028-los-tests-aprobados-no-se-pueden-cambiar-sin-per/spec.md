@@ -70,7 +70,7 @@ Los tests que aprueba la persona con `policy.tests: contract` ya quedan bloquead
 
 ## Tareas
 
-- [ ] T1: Los textos del desbloqueo
+- [x] T1: Los textos del desbloqueo
   - files: packages/core/src/guard/testing.ts, packages/core/src/guard/decide.ts, packages/core/src/cards/flow.ts, packages/core/src/cards/testing.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC2, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard test/cards && pnpm --filter @baquia-dev/specty-core typecheck

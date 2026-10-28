@@ -199,6 +199,30 @@ const REFUSALS: Readonly<Record<TestsRefusal["reason"], Words>> = {
   }),
 };
 
+/**
+ * The agent in delegated mode does not decide a request that unlocks an approved test: only the
+ * person does (A2 of ADR 0014's epic), as with `delegate` and `uninstall`.
+ */
+export function unlockRefusedCard(header: string, request: string, ctx: CardContext): Output {
+  const t = translator(ctx.lang);
+  const decide = `\`${ctx.command} approve --scope ${request}\``;
+  const reject = `\`${ctx.command} reject --scope ${request}\``;
+  return {
+    status: "blocked",
+    header,
+    blocks: section(undefined, [
+      t(
+        `${request} desbloquea un test aprobado: lo decide solo la persona, también en modo delegado.`,
+        `${request} unlocks an approved test: only the person decides it, in delegated mode too.`,
+      ),
+    ]),
+    next: t(
+      `pide al usuario que lo decida con ${decide} o ${reject} en su terminal, y termina tu turno.`,
+      `ask the user to decide it with ${decide} or ${reject} in their terminal, and end your turn.`,
+    ),
+  };
+}
+
 /** What `specty approve` asks the person in the testing phase. */
 export function approveTestsQuestion(title: string, lang: Lang): string {
   return translator(lang)(`¿Aprobar los tests de «${title}»?`, `Approve the tests of "${title}"?`);

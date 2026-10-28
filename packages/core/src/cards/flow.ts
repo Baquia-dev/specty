@@ -231,19 +231,34 @@ export function withLead(lead: string, card: Output): Output {
   return { ...card, blocks: [...section(undefined, [lead]), ...card.blocks] };
 }
 
+/**
+ * A scope request waits for its decision. One that `unlocks` an approved test is the person's
+ * alone, in delegated mode too (ADR 0014).
+ */
 export function scopeRequestedCard(
   header: string,
   request: string,
   paths: readonly string[],
   ctx: CardContext,
+  unlocks = false,
 ): Output {
   const t = translator(ctx.lang);
+  const title = unlocks
+    ? t(
+        `SOLICITUD ${request} (desbloquea tests aprobados)`,
+        `REQUEST ${request} (unlocks approved tests)`,
+      )
+    : t(`SOLICITUD ${request}`, `REQUEST ${request}`);
   return {
     status: "ok",
     header,
-    blocks: section(t(`SOLICITUD ${request}`, `REQUEST ${request}`), paths),
-    next:
-      ctx.delegated === true
+    blocks: section(title, paths),
+    next: unlocks
+      ? t(
+          `desbloquear un test aprobado lo decide solo la persona, también en modo delegado: pídele que lo decida con \`${ctx.command} approve --scope ${request}\` en su terminal y termina tu turno.`,
+          `unlocking an approved test is the person's decision alone, in delegated mode too: ask them to decide it with \`${ctx.command} approve --scope ${request}\` in their terminal and end your turn.`,
+        )
+      : ctx.delegated === true
         ? t(
             `modo delegado: aprueba tú la solicitud con \`${ctx.command} approve --scope ${request}\` y sigue con la tarea.`,
             `delegated mode: approve the request yourself with \`${ctx.command} approve --scope ${request}\` and continue with the task.`,

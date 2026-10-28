@@ -6,6 +6,13 @@
   "branch": "specty/20261028-los-tests-aprobados-no-se-pueden-cambiar-sin-per",
   "baseCommit": "b3deec3f669201638899dae710bc9c71746cc416",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ad93519543dcdcc95eca68a24def2bd946b029454222caed8616827d970ede6c",
+    "at": "2026-10-28T08:55:53.309Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7f818c9ca054702d437a058d91683d5b247f9bf1",
+      "startedAt": "2026-10-28T08:55:53.721Z",
+      "doneAt": "2026-10-28T09:01:59.864Z",
+      "summary": "lockedDenial nombra la solicitud de desbloqueo con scope add para la tarea activa; scopeRequestedCard gana la variante unlocks, que pide a la persona decidirla; unlockRefusedCard para el agente en modo delegado."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 7,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ad93519543dcdcc95eca68a24def2bd946b029454222caed8616827d970ede6c",
-    "at": "2026-10-28T08:55:53.309Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

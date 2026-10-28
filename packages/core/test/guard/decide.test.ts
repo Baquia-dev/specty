@@ -135,6 +135,9 @@ describe("decideGuard on files", () => {
       if (!denied.allow) {
         expect(denied.reason).toContain("`src/a.test.ts` es un test aprobado");
         expect(denied.next).toContain("explícaselo al usuario");
+        // AC6: the way out is an unlock request, which only the person decides.
+        expect(denied.next).toContain("`specty scope add src/a.test.ts --task T1 --reason");
+        expect(denied.next).toContain("solo decide la persona");
       }
     }
     // The code, and the new tests the implementation adds in their own files, stay open.

@@ -37,21 +37,25 @@ export function testingDenial(
 
 /**
  * Why an approved test may not be written or deleted: the tests the person approved are the
- * contract (ADR 0014), and the implementation's own tests go in new files.
+ * contract (ADR 0014), and the implementation's own tests go in new files. The way out is an
+ * unlock request for `task`, which only the person decides.
  */
 export function lockedDenial(
   path: string,
+  task: string | undefined,
   lang: Lang,
+  command: string,
 ): { readonly reason: string; readonly next: string } {
   const t = (es: string, en: string) => (lang === "es" ? es : en);
+  const request = `${command} scope add ${path} --task ${task ?? "<T>"}`;
   return {
     reason: t(
       `\`${path}\` es un test aprobado y está bloqueado: los tests que aprobó la persona son el contrato.`,
       `\`${path}\` is an approved test and it is locked: the tests the person approved are the contract.`,
     ),
     next: t(
-      "no lo cambies; si crees que el test está mal, para y explícaselo al usuario. Los tests nuevos van en archivos nuevos.",
-      "do not change it; if you think the test is wrong, stop and explain it to the user. New tests go in new files.",
+      `no lo cambies para que pase; si crees que el test está mal, para y explícaselo al usuario, o pide desbloquearlo con \`${request} --reason "<motivo>"\`, que solo decide la persona. Los tests nuevos van en archivos nuevos.`,
+      `do not change it to make it pass; if you think the test is wrong, stop and explain it to the user, or ask to unlock it with \`${request} --reason "<reason>"\`, which only the person decides. New tests go in new files.`,
     ),
   };
 }

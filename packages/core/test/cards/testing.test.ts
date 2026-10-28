@@ -6,11 +6,13 @@ import {
   type ChangeView,
   nextCard,
   renderText,
+  scopeRequestedCard,
   statusCard,
   type TaskView,
   testsApprovedLine,
   testsRefusedCard,
   testsSubmittedCard,
+  unlockRefusedCard,
 } from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
@@ -192,5 +194,30 @@ describe("the person's decision on the tests", () => {
       ES,
     );
     expect(card.next).toBe("te toca decidir en 20261028-saludo: `specty approve`.");
+  });
+});
+
+describe("unlocking an approved test", () => {
+  const header = "SPECTY · 20261028-saludo · implementing";
+
+  it("AC1: asks the person to decide the request, in delegated mode too", () => {
+    for (const ctx of [ES, { ...ES, delegated: true }]) {
+      const text = renderText(
+        scopeRequestedCard(header, "S1", ["src/app.test.ts"], ctx, true),
+        "es",
+      );
+      expect(text).toContain("SOLICITUD S1 (desbloquea tests aprobados):\n  src/app.test.ts");
+      expect(text).toContain(
+        "SIGUIENTE: desbloquear un test aprobado lo decide solo la persona, también en modo delegado: pídele que lo decida con `specty approve --scope S1` en su terminal y termina tu turno.",
+      );
+    }
+  });
+
+  it("AC2: refuses to let the delegated agent decide it", () => {
+    const card = unlockRefusedCard(header, "S1", EN);
+    expect(card.status).toBe("blocked");
+    expect(renderText(card, "en")).toContain(
+      "S1 unlocks an approved test: only the person decides it, in delegated mode too.\nNEXT: ask the user to decide it with `specty approve --scope S1` or `specty reject --scope S1` in their terminal, and end your turn.",
+    );
   });
 });
