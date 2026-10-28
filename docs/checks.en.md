@@ -221,7 +221,7 @@ Checks that the generated code matches what its generator produces, like a `git 
 
 **Stack:** any.
 
-The lines of code of each file, without blank lines or comments. It warns above `lines.warn` and fails above `lines.fail`.
+The lines of code of each file, without blank lines or comments, by the same rule as `task done`. It fails if the change takes a file past `lines.fail`, and warns if it grows one past `lines.warn`, also one that was already past the maximum: touching a long inherited file does not force a split. It compares with where the mode starts (the base with `--changed`, HEAD with `--staged`); `--all` has no start, so every file past `lines.fail` fails.
 
 **Configuration:** the `lines` rule: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` and `exclude`. To leave out a specific file, put its path or a glob in `lines.exclude`; it adds to the data folders that are left out by default (fixtures, mocks, migrations, i18n…).
 

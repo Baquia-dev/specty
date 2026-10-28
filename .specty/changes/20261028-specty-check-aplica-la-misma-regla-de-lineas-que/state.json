@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-specty-check-aplica-la-misma-regla-de-lineas-que",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-specty-check-aplica-la-misma-regla-de-lineas-que",
   "baseCommit": "aea15f12ea2840c2a9da0391db10ec9f996a62cd",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:56e9264a54d18cadb014a5cd9dcd942b19f0b6d189f8befe8c1c84cdbfdabd07",
+    "at": "2026-10-28T17:12:23.292Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a2ca903d932071ea6386a89ea9e9d621d9057217",
+      "startedAt": "2026-10-28T17:12:23.728Z",
+      "doneAt": "2026-10-28T17:17:25.780Z",
+      "summary": "max-lines de specty check usa longFiles de core con el texto de partida del modo: solo falla lo que el cambio lleva por encima de lines.fail; --all cuenta todo; test visto en rojo; checks.md/en"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:56e9264a54d18cadb014a5cd9dcd942b19f0b6d189f8befe8c1c84cdbfdabd07",
-    "at": "2026-10-28T17:12:23.292Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

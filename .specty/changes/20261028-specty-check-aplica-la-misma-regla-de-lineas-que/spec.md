@@ -17,7 +17,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: specty check aplica la misma regla de líneas que task done
+- [x] T1: specty check aplica la misma regla de líneas que task done
   - files: packages/cli/src/check/max-lines.ts, packages/cli/test/check.test.ts, docs/checks.md, docs/checks.en.md
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/check.test.ts test/check-examples-ts.test.ts test/check-examples-flutter.test.ts
   - type: feat
