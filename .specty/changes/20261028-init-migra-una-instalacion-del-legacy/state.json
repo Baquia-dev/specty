@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "93742b4da37e88ab3aa765421110a02d301a7e43",
+      "attempts": 1,
       "startedAt": "2026-10-28T16:32:31.798Z",
       "doneAt": "2026-10-28T16:33:27.242Z",
-      "summary": "configTemplate acepta governed e ignored; cards/legacy.ts tiene los pasos, sus notas y preguntas, las líneas de lo hecho, el rechazo y el plan"
+      "summary": "configTemplate acepta governed e ignored; cards/legacy.ts tiene los pasos, sus notas y preguntas, las líneas de lo hecho, el rechazo y el plan",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3c78b454bc73890e7d833c77c733090fc3e09f5f",
+      "startedAt": "2026-10-28T16:33:27.593Z",
+      "doneAt": "2026-10-28T16:39:00.115Z",
+      "summary": "install/legacy.ts reconoce, traduce, planea y aplica la migración con una nota y una pregunta por paso; init la llama antes de leer la configuración e import lista los cambios del legacy"
     }
   },
   "pending": {

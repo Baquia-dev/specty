@@ -29,6 +29,7 @@ import { commitInstall } from "../install/commit";
 import { type InstallFiles, installFiles } from "../install/files";
 import { ensureDevelop, flowToWrite, noFlowWarnings } from "../install/git-flow";
 import { agentsToInstall, installHooks } from "../install/hooks";
+import { type Migration, migrateLegacy } from "../install/legacy";
 import { installMcp } from "../install/mcp";
 import { isNewProject, writeProduct } from "../install/product";
 import { writeAgentsMd, writeConfig, writeGlossary } from "../install/project-files";
@@ -112,6 +113,8 @@ async function init(
   const git = createGit(root, environment.env);
   // What already had changes stays out of init's commit: it is the person's work.
   const before = new Set(pathsOf(await git.changedSince(await git.head())));
+  const migration = await migrate(environment, { root, git, options, lang: fallback });
+  if (migration.kind === "refused") return { output: migration.output, lang: fallback };
   const existing = await loadConfig(repoPaths(root));
   if (existing.kind === "invalid") {
     const issues = existing.issues.map((issue) => `${issue.path}: ${issue.message}`).join("; ");
@@ -132,7 +135,7 @@ async function init(
     config,
     created: existing.kind === "missing",
   };
-  const installed = await install(setup, fresh);
+  const installed = withMigration(await install(setup, fresh), migration);
   const cards: CardContext = { ...bareCards(environment.env), lang };
   if (options.dryRun === true) {
     const planned = installed.files.changes.map((change) => ({
@@ -142,6 +145,35 @@ async function init(
     return { output: dryRunCard(planned, installed.warnings, cards), lang };
   }
   return { output: await committed(setup, installed, before, cards), lang };
+}
+
+/** The legacy's installation, migrated first, step by step, by the person (ADR 0005). */
+function migrate(
+  environment: Environment,
+  at: {
+    readonly root: string;
+    readonly git: Git;
+    readonly options: InitOptions;
+    readonly lang: Lang;
+  },
+): Promise<Migration> {
+  return migrateLegacy({
+    environment,
+    root: at.root,
+    git: at.git,
+    cards: { ...bareCards(environment.env), lang: at.lang },
+    dryRun: at.options.dryRun === true,
+  });
+}
+
+/** What init installed, with what the legacy's migration did first and the files it moved. */
+function withMigration(installed: Installed, migration: Migration): Installed {
+  if (migration.kind !== "done") return installed;
+  return {
+    ...installed,
+    done: [...migration.done, ...installed.done],
+    written: [...installed.written, ...migration.written],
+  };
 }
 
 /** What init works with once it knows the repository, its language and its project. */

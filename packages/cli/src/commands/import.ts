@@ -11,6 +11,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { type OpenSpecFiles, parseOpenSpec } from "@baquia-dev/specty-exporters";
 import type { Command } from "commander";
+import { legacyImportable } from "../install/legacy";
 import { exists, readText } from "../io/files";
 import type { Session } from "../session";
 import { listDir } from "../store/changes";
@@ -37,7 +38,10 @@ const CHANGES = "openspec/changes";
  */
 async function importChange(session: Session, folder: string | undefined): Promise<Output> {
   const { cards } = session;
-  if (folder === undefined) return importListCard(await importable(session.root), cards);
+  if (folder === undefined) {
+    const found = [...(await importable(session.root)), ...(await legacyImportable(session.root))];
+    return importListCard(found, cards);
+  }
   const shown = folder.replace(/\/+$/, "");
   const path = resolve(session.environment.cwd, shown);
   if (!(await exists(path))) return importRefusalCard({ reason: "missing", folder: shown }, cards);

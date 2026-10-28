@@ -68,7 +68,7 @@ Un repositorio con el Specty anterior (`@barcidev/specty`) tiene un `.specty/con
   - files: packages/core/src/templates.ts, packages/core/src/cards/legacy.ts, packages/core/src/cards/index.ts, packages/core/test/cards/legacy.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/legacy.test.ts
-- [ ] T2: La migración en `init` y los cambios del legacy en `import`
+- [x] T2: La migración en `init` y los cambios del legacy en `import`
   - files: packages/cli/src/install/legacy.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/import.ts, packages/cli/test/legacy.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty typecheck && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/legacy.test.ts test/import.test.ts test/bootstrap.test.ts
