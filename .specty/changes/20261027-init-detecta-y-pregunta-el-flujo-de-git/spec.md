@@ -11,25 +11,25 @@ kind: standard
 ## Fuera de alcance
 
 - Preguntar o detectar `git.branchPattern`.
-- Volver a preguntar el flujo cuando la configuración ya lo tiene: para cambiarlo está `--git-flow`.
+- Preguntar o detectar el flujo en una configuración que ya existe, lo tenga o no, como pasa con el idioma: para elegirlo o cambiarlo está `--git-flow`.
 - Las ramas `release/` y `hotfix/` de Git Flow, más allá de servir para detectarlo.
 
 ## Supuestos
 
 - A1: Sin nada detectado, la primera opción es la de Specty (`specty/<id>`), la de siempre: quien acepta sin mirar no cambia de nombres; GitHub Flow va después.
   - impacto: medio
-- A2: Un agente solo escribe el flujo detectado cuando `init` crea la configuración: en una instalación que ya existe, cambiar el nombre de las ramas lo decide la persona o `--git-flow`.
+- A2: `init` solo elige el flujo (preguntando o por detección) cuando crea la configuración, como el idioma: en una instalación que ya existe, cambiar el nombre de las ramas se pide con `--git-flow`, y repetir `init` para actualizar los hooks no pregunta nada nuevo. Lo decidió el usuario el 2026-10-27.
   - impacto: medio
 - A3: La pregunta va después de la de los agentes y antes de la entrevista de un proyecto nuevo, porque el flujo se escribe en `config.yaml` antes que `PRODUCT.md`.
 - A4: Elegir «Specty» escribe `git.flow: specty`, así `init` no vuelve a preguntar.
 
 ## Criterios de aceptación
 
-- AC1: CUANDO una persona en la terminal ejecuta `init` sin `--git-flow` ni `--dry-run` y la configuración no tiene `git.flow` ENTONCES, después de los agentes, `init` le pregunta qué flujo de git sigue el repositorio (una sola opción), escribe el elegido en `git.flow` y, con Git Flow, prepara `develop` como con `--git-flow gitflow`.
+- AC1: CUANDO una persona en la terminal ejecuta `init` sin `--git-flow` ni `--dry-run` en un repositorio sin configuración ENTONCES, después de los agentes, `init` le pregunta qué flujo de git sigue el repositorio (una sola opción), escribe el elegido en `git.flow` y, con Git Flow, prepara `develop` como con `--git-flow gitflow`.
 - AC2: CUANDO `init` detecta el flujo (Git Flow por la configuración de git-flow, una rama `develop` o ramas `feature/`, `bugfix/`, `release/` o `hotfix/`; GitHub Flow por ramas `<tipo>/…` con un tipo de commit; el de Specty por ramas `specty/…`) ENTONCES ese va primero en la pregunta, con la etiqueta «detectado»; sin detección, el primero es el de Specty y la pregunta no habla de ninguno detectado.
 - AC3: CUANDO la persona cancela la pregunta ENTONCES `init` escribe el flujo detectado, o ninguno si no lo hay.
 - AC4: CUANDO nadie puede responder (un agente o `--dry-run`) ENTONCES `init` escribe el flujo detectado solo si crea la configuración; en una configuración que ya existe no lo toca.
-- AC5: CUANDO la configuración ya tiene `git.flow`, o se pasa `--git-flow`, ENTONCES `init` no pregunta el flujo.
+- AC5: CUANDO la configuración ya existe, tenga o no `git.flow`, o se pasa `--git-flow`, ENTONCES `init` no pregunta el flujo ni lo detecta, y solo `--git-flow` lo cambia.
 - AC6: CUANDO un proyecto nuevo termina `init` sin flujo de git ENTONCES la salida avisa de que las ramas serán `specty/<id>` hasta elegirlo con `--git-flow`, y su SIGUIENTE pide preguntárselo al usuario y ejecutar `init --git-flow <flujo>`.
 - AC7: CUANDO se lee ARCHITECTURE §14 ENTONCES dice cómo detecta `init` el flujo, cuándo lo pregunta y qué pasa en un proyecto nuevo sin él.
 
@@ -41,7 +41,8 @@ kind: standard
   - `InitView.chooseFlow`: `newProjectNext` añade a su SIGUIENTE elegir el flujo con `init --git-flow <flujo>`.
 - CLI, `install/git-flow.ts`:
   - `detectFlow(git)`: lee `gitflow.branch.develop` y las ramas locales y remotas (sin el nombre del remoto) y aplica el orden de AC2.
-  - `flowToWrite(...)`: el de `--git-flow`; nada si la configuración ya tiene uno; la respuesta de la persona o, si cancela, el detectado; sin persona, el detectado solo al crear la configuración. Devuelve también si un proyecto nuevo quedó sin flujo.
+  - `flowToWrite(...)`: el de `--git-flow`; nada en una configuración que ya existe; al crearla, la respuesta de la persona o, si cancela o no hay persona, el detectado. Dice también si el repositorio acaba con flujo.
+  - `noFlowWarnings(...)`: el aviso cuando `init` escribió `PRODUCT.md` (un proyecto nuevo) y no hay flujo.
 - CLI, `commands/init.ts`: pregunta tras los agentes con `flowToWrite`, y usa su flujo para `config.yaml` y para `develop` en vez de solo `--git-flow`.
 
 ## Archivos
@@ -54,6 +55,7 @@ kind: standard
 - modificar packages/cli/test/init-git-flow.test.ts — detección, pregunta y proyecto nuevo
 - modificar packages/cli/test/init-agents.test.ts — la pregunta del flujo tras la de los agentes (R1)
 - modificar packages/cli/test/init-language.test.ts — la pregunta del flujo en la lista de preguntas (R1)
+- modificar packages/cli/test/new-project.test.ts — el SIGUIENTE de un proyecto nuevo pide elegir el flujo (R1)
 - modificar docs/ARCHITECTURE.md — §14
 
 ## Tareas
@@ -70,8 +72,13 @@ kind: standard
   - files: docs/ARCHITECTURE.md
   - ac: AC7
   - type: docs
+- [ ] T4: detectFlow deja de exportarse
+  - files: packages/cli/src/install/git-flow.ts
+  - ac: AC2
+  - verify: pnpm knip
+  - type: refactor
 
 ## Riesgos
 
-- R1: Los tests que ejecutan `init` con una persona y comparan la lista exacta de preguntas u opciones reciben una más (`init-agents.test.ts` y `init-language.test.ts`). Mitigación: solo se añade la pregunta del flujo a lo que esperan; la persona de prueba responde la primera opción, la de Specty, así que lo que instalan no cambia.
+- R1: Siete tests que ya existían notan la pregunta o el SIGUIENTE nuevos, y el usuario aprobó ajustarlos (2026-10-27): cuatro comparan la lista exacta de preguntas u opciones (`init-agents.test.ts` AC1 y AC2, `init-language.test.ts` AC1 dos veces), dos comprueban con una terminal que falla ante cualquier pregunta que `--tools` o `--language` no preguntan nada (`init-agents.test.ts` AC6, `init-language.test.ts` AC2), y uno espera el SIGUIENTE exacto de un proyecto nuevo de un agente (`new-project.test.ts` AC2, ampliación S1). Mitigación: a las listas solo se añade la pregunta del flujo; los dos de «nada» pasan `--git-flow specty`, así siguen sin preguntar nada; y el de `new-project` espera el SIGUIENTE de AC6. La persona de prueba responde la primera opción, la de Specty, así que lo que instalan no cambia.
 - R2: Otros tests que ejecutan `init` con una persona y después `new`. Mitigación: con la de Specty primero, sus ramas siguen siendo `specty/<id>`; la suite completa lo comprueba.

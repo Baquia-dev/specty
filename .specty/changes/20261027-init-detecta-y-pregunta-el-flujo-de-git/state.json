@@ -2,24 +2,25 @@
   "schema": 1,
   "id": "20261027-init-detecta-y-pregunta-el-flujo-de-git",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261027-init-detecta-y-pregunta-el-flujo-de-git",
   "baseCommit": "0445983eeb54af55bce9cca2794c24005f924c23",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:6f22df1f881583c0c676405728e2cd8852bcf1656fcaca0e24bff3583cc52607",
-    "at": "2026-10-28T00:06:57.145Z",
+    "revision": 2,
+    "hash": "sha256:6baf09311be440c16d3b22891f7ec1ee9b0d2b20bb823a98e3412d56c88dd3a6",
+    "at": "2026-10-28T00:48:29.748Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
-    "level": "M",
-    "score": 10,
+    "level": "L",
+    "score": 12,
     "adjust": 0,
     "reasons": [
-      "8 archivos",
-      "2 módulos"
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
     ]
   },
   "items": {
@@ -28,7 +29,7 @@
       "decision": "implicit"
     },
     "A2": {
-      "hash": "sha256:d867f84b84810e191f0d89f22f6a41f33ea0533ca2cc5570ad62e3f2eaa8b797",
+      "hash": "sha256:7897bbe4c25b6f48e003e34d014c6d24ea4d04d867371659ba7b1262e454f34a",
       "decision": "implicit"
     },
     "A3": {
@@ -61,12 +62,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7d2af46430213976d765341a8a206106be42bd9e",
+      "attempts": 1,
       "startedAt": "2026-10-28T00:43:28.133Z",
       "doneAt": "2026-10-28T00:47:17.048Z",
-      "summary": "ARCHITECTURE §14 dice cómo detecta init el flujo, que solo lo pregunta o detecta al crear config.yaml (como el idioma), qué pasa si se cancela y el aviso y SIGUIENTE de un proyecto nuevo sin flujo."
+      "summary": "ARCHITECTURE §14 dice cómo detecta init el flujo, que solo lo pregunta o detecta al crear config.yaml (como el idioma), qué pasa si se cancela y el aviso y SIGUIENTE de un proyecto nuevo sin flujo.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -76,7 +77,7 @@
   "maxIds": {
     "A": 4,
     "AC": 7,
-    "T": 3,
+    "T": 4,
     "R": 2
   }
 }
