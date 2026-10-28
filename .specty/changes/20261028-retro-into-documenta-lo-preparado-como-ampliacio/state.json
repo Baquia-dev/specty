@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-retro-into-documenta-lo-preparado-como-ampliacio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-retro-into-documenta-lo-preparado-como-ampliacio",
   "baseCommit": "f654d6ae32c2e1cc73bdecc5d630d533ad66c6a6",
   "revision": 2,
@@ -62,12 +62,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b0274499ddf88803c3500f438954e149a483ffce",
+      "attempts": 1,
       "startedAt": "2026-10-28T14:48:22.666Z",
       "doneAt": "2026-10-28T14:51:10.909Z",
-      "summary": "Sin código propio: lo implementó T1, cuya verificación corría estos tests"
+      "summary": "Sin código propio: lo implementó T1, cuya verificación corría estos tests",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bf957636eb6cee77c38a49bbdf06bfa0f74fd4de",
+      "startedAt": "2026-10-28T14:51:11.240Z",
+      "doneAt": "2026-10-28T14:54:13.523Z",
+      "summary": "ARCHITECTURE 6 y 9 y formats 3 y 4 describen retro --into, su huella y su confirmación"
     }
   },
   "pending": {
