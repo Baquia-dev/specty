@@ -67,7 +67,7 @@ Con `policy.tests: contract`, los tests de una feature ya se escriben, se envía
 
 ## Tareas
 
-- [ ] T1: Las tarjetas de los rechazos y los criterios manuales
+- [x] T1: Las tarjetas de los rechazos y los criterios manuales
   - files: packages/core/src/cards/testing.ts, packages/core/src/cards/view.ts, packages/cli/src/flow/views.ts
   - ac: AC6
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards

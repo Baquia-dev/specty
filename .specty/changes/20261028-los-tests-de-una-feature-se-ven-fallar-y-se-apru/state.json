@@ -6,6 +6,13 @@
   "branch": "specty/20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
   "baseCommit": "2d2ceff6979d2bec7e6894504a5e7ae81ade6f3c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6343fe370405642103c5b7a5b0492366ed113299a14f2d910571330ea8f9c7d3",
+    "at": "2026-10-28T07:00:09.945Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f24c2e2543bb6edf56eeb4de7bae1668d8b8f563",
+      "startedAt": "2026-10-28T07:00:10.371Z",
+      "doneAt": "2026-10-28T07:08:12.038Z",
+      "summary": "TestsRefusal gana untested, green y unnamed, con sus textos en una tabla; CriterionView.manual desde test: manual, y la tarjeta de la fase de tests deja fuera esos criterios."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 8,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6343fe370405642103c5b7a5b0492366ed113299a14f2d910571330ea8f9c7d3",
-    "at": "2026-10-28T07:00:09.945Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

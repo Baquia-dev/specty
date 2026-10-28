@@ -82,6 +82,45 @@ describe("the card of the testing phase", () => {
     expect(text).toContain("neither production code nor its signatures");
     expect(text).toMatch(/NEXT: .*`specty propose`/);
   });
+
+  it("AC6: leaves out the criteria checked by hand", () => {
+    const text = card([
+      task("T1", {
+        criteria: [
+          { id: "AC1", text: "CUANDO hay nombre ENTONCES saluda por nombre." },
+          { id: "AC2", text: "CUANDO se lee la guía ENTONCES explica el saludo.", manual: true },
+        ],
+      }),
+    ]);
+    expect(text).toContain("AC1: CUANDO hay nombre");
+    expect(text).not.toContain("AC2");
+  });
+});
+
+describe("the tests not sent", () => {
+  const refused = (refusal: Parameters<typeof testsRefusedCard>[1], ctx = ES) =>
+    renderText(testsRefusedCard("20261028-saludo", refusal, ctx), ctx.lang);
+
+  it("AC1: says the tests are not red when the verification passes", () => {
+    expect(refused({ reason: "green", commands: ["pnpm test"] })).toContain(
+      "Los tests nuevos no fallan: pasó su verificación:\n  pnpm test\nSIGUIENTE: escribe los tests de modo que fallen sin el código y vuelve a ejecutar `specty propose`.",
+    );
+    expect(refused({ reason: "green", commands: ["pnpm test"] }, EN)).toContain(
+      "The new tests do not fail: their verification passed:\n  pnpm test",
+    );
+  });
+
+  it("AC2: names the new tests the failing verification does not name", () => {
+    expect(refused({ reason: "unnamed", paths: ["src/b.test.ts"] })).toContain(
+      "La verificación falla, pero su salida no nombra estos tests nuevos:\n  src/b.test.ts",
+    );
+  });
+
+  it("AC3: names the criteria without a new test that carries their id", () => {
+    const text = refused({ reason: "untested", criteria: ["AC2", "AC3"] });
+    expect(text).toContain("Estos criterios no tienen un test nuevo con su id:\n  AC2\n  AC3");
+    expect(text).toContain("con su id en el nombre (`AC1: …`)");
+  });
 });
 
 describe("the tests sent", () => {
