@@ -59,7 +59,7 @@ slice: C5
 
 ## Tareas
 
-- [ ] T1: Los textos del registro MCP
+- [x] T1: Los textos del registro MCP
   - files: packages/core/src/cards/mcp.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/index.ts, packages/core/test/cards/mcp.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/mcp.test.ts test/cards/doctor.test.ts

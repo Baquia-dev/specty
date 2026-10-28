@@ -195,6 +195,7 @@ export {
 } from "./land";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
 export { busyChangeCard, type LockHolderView } from "./lock";
+export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";
 export {
   changeCreatedLead,
   type NewRefusal,
