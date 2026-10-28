@@ -44,7 +44,7 @@ Desde que `packages/core/src/spec/` cuenta como código y no como tests, `specty
 
 ## Tareas
 
-- [ ] T1: parseSpec y readFrontmatter, divididas
+- [x] T1: parseSpec y readFrontmatter, divididas
   - files: packages/core/src/spec/parse.ts, packages/core/src/spec/frontmatter.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec

@@ -6,6 +6,13 @@
   "branch": "specty/20261028-las-funciones-del-parser-de-specs-dentro-de-los",
   "baseCommit": "00645350eb197da70c9d9b5bca3a4c00383c6ec3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:06a3bf099fea52a0a1e14483d3a9d3aa7ec7d58c87737cc42829c9ac072a1ad6",
+    "at": "2026-10-28T07:26:33.911Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -20,7 +27,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e3eeee63fab7cb518e512e13d4a707741fcb64a5",
+      "startedAt": "2026-10-28T07:26:34.391Z",
+      "doneAt": "2026-10-28T07:30:27.697Z",
+      "summary": "parseSpec delega el recorrido de las secciones en readSections, y readFrontmatter la construcción del frontmatter válido en frontmatterOf; los tests de spec, sin cambios."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -30,12 +47,5 @@
     "AC": 2,
     "T": 3,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:06a3bf099fea52a0a1e14483d3a9d3aa7ec7d58c87737cc42829c9ac072a1ad6",
-    "at": "2026-10-28T07:26:33.911Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -60,26 +60,27 @@ export function readFrontmatter(
       diagnostics: [invalid(lang, detail, line)],
     };
   }
-  const data = parsed.data;
+  return { frontmatter: frontmatterOf(parsed.data), diagnostics: [] };
+}
+
+/** The frontmatter as the spec keeps it: lists always present, empty options left out. */
+function frontmatterOf(data: z.infer<typeof FrontmatterSchema>): Frontmatter {
   return {
-    frontmatter: {
-      kind: data.kind,
-      ...(data.epic !== undefined ? { epic: data.epic } : {}),
-      ...(data.slice !== undefined ? { slice: data.slice } : {}),
-      follows: data.follows ?? [],
-      dependsOn: data.dependsOn ?? [],
-      ...(data.allowedDependencies !== undefined && data.allowedDependencies.length > 0
-        ? { allowedDependencies: data.allowedDependencies }
-        : {}),
-      ...(data.timebox !== undefined ? { timebox: data.timebox } : {}),
-      ...(data.estimate !== undefined
-        ? { estimate: { adjust: data.estimate.adjust, reason: data.estimate.reason } }
-        : {}),
-      ...(data.effort !== undefined
-        ? { effort: { review: data.effort.review, reason: data.effort.reason } }
-        : {}),
-    },
-    diagnostics: [],
+    kind: data.kind,
+    ...(data.epic !== undefined ? { epic: data.epic } : {}),
+    ...(data.slice !== undefined ? { slice: data.slice } : {}),
+    follows: data.follows ?? [],
+    dependsOn: data.dependsOn ?? [],
+    ...(data.allowedDependencies !== undefined && data.allowedDependencies.length > 0
+      ? { allowedDependencies: data.allowedDependencies }
+      : {}),
+    ...(data.timebox !== undefined ? { timebox: data.timebox } : {}),
+    ...(data.estimate !== undefined
+      ? { estimate: { adjust: data.estimate.adjust, reason: data.estimate.reason } }
+      : {}),
+    ...(data.effort !== undefined
+      ? { effort: { review: data.effort.review, reason: data.effort.reason } }
+      : {}),
   };
 }
 
