@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
+  "baseCommit": "3b93a0cfb50a432f95ce7e2117526425fc6b35ce",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d067b86fc633aacf1f411430adab4a1aafebd4d4c9eb78a87eba4d1407e8237f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:966be533b294661a8633356317b8cd291cc885e0d2b02f4b8b2306da92e09e31",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9a1a34fc88421aa552b257a9baccff49dbc7219a3eccb62c0202dc4c9a323afe",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 5
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1a0d341dae466ba9b0c754dc150619e5481ab6396aaa15066392faee7908cca4",
+    "at": "2026-10-28T10:45:58.574Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
