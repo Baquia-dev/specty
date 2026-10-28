@@ -6,6 +6,13 @@
   "branch": "specty/20261028-la-pestana-historial-muestra-la-linea-de-tiempo",
   "baseCommit": "bfd12da5c6c6886f3759798aecfa9362f3848bc8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:49f6aa5968d77ab6e68bd3aef3c597f102a899cc88dff7de124c04bdf888318c",
+    "at": "2026-10-28T17:59:12.498Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -38,12 +45,6 @@
     "AC": 3,
     "T": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:49f6aa5968d77ab6e68bd3aef3c597f102a899cc88dff7de124c04bdf888318c",
-    "at": "2026-10-28T17:59:12.498Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T18:00:13.065Z"
 }
