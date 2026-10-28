@@ -10,6 +10,7 @@ import {
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
 import { type CiOptions, ciFacts } from "../flow/ci-commits";
+import { githubOptions } from "../flow/ci-github";
 import type { Session } from "../session";
 
 /** `specty ci`'s options as commander reads them. */
@@ -41,7 +42,9 @@ export function ciCommand(
  * no spike going into the target branch, in the report and the JSON of `specty check`.
  */
 async function ci(session: Session, options: CiFlags): Promise<ReportOutput> {
-  const facts = await ciFacts(session, options);
+  // Without `--base`, a GitHub Actions run says which commits to check; the options still win.
+  const event = options.base === undefined ? await githubOptions(session.environment.env) : {};
+  const facts = await ciFacts(session, { ...event, ...options });
   const report = ciReport(facts, (id) => checkLevel(session.config, id), session.lang);
   return {
     report: renderReport(report, {

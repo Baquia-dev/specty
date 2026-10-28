@@ -60,7 +60,7 @@ slice: C3
 
 ## Tareas
 
-- [ ] T1: `specty ci` lee el evento de GitHub Actions
+- [x] T1: `specty ci` lee el evento de GitHub Actions
   - files: packages/cli/src/flow/ci-github.ts, packages/cli/src/commands/ci.ts, packages/cli/test/ci-github.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/ci-github.test.ts test/ci.test.ts

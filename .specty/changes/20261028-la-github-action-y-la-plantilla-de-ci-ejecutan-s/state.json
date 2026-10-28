@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "542c555041c59dacc075baf2cceee4df730f817e",
+      "startedAt": "2026-10-28T15:33:00.285Z",
+      "doneAt": "2026-10-28T15:33:51.559Z",
+      "summary": "flow/ci-github traduce el evento de pull request o push a CiOptions, y specty ci lo usa sin --base"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
