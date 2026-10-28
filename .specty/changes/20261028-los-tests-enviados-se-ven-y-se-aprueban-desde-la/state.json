@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
   "baseCommit": "3b93a0cfb50a432f95ce7e2117526425fc6b35ce",
   "revision": 1,
@@ -69,12 +69,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "aecefd8bf1c3906e0901d66aeeff3e6e8b561094",
+      "attempts": 1,
       "startedAt": "2026-10-28T11:03:15.851Z",
       "doneAt": "2026-10-28T11:09:19.777Z",
-      "summary": "ENTERS.implementing añade tests.approved y tests.locked: el servidor fecha la implementación por el último; un test del servidor aprueba los tests enviados con contract (tests.approved, canal ui, lockedTests). AC4 ya funcionaba: el test lo fija. serving acepta otra spec"
+      "summary": "ENTERS.implementing añade tests.approved y tests.locked: el servidor fecha la implementación por el último; un test del servidor aprueba los tests enviados con contract (tests.approved, canal ui, lockedTests). AC4 ya funcionaba: el test lo fija. serving acepta otra spec",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "412acbdae8c2ea67745e8d377b67468ad334a649",
+      "startedAt": "2026-10-28T11:09:20.078Z",
+      "doneAt": "2026-10-28T11:14:33.677Z",
+      "summary": "docs/ui.md: los tests por aprobar en la Bandeja, la sección de tests de Progreso con su rojo, y «Aprobar los tests» con su diálogo en la cabecera y la barra"
     }
   },
   "pending": {

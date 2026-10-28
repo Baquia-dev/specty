@@ -79,7 +79,7 @@ Con `policy.tests: contract`, el agente envía los tests de una feature antes de
   - files: packages/cli/src/server/records.ts, packages/cli/test/server/actions.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server
-- [ ] T5: La fase de tests en docs/ui.md
+- [x] T5: La fase de tests en docs/ui.md
   - files: docs/ui.md
   - ac: AC6
   - type: docs
