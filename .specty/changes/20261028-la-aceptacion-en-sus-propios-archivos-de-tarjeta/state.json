@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261028-la-aceptacion-en-sus-propios-archivos-de-tarjeta",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-la-aceptacion-en-sus-propios-archivos-de-tarjeta",
+  "baseCommit": "aa9e93297d3f12bdc77adaa5eb0691d1a749b432",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d502ee9ee6e56fac1c3a1e558645f63f3d73ad468873489e5ec7d911bcf25cfa",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c5fd9807c32475c6e0814125ebebaf72a2041b7e5db5dd5437f1a2d7f3c34885",
+    "at": "2026-10-28T09:23:35.679Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
