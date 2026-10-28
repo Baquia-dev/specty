@@ -165,7 +165,12 @@ Implementado en la fase 1: los siete comandos del agente (`retro` sin `--into`, 
 
 **Cómo escribe la spec el agente:** con sus propias herramientas de edición, sobre `.specty/changes/<id>/spec.md`. El guard lo permite solo en las fases que lo admiten. `propose` es la puerta obligatoria: nada avanza sin validación. Se descartó enviar la spec por stdin, porque escribir Markdown largo en un heredoc falla a menudo por el escapado.
 
-**MCP** (fase 3): los siete comandos se exponen como herramientas (`specty_next`, `specty_task_done`…) sobre el mismo servicio de core.
+**MCP.** `specty mcp` es un servidor MCP por stdio (`commands/mcp.ts`, `mcp/`). Habla JSON-RPC 2.0, un mensaje por línea y sin el SDK de MCP: `initialize`, con la versión del protocolo que pide el cliente si la conoce o la más reciente que conoce, `ping`, `tools/list` y `tools/call`. Atiende los mensajes de uno en uno. Sus herramientas son los comandos del agente que trabajan en una carpeta:
+
+- `specty_next`, `specty_new`, `specty_propose`, `specty_review` y `specty_check`;
+- `specty_task_done`, `specty_scope_add`, `specty_adjust`, `specty_integrate` y `specty_retro`.
+
+Cada una tiene el esquema JSON de sus argumentos y un `folder` opcional, la carpeta del cambio, porque el servidor arranca en la del agente y no la sigue cuando la sesión cambia de worktree. Una llamada construye la línea del comando y la ejecuta con `runCli` en esa carpeta. La salida se captura y es el texto de la respuesta, con `isError` si el comando sale con 1 o 2. Así la tarjeta, el bloqueo del cambio y las reglas son los de la CLI, y una terminal que nunca responde impide que un comando pregunte por stdin, que lleva el protocolo. Una herramienta desconocida o un argumento que no encaja da el error -32602 sin ejecutar nada. Las acciones de la persona no tienen herramienta, tampoco en modo delegado: el agente delegado sigue usando la CLI. `enter` tampoco, porque con MCP basta `folder`. Una verificación larga (`task done`, `accept`) puede pasar del tiempo que un cliente espera a una herramienta. Si el cliente corta la llamada, la verificación sigue, y su resultado queda en la auditoría.
 
 ## 7. Contexto para el agente
 

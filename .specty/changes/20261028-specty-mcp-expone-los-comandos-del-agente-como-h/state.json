@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
   "baseCommit": "edb43bd3094859ee92c940acab964d048810a6e4",
   "revision": 1,
@@ -50,12 +50,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e299896426580b058564a0d92827a9c3ebfbc1d7",
+      "attempts": 1,
       "startedAt": "2026-10-28T15:40:07.454Z",
       "doneAt": "2026-10-28T15:42:50.732Z",
-      "summary": "specty mcp: JSON-RPC por líneas (mcp/protocol), diez herramientas con esquema y su línea de comando (mcp/tools), cada llamada ejecuta runCli en su carpeta con la salida capturada"
+      "summary": "specty mcp: JSON-RPC por líneas (mcp/protocol), diez herramientas con esquema y su línea de comando (mcp/tools), cada llamada ejecuta runCli en su carpeta con la salida capturada",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6855b32163a1e31a4cab589cf1f658cb9c72620f",
+      "startedAt": "2026-10-28T15:42:51.040Z",
+      "doneAt": "2026-10-28T15:43:04.260Z",
+      "summary": "ARCHITECTURE 6 describe el servidor MCP, sus herramientas y sus límites"
     }
   },
   "pending": {
