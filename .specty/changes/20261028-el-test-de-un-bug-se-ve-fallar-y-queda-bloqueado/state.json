@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-el-test-de-un-bug-se-ve-fallar-y-queda-bloqueado",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-el-test-de-un-bug-se-ve-fallar-y-queda-bloqueado",
   "baseCommit": "fa1b639f3e43aa27feb14b545cde7cdcc63bcd72",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f577850706fd556ec3a19601c031d11ae33105fa",
+      "attempts": 1,
       "startedAt": "2026-10-28T09:48:33.336Z",
       "doneAt": "2026-10-28T09:54:41.906Z",
-      "summary": "En el ciclo de un bug, proposeTests bloquea los tests en rojo (lockRed: confirmRed de Specty, hashes, tests.proposed y tests.locked) y sigue con la tarjeta de la primera tarea tras testsLockedLead; la feature sigue esperando a la persona (sendForApproval)."
+      "summary": "En el ciclo de un bug, proposeTests bloquea los tests en rojo (lockRed: confirmRed de Specty, hashes, tests.proposed y tests.locked) y sigue con la tarjeta de la primera tarea tras testsLockedLead; la feature sigue esperando a la persona (sendForApproval).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cd360fb48d07ad31d11d9055197149e8f3e13a7d",
+      "startedAt": "2026-10-28T09:54:42.220Z",
+      "doneAt": "2026-10-28T09:59:35.623Z",
+      "summary": "friction.test.ts recorre un bug quick con contract sin bloqueos (agente 6, persona 2: +1 y +0 sobre el quick); formats y ARCHITECTURE §4 dicen qué ciclo sigue cada cambio y el evento tests.locked."
     }
   },
   "pending": {

@@ -67,7 +67,7 @@ Con `policy.tests: contract`, solo una feature pasa por la fase de tests, y lo d
   - files: packages/core/src/cards/audit.ts, packages/core/src/cards/testing.ts, packages/core/src/cards/index.ts, packages/cli/src/commands/tests.ts, packages/cli/test/bug-cycle.test.ts
   - ac: AC2, AC5
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/bug-cycle.test.ts
-- [ ] T3: La fricción de un bug y la documentación
+- [x] T3: La fricción de un bug y la documentación
   - files: packages/cli/test/friction.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/friction.test.ts

@@ -135,6 +135,30 @@ function feature(root: string): Script {
   };
 }
 
+/** The button's verification fails, naming its test, until the button says «Sign in». */
+const RED_UNTIL_SIGN_IN = `node -e "if(!require('fs').readFileSync('src/button.ts','utf8').includes('Sign in')){console.log('FAIL src/button.test.ts');process.exit(1)}"`;
+const BUG_CONFIG = `${CONFIG(RED_UNTIL_SIGN_IN)}policy:\n  tests: contract\n`;
+
+/** QUICK's bug under `contract`: the test that reproduces it, red and locked, then the fix. */
+function bug(root: string): Script {
+  return {
+    async before(argv, output) {
+      const [verb] = argv;
+      if (verb === "new") {
+        return { argv: ["new", "--kind", "quick", "Corregir el botón", "--request", "Sign in"] };
+      }
+      const phase = phaseOf(output);
+      if (verb === "propose" && phase === "draft")
+        await writeFiles(root, { [draftPath(output)]: QUICK });
+      if (verb === "propose" && phase === "testing") {
+        await writeFiles(root, { "src/button.test.ts": BUTTON_TEST });
+      }
+      if (verb === "task") await writeFiles(root, { "src/button.ts": "Sign in\n" });
+      return { argv: filled(argv) };
+    },
+  };
+}
+
 /** The walk's steps, one per line, to read when an expectation fails. */
 const transcript = (result: Walk): string =>
   result.steps.map((step) => `${step.who} ${step.what} → ${step.code}`).join("\n");
@@ -206,6 +230,21 @@ describe("following every SIGUIENTE", () => {
     expect(result.friction, transcript(result)).toEqual({
       agent: 10,
       person: 4,
+      blockedTools: 0,
+      blocks: 0,
+      toApproval: { agent: 3, person: 1 },
+    });
+  });
+
+  it("AC6: takes a bug to the end under contract, its red test locked with no person", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": BUG_CONFIG });
+    const result = await walk(root, bug(root));
+    expect(result.done, transcript(result)).toBe(true);
+    // One command of the agent over the quick change (`propose` of the test), and none of the
+    // person: a bug's red test needs no gate 2.
+    expect(result.friction, transcript(result)).toEqual({
+      agent: 6,
+      person: 2,
       blockedTools: 0,
       blocks: 0,
       toApproval: { agent: 3, person: 1 },

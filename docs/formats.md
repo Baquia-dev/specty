@@ -202,7 +202,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 }
 ```
 
-- `phase` es una de las fases de ARCHITECTURE §4: `draft`, `review`, `testing`, `implementing`, `acceptance`, `adjusting`, `closing`, `done` o `cancelled`. `testing` es la fase de los tests de los criterios antes del código ([ADR 0014](decisions/0014-los-tests-como-contrato.md)): se entra en ella al aprobar la spec de un cambio `standard` con alguna tarea `feat` y `policy.tests: contract`.
+- `phase` es una de las fases de ARCHITECTURE §4: `draft`, `review`, `testing`, `implementing`, `acceptance`, `adjusting`, `closing`, `done` o `cancelled`. `testing` es la fase de los tests de los criterios antes del código ([ADR 0014](decisions/0014-los-tests-como-contrato.md)): con `policy.tests: contract`, se entra en ella al aprobar la spec de un cambio con tareas pendientes `feat` (un `standard`: el ciclo de una feature, con el gate 2) o solo `fix` (también un `quick`: el ciclo de un bug, cuyo test en rojo se bloquea solo).
 - `approved.hash` debe coincidir con la forma canónica actual de `spec.md`. Si no coincide, nada avanza hasta que se proponga y apruebe una nueva revisión.
 - `approved.channel` dice por dónde se aprobó: `tty`, `ui`, `pr` o `delegated`. `delegated` significa que aprobó el agente en modo delegado. `by` es siempre la persona: la que aprobó o la que delegó.
 - `items[].decision` puede ser:
@@ -250,6 +250,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada |
 | `tests.proposed` | en la fase `testing`, el agente envió los tests: `count` y `files`, los que van en el commit, y `red`: cada comando de la verificación que falló, `{ cmd, exit }` |
 | `tests.approved` | la persona aprobó los tests enviados (el gate 2 de ADR 0014): canal (`tty`, `ui` o `delegated`) |
+| `tests.locked` | en el ciclo de un bug, Specty bloqueó los tests en rojo sin esperar a la persona: `count` y `files` |
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló, y `tree`: el código sobre el que corrió, un hash del árbol de trabajo sin `.specty/` tomado antes de verificar |
 | `task.completed` | tarea, commit, resumen (300 caracteres como máximo) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
