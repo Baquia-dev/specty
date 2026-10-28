@@ -74,7 +74,7 @@ Las pruebas de extremo a extremo de hoy usan un modelo guionizado: demuestran qu
   - files: evals/src/agents.ts, evals/src/report.ts, evals/run/compliance.eval.ts, evals/test/report.test.ts
   - ac: AC3, AC4
   - verify: pnpm exec vitest run --root evals && pnpm exec tsc -p evals/tsconfig.json && pnpm lint && pnpm knip
-- [ ] T3: Documentar la suite
+- [x] T3: Documentar la suite
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm exec vitest run --root evals
