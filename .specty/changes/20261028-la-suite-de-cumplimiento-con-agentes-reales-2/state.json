@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "id": "20261028-la-suite-de-cumplimiento-con-agentes-reales-2",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261028-la-suite-de-cumplimiento-con-agentes-reales-2",
+  "baseCommit": "680a8daf896d0e6238cc24a4d8a6d81ab5dee4d5",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:3df48bf9f409fecf6b3b34e6793f397f07076ed5210aeb6b90f699cf560bb064",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0c09400cc53d817f61b47291948597dd68b26703c2da74c3cbcc84054ae8b187",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:5c23f1984866e1933e0bc8af8ad71dc794bf8ca3fe79b81e262b346e44bc56e2",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:f16ad049c867fc1d92c56b9338d8c3c2efdec694dfdb746b5d6ec25e27060df0",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0aa71e29d0e8f9ddd03e8e7e986a6015eeb3e97aac7219c73b191c96e116f57e",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ac9b23c1adba8878e73decfaf6f66a48866aee424a2fd5a2864cf509565804dd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5f236422c8d29085049d17177e98bc55876c6defaa666d9d1179cb299c1f161b",
+    "at": "2026-10-28T16:49:12.645Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
