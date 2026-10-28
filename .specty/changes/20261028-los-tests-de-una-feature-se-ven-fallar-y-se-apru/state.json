@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
+  "baseCommit": "2d2ceff6979d2bec7e6894504a5e7ae81ade6f3c",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:27ec93e9f771fe047eaf1ff09ac3055332be00b4e0f534cd9024761e4a74aa1d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c7329481e397d3f493c47d6168dde1cc3ab9987af92424b00e5e984065faedce",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:0870dedf5f0bf1024daca991493b1b7ef1ad8360fe2db87bb76ad9c4dbdcb317",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:109570f3b998a9bf47aeb2e50192498f9b7921fd9595609464529c0e5c677959",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 8,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6343fe370405642103c5b7a5b0492366ed113299a14f2d910571330ea8f9c7d3",
+    "at": "2026-10-28T07:00:09.945Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
