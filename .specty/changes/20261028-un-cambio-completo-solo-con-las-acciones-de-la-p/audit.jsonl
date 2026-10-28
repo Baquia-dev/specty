@@ -1,0 +1,3 @@
+{"ts":"2026-10-28T18:30:59.873Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","type":"feat","branch":"specty/20261028-un-cambio-completo-solo-con-las-acciones-de-la-p","request":"comienza con el punto 1 luego el 2 y el 3, con aprobar, aceptar y cerrar"}}
+{"ts":"2026-10-28T18:31:14.005Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:2302a8a36a5f720660e65c31ab0f1fff3ccb14151dc64a192190e900f40e66f0","size":"S","warnings":0}}
+{"ts":"2026-10-28T18:31:17.367Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:2302a8a36a5f720660e65c31ab0f1fff3ccb14151dc64a192190e900f40e66f0","channel":"delegated","delegated":true}}

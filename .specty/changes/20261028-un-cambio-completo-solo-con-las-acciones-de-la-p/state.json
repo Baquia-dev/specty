@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261028-un-cambio-completo-solo-con-las-acciones-de-la-p",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-un-cambio-completo-solo-con-las-acciones-de-la-p",
+  "baseCommit": "c53731fa52e569105563066111b7fb981870b849",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2302a8a36a5f720660e65c31ab0f1fff3ccb14151dc64a192190e900f40e66f0",
+    "at": "2026-10-28T18:31:17.355Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
