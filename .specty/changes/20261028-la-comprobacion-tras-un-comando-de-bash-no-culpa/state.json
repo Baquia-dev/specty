@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261028-la-comprobacion-tras-un-comando-de-bash-no-culpa",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-la-comprobacion-tras-un-comando-de-bash-no-culpa",
+  "baseCommit": "02935a2c27dbc39c7f422e176eb8cfb29b47370e",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c77b6fb17bed434d29000c9d6601d61809a862d32b20f6d8366b34d101a2049d",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b293d205c65d13d89b385bda7c706582ea3860a315689d59d43b43a90067a2e8",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 1,
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1fb840e5ccc7f7b45841b05dcbcafac7cb67a2fd84bad574d38e1163d42c016f",
+    "at": "2026-10-28T08:37:16.569Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
