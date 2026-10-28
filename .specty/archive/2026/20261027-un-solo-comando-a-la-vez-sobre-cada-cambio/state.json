@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261027-un-solo-comando-a-la-vez-sobre-cada-cambio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261027-un-solo-comando-a-la-vez-sobre-cada-cambio",
   "baseCommit": "e9abd207bffefbfe25412bb1c97e3f6ee6a1fac3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1853ceffcd7842c843f7b7f1a421dc4dde85852fbd440eadad5c6412febef9a0",
@@ -56,12 +56,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "db7e7ea7c418035888a0aa38f4dceffa17657eed",
+      "attempts": 1,
       "startedAt": "2026-10-28T05:20:33.376Z",
       "doneAt": "2026-10-28T05:32:54.513Z",
-      "summary": "Los comandos del agente que escriben su cambio (next, propose, review, integrate, adjust, retro, task done, scope add), las decisiones de la persona (decider) y las acciones de la UI (runAction) corren con withChangeLock; ARCHITECTURE §9 lo explica."
+      "summary": "Los comandos del agente que escriben su cambio (next, propose, review, integrate, adjust, retro, task done, scope add), las decisiones de la persona (decider) y las acciones de la UI (runAction) corren con withChangeLock; ARCHITECTURE §9 lo explica.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,5 +73,6 @@
     "AC": 5,
     "T": 2,
     "R": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T05:46:33.490Z"
 }

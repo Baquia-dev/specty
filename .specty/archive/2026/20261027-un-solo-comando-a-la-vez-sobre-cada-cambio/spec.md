@@ -73,3 +73,23 @@ Dos comandos que cambian el mismo cambio pueden correr a la vez, desde dos sesio
 
 - R1: Un comando que se cuelga deja el cambio bloqueado mientras su proceso viva. Mitigación: la tarjeta da el pid y la carpeta para terminarlo, y en cuanto muere el bloqueo deja de contar.
 - R2: Un pid reutilizado por otro proceso hace que un bloqueo viejo parezca vivo. Mitigación: el bloqueo guarda la hora, y la tarjeta la enseña para que se vea que es antiguo.
+
+## Cierre
+
+### Resumen
+
+Un comando que cambia un cambio lo bloquea mientras corre: las decisiones de la persona, desde la terminal o desde la UI, y los comandos del agente que escriben el cambio de su carpeta. El bloqueo es `.git/common/specty/locks/<id>.json`, compartido por todas las worktrees. Se crea en exclusiva, se suelta al terminar, también tras un fallo, y el de un proceso que ya no existe no cuenta. Si otro proceso vivo lo tiene, el segundo comando sale con 2 sin tocar el estado ni el registro, y la tarjeta `busyChangeCard` nombra el comando, el pid, la hora y la carpeta del que lo tiene. formats.md §1 y ARCHITECTURE §9 lo documentan.
+
+### Desviaciones
+
+- El bloqueo se crea escribiéndolo aparte y enlazándolo en su sitio (`link`), no con `open(…, "wx")`: así otro comando nunca lee un bloqueo a medio escribir y lo toma por roto.
+- La UI bloquea toda acción de la persona, también las de la revisión (decidir un supuesto, comentar y pedir cambios), que escriben el cambio; su tarjeta la nombra como `specty ui`.
+
+### Decisiones
+
+- La tarjeta del cambio ocupado va en un archivo propio del core, `cards/lock.ts`, porque `cards/flow.ts` está cerca del límite de líneas y el bloqueo no es solo de las decisiones de la persona.
+- Las pruebas simulan el otro proceso con el pid del proceso padre del test, que está vivo, y el proceso muerto con el de un `node -e ""` que ya terminó.
+
+### Pendientes
+
+- Si dos comandos encuentran a la vez el bloqueo de un proceso muerto, uno podría borrar el que el otro acaba de crear. Es una ventana de milisegundos que solo se abre tras una caída; se cerraría renombrando el bloqueo viejo y comprobando qué se ha movido.
