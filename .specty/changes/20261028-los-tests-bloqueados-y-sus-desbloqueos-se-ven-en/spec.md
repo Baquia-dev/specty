@@ -62,7 +62,7 @@ Con `policy.tests: contract`, los tests aprobados quedan bloqueados y solo la pe
   - files: packages/ui/src/data/locks.ts, packages/ui/src/data/locks.test.ts, packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/progress.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data
-- [ ] T2: La sección de tests bloqueados en Progreso y en Aceptación
+- [x] T2: La sección de tests bloqueados en Progreso y en Aceptación
   - files: packages/ui/src/progress/locked-tests.ts, packages/ui/src/progress/locked-tests.test.ts, packages/ui/src/progress/progress-tab.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/components/icons.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress --include src/acceptance --include src/components

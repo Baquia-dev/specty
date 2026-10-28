@@ -16,6 +16,7 @@ import { formatDuration, type RunRecord, type TaskStatus, workTime } from "../da
 import { type ChangeView, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { LiveOutput } from "./live-output";
+import { LockedTests } from "./locked-tests";
 import { ScopeRequest } from "./scope-request";
 import { TaskRow } from "./task-row";
 import { TestsSent } from "./tests-sent";
@@ -32,11 +33,12 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
 /**
  * The Progress tab (docs/ui.md, Progreso): the tasks in the spec's order as document rows. A task
  * waiting for the person's decision leaves its place for «Te espera» at the top and goes back to
- * it once decided. In `testing`, the tests the agent writes or sent go first.
+ * it once decided. In `testing`, the tests the agent writes or sent go first; then the approved
+ * tests it locked.
  */
 @Component({
   selector: "sp-progress-tab",
-  imports: [SectionDivider, EmptyState, TaskRow, ScopeRequest, LiveOutput, TestsSent],
+  imports: [SectionDivider, EmptyState, TaskRow, ScopeRequest, LiveOutput, TestsSent, LockedTests],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-8" },
   template: `
@@ -55,6 +57,9 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
       </div>
       @if (change().tests; as tests) {
         <sp-tests-sent [tests]="tests" [now]="now()" />
+      }
+      @if (change().lockedTests; as locked) {
+        <sp-locked-tests [tests]="locked" />
       }
       @if (waiting().length > 0) {
         <section aria-labelledby="progress-waiting" data-waiting>

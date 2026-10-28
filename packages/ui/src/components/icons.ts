@@ -35,6 +35,8 @@ import {
   LayoutList,
   Lightbulb,
   ListChecks,
+  Lock,
+  LockOpen,
   MessageSquare,
   MessageSquarePlus,
   Minus,
@@ -90,6 +92,8 @@ export const LucideLayoutGrid = icon("layout-grid", LayoutGrid);
 export const LucideLayoutList = icon("layout-list", LayoutList);
 export const LucideLightbulb = icon("lightbulb", Lightbulb);
 export const LucideListChecks = icon("list-checks", ListChecks);
+export const LucideLock = icon("lock", Lock);
+export const LucideLockOpen = icon("lock-open", LockOpen);
 export const LucideMessageSquare = icon("message-square", MessageSquare);
 export const LucideMessageSquarePlus = icon("message-square-plus", MessageSquarePlus);
 export const LucideMinus = icon("minus", Minus);
