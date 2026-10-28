@@ -39,3 +39,21 @@ La suite de cumplimiento ya corrió con un agente real. ARCHITECTURE debe decir 
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
   - type: docs
+
+## Cierre
+
+### Resumen
+
+ARCHITECTURE §16 anota los resultados de la suite del 2026-10-28 con Claude Code 2.1.312: cinco ejecuciones de los cuatro escenarios, las cinco cumplidas, sin violaciones ni bloqueos del guard, con 4 a 14 llamadas a herramientas por ejecución. Nombra también los agentes que faltan. §18 deja la fase 3 «en curso»: todo su contenido está hecho, pero su criterio de salida, una suite estable con al menos cuatro agentes, sigue abierto.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Cinco ejecuciones con un solo agente no bastan para llamar estable a la suite, así que la fase 3 no se marca como hecha.
+
+### Pendientes
+
+- Ejecutar `pnpm evals` con Codex, Gemini CLI, OpenCode y Cursor CLI, con su sesión, y repetir cada escenario varias veces antes de marcar la fase 3.

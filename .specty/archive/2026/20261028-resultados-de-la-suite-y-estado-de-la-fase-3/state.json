@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-resultados-de-la-suite-y-estado-de-la-fase-3",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-resultados-de-la-suite-y-estado-de-la-fase-3",
   "baseCommit": "188d6aa314a20d1ac5dd7c86d13536a0ac5abb8b",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:40d827b87e40e606960d017d3406124521fc48897b582024e4686232c0e16742",
@@ -34,12 +34,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "abec31dcea7645bdba68e47748df50042e418e55",
+      "attempts": 1,
       "startedAt": "2026-10-28T17:26:22.078Z",
       "doneAt": "2026-10-28T17:26:53.408Z",
-      "summary": "ARCHITECTURE 16 anota los resultados de Claude Code y 18 deja la fase 3 en curso con lo que falta"
+      "summary": "ARCHITECTURE 16 anota los resultados de Claude Code y 18 deja la fase 3 en curso con lo que falta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -50,5 +50,6 @@
     "A": 2,
     "AC": 2,
     "T": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T17:30:46.491Z"
 }
