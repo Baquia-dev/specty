@@ -58,7 +58,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: los textos de la pregunta del flujo y del proyecto nuevo sin flujo
+- [x] T1: los textos de la pregunta del flujo y del proyecto nuevo sin flujo
   - files: packages/core/src/cards/init.ts, packages/core/src/cards/index.ts, packages/core/test/cards/init.test.ts
   - ac: AC1, AC2, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/init.test.ts

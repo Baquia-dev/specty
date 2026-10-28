@@ -6,6 +6,13 @@
   "branch": "specty/20261027-init-detecta-y-pregunta-el-flujo-de-git",
   "baseCommit": "0445983eeb54af55bce9cca2794c24005f924c23",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f22df1f881583c0c676405728e2cd8852bcf1656fcaca0e24bff3583cc52607",
+    "at": "2026-10-28T00:06:57.145Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -33,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "400932dfe9ecfa457aa40d355c5a51563889377c",
+      "startedAt": "2026-10-28T00:06:57.544Z",
+      "doneAt": "2026-10-28T00:09:03.706Z",
+      "summary": "cards/init.ts: flowQuestion y flowChoices (los cuatro flujos con sus ramas; el detectado primero y marcado; sin él, Specty primero), noFlowWarning, e InitView.chooseFlow para que el SIGUIENTE de un proyecto nuevo pida elegir el flujo con init --git-flow."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 7,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6f22df1f881583c0c676405728e2cd8852bcf1656fcaca0e24bff3583cc52607",
-    "at": "2026-10-28T00:06:57.145Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

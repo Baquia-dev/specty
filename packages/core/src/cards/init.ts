@@ -75,6 +75,56 @@ export function developLine(from: string, lang: Lang): string {
   );
 }
 
+const FLOW_TITLES: Readonly<Record<GitFlow, string>> = {
+  specty: "Specty",
+  github: "GitHub Flow",
+  gitflow: "Git Flow",
+  trunk: "Trunk",
+};
+
+/** `init`'s question to a person, after the agents: which git flow names the changes' branches. */
+export function flowQuestion(detected: GitFlow | undefined, lang: Lang): string {
+  const t = translator(lang);
+  return detected === undefined
+    ? t(
+        "¿Qué flujo de git sigue este repositorio? Specty nombrará así las ramas de los cambios.",
+        "Which git flow does this repository follow? Specty will name the changes' branches by it.",
+      )
+    : t(
+        "¿Qué flujo de git sigue este repositorio? El detectado va primero; Specty nombrará así las ramas de los cambios.",
+        "Which git flow does this repository follow? The detected one comes first; Specty will name the changes' branches by it.",
+      );
+}
+
+/**
+ * The answers to `flowQuestion`, each with its branches: the `detected` one first and saying so;
+ * then Specty's own, which keeps the names of always, GitHub Flow, Git Flow and trunk.
+ */
+export function flowChoices(
+  detected: GitFlow | undefined,
+  lang: Lang,
+): readonly { readonly value: GitFlow; readonly label: string }[] {
+  const t = translator(lang);
+  const order = Object.keys(FLOW_TITLES).filter((flow): flow is GitFlow => flow !== detected);
+  return (detected === undefined ? order : [detected, ...order]).map((flow) => {
+    const [es, en] = FLOW_BRANCHES[flow];
+    const label = `${FLOW_TITLES[flow]}: ${t(es, en)}`;
+    return {
+      value: flow,
+      label: flow === detected ? `${label} (${t("detectado", "detected")})` : label,
+    };
+  });
+}
+
+/** A new project ended `init` with no git flow: its changes' branches keep Specty's names. */
+export function noFlowWarning(command: string, lang: Lang): string {
+  const flows = GIT_FLOWS.join("|");
+  return translator(lang)(
+    `Proyecto nuevo sin flujo de git: las ramas de los cambios serán specty/<id> hasta que lo elijas con \`${command} init --git-flow <${flows}>\`.`,
+    `New project without a git flow: the changes' branches will be specty/<id> until you choose one with \`${command} init --git-flow <${flows}>\`.`,
+  );
+}
+
 /** What `init` did with `.specty/config.yaml`: created it, added the keys it lacked, or left it. */
 export function configLine(created: boolean, added: readonly string[], lang: Lang): string {
   const t = translator(lang);
@@ -201,6 +251,8 @@ export interface InitView {
   readonly unfilled: readonly string[];
   /** In a new project, how PRODUCT.md was written. */
   readonly product?: "interviewed" | "skeleton";
+  /** A new project ended with no git flow: its next step chooses one. */
+  readonly chooseFlow?: boolean;
 }
 
 /** `specty init` done. Next comes AGENTS.md, or in a new project, its first change. */
@@ -217,7 +269,7 @@ export function initCard(view: InitView, ctx: CardContext): Output {
     next:
       view.product === undefined
         ? existingProjectNext(view.unfilled, ctx)
-        : newProjectNext(view.product === "interviewed", ctx),
+        : newProjectNext(view.product === "interviewed", ctx, view.chooseFlow === true),
   };
 }
 
@@ -241,18 +293,36 @@ function existingProjectNext(unfilled: readonly string[], ctx: CardContext): str
   );
 }
 
-/** What comes after `init` in a new project, for whoever ran it. */
-export function newProjectNext(interviewed: boolean, ctx: CardContext): string {
+/**
+ * What comes after `init` in a new project, for whoever ran it; first, when it has no git flow
+ * (`chooseFlow`), choosing one.
+ */
+export function newProjectNext(interviewed: boolean, ctx: CardContext, chooseFlow = false): string {
   const t = translator(ctx.lang);
-  return interviewed
+  if (interviewed) {
+    const first = t(
+      "pídele a tu agente el primer cambio: el esqueleto del proyecto, a partir de PRODUCT.md.",
+      "ask your agent for the first change: the project's skeleton, from PRODUCT.md.",
+    );
+    const flows = GIT_FLOWS.join("|");
+    return chooseFlow
+      ? t(
+          `elige el flujo de git con \`${ctx.command} init --git-flow <${flows}>\` y ${first}`,
+          `choose the git flow with \`${ctx.command} init --git-flow <${flows}>\` and ${first}`,
+        )
+      : first;
+  }
+  const flows = (or: string) => `${GIT_FLOWS.slice(0, -1).join(", ")} ${or} ${GIT_FLOWS.at(-1)}`;
+  const ask = chooseFlow
     ? t(
-        "pídele a tu agente el primer cambio: el esqueleto del proyecto, a partir de PRODUCT.md.",
-        "ask your agent for the first change: the project's skeleton, from PRODUCT.md.",
+        `pregúntale al usuario qué flujo de git seguirá (${flows("o")}) y ejecuta \`${ctx.command} init --git-flow <flujo>\`; luego hazle`,
+        `ask the user which git flow it will follow (${flows("or")}) and run \`${ctx.command} init --git-flow <flow>\`; then ask them`,
       )
-    : t(
-        `es un proyecto nuevo: hazle al usuario las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con \`${ctx.command} new "Esqueleto del proyecto" --request "<petición literal del usuario>"\`.`,
-        `this is a new project: ask the user the questions in PRODUCT.md, fill it in with their answers and create the first change, the project's skeleton, with \`${ctx.command} new "Project skeleton" --request "<the user's literal request>"\`.`,
-      );
+    : t("hazle al usuario", "ask the user");
+  return t(
+    `es un proyecto nuevo: ${ask} las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con \`${ctx.command} new "Esqueleto del proyecto" --request "<petición literal del usuario>"\`.`,
+    `this is a new project: ${ask} the questions in PRODUCT.md, fill it in with their answers and create the first change, the project's skeleton, with \`${ctx.command} new "Project skeleton" --request "<the user's literal request>"\`.`,
+  );
 }
 
 /** What `init --dry-run` would create or change, with paths as the person reads them. */
