@@ -31,12 +31,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "aead6bbf6a3a42be2af21c236f61e6706466cc0d",
+      "attempts": 1,
       "startedAt": "2026-10-28T17:39:47.275Z",
       "doneAt": "2026-10-28T17:45:09.419Z",
-      "summary": "init.ts se queda con el comando (opciones, idioma, migración, commit, informe); install, installTarget, writeProjectFiles y sus tipos pasan a install/install.ts sin cambios; tests de init sin tocar"
+      "summary": "init.ts se queda con el comando (opciones, idioma, migración, commit, informe); install, installTarget, writeProjectFiles y sus tipos pasan a install/install.ts sin cambios; tests de init sin tocar",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "163536cf2424a450c13aeab42fef22b575309d85",
+      "startedAt": "2026-10-28T17:45:09.743Z",
+      "doneAt": "2026-10-28T17:49:52.136Z",
+      "summary": "Los textos de doctor de cada agente pasan a cards/doctor-agents.ts (AGENT_WRITERS, como MCP_WRITERS); DoctorLine sigue entero en doctor.ts; tests de cards sin tocar"
     }
   },
   "pending": {

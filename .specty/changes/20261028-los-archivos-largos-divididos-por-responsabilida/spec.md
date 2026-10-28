@@ -49,7 +49,7 @@ kind: standard
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/init-agents.test.ts test/init-commit.test.ts test/init-git-flow.test.ts test/init-language.test.ts test/init-reversible.test.ts
   - type: refactor
-- [ ] T2: Las líneas de doctor de cada agente, en su propio archivo
+- [x] T2: Las líneas de doctor de cada agente, en su propio archivo
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/core/test/cards/doctor.test.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm sources && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
