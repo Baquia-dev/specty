@@ -7,3 +7,7 @@
 {"ts":"2026-10-28T10:26:11.676Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"05b19fd72cc7d878273e02517cffa49dfc91cf94"}}
 {"ts":"2026-10-28T10:31:16.632Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm test","exit":0,"ms":141878,"tree":"sha256:bb91cdbd4ab0aabf1679005e20e75f104a4f257f04182de9441013f39b409640"}}
 {"ts":"2026-10-28T10:31:16.633Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"formats nombra testCycle y unlocked de spec.approved; ARCHITECTURE §4 y §12 explican el ciclo de los ajustes con contract."}}
+{"ts":"2026-10-28T10:33:53.943Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":148851,"tree":"sha256:bb91cdbd4ab0aabf1679005e20e75f104a4f257f04182de9441013f39b409640"}}
+{"ts":"2026-10-28T10:33:53.944Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T10:34:20.819Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:9f3f8dafc7fa27a718a30c30d4d5a0768daafe9ee39d93f3cbf02848626568a7","size":"M","warnings":0}}
+{"ts":"2026-10-28T10:34:21.036Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

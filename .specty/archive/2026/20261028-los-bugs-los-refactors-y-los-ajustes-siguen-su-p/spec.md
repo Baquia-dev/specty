@@ -66,3 +66,29 @@ Los dos cambios anteriores de C4 ya dan su ciclo a los bugs y a los refactors co
 ## Riesgos
 
 - R1: Un criterio reescrito con otras palabras pero el mismo sentido desbloquea sus tests sin necesidad. Mitigación: el agente los vuelve a enviar tal cual si siguen valiendo, y la persona los aprueba en el gate 2.
+
+## Cierre
+
+### Resumen
+
+Con este corte, y los dos cambios anteriores, C4 queda completo:
+- **Bugs:** un bug pasa por el rojo y queda bloqueado sin la persona.
+- **Refactors:** un `refactor` o un `perf` no puede quitar aserciones con `contract`.
+- **Refinamientos:** el ajuste que modifica un criterio desbloquea los tests que llevan su id (`spec.approved` anota `unlocked`) y vuelve a la fase de tests con el ciclo de una feature y el gate 2, aunque sus tareas sean `fix`.
+- **Defectos:** un ajuste que solo añade un `fix` sigue el ciclo de un bug.
+
+`flow/adjusted-tests.ts` decide el ciclo al aprobar, y `state.json` lo guarda en `testCycle` mientras el cambio está en `testing`. formats y ARCHITECTURE §4 y §12 lo documentan.
+
+### Desviaciones
+
+- La construcción del estado aprobado pasó a `approvalState` en `approve.ts`: con el ciclo y el desbloqueo, `approved` llegaba a 51 líneas y a complejidad 11.
+- La prueba del defecto añade su test nuevo a «Archivos», porque un ajuste no puede usar en una tarea un archivo que no está ahí.
+
+### Decisiones
+
+- El ciclo se decide al aprobar y se guarda, y no al enviar los tests: al enviarlos ya no queda la revisión aprobada antes del ajuste para comparar qué criterios cambiaron.
+- Un criterio nuevo no desbloquea nada: aún no tiene tests bloqueados.
+
+### Pendientes
+
+- La UI de la fase de tests, de los bloqueos y de la matriz de criterios (C6).
