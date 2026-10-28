@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-glosario-del-dominio-de-specty",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-glosario-del-dominio-de-specty",
   "baseCommit": "4eb864333549c91c173f5a9d718cd2f4fb71ed8f",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cec7f1227ac8680e7cff2f890e0316d91a622a78",
+      "attempts": 1,
       "startedAt": "2026-10-28T08:25:31.683Z",
       "doneAt": "2026-10-28T08:26:00.988Z",
-      "summary": "docs/dominio.md: 15 términos de Specty que un agente podría nombrar mal, de los más concretos a los más comunes, con su nombre en el código."
+      "summary": "docs/dominio.md: 15 términos de Specty que un agente podría nombrar mal, de los más concretos a los más comunes, con su nombre en el código.",
+      "scopeExtra": []
     }
   },
   "pending": {

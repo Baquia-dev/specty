@@ -19,3 +19,9 @@ Specty ya trae a las tarjetas las definiciones del glosario del dominio, pero su
   - ac: —
   - verify: specty doctor
   - type: docs
+
+## Cierre
+
+### Resumen
+
+docs/dominio.md: 15 términos de Specty que un agente podría nombrar mal, de los más concretos a los más comunes, con su nombre en el código.
