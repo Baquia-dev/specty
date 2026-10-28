@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as z from "zod";
-import { branchPatternIssue, GIT_FLOWS, type GitFlow } from "../branches";
 import { defaultGlossary } from "../glossary";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
+import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
 
 /** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
 export type TestsPolicy = "contract" | "required" | "recommended" | "off";
@@ -58,22 +58,7 @@ export interface ResolvedConfig {
   /** The project's glossary (formats.md §6); unset, the default of its language. */
   readonly glossary: string;
   readonly retro: { readonly mode: "agent" | "minimal" };
-  readonly git: {
-    readonly branchPerChange: boolean;
-    /** `new` creates each change in a worktree of its own (needs `branchPerChange`). */
-    readonly worktrees: boolean;
-    /**
-     * What prepares a new worktree, such as installing dependencies; `false` runs nothing.
-     * Unset: the install command of the stack detected there.
-     */
-    readonly setup?: string | false;
-    /** The branch changes start from and go to when finished. Unset: the main branch. */
-    readonly target?: string;
-    /** How the changes' branches are named (`branchName`). Unset: Specty's own, `specty/<id>`. */
-    readonly flow?: GitFlow;
-    /** A name with `{type}`, `{slug}` and `{id}` for the changes' branches, over `flow`. */
-    readonly branchPattern?: string;
-  };
+  readonly git: GitConfig;
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
   /**
@@ -117,7 +102,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   policy: { tests: "recommended" },
   glossary: defaultGlossary("en"),
   retro: { mode: "agent" },
-  git: { branchPerChange: true, worktrees: true },
+  git: DEFAULT_GIT,
   team: { approvers: [], requirePrReview: true },
   ui: { port: "auto", requireUserPresence: false },
 };
@@ -178,23 +163,7 @@ export const ConfigSchema = z.strictObject({
     .optional(),
   glossary: z.string().min(1).optional(),
   retro: z.strictObject({ mode: z.enum(["agent", "minimal"]).optional() }).optional(),
-  git: z
-    .strictObject({
-      branchPerChange: z.boolean().optional(),
-      worktrees: z.boolean().optional(),
-      setup: z.union([z.string().min(1), z.literal(false)]).optional(),
-      target: z.string().min(1).optional(),
-      flow: z.enum(GIT_FLOWS).optional(),
-      branchPattern: z
-        .string()
-        .min(1)
-        .superRefine((pattern, context) => {
-          const issue = branchPatternIssue(pattern);
-          if (issue !== undefined) context.addIssue({ code: "custom", message: issue });
-        })
-        .optional(),
-    })
-    .optional(),
+  git: GitSchema.optional(),
   team: z
     .strictObject({
       approvers: z.array(z.string().min(1)).optional(),
@@ -261,7 +230,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     policy: { tests: input.policy?.tests ?? base.policy.tests },
     glossary: glossaryOf(input),
     retro: { mode: input.retro?.mode ?? base.retro.mode },
-    git: gitOf(input),
+    git: resolveGit(input.git),
     team: teamOf(input),
     ui: uiOf(input),
     ...(review !== undefined ? { review } : {}),
@@ -321,18 +290,6 @@ function linesOf(input: ConfigInput): ResolvedConfig["lines"] {
     },
     // The person's paths add to the data folders, which stay out.
     exclude: [...new Set([...base.exclude, ...(input.lines?.exclude ?? [])])],
-  };
-}
-
-function gitOf(input: ConfigInput): ResolvedConfig["git"] {
-  const { git } = input;
-  return {
-    branchPerChange: git?.branchPerChange ?? DEFAULT_CONFIG.git.branchPerChange,
-    worktrees: git?.worktrees ?? DEFAULT_CONFIG.git.worktrees,
-    ...(git?.setup !== undefined ? { setup: git.setup } : {}),
-    ...(git?.target !== undefined ? { target: git.target } : {}),
-    ...(git?.flow !== undefined ? { flow: git.flow } : {}),
-    ...(git?.branchPattern !== undefined ? { branchPattern: git.branchPattern } : {}),
   };
 }
 

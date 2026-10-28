@@ -54,7 +54,7 @@ kind: standard
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm sources && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
   - type: refactor
-- [ ] T3: La sección git de la configuración, en su propio archivo
+- [x] T3: La sección git de la configuración, en su propio archivo
   - files: packages/core/src/schema/config.ts, packages/core/src/schema/git.ts, packages/core/test/schema/schema.test.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema
