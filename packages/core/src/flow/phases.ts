@@ -24,10 +24,10 @@ export const PHASES: readonly Phase[] = [
 ];
 
 /**
- * Governed code: blocked, open only for the active task's scope, or only for the files a pending
- * incorporation of the main branch brings together.
+ * Governed code: blocked, open only for the active task's scope, only for the tests of the
+ * change's files, or only for the files a pending incorporation of the main branch brings together.
  */
-export type CodeAccess = "blocked" | "active-task" | "integration";
+export type CodeAccess = "blocked" | "active-task" | "tests" | "integration";
 
 /**
  * Edits to `spec.md`: free (draft, review), append-only (adjusting: new tasks and criteria,
@@ -46,8 +46,8 @@ export interface PhasePermissions {
 const PERMISSIONS: Readonly<Record<Exclude<Phase, "closing">, PhasePermissions>> = {
   draft: { code: "blocked", spec: "free", waitingFor: "agent" },
   review: { code: "blocked", spec: "free", waitingFor: "human" },
-  // ADR 0014: the tests of the criteria before the code. No change enters it yet.
-  testing: { code: "blocked", spec: "locked", waitingFor: "agent" },
+  // ADR 0014: the tests of the criteria, before the code.
+  testing: { code: "tests", spec: "locked", waitingFor: "agent" },
   implementing: { code: "active-task", spec: "locked", waitingFor: "agent" },
   acceptance: { code: "blocked", spec: "locked", waitingFor: "human" },
   adjusting: { code: "blocked", spec: "append-only", waitingFor: "agent" },

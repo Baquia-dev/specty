@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
-import { DEFAULT_CONFIG, parseSpec, validateSpec } from "../../src";
+import { DEFAULT_CONFIG, parseSpec, testsFirst, validateSpec } from "../../src";
 import { check, fixture, withConfig } from "../helpers";
 
 const STANDARD = fixture("standard.es.md");
@@ -41,6 +41,34 @@ describe("tests policy", () => {
     const diagnostics = validateSpec(spec, { phase: "draft", config: required, locations });
     expect(diagnostics.find((entry) => entry.code === "task-no-tests")?.severity).toBe("error");
     expect(check(STANDARD, { config: withConfig({ policy: { tests: "off" } }) })).toEqual([]);
+  });
+
+  it("AC1: is an error under contract too", () => {
+    const contract = withConfig({ policy: { tests: "contract" } });
+    const { spec, locations } = parseSpec(STANDARD);
+    const diagnostics = validateSpec(spec, { phase: "draft", config: contract, locations });
+    expect(diagnostics.find((entry) => entry.code === "task-no-tests")?.severity).toBe("error");
+  });
+});
+
+describe("testsFirst", () => {
+  const { spec } = parseSpec(STANDARD);
+  const typed = (type: string) =>
+    parseSpec(STANDARD.replace(/( {2}- ac: .+)/g, `$1\n  - type: ${type}`)).spec;
+
+  it("AC2: sends a standard change with a feat task through the testing phase under contract", () => {
+    expect(spec.sections.tasks?.items.every((task) => task.type === undefined)).toBe(true);
+    expect(testsFirst(spec, "contract")).toBe(true);
+    expect(testsFirst(typed("feat"), "contract")).toBe(true);
+  });
+
+  it("AC3: does not without contract, without a feat task or for another kind of change", () => {
+    for (const policy of ["required", "recommended", "off"] as const) {
+      expect(testsFirst(spec, policy), policy).toBe(false);
+    }
+    expect(testsFirst(typed("fix"), "contract")).toBe(false);
+    const quick = { ...spec, frontmatter: { ...spec.frontmatter, kind: "quick" as const } };
+    expect(testsFirst(quick, "contract")).toBe(false);
   });
 });
 

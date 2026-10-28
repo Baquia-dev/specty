@@ -269,11 +269,17 @@ async function guardContext(session: Session) {
   if (active === undefined || isFinished(active.state)) return base;
   const { state } = active;
   const taskEntry = Object.entries(state.tasks).find(([, task]) => task.status === "active");
+  const testing = state.phase === "testing";
   const spec =
-    taskEntry === undefined
+    taskEntry === undefined && !testing
       ? undefined
       : parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const files = spec?.sections.tasks?.items.find((task) => task.id === taskEntry?.[0])?.files ?? [];
+  // In the testing phase, the tests of any of the change's files may be written (ADR 0014).
+  const planned = [
+    ...(spec?.sections.files?.items ?? []).map((entry) => entry.path),
+    ...(spec?.sections.tasks?.items ?? []).flatMap((task) => task.files),
+  ];
   const change: GuardChange = {
     id: state.id,
     kind: state.kind,
@@ -283,6 +289,7 @@ async function guardContext(session: Session) {
     ...(taskEntry !== undefined
       ? { task: { id: taskEntry[0], files, extras: taskEntry[1].scopeExtra } }
       : {}),
+    ...(testing ? { files: planned } : {}),
     ...(state.integration !== undefined && isIntegrating(state)
       ? { integration: { target: state.integration.target, paths: state.integration.paths } }
       : {}),

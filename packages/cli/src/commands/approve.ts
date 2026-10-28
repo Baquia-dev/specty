@@ -25,6 +25,7 @@ import {
   specChangedCard,
   specDelta,
   specHash,
+  testsFirst,
   transition,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
@@ -185,6 +186,7 @@ async function approved(
       validationErrors: analysis.valid ? 0 : 1,
       pendingHighImpact: 0,
       remainingTasks,
+      testsFirst: testsFirst(spec, session.config.policy.tests),
     },
   });
   if (!moved.ok) return blockedCard(header, moved.code, askAgentNext(session.cards));

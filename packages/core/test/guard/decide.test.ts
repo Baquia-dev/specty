@@ -108,6 +108,25 @@ describe("decideGuard on files", () => {
     if (!denied.allow) expect(denied.next).toContain("specty scope add src/b.ts --task T1");
   });
 
+  it("AC4: opens only the change's tests in the testing phase, and sends the rest to propose", () => {
+    const testing: GuardChange = {
+      ...change("testing"),
+      files: ["src/a.ts", "test/a.test.ts"],
+    };
+    expect(
+      allowed(write("test/a.test.ts", "src/a.test.ts", "src/__tests__/a.ts"), ctx(testing)),
+    ).toBe(true);
+    for (const path of ["src/a.ts", "src/b.ts", "lib/other.test.ts"]) {
+      const denied = decideGuard(write(path), ctx(testing));
+      expect(denied, path).toMatchObject({ allow: false, rule: "phase" });
+      if (!denied.allow) {
+        expect(denied.reason).toContain("fase de tests");
+        expect(denied.next).toContain("`specty propose`");
+      }
+    }
+    expect(allowed(write("README.md"), ctx(testing))).toBe(true);
+  });
+
   it("judges each path of an edit that writes and deletes at once, such as a patch", () => {
     const files = (writes: string[], deletes: string[] = []): GuardAction => ({
       kind: "files",

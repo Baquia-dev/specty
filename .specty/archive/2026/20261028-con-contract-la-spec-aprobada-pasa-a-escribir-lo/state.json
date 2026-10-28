@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261028-con-contract-la-spec-aprobada-pasa-a-escribir-lo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-con-contract-la-spec-aprobada-pasa-a-escribir-lo",
+  "baseCommit": "f34257247769a9e00ff21d651fffd295eb14c8d2",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e8271350ca555aeab0550490b2c125d1b7f8cc2b011d854f9420912c2c48f42e",
+    "at": "2026-10-28T05:49:06.282Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f549340b5d9fe9621b3cc8480ad86cc86d35924c018f9298fff48445a8e2c413",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:abef3abba6cfc2568fdfb90d62ad720e28bb5d614243a72f4773e29c238b5cd7",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f757d86694ad1de40e8cb6f283ad48dbbd3bc989f479c71a1c6d216f0c0a34e3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "75316401287dcdc91f07472bcbd091514ae0d771",
+      "attempts": 1,
+      "startedAt": "2026-10-28T05:49:07.032Z",
+      "doneAt": "2026-10-28T05:57:27.025Z",
+      "summary": "policy.tests: contract (sin tests es error, como required); testsFirst(spec, policy) en validate/quality.ts; approve lleva testsFirst y, con tareas pendientes, va de review a testing; approve.ts lo calcula con la spec.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "ede00b10824d1a63bd0c0a30d231e1b61f883e5f",
+      "attempts": 1,
+      "startedAt": "2026-10-28T05:57:27.362Z",
+      "doneAt": "2026-10-28T06:03:14.302Z",
+      "summary": "En testing el código se abre a los tests (CodeAccess tests); guard/testing.ts deja escribir solo los tests de los archivos del cambio (declarados o implícitos) y rechaza lo demás con la regla phase y un SIGUIENTE a propose; enforce/guard.ts le pasa los archivos.",
+      "scopeExtra": [
+        "packages/core/src/guard/testing.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5322756f7d8ab6fccb27d28b0ad8fc24c0720df3",
+      "attempts": 1,
+      "startedAt": "2026-10-28T06:03:14.622Z",
+      "doneAt": "2026-10-28T06:08:13.192Z",
+      "summary": "agent-stop cuenta testing entre las fases con plan aprobado; formats §2 y §6 nombran contract y cuándo se entra en testing; ARCHITECTURE §4 la dibuja en el diagrama, su fila deja escribir los tests del cambio y el párrafo explica entrada, guard y fin de turno.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 3,
+    "R": 1,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-28T06:11:18.822Z"
+}
