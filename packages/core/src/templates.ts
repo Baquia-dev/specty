@@ -81,6 +81,8 @@ export interface TemplateOptions {
   readonly files?: readonly FileEntry[];
   /** The first change of a new project: its skeleton (ARCHITECTURE §14). */
   readonly bootstrap?: boolean;
+  /** Sections that come written (`specty import`), in place of their hint. */
+  readonly prefilled?: Readonly<Partial<Record<SectionKey, string>>>;
 }
 
 /** Skeleton of a new spec: frontmatter, title and one hinted section per allowed section. */
@@ -103,14 +105,21 @@ export function specTemplate(options: TemplateOptions): string {
       ...(options.slice !== undefined ? { slice: options.slice } : {}),
     },
   }).trimEnd();
-  const sections = keys.map((key) => {
-    const prefilled =
-      key === "files" && options.files !== undefined && options.files.length > 0
-        ? options.files.map((entry) => fileLine(entry, lang)).join("\n")
-        : `<!-- ${(options.bootstrap === true ? BOOTSTRAP_HINTS[lang][key] : undefined) ?? HINTS[lang][key]} -->`;
-    return `## ${SECTION_TITLES[lang][key]}\n\n${prefilled}`;
-  });
+  const sections = keys.map((key) => `## ${SECTION_TITLES[lang][key]}\n\n${bodyOf(key, options)}`);
   return `${[header, ...sections].join("\n\n")}\n`;
+}
+
+/** A section's body in the skeleton: what came written, a retro's files, or its hint. */
+function bodyOf(key: SectionKey, options: TemplateOptions): string {
+  const { lang } = options;
+  const written = options.prefilled?.[key];
+  if (written !== undefined) return written;
+  if (key === "files" && options.files !== undefined && options.files.length > 0) {
+    return options.files.map((entry) => fileLine(entry, lang)).join("\n");
+  }
+  const hint =
+    (options.bootstrap === true ? BOOTSTRAP_HINTS[lang][key] : undefined) ?? HINTS[lang][key];
+  return `<!-- ${hint} -->`;
 }
 
 /** What `init` detected, for the first `.specty/config.yaml`. */

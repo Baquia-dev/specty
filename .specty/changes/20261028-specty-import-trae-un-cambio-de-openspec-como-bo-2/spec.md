@@ -67,7 +67,7 @@ Hoy Specty exporta a OpenSpec, pero quien ya trabaja con OpenSpec no puede traer
   - files: packages/exporters/src/import-openspec.ts, packages/exporters/src/index.ts, packages/exporters/test/import-openspec.test.ts, packages/core/src/cards/import.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC2
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty-exporters typecheck && pnpm --filter @baquia-dev/specty-exporters exec vitest run test/import-openspec.test.ts
-- [ ] T2: La plantilla rellena y los textos de la importación
+- [x] T2: La plantilla rellena y los textos de la importación
   - files: packages/core/src/templates.ts, packages/core/src/cards/import.ts, packages/core/src/cards/index.ts, packages/core/test/cards/import.test.ts
   - ac: AC2, AC3, AC4
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty-core typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/import.test.ts

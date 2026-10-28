@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "030f9b9236f3b3fdc70c77b5a6ecbcf166c46965",
+      "attempts": 1,
       "startedAt": "2026-10-28T16:20:48.027Z",
       "doneAt": "2026-10-28T16:21:16.124Z",
-      "summary": "parseOpenSpec lee proposal, tasks, design y specs de un cambio de OpenSpec en un ImportedChange de core, con given, when y outcome"
+      "summary": "parseOpenSpec lee proposal, tasks, design y specs de un cambio de OpenSpec en un ImportedChange de core, con given, when y outcome",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a3ec7ed6957755ed0c33d5093445a344067904c4",
+      "startedAt": "2026-10-28T16:21:16.467Z",
+      "doneAt": "2026-10-28T16:21:27.824Z",
+      "summary": "specTemplate acepta secciones ya escritas (bodyOf); los textos de la importación entraron con T1"
     }
   },
   "pending": {
