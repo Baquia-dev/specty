@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261028-retro-into-documenta-lo-preparado-como-ampliacio",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261028-retro-into-documenta-lo-preparado-como-ampliacio",
+  "baseCommit": "f654d6ae32c2e1cc73bdecc5d630d533ad66c6a6",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1ec3384184ec46dc49935efb62fc68e4d7974ab3470a0d72dc22148f32acebff",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7cb55c0a635253767390a895914fcf9a284911e58c9aa76799edce895b8b92e4",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:338a982f55cdfac4d3f4af0a22322d171665b9bc1d6c304738806c573590bf3b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:4575c18c585d917ec5deb763a4aa23f5ab4a6df079af9c43181006f652b749c4",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:1ac34a9ae93598800de527f8dd980cb80906d48c4366ef67d8ce7a9adc1fd386",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a038e9333d59e0a3fe262bc71513d3b0f40d1ac1ef673c0a39189770b7466022",
+    "at": "2026-10-28T14:34:50.391Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
