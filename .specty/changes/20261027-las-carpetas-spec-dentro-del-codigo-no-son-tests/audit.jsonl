@@ -1,0 +1,3 @@
+{"ts":"2026-10-28T04:15:44.836Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","type":"fix","branch":"specty/20261027-las-carpetas-spec-dentro-del-codigo-no-son-tests","request":"peocede"}}
+{"ts":"2026-10-28T04:16:19.061Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:38544d3778bcbbae453b6cb32d40961fee67cf05a9466d95ebefc0d092897c8e","size":"S","warnings":0}}
+{"ts":"2026-10-28T04:16:25.714Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:38544d3778bcbbae453b6cb32d40961fee67cf05a9466d95ebefc0d092897c8e","channel":"delegated","delegated":true}}

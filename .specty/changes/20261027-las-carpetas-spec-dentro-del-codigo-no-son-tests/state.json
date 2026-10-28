@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261027-las-carpetas-spec-dentro-del-codigo-no-son-tests",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261027-las-carpetas-spec-dentro-del-codigo-no-son-tests",
+  "baseCommit": "94c82d8cc021b482ab82a700e4a332368808b032",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:38544d3778bcbbae453b6cb32d40961fee67cf05a9466d95ebefc0d092897c8e",
+    "at": "2026-10-28T04:16:25.700Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
