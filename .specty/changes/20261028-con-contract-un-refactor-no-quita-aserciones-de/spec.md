@@ -18,7 +18,7 @@ Un `refactor` o un `perf` no cambia lo que hace el código, así que tampoco deb
 
 ## Tareas
 
-- [ ] T1: Con contract, task done no completa un refactor que quita aserciones
+- [x] T1: Con contract, task done no completa un refactor que quita aserciones
   - files: packages/cli/src/commands/task.ts, packages/core/src/cards/task.ts, packages/cli/test/assertions.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/assertions.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
   - type: feat

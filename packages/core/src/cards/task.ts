@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
+
+import { counted } from "../i18n";
 import { type Output, section } from "../output";
+import type { AssertionLoss } from "../scope/assertions";
 import { assertionWarnings, riskWarnings } from "./acceptance";
 import { blockedCard, withLead } from "./flow";
 import { longFileWarnings, splitAdvice } from "./lines";
@@ -15,7 +18,14 @@ export type TaskDoneRefusal =
   /** Every next task card repeats a summary or a finding, so neither may pass NOTE_MAX. */
   | { readonly reason: "too-long"; readonly note: "summary" | "finding"; readonly length: number }
   | { readonly reason: "empty"; readonly note: "summary" | "finding"; readonly task: string }
-  | { readonly reason: "scope-pending"; readonly task: string; readonly request: string };
+  | { readonly reason: "scope-pending"; readonly task: string; readonly request: string }
+  /** Under `policy.tests: contract`, a refactor or a perf keeps the tests that existed (ADR 0014). */
+  | {
+      readonly reason: "assertions";
+      readonly task: string;
+      readonly type: "refactor" | "perf";
+      readonly losses: readonly AssertionLoss[];
+    };
 
 /** A `specty task done` that completes nothing: `invalid` when its notes are what is wrong. */
 export function taskDoneRefusalCard(
@@ -52,7 +62,36 @@ export function taskDoneRefusalCard(
           `keep working within the scope and ask the user for \`${ctx.command} approve --scope ${refusal.request}\`.`,
         ),
       );
+    case "assertions":
+      return assertionsRefusalCard(refusal, header, ctx);
   }
+}
+
+/** A refactor or a perf that removed assertions from tests that already existed, under contract. */
+function assertionsRefusalCard(
+  refusal: Extract<TaskDoneRefusal, { readonly reason: "assertions" }>,
+  header: string,
+  ctx: CardContext,
+): Output {
+  const t = translator(ctx.lang);
+  const { task, type } = refusal;
+  return {
+    status: "blocked",
+    header,
+    blocks: section(
+      undefined,
+      refusal.losses.map(({ path, removed }) =>
+        t(
+          `${task} es un ${type} y quitó ${counted(removed, "aserción", "aserciones")} de ${path}, un test que ya existía: con \`policy.tests: contract\`, no cambia lo que comprueban los tests.`,
+          `${task} is a ${type} and removed ${counted(removed, "assertion", "assertions")} from ${path}, a test that already existed: under \`policy.tests: contract\`, it does not change what the tests check.`,
+        ),
+      ),
+    ),
+    next: t(
+      `devuelve las aserciones al test y vuelve a ejecutar \`${ctx.command} task done ${task}\`; si el test estaba mal, para y explícaselo al usuario.`,
+      `put the assertions back in the test and run \`${ctx.command} task done ${task}\` again; if the test was wrong, stop and explain it to the user.`,
+    ),
+  };
 }
 
 /** A summary or a finding that is too long or empty. */

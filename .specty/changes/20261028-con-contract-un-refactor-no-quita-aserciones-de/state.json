@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-con-contract-un-refactor-no-quita-aserciones-de",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-con-contract-un-refactor-no-quita-aserciones-de",
   "baseCommit": "01873231d24767c52db647dc16330d463bf7332c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c95fe015da7bb3d964475f8e2fa0365f4852cf9ce07b85631d01563fb645e531",
+    "at": "2026-10-28T10:04:32.102Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -16,19 +23,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "726b0ce09f49e9a2cc2675cb8b3b18aa02dc1508",
+      "startedAt": "2026-10-28T10:04:32.521Z",
+      "doneAt": "2026-10-28T10:09:10.099Z",
+      "summary": "Con contract, task done no completa un refactor o un perf que quita aserciones de un test que ya existía: lo comprueba antes de verificar y dice cuántas y de qué test (taskDoneRefusalCard, motivo assertions); sin contract sigue siendo un aviso. formats §6 y ARCHITECTURE §4."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c95fe015da7bb3d964475f8e2fa0365f4852cf9ce07b85631d01563fb645e531",
-    "at": "2026-10-28T10:04:32.102Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
