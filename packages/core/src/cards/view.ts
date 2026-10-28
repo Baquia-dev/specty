@@ -149,6 +149,8 @@ export interface ChangeView {
   /** In acceptance, each criterion of the spec with the tests that carry its id. */
   readonly criteriaTests?: readonly CriterionTestsView[];
   readonly closingSubmitted: boolean;
+  /** In the testing phase, the tests were sent and wait for the person (ADR 0014). */
+  readonly testsSubmitted?: boolean;
   /** `spec.md` no longer matches the approved revision. */
   readonly specChanged: boolean;
   /** Only while an incorporation is pending: it comes before the phase's work. */

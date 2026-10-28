@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4093c5da645e43e3a3d06b4fdfef5ef72b6e2d80",
+      "attempts": 1,
       "startedAt": "2026-10-28T06:20:13.948Z",
       "doneAt": "2026-10-28T06:30:16.476Z",
-      "summary": "testsSubmittedAt en state.json; propose sigue en testing y approveTests (solo la persona, con los tests enviados) pasa a implementing; testing espera a la persona tras el envío; humanAction de testing es approve; tests.proposed y tests.approved en palabras."
+      "summary": "testsSubmittedAt en state.json; propose sigue en testing y approveTests (solo la persona, con los tests enviados) pasa a implementing; testing espera a la persona tras el envío; humanAction de testing es approve; tests.proposed y tests.approved en palabras.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "06a8aec2813f1852eb3143684c7823e0121dbe8d",
+      "startedAt": "2026-10-28T06:30:16.811Z",
+      "doneAt": "2026-10-28T06:38:35.639Z",
+      "summary": "cards/testing.ts: testsSubmittedCard (lo enviado y quién aprueba, también en modo delegado), testsRefusedCard, approveTestsQuestion y testsApprovedLine; ChangeView.testsSubmitted desde testsSubmittedAt; status espera a la persona con los tests enviados."
     }
   },
   "pending": {

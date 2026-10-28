@@ -62,6 +62,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
     rejected: rejectedAssumptions(spec, state),
     ...(await phaseFacts(session, change, spec, { tasks, audit, commits })),
     closingSubmitted: state.closingSubmittedAt !== undefined,
+    ...(state.testsSubmittedAt !== undefined ? { testsSubmitted: true } : {}),
     specChanged:
       state.phase === "implementing" &&
       state.approved !== undefined &&

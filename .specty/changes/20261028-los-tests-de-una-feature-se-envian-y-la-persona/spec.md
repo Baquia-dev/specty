@@ -72,7 +72,7 @@ Comprobar que los tests fallan antes de aceptarlos llega con el corte C2.
   - files: packages/core/src/schema/state.ts, packages/core/src/flow/machine.ts, packages/core/src/flow/phases.ts, packages/core/src/cards/human.ts, packages/core/src/cards/audit.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/flow test/cards
-- [ ] T2: Las tarjetas de los tests enviados y la vista del cambio
+- [x] T2: Las tarjetas de los tests enviados y la vista del cambio
   - files: packages/core/src/cards/testing.ts, packages/core/src/cards/view.ts, packages/core/src/cards/index.ts, packages/cli/src/flow/views.ts, packages/cli/src/commands/status.ts
   - ac: AC1, AC5
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards

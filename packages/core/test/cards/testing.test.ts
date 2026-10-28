@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  approveTestsQuestion,
   type CardContext,
   type ChangeView,
   nextCard,
   renderText,
   statusCard,
   type TaskView,
+  testsApprovedLine,
+  testsRefusedCard,
+  testsSubmittedCard,
 } from "../../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
@@ -77,6 +81,58 @@ describe("the card of the testing phase", () => {
     expect(text).toContain("with its id in the name (`AC1: …`)");
     expect(text).toContain("neither production code nor its signatures");
     expect(text).toMatch(/NEXT: .*`specty propose`/);
+  });
+});
+
+describe("the tests sent", () => {
+  const sent = { commit: "abc1234", files: ["src/app.test.ts", "src/greet.test.ts"] };
+
+  it("AC1: says what was committed and asks the user to approve it", () => {
+    const text = renderText(testsSubmittedCard("20261028-saludo", sent, ES), "es");
+    expect(text).toContain("SPECTY · 20261028-saludo · testing");
+    expect(text).toContain(
+      "TESTS ENVIADOS (commit abc1234):\n  src/app.test.ts\n  src/greet.test.ts",
+    );
+    expect(text).toContain(
+      "SIGUIENTE: pide al usuario que revise los tests y los apruebe con `specty approve`, y termina tu turno.",
+    );
+    const delegated = renderText(
+      testsSubmittedCard("20261028-saludo", sent, { ...EN, delegated: true }),
+      "en",
+    );
+    expect(delegated).toContain("TESTS SENT (commit abc1234)");
+    expect(delegated).toContain(
+      "NEXT: delegated mode: approve the tests yourself with `specty approve` and follow its output.",
+    );
+  });
+
+  it("AC1: keeps the change waiting for the person on `next`", () => {
+    expect(card([task("T1")])).not.toContain("Tests enviados");
+    const waiting = renderText(
+      nextCard({ change: { ...change([task("T1")]), testsSubmitted: true }, dirty: [] }, ES),
+      "es",
+    );
+    expect(waiting).toContain("Tests enviados; falta la aprobación del usuario.");
+    expect(waiting).toContain("`specty approve`");
+  });
+
+  it("AC2: says why nothing was sent: no new tests, or code changed with them", () => {
+    const none = testsRefusedCard("20261028-saludo", { reason: "no-tests" }, ES);
+    expect(none.status).toBe("blocked");
+    expect(renderText(none, "es")).toContain(
+      "No hay tests nuevos de los archivos del cambio que enviar.\nSIGUIENTE: escribe los tests de los criterios y vuelve a ejecutar `specty propose`.",
+    );
+    const code = testsRefusedCard("20261028-saludo", { reason: "code", paths: ["src/app.ts"] }, EN);
+    expect(renderText(code, "en")).toContain(
+      "In the testing phase only tests are sent; this code changed:\n  src/app.ts",
+    );
+  });
+
+  it("AC3: asks the person and records the approval in both languages", () => {
+    expect(approveTestsQuestion("Saludo", "es")).toBe("¿Aprobar los tests de «Saludo»?");
+    expect(approveTestsQuestion("Saludo", "en")).toBe('Approve the tests of "Saludo"?');
+    expect(testsApprovedLine("abc1234", "es")).toBe("Tests aprobados (commit abc1234).");
+    expect(testsApprovedLine("abc1234", "en")).toBe("Tests approved (commit abc1234).");
   });
 });
 

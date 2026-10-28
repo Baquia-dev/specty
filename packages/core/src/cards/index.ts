@@ -261,6 +261,13 @@ export {
   taskDoneCard,
   taskDoneRefusalCard,
 } from "./task";
+export {
+  approveTestsQuestion,
+  type TestsRefusal,
+  testsApprovedLine,
+  testsRefusedCard,
+  testsSubmittedCard,
+} from "./testing";
 export { effortLabel, effortLine, runNext, translator, verifyingNote } from "./text";
 export { invalidPortCard, uiOpenedCard, uiStoppedCard } from "./ui";
 export {

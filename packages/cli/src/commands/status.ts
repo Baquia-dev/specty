@@ -31,7 +31,8 @@ export async function status(session: Session): Promise<Output> {
             ? "human"
             : phasePermissions(
                 state.phase,
-                state.closingSubmittedAt !== undefined,
+                (state.phase === "testing" ? state.testsSubmittedAt : state.closingSubmittedAt) !==
+                  undefined,
                 isIntegrating(state),
               ).waitingFor,
         current,
