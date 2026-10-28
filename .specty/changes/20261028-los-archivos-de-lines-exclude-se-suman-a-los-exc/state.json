@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261028-los-archivos-de-lines-exclude-se-suman-a-los-exc",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-los-archivos-de-lines-exclude-se-suman-a-los-exc",
+  "baseCommit": "d0b1d42a3b4b71010a26e413e2222400429dff69",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:276f6b488a6e546c6a05316386df31e5cd4a2464f2535cc10b9952c81e3c057a",
+    "at": "2026-10-28T15:15:09.917Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
