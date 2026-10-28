@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-la-comprobacion-tras-un-comando-de-bash-no-culpa",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-la-comprobacion-tras-un-comando-de-bash-no-culpa",
   "baseCommit": "02935a2c27dbc39c7f422e176eb8cfb29b47370e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1fb840e5ccc7f7b45841b05dcbcafac7cb67a2fd84bad574d38e1163d42c016f",
+    "at": "2026-10-28T08:37:16.569Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -24,7 +31,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a385f28cec5a5ecc1dd0ab40d9910279943ddc52",
+      "startedAt": "2026-10-28T08:37:17.426Z",
+      "doneAt": "2026-10-28T08:44:18.703Z",
+      "summary": "withoutSpecty quita de lo que cambió un comando de Bash lo de la carpeta del cambio activo mientras un proceso vivo de Specty tiene su bloqueo (liveHolder en store/lock.ts); ARCHITECTURE §10."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -33,12 +50,5 @@
     "A": 2,
     "AC": 1,
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1fb840e5ccc7f7b45841b05dcbcafac7cb67a2fd84bad574d38e1163d42c016f",
-    "at": "2026-10-28T08:37:16.569Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

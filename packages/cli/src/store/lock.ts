@@ -61,6 +61,12 @@ export async function lockChange(git: Git, id: string, holder: LockHolder): Prom
   };
 }
 
+/** Who holds the lock of change `id`, when its process is alive. */
+export async function liveHolder(git: Git, id: string): Promise<LockHolder | undefined> {
+  const holder = await readHolder(await git.gitPath(lockOf(id)));
+  return holder !== undefined && alive(holder.pid) ? holder : undefined;
+}
+
 /** Creates the lock whole or not at all: written aside, then linked in place, which fails if it exists. */
 async function create(path: string, holder: LockHolder): Promise<boolean> {
   const draft = `${path}.${holder.pid}.tmp`;

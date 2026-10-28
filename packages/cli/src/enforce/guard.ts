@@ -25,7 +25,13 @@ import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } fro
 import { leavePending, type PendingKind, takePending } from "./pending";
 import { redirection, resolveAction } from "./place";
 import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
-import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
+import {
+  pruneSnapshots,
+  saveSnapshot,
+  takeSnapshot,
+  treeSnapshot,
+  withoutSpecty,
+} from "./shell-snapshot";
 import { worktreeHook } from "./worktree-hooks";
 
 const ALLOW: Verdict = { allow: true };
@@ -254,7 +260,7 @@ async function afterShell(session: Session, event: Record<string, unknown>): Pro
   const before = id === undefined ? undefined : await takeSnapshot(session, id);
   await pruneSnapshots(session);
   if (before === undefined) return ALLOW;
-  const changes = shellChanges(before, await treeSnapshot(session));
+  const changes = await withoutSpecty(session, shellChanges(before, await treeSnapshot(session)));
   return verdict(decideAfterShell(changes, await guardContext(session)), session);
 }
 

@@ -33,7 +33,7 @@ Tras cada comando de Bash, el guard compara la carpeta con la foto de antes y ju
 
 ## Tareas
 
-- [ ] T1: Lo que escribe un proceso de Specty con el bloqueo no cuenta tras un comando
+- [x] T1: Lo que escribe un proceso de Specty con el bloqueo no cuenta tras un comando
   - files: packages/cli/src/store/lock.ts, packages/cli/src/enforce/shell-snapshot.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/shell-snapshot.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/shell-snapshot.test.ts test/enforce.test.ts test/lock.test.ts
