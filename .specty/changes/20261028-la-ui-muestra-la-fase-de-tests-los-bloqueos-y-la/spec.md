@@ -77,7 +77,7 @@ El corte C6 de la épica «Tests como contrato» lleva a la UI lo que la termina
   - files: packages/ui/src/data/sample-tests.ts, packages/ui/src/data/sample-records.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-acceptance.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch
-- [ ] T5: Los tests de cada criterio en docs/ui.md y docs/ARCHITECTURE.md
+- [x] T5: Los tests de cada criterio en docs/ui.md y docs/ARCHITECTURE.md
   - files: docs/ui.md, docs/ARCHITECTURE.md
   - ac: AC4
   - type: docs

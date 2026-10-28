@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-la-ui-muestra-la-fase-de-tests-los-bloqueos-y-la",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-la-ui-muestra-la-fase-de-tests-los-bloqueos-y-la",
   "baseCommit": "0aa02403ba543ca822ff4cda6d563ae2c42cfff8",
   "revision": 1,
@@ -71,16 +71,25 @@
     },
     "T4": {
       "status": "done",
+      "baseCommit": "87d6a5761376b9af598db6ccf6332ee3d9f930f6",
+      "attempts": 1,
+      "startedAt": "2026-10-28T12:08:52.863Z",
+      "doneAt": "2026-10-28T12:21:18.511Z",
+      "summary": "El prototipo trae un cambio en testing con dos tests en rojo, que se aprueban y bloquean, y el cambio en aceptación trae los tests de sus criterios; los tests que cuentan el ejemplo pasan a 10 cambios y 6 decisiones (A4)",
       "scopeExtra": [
         "packages/ui/src/inbox/inbox-toolbar.test.ts",
         "packages/ui/src/inbox/inbox-view.test.ts",
         "packages/ui/src/inbox/inbox.test.ts"
-      ],
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "87d6a5761376b9af598db6ccf6332ee3d9f930f6",
-      "startedAt": "2026-10-28T12:08:52.863Z",
-      "doneAt": "2026-10-28T12:21:18.511Z",
-      "summary": "El prototipo trae un cambio en testing con dos tests en rojo, que se aprueban y bloquean, y el cambio en aceptación trae los tests de sus criterios; los tests que cuentan el ejemplo pasan a 10 cambios y 6 decisiones (A4)"
+      "baseCommit": "b39c549b09fb65c584f9b237fb1f963ed4a9aee7",
+      "startedAt": "2026-10-28T12:21:18.850Z",
+      "doneAt": "2026-10-28T12:26:32.153Z",
+      "summary": "docs/ui.md describe los tests de cada criterio en Aceptación y el cambio en testing del prototipo; ARCHITECTURE §15, criteriaTests del servidor y desde cuándo está en implementing con contract"
     }
   },
   "pending": {
