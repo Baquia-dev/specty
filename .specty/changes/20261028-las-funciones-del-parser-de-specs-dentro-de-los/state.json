@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "20261028-las-funciones-del-parser-de-specs-dentro-de-los",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-las-funciones-del-parser-de-specs-dentro-de-los",
+  "baseCommit": "00645350eb197da70c9d9b5bca3a4c00383c6ec3",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:95060f9611829db46eeb3f7d9a6ec3aee01c5c91473a7fa381110bf5bc8c46fa",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:06a3bf099fea52a0a1e14483d3a9d3aa7ec7d58c87737cc42829c9ac072a1ad6",
+    "at": "2026-10-28T07:26:33.911Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
