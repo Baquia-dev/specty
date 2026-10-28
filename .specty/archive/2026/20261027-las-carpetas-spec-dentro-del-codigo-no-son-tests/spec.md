@@ -19,3 +19,9 @@ kind: quick
 - [x] T1: Las carpetas spec dentro del código no son tests
   - files: packages/core/src/scope/tests.ts, packages/core/test/scope/scope.test.ts, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/scope && pnpm --filter @baquia-dev/specty-core typecheck
+
+## Cierre
+
+### Resumen
+
+spec y specs solo son carpetas de tests, y raíces del reflejo, fuera de src, lib, app o main; src/spec/ vuelve a ser código. Tests nuevos y formats §6.

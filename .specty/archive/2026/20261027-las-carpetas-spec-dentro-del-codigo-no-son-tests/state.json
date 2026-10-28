@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-las-carpetas-spec-dentro-del-codigo-no-son-tests",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261027-las-carpetas-spec-dentro-del-codigo-no-son-tests",
   "baseCommit": "94c82d8cc021b482ab82a700e4a332368808b032",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e8e0bee5ccf3131cf7293cb75644769a3c80eacd",
+      "attempts": 1,
       "startedAt": "2026-10-28T04:16:26.178Z",
       "doneAt": "2026-10-28T04:26:48.109Z",
-      "summary": "spec y specs solo son carpetas de tests, y raíces del reflejo, fuera de src, lib, app o main; src/spec/ vuelve a ser código. Tests nuevos y formats §6."
+      "summary": "spec y specs solo son carpetas de tests, y raíces del reflejo, fuera de src, lib, app o main; src/spec/ vuelve a ser código. Tests nuevos y formats §6.",
+      "scopeExtra": []
     }
   },
   "pending": {
