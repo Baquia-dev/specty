@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { type Phase, phasePermissions } from "../flow/phases";
-import { matchesAny } from "../glob";
+import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
 import type { ResolvedConfig } from "../schema/config";
 import { isGoverned } from "../scope/governed";
@@ -9,34 +8,11 @@ import type { ChangeKind } from "../spec/model";
 import { humanDenial } from "./human";
 import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
 import { type BoundSession, sessionDenial } from "./session";
+import { protectedDenial, specDenial } from "./spec";
 import { testingDenial } from "./testing";
 import { type Elsewhere, elsewhereDenial, type ForeignPath, foreignDenial } from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
-
-/** Files only Specty writes; editing them by hand would bypass the flow. */
-const PROTECTED: readonly string[] = [
-  ".specty/config.yaml",
-  ".specty/archive/**",
-  ".specty/changes/*/state.json",
-  ".specty/changes/*/audit.jsonl",
-  ".specty/changes/*/comments.json",
-  ".specty/changes/*/revisions/**",
-  ".specty/changes/*/reviews/**",
-  ".git/**",
-  ".claude/settings.json",
-  ".claude/settings.local.json",
-  ".cursor/hooks.json",
-  ".codex/hooks.json",
-  ".codex/rules/specty.rules",
-  ".opencode/plugins/specty.js",
-  ".husky/pre-commit",
-  ".husky/prepare-commit-msg",
-  "lefthook.yml",
-  "lefthook.yaml",
-  ".lefthook.yml",
-  ".lefthook.yaml",
-];
 
 export interface GuardChange {
   readonly id: string;
@@ -224,22 +200,13 @@ function decideFiles(
 }
 
 function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): GuardDecision {
-  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
   const { change } = ctx;
-  if (change !== undefined && path === change.specPath) return decideSpec(change, mode, ctx);
-  if (matchesAny(path, PROTECTED) || path.startsWith(".specty/")) {
-    return deny(
-      "protected",
-      t(
-        `\`${path}\` lo gestiona Specty; no se edita a mano.`,
-        `\`${path}\` is managed by Specty; do not edit it by hand.`,
-      ),
-      t(
-        `usa los comandos de Specty: \`${ctx.command} next\`.`,
-        `use Specty's commands: \`${ctx.command} next\`.`,
-      ),
-    );
+  if (change !== undefined && path === change.specPath) {
+    const denial = specDenial(change, mode, ctx.lang, ctx.command);
+    return denial === undefined ? ALLOW : deny("spec", denial.reason, denial.next);
   }
+  const managed = protectedDenial(path, ctx.lang, ctx.command);
+  if (managed !== undefined) return deny("protected", managed.reason, managed.next);
   return isGoverned(path, ctx.config) ? decideGoverned(path, ctx) : ALLOW;
 }
 
@@ -308,35 +275,6 @@ function decideTaskScope(path: string, change: GuardChange, ctx: GuardContext): 
       `trabaja dentro del alcance o pídelo con \`${ctx.command} scope add ${path} --task ${task.id} --reason "<motivo>"\`.`,
       `stay within the scope or request it with \`${ctx.command} scope add ${path} --task ${task.id} --reason "<reason>"\`.`,
     ),
-  );
-}
-
-function decideSpec(
-  change: GuardChange,
-  mode: "write" | "delete",
-  ctx: GuardContext,
-): GuardDecision {
-  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
-  const access = phasePermissions(change.phase, change.closingSubmitted).spec;
-  if (mode === "write" && access !== "locked") return ALLOW;
-  const implementing = change.phase === "implementing";
-  return deny(
-    "spec",
-    implementing
-      ? t(
-          "La spec está aprobada y bloqueada mientras se implementa.",
-          "The spec is approved and locked while it is implemented.",
-        )
-      : t(
-          `La spec está bloqueada en la fase ${change.phase}.`,
-          `The spec is locked in the ${change.phase} phase.`,
-        ),
-    implementing
-      ? t(
-          `si necesitas otro archivo usa \`${ctx.command} scope add\`; si el plan debe cambiar, díselo al usuario.`,
-          `if you need another file use \`${ctx.command} scope add\`; if the plan must change, tell the user.`,
-        )
-      : t(`ejecuta \`${ctx.command} next\`.`, `run \`${ctx.command} next\`.`),
   );
 }
 
