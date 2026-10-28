@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261028-con-contract-la-spec-aprobada-pasa-a-escribir-lo",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-con-contract-la-spec-aprobada-pasa-a-escribir-lo",
+  "baseCommit": "f34257247769a9e00ff21d651fffd295eb14c8d2",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f549340b5d9fe9621b3cc8480ad86cc86d35924c018f9298fff48445a8e2c413",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:abef3abba6cfc2568fdfb90d62ad720e28bb5d614243a72f4773e29c238b5cd7",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f757d86694ad1de40e8cb6f283ad48dbbd3bc989f479c71a1c6d216f0c0a34e3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e8271350ca555aeab0550490b2c125d1b7f8cc2b011d854f9420912c2c48f42e",
+    "at": "2026-10-28T05:49:06.282Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

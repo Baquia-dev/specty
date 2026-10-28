@@ -1,0 +1,3 @@
+{"ts":"2026-10-28T05:47:19.628Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","type":"feat","branch":"specty/20261028-con-contract-la-spec-aprobada-pasa-a-escribir-lo","request":"listo"}}
+{"ts":"2026-10-28T05:48:50.924Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:e8271350ca555aeab0550490b2c125d1b7f8cc2b011d854f9420912c2c48f42e","size":"L","warnings":1}}
+{"ts":"2026-10-28T05:49:06.302Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:e8271350ca555aeab0550490b2c125d1b7f8cc2b011d854f9420912c2c48f42e","channel":"delegated","delegated":true}}
