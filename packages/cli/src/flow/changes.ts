@@ -58,7 +58,11 @@ export async function awaits(
     scope !== undefined && state.pending.scopeRequests.some((request) => request.id === scope);
   switch (action) {
     case "approve":
-      return scope === undefined ? state.phase === "review" : requested;
+      if (scope !== undefined) return requested;
+      return (
+        state.phase === "review" ||
+        (state.phase === "testing" && state.testsSubmittedAt !== undefined)
+      );
     case "reject":
       return requested;
     case "accept":

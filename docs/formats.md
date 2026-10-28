@@ -216,6 +216,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - `items[].comment` (opcional) guarda por qué la persona rechazó un supuesto; el agente lo lee en `specty next`.
 - `maxIds` guarda el número más alto usado por cada prefijo (también `S`, las solicitudes de alcance), para que un id borrado nunca se reutilice con otro significado.
 - `closingSubmittedAt` (opcional) indica que el cierre ya se envió y espera la confirmación de la persona.
+- `testsSubmittedAt` (opcional), en la fase `testing`, indica que el agente envió los tests y esperan la aprobación de la persona; se borra al aprobarlos.
 - `integration` (opcional) registra una incorporación de la rama principal que no salió sola: el merge dio conflictos o, con su resultado, la verificación falla, y el merge espera en la carpeta del cambio a que el agente lo termine (ARCHITECTURE §9). Mientras no tiene `resolved`, el agente solo puede tocar los archivos de `paths`:
 
   ```json
@@ -246,6 +247,8 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `assumption.decided` | ítem, decisión, comentario |
 | `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |
 | `spec.approved` | revisión, hash, canal (`ui`, `tty`, `pr`), presencia verificada |
+| `tests.proposed` | en la fase `testing`, el agente envió los tests: `count` y `files`, los que van en el commit |
+| `tests.approved` | la persona aprobó los tests enviados (el gate 2 de ADR 0014): canal (`tty`, `ui` o `delegated`) |
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló, y `tree`: el código sobre el que corrió, un hash del árbol de trabajo sin `.specty/` tomado antes de verificar |
 | `task.completed` | tarea, commit, resumen (300 caracteres como máximo) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |

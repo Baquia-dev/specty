@@ -39,14 +39,19 @@ import { canDecide } from "./human";
 import { thenNext } from "./next";
 import { retroDone } from "./retro";
 import { decideScope } from "./scope-decision";
+import { approveTests } from "./tests";
 
-/** `specty approve [--scope S]`: a person approves the spec in review or a scope request. */
+/**
+ * `specty approve [--scope S]`: a person approves the spec in review, the tests sent in the
+ * testing phase, or a scope request.
+ */
 export async function approve(session: Session, scope: string | undefined): Promise<Output> {
   const { cards } = session;
   if (!canDecide(session)) return notInteractiveCard("approve", cards);
   const active = await resolveActive(session);
   if (active === undefined) return noActiveChangeCard("person", cards);
   if (scope !== undefined) return decideScope(session, active, scope, "approve", undefined);
+  if (active.state.phase === "testing") return approveTests(session, active);
   if (active.state.phase !== "review")
     return nothingPendingCard(active.state.id, active.state.phase, "approve", cards);
   return approveSpec(session, active);

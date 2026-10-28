@@ -34,6 +34,7 @@ import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readRevision, type StoredChange } from "../store/changes";
 import { resolveComments } from "../store/comments";
+import { proposeTests } from "./tests";
 
 const PROPOSE_PHASES: readonly ProposePhase[] = ["draft", "review", "adjusting", "closing"];
 
@@ -43,6 +44,8 @@ export async function propose(session: Session): Promise<Output> {
   const active = await resolveActive(session);
   if (active === undefined) return noActiveChangeCard("agent", cards);
   const { state, files } = active;
+  // In the testing phase, what is sent is the tests, not the spec (ADR 0014).
+  if (state.phase === "testing") return proposeTests(session, active);
   const phase = PROPOSE_PHASES.find((candidate) => candidate === state.phase);
   if (phase === undefined) return notProposableCard(state.id, state.phase, cards);
   const analysis = await analyzeChange(session, active, phase);
