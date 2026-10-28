@@ -25,3 +25,7 @@
 {"ts":"2026-10-28T11:46:15.242Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T6","baseCommit":"fd846f451bc6de9457db351f5e5acff1af4876c9"}}
 {"ts":"2026-10-28T11:48:59.228Z","actor":"specty","event":"task.verified","data":{"task":"T6","cmd":"pnpm knip && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data","exit":0,"ms":10551,"tree":"sha256:1617540518f25fb75b5eb1909ec3902740f31f3f07fb0111795ef4205ed03301"}}
 {"ts":"2026-10-28T11:48:59.310Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T6","summary":"UnlockView deja de exportarse: solo lo usa locks.ts, y knip ya no lo marca"}}
+{"ts":"2026-10-28T11:51:32.961Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":148127,"tree":"sha256:1617540518f25fb75b5eb1909ec3902740f31f3f07fb0111795ef4205ed03301"}}
+{"ts":"2026-10-28T11:51:32.962Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":2,"delegated":true}}
+{"ts":"2026-10-28T11:51:55.421Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:aad68f6ab73ba52ff22c2454e5bc4129418e357dc4686b4e93d52d75a6d95e9b","size":"L","warnings":3}}
+{"ts":"2026-10-28T11:51:55.652Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -83,3 +83,24 @@ Con `policy.tests: contract`, los tests aprobados quedan bloqueados y solo la pe
   - ac: AC1
   - verify: pnpm knip && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data
   - type: fix
+
+## Cierre
+
+### Resumen
+
+La UI muestra los bloqueos de `contract`. «Tests bloqueados» va en Progreso y en Aceptación: cada test aprobado por su ruta, con el candado abierto si una solicitud lo desbloqueó para la tarea en curso, y los desbloqueos que ya hubo. Una solicitud que pide un test aprobado se titula «Desbloquear un test aprobado», marca la ruta y explica que solo lo decide la persona. El historial ya tiene los textos del envío, la aprobación y el bloqueo de los tests, y de cada desbloqueo.
+
+### Desviaciones (respecto al plan)
+
+- T4 se amplió con `data/history-text.ts` (S1, aprobada en modo delegado). `HistoryType`, `Told` y `CHANNELS` pasaron allí, para que `history-tests.ts` los use sin importar `history.ts`. `history.ts` queda en 286 líneas.
+- La primera aceptación falló en `pnpm check`: knip marcó `UnlockView` como exportado sin uso. Un ajuste (T6, defecto de AC1) lo dejó sin exportar.
+- `scope-request.test.ts` es nuevo, junto a su fuente. Su primera expectativa de la marca no llevaba el paréntesis, y se corrigió antes de completar la tarea.
+
+### Decisiones
+
+- «Desbloqueado» quiere decir que la ruta está en el `scopeExtra` de la tarea en curso, como lo leen el guard y `tests-locked`. Los desbloqueos pasados salen de `scope.decided` con `unlock`.
+- En el historial, el envío y el bloqueo de los tests son del tipo «verificaciones» y su aprobación es del tipo «spec», como la de una revisión.
+
+### Pendientes
+
+- Corte C6: la matriz criterio → tests con los criterios manuales en Aceptación (el servidor da los tests de cada criterio) y el cambio de ejemplo en `testing` del prototipo, con aprobar los tests en los datos de ejemplo.

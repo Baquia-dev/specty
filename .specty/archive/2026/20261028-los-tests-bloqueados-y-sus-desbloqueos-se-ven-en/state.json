@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "baseCommit": "6477c7d222a97eda066f7ddc4c347134174c2749",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:ed1f55467177742d5047e58bfebdbe26a90ce1517701554240548f7389588c40",
@@ -90,12 +90,12 @@
     },
     "T6": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fd846f451bc6de9457db351f5e5acff1af4876c9",
+      "attempts": 1,
       "startedAt": "2026-10-28T11:46:15.242Z",
       "doneAt": "2026-10-28T11:48:59.309Z",
-      "summary": "UnlockView deja de exportarse: solo lo usa locks.ts, y knip ya no lo marca"
+      "summary": "UnlockView deja de exportarse: solo lo usa locks.ts, y knip ya no lo marca",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -107,5 +107,6 @@
     "AC": 4,
     "T": 6,
     "S": 1
-  }
+  },
+  "closingSubmittedAt": "2026-10-28T11:51:55.420Z"
 }
