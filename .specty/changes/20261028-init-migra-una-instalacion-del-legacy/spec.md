@@ -72,7 +72,7 @@ Un repositorio con el Specty anterior (`@barcidev/specty`) tiene un `.specty/con
   - files: packages/cli/src/install/legacy.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/import.ts, packages/cli/test/legacy.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty typecheck && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/legacy.test.ts test/import.test.ts test/bootstrap.test.ts
-- [ ] T3: Documentar la migración
+- [x] T3: Documentar la migración
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/legacy.test.ts

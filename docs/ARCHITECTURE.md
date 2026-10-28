@@ -521,6 +521,14 @@ Con `policy.tests: contract` (ADR 0014), aprobar un ajuste decide el ciclo de su
 
 ## 14. Detección e inicio
 
+**Migración desde el legacy** (`install/legacy.ts`, [ADR 0005](decisions/0005-repo-nuevo.md)). Antes de leer la configuración, `init` mira si `.specty/config.yaml` es del legacy (`@barcidev/specty`): tiene alguna de las claves `spec_engine`, `governance` o `scopes`. Si lo es, la migra en tres pasos, cada uno con una nota de lo que cambia y una pregunta:
+
+1. Mover todo `.specty/` a `.specty/legacy/` y escribir la configuración nueva. El idioma es el del legacy; `governance.source_paths` pasa a `governed` y `governance.exempt_paths` a `ignored`; el `test` de `scopes[0].verify` es `verify.default`, y `lint`, `test` y `build`, unidos con `&&`, son `verify.full`. Es obligatorio: si la persona dice que no, nada cambia e `init` no sigue.
+2. Quitar sus hooks de git, entre `# >>> specty-hook >>>` y `# <<< specty-hook <<<`, de `.husky/` y de la carpeta de hooks de git.
+3. Quitar sus bloques de AGENTS.md, los que llevan `hash=` en el marcador.
+
+Después sigue el `init` de siempre. Su salida dice qué se migró y qué cambios del legacy se pueden traer con `specty import` (los de `.specty/legacy/changes/` con `proposal.md`), y su commit lleva las rutas movidas. Migrar es de la persona: sin terminal, `init` lo rechaza y dice cómo hacerlo, y `init --dry-run` muestra el plan sin cambiar nada. Los archivos que los adaptadores del legacy generaron fuera de `.specty/` quedan donde están.
+
 **Proyecto existente** (`specty init`):
 
 1. Con una persona en la terminal y sin configuración, lo primero que pregunta es el idioma en que trabaja Specty, en español y en inglés a la vez, con el que detecta del sistema como primera opción. `LANG` no basta: una terminal con `C.UTF-8`, como la de macOS o la de VS Code, daría inglés. Lo elegido rige la configuración, AGENTS.md, las preguntas siguientes y la salida. Con `--language`, en `--dry-run` o si lo ejecuta un agente, no pregunta: un agente pasa `--language` con el idioma en que le habla el usuario, como le pide `next` en un repositorio sin Specty. En un repositorio ya configurado, `--language` cambia solo la línea `language` de `config.yaml` y reescribe los bloques de AGENTS.md en ese idioma.

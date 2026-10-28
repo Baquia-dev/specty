@@ -15,7 +15,8 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 │  ├─ comments.json            # hilos de revisión de la UI
 │  ├─ revisions/r1.md, r2.md…  # instantánea de cada revisión propuesta
 │  └─ reviews/spec-r1.md, diff-1.md…  # respuestas de la revisión independiente (ADR 0011), protegidas
-└─ archive/<año>/<id>/         # cambios cerrados o cancelados, misma estructura
+├─ archive/<año>/<id>/         # cambios cerrados o cancelados, misma estructura
+└─ legacy/                     # lo que tenía `.specty/` con el legacy, movido por `init` (ARCHITECTURE §14); sus cambios se importan con `specty import`
 
 .git/specty/                   # local, por worktree, nunca versionado
 ├─ receipts.json               # recibos de commit
@@ -628,4 +629,4 @@ SIGUIENTE: revierte ese archivo o pide ampliar el alcance con `specty scope add 
 | Cada `- [ ]` de `tasks.md`, sin su numeración | Una tarea sin `files`, que añade el agente |
 | `design.md`, las demás partes de la propuesta, los requisitos sin escenario, los escenarios incompletos, los requisitos de REMOVED y las tareas `- [x]` | Diseño, tal cual y con una etiqueta por grupo |
 
-Supuestos y Archivos conservan su pista. La petición literal del cambio es «Importado de OpenSpec: <carpeta>», y la carpeta de origen no cambia. Los cambios archivados (`openspec/changes/archive/`) y las specs vivas (`openspec/specs/`) no se importan.
+Supuestos y Archivos conservan su pista. La petición literal del cambio es «Importado de OpenSpec: <carpeta>», y la carpeta de origen no cambia. Los cambios archivados (`openspec/changes/archive/`) y las specs vivas (`openspec/specs/`) no se importan. Sin carpeta, `specty import` lista los cambios de `openspec/changes/` y, tras migrar el legacy, los de `.specty/legacy/changes/`, que tienen el mismo formato.

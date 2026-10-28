@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-init-migra-una-instalacion-del-legacy",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-init-migra-una-instalacion-del-legacy",
   "baseCommit": "1b31ebcbaaf392930ff10c943fd85335f116b57d",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3c78b454bc73890e7d833c77c733090fc3e09f5f",
+      "attempts": 1,
       "startedAt": "2026-10-28T16:33:27.593Z",
       "doneAt": "2026-10-28T16:39:00.115Z",
-      "summary": "install/legacy.ts reconoce, traduce, planea y aplica la migración con una nota y una pregunta por paso; init la llama antes de leer la configuración e import lista los cambios del legacy"
+      "summary": "install/legacy.ts reconoce, traduce, planea y aplica la migración con una nota y una pregunta por paso; init la llama antes de leer la configuración e import lista los cambios del legacy",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "55dd9e5e1a53626318ce376baa9224dccc93a4b8",
+      "startedAt": "2026-10-28T16:39:00.428Z",
+      "doneAt": "2026-10-28T16:39:25.890Z",
+      "summary": "ARCHITECTURE 14 explica la migración del legacy y formats 1 y 10 nombran .specty/legacy/"
     }
   },
   "pending": {
