@@ -19,6 +19,7 @@ import { type NewOptions, newChange } from "./new";
 import { next } from "./next";
 import { propose } from "./propose";
 import { retro } from "./retro";
+import { retroInto } from "./retro-into";
 import { review } from "./review";
 import { scopeAdd } from "./scope";
 import { taskDone } from "./task";
@@ -68,8 +69,17 @@ export function agentCommands(
     .command("retro")
     .description("document staged changes made without a spec")
     .option("--minimal", "write a one-line reason yourself (person only)")
-    .action((options: { minimal?: boolean }) =>
-      locked(run, "retro")((session) => retro(session, options.minimal === true))(),
+    .option("--into <id>", "document them as a scope request of the active change")
+    .option("--reason <text>", "with --into: why they were made")
+    .action((options: { minimal?: boolean; into?: string; reason?: string }) =>
+      locked(
+        run,
+        "retro",
+      )((session) =>
+        options.into === undefined
+          ? retro(session, options.minimal === true)
+          : retroInto(session, options.into, options.reason ?? "", options.minimal === true),
+      )(),
     );
 }
 

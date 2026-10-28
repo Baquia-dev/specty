@@ -63,7 +63,7 @@ Cuando alguien prepara a mano código fuera del alcance del cambio activo, hoy e
 
 ## Tareas
 
-- [ ] T1: Tarjetas de `retro --into` y el mensaje del bloqueo
+- [x] T1: Tarjetas de `retro --into` y el mensaje del bloqueo
   - files: packages/core/src/schema/state.ts, packages/core/src/cards/retro-into.ts, packages/core/src/cards/hooks.ts, packages/core/src/cards/index.ts, packages/core/test/cards/retro-into.test.ts, packages/core/test/cards/hooks.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
 - [ ] T2: El comando, la aprobación con recibo y el hook

@@ -44,7 +44,23 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/commands/retro-into.ts",
+        "packages/cli/src/flow/retro-into.ts",
+        "packages/cli/src/commands/agent-commands.ts",
+        "packages/cli/src/commands/scope-decision.ts",
+        "packages/cli/src/enforce/hook.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "42a1a3c9a0fd9d4aed77b8867e85e4c191b80a4f",
+      "startedAt": "2026-10-28T14:37:30.265Z",
+      "doneAt": "2026-10-28T14:48:22.344Z",
+      "summary": "Campo retro en la solicitud, tarjetas de retro --into, el hook propone --into, el comando crea la solicitud y su aprobación rechaza lo caducado o emite el recibo retro"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

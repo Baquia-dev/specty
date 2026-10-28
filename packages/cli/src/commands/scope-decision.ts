@@ -11,12 +11,16 @@ import {
   notInteractiveCard,
   type Output,
   rejectionQuestion,
+  retroIntoApprovedCard,
+  retroIntoStaleCard,
+  retroIntoStaleReason,
   scopeDecidedLine,
   scopeDecisionQuestion,
   transition,
   unlockRefusedCard,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
+import { confirmRetroInto, stagedPrint } from "../flow/retro-into";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { canDecide } from "./human";
@@ -60,6 +64,10 @@ export async function decideScope(
   if (unlocks.length > 0 && session.actor === "agent") {
     return unlockRefusedCard(header, request.id, cards);
   }
+  // A request of `retro --into` documents the staged code it was asked for, not what is there now.
+  if (request.retro !== undefined && request.retro !== (await stagedPrint(session))) {
+    return rejectStaleRetro(session, active, request, header);
+  }
   terminal.note(
     `${request.id} · ${request.task}`,
     `${request.paths.join("\n")}\n— ${request.reason}`,
@@ -99,7 +107,7 @@ async function recordScopeDecision(
   const remaining = state.pending.scopeRequests.filter((entry) => entry !== request);
   const base = { ...state, pending: { ...state.pending, scopeRequests: remaining } };
   const next = decision === "approve" ? withExtras(base, request.task, request.paths) : base;
-  await commitState(
+  const updated = await commitState(
     session,
     active,
     next,
@@ -115,8 +123,32 @@ async function recordScopeDecision(
     },
     "human",
   );
+  if (decision === "approve" && request.retro !== undefined) {
+    await confirmRetroInto(session, updated, request);
+    return retroIntoApprovedCard(header, request, state.id, session.actor === "agent", cards);
+  }
   return thenNext(
     session,
     decisionCard(header, [scopeDecidedLine(decision, request, session.lang)], cards),
   );
+}
+
+/** Specty rejects a request of `retro --into` whose staged code changed since it was asked. */
+async function rejectStaleRetro(
+  session: Session,
+  active: StoredChange,
+  request: ScopeRequest,
+  header: string,
+): Promise<Output> {
+  const { state } = active;
+  const remaining = state.pending.scopeRequests.filter((entry) => entry !== request);
+  await commitState(
+    session,
+    active,
+    { ...state, pending: { ...state.pending, scopeRequests: remaining } },
+    "scope.decided",
+    { id: request.id, decision: "rejected", reason: retroIntoStaleReason(session.lang) },
+    "specty",
+  );
+  return retroIntoStaleCard(header, request.id, state.id, session.actor === "agent", session.cards);
 }
