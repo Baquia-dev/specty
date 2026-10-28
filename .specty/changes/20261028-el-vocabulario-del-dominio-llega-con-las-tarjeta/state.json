@@ -6,6 +6,13 @@
   "branch": "specty/20261028-el-vocabulario-del-dominio-llega-con-las-tarjeta",
   "baseCommit": "2c9de7580f7c4e6a64b7e3515319106f686e9811",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:dcc38e0de5695ce336c4673bb6691624f6623ead61dc6c68bad0237c6a15bdc6",
+    "at": "2026-10-28T06:08:15.251Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -33,7 +40,17 @@
       "decision": "confirmed"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5db9a25d1cddb560595b2ec253e40b36a371d6a2",
+      "startedAt": "2026-10-28T06:08:15.676Z",
+      "doneAt": "2026-10-28T06:17:19.163Z",
+      "summary": "core/glossary.ts lee el glosario (una línea por término, nombre en el código opcional, sin comentarios HTML) y termsIn encuentra sus términos (mayúsculas, plural s/es, palabra entera, código tal cual); clave glossary en config con valor por defecto según el idioma; formats.md §6."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -43,12 +60,5 @@
     "AC": 7,
     "T": 3,
     "R": 2
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:dcc38e0de5695ce336c4673bb6691624f6623ead61dc6c68bad0237c6a15bdc6",
-    "at": "2026-10-28T06:08:15.251Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -63,7 +63,7 @@ Es el corte C5 de la épica «Tests como contrato y vocabulario del dominio».
 
 ## Tareas
 
-- [ ] T1: El glosario se lee y sus términos se encuentran en un texto
+- [x] T1: El glosario se lee y sus términos se encuentran en un texto
   - files: packages/core/src/glossary.ts, packages/core/src/schema/config.ts, packages/core/src/index.ts
   - ac: AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/glossary.test.ts test/schema
