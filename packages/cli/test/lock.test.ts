@@ -1,12 +1,28 @@
 // SPDX-License-Identifier: Apache-2.0
 import { spawnSync } from "node:child_process";
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import type { Output } from "@baquia-dev/specty-core";
 import { describe, expect, it } from "vitest";
 import { withChangeLock } from "../src/flow/active";
+import { runAction } from "../src/server/actions";
 import { openSession, type Session } from "../src/session";
-import { AGENT, APP, CHANGE, cli, DIST, git, NOW, tempRepo, testEnv } from "./support";
+import {
+  AGENT,
+  APP,
+  CHANGE,
+  cli,
+  DIST,
+  git,
+  NOW,
+  person,
+  read,
+  SPEC,
+  SPEC_PATH,
+  tempRepo,
+  testEnv,
+  writeFiles,
+} from "./support";
 
 const DONE: Output = { status: "ok", header: "SPECTY", blocks: [], next: "nada" };
 
@@ -31,9 +47,9 @@ async function sessionIn(root: string): Promise<Session> {
   return opened.session;
 }
 
-/** Where the lock of the change of `root` lives, shared by every worktree. */
-const lockPath = (root: string) =>
-  join(root, git(root, "rev-parse", "--git-path", `common/specty/locks/${CHANGE}.json`));
+/** Where the lock of change `id` of `root` lives, shared by every worktree. */
+const lockPath = (root: string, id = CHANGE) =>
+  join(root, git(root, "rev-parse", "--git-path", `common/specty/locks/${id}.json`));
 
 const exists = (path: string) =>
   access(path).then(
@@ -41,9 +57,9 @@ const exists = (path: string) =>
     () => false,
   );
 
-/** A lock as another process `pid` left it. */
-async function lockedBy(root: string, pid: number): Promise<void> {
-  const path = lockPath(root);
+/** A lock of change `id` as another process `pid` left it. */
+async function lockedBy(root: string, pid: number, id = CHANGE): Promise<void> {
+  const path = lockPath(root, id);
   await mkdir(dirname(path), { recursive: true });
   const holder = { pid, command: "accept", folder: root, at: "2026-10-28T04:38:48.160Z" };
   await writeFile(path, JSON.stringify(holder));
@@ -100,5 +116,45 @@ describe("the lock of a change", () => {
     expect(await exists(lockPath(root))).toBe(false);
     const bare = await sessionIn(await tempRepo(APP));
     expect(await withChangeLock(bare, "next", async () => DONE)).toBe(DONE);
+  });
+});
+
+const STATE = `.specty/changes/${CHANGE}/state.json`;
+const AUDIT = `.specty/changes/${CHANGE}/audit.jsonl`;
+const records = (root: string) => Promise.all([read(root, STATE), read(root, AUDIT)]);
+
+describe("the commands that change a change", () => {
+  it("AC1: refuse an agent's, a person's or the UI's command while another process changes it", async () => {
+    const { root } = await withChange();
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    await lockedBy(root, process.ppid);
+    const before = await records(root);
+    const proposed = await cli(root, ["propose"]);
+    expect(proposed.code).toBe(2);
+    expect(proposed.out).toContain(
+      `Otro comando está cambiando ${CHANGE}: \`specty accept\` (pid ${process.ppid},`,
+    );
+    expect(await records(root)).toEqual(before);
+    await rm(lockPath(root));
+    expect((await cli(root, ["propose"])).code).toBe(0);
+
+    await lockedBy(root, process.ppid);
+    const inReview = await records(root);
+    const terminal = person({ choose: ["confirm"] });
+    expect((await cli(root, ["approve"], { terminal })).code).toBe(2);
+    const fromUi = await runAction(await sessionIn(root), CHANGE, { kind: "approve", revision: 1 });
+    expect(fromUi.status).toBe("blocked");
+    expect(await records(root)).toEqual(inReview);
+  });
+
+  it("AC4: leave reading commands and the other changes alone", async () => {
+    const { root } = await withChange();
+    await writeFiles(root, { [SPEC_PATH]: SPEC });
+    await lockedBy(root, process.ppid);
+    expect((await cli(root, ["status"])).code).toBe(0);
+    expect((await cli(root, ["check", "--all"])).out).not.toContain("Otro comando");
+    await rm(lockPath(root));
+    await lockedBy(root, process.ppid, "20200101-otro");
+    expect((await cli(root, ["propose"])).code).toBe(0);
   });
 });

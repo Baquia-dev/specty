@@ -62,7 +62,7 @@ Dos comandos que cambian el mismo cambio pueden correr a la vez, desde dos sesio
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/lock.test.ts
   - type: fix
   - notes: documenta el archivo en docs/formats.md.
-- [ ] T2: Los comandos que cambian un cambio toman su bloqueo
+- [x] T2: Los comandos que cambian un cambio toman su bloqueo
   - files: packages/cli/src/commands/agent-commands.ts, packages/cli/src/commands/person-commands.ts, packages/cli/src/server/actions.ts, packages/cli/test/lock.test.ts
   - ac: AC1, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/lock.test.ts test/flow.test.ts test/anywhere.test.ts test/server-actions.test.ts

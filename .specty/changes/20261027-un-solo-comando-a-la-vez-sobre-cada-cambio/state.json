@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261027-un-solo-comando-a-la-vez-sobre-cada-cambio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261027-un-solo-comando-a-la-vez-sobre-cada-cambio",
   "baseCommit": "e9abd207bffefbfe25412bb1c97e3f6ee6a1fac3",
   "revision": 1,
@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "034a6f12cd6ae62d1a2675f9aa490ceaec61deb3",
+      "attempts": 1,
       "startedAt": "2026-10-28T05:14:03.765Z",
       "doneAt": "2026-10-28T05:20:33.064Z",
-      "summary": "store/lock.ts toma el bloqueo de un cambio en common/specty/locks/<id>.json (enlace exclusivo, el de un proceso muerto no cuenta, una vez por proceso); withChangeLock lo usa y devuelve busyChangeCard (core, es/en) si otro lo tiene; formats.md lo documenta."
+      "summary": "store/lock.ts toma el bloqueo de un cambio en common/specty/locks/<id>.json (enlace exclusivo, el de un proceso muerto no cuenta, una vez por proceso); withChangeLock lo usa y devuelve busyChangeCard (core, es/en) si otro lo tiene; formats.md lo documenta.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "db7e7ea7c418035888a0aa38f4dceffa17657eed",
+      "startedAt": "2026-10-28T05:20:33.376Z",
+      "doneAt": "2026-10-28T05:32:54.513Z",
+      "summary": "Los comandos del agente que escriben su cambio (next, propose, review, integrate, adjust, retro, task done, scope add), las decisiones de la persona (decider) y las acciones de la UI (runAction) corren con withChangeLock; ARCHITECTURE §9 lo explica."
     }
   },
   "pending": {
