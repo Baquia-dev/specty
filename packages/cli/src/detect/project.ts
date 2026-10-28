@@ -10,6 +10,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { parse as parseYaml } from "yaml";
 import { exists, isDirectory, isRecord, parseJson, readText } from "../io/files";
+import { ciCommands } from "./ci";
 import { pythonPrefix, qualityCommands } from "./quality";
 import { detectStacks, type Stack } from "./stack";
 
@@ -56,7 +57,11 @@ export async function detectProject(root: string, name: string): Promise<Detecti
     name,
     stacks,
     packages: await workspacePackages(root),
-    commands: primary === undefined ? {} : commandsFor(primary),
+    // The stack's commands over the CI's: the CI only fills what the stack does not give.
+    commands: {
+      ...(await ciCommands(root)),
+      ...(primary === undefined ? {} : commandsFor(primary)),
+    },
     tools: await agentTools(root),
     generated: stacks.some((stack) => stack.language === "dart")
       ? ["**/*.g.dart", "**/*.freezed.dart", "**/*.gr.dart", "**/*.mocks.dart"]

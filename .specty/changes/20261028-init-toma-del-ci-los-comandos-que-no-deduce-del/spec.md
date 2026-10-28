@@ -46,7 +46,7 @@ La detección de `init` saca los comandos del proyecto (tests, lint y tipos) de 
 
 ## Tareas
 
-- [ ] T1: init toma del CI los comandos que no deduce del proyecto
+- [x] T1: init toma del CI los comandos que no deduce del proyecto
   - files: packages/cli/src/detect/ci.ts, packages/cli/src/detect/project.ts, packages/cli/test/detect-ci.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/detect-ci.test.ts test/detect-quality.test.ts

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
   "baseCommit": "4316fca24392e8c5161b5a72b3df1c94142a4f89",
   "revision": 1,
@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "92d75af41663273443f2783999c55ecbe9c6373b",
+      "startedAt": "2026-10-28T18:14:58.111Z",
+      "doneAt": "2026-10-28T18:21:12.843Z",
+      "summary": "detect/ci.ts lee run/script/command de GitHub Actions, GitLab, CircleCI, Bitbucket y Azure, clasifica tests/lint/tipos por palabras genéricas y descarta variables, instalaciones, comentarios y líneas partidas; detectProject: la pila por encima del CI; ARCHITECTURE §7 y §17"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

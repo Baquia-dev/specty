@@ -178,7 +178,7 @@ Registrarlo es opcional, porque cada herramienta MCP ocupa contexto en cada turn
 ## 7. Contexto para el agente
 
 - **AGENTS.md**: Specty gestiona dos bloques delimitados ([formats.md §8](formats.md#8-bloque-de-agentsmd)):
-  - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check);
+  - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check). Los comandos salen de la pila, y los de tests, lint y tipos que la pila no da, de lo que ejecuta el CI del proyecto (`detect/ci.ts`: los `run`, `script` y `command` de GitHub Actions, GitLab CI, CircleCI, Bitbucket Pipelines y Azure Pipelines, reconocidos por palabras genéricas como `test`, `lint` o `typecheck`, sin los que usan variables o instalan);
   - flujo: unas 8 líneas.
 
   El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no verifica `specty check`. Mientras sigan vacías, `specty doctor` lo avisa (ver §14).
@@ -720,7 +720,7 @@ Codex se busca en `SPECTY_E2E_CODEX` o en las carpetas del PATH, sin ejecutar na
 
 | Módulo | Tamaño | Acoplamiento | Plan |
 | --- | --- | --- | --- |
-| `src/detect` | ~1,7k líneas | Solo sus propios tipos | Reescrito en la fase 1 de forma compacta (~450 líneas, sin clases ni casts), con las mismas pilas y frameworks, el gestor de paquetes en los comandos y la detección de herramientas de IA. Falta leer los comandos del CI (F3) |
+| `src/detect` | ~1,7k líneas | Solo sus propios tipos | Reescrito en la fase 1 de forma compacta (~450 líneas, sin clases ni casts), con las mismas pilas y frameworks, el gestor de paquetes en los comandos y la detección de herramientas de IA. Lee también los comandos del CI, que el legacy no leía, para lo que la pila no da (§7) |
 | `src/governance/hook-managers` | ~0,8k | `core/git` | Reescrito en la fase 1 con la misma idea (bloque marcado e idempotente) para `pre-commit` y `prepare-commit-msg`, respetando `core.hooksPath`, husky y lefthook; simple-git-hooks se indica a mano |
 | `src/adapters` (21) | ~1,5k | `generate/types`, `i18n`, `config` | La fase 1 cubre Claude Code y Cursor. Al portarlo se vio que el legacy escribía los hooks de Claude Code sin la lista `hooks: [{ type: "command" }]` que exige su formato, así que probablemente nunca se ejecutaban. Solo 2 de los 21 adaptadores instalaban hooks |
 | `src/ui/server.ts`, `src/ui/sse.ts` | ~250 | Bajo | Se portan con la seguridad nueva. `router`, `dispatcher` y los servicios (~1,4k) no se portan, porque dependen de la gobernanza legacy |
