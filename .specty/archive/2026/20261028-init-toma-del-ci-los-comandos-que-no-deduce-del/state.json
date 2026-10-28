@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-init-toma-del-ci-los-comandos-que-no-deduce-del",
+  "baseCommit": "4316fca24392e8c5161b5a72b3df1c94142a4f89",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4c3faec201db3e88789711382ed10dd6fd764282f1ddffe72b92f7d33959e3d0",
+    "at": "2026-10-28T18:13:27.130Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9e22f7af9a12bb8183d060d9e6a7dd8ee13838fb6bb5173af54f66f4b6be27ab",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6140aaa0f7c5bf9ab69da7b98e60f6ca7c48e95f93cd98650b9d431ce678d692",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:dfa66bd83e34824d81e7199f6dd404c17d3056f3477ed76c14c07fb2c321d7c6",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:965e86d1c7fddaa359063d357f17ef7bc31d74dd412a63247128f7b55762ed81",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "92d75af41663273443f2783999c55ecbe9c6373b",
+      "attempts": 1,
+      "startedAt": "2026-10-28T18:14:58.111Z",
+      "doneAt": "2026-10-28T18:21:12.843Z",
+      "summary": "detect/ci.ts lee run/script/command de GitHub Actions, GitLab, CircleCI, Bitbucket y Azure, clasifica tests/lint/tipos por palabras genéricas y descarta variables, instalaciones, comentarios y líneas partidas; detectProject: la pila por encima del CI; ARCHITECTURE §7 y §17",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 1,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-28T18:25:56.713Z",
+  "lockedTests": {
+    "packages/cli/test/detect-ci.test.ts": "sha256:74f224dc0ca0368fa025af2e1a018c81012cff1db869e73fcf8b3a1d759f81f0"
+  }
+}

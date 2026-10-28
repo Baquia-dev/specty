@@ -178,7 +178,7 @@ Registrarlo es opcional, porque cada herramienta MCP ocupa contexto en cada turn
 ## 7. Contexto para el agente
 
 - **AGENTS.md**: Specty gestiona dos bloques delimitados ([formats.md §8](formats.md#8-bloque-de-agentsmd)):
-  - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check);
+  - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check). Los comandos salen de la pila, y los de tests, lint y tipos que la pila no da, de lo que ejecuta el CI del proyecto (`detect/ci.ts`: los `run`, `script` y `command` de GitHub Actions, GitLab CI, CircleCI, Bitbucket Pipelines y Azure Pipelines, reconocidos por palabras genéricas como `test`, `lint` o `typecheck`, sin los que usan variables o instalan);
   - flujo: unas 8 líneas.
 
   El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no verifica `specty check`. Mientras sigan vacías, `specty doctor` lo avisa (ver §14).
@@ -720,7 +720,7 @@ Codex se busca en `SPECTY_E2E_CODEX` o en las carpetas del PATH, sin ejecutar na
 
 | Módulo | Tamaño | Acoplamiento | Plan |
 | --- | --- | --- | --- |
-| `src/detect` | ~1,7k líneas | Solo sus propios tipos | Reescrito en la fase 1 de forma compacta (~450 líneas, sin clases ni casts), con las mismas pilas y frameworks, el gestor de paquetes en los comandos y la detección de herramientas de IA. Falta leer los comandos del CI (F3) |
+| `src/detect` | ~1,7k líneas | Solo sus propios tipos | Reescrito en la fase 1 de forma compacta (~450 líneas, sin clases ni casts), con las mismas pilas y frameworks, el gestor de paquetes en los comandos y la detección de herramientas de IA. Lee también los comandos del CI, que el legacy no leía, para lo que la pila no da (§7) |
 | `src/governance/hook-managers` | ~0,8k | `core/git` | Reescrito en la fase 1 con la misma idea (bloque marcado e idempotente) para `pre-commit` y `prepare-commit-msg`, respetando `core.hooksPath`, husky y lefthook; simple-git-hooks se indica a mano |
 | `src/adapters` (21) | ~1,5k | `generate/types`, `i18n`, `config` | La fase 1 cubre Claude Code y Cursor. Al portarlo se vio que el legacy escribía los hooks de Claude Code sin la lista `hooks: [{ type: "command" }]` que exige su formato, así que probablemente nunca se ejecutaban. Solo 2 de los 21 adaptadores instalaban hooks |
 | `src/ui/server.ts`, `src/ui/sse.ts` | ~250 | Bajo | Se portan con la seguridad nueva. `router`, `dispatcher` y los servicios (~1,4k) no se portan, porque dependen de la gobernanza legacy |
@@ -742,7 +742,7 @@ Se elimina:
 | --- | --- | --- |
 | F0 · Fundaciones ✓ | Monorepo. En core: spec (parser, serializador, hash, delta, validación), máquina de estados, alcance y tamaño | Pruebas de ida y vuelta y de transiciones en verde |
 | F1 · Flujo por CLI ✓ | `init` (detección), los 7 comandos del agente, git (ramas, recibos, trailers), hooks de git, bloques de AGENTS.md, guard con adaptadores de Claude Code y Cursor, aprobación por TTY | Desde aquí, Specty se construye usándose a sí mismo |
-| F2 · UI | Primero el sistema de diseño y un prototipo navegable; después las pantallas de revisión, delta, progreso, aceptación y cierre en vivo | Un cambio completo sin abrir el Markdown |
+| F2 · UI ✓ | Primero el sistema de diseño y un prototipo navegable; después las pantallas de revisión, delta, progreso, aceptación y cierre en vivo | Un cambio completo sin abrir el Markdown: lo recorre `cli/test/server/lifecycle.test.ts`, con la persona solo en el servidor de la UI |
 | F3 · Auditoría y ecosistema (en curso) | `why`, `audit`, flujo retro completo, `specty ci` y GitHub Action, exportadores, importador desde OpenSpec y el legacy, servidor MCP, más adaptadores con hooks, suite de cumplimiento con ≥ 4 agentes. Todo está hecho (épica `20261028-fase-3-auditoria-y-ecosistema`, 2026-10-28), también la suite (`pnpm evals`) | La suite de cumplimiento es estable con cada agente. Pendiente: medirla con al menos cuatro agentes y repetirla; hoy solo se midió Claude Code, con cinco ejecuciones (§16) |
 | F4 · Escala y equipos | Épicas y worktrees en paralelo, modo equipo (aprobadores, revisión de PR), WebAuthn, extensión de VS Code (mismo bundle de UI), MCP Apps en el chat. De la extensión está la base (`packages/vscode`, 2026-10-28): el cambio de la carpeta, su fase y si espera a la persona en la barra de estado, leídos de `specty --json status`, y «Specty: Abrir la UI», que arranca `specty ui` en solo lectura y abre su enlace en el navegador; se empaqueta en un `.vsix` con `pnpm --filter specty-vscode package`, sin publicarse. Falta decidir desde VS Code (la webview con `postMessage`), publicarla y Windows | — |
 
