@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
+import { COMMIT_TYPES } from "../spec/model";
+import { acceptanceCard } from "./acceptance";
+import { termsSection } from "./glossary";
 import { integrationCard } from "./integration";
+import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
-import { acceptanceCard, adjustingCard, closingCard, implementingCard } from "./work";
+import { adjustingCard, closingCard, implementingCard } from "./work";
 
 export { taskCard } from "./work";
 
@@ -28,6 +32,7 @@ export function nextCard(view: NextView, ctx: CardContext): Output {
 const PHASE_CARDS: Readonly<Record<Phase, (change: ChangeView, ctx: CardContext) => Output>> = {
   draft: draftCard,
   review: reviewCard,
+  testing: testingCard,
   implementing: implementingCard,
   acceptance: acceptanceCard,
   adjusting: adjustingCard,
@@ -109,11 +114,33 @@ function idleCard(ctx: CardContext): Output {
         "Reading, explaining or exploring code does not need Specty.",
       ),
     ]),
-    next: t(
-      `ejecuta \`${ctx.command} new "<título>" --request "<petición literal del usuario>"\` (añade \`--kind quick\` si son hasta ${ctx.quickMaxFiles} archivos de código sin rutas sensibles).`,
-      `run \`${ctx.command} new "<title>" --request "<the user's literal request>"\` (add \`--kind quick\` for up to ${ctx.quickMaxFiles} code files without sensitive paths).`,
-    ),
+    next: ctx.branchTypes === true ? typedNewNext(ctx) : untypedNewNext(ctx),
   };
+}
+
+function untypedNewNext(ctx: CardContext): string {
+  return translator(ctx.lang)(
+    `ejecuta \`${ctx.command} new "<título>" --request "<petición literal del usuario>"\` ${quickHint(ctx)}.`,
+    `run \`${ctx.command} new "<title>" --request "<the user's literal request>"\` ${quickHint(ctx)}.`,
+  );
+}
+
+/** With a `git.flow` that names the branches by type, the agent says what the change is. */
+function typedNewNext(ctx: CardContext): string {
+  const t = translator(ctx.lang);
+  const types = (last: string) =>
+    `${COMMIT_TYPES.slice(0, -1).join(", ")} ${last} ${COMMIT_TYPES.at(-1) ?? ""}`;
+  return t(
+    `ejecuta \`${ctx.command} new "<título>" --type <tipo> --request "<petición literal del usuario>"\`, con el tipo de commit que es el cambio, que nombra su rama: ${types("o")} ${quickHint(ctx)}.`,
+    `run \`${ctx.command} new "<title>" --type <type> --request "<the user's literal request>"\`, with the commit type the change is, which names its branch: ${types("or")} ${quickHint(ctx)}.`,
+  );
+}
+
+function quickHint(ctx: CardContext): string {
+  return translator(ctx.lang)(
+    `(añade \`--kind quick\` si son hasta ${ctx.quickMaxFiles} archivos de código sin rutas sensibles)`,
+    `(add \`--kind quick\` for up to ${ctx.quickMaxFiles} code files without sensitive paths)`,
+  );
 }
 
 function draftCard(change: ChangeView, ctx: CardContext): Output {
@@ -136,6 +163,7 @@ function draftCard(change: ChangeView, ctx: CardContext): Output {
           carriedLines(carried, ctx),
         ),
       ),
+      ...termsSection(change.glossary, [change.title, change.request], ctx.lang),
       ...section(t("CÓMO REDACTARLA", "HOW TO WRITE IT"), draftingGuide(change, ctx)),
     ],
     next: t(

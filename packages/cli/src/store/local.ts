@@ -10,7 +10,7 @@ import type { Git } from "../io/git";
  */
 
 /** `init` is Specty's own installation: its commit belongs to no change. */
-const RECEIPT_KINDS = ["spec", "task", "close", "retro", "init"] as const;
+const RECEIPT_KINDS = ["spec", "task", "tests", "close", "retro", "init"] as const;
 
 export type ReceiptKind = (typeof RECEIPT_KINDS)[number];
 

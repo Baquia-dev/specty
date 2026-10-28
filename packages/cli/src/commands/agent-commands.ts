@@ -2,11 +2,15 @@
 import {
   CHANGE_KINDS,
   type ChangeKind,
+  COMMIT_TYPES,
+  type CommitType,
+  type NewRefusal,
   newRefusalCard,
   type Output,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
+import { withChangeLock } from "../flow/active";
 import { bareCards, type Session } from "../session";
 import { adjust } from "./adjust";
 import { enter } from "./enter";
@@ -21,6 +25,10 @@ import { taskDone } from "./task";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
 
+/** A command that changes its folder's change runs with that change locked (ARCHITECTURE §9). */
+const locked = (run: Run, command: string) => (handler: (session: Session) => Promise<Output>) =>
+  run((session) => withChangeLock(session, command, () => handler(session)));
+
 /**
  * Registers the agent's commands (ARCHITECTURE §6): the flow it follows and the work of its
  * tasks. `refuse` shows what is refused before any session opens, such as an unknown kind.
@@ -31,7 +39,7 @@ export function agentCommands(
   env: NodeJS.ProcessEnv,
   refuse: (output: Output) => void,
 ): void {
-  program.command("next").description("what to do now").action(run(next));
+  program.command("next").description("what to do now").action(locked(run, "next")(next));
   program
     .command("enter")
     .description("go on in a change's folder from this conversation")
@@ -41,33 +49,34 @@ export function agentCommands(
   program
     .command("propose")
     .description("validate the spec and send it to review")
-    .action(run(propose));
+    .action(locked(run, "propose")(propose));
   program
     .command("review")
     .description("an independent review of the spec, by the command the person set up")
-    .action(run(review));
+    .action(locked(run, "review")(review));
   taskCommands(program, run);
   program
     .command("integrate")
     .description("finish the merge of the main branch a closing left here")
-    .action(run(integrate));
+    .action(locked(run, "integrate")(integrate));
   program
     .command("adjust")
     .description("record the user's adjustment request")
     .argument("<request>")
-    .action((request: string) => run((session) => adjust(session, request))());
+    .action((request: string) => locked(run, "adjust")((session) => adjust(session, request))());
   program
     .command("retro")
     .description("document staged changes made without a spec")
     .option("--minimal", "write a one-line reason yourself (person only)")
     .action((options: { minimal?: boolean }) =>
-      run((session) => retro(session, options.minimal === true))(),
+      locked(run, "retro")((session) => retro(session, options.minimal === true))(),
     );
 }
 
 /** `specty new`'s options as commander reads them. */
 interface NewFlags {
   readonly kind: string;
+  readonly type: string;
   readonly follows?: string[];
   readonly epic?: string;
   readonly slice?: string;
@@ -77,7 +86,7 @@ interface NewFlags {
   readonly request?: string;
 }
 
-/** `specty new`, which refuses an unknown kind before any session opens. */
+/** `specty new`, which refuses an unknown kind or type before any session opens. */
 function newCommand(
   program: Command,
   run: Run,
@@ -89,6 +98,11 @@ function newCommand(
     .description("create a change and its spec")
     .argument("<title>")
     .option("--kind <kind>", `one of ${CHANGE_KINDS.join(", ")}`, "standard")
+    .option(
+      "--type <type>",
+      `what the change is, which names its branch under git.flow: one of ${COMMIT_TYPES.join(", ")}`,
+      "feat",
+    )
     .option("--follows <ids...>", "changes this one continues")
     .option("--epic <id>")
     .option("--slice <id>")
@@ -97,19 +111,34 @@ function newCommand(
     .option("--from <branch>", "with --worktree, the branch to start from (default: the main one)")
     .option("--request <text>", "the user's literal request, kept in the audit as written")
     .action((title: string, options: NewFlags) => {
-      const kind = CHANGE_KINDS.find((candidate) => candidate === options.kind);
-      if (kind === undefined) {
-        refuse(newRefusalCard({ reason: "unknown-kind", kind: options.kind }, bareCards(env)));
+      const given = kindAndType(options);
+      if ("reason" in given) {
+        refuse(newRefusalCard(given, bareCards(env)));
         return Promise.resolve();
       }
-      return run((session) => newChange(session, newOptions(title, kind, options)))();
+      return run((session) => newChange(session, newOptions(title, given, options)))();
     });
 }
 
-function newOptions(title: string, kind: ChangeKind, options: NewFlags): NewOptions {
+interface KindAndType {
+  readonly kind: ChangeKind;
+  readonly type: CommitType;
+}
+
+/** The kind and type `new` was given, or why they are refused. */
+function kindAndType(options: NewFlags): KindAndType | NewRefusal {
+  const kind = CHANGE_KINDS.find((candidate) => candidate === options.kind);
+  if (kind === undefined) return { reason: "unknown-kind", kind: options.kind };
+  const type = COMMIT_TYPES.find((candidate) => candidate === options.type);
+  if (type === undefined) return { reason: "unknown-type", type: options.type };
+  return { kind, type };
+}
+
+function newOptions(title: string, given: KindAndType, options: NewFlags): NewOptions {
   return {
     title,
-    kind,
+    kind: given.kind,
+    type: given.type,
     follows: options.follows ?? [],
     ...(options.epic !== undefined ? { epic: options.epic } : {}),
     ...(options.slice !== undefined ? { slice: options.slice } : {}),
@@ -135,7 +164,10 @@ function taskCommands(program: Command, run: Run): void {
       [],
     )
     .action((id: string, options: { summary: string; finding: string[] }) =>
-      run((session) => taskDone(session, id, options.summary, options.finding))(),
+      locked(
+        run,
+        "task done",
+      )((session) => taskDone(session, id, options.summary, options.finding))(),
     );
   program
     .command("scope")
@@ -145,6 +177,9 @@ function taskCommands(program: Command, run: Run): void {
     .option("--task <id>")
     .option("--reason <text>", "why the task needs the paths", "")
     .action((paths: string[], options: { task?: string; reason: string }) =>
-      run((session) => scopeAdd(session, paths, options.reason, options.task))(),
+      locked(
+        run,
+        "scope add",
+      )((session) => scopeAdd(session, paths, options.reason, options.task))(),
     );
 }

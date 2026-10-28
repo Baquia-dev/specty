@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "id": "20261027-patron-de-rama-propio-con-git-branchpattern",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261027-patron-de-rama-propio-con-git-branchpattern",
+  "baseCommit": "25e9ecd09de5fa8e644cc72364ca22230fa3b6b2",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:83af4b6eab386f807db59e9d74870b21f8322b2056b318ab61292526bff76f84",
+    "at": "2026-10-27T23:30:45.418Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:09ad681357659a02583198d73b8a441c4f9d0f24dd30e5d043a791e5fe7a1d9c",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:820f6dea5d950fd44350f2c9275b619c1a4e53bc9782d9ae0401eb993bc1db1f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ecf89310f0f5d00490ee6cb24c2c63c19200c87adc24453031b93494c83c1a04",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "395b5005a64730f918a62595d2ef76b69828b9a0",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:30:45.818Z",
+      "doneAt": "2026-10-27T23:35:02.203Z",
+      "summary": "branchName acepta pattern ({type}, {slug}, {id}; el de un spike es spike) por encima del flujo; branchPatternIssue rechaza patrones sin {slug} ni {id}, con otros marcadores o que git no admite; branchUsesType decide si next pide --type. config.yaml acepta git.branchPattern validado.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b9d70c815ab488271e3281863a48e7727762eca0",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:35:02.503Z",
+      "doneAt": "2026-10-27T23:36:21.353Z",
+      "summary": "new pasa git.branchPattern a branchName (gana a git.flow) y session.ts calcula branchTypes con branchUsesType, así next pide --type solo si el patrón lleva {type}. Un patrón inválido para cualquier comando con git.branchPattern y el motivo.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "ccf7c4075f25352fe0b31adb8cc6c4418f90390a",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:36:21.647Z",
+      "doneAt": "2026-10-27T23:38:46.879Z",
+      "summary": "formats §6 trae git.branchPattern en el ejemplo y describe sus marcadores, qué patrones rechaza y que gana a git.flow; ARCHITECTURE §9 lo resume junto a cuándo pide next --type.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-27T23:41:18.036Z"
+}

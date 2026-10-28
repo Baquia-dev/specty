@@ -26,35 +26,13 @@ export function readFiles(raw: RawList, lang: Lang): ListResult<FileEntry> {
 }
 
 function readEntry(item: RawItem, reader: Reader): FileEntry[] {
-  const match = ACTION.exec(item.head);
-  if (match === null) {
-    reader.report({
-      code: "item-invalid",
-      params: { section: reader.sectionName, example: EXAMPLES.files[reader.lang] },
-      line: item.line,
-    });
-    return [];
-  }
-  const word = match[1] ?? "";
-  const action = fileActionFrom(word);
-  if (action === undefined) {
-    reader.report({ code: "file-action-unknown", params: { action: word }, line: item.line });
-    return [];
-  }
-  const [first, afterFirst] = takePath(match[2] ?? "");
-  const arrow = ARROW.exec(afterFirst.trimStart());
-  const renamed = action === "rename" && arrow !== null;
-  if (action === "rename" && !renamed) {
-    reader.report({ code: "file-rename-target", line: item.line });
-  }
-  const [second, afterSecond] = renamed
-    ? takePath(afterFirst.trimStart().slice(arrow[0].length))
-    : (["", afterFirst] as const);
-  const path = readPath(renamed ? second : first, item.line, undefined, reader);
-  const from = renamed ? readPath(first, item.line, undefined, reader) : undefined;
-  if (path === undefined || (renamed && from === undefined)) return [];
+  const head = readAction(item, reader);
+  const paths = head === undefined ? undefined : readPaths(head, item, reader);
+  if (head === undefined || paths === undefined) return [];
+  const { action } = head;
+  const { path, from } = paths;
   reportFields(item, path, reader);
-  const reason = afterSecond.trim().replace(SEPARATOR, "").trim();
+  const reason = paths.rest.trim().replace(SEPARATOR, "").trim();
   const claimed = reader.claim(path, item.line, {
     code: "file-duplicate",
     params: { path },
@@ -70,6 +48,51 @@ function readEntry(item: RawItem, reader: Reader): FileEntry[] {
       ...(reason.length > 0 ? { reason } : {}),
     },
   ];
+}
+
+/** The entry's action and the text after it, or undefined once its problem is reported. */
+function readAction(
+  item: RawItem,
+  reader: Reader,
+): { readonly action: FileEntry["action"]; readonly rest: string } | undefined {
+  const match = ACTION.exec(item.head);
+  if (match === null) {
+    reader.report({
+      code: "item-invalid",
+      params: { section: reader.sectionName, example: EXAMPLES.files[reader.lang] },
+      line: item.line,
+    });
+    return undefined;
+  }
+  const word = match[1] ?? "";
+  const action = fileActionFrom(word);
+  if (action === undefined) {
+    reader.report({ code: "file-action-unknown", params: { action: word }, line: item.line });
+    return undefined;
+  }
+  return { action, rest: match[2] ?? "" };
+}
+
+/**
+ * The entry's path, with the origin of a rename (`origen -> destino`), and the text after them;
+ * undefined once a problem with a path is reported. A rename without its target keeps one path.
+ */
+function readPaths(
+  head: { readonly action: FileEntry["action"]; readonly rest: string },
+  item: RawItem,
+  reader: Reader,
+): { readonly path: string; readonly from?: string; readonly rest: string } | undefined {
+  const [first, afterFirst] = takePath(head.rest);
+  const arrow = ARROW.exec(afterFirst.trimStart());
+  if (head.action !== "rename" || arrow === null) {
+    if (head.action === "rename") reader.report({ code: "file-rename-target", line: item.line });
+    const path = readPath(first, item.line, undefined, reader);
+    return path === undefined ? undefined : { path, rest: afterFirst };
+  }
+  const [second, afterSecond] = takePath(afterFirst.trimStart().slice(arrow[0].length));
+  const path = readPath(second, item.line, undefined, reader);
+  const from = readPath(first, item.line, undefined, reader);
+  return path === undefined || from === undefined ? undefined : { path, from, rest: afterSecond };
 }
 
 /** Takes a path token (backticked or up to the next space or dash) and returns the rest. */

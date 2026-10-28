@@ -78,6 +78,7 @@ export function deriveReview(
     id: item.id,
     text: item.text,
     warnings: warningsFor(item.id).map((warning) => warning.text),
+    ...(item.test === "manual" ? { manual: true as const } : {}),
   }));
   const groups = fileGroups(spec);
   const tasks = taskViews(spec, state, warningsFor);

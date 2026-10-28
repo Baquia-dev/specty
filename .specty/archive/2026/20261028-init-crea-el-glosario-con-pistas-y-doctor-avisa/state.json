@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "id": "20261028-init-crea-el-glosario-con-pistas-y-doctor-avisa",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-init-crea-el-glosario-con-pistas-y-doctor-avisa",
+  "baseCommit": "2d2ceff6979d2bec7e6894504a5e7ae81ade6f3c",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:53d185ccffbb7de64d1881b6990edfba93cbcb66406c5f65ddcd095ebdcfd26c",
+    "at": "2026-10-28T07:19:46.672Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8cc60e76264627c8d47c55c797abae561242fcf13e7afc208d56de70128be2d2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:568ed112053e4bee525901e09d88415108b9847fece024d69f0d17f70bf2300a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8fa89f1cc01ef9c2da6aa74ea9b1686940b6693d505cde9de36b3dd4fd708d20",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:2d9a75b6dfae1f81f0ceeeccadb8423555ea75e26e59a6a9b49169fc74fbde00",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "52be748c1b7f2f770724171b3d6cc51a5c885cdc",
+      "attempts": 1,
+      "startedAt": "2026-10-28T07:19:47.483Z",
+      "doneAt": "2026-10-28T07:25:46.245Z",
+      "summary": "glossaryTemplate (título y pistas del formato en un comentario, es/en), glossaryLine para init y el aviso empty-glossary de doctor, en el core.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f337545755115e4b0eec2959522c37bb6fa59150",
+      "attempts": 1,
+      "startedAt": "2026-10-28T07:25:46.605Z",
+      "doneAt": "2026-10-28T07:38:54.682Z",
+      "summary": "init escribe el glosario con pistas donde falta (writeGlossary), lo dice y lo lleva a su commit; doctor avisa si existe sin términos; init-commit.test incluye el glosario en el commit; formats §6 y ARCHITECTURE §14.",
+      "scopeExtra": [
+        "packages/core/src/index.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-28T07:43:12.858Z"
+}

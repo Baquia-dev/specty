@@ -1,9 +1,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import { readdir, stat } from "node:fs/promises";
 import { join } from "node:path";
-import { type ChangedFile, DELETED, type ShellSnapshot } from "@baquia-dev/specty-core";
+import {
+  type ChangedFile,
+  DELETED,
+  type ShellChanges,
+  type ShellSnapshot,
+} from "@baquia-dev/specty-core";
+import { resolveActive } from "../flow/active";
 import { isMissing, isRecord, parseJson, readText, remove, writeText } from "../io/files";
 import type { Session } from "../session";
+import { liveHolder } from "../store/lock";
 
 /**
  * Snapshots of the working tree taken before each Bash command of the agent, so the guard can
@@ -45,6 +52,22 @@ export async function takeSnapshot(
       (entry): entry is [string, string] => typeof entry[1] === "string",
     ),
   );
+}
+
+/**
+ * What a shell command changed, without what a Specty process wrote meanwhile: while a live one
+ * holds the active change's lock, the change's own folder is that process's (ARCHITECTURE §10).
+ */
+export async function withoutSpecty(
+  session: Session,
+  changes: ShellChanges,
+): Promise<ShellChanges> {
+  const change = await resolveActive(session);
+  if (change === undefined || (await liveHolder(session.git, change.state.id)) === undefined)
+    return changes;
+  const folder = `${session.paths.relative(change.files.dir)}/`;
+  const outside = (path: string) => !path.startsWith(folder);
+  return { writes: changes.writes.filter(outside), deletes: changes.deletes.filter(outside) };
 }
 
 /** Removes the snapshots of commands that never reported back. */

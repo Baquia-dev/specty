@@ -5,6 +5,7 @@ import { ClosingActions } from "../acceptance/closing-actions";
 import { PhaseBadge } from "../components/badge";
 import type { ChangeView, ReviewSection } from "../data/records";
 import { revisionName, revisionState } from "../data/revision";
+import { TestsActions } from "../progress/tests-actions";
 import { SECTION_LABELS } from "../review/comments";
 import { ReviewActions } from "../review/review-actions";
 import { sectionNumber } from "../review/section-meta";
@@ -18,11 +19,12 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
 
 /**
  * The change at a glance while scrolling: phase, title, revision, the section being read, what
- * is still to decide and the decision waiting: on the spec in review, on the result in acceptance.
+ * is still to decide and the decision waiting: on the spec in review, on the tests the agent
+ * sent, on the result in acceptance.
  */
 @Component({
   selector: "sp-change-bar",
-  imports: [PhaseBadge, ReviewActions, AcceptanceActions, ClosingActions],
+  imports: [PhaseBadge, ReviewActions, TestsActions, AcceptanceActions, ClosingActions],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     "[class]": "shown() ? barShown : barHidden",
@@ -51,6 +53,8 @@ const BAR_HIDDEN = `${BAR} pointer-events-none -translate-y-full opacity-0`;
       </div>
       @if (change().phase === 'review') {
         <sp-review-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
+      } @else if (change().decision === 'tests') {
+        <sp-tests-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
       } @else if (change().phase === 'acceptance') {
         <sp-acceptance-actions class="ml-auto shrink-0" [change]="change()" [compact]="true" />
       } @else if (change().decision === 'closing') {

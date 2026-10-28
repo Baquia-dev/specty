@@ -6,6 +6,7 @@ import {
   doctorCard,
   hasBlock,
   type Output,
+  parseGlossary,
   unfilledSections,
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
@@ -103,9 +104,12 @@ async function doctorWarnings(session: Session, agents: string | undefined): Pro
   const built = new Set(await git.ignored(missing));
   const gone = missing.filter((path) => !built.has(path));
   const delegation = await readDelegation(git);
+  const glossary = await readText(join(root, session.config.glossary));
+  const emptyGlossary = glossary !== undefined && parseGlossary(glossary).length === 0;
   return [
     ...(gone.length === 0 ? [] : [{ code: "missing-paths", paths: gone } as const]),
     ...(unfilled.length === 0 ? [] : [{ code: "unfilled-sections", sections: unfilled } as const]),
+    ...(emptyGlossary ? [{ code: "empty-glossary", path: session.config.glossary } as const] : []),
     ...(delegation === undefined
       ? []
       : [{ code: "delegated", since: delegation.at.slice(0, 10), by: delegation.by } as const]),

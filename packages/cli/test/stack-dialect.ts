@@ -120,6 +120,7 @@ const COMMON = [
   "scope",
   "dependencies",
   "fix-tests",
+  "criteria-tested",
   "tests-removed",
 ];
 
@@ -163,6 +164,7 @@ export function describeExamples(dialects: readonly Dialect[]): void {
       expect(await statuses(example(dialect), failing(dialect))).toEqual(
         expected(ids, "failed", {
           secrets: scanner ? "failed" : "skipped",
+          "criteria-tested": "warned",
           "tests-removed": "warned",
           ...(dialect.markers.focused ? {} : { "focused-tests": "passed" }),
           ...(dialect.markers.skipped ? {} : { "skipped-tests": "passed" }),
@@ -204,7 +206,7 @@ function passing(dialect: Dialect): Case {
     write: {
       [paths.manifest]: dialect.manifest([dialect.dependencies.line]),
       [paths.cart]: code.cart(code.discount([pending(code, "(#12)"), ...code.fixed])),
-      [paths.cartTest]: code.tests("Cart", [{ name: "adds the prices" }]),
+      [paths.cartTest]: code.tests("Cart", [{ name: "adds the prices AC1" }]),
       [paths.catalog]: code.catalog(3),
       [paths.prices]: "[100, 250, 400]\n",
       [paths.pricesData]: rendered(code.prices, [100, 250, 400]),

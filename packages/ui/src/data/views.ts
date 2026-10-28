@@ -17,6 +17,7 @@ import { closingOf } from "./closing";
 import { deriveDelta } from "./delta";
 import { findingsOf } from "./findings";
 import { historyOf } from "./history";
+import { lockedOf } from "./locks";
 import { type AuditRecord, progressOf } from "./progress";
 import type {
   ChangeRecord,
@@ -28,11 +29,13 @@ import type {
 } from "./records";
 import { deriveReview } from "./review";
 import { sharedFiles } from "./shared";
+import { testsOf } from "./tests";
 import { warningsOf } from "./warnings";
 
 const TABS: Readonly<Record<Phase, ChangeTab>> = {
   draft: "spec",
   review: "spec",
+  testing: "progress",
   implementing: "progress",
   adjusting: "progress",
   acceptance: "acceptance",
@@ -48,6 +51,7 @@ export function initialTab(phase: Phase): ChangeTab {
 /** What the person has to decide now, if anything (docs/ui.md, Bandeja). */
 export function decisionOf(state: ChangeState): DecisionKind | undefined {
   if (state.phase === "review") return "review";
+  if (state.phase === "testing" && state.testsSubmittedAt !== undefined) return "tests";
   if (state.phase === "implementing" && state.pending.scopeRequests.length > 0) return "scope";
   if (state.phase === "acceptance") return "acceptance";
   if (state.phase === "closing" && state.closingSubmittedAt !== undefined) return "closing";
@@ -98,6 +102,8 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const request = requestOf(record.audit ?? []);
   const warnings = warningsOf(record.audit ?? []);
   const findings = findingsOf(record.audit ?? []);
+  const tests = testsOf(state, record.audit ?? []);
+  const locked = lockedOf(state, record.audit ?? []);
   // The last review of each target that answered: the records come oldest first.
   const last = (target: ReviewRecord["target"]) =>
     (record.reviews ?? []).findLast((review) => review.target === target);
@@ -155,6 +161,9 @@ export function deriveView(record: ChangeRecord): ChangeView {
     },
     progress: progressOf(spec, state, record.audit ?? [], record.verifyFull),
     ...closingIn(spec),
+    ...(tests === undefined ? {} : { tests }),
+    ...(locked.length === 0 ? {} : { lockedTests: locked }),
+    ...(record.criteriaTests === undefined ? {} : { criteriaTests: record.criteriaTests }),
     ...(warnings.length === 0 ? {} : { warnings }),
     ...(findings.length === 0 ? {} : { findings }),
     ...(specReview === undefined ? {} : { specReview }),

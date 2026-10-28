@@ -21,6 +21,10 @@ const DECISIONS: Readonly<
     label: { es: "Spec por revisar", en: "Spec to review" },
     action: { es: "Revisar spec", en: "Review spec" },
   },
+  tests: {
+    label: { es: "Tests por aprobar", en: "Tests to approve" },
+    action: { es: "Aprobar tests", en: "Approve tests" },
+  },
   scope: {
     label: { es: "Solicitud de alcance", en: "Scope request" },
     action: { es: "Decidir alcance", en: "Decide scope" },
@@ -34,6 +38,27 @@ const DECISIONS: Readonly<
     action: { es: "Revisar cierre", en: "Review closing" },
   },
 };
+
+/**
+ * What goes after the decision: the revision in review, against the approved one when there is a
+ * delta, or how many tests wait for approval.
+ */
+function detailOf(change: ChangeView, t: (es: string, en: string) => string): string {
+  const delta = change.review.delta;
+  if (change.decision === "review") {
+    return delta
+      ? t(
+          ` · revisión ${change.revision}, frente a la ${delta.approvedRevision} aprobada`,
+          ` · revision ${change.revision}, against approved revision ${delta.approvedRevision}`,
+        )
+      : t(` · revisión ${change.revision}`, ` · revision ${change.revision}`);
+  }
+  const sent = change.decision === "tests" ? (change.tests?.files.length ?? 0) : 0;
+  if (sent === 0) return "";
+  return sent === 1
+    ? t(" · 1 test nuevo", " · 1 new test")
+    : t(` · ${sent} tests nuevos`, ` · ${sent} new tests`);
+}
 
 /**
  * A document row; the one picked with j/k keeps the highlight the others show on hover. Its
@@ -125,18 +150,9 @@ export class InboxRow {
     const change = this.change();
     const t = this.t();
     const lang = this.preferences.lang();
-    const delta = change.review.delta;
     const doing =
       change.decision !== undefined
-        ? DECISIONS[change.decision].label[lang] +
-          (change.decision === "review"
-            ? delta
-              ? t(
-                  ` · revisión ${change.revision}, frente a la ${delta.approvedRevision} aprobada`,
-                  ` · revision ${change.revision}, against approved revision ${delta.approvedRevision}`,
-                )
-              : t(` · revisión ${change.revision}`, ` · revision ${change.revision}`)
-            : "")
+        ? DECISIONS[change.decision].label[lang] + detailOf(change, t)
         : change.phase === "draft"
           ? t("La spec se está redactando", "The spec is being written")
           : "";

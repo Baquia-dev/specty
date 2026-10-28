@@ -19,6 +19,7 @@ import { enteredSession } from "./sessions";
 
 /** The phases whose change has an approved plan the diff must keep to. */
 const APPROVED_PHASES: ReadonlySet<string> = new Set([
+  "testing",
   "implementing",
   "adjusting",
   "acceptance",

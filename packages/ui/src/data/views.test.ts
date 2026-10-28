@@ -170,6 +170,59 @@ describe("decisions and tabs", () => {
     ).toBe("closing");
   });
 
+  it("AC1: a change in testing waits for the person only once the agent sent its tests", () => {
+    const sentAt = "2026-10-28T10:00:00.000Z";
+    expect(decisionOf(state({ phase: "testing" }))).toBeUndefined();
+    expect(decisionOf(state({ phase: "testing", testsSubmittedAt: sentAt }))).toBe("tests");
+    const audit = [
+      {
+        ts: sentAt,
+        actor: "agent" as const,
+        event: "tests.proposed",
+        data: {
+          count: 1,
+          files: ["test/trimestre_test.dart"],
+          red: [{ cmd: "flutter test", exit: 1 }],
+        },
+      },
+    ];
+    const view = deriveView({
+      ...record({ phase: "testing", revision: 1, testsSubmittedAt: sentAt }),
+      audit,
+    });
+    expect([view.decision, view.tests]).toEqual([
+      "tests",
+      {
+        submittedAt: sentAt,
+        files: ["test/trimestre_test.dart"],
+        red: [{ cmd: "flutter test", exit: 1 }],
+      },
+    ]);
+    expect(deriveView(record({ phase: "review" })).tests).toBeUndefined();
+  });
+
+  it("AC1: carries the tests of each criterion the server sent, as they came", () => {
+    const criteriaTests = [
+      {
+        id: "AC1",
+        manual: false,
+        owed: true,
+        tests: [{ path: "test/trimestre_test.dart", line: 4, task: "T1", commit: "a1b2c3d" }],
+      },
+    ];
+    const accepting = { ...record({ phase: "acceptance" }), criteriaTests };
+    expect(deriveView(accepting).criteriaTests).toEqual(criteriaTests);
+    expect(deriveView(record({ phase: "acceptance" })).criteriaTests).toBeUndefined();
+  });
+
+  it("AC1: carries the approved tests it locked, only when there are some", () => {
+    const lockedTests = { "test/trimestre_test.dart": HASH };
+    expect(deriveView(record({ phase: "implementing", lockedTests })).lockedTests).toEqual([
+      { path: "test/trimestre_test.dart", unlocks: [] },
+    ]);
+    expect(deriveView(record({ phase: "implementing" })).lockedTests).toBeUndefined();
+  });
+
   it("waits for the agent once the person asked for changes, until the next proposal (AC1, AC3)", () => {
     const step = (ts: string, event: string, revision: number) => ({
       ts,
@@ -302,6 +355,10 @@ Evolución agrupada por trimestre.
       "history",
       "history",
     ]);
+  });
+
+  it("AC4: opens the testing phase on the progress tab", () => {
+    expect(initialTab("testing")).toBe("progress");
   });
 });
 

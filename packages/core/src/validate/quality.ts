@@ -4,7 +4,7 @@ import type { TestsPolicy } from "../schema/config";
 import { isTestFile } from "../scope/tests";
 import { computeSize } from "../sizing/size";
 import type { Diagnostic } from "../spec/diagnostics";
-import type { CommitType, Task } from "../spec/model";
+import type { CommitType, Spec, Task } from "../spec/model";
 import { fileLine, itemLine, type Rule, report } from "./context";
 import { formatBreach, splitBreaches } from "./limits";
 
@@ -69,6 +69,27 @@ export function testRules(task: Pick<Task, "type">, policy: TestsPolicy): TestRu
   return type === "feat" || type === "fix" ? "first" : "keep";
 }
 
+/** How a change's tests come before its code (ADR 0014): a feature's wait for the person; a bug's red test locks by itself. */
+export type TestCycle = "feature" | "bug";
+
+/**
+ * The cycle of tests a change follows under `policy.tests: contract`, by its tasks not `done`
+ * yet: a standard change with a `feat` task, the default type, is a feature; one with `fix`
+ * tasks and no `feat`, also a quick one, is a bug; any other has no testing phase.
+ */
+export function testCycle(
+  spec: Spec,
+  policy: TestsPolicy,
+  done: ReadonlySet<string> = new Set(),
+): TestCycle | undefined {
+  const { kind } = spec.frontmatter;
+  if (policy !== "contract" || (kind !== "standard" && kind !== "quick")) return undefined;
+  const pending = (spec.sections.tasks?.items ?? []).filter((task) => !done.has(task.id));
+  const types = new Set(pending.map((task) => task.type ?? "feat"));
+  if (kind === "standard" && types.has("feat")) return "feature";
+  return types.has("fix") ? "bug" : undefined;
+}
+
 /** Criteria name an observable outcome, in WHEN … THEN … form. */
 export const checkCriteria: Rule = (spec, ctx, lang) =>
   (spec.sections.criteria?.items ?? []).flatMap((criterion): Diagnostic[] => {
@@ -115,7 +136,8 @@ export const checkTaskQuality: Rule = (spec, ctx, lang) => {
             report(lang, {
               code: "task-no-tests",
               params: { id: task.id, policy: policy.tests },
-              severity: policy.tests === "required" ? "error" : "warning",
+              severity:
+                policy.tests === "required" || policy.tests === "contract" ? "error" : "warning",
               ...at,
             }),
           ]

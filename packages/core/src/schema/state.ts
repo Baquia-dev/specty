@@ -10,6 +10,7 @@ const Count = z.number().int().min(0);
 export const PhaseSchema = z.enum([
   "draft",
   "review",
+  "testing",
   "implementing",
   "acceptance",
   "adjusting",
@@ -100,6 +101,12 @@ export const ChangeStateSchema = z.strictObject({
   /** Highest number ever used per prefix (items and `S` scope requests): ids are never reused. */
   maxIds: z.partialRecord(z.enum(["A", "AC", "T", "R", "C", "S"]), Count),
   closingSubmittedAt: Timestamp.optional(),
+  /** In the testing phase, the tests were sent and wait for the person's approval (ADR 0014). */
+  testsSubmittedAt: Timestamp.optional(),
+  /** The tests the person approved, locked by path to the hash of their content (ADR 0014). */
+  lockedTests: z.record(z.string().min(1), Hash).optional(),
+  /** In the testing phase, the cycle its approval decided: a feature's or a bug's (ADR 0014). */
+  testCycle: z.enum(["feature", "bug"]).optional(),
   integration: IntegrationSchema.optional(),
 });
 

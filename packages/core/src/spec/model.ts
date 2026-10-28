@@ -90,6 +90,8 @@ export interface Assumption {
 export interface Criterion {
   readonly id: string;
   readonly text: string;
+  /** `test: manual`: the person checks it, and no test has to carry its id. */
+  readonly test?: "manual";
 }
 
 export interface Risk {

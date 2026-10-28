@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-los-tests-enviados-se-ven-y-se-aprueban-desde-la",
+  "baseCommit": "3b93a0cfb50a432f95ce7e2117526425fc6b35ce",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1a0d341dae466ba9b0c754dc150619e5481ab6396aaa15066392faee7908cca4",
+    "at": "2026-10-28T10:45:58.574Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d067b86fc633aacf1f411430adab4a1aafebd4d4c9eb78a87eba4d1407e8237f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:966be533b294661a8633356317b8cd291cc885e0d2b02f4b8b2306da92e09e31",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:9a1a34fc88421aa552b257a9baccff49dbc7219a3eccb62c0202dc4c9a323afe",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "c06926e540550dacd23247e78e01468a14849911",
+      "attempts": 1,
+      "startedAt": "2026-10-28T10:45:58.957Z",
+      "doneAt": "2026-10-28T10:52:12.799Z",
+      "summary": "La vista del cambio lleva los tests enviados y su rojo (data/tests.ts, desde el último tests.proposed), la decisión tests en testing con testsSubmittedAt, y la Bandeja dice «Tests por aprobar · N tests nuevos»; la cabecera nombra la espera",
+      "scopeExtra": [
+        "packages/ui/src/change/change-page.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "5ac7a8fe52af318f83db347527c4ed4917440fe4",
+      "attempts": 1,
+      "startedAt": "2026-10-28T10:52:13.107Z",
+      "doneAt": "2026-10-28T10:56:45.846Z",
+      "summary": "sp-tests-sent: en testing, Progreso muestra arriba «Tests por aprobar» con cada test por su ruta, cada comando en rojo con su salida y qué implica aprobarlos; mientras el agente los escribe, lo dice. El test se escribió antes que el componente, pero no se ejecutó en rojo antes de escribirlo",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cd01e2e76fe513b632973344d211c178b224996a",
+      "attempts": 1,
+      "startedAt": "2026-10-28T10:56:46.153Z",
+      "doneAt": "2026-10-28T11:03:15.542Z",
+      "summary": "sp-tests-actions: «Aprobar los tests» en la cabecera y, compacto, en la barra, con un diálogo que dice que quedan bloqueados; aprueba la revisión vigente con source.approve y avisa; si la fuente falla, el diálogo sigue; en solo lectura, desactivado. La página lo prueba en change-page.tests.test.ts",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "aecefd8bf1c3906e0901d66aeeff3e6e8b561094",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:03:15.851Z",
+      "doneAt": "2026-10-28T11:09:19.777Z",
+      "summary": "ENTERS.implementing añade tests.approved y tests.locked: el servidor fecha la implementación por el último; un test del servidor aprueba los tests enviados con contract (tests.approved, canal ui, lockedTests). AC4 ya funcionaba: el test lo fija. serving acepta otra spec",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "412acbdae8c2ea67745e8d377b67468ad334a649",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:09:20.078Z",
+      "doneAt": "2026-10-28T11:14:33.677Z",
+      "summary": "docs/ui.md: los tests por aprobar en la Bandeja, la sección de tests de Progreso con su rojo, y «Aprobar los tests» con su diálogo en la cabecera y la barra",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 5
+  },
+  "closingSubmittedAt": "2026-10-28T11:17:33.304Z"
+}

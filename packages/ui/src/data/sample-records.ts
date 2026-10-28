@@ -7,6 +7,7 @@ import { withHistory } from "./sample-history";
 import { boletinesProgress, loginProgress, withProgress } from "./sample-progress";
 import { revisedSample } from "./sample-revisions";
 import { SAMPLE_SPECS } from "./sample-specs";
+import { noticesSample } from "./sample-tests";
 
 export const HASH = `sha256:${"0".repeat(64)}`;
 const MINUTE = 60_000;
@@ -45,6 +46,19 @@ function sample(
     state,
     phaseSince: new Date(now - minutesAgo * MINUTE).toISOString(),
   };
+}
+
+/** The change in `testing`, approved nine minutes ago, whose tests wait for the person. */
+function testingSample(now: number): ChangeRecord {
+  const approved = {
+    revision: 1,
+    hash: HASH,
+    at: new Date(now - 9 * MINUTE).toISOString(),
+    by: REVIEWER,
+    channel: "tty" as const,
+  };
+  const id = "20261022-avisos-calificaciones";
+  return noticesSample(sample(id, "testing", 9, now, { approved }, ["pending", "pending"]), now);
 }
 
 /**
@@ -90,6 +104,7 @@ export function sampleRecords(now: number): ChangeRecord[] {
       ["done"],
     ),
     withProgress(sample("20261021-login-google", "implementing", 25, now), loginProgress(now)),
+    testingSample(now),
     sample("20261021-modo-oscuro", "draft", 8, now),
     sample("20261015-redondeo-promedios", "done", 60 * 26, now, {}, ["done"]),
     sample("20261014-chat-docentes", "cancelled", 60 * 72, now),

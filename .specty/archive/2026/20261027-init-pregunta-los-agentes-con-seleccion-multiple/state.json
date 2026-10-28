@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "id": "20261027-init-pregunta-los-agentes-con-seleccion-multiple",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261027-init-pregunta-los-agentes-con-seleccion-multiple",
+  "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:39458b66e8a9538715c632e52225ce48aa953f09109784d53b19b7626ab61442",
+    "at": "2026-10-27T06:51:25.183Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ab5f85fdf55f83f87082d5b2c1fe948cfaf69b9b34ac3469ae1d5e9086c86888",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:7d54addd1cb6f67975d3b8d914b62b8d00e8f1c11e21e5508a85d2ee6e2f7cb8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7f4aee2a95381d89d613a7c8695adfbd8f7f8eebbcec4fdc2bdbb69ab084b38b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:eb3394c8b20d7dfff32c73fc95dabf572798011fb60f4ae912e08f26860561a4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d40ca5934e44a33e49772884dc112efc6950d2f4",
+      "attempts": 1,
+      "startedAt": "2026-10-27T06:51:25.577Z",
+      "doneAt": "2026-10-27T06:57:39.642Z",
+      "summary": "agentQuestion(detectados, lang) admite varios y dice si no hay detectados; agentChoices(detectados, lang) marca «(detectado)». Su llamada en install/hooks.ts se adaptó sin cambiar qué hace, y el test de AC4 ajustó el texto de la pregunta (R1).",
+      "scopeExtra": [
+        "packages/cli/src/install/hooks.ts",
+        "packages/cli/test/init-agents.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "da7704bc31e7bd70fc4a1da519d10fe05e26001d",
+      "attempts": 1,
+      "startedAt": "2026-10-27T06:57:39.936Z",
+      "doneAt": "2026-10-27T07:01:33.345Z",
+      "summary": "Terminal gana chooseMany(mensaje, opciones, marcadas): la del sistema usa multiselect de clack con al menos una; la delegada, la de los hooks y la pantalla de la UI no eligen. La persona de prueba responde lo guionizado, lo marcado o la primera opción.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "0d0aec1dfb4997ace6a82b4d40ca8bbc432951a0",
+      "attempts": 1,
+      "startedAt": "2026-10-27T07:01:33.649Z",
+      "doneAt": "2026-10-27T10:43:42.746Z",
+      "summary": "init pregunta siempre a una persona con chooseMany, con los detectados marcados; instala los marcados y, si cancela, los detectados o Claude Code. Sin persona, con --dry-run o --tools, igual que antes. El test de «no detecta ninguno» se ajustó a la pregunta múltiple (R1).",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "50913c41eecafc7692731ab4a2ef000194aa8550",
+      "attempts": 1,
+      "startedAt": "2026-10-27T10:43:43.309Z",
+      "doneAt": "2026-10-27T10:52:31.628Z",
+      "summary": "ARCHITECTURE §14 dice que la persona en la terminal siempre elige los agentes en una lista múltiple con los detectados marcados, qué se instala si cancela y que sin persona, con --dry-run o --tools todo sigue igual.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-27T10:57:18.877Z"
+}

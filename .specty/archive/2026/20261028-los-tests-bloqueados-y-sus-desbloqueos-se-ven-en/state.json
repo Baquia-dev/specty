@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
+  "baseCommit": "6477c7d222a97eda066f7ddc4c347134174c2749",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ed1f55467177742d5047e58bfebdbe26a90ce1517701554240548f7389588c40",
+    "at": "2026-10-28T11:46:14.888Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "6 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:669c4522b62dcbe2f4c180b35a4c9e1dcc46874be66db5395e52a6bf963b76d6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e270f03e5388c2fa3d9f8e7e17a6ed013a707070c6fa8e55cd9fb8af1055b5a4",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:1b1aa34302863a38b35de84e05ccff9b8c39f298658ae65e8cc053c45a4aa6df",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c1b891c269a6b7fc3ac39b9a3587b3101c549dc82812da82dac139c5de21819d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ad81208f8914be810fb3d38ecdb63711569df8ce",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:20:48.030Z",
+      "doneAt": "2026-10-28T11:26:06.306Z",
+      "summary": "data/locks.ts: lockedOf da cada test bloqueado por su ruta, desbloqueado para la tarea en curso si está en su scopeExtra, con los desbloqueos de scope.decided; unlocksOf marca las rutas bloqueadas de cada solicitud (TaskScopeRequest.unlocks); la vista lleva lockedTests",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "582d9425421a274bce61a0eed993828f25da455c",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:26:06.617Z",
+      "doneAt": "2026-10-28T11:30:41.505Z",
+      "summary": "sp-locked-tests: «Tests bloqueados» con cada test por su ruta y un candado, abierto si una solicitud lo desbloqueó para la tarea en curso («Desbloqueado para T2: vuelve a bloquearse al terminarla»), y los desbloqueos que hubo; en Progreso y en Aceptación. Iconos lock y lock-open",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "2ac0b588005bbf1be13528043f3fec986cfa8ddc",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:30:41.813Z",
+      "doneAt": "2026-10-28T11:35:01.026Z",
+      "summary": "La solicitud que pide un test aprobado se titula «Desbloquear un test aprobado», con el candado abierto, marca cada ruta bloqueada «(test aprobado)» y explica que la tarea podrá cambiarlo, que vuelve a bloquearse al terminarla y que solo lo decide la persona",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "ad1a6084a06b0471d04970c5493e5831a54977df",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:35:01.341Z",
+      "doneAt": "2026-10-28T11:40:01.631Z",
+      "summary": "El historial nombra el envío, la aprobación y el bloqueo de los tests (data/history-tests.ts) y los desbloqueos de una solicitud o de un ajuste; HistoryType, Told y CHANNELS pasan a history-text.ts",
+      "scopeExtra": [
+        "packages/ui/src/data/history-text.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "9b34898e04f314bcc26ba4eeba973cb977a3cd5e",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:40:01.937Z",
+      "doneAt": "2026-10-28T11:45:10.231Z",
+      "summary": "docs/ui.md describe la solicitud de desbloqueo, la sección «Tests bloqueados» en Progreso y Aceptación, y los textos del historial de los tests",
+      "scopeExtra": []
+    },
+    "T6": {
+      "status": "done",
+      "baseCommit": "fd846f451bc6de9457db351f5e5acff1af4876c9",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:46:15.242Z",
+      "doneAt": "2026-10-28T11:48:59.309Z",
+      "summary": "UnlockView deja de exportarse: solo lo usa locks.ts, y knip ya no lo marca",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 6,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-28T11:51:55.420Z"
+}

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import {
+  criterionMarks,
   DEFAULT_CHECKS,
   focusedTests,
   resolveConfig,
@@ -293,6 +294,88 @@ describe("testCases", () => {
       "function testHelper() {}",
     ].join("\n");
     expect(testCases(text)).toBe(0);
+  });
+});
+
+describe("criterionMarks", () => {
+  it("AC3: finds each id where a line carries it, as the spec writes it", () => {
+    const text = [
+      'it("AC1: greets by name", () => {});',
+      "  // AC2, and AC1 again",
+      "it('AC20 is another criterion', () => {});",
+      "def test_AC3_parses():",
+      "func TestAC2Greets(t *testing.T) {",
+      "it('ac1 in lower case', () => {});",
+      "const XAC1 = 1;",
+    ].join("\n");
+    expect(criterionMarks(text, ["AC1", "AC2", "AC3"])).toEqual([
+      { line: 1, marker: "AC1" },
+      { line: 2, marker: "AC2" },
+      { line: 2, marker: "AC1" },
+      { line: 4, marker: "AC3" },
+      { line: 5, marker: "AC2" },
+    ]);
+  });
+
+  it("finds nothing without ids", () => {
+    expect(criterionMarks("it('AC1: greets', () => {});", [])).toEqual([]);
+  });
+
+  /** The ids `criterionMarks` finds in `lines`, with their line. */
+  const named = (...lines: string[]) =>
+    criterionMarks(
+      lines.join("\n"),
+      Array.from({ length: 12 }, (_, index) => `AC${index + 1}`),
+    ).map((mark) => `${mark.line} ${mark.marker}`);
+
+  it("AC1: counts an id in a test's or a group's name, after an annotation, or in a comment", () => {
+    expect(
+      named(
+        "describe('AC1: greets', () => {",
+        "  it('AC2 by name', () => {});",
+        "  @Test",
+        '  @DisplayName("AC3: adds")',
+        "  void addsAC4() {",
+        "#[test]",
+        "fn adds_AC5() {",
+        'var _ = Describe("AC6 cart", func() {',
+        '  It("AC7 adds", func() {',
+        't.Run("AC8: subtest", func(t *testing.T) {',
+        'test "AC9 in Elixir" do',
+        "  # AC10 in a comment",
+        "  // AC11 too",
+        "  [Fact]",
+        "  public void AddsAC12()",
+      ),
+    ).toEqual([
+      "1 AC1",
+      "2 AC2",
+      "4 AC3",
+      "5 AC4",
+      "7 AC5",
+      "8 AC6",
+      "9 AC7",
+      "10 AC8",
+      "11 AC9",
+      "12 AC10",
+      "13 AC11",
+      "15 AC12",
+    ]);
+  });
+
+  it("AC2: leaves out an id in a fixture or in a test's body", () => {
+    expect(
+      named(
+        "it('parses', () => {",
+        "  const spec = '- AC1: CUANDO se pasa «Ana» ENTONCES imprime «Hola, Ana».';",
+        "  expect(ids).toEqual(['AC2']);",
+        "});",
+        "  @Test",
+        "  void adds() {",
+        '    assertEquals("AC3", id);',
+        "const TWO = SPEC.replace('- AC4', '- AC5');",
+      ),
+    ).toEqual([]);
   });
 });
 

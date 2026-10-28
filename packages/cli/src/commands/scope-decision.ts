@@ -14,6 +14,7 @@ import {
   scopeDecidedLine,
   scopeDecisionQuestion,
   transition,
+  unlockRefusedCard,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import type { Session } from "../session";
@@ -54,6 +55,11 @@ export async function decideScope(
     (entry) => entry.id === scope.trim().toUpperCase(),
   );
   if (request === undefined) return noScopeRequestCard(scope, header, cards);
+  // Unlocking an approved test is the person's alone, in delegated mode too (ADR 0014).
+  const unlocks = request.paths.filter((path) => Object.hasOwn(state.lockedTests ?? {}, path));
+  if (unlocks.length > 0 && session.actor === "agent") {
+    return unlockRefusedCard(header, request.id, cards);
+  }
   terminal.note(
     `${request.id} · ${request.task}`,
     `${request.paths.join("\n")}\n— ${request.reason}`,
@@ -64,7 +70,7 @@ export async function decideScope(
       : undefined;
   const confirmed = await terminal.confirm(scopeDecisionQuestion(decision, request, session.lang));
   if (!confirmed) return nothingChangedCard(header, checkStatus(cards), cards);
-  return recordScopeDecision(session, active, request, { decision, header, why });
+  return recordScopeDecision(session, active, request, { decision, header, why, unlocks });
 }
 
 /** The decision taken: the request leaves the queue and, approved, widens its task's scope. */
@@ -76,10 +82,12 @@ async function recordScopeDecision(
     readonly decision: "approve" | "reject";
     readonly header: string;
     readonly why: string | undefined;
+    /** The approved tests the request unlocks for its task. */
+    readonly unlocks: readonly string[];
   },
 ): Promise<Output> {
   const { state } = active;
-  const { decision, header, why } = taken;
+  const { decision, header, why, unlocks } = taken;
   const { cards } = session;
   const moved = transition({
     phase: "implementing",
@@ -100,6 +108,10 @@ async function recordScopeDecision(
       id: request.id,
       decision: decision === "approve" ? "approved" : "rejected",
       ...(why !== undefined && why.trim().length > 0 ? { reason: why.trim() } : {}),
+      // The acceptance shows each test a person unlocked, with its request and its task.
+      ...(decision === "approve" && unlocks.length > 0
+        ? { unlock: unlocks, task: request.task }
+        : {}),
     },
     "human",
   );

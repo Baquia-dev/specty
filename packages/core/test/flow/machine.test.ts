@@ -23,7 +23,15 @@ const ACTORS: readonly Actor[] = ["agent", "human", "specty"];
 const PASSING: Readonly<Record<FlowEventType, FlowEvent>> = {
   propose: { type: "propose", validationErrors: 0 },
   requestChanges: { type: "requestChanges" },
-  approve: { type: "approve", validationErrors: 0, pendingHighImpact: 0, remainingTasks: 0 },
+  approve: {
+    type: "approve",
+    validationErrors: 0,
+    pendingHighImpact: 0,
+    remainingTasks: 0,
+    testsFirst: false,
+  },
+  approveTests: { type: "approveTests", testsSubmitted: true },
+  confirmRed: { type: "confirmRed" },
   taskDone: { type: "taskDone", remainingTasks: 0 },
   scopeRequest: { type: "scopeRequest" },
   decideScope: { type: "decideScope" },
@@ -45,9 +53,17 @@ interface Row {
 const TABLE: Readonly<Record<FlowEventType, Row>> = {
   propose: {
     actors: ["agent", "human"],
-    next: { draft: "review", review: "review", adjusting: "review", closing: "closing" },
+    next: {
+      draft: "review",
+      review: "review",
+      testing: "testing",
+      adjusting: "review",
+      closing: "closing",
+    },
   },
   requestChanges: { actors: ["human"], next: { review: "review" } },
+  approveTests: { actors: ["human"], next: { testing: "implementing" } },
+  confirmRed: { actors: ["specty"], next: { testing: "implementing" } },
   approve: {
     actors: ["human"],
     next: { review: { retro: "done", epic: "implementing", other: "acceptance" } },
@@ -111,6 +127,67 @@ describe("transition", () => {
           }
   });
 
+  it("AC1: lets the person cancel a change in testing", () => {
+    const base = { phase: "testing" as const, kind: "standard" as const, actor: "human" as const };
+    expect(transition({ ...base, event: { type: "cancel" } })).toEqual({
+      ok: true,
+      phase: "cancelled",
+    });
+  });
+
+  it("AC3: keeps a change in testing when its tests are sent, and the person's approval implements it", () => {
+    const base = { phase: "testing" as const, kind: "standard" as const };
+    const sent = { type: "propose" as const, validationErrors: 0 };
+    expect(transition({ ...base, actor: "agent", event: sent })).toEqual({
+      ok: true,
+      phase: "testing",
+    });
+    const approve = (testsSubmitted: boolean) => ({
+      type: "approveTests" as const,
+      testsSubmitted,
+    });
+    expect(transition({ ...base, actor: "human", event: approve(true) })).toEqual({
+      ok: true,
+      phase: "implementing",
+    });
+    expect(transition({ ...base, actor: "human", event: approve(false) })).toEqual({
+      ok: false,
+      code: "tests-not-submitted",
+    });
+    expect(transition({ ...base, actor: "agent", event: approve(true) })).toEqual({
+      ok: false,
+      code: "actor-not-allowed",
+    });
+  });
+
+  it("AC2: approving a spec whose tests come first starts the testing phase", () => {
+    const approve = (remainingTasks: number) => ({
+      type: "approve" as const,
+      validationErrors: 0,
+      pendingHighImpact: 0,
+      remainingTasks,
+      testsFirst: true,
+    });
+    const base = { phase: "review" as const, kind: "standard" as const, actor: "human" as const };
+    expect(transition({ ...base, event: approve(2) })).toEqual({ ok: true, phase: "testing" });
+    // With nothing left to build, there is nothing to test first either.
+    expect(transition({ ...base, event: approve(0) })).toEqual({ ok: true, phase: "acceptance" });
+  });
+
+  it("AC1: implements a bug once its test is red, without the person, and only Specty says so", () => {
+    const base = { phase: "testing" as const, kind: "quick" as const };
+    expect(transition({ ...base, actor: "specty", event: { type: "confirmRed" } })).toEqual({
+      ok: true,
+      phase: "implementing",
+    });
+    for (const actor of ["agent", "human"] as const) {
+      expect(transition({ ...base, actor, event: { type: "confirmRed" } })).toEqual({
+        ok: false,
+        code: "actor-not-allowed",
+      });
+    }
+  });
+
   it("never lets the agent run an event that grants permissions", () => {
     for (const event of FLOW_EVENTS) {
       const rule = EVENT_RULES[event];
@@ -127,7 +204,13 @@ describe("transition", () => {
     expect(
       transition({
         ...base,
-        event: { type: "approve", validationErrors: 0, pendingHighImpact: 1, remainingTasks: 2 },
+        event: {
+          type: "approve",
+          validationErrors: 0,
+          pendingHighImpact: 1,
+          remainingTasks: 2,
+          testsFirst: false,
+        },
       }),
     ).toEqual({ ok: false, code: "pending-assumptions" });
     // With tasks to do, approving starts the implementation (AC2).
@@ -136,7 +219,13 @@ describe("transition", () => {
         transition({
           ...base,
           kind,
-          event: { type: "approve", validationErrors: 0, pendingHighImpact: 0, remainingTasks: 2 },
+          event: {
+            type: "approve",
+            validationErrors: 0,
+            pendingHighImpact: 0,
+            remainingTasks: 2,
+            testsFirst: false,
+          },
         }),
         kind,
       ).toEqual({ ok: true, phase: "implementing" });
@@ -162,6 +251,19 @@ describe("phasePermissions", () => {
   it("opens code only for the active task", () => {
     const open = PHASES.filter((phase) => phasePermissions(phase).code === "active-task");
     expect(open).toEqual(["implementing"]);
+  });
+
+  it("AC4: opens code only to the change's tests in the testing phase", () => {
+    expect(phasePermissions("testing")).toEqual({
+      code: "tests",
+      spec: "locked",
+      waitingFor: "agent",
+    });
+  });
+
+  it("AC5: waits for the person once the tests are sent", () => {
+    expect(phasePermissions("testing").waitingFor).toBe("agent");
+    expect(phasePermissions("testing", true).waitingFor).toBe("human");
   });
 
   it("knows who the change is waiting for", () => {

@@ -103,6 +103,56 @@ describe("specty check --install keeps the agents out of the noise", () => {
     expect(rules["node_modules/**"]).toBe("deny");
   });
 
+  it("keeps the archived changes out of the index only, never out of reach", async () => {
+    const root = await repo({
+      ".cursor/rules.md": "x\n",
+      ".agents/rules/style.md": "x\n",
+      "CLAUDE.md": "x\n",
+      ".gemini/settings.json": "{}\n",
+      ".windsurfrules": "x\n",
+      "opencode.json": "{}\n",
+    });
+    expect((await cli(root, ["check", "--install"], { terminal: person() })).code).toBe(0);
+    const archived = ".specty/archive/**";
+    const index = await read(root, ".cursorindexingignore");
+    expect(index).toContain(
+      "# Specty: los cambios archivados, fuera del índice; el agente aún puede abrirlos (specty check --install)",
+    );
+    expect(index).toContain(archived);
+    expect(index).not.toContain("**/node_modules/**");
+    const antigravity = await read(root, ".antigravityignore");
+    expect(antigravity).toContain(archived);
+    expect(antigravity).toContain("**/node_modules/**");
+    for (const file of [".cursorignore", ".geminiignore", ".codeiumignore"]) {
+      expect(await read(root, file), file).not.toContain(".specty/");
+    }
+    expect(await read(root, ".claude/settings.json")).not.toContain(".specty/");
+    expect(await read(root, "opencode.json")).not.toContain(".specty/");
+    expect((await cli(root, ["check", "--install", "--dry-run"])).out).toContain(
+      "No hay nada que instalar.",
+    );
+  });
+
+  it("keeps the archived changes out of the index with no noise to exclude", async () => {
+    const quiet = READY.replace("checks:", "checks:\n  exclude: []").replace(
+      '["**/*.g.dart"]',
+      "[]",
+    );
+    const root = await tempRepo({
+      ...APP,
+      ...WORKFLOW,
+      ".cursor/rules.md": "x\n",
+      ".agents/rules/style.md": "x\n",
+      ".specty/config.yaml": `${CONFIG()}${quiet}`,
+    });
+    const plan = await cli(root, ["check", "--install", "--dry-run"]);
+    expect(plan.out).toContain(".cursorindexingignore (crear)");
+    expect(plan.out).toContain(".antigravityignore (crear)");
+    expect(plan.out).toContain("+.specty/archive/**");
+    expect(plan.out).not.toContain(".cursorignore");
+    expect(plan.out).not.toContain("node_modules");
+  });
+
   it("explains the patterns in English", async () => {
     const root = await repo(
       { ".cursor/rules.md": "x\n" },
@@ -111,6 +161,9 @@ describe("specty check --install keeps the agents out of the noise", () => {
     const plan = await cli(root, ["check", "--install", "--dry-run"]);
     expect(plan.out).toContain(
       "+# Specty: dependencies, build output and generated code (specty check --install)",
+    );
+    expect(plan.out).toContain(
+      "+# Specty: archived changes, out of the index; the agent can still open them (specty check --install)",
     );
   });
 });

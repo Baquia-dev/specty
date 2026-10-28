@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   type AgentTool,
+  branchUsesType,
   type CardContext,
   type ConfigIssue,
   detectAgentTool,
@@ -26,6 +27,15 @@ export interface Terminal {
     message: string,
     options: readonly { readonly value: T; readonly label: string }[],
   ): Promise<T | undefined>;
+  /**
+   * Several answers, with `initial` already checked: the ones checked when confirmed, or
+   * undefined if the person cancels or nobody can answer.
+   */
+  chooseMany<T extends string>(
+    message: string,
+    options: readonly { readonly value: T; readonly label: string }[],
+    initial: readonly T[],
+  ): Promise<readonly T[] | undefined>;
   ask(message: string): Promise<string | undefined>;
   /** Shows information to the person (summaries before a decision). */
   note(title: string, text: string): void;
@@ -130,6 +140,7 @@ export function sessionFrom(
       quickMaxFiles: config.lanes.quick.maxFiles,
       implicitTests: config.scope.implicitTests,
       ...(delegated ? { delegated: true } : {}),
+      ...(branchUsesType(config.git) ? { branchTypes: true } : {}),
     },
   };
 }
@@ -144,6 +155,7 @@ function delegatedTerminal(io: Io): Terminal {
     interactive: false,
     confirm: async () => true,
     choose: async () => undefined,
+    chooseMany: async () => undefined,
     ask: async () => undefined,
     note: (title, text) => io.err(`${title}\n${text}`),
   };

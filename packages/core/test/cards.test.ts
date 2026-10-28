@@ -71,6 +71,21 @@ describe("next cards", () => {
     expect(en).toContain('`specty new "<title>" --request "<the user\'s literal request>"`');
   });
 
+  it("asks for the change's type when the flow names the branches by it (AC1)", () => {
+    const typed = { ...ES, branchTypes: true };
+    expect(
+      renderText(nextCard({ dirty: [] }, typed), "es")
+        .split("\n")
+        .at(-1),
+    ).toBe(
+      'SIGUIENTE: ejecuta `specty new "<título>" --type <tipo> --request "<petición literal del usuario>"`, con el tipo de commit que es el cambio, que nombra su rama: feat, fix, refactor, perf, test, docs, chore, build, ci o style (añade `--kind quick` si son hasta 3 archivos de código sin rutas sensibles).',
+    );
+    const en = renderText(nextCard({ dirty: [] }, { ...typed, lang: "en" }), "en");
+    expect(en).toContain(
+      'run `specty new "<title>" --type <type> --request "<the user\'s literal request>"`, with the commit type the change is, which names its branch: feat, fix, refactor, perf, test, docs, chore, build, ci or style (add',
+    );
+  });
+
   it("shows the user's literal request while drafting, when there is one", () => {
     const request = "Que el saludo use el nombre.\nY que no grite.";
     const card = text({ ...view("draft"), request });
@@ -291,6 +306,12 @@ describe("AGENTS.md blocks", () => {
 });
 
 describe("templates", () => {
+  it("tell how to mark a criterion that no test can check (AC1)", () => {
+    for (const lang of ["es", "en"] as const) {
+      expect(specTemplate({ kind: "standard", lang, title: "X" })).toContain('"  - test: manual"');
+    }
+  });
+
   it("produce specs that only lack their content", () => {
     for (const kind of ["quick", "standard", "spike", "retro", "epic"] as const) {
       const { diagnostics, spec } = parseSpec(specTemplate({ kind, lang: "en", title: "X" }));

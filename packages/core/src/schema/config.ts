@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as z from "zod";
+import { branchPatternIssue, GIT_FLOWS, type GitFlow } from "../branches";
+import { defaultGlossary } from "../glossary";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 
-export type TestsPolicy = "required" | "recommended" | "off";
+/** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
+export type TestsPolicy = "contract" | "required" | "recommended" | "off";
 
 /** `.specty/config.yaml` with every default applied. */
 /** Lines of code: a warning past `warn`, a block past `fail`, or never with `false`. */
@@ -51,6 +54,8 @@ export interface ResolvedConfig {
   /** What `specty check` runs and how much it prints (ADR 0012). */
   readonly checks: ChecksConfig;
   readonly policy: { readonly tests: TestsPolicy };
+  /** The project's glossary (formats.md §6); unset, the default of its language. */
+  readonly glossary: string;
   readonly retro: { readonly mode: "agent" | "minimal" };
   readonly git: {
     readonly branchPerChange: boolean;
@@ -63,6 +68,10 @@ export interface ResolvedConfig {
     readonly setup?: string | false;
     /** The branch changes start from and go to when finished. Unset: the main branch. */
     readonly target?: string;
+    /** How the changes' branches are named (`branchName`). Unset: Specty's own, `specty/<id>`. */
+    readonly flow?: GitFlow;
+    /** A name with `{type}`, `{slug}` and `{id}` for the changes' branches, over `flow`. */
+    readonly branchPattern?: string;
   };
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
@@ -105,6 +114,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   },
   checks: DEFAULT_CHECKS,
   policy: { tests: "recommended" },
+  glossary: defaultGlossary("en"),
   retro: { mode: "agent" },
   git: { branchPerChange: true, worktrees: true },
   team: { approvers: [], requirePrReview: true },
@@ -163,8 +173,9 @@ export const ConfigSchema = z.strictObject({
     .optional(),
   checks: ChecksSchema.optional(),
   policy: z
-    .strictObject({ tests: z.enum(["required", "recommended", "off"]).optional() })
+    .strictObject({ tests: z.enum(["contract", "required", "recommended", "off"]).optional() })
     .optional(),
+  glossary: z.string().min(1).optional(),
   retro: z.strictObject({ mode: z.enum(["agent", "minimal"]).optional() }).optional(),
   git: z
     .strictObject({
@@ -172,6 +183,15 @@ export const ConfigSchema = z.strictObject({
       worktrees: z.boolean().optional(),
       setup: z.union([z.string().min(1), z.literal(false)]).optional(),
       target: z.string().min(1).optional(),
+      flow: z.enum(GIT_FLOWS).optional(),
+      branchPattern: z
+        .string()
+        .min(1)
+        .superRefine((pattern, context) => {
+          const issue = branchPatternIssue(pattern);
+          if (issue !== undefined) context.addIssue({ code: "custom", message: issue });
+        })
+        .optional(),
     })
     .optional(),
   team: z
@@ -238,12 +258,17 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     lines: linesOf(input),
     checks: resolveChecks(input.checks),
     policy: { tests: input.policy?.tests ?? base.policy.tests },
+    glossary: glossaryOf(input),
     retro: { mode: input.retro?.mode ?? base.retro.mode },
     git: gitOf(input),
     team: teamOf(input),
     ui: uiOf(input),
     ...(review !== undefined ? { review } : {}),
   };
+}
+
+function glossaryOf(input: ConfigInput): string {
+  return input.glossary ?? defaultGlossary(input.language ?? DEFAULT_CONFIG.language);
 }
 
 function verifyOf(input: ConfigInput): ResolvedConfig["verify"] {
@@ -304,6 +329,8 @@ function gitOf(input: ConfigInput): ResolvedConfig["git"] {
     worktrees: git?.worktrees ?? DEFAULT_CONFIG.git.worktrees,
     ...(git?.setup !== undefined ? { setup: git.setup } : {}),
     ...(git?.target !== undefined ? { target: git.target } : {}),
+    ...(git?.flow !== undefined ? { flow: git.flow } : {}),
+    ...(git?.branchPattern !== undefined ? { branchPattern: git.branchPattern } : {}),
   };
 }
 

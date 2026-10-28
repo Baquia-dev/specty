@@ -28,6 +28,7 @@ import {
   transition,
 } from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
+import { adjustedTests, doneOf } from "../flow/adjusted-tests";
 import { analyzeChange } from "../flow/analysis";
 import { commitWithReceipt, decisionTrailers } from "../flow/commits";
 import { finishRetro } from "../flow/finish";
@@ -38,14 +39,19 @@ import { canDecide } from "./human";
 import { thenNext } from "./next";
 import { retroDone } from "./retro";
 import { decideScope } from "./scope-decision";
+import { approveTests } from "./tests";
 
-/** `specty approve [--scope S]`: a person approves the spec in review or a scope request. */
+/**
+ * `specty approve [--scope S]`: a person approves the spec in review, the tests sent in the
+ * testing phase, or a scope request.
+ */
 export async function approve(session: Session, scope: string | undefined): Promise<Output> {
   const { cards } = session;
   if (!canDecide(session)) return notInteractiveCard("approve", cards);
   const active = await resolveActive(session);
   if (active === undefined) return noActiveChangeCard("person", cards);
   if (scope !== undefined) return decideScope(session, active, scope, "approve", undefined);
+  if (active.state.phase === "testing") return approveTests(session, active);
   if (active.state.phase !== "review")
     return nothingPendingCard(active.state.id, active.state.phase, "approve", cards);
   return approveSpec(session, active);
@@ -173,8 +179,10 @@ async function approved(
 ): Promise<Output> {
   const { state } = active;
   // Counted as `task done` counts them: with none left, the change goes to acceptance.
+  const done = doneOf(state);
+  const tests = await adjustedTests(session, active, spec, done);
   const remainingTasks = (spec.sections.tasks?.items ?? []).filter(
-    (item) => state.tasks[item.id]?.status !== "done",
+    (item) => !done.has(item.id),
   ).length;
   const moved = transition({
     phase: "review",
@@ -185,15 +193,43 @@ async function approved(
       validationErrors: analysis.valid ? 0 : 1,
       pendingHighImpact: 0,
       remainingTasks,
+      // An adjustment's tests come first only if it brings any, or changes a criterion.
+      testsFirst: tests.cycle !== undefined,
     },
   });
   if (!moved.ok) return blockedCard(header, moved.code, askAgentNext(session.cards));
   // The person who delegated stays as `by`; the channel records that the agent approved.
   const channel =
     session.actor === "agent" ? "delegated" : (session.environment.terminal.channel ?? "tty");
-  const approvedState: ChangeState = {
-    ...state,
+  const approvedState = await approvalState(session, state, {
+    items,
+    hash: analysis.hash,
     phase: moved.phase,
+    channel,
+    tests,
+  });
+  return recordApproval(session, active, spec, analysis, approvedState, channel);
+}
+
+/**
+ * The state once approved: who, when and how, the assumptions still pending taken as implicit,
+ * and what the approval decided about the tests (ADR 0014).
+ */
+async function approvalState(
+  session: Session,
+  state: ChangeState,
+  approval: {
+    readonly items: ChangeState["items"];
+    readonly hash: NonNullable<ChangeState["approved"]>["hash"];
+    readonly phase: ChangeState["phase"];
+    readonly channel: NonNullable<ChangeState["approved"]>["channel"];
+    readonly tests: Awaited<ReturnType<typeof adjustedTests>>;
+  },
+): Promise<ChangeState> {
+  const { items, phase, tests } = approval;
+  return {
+    ...state,
+    phase,
     items: Object.fromEntries(
       Object.entries(items).map(([id, item]) => [
         id,
@@ -202,14 +238,15 @@ async function approved(
     ),
     approved: {
       revision: state.revision,
-      hash: analysis.hash,
+      hash: approval.hash,
       at: session.environment.now().toISOString(),
       by: (await session.git.config("user.name")) ?? "unknown",
-      channel,
+      channel: approval.channel,
     },
     pending: { ...state.pending, adjustment: null },
+    ...(tests.lockedTests !== undefined ? { lockedTests: tests.lockedTests } : {}),
+    ...(phase === "testing" && tests.cycle !== undefined ? { testCycle: tests.cycle } : {}),
   };
-  return recordApproval(session, active, spec, analysis, approvedState, channel);
 }
 
 async function recordApproval(
@@ -221,12 +258,21 @@ async function recordApproval(
   channel: string,
 ): Promise<Output> {
   const { state, files } = active;
+  // The approved tests an adjustment unlocked: they carry a criterion it modified (ADR 0014).
+  const unlocked = Object.keys(state.lockedTests ?? {}).filter(
+    (path) => approvedState.lockedTests?.[path] === undefined,
+  );
   const updated = await commitState(
     session,
     active,
     approvedState,
     "spec.approved",
-    { revision: state.revision, hash: analysis.hash, channel },
+    {
+      revision: state.revision,
+      hash: analysis.hash,
+      channel,
+      ...(unlocked.length > 0 ? { unlocked } : {}),
+    },
     "human",
   );
   if (state.kind === "retro")

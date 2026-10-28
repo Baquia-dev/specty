@@ -22,6 +22,13 @@ export {
 } from "./agents-md";
 export { type Analysis, analyzeSpec } from "./analyze";
 export {
+  branchName,
+  branchPatternIssue,
+  branchUsesType,
+  GIT_FLOWS,
+  type GitFlow,
+} from "./branches";
+export {
   AGENT_CAPABILITIES,
   type AgentCapabilities,
   capabilityTable,
@@ -30,6 +37,7 @@ export {
   type Support,
 } from "./capabilities";
 export * from "./cards";
+export { glossaryLine } from "./cards/init";
 export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
@@ -47,6 +55,7 @@ export {
   type ResolvedImport,
 } from "./checks/layers";
 export {
+  criterionMarks,
   focusedTests,
   type Mark,
   skippedTests,
@@ -95,6 +104,13 @@ export {
   type WaitingFor,
 } from "./flow/phases";
 export { globBase, isGlob, matchesAny, matchesPattern } from "./glob";
+export {
+  defaultGlossary,
+  type GlossaryEntry,
+  glossaryTemplate,
+  parseGlossary,
+  termsIn,
+} from "./glossary";
 export {
   DELETED,
   decideAfterShell,
@@ -248,4 +264,4 @@ export {
   type TemplateOptions,
 } from "./templates";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";
-export { type TestRules, testRules } from "./validate/quality";
+export { type TestCycle, type TestRules, testCycle, testRules } from "./validate/quality";

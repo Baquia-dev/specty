@@ -105,14 +105,15 @@ describe("Inbox", () => {
     const { element, rows, row, sections } = await open();
     expect(text(element.querySelector("sp-inbox h1"))).toBe("Bandeja");
     expect(text(element.querySelector("[data-summary]"))).toBe(
-      "5 decisiones · 2 en curso · 2 recientes",
+      "6 decisiones · 2 en curso · 2 recientes",
     );
-    expect(sections()).toEqual(["Esperan tu decisión 5", "En curso 2", "Recientes 2"]);
+    expect(sections()).toEqual(["Esperan tu decisión 6", "En curso 2", "Recientes 2"]);
     expect(rows().map((item) => short(item.dataset.id))).toEqual([
       "asistencia-curso",
       "recordatorios-correo",
       "justificar-faltas",
       "evolucion-trimestre",
+      "avisos-calificaciones",
       "boletines-pdf",
       "login-google",
       "modo-oscuro",
@@ -196,7 +197,7 @@ describe("Inbox", () => {
     search()?.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     await fixture.whenStable();
     expect(search()?.value).toBe("");
-    expect(rows()).toHaveLength(9);
+    expect(rows()).toHaveLength(10);
   });
 
   it("keeps the view when coming back from a change, with a clean URL (AC6)", async () => {

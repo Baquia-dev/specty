@@ -42,6 +42,7 @@ const CHECKS = [
   "scope",
   "dependencies",
   "fix-tests",
+  "criteria-tested",
   "tests-removed",
 ];
 
@@ -183,7 +184,7 @@ function passing(framework: Framework): Case {
     write: {
       "package.json": manifest(framework, { zod: "3.25.76" }),
       "src/app/cart.ts": cart.join("\n"),
-      "src/app/cart.spec.ts": 'it("adds the prices", () => {\n  expect(1).toBe(1);\n});\n',
+      "src/app/cart.spec.ts": 'it("AC1: adds the prices", () => {\n  expect(1).toBe(1);\n});\n',
       "src/app/catalog.ts": "export const ITEMS = 3;\n",
       "src/app/prices.json": "[100, 250, 400]\n",
       "src/app/prices.gen.ts": rendered(PRICES, [100, 250, 400]),
@@ -251,6 +252,7 @@ describe.each(["angular", "nestjs"] as const)("the %s example of specty check", 
       expected(CHECKS, "failed", {
         layers: "skipped",
         secrets: scanner ? "failed" : "skipped",
+        "criteria-tested": "warned",
         "tests-removed": "warned",
       }),
     );

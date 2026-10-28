@@ -90,6 +90,37 @@ describe("resolveConfig", () => {
     expect(target({ target: "" })).toBe("invalid");
   });
 
+  it("takes an optional flow that names the branches, and refuses an unknown one (AC3)", () => {
+    const flow = (git: unknown) => {
+      const result = resolveConfig({ version: 1, git });
+      return result.ok ? result.config.git.flow : result.issues.map((issue) => issue.path);
+    };
+    expect(flow({ flow: "gitflow" })).toBe("gitflow");
+    expect(flow({ flow: "trunk" })).toBe("trunk");
+    // Unset, the branches keep Specty's own names.
+    expect(flow({})).toBeUndefined();
+    expect(flow({ flow: "svn" })).toEqual(["git.flow"]);
+  });
+
+  it("takes an optional branch pattern, and refuses one that gives no valid branches (AC2)", () => {
+    const pattern = (git: unknown) => {
+      const result = resolveConfig({ version: 1, git });
+      return result.ok ? result.config.git.branchPattern : result.issues;
+    };
+    expect(pattern({ branchPattern: "team/{type}-{slug}" })).toBe("team/{type}-{slug}");
+    expect(pattern({})).toBeUndefined();
+    expect(pattern({ branchPattern: "{type}/fijo" })).toEqual([
+      { path: "git.branchPattern", message: expect.stringContaining("{slug} or {id}") },
+    ]);
+    const empty = pattern({ branchPattern: "" });
+    expect(Array.isArray(empty) && empty.map((issue) => issue.path)).toContain("git.branchPattern");
+  });
+
+  it("AC1: accepts the contract tests policy", () => {
+    const resolved = resolveConfig({ version: 1, policy: { tests: "contract" } });
+    expect(resolved.ok && resolved.config.policy.tests).toBe("contract");
+  });
+
   it("reports unknown keys, bad values and inconsistent thresholds", () => {
     const issues = (input: unknown) => (resolveConfig(input).ok ? [] : ["invalid"]);
     expect(issues({ version: 1, colour: "blue" })).toEqual(["invalid"]);
@@ -166,8 +197,31 @@ describe("parseChangeState", () => {
     if (!wrong.ok) expect(wrong.issues[0]).toMatch(/^integration\.reason/);
   });
 
+  it("AC1: accepts a change in the testing phase", () => {
+    expect(parseChangeState({ ...state, phase: "testing" }).ok).toBe(true);
+  });
+
+  it("AC1: keeps the hash of each approved test", () => {
+    const locked = { ...state, lockedTests: { "test/a.test.ts": HASH } };
+    expect(parseChangeState(locked).ok).toBe(true);
+    expect(parseChangeState({ ...locked, lockedTests: { "test/a.test.ts": "x" } }).ok).toBe(false);
+  });
+
+  it("AC1: keeps the cycle an approval decided for the testing phase", () => {
+    for (const testCycle of ["feature", "bug"]) {
+      expect(parseChangeState({ ...state, phase: "testing", testCycle }).ok).toBe(true);
+    }
+    expect(parseChangeState({ ...state, phase: "testing", testCycle: "spike" }).ok).toBe(false);
+  });
+
+  it("AC5: keeps when the tests were sent for approval", () => {
+    const sent = { ...state, phase: "testing", testsSubmittedAt: "2026-10-28T10:00:00.000Z" };
+    expect(parseChangeState(sent).ok).toBe(true);
+    expect(parseChangeState({ ...sent, testsSubmittedAt: "ayer" }).ok).toBe(false);
+  });
+
   it("rejects malformed states with readable issues", () => {
-    const result = parseChangeState({ ...state, phase: "testing", revision: -1 });
+    const result = parseChangeState({ ...state, phase: "tested", revision: -1 });
     expect(result.ok).toBe(false);
     if (!result.ok)
       expect(result.issues.map((issue) => issue.split(":")[0])).toEqual(["phase", "revision"]);

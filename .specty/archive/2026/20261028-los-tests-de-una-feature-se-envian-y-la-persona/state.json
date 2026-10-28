@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "id": "20261028-los-tests-de-una-feature-se-envian-y-la-persona",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-los-tests-de-una-feature-se-envian-y-la-persona",
+  "baseCommit": "ce370dc124673595b08e75eb6e3b0d90e7d3431e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9ad300c054dfe09c0c5883979c89cddac78c993e0d4fdcdfcc92fe8d41ee83ea",
+    "at": "2026-10-28T06:20:13.548Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "16 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:604e6ba21dbad11d49d7e881df3fa0b128776636a74b77baf1ea3da7476f4aa3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:df56264644e5f167bb1af6a7923b327970580c706101a4475fc2c5d5f6bd3047",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:629dc8cc3f1769e27c0e0967341a7091bac7dcb6f721968372fe1b060e53bb20",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4093c5da645e43e3a3d06b4fdfef5ef72b6e2d80",
+      "attempts": 1,
+      "startedAt": "2026-10-28T06:20:13.948Z",
+      "doneAt": "2026-10-28T06:30:16.476Z",
+      "summary": "testsSubmittedAt en state.json; propose sigue en testing y approveTests (solo la persona, con los tests enviados) pasa a implementing; testing espera a la persona tras el envío; humanAction de testing es approve; tests.proposed y tests.approved en palabras.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "06a8aec2813f1852eb3143684c7823e0121dbe8d",
+      "attempts": 1,
+      "startedAt": "2026-10-28T06:30:16.811Z",
+      "doneAt": "2026-10-28T06:38:35.639Z",
+      "summary": "cards/testing.ts: testsSubmittedCard (lo enviado y quién aprueba, también en modo delegado), testsRefusedCard, approveTestsQuestion y testsApprovedLine; ChangeView.testsSubmitted desde testsSubmittedAt; status espera a la persona con los tests enviados.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f4c0375366c5d359dc6d9ecd4f63149dd62b8390",
+      "attempts": 1,
+      "startedAt": "2026-10-28T06:38:36.033Z",
+      "doneAt": "2026-10-28T06:50:56.490Z",
+      "summary": "commands/tests.ts: propose en testing hace un commit solo con los tests nuevos del cambio (recibo tests) y espera a la persona, o dice qué falta; approve en testing es el gate 2 (también delegado) y pasa a implementing; approve los encuentra desde otra carpeta; formats y ARCHITECTURE §4.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-28T06:53:55.099Z"
+}

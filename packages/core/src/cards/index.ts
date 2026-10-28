@@ -13,6 +13,7 @@ export {
   verificationNoteTitle,
   verificationReusedNote,
 } from "./accept";
+export { assertionWarnings, riskWarnings } from "./acceptance";
 export { type AdjustRefusal, adjustRefusalCard } from "./adjust";
 export {
   type ApprovalView,
@@ -100,10 +101,16 @@ export {
   statusCard,
 } from "./human";
 export {
+  agentChoices,
+  agentQuestion,
   agentsMdLine,
   backupLine,
   configLine,
+  developLine,
   dryRunCard,
+  flowChoices,
+  flowLine,
+  flowQuestion,
   type InitRefusal,
   type InitView,
   initCard,
@@ -112,6 +119,8 @@ export {
   languageLine,
   languageQuestion,
   newProjectNext,
+  noAgentWarning,
+  noFlowWarning,
   noTestCommandWarning,
   productLine,
 } from "./init";
@@ -184,6 +193,7 @@ export {
   targetAheadLine,
 } from "./land";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
+export { busyChangeCard, type LockHolderView } from "./lock";
 export {
   changeCreatedLead,
   type NewRefusal,
@@ -252,6 +262,15 @@ export {
   taskDoneCard,
   taskDoneRefusalCard,
 } from "./task";
+export {
+  approveTestsQuestion,
+  type TestsRefusal,
+  testsApprovedLine,
+  testsLockedLead,
+  testsRefusedCard,
+  testsSubmittedCard,
+  unlockRefusedCard,
+} from "./testing";
 export { effortLabel, effortLine, runNext, translator, verifyingNote } from "./text";
 export { invalidPortCard, uiOpenedCard, uiStoppedCard } from "./ui";
 export {
@@ -286,4 +305,4 @@ export {
   whyCard,
   whyRefusalCard,
 } from "./why";
-export { assertionWarnings, NOTE_MAX, riskWarnings } from "./work";
+export { NOTE_MAX } from "./work";

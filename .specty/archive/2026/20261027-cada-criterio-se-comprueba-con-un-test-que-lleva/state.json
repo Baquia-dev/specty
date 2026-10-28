@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "id": "20261027-cada-criterio-se-comprueba-con-un-test-que-lleva",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261027-cada-criterio-se-comprueba-con-un-test-que-lleva",
+  "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:e33e2cf159f9218a4e47b39123fb9b7a7d4ded4fcbd44a0c9adf12e6f109f9f6",
+    "at": "2026-10-28T00:35:52.708Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8c523a392724118a062512e1d3367d09efa7d314c061d4e548d7a4fba5db7bba",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:68f1e1db17db5450877f975394ca6f515f79e53d733686996d27907f612d49de",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e200dd79d78f0e398fff7257254019e397c9590d633d59a5f34001472c8c631c",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0ce199ac772ddc328b6e8094f712e5ec40a31d375434c2d550908012136447e7",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "068706cc2428000f97392432e4d060ce15401f7b",
+      "attempts": 1,
+      "startedAt": "2026-10-27T06:59:00.227Z",
+      "doneAt": "2026-10-27T10:40:40.412Z",
+      "summary": "Un criterio admite el campo test: manual (modelo, vocabulario es/en, parser con field-invalid para otros valores, forma canónica y pista en la plantilla); tests de parse, hash y arbitrarios ampliados; docs/formats.md y ADR 0014 con las decisiones de la épica.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "7b11d1b5d10ee6fd0669959397cf79527449ba7a",
+      "attempts": 1,
+      "startedAt": "2026-10-27T10:40:40.953Z",
+      "doneAt": "2026-10-27T11:09:23.643Z",
+      "summary": "criteria-tested avisa del criterio de una tarea feat o fix sin test: manual que ninguna línea de test añadida nombra; su texto va en check/plan.ts (pnpm sources). Documentado, y los tests de catálogo incluyen la verificación.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e018bf2a0e572e3d105bca83cb602f6c541af550",
+      "attempts": 1,
+      "startedAt": "2026-10-27T11:09:23.969Z",
+      "doneAt": "2026-10-27T11:15:42.402Z",
+      "summary": "La regla de tests pide el id del criterio en el nombre del test; cards/criteria.ts pinta «CRITERIOS Y TESTS» en aceptación y avisa (agente y persona) de los criterios test: manual y de los que deben test y no lo tienen.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "f1fc00cc6445d84a8da60bec4c8d614d9baf5762",
+      "attempts": 1,
+      "startedAt": "2026-10-27T11:15:42.727Z",
+      "doneAt": "2026-10-27T11:29:51.100Z",
+      "summary": "En aceptación, criteria-tests.ts une cada criterio con las líneas de test con su id que añadió un commit de una tarea (git show + git blame) y views.ts lo pasa a la tarjeta y a accept; avisos de criterios al final. Documentado en ARCHITECTURE §13.",
+      "scopeExtra": [
+        "packages/core/src/cards/work.ts",
+        "packages/core/src/cards/accept.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 7,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-28T00:40:52.002Z",
+  "integration": {
+    "target": "main",
+    "commit": "0445983eeb54af55bce9cca2794c24005f924c23",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/checks.en.md",
+      "docs/checks.md",
+      "docs/decisions/0014-los-tests-como-contrato.md",
+      "docs/formats.md",
+      "packages/cli/src/check/install-ignores.ts",
+      "packages/cli/src/check/plan.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/init.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/enforce/entry.ts",
+      "packages/cli/src/flow/active.ts",
+      "packages/cli/src/flow/branches.ts",
+      "packages/cli/src/flow/criteria-tests.ts",
+      "packages/cli/src/flow/prune.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/install/git-flow.ts",
+      "packages/cli/src/install/hooks.ts",
+      "packages/cli/src/install/project-files.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/src/server/actions.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/src/terminal.ts",
+      "packages/cli/test/branch-names.test.ts",
+      "packages/cli/test/check-examples-flutter.test.ts",
+      "packages/cli/test/check-examples-ts.test.ts",
+      "packages/cli/test/check-ignores.test.ts",
+      "packages/cli/test/criteria-tests.test.ts",
+      "packages/cli/test/init-agents.test.ts",
+      "packages/cli/test/init-git-flow.test.ts",
+      "packages/cli/test/prune.test.ts",
+      "packages/cli/test/server-actions.test.ts",
+      "packages/cli/test/stack-dialect.ts",
+      "packages/cli/test/support.ts",
+      "packages/cli/test/task-check.test.ts",
+      "packages/cli/test/terminal.test.ts",
+      "packages/core/src/branches.ts",
+      "packages/core/src/cards/accept.ts",
+      "packages/core/src/cards/criteria.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/init.ts",
+      "packages/core/src/cards/new.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/src/cards/work.ts",
+      "packages/core/src/checks/markers.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/schema/config.ts",
+      "packages/core/src/sizing/lines.ts",
+      "packages/core/src/spec/model.ts",
+      "packages/core/src/spec/read-items.ts",
+      "packages/core/src/spec/serialize.ts",
+      "packages/core/src/spec/vocabulary.ts",
+      "packages/core/src/templates.ts",
+      "packages/core/test/branches.test.ts",
+      "packages/core/test/cards.test.ts",
+      "packages/core/test/cards/criteria.test.ts",
+      "packages/core/test/cards/init.test.ts",
+      "packages/core/test/cards/new.test.ts",
+      "packages/core/test/cards/tests.test.ts",
+      "packages/core/test/checks/markers.test.ts",
+      "packages/core/test/schema/schema.test.ts",
+      "packages/core/test/sizing/hand-written.test.ts",
+      "packages/core/test/spec/arbitraries.ts",
+      "packages/core/test/spec/hash.test.ts",
+      "packages/core/test/spec/parse.test.ts"
+    ],
+    "at": "2026-10-28T00:41:14.624Z",
+    "resolved": {
+      "commit": "e257fe1",
+      "at": "2026-10-28T00:48:16.683Z"
+    }
+  }
+}

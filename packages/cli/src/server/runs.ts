@@ -64,6 +64,8 @@ export function changeRuns(
         return runRefusalCard({ reason: "not-in-acceptance" }, header, cards);
       if (command === undefined) return runRefusalCard({ reason: "no-full-verify" }, header, cards);
       if (going.has(id)) return runRefusalCard({ reason: "running" }, header, cards);
+      // Its tasks' runs are over: only the full one ends it, once its result is in the audit.
+      tasks.forget(id);
       runFull(target, { id, there, change, command });
       return runStartedCard(header, command, cards);
     },
@@ -197,11 +199,12 @@ async function ended(
  * The tasks' verifications that `specty task done` keeps live in other processes
  * (`store/runs.ts`), looked at every half second: `heard` gets each one that moves, and
  * `undefined` once its file is gone. A file whose process no longer exists is removed unseen.
+ * `forget` drops what it saw of a change, so that it does not end that change's run again.
  */
 function taskRuns(
   session: Session,
   heard: (id: string, run: Run | undefined) => void,
-): { current(id: string): Run | undefined; close(): void } {
+): { current(id: string): Run | undefined; forget(id: string): void; close(): void } {
   let runs = new Map<string, Run>();
   const said = new Map<string, string>();
   const look = async () => {
@@ -236,7 +239,11 @@ function taskRuns(
       });
   }, TASKS_EVERY);
   timer.unref();
-  return { current: (id) => runs.get(id), close: () => clearInterval(timer) };
+  return {
+    current: (id) => runs.get(id),
+    forget: (id) => said.delete(id),
+    close: () => clearInterval(timer),
+  };
 }
 
 /** Whether process `pid` still exists: one that only refuses signals from us does. */

@@ -11,6 +11,7 @@ import {
   translator,
 } from "@baquia-dev/specty-core";
 import { resolveActive } from "../flow/active";
+import { untestedCriteria } from "../flow/criteria-tests";
 import type { Session } from "../session";
 import { loadChange, readSpec } from "../store/changes";
 import { dependencies } from "./dependencies";
@@ -49,7 +50,14 @@ export function planProvider(plan: Plan): Provider {
     checks:
       "missing" in plan
         ? [approved(plan)]
-        : [approved(plan), scope(plan), dependencies(plan), fixTests(plan), testsRemoved],
+        : [
+            approved(plan),
+            scope(plan),
+            dependencies(plan),
+            fixTests(plan),
+            criteriaTested(plan),
+            testsRemoved,
+          ],
   };
 }
 
@@ -84,6 +92,32 @@ function approvalProblem(plan: Plan, t: Translate): string | undefined {
     `La spec de ${id} cambió desde su aprobación (revisión ${revision})`,
     `The spec of ${id} changed since it was approved (revision ${revision})`,
   );
+}
+
+/**
+ * Each criterion of a `feat` or `fix` task has a test with its id: an error under
+ * `policy.tests: contract`, where tests are the contract, and a warning otherwise (ADR 0014).
+ */
+function criteriaTested(plan: LoadedPlan): CheckDefinition {
+  return {
+    id: "criteria-tested",
+    async run(context) {
+      const t = translator(context.session.lang);
+      const severity = context.session.config.policy.tests === "contract" ? "error" : "warning";
+      const untested = await untestedCriteria(plan, context);
+      const findings = untested.map(({ id, tasks }): Finding => {
+        const covered = `${id} (${tasks.join(", ")})`;
+        return {
+          message: t(
+            `${covered} no tiene en el diff ningún test con su id`,
+            `${covered} has no test with its id in the diff`,
+          ),
+          severity,
+        };
+      });
+      return { findings };
+    },
+  };
 }
 
 /** Every file the diff touches, deleted ones too, is in the plan's scope. */

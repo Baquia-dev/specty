@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { Lang } from "../i18n";
+import { fold, type Lang } from "../i18n";
 import type { ItemPrefix } from "../ids";
 import type { RawList } from "./list";
 import type { Assumption, Criterion, ListSectionKey, Risk, Slice } from "./model";
@@ -17,8 +17,11 @@ import {
   IMPACT_WORDS,
   impactFrom,
   isImpactKey,
+  isTestKey,
+  MANUAL_TEST,
   NONE_WORD,
   SLICE_FIELDS,
+  TEST_KEY,
 } from "./vocabulary";
 
 interface IdItem {
@@ -60,7 +63,31 @@ export function readAssumptions(raw: RawList, lang: Lang): ListResult<Assumption
 }
 
 export function readCriteria(raw: RawList, lang: Lang): ListResult<Criterion> {
-  return readPlainItems(raw, lang, "criteria", "AC");
+  const reader = createReader(lang, "criteria");
+  const { none, items } = prelude(raw, reader);
+  const criteria = items.flatMap((item): Criterion[] => {
+    const head = claimedHead(item.head, item.line, "AC", "criteria", reader);
+    if (head === undefined) return [];
+    const fields = readFields(
+      item,
+      head.id,
+      (key) => (isTestKey(key) ? "test" : undefined),
+      [TEST_KEY],
+      reader,
+    );
+    const field = fields.get("test");
+    const manual = field !== undefined && fold(field.value) === MANUAL_TEST;
+    if (field !== undefined && !manual) {
+      reader.report({
+        code: "field-invalid",
+        params: { id: head.id, field: field.key, value: field.value, valid: MANUAL_TEST },
+        line: field.line,
+        target: head.id,
+      });
+    }
+    return [{ id: head.id, text: head.text, ...(manual ? { test: MANUAL_TEST } : {}) }];
+  });
+  return finish(reader, none, criteria);
 }
 
 export function readRisks(raw: RawList, lang: Lang): ListResult<Risk> {

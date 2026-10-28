@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
+import { join } from "node:path";
 import {
   type AssertionLoss,
   type ChangeState,
+  hashText,
   type LongFile,
   moduleOf,
   type RiskFinding,
@@ -13,7 +15,7 @@ import {
   verifyingNote,
 } from "@baquia-dev/specty-core";
 import { tail } from "../io/exec";
-import { writeText } from "../io/files";
+import { readText, writeText } from "../io/files";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
@@ -92,6 +94,28 @@ export async function verifyTask(
     : { ok: false, command, code: result.code, tail: output };
 }
 
+/**
+ * The approved tests once `task` is done: each one the person unlocked for it is locked again
+ * with its new content, and one that is gone is no longer locked (ADR 0014). Undefined without
+ * approved tests.
+ */
+async function relock(
+  session: Session,
+  state: ChangeState,
+  task: string,
+): Promise<ChangeState["lockedTests"]> {
+  if (state.lockedTests === undefined) return undefined;
+  const unlocked = new Set(state.tasks[task]?.scopeExtra ?? []);
+  const entries = await Promise.all(
+    Object.entries(state.lockedTests).map(async ([path, hash]) => {
+      if (!unlocked.has(path)) return [[path, hash] as const];
+      const text = await readText(join(session.root, path));
+      return text === undefined ? [] : [[path, hashText(text)] as const];
+    }),
+  );
+  return Object.fromEntries(entries.flat());
+}
+
 /** Marks the task done, ticks it in the spec and commits code and state together. */
 export async function completeTask(
   session: Session,
@@ -125,7 +149,14 @@ export async function completeTask(
   });
   const phase = moved.ok ? moved.phase : state.phase;
   await writeText(change.files.spec, serializeSpec(ticked(spec, tasks)));
-  const updated = await commitState(session, change, { ...state, phase, tasks }, "task.completed", {
+  const relocked = await relock(session, state, task.id);
+  const next = {
+    ...state,
+    phase,
+    tasks,
+    ...(relocked === undefined ? {} : { lockedTests: relocked }),
+  };
+  const updated = await commitState(session, change, next, "task.completed", {
     task: task.id,
     summary,
     // Only the notes there are: `removedAssertions`, `risks`, `findings`.

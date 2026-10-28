@@ -23,6 +23,7 @@ import {
   Eye,
   FilePlus,
   FileQuestionMark,
+  FlaskConical,
   GitCommitHorizontal,
   GitCompareArrows,
   Hourglass,
@@ -34,6 +35,8 @@ import {
   LayoutList,
   Lightbulb,
   ListChecks,
+  Lock,
+  LockOpen,
   MessageSquare,
   MessageSquarePlus,
   Minus,
@@ -78,6 +81,7 @@ export const LucideDownload = icon("download", Download);
 export const LucideEye = icon("eye", Eye);
 export const LucideFilePlus = icon("file-plus", FilePlus);
 export const LucideFileQuestion = icon("file-question-mark", FileQuestionMark);
+export const LucideFlaskConical = icon("flask-conical", FlaskConical);
 export const LucideGitCommitHorizontal = icon("git-commit-horizontal", GitCommitHorizontal);
 export const LucideGitCompareArrows = icon("git-compare-arrows", GitCompareArrows);
 export const LucideHourglass = icon("hourglass", Hourglass);
@@ -88,6 +92,8 @@ export const LucideLayoutGrid = icon("layout-grid", LayoutGrid);
 export const LucideLayoutList = icon("layout-list", LayoutList);
 export const LucideLightbulb = icon("lightbulb", Lightbulb);
 export const LucideListChecks = icon("list-checks", ListChecks);
+export const LucideLock = icon("lock", Lock);
+export const LucideLockOpen = icon("lock-open", LockOpen);
 export const LucideMessageSquare = icon("message-square", MessageSquare);
 export const LucideMessageSquarePlus = icon("message-square-plus", MessageSquarePlus);
 export const LucideMinus = icon("minus", Minus);

@@ -46,34 +46,60 @@ export function parseSpec(text: string, options: ParseOptions = {}): ParseResult
     options.language,
   );
   const front = readFrontmatter(source.frontmatter?.raw, source.frontmatter?.line, lang);
-  const diagnostics: Diagnostic[] = [...front.diagnostics, ...layoutDiagnostics(source, lang)];
+  const read = readSections(matched, lang);
+  const title = source.titles[0];
+  return {
+    spec: {
+      language: lang,
+      frontmatter: front.frontmatter,
+      title: title?.text ?? "",
+      sections: read.sections,
+    },
+    locations: {
+      ...(source.frontmatter !== undefined ? { frontmatter: source.frontmatter.line } : {}),
+      ...(title !== undefined ? { title: title.line } : {}),
+      sections: read.sectionLines,
+      items: read.itemLines,
+      files: read.fileLines,
+    },
+    diagnostics: [...front.diagnostics, ...layoutDiagnostics(source, lang), ...read.diagnostics],
+  };
+}
+
+/** A section of the source with the section its heading names, if it names one. */
+interface MatchedSection {
+  readonly section: SpecSource["sections"][number];
+  readonly match: ReturnType<typeof sectionFromHeading>;
+}
+
+interface ReadSections {
+  readonly sections: MutableSections;
+  readonly sectionLines: Partial<Record<SectionKey, number>>;
+  readonly itemLines: Record<string, number>;
+  readonly fileLines: Record<string, number>;
+  readonly diagnostics: readonly Diagnostic[];
+}
+
+/** Each section in its place, with its lines; an unknown or repeated heading is reported and skipped. */
+function readSections(matched: readonly MatchedSection[], lang: Lang): ReadSections {
   const sections: MutableSections = {};
   const sectionLines: Partial<Record<SectionKey, number>> = {};
   const itemLines: Record<string, number> = {};
   const fileLines: Record<string, number> = {};
-
+  const diagnostics: Diagnostic[] = [];
   for (const { section, match } of matched) {
     const line = section.heading.line;
     if (match === undefined) {
       const valid = Object.values(SECTION_TITLES[lang]).join(", ");
-      diagnostics.push(
-        diagnostic(lang, {
-          code: "section-unknown",
-          params: { heading: section.heading.text, valid },
-          line,
-        }),
-      );
+      const params = { heading: section.heading.text, valid };
+      diagnostics.push(diagnostic(lang, { code: "section-unknown", params, line }));
       continue;
     }
     const { key } = match;
     if (sectionLines[key] !== undefined) {
+      const params = { section: SECTION_TITLES[lang][key] };
       diagnostics.push(
-        diagnostic(lang, {
-          code: "section-duplicate",
-          params: { section: SECTION_TITLES[lang][key] },
-          line,
-          target: `section:${key}`,
-        }),
+        diagnostic(lang, { code: "section-duplicate", params, line, target: `section:${key}` }),
       );
       continue;
     }
@@ -86,19 +112,7 @@ export function parseSpec(text: string, options: ParseOptions = {}): ParseResult
     diagnostics.push(...result.diagnostics);
     Object.assign(key === "files" ? fileLines : itemLines, result.lines);
   }
-
-  const title = source.titles[0];
-  return {
-    spec: { language: lang, frontmatter: front.frontmatter, title: title?.text ?? "", sections },
-    locations: {
-      ...(source.frontmatter !== undefined ? { frontmatter: source.frontmatter.line } : {}),
-      ...(title !== undefined ? { title: title.line } : {}),
-      sections: sectionLines,
-      items: itemLines,
-      files: fileLines,
-    },
-    diagnostics,
-  };
+  return { sections, sectionLines, itemLines, fileLines, diagnostics };
 }
 
 type AnyListResult = Pick<ListResult<unknown>, "diagnostics" | "lines">;

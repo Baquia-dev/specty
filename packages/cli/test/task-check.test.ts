@@ -29,7 +29,7 @@ describe("specty check in task done", () => {
     const root = await approved(`${CONFIG()}${CHECKS}`);
     await writeFiles(root, {
       "src/app.ts": "export const greet = (name: string) => 'Hola, ' + name;\n",
-      "src/app.test.ts": `it${ONLY}("greets", () => {});\n`,
+      "src/app.test.ts": `it${ONLY}("AC1: greets", () => {});\n`,
     });
     const failed = await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
     expect(failed.code).toBe(2);
@@ -40,12 +40,12 @@ describe("specty check in task done", () => {
         "SALIDA:",
         "  FALLA focused-tests",
         `    src/app.test.ts:1 test enfocado: it${ONLY}`,
-        "  OK 6/7 · FALLA: focused-tests",
+        "  OK 7/8 · FALLA: focused-tests",
         "SIGUIENTE: corrige el problema y vuelve a ejecutar `specty task done T1",
       ].join("\n"),
     );
 
-    await writeFiles(root, { "src/app.test.ts": `it("greets", () => {});\n` });
+    await writeFiles(root, { "src/app.test.ts": `it("AC1: greets", () => {});\n` });
     expect((await cli(root, ["task", "done", "T1", "--summary", "Uno"])).code).toBe(0);
   });
 

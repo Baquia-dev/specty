@@ -9,7 +9,8 @@ import type { Session } from "../session";
  * Keeps each agent the repository uses out of the noise (ADR 0012): dependencies, build output
  * and generated code, by the globs of `checks.exclude` and `scope.generated`. Each agent has its
  * own place for it, per its documentation, with the syntax of `.gitignore`; only the patterns
- * missing there are added, and everything else in the file stays.
+ * missing there are added, and everything else in the file stays. The archived changes only
+ * leave the index of the agents that have one apart, so the agent can still open them.
  */
 
 interface IgnoreFile {
@@ -33,13 +34,45 @@ const IGNORE_FILES: readonly IgnoreFile[] = [
   { tool: "antigravity", names: [".antigravityignore"], create: ".antigravityignore" },
 ];
 
+/**
+ * What only leaves the agent's index and search, because the agent may still need to open it:
+ * the archived changes, which describe the code as it was.
+ */
+const INDEX_ONLY = [".specty/archive/**"];
+
+const INDEX_FILES: readonly IgnoreFile[] = [
+  // Cursor leaves these paths out of its index, but its features still read them when asked.
+  { tool: "cursor", names: [".cursorindexingignore"], create: ".cursorindexingignore" },
+  { tool: "antigravity", names: [".antigravityignore"], create: ".antigravityignore" },
+];
+
 /** Plans the exclusions into `files`, the plan's files, for each agent in use. */
 export async function agentIgnores(session: Session, files: InstallFiles): Promise<void> {
   const { root, config } = session;
   const patterns = [...new Set([...config.checks.exclude, ...config.scope.generated])];
-  if (patterns.length === 0) return;
+  if (patterns.length > 0) await noiseIgnores(session, files, patterns);
+  const comment = translator(session.lang)(
+    "Specty: los cambios archivados, fuera del índice; el agente aún puede abrirlos (specty check --install)",
+    "Specty: archived changes, out of the index; the agent can still open them (specty check --install)",
+  );
+  for (const ignore of INDEX_FILES) {
+    if (await uses(root, ignore.tool)) await addIgnores(root, files, ignore, INDEX_ONLY, comment);
+  }
+}
+
+/** The noise, out of every place each agent has for it, including the ones that block reading. */
+async function noiseIgnores(
+  session: Session,
+  files: InstallFiles,
+  patterns: readonly string[],
+): Promise<void> {
+  const { root } = session;
+  const comment = translator(session.lang)(
+    "Specty: dependencias, artefactos de build y código generado (specty check --install)",
+    "Specty: dependencies, build output and generated code (specty check --install)",
+  );
   for (const ignore of IGNORE_FILES) {
-    if (await uses(root, ignore.tool)) await addIgnores(session, files, ignore, patterns);
+    if (await uses(root, ignore.tool)) await addIgnores(root, files, ignore, patterns, comment);
   }
   if (await uses(root, "claude-code")) {
     const deny = patterns.map((pattern) => `Read(${pattern})`);
@@ -58,31 +91,28 @@ export async function agentIgnores(session: Session, files: InstallFiles): Promi
   }
 }
 
-/** Adds to the agent's ignore file, or to a new one, the patterns missing there, under Specty's comment. */
+/** Adds to the agent's ignore file, or to a new one, the patterns missing there, under `text`. */
 async function addIgnores(
-  session: Session,
+  root: string,
   files: InstallFiles,
   ignore: IgnoreFile,
   patterns: readonly string[],
+  text: string,
 ): Promise<void> {
-  const { root } = session;
   const found = await Promise.all(
     ignore.names.map(async (name) =>
       (await files.read(join(root, name))) === undefined ? [] : [name],
     ),
   );
   const file = join(root, found.flat()[0] ?? ignore.create);
-  const text = (await files.read(file)) ?? "";
-  const present = new Set(text.split(/\r?\n/).map((line) => line.trim()));
+  const current = (await files.read(file)) ?? "";
+  const present = new Set(current.split(/\r?\n/).map((line) => line.trim()));
   const missing = patterns.filter((pattern) => !present.has(pattern));
   if (missing.length === 0) return;
-  const comment = `# ${translator(session.lang)(
-    "Specty: dependencias, artefactos de build y código generado (specty check --install)",
-    "Specty: dependencies, build output and generated code (specty check --install)",
-  )}`;
+  const comment = `# ${text}`;
   const block = [...(present.has(comment) ? [] : [comment]), ...missing].join("\n");
-  const lead = text === "" ? "" : text.endsWith("\n") ? "\n" : "\n\n";
-  await files.write(file, `${text}${lead}${block}\n`);
+  const lead = current === "" ? "" : current.endsWith("\n") ? "\n" : "\n\n";
+  await files.write(file, `${current}${lead}${block}\n`);
 }
 
 /**

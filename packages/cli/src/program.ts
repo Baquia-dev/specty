@@ -133,11 +133,19 @@ function readingCommands(
     .description("set up Specty in this repository")
     .option("--language <lang>", "es or en")
     .option("--tools <list>", "comma-separated agent tools, for example claude-code,cursor")
+    .option("--git-flow <flow>", "how change branches are named: specty, github, trunk or gitflow")
     .option("--dry-run", "only list what init would create or change")
-    .action(async (options: { language?: string; tools?: string; dryRun?: boolean }) => {
-      const { output, lang } = await initCommand(environment, options);
-      emit(output, lang);
-    });
+    .action(
+      async (options: {
+        language?: string;
+        tools?: string;
+        gitFlow?: string;
+        dryRun?: boolean;
+      }) => {
+        const { output, lang } = await initCommand(environment, options);
+        emit(output, lang);
+      },
+    );
   program
     .command("prune")
     .description("remove the folders of finished changes and the branches already merged")

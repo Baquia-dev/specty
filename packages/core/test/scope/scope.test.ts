@@ -183,4 +183,30 @@ describe("governed paths", () => {
     }
     expect(isTestFile("lib/contest.dart")).toBe(false);
   });
+
+  it("takes spec folders for tests only outside a folder of code, where RSpec puts them", () => {
+    for (const path of [
+      "spec/models/user_spec.rb",
+      "spec/spec_helper.rb",
+      "packages/billing/specs/invoice_spec.rb",
+      "src/test/java/com/shop/Cart.java",
+    ]) {
+      expect(isTestFile(path), path).toBe(true);
+    }
+    for (const path of [
+      "packages/core/src/spec/parse.ts",
+      "lib/specs/registry.dart",
+      "app/spec/builder.rb",
+    ]) {
+      expect(isTestFile(path), path).toBe(false);
+    }
+  });
+
+  it("does not take code under src/spec for a test of the code it sits next to", () => {
+    const core = ["packages/core/src/spec/parse.ts"];
+    expect(outOfScope(core, modified("packages/core/src/spec/serialize.ts"))).toEqual([
+      "packages/core/src/spec/serialize.ts",
+    ]);
+    expect(isTestOf("spec/models/user_spec.rb", ["app/models/user.rb"])).toBe(true);
+  });
 });

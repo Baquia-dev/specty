@@ -44,30 +44,47 @@ export function readList(body: readonly SourceLine[]): RawList {
   const problems: ListProblem[] = [];
   for (const { text, line, fenced } of body) {
     if (text.trim() === "") continue;
-    if (fenced) {
-      problems.push({ kind: "fenced", line });
-      continue;
-    }
-    const top = TOP_BULLET.exec(text);
-    if (top !== null) {
-      items.push({ head: (top[1] ?? "").trim(), line, fields: [] });
-      continue;
-    }
     const current = items.at(-1);
-    const sub = SUB_BULLET.exec(text);
-    if (sub !== null && current !== undefined) {
-      const field = FIELD.exec((sub[1] ?? "").trim());
-      if (field === null) problems.push({ kind: "bad-field", line });
-      else current.fields.push({ key: field[1] ?? "", value: (field[2] ?? "").trim(), line });
-      continue;
+    const read: LineRead = fenced ? { kind: "fenced" } : readLine(text, current !== undefined);
+    switch (read.kind) {
+      case "item":
+        items.push({ head: read.head, line, fields: [] });
+        break;
+      case "field":
+        current?.fields.push({ key: read.key, value: read.value, line });
+        break;
+      case "continuation":
+        if (current !== undefined) appendContinuation(current, read.text);
+        break;
+      default:
+        problems.push({ kind: read.kind, line });
     }
-    if (INDENTED_TEXT.test(text) && current !== undefined) {
-      appendContinuation(current, text.trim());
-      continue;
-    }
-    problems.push({ kind: "not-list", line });
   }
   return { items, problems };
+}
+
+/** What a line of a structured section is: an item, a field, a continuation or a problem. */
+type LineRead =
+  | { readonly kind: "item"; readonly head: string }
+  | { readonly kind: "field"; readonly key: string; readonly value: string }
+  | { readonly kind: "continuation"; readonly text: string }
+  | { readonly kind: ListProblem["kind"] };
+
+/** Reads one line; fields and continuations need an item before them (`inItem`). */
+function readLine(text: string, inItem: boolean): LineRead {
+  const top = TOP_BULLET.exec(text);
+  if (top !== null) return { kind: "item", head: (top[1] ?? "").trim() };
+  const sub = SUB_BULLET.exec(text);
+  if (sub !== null && inItem) return fieldOf(sub[1] ?? "");
+  if (INDENTED_TEXT.test(text) && inItem) return { kind: "continuation", text: text.trim() };
+  return { kind: "not-list" };
+}
+
+/** An indented bullet: a `key: value` field, or a bad one. */
+function fieldOf(text: string): LineRead {
+  const field = FIELD.exec(text.trim());
+  if (field === null) return { kind: "bad-field" };
+  return { kind: "field", key: field[1] ?? "", value: (field[2] ?? "").trim() };
 }
 
 function appendContinuation(item: ItemBuilder, text: string): void {

@@ -264,6 +264,16 @@ checks:
 
 **Desactivar:** `levels: { todo: off }`.
 
+### `tests-locked`
+
+**Stack:** cualquiera.
+
+Falla si un test que aprobó la persona con `policy.tests: contract` ya no coincide con el hash que guardó `state.json` al aprobarlo (`lockedTests`), o si falta. Mira todos los cambios abiertos de la carpeta, por sus `state.json` y sea cual sea la rama, así que también falla en la CI de un PR. Con `--staged` compara lo preparado. Deja fuera un test que la persona desbloqueó para la tarea activa de su cambio, hasta que la tarea se completa. Donde ningún cambio tiene tests aprobados, no aparece en el informe ([ADR 0014](decisions/0014-los-tests-como-contrato.md)).
+
+**Configuración:** no tiene.
+
+**Desactivar:** `levels: { tests-locked: off }`.
+
 ### `secrets`
 
 **Stack:** cualquiera.
@@ -323,6 +333,16 @@ Cada tarea `type: fix`, activa o hecha, trae en el diff un test suyo: de sus `fi
 **Configuración:** no tiene.
 
 **Desactivar:** `levels: { fix-tests: off }`, o `warn` para que una tarea `fix` sin test solo avise.
+
+### `criteria-tested`
+
+**Con:** `--spec`.
+
+Avisa, sin hacer fallar, de cada criterio de aceptación de una tarea `feat` o `fix` (o sin `type`, que es `feat`), activa o hecha, que no tiene un test con su id: ninguna línea que el diff añade a un archivo de test lo contiene. El id cuenta en el nombre de un test o de su grupo, o en una línea de comentario, escrito como en la spec: `it("AC2: saluda sin nombre", …)`. El nombre está en la línea que declara el test (`it(`, `test(`, `describe(`, `def test_`, `func Test`, `t.Run("…"`, los nodos de Ginkgo…) y, si la declaración es una anotación (`@Test`, `[Fact]`, `#[test]`), en las anotaciones que la siguen y en la firma. No cuenta en los datos de un fixture ni en el cuerpo del test, y `AC2` no cuenta para `AC20`. No lo necesita un criterio con `test: manual`, que comprueba la persona, ni el que solo cubren tareas de otros tipos. Con `--staged`, solo cuenta la tarea activa, porque la hecha ya hizo su commit.
+
+**Configuración:** con `policy.tests: off` no avisa de ningún criterio. Con `policy.tests: contract`, donde los tests son el contrato, no avisa: falla.
+
+**Desactivar:** `levels: { criteria-tested: off }`.
 
 ### `tests-removed`
 

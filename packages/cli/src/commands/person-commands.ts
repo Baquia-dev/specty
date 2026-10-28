@@ -2,6 +2,7 @@
 import type { Output } from "@baquia-dev/specty-core";
 import { Argument, type Command } from "commander";
 import type { ReportOutput } from "../check/provider";
+import { withChangeLock } from "../flow/active";
 import type { Session } from "../session";
 import { accept } from "./accept";
 import { approve } from "./approve";
@@ -12,7 +13,10 @@ import { reject } from "./scope-decision";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
 
-/** A person's decision runs in the folder of the change it applies to, from any folder. */
+/**
+ * A person's decision runs in the folder of the change it applies to, from any folder, with that
+ * change locked (ARCHITECTURE §9).
+ */
 function decider(run: Run) {
   return (
     action: PersonAction,
@@ -21,7 +25,8 @@ function decider(run: Run) {
   ) =>
     run(async (session) => {
       const chosen = await personSession(session, action, options);
-      return chosen.kind === "output" ? chosen.output : handler(chosen.session);
+      if (chosen.kind === "output") return chosen.output;
+      return withChangeLock(chosen.session, action, () => handler(chosen.session));
     })();
 }
 

@@ -3,11 +3,15 @@ import { relative, resolve, sep } from "node:path";
 import {
   AGENT_NAMES,
   type AgentTool,
+  agentChoices,
+  agentQuestion,
   claudePointerLine,
+  detectAgentTool,
   gitHooksLine,
   gitHooksManualWarning,
   isGuardedAgent,
   type Lang,
+  noAgentWarning,
   noHooksWarning,
   notOnPathWarning,
 } from "@baquia-dev/specty-core";
@@ -24,6 +28,35 @@ interface HooksInstall {
   readonly warnings: readonly string[];
   /** Repository-relative files written that git tracks: they go into init's commit. */
   readonly written: readonly string[];
+}
+
+/**
+ * The agent tools `init` installs: the ones `given`; otherwise the ones a person at the terminal
+ * checks, offered with those found already checked: the ones their files show (`detected`) and
+ * the one running `init`, by its environment. If the person cancels, or nobody can be asked, the
+ * ones found; with none, Claude Code's, and a warning when nobody could say.
+ */
+export async function agentsToInstall(options: {
+  readonly environment: Environment;
+  readonly given: readonly AgentTool[] | undefined;
+  readonly detected: readonly AgentTool[];
+  readonly lang: Lang;
+  readonly dryRun: boolean;
+}): Promise<{ readonly tools: readonly AgentTool[]; readonly warnings: readonly string[] }> {
+  const { environment, given, detected, lang } = options;
+  if (given !== undefined) return { tools: given, warnings: [] };
+  const running = detectAgentTool(environment.env);
+  const found =
+    running === undefined || detected.includes(running) ? detected : [...detected, running];
+  const { terminal } = environment;
+  if (terminal.interactive && !options.dryRun) {
+    const question = agentQuestion(found.length > 0, lang);
+    const chosen = await terminal.chooseMany(question, agentChoices(found, lang), found);
+    const tools = chosen ?? found;
+    return { tools: tools.length > 0 ? tools : ["claude-code"], warnings: [] };
+  }
+  if (found.length > 0) return { tools: found, warnings: [] };
+  return { tools: ["claude-code"], warnings: [noAgentWarning(COMMAND, lang)] };
 }
 
 /**

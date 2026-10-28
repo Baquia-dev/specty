@@ -8,6 +8,7 @@ import {
   isIntegrating,
   isRiskRule,
   type LongFile,
+  parseGlossary,
   parseSpec,
   type RiskFinding,
   recommendTaskEffort,
@@ -17,10 +18,11 @@ import {
   type TaskView,
   testRules,
 } from "@baquia-dev/specty-core";
-import { exists, isRecord } from "../io/files";
+import { exists, isRecord, readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
+import { acceptanceFacts } from "./acceptance";
 import { type Audit, carriedOf, dataOf, findingsOf, readAudit } from "./carried";
 import { sliceViews } from "./epic";
 
@@ -59,15 +61,24 @@ export async function changeView(session: Session, change: StoredChange): Promis
       active === undefined ? [] : await conventions(session, [...active.files, ...active.extras]),
     pendingScope: state.pending.scopeRequests,
     rejected: rejectedAssumptions(spec, state),
-    ...(await phaseFacts(session, change, spec, { tasks, audit })),
+    ...(await phaseFacts(session, change, spec, { tasks, audit, commits })),
     closingSubmitted: state.closingSubmittedAt !== undefined,
+    ...(state.testsSubmittedAt !== undefined ? { testsSubmitted: true } : {}),
     specChanged:
       state.phase === "implementing" &&
       state.approved !== undefined &&
       specHash(spec) !== state.approved.hash,
     ...integrationView(state),
     ...(state.kind === "epic" ? { slices: await sliceViews(session, change, spec) } : {}),
+    ...(await glossaryView(session)),
   };
+}
+
+/** The project's glossary (formats.md §6), when its file defines some term. */
+async function glossaryView(session: Session): Promise<Pick<ChangeView, "glossary">> {
+  const path = session.config.glossary;
+  const entries = parseGlossary((await readText(join(session.root, path))) ?? "");
+  return entries.length === 0 ? {} : { glossary: { path, entries } };
 }
 
 /** What git and the audit hold of the change's tasks: each one's commit and what `task done` recorded. */
@@ -134,24 +145,27 @@ function rejectedAssumptions(spec: Spec, state: ChangeState): ChangeView["reject
 
 /**
  * What the change's phase brings: the comments to answer in review, the adjustment asked for,
- * the draft's request and what it carries over, and a review recommended before acceptance.
+ * the draft's request and what it carries over, and, in acceptance, a review recommended first
+ * and each criterion with its tests (an epic's criteria are its slices').
  */
 async function phaseFacts(
   session: Session,
   change: StoredChange,
   spec: Spec,
-  read: { readonly tasks: readonly TaskView[]; readonly audit: Audit },
+  read: {
+    readonly tasks: readonly TaskView[];
+    readonly audit: Audit;
+    readonly commits: ReadonlyMap<string, string>;
+  },
 ) {
   const { state } = change;
-  const { tasks, audit } = read;
+  const { audit } = read;
   return {
     requested: state.phase === "review" ? await requested(change, audit) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
     ...(state.phase === "draft" ? request(audit) : {}),
     ...(state.phase === "draft" ? await carriedOf(session, spec.frontmatter.follows) : {}),
-    ...(state.phase === "acceptance" && resultReview(session, change, tasks, audit)
-      ? { recommendReview: true }
-      : {}),
+    ...(state.phase === "acceptance" ? await acceptanceFacts(session, change, spec, read) : {}),
   };
 }
 
@@ -245,33 +259,18 @@ function listOf(value: unknown): Record<string, unknown>[] {
   return Array.isArray(value) ? value.filter((item: unknown) => isRecord(item)) : [];
 }
 
-/**
- * An independent review of the result (ADR 0011) comes before the acceptance of a large change,
- * or of one whose tasks removed assertions or added risks, until one follows its last task.
- */
-function resultReview(
-  session: Session,
-  change: StoredChange,
-  tasks: readonly TaskView[],
-  audit: Audit,
-): boolean {
-  if (session.config.review === undefined) return false;
-  const level = change.state.size?.level;
-  const warned = tasks.some(
-    (task) => (task.risks?.length ?? 0) > 0 || (task.removedAssertions?.length ?? 0) > 0,
-  );
-  if (level !== "L" && level !== "XL" && !warned) return false;
-  const lastTask = audit.findLastIndex((entry) => entry.event === "task.completed");
-  const lastReview = audit.findLastIndex(
-    (entry) => entry.event === "review.completed" && dataOf(entry).target === "diff",
-  );
-  return lastReview < lastTask;
-}
-
 function criteriaOf(spec: Spec, ac: readonly string[] | "none" | undefined): TaskView["criteria"] {
   if (ac === undefined || ac === "none") return [];
   const criteria = spec.sections.criteria?.items ?? [];
-  return ac.flatMap((id) => criteria.filter((criterion) => criterion.id === id));
+  return ac.flatMap((id) =>
+    criteria
+      .filter((criterion) => criterion.id === id)
+      .map(({ id: _id, text, test }) => ({
+        id,
+        text,
+        ...(test === "manual" ? { manual: true } : {}),
+      })),
+  );
 }
 
 /** Short SHA of each task's commit, found through the `Specty-Task` trailer. */

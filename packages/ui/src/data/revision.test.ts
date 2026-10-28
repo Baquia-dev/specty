@@ -27,6 +27,7 @@ describe("revision", () => {
     expect(Object.fromEntries(states)).toEqual({
       draft: "sin proponer",
       review: "por aprobar",
+      testing: "aprobada",
       implementing: "aprobada",
       acceptance: "aprobada",
       adjusting: "aprobada, en ajuste",

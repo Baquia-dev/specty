@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "id": "20261028-los-bugs-los-refactors-y-los-ajustes-siguen-su-p",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-los-bugs-los-refactors-y-los-ajustes-siguen-su-p",
+  "baseCommit": "58cab00cd2eab26142fb0fea7f7f0cee8cca37e0",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f946f8e0c9f3ad52e6e7992e961058f5e61fcbd09441c491bac22728d1caed3f",
+    "at": "2026-10-28T10:14:45.210Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:65cb7a0b4a679cd3610335bca384ad09a687bb94d122230006a43b800ecd0186",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:1c0a2b33ab0956a9ed6e702f66072a7a66b5dc47c145fb264644e5298d12ad37",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:78b97a97f54b131d798bd77b57e5dc423d7cf6b10bf16791779dbbc32ab170fd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a957e8b209b4dedc69ca4140b03c4f644cd16ab1",
+      "attempts": 1,
+      "startedAt": "2026-10-28T10:14:45.589Z",
+      "doneAt": "2026-10-28T10:26:11.366Z",
+      "summary": "flow/adjusted-tests.ts: un ajuste que modifica un criterio desbloquea los tests con su id y va al ciclo de una feature; si no, decide testCycle (un defecto, el de un bug). approve guarda testCycle y anota unlocked en spec.approved; tests.ts usa cycleOf y borra testCycle al salir de testing.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "05b19fd72cc7d878273e02517cffa49dfc91cf94",
+      "attempts": 1,
+      "startedAt": "2026-10-28T10:26:11.676Z",
+      "doneAt": "2026-10-28T10:31:16.632Z",
+      "summary": "formats nombra testCycle y unlocked de spec.approved; ARCHITECTURE §4 y §12 explican el ciclo de los ajustes con contract.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-28T10:34:20.818Z"
+}

@@ -29,6 +29,7 @@ function screen(): Terminal & { readonly notes: string[] } {
     channel: "ui",
     confirm: () => Promise.resolve(true),
     choose: () => Promise.resolve(undefined),
+    chooseMany: () => Promise.resolve(undefined),
     ask: () => Promise.resolve(undefined),
     note: (title) => {
       notes.push(title);

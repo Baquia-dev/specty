@@ -2,6 +2,7 @@
 // The progress of a change's tasks (docs/ui.md, Progreso): the spec's tasks joined with their
 // state and their verifications. Only types come from core, so screens may import the helpers.
 import type { ChangeState, Lang, Spec, Task } from "@baquia-dev/specty-core";
+import { unlocksOf } from "./locks";
 
 /** A line of `audit.jsonl` (formats.md §4), as the data source gives it. */
 export interface AuditRecord {
@@ -43,6 +44,8 @@ export interface TaskScopeRequest {
   readonly id: string;
   readonly paths: readonly string[];
   readonly reason: string;
+  /** The approved tests it asks to unlock (ADR 0014); none for a plain widening. */
+  readonly unlocks?: readonly string[];
 }
 
 export interface TaskProgressView {
@@ -144,7 +147,11 @@ function taskProgress(
     ...lastVerification(last),
     scopeRequests: state.pending.scopeRequests
       .filter((request) => request.task === task.id)
-      .map(({ id, paths, reason }) => ({ id, paths, reason })),
+      .map((request) => {
+        const { id, paths, reason } = request;
+        const unlocks = unlocksOf(state, request);
+        return { id, paths, reason, ...(unlocks.length === 0 ? {} : { unlocks }) };
+      }),
   };
 }
 

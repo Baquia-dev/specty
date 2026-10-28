@@ -2,29 +2,25 @@
 // A change's history (docs/ui.md, Historial): the events of `audit.jsonl` (formats.md §4) as a
 // timeline that reads, each with its type to filter by. Pure: it runs in the derivation worker.
 // The events come from disk and from older versions of the CLI: every field is read with care.
+
+import { TESTS_TELL } from "./history-tests";
 import {
   both,
+  CHANNELS,
   count,
   counted,
   type Data,
+  type HistoryType,
   isData,
   onTask,
   plain,
+  type Told,
   text,
   texts,
   when,
 } from "./history-text";
 import { type AuditRecord, formatDuration } from "./progress";
 import type { Bilingual } from "./records";
-
-type HistoryType =
-  | "spec"
-  | "tasks"
-  | "verifications"
-  | "scope"
-  | "adjustments"
-  | "closing"
-  | "other";
 
 export interface HistoryEntry {
   /** ISO time of the event. */
@@ -39,12 +35,6 @@ export interface HistoryEntry {
   readonly details: readonly Bilingual[];
 }
 
-interface Told {
-  readonly type: HistoryType;
-  readonly title: Bilingual;
-  readonly details?: readonly (Bilingual | undefined)[];
-}
-
 /** A decision of the person that their agent took, in delegated mode (ADR 0010). */
 const DELEGATED = both("Por delegación: lo decidió el agente", "Delegated: the agent decided");
 
@@ -53,12 +43,6 @@ const LANES: Readonly<Record<string, Bilingual>> = {
   quick: both("Cambio rápido", "Quick change"),
   epic: both("Épica", "Epic"),
   retro: both("Retro: código ya escrito", "Retro: code already written"),
-};
-
-const CHANNELS: Readonly<Record<string, Bilingual>> = {
-  ui: both("Desde la UI", "From the UI"),
-  tty: both("En la terminal", "In the terminal"),
-  pr: both("En una pull request", "In a pull request"),
 };
 
 /** «la revisión 3», or «la spec» when the event does not say which. */
@@ -150,7 +134,16 @@ const TELL: Readonly<Record<string, (data: Data) => Told>> = {
     return {
       type: "spec",
       title: both(`Aprobó ${of.es}`, `Approved ${of.en}`),
-      details: [CHANNELS[text(data, "channel") ?? ""]],
+      details: [
+        CHANNELS[text(data, "channel") ?? ""],
+        // An adjustment that modified a criterion unlocks its approved tests (ADR 0014).
+        when(texts(data, "unlocked").join(", ") || undefined, (paths) =>
+          both(
+            `Desbloquea los tests de los criterios modificados: ${paths}`,
+            `Unlocks the tests of the modified criteria: ${paths}`,
+          ),
+        ),
+      ],
     };
   },
   "task.started": (data) => ({
@@ -205,10 +198,17 @@ const TELL: Readonly<Record<string, (data: Data) => Told>> = {
               "Approved the widening by the project's policy",
             )
           : both(`Aprobó ${what.es}`, `Approved ${what.en}`);
+    const task = text(data, "task") ?? "";
     return {
       type: "scope",
       title,
-      details: [pathsOf(data), plain(text(data, "reason"))],
+      details: [
+        pathsOf(data),
+        plain(text(data, "reason")),
+        when(texts(data, "unlock").join(", ") || undefined, (paths) =>
+          both(`Desbloquea para ${task}: ${paths}`, `Unlocks for ${task}: ${paths}`),
+        ),
+      ],
     };
   },
   "adjust.requested": (data) => ({
@@ -254,6 +254,7 @@ const TELL: Readonly<Record<string, (data: Data) => Told>> = {
         : undefined,
     ],
   }),
+  ...TESTS_TELL,
 };
 
 /** After accepting, a proposal is the closing the agent sends (`specty propose` in closing). */

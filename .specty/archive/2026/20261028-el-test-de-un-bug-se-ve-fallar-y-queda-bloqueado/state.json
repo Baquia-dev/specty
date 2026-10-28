@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "id": "20261028-el-test-de-un-bug-se-ve-fallar-y-queda-bloqueado",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-el-test-de-un-bug-se-ve-fallar-y-queda-bloqueado",
+  "baseCommit": "fa1b639f3e43aa27feb14b545cde7cdcc63bcd72",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:10e23e3a93ceede4201c978e5a07117964171c55fc391d6d916dbbb4d7fa7bb5",
+    "at": "2026-10-28T09:37:47.124Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d34d5d8f271b14e6ceecc267cf87e6492895c857aa43d89f6fc2a009e91cbe75",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ec5e63dee5530569ac9e23400ba46c68a4bd82645f839f52ef43cb85bc1d2207",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8a9ad7de9f60fe5e6e79d7971bbcf930845e52832d1c30b838b5394e71846412",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "aad899db06f331a1d202c9177018c1d4ada63a72",
+      "attempts": 1,
+      "startedAt": "2026-10-28T09:37:47.528Z",
+      "doneAt": "2026-10-28T09:48:32.994Z",
+      "summary": "testCycle(spec, policy, done) sustituye a testsFirst: feature con una feat pendiente en standard, bug con solo fix pendientes (también quick); approve lo calcula con las tareas hechas; la máquina gana confirmRed (Specty, testing → implementing) y transition elige el grupo con guardas de tipo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "f577850706fd556ec3a19601c031d11ae33105fa",
+      "attempts": 1,
+      "startedAt": "2026-10-28T09:48:33.336Z",
+      "doneAt": "2026-10-28T09:54:41.906Z",
+      "summary": "En el ciclo de un bug, proposeTests bloquea los tests en rojo (lockRed: confirmRed de Specty, hashes, tests.proposed y tests.locked) y sigue con la tarjeta de la primera tarea tras testsLockedLead; la feature sigue esperando a la persona (sendForApproval).",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "cd360fb48d07ad31d11d9055197149e8f3e13a7d",
+      "attempts": 1,
+      "startedAt": "2026-10-28T09:54:42.220Z",
+      "doneAt": "2026-10-28T09:59:35.623Z",
+      "summary": "friction.test.ts recorre un bug quick con contract sin bloqueos (agente 6, persona 2: +1 y +0 sobre el quick); formats y ARCHITECTURE §4 dicen qué ciclo sigue cada cambio y el evento tests.locked.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 7,
+    "T": 3,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-28T10:02:59.607Z"
+}

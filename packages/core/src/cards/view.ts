@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { AgentTool } from "../agents";
 import type { Phase } from "../flow/phases";
+import type { GlossaryEntry } from "../glossary";
 import type { Lang } from "../i18n";
 import type { AssertionLoss } from "../scope/assertions";
 import type { RiskFinding } from "../scope/risk";
@@ -17,6 +18,8 @@ export interface CardContext {
   readonly tool?: AgentTool;
   readonly quickMaxFiles: number;
   readonly implicitTests: boolean;
+  /** `git.flow` names the branches by the change's type, so `new` takes `--type`. */
+  readonly branchTypes?: boolean;
   /** The person delegated their decisions to the agent (ADR 0010): the agent runs them itself. */
   readonly delegated?: boolean;
 }
@@ -24,6 +27,27 @@ export interface CardContext {
 export interface CriterionView {
   readonly id: string;
   readonly text: string;
+  /** `test: manual`: the person checks it, so it needs no test (ADR 0014). */
+  readonly manual?: boolean;
+}
+
+/** A line of a test that carries a criterion's id, and the task whose commit added it. */
+interface CriterionTestView {
+  readonly path: string;
+  readonly line: number;
+  readonly task: string;
+  /** Short SHA of the commit that added the line. */
+  readonly commit: string;
+}
+
+/** A criterion in acceptance, with the tests that carry its id (ADR 0014). */
+export interface CriterionTestsView {
+  readonly id: string;
+  /** `test: manual`: the person checks it by hand. */
+  readonly manual: boolean;
+  /** A `feat` or `fix` task covers it, so a test should carry its id. */
+  readonly owed: boolean;
+  readonly tests: readonly CriterionTestView[];
 }
 
 export interface TaskView {
@@ -125,11 +149,26 @@ export interface ChangeView {
   readonly carried?: readonly CarriedView[];
   /** In acceptance, an independent review of the result (ADR 0011) should come first. */
   readonly recommendReview?: boolean;
+  /** In acceptance, each criterion of the spec with the tests that carry its id. */
+  readonly criteriaTests?: readonly CriterionTestsView[];
+  /** In acceptance, each approved test a person unlocked, with its request and its task. */
+  readonly unlockedTests?: readonly {
+    readonly path: string;
+    readonly request: string;
+    readonly task: string;
+  }[];
   readonly closingSubmitted: boolean;
+  /** In the testing phase, the tests were sent and wait for the person (ADR 0014). */
+  readonly testsSubmitted?: boolean;
   /** `spec.md` no longer matches the approved revision. */
   readonly specChanged: boolean;
   /** Only while an incorporation is pending: it comes before the phase's work. */
   readonly integration?: IntegrationView;
   /** An epic's slices, in the order of its spec. */
   readonly slices?: readonly SliceView[];
+  /** The project's glossary, when it defines some term (formats.md §6). */
+  readonly glossary?: {
+    readonly path: string;
+    readonly entries: readonly GlossaryEntry[];
+  };
 }

@@ -99,6 +99,66 @@ function quick(root: string): Script {
   };
 }
 
+/**
+ * Under `policy.tests: contract` (ADR 0014), every task brings a test, and the verification fails,
+ * naming the test, until `src/app.ts` greets with «Hola».
+ */
+const RED_UNTIL_HOLA = `node -e "if(!require('fs').readFileSync('src/app.ts','utf8').includes('Hola')){console.log('FAIL src/app.test.ts');process.exit(1)}"`;
+const CONTRACT_CONFIG = `${CONFIG(RED_UNTIL_HOLA)}policy:\n  tests: contract\n`;
+const FEATURE = STANDARD.replace(
+  "  - files: src/app.ts\n  - ac: AC1\n  - type: refactor",
+  "  - files: src/app.ts, src/app.test.ts\n  - ac: AC1\n  - type: refactor",
+);
+
+/** SPEC's feature under `contract`: its test first, red, approved, and then the code. */
+function feature(root: string): Script {
+  return {
+    async before(argv, output) {
+      const [verb, , task] = argv;
+      if (verb === "new") {
+        return { argv: ["new", "Saludo personalizado", "--request", "Que salude por nombre."] };
+      }
+      const phase = phaseOf(output);
+      if (verb === "propose" && phase === "draft") await writeFiles(root, { [SPEC_PATH]: FEATURE });
+      if (verb === "propose" && phase === "testing") {
+        await writeFiles(root, { "src/app.test.ts": "it('AC1: saluda a Ana', () => {});\n" });
+      }
+      if (verb === "propose" && phase === "closing") {
+        await writeFiles(root, { [SPEC_PATH]: `${await read(root, SPEC_PATH)}${CLOSING}` });
+      }
+      if (verb === "task") {
+        const greeting = task === "T1" ? "'Hola, ' + name" : "'Hola, ' + name + ', qué bien'";
+        await writeFiles(root, { "src/app.ts": `export const greet = (name) => ${greeting};\n` });
+      }
+      return { argv: filled(argv) };
+    },
+  };
+}
+
+/** The button's verification fails, naming its test, until the button says «Sign in». */
+const RED_UNTIL_SIGN_IN = `node -e "if(!require('fs').readFileSync('src/button.ts','utf8').includes('Sign in')){console.log('FAIL src/button.test.ts');process.exit(1)}"`;
+const BUG_CONFIG = `${CONFIG(RED_UNTIL_SIGN_IN)}policy:\n  tests: contract\n`;
+
+/** QUICK's bug under `contract`: the test that reproduces it, red and locked, then the fix. */
+function bug(root: string): Script {
+  return {
+    async before(argv, output) {
+      const [verb] = argv;
+      if (verb === "new") {
+        return { argv: ["new", "--kind", "quick", "Corregir el botón", "--request", "Sign in"] };
+      }
+      const phase = phaseOf(output);
+      if (verb === "propose" && phase === "draft")
+        await writeFiles(root, { [draftPath(output)]: QUICK });
+      if (verb === "propose" && phase === "testing") {
+        await writeFiles(root, { "src/button.test.ts": BUTTON_TEST });
+      }
+      if (verb === "task") await writeFiles(root, { "src/button.ts": "Sign in\n" });
+      return { argv: filled(argv) };
+    },
+  };
+}
+
 /** The walk's steps, one per line, to read when an expectation fails. */
 const transcript = (result: Walk): string =>
   result.steps.map((step) => `${step.who} ${step.what} → ${step.code}`).join("\n");
@@ -158,6 +218,36 @@ describe("following every SIGUIENTE", () => {
       blockedTools: 2,
       blocks: 5,
       toApproval: { agent: 5, person: 1 },
+    });
+  });
+
+  it("AC7: takes a feature to the end under contract, its tests red and approved first", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": CONTRACT_CONFIG });
+    const result = await walk(root, feature(root));
+    expect(result.done, transcript(result)).toBe(true);
+    // Two commands of the agent (`next`, `propose` of the tests) and one of the person (the gate
+    // 2) over the standard change, as ADR 0014's epic expects (R1).
+    expect(result.friction, transcript(result)).toEqual({
+      agent: 10,
+      person: 4,
+      blockedTools: 0,
+      blocks: 0,
+      toApproval: { agent: 3, person: 1 },
+    });
+  });
+
+  it("AC6: takes a bug to the end under contract, its red test locked with no person", async () => {
+    const root = await tempRepo({ ...APP, ".specty/config.yaml": BUG_CONFIG });
+    const result = await walk(root, bug(root));
+    expect(result.done, transcript(result)).toBe(true);
+    // One command of the agent over the quick change (`propose` of the test), and none of the
+    // person: a bug's red test needs no gate 2.
+    expect(result.friction, transcript(result)).toEqual({
+      agent: 6,
+      person: 2,
+      blockedTools: 0,
+      blocks: 0,
+      toApproval: { agent: 3, person: 1 },
     });
   });
 

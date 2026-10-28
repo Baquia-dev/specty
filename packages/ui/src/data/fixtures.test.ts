@@ -151,6 +151,41 @@ describe("FixtureData actions", () => {
     });
   });
 
+  it("AC3: brings a change in testing with its red tests, and approving them locks them", async () => {
+    const { fixtures, store, settle } = setup();
+    await settle();
+    const id = "20261022-avisos-calificaciones";
+    const view = () => store.all().find((change) => change.id === id);
+    const files = ["test/grades/grade_notice_test.dart", "test/grades/notice_view_test.dart"];
+    expect([view()?.phase, view()?.decision, view()?.tests?.files]).toEqual([
+      "testing",
+      "tests",
+      files,
+    ]);
+    expect(view()?.tests?.red).toEqual([{ cmd: "flutter test test/grades", exit: 1 }]);
+    await fixtures.approve(id, 1);
+    await settle();
+    expect([view()?.phase, view()?.decision]).toEqual(["implementing", undefined]);
+    expect(view()?.lockedTests?.map((test) => test.path)).toEqual(files.toSorted());
+    const record = (await fixtures.changes()).find((item) => item.state.id === id);
+    expect(record?.audit?.at(-1)).toMatchObject({
+      actor: "human",
+      event: "tests.approved",
+      data: { channel: "ui" },
+    });
+    expect(record?.state.testsSubmittedAt).toBeUndefined();
+  });
+
+  it("AC3: gives the change in acceptance the tests of its criteria", async () => {
+    const { store, settle } = setup();
+    await settle();
+    const view = store.all().find((change) => change.id === "20261018-asistencia-curso");
+    expect(view?.criteriaTests?.map((item) => [item.id, item.tests.length])).toEqual([
+      ["AC1", 2],
+      ["AC2", 1],
+    ]);
+  });
+
   it("confirms only a closing the agent sent, and the change is done (AC3)", async () => {
     const { fixtures, store, settle } = setup();
     const [mail, panel] = ["20261017-recordatorios-correo", "20261018-asistencia-curso"];
@@ -196,6 +231,7 @@ describe("ChangesStore", () => {
       "closing",
       "review",
       "review",
+      "tests",
       "scope",
     ]);
     expect(
@@ -213,11 +249,12 @@ describe("ChangesStore", () => {
     fixtures.approveSpec();
     fixtures.approveScope();
     await settle();
-    // The first review is approved; the revised one still waits.
+    // The first review is approved; the revised one and the tests sent still wait.
     expect(store.decisions().map((view) => view.decision)).toEqual([
       "acceptance",
       "closing",
       "review",
+      "tests",
     ]);
     fixtures.finishTask();
     fixtures.finishTask();
@@ -235,7 +272,7 @@ describe("ChangesStore", () => {
     fixtures.toggleOutage();
     await settle();
     expect(store.views.error()).toBeUndefined();
-    expect(store.all()).toHaveLength(9);
+    expect(store.all()).toHaveLength(10);
   });
 
   it("derives through a web worker when there is one (AC10)", async () => {
@@ -253,7 +290,7 @@ describe("ChangesStore", () => {
     const { store, settle } = setup(false);
     await settle();
     expect(posted).toEqual([0]);
-    expect(store.all()).toHaveLength(9);
+    expect(store.all()).toHaveLength(10);
   });
 
   it("says so when there are no web workers and no deriver was given", async () => {

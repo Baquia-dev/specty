@@ -46,13 +46,25 @@ export async function taskDone(
   const { cards } = session;
   const diff = await checkedDiff(session, active, task, header);
   if ("card" in diff) return diff.card;
+  const removedAssertions = await assertionLosses(session, diff.base, diff.changed);
+  // Under contract, a refactor or a perf keeps what the existing tests check (ADR 0014).
+  const kept = task.type === "refactor" || task.type === "perf" ? task.type : undefined;
+  if (session.config.policy.tests === "contract" && kept && removedAssertions.length > 0) {
+    const refusal = {
+      reason: "assertions",
+      task: task.id,
+      type: kept,
+      losses: removedAssertions,
+    } as const;
+    return taskDoneRefusalCard(refusal, header, cards);
+  }
 
   const verified = await verifyTask(session, active, task);
   if (!verified.ok)
     return verifyFailedCard(header, task.id, verified.command, verified.code, verified.tail, cards);
 
   const notes: TaskNotes = {
-    removedAssertions: await assertionLosses(session, diff.base, diff.changed),
+    removedAssertions,
     risks: await riskFindings(session, diff.base, diff.changed),
     findings: findings.map((finding) => finding.trim()),
     longFiles: diff.long,

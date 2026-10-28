@@ -82,6 +82,45 @@ describe("acceptance evidence", () => {
     });
   });
 
+  it("AC1: gives each criterion its tests, at most 3, and says which are by hand or owe a test", () => {
+    const line = (n: number) => ({ path: "test/a_test.dart", line: n, task: "T1", commit: "a1" });
+    const criteriaTests = [
+      { id: "AC1", manual: false, owed: true, tests: [1, 2, 3, 4].map(line) },
+      { id: "AC2", manual: false, owed: true, tests: [] },
+      { id: "AC3", manual: true, owed: false, tests: [] },
+      { id: "AC4", manual: false, owed: false, tests: [] },
+    ];
+    const criteria = [
+      criterion("AC1"),
+      criterion("AC2"),
+      { ...criterion("AC3"), manual: true as const },
+      criterion("AC4"),
+    ];
+    const evidence = evidenceOf(criteria, [task("T1")], criteriaTests);
+    expect(
+      evidence.map(({ id, tests, more, manual, untested }) => ({
+        id,
+        tests,
+        more,
+        manual,
+        untested,
+      })),
+    ).toEqual([
+      { id: "AC1", tests: [1, 2, 3].map(line), more: 1, manual: undefined, untested: undefined },
+      { id: "AC2", tests: [], more: 0, manual: undefined, untested: true },
+      { id: "AC3", tests: [], more: 0, manual: true, untested: undefined },
+      { id: "AC4", tests: [], more: 0, manual: undefined, untested: undefined },
+    ]);
+    // Without the server's tests, only what the spec says: AC3 by hand.
+    const bare = evidenceOf(criteria, [task("T1")]);
+    expect(bare.map((item) => [item.tests, item.manual, item.untested])).toEqual([
+      [undefined, undefined, undefined],
+      [undefined, undefined, undefined],
+      [undefined, true, undefined],
+      [undefined, undefined, undefined],
+    ]);
+  });
+
   it("finds the sample in acceptance fully verified, from its commits and audit (AC1)", () => {
     const view = deriveViews(sampleRecords(NOW)).find((item) => item.id === ASISTENCIA);
     if (view === undefined) throw new Error("no sample");

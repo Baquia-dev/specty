@@ -14,6 +14,7 @@ import {
   parseSpec,
   pathProblem,
   type ScopeAddRefusal,
+  type ScopeRules,
   type Spec,
   scopeAddRefusalCard,
   scopeRequestedCard,
@@ -55,10 +56,12 @@ export async function scopeAdd(
   const spec = parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const task = spec.sections.tasks?.items.find((item) => item.id === taskId);
   const rules = scopeRulesFrom(session.config);
-  const missing = paths.filter(
-    (path) =>
-      classifyPath(path, { taskFiles: task?.files ?? [], extras: stored.scopeExtra, rules }) ===
-      "out-of-scope",
+  const { missing, locked } = askedFor(
+    paths,
+    task?.files ?? [],
+    stored.scopeExtra,
+    active.state,
+    rules,
   );
   if (missing.length === 0) {
     return withLead(
@@ -71,11 +74,32 @@ export async function scopeAdd(
   const planned = listed(spec);
   // Requested files another open change also lists, shown whatever the decision.
   const shared = sharedBlock(session, await sharedFiles(session, state.id, missing));
+  // Unlocking an approved test is never approved by policy (ADR 0014).
   const card =
-    decideScopeRequest(missing, rules, planned) === "auto"
+    locked.length === 0 && decideScopeRequest(missing, rules, planned) === "auto"
       ? await approveByPolicy(session, active, spec, wanted, planned)
-      : await requestApproval(session, active, header, wanted);
+      : await requestApproval(session, active, header, wanted, locked.length > 0);
   return { ...card, blocks: [...card.blocks, ...shared] };
+}
+
+/**
+ * What the task asks for: the paths outside its scope and, though inside it, the approved tests
+ * still locked for it (`locked`), whose unlock is a request too.
+ */
+function askedFor(
+  paths: readonly string[],
+  taskFiles: readonly string[],
+  extras: readonly string[],
+  state: ChangeState,
+  rules: ScopeRules,
+): { readonly missing: readonly string[]; readonly locked: readonly string[] } {
+  const outside = paths.filter(
+    (path) => classifyPath(path, { taskFiles, extras, rules }) === "out-of-scope",
+  );
+  const locked = paths.filter(
+    (path) => Object.hasOwn(state.lockedTests ?? {}, path) && !extras.includes(path),
+  );
+  return { missing: [...new Set([...outside, ...locked])], locked };
 }
 
 /** The paths a task asks for, outside its scope, and why. */
@@ -140,12 +164,16 @@ async function approveByPolicy(
   );
 }
 
-/** A request the person decides on, numbered after the change's last one. */
+/**
+ * A request the person decides on, numbered after the change's last one. One that `unlocks` an
+ * approved test is the person's alone.
+ */
 async function requestApproval(
   session: Session,
   active: StoredChange,
   header: string,
   wanted: Wanted,
+  unlocks: boolean,
 ): Promise<Output> {
   const { state } = active;
   const number = (state.maxIds.S ?? 0) + 1;
@@ -166,7 +194,7 @@ async function requestApproval(
     "scope.requested",
     request,
   );
-  return scopeRequestedCard(header, request.id, wanted.paths, session.cards);
+  return scopeRequestedCard(header, request.id, wanted.paths, session.cards, unlocks);
 }
 
 export function withExtras(

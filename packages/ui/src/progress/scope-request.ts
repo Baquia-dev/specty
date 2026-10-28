@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DIALOG_DATA, DialogRef } from "@angular/cdk/dialog";
-import { ChangeDetectionStrategy, Component, inject, input, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from "@angular/core";
 import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Field } from "../components/field";
-import { LucideFilePlus } from "../components/icons";
+import { LucideFilePlus, LucideLockOpen } from "../components/icons";
 import { Toasts } from "../components/toast";
 import { Decisions } from "../data/decisions";
 import type { TaskScopeRequest } from "../data/progress";
@@ -63,7 +63,8 @@ class RejectScope {
 
 /**
  * A scope request inside the task that asked for it: the paths, the agent's reason, what deciding
- * means, and the decision. The task waits at the top of the tab until it is decided.
+ * means, and the decision. The task waits at the top of the tab until it is decided. A request to
+ * unlock an approved test says so and marks it.
  */
 @Component({
   selector: "sp-scope-request",
@@ -72,23 +73,19 @@ class RejectScope {
   host: { class: "block" },
   template: `
     <div role="group" [attr.aria-label]="t()('Solicitud de alcance ', 'Scope request ') + request().id" class="flex flex-col gap-2 rounded-xl px-3.5 py-3" style="background: color-mix(in oklab, var(--color-phase-review-bg) 55%, transparent)" data-scope-request>
-      <span class="flex items-center gap-1.5 text-[13px] font-semibold" style="color: var(--color-phase-review)">
-        <svg [lucideIcon]="icon" size="14" aria-hidden="true"></svg>{{ request().id }} · {{ t()('Solicitud de alcance', 'Scope request') }}
+      <span class="flex items-center gap-1.5 text-[13px] font-semibold" style="color: var(--color-phase-review)" data-heading>
+        <svg [lucideIcon]="unlocks().length > 0 ? unlockIcon : icon" size="14" aria-hidden="true"></svg>{{ request().id }} · {{ unlocks().length > 0 ? t()('Desbloquear un test aprobado', 'Unlock an approved test') : t()('Solicitud de alcance', 'Scope request') }}
       </span>
       <span class="text-sm">
         {{ task() }} {{ t()('pide', 'asks for') }}
         @for (path of request().paths; track path) {
           <code class="font-mono text-[13px]">{{ path }}</code>
+          @if (unlocks().includes(path)) {
+            <span class="text-xs text-text-muted" data-unlock>({{ t()('test aprobado', 'approved test') }})</span>
+          }
         }: «{{ request().reason }}»
       </span>
-      <span class="text-[13px] text-text-muted">
-        {{
-          t()(
-            'Si la apruebas, ' + task() + ' podrá tocarlo y entra en su alcance. Si la rechazas, el agente sigue sin él y lee tu motivo.',
-            'If you approve it, ' + task() + ' may touch it and it enters its scope. If you reject it, the agent goes on without it and reads your reason.'
-          )
-        }}
-      </span>
+      <span class="text-[13px] text-text-muted" data-means>{{ means() }}</span>
       <div class="flex flex-wrap gap-2">
         <sp-button size="sm" variant="primary" [disabledReason]="decisions.blocked()" (pressed)="approve()">{{ t()('Aprobar', 'Approve') }}</sp-button>
         <sp-button size="sm" [disabledReason]="decisions.blocked()" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
@@ -109,6 +106,30 @@ export class ScopeRequest {
   protected readonly decisions = inject(Decisions);
   protected readonly t = this.preferences.t;
   protected readonly icon = LucideFilePlus;
+  protected readonly unlockIcon = LucideLockOpen;
+
+  /** The approved tests it asks to unlock (ADR 0014): only the person decides those. */
+  protected readonly unlocks = computed(() => this.request().unlocks ?? []);
+
+  /** What approving or rejecting it means, for an unlock or for a plain widening. */
+  protected readonly means = computed(() => {
+    const task = this.task();
+    const rejecting = this.t()(
+      "Si la rechazas, el agente sigue sin él y lee tu motivo.",
+      "If you reject it, the agent goes on without it and reads your reason.",
+    );
+    const approving =
+      this.unlocks().length > 0
+        ? this.t()(
+            `Si la apruebas, ${task} podrá cambiar este test aprobado y vuelve a bloquearse al terminarla. Solo lo decides tú: el agente no puede aprobarlo, ni en modo delegado.`,
+            `If you approve it, ${task} may change this approved test, and it locks again once that task is done. Only you decide it: the agent cannot approve it, not even in delegated mode.`,
+          )
+        : this.t()(
+            `Si la apruebas, ${task} podrá tocarlo y entra en su alcance.`,
+            `If you approve it, ${task} may touch it and it enters its scope.`,
+          );
+    return `${approving} ${rejecting}`;
+  });
 
   protected approve(): void {
     const { id } = this.request();

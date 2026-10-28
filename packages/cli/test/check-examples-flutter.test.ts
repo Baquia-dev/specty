@@ -40,6 +40,7 @@ const CHECKS = [
   "scope",
   "dependencies",
   "fix-tests",
+  "criteria-tested",
   "tests-removed",
 ];
 
@@ -175,7 +176,7 @@ const PASSING: Case = {
       "",
     ].join("\n"),
     "test/cart_test.dart":
-      "void main() {\n  test('adds the prices', () {\n    expect(1, 1);\n  });\n}\n",
+      "void main() {\n  test('AC1: adds the prices', () {\n    expect(1, 1);\n  });\n}\n",
     "lib/catalog.dart": "const items = 3;\n",
     "lib/prices.json": "[100, 250, 400]\n",
     "lib/prices_data.dart": rendered(PRICES, [100, 250, 400]),
@@ -237,6 +238,7 @@ describe("the Flutter example of specty check", () => {
     expect(await statuses(EXAMPLE, FAILING)).toEqual(
       expected(CHECKS, "failed", {
         secrets: scanner ? "failed" : "skipped",
+        "criteria-tested": "warned",
         "tests-removed": "warned",
       }),
     );

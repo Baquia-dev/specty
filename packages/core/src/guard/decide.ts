@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { type Phase, phasePermissions } from "../flow/phases";
-import { matchesAny } from "../glob";
+import type { Phase } from "../flow/phases";
 import type { Lang } from "../i18n";
 import type { ResolvedConfig } from "../schema/config";
 import { isGoverned } from "../scope/governed";
@@ -9,33 +8,11 @@ import type { ChangeKind } from "../spec/model";
 import { humanDenial } from "./human";
 import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
 import { type BoundSession, sessionDenial } from "./session";
+import { protectedDenial, specDenial } from "./spec";
+import { lockedDenial, testingDenial } from "./testing";
 import { type Elsewhere, elsewhereDenial, type ForeignPath, foreignDenial } from "./worktrees";
 
 export { HUMAN_COMMANDS } from "./human";
-
-/** Files only Specty writes; editing them by hand would bypass the flow. */
-const PROTECTED: readonly string[] = [
-  ".specty/config.yaml",
-  ".specty/archive/**",
-  ".specty/changes/*/state.json",
-  ".specty/changes/*/audit.jsonl",
-  ".specty/changes/*/comments.json",
-  ".specty/changes/*/revisions/**",
-  ".specty/changes/*/reviews/**",
-  ".git/**",
-  ".claude/settings.json",
-  ".claude/settings.local.json",
-  ".cursor/hooks.json",
-  ".codex/hooks.json",
-  ".codex/rules/specty.rules",
-  ".opencode/plugins/specty.js",
-  ".husky/pre-commit",
-  ".husky/prepare-commit-msg",
-  "lefthook.yml",
-  "lefthook.yaml",
-  ".lefthook.yml",
-  ".lefthook.yaml",
-];
 
 export interface GuardChange {
   readonly id: string;
@@ -49,6 +26,10 @@ export interface GuardChange {
     readonly files: readonly string[];
     readonly extras: readonly string[];
   };
+  /** In the testing phase, the files of the approved spec: only their tests may be written. */
+  readonly files?: readonly string[];
+  /** The tests the person approved: nobody writes or deletes them (ADR 0014). */
+  readonly locked?: readonly string[];
   /** A pending incorporation of the main branch: it alone decides about code, in any phase. */
   readonly integration?: GuardIntegration;
 }
@@ -123,7 +104,8 @@ export type GuardRule =
   | "scope"
   | "worktree"
   | "integration"
-  | "session";
+  | "session"
+  | "locked";
 
 export type GuardDecision =
   | { readonly allow: true }
@@ -221,22 +203,13 @@ function decideFiles(
 }
 
 function decidePath(path: string, mode: "write" | "delete", ctx: GuardContext): GuardDecision {
-  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
   const { change } = ctx;
-  if (change !== undefined && path === change.specPath) return decideSpec(change, mode, ctx);
-  if (matchesAny(path, PROTECTED) || path.startsWith(".specty/")) {
-    return deny(
-      "protected",
-      t(
-        `\`${path}\` lo gestiona Specty; no se edita a mano.`,
-        `\`${path}\` is managed by Specty; do not edit it by hand.`,
-      ),
-      t(
-        `usa los comandos de Specty: \`${ctx.command} next\`.`,
-        `use Specty's commands: \`${ctx.command} next\`.`,
-      ),
-    );
+  if (change !== undefined && path === change.specPath) {
+    const denial = specDenial(change, mode, ctx.lang, ctx.command);
+    return denial === undefined ? ALLOW : deny("spec", denial.reason, denial.next);
   }
+  const managed = protectedDenial(path, ctx.lang, ctx.command);
+  if (managed !== undefined) return deny("protected", managed.reason, managed.next);
   return isGoverned(path, ctx.config) ? decideGoverned(path, ctx) : ALLOW;
 }
 
@@ -257,6 +230,14 @@ function decideGoverned(path: string, ctx: GuardContext): GuardDecision {
   if (change.integration !== undefined) {
     const denial = integrationDenial(path, change.integration, ctx.config, ctx.lang, ctx.command);
     return denial === undefined ? ALLOW : deny("integration", denial.reason, denial.next);
+  }
+  if (change.locked?.includes(path) === true) {
+    const denial = lockedDenial(path, change.task?.id, ctx.lang, ctx.command);
+    return deny("locked", denial.reason, denial.next);
+  }
+  if (change.phase === "testing") {
+    const denial = testingDenial(path, change.files ?? [], ctx.config, ctx.lang, ctx.command);
+    return denial === undefined ? ALLOW : deny("phase", denial.reason, denial.next);
   }
   if (change.phase !== "implementing") {
     return deny(
@@ -301,35 +282,6 @@ function decideTaskScope(path: string, change: GuardChange, ctx: GuardContext): 
       `trabaja dentro del alcance o pídelo con \`${ctx.command} scope add ${path} --task ${task.id} --reason "<motivo>"\`.`,
       `stay within the scope or request it with \`${ctx.command} scope add ${path} --task ${task.id} --reason "<reason>"\`.`,
     ),
-  );
-}
-
-function decideSpec(
-  change: GuardChange,
-  mode: "write" | "delete",
-  ctx: GuardContext,
-): GuardDecision {
-  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
-  const access = phasePermissions(change.phase, change.closingSubmitted).spec;
-  if (mode === "write" && access !== "locked") return ALLOW;
-  const implementing = change.phase === "implementing";
-  return deny(
-    "spec",
-    implementing
-      ? t(
-          "La spec está aprobada y bloqueada mientras se implementa.",
-          "The spec is approved and locked while it is implemented.",
-        )
-      : t(
-          `La spec está bloqueada en la fase ${change.phase}.`,
-          `The spec is locked in the ${change.phase} phase.`,
-        ),
-    implementing
-      ? t(
-          `si necesitas otro archivo usa \`${ctx.command} scope add\`; si el plan debe cambiar, díselo al usuario.`,
-          `if you need another file use \`${ctx.command} scope add\`; if the plan must change, tell the user.`,
-        )
-      : t(`ejecuta \`${ctx.command} next\`.`, `run \`${ctx.command} next\`.`),
   );
 }
 

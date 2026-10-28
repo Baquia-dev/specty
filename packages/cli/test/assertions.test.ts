@@ -15,18 +15,21 @@ import {
 const TEST = "src/app.test.ts";
 const AUDIT = `.specty/changes/${CHANGE}/audit.jsonl`;
 
-/** SPEC's change, approved, in a repository whose test already has three assertions. */
-async function withTest(): Promise<string> {
+const ASSERTIONS =
+  "expect(greet()).toBe('hola');\nexpect(greet('Ana')).toBe('hola');\nexpect(1).toBe(1);\n";
+
+/** SPEC's change (or `spec`), approved, in a repository whose test already has three assertions. */
+async function withTest(
+  config = CONFIG(),
+  spec = SPEC.replace("- crear src/app.test.ts", "- modificar src/app.test.ts"),
+): Promise<string> {
   const root = await tempRepo({
     "src/app.ts": "export const greet = () => 'hola';\n",
-    [TEST]:
-      "expect(greet()).toBe('hola');\nexpect(greet('Ana')).toBe('hola');\nexpect(1).toBe(1);\n",
-    ".specty/config.yaml": CONFIG(),
+    [TEST]: ASSERTIONS,
+    ".specty/config.yaml": config,
   });
   expect((await cli(root, ["new", "Saludo personalizado"])).code).toBe(0);
-  await writeFiles(root, {
-    [SPEC_PATH]: SPEC.replace("- crear src/app.test.ts", "- modificar src/app.test.ts"),
-  });
+  await writeFiles(root, { [SPEC_PATH]: spec });
   expect((await cli(root, ["propose"])).code).toBe(0);
   const approved = await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
   expect(approved.code).toBe(0);
@@ -82,5 +85,38 @@ describe("tests in task cards and task done", () => {
     expect(terminal.notes.join("\n")).toContain(
       "T1 quitó 2 aserciones de src/app.test.ts, un test que ya existía.",
     );
+  });
+});
+
+/** Two refactors, each with the test it keeps, under `policy.tests: contract` (ADR 0014). */
+const REFACTORS = SPEC.replace("- crear src/app.test.ts", "- modificar src/app.test.ts")
+  .replace(
+    "- [ ] T1: Saludar por nombre\n  - files: src/app.ts, src/app.test.ts\n  - ac: AC1",
+    "- [ ] T1: Saludar por nombre\n  - files: src/app.ts, src/app.test.ts\n  - ac: AC1\n  - type: refactor",
+  )
+  .replace(
+    "  - files: src/app.ts\n  - ac: AC1\n  - type: refactor",
+    "  - files: src/app.ts, src/app.test.ts\n  - ac: AC1\n  - type: refactor",
+  );
+const CONTRACT = `${CONFIG()}policy:\n  tests: contract\nchecks:\n  levels: { secrets: off }\n`;
+
+describe("a refactor under contract", () => {
+  it("is not done while it removes assertions from a test that already existed", async () => {
+    const root = await withTest(CONTRACT, REFACTORS);
+    await cli(root, ["next"]);
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = () => 'hola' ;\n",
+      [TEST]: "// expect(greet()).toBe('hola');\nexpect(1).toBe(1);\n",
+    });
+    const refused = await cli(root, ["task", "done", "T1", "--summary", "Uno"]);
+    expect(refused.code).not.toBe(0);
+    expect(refused.out).toContain(
+      "T1 es un refactor y quitó 2 aserciones de src/app.test.ts, un test que ya existía:",
+    );
+    expect(refused.out).toContain("devuelve las aserciones");
+    const state = JSON.parse(await read(root, `.specty/changes/${CHANGE}/state.json`));
+    expect(state.tasks.T1.status).toBe("active");
+    await writeFiles(root, { [TEST]: ASSERTIONS });
+    expect((await cli(root, ["task", "done", "T1", "--summary", "Uno"])).code).toBe(0);
   });
 });

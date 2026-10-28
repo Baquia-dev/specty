@@ -125,4 +125,41 @@ describe("the audit report", () => {
     const spanish = auditReport({ ...VIEW, tasks: [], events: [] }, "es").markdown;
     expect(spanish).toContain("## Tareas\n\nSin tareas.");
   });
+
+  it("AC6: says the tests were sent and approved, in both languages", () => {
+    const events = [
+      event("2026-10-24T11:00:00.000Z", "agent", "tests.proposed", {
+        count: 2,
+        files: ["src/app.test.ts", "src/greet.test.ts"],
+      }),
+      event("2026-10-24T11:05:00.000Z", "human", "tests.approved", { channel: "tty" }),
+    ];
+    const lines = (lang: "es" | "en") =>
+      auditReport({ ...VIEW, tasks: [], events }, lang)
+        .markdown.split("\n")
+        .filter((line) => line.startsWith("| 2026"));
+    expect(lines("es")).toEqual([
+      "| 2026-10-24 11:00 | agente | Envió 2 tests para aprobar |",
+      "| 2026-10-24 11:05 | persona | Aprobó los tests (tty) |",
+    ]);
+    expect(lines("en")).toEqual([
+      "| 2026-10-24 11:00 | agent | Sent 2 tests for approval |",
+      "| 2026-10-24 11:05 | person | Approved the tests (tty) |",
+    ]);
+  });
+
+  it("AC5: says a bug's red tests were locked, in both languages", () => {
+    const locked = [
+      event("2026-10-24T11:00:00.000Z", "specty", "tests.locked", {
+        count: 1,
+        files: ["src/app.test.ts"],
+      }),
+    ];
+    const row = (lang: "es" | "en") =>
+      auditReport({ ...VIEW, tasks: [], events: locked }, lang)
+        .markdown.split("\n")
+        .find((line) => line.startsWith("| 2026"));
+    expect(row("es")).toBe("| 2026-10-24 11:00 | specty | Bloqueó 1 tests en rojo |");
+    expect(row("en")).toBe("| 2026-10-24 11:00 | specty | Locked 1 red tests |");
+  });
 });

@@ -19,6 +19,7 @@ import { Select } from "../components/select";
 import { evidenceOf, summaryOf } from "../data/acceptance";
 import { Decisions } from "../data/decisions";
 import type { ChangeView } from "../data/records";
+import { LockedTests } from "../progress/locked-tests";
 import { IndependentReview } from "../review/independent-review";
 import { Preferences } from "../theme/preferences";
 import { AcceptanceFindings } from "./acceptance-findings";
@@ -53,6 +54,7 @@ const VIEW_KEY = "specty.acceptance.view";
     ClosingView,
     AcceptanceWarnings,
     AcceptanceFindings,
+    LockedTests,
     IndependentReview,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -78,6 +80,10 @@ const VIEW_KEY = "specty.acceptance.view";
       <!-- What the tasks learned, and what another model said about the result (specty review). -->
       @if (change().findings; as findings) {
         <sp-acceptance-findings [findings]="findings" />
+      }
+      <!-- The approved tests it locked, and which of them a person unlocked for a task. -->
+      @if (change().lockedTests; as locked) {
+        <sp-locked-tests [tests]="locked" />
       }
       @if (change().resultReview; as review) {
         <sp-independent-review [review]="review" />
@@ -127,7 +133,11 @@ export class AcceptanceTab {
   private readonly injector = inject(Injector);
 
   protected readonly evidence = computed(() =>
-    evidenceOf(this.change().review.criteria, this.change().progress.tasks),
+    evidenceOf(
+      this.change().review.criteria,
+      this.change().progress.tasks,
+      this.change().criteriaTests,
+    ),
   );
   private readonly summary = computed(() =>
     summaryOf(this.evidence(), this.change().progress.tasks),

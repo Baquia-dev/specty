@@ -25,7 +25,13 @@ import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } fro
 import { leavePending, type PendingKind, takePending } from "./pending";
 import { redirection, resolveAction } from "./place";
 import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
-import { pruneSnapshots, saveSnapshot, takeSnapshot, treeSnapshot } from "./shell-snapshot";
+import {
+  pruneSnapshots,
+  saveSnapshot,
+  takeSnapshot,
+  treeSnapshot,
+  withoutSpecty,
+} from "./shell-snapshot";
 import { worktreeHook } from "./worktree-hooks";
 
 const ALLOW: Verdict = { allow: true };
@@ -254,7 +260,7 @@ async function afterShell(session: Session, event: Record<string, unknown>): Pro
   const before = id === undefined ? undefined : await takeSnapshot(session, id);
   await pruneSnapshots(session);
   if (before === undefined) return ALLOW;
-  const changes = shellChanges(before, await treeSnapshot(session));
+  const changes = await withoutSpecty(session, shellChanges(before, await treeSnapshot(session)));
   return verdict(decideAfterShell(changes, await guardContext(session)), session);
 }
 
@@ -269,11 +275,17 @@ async function guardContext(session: Session) {
   if (active === undefined || isFinished(active.state)) return base;
   const { state } = active;
   const taskEntry = Object.entries(state.tasks).find(([, task]) => task.status === "active");
+  const testing = state.phase === "testing";
   const spec =
-    taskEntry === undefined
+    taskEntry === undefined && !testing
       ? undefined
       : parseSpec(await readSpec(active.files), { language: session.lang }).spec;
   const files = spec?.sections.tasks?.items.find((task) => task.id === taskEntry?.[0])?.files ?? [];
+  // In the testing phase, the tests of any of the change's files may be written (ADR 0014).
+  const planned = [
+    ...(spec?.sections.files?.items ?? []).map((entry) => entry.path),
+    ...(spec?.sections.tasks?.items ?? []).flatMap((task) => task.files),
+  ];
   const change: GuardChange = {
     id: state.id,
     kind: state.kind,
@@ -282,6 +294,15 @@ async function guardContext(session: Session) {
     specPath: session.paths.relative(active.files.spec),
     ...(taskEntry !== undefined
       ? { task: { id: taskEntry[0], files, extras: taskEntry[1].scopeExtra } }
+      : {}),
+    ...(testing ? { files: planned } : {}),
+    // An approved test the person unlocked for the active task is open for it (ADR 0014).
+    ...(state.lockedTests !== undefined
+      ? {
+          locked: Object.keys(state.lockedTests).filter(
+            (path) => taskEntry?.[1].scopeExtra.includes(path) !== true,
+          ),
+        }
       : {}),
     ...(state.integration !== undefined && isIntegrating(state)
       ? { integration: { target: state.integration.target, paths: state.integration.paths } }

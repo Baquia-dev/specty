@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
+import { AGENT_NAMES, type AgentTool, isAgentTool } from "../agents";
+import { GIT_FLOWS, type GitFlow } from "../branches";
 import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { blockedCard } from "./flow";
@@ -11,17 +13,21 @@ import type { CardContext } from "./view";
 export type InitRefusal =
   | { readonly reason: "no-git" }
   /** `.specty/config.yaml` exists and is not valid: `issues` says why. */
-  | { readonly reason: "invalid-config"; readonly issues: string };
+  | { readonly reason: "invalid-config"; readonly issues: string }
+  /** `--git-flow` names no flow of `GIT_FLOWS`. */
+  | { readonly reason: "unknown-flow"; readonly flow: string };
 
 export function initRefusalCard(refusal: InitRefusal, lang: Lang): Output {
   const t = translator(lang);
-  return refusal.reason === "no-git"
-    ? blockedCard(
+  switch (refusal.reason) {
+    case "no-git":
+      return blockedCard(
         headerOf("init"),
         t("Esto no es un repositorio git.", "This is not a git repository."),
         t("ejecuta `git init` y vuelve a intentarlo.", "run `git init` and try again."),
-      )
-    : blockedCard(
+      );
+    case "invalid-config":
+      return blockedCard(
         headerOf("init"),
         t(
           `.specty/config.yaml no es válido: ${refusal.issues}`,
@@ -29,6 +35,94 @@ export function initRefusalCard(refusal: InitRefusal, lang: Lang): Output {
         ),
         t("corrígelo y vuelve a ejecutar `specty init`.", "fix it and run `specty init` again."),
       );
+    case "unknown-flow":
+      return {
+        ...blockedCard(
+          headerOf("init"),
+          t(`Flujo de git desconocido: ${refusal.flow}.`, `Unknown git flow: ${refusal.flow}.`),
+          t(
+            `usa \`--git-flow ${GIT_FLOWS.join("|")}\`.`,
+            `use \`--git-flow ${GIT_FLOWS.join("|")}\`.`,
+          ),
+        ),
+        status: "invalid",
+      };
+  }
+}
+
+/** The changes' branches under each flow, as `branchName` makes them. */
+const FLOW_BRANCHES: Readonly<Record<GitFlow, readonly [string, string]>> = {
+  specty: ["specty/<id>", "specty/<id>"],
+  github: ["<tipo>/<slug>, como feat/<slug>", "<type>/<slug>, such as feat/<slug>"],
+  trunk: ["<tipo>/<slug>, como feat/<slug>", "<type>/<slug>, such as feat/<slug>"],
+  gitflow: ["feature/<slug> y bugfix/<slug>", "feature/<slug> and bugfix/<slug>"],
+};
+
+/** `init --git-flow` set `git.flow`: how the changes' branches will be named. */
+export function flowLine(flow: GitFlow, lang: Lang): string {
+  const [es, en] = FLOW_BRANCHES[flow];
+  return translator(lang)(
+    `.specty/config.yaml: git.flow es ${flow}; las ramas de los cambios serán ${es}.`,
+    `.specty/config.yaml: git.flow is ${flow}; the changes' branches will be ${en}.`,
+  );
+}
+
+/** Git Flow's `develop` did not exist: `init` made it from `from`. */
+export function developLine(from: string, lang: Lang): string {
+  return translator(lang)(
+    `Rama develop creada desde ${from}: ahí empiezan y terminan los cambios.`,
+    `Branch develop created from ${from}: changes start from it and go to it.`,
+  );
+}
+
+const FLOW_TITLES: Readonly<Record<GitFlow, string>> = {
+  specty: "Specty",
+  github: "GitHub Flow",
+  gitflow: "Git Flow",
+  trunk: "Trunk",
+};
+
+/** `init`'s question to a person, after the agents: which git flow names the changes' branches. */
+export function flowQuestion(detected: GitFlow | undefined, lang: Lang): string {
+  const t = translator(lang);
+  return detected === undefined
+    ? t(
+        "¿Qué flujo de git sigue este repositorio? Specty nombrará así las ramas de los cambios.",
+        "Which git flow does this repository follow? Specty will name the changes' branches by it.",
+      )
+    : t(
+        "¿Qué flujo de git sigue este repositorio? El detectado va primero; Specty nombrará así las ramas de los cambios.",
+        "Which git flow does this repository follow? The detected one comes first; Specty will name the changes' branches by it.",
+      );
+}
+
+/**
+ * The answers to `flowQuestion`, each with its branches: the `detected` one first and saying so;
+ * then Specty's own, which keeps the names of always, GitHub Flow, Git Flow and trunk.
+ */
+export function flowChoices(
+  detected: GitFlow | undefined,
+  lang: Lang,
+): readonly { readonly value: GitFlow; readonly label: string }[] {
+  const t = translator(lang);
+  const order = Object.keys(FLOW_TITLES).filter((flow): flow is GitFlow => flow !== detected);
+  return (detected === undefined ? order : [detected, ...order]).map((flow) => {
+    const [es, en] = FLOW_BRANCHES[flow];
+    const label = `${FLOW_TITLES[flow]}: ${t(es, en)}`;
+    return {
+      value: flow,
+      label: flow === detected ? `${label} (${t("detectado", "detected")})` : label,
+    };
+  });
+}
+
+/** A new project ended `init` with no git flow: its changes' branches keep Specty's names. */
+export function noFlowWarning(command: string, lang: Lang): string {
+  const flows = GIT_FLOWS.join("|");
+  return translator(lang)(
+    `Proyecto nuevo sin flujo de git: las ramas de los cambios serán specty/<id> hasta que lo elijas con \`${command} init --git-flow <${flows}>\`.`,
+    `New project without a git flow: the changes' branches will be specty/<id> until you choose one with \`${command} init --git-flow <${flows}>\`.`,
+  );
 }
 
 /** What `init` did with `.specty/config.yaml`: created it, added the keys it lacked, or left it. */
@@ -44,6 +138,47 @@ export function configLine(created: boolean, added: readonly string[], lang: Lan
         ".specty/config.yaml ya existía; no se tocó.",
         ".specty/config.yaml already existed; left untouched.",
       );
+}
+
+/** Every agent tool, in the order of `AGENT_NAMES`: Claude Code first. */
+const AGENT_TOOLS = Object.keys(AGENT_NAMES).filter(isAgentTool);
+
+/**
+ * `init`'s question to a person, after the language: which agents they work with, several
+ * allowed. Whether it `detected` any says if some come already checked.
+ */
+export function agentQuestion(detected: boolean, lang: Lang): string {
+  const t = translator(lang);
+  return detected
+    ? t(
+        "¿Con qué agentes trabajas en este repositorio? Los detectados ya están marcados; puedes marcar varios.",
+        "Which agents do you work with in this repository? The detected ones are already checked; you can check several.",
+      )
+    : t(
+        "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",
+        "No agent detected. Which ones do you work with in this repository? You can check several.",
+      );
+}
+
+/** The answers to `agentQuestion`: every agent tool, Claude Code first; the `detected` say so. */
+export function agentChoices(
+  detected: readonly AgentTool[],
+  lang: Lang,
+): readonly { readonly value: AgentTool; readonly label: string }[] {
+  const mark = translator(lang)("detectado", "detected");
+  return AGENT_TOOLS.map((tool) => ({
+    value: tool,
+    label: detected.includes(tool) ? `${AGENT_NAMES[tool]} (${mark})` : AGENT_NAMES[tool],
+  }));
+}
+
+/** No agent was detected and nobody could be asked: Claude Code's guard went in. */
+export function noAgentWarning(command: string, lang: Lang): string {
+  const tools = AGENT_TOOLS.join(", ");
+  return translator(lang)(
+    `No se detectó ningún agente: se instaló el guard de Claude Code. Si usas otro, ejecuta \`${command} init --tools <herramienta>\` con alguna de estas: ${tools}.`,
+    `No agent detected: Claude Code's guard was installed. If you use another, run \`${command} init --tools <tool>\` with any of: ${tools}.`,
+  );
 }
 
 /** `init`'s first question to a person: in both languages, as neither is known yet. */
@@ -75,6 +210,14 @@ export function agentsMdLine(created: boolean, lang: Lang): string {
   return created
     ? t("AGENTS.md creado con los bloques de Specty.", "AGENTS.md created with Specty's blocks.")
     : t("AGENTS.md: bloques de Specty actualizados.", "AGENTS.md: Specty's blocks updated.");
+}
+
+/** The glossary of the domain, created with the hints of its format (formats.md §6). */
+export function glossaryLine(path: string, lang: Lang): string {
+  return translator(lang)(
+    `Glosario del dominio creado con pistas: ${path}.`,
+    `Domain glossary created with hints: ${path}.`,
+  );
 }
 
 /** A new project's PRODUCT.md: from the person's answers, or with the questions to answer. */
@@ -112,8 +255,12 @@ export interface InitView {
   /** The stacks and the commands it detected. */
   readonly detected: readonly string[];
   readonly warnings: readonly string[];
+  /** The sections of AGENTS.md people complete by hand that are still empty, as written. */
+  readonly unfilled: readonly string[];
   /** In a new project, how PRODUCT.md was written. */
   readonly product?: "interviewed" | "skeleton";
+  /** A new project ended with no git flow: its next step chooses one. */
+  readonly chooseFlow?: boolean;
 }
 
 /** `specty init` done. Next comes AGENTS.md, or in a new project, its first change. */
@@ -129,26 +276,61 @@ export function initCard(view: InitView, ctx: CardContext): Output {
     ],
     next:
       view.product === undefined
-        ? t(
-            `completa las secciones «Mapa» y «Convenciones» de AGENTS.md con lo que no se deduce del código, revisa .specty/config.yaml y ejecuta \`${ctx.command} doctor\`.`,
-            `complete the "Map" and "Conventions" sections of AGENTS.md with what cannot be inferred from the code, review .specty/config.yaml and run \`${ctx.command} doctor\`.`,
-          )
-        : newProjectNext(view.product === "interviewed", ctx),
+        ? existingProjectNext(view.unfilled, ctx)
+        : newProjectNext(view.product === "interviewed", ctx, view.chooseFlow === true),
   };
 }
 
-/** What comes after `init` in a new project, for whoever ran it. */
-export function newProjectNext(interviewed: boolean, ctx: CardContext): string {
+/** What comes after `init` in a project that exists: the empty sections of AGENTS.md, if any. */
+function existingProjectNext(unfilled: readonly string[], ctx: CardContext): string {
   const t = translator(ctx.lang);
-  return interviewed
+  const review = t(
+    `revisa .specty/config.yaml y ejecuta \`${ctx.command} doctor\`.`,
+    `review .specty/config.yaml and run \`${ctx.command} doctor\`.`,
+  );
+  if (unfilled.length === 0) return review;
+  const listed = (open: string, close: string, and: string) =>
+    unfilled.map((title) => `${open}${title}${close}`).join(` ${and} `);
+  const sections =
+    unfilled.length === 1
+      ? t(`la sección ${listed("«", "»", "y")}`, `the ${listed('"', '"', "and")} section`)
+      : t(`las secciones ${listed("«", "»", "y")}`, `the ${listed('"', '"', "and")} sections`);
+  return t(
+    `completa ${sections} de AGENTS.md con lo que no se deduce del código, ${review}`,
+    `complete ${sections} of AGENTS.md with what cannot be inferred from the code, ${review}`,
+  );
+}
+
+/**
+ * What comes after `init` in a new project, for whoever ran it; first, when it has no git flow
+ * (`chooseFlow`), choosing one.
+ */
+export function newProjectNext(interviewed: boolean, ctx: CardContext, chooseFlow = false): string {
+  const t = translator(ctx.lang);
+  if (interviewed) {
+    const first = t(
+      "pídele a tu agente el primer cambio: el esqueleto del proyecto, a partir de PRODUCT.md.",
+      "ask your agent for the first change: the project's skeleton, from PRODUCT.md.",
+    );
+    const flows = GIT_FLOWS.join("|");
+    return chooseFlow
+      ? t(
+          `elige el flujo de git con \`${ctx.command} init --git-flow <${flows}>\` y ${first}`,
+          `choose the git flow with \`${ctx.command} init --git-flow <${flows}>\` and ${first}`,
+        )
+      : first;
+  }
+  const flows = (or: string) => `${GIT_FLOWS.slice(0, -1).join(", ")} ${or} ${GIT_FLOWS.at(-1)}`;
+  const ask = chooseFlow
     ? t(
-        "pídele a tu agente el primer cambio: el esqueleto del proyecto, a partir de PRODUCT.md.",
-        "ask your agent for the first change: the project's skeleton, from PRODUCT.md.",
+        `pregúntale al usuario qué flujo de git seguirá (${flows("o")}) y ejecuta \`${ctx.command} init --git-flow <flujo>\`; luego hazle`,
+        `ask the user which git flow it will follow (${flows("or")}) and run \`${ctx.command} init --git-flow <flow>\`; then ask them`,
       )
-    : t(
-        `es un proyecto nuevo: hazle al usuario las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con \`${ctx.command} new "Esqueleto del proyecto" --request "<petición literal del usuario>"\`.`,
-        `this is a new project: ask the user the questions in PRODUCT.md, fill it in with their answers and create the first change, the project's skeleton, with \`${ctx.command} new "Project skeleton" --request "<the user's literal request>"\`.`,
-      );
+    : t("hazle al usuario", "ask the user");
+  return t(
+    `es un proyecto nuevo: ${ask} las preguntas de PRODUCT.md, complétalo con sus respuestas y crea el primer cambio, el esqueleto del proyecto, con \`${ctx.command} new "Esqueleto del proyecto" --request "<petición literal del usuario>"\`.`,
+    `this is a new project: ${ask} the questions in PRODUCT.md, fill it in with their answers and create the first change, the project's skeleton, with \`${ctx.command} new "Project skeleton" --request "<the user's literal request>"\`.`,
+  );
 }
 
 /** What `init --dry-run` would create or change, with paths as the person reads them. */

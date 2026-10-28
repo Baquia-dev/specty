@@ -10,6 +10,7 @@ import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { readBindings } from "../store/local";
 import { isFinished } from "./active";
+import { markedBranches } from "./branches";
 import { locateChanges } from "./changes";
 import { integrationOf, isIncorporated, reasonOf } from "./integrate";
 import { within } from "./land";
@@ -74,14 +75,16 @@ async function keptBecause(
 }
 
 /**
- * Deletes the change branches (`specty/*`, `spike/*`) that are already in the target branch and
- * checked out in no worktree: their commits are in the target, so nothing is lost. The others
- * stay, such as a cancelled change's, which keeps its record.
+ * Deletes the change branches (`specty/*`, `spike/*` and those `new` marked, whatever `git.flow`
+ * named them) that are already in the target branch and checked out in no worktree: their
+ * commits are in the target, so nothing is lost. The others stay, such as a cancelled change's,
+ * which keeps its record. A branch Specty did not create never goes, even one named by the flow.
  */
 export async function deleteMerged(session: Session): Promise<Cleanup> {
   const { git } = session;
   const target = await targetBranch(git, session.config.git.target);
   if (target === undefined) return { removed: [], kept: [] };
+  const patterns = ["specty/*", "spike/*", ...(await markedBranches(git))];
   const branches = async (filter: "--merged" | "--no-merged") =>
     (
       await git.output([
@@ -90,8 +93,7 @@ export async function deleteMerged(session: Session): Promise<Cleanup> {
         target,
         "--format=%(refname:short)",
         "--list",
-        "specty/*",
-        "spike/*",
+        ...patterns,
       ])
     )
       .split("\n")

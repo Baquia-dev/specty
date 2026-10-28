@@ -158,6 +158,50 @@ describe("historyOf", () => {
     ]);
   });
 
+  it("AC3: tells the tests sent, approved and locked, and each unlock, with contract", () => {
+    const audit = [
+      event("agent", "tests.proposed", {
+        count: 2,
+        files: ["test/a_test.dart", "test/b_test.dart"],
+        red: [{ cmd: "flutter test", exit: 1 }],
+      }),
+      event("human", "tests.approved", { channel: "ui" }),
+      event("agent", "tests.proposed", { count: 1, files: ["test/bug_test.dart"] }),
+      event("specty", "tests.locked", { count: 1 }),
+      event("human", "scope.decided", {
+        id: "S2",
+        decision: "approved",
+        unlock: ["test/a_test.dart"],
+        task: "T2",
+      }),
+      event("human", "spec.approved", {
+        revision: 3,
+        channel: "tty",
+        unlocked: ["test/a_test.dart", "test/b_test.dart"],
+      }),
+      event("specty", "tests.locked", {}),
+    ];
+    expect(said(audit)).toEqual([
+      "Envió 2 tests para aprobar · test/a_test.dart, test/b_test.dart · En rojo: flutter test",
+      "Aprobó los tests · Desde la UI",
+      "Envió 1 test para aprobar · test/bug_test.dart",
+      "Bloqueó 1 test en rojo",
+      "Aprobó la solicitud S2 · Desbloquea para T2: test/a_test.dart",
+      "Aprobó la revisión 3 · En la terminal · Desbloquea los tests de los criterios modificados: test/a_test.dart, test/b_test.dart",
+      "Bloqueó los tests en rojo",
+    ]);
+    expect(historyOf(audit).map((entry) => entry.type)).toEqual([
+      "verifications",
+      "spec",
+      "verifications",
+      "verifications",
+      "scope",
+      "spec",
+      "verifications",
+    ]);
+    expect(historyOf(audit)[0]?.title.en).toBe("Sent 2 tests for approval");
+  });
+
   it("keeps an unknown event or incomplete data, with what it can read (AC2)", () => {
     const entries = historyOf([
       event("specty", "guard.blocked", { path: "src/a.ts" }),

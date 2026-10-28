@@ -1,9 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
+  configLine,
+  configTemplate,
   flowBlock,
+  flowLine,
+  type GitFlow,
+  glossaryTemplate,
   humanSections,
   type Lang,
+  languageLine,
   projectBlock,
   removeBlock,
   upsertBlock,
@@ -19,7 +25,7 @@ import { type InstallFiles, installFiles } from "./files";
  * lacks (`verify.default`, `verify.full`). It inserts lines into the text, so everything already
  * there, comments and formatting included, stays exactly as it was.
  */
-export function completeConfig(
+function completeConfig(
   text: string,
   detection: Detection,
 ): { readonly text: string; readonly added: readonly string[] } {
@@ -35,12 +41,15 @@ export function completeConfig(
   const added = missing.map(({ key, value }) => `verify.${key} (\`${value}\`)`);
   if (missing.length === 0) return { text, added };
   const entries = missing.map(({ key, value }) => `${key}: ${JSON.stringify(value)}`);
-  if (current === undefined) {
-    const separator = text === "" || text.endsWith("\n") ? "" : "\n";
-    const block = entries.map((entry) => `  ${entry}`).join("\n");
-    return { text: `${text}${separator}verify:\n${block}\n`, added };
-  }
+  if (current === undefined) return { text: withBlock(text, "verify", entries), added };
   return { text: intoMap(text, current, entries), added };
+}
+
+/** A new map `key` with `entries` at the end of the text. */
+function withBlock(text: string, key: string, entries: readonly string[]): string {
+  const separator = text === "" || text.endsWith("\n") ? "" : "\n";
+  const block = entries.map((entry) => `  ${entry}`).join("\n");
+  return `${text}${separator}${key}:\n${block}\n`;
 }
 
 /** The entries after the map's last value, with the indentation of its first key. */
@@ -58,7 +67,7 @@ function intoMap(text: string, map: YAMLMap, entries: readonly string[]): string
  * Sets `language` in an existing `.specty/config.yaml`: it replaces only the value, or adds the
  * key after `version`, so comments and formatting stay. Unchanged when it already says `lang`.
  */
-export function withLanguage(text: string, lang: Lang): string {
+function withLanguage(text: string, lang: Lang): string {
   const node = parseDocument(text).get("language", true);
   if (isScalar(node)) {
     if (node.value === lang || node.range === undefined || node.range === null) return text;
@@ -68,6 +77,71 @@ export function withLanguage(text: string, lang: Lang): string {
   const version = /^version:.*\n/m.exec(text);
   const at = version === null ? 0 : version.index + version[0].length;
   return `${text.slice(0, at)}language: ${lang}\n${text.slice(at)}`;
+}
+
+/**
+ * Sets `git.flow` in `.specty/config.yaml` and, with Git Flow, `git.target: develop` when there is
+ * no target yet: it replaces only the value or inserts the keys, so comments and formatting stay.
+ * A `git` that is not a map is the person's to fix, and validation says so.
+ */
+function withGitFlow(text: string, flow: GitFlow): string {
+  const node = parseDocument(text).getIn(["git", "flow"], true);
+  const replaced =
+    isScalar(node) && node.range
+      ? `${text.slice(0, node.range[0])}${flow}${text.slice(node.range[1])}`
+      : text;
+  const document = parseDocument(replaced);
+  const git = document.get("git", true);
+  if (git !== undefined && !isMap(git)) return text;
+  const entries = [
+    ...(document.hasIn(["git", "flow"]) ? [] : [`flow: ${flow}`]),
+    ...(flow === "gitflow" && !document.hasIn(["git", "target"]) ? ["target: develop"] : []),
+  ];
+  if (entries.length === 0) return replaced;
+  return git === undefined ? withBlock(replaced, "git", entries) : intoMap(replaced, git, entries);
+}
+
+/**
+ * Writes `.specty/config.yaml`: a new one, or the existing one with the verification it lacks,
+ * the language `--language` asks for and the flow `--git-flow` asks for. Returns the lines that
+ * say what it did.
+ */
+export async function writeConfig(
+  files: InstallFiles,
+  path: string,
+  detection: Detection,
+  options: {
+    readonly created: boolean;
+    readonly lang: Lang;
+    readonly relanguage?: Lang;
+    readonly flow?: GitFlow;
+  },
+): Promise<readonly string[]> {
+  const { lang, flow } = options;
+  const flowed = (text: string) => (flow === undefined ? text : withGitFlow(text, flow));
+  const flowLines = flow === undefined ? [] : [flowLine(flow, lang)];
+  if (options.created) {
+    const verify = verifyCommands(detection.commands);
+    const template = configTemplate({ lang, verify, generated: detection.generated });
+    await files.write(path, flowed(template));
+    return [configLine(true, [], lang), ...flowLines];
+  }
+  // An existing configuration only gains the verification it lacks and the detection now finds.
+  const current = (await files.read(path)) ?? "";
+  const completed = completeConfig(current, detection);
+  const relanguaged =
+    options.relanguage === undefined
+      ? completed.text
+      : withLanguage(completed.text, options.relanguage);
+  const text = flowed(relanguaged);
+  if (text !== current) await files.write(path, text);
+  const changed = [
+    ...(relanguaged !== completed.text ? [languageLine(lang)] : []),
+    ...(text !== relanguaged ? flowLines : []),
+  ];
+  if (changed.length === 0) return [configLine(false, completed.added, lang)];
+  const added = completed.added.length > 0 ? [configLine(false, completed.added, lang)] : [];
+  return [...changed, ...added];
 }
 
 /** Writes or refreshes the managed blocks of AGENTS.md; the rest of the file is the user's. */
@@ -83,6 +157,22 @@ export async function writeAgentsMd(
   const withProject = upsertBlock(base, "project", projectBlock(projectFacts(detection), lang));
   await files.write(path, upsertBlock(withProject, "flow", flowBlock(lang, COMMAND)));
   return current === undefined ? "created" : "updated";
+}
+
+/**
+ * Writes the glossary of the domain with the hints of its format where it is missing (formats.md
+ * §6); one that exists is the person's and stays, even with only its hints.
+ */
+export async function writeGlossary(
+  root: string,
+  path: string,
+  lang: Lang,
+  files: InstallFiles = installFiles(),
+): Promise<boolean> {
+  const at = join(root, path);
+  if ((await files.read(at)) !== undefined) return false;
+  await files.write(at, glossaryTemplate(lang));
+  return true;
 }
 
 /** Takes Specty's blocks out of AGENTS.md; the rest of the file is the person's and stays. */

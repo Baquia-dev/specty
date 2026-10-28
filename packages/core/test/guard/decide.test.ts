@@ -108,6 +108,42 @@ describe("decideGuard on files", () => {
     if (!denied.allow) expect(denied.next).toContain("specty scope add src/b.ts --task T1");
   });
 
+  it("AC4: opens only the change's tests in the testing phase, and sends the rest to propose", () => {
+    const testing: GuardChange = {
+      ...change("testing"),
+      files: ["src/a.ts", "test/a.test.ts"],
+    };
+    expect(
+      allowed(write("test/a.test.ts", "src/a.test.ts", "src/__tests__/a.ts"), ctx(testing)),
+    ).toBe(true);
+    for (const path of ["src/a.ts", "src/b.ts", "lib/other.test.ts"]) {
+      const denied = decideGuard(write(path), ctx(testing));
+      expect(denied, path).toMatchObject({ allow: false, rule: "phase" });
+      if (!denied.allow) {
+        expect(denied.reason).toContain("fase de tests");
+        expect(denied.next).toContain("`specty propose`");
+      }
+    }
+    expect(allowed(write("README.md"), ctx(testing))).toBe(true);
+  });
+
+  it("AC2: refuses to write or delete an approved test, even within the task's scope", () => {
+    const locked: GuardChange = { ...IMPLEMENTING, locked: ["src/a.test.ts"] };
+    for (const action of [write("src/a.test.ts"), shell({ deletes: ["src/a.test.ts"] })]) {
+      const denied = decideGuard(action, ctx(locked));
+      expect(denied).toMatchObject({ allow: false, rule: "locked" });
+      if (!denied.allow) {
+        expect(denied.reason).toContain("`src/a.test.ts` es un test aprobado");
+        expect(denied.next).toContain("explícaselo al usuario");
+        // AC6: the way out is an unlock request, which only the person decides.
+        expect(denied.next).toContain("`specty scope add src/a.test.ts --task T1 --reason");
+        expect(denied.next).toContain("solo decide la persona");
+      }
+    }
+    // The code, and the new tests the implementation adds in their own files, stay open.
+    expect(allowed(write("src/a.ts", "src/b.test.ts"), ctx(locked))).toBe(true);
+  });
+
   it("judges each path of an edit that writes and deletes at once, such as a patch", () => {
     const files = (writes: string[], deletes: string[] = []): GuardAction => ({
       kind: "files",

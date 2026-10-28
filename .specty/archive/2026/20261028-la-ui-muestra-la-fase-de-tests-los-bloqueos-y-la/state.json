@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "id": "20261028-la-ui-muestra-la-fase-de-tests-los-bloqueos-y-la",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-la-ui-muestra-la-fase-de-tests-los-bloqueos-y-la",
+  "baseCommit": "0aa02403ba543ca822ff4cda6d563ae2c42cfff8",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:57bf038bd9e1d74a8896242b6f458ce5a6bf3ddc297266e61aff3ae1d83df050",
+    "at": "2026-10-28T11:55:10.358Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:46a0885bf91b21ee103659bf25b12729679e9e486363ae2e8f6db37960a55493",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8c7f9ce47f7f61b3f18211cba897511625ce3a41d41d0a9839aaa07efd39378a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e60b4286936db8cf9417be78ef455b027c2bd5d1582899e9590d38792af53c4c",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:908e1614c22af3110be652da9010325cf945fe9d5c4b3dbed8f2c570af2a581f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "284c146d228c11359744119caf79fa4ea698218b",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:55:10.755Z",
+      "doneAt": "2026-10-28T11:59:45.041Z",
+      "summary": "El servidor guarda la sesión de cada cambio abierto y, con los commits de sus tareas, da criteriaTests a los que están en aceptación (no a las épicas), con la función de la tarjeta de aceptación",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "4be405d8e7ec501d51578e48f4966a03e7b52076",
+      "attempts": 1,
+      "startedAt": "2026-10-28T11:59:45.343Z",
+      "doneAt": "2026-10-28T12:04:32.068Z",
+      "summary": "La vista pasa criteriaTests del servidor; cada criterio sabe si es manual (de la spec) y su evidencia trae como mucho 3 tests, cuántos más hay y si debía un test que no tiene",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "bb813a1a103751f54f78867b5016ddfa5a22185c",
+      "attempts": 1,
+      "startedAt": "2026-10-28T12:04:32.376Z",
+      "doneAt": "2026-10-28T12:08:52.548Z",
+      "summary": "Cada criterio de Aceptación lista, bajo sus tareas, los tests con su id (ruta:línea · tarea · commit, como mucho 3 y cuántos más), o dice «A comprobar a mano» o avisa «Sin test con su id»; la pestaña pasa criteriaTests a la evidencia",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "87d6a5761376b9af598db6ccf6332ee3d9f930f6",
+      "attempts": 1,
+      "startedAt": "2026-10-28T12:08:52.863Z",
+      "doneAt": "2026-10-28T12:21:18.511Z",
+      "summary": "El prototipo trae un cambio en testing con dos tests en rojo, que se aprueban y bloquean, y el cambio en aceptación trae los tests de sus criterios; los tests que cuentan el ejemplo pasan a 10 cambios y 6 decisiones (A4)",
+      "scopeExtra": [
+        "packages/ui/src/inbox/inbox-toolbar.test.ts",
+        "packages/ui/src/inbox/inbox-view.test.ts",
+        "packages/ui/src/inbox/inbox.test.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "b39c549b09fb65c584f9b237fb1f963ed4a9aee7",
+      "attempts": 1,
+      "startedAt": "2026-10-28T12:21:18.850Z",
+      "doneAt": "2026-10-28T12:26:32.153Z",
+      "summary": "docs/ui.md describe los tests de cada criterio en Aceptación y el cambio en testing del prototipo; ARCHITECTURE §15, criteriaTests del servidor y desde cuándo está en implementing con contract",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 5
+  },
+  "closingSubmittedAt": "2026-10-28T12:29:43.261Z"
+}

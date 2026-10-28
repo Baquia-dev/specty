@@ -1,33 +1,36 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename } from "node:path";
+import { basename, join } from "node:path";
 import {
   type AgentTool,
   agentsMdLine,
   backupLine,
   type CardContext,
-  configLine,
-  configTemplate,
   DEFAULT_CONFIG,
+  defaultGlossary,
   dryRunCard,
+  GIT_FLOWS,
+  type GitFlow,
+  glossaryLine,
   type InitRefusal,
   initCard,
   initRefusalCard,
   isAgentTool,
   type Lang,
   languageChoices,
-  languageLine,
   languageQuestion,
   noTestCommandWarning,
   type Output,
   productLine,
   type ResolvedConfig,
+  unfilledSections,
 } from "@baquia-dev/specty-core";
 import { type Detection, detectProject, projectFacts, verifyCommands } from "../detect/project";
 import { commitInstall } from "../install/commit";
 import { type InstallFiles, installFiles } from "../install/files";
-import { installHooks } from "../install/hooks";
+import { ensureDevelop, flowToWrite, noFlowWarnings } from "../install/git-flow";
+import { agentsToInstall, installHooks } from "../install/hooks";
 import { isNewProject, writeProduct } from "../install/product";
-import { completeConfig, withLanguage, writeAgentsMd } from "../install/project-files";
+import { writeAgentsMd, writeConfig, writeGlossary } from "../install/project-files";
 import { exists } from "../io/files";
 import { createGit, findRoot, type Git, pathsOf } from "../io/git";
 import { bareCards, type Environment, systemLanguage } from "../session";
@@ -38,6 +41,8 @@ interface InitOptions {
   readonly language?: Lang;
   /** Agent tools to configure; by default, the ones detected in the repository. */
   readonly tools?: readonly AgentTool[];
+  /** How the changes' branches are named (`git.flow`); by default, left as it is. */
+  readonly gitFlow?: GitFlow;
   /** Only say what it would create or change: nothing is written or committed. */
   readonly dryRun?: boolean;
 }
@@ -45,7 +50,12 @@ interface InitOptions {
 /** `specty init` as typed: reads its options, and says which language its output uses. */
 export async function initCommand(
   environment: Environment,
-  options: { readonly language?: string; readonly tools?: string; readonly dryRun?: boolean },
+  options: {
+    readonly language?: string;
+    readonly tools?: string;
+    readonly gitFlow?: string;
+    readonly dryRun?: boolean;
+  },
 ): Promise<{ readonly output: Output; readonly lang: Lang }> {
   const language =
     options.language === "es" || options.language === "en" ? options.language : undefined;
@@ -53,9 +63,18 @@ export async function initCommand(
     ?.split(",")
     .map((tool) => tool.trim())
     .filter(isAgentTool);
+  const gitFlow = GIT_FLOWS.find((flow) => flow === options.gitFlow);
+  if (options.gitFlow !== undefined && gitFlow === undefined) {
+    const lang = language ?? systemLanguage(environment.env);
+    return {
+      output: initRefusalCard({ reason: "unknown-flow", flow: options.gitFlow }, lang),
+      lang,
+    };
+  }
   return init(environment, {
     ...(language !== undefined ? { language } : {}),
     ...(tools !== undefined ? { tools } : {}),
+    ...(gitFlow !== undefined ? { gitFlow } : {}),
     ...(options.dryRun === true ? { dryRun: true } : {}),
   });
 }
@@ -133,15 +152,40 @@ interface Installed {
   /** Repository-relative files init writes that git tracks: they go into its commit. */
   readonly written: readonly string[];
   readonly warnings: readonly string[];
+  /** The sections of AGENTS.md people complete by hand that are still empty. */
+  readonly unfilled: readonly string[];
+  /** The git flow init wrote, if any. */
+  readonly flow: GitFlow | undefined;
+  /** A new project ended without a flow: its next step chooses one. */
+  readonly chooseFlow: boolean;
 }
 
 /** The configuration, AGENTS.md, PRODUCT.md for a new project, and each agent's hooks. */
 async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
   const { environment, options, root, git, lang, detection } = setup;
   const { files, backups } = await installTarget(setup);
-  const project = await writeProjectFiles(setup, fresh, files);
-  const tools =
-    options.tools ?? (detection.tools.length > 0 ? detection.tools : ["claude-code" as const]);
+  const dryRun = options.dryRun === true;
+  // Asked right after the language, before a new project's interview.
+  const agents = await agentsToInstall({
+    environment,
+    given: options.tools,
+    detected: detection.tools,
+    lang,
+    dryRun,
+  });
+  // Then the flow, which goes in config.yaml before PRODUCT.md is written.
+  const flow = await flowToWrite({
+    environment,
+    git,
+    given: options.gitFlow,
+    configured: setup.config?.git.flow,
+    created: setup.created,
+    dryRun,
+    lang,
+  });
+  const project = await writeProjectFiles(setup, fresh, files, flow.flow);
+  const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
+  const { tools } = agents;
   const hooks = await installHooks({ environment, root, git, tools, lang, files });
   const noTests =
     setup.config?.verify.default === undefined &&
@@ -152,7 +196,15 @@ async function install(setup: InitSetup, fresh: boolean): Promise<Installed> {
     product: project.product,
     done: [...project.done, ...hooks.done],
     written: [...project.written, ...hooks.written],
-    warnings: [...hooks.warnings, ...(noTests ? [noTestCommandWarning(lang)] : [])],
+    unfilled: project.unfilled,
+    flow: flow.flow,
+    chooseFlow: noFlow.length > 0,
+    warnings: [
+      ...agents.warnings,
+      ...noFlow,
+      ...hooks.warnings,
+      ...(noTests ? [noTestCommandWarning(lang)] : []),
+    ],
   };
 }
 
@@ -174,19 +226,23 @@ async function installTarget(
   return { files, backups };
 }
 
-/** `.specty/config.yaml`, AGENTS.md and, in a new project, PRODUCT.md. */
+/** `.specty/config.yaml`, AGENTS.md, the glossary where it is missing and, in a new project, PRODUCT.md. */
 async function writeProjectFiles(
   setup: InitSetup,
   fresh: boolean,
   files: InstallFiles,
-): Promise<Pick<Installed, "product" | "done" | "written">> {
+  flow: GitFlow | undefined,
+): Promise<Pick<Installed, "product" | "done" | "written" | "unfilled">> {
   const { environment, options, root, lang, detection } = setup;
   const configLines = await writeConfig(files, repoPaths(root).config, detection, {
     created: setup.created,
     lang,
     ...(options.language !== undefined ? { relanguage: options.language } : {}),
+    ...(flow !== undefined ? { flow } : {}),
   });
   const agents = await writeAgentsMd(root, lang, detection, files);
+  const glossary = setup.config?.glossary ?? defaultGlossary(lang);
+  const glossaryCreated = await writeGlossary(root, glossary, lang, files);
   // A new project starts with what it is for: the interview with a person, or its questions.
   const product = fresh
     ? await writeProduct({
@@ -203,9 +259,16 @@ async function writeProjectFiles(
     done: [
       ...configLines,
       agentsMdLine(agents === "created", lang),
+      ...(glossaryCreated ? [glossaryLine(glossary, lang)] : []),
       ...(product === undefined ? [] : [productLine(product === "interviewed", lang)]),
     ],
-    written: [".specty/config.yaml", "AGENTS.md", ...(product === undefined ? [] : ["PRODUCT.md"])],
+    written: [
+      ".specty/config.yaml",
+      "AGENTS.md",
+      ...(glossaryCreated ? [glossary] : []),
+      ...(product === undefined ? [] : ["PRODUCT.md"]),
+    ],
+    unfilled: unfilledSections((await files.read(join(root, "AGENTS.md"))) ?? ""),
   };
 }
 
@@ -219,9 +282,13 @@ async function committed(
   const { environment, lang, detection } = setup;
   const result = await commitInstall(environment, installed.written, before, setup.created);
   const backedUp = await exists(installed.backups);
+  // Git Flow's target, unless the configuration already sent changes elsewhere.
+  const toDevelop =
+    installed.flow === "gitflow" && (setup.config?.git.target ?? "develop") === "develop";
   const done = [
     ...installed.done,
     ...result.done,
+    ...(toDevelop ? await ensureDevelop(setup.git, lang) : []),
     ...(backedUp ? [backupLine(installed.backups, lang)] : []),
   ];
   const warnings = [...installed.warnings, ...result.warnings];
@@ -230,8 +297,15 @@ async function committed(
     ...facts.stacks,
     ...facts.commands.map((entry) => `${entry.label}: ${entry.command}`),
   ];
-  const { product } = installed;
-  const view = { done, detected, warnings, ...(product === undefined ? {} : { product }) };
+  const { product, unfilled } = installed;
+  const view = {
+    done,
+    detected,
+    warnings,
+    unfilled,
+    ...(product === undefined ? {} : { product }),
+    ...(installed.chooseFlow ? { chooseFlow: true } : {}),
+  };
   return initCard(view, cards);
 }
 
@@ -250,33 +324,4 @@ async function languageOf(
   if (!environment.terminal.interactive || options.dryRun === true) return detected;
   const chosen = await environment.terminal.choose(languageQuestion(), languageChoices(detected));
   return chosen ?? detected;
-}
-
-/**
- * Writes `.specty/config.yaml`: a new one, or the existing one with the verification it lacks and
- * the language `--language` asks for. Returns the lines that say what it did.
- */
-async function writeConfig(
-  files: InstallFiles,
-  path: string,
-  detection: Detection,
-  options: { readonly created: boolean; readonly lang: Lang; readonly relanguage?: Lang },
-): Promise<readonly string[]> {
-  const { lang } = options;
-  if (options.created) {
-    const verify = verifyCommands(detection.commands);
-    await files.write(path, configTemplate({ lang, verify, generated: detection.generated }));
-    return [configLine(true, [], lang)];
-  }
-  // An existing configuration only gains the verification it lacks and the detection now finds.
-  const current = (await files.read(path)) ?? "";
-  const completed = completeConfig(current, detection);
-  const text =
-    options.relanguage === undefined
-      ? completed.text
-      : withLanguage(completed.text, options.relanguage);
-  if (text !== current) await files.write(path, text);
-  if (text === completed.text) return [configLine(false, completed.added, lang)];
-  const added = completed.added.length > 0 ? [configLine(false, completed.added, lang)] : [];
-  return [languageLine(lang), ...added];
 }
