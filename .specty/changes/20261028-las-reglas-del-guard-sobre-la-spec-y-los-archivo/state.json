@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-las-reglas-del-guard-sobre-la-spec-y-los-archivo",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-las-reglas-del-guard-sobre-la-spec-y-los-archivo",
   "baseCommit": "4eb864333549c91c173f5a9d718cd2f4fb71ed8f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:637206e07c51db055af523cf5345c00061b60b8896180be05763bcc87191918c",
+    "at": "2026-10-28T08:15:35.386Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "818078d2669ae9bd9c08b12bb72a9af30d55865f",
+      "startedAt": "2026-10-28T08:15:35.865Z",
+      "doneAt": "2026-10-28T08:19:14.422Z",
+      "summary": "guard/spec.ts tiene PROTECTED, protectedDenial y specDenial; decide.ts los usa con las mismas reglas y textos y baja de 300 líneas de código."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:637206e07c51db055af523cf5345c00061b60b8896180be05763bcc87191918c",
-    "at": "2026-10-28T08:15:35.386Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

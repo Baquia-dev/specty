@@ -15,7 +15,7 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: Las reglas de la spec y de los archivos protegidos, en guard/spec.ts
+- [x] T1: Las reglas de la spec y de los archivos protegidos, en guard/spec.ts
   - files: packages/core/src/guard/decide.ts, packages/core/src/guard/spec.ts
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard && pnpm --filter @baquia-dev/specty-core typecheck
   - type: refactor
