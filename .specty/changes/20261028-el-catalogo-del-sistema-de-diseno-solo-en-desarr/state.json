@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261028-el-catalogo-del-sistema-de-diseno-solo-en-desarr",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-el-catalogo-del-sistema-de-diseno-solo-en-desarr",
+  "baseCommit": "386c1c021deec1423506e8570bb7cde64ce991af",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a63c28e08431ec77683e20c840abdfa67510875d68a50d6a5f73f7e4bee465e9",
+    "at": "2026-10-28T17:48:38.786Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
