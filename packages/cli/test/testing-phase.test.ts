@@ -77,3 +77,17 @@ describe("the guard in the testing phase", () => {
     }
   });
 });
+
+describe("the end of the agent's turn in the testing phase", () => {
+  it("AC5: checks the diff against the approved plan, as while implementing", async () => {
+    const { root } = await approved(`${CONTRACT}checks:\n  levels: { secrets: off }\n`);
+    // Written past the guard, as a shell command could.
+    await writeFiles(root, { "lib/other.ts": "export const other = 1;\n" });
+    const run = await cli(root, ["hook", "agent-stop", "claude-code"], {
+      stdin: JSON.stringify({ stop_hook_active: false }),
+    });
+    const reply = JSON.parse(run.out);
+    expect(reply.decision).toBe("block");
+    expect(reply.reason).toContain("FALLA scope\n  lib/other.ts fuera del alcance de la spec");
+  });
+});

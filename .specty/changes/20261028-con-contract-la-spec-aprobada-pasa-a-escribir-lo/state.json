@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-con-contract-la-spec-aprobada-pasa-a-escribir-lo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-con-contract-la-spec-aprobada-pasa-a-escribir-lo",
   "baseCommit": "f34257247769a9e00ff21d651fffd295eb14c8d2",
   "revision": 1,
@@ -48,14 +48,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/guard/testing.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "ede00b10824d1a63bd0c0a30d231e1b61f883e5f",
+      "attempts": 1,
       "startedAt": "2026-10-28T05:57:27.362Z",
       "doneAt": "2026-10-28T06:03:14.302Z",
-      "summary": "En testing el código se abre a los tests (CodeAccess tests); guard/testing.ts deja escribir solo los tests de los archivos del cambio (declarados o implícitos) y rechaza lo demás con la regla phase y un SIGUIENTE a propose; enforce/guard.ts le pasa los archivos."
+      "summary": "En testing el código se abre a los tests (CodeAccess tests); guard/testing.ts deja escribir solo los tests de los archivos del cambio (declarados o implícitos) y rechaza lo demás con la regla phase y un SIGUIENTE a propose; enforce/guard.ts le pasa los archivos.",
+      "scopeExtra": [
+        "packages/core/src/guard/testing.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5322756f7d8ab6fccb27d28b0ad8fc24c0720df3",
+      "startedAt": "2026-10-28T06:03:14.622Z",
+      "doneAt": "2026-10-28T06:08:13.192Z",
+      "summary": "agent-stop cuenta testing entre las fases con plan aprobado; formats §2 y §6 nombran contract y cuándo se entra en testing; ARCHITECTURE §4 la dibuja en el diagrama, su fila deja escribir los tests del cambio y el párrafo explica entrada, guard y fin de turno."
     }
   },
   "pending": {

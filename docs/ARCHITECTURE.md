@@ -62,8 +62,9 @@ specty/
                       │  ▲
               aprobar*│  └─────────propose (solo el delta)───────┐
     ┌─────────────────┤                                          │
-    │ sin tareas      ▼                                          │
-    │ pendientes implementing ◄── scope add · decidir alcance*   │
+    │ sin tareas      ├──con contract──► testing                 │
+    │ pendientes      ▼                                          │
+    │            implementing ◄── scope add · decidir alcance*   │
     │                 │                                          │
     │     última tarea│                                          │
     │                 ▼                                          │
@@ -80,14 +81,14 @@ specty/
 | --- | --- | --- | --- |
 | `draft` | bloqueado | el agente redacta | agente |
 | `review` | bloqueado | el agente atiende comentarios; la persona edita en la UI | persona |
-| `testing` | bloqueado | bloqueado | agente |
+| `testing` | solo los tests de los archivos del cambio | bloqueado | agente |
 | `implementing` | solo el alcance de la tarea activa | bloqueado | agente |
 | `acceptance` | bloqueado | bloqueado | persona |
 | `adjusting` | bloqueado | solo añadir tareas y ajustar criterios; las tareas hechas son inmutables | agente |
 | `closing` | bloqueado | solo la sección Cierre | agente, luego persona |
 | `done`, `cancelled` | — | inmutable (archivado) | — |
 
-**Fase de tests.** `testing` va entre `review` e `implementing`: con `policy.tests: contract`, el agente escribe primero los tests de los criterios y la persona los aprueba antes del código ([ADR 0014](decisions/0014-los-tests-como-contrato.md)). Hoy la fase ya existe en `state.json`, en `specty next`, en el servidor y en la UI, y se puede cancelar, pero todavía no se entra en ella, así que no está en el diagrama; mientras tanto lo bloquea todo y espera al agente.
+**Fase de tests.** `testing` va entre `review` e `implementing`: con `policy.tests: contract`, el agente escribe primero los tests de los criterios y la persona los aprueba antes del código ([ADR 0014](decisions/0014-los-tests-como-contrato.md)). Se entra al aprobar la spec de un cambio `standard` con alguna tarea `feat` (el tipo por defecto) y tareas pendientes, con `policy.tests: contract` (`testsFirst` de `validate/quality.ts`); sin `contract`, aprobar lleva a `implementing` como siempre. En la fase, el guard solo deja escribir un test que esté en «Archivos» o en las tareas, o que sea un test implícito de uno de esos archivos; el resto del código gobernado se rechaza con un SIGUIENTE que lleva a `specty propose`, y el fin de turno del agente revisa el diff con el plan aprobado, como al implementar. Enviar los tests y aprobarlos llegan en los cambios siguientes del corte C2; hasta entonces, un cambio en `testing` solo puede cancelarse.
 
 **Incorporación pendiente.** Si incorporar la rama principal al cerrar (o al aceptar un quick) deja un merge para el agente (§9), la fase no cambia. Lo que cambia es el código gobernado: solo quedan abiertos los archivos que junta la fusión, con sus tests implícitos y los generados, y se espera al agente. La spec conserva el acceso de su fase. `specty next` muestra la incorporación antes que el trabajo de la fase.
 

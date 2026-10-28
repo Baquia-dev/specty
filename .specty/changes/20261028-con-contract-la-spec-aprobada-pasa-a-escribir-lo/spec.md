@@ -66,7 +66,7 @@ El cambio anterior dejó la fase `testing` en el modelo y en cada vista, pero si
   - files: packages/core/src/flow/phases.ts, packages/core/src/guard/decide.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/testing-phase.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard test/flow && pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts
-- [ ] T3: El fin de turno revisa el plan en testing; la documentación
+- [x] T3: El fin de turno revisa el plan en testing; la documentación
   - files: packages/cli/src/enforce/agent-stop.ts, packages/cli/test/testing-phase.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts test/check-agent-stop.test.ts
