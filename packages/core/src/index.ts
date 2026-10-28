@@ -22,6 +22,13 @@ export {
 } from "./agents-md";
 export { type Analysis, analyzeSpec } from "./analyze";
 export {
+  branchName,
+  branchPatternIssue,
+  branchUsesType,
+  GIT_FLOWS,
+  type GitFlow,
+} from "./branches";
+export {
   AGENT_CAPABILITIES,
   type AgentCapabilities,
   capabilityTable,

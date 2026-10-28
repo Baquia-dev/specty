@@ -21,6 +21,13 @@ describe("the cards of a refused `new`", () => {
     expect(kind.status).toBe("invalid");
     expect(renderText(kind, "es")).toContain("Tipo de cambio desconocido: big.");
     expect(kind.next).toBe("--kind quick|standard|spike|retro|epic");
+    const type = refused({ reason: "unknown-type", type: "bug" });
+    expect(type.status).toBe("invalid");
+    expect(renderText(type, "es")).toContain("Tipo de commit desconocido: bug.");
+    expect(renderText(refused({ reason: "unknown-type", type: "bug" }, EN), "en")).toContain(
+      "Unknown commit type: bug.",
+    );
+    expect(type.next).toBe("--type feat|fix|refactor|perf|test|docs|chore|build|ci|style");
     const bootstrap = refused({ reason: "bootstrap-quick", title: "Esqueleto" });
     expect(bootstrap.status).toBe("invalid");
     expect(bootstrap.next).toBe(

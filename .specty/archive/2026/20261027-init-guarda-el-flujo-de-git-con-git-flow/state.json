@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "id": "20261027-init-guarda-el-flujo-de-git-con-git-flow",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261027-init-guarda-el-flujo-de-git-con-git-flow",
+  "baseCommit": "2b92e418e8e3f055d927c143ccf7779e6bd1baa1",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:3a33323e1db0ea8e68ed0c7f14d7d6b9ee96d9e86d28b9bfb856fd23910afb25",
+    "at": "2026-10-27T23:58:29.335Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b3d6e55c3945dc5738fe12b884246e2cb69b69cbe39f5bdac2d05f3210587a59",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:0217dbcec76cdafb39ad85752f150faaead581498f80f4b0e3e85ca2a18d1be0",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cd4e830cfbb5d29b1d73b30421cf2a7b2e6657c9600aa918f891f24929375b48",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e7cb5ffec64dd07bae28131ccabd9ce82d5ee5f7",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:44:26.570Z",
+      "doneAt": "2026-10-27T23:46:01.895Z",
+      "summary": "cards/init.ts: negativa unknown-flow con los flujos válidos, flowLine (cómo se llamarán las ramas con cada flujo) y developLine; exportadas desde cards/index.ts (S1).",
+      "scopeExtra": [
+        "packages/core/src/cards/index.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "c42ef9aad7ad5ff47e083ab443d228470f09de4c",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:46:02.180Z",
+      "doneAt": "2026-10-27T23:51:09.481Z",
+      "summary": "init --git-flow escribe git.flow con withGitFlow (cambia el valor o lo inserta en git, sin tocar lo demás) y, con gitflow y sin destino, git.target: develop; rechaza un flujo desconocido. writeConfig se mudó a install/project-files.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "0dcbac0a214991d51e0011d13eecd60a27e5881b",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:51:09.777Z",
+      "doneAt": "2026-10-27T23:55:14.293Z",
+      "summary": "Con --git-flow gitflow y destino develop, init crea develop tras su commit (install/git-flow.ts): desde origin/develop, siguiéndola, si existe, y si no desde la rama actual; no la toca si ya existe, ni en --dry-run, ni con otro git.target.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "07de839bd22486b4dead5ad61d28968f35852d0b",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:55:14.593Z",
+      "doneAt": "2026-10-27T23:57:27.597Z",
+      "summary": "ARCHITECTURE §14 dice que init --git-flow escribe git.flow (o cambia solo esa clave), rechaza uno desconocido y, con gitflow, añade git.target: develop y crea develop si falta.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "28c5e9804be9523156e76932448162cd798253ca",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:58:29.688Z",
+      "doneAt": "2026-10-27T23:58:49.253Z",
+      "summary": "completeConfig, withLanguage y withGitFlow dejan de exportarse: tras mudar writeConfig solo los usa install/project-files.ts, y knip pasa.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 6,
+    "T": 5,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-28T00:04:30.026Z"
+}

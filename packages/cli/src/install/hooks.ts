@@ -31,9 +31,10 @@ interface HooksInstall {
 }
 
 /**
- * The agent tools `init` installs: the ones `given`; otherwise the ones their files show
- * (`detected`) and the one running `init`, by its environment. With none, a person at the
- * terminal is asked; when nobody can be, Claude Code's goes in, with a warning that says so.
+ * The agent tools `init` installs: the ones `given`; otherwise the ones a person at the terminal
+ * checks, offered with those found already checked: the ones their files show (`detected`) and
+ * the one running `init`, by its environment. If the person cancels, or nobody can be asked, the
+ * ones found; with none, Claude Code's, and a warning when nobody could say.
  */
 export async function agentsToInstall(options: {
   readonly environment: Environment;
@@ -47,12 +48,14 @@ export async function agentsToInstall(options: {
   const running = detectAgentTool(environment.env);
   const found =
     running === undefined || detected.includes(running) ? detected : [...detected, running];
-  if (found.length > 0) return { tools: found, warnings: [] };
   const { terminal } = environment;
   if (terminal.interactive && !options.dryRun) {
-    const chosen = await terminal.choose(agentQuestion(lang), agentChoices());
-    return { tools: [chosen ?? "claude-code"], warnings: [] };
+    const question = agentQuestion(found.length > 0, lang);
+    const chosen = await terminal.chooseMany(question, agentChoices(found, lang), found);
+    const tools = chosen ?? found;
+    return { tools: tools.length > 0 ? tools : ["claude-code"], warnings: [] };
   }
+  if (found.length > 0) return { tools: found, warnings: [] };
   return { tools: ["claude-code"], warnings: [noAgentWarning(COMMAND, lang)] };
 }
 

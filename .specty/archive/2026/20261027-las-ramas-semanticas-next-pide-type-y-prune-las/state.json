@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "id": "20261027-las-ramas-semanticas-next-pide-type-y-prune-las",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261027-las-ramas-semanticas-next-pide-type-y-prune-las",
+  "baseCommit": "53c04665141c1d80bbeb386026ef6bf13b1193f6",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1c0536942ec6a13a855c13250c3f33a915d4101a8a0e52ed9c0314cb70c2488e",
+    "at": "2026-10-27T23:18:45.232Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:47afc23bb94b6e12acafcfe1bfe3ac1e1b8eb71315ba4a7569a67cdbea415763",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:dec6b42b35cfc0790111b92116f89cc1033608207804a18893e6352401182493",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0788dc7d8da6dfade910a8a336d738e50c563e85",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:18:45.660Z",
+      "doneAt": "2026-10-27T23:21:21.051Z",
+      "summary": "Con un git.flow que nombra por tipo (github, trunk, gitflow), session.ts marca branchTypes y el SIGUIENTE de next sin cambio propone new --type <tipo> con los tipos válidos; con specty o sin la clave, el texto de siempre.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "2efb80405d97153b282dd71475fc0ac68ff9ff17",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:21:21.335Z",
+      "doneAt": "2026-10-27T23:22:49.420Z",
+      "summary": "prune lista, además de specty/* y spike/*, las ramas marcadas por new (markedBranches lee branch.<rama>.specty con git config --get-regexp): borra las ya incorporadas y sin worktree, deja las demás con su motivo y nunca toca las de la persona.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "3db56819943e391b2e8ff47e5a1761a682a5ada5",
+      "attempts": 1,
+      "startedAt": "2026-10-27T23:22:49.711Z",
+      "doneAt": "2026-10-27T23:27:13.043Z",
+      "summary": "ARCHITECTURE §9 dice que next pide --type con un flujo por tipo y que prune borra también las ramas marcadas ya incorporadas, nunca las de la persona; formats §6 lo resume.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-27T23:29:33.032Z"
+}

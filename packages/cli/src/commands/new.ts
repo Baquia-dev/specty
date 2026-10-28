@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import {
+  branchName,
   type ChangeKind,
+  type CommitType,
   changeCreatedLead,
   makeChangeId,
   newRefusalCard,
@@ -12,6 +14,7 @@ import {
   worktreeCreatedCard,
 } from "@baquia-dev/specty-core";
 import { commitState, isFinished, resolveActive } from "../flow/active";
+import { freeBranch, markBranch } from "../flow/branches";
 import { sliceRefusal } from "../flow/epic";
 import { removeFinished } from "../flow/prune";
 import { changeView } from "../flow/views";
@@ -28,6 +31,8 @@ import { dirtyGoverned } from "./next";
 export interface NewOptions {
   readonly title: string;
   readonly kind: ChangeKind;
+  /** What the change is, which names its branch under `git.flow`. */
+  readonly type: CommitType;
   readonly follows: readonly string[];
   readonly epic?: string;
   readonly slice?: string;
@@ -94,9 +99,11 @@ async function newInFolder(session: Session, options: NewOptions, title: string)
   if (dirty.length > 0) return nextCard({ dirty }, cards);
 
   const id = await uniqueId(session, makeChangeId(session.environment.now(), title));
-  const branch = session.config.git.branchPerChange ? branchOf(options.kind, id) : undefined;
-  if (branch !== undefined) await session.git.output(["switch", "-q", "-c", branch]);
-  else await writePointer(session.git, "active", id);
+  const branch = settings.branchPerChange ? await branchFor(session, options, id) : undefined;
+  if (branch !== undefined) {
+    await session.git.output(["switch", "-q", "-c", branch]);
+    await markBranch(session.git, branch, id);
+  } else await writePointer(session.git, "active", id);
   const created = await createChange(session, options, {
     id,
     title,
@@ -131,9 +138,10 @@ async function newInWorktree(
   const { removed } = await removeFinished(session);
   const home = await worktreesHome(git);
   const id = await uniqueId(session, makeChangeId(session.environment.now(), title), home);
-  const branch = branchOf(options.kind, id);
+  const branch = await branchFor(session, options, id);
   const folder = join(home, id);
   const copied = await addWorktree(git, { folder, branch, base: base.commit });
+  await markBranch(git, branch, id);
   await createChange(session, options, {
     id,
     title,
@@ -160,8 +168,16 @@ async function newInWorktree(
   );
 }
 
-function branchOf(kind: ChangeKind, id: string): string {
-  return `${kind === "spike" ? "spike" : "specty"}/${id}`;
+/**
+ * The change's branch, as `git.branchPattern` or else `git.flow` names it (Specty's own when
+ * neither is set), and free.
+ */
+async function branchFor(session: Session, options: NewOptions, id: string): Promise<string> {
+  const { flow = "specty", branchPattern } = session.config.git;
+  const { kind, type } = options;
+  const title = options.title.trim();
+  const pattern = branchPattern !== undefined ? { pattern: branchPattern } : {};
+  return freeBranch(session.git, branchName({ flow, kind, type, id, title, ...pattern }));
 }
 
 /** Writes the spec skeleton and the initial state of a new change in `target.dir`. */
@@ -194,6 +210,7 @@ async function createChange(
   const state = initialState({ id, kind: options.kind, branch, baseCommit: target.baseCommit });
   return commitState(session, { files, state, archived: false }, state, "change.created", {
     kind: options.kind,
+    type: options.type,
     ...(branch !== undefined ? { branch } : {}),
     ...(options.follows.length > 0 ? { follows: options.follows } : {}),
     ...(options.epic !== undefined ? { epic: options.epic, slice: options.slice } : {}),

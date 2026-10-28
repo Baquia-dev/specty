@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-import { detectAgentTool } from "@baquia-dev/specty-core";
+import { DEFAULT_CONFIG, detectAgentTool } from "@baquia-dev/specty-core";
 import { afterEach, describe, expect, it } from "vitest";
 import { hookTerminal } from "../src/enforce/entry";
+import { createGit } from "../src/io/git";
+import { sessionFrom } from "../src/session";
+import { repoPaths } from "../src/store/paths";
 import { systemTerminal } from "../src/terminal";
-import { testEnv } from "./support";
+import { AGENT, NOW, person, tempRepo, testEnv } from "./support";
 
 const original = { stdin: process.stdin.isTTY, stdout: process.stdout.isTTY };
 
@@ -46,5 +49,38 @@ describe("who is at the terminal", () => {
         else process.env[key] = value;
       }
     }
+  });
+});
+
+describe("a question with several answers", () => {
+  const options = [
+    { value: "claude-code", label: "Claude Code" },
+    { value: "codex", label: "Codex" },
+  ];
+
+  it("is not answered by the hooks' terminal, nor by an agent's shell in delegated mode", async () => {
+    expect(await hookTerminal({}).chooseMany("¿Cuáles?", options, ["codex"])).toBeUndefined();
+    const root = await tempRepo({ "README.md": "# App\n" });
+    const environment = {
+      cwd: root,
+      env: testEnv(),
+      now: () => NOW,
+      terminal: AGENT,
+      io: { out: () => undefined, err: () => undefined },
+      invocation: { command: "specty", portable: true },
+    };
+    const git = createGit(root, environment.env);
+    const session = sessionFrom(environment, root, repoPaths(root), git, DEFAULT_CONFIG, true);
+    const { terminal } = session.environment;
+    expect(await terminal.chooseMany("¿Cuáles?", options, ["codex"])).toBeUndefined();
+  });
+
+  it("is answered by the test person with what was checked, or the first option", async () => {
+    expect(await person().chooseMany("¿Cuáles?", options, ["codex"])).toEqual(["codex"]);
+    expect(await person().chooseMany("¿Cuáles?", options, [])).toEqual(["claude-code"]);
+    const scripted = person({ chooseMany: [["codex", "claude-code", "otro"]] });
+    // In the options' order, as the person's terminal gives them; what is not offered is dropped.
+    expect(await scripted.chooseMany("¿Cuáles?", options, [])).toEqual(["claude-code", "codex"]);
+    await expect(AGENT.chooseMany("¿Cuáles?", options, [])).rejects.toThrow();
   });
 });

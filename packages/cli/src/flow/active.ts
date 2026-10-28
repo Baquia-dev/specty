@@ -9,8 +9,7 @@ import {
   saveState,
 } from "../store/changes";
 import { readPointer } from "../store/local";
-
-const CHANGE_BRANCH = /^(?:specty|spike)\/(.+)$/;
+import { changeOfBranch } from "./branches";
 
 /**
  * The change the current command acts on: a retro in progress first, then the change of
@@ -23,9 +22,11 @@ export async function resolveActive(session: Session): Promise<StoredChange | un
     const change = await loadChange(paths, retro);
     if (change !== undefined && !isFinished(change.state)) return change;
   }
-  const id = config.git.branchPerChange
-    ? CHANGE_BRANCH.exec((await git.branch()) ?? "")?.[1]
-    : await readPointer(git, "active");
+  if (config.git.branchPerChange) {
+    const branch = await git.branch();
+    return branch === undefined ? undefined : changeOfBranch(session, branch);
+  }
+  const id = await readPointer(git, "active");
   return id === undefined ? undefined : loadChange(paths, id);
 }
 

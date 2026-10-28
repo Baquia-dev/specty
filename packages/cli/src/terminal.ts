@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { personAtTerminal } from "@baquia-dev/specty-core";
-import { confirm, isCancel, note, select, text } from "@clack/prompts";
+import { confirm, isCancel, multiselect, note, select, text } from "@clack/prompts";
 import type { Terminal } from "./session";
 
 /**
@@ -23,6 +23,18 @@ export function systemTerminal(env: Readonly<Record<string, string | undefined>>
       return isCancel(answer)
         ? undefined
         : options.find((option) => option.value === answer)?.value;
+    },
+    async chooseMany(message, options, initial) {
+      // At least one: a confirmed question always has an answer.
+      const answer = await multiselect<string>({
+        message,
+        options: options.map((option) => ({ value: option.value, label: option.label })),
+        initialValues: [...initial],
+        required: true,
+      });
+      return isCancel(answer)
+        ? undefined
+        : options.filter((option) => answer.includes(option.value)).map((option) => option.value);
     },
     async ask(message) {
       const answer = await text({ message });

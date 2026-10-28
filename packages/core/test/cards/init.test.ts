@@ -8,7 +8,9 @@ import {
   backupLine,
   type CardContext,
   configLine,
+  developLine,
   dryRunCard,
+  flowLine,
   initCard,
   initRefusalCard,
   newProjectNext,
@@ -32,19 +34,71 @@ describe("a refused `init`", () => {
       "SPECTY · init\n.specty/config.yaml is invalid: mode: no válido\nNEXT: fix it and run `specty init` again.",
     );
   });
+
+  it("names the valid git flows when --git-flow is not one (AC5)", () => {
+    const flow = initRefusalCard({ reason: "unknown-flow", flow: "svn" }, "es");
+    expect(flow.status).toBe("invalid");
+    expect(renderText(flow, "es")).toBe(
+      "SPECTY · init\nFlujo de git desconocido: svn.\nSIGUIENTE: usa `--git-flow specty|github|trunk|gitflow`.",
+    );
+    expect(renderText(initRefusalCard({ reason: "unknown-flow", flow: "svn" }, "en"), "en")).toBe(
+      "SPECTY · init\nUnknown git flow: svn.\nNEXT: use `--git-flow specty|github|trunk|gitflow`.",
+    );
+  });
+});
+
+describe("the git flow `init` writes", () => {
+  it("says how the changes' branches will be named (AC1)", () => {
+    expect(flowLine("gitflow", "es")).toBe(
+      ".specty/config.yaml: git.flow es gitflow; las ramas de los cambios serán feature/<slug> y bugfix/<slug>.",
+    );
+    expect(flowLine("github", "es")).toBe(
+      ".specty/config.yaml: git.flow es github; las ramas de los cambios serán <tipo>/<slug>, como feat/<slug>.",
+    );
+    expect(flowLine("trunk", "en")).toBe(
+      ".specty/config.yaml: git.flow is trunk; the changes' branches will be <type>/<slug>, such as feat/<slug>.",
+    );
+    expect(flowLine("specty", "en")).toBe(
+      ".specty/config.yaml: git.flow is specty; the changes' branches will be specty/<id>.",
+    );
+  });
+
+  it("says where develop came from (AC4)", () => {
+    expect(developLine("origin/develop", "es")).toBe(
+      "Rama develop creada desde origin/develop: ahí empiezan y terminan los cambios.",
+    );
+    expect(developLine("main", "en")).toBe(
+      "Branch develop created from main: changes start from it and go to it.",
+    );
+  });
 });
 
 describe("the agent `init` installs", () => {
-  it("asks a person which one, Claude Code first (AC4)", () => {
-    expect(agentQuestion("es")).toBe(
-      "No se detectó ningún agente. ¿Con cuál trabajas en este repositorio?",
+  it("asks a person which ones, several allowed, Claude Code first (AC1)", () => {
+    expect(agentQuestion(true, "es")).toBe(
+      "¿Con qué agentes trabajas en este repositorio? Los detectados ya están marcados; puedes marcar varios.",
     );
-    expect(agentQuestion("en")).toBe(
-      "No agent detected. Which one do you work with in this repository?",
+    expect(agentQuestion(true, "en")).toBe(
+      "Which agents do you work with in this repository? The detected ones are already checked; you can check several.",
     );
-    const choices = agentChoices();
+    const choices = agentChoices([], "es");
     expect(choices[0]).toEqual({ value: "claude-code", label: "Claude Code" });
     expect(choices.map((choice) => choice.value)).toEqual(Object.keys(AGENT_NAMES));
+  });
+
+  it("labels the detected ones, and says when there are none (AC2)", () => {
+    const es = agentChoices(["codex", "cursor"], "es");
+    expect(es.find((choice) => choice.value === "codex")?.label).toBe("Codex (detectado)");
+    expect(es.find((choice) => choice.value === "cursor")?.label).toBe("Cursor (detectado)");
+    expect(es[0]?.label).toBe("Claude Code");
+    const en = agentChoices(["codex"], "en");
+    expect(en.find((choice) => choice.value === "codex")?.label).toBe("Codex (detected)");
+    expect(agentQuestion(false, "es")).toBe(
+      "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",
+    );
+    expect(agentQuestion(false, "en")).toBe(
+      "No agent detected. Which ones do you work with in this repository? You can check several.",
+    );
   });
 
   it("warns when nobody could say, and how to choose another (AC5)", () => {

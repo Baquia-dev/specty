@@ -17,6 +17,8 @@ export interface CardContext {
   readonly tool?: AgentTool;
   readonly quickMaxFiles: number;
   readonly implicitTests: boolean;
+  /** `git.flow` names the branches by the change's type, so `new` takes `--type`. */
+  readonly branchTypes?: boolean;
   /** The person delegated their decisions to the agent (ADR 0010): the agent runs them itself. */
   readonly delegated?: boolean;
 }
@@ -27,7 +29,7 @@ export interface CriterionView {
 }
 
 /** A line of a test that carries a criterion's id, and the task whose commit added it. */
-export interface CriterionTestView {
+interface CriterionTestView {
   readonly path: string;
   readonly line: number;
   readonly task: string;

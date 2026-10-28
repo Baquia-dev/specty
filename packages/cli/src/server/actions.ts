@@ -155,6 +155,7 @@ function screen(choice?: string): Terminal {
     confirm: () => Promise.resolve(true),
     choose: (_message, options) =>
       Promise.resolve(options.find((option) => option.value === choice)?.value),
+    chooseMany: () => Promise.resolve(undefined),
     ask: () => Promise.resolve(undefined),
     note: () => undefined,
   };

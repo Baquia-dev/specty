@@ -92,13 +92,19 @@ export async function tempRepo(files: Readonly<Record<string, string>>): Promise
 export interface Answers {
   readonly confirm?: readonly boolean[];
   readonly choose?: readonly string[];
+  /** Each answer to a question with several: the values checked when confirmed. */
+  readonly chooseMany?: readonly (readonly string[])[];
   readonly ask?: readonly string[];
 }
 
-/** A person at a TTY who gives the scripted answers (confirm defaults to yes). */
+/**
+ * A person at a TTY who gives the scripted answers (confirm defaults to yes; several answers, to
+ * what was checked, or the first option when nothing was).
+ */
 export function person(answers: Answers = {}): Terminal & { readonly notes: string[] } {
   const confirms = [...(answers.confirm ?? [])];
   const choices = [...(answers.choose ?? [])];
+  const checks = [...(answers.chooseMany ?? [])];
   const texts = [...(answers.ask ?? [])];
   const notes: string[] = [];
   return {
@@ -108,6 +114,11 @@ export function person(answers: Answers = {}): Terminal & { readonly notes: stri
     choose: async (_message, options) => {
       const wanted = choices.shift();
       return options.find((option) => option.value === wanted)?.value ?? options[0]?.value;
+    },
+    chooseMany: async (_message, options, initial) => {
+      const values = options.map((option) => option.value);
+      const wanted = checks.shift() ?? (initial.length > 0 ? initial : values.slice(0, 1));
+      return values.filter((value) => wanted.includes(value));
     },
     ask: async () => texts.shift(),
     note: (title, body) => {
@@ -121,6 +132,7 @@ export const AGENT: Terminal = {
   interactive: false,
   confirm: () => Promise.reject(new Error("an agent cannot be asked")),
   choose: () => Promise.reject(new Error("an agent cannot be asked")),
+  chooseMany: () => Promise.reject(new Error("an agent cannot be asked")),
   ask: () => Promise.reject(new Error("an agent cannot be asked")),
   note: () => undefined,
 };

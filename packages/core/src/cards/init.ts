@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AGENT_NAMES, type AgentTool, isAgentTool } from "../agents";
+import { GIT_FLOWS, type GitFlow } from "../branches";
 import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { blockedCard } from "./flow";
@@ -12,17 +13,21 @@ import type { CardContext } from "./view";
 export type InitRefusal =
   | { readonly reason: "no-git" }
   /** `.specty/config.yaml` exists and is not valid: `issues` says why. */
-  | { readonly reason: "invalid-config"; readonly issues: string };
+  | { readonly reason: "invalid-config"; readonly issues: string }
+  /** `--git-flow` names no flow of `GIT_FLOWS`. */
+  | { readonly reason: "unknown-flow"; readonly flow: string };
 
 export function initRefusalCard(refusal: InitRefusal, lang: Lang): Output {
   const t = translator(lang);
-  return refusal.reason === "no-git"
-    ? blockedCard(
+  switch (refusal.reason) {
+    case "no-git":
+      return blockedCard(
         headerOf("init"),
         t("Esto no es un repositorio git.", "This is not a git repository."),
         t("ejecuta `git init` y vuelve a intentarlo.", "run `git init` and try again."),
-      )
-    : blockedCard(
+      );
+    case "invalid-config":
+      return blockedCard(
         headerOf("init"),
         t(
           `.specty/config.yaml no es válido: ${refusal.issues}`,
@@ -30,6 +35,44 @@ export function initRefusalCard(refusal: InitRefusal, lang: Lang): Output {
         ),
         t("corrígelo y vuelve a ejecutar `specty init`.", "fix it and run `specty init` again."),
       );
+    case "unknown-flow":
+      return {
+        ...blockedCard(
+          headerOf("init"),
+          t(`Flujo de git desconocido: ${refusal.flow}.`, `Unknown git flow: ${refusal.flow}.`),
+          t(
+            `usa \`--git-flow ${GIT_FLOWS.join("|")}\`.`,
+            `use \`--git-flow ${GIT_FLOWS.join("|")}\`.`,
+          ),
+        ),
+        status: "invalid",
+      };
+  }
+}
+
+/** The changes' branches under each flow, as `branchName` makes them. */
+const FLOW_BRANCHES: Readonly<Record<GitFlow, readonly [string, string]>> = {
+  specty: ["specty/<id>", "specty/<id>"],
+  github: ["<tipo>/<slug>, como feat/<slug>", "<type>/<slug>, such as feat/<slug>"],
+  trunk: ["<tipo>/<slug>, como feat/<slug>", "<type>/<slug>, such as feat/<slug>"],
+  gitflow: ["feature/<slug> y bugfix/<slug>", "feature/<slug> and bugfix/<slug>"],
+};
+
+/** `init --git-flow` set `git.flow`: how the changes' branches will be named. */
+export function flowLine(flow: GitFlow, lang: Lang): string {
+  const [es, en] = FLOW_BRANCHES[flow];
+  return translator(lang)(
+    `.specty/config.yaml: git.flow es ${flow}; las ramas de los cambios serán ${es}.`,
+    `.specty/config.yaml: git.flow is ${flow}; the changes' branches will be ${en}.`,
+  );
+}
+
+/** Git Flow's `develop` did not exist: `init` made it from `from`. */
+export function developLine(from: string, lang: Lang): string {
+  return translator(lang)(
+    `Rama develop creada desde ${from}: ahí empiezan y terminan los cambios.`,
+    `Branch develop created from ${from}: changes start from it and go to it.`,
+  );
 }
 
 /** What `init` did with `.specty/config.yaml`: created it, added the keys it lacked, or left it. */
@@ -50,17 +93,33 @@ export function configLine(created: boolean, added: readonly string[], lang: Lan
 /** Every agent tool, in the order of `AGENT_NAMES`: Claude Code first. */
 const AGENT_TOOLS = Object.keys(AGENT_NAMES).filter(isAgentTool);
 
-/** `init`'s question to a person when it detects no agent, after the language. */
-export function agentQuestion(lang: Lang): string {
-  return translator(lang)(
-    "No se detectó ningún agente. ¿Con cuál trabajas en este repositorio?",
-    "No agent detected. Which one do you work with in this repository?",
-  );
+/**
+ * `init`'s question to a person, after the language: which agents they work with, several
+ * allowed. Whether it `detected` any says if some come already checked.
+ */
+export function agentQuestion(detected: boolean, lang: Lang): string {
+  const t = translator(lang);
+  return detected
+    ? t(
+        "¿Con qué agentes trabajas en este repositorio? Los detectados ya están marcados; puedes marcar varios.",
+        "Which agents do you work with in this repository? The detected ones are already checked; you can check several.",
+      )
+    : t(
+        "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",
+        "No agent detected. Which ones do you work with in this repository? You can check several.",
+      );
 }
 
-/** The answers to `agentQuestion`: every agent tool, Claude Code first. */
-export function agentChoices(): readonly { readonly value: AgentTool; readonly label: string }[] {
-  return AGENT_TOOLS.map((tool) => ({ value: tool, label: AGENT_NAMES[tool] }));
+/** The answers to `agentQuestion`: every agent tool, Claude Code first; the `detected` say so. */
+export function agentChoices(
+  detected: readonly AgentTool[],
+  lang: Lang,
+): readonly { readonly value: AgentTool; readonly label: string }[] {
+  const mark = translator(lang)("detectado", "detected");
+  return AGENT_TOOLS.map((tool) => ({
+    value: tool,
+    label: detected.includes(tool) ? `${AGENT_NAMES[tool]} (${mark})` : AGENT_NAMES[tool],
+  }));
 }
 
 /** No agent was detected and nobody could be asked: Claude Code's guard went in. */

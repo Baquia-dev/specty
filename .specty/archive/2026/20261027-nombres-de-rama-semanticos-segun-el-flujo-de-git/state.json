@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "20261027-nombres-de-rama-semanticos-segun-el-flujo-de-git",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261027-nombres-de-rama-semanticos-segun-el-flujo-de-git",
+  "baseCommit": "929096423c7cb2eee3725d820eb914ab42fd4791",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b88a519093f5614398d4d6cc6bd7e2cd2497c42ea9ccd519676dd33bac235889",
+    "at": "2026-10-27T11:08:25.713Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:affbee514735226ae613d52c14e7faa8301521dcf9b4dd549238dea24c7c0b86",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4eb88caaf507ea2ca2ffdde06dffaec4fcdfd58d60b82544b7022c4f08fb5a4c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e4f5c9186860564624b08066afc5f2d4463a8f1580b2605fceb8599cfc6a4871",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:bf04379e143708a5de4d5de3f017d1268e53367d360d55ac134ab33ea5d42192",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:a2d3fb23c029fc6dd697a298983a986dac0874a9a334943714a40e0a28936513",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "0dec11a58f111d2ba1ddc7d2091b3fcf02f6d00c",
+      "attempts": 1,
+      "startedAt": "2026-10-27T11:08:27.955Z",
+      "doneAt": "2026-10-27T11:13:39.921Z",
+      "summary": "core/branches.ts: GIT_FLOWS y branchName (specty/<id>; <tipo>/<slug> en github y trunk; bugfix/ o feature/ en gitflow; spike/<slug>). config.yaml acepta git.flow, opcional (sin él, el de Specty).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "eb198a323c176a11500fbd08a0b159fe5cbc6044",
+      "attempts": 1,
+      "startedAt": "2026-10-27T11:13:40.269Z",
+      "doneAt": "2026-10-27T11:25:16.822Z",
+      "summary": "new --type (feat por defecto; rechazo unknown-type con los válidos) nombra la rama con branchName según git.flow, toma la primera libre (-2, -3…) entre las locales y remotas y la marca en git (branch.<rama>.specty = id), en la worktree y en la carpeta actual.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e46711c7e499c32f74ac5737b1244a61a70fa0e7",
+      "attempts": 1,
+      "startedAt": "2026-10-27T11:25:17.422Z",
+      "doneAt": "2026-10-27T11:29:41.447Z",
+      "summary": "resolveActive busca el cambio de la rama con changeOfBranch: por el nombre specty/<id> o spike/<id> si ese cambio existe, si no por la marca de git y si no por el cambio abierto cuyo state.json nombra la rama (otro clon).",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "ad58152f55df7af753c13c29373675c349775d2a",
+      "attempts": 1,
+      "startedAt": "2026-10-27T11:29:41.777Z",
+      "doneAt": "2026-10-27T11:34:37.572Z",
+      "summary": "formats §6 describe git.flow (ejemplo y nombres de cada flujo, -2 y la marca) y ARCHITECTURE §9 trae la tabla de nombres por flujo y cómo se reconoce el cambio de una rama; la fila de new nombra --type.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 8,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-27T11:37:03.834Z"
+}

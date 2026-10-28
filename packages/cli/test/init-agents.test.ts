@@ -24,15 +24,39 @@ const has = (root: string, path: string) =>
 const claudeGuard = async (root: string) =>
   (await has(root, ".claude/settings.json")) || (await has(root, ".claude/settings.local.json"));
 
-/** A person who gives `answers` and whose questions, with the values offered, are recorded. */
-function recorded(answers: readonly string[]) {
-  const asked: { readonly message: string; readonly values: readonly string[] }[] = [];
+interface Asked {
+  readonly message: string;
+  readonly values: readonly string[];
+  readonly labels: readonly string[];
+  /** What came checked, in a question with several answers. */
+  readonly initial?: readonly string[];
+}
+
+/**
+ * A person who gives `answers` and whose questions, with the values offered, are recorded. Each
+ * of `checks` answers a question with several; `undefined` cancels it.
+ */
+function recorded(answers: readonly string[], checks: readonly (readonly string[] | undefined)[]) {
+  const asked: Asked[] = [];
   const base = person({ choose: answers });
+  const pending = [...checks];
+  const offered = (options: readonly { readonly value: string; readonly label: string }[]) => ({
+    values: options.map((option) => option.value),
+    labels: options.map((option) => option.label),
+  });
   const terminal: Terminal = {
     ...base,
     choose: (message, options) => {
-      asked.push({ message, values: options.map((option) => option.value) });
+      asked.push({ message, ...offered(options) });
       return base.choose(message, options);
+    },
+    chooseMany: (message, options, initial) => {
+      asked.push({ message, ...offered(options), initial });
+      const answer = pending.shift();
+      const values = options.map((option) => option.value);
+      return Promise.resolve(
+        answer === undefined ? undefined : values.filter((value) => answer.includes(value)),
+      );
     },
   };
   return { terminal, asked };
@@ -42,6 +66,7 @@ function recorded(answers: readonly string[]) {
 const UNASKED: Terminal = {
   ...person(),
   choose: () => Promise.reject(new Error("no debe preguntar")),
+  chooseMany: () => Promise.reject(new Error("no debe preguntar")),
 };
 
 describe("the agents init installs", () => {
@@ -65,19 +90,62 @@ describe("the agents init installs", () => {
     expect(await claudeGuard(both)).toBe(true);
   });
 
-  it("asks a person when it finds none, after the language, Claude Code first (AC4)", async () => {
+  it("asks a person when it finds none, after the language, Claude Code first (AC1, AC2)", async () => {
     const root = await tempRepo(CODE);
-    const { terminal, asked } = recorded(["es", "cursor"]);
+    const { terminal, asked } = recorded(["es"], [["cursor", "codex"]]);
     const done = await cli(root, ["init"], { terminal });
     expect(done.code).toBe(0);
     expect(asked.map((question) => question.message)).toEqual([
       "¿En qué idioma trabaja Specty? · Which language should Specty work in?",
-      "No se detectó ningún agente. ¿Con cuál trabajas en este repositorio?",
+      "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",
     ]);
     expect(asked[1]?.values[0]).toBe("claude-code");
+    expect(asked[1]?.initial).toEqual([]);
+    // Several checked: each one's guard goes in.
     expect(await has(root, ".cursor/hooks.json")).toBe(true);
+    expect(await has(root, ".codex/hooks.json")).toBe(true);
     expect(await claudeGuard(root)).toBe(false);
     expect(done.out).not.toContain(NO_AGENT);
+  });
+
+  it("asks a person even when it finds some, already checked (AC1, AC2)", async () => {
+    const root = await tempRepo({ ...CODE, "CLAUDE.md": "# Reglas\n", ".cursorrules": "x\n" });
+    const { terminal, asked } = recorded([], [["claude-code", "cursor"]]);
+    const done = await cli(root, ["init", "--language", "es"], { terminal });
+    expect(done.code).toBe(0);
+    expect(asked).toHaveLength(1);
+    expect(asked[0]?.message).toBe(
+      "¿Con qué agentes trabajas en este repositorio? Los detectados ya están marcados; puedes marcar varios.",
+    );
+    expect(asked[0]?.initial).toEqual(["claude-code", "cursor"]);
+    expect(asked[0]?.labels.slice(0, 2)).toEqual(["Claude Code (detectado)", "Cursor (detectado)"]);
+    expect(asked[0]?.labels).toContain("Codex");
+  });
+
+  it("installs only the ones the person leaves checked (AC3)", async () => {
+    const root = await tempRepo({ ...CODE, "CLAUDE.md": "# Reglas\n" });
+    const { terminal } = recorded([], [["codex", "cursor"]]);
+    const done = await cli(root, ["init", "--language", "es"], { terminal });
+    expect(done.code).toBe(0);
+    expect(await has(root, ".codex/hooks.json")).toBe(true);
+    expect(await has(root, ".cursor/hooks.json")).toBe(true);
+    expect(await claudeGuard(root)).toBe(false);
+  });
+
+  it("installs the detected ones, or Claude Code's, when the person cancels (AC4)", async () => {
+    const found = await tempRepo({ ...CODE, ".cursorrules": "x\n" });
+    const kept = await cli(found, ["init", "--language", "es"], {
+      terminal: recorded([], [undefined]).terminal,
+    });
+    expect(kept.code).toBe(0);
+    expect(await has(found, ".cursor/hooks.json")).toBe(true);
+    expect(await claudeGuard(found)).toBe(false);
+    const none = await tempRepo(CODE);
+    const fallback = await cli(none, ["init", "--language", "es"], {
+      terminal: recorded([], [undefined]).terminal,
+    });
+    expect(fallback.code).toBe(0);
+    expect(await claudeGuard(none)).toBe(true);
   });
 
   it("installs Claude Code's and says so when nobody can answer (AC5)", async () => {
