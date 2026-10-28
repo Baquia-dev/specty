@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-un-cambio-completo-solo-con-las-acciones-de-la-p",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-un-cambio-completo-solo-con-las-acciones-de-la-p",
   "baseCommit": "c53731fa52e569105563066111b7fb981870b849",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2302a8a36a5f720660e65c31ab0f1fff3ccb14151dc64a192190e900f40e66f0",
+    "at": "2026-10-28T18:31:17.355Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 1,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6a2e56d060b36c357965f7691d2123728c2c58f9",
+      "startedAt": "2026-10-28T18:31:17.806Z",
+      "doneAt": "2026-10-28T18:36:14.722Z",
+      "summary": "lifecycle.test.ts recorre un cambio con contract de review a done con la persona solo en el servidor de la UI (supuesto, spec, tests, alcance, aceptar, cerrar); pasa a la primera; ARCHITECTURE §18: F2 hecha"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2302a8a36a5f720660e65c31ab0f1fff3ccb14151dc64a192190e900f40e66f0",
-    "at": "2026-10-28T18:31:17.355Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

@@ -15,7 +15,7 @@ El criterio de salida de la fase F2 (ARCHITECTURE §18) es «un cambio completo 
 
 ## Tareas
 
-- [ ] T1: Un cambio completo solo con las acciones de la persona en la UI
+- [x] T1: Un cambio completo solo con las acciones de la persona en la UI
   - files: packages/cli/test/server/lifecycle.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm lint && pnpm --filter @baquia-dev/specty build && pnpm --filter @baquia-dev/specty exec vitest run test/server/lifecycle.test.ts
   - type: test
