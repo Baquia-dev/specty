@@ -4,3 +4,7 @@
 {"ts":"2026-10-28T08:55:26.081Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"bafd5e2f524f18ad6dbf1bb16289a8b53f77bd96"}}
 {"ts":"2026-10-28T09:00:02.534Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/lock.test.ts test/shell-snapshot.test.ts","exit":0,"ms":11426,"tree":"sha256:f71df4edeb4cdd4731e03d254ae6d99b6452567d1e0d10180ac5a7e914975ae8"}}
 {"ts":"2026-10-28T09:00:02.763Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"replaceDead reemplaza un bloqueo muerto bajo un permiso exclusivo (<id>.json.claim) y vuelve a comprobarlo con él; un permiso de un proceso muerto no cuenta; formats §1 y ARCHITECTURE §9."}}
+{"ts":"2026-10-28T09:03:33.893Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":200834,"tree":"sha256:f71df4edeb4cdd4731e03d254ae6d99b6452567d1e0d10180ac5a7e914975ae8"}}
+{"ts":"2026-10-28T09:03:33.896Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-28T09:03:50.467Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:3bf9fca2205f629c780149d8690b3671aebc8f908a3e0220f4c60a4958a24a18","size":"S","warnings":0}}
+{"ts":"2026-10-28T09:06:28.797Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

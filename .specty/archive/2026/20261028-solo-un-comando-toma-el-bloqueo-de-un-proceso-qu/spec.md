@@ -39,3 +39,22 @@ El bloqueo de un cambio cuyo proceso ya no existe no cuenta, y el siguiente coma
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/lock.test.ts test/shell-snapshot.test.ts
   - type: fix
   - notes: documenta el permiso en docs/formats.md §1 y ARCHITECTURE §9.
+
+## Cierre
+
+### Resumen
+
+Para reemplazar el bloqueo de un proceso que ya no existe, un comando toma antes un permiso exclusivo y breve junto a él (`locks/<id>.json.claim`) y, con el permiso tomado, comprueba otra vez que el bloqueo sigue muerto. Mientras otro proceso vivo tiene el permiso, el comando se niega con la tarjeta del cambio ocupado y no borra nada. Un permiso dejado por un proceso que ya no existe no cuenta, y el permiso se borra en cuanto el reemplazo termina. formats.md §1 y ARCHITECTURE §9 lo documentan.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- El permiso y el bloqueo comparten la misma función, `exclusive`: crear en exclusiva y reemplazar solo lo de un proceso muerto. Así el permiso abandonado se trata igual que el bloqueo.
+- El glosario no cambia: el permiso es un detalle interno del bloqueo, que ya está definido.
+
+### Pendientes
+
+- Ninguno.
