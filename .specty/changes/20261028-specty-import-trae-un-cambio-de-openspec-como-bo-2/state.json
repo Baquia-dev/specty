@@ -6,6 +6,13 @@
   "branch": "specty/20261028-specty-import-trae-un-cambio-de-openspec-como-bo-2",
   "baseCommit": "6739bf86d4838e486917f11ccd66ea4b2011a89e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bf958f1142c61c83576f3ad84349eb1edb137898b975ad0772e3fd604554ff11",
+    "at": "2026-10-28T16:19:58.426Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:bf958f1142c61c83576f3ad84349eb1edb137898b975ad0772e3fd604554ff11",
-    "at": "2026-10-28T16:19:58.426Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-28T16:20:36.003Z"
 }
