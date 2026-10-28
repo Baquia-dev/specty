@@ -78,7 +78,7 @@ Con `policy.tests: contract`, los tests aprobados quedan bloqueados y solo la pe
   - files: docs/ui.md
   - ac: AC4
   - type: docs
-- [ ] T6: El tipo de un desbloqueo no se exporta
+- [x] T6: El tipo de un desbloqueo no se exporta
   - files: packages/ui/src/data/locks.ts
   - ac: AC1
   - verify: pnpm knip && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data

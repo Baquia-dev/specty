@@ -7,7 +7,7 @@ import { type Data, text, texts } from "./history-text";
 import type { AuditRecord } from "./progress";
 
 /** An unlock the person approved: the request and the task it was for. */
-export interface UnlockView {
+interface UnlockView {
   readonly request: string;
   readonly task: string;
 }

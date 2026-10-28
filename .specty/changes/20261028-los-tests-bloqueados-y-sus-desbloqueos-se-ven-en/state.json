@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-los-tests-bloqueados-y-sus-desbloqueos-se-ven-en",
   "baseCommit": "6477c7d222a97eda066f7ddc4c347134174c2749",
   "revision": 2,
@@ -87,6 +87,15 @@
       "doneAt": "2026-10-28T11:45:10.231Z",
       "summary": "docs/ui.md describe la solicitud de desbloqueo, la sección «Tests bloqueados» en Progreso y Aceptación, y los textos del historial de los tests",
       "scopeExtra": []
+    },
+    "T6": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fd846f451bc6de9457db351f5e5acff1af4876c9",
+      "startedAt": "2026-10-28T11:46:15.242Z",
+      "doneAt": "2026-10-28T11:48:59.309Z",
+      "summary": "UnlockView deja de exportarse: solo lo usa locks.ts, y knip ya no lo marca"
     }
   },
   "pending": {

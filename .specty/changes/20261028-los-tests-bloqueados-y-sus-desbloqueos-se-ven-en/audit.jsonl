@@ -22,3 +22,6 @@
 {"ts":"2026-10-28T11:45:54.644Z","actor":"agent","tool":"claude-code","event":"adjust.requested","data":{"request":"pnpm check falla: knip marca UnlockView de packages/ui/src/data/locks.ts como tipo exportado sin uso"}}
 {"ts":"2026-10-28T11:46:10.686Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:ed1f55467177742d5047e58bfebdbe26a90ce1517701554240548f7389588c40","size":"L","warnings":3}}
 {"ts":"2026-10-28T11:46:14.898Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":2,"hash":"sha256:ed1f55467177742d5047e58bfebdbe26a90ce1517701554240548f7389588c40","channel":"delegated","delegated":true}}
+{"ts":"2026-10-28T11:46:15.242Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T6","baseCommit":"fd846f451bc6de9457db351f5e5acff1af4876c9"}}
+{"ts":"2026-10-28T11:48:59.228Z","actor":"specty","event":"task.verified","data":{"task":"T6","cmd":"pnpm knip && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data","exit":0,"ms":10551,"tree":"sha256:1617540518f25fb75b5eb1909ec3902740f31f3f07fb0111795ef4205ed03301"}}
+{"ts":"2026-10-28T11:48:59.310Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T6","summary":"UnlockView deja de exportarse: solo lo usa locks.ts, y knip ya no lo marca"}}
