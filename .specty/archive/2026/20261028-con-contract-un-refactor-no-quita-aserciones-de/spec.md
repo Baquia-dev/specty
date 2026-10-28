@@ -22,3 +22,9 @@ Un `refactor` o un `perf` no cambia lo que hace el código, así que tampoco deb
   - files: packages/cli/src/commands/task.ts, packages/core/src/cards/task.ts, packages/cli/test/assertions.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/assertions.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/cards
   - type: feat
+
+## Cierre
+
+### Resumen
+
+Con contract, task done no completa un refactor o un perf que quita aserciones de un test que ya existía: lo comprueba antes de verificar y dice cuántas y de qué test (taskDoneRefusalCard, motivo assertions); sin contract sigue siendo un aviso. formats §6 y ARCHITECTURE §4.
