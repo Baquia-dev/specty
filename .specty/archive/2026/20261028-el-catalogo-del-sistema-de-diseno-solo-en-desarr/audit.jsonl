@@ -4,3 +4,5 @@
 {"ts":"2026-10-28T17:48:39.648Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"e70904b655e577ba5d4498ad80c7815c85ee648a"}}
 {"ts":"2026-10-28T17:50:33.650Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-ui typecheck && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/shell.test.ts --include src/app/delegation.test.ts","exit":0,"ms":14443,"tree":"sha256:8b8d220ca31141e094579d54e3ea4a84f812ae3aa51f97f468707d0af2b8768c"}}
 {"ts":"2026-10-28T17:50:33.762Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"DEV_TOOLS (isDevMode) decide el enlace y el comando del catálogo, y appRoutes solo añade su ruta en desarrollo"}}
+{"ts":"2026-10-28T17:57:04.597Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":380663,"tree":"sha256:8b8d220ca31141e094579d54e3ea4a84f812ae3aa51f97f468707d0af2b8768c"}}
+{"ts":"2026-10-28T17:57:04.677Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

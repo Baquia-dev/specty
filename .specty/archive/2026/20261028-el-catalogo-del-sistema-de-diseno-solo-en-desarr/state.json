@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-el-catalogo-del-sistema-de-diseno-solo-en-desarr",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-el-catalogo-del-sistema-de-diseno-solo-en-desarr",
   "baseCommit": "386c1c021deec1423506e8570bb7cde64ce991af",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e70904b655e577ba5d4498ad80c7815c85ee648a",
+      "attempts": 1,
       "startedAt": "2026-10-28T17:48:39.646Z",
       "doneAt": "2026-10-28T17:50:33.761Z",
-      "summary": "DEV_TOOLS (isDevMode) decide el enlace y el comando del catálogo, y appRoutes solo añade su ruta en desarrollo"
+      "summary": "DEV_TOOLS (isDevMode) decide el enlace y el comando del catálogo, y appRoutes solo añade su ruta en desarrollo",
+      "scopeExtra": []
     }
   },
   "pending": {
