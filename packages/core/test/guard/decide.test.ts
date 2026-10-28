@@ -127,6 +127,20 @@ describe("decideGuard on files", () => {
     expect(allowed(write("README.md"), ctx(testing))).toBe(true);
   });
 
+  it("AC2: refuses to write or delete an approved test, even within the task's scope", () => {
+    const locked: GuardChange = { ...IMPLEMENTING, locked: ["src/a.test.ts"] };
+    for (const action of [write("src/a.test.ts"), shell({ deletes: ["src/a.test.ts"] })]) {
+      const denied = decideGuard(action, ctx(locked));
+      expect(denied).toMatchObject({ allow: false, rule: "locked" });
+      if (!denied.allow) {
+        expect(denied.reason).toContain("`src/a.test.ts` es un test aprobado");
+        expect(denied.next).toContain("explícaselo al usuario");
+      }
+    }
+    // The code, and the new tests the implementation adds in their own files, stay open.
+    expect(allowed(write("src/a.ts", "src/b.test.ts"), ctx(locked))).toBe(true);
+  });
+
   it("judges each path of an edit that writes and deletes at once, such as a patch", () => {
     const files = (writes: string[], deletes: string[] = []): GuardAction => ({
       kind: "files",

@@ -60,7 +60,7 @@ Desbloquear un test, que solo decide la persona, llega con el cambio siguiente, 
 
 ## Tareas
 
-- [ ] T1: El estado guarda los tests aprobados y el guard los protege
+- [x] T1: El estado guarda los tests aprobados y el guard los protege
   - files: packages/core/src/schema/state.ts, packages/core/src/guard/decide.ts, packages/core/src/guard/testing.ts, packages/cli/src/commands/tests.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/test-locks.test.ts
   - ac: AC1, AC2
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/guard && pnpm --filter @baquia-dev/specty exec vitest run test/test-locks.test.ts

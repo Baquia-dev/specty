@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
+
+import { join } from "node:path";
 import {
   approvalPostponedCard,
   approveTestsQuestion,
@@ -8,6 +10,7 @@ import {
   type ChangeState,
   classifyPath,
   decisionCard,
+  hashText,
   headerOf,
   isGoverned,
   isTestFile,
@@ -16,6 +19,7 @@ import {
   type Output,
   parseSpec,
   runNext,
+  type Sha256Hash,
   type Spec,
   scopeRulesFrom,
   shortHash,
@@ -28,9 +32,11 @@ import {
 } from "@baquia-dev/specty-core";
 import { checkContext } from "../check/files";
 import { commitState } from "../flow/active";
+import { dataOf, readAudit } from "../flow/carried";
 import { changeTrailers, commitWithReceipt, decisionTrailers } from "../flow/commits";
 import { untestedBeforeCode } from "../flow/criteria-tests";
 import { runLive } from "../flow/live-run";
+import { readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { thenNext } from "./next";
@@ -173,10 +179,11 @@ export async function approveTests(session: Session, active: StoredChange): Prom
   const channel =
     session.actor === "agent" ? "delegated" : (session.environment.terminal.channel ?? "tty");
   const { testsSubmittedAt: _sent, ...rest } = state;
+  const lockedTests = { ...state.lockedTests, ...(await sentHashes(session, active)) };
   await commitState(
     session,
     active,
-    { ...rest, phase: moved.phase },
+    { ...rest, phase: moved.phase, lockedTests },
     "tests.approved",
     { channel },
     "human",
@@ -193,6 +200,29 @@ export async function approveTests(session: Session, active: StoredChange): Prom
     session,
     decisionCard(headerOf(state.id, moved.phase), [testsApprovedLine(commit, session.lang)], cards),
   );
+}
+
+/**
+ * The hash of each test of the last sending (`tests.proposed`), as the person approves it: they
+ * stay locked from then on (ADR 0014). A test that sending deleted is not locked.
+ */
+async function sentHashes(
+  session: Session,
+  active: StoredChange,
+): Promise<Record<string, Sha256Hash>> {
+  const sent = (await readAudit(active.files)).findLast(
+    (entry) => entry.event === "tests.proposed",
+  );
+  const paths = dataOf(sent).files;
+  const hashes = await Promise.all(
+    (Array.isArray(paths) ? paths : [])
+      .filter((path): path is string => typeof path === "string")
+      .map(async (path) => {
+        const text = await readText(join(session.root, path));
+        return text === undefined ? [] : [[path, hashText(text)] as const];
+      }),
+  );
+  return Object.fromEntries(hashes.flat());
 }
 
 /** The approved revision the tests answer to, as every commit of the change names it. */

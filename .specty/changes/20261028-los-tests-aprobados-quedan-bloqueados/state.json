@@ -6,6 +6,13 @@
   "branch": "specty/20261028-los-tests-aprobados-quedan-bloqueados",
   "baseCommit": "68c27e34df6c1abc0d219ddd4d543cb3d1cd43d2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3852e55b6d994e919cb46c5386510ec9a36b89bc46d1f56cb49923aa3022975d",
+    "at": "2026-10-28T08:24:39.488Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -29,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "07203a6e967e65a9d35599abc77aa1d15956d148",
+      "startedAt": "2026-10-28T08:24:39.926Z",
+      "doneAt": "2026-10-28T08:34:22.544Z",
+      "summary": "lockedTests en state.json con el hash de cada test del último tests.proposed al aprobarlos; el guard rechaza escribir o borrar un test bloqueado (regla locked, textos en guard/testing.ts) en cualquier fase; enforce/guard.ts le pasa las rutas."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,12 +56,5 @@
     "AC": 5,
     "T": 2,
     "R": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:3852e55b6d994e919cb46c5386510ec9a36b89bc46d1f56cb49923aa3022975d",
-    "at": "2026-10-28T08:24:39.488Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

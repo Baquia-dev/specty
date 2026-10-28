@@ -201,6 +201,12 @@ describe("parseChangeState", () => {
     expect(parseChangeState({ ...state, phase: "testing" }).ok).toBe(true);
   });
 
+  it("AC1: keeps the hash of each approved test", () => {
+    const locked = { ...state, lockedTests: { "test/a.test.ts": HASH } };
+    expect(parseChangeState(locked).ok).toBe(true);
+    expect(parseChangeState({ ...locked, lockedTests: { "test/a.test.ts": "x" } }).ok).toBe(false);
+  });
+
   it("AC5: keeps when the tests were sent for approval", () => {
     const sent = { ...state, phase: "testing", testsSubmittedAt: "2026-10-28T10:00:00.000Z" };
     expect(parseChangeState(sent).ok).toBe(true);
