@@ -2,13 +2,14 @@
 import { Location } from "@angular/common";
 import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router } from "@angular/router";
+import { Commands } from "../components/command-palette";
 import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
 import type { ChangeRecord as ChangeRecordForTest } from "../data/records";
 import { SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
 import { Preferences } from "../theme/preferences";
-import { APP_ROUTES } from "./routes";
+import { appRoutes, DEV_TOOLS } from "./routes";
 import { Shell } from "./shell";
 
 /** jsdom has no Worker: derive in the same thread, as the worker would. */
@@ -17,7 +18,8 @@ const IN_THREAD = {
   useValue: (records: readonly ChangeRecordForTest[]) => Promise.resolve(deriveViews(records)),
 };
 
-async function open(path: string) {
+/** The shell at `path`; `devTools` false is the build `specty ui` serves, without the catalog. */
+async function open(path: string, devTools = true) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
@@ -27,7 +29,8 @@ async function open(path: string) {
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
     providers: [
-      provideRouter(APP_ROUTES),
+      provideRouter(appRoutes(devTools)),
+      { provide: DEV_TOOLS, useValue: devTools },
       { provide: SpectyData, useClass: FixtureData },
       IN_THREAD,
     ],
@@ -61,6 +64,19 @@ describe("Shell", () => {
     expect(element.querySelectorAll("header input[name=lang]")).toHaveLength(2);
     expect(element.querySelector("sp-catalog")).not.toBeNull();
     expect(router.url).toBe("/catalog/colors");
+  });
+
+  it("leaves the catalog out of the build people use: no link, no command, no page", async () => {
+    const { element, router } = await open("/catalog/colors", false);
+    const main = [...element.querySelectorAll<HTMLAnchorElement>("header nav a")];
+    expect(main.map((link) => link.getAttribute("href"))).toEqual(["/"]);
+    expect(element.querySelector("sp-catalog")).toBeNull();
+    expect(router.url).toBe("/");
+    const ids = TestBed.inject(Commands)
+      .all()
+      .map((command) => command.id);
+    expect(ids).toContain("go:inbox");
+    expect(ids).not.toContain("go:catalog");
   });
 
   it("keeps the header on one line, theme and language in a preferences menu (AC1, AC2)", async () => {

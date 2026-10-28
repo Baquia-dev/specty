@@ -18,6 +18,6 @@ El catálogo del sistema de diseño es una herramienta para quien desarrolla la 
 
 ## Tareas
 
-- [ ] T1: El catálogo solo en desarrollo
+- [x] T1: El catálogo solo en desarrollo
   - files: packages/ui/src/app/routes.ts, packages/ui/src/app/shell.ts, packages/ui/src/main.ts, packages/ui/src/app/shell.test.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/shell.test.ts --include src/app/delegation.test.ts

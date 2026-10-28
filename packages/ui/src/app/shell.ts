@@ -23,8 +23,9 @@ import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
 import { DelegationChip } from "./delegation";
 import { PreferencesMenu } from "./preferences-menu";
+import { DEV_TOOLS } from "./routes";
 
-/** The frame of every screen: header (Inbox, catalog, ⌘K, preferences) and toasts. */
+/** The frame of every screen: header (Inbox, the catalog in development, ⌘K, preferences) and toasts. */
 @Component({
   selector: "sp-root",
   imports: [
@@ -90,9 +91,11 @@ export class Shell {
   private readonly document = inject(DOCUMENT);
   protected readonly t = this.preferences.t;
   protected readonly search = LucideSearch;
+  /** The catalog is for whoever develops the UI: only in development (`DEV_TOOLS`). */
+  private readonly devTools = inject(DEV_TOOLS);
   protected readonly links = [
     { path: "/", es: "Bandeja", en: "Inbox", exact: true },
-    { path: "/catalog", es: "Catálogo", en: "Catalog", exact: false },
+    ...(this.devTools ? [{ path: "/catalog", es: "Catálogo", en: "Catalog", exact: false }] : []),
   ];
 
   private readonly content = viewChild.required<ElementRef<HTMLElement>>("content");
@@ -146,12 +149,14 @@ export class Shell {
     const add = (id: string, es: string, en: string, run: () => void) =>
       this.commands.register({ id, label: { es, en }, run }, destroyRef);
     add("go:inbox", "Ir a la Bandeja", "Go to the Inbox", () => void router.navigateByUrl("/"));
-    add(
-      "go:catalog",
-      "Ir al catálogo",
-      "Go to the catalog",
-      () => void router.navigateByUrl("/catalog"),
-    );
+    if (this.devTools) {
+      add(
+        "go:catalog",
+        "Ir al catálogo",
+        "Go to the catalog",
+        () => void router.navigateByUrl("/catalog"),
+      );
+    }
     add("theme:light", "Tema claro", "Light theme", () => this.preferences.theme.set("light"));
     add("theme:dark", "Tema oscuro", "Dark theme", () => this.preferences.theme.set("dark"));
     add("theme:system", "Tema del sistema", "System theme", () =>

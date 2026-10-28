@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261028-el-catalogo-del-sistema-de-diseno-solo-en-desarr",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-el-catalogo-del-sistema-de-diseno-solo-en-desarr",
   "baseCommit": "386c1c021deec1423506e8570bb7cde64ce991af",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a63c28e08431ec77683e20c840abdfa67510875d68a50d6a5f73f7e4bee465e9",
+    "at": "2026-10-28T17:48:38.786Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e70904b655e577ba5d4498ad80c7815c85ee648a",
+      "startedAt": "2026-10-28T17:48:39.646Z",
+      "doneAt": "2026-10-28T17:50:33.761Z",
+      "summary": "DEV_TOOLS (isDevMode) decide el enlace y el comando del catálogo, y appRoutes solo añade su ruta en desarrollo"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a63c28e08431ec77683e20c840abdfa67510875d68a50d6a5f73f7e4bee465e9",
-    "at": "2026-10-28T17:48:38.786Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
