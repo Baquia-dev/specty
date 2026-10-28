@@ -611,4 +611,21 @@ SIGUIENTE: revierte ese archivo o pide ampliar el alcance con `specty scope add 
 | Diseño, Archivos, Riesgos | `design.md` | `plan.md`: Summary, Design, Project Structure y Risks | `design.md`: Overview, Architecture, Components and Interfaces y Risks |
 | Tareas | `tasks.md`: `- [x] 1.1 …`, marcadas si están hechas | `tasks.md`: `- [ ] T001 [US1] … in <rutas>` | `tasks.md`: `- [ ] 1. …`, con sus archivos y `_Requirements: 1.2_` |
 
-`<nombre>` es el id del cambio sin su fecha. Los encabezados y las palabras clave de cada formato (WHEN, THEN, SHALL) van en inglés, como los espera cada herramienta, y el texto de la spec va tal cual, en su idioma. Un criterio `CUANDO … ENTONCES …` (o `WHEN … THEN …`) se parte en su condición y su resultado; uno de otra forma va entero como resultado. Lo hace `packages/exporters` (`exportSpec`), que devuelve rutas y contenidos sin escribir nada. El mapeo parte de la documentación pública de cada formato, consultada al implementarlo (octubre de 2026). La importación (al menos desde OpenSpec, para quienes vienen del legacy) usa el mapeo inverso.
+`<nombre>` es el id del cambio sin su fecha. Los encabezados y las palabras clave de cada formato (WHEN, THEN, SHALL) van en inglés, como los espera cada herramienta, y el texto de la spec va tal cual, en su idioma. Un criterio `CUANDO … ENTONCES …` (o `WHEN … THEN …`) se parte en su condición y su resultado; uno de otra forma va entero como resultado. Lo hace `packages/exporters` (`exportSpec`), que devuelve rutas y contenidos sin escribir nada. El mapeo parte de la documentación pública de cada formato, consultada al implementarlo (octubre de 2026).
+
+**Importación desde OpenSpec** (`specty import <carpeta>`). Usa el mapeo inverso:
+
+- `parseOpenSpec` (`packages/exporters`) lee los archivos de la carpeta.
+- `importedSections` (`core/src/cards/import.ts`) los pone en las palabras de la spec.
+- `specTemplate` los escribe en lugar de las pistas de esas secciones.
+
+| OpenSpec | Spec |
+| --- | --- |
+| El `#` de `proposal.md`, sin «Change:» ni «Proposal:» | Título (sin él, el nombre de la carpeta) |
+| Why y What Changes | Objetivo |
+| Out of Scope | Fuera de alcance |
+| Cada `#### Scenario:` con WHEN y THEN (y GIVEN; AND se une a la cláusula anterior) | Un criterio `DADO … CUANDO … ENTONCES …` |
+| Cada `- [ ]` de `tasks.md`, sin su numeración | Una tarea sin `files`, que añade el agente |
+| `design.md`, las demás partes de la propuesta, los requisitos sin escenario, los escenarios incompletos, los requisitos de REMOVED y las tareas `- [x]` | Diseño, tal cual y con una etiqueta por grupo |
+
+Supuestos y Archivos conservan su pista. La petición literal del cambio es «Importado de OpenSpec: <carpeta>», y la carpeta de origen no cambia. Los cambios archivados (`openspec/changes/archive/`) y las specs vivas (`openspec/specs/`) no se importan.

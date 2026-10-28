@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-specty-import-trae-un-cambio-de-openspec-como-bo-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-specty-import-trae-un-cambio-de-openspec-como-bo-2",
   "baseCommit": "6739bf86d4838e486917f11ccd66ea4b2011a89e",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2c79e30a07aa3b043be725cfbd3316b461856bc8",
+      "attempts": 1,
       "startedAt": "2026-10-28T16:21:28.171Z",
       "doneAt": "2026-10-28T16:21:42.873Z",
-      "summary": "specty import lista los cambios de OpenSpec o crea uno como borrador con new y las secciones importadas"
+      "summary": "specty import lista los cambios de OpenSpec o crea uno como borrador con new y las secciones importadas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "48d2b2a448a9d56f8c5265cb76fbe1be182a4996",
+      "startedAt": "2026-10-28T16:21:43.218Z",
+      "doneAt": "2026-10-28T16:21:53.586Z",
+      "summary": "ARCHITECTURE 6 nombra specty import y formats 10 tabula el mapeo inverso"
     }
   },
   "pending": {
