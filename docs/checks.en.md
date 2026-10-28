@@ -324,6 +324,16 @@ Each `type: fix` task, active or done, brings a test of its own in the diff: fro
 
 **Disable:** `levels: { fix-tests: off }`, or `warn` so that a `fix` task without a test only warns.
 
+### `criteria-tested`
+
+**With:** `--spec`.
+
+Warns, without failing, about each acceptance criterion of a `feat` or `fix` task (or one without a `type`, which is `feat`), active or done, that has no test with its id: no line the diff adds to a test file contains it. The id counts anywhere in the line (the test's name, its description or a comment), written as in the spec: `it("AC2: greets without a name", …)`. `AC2` does not count for `AC20`. A criterion with `test: manual`, which the person checks, does not need one, nor one that only tasks of other types cover. With `--staged`, only the active task counts, because the done one already made its commit.
+
+**Configuration:** with `policy.tests: off` it warns about no criterion.
+
+**Disable:** `levels: { criteria-tested: off }`.
+
 ### `tests-removed`
 
 **With:** `--spec`.

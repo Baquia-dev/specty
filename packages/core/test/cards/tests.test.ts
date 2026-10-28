@@ -63,10 +63,15 @@ describe("test rules", () => {
     expect(testRules({ type: "feat" }, "off")).toBeUndefined();
   });
 
-  it("show in the task card: test first, and never bend an existing failing test", () => {
+  it("AC4: show in the task card: test first, with the criterion's id, and never bend an existing failing test", () => {
     const first = card("implementing", [task("T1", "active", { testRules: "first" })]);
     expect(first).toContain(
-      "TESTS:\n  Primero el test: escribe el que comprueba cada criterio y míralo fallar; después, el código.\n  Si falla un test que ya existía, no lo cambies para que pase: para y explícaselo al usuario.",
+      "TESTS:\n  Primero el test: escribe el que comprueba cada criterio, con su id en el nombre (`AC1: …`), y míralo fallar; después, el código.\n  Si falla un test que ya existía, no lo cambies para que pase: para y explícaselo al usuario.",
+    );
+    expect(
+      card("implementing", [task("T1", "active", { testRules: "first" })], { ...ES, lang: "en" }),
+    ).toContain(
+      "TESTS:\n  Test first: write the test that checks each criterion, with its id in the name (`AC1: …`), and watch it fail; then the code.\n",
     );
     const keep = card("implementing", [task("T1", "active", { testRules: "keep" })], {
       ...ES,

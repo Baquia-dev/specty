@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Lang } from "../i18n";
 import type { Output } from "../output";
+import { criteriaWarnings } from "./criteria";
 import { sliceLines } from "./epic";
 import { blockedCard } from "./flow";
 import { longFileWarnings } from "./lines";
@@ -29,6 +30,7 @@ export function acceptanceSummary(
     ...assertionWarnings(change.tasks, ctx.lang),
     ...riskWarnings(change.tasks, ctx.lang),
     ...longFileWarnings(change.tasks, ctx.lang),
+    ...criteriaWarnings(change.criteriaTests ?? [], ctx.lang, "person"),
     ...(unverified
       ? [
           t(

@@ -117,6 +117,21 @@ export function testCases(text: string): number {
     .length;
 }
 
+/**
+ * The lines that carry one of `ids`, once per id, as the spec writes it: anywhere in the line (the
+ * name, the description or a comment), also inside a name (`TestAC2Greets`, `test_AC2_greets`);
+ * `AC2` does not count for `AC20` nor `XAC2`.
+ */
+export function criterionMarks(text: string, ids: readonly string[]): Mark[] {
+  if (ids.length === 0) return [];
+  const id = new RegExp(`(?<![A-Z0-9])(?:${ids.map(escaped).join("|")})(?![0-9])`, "g");
+  return text
+    .split(/\r?\n/)
+    .flatMap((source, index) =>
+      [...new Set(source.match(id))].map((marker) => ({ line: index + 1, marker })),
+    );
+}
+
 /** Comments that start with a marker of pending work and point to no issue. */
 export function unreferencedTodos(text: string, todo: TodoConfig): Mark[] {
   const markers = todo.markers.map(escaped).join("|");

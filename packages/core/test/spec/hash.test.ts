@@ -63,6 +63,15 @@ describe("specDelta", () => {
     ]);
   });
 
+  it("sees `test: manual` as a change of its criterion (AC1)", () => {
+    const manual = STANDARD.replace(/(- AC1: [^\n]*\n)/, "$1  - test: manual\n");
+    expect(manual).not.toBe(STANDARD);
+    expect(hashOf(manual)).not.toBe(hashOf(STANDARD));
+    expect(specDelta(specOf(STANDARD), specOf(manual)).entries).toEqual([
+      { key: "AC1", kind: "criterion", change: "modified" },
+    ]);
+  });
+
   it("is empty when only checkboxes change", () => {
     const delta = specDelta(specOf(STANDARD), specOf(STANDARD.replace("- [ ] T2", "- [x] T2")));
     expect(delta.isEmpty).toBe(true);
