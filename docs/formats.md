@@ -201,6 +201,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 }
 ```
 
+- `phase` es una de las fases de ARCHITECTURE §4: `draft`, `review`, `testing`, `implementing`, `acceptance`, `adjusting`, `closing`, `done` o `cancelled`. `testing` es la fase de los tests de los criterios antes del código ([ADR 0014](decisions/0014-los-tests-como-contrato.md)); todavía no se entra en ella.
 - `approved.hash` debe coincidir con la forma canónica actual de `spec.md`. Si no coincide, nada avanza hasta que se proponga y apruebe una nueva revisión.
 - `approved.channel` dice por dónde se aprobó: `tty`, `ui`, `pr` o `delegated`. `delegated` significa que aprobó el agente en modo delegado. `by` es siempre la persona: la que aprobó o la que delegó.
 - `items[].decision` puede ser:

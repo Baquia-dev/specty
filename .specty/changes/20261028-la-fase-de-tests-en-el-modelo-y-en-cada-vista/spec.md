@@ -62,7 +62,7 @@ El corte C2 de la épica «Tests como contrato» añade la fase `testing`, entre
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty-core exec vitest run test/schema test/cards && pnpm --filter @baquia-dev/specty exec vitest run test/server/records.test.ts && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data --include src/theme --include src/components
   - notes: una sola tarea porque cada `Record<Phase, …>` de core, cli y ui exige la fase a la vez: repartida, una tarea dejaría los tipos en rojo.
-- [ ] T2: Un cambio en testing se puede cancelar; la documentación nombra la fase
+- [x] T2: Un cambio en testing se puede cancelar; la documentación nombra la fase
   - files: packages/core/src/flow/machine.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow
