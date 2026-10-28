@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "id": "20261028-con-contract-un-refactor-no-quita-aserciones-de",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-con-contract-un-refactor-no-quita-aserciones-de",
+  "baseCommit": "01873231d24767c52db647dc16330d463bf7332c",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c95fe015da7bb3d964475f8e2fa0365f4852cf9ce07b85631d01563fb645e531",
+    "at": "2026-10-28T10:04:32.102Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
