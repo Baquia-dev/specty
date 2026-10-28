@@ -31,12 +31,29 @@ const MIRROR_ROOTS: ReadonlySet<string> = new Set([
 const SOURCE_ROOTS: readonly string[] = ["lib", "src", "app", "main", ""];
 const SWIFT_TESTS = "Tests";
 
+/**
+ * RSpec's folders, which sit next to the code (`spec/models/user_spec.rb`): inside a folder of
+ * code they are code too, such as `src/spec/parse.ts`.
+ */
+const SPEC_DIRS: ReadonlySet<string> = new Set(["spec", "specs"]);
+const CODE_DIRS: ReadonlySet<string> = new Set(SOURCE_ROOTS.filter(Boolean));
+
 /** True for test files by name (`*.test.ts`, `*_test.dart`…) or location (`test/`, `__tests__/`…). */
 export function isTestFile(path: string): boolean {
   if (TEST_NAME.some((pattern) => pattern.test(path))) return true;
-  return dirname(path)
-    .split("/")
-    .some((segment) => TEST_DIRS.has(segment));
+  const segments = dirname(path).split("/");
+  return segments.some((_, index) => isTestDir(segments, index, TEST_DIRS));
+}
+
+/** True when `segments[index]` is one of the folders of tests in `names`. */
+function isTestDir(
+  segments: readonly string[],
+  index: number,
+  names: ReadonlySet<string>,
+): boolean {
+  const segment = segments[index];
+  if (segment === undefined || !names.has(segment)) return false;
+  return !SPEC_DIRS.has(segment) || !segments.slice(0, index).some((dir) => CODE_DIRS.has(dir));
 }
 
 /**
@@ -102,7 +119,7 @@ function atMirrorRoot(segments: readonly string[]): boolean {
 }
 
 function mirrorRoot(segments: readonly string[]): number {
-  return segments.findIndex((segment) => MIRROR_ROOTS.has(segment));
+  return segments.findIndex((_, index) => isTestDir(segments, index, MIRROR_ROOTS));
 }
 
 /** The mirror root may be nested, as in a monorepo package: `packages/x/test/a` → `packages/x/src/a`. */
