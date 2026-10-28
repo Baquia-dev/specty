@@ -141,7 +141,7 @@ Punto de partida para el sistema de diseño:
 - Tipografía sans para la interfaz y monoespaciada para rutas, comandos y código.
 - Escala de espaciado de 4 px, radios moderados, sombras mínimas e iconos de trazo (Lucide).
 
-**Dirección elegida: Tinta** (2026-10-21, entre cuatro propuestas). Los valores viven solo en `packages/ui/src/styles.css`, y el catálogo (`pnpm --filter @baquia-dev/specty-ui exec ng serve`, en `/catalog`) los muestra en vivo.
+**Dirección elegida: Tinta** (2026-10-21, entre cuatro propuestas). Los valores viven solo en `packages/ui/src/styles.css`, y el catálogo (`pnpm --filter @baquia-dev/specty-ui exec ng serve`, en `/catalog`) los muestra en vivo. El catálogo es para quien desarrolla la UI: solo existe en desarrollo (`DEV_TOOLS`, que es `isDevMode()`, en `app/routes.ts`), así que la cabecera, la paleta ⌘K y la ruta `/catalog` no están en el build que sirve `specty ui`.
 
 - En claro, neutros fríos de la escala zinc: fondo `#FAFAFA`, superficie `#FFFFFF`, texto `#18181B`.
 - En oscuro, grises mate como los de Taiga UI (2026-10-22, porque el casi negro cansaba la vista): fondo `#222222`, superficie `#292929`, borde `#3A3A3A`, texto al 90 % `#E8E8E8` (13:1 sobre el fondo, frente a los 17,8:1 de antes) y fases desaturadas. Un test pone un techo de 14:1 al texto sobre el fondo.
