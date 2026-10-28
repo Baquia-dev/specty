@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-specty-import-trae-un-cambio-de-openspec-como-bo-2",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261028-specty-import-trae-un-cambio-de-openspec-como-bo-2",
   "baseCommit": "6739bf86d4838e486917f11ccd66ea4b2011a89e",
   "revision": 1,
@@ -56,6 +56,9 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-28T16:20:36.003Z"
+  "lockedTests": {
+    "packages/cli/test/import.test.ts": "sha256:bccd2ec75181e94195ffae281c9369c0d81c7cdebff0c955b3b8a91a8881d607",
+    "packages/core/test/cards/import.test.ts": "sha256:783a4c53cd4fefb513dc52a73e3c8cb05ffc19134aec9dae19b2af60e09eae4c",
+    "packages/exporters/test/import-openspec.test.ts": "sha256:2608f2d8952cf807fbf9d82a16dcc4688dc5f49d46096b9e92a1e54194ff82df"
+  }
 }
