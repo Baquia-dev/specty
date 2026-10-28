@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-specty-mcp-expone-los-comandos-del-agente-como-h",
+  "baseCommit": "edb43bd3094859ee92c940acab964d048810a6e4",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:38826f96e38e845335366f132abb32ef39b6e5328ec34a2712d0fb24c01441dd",
+    "at": "2026-10-28T15:44:31.931Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 6,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6af5c1b2b97a4e3bb05c85c5807515cbc6679b6409ea22c2c5f0ddb88933d1d6",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:95b8b12d71298f86eab0716c54b9e4521de06d3183703314c3506479d58a6d78",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8070a87ca87e647ef3678d6c86406d94760eb76f8d9cc1486bd36b8c0bfc82c4",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:7121ac9853df39910a12c867495261fabc5e015136c5994a2ce09457f6ea295c",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:ede68c0880c3da52130b047122354999837c04e9e2448cc9693aff7c671c86e0",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:68726b630612a49c623558d7547a88185a1f6f40993e8cf848b7a25fa5b404e8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e299896426580b058564a0d92827a9c3ebfbc1d7",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:40:07.454Z",
+      "doneAt": "2026-10-28T15:42:50.732Z",
+      "summary": "specty mcp: JSON-RPC por líneas (mcp/protocol), diez herramientas con esquema y su línea de comando (mcp/tools), cada llamada ejecuta runCli en su carpeta con la salida capturada",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "6855b32163a1e31a4cab589cf1f658cb9c72620f",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:42:51.040Z",
+      "doneAt": "2026-10-28T15:43:04.260Z",
+      "summary": "ARCHITECTURE 6 describe el servidor MCP, sus herramientas y sus límites",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "01f0cb50cfbe0d7b112bc1af25026073ded59ea2",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:44:32.285Z",
+      "doneAt": "2026-10-28T15:44:44.928Z",
+      "summary": "Args ya no se exporta; knip pasa",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-28T15:47:43.907Z",
+  "lockedTests": {
+    "packages/cli/test/mcp.test.ts": "sha256:5e8cf22f63c7ace577e3ca8495f7cb1eb634c69b0fa966b84f57e72ab3f0fa48"
+  }
+}

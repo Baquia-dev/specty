@@ -35,6 +35,8 @@ const ScopeRequestSchema = z.strictObject({
   task: z.string().regex(/^T[1-9]\d*$/),
   paths: z.array(z.string().min(1)).min(1),
   reason: z.string().min(1),
+  /** Made by `retro --into`: the print of the staged code it documents (ARCHITECTURE §9). */
+  retro: z.string().min(1).optional(),
 });
 
 /**

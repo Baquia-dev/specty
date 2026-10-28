@@ -35,6 +35,35 @@ describe("specty check", () => {
     );
   });
 
+  it("follows task done's rule: fails only on files the change takes past the maximum", async () => {
+    const root = await tempRepo({
+      "src/legacy.ts": source(520),
+      "src/near.ts": source(480),
+      "src/long.ts": source(320),
+      ".specty/config.yaml": `${CONFIG()}checks:\n  levels:\n    secrets: off\n`,
+    });
+    // Already past the maximum, it grows; near it, it crosses; past the warning, it stays.
+    await writeFiles(root, {
+      "src/legacy.ts": source(525),
+      "src/near.ts": source(510),
+      "src/long.ts": source(320).replace("v0 = 0", "v0 = 1"),
+    });
+    const run = await cli(root, ["check"]);
+    expect(run.code).toBe(1);
+    expect(run.out).toBe(
+      [
+        "FALLA max-lines",
+        "  src/legacy.ts 525 líneas de código (aviso a partir de 300)",
+        "  src/near.ts 510 líneas de código (máximo 500)",
+        "OK 3/4 · FALLA: max-lines",
+      ].join("\n"),
+    );
+    // Without a starting point, every file counts.
+    expect((await cli(root, ["check", "--all"])).out).toContain(
+      "  src/legacy.ts 525 líneas de código (máximo 500)",
+    );
+  });
+
   it("looks at what is staged with --staged, and at everything with --all", async () => {
     const root = await repo();
     await writeFiles(root, { "src/big.ts": source(520), "src/long.ts": source(320) });

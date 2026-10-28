@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "id": "20261028-specty-ci-rechaza-los-commits-que-no-se-pueden-t",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-specty-ci-rechaza-los-commits-que-no-se-pueden-t",
+  "baseCommit": "d0b1d42a3b4b71010a26e413e2222400429dff69",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:171ec8df8bcf135edf23018eb6fa6cde54ab70da0525237d2d22ae2c83738cb3",
+    "at": "2026-10-28T15:11:40.701Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0cc1342d410852a2536abf4f55927bcc702da995edbb35752a0155f690399512",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:15ddd31e87c66a426784c113c854f1146ea240949e6152c196a5f35cf35019a3",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:aa2ffb6e082dcb1928d799e2c6a18e3f5baa9ed751f4696c54198fe1dd990e88",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:d7d42715a81c4424b4ef8d0ea9e3ee0ab6563c7b2bc7494befa864133595f571",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:2cef142cd03e204d55f3866a0bcf25cfc0ff7807e7148d78411eb185df3293b4",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:919abc68c8258287e39e4a122fb9cc6965dd18bf023fc52f004585a9b0bd4039",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3375a6c07fa5c41faaa73330c4ae1036cc86036f",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:14:14.275Z",
+      "doneAt": "2026-10-28T15:14:49.971Z",
+      "summary": "ciReport en core: traced, task-approval y no-spike con sus textos, como un CheckReport",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "32c04bce54bae663d8d85181b182541230e9022c",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:14:50.326Z",
+      "doneAt": "2026-10-28T15:18:28.459Z",
+      "summary": "specty ci: flow/ci-commits reúne con git los trailers, archivos, cambio y aprobación de cada commit del rango; el comando da el informe y el JSON de specty check",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "49377315f81084a263cec42e7d484c34f5e8db71",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:18:29.096Z",
+      "doneAt": "2026-10-28T15:19:31.616Z",
+      "summary": "checks.md, checks.en.md y ARCHITECTURE 6 y 10 describen specty ci",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-28T15:25:21.493Z",
+  "lockedTests": {
+    "packages/cli/test/ci.test.ts": "sha256:eb43f506a3c6ba2d7fd35feba8e15873c6af64ddbd86dd721a841ae0da6f6df1",
+    "packages/core/test/cards/ci.test.ts": "sha256:33d36a993a5d7711babab15560d967f0a0279169612ff1cb80cc26372b0722fc"
+  }
+}

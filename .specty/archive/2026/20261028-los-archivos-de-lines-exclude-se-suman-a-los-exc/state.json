@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261028-los-archivos-de-lines-exclude-se-suman-a-los-exc",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261028-los-archivos-de-lines-exclude-se-suman-a-los-exc",
+  "baseCommit": "d0b1d42a3b4b71010a26e413e2222400429dff69",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:276f6b488a6e546c6a05316386df31e5cd4a2464f2535cc10b9952c81e3c057a",
+    "at": "2026-10-28T15:15:09.917Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7370302ceda42e3fd5c3da365d245d14f27b670a",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:15:10.404Z",
+      "doneAt": "2026-10-28T15:19:37.496Z",
+      "summary": "lines.exclude se suma a las carpetas por defecto (sin duplicados); test en schema.test.ts visto en rojo antes del código; formats §6 y checks.md/en",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

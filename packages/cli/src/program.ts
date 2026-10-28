@@ -13,9 +13,11 @@ import type { ReportOutput } from "./check/provider";
 import { agentCommands } from "./commands/agent-commands";
 import { auditCommand } from "./commands/audit";
 import { checkCommand } from "./commands/check";
+import { ciCommand } from "./commands/ci";
 import { doctor } from "./commands/doctor";
 import { exportCommand } from "./commands/export";
 import { initCommand } from "./commands/init";
+import { mcpCommand } from "./commands/mcp";
 import { personCommands } from "./commands/person-commands";
 import { prune } from "./commands/prune";
 import { status } from "./commands/status";
@@ -27,6 +29,8 @@ import { bareCards, type Environment, openSession, type Session, systemLanguage 
 
 export interface CliEnvironment extends Environment {
   readonly stdin: () => Promise<string>;
+  /** Stdin as it arrives, for `specty mcp`, which answers each line while it reads the next. */
+  readonly input?: AsyncIterable<string | Uint8Array>;
 }
 
 /** Runs one command and returns its exit code (0 ok, 1 invalid, 2 blocked by the flow). */
@@ -56,6 +60,8 @@ export async function runCli(
   personCommands(program, run);
   uninstallCommand(program, run);
   checkCommand(program, run);
+  ciCommand(program, run);
+  mcpCommand(program, environment, runCli);
   auditCommand(program, run);
   exportCommand(program, run);
   readingCommands(program, run, environment, emit);
@@ -135,12 +141,14 @@ function readingCommands(
     .option("--tools <list>", "comma-separated agent tools, for example claude-code,cursor")
     .option("--git-flow <flow>", "how change branches are named: specty, github, trunk or gitflow")
     .option("--dry-run", "only list what init would create or change")
+    .option("--mcp", "also register Specty's MCP server in each agent's project configuration")
     .action(
       async (options: {
         language?: string;
         tools?: string;
         gitFlow?: string;
         dryRun?: boolean;
+        mcp?: boolean;
       }) => {
         const { output, lang } = await initCommand(environment, options);
         emit(output, lang);

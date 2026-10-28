@@ -14,6 +14,7 @@ import { formatterExclusions } from "../detect/formatters";
 import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
 import { gitHooksInstalled } from "../install/git-hooks";
+import { mcpDoctor } from "../install/mcp";
 import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
 import { COMMAND, type Session } from "../session";
@@ -51,17 +52,20 @@ export async function doctor(session: Session): Promise<Output> {
   );
   const version = process.versions.node;
   check(supportsNode(version), { code: "node", version }, { code: "old-node", version });
-  const warnings = await doctorWarnings(session, agents);
+  const warnings = [...tools.warnings, ...(await doctorWarnings(session, agents))];
   return doctorCard({ ok, warnings, problems }, session.cards);
 }
 
 /**
- * Each agent's guard, as its module checks it (`agents/`); another tool's guidance that tells the
- * agent to do what the guard blocks; and the formatters that would rewrite Specty's files.
+ * Each agent's guard, as its module checks it (`agents/`), and Specty's MCP server once the
+ * repository registered it; another tool's guidance that tells the agent to do what the guard
+ * blocks; and the formatters that would rewrite Specty's files.
  */
-async function toolLines(
-  session: Session,
-): Promise<{ readonly ok: DoctorLine[]; readonly problems: DoctorLine[] }> {
+async function toolLines(session: Session): Promise<{
+  readonly ok: DoctorLine[];
+  readonly problems: DoctorLine[];
+  readonly warnings: DoctorLine[];
+}> {
   const { root, git } = session;
   const ok: DoctorLine[] = [];
   const problems: DoctorLine[] = [];
@@ -72,6 +76,9 @@ async function toolLines(
     ok.push(...lines.ok);
     problems.push(...lines.problems);
   }
+  const mcp = await mcpDoctor(root, tools);
+  ok.push(...mcp.ok);
+  problems.push(...mcp.problems);
   for (const { file, blocks } of await gentleAiGuidance(root, session.environment.env)) {
     problems.push({ code: "gentle-ai", file, blocks });
   }
@@ -79,7 +86,7 @@ async function toolLines(
     if (excluded) ok.push({ code: "formatter-excludes", name, path });
     else problems.push({ code: "formatter-checks", name, path, add, file });
   }
-  return { ok, problems };
+  return { ok, problems, warnings: mcp.warnings };
 }
 
 /** Whether the `specty` command the agent runs can be found: its script, or the one on PATH. */

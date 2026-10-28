@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "id": "20261028-retro-into-documenta-lo-preparado-como-ampliacio",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-retro-into-documenta-lo-preparado-como-ampliacio",
+  "baseCommit": "f654d6ae32c2e1cc73bdecc5d630d533ad66c6a6",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:a038e9333d59e0a3fe262bc71513d3b0f40d1ac1ef673c0a39189770b7466022",
+    "at": "2026-10-28T14:34:50.391Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1ec3384184ec46dc49935efb62fc68e4d7974ab3470a0d72dc22148f32acebff",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7cb55c0a635253767390a895914fcf9a284911e58c9aa76799edce895b8b92e4",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:338a982f55cdfac4d3f4af0a22322d171665b9bc1d6c304738806c573590bf3b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:4575c18c585d917ec5deb763a4aa23f5ab4a6df079af9c43181006f652b749c4",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:1ac34a9ae93598800de527f8dd980cb80906d48c4366ef67d8ce7a9adc1fd386",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "42a1a3c9a0fd9d4aed77b8867e85e4c191b80a4f",
+      "attempts": 1,
+      "startedAt": "2026-10-28T14:37:30.265Z",
+      "doneAt": "2026-10-28T14:48:22.344Z",
+      "summary": "Campo retro en la solicitud, tarjetas de retro --into, el hook propone --into, el comando crea la solicitud y su aprobación rechaza lo caducado o emite el recibo retro",
+      "scopeExtra": [
+        "packages/cli/src/commands/retro-into.ts",
+        "packages/cli/src/flow/retro-into.ts",
+        "packages/cli/src/commands/agent-commands.ts",
+        "packages/cli/src/commands/scope-decision.ts",
+        "packages/cli/src/enforce/hook.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b0274499ddf88803c3500f438954e149a483ffce",
+      "attempts": 1,
+      "startedAt": "2026-10-28T14:48:22.666Z",
+      "doneAt": "2026-10-28T14:51:10.909Z",
+      "summary": "Sin código propio: lo implementó T1, cuya verificación corría estos tests",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "bf957636eb6cee77c38a49bbdf06bfa0f74fd4de",
+      "attempts": 1,
+      "startedAt": "2026-10-28T14:51:11.240Z",
+      "doneAt": "2026-10-28T14:54:13.523Z",
+      "summary": "ARCHITECTURE 6 y 9 y formats 3 y 4 describen retro --into, su huella y su confirmación",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-28T14:57:41.222Z",
+  "lockedTests": {
+    "packages/cli/test/retro-into.test.ts": "sha256:c7f7580ccfebedf3bdf1e376ccb24f0f2e4ad5dd757f287342e06c75aa0a0b61",
+    "packages/core/test/cards/hooks.test.ts": "sha256:8e0da3578c17c1b006666a088b712f2c23f2398c9ba0c1d9f6824ada42906c86",
+    "packages/core/test/cards/retro-into.test.ts": "sha256:6c8927b0ee790b85e44a8ff8a5e20221d4f632f2aa0f31a73ddeb326d3a019c5"
+  }
+}

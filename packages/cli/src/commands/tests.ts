@@ -139,7 +139,11 @@ async function commitTests(
   const scope = moduleOf(tests[0] ?? "");
   return commitWithReceipt(session, {
     subject: `test${scope === "(root)" ? "" : `(${scope})`}: ${spec.title}`,
-    trailers: changeTrailers(session, state.id, { "Specty-Spec": specTrailer(state) }),
+    // `Specty-Tests` lets the acceptance matrix count the lines of this commit (ARCHITECTURE §13).
+    trailers: changeTrailers(session, state.id, {
+      "Specty-Spec": specTrailer(state),
+      "Specty-Tests": "true",
+    }),
     stage: [tests, [dir]],
     only: [...tests, dir],
     receipt: { change: state.id, kind: "tests" },

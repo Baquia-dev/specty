@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AGENT_NAMES, type AgentTool } from "../agents";
 import { headerOf, type Output, section } from "../output";
+import { MCP_WRITERS } from "./mcp";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -74,7 +75,14 @@ export type DoctorLine =
   | { readonly code: "unfilled-sections"; readonly sections: readonly string[] }
   /** The glossary exists and defines no term yet: only its hints. */
   | { readonly code: "empty-glossary"; readonly path: string }
-  | { readonly code: "delegated"; readonly since: string; readonly by: string };
+  | { readonly code: "delegated"; readonly since: string; readonly by: string }
+  /** Specty's MCP server in an agent's project configuration (`cards/mcp.ts`). */
+  | {
+      readonly code: "mcp-registered" | "mcp-missing" | "mcp-other";
+      readonly tool: AgentTool;
+      readonly file: string;
+    }
+  | { readonly code: "mcp-user-folder"; readonly tool: AgentTool };
 
 type Code = DoctorLine["code"];
 /** Each line, by its code. */
@@ -306,6 +314,7 @@ const WRITERS: {
       `Modo delegado activo desde el ${line.since} (${line.by}): tu agente toma tus decisiones. Para desactivarlo: \`${command} delegate off\`.`,
       `Delegated mode on since ${line.since} (${line.by}): your agent makes your decisions. To turn it off: \`${command} delegate off\`.`,
     ),
+  ...MCP_WRITERS,
 };
 
 export function doctorLine(line: DoctorLine, ctx: CardContext): string {

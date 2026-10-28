@@ -45,7 +45,8 @@ export interface ResolvedConfig {
   readonly size: { readonly S: number; readonly M: number; readonly L: number };
   /**
    * Lines of code of the files a task touches: a warning past `warn`, a block past `fail` (or
-   * never, with `false`). Tests have their own; `exclude` lists paths not sized.
+   * never, with `false`). Tests have their own; `exclude` lists paths not sized, the person's
+   * added to the default ones.
    */
   readonly lines: LineLimits & {
     readonly tests: LineLimits;
@@ -318,7 +319,8 @@ function linesOf(input: ConfigInput): ResolvedConfig["lines"] {
       warn: input.lines?.tests?.warn ?? base.tests.warn,
       fail: input.lines?.tests?.fail ?? base.tests.fail,
     },
-    exclude: input.lines?.exclude ?? base.exclude,
+    // The person's paths add to the data folders, which stay out.
+    exclude: [...new Set([...base.exclude, ...(input.lines?.exclude ?? [])])],
   };
 }
 

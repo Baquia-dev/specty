@@ -1,0 +1,12 @@
+{
+  "name": "@baquia-dev/specty-evals",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Specty's compliance suite: real agents in throwaway repositories (ARCHITECTURE §16). Its tests judge; `pnpm evals` runs the agents.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}

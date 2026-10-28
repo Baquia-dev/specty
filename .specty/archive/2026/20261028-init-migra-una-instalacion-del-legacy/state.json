@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "id": "20261028-init-migra-una-instalacion-del-legacy",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-init-migra-una-instalacion-del-legacy",
+  "baseCommit": "1b31ebcbaaf392930ff10c943fd85335f116b57d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:51ca392e829bce315bbaddeaa1e99bf0965911baaa511f0ba4616b8e4d7d3c84",
+    "at": "2026-10-28T16:30:49.634Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:332367710aefb6a42d535790c3864ecdcaed6a18cc2974dcf90119fc79e50019",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ff3aa2eed77ff9ac298c3daf2297596e4fcdeeb7c6e2206007f9d9b2b03f339b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:f1d2aae25774131c000a8edf74d1586385893ad94d32de022d4204e3296e866b",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:8994642a6096a0fd637034f8bb0893e35ccd6c5b238b622e4022214036e72745",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:5cdbd7492304c538f1c07b3b417c1339016f9904934513eab04e33a862e1036e",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:74c14954adca1a0db94795661797bffce0bc6ad4c7737888627876a9d9895ff4",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "93742b4da37e88ab3aa765421110a02d301a7e43",
+      "attempts": 1,
+      "startedAt": "2026-10-28T16:32:31.798Z",
+      "doneAt": "2026-10-28T16:33:27.242Z",
+      "summary": "configTemplate acepta governed e ignored; cards/legacy.ts tiene los pasos, sus notas y preguntas, las líneas de lo hecho, el rechazo y el plan",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "3c78b454bc73890e7d833c77c733090fc3e09f5f",
+      "attempts": 1,
+      "startedAt": "2026-10-28T16:33:27.593Z",
+      "doneAt": "2026-10-28T16:39:00.115Z",
+      "summary": "install/legacy.ts reconoce, traduce, planea y aplica la migración con una nota y una pregunta por paso; init la llama antes de leer la configuración e import lista los cambios del legacy",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "55dd9e5e1a53626318ce376baa9224dccc93a4b8",
+      "attempts": 1,
+      "startedAt": "2026-10-28T16:39:00.428Z",
+      "doneAt": "2026-10-28T16:39:25.890Z",
+      "summary": "ARCHITECTURE 14 explica la migración del legacy y formats 1 y 10 nombran .specty/legacy/",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-28T16:42:31.580Z",
+  "lockedTests": {
+    "packages/cli/test/legacy.test.ts": "sha256:8b43949822743de6d2b7759a037b6b8a192e29e91e16532b6a0bc169ed683b5b",
+    "packages/core/test/cards/legacy.test.ts": "sha256:d402d5b08ec3307e7136144cdb54049c220db71d8820a66a447a8438db8a321f"
+  }
+}

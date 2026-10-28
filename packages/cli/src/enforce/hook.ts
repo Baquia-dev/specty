@@ -1,16 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
-import {
-  blockedCommitMessage,
-  checkStagedFailedLine,
-  isGoverned,
-  matchesAny,
-  parseSpec,
-} from "@baquia-dev/specty-core";
+import { blockedCommitMessage, checkStagedFailedLine, matchesAny } from "@baquia-dev/specty-core";
 import { check } from "../commands/check";
 import { isFinished, resolveActive } from "../flow/active";
-import { pathsOf } from "../io/git";
+import { changeScope, stagedGoverned } from "../flow/retro-into";
 import { COMMAND, type Session } from "../session";
-import { readSpec, type StoredChange } from "../store/changes";
+import type { StoredChange } from "../store/changes";
 import { takeMarker, takeReceipt, writeMarker } from "../store/local";
 
 /**
@@ -27,16 +21,14 @@ export async function preCommit(session: Session): Promise<number> {
     await writeMarker(git, { tree, change: receipt.change, kind: receipt.kind });
     return 0;
   }
-  const governed = pathsOf(await git.staged()).filter(
-    (path) => !path.startsWith(".specty/") && isGoverned(path, session.config),
-  );
+  const governed = await stagedGoverned(session);
   if (governed.length === 0) return 0;
   const active = await resolveActive(session);
   const open = active !== undefined && !isFinished(active.state) ? active : undefined;
   if (open !== undefined && open.state.phase !== "draft") {
     return manualEdit(session, open, governed, tree);
   }
-  session.environment.io.err(message(session, governed, undefined));
+  session.environment.io.err(message(session, governed));
   return 1;
 }
 
@@ -57,7 +49,7 @@ async function manualEdit(
     await writeMarker(session.git, { tree, change: open.state.id, kind: "manual" });
     return 0;
   }
-  session.environment.io.err(message(session, outside, open.state.id));
+  session.environment.io.err(message(session, outside, open));
   return 1;
 }
 
@@ -106,21 +98,18 @@ export async function prepareCommitMsg(
   return 0;
 }
 
-/** Every path the change declares or has been granted. */
-async function changeScope(session: Session, change: StoredChange): Promise<string[]> {
-  const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
-  const declared = (spec.sections.files?.items ?? []).flatMap((entry) =>
-    entry.from === undefined ? [entry.path] : [entry.path, entry.from],
-  );
-  const extras = Object.values(change.state.tasks).flatMap((task) => task.scopeExtra);
-  return [...declared, ...extras];
-}
-
-function message(session: Session, paths: readonly string[], change: string | undefined): string {
+/**
+ * The message of a blocked commit. Outside the scope of a change implementing a task, it offers
+ * `retro --into`, which documents the paths in that change.
+ */
+function message(session: Session, paths: readonly string[], change?: StoredChange): string {
+  const into =
+    change?.state.phase === "implementing" &&
+    Object.values(change.state.tasks).some((task) => task.status === "active");
   return blockedCommitMessage(
     {
       paths,
-      ...(change !== undefined ? { change } : {}),
+      ...(change !== undefined ? { change: change.state.id, into } : {}),
       minimalAllowed: session.config.retro.mode === "minimal",
       command: COMMAND,
     },

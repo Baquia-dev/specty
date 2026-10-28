@@ -39,11 +39,11 @@ Todo va bajo `checks` en `.specty/config.yaml`:
 checks:
   levels: { todo: warn, secrets: off }  # error | warn | off por verificación; sin la clave, error
   maxFindings: 10                       # fallos que se muestran por verificación antes de «… y N más»
-  exclude: ["**/node_modules/**", "**/build/**"]  # lo que ninguna verificación mira
+  exclude: ["legacy/**", "tools/vendored.ts"]  # lo que ninguna verificación mira, además de lo de por defecto
 ```
 
 - **Desactivar una verificación:** `checks.levels: { <id>: off }`. Con `warn`, sus fallos solo avisan. Es lo mismo para todas; cada sección de abajo dice además si hay otra forma.
-- **Lo que nunca se mira:** `checks.exclude` (por defecto `node_modules`, `build`, `dist`, `.dart_tool`, `out`, `target`, `coverage`, `vendor`, `.next`, `.angular` y `.gradle`), las rutas de `ignored` y el código generado de `scope.generated`.
+- **Lo que nunca se mira:** `checks.exclude`, las rutas de `ignored` y el código generado de `scope.generated`. Lo que pones en `checks.exclude` se suma a las carpetas que siempre quedan fuera: `node_modules`, `build`, `dist`, `.dart_tool`, `out`, `target`, `coverage`, `vendor`, `.next`, `.angular` y `.gradle`.
 - **Mensajes:** en el idioma de `language` (`es` o `en`).
 
 ## Las verificaciones
@@ -221,9 +221,9 @@ Comprueba que el código generado coincide con lo que produce su generador, como
 
 **Stack:** cualquiera.
 
-Las líneas de código de cada archivo, sin blancos ni comentarios. Avisa por encima de `lines.warn` y falla por encima de `lines.fail`.
+Las líneas de código de cada archivo, sin blancos ni comentarios, con la misma regla que `task done`. Falla si el cambio lleva un archivo por encima de `lines.fail`, y avisa si hace crecer uno por encima de `lines.warn`, también uno que ya pasaba del máximo: tocar un archivo heredado largo no obliga a dividirlo. Compara con el punto de partida del modo (la base con `--changed`, HEAD con `--staged`); con `--all` no lo hay, así que falla cada archivo por encima de `lines.fail`.
 
-**Configuración:** la regla `lines`: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` y `exclude`.
+**Configuración:** la regla `lines`: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` y `exclude`. Para dejar fuera un archivo concreto, pon su ruta o un glob en `lines.exclude`; se suma a las carpetas de datos que ya quedan fuera por defecto (fixtures, mocks, migrations, i18n…).
 
 **Desactivar:** `levels: { max-lines: off }`, o `lines.fail: false` para que solo avise.
 
@@ -358,8 +358,37 @@ Avisa, sin hacer fallar nunca, de cada test que el diff borra y de cada archivo 
 
 - **`specty task done`** ejecuta `specty check --changed --spec` antes de la verificación de la tarea, y no la completa con fallos. Deja fuera `scope` y `max-lines`, que ya comprueba por tarea. Si la tarea tiene verificación, deja fuera también los cuatro comandos del proyecto, para que los tests no corran dos veces.
 - **El pre-commit** ejecuta `specty check --staged` sobre los cambios manuales con `checks.preCommit: true`.
-- **La CI** ejecuta `specty check --all --json` con la plantilla de GitHub Actions.
+- **La CI** ejecuta `specty check --all --json` con la plantilla de GitHub Actions, y `specty ci` (abajo) sobre los commits del pull request o del push.
 - **El fin de turno del agente** ejecuta `specty check --changed`, con `--spec` si hay un cambio aprobado. Si falla, el agente recibe el informe y sigue en vez de dar la tarea por terminada. Funciona en Claude Code, Cursor y Codex, que tienen un hook de fin de turno documentado. En los demás agentes, la regla escrita del bloque de AGENTS.md es el respaldo.
+
+## Commits trazables: `specty ci`
+
+`specty ci [--base <ref>] [--into <rama>] [--head-ref <rama>] [--verbose]` es la capa 4 de cumplimiento (ARCHITECTURE §10). No mira el código, sino los commits de `<base>..HEAD` que no son de merge. `--base` es la rama de destino del pull request o el commit anterior a un push; sin él, la rama destino, como `--changed`. Da el mismo informe y, con `--json`, el mismo JSON que `specty check`, y sus tres verificaciones respetan `checks.levels`:
+
+- **`traced`**: un commit que toca rutas gobernadas (fuera de `.specty/`) lleva `Specty-Change` o, si es la instalación de Specty, `Specty-Init: true`. El informe nombra el commit, su asunto y sus archivos, y pide documentarlo con `specty retro`.
+- **`task-approval`**: el cambio que nombra un commit de código gobernado existe en ese commit o en `HEAD`, abierto o archivado. En un commit de tarea (`Specty-Task`), además, el `state.json` de ese commit tiene una aprobación, la forma canónica de su `spec.md` da ese hash y el `Specty-Spec` del commit lo nombra.
+- **`no-spike`**: ningún commit con `Specty-Kind: spike`, ni la rama `spike/…` del pull request (`--head-ref`), va a la rama destino del repositorio (`git.target` o la principal). El destino es `--into` o la rama que nombra `--base`, sin su remoto. Si no se puede saber, porque `--base` es un commit, se trata como la rama destino.
+
+Los recibos viven en `.git` de cada clon, así que `specty ci` no los comprueba: un trailer copiado a mano pasa. La garantía con identidad llega con el modo equipo. Solo lee, así que también lo ejecuta el agente.
+
+**En GitHub Actions** (`GITHUB_ACTIONS=true`) y sin `--base`, `specty ci` lee el evento (`flow/ci-github.ts`). Las opciones de la línea de comando ganan a lo que da el evento.
+
+- **Pull request:** revisa `origin/<rama base>..HEAD`, con la rama base como destino y la del pull request como `--head-ref`.
+- **Push:** revisa desde el `before` del evento, con la rama empujada como destino. Si el push crea la rama, empieza en `origin/<rama por defecto>`.
+
+Hay dos formas de ejecutarlo:
+
+- La plantilla de `specty check --install` lo hace en los pull requests, con la versión exacta del CLI.
+- La Action de la raíz del repositorio de Specty (`action.yml`):
+
+  ```yaml
+  - uses: actions/checkout@v5
+    with:
+      fetch-depth: 0
+  - uses: Baquia-dev/specty@v0.2.0   # ejecuta @baquia-dev/specty@0.2.0; o el input `version`
+  ```
+
+  La Action prepara Node 22, completa la historia si el clon es superficial y ejecuta `npx -y @baquia-dev/specty@<versión> ci`. Sin etiqueta de versión ni `version`, falla y pide el input.
 
 ## Preparar el proyecto
 

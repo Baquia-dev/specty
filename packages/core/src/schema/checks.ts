@@ -159,7 +159,8 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
   return {
     levels: input?.levels ?? DEFAULT_CHECKS.levels,
     maxFindings: input?.maxFindings ?? DEFAULT_CHECKS.maxFindings,
-    exclude: input?.exclude ?? DEFAULT_CHECKS.exclude,
+    // The person's paths add to the dependency and build folders, which stay out.
+    exclude: [...new Set([...DEFAULT_CHECKS.exclude, ...(input?.exclude ?? [])])],
     todo: {
       markers: input?.todo?.markers ?? DEFAULT_CHECKS.todo.markers,
       reference: input?.todo?.reference ?? DEFAULT_CHECKS.todo.reference,

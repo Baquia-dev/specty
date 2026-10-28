@@ -108,7 +108,10 @@ async function withCriteriaTests(
   const { state } = record;
   if (state.phase !== "acceptance" || state.kind === "epic") return record;
   const spec = parseSpec(record.spec, { language: there.lang }).spec;
-  return { ...record, criteriaTests: await criteriaTests(there, spec, commits ?? new Map()) };
+  return {
+    ...record,
+    criteriaTests: await criteriaTests(there, spec, commits ?? new Map(), state.id),
+  };
 }
 
 /**

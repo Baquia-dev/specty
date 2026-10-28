@@ -39,6 +39,7 @@ export {
   auditRefusalCard,
   auditReport,
 } from "./audit";
+export { type CiCommit, type CiFacts, type CiLevel, ciReport } from "./ci";
 export {
   alreadyClosedLine,
   cancelCommitSubject,
@@ -100,6 +101,14 @@ export {
   type StatusEntry,
   statusCard,
 } from "./human";
+export {
+  type ImportedChange,
+  importedLead,
+  importedSections,
+  importListCard,
+  importRefusalCard,
+  importRequest,
+} from "./import";
 export {
   agentChoices,
   agentQuestion,
@@ -192,8 +201,18 @@ export {
   retryLandingNext,
   targetAheadLine,
 } from "./land";
+export {
+  legacyDoneLines,
+  legacyMoveBody,
+  legacyPlanCard,
+  legacyRefusalCard,
+  legacyRemovalBody,
+  legacyStepQuestion,
+  legacyStepTitle,
+} from "./legacy";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
 export { busyChangeCard, type LockHolderView } from "./lock";
+export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";
 export {
   changeCreatedLead,
   type NewRefusal,
@@ -227,6 +246,14 @@ export {
   retroRefusalCard,
   retroTitle,
 } from "./retro";
+export {
+  type RetroIntoRefusal,
+  retroIntoApprovedCard,
+  retroIntoRefusalCard,
+  retroIntoRequestedCard,
+  retroIntoStaleCard,
+  retroIntoStaleReason,
+} from "./retro-into";
 export {
   diffReviewPrompt,
   type ReviewedView,

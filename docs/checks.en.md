@@ -39,11 +39,11 @@ Everything goes under `checks` in `.specty/config.yaml`:
 checks:
   levels: { todo: warn, secrets: off }  # error | warn | off per check; without the key, error
   maxFindings: 10                       # failures shown per check before "… and N more"
-  exclude: ["**/node_modules/**", "**/build/**"]  # what no check looks at
+  exclude: ["legacy/**", "tools/vendored.ts"]  # what no check looks at, on top of the defaults
 ```
 
 - **Turning a check off:** `checks.levels: { <id>: off }`. With `warn`, its failures only warn. It works the same for every check; each section below also says whether there is another way.
-- **What is never looked at:** `checks.exclude` (by default `node_modules`, `build`, `dist`, `.dart_tool`, `out`, `target`, `coverage`, `vendor`, `.next`, `.angular` and `.gradle`), the `ignored` paths and the generated code of `scope.generated`.
+- **What is never looked at:** `checks.exclude`, the `ignored` paths and the generated code of `scope.generated`. What you put in `checks.exclude` adds to the folders that always stay out: `node_modules`, `build`, `dist`, `.dart_tool`, `out`, `target`, `coverage`, `vendor`, `.next`, `.angular` and `.gradle`.
 - **Messages:** in the `language` of the configuration (`es` or `en`).
 
 ## The checks
@@ -221,9 +221,9 @@ Checks that the generated code matches what its generator produces, like a `git 
 
 **Stack:** any.
 
-The lines of code of each file, without blank lines or comments. It warns above `lines.warn` and fails above `lines.fail`.
+The lines of code of each file, without blank lines or comments, by the same rule as `task done`. It fails if the change takes a file past `lines.fail`, and warns if it grows one past `lines.warn`, also one that was already past the maximum: touching a long inherited file does not force a split. It compares with where the mode starts (the base with `--changed`, HEAD with `--staged`); `--all` has no start, so every file past `lines.fail` fails.
 
-**Configuration:** the `lines` rule: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` and `exclude`.
+**Configuration:** the `lines` rule: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` and `exclude`. To leave out a specific file, put its path or a glob in `lines.exclude`; it adds to the data folders that are left out by default (fixtures, mocks, migrations, i18n…).
 
 **Disable:** `levels: { max-lines: off }`, or `lines.fail: false` so that it only warns.
 
@@ -358,8 +358,37 @@ Warns, without ever failing, about each test the diff deletes and each test file
 
 - **`specty task done`** runs `specty check --changed --spec` before the task's verification, and does not complete the task with failures. It leaves out `scope` and `max-lines`, which it already checks per task. When the task has a verification, it also leaves out the project's four commands, so that the tests do not run twice.
 - **The pre-commit hook** runs `specty check --staged` on manual changes with `checks.preCommit: true`.
-- **CI** runs `specty check --all --json` with the GitHub Actions template.
+- **CI** runs `specty check --all --json` with the GitHub Actions template, and `specty ci` (below) on the commits of the pull request or the push.
 - **The agent's end of turn** runs `specty check --changed`, with `--spec` when there is an approved change. If it fails, the agent gets the report and keeps going instead of reporting the task as done. It works in Claude Code, Cursor and Codex, which have a documented end-of-turn hook. In other agents, the written rule in the AGENTS.md block is the fallback.
+
+## Traceable commits: `specty ci`
+
+`specty ci [--base <ref>] [--into <branch>] [--head-ref <branch>] [--verbose]` is the fourth layer of compliance (ARCHITECTURE §10). It looks at the commits of `<base>..HEAD` that are not merges, not at the code. `--base` is the pull request's target branch or the commit before a push; without it, the target branch, as with `--changed`. It prints the same report as `specty check` and, with `--json`, the same JSON, and its three checks follow `checks.levels`:
+
+- **`traced`**: a commit that touches governed paths (outside `.specty/`) carries `Specty-Change` or, for Specty's installation, `Specty-Init: true`. The report names the commit, its subject and its files, and asks to document it with `specty retro`.
+- **`task-approval`**: the change a commit of governed code names exists in that commit or in `HEAD`, open or archived. A task's commit (`Specty-Task`) also needs, in that commit, a `state.json` with an approval whose hash its `spec.md`'s canonical form gives, and a `Specty-Spec` that names it.
+- **`no-spike`**: no commit with `Specty-Kind: spike`, nor the pull request's `spike/…` branch (`--head-ref`), goes into the repository's target branch (`git.target` or the main one). Where the commits go is `--into`, or the branch `--base` names without its remote. When that is unknown, because `--base` is a commit, it counts as the target branch.
+
+Receipts live in each clone's `.git`, so `specty ci` does not check them: a trailer copied by hand passes. The guarantee with identity comes with team mode. It only reads, so the agent runs it too.
+
+**In GitHub Actions** (`GITHUB_ACTIONS=true`) and without `--base`, `specty ci` reads the event (`flow/ci-github.ts`). The options on the command line win over what the event gives.
+
+- **Pull request:** it checks `origin/<base branch>..HEAD`, into the base branch, with the pull request's branch as `--head-ref`.
+- **Push:** it checks from the event's `before`, into the branch pushed. When the push creates the branch, it starts at `origin/<default branch>`.
+
+There are two ways to run it:
+
+- The template of `specty check --install` runs it on pull requests, with the CLI's exact version.
+- The Action at the root of Specty's repository (`action.yml`):
+
+  ```yaml
+  - uses: actions/checkout@v5
+    with:
+      fetch-depth: 0
+  - uses: Baquia-dev/specty@v0.2.0   # runs @baquia-dev/specty@0.2.0; or the input `version`
+  ```
+
+  The Action sets up Node 22, completes the history of a shallow clone and runs `npx -y @baquia-dev/specty@<version> ci`. Without a version tag or `version`, it fails and asks for the input.
 
 ## Preparing the project
 

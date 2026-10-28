@@ -15,7 +15,8 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 │  ├─ comments.json            # hilos de revisión de la UI
 │  ├─ revisions/r1.md, r2.md…  # instantánea de cada revisión propuesta
 │  └─ reviews/spec-r1.md, diff-1.md…  # respuestas de la revisión independiente (ADR 0011), protegidas
-└─ archive/<año>/<id>/         # cambios cerrados o cancelados, misma estructura
+├─ archive/<año>/<id>/         # cambios cerrados o cancelados, misma estructura
+└─ legacy/                     # lo que tenía `.specty/` con el legacy, movido por `init` (ARCHITECTURE §14); sus cambios se importan con `specty import`
 
 .git/specty/                   # local, por worktree, nunca versionado
 ├─ receipts.json               # recibos de commit
@@ -35,6 +36,19 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
    ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
    └─ manifest.json            # [{ "path", "created", "removed"?, "copy"? }]: cada archivo creado, cambiado o borrado
 ```
+
+**El servidor MCP en cada agente** (`specty init --mcp`, ARCHITECTURE §6). La entrada se llama `specty`, ejecuta `specty mcp` y se escribe solo con `specty` en el PATH, en la configuración MCP de proyecto de cada agente que el repositorio usa. Lo demás del archivo no cambia:
+
+| Agente | Archivo | Entrada |
+| --- | --- | --- |
+| Claude Code | `.mcp.json` | `"mcpServers": { "specty": { "command": "specty", "args": ["mcp"] } }` |
+| Cursor | `.cursor/mcp.json` | la misma |
+| Gemini CLI | `.gemini/settings.json` | la misma |
+| Devin (Windsurf) | `.devin/config.json` | la misma |
+| OpenCode | `opencode.json` | `"mcp": { "specty": { "type": "local", "command": ["specty", "mcp"], "enabled": true } }` |
+| Codex | `.codex/config.toml` | la tabla `[mcp_servers.specty]` con `command = "specty"` y `args = ["mcp"]`; Codex la lee en un proyecto de confianza |
+
+Antigravity solo lee los servidores MCP de la carpeta del usuario, donde Specty no escribe: `init` y `doctor` dicen cómo añadirlo. `uninstall` quita la entrada de todos esos archivos y borra el que se queda vacío.
 
 ### Identificadores
 
@@ -214,6 +228,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 - `tasks[].status` puede ser `pending`, `active` o `done`. `scopeExtra` guarda las ampliaciones aprobadas.
 - `tasks[].baseCommit` es el commit desde el que empezó la tarea. `tasks[].commit` (opcional) es el commit de la tarea, pero la CLI no lo guarda: es el commit que contiene el propio `state.json`. Se encuentra por su trailer `Specty-Task`, y el servidor local lo añade a lo que sirve a la UI (ARCHITECTURE §15).
 - `items[].comment` (opcional) guarda por qué la persona rechazó un supuesto; el agente lo lee en `specty next`.
+- `pending.scopeRequests[].retro` (opcional): la creó `specty retro --into` y guarda la huella de lo preparado que documenta (un hash de la ruta, el modo y el blob de cada archivo gobernado preparado). Si al aprobarla la huella ya no coincide, Specty la rechaza (ARCHITECTURE §9).
 - `maxIds` guarda el número más alto usado por cada prefijo (también `S`, las solicitudes de alcance), para que un id borrado nunca se reutilice con otro significado.
 - `closingSubmittedAt` (opcional) indica que el cierre ya se envió y espera la confirmación de la persona.
 - `testsSubmittedAt` (opcional), en la fase `testing`, indica que el agente envió los tests y esperan la aprobación de la persona; se borra al aprobarlos.
@@ -255,14 +270,14 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `task.started` | tarea, commit base |
 | `task.verified` | tarea, comando, código de salida, duración, final de la salida si falló, y `tree`: el código sobre el que corrió, un hash del árbol de trabajo sin `.specty/` tomado antes de verificar |
 | `task.completed` | tarea, commit, resumen (300 caracteres como máximo) y, si la tarea quitó aserciones de tests que ya existían, `removedAssertions`: `{ path, removed }` por archivo; si su diff tiene riesgos conocidos, `risks`: `{ path, rule, cwe?, line? }` por hallazgo; con `--finding`, `findings`: los textos del agente, en orden, de 300 caracteres como máximo cada uno; si dejó archivos por encima de `lines.warn`, `longFiles`: `{ path, lines, before, limit, severity }` por archivo |
-| `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban); si la persona aprueba el desbloqueo de tests aprobados, `unlock` (sus rutas) y `task` |
+| `scope.requested` / `scope.decided` | rutas, motivo, decisión (`auto` o persona); si es `auto`, `basis` (ruta → `test`, `generated` o `planned`) y `plannedFor` (ruta prevista → tareas que la listaban); si la persona aprueba el desbloqueo de tests aprobados, `unlock` (sus rutas) y `task`; la solicitud de `retro --into` lleva `retro` (la huella de lo preparado), y si lo preparado cambió antes de aprobarla, Specty la rechaza (actor `specty`) con el motivo |
 | `epic.slicesDone` | todos los cortes de una épica tienen un cambio cerrado, y `specty next` la pasa a aceptación (actor `specty`): `slices`, el cambio de cada corte |
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
 | `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec` o `diff`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |
 | `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta o por el servidor local cuando la persona la lanza desde la UI (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, las últimas 10 líneas si falló, y `tree`, como en `task.verified`. `accept` no la repite si la última verificación con ese comando (también la de una tarea, sola o tras `verify.quick`) pasó con el mismo `tree` |
 | `change.accepted` | revisión aceptada |
-| `retro.confirmed` | hash del índice, modo (`agent` o `minimal`) |
+| `retro.confirmed` | en una retro aparte, el modo (`agent` o `minimal`); con `retro --into`, en el cambio activo, la solicitud (`request`) y sus rutas (`paths`) |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |
 | `integration.started` | incorporar la rama principal al cerrar dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
 | `integration.resolved` | `specty integrate` hizo el commit de merge: commit |
@@ -325,11 +340,11 @@ lines:                            # líneas de código de los archivos que toca 
   warn: 300                       # avisa si la tarea deja un archivo por encima y lo hizo crecer
   fail: 500                       # bloquea si la tarea lo lleva por encima; false: nunca
   tests: { warn: 400, fail: 600 }
-  exclude: ["**/fixtures/**", "**/mocks/**", "**/testdata/**", "**/migrations/**", "**/locales/**"]  # por defecto, también __fixtures__, __mocks__, i18n, l10n y translations
+  exclude: ["src/legacy/report.ts", "**/*.pb.ts"]  # rutas o globs que no se miden; se suman a las de por defecto: fixtures, __fixtures__, mocks, __mocks__, testdata, migrations, i18n, l10n, locales y translations
 checks:                           # specty check (ADR 0012)
   levels: { max-lines: error }    # error | warn | off por verificación; sin la clave, error
   maxFindings: 10                 # fallos que se muestran por verificación antes de «… y N más»
-  exclude: ["**/node_modules/**", "**/build/**", "**/dist/**", "**/.dart_tool/**"]  # por defecto, también out, target, coverage, vendor, .next, .angular y .gradle
+  exclude: ["legacy/**"]          # rutas o globs que ninguna verificación mira; se suman a las de por defecto: node_modules, build, dist, out, target, coverage, vendor, .dart_tool, .next, .angular y .gradle
   todo:                           # la verificación todo
     markers: ["TODO", "FIXME"]    # palabras que, primeras en un comentario, marcan trabajo pendiente; distingue mayúsculas
     reference: "#\\d+|\\b[A-Z][A-Z0-9]+-\\d+\\b|https?://\\S+"  # expresión regular de la referencia a un issue, tras la marca
@@ -445,10 +460,10 @@ Las dos de tests solo miran los archivos de test (por nombre o por carpeta, como
 `specty check --install` prepara el proyecto para sus verificaciones, y la persona decide cada paso en su terminal. Por cada archivo muestra el diff (`git diff --no-index` entre el antes y el después) y pregunta antes de escribirlo. Sin terminal interactiva se niega, porque escribe `.specty/config.yaml`, y con `--dry-run` solo enseña el plan, sin preguntar ni escribir. Los pasos son:
 
 - `.specty/config.yaml`: `checks.preCommit: true`, conservando el resto del archivo y sus comentarios.
-- `.github/workflows/specty-check.yml`: la plantilla de GitHub Actions. Prepara el stack (Node 22, pnpm, Flutter o Dart, y el comando de instalación detectado), ejecuta `npx -y @baquia-dev/specty@<versión> check --all --json` con la versión exacta del CLI que la escribe, y guarda el JSON como artefacto. Las demás plataformas de CI se añaden como plantillas en `check/ci.ts`.
+- `.github/workflows/specty-check.yml`: la plantilla de GitHub Actions. Prepara el stack (Node 22, pnpm, Flutter o Dart, y el comando de instalación detectado), ejecuta `npx -y @baquia-dev/specty@<versión> check --all --json` con la versión exacta del CLI que la escribe, y guarda el JSON como artefacto. En los pull requests ejecuta también `specty ci` con la misma versión, que lee el evento ([checks.md](checks.md#commits-trazables-specty-ci)). Las demás plataformas de CI se añaden como plantillas en `check/ci.ts`.
 - En Dart, `analysis_options.yaml`: los modos estrictos que falten bajo `analyzer.language`, sin tocar sus `include` ni comentarios; si no existe, lo crea.
 - Junto al guard de Claude Code (`Stop`), Cursor (`stop`), Codex (`Stop`, en `.codex/hooks.json` del proyecto), Gemini CLI (`AfterAgent`, en `.gemini/settings.json`, con el límite en milisegundos), Devin (`Stop`, en la raíz de `.devin/hooks.v1.json`) y Antigravity (`Stop`, en el hook `specty` de `.agents/hooks.json`): el hook de fin de turno `specty hook agent-stop <agente>`, con el mismo comando de Specty que el guard y el tiempo límite de `verify.timeoutSec` (ARCHITECTURE §10). En OpenCode, el plugin de Specty se vuelve a escribir con `STOP` igual a ese tiempo límite, y desde entonces ejecuta el hook en cada `session.idle`.
-- Para cada agente que el repositorio usa (por sus marcas de ARCHITECTURE §10), sus exclusiones con los globs de `checks.exclude` y `scope.generated`, para que no lea dependencias, artefactos de build ni código generado. Van en `.cursorignore` (Cursor), en `.geminiignore` (Gemini CLI), en `.antigravityignore` (Antigravity), en el archivo de Windsurf que exista (`.devinignore`, `.windsurfignore` o `.codeiumignore`; si no hay ninguno, `.codeiumignore`), como reglas `Read(<patrón>)` en `permissions.deny` de `.claude/settings.json` (Claude Code) y como `"<patrón>": "deny"` en `permission.read` de `opencode.json` u `opencode.jsonc` (OpenCode, que también recibe cada patrón con `**/` sin ese prefijo). Solo se añaden los patrones que faltan, y lo demás queda. Copilot y Codex no tienen un archivo de exclusión propio en el repositorio. Los cambios archivados (`.specty/archive/**`) salen solo del índice, aunque `checks.exclude` y `scope.generated` estén vacíos y bajo su propio comentario: en `.cursorindexingignore` (Cursor) y en `.antigravityignore` (Antigravity). Nunca van a las exclusiones que además impiden leer, porque el agente aún puede necesitar abrir un cambio archivado.
+- Para cada agente que el repositorio usa (por sus marcas de ARCHITECTURE §10), sus exclusiones con los globs de `checks.exclude` y `scope.generated`, para que no lea dependencias, artefactos de build ni código generado. Van en `.cursorignore` (Cursor), en `.geminiignore` (Gemini CLI), en `.antigravityignore` (Antigravity), en el archivo de Windsurf que exista (`.devinignore`, `.windsurfignore` o `.codeiumignore`; si no hay ninguno, `.codeiumignore`), como reglas `Read(<patrón>)` en `permissions.deny` de `.claude/settings.json` (Claude Code) y como `"<patrón>": "deny"` en `permission.read` de `opencode.json` u `opencode.jsonc` (OpenCode, que también recibe cada patrón con `**/` sin ese prefijo). Solo se añaden los patrones que faltan, y lo demás queda. Copilot y Codex no tienen un archivo de exclusión propio en el repositorio. Los cambios archivados (`.specty/archive/**`) salen solo del índice, siempre y bajo su propio comentario: en `.cursorindexingignore` (Cursor) y en `.antigravityignore` (Antigravity). Nunca van a las exclusiones que además impiden leer, porque el agente aún puede necesitar abrir un cambio archivado.
 - Con `checks.layers` en TypeScript o JavaScript y sin dependency-cruiser, este como devDependency con su versión exacta (`dependency-cruiser@18.7.0`), con el gestor del proyecto (`npm install --save-dev --save-exact`, `pnpm add --save-dev --save-exact`, `yarn add --dev --exact` o `bun add --dev --exact`), solo si la persona lo confirma.
 
 Los pasos planifican uno tras otro sobre los mismos archivos, así que dos pasos que tocan el mismo archivo (el hook de fin de turno y las reglas `Read` de Claude Code) dan un solo diff. Lo que la persona ya decidió distinto (`checks.preCommit: false`, un modo estricto en `false`, una plantilla de CI con otro contenido) es un conflicto: se informa y no se toca. Lo que se aplica entra en un commit con recibo, `Specty-Init`, solo con los archivos que no tenían cambios de la persona y nunca dentro de un cambio activo. Ejecutarlo otra vez, con todo aplicado, dice que no hay nada que instalar. Betterleaks y gitleaks no son paquetes del proyecto: si faltan, el comando dice que se instalen.
@@ -494,6 +509,7 @@ Specty-Agent: claude-code
 | --- | --- |
 | Tarea | `Specty-Change`, `Specty-Task`, `Specty-Spec` (revisión@hash corto), `Specty-Agent` |
 | Spec aprobada | `Specty-Change`, `Specty-Spec` |
+| Tests enviados en la fase de tests (`test(<módulo>)`) | `Specty-Change`, `Specty-Spec`, `Specty-Tests: true`; la matriz de aceptación cuenta sus líneas (ARCHITECTURE §13) |
 | Merge de la incorporación al cerrar; archivo al cerrar, cancelar o aceptar un quick | `Specty-Change` |
 | Decisión que el agente toma en modo delegado (las dos filas anteriores) | Además, `Specty-Delegated: true` y `Specty-Agent`; los commits de las tareas no lo llevan (ADR 0010) |
 | Manual dentro del alcance | `Specty-Change`, `Specty-Manual: true` |
@@ -596,4 +612,21 @@ SIGUIENTE: revierte ese archivo o pide ampliar el alcance con `specty scope add 
 | Diseño, Archivos, Riesgos | `design.md` | `plan.md`: Summary, Design, Project Structure y Risks | `design.md`: Overview, Architecture, Components and Interfaces y Risks |
 | Tareas | `tasks.md`: `- [x] 1.1 …`, marcadas si están hechas | `tasks.md`: `- [ ] T001 [US1] … in <rutas>` | `tasks.md`: `- [ ] 1. …`, con sus archivos y `_Requirements: 1.2_` |
 
-`<nombre>` es el id del cambio sin su fecha. Los encabezados y las palabras clave de cada formato (WHEN, THEN, SHALL) van en inglés, como los espera cada herramienta, y el texto de la spec va tal cual, en su idioma. Un criterio `CUANDO … ENTONCES …` (o `WHEN … THEN …`) se parte en su condición y su resultado; uno de otra forma va entero como resultado. Lo hace `packages/exporters` (`exportSpec`), que devuelve rutas y contenidos sin escribir nada. El mapeo parte de la documentación pública de cada formato, consultada al implementarlo (octubre de 2026). La importación (al menos desde OpenSpec, para quienes vienen del legacy) usa el mapeo inverso.
+`<nombre>` es el id del cambio sin su fecha. Los encabezados y las palabras clave de cada formato (WHEN, THEN, SHALL) van en inglés, como los espera cada herramienta, y el texto de la spec va tal cual, en su idioma. Un criterio `CUANDO … ENTONCES …` (o `WHEN … THEN …`) se parte en su condición y su resultado; uno de otra forma va entero como resultado. Lo hace `packages/exporters` (`exportSpec`), que devuelve rutas y contenidos sin escribir nada. El mapeo parte de la documentación pública de cada formato, consultada al implementarlo (octubre de 2026).
+
+**Importación desde OpenSpec** (`specty import <carpeta>`). Usa el mapeo inverso:
+
+- `parseOpenSpec` (`packages/exporters`) lee los archivos de la carpeta.
+- `importedSections` (`core/src/cards/import.ts`) los pone en las palabras de la spec.
+- `specTemplate` los escribe en lugar de las pistas de esas secciones.
+
+| OpenSpec | Spec |
+| --- | --- |
+| El `#` de `proposal.md`, sin «Change:» ni «Proposal:» | Título (sin él, el nombre de la carpeta) |
+| Why y What Changes | Objetivo |
+| Out of Scope | Fuera de alcance |
+| Cada `#### Scenario:` con WHEN y THEN (y GIVEN; AND se une a la cláusula anterior) | Un criterio `DADO … CUANDO … ENTONCES …` |
+| Cada `- [ ]` de `tasks.md`, sin su numeración | Una tarea sin `files`, que añade el agente |
+| `design.md`, las demás partes de la propuesta, los requisitos sin escenario, los escenarios incompletos, los requisitos de REMOVED y las tareas `- [x]` | Diseño, tal cual y con una etiqueta por grupo |
+
+Supuestos y Archivos conservan su pista. La petición literal del cambio es «Importado de OpenSpec: <carpeta>», y la carpeta de origen no cambia. Los cambios archivados (`openspec/changes/archive/`) y las specs vivas (`openspec/specs/`) no se importan. Sin carpeta, `specty import` lista los cambios de `openspec/changes/` y, tras migrar el legacy, los de `.specty/legacy/changes/`, que tienen el mismo formato.

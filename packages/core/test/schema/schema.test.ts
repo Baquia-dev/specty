@@ -2,7 +2,13 @@
 
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
-import { DEFAULT_CONFIG, isIntegrating, parseChangeState, resolveConfig } from "../../src";
+import {
+  DEFAULT_CONFIG,
+  fileSize,
+  isIntegrating,
+  parseChangeState,
+  resolveConfig,
+} from "../../src";
 
 /** The example of docs/formats.md §6. */
 const CONFIG_EXAMPLE = `
@@ -119,6 +125,23 @@ describe("resolveConfig", () => {
   it("AC1: accepts the contract tests policy", () => {
     const resolved = resolveConfig({ version: 1, policy: { tests: "contract" } });
     expect(resolved.ok && resolved.config.policy.tests).toBe("contract");
+  });
+
+  it("adds the person's line exclusions to the default ones", () => {
+    const resolved = resolveConfig({ version: 1, lines: { exclude: ["src/legacy/big.ts"] } });
+    if (!resolved.ok) throw new Error("invalid config");
+    const big = "value = 1\n".repeat(900);
+    expect(fileSize("src/legacy/big.ts", big, resolved.config)).toBeUndefined();
+    expect(fileSize("test/fixtures/data.ts", big, resolved.config)).toBeUndefined();
+    expect(fileSize("src/legacy/other.ts", big, resolved.config)).toMatchObject({ lines: 900 });
+  });
+
+  it("adds the person's check exclusions to the default ones", () => {
+    const resolved = resolveConfig({ version: 1, checks: { exclude: ["legacy/**"] } });
+    if (!resolved.ok) throw new Error("invalid config");
+    expect(resolved.config.checks.exclude).toContain("legacy/**");
+    expect(resolved.config.checks.exclude).toContain("**/node_modules/**");
+    expect(resolved.config.checks.exclude).toContain("**/dist/**");
   });
 
   it("reports unknown keys, bad values and inconsistent thresholds", () => {

@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "id": "20261028-init-mcp-registra-el-servidor-en-los-agentes-y-d-2",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-init-mcp-registra-el-servidor-en-los-agentes-y-d-2",
+  "baseCommit": "3c5750ef91e42b9b950a1a5b0c972414d3ff6fae",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:34e597db4156a3a09fe50401b6aa9d4199d794097bff4f0bd10471da0dbca213",
+    "at": "2026-10-28T15:57:22.839Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:9c35e6589eb732b0fd909d1319b37308e597e531f22e80b92c2cab8879d24014",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:185ea7416bd9fcbce1953ed853dc13f7bed19c2382394a4c3457966d9ef7ff69",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8919e6fc3219c6017d585ec5d4aa349c8f6f53d507762891e53041d13f8140de",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:589e71a7f294c91ecf6fba59a94249f2f293f786a7f0b7423f16df102ac6f6e0",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8d862d0493596e5248e654028704146973f121e6611e78ab258ab4d2d295826e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "344517241fdf63e309a427a546e9794e52cc55a6",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:58:15.937Z",
+      "doneAt": "2026-10-28T15:58:30.168Z",
+      "summary": "cards/mcp.ts: línea de init, avisos y líneas de doctor del servidor MCP, sumadas a los WRITERS de doctor",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "1ef54be110ec519add89455e6a4f882d2b3e6d05",
+      "attempts": 1,
+      "startedAt": "2026-10-28T15:58:30.473Z",
+      "doneAt": "2026-10-28T16:02:09.823Z",
+      "summary": "install/mcp.ts registra, revisa y quita la entrada specty de cada agente; init --mcp, doctor y uninstall la usan",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e15e8103a2a0ce1ea88dd712842ee07bfabb1ae4",
+      "attempts": 1,
+      "startedAt": "2026-10-28T16:02:10.130Z",
+      "doneAt": "2026-10-28T16:02:45.254Z",
+      "summary": "formats 1 tabula la entrada de cada agente y ARCHITECTURE 6 explica el registro opcional",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-28T16:05:44.947Z",
+  "lockedTests": {
+    "packages/cli/test/mcp-install.test.ts": "sha256:461c37dfad9489635bfe8aec51417e3e8c1832d8feb318aed6fd86877fa06456",
+    "packages/core/test/cards/mcp.test.ts": "sha256:a3573caa9a982ac0c110e84414b5f860196000449c9a7e4c0acae0059ba424da"
+  }
+}

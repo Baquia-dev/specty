@@ -6,6 +6,8 @@ export interface BlockedCommitView {
   readonly paths: readonly string[];
   /** Active change whose scope the paths fall outside of, if any. */
   readonly change?: string;
+  /** The change is implementing a task, so `retro --into` can document the paths in it. */
+  readonly into?: boolean;
   readonly minimalAllowed: boolean;
   readonly command: string;
 }
@@ -31,14 +33,16 @@ export function blockedCommitMessage(view: BlockedCommitView, lang: Lang): strin
         ),
       ]
     : [];
+  const retro =
+    view.into === true && view.change !== undefined ? `retro --into ${view.change}` : "retro";
   return [
     lead,
     ...view.paths.map((path) => `  - ${path}`),
     "",
     t("Para documentarlo:", "To document it:"),
     t(
-      "  • Pídele a tu agente: «Documenta los cambios preparados con specty retro».",
-      '  • Ask your agent: "Document the staged changes with specty retro".',
+      `  • Pídele a tu agente: «Documenta los cambios preparados con specty ${retro}».`,
+      `  • Ask your agent: "Document the staged changes with specty ${retro}".`,
     ),
     ...minimal,
     t("Después repite git commit.", "Then run git commit again."),

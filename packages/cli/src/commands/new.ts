@@ -10,6 +10,7 @@ import {
   nextCard,
   type Output,
   specTemplate,
+  type TemplateOptions,
   withLead,
   worktreeCreatedCard,
 } from "@baquia-dev/specty-core";
@@ -45,6 +46,8 @@ export interface NewOptions {
   readonly bootstrap?: boolean;
   /** The user's literal request, kept in the audit as they wrote it. */
   readonly request?: string;
+  /** Sections that come written, such as an imported change's (`specty import`). */
+  readonly sections?: TemplateOptions["prefilled"];
 }
 
 /**
@@ -194,19 +197,7 @@ async function createChange(
 ): Promise<StoredChange> {
   const { id, branch } = target;
   const files = changeFiles(target.dir);
-  await writeText(
-    files.spec,
-    specTemplate({
-      kind: options.kind,
-      lang: session.lang,
-      title: target.title,
-      follows: options.follows,
-      ...(options.epic !== undefined ? { epic: options.epic } : {}),
-      ...(options.slice !== undefined ? { slice: options.slice } : {}),
-      ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),
-      ...(options.bootstrap === true ? { bootstrap: true } : {}),
-    }),
-  );
+  await writeText(files.spec, skeleton(session, options, target.title));
   const state = initialState({ id, kind: options.kind, branch, baseCommit: target.baseCommit });
   return commitState(session, { files, state, archived: false }, state, "change.created", {
     kind: options.kind,
@@ -216,6 +207,21 @@ async function createChange(
     ...(options.epic !== undefined ? { epic: options.epic, slice: options.slice } : {}),
     ...(options.request !== undefined ? { request: options.request.trim() } : {}),
     ...(options.bootstrap === true ? { bootstrap: true } : {}),
+  });
+}
+
+/** The spec's skeleton: its frontmatter and title, and the sections that come written. */
+function skeleton(session: Session, options: NewOptions, title: string): string {
+  return specTemplate({
+    kind: options.kind,
+    lang: session.lang,
+    title,
+    follows: options.follows,
+    ...(options.epic !== undefined ? { epic: options.epic } : {}),
+    ...(options.slice !== undefined ? { slice: options.slice } : {}),
+    ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),
+    ...(options.bootstrap === true ? { bootstrap: true } : {}),
+    ...(options.sections !== undefined ? { prefilled: options.sections } : {}),
   });
 }
 

@@ -61,6 +61,11 @@ function githubActions({ stack, version, branch, lang }: CiContext): CiTemplate 
     "        with:",
     "          name: specty-check",
     "          path: specty-check.json",
+    `      # ${t("Cada commit del pull request viene de un cambio aprobado (ARCHITECTURE §10).", "Each commit of the pull request comes from an approved change (ARCHITECTURE §10).")}`,
+    "      - name: specty ci",
+    "        if: github.event_name == 'pull_request'",
+    "        shell: bash",
+    `        run: npx -y @baquia-dev/specty@${version} ci`,
   ];
   const text = [
     `# ${t("Las verificaciones de Specty (`specty check`). Lo creó `specty check --install`; puedes editarlo.", "Specty's checks (`specty check`). Written by `specty check --install`; you may edit it.")}`,
