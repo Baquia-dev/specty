@@ -326,7 +326,7 @@ lines:                            # líneas de código de los archivos que toca 
   warn: 300                       # avisa si la tarea deja un archivo por encima y lo hizo crecer
   fail: 500                       # bloquea si la tarea lo lleva por encima; false: nunca
   tests: { warn: 400, fail: 600 }
-  exclude: ["**/fixtures/**", "**/mocks/**", "**/testdata/**", "**/migrations/**", "**/locales/**"]  # por defecto, también __fixtures__, __mocks__, i18n, l10n y translations
+  exclude: ["src/legacy/report.ts", "**/*.pb.ts"]  # rutas o globs que no se miden; se suman a las de por defecto: fixtures, __fixtures__, mocks, __mocks__, testdata, migrations, i18n, l10n, locales y translations
 checks:                           # specty check (ADR 0012)
   levels: { max-lines: error }    # error | warn | off por verificación; sin la clave, error
   maxFindings: 10                 # fallos que se muestran por verificación antes de «… y N más»

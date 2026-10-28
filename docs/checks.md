@@ -223,7 +223,7 @@ Comprueba que el código generado coincide con lo que produce su generador, como
 
 Las líneas de código de cada archivo, sin blancos ni comentarios. Avisa por encima de `lines.warn` y falla por encima de `lines.fail`.
 
-**Configuración:** la regla `lines`: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` y `exclude`.
+**Configuración:** la regla `lines`: `warn: 300`, `fail: 500`, `tests: { warn: 400, fail: 600 }` y `exclude`. Para dejar fuera un archivo concreto, pon su ruta o un glob en `lines.exclude`; se suma a las carpetas de datos que ya quedan fuera por defecto (fixtures, mocks, migrations, i18n…).
 
 **Desactivar:** `levels: { max-lines: off }`, o `lines.fail: false` para que solo avise.
 
