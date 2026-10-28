@@ -2,3 +2,4 @@
 {"ts":"2026-10-28T17:59:11.350Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:49f6aa5968d77ab6e68bd3aef3c597f102a899cc88dff7de124c04bdf888318c","size":"S","warnings":0}}
 {"ts":"2026-10-28T17:59:12.527Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:49f6aa5968d77ab6e68bd3aef3c597f102a899cc88dff7de124c04bdf888318c","channel":"delegated","delegated":true}}
 {"ts":"2026-10-28T18:00:13.066Z","actor":"agent","tool":"claude-code","event":"tests.proposed","data":{"count":1,"files":["packages/ui/src/history/history-tab.test.ts"],"red":[{"cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-tab.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint","exit":1}]}}
+{"ts":"2026-10-28T18:00:13.734Z","actor":"agent","tool":"claude-code","event":"tests.approved","data":{"channel":"delegated","delegated":true}}
