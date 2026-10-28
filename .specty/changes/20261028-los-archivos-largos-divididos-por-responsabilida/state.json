@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "20261028-los-archivos-largos-divididos-por-responsabilida",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-los-archivos-largos-divididos-por-responsabilida",
+  "baseCommit": "386c1c021deec1423506e8570bb7cde64ce991af",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1098e81beede798eafe186a5a37c0ea920222bb30754462b983a729b7359e8ba",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6bb54eccdc9a396cbf9b93256f988087e80c3be66b811be5e0f0cdf8824b75bd",
+    "at": "2026-10-28T17:39:46.843Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
