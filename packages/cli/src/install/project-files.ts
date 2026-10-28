@@ -6,6 +6,7 @@ import {
   flowBlock,
   flowLine,
   type GitFlow,
+  glossaryTemplate,
   humanSections,
   type Lang,
   languageLine,
@@ -156,6 +157,22 @@ export async function writeAgentsMd(
   const withProject = upsertBlock(base, "project", projectBlock(projectFacts(detection), lang));
   await files.write(path, upsertBlock(withProject, "flow", flowBlock(lang, COMMAND)));
   return current === undefined ? "created" : "updated";
+}
+
+/**
+ * Writes the glossary of the domain with the hints of its format where it is missing (formats.md
+ * §6); one that exists is the person's and stays, even with only its hints.
+ */
+export async function writeGlossary(
+  root: string,
+  path: string,
+  lang: Lang,
+  files: InstallFiles = installFiles(),
+): Promise<boolean> {
+  const at = join(root, path);
+  if ((await files.read(at)) !== undefined) return false;
+  await files.write(at, glossaryTemplate(lang));
+  return true;
 }
 
 /** Takes Specty's blocks out of AGENTS.md; the rest of the file is the person's and stays. */

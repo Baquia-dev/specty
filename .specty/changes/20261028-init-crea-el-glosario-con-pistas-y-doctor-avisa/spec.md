@@ -59,7 +59,7 @@ Las tarjetas ya traen las definiciones del glosario del dominio, pero ningún pr
   - files: packages/core/src/glossary.ts, packages/core/src/index.ts, packages/core/src/cards/init.ts, packages/core/src/cards/doctor.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/glossary.test.ts test/cards
-- [ ] T2: init crea el glosario y doctor avisa mientras no define términos
+- [x] T2: init crea el glosario y doctor avisa mientras no define términos
   - files: packages/cli/src/install/project-files.ts, packages/cli/src/commands/init.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/init-commit.test.ts, packages/cli/test/glossary-setup.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/glossary-setup.test.ts test/init-commit.test.ts test/init-reversible.test.ts test/doctor-enter.test.ts

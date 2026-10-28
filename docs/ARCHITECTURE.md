@@ -521,6 +521,7 @@ Las tareas con más de 5 archivos, o cuya tarjeta supera el presupuesto, generan
 5. Genera:
    - `.specty/config.yaml`; con `--git-flow <specty|github|trunk|gitflow>`, o el flujo elegido, con ese `git.flow` (§9). En una configuración que ya existe, `--git-flow` cambia o añade solo esa clave, sin tocar comentarios ni formato (`withGitFlow`, en `install/project-files.ts`); sin la opción, no toca el flujo. Un flujo desconocido no instala nada. Con `gitflow`, añade `git.target: develop` si no había destino y, si ese es el destino y `develop` no existe en local, la crea tras su commit: desde `origin/develop`, siguiéndola, si existe, y si no desde la rama actual (`ensureDevelop`, en `install/git-flow.ts`). El simulacro no crea ramas;
    - los bloques de AGENTS.md;
+   - el glosario del dominio (`glossary`, formats §6), si falta: un título y, en un comentario, el formato de una línea con un ejemplo, en el idioma del proyecto (`writeGlossary` en `install/project-files.ts`). Uno que existe no se toca, aunque solo tenga las pistas;
    - los punteros y hooks de las herramientas detectadas;
    - los hooks de git;
    - opcionalmente, el workflow de CI.
@@ -553,6 +554,7 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 - los guards y hooks de cada herramienta, también si son de antes de `specty enter` (§10), y los hooks de git;
 - que los formateadores del proyecto (Biome, Prettier) excluyen los archivos que escribe Specty;
 - que la guía de otra herramienta no pida al agente lo que el guard bloquea: los bloques de flujo de gentle-ai (`agent-routing`, el de su ODD, que pide commits propios por unidad de trabajo, y `orchestrator`, `sdd-orchestrator` y `sdd`, los de su antiguo SDD) en AGENTS.md o CLAUDE.md del repositorio, o en los archivos globales donde gentle-ai los escribe (`~/.claude/CLAUDE.md`, el `AGENTS.md` de Codex y el de OpenCode, y `~/.cursor/rules/gentle-ai.mdc`);
+- que el glosario del dominio, si existe, defina algún término. Es un aviso, no un problema: con solo las pistas, las tarjetas no traen ninguna definición. Si el archivo no existe, no dice nada;
 - el modo delegado, si está activo: un aviso, porque es una decisión de la persona.
 
 No ejecuta los comandos que cita AGENTS.md, ni mide su tamaño, ni revisa la configuración de CI.

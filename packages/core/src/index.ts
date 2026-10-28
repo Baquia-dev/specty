@@ -104,7 +104,13 @@ export {
   type WaitingFor,
 } from "./flow/phases";
 export { globBase, isGlob, matchesAny, matchesPattern } from "./glob";
-export { type GlossaryEntry, glossaryTemplate, parseGlossary, termsIn } from "./glossary";
+export {
+  defaultGlossary,
+  type GlossaryEntry,
+  glossaryTemplate,
+  parseGlossary,
+  termsIn,
+} from "./glossary";
 export {
   DELETED,
   decideAfterShell,

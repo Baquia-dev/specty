@@ -380,7 +380,7 @@ review:
 - **Línea de pedido**: un producto y su cantidad dentro de un pedido.
 ```
 
-El nombre en el código, entre paréntesis, es opcional. Las demás líneas y los comentarios HTML no cuentan, así que las pistas pueden ir en un comentario. Un término aparece en un texto sin importar mayúsculas, como palabra entera y también en plural con `s` o `es`; su nombre en el código aparece tal cual (`parseGlossary` y `termsIn` en `core/src/glossary.ts`). Si el archivo no existe, no hay glosario.
+El nombre en el código, entre paréntesis, es opcional. Las demás líneas y los comentarios HTML no cuentan, así que las pistas pueden ir en un comentario. Un término aparece en un texto sin importar mayúsculas, como palabra entera y también en plural con `s` o `es`; su nombre en el código aparece tal cual (`parseGlossary` y `termsIn` en `core/src/glossary.ts`). Si el archivo no existe, no hay glosario. `specty init` lo crea con las pistas en un comentario donde falta, y `specty doctor` avisa mientras no define ningún término.
 
 `verify.quick` es una comprobación rápida de todo el repositorio, como el formato o el tamaño de los archivos, que `task done` ejecuta antes de la verificación de cada tarea. Las dos van en un solo comando, `<quick> && <verify>`, que es también el que muestra la tarjeta de la tarea. Así un fallo aparece en la tarea que lo causó, no en otra posterior ni al aceptar. Sin la clave, cada tarea ejecuta solo su verificación.
 

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-init-crea-el-glosario-con-pistas-y-doctor-avisa",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-init-crea-el-glosario-con-pistas-y-doctor-avisa",
   "baseCommit": "2d2ceff6979d2bec7e6894504a5e7ae81ade6f3c",
   "revision": 1,
@@ -43,12 +43,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "52be748c1b7f2f770724171b3d6cc51a5c885cdc",
+      "attempts": 1,
       "startedAt": "2026-10-28T07:19:47.483Z",
       "doneAt": "2026-10-28T07:25:46.245Z",
-      "summary": "glossaryTemplate (título y pistas del formato en un comentario, es/en), glossaryLine para init y el aviso empty-glossary de doctor, en el core."
+      "summary": "glossaryTemplate (título y pistas del formato en un comentario, es/en), glossaryLine para init y el aviso empty-glossary de doctor, en el core.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/index.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "f337545755115e4b0eec2959522c37bb6fa59150",
+      "startedAt": "2026-10-28T07:25:46.605Z",
+      "doneAt": "2026-10-28T07:38:54.682Z",
+      "summary": "init escribe el glosario con pistas donde falta (writeGlossary), lo dice y lo lleva a su commit; doctor avisa si existe sin términos; init-commit.test incluye el glosario en el commit; formats §6 y ARCHITECTURE §14."
     }
   },
   "pending": {
