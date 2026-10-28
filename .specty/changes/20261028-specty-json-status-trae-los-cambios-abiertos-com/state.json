@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261028-specty-json-status-trae-los-cambios-abiertos-com",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-specty-json-status-trae-los-cambios-abiertos-com",
+  "baseCommit": "f6ae81c304671ff48dd9cecba45d984c652baebf",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bbf8db3e8fd67b390162f11281c62ef67e7642e008dea0f281b7b6822b7d92ab",
+    "at": "2026-10-28T19:08:47.833Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
