@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261028-el-test-de-un-bug-se-ve-fallar-y-queda-bloqueado",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261028-el-test-de-un-bug-se-ve-fallar-y-queda-bloqueado",
+  "baseCommit": "fa1b639f3e43aa27feb14b545cde7cdcc63bcd72",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d34d5d8f271b14e6ceecc267cf87e6492895c857aa43d89f6fc2a009e91cbe75",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ec5e63dee5530569ac9e23400ba46c68a4bd82645f839f52ef43cb85bc1d2207",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:8a9ad7de9f60fe5e6e79d7971bbcf930845e52832d1c30b838b5394e71846412",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 7,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:10e23e3a93ceede4201c978e5a07117964171c55fc391d6d916dbbb4d7fa7bb5",
+    "at": "2026-10-28T09:37:47.124Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
