@@ -119,6 +119,37 @@ describe("the lock of a change", () => {
   });
 });
 
+/** The claim another process `pid` holds while it replaces a dead process's lock. */
+async function claimedBy(root: string, pid: number): Promise<void> {
+  const holder = { pid, command: "close", folder: root, at: "2026-10-28T05:00:00.000Z" };
+  await writeFile(`${lockPath(root)}.claim`, JSON.stringify(holder));
+}
+
+describe("replacing a dead process's lock", () => {
+  it("AC1: is refused while another live process replaces it, and removes nothing", async () => {
+    const { root, session } = await withChange();
+    const dead = deadPid();
+    await lockedBy(root, dead);
+    await claimedBy(root, process.ppid);
+    const output = await withChangeLock(session, "propose", async () => DONE);
+    expect(output.status).toBe("blocked");
+    expect(output.blocks.flatMap((block) => block.lines).join("\n")).toContain(
+      `\`specty close\` (pid ${process.ppid},`,
+    );
+    expect(JSON.parse(await readFile(lockPath(root), "utf8")).pid).toBe(dead);
+    expect(JSON.parse(await readFile(`${lockPath(root)}.claim`, "utf8")).pid).toBe(process.ppid);
+  });
+
+  it("AC2: takes it when the claim was left by a process that no longer exists, and leaves no claim", async () => {
+    const { root, session } = await withChange();
+    await lockedBy(root, deadPid());
+    await claimedBy(root, deadPid());
+    expect(await withChangeLock(session, "propose", async () => DONE)).toBe(DONE);
+    expect(await exists(lockPath(root))).toBe(false);
+    expect(await exists(`${lockPath(root)}.claim`)).toBe(false);
+  });
+});
+
 const STATE = `.specty/changes/${CHANGE}/state.json`;
 const AUDIT = `.specty/changes/${CHANGE}/audit.jsonl`;
 const records = (root: string) => Promise.all([read(root, STATE), read(root, AUDIT)]);
