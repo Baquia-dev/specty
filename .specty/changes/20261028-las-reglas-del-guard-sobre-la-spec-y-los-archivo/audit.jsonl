@@ -1,0 +1,3 @@
+{"ts":"2026-10-28T08:15:11.633Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"quick","type":"refactor","branch":"specty/20261028-las-reglas-del-guard-sobre-la-spec-y-los-archivo","request":"sugue con C3, luego con C4 Y C6 en todas aprueba, acepta y cierra"}}
+{"ts":"2026-10-28T08:15:34.912Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:637206e07c51db055af523cf5345c00061b60b8896180be05763bcc87191918c","size":"S","warnings":0}}
+{"ts":"2026-10-28T08:15:35.400Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:637206e07c51db055af523cf5345c00061b60b8896180be05763bcc87191918c","channel":"delegated","delegated":true}}
