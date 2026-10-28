@@ -192,6 +192,7 @@ export {
   targetAheadLine,
 } from "./land";
 export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
+export { busyChangeCard, type LockHolderView } from "./lock";
 export {
   changeCreatedLead,
   type NewRefusal,

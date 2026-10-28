@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { ChangeState } from "@baquia-dev/specty-core";
+import { busyChangeCard, type ChangeState, type Output } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import {
   type AuditEntry,
@@ -9,6 +9,8 @@ import {
   saveState,
 } from "../store/changes";
 import { readPointer } from "../store/local";
+import { lockChange } from "../store/lock";
+import { posixRelative } from "../store/paths";
 import { changeOfBranch } from "./branches";
 
 /**
@@ -28,6 +30,35 @@ export async function resolveActive(session: Session): Promise<StoredChange | un
   }
   const id = await readPointer(git, "active");
   return id === undefined ? undefined : loadChange(paths, id);
+}
+
+/**
+ * Runs `command` with the change of the session's folder locked (formats.md §1): another command
+ * changing it at the same time gets the busy card and changes nothing. Without a change, it runs
+ * as is.
+ */
+export async function withChangeLock(
+  session: Session,
+  command: string,
+  handler: () => Promise<Output>,
+): Promise<Output> {
+  const change = await resolveActive(session);
+  if (change === undefined) return handler();
+  const lock = await lockChange(session.git, change.state.id, {
+    pid: process.pid,
+    command,
+    folder: session.root,
+    at: session.environment.now().toISOString(),
+  });
+  if (lock.kind === "busy") {
+    const folder = posixRelative(session.root, lock.holder.folder);
+    return busyChangeCard(change.state.id, { ...lock.holder, folder }, session.cards);
+  }
+  try {
+    return await handler();
+  } finally {
+    await lock.release();
+  }
 }
 
 export function isFinished(state: ChangeState): boolean {

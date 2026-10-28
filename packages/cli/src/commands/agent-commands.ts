@@ -10,6 +10,7 @@ import {
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
+import { withChangeLock } from "../flow/active";
 import { bareCards, type Session } from "../session";
 import { adjust } from "./adjust";
 import { enter } from "./enter";
@@ -24,6 +25,10 @@ import { taskDone } from "./task";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
 
+/** A command that changes its folder's change runs with that change locked (ARCHITECTURE §9). */
+const locked = (run: Run, command: string) => (handler: (session: Session) => Promise<Output>) =>
+  run((session) => withChangeLock(session, command, () => handler(session)));
+
 /**
  * Registers the agent's commands (ARCHITECTURE §6): the flow it follows and the work of its
  * tasks. `refuse` shows what is refused before any session opens, such as an unknown kind.
@@ -34,7 +39,7 @@ export function agentCommands(
   env: NodeJS.ProcessEnv,
   refuse: (output: Output) => void,
 ): void {
-  program.command("next").description("what to do now").action(run(next));
+  program.command("next").description("what to do now").action(locked(run, "next")(next));
   program
     .command("enter")
     .description("go on in a change's folder from this conversation")
@@ -44,27 +49,27 @@ export function agentCommands(
   program
     .command("propose")
     .description("validate the spec and send it to review")
-    .action(run(propose));
+    .action(locked(run, "propose")(propose));
   program
     .command("review")
     .description("an independent review of the spec, by the command the person set up")
-    .action(run(review));
+    .action(locked(run, "review")(review));
   taskCommands(program, run);
   program
     .command("integrate")
     .description("finish the merge of the main branch a closing left here")
-    .action(run(integrate));
+    .action(locked(run, "integrate")(integrate));
   program
     .command("adjust")
     .description("record the user's adjustment request")
     .argument("<request>")
-    .action((request: string) => run((session) => adjust(session, request))());
+    .action((request: string) => locked(run, "adjust")((session) => adjust(session, request))());
   program
     .command("retro")
     .description("document staged changes made without a spec")
     .option("--minimal", "write a one-line reason yourself (person only)")
     .action((options: { minimal?: boolean }) =>
-      run((session) => retro(session, options.minimal === true))(),
+      locked(run, "retro")((session) => retro(session, options.minimal === true))(),
     );
 }
 
@@ -159,7 +164,10 @@ function taskCommands(program: Command, run: Run): void {
       [],
     )
     .action((id: string, options: { summary: string; finding: string[] }) =>
-      run((session) => taskDone(session, id, options.summary, options.finding))(),
+      locked(
+        run,
+        "task done",
+      )((session) => taskDone(session, id, options.summary, options.finding))(),
     );
   program
     .command("scope")
@@ -169,6 +177,9 @@ function taskCommands(program: Command, run: Run): void {
     .option("--task <id>")
     .option("--reason <text>", "why the task needs the paths", "")
     .action((paths: string[], options: { task?: string; reason: string }) =>
-      run((session) => scopeAdd(session, paths, options.reason, options.task))(),
+      locked(
+        run,
+        "scope add",
+      )((session) => scopeAdd(session, paths, options.reason, options.task))(),
     );
 }

@@ -14,7 +14,7 @@ import { delegate } from "../commands/delegate";
 import { close } from "../commands/finish";
 import { type PersonAction, personSession } from "../commands/human";
 import { reject } from "../commands/scope-decision";
-import { resolveActive } from "../flow/active";
+import { resolveActive, withChangeLock } from "../flow/active";
 import { addComment, decideAssumption, requestChanges } from "../flow/review";
 import { isRecord } from "../io/files";
 import { type Session, sessionFrom, type Terminal } from "../session";
@@ -193,7 +193,8 @@ export function setDelegation(session: Session, on: boolean): Promise<Output> {
 
 /**
  * Runs an action of the person in the folder of change `id`, with the same command as at the
- * terminal; the answer is that command's output.
+ * terminal and the change locked by the UI's process (ARCHITECTURE §9); the answer is that
+ * command's output.
  */
 export async function runAction(session: Session, id: string, action: Action): Promise<Output> {
   const ui = onScreen(session);
@@ -201,6 +202,11 @@ export async function runAction(session: Session, id: string, action: Action): P
   const chosen = await personSession(ui, COMMAND[action.kind], { id, ...scope });
   if (chosen.kind === "output") return chosen.output;
   const there = chosen.session;
+  return withChangeLock(there, "ui", () => act(there, action));
+}
+
+/** The command each action of the person is, in the change's folder. */
+function act(there: Session, action: Action): Promise<Output> {
   switch (action.kind) {
     case "approve":
       return approveRevision(there, action.revision);
