@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261028-los-tests-de-una-feature-se-ven-fallar-y-se-apru",
   "baseCommit": "2d2ceff6979d2bec7e6894504a5e7ae81ade6f3c",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "74d96f27d77f4fc04d763348c31404d0d4c71403",
+      "attempts": 1,
       "startedAt": "2026-10-28T07:08:12.398Z",
       "doneAt": "2026-10-28T07:13:54.656Z",
-      "summary": "proposeTests exige, antes del commit, un test nuevo con su id por criterio (untestedBeforeCode, sobre las líneas que añade el cambio) y el rojo: la verificación de las tareas feat y fix falla y nombra cada test nuevo; tests.proposed guarda los comandos rojos."
+      "summary": "proposeTests exige, antes del commit, un test nuevo con su id por criterio (untestedBeforeCode, sobre las líneas que añade el cambio) y el rojo: la verificación de las tareas feat y fix falla y nombra cada test nuevo; tests.proposed guarda los comandos rojos.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "21540ae88e620cd9f35bd019ead632873cabe4f7",
+      "startedAt": "2026-10-28T07:13:55.005Z",
+      "doneAt": "2026-10-28T07:20:26.733Z",
+      "summary": "criteria-tested es un error con contract y un aviso con las demás políticas; friction.test.ts recorre una feature con contract sin bloqueos (agente 10, persona 4: +2 y +1 sobre la estándar); ARCHITECTURE §4 y §16, formats y checks documentan el rojo y la gravedad."
     }
   },
   "pending": {

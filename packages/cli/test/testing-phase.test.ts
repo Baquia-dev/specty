@@ -27,11 +27,11 @@ const FEATURE = SPEC.replace(
   "  - files: src/app.ts, src/app.test.ts\n  - ac: AC1\n  - type: refactor",
 );
 
-/** FEATURE's change, proposed and approved by the person, under `config`. */
-async function approved(config: string) {
+/** `spec`'s change, FEATURE's by default, proposed and approved by the person, under `config`. */
+async function approved(config: string, spec = FEATURE) {
   const root = await tempRepo({ ...APP, ".specty/config.yaml": config });
   await cli(root, ["new", "Saludo personalizado"]);
-  await writeFiles(root, { [SPEC_PATH]: FEATURE });
+  await writeFiles(root, { [SPEC_PATH]: spec });
   const proposed = await cli(root, ["propose"]);
   expect(proposed.code, proposed.out).toBe(0);
   const approval = await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
@@ -245,5 +245,34 @@ describe("approving the tests", () => {
     const approval = await cli(root, ["approve"], { terminal: person() });
     expect(approval.code, approval.out).toBe(0);
     expect((await stateOf(folder)).phase).toBe("implementing");
+  });
+});
+
+/** FEATURE with a `fix` in T1: no `feat`, so it skips the testing phase, but still owes its test. */
+const FIX = FEATURE.replace(
+  "- [ ] T1: Saludar por nombre\n  - files: src/app.ts, src/app.test.ts\n  - ac: AC1",
+  "- [ ] T1: Saludar por nombre\n  - files: src/app.ts, src/app.test.ts\n  - ac: AC1\n  - type: fix",
+);
+
+describe("criteria-tested under contract", () => {
+  const untested = async (config: string) => {
+    const { root } = await approved(`${config}checks:\n  levels: { secrets: off }\n`, FIX);
+    expect(await phaseOf(root)).toBe("implementing");
+    await cli(root, ["next"]);
+    // The fix brings a test, as `fix-tests` asks, but not one named after AC1.
+    await writeFiles(root, {
+      "src/app.ts": "export const greet = (name) => 'Hola, ' + name;\n",
+      "src/app.test.ts": "it('saluda a Ana', () => {});\n",
+    });
+    return cli(root, ["check", "--changed", "--spec"]);
+  };
+
+  it("AC5: fails with contract, and only warns otherwise", async () => {
+    const failing = await untested(CONTRACT);
+    expect(failing.code).not.toBe(0);
+    expect(failing.out).toContain("FALLA criteria-tested");
+    const warned = await untested(CONFIG());
+    expect(warned.code).toBe(0);
+    expect(warned.out).toContain("AVISO criteria-tested");
   });
 });

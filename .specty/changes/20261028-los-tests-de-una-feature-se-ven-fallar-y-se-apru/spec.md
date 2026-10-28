@@ -75,7 +75,7 @@ Con `policy.tests: contract`, los tests de una feature ya se escriben, se envía
   - files: packages/cli/src/commands/tests.ts, packages/cli/src/flow/criteria-tests.ts, packages/cli/test/testing-phase.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm typecheck && pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts test/criteria-tests.test.ts
-- [ ] T3: criteria-tested con contract, la fricción y la documentación
+- [x] T3: criteria-tested con contract, la fricción y la documentación
   - files: packages/cli/src/check/plan.ts, packages/cli/test/testing-phase.test.ts, packages/cli/test/friction.test.ts, docs/ARCHITECTURE.md, docs/formats.md, docs/checks.md, docs/checks.en.md
   - ac: AC5, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/testing-phase.test.ts test/friction.test.ts test/check-docs.test.ts
