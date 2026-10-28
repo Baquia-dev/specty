@@ -10,6 +10,7 @@ const Count = z.number().int().min(0);
 export const PhaseSchema = z.enum([
   "draft",
   "review",
+  "testing",
   "implementing",
   "acceptance",
   "adjusting",

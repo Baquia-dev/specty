@@ -3,6 +3,7 @@ import type { Phase } from "../flow/phases";
 import { headerOf, type Output, section } from "../output";
 import { COMMIT_TYPES } from "../spec/model";
 import { integrationCard } from "./integration";
+import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
 import { acceptanceCard, adjustingCard, closingCard, implementingCard } from "./work";
@@ -29,6 +30,7 @@ export function nextCard(view: NextView, ctx: CardContext): Output {
 const PHASE_CARDS: Readonly<Record<Phase, (change: ChangeView, ctx: CardContext) => Output>> = {
   draft: draftCard,
   review: reviewCard,
+  testing: testingCard,
   implementing: implementingCard,
   acceptance: acceptanceCard,
   adjusting: adjustingCard,

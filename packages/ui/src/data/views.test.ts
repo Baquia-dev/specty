@@ -303,6 +303,10 @@ Evolución agrupada por trimestre.
       "history",
     ]);
   });
+
+  it("AC4: opens the testing phase on the progress tab", () => {
+    expect(initialTab("testing")).toBe("progress");
+  });
 });
 
 describe("derivation worker (AC7, AC10)", () => {

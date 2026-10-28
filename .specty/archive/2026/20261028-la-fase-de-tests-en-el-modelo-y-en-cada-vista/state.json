@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "id": "20261028-la-fase-de-tests-en-el-modelo-y-en-cada-vista",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-la-fase-de-tests-en-el-modelo-y-en-cada-vista",
+  "baseCommit": "9aa860c474b4bb06f1bfa26bbd0e83f15721b4e0",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:387f63b92279a0f8459f57262ff9f647f8886ea9005d328797774221a46625e7",
+    "at": "2026-10-28T05:25:22.659Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:23b39344f16a50d2081d70c9b96944f5b9a2eae9b690dfc2cf1fd150554bbfaf",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f17bb8be72ecdeb040efc172cad262b96427240f83cb52089e7e58bd7cce9def",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:799803799bf0ffde7a563cba3a6dd085d69865d6886e0832491253882c7f7557",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "99c42e7d9c43395628a938c2b9dcba08af29ef17",
+      "attempts": 1,
+      "startedAt": "2026-10-28T05:25:23.025Z",
+      "doneAt": "2026-10-28T05:37:49.383Z",
+      "summary": "La fase testing en Phase, PHASES y PhaseSchema, cancelable; su tarjeta en cards/testing.ts; ENTERS.testing = spec.approved; en la UI «Tests» con flask-conical, colores propios, pestaña de progreso y revisión «aprobada».",
+      "scopeExtra": [
+        "packages/ui/src/styles.css",
+        "packages/core/src/flow/machine.ts",
+        "packages/ui/src/catalog/catalog.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "6fe54053f8e1e1c181bfc727731746ff0a4f87fe",
+      "attempts": 1,
+      "startedAt": "2026-10-28T05:37:49.725Z",
+      "doneAt": "2026-10-28T05:41:29.721Z",
+      "summary": "Test de AC1: en testing solo se puede cancelar (el cambio de OPEN entró en T1); formats §2 nombra las fases de state.json y ARCHITECTURE §4 y §15 la fase de tests, que aún no tiene entrada.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 2,
+    "R": 1,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-28T05:45:51.519Z"
+}

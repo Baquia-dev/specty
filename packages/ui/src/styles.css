@@ -23,6 +23,8 @@
   --color-phase-draft-bg: #f1f1f2;
   --color-phase-review: #92400e;
   --color-phase-review-bg: #fef3c7;
+  --color-phase-testing: #115e59;
+  --color-phase-testing-bg: #ccfbf1;
   --color-phase-implementing: #1d4ed8;
   --color-phase-implementing-bg: #dbeafe;
   --color-phase-adjusting: #1d4ed8;
@@ -141,6 +143,8 @@
   --color-phase-draft-bg: #333333;
   --color-phase-review: #e2c07d;
   --color-phase-review-bg: #3a3426;
+  --color-phase-testing: #8fd1c7;
+  --color-phase-testing-bg: #2b3a39;
   --color-phase-implementing: #9fb9e6;
   --color-phase-implementing-bg: #2d3442;
   --color-phase-adjusting: #9fb9e6;

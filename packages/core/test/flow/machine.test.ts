@@ -111,6 +111,20 @@ describe("transition", () => {
           }
   });
 
+  it("AC1: lets the person cancel a change in testing, and nothing else moves it yet", () => {
+    const base = { phase: "testing" as const, kind: "standard" as const, actor: "human" as const };
+    expect(transition({ ...base, event: { type: "cancel" } })).toEqual({
+      ok: true,
+      phase: "cancelled",
+    });
+    for (const event of FLOW_EVENTS.filter((type) => type !== "cancel")) {
+      const result = transition({ ...base, event: PASSING[event] });
+      expect(result.ok ? result.phase : result.code, event).toBe(
+        event === "childrenDone" ? "actor-not-allowed" : "phase-not-allowed",
+      );
+    }
+  });
+
   it("never lets the agent run an event that grants permissions", () => {
     for (const event of FLOW_EVENTS) {
       const rule = EVENT_RULES[event];

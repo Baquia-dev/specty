@@ -17,7 +17,7 @@ describe("icons", () => {
 
   it("gives every icon the UI uses as data, each with its Lucide name and drawing (AC1)", () => {
     const all = Object.entries(icons);
-    expect(all.length).toBe(50);
+    expect(all.length).toBe(51);
     for (const [exported, data] of all) {
       expect(exported).toMatch(/^Lucide[A-Z]/);
       expect(data.name).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);

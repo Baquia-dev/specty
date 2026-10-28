@@ -36,6 +36,7 @@ export interface EventRule {
 const OPEN: readonly Phase[] = [
   "draft",
   "review",
+  "testing",
   "implementing",
   "acceptance",
   "adjusting",
