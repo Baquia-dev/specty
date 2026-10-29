@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-init-escribe-contract-como-politica-de-tests",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-init-escribe-contract-como-politica-de-tests",
   "baseCommit": "73f84b4f4729f7bd4de94ac7e0498f539feb75fd",
   "revision": 1,
@@ -25,14 +25,14 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/config-fill.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "b7623f676fb6d3cb44646fb7a217328e7cf784d9",
+      "attempts": 1,
       "startedAt": "2026-10-29T05:14:32.399Z",
       "doneAt": "2026-10-29T05:22:10.480Z",
-      "summary": "La plantilla de config.yaml escribe tests: contract (sin la clave sigue recommended); templates.test.ts visto en rojo; config-fill.test.ts: la tarea del manifiesto pasa a type build, con OK de la persona; formats §6, ARCHITECTURE §19.5, ADR 0014"
+      "summary": "La plantilla de config.yaml escribe tests: contract (sin la clave sigue recommended); templates.test.ts visto en rojo; config-fill.test.ts: la tarea del manifiesto pasa a type build, con OK de la persona; formats §6, ARCHITECTURE §19.5, ADR 0014",
+      "scopeExtra": [
+        "packages/cli/test/config-fill.test.ts"
+      ]
     }
   },
   "pending": {

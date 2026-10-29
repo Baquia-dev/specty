@@ -22,3 +22,9 @@ ADR 0014 dejó `policy.tests: contract` como opción hasta probarlo en este repo
   - files: packages/core/src/templates.ts, packages/core/test/templates.test.ts, docs/formats.md, docs/ARCHITECTURE.md, docs/decisions/0014-los-tests-como-contrato.md
   - verify: pnpm typecheck && pnpm lint && pnpm --filter @baquia-dev/specty-core exec vitest run test/templates.test.ts
   - type: feat
+
+## Cierre
+
+### Resumen
+
+La plantilla de config.yaml escribe tests: contract (sin la clave sigue recommended); templates.test.ts visto en rojo; config-fill.test.ts: la tarea del manifiesto pasa a type build, con OK de la persona; formats §6, ARCHITECTURE §19.5, ADR 0014
