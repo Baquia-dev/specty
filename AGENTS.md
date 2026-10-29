@@ -3,7 +3,7 @@
 <!-- specty:begin id=project -->
 ## Proyecto (detectado por Specty)
 - Stack: TypeScript (pnpm)
-- Paquetes: packages/cli, packages/core, packages/exporters, packages/ui
+- Paquetes: evals, packages/cli, packages/core, packages/exporters, packages/ui, packages/vscode
 - Comandos:
   - Tests: `pnpm test`
   - Lint: `pnpm lint`

@@ -15,7 +15,7 @@ Specty instala ahora el `SessionStart` de Claude Code con `compact|clear`, para 
 
 ## Tareas
 
-- [ ] T1: `specty init` actualiza la instalación de Claude Code de este repositorio
+- [x] T1: `specty init` actualiza la instalación de Claude Code de este repositorio
   - files: .claude/settings.json, AGENTS.md
   - verify: pnpm lint
   - type: chore
