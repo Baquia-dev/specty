@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9b9e258e07d28b8cc174b81feb48511302179774",
+      "startedAt": "2026-10-29T20:24:32.330Z",
+      "doneAt": "2026-10-29T20:33:51.971Z",
+      "summary": "flowBlock(lang, command, { mcp }) añade tras la primera línea la que pide usar las herramientas specty_* en lugar del comando que hace lo mismo; sin mcp el bloque es el de hoy. formats.md §8 la describe."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

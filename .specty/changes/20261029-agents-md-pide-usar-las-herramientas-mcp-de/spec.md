@@ -45,7 +45,7 @@ Con el servidor MCP de Specty registrado, el agente de VS Code ejecutaba `specty
 
 ## Tareas
 
-- [ ] T1: El bloque de flujo pide usar las herramientas MCP si hay servidor
+- [x] T1: El bloque de flujo pide usar las herramientas MCP si hay servidor
   - files: packages/core/test/agents-md.test.ts, packages/core/src/agents-md.ts, docs/formats.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts test/cards.test.ts test/cards/language.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
