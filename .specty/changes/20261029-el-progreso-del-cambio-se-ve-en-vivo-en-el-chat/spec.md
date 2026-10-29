@@ -82,7 +82,7 @@ El corte arregla además lo que mostró la prueba en anfitriones reales (2026-10
 
 ## Tareas
 
-- [ ] T1: El servidor da a la vista lo que cambió, mientras el agente trabaja
+- [x] T1: El servidor da a la vista lo que cambió, mientras el agente trabaja
   - files: packages/cli/src/commands/mcp.ts, packages/cli/src/mcp/app.ts, packages/cli/test/mcp-app.test.ts, packages/cli/test/mcp-app-live.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts test/mcp-app-live.test.ts test/mcp.test.ts && pnpm typecheck && pnpm lint && pnpm knip

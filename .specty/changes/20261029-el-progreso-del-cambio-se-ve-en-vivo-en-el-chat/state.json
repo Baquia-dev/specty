@@ -44,7 +44,22 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/mcp/tools.ts",
+        "packages/cli/src/store/lock.ts",
+        "packages/ui/src/app/embedded.ts",
+        "packages/ui/src/data/changes-store.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "d48c70f68e3a012262a61834a654c32d7a8cac59",
+      "startedAt": "2026-10-29T09:49:02.080Z",
+      "doneAt": "2026-10-29T10:10:13.454Z",
+      "summary": "specty_view da huella (stat de los archivos y la verificación viva), unchanged con since y el objeto como texto JSON; las herramientas del agente solo texto; con MCP Apps el resto no espera a una herramienta en marcha. Adelanta embeddedProviders() e inThread (tests de T3)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -53,7 +68,8 @@
     "A": 5,
     "AC": 7,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/mcp-app.test.ts": "sha256:fa9f973cd5b0ecb2a0e6a126261f46b117e34cc8180d5affbd34b9f87cf76c54",

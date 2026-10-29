@@ -13,7 +13,7 @@ import {
   parseMessage,
   result,
 } from "../mcp/protocol";
-import { commandOf, showsView, toolList, VIEW_TOOL } from "../mcp/tools";
+import { commandOf, toolList, VIEW_TOOL } from "../mcp/tools";
 import type { CliEnvironment } from "../program";
 import type { Terminal } from "../session";
 
@@ -49,12 +49,61 @@ export function mcpCommand(program: Command, environment: CliEnvironment, runCli
         runCli,
         connection: { page: undefined },
       };
+      const answers = answering(context);
       for await (const line of lines(environment.input ?? [])) {
-        if (line.trim() === "") continue;
-        const answer = await answerTo(parseMessage(line), context);
-        if (answer !== undefined) environment.io.out(answer);
+        if (line.trim() !== "") answers.take(parseMessage(line));
       }
+      await answers.done();
     });
+}
+
+/**
+ * The order of the answers (ADR 0015): each message is answered once everything before it is,
+ * except that with MCP Apps the messages that are not the agent's tools (the view's
+ * `specty_view`, its page, `ping`…) wait for no tool of the agent: the view sees the change
+ * while a tool runs. `done` waits for what is pending, and throws what the first answer that
+ * failed threw.
+ */
+function answering(context: Context): { take(message: Incoming): void; done(): Promise<void> } {
+  const say = (answer: string | undefined) => {
+    if (answer !== undefined) context.environment.io.out(answer);
+  };
+  let failed: { readonly error: unknown } | undefined;
+  const settled = (work: Promise<void>) =>
+    work.catch((error: unknown) => {
+      failed ??= { error };
+    });
+  let tools = Promise.resolve();
+  let rest = Promise.resolve();
+  return {
+    take(message) {
+      const answer = () => answerTo(message, context).then(say);
+      if (isAgentTool(message)) {
+        tools = settled(Promise.all([tools, rest]).then(answer));
+        return;
+      }
+      const before = tools;
+      rest = settled(
+        rest.then(async () => {
+          if (context.connection.page === undefined) await before;
+          await answer();
+        }),
+      );
+    },
+    async done() {
+      await Promise.all([tools, rest]);
+      if (failed !== undefined) throw failed.error;
+    },
+  };
+}
+
+/** Whether the message calls one of the agent's tools, which the view does not wait for. */
+function isAgentTool(message: Incoming): boolean {
+  return (
+    message.kind === "request" &&
+    message.method === "tools/call" &&
+    message.params.name !== VIEW_TOOL
+  );
 }
 
 /** The lines of `input`, whose chunks may cut a line, or a character, in two. */
@@ -104,21 +153,24 @@ async function answerTo(message: Incoming, context: Context): Promise<string | u
   }
 }
 
-/** A tool's answer: the view's own, or a command's, which also names its folder for the view. */
+/**
+ * A tool's answer: the view's own, whose data also goes as JSON text for a host that hands the
+ * view only the text, or a command's, which is only its card's text: the view takes the folder
+ * from the call's arguments.
+ */
 async function answerCall(
   id: string | number,
   params: Readonly<Record<string, unknown>>,
   context: Context,
 ): Promise<string> {
   const { environment, runCli, connection } = context;
-  const apps = connection.page !== undefined;
-  if (apps && params.name === VIEW_TOOL) {
-    const asked = isRecord(params.arguments) ? params.arguments.folder : undefined;
-    const folder = resolve(environment.cwd, typeof asked === "string" ? asked : ".");
-    const data = await viewData(environment, folder);
-    const text = data.records.length === 0 ? "No change is open there." : "The change's record.";
+  if (connection.page !== undefined && params.name === VIEW_TOOL) {
+    const args = isRecord(params.arguments) ? params.arguments : {};
+    const folder = resolve(environment.cwd, typeof args.folder === "string" ? args.folder : ".");
+    const since = typeof args.since === "string" ? args.since : undefined;
+    const data = await viewData(environment, folder, since);
     return result(id, {
-      content: [{ type: "text", text }],
+      content: [{ type: "text", text: JSON.stringify(data) }],
       structuredContent: data,
       isError: false,
     });
@@ -127,9 +179,7 @@ async function answerCall(
   if ("problem" in command) return failure(id, INVALID_PARAMS, command.problem);
   const folder =
     command.folder === undefined ? environment.cwd : resolve(environment.cwd, command.folder);
-  const called = await callTool(command.argv, folder, environment, runCli);
-  const view = apps && showsView(params.name) ? { structuredContent: { folder } } : {};
-  return result(id, { ...called, ...view });
+  return result(id, await callTool(command.argv, folder, environment, runCli));
 }
 
 /** The view's page, the one resource there is with MCP Apps. */

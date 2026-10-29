@@ -6,15 +6,16 @@ import {
   computed,
   DestroyRef,
   inject,
+  type Provider,
   signal,
 } from "@angular/core";
 import type { Phase } from "@baquia-dev/specty-core/light";
 import { AcceptanceTab } from "../acceptance/acceptance-tab";
 import { PhaseBadge } from "../components/badge";
 import { PAGE } from "../components/document";
-import { ChangesStore } from "../data/changes-store";
-import { MCP_HOST } from "../data/mcp-app";
-import type { ChangeTab, DecisionKind, ReviewSection } from "../data/records";
+import { ChangesStore, DERIVER, inThread } from "../data/changes-store";
+import { MCP_HOST, McpAppData } from "../data/mcp-app";
+import { type ChangeTab, type DecisionKind, type ReviewSection, SpectyData } from "../data/records";
 import { HistoryTab } from "../history/history-tab";
 import { ProgressTab } from "../progress/progress-tab";
 import { SpecReview } from "../review/spec-review";
@@ -129,4 +130,15 @@ export class Embedded {
     });
     inject(DestroyRef).onDestroy(() => observer?.disconnect());
   }
+}
+
+/**
+ * What the embedded view starts with: the host's data, and views derived in the main thread,
+ * because the frame of an MCP App cannot start a worker.
+ */
+export function embeddedProviders(): Provider[] {
+  return [
+    { provide: SpectyData, useClass: McpAppData },
+    { provide: DERIVER, useValue: inThread },
+  ];
 }
