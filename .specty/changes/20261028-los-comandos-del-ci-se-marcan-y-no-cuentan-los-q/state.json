@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261028-los-comandos-del-ci-se-marcan-y-no-cuentan-los-q",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261028-los-comandos-del-ci-se-marcan-y-no-cuentan-los-q",
+  "baseCommit": "c019307ae21a257f99a9da5a91e7be9d0ca634be",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6a7d4bf7e407aa760ed83019299b3a255092322baec7892f4b817b315f380cfe",
+    "at": "2026-10-29T04:59:06.521Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
