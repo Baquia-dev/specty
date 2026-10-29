@@ -6,6 +6,13 @@
   "branch": "specty/20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b62931356f010092689192e5a6f4346732538d4ac62adabbdd6b14fcc37bd8ab",
+    "at": "2026-10-29T07:54:26.677Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b62931356f010092689192e5a6f4346732538d4ac62adabbdd6b14fcc37bd8ab",
-    "at": "2026-10-29T07:54:26.677Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T07:55:22.075Z"
 }
