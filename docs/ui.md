@@ -129,6 +129,18 @@ Las tareas, en el orden de la spec, como filas de documento (igual que los ítem
 - **Trazabilidad** (`history/trace-view.ts`): el control «Vista» de la pestaña (Línea de tiempo, Trazabilidad), que solo aparece cuando la pestaña sabe de qué cambio es, cambia la línea de tiempo y sus filtros por los archivos que dejó el cambio. Un `sp-select` «Archivo» elige uno (el primero al entrar), que se ve tal como lo dejó el commit de su última tarea, con sus líneas numeradas y un margen tipo blame: cada bloque de líneas seguidas del mismo commit lleva su hash y su fecha y, si lo hizo Specty, su cambio enlazado a su Historial, su tarea y los criterios que cubre (con su texto en el tooltip); si no, el asunto y el autor del commit, «fuera de Specty». La fuente da la lista y el blame (`traceFiles` y `trace`; el servidor, con `GET /api/changes/<id>/trace`); mientras cargan, líneas de carga, y si el cambio aún no tiene commits, no dejó archivos o la fuente no puede, la vista lo dice con su motivo. En el prototipo, la de «Panel de asistencia por curso» sale de sus diffs de muestra (`data/sample-trace.ts`).
 - Más adelante: resaltar la sintaxis del código en la trazabilidad, y saltar de una línea a su diff.
 
+### En el chat (MCP Apps)
+
+La vista de un anfitrión de MCP Apps ([ADR 0015](decisions/0015-mcp-apps-solo-para-ver.md)):
+- **Cuándo aparece:** cuando una herramienta del agente trabaja sobre un cambio.
+- **Cómo arranca:** la página es `mcp-app.html`, y su marca `<meta name="specty-data" content="mcp-app">` hace que `main.ts` arranque `app/embedded.ts` en lugar del armazón, sin rutas, con `McpAppData` como fuente.
+- **De dónde salen los datos:** `McpAppData` (`data/mcp-app.ts`) habla JSON-RPC por `postMessage` con el anfitrión. Lo saluda con `ui/initialize`, toma de cada resultado de herramienta la carpeta en la que corrió y lee ese cambio con `specty_view`.
+- **Qué muestra:** el cambio, con su fase, su id y su título, y solo la pestaña de la fase. Es la Spec en borrador y revisión, el Progreso en tests, implementación y ajustes, la Aceptación en aceptación, cierre y terminado, y el Historial si se canceló.
+- **Qué no hay:** ni bandeja, ni pestañas, ni acciones. Si el cambio espera a la persona, una línea dice qué comando ejecutar en la terminal o que lo abra en `specty ui`, porque la vista no decide nada.
+- **Aspecto:** sin las fuentes Geist, que la CSP del iframe no deja cargar, se ve con las del sistema.
+- **El tamaño:** la vista avisa al anfitrión de su tamaño (`ui/notifications/size-changed`).
+- **Sin Web Worker:** si el iframe no deja crearlo, los datos se derivan en el hilo principal.
+
 ### Carga, estados vacíos y errores
 
 Esqueletos de carga en lugar de spinners. Cada error dice qué pasó y qué hacer. Si se pierde la conexión con el servidor, un aviso discreto reintenta solo.

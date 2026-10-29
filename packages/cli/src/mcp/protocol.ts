@@ -68,10 +68,14 @@ export function failure(id: Id, code: number, message: string): string {
   return JSON.stringify({ jsonrpc: "2.0", id, error: { code, message } });
 }
 
-/** The answer to `initialize`: the client's version if the server knows it, or its latest one. */
+/**
+ * The answer to `initialize`: the client's version if the server knows it, or its latest one.
+ * With `apps`, the client renders MCP Apps and the view exists: the server also has resources.
+ */
 export function initialized(
   params: Readonly<Record<string, unknown>>,
   version: string,
+  apps = false,
 ): Record<string, unknown> {
   const asked = params.protocolVersion;
   return {
@@ -79,7 +83,7 @@ export function initialized(
       typeof asked === "string" && PROTOCOL_VERSIONS.includes(asked)
         ? asked
         : PROTOCOL_VERSIONS[PROTOCOL_VERSIONS.length - 1],
-    capabilities: { tools: { listChanged: false } },
+    capabilities: { tools: { listChanged: false }, ...(apps ? { resources: {} } : {}) },
     serverInfo: { name: "specty", version },
     instructions:
       "Specty enforces spec-driven development. Call specty_next first and follow its NEXT line (SIGUIENTE in Spanish). Pass `folder` with the change's folder when you work in a worktree. The person's decisions (approve, accept, close) are not tools.",

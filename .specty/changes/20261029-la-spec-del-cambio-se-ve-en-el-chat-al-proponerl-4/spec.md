@@ -81,7 +81,7 @@ Primer corte de la épica de MCP Apps. Cuando un anfitrión que soporta MCP Apps
   - files: packages/cli/mcp-app.mjs, packages/cli/build.mjs, packages/cli/test/mcp-app-page.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app-page.test.ts test/bundle.test.ts && pnpm lint && pnpm knip
-- [ ] T4: El servidor MCP sirve la vista y la enlaza a las herramientas de un cambio
+- [x] T4: El servidor MCP sirve la vista y la enlaza a las herramientas de un cambio
   - files: packages/cli/src/mcp/app.ts, packages/cli/src/mcp/protocol.ts, packages/cli/src/mcp/tools.ts, packages/cli/src/commands/mcp.ts, packages/cli/test/mcp-app.test.ts, docs/decisions/0015-mcp-apps-solo-para-ver.md, docs/ARCHITECTURE.md, docs/ui.md
   - ac: AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts test/mcp.test.ts && pnpm typecheck && pnpm lint && pnpm knip

@@ -2,6 +2,8 @@
 import { resolve } from "node:path";
 import type { Command } from "commander";
 import { spectyVersion } from "../check/ci";
+import { isRecord } from "../io/files";
+import { rendersApps, VIEW_MIME, VIEW_URI, viewData, viewPage } from "../mcp/app";
 import {
   failure,
   INVALID_PARAMS,
@@ -11,11 +13,26 @@ import {
   parseMessage,
   result,
 } from "../mcp/protocol";
-import { commandOf, toolList } from "../mcp/tools";
+import { commandOf, showsView, toolList, VIEW_TOOL } from "../mcp/tools";
 import type { CliEnvironment } from "../program";
 import type { Terminal } from "../session";
 
 type RunCli = (argv: readonly string[], environment: CliEnvironment) => Promise<number>;
+
+/**
+ * What a connection agreed in `initialize`: the view's page, when the client renders MCP Apps
+ * and the build wrote it (ADR 0015); without one, the server is as it always was.
+ */
+interface Connection {
+  page: string | undefined;
+}
+
+interface Context {
+  readonly version: string;
+  readonly environment: CliEnvironment;
+  readonly runCli: RunCli;
+  readonly connection: Connection;
+}
 
 /**
  * `specty mcp` (ARCHITECTURE §6): an MCP server over stdio whose tools are the agent's commands.
@@ -26,10 +43,15 @@ export function mcpCommand(program: Command, environment: CliEnvironment, runCli
     .command("mcp")
     .description("serve the agent's commands as MCP tools over stdio")
     .action(async () => {
-      const version = await spectyVersion();
+      const context = {
+        version: await spectyVersion(),
+        environment,
+        runCli,
+        connection: { page: undefined },
+      };
       for await (const line of lines(environment.input ?? [])) {
         if (line.trim() === "") continue;
-        const answer = await answerTo(parseMessage(line), version, environment, runCli);
+        const answer = await answerTo(parseMessage(line), context);
         if (answer !== undefined) environment.io.out(answer);
       }
     });
@@ -52,12 +74,7 @@ async function* lines(
 }
 
 /** The answer to a message, or none for a notification. */
-async function answerTo(
-  message: Incoming,
-  version: string,
-  environment: CliEnvironment,
-  runCli: RunCli,
-): Promise<string | undefined> {
+async function answerTo(message: Incoming, context: Context): Promise<string | undefined> {
   switch (message.kind) {
     case "invalid":
       return failure(message.id, message.code, message.message);
@@ -67,30 +84,82 @@ async function answerTo(
       break;
   }
   const { id, method, params } = message;
+  const { connection } = context;
   switch (method) {
-    case "initialize":
-      return result(id, initialized(params, version));
+    case "initialize": {
+      const { script } = context.environment.invocation;
+      connection.page = rendersApps(params) ? await viewPage(script) : undefined;
+      return result(id, initialized(params, context.version, connection.page !== undefined));
+    }
     case "ping":
       return result(id, {});
     case "tools/list":
-      return result(id, { tools: toolList() });
-    case "tools/call": {
-      const command = commandOf(params.name, params.arguments);
-      if ("problem" in command) return failure(id, INVALID_PARAMS, command.problem);
-      return result(id, await callTool(command.argv, command.folder, environment, runCli));
-    }
+      return result(id, { tools: toolList(connection.page !== undefined) });
+    case "tools/call":
+      return answerCall(id, params, context);
+    default:
+      return connection.page === undefined
+        ? failure(id, METHOD_NOT_FOUND, `Method not found: ${method}`)
+        : answerResource(id, method, params, connection.page);
+  }
+}
+
+/** A tool's answer: the view's own, or a command's, which also names its folder for the view. */
+async function answerCall(
+  id: string | number,
+  params: Readonly<Record<string, unknown>>,
+  context: Context,
+): Promise<string> {
+  const { environment, runCli, connection } = context;
+  const apps = connection.page !== undefined;
+  if (apps && params.name === VIEW_TOOL) {
+    const asked = isRecord(params.arguments) ? params.arguments.folder : undefined;
+    const folder = resolve(environment.cwd, typeof asked === "string" ? asked : ".");
+    const data = await viewData(environment, folder);
+    const text = data.records.length === 0 ? "No change is open there." : "The change's record.";
+    return result(id, {
+      content: [{ type: "text", text }],
+      structuredContent: data,
+      isError: false,
+    });
+  }
+  const command = commandOf(params.name, params.arguments);
+  if ("problem" in command) return failure(id, INVALID_PARAMS, command.problem);
+  const folder =
+    command.folder === undefined ? environment.cwd : resolve(environment.cwd, command.folder);
+  const called = await callTool(command.argv, folder, environment, runCli);
+  const view = apps && showsView(params.name) ? { structuredContent: { folder } } : {};
+  return result(id, { ...called, ...view });
+}
+
+/** The view's page, the one resource there is with MCP Apps. */
+function answerResource(
+  id: string | number,
+  method: string,
+  params: Readonly<Record<string, unknown>>,
+  page: string,
+): string {
+  switch (method) {
+    case "resources/list":
+      return result(id, {
+        resources: [{ uri: VIEW_URI, name: "specty-change", title: "Specty", mimeType: VIEW_MIME }],
+      });
+    case "resources/read":
+      return params.uri === VIEW_URI
+        ? result(id, { contents: [{ uri: VIEW_URI, mimeType: VIEW_MIME, text: page }] })
+        : failure(id, INVALID_PARAMS, `Unknown resource: ${String(params.uri)}`);
     default:
       return failure(id, METHOD_NOT_FOUND, `Method not found: ${method}`);
   }
 }
 
 /**
- * Runs the command in `folder` (or the server's), as the CLI would there: its output, captured,
- * is the tool's text, and an exit code of 1 or 2 makes it an error. Its stderr stays on stderr.
+ * Runs the command in `folder`, as the CLI would there: its output, captured, is the tool's text,
+ * and an exit code of 1 or 2 makes it an error. Its stderr stays on stderr.
  */
 async function callTool(
   argv: readonly string[],
-  folder: string | undefined,
+  folder: string,
   environment: CliEnvironment,
   runCli: RunCli,
 ): Promise<Record<string, unknown>> {
@@ -98,7 +167,7 @@ async function callTool(
   const { input: _input, ...rest } = environment;
   const code = await runCli(argv, {
     ...rest,
-    cwd: folder === undefined ? environment.cwd : resolve(environment.cwd, folder),
+    cwd: folder,
     io: { out: (text) => out.push(text), err: environment.io.err },
     terminal: nobodyAnswers(environment),
     stdin: async () => "",

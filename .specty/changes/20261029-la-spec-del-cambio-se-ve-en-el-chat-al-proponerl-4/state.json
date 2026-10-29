@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fdb195333c8d4b39eb08a93ecb4a07eb7f75b8a8",
+      "attempts": 1,
       "startedAt": "2026-10-29T07:56:47.813Z",
       "doneAt": "2026-10-29T07:57:07.145Z",
-      "summary": "mcp-app.mjs empaqueta el build de la UI en un HTML (esbuild sin chunks, CSS sin @font-face, marca, sin base ni links, gramáticas de shiki vacías: 1,36 MB); sin script no escribe la página; build.mjs la escribe junto al bundle"
+      "summary": "mcp-app.mjs empaqueta el build de la UI en un HTML (esbuild sin chunks, CSS sin @font-face, marca, sin base ni links, gramáticas de shiki vacías: 1,36 MB); sin script no escribe la página; build.mjs la escribe junto al bundle",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9307e24ccd36f095297df1a24912e02dea1920f0",
+      "startedAt": "2026-10-29T07:57:07.459Z",
+      "doneAt": "2026-10-29T07:57:47.383Z",
+      "summary": "Servidor MCP: rendersApps en initialize, resources/list y read de ui://specty/change, _meta.ui en las herramientas de un cambio con structuredContent.folder, specty_view solo para la app; la página junto al bundle o al script de la invocación; ADR 0015, ARCHITECTURE §6/§18, ui.md"
     }
   },
   "pending": {
