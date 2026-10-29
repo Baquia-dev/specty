@@ -6,6 +6,13 @@
   "branch": "specty/20261029-las-evals-miden-el-consumo-y-comparan-un",
   "baseCommit": "297ca21f78dc0a25accc02e73612d622f5357f13",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fe33fd5dd186dfb868aeb246d00d9ec5978335874f7916b0edd0dda105193b2f",
+    "at": "2026-10-29T21:19:28.505Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -35,12 +42,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:fe33fd5dd186dfb868aeb246d00d9ec5978335874f7916b0edd0dda105193b2f",
-    "at": "2026-10-29T21:19:28.505Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T21:22:19.783Z"
 }
