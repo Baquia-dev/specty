@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
+  "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6b4bb7b0abde79cdd5ef9bce837063d68b388d80040c066138e0c9d24a69a503",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b09d31b4a53a9b8d34758300fd1c1b66e30a2f302e405c1802c4bad8d394335f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:657806c99eb951c35d0185f00ad64842ccc1d409f77a145593c03d32df73fd4a",
+    "at": "2026-10-29T19:46:52.407Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
