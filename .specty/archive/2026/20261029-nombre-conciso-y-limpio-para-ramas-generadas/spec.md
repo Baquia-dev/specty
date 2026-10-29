@@ -22,3 +22,9 @@ Evitar nombres de rama largos o truncados a mitad de palabra (como `...-proponer
 - [x] T1: Truncado de slugs por palabra y soporte de --slug y --branch en specty new
   - files: packages/core/src/ids.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/src/commands/new.ts, packages/core/test/basics.test.ts, packages/cli/test/branch-names.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/basics.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/branch-names.test.ts
+
+## Cierre
+
+### Resumen
+
+Truncar slugs en frontera de palabra y soportar --slug y --branch en specty new

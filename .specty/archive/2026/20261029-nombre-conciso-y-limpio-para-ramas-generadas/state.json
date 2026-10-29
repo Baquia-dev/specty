@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-nombre-conciso-y-limpio-para-ramas-generadas",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-nombre-conciso-y-limpio-para-ramas-generadas",
   "baseCommit": "b4e6d969e13c30e0ecc85066c614f1b79665588f",
   "revision": 1,
@@ -26,12 +26,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "42e1999c5cd9d0ae0e1982e1cb0fcdb68a5ba057",
+      "attempts": 1,
       "startedAt": "2026-10-29T10:35:34.161Z",
       "doneAt": "2026-10-29T10:47:26.893Z",
-      "summary": "Truncar slugs en frontera de palabra y soportar --slug y --branch en specty new"
+      "summary": "Truncar slugs en frontera de palabra y soportar --slug y --branch en specty new",
+      "scopeExtra": []
     }
   },
   "pending": {
