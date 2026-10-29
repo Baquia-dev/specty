@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-agents-md-pide-usar-las-herramientas-mcp-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-agents-md-pide-usar-las-herramientas-mcp-de",
   "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
   "revision": 1,
@@ -47,6 +47,8 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T20:24:31.341Z"
+  "lockedTests": {
+    "packages/cli/test/mcp-install.test.ts": "sha256:a69edb4d4ba2390c246f6b77b0e315efb0d6f8949736b43106f6e3bd47dc84f2",
+    "packages/core/test/agents-md.test.ts": "sha256:b2dbcfd87bf727434037c1f194399408e3eb68747978d45290ea7a15fbef3178"
+  }
 }
