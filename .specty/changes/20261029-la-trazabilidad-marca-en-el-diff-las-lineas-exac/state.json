@@ -6,6 +6,13 @@
   "branch": "specty/20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
   "baseCommit": "0acfdedf181cf68d8c8737ef85e7baed0c108705",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f85c82d60fe3f9ef56f954db1ab1b5886e0a2466fd5aea702a540c283c6bd2df",
+    "at": "2026-10-29T08:59:09.170Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -36,12 +43,6 @@
     "AC": 3,
     "T": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f85c82d60fe3f9ef56f954db1ab1b5886e0a2466fd5aea702a540c283c6bd2df",
-    "at": "2026-10-29T08:59:09.170Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T09:01:16.464Z"
 }
