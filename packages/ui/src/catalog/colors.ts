@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DOCUMENT } from "@angular/common";
 import { ChangeDetectionStrategy, Component, computed, inject } from "@angular/core";
-import { PHASES } from "@baquia-dev/specty-core";
+import { PHASES } from "@baquia-dev/specty-core/light";
 import { PhaseBadge } from "../components/badge";
 import { LIST, SectionDivider } from "../components/document";
 import { Preferences } from "../theme/preferences";

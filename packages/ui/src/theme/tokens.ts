@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { type Lang, PHASES, type Phase } from "@baquia-dev/specty-core";
+import { type Lang, PHASES, type Phase } from "@baquia-dev/specty-core/light";
 
 /** Inventory of the design tokens. Their values live only in `styles.css`. */
 export type TokenGroup = "color" | "phase" | "type" | "space" | "radius" | "shadow" | "motion";

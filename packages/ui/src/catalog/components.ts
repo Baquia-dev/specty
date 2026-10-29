@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from "@angular/core";
-import { PHASES } from "@baquia-dev/specty-core";
+import { PHASES } from "@baquia-dev/specty-core/light";
 import { Badge, PhaseBadge } from "../components/badge";
 import { Button, IconButton } from "../components/button";
 import { Card } from "../components/card";

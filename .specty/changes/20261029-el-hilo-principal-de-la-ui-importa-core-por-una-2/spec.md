@@ -54,7 +54,7 @@ El hilo principal de la UI solo usa de core los idiomas (`LANGS`, `fold`), el tr
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/light.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
   - type: refactor
-- [ ] T2: El hilo principal de la UI importa de la entrada ligera
+- [x] T2: El hilo principal de la UI importa de la entrada ligera
   - files: packages/ui/src/theme/preferences.ts, packages/ui/src/theme/tokens.ts, packages/ui/src/app/preferences-menu.ts, packages/ui/src/components/command-palette.ts, packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/inbox/inbox-view.ts, packages/ui/src/catalog/colors.ts, packages/ui/src/catalog/components.ts, AGENTS.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme --include src/inbox --include src/components/command-palette.test.ts && pnpm lint && pnpm knip

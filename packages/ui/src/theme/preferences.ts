@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DOCUMENT } from "@angular/common";
 import { computed, effect, Injectable, inject, signal } from "@angular/core";
-import { LANGS, type Lang, translator } from "@baquia-dev/specty-core";
+import { LANGS, type Lang, translator } from "@baquia-dev/specty-core/light";
 
 export type ThemeChoice = "light" | "dark" | "system";
 export type Theme = "light" | "dark";

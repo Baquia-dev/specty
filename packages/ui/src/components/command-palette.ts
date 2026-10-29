@@ -11,7 +11,7 @@ import {
   inject,
   signal,
 } from "@angular/core";
-import { fold, type Lang } from "@baquia-dev/specty-core";
+import { fold, type Lang } from "@baquia-dev/specty-core/light";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
 import { DialogFrame, Dialogs } from "./dialog";

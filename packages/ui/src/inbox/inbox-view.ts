@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // What the Inbox shows, from the change views: filtered, grouped and sorted. Pure.
-import { type Lang, PHASES, type Phase, type SizeLevel } from "@baquia-dev/specty-core";
+import type { SizeLevel } from "@baquia-dev/specty-core";
+import { type Lang, PHASES, type Phase } from "@baquia-dev/specty-core/light";
 import type { Bilingual, ChangeView } from "../data/records";
 import { PHASE_LABELS } from "../theme/tokens";
 

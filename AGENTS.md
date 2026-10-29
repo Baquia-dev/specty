@@ -60,7 +60,7 @@ Lo que ya verifica una herramienta no se repite aquí: el core sin APIs de Node 
 - Archivos con una responsabilidad: si uno crece demasiado, propón cómo dividirlo por responsabilidad antes de seguir. Nunca lo partas solo para cumplir el número: un `parte2` o unos helpers sin cohesión son peores que un archivo largo.
 - Sin casts inseguros; datos `readonly` e inmutables.
 - Todo texto visible tiene versión en español y en inglés, en `packages/core/src/cards/`: la CLI le pasa los datos a core.
-- La API pública de core son dos listas explícitas: `packages/core/src/index.ts` y, para los textos, `packages/core/src/cards/index.ts`. Si una tarea añade algo que usa otro paquete, pon en sus archivos la lista que toca.
+- La API pública de core son listas explícitas: `packages/core/src/index.ts` y, para los textos, `packages/core/src/cards/index.ts`; además, `packages/core/src/light.ts` (`@baquia-dev/specty-core/light`) es la entrada ligera, sin el parser, zod ni yaml: el hilo principal de la UI importa de ella y no del índice, que solo usan el worker y los chunks perezosos. Si una tarea añade algo que usa otro paquete, pon en sus archivos la lista que toca.
 - Nada que conceda permisos sobre el código (aprobar, aceptar, cerrar) puede habilitarse con una variable de entorno: las pruebas inyectan una terminal.
 - Los formatos (`spec.md`, `state.json`, `config.yaml`) se definen en `docs/formats.md`; si cambias el código, actualiza ese documento.
 

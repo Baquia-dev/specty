@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-hilo-principal-de-la-ui-importa-core-por-una-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-el-hilo-principal-de-la-ui-importa-core-por-una-2",
   "baseCommit": "1f53657807f9a08c2f5d4ca2eecb5119702d43f5",
   "revision": 1,
@@ -32,12 +32,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "de4f90425470d5ea78075c34d57bb42eacdb1c24",
+      "attempts": 1,
       "startedAt": "2026-10-29T05:40:00.432Z",
       "doneAt": "2026-10-29T05:43:56.970Z",
-      "summary": "core/src/light.ts y la entrada ./light de core: LANGS, fold, translator y PHASES; un test recorre sus importaciones y comprueba que no llega a zod, yaml, picomatch ni @noble/hashes y que da los valores del índice"
+      "summary": "core/src/light.ts y la entrada ./light de core: LANGS, fold, translator y PHASES; un test recorre sus importaciones y comprueba que no llega a zod, yaml, picomatch ni @noble/hashes y que da los valores del índice",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "48e64fe3dfa3b238149730b73f5891bb9544a226",
+      "startedAt": "2026-10-29T05:43:57.283Z",
+      "doneAt": "2026-10-29T05:48:15.386Z",
+      "summary": "Los ocho archivos del hilo principal de la UI importan LANGS, fold, translator y PHASES de @baquia-dev/specty-core/light; el bundle inicial vuelve de 740 a 521 kB, con el parser y la exportación en el chunk de la página del cambio; AGENTS.md cuenta la entrada ligera"
     }
   },
   "pending": {

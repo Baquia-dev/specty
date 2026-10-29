@@ -11,7 +11,7 @@ import {
   signal,
   viewChild,
 } from "@angular/core";
-import { PHASES } from "@baquia-dev/specty-core";
+import { PHASES } from "@baquia-dev/specty-core/light";
 import { LucideDynamicIcon } from "@lucide/angular";
 import { EdgeFade } from "../components/edge-fade";
 import { LucideSearch } from "../components/icons";
