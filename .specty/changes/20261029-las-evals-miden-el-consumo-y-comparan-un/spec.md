@@ -66,7 +66,7 @@ Antes de llevarlo al producto hay que medirlo con agentes de verdad. Para eso la
   - files: evals/test/consumption.test.ts, evals/test/experiments.test.ts, evals/src/agents.ts, evals/src/report.ts, evals/src/experiments.ts, evals/src/repo.ts, evals/run/compliance.eval.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-evals exec vitest run test/consumption.test.ts test/experiments.test.ts test/report.test.ts test/scenarios.test.ts && pnpm --filter @baquia-dev/specty-evals typecheck && pnpm lint && pnpm knip
-- [ ] T2: Los resultados del experimento con Claude Code
+- [x] T2: Los resultados del experimento con Claude Code
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

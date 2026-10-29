@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-las-evals-miden-el-consumo-y-comparan-un",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-las-evals-miden-el-consumo-y-comparan-un",
   "baseCommit": "297ca21f78dc0a25accc02e73612d622f5357f13",
   "revision": 1,
@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ae2363c65479e4a1ff06d2b4482c3870b7a62ab0",
+      "attempts": 1,
       "startedAt": "2026-10-29T21:22:20.775Z",
       "doneAt": "2026-10-29T21:25:43.452Z",
-      "summary": "La suite guarda coste y contexto máximo del hilo principal de Claude Code (consumptionOf) y los resume en «Consumo»; experimentos changes y changes-subagent (3 quick seguidos en modo delegado, el segundo con el subagente specty-change), solo si se nombran, con 150 turnos y 30 min."
+      "summary": "La suite guarda coste y contexto máximo del hilo principal de Claude Code (consumptionOf) y los resume en «Consumo»; experimentos changes y changes-subagent (3 quick seguidos en modo delegado, el segundo con el subagente specty-change), solo si se nombran, con 150 turnos y 30 min.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cb40ea1cef8d0bf30f46fe24bb0bc6a42dc2f337",
+      "startedAt": "2026-10-29T21:25:43.746Z",
+      "doneAt": "2026-10-29T21:40:20.754Z",
+      "summary": "Experimento con Claude Code 2.1.312, 3 ejecuciones de cada uno: los dos cumplen 3/3 sin bloqueos; el subagente cuesta 0,78 frente a 0,43 USD (1,8×) y deja el hilo en 26.500 frente a 33.500 tokens. ARCHITECTURE §16 lo anota: no compensa en sesiones cortas; el aviso de /clear cubre las largas."
     }
   },
   "pending": {

@@ -699,6 +699,26 @@ Claude Code siguió el flujo sin que el guard tuviera que bloquearlo: ninguna ac
 - Codex, Gemini CLI, OpenCode y Cursor CLI, que no estaban instalados ni tenían sesión en esa máquina;
 - Antigravity y Devin (Windsurf), que no tienen un modo sin interfaz.
 
+**Experimentos de consumo** (`src/experiments.ts`). No miden si el agente cumple el flujo, sino lo que cuesta.
+- `changes` y `changes-subagent` piden tres arreglos seguidos, cada uno como un cambio quick, en modo delegado (lo activa la persona simulada).
+- En el segundo, el repositorio trae el subagente `specty-change` de Claude Code (`.claude/agents/`), que sigue `specty next` hasta cerrar su cambio y responde en tres líneas, y el encargo pide hacer cada cambio con él.
+- Se juzgan por el repositorio: cumplen con los tres archivos arreglados y tres cambios cerrados; código sin ningún cambio de Specty es una violación.
+- Solo corren si `SPECTY_EVALS_SCENARIOS` los nombra, con 150 turnos y 30 minutos.
+- De cada ejecución de Claude Code, la suite guarda el coste que da su `stream-json` (`total_cost_usd`, sus subagentes incluidos) y el mayor contexto que leyó su hilo principal (`consumptionOf`). El informe da sus medias en «Consumo».
+
+El 2026-10-29, con Claude Code 2.1.312, tres ejecuciones de cada uno:
+
+| Experimento | Cumplió | Rondas (media) | Coste medio (USD) | Contexto máximo del hilo principal (media) |
+| --- | --- | --- | --- | --- |
+| Tres cambios, por el agente | 3 de 3 | 30,7 | 0,43 | 33.500 |
+| Tres cambios, cada uno con un subagente | 3 de 3 | 44,3 | 0,78 | 26.500 |
+
+El subagente sigue el flujo entero de Specty, con el guard, sin bloqueos ni violaciones, y el hilo principal crece menos. Pero en una sesión corta cuesta 1,8 veces más: cada subagente arranca un contexto nuevo, vuelve a leer las instrucciones y repite pasos (unas 14 rondas más por cada tres cambios).
+
+Ese coste fijo, unos 0,12 USD por cambio aquí, solo compensa cuando la sesión principal ya lleva mucho contexto. En las sesiones medidas de este repositorio, un cambio empezaba con unos 515.000 tokens de contexto, y releerlos le costaba unos 4 USD.
+
+Para ese caso, el aviso de sesión nueva del cierre (§13) da el mismo ahorro sin el coste fijo y sin esconder los pasos. Por eso Specty no instala el subagente ni pide delegar. Queda como alternativa sin intervención de la persona, que convendría solo por encima de unos 150.000 tokens, y está por medir en una sesión larga.
+
 **El agente real con un modelo guionizado** (`agent-e2e.test.ts`, con `fake-model.ts`). Es la parte de la suite que no necesita un modelo de verdad. Claude Code corre en modo headless (`claude -p`) en un repositorio preparado con `specty init`. Habla con un servidor local que imita la API de Messages: responde por SSE una secuencia fija de llamadas a herramientas, y sabe por dónde va contando los `tool_result` que trae la conversación. La prueba lee esos `tool_result` y comprueba lo que Claude Code le devolvió al modelo:
 
 - sin cambio activo, escribir código gobernado, hacer `git commit` con código sin commit y ejecutar `specty approve` dan tres errores del hook de Specty, cada uno con su SIGUIENTE, y el repositorio no cambia;
