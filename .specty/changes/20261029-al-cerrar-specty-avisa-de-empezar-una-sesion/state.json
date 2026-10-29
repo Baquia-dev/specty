@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02219fdb6170e8dd768bb91e8c3396879a94e77c",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:39:35.746Z",
       "doneAt": "2026-10-29T20:40:11.175Z",
-      "summary": "freshSessionLine en cards/usage.ts: aconseja una sesión nueva para el siguiente cambio con el contexto redondeado a miles y agrupado por idioma (620.000 / 620,000); exportada en el índice de textos."
+      "summary": "freshSessionLine en cards/usage.ts: aconseja una sesión nueva para el siguiente cambio con el contexto redondeado a miles y agrupado por idioma (620.000 / 620,000); exportada en el índice de textos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fbc731ca398cd41f3d540ed641ed815dc72c2d49",
+      "startedAt": "2026-10-29T20:40:11.951Z",
+      "doneAt": "2026-10-29T20:42:35.058Z",
+      "summary": "sessionContext lee de la cola del transcript de Claude Code lo que leyó la última respuesta (entrada y caché); measureUsage añade el aviso de sesión nueva por encima de 150.000 tokens, con la última sesión de Claude Code de la auditoría."
     }
   },
   "pending": {

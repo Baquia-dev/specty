@@ -62,7 +62,7 @@ Claude Code no deja que un hook ni el agente limpien la sesión. Por eso:
   - files: packages/core/test/cards/fresh-session.test.ts, packages/core/src/cards/usage.ts, packages/core/src/cards/index.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/fresh-session.test.ts test/cards/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: Al cerrar, Specty avisa si la sesión del agente es grande
+- [x] T2: Al cerrar, Specty avisa si la sesión del agente es grande
   - files: packages/cli/test/fresh-session.test.ts, packages/cli/src/agents/run.ts, packages/cli/src/flow/usage.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/fresh-session.test.ts test/usage.test.ts test/audit-who.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
