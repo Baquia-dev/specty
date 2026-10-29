@@ -72,3 +72,46 @@ Al desplazarse por la UI, la barra de pestañas de un cambio se queda fija bajo 
   - files: packages/ui/src/history/history-tab.ts, packages/ui/src/history/history-tab.test.ts, docs/ui.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-tab.test.ts && pnpm lint
+
+## Cierre
+
+### Resumen
+
+- Se hizo fija la barra de pestañas (`[data-tabs-bar]`) en `sp-tabs` bajo `--sp-bar-top` y se incorporó la ranura derecha `[data-tabs-end]` junto con la directiva `TabEnd` (`ng-template[spTabEnd]`), que proyecta el contenido compacto de la pestaña activa cuando su bloque superior sale de la vista.
+- `sp-change-page` mide tanto la altura de la barra compacta (`--sp-bar-top`) como la suma de la barra compacta y la barra de pestañas (`--sp-sticky-top`).
+- Los divisores `sp-section-divider` y los encabezados de cada sección en `sp-spec-review` (`[data-section-header]`) quedan fijos en `top-[var(--sp-sticky-top,0px)]` sobre el fondo de la página mientras avanza el desplazamiento por su sección.
+- En Progreso, Aceptación e Historial, cuando el bloque superior (`[data-top]`) queda oculto por el desplazamiento, sus indicadores y selectores se muestran a la derecha de la barra fija de pestañas.
+
+### Desviaciones
+
+- Durante `T3` se solicitó el desbloqueo puntual (`S1`) de `progress-tab.test.ts`, `acceptance-tab.test.ts` y `history-tab.test.ts` para capturar el elemento observado como `Element` en el mock de `IntersectionObserver` y satisfacer el chequeo estricto de tipos (`TS2352`).
+
+### Decisiones
+
+- Se reutilizó una única directiva `TabEnd` en `components/tabs.ts` basada en `IntersectionObserver` con raíz en `<main>`, evitando escuchas manuales de eventos de scroll en las tres pestañas.
+
+### Pendientes
+
+- Ninguno.
+
+## Cierre
+
+### Resumen
+
+- Se hizo fija la barra de pestañas (`[data-tabs-bar]`) en `sp-tabs` bajo `--sp-bar-top` y se incorporó la ranura derecha `[data-tabs-end]` junto con la directiva `TabEnd` (`ng-template[spTabEnd]`), que proyecta el contenido compacto de la pestaña activa cuando su bloque superior sale de la vista.
+- `sp-change-page` mide tanto la altura de la barra compacta (`--sp-bar-top`) como la suma de la barra compacta y la barra de pestañas (`--sp-sticky-top`).
+- Los divisores `sp-section-divider` y los encabezados de cada sección en `sp-spec-review` (`[data-section-header]`) quedan fijos en `top-[var(--sp-sticky-top,0px)]` sobre el fondo de la página mientras avanza el desplazamiento por su sección.
+- En Progreso, Aceptación e Historial, cuando el bloque superior (`[data-top]`) queda oculto por el desplazamiento, sus indicadores y selectores se muestran a la derecha de la barra fija de pestañas.
+
+### Desviaciones
+
+- Durante `T3` se solicitó el desbloqueo puntual (`S1`) de `progress-tab.test.ts`, `acceptance-tab.test.ts` y `history-tab.test.ts` para capturar el elemento observado como `Element` en el mock de `IntersectionObserver` y satisfacer el chequeo estricto de tipos (`TS2352`).
+
+### Decisiones
+
+- Se reutilizó una única directiva `TabEnd` en `components/tabs.ts` basada en `IntersectionObserver` con raíz en `<main>`, evitando escuchas manuales de eventos de scroll en las tres pestañas.
+
+### Pendientes
+
+- Ninguno.
+
