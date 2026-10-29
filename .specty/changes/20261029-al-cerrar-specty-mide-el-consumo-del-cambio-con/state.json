@@ -37,16 +37,25 @@
   "tasks": {
     "T1": {
       "status": "done",
+      "baseCommit": "916dca46dc38825b4ca8a97f4b6d4560ecfe09b1",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:16:34.000Z",
+      "doneAt": "2026-10-29T20:23:19.981Z",
+      "summary": "core/usage.ts: modelPrices deduce por mínimos cuadrados, con columnas escaladas, los precios que explican cada sesión de ccusage al céntimo; changeUsage suma las llamadas desde la creación. Incluye los textos de T2 (usageLine y change.usage en audit), que pide el typecheck.",
       "scopeExtra": [
         "packages/core/src/cards/usage.ts",
         "packages/core/src/cards/index.ts",
         "packages/core/src/cards/audit.ts"
-      ],
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "916dca46dc38825b4ca8a97f4b6d4560ecfe09b1",
-      "startedAt": "2026-10-29T20:16:34.000Z",
-      "doneAt": "2026-10-29T20:23:19.981Z",
-      "summary": "core/usage.ts: modelPrices deduce por mínimos cuadrados, con columnas escaladas, los precios que explican cada sesión de ccusage al céntimo; changeUsage suma las llamadas desde la creación. Incluye los textos de T2 (usageLine y change.usage en audit), que pide el typecheck."
+      "baseCommit": "87ac990491fbc7ad17dc13d00324713e3817f4b5",
+      "startedAt": "2026-10-29T20:23:20.333Z",
+      "doneAt": "2026-10-29T20:23:28.540Z",
+      "summary": "Los textos ya entraron en T1, que los necesitaba para su typecheck: usageLine en español e inglés y el evento change.usage en specty audit; aquí pasa su verificación."
     }
   },
   "pending": {

@@ -81,7 +81,7 @@ Specty no instala ccusage ni escribe fuera del proyecto. Usa el de `node_modules
   - files: packages/core/test/usage.test.ts, packages/core/src/usage.ts, packages/core/src/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: El consumo en palabras, en el cierre y en la auditoría
+- [x] T2: El consumo en palabras, en el cierre y en la auditoría
   - files: packages/core/test/cards/usage.test.ts, packages/core/src/cards/usage.ts, packages/core/src/cards/index.ts, packages/core/src/cards/audit.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
