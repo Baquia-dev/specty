@@ -18,3 +18,9 @@ El test «AC3: fails when `specty ui` ends without a link, or gives none in time
   - files: packages/vscode/test/specty.test.ts
   - verify: for i in 1 2 3 4 5; do pnpm exec vitest run --root packages/vscode test/specty.test.ts || exit 1; done && pnpm lint
   - type: test
+
+## Cierre
+
+### Resumen
+
+El script de prueba escucha SIGTERM antes que nada y el caso sin enlace espera 2 s; pasa 5 veces seguidas y 8 a la vez bajo carga
