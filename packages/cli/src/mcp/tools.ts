@@ -225,6 +225,9 @@ export function toolList(apps = false): Record<string, unknown>[] {
       properties: {
         folder: FOLDER,
         since: text("The fingerprint of what the view has: if nothing changed, no record comes."),
+        change: text(
+          "The id of the change the view shows: found in another folder, or once archived.",
+        ),
       },
       required: [],
     },

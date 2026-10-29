@@ -75,7 +75,7 @@ Tercer y último corte de la épica de MCP Apps. Cuando el cambio pasa a aceptac
   - files: packages/cli/test/accept-live.test.ts, packages/cli/src/commands/accept.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/store/runs.ts, packages/cli/src/server/runs.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-live.test.ts test/live-run.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T2: `specty_view` da el cambio por su id, también cerrado o en otra carpeta
+- [x] T2: `specty_view` da el cambio por su id, también cerrado o en otra carpeta
   - files: packages/cli/test/mcp-app-change.test.ts, packages/cli/test/mcp-app.test.ts, packages/cli/src/mcp/app.ts, packages/cli/src/mcp/tools.ts, packages/cli/src/commands/mcp.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app-change.test.ts test/mcp-app.test.ts test/mcp-app-live.test.ts test/mcp.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

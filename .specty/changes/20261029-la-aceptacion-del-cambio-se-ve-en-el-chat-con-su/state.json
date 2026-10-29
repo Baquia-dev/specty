@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5b64d010a4c8ff49824aa37def556d6f2ee1cc08",
+      "attempts": 1,
       "startedAt": "2026-10-29T18:45:27.955Z",
       "doneAt": "2026-10-29T18:49:34.194Z",
-      "summary": "specty accept verifica con runLive sin tarea: la ejecución queda en specty/runs/<cambio>.json mientras corre y se borra al terminar; LiveRun.task es opcional y el servidor de specty ui la copia sin pid, así que la ve como la completa."
+      "summary": "specty accept verifica con runLive sin tarea: la ejecución queda en specty/runs/<cambio>.json mientras corre y se borra al terminar; LiveRun.task es opcional y el servidor de specty ui la copia sin pid, así que la ve como la completa.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "954752bca9948543fd6493dcc6d97d40c711927f",
+      "startedAt": "2026-10-29T18:49:34.532Z",
+      "doneAt": "2026-10-29T18:54:28.341Z",
+      "summary": "specty_view acepta change: busca el cambio abierto en cualquier worktree o archivado, en la carpeta del servidor si la pedida ya no existe, con su huella y unchanged; leer todos los registros tarda unos 0,4 s con los 300 cambios del repo."
     }
   },
   "pending": {

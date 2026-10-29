@@ -167,8 +167,12 @@ async function answerCall(
   if (connection.page !== undefined && params.name === VIEW_TOOL) {
     const args = isRecord(params.arguments) ? params.arguments : {};
     const folder = resolve(environment.cwd, typeof args.folder === "string" ? args.folder : ".");
-    const since = typeof args.since === "string" ? args.since : undefined;
-    const data = await viewData(environment, folder, since);
+    const text = (key: string) => (typeof args[key] === "string" ? args[key] : undefined);
+    const data = await viewData(environment, {
+      folder,
+      since: text("since"),
+      change: text("change"),
+    });
     return result(id, {
       content: [{ type: "text", text: JSON.stringify(data) }],
       structuredContent: data,

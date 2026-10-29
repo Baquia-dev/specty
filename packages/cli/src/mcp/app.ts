@@ -4,9 +4,11 @@ import { stat } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolveActive } from "../flow/active";
+import { locateChanges } from "../flow/changes";
 import { isRecord, readText } from "../io/files";
 import { changeRecords } from "../server/records";
 import { type Environment, openSession, type Session } from "../session";
+import { loadChange } from "../store/changes";
 import { alive } from "../store/lock";
 import { type LiveRun, readRuns } from "../store/runs";
 
@@ -47,9 +49,9 @@ const WATCHED: readonly string[] = ["spec.md", "state.json", "audit.jsonl", "com
 type ViewRun = Omit<LiveRun, "pid">;
 
 /**
- * What `specty_view` gives: the record of the change open in a folder, as `/api/changes` would,
- * its verification going on and its fingerprint; or only that nothing changed, if the view
- * already has what `since` names.
+ * What `specty_view` gives: the record of a change, as `/api/changes` would, its verification
+ * going on and its fingerprint; or only that nothing changed, if the view already has what
+ * `since` names.
  */
 type ViewData =
   | { readonly fingerprint: string; readonly unchanged: true }
@@ -59,25 +61,49 @@ type ViewData =
       readonly run?: ViewRun;
     };
 
-export async function viewData(
-  environment: Environment,
-  folder: string,
-  since: string | undefined,
-): Promise<ViewData> {
-  const opened = await openSession({ ...environment, cwd: folder });
-  if (opened.kind !== "ok") return { fingerprint: "", records: [] };
-  const { session } = opened;
-  const active = await resolveActive(session);
-  if (active === undefined) return { fingerprint: "", records: [] };
-  const run = await runOf(session, active.state.id);
-  const fingerprint = await fingerprintOf(active.files.dir, run);
-  if (fingerprint === since) return { fingerprint, unchanged: true };
+/** What the view asks for: the folder of the tool's call, what it has and the change it shows. */
+export interface ViewAsk {
+  readonly folder: string;
+  readonly since: string | undefined;
+  readonly change: string | undefined;
+}
+
+const NOTHING: ViewData = { fingerprint: "", records: [] };
+
+/** The change open in the folder asked, or the one the view names, wherever it lives. */
+export async function viewData(environment: Environment, asked: ViewAsk): Promise<ViewData> {
+  const session = await sessionFor(environment, asked);
+  const found = session === undefined ? undefined : await changeOf(session, asked.change);
+  if (session === undefined || found === undefined) return NOTHING;
+  const { id } = found.state;
+  const run = await runOf(session, id);
+  const fingerprint = await fingerprintOf(found.files.dir, run);
+  if (fingerprint === asked.since) return { fingerprint, unchanged: true };
   const records = await changeRecords(session);
   return {
     fingerprint,
-    records: records.filter((record) => record.state.id === active.state.id),
+    records: records.filter((record) => record.state.id === id),
     ...(run === undefined ? {} : { run }),
   };
+}
+
+/**
+ * A session in the folder asked. For a change named by its id, in the server's folder when that
+ * one is gone, as the worktree of a change that closed.
+ */
+async function sessionFor(environment: Environment, asked: ViewAsk): Promise<Session | undefined> {
+  const opened = await openSession({ ...environment, cwd: asked.folder });
+  if (opened.kind === "ok") return opened.session;
+  if (asked.change === undefined) return undefined;
+  const here = await openSession(environment);
+  return here.kind === "ok" ? here.session : undefined;
+}
+
+/** The change open in the session's folder or, by its id, open in any worktree or archived. */
+async function changeOf(session: Session, id: string | undefined) {
+  if (id === undefined) return resolveActive(session);
+  const located = (await locateChanges(session)).find(({ change }) => change.state.id === id);
+  return located?.change ?? loadChange(session.paths, id);
 }
 
 /** The verification of change `id` that a live process is running, if any. */
