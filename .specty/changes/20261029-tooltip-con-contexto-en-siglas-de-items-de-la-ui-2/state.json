@@ -5,11 +5,11 @@
   "phase": "acceptance",
   "branch": "specty/20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
   "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:657806c99eb951c35d0185f00ad64842ccc1d409f77a145593c03d32df73fd4a",
-    "at": "2026-10-29T19:46:52.407Z",
+    "revision": 2,
+    "hash": "sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85",
+    "at": "2026-10-29T20:51:44.820Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
@@ -64,12 +64,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "392300b21b5701c08a5732b41bedea9584d4853a",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:40:03.314Z",
       "doneAt": "2026-10-29T20:40:29.491Z",
-      "summary": "Activar tooltips de siglas en historial y vista de trazabilidad"
+      "summary": "Activar tooltips de siglas en historial y vista de trazabilidad",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -81,10 +81,47 @@
     "AC": 3,
     "T": 4
   },
-  "lockedTests": {
-    "packages/ui/src/history/trace-view.test.ts": "sha256:a74e9761d16dba3b2ac82953cf0af14475be3efec12d05ef0e66402a50e0af43",
-    "packages/ui/src/progress/locked-tests.test.ts": "sha256:e0d6d970f74590fe8a16da3554bdd922e5d47b3856bef9cc33482c00febf3724",
-    "packages/ui/src/review/spec-sections.test.ts": "sha256:220668466fd3e54251e7c48f672dae227ffdd3af48394dc9cea4c5bc189ea0b5",
-    "packages/ui/src/components/item-tooltip.test.ts": "sha256:67268f965af23c6432100ff96e1703f2a8d1b84b825d590bc78117ccaf29c607"
+  "lockedTests": {},
+  "integration": {
+    "target": "main",
+    "commit": "a2d26180142206ccbdbee773b9b728c1537fbaf2",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "package.json",
+      "packages/cli/src/agents/run.ts",
+      "packages/cli/src/commands/accept.ts",
+      "packages/cli/src/commands/finish.ts",
+      "packages/cli/src/flow/active.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/src/store/changes.ts",
+      "packages/cli/test/audit-who.test.ts",
+      "packages/cli/test/usage.test.ts",
+      "packages/core/src/cards/audit.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/usage.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/usage.ts",
+      "packages/core/test/cards/usage.test.ts",
+      "packages/core/test/usage.test.ts",
+      "packages/ui/src/acceptance/acceptance-tab.ts",
+      "packages/ui/src/components/item-tooltip.test.ts",
+      "packages/ui/src/components/item-tooltip.ts",
+      "packages/ui/src/history/history-tab.ts",
+      "packages/ui/src/history/trace-view.test.ts",
+      "packages/ui/src/history/trace-view.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/progress/locked-tests.test.ts",
+      "packages/ui/src/progress/locked-tests.ts",
+      "packages/ui/src/progress/progress-tab.ts",
+      "packages/ui/src/review/comments.ts",
+      "packages/ui/src/review/spec-review.ts",
+      "packages/ui/src/review/spec-sections.test.ts",
+      "packages/ui/src/review/spec-sections.ts",
+      "pnpm-lock.yaml"
+    ],
+    "at": "2026-10-29T20:42:02.498Z"
   }
 }

@@ -21,8 +21,8 @@ Cuando cualquier componente de la UI muestra o menciona una sigla de ítem o sol
 
 ## Criterios de aceptación
 
-- AC1: CUANDO la persona pasa el puntero o lleva el foco sobre una sigla de ítem o solicitud (`A`, `AC`, `T`, `R`, `S`, `C`) en las vistas de revisión, progreso, aceptación, historial, trazabilidad o bandeja ENTONCES se muestra un tooltip flotante con el tipo de la sigla, su identificador y su texto o título en el idioma activo.
-- AC2: CUANDO un texto de comentario, estado de test bloqueado, solicitud de alcance o evento del historial incluye una o más siglas en una frase ENTONCES cada sigla conserva el texto visible del mensaje y al pasar el puntero sobre ella muestra en el tooltip qué sigla es junto con su contenido.
+- AC1: CUANDO la persona pasa el puntero o lleva el foco sobre una sigla de ítem o solicitud (`A`, `AC`, `T`, `R`, `S`, `C`) en las vistas de revisión, progreso, aceptación, historial, trazabilidad o bandeja ENTONCES se muestra un tooltip flotante con el tipo de la sigla, su identificador y su contenido o título en el idioma activo.
+- AC2: CUANDO un texto de comentario, estado de test bloqueado, solicitud de alcance o evento del historial incluye una o más siglas en una frase ENTONCES cada sigla conserva el texto visible del mensaje y al pasar el puntero sobre ella muestra en un tooltip qué sigla es junto con su contenido.
 - AC3: CUANDO una sigla referenciada no tiene contenido asociado en los datos presentes ENTONCES el tooltip muestra el nombre completo del tipo de sigla seguido de su identificador en el idioma activo.
 
 ## Diseño
