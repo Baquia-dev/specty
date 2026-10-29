@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-accept-incorpora-main-antes-de-su-verificacion-y",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-accept-incorpora-main-antes-de-su-verificacion-y",
   "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4e9c8be40c6b53dbaf19b44c6ac89fb33505d20b",
+      "attempts": 1,
       "startedAt": "2026-10-29T18:34:57.497Z",
       "doneAt": "2026-10-29T18:40:53.077Z",
-      "summary": "accept fusiona main antes de su verificación completa (sin mirar la carpeta de main), la del merge queda como change.verified y accept la reutiliza; close solo fusiona si main avanzó después. Tests de un cambio normal y uno quick; ARCHITECTURE y formats al día."
+      "summary": "accept fusiona main antes de su verificación completa (sin mirar la carpeta de main), la del merge queda como change.verified y accept la reutiliza; close solo fusiona si main avanzó después. Tests de un cambio normal y uno quick; ARCHITECTURE y formats al día.",
+      "scopeExtra": []
     }
   },
   "pending": {

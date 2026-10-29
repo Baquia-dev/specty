@@ -22,3 +22,9 @@ Cuando main avanzó, `accept` verifica el código de la rama y después `close` 
 - [x] T1: accept fusiona main antes de su verificación completa
   - files: packages/cli/src/commands/accept.ts, packages/cli/src/flow/integrate.ts, packages/cli/test/integrate.test.ts, packages/cli/test/support.ts, docs/ARCHITECTURE.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/integrate.test.ts test/reuse.test.ts test/unverified.test.ts && pnpm lint
+
+## Cierre
+
+### Resumen
+
+accept fusiona main antes de su verificación completa (sin mirar la carpeta de main), la del merge queda como change.verified y accept la reutiliza; close solo fusiona si main avanzó después. Tests de un cambio normal y uno quick; ARCHITECTURE y formats al día.
