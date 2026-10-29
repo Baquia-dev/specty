@@ -6,6 +6,7 @@ import { join } from "node:path";
 import {
   type ChangeUsage,
   changeUsage,
+  freshSessionLine,
   type ModelCost,
   modelPrices,
   type Output,
@@ -13,6 +14,7 @@ import {
   type UsageEntry,
   usageLine,
 } from "@baquia-dev/specty-core";
+import { sessionContext } from "../agents/run";
 import { execute } from "../io/exec";
 import { exists, isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
@@ -24,22 +26,46 @@ import { type Audit, readAudit } from "./carried";
 const SOURCES: ReadonlyMap<unknown, string> = new Map([["claude-code", "claude"]]);
 /** The logs are local: a minute is plenty for each report. */
 const TIMEOUT_MS = 60_000;
+/**
+ * Beyond this context, a fresh session pays off: every step of the next change would read the
+ * earlier ones again. Measured in this repository, half of the cost (ARCHITECTURE §13).
+ */
+const FRESH_SESSION = 150_000;
 
 type Tokens = Omit<UsageEntry, "timestamp" | "model">;
 
 /**
- * Measures the change's consumption and records it in its audit, before it is archived: the line
- * for its closing, or none when ccusage does not answer or the audit names no session.
+ * Measures the change's consumption and records it in its audit, before it is archived, and
+ * looks at the context the agent's session carries: the closing's lines, the consumption when
+ * ccusage answers for a session the audit names, and the advice of a fresh session when it is big.
  */
 export async function measureUsage(
   session: Session,
   change: StoredChange,
 ): Promise<readonly string[]> {
-  const usage = await usageOf(session, change);
-  if (usage === undefined) return [];
-  const entry = await auditEntry(session, "specty", "change.usage", { ...usage });
-  await appendAudit(change.files, entry);
-  return [usageLine(usage, session.lang)];
+  const audit = await readAudit(change.files);
+  const usage = await usageOf(session, audit);
+  if (usage !== undefined) {
+    const entry = await auditEntry(session, "specty", "change.usage", { ...usage });
+    await appendAudit(change.files, entry);
+  }
+  const context = await agentContext(session, audit);
+  return [
+    ...(usage === undefined ? [] : [usageLine(usage, session.lang)]),
+    ...(context !== undefined && context > FRESH_SESSION
+      ? [freshSessionLine(context, session.lang)]
+      : []),
+  ];
+}
+
+/** The context of the last Claude Code session the audit names: the one the next change gets. */
+async function agentContext(session: Session, audit: Audit): Promise<number | undefined> {
+  const last = audit.findLast(
+    (line) => line.tool === "claude-code" && typeof line.session === "string",
+  );
+  return typeof last?.session === "string"
+    ? sessionContext(last.session, session.environment.env)
+    : undefined;
 }
 
 /** The closing card, with the consumption's line after what it says. */
@@ -48,8 +74,7 @@ export function withUsage(card: Output, lines: readonly string[]): Output {
   return { ...card, blocks: [...card.blocks, ...section(undefined, lines)] };
 }
 
-async function usageOf(session: Session, change: StoredChange): Promise<ChangeUsage | undefined> {
-  const audit = await readAudit(change.files);
+async function usageOf(session: Session, audit: Audit): Promise<ChangeUsage | undefined> {
   const since = audit.find((line) => line.event === "change.created")?.ts;
   const sessions = namedSessions(audit);
   if (typeof since !== "string" || sessions.size === 0) return undefined;

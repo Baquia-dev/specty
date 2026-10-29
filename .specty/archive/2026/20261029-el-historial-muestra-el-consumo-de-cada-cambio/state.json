@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261029-el-historial-muestra-el-consumo-de-cada-cambio",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261029-el-historial-muestra-el-consumo-de-cada-cambio",
+  "baseCommit": "2b8cc19cd8b7f068b53d6fa07d36b39ffbbae16d",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:52252117df69c4fe7235202d73f56c3cf893f03c532e24f98cb1c51ef14096c1",
+    "at": "2026-10-29T21:06:22.937Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "8f04a35fc1e25ce1f39ae30bbc164a658d221e19",
+      "attempts": 1,
+      "startedAt": "2026-10-29T21:06:23.352Z",
+      "doneAt": "2026-10-29T21:07:31.035Z",
+      "summary": "El historial muestra change.usage como evento del cierre («Consumo del cambio · 223,8 mil tokens en 2 llamadas, 0,08 USD»), con el texto del core que exporta su entrada ligera (usageOf, usageWords); ui.md lo cuenta.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

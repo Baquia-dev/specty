@@ -54,11 +54,17 @@ const ENOUGH = 4;
 const CENT = 0.01;
 /** Below this, a pivot of the scaled system is a zero: the sessions do not fix the prices. */
 const SINGULAR = 1e-12;
+/**
+ * The share of a model's sessions that may fall outside its prices: ccusage prices a few of them
+ * otherwise, by a cost their log already says or by a kind of cache write its report does not
+ * tell apart. In this repository, 2 of 36.
+ */
+const STRAYS = 0.1;
 
 /**
- * Each model's prices: those that explain, to the cent, the cost ccusage gives each of its
- * sessions, found by least squares. A model with fewer than four sessions, or whose costs no
- * prices explain (prices by tiers, say), has none.
+ * Each model's prices: those that explain, to the cent, the cost ccusage gives at least nine in
+ * ten of its sessions. A model with fewer than four sessions, or whose costs no prices explain
+ * (prices by tiers, say), has none.
  */
 export function modelPrices(rows: readonly ModelCost[]): ReadonlyMap<string, TokenPrices> {
   const byModel = new Map<string, ModelCost[]>();
@@ -100,8 +106,58 @@ export function changeUsage(
     : usage;
 }
 
-/** The prices that explain every session to the cent, or undefined. */
+/**
+ * The prices that explain to the cent all the sessions but a tenth at most, or undefined. A fit
+ * over every session would spread a stray's error over all of them, so each candidate solves four
+ * sessions spread over the list exactly; the one that explains the most wins, and least squares
+ * over those it explains gives the prices.
+ */
 function fit(sessions: readonly ModelCost[]): TokenPrices | undefined {
+  if (sessions.length < ENOUGH) return undefined;
+  let best: readonly ModelCost[] = [];
+  for (const candidate of candidates(sessions)) {
+    const explained = sessions.filter((session) => explains(candidate, session));
+    if (explained.length > best.length) best = explained;
+  }
+  if (best.length < Math.max(ENOUGH, Math.ceil(sessions.length * (1 - STRAYS)))) return undefined;
+  const prices = leastSquares(best);
+  return prices !== undefined &&
+    plausible(prices) &&
+    best.every((session) => explains(prices, session))
+    ? prices
+    : undefined;
+}
+
+/**
+ * The exact prices of four sessions spread over the list, one group from each session. Prices
+ * below zero are none: four sessions can bend them until they explain one more by chance.
+ */
+function candidates(sessions: readonly ModelCost[]): TokenPrices[] {
+  const step = Math.floor(sessions.length / ENOUGH);
+  return sessions.flatMap((_, first) => {
+    const group = [0, 1, 2, 3].flatMap((offset) => {
+      const session = sessions[(first + offset * step) % sessions.length];
+      return session === undefined ? [] : [session];
+    });
+    const prices = leastSquares(group);
+    return prices !== undefined && plausible(prices) ? [prices] : [];
+  });
+}
+
+/** Whether the prices can be prices: none below zero. */
+function plausible(prices: TokenPrices): boolean {
+  return [prices.input, prices.output, prices.cacheWrite, prices.cacheRead].every(
+    (price) => price >= 0,
+  );
+}
+
+/** Whether `prices` give the session's cost to the cent. */
+function explains(prices: TokenPrices, session: ModelCost): boolean {
+  return Math.abs(costOf(millions(session), prices) - session.cost) <= CENT;
+}
+
+/** The prices that best explain the sessions' costs, or undefined when they do not fix them. */
+function leastSquares(sessions: readonly ModelCost[]): TokenPrices | undefined {
   if (sessions.length < ENOUGH) return undefined;
   const rows = sessions.map(millions);
   // Each column scaled to its largest value: cache reads run in billions, inputs in thousands.
@@ -116,12 +172,7 @@ function fit(sessions: readonly ModelCost[]): TokenPrices | undefined {
   const [input, output, cacheWrite, cacheRead] = columns(
     (column) => solved[column] / scales[column],
   );
-  const prices = { input, output, cacheWrite, cacheRead };
-  const explained = sessions.every(
-    (session, index) =>
-      Math.abs(costOf(rows[index] ?? [0, 0, 0, 0], prices) - session.cost) <= CENT,
-  );
-  return explained ? prices : undefined;
+  return { input, output, cacheWrite, cacheRead };
 }
 
 /**

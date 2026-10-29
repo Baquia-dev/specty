@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "id": "20261029-al-cerrar-specty-avisa-de-empezar-una-sesion",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-al-cerrar-specty-avisa-de-empezar-una-sesion",
+  "baseCommit": "a2d26180142206ccbdbee773b9b728c1537fbaf2",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0aa6bc43bf6232321cfc4ad83689d66530e7ee38a420d4b5f528ca1e20b68c3c",
+    "at": "2026-10-29T20:37:38.279Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8038d5548a7d142ab4bd7ef88f158329ce54601bcd3f4137824ac8875db2a1d9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:4dddb7b9db10b158ba6ccbc7a2ce17b5694c8710ea07003bd875dc464afd63ee",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "02219fdb6170e8dd768bb91e8c3396879a94e77c",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:39:35.746Z",
+      "doneAt": "2026-10-29T20:40:11.175Z",
+      "summary": "freshSessionLine en cards/usage.ts: aconseja una sesión nueva para el siguiente cambio con el contexto redondeado a miles y agrupado por idioma (620.000 / 620,000); exportada en el índice de textos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "fbc731ca398cd41f3d540ed641ed815dc72c2d49",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:40:11.951Z",
+      "doneAt": "2026-10-29T20:42:35.058Z",
+      "summary": "sessionContext lee de la cola del transcript de Claude Code lo que leyó la última respuesta (entrada y caché); measureUsage añade el aviso de sesión nueva por encima de 150.000 tokens, con la última sesión de Claude Code de la auditoría.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "19dba057313cdb98ffc6222c1a61f0f9861be6b1",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:42:35.424Z",
+      "doneAt": "2026-10-29T20:44:47.809Z",
+      "summary": "SessionStart de Claude Code con compact|clear, y ARCHITECTURE: la tarjeta tras compactar o limpiar, la fila de Claude Code y el aviso de sesión nueva en §13. .claude/settings.json no se tocó: el guard lo protege y se actualiza con specty init.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-29T20:50:21.807Z",
+  "lockedTests": {
+    "packages/cli/test/setup.test.ts": "sha256:57576ff8a812857dee17d77fef4a65b7e3ee6269e750832813dcf62ce7a1687b",
+    "packages/cli/test/fresh-session.test.ts": "sha256:1bd417536d45bef7890c3a9e6d38f3736a7b4939c3d7bff193bf6b7b440fb644",
+    "packages/core/test/cards/fresh-session.test.ts": "sha256:a5c32bb99834344d54375227ddd233e8bb14084dbf56b3be994cf0a877ce1d0d"
+  }
+}

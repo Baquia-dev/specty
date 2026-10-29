@@ -241,4 +241,25 @@ describe("historyOf", () => {
       "Delegated: the agent decided",
     ]);
   });
+
+  it("tells the change's consumption at its closing, with its cost when it has one", () => {
+    const tokens = { input: 15, output: 800, cacheWrite: 3000, cacheRead: 220_000 };
+    const audit = [
+      event("specty", "change.usage", { calls: 2, ...tokens, cost: 0.08406 }),
+      event("specty", "change.usage", { calls: 1, ...tokens }),
+      event("specty", "change.usage", { calls: "dos" }),
+    ];
+    expect(said(audit)).toEqual([
+      "Consumo del cambio · 223,8 mil tokens en 2 llamadas, 0,08 USD",
+      "Consumo del cambio · 223,8 mil tokens en 1 llamada",
+      // Data it cannot read: the title alone.
+      "Consumo del cambio",
+    ]);
+    const [entry] = historyOf(audit);
+    expect(entry?.type).toBe("closing");
+    expect(entry?.title.en).toBe("The change's usage");
+    expect(entry?.details.map((detail) => detail.en)).toEqual([
+      "223.8k tokens in 2 calls, 0.08 USD",
+    ]);
+  });
 });

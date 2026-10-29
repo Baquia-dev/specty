@@ -5,6 +5,7 @@ import { open, readdir } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import type { AgentTool } from "@baquia-dev/specty-core";
+import { isRecord, parseJson } from "../io/files";
 
 export interface AgentRun {
   /** The agent's session id: what tells which of its sessions worked on a change. */
@@ -38,11 +39,31 @@ export async function agentRun(tool: AgentTool | undefined, env: Env): Promise<A
 }
 
 /**
- * The model of the last answer in Claude Code's transcript of `session`: it does not pass the
- * model to its commands, only the session's id, and keeps each session in
+ * The tokens the last answer of Claude Code's `session` read: its prompt, with all the context the
+ * session carries. Undefined when the id is not a name or its transcript does not tell.
+ */
+export async function sessionContext(session: string, env: Env): Promise<number | undefined> {
+  if (!SESSION.test(session)) return undefined;
+  const lines = (await transcriptTail(session, env))?.split("\n").reverse() ?? [];
+  for (const line of lines) {
+    const read = promptOf(parseJson(line));
+    if (read !== undefined) return read;
+  }
+  return undefined;
+}
+
+/** The model of the last answer in Claude Code's transcript of `session`. */
+async function claudeModel(session: string, env: Env): Promise<string | undefined> {
+  const tail = await transcriptTail(session, env);
+  return tail === undefined ? undefined : [...tail.matchAll(MODEL)].at(-1)?.[1];
+}
+
+/**
+ * The end of Claude Code's transcript of `session`: it does not pass the model or the context to
+ * its commands, only the session's id, and keeps each session in
  * `projects/<folder>/<session>.jsonl` of its configuration folder.
  */
-async function claudeModel(session: string, env: Env): Promise<string | undefined> {
+async function transcriptTail(session: string, env: Env): Promise<string | undefined> {
   const projects = join(
     env.CLAUDE_CONFIG_DIR ?? join(env.HOME ?? homedir(), ".claude"),
     "projects",
@@ -50,9 +71,27 @@ async function claudeModel(session: string, env: Env): Promise<string | undefine
   const folders = await readdir(projects).catch(() => []);
   for (const folder of folders) {
     const tail = await tailOf(join(projects, folder, `${session}.jsonl`));
-    if (tail !== undefined) return [...tail.matchAll(MODEL)].at(-1)?.[1];
+    if (tail !== undefined) return tail;
   }
   return undefined;
+}
+
+/**
+ * What an answer of the transcript read: its input, cache writes and cache reads. Claude Code's
+ * own messages read nothing, and the first line of a tail is usually cut.
+ */
+function promptOf(entry: unknown): number | undefined {
+  if (!isRecord(entry) || entry.type !== "assistant" || !isRecord(entry.message)) return undefined;
+  const { usage } = entry.message;
+  if (!isRecord(usage)) return undefined;
+  const counts = [
+    usage.input_tokens,
+    usage.cache_creation_input_tokens,
+    usage.cache_read_input_tokens,
+  ];
+  if (!counts.every((count): count is number => typeof count === "number")) return undefined;
+  const read = counts.reduce((total, count) => total + count, 0);
+  return read > 0 ? read : undefined;
 }
 
 /** The last bytes of a file; none when it cannot be read. */

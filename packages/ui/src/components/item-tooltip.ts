@@ -70,10 +70,13 @@ export function splitItemRefs(text: string): readonly ItemTextPart[] {
 
 export function itemsOfReview(review: ReviewView): ItemMap {
   const map = new Map<string, string>();
-  for (const i of [...review.assumptions, ...review.criteria, ...review.risks]) map.set(i.id, i.text);
+  for (const i of [...review.assumptions, ...review.criteria, ...review.risks])
+    map.set(i.id, i.text);
   for (const task of review.tasks) map.set(task.id, task.title);
   for (const e of review.delta?.entries ?? []) {
-    const text = e.text.reduce((acc, p) => (p.change === "removed" ? acc : acc + p.text), "").trim();
+    const text = e.text
+      .reduce((acc, p) => (p.change === "removed" ? acc : acc + p.text), "")
+      .trim();
     if (EXACT_ITEM_RE.test(e.key) && !map.has(e.key) && text) map.set(e.key, text);
   }
   return map;
@@ -84,7 +87,8 @@ function addHistoryScopes(map: Map<string, string>, change: ChangeView, lang: La
     if (entry.type !== "scope") continue;
     const id = /\b(S[1-9]\d*)\b/.exec(`${entry.details[0]?.[lang] ?? ""} ${entry.title.es}`)?.[1];
     const summary = entry.details.at(-1)?.[lang]?.trim() ?? "";
-    if (id !== undefined && !map.has(id) && summary.length > 0 && summary !== id) map.set(id, summary);
+    if (id !== undefined && !map.has(id) && summary.length > 0 && summary !== id)
+      map.set(id, summary);
   }
 }
 
@@ -103,7 +107,8 @@ function visibleText(el: Element): string {
   let out = "";
   for (const node of el.childNodes) {
     if (node.nodeType === Node.TEXT_NODE) out += node.textContent ?? "";
-    else if (node instanceof Element && !node.classList.contains("sr-only")) out += visibleText(node);
+    else if (node instanceof Element && !node.classList.contains("sr-only"))
+      out += visibleText(node);
   }
   return out.trim();
 }
@@ -196,7 +201,8 @@ export class ItemTooltips {
 
   protected onLeave(event: MouseEvent): void {
     const origin = this.activeTarget?.origin;
-    if (!origin || (event.relatedTarget instanceof Node && origin.contains(event.relatedTarget))) return;
+    if (!origin || (event.relatedTarget instanceof Node && origin.contains(event.relatedTarget)))
+      return;
     clearTimeout(this.leaving);
     this.leaving = setTimeout(() => this.hide(), GRACE_MS);
   }
@@ -248,13 +254,17 @@ export class ItemTooltips {
       const positionStrategy = pos.withPositions([...TOOLTIP_POSITIONS]).withViewportMargin(8);
       const scrollStrategy = overlay.createRepositionScrollStrategy(this.injector);
       this.position = positionStrategy;
-      this.overlayRef = overlay.createOverlayRef(this.injector, { positionStrategy, scrollStrategy });
+      this.overlayRef = overlay.createOverlayRef(this.injector, {
+        positionStrategy,
+        scrollStrategy,
+      });
     } else this.position?.setOrigin(origin);
     if (this.bubble === undefined) {
       const span = this.host.ownerDocument.createElement("span");
       span.setAttribute("role", "tooltip");
       span.setAttribute("data-tooltip", "");
-      span.className = "max-w-80 rounded-md bg-text px-2 py-1 text-xs text-bg shadow-md transition-opacity starting:opacity-0";
+      span.className =
+        "max-w-80 rounded-md bg-text px-2 py-1 text-xs text-bg shadow-md transition-opacity starting:opacity-0";
       span.style.transitionDuration = "var(--duration-fast)";
       span.addEventListener("pointerenter", () => clearTimeout(this.leaving));
       span.addEventListener("pointerleave", () => this.hide());

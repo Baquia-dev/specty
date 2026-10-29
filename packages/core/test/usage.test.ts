@@ -73,6 +73,43 @@ describe("the prices of each model", () => {
   });
 });
 
+describe("the prices, among many sessions", () => {
+  /**
+   * Sessions at Opus' prices, as big as this repository's (tens of dollars), with tokens that vary
+   * each its own way.
+   */
+  const priced = (count: number) =>
+    Array.from({ length: count }, (_, index) =>
+      session([
+        1000 + ((index * index * 31) % 6000),
+        100_000 + ((index * 7919 * 13) % 2_900_000),
+        500_000 + ((index * index * index * 13) % 9_500_000),
+        50_000_000 + ((index * 104_729 * 97) % 1_650_000_000),
+      ]),
+    );
+  /** A session ccusage priced otherwise: `off` dollars away from Opus' prices. */
+  const stray = (tokens: Tokens, off: number) => {
+    const at = session(tokens);
+    return { ...at, cost: at.cost + off };
+  };
+  const strays = [
+    stray([2900, 2_026_400, 6_558_400, 695_736_800], 3.85),
+    stray([2100, 1_076_700, 3_112_700, 506_822_700], 1.03),
+    stray([1500, 900_000, 2_000_000, 300_000_000], 2),
+  ];
+
+  it("leave out a few sessions that ccusage priced otherwise, up to a tenth", () => {
+    // This repository's report: 34 sessions at Opus' prices and 2 that are not.
+    const prices = modelPrices([...priced(34), ...strays.slice(0, 2)]).get(MODEL);
+    expect(prices?.input).toBeCloseTo(4, 4);
+    expect(prices?.output).toBeCloseTo(20, 6);
+    expect(prices?.cacheWrite).toBeCloseTo(8, 6);
+    expect(prices?.cacheRead).toBeCloseTo(0.2, 6);
+    // Three of twenty are more than a tenth: no prices.
+    expect(modelPrices([...priced(17), ...strays]).has(MODEL)).toBe(false);
+  });
+});
+
 describe("a change's consumption", () => {
   it("AC1: adds up the calls made since the change began, and their cost", () => {
     const usage = changeUsage(

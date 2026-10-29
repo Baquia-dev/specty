@@ -3,6 +3,7 @@
 // timeline that reads, each with its type to filter by. Pure: it runs in the derivation worker.
 // The events come from disk and from older versions of the CLI: every field is read with care.
 
+import { translator, usageOf, usageWords } from "@baquia-dev/specty-core/light";
 import { TESTS_TELL } from "./history-tests";
 import {
   both,
@@ -258,6 +259,18 @@ const TELL: Readonly<Record<string, (data: Data) => Told>> = {
       ),
     ],
   }),
+  "change.usage": (data) => {
+    const usage = usageOf(data);
+    return {
+      type: "closing",
+      title: both("Consumo del cambio", "The change's usage"),
+      details: [
+        usage === undefined
+          ? undefined
+          : both(usageWords(usage, translator("es")), usageWords(usage, translator("en"))),
+      ],
+    };
+  },
   "change.closed": (data) => ({
     type: "closing",
     title: both("Cerró el cambio", "Closed the change"),
