@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "20261029-al-cerrar-specty-avisa-de-empezar-una-sesion",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-al-cerrar-specty-avisa-de-empezar-una-sesion",
+  "baseCommit": "a2d26180142206ccbdbee773b9b728c1537fbaf2",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8038d5548a7d142ab4bd7ef88f158329ce54601bcd3f4137824ac8875db2a1d9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:4dddb7b9db10b158ba6ccbc7a2ce17b5694c8710ea07003bd875dc464afd63ee",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0aa6bc43bf6232321cfc4ad83689d66530e7ee38a420d4b5f528ca1e20b68c3c",
+    "at": "2026-10-29T20:37:38.279Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
