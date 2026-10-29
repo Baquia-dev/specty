@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "20261029-al-proponer-specty-avisa-de-los-archivos-que",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-al-proponer-specty-avisa-de-los-archivos-que",
+  "baseCommit": "e98af32e02da557fafc881ca6747d658ca509065",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ee770b43dd15679116b69cdf03889c715959982443174d869ba13b06619cdc8e",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:90a36721d7eca21168a9a7a478c4e4ef4e3ec059bcc79c8b31cada4be5fb1a25",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f4f707be2937b2f69e72e5302ab736a65fcec0b584245e467d259ba44c145a8",
+    "at": "2026-10-29T22:02:20.682Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
