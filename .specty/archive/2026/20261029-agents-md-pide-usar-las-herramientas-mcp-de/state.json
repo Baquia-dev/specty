@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-agents-md-pide-usar-las-herramientas-mcp-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-agents-md-pide-usar-las-herramientas-mcp-de",
   "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:49a83bcc6368def76142f9bd302eed34adfbb3a2a0444592aa7991d9b84cddb9",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "29a8a91728697e89c0c04cb75d2cccfafbe33c5e",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:33:52.856Z",
       "doneAt": "2026-10-29T20:43:27.532Z",
-      "summary": "init registra el servidor MCP antes de AGENTS.md (mcpServer) y, si escribió entradas o algún archivo de agente ya tiene la entrada specty (mcpInRepo), el bloque de flujo lleva la línea de las herramientas; ARCHITECTURE §6 lo cuenta."
+      "summary": "init registra el servidor MCP antes de AGENTS.md (mcpServer) y, si escribió entradas o algún archivo de agente ya tiene la entrada specty (mcpInRepo), el bloque de flujo lleva la línea de las herramientas; ARCHITECTURE §6 lo cuenta.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -66,6 +66,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-10-29T20:49:26.502Z",
   "lockedTests": {
     "packages/cli/test/mcp-install.test.ts": "sha256:a69edb4d4ba2390c246f6b77b0e315efb0d6f8949736b43106f6e3bd47dc84f2",
     "packages/core/test/agents-md.test.ts": "sha256:b2dbcfd87bf727434037c1f194399408e3eb68747978d45290ea7a15fbef3178"

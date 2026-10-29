@@ -57,3 +57,25 @@ Con el servidor MCP de Specty registrado, el agente de VS Code ejecutaba `specty
 ## Riesgos
 
 - R1: Un agente sigue prefiriendo la terminal aunque tenga la herramienta. Mitigación: la línea lo pide de forma explícita y dice para qué, y en VS Code la persona puede nombrar la herramienta con `#`.
+
+## Cierre
+
+### Resumen
+
+Si el repositorio registra el servidor MCP de Specty, `specty init` escribe en el bloque de flujo de AGENTS.md, tras su primera línea, una que pide usar las herramientas `specty_*` en lugar del comando que hace lo mismo, para que el chat muestre el cambio. Cuenta como registrado cuando el archivo MCP de algún agente tiene una entrada `specty`, aunque ejecute otro comando, o cuando `--mcp` acaba de escribirla. Sin servidor, el bloque es el de siempre.
+
+### Desviaciones
+
+- La tarea de documentación se repartió entre T1 (formats.md) y T2 (ARCHITECTURE.md): con `policy.tests: contract` una tarea sin tests no vale.
+- `install` pasaba de 50 líneas con el nuevo orden: el registro del servidor salió a `mcpServer`.
+
+### Decisiones
+
+- `init --mcp` registra el servidor antes de escribir AGENTS.md, para que la línea salga en la misma ejecución. Si no pudo escribir entradas (sin `specty` en el PATH), la línea solo sale si ya había una.
+- La línea es condicional («si tienes las herramientas…»), así que no estorba a un agente del mismo repositorio sin el servidor.
+- `flowBlock` recibe `{ mcp }` en un objeto de opciones: sin él, el bloque y sus 15 líneas siguen como los fijan los tests de siempre.
+
+### Pendientes
+
+- Un repositorio que ya tenía el servidor registrado recibe la línea la próxima vez que ejecute `specty init`.
+- Los servidores registrados solo en la carpeta del usuario (VS Code, Claude Desktop, Antigravity) no se detectan. Con esos, nombrar la herramienta en el chat (`#specty_next` en VS Code) sigue siendo la forma segura.
