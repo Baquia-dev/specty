@@ -22,3 +22,10 @@
 {"ts":"2026-10-29T20:50:51.227Z","actor":"agent","tool":"antigravity","event":"adjust.requested","data":{"request":"Ajustar redacción de criterios AC1 y AC2 para desbloquear formateo de tests"}}
 {"ts":"2026-10-29T20:51:43.475Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85","size":"L","warnings":0}}
 {"ts":"2026-10-29T20:51:44.860Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"spec.approved","data":{"revision":2,"hash":"sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85","channel":"delegated","unlocked":["packages/ui/src/history/trace-view.test.ts","packages/ui/src/progress/locked-tests.test.ts","packages/ui/src/review/spec-sections.test.ts","packages/ui/src/components/item-tooltip.test.ts"],"delegated":true}}
+{"ts":"2026-10-29T20:53:54.673Z","actor":"specty","event":"integration.abandoned","data":{"target":"main"}}
+{"ts":"2026-10-29T20:53:56.786Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"3aeb8b6f57ab9c8d4fd6ee0ab62a39699a315081","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-29T21:22:21.667Z","actor":"agent","tool":"antigravity","event":"integration.resolved","data":{"commit":"5d81b2f"}}
+{"ts":"2026-10-29T21:23:00.664Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"297ca21f78dc0a25accc02e73612d622f5357f13","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-29T21:36:04.312Z","actor":"agent","tool":"antigravity","event":"adjust.requested","data":{"request":"Formatear componente de tooltips de siglas"}}
+{"ts":"2026-10-29T21:37:10.666Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":3,"hash":"sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85","size":"L","warnings":0}}
+{"ts":"2026-10-29T21:37:11.493Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"spec.approved","data":{"revision":3,"hash":"sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85","channel":"delegated","delegated":true}}
