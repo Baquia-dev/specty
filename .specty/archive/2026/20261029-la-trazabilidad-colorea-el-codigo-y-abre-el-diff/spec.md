@@ -49,3 +49,22 @@ La vista de trazabilidad del Historial enseña el código en texto plano y no de
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La trazabilidad del Historial colorea el código con el resaltado del visor de diffs (el archivo pasa como una sección de líneas de contexto), y en el margen de cada bloque que hizo Specty ofrece «Ver diff»: bajo el bloque se abre el diff de ese archivo en la tarea del bloque, de este cambio o de otro (`history/trace-diff.ts`, con `sp-diff-file`), y «Ocultar diff» lo cierra. Si la fuente no puede dar el diff, o la tarea no cambió el archivo, el panel lo dice. En el prototipo funciona con los diffs de muestra de «Panel de asistencia por curso». El bundle inicial queda en 524,6 kB.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- El diff se abre en la propia trazabilidad y no en la vista «Cambios» de Aceptación: no hace falta pasar la tarea por la URL, y la página del cambio y la pestaña Aceptación quedan para el cambio de pestañas fijas que lleva Antigravity.
+- Uno abierto a la vez; elegir otro archivo lo cierra.
+
+### Pendientes
+
+- Marcar dentro del diff las líneas exactas del bloque.
