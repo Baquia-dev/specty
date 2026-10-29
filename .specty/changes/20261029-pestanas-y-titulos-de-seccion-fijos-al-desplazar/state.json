@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
+  "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f00fcc7ece578d7d669bdfbee77668b23292c3858fe4e98945d7d457a9496fee",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7ae9979128a2b4bc623dadf3ff9a900130ea73d6020ef0d3039bd93be88c29f1",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6a737d0024f8003e85a07848411dfb98e21b3e0cd7c7a7584e14e35b9cf0599f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eb65cff68b64c8c6ba0af7ff127714ca59add832edbbb08e692469892a67ba74",
+    "at": "2026-10-29T07:55:07.532Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
