@@ -271,6 +271,23 @@ describe("ReviewItems", () => {
     expect(host.anchors).toEqual([{ item: "R1" }, { item: "T1" }, { item: "AC1" }]);
   });
 
+  it("AC1: shows a tooltip with the sigla type and content when hovering task criterion badges or item ids", async () => {
+    const { element, settle } = await render();
+    const badge = element.querySelector<HTMLElement>("#tasks [data-item=T1] sp-badge");
+    badge?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+    await settle();
+    expect(document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim()).toBe(
+      'Criterio de aceptación AC1: CUANDO alguien pulsa "Entrar" ENTONCES entra.',
+    );
+
+    const riskId = element.querySelector<HTMLElement>("#risks [data-item=R1] .font-mono");
+    riskId?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+    await settle();
+    expect(document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim()).toBe(
+      "Riesgo R1: Google cambia su API.",
+    );
+  });
+
   it("offers no comment outside an editable review (AC4)", async () => {
     const { fixture, host, element } = await render();
     host.editable.set(false);

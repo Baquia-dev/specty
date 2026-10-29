@@ -160,6 +160,20 @@ describe("the traceability view", () => {
       expect(text(traced)).toContain(part);
     }
     expect(traced?.querySelector(`a[href="/changes/${ID}?tab=history"]`)).not.toBeNull();
+
+    const taskRef = traced?.querySelector<HTMLElement>("[data-item-ref=T2]");
+    taskRef?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+    await settle();
+    expect(document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim()).toBe(
+      "Tarea T2: Panel con estudiantes destacados",
+    );
+
+    const criterionBadge = traced?.querySelector<HTMLElement>("sp-badge");
+    criterionBadge?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+    await settle();
+    expect(document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim()).toBe(
+      "Criterio de aceptación AC1: CUANDO el coordinador abre el panel ENTONCES ve el porcentaje semanal por curso.",
+    );
   });
 
   it("AC1: shows another file when the person chooses it", async () => {

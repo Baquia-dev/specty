@@ -6,6 +6,13 @@
   "branch": "specty/20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
   "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:657806c99eb951c35d0185f00ad64842ccc1d409f77a145593c03d32df73fd4a",
+    "at": "2026-10-29T19:46:52.407Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -35,12 +42,6 @@
     "AC": 3,
     "T": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:657806c99eb951c35d0185f00ad64842ccc1d409f77a145593c03d32df73fd4a",
-    "at": "2026-10-29T19:46:52.407Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T19:47:30.162Z"
 }

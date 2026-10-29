@@ -65,4 +65,18 @@ describe("LockedTests", () => {
       "Unlocked for T2: it locks again once that task is done · unlocked with S1 for T1 and with S3 for T2",
     );
   });
+
+  it("AC2, AC3: wraps each request and task sigla in data-item-ref and shows its tooltip on hover", async () => {
+    const { element } = await render("es");
+    const refs = [...element.querySelectorAll<HTMLElement>("[data-state] [data-item-ref]")];
+    expect(refs.map((ref) => ref.dataset.itemRef)).toEqual(["S1", "T1", "T2", "S1", "T1", "S3", "T2"]);
+    refs[0]?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+    expect(document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim()).toBe(
+      "Solicitud de alcance S1",
+    );
+    refs[2]?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+    expect(document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim()).toBe(
+      "Tarea T2",
+    );
+  });
 });
