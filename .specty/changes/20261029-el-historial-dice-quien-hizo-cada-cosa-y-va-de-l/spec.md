@@ -48,7 +48,7 @@ El Historial pone «Persona» aunque la auditoría ya sabe su nombre, y del agen
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/history.ts, packages/ui/src/data/sample-history.ts, packages/ui/src/data/history-who.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/history-who.test.ts --include src/data/history.test.ts && pnpm lint
-- [ ] T2: La pestaña dice quién y va del más reciente al más antiguo
+- [x] T2: La pestaña dice quién y va del más reciente al más antiguo
   - files: packages/ui/src/history/history-tab.ts, packages/ui/src/history/history-tab.test.ts, packages/ui/src/history/history-who.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint

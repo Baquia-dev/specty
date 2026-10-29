@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from "@angular/core";
+import type { Lang } from "@baquia-dev/specty-core";
 import { Badge } from "../components/badge";
 import { Button } from "../components/button";
 import { LIST, ROW, SectionDivider } from "../components/document";
@@ -12,8 +13,6 @@ import type { HistoryType } from "../data/history-text";
 import { Preferences } from "../theme/preferences";
 import { HistoryExport } from "./history-export";
 import { TraceView } from "./trace-view";
-
-type Actor = HistoryEntry["actor"];
 
 /** The agent tools by their id, as the agent declares them (context, not proof). */
 const TOOLS: Readonly<Record<string, string>> = {
@@ -165,7 +164,8 @@ export class HistoryTab {
 
   protected readonly days = computed((): readonly Day[] => {
     const days: { key: string; heading: string; events: HistoryEntry[] }[] = [];
-    for (const event of this.shown()) {
+    // The newest first: the last day on top, and in each day its last event.
+    for (const event of this.shown().toReversed()) {
       const key = dayKey(event.at);
       const last = days[days.length - 1];
       if (last?.key === key) last.events.push(event);
@@ -191,7 +191,7 @@ export class HistoryTab {
   }
 
   protected actorOf(event: HistoryEntry): string {
-    return actorLabel(event.actor, event.tool, this.t());
+    return actorLabel(event, this.t(), this.lang());
   }
 
   protected typeOf(type: HistoryType): string {
@@ -221,19 +221,49 @@ function dayKey(at: string): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
+/** The person by their name; the agent with its tool, its model and its effort, when known. */
 function actorLabel(
-  actor: Actor,
-  tool: string | undefined,
+  event: HistoryEntry,
   t: (es: string, en: string) => string,
+  lang: Lang,
 ): string {
-  switch (actor) {
+  switch (event.actor) {
     case "human":
-      return t("Persona", "Person");
+      return event.by ?? t("Persona", "Person");
     case "specty":
       return "Specty";
     case "agent": {
-      const agent = t("Agente", "Agent");
-      return tool === undefined ? agent : `${agent} · ${TOOLS[tool] ?? tool}`;
+      const { tool, model, effort } = event;
+      return [
+        t("Agente", "Agent"),
+        tool === undefined ? undefined : (TOOLS[tool] ?? tool),
+        model === undefined ? undefined : modelName(model),
+        effort === undefined ? undefined : effortName(effort, lang),
+      ]
+        .filter((part) => part !== undefined)
+        .join(" · ");
     }
   }
+}
+
+/** A Claude model by its short name, `claude-opus-5-5` as «Opus 5.5»; any other, as it is. */
+function modelName(model: string): string {
+  const [, family = "", major, minor] =
+    /^claude-([a-z]+)-(\d+)(?:-(\d{1,2}))?(?:-\d{8})?$/.exec(model) ?? [];
+  if (major === undefined) return model;
+  const name = `${family.charAt(0).toUpperCase()}${family.slice(1)}`;
+  return `${name} ${major}${minor === undefined ? "" : `.${minor}`}`;
+}
+
+const EFFORTS: ReadonlyMap<string, Readonly<Record<Lang, string>>> = new Map([
+  ["low", { es: "esfuerzo bajo", en: "low effort" }],
+  ["medium", { es: "esfuerzo medio", en: "medium effort" }],
+  ["high", { es: "esfuerzo alto", en: "high effort" }],
+  ["xhigh", { es: "esfuerzo muy alto", en: "extra-high effort" }],
+  ["max", { es: "esfuerzo máximo", en: "max effort" }],
+]);
+
+/** The effort in words; one it does not know, as it is. */
+function effortName(effort: string, lang: Lang): string {
+  return EFFORTS.get(effort)?.[lang] ?? (lang === "es" ? `esfuerzo ${effort}` : `${effort} effort`);
 }

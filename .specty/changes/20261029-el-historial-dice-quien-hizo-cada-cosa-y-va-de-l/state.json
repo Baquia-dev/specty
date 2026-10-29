@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a12637982ef497f661379dc1e14b1c19d72f9f7b",
+      "attempts": 1,
       "startedAt": "2026-10-29T07:59:56.107Z",
       "doneAt": "2026-10-29T08:16:06.375Z",
-      "summary": "AuditRecord e HistoryEntry traen by, model y effort; historyOf los copia y el detalle delegado nombra a la persona; las líneas de muestra dicen quién"
+      "summary": "AuditRecord e HistoryEntry traen by, model y effort; historyOf los copia y el detalle delegado nombra a la persona; las líneas de muestra dicen quién",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8d0e305427be15782d440c48c86664f08a38176f",
+      "startedAt": "2026-10-29T08:16:06.711Z",
+      "doneAt": "2026-10-29T08:20:57.328Z",
+      "summary": "La pestaña Historial nombra a la persona, dice la herramienta, el modelo (Opus 5.5) y el esfuerzo del agente, y va del día y el evento más recientes a los más antiguos"
     }
   },
   "pending": {
