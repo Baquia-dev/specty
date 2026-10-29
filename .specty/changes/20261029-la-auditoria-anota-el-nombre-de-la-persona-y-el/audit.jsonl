@@ -2,3 +2,4 @@
 {"ts":"2026-10-29T07:33:48.925Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:768d0f7ce610d1603c87292529aab251f323b4c8577fac40d37090a2629471db","size":"M","warnings":1}}
 {"ts":"2026-10-29T07:33:49.616Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:768d0f7ce610d1603c87292529aab251f323b4c8577fac40d37090a2629471db","channel":"delegated","delegated":true}}
 {"ts":"2026-10-29T07:34:28.056Z","actor":"agent","tool":"claude-code","event":"tests.proposed","data":{"count":1,"files":["packages/cli/test/audit-who.test.ts"],"red":[{"cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/audit-who.test.ts && pnpm lint","exit":1}]}}
+{"ts":"2026-10-29T07:34:34.817Z","actor":"agent","tool":"claude-code","event":"tests.approved","data":{"channel":"delegated","delegated":true}}

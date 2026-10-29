@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
@@ -45,6 +45,7 @@
     "AC": 2,
     "T": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T07:34:28.055Z"
+  "lockedTests": {
+    "packages/cli/test/audit-who.test.ts": "sha256:83360bcc529e72768caf00dce44e2c0e26edd95c8bebb01af53e658af32045c8"
+  }
 }
