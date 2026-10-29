@@ -172,7 +172,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
               <sp-acceptance-tab class="pt-2" [change]="change" />
             </sp-tab-panel>
             <sp-tab-panel value="history" [label]="t()('Historial', 'History')">
-              <sp-history-tab class="pt-2" [history]="change.history" />
+              <sp-history-tab class="pt-2" [history]="change.history" [change]="change.id" />
             </sp-tab-panel>
           </sp-tabs>
         </div>

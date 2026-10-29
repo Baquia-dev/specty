@@ -8,8 +8,7 @@ import type { ChangeRecord } from "./records";
 import { zip } from "./zip";
 
 /** The report in Markdown or JSON, or the spec in OpenSpec, Spec Kit or Kiro. */
-export const EXPORTS = ["markdown", "json", "openspec", "speckit", "kiro"] as const;
-export type ExportChoice = (typeof EXPORTS)[number];
+export type ExportChoice = "markdown" | "json" | "openspec" | "speckit" | "kiro";
 
 /** A file to download: its name, its media type and its content. */
 export interface Download {

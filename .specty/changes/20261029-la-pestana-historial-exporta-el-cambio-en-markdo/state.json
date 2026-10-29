@@ -39,12 +39,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3cc07f5686df2a27c2ae01070bb3b382efb92f5d",
+      "attempts": 1,
       "startedAt": "2026-10-29T05:09:16.008Z",
       "doneAt": "2026-10-29T05:14:33.622Z",
-      "summary": "data/export.ts da el informe de auditoría en Markdown o JSON y la spec en OpenSpec, Spec Kit o Kiro con las funciones de la CLI; data/zip.ts escribe el ZIP sin comprimir (comprobado con unzip -t); la UI depende de los exportadores"
+      "summary": "data/export.ts da el informe de auditoría en Markdown o JSON y la spec en OpenSpec, Spec Kit o Kiro con las funciones de la CLI; data/zip.ts escribe el ZIP sin comprimir (comprobado con unzip -t); la UI depende de los exportadores",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/data/export.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "a83730606e616c6c32095bb2f02a2f6c010fe997",
+      "startedAt": "2026-10-29T05:14:33.949Z",
+      "doneAt": "2026-10-29T05:28:57.159Z",
+      "summary": "sp-history-export: el menú Exportar con Markdown, JSON, OpenSpec, Spec Kit y Kiro, que pide el cambio a la fuente y lo descarga (un .zip para los de varios archivos) o avisa si no puede; está junto a los filtros del Historial, también sin eventos"
     }
   },
   "pending": {

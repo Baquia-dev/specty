@@ -10,6 +10,7 @@ import { Select, type SelectOption } from "../components/select";
 import type { HistoryEntry } from "../data/history";
 import type { HistoryType } from "../data/history-text";
 import { Preferences } from "../theme/preferences";
+import { HistoryExport } from "./history-export";
 
 type Actor = HistoryEntry["actor"];
 
@@ -57,20 +58,27 @@ interface Day {
  */
 @Component({
   selector: "sp-history-tab",
-  imports: [SectionDivider, EmptyState, Segmented, Select, Button, Badge],
+  imports: [SectionDivider, EmptyState, Segmented, Select, Button, Badge, HistoryExport],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
   template: `
+    @if (history().length > 0 || change() !== undefined) {
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+        @if (history().length > 0) {
+          <sp-segmented [label]="t()('Quién', 'Who')" [options]="actorOptions()" [(value)]="actor" />
+          <sp-select class="w-56" [label]="t()('Tipo', 'Type')" [options]="typeOptions()" [(value)]="type" />
+          <p class="m-0 text-sm text-text-muted" data-summary>{{ summary() }}</p>
+        }
+        @if (change(); as id) {
+          <sp-history-export class="ml-auto" [change]="id" />
+        }
+      </div>
+    }
     @if (history().length === 0) {
       <sp-empty-state [heading]="t()('Aún no hay eventos', 'No events yet')" [icon]="emptyIcon">
         <p class="m-0">{{ t()('Aparecen aquí a medida que el cambio avanza.', 'They show here as the change moves on.') }}</p>
       </sp-empty-state>
     } @else {
-      <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-        <sp-segmented [label]="t()('Quién', 'Who')" [options]="actorOptions()" [(value)]="actor" />
-        <sp-select class="w-56" [label]="t()('Tipo', 'Type')" [options]="typeOptions()" [(value)]="type" />
-        <p class="m-0 text-sm text-text-muted" data-summary>{{ summary() }}</p>
-      </div>
       @if (days().length === 0) {
         <div class="flex flex-wrap items-center gap-3 text-sm text-text-muted" data-no-match>
           <p class="m-0">{{ t()('Ningún evento coincide con estos filtros.', 'No event matches these filters.') }}</p>
@@ -102,6 +110,8 @@ interface Day {
 })
 export class HistoryTab {
   readonly history = input.required<readonly HistoryEntry[]>();
+  /** The change's id: with it, the tab offers its export. */
+  readonly change = input<string>();
 
   private readonly preferences = inject(Preferences);
   protected readonly t = this.preferences.t;
