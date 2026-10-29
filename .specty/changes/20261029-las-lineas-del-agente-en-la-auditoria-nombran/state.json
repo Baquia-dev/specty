@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261029-las-lineas-del-agente-en-la-auditoria-nombran",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-las-lineas-del-agente-en-la-auditoria-nombran",
   "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a3a82ebb6dd8360116ae091d21b0a6b6bded0ab61c5a7e68b5a749bf5d90c6d5",
+    "at": "2026-10-29T20:00:10.635Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "46d545c0b35b4ae9bba5c036afdcdc782f53ad89",
+      "startedAt": "2026-10-29T20:00:11.049Z",
+      "doneAt": "2026-10-29T20:01:22.124Z",
+      "summary": "Las líneas del agente llevan session (CLAUDE_CODE_SESSION_ID validado, aunque no aparezca su transcript); sin id válido o fuera de Claude Code, sin el campo. formats.md §4 lo documenta."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:a3a82ebb6dd8360116ae091d21b0a6b6bded0ab61c5a7e68b5a749bf5d90c6d5",
-    "at": "2026-10-29T20:00:10.635Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

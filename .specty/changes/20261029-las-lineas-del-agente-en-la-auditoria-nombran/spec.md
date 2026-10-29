@@ -18,6 +18,6 @@ Para medir lo que consume cada cambio hay que saber qué sesiones del agente tra
 
 ## Tareas
 
-- [ ] T1: Las líneas del agente nombran su sesión
+- [x] T1: Las líneas del agente nombran su sesión
   - files: packages/cli/src/agents/run.ts, packages/cli/src/flow/active.ts, packages/cli/src/store/changes.ts, packages/cli/test/audit-who.test.ts, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/audit-who.test.ts && pnpm lint

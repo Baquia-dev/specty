@@ -78,6 +78,7 @@ describe("who is behind each line of the audit", () => {
       tool: "claude-code",
       model: "claude-opus-5-5",
       effort: "high",
+      session: "sesion-1",
     });
   });
 
@@ -92,7 +93,12 @@ describe("who is behind each line of the audit", () => {
       CLAUDE_CONFIG_DIR: folder,
     });
     const created = (await auditOf(unknown)).find((line) => line.event === "change.created");
-    expect(created).toMatchObject({ tool: "claude-code", effort: "medium" });
+    // The session is named even when its transcript is not found: it is what Claude Code says.
+    expect(created).toMatchObject({
+      tool: "claude-code",
+      effort: "medium",
+      session: "otra-sesion",
+    });
     expect(created).not.toHaveProperty("model");
 
     const crooked = await inReview({
@@ -103,11 +109,13 @@ describe("who is behind each line of the audit", () => {
     const line = (await auditOf(crooked)).find((entry) => entry.event === "change.created");
     expect(line).not.toHaveProperty("model");
     expect(line).not.toHaveProperty("effort");
+    expect(line).not.toHaveProperty("session");
 
     // Without Claude Code, its variables say nothing.
     const other = await inReview({ CLAUDE_EFFORT: "high", CLAUDE_CODE_SESSION_ID: "sesion-1" });
     const plain = (await auditOf(other)).find((entry) => entry.event === "spec.proposed");
     expect(plain).not.toHaveProperty("effort");
     expect(plain).not.toHaveProperty("model");
+    expect(plain).not.toHaveProperty("session");
   });
 });

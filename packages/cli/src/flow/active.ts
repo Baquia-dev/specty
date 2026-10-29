@@ -103,12 +103,12 @@ export async function auditEntry(
   };
 }
 
-/** What a line tells of who acted: the person's git name, or the agent's model and effort. */
+/** What a line tells of who acted: the person's git name, or the agent's session, model and effort. */
 async function told(
   session: Session,
   who: AuditEntry["actor"],
   delegated: boolean,
-): Promise<Pick<AuditEntry, "by" | "model" | "effort">> {
+): Promise<Pick<AuditEntry, "by" | "session" | "model" | "effort">> {
   const by = who === "human" || delegated ? await session.git.config("user.name") : undefined;
   const run = who === "agent" ? await agentRun(session.tool, session.environment.env) : {};
   return { ...(by === undefined ? {} : { by }), ...run };
