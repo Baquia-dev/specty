@@ -14,14 +14,32 @@ import {
   person,
   quickInWorktree,
   read,
+  SPEC_PATH,
   stateIn,
   tempRepo,
+  toAcceptance,
   toClosing,
   tryGit,
   writeFiles,
 } from "./support";
 
 const BRANCH = `specty/${CHANGE}`;
+
+/** A full verification that counts its runs in the repository's `.git/runs`, from any worktree. */
+const COUNTED = `node -e "require('fs').appendFileSync(process.argv[1] + '/runs', 'x')" "$(git rev-parse --git-common-dir)"`;
+const COUNTING = {
+  ...FILES,
+  ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(COUNTED)}\n`,
+};
+const runs = async (root: string) => (await read(root, ".git/runs")).length;
+const MERGED = /Antes, main se incorporó a la rama del cambio \(merge [0-9a-f]{7}\)/;
+
+/** Main moves on in `root` with a file the change does not touch. */
+async function mainMoves(root: string): Promise<void> {
+  await writeFiles(root, { "src/other.ts": "export const other = 1;\n" });
+  git(root, "add", "-A");
+  git(root, "commit", "-q", "-m", "otro trabajo en main");
+}
 
 describe("closing incorporates the change into the main branch", () => {
   it("fast-forwards main where it is checked out and removes the change's worktree (AC1, AC5)", async () => {
@@ -58,6 +76,28 @@ describe("closing incorporates the change into the main branch", () => {
     // The archive commit comes after the merge, and main moved to it.
     expect(git(root, "rev-parse", "main")).toBe(git(root, "rev-parse", BRANCH));
     expect(await read(root, "src/app.ts")).toBe("2\n");
+    expect(await read(root, "src/other.ts")).toBe("export const other = 1;\n");
+  });
+
+  it("merges a main that moved on acceptance, and the full verification runs only there", async () => {
+    const { root, folder } = await inWorktree(COUNTING);
+    await toAcceptance(folder);
+    await mainMoves(root);
+    const terminal = person();
+    const accepted = await cli(folder, ["accept"], { terminal });
+    expect(accepted.code).toBe(0);
+    expect(accepted.out).toMatch(MERGED);
+    expect(terminal.notes.join("\n")).toContain(
+      "ya pasó con este mismo código en una verificación anterior: no se repite.",
+    );
+    expect(await runs(root)).toBe(1);
+    const closing = "\n## Cierre\n\n### Resumen\n\nSaludo listo.\n";
+    await writeFiles(folder, { [SPEC_PATH]: `${await read(folder, SPEC_PATH)}${closing}` });
+    expect((await cli(folder, ["propose"])).out).toContain("Cierre válido.");
+    const closed = await cli(folder, ["close"], { terminal: person() });
+    expect(closed.code).toBe(0);
+    expect(closed.out).not.toMatch(MERGED);
+    expect(await runs(root)).toBe(1);
     expect(await read(root, "src/other.ts")).toBe("export const other = 1;\n");
   });
 
@@ -202,6 +242,18 @@ describe("closing incorporates the change into the main branch", () => {
     });
     const waiting = await cli(second.folder, ["accept"], { terminal: person() });
     expect(waiting.out).toContain("El agente aún resuelve la incorporación de main");
+  });
+
+  it("verifies a quick change once when main moved before its acceptance", async () => {
+    const root = await tempRepo({ ...COUNTING, "src/button.ts": "Sing in\n" });
+    const { folder } = await quickInWorktree(root, "Corregir botón", "corregir-boton", "Sign in\n");
+    await mainMoves(root);
+    const accepted = await cli(folder, ["accept"], { terminal: person() });
+    expect(accepted.out).toContain("Cambio aceptado, cerrado y archivado");
+    expect(accepted.out).toMatch(MERGED);
+    expect(await runs(root)).toBe(1);
+    expect(await read(root, "src/button.ts")).toBe("Sign in\n");
+    expect(await read(root, "src/other.ts")).toBe("export const other = 1;\n");
   });
 
   it("incorporates into git.target, and into nothing when that branch is missing", async () => {

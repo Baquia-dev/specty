@@ -276,11 +276,11 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
 | `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec` o `diff`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |
-| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta o por el servidor local cuando la persona la lanza desde la UI (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, las últimas 10 líneas si falló, y `tree`, como en `task.verified`. `accept` no la repite si la última verificación con ese comando (también la de una tarea, sola o tras `verify.quick`) pasó con el mismo `tree` |
+| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta, por el servidor local cuando la persona la lanza desde la UI, o al incorporar la rama principal en un cambio abierto, si pasa (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, las últimas 10 líneas si falló, y `tree`, como en `task.verified`. `accept` no la repite si la última verificación con ese comando (también la de una tarea, sola o tras `verify.quick`) pasó con el mismo `tree` |
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | en una retro aparte, el modo (`agent` o `minimal`); con `retro --into`, en el cambio activo, la solicitud (`request`) y sus rutas (`paths`) |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |
-| `integration.started` | incorporar la rama principal al cerrar dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
+| `integration.started` | incorporar la rama principal al aceptar o al cerrar dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
 | `integration.resolved` | `specty integrate` hizo el commit de merge: commit |
 | `integration.abandoned` | el merge ya no estaba en curso y la incorporación pendiente se descartó: rama destino |
 
