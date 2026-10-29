@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-al-cerrar-specty-avisa-de-empezar-una-sesion",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-al-cerrar-specty-avisa-de-empezar-una-sesion",
   "baseCommit": "a2d26180142206ccbdbee773b9b728c1537fbaf2",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fbc731ca398cd41f3d540ed641ed815dc72c2d49",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:40:11.951Z",
       "doneAt": "2026-10-29T20:42:35.058Z",
-      "summary": "sessionContext lee de la cola del transcript de Claude Code lo que leyó la última respuesta (entrada y caché); measureUsage añade el aviso de sesión nueva por encima de 150.000 tokens, con la última sesión de Claude Code de la auditoría."
+      "summary": "sessionContext lee de la cola del transcript de Claude Code lo que leyó la última respuesta (entrada y caché); measureUsage añade el aviso de sesión nueva por encima de 150.000 tokens, con la última sesión de Claude Code de la auditoría.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "19dba057313cdb98ffc6222c1a61f0f9861be6b1",
+      "startedAt": "2026-10-29T20:42:35.424Z",
+      "doneAt": "2026-10-29T20:44:47.809Z",
+      "summary": "SessionStart de Claude Code con compact|clear, y ARCHITECTURE: la tarjeta tras compactar o limpiar, la fila de Claude Code y el aviso de sesión nueva en §13. .claude/settings.json no se tocó: el guard lo protege y se actualiza con specty init."
     }
   },
   "pending": {

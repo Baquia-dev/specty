@@ -66,7 +66,7 @@ Claude Code no deja que un hook ni el agente limpien la sesión. Por eso:
   - files: packages/cli/test/fresh-session.test.ts, packages/cli/src/agents/run.ts, packages/cli/src/flow/usage.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/fresh-session.test.ts test/usage.test.ts test/audit-who.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T3: La tarjeta de Specty vuelve tras `/clear`
+- [x] T3: La tarjeta de Specty vuelve tras `/clear`
   - files: packages/cli/test/setup.test.ts, packages/cli/src/agents/claude-code.ts, .claude/settings.json, docs/ARCHITECTURE.md
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts test/session-start.test.ts test/agents.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

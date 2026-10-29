@@ -33,7 +33,8 @@ import {
 /**
  * The events the guard listens to, with the tools each one covers: before each write or
  * command, after each Bash command, whether it succeeded or failed, when Claude Code creates or
- * removes a worktree, which takes no matcher, and when a session starts again after a compaction.
+ * removes a worktree, which takes no matcher, and when a session starts again after a compaction
+ * or a `/clear`, which the closing advises when the session grew big.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
   PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
@@ -41,7 +42,7 @@ const EVENTS: Readonly<Record<string, string | undefined>> = {
   PostToolUseFailure: "Bash",
   WorktreeCreate: undefined,
   WorktreeRemove: undefined,
-  SessionStart: "compact",
+  SessionStart: "compact|clear",
 };
 /** After a Bash command, whether it succeeded or failed. */
 const AFTER: ReadonlySet<unknown> = new Set(["PostToolUse", "PostToolUseFailure"]);
