@@ -61,7 +61,7 @@ La pestaña Historial muestra la línea de tiempo, pero para llevarse el cambio 
   - files: packages/ui/src/history/history-export.ts, packages/ui/src/history/history-export.test.ts, packages/ui/src/history/history-tab.ts, packages/ui/src/change/change-page.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-export.test.ts --include src/history/history-tab.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
-- [ ] T3: Documentar la exportación
+- [x] T3: Documentar la exportación
   - files: docs/ui.md
   - ac: —
   - verify: pnpm lint

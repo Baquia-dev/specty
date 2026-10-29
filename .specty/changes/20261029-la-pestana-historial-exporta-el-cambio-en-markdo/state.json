@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
   "baseCommit": "7f224077b03d050749f0d8c435ff4ad04bd4ffa8",
   "revision": 1,
@@ -48,14 +48,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/data/export.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "a83730606e616c6c32095bb2f02a2f6c010fe997",
+      "attempts": 1,
       "startedAt": "2026-10-29T05:14:33.949Z",
       "doneAt": "2026-10-29T05:28:57.159Z",
-      "summary": "sp-history-export: el menú Exportar con Markdown, JSON, OpenSpec, Spec Kit y Kiro, que pide el cambio a la fuente y lo descarga (un .zip para los de varios archivos) o avisa si no puede; está junto a los filtros del Historial, también sin eventos"
+      "summary": "sp-history-export: el menú Exportar con Markdown, JSON, OpenSpec, Spec Kit y Kiro, que pide el cambio a la fuente y lo descarga (un .zip para los de varios archivos) o avisa si no puede; está junto a los filtros del Historial, también sin eventos",
+      "scopeExtra": [
+        "packages/ui/src/data/export.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d52efab290164c26bd018bf239fd6c4bfa6f61c4",
+      "startedAt": "2026-10-29T05:28:57.472Z",
+      "doneAt": "2026-10-29T05:32:13.419Z",
+      "summary": "docs/ui.md describe el menú Exportar: los cinco formatos, que la UI los genera con las funciones de la CLI y el aviso cuando no puede"
     }
   },
   "pending": {
