@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-coste-del-consumo-admite-unas-pocas-sesiones",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-el-coste-del-consumo-admite-unas-pocas-sesiones",
   "baseCommit": "81c35588c601d717ef95714949381ad3425bad80",
   "revision": 1,
@@ -25,14 +25,14 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "docs/formats.md"
-      ],
-      "attempts": 1,
       "baseCommit": "30250efaa2e6cad234c314bfcd03652530ea606b",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:55:38.930Z",
       "doneAt": "2026-10-29T21:01:34.373Z",
-      "summary": "modelPrices busca entre candidatos que resuelven exactamente cuatro sesiones repartidas el que explica al céntimo nueve de cada diez, sin precios negativos, y afina con mínimos cuadrados: con el informe real da 4/20/8/0,2 pese a 2 de 36 sesiones calculadas de otra forma."
+      "summary": "modelPrices busca entre candidatos que resuelven exactamente cuatro sesiones repartidas el que explica al céntimo nueve de cada diez, sin precios negativos, y afina con mínimos cuadrados: con el informe real da 4/20/8/0,2 pese a 2 de 36 sesiones calculadas de otra forma.",
+      "scopeExtra": [
+        "docs/formats.md"
+      ]
     }
   },
   "pending": {

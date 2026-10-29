@@ -21,3 +21,9 @@ Ahora el ajuste deja fuera, una a una, las sesiones que peor cuadran, hasta un 1
 - [x] T1: El ajuste de precios deja fuera unas pocas sesiones que no cuadran
   - files: packages/core/src/usage.ts, packages/core/test/usage.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
+
+## Cierre
+
+### Resumen
+
+modelPrices busca entre candidatos que resuelven exactamente cuatro sesiones repartidas el que explica al céntimo nueve de cada diez, sin precios negativos, y afina con mínimos cuadrados: con el informe real da 4/20/8/0,2 pese a 2 de 36 sesiones calculadas de otra forma.
