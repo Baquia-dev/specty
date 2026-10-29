@@ -27,6 +27,8 @@ import {
   verifiedIn,
 } from "./sample-run";
 import { approveTestsIn } from "./sample-tests";
+import { sampleTrace, sampleTraceFiles } from "./sample-trace";
+import type { TraceRecord } from "./trace";
 
 export { REVIEWER, sampleRecords } from "./sample-records";
 
@@ -115,6 +117,15 @@ export class FixtureData extends SpectyData {
   /** The sample's diffs: those of «Panel de asistencia por curso»; the other changes show none. */
   override diff(change: string, task?: string): Promise<string> {
     return sampleDiffOf(this.records, change, task);
+  }
+
+  /** The sample's traceability, from those same diffs; the other changes have no commits. */
+  override traceFiles(change: string): Promise<readonly string[]> {
+    return sampleTraceFiles(this.records, change);
+  }
+
+  override trace(change: string, path: string): Promise<TraceRecord> {
+    return sampleTrace(this.records, change, path);
   }
 
   /** The prototype takes every decision. */

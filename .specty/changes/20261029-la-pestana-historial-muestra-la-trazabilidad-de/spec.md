@@ -56,7 +56,7 @@ El servidor local ya da la trazabilidad de un cambio (`GET /api/changes/<id>/tra
   - files: packages/ui/src/data/trace.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-trace.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-trace.test.ts && pnpm lint
-- [ ] T2: La trazabilidad de muestra del prototipo
+- [x] T2: La trazabilidad de muestra del prototipo
   - files: packages/ui/src/data/sample-trace.ts, packages/ui/src/data/sample-trace.test.ts, packages/ui/src/data/fixtures.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-trace.test.ts --include src/data/fixtures.test.ts && pnpm lint
