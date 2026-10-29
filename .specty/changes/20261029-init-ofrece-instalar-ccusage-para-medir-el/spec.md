@@ -61,7 +61,7 @@ La primera vez que una persona ejecuta `specty init`:
   - files: packages/cli/test/init-usage.test.ts, packages/cli/src/install/usage.ts, packages/cli/src/install/install.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-usage.test.ts test/setup.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T3: ARCHITECTURE cuenta el ofrecimiento
+- [x] T3: ARCHITECTURE cuenta el ofrecimiento
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

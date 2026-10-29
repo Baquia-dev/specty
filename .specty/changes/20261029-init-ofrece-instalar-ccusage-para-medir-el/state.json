@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-init-ofrece-instalar-ccusage-para-medir-el",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-init-ofrece-instalar-ccusage-para-medir-el",
   "baseCommit": "b76a74f022c08910d3acd77b4823066410a1caaf",
   "revision": 1,
@@ -44,12 +44,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e1981eecd3fafabb60eea800fcaef393b8dd4ab9",
+      "attempts": 1,
       "startedAt": "2026-10-29T22:41:32.234Z",
       "doneAt": "2026-10-29T22:50:37.167Z",
-      "summary": "install/usage.ts: la primera vez, en Node, init pregunta a la persona y añade ccusage@20.0.45 con su gestor (-w en workspace de pnpm), con package.json y lockfile en su commit; si no, avisa cómo instalarlo. Último paso de install.ts."
+      "summary": "install/usage.ts: la primera vez, en Node, init pregunta a la persona y añade ccusage@20.0.45 con su gestor (-w en workspace de pnpm), con package.json y lockfile en su commit; si no, avisa cómo instalarlo. Último paso de install.ts.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "13e22e423d5627a53fc1195c4dfabb38d74ef3cf",
+      "startedAt": "2026-10-29T22:50:37.494Z",
+      "doneAt": "2026-10-29T22:51:03.117Z",
+      "summary": "ARCHITECTURE §13: Specty no trae ccusage ni lo descarga solo; init lo ofrece. §14: el paso de init que pregunta, añade con el gestor o avisa cómo instalarlo."
     }
   },
   "pending": {
