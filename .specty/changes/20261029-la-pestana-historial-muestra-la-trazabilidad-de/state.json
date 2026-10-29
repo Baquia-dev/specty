@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "dad80e0f95049e259bc094e78227f8a05e0c7cf0",
+      "startedAt": "2026-10-29T06:14:04.013Z",
+      "doneAt": "2026-10-29T06:17:49.726Z",
+      "summary": "data/trace.ts (TraceRecord, TraceBlock, isTrace) y las lecturas opcionales traceFiles y trace de SpectyData; ServerData las pide a /api/changes/<id>/trace y explica 403, 404, 413 y datos inesperados"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

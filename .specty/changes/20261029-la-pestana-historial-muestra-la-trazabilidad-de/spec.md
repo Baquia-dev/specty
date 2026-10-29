@@ -52,7 +52,7 @@ El servidor local ya da la trazabilidad de un cambio (`GET /api/changes/<id>/tra
 
 ## Tareas
 
-- [ ] T1: La trazabilidad en la fuente de datos y en el servidor local
+- [x] T1: La trazabilidad en la fuente de datos y en el servidor local
   - files: packages/ui/src/data/trace.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-trace.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/server-trace.test.ts && pnpm lint

@@ -24,9 +24,19 @@ import {
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
+import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
 const MARK = 'meta[name="specty-data"][content="server"]';
+
+const NO_TRACE_YET: Bilingual = {
+  es: "Este cambio aún no tiene commits, o ese archivo no es suyo.",
+  en: "This change has no commits yet, or that file is not its own.",
+};
+const TRACE_TOO_LARGE: Bilingual = {
+  es: "Este archivo es demasiado grande para trazarlo aquí: usa `specty why <archivo>:<línea>` en la terminal.",
+  en: "This file is too large to trace here: use `specty why <file>:<line>` in the terminal.",
+};
 
 /** What `GET /api/session` says: whether the person may decide here, and the CSRF token. */
 interface ServerSession {
@@ -169,6 +179,31 @@ export class ServerData extends SpectyData {
       const body: unknown = await response.json().catch(() => undefined);
       throw new ActionError(tooLarge(isObject(body) ? body.range : undefined));
     }
+    throw new ActionError(answered(response.status));
+  }
+
+  /** The files the change left; a read, so even an agent's server gives them. */
+  override async traceFiles(change: string): Promise<readonly string[]> {
+    const body = await this.traced(`/api/changes/${encodeURIComponent(change)}/trace`);
+    if (isObject(body) && isStrings(body.files)) return body.files;
+    throw new ActionError(UNEXPECTED);
+  }
+
+  /** `path` as the change left it, in blocks with what `specty why` tells of each. */
+  override async trace(change: string, path: string): Promise<TraceRecord> {
+    const query = `?path=${encodeURIComponent(path)}`;
+    const body = await this.traced(`/api/changes/${encodeURIComponent(change)}/trace${query}`);
+    if (isTrace(body)) return body;
+    throw new ActionError(UNEXPECTED);
+  }
+
+  /** A read of the traceability, or why there is none. */
+  private async traced(url: string): Promise<unknown> {
+    const response = await fetch(url);
+    if (response.ok) return response.json().catch(() => undefined);
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    if (response.status === 404) throw new ActionError(NO_TRACE_YET);
+    if (response.status === 413) throw new ActionError(TRACE_TOO_LARGE);
     throw new ActionError(answered(response.status));
   }
 
