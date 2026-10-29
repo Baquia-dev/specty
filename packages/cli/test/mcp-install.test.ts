@@ -96,6 +96,30 @@ describe("init --mcp", () => {
   });
 });
 
+describe("AGENTS.md with the MCP server", () => {
+  const LINE = "- Si tienes las herramientas MCP de Specty (`specty_next`";
+  const init = (root: string) => cli(root, ["init", "--language", "es", "--tools", "claude-code"]);
+
+  it("AC2: init asks the agent to use the MCP tools only when an agent's file registers the server", async () => {
+    const plain = await tempRepo({ "README.md": "x\n" });
+    expect((await init(plain)).code).toBe(0);
+    expect(await read(plain, "AGENTS.md")).not.toContain("specty_next");
+
+    const registered = await tempRepo({ "README.md": "x\n" });
+    await register(registered, ["claude-code"]);
+    expect((await init(registered)).code).toBe(0);
+    expect(await read(registered, "AGENTS.md")).toContain(LINE);
+
+    // A server of the person's own under Specty's name, as a wrapper that logs it, counts too.
+    const theirs = await tempRepo({
+      "README.md": "x\n",
+      ".mcp.json": '{ "mcpServers": { "specty": { "command": "node", "args": ["tee.mjs"] } } }\n',
+    });
+    expect((await init(theirs)).code).toBe(0);
+    expect(await read(theirs, "AGENTS.md")).toContain(LINE);
+  });
+});
+
 describe("doctor and uninstall", () => {
   it("AC4: doctor confirms the server, asks for it where it is missing or wrong, and says nothing without it", async () => {
     const root = await tempRepo({ "README.md": "x\n" });

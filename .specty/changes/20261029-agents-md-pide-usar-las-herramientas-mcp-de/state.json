@@ -6,6 +6,13 @@
   "branch": "specty/20261029-agents-md-pide-usar-las-herramientas-mcp-de",
   "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:49a83bcc6368def76142f9bd302eed34adfbb3a2a0444592aa7991d9b84cddb9",
+    "at": "2026-10-29T20:23:33.219Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:49a83bcc6368def76142f9bd302eed34adfbb3a2a0444592aa7991d9b84cddb9",
-    "at": "2026-10-29T20:23:33.219Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T20:24:31.341Z"
 }
