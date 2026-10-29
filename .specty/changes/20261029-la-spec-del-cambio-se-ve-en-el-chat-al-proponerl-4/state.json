@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
@@ -56,6 +56,11 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T07:55:22.075Z"
+  "lockedTests": {
+    "packages/ui/src/data/fixtures.test.ts": "sha256:c61a3fa1ebb45628f0fb83ec64338470052925e0881793a523eaa85720670ee4",
+    "packages/cli/test/mcp-app-page.test.ts": "sha256:a66b965c71dbaffe0ee9790cca9b95482f3865c29441fbb0125539838acbc6d1",
+    "packages/cli/test/mcp-app.test.ts": "sha256:938f773d37a7c69be5e2d89a8bc6ecc436ef23f53878b094052aaf361ae6acdb",
+    "packages/ui/src/app/embedded.test.ts": "sha256:4c2d0ced7e357db98b2de0fcf6dcea1ecc9d7348d0a0861c2360c6d0c4ae8d41",
+    "packages/ui/src/data/mcp-app.test.ts": "sha256:4e5ce0c2d25f9d687f7a4866ae3e9493584bd811aee787fcdbe33fdc0d6b681c"
+  }
 }
