@@ -74,3 +74,36 @@ Es solo para ver: las decisiones siguen en la terminal o en `specty ui`.
 - R3: Los datos del cambio (spec, diffs, salidas de verificación) viajan al anfitrión. Mitigación: es el mismo anfitrión que ya ve el código a través del agente, `structuredContent` no entra en el contexto del modelo, y `specty_view` solo lee.
 - R4: C1 no cabe en un cambio de tamaño L. Mitigación: lleva cambios previos (sin worker, el HTML único, el servidor), cada uno con su test, como C2 de la épica de tests.
 - R5: Un anfitrión que no reenvía las consultas de la vista mientras la herramienta que la abrió sigue en marcha. Mitigación: la vista muestra el estado al llegar el resultado de esa herramienta, y C2 comprueba con un anfitrión simulado que las consultas siguen respondiendo mientras tanto.
+
+## Cierre
+
+### Resumen
+
+Con un anfitrión de MCP Apps, cada herramienta de Specty que trabaja sobre un cambio muestra en el chat la UI de Specty, solo para ver, con la pestaña del momento:
+- la Spec mientras se escribe y se revisa (C1);
+- el Progreso mientras se escriben los tests y el código, en vivo cada segundo con una huella y fijado con `pip` si el anfitrión lo ofrece (C2);
+- la Aceptación con la verificación completa de `specty accept` en vivo y, al final, el cierre, siguiendo al cambio por su id aunque se archive (C3).
+
+La vista es el bundle de Angular en un único `mcp-app.html` y deriva en el hilo principal, sin worker. Lee sus datos con `specty_view`, que el modelo no ve y que solo lee. Las decisiones siguen en la terminal o en `specty ui` (ADR 0015). Sin la extensión, las herramientas son las de siempre.
+
+### Desviaciones
+
+- C1 se rehízo tres veces: por el orden de las verificaciones, por un parámetro por defecto y por un test que afirmaba lo contrario («sin Web Workers»).
+- La prueba en anfitriones reales (2026-10-29) cambió el diseño:
+  - En Claude Desktop el modelo recibía `structuredContent` en lugar del texto de la tarjeta, así que las herramientas del agente vuelven a dar solo su texto. La vista toma la carpeta de los argumentos de la llamada (`tool-input`) y lee los datos también como texto JSON.
+  - En VS Code el worker no carga: el modo embebido deriva en el hilo principal desde el principio.
+- `specty_view` acepta más que la carpeta: también `since` (C2) y `change` (C3), con el permiso de la persona para ajustar los tests de C1 y C2 que fijaban su esquema.
+- `specty accept` deja ahora su verificación completa en vivo (C3). Eso también lo ve `specty ui`, que antes solo veía la que lanzaba él mismo.
+
+### Decisiones
+
+- Solo para ver: decidir desde el chat queda para otro ADR, cuando Specty pueda comprobar que decide una persona.
+- La pestaña sale de la fase: Spec en borrador y revisión; Progreso en tests, implementación y ajustes; Aceptación en aceptación, cierre y terminado; Historial si se canceló.
+- La vista pregunta un segundo después de cada respuesta, y solo en las fases en que el cambio se mueve sin una persona. La huella es un hash de `stat` de los archivos del cambio más la verificación en curso.
+- Con MCP Apps, lo que no es una herramienta del agente no espera a la herramienta en marcha. Sin la extensión, el orden es el de siempre.
+
+### Pendientes
+
+- Probar en VS Code y en Claude Desktop con el bundle de main reconstruido: las tres pestañas, `pip` y un `specty_new` con worktree.
+- Copilot CLI dentro de VS Code oculta la llamada y su vista. Depende del anfitrión.
+- Quitar las configuraciones MCP de prueba al terminar: el `mcp.json` de usuario de VS Code, `mcpServers` de Claude Desktop y la entrada de Antigravity.

@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261029-mcp-apps-la-ui-de-specty-en-el-chat-solo-para-ve",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261029-mcp-apps-la-ui-de-specty-en-el-chat-solo-para-ve",
   "baseCommit": "2c20665f684aa5ed747233f024bc687aee919f5d",
-  "revision": 3,
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:8e0319ef773fc78dc78b47c7fac05eddc9b2b760eb730be8f902b8b8a2693496",
+    "at": "2026-10-29T06:20:32.465Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -55,11 +62,5 @@
     "C": 3,
     "R": 5
   },
-  "approved": {
-    "revision": 3,
-    "hash": "sha256:8e0319ef773fc78dc78b47c7fac05eddc9b2b760eb730be8f902b8b8a2693496",
-    "at": "2026-10-29T06:20:32.465Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "ui"
-  }
+  "closingSubmittedAt": "2026-10-29T19:04:37.050Z"
 }
