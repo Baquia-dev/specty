@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
   "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
   "revision": 2,
@@ -59,12 +59,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4522251cc69937eeba0a71c90808c26f5371c90c",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:23:28.883Z",
       "doneAt": "2026-10-29T20:27:05.632Z",
-      "summary": "flow/usage.ts pide a ccusage (el de node_modules/.bin del cambio o el del PATH) los precios y las llamadas de las sesiones de la auditoría, anota change.usage y añade la línea; close y el cierre del quick miden antes de archivar. Sin respuesta válida, nada cambia."
+      "summary": "flow/usage.ts pide a ccusage (el de node_modules/.bin del cambio o el del PATH) los precios y las llamadas de las sesiones de la auditoría, anota change.usage y añade la línea; close y el cierre del quick miden antes de archivar. Sin respuesta válida, nada cambia.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e3e821e9905a2432942f211bd549fa6c41906909",
+      "startedAt": "2026-10-29T20:27:05.981Z",
+      "doneAt": "2026-10-29T20:28:10.567Z",
+      "summary": "ccusage 20.0.45 como dependencia de desarrollo con el script usage (informe por días); formats.md §4 documenta change.usage y ARCHITECTURE §13 cómo se mide: sesiones de la auditoría, precios deducidos del informe de ccusage, sin instalar nada."
     }
   },
   "pending": {

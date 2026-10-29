@@ -89,7 +89,7 @@ Specty no instala ccusage ni escribe fuera del proyecto. Usa el de `node_modules
   - files: packages/cli/test/usage.test.ts, packages/cli/src/flow/usage.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/usage.test.ts test/integrate.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T4: ccusage en este repositorio y la documentación
+- [x] T4: ccusage en este repositorio y la documentación
   - files: package.json, pnpm-lock.yaml, docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm knip && pnpm lint
