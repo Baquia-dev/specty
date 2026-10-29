@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
   "baseCommit": "7de538a74b9ad00473a69df08c98fcbcd8da146a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:97966ff74932142c058397f741094b2112544ab01e8e460f9c330f4fac77cd6d",
@@ -52,12 +52,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c8aa6dce49b0472125dca37b9d48d8b3dcbedf6c",
+      "attempts": 1,
       "startedAt": "2026-10-29T08:20:57.661Z",
       "doneAt": "2026-10-29T08:24:26.938Z",
-      "summary": "docs/ui.md describe el orden del más reciente al más antiguo y quién hizo cada cosa: el nombre de la persona y el modelo y el esfuerzo del agente"
+      "summary": "docs/ui.md describe el orden del más reciente al más antiguo y quién hizo cada cosa: el nombre de la persona y el modelo y el esfuerzo del agente",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,6 +69,7 @@
     "AC": 3,
     "T": 3
   },
+  "closingSubmittedAt": "2026-10-29T08:28:12.149Z",
   "lockedTests": {
     "packages/ui/src/history/history-tab.test.ts": "sha256:c3919b9bde77e116cb7dfa733fcf311bc178b0ecaca31c7be217e0e1931c4c78",
     "packages/ui/src/data/history-who.test.ts": "sha256:dc36794e0303064e9200727655a7b1dba05c30604d2e6c61c0ddbb4a4c75e956",

@@ -57,3 +57,25 @@ El Historial pone «Persona» aunque la auditoría ya sabe su nombre, y del agen
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El Historial nombra a la persona (`by`, su nombre de git) en lugar de «Persona», y del agente dice la herramienta, el modelo y el esfuerzo cuando la línea los trae («Agente · Claude Code · Opus 5.5 · esfuerzo alto»); una decisión delegada dice por quién («Por delegación de Ana: lo decidió el agente»). Los días y sus eventos van del más reciente al más antiguo. Las líneas de muestra del prototipo traen nombre, modelo y esfuerzo.
+
+### Desviaciones
+
+- La primera versión de este cambio también fijaba la barra de filtros; se canceló en borrador porque Antigravity lleva ese mismo pedido en `20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar` (los filtros pasan a la barra de pestañas al desplazarse), y fijarla aquí lo habría anulado.
+- `historyOf` pasó de 10 de complejidad: lo de quién va en `whoOf`.
+- Los tests nuevos usan `as const` en sus datos para compilar antes de que existieran los campos nuevos, así su rojo nombra también el test del orden.
+
+### Decisiones
+
+- Un modelo de Claude se muestra por su nombre corto y la fecha de su versión no cuenta como número menor; uno desconocido, y un esfuerzo desconocido, van tal cual.
+- `sample-history.ts` importa `REVIEWER` de `sample-records.ts`, que a su vez lo importa: solo se usa al construir la muestra, no al cargar los módulos.
+
+### Pendientes
+
+- Que los filtros no se oculten al desplazarse: el cambio de Antigravity, que toca los mismos archivos y tendrá que incorporar este.
+- La trazabilidad coloreada y con su diff: el cambio siguiente.
