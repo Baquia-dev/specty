@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-historial-muestra-el-consumo-de-cada-cambio",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-el-historial-muestra-el-consumo-de-cada-cambio",
   "baseCommit": "2b8cc19cd8b7f068b53d6fa07d36b39ffbbae16d",
   "revision": 1,
@@ -26,12 +26,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8f04a35fc1e25ce1f39ae30bbc164a658d221e19",
+      "attempts": 1,
       "startedAt": "2026-10-29T21:06:23.352Z",
       "doneAt": "2026-10-29T21:07:31.035Z",
-      "summary": "El historial muestra change.usage como evento del cierre («Consumo del cambio · 223,8 mil tokens en 2 llamadas, 0,08 USD»), con el texto del core que exporta su entrada ligera (usageOf, usageWords); ui.md lo cuenta."
+      "summary": "El historial muestra change.usage como evento del cierre («Consumo del cambio · 223,8 mil tokens en 2 llamadas, 0,08 USD»), con el texto del core que exporta su entrada ligera (usageOf, usageWords); ui.md lo cuenta.",
+      "scopeExtra": []
     }
   },
   "pending": {

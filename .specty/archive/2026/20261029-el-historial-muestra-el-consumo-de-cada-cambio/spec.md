@@ -20,3 +20,9 @@ Desde ahora el cierre anota en la auditoría lo que consumió el cambio (`change
 - [x] T1: El historial muestra el consumo de cada cambio
   - files: packages/core/src/light.ts, packages/ui/src/data/history.ts, packages/ui/src/data/history.test.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/history.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/light.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
+
+## Cierre
+
+### Resumen
+
+El historial muestra change.usage como evento del cierre («Consumo del cambio · 223,8 mil tokens en 2 llamadas, 0,08 USD»), con el texto del core que exporta su entrada ligera (usageOf, usageWords); ui.md lo cuenta.
