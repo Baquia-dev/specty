@@ -21,7 +21,7 @@ export async function archive(
   data: Readonly<Record<string, unknown>>,
 ): Promise<StoredChange> {
   await saveState(change.files, state);
-  await appendAudit(change.files, auditEntry(session, "human", event, data));
+  await appendAudit(change.files, await auditEntry(session, "human", event, data));
   const target = session.paths.archivedDir(state.id, session.environment.now().getFullYear());
   await move(change.files.dir, target);
   if (!session.config.git.branchPerChange) await writePointer(session.git, "active", undefined);

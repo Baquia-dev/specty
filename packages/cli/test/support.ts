@@ -44,6 +44,10 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
     // Antigravity CLI's mark, with both editors turned off.
     HGEDITOR: _k,
     JJ_EDITOR: _l,
+    // What Claude Code tells of its session: a test must not read the transcript of who runs it.
+    CLAUDE_EFFORT: _m,
+    CLAUDE_CODE_SESSION_ID: _n,
+    CLAUDE_CONFIG_DIR: _o,
     // The tests choose their language with LANG, which these would override (macOS runners set
     // LC_ALL).
     LC_ALL: _i,
