@@ -4,3 +4,5 @@
 {"ts":"2026-10-29T04:59:07.399Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T1","baseCommit":"2805a18c62763082acd6cb5f8f5046fda2c2cfd4"}}
 {"ts":"2026-10-29T05:05:29.220Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/detect-ci-marks.test.ts test/detect-ci.test.ts test/detect-quality.test.ts","exit":0,"ms":17702,"tree":"sha256:e53b91d504de81146627e5d1d3d338b4bdc7333ae9f32b7379ad10d01a704ad0"}}
 {"ts":"2026-10-29T05:05:29.467Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T1","summary":"Detection.fromCi y la etiqueta «(CI)» en projectFacts (init y AGENTS.md); un comando del CI con | o || no cuenta; tests vistos en rojo; ARCHITECTURE §7"}}
+{"ts":"2026-10-29T05:08:54.817Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":202958,"tree":"sha256:e53b91d504de81146627e5d1d3d338b4bdc7333ae9f32b7379ad10d01a704ad0"}}
+{"ts":"2026-10-29T05:12:26.105Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"lane":"quick","delegated":true}}

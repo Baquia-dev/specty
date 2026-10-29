@@ -21,3 +21,9 @@ La detección rellena con los comandos del CI los que la pila no da, pero no dic
   - files: packages/cli/src/detect/ci.ts, packages/cli/src/detect/project.ts, packages/cli/test/detect-ci-marks.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/detect-ci-marks.test.ts test/detect-ci.test.ts test/detect-quality.test.ts
   - type: feat
+
+## Cierre
+
+### Resumen
+
+Detection.fromCi y la etiqueta «(CI)» en projectFacts (init y AGENTS.md); un comando del CI con | o || no cuenta; tests vistos en rojo; ARCHITECTURE §7

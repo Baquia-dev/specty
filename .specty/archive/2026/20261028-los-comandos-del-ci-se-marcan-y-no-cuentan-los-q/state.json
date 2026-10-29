@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261028-los-comandos-del-ci-se-marcan-y-no-cuentan-los-q",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-los-comandos-del-ci-se-marcan-y-no-cuentan-los-q",
   "baseCommit": "c019307ae21a257f99a9da5a91e7be9d0ca634be",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2805a18c62763082acd6cb5f8f5046fda2c2cfd4",
+      "attempts": 1,
       "startedAt": "2026-10-29T04:59:07.398Z",
       "doneAt": "2026-10-29T05:05:29.457Z",
-      "summary": "Detection.fromCi y la etiqueta «(CI)» en projectFacts (init y AGENTS.md); un comando del CI con | o || no cuenta; tests vistos en rojo; ARCHITECTURE §7"
+      "summary": "Detection.fromCi y la etiqueta «(CI)» en projectFacts (init y AGENTS.md); un comando del CI con | o || no cuenta; tests vistos en rojo; ARCHITECTURE §7",
+      "scopeExtra": []
     }
   },
   "pending": {
