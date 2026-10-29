@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "id": "20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
+  "baseCommit": "0acfdedf181cf68d8c8737ef85e7baed0c108705",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f85c82d60fe3f9ef56f954db1ab1b5886e0a2466fd5aea702a540c283c6bd2df",
+    "at": "2026-10-29T08:59:09.170Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fb0c3848a1d07545ef39255c3ff3cdb52592ff2e4a9e5b7b8ed5273c199a2eb3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:13389f27652c296b665190aa8a6c7598c18360525b2c65cb12852c25a087e741",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "64c74eb664a7e754f2d9d9cebe3a58080377ea81",
+      "attempts": 1,
+      "startedAt": "2026-10-29T09:01:20.831Z",
+      "doneAt": "2026-10-29T09:05:15.048Z",
+      "summary": "Cada bloque de la trazabilidad trae origin: los números que sus líneas tenían en el commit que las escribió, sacados del blame en porcelana",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "890a8d1e412fed6510300df964bb7ba4cd1d101d",
+      "attempts": 1,
+      "startedAt": "2026-10-29T09:05:15.398Z",
+      "doneAt": "2026-10-29T09:09:28.101Z",
+      "summary": "sp-diff-file marca las líneas del lado nuevo que recibe en marked (data-marked, una barra de acento y un texto para lectores de pantalla), también lado a lado, nunca una quitada, y con marcas enseña el archivo entero",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "f58fa6ca4fc98f20a2fb269f7e2eb219975805b9",
+      "attempts": 1,
+      "startedAt": "2026-10-29T09:09:28.457Z",
+      "doneAt": "2026-10-29T09:32:38.835Z",
+      "summary": "Ver diff marca las líneas del bloque por su origin y lleva la vista a la primera; la muestra del prototipo trae origin con el número nuevo de cada línea (el test de la muestra lo exige, con el visto bueno del usuario)",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "7dbe07d577801082524fd19f7065e22a399b8f37",
+      "attempts": 1,
+      "startedAt": "2026-10-29T09:32:39.182Z",
+      "doneAt": "2026-10-29T09:36:10.238Z",
+      "summary": "docs/ui.md describe las marcas del diff de un bloque y ARCHITECTURE el origin de cada bloque en la lectura trace",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-29T09:39:59.430Z",
+  "lockedTests": {
+    "packages/cli/test/server/trace-origin.test.ts": "sha256:a794df8af42a0e32537281ea1fd0c4c99c484f3ce0ebcf0290a4a61665731686",
+    "packages/ui/src/components/diff-file-marks.test.ts": "sha256:eb07a6379e3732119a8bae537e3d24db167e71807d0321344929269067aa15c2",
+    "packages/ui/src/history/trace-marks.test.ts": "sha256:fc177c87798fd01802d9c6a9be3888ff3a294140727bfa74771bdd8dc66e49f0"
+  }
+}

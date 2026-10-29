@@ -70,6 +70,15 @@ describe("Tabs", () => {
     tabs()[2]?.click();
     expect(host.selected()).toBe("history");
   });
+
+  it("AC1: keeps the tab bar fixed under --sp-bar-top on the page ground", async () => {
+    const { element } = await render();
+    const bar = element.querySelector<HTMLElement>("[data-tabs-bar]");
+    expect(bar?.className.split(" ")).toEqual(
+      expect.arrayContaining(["sticky", "top-[var(--sp-bar-top,0px)]", "bg-bg"]),
+    );
+    expect(bar?.querySelector("[role=tablist]")).not.toBeNull();
+  });
 });
 
 describe("Collapsible", () => {

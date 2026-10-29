@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from "@angular/core";
+import type { Lang } from "@baquia-dev/specty-core";
 import { Badge } from "../components/badge";
 import { Button } from "../components/button";
 import { LIST, ROW, SectionDivider } from "../components/document";
@@ -7,12 +8,12 @@ import { EmptyState } from "../components/empty-state";
 import { LucideLayoutList } from "../components/icons";
 import { Segmented, type SegmentedOption } from "../components/segmented";
 import { Select, type SelectOption } from "../components/select";
+import { TabEnd } from "../components/tabs";
 import type { HistoryEntry } from "../data/history";
 import type { HistoryType } from "../data/history-text";
 import { Preferences } from "../theme/preferences";
 import { HistoryExport } from "./history-export";
-
-type Actor = HistoryEntry["actor"];
+import { TraceView } from "./trace-view";
 
 /** The agent tools by their id, as the agent declares them (context, not proof). */
 const TOOLS: Readonly<Record<string, string>> = {
@@ -58,13 +59,26 @@ interface Day {
  */
 @Component({
   selector: "sp-history-tab",
-  imports: [SectionDivider, EmptyState, Segmented, Select, Button, Badge, HistoryExport],
+  imports: [
+    SectionDivider,
+    EmptyState,
+    Segmented,
+    Select,
+    TabEnd,
+    Button,
+    Badge,
+    HistoryExport,
+    TraceView,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
   template: `
     @if (history().length > 0 || change() !== undefined) {
-      <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-        @if (history().length > 0) {
+      <div #top class="flex flex-wrap items-center gap-x-6 gap-y-3" data-top>
+        @if (change() !== undefined) {
+          <sp-segmented [label]="t()('Vista', 'View')" [options]="viewOptions()" [(value)]="view" />
+        }
+        @if (history().length > 0 && view() === 'timeline') {
           <sp-segmented [label]="t()('Quién', 'Who')" [options]="actorOptions()" [(value)]="actor" />
           <sp-select class="w-56" [label]="t()('Tipo', 'Type')" [options]="typeOptions()" [(value)]="type" />
           <p class="m-0 text-sm text-text-muted" data-summary>{{ summary() }}</p>
@@ -73,8 +87,17 @@ interface Day {
           <sp-history-export class="ml-auto" [change]="id" />
         }
       </div>
+      <ng-template [spTabEnd]="history().length > 0 && view() === 'timeline' ? top : undefined">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2" data-compact-summary>
+          <sp-segmented [label]="t()('Quién', 'Who')" [options]="actorOptions()" [(value)]="actor" data-compact-actor />
+          <sp-select class="w-48" [label]="t()('Tipo', 'Type')" [options]="typeOptions()" [(value)]="type" data-compact-type />
+          <p class="m-0 text-xs text-text-muted">{{ summary() }}</p>
+        </div>
+      </ng-template>
     }
-    @if (history().length === 0) {
+    @if (view() === 'trace' && change(); as id) {
+      <sp-trace-view [change]="id" />
+    } @else if (history().length === 0) {
       <sp-empty-state [heading]="t()('Aún no hay eventos', 'No events yet')" [icon]="emptyIcon">
         <p class="m-0">{{ t()('Aparecen aquí a medida que el cambio avanza.', 'They show here as the change moves on.') }}</p>
       </sp-empty-state>
@@ -124,6 +147,16 @@ export class HistoryTab {
   protected readonly actor = signal<string>("all");
   protected readonly type = signal<string>("all");
 
+  /** The timeline, or the traceability of the change's files. */
+  protected readonly view = signal<string>("timeline");
+  protected readonly viewOptions = computed((): readonly SegmentedOption[] => {
+    const t = this.t();
+    return [
+      { value: "timeline", label: t("Línea de tiempo", "Timeline") },
+      { value: "trace", label: t("Trazabilidad", "Traceability") },
+    ];
+  });
+
   protected readonly actorOptions = computed((): readonly SegmentedOption[] => {
     const t = this.t();
     return [
@@ -149,7 +182,8 @@ export class HistoryTab {
 
   protected readonly days = computed((): readonly Day[] => {
     const days: { key: string; heading: string; events: HistoryEntry[] }[] = [];
-    for (const event of this.shown()) {
+    // The newest first: the last day on top, and in each day its last event.
+    for (const event of this.shown().toReversed()) {
       const key = dayKey(event.at);
       const last = days[days.length - 1];
       if (last?.key === key) last.events.push(event);
@@ -175,7 +209,7 @@ export class HistoryTab {
   }
 
   protected actorOf(event: HistoryEntry): string {
-    return actorLabel(event.actor, event.tool, this.t());
+    return actorLabel(event, this.t(), this.lang());
   }
 
   protected typeOf(type: HistoryType): string {
@@ -205,19 +239,49 @@ function dayKey(at: string): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }
 
+/** The person by their name; the agent with its tool, its model and its effort, when known. */
 function actorLabel(
-  actor: Actor,
-  tool: string | undefined,
+  event: HistoryEntry,
   t: (es: string, en: string) => string,
+  lang: Lang,
 ): string {
-  switch (actor) {
+  switch (event.actor) {
     case "human":
-      return t("Persona", "Person");
+      return event.by ?? t("Persona", "Person");
     case "specty":
       return "Specty";
     case "agent": {
-      const agent = t("Agente", "Agent");
-      return tool === undefined ? agent : `${agent} · ${TOOLS[tool] ?? tool}`;
+      const { tool, model, effort } = event;
+      return [
+        t("Agente", "Agent"),
+        tool === undefined ? undefined : (TOOLS[tool] ?? tool),
+        model === undefined ? undefined : modelName(model),
+        effort === undefined ? undefined : effortName(effort, lang),
+      ]
+        .filter((part) => part !== undefined)
+        .join(" · ");
     }
   }
+}
+
+/** A Claude model by its short name, `claude-opus-5-5` as «Opus 5.5»; any other, as it is. */
+function modelName(model: string): string {
+  const [, family = "", major, minor] =
+    /^claude-([a-z]+)-(\d+)(?:-(\d{1,2}))?(?:-\d{8})?$/.exec(model) ?? [];
+  if (major === undefined) return model;
+  const name = `${family.charAt(0).toUpperCase()}${family.slice(1)}`;
+  return `${name} ${major}${minor === undefined ? "" : `.${minor}`}`;
+}
+
+const EFFORTS: ReadonlyMap<string, Readonly<Record<Lang, string>>> = new Map([
+  ["low", { es: "esfuerzo bajo", en: "low effort" }],
+  ["medium", { es: "esfuerzo medio", en: "medium effort" }],
+  ["high", { es: "esfuerzo alto", en: "high effort" }],
+  ["xhigh", { es: "esfuerzo muy alto", en: "extra-high effort" }],
+  ["max", { es: "esfuerzo máximo", en: "max effort" }],
+]);
+
+/** The effort in words; one it does not know, as it is. */
+function effortName(effort: string, lang: Lang): string {
+  return EFFORTS.get(effort)?.[lang] ?? (lang === "es" ? `esfuerzo ${effort}` : `${effort} effort`);
 }

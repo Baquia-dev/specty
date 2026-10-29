@@ -48,6 +48,10 @@ export interface NewOptions {
   readonly request?: string;
   /** Sections that come written, such as an imported change's (`specty import`). */
   readonly sections?: TemplateOptions["prefilled"];
+  /** A clean, concise slug for the change id and branch. */
+  readonly slug?: string;
+  /** An explicit branch name for the change. */
+  readonly branch?: string;
 }
 
 /**
@@ -101,7 +105,8 @@ async function newInFolder(session: Session, options: NewOptions, title: string)
   const dirty = await dirtyGoverned(session);
   if (dirty.length > 0) return nextCard({ dirty }, cards);
 
-  const id = await uniqueId(session, makeChangeId(session.environment.now(), title));
+  const changeTitle = options.slug?.trim() ? options.slug : title;
+  const id = await uniqueId(session, makeChangeId(session.environment.now(), changeTitle));
   const branch = settings.branchPerChange ? await branchFor(session, options, id) : undefined;
   if (branch !== undefined) {
     await session.git.output(["switch", "-q", "-c", branch]);
@@ -140,7 +145,8 @@ async function newInWorktree(
   // Folders of changes already closed (and incorporated) or cancelled are no longer needed.
   const { removed } = await removeFinished(session);
   const home = await worktreesHome(git);
-  const id = await uniqueId(session, makeChangeId(session.environment.now(), title), home);
+  const changeTitle = options.slug?.trim() ? options.slug : title;
+  const id = await uniqueId(session, makeChangeId(session.environment.now(), changeTitle), home);
   const branch = await branchFor(session, options, id);
   const folder = join(home, id);
   const copied = await addWorktree(git, { folder, branch, base: base.commit });
@@ -176,9 +182,12 @@ async function newInWorktree(
  * neither is set), and free.
  */
 async function branchFor(session: Session, options: NewOptions, id: string): Promise<string> {
+  if (options.branch !== undefined && options.branch.trim().length > 0) {
+    return freeBranch(session.git, options.branch.trim());
+  }
   const { flow = "specty", branchPattern } = session.config.git;
   const { kind, type } = options;
-  const title = options.title.trim();
+  const title = (options.slug?.trim() ? options.slug : options.title).trim();
   const pattern = branchPattern !== undefined ? { pattern: branchPattern } : {};
   return freeBranch(session.git, branchName({ flow, kind, type, id, title, ...pattern }));
 }

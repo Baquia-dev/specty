@@ -256,7 +256,7 @@ El estudiante ve su evolución por materia en un gráfico de líneas con filtro 
 
 ## 4. `audit.jsonl`
 
-Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "tool"?, "event", "data" }`. `tool` es la herramienta que declara el agente: sirve como contexto, no como prueba. Si el agente toma una decisión de la persona en modo delegado (aprobar, decidir el alcance, aceptar, cerrar o cancelar), la línea lleva `actor: "agent"` y `data.delegated: true`.
+Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "tool"?, "by"?, "model"?, "effort"?, "event", "data" }`. `tool` es la herramienta que declara el agente: sirve como contexto, no como prueba. Si el agente toma una decisión de la persona en modo delegado (aprobar, decidir el alcance, aceptar, cerrar o cancelar), la línea lleva `actor: "agent"` y `data.delegated: true`. `by` es el nombre de la persona, su `user.name` de git, en sus decisiones y en las que el agente toma por ella. `model` y `effort` son el modelo y el esfuerzo del agente cuando su herramienta los dice, también como contexto (`agents/run.ts`): hoy solo Claude Code, cuyo esfuerzo llega en `CLAUDE_EFFORT` y cuyo modelo es el de la última respuesta del transcript de su sesión (`projects/*/<CLAUDE_CODE_SESSION_ID>.jsonl` bajo `CLAUDE_CONFIG_DIR` o `~/.claude`), del que Specty lee solo los últimos 64 KB y solo ese campo. Si no se encuentran, la línea va sin ellos; las líneas anteriores no los tienen.
 
 | Evento | Datos |
 | --- | --- |
@@ -276,11 +276,11 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | `adjust.requested` | petición literal |
 | `adjust.classified` | clasificación por ítem: defecto, refinamiento o alcance nuevo |
 | `review.completed` | la revisión independiente (ADR 0011), anotada por `specty review` (actor `specty`): `target` (`spec` o `diff`), revisión, comando, código de salida, duración y, si respondió, el archivo de la respuesta |
-| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta o por el servidor local cuando la persona la lanza desde la UI (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, las últimas 10 líneas si falló, y `tree`, como en `task.verified`. `accept` no la repite si la última verificación con ese comando (también la de una tarea, sola o tras `verify.quick`) pasó con el mismo `tree` |
+| `change.verified` | la verificación completa (`verify.full`), anotada por `specty accept` cuando la ejecuta, por el servidor local cuando la persona la lanza desde la UI, o al incorporar la rama principal en un cambio abierto, si pasa (actor `specty`): comando, código de salida (`null` si se cortó por tiempo), duración, las últimas 10 líneas si falló, y `tree`, como en `task.verified`. `accept` no la repite si la última verificación con ese comando (también la de una tarea, sola o tras `verify.quick`) pasó con el mismo `tree` |
 | `change.accepted` | revisión aceptada |
 | `retro.confirmed` | en una retro aparte, el modo (`agent` o `minimal`); con `retro --into`, en el cambio activo, la solicitud (`request`) y sus rutas (`paths`) |
 | `change.closed` / `change.cancelled` | motivo, al cancelar |
-| `integration.started` | incorporar la rama principal al cerrar dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
+| `integration.started` | incorporar la rama principal al aceptar o al cerrar dejó el merge para el agente: rama destino, su commit, motivo (`conflicts` o `verify`) y archivos en conflicto |
 | `integration.resolved` | `specty integrate` hizo el commit de merge: commit |
 | `integration.abandoned` | el merge ya no estaba en curso y la incorporación pendiente se descartó: rama destino |
 
@@ -541,7 +541,7 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 - Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.
 
 ## Reglas (Specty)
-- Antes de reportar una tarea como terminada, ejecuta `specty check --changed --spec` y corrige todos los fallos. No reportes con fallos pendientes.
+- `specty task done` ya ejecuta `specty check --changed --spec` y la verificación de la tarea, y no la completa con fallos: no los repitas justo antes; corrige lo que devuelva y no reportes con fallos pendientes.
 - Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.
 - Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.
 - Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.

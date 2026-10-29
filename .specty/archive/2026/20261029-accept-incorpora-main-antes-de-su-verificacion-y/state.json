@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261029-accept-incorpora-main-antes-de-su-verificacion-y",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261029-accept-incorpora-main-antes-de-su-verificacion-y",
+  "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e10be5bcc9d7a6f20e706563a770eac3820e7c7a351284ff78d1cd5c0643e0bf",
+    "at": "2026-10-29T18:34:57.041Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "4e9c8be40c6b53dbaf19b44c6ac89fb33505d20b",
+      "attempts": 1,
+      "startedAt": "2026-10-29T18:34:57.497Z",
+      "doneAt": "2026-10-29T18:40:53.077Z",
+      "summary": "accept fusiona main antes de su verificación completa (sin mirar la carpeta de main), la del merge queda como change.verified y accept la reutiliza; close solo fusiona si main avanzó después. Tests de un cambio normal y uno quick; ARCHITECTURE y formats al día.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

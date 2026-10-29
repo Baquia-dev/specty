@@ -17,6 +17,11 @@ export interface AuditEntry {
   readonly ts: string;
   readonly actor: "agent" | "human" | "specty";
   readonly tool?: string;
+  /** The person: in their own decisions and in those the agent takes for them. */
+  readonly by?: string;
+  /** What the agent tells of itself, when it does: context, not proof, like `tool`. */
+  readonly model?: string;
+  readonly effort?: string;
   readonly event: string;
   readonly data: Readonly<Record<string, unknown>>;
 }

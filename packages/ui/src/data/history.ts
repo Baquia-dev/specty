@@ -28,6 +28,11 @@ export interface HistoryEntry {
   readonly actor: AuditRecord["actor"];
   /** The tool the agent declared: context, not proof. */
   readonly tool?: string;
+  /** The person, by their git name: in their decisions and in those the agent took for them. */
+  readonly by?: string;
+  /** The agent's model and effort, when its tool tells them. */
+  readonly model?: string;
+  readonly effort?: string;
   /** The event as `audit.jsonl` names it. */
   readonly event: string;
   readonly type: HistoryType;
@@ -35,8 +40,30 @@ export interface HistoryEntry {
   readonly details: readonly Bilingual[];
 }
 
-/** A decision of the person that their agent took, in delegated mode (ADR 0010). */
-const DELEGATED = both("Por delegación: lo decidió el agente", "Delegated: the agent decided");
+/** What a line says of who did it: the agent's tool, model and effort, or the person's name. */
+function whoOf({
+  tool,
+  by,
+  model,
+  effort,
+}: AuditRecord): Pick<HistoryEntry, "tool" | "by" | "model" | "effort"> {
+  return {
+    ...(tool === undefined ? {} : { tool }),
+    ...(by === undefined ? {} : { by }),
+    ...(model === undefined ? {} : { model }),
+    ...(effort === undefined ? {} : { effort }),
+  };
+}
+
+/** A decision of the person that their agent took, in delegated mode (ADR 0010), by whom. */
+function delegatedBy(by: string | undefined): Bilingual {
+  return by === undefined
+    ? both("Por delegación: lo decidió el agente", "Delegated: the agent decided")
+    : both(
+        `Por delegación de ${by}: lo decidió el agente`,
+        `Delegated by ${by}: the agent decided`,
+      );
+}
 
 const LANES: Readonly<Record<string, Bilingual>> = {
   standard: both("Carril estándar", "Standard lane"),
@@ -264,20 +291,22 @@ const CLOSING_SENT: Told = { type: "closing", title: both("Envió el cierre", "S
 export function historyOf(audit: readonly AuditRecord[]): readonly HistoryEntry[] {
   const entries: HistoryEntry[] = [];
   let accepted = false;
-  for (const { ts, actor, tool, event, data } of audit) {
+  for (const line of audit) {
+    const { ts, actor, event, data } = line;
     const told =
       event === "spec.proposed" && accepted
         ? CLOSING_SENT
         : (TELL[event]?.(data ?? {}) ?? { type: "other", title: both(event, event) });
     if (event === "change.accepted") accepted = true;
+    const delegated = data?.delegated === true ? delegatedBy(line.by) : undefined;
     entries.push({
       at: ts,
       actor,
-      ...(tool === undefined ? {} : { tool }),
+      ...whoOf(line),
       event,
       type: told.type,
       title: told.title,
-      details: [...(told.details ?? []), data?.delegated === true ? DELEGATED : undefined].filter(
+      details: [...(told.details ?? []), delegated].filter(
         (detail): detail is Bilingual => detail !== undefined,
       ),
     });

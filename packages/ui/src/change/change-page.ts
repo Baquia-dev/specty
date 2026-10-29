@@ -221,15 +221,21 @@ export class ChangePage {
     const host: HTMLElement = inject(ElementRef).nativeElement;
     let resize: ResizeObserver | undefined;
     let intersection: IntersectionObserver | undefined;
-    // Sticky parts below (spec index, comments, anchors) start under the compact bar.
+    // Sticky parts below (tabs bar, section headers, spec index, comments) start under the compact bar.
     effect(() => {
       const bar = this.bar()?.nativeElement;
       resize?.disconnect();
       if (bar === undefined || typeof ResizeObserver === "undefined") return;
-      resize = new ResizeObserver(() =>
-        host.style.setProperty("--sp-sticky-top", `${bar.offsetHeight}px`),
-      );
+      const tabsBar = host.querySelector<HTMLElement>("[data-tabs-bar]");
+      const measure = () => {
+        const barHeight = bar.offsetHeight;
+        const tabsHeight = tabsBar?.offsetHeight ?? 0;
+        host.style.setProperty("--sp-bar-top", `${barHeight}px`);
+        host.style.setProperty("--sp-sticky-top", `${barHeight + tabsHeight}px`);
+      };
+      resize = new ResizeObserver(measure);
       resize.observe(bar);
+      if (tabsBar !== null) resize.observe(tabsBar);
     });
     // Without IntersectionObserver the bar stays hidden and the wide header still serves.
     effect(() => {

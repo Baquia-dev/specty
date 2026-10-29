@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
+  "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:64a8a24374e933b2294a1f281c56d653f27e34e11ad5d6014113555281bce372",
+    "at": "2026-10-29T18:41:52.167Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f4f338a567fce9a2157478c3faea6d1c756043e4d07600d5c73a28ea71ee9351",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:869e2d6b00cb7df11908342dcedac168284c7a307a6a8c1cc723059797780d6b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:907e1fb32f92f679a90b68a3173b14ceb22f8cf35cc53b255678d23c3c91a916",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:93f2200af966a71ee095faecbe3918d16edbbb91a0f7c519569cc495473fd25a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:5cb3a3da540000a80ae126a9151ee948f6141c8f9f1e69e7626bb5692cd28e56",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:9ebc8bcd62ed24d5318321be3c4ce4ef182e0fbc5c1af0372b71d9d6077e049e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "5b64d010a4c8ff49824aa37def556d6f2ee1cc08",
+      "attempts": 1,
+      "startedAt": "2026-10-29T18:45:27.955Z",
+      "doneAt": "2026-10-29T18:49:34.194Z",
+      "summary": "specty accept verifica con runLive sin tarea: la ejecución queda en specty/runs/<cambio>.json mientras corre y se borra al terminar; LiveRun.task es opcional y el servidor de specty ui la copia sin pid, así que la ve como la completa.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "954752bca9948543fd6493dcc6d97d40c711927f",
+      "attempts": 1,
+      "startedAt": "2026-10-29T18:49:34.532Z",
+      "doneAt": "2026-10-29T18:54:28.341Z",
+      "summary": "specty_view acepta change: busca el cambio abierto en cualquier worktree o archivado, en la carpeta del servidor si la pedida ya no existe, con su huella y unchanged; leer todos los registros tarda unos 0,4 s con los 300 cambios del repo.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "08ea6b95b370b814accddfd004561d0ce87e0cf3",
+      "attempts": 1,
+      "startedAt": "2026-10-29T18:54:28.683Z",
+      "doneAt": "2026-10-29T18:59:24.949Z",
+      "summary": "La vista manda en cada pregunta el id del cambio que muestra, o el que nombra la cabecera de la tarjeta de la herramienta, y así lo sigue hasta terminado; ARCHITECTURE §6 y ui.md lo cuentan, con la verificación en vivo de accept.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-29T19:03:27.651Z",
+  "lockedTests": {
+    "packages/cli/test/mcp-app.test.ts": "sha256:7cd4c7789ed4f6822d04949219ca89662f4cec4609988add82eb640755019dae",
+    "packages/ui/src/data/mcp-app.test.ts": "sha256:fb8fc24133c4ee1ba96e9e49e61d117468b43614e54099c4e551e4d5f4d50075",
+    "packages/cli/test/accept-live.test.ts": "sha256:308271e3491606783be187188ad97310127508a43d56c9b691fbe117898e8408",
+    "packages/cli/test/mcp-app-change.test.ts": "sha256:a94cb54b93c48b0557226fd17c713187fd724f7a1728feb0f43a145cf29c9a24"
+  }
+}

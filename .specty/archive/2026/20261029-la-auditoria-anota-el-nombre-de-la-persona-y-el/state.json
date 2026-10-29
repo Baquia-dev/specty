@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "id": "20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
+  "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:768d0f7ce610d1603c87292529aab251f323b4c8577fac40d37090a2629471db",
+    "at": "2026-10-29T07:33:49.603Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0aec081139832b3ca90498bf3836d489b2fd70398a2d020a8c7bce5097c2edf2",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:584e757ec84753a7427504df8160bc276b8a46eef487be6c5c2216e75238c0c2",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:de2597e46486a59b937102901a93f34438d790dfe50c1c4d6e78ddc9ff5b9d7e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "7c96ce2b64044d14b2cdbe058c5093fb7d198d55",
+      "attempts": 1,
+      "startedAt": "2026-10-29T07:34:35.171Z",
+      "doneAt": "2026-10-29T07:47:12.287Z",
+      "summary": "auditEntry anota by (user.name de git) en las líneas de la persona y en las delegadas, y model y effort de Claude Code (CLAUDE_EFFORT y el final del transcript de su sesión) en las del agente; testEnv deja fuera esas variables",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "445251c8d3d4073ef0ceaa01394cadd908ed1b35",
+      "attempts": 1,
+      "startedAt": "2026-10-29T07:47:12.660Z",
+      "doneAt": "2026-10-29T07:50:43.798Z",
+      "summary": "docs/formats.md describe by, model y effort en audit.jsonl y de dónde salen",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-29T07:54:20.549Z",
+  "lockedTests": {
+    "packages/cli/test/audit-who.test.ts": "sha256:83360bcc529e72768caf00dce44e2c0e26edd95c8bebb01af53e658af32045c8"
+  }
+}

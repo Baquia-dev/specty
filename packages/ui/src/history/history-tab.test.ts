@@ -4,6 +4,7 @@ import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router, withComponentInputBinding } from "@angular/router";
 import { APP_ROUTES } from "../app/routes";
 import { Shell } from "../app/shell";
+import { TabPanel, Tabs } from "../components/tabs";
 import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
 import type { HistoryEntry } from "../data/history";
@@ -58,8 +59,14 @@ const EVENTS: readonly HistoryEntry[] = [
 ];
 
 @Component({
-  imports: [HistoryTab],
-  template: `<sp-history-tab [history]="history()" />`,
+  imports: [Tabs, TabPanel, HistoryTab],
+  template: `
+    <sp-tabs label="Cambio">
+      <sp-tab-panel value="history" label="Historial">
+        <sp-history-tab [history]="history()" />
+      </sp-tab-panel>
+    </sp-tabs>
+  `,
 })
 class Host {
   readonly history = input<readonly HistoryEntry[]>(EVENTS);
@@ -92,21 +99,21 @@ async function render(history: readonly HistoryEntry[] = EVENTS) {
 describe("the History tab", () => {
   afterEach(() => TestBed.resetTestingModule());
 
-  it("AC1: shows the events in time order, by day, each with its time, who, type, title and details", async () => {
+  it("AC3: shows the events newest first, by day, each with its time, who, type, title and details", async () => {
     const { element, rows, text } = await render();
     expect(element.querySelectorAll("[data-day]")).toHaveLength(2);
     expect(rows()).toHaveLength(5);
     expect(rows().map((row) => row.querySelector("time")?.getAttribute("datetime"))).toEqual(
-      EVENTS.map((event) => event.at),
+      EVENTS.map((event) => event.at).toReversed(),
     );
-    expect(text(rows()[0])).toContain("Persona");
-    expect(text(rows()[0])).toContain("Cambio creado");
-    expect(text(rows()[0])).toContain("Cambio rápido");
-    expect(text(rows()[1])).toContain("Agente · Claude Code");
+    expect(text(rows()[4])).toContain("Persona");
+    expect(text(rows()[4])).toContain("Cambio creado");
+    expect(text(rows()[4])).toContain("Cambio rápido");
+    expect(text(rows()[3])).toContain("Agente · Claude Code");
     expect(text(rows()[2])).toContain("Verificaciones");
     expect(text(rows()[2])).toContain("pnpm test · 12 s");
-    expect(text(rows()[3])).toContain("Specty");
-    expect(text(rows()[4])).toContain("Por delegación: lo decidió el agente");
+    expect(text(rows()[1])).toContain("Specty");
+    expect(text(rows()[0])).toContain("Por delegación: lo decidió el agente");
     expect(text(element.querySelector("[data-summary]"))).toBe("5 eventos");
   });
 
@@ -173,5 +180,51 @@ describe("the History tab", () => {
       6,
     );
     expect(element.textContent).not.toContain("llegan en la fase 3");
+  });
+
+  it("AC5: shows who, type and the event count on the right of the tab bar once the top bar scrolls out of view", async () => {
+    let observed: Element | undefined;
+    let fire: IntersectionObserverCallback = () => undefined;
+    class FakeObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        fire = callback;
+      }
+      observe(target: Element): void {
+        observed = target;
+      }
+      disconnect(): void {}
+    }
+    Object.assign(window, { IntersectionObserver: FakeObserver });
+    try {
+      const { element, settle, rows, text } = await render();
+      const top = element.querySelector<HTMLElement>("sp-history-tab [data-top]");
+      expect(observed).toBe(top);
+      if (observed === undefined) throw new Error("expected observed target");
+      expect(element.querySelector("[data-tabs-end]")).toBeNull();
+
+      fire(
+        [{ target: observed, isIntersecting: false } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+      await settle();
+      const end = element.querySelector<HTMLElement>("[data-tabs-end]");
+      expect(text(end?.querySelector("[data-compact-summary] p"))).toBe("5 eventos");
+      end
+        ?.querySelector<HTMLInputElement>("[data-compact-actor] input[type=radio][value=agent]")
+        ?.click();
+      await settle();
+      expect(rows()).toHaveLength(2);
+      expect(text(end?.querySelector("[data-compact-summary] p"))).toBe("2 de 5 eventos");
+      expect(end?.querySelector("[data-compact-type]")).not.toBeNull();
+
+      fire(
+        [{ target: observed, isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+      await settle();
+      expect(element.querySelector("[data-tabs-end]")).toBeNull();
+    } finally {
+      Reflect.deleteProperty(window, "IntersectionObserver");
+    }
   });
 });

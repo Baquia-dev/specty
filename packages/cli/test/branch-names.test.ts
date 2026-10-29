@@ -131,3 +131,34 @@ describe("a branch pattern", () => {
     expect(next.out).toContain("corrige .specty/config.yaml");
   });
 });
+
+describe("custom slug and branch in new", () => {
+  it("uses --slug to name the change id and branch cleanly", async () => {
+    const root = await tempRepo(APP);
+    const created = await cli(root, [
+      "new",
+      "La spec del cambio se ve en el chat al proponerla",
+      "--slug",
+      "spec-en-chat",
+    ]);
+    expect(created.code).toBe(0);
+    const expectedId = `${CHANGE.slice(0, 8)}-spec-en-chat`;
+    expect(git(root, "branch", "--show-current")).toBe(`specty/${expectedId}`);
+    expect(markOf(root, `specty/${expectedId}`)).toBe(expectedId);
+  });
+
+  it("uses --branch to override the branch name completely", async () => {
+    const root = await repo("github");
+    const created = await cli(root, [
+      "new",
+      "Un título descriptivo largo",
+      "--branch",
+      "custom/mi-rama",
+    ]);
+    expect(created.code).toBe(0);
+    const id = idOf("un-titulo-descriptivo-largo");
+    const folder = folderOf(root, id);
+    expect(git(folder, "branch", "--show-current")).toBe("custom/mi-rama");
+    expect(markOf(root, "custom/mi-rama")).toBe(id);
+  });
+});

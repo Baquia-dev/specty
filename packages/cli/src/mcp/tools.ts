@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { CHANGE_KINDS, COMMIT_TYPES } from "@baquia-dev/specty-core";
 import { isRecord } from "../io/files";
+import { VIEW_URI } from "./app";
 
 /**
  * The tools of `specty mcp`: the agent's commands that work in a folder (ARCHITECTURE §6), each
@@ -27,6 +28,8 @@ interface Tool {
   readonly required: readonly string[];
   /** The command line: options first, then `--` before the operands, which may start with `-`. */
   readonly argv: (args: Args) => readonly string[];
+  /** Its result shows the change in an MCP App (ADR 0015); every tool of a change does. */
+  readonly view?: false;
 }
 
 const text = (description: string): Property => ({ type: "string", description });
@@ -123,6 +126,8 @@ const TOOLS: readonly Tool[] = [
       ...(args.spec === true ? ["--spec"] : []),
       ...(args.verbose === true ? ["--verbose"] : []),
     ],
+    // The checks are not of a change.
+    view: false,
   },
   {
     name: "specty_task_done",
@@ -192,9 +197,16 @@ const TOOLS: readonly Tool[] = [
   },
 ];
 
-/** What `tools/list` answers: each tool with the JSON schema of its arguments. */
-export function toolList(): Record<string, unknown>[] {
-  return TOOLS.map((tool) => ({
+/** The tool of the view of an MCP App, which only the app calls: it reads the change, nothing else. */
+export const VIEW_TOOL = "specty_view";
+
+/**
+ * What `tools/list` answers: each tool with the JSON schema of its arguments. With `apps` (the
+ * client renders MCP Apps and the view exists), a change's tools link to the view, and the view
+ * has its own tool, which the model does not see.
+ */
+export function toolList(apps = false): Record<string, unknown>[] {
+  const tools = TOOLS.map((tool) => ({
     name: tool.name,
     description: tool.description,
     inputSchema: {
@@ -202,7 +214,26 @@ export function toolList(): Record<string, unknown>[] {
       properties: { ...tool.properties, folder: FOLDER },
       required: tool.required,
     },
+    ...(apps && tool.view !== false ? { _meta: { ui: { resourceUri: VIEW_URI } } } : {}),
   }));
+  if (!apps) return tools;
+  const view = {
+    name: VIEW_TOOL,
+    description: "The record of the change open in the folder, for Specty's view. It only reads.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        folder: FOLDER,
+        since: text("The fingerprint of what the view has: if nothing changed, no record comes."),
+        change: text(
+          "The id of the change the view shows: found in another folder, or once archived.",
+        ),
+      },
+      required: [],
+    },
+    _meta: { ui: { resourceUri: VIEW_URI, visibility: ["app"] } },
+  };
+  return [...tools, view];
 }
 
 /** The command line of a call, or why the call is wrong. */

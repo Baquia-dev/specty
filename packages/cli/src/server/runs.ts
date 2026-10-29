@@ -196,8 +196,8 @@ async function ended(
 }
 
 /**
- * The tasks' verifications that `specty task done` keeps live in other processes
- * (`store/runs.ts`), looked at every half second: `heard` gets each one that moves, and
+ * The tasks' verifications that `specty task done` keeps live in other processes, and the full
+ * one of `specty accept` (`store/runs.ts`), looked at every half second: `heard` gets each one that moves, and
  * `undefined` once its file is gone. A file whose process no longer exists is removed unseen.
  * `forget` drops what it saw of a change, so that it does not end that change's run again.
  */
@@ -214,8 +214,9 @@ function taskRuns(
         await clearRun(session.git, id);
         continue;
       }
-      const { task, command, startedAt, output } = live;
-      now.set(id, { task, command, startedAt, output });
+      // Without a task it is the full one, which `specty accept` runs.
+      const { pid: _pid, ...run } = live;
+      now.set(id, run);
     }
     runs = now;
     for (const [id, run] of now) {

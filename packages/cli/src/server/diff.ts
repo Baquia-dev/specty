@@ -13,13 +13,17 @@ export type DiffAnswer =
   | { readonly kind: "failed" };
 
 /**
- * The diff of `task` of change `id` or, with none, of the whole change: from where its first task
- * with a commit started to the commit of its last one, the range the UI shows. Specty's own files
- * stay out: the view shows the code. Every worktree shares git's objects, so any of them will do.
+ * The commits change `id` spans: from where its first task with a commit started to the commit of
+ * its last one or, of `task`, its own. Nothing before a task has a commit. Every worktree shares
+ * git's objects, so any of them will do.
  */
-export async function changeDiff(session: Session, id: string, task?: string): Promise<DiffAnswer> {
+export async function changeRange(
+  session: Session,
+  id: string,
+  task?: string,
+): Promise<{ readonly from: string; readonly to: string } | undefined> {
   const record = (await changeRecords(session)).find((item) => item.state.id === id);
-  if (record === undefined) return { kind: "missing" };
+  if (record === undefined) return undefined;
   const { tasks } = record.state;
   const { spec } = parseSpec(record.spec, { language: session.lang });
   const committed = (spec.sections.tasks?.items ?? []).flatMap((item) => {
@@ -31,7 +35,17 @@ export async function changeDiff(session: Session, id: string, task?: string): P
     task === undefined
       ? [committed[0]?.baseCommit, committed.at(-1)?.commit]
       : [chosen?.baseCommit, chosen?.commit];
-  if (from === undefined || to === undefined) return { kind: "missing" };
+  return from === undefined || to === undefined ? undefined : { from, to };
+}
+
+/**
+ * The diff of `task` of change `id` or, with none, of the whole change, the range the UI shows.
+ * Specty's own files stay out: the view shows the code.
+ */
+export async function changeDiff(session: Session, id: string, task?: string): Promise<DiffAnswer> {
+  const range = await changeRange(session, id, task);
+  if (range === undefined) return { kind: "missing" };
+  const { from, to } = range;
   const result = await session.git.run([
     "diff",
     "-M",

@@ -4,6 +4,7 @@
 import type { ResultDecision } from "./acceptance";
 import type { RunRecord } from "./progress";
 import type { Bilingual, ChangeRecord, CommentAnchor, Delegation } from "./records";
+import type { TraceRecord } from "./trace";
 
 /** An action the source could not do, explained in both languages. */
 export class ActionError extends Error {
@@ -17,6 +18,10 @@ const READ_ONLY: Bilingual = {
   en: "This data source is read-only: it takes no actions.",
 };
 const NO_DIFFS: Bilingual = { es: "Esta fuente no da diffs.", en: "This source gives no diffs." };
+const NO_TRACE: Bilingual = {
+  es: "Esta fuente no da la trazabilidad.",
+  en: "This source gives no traceability.",
+};
 
 /**
  * Any data source the UI can run on: fetch + SSE from the local server, `postMessage` in an
@@ -93,6 +98,16 @@ export abstract class SpectyData {
   /** The diff, as `git diff` writes it, of a task or, with none, of the whole change. */
   diff(_change: string, _task?: string): Promise<string> {
     return Promise.reject(new ActionError(NO_DIFFS));
+  }
+
+  /** The files the change left, for its traceability. */
+  traceFiles(_change: string): Promise<readonly string[]> {
+    return Promise.reject(new ActionError(NO_TRACE));
+  }
+
+  /** `path` as the change left it, in blocks with the commit, change, task and criteria of each. */
+  trace(_change: string, _path: string): Promise<TraceRecord> {
+    return Promise.reject(new ActionError(NO_TRACE));
   }
 
   /** Delegated mode as the source knows it; nothing when it cannot tell. */

@@ -44,6 +44,10 @@ export function testEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {
     // Antigravity CLI's mark, with both editors turned off.
     HGEDITOR: _k,
     JJ_EDITOR: _l,
+    // What Claude Code tells of its session: a test must not read the transcript of who runs it.
+    CLAUDE_EFFORT: _m,
+    CLAUDE_CODE_SESSION_ID: _n,
+    CLAUDE_CONFIG_DIR: _o,
     // The tests choose their language with LANG, which these would override (macOS runners set
     // LC_ALL).
     LC_ALL: _i,
@@ -229,8 +233,8 @@ export async function inWorktree(files: Readonly<Record<string, string>> = APP) 
   return { root, folder: folderOf(root) };
 }
 
-/** Takes SPEC's change in `folder` to a closing that waits for the person. */
-export async function toClosing(folder: string): Promise<void> {
+/** Takes SPEC's change in `folder` to an acceptance that waits for the person. */
+export async function toAcceptance(folder: string): Promise<void> {
   await writeFiles(folder, { [SPEC_PATH]: SPEC });
   expect((await cli(folder, ["propose"])).code).toBe(0);
   const approved = await cli(folder, ["approve"], { terminal: person({ choose: ["confirm"] }) });
@@ -240,6 +244,11 @@ export async function toClosing(folder: string): Promise<void> {
   await cli(folder, ["task", "done", "T1", "--summary", "Uno"]);
   await writeFiles(folder, { "src/app.ts": "2\n" });
   await cli(folder, ["task", "done", "T2", "--summary", "Dos"]);
+}
+
+/** Takes SPEC's change in `folder` to a closing that waits for the person. */
+export async function toClosing(folder: string): Promise<void> {
+  await toAcceptance(folder);
   await cli(folder, ["accept"], { terminal: person() });
   const closing = "\n## Cierre\n\n### Resumen\n\nSaludo listo.\n";
   await writeFiles(folder, { [SPEC_PATH]: `${await read(folder, SPEC_PATH)}${closing}` });

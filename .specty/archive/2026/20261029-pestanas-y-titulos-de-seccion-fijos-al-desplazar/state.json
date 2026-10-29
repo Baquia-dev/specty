@@ -1,0 +1,161 @@
+{
+  "schema": 1,
+  "id": "20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
+  "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eb65cff68b64c8c6ba0af7ff127714ca59add832edbbb08e692469892a67ba74",
+    "at": "2026-10-29T07:55:07.532Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f00fcc7ece578d7d669bdfbee77668b23292c3858fe4e98945d7d457a9496fee",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7ae9979128a2b4bc623dadf3ff9a900130ea73d6020ef0d3039bd93be88c29f1",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6a737d0024f8003e85a07848411dfb98e21b3e0cd7c7a7584e14e35b9cf0599f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b2d6be649628366974d457cfcd2451f5c1529c19",
+      "attempts": 1,
+      "startedAt": "2026-10-29T07:59:24.483Z",
+      "doneAt": "2026-10-29T08:09:32.964Z",
+      "summary": "Hacer fija la barra de pestañas con ranura derecha spTabEnd y fijar sp-section-divider al desplazar",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "5ba81b8c3c2eb792af962100b2e74e84d6adbe35",
+      "attempts": 2,
+      "startedAt": "2026-10-29T08:09:33.360Z",
+      "doneAt": "2026-10-29T08:11:27.505Z",
+      "summary": "Medir --sp-bar-top y --sp-sticky-top en sp-change-page y fijar encabezados de sección en sp-spec-review",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "fb7e97b74a6c55992d83b9853b7c89673a136b8b",
+      "attempts": 2,
+      "startedAt": "2026-10-29T08:11:28.084Z",
+      "doneAt": "2026-10-29T08:28:00.857Z",
+      "summary": "Proyectar resumen y controles a la derecha de las pestañas en Progreso y Aceptación al desplazar",
+      "scopeExtra": [
+        "packages/ui/src/history/history-tab.test.ts",
+        "packages/ui/src/progress/progress-tab.test.ts",
+        "packages/ui/src/acceptance/acceptance-tab.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "3e0456ca2c50daac6cc7d66a4874bdde171fbe05",
+      "attempts": 1,
+      "startedAt": "2026-10-29T08:28:01.210Z",
+      "doneAt": "2026-10-29T08:29:59.624Z",
+      "summary": "Proyectar filtros Quién, Tipo y cantidad de eventos a la derecha de las pestañas en Historial y actualizar docs/ui.md",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 4,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-29T08:34:58.285Z",
+  "lockedTests": {
+    "packages/ui/src/acceptance/acceptance-tab.test.ts": "sha256:4ebe1c97714bc42b6e57587a6de4e35982758eda76c91a69b91b208ba6dd410c",
+    "packages/ui/src/change/change-page.test.ts": "sha256:0f270acd2aff231d88870bfd66cf7b78b3c8f59e13ecd7f397363ed1f1abc9e5",
+    "packages/ui/src/components/document.test.ts": "sha256:954a9e1498ac3f19342b58a0fb83b909a62f111abcd767ed9a6f84f3d039fade",
+    "packages/ui/src/components/tabs.test.ts": "sha256:d26ed04969281e600fbda698a88aa39acb3267f35162a7a0cb0317651922cf73",
+    "packages/ui/src/history/history-tab.test.ts": "sha256:6915cd6d86160319505e9d58fd93d26126a1e41d5df0070edc1cadb9a045034f",
+    "packages/ui/src/progress/progress-tab.test.ts": "sha256:e6123194d49f482d205dee9fba53422b4e1dd2be42d62c1152f2b571550ace7c",
+    "packages/ui/src/review/spec-review.test.ts": "sha256:c87c59c75016952c9c6ca8c6e28799295ae34cee9f6dc36b5dd183da6892603b"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "e8e1504be9c0f75e0842dd70bf5c1ef5183f5120",
+    "reason": "conflicts",
+    "conflicts": [
+      "docs/ui.md"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/decisions/0015-mcp-apps-solo-para-ver.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/build.mjs",
+      "packages/cli/mcp-app.mjs",
+      "packages/cli/src/agents/run.ts",
+      "packages/cli/src/commands/mcp.ts",
+      "packages/cli/src/flow/active.ts",
+      "packages/cli/src/flow/finish.ts",
+      "packages/cli/src/flow/verified.ts",
+      "packages/cli/src/mcp/app.ts",
+      "packages/cli/src/mcp/protocol.ts",
+      "packages/cli/src/mcp/tools.ts",
+      "packages/cli/src/store/changes.ts",
+      "packages/cli/test/audit-who.test.ts",
+      "packages/cli/test/mcp-app-page.test.ts",
+      "packages/cli/test/mcp-app.test.ts",
+      "packages/cli/test/support.ts",
+      "packages/ui/src/acceptance/acceptance-tab.test.ts",
+      "packages/ui/src/acceptance/acceptance-tab.ts",
+      "packages/ui/src/app/embedded.test.ts",
+      "packages/ui/src/app/embedded.ts",
+      "packages/ui/src/change/change-page.test.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/components/document.test.ts",
+      "packages/ui/src/components/document.ts",
+      "packages/ui/src/components/tabs.test.ts",
+      "packages/ui/src/components/tabs.ts",
+      "packages/ui/src/data/changes-store.ts",
+      "packages/ui/src/data/fixtures.test.ts",
+      "packages/ui/src/data/history-who.test.ts",
+      "packages/ui/src/data/history.ts",
+      "packages/ui/src/data/mcp-app.test.ts",
+      "packages/ui/src/data/mcp-app.ts",
+      "packages/ui/src/data/progress.ts",
+      "packages/ui/src/data/sample-history.ts",
+      "packages/ui/src/history/history-tab.test.ts",
+      "packages/ui/src/history/history-tab.ts",
+      "packages/ui/src/history/history-who.test.ts",
+      "packages/ui/src/main.ts",
+      "packages/ui/src/progress/progress-tab.test.ts",
+      "packages/ui/src/progress/progress-tab.ts",
+      "packages/ui/src/review/spec-review.test.ts",
+      "packages/ui/src/review/spec-review.ts"
+    ],
+    "at": "2026-10-29T08:35:14.447Z",
+    "resolved": {
+      "commit": "59b1e07",
+      "at": "2026-10-29T08:41:59.188Z"
+    }
+  }
+}

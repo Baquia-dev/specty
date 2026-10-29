@@ -6,9 +6,12 @@ import { dirname, join } from "node:path";
 import { isRecord, parseJson, readText, writeText } from "../io/files";
 import type { Git } from "../io/git";
 
-/** A verification going on: its task, command, start, lines so far and the process running it. */
+/**
+ * A verification going on: its task, command, start, lines so far and the process running it.
+ * One without a task is the full one, which `specty accept` runs.
+ */
 export interface LiveRun {
-  readonly task: string;
+  readonly task?: string;
   readonly command: string;
   readonly startedAt: string;
   readonly output: readonly string[];
@@ -43,7 +46,7 @@ export async function readRuns(git: Git): Promise<ReadonlyMap<string, LiveRun>> 
 function isLiveRun(value: unknown): value is LiveRun {
   return (
     isRecord(value) &&
-    typeof value.task === "string" &&
+    (value.task === undefined || typeof value.task === "string") &&
     typeof value.command === "string" &&
     typeof value.startedAt === "string" &&
     typeof value.pid === "number" &&

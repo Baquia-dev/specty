@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261029-la-trazabilidad-colorea-el-codigo-y-abre-el-diff",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-la-trazabilidad-colorea-el-codigo-y-abre-el-diff",
+  "baseCommit": "e8e1504be9c0f75e0842dd70bf5c1ef5183f5120",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:27bb0e2167373e05ea26d0192007159a271f3ab6439d639555c6fd20f4249daf",
+    "at": "2026-10-29T08:33:48.201Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a099080d714322171b8e247f64247c8dcf581d12b29c54bfa7d950af05ab925f",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a424e2df17f59ec588e52854980d9613a01318d3d15f244de1c83a9a6c284166",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "cdd4150f23d8f55b34e22cb47e838a6c54867ef0",
+      "attempts": 1,
+      "startedAt": "2026-10-29T08:34:47.742Z",
+      "doneAt": "2026-10-29T08:42:40.979Z",
+      "summary": "La trazabilidad colorea el código con el resaltado del visor de diffs, y cada bloque de Specty ofrece Ver diff, que abre bajo él el diff del archivo en la tarea del bloque (sp-trace-diff) o dice por qué no",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d47fbb60fac41a2d7736fb6a8378f8827de06859",
+      "attempts": 1,
+      "startedAt": "2026-10-29T08:42:41.346Z",
+      "doneAt": "2026-10-29T08:46:23.852Z",
+      "summary": "docs/ui.md describe el color de la trazabilidad y su Ver diff por bloque",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-29T08:50:11.701Z",
+  "lockedTests": {
+    "packages/ui/src/history/trace-diff.test.ts": "sha256:7ed447e03b24921cac6675280e25fab6ad8ecfa8963d827bf021903b5d5b4152"
+  }
+}

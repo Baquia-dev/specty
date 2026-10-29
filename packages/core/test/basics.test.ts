@@ -19,6 +19,14 @@ describe("ids", () => {
     expect(slugify("!!!")).toBe("change");
   });
 
+  it("truncates slugs cleanly at word boundaries instead of mid-word", () => {
+    expect(slugify("La spec del cambio se ve en el chat al proponerla")).toBe(
+      "la-spec-del-cambio-se-ve-en-el-chat-al",
+    );
+    expect(slugify("uno dos tres cuatro cinco", 12)).toBe("uno-dos");
+    expect(slugify("supercalifragilisticexpialidocious", 10)).toBe("supercalif");
+  });
+
   it("parses item ids into canonical form", () => {
     expect(parseItemId("ac01")).toEqual({ prefix: "AC", number: 1, id: "AC1" });
     expect(parseItemId("c3")?.id).toBe("C3");

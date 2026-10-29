@@ -297,4 +297,30 @@ describe("ChangePage", () => {
     const bar = element.querySelector("sp-change-page [data-sticky]");
     expect(bar?.querySelector("sp-phase-badge")?.getAttribute("data-phase")).toBe("acceptance");
   });
+
+  it("AC1: measures --sp-bar-top for the sticky tab bar and sums both bars in --sp-sticky-top", async () => {
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        constructor(private readonly report: () => void) {}
+        observe(target: HTMLElement) {
+          const height = target.hasAttribute("data-tabs-bar") ? 40 : 56;
+          Object.defineProperty(target, "offsetHeight", { value: height, configurable: true });
+          this.report();
+        }
+        disconnect() {}
+      },
+    );
+    try {
+      const { element } = await open("/changes/20261020-evolucion-trimestre");
+      const page = element.querySelector<HTMLElement>("sp-change-page");
+      expect(page?.style.getPropertyValue("--sp-bar-top")).toBe("56px");
+      expect(page?.style.getPropertyValue("--sp-sticky-top")).toBe("96px");
+      const tabsBar = page?.querySelector<HTMLElement>("[data-tabs-bar]");
+      expect(tabsBar?.className).toContain("sticky");
+      expect(tabsBar?.className).toContain("top-[var(--sp-bar-top,0px)]");
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
 });

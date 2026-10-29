@@ -164,14 +164,18 @@ let nextId = 0;
               <div class="bg-text/4 px-3 py-1 text-text-muted wrap-anywhere" [attr.tabindex]="$index === revealed() ? -1 : null" data-hunk><span aria-hidden="true">&#64;&#64; -{{ row.hunk.oldStart }},{{ row.hunk.oldLines }} +{{ row.hunk.newStart }},{{ row.hunk.newLines }} &#64;&#64;{{ row.hunk.section ? ' ' + row.hunk.section : '' }}</span><span class="sr-only">{{ t()('Desde la línea ', 'From line ') + (row.hunk.newLines > 0 ? row.hunk.newStart : row.hunk.oldStart) + (row.hunk.section ? ': ' + row.hunk.section : '') }}</span></div>
             }
             @case ('line') {
-              <div [class]="'grid grid-cols-(--diff-cols) ' + lookOf(row.line).bg" [attr.tabindex]="$index === revealed() ? -1 : null" [attr.data-line]="row.line.kind">
+              @let markedLine = isMarked(row.line);
+              <div [class]="'relative grid grid-cols-(--diff-cols) ' + lookOf(row.line).bg + (markedLine ? ' ' + mark : '')" [attr.tabindex]="$index === revealed() ? -1 : null" [attr.data-line]="row.line.kind" [attr.data-marked]="markedLine ? '' : null">
+                @if (markedLine) {<span class="sr-only">{{ t()('Marcada: ', 'Marked: ') }}</span>}
                 <span [class]="number" aria-hidden="true">{{ row.line.oldNumber }}</span>
                 <span [class]="number" aria-hidden="true">{{ row.line.newNumber }}</span>
                 <ng-container *ngTemplateOutlet="cells; context: { $implicit: row.line, last: true }" />
               </div>
             }
             @case ('pair') {
-              <div class="grid grid-cols-(--diff-cols)" [attr.tabindex]="$index === revealed() ? -1 : null" data-pair>
+              @let markedPair = isMarked(row.right);
+              <div [class]="'relative grid grid-cols-(--diff-cols)' + (markedPair ? ' ' + mark : '')" [attr.tabindex]="$index === revealed() ? -1 : null" [attr.data-marked]="markedPair ? '' : null" data-pair>
+                @if (markedPair) {<span class="sr-only">{{ t()('Marcada: ', 'Marked: ') }}</span>}
                 <span [class]="number + ' ' + lookOf(row.left).bg" aria-hidden="true">{{ row.left?.oldNumber }}</span>
                 <ng-container *ngTemplateOutlet="cells; context: { $implicit: row.left, last: false }" />
                 <span [class]="number + ' ' + lookOf(row.right).bg" aria-hidden="true">{{ row.right?.newNumber }}</span>
@@ -196,6 +200,11 @@ export class DiffFileView {
   readonly file = input.required<DiffFile>();
   readonly mode = input<DiffMode>("unified");
   readonly open = model(true);
+  /**
+   * Lines to mark, by their number on the new side, such as a traced block's: never a removed
+   * one. With any, the whole file shows, so none hides behind «Mostrar N líneas más».
+   */
+  readonly marked = input<readonly number[]>([]);
 
   private readonly preferences = inject(Preferences);
   private readonly injector = inject(Injector);
@@ -236,10 +245,13 @@ export class DiffFileView {
   private readonly shown = computed(() => {
     const { hunks } = this.file();
     const total = hunks.reduce((sum, hunk) => sum + hunk.lines.length, 0);
-    return this.revealed() !== undefined || total <= LONG_FILE
+    return this.revealed() !== undefined || total <= LONG_FILE || this.marked().length > 0
       ? { hunks, hidden: 0 }
       : firstLines(hunks, PREVIEW_LINES);
   });
+  private readonly markedLines = computed(() => new Set(this.marked()));
+  /** A marked row: a bar in the accent color on its left, over the color of its kind. */
+  protected readonly mark = "shadow-[inset_3px_0_0_var(--color-accent)]";
   protected readonly hidden = computed(() => this.shown().hidden);
   protected readonly rows = computed(() =>
     rowsOf(
@@ -267,6 +279,16 @@ export class DiffFileView {
   /** How a line looks; the empty side of a split row, on a faint ground. */
   protected lookOf(line: LineView | undefined): (typeof LINE)[DiffLineKind] | typeof EMPTY_SIDE {
     return line === undefined ? EMPTY_SIDE : LINE[line.kind];
+  }
+
+  /** Whether a line is one to mark: on the new side, never removed. */
+  protected isMarked(line: LineView | undefined): boolean {
+    return (
+      line !== undefined &&
+      line.kind !== "removed" &&
+      line.newNumber !== undefined &&
+      this.markedLines().has(line.newNumber)
+    );
   }
 
   /** What a screen reader hears before a changed line, instead of its sign. */

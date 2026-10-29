@@ -20,14 +20,14 @@ export interface FullRun {
  * The full verification's result in the audit (`change.verified`, formats.md §4), as
  * `task.verified` keeps a task's: command, exit code, duration and, if it failed, its last lines.
  */
-export function recordFullVerification(
+export async function recordFullVerification(
   session: Session,
   change: StoredChange,
   run: FullRun,
 ): Promise<void> {
   return appendAudit(
     change.files,
-    auditEntry(session, "specty", "change.verified", {
+    await auditEntry(session, "specty", "change.verified", {
       cmd: run.command,
       exit: run.code ?? null,
       ms: run.ms,

@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261029-nombre-conciso-y-limpio-para-ramas-generadas",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261029-nombre-conciso-y-limpio-para-ramas-generadas",
+  "baseCommit": "b4e6d969e13c30e0ecc85066c614f1b79665588f",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:659266ea319649fc69d917593475f6af1b22b22f24d889c164e28beab95b3059",
+    "at": "2026-10-29T10:35:31.612Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "42e1999c5cd9d0ae0e1982e1cb0fcdb68a5ba057",
+      "attempts": 1,
+      "startedAt": "2026-10-29T10:35:34.161Z",
+      "doneAt": "2026-10-29T10:47:26.893Z",
+      "summary": "Truncar slugs en frontera de palabra y soportar --slug y --branch en specty new",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

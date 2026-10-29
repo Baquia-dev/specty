@@ -96,6 +96,8 @@ interface NewFlags {
   readonly worktree?: boolean;
   readonly from?: string;
   readonly request?: string;
+  readonly slug?: string;
+  readonly branch?: string;
 }
 
 /** `specty new`, which refuses an unknown kind or type before any session opens. */
@@ -122,6 +124,8 @@ function newCommand(
     .option("--worktree", "create the change in a new worktree, so this folder keeps its work")
     .option("--from <branch>", "with --worktree, the branch to start from (default: the main one)")
     .option("--request <text>", "the user's literal request, kept in the audit as written")
+    .option("--slug <slug>", "clean, concise slug for the change id and branch")
+    .option("--branch <branch>", "explicit branch name for the change")
     .action((title: string, options: NewFlags) => {
       const given = kindAndType(options);
       if ("reason" in given) {
@@ -158,6 +162,8 @@ function newOptions(title: string, given: KindAndType, options: NewFlags): NewOp
     worktree: options.worktree === true,
     ...(options.from !== undefined ? { from: options.from } : {}),
     ...(options.request !== undefined ? { request: options.request } : {}),
+    ...(options.slug !== undefined ? { slug: options.slug } : {}),
+    ...(options.branch !== undefined ? { branch: options.branch } : {}),
   };
 }
 

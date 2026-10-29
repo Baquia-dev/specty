@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261029-la-pestana-historial-muestra-la-trazabilidad-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-la-pestana-historial-muestra-la-trazabilidad-de",
+  "baseCommit": "3b9f1c06a867a35ad9644479b1d3ee8ef61307db",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bbd2ade7c20374673bfe783ff1e7e4099826d16cfc7776544c27220c7c235be4",
+    "at": "2026-10-29T06:11:57.704Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4c4434bb04e121cc5b320ad2b4c454f21d94b7e50424d0bc0ecd369dc0f836ce",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a6232b4b11e4cbbe0811d938397e9a260224de20b340d1cb99ff00d2bb0b8a9c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:82eed87ec96654cf5e628e955871f7b497553cbba044ca63ed730280274ff8f6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "dad80e0f95049e259bc094e78227f8a05e0c7cf0",
+      "attempts": 1,
+      "startedAt": "2026-10-29T06:14:04.013Z",
+      "doneAt": "2026-10-29T06:17:49.726Z",
+      "summary": "data/trace.ts (TraceRecord, TraceBlock, isTrace) y las lecturas opcionales traceFiles y trace de SpectyData; ServerData las pide a /api/changes/<id>/trace y explica 403, 404, 413 y datos inesperados",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "5a85cfb69e30c4afc69abfabd0b7d3329d88d5cf",
+      "attempts": 1,
+      "startedAt": "2026-10-29T06:17:50.035Z",
+      "doneAt": "2026-10-29T06:21:25.726Z",
+      "summary": "data/sample-trace.ts saca la trazabilidad del prototipo de los diffs de muestra de «Panel de asistencia por curso» (lo añadido por cada tarea con su commit, tarea y criterios; el resto de la base); FixtureData la usa",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "5b202cb255d20e9f0ac293d20872d7835a960721",
+      "attempts": 1,
+      "startedAt": "2026-10-29T06:21:26.041Z",
+      "doneAt": "2026-10-29T06:26:33.643Z",
+      "summary": "sp-trace-view muestra el archivo elegido con un margen tipo blame por bloque (commit, cambio enlazado, tarea y criterios, o asunto y autor) y el motivo si no hay nada que trazar; el control Vista del Historial cambia entre línea de tiempo y trazabilidad",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "0a9894d8e39aa2f8cb9b176eb45d7013be421a45",
+      "attempts": 1,
+      "startedAt": "2026-10-29T06:26:33.968Z",
+      "doneAt": "2026-10-29T06:30:01.307Z",
+      "summary": "docs/ui.md describe la vista Trazabilidad: el control Vista, el archivo elegido, el margen tipo blame, sus motivos y la muestra del prototipo",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-29T06:33:46.354Z",
+  "lockedTests": {
+    "packages/ui/src/data/sample-trace.test.ts": "sha256:a46d8a98b5ee6deccf71c4d4d011aa1f18c17016795085bdb1a20757248e963a",
+    "packages/ui/src/data/server-trace.test.ts": "sha256:e0bd03679b0e9fcf4fdbe30ece5312c039c45cdd00980cf11035f16cee4641f1",
+    "packages/ui/src/history/trace-view.test.ts": "sha256:e206581e6082ce423f9a73cc8d6f10c387213d5e72c423b62bc5b6298d202275"
+  }
+}

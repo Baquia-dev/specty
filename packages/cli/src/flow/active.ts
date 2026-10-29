@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { busyChangeCard, type ChangeState, type Output } from "@baquia-dev/specty-core";
+import { agentRun } from "../agents/run";
 import type { Session } from "../session";
 import {
   type AuditEntry,
@@ -75,27 +76,40 @@ export async function commitState(
   actor: AuditEntry["actor"] = session.actor,
 ): Promise<StoredChange> {
   await saveState(change.files, state);
-  await appendAudit(change.files, auditEntry(session, actor, event, data));
+  await appendAudit(change.files, await auditEntry(session, actor, event, data));
   return { ...change, state };
 }
 
 /**
  * An audit line. A person's decision that the agent takes in delegated mode (ADR 0010) is the
- * agent's, marked `delegated`.
+ * agent's, marked `delegated`. A person's line, and a delegated one, name the person (`by`, their
+ * git name); an agent's line carries the model and the effort the agent tells, if any.
  */
-export function auditEntry(
+export async function auditEntry(
   session: Session,
   actor: AuditEntry["actor"],
   event: string,
   data: Readonly<Record<string, unknown>>,
-): AuditEntry {
+): Promise<AuditEntry> {
   const delegated = actor === "human" && session.actor === "agent" && session.delegated;
   const who = delegated ? "agent" : actor;
   return {
     ts: session.environment.now().toISOString(),
     actor: who,
     ...(who === "agent" && session.tool !== undefined ? { tool: session.tool } : {}),
+    ...(await told(session, who, delegated)),
     event,
     data: delegated ? { ...data, delegated: true } : data,
   };
+}
+
+/** What a line tells of who acted: the person's git name, or the agent's model and effort. */
+async function told(
+  session: Session,
+  who: AuditEntry["actor"],
+  delegated: boolean,
+): Promise<Pick<AuditEntry, "by" | "model" | "effort">> {
+  const by = who === "human" || delegated ? await session.git.config("user.name") : undefined;
+  const run = who === "agent" ? await agentRun(session.tool, session.environment.env) : {};
+  return { ...(by === undefined ? {} : { by }), ...run };
 }

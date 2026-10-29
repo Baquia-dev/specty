@@ -293,10 +293,24 @@ describe("ChangesStore", () => {
     expect(store.all()).toHaveLength(10);
   });
 
-  it("says so when there are no web workers and no deriver was given", async () => {
+  it("AC4: derives in the main thread when there are no web workers and no deriver was given", async () => {
     const { store, settle } = setup(false);
     await settle();
-    expect(String(store.views.error())).toContain("no Web Workers");
+    expect(store.views.error()).toBeUndefined();
+    expect(store.all()).toHaveLength(10);
+  });
+
+  it("AC4: derives in the main thread when creating the worker fails, as a sandbox's CSP makes it", async () => {
+    class RefusedWorker {
+      constructor() {
+        throw new Error("Refused to create a worker: it violates the Content Security Policy.");
+      }
+    }
+    Object.assign(globalThis, { Worker: RefusedWorker });
+    const { store, settle } = setup(false);
+    await settle();
+    expect(store.views.error()).toBeUndefined();
+    expect(store.all()).toHaveLength(10);
   });
 
   it("finds a change by id", async () => {
