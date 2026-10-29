@@ -53,3 +53,22 @@ La pestaña Historial va a exportar el cambio en Markdown, JSON, OpenSpec, Spec 
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-exporters exec vitest run && pnpm --filter @baquia-dev/specty exec vitest run test/export.test.ts && pnpm lint
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+`auditViewOf` (core, `cards/audit-view.ts`) arma el `AuditView` de `auditReport` desde el estado, la spec, las líneas de la auditoría y los commits de las tareas, y `exportContextOf` (exportadores, `context.ts`) da el id, la rama, el día de creación y la petición que necesita `exportSpec`. `specty audit` y `specty export` los usan y su salida no cambia: sus tests pasan sin tocarlos. La UI podrá exportar lo mismo con ellas.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Sin commits dados, `auditViewOf` toma los de `state.tasks`, donde los pone el servidor local al leer los cambios; la CLI sigue buscándolos por sus trailers.
+- Cada función tiene su `isRecord` local: core y los exportadores no comparten utilidades fuera de su API pública.
+
+### Pendientes
+
+- `cards/index.ts` sigue por encima de 300 líneas (333): es la lista de la API pública de textos; se sugirió añadirlo a `lines.exclude`.

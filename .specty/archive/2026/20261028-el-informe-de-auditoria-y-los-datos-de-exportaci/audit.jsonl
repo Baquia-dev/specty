@@ -7,3 +7,7 @@
 {"ts":"2026-10-29T04:50:10.210Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"587a5c99ab2bb6e90721bffde18d45eabe519918"}}
 {"ts":"2026-10-29T04:55:43.246Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-exporters exec vitest run && pnpm --filter @baquia-dev/specty exec vitest run test/export.test.ts && pnpm lint","exit":0,"ms":4275,"tree":"sha256:465c939530ca0ce918bbc004061a2ae95852efda49677b87e8552b998d16dbaa"}}
 {"ts":"2026-10-29T04:55:43.337Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"exportContextOf en exporters/src/context.ts da el id, la rama, el día y la petición desde el estado y la auditoría; specty export lo usa y sus archivos no cambian"}}
+{"ts":"2026-10-29T05:00:20.240Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":269982,"tree":"sha256:465c939530ca0ce918bbc004061a2ae95852efda49677b87e8552b998d16dbaa"}}
+{"ts":"2026-10-29T05:00:20.242Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-29T05:00:31.119Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:33323ac01ef8265854e89fee44d0f55ca37304e4f55b8aa88401351cf2d86a7a","size":"L","warnings":0}}
+{"ts":"2026-10-29T05:05:58.738Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261028-el-informe-de-auditoria-y-los-datos-de-exportaci",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261028-el-informe-de-auditoria-y-los-datos-de-exportaci",
   "baseCommit": "4ed71aca4a08ee4a6f7ecd21599fe041ae57a0ab",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:69612025665f4e932011ce2a730a1d3c8a5cb8cd26f53ac1c9e03c4b1bb6c768",
@@ -40,12 +40,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "587a5c99ab2bb6e90721bffde18d45eabe519918",
+      "attempts": 1,
       "startedAt": "2026-10-29T04:50:10.210Z",
       "doneAt": "2026-10-29T04:55:43.336Z",
-      "summary": "exportContextOf en exporters/src/context.ts da el id, la rama, el día y la petición desde el estado y la auditoría; specty export lo usa y sus archivos no cambian"
+      "summary": "exportContextOf en exporters/src/context.ts da el id, la rama, el día y la petición desde el estado y la auditoría; specty export lo usa y sus archivos no cambian",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,5 +56,6 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-29T05:00:31.118Z"
 }
