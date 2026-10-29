@@ -6,6 +6,13 @@
   "branch": "specty/20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
   "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7c9a85ea643165213e80f2e3cbc4b586c5f923177a15e06d1791200ef5af07cc",
+    "at": "2026-10-29T20:11:08.913Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -38,12 +45,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:7c9a85ea643165213e80f2e3cbc4b586c5f923177a15e06d1791200ef5af07cc",
-    "at": "2026-10-29T20:11:08.913Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T20:16:29.548Z"
 }
