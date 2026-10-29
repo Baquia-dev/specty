@@ -6,6 +6,13 @@
   "branch": "specty/20261029-la-pestana-historial-muestra-la-trazabilidad-de",
   "baseCommit": "3b9f1c06a867a35ad9644479b1d3ee8ef61307db",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bbd2ade7c20374673bfe783ff1e7e4099826d16cfc7776544c27220c7c235be4",
+    "at": "2026-10-29T06:11:57.704Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -39,12 +46,6 @@
     "AC": 4,
     "T": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:bbd2ade7c20374673bfe783ff1e7e4099826d16cfc7776544c27220c7c235be4",
-    "at": "2026-10-29T06:11:57.704Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T06:13:57.193Z"
 }
