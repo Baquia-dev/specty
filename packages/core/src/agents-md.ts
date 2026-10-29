@@ -56,13 +56,16 @@ function flowLines(t: Translate, command: string): string[] {
   ];
 }
 
-/** The five rules no tool can verify, and the one that has the agent run `specty check`. */
+/**
+ * The rules no tool can verify, after the one about `task done`'s gate: it already runs `specty
+ * check` and the task's verification, so running them first would only run the tests twice.
+ */
 function ruleLines(t: Translate, command: string): string[] {
   return [
     t("## Reglas (Specty)", "## Rules (Specty)"),
     t(
-      `- Antes de reportar una tarea como terminada, ejecuta \`${command} check --changed --spec\` y corrige todos los fallos. No reportes con fallos pendientes.`,
-      `- Before reporting a task as done, run \`${command} check --changed --spec\` and fix every failure. Do not report with failures pending.`,
+      `- \`${command} task done\` ya ejecuta \`${command} check --changed --spec\` y la verificación de la tarea, y no la completa con fallos: no los repitas justo antes; corrige lo que devuelva y no reportes con fallos pendientes.`,
+      `- \`${command} task done\` already runs \`${command} check --changed --spec\` and the task's verification, and does not complete the task with failures: do not repeat them right before; fix whatever it returns and do not report with failures pending.`,
     ),
     t(
       "- Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.",

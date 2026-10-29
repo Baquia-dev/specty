@@ -1,20 +1,25 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
   inject,
+  type Provider,
   signal,
 } from "@angular/core";
 import type { Phase } from "@baquia-dev/specty-core/light";
 import { AcceptanceTab } from "../acceptance/acceptance-tab";
 import { PhaseBadge } from "../components/badge";
 import { PAGE } from "../components/document";
-import { ChangesStore } from "../data/changes-store";
-import { MCP_HOST } from "../data/mcp-app";
-import type { ChangeTab, DecisionKind, ReviewSection } from "../data/records";
+import { ChangesStore, DERIVER, inThread } from "../data/changes-store";
+import { McpAppData } from "../data/mcp-app";
+import {
+  ActionError,
+  type ChangeTab,
+  type DecisionKind,
+  type ReviewSection,
+  SpectyData,
+} from "../data/records";
 import { HistoryTab } from "../history/history-tab";
 import { ProgressTab } from "../progress/progress-tab";
 import { SpecReview } from "../review/spec-review";
@@ -91,6 +96,8 @@ const DECIDE: Readonly<Record<DecisionKind, { es: string; en: string; command: s
             <sp-history-tab [history]="change.history" [change]="change.id" />
           }
         }
+      } @else if (problem(); as problem) {
+        <p role="alert" class="m-0 text-sm text-text-muted">{{ problem }}</p>
       } @else {
         <p class="m-0 text-sm text-text-muted">{{ t()('Esperando el cambio…', 'Waiting for the change…') }}</p>
       }
@@ -99,7 +106,8 @@ const DECIDE: Readonly<Record<DecisionKind, { es: string; en: string; command: s
 })
 export class Embedded {
   private readonly store = inject(ChangesStore);
-  protected readonly t = inject(Preferences).t;
+  private readonly preferences = inject(Preferences);
+  protected readonly t = this.preferences.t;
   protected readonly page = PAGE;
   protected readonly decide = DECIDE;
   /** The one change the host's tool worked on. */
@@ -108,25 +116,23 @@ export class Embedded {
     const change = this.change();
     return change === undefined ? "spec" : TAB[change.phase];
   });
+  /** Why the change cannot be read, as the source says it. */
+  protected readonly problem = computed(() => {
+    const error = this.store.views.error();
+    if (error === undefined) return undefined;
+    return error instanceof ActionError ? error.text[this.preferences.lang()] : error.message;
+  });
   /** The spec section being read: the review keeps its index in step. */
   protected readonly reading = signal<ReviewSection | undefined>(undefined);
+}
 
-  constructor() {
-    // The host sizes the frame to the view: it hears each change of height.
-    const host = inject(MCP_HOST);
-    let observer: ResizeObserver | undefined;
-    afterNextRender(() => {
-      if (typeof ResizeObserver === "undefined") return;
-      observer = new ResizeObserver(() => {
-        const { scrollWidth: width, scrollHeight: height } = document.documentElement;
-        host.post({
-          jsonrpc: "2.0",
-          method: "ui/notifications/size-changed",
-          params: { width, height },
-        });
-      });
-      observer.observe(document.body);
-    });
-    inject(DestroyRef).onDestroy(() => observer?.disconnect());
-  }
+/**
+ * What the embedded view starts with: the host's data, and views derived in the main thread,
+ * because the frame of an MCP App cannot start a worker.
+ */
+export function embeddedProviders(): Provider[] {
+  return [
+    { provide: SpectyData, useClass: McpAppData },
+    { provide: DERIVER, useValue: inThread },
+  ];
 }

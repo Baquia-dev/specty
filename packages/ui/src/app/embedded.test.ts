@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { TestBed } from "@angular/core/testing";
 import { DERIVER } from "../data/changes-store";
+import { McpAppData } from "../data/mcp-app";
 import { type ChangeRecord, SpectyData } from "../data/records";
 import { sampleRecords } from "../data/sample-records";
+import { ActionError } from "../data/source";
 import { deriveViews } from "../data/views";
-import { Embedded } from "./embedded";
+import { Embedded, embeddedProviders } from "./embedded";
 
 /** What the host gives the view: the one change the tool worked on, and no way to decide. */
 class OneChange extends SpectyData {
@@ -27,8 +29,29 @@ const inPhase = (phase: string) => {
   return record;
 };
 
+/** A source that could not read the change: it says why. */
+class Unreadable extends SpectyData {
+  changes(): Promise<readonly ChangeRecord[]> {
+    return Promise.reject(
+      new ActionError({
+        es: "No hay ningún cambio abierto en esa carpeta.",
+        en: "No change is open in that folder.",
+      }),
+    );
+  }
+
+  subscribe(): () => void {
+    return () => undefined;
+  }
+}
+
 /** The embedded view on a source with only `record`. */
-async function embedded(record: ChangeRecord) {
+function embedded(record: ChangeRecord) {
+  return embeddedOn(new OneChange(record));
+}
+
+/** The embedded view on `source`. */
+async function embeddedOn(source: SpectyData) {
   window.matchMedia = (() => ({
     matches: false,
     addEventListener: () => undefined,
@@ -38,7 +61,7 @@ async function embedded(record: ChangeRecord) {
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
     providers: [
-      { provide: SpectyData, useValue: new OneChange(record) },
+      { provide: SpectyData, useValue: source },
       {
         provide: DERIVER,
         useValue: (records: readonly ChangeRecord[]) => Promise.resolve(deriveViews(records)),
@@ -56,7 +79,10 @@ async function embedded(record: ChangeRecord) {
 const text = (element: Element) => element.textContent?.replace(/\s+/g, " ").trim() ?? "";
 
 describe("the embedded view of an MCP App", () => {
-  afterEach(() => TestBed.resetTestingModule());
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    TestBed.resetTestingModule();
+  });
 
   it("AC1: shows only the Spec tab of a change in review, with no inbox, tabs or actions", async () => {
     const record = inPhase("review");
@@ -77,5 +103,33 @@ describe("the embedded view of an MCP App", () => {
     ).toEqual([]);
     expect(text(element)).toContain("specty approve");
     expect(text(element)).toContain("specty ui");
+  });
+
+  it("AC6: says why it cannot read the change instead of waiting for it", async () => {
+    const element = await embeddedOn(new Unreadable());
+    expect(text(element)).toContain("No hay ningún cambio abierto en esa carpeta.");
+    expect(text(element)).not.toContain("Esperando el cambio");
+  });
+
+  it("AC7: starts with the source of the host and derives in the main thread, with no worker", async () => {
+    let started = 0;
+    vi.stubGlobal(
+      "Worker",
+      class {
+        constructor() {
+          started += 1;
+        }
+        addEventListener() {}
+        postMessage() {}
+        terminate() {}
+      },
+    );
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({ providers: [...embeddedProviders()] });
+    const records = sampleRecords(Date.now());
+    const views = await TestBed.inject(DERIVER)(records);
+    expect(views.map((view) => view.id)).toEqual(records.map((record) => record.state.id));
+    expect(started).toBe(0);
+    expect(TestBed.inject(SpectyData)).toBeInstanceOf(McpAppData);
   });
 });

@@ -220,15 +220,17 @@ export function toolList(apps = false): Record<string, unknown>[] {
   const view = {
     name: VIEW_TOOL,
     description: "The record of the change open in the folder, for Specty's view. It only reads.",
-    inputSchema: { type: "object", properties: { folder: FOLDER }, required: [] },
+    inputSchema: {
+      type: "object",
+      properties: {
+        folder: FOLDER,
+        since: text("The fingerprint of what the view has: if nothing changed, no record comes."),
+      },
+      required: [],
+    },
     _meta: { ui: { resourceUri: VIEW_URI, visibility: ["app"] } },
   };
   return [...tools, view];
-}
-
-/** Whether a tool's result shows its change in the view: every tool of a change. */
-export function showsView(name: unknown): boolean {
-  return TOOLS.some((tool) => tool.name === name && tool.view !== false);
 }
 
 /** The command line of a call, or why the call is wrong. */

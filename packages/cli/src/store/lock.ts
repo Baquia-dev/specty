@@ -121,7 +121,7 @@ async function readHolder(path: string): Promise<LockHolder | undefined> {
 }
 
 /** Whether process `pid` exists on this machine; one of another user exists too. */
-function alive(pid: number): boolean {
+export function alive(pid: number): boolean {
   try {
     process.kill(pid, 0);
     return true;

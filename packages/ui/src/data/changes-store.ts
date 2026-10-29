@@ -68,7 +68,8 @@ function startWorker(): Worker | undefined {
   }
 }
 
-const inThread: Deriver = async (records) => (await import("./views")).deriveViews(records);
+/** Derives in the main thread: where a worker cannot start, as in an MCP App (ADR 0015). */
+export const inThread: Deriver = async (records) => (await import("./views")).deriveViews(records);
 
 /**
  * The changes as the screens see them. It reads from whatever `SpectyData` is provided, derives

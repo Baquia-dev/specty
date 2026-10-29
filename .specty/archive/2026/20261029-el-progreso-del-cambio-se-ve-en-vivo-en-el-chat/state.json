@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
+  "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2d43c5500d81680cb38d6552131a9f54696199fe578bae101dc7634204f5f075",
+    "at": "2026-10-29T09:44:03.784Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2a1c883b25011caae361561dddd9ef389f5df8ae2c365c842e958da16d66697b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fcd47af2391422f5c4b9bd61034a0bb08e74850a7224d6816e74833a5d1fb2dc",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:27d694f251d59b0e09c4913cf14b3f4bb8484c7a31c8d89ef1713c2761c36c60",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:a0f93b93f4fa402316a7b56bb4ea12b111eaa51612488ea5e53ca9b14a66acfb",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0859abb40e207053b41dfe1001798f89d709a415adc86e9313bee7fc04fd567e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d48c70f68e3a012262a61834a654c32d7a8cac59",
+      "attempts": 1,
+      "startedAt": "2026-10-29T09:49:02.080Z",
+      "doneAt": "2026-10-29T10:10:13.454Z",
+      "summary": "specty_view da huella (stat de los archivos y la verificación viva), unchanged con since y el objeto como texto JSON; las herramientas del agente solo texto; con MCP Apps el resto no espera a una herramienta en marcha. Adelanta embeddedProviders() e inThread (tests de T3).",
+      "scopeExtra": [
+        "packages/cli/src/mcp/tools.ts",
+        "packages/cli/src/store/lock.ts",
+        "packages/ui/src/app/embedded.ts",
+        "packages/ui/src/data/changes-store.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "da683169d2726ff4568a7d72b6fa7d4f456fcab3",
+      "attempts": 1,
+      "startedAt": "2026-10-29T10:10:14.097Z",
+      "doneAt": "2026-10-29T10:19:46.259Z",
+      "summary": "McpAppData lee la carpeta de tool-input, vuelve a preguntar cada segundo con since mientras la fase se mueve, pide pip en Progreso, da la verificación por watchRun, lee el texto JSON si falta structuredContent y rechaza con motivo bilingüe; el tamaño va tras initialized.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "caa66aafccd305560dcd0d681a7e3a1c0984a248",
+      "attempts": 1,
+      "startedAt": "2026-10-29T10:19:46.611Z",
+      "doneAt": "2026-10-29T10:25:55.395Z",
+      "summary": "La vista arranca con embeddedProviders() (fuente del anfitrión y derivación en el hilo principal), dice por qué no puede leer el cambio y ya no avisa de su tamaño; ARCHITECTURE §6, ui.md y el ADR 0015 cuentan la huella, el orden y el texto JSON.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-10-29T10:38:13.730Z",
+  "lockedTests": {
+    "packages/cli/test/mcp-app.test.ts": "sha256:fa9f973cd5b0ecb2a0e6a126261f46b117e34cc8180d5affbd34b9f87cf76c54",
+    "packages/ui/src/app/embedded.test.ts": "sha256:cd85ff4399ccd8443a0513dffe943d0f94981b87f69e983f93a772027a32869b",
+    "packages/ui/src/data/mcp-app.test.ts": "sha256:757b9a31399a419bec0276bbdc02163ca1c7e77aa2f946e4056f8dc09dc3112f",
+    "packages/cli/test/mcp-app-live.test.ts": "sha256:25e114f23c9e2524e825341225c4e6c00ba08d54d73c2a43178c3d42a7efd79d"
+  }
+}
