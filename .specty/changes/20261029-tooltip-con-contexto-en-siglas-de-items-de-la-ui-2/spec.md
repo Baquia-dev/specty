@@ -52,7 +52,7 @@ Se añade `packages/ui/src/components/item-tooltip.ts` con:
 
 ## Tareas
 
-- [ ] T1: Directiva de tooltips de siglas, componente de texto y resolución de contenido
+- [x] T1: Directiva de tooltips de siglas, componente de texto y resolución de contenido
   - files: packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts

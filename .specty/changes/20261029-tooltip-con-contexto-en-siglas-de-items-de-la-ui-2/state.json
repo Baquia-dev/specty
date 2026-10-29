@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "22a750fd14b4bc99aecebcd356b2ebb178c8f5bf",
+      "startedAt": "2026-10-29T19:48:03.453Z",
+      "doneAt": "2026-10-29T20:13:08.047Z",
+      "summary": "Añadir directiva spItemTooltips, componente sp-item-text y resolución bilingüe de siglas"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
