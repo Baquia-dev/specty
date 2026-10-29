@@ -28,7 +28,7 @@ type Reader = (path: string, text: string) => ResolvedImport[];
 
 interface Scanner {
   readonly files: RegExp;
-  prepare(context: CheckContext): Promise<Reader>;
+  prepare(context: Pick<CheckContext, "session">): Promise<Reader>;
 }
 
 const SCANNERS: readonly Scanner[] = [
@@ -87,7 +87,7 @@ const SCANNERS: readonly Scanner[] = [
 
 /** The imports of each of `files` that a scanner reads, by the language of each. */
 export async function scannedImports(
-  context: CheckContext,
+  context: Pick<CheckContext, "session" | "read">,
   files: readonly string[],
 ): Promise<ResolvedImport[]> {
   const found = await Promise.all(

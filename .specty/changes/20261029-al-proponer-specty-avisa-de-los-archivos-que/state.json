@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c76c0d714eece8306c278c7904b7617f4f4aed97",
+      "attempts": 1,
       "startedAt": "2026-10-29T22:04:11.208Z",
       "doneAt": "2026-10-29T22:05:40.113Z",
-      "summary": "core/checks/imports-script.ts: scriptImports lee las cinco formas de import de TS/JS en su orden y resuelve rutas relativas (extensión, .js por .ts, index, ..) y paquetes del workspace por sus entradas; cards/impact.ts con el título y la línea («importado por …, y N más»)."
+      "summary": "core/checks/imports-script.ts: scriptImports lee las cinco formas de import de TS/JS en su orden y resuelve rutas relativas (extensión, .js por .ts, index, ..) y paquetes del workspace por sus entradas; cards/impact.ts con el título y la línea («importado por …, y N más»).",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4789aeabab9443983f08e5321054502ff616692d",
+      "startedAt": "2026-10-29T22:05:40.402Z",
+      "doneAt": "2026-10-29T22:07:04.905Z",
+      "summary": "flow/impact.ts busca, en los archivos del repositorio, quién importa lo que la spec modifica, borra o mueve sin estar en ella (TS/JS con scriptImports y los paquetes de sus package.json; el resto con los escáneres de capas), y propose lo nombra en «LO USAN FUERA DE LA SPEC»."
     }
   },
   "pending": {

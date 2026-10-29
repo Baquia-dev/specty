@@ -66,7 +66,7 @@ No usa tree-sitter, porque no aportaría lo que falta. Specty ya lee los imports
   - files: packages/core/test/checks/imports-script.test.ts, packages/core/src/checks/imports-script.ts, packages/core/src/index.ts, packages/core/src/cards/impact.ts, packages/core/src/cards/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/imports-script.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip
-- [ ] T2: Al proponer, Specty nombra los archivos que usan lo que cambia la spec
+- [x] T2: Al proponer, Specty nombra los archivos que usan lo que cambia la spec
   - files: packages/cli/test/impact.test.ts, packages/cli/src/flow/impact.ts, packages/cli/src/check/layer-scanners.ts, packages/cli/src/commands/propose.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/impact.test.ts test/propose.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

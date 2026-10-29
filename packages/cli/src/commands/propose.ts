@@ -29,6 +29,7 @@ import {
 import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
 import { dataOf, readAudit } from "../flow/carried";
+import { impactBlock, impactedFiles } from "../flow/impact";
 import { listed, sharedBlock, sharedFiles } from "../flow/shared";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
@@ -140,7 +141,10 @@ async function proposalCard(
   // Files another open change also lists: seen while planning, not when the merge collides.
   if (phase === "closing") return card;
   const shared = await sharedFiles(session, state.id, listed(analysis.spec));
-  return { ...card, blocks: [...card.blocks, ...sharedBlock(session, shared)] };
+  // Files outside the spec that import what it changes: a scope request foreseen.
+  const impacts = await impactedFiles(session, analysis.spec);
+  const blocks = [...sharedBlock(session, shared), ...impactBlock(session, impacts)];
+  return { ...card, blocks: [...card.blocks, ...blocks] };
 }
 
 /**
