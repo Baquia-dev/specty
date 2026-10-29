@@ -12,3 +12,7 @@
 {"ts":"2026-10-29T06:03:07.796Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T3","baseCommit":"c6727114f39d428d0aa363324ded5750f2ab37af"}}
 {"ts":"2026-10-29T06:06:37.545Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm lint","exit":0,"ms":696,"tree":"sha256:db1654276511948a06669e4a07f80b3f28ef2ab56e42435dcdb06403b0990684"}}
 {"ts":"2026-10-29T06:06:37.546Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T3","summary":"ARCHITECTURE describe GET /api/changes/<id>/trace: la lista, el blame por bloques y sus respuestas"}}
+{"ts":"2026-10-29T06:09:52.411Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":190474,"tree":"sha256:db1654276511948a06669e4a07f80b3f28ef2ab56e42435dcdb06403b0990684"}}
+{"ts":"2026-10-29T06:09:52.412Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-29T06:10:02.229Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:91de5ed71fa9d3bf7bb208ca7feed7748fd80989822ce80d16bce1fc9b31ffb0","size":"M","warnings":0}}
+{"ts":"2026-10-29T06:10:12.535Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

@@ -61,3 +61,23 @@ La vista de trazabilidad del Historial (docs/ui.md) enseña un archivo con un ma
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El servidor local da la trazabilidad de un cambio en `GET /api/changes/<id>/trace` (`server/trace.ts`): sin más, los archivos que dejó (añadidos, modificados o renombrados, sin `.specty/` ni los borrados); con `?path=` de uno de ellos, sus líneas en el commit de su última tarea, agrupadas en bloques de líneas seguidas del mismo commit, cada uno con lo que diría `specty why`. No lee archivos que el cambio no dejó (404), no sirve blames de más de 512 KB (413) y exige la sesión. `flow/traced.ts` reúne la lectura de commits con sus trailers que antes vivía en `commands/why.ts`, y `server/diff.ts` comparte el rango del cambio.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- El blame va sobre el commit de la última tarea, no sobre la carpeta: lo comparten todas las worktrees y enseña el archivo como lo dejó el cambio, abierto o cerrado.
+- La lista sale de `git diff --name-only -z`, para que un nombre con acentos llegue tal cual.
+- `traceReply` traduce la respuesta a estado y JSON en `trace.ts`, para que `http.ts` apenas crezca.
+
+### Pendientes
+
+- La vista de la UI que usa esta lectura: el cambio siguiente.

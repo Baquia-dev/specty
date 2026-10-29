@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
   "baseCommit": "2c20665f684aa5ed747233f024bc687aee919f5d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:b1b27ba48c055d10359c5a7c0ad36288dbd30b51f3b871711908e426e63182e4",
@@ -56,12 +56,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c6727114f39d428d0aa363324ded5750f2ab37af",
+      "attempts": 1,
       "startedAt": "2026-10-29T06:03:07.795Z",
       "doneAt": "2026-10-29T06:06:37.545Z",
-      "summary": "ARCHITECTURE describe GET /api/changes/<id>/trace: la lista, el blame por bloques y sus respuestas"
+      "summary": "ARCHITECTURE describe GET /api/changes/<id>/trace: la lista, el blame por bloques y sus respuestas",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -73,6 +73,7 @@
     "AC": 3,
     "T": 3
   },
+  "closingSubmittedAt": "2026-10-29T06:10:02.229Z",
   "lockedTests": {
     "packages/cli/test/server/trace.test.ts": "sha256:7ca45dfdaf8ef2a0384d8f1e8c939e07c39a44c8112c6033748ab2f45ead94eb"
   }
