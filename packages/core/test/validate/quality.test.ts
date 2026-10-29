@@ -49,6 +49,20 @@ describe("tests policy", () => {
     const diagnostics = validateSpec(spec, { phase: "draft", config: contract, locations });
     expect(diagnostics.find((entry) => entry.code === "task-no-tests")?.severity).toBe("error");
   });
+
+  it("spares a refactor or a perf under contract, whose contract is the existing tests", () => {
+    for (const type of ["refactor", "perf"]) {
+      const { spec, locations } = parseSpec(
+        STANDARD.replace(/( {2}- ac: .+)/g, `$1\n  - type: ${type}`),
+      );
+      const severities = (config: typeof DEFAULT_CONFIG) =>
+        validateSpec(spec, { phase: "draft", config, locations })
+          .filter((entry) => entry.code === "task-no-tests")
+          .map((entry) => entry.severity);
+      expect(severities(withConfig({ policy: { tests: "contract" } })), type).toEqual([]);
+      expect(severities(withConfig({ policy: { tests: "required" } })), type).toContain("error");
+    }
+  });
 });
 
 describe("testCycle", () => {

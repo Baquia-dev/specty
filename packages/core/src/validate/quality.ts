@@ -129,9 +129,8 @@ export const checkTaskQuality: Rule = (spec, ctx, lang) => {
             }),
           ]
         : [];
-    const needsTests = testsApply && CODE_TYPES.has(task.type ?? "feat");
     const untested =
-      needsTests && !task.files.some(isTestFile)
+      testsApply && needsTests(task, policy.tests) && !task.files.some(isTestFile)
         ? [
             report(lang, {
               code: "task-no-tests",
@@ -145,6 +144,15 @@ export const checkTaskQuality: Rule = (spec, ctx, lang) => {
     return [...large, ...untested];
   });
 };
+
+/**
+ * Whether a code task must list a test. Under `contract`, a `refactor` or a `perf` need not: its
+ * contract is the existing tests, and `task done` refuses one that removes their assertions.
+ */
+function needsTests(task: Pick<Task, "type">, policy: TestsPolicy): boolean {
+  const rules = testRules(task, policy);
+  return rules === "first" || (rules === "keep" && policy !== "contract");
+}
 
 /** Every file says why it changes; retros are written from the diff, so they are exempt. */
 export const checkFileReasons: Rule = (spec, ctx, lang) => {

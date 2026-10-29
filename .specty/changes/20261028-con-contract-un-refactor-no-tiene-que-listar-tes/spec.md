@@ -16,7 +16,7 @@ Con `policy.tests: required` o `contract`, cada tarea de código de un cambio es
 
 ## Tareas
 
-- [ ] T1: Con contract, un refactor no tiene que listar tests que no cambia
+- [x] T1: Con contract, un refactor no tiene que listar tests que no cambia
   - files: packages/core/src/validate/quality.ts, packages/core/test/validate/quality.test.ts, docs/formats.md
   - verify: pnpm typecheck && pnpm lint && pnpm --filter @baquia-dev/specty-core exec vitest run test/validate test/cards
   - type: feat
