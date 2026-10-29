@@ -56,7 +56,7 @@ La vista de trazabilidad del Historial (docs/ui.md) enseña un archivo con un ma
   - files: packages/cli/src/server/trace.ts, packages/cli/src/server/diff.ts, packages/cli/src/server/http.ts, packages/cli/test/server/trace.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/trace.test.ts test/server/diff.test.ts && pnpm lint
-- [ ] T3: Documentar la lectura `trace`
+- [x] T3: Documentar la lectura `trace`
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

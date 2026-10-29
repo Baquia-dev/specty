@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
   "baseCommit": "2c20665f684aa5ed747233f024bc687aee919f5d",
   "revision": 1,
@@ -47,12 +47,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4b1375d16e3867c0d23ccd0ca8913f36e1fd2d8b",
+      "attempts": 1,
       "startedAt": "2026-10-29T05:58:22.399Z",
       "doneAt": "2026-10-29T06:03:07.464Z",
-      "summary": "server/trace.ts: GET /api/changes/<id>/trace da los archivos que dejó el cambio y, con ?path=, su blame en el último commit por bloques con lo que diría specty why; 404 fuera del cambio, 413 por encima de 512 KB; server/diff.ts comparte el rango"
+      "summary": "server/trace.ts: GET /api/changes/<id>/trace da los archivos que dejó el cambio y, con ?path=, su blame en el último commit por bloques con lo que diría specty why; 404 fuera del cambio, 413 por encima de 512 KB; server/diff.ts comparte el rango",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c6727114f39d428d0aa363324ded5750f2ab37af",
+      "startedAt": "2026-10-29T06:03:07.795Z",
+      "doneAt": "2026-10-29T06:06:37.545Z",
+      "summary": "ARCHITECTURE describe GET /api/changes/<id>/trace: la lista, el blame por bloques y sus respuestas"
     }
   },
   "pending": {
