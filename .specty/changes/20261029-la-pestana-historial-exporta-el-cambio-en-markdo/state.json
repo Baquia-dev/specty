@@ -6,6 +6,13 @@
   "branch": "specty/20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
   "baseCommit": "7f224077b03d050749f0d8c435ff4ad04bd4ffa8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f65828c0f3df063c8e498404d9ab371d45412acc258fec47452f1a0e54afd4b0",
+    "at": "2026-10-29T05:06:44.645Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -39,12 +46,6 @@
     "AC": 3,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f65828c0f3df063c8e498404d9ab371d45412acc258fec47452f1a0e54afd4b0",
-    "at": "2026-10-29T05:06:44.645Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T05:09:03.061Z"
 }
