@@ -6,6 +6,7 @@ import { Button } from "../components/button";
 import { LIST, ROW, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { LucideLayoutList } from "../components/icons";
+import { ItemText, ItemTooltips } from "../components/item-tooltip";
 import { Segmented, type SegmentedOption } from "../components/segmented";
 import { Select, type SelectOption } from "../components/select";
 import { TabEnd } from "../components/tabs";
@@ -69,7 +70,9 @@ interface Day {
     Badge,
     HistoryExport,
     TraceView,
+    ItemText,
   ],
+  hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
   template: `
@@ -116,10 +119,10 @@ interface Day {
               <li [class]="row" data-event>
                 <time class="pt-0.5 font-mono text-xs text-text-muted" [attr.datetime]="event.at">{{ timeOf(event.at) }}</time>
                 <div class="flex min-w-0 flex-col gap-1">
-                  <p class="m-0 text-sm text-text">{{ event.title[lang()] }}</p>
+                  <p class="m-0 text-sm text-text"><sp-item-text [text]="event.title[lang()]" /></p>
                   <p class="m-0 text-xs text-text-muted">{{ actorOf(event) }}</p>
                   @for (detail of event.details; track $index) {
-                    <p class="m-0 text-[13px] text-text-muted">{{ detail[lang()] }}</p>
+                    <p class="m-0 text-[13px] text-text-muted"><sp-item-text [text]="detail[lang()]" /></p>
                   }
                 </div>
                 <sp-badge>{{ typeOf(event.type) }}</sp-badge>
@@ -142,6 +145,10 @@ export class HistoryTab {
   protected readonly emptyIcon = LucideLayoutList;
   protected readonly list = LIST;
   protected readonly row = ROW;
+
+  constructor() {
+    inject(ItemTooltips).setSource(() => this.change());
+  }
 
   /** Who and which type to show: «all», or one of them. */
   protected readonly actor = signal<string>("all");

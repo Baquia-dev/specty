@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "id": "20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
+  "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85",
+    "at": "2026-10-29T21:37:11.482Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6b4bb7b0abde79cdd5ef9bce837063d68b388d80040c066138e0c9d24a69a503",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b09d31b4a53a9b8d34758300fd1c1b66e30a2f302e405c1802c4bad8d394335f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "22a750fd14b4bc99aecebcd356b2ebb178c8f5bf",
+      "attempts": 2,
+      "startedAt": "2026-10-29T19:48:03.453Z",
+      "doneAt": "2026-10-29T20:13:08.047Z",
+      "summary": "Añadir directiva spItemTooltips, componente sp-item-text y resolución bilingüe de siglas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "d4f16dd3379afdd648d8a7f19c25208b6b2e206a",
+      "attempts": 2,
+      "startedAt": "2026-10-29T20:13:08.370Z",
+      "doneAt": "2026-10-29T20:21:04.831Z",
+      "summary": "Activar tooltips de siglas en revisión de spec, delta y comentarios",
+      "scopeExtra": [
+        "packages/ui/src/components/item-tooltip.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "471979a2ef7b9ca096acc5844b031088da093742",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:21:05.454Z",
+      "doneAt": "2026-10-29T20:24:24.546Z",
+      "summary": "Activar tooltips de siglas en progreso, tests bloqueados, aceptación y bandeja",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "392300b21b5701c08a5732b41bedea9584d4853a",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:40:03.314Z",
+      "doneAt": "2026-10-29T20:40:29.491Z",
+      "summary": "Activar tooltips de siglas en historial y vista de trazabilidad",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 4
+  },
+  "closingSubmittedAt": "2026-10-29T21:50:01.563Z",
+  "lockedTests": {},
+  "integration": {
+    "target": "main",
+    "commit": "297ca21f78dc0a25accc02e73612d622f5357f13",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      ".claude/settings.json",
+      "AGENTS.md",
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/agents/claude-code.ts",
+      "packages/cli/src/agents/run.ts",
+      "packages/cli/src/flow/usage.ts",
+      "packages/cli/test/fresh-session.test.ts",
+      "packages/cli/test/setup.test.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/usage.ts",
+      "packages/core/src/light.ts",
+      "packages/core/src/usage.ts",
+      "packages/core/test/cards/fresh-session.test.ts",
+      "packages/core/test/usage.test.ts",
+      "packages/ui/src/acceptance/acceptance-tab.ts",
+      "packages/ui/src/components/item-tooltip.test.ts",
+      "packages/ui/src/components/item-tooltip.ts",
+      "packages/ui/src/data/history.test.ts",
+      "packages/ui/src/data/history.ts",
+      "packages/ui/src/history/history-tab.ts",
+      "packages/ui/src/history/trace-view.test.ts",
+      "packages/ui/src/history/trace-view.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/progress/locked-tests.test.ts",
+      "packages/ui/src/progress/locked-tests.ts",
+      "packages/ui/src/progress/progress-tab.ts",
+      "packages/ui/src/review/comments.ts",
+      "packages/ui/src/review/spec-review.ts",
+      "packages/ui/src/review/spec-sections.test.ts",
+      "packages/ui/src/review/spec-sections.ts"
+    ],
+    "at": "2026-10-29T21:37:54.770Z",
+    "resolved": {
+      "commit": "a4f38b8",
+      "at": "2026-10-29T21:43:22.227Z"
+    }
+  }
+}

@@ -12,6 +12,7 @@ import {
 import { LIST, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { LucideListChecks } from "../components/icons";
+import { ItemTooltips } from "../components/item-tooltip";
 import { TabEnd } from "../components/tabs";
 import { formatDuration, type RunRecord, type TaskStatus, workTime } from "../data/progress";
 import { type ChangeView, SpectyData } from "../data/records";
@@ -49,6 +50,7 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
     TestsSent,
     LockedTests,
   ],
+  hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-8" },
   template: `
@@ -182,6 +184,7 @@ export class ProgressTab {
   }
 
   constructor() {
+    inject(ItemTooltips).setSource(() => this.change());
     const timer = setInterval(() => this.now.set(Date.now()), TICK_MS);
     inject(DestroyRef).onDestroy(() => clearInterval(timer));
     const source = inject(SpectyData);

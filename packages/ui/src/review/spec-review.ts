@@ -20,6 +20,7 @@ import { Button } from "../components/button";
 import { Collapsible } from "../components/collapsible";
 import { LIST } from "../components/document";
 import { LucideMessageSquare, LucideTriangleAlert } from "../components/icons";
+import { ItemTooltips } from "../components/item-tooltip";
 import { Decisions } from "../data/decisions";
 import type { ChangeView, CommentAnchor, ReviewSection } from "../data/records";
 import { Preferences } from "../theme/preferences";
@@ -71,12 +72,13 @@ const SECTION =
     ReviewDelta,
     UserRequest,
     IndependentReview,
+    ItemTooltips,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   // Positioned, so absolute screen-reader text inside stays within the scrolling area.
   host: { class: "relative flex scroll-mt-[calc(var(--sp-sticky-top,0px)+1rem)] flex-col gap-6" },
   template: `
-    <div class="flex flex-wrap items-start gap-x-12 gap-y-6">
+    <div class="flex flex-wrap items-start gap-x-12 gap-y-6" [spItemTooltips]="change()">
       @if (mode() === 'full') {
         <nav class="flex flex-[1_1_170px] flex-col md:sticky md:top-[calc(var(--sp-sticky-top,0px)+1rem)]" [attr.aria-label]="t()('Secciones de la spec', 'Spec sections')">
           <p class="m-0 mb-2 px-2 text-xs font-medium tracking-[0.12em] text-text-muted uppercase" aria-hidden="true">{{ t()('Contenido', 'Contents') }}</p>

@@ -139,7 +139,7 @@ describe("the traceability view", () => {
   afterEach(() => TestBed.resetTestingModule());
 
   it("AC1: shows the first file's lines with a blame margin: the commit, change, task and criteria of each block", async () => {
-    const { element } = await render(new Source());
+    const { element, settle } = await render(new Source());
     const lines = [...element.querySelectorAll("[data-line]")];
     expect(lines).toHaveLength(3);
     expect(text(lines[0])).toContain("import 'attendance_record.dart';");
@@ -160,6 +160,22 @@ describe("the traceability view", () => {
       expect(text(traced)).toContain(part);
     }
     expect(traced?.querySelector(`a[href="/changes/${ID}?tab=history"]`)).not.toBeNull();
+
+    const taskRef = traced?.querySelector<HTMLElement>("[data-item-ref=T2]");
+    taskRef?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+    await settle();
+    expect(
+      document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim(),
+    ).toBe("Tarea T2: Panel con estudiantes destacados");
+
+    const criterionBadge = traced?.querySelector<HTMLElement>("sp-badge");
+    criterionBadge?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
+    await settle();
+    expect(
+      document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim(),
+    ).toBe(
+      "Criterio de aceptación AC1: CUANDO el coordinador abre el panel ENTONCES ve el porcentaje semanal por curso.",
+    );
   });
 
   it("AC1: shows another file when the person chooses it", async () => {

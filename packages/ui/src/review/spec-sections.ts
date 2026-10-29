@@ -15,6 +15,7 @@ import {
   LucideTrash2,
   LucideTriangleAlert,
 } from "../components/icons";
+import { ItemTooltips } from "../components/item-tooltip";
 import type { Toasts } from "../components/toast";
 import {
   ActionError,
@@ -80,6 +81,7 @@ const STATUS = {
 @Component({
   selector: "sp-review-items",
   imports: [LucideDynamicIcon, Badge, IconButton],
+  hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @switch (section()) {
@@ -195,6 +197,10 @@ export class ReviewItems {
   protected readonly row = ROW;
   protected readonly list = LIST;
   protected readonly reveal = REVEAL;
+
+  constructor() {
+    inject(ItemTooltips).setSource(() => this.review());
+  }
 
   protected actionLabel(file: FileView): string {
     return this.t()(ACTIONS[file.action].es, ACTIONS[file.action].en);
