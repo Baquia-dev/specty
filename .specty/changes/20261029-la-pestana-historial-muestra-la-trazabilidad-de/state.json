@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5a85cfb69e30c4afc69abfabd0b7d3329d88d5cf",
+      "attempts": 1,
       "startedAt": "2026-10-29T06:17:50.035Z",
       "doneAt": "2026-10-29T06:21:25.726Z",
-      "summary": "data/sample-trace.ts saca la trazabilidad del prototipo de los diffs de muestra de «Panel de asistencia por curso» (lo añadido por cada tarea con su commit, tarea y criterios; el resto de la base); FixtureData la usa"
+      "summary": "data/sample-trace.ts saca la trazabilidad del prototipo de los diffs de muestra de «Panel de asistencia por curso» (lo añadido por cada tarea con su commit, tarea y criterios; el resto de la base); FixtureData la usa",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5b202cb255d20e9f0ac293d20872d7835a960721",
+      "startedAt": "2026-10-29T06:21:26.041Z",
+      "doneAt": "2026-10-29T06:26:33.643Z",
+      "summary": "sp-trace-view muestra el archivo elegido con un margen tipo blame por bloque (commit, cambio enlazado, tarea y criterios, o asunto y autor) y el motivo si no hay nada que trazar; el control Vista del Historial cambia entre línea de tiempo y trazabilidad"
     }
   },
   "pending": {

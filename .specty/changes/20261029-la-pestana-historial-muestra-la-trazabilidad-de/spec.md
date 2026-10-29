@@ -60,7 +60,7 @@ El servidor local ya da la trazabilidad de un cambio (`GET /api/changes/<id>/tra
   - files: packages/ui/src/data/sample-trace.ts, packages/ui/src/data/sample-trace.test.ts, packages/ui/src/data/fixtures.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/sample-trace.test.ts --include src/data/fixtures.test.ts && pnpm lint
-- [ ] T3: La vista «Trazabilidad» de la pestaña Historial
+- [x] T3: La vista «Trazabilidad» de la pestaña Historial
   - files: packages/ui/src/history/trace-view.ts, packages/ui/src/history/trace-view.test.ts, packages/ui/src/history/history-tab.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

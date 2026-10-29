@@ -11,6 +11,7 @@ import type { HistoryEntry } from "../data/history";
 import type { HistoryType } from "../data/history-text";
 import { Preferences } from "../theme/preferences";
 import { HistoryExport } from "./history-export";
+import { TraceView } from "./trace-view";
 
 type Actor = HistoryEntry["actor"];
 
@@ -58,13 +59,16 @@ interface Day {
  */
 @Component({
   selector: "sp-history-tab",
-  imports: [SectionDivider, EmptyState, Segmented, Select, Button, Badge, HistoryExport],
+  imports: [SectionDivider, EmptyState, Segmented, Select, Button, Badge, HistoryExport, TraceView],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
   template: `
     @if (history().length > 0 || change() !== undefined) {
       <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-        @if (history().length > 0) {
+        @if (change() !== undefined) {
+          <sp-segmented [label]="t()('Vista', 'View')" [options]="viewOptions()" [(value)]="view" />
+        }
+        @if (history().length > 0 && view() === 'timeline') {
           <sp-segmented [label]="t()('Quién', 'Who')" [options]="actorOptions()" [(value)]="actor" />
           <sp-select class="w-56" [label]="t()('Tipo', 'Type')" [options]="typeOptions()" [(value)]="type" />
           <p class="m-0 text-sm text-text-muted" data-summary>{{ summary() }}</p>
@@ -74,7 +78,9 @@ interface Day {
         }
       </div>
     }
-    @if (history().length === 0) {
+    @if (view() === 'trace' && change(); as id) {
+      <sp-trace-view [change]="id" />
+    } @else if (history().length === 0) {
       <sp-empty-state [heading]="t()('Aún no hay eventos', 'No events yet')" [icon]="emptyIcon">
         <p class="m-0">{{ t()('Aparecen aquí a medida que el cambio avanza.', 'They show here as the change moves on.') }}</p>
       </sp-empty-state>
@@ -123,6 +129,16 @@ export class HistoryTab {
   /** Who and which type to show: «all», or one of them. */
   protected readonly actor = signal<string>("all");
   protected readonly type = signal<string>("all");
+
+  /** The timeline, or the traceability of the change's files. */
+  protected readonly view = signal<string>("timeline");
+  protected readonly viewOptions = computed((): readonly SegmentedOption[] => {
+    const t = this.t();
+    return [
+      { value: "timeline", label: t("Línea de tiempo", "Timeline") },
+      { value: "trace", label: t("Trazabilidad", "Traceability") },
+    ];
+  });
 
   protected readonly actorOptions = computed((): readonly SegmentedOption[] => {
     const t = this.t();
