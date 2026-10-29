@@ -71,7 +71,8 @@ describe("init on an existing configuration", () => {
       "## Supuestos\n\n- A1: El proyecto usa npm.\n",
       "## Criterios de aceptación\n\n- AC1: CUANDO se instala ENTONCES hay scripts.\n",
       "## Archivos\n\n- crear package.json — scripts del proyecto\n",
-      '## Tareas\n\n- [ ] T1: Manifiesto\n  - files: package.json\n  - ac: AC1\n  - verify: "true"\n  - type: feat\n',
+      // A manifest is a build task: under init's contract it has no testing phase.
+      '## Tareas\n\n- [ ] T1: Manifiesto\n  - files: package.json\n  - ac: AC1\n  - verify: "true"\n  - type: build\n',
     ].join("\n");
     await writeFiles(folder, { [path]: spec });
     expect((await cli(folder, ["propose"])).code).toBe(0);

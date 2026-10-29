@@ -28,6 +28,8 @@ export interface Detection {
   readonly stacks: readonly Stack[];
   readonly packages: readonly string[];
   readonly commands: Commands;
+  /** The commands that came from the CI, because the stack gave none of their kind. */
+  readonly fromCi?: readonly (keyof Commands)[];
   readonly tools: readonly AgentTool[];
   /** Generated-code globs implied by the stack (scope.generated). */
   readonly generated: readonly string[];
@@ -53,15 +55,18 @@ const STACK_NAMES: Readonly<Record<Stack["language"], string>> = {
 export async function detectProject(root: string, name: string): Promise<Detection> {
   const stacks = await detectStacks(root);
   const primary = stacks[0];
+  const ci = await ciCommands(root);
+  const own = primary === undefined ? {} : commandsFor(primary);
+  const fromCi = (["test", "lint", "typecheck"] as const).filter(
+    (key) => ci[key] !== undefined && own[key] === undefined,
+  );
   return {
     name,
     stacks,
     packages: await workspacePackages(root),
     // The stack's commands over the CI's: the CI only fills what the stack does not give.
-    commands: {
-      ...(await ciCommands(root)),
-      ...(primary === undefined ? {} : commandsFor(primary)),
-    },
+    commands: { ...ci, ...own },
+    ...(fromCi.length > 0 ? { fromCi } : {}),
     tools: await agentTools(root),
     generated: stacks.some((stack) => stack.language === "dart")
       ? ["**/*.g.dart", "**/*.freezed.dart", "**/*.gr.dart", "**/*.mocks.dart"]
@@ -197,18 +202,21 @@ export function projectFacts(detection: Detection): ProjectFacts {
   });
   const { commands } = detection;
   const labeled = [
-    ["Tests", commands.test],
-    ["Lint", commands.lint],
-    ["Typecheck", commands.typecheck],
-    ["Build", commands.build],
-    ["Check", commands.check],
+    ["Tests", "test"],
+    ["Lint", "lint"],
+    ["Typecheck", "typecheck"],
+    ["Build", "build"],
+    ["Check", "check"],
   ] as const;
   return {
     stacks,
     packages: detection.packages,
-    commands: labeled.flatMap(([label, command]) =>
-      command === undefined ? [] : [{ label, command }],
-    ),
+    // What came from the CI says so: «Tests (CI)».
+    commands: labeled.flatMap(([label, key]) => {
+      const command = commands[key];
+      if (command === undefined) return [];
+      return [{ label: detection.fromCi?.includes(key) ? `${label} (CI)` : label, command }];
+    }),
   };
 }
 

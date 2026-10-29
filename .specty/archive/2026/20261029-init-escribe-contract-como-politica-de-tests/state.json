@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261029-init-escribe-contract-como-politica-de-tests",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261029-init-escribe-contract-como-politica-de-tests",
+  "baseCommit": "73f84b4f4729f7bd4de94ac7e0498f539feb75fd",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:15ae10faf8ff431b8265192c2e85fbe9b6472ecfc6eb80cd26e97d49d28e61df",
+    "at": "2026-10-29T05:14:31.909Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "b7623f676fb6d3cb44646fb7a217328e7cf784d9",
+      "attempts": 1,
+      "startedAt": "2026-10-29T05:14:32.399Z",
+      "doneAt": "2026-10-29T05:22:10.480Z",
+      "summary": "La plantilla de config.yaml escribe tests: contract (sin la clave sigue recommended); templates.test.ts visto en rojo; config-fill.test.ts: la tarea del manifiesto pasa a type build, con OK de la persona; formats §6, ARCHITECTURE §19.5, ADR 0014",
+      "scopeExtra": [
+        "packages/cli/test/config-fill.test.ts"
+      ]
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

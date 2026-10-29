@@ -58,9 +58,12 @@ function commandsOf(text: string): string[] {
     .filter((command) => command.length > 0);
 }
 
-/** What a command checks, or nothing when it cannot run the same way here or only prepares. */
+/**
+ * What a command checks, or nothing when it cannot run the same way here, only prepares, or hides
+ * its exit code behind a pipe (`make test || true`, `make test | tee test.log`).
+ */
 function categoryOf(command: string): Category | undefined {
-  if (command.startsWith("#") || command.endsWith("\\") || command.includes("$")) return undefined;
+  if (command.startsWith("#") || command.endsWith("\\") || /[$|]/.test(command)) return undefined;
   const words = command
     .toLowerCase()
     .split(/\s+/)

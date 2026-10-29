@@ -30,7 +30,7 @@ describe("the template of .specty/config.yaml", () => {
       '  generated: ["src/gen/**"]',
       "  autoApprove: tests-and-generated",
       "policy:",
-      "  tests: recommended",
+      "  tests: contract",
       "retro:",
       "  mode: agent",
       "git:",

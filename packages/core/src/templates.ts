@@ -173,7 +173,8 @@ export function configTemplate(options: ConfigTemplateOptions): string {
     `  generated: ${list(options.generated)}`,
     "  autoApprove: tests-and-generated",
     "policy:",
-    "  tests: recommended",
+    // A new project starts with the tests as contract (ADR 0014); a config without the key stays `recommended`.
+    "  tests: contract",
     "retro:",
     "  mode: agent",
     "git:",
