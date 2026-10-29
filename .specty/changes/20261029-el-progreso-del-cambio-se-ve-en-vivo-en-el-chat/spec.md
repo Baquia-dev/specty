@@ -86,7 +86,7 @@ El corte arregla además lo que mostró la prueba en anfitriones reales (2026-10
   - files: packages/cli/src/commands/mcp.ts, packages/cli/src/mcp/app.ts, packages/cli/test/mcp-app.test.ts, packages/cli/test/mcp-app-live.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts test/mcp-app-live.test.ts test/mcp.test.ts && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T2: La fuente de la vista pregunta cada segundo y pide quedar fijada
+- [x] T2: La fuente de la vista pregunta cada segundo y pide quedar fijada
   - files: packages/ui/src/data/mcp-app.ts, packages/ui/src/data/mcp-app.test.ts
   - ac: AC1, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/mcp-app.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
