@@ -6,6 +6,13 @@
   "branch": "specty/20261029-init-ofrece-instalar-ccusage-para-medir-el",
   "baseCommit": "b76a74f022c08910d3acd77b4823066410a1caaf",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:86f4336fff1bfe4e27d2a957d3251657a7ac219ec6245b65d3676215b2cde24c",
+    "at": "2026-10-29T22:39:29.601Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -36,12 +43,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:86f4336fff1bfe4e27d2a957d3251657a7ac219ec6245b65d3676215b2cde24c",
-    "at": "2026-10-29T22:39:29.601Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T22:40:53.911Z"
 }
