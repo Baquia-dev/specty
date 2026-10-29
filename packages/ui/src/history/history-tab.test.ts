@@ -4,6 +4,7 @@ import { TestBed } from "@angular/core/testing";
 import { provideRouter, Router, withComponentInputBinding } from "@angular/router";
 import { APP_ROUTES } from "../app/routes";
 import { Shell } from "../app/shell";
+import { TabPanel, Tabs } from "../components/tabs";
 import { DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
 import type { HistoryEntry } from "../data/history";
@@ -58,8 +59,14 @@ const EVENTS: readonly HistoryEntry[] = [
 ];
 
 @Component({
-  imports: [HistoryTab],
-  template: `<sp-history-tab [history]="history()" />`,
+  imports: [Tabs, TabPanel, HistoryTab],
+  template: `
+    <sp-tabs label="Cambio">
+      <sp-tab-panel value="history" label="Historial">
+        <sp-history-tab [history]="history()" />
+      </sp-tab-panel>
+    </sp-tabs>
+  `,
 })
 class Host {
   readonly history = input<readonly HistoryEntry[]>(EVENTS);
@@ -173,5 +180,47 @@ describe("the History tab", () => {
       6,
     );
     expect(element.textContent).not.toContain("llegan en la fase 3");
+  });
+
+  it("AC5: shows who, type and the event count on the right of the tab bar once the top bar scrolls out of view", async () => {
+    let fire: IntersectionObserverCallback = () => undefined;
+    class FakeObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        fire = callback;
+      }
+      observe(): void {}
+      disconnect(): void {}
+    }
+    Object.assign(window, { IntersectionObserver: FakeObserver });
+    try {
+      const { element, settle, rows, text } = await render();
+      const top = element.querySelector<HTMLElement>("sp-history-tab [data-top]");
+      expect(top).not.toBeNull();
+      expect(element.querySelector("[data-tabs-end]")).toBeNull();
+
+      fire(
+        [{ target: top, isIntersecting: false } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+      await settle();
+      const end = element.querySelector<HTMLElement>("[data-tabs-end]");
+      expect(text(end?.querySelector("[data-compact-summary] p"))).toBe("5 eventos");
+      end
+        ?.querySelector<HTMLInputElement>("[data-compact-actor] input[type=radio][value=agent]")
+        ?.click();
+      await settle();
+      expect(rows()).toHaveLength(2);
+      expect(text(end?.querySelector("[data-compact-summary] p"))).toBe("2 de 5 eventos");
+      expect(end?.querySelector("[data-compact-type]")).not.toBeNull();
+
+      fire(
+        [{ target: top, isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+      await settle();
+      expect(element.querySelector("[data-tabs-end]")).toBeNull();
+    } finally {
+      Reflect.deleteProperty(window, "IntersectionObserver");
+    }
   });
 });

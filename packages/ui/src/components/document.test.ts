@@ -34,6 +34,15 @@ describe("SectionDivider", () => {
     expect(element.querySelector("h3")).toBeNull();
     expect(element.querySelector("[data-meta]")).toBeNull();
   });
+
+  it("AC2: stays fixed under --sp-sticky-top on the page ground while its section scrolls", async () => {
+    const fixture = TestBed.createComponent(Host);
+    await fixture.whenStable();
+    const divider = fixture.nativeElement.querySelector("sp-section-divider");
+    expect(divider?.className.split(" ")).toEqual(
+      expect.arrayContaining(["sticky", "top-[var(--sp-sticky-top,0px)]", "bg-bg"]),
+    );
+  });
 });
 
 describe("document patterns", () => {

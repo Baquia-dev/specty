@@ -6,6 +6,13 @@
   "branch": "specty/20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:eb65cff68b64c8c6ba0af7ff127714ca59add832edbbb08e692469892a67ba74",
+    "at": "2026-10-29T07:55:07.532Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -39,12 +46,6 @@
     "AC": 5,
     "T": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:eb65cff68b64c8c6ba0af7ff127714ca59add832edbbb08e692469892a67ba74",
-    "at": "2026-10-29T07:55:07.532Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T07:58:31.277Z"
 }

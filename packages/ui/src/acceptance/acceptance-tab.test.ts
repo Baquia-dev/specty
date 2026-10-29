@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Component, Injectable, input } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
+import { TabPanel, Tabs } from "../components/tabs";
 import { FixtureData, sampleRecords } from "../data/fixtures";
 import { type Bilingual, type ChangeView, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
@@ -19,8 +20,14 @@ function view(id: string): ChangeView {
 const ASISTENCIA = view("20261018-asistencia-curso");
 
 @Component({
-  imports: [AcceptanceTab],
-  template: `<sp-acceptance-tab [change]="change()" />`,
+  imports: [Tabs, TabPanel, AcceptanceTab],
+  template: `
+    <sp-tabs label="Cambio">
+      <sp-tab-panel value="acceptance" label="Aceptación">
+        <sp-acceptance-tab [change]="change()" />
+      </sp-tab-panel>
+    </sp-tabs>
+  `,
 })
 class Host {
   readonly change = input.required<ChangeView>();
@@ -277,5 +284,50 @@ describe("Acceptance tab", () => {
     });
     expect(text(element.querySelector("sp-empty-state h2"))).toBe("Aún no hay criterios");
     expect(element.querySelector("[data-view]")).toBeNull();
+  });
+
+  it("AC4: shows the verified criteria summary and the view selector on the right of the tab bar once scrolled out of view", async () => {
+    let fire: IntersectionObserverCallback = () => undefined;
+    class FakeObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        fire = callback;
+      }
+      observe(): void {}
+      disconnect(): void {}
+    }
+    Object.assign(window, { IntersectionObserver: FakeObserver });
+    try {
+      const { element, settle } = await render();
+      const top = element.querySelector<HTMLElement>("sp-acceptance-tab [data-top]");
+      expect(top).not.toBeNull();
+      expect(element.querySelector("[data-tabs-end]")).toBeNull();
+
+      fire(
+        [{ target: top, isIntersecting: false } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+      await settle();
+      const end = element.querySelector<HTMLElement>("[data-tabs-end]");
+      expect(text(end?.querySelector("[data-compact-summary] p"))).toBe(
+        "2 de 2 criterios verificados · 2 tareas hechas · 2 commits",
+      );
+      end?.querySelector<HTMLElement>("[data-compact-view] [data-select]")?.click();
+      await settle();
+      [...document.querySelectorAll<HTMLElement>("[role=option]")]
+        .find((option) => text(option) === "Matriz")
+        ?.click();
+      await settle();
+      expect(localStorage.getItem(KEY)).toBe("matrix");
+      expect(element.querySelector("[data-matrix] table")).not.toBeNull();
+
+      fire(
+        [{ target: top, isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+      await settle();
+      expect(element.querySelector("[data-tabs-end]")).toBeNull();
+    } finally {
+      Reflect.deleteProperty(window, "IntersectionObserver");
+    }
   });
 });
