@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
   "baseCommit": "7f224077b03d050749f0d8c435ff4ad04bd4ffa8",
   "revision": 1,
@@ -46,6 +46,9 @@
     "AC": 3,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T05:09:03.061Z"
+  "lockedTests": {
+    "packages/ui/src/data/export.test.ts": "sha256:c3dccf9c29fb9088e7dce1b2f6e3cbcccc82028b8f6f0a214f20750f1b0130f3",
+    "packages/ui/src/data/zip.test.ts": "sha256:56d6a60c43e93bc5f1bd4b1d0083b54bdf190ed61587241898426ffb1006e01e",
+    "packages/ui/src/history/history-export.test.ts": "sha256:7cb53cd91ea6b2d585c30a2449286838d7aba551ac192c3710744fc4b6f35231"
+  }
 }
