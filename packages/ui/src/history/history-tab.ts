@@ -8,6 +8,7 @@ import { EmptyState } from "../components/empty-state";
 import { LucideLayoutList } from "../components/icons";
 import { Segmented, type SegmentedOption } from "../components/segmented";
 import { Select, type SelectOption } from "../components/select";
+import { TabEnd } from "../components/tabs";
 import type { HistoryEntry } from "../data/history";
 import type { HistoryType } from "../data/history-text";
 import { Preferences } from "../theme/preferences";
@@ -58,12 +59,22 @@ interface Day {
  */
 @Component({
   selector: "sp-history-tab",
-  imports: [SectionDivider, EmptyState, Segmented, Select, Button, Badge, HistoryExport, TraceView],
+  imports: [
+    SectionDivider,
+    EmptyState,
+    Segmented,
+    Select,
+    TabEnd,
+    Button,
+    Badge,
+    HistoryExport,
+    TraceView,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
   template: `
     @if (history().length > 0 || change() !== undefined) {
-      <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+      <div #top class="flex flex-wrap items-center gap-x-6 gap-y-3" data-top>
         @if (change() !== undefined) {
           <sp-segmented [label]="t()('Vista', 'View')" [options]="viewOptions()" [(value)]="view" />
         }
@@ -76,6 +87,13 @@ interface Day {
           <sp-history-export class="ml-auto" [change]="id" />
         }
       </div>
+      <ng-template [spTabEnd]="history().length > 0 && view() === 'timeline' ? top : undefined">
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2" data-compact-summary>
+          <sp-segmented [label]="t()('Quién', 'Who')" [options]="actorOptions()" [(value)]="actor" data-compact-actor />
+          <sp-select class="w-48" [label]="t()('Tipo', 'Type')" [options]="typeOptions()" [(value)]="type" data-compact-type />
+          <p class="m-0 text-xs text-text-muted">{{ summary() }}</p>
+        </div>
+      </ng-template>
     }
     @if (view() === 'trace' && change(); as id) {
       <sp-trace-view [change]="id" />

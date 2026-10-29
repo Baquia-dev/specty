@@ -297,4 +297,19 @@ describe("SpecReview", () => {
       text: "Esta fuente de datos es de solo lectura: no admite acciones.",
     });
   });
+
+  it("AC2: pins each section's header under --sp-sticky-top while the section scrolls", async () => {
+    const { review } = await open(REVIEW);
+    const headers = [
+      ...(review()?.querySelectorAll<HTMLElement>("[data-section] [data-section-header]") ?? []),
+    ];
+    expect(headers).toHaveLength(7);
+    for (const header of headers) {
+      expect(header.className.split(" ")).toEqual(
+        expect.arrayContaining(["sticky", "top-[var(--sp-sticky-top,0px)]", "bg-bg"]),
+      );
+      expect(header.querySelector("[data-divider]")).not.toBeNull();
+      expect(header.querySelector("h2")).not.toBeNull();
+    }
+  });
 });

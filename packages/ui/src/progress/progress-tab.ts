@@ -12,6 +12,7 @@ import {
 import { LIST, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { LucideListChecks } from "../components/icons";
+import { TabEnd } from "../components/tabs";
 import { formatDuration, type RunRecord, type TaskStatus, workTime } from "../data/progress";
 import { type ChangeView, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
@@ -38,7 +39,16 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
  */
 @Component({
   selector: "sp-progress-tab",
-  imports: [SectionDivider, EmptyState, TaskRow, ScopeRequest, LiveOutput, TestsSent, LockedTests],
+  imports: [
+    SectionDivider,
+    EmptyState,
+    TabEnd,
+    TaskRow,
+    ScopeRequest,
+    LiveOutput,
+    TestsSent,
+    LockedTests,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-8" },
   template: `
@@ -47,7 +57,7 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
         <p class="m-0">{{ t()('Aparecen aquí cuando la spec las define.', 'They show here once the spec defines them.') }}</p>
       </sp-empty-state>
     } @else {
-      <div class="flex flex-col gap-2.5">
+      <div #top class="flex flex-col gap-2.5" data-top>
         <p class="m-0 text-sm text-text-muted" data-summary><strong class="font-semibold text-text">{{ doneLine() }}</strong>{{ rest() }}</p>
         <div class="flex max-w-lg gap-1" aria-hidden="true" data-bar>
           @for (task of tasks(); track task.id) {
@@ -55,6 +65,16 @@ const SEGMENTS: Readonly<Record<TaskStatus, string>> = {
           }
         </div>
       </div>
+      <ng-template [spTabEnd]="top">
+        <div class="flex items-center gap-3" data-compact-summary>
+          <p class="m-0 text-xs text-text-muted"><strong class="font-semibold text-text">{{ doneLine() }}</strong>{{ rest() }}</p>
+          <div class="flex w-24 gap-1" aria-hidden="true" data-compact-bar>
+            @for (task of tasks(); track task.id) {
+              <span class="h-1.5 flex-1 rounded-full" [style.background]="segments[task.status]"></span>
+            }
+          </div>
+        </div>
+      </ng-template>
       @if (change().tests; as tests) {
         <sp-tests-sent [tests]="tests" [now]="now()" />
       }

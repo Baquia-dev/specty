@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Component, computed, Injectable, inject, input } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
+import { TabPanel, Tabs } from "../components/tabs";
 import { Toasts } from "../components/toast";
 import { ChangesStore, DERIVER } from "../data/changes-store";
 import { FixtureData } from "../data/fixtures";
@@ -12,8 +13,16 @@ import { ProgressTab } from "./progress-tab";
 const PDF = "20261019-boletines-pdf";
 
 @Component({
-  imports: [ProgressTab],
-  template: `@if (change(); as change) { <sp-progress-tab [change]="change" /> }`,
+  imports: [Tabs, TabPanel, ProgressTab],
+  template: `
+    @if (change(); as change) {
+      <sp-tabs label="Cambio">
+        <sp-tab-panel value="progress" label="Progreso">
+          <sp-progress-tab [change]="change" />
+        </sp-tab-panel>
+      </sp-tabs>
+    }
+  `,
 })
 class Host {
   readonly id = input(PDF);
@@ -233,5 +242,47 @@ describe("Progress tab", () => {
     expect(text(task()?.querySelector("[data-verification]"))).toMatch(/^Falló .* Ocultar salida$/);
     expect(text(task()?.querySelector("[data-output]"))).toContain("Couldn't resolve");
     expect(text(task()?.querySelector("[data-attempts]"))).toBe("2 intentos");
+  });
+
+  it("AC3: moves the summary and a compact segmented bar to the right of the tab bar once scrolled out of view", async () => {
+    let observed: Element | undefined;
+    let fire: IntersectionObserverCallback = () => undefined;
+    class FakeObserver {
+      constructor(callback: IntersectionObserverCallback) {
+        fire = callback;
+      }
+      observe(target: Element): void {
+        observed = target;
+      }
+      disconnect(): void {}
+    }
+    Object.assign(window, { IntersectionObserver: FakeObserver });
+    try {
+      const { element, settle } = await render();
+      const top = element.querySelector<HTMLElement>("sp-progress-tab [data-top]");
+      expect(observed).toBe(top);
+      if (observed === undefined) throw new Error("expected observed target");
+      expect(element.querySelector("[data-tabs-end]")).toBeNull();
+
+      fire(
+        [{ target: observed, isIntersecting: false } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+      await settle();
+      const end = element.querySelector<HTMLElement>("[data-tabs-end]");
+      expect(text(end?.querySelector("[data-compact-summary]"))).toMatch(
+        /^2 de 3 tareas hechas · \d+ min de trabajo · 1 decisión te espera$/,
+      );
+      expect(end?.querySelectorAll("[data-compact-bar] span")).toHaveLength(3);
+
+      fire(
+        [{ target: observed, isIntersecting: true } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+      await settle();
+      expect(element.querySelector("[data-tabs-end]")).toBeNull();
+    } finally {
+      Reflect.deleteProperty(window, "IntersectionObserver");
+    }
   });
 });
