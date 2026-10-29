@@ -361,7 +361,7 @@ checks:                           # specty check (ADR 0012)
   commands:                       # opcional: los comandos del proyecto, por encima de los detectados
     tests: "pnpm test --run"      # format | lint | typecheck | tests
 policy:
-  tests: recommended              # contract | required | recommended | off; contract: los tests de una feature, antes del código (ARCHITECTURE §4)
+  tests: contract                 # contract | required | recommended | off; contract: los tests de una feature, antes del código (ARCHITECTURE §4). init escribe contract en un proyecto nuevo; sin la clave, recommended
 glossary: docs/dominio.md         # el glosario del dominio; sin la clave: docs/dominio.md (es) o docs/domain.md (en)
 retro:
   mode: agent                     # agent | minimal

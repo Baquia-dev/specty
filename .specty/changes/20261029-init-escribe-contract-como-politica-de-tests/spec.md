@@ -18,7 +18,7 @@ ADR 0014 dejó `policy.tests: contract` como opción hasta probarlo en este repo
 
 ## Tareas
 
-- [ ] T1: init escribe contract como política de tests
+- [x] T1: init escribe contract como política de tests
   - files: packages/core/src/templates.ts, packages/core/test/templates.test.ts, docs/formats.md, docs/ARCHITECTURE.md, docs/decisions/0014-los-tests-como-contrato.md
   - verify: pnpm typecheck && pnpm lint && pnpm --filter @baquia-dev/specty-core exec vitest run test/templates.test.ts
   - type: feat

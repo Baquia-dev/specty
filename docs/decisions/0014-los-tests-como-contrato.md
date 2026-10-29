@@ -32,7 +32,7 @@ Decisiones del usuario del 2026-10-27:
 
 - La revisión de los tests es solo para features.
 - Desbloquear un test queda fuera del modo delegado ([ADR 0010](0010-modo-delegado.md)): lo decide siempre la persona. Aprobar los tests sí se delega, como aprobar la spec.
-- `contract` empieza como opción, y pasará a ser el valor por defecto después de probarlo en este repositorio, en un cambio aparte.
+- `contract` empieza como opción, y pasará a ser el valor por defecto después de probarlo en este repositorio, en un cambio aparte. Hecho el 2026-10-29, tras usarlo aquí desde el 2026-10-28: `init` escribe `contract` en un proyecto nuevo. Una configuración sin la clave sigue en `recommended`, para no cambiarle el flujo a un proyecto que ya existía.
 - Un cambio `quick` no pasa por la revisión de los tests, porque no tiene criterios; si es un bug, sigue el ciclo de un bug.
 - El bloqueo es por archivo y completo, y un error de compilación de un test nuevo cuenta como rojo, como en el TDD clásico.
 

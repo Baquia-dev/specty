@@ -752,4 +752,4 @@ Se elimina:
 2. Rama por cambio en modo individual. Propuesta: activada por defecto.
 3. Retro por defecto. Propuesta: modo `agent` (la visión original), con `minimal` activable.
 4. Aceptación en el carril `quick`. Propuesta: un clic.
-5. Política de tests por defecto. Propuesta: `recommended`, que avisa si una tarea de código no toca tests.
+5. Política de tests por defecto. Resuelta (2026-10-29): `init` escribe `contract` en un proyecto nuevo ([ADR 0014](decisions/0014-los-tests-como-contrato.md)); una configuración sin la clave sigue en `recommended`, que avisa si una tarea de código no toca tests, para no cambiarle el flujo a un proyecto que ya existía.
