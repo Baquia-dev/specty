@@ -99,21 +99,21 @@ async function render(history: readonly HistoryEntry[] = EVENTS) {
 describe("the History tab", () => {
   afterEach(() => TestBed.resetTestingModule());
 
-  it("AC1: shows the events in time order, by day, each with its time, who, type, title and details", async () => {
+  it("AC3: shows the events newest first, by day, each with its time, who, type, title and details", async () => {
     const { element, rows, text } = await render();
     expect(element.querySelectorAll("[data-day]")).toHaveLength(2);
     expect(rows()).toHaveLength(5);
     expect(rows().map((row) => row.querySelector("time")?.getAttribute("datetime"))).toEqual(
-      EVENTS.map((event) => event.at),
+      EVENTS.map((event) => event.at).toReversed(),
     );
-    expect(text(rows()[0])).toContain("Persona");
-    expect(text(rows()[0])).toContain("Cambio creado");
-    expect(text(rows()[0])).toContain("Cambio rápido");
-    expect(text(rows()[1])).toContain("Agente · Claude Code");
+    expect(text(rows()[4])).toContain("Persona");
+    expect(text(rows()[4])).toContain("Cambio creado");
+    expect(text(rows()[4])).toContain("Cambio rápido");
+    expect(text(rows()[3])).toContain("Agente · Claude Code");
     expect(text(rows()[2])).toContain("Verificaciones");
     expect(text(rows()[2])).toContain("pnpm test · 12 s");
-    expect(text(rows()[3])).toContain("Specty");
-    expect(text(rows()[4])).toContain("Por delegación: lo decidió el agente");
+    expect(text(rows()[1])).toContain("Specty");
+    expect(text(rows()[0])).toContain("Por delegación: lo decidió el agente");
     expect(text(element.querySelector("[data-summary]"))).toBe("5 eventos");
   });
 

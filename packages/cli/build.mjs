@@ -2,11 +2,13 @@
 // Bundles the CLI and its dependencies into `specty.mjs` and its chunks: users install nothing
 // else, and the hooks load only their own entry. `--ui <folder>` copies a build of the UI next to
 // it, for the npm package; `--outdir <folder>` writes somewhere else than `dist`; `--metafile
-// <file>` keeps esbuild's metafile, for the tests.
+// <file>` keeps esbuild's metafile, for the tests. With a build of the UI, `--ui`'s or the
+// monorepo's, it also writes the page of the MCP App, `mcp-app.html` (ADR 0015).
 import { access, cp, readdir, rm, writeFile } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { build } from "esbuild";
+import { mcpAppPage } from "./mcp-app.mjs";
 
 const { values } = parseArgs({
   options: {
@@ -67,3 +69,14 @@ if (values.ui !== undefined) {
   }
   await cp(ui, join(outdir, "ui"), { recursive: true });
 }
+
+// The page of the MCP App: from `--ui`, or from the monorepo's build of the UI if there is one.
+await rm(join(outdir, "mcp-app.html"), { force: true });
+const uiBuild = resolve(values.ui ?? join("..", "ui", "dist", "browser"));
+const hasUi = await access(join(uiBuild, "index.html")).then(
+  () => true,
+  () => false,
+);
+// A build that loads no script has nothing to pack: no page, and the build goes on.
+const page = hasUi ? await mcpAppPage(uiBuild) : undefined;
+if (page !== undefined) await writeFile(join(outdir, "mcp-app.html"), page);

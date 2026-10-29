@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "id": "20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
+  "baseCommit": "7de538a74b9ad00473a69df08c98fcbcd8da146a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:97966ff74932142c058397f741094b2112544ab01e8e460f9c330f4fac77cd6d",
+    "at": "2026-10-29T07:57:02.653Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:062cff8ea739691eebac60838d6ae338b202e90ade09269f042d6711159bca33",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e989a3569c232f65418bd91a92c075edb66291cba7a65f0e67e5d71448566538",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a12637982ef497f661379dc1e14b1c19d72f9f7b",
+      "attempts": 1,
+      "startedAt": "2026-10-29T07:59:56.107Z",
+      "doneAt": "2026-10-29T08:16:06.375Z",
+      "summary": "AuditRecord e HistoryEntry traen by, model y effort; historyOf los copia y el detalle delegado nombra a la persona; las líneas de muestra dicen quién",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8d0e305427be15782d440c48c86664f08a38176f",
+      "attempts": 1,
+      "startedAt": "2026-10-29T08:16:06.711Z",
+      "doneAt": "2026-10-29T08:20:57.328Z",
+      "summary": "La pestaña Historial nombra a la persona, dice la herramienta, el modelo (Opus 5.5) y el esfuerzo del agente, y va del día y el evento más recientes a los más antiguos",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "c8aa6dce49b0472125dca37b9d48d8b3dcbedf6c",
+      "attempts": 1,
+      "startedAt": "2026-10-29T08:20:57.661Z",
+      "doneAt": "2026-10-29T08:24:26.938Z",
+      "summary": "docs/ui.md describe el orden del más reciente al más antiguo y quién hizo cada cosa: el nombre de la persona y el modelo y el esfuerzo del agente",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-29T08:28:12.149Z",
+  "lockedTests": {
+    "packages/ui/src/history/history-tab.test.ts": "sha256:c3919b9bde77e116cb7dfa733fcf311bc178b0ecaca31c7be217e0e1931c4c78",
+    "packages/ui/src/data/history-who.test.ts": "sha256:dc36794e0303064e9200727655a7b1dba05c30604d2e6c61c0ddbb4a4c75e956",
+    "packages/ui/src/history/history-who.test.ts": "sha256:de2fa2ef339823176a22cec408fad25ebd80b838dba43f1879cc8f65e4e756cf"
+  }
+}
