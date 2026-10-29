@@ -66,3 +66,24 @@ La pestaña Historial muestra la línea de tiempo, pero para llevarse el cambio 
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La pestaña Historial tiene un menú «Exportar» (`history/history-export.ts`) a la derecha de los filtros, también sin eventos. Descarga el informe de auditoría del cambio en Markdown o JSON, el mismo de `specty audit`, o la spec en OpenSpec, Spec Kit o Kiro en un `.zip` con los archivos de `specty export`. La UI lo genera ella misma (`data/export.ts`) con `auditViewOf`, `auditReport`, `exportContextOf` y `exportSpec`, a partir del cambio tal como lo tiene la fuente, y escribe el `.zip` sin comprimir con `data/zip.ts` (comprobado con `unzip -t`). Si la fuente no tiene o no puede dar el cambio, un aviso lo dice y no se descarga nada.
+
+### Desviaciones
+
+- `data/export.ts` entró en T2 (S1): la lista de formatos pasó al menú y el módulo solo exporta su tipo.
+- El bundle inicial de la UI pasa de 521 a 740 kB: el parser y el informe de core entran en un chunk compartido que carga `main`, porque el hilo principal importa core por su índice. Cargarlo bajo demanda con `import()` no bastaba (el mismo chunk compartido) y además hacía inestable el test bloqueado. Lo arregla el cambio siguiente, «El hilo principal de la UI importa core por una entrada ligera», ya creado.
+
+### Decisiones
+
+- La exportación se genera en la UI, no en el servidor: sale igual que en la CLI y sirve para cualquier fuente (servidor, prototipo, la webview de VS Code y MCP Apps).
+- El menú lista los formatos por su nombre, igual en los dos idiomas; el JSON lleva sangría de dos espacios.
+
+### Pendientes
+
+- La entrada ligera de core para el hilo principal, que devuelve el bundle inicial a su tamaño.
+- La vista de trazabilidad.

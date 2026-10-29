@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
   "baseCommit": "7f224077b03d050749f0d8c435ff4ad04bd4ffa8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f65828c0f3df063c8e498404d9ab371d45412acc258fec47452f1a0e54afd4b0",
@@ -59,12 +59,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d52efab290164c26bd018bf239fd6c4bfa6f61c4",
+      "attempts": 1,
       "startedAt": "2026-10-29T05:28:57.472Z",
       "doneAt": "2026-10-29T05:32:13.419Z",
-      "summary": "docs/ui.md describe el menú Exportar: los cinco formatos, que la UI los genera con las funciones de la CLI y el aviso cuando no puede"
+      "summary": "docs/ui.md describe el menú Exportar: los cinco formatos, que la UI los genera con las funciones de la CLI y el aviso cuando no puede",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -76,6 +76,7 @@
     "AC": 3,
     "T": 3
   },
+  "closingSubmittedAt": "2026-10-29T05:35:42.672Z",
   "lockedTests": {
     "packages/ui/src/data/export.test.ts": "sha256:c3dccf9c29fb9088e7dce1b2f6e3cbcccc82028b8f6f0a214f20750f1b0130f3",
     "packages/ui/src/data/zip.test.ts": "sha256:56d6a60c43e93bc5f1bd4b1d0083b54bdf190ed61587241898426ffb1006e01e",
