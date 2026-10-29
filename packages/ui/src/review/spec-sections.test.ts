@@ -276,16 +276,16 @@ describe("ReviewItems", () => {
     const badge = element.querySelector<HTMLElement>("#tasks [data-item=T1] sp-badge");
     badge?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
     await settle();
-    expect(document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim()).toBe(
-      'Criterio de aceptación AC1: CUANDO alguien pulsa "Entrar" ENTONCES entra.',
-    );
+    expect(
+      document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim(),
+    ).toBe('Criterio de aceptación AC1: CUANDO alguien pulsa "Entrar" ENTONCES entra.');
 
     const riskId = element.querySelector<HTMLElement>("#risks [data-item=R1] .font-mono");
     riskId?.dispatchEvent(new MouseEvent("pointerover", { bubbles: true }));
     await settle();
-    expect(document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim()).toBe(
-      "Riesgo R1: Google cambia su API.",
-    );
+    expect(
+      document.querySelector(".cdk-overlay-container [data-tooltip]")?.textContent?.trim(),
+    ).toBe("Riesgo R1: Google cambia su API.");
   });
 
   it("offers no comment outside an editable review (AC4)", async () => {

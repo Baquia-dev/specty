@@ -145,6 +145,15 @@ async function stateOf(root: string, target: Target): Promise<State> {
 }
 
 /**
+ * Whether the repository registers Specty's server: some agent's file has its entry, even one
+ * that runs another command, as a wrapper that logs it. AGENTS.md then asks to use its tools.
+ */
+export async function mcpInRepo(root: string): Promise<boolean> {
+  const states = await Promise.all(TARGETS.map((target) => stateOf(root, target)));
+  return states.some((state) => state !== "absent");
+}
+
+/**
  * What `doctor` says of the server. The repository asked for it when some agent's file has the
  * entry: then each agent of `tools` should have it, running `specty mcp`. Without any, nothing.
  */

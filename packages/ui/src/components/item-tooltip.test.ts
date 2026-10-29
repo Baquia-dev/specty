@@ -110,9 +110,7 @@ describe("ItemTooltips and ItemText", () => {
     await settle();
     expect(bubble()?.textContent?.trim()).toBe(`Criterio de aceptación AC1: ${ac1}`);
 
-    element
-      .querySelector("#task")
-      ?.dispatchEvent(new FocusEvent("focusin", { bubbles: true }));
+    element.querySelector("#task")?.dispatchEvent(new FocusEvent("focusin", { bubbles: true }));
     await settle();
     expect(bubble()?.textContent?.trim()).toBe(`Tarea T1: ${t1}`);
 
@@ -164,7 +162,7 @@ describe("ItemTooltips and ItemText", () => {
     await settle();
     expect(bubble()?.textContent?.trim()).toBe("Corte C2");
 
-    TestBed.inject(Preferences).setLang("en");
+    TestBed.inject(Preferences).lang.set("en");
     host.change.set(undefined);
     await settle();
     hover(element.querySelector("#task"));

@@ -19,7 +19,7 @@ import { repoPaths } from "../store/paths";
 import { type InstallFiles, installFiles } from "./files";
 import { flowToWrite, noFlowWarnings } from "./git-flow";
 import { agentsToInstall, installHooks } from "./hooks";
-import { installMcp } from "./mcp";
+import { installMcp, mcpInRepo } from "./mcp";
 import { writeProduct } from "./product";
 import { writeAgentsMd, writeConfig, writeGlossary } from "./project-files";
 
@@ -91,15 +91,12 @@ export async function install(setup: InitSetup, fresh: boolean): Promise<Install
     dryRun,
     lang,
   });
-  const project = await writeProjectFiles(setup, fresh, files, flow.flow);
-  const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
+  // The MCP server goes before AGENTS.md, whose flow asks to use its tools when it is there.
   const { tools } = agents;
+  const mcp = await mcpServer(setup, tools, files);
+  const project = await writeProjectFiles(setup, fresh, files, flow.flow, mcp.served);
+  const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
   const hooks = await installHooks({ environment, root, git, tools, lang, files });
-  const { invocation } = environment;
-  const mcp =
-    options.mcp === true
-      ? await installMcp({ root, tools, invocation, files, lang })
-      : { done: [], warnings: [], written: [] };
   const noTests =
     setup.config?.verify.default === undefined &&
     verifyCommands(detection.commands).default === undefined;
@@ -122,6 +119,24 @@ export async function install(setup: InitSetup, fresh: boolean): Promise<Install
   };
 }
 
+/**
+ * Specty's MCP server with `--mcp`, and whether the repository registers it: the entries just
+ * written, or one an agent's file already had.
+ */
+async function mcpServer(
+  setup: InitSetup,
+  tools: readonly AgentTool[],
+  files: InstallFiles,
+): Promise<Awaited<ReturnType<typeof installMcp>> & { readonly served: boolean }> {
+  const { options, root, lang, environment } = setup;
+  const { invocation } = environment;
+  const mcp =
+    options.mcp === true
+      ? await installMcp({ root, tools, invocation, files, lang })
+      : { done: [], warnings: [], written: [] };
+  return { ...mcp, served: mcp.written.length > 0 || (await mcpInRepo(root)) };
+}
+
 /** Where init writes: a dry run only plans; otherwise every file that existed is copied first. */
 async function installTarget(
   setup: InitSetup,
@@ -140,12 +155,16 @@ async function installTarget(
   return { files, backups };
 }
 
-/** `.specty/config.yaml`, AGENTS.md, the glossary where it is missing and, in a new project, PRODUCT.md. */
+/**
+ * `.specty/config.yaml`, AGENTS.md, the glossary where it is missing and, in a new project,
+ * PRODUCT.md. `mcp` says whether the repository registers Specty's MCP server.
+ */
 async function writeProjectFiles(
   setup: InitSetup,
   fresh: boolean,
   files: InstallFiles,
   flow: GitFlow | undefined,
+  mcp: boolean,
 ): Promise<Pick<Installed, "product" | "done" | "written" | "unfilled">> {
   const { environment, options, root, lang, detection } = setup;
   const configLines = await writeConfig(files, repoPaths(root).config, detection, {
@@ -154,7 +173,7 @@ async function writeProjectFiles(
     ...(options.language !== undefined ? { relanguage: options.language } : {}),
     ...(flow !== undefined ? { flow } : {}),
   });
-  const agents = await writeAgentsMd(root, lang, detection, files);
+  const agents = await writeAgentsMd(root, lang, detection, files, mcp);
   const glossary = setup.config?.glossary ?? defaultGlossary(lang);
   const glossaryCreated = await writeGlossary(root, glossary, lang, files);
   // A new project starts with what it is for: the interview with a person, or its questions.

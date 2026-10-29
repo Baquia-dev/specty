@@ -5,6 +5,7 @@ import { lookup } from "../lookup";
 import { headerOf, type Output, section } from "../output";
 import type { ChangeKind } from "../spec/model";
 import { translator } from "./text";
+import { usageOf, usageWords } from "./usage";
 import type { CardContext } from "./view";
 
 /** A line of `audit.jsonl` (formats.md §4), as it is. */
@@ -156,6 +157,8 @@ interface EventWords {
   after(key: string): string;
   /** The command an event ran, with its exit code and its duration. */
   ran(): string;
+  /** The consumption an event keeps: tokens, calls and cost, or "—". */
+  usage(): string;
 }
 
 /** Each event of formats.md §4 in words. */
@@ -204,6 +207,7 @@ const EVENTS: Readonly<Record<string, (words: EventWords) => string>> = {
   "change.verified": ({ t, ran }) => t("Verificación completa: ", "Full verification: ") + ran(),
   "change.accepted": ({ t }) => t("Aceptó el resultado", "Accepted the result"),
   "retro.confirmed": ({ t }) => t("Confirmó la retro", "Confirmed the retro"),
+  "change.usage": ({ t, usage }) => t("Consumo: ", "Usage: ") + usage(),
   "change.closed": ({ t }) => t("Cerró el cambio", "Closed the change"),
   "change.cancelled": ({ t, after }) =>
     t("Canceló el cambio", "Cancelled the change") + after("reason"),
@@ -233,6 +237,10 @@ function eventWords(data: AuditEvent["data"], t: T): EventWords {
         `\`${text("cmd")}\`, código ${value("exit")}, ${duration(data.ms)}`,
         `\`${text("cmd")}\`, code ${value("exit")}, ${duration(data.ms)}`,
       ),
+    usage: () => {
+      const usage = usageOf(data);
+      return usage === undefined ? "—" : usageWords(usage, t);
+    },
   };
 }
 

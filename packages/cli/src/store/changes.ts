@@ -20,6 +20,7 @@ export interface AuditEntry {
   /** The person: in their own decisions and in those the agent takes for them. */
   readonly by?: string;
   /** What the agent tells of itself, when it does: context, not proof, like `tool`. */
+  readonly session?: string;
   readonly model?: string;
   readonly effort?: string;
   readonly event: string;

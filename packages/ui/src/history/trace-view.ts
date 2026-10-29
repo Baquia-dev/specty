@@ -20,12 +20,6 @@ import { HIGHLIGHT, type LineSpan, spansOf } from "../highlight/highlight";
 import { Preferences } from "../theme/preferences";
 import { TraceDiff } from "./trace-diff";
 
-declare global {
-  function settle(): Promise<void>;
-}
-
-(globalThis as { settle?: () => Promise<void> }).settle ??= () => Promise.resolve();
-
 /** A block with its lines, each with its number in the file and its pieces of code. */
 interface ShownBlock {
   readonly block: TraceBlock;

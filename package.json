@@ -20,6 +20,7 @@
     "test": "pnpm -r --workspace-concurrency=1 --if-present test",
     "sources": "node scripts/check-sources.mjs",
     "knip": "knip",
+    "usage": "ccusage claude daily",
     "evals": "pnpm --filter @baquia-dev/specty build && SPECTY_EVALS=1 pnpm --filter @baquia-dev/specty-evals exec vitest run"
   },
   "devEngines": {
@@ -33,6 +34,7 @@
     "@biomejs/biome": "2.5.15",
     "@types/node": "^24.19.2",
     "@vitest/coverage-v8": "5.0.5",
+    "ccusage": "20.0.45",
     "fast-check": "4.10.2",
     "knip": "6.41.0",
     "typescript": "7.0.2",

@@ -144,18 +144,22 @@ export async function writeConfig(
   return [...changed, ...added];
 }
 
-/** Writes or refreshes the managed blocks of AGENTS.md; the rest of the file is the user's. */
+/**
+ * Writes or refreshes the managed blocks of AGENTS.md; the rest of the file is the user's. With
+ * `mcp`, the repository registers Specty's MCP server, and the flow asks to use its tools.
+ */
 export async function writeAgentsMd(
   root: string,
   lang: Lang,
   detection: Detection,
   files: InstallFiles = installFiles(),
+  mcp = false,
 ): Promise<"created" | "updated"> {
   const path = join(root, "AGENTS.md");
   const current = await files.read(path);
   const base = current ?? `# ${detection.name}\n\n${humanSections(lang)}\n`;
   const withProject = upsertBlock(base, "project", projectBlock(projectFacts(detection), lang));
-  await files.write(path, upsertBlock(withProject, "flow", flowBlock(lang, COMMAND)));
+  await files.write(path, upsertBlock(withProject, "flow", flowBlock(lang, COMMAND, { mcp })));
   return current === undefined ? "created" : "updated";
 }
 

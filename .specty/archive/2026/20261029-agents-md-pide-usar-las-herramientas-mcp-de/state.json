@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "id": "20261029-agents-md-pide-usar-las-herramientas-mcp-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-agents-md-pide-usar-las-herramientas-mcp-de",
+  "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:49a83bcc6368def76142f9bd302eed34adfbb3a2a0444592aa7991d9b84cddb9",
+    "at": "2026-10-29T20:23:33.219Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d46c1b7d421aa2e4e20a776c479daa10f8545e211d7d8b377c73883d84103e30",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:226fa5df89541d0a3b74252476cae88dd56d3f577b68077d1dab151d7e45a455",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:1a6d954514a962cbd7a3d7223f36e4900b1ae43148efcbfde368246568199a4d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9b9e258e07d28b8cc174b81feb48511302179774",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:24:32.330Z",
+      "doneAt": "2026-10-29T20:33:51.971Z",
+      "summary": "flowBlock(lang, command, { mcp }) añade tras la primera línea la que pide usar las herramientas specty_* en lugar del comando que hace lo mismo; sin mcp el bloque es el de hoy. formats.md §8 la describe.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "29a8a91728697e89c0c04cb75d2cccfafbe33c5e",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:33:52.856Z",
+      "doneAt": "2026-10-29T20:43:27.532Z",
+      "summary": "init registra el servidor MCP antes de AGENTS.md (mcpServer) y, si escribió entradas o algún archivo de agente ya tiene la entrada specty (mcpInRepo), el bloque de flujo lleva la línea de las herramientas; ARCHITECTURE §6 lo cuenta.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-29T20:49:26.502Z",
+  "lockedTests": {
+    "packages/cli/test/mcp-install.test.ts": "sha256:a69edb4d4ba2390c246f6b77b0e315efb0d6f8949736b43106f6e3bd47dc84f2",
+    "packages/core/test/agents-md.test.ts": "sha256:b2dbcfd87bf727434037c1f194399408e3eb68747978d45290ea7a15fbef3178"
+  }
+}

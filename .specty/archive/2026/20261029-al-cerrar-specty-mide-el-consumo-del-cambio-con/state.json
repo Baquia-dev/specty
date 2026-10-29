@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "id": "20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
+  "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7c9a85ea643165213e80f2e3cbc4b586c5f923177a15e06d1791200ef5af07cc",
+    "at": "2026-10-29T20:11:08.913Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "cambia dependencias",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8f450352e470bc109c478b14a6c27df11c4c1636c88a39a7feea2920b68e5a95",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f794ae1b5efd9bcf2c4158562313096c5fcd3ef03b63c4c4dcc262acb1f77cc6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "916dca46dc38825b4ca8a97f4b6d4560ecfe09b1",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:16:34.000Z",
+      "doneAt": "2026-10-29T20:23:19.981Z",
+      "summary": "core/usage.ts: modelPrices deduce por mínimos cuadrados, con columnas escaladas, los precios que explican cada sesión de ccusage al céntimo; changeUsage suma las llamadas desde la creación. Incluye los textos de T2 (usageLine y change.usage en audit), que pide el typecheck.",
+      "scopeExtra": [
+        "packages/core/src/cards/usage.ts",
+        "packages/core/src/cards/index.ts",
+        "packages/core/src/cards/audit.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "87ac990491fbc7ad17dc13d00324713e3817f4b5",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:23:20.333Z",
+      "doneAt": "2026-10-29T20:23:28.540Z",
+      "summary": "Los textos ya entraron en T1, que los necesitaba para su typecheck: usageLine en español e inglés y el evento change.usage en specty audit; aquí pasa su verificación.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "4522251cc69937eeba0a71c90808c26f5371c90c",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:23:28.883Z",
+      "doneAt": "2026-10-29T20:27:05.632Z",
+      "summary": "flow/usage.ts pide a ccusage (el de node_modules/.bin del cambio o el del PATH) los precios y las llamadas de las sesiones de la auditoría, anota change.usage y añade la línea; close y el cierre del quick miden antes de archivar. Sin respuesta válida, nada cambia.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "e3e821e9905a2432942f211bd549fa6c41906909",
+      "attempts": 1,
+      "startedAt": "2026-10-29T20:27:05.981Z",
+      "doneAt": "2026-10-29T20:28:10.567Z",
+      "summary": "ccusage 20.0.45 como dependencia de desarrollo con el script usage (informe por días); formats.md §4 documenta change.usage y ARCHITECTURE §13 cómo se mide: sesiones de la auditoría, precios deducidos del informe de ccusage, sin instalar nada.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 4,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-10-29T20:34:50.045Z",
+  "lockedTests": {
+    "packages/cli/test/usage.test.ts": "sha256:bad355335e3963c23cc6c4c0897f36e1173301cacde6b2a60e1ee1501f7b5fbc",
+    "packages/core/test/cards/usage.test.ts": "sha256:32034c03886aa5ca24959fefb7fe8607b43fb10c214c789f8c1ec8a4ccbdb7c1",
+    "packages/core/test/usage.test.ts": "sha256:f957c442306f2d4d2b3aa7e8baecb62f378985620c2df77131c92512c9bb5c85"
+  }
+}
