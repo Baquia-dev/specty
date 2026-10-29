@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
   "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
   "revision": 2,
@@ -45,6 +45,9 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T20:16:29.548Z"
+  "lockedTests": {
+    "packages/cli/test/usage.test.ts": "sha256:bad355335e3963c23cc6c4c0897f36e1173301cacde6b2a60e1ee1501f7b5fbc",
+    "packages/core/test/cards/usage.test.ts": "sha256:32034c03886aa5ca24959fefb7fe8607b43fb10c214c789f8c1ec8a4ccbdb7c1",
+    "packages/core/test/usage.test.ts": "sha256:f957c442306f2d4d2b3aa7e8baecb62f378985620c2df77131c92512c9bb5c85"
+  }
 }
