@@ -6,6 +6,13 @@
   "branch": "specty/20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
   "baseCommit": "2c20665f684aa5ed747233f024bc687aee919f5d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b1b27ba48c055d10359c5a7c0ad36288dbd30b51f3b871711908e426e63182e4",
+    "at": "2026-10-29T05:53:19.345Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -38,12 +45,6 @@
     "AC": 3,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b1b27ba48c055d10359c5a7c0ad36288dbd30b51f3b871711908e426e63182e4",
-    "at": "2026-10-29T05:53:19.345Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T05:54:12.590Z"
 }
