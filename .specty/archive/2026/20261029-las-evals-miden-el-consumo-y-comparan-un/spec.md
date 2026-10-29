@@ -76,3 +76,26 @@ Antes de llevarlo al producto hay que medirlo con agentes de verdad. Para eso la
 
 - R1: El experimento gasta cupo de la persona: dos ejecuciones de unos minutos. Mitigación: una ejecución por variante, y solo cuando se nombra.
 - R2: Tres cambios pequeños no muestran el ahorro de una sesión larga. Mitigación: se mide además el mayor contexto del hilo principal, que con el subagente debe quedarse quieto y sin él crecer con cada cambio, y el ahorro se extrapola con la simulación.
+
+## Cierre
+
+### Resumen
+
+La suite guarda el coste de cada ejecución de Claude Code y el mayor contexto de su hilo principal, y los resume en «Consumo». Tiene dos experimentos de tres cambios quick seguidos en modo delegado: uno los hace el agente y el otro, cada uno, el subagente `specty-change`.
+
+Con Claude Code 2.1.312 y tres ejecuciones de cada uno, los dos cumplen 3 de 3 sin bloqueos. Con el subagente el hilo principal crece menos (26.500 frente a 33.500 tokens), pero cuesta 1,8 veces más (0,78 frente a 0,43 USD), porque cada subagente arranca un contexto nuevo y repite pasos. ARCHITECTURE §16 lo anota.
+
+### Desviaciones
+
+- Tres ejecuciones de cada experimento en lugar de una, porque cada una salió por menos de un dólar.
+- La primera verificación completa de `accept` falló por un error de jsdom en `ui/src/app/embedded.test.ts`, ajeno a este cambio. Solo y en la suite de la UI pasó entero (517 de 517), y el segundo `accept` pasó.
+
+### Decisiones
+
+- Los experimentos son aparte de los escenarios de cumplimiento, con su propio tipo de id, y solo corren si se nombran: cuestan cupo y tardan más.
+- Specty no instala el subagente ni pide delegar. En sesiones cortas cuesta casi el doble, y en las largas el aviso de sesión nueva del cierre da el mismo ahorro sin el coste fijo.
+
+### Pendientes
+
+- Medir el subagente en una sesión larga, por encima de 150.000 tokens: es donde podría compensar como limpieza sin intervención de la persona.
+- `ui/src/app/embedded.test.ts` falla a veces bajo la carga de `pnpm check`, con un error de jsdom tras terminar el test.

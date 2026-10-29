@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-las-evals-miden-el-consumo-y-comparan-un",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-las-evals-miden-el-consumo-y-comparan-un",
   "baseCommit": "297ca21f78dc0a25accc02e73612d622f5357f13",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:fe33fd5dd186dfb868aeb246d00d9ec5978335874f7916b0edd0dda105193b2f",
@@ -43,12 +43,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cb40ea1cef8d0bf30f46fe24bb0bc6a42dc2f337",
+      "attempts": 1,
       "startedAt": "2026-10-29T21:25:43.746Z",
       "doneAt": "2026-10-29T21:40:20.754Z",
-      "summary": "Experimento con Claude Code 2.1.312, 3 ejecuciones de cada uno: los dos cumplen 3/3 sin bloqueos; el subagente cuesta 0,78 frente a 0,43 USD (1,8×) y deja el hilo en 26.500 frente a 33.500 tokens. ARCHITECTURE §16 lo anota: no compensa en sesiones cortas; el aviso de /clear cubre las largas."
+      "summary": "Experimento con Claude Code 2.1.312, 3 ejecuciones de cada uno: los dos cumplen 3/3 sin bloqueos; el subagente cuesta 0,78 frente a 0,43 USD (1,8×) y deja el hilo en 26.500 frente a 33.500 tokens. ARCHITECTURE §16 lo anota: no compensa en sesiones cortas; el aviso de /clear cubre las largas.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -61,6 +61,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-29T21:51:17.633Z",
   "lockedTests": {
     "evals/test/consumption.test.ts": "sha256:3733a42173d51ebcef61960d0caf76e53aeab77993a183a9a42a033d65172911",
     "evals/test/experiments.test.ts": "sha256:d17529eceda62dbe2a2ea958f659e7dc995eb129f0c4a4c16d6afa5f75739480"
