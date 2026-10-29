@@ -20,3 +20,9 @@ Con `policy.tests: required` o `contract`, cada tarea de código de un cambio es
   - files: packages/core/src/validate/quality.ts, packages/core/test/validate/quality.test.ts, docs/formats.md
   - verify: pnpm typecheck && pnpm lint && pnpm --filter @baquia-dev/specty-core exec vitest run test/validate test/cards
   - type: feat
+
+## Cierre
+
+### Resumen
+
+Con contract, refactor y perf no necesitan listar tests (needsTests con testRules); required y recommended igual; test visto en rojo; formats §1
