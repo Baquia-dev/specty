@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7c96ce2b64044d14b2cdbe058c5093fb7d198d55",
+      "startedAt": "2026-10-29T07:34:35.171Z",
+      "doneAt": "2026-10-29T07:47:12.287Z",
+      "summary": "auditEntry anota by (user.name de git) en las líneas de la persona y en las delegadas, y model y effort de Claude Code (CLAUDE_EFFORT y el final del transcript de su sesión) en las del agente; testEnv deja fuera esas variables"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
