@@ -12,6 +12,7 @@ import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { Field } from "../components/field";
 import { LucideQuote } from "../components/icons";
+import { ItemText } from "../components/item-tooltip";
 import { Toasts } from "../components/toast";
 import {
   type Bilingual,
@@ -57,7 +58,7 @@ export function selectionAnchor(root: HTMLElement): CommentAnchor | undefined {
 /** The review's comments and the composer for a new one, anchored to an item or a quote. */
 @Component({
   selector: "sp-review-comments",
-  imports: [LucideDynamicIcon, Button, Field],
+  imports: [LucideDynamicIcon, Button, Field, ItemText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-3" },
   template: `
@@ -68,7 +69,7 @@ export function selectionAnchor(root: HTMLElement): CommentAnchor | undefined {
     @if (editable()) {
       @if (anchor(); as target) {
         <form class="flex flex-col gap-2 rounded-lg border border-border bg-surface p-3" (submit)="$event.preventDefault()">
-          <p class="m-0 text-sm text-text-muted" data-target>{{ anchorLabel(target) }}</p>
+          <p class="m-0 text-sm text-text-muted" data-target><sp-item-text [text]="anchorLabel(target)" /></p>
           <sp-field [label]="t()('Comentario', 'Comment')" [multiline]="true" [(value)]="body" />
           <div class="flex justify-end gap-2">
             <sp-button size="sm" variant="ghost" (pressed)="cancel()">{{ t()('Cancelar', 'Cancel') }}</sp-button>
@@ -92,8 +93,8 @@ export function selectionAnchor(root: HTMLElement): CommentAnchor | undefined {
     <ul class="m-0 flex list-none flex-col p-0">
       @for (comment of comments(); track comment.id) {
         <li class="flex flex-col gap-1 border-b border-border py-3 text-sm first:pt-0" [class.opacity-60]="comment.resolved" [attr.data-comment]="comment.id">
-          <span class="font-mono text-[11px] text-text-muted">{{ anchorLabel(comment.anchor) }}</span>
-          <p class="m-0 leading-normal">{{ comment.body }}</p>
+          <span class="font-mono text-[11px] text-text-muted"><sp-item-text [text]="anchorLabel(comment.anchor)" /></span>
+          <p class="m-0 leading-normal"><sp-item-text [text]="comment.body" /></p>
           <span class="text-xs text-text-muted">
             {{ comment.author }} · {{ since(comment.createdAt) }} · {{ t()('en la revisión ', 'on revision ') }}{{ comment.revision }}
             @if (comment.resolvedInRevision) {

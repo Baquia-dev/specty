@@ -25,12 +25,7 @@ import {
 } from "@angular/core";
 import type { Lang } from "@baquia-dev/specty-core/light";
 import { ChangesStore } from "../data/changes-store";
-import {
-  type ChangeView,
-  type DeltaEntryView,
-  type ReviewView,
-  SpectyData,
-} from "../data/records";
+import { type ChangeView, type DeltaEntryView, type ReviewView, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
 import { TOOLTIP_POSITIONS } from "./tooltip";
 
@@ -74,7 +69,6 @@ export type ItemSource =
   | string
   | undefined;
 
-/** Formats a Specty sigla (`A1`, `AC1`, `T4`, `R1`, `S1`, `C1`) with its full type and content. */
 export function formatItemTooltip(id: string, lang: Lang, text?: string): string {
   const trimmed = id.trim();
   const match = EXACT_ITEM_RE.exec(trimmed);
@@ -84,7 +78,6 @@ export function formatItemTooltip(id: string, lang: Lang, text?: string): string
   return clean.length > 0 ? `${label} ${trimmed}: ${clean}` : `${label} ${trimmed}`;
 }
 
-/** Splits a text into plain segments and Specty item references (`A1`, `AC1`, `T4`, `R1`, `S1`, `C1`). */
 export function splitItemRefs(text: string): readonly ItemTextPart[] {
   if (text.length === 0) return [];
   const parts: ItemTextPart[] = [];
@@ -108,7 +101,6 @@ function deltaEntryText(entry: DeltaEntryView): string {
     .trim();
 }
 
-/** Collects item IDs and their text or title from a `ReviewView` (including delta entries). */
 export function itemsOfReview(review: ReviewView): ReadonlyMap<string, string> {
   const map = new Map<string, string>();
   for (const assumption of review.assumptions) map.set(assumption.id, assumption.text);
@@ -129,13 +121,11 @@ function addHistoryScopes(map: Map<string, string>, change: ChangeView, lang: La
     const head = `${entry.details[0]?.[lang] ?? ""} ${entry.title.es}`;
     const id = /\b(S[1-9]\d*)\b/.exec(head)?.[1];
     const summary = entry.details.at(-1)?.[lang]?.trim() ?? "";
-    if (id !== undefined && !map.has(id) && summary.length > 0 && summary !== id) {
+    if (id !== undefined && !map.has(id) && summary.length > 0 && summary !== id)
       map.set(id, summary);
-    }
   }
 }
 
-/** Collects item IDs and scope requests with their content from a `ChangeView`. */
 export function itemsOfChange(change: ChangeView, lang: Lang = "es"): ReadonlyMap<string, string> {
   const map = new Map(itemsOfReview(change.review));
   for (const task of change.progress.tasks) {
@@ -189,9 +179,8 @@ function explicitTarget(element: Element, host: HTMLElement): ResolvedTarget | u
 function nodeIdOf(node: HTMLElement): string | undefined {
   const text = visibleText(node);
   if (EXACT_ITEM_RE.test(text) && node.children.length <= 2) return text;
-  if (node.children.length === 0 && node.classList.contains("font-mono")) {
+  if (node.children.length === 0 && node.classList.contains("font-mono"))
     return LEADING_ITEM_RE.exec(text)?.[1];
-  }
   return undefined;
 }
 
@@ -224,6 +213,8 @@ class ItemTooltipBubble {
   enter: (() => void) | undefined;
   leave: (() => void) | undefined;
 }
+
+let openTooltip: ItemTooltips | undefined;
 
 @Directive({
   selector: "[spItemTooltips]",
@@ -262,7 +253,7 @@ export class ItemTooltips {
   constructor() {
     afterRenderEffect(() => this.syncBubble());
     inject(DestroyRef).onDestroy(() => {
-      this.stay();
+      this.hide();
       this.overlay?.dispose();
     });
   }
@@ -274,6 +265,7 @@ export class ItemTooltips {
   protected onEnter(event: Event): void {
     const target = this.resolveTarget(event.target);
     if (target === undefined) return;
+    event.stopPropagation();
     const from = event instanceof MouseEvent ? event.relatedTarget : null;
     if (from instanceof Node && target.origin.contains(from)) {
       this.stay();
@@ -324,6 +316,8 @@ export class ItemTooltips {
   }
 
   private showTarget(target: ResolvedTarget): void {
+    if (openTooltip !== undefined && openTooltip !== this) openTooltip.hide();
+    openTooltip = this;
     this.stay();
     const content = target.text || this.items().get(target.id);
     const formatted = formatItemTooltip(target.id, this.preferences.lang(), content);
@@ -365,6 +359,7 @@ export class ItemTooltips {
 
   protected hide(): void {
     this.stay();
+    if (openTooltip === this) openTooltip = undefined;
     this.activeTarget = undefined;
     this.bubbleRef = undefined;
     this.overlay?.detach();
@@ -375,7 +370,7 @@ export class ItemTooltips {
   selector: "sp-item-text",
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [ItemTooltips],
-  template: `@for (part of parts(); track $index) {@if (part.id) {<span [attr.data-item-ref]="part.id">{{ part.text }}</span>} @else {{{ part.text }}}}`,
+  template: `@for (part of parts(); track $index) {@if (part.id) {<span [attr.data-item-ref]="part.id">{{ part.text }}</span>} @else {<span>{{ part.text }}</span>}}`,
 })
 export class ItemText {
   readonly text = input.required<string>();

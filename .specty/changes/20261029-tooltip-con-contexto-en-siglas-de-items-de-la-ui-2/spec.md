@@ -56,7 +56,7 @@ Se añade `packages/ui/src/components/item-tooltip.ts` con:
   - files: packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts
-- [ ] T2: Tooltips de siglas en revisión de spec, delta y comentarios
+- [x] T2: Tooltips de siglas en revisión de spec, delta y comentarios
   - files: packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-sections.ts, packages/ui/src/review/comments.ts, packages/ui/src/review/spec-sections.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts
