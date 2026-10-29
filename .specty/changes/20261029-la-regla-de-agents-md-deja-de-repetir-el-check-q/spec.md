@@ -17,6 +17,6 @@ La primera regla del bloque de Specty en AGENTS.md pide ejecutar `specty check -
 
 ## Tareas
 
-- [ ] T1: La regla confía en la compuerta de task done
+- [x] T1: La regla confía en la compuerta de task done
   - files: packages/core/src/agents-md.ts, packages/core/test/cards.test.ts, AGENTS.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts && pnpm lint

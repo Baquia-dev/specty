@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261029-la-regla-de-agents-md-deja-de-repetir-el-check-q",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-la-regla-de-agents-md-deja-de-repetir-el-check-q",
   "baseCommit": "b4e6d969e13c30e0ecc85066c614f1b79665588f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:75c070db174d5786aa2b657b9dfd4a1c44a156900532a4228bbdc6f993ab1464",
+    "at": "2026-10-29T10:30:19.536Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "06d9d65b604296e4c7d13ca6fbfbf53927951c1c",
+      "startedAt": "2026-10-29T10:30:20.042Z",
+      "doneAt": "2026-10-29T10:37:28.245Z",
+      "summary": "La primera regla del bloque de Specty dice que task done ya ejecuta specty check y la verificación, que no se repitan justo antes y que se corrija lo que devuelva; AGENTS.md y formats.md la reproducen"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:75c070db174d5786aa2b657b9dfd4a1c44a156900532a4228bbdc6f993ab1464",
-    "at": "2026-10-29T10:30:19.536Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

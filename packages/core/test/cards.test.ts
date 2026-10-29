@@ -276,7 +276,7 @@ describe("AGENTS.md blocks", () => {
     expect(es.length).toBeLessThanOrEqual(15);
     expect(es.slice(-6)).toEqual([
       "## Reglas (Specty)",
-      "- Antes de reportar una tarea como terminada, ejecuta `specty check --changed --spec` y corrige todos los fallos. No reportes con fallos pendientes.",
+      "- `specty task done` ya ejecuta `specty check --changed --spec` y la verificación de la tarea, y no la completa con fallos: no los repitas justo antes; corrige lo que devuelva y no reportes con fallos pendientes.",
       "- Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.",
       "- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.",
       "- Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.",
@@ -284,7 +284,7 @@ describe("AGENTS.md blocks", () => {
     ]);
     expect(flowBlock("en", "specty").split("\n").slice(-6)).toEqual([
       "## Rules (Specty)",
-      "- Before reporting a task as done, run `specty check --changed --spec` and fix every failure. Do not report with failures pending.",
+      "- `specty task done` already runs `specty check --changed --spec` and the task's verification, and does not complete the task with failures: do not repeat them right before; fix whatever it returns and do not report with failures pending.",
       "- Before creating a module, use case, component or screen, look for an equivalent one in the repo and replicate its structure.",
       "- Find code with targeted searches by symbol or text and read only the fragments you need, not whole files.",
       "- Edit with targeted changes; do not rewrite whole files for small changes.",
