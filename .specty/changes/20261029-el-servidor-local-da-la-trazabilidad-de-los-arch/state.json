@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "de2bc6639702fefa720cdbcc58f246cbebc56049",
+      "attempts": 1,
       "startedAt": "2026-10-29T05:54:27.151Z",
       "doneAt": "2026-10-29T05:58:22.084Z",
-      "summary": "flow/traced.ts tiene logged y ChangeSpecs, que salen de commands/why.ts; specty why los usa y sus tests pasan sin cambios"
+      "summary": "flow/traced.ts tiene logged y ChangeSpecs, que salen de commands/why.ts; specty why los usa y sus tests pasan sin cambios",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4b1375d16e3867c0d23ccd0ca8913f36e1fd2d8b",
+      "startedAt": "2026-10-29T05:58:22.399Z",
+      "doneAt": "2026-10-29T06:03:07.464Z",
+      "summary": "server/trace.ts: GET /api/changes/<id>/trace da los archivos que dejó el cambio y, con ?path=, su blame en el último commit por bloques con lo que diría specty why; 404 fuera del cambio, 413 por encima de 512 KB; server/diff.ts comparte el rango"
     }
   },
   "pending": {

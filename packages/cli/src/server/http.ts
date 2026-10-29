@@ -11,6 +11,7 @@ import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
 import { changeRecords } from "./records";
 import { changeRuns, type Runs } from "./runs";
+import { changeTrace, traceReply } from "./trace";
 
 export interface ServerOptions {
   readonly session: Session;
@@ -177,9 +178,14 @@ async function readApi(
   return readChange(response, context, url);
 }
 
-/** A change's verification going on, or its diff, whole or of one task. */
+/** A change's verification going on, its traceability, or its diff, whole or of one task. */
 async function readChange(response: ServerResponse, context: Context, url: URL) {
-  const [, id, part] = /^\/api\/changes\/([^/]+)\/(diff|run)$/.exec(url.pathname) ?? [];
+  const [, id, part] = /^\/api\/changes\/([^/]+)\/(diff|run|trace)$/.exec(url.pathname) ?? [];
+  if (id !== undefined && part === "trace") {
+    const path = url.searchParams.get("path") ?? undefined;
+    const reply = traceReply(await changeTrace(context.session, decodeURIComponent(id), path));
+    return send(response, reply.status, JSON_TYPE, reply.body);
+  }
   if (id !== undefined && part === "run") {
     const run = context.runs.current(decodeURIComponent(id)) ?? null;
     return send(response, 200, JSON_TYPE, JSON.stringify(run));

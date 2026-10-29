@@ -52,7 +52,7 @@ La vista de trazabilidad del Historial (docs/ui.md) enseña un archivo con un ma
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/why.test.ts && pnpm lint
   - type: refactor
-- [ ] T2: La trazabilidad de un cambio en el servidor
+- [x] T2: La trazabilidad de un cambio en el servidor
   - files: packages/cli/src/server/trace.ts, packages/cli/src/server/diff.ts, packages/cli/src/server/http.ts, packages/cli/test/server/trace.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/trace.test.ts test/server/diff.test.ts && pnpm lint
