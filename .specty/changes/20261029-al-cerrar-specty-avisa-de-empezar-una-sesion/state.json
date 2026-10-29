@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02219fdb6170e8dd768bb91e8c3396879a94e77c",
+      "startedAt": "2026-10-29T20:39:35.746Z",
+      "doneAt": "2026-10-29T20:40:11.175Z",
+      "summary": "freshSessionLine en cards/usage.ts: aconseja una sesión nueva para el siguiente cambio con el contexto redondeado a miles y agrupado por idioma (620.000 / 620,000); exportada en el índice de textos."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -58,7 +58,7 @@ Claude Code no deja que un hook ni el agente limpien la sesión. Por eso:
 
 ## Tareas
 
-- [ ] T1: El texto del aviso de sesión nueva
+- [x] T1: El texto del aviso de sesión nueva
   - files: packages/core/test/cards/fresh-session.test.ts, packages/core/src/cards/usage.ts, packages/core/src/cards/index.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/fresh-session.test.ts test/cards/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

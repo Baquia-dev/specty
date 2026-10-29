@@ -316,7 +316,7 @@ export {
   removedCard,
   unwatchedChangeWarning,
 } from "./uninstall";
-export { usageLine } from "./usage";
+export { freshSessionLine, usageLine } from "./usage";
 export type {
   CardContext,
   ChangeView,
