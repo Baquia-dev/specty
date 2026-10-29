@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
   "baseCommit": "7de538a74b9ad00473a69df08c98fcbcd8da146a",
   "revision": 1,
@@ -41,6 +41,9 @@
     "AC": 3,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T07:59:50.413Z"
+  "lockedTests": {
+    "packages/ui/src/history/history-tab.test.ts": "sha256:c3919b9bde77e116cb7dfa733fcf311bc178b0ecaca31c7be217e0e1931c4c78",
+    "packages/ui/src/data/history-who.test.ts": "sha256:dc36794e0303064e9200727655a7b1dba05c30604d2e6c61c0ddbb4a4c75e956",
+    "packages/ui/src/history/history-who.test.ts": "sha256:de2fa2ef339823176a22cec408fad25ebd80b838dba43f1879cc8f65e4e756cf"
+  }
 }
