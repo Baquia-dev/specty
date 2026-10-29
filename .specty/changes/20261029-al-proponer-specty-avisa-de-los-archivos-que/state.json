@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-al-proponer-specty-avisa-de-los-archivos-que",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-al-proponer-specty-avisa-de-los-archivos-que",
   "baseCommit": "e98af32e02da557fafc881ca6747d658ca509065",
   "revision": 1,
@@ -43,6 +43,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T22:04:10.372Z"
+  "lockedTests": {
+    "packages/cli/test/impact.test.ts": "sha256:4785f4751e32781abe35c986879596c4b000db0847ec8bee383dd73dc5e42b74",
+    "packages/core/test/checks/imports-script.test.ts": "sha256:b9c723b2502ba90a7da9d8b928bc8ce0933c44bf9dbdb4931aafff00cefeb4ac"
+  }
 }
