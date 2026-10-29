@@ -43,7 +43,7 @@ La pestaña Historial va a exportar el cambio en Markdown, JSON, OpenSpec, Spec 
 
 ## Tareas
 
-- [ ] T1: El informe de auditoría desde `auditViewOf` de core
+- [x] T1: El informe de auditoría desde `auditViewOf` de core
   - files: packages/core/src/cards/audit-view.ts, packages/core/src/cards/index.ts, packages/core/test/cards/audit-view.test.ts, packages/cli/src/commands/audit.ts, packages/cli/test/audit.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/audit-view.test.ts test/cards/audit.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/audit.test.ts && pnpm lint

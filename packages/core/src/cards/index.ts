@@ -39,6 +39,7 @@ export {
   auditRefusalCard,
   auditReport,
 } from "./audit";
+export { type AuditSource, auditViewOf } from "./audit-view";
 export { type CiCommit, type CiFacts, type CiLevel, ciReport } from "./ci";
 export {
   alreadyClosedLine,
