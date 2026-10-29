@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
+  "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0aec081139832b3ca90498bf3836d489b2fd70398a2d020a8c7bce5097c2edf2",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:584e757ec84753a7427504df8160bc276b8a46eef487be6c5c2216e75238c0c2",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:de2597e46486a59b937102901a93f34438d790dfe50c1c4d6e78ddc9ff5b9d7e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:768d0f7ce610d1603c87292529aab251f323b4c8577fac40d37090a2629471db",
+    "at": "2026-10-29T07:33:49.603Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
