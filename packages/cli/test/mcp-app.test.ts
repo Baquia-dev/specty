@@ -3,7 +3,9 @@ import { mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { createGit } from "../src/io/git";
 import { runCli } from "../src/program";
+import { writeRun } from "../src/store/runs";
 import { AGENT, APP, CHANGE, cli, DIST, NOW, tempRepo, testEnv } from "./support";
 
 type Message = Record<string, unknown>;
@@ -91,7 +93,8 @@ describe("specty mcp as an MCP App", () => {
     const records = (resultOf(view).structuredContent as { records: { state: { id: string } }[] })
       .records;
     expect(records.map((record) => record.state.id)).toEqual([CHANGE]);
-    expect(resultOf(next).structuredContent).toMatchObject({ folder: root });
+    // The view takes the folder from the call's arguments, not from the result (C2, A5).
+    expect(resultOf(next).structuredContent).toBeUndefined();
   });
 
   it("AC3: without the extension, or without the page, the tools are today's", async () => {
@@ -126,13 +129,66 @@ describe("specty mcp as an MCP App", () => {
     ]);
     const tool = named(toolsOf(list), "specty_view");
     expect(tool?._meta).toEqual({ ui: { resourceUri: VIEW, visibility: ["app"] } });
-    // Only the folder: nothing a call could decide with.
+    // Only the folder and the fingerprint of what the view has (C2, A5): nothing to decide with.
     expect(tool?.inputSchema).toEqual({
       type: "object",
-      properties: { folder: expect.objectContaining({ type: "string" }) },
+      properties: {
+        folder: expect.objectContaining({ type: "string" }),
+        since: expect.objectContaining({ type: "string" }),
+      },
       required: [],
     });
     expect(resultOf(view).isError).toBe(false);
     expect(await readFile(state, "utf8")).toBe(before);
+  });
+
+  it("AC1: with the extension, the agent's tools answer only their card's text", async () => {
+    const { root, script } = await setUp();
+    const [, next] = await serve(root, script, [
+      initialize(1, APPS),
+      call(2, "specty_next", { folder: root }),
+    ]);
+    const result = resultOf(next);
+    expect(result.structuredContent).toBeUndefined();
+    expect(result.content).toEqual([
+      { type: "text", text: expect.stringContaining(`SPECTY · ${CHANGE}`) },
+    ]);
+  });
+
+  it("AC2: specty_view says when nothing changed, and gives the run going on, also as JSON text", async () => {
+    const { root, script } = await setUp();
+    const [, first] = await serve(root, script, [
+      initialize(1, APPS),
+      call(2, "specty_view", { folder: root }),
+    ]);
+    const data = resultOf(first).structuredContent as { fingerprint: string; records: unknown[] };
+    expect(typeof data.fingerprint).toBe("string");
+    expect(data.records).toHaveLength(1);
+    const text = (resultOf(first).content as { text: string }[])[0]?.text ?? "";
+    expect(JSON.parse(text)).toEqual(data);
+    const [, same] = await serve(root, script, [
+      initialize(1, APPS),
+      call(2, "specty_view", { folder: root, since: data.fingerprint }),
+    ]);
+    expect(resultOf(same).structuredContent).toEqual({
+      fingerprint: data.fingerprint,
+      unchanged: true,
+    });
+    await writeRun(createGit(root, testEnv()), CHANGE, {
+      task: "T1",
+      command: "npm test",
+      startedAt: NOW.toISOString(),
+      output: ["✓ greets Ana"],
+      pid: process.pid,
+    });
+    const [, moved] = await serve(root, script, [
+      initialize(1, APPS),
+      call(2, "specty_view", { folder: root, since: data.fingerprint }),
+    ]);
+    const now = resultOf(moved).structuredContent as { fingerprint: string };
+    expect(now.fingerprint).not.toBe(data.fingerprint);
+    expect(now).toMatchObject({
+      run: { task: "T1", command: "npm test", output: ["✓ greets Ana"] },
+    });
   });
 });

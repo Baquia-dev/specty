@@ -6,6 +6,13 @@
   "branch": "specty/20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
   "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2d43c5500d81680cb38d6552131a9f54696199fe578bae101dc7634204f5f075",
+    "at": "2026-10-29T09:44:03.784Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2d43c5500d81680cb38d6552131a9f54696199fe578bae101dc7634204f5f075",
-    "at": "2026-10-29T09:44:03.784Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T09:48:30.430Z"
 }
