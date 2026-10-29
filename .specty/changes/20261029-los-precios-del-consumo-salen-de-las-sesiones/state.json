@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-los-precios-del-consumo-salen-de-las-sesiones",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-los-precios-del-consumo-salen-de-las-sesiones",
+  "baseCommit": "8d01403c84c6f54381feff9bc5aada7f6faeb40d",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:52db96644b863d43a3746ce0fa6c84042aa1ba505e3d5f5245fe239801f67715",
+    "at": "2026-10-29T21:55:50.962Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
