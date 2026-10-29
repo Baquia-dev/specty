@@ -11,6 +11,7 @@ import {
 import { RouterLink } from "@angular/router";
 import { PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
+import { ItemTooltips } from "../components/item-tooltip";
 import { type Bilingual, type ChangeView, type DecisionKind, relativeTime } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
@@ -71,6 +72,7 @@ const ROW =
 @Component({
   selector: "sp-inbox-row",
   imports: [RouterLink, PhaseBadge, Button],
+  hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     role: "listitem",
@@ -106,7 +108,7 @@ const ROW =
       }
       @for (request of change().scopeRequests; track request.id) {
         <span class="text-[13px] text-text-muted" data-note>
-          {{ request.task }} {{ t()('pide', 'asks for') }}
+          <span [attr.data-item-ref]="request.task">{{ request.task }}</span> {{ t()('pide', 'asks for') }}
           @for (path of request.paths; track path) {
             <code class="font-mono text-xs text-text">{{ path }}</code>
           }: «{{ request.reason }}»
@@ -144,6 +146,10 @@ export class InboxRow {
   protected readonly t = this.preferences.t;
   protected readonly row = ROW;
   protected readonly decisions = DECISIONS;
+
+  constructor() {
+    inject(ItemTooltips).setSource(() => this.change());
+  }
 
   /** What it waits for, or what it is doing, and its size. */
   protected readonly waits = computed(() => {

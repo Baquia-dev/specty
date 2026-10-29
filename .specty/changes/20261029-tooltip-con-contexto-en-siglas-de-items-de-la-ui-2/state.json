@@ -44,14 +44,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/components/item-tooltip.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "d4f16dd3379afdd648d8a7f19c25208b6b2e206a",
+      "attempts": 2,
       "startedAt": "2026-10-29T20:13:08.370Z",
       "doneAt": "2026-10-29T20:21:04.831Z",
-      "summary": "Activar tooltips de siglas en revisión de spec, delta y comentarios"
+      "summary": "Activar tooltips de siglas en revisión de spec, delta y comentarios",
+      "scopeExtra": [
+        "packages/ui/src/components/item-tooltip.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "471979a2ef7b9ca096acc5844b031088da093742",
+      "startedAt": "2026-10-29T20:21:05.454Z",
+      "doneAt": "2026-10-29T20:24:24.546Z",
+      "summary": "Activar tooltips de siglas en progreso, tests bloqueados, aceptación y bandeja"
     }
   },
   "pending": {

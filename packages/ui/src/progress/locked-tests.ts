@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, input } from "@angular/core
 import { LucideDynamicIcon } from "@lucide/angular";
 import { LIST, ROW, SectionDivider } from "../components/document";
 import { LucideLock, LucideLockOpen } from "../components/icons";
+import { ItemText } from "../components/item-tooltip";
 import type { LockedTestView } from "../data/locks";
 import { Preferences } from "../theme/preferences";
 
@@ -13,7 +14,7 @@ import { Preferences } from "../theme/preferences";
  */
 @Component({
   selector: "sp-locked-tests",
-  imports: [LucideDynamicIcon, SectionDivider],
+  imports: [LucideDynamicIcon, SectionDivider, ItemText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section aria-labelledby="locked-tests" data-locked-tests>
@@ -24,7 +25,7 @@ import { Preferences } from "../theme/preferences";
             <svg class="mt-0.5" [lucideIcon]="test.unlockedFor ? openIcon : lockIcon" size="14" [style.color]="test.unlockedFor ? 'var(--color-phase-review)' : 'var(--color-text-muted)'" aria-hidden="true"></svg>
             <p class="m-0 flex min-w-0 flex-col gap-0.5">
               <code class="font-mono text-xs break-all">{{ test.path }}</code>
-              <span class="text-[13px] text-text-muted" data-state>{{ stateOf(test) }}</span>
+              <span class="text-[13px] text-text-muted" data-state><sp-item-text [text]="stateOf(test)" /></span>
             </p>
           </li>
         }

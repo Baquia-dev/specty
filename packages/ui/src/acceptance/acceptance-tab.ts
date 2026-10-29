@@ -15,6 +15,7 @@ import {
 import { LIST, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { LucideListChecks } from "../components/icons";
+import { ItemTooltips } from "../components/item-tooltip";
 import { Select } from "../components/select";
 import { TabEnd } from "../components/tabs";
 import { evidenceOf, summaryOf } from "../data/acceptance";
@@ -59,6 +60,7 @@ const VIEW_KEY = "specty.acceptance.view";
     LockedTests,
     IndependentReview,
   ],
+  hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-6" },
   template: `
@@ -184,6 +186,7 @@ export class AcceptanceTab {
   });
 
   constructor() {
+    inject(ItemTooltips).setSource(() => this.change());
     effect(() => this.store(this.view()));
   }
 
