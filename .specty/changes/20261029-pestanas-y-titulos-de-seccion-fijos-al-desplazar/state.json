@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
@@ -46,6 +46,13 @@
     "AC": 5,
     "T": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T07:58:31.277Z"
+  "lockedTests": {
+    "packages/ui/src/acceptance/acceptance-tab.test.ts": "sha256:5dca8a4bb0ac96d06962f972c9c73431bb477b938addebb215e0a65d2307f3f6",
+    "packages/ui/src/change/change-page.test.ts": "sha256:0f270acd2aff231d88870bfd66cf7b78b3c8f59e13ecd7f397363ed1f1abc9e5",
+    "packages/ui/src/components/document.test.ts": "sha256:954a9e1498ac3f19342b58a0fb83b909a62f111abcd767ed9a6f84f3d039fade",
+    "packages/ui/src/components/tabs.test.ts": "sha256:d26ed04969281e600fbda698a88aa39acb3267f35162a7a0cb0317651922cf73",
+    "packages/ui/src/history/history-tab.test.ts": "sha256:1944d7ff9131eab28b8255578ddea72fdce11d36822f5d6a84206b9ad4795bf1",
+    "packages/ui/src/progress/progress-tab.test.ts": "sha256:9e50fa0d07e4643db3f28e049e2db45b84c20b5cc3fffc32bea765b75c6337d5",
+    "packages/ui/src/review/spec-review.test.ts": "sha256:c87c59c75016952c9c6ca8c6e28799295ae34cee9f6dc36b5dd183da6892603b"
+  }
 }
