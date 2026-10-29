@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261029-las-evals-miden-el-consumo-y-comparan-un",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-las-evals-miden-el-consumo-y-comparan-un",
+  "baseCommit": "297ca21f78dc0a25accc02e73612d622f5357f13",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:49b531e505b05818b559cbaac36545767777d4e93ccdec013748e63e96cd8cbf",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:772e8b8701b1159f64b9fe37e44e094961f9120652aab521eb8fd938cfba0b94",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fe33fd5dd186dfb868aeb246d00d9ec5978335874f7916b0edd0dda105193b2f",
+    "at": "2026-10-29T21:19:28.505Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
