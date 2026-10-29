@@ -53,7 +53,7 @@ La pestaña Historial muestra la línea de tiempo, pero para llevarse el cambio 
 
 ## Tareas
 
-- [ ] T1: La exportación en cada formato y el ZIP
+- [x] T1: La exportación en cada formato y el ZIP
   - files: packages/ui/package.json, pnpm-lock.yaml, packages/ui/src/data/export.ts, packages/ui/src/data/export.test.ts, packages/ui/src/data/zip.ts, packages/ui/src/data/zip.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/export.test.ts --include src/data/zip.test.ts && pnpm lint

@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3cc07f5686df2a27c2ae01070bb3b382efb92f5d",
+      "startedAt": "2026-10-29T05:09:16.008Z",
+      "doneAt": "2026-10-29T05:14:33.622Z",
+      "summary": "data/export.ts da el informe de auditoría en Markdown o JSON y la spec en OpenSpec, Spec Kit o Kiro con las funciones de la CLI; data/zip.ts escribe el ZIP sin comprimir (comprobado con unzip -t); la UI depende de los exportadores"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

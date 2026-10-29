@@ -299,6 +299,9 @@ importers:
       '@baquia-dev/specty-core':
         specifier: workspace:*
         version: link:../core
+      '@baquia-dev/specty-exporters':
+        specifier: workspace:*
+        version: link:../exporters
       '@fontsource-variable/geist':
         specifier: 5.3.0
         version: 5.3.0
