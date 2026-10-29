@@ -55,3 +55,23 @@ El Historial dice «Persona» o «Agente · Claude Code» porque `audit.jsonl` n
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Cada línea de `audit.jsonl` dice ahora quién actuó: las decisiones de la persona, y las que el agente toma por ella en modo delegado, llevan `by` con su `user.name` de git; las del agente llevan `model` y `effort` cuando la herramienta los dice, hoy Claude Code (`CLAUDE_EFFORT` y el modelo de la última respuesta del transcript de su sesión, del que solo se leen los últimos 64 KB). `agents/run.ts` lo lee, `auditEntry` lo anota y docs/formats.md lo describe. Los tests ya no heredan las variables de la sesión de quien los ejecuta.
+
+### Desviaciones
+
+- `auditEntry` pasó de 10 de complejidad: lo que dice de quién actuó va en `told`.
+
+### Decisiones
+
+- El id de la sesión se valida antes de buscar su transcript, y `<synthetic>` no cuenta como modelo.
+- Una línea que no encuentra el modelo o el esfuerzo va sin ellos, sin error.
+
+### Pendientes
+
+- Enseñarlos en el Historial: el cambio siguiente.
+- El modelo y el esfuerzo de otros agentes, cuando los digan.

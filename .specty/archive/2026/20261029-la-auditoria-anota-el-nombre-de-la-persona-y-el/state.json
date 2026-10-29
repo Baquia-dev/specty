@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:768d0f7ce610d1603c87292529aab251f323b4c8577fac40d37090a2629471db",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "445251c8d3d4073ef0ceaa01394cadd908ed1b35",
+      "attempts": 1,
       "startedAt": "2026-10-29T07:47:12.660Z",
       "doneAt": "2026-10-29T07:50:43.798Z",
-      "summary": "docs/formats.md describe by, model y effort en audit.jsonl y de dónde salen"
+      "summary": "docs/formats.md describe by, model y effort en audit.jsonl y de dónde salen",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -64,6 +64,7 @@
     "AC": 2,
     "T": 2
   },
+  "closingSubmittedAt": "2026-10-29T07:54:20.549Z",
   "lockedTests": {
     "packages/cli/test/audit-who.test.ts": "sha256:83360bcc529e72768caf00dce44e2c0e26edd95c8bebb01af53e658af32045c8"
   }

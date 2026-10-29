@@ -9,3 +9,7 @@
 {"ts":"2026-10-29T07:47:12.661Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T2","baseCommit":"445251c8d3d4073ef0ceaa01394cadd908ed1b35"}}
 {"ts":"2026-10-29T07:50:43.797Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm lint","exit":0,"ms":703,"tree":"sha256:3b7859d6fe853948c25caf0db26a66cf2f34d1ecfb16749d2a2651aa2e6fc0c2"}}
 {"ts":"2026-10-29T07:50:43.799Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T2","summary":"docs/formats.md describe by, model y effort en audit.jsonl y de dónde salen"}}
+{"ts":"2026-10-29T07:54:10.961Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":201559,"tree":"sha256:3b7859d6fe853948c25caf0db26a66cf2f34d1ecfb16749d2a2651aa2e6fc0c2"}}
+{"ts":"2026-10-29T07:54:10.962Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-29T07:54:20.550Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:4eee7028539fe035b271de339179a9fa153404d6581b8dec1ad6017ae71b3d52","size":"M","warnings":1}}
+{"ts":"2026-10-29T07:54:28.357Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}
