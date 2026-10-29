@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
+  "baseCommit": "2c20665f684aa5ed747233f024bc687aee919f5d",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6c6af95df460cfe2b660804630c1d6928871bdac4f518ebde64453acdeabb4f6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:71d8b92b0bc81e5fdebadbd544098dcbb504df847e28d1eef63dc1fd16478111",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:e42d8b57d7ee0cf051bd6552a04bc6bf5477c4236ade286bb749be848946369d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b1b27ba48c055d10359c5a7c0ad36288dbd30b51f3b871711908e426e63182e4",
+    "at": "2026-10-29T05:53:19.345Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
