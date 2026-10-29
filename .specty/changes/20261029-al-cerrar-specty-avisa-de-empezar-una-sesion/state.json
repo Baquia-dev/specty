@@ -6,6 +6,13 @@
   "branch": "specty/20261029-al-cerrar-specty-avisa-de-empezar-una-sesion",
   "baseCommit": "a2d26180142206ccbdbee773b9b728c1537fbaf2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:0aa6bc43bf6232321cfc4ad83689d66530e7ee38a420d4b5f528ca1e20b68c3c",
+    "at": "2026-10-29T20:37:38.279Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -36,12 +43,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:0aa6bc43bf6232321cfc4ad83689d66530e7ee38a420d4b5f528ca1e20b68c3c",
-    "at": "2026-10-29T20:37:38.279Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T20:39:34.742Z"
 }

@@ -146,12 +146,12 @@ describe("specty init", () => {
     expect((await cli(root, ["doctor"])).out).toContain("Claude Code: guard instalado.");
   });
 
-  it("installs the card after a compaction, and doctor misses it", async () => {
+  it("AC3: installs the card after a compaction or a /clear, and doctor misses it", async () => {
     const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
     expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
     const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
     expect(settings.hooks.SessionStart).toMatchObject([
-      { matcher: "compact", hooks: [{ type: "command" }] },
+      { matcher: "compact|clear", hooks: [{ type: "command" }] },
     ]);
     const hooks = { ...settings.hooks, SessionStart: [] };
     await writeFiles(root, {
