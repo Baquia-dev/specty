@@ -15,10 +15,28 @@ export interface ProjectFacts {
 /**
  * The flow block (docs/formats.md §8), always loaded by the agent: Specty's flow in eight lines
  * and the five rules no tool can verify. What a tool can verify, `specty check` does (ADR 0012).
+ * With `mcp`, the repository registers Specty's MCP server: one line more asks to use its tools,
+ * so that the chat shows the change (ADR 0015).
  */
-export function flowBlock(lang: Lang, command: string): string {
+export function flowBlock(
+  lang: Lang,
+  command: string,
+  options: { readonly mcp?: boolean } = {},
+): string {
   const t = translator(lang);
-  return [...flowLines(t, command), "", ...ruleLines(t, command)].join("\n");
+  const lines = flowLines(t, command);
+  const tools = options.mcp === true ? [mcpLine(t)] : [];
+  // After the heading and the line that says where to start.
+  const flow = [...lines.slice(0, 2), ...tools, ...lines.slice(2)];
+  return [...flow, "", ...ruleLines(t, command)].join("\n");
+}
+
+/** The line that, with Specty's MCP server, asks to use its tools instead of the commands. */
+function mcpLine(t: Translate): string {
+  return t(
+    "- Si tienes las herramientas MCP de Specty (`specty_next`, `specty_new`, `specty_task_done`…), úsalas en lugar del comando que hace lo mismo: así el chat muestra el cambio.",
+    "- If you have Specty's MCP tools (`specty_next`, `specty_new`, `specty_task_done`…), use them instead of the command that does the same: that way the chat shows the change.",
+  );
 }
 
 /** Specty's flow: where to start, where to work, how to finish a task and what is the person's. */

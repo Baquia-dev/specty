@@ -64,3 +64,21 @@ describe("citedPaths", () => {
     expect(citedPaths(text)).toEqual([]);
   });
 });
+
+describe("the flow block with Specty's MCP server", () => {
+  const LINE = {
+    es: "- Si tienes las herramientas MCP de Specty (`specty_next`, `specty_new`, `specty_task_done`…), úsalas en lugar del comando que hace lo mismo: así el chat muestra el cambio.",
+    en: "- If you have Specty's MCP tools (`specty_next`, `specty_new`, `specty_task_done`…), use them instead of the command that does the same: that way the chat shows the change.",
+  };
+
+  it("AC1: asks to use the MCP tools right after its first line, and only with the server", () => {
+    for (const lang of ["es", "en"] as const) {
+      const plain = flowBlock(lang, "specty").split("\n");
+      const served = flowBlock(lang, "specty", { mcp: true }).split("\n");
+      expect(served[2]).toBe(LINE[lang]);
+      expect(served.filter((line) => line !== LINE[lang])).toEqual(plain);
+      expect(plain.join("\n")).not.toContain("specty_next");
+      expect(flowBlock(lang, "specty", { mcp: false })).toBe(plain.join("\n"));
+    }
+  });
+});
