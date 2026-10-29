@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
+  "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2a1c883b25011caae361561dddd9ef389f5df8ae2c365c842e958da16d66697b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:fcd47af2391422f5c4b9bd61034a0bb08e74850a7224d6816e74833a5d1fb2dc",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:27d694f251d59b0e09c4913cf14b3f4bb8484c7a31c8d89ef1713c2761c36c60",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:a0f93b93f4fa402316a7b56bb4ea12b111eaa51612488ea5e53ca9b14a66acfb",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:0859abb40e207053b41dfe1001798f89d709a415adc86e9313bee7fc04fd567e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 7,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2d43c5500d81680cb38d6552131a9f54696199fe578bae101dc7634204f5f075",
+    "at": "2026-10-29T09:44:03.784Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
