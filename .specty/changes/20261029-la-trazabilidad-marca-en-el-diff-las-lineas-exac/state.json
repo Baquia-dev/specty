@@ -33,7 +33,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "64c74eb664a7e754f2d9d9cebe3a58080377ea81",
+      "startedAt": "2026-10-29T09:01:20.831Z",
+      "doneAt": "2026-10-29T09:05:15.048Z",
+      "summary": "Cada bloque de la trazabilidad trae origin: los números que sus líneas tenían en el commit que las escribió, sacados del blame en porcelana"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

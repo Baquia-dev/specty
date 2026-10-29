@@ -12,6 +12,17 @@ interface TraceBlock {
   readonly end: number;
   /** As `specty why` tells it: the commit and, when Specty made it, its change, task and criteria. */
   readonly commit: WhyCommit;
+  /**
+   * The numbers its lines had in that commit, in order: where the commit's diff shows them, even
+   * if a later commit moved them.
+   */
+  readonly origin: readonly number[];
+}
+
+/** Who wrote a line: the commit's full hash, and the line's number in that commit. */
+interface Owner {
+  readonly hash: string;
+  readonly origin: number;
 }
 
 /** A file as the change left it, at `commit`, the one of its last task. */
@@ -50,7 +61,7 @@ export async function changeTrace(
   // The same limit as the diff: more would not be read in a browser either.
   if (blamed.stdout.length >= MAX_OUTPUT) return { kind: "too-large" };
   const { lines, owners } = blameOf(blamed.stdout);
-  const commits = await commitsOf(session, [...new Set(owners)]);
+  const commits = await commitsOf(session, [...new Set(owners.map((owner) => owner.hash))]);
   const trace = { path, commit: range.to, lines, blocks: blocksOf(owners, commits) };
   return { kind: "trace", trace };
 }
@@ -96,13 +107,14 @@ async function leftFiles(
 }
 
 /** The lines of `git blame --porcelain`, each with the full hash of the commit it comes from. */
-function blameOf(output: string): { lines: string[]; owners: string[] } {
+function blameOf(output: string): { lines: string[]; owners: Owner[] } {
   const lines: string[] = [];
-  const owners: string[] = [];
-  let owner = "";
+  const owners: Owner[] = [];
+  // Each line comes after its header: `<hash> <number in that commit> <number now>`.
+  let owner: Owner = { hash: "", origin: 0 };
   for (const line of output.split("\n")) {
-    const header = /^([0-9a-f]{40,64}) \d+ \d+/.exec(line)?.[1];
-    if (header !== undefined) owner = header;
+    const [, hash, origin] = /^([0-9a-f]{40,64}) (\d+) \d+/.exec(line) ?? [];
+    if (hash !== undefined) owner = { hash, origin: Number(origin) };
     else if (line.startsWith("\t")) {
       lines.push(line.slice(1));
       owners.push(owner);
@@ -128,19 +140,16 @@ async function commitsOf(
 }
 
 /** The lines in a row from the same commit, as one block each. */
-function blocksOf(
-  owners: readonly string[],
-  commits: ReadonlyMap<string, WhyCommit>,
-): TraceBlock[] {
+function blocksOf(owners: readonly Owner[], commits: ReadonlyMap<string, WhyCommit>): TraceBlock[] {
   const blocks: (TraceBlock & { readonly owner: string })[] = [];
-  owners.forEach((owner, index) => {
-    const commit = commits.get(owner);
+  owners.forEach(({ hash, origin }, index) => {
+    const commit = commits.get(hash);
     const last = blocks.at(-1);
     if (commit === undefined) return;
-    if (last?.owner === owner && last.end === index) {
-      blocks[blocks.length - 1] = { ...last, end: index + 1 };
+    if (last?.owner === hash && last.end === index) {
+      blocks[blocks.length - 1] = { ...last, end: index + 1, origin: [...last.origin, origin] };
     } else {
-      blocks.push({ owner, start: index + 1, end: index + 1, commit });
+      blocks.push({ owner: hash, start: index + 1, end: index + 1, commit, origin: [origin] });
     }
   });
   return blocks.map(({ owner: _, ...block }) => block);

@@ -48,7 +48,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Los números de cada bloque en el commit de su tarea
+- [x] T1: Los números de cada bloque en el commit de su tarea
   - files: packages/cli/src/server/trace.ts, packages/cli/test/server/trace-origin.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/trace-origin.test.ts test/server/trace.test.ts && pnpm lint
