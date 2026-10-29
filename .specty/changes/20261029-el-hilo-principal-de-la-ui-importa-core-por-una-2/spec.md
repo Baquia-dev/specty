@@ -49,7 +49,7 @@ El hilo principal de la UI solo usa de core los idiomas (`LANGS`, `fold`), el tr
 
 ## Tareas
 
-- [ ] T1: La entrada ligera de core
+- [x] T1: La entrada ligera de core
   - files: packages/core/src/light.ts, packages/core/package.json, packages/core/test/light.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/light.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
