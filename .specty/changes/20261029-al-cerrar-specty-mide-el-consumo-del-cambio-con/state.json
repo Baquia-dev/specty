@@ -50,12 +50,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "87ac990491fbc7ad17dc13d00324713e3817f4b5",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:23:20.333Z",
       "doneAt": "2026-10-29T20:23:28.540Z",
-      "summary": "Los textos ya entraron en T1, que los necesitaba para su typecheck: usageLine en español e inglés y el evento change.usage en specty audit; aquí pasa su verificación."
+      "summary": "Los textos ya entraron en T1, que los necesitaba para su typecheck: usageLine en español e inglés y el evento change.usage en specty audit; aquí pasa su verificación.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4522251cc69937eeba0a71c90808c26f5371c90c",
+      "startedAt": "2026-10-29T20:23:28.883Z",
+      "doneAt": "2026-10-29T20:27:05.632Z",
+      "summary": "flow/usage.ts pide a ccusage (el de node_modules/.bin del cambio o el del PATH) los precios y las llamadas de las sesiones de la auditoría, anota change.usage y añade la línea; close y el cierre del quick miden antes de archivar. Sin respuesta válida, nada cambia."
     }
   },
   "pending": {

@@ -29,6 +29,7 @@ import { archive, commitArchive } from "../flow/finish";
 import { type Absorbed, absorbTarget, integrationOf, mergeTarget } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
 import { runLive } from "../flow/live-run";
+import { measureUsage, withUsage } from "../flow/usage";
 import { codeTree, passedOnThisCode, recordFullVerification } from "../flow/verified";
 import { changeView } from "../flow/views";
 import { tail } from "../io/exec";
@@ -210,6 +211,8 @@ async function closeQuick(
     change.files.spec,
     serializeSpec({ ...spec, sections: { ...spec.sections, closing } }),
   );
+  // Measured before archiving, so that the consumption goes with the change.
+  const usage = await measureUsage(session, change);
   const archived = await archive(
     session,
     change,
@@ -237,5 +240,5 @@ async function closeQuick(
     [...merged, ...(absorbed?.lines ?? [])],
     landed,
   );
-  return withVerifyHints(card, hints);
+  return withVerifyHints(withUsage(card, usage), hints);
 }
