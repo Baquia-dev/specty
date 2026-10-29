@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-accept-incorpora-main-antes-de-su-verificacion-y",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-accept-incorpora-main-antes-de-su-verificacion-y",
+  "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:e10be5bcc9d7a6f20e706563a770eac3820e7c7a351284ff78d1cd5c0643e0bf",
+    "at": "2026-10-29T18:34:57.041Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
