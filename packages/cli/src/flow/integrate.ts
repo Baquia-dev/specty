@@ -24,6 +24,7 @@ import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { commitWithReceipt, decisionTrailers } from "./commits";
+import { codeTree, recordFullVerification } from "./verified";
 import { targetBranch } from "./worktree";
 
 /** How a finished change reaches the main branch (ARCHITECTURE §9, "Incorporación"). */
@@ -70,10 +71,8 @@ export type Absorbed =
   | { readonly ok: false; readonly output: Output };
 
 /**
- * When the main branch moved, merges it into the change's branch, here, and commits the merge
- * only after the verification passes. With conflicts or a failing verification, the merge stays
- * in progress for the agent; a closed change's merge is aborted instead, as is any other failure,
- * and nothing moves. `again` is the command the person runs afterwards.
+ * Before the change lands: refuses when the folder that holds the main branch has uncommitted
+ * changes, which the fast-forward could overwrite, and then merges the main branch (`mergeTarget`).
  */
 export async function absorbTarget(
   session: Session,
@@ -81,11 +80,24 @@ export async function absorbTarget(
   change: StoredChange,
   again: "close" | "accept",
 ): Promise<Absorbed> {
+  const dirty = await holderDirty(session, plan, change.state, again);
+  return dirty ?? mergeTarget(session, plan, change, again);
+}
+
+/**
+ * When the main branch moved, merges it into the change's branch, here, and commits the merge
+ * only after the verification passes. With conflicts or a failing verification, the merge stays
+ * in progress for the agent; a closed change's merge is aborted instead, as is any other failure,
+ * and nothing moves. `again` is the command the person runs afterwards.
+ */
+export async function mergeTarget(
+  session: Session,
+  plan: Integration,
+  change: StoredChange,
+  again: "close" | "accept",
+): Promise<Absorbed> {
   const { git, cards } = session;
   const { state } = change;
-  // Checked before anything moves: the fast-forward could overwrite those changes.
-  const dirty = await holderDirty(session, plan, state, again);
-  if (dirty !== undefined) return dirty;
   if (await contains(git, "HEAD", plan.target)) return { ok: true, lines: [] };
   const absorbing: Absorbing = {
     plan,
@@ -165,13 +177,23 @@ async function failedVerification(
   const { git, lang } = session;
   const { plan, change, again, byHand } = absorbing;
   session.environment.io.err(verifyingNote(command, lang));
+  const started = Date.now();
   const result = await execute(command, [], {
     cwd: session.root,
     shell: true,
     env: session.environment.env,
     timeoutMs: session.config.verify.timeoutSec * 1000,
   });
-  if (result.code === 0) return undefined;
+  if (result.code === 0) {
+    // In the audit, so that `accept` does not run it again on this code; a closed change's audit
+    // is already archived.
+    if (change.state.phase !== "done") {
+      const run = { command, code: 0, ms: Date.now() - started, output: tail(result) };
+      const tree = await codeTree(session);
+      await recordFullVerification(session, change, tree === undefined ? run : { ...run, tree });
+    }
+    return undefined;
+  }
   const reason = mergedVerifyFailsLine(plan.target, command, lang);
   const details = { title: incorporationTitle("verification", lang), lines: tail(result, 15) };
   if (absorbing.forAgent)

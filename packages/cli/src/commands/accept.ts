@@ -26,7 +26,7 @@ import {
 import { commitState } from "../flow/active";
 import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
-import { absorbTarget, integrationOf } from "../flow/integrate";
+import { type Absorbed, absorbTarget, integrationOf, mergeTarget } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
 import { runLive } from "../flow/live-run";
 import { codeTree, passedOnThisCode, recordFullVerification } from "../flow/verified";
@@ -52,6 +52,8 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   const pending = await pendingIntegration(session, guard.change, "accept");
   if (pending.kind === "wait") return pending.output;
   const { change } = pending;
+  const merged = await mergeFirst(session, change);
+  if (!merged.ok) return merged.output;
   const { terminal } = session.environment;
   const view = await changeView(session, change);
   // An epic has no code of its own: each of its slices was verified when it closed.
@@ -64,7 +66,19 @@ export async function accept(session: Session, verify?: boolean): Promise<Output
   if (stopped !== undefined) return stopped;
   if (!(await terminal.confirm(acceptQuestion(view.title, session.lang))))
     return postponed(session, change.state);
-  return accepted(session, change, view);
+  return accepted(session, change, view, merged.lines);
+}
+
+/**
+ * The main branch comes into the change first, so that the full verification runs once, on the
+ * merged code, and `close` has nothing left to merge unless main moves again. Main's folder is
+ * not checked here: nothing lands yet.
+ */
+async function mergeFirst(session: Session, change: StoredChange): Promise<Absorbed> {
+  const plan = await integrationOf(session, change.state);
+  return plan === undefined
+    ? { ok: true, lines: [] }
+    : mergeTarget(session, plan, change, "accept");
 }
 
 /**
@@ -136,8 +150,16 @@ async function runFullVerification(
     : postponed(session, state);
 }
 
-/** The person accepted: a quick change closes; any other goes on to its closing. */
-async function accepted(session: Session, change: StoredChange, view: ChangeView): Promise<Output> {
+/**
+ * The person accepted: a quick change closes; any other goes on to its closing. `merged` says
+ * how the main branch came in before the verification, if it did.
+ */
+async function accepted(
+  session: Session,
+  change: StoredChange,
+  view: ChangeView,
+  merged: readonly string[],
+): Promise<Output> {
   const { state } = change;
   const { cards } = session;
   const moved = transition({
@@ -153,6 +175,7 @@ async function accepted(session: Session, change: StoredChange, view: ChangeView
       session,
       change,
       view.tasks.map((task) => task.summary ?? task.title),
+      merged,
     );
   await commitState(
     session,
@@ -164,7 +187,7 @@ async function accepted(session: Session, change: StoredChange, view: ChangeView
   );
   return thenNext(
     session,
-    decisionCard(headerOf(state.id, moved.phase), [acceptedLine(session.lang)], cards),
+    decisionCard(headerOf(state.id, moved.phase), [acceptedLine(session.lang), ...merged], cards),
   );
 }
 
@@ -173,8 +196,10 @@ async function closeQuick(
   session: Session,
   change: StoredChange,
   summaries: readonly string[],
+  merged: readonly string[],
 ): Promise<Output> {
-  // As when closing: the main branch comes in first, and a refusal leaves it in acceptance.
+  // As when closing, before it lands: main's folder is checked and main comes in again if it
+  // moved since the verification. A refusal leaves the change in acceptance.
   const plan = await integrationOf(session, change.state);
   const absorbed =
     plan === undefined ? undefined : await absorbTarget(session, plan, change, "accept");
@@ -209,7 +234,7 @@ async function closeQuick(
       landed?.landed === true ? undefined : change.state.branch,
       session.cards,
     ),
-    absorbed?.lines ?? [],
+    [...merged, ...(absorbed?.lines ?? [])],
     landed,
   );
   return withVerifyHints(card, hints);
