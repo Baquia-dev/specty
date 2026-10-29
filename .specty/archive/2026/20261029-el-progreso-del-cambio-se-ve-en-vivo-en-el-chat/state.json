@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
   "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2d43c5500d81680cb38d6552131a9f54696199fe578bae101dc7634204f5f075",
@@ -70,12 +70,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "caa66aafccd305560dcd0d681a7e3a1c0984a248",
+      "attempts": 1,
       "startedAt": "2026-10-29T10:19:46.611Z",
       "doneAt": "2026-10-29T10:25:55.395Z",
-      "summary": "La vista arranca con embeddedProviders() (fuente del anfitrión y derivación en el hilo principal), dice por qué no puede leer el cambio y ya no avisa de su tamaño; ARCHITECTURE §6, ui.md y el ADR 0015 cuentan la huella, el orden y el texto JSON."
+      "summary": "La vista arranca con embeddedProviders() (fuente del anfitrión y derivación en el hilo principal), dice por qué no puede leer el cambio y ya no avisa de su tamaño; ARCHITECTURE §6, ui.md y el ADR 0015 cuentan la huella, el orden y el texto JSON.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -89,6 +89,7 @@
     "R": 2,
     "S": 1
   },
+  "closingSubmittedAt": "2026-10-29T10:38:13.730Z",
   "lockedTests": {
     "packages/cli/test/mcp-app.test.ts": "sha256:fa9f973cd5b0ecb2a0e6a126261f46b117e34cc8180d5affbd34b9f87cf76c54",
     "packages/ui/src/app/embedded.test.ts": "sha256:cd85ff4399ccd8443a0513dffe943d0f94981b87f69e983f93a772027a32869b",

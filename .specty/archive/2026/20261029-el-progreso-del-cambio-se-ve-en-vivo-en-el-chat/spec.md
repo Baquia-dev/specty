@@ -99,3 +99,28 @@ El corte arregla además lo que mostró la prueba en anfitriones reales (2026-10
 
 - R1: Muchas vistas en una conversación preguntan a la vez. Mitigación: solo en las fases que se mueven, una pregunta por segundo y vista, y con huella, que no lee los archivos si nada cambió.
 - R2: Un anfitrión que no reenvía las preguntas de la vista mientras la herramienta que la abrió sigue en marcha. Mitigación: la vista lee de nuevo con el resultado de la herramienta; C2 lo vuelve a probar en VS Code y en Claude Desktop.
+
+## Cierre
+
+### Resumen
+
+La vista del chat sigue al cambio mientras se programa. Toma la carpeta de los argumentos de la llamada (`tool-input`), lee el cambio con `specty_view` y, mientras la fase se mueve, vuelve a preguntar cada segundo con la huella de lo que tiene. El servidor solo manda el registro si algo cambió. `specty_view` da también la verificación en curso y manda los datos como texto JSON, y el servidor lo atiende sin esperar a la herramienta del agente que esté en marcha. Las herramientas del agente vuelven a responder solo con el texto de su tarjeta. La vista pide quedar fijada (`pip`) en Progreso si el anfitrión lo ofrece, dice por qué no puede leer el cambio, deriva en el hilo principal sin intentar un worker y avisa de su tamaño tras `initialized`.
+
+### Desviaciones
+
+- T1 adelantó `embeddedProviders()` y la exportación de `inThread`, previstos para T3, con la ampliación S1. Su verificación compila los tests de la UI, y `embedded.test.ts` ya importaba `embeddedProviders`. También entraron `mcp/tools.ts`, por `since` en el esquema, y `store/lock.ts`, que exporta `alive`.
+- El orden de las respuestas no es exactamente el de A4. Sin MCP Apps, cada mensaje espera a los anteriores, como siempre. Con ellas, todo lo que no es una herramienta del agente (`specty_view`, la página, `ping`, `tools/list`…) no espera a la que esté en marcha. Así lo exigen los tests de C1, que leen las respuestas por su posición, y el anfitrión que pide la página mientras la herramienta corre.
+- `showsView` desaparece de `mcp/tools.ts`: sin `structuredContent.folder` nadie lo usa.
+
+### Decisiones
+
+- La huella es un hash de `stat` (tamaño y hora) de `spec.md`, `state.json`, `audit.jsonl` y `comments.json`, más la verificación en curso, solo si su proceso sigue vivo. Sin cambio abierto, la huella es vacía.
+- La vista programa la siguiente pregunta un segundo después de cada respuesta, no con un intervalo fijo: dos preguntas de la misma vista nunca se cruzan. Si llega la respuesta de una pregunta anterior a la última, se descarta.
+- La vista pide `pip` una sola vez por vista.
+- Comprobado en Chrome sin interfaz, con un anfitrión que solo da el texto (como Claude Desktop) y ofrece `pip`: lee los datos, muestra el Progreso, pide quedar fijada y pregunta cada segundo. Sin cambio en la carpeta, dice por qué.
+
+### Pendientes
+
+- Volver a probar en VS Code y en Claude Desktop con el bundle de main reconstruido (R2).
+- `specty_new` crea el cambio en otra carpeta (su worktree), así que la vista de esa llamada lee la carpeta principal y no lo encuentra. Puede resolverse en C3 o aparte.
+- C3: la pestaña Aceptación en vivo, con la verificación completa y el cierre.
