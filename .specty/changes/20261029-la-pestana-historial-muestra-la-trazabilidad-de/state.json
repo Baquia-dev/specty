@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261029-la-pestana-historial-muestra-la-trazabilidad-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-la-pestana-historial-muestra-la-trazabilidad-de",
+  "baseCommit": "3b9f1c06a867a35ad9644479b1d3ee8ef61307db",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4c4434bb04e121cc5b320ad2b4c454f21d94b7e50424d0bc0ecd369dc0f836ce",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a6232b4b11e4cbbe0811d938397e9a260224de20b340d1cb99ff00d2bb0b8a9c",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:82eed87ec96654cf5e628e955871f7b497553cbba044ca63ed730280274ff8f6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:bbd2ade7c20374673bfe783ff1e7e4099826d16cfc7776544c27220c7c235be4",
+    "at": "2026-10-29T06:11:57.704Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
