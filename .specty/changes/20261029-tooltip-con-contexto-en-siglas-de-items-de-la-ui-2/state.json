@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
   "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
   "revision": 1,
@@ -42,6 +42,10 @@
     "AC": 3,
     "T": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T19:47:30.162Z"
+  "lockedTests": {
+    "packages/ui/src/history/trace-view.test.ts": "sha256:a74e9761d16dba3b2ac82953cf0af14475be3efec12d05ef0e66402a50e0af43",
+    "packages/ui/src/progress/locked-tests.test.ts": "sha256:e0d6d970f74590fe8a16da3554bdd922e5d47b3856bef9cc33482c00febf3724",
+    "packages/ui/src/review/spec-sections.test.ts": "sha256:220668466fd3e54251e7c48f672dae227ffdd3af48394dc9cea4c5bc189ea0b5",
+    "packages/ui/src/components/item-tooltip.test.ts": "sha256:67268f965af23c6432100ff96e1703f2a8d1b84b825d590bc78117ccaf29c607"
+  }
 }
