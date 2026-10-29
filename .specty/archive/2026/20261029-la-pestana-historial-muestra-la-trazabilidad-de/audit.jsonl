@@ -15,3 +15,7 @@
 {"ts":"2026-10-29T06:26:33.968Z","actor":"agent","tool":"claude-code","event":"task.started","data":{"task":"T4","baseCommit":"0a9894d8e39aa2f8cb9b176eb45d7013be421a45"}}
 {"ts":"2026-10-29T06:30:01.307Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm lint","exit":0,"ms":704,"tree":"sha256:ac781555d88517b91e0717cfcdfb4c599b6556fe0d5b17f07409578a6f9bf45f"}}
 {"ts":"2026-10-29T06:30:01.308Z","actor":"agent","tool":"claude-code","event":"task.completed","data":{"task":"T4","summary":"docs/ui.md describe la vista Trazabilidad: el control Vista, el archivo elegido, el margen tipo blame, sus motivos y la muestra del prototipo"}}
+{"ts":"2026-10-29T06:33:29.946Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":194876,"tree":"sha256:ac781555d88517b91e0717cfcdfb4c599b6556fe0d5b17f07409578a6f9bf45f"}}
+{"ts":"2026-10-29T06:33:29.947Z","actor":"agent","tool":"claude-code","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-29T06:33:46.355Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:a049c3b42f43ef3dde6f2a765ef6f99357b74c0a59e89194598e495c037d64f8","size":"L","warnings":0}}
+{"ts":"2026-10-29T06:34:58.253Z","actor":"agent","tool":"claude-code","event":"change.closed","data":{"delegated":true}}

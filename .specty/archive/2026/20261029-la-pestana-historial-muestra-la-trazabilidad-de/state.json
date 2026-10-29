@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-la-pestana-historial-muestra-la-trazabilidad-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-la-pestana-historial-muestra-la-trazabilidad-de",
   "baseCommit": "3b9f1c06a867a35ad9644479b1d3ee8ef61307db",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:bbd2ade7c20374673bfe783ff1e7e4099826d16cfc7776544c27220c7c235be4",
@@ -66,12 +66,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0a9894d8e39aa2f8cb9b176eb45d7013be421a45",
+      "attempts": 1,
       "startedAt": "2026-10-29T06:26:33.968Z",
       "doneAt": "2026-10-29T06:30:01.307Z",
-      "summary": "docs/ui.md describe la vista Trazabilidad: el control Vista, el archivo elegido, el margen tipo blame, sus motivos y la muestra del prototipo"
+      "summary": "docs/ui.md describe la vista Trazabilidad: el control Vista, el archivo elegido, el margen tipo blame, sus motivos y la muestra del prototipo",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "AC": 4,
     "T": 4
   },
+  "closingSubmittedAt": "2026-10-29T06:33:46.354Z",
   "lockedTests": {
     "packages/ui/src/data/sample-trace.test.ts": "sha256:a46d8a98b5ee6deccf71c4d4d011aa1f18c17016795085bdb1a20757248e963a",
     "packages/ui/src/data/server-trace.test.ts": "sha256:e0bd03679b0e9fcf4fdbe30ece5312c039c45cdd00980cf11035f16cee4641f1",

@@ -69,3 +69,23 @@ El servidor local ya da la trazabilidad de un cambio (`GET /api/changes/<id>/tra
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+La pestaña Historial tiene un control «Vista» (Línea de tiempo, Trazabilidad). La trazabilidad (`history/trace-view.ts`) enseña los archivos que dejó el cambio y, del elegido, sus líneas numeradas con un margen tipo blame: cada bloque con su commit y su fecha y, si lo hizo Specty, su cambio enlazado, su tarea y sus criterios; si no, el asunto y el autor. La fuente de datos tiene dos lecturas opcionales nuevas, `traceFiles` y `trace` (`data/trace.ts`), que `ServerData` pide a `GET /api/changes/<id>/trace` con motivos legibles para 403, 404, 413 y datos inesperados, y que el prototipo saca de los diffs de muestra de «Panel de asistencia por curso» (`data/sample-trace.ts`). Cuando no hay nada que trazar, la vista dice por qué.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Los títulos y criterios de la muestra van escritos en `sample-trace.ts`: el hilo principal no carga el parser de core.
+- El código va sin resaltar la sintaxis y con el margen a la izquierda; el bundle inicial queda en 522,6 kB.
+
+### Pendientes
+
+- Resaltar la sintaxis en la trazabilidad, como en el visor de diffs.
+- Saltar de una línea o un bloque a su diff.
