@@ -71,7 +71,7 @@ Tercer y último corte de la épica de MCP Apps. Cuando el cambio pasa a aceptac
 
 ## Tareas
 
-- [ ] T1: `specty accept` deja su verificación completa en vivo
+- [x] T1: `specty accept` deja su verificación completa en vivo
   - files: packages/cli/test/accept-live.test.ts, packages/cli/src/commands/accept.ts, packages/cli/src/flow/live-run.ts, packages/cli/src/store/runs.ts, packages/cli/src/server/runs.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-live.test.ts test/live-run.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

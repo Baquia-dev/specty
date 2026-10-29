@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5b64d010a4c8ff49824aa37def556d6f2ee1cc08",
+      "startedAt": "2026-10-29T18:45:27.955Z",
+      "doneAt": "2026-10-29T18:49:34.194Z",
+      "summary": "specty accept verifica con runLive sin tarea: la ejecución queda en specty/runs/<cambio>.json mientras corre y se borra al terminar; LiveRun.task es opcional y el servidor de specty ui la copia sin pid, así que la ve como la completa."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

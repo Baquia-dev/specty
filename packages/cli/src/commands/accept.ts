@@ -28,9 +28,10 @@ import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
 import { absorbTarget, integrationOf } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
+import { runLive } from "../flow/live-run";
 import { codeTree, passedOnThisCode, recordFullVerification } from "../flow/verified";
 import { changeView } from "../flow/views";
-import { execute, tail } from "../io/exec";
+import { tail } from "../io/exec";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
@@ -102,7 +103,10 @@ async function verificationToRun(
   return undefined;
 }
 
-/** Runs and records the full verification; a failure stops the agent, and asks the person. */
+/**
+ * Runs and records the full verification, live for `specty ui` and the chat as it goes; a
+ * failure stops the agent, and asks the person.
+ */
 async function runFullVerification(
   session: Session,
   change: StoredChange,
@@ -113,12 +117,7 @@ async function runFullVerification(
   const { terminal } = session.environment;
   const tree = await codeTree(session);
   const started = Date.now();
-  const result = await execute(full, [], {
-    cwd: session.root,
-    shell: true,
-    env: session.environment.env,
-    timeoutMs: session.config.verify.timeoutSec * 1000,
-  });
+  const result = await runLive(session, state.id, undefined, full);
   await recordFullVerification(session, change, {
     command: full,
     code: result.code,

@@ -9,14 +9,14 @@ const KEPT = 1000;
 const EVERY = 250;
 
 /**
- * Runs the verification of `task` of change `change` and keeps it live for the local server
- * (`store/runs.ts`): the file is written as lines come, at most every 250 ms, and removed once
- * the command ends, whether it passed or not.
+ * Runs the verification of `task` of change `change`, or with no task the full one, and keeps it
+ * live for the local server and the MCP App (`store/runs.ts`): the file is written as lines
+ * come, at most every 250 ms, and removed once the command ends, whether it passed or not.
  */
 export async function runLive(
   session: Session,
   change: string,
-  task: string,
+  task: string | undefined,
   command: string,
 ): Promise<ExecResult> {
   const startedAt = session.environment.now().toISOString();
@@ -24,9 +24,10 @@ export async function runLive(
   const rests = { stdout: "", stderr: "" };
   let pending: NodeJS.Timeout | undefined;
   let writing: Promise<void> = Promise.resolve();
+  const of = task === undefined ? {} : { task };
   const write = () => {
     pending = undefined;
-    const run = { task, command, startedAt, output, pid: process.pid };
+    const run = { ...of, command, startedAt, output, pid: process.pid };
     writing = writing.then(() => writeRun(session.git, change, run)).catch(() => undefined);
   };
   write();
