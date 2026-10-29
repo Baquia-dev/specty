@@ -65,3 +65,22 @@ kind: standard
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+«Ver diff» de un bloque de la trazabilidad marca ahora exactamente sus líneas en el diff de su tarea y lleva la vista a la primera. El servidor da en cada bloque `origin`, los números que sus líneas tenían en el commit que las escribió (del blame en porcelana), que son los de ese diff aunque una tarea posterior las moviera. `sp-diff-file` marca las líneas que recibe en `marked` (una barra de acento y «Marcada» para un lector de pantalla), del lado nuevo, también lado a lado, y con marcas enseña el archivo entero. El prototipo trae `origin` en su muestra.
+
+### Desviaciones
+
+- El test que ya existía de la muestra (`sample-trace.test.ts`, AC4) comparaba el bloque entero con `toEqual` y fallaba por el campo nuevo; con el visto bueno del usuario, ahora exige también su `origin`.
+
+### Decisiones
+
+- Las líneas se reconocen por su número en el commit de la tarea y no por su texto: dos líneas iguales no se confunden.
+- Sin `origin` (un servidor anterior), el diff se abre sin marcas en lugar de marcar líneas que podrían no ser las del bloque.
+
+### Pendientes
+
+Ninguno.
