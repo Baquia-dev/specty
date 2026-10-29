@@ -17,6 +17,6 @@ Desde ahora el cierre anota en la auditoría lo que consumió el cambio (`change
 
 ## Tareas
 
-- [ ] T1: El historial muestra el consumo de cada cambio
+- [x] T1: El historial muestra el consumo de cada cambio
   - files: packages/core/src/light.ts, packages/ui/src/data/history.ts, packages/ui/src/data/history.test.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/history.test.ts && pnpm --filter @baquia-dev/specty-core exec vitest run test/light.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

@@ -4,5 +4,6 @@
 // as soon as a lazy chunk uses the parser; the worker and the lazy chunks use the index.
 
 export { translator } from "./cards/text";
+export { usageOf, usageWords } from "./cards/usage";
 export { PHASES, type Phase } from "./flow/phases";
 export { fold, LANGS, type Lang } from "./i18n";
