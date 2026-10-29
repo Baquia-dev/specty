@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:b62931356f010092689192e5a6f4346732538d4ac62adabbdd6b14fcc37bd8ab",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9307e24ccd36f095297df1a24912e02dea1920f0",
+      "attempts": 1,
       "startedAt": "2026-10-29T07:57:07.459Z",
       "doneAt": "2026-10-29T07:57:47.383Z",
-      "summary": "Servidor MCP: rendersApps en initialize, resources/list y read de ui://specty/change, _meta.ui en las herramientas de un cambio con structuredContent.folder, specty_view solo para la app; la página junto al bundle o al script de la invocación; ADR 0015, ARCHITECTURE §6/§18, ui.md"
+      "summary": "Servidor MCP: rendersApps en initialize, resources/list y read de ui://specty/change, _meta.ui en las herramientas de un cambio con structuredContent.folder, specty_view solo para la app; la página junto al bundle o al script de la invocación; ADR 0015, ARCHITECTURE §6/§18, ui.md",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-29T08:02:07.672Z",
   "lockedTests": {
     "packages/ui/src/data/fixtures.test.ts": "sha256:c61a3fa1ebb45628f0fb83ec64338470052925e0881793a523eaa85720670ee4",
     "packages/cli/test/mcp-app-page.test.ts": "sha256:a66b965c71dbaffe0ee9790cca9b95482f3865c29441fbb0125539838acbc6d1",

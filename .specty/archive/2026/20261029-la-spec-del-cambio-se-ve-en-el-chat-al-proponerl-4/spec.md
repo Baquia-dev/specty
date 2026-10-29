@@ -90,3 +90,43 @@ Primer corte de la épica de MCP Apps. Cuando un anfitrión que soporta MCP Apps
 
 - R1: Algo de la UI que no funciona en el iframe aislado: el resaltado de código de shiki, que puede cargar WebAssembly, o una ruta de recursos. Mitigación: la pestaña Spec usa markdown sin shiki, y C1 abre el HTML empaquetado en un iframe con la CSP por defecto para comprobarlo.
 - R2: El HTML único pesa en torno a 1 MB. Mitigación: siempre es el mismo recurso; el cierre de C1 anota su tamaño.
+
+## Cierre
+
+### Resumen
+
+Con un anfitrión que declara MCP Apps, cada herramienta de un cambio de `specty mcp` muestra en el chat la UI de Specty, abierta solo en la pestaña de su fase, sin bandeja, sin pestañas y sin botones. Donde el cambio espera a la persona, la vista dice el comando de la terminal o `specty ui`. Las piezas:
+- UI: el `DERIVER` deriva en el hilo principal cuando no hay worker; `McpAppData` habla con el anfitrión por `postMessage`; `app/embedded.ts` es la vista; `main.ts` la carga con `import()` cuando la página trae la marca.
+- Página: el build del CLI empaqueta la UI en `mcp-app.html` (`mcp-app.mjs`), de 1,36 MB, sin referencias a otros archivos.
+- Servidor: negocia la extensión, sirve `ui://specty/change`, enlaza las herramientas de un cambio, añade `structuredContent.folder` y ofrece `specty_view` solo a la vista.
+- ADR 0015 y la documentación (ARCHITECTURE §6 y §18, `docs/ui.md`).
+
+Lo comprobé en Chrome con un anfitrión simulado: la página, en un iframe con `sandbox="allow-scripts"` y la CSP por defecto de MCP Apps, saluda al anfitrión, pide `specty_view` y muestra la Spec y el Progreso con los datos reales de este cambio.
+
+### Desviaciones (respecto al plan)
+
+- El corte se rehízo tres veces (-2, -3 y -4):
+  - en la primera spec, dos verificaciones ejecutaban `knip` o `typecheck` antes que sus tests, así que el envío de los tests no los veía fallar;
+  - después, una tarea de arreglo hacía el cambio XL;
+  - al final, un test que ya existía (`fixtures.test.ts`) exigía el error sin worker.
+
+  El código se recuperó cada vez de la rama anterior.
+- `mcp-app.test.ts` tuvo un fallo cuando ya estaba aprobado: `setUp(undefined)` usaba el valor por defecto y escribía la página. La persona lo desbloqueó (S1) en el intento -2, y aquí se envió ya corregido.
+- Probándolo en Chrome salieron cuatro cosas que los tests no veían:
+  - la vista tiene el selector `sp-root`, porque `bootstrapApplication` busca el elemento de la página;
+  - la vista embebida se carga con `import()`, porque si no, el bundle de `specty ui` pasaba de su presupuesto de 1 MB;
+  - el servidor busca la página junto al bundle (`import.meta.url`), porque `invocation.script` solo existe para `init` y `doctor`;
+  - las gramáticas y los temas de shiki (2,6 MB de 3,8) salen de la página como módulos vacíos.
+- Sin script que empaquetar, el build no escribe la página; `bundle.test.ts` lo exigía.
+- `fixtures.test.ts`: el test que exigía un error sin worker pasa a exigir que se derive, con el permiso de la persona.
+
+### Decisiones
+
+- Las gramáticas se reconocen por su contenido (`"scopeName"`, `"tokenColors"`), porque en el build de Angular son chunks sin nombre. El sustituto exporta los mismos nombres que el original, porque unas gramáticas importan otras.
+- `specty_view` lee todos los registros con `changeRecords` y se queda con el de la carpeta. Para una llamada por herramienta basta; C2, que consulta cada segundo, usará la huella.
+
+### Pendientes
+
+- C2: refrescar cada segundo con la huella, fijar la vista (`pip`) y atender `specty_view` mientras otra herramienta corre.
+- La vista avisa de su tamaño antes de enviar `ui/notifications/initialized`. Conviene esperar a ese aviso: un anfitrión estricto podría ignorar los anteriores.
+- Las capturas en Chrome headless fueron intermitentes: a veces la vista no llegaba a pedir `specty_view` antes de la captura. Lo atribuyo al reloj virtual de Chrome, no a la vista, pero falta probarlo en un anfitrión real (Claude Desktop o VS Code con Copilot).
