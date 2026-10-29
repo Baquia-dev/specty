@@ -1,0 +1,13 @@
+{"ts":"2026-10-29T05:55:01.580Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"epic","type":"feat","branch":"specty/20261029-mcp-apps-la-ui-de-specty-en-el-chat-solo-para-ve","request":"POR AHORA SOLO VER, pero que aparezca siempre pero solo la seccion dependiendo del comando que se va ejecutando, es decir, al proponer inicialmente la spec, que se vea solo la pestaña de spec, luego cuando ya se pase a codificar, se debe mostrar la pestaña de progreso (si se puede fijar, para que el usuario vea el progreso en tiempo real seria lo ideal, si no que se muestre al final), luego al aceptarse, que se vea la pestaña de aceptacion, en la cual ocurre la verificacion y donde al final aparece el cierre."}}
+{"ts":"2026-10-29T05:55:50.434Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:ac5598c8ae04fba0de2eacba403c7cbde9f9e5a31691a0230824d5e71634a94f","size":"S","warnings":0}}
+{"ts":"2026-10-29T06:06:18.926Z","actor":"human","event":"assumption.decided","data":{"item":"A1","decision":"confirmed"}}
+{"ts":"2026-10-29T06:08:25.415Z","actor":"human","event":"assumption.decided","data":{"item":"A2","decision":"confirmed"}}
+{"ts":"2026-10-29T06:08:55.059Z","actor":"human","event":"assumption.decided","data":{"item":"A3","decision":"confirmed"}}
+{"ts":"2026-10-29T06:09:10.153Z","actor":"human","event":"assumption.decided","data":{"item":"A4","decision":"confirmed"}}
+{"ts":"2026-10-29T06:13:13.236Z","actor":"human","event":"assumption.decided","data":{"item":"A6","decision":"confirmed"}}
+{"ts":"2026-10-29T06:13:47.247Z","actor":"human","event":"assumption.decided","data":{"item":"A7","decision":"confirmed"}}
+{"ts":"2026-10-29T06:17:28.967Z","actor":"human","event":"review.changes_requested","data":{"revision":1,"comments":["c1"]}}
+{"ts":"2026-10-29T06:19:06.912Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":2,"hash":"sha256:2b30ee20a9ddb42c84325e138ab1a6ecb7f5f7356d86ad6baac50de0122563ad","size":"S","warnings":0}}
+{"ts":"2026-10-29T06:19:28.361Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":3,"hash":"sha256:8e0319ef773fc78dc78b47c7fac05eddc9b2b760eb730be8f902b8b8a2693496","size":"S","warnings":0}}
+{"ts":"2026-10-29T06:20:23.291Z","actor":"human","event":"assumption.decided","data":{"item":"A5","decision":"confirmed"}}
+{"ts":"2026-10-29T06:20:32.495Z","actor":"human","event":"spec.approved","data":{"revision":3,"hash":"sha256:8e0319ef773fc78dc78b47c7fac05eddc9b2b760eb730be8f902b8b8a2693496","channel":"ui"}}

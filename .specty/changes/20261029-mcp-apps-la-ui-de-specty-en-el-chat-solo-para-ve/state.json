@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "id": "20261029-mcp-apps-la-ui-de-specty-en-el-chat-solo-para-ve",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261029-mcp-apps-la-ui-de-specty-en-el-chat-solo-para-ve",
+  "baseCommit": "2c20665f684aa5ed747233f024bc687aee919f5d",
+  "revision": 3,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:01207739024f3c6d8aefaa29a891b5e9cbd26811dda2429bd7cbd1d06d6a5469",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2949392132fd59463e63f57e41437b55b5ebd4e787cfc9deffeef10b81a2104f",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:dc6c9c664b4e5513dd32254ad20100295edf5e467aaabe9c730013724da9a79b",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:e118c140c0da7c7f22aa04f7fb4b3045044f959ab43c597a80dec25adceefaf9",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:8ce91acce8dab4459de14237e5bc1c4d43c7aecb700b395108ee595cfe8cfc87",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:d76995e6d2fac00f26ca5394a833f08f5b7b0b93fd6accc0d518d2e0a5d66cbb",
+      "decision": "confirmed"
+    },
+    "A7": {
+      "hash": "sha256:4edd0680252b89d7c4160aa1ffa0ceddd201b6a34d546a3f9dcef5c9b797bb90",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 10,
+    "C": 3,
+    "R": 5
+  },
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:8e0319ef773fc78dc78b47c7fac05eddc9b2b760eb730be8f902b8b8a2693496",
+    "at": "2026-10-29T06:20:32.465Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "ui"
+  }
+}

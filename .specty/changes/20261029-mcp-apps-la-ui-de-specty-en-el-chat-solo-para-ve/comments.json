@@ -1,0 +1,13 @@
+[
+  {
+    "id": "c1",
+    "revision": 1,
+    "anchor": {
+      "item": "A5"
+    },
+    "author": "Jorge Palacio Barcinilla",
+    "body": "Habra sensacion de retraso al refrescar? se puede bajar a 1 segundo?",
+    "createdAt": "2026-10-29T06:10:56.960Z",
+    "resolvedInRevision": 2
+  }
+]
