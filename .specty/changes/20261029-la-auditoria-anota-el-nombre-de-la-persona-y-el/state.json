@@ -6,6 +6,13 @@
   "branch": "specty/20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:768d0f7ce610d1603c87292529aab251f323b4c8577fac40d37090a2629471db",
+    "at": "2026-10-29T07:33:49.603Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -38,12 +45,6 @@
     "AC": 2,
     "T": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:768d0f7ce610d1603c87292529aab251f323b4c8577fac40d37090a2629471db",
-    "at": "2026-10-29T07:33:49.603Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T07:34:28.055Z"
 }
