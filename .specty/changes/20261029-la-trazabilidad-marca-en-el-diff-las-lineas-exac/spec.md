@@ -60,7 +60,7 @@ kind: standard
   - files: packages/ui/src/data/trace.ts, packages/ui/src/data/sample-trace.ts, packages/ui/src/history/trace-diff.ts, packages/ui/src/history/trace-view.ts, packages/ui/src/history/trace-marks.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history --include src/data/sample-trace.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
-- [ ] T4: Documentar las marcas
+- [x] T4: Documentar las marcas
   - files: docs/ui.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

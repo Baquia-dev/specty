@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
   "baseCommit": "0acfdedf181cf68d8c8737ef85e7baed0c108705",
   "revision": 1,
@@ -54,12 +54,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f58fa6ca4fc98f20a2fb269f7e2eb219975805b9",
+      "attempts": 1,
       "startedAt": "2026-10-29T09:09:28.457Z",
       "doneAt": "2026-10-29T09:32:38.835Z",
-      "summary": "Ver diff marca las líneas del bloque por su origin y lleva la vista a la primera; la muestra del prototipo trae origin con el número nuevo de cada línea (el test de la muestra lo exige, con el visto bueno del usuario)"
+      "summary": "Ver diff marca las líneas del bloque por su origin y lleva la vista a la primera; la muestra del prototipo trae origin con el número nuevo de cada línea (el test de la muestra lo exige, con el visto bueno del usuario)",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7dbe07d577801082524fd19f7065e22a399b8f37",
+      "startedAt": "2026-10-29T09:32:39.182Z",
+      "doneAt": "2026-10-29T09:36:10.238Z",
+      "summary": "docs/ui.md describe las marcas del diff de un bloque y ARCHITECTURE el origin de cada bloque en la lectura trace"
     }
   },
   "pending": {
