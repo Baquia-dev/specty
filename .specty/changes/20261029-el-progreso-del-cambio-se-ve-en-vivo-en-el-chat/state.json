@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
   "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
   "revision": 1,
@@ -55,6 +55,10 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T09:48:30.430Z"
+  "lockedTests": {
+    "packages/cli/test/mcp-app.test.ts": "sha256:fa9f973cd5b0ecb2a0e6a126261f46b117e34cc8180d5affbd34b9f87cf76c54",
+    "packages/ui/src/app/embedded.test.ts": "sha256:cd85ff4399ccd8443a0513dffe943d0f94981b87f69e983f93a772027a32869b",
+    "packages/ui/src/data/mcp-app.test.ts": "sha256:757b9a31399a419bec0276bbdc02163ca1c7e77aa2f946e4056f8dc09dc3112f",
+    "packages/cli/test/mcp-app-live.test.ts": "sha256:25e114f23c9e2524e825341225c4e6c00ba08d54d73c2a43178c3d42a7efd79d"
+  }
 }
