@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-la-pestana-historial-exporta-el-cambio-en-markdo",
+  "baseCommit": "7f224077b03d050749f0d8c435ff4ad04bd4ffa8",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c1630b29cec92438c0cd0326ff21fcc84549502ba56411f742d7fe1ed1c83479",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c063ba24eceb5558d0e3dc75452a75e8acd06c836ca3826205063c07e290e0cc",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:bbba3252da1582785b68c16ec635b6cdda5cae14f00fe9652287c876e8109713",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f65828c0f3df063c8e498404d9ab371d45412acc258fec47452f1a0e54afd4b0",
+    "at": "2026-10-29T05:06:44.645Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
