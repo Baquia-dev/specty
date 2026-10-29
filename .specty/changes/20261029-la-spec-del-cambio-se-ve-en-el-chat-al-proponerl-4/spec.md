@@ -69,7 +69,7 @@ Primer corte de la épica de MCP Apps. Cuando un anfitrión que soporta MCP Apps
 
 ## Tareas
 
-- [ ] T1: La UI deriva sus datos sin worker cuando no puede crear uno
+- [x] T1: La UI deriva sus datos sin worker cuando no puede crear uno
   - files: packages/ui/src/data/changes-store.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts && pnpm lint

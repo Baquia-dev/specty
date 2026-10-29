@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d98c5cc548effe1ac40c4c543401f32ef3456224",
+      "startedAt": "2026-10-29T07:55:26.387Z",
+      "doneAt": "2026-10-29T07:55:52.668Z",
+      "summary": "DERIVER sin worker: startWorker con try/catch y el error del worker; sin él, import() perezoso de la derivación; fixtures.test.ts exige derivar sin worker (antes, error), con OK de la persona"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
