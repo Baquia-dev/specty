@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-salida-de-los-test-que-fallan-tiene-resaltado",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-la-salida-de-los-test-que-fallan-tiene-resaltado",
   "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "39d402df523160ab320bf60d3a5f11a0110cca23",
+      "attempts": 1,
       "startedAt": "2026-10-29T09:55:24.605Z",
       "doneAt": "2026-10-29T10:01:28.596Z",
-      "summary": "Reconocimiento de marcas de ejecutores de tests (✕, ✖, ✔), errores como AssertionError, líneas de aserción (- Expected, + Received) y tramos de diff en outputSegments; pruebas unitarias y documentación en docs/ui.md."
+      "summary": "Reconocimiento de marcas de ejecutores de tests (✕, ✖, ✔), errores como AssertionError, líneas de aserción (- Expected, + Received) y tramos de diff en outputSegments; pruebas unitarias y documentación en docs/ui.md.",
+      "scopeExtra": []
     }
   },
   "pending": {

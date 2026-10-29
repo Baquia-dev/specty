@@ -19,3 +19,9 @@ La visualización de la salida de las verificaciones de tests que fallan en la i
 - [x] T1: Resaltado con colores de la salida de tests que fallan
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts --include src/progress/progress-tab.test.ts && pnpm typecheck && pnpm lint
+
+## Cierre
+
+### Resumen
+
+Reconocimiento de marcas de ejecutores de tests (✕, ✖, ✔), errores como AssertionError, líneas de aserción (- Expected, + Received) y tramos de diff en outputSegments; pruebas unitarias y documentación en docs/ui.md.
