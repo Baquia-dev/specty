@@ -40,7 +40,7 @@ La vista de trazabilidad del Historial enseña el código en texto plano y no de
 
 ## Tareas
 
-- [ ] T1: El código coloreado y el diff de cada bloque en la trazabilidad
+- [x] T1: El código coloreado y el diff de cada bloque en la trazabilidad
   - files: packages/ui/src/history/trace-view.ts, packages/ui/src/history/trace-diff.ts, packages/ui/src/history/trace-diff.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cdd4150f23d8f55b34e22cb47e838a6c54867ef0",
+      "startedAt": "2026-10-29T08:34:47.742Z",
+      "doneAt": "2026-10-29T08:42:40.979Z",
+      "summary": "La trazabilidad colorea el código con el resaltado del visor de diffs, y cada bloque de Specty ofrece Ver diff, que abre bajo él el diff del archivo en la tarea del bloque (sp-trace-diff) o dice por qué no"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
