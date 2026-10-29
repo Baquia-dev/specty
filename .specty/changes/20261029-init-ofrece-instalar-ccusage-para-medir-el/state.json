@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-init-ofrece-instalar-ccusage-para-medir-el",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-init-ofrece-instalar-ccusage-para-medir-el",
   "baseCommit": "b76a74f022c08910d3acd77b4823066410a1caaf",
   "revision": 1,
@@ -43,6 +43,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T22:40:53.911Z"
+  "lockedTests": {
+    "packages/cli/test/init-usage.test.ts": "sha256:2cd0e3a220ee0aa04604447d8f7a87d7b2750ec9f4c4dfd454a2b7100b7f5878",
+    "packages/core/test/cards/ccusage.test.ts": "sha256:5ed4051dca1a45e769c293814e8e913b1b2b9a4faca05e0db75538c4cbe559e6"
+  }
 }
