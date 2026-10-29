@@ -71,3 +71,21 @@ La primera vez que una persona ejecuta `specty init`:
 
 - R1: Sin red, el gestor falla y init se alarga. Mitigación: init sigue y deja el aviso con el comando (AC2).
 - R2: Otra versión de ccusage cambia su JSON. Mitigación: init fija la versión, y Specty, si no entiende la respuesta, cierra sin consumo.
+
+## Cierre
+
+### Resumen
+
+`specty init`, al crear la configuración, ofrece ccusage. En un proyecto de Node que no lo tiene, pregunta a la persona y, si acepta, lo añade como dependencia de desarrollo con su gestor, fijado en 20.0.45 (`-w` en la raíz de un workspace de pnpm). `package.json` y el lockfile entran en el commit de init. A un agente, o fuera de Node, le da el comando en un aviso. Si ya lo tiene, si la configuración existía o en `--dry-run`, calla. Es el último paso de `install.ts` (`install/usage.ts`).
+
+### Desviaciones
+
+Ninguna respecto al plan.
+
+### Decisiones
+
+El gestor sale de la detección del stack, que ya elige entre pnpm, npm, yarn y bun por el lockfile; sin un stack de Node con gestor conocido, el aviso da `npm i -g`. La espera del gestor es de cinco minutos, para una red lenta. Antes de cerrar T2, la suite completa del CLI corrió con pnpm, npm, yarn y bun falsos que anotan sus llamadas: ningún test existente llega a instalar ccusage.
+
+### Pendientes
+
+- Que `doctor` avise cuando falta ccusage en un proyecto ya configurado (la opción 1 que se descartó en favor de esta).

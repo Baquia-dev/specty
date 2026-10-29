@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-init-ofrece-instalar-ccusage-para-medir-el",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-init-ofrece-instalar-ccusage-para-medir-el",
   "baseCommit": "b76a74f022c08910d3acd77b4823066410a1caaf",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:86f4336fff1bfe4e27d2a957d3251657a7ac219ec6245b65d3676215b2cde24c",
@@ -53,12 +53,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "13e22e423d5627a53fc1195c4dfabb38d74ef3cf",
+      "attempts": 1,
       "startedAt": "2026-10-29T22:50:37.494Z",
       "doneAt": "2026-10-29T22:51:03.117Z",
-      "summary": "ARCHITECTURE §13: Specty no trae ccusage ni lo descarga solo; init lo ofrece. §14: el paso de init que pregunta, añade con el gestor o avisa cómo instalarlo."
+      "summary": "ARCHITECTURE §13: Specty no trae ccusage ni lo descarga solo; init lo ofrece. §14: el paso de init que pregunta, añade con el gestor o avisa cómo instalarlo.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -71,6 +71,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-29T22:54:52.534Z",
   "lockedTests": {
     "packages/cli/test/init-usage.test.ts": "sha256:2cd0e3a220ee0aa04604447d8f7a87d7b2750ec9f4c4dfd454a2b7100b7f5878",
     "packages/core/test/cards/ccusage.test.ts": "sha256:5ed4051dca1a45e769c293814e8e913b1b2b9a4faca05e0db75538c4cbe559e6"
