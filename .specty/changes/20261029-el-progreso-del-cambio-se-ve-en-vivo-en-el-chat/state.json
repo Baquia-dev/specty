@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-el-progreso-del-cambio-se-ve-en-vivo-en-el-chat",
   "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
   "revision": 1,
@@ -61,12 +61,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "da683169d2726ff4568a7d72b6fa7d4f456fcab3",
+      "attempts": 1,
       "startedAt": "2026-10-29T10:10:14.097Z",
       "doneAt": "2026-10-29T10:19:46.259Z",
-      "summary": "McpAppData lee la carpeta de tool-input, vuelve a preguntar cada segundo con since mientras la fase se mueve, pide pip en Progreso, da la verificación por watchRun, lee el texto JSON si falta structuredContent y rechaza con motivo bilingüe; el tamaño va tras initialized."
+      "summary": "McpAppData lee la carpeta de tool-input, vuelve a preguntar cada segundo con since mientras la fase se mueve, pide pip en Progreso, da la verificación por watchRun, lee el texto JSON si falta structuredContent y rechaza con motivo bilingüe; el tamaño va tras initialized.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "caa66aafccd305560dcd0d681a7e3a1c0984a248",
+      "startedAt": "2026-10-29T10:19:46.611Z",
+      "doneAt": "2026-10-29T10:25:55.395Z",
+      "summary": "La vista arranca con embeddedProviders() (fuente del anfitrión y derivación en el hilo principal), dice por qué no puede leer el cambio y ya no avisa de su tamaño; ARCHITECTURE §6, ui.md y el ADR 0015 cuentan la huella, el orden y el texto JSON."
     }
   },
   "pending": {

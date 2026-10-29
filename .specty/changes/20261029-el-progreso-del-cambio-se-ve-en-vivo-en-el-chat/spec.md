@@ -90,7 +90,7 @@ El corte arregla además lo que mostró la prueba en anfitriones reales (2026-10
   - files: packages/ui/src/data/mcp-app.ts, packages/ui/src/data/mcp-app.test.ts
   - ac: AC1, AC4, AC5, AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/mcp-app.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
-- [ ] T3: La vista arranca sin worker y dice por qué no puede leer el cambio
+- [x] T3: La vista arranca sin worker y dice por qué no puede leer el cambio
   - files: packages/ui/src/app/embedded.ts, packages/ui/src/app/embedded.test.ts, packages/ui/src/main.ts, packages/ui/src/data/changes-store.ts, docs/ARCHITECTURE.md, docs/ui.md, docs/decisions/0015-mcp-apps-solo-para-ver.md
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/embedded.test.ts --include src/data/fixtures.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

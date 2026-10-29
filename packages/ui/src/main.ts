@@ -18,15 +18,9 @@ const MCP_APP = 'meta[name="specty-data"][content="mcp-app"]';
  * initial bundle of `specty ui`; the MCP App's page carries everything in one file anyway.
  */
 async function embedded(): Promise<void> {
-  const [{ Embedded }, { McpAppData }] = await Promise.all([
-    import("./app/embedded"),
-    import("./data/mcp-app"),
-  ]);
+  const { Embedded, embeddedProviders } = await import("./app/embedded");
   await bootstrapApplication(Embedded, {
-    providers: [
-      provideRouter([], withDisabledInitialNavigation()),
-      { provide: SpectyData, useClass: McpAppData },
-    ],
+    providers: [provideRouter([], withDisabledInitialNavigation()), ...embeddedProviders()],
   });
 }
 

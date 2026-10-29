@@ -134,13 +134,16 @@ Las tareas, en el orden de la spec, como filas de documento (igual que los ítem
 
 La vista de un anfitrión de MCP Apps ([ADR 0015](decisions/0015-mcp-apps-solo-para-ver.md)):
 - **Cuándo aparece:** cuando una herramienta del agente trabaja sobre un cambio.
-- **Cómo arranca:** la página es `mcp-app.html`, y su marca `<meta name="specty-data" content="mcp-app">` hace que `main.ts` arranque `app/embedded.ts` en lugar del armazón, sin rutas, con `McpAppData` como fuente.
-- **De dónde salen los datos:** `McpAppData` (`data/mcp-app.ts`) habla JSON-RPC por `postMessage` con el anfitrión. Lo saluda con `ui/initialize`, toma de cada resultado de herramienta la carpeta en la que corrió y lee ese cambio con `specty_view`.
+- **Cómo arranca:** la página es `mcp-app.html`, y su marca `<meta name="specty-data" content="mcp-app">` hace que `main.ts` arranque `app/embedded.ts` en lugar del armazón, sin rutas, con `embeddedProviders()`: `McpAppData` como fuente y la derivación en el hilo principal.
+- **De dónde salen los datos:** `McpAppData` (`data/mcp-app.ts`) habla JSON-RPC por `postMessage` con el anfitrión. Lo saluda con `ui/initialize`, toma la carpeta de los argumentos de la llamada (`ui/notifications/tool-input`) y lee ese cambio con `specty_view`. Con el resultado de la herramienta lo vuelve a leer, porque la herramienta ya lo cambió. Si el anfitrión no le da el `structuredContent`, lee los datos del texto JSON.
+- **En vivo:** mientras el cambio está en tests, implementación, ajustes, aceptación o cierre, vuelve a preguntar un segundo después de cada respuesta, con la huella de lo que tiene (`since`). Solo se actualiza si algo cambió, y la verificación en curso le llega por `watchRun`. En las demás fases el cambio espera a una persona o ya terminó, y no pregunta. Para con `ui/resource-teardown`.
+- **Fijada:** si el anfitrión ofrece `pip` y el cambio está en tests, implementación o ajustes, pide quedar fijada (`ui/request-display-mode`), una vez.
 - **Qué muestra:** el cambio, con su fase, su id y su título, y solo la pestaña de la fase. Es la Spec en borrador y revisión, el Progreso en tests, implementación y ajustes, la Aceptación en aceptación, cierre y terminado, y el Historial si se canceló.
 - **Qué no hay:** ni bandeja, ni pestañas, ni acciones. Si el cambio espera a la persona, una línea dice qué comando ejecutar en la terminal o que lo abra en `specty ui`, porque la vista no decide nada.
 - **Aspecto:** sin las fuentes Geist, que la CSP del iframe no deja cargar, se ve con las del sistema.
-- **El tamaño:** la vista avisa al anfitrión de su tamaño (`ui/notifications/size-changed`).
-- **Sin Web Worker:** si el iframe no deja crearlo, los datos se derivan en el hilo principal.
+- **Si no puede leer el cambio:** dice por qué, en lugar de «Esperando el cambio…»: no hay ninguno abierto en la carpeta, o la respuesta no se entiende.
+- **El tamaño:** la fuente avisa al anfitrión de su tamaño (`ui/notifications/size-changed`), después de `ui/notifications/initialized`.
+- **Sin Web Worker:** el iframe no deja crearlo, así que en modo embebido los datos se derivan en el hilo principal, sin intentarlo.
 
 ### Carga, estados vacíos y errores
 
