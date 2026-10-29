@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261028-con-contract-un-refactor-no-tiene-que-listar-tes",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261028-con-contract-un-refactor-no-tiene-que-listar-tes",
+  "baseCommit": "4ed71aca4a08ee4a6f7ecd21599fe041ae57a0ab",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b727dcd3c88c876a3b93f5e6ffeb29c227d12492ea98c5021a6eb589982e1c0d",
+    "at": "2026-10-29T04:48:14.731Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "842132d813cf0b508b5c12323bb4bd65e4fa2287",
+      "attempts": 1,
+      "startedAt": "2026-10-29T04:48:15.642Z",
+      "doneAt": "2026-10-29T04:53:21.775Z",
+      "summary": "Con contract, refactor y perf no necesitan listar tests (needsTests con testRules); required y recommended igual; test visto en rojo; formats §1",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}
