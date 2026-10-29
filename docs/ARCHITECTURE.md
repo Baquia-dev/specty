@@ -175,6 +175,14 @@ Cada una tiene el esquema JSON de sus argumentos y un `folder` opcional, la carp
 
 Registrarlo es opcional, porque cada herramienta MCP ocupa contexto en cada turno y la CLI ya hace lo mismo. `specty init --mcp` escribe la entrada `specty` en la configuración MCP de proyecto de cada agente del repositorio (`install/mcp.ts`; los archivos, en [formats.md §1](formats.md#1-estructura)). Solo la escribe con `specty` en el PATH; si no, avisa. Antigravity solo lee la carpeta del usuario, así que recibe un aviso con los pasos. `init` sin `--mcp` no toca esas entradas. Cuando algún agente tiene la entrada, `doctor` la confirma en cada uno y da un problema en el agente al que le falta o cuya entrada ejecuta otro comando. Sin ninguna, no dice nada. `uninstall` la quita.
 
+**MCP Apps** ([ADR 0015](decisions/0015-mcp-apps-solo-para-ver.md)). Si el cliente declara en `initialize` la extensión `io.modelcontextprotocol/ui` con `text/html;profile=mcp-app`, y junto al bundle está `mcp-app.html`, el servidor declara `resources`. Entonces:
+- **`tools/list`:** enlaza cada herramienta de un cambio (todas salvo `specty_check`) con `ui://specty/change` en `_meta.ui.resourceUri`.
+- **`resources/read`:** devuelve esa página.
+- **El resultado de esas herramientas:** lleva `structuredContent.folder`, la carpeta en la que corrió.
+- **`specty_view`:** una herramienta más, con `visibility: ["app"]`, que solo llama la vista y solo acepta `folder`. Devuelve en `structuredContent.records` el registro del cambio abierto en esa carpeta, como `/api/changes`.
+
+`mcp/app.ts` reconoce la extensión, busca la página (junto a `invocation.script` si la invocación lo nombra, como en los tests, y si no junto al bundle) y arma los datos de la vista. La página la escribe el build del CLI (`mcp-app.mjs`) con el build de la UI: el de `--ui` o el del monorepo. Lleva todo el JS y el CSS dentro, sin `@font-face` ni las gramáticas de shiki. La vista es solo para ver: no decide nada, y dice dónde decidir. Sin la extensión, o sin la página, el servidor es el de siempre.
+
 ## 7. Contexto para el agente
 
 - **AGENTS.md**: Specty gestiona dos bloques delimitados ([formats.md §8](formats.md#8-bloque-de-agentsmd)):
@@ -745,7 +753,7 @@ Se elimina:
 | F1 · Flujo por CLI ✓ | `init` (detección), los 7 comandos del agente, git (ramas, recibos, trailers), hooks de git, bloques de AGENTS.md, guard con adaptadores de Claude Code y Cursor, aprobación por TTY | Desde aquí, Specty se construye usándose a sí mismo |
 | F2 · UI ✓ | Primero el sistema de diseño y un prototipo navegable; después las pantallas de revisión, delta, progreso, aceptación y cierre en vivo | Un cambio completo sin abrir el Markdown: lo recorre `cli/test/server/lifecycle.test.ts`, con la persona solo en el servidor de la UI |
 | F3 · Auditoría y ecosistema (en curso) | `why`, `audit`, flujo retro completo, `specty ci` y GitHub Action, exportadores, importador desde OpenSpec y el legacy, servidor MCP, más adaptadores con hooks, suite de cumplimiento con ≥ 4 agentes. Todo está hecho (épica `20261028-fase-3-auditoria-y-ecosistema`, 2026-10-28), también la suite (`pnpm evals`) | La suite de cumplimiento es estable con cada agente. Pendiente: medirla con al menos cuatro agentes y repetirla; hoy solo se midió Claude Code, con cinco ejecuciones (§16) |
-| F4 · Escala y equipos | Épicas y worktrees en paralelo, modo equipo (aprobadores, revisión de PR), WebAuthn, extensión de VS Code (mismo bundle de UI), MCP Apps en el chat. De la extensión está la base (`packages/vscode`, 2026-10-28): el cambio de la carpeta, su fase y si espera a la persona en la barra de estado, leídos de `specty --json status`, y «Specty: Abrir la UI», que arranca `specty ui` en solo lectura y abre su enlace en el navegador; se empaqueta en un `.vsix` con `pnpm --filter specty-vscode package`, sin publicarse. Falta decidir desde VS Code (la webview con `postMessage`), publicarla y Windows | — |
+| F4 · Escala y equipos | Épicas y worktrees en paralelo, modo equipo (aprobadores, revisión de PR), WebAuthn, extensión de VS Code (mismo bundle de UI), MCP Apps en el chat. De la extensión está la base (`packages/vscode`, 2026-10-28): el cambio de la carpeta, su fase y si espera a la persona en la barra de estado, leídos de `specty --json status`, y «Specty: Abrir la UI», que arranca `specty ui` en solo lectura y abre su enlace en el navegador; se empaqueta en un `.vsix` con `pnpm --filter specty-vscode package`, sin publicarse. Falta decidir desde VS Code (la webview con `postMessage`), publicarla y Windows. De MCP Apps está la vista de la spec en el chat, solo para ver ([ADR 0015](decisions/0015-mcp-apps-solo-para-ver.md), §6); faltan el progreso en vivo y la aceptación | — |
 
 ## 19. Preguntas abiertas
 

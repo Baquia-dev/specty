@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "id": "20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261029-la-spec-del-cambio-se-ve-en-el-chat-al-proponerl-4",
+  "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b62931356f010092689192e5a6f4346732538d4ac62adabbdd6b14fcc37bd8ab",
+    "at": "2026-10-29T07:54:26.677Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "15 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:61a36ab9293ceb3c5737a791453cdb1132d96ba304fb0a97d946859232a3bcf2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:70e93ab8b83d400c4959ff46ed7590aa963fb762238647fd70cda13153dee744",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:7c47060fd7e9470d8df22097de89c98e91431b614cc561e743a2ee3d84303db5",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:02d6e5ee8668ad3b38c64f09242ec28ef7fbc0e16b933448830172a5c886fd6a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:7d366f56092bf0d103805bdc9a5807ad9e79b37ecfeb707c37e0ffaa79e398f6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d98c5cc548effe1ac40c4c543401f32ef3456224",
+      "attempts": 1,
+      "startedAt": "2026-10-29T07:55:26.387Z",
+      "doneAt": "2026-10-29T07:55:52.668Z",
+      "summary": "DERIVER sin worker: startWorker con try/catch y el error del worker; sin él, import() perezoso de la derivación; fixtures.test.ts exige derivar sin worker (antes, error), con OK de la persona",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "16c26f4919e4f28a578d31f374bdbd090c9461f7",
+      "attempts": 1,
+      "startedAt": "2026-10-29T07:55:53.012Z",
+      "doneAt": "2026-10-29T07:56:47.473Z",
+      "summary": "McpAppData (postMessage JSON-RPC: ui/initialize, tool-result → specty_view, solo lectura) y la vista Embedded (selector sp-root) con solo la pestaña de la fase y dónde decidir; main.ts la carga con import() con la marca mcp-app",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "fdb195333c8d4b39eb08a93ecb4a07eb7f75b8a8",
+      "attempts": 1,
+      "startedAt": "2026-10-29T07:56:47.813Z",
+      "doneAt": "2026-10-29T07:57:07.145Z",
+      "summary": "mcp-app.mjs empaqueta el build de la UI en un HTML (esbuild sin chunks, CSS sin @font-face, marca, sin base ni links, gramáticas de shiki vacías: 1,36 MB); sin script no escribe la página; build.mjs la escribe junto al bundle",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "9307e24ccd36f095297df1a24912e02dea1920f0",
+      "attempts": 1,
+      "startedAt": "2026-10-29T07:57:07.459Z",
+      "doneAt": "2026-10-29T07:57:47.383Z",
+      "summary": "Servidor MCP: rendersApps en initialize, resources/list y read de ui://specty/change, _meta.ui en las herramientas de un cambio con structuredContent.folder, specty_view solo para la app; la página junto al bundle o al script de la invocación; ADR 0015, ARCHITECTURE §6/§18, ui.md",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-29T08:02:07.672Z",
+  "lockedTests": {
+    "packages/ui/src/data/fixtures.test.ts": "sha256:c61a3fa1ebb45628f0fb83ec64338470052925e0881793a523eaa85720670ee4",
+    "packages/cli/test/mcp-app-page.test.ts": "sha256:a66b965c71dbaffe0ee9790cca9b95482f3865c29441fbb0125539838acbc6d1",
+    "packages/cli/test/mcp-app.test.ts": "sha256:938f773d37a7c69be5e2d89a8bc6ecc436ef23f53878b094052aaf361ae6acdb",
+    "packages/ui/src/app/embedded.test.ts": "sha256:4c2d0ced7e357db98b2de0fcf6dcea1ecc9d7348d0a0861c2360c6d0c4ae8d41",
+    "packages/ui/src/data/mcp-app.test.ts": "sha256:4e5ce0c2d25f9d687f7a4866ae3e9493584bd811aee787fcdbe33fdc0d6b681c"
+  }
+}
