@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
+  "baseCommit": "7de538a74b9ad00473a69df08c98fcbcd8da146a",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:062cff8ea739691eebac60838d6ae338b202e90ade09269f042d6711159bca33",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e989a3569c232f65418bd91a92c075edb66291cba7a65f0e67e5d71448566538",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:97966ff74932142c058397f741094b2112544ab01e8e460f9c330f4fac77cd6d",
+    "at": "2026-10-29T07:57:02.653Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
