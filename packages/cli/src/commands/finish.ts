@@ -27,6 +27,7 @@ import { verifyHints, withVerifyHints } from "../flow/detected";
 import { archive, commitArchive } from "../flow/finish";
 import { absorbTarget, integrationOf, isIncorporated } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
+import { measureUsage, withUsage } from "../flow/usage";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { writePointer } from "../store/local";
@@ -82,6 +83,8 @@ async function closeConfirmed(session: Session, change: StoredChange, spec: Spec
   });
   if (!moved.ok)
     return blockedCard(headerOf(state.id, state.phase), moved.code, checkStatus(session.cards));
+  // Measured before archiving, so that the consumption goes with the change.
+  const usage = await measureUsage(session, change);
   const archived = await archive(
     session,
     change,
@@ -109,7 +112,7 @@ async function closeConfirmed(session: Session, change: StoredChange, spec: Spec
     absorbed?.lines ?? [],
     landed,
   );
-  return withVerifyHints(card, hints);
+  return withVerifyHints(withUsage(card, usage), hints);
 }
 
 /** A closed change that did not reach the main branch (its landing failed): retries only that. */

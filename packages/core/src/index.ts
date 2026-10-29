@@ -263,5 +263,13 @@ export {
   specTemplate,
   type TemplateOptions,
 } from "./templates";
+export {
+  type ChangeUsage,
+  changeUsage,
+  type ModelCost,
+  modelPrices,
+  type TokenPrices,
+  type UsageEntry,
+} from "./usage";
 export { type ProposePhase, type ValidationContext, validateSpec } from "./validate";
 export { type TestCycle, type TestRules, testCycle, testRules } from "./validate/quality";
