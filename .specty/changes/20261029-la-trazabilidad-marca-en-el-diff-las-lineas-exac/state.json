@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
   "baseCommit": "0acfdedf181cf68d8c8737ef85e7baed0c108705",
   "revision": 1,
@@ -43,6 +43,9 @@
     "AC": 3,
     "T": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T09:01:16.464Z"
+  "lockedTests": {
+    "packages/cli/test/server/trace-origin.test.ts": "sha256:a794df8af42a0e32537281ea1fd0c4c99c484f3ce0ebcf0290a4a61665731686",
+    "packages/ui/src/components/diff-file-marks.test.ts": "sha256:eb07a6379e3732119a8bae537e3d24db167e71807d0321344929269067aa15c2",
+    "packages/ui/src/history/trace-marks.test.ts": "sha256:fc177c87798fd01802d9c6a9be3888ff3a294140727bfa74771bdd8dc66e49f0"
+  }
 }
