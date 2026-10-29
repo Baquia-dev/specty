@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
+  "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "cambia dependencias",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8f450352e470bc109c478b14a6c27df11c4c1636c88a39a7feea2920b68e5a95",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:f794ae1b5efd9bcf2c4158562313096c5fcd3ef03b63c4c4dcc262acb1f77cc6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:7c9a85ea643165213e80f2e3cbc4b586c5f923177a15e06d1791200ef5af07cc",
+    "at": "2026-10-29T20:11:08.913Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
