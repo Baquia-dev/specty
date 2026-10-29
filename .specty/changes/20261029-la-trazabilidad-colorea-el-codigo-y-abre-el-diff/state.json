@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-trazabilidad-colorea-el-codigo-y-abre-el-diff",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-la-trazabilidad-colorea-el-codigo-y-abre-el-diff",
   "baseCommit": "e8e1504be9c0f75e0842dd70bf5c1ef5183f5120",
   "revision": 1,
@@ -41,6 +41,7 @@
     "AC": 3,
     "T": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T08:34:38.714Z"
+  "lockedTests": {
+    "packages/ui/src/history/trace-diff.test.ts": "sha256:7ed447e03b24921cac6675280e25fab6ad8ecfa8963d827bf021903b5d5b4152"
+  }
 }
