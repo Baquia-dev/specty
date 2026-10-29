@@ -541,7 +541,7 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 - Si el comando `specty` no existe, usa `npx -y @baquia-dev/specty <comando>`. Nunca uses `npx specty`: es otro paquete.
 
 ## Reglas (Specty)
-- Antes de reportar una tarea como terminada, ejecuta `specty check --changed --spec` y corrige todos los fallos. No reportes con fallos pendientes.
+- `specty task done` ya ejecuta `specty check --changed --spec` y la verificación de la tarea, y no la completa con fallos: no los repitas justo antes; corrige lo que devuelva y no reportes con fallos pendientes.
 - Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.
 - Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.
 - Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.
