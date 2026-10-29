@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261028-el-informe-de-auditoria-y-los-datos-de-exportaci",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261028-el-informe-de-auditoria-y-los-datos-de-exportaci",
+  "baseCommit": "4ed71aca4a08ee4a6f7ecd21599fe041ae57a0ab",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:69612025665f4e932011ce2a730a1d3c8a5cb8cd26f53ac1c9e03c4b1bb6c768",
+    "at": "2026-10-29T04:45:07.903Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:096a7827931e3733eb96a6bef994c680f7b2266c61dcac333a64c325c6bf4895",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "362fd3ef164fd8e6bc53e30b83c50d400683fc62",
+      "attempts": 1,
+      "startedAt": "2026-10-29T04:45:08.301Z",
+      "doneAt": "2026-10-29T04:50:09.882Z",
+      "summary": "auditViewOf en core/src/cards/audit-view.ts arma el AuditView desde el estado, la spec, la auditoría y los commits; specty audit lo usa y su salida no cambia",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "587a5c99ab2bb6e90721bffde18d45eabe519918",
+      "attempts": 1,
+      "startedAt": "2026-10-29T04:50:10.210Z",
+      "doneAt": "2026-10-29T04:55:43.336Z",
+      "summary": "exportContextOf en exporters/src/context.ts da el id, la rama, el día y la petición desde el estado y la auditoría; specty export lo usa y sus archivos no cambian",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-29T05:00:31.118Z"
+}

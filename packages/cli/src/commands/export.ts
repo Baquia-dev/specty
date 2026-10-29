@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join, resolve } from "node:path";
 import { exportedCard, exportRefusalCard, type Output, parseSpec } from "@baquia-dev/specty-core";
-import { EXPORT_FORMATS, exportSpec } from "@baquia-dev/specty-exporters";
+import { EXPORT_FORMATS, exportContextOf, exportSpec } from "@baquia-dev/specty-exporters";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
 import { resolveActive } from "../flow/active";
-import { dataOf, readAudit } from "../flow/carried";
+import { readAudit } from "../flow/carried";
 import { findChange } from "../flow/find";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
-import { readSpec, type StoredChange } from "../store/changes";
+import { readSpec } from "../store/changes";
 import { shownPath } from "../store/paths";
 
 /** How each format is called in the output. */
@@ -44,7 +44,8 @@ async function exportChange(
     );
   }
   const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;
-  const files = exportSpec(spec, chosen, await exportFacts(change));
+  const context = exportContextOf(change.state, await readAudit(change.files));
+  const files = exportSpec(spec, chosen, context);
   const folder = resolve(session.root, out ?? join(".specty", "exports", chosen));
   for (const file of files) await writeText(join(folder, file.path), file.content);
   return exportedCard(
@@ -53,19 +54,6 @@ async function exportChange(
     files.map((file) => file.path),
     cards,
   );
-}
-
-/** What the export tells of the change: its id, branch, creation day and the user's request. */
-async function exportFacts(change: StoredChange): Promise<Parameters<typeof exportSpec>[2]> {
-  const { state } = change;
-  const created = (await readAudit(change.files)).find((entry) => entry.event === "change.created");
-  const { request } = dataOf(created);
-  return {
-    id: state.id,
-    ...(state.branch === undefined ? {} : { branch: state.branch }),
-    ...(typeof created?.ts === "string" ? { created: created.ts.slice(0, 10) } : {}),
-    ...(typeof request === "string" ? { request } : {}),
-  };
 }
 
 /** Inside the repository, relative to its root; outside, whole: a long `../../…` is hard to read. */
