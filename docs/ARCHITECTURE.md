@@ -178,7 +178,7 @@ Registrarlo es opcional, porque cada herramienta MCP ocupa contexto en cada turn
 ## 7. Contexto para el agente
 
 - **AGENTS.md**: Specty gestiona dos bloques delimitados ([formats.md §8](formats.md#8-bloque-de-agentsmd)):
-  - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check). Los comandos salen de la pila, y los de tests, lint y tipos que la pila no da, de lo que ejecuta el CI del proyecto (`detect/ci.ts`: los `run`, `script` y `command` de GitHub Actions, GitLab CI, CircleCI, Bitbucket Pipelines y Azure Pipelines, reconocidos por palabras genéricas como `test`, `lint` o `typecheck`, sin los que usan variables o instalan);
+  - hechos del proyecto, generados por la detección: stack, paquetes y comandos (tests, lint, tipos, check). Los comandos salen de la pila, y los de tests, lint y tipos que la pila no da, de lo que ejecuta el CI del proyecto (`detect/ci.ts`: los `run`, `script` y `command` de GitHub Actions, GitLab CI, CircleCI, Bitbucket Pipelines y Azure Pipelines, reconocidos por palabras genéricas como `test`, `lint` o `typecheck`, sin los que usan variables, instalan o pasan por una tubería, que esconde su código de salida). Los que vienen del CI lo dicen en su etiqueta: «Tests (CI): `make test`»;
   - flujo: unas 8 líneas.
 
   El resto del archivo pertenece a la persona y Specty no lo toca. Un AGENTS.md nuevo empieza además con las secciones «Mapa» y «Convenciones», con pistas. Las completa la persona, porque lo que sirve ahí no se deduce del código: para qué es un directorio, qué no se toca, las reglas que no verifica `specty check`. Mientras sigan vacías, `specty doctor` lo avisa (ver §14).

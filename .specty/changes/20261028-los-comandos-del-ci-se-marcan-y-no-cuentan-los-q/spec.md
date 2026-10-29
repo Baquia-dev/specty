@@ -17,7 +17,7 @@ La detección rellena con los comandos del CI los que la pila no da, pero no dic
 
 ## Tareas
 
-- [ ] T1: Los comandos del CI se marcan y no cuentan los que esconden su salida
+- [x] T1: Los comandos del CI se marcan y no cuentan los que esconden su salida
   - files: packages/cli/src/detect/ci.ts, packages/cli/src/detect/project.ts, packages/cli/test/detect-ci-marks.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm typecheck && pnpm lint && pnpm knip && pnpm --filter @baquia-dev/specty exec vitest run test/detect-ci-marks.test.ts test/detect-ci.test.ts test/detect-quality.test.ts
   - type: feat
