@@ -80,3 +80,29 @@ No usa tree-sitter, porque no aportaría lo que falta. Specty ya lee los imports
 
 - R1: En un repositorio grande, leer todos los archivos retrasa `propose`. Mitigación: solo se leen los archivos de los lenguajes con escáner, una vez, y en este repositorio se mide el tiempo.
 - R2: Un import que el escáner no entiende (alias de `tsconfig`, rutas generadas) deja fuera a un importador. Mitigación: es un aviso; si falta alguno, el guard sigue pidiendo la ampliación como hasta ahora.
+
+## Cierre
+
+### Resumen
+
+`specty propose` nombra en «LO USAN FUERA DE LA SPEC» los archivos del repositorio que importan uno que la spec modifica, borra o mueve, si no están en ella: por archivo, cinco importadores y cuántos más. TypeScript y JavaScript los lee el nuevo `scriptImports` del core, y los demás lenguajes, los escáneres de capas.
+
+Probado sobre un clon de este repositorio, con una spec que modifica `core/src/usage.ts` y `core/src/paths.ts`:
+- nombró los 2 importadores del primero (`cards/usage.ts` y el índice);
+- nombró los 15 del segundo (cinco y «y 10 más»);
+- todo `propose`, con el aviso, tardó 0,28 s.
+
+### Desviaciones
+
+- La verificación de T2 cita `test/propose.test.ts`, que no existe. Vitest lo toma como un filtro sin coincidencias y ejecuta el resto, así que no cambió nada.
+
+### Decisiones
+
+- Sin tree-sitter. Lo que faltaba era resolver cada import a su archivo, no leerlo, y Specty ya leía ocho lenguajes con sus escáneres de capas. Sus gramáticas pesan entre 3,5 MB (solo TS/JS) y 52 MB, frente a los 1,7 MB de la CLI.
+- «Importado por», que vale para uno y para varios importadores.
+- Solo los imports directos: quien usa un archivo a través de un índice aparece como el índice, y así el aviso no se llena de todo lo que usa el core.
+
+### Pendientes
+
+- Los alias de `tsconfig` (`paths`) no se resuelven: sus importadores no aparecen.
+- Que el chequeo de capas use `scriptImports` cuando el proyecto no tiene dependency-cruiser.
