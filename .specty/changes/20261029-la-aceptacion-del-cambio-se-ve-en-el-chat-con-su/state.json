@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
   "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "954752bca9948543fd6493dcc6d97d40c711927f",
+      "attempts": 1,
       "startedAt": "2026-10-29T18:49:34.532Z",
       "doneAt": "2026-10-29T18:54:28.341Z",
-      "summary": "specty_view acepta change: busca el cambio abierto en cualquier worktree o archivado, en la carpeta del servidor si la pedida ya no existe, con su huella y unchanged; leer todos los registros tarda unos 0,4 s con los 300 cambios del repo."
+      "summary": "specty_view acepta change: busca el cambio abierto en cualquier worktree o archivado, en la carpeta del servidor si la pedida ya no existe, con su huella y unchanged; leer todos los registros tarda unos 0,4 s con los 300 cambios del repo.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "08ea6b95b370b814accddfd004561d0ce87e0cf3",
+      "startedAt": "2026-10-29T18:54:28.683Z",
+      "doneAt": "2026-10-29T18:59:24.949Z",
+      "summary": "La vista manda en cada pregunta el id del cambio que muestra, o el que nombra la cabecera de la tarjeta de la herramienta, y así lo sigue hasta terminado; ARCHITECTURE §6 y ui.md lo cuentan, con la verificación en vivo de accept."
     }
   },
   "pending": {

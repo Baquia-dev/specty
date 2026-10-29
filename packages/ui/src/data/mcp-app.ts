@@ -97,6 +97,11 @@ export class McpAppData extends SpectyData {
   private next = 1;
   /** The folder of the tool's call: none, and the server uses its own. */
   private folder: string | undefined;
+  /**
+   * The id of the change the view shows, or the one the tool's card names: the server finds it
+   * in its own folder, or archived once it closed.
+   */
+  private change: string | undefined;
   /** The fingerprint of what the view has. */
   private fingerprint: string | undefined;
   /** The display modes the host offers. */
@@ -176,8 +181,10 @@ export class McpAppData extends SpectyData {
         void this.read();
         return;
       case "ui/notifications/tool-result":
-        // The tool already changed the change: read it again. An older server names the folder.
+        // The tool already changed the change: read it again. An older server names the folder,
+        // and the card names the change, as `specty new`'s, made in a folder of its own.
         this.folder = folderIn(params.structuredContent) ?? this.folder;
+        this.change = changeIn(params.content) ?? this.change;
         void this.read();
         return;
       case "ui/resource-teardown":
@@ -185,17 +192,18 @@ export class McpAppData extends SpectyData {
     }
   }
 
-  /** Asks the server for the change of the folder, and tells whoever listens if it moved. */
+  /** Asks the server for the change, and tells whoever listens if it moved. */
   private async read(): Promise<void> {
     if (this.closed) return;
     clearTimeout(this.timer);
     const asked = ++this.reads;
     const since = this.fingerprint === undefined ? {} : { since: this.fingerprint };
     const folder = this.folder === undefined ? {} : { folder: this.folder };
+    const change = this.change === undefined ? {} : { change: this.change };
     const answer = viewOf(
       await this.request("tools/call", {
         name: "specty_view",
-        arguments: { ...folder, ...since },
+        arguments: { ...folder, ...since, ...change },
       }),
     );
     if (this.closed || asked !== this.reads) return;
@@ -217,6 +225,7 @@ export class McpAppData extends SpectyData {
       this.records = answer.records;
       this.run = answer.run;
       this.fingerprint = answer.fingerprint;
+      this.change = answer.records[0]?.state.id ?? this.change;
     }
     for (const listener of this.listeners) listener();
     for (const { change, listener } of this.runListeners) listener(this.runOf(change));
@@ -298,13 +307,27 @@ function viewOf(result: unknown): ViewAnswer {
   };
 }
 
+/** A card's first line names its change: `SPECTY · <id> · <phase>`. */
+const HEADER = /^SPECTY · (\d{8}-[^\s·]+)/;
+
+/** The change a tool's card names in its first line, if it names one. */
+function changeIn(content: unknown): string | undefined {
+  return HEADER.exec(textOf(content) ?? "")?.[1];
+}
+
 /** The JSON of a result's first text, if it is JSON. */
 function jsonOf(content: unknown): unknown {
-  const first: unknown = Array.isArray(content) ? content[0] : undefined;
-  if (!isMessage(first) || typeof first.text !== "string") return undefined;
+  const text = textOf(content);
+  if (text === undefined) return undefined;
   try {
-    return JSON.parse(first.text);
+    return JSON.parse(text);
   } catch {
     return undefined;
   }
+}
+
+/** A result's first text. */
+function textOf(content: unknown): string | undefined {
+  const first: unknown = Array.isArray(content) ? content[0] : undefined;
+  return isMessage(first) && typeof first.text === "string" ? first.text : undefined;
 }

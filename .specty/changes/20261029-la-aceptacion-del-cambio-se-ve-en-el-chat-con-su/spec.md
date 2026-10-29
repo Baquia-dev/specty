@@ -79,7 +79,7 @@ Tercer y último corte de la épica de MCP Apps. Cuando el cambio pasa a aceptac
   - files: packages/cli/test/mcp-app-change.test.ts, packages/cli/test/mcp-app.test.ts, packages/cli/src/mcp/app.ts, packages/cli/src/mcp/tools.ts, packages/cli/src/commands/mcp.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app-change.test.ts test/mcp-app.test.ts test/mcp-app-live.test.ts test/mcp.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T3: La vista sigue al cambio por su id hasta su cierre
+- [x] T3: La vista sigue al cambio por su id hasta su cierre
   - files: packages/ui/src/data/mcp-app.test.ts, packages/ui/src/data/mcp-app.ts, docs/ARCHITECTURE.md, docs/ui.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/mcp-app.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
