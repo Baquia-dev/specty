@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-regla-de-agents-md-deja-de-repetir-el-check-q",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-la-regla-de-agents-md-deja-de-repetir-el-check-q",
   "baseCommit": "b4e6d969e13c30e0ecc85066c614f1b79665588f",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "06d9d65b604296e4c7d13ca6fbfbf53927951c1c",
+      "attempts": 1,
       "startedAt": "2026-10-29T10:30:20.042Z",
       "doneAt": "2026-10-29T10:37:28.245Z",
-      "summary": "La primera regla del bloque de Specty dice que task done ya ejecuta specty check y la verificación, que no se repitan justo antes y que se corrija lo que devuelva; AGENTS.md y formats.md la reproducen"
+      "summary": "La primera regla del bloque de Specty dice que task done ya ejecuta specty check y la verificación, que no se repitan justo antes y que se corrija lo que devuelva; AGENTS.md y formats.md la reproducen",
+      "scopeExtra": []
     }
   },
   "pending": {
