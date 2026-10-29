@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-la-regla-de-agents-md-deja-de-repetir-el-check-q",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-la-regla-de-agents-md-deja-de-repetir-el-check-q",
+  "baseCommit": "b4e6d969e13c30e0ecc85066c614f1b79665588f",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:75c070db174d5786aa2b657b9dfd4a1c44a156900532a4228bbdc6f993ab1464",
+    "at": "2026-10-29T10:30:19.536Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
