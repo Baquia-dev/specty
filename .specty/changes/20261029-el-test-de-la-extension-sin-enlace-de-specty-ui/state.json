@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261029-el-test-de-la-extension-sin-enlace-de-specty-ui",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-el-test-de-la-extension-sin-enlace-de-specty-ui",
   "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8cf1d7d8e66b2acd4abb3397044bf5626a58632610e79c24a1fe59486360116d",
+    "at": "2026-10-29T09:47:16.301Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 1,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "025cf4677807e331f2b0d2d2116e7a0dbd6a7c59",
+      "startedAt": "2026-10-29T09:47:16.814Z",
+      "doneAt": "2026-10-29T09:52:12.785Z",
+      "summary": "El script de prueba escucha SIGTERM antes que nada y el caso sin enlace espera 2 s; pasa 5 veces seguidas y 8 a la vez bajo carga"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:8cf1d7d8e66b2acd4abb3397044bf5626a58632610e79c24a1fe59486360116d",
-    "at": "2026-10-29T09:47:16.301Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

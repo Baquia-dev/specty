@@ -14,7 +14,7 @@ El test «AC3: fails when `specty ui` ends without a link, or gives none in time
 
 ## Tareas
 
-- [ ] T1: El script de prueba escucha la parada primero y el caso sin enlace espera 2 s
+- [x] T1: El script de prueba escucha la parada primero y el caso sin enlace espera 2 s
   - files: packages/vscode/test/specty.test.ts
   - verify: for i in 1 2 3 4 5; do pnpm exec vitest run --root packages/vscode test/specty.test.ts || exit 1; done && pnpm lint
   - type: test

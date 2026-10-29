@@ -10,12 +10,17 @@ const LINK = "http://localhost:4173/?token=abc_DEF-123";
 
 /**
  * A stand-in for `specty`: it notes each call and its folder, prints the status of
- * `settings.json` and, for `ui`, its link (or nothing, or a failure) until it is stopped.
+ * `settings.json` and, for `ui`, its link (or nothing, or a failure) until it is stopped. It
+ * listens for the stop before anything else, so a stop that comes early still leaves its mark.
  */
 const SCRIPT = `#!/usr/bin/env node
 const fs = require("node:fs");
 const path = require("node:path");
 const here = (name) => path.join(__dirname, name);
+process.on("SIGTERM", () => {
+  fs.writeFileSync(here("stopped"), "");
+  process.exit(0);
+});
 const args = process.argv.slice(2);
 fs.appendFileSync(here("calls.log"), args.join(" ") + " @ " + process.cwd() + "\\n");
 const settings = JSON.parse(fs.readFileSync(here("settings.json"), "utf8"));
@@ -28,10 +33,6 @@ if (args[0] === "ui") {
     process.stderr.write("specty: el puerto 4173 está ocupado\\n");
     process.exit(1);
   }
-  process.on("SIGTERM", () => {
-    fs.writeFileSync(here("stopped"), "");
-    process.exit(0);
-  });
   if (settings.ui === "link") process.stdout.write("SPECTY · UI\\nAbre ${LINK} en el navegador.\\n");
   setInterval(() => undefined, 1000);
 }
@@ -176,8 +177,10 @@ describe("starting the UI", () => {
     expect(refused.kind).toBe("failed");
     expect(refused.kind === "failed" ? refused.message : "").toContain("ocupado");
 
+    // Two seconds: time enough for Node to start the stand-in even on a busy machine, so the
+    // stop it gets is the one for not giving a link.
     const silent = await fakeSpecty({ ui: "silent" });
-    expect((await startUi(silent.command, silent.folder, 300)).kind).toBe("failed");
+    expect((await startUi(silent.command, silent.folder, 2000)).kind).toBe("failed");
     await vi.waitFor(() => expect(silent.stopped()).toBe(true), { timeout: 4000 });
-  });
+  }, 10_000);
 });
