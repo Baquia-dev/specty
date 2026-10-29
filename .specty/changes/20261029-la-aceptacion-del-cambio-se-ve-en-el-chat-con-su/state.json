@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
+  "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f4f338a567fce9a2157478c3faea6d1c756043e4d07600d5c73a28ea71ee9351",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:869e2d6b00cb7df11908342dcedac168284c7a307a6a8c1cc723059797780d6b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:907e1fb32f92f679a90b68a3173b14ceb22f8cf35cc53b255678d23c3c91a916",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:93f2200af966a71ee095faecbe3918d16edbbb91a0f7c519569cc495473fd25a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:5cb3a3da540000a80ae126a9151ee948f6141c8f9f1e69e7626bb5692cd28e56",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:9ebc8bcd62ed24d5318321be3c4ce4ef182e0fbc5c1af0372b71d9d6077e049e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:64a8a24374e933b2294a1f281c56d653f27e34e11ad5d6014113555281bce372",
+    "at": "2026-10-29T18:41:52.167Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
