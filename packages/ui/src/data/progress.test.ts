@@ -244,12 +244,26 @@ describe("outputSegments", () => {
       ["fail", "failed"],
       ["plain", "."],
     ]);
+    expect(tones(" ✕ AC1: parses spec")[1]).toEqual(["fail", "✕"]);
+    expect(tones(" ✖ should fail")[1]).toEqual(["fail", "✖"]);
+    expect(tones(" ✔ should pass")[1]).toEqual(["pass", "✔"]);
+    expect(tones("  AssertionError: expected false to be true")[1]).toEqual([
+      "fail",
+      "AssertionError",
+    ]);
+    expect(tones("FAILURES: 1 failure")[0]).toEqual(["fail", "FAILURES"]);
   });
 
   it("reads an assertion's expected and actual lines whole", () => {
     expect(tones("  Expected: 'Descargar PDF'")).toEqual([["pass", "  Expected: 'Descargar PDF'"]]);
     expect(tones("    Actual: 'Descargar'")).toEqual([["fail", "    Actual: 'Descargar'"]]);
     expect(tones("  Received: 3")).toEqual([["fail", "  Received: 3"]]);
+    expect(tones("  - Expected   - 1")).toEqual([["pass", "  - Expected   - 1"]]);
+    expect(tones("  + Received   + 1")).toEqual([["fail", "  + Received   + 1"]]);
+    expect(tones("  - 'Descargar PDF'")).toEqual([["pass", "  - 'Descargar PDF'"]]);
+    expect(tones("  + 'Descargar'")).toEqual([["fail", "  + 'Descargar'"]]);
+    expect(tones("  - true")).toEqual([["pass", "  - true"]]);
+    expect(tones("  + false")).toEqual([["fail", "  + false"]]);
   });
 
   it("leaves alone what it does not recognize, like dates or words with numbers", () => {
