@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-el-hilo-principal-de-la-ui-importa-core-por-una-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-el-hilo-principal-de-la-ui-importa-core-por-una-2",
   "baseCommit": "1f53657807f9a08c2f5d4ca2eecb5119702d43f5",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:34f1073b52a683a19014c4ec585de4cf0813119972b5b4ebfb97336616e0cd1a",
@@ -41,12 +41,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "48e64fe3dfa3b238149730b73f5891bb9544a226",
+      "attempts": 1,
       "startedAt": "2026-10-29T05:43:57.283Z",
       "doneAt": "2026-10-29T05:48:15.386Z",
-      "summary": "Los ocho archivos del hilo principal de la UI importan LANGS, fold, translator y PHASES de @baquia-dev/specty-core/light; el bundle inicial vuelve de 740 a 521 kB, con el parser y la exportación en el chunk de la página del cambio; AGENTS.md cuenta la entrada ligera"
+      "summary": "Los ocho archivos del hilo principal de la UI importan LANGS, fold, translator y PHASES de @baquia-dev/specty-core/light; el bundle inicial vuelve de 740 a 521 kB, con el parser y la exportación en el chunk de la página del cambio; AGENTS.md cuenta la entrada ligera",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -57,5 +57,6 @@
     "A": 1,
     "AC": 2,
     "T": 2
-  }
+  },
+  "closingSubmittedAt": "2026-10-29T05:51:41.715Z"
 }

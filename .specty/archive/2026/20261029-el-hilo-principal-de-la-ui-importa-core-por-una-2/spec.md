@@ -59,3 +59,24 @@ El hilo principal de la UI solo usa de core los idiomas (`LANGS`, `fold`), el tr
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui typecheck && pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme --include src/inbox --include src/components/command-palette.test.ts && pnpm lint && pnpm knip
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Core tiene una entrada ligera, `@baquia-dev/specty-core/light` (`src/light.ts`), con `LANGS`, `fold`, `translator` y `PHASES`, y los ocho archivos del hilo principal de la UI importan de ella en lugar del índice. El bundle inicial vuelve de 740 a 521 kB: el parser, zod y yaml solo cargan en el worker y en el chunk perezoso de la página del cambio, donde está la exportación del Historial. Un test recorre las importaciones de la entrada ligera y comprueba que no llega a zod, yaml, picomatch ni `@noble/hashes`. AGENTS.md la cuenta en la API pública de core.
+
+### Desviaciones
+
+- Este cambio se creó antes de cerrar la exportación del Historial y se canceló en borrador para recrearlo desde main con ella dentro, y así medir el bundle con la exportación.
+- `inbox-view.ts` importa `SizeLevel` del índice con `import type`, que no carga nada.
+
+### Decisiones
+
+- Una sola entrada ligera, no una por área: el hilo principal usa cuatro valores y basta.
+- La exportación se queda con importación estática: con la entrada ligera ya no va al bundle inicial, y cargarla con `import()` hacía inestable su test.
+
+### Pendientes
+
+- Derivar las vistas en el hilo principal sin workers (MCP Apps): la épica de MCP Apps, que la sesión specty-8a hará después de este cambio.
+- El chunk de la página del cambio pasa de 194 a 421 kB por el parser: si pesa, la exportación puede cargarse con `import()` cuando su test espere lo suficiente.
