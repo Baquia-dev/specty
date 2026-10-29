@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-el-coste-del-consumo-admite-unas-pocas-sesiones",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-el-coste-del-consumo-admite-unas-pocas-sesiones",
+  "baseCommit": "81c35588c601d717ef95714949381ad3425bad80",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3c4f039a6220eeedc1013f705832f4afa993721315c8ae74625ed43edd7a0405",
+    "at": "2026-10-29T20:55:38.450Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
