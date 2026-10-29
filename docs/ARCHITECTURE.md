@@ -246,6 +246,12 @@ Registrarlo es opcional, porque cada herramienta MCP ocupa contexto en cada turn
 - **Desbloqueo de un test aprobado** (`policy.tests: contract`, ADR 0014): `scope add` sobre un test de `lockedTests` crea una solicitud aunque el test esté en el alcance de la tarea. Esa solicitud nunca se aprueba sola, y `approve --scope` y `reject --scope` se la niegan al agente en modo delegado: la decide solo la persona. Aprobada, el test queda en las ampliaciones de la tarea, abierto para el guard y para `tests-locked` mientras la tarea está activa. Al completar la tarea, su versión nueva queda bloqueada con su hash, y la tarjeta de aceptación lista los tests desbloqueados con su solicitud y su tarea.
 - Durante una tarea activa, todo cambio en el árbol se atribuye a esa tarea: Specty no distingue quién teclea.
 - **Archivos compartidos:** `propose`, `approve` y `scope add` avisan («ARCHIVOS COMPARTIDOS») cuando un archivo gobernado del cambio aparece también en la sección Archivos, o en las ampliaciones aprobadas, de otro cambio abierto de otra worktree, leído en su carpeta. Las rutas con comodines encajan en los dos sentidos. Solo avisan, para que el posible conflicto se vea al planificar y no al incorporar; la documentación no cuenta.
+- **Quién usa lo que cambia:** `propose` avisa («LO USAN FUERA DE LA SPEC») de los archivos del repositorio que importan uno que la spec modifica, borra o mueve, si no están en ella (`flow/impact.ts`). Así el agente decide antes de aprobar si los incluye, en lugar de pedir la ampliación a mitad de la tarea. En el archivo, 12 de 38 ampliaciones eran de este tipo.
+  - Por archivo nombra como mucho cinco importadores, ordenados, y cuántos más. Un archivo que se crea no tiene importadores, y el cierre no avisa.
+  - TypeScript y JavaScript los lee `scriptImports` (`core/src/checks/imports-script.ts`): `import … from`, `import "…"`, `export … from`, `import()` y `require()`. Resuelve las rutas relativas con su extensión o sin ella, `.js` por `.ts` y una carpeta por su `index`, y los paquetes del workspace por el `exports` o el `main` de sus `package.json`.
+  - Los demás lenguajes, con los escáneres de capas (`scannedImports`).
+  - Solo cuentan los imports directos: quien usa un archivo a través de un índice que lo reexporta aparece como el índice.
+  - Sin tree-sitter: lo que falta es resolver cada import, no leerlo, y sus gramáticas multiplicarían el paquete de la CLI.
 
 ## 9. Git
 

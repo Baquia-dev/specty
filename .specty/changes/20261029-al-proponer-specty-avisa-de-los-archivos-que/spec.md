@@ -70,7 +70,7 @@ No usa tree-sitter, porque no aportaría lo que falta. Specty ya lee los imports
   - files: packages/cli/test/impact.test.ts, packages/cli/src/flow/impact.ts, packages/cli/src/check/layer-scanners.ts, packages/cli/src/commands/propose.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/impact.test.ts test/propose.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T3: ARCHITECTURE cuenta el aviso
+- [x] T3: ARCHITECTURE cuenta el aviso
   - files: docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
