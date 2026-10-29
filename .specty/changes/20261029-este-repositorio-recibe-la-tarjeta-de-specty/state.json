@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-este-repositorio-recibe-la-tarjeta-de-specty",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-este-repositorio-recibe-la-tarjeta-de-specty",
+  "baseCommit": "1be0d09e4ffa1eeca96b0b0695491b97add10779",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3ee2174ba9f80b16f42f628799f0767d508a0924f97f0e1de41274160a9bcb55",
+    "at": "2026-10-29T21:12:02.693Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
