@@ -56,7 +56,7 @@ Al desplazarse por la UI, la barra de pestañas de un cambio se queda fija bajo 
 
 ## Tareas
 
-- [ ] T1: Barra de pestañas fija con ranura derecha y divisores de sección fijos
+- [x] T1: Barra de pestañas fija con ranura derecha y divisores de sección fijos
   - files: packages/ui/src/components/tabs.ts, packages/ui/src/components/tabs.test.ts, packages/ui/src/components/document.ts, packages/ui/src/components/document.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/tabs.test.ts --include src/components/document.test.ts && pnpm lint

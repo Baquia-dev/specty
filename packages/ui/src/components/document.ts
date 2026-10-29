@@ -31,7 +31,10 @@ export const LIST = "m-0 flex list-none flex-col gap-0.5 p-0 pl-6";
 @Component({
   selector: "sp-section-divider",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: "flex items-center gap-3 font-mono text-[11px] text-text-muted" },
+  host: {
+    class:
+      "sticky top-[var(--sp-sticky-top,0px)] z-5 -my-2 flex items-center gap-3 bg-bg py-2 font-mono text-[11px] text-text-muted",
+  },
   template: `
     @if (level() === 2) {
       <h2 [class]="title" [id]="headingId() || null">{{ heading() }}</h2>
