@@ -75,3 +75,26 @@ Claude Code no deja que un hook ni el agente limpien la sesión. Por eso:
 
 - R1: Una respuesta larga deja la última línea del asistente fuera de los 64 KB que se leen. Mitigación: sin línea no hay aviso (AC2). El cierre es el mismo.
 - R2: El aviso molesta a quien prefiere seguir en la misma sesión. Mitigación: solo aparece por encima de 150.000 tokens y no bloquea nada.
+
+## Cierre
+
+### Resumen
+
+Al cerrar un cambio, o al aceptar uno quick, Specty lee en la cola del transcript de la última sesión de Claude Code de la auditoría lo que leyó su última respuesta (`sessionContext`). Si pasa de 150.000 tokens, la salida aconseja una sesión nueva para el siguiente cambio, con el contexto redondeado a miles.
+
+El guard de Claude Code escucha ahora `SessionStart` con `compact|clear`, así que tras un `/clear` la tarjeta de `specty next` vuelve sola.
+
+### Desviaciones
+
+- `.claude/settings.json` de este repositorio no cambió. El guard no deja editarlo a mano, y `specty init` desde la CLI de la worktree habría reescrito los hooks de git compartidos con la ruta de una carpeta que se borra al cerrar.
+
+### Decisiones
+
+- El tamaño del contexto sale del transcript, no de ccusage: el aviso funciona aunque ccusage no esté.
+- La sesión que cuenta es la de la última línea de Claude Code de la auditoría: la que sigue con el siguiente cambio. Así el aviso llega también cuando cierra la persona en su terminal.
+- Las instalaciones anteriores siguen con `compact`. `doctor` no las marca, porque solo mira que el evento exista, y `specty init` las actualiza.
+
+### Pendientes
+
+- Actualizar con `specty init` el `.claude/settings.json` de este repositorio, desde la carpeta principal y con la CLI ya reconstruida.
+- Que el historial de la UI muestre el consumo (`change.usage`).
