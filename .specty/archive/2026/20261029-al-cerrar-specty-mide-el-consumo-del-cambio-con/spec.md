@@ -100,3 +100,30 @@ Specty no instala ccusage ni escribe fuera del proyecto. Usa el de `node_modules
 - R1: Otra versión de ccusage cambia su JSON. Mitigación: Specty valida cada campo que usa y, si no encaja, cierra sin consumo (AC4). El repositorio fija la versión.
 - R2: Un modelo con precios por tramos, más caro por encima de cierto contexto, no tiene precios lineales. Mitigación: el ajuste debe explicar cada sesión al céntimo; si no, el consumo va sin coste (AC2).
 - R3: Un usuario con muchos logs espera al cerrar. Mitigación: solo la fuente del agente (un segundo aquí) y 60 s como máximo por llamada.
+
+## Cierre
+
+### Resumen
+
+Al cerrar un cambio, o al aceptar uno quick, Specty pide a ccusage las sesiones de Claude Code que nombra la auditoría del cambio y suma las llamadas hechas desde su creación. Anota `change.usage` con llamadas, tokens y coste, y lo dicen la salida y `specty audit`.
+
+El coste sale de los precios de cada modelo, deducidos por mínimos cuadrados del informe de sesiones de ccusage y aceptados solo si explican cada sesión al céntimo. Sin ccusage o sin sesiones, el cierre no cambia. ccusage 20.0.45 queda como dependencia de desarrollo de este repositorio, con `pnpm usage`.
+
+### Desviaciones
+
+- T1 tomó con `scope add` los archivos de T2, los textos. El typecheck del core compila el test bloqueado de T2, que importa `usageLine`, así que T1 no pasaba su verificación sin ellos; T2 solo pasó la suya.
+- `solve` se dividió en `withPivot`, `eliminate` y `cell` para bajar su complejidad de 16 a menos de 10.
+
+### Decisiones
+
+- ccusage 20 es un binario nativo sin API de JavaScript: Specty lo ejecuta, no lo empaqueta, y nunca lo instala. Usa el de `node_modules/.bin` de la carpeta del cambio o el del PATH; con `npx` escribiría en la carpeta del usuario.
+- Solo la fuente del agente (`ccusage claude …`): el informe de todas las fuentes tardaba 34 s y el de Claude, un segundo.
+- Precios deducidos en vez de repartir el coste de la sesión con los ratios estándar. El reparto se desviaba un 5 % de mediana y hasta un 25 % por cambio; los precios deducidos reproducen a ccusage al céntimo.
+- Sin entrada en el glosario: «consumo del cambio, según ccusage» se explica solo, y una entrada se añadiría a cada tarjeta que lo nombra.
+
+### Pendientes
+
+- El aviso de empezar una sesión nueva al cerrar y `clear` en el hook de inicio de sesión de Claude Code: el cambio siguiente.
+- Que el historial de la UI muestre el consumo y que `specty doctor` diga si puede medirlo.
+- Las sesiones de otros agentes, cuando su herramienta diga su id; ccusage ya lee Codex, OpenCode y otros.
+- `core/src/cards/index.ts` pasa de 300 líneas de código (334). Es la lista de exports de los textos; partirla solo por el número sería peor.

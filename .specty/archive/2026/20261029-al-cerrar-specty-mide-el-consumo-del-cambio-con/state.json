@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-al-cerrar-specty-mide-el-consumo-del-cambio-con",
   "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:7c9a85ea643165213e80f2e3cbc4b586c5f923177a15e06d1791200ef5af07cc",
@@ -68,12 +68,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e3e821e9905a2432942f211bd549fa6c41906909",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:27:05.981Z",
       "doneAt": "2026-10-29T20:28:10.567Z",
-      "summary": "ccusage 20.0.45 como dependencia de desarrollo con el script usage (informe por días); formats.md §4 documenta change.usage y ARCHITECTURE §13 cómo se mide: sesiones de la auditoría, precios deducidos del informe de ccusage, sin instalar nada."
+      "summary": "ccusage 20.0.45 como dependencia de desarrollo con el script usage (informe por días); formats.md §4 documenta change.usage y ARCHITECTURE §13 cómo se mide: sesiones de la auditoría, precios deducidos del informe de ccusage, sin instalar nada.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -86,6 +86,7 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-10-29T20:34:50.045Z",
   "lockedTests": {
     "packages/cli/test/usage.test.ts": "sha256:bad355335e3963c23cc6c4c0897f36e1173301cacde6b2a60e1ee1501f7b5fbc",
     "packages/core/test/cards/usage.test.ts": "sha256:32034c03886aa5ca24959fefb7fe8607b43fb10c214c789f8c1ec8a4ccbdb7c1",
