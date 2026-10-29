@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-las-evals-miden-el-consumo-y-comparan-un",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-las-evals-miden-el-consumo-y-comparan-un",
   "baseCommit": "297ca21f78dc0a25accc02e73612d622f5357f13",
   "revision": 1,
@@ -42,6 +42,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T21:22:19.783Z"
+  "lockedTests": {
+    "evals/test/consumption.test.ts": "sha256:3733a42173d51ebcef61960d0caf76e53aeab77993a183a9a42a033d65172911",
+    "evals/test/experiments.test.ts": "sha256:d17529eceda62dbe2a2ea958f659e7dc995eb129f0c4a4c16d6afa5f75739480"
+  }
 }
