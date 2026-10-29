@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
   "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
   "revision": 1,
@@ -59,6 +59,10 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T18:45:23.092Z"
+  "lockedTests": {
+    "packages/cli/test/mcp-app.test.ts": "sha256:7cd4c7789ed4f6822d04949219ca89662f4cec4609988add82eb640755019dae",
+    "packages/ui/src/data/mcp-app.test.ts": "sha256:fb8fc24133c4ee1ba96e9e49e61d117468b43614e54099c4e551e4d5f4d50075",
+    "packages/cli/test/accept-live.test.ts": "sha256:308271e3491606783be187188ad97310127508a43d56c9b691fbe117898e8408",
+    "packages/cli/test/mcp-app-change.test.ts": "sha256:a94cb54b93c48b0557226fd17c713187fd724f7a1728feb0f43a145cf29c9a24"
+  }
 }
