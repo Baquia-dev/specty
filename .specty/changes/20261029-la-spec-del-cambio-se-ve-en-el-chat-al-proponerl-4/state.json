@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "16c26f4919e4f28a578d31f374bdbd090c9461f7",
+      "attempts": 1,
       "startedAt": "2026-10-29T07:55:53.012Z",
       "doneAt": "2026-10-29T07:56:47.473Z",
-      "summary": "McpAppData (postMessage JSON-RPC: ui/initialize, tool-result → specty_view, solo lectura) y la vista Embedded (selector sp-root) con solo la pestaña de la fase y dónde decidir; main.ts la carga con import() con la marca mcp-app"
+      "summary": "McpAppData (postMessage JSON-RPC: ui/initialize, tool-result → specty_view, solo lectura) y la vista Embedded (selector sp-root) con solo la pestaña de la fase y dónde decidir; main.ts la carga con import() con la marca mcp-app",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fdb195333c8d4b39eb08a93ecb4a07eb7f75b8a8",
+      "startedAt": "2026-10-29T07:56:47.813Z",
+      "doneAt": "2026-10-29T07:57:07.145Z",
+      "summary": "mcp-app.mjs empaqueta el build de la UI en un HTML (esbuild sin chunks, CSS sin @font-face, marca, sin base ni links, gramáticas de shiki vacías: 1,36 MB); sin script no escribe la página; build.mjs la escribe junto al bundle"
     }
   },
   "pending": {

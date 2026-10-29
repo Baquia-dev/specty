@@ -77,7 +77,7 @@ Primer corte de la épica de MCP Apps. Cuando un anfitrión que soporta MCP Apps
   - files: packages/ui/src/data/mcp-app.ts, packages/ui/src/data/mcp-app.test.ts, packages/ui/src/app/embedded.ts, packages/ui/src/app/embedded.test.ts, packages/ui/src/main.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/mcp-app.test.ts --include src/app/embedded.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
-- [ ] T3: La UI se empaqueta en un único HTML para MCP Apps
+- [x] T3: La UI se empaqueta en un único HTML para MCP Apps
   - files: packages/cli/mcp-app.mjs, packages/cli/build.mjs, packages/cli/test/mcp-app-page.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app-page.test.ts test/bundle.test.ts && pnpm lint && pnpm knip
