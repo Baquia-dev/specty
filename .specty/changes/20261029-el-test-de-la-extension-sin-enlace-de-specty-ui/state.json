@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-el-test-de-la-extension-sin-enlace-de-specty-ui",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-el-test-de-la-extension-sin-enlace-de-specty-ui",
+  "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:8cf1d7d8e66b2acd4abb3397044bf5626a58632610e79c24a1fe59486360116d",
+    "at": "2026-10-29T09:47:16.301Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
