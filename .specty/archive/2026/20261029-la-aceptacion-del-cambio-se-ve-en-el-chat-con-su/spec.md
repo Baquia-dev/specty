@@ -88,3 +88,25 @@ Tercer y último corte de la épica de MCP Apps. Cuando el cambio pasa a aceptac
 
 - R1: La cabecera de la tarjeta cambia de formato y la vista deja de leer el id. Mitigación: el test de C2 (AC1 de `cli/test/mcp-app.test.ts`) ya fija que la tarjeta empieza por `SPECTY · <id>`, y sin cabecera la vista sigue con la carpeta.
 - R2: Cuando la huella cambia, `changeRecords` lee todos los cambios, también los archivados. Mitigación: solo pasa cuando algo cambió, y C3 mide el tiempo con los más de 300 cambios de este repositorio.
+
+## Cierre
+
+### Resumen
+
+La vista del chat muestra la aceptación del cambio en vivo y lo sigue hasta su cierre. `specty accept` deja su verificación completa en el mismo archivo en vivo que `specty task done`, sin tarea, así que la ven mientras corre tanto la vista del chat como `specty ui`. `specty_view` acepta `change`: da ese cambio aunque viva en otra worktree o ya esté archivado, también si la carpeta pedida desapareció. La vista manda en cada pregunta el id del cambio que muestra, o el que nombra la cabecera de la tarjeta de la herramienta, como el que crea `specty_new` en su propia carpeta. Con esto la épica tiene sus tres pestañas en el chat: Spec, Progreso y Aceptación.
+
+### Desviaciones
+
+- Ninguna sobre el plan. Al aceptar, main ya traía el cambio «accept incorpora main antes de su verificación», que también toca `commands/accept.ts`. Se incorporó sin conflictos y `runLive` sigue en su sitio.
+
+### Decisiones
+
+- Con `change`, el servidor busca primero entre los cambios abiertos de todas las worktrees (`locateChanges`) y después en el archivo (`loadChange`). Si la carpeta pedida ya no se puede abrir, usa la del servidor, y solo cuando la vista nombra un cambio. Sin `change`, todo sigue como en C2.
+- La vista lee el id de la primera línea de la tarjeta con `SPECTY · <fecha>-<nombre>`. El «SPECTY · …» de un test de C1 no lo cumple, y la vista sigue con la carpeta.
+- Leer todos los registros (`changeRecords`) tarda unos 0,4 s con los más de 300 cambios de este repositorio, medido con `/api/changes`. Solo pasa cuando la huella cambia, y la siguiente pregunta espera un segundo tras cada respuesta.
+- El botón «Ejecutar» de la verificación completa sigue desactivado en el chat, con su motivo, como en `specty ui` de solo lectura: un test existente lo fija así.
+
+### Pendientes
+
+- Probar en VS Code y en Claude Desktop con el bundle de main reconstruido: la spec, el progreso y la aceptación, y un `specty_new` con worktree.
+- El cierre y el cierre de la épica, que ya tiene sus tres cortes.

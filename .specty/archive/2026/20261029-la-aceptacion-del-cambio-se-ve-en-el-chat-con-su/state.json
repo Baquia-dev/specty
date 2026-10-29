@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
   "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:64a8a24374e933b2294a1f281c56d653f27e34e11ad5d6014113555281bce372",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "08ea6b95b370b814accddfd004561d0ce87e0cf3",
+      "attempts": 1,
       "startedAt": "2026-10-29T18:54:28.683Z",
       "doneAt": "2026-10-29T18:59:24.949Z",
-      "summary": "La vista manda en cada pregunta el id del cambio que muestra, o el que nombra la cabecera de la tarjeta de la herramienta, y así lo sigue hasta terminado; ARCHITECTURE §6 y ui.md lo cuentan, con la verificación en vivo de accept."
+      "summary": "La vista manda en cada pregunta el id del cambio que muestra, o el que nombra la cabecera de la tarjeta de la herramienta, y así lo sigue hasta terminado; ARCHITECTURE §6 y ui.md lo cuentan, con la verificación en vivo de accept.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,6 +87,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-29T19:03:27.651Z",
   "lockedTests": {
     "packages/cli/test/mcp-app.test.ts": "sha256:7cd4c7789ed4f6822d04949219ca89662f4cec4609988add82eb640755019dae",
     "packages/ui/src/data/mcp-app.test.ts": "sha256:fb8fc24133c4ee1ba96e9e49e61d117468b43614e54099c4e551e4d5f4d50075",
