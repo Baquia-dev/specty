@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-la-auditoria-anota-el-nombre-de-la-persona-y-el",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7c96ce2b64044d14b2cdbe058c5093fb7d198d55",
+      "attempts": 1,
       "startedAt": "2026-10-29T07:34:35.171Z",
       "doneAt": "2026-10-29T07:47:12.287Z",
-      "summary": "auditEntry anota by (user.name de git) en las líneas de la persona y en las delegadas, y model y effort de Claude Code (CLAUDE_EFFORT y el final del transcript de su sesión) en las del agente; testEnv deja fuera esas variables"
+      "summary": "auditEntry anota by (user.name de git) en las líneas de la persona y en las delegadas, y model y effort de Claude Code (CLAUDE_EFFORT y el final del transcript de su sesión) en las del agente; testEnv deja fuera esas variables",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "445251c8d3d4073ef0ceaa01394cadd908ed1b35",
+      "startedAt": "2026-10-29T07:47:12.660Z",
+      "doneAt": "2026-10-29T07:50:43.798Z",
+      "summary": "docs/formats.md describe by, model y effort en audit.jsonl y de dónde salen"
     }
   },
   "pending": {

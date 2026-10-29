@@ -50,7 +50,7 @@ El Historial dice «Persona» o «Agente · Claude Code» porque `audit.jsonl` n
   - files: packages/cli/src/agents/run.ts, packages/cli/src/flow/active.ts, packages/cli/src/flow/finish.ts, packages/cli/src/flow/verified.ts, packages/cli/src/store/changes.ts, packages/cli/test/support.ts, packages/cli/test/audit-who.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/audit-who.test.ts && pnpm lint
-- [ ] T2: Documentar los campos nuevos
+- [x] T2: Documentar los campos nuevos
   - files: docs/formats.md
   - ac: —
   - verify: pnpm lint
