@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "20261029-el-hilo-principal-de-la-ui-importa-core-por-una-2",
+  "kind": "standard",
+  "phase": "implementing",
+  "branch": "specty/20261029-el-hilo-principal-de-la-ui-importa-core-por-una-2",
+  "baseCommit": "1f53657807f9a08c2f5d4ca2eecb5119702d43f5",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f5ee2ac9ff73a087f3d097d89382ed92968320b1c044e6c7716437fca00c14c4",
+      "decision": "confirmed"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 1,
+    "AC": 2,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:34f1073b52a683a19014c4ec585de4cf0813119972b5b4ebfb97336616e0cd1a",
+    "at": "2026-10-29T05:40:00.022Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}

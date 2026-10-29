@@ -1,0 +1,3 @@
+{"ts":"2026-10-29T05:39:19.254Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","type":"feat","branch":"specty/20261029-el-hilo-principal-de-la-ui-importa-core-por-una-2","request":"realiza el Exportar el historial y la vista de trazabilidad."}}
+{"ts":"2026-10-29T05:39:55.912Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:34f1073b52a683a19014c4ec585de4cf0813119972b5b4ebfb97336616e0cd1a","size":"L","warnings":1}}
+{"ts":"2026-10-29T05:40:00.033Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:34f1073b52a683a19014c4ec585de4cf0813119972b5b4ebfb97336616e0cd1a","channel":"delegated","delegated":true}}
