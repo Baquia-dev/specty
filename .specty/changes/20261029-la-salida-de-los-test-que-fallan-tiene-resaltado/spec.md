@@ -16,6 +16,6 @@ La visualización de la salida de las verificaciones de tests que fallan en la i
 
 ## Tareas
 
-- [ ] T1: Resaltado con colores de la salida de tests que fallan
+- [x] T1: Resaltado con colores de la salida de tests que fallan
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/progress.test.ts, docs/ui.md
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/progress.test.ts --include src/progress/progress-tab.test.ts && pnpm typecheck && pnpm lint

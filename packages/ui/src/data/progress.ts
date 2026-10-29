@@ -210,9 +210,9 @@ export interface OutputSegment {
 const MARKS = new RegExp(
   [
     String.raw`(?<muted>^\d{2}:\d{2}(?::\d{2})?)`,
-    String.raw`(?<path>[\w@./-]+\.[A-Za-z]\w*:\d+(?::\d+)?)`,
-    String.raw`(?<fail>\[E\]|✗|×|\bFAIL(?:ED)?\b|\b[Ee]rror\b|\bException\b|\bfailed\b|(?<![\w+-])-\d+\b)`,
-    String.raw`(?<pass>✓|\bPASS(?:ED)?\b|All tests passed!?|\bpassed\b|(?<![\w+-])\+\d+\b)`,
+    String.raw`(?<path>[\w@./-]+\.[A-Za-z]\w*(?::\d+(?::\d+)?|\s+\d+:\d+))`,
+    String.raw`(?<fail>\[E\]|[✗×✕✖]|\bFAIL(?:URES?|ED)?\b|\b\w*[Ee]rror\b|\b\w*[Ee]xception\b|\bfail(?:ures?|ed)?\b|(?<![\w+-])-\d+\b)`,
+    String.raw`(?<pass>[✓✔]|\bPASS(?:ED|ES)?\b|All tests passed!?|\bpassed\b|(?<![\w+-])\+\d+\b)`,
   ].join("|"),
   "gu",
 );
@@ -222,8 +222,18 @@ const MARKS = new RegExp(
  * in blue, timings muted; what is not recognized stays plain. The text is kept whole.
  */
 export function outputSegments(line: string): readonly OutputSegment[] {
-  if (/^\s*(?:Actual|Received):/.test(line)) return [{ text: line, tone: "fail" }];
-  if (/^\s*Expected:/.test(line)) return [{ text: line, tone: "pass" }];
+  if (/^\s*(?:(?:Actual|Received):|\+\s*(?:Received|Actual)\b)/.test(line)) {
+    return [{ text: line, tone: "fail" }];
+  }
+  if (/^\s*(?:Expected:|-\s*Expected\b)/.test(line)) {
+    return [{ text: line, tone: "pass" }];
+  }
+  if (/^\s*-\s+(?:["'`]|true\b|false\b|null\b|undefined\b|\{|\[|\d+\s*$)/.test(line)) {
+    return [{ text: line, tone: "pass" }];
+  }
+  if (/^\s*\+\s+(?:["'`]|true\b|false\b|null\b|undefined\b|\{|\[|\d+\s*$)/.test(line)) {
+    return [{ text: line, tone: "fail" }];
+  }
   const segments: OutputSegment[] = [];
   let at = 0;
   for (const match of line.matchAll(MARKS)) {
