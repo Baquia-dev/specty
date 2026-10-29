@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261029-el-coste-del-consumo-admite-unas-pocas-sesiones",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-el-coste-del-consumo-admite-unas-pocas-sesiones",
   "baseCommit": "81c35588c601d717ef95714949381ad3425bad80",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3c4f039a6220eeedc1013f705832f4afa993721315c8ae74625ed43edd7a0405",
+    "at": "2026-10-29T20:55:38.450Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,25 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "docs/formats.md"
+      ],
+      "attempts": 1,
+      "baseCommit": "30250efaa2e6cad234c314bfcd03652530ea606b",
+      "startedAt": "2026-10-29T20:55:38.930Z",
+      "doneAt": "2026-10-29T21:01:34.373Z",
+      "summary": "modelPrices busca entre candidatos que resuelven exactamente cuatro sesiones repartidas el que explica al céntimo nueve de cada diez, sin precios negativos, y afina con mínimos cuadrados: con el informe real da 4/20/8/0,2 pese a 2 de 36 sesiones calculadas de otra forma."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
-    "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:3c4f039a6220eeedc1013f705832f4afa993721315c8ae74625ed43edd7a0405",
-    "at": "2026-10-29T20:55:38.450Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
+    "T": 1,
+    "S": 1
   }
 }

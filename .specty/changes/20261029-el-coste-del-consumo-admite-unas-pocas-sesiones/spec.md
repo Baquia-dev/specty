@@ -18,6 +18,6 @@ Ahora el ajuste deja fuera, una a una, las sesiones que peor cuadran, hasta un 1
 
 ## Tareas
 
-- [ ] T1: El ajuste de precios deja fuera unas pocas sesiones que no cuadran
+- [x] T1: El ajuste de precios deja fuera unas pocas sesiones que no cuadran
   - files: packages/core/src/usage.ts, packages/core/test/usage.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
