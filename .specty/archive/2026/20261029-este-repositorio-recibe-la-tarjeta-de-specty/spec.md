@@ -19,3 +19,9 @@ Specty instala ahora el `SessionStart` de Claude Code con `compact|clear`, para 
   - files: .claude/settings.json, AGENTS.md
   - verify: pnpm lint
   - type: chore
+
+## Cierre
+
+### Resumen
+
+specty init, con la CLI del PATH reconstruida, deja en .claude/settings.json el SessionStart con compact|clear y pone al día el bloque del proyecto de AGENTS.md (suma evals y packages/vscode).

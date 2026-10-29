@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-este-repositorio-recibe-la-tarjeta-de-specty",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-este-repositorio-recibe-la-tarjeta-de-specty",
   "baseCommit": "1be0d09e4ffa1eeca96b0b0695491b97add10779",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3c631e9e33a3d1b9c9cf1a6ce2d443769aa5557d",
+      "attempts": 1,
       "startedAt": "2026-10-29T21:12:03.651Z",
       "doneAt": "2026-10-29T21:12:19.757Z",
-      "summary": "specty init, con la CLI del PATH reconstruida, deja en .claude/settings.json el SessionStart con compact|clear y pone al día el bloque del proyecto de AGENTS.md (suma evals y packages/vscode)."
+      "summary": "specty init, con la CLI del PATH reconstruida, deja en .claude/settings.json el SessionStart con compact|clear y pone al día el bloque del proyecto de AGENTS.md (suma evals y packages/vscode).",
+      "scopeExtra": []
     }
   },
   "pending": {
