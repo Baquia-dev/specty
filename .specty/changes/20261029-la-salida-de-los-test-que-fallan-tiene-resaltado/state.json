@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-la-salida-de-los-test-que-fallan-tiene-resaltado",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-la-salida-de-los-test-que-fallan-tiene-resaltado",
+  "baseCommit": "d3d65954d03b1f1e5fabd9c28833c484d2f98142",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:efeb57a3ed5b892e37e6d2a1a0d1b7cfca24ec1dc56c37dc6bc14c76e862039b",
+    "at": "2026-10-29T09:55:24.056Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
