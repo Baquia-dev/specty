@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-el-historial-dice-quien-hizo-cada-cosa-y-va-de-l",
   "baseCommit": "7de538a74b9ad00473a69df08c98fcbcd8da146a",
   "revision": 1,
@@ -43,12 +43,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8d0e305427be15782d440c48c86664f08a38176f",
+      "attempts": 1,
       "startedAt": "2026-10-29T08:16:06.711Z",
       "doneAt": "2026-10-29T08:20:57.328Z",
-      "summary": "La pestaña Historial nombra a la persona, dice la herramienta, el modelo (Opus 5.5) y el esfuerzo del agente, y va del día y el evento más recientes a los más antiguos"
+      "summary": "La pestaña Historial nombra a la persona, dice la herramienta, el modelo (Opus 5.5) y el esfuerzo del agente, y va del día y el evento más recientes a los más antiguos",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c8aa6dce49b0472125dca37b9d48d8b3dcbedf6c",
+      "startedAt": "2026-10-29T08:20:57.661Z",
+      "doneAt": "2026-10-29T08:24:26.938Z",
+      "summary": "docs/ui.md describe el orden del más reciente al más antiguo y quién hizo cada cosa: el nombre de la persona y el modelo y el esfuerzo del agente"
     }
   },
   "pending": {

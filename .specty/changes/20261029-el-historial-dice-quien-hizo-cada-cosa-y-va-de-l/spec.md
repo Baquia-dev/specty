@@ -52,7 +52,7 @@ El Historial pone «Persona» aunque la auditoría ya sabe su nombre, y del agen
   - files: packages/ui/src/history/history-tab.ts, packages/ui/src/history/history-tab.test.ts, packages/ui/src/history/history-who.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
-- [ ] T3: Documentar el Historial
+- [x] T3: Documentar el Historial
   - files: docs/ui.md
   - ac: —
   - verify: pnpm lint
