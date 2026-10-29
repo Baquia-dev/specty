@@ -52,7 +52,7 @@ kind: standard
   - files: packages/cli/src/server/trace.ts, packages/cli/test/server/trace-origin.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/trace-origin.test.ts test/server/trace.test.ts && pnpm lint
-- [ ] T2: `sp-diff-file` marca líneas
+- [x] T2: `sp-diff-file` marca líneas
   - files: packages/ui/src/components/diff-file.ts, packages/ui/src/components/diff-file-marks.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/diff-file-marks.test.ts --include src/components/diff-file.test.ts && pnpm lint

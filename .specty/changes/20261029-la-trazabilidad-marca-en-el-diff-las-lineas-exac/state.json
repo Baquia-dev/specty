@@ -36,12 +36,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "64c74eb664a7e754f2d9d9cebe3a58080377ea81",
+      "attempts": 1,
       "startedAt": "2026-10-29T09:01:20.831Z",
       "doneAt": "2026-10-29T09:05:15.048Z",
-      "summary": "Cada bloque de la trazabilidad trae origin: los números que sus líneas tenían en el commit que las escribió, sacados del blame en porcelana"
+      "summary": "Cada bloque de la trazabilidad trae origin: los números que sus líneas tenían en el commit que las escribió, sacados del blame en porcelana",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "890a8d1e412fed6510300df964bb7ba4cd1d101d",
+      "startedAt": "2026-10-29T09:05:15.398Z",
+      "doneAt": "2026-10-29T09:09:28.101Z",
+      "summary": "sp-diff-file marca las líneas del lado nuevo que recibe en marked (data-marked, una barra de acento y un texto para lectores de pantalla), también lado a lado, nunca una quitada, y con marcas enseña el archivo entero"
     }
   },
   "pending": {
