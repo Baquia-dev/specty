@@ -116,17 +116,19 @@ const SECTION =
         }
         @for (entry of mode() === 'full' ? index() : []; track entry.key; let i = $index) {
           <section [class]="section" [id]="'review-' + entry.key" [attr.data-section]="entry.key" [attr.data-flash]="flashed() === entry.key || null" [attr.aria-labelledby]="'review-' + entry.key + '-title'">
-            <div class="flex items-center gap-3 font-mono text-[11px] text-text-muted" data-divider>
-              <span class="transition-colors duration-300 motion-reduce:transition-none group-data-flash/section:text-text">§ {{ number(i) }}</span>
-              <span class="relative h-px flex-1 bg-border" aria-hidden="true">
-                <span class="absolute -top-px left-0 h-0.5 w-0 bg-text transition-[width] duration-700 ease-[cubic-bezier(.2,.8,.2,1)] motion-reduce:transition-none group-data-flash/section:w-full"></span>
-              </span>
-              @if (progress(entry.key); as text) {
-                <span data-progress>{{ text }}</span>
-              }
-            </div>
-            <h2 class="mt-3 mb-0.5 text-[1.375rem] leading-tight font-semibold tracking-tight" tabindex="-1" [id]="'review-' + entry.key + '-title'">{{ label(entry.key) }}</h2>
-            <p class="m-0 text-sm text-text-muted">{{ meta[entry.key].hint[lang()] }}</p>
+            <header class="sticky top-[var(--sp-sticky-top,0px)] z-5 -mt-2 bg-bg py-2 transition-colors duration-700 ease-out motion-reduce:transition-none group-data-flash/section:bg-phase-draft-bg" data-section-header>
+              <div class="flex items-center gap-3 font-mono text-[11px] text-text-muted" data-divider>
+                <span class="transition-colors duration-300 motion-reduce:transition-none group-data-flash/section:text-text">§ {{ number(i) }}</span>
+                <span class="relative h-px flex-1 bg-border" aria-hidden="true">
+                  <span class="absolute -top-px left-0 h-0.5 w-0 bg-text transition-[width] duration-700 ease-[cubic-bezier(.2,.8,.2,1)] motion-reduce:transition-none group-data-flash/section:w-full"></span>
+                </span>
+                @if (progress(entry.key); as text) {
+                  <span data-progress>{{ text }}</span>
+                }
+              </div>
+              <h2 class="mt-3 mb-0.5 text-[1.375rem] leading-tight font-semibold tracking-tight" tabindex="-1" [id]="'review-' + entry.key + '-title'">{{ label(entry.key) }}</h2>
+              <p class="m-0 text-sm text-text-muted">{{ meta[entry.key].hint[lang()] }}</p>
+            </header>
             <div class="mt-4">
               @switch (entry.key) {
                 @case ('goal') {

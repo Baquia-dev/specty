@@ -60,7 +60,7 @@ Al desplazarse por la UI, la barra de pestañas de un cambio se queda fija bajo 
   - files: packages/ui/src/components/tabs.ts, packages/ui/src/components/tabs.test.ts, packages/ui/src/components/document.ts, packages/ui/src/components/document.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/tabs.test.ts --include src/components/document.test.ts && pnpm lint
-- [ ] T2: Medición de barras en la página del cambio y encabezados fijos en la revisión de la spec
+- [x] T2: Medición de barras en la página del cambio y encabezados fijos en la revisión de la spec
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-page.test.ts --include src/review/spec-review.test.ts && pnpm lint

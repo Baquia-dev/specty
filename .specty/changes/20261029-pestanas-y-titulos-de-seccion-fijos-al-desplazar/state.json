@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b2d6be649628366974d457cfcd2451f5c1529c19",
+      "attempts": 1,
       "startedAt": "2026-10-29T07:59:24.483Z",
       "doneAt": "2026-10-29T08:09:32.964Z",
-      "summary": "Hacer fija la barra de pestañas con ranura derecha spTabEnd y fijar sp-section-divider al desplazar"
+      "summary": "Hacer fija la barra de pestañas con ranura derecha spTabEnd y fijar sp-section-divider al desplazar",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "5ba81b8c3c2eb792af962100b2e74e84d6adbe35",
+      "startedAt": "2026-10-29T08:09:33.360Z",
+      "doneAt": "2026-10-29T08:11:27.505Z",
+      "summary": "Medir --sp-bar-top y --sp-sticky-top en sp-change-page y fijar encabezados de sección en sp-spec-review"
     }
   },
   "pending": {
