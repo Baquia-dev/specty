@@ -22,6 +22,7 @@ import { agentsToInstall, installHooks } from "./hooks";
 import { installMcp, mcpInRepo } from "./mcp";
 import { writeProduct } from "./product";
 import { writeAgentsMd, writeConfig, writeGlossary } from "./project-files";
+import { usageTool } from "./usage";
 
 /** What `specty init` installs, and in which order; the command itself is `commands/init.ts`. */
 
@@ -97,6 +98,8 @@ export async function install(setup: InitSetup, fresh: boolean): Promise<Install
   const project = await writeProjectFiles(setup, fresh, files, flow.flow, mcp.served);
   const noFlow = noFlowWarnings(flow, project.product !== undefined, lang);
   const hooks = await installHooks({ environment, root, git, tools, lang, files });
+  // Last: ccusage, so that closing measures each change's consumption.
+  const steps = [hooks, mcp, await usageTool(setup)];
   const noTests =
     setup.config?.verify.default === undefined &&
     verifyCommands(detection.commands).default === undefined;
@@ -104,16 +107,15 @@ export async function install(setup: InitSetup, fresh: boolean): Promise<Install
     files,
     backups,
     product: project.product,
-    done: [...project.done, ...hooks.done, ...mcp.done],
-    written: [...project.written, ...hooks.written, ...mcp.written],
+    done: [...project.done, ...steps.flatMap((step) => step.done)],
+    written: [...project.written, ...steps.flatMap((step) => step.written)],
     unfilled: project.unfilled,
     flow: flow.flow,
     chooseFlow: noFlow.length > 0,
     warnings: [
       ...agents.warnings,
       ...noFlow,
-      ...hooks.warnings,
-      ...mcp.warnings,
+      ...steps.flatMap((step) => step.warnings),
       ...(noTests ? [noTestCommandWarning(lang)] : []),
     ],
   };

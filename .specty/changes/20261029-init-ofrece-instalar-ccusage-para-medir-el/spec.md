@@ -57,7 +57,7 @@ La primera vez que una persona ejecuta `specty init`:
   - files: packages/core/test/cards/ccusage.test.ts, packages/core/src/cards/usage.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/ccusage.test.ts test/cards/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: init ofrece instalar ccusage o explica cómo
+- [x] T2: init ofrece instalar ccusage o explica cómo
   - files: packages/cli/test/init-usage.test.ts, packages/cli/src/install/usage.ts, packages/cli/src/install/install.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-usage.test.ts test/setup.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

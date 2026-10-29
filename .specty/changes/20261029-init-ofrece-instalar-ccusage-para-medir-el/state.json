@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "18bfab9af8e4af775f36a98bb364e1b093a11771",
+      "attempts": 1,
       "startedAt": "2026-10-29T22:40:54.856Z",
       "doneAt": "2026-10-29T22:41:31.886Z",
-      "summary": "cards/usage.ts: la pregunta de init con el comando que ejecuta, la línea de ccusage añadido, el aviso de fallo con el comando y el que explica cómo instalarlo, en español y en inglés; exportados en el índice de textos."
+      "summary": "cards/usage.ts: la pregunta de init con el comando que ejecuta, la línea de ccusage añadido, el aviso de fallo con el comando y el que explica cómo instalarlo, en español y en inglés; exportados en el índice de textos.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e1981eecd3fafabb60eea800fcaef393b8dd4ab9",
+      "startedAt": "2026-10-29T22:41:32.234Z",
+      "doneAt": "2026-10-29T22:50:37.167Z",
+      "summary": "install/usage.ts: la primera vez, en Node, init pregunta a la persona y añade ccusage@20.0.45 con su gestor (-w en workspace de pnpm), con package.json y lockfile en su commit; si no, avisa cómo instalarlo. Último paso de install.ts."
     }
   },
   "pending": {
