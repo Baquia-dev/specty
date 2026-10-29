@@ -9,6 +9,11 @@ export interface AuditRecord {
   readonly ts: string;
   readonly actor: "agent" | "human" | "specty";
   readonly tool?: string;
+  /** The person: in their own decisions and in those the agent took for them. */
+  readonly by?: string;
+  /** The agent's model and effort, when its tool tells them: context, not proof. */
+  readonly model?: string;
+  readonly effort?: string;
   readonly event: string;
   readonly data: Readonly<Record<string, unknown>>;
 }

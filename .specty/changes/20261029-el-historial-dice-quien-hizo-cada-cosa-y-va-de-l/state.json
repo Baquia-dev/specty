@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a12637982ef497f661379dc1e14b1c19d72f9f7b",
+      "startedAt": "2026-10-29T07:59:56.107Z",
+      "doneAt": "2026-10-29T08:16:06.375Z",
+      "summary": "AuditRecord e HistoryEntry traen by, model y effort; historyOf los copia y el detalle delegado nombra a la persona; las líneas de muestra dicen quién"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

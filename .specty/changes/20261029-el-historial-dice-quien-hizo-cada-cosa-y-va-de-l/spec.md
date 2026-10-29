@@ -44,7 +44,7 @@ El Historial pone «Persona» aunque la auditoría ya sabe su nombre, y del agen
 
 ## Tareas
 
-- [ ] T1: Quién hizo cada cosa en los datos del Historial
+- [x] T1: Quién hizo cada cosa en los datos del Historial
   - files: packages/ui/src/data/progress.ts, packages/ui/src/data/history.ts, packages/ui/src/data/sample-history.ts, packages/ui/src/data/history-who.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/history-who.test.ts --include src/data/history.test.ts && pnpm lint

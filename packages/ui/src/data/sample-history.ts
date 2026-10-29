@@ -3,6 +3,8 @@
 // joined by time to the events the samples already carry: tasks, verifications and scope.
 import type { AuditRecord } from "./progress";
 import type { ChangeRecord } from "./records";
+// Used only when a sample is built, never while the modules load, so the cycle is harmless.
+import { REVIEWER } from "./sample-records";
 
 const MINUTE = 60_000;
 const HOUR = 60;
@@ -122,18 +124,30 @@ const STEPS: Readonly<Record<string, readonly Step[]>> = {
   ],
 };
 
-/** The sample with its whole history, in time order; the agent declares its tool. */
+/**
+ * The sample with its whole history, in time order. Each line says who: the reviewer by her
+ * name, and the agent its tool, its model and its effort.
+ */
 export function withHistory(record: ChangeRecord, now: number): ChangeRecord {
   const steps = STEPS[record.state.id] ?? [];
   const added = steps.map(
     ([minutes, actor, event, data]): AuditRecord => ({
       ts: new Date(now - minutes * MINUTE).toISOString(),
       actor,
-      ...(actor === "agent" ? { tool: "claude-code" } : {}),
       event,
       data: data ?? {},
     }),
   );
-  const audit = [...(record.audit ?? []), ...added].toSorted((a, b) => a.ts.localeCompare(b.ts));
+  const audit = [...(record.audit ?? []), ...added]
+    .map(saidWho)
+    .toSorted((a, b) => a.ts.localeCompare(b.ts));
   return audit.length === 0 ? record : { ...record, audit };
+}
+
+function saidWho(line: AuditRecord): AuditRecord {
+  if (line.actor === "human") return { by: REVIEWER, ...line };
+  if (line.actor === "agent") {
+    return { tool: "claude-code", model: "claude-opus-5-5", effort: "high", ...line };
+  }
+  return line;
 }
