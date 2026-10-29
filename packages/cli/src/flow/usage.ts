@@ -11,6 +11,7 @@ import {
   modelPrices,
   type Output,
   section,
+  type TokenPrices,
   type UsageEntry,
   usageLine,
 } from "@baquia-dev/specty-core";
@@ -33,6 +34,12 @@ const TIMEOUT_MS = 60_000;
 const FRESH_SESSION = 150_000;
 
 type Tokens = Omit<UsageEntry, "timestamp" | "model">;
+/** A session of ccusage's report: its id, its project and what each model cost in it. */
+interface SessionCost {
+  readonly id: string;
+  readonly project: string;
+  readonly models: readonly ModelCost[];
+}
 
 /**
  * Measures the change's consumption and records it in its audit, before it is archived, and
@@ -78,11 +85,11 @@ async function usageOf(session: Session, audit: Audit): Promise<ChangeUsage | un
   const since = audit.find((line) => line.event === "change.created")?.ts;
   const sessions = namedSessions(audit);
   if (typeof since !== "string" || sessions.size === 0) return undefined;
-  const rows: ModelCost[] = [];
+  const rows: SessionCost[] = [];
   for (const source of new Set(sessions.values())) {
     const sessionReport = await report(session, [source, "session", "--json", "--offline"]);
     if (sessionReport === undefined) return undefined;
-    rows.push(...modelCosts(sessionReport));
+    rows.push(...sessionCosts(sessionReport));
   }
   const entries: UsageEntry[] = [];
   for (const [id, source] of sessions) {
@@ -90,7 +97,22 @@ async function usageOf(session: Session, audit: Audit): Promise<ChangeUsage | un
     if (calls === undefined) return undefined;
     entries.push(...usageEntries(calls));
   }
-  return changeUsage(entries, since, modelPrices(rows));
+  return changeUsage(entries, since, pricesFor(rows, sessions));
+}
+
+/**
+ * Each model's prices: from the sessions of the change's own projects, when they have enough of
+ * them, and from every session otherwise. Other projects may run otherwise (an evaluation without
+ * an interface writes its cache at another price, which the report does not tell apart).
+ */
+function pricesFor(
+  rows: readonly SessionCost[],
+  named: ReadonlyMap<string, string>,
+): ReadonlyMap<string, TokenPrices> {
+  const projects = new Set(rows.flatMap((row) => (named.has(row.id) ? [row.project] : [])));
+  const own = rows.filter((row) => projects.has(row.project));
+  const costs = (of: readonly SessionCost[]) => of.flatMap((row) => row.models);
+  return new Map([...modelPrices(costs(rows)), ...modelPrices(costs(own))]);
 }
 
 /** The sessions the audit's lines name, each with its agent's ccusage source. */
@@ -116,12 +138,18 @@ async function report(session: Session, args: readonly string[]): Promise<unknow
   return result.code === 0 ? parseJson(result.stdout) : undefined;
 }
 
-/** The `modelBreakdowns` of every session in ccusage's session report. */
-function modelCosts(report: unknown): ModelCost[] {
+/** Every session of ccusage's session report, with its `modelBreakdowns`. */
+function sessionCosts(report: unknown): SessionCost[] {
   const sessions = isRecord(report) && Array.isArray(report.sessions) ? report.sessions : [];
   return sessions.flatMap((row) =>
     isRecord(row) && Array.isArray(row.modelBreakdowns)
-      ? row.modelBreakdowns.flatMap(modelCost)
+      ? [
+          {
+            id: typeof row.sessionId === "string" ? row.sessionId : "",
+            project: typeof row.projectPath === "string" ? row.projectPath : "",
+            models: row.modelBreakdowns.flatMap(modelCost),
+          },
+        ]
       : [],
   );
 }

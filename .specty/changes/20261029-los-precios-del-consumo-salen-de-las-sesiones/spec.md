@@ -18,6 +18,6 @@ Las 15 sesiones de este proyecto, en cambio, cuadran todas. Specty deduce ahora 
 
 ## Tareas
 
-- [ ] T1: Los precios salen de las sesiones del proyecto del cambio
+- [x] T1: Los precios salen de las sesiones del proyecto del cambio
   - files: packages/cli/src/flow/usage.ts, packages/cli/test/usage-projects.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/usage-projects.test.ts test/usage.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
