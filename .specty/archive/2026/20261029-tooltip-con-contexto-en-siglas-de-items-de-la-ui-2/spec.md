@@ -68,3 +68,22 @@ Se añade `packages/ui/src/components/item-tooltip.ts` con:
   - files: packages/ui/src/history/history-tab.ts, packages/ui/src/history/trace-view.ts, packages/ui/src/history/trace-view.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/trace-view.test.ts
+
+## Cierre
+
+### Resumen
+
+Se añadió `packages/ui/src/components/item-tooltip.ts` con la directiva `ItemTooltips` (`[spItemTooltips]`), el componente en línea `ItemText` (`<sp-item-text>`) y las funciones `formatItemTooltip`, `splitItemRefs`, `itemsOfReview` e `itemsOfChange`, y se integró en las vistas de revisión (`spec-review`, `spec-sections`, `comments`), progreso (`progress-tab`, `locked-tests`), aceptación (`acceptance-tab`), bandeja (`inbox-row`), historial (`history-tab`) y trazabilidad (`trace-view`).
+
+### Desviaciones
+
+- En `T2` se solicitó alcance adicional sobre `packages/ui/src/components/item-tooltip.ts` para asegurar que una sola instancia de tooltip permanezca abierta a la vez cuando coexisten varias directivas `ItemTooltips`.
+
+### Decisiones
+
+- Se usó `DomPortal` respaldado por un `DocumentFragment` para renderizar la burbuja del tooltip en el overlay CDK sin componentes auxiliares adicionales y mantener el módulo por debajo de 300 líneas.
+- La directiva `ItemTooltips` hereda el mapa de siglas de ancestros o del `ChangesStore` y respeta bloques `<code>`, `<pre>` y `<sp-tooltip>` existentes.
+
+### Pendientes
+
+- Ninguno.

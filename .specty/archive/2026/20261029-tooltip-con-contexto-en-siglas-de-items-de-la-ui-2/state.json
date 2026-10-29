@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
   "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85",
@@ -81,6 +81,7 @@
     "AC": 3,
     "T": 4
   },
+  "closingSubmittedAt": "2026-10-29T21:50:01.563Z",
   "lockedTests": {},
   "integration": {
     "target": "main",
@@ -121,6 +122,10 @@
       "packages/ui/src/review/spec-sections.test.ts",
       "packages/ui/src/review/spec-sections.ts"
     ],
-    "at": "2026-10-29T21:23:00.664Z"
+    "at": "2026-10-29T21:37:54.770Z",
+    "resolved": {
+      "commit": "a4f38b8",
+      "at": "2026-10-29T21:43:22.227Z"
+    }
   }
 }

@@ -29,3 +29,10 @@
 {"ts":"2026-10-29T21:36:04.312Z","actor":"agent","tool":"antigravity","event":"adjust.requested","data":{"request":"Formatear componente de tooltips de siglas"}}
 {"ts":"2026-10-29T21:37:10.666Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":3,"hash":"sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85","size":"L","warnings":0}}
 {"ts":"2026-10-29T21:37:11.493Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"spec.approved","data":{"revision":3,"hash":"sha256:9a4cda545f92028f71b9ee48ced9dc0c7573d57995e6b316ea564ec43d0e4f85","channel":"delegated","delegated":true}}
+{"ts":"2026-10-29T21:37:53.786Z","actor":"specty","event":"integration.abandoned","data":{"target":"main"}}
+{"ts":"2026-10-29T21:37:54.771Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"297ca21f78dc0a25accc02e73612d622f5357f13","reason":"verify","conflicts":[]}}
+{"ts":"2026-10-29T21:43:22.229Z","actor":"agent","tool":"antigravity","event":"integration.resolved","data":{"commit":"a4f38b8"}}
+{"ts":"2026-10-29T21:48:25.210Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":272813,"tree":"sha256:338f0b774af8699ea64f7b4ce35d5b572e88b39b9b0ac776af1a0969c0eb9804"}}
+{"ts":"2026-10-29T21:48:25.213Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.accepted","data":{"revision":3,"delegated":true}}
+{"ts":"2026-10-29T21:50:01.566Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":4,"hash":"sha256:742af8a1c9ce494b63c730e5aa90b407805e8e8486eb0432b9b3b587a9657bb2","size":"L","warnings":0}}
+{"ts":"2026-10-29T21:50:55.888Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.closed","data":{"delegated":true}}
