@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-la-pestana-historial-muestra-la-trazabilidad-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-la-pestana-historial-muestra-la-trazabilidad-de",
   "baseCommit": "3b9f1c06a867a35ad9644479b1d3ee8ef61307db",
   "revision": 1,
@@ -57,12 +57,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5b202cb255d20e9f0ac293d20872d7835a960721",
+      "attempts": 1,
       "startedAt": "2026-10-29T06:21:26.041Z",
       "doneAt": "2026-10-29T06:26:33.643Z",
-      "summary": "sp-trace-view muestra el archivo elegido con un margen tipo blame por bloque (commit, cambio enlazado, tarea y criterios, o asunto y autor) y el motivo si no hay nada que trazar; el control Vista del Historial cambia entre línea de tiempo y trazabilidad"
+      "summary": "sp-trace-view muestra el archivo elegido con un margen tipo blame por bloque (commit, cambio enlazado, tarea y criterios, o asunto y autor) y el motivo si no hay nada que trazar; el control Vista del Historial cambia entre línea de tiempo y trazabilidad",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0a9894d8e39aa2f8cb9b176eb45d7013be421a45",
+      "startedAt": "2026-10-29T06:26:33.968Z",
+      "doneAt": "2026-10-29T06:30:01.307Z",
+      "summary": "docs/ui.md describe la vista Trazabilidad: el control Vista, el archivo elegido, el margen tipo blame, sus motivos y la muestra del prototipo"
     }
   },
   "pending": {
