@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261029-la-trazabilidad-colorea-el-codigo-y-abre-el-diff",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-la-trazabilidad-colorea-el-codigo-y-abre-el-diff",
+  "baseCommit": "e8e1504be9c0f75e0842dd70bf5c1ef5183f5120",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a099080d714322171b8e247f64247c8dcf581d12b29c54bfa7d950af05ab925f",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a424e2df17f59ec588e52854980d9613a01318d3d15f244de1c83a9a6c284166",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:27bb0e2167373e05ea26d0192007159a271f3ab6439d639555c6fd20f4249daf",
+    "at": "2026-10-29T08:33:48.201Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
