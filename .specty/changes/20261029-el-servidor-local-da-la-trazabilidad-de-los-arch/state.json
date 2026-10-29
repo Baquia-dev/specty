@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261029-el-servidor-local-da-la-trazabilidad-de-los-arch",
   "baseCommit": "2c20665f684aa5ed747233f024bc687aee919f5d",
   "revision": 1,
@@ -45,6 +45,7 @@
     "AC": 3,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-29T05:54:12.590Z"
+  "lockedTests": {
+    "packages/cli/test/server/trace.test.ts": "sha256:7ca45dfdaf8ef2a0384d8f1e8c939e07c39a44c8112c6033748ab2f45ead94eb"
+  }
 }
