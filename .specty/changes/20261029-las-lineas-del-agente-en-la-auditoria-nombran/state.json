@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-las-lineas-del-agente-en-la-auditoria-nombran",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-las-lineas-del-agente-en-la-auditoria-nombran",
+  "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a3a82ebb6dd8360116ae091d21b0a6b6bded0ab61c5a7e68b5a749bf5d90c6d5",
+    "at": "2026-10-29T20:00:10.635Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
