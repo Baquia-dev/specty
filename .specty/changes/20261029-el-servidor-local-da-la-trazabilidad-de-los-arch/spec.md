@@ -47,7 +47,7 @@ La vista de trazabilidad del Historial (docs/ui.md) enseña un archivo con un ma
 
 ## Tareas
 
-- [ ] T1: Los commits con sus trailers, fuera de `specty why`
+- [x] T1: Los commits con sus trailers, fuera de `specty why`
   - files: packages/cli/src/flow/traced.ts, packages/cli/src/commands/why.ts, packages/cli/test/why.test.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/why.test.ts && pnpm lint

@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "de2bc6639702fefa720cdbcc58f246cbebc56049",
+      "startedAt": "2026-10-29T05:54:27.151Z",
+      "doneAt": "2026-10-29T05:58:22.084Z",
+      "summary": "flow/traced.ts tiene logged y ChangeSpecs, que salen de commands/why.ts; specty why los usa y sus tests pasan sin cambios"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
