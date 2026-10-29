@@ -21,3 +21,9 @@ Para medir lo que consume cada cambio hay que saber qué sesiones del agente tra
 - [x] T1: Las líneas del agente nombran su sesión
   - files: packages/cli/src/agents/run.ts, packages/cli/src/flow/active.ts, packages/cli/src/store/changes.ts, packages/cli/test/audit-who.test.ts, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/audit-who.test.ts && pnpm lint
+
+## Cierre
+
+### Resumen
+
+Las líneas del agente llevan session (CLAUDE_CODE_SESSION_ID validado, aunque no aparezca su transcript); sin id válido o fuera de Claude Code, sin el campo. formats.md §4 lo documenta.
