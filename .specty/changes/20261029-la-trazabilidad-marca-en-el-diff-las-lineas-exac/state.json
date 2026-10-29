@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261029-la-trazabilidad-marca-en-el-diff-las-lineas-exac",
+  "baseCommit": "0acfdedf181cf68d8c8737ef85e7baed0c108705",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fb0c3848a1d07545ef39255c3ff3cdb52592ff2e4a9e5b7b8ed5273c199a2eb3",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:13389f27652c296b665190aa8a6c7598c18360525b2c65cb12852c25a087e741",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f85c82d60fe3f9ef56f954db1ab1b5886e0a2466fd5aea702a540c283c6bd2df",
+    "at": "2026-10-29T08:59:09.170Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
