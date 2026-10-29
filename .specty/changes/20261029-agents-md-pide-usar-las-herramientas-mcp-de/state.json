@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-agents-md-pide-usar-las-herramientas-mcp-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-agents-md-pide-usar-las-herramientas-mcp-de",
   "baseCommit": "a136ff4f3f34072d3f949e120a106ef417cc6bfa",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9b9e258e07d28b8cc174b81feb48511302179774",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:24:32.330Z",
       "doneAt": "2026-10-29T20:33:51.971Z",
-      "summary": "flowBlock(lang, command, { mcp }) añade tras la primera línea la que pide usar las herramientas specty_* en lugar del comando que hace lo mismo; sin mcp el bloque es el de hoy. formats.md §8 la describe."
+      "summary": "flowBlock(lang, command, { mcp }) añade tras la primera línea la que pide usar las herramientas specty_* en lugar del comando que hace lo mismo; sin mcp el bloque es el de hoy. formats.md §8 la describe.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "29a8a91728697e89c0c04cb75d2cccfafbe33c5e",
+      "startedAt": "2026-10-29T20:33:52.856Z",
+      "doneAt": "2026-10-29T20:43:27.532Z",
+      "summary": "init registra el servidor MCP antes de AGENTS.md (mcpServer) y, si escribió entradas o algún archivo de agente ya tiene la entrada specty (mcpInRepo), el bloque de flujo lleva la línea de las herramientas; ARCHITECTURE §6 lo cuenta."
     }
   },
   "pending": {

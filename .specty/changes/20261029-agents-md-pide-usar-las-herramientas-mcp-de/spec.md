@@ -49,7 +49,7 @@ Con el servidor MCP de Specty registrado, el agente de VS Code ejecutaba `specty
   - files: packages/core/test/agents-md.test.ts, packages/core/src/agents-md.ts, docs/formats.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts test/cards.test.ts test/cards/language.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: init escribe esa línea cuando el repositorio registra el servidor
+- [x] T2: init escribe esa línea cuando el repositorio registra el servidor
   - files: packages/cli/test/mcp-install.test.ts, packages/cli/src/install/mcp.ts, packages/cli/src/install/install.ts, packages/cli/src/install/project-files.ts, docs/ARCHITECTURE.md
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-install.test.ts test/install.test.ts test/init-agents.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
