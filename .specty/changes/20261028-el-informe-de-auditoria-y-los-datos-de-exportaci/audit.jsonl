@@ -1,0 +1,3 @@
+{"ts":"2026-10-29T04:44:37.901Z","actor":"agent","tool":"claude-code","event":"change.created","data":{"kind":"standard","type":"feat","branch":"specty/20261028-el-informe-de-auditoria-y-los-datos-de-exportaci","request":"realiza el Exportar el historial y la vista de trazabilidad."}}
+{"ts":"2026-10-29T04:45:04.812Z","actor":"agent","tool":"claude-code","event":"spec.proposed","data":{"revision":1,"hash":"sha256:69612025665f4e932011ce2a730a1d3c8a5cb8cd26f53ac1c9e03c4b1bb6c768","size":"L","warnings":0}}
+{"ts":"2026-10-29T04:45:07.913Z","actor":"agent","tool":"claude-code","event":"spec.approved","data":{"revision":1,"hash":"sha256:69612025665f4e932011ce2a730a1d3c8a5cb8cd26f53ac1c9e03c4b1bb6c768","channel":"delegated","delegated":true}}
