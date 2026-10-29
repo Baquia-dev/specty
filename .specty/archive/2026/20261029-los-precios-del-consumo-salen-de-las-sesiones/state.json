@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-los-precios-del-consumo-salen-de-las-sesiones",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261029-los-precios-del-consumo-salen-de-las-sesiones",
   "baseCommit": "8d01403c84c6f54381feff9bc5aada7f6faeb40d",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "084e952737822aff8367c4fb09a26567f2c5a88c",
+      "attempts": 1,
       "startedAt": "2026-10-29T21:55:51.390Z",
       "doneAt": "2026-10-29T21:57:49.452Z",
-      "summary": "pricesFor deduce los precios de las sesiones del proyecto de las del cambio (projectPath del informe de ccusage) y solo usa todas para un modelo que ese proyecto no tiene en cuatro sesiones: las evals sin interfaz, que escriben la caché a otro precio, ya no quitan el coste."
+      "summary": "pricesFor deduce los precios de las sesiones del proyecto de las del cambio (projectPath del informe de ccusage) y solo usa todas para un modelo que ese proyecto no tiene en cuatro sesiones: las evals sin interfaz, que escriben la caché a otro precio, ya no quitan el coste.",
+      "scopeExtra": []
     }
   },
   "pending": {

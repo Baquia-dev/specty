@@ -21,3 +21,9 @@ Las 15 sesiones de este proyecto, en cambio, cuadran todas. Specty deduce ahora 
 - [x] T1: Los precios salen de las sesiones del proyecto del cambio
   - files: packages/cli/src/flow/usage.ts, packages/cli/test/usage-projects.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/usage-projects.test.ts test/usage.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
+
+## Cierre
+
+### Resumen
+
+pricesFor deduce los precios de las sesiones del proyecto de las del cambio (projectPath del informe de ccusage) y solo usa todas para un modelo que ese proyecto no tiene en cuatro sesiones: las evals sin interfaz, que escriben la caché a otro precio, ya no quitan el coste.
