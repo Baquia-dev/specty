@@ -17,13 +17,22 @@ export interface Agent {
   readonly name: string;
   /** Its binary: `SPECTY_EVALS_<ID>`, on the PATH or, for Claude Code, in an editor's extension. */
   find(env: NodeJS.ProcessEnv): string | undefined;
-  /** The command line that runs `prompt` without an interface, in the folder it starts in. */
-  command(binary: string, prompt: string): string[];
+  /**
+   * The command line that runs `prompt` without an interface, in the folder it starts in, with
+   * `turns` of the model at most where the agent takes a limit (30 by default).
+   */
+  command(binary: string, prompt: string, turns?: number): string[];
 }
 
 interface Counts {
   readonly rounds: number;
   readonly blocks: number;
+}
+
+/** What a run cost, and the largest context its main thread read: its prompt's tokens. */
+export interface Consumption {
+  readonly cost: number;
+  readonly context: number;
 }
 
 /** A guard refusal: Specty's message and its next step, inside a tool's output. */
@@ -65,6 +74,45 @@ function claudeCounts(lines: readonly string[]): Counts {
   return { rounds, blocks };
 }
 
+/**
+ * The consumption of a run of Claude Code, from its `stream-json`: the cost its result gives, its
+ * subagents' included, and the largest prompt of its main thread's answers, which carry no
+ * `parent_tool_use_id`. Other agents, or a run without its result, tell nothing.
+ */
+export function consumptionOf(id: AgentId, transcript: string): Consumption | undefined {
+  if (id !== "claude-code") return undefined;
+  let cost: number | undefined;
+  let context = 0;
+  for (const line of transcript.split("\n")) {
+    const value = parsed(line);
+    if (!isObject(value)) continue;
+    if (value.type === "result" && typeof value.total_cost_usd === "number") {
+      cost = value.total_cost_usd;
+    }
+    if (value.type === "assistant" && value.parent_tool_use_id == null) {
+      context = Math.max(context, promptOf(value.message));
+    }
+  }
+  return cost === undefined ? undefined : { cost, context };
+}
+
+/** The tokens an answer read: its input, cache writes and cache reads. */
+function promptOf(message: unknown): number {
+  const usage = isObject(message) ? message.usage : undefined;
+  if (!isObject(usage)) return 0;
+  return ["input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"]
+    .map((key) => usage[key])
+    .reduce((total: number, count) => total + (typeof count === "number" ? count : 0), 0);
+}
+
+function parsed(line: string): unknown {
+  try {
+    return JSON.parse(line);
+  } catch {
+    return undefined;
+  }
+}
+
 interface Item {
   readonly type?: unknown;
   readonly is_error?: unknown;
@@ -73,12 +121,7 @@ interface Item {
 
 /** The content items of one line's message, or none for a line that is not one. */
 function contentOf(line: string): Item[] {
-  let value: unknown;
-  try {
-    value = JSON.parse(line);
-  } catch {
-    return [];
-  }
+  const value = parsed(line);
   const message = isObject(value) ? value.message : undefined;
   const content = isObject(message) ? message.content : undefined;
   return Array.isArray(content) ? content.filter(isObject) : [];
@@ -130,7 +173,7 @@ export const AGENTS: readonly Agent[] = [
     id: "claude-code",
     name: "Claude Code",
     find: (env) => finder("claude-code", "claude")(env) ?? bundledClaude(),
-    command: (binary, prompt) => [
+    command: (binary, prompt, turns = 30) => [
       binary,
       "-p",
       prompt,
@@ -138,11 +181,12 @@ export const AGENTS: readonly Agent[] = [
       "stream-json",
       "--verbose",
       "--max-turns",
-      "30",
+      String(turns),
       "--permission-mode",
       "acceptEdits",
+      // `Agent` lets it hand work to the subagents the repository defines.
       "--allowedTools",
-      "Bash,Read,Write,Edit,Glob,Grep",
+      "Bash,Read,Write,Edit,Glob,Grep,Agent",
     ],
   },
   {

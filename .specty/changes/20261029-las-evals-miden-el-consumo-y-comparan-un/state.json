@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ae2363c65479e4a1ff06d2b4482c3870b7a62ab0",
+      "startedAt": "2026-10-29T21:22:20.775Z",
+      "doneAt": "2026-10-29T21:25:43.452Z",
+      "summary": "La suite guarda coste y contexto máximo del hilo principal de Claude Code (consumptionOf) y los resume en «Consumo»; experimentos changes y changes-subagent (3 quick seguidos en modo delegado, el segundo con el subagente specty-change), solo si se nombran, con 150 turnos y 30 min."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

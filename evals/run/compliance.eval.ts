@@ -4,7 +4,8 @@ import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { expect, it } from "vitest";
-import { AGENTS, type Agent, countsOf } from "../src/agents";
+import { AGENTS, type Agent, consumptionOf, countsOf } from "../src/agents";
+import { type Experiment, namedExperiments } from "../src/experiments";
 import { DIST } from "../src/repo";
 import { type Omitted, type Run, reportJson, reportMarkdown, summarize } from "../src/report";
 import { SCENARIOS, type Scenario } from "../src/scenarios";
@@ -50,20 +51,24 @@ function agentEnv(bin: string): NodeJS.ProcessEnv {
   return { ...env, PATH: `${bin}${delimiter}${process.env.PATH ?? ""}` };
 }
 
-/** One run of `scenario` by `agent`, or why the agent has to be left out. */
+/**
+ * One run of a scenario or an experiment by `agent`, or why the agent has to be left out. An
+ * experiment brings its own turns and minutes; a run that tells its consumption keeps it.
+ */
 async function runOnce(
   agent: Agent,
   binary: string,
-  scenario: Scenario,
+  scenario: Scenario | Experiment,
   bin: string,
 ): Promise<Run | Omitted> {
   const root = await scenario.prepare(agent.id);
-  const [command = binary, ...args] = agent.command(binary, scenario.prompt);
+  const turns = "turns" in scenario ? scenario.turns : undefined;
+  const [command = binary, ...args] = agent.command(binary, scenario.prompt, turns);
   const result = spawnSync(command, args, {
     cwd: root,
     env: agentEnv(bin),
     encoding: "utf8",
-    timeout: TIMEOUT_MS,
+    timeout: "minutes" in scenario ? scenario.minutes * 60 * 1000 : TIMEOUT_MS,
     maxBuffer: 64 * 1024 * 1024,
   });
   const transcript = result.stdout ?? "";
@@ -75,7 +80,9 @@ async function runOnce(
   ) {
     return { agent: agent.id, reason: "sin sesión iniciada" };
   }
-  return { agent: agent.id, scenario: scenario.id, verdict: await scenario.judge(root), ...counts };
+  const verdict = await scenario.judge(root);
+  const consumption = consumptionOf(agent.id, transcript);
+  return { agent: agent.id, scenario: scenario.id, verdict, ...counts, ...consumption };
 }
 
 /** Every run of one agent; without its binary, or once it shows it has no session, why not. */
@@ -87,7 +94,11 @@ async function runAgent(
   if (binary === undefined)
     return { runs: [], omitted: { agent: agent.id, reason: "no está instalado" } };
   const runs: Run[] = [];
-  for (const scenario of chosen(SCENARIOS, "SPECTY_EVALS_SCENARIOS")) {
+  const named = process.env.SPECTY_EVALS_SCENARIOS;
+  for (const scenario of [
+    ...chosen(SCENARIOS, "SPECTY_EVALS_SCENARIOS"),
+    ...namedExperiments(named),
+  ]) {
     for (let run = 0; run < RUNS; run += 1) {
       const result = await runOnce(agent, binary, scenario, bin);
       if ("reason" in result) return { runs, omitted: result };

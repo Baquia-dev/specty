@@ -97,18 +97,31 @@ const NOBODY: Terminal = {
   note: () => undefined,
 };
 
-/** `specty <argv>` in `root`, by the agent or, with `person`, by a person at the terminal. */
+/**
+ * `specty <argv>` in `root`, by the agent or, with `person`, by a person at the terminal, who
+ * takes the option `choose` when a question offers it.
+ */
 export async function specty(
   root: string,
   argv: readonly string[],
-  options: { readonly person?: boolean } = {},
+  options: { readonly person?: boolean; readonly choose?: string } = {},
 ): Promise<{ readonly code: number; readonly out: string }> {
   const out: string[] = [];
+  const { choose } = options;
+  const person: Terminal =
+    choose === undefined
+      ? PERSON
+      : {
+          ...PERSON,
+          choose: async (message, choices) =>
+            choices.find((choice) => choice.value === choose)?.value ??
+            PERSON.choose(message, choices),
+        };
   const code = await runCli(argv, {
     cwd: root,
     env: cliEnv(),
     now: () => new Date(),
-    terminal: options.person === true ? PERSON : NOBODY,
+    terminal: options.person === true ? person : NOBODY,
     io: { out: (text) => out.push(text), err: () => undefined },
     invocation: { command: `node "${DIST}"`, portable: false, script: DIST },
     stdin: async () => "",
