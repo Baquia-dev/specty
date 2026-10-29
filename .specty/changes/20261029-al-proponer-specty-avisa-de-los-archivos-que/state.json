@@ -6,6 +6,13 @@
   "branch": "specty/20261029-al-proponer-specty-avisa-de-los-archivos-que",
   "baseCommit": "e98af32e02da557fafc881ca6747d658ca509065",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6f4f707be2937b2f69e72e5302ab736a65fcec0b584245e467d259ba44c145a8",
+    "at": "2026-10-29T22:02:20.682Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -36,12 +43,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6f4f707be2937b2f69e72e5302ab736a65fcec0b584245e467d259ba44c145a8",
-    "at": "2026-10-29T22:02:20.682Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T22:04:10.372Z"
 }
