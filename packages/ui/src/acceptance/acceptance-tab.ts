@@ -16,6 +16,7 @@ import { LIST, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { LucideListChecks } from "../components/icons";
 import { Select } from "../components/select";
+import { TabEnd } from "../components/tabs";
 import { evidenceOf, summaryOf } from "../data/acceptance";
 import { Decisions } from "../data/decisions";
 import type { ChangeView } from "../data/records";
@@ -47,6 +48,7 @@ const VIEW_KEY = "specty.acceptance.view";
     SectionDivider,
     EmptyState,
     Select,
+    TabEnd,
     CriterionRow,
     TraceMatrix,
     FullVerification,
@@ -65,10 +67,16 @@ const VIEW_KEY = "specty.acceptance.view";
         <p class="m-0">{{ t()('Aparecen aquí cuando la spec los define.', 'They show here once the spec defines them.') }}</p>
       </sp-empty-state>
     } @else {
-      <div class="flex flex-wrap items-center justify-between gap-3">
+      <div #top class="flex flex-wrap items-center justify-between gap-3" data-top>
         <p class="m-0 text-sm text-text-muted" data-summary><strong class="font-semibold text-text">{{ verifiedLine() }}</strong>{{ rest() }}</p>
         <sp-select [label]="t()('Vista', 'View')" [options]="views()" [value]="view()" (valueChange)="choose($event)" data-view />
       </div>
+      <ng-template [spTabEnd]="top">
+        <div class="flex flex-wrap items-center gap-3" data-compact-summary>
+          <p class="m-0 text-xs text-text-muted"><strong class="font-semibold text-text">{{ verifiedLine() }}</strong>{{ rest() }}</p>
+          <sp-select [label]="t()('Vista', 'View')" [options]="views()" [value]="view()" (valueChange)="choose($event)" data-compact-view />
+        </div>
+      </ng-template>
       <!-- After accepting: the closing the agent writes, and once done, what it said. -->
       @if (showsClosing()) {
         <sp-closing-view [change]="change()" />

@@ -287,23 +287,27 @@ describe("Acceptance tab", () => {
   });
 
   it("AC4: shows the verified criteria summary and the view selector on the right of the tab bar once scrolled out of view", async () => {
+    let observed: Element | undefined;
     let fire: IntersectionObserverCallback = () => undefined;
     class FakeObserver {
       constructor(callback: IntersectionObserverCallback) {
         fire = callback;
       }
-      observe(): void {}
+      observe(target: Element): void {
+        observed = target;
+      }
       disconnect(): void {}
     }
     Object.assign(window, { IntersectionObserver: FakeObserver });
     try {
       const { element, settle } = await render();
       const top = element.querySelector<HTMLElement>("sp-acceptance-tab [data-top]");
-      expect(top).not.toBeNull();
+      expect(observed).toBe(top);
+      if (observed === undefined) throw new Error("expected observed target");
       expect(element.querySelector("[data-tabs-end]")).toBeNull();
 
       fire(
-        [{ target: top, isIntersecting: false } as IntersectionObserverEntry],
+        [{ target: observed, isIntersecting: false } as IntersectionObserverEntry],
         {} as IntersectionObserver,
       );
       await settle();
@@ -321,7 +325,7 @@ describe("Acceptance tab", () => {
       expect(element.querySelector("[data-matrix] table")).not.toBeNull();
 
       fire(
-        [{ target: top, isIntersecting: true } as IntersectionObserverEntry],
+        [{ target: observed, isIntersecting: true } as IntersectionObserverEntry],
         {} as IntersectionObserver,
       );
       await settle();

@@ -183,23 +183,27 @@ describe("the History tab", () => {
   });
 
   it("AC5: shows who, type and the event count on the right of the tab bar once the top bar scrolls out of view", async () => {
+    let observed: Element | undefined;
     let fire: IntersectionObserverCallback = () => undefined;
     class FakeObserver {
       constructor(callback: IntersectionObserverCallback) {
         fire = callback;
       }
-      observe(): void {}
+      observe(target: Element): void {
+        observed = target;
+      }
       disconnect(): void {}
     }
     Object.assign(window, { IntersectionObserver: FakeObserver });
     try {
       const { element, settle, rows, text } = await render();
       const top = element.querySelector<HTMLElement>("sp-history-tab [data-top]");
-      expect(top).not.toBeNull();
+      expect(observed).toBe(top);
+      if (observed === undefined) throw new Error("expected observed target");
       expect(element.querySelector("[data-tabs-end]")).toBeNull();
 
       fire(
-        [{ target: top, isIntersecting: false } as IntersectionObserverEntry],
+        [{ target: observed, isIntersecting: false } as IntersectionObserverEntry],
         {} as IntersectionObserver,
       );
       await settle();
@@ -214,7 +218,7 @@ describe("the History tab", () => {
       expect(end?.querySelector("[data-compact-type]")).not.toBeNull();
 
       fire(
-        [{ target: top, isIntersecting: true } as IntersectionObserverEntry],
+        [{ target: observed, isIntersecting: true } as IntersectionObserverEntry],
         {} as IntersectionObserver,
       );
       await settle();

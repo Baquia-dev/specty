@@ -245,23 +245,27 @@ describe("Progress tab", () => {
   });
 
   it("AC3: moves the summary and a compact segmented bar to the right of the tab bar once scrolled out of view", async () => {
+    let observed: Element | undefined;
     let fire: IntersectionObserverCallback = () => undefined;
     class FakeObserver {
       constructor(callback: IntersectionObserverCallback) {
         fire = callback;
       }
-      observe(): void {}
+      observe(target: Element): void {
+        observed = target;
+      }
       disconnect(): void {}
     }
     Object.assign(window, { IntersectionObserver: FakeObserver });
     try {
       const { element, settle } = await render();
       const top = element.querySelector<HTMLElement>("sp-progress-tab [data-top]");
-      expect(top).not.toBeNull();
+      expect(observed).toBe(top);
+      if (observed === undefined) throw new Error("expected observed target");
       expect(element.querySelector("[data-tabs-end]")).toBeNull();
 
       fire(
-        [{ target: top, isIntersecting: false } as IntersectionObserverEntry],
+        [{ target: observed, isIntersecting: false } as IntersectionObserverEntry],
         {} as IntersectionObserver,
       );
       await settle();
@@ -272,7 +276,7 @@ describe("Progress tab", () => {
       expect(end?.querySelectorAll("[data-compact-bar] span")).toHaveLength(3);
 
       fire(
-        [{ target: top, isIntersecting: true } as IntersectionObserverEntry],
+        [{ target: observed, isIntersecting: true } as IntersectionObserverEntry],
         {} as IntersectionObserver,
       );
       await settle();

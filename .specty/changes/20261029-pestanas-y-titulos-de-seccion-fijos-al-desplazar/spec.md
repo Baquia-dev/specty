@@ -64,7 +64,7 @@ Al desplazarse por la UI, la barra de pestañas de un cambio se queda fija bajo 
   - files: packages/ui/src/change/change-page.ts, packages/ui/src/change/change-page.test.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/spec-review.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/change/change-page.test.ts --include src/review/spec-review.test.ts && pnpm lint
-- [ ] T3: Resumen y controles a la derecha de las pestañas en Progreso y Aceptación
+- [x] T3: Resumen y controles a la derecha de las pestañas en Progreso y Aceptación
   - files: packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/progress-tab.test.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/acceptance/acceptance-tab.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/progress-tab.test.ts --include src/acceptance/acceptance-tab.test.ts && pnpm lint
