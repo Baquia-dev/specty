@@ -48,7 +48,7 @@ La pestaña Historial va a exportar el cambio en Markdown, JSON, OpenSpec, Spec 
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/audit-view.test.ts test/cards/audit.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/audit.test.ts && pnpm lint
   - type: refactor
-- [ ] T2: Los datos de la exportación desde `exportContextOf`
+- [x] T2: Los datos de la exportación desde `exportContextOf`
   - files: packages/exporters/src/context.ts, packages/exporters/src/index.ts, packages/exporters/test/context.test.ts, packages/cli/src/commands/export.ts, packages/cli/test/export.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-exporters exec vitest run && pnpm --filter @baquia-dev/specty exec vitest run test/export.test.ts && pnpm lint
