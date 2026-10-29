@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c76c0d714eece8306c278c7904b7617f4f4aed97",
+      "startedAt": "2026-10-29T22:04:11.208Z",
+      "doneAt": "2026-10-29T22:05:40.113Z",
+      "summary": "core/checks/imports-script.ts: scriptImports lee las cinco formas de import de TS/JS en su orden y resuelve rutas relativas (extensión, .js por .ts, index, ..) y paquetes del workspace por sus entradas; cards/impact.ts con el título y la línea («importado por …, y N más»)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

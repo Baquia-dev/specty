@@ -48,6 +48,11 @@ export { phpImports } from "./checks/imports-php";
 export { pythonImports, pythonProject } from "./checks/imports-python";
 export { rustImports } from "./checks/imports-rust";
 export {
+  type ScriptPackage,
+  type ScriptProject,
+  scriptImports,
+} from "./checks/imports-script";
+export {
   type LayerViolation,
   layerOf,
   layerViolations,

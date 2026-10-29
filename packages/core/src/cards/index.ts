@@ -102,6 +102,7 @@ export {
   type StatusEntry,
   statusCard,
 } from "./human";
+export { impactLine, impactTitle } from "./impact";
 export {
   type ImportedChange,
   importedLead,

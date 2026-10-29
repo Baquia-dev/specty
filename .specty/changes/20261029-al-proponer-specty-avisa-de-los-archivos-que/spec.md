@@ -62,7 +62,7 @@ No usa tree-sitter, porque no aportaría lo que falta. Specty ya lee los imports
 
 ## Tareas
 
-- [ ] T1: El core lee los imports de TypeScript y JavaScript, y tiene los textos del aviso
+- [x] T1: El core lee los imports de TypeScript y JavaScript, y tiene los textos del aviso
   - files: packages/core/test/checks/imports-script.test.ts, packages/core/src/checks/imports-script.ts, packages/core/src/index.ts, packages/core/src/cards/impact.ts, packages/core/src/cards/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/imports-script.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip
