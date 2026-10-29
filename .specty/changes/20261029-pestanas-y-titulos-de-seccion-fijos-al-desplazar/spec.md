@@ -68,7 +68,7 @@ Al desplazarse por la UI, la barra de pestañas de un cambio se queda fija bajo 
   - files: packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/progress-tab.test.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/acceptance/acceptance-tab.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/progress-tab.test.ts --include src/acceptance/acceptance-tab.test.ts && pnpm lint
-- [ ] T4: Filtros y conteo de eventos a la derecha de las pestañas en Historial y documentación
+- [x] T4: Filtros y conteo de eventos a la derecha de las pestañas en Historial y documentación
   - files: packages/ui/src/history/history-tab.ts, packages/ui/src/history/history-tab.test.ts, docs/ui.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/history-tab.test.ts && pnpm lint

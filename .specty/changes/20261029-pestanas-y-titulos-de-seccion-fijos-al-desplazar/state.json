@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-pestanas-y-titulos-de-seccion-fijos-al-desplazar",
   "baseCommit": "7cbc09a7b4c1dd68e1227c7e073b64f0c4a5b90d",
   "revision": 1,
@@ -57,16 +57,25 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "fb7e97b74a6c55992d83b9853b7c89673a136b8b",
+      "attempts": 2,
+      "startedAt": "2026-10-29T08:11:28.084Z",
+      "doneAt": "2026-10-29T08:28:00.857Z",
+      "summary": "Proyectar resumen y controles a la derecha de las pestañas en Progreso y Aceptación al desplazar",
       "scopeExtra": [
         "packages/ui/src/history/history-tab.test.ts",
         "packages/ui/src/progress/progress-tab.test.ts",
         "packages/ui/src/acceptance/acceptance-tab.test.ts"
-      ],
-      "attempts": 2,
-      "baseCommit": "fb7e97b74a6c55992d83b9853b7c89673a136b8b",
-      "startedAt": "2026-10-29T08:11:28.084Z",
-      "doneAt": "2026-10-29T08:28:00.857Z",
-      "summary": "Proyectar resumen y controles a la derecha de las pestañas en Progreso y Aceptación al desplazar"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3e0456ca2c50daac6cc7d66a4874bdde171fbe05",
+      "startedAt": "2026-10-29T08:28:01.210Z",
+      "doneAt": "2026-10-29T08:29:59.624Z",
+      "summary": "Proyectar filtros Quién, Tipo y cantidad de eventos a la derecha de las pestañas en Historial y actualizar docs/ui.md"
     }
   },
   "pending": {
