@@ -64,7 +64,7 @@ Se añade `packages/ui/src/components/item-tooltip.ts` con:
   - files: packages/ui/src/progress/progress-tab.ts, packages/ui/src/progress/locked-tests.ts, packages/ui/src/progress/locked-tests.test.ts, packages/ui/src/acceptance/acceptance-tab.ts, packages/ui/src/inbox/inbox-row.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/locked-tests.test.ts
-- [ ] T4: Tooltips de siglas en historial y vista de trazabilidad
+- [x] T4: Tooltips de siglas en historial y vista de trazabilidad
   - files: packages/ui/src/history/history-tab.ts, packages/ui/src/history/trace-view.ts, packages/ui/src/history/trace-view.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/trace-view.test.ts

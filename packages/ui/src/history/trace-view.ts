@@ -10,6 +10,7 @@ import {
 } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { Badge } from "../components/badge";
+import { ItemTooltips } from "../components/item-tooltip";
 import { Select, type SelectOption } from "../components/select";
 import { Skeleton } from "../components/skeleton";
 import type { DiffFile, DiffLine } from "../data/diff";
@@ -18,6 +19,12 @@ import type { TraceBlock, TraceRecord } from "../data/trace";
 import { HIGHLIGHT, type LineSpan, spansOf } from "../highlight/highlight";
 import { Preferences } from "../theme/preferences";
 import { TraceDiff } from "./trace-diff";
+
+declare global {
+  function settle(): Promise<void>;
+}
+
+(globalThis as { settle?: () => Promise<void> }).settle ??= () => Promise.resolve();
 
 /** A block with its lines, each with its number in the file and its pieces of code. */
 interface ShownBlock {
@@ -54,6 +61,7 @@ function diffOf(trace: TraceRecord): DiffFile {
 @Component({
   selector: "sp-trace-view",
   imports: [Select, Skeleton, Badge, RouterLink, TraceDiff],
+  hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: "flex flex-col gap-4" },
   template: `
@@ -86,13 +94,13 @@ function diffOf(trace: TraceRecord): DiffFile {
                 @if (commit.change; as change) {
                   <a class="text-text underline-offset-2 hover:underline" [routerLink]="['/changes', change.id]" [queryParams]="{ tab: 'history' }">{{ change.title ?? change.id }}</a>
                   @if (change.task; as task) {
-                    <p class="m-0">{{ task.id }} · {{ task.title ?? '' }}</p>
+                    <p class="m-0"><span [attr.data-item-ref]="task.id" [attr.data-item-text]="task.title ?? ''">{{ task.id }}</span> · {{ task.title ?? '' }}</p>
                     <button type="button" class="w-fit cursor-pointer border-0 bg-transparent p-0 font-sans text-xs text-text underline underline-offset-2" [attr.aria-expanded]="open" (click)="toggle(shown.block.start)" data-show-diff>{{ open ? t()('Ocultar diff', 'Hide diff') : t()('Ver diff', 'Show diff') }}</button>
                   }
                   @if (change.criteria.length > 0) {
                     <p class="m-0 flex flex-wrap gap-1">
                       @for (criterion of change.criteria; track criterion.id) {
-                        <sp-badge [attr.title]="criterion.text">{{ criterion.id }}</sp-badge>
+                        <sp-badge [attr.data-item-ref]="criterion.id" [attr.data-item-text]="criterion.text">{{ criterion.id }}</sp-badge>
                       }
                     </p>
                   }
@@ -130,6 +138,10 @@ export class TraceView {
   private readonly preferences = inject(Preferences);
   private readonly highlight = inject(HIGHLIGHT);
   protected readonly t = this.preferences.t;
+
+  constructor() {
+    inject(ItemTooltips).setSource(() => this.change());
+  }
 
   protected readonly files = resource({
     params: () => this.change(),

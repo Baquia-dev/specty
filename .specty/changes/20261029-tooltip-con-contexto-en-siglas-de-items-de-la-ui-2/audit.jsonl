@@ -15,3 +15,6 @@
 {"ts":"2026-10-29T20:21:05.454Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T3","baseCommit":"471979a2ef7b9ca096acc5844b031088da093742"}}
 {"ts":"2026-10-29T20:24:24.450Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/progress/locked-tests.test.ts","exit":0,"ms":7818,"tree":"sha256:1d66424ddf51e5c48372fef0e75fa00bce52561cce91dc61b6150205c39c27e6"}}
 {"ts":"2026-10-29T20:24:24.547Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T3","summary":"Activar tooltips de siglas en progreso, tests bloqueados, aceptación y bandeja"}}
+{"ts":"2026-10-29T20:40:03.315Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T4","baseCommit":"392300b21b5701c08a5732b41bedea9584d4853a"}}
+{"ts":"2026-10-29T20:40:29.289Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history/trace-view.test.ts","exit":0,"ms":22360,"tree":"sha256:4bca917c7eaa3cadd81d71ead31b130e7921d550ddcf660fc1c5222163948c75"}}
+{"ts":"2026-10-29T20:40:29.494Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T4","summary":"Activar tooltips de siglas en historial y vista de trazabilidad"}}

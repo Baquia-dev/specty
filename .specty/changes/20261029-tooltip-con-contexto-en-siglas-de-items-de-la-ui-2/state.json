@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261029-tooltip-con-contexto-en-siglas-de-items-de-la-ui-2",
   "baseCommit": "dae1cc1b2f962d7835bd4e4ae5d75167c50e7b3e",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "471979a2ef7b9ca096acc5844b031088da093742",
+      "attempts": 1,
       "startedAt": "2026-10-29T20:21:05.454Z",
       "doneAt": "2026-10-29T20:24:24.546Z",
-      "summary": "Activar tooltips de siglas en progreso, tests bloqueados, aceptación y bandeja"
+      "summary": "Activar tooltips de siglas en progreso, tests bloqueados, aceptación y bandeja",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "392300b21b5701c08a5732b41bedea9584d4853a",
+      "startedAt": "2026-10-29T20:40:03.314Z",
+      "doneAt": "2026-10-29T20:40:29.491Z",
+      "summary": "Activar tooltips de siglas en historial y vista de trazabilidad"
     }
   },
   "pending": {
