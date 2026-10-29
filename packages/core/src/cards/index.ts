@@ -317,7 +317,14 @@ export {
   removedCard,
   unwatchedChangeWarning,
 } from "./uninstall";
-export { freshSessionLine, usageLine } from "./usage";
+export {
+  ccusageAddedLine,
+  ccusageFailedWarning,
+  ccusageHint,
+  ccusageQuestion,
+  freshSessionLine,
+  usageLine,
+} from "./usage";
 export type {
   CardContext,
   ChangeView,

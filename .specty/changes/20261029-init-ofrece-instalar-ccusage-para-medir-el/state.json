@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "18bfab9af8e4af775f36a98bb364e1b093a11771",
+      "startedAt": "2026-10-29T22:40:54.856Z",
+      "doneAt": "2026-10-29T22:41:31.886Z",
+      "summary": "cards/usage.ts: la pregunta de init con el comando que ejecuta, la línea de ccusage añadido, el aviso de fallo con el comando y el que explica cómo instalarlo, en español y en inglés; exportados en el índice de textos."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

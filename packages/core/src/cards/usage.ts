@@ -63,6 +63,37 @@ export function usageOf(data: Readonly<Record<string, unknown>>): ChangeUsage | 
   return cost === undefined ? usage : { ...usage, cost };
 }
 
+/** What init asks a person whose Node project has no ccusage: `command` adds it. */
+export function ccusageQuestion(command: string, lang: Lang): string {
+  return translator(lang)(
+    `¿Medir lo que consume cada cambio? Añade ccusage como dependencia de desarrollo con \`${command}\`.`,
+    `Measure what each change consumes? It adds ccusage as a development dependency with \`${command}\`.`,
+  );
+}
+
+export function ccusageAddedLine(lang: Lang): string {
+  return translator(lang)(
+    "ccusage añadido como dependencia de desarrollo: al cerrar cada cambio, Specty dice lo que consumió.",
+    "ccusage added as a development dependency: when each change closes, Specty tells what it consumed.",
+  );
+}
+
+/** Adding ccusage failed: the command to run later. */
+export function ccusageFailedWarning(command: string, lang: Lang): string {
+  return translator(lang)(
+    `No se pudo añadir ccusage: ejecuta \`${command}\` para que Specty mida el consumo de cada cambio.`,
+    `ccusage could not be added: run \`${command}\` for Specty to measure what each change consumes.`,
+  );
+}
+
+/** How to install ccusage, when init does not: an agent runs it, or the project is not Node's. */
+export function ccusageHint(command: string, lang: Lang): string {
+  return translator(lang)(
+    `Para que Specty mida el consumo de cada cambio, instala ccusage: \`${command}\`.`,
+    `For Specty to measure what each change consumes, install ccusage: \`${command}\`.`,
+  );
+}
+
 /** Millions with two decimals, thousands with one, or whole. */
 function amount(tokens: number, t: T): string {
   if (tokens >= 1e6) return decimal(tokens / 1e6, 2, t) + t(" M", "M");

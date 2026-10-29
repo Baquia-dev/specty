@@ -53,7 +53,7 @@ La primera vez que una persona ejecuta `specty init`:
 
 ## Tareas
 
-- [ ] T1: Los textos del ofrecimiento de ccusage
+- [x] T1: Los textos del ofrecimiento de ccusage
   - files: packages/core/test/cards/ccusage.test.ts, packages/core/src/cards/usage.ts, packages/core/src/cards/index.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/ccusage.test.ts test/cards/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
