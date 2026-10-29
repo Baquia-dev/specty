@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261029-init-escribe-contract-como-politica-de-tests",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261029-init-escribe-contract-como-politica-de-tests",
+  "baseCommit": "73f84b4f4729f7bd4de94ac7e0498f539feb75fd",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:15ae10faf8ff431b8265192c2e85fbe9b6472ecfc6eb80cd26e97d49d28e61df",
+    "at": "2026-10-29T05:14:31.909Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
