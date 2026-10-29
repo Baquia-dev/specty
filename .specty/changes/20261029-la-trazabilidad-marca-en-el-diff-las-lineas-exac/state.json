@@ -45,12 +45,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "890a8d1e412fed6510300df964bb7ba4cd1d101d",
+      "attempts": 1,
       "startedAt": "2026-10-29T09:05:15.398Z",
       "doneAt": "2026-10-29T09:09:28.101Z",
-      "summary": "sp-diff-file marca las líneas del lado nuevo que recibe en marked (data-marked, una barra de acento y un texto para lectores de pantalla), también lado a lado, nunca una quitada, y con marcas enseña el archivo entero"
+      "summary": "sp-diff-file marca las líneas del lado nuevo que recibe en marked (data-marked, una barra de acento y un texto para lectores de pantalla), también lado a lado, nunca una quitada, y con marcas enseña el archivo entero",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f58fa6ca4fc98f20a2fb269f7e2eb219975805b9",
+      "startedAt": "2026-10-29T09:09:28.457Z",
+      "doneAt": "2026-10-29T09:32:38.835Z",
+      "summary": "Ver diff marca las líneas del bloque por su origin y lleva la vista a la primera; la muestra del prototipo trae origin con el número nuevo de cada línea (el test de la muestra lo exige, con el visto bueno del usuario)"
     }
   },
   "pending": {

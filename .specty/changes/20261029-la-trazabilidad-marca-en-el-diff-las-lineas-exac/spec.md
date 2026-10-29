@@ -56,7 +56,7 @@ kind: standard
   - files: packages/ui/src/components/diff-file.ts, packages/ui/src/components/diff-file-marks.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/diff-file-marks.test.ts --include src/components/diff-file.test.ts && pnpm lint
-- [ ] T3: «Ver diff» marca las líneas del bloque
+- [x] T3: «Ver diff» marca las líneas del bloque
   - files: packages/ui/src/data/trace.ts, packages/ui/src/data/sample-trace.ts, packages/ui/src/history/trace-diff.ts, packages/ui/src/history/trace-view.ts, packages/ui/src/history/trace-marks.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/history --include src/data/sample-trace.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

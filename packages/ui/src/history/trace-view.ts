@@ -112,7 +112,7 @@ function diffOf(trace: TraceRecord): DiffFile {
               @if (open && trace.hasValue()) {
                 @if (commit.change; as change) {
                   @if (change.task; as task) {
-                    <sp-trace-diff class="col-span-2 border-t border-border" [change]="change.id" [task]="task.id" [path]="trace.value().path" />
+                    <sp-trace-diff class="col-span-2 border-t border-border" [change]="change.id" [task]="task.id" [path]="trace.value().path" [lines]="shown.block.origin ?? []" />
                   }
                 }
               }

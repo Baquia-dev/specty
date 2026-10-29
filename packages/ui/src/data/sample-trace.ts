@@ -74,7 +74,12 @@ export function sampleTrace(
     path,
     commit: left.last,
     lines: lines.map((line) => line.text),
-    blocks: blocksOf(lines.map((line) => (line.kind === "added" ? found.commit : left.base))),
+    blocks: blocksOf(
+      lines.map((line) => ({
+        commit: line.kind === "added" ? found.commit : left.base,
+        origin: line.newNumber ?? 0,
+      })),
+    ),
   });
 }
 
@@ -114,12 +119,21 @@ function taskCommit(task: SampleTask, commit: string, doneAt: string | undefined
 }
 
 /** The lines in a row from the same commit, as one block each. */
-function blocksOf(owners: readonly WhyCommit[]): TraceBlock[] {
+function blocksOf(
+  owners: readonly { readonly commit: WhyCommit; readonly origin: number }[],
+): TraceBlock[] {
   const blocks: TraceBlock[] = [];
-  owners.forEach((commit, index) => {
+  owners.forEach(({ commit, origin }, index) => {
     const last = blocks.at(-1);
-    if (last?.commit === commit) blocks[blocks.length - 1] = { ...last, end: index + 1 };
-    else blocks.push({ start: index + 1, end: index + 1, commit });
+    if (last?.commit === commit) {
+      blocks[blocks.length - 1] = {
+        ...last,
+        end: index + 1,
+        origin: [...(last.origin ?? []), origin],
+      };
+    } else {
+      blocks.push({ start: index + 1, end: index + 1, commit, origin: [origin] });
+    }
   });
   return blocks;
 }

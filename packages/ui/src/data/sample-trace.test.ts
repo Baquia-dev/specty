@@ -26,6 +26,8 @@ describe("the prototype's traceability", () => {
       {
         start: 1,
         end: panel.lines.length,
+        // The task added the whole file: each line has, in its commit, the number it has now.
+        origin: panel.lines.map((_, index) => index + 1),
         commit: expect.objectContaining({
           commit: "8b0a4f6",
           change: expect.objectContaining({

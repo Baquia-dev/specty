@@ -10,6 +10,11 @@ export interface TraceBlock {
   readonly end: number;
   /** The commit and, when Specty made it, its change, its task and the criteria it covers. */
   readonly commit: WhyCommit;
+  /**
+   * The numbers its lines had in that commit, where its diff shows them; a server from before
+   * does not send them.
+   */
+  readonly origin?: readonly number[];
 }
 
 /** A file as its change left it, at `commit`, the one of its last task. */
