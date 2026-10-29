@@ -34,11 +34,16 @@ export function parseItemId(raw: string): ItemId | undefined {
 }
 
 export function slugify(title: string, maxLength = 48): string {
-  const slug = fold(title)
+  const folded = fold(title)
     .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, maxLength)
-    .replace(/-+$/, "");
+    .replace(/^-+|-+$/g, "");
+  if (folded.length <= maxLength) {
+    return folded.length > 0 ? folded : "change";
+  }
+  const sliced = folded.slice(0, maxLength);
+  const lastDash = sliced.lastIndexOf("-");
+  const trimmed = lastDash > 0 ? sliced.slice(0, lastDash) : sliced;
+  const slug = trimmed.replace(/-+$/, "");
   return slug.length > 0 ? slug : "change";
 }
 
