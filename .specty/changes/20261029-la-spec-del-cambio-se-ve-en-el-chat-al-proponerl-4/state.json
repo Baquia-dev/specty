@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d98c5cc548effe1ac40c4c543401f32ef3456224",
+      "attempts": 1,
       "startedAt": "2026-10-29T07:55:26.387Z",
       "doneAt": "2026-10-29T07:55:52.668Z",
-      "summary": "DERIVER sin worker: startWorker con try/catch y el error del worker; sin él, import() perezoso de la derivación; fixtures.test.ts exige derivar sin worker (antes, error), con OK de la persona"
+      "summary": "DERIVER sin worker: startWorker con try/catch y el error del worker; sin él, import() perezoso de la derivación; fixtures.test.ts exige derivar sin worker (antes, error), con OK de la persona",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "16c26f4919e4f28a578d31f374bdbd090c9461f7",
+      "startedAt": "2026-10-29T07:55:53.012Z",
+      "doneAt": "2026-10-29T07:56:47.473Z",
+      "summary": "McpAppData (postMessage JSON-RPC: ui/initialize, tool-result → specty_view, solo lectura) y la vista Embedded (selector sp-root) con solo la pestaña de la fase y dónde decidir; main.ts la carga con import() con la marca mcp-app"
     }
   },
   "pending": {

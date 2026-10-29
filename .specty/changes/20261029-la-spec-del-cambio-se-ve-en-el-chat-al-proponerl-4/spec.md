@@ -73,7 +73,7 @@ Primer corte de la épica de MCP Apps. Cuando un anfitrión que soporta MCP Apps
   - files: packages/ui/src/data/changes-store.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts && pnpm lint
-- [ ] T2: La vista embebida muestra solo la pestaña del cambio, con los datos del anfitrión
+- [x] T2: La vista embebida muestra solo la pestaña del cambio, con los datos del anfitrión
   - files: packages/ui/src/data/mcp-app.ts, packages/ui/src/data/mcp-app.test.ts, packages/ui/src/app/embedded.ts, packages/ui/src/app/embedded.test.ts, packages/ui/src/main.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/mcp-app.test.ts --include src/app/embedded.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
