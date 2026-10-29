@@ -129,12 +129,14 @@ describe("specty mcp as an MCP App", () => {
     ]);
     const tool = named(toolsOf(list), "specty_view");
     expect(tool?._meta).toEqual({ ui: { resourceUri: VIEW, visibility: ["app"] } });
-    // Only the folder and the fingerprint of what the view has (C2, A5): nothing to decide with.
+    // Only the folder, the fingerprint of what the view has (C2, A5) and the change it shows (C3,
+    // A5): nothing to decide with.
     expect(tool?.inputSchema).toEqual({
       type: "object",
       properties: {
         folder: expect.objectContaining({ type: "string" }),
         since: expect.objectContaining({ type: "string" }),
+        change: expect.objectContaining({ type: "string" }),
       },
       required: [],
     });

@@ -198,10 +198,12 @@ describe("the data source of the MCP App, live", () => {
     await vi.advanceTimersByTimeAsync(10);
     expect(heard).toBe(1);
     await vi.advanceTimersByTimeAsync(1000);
-    expect(viewCalls(host)[1]).toEqual({ folder: "/repo/change", since: "a" });
+    // With the id of the change it shows, too (C3, A5).
+    const again = { folder: "/repo/change", since: "a", change: record.state.id };
+    expect(viewCalls(host)[1]).toEqual(again);
     expect(heard).toBe(1);
     await vi.advanceTimersByTimeAsync(1000);
-    expect(viewCalls(host)[2]).toEqual({ folder: "/repo/change", since: "a" });
+    expect(viewCalls(host)[2]).toEqual(again);
     expect(heard).toBe(2);
   });
 
@@ -323,5 +325,64 @@ describe("the data source of the MCP App, live", () => {
     expect(methods.indexOf("ui/notifications/size-changed")).toBeGreaterThan(
       methods.indexOf("ui/notifications/initialized"),
     );
+  });
+});
+
+describe("the data source of the MCP App, by change", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    TestBed.resetTestingModule();
+  });
+
+  it("AC3: asks with the id of the change it shows, and stops once it is done", async () => {
+    vi.useFakeTimers();
+    const closing = inPhase("closing");
+    const done: ChangeRecord = { ...closing, state: { ...closing.state, phase: "done" } };
+    let asked = 0;
+    const { host, source } = sourceOn(() => {
+      asked += 1;
+      return asked === 1
+        ? answered({ fingerprint: "a", records: [closing] })
+        : answered({ fingerprint: "b", records: [done] });
+    });
+    await vi.advanceTimersByTimeAsync(10);
+    host.emit(toolInput("/repo/change"));
+    await vi.advanceTimersByTimeAsync(1010);
+    expect(viewCalls(host)[1]).toEqual({
+      folder: "/repo/change",
+      since: "a",
+      change: closing.state.id,
+    });
+    expect((await source.changes())[0]?.state.phase).toBe("done");
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(viewCalls(host)).toHaveLength(2);
+  });
+
+  it("AC4: reads the change a tool's card names, though its folder has none open", async () => {
+    vi.useFakeTimers();
+    const record = inPhase("draft");
+    const { host, source } = sourceOn((args) =>
+      args.change === record.state.id
+        ? answered({ fingerprint: "a", records: [record] })
+        : answered({ fingerprint: "", records: [] }),
+    );
+    await vi.advanceTimersByTimeAsync(10);
+    host.emit(toolInput("/repo/main"));
+    await vi.advanceTimersByTimeAsync(10);
+    host.emit({
+      jsonrpc: "2.0",
+      method: "ui/notifications/tool-result",
+      params: {
+        content: [
+          {
+            type: "text",
+            text: `SPECTY · ${record.state.id} · draft\nCambio creado.\nSIGUIENTE: escribe la spec.`,
+          },
+        ],
+      },
+    });
+    await vi.advanceTimersByTimeAsync(10);
+    expect(viewCalls(host).at(-1)).toMatchObject({ folder: "/repo/main", change: record.state.id });
+    expect(await source.changes()).toEqual([record]);
   });
 });

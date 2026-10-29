@@ -6,6 +6,13 @@
   "branch": "specty/20261029-la-aceptacion-del-cambio-se-ve-en-el-chat-con-su",
   "baseCommit": "f88e56a574cdf9ff245f40e6b70d320f729deb70",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:64a8a24374e933b2294a1f281c56d653f27e34e11ad5d6014113555281bce372",
+    "at": "2026-10-29T18:41:52.167Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:64a8a24374e933b2294a1f281c56d653f27e34e11ad5d6014113555281bce372",
-    "at": "2026-10-29T18:41:52.167Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-29T18:45:23.092Z"
 }
