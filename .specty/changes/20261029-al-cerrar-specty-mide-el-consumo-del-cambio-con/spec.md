@@ -77,7 +77,7 @@ Specty no instala ccusage ni escribe fuera del proyecto. Usa el de `node_modules
 
 ## Tareas
 
-- [ ] T1: El core deduce los precios de ccusage y suma el consumo de un cambio
+- [x] T1: El core deduce los precios de ccusage y suma el consumo de un cambio
   - files: packages/core/test/usage.test.ts, packages/core/src/usage.ts, packages/core/src/index.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/usage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

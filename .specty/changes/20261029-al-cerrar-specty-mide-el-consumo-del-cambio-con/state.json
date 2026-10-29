@@ -34,7 +34,21 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/usage.ts",
+        "packages/core/src/cards/index.ts",
+        "packages/core/src/cards/audit.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "916dca46dc38825b4ca8a97f4b6d4560ecfe09b1",
+      "startedAt": "2026-10-29T20:16:34.000Z",
+      "doneAt": "2026-10-29T20:23:19.981Z",
+      "summary": "core/usage.ts: modelPrices deduce por mínimos cuadrados, con columnas escaladas, los precios que explican cada sesión de ccusage al céntimo; changeUsage suma las llamadas desde la creación. Incluye los textos de T2 (usageLine y change.usage en audit), que pide el typecheck."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
