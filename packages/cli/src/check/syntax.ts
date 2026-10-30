@@ -10,8 +10,8 @@ import type { Language, Parser } from "web-tree-sitter";
 /**
  * The functions of a file measured on its tree-sitter syntax tree (ADR 0016). The runtime and each
  * grammar load the first time a file needs them, once per process. The bundle carries them
- * compressed in `grammars/`, next to it (`build.mjs`); from the sources, as in the tests, they come
- * from `node_modules`.
+ * compressed in `grammars/`, next to it (`build.mjs`), and reads no other copy; from the sources,
+ * as in the tests, they come from `node_modules`.
  */
 
 interface Grammar {
@@ -38,6 +38,9 @@ function grammarFile(name: string): string {
   const folder = dirname(require.resolve("@repomix/tree-sitter-wasms/package.json"));
   return join(folder, "out", `${name}.wasm`);
 }
+
+// Run from `dist`, not from the TypeScript sources.
+const BUNDLED = !import.meta.url.endsWith(".ts");
 const decompress = promisify(brotliDecompress);
 
 let parser: Promise<Parser | undefined> | undefined;
@@ -93,16 +96,15 @@ function languageOf(file: string): Promise<Language | undefined> {
   return loading;
 }
 
-/** A WebAssembly file: the bundle's compressed copy, or the package's in `node_modules`. */
+/**
+ * A WebAssembly file: in the bundle, only its own compressed copy, because pnpm's `NODE_PATH` would
+ * let it find another one; from the sources, the package's in `node_modules`.
+ */
 async function wasm(name: string, source: () => string): Promise<Uint8Array | undefined> {
-  const packed = await readFile(new URL(`grammars/${name}.wasm.br`, import.meta.url)).catch(
-    () => undefined,
-  );
-  if (packed !== undefined) return decompress(packed);
   try {
-    return await readFile(source());
+    if (!BUNDLED) return await readFile(source());
+    return await decompress(await readFile(new URL(`grammars/${name}.wasm.br`, import.meta.url)));
   } catch {
-    // Neither copy: outside the monorepo, a bundle without its grammars.
     return undefined;
   }
 }

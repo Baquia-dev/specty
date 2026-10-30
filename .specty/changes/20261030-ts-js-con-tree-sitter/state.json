@@ -70,12 +70,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "59f2288cbaac4d55446d76b83d999bf5e53297ec",
+      "attempts": 2,
       "startedAt": "2026-10-30T10:18:39.967Z",
       "doneAt": "2026-10-30T10:23:45.065Z",
-      "summary": "specty check mide TypeScript y JavaScript con tree-sitter (check/syntax.ts) y cae en la estimación si una versión no parsea o la gramática no carga; cada gramática espera al runtime, y las dos verificaciones comparten la medida de la ejecución."
+      "summary": "specty check mide TypeScript y JavaScript con tree-sitter (check/syntax.ts) y cae en la estimación si una versión no parsea o la gramática no carga; cada gramática espera al runtime, y las dos verificaciones comparten la medida de la ejecución.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/check/syntax.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "b078b037e7ba8acb0e670ba5e4d4a26d3bd47507",
+      "startedAt": "2026-10-30T10:23:45.399Z",
+      "doneAt": "2026-10-30T10:27:09.673Z",
+      "summary": "El build deja en dist/grammars el runtime y las gramáticas de TypeScript, TSX y JavaScript comprimidas con brotli (calidad 9) y sus licencias; el bundle lee solo esas copias, porque el NODE_PATH de pnpm le dejaba encontrar otras."
     }
   },
   "pending": {
