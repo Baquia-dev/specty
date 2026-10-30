@@ -2,25 +2,25 @@
   "schema": 1,
   "id": "20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "baseCommit": "4d47f9cd6a16ef9b88a1a12778cafc358ad10c1e",
-  "revision": 2,
+  "revision": 3,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:e96693d4c995d0d36a0d8e25ff41947c6265772615325f4ff23f0430a02266fb",
-    "at": "2026-10-30T09:02:13.323Z",
+    "revision": 3,
+    "hash": "sha256:9c036e7be5df48dfbe1ae74042ff9fd3485c1b52a847067a85893be681376a1e",
+    "at": "2026-10-30T09:09:46.087Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 11,
+    "score": 12,
     "adjust": 0,
     "reasons": [
       "8 archivos",
       "2 módulos",
-      "4 tareas"
+      "5 tareas"
     ]
   },
   "items": {
@@ -63,12 +63,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6052849698f804a780347742e35930eb1b1b1e45",
+      "attempts": 1,
       "startedAt": "2026-10-30T09:07:34.103Z",
       "doneAt": "2026-10-30T09:08:34.304Z",
-      "summary": "ui.md (Aceptación) cuenta la línea de cobertura y sus tramos; formats.md, las rutas por defecto con coverage/<proyecto>/lcov.info"
+      "summary": "ui.md (Aceptación) cuenta la línea de cobertura y sus tramos; formats.md, las rutas por defecto con coverage/<proyecto>/lcov.info",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,7 +78,7 @@
   "maxIds": {
     "A": 2,
     "AC": 5,
-    "T": 4,
+    "T": 5,
     "R": 1
   },
   "lockedTests": {
