@@ -20,6 +20,7 @@ import { isFinished, resolveActive } from "../flow/active";
 import { sharedFolders, worktreesHome } from "../flow/worktree";
 import { isRecord, parseJson } from "../io/files";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
+import { noteActivity } from "../store/activity";
 import { readSpec } from "../store/changes";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { leavePending, type PendingKind, takePending } from "./pending";
@@ -83,11 +84,27 @@ export async function guard(
     if (opened.kind !== "ok") return agent.reply(ALLOW, kind === "before" ? "before" : "after");
     // A conversation that entered a change's folder is answered in that folder's session.
     const entered = await enteredSession(agent.tool, opened.session, event);
+    await noted(agent.tool, entered.session, event);
     const call = { agent, environment, event, cwd, ...entered };
     return await answer(kind, kind === "before" ? await redirected(call, given) : call);
   } catch (error) {
     return agent.failed(`specty guard: ${error instanceof Error ? error.message : String(error)}`);
   }
+}
+
+/**
+ * The conversation's step in the folder it works in, for `status` to tell who holds each change
+ * (ADR 0016). Failing to note it changes nothing of the answer.
+ */
+async function noted(
+  tool: GuardTool,
+  session: Session,
+  event: Record<string, unknown>,
+): Promise<void> {
+  const conversation = conversationOf(event);
+  if (conversation === undefined) return;
+  const step = { tool, conversation, folder: session.root, now: session.environment.now() };
+  await noteActivity(session.git, step).catch(() => undefined);
 }
 
 /**
