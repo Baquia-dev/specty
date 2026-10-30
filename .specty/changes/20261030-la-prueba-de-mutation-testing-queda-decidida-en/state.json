@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261030-la-prueba-de-mutation-testing-queda-decidida-en",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261030-la-prueba-de-mutation-testing-queda-decidida-en",
+  "baseCommit": "029927559fc1f19ae2ef44500156027e40f39912",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2de0af0d2cef3065b77aec0f82b03638d90af961af4faa1ff7d602d04bd54686",
+    "at": "2026-10-30T21:28:06.677Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
