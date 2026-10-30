@@ -14,7 +14,7 @@ Se midió mutation testing con Stryker sobre tres cambios recientes de Specty, c
 
 ## Tareas
 
-- [ ] T1: El ADR 0017 deja medido y decidido mutation testing
+- [x] T1: El ADR 0017 deja medido y decidido mutation testing
   - files: docs/decisions/0017-mutation-testing-medido-y-fuera-de-specty-check.md
   - ac: —
   - verify: pnpm lint

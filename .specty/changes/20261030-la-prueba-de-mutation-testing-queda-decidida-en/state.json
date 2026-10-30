@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261030-la-prueba-de-mutation-testing-queda-decidida-en",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-la-prueba-de-mutation-testing-queda-decidida-en",
   "baseCommit": "029927559fc1f19ae2ef44500156027e40f39912",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2de0af0d2cef3065b77aec0f82b03638d90af961af4faa1ff7d602d04bd54686",
+    "at": "2026-10-30T21:28:06.677Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9bab2e474030f6cfddf4599ff7f9c8d416ff234f",
+      "startedAt": "2026-10-30T21:28:07.189Z",
+      "doneAt": "2026-10-30T21:28:39.987Z",
+      "summary": "ADR 0017: la medición de Stryker sobre code-rules, vulnerabilities y functions-tree, la clasificación de los mutantes que sobreviven y la decisión de no llevar mutation testing a specty check"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2de0af0d2cef3065b77aec0f82b03638d90af961af4faa1ff7d602d04bd54686",
-    "at": "2026-10-30T21:28:06.677Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
