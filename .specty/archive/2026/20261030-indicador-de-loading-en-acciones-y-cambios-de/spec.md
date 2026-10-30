@@ -67,3 +67,29 @@ Proporcionar retroalimentación visual inmediata con indicadores de carga (spinn
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/icons.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+Se implementó el indicador de carga (`loading`) en las acciones y cambios de estado de la interfaz de usuario:
+- Se añadió el icono `LucideLoader2` y soporte del estado `loading` con animación giratoria (`animate-spin`), atributo de accesibilidad `aria-busy="true"` y deshabilitación contra pulsaciones múltiples en `Button` e `IconButton`.
+- Se integró el estado de carga en la confirmación y rechazo de supuestos (`AssumptionRow` y `RejectAssumption`), deshabilitando las acciones opuestas mientras se procesa la petición.
+- Se incorporaron indicadores de carga en las acciones globales de revisión («Aprobar revisión» y «Pedir cambios») y en la confirmación de cierre («Confirmar y archivar»).
+- Se añadieron estados de carga en la adición, edición y eliminación de comentarios en `ReviewComments`.
+- Se actualizó el conteo de iconos en `icons.test.ts` de 53 a 54 mediante ajuste y tarea T5.
+
+### Desviaciones
+
+- Se requirió un ajuste (`specty adjust`) tras la fase de aceptación para añadir la tarea T5 y actualizar la prueba de regresión `icons.test.ts` por la adición de `LucideLoader2`.
+- Se solicitó el desbloqueo (`specty scope add`) de los archivos de prueba `spec-sections.test.ts`, `closing-actions.test.ts`, `review-actions.test.ts`, `comments.test.ts` e `icons.test.ts` para adaptar pruebas preexistentes y reflejar las llamadas asíncronas de los nuevos estados de carga.
+
+### Decisiones
+
+- Se utilizó el icono estándar `LucideLoader2` con clase `animate-spin` para mantener consistencia con los tokens de diseño y evitar añadir dependencias externas.
+- Durante las peticiones asíncronas de confirmación o rechazo de supuestos, ambas acciones se bloquean mutuamente para evitar condiciones de carrera o pulsaciones dobles contradictorias.
+- Las promesas pendientes se gestionan con señales locales booleanas (`loading`, `loadingConfirm`, `loadingApprove`, etc.) que se restablecen al resolverse o fallar la acción.
+
+### Pendientes
+
+- Ninguno. Todas las operaciones asíncronas de cambios de estado identificadas cuentan con respuesta visual inmediata de carga y accesibilidad mediante `aria-busy`.
