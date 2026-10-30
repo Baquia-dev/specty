@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "id": "20261030-ts-js-con-tree-sitter",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-ts-js-con-tree-sitter",
+  "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "cambia dependencias",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ce6a854e20cdea729d7e18df6234ff4e7214d22f09901b075467db1063ba99f6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e99911917ddce9d9e04065005dea64addcd27807455248c4a25a7741749577fc",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:9dea6430ddb1b8aff935aa102913b69fe3fb26170cc805ee75abbd0d5ccf4125",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:9d10ff4fd2610c8da331af3cbab2dedffa09d1bfed1f182b86d256ef1d223682",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:1490b3c88804834363b0a926a2ffc67c0dcd3eb163347c01075426752d4709c6",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:87fc11f95c6220ffc71772f7a949e5fd415dddb32936fb030e4c5198ec0a61d5",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:e3c968e11b8d68b7cf4f0e324af2bfd33af45d9136dbfb0a714bc0b8734a4c6a",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:4806df08eb7cd7a025066d077729c75be2be62884287b1fa53ec98e1a16fdd17",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 7,
+    "T": 4,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1220a02beceac7af67251e878b452405cd1e127dd3f23dd12645b51444f18a7a",
+    "at": "2026-10-30T10:12:55.713Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
