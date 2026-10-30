@@ -30,14 +30,19 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
   - impacto: alto
 - A2: La vista no puede leer el color del chat porque está aislada, así que usa lo que le da el anfitrión en `hostContext`: `theme` y `styles.variables`, al saludar y en `ui/notifications/host-context-changed`, que trae solo lo que cambió. Claude manda sus variables con `light-dark()`; VS Code 1.143.1 manda `var(--vscode-*)` e ignora `prefersBorder`, aunque no dibuja marco y su webview es transparente.
   - impacto: alto
-- A3: Las cards son un velo del color del texto sobre lo que haya detrás: un 4 % en oscuro y un 2,5 % en claro, con el borde del anfitrión (`--color-border-primary`) o, sin él, el texto al 12 %. El texto sale de `--color-text-primary` y el atenuado de `--color-text-secondary`. Sin esas variables se usan los colores de Specty del tema. Los colores de fase siguen siendo de Specty.
+- A3: Ajustado el 2026-10-30 a petición de la persona. La vista es un panel gris translúcido sin borde: un 14 % de `#484848` en oscuro y un 2,5 % de negro en claro. Las cards son un gris más denso: un 30 % de `#484848` en oscuro y blanco al 65 % en claro. Los bordes son suaves, el color del texto al 6 % en oscuro y al 7 % en claro, y ya no usan el del anfitrión. El texto sale de `--color-text-primary` y el atenuado de `--color-text-secondary`; sin esas variables se usan los colores de Specty del tema. Los colores de fase siguen siendo de Specty.
   - impacto: alto
-- A4: Lo que pinta fondo y antes usaba `--color-bg`, como las barras fijas de otras pestañas, usa `--color-background-primary` del anfitrión o el de Specty; solo `body` queda transparente.
+- A4: Lo que pinta fondo y antes usaba `--color-bg`, como las barras fijas de otras pestañas, usa `--color-background-primary` del anfitrión o el de Specty. `body` queda transparente y el panel lo pinta el `main` de la vista.
 - A5: El tema del anfitrión manda sobre el del sistema: la vista lo pone en `Preferences.theme`. Si el anfitrión no da tema, sigue el del sistema, como hoy.
 - A6: La cabecera en card vale para todas las fases, porque la cabecera es común a la vista embebida; el contenido de las demás pestañas no cambia.
 - A7: Cada card dice en su cabecera lo que hoy dice el índice y la sección: su progreso (`sectionProgress`) o, si no lo hay, cuántos ítems tiene; los pendientes y avisos (en ámbar), sus comentarios y «Cambió» si la sección tiene entradas en el delta desde la revisión aprobada. Objetivo, Fuera de alcance y Diseño no cuentan ítems.
 - A8: Las cards abiertas se mantienen mientras llegan actualizaciones del mismo cambio; con otro cambio, vuelve a abrirse solo Objetivo.
 - A9: Cambian dos tests que afirman lo de antes. En `app/embedded.test.ts`, AC1 buscaba `sp-spec-review` y ahora busca las cards. En `cli/test/mcp-app.test.ts`, `resources/read` se comparaba entero sin `_meta`.
+- A10: El fondo opaco de VS Code (#121212) es el que pinta Chrome cuando el `color-scheme` del iframe no coincide con el de la página que lo contiene. El webview de VS Code no declara ninguno y marca el `body` con `data-vscode-theme-kind`. Dentro de VS Code la vista declara `color-scheme: light`; `normal` no basta, porque la meta `light dark` lo devuelve al del sistema. Fuera de VS Code usa el del tema, como pide Claude. Lo comprobé en un anfitrión simulado en Chrome el 2026-10-30.
+  - impacto: alto
+- A11: VS Code limita la vista al 75 % del alto de la ventana y, si no cabe, la desplaza dentro; la vista no puede quitar ese límite. Lo que sí hace es ocultar su barra de desplazamiento y ocupar menos: la cabecera de cada card va en una línea, con la pista recortada junto al título, y el texto del cuerpo pasa a 14 px. Si aun así no cabe, se desplaza con la rueda, sin barra.
+  - impacto: alto
+- A12: Claude Desktop toma `prefersBorder` del `_meta.ui` de la herramienta y no del recurso: su código lo deja pasar junto a `resourceUri` y `visibility`. Por eso lo llevan también las herramientas que enlazan la vista.
 
 ## Criterios de aceptación
 
@@ -49,8 +54,8 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
 - AC6: CUANDO el anfitrión da `hostContext.theme` al responder a `ui/initialize` o en `ui/notifications/host-context-changed` ENTONCES la vista usa ese tema (`data-theme` de la raíz) aunque el sistema diga otro; sin tema, sigue el del sistema.
 - AC7: CUANDO el anfitrión da `hostContext.styles.variables` ENTONCES la vista pone en la raíz cada variable que empieza por `--` y cuyo valor es texto. Una actualización parcial cambia solo las que trae, y lo que no es una variable se ignora.
 - AC8: CUANDO el contenido de la vista encoge (se cierra una card) ENTONCES `ui/notifications/size-changed` da el alto del contenido, menor que el del iframe, y no el alto del iframe.
-- AC9: CUANDO el anfitrión lee la vista (`resources/read`) ENTONCES su contenido lleva `_meta.ui.prefersBorder: false`.
-- AC10: CUANDO la vista se abre en VS Code con Copilot y en Claude Desktop, en tema oscuro y claro ENTONCES las cards se ven sobre el fondo del chat, sin marco ni fondo opaco, con el texto y la fuente del chat.
+- AC9: CUANDO el anfitrión lee la vista (`resources/read`) o la lista de herramientas ENTONCES el contenido de la vista y el `_meta.ui` de cada herramienta que la enlaza llevan `prefersBorder: false`.
+- AC10: CUANDO la vista se abre en VS Code con Copilot y en Claude Desktop, en tema oscuro y claro ENTONCES la vista y sus cards se ven sobre el fondo del chat, en un gris translúcido con bordes suaves (A3), sin marco, sin fondo opaco y sin barra de desplazamiento, con el texto y la fuente del chat.
   - test: manual
 
 ## Diseño
@@ -80,6 +85,11 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
 
   Los nombres de Specty (`--color-text`, `--color-border`…) no chocan con los del anfitrión (`--color-text-primary`, `--color-border-primary`…). `--font-sans` y `--font-mono` del anfitrión sustituyen directamente a las de Specty.
 - CLI: `mcp/app.ts` exporta `VIEW_META = { ui: { prefersBorder: false } }` y `commands/mcp.ts` lo añade al contenido de `resources/read`.
+- Ajuste del 2026-10-30:
+  - `styles.css` bajo `[data-embedded]`: los colores de A3, con `--color-panel` para el panel; sin barra de desplazamiento (`scrollbar-width: none`); y `color-scheme: light` cuando `body` lleva `data-vscode-theme-kind` (A10).
+  - `app/embedded.ts`: el `main` es el panel, con fondo `--color-panel`, esquinas redondeadas y un margen pequeño alrededor de las cards.
+  - `review/spec-cards.ts`: la cabecera de cada card va en una línea, con la pista recortada (`truncate`) junto al título, y el cuerpo usa texto de 14 px (A11).
+  - `mcp/tools.ts`: las herramientas que enlazan la vista llevan `prefersBorder: false` en su `_meta.ui` (A12).
 
 ## Archivos
 
@@ -95,6 +105,8 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
 - modificar packages/cli/src/mcp/app.ts — `VIEW_META`
 - modificar packages/cli/src/commands/mcp.ts — `_meta` en `resources/read`
 - modificar packages/cli/test/mcp-app.test.ts — AC9
+- modificar packages/cli/src/mcp/tools.ts — `prefersBorder` en el `_meta.ui` de las herramientas
+- crear packages/ui/src/app/embedded-look.test.ts — AC10, lo que se puede comprobar fuera del anfitrión: el panel, la cabecera en una línea y el texto de 14 px
 - modificar docs/ui.md — «En el chat (MCP Apps)»: las cards, los colores del anfitrión y el alto
 
 ## Tareas
@@ -111,9 +123,17 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
   - files: packages/cli/src/mcp/app.ts, packages/cli/src/commands/mcp.ts, packages/cli/test/mcp-app.test.ts, docs/ui.md
   - ac: AC9, AC10
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts && pnpm typecheck && pnpm lint && pnpm knip
+- [ ] T4: Claude Desktop no enmarca la vista
+  - files: packages/cli/src/mcp/tools.ts, packages/cli/test/mcp-app.test.ts
+  - ac: AC9
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
+- [ ] T5: La vista es un panel gris translúcido, sin fondo opaco ni barra de desplazamiento, con cards más compactas
+  - files: packages/ui/src/app/embedded-look.test.ts, packages/ui/src/styles.css, packages/ui/src/app/embedded.ts, packages/ui/src/review/spec-cards.ts, docs/ui.md
+  - ac: AC10
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/embedded-look.test.ts --include src/review/spec-cards.test.ts --include src/app/embedded.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
 
 ## Riesgos
 
-- R1: Si el `color-scheme` de la vista no coincide con el del chat, el navegador pinta un fondo opaco detrás del iframe. Mitigación: la página ya declara `<meta name="color-scheme" content="light dark">`, y la raíz toma el `color-scheme` del tema del anfitrión (A5); AC10 lo comprueba en los dos anfitriones.
+- R1: Si el `color-scheme` de la vista no coincide con el del chat, el navegador pinta un fondo opaco detrás del iframe; pasó en VS Code. Mitigación: la raíz toma el `color-scheme` del tema del anfitrión (A5), salvo en VS Code, donde declara `light` como su webview (A10). AC10 lo comprueba en los dos anfitriones.
 - R2: En VS Code las variables son `var(--vscode-*)`, que solo resuelven si el webview las define en la raíz del documento de la vista. Mitigación: sin ellas, las reservas de Specty siguen dando un texto legible, y AC10 lo comprueba.
 - R3: Con fondo transparente, Progreso y Aceptación pueden verse algo distintos (sus barras fijas usan `--color-bg`). Mitigación: A4 les da el fondo del anfitrión; su paso a cards es el siguiente cambio.

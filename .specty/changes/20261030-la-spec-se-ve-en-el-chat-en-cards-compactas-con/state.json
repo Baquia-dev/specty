@@ -2,24 +2,25 @@
   "schema": 1,
   "id": "20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "testing",
   "branch": "specty/20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:daced9d6055e48b884303e6d85636473433ba3faec043525581e376e4f931738",
-    "at": "2026-10-30T05:53:55.218Z",
+    "revision": 2,
+    "hash": "sha256:9658fc60924181dc25584b4b006f9bd81f516a638229757fb3cf21cc95e4526d",
+    "at": "2026-10-30T06:51:49.602Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 14,
+    "score": 18,
     "adjust": 0,
     "reasons": [
-      "12 archivos",
-      "2 módulos"
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
     ]
   },
   "items": {
@@ -32,11 +33,11 @@
       "decision": "confirmed"
     },
     "A3": {
-      "hash": "sha256:ee0d4fd17848d4cc1a648fab81bb73dbb302bf228c08e060f7a85a795301f1d0",
+      "hash": "sha256:b31a4a268d7467768a7e14c38ca862cd4bdc2ed9a3af82373228cde8bb70a345",
       "decision": "confirmed"
     },
     "A4": {
-      "hash": "sha256:f4eefa588038b0986392f9896d61fd7a3308be2bfaa3236e0a118f2bf25eea07",
+      "hash": "sha256:e5b31676cfe14287035fbcf89eedd6d9d787a2b9b1019798549c2eb64c5e064b",
       "decision": "implicit"
     },
     "A5": {
@@ -57,6 +58,18 @@
     },
     "A9": {
       "hash": "sha256:112fda9305e370c8bce0ab7534b30a55cb8cd505b7b9131ae4a8a790873fdde6",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:82a50787cbb64278c172bea632d03a17b994db3f2c34e9ae90dda3d47507d9fc",
+      "decision": "confirmed"
+    },
+    "A11": {
+      "hash": "sha256:eaf6a0593e5c7a189ea32b085724122c6dce09b6674af2b0080098dc7382aba8",
+      "decision": "confirmed"
+    },
+    "A12": {
+      "hash": "sha256:da8e4c3775c069994f198f9df0f6bce4559765b5630ac2091c36d35921fabb36",
       "decision": "implicit"
     }
   },
@@ -83,12 +96,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "db3290872ceb7da10e67b2cad4d57a5d5c81c283",
+      "attempts": 1,
       "startedAt": "2026-10-30T06:14:09.549Z",
       "doneAt": "2026-10-30T06:15:03.297Z",
-      "summary": "resources/read da la vista con _meta.ui.prefersBorder: false (VIEW_META en mcp/app.ts). docs/ui.md cuenta las cards, el aspecto del anfitrión y el alto del contenido."
+      "summary": "resources/read da la vista con _meta.ui.prefersBorder: false (VIEW_META en mcp/app.ts). docs/ui.md cuenta las cards, el aspecto del anfitrión y el alto del contenido.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -96,17 +109,17 @@
     "adjustment": null
   },
   "maxIds": {
-    "A": 9,
+    "A": 12,
     "AC": 10,
-    "T": 3,
+    "T": 5,
     "R": 3,
     "S": 1
   },
   "lockedTests": {
-    "packages/cli/test/mcp-app.test.ts": "sha256:edc46506b015c7741cb544155aa62acbd4e1a1caf072893a6f4e0d07aabec95c",
     "packages/ui/src/app/embedded.test.ts": "sha256:ee69d4204d4d0d0cd278b2acf98e0cdaa8df377001d5e34778c14b66c61afb51",
     "packages/ui/src/data/mcp-app.test.ts": "sha256:b83074e374582bbbb7a4be0817605536df5535de786f5fbbb5155e34ee26ccb6",
     "packages/ui/src/review/spec-cards.test.ts": "sha256:d3c56193c398ac08d6a8594987c7bbff5a52d3a35c0ff67d96aba0f9b66ea6e6",
     "packages/ui/src/theme/host-look.test.ts": "sha256:6dcedd738697851c5340befa18b6993267c550bae73dc45c9d65391f8d069102"
-  }
+  },
+  "testCycle": "feature"
 }
