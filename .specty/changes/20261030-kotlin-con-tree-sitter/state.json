@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "id": "20261030-kotlin-con-tree-sitter",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-kotlin-con-tree-sitter",
+  "baseCommit": "e0a25fee7de4042b9ff4417b640ed3eb185a9167",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "3 módulos",
+      "cambia dependencias",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ee7a53103f4d40e6891dfb3d3dce33046f65ca75995c16feea194c52844c8401",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:07d0c42f79598ccef48291ae84155e960533a39487a82cefc1c17e04029326cb",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:20db6265521e226d87ad44710c59060ef88bcc324d0a268976e1c403d063d820",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:2df77c018e30c56a2c6b9b79761d7359e426c1e9de230aef8a8c72f338acbd00",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:390e96d45dc2cc37c27dbeed42fc39c0a8159ab1abcad8b8ad3939a0b2fb9126",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:95fd262b0c3750100f60d2a35f48d36270b52dac8bc0ac6b5781bb805e5595e4",
+    "at": "2026-10-30T11:06:12.440Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
