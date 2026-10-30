@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
-import * as overlay from "@angular/cdk/overlay";
+import {
+  createFlexibleConnectedPositionStrategy,
+  createOverlayRef,
+  createRepositionScrollStrategy,
+  type FlexibleConnectedPositionStrategy,
+  type OverlayRef,
+} from "@angular/cdk/overlay";
 import { DomPortal } from "@angular/cdk/portal";
 import {
   afterRenderEffect,
@@ -29,10 +35,9 @@ const IGNORED_SELECTOR = ".cdk-overlay-container, sp-tooltip, [data-tooltip], pr
 
 type ItemPrefix = "AC" | "A" | "T" | "R" | "S" | "C";
 type ItemMap = ReadonlyMap<string, string>;
-type ItemRecord = Readonly<Record<string, string>>;
-type ItemSource = ChangeView | ReviewView | ItemMap | ItemRecord | string;
+type ItemSource = ChangeView | ReviewView | ItemMap | Readonly<Record<string, string>> | string;
 
-const ITEM_LABELS: Readonly<Record<ItemPrefix, Readonly<Record<Lang, string>>>> = {
+const ITEM_LABELS: Record<ItemPrefix, Record<Lang, string>> = {
   A: { es: "Supuesto", en: "Assumption" },
   AC: { es: "Criterio de aceptación", en: "Acceptance criterion" },
   T: { es: "Tarea", en: "Task" },
@@ -41,22 +46,18 @@ const ITEM_LABELS: Readonly<Record<ItemPrefix, Readonly<Record<Lang, string>>>> 
   C: { es: "Corte", en: "Slice" },
 };
 
-interface ItemTextPart {
-  readonly text: string;
-  readonly id?: string;
-}
-
 export function formatItemTooltip(id: string, lang: Lang, text?: string): string {
-  const trimmed = id.trim();
-  const match = EXACT_ITEM_RE.exec(trimmed);
-  if (match === null) return "";
+  const match = EXACT_ITEM_RE.exec(id.trim());
+  if (!match) return "";
   const label = ITEM_LABELS[match[1] as ItemPrefix][lang];
   const clean = text?.replace(/\s+/g, " ").trim() ?? "";
-  return clean.length > 0 ? `${label} ${trimmed}: ${clean}` : `${label} ${trimmed}`;
+  return clean ? `${label} ${id.trim()}: ${clean}` : `${label} ${id.trim()}`;
 }
 
-export function splitItemRefs(text: string): readonly ItemTextPart[] {
-  const parts: ItemTextPart[] = [];
+export function splitItemRefs(
+  text: string,
+): readonly { readonly text: string; readonly id?: string }[] {
+  const parts: { text: string; id?: string }[] = [];
   let last = 0;
   for (const m of text.matchAll(INLINE_ITEM_RE)) {
     const i = m.index ?? 0;
@@ -72,10 +73,12 @@ export function itemsOfReview(review: ReviewView): ItemMap {
   const map = new Map<string, string>();
   for (const i of [...review.assumptions, ...review.criteria, ...review.risks])
     map.set(i.id, i.text);
-  for (const task of review.tasks) map.set(task.id, task.title);
+  for (const t of review.tasks) map.set(t.id, t.title);
   for (const e of review.delta?.entries ?? []) {
     const text = e.text
-      .reduce((acc, p) => (p.change === "removed" ? acc : acc + p.text), "")
+      .filter((p) => p.change !== "removed")
+      .map((p) => p.text)
+      .join("")
       .trim();
     if (EXACT_ITEM_RE.test(e.key) && !map.has(e.key) && text) map.set(e.key, text);
   }
@@ -86,9 +89,8 @@ function addHistoryScopes(map: Map<string, string>, change: ChangeView, lang: La
   for (const entry of change.history) {
     if (entry.type !== "scope") continue;
     const id = /\b(S[1-9]\d*)\b/.exec(`${entry.details[0]?.[lang] ?? ""} ${entry.title.es}`)?.[1];
-    const summary = entry.details.at(-1)?.[lang]?.trim() ?? "";
-    if (id !== undefined && !map.has(id) && summary.length > 0 && summary !== id)
-      map.set(id, summary);
+    const s = entry.details.at(-1)?.[lang]?.trim() ?? "";
+    if (id && !map.has(id) && s && s !== id) map.set(id, s);
   }
 }
 
@@ -96,8 +98,8 @@ export function itemsOfChange(change: ChangeView, lang: Lang = "es"): ItemMap {
   const map = new Map(itemsOfReview(change.review));
   for (const t of change.progress.tasks) if (!map.has(t.id) && t.title) map.set(t.id, t.title);
   for (const req of change.scopeRequests) {
-    const summary = req.reason.trim() || req.paths.join(", ");
-    if (summary.length > 0) map.set(req.id, summary);
+    const s = req.reason.trim() || req.paths.join(", ");
+    if (s) map.set(req.id, s);
   }
   addHistoryScopes(map, change, lang);
   return map;
@@ -105,10 +107,9 @@ export function itemsOfChange(change: ChangeView, lang: Lang = "es"): ItemMap {
 
 function visibleText(el: Element): string {
   let out = "";
-  for (const node of el.childNodes) {
-    if (node.nodeType === Node.TEXT_NODE) out += node.textContent ?? "";
-    else if (node instanceof Element && !node.classList.contains("sr-only"))
-      out += visibleText(node);
+  for (const n of el.childNodes) {
+    if (n.nodeType === Node.TEXT_NODE) out += n.textContent ?? "";
+    else if (n instanceof Element && !n.classList.contains("sr-only")) out += visibleText(n);
   }
   return out.trim();
 }
@@ -116,33 +117,81 @@ function visibleText(el: Element): string {
 interface ResolvedTarget {
   readonly origin: HTMLElement;
   readonly id: string;
-  readonly text?: string;
+  readonly text?: string | undefined;
 }
 
 function explicitTarget(el: Element, host: HTMLElement): ResolvedTarget | undefined {
   const ref = el.closest<HTMLElement>("[data-item-ref]");
-  const id = ref !== null && host.contains(ref) ? (ref.dataset.itemRef?.trim() ?? "") : "";
-  if (ref === null || !EXACT_ITEM_RE.test(id)) return undefined;
-  const text = ref.dataset.itemText?.trim();
-  return { origin: ref, id, ...(text ? { text } : {}) };
-}
-
-function nodeIdOf(node: HTMLElement): string | undefined {
-  const text = visibleText(node);
-  if (EXACT_ITEM_RE.test(text) && node.children.length <= 2) return text;
-  return node.children.length === 0 && node.classList.contains("font-mono")
-    ? LEADING_ITEM_RE.exec(text)?.[1]
+  const id = ref && host.contains(ref) ? (ref.dataset.itemRef?.trim() ?? "") : "";
+  return ref && EXACT_ITEM_RE.test(id)
+    ? { origin: ref, id, text: ref.dataset.itemText?.trim() }
     : undefined;
 }
 
+function nodeIdOf(node: HTMLElement): string | undefined {
+  const t = visibleText(node);
+  return EXACT_ITEM_RE.test(t) && node.children.length <= 2
+    ? t
+    : node.children.length === 0 && node.classList.contains("font-mono")
+      ? LEADING_ITEM_RE.exec(t)?.[1]
+      : undefined;
+}
+
 function inferredTarget(el: Element, host: HTMLElement): ResolvedTarget | undefined {
-  let node: Element | null = el;
-  while (node instanceof HTMLElement && host.contains(node)) {
-    const id = nodeIdOf(node);
-    if (id !== undefined) return { origin: node, id };
-    node = node === host ? null : node.parentElement;
+  for (
+    let n: Element | null = el;
+    n instanceof HTMLElement && host.contains(n);
+    n = n === host ? null : n.parentElement
+  ) {
+    const id = nodeIdOf(n);
+    if (id !== undefined) return { origin: n, id };
   }
   return undefined;
+}
+
+function node(
+  doc: Document,
+  tag: string,
+  attrs: Record<string, string>,
+  ...kids: (Node | string)[]
+): HTMLElement {
+  const el = doc.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  el.append(...kids);
+  return el;
+}
+
+function renderBubble(el: HTMLElement, id: string, lang: Lang, text?: string): boolean {
+  const match = EXACT_ITEM_RE.exec(id.trim());
+  if (!match) return false;
+  const clean = text?.replace(/\s+/g, " ").trim() ?? "";
+  el.replaceChildren();
+  const doc = el.ownerDocument;
+  const label = ITEM_LABELS[match[1] as ItemPrefix][lang];
+  const bullet = node(doc, "span", {
+    class: "inline-block size-1.5 rounded-full bg-current opacity-75 shrink-0",
+    "data-item-bullet": "",
+    "aria-hidden": "true",
+  });
+  el.appendChild(
+    node(
+      doc,
+      "span",
+      { class: "flex items-center gap-1.5 font-semibold text-bg", "data-item-header": "" },
+      bullet,
+      clean ? `${label} ${id.trim()}: ` : `${label} ${id.trim()}`,
+    ),
+  );
+  if (clean)
+    el.appendChild(
+      node(
+        doc,
+        "span",
+        { class: "block text-xs opacity-90 leading-relaxed font-normal", "data-item-body": "" },
+        clean,
+      ),
+    );
+  return true;
 }
 
 let openTooltip: ItemTooltips | undefined;
@@ -164,25 +213,27 @@ export class ItemTooltips {
   private readonly preferences = inject(Preferences);
   private readonly parent = inject(ItemTooltips, { optional: true, skipSelf: true });
   private readonly fallbackSource = signal<(() => ItemSource | undefined) | undefined>(undefined);
-  private overlayRef: overlay.OverlayRef | undefined;
-  private position: overlay.FlexibleConnectedPositionStrategy | undefined;
-  private bubble: HTMLSpanElement | undefined;
+  private overlay?: { ref: OverlayRef; pos: FlexibleConnectedPositionStrategy };
+  private bubble?: HTMLSpanElement;
   private activeTarget: ResolvedTarget | undefined;
-  private leaving: ReturnType<typeof setTimeout> | undefined;
+  private leaving?: ReturnType<typeof setTimeout>;
 
   readonly items: Signal<ItemMap> = computed((): ItemMap => {
     const src = this.spItemTooltips() ?? this.fallbackSource()?.();
     const own = this.resolveSource(src, this.preferences.lang());
     const inherited = this.parent?.items();
-    if (inherited === undefined || inherited.size === 0) return own;
-    return own.size === 0 ? inherited : new Map([...inherited, ...own]);
+    return !inherited || inherited.size === 0
+      ? own
+      : own.size === 0
+        ? inherited
+        : new Map([...inherited, ...own]);
   });
 
   constructor() {
     afterRenderEffect(() => this.syncBubble());
     inject(DestroyRef).onDestroy(() => {
       this.hide();
-      this.overlayRef?.dispose();
+      this.overlay?.ref.dispose();
     });
   }
 
@@ -203,6 +254,7 @@ export class ItemTooltips {
     const origin = this.activeTarget?.origin;
     if (!origin || (event.relatedTarget instanceof Node && origin.contains(event.relatedTarget)))
       return;
+    origin.removeAttribute("data-item-active");
     clearTimeout(this.leaving);
     this.leaving = setTimeout(() => this.hide(), GRACE_MS);
   }
@@ -210,18 +262,16 @@ export class ItemTooltips {
   private syncBubble(): void {
     const [lang, map, t] = [this.preferences.lang(), this.items(), this.activeTarget];
     if (!t || !this.bubble) return;
-    const text = formatItemTooltip(t.id, lang, t.text || map.get(t.id));
-    if (text) this.bubble.textContent = text;
-    else this.hide();
+    if (!renderBubble(this.bubble, t.id, lang, t.text || map.get(t.id))) this.hide();
   }
 
-  private resolveSource(source: ItemSource | undefined, lang: Lang): ItemMap {
-    if (!source) return new Map();
-    if (source instanceof Map) return source;
-    if (typeof source === "string") return this.fromStore(source, lang);
-    if ("review" in source) return itemsOfChange(source as ChangeView, lang);
-    if ("assumptions" in source) return itemsOfReview(source as ReviewView);
-    return new Map(Object.entries(source));
+  private resolveSource(src: ItemSource | undefined, lang: Lang): ItemMap {
+    if (!src) return new Map();
+    if (src instanceof Map) return src;
+    if (typeof src === "string") return this.fromStore(src, lang);
+    if ("review" in src) return itemsOfChange(src as ChangeView, lang);
+    if ("assumptions" in src) return itemsOfReview(src as ReviewView);
+    return new Map(Object.entries(src));
   }
 
   private fromStore(id: string, lang: Lang): ItemMap {
@@ -230,10 +280,10 @@ export class ItemTooltips {
     return found ? itemsOfChange(found, lang) : new Map();
   }
 
-  private resolveTarget(rawTarget: EventTarget | null): ResolvedTarget | undefined {
-    if (!(rawTarget instanceof Element) || !this.host.contains(rawTarget)) return undefined;
-    if (rawTarget.closest(IGNORED_SELECTOR) !== null) return undefined;
-    return explicitTarget(rawTarget, this.host) ?? inferredTarget(rawTarget, this.host);
+  private resolveTarget(raw: EventTarget | null): ResolvedTarget | undefined {
+    if (!(raw instanceof Element) || !this.host.contains(raw) || raw.closest(IGNORED_SELECTOR))
+      return undefined;
+    return explicitTarget(raw, this.host) ?? inferredTarget(raw, this.host);
   }
 
   private showTarget(target: ResolvedTarget): void {
@@ -241,45 +291,48 @@ export class ItemTooltips {
     openTooltip = this;
     clearTimeout(this.leaving);
     const raw = target.text || this.items().get(target.id);
-    const formatted = formatItemTooltip(target.id, this.preferences.lang(), raw);
-    if (!formatted) return;
+    this.activeTarget?.origin.removeAttribute("data-item-active");
     this.activeTarget = target;
-    this.ensureOverlay(target.origin).textContent = formatted;
-    this.overlayRef?.updatePosition();
+    target.origin.setAttribute("data-item-active", "");
+    const bubble = this.ensureOverlay(target.origin);
+    if (!renderBubble(bubble, target.id, this.preferences.lang(), raw)) return;
+    this.overlay?.ref.updatePosition();
   }
 
   private ensureOverlay(origin: HTMLElement): HTMLSpanElement {
-    if (this.overlayRef === undefined) {
-      const pos = overlay.createFlexibleConnectedPositionStrategy(this.injector, origin);
-      const positionStrategy = pos.withPositions([...TOOLTIP_POSITIONS]).withViewportMargin(8);
-      const scrollStrategy = overlay.createRepositionScrollStrategy(this.injector);
-      this.position = positionStrategy;
-      this.overlayRef = overlay.createOverlayRef(this.injector, {
-        positionStrategy,
-        scrollStrategy,
+    if (!this.overlay) {
+      const pos = createFlexibleConnectedPositionStrategy(this.injector, origin)
+        .withPositions([...TOOLTIP_POSITIONS])
+        .withViewportMargin(8);
+      const ref = createOverlayRef(this.injector, {
+        positionStrategy: pos,
+        scrollStrategy: createRepositionScrollStrategy(this.injector),
       });
-    } else this.position?.setOrigin(origin);
-    if (this.bubble === undefined) {
-      const span = this.host.ownerDocument.createElement("span");
-      span.setAttribute("role", "tooltip");
-      span.setAttribute("data-tooltip", "");
-      span.className =
-        "max-w-80 rounded-md bg-text px-2 py-1 text-xs text-bg shadow-md transition-opacity starting:opacity-0";
-      span.style.transitionDuration = "var(--duration-fast)";
-      span.addEventListener("pointerenter", () => clearTimeout(this.leaving));
-      span.addEventListener("pointerleave", () => this.hide());
-      this.host.ownerDocument.createDocumentFragment().appendChild(span);
-      this.bubble = span;
+      this.overlay = { ref, pos };
+    } else this.overlay.pos.setOrigin(origin);
+    if (!this.bubble) {
+      const b = node(this.host.ownerDocument, "span", {
+        role: "tooltip",
+        "data-tooltip": "",
+        class:
+          "max-w-80 rounded-lg bg-text p-2.5 text-xs text-bg shadow-md transition-opacity starting:opacity-0 flex flex-col gap-1",
+        style: "transition-duration: var(--duration-fast)",
+      });
+      b.addEventListener("pointerenter", () => clearTimeout(this.leaving));
+      b.addEventListener("pointerleave", () => this.hide());
+      this.host.ownerDocument.createDocumentFragment().appendChild(b);
+      this.bubble = b;
     }
-    if (!this.overlayRef.hasAttached()) this.overlayRef.attach(new DomPortal(this.bubble));
+    if (!this.overlay.ref.hasAttached()) this.overlay.ref.attach(new DomPortal(this.bubble));
     return this.bubble;
   }
 
   protected hide(): void {
     clearTimeout(this.leaving);
     if (openTooltip === this) openTooltip = undefined;
+    this.activeTarget?.origin.removeAttribute("data-item-active");
     this.activeTarget = undefined;
-    this.overlayRef?.detach();
+    this.overlay?.ref.detach();
   }
 }
 
@@ -287,7 +340,7 @@ export class ItemTooltips {
   selector: "sp-item-text",
   changeDetection: ChangeDetectionStrategy.OnPush,
   hostDirectives: [ItemTooltips],
-  template: `@for (part of parts(); track $index) {@if (part.id) {<span [attr.data-item-ref]="part.id">{{ part.text }}</span>} @else {<span>{{ part.text }}</span>}}`,
+  template: `@for (part of parts(); track $index) {@if (part.id) {<span class="cursor-help rounded-xs px-0.5" [attr.data-item-ref]="part.id">{{ part.text }}</span>} @else {<span>{{ part.text }}</span>}}`,
 })
 export class ItemText {
   readonly text = input.required<string>();

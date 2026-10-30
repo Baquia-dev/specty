@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "48fdc2052e6f64d8c699b61a153545bf5250f99b",
+      "startedAt": "2026-10-30T05:37:29.585Z",
+      "doneAt": "2026-10-30T05:46:06.396Z",
+      "summary": "Añadir cursor de ayuda y resalte interactivo en elementos de siglas"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
