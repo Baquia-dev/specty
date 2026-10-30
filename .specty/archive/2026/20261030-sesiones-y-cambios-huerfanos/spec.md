@@ -93,3 +93,24 @@ Es la mitad en vivo de la memoria de Specty. Trae el ADR 0016, que recoge las de
 
 - R1: Anotar la actividad frena al guard — una lectura pequeña por evento y una escritura por minuto. Se mide la mediana del guard de un `Bash` antes y después.
 - R2: Una conversación que dejó de trabajar sigue figurando hasta `memory.orphanAfterMin` — `status` dice hace cuánto fue su último paso, y la persona lo ve.
+
+## Cierre
+
+### Resumen
+
+El guard anota, en cada evento con id de conversación, en qué carpeta trabaja esa conversación de agente y cuándo dio su último paso (`.git/common/specty/activity/<agente>-<conversación>.json`). Solo escribe si la conversación cambió de carpeta o pasó un minuto. `specty status` dice de cada cambio qué agente lo lleva y hace cuánto, y marca como huérfano el que espera al agente sin pasos ni cambios de estado en `memory.orphanAfterMin` minutos (60 por defecto). `--json` lo trae en `holder` y `orphan`. El ADR 0016 recoge las decisiones de la épica y enmienda ARCHITECTURE §9.
+
+### Desviaciones
+
+- Para no lanzar git en cada evento, la actividad lee el directorio común desde `.git` (o desde el `gitdir` y el `commondir` de una worktree); solo si no se puede, pregunta a git. Con `git rev-parse --git-path`, la mediana del guard de un `Bash` subía unos 12 ms. Así siguió en 114 ms (medido el 2026-10-30, 25 llamadas por bundle).
+
+### Decisiones
+
+- La actividad vive en `activity/`, aparte de `sessions/`, que liga una conversación a la carpeta en la que entró y que lee `prune`.
+- Un cambio que espera a la persona nunca es huérfano, y uno cuyo `state.json` cambió hace poco tampoco: cubre los agentes sin hooks y el cambio recién creado al que su sesión aún no entró.
+
+### Pendientes
+
+- Los archivos de `activity/` no caducan: uno por conversación. `prune` podría borrar los de más de una semana.
+- Queda en `activity/` el archivo de la sesión `bench` de la medición; el guard no deja borrarlo desde la carpeta de otro cambio. Se irá con esa limpieza.
+- `packages/core/src/cards/human.ts` pasó de 300 líneas de código (301). Cuando C2 añada «TE TOCA» a `status`, conviene llevar la tarjeta del estado a su propio archivo.

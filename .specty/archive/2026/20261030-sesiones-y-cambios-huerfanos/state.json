@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-sesiones-y-cambios-huerfanos",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-sesiones-y-cambios-huerfanos",
   "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:d8bd8ab47bffa8c2018fbfb74698897fa1af9c97b5e0fa2f4e34ac7b079a9626",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ff228e00bfa8092d00cc5cdd886faa28b7e4c538",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:17:54.473Z",
       "doneAt": "2026-10-30T10:19:03.980Z",
-      "summary": "ADR 0016 «La memoria de Specty», ARCHITECTURE §9 enmendado y status/guard con la actividad, formats.md con activity/ y memory, y el glosario con «Cambio huérfano»"
+      "summary": "ADR 0016 «La memoria de Specty», ARCHITECTURE §9 enmendado y status/guard con la actividad, formats.md con activity/ y memory, y el glosario con «Cambio huérfano»",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,6 +87,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-30T10:23:21.576Z",
   "lockedTests": {
     "packages/cli/test/activity.test.ts": "sha256:2525702974180f92c893b49e418e72e57fdd25f8404d9e10bf1278e1fde6db30",
     "packages/core/test/cards/status-holder.test.ts": "sha256:89ac11cd3ac17eec4664172db2ce53839a06822b9023df74106eb717f1a5d26a",
