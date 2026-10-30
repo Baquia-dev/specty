@@ -9,7 +9,7 @@ import {
   output,
 } from "@angular/core";
 import { RouterLink } from "@angular/router";
-import { PhaseBadge } from "../components/badge";
+import { KindBadge, PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { ItemTooltips } from "../components/item-tooltip";
 import { type Bilingual, type ChangeView, type DecisionKind, relativeTime } from "../data/records";
@@ -71,7 +71,7 @@ const ROW =
 /** One change in the Inbox: its phase, what it waits for, how long, and the way into it. */
 @Component({
   selector: "sp-inbox-row",
-  imports: [RouterLink, PhaseBadge, Button],
+  imports: [RouterLink, PhaseBadge, KindBadge, Button],
   hostDirectives: [ItemTooltips],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
@@ -87,7 +87,10 @@ const ROW =
       <span class="text-xs whitespace-nowrap text-text-muted" data-since>{{ since() }}</span>
     </div>
     <div class="flex min-w-0 flex-col gap-0.5">
-      <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change().id]" [queryParams]="{ tab: change().tab }" (focus)="picked.emit()">{{ change().title }}</a>
+      <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <a class="font-semibold text-text no-underline hover:underline" [routerLink]="['/changes', change().id]" [queryParams]="{ tab: change().tab }" (focus)="picked.emit()">{{ change().title }}</a>
+        <sp-kind-badge [kind]="change().kind" [epic]="change().epic" />
+      </div>
       @if (waits(); as line) {
         <span class="text-[13px] text-text-muted" data-waits>{{ line }}</span>
       }

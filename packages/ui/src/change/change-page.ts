@@ -20,7 +20,7 @@ import { LucideDynamicIcon } from "@lucide/angular";
 import { AcceptanceActions } from "../acceptance/acceptance-actions";
 import { AcceptanceTab } from "../acceptance/acceptance-tab";
 import { ClosingActions } from "../acceptance/closing-actions";
-import { PhaseBadge } from "../components/badge";
+import { KindBadge, PhaseBadge } from "../components/badge";
 import { PAGE } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import {
@@ -80,6 +80,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
     RouterLink,
     LucideDynamicIcon,
     PhaseBadge,
+    KindBadge,
     Skeleton,
     EmptyState,
     Tabs,
@@ -116,6 +117,7 @@ const WAITING: Readonly<Record<DecisionKind, { es: string; en: string }>> = {
             <div class="flex min-w-0 flex-[1_1_28rem] flex-col">
               <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                 <sp-phase-badge [phase]="change.phase" />
+                <sp-kind-badge [kind]="change.kind" [epic]="change.epic" />
                 @if (change.decision; as decision) {
                   <span class="text-sm text-text-muted" data-waiting>{{ t()(waiting[decision].es, waiting[decision].en) }}</span>
                   <span class="hidden text-sm text-text-muted sm:inline" aria-hidden="true">·</span>

@@ -68,7 +68,7 @@ Identificar visualmente en la UI cada tipo de cambio (`Épica`, `Corte`, `Indivi
   - files: packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox-view.test.ts, packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/inbox/inbox-toolbar.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-view.test.ts --include src/inbox/inbox-toolbar.test.ts
-- [ ] T3: Mostrar bloques visuales de épica e insignia de tipo en Bandeja y cabecera del cambio
+- [x] T3: Mostrar bloques visuales de épica e insignia de tipo en Bandeja y cabecera del cambio
   - files: packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox.test.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/change/change-page.ts, docs/ui.md
   - ac: AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox.test.ts --include src/change/change-page.test.ts

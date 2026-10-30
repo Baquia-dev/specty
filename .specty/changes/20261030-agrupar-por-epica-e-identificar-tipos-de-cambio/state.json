@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-agrupar-por-epica-e-identificar-tipos-de-cambio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-agrupar-por-epica-e-identificar-tipos-de-cambio",
   "baseCommit": "ce35fb1d06dad482c00eff14476fcd9ce39e7d71",
   "revision": 1,
@@ -43,12 +43,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "78b0f2e564476424a69b346d22a140ee2eacb91d",
+      "attempts": 1,
       "startedAt": "2026-10-30T21:58:58.544Z",
       "doneAt": "2026-10-30T22:02:59.436Z",
-      "summary": "Añadir agrupación por épica, bloques de épica por sección y opción Épica en la Bandeja"
+      "summary": "Añadir agrupación por épica, bloques de épica por sección y opción Épica en la Bandeja",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9b3fad7f8d62c5e07042fc35a8598266c7689f2a",
+      "startedAt": "2026-10-30T22:02:59.785Z",
+      "doneAt": "2026-10-30T22:04:58.701Z",
+      "summary": "Renderizar bloques de épica e insignias de tipo en la Bandeja y en la cabecera del cambio"
     }
   },
   "pending": {
