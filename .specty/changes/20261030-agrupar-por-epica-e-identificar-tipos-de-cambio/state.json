@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261030-agrupar-por-epica-e-identificar-tipos-de-cambio",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-agrupar-por-epica-e-identificar-tipos-de-cambio",
+  "baseCommit": "ce35fb1d06dad482c00eff14476fcd9ce39e7d71",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a350387062641c645f2313e46c10551c4abdeb79f64b8b707e2ef61a22a053ed",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:b571688e04e6b763cdb4c6f769df8e6e1c99bda36b12e10f5f19896513f87dd3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2f81d5fdf6e51b1c1fa375bc7aabd83f79e35ff8e27c2353b2ec3cea965a708e",
+    "at": "2026-10-30T21:48:21.751Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
