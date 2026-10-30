@@ -6,6 +6,13 @@
   "branch": "specty/20261030-multiples-tooltips-fijados-con-indicador-y",
   "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:444d97256f3f339874af5fdb1b5c5754a70b7e24d2608c39c3e7634a503dfd64",
+    "at": "2026-10-30T06:20:47.558Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -38,12 +45,6 @@
     "AC": 4,
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:444d97256f3f339874af5fdb1b5c5754a70b7e24d2608c39c3e7634a503dfd64",
-    "at": "2026-10-30T06:20:47.558Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T06:21:34.554Z"
 }

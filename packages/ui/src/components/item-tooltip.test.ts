@@ -269,4 +269,79 @@ describe("ItemTooltips and ItemText", () => {
     await settle();
     expect(bubble()).toBeNull();
   });
+
+  it("AC1: sets data-item-pinned indicator on the owner element when pinned on click", async () => {
+    const { element, settle } = await render("es");
+    const target = element.querySelector<HTMLElement>("#criterion");
+    expect(target?.hasAttribute("data-item-pinned")).toBe(false);
+    target?.click();
+    await settle();
+    expect(target?.hasAttribute("data-item-pinned")).toBe(true);
+    expect(bubble()).not.toBeNull();
+  });
+
+  it("AC2: keeps multiple pinned tooltips open simultaneously with their close buttons and indicators", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#criterion");
+    const t2 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+    t2?.click();
+    await settle();
+
+    const bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(2);
+    expect(t1?.hasAttribute("data-item-pinned")).toBe(true);
+    expect(t2?.hasAttribute("data-item-pinned")).toBe(true);
+    for (const b of bubbles) {
+      expect(b.querySelector("[data-item-close]")).not.toBeNull();
+    }
+  });
+
+  it("AC3: adjusts position or offsets overlapping tooltips to prevent full occlusion", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#criterion");
+    const t2 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+    t2?.click();
+    await settle();
+
+    const bubbles = [
+      ...document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]"),
+    ];
+    expect(bubbles.length).toBe(2);
+    const r1 = bubbles[0].getBoundingClientRect();
+    const r2 = bubbles[1].getBoundingClientRect();
+    const identical = r1.top === r2.top && r1.left === r2.left && r1.width === r2.width;
+    expect(identical).toBe(false);
+  });
+
+  it("AC4: closes only the target tooltip when clicking its close button or trigger, removing its indicator", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#criterion");
+    const t2 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+    t2?.click();
+    await settle();
+
+    let bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(2);
+
+    const close1 = bubbles[0].querySelector<HTMLButtonElement>("[data-item-close]");
+    close1?.click();
+    await settle();
+
+    bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(1);
+    expect(t1?.hasAttribute("data-item-pinned")).toBe(false);
+    expect(t2?.hasAttribute("data-item-pinned")).toBe(true);
+
+    t2?.click();
+    await settle();
+    bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(0);
+    expect(t2?.hasAttribute("data-item-pinned")).toBe(false);
+  });
 });
