@@ -2,6 +2,7 @@
 import type { Lang } from "../i18n";
 import type { Output } from "../output";
 import { assertionWarnings, riskWarnings } from "./acceptance";
+import { coverageLines } from "./coverage";
 import { criteriaWarnings } from "./criteria";
 import { sliceLines } from "./epic";
 import { blockedCard } from "./flow";
@@ -31,6 +32,7 @@ export function acceptanceSummary(
     ...riskWarnings(change.tasks, ctx.lang),
     ...longFileWarnings(change.tasks, ctx.lang),
     ...criteriaWarnings(change.criteriaTests ?? [], ctx.lang, "person"),
+    ...(change.coverage === undefined ? [] : coverageLines(change.coverage, ctx.lang)),
     ...(unverified
       ? [
           t(

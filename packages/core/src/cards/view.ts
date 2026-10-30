@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { AgentTool } from "../agents";
+import type { CoverageGap } from "../checks/coverage";
 import type { Phase } from "../flow/phases";
 import type { GlossaryEntry } from "../glossary";
 import type { Lang } from "../i18n";
@@ -104,6 +105,21 @@ export interface CommentView {
   readonly body: string;
 }
 
+/**
+ * The coverage of the lines the change adds, from its last full verification that passed on
+ * this code (`change.verified`, formats.md §4).
+ */
+export interface CoverageView {
+  readonly measured: number;
+  readonly covered: number;
+  /** The first stretches of added lines no test ran. */
+  readonly gaps: readonly CoverageGap[];
+  /** How many stretches no test ran, those in `gaps` included. */
+  readonly stretches: number;
+  /** `checks.coverage.warn`: below it, the stretches show. */
+  readonly warn: number;
+}
+
 /** An incorporation of the main branch that waits for the agent in the change's folder. */
 export interface IntegrationView {
   readonly target: string;
@@ -164,6 +180,8 @@ export interface ChangeView {
   readonly specChanged: boolean;
   /** Only while an incorporation is pending: it comes before the phase's work. */
   readonly integration?: IntegrationView;
+  /** In acceptance, the coverage of what the change adds, when a full verification measured it. */
+  readonly coverage?: CoverageView;
   /** An epic's slices, in the order of its spec. */
   readonly slices?: readonly SliceView[];
   /** The project's glossary, when it defines some term (formats.md §6). */

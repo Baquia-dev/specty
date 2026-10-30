@@ -69,7 +69,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Las tarjetas muestran la cobertura del cambio
+- [x] T1: Las tarjetas muestran la cobertura del cambio
   - files: packages/core/test/cards/coverage.test.ts, packages/core/src/cards/coverage.ts, packages/core/src/cards/view.ts, packages/core/src/cards/accept.ts, packages/core/src/cards/acceptance.ts, packages/core/src/cards/index.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/coverage.test.ts test/cards/accept.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

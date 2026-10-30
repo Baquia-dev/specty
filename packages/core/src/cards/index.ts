@@ -54,6 +54,7 @@ export {
   resolvedIntegrationNote,
   verifyHintLine,
 } from "./close";
+export { coverageLines } from "./coverage";
 export {
   decisionPostponedCard,
   noSuchChangeCard,
@@ -328,6 +329,7 @@ export {
 export type {
   CardContext,
   ChangeView,
+  CoverageView,
   CriterionView,
   IntegrationView,
   RejectedView,
