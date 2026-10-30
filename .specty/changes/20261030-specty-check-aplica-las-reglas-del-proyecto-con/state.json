@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-specty-check-aplica-las-reglas-del-proyecto-con",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-specty-check-aplica-las-reglas-del-proyecto-con",
   "baseCommit": "ce35fb1d06dad482c00eff14476fcd9ce39e7d71",
   "revision": 1,
@@ -54,6 +54,7 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T21:14:11.863Z"
+  "lockedTests": {
+    "packages/cli/test/check-code-rules.test.ts": "sha256:d2c53c6d7891bbcbdae13fe2e98cae7fd32e0d4ba7098a4bec71bdee1c020da2"
+  }
 }
