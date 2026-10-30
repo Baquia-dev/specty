@@ -252,9 +252,8 @@ describe("AssumptionRow", () => {
     const pendingPromise = new Promise<void>((res) => {
       resolveAction = res;
     });
-    const recording = TestBed.inject(SpectyData) as Recording;
-    recording.decideAssumption = () => pendingPromise;
-    const { element, fixture } = await render();
+    const { element, fixture, source } = await render();
+    (source as Recording).decideAssumption = () => pendingPromise;
     const confirmButton = element.querySelector<HTMLButtonElement>(
       "sp-assumption-row sp-button[variant=primary] button",
     );
@@ -264,6 +263,7 @@ describe("AssumptionRow", () => {
     expect(confirmButton?.disabled).toBe(true);
     expect(confirmButton?.querySelector(".animate-spin")).not.toBeNull();
     resolveAction();
+    await new Promise((resolve) => setTimeout(resolve));
     await fixture.whenStable();
     expect(confirmButton?.getAttribute("aria-busy")).toBeNull();
   });

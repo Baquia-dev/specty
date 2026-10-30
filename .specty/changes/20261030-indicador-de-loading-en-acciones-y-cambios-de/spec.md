@@ -49,7 +49,7 @@ Proporcionar retroalimentación visual inmediata con indicadores de carga (spinn
   - files: packages/ui/src/components/icons.ts, packages/ui/src/components/button.ts, packages/ui/src/components/button.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/button.test.ts
-- [ ] T2: Indicadores de carga en confirmación de supuestos
+- [x] T2: Indicadores de carga en confirmación de supuestos
   - files: packages/ui/src/review/assumption-row.ts, packages/ui/src/review/spec-sections.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts

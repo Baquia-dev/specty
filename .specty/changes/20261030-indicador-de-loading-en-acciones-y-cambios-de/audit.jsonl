@@ -6,3 +6,8 @@
 {"ts":"2026-10-30T12:02:34.461Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T1","baseCommit":"085c8fc23efc0b3ba9bc766922eed857091838b8"}}
 {"ts":"2026-10-30T12:05:29.841Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/button.test.ts","exit":0,"ms":6521,"tree":"sha256:f26c808e58ef12eff86fd105964f7cc75728cfa66d2a69d6a5745451b5ee23c1"}}
 {"ts":"2026-10-30T12:05:29.942Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T1","summary":"icono Loader2 y soporte de loading en Button e IconButton"}}
+{"ts":"2026-10-30T12:05:30.300Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T2","baseCommit":"98ada933fe07a11f483f367ed9a3332ef7f744a8"}}
+{"ts":"2026-10-30T12:06:00.058Z","actor":"agent","tool":"antigravity","event":"scope.requested","data":{"id":"S1","task":"T2","paths":["packages/ui/src/review/spec-sections.test.ts"],"reason":"ajuste de render() en test AC2"}}
+{"ts":"2026-10-30T12:07:16.258Z","actor":"human","by":"Jorge Palacio Barcinilla","event":"scope.decided","data":{"id":"S1","decision":"approved","unlock":["packages/ui/src/review/spec-sections.test.ts"],"task":"T2"}}
+{"ts":"2026-10-30T12:11:12.593Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts","exit":0,"ms":7477,"tree":"sha256:d1afac4145c1d1172e5fa496171c1d1733bc873765e4073ab55374e34fa94bc9"}}
+{"ts":"2026-10-30T12:11:12.695Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T2","summary":"indicadores de carga en confirmacion y rechazo de supuestos"}}

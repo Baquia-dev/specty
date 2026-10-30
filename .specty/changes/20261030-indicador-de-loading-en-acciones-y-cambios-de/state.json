@@ -39,12 +39,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "085c8fc23efc0b3ba9bc766922eed857091838b8",
+      "attempts": 1,
       "startedAt": "2026-10-30T12:02:34.461Z",
       "doneAt": "2026-10-30T12:05:29.941Z",
-      "summary": "icono Loader2 y soporte de loading en Button e IconButton"
+      "summary": "icono Loader2 y soporte de loading en Button e IconButton",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/spec-sections.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "98ada933fe07a11f483f367ed9a3332ef7f744a8",
+      "startedAt": "2026-10-30T12:05:30.299Z",
+      "doneAt": "2026-10-30T12:11:12.693Z",
+      "summary": "indicadores de carga en confirmacion y rechazo de supuestos"
     }
   },
   "pending": {
@@ -54,13 +65,14 @@
   "maxIds": {
     "A": 3,
     "AC": 5,
-    "T": 4
+    "T": 4,
+    "S": 1
   },
   "lockedTests": {
     "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:ddfb1d522aacdb15ef81cd63b58daff611886ae24585544f048f45175461ebd6",
     "packages/ui/src/components/button.test.ts": "sha256:f8eee93e474082fdac62468d815a99cd946e2febe50774e941258a246fb4848d",
     "packages/ui/src/review/comments.test.ts": "sha256:f805401af99d8cf9f2c8526a8d387857641eaea1214de89ee3a500370cbeee69",
     "packages/ui/src/review/review-actions.test.ts": "sha256:d949b99aa0a1ad7e5afe1364a9a7d04881d37ceb0a3092f2d500aef8bfdf8527",
-    "packages/ui/src/review/spec-sections.test.ts": "sha256:1f523a45af5cd32f67c9dd9d9767f54b56c3ae295ee1743a51ca7c272632ec96"
+    "packages/ui/src/review/spec-sections.test.ts": "sha256:1cf6fbd22e0e27d3f523cc1a05bb16dcae445a2e15ad48a6532cf9bcc68c315f"
   }
 }
