@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-tooltip-fijado-al-hacer-click-con-boton-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-tooltip-fijado-al-hacer-click-con-boton-de",
   "baseCommit": "af83a9659994353f690f1174de6973f5f1635f9a",
   "revision": 1,
@@ -41,6 +41,7 @@
     "AC": 3,
     "T": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T06:06:00.815Z"
+  "lockedTests": {
+    "packages/ui/src/components/item-tooltip.test.ts": "sha256:4eb70ba69eb38533b69f923a3c2c2de60c7a02d4ee7165fd8771d43d5e48e4ca"
+  }
 }
