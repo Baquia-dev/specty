@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-adr-0016-gramaticas",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-adr-0016-gramaticas",
   "baseCommit": "eeeccbe6158bce2f8966e3ee18640a47565cebad",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d19457e30e1d6459d3217f77caadfd7a6131b52f",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:45:02.304Z",
       "doneAt": "2026-10-30T11:45:10.810Z",
-      "summary": "El ADR 0016 dice dieciséis gramáticas y el runtime, no diecisiete."
+      "summary": "El ADR 0016 dice dieciséis gramáticas y el runtime, no diecisiete.",
+      "scopeExtra": []
     }
   },
   "pending": {

@@ -21,3 +21,9 @@ Las consecuencias del ADR 0016 dicen que el paquete ocupa 1,8 MB «con los dieci
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
   - type: docs
+
+## Cierre
+
+### Resumen
+
+El ADR 0016 dice dieciséis gramáticas y el runtime, no diecisiete.
