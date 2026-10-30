@@ -21,11 +21,11 @@ class Recording extends SpectyData {
     this.calls.push(args);
     return Promise.resolve();
   }
-  editComment(...args: unknown[]): Promise<void> {
+  override editComment(...args: unknown[]): Promise<void> {
     this.calls.push(["editComment", ...args]);
     return Promise.resolve();
   }
-  deleteComment(...args: unknown[]): Promise<void> {
+  override deleteComment(...args: unknown[]): Promise<void> {
     this.calls.push(["deleteComment", ...args]);
     return Promise.resolve();
   }
@@ -188,7 +188,7 @@ describe("ReviewComments", () => {
   });
 
   it("AC3: deleting comment calls deleteComment", async () => {
-    const { element, source, fixture, settle } = await render();
+    const { element, source, settle } = await render();
     const open = element.querySelector("[data-comment=c2]");
     open?.querySelector<HTMLButtonElement>("[data-action=delete] button")?.click();
     await settle();

@@ -72,7 +72,7 @@ Permitir editar y eliminar comentarios en la revisión de la spec, deshabilitar 
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/delta-review.ts, packages/ui/src/review/review-actions.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/review-actions.test.ts --include src/review/spec-sections.test.ts
-- [ ] T4: Interfaz de edición y eliminación de comentarios en ReviewComments
+- [x] T4: Interfaz de edición y eliminación de comentarios en ReviewComments
   - files: packages/ui/src/review/comments.ts, packages/ui/src/review/comments.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/comments.test.ts

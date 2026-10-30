@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-edicion-y-eliminacion-de-comentarios-y-bloqueo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-edicion-y-eliminacion-de-comentarios-y-bloqueo",
   "baseCommit": "115b28a8160a96c2f75054f6a484bb524d088254",
   "revision": 1,
@@ -61,14 +61,25 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/review/review-actions.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "22fd490baa805f2712e4a2ef04eac90f949f9450",
+      "attempts": 1,
       "startedAt": "2026-10-30T09:10:52.186Z",
       "doneAt": "2026-10-30T09:53:21.382Z",
-      "summary": "bloqueo de aprobación ante comentarios abiertos y deshabilitación de acciones en supuestos comentados"
+      "summary": "bloqueo de aprobación ante comentarios abiertos y deshabilitación de acciones en supuestos comentados",
+      "scopeExtra": [
+        "packages/ui/src/review/review-actions.test.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/review/comments.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "ea1fcadeac5344112d35d9035cea906f3cd198f4",
+      "startedAt": "2026-10-30T09:53:21.714Z",
+      "doneAt": "2026-10-30T10:02:22.245Z",
+      "summary": "interfaz para editar y eliminar comentarios en ReviewComments"
     }
   },
   "pending": {
@@ -79,11 +90,11 @@
     "A": 3,
     "AC": 5,
     "T": 4,
-    "S": 3
+    "S": 4
   },
   "lockedTests": {
     "packages/ui/src/data/fixtures.test.ts": "sha256:1a642e6e2264a62a9c1d8ad1f0357afb7c78f36e4bf5f3ad111d346046de8676",
-    "packages/ui/src/review/comments.test.ts": "sha256:8ea85ad0b22b1cc365fbfec0f8d25d2300d2b8cc73663d85535af28d6d6a946d",
+    "packages/ui/src/review/comments.test.ts": "sha256:cdea0f6e07aa9cea5cd664b33004a31d040041d105dc52f1e5da30d0804406b2",
     "packages/ui/src/review/review-actions.test.ts": "sha256:d18d3a76493a4f0df0ababa7f6d18bd39a84bc9b1159a55c2b56f4e520c8b7b5",
     "packages/ui/src/review/spec-sections.test.ts": "sha256:4ca8a9f953b0ca0631563cb7fdd267efee23ffe5ae49f5bb851f5a2ee17c6551",
     "packages/cli/src/server/actions.test.ts": "sha256:2588245f917c23503143df55c203975f76dd9b06c4cadea334371c57337c5bff",
