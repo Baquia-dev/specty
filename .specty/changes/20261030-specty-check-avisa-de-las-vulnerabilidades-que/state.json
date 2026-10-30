@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-specty-check-avisa-de-las-vulnerabilidades-que",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-specty-check-avisa-de-las-vulnerabilidades-que",
   "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
   "revision": 1,
@@ -47,12 +47,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c6fad284f5637bcf0782a4efb54bd6e740278197",
+      "attempts": 1,
       "startedAt": "2026-10-30T12:52:06.061Z",
       "doneAt": "2026-10-30T12:53:32.865Z",
-      "summary": "Los ejemplos por stack apagan vulnerabilities (el de Go cambia go.mod y un OSV-Scanner instalado consultaría osv.dev) y el test de las guías lo cuenta entre los checks que su ejemplo no muestra"
+      "summary": "Los ejemplos por stack apagan vulnerabilities (el de Go cambia go.mod y un OSV-Scanner instalado consultaría osv.dev) y el test de las guías lo cuenta entre los checks que su ejemplo no muestra",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8b1c2983de3ff94a5dc7dc195f6237688f380162",
+      "startedAt": "2026-10-30T12:53:33.229Z",
+      "doneAt": "2026-10-30T12:53:41.188Z",
+      "summary": "checks.md y checks.en.md documentan vulnerabilities (lockfiles, solo lo que trae el cambio, osv-scanner.toml, osv.dev, cómo apagarlo); formats.md §6 detalla las dos copias, el comando y el 127; ARCHITECTURE lo añade a la lista de specty check"
     }
   },
   "pending": {

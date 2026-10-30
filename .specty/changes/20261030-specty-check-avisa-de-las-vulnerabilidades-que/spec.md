@@ -68,7 +68,7 @@ Sigue el mismo patrón que `secrets` (ADR 0012): una herramienta externa, opcion
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts test/check-examples-native.test.ts && pnpm lint
   - type: test
-- [ ] T3: La documentación cuenta el check
+- [x] T3: La documentación cuenta el check
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
