@@ -70,6 +70,7 @@ Lo calcula Specty, sin diff-cover (una herramienta de Python), y vale para cualq
 - modificar docs/checks.en.md — el check nuevo, en inglés
 - modificar docs/formats.md — `checks.coverage` y el check en la lista
 - modificar docs/ARCHITECTURE.md — el check en la lista de `specty check`
+- modificar packages/cli/test/check-docs.test.ts — añade `diff-coverage` a los checks que su ejemplo no muestra, como `secrets` y `tests-locked`
 
 ## Tareas
 
@@ -86,6 +87,11 @@ Lo calcula Specty, sin diff-cover (una herramienta de Python), y vale para cualq
   - ac: —
   - verify: pnpm lint
   - type: docs
+- [ ] T4: El test de las guías cuenta diff-coverage, que su ejemplo no muestra
+  - files: packages/cli/test/check-docs.test.ts
+  - ac: —
+  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts && pnpm lint
+  - type: test
 
 ## Riesgos
 
