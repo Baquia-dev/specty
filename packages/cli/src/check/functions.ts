@@ -81,7 +81,7 @@ async function measureFiles(context: CheckContext): Promise<Measured[]> {
       if (text === undefined) return [];
       const [current, then] = await versions(path, text, await context.before(path));
       return current.map((now) => {
-        const pair = now.name === undefined ? undefined : pairOf(now, current, then);
+        const pair = pairOf(now, current, then);
         return pair === undefined ? { path, now } : { path, now, before: pair };
       });
     }),
@@ -106,6 +106,10 @@ async function versions(
   return [functionMetrics(path, text), before === undefined ? [] : functionMetrics(path, before)];
 }
 
+/**
+ * Its pair where the run starts: the one in the same place among those of its name, or among those
+ * without one, as callbacks and accessors, which otherwise would fail when touched without growing.
+ */
 function pairOf(
   now: FunctionMetric,
   current: readonly FunctionMetric[],

@@ -24,6 +24,12 @@ const GRAMMARS: readonly (readonly [RegExp, Grammar])[] = [
   [/\.[cm]?ts$/, { file: "typescript", language: "typescript" }],
   [/\.tsx$/, { file: "tsx", language: "typescript" }],
   [/\.[cm]?jsx?$/, { file: "javascript", language: "javascript" }],
+  [/\.java$/, { file: "java", language: "java" }],
+  [/\.cs$/, { file: "c_sharp", language: "csharp" }],
+  [/\.php$/, { file: "php", language: "php" }],
+  // A `.h` may be C++: if it does not parse as C, the line estimator measures it.
+  [/\.[ch]$/, { file: "c", language: "c" }],
+  [/\.(?:cc|cpp|cxx|hpp|hh)$/, { file: "cpp", language: "cpp" }],
 ];
 
 // The files in `node_modules`, each package named whole in a `require.resolve`, so that knip sees
