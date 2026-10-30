@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "baseCommit": "4d47f9cd6a16ef9b88a1a12778cafc358ad10c1e",
-  "revision": 3,
+  "revision": 4,
   "approved": {
     "revision": 3,
     "hash": "sha256:9c036e7be5df48dfbe1ae74042ff9fd3485c1b52a847067a85893be681376a1e",
@@ -72,12 +72,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cf51df81cc94a2a470788ea68385c91a6c87155a",
+      "attempts": 1,
       "startedAt": "2026-10-30T09:09:46.487Z",
       "doneAt": "2026-10-30T09:10:01.569Z",
-      "summary": "CoverageGapView y RunCoverageView dejan de exportarse: solo los usa VerificationView, y knip queda en verde"
+      "summary": "CoverageGapView y RunCoverageView dejan de exportarse: solo los usa VerificationView, y knip queda en verde",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -90,6 +90,7 @@
     "T": 5,
     "R": 1
   },
+  "closingSubmittedAt": "2026-10-30T09:18:33.816Z",
   "lockedTests": {
     "packages/cli/test/check-coverage.test.ts": "sha256:c1e315e62225df171abb86f51302594b9cb1b3bf0b05cc15ab0547d13235a0fd",
     "packages/ui/src/acceptance/full-verification.test.ts": "sha256:e3b4d445342ffcbcf0e05670deecd62118c2f015cae658d34a157f0a794ed8fa",

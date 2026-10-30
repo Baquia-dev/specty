@@ -83,3 +83,25 @@ La verificación completa ya anota en `change.verified` qué parte de las línea
 ## Riesgos
 
 - R1: Las rutas nuevas con `*` recorren más carpetas al buscar informes — `*` no entra en dependencias ni en carpetas ocultas, y solo se leen los informes modificados durante la ejecución.
+
+## Cierre
+
+### Resumen
+
+La sección Verificación completa de Aceptación (UI y chat) muestra, cuando el último resultado pasó y anotó `coverage`, qué parte de las líneas que añade el cambio ejecutaron los tests («Los tests ejecutan el 92 % … (120 de 130).»), con los tramos sin ejecutar y cuántos más quedan. `progressOf` lee la cobertura con cuidado y la verificación simulada del prototipo trae una. Las rutas por defecto de `checks.coverage.reports` incluyen `coverage/<proyecto>/lcov.info` (como Angular), y los tests de la UI dejan `packages/ui/coverage/specty-ui/lcov.info`.
+
+### Desviaciones
+
+- La primera aceptación falló en `knip`: los dos tipos nuevos de `progress.ts` se exportaban sin uso, y la verificación de T2 no incluía `knip`. Un ajuste añadió T5 (`chore`), que deja de exportarlos.
+- La verificación completa de esta aceptación no anotó cobertura: lo único medible del cambio está en la UI, cuyo informe solo encuentran las rutas nuevas de este cambio, aún no las del `specty` de main. Con el CLI de esta carpeta, `specty check --changed` dio `diff-coverage` OK sobre datos reales.
+
+### Decisiones
+
+- La UI no conoce `checks.coverage.warn`: muestra siempre el porcentaje y los tramos, sin tono de aviso.
+- Solo se muestra la cobertura de un último resultado que pasó, como en la terminal.
+
+### Pendientes
+
+- Un cambio rápido: los tests de exporters y vscode dejan LCOV (`lcovonly` en sus `vitest.config.ts`).
+- Comprobar la cobertura en la nota de `accept` y en Aceptación en el próximo cambio que añada código medible, con el dist de main reconstruido.
+- Las verificaciones de cada tarea podrían incluir `knip` cuando tocan exportaciones, para no descubrirlo al aceptar.
