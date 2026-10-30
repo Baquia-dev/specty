@@ -45,3 +45,22 @@ Permitir que la persona fije el tooltip contextual de una sigla (`A`, `AC`, `T`,
   - files: packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts
+
+## Cierre
+
+### Resumen
+
+Se implementó el estado fijado (`pinned`) en la directiva `ItemTooltips` al hacer click sobre cualquier elemento detonador de sigla (`A`, `AC`, `T`, `R`, `S`, `C`). Al fijarse, el tooltip no se cierra al retirar el puntero y muestra un botón con icono "✕" en la esquina superior derecha (`[data-item-close]`, con `aria-label` accesible según idioma) para cerrarlo y desfijarlo. También se desfija y cierra al pulsar `Escape` o al hacer click nuevamente en la sigla. Si el tooltip se activa únicamente por hover o foco, mantiene su comportamiento ligero sin botón de cierre.
+
+### Desviaciones
+
+- Para cumplir con el límite estricto de 50 líneas por función (`function-lines`), la función `renderBubble` se dividió en funciones auxiliares cohesivas (`closeButton` y `bubbleHeader`).
+
+### Decisiones
+
+- D1: El botón de cierre solo se renderiza en el DOM cuando el tooltip está en modo fijado (`pinned === true`), preservando la limpieza del DOM y la compatibilidad de `textContent` en modo hover.
+- D2: El click sobre el botón de cierre detiene la propagación del evento para evitar que elementos contenedores intercepten la acción.
+
+### Pendientes
+
+- Ninguno.
