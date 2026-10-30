@@ -30,30 +30,12 @@ interface Found {
   readonly end: number;
 }
 
+// How far a name may be from its function, field after field: C's `static int *total(int x)`
+// takes three steps.
+const NAME_DEPTH = 5;
+
 export function treeFunctions(language: TreeLanguage, root: SyntaxNode): FunctionMetric[] {
-  const grammar = TREE_GRAMMARS[language];
-  const rows = new Set<number>();
-  const found: Found[] = [];
-  const branches = new Map<Found, number>();
-  // Depth first, in the order of the source, without recursion: a long chain of `+` or of
-  // `else if` nests as deep as it is long.
-  const pending: [SyntaxNode, Found | undefined][] = [[root, undefined]];
-  for (let next = pending.pop(); next !== undefined; next = pending.pop()) {
-    const [node, owner] = next;
-    let inner = owner;
-    if (node.isNamed && grammar.functions.has(node.type)) {
-      inner = functionOf(grammar, node);
-      found.push(inner);
-    } else if (owner !== undefined && isBranch(grammar, node)) {
-      branches.set(owner, (branches.get(owner) ?? 0) + 1);
-    }
-    const children = node.children;
-    if (children.length === 0) codeRows(grammar, node, rows);
-    for (let index = children.length - 1; index >= 0; index -= 1) {
-      const child = children[index];
-      if (child !== undefined) pending.push([child, inner]);
-    }
-  }
+  const { rows, found, branches } = walk(TREE_GRAMMARS[language], root);
   return found.map((fn) => {
     let lines = 0;
     for (let row = fn.start; row <= fn.end; row += 1) if (rows.has(row)) lines += 1;
@@ -67,42 +49,111 @@ export function treeFunctions(language: TreeLanguage, root: SyntaxNode): Functio
   });
 }
 
-/** A function from its first child that is not a decorator or a comment to its last row. */
+/** What one pass over the tree gathers. */
+interface Walked {
+  /** The rows with code. */
+  readonly rows: Set<number>;
+  /** The functions, in the order of the source. */
+  readonly found: Found[];
+  /** The branches of each function, without those of the functions inside it. */
+  readonly branches: Map<Found, number>;
+}
+
+function walk(grammar: TreeGrammar, root: SyntaxNode): Walked {
+  const walked: Walked = { rows: new Set(), found: [], branches: new Map() };
+  // Depth first, in the order of the source, without recursion: a long chain of `+` or of
+  // `else if` nests as deep as it is long.
+  const pending: [SyntaxNode, Found | undefined][] = [[root, undefined]];
+  for (let next = pending.pop(); next !== undefined; next = pending.pop()) {
+    const [node, owner] = next;
+    // A comment is no code, nor are its children, as the doc comments of Rust have.
+    if (grammar.comments.has(node.type)) continue;
+    const inner = visit(grammar, node, owner, walked);
+    const children = node.children;
+    if (children.length === 0) codeRows(node, walked.rows);
+    for (let index = children.length - 1; index >= 0; index -= 1) {
+      const child = children[index];
+      if (child !== undefined) pending.push([child, inner]);
+    }
+  }
+  return walked;
+}
+
+/** A node as a function, which owns what is inside it, or as a branch of the one that owns it. */
+function visit(
+  grammar: TreeGrammar,
+  node: SyntaxNode,
+  owner: Found | undefined,
+  walked: Walked,
+): Found | undefined {
+  if (node.isNamed && grammar.functions.has(node.type)) {
+    const fn = functionOf(grammar, node);
+    walked.found.push(fn);
+    return fn;
+  }
+  if (owner !== undefined && isBranch(grammar, node)) {
+    walked.branches.set(owner, (walked.branches.get(owner) ?? 0) + 1);
+  }
+  return owner;
+}
+
+/** A function from its first token past its decorators and comments to its last row. */
 function functionOf(grammar: TreeGrammar, node: SyntaxNode): Found {
-  const header = node.children.find((child) => !grammar.prefixes.has(child.type)) ?? node;
-  const name = nameOf(grammar, node);
+  const header = firstToken(grammar, node) ?? node;
+  const name = nameIn(grammar, node, 0) ?? receivedName(grammar, node);
   const rows = { start: header.startPosition.row, end: node.endPosition.row };
   return name === undefined ? rows : { name, ...rows };
 }
 
-/** Its own name or, when it has none, that of the variable, member or key that receives it. */
-function nameOf(grammar: TreeGrammar, node: SyntaxNode): string | undefined {
-  const own = node.childForFieldName("name");
-  if (own !== null) return nameText(grammar, own);
-  const parent = node.parent;
-  const field = parent === null ? undefined : grammar.receivers[parent.type];
-  const target = field === undefined ? null : (parent?.childForFieldName(field) ?? null);
-  if (target === null) return undefined;
-  const named = grammar.members.has(target.type) ? target.childForFieldName("property") : target;
-  return named === null ? undefined : nameText(grammar, named);
+function firstToken(grammar: TreeGrammar, node: SyntaxNode): SyntaxNode | undefined {
+  if (grammar.prefixes.has(node.type) || grammar.comments.has(node.type)) return undefined;
+  if (node.children.length === 0) return node;
+  for (const child of node.children) {
+    const token = firstToken(grammar, child);
+    if (token !== undefined) return token;
+  }
+  return undefined;
 }
 
-function nameText(grammar: TreeGrammar, node: SyntaxNode): string | undefined {
-  if (!grammar.names.has(node.type)) return undefined;
-  return node.text.replace(/^(["'`])(.*)\1$/s, "$2");
+/** The name that `nameFields` and `carriers` lead to from a node, which is not itself a name. */
+function nameIn(grammar: TreeGrammar, node: SyntaxNode, depth: number): string | undefined {
+  if (depth > 0 && grammar.names.has(node.type)) {
+    return node.text.replace(/^(["'`])(.*)\1$/s, "$2");
+  }
+  if (depth >= NAME_DEPTH) return undefined;
+  for (const field of grammar.nameFields) {
+    const child = node.childForFieldName(field);
+    const name = child === null ? undefined : nameIn(grammar, child, depth + 1);
+    if (name !== undefined) return name;
+  }
+  if (!grammar.carriers.has(node.type)) return undefined;
+  const first = node.children.find((child) => child.isNamed);
+  return first === undefined ? undefined : nameIn(grammar, first, depth + 1);
+}
+
+/** For a function without a name, that of the variable, member or key that receives it. */
+function receivedName(grammar: TreeGrammar, node: SyntaxNode): string | undefined {
+  const parent = node.parent;
+  const key = parent === null ? undefined : grammar.receivers.get(parent.type);
+  if (parent === null || key === undefined) return undefined;
+  const target =
+    parent.childForFieldName(key) ?? parent.children.find((child) => child.type === key);
+  return target === undefined ? undefined : nameIn(grammar, target, 1);
 }
 
 function isBranch(grammar: TreeGrammar, node: SyntaxNode): boolean {
-  if (!node.isNamed) return false;
+  if (!node.isNamed) {
+    // A logical operator, as a token: some grammars nest `a && b && c`, others keep it flat.
+    const parent = node.parent;
+    return grammar.operators.has(node.type) && parent !== null && grammar.logical.has(parent.type);
+  }
   if (grammar.branches.has(node.type)) return true;
-  if (!grammar.logical.has(node.type)) return false;
-  const operator = node.childForFieldName("operator");
-  return operator !== null && grammar.operators.has(operator.type);
+  const keyword = grammar.cases.get(node.type);
+  return keyword !== undefined && node.children[0]?.type === keyword;
 }
 
-/** The rows where a leaf has code: not a comment, and not blank inside a string of many lines. */
-function codeRows(grammar: TreeGrammar, leaf: SyntaxNode, rows: Set<number>): void {
-  if (grammar.comments.has(leaf.type)) return;
+/** The rows where a leaf has code: not blank inside a string of many lines. */
+function codeRows(leaf: SyntaxNode, rows: Set<number>): void {
   const { startPosition: start, endPosition: end } = leaf;
   if (start.row === end.row) {
     // A token without width, as the semicolon that JavaScript inserts, is no code.

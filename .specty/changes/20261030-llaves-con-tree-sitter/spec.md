@@ -64,7 +64,7 @@ epic: 20261030-tree-sitter-mide-las-funciones
 
 ## Tareas
 
-- [ ] T1: El core mide C, C++, Java, C# y PHP sobre el árbol
+- [x] T1: El core mide C, C++, Java, C# y PHP sobre el árbol
   - files: packages/core/src/checks/functions-tree.ts, packages/core/src/checks/tree-languages.ts, packages/core/src/checks/tree-languages-c.ts, packages/core/test/checks/functions-tree-c.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree-c.test.ts test/checks/functions-tree.test.ts test/checks/functions-tree-names.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

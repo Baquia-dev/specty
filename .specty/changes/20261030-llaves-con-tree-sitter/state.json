@@ -57,7 +57,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6b3e41d01b6f97c7d42ce2dcd7c1b7e37b01cf5e",
+      "startedAt": "2026-10-30T10:44:51.799Z",
+      "doneAt": "2026-10-30T10:49:44.714Z",
+      "summary": "El core generaliza la medida sobre el árbol (comentarios con sus hijos, primer token fuera de anotaciones, nombres por campos y declaradores, case por su token, operadores lógicos por token) y suma las tablas de C, C++, Java, C# y PHP."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
