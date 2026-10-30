@@ -81,7 +81,7 @@ Lo calcula Specty, sin diff-cover (una herramienta de Python), y vale para cualq
   - files: packages/cli/test/check-coverage.test.ts, packages/cli/src/check/coverage.ts, packages/cli/src/check/provider.ts, packages/cli/src/check/files.ts, packages/cli/src/check/common.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-coverage.test.ts test/check-commands.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T3: La documentación cuenta el check
+- [x] T3: La documentación cuenta el check
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

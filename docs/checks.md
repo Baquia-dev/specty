@@ -284,6 +284,16 @@ Busca secretos con Betterleaks o, si no está, con gitleaks, sobre una copia tem
 
 **Desactivar:** `levels: { secrets: off }`.
 
+### `diff-coverage`
+
+**Stack:** cualquiera que deje un informe de cobertura: LCOV (Vitest, Jest, `flutter test --coverage`, cargo-llvm-cov, gcov), Cobertura (coverage.py, coverlet, PHPUnit), JaCoCo (Maven y Gradle) o el perfil de Go (`go test -coverprofile`).
+
+Dice qué parte de las líneas ejecutables que añade el cambio ejecutó algún test, y nombra los tramos que ninguno ejecuta como `ruta:línea`. Specty no ejecuta los tests con cobertura: lee el informe que dejan los tests del proyecto en la misma ejecución de `specty check`. Por eso corre después de las demás verificaciones, y solo lee los informes modificados desde que empezó. Sin los tests (como en `task done` con verificación propia), con un informe de antes o sin ninguna línea añadida que mida el informe, no aparece. Las rutas de un monorepo, de un módulo de Go o de la carpeta de fuentes de Java se emparejan con el archivo del repositorio.
+
+**Configuración:** `coverage: { reports: [...], warn: 80, error: 60 }`. `reports` son las rutas donde los tests dejan su informe, con `*` dentro de un tramo; las de por defecto cubren las de las herramientas habituales. Por debajo de `warn` es un aviso, y por debajo de `error`, si está, un fallo. Los tests del proyecto tienen que escribir el informe: en Vitest, por ejemplo, `coverage.reporter: ["lcov"]`.
+
+**Desactivar:** `levels: { diff-coverage: off }`.
+
 ### `spec-approved`
 
 **Con:** `--spec`.
