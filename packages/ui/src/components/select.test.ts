@@ -146,4 +146,16 @@ describe("Select", () => {
     expect(list()?.hidden ?? true).toBe(true);
     expect(text(trigger)).toBe("Tamaño, de mayor a menor");
   });
+
+  it("AC4: in the chat, its list is opaque with the chat's ground and marks options with the text's tint", async () => {
+    const { trigger, list, options, settle } = await render();
+    trigger?.click();
+    await settle();
+    expect(list()?.classList.contains("embedded:bg-bg")).toBe(true);
+    expect(options().length).toBeGreaterThan(0);
+    for (const option of options()) {
+      expect(option.classList.contains("embedded:hover:bg-text/6")).toBe(true);
+      expect(option.classList.contains("embedded:data-[active=true]:bg-text/6")).toBe(true);
+    }
+  });
 });

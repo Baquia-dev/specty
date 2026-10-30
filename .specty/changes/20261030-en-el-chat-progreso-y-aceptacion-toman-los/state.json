@@ -6,6 +6,13 @@
   "branch": "specty/20261030-en-el-chat-progreso-y-aceptacion-toman-los",
   "baseCommit": "d3c17f59d9b00f4e3b07196f703d8fa980d8a44d",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ba3a2606e2515f2709f4d537b256d41e840250b31606958b2e38118e6f6f052c",
+    "at": "2026-10-30T07:50:39.629Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -51,12 +58,6 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:ba3a2606e2515f2709f4d537b256d41e840250b31606958b2e38118e6f6f052c",
-    "at": "2026-10-30T07:50:39.629Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T07:52:48.540Z"
 }
