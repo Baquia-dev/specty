@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261030-specty-check-avisa-de-las-vulnerabilidades-que",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-specty-check-avisa-de-las-vulnerabilidades-que",
+  "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 5,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e9aac235a7fc8b6962ae7d6b77723bb18a37fef8584ec19bc26634f9a257dcd6",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:196a8cf21882f6737a052291677cdd0215e6a7c2d666fdf70f1209fd6552968f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:c83750e0fcf1ff56cc3d9ee85c1751b21d387d75e9448e5aea4988b1480c3382",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:83a0328c41d5389cf65b22bd0fb16fbaac5f812319acbd53b8b318773a4ca135",
+    "at": "2026-10-30T12:44:10.406Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
