@@ -19,3 +19,9 @@ Asegurar que el tooltip fijado muestre claramente el color mate identificador as
 - [x] T1: Color indicador en el tooltip fijado mediante línea vertical izquierda y viñeta
   - files: packages/ui/src/styles.css, packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts
+
+## Cierre
+
+### Resumen
+
+Asociación del color identificador mate en el tooltip fijado mediante línea vertical izquierda y viñeta

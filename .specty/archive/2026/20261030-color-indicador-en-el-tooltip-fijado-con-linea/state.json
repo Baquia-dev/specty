@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-color-indicador-en-el-tooltip-fijado-con-linea",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-color-indicador-en-el-tooltip-fijado-con-linea",
   "baseCommit": "bb2d0c9acb319ef6d844523d398e129af6a6b9d0",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b4e1efdade9f53e7db8f294268cb044870965536",
+      "attempts": 1,
       "startedAt": "2026-10-30T08:15:26.512Z",
       "doneAt": "2026-10-30T08:22:50.679Z",
-      "summary": "Asociación del color identificador mate en el tooltip fijado mediante línea vertical izquierda y viñeta"
+      "summary": "Asociación del color identificador mate en el tooltip fijado mediante línea vertical izquierda y viñeta",
+      "scopeExtra": []
     }
   },
   "pending": {
