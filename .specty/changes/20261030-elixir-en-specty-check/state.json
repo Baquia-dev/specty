@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1759bf04b97c06a104e0b91ec4f8ac1d5f8d4d30",
+      "startedAt": "2026-10-30T11:35:51.117Z",
+      "doneAt": "2026-10-30T11:36:40.456Z",
+      "summary": "specty check mide Elixir (.ex y .exs) con tree-sitter: la gramática sale de su paquete, y el proveedor de funciones ya no deja ningún stack fuera."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

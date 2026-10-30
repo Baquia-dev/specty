@@ -59,7 +59,7 @@ Elixir era el único stack sin `function-lines` ni `complexity`. El cambio previ
 
 ## Tareas
 
-- [ ] T1: specty check mide Elixir con tree-sitter
+- [x] T1: specty check mide Elixir con tree-sitter
   - files: packages/cli/src/check/syntax.ts, packages/cli/src/check/functions.ts, packages/cli/package.json, packages/cli/test/check-functions-elixir.test.ts, packages/cli/test/check-functions.test.ts, pnpm-lock.yaml
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-elixir.test.ts test/check-functions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

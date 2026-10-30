@@ -6,7 +6,6 @@ import {
   isTestFile,
   translator,
 } from "@baquia-dev/specty-core";
-import type { Stack } from "../detect/stack";
 import type { CheckContext, CheckDefinition, Provider } from "./provider";
 import { treeMetrics } from "./syntax";
 
@@ -26,12 +25,10 @@ interface Measured {
   readonly before?: FunctionMetric;
 }
 
-// The stacks whose language `functionMetrics` has no estimator for.
-const UNMEASURED: ReadonlySet<Stack["language"]> = new Set(["elixir"]);
-
+// Every stack's language has a grammar, and all but Elixir's a line estimator too.
 export const functionsProvider: Provider = {
   id: "functions",
-  applies: (stacks) => stacks.some((stack) => !UNMEASURED.has(stack.language)),
+  applies: (stacks) => stacks.length > 0,
   checks: [check("function-lines", "lines"), check("complexity", "complexity")],
 };
 
