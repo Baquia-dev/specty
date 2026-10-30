@@ -20,3 +20,9 @@ En las sesiones medidas, el 40 % de las llamadas al modelo hacían una sola lect
 - [x] T1: Las lecturas independientes se piden juntas
   - files: packages/core/src/agents-md.ts, packages/core/test/cards.test.ts, AGENTS.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts && pnpm lint
+
+## Cierre
+
+### Resumen
+
+La regla de localizar el código pide además juntar en la misma respuesta las lecturas y búsquedas que no dependen entre sí (español e inglés), como segunda mitad de esa línea para no pasar de las 15 líneas del bloque que ya exige su test; AGENTS.md y formats.md la reproducen.
