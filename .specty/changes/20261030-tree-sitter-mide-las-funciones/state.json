@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "20261030-tree-sitter-mide-las-funciones",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261030-tree-sitter-mide-las-funciones",
+  "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4add5b560d6bf9220146fd27dea7c09e2c313a170af4e97e3997d3523861e891",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6246259ab753b76e01c97d302896ea68e8f37850bec19c49dd42b9e08843cf6d",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:c6f96238020aad952aa423e427dddbdda81809936067df7d96baeab56347e600",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:da310dbd849af1122b23b06648061b02515a48d95b0b61f85d3e5b345d1f45aa",
+      "decision": "confirmed"
+    },
+    "A5": {
+      "hash": "sha256:1298724b94f997d4a9a00080b1df52357dc5fed988ae2f6a8fc31fc643d0df1a",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:e63c00d197d498d6b61f4c23be961e79b74fe0d389802857b76515c70ef9a7c9",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:7fc3e7c6872e4ff1ede7e0b096f3d7dd9fb11a4498423b34816d9880cc468e95",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:a87642e21f57c29584173a83bed1c090279caff72f7886b48ed8a1f157d3c15f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 11,
+    "C": 3,
+    "R": 6
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3a5f633bb31874909b05a5bae245aaf8cde3c1b58449854324f069937b07bd0a",
+    "at": "2026-10-30T10:06:14.024Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
