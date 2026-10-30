@@ -163,6 +163,16 @@ describe("Inbox toolbar", () => {
     expect(titles).toEqual(titles.toSorted((a, b) => a.localeCompare(b, "es")));
   });
 
+  it("AC4: offers grouping by epic in the header options and groups non-epic changes by kind", async () => {
+    const { element, sections, settle } = await open();
+    const groups = () => [...element.querySelectorAll<HTMLButtonElement>("[data-group] button")];
+    expect(groups().map(text)).toEqual(["Estado", "Fase", "Sin agrupar", "Épica"]);
+    groups()[3]?.click();
+    await settle();
+    expect(localStorage.getItem("specty.inbox.group")).toBe("epic");
+    expect(sections()).toEqual(["Specs individuales 8", "Cambios quick 2"]);
+  });
+
   it("says when nothing matches, how many are shown, and clears the filters (AC5)", async () => {
     const { element, rows, settle, typeIn } = await open();
     await typeIn("correo");

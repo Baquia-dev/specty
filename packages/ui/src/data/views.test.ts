@@ -157,6 +157,32 @@ describe("deriveView", () => {
     expect(empty.problems.some((problem) => problem.startsWith("spec.md"))).toBe(true);
     expect(empty.title).toBe("20261020-evolucion-trimestre");
   });
+
+  it("AC1: derives epic id, slice and resolved epic title when frontmatter declares epic", () => {
+    const epicSpec = `---\nkind: epic\n---\n\n# Panel académico integral\n\n## Objetivo\n\nUnificar seguimiento.\n`;
+    const sliceSpec = SPEC.replace(
+      "kind: standard",
+      "kind: standard\nepic: 20261015-panel-academico\nslice: C1",
+    );
+    const epicRecord = record({ id: "20261015-panel-academico", kind: "epic" }, epicSpec);
+    const sliceRecord = record({ id: "20261020-evolucion-trimestre" }, sliceSpec);
+    expect(deriveView(record())).not.toHaveProperty("epic");
+    expect(deriveView(sliceRecord)).toMatchObject({
+      epic: {
+        id: "20261015-panel-academico",
+        title: "20261015-panel-academico",
+        slice: "C1",
+      },
+    });
+    const [, resolved] = deriveViews([epicRecord, sliceRecord]);
+    expect(resolved).toMatchObject({
+      epic: {
+        id: "20261015-panel-academico",
+        title: "Panel académico integral",
+        slice: "C1",
+      },
+    });
+  });
 });
 
 describe("decisions and tabs", () => {

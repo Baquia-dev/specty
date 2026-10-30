@@ -4,7 +4,7 @@ import { provideRouter, Router, withComponentInputBinding } from "@angular/route
 import { APP_ROUTES } from "../app/routes";
 import { Shell } from "../app/shell";
 import { DERIVER } from "../data/changes-store";
-import { FixtureData } from "../data/fixtures";
+import { FixtureData, sampleRecords } from "../data/fixtures";
 import type { ChangeRecord as ChangeRecordForTest } from "../data/records";
 import { type ChangeRecord, SpectyData } from "../data/records";
 import { deriveViews } from "../data/views";
@@ -245,4 +245,104 @@ describe("Inbox", () => {
     await settle();
     expect(element.querySelector("sp-inbox [role=alert]")).toBeNull();
   });
+
+  it("AC2, AC3, AC5: identifies each change kind in Inbox and ChangePage and groups epic slices visually", async () => {
+    const { element, row, router, settle } = await open();
+    expect(
+      row("20261020-evolucion-trimestre")
+        ?.querySelector("sp-kind-badge")
+        ?.getAttribute("data-kind"),
+    ).toBe("standard");
+    expect(text(row("20261020-evolucion-trimestre")?.querySelector("sp-kind-badge"))).toBe(
+      "Individual",
+    );
+    expect(
+      row("20261021-modo-oscuro")?.querySelector("sp-kind-badge")?.getAttribute("data-kind"),
+    ).toBe("quick");
+    expect(text(row("20261021-modo-oscuro")?.querySelector("sp-kind-badge"))).toBe("Quick");
+
+    await router.navigateByUrl("/changes/20261020-evolucion-trimestre");
+    await settle();
+    const heroBadge = element.querySelector("sp-change-page [data-hero] sp-kind-badge");
+    expect(heroBadge?.getAttribute("data-kind")).toBe("standard");
+    expect(text(heroBadge)).toBe("Individual");
+  });
+
+  it("AC3: renders a visual [data-epic-group] container when changes in a section belong to an epic", async () => {
+    const base = sampleRecordsForEpic();
+    class EpicData extends SpectyData {
+      changes(): Promise<readonly ChangeRecord[]> {
+        return Promise.resolve(base);
+      }
+      subscribe(): () => void {
+        return () => undefined;
+      }
+    }
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter(APP_ROUTES, withComponentInputBinding()),
+        { provide: SpectyData, useClass: EpicData },
+        IN_THREAD,
+      ],
+    });
+    const fixture = TestBed.createComponent(Shell);
+    await TestBed.inject(Router).navigateByUrl("/");
+    for (let round = 0; round < 40; round++) {
+      await fixture.whenStable();
+      await new Promise((resolve) => setTimeout(resolve));
+    }
+    const element: HTMLElement = fixture.nativeElement;
+    const group = element.querySelector<HTMLElement>('[data-epic-group="20261015-panel"]');
+    expect(group).not.toBeNull();
+    expect(text(group?.querySelector("[data-epic-header]"))).toContain("Épica: Panel académico");
+    const groupRows = [...(group?.querySelectorAll<HTMLElement>("sp-inbox-row") ?? [])];
+    expect(groupRows.map((item) => short(item.dataset.id))).toEqual([
+      "asistencia-curso",
+      "justificar-faltas",
+    ]);
+    expect(text(groupRows[0]?.querySelector("sp-kind-badge"))).toBe("Corte C1 · Panel académico");
+  });
 });
+
+function sampleRecordsForEpic(): readonly ChangeRecord[] {
+  const records = sampleRecords(Date.now());
+  const epicRecord: ChangeRecord = {
+    spec: "---\nkind: epic\n---\n\n# Panel académico\n\n## Objetivo\n\nSeguimiento.\n",
+    state: {
+      ...(records[0] ?? failRecord()).state,
+      id: "20261015-panel",
+      kind: "epic",
+      phase: "implementing",
+    },
+    phaseSince: new Date().toISOString(),
+  };
+  return [
+    epicRecord,
+    ...records.map((rec) => {
+      if (rec.state.id === "20261018-asistencia-curso") {
+        return {
+          ...rec,
+          spec: rec.spec.replace(
+            "kind: standard",
+            "kind: standard\nepic: 20261015-panel\nslice: C1",
+          ),
+        };
+      }
+      if (rec.state.id === "20261016-justificar-faltas") {
+        return {
+          ...rec,
+          spec: rec.spec.replace(
+            "kind: standard",
+            "kind: standard\nepic: 20261015-panel\nslice: C2",
+          ),
+        };
+      }
+      return rec;
+    }),
+  ];
+}
+
+function failRecord(): never {
+  throw new Error("missing fixture record");
+}

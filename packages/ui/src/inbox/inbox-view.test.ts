@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { sampleRecords } from "../data/fixtures";
+import type { ChangeView } from "../data/records";
 import { deriveViews } from "../data/views";
+import * as inboxViewModule from "./inbox-view";
 import {
   type InboxFilters,
+  type InboxSection,
   inboxSections,
   matchesQuery,
   phaseCounts,
@@ -98,6 +101,80 @@ describe("inbox view", () => {
       change.size ? order[change.size.level] : 0,
     );
     expect(sizes).toEqual(sizes.toSorted((a, b) => b - a));
+  });
+
+  it("AC3: clusters changes of the same epic contiguously in a section and builds epic blocks", () => {
+    const base = CHANGES[0] ?? fail();
+    const epicRef = { id: "20261015-panel", title: "Panel académico", slice: "C1" };
+    const slice1 = {
+      ...base,
+      id: "20261018-corte-1",
+      title: "Corte 1",
+      epic: epicRef,
+    } as ChangeView;
+    const standalone = { ...base, id: "20261019-sola", title: "Spec sola" } as ChangeView;
+    const slice2 = {
+      ...base,
+      id: "20261020-corte-2",
+      title: "Corte 2",
+      epic: { ...epicRef, slice: "C2" },
+    } as ChangeView;
+    const sections = inboxSections([slice1, standalone, slice2], DEFAULTS, "es");
+    expect(ids(sections[0]?.changes ?? [])).toEqual(["corte-1", "corte-2", "sola"]);
+    const sectionBlocks = (
+      inboxViewModule as {
+        sectionBlocks?: (
+          section: InboxSection,
+        ) => readonly {
+          kind: string;
+          epicId?: string;
+          title?: string;
+          changes?: readonly ChangeView[];
+        }[];
+      }
+    ).sectionBlocks;
+    expect(sectionBlocks).toBeDefined();
+    const blocks = sectionBlocks ? sectionBlocks(sections[0] ?? fail()) : [];
+    expect(blocks.map((b) => [b.kind, b.epicId, b.changes?.length])).toEqual([
+      ["epic", "20261015-panel", 2],
+      ["row", undefined, undefined],
+    ]);
+    expect(matchesQuery(slice1, "Panel académico")).toBe(true);
+    expect(matchesQuery(slice1, "C1")).toBe(true);
+  });
+
+  it("AC4: groups by epic into per-epic sections followed by sections per change kind", () => {
+    const base = CHANGES[0] ?? fail();
+    const make = (
+      id: string,
+      title: string,
+      kind: ChangeView["kind"],
+      epic?: { id: string; title: string; slice?: string },
+    ) => ({ ...base, id, title, kind, ...(epic ? { epic } : {}) }) as ChangeView;
+    const items = [
+      make("20261019-sola", "Spec sola", "standard"),
+      make("20261018-corte-1", "Corte 1", "standard", {
+        id: "20261015-panel",
+        title: "Panel académico",
+        slice: "C1",
+      }),
+      make("20261021-rapida", "Cambio rápido", "quick"),
+      make("20261015-panel", "Panel académico", "epic"),
+      make("20261022-manual", "Ajuste manual", "retro"),
+      make("20261023-spike", "Explorar caché", "spike"),
+    ];
+    const sections = inboxSections(
+      items,
+      { ...DEFAULTS, group: "epic" as InboxFilters["group"] },
+      "es",
+    );
+    expect(sections.map((s) => [s.key, s.label.es, ids(s.changes)])).toEqual([
+      ["epic:20261015-panel", "Épica · Panel académico", ["panel", "corte-1"]],
+      ["standard", "Specs individuales", ["sola"]],
+      ["quick", "Cambios quick", ["rapida"]],
+      ["retro", "Cambios manuales", ["manual"]],
+      ["spike", "Spikes", ["spike"]],
+    ]);
   });
 });
 

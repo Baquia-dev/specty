@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-import { Component, signal } from "@angular/core";
+import { Component, signal, type Type } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-import { PHASES, type Phase } from "@baquia-dev/specty-core";
+import { type ChangeKind, PHASES, type Phase } from "@baquia-dev/specty-core";
 import { PHASE_LABELS } from "../theme/tokens";
+import * as badgeModule from "./badge";
 import { Badge, PhaseBadge } from "./badge";
 import { Card } from "./card";
 import { Skeleton } from "./skeleton";
@@ -59,7 +60,80 @@ describe("PhaseBadge and Badge", () => {
     expect(badge?.textContent?.trim()).toBe("Tests");
     expect(badge?.querySelector("svg")?.getAttribute("class")).toContain("flask-conical");
   });
+
+  it("AC2: shows the icon and bilingual label for every change kind and epic slice", async () => {
+    const KindBadge = (badgeModule as { KindBadge?: Type<unknown> }).KindBadge;
+    expect(KindBadge).toBeDefined();
+    if (KindBadge === undefined) return;
+    expect(await renderKind(KindBadge, "es", "epic")).toEqual({
+      kind: "epic",
+      epic: undefined,
+      label: "Épica",
+      hasIcon: true,
+    });
+    expect(await renderKind(KindBadge, "en", "epic")).toMatchObject({
+      kind: "epic",
+      label: "Epic",
+    });
+    expect(await renderKind(KindBadge, "es", "standard")).toMatchObject({
+      kind: "standard",
+      label: "Individual",
+    });
+    expect(await renderKind(KindBadge, "en", "standard")).toMatchObject({
+      kind: "standard",
+      label: "Standalone",
+    });
+    expect(await renderKind(KindBadge, "es", "quick")).toMatchObject({
+      kind: "quick",
+      label: "Quick",
+    });
+    expect(await renderKind(KindBadge, "es", "retro")).toMatchObject({
+      kind: "retro",
+      label: "Manual",
+    });
+    expect(await renderKind(KindBadge, "es", "spike")).toMatchObject({
+      kind: "spike",
+      label: "Spike",
+    });
+    const slice = { id: "20261015-panel", title: "Panel académico", slice: "C1" };
+    expect(await renderKind(KindBadge, "es", "standard", slice)).toEqual({
+      kind: "slice",
+      epic: "20261015-panel",
+      label: "Corte C1 · Panel académico",
+      hasIcon: true,
+    });
+    expect(await renderKind(KindBadge, "en", "standard", slice)).toMatchObject({
+      kind: "slice",
+      epic: "20261015-panel",
+      label: "Slice C1 · Panel académico",
+    });
+  });
 });
+
+async function renderKind(
+  KindBadge: Type<unknown>,
+  lang: "es" | "en",
+  kind: ChangeKind,
+  epic?: { id: string; title: string; slice?: string },
+) {
+  window.matchMedia = (() => ({
+    matches: false,
+    addEventListener: () => undefined,
+  })) as unknown as typeof window.matchMedia;
+  localStorage.setItem("specty.lang", lang);
+  TestBed.resetTestingModule();
+  const fixture = TestBed.createComponent(KindBadge);
+  fixture.componentRef.setInput("kind", kind);
+  if (epic !== undefined) fixture.componentRef.setInput("epic", epic);
+  await fixture.whenStable();
+  const el: HTMLElement = fixture.nativeElement;
+  return {
+    kind: el.dataset.kind,
+    epic: el.dataset.epic,
+    label: el.textContent?.trim(),
+    hasIcon: el.querySelector("svg") !== null,
+  };
+}
 
 describe("Card", () => {
   it("shows and announces the selection (AC6)", async () => {
