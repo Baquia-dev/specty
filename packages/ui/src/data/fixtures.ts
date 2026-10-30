@@ -201,6 +201,24 @@ export class FixtureData extends SpectyData {
     });
   }
 
+  override editComment(change: string, id: string, body: string): Promise<void> {
+    return this.edit(change, (record) => {
+      const comments = record.comments ?? [];
+      const updated = comments.map((comment) =>
+        comment.id === id ? { ...comment, body } : comment,
+      );
+      return { ...record, comments: updated };
+    });
+  }
+
+  override deleteComment(change: string, id: string): Promise<void> {
+    return this.edit(change, (record) => {
+      const comments = record.comments ?? [];
+      const filtered = comments.filter((comment) => comment.id !== id);
+      return { ...record, comments: filtered };
+    });
+  }
+
   /** Noted in the audit, as the server does: the agent gets the comments in `specty next`. */
   override requestChanges(change: string): Promise<void> {
     return this.edit(change, (record) => requestChangesIn(record, Date.now()));

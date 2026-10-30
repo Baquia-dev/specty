@@ -40,15 +40,24 @@
   "tasks": {
     "T1": {
       "status": "done",
+      "baseCommit": "a86701a28edf4b47fe42943945db1e79316c5570",
+      "attempts": 1,
+      "startedAt": "2026-10-30T09:01:29.921Z",
+      "doneAt": "2026-10-30T09:08:42.273Z",
+      "summary": "acciones en CLI para editar y eliminar comentarios y bloqueo de aprobación ante comentarios abiertos",
       "scopeExtra": [
         "packages/cli/src/server/actions.test.ts",
         "packages/cli/test/src/server/actions.test.ts"
-      ],
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "a86701a28edf4b47fe42943945db1e79316c5570",
-      "startedAt": "2026-10-30T09:01:29.921Z",
-      "doneAt": "2026-10-30T09:08:42.273Z",
-      "summary": "acciones en CLI para editar y eliminar comentarios y bloqueo de aprobación ante comentarios abiertos"
+      "baseCommit": "4a8456155c0f0ee31f83e668d3cab005a7a6a7c5",
+      "startedAt": "2026-10-30T09:08:42.602Z",
+      "doneAt": "2026-10-30T09:10:51.824Z",
+      "summary": "métodos editComment y deleteComment en SpectyData, server y fixtures"
     }
   },
   "pending": {

@@ -51,6 +51,14 @@ export abstract class SpectyData {
     return Promise.reject(new ActionError(READ_ONLY));
   }
 
+  editComment(_change: string, _id: string, _body: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
+  deleteComment(_change: string, _id: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
+  }
+
   /** Sends the unresolved comments to the agent. */
   requestChanges(_change: string): Promise<void> {
     return Promise.reject(new ActionError(READ_ONLY));

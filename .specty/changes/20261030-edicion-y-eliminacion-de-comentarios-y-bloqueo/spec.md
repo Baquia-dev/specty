@@ -64,7 +64,7 @@ Permitir editar y eliminar comentarios en la revisión de la spec, deshabilitar 
   - files: packages/cli/src/flow/review.ts, packages/cli/src/server/actions.ts, packages/cli/src/server/actions.test.ts
   - ac: AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/server/actions.test.ts
-- [ ] T2: Capa de datos UI: métodos editComment y deleteComment
+- [x] T2: Capa de datos UI: métodos editComment y deleteComment
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts

@@ -159,6 +159,14 @@ export class ServerData extends SpectyData {
     return this.act(change, "comments", { anchor, body });
   }
 
+  override editComment(change: string, id: string, body: string): Promise<void> {
+    return this.act(change, `comments/${encodeURIComponent(id)}`, { body });
+  }
+
+  override deleteComment(change: string, id: string): Promise<void> {
+    return this.act(change, `comments/${encodeURIComponent(id)}`, { delete: true });
+  }
+
   override requestChanges(change: string): Promise<void> {
     return this.act(change, "request-changes", {});
   }
