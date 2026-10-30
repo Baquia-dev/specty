@@ -79,3 +79,25 @@ Sigue el mismo patrón que `secrets` (ADR 0012): una herramienta externa, opcion
 - R1: osv.dev lento o caído haría esperar a cada `task done` que toque un lockfile — el límite es `verify.timeoutSec`, y al agotarse el check sale como no ejecutado, sin bloquear.
 - R2: Una vulnerabilidad sin versión arreglada bloquearía el cambio que la trae — se ignora con `IgnoredVulns` en `osv-scanner.toml`, que el check respeta, o se baja el check a `warn`.
 - R3: Los tests que ya tocan un lockfile y comprueban el resumen exacto de `specty check` verían un check más, como no ejecutado — se corre la suite completa del CLI antes de aceptar.
+
+## Cierre
+
+### Resumen
+
+`specty check` tiene el check `vulnerabilities`. Cuando la ejecución toca un lockfile que OSV-Scanner lee, Specty escribe dos copias en una carpeta temporal: la de la ejecución, tal como la ve el modo, y la del inicio. Cada copia va junto al `osv-scanner.toml` de su carpeta, y OSV-Scanner 2 escanea las dos a la vez. Los hallazgos son las vulnerabilidades de un paquete y una versión que la copia de después tiene y la de antes no, con su id y su gravedad. Con `--all` salen todas. Sin lockfile en la ejecución no aparece; sin OSV-Scanner en el PATH no corre y dice que se instale.
+
+### Desviaciones
+
+- Los dos escaneos, el de antes y el de después, corren a la vez y no uno tras otro, para no duplicar la espera de red de R1.
+- Las guías se escribieron antes de completar T2, porque su verificación (`check-docs.test.ts`) exige que las dos guías documenten el check; quedaron en el commit de T3.
+
+### Decisiones
+
+- El código 127 lo dan tanto `execute`, cuando el programa no arranca, como OSV-Scanner, en un error general. Solo cuando `osv-scanner --version` tampoco arranca se da por no instalado.
+- Un paquete que cambia de versión y sigue teniendo la misma vulnerabilidad cuenta como del cambio: la clave incluye la versión.
+- No se probó con el binario real de OSV-Scanner, porque no se pudo descargar en esta sesión: los flags, el JSON y los códigos de salida salen del código fuente de la v2.7.0, y los tests usan un escáner falso con esa forma.
+
+### Pendientes
+
+- Probar el check con OSV-Scanner instalado (`brew install osv-scanner`) sobre un cambio real de `pnpm-lock.yaml`.
+- El modo sin red (`--offline-vulnerabilities` con las bases descargadas), si alguien no quiere que sus paquetes salgan hacia osv.dev y aun así quiere el check.
