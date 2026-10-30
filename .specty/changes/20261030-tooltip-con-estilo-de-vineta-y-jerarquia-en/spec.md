@@ -45,7 +45,7 @@ Mejorar la presentación y usabilidad de los tooltips de siglas (`A`, `AC`, `T`,
   - files: packages/ui/src/styles.css, packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts
-- [ ] T2: Estilo de viñeta y jerarquía visual en la burbuja del tooltip flotante
+- [x] T2: Estilo de viñeta y jerarquía visual en la burbuja del tooltip flotante
   - files: packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
   "revision": 1,
@@ -34,12 +34,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "48fdc2052e6f64d8c699b61a153545bf5250f99b",
+      "attempts": 1,
       "startedAt": "2026-10-30T05:37:29.585Z",
       "doneAt": "2026-10-30T05:46:06.396Z",
-      "summary": "Añadir cursor de ayuda y resalte interactivo en elementos de siglas"
+      "summary": "Añadir cursor de ayuda y resalte interactivo en elementos de siglas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "96ea40e8feb2eaf88bc3ddb66e395a423dbf2c6a",
+      "startedAt": "2026-10-30T05:46:06.706Z",
+      "doneAt": "2026-10-30T05:47:10.154Z",
+      "summary": "Estilo de viñeta y jerarquía visual en la burbuja del tooltip flotante"
     }
   },
   "pending": {

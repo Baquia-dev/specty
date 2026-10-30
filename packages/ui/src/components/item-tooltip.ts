@@ -315,7 +315,7 @@ export class ItemTooltips {
         role: "tooltip",
         "data-tooltip": "",
         class:
-          "max-w-80 rounded-lg bg-text p-2.5 text-xs text-bg shadow-md transition-opacity starting:opacity-0 flex flex-col gap-1",
+          "max-w-80 rounded-lg bg-text p-2.5 text-xs text-bg shadow-md border border-border/15 transition-opacity starting:opacity-0 flex flex-col gap-1",
         style: "transition-duration: var(--duration-fast)",
       });
       b.addEventListener("pointerenter", () => clearTimeout(this.leaving));
