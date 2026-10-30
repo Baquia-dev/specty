@@ -137,3 +137,47 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
 - R1: Si el `color-scheme` de la vista no coincide con el del chat, el navegador pinta un fondo opaco detrás del iframe; pasó en VS Code. Mitigación: la raíz toma el `color-scheme` del tema del anfitrión (A5), salvo en VS Code, donde declara `light` como su webview (A10). AC10 lo comprueba en los dos anfitriones.
 - R2: En VS Code las variables son `var(--vscode-*)`, que solo resuelven si el webview las define en la raíz del documento de la vista. Mitigación: sin ellas, las reservas de Specty siguen dando un texto legible, y AC10 lo comprueba.
 - R3: Con fondo transparente, Progreso y Aceptación pueden verse algo distintos (sus barras fijas usan `--color-bg`). Mitigación: A4 les da el fondo del anfitrión; su paso a cards es el siguiente cambio.
+
+## Cierre
+
+### Resumen
+
+En el chat de un anfitrión de MCP Apps, la spec de un cambio en borrador o en revisión ya no es la revisión entera de `specty ui`.
+- **Cabecera:** una card con la fase, el id, el título y lo que espera el cambio.
+- **Secciones** (`review/spec-cards.ts`): una card compacta por sección, con la cabecera en una línea, su resumen y sus marcas. Solo Objetivo viene abierta; las demás se abren al pulsarlas y siguen así mientras se actualiza el mismo cambio. La revisión independiente y los comentarios, solo para leer, van en cards aparte.
+- **Se funde con el chat:**
+  - toma del anfitrión el tema, el texto y la fuente (`theme/host-look.ts`, al saludar y con `ui/notifications/host-context-changed`);
+  - es un panel gris translúcido con cards de un gris más denso y bordes suaves;
+  - no pinta fondo propio, y ni el recurso ni las herramientas piden marco.
+- **El alto** es el del contenido, así que encoge al cerrar una card.
+
+La persona lo comprobó en VS Code con Copilot y en Claude Desktop (AC10).
+
+### Desviaciones (respecto al plan)
+
+- La primera versión pasó por un ajuste (revisión 2) tras probarla la persona:
+  - en VS Code había un fondo opaco (#121212) y una barra de desplazamiento que se veía invasiva;
+  - en Claude, un borde alrededor de las cards;
+  - además, la persona pidió un gris translúcido y bordes más suaves.
+
+  El ajuste añadió A10 a A12, cambió A3, A4, AC9 y AC10, y añadió T4 y T5.
+- Dos tests aprobados tuvieron errores míos, y la persona los desbloqueó:
+  - S1: el test de AC5 llamaba a `text()` con algo que podía ser `null` y no compilaba;
+  - S2: el test nuevo de AC9 exigía `prefersBorder` también a `specty_view`, contra el test de AC6 que ya existía, que fija su `_meta` exacto.
+- Las cards no usan `ReviewComments`, que pide la fuente de datos para comentar: tienen su propia lista de solo lectura.
+- T5 junta lo que el plan del ajuste separaba en dos tareas, porque con `contract` cada tarea necesita un test. Su test comprueba lo que se ve fuera del anfitrión: el panel, la cabecera en una línea y el texto de 14 px. Los colores y la barra se comprueban a mano en AC10.
+
+### Decisiones
+
+- **Un solo iframe:** MCP Apps muestra una vista por llamada. Las cards parecen sueltas por el panel translúcido y el hueco entre ellas (A1).
+- **`color-scheme` en VS Code:** su webview no declara ninguno, así que, si la vista declara uno oscuro, el navegador le pinta un fondo opaco. Dentro de VS Code, donde el `body` lleva `data-vscode-theme-kind`, la vista declara `light`. `normal` no basta, porque la meta `light dark` lo devuelve al del sistema. Fuera de VS Code usa el del tema. Lo comprobé en un anfitrión simulado en Chrome, midiendo el `color-scheme` dentro del iframe.
+- **`prefersBorder` en las herramientas:** Claude Desktop lo lee del `_meta.ui` de la herramienta, como se ve en su `app.asar`. Va en las herramientas que llama el modelo y en el recurso, pero no en `specty_view`, que solo usa la vista.
+- **Bordes:** salen del color del texto del anfitrión y no de su `--color-border-primary`, que en VS Code puede faltar y que en Claude marcaba demasiado.
+- **El alto:** se mide con la raíz a `max-content`, como el SDK de ext-apps, porque `scrollHeight` nunca baja del alto del iframe.
+
+### Pendientes
+
+- Pasar a cards Progreso y Aceptación, como pidió la persona («luego vamos mirando las demás»).
+- Quitar las entradas de prueba `specty-cards` de las configuraciones MCP de VS Code y de Claude Desktop.
+- VS Code limita la vista al 75 % del alto de la ventana: una spec larga con Objetivo abierto aún se desplaza dentro, aunque sin barra.
+- El texto de «Lo que pediste» (`UserRequest`) sigue a 16 px dentro de las cards de 14 px.

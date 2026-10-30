@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:9658fc60924181dc25584b4b006f9bd81f516a638229757fb3cf21cc95e4526d",
@@ -116,12 +116,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0a5b7669b554c7c418dbf10b93871341347f678d",
+      "attempts": 1,
       "startedAt": "2026-10-30T06:55:59.629Z",
       "doneAt": "2026-10-30T06:59:15.624Z",
-      "summary": "La vista es un panel gris translúcido con cards de un gris más denso y bordes suaves; en VS Code declara color-scheme light (sin fondo opaco), sin barra de desplazamiento, cabeceras en una línea y cuerpo a 14 px."
+      "summary": "La vista es un panel gris translúcido con cards de un gris más denso y bordes suaves; en VS Code declara color-scheme light (sin fondo opaco), sin barra de desplazamiento, cabeceras en una línea y cuerpo a 14 px.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -135,6 +135,7 @@
     "R": 3,
     "S": 2
   },
+  "closingSubmittedAt": "2026-10-30T07:27:30.241Z",
   "lockedTests": {
     "packages/ui/src/app/embedded.test.ts": "sha256:ee69d4204d4d0d0cd278b2acf98e0cdaa8df377001d5e34778c14b66c61afb51",
     "packages/ui/src/data/mcp-app.test.ts": "sha256:b83074e374582bbbb7a4be0817605536df5535de786f5fbbb5155e34ee26ccb6",
