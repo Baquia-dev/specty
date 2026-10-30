@@ -32,6 +32,7 @@ Proporcionar retroalimentación visual inmediata con indicadores de carga (spinn
 ## Archivos
 
 - modificar packages/ui/src/components/icons.ts — exportar icono Loader2 de Lucide
+- modificar packages/ui/src/components/icons.test.ts — actualizar conteo de iconos a 54
 - modificar packages/ui/src/components/button.ts — soporte de input loading con spinner accesible
 - modificar packages/ui/src/components/button.test.ts — pruebas del estado loading en Button e IconButton
 - modificar packages/ui/src/review/assumption-row.ts — estado de carga en confirmación y rechazo de supuestos
@@ -61,3 +62,8 @@ Proporcionar retroalimentación visual inmediata con indicadores de carga (spinn
   - files: packages/ui/src/review/comments.ts, packages/ui/src/review/comments.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/comments.test.ts
+- [ ] T5: Actualizar conteo de iconos en prueba de regresión
+  - files: packages/ui/src/components/icons.test.ts
+  - ac: AC1
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/icons.test.ts
+  - type: fix
