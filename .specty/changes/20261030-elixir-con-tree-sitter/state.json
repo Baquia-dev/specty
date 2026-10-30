@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261030-elixir-con-tree-sitter",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-elixir-con-tree-sitter",
+  "baseCommit": "01baf7fa850581a32f5bde2a77cb4773db94513e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cac8c52e02c6143007c6dbe3f0e6e7fa0183a0b33dcf1ac3bbefd8842aa8b8a1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9b695099b8f76d7fa3b4456ab4c17f75650f354969a1cbb0f98062165a886a1c",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8069c48e7913324de8f3948def65d263a6d5199bb3067db651b8f5517b917b3a",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:622a2e3bcad2d93e67c470a160b4996d1a859a56decfec55c9f5e1f508895935",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 1,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1a8cb36f13a472da7d0a397c29403927363f6b0fc22228f01114dadde18da02c",
+    "at": "2026-10-30T11:27:05.555Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
