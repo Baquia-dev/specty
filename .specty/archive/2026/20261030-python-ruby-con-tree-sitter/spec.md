@@ -83,3 +83,25 @@ follows:
 
 - R1: El test de `check-functions.test.ts` que mide Python por su indentación y Ruby por `def … end` (S4 AC1) pasa ahora por el árbol. Mitigación: sus funciones se leen igual con los dos métodos (A4); si cambia algún número, se ajusta con su motivo.
 - R2: Una cadena de varias líneas con código de verdad en las filas siguientes (una f-string con expresiones) pierde esas filas y sus ramas. Mitigación: es lo mismo que hacía la estimación, que vaciaba las cadenas.
+
+## Cierre
+
+### Resumen
+
+`function-lines` y `complexity` miden sobre el árbol de tree-sitter también Python y Ruby, con la misma medida que sus estimaciones.
+- Las tablas viven en `tree-languages-scripting.ts`.
+- `TreeGrammar` añade `docstrings` (una sentencia que solo es una cadena no es código) y `strings` (de una cadena de Python solo cuenta su primera fila).
+- Con el árbol, un `range.end` ya no cierra un método de Ruby, y una variable de Python llamada `case` no cuenta como rama.
+
+### Desviaciones
+
+- `specty new` exige `--slice` con `--epic`, así que el cambio se creó con `--slice C3` y se quitó el corte del frontmatter en el borrador, como en los cambios previos de C2.
+
+### Decisiones
+
+- En Ruby, los bloques y las lambdas siguen dentro de su método, y en Python las `lambda` también: así lo medía la estimación, y los límites significan lo mismo.
+
+### Pendientes
+
+- El corte C3: Elixir, que hoy no se mide. Prototipo probado: las funciones son llamadas `def`, `defp`, `defmacro` y `defmacrop` y las `fn`; las ramas, las llamadas `if` y `unless`, cada cláusula de `case`, `cond`, `receive` y `with` y de un `rescue` o un `catch`, y `and`, `or`, `&&` y `||`. Hace falta un campo de la tabla para las llamadas por su `target`, quitar Elixir de `UNMEASURED` y cambiar el test que lo da por no medido.
+- Reconstruir el dist de main tras incorporar.
