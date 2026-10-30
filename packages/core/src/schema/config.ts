@@ -4,6 +4,7 @@ import { defaultGlossary } from "../glossary";
 import type { Lang } from "../i18n";
 import { type ChecksConfig, ChecksSchema, DEFAULT_CHECKS, resolveChecks } from "./checks";
 import { DEFAULT_GIT, type GitConfig, GitSchema, resolveGit } from "./git";
+import { DEFAULT_MEMORY, type MemoryConfig, MemorySchema, resolveMemory } from "./memory";
 
 /** `contract`, above `required`: a feature's tests are written and approved before its code (ADR 0014). */
 export type TestsPolicy = "contract" | "required" | "recommended" | "off";
@@ -61,6 +62,7 @@ export interface ResolvedConfig {
   readonly git: GitConfig;
   readonly team: { readonly approvers: readonly string[]; readonly requirePrReview: boolean };
   readonly ui: { readonly port: "auto" | number; readonly requireUserPresence: boolean };
+  readonly memory: MemoryConfig;
   /**
    * The independent review (ADR 0011): a command the person sets up, which reads the text to
    * review on its standard input. Unset, Specty neither recommends nor runs a review.
@@ -105,6 +107,7 @@ export const DEFAULT_CONFIG: ResolvedConfig = {
   git: DEFAULT_GIT,
   team: { approvers: [], requirePrReview: true },
   ui: { port: "auto", requireUserPresence: false },
+  memory: DEFAULT_MEMORY,
 };
 
 const Globs = z.array(z.string().min(1));
@@ -179,6 +182,7 @@ export const ConfigSchema = z.strictObject({
   review: z
     .strictObject({ command: z.string().min(1), timeoutSec: Positive.optional() })
     .optional(),
+  memory: MemorySchema.optional(),
   /** Per-tool effort table overrides; interpreted by the CLI. */
   effort: z.record(z.string(), z.unknown()).optional(),
 });
@@ -233,6 +237,7 @@ function withDefaults(input: ConfigInput): ResolvedConfig {
     git: resolveGit(input.git),
     team: teamOf(input),
     ui: uiOf(input),
+    memory: resolveMemory(input.memory),
     ...(review !== undefined ? { review } : {}),
   };
 }

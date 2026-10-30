@@ -198,6 +198,10 @@ export interface StatusEntry {
   readonly pendingScope: readonly string[];
   /** Where the change lives, relative to this folder, when it is not this folder. */
   readonly folder?: string;
+  /** The agent whose session stepped last in the change's folder, and how many minutes ago. */
+  readonly holder?: { readonly tool: string; readonly ago: number };
+  /** It waits for the agent, and no session stepped in it nor wrote to it lately. */
+  readonly orphan?: boolean;
 }
 
 /**
@@ -255,7 +259,39 @@ function statusLine(entry: StatusEntry, t: Translate): string {
           ` · scope: ${entry.pendingScope.join(", ")}`,
         );
   const where = entry.folder === undefined ? "" : ` · ${t("en", "in")} ${entry.folder}`;
-  return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}`;
+  const held = heldBy(entry, t);
+  return `${marker} ${entry.id} · ${entry.kind} · ${entry.phase} · ${t("espera", "waits for")} ${who[entry.waitingFor]}${scope} — ${entry.title}${where}${held === undefined ? "" : ` · ${held}`}`;
+}
+
+/** Who holds the change and since when, or that it is an orphan; nothing when neither is known. */
+function heldBy(entry: StatusEntry, t: Translate): string | undefined {
+  const { holder } = entry;
+  if (entry.orphan === true) {
+    return holder === undefined
+      ? t("huérfano: ninguna sesión lo lleva", "orphaned: no session holds it")
+      : t(
+          `huérfano: ${holder.tool} dio su último paso ${ago(holder.ago, t)}`,
+          `orphaned: ${holder.tool} last stepped ${ago(holder.ago, t)}`,
+        );
+  }
+  return holder === undefined
+    ? undefined
+    : t(
+        `lo lleva ${holder.tool}, ${ago(holder.ago, t)}`,
+        `held by ${holder.tool}, ${ago(holder.ago, t)}`,
+      );
+}
+
+/** How long ago, from minutes: under a minute, minutes, hours up to two days, then days. */
+function ago(minutes: number, t: Translate): string {
+  if (minutes < 1) return t("ahora mismo", "just now");
+  const [count, unit] =
+    minutes < 60
+      ? [Math.floor(minutes), "min"]
+      : minutes < 48 * 60
+        ? [Math.floor(minutes / 60), "h"]
+        : [Math.floor(minutes / (24 * 60)), "d"];
+  return t(`hace ${count} ${unit}`, `${count} ${unit} ago`);
 }
 
 /** The person's decision, the one here first; with none, the agent goes on. */

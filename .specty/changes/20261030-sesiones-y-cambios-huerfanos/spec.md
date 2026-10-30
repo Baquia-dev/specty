@@ -75,7 +75,7 @@ Es la mitad en vivo de la memoria de Specty. Trae el ADR 0016, que recoge las de
 
 ## Tareas
 
-- [ ] T1: La configuración y la línea del estado saben quién lleva cada cambio
+- [x] T1: La configuración y la línea del estado saben quién lleva cada cambio
   - files: packages/core/test/schema/memory.test.ts, packages/core/test/cards/status-holder.test.ts, packages/core/src/schema/memory.ts, packages/core/src/schema/config.ts, packages/core/src/cards/human.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/memory.test.ts test/cards/status-holder.test.ts test/cards.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip
