@@ -22,14 +22,14 @@ export interface AuditRecord {
 export type TaskStatus = "pending" | "active" | "done";
 
 /** A stretch of lines the change adds that no test ran. */
-export interface CoverageGapView {
+interface CoverageGapView {
   readonly path: string;
   readonly from: number;
   readonly to: number;
 }
 
 /** What part of the lines the change adds the tests of a full verification ran (formats.md §4). */
-export interface RunCoverageView {
+interface RunCoverageView {
   readonly measured: number;
   readonly covered: number;
   /** The first stretches no test ran. */

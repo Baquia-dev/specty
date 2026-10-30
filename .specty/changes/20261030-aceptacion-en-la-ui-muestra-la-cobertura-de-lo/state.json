@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "baseCommit": "4d47f9cd6a16ef9b88a1a12778cafc358ad10c1e",
   "revision": 3,
@@ -69,6 +69,15 @@
       "doneAt": "2026-10-30T09:08:34.304Z",
       "summary": "ui.md (Aceptación) cuenta la línea de cobertura y sus tramos; formats.md, las rutas por defecto con coverage/<proyecto>/lcov.info",
       "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cf51df81cc94a2a470788ea68385c91a6c87155a",
+      "startedAt": "2026-10-30T09:09:46.487Z",
+      "doneAt": "2026-10-30T09:10:01.569Z",
+      "summary": "CoverageGapView y RunCoverageView dejan de exportarse: solo los usa VerificationView, y knip queda en verde"
     }
   },
   "pending": {

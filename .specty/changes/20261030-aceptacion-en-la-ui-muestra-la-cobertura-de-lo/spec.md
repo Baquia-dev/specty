@@ -74,7 +74,7 @@ La verificación completa ya anota en `change.verified` qué parte de las línea
   - ac: —
   - verify: pnpm lint
   - type: docs
-- [ ] T5: Los tipos de la cobertura en progress.ts no se exportan
+- [x] T5: Los tipos de la cobertura en progress.ts no se exportan
   - files: packages/ui/src/data/progress.ts
   - ac: —
   - verify: pnpm knip && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
