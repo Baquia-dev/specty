@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-llaves-con-tree-sitter",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-llaves-con-tree-sitter",
   "baseCommit": "f197a3575d19bca8233207d690d8ea471aea68bc",
   "revision": 1,
@@ -68,6 +68,9 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T10:44:50.886Z"
+  "lockedTests": {
+    "packages/cli/test/bundle-grammars-c.test.ts": "sha256:df9c216d473e79bd9329ed99d7d83144238c1541ef422e5093c3541a1a81c7b9",
+    "packages/cli/test/check-functions-c.test.ts": "sha256:d47bb0f80cbfb8006c7afbc1cec99f11866f75f3792653a8f53df9cc36968e81",
+    "packages/core/test/checks/functions-tree-c.test.ts": "sha256:fab1bd73ff71d7b59dec4f491ec8c28aeeeb599aa6d88484950b62fc01973266"
+  }
 }
