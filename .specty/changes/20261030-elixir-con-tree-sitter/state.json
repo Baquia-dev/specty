@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-elixir-con-tree-sitter",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-elixir-con-tree-sitter",
   "baseCommit": "01baf7fa850581a32f5bde2a77cb4773db94513e",
   "revision": 1,
@@ -52,6 +52,7 @@
     "T": 1,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T11:27:41.164Z"
+  "lockedTests": {
+    "packages/core/test/checks/functions-tree-elixir.test.ts": "sha256:1d26d7b3b96aefacb5feca361c923632424d33c37ef2a22a760c4bc663ffd02b"
+  }
 }
