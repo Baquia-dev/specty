@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "20261030-multiples-tooltips-fijados-con-indicador-y",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-multiples-tooltips-fijados-con-indicador-y",
+  "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ae5b3f496ea973a6146b05e9e6988e6de5ecff93d87853fc8e2d8797ec28da61",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c45535242f00bf93d19d95203ea7d5a9e0444ca75845788077f6b609c918f67b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:4abe1dbdb3dbe02fed1688f4123eaa13f7c1111eb454517c4a2642dad425ce97",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:444d97256f3f339874af5fdb1b5c5754a70b7e24d2608c39c3e7634a503dfd64",
+    "at": "2026-10-30T06:20:47.558Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
