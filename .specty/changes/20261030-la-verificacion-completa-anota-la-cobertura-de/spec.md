@@ -73,7 +73,7 @@ kind: standard
   - files: packages/core/test/cards/coverage.test.ts, packages/core/src/cards/coverage.ts, packages/core/src/cards/view.ts, packages/core/src/cards/accept.ts, packages/core/src/cards/acceptance.ts, packages/core/src/cards/index.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/coverage.test.ts test/cards/accept.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: La verificación completa anota la cobertura y la aceptación la muestra
+- [x] T2: La verificación completa anota la cobertura y la aceptación la muestra
   - files: packages/cli/test/accept-coverage.test.ts, packages/cli/src/check/coverage.ts, packages/cli/src/flow/verified.ts, packages/cli/src/flow/acceptance.ts, packages/cli/src/commands/accept.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-coverage.test.ts test/check-coverage.test.ts test/integrate.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

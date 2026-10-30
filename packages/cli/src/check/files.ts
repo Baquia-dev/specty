@@ -11,9 +11,14 @@ import type { CheckContext } from "./provider";
  * `--staged`, on disk otherwise) and the lines each one adds, so that a check can leave out what
  * was already there before the change.
  */
-export async function checkContext(session: Session, mode: CheckMode): Promise<CheckContext> {
+export async function checkContext(
+  session: Session,
+  mode: CheckMode,
+  from?: string,
+): Promise<CheckContext> {
   const started = Date.now();
-  const base = mode === "changed" ? await baseOf(session) : undefined;
+  // `from` takes the place of the merge-base: a merge in progress counts from what comes in.
+  const base = mode === "changed" ? (from ?? (await baseOf(session))) : undefined;
   const [changed, added] = await Promise.all([
     candidates(session, mode, base),
     addedLines(session, mode, base),

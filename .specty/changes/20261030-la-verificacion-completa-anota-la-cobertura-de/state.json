@@ -40,12 +40,25 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "360e52e988b34e9355d6a8784e8113d7700936ac",
+      "attempts": 1,
       "startedAt": "2026-10-30T08:41:46.840Z",
       "doneAt": "2026-10-30T08:42:52.318Z",
-      "summary": "coverageLines (es/en: porcentaje redondeado hacia abajo, umbral y hasta cinco tramos con cuántos más por debajo de warn), CoverageView y ChangeView.coverage; el resumen de la persona y la sección COBERTURA de la tarjeta del agente la muestran"
+      "summary": "coverageLines (es/en: porcentaje redondeado hacia abajo, umbral y hasta cinco tramos con cuántos más por debajo de warn), CoverageView y ChangeView.coverage; el resumen de la persona y la sección COBERTURA de la tarjeta del agente la muestran",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/check/files.ts",
+        "packages/cli/src/flow/integrate.ts",
+        "packages/cli/src/server/runs.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "17183c2699b05185b15587e2e17eb77c19e194fe",
+      "startedAt": "2026-10-30T08:42:52.659Z",
+      "doneAt": "2026-10-30T08:48:26.099Z",
+      "summary": "change.verified anota la cobertura de lo que añade el cambio (desde MERGE_HEAD si hay merge en curso; FullRun lleva started), y la aceptación muestra la de la última verificación que pasó sobre el código actual, también en la nota de accept"
     }
   },
   "pending": {
@@ -56,7 +69,8 @@
     "A": 3,
     "AC": 4,
     "T": 4,
-    "R": 2
+    "R": 2,
+    "S": 2
   },
   "lockedTests": {
     "packages/cli/test/accept-coverage.test.ts": "sha256:fd654f54d06d2ac4d55a451572e0691590ac927d53ef2e20575f3c5707736abf"

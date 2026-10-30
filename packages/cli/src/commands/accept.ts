@@ -9,6 +9,7 @@ import {
   checkStatus,
   closeCommitSubject,
   closedCard,
+  coverageLines,
   decisionCard,
   delegatedFailureCard,
   headerOf,
@@ -133,16 +134,19 @@ async function runFullVerification(
   const tree = await codeTree(session);
   const started = Date.now();
   const result = await runLive(session, state.id, undefined, full);
-  await recordFullVerification(session, change, {
+  const coverage = await recordFullVerification(session, change, {
     command: full,
+    started,
     code: result.code,
     ms: Date.now() - started,
     output: tail(result),
     ...(tree === undefined ? {} : { tree }),
   });
+  const { warn } = session.config.checks.coverage;
+  const measured = coverage === undefined ? [] : coverageLines({ ...coverage, warn }, session.lang);
   terminal.note(
     verificationNoteTitle(result.code === 0, session.lang),
-    tail(result, 15).join("\n"),
+    [...tail(result, 15), ...measured].join("\n"),
   );
   if (result.code === 0) return undefined;
   if (delegated) return delegatedFailureCard(headerOf(state.id, state.phase), full, session.cards);

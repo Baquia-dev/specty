@@ -2,6 +2,7 @@
 import { readdir, stat } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import {
+  type ChangedCoverage,
   type Coverage,
   changedCoverage,
   type Finding,
@@ -22,13 +23,7 @@ export const diffCoverage: CheckDefinition = {
   async run(context) {
     const { session } = context;
     const { coverage } = session.config.checks;
-    const paths = await freshReports(session.root, coverage.reports, context.started);
-    const reports = await Promise.all(paths.map((path) => readReport(context, path)));
-    const changed = context.files.map((path) => {
-      const lines = context.added(path);
-      return lines === undefined ? { path } : { path, lines };
-    });
-    const result = changedCoverage(reports, changed);
+    const result = await changeCoverage(context);
     if (result.measured === 0) return { inapplicable: true };
     const percent = Math.floor((result.covered / result.measured) * 100);
     const failing = coverage.error !== undefined && percent < coverage.error;
@@ -57,6 +52,21 @@ export const diffCoverage: CheckDefinition = {
     return { findings: [head, ...gaps] };
   },
 };
+
+/**
+ * The coverage of the lines the run adds, from the reports of `checks.coverage.reports` written
+ * since it started: what `diff-coverage` reports, and what a full verification records.
+ */
+export async function changeCoverage(context: CheckContext): Promise<ChangedCoverage> {
+  const { root, config } = context.session;
+  const paths = await freshReports(root, config.checks.coverage.reports, context.started);
+  const reports = await Promise.all(paths.map((path) => readReport(context, path)));
+  const changed = context.files.map((path) => {
+    const lines = context.added(path);
+    return lines === undefined ? { path } : { path, lines };
+  });
+  return changedCoverage(reports, changed);
+}
 
 /** The report at `path`, its relative files anchored to the folders around it. */
 async function readReport(context: CheckContext, path: string): Promise<Coverage> {
