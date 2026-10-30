@@ -97,15 +97,29 @@ describe("specty mcp as an MCP App", () => {
     expect(resultOf(next).structuredContent).toBeUndefined();
   });
 
-  it("AC9: asks the host to show the view without a frame of its own", async () => {
+  it("AC9: asks the host to show the view without a frame of its own, in the page and in each tool", async () => {
     const { root, script } = await setUp();
-    const [, read] = await serve(root, script, [
+    const [, read, list] = await serve(root, script, [
       initialize(1, APPS),
       request(2, "resources/read", { uri: VIEW }),
+      request(3, "tools/list"),
     ]);
     expect(resultOf(read).contents).toEqual([
       { uri: VIEW, mimeType: MIME, text: PAGE, _meta: { ui: { prefersBorder: false } } },
     ]);
+    // Claude Desktop reads it from the tool's `_meta.ui`, next to `resourceUri`.
+    const linked = toolsOf(list).filter((tool) => {
+      const ui = (tool._meta as { ui?: { resourceUri?: string } } | undefined)?.ui;
+      return ui?.resourceUri === VIEW;
+    });
+    expect(linked.map((tool) => tool.name)).toEqual(
+      expect.arrayContaining(["specty_new", "specty_propose", "specty_next", "specty_view"]),
+    );
+    for (const tool of linked) {
+      expect(tool._meta, String(tool.name)).toMatchObject({
+        ui: { resourceUri: VIEW, prefersBorder: false },
+      });
+    }
   });
 
   it("AC3: without the extension, or without the page, the tools are today's", async () => {
