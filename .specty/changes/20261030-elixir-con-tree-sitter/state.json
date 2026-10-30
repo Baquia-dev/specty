@@ -6,6 +6,13 @@
   "branch": "specty/20261030-elixir-con-tree-sitter",
   "baseCommit": "01baf7fa850581a32f5bde2a77cb4773db94513e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1a8cb36f13a472da7d0a397c29403927363f6b0fc22228f01114dadde18da02c",
+    "at": "2026-10-30T11:27:05.555Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -45,12 +52,6 @@
     "T": 1,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1a8cb36f13a472da7d0a397c29403927363f6b0fc22228f01114dadde18da02c",
-    "at": "2026-10-30T11:27:05.555Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T11:27:41.164Z"
 }
