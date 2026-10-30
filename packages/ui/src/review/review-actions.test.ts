@@ -98,7 +98,13 @@ describe("ReviewActions", () => {
   it("says the agent prepares the next revision once changes were asked for (AC2)", async () => {
     const { actions, buttons, fixture, host } = await render();
     const asked = { revision: 2, at: "2026-10-24T10:00:00Z" };
-    host.change.set({ ...viewOf(REVIEW), highImpactPending: 0, changesRequested: asked });
+    const base = viewOf(REVIEW);
+    host.change.set({
+      ...base,
+      highImpactPending: 0,
+      changesRequested: asked,
+      review: { ...base.review, comments: [] },
+    });
     await fixture.whenStable();
     expect(text(actions()?.querySelector("[data-requested]"))).toBe(
       "Cambios pedidos: el agente prepara la revisión 3.",
@@ -108,12 +114,18 @@ describe("ReviewActions", () => {
 
   it("requests changes and approves the revision it shows, telling so (AC2)", async () => {
     const { buttons, fixture, host } = await render();
-    host.change.set({ ...viewOf(REVIEW), highImpactPending: 0 });
+    const base = viewOf(REVIEW);
+    // Con comentarios abiertos se pueden pedir cambios
+    host.change.set({ ...base, highImpactPending: 0 });
     await fixture.whenStable();
-    expect(buttons()[1]?.disabled).toBe(false);
     buttons()[0]?.click();
     await fixture.whenStable();
     expect(TestBed.inject(Toasts).items().at(-1)?.text).toContain("Comentarios enviados");
+
+    // Sin comentarios pendientes se puede aprobar
+    host.change.set({ ...base, highImpactPending: 0, review: { ...base.review, comments: [] } });
+    await fixture.whenStable();
+    expect(buttons()[1]?.disabled).toBe(false);
     buttons()[1]?.click();
     await fixture.whenStable();
     expect(TestBed.inject(Toasts).items().at(-1)?.text).toBe("Revisión 2 aprobada.");

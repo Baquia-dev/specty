@@ -28,6 +28,7 @@ import { Toasts } from "../components/toast";
 import {
   type AssumptionView,
   type CommentAnchor,
+  type CommentView,
   type DiffPart,
   SpectyData,
 } from "../data/records";
@@ -115,12 +116,12 @@ const DECISIONS = {
       @if (editable()) {
         @if (assumption().decision === 'pending' || reconsidering()) {
           <div class="mt-2 flex gap-2" data-choices>
-            <sp-button size="sm" variant="primary" (pressed)="confirm()">{{ t()('Confirmar', 'Confirm') }}</sp-button>
-            <sp-button size="sm" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
+            <sp-button size="sm" variant="primary" [disabledReason]="commentBlocked()" (pressed)="confirm()">{{ t()('Confirmar', 'Confirm') }}</sp-button>
+            <sp-button size="sm" [disabledReason]="commentBlocked()" (pressed)="reject()">{{ t()('Rechazar…', 'Reject…') }}</sp-button>
           </div>
         } @else {
           <!-- Already decided: the choices stay out of the way until the person asks for them. -->
-          <sp-button class="mt-1 self-start" size="sm" variant="ghost" (pressed)="reconsider()">{{ t()('Cambiar decisión', 'Change decision') }}</sp-button>
+          <sp-button class="mt-1 self-start" size="sm" variant="ghost" [disabledReason]="commentBlocked()" (pressed)="reconsider()">{{ t()('Cambiar decisión', 'Change decision') }}</sp-button>
         }
       }
     </div>
@@ -138,6 +139,7 @@ export class AssumptionRow {
   readonly assumption = input.required<AssumptionView>();
   readonly change = input.required<string>();
   readonly editable = input(false);
+  readonly comments = input<readonly CommentView[]>([]);
   /** In the delta: its final text, with the words added since the approved revision. */
   readonly diff = input<readonly DiffPart[] | undefined>(undefined);
   /** In the delta, only if words were removed: what it said before. */
@@ -157,6 +159,23 @@ export class AssumptionRow {
   protected readonly waiting = computed(
     () => this.assumption().impact === "high" && this.assumption().decision === "pending",
   );
+  /** Open comments anchored to this assumption disable deciding on it. */
+  protected readonly commentBlocked = computed(() => {
+    const id = this.assumption().id;
+    const text = this.assumption().text;
+    const hasOpen = this.comments().some(
+      (c) =>
+        !c.resolved &&
+        (("item" in c.anchor && c.anchor.item === id) ||
+          ("quote" in c.anchor && c.anchor.section === "assumptions" && text.includes(c.anchor.quote))),
+    );
+    return hasOpen
+      ? this.t()(
+          "Tiene comentarios pendientes: edítalos, elimínalos o pide cambios.",
+          "Has pending comments: edit, delete them or request changes.",
+        )
+      : "";
+  });
   /**
    * The person asked to change a decision already taken. A new decision folds the choices away
    * again; live updates that keep the same decision leave them open.

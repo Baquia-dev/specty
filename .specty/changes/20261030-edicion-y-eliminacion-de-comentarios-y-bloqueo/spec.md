@@ -68,7 +68,7 @@ Permitir editar y eliminar comentarios en la revisión de la spec, deshabilitar 
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/data/fixtures.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/fixtures.test.ts
-- [ ] T3: Bloqueo de aprobación y acciones en supuestos con comentarios
+- [x] T3: Bloqueo de aprobación y acciones en supuestos con comentarios
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/assumption-row.ts, packages/ui/src/review/spec-review.ts, packages/ui/src/review/delta-review.ts, packages/ui/src/review/review-actions.test.ts
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/review-actions.test.ts --include src/review/spec-sections.test.ts

@@ -77,6 +77,17 @@ export class ReviewActions {
             `${pending} high-impact assumptions are still undecided.`,
           );
     }
+    if (this.openComments() > 0) {
+      return this.openComments() === 1
+        ? t(
+            "Hay 1 comentario sin resolver: pide cambios.",
+            "There is 1 unresolved comment: request changes.",
+          )
+        : t(
+            `Hay ${this.openComments()} comentarios sin resolver: pide cambios.`,
+            `There are ${this.openComments()} unresolved comments: request changes.`,
+          );
+    }
     if (errors > 0)
       return t(
         `La spec tiene ${errors} errores de validación.`,
