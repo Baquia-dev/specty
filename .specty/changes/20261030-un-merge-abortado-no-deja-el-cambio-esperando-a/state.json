@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261030-un-merge-abortado-no-deja-el-cambio-esperando-a",
   "kind": "quick",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-un-merge-abortado-no-deja-el-cambio-esperando-a",
   "baseCommit": "58f383b240b47be41c189de25d30198cb97cdbb9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ab36b81e49dba744b0940ade01aa24b7a2bf1c94effaf30d3f4f57893c27831e",
+    "at": "2026-10-30T08:14:47.033Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -24,12 +31,7 @@
   "maxIds": {
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ab36b81e49dba744b0940ade01aa24b7a2bf1c94effaf30d3f4f57893c27831e",
-    "at": "2026-10-30T08:14:47.033Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "bug"
+  "lockedTests": {
+    "packages/cli/test/integrate-aborted.test.ts": "sha256:f17d930e18515243595f10cb3eb9637e02fbb7b8a76a5e7f220beb240f6acfb5"
+  }
 }
