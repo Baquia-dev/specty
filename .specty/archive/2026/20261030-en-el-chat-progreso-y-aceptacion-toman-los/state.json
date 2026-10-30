@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-en-el-chat-progreso-y-aceptacion-toman-los",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-en-el-chat-progreso-y-aceptacion-toman-los",
   "baseCommit": "d3c17f59d9b00f4e3b07196f703d8fa980d8a44d",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:ba3a2606e2515f2709f4d537b256d41e840250b31606958b2e38118e6f6f052c",
@@ -68,12 +68,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "14357c93ea9c414a1b70aa3a7a98b2f17a9ec780",
+      "attempts": 1,
       "startedAt": "2026-10-30T07:55:10.874Z",
       "doneAt": "2026-10-30T07:58:33.345Z",
-      "summary": "En el chat, la lista del desplegable es opaca (embedded:bg-bg) y sus opciones se marcan con bg-text/6. docs/ui.md cuenta el aspecto de Progreso y Aceptación. Capturas en anfitrión simulado (VS Code y Claude claro/oscuro): sin franjas y lista opaca."
+      "summary": "En el chat, la lista del desplegable es opaca (embedded:bg-bg) y sus opciones se marcan con bg-text/6. docs/ui.md cuenta el aspecto de Progreso y Aceptación. Capturas en anfitrión simulado (VS Code y Claude claro/oscuro): sin franjas y lista opaca.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -86,6 +86,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-10-30T08:13:57.824Z",
   "lockedTests": {
     "packages/ui/src/app/embedded-look.test.ts": "sha256:af250ae0158c6629701633d1230e996b58778d7f4b9c43698ec72271432c7b62",
     "packages/ui/src/components/diff-viewer.test.ts": "sha256:1eae76fa87519768a6e1819351a892c85de5aa6aca0d975cd696daa006b9734c",

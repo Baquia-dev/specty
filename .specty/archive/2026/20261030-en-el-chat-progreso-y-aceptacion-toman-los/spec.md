@@ -77,3 +77,32 @@ En la vista del chat (MCP Apps), Progreso y Aceptación siguen con su forma de h
 ## Riesgos
 
 - R1: Si las clases `embedded:` salieran antes que las de base en el CSS, con la misma especificidad no ganarían. Mitigación: lo compruebo en el CSS construido y en capturas del anfitrión simulado antes de pedir AC5.
+
+## Cierre
+
+### Resumen
+
+En la vista del chat, Progreso y Aceptación conservan su forma y toman los colores del panel translúcido:
+- **Variante `embedded:`** (`styles.css`): aplica una clase solo bajo `[data-embedded]`, así que `specty ui` no cambia.
+- **Sin franjas opacas:** los títulos de sección (`sp-section-divider`) y la barra del diff no se quedan fijos ni pintan el fondo del chat.
+- **Código del texto:** lleva el tinte del texto al 5 %, como las rutas de las tareas; el código dentro de un bloque sigue sin fondo propio.
+- **Desplegable:** su lista es opaca, con el fondo del chat, y sus opciones se marcan con el tinte del texto.
+
+Las entradas de prueba `specty-cards` de VS Code y Claude Desktop se quitaron fuera del repo.
+
+### Desviaciones (respecto al plan)
+
+- T1 se dividió en dos tareas antes de aprobar la spec, porque tocaba 7 archivos: la barra del diff pasó a T2 y el desplegable a T3.
+- AC5 no se comprobó en VS Code ni en Claude Desktop reales, porque las entradas de prueba ya estaban quitadas. Se comprobó en un anfitrión simulado en Chrome con las variables de VS Code y de Claude, en oscuro y claro, y la persona aceptó con esas capturas.
+
+### Decisiones
+
+- **Una variante en lugar de reglas sueltas en `styles.css`:** cada componente dice su aspecto en el chat junto a sus demás clases, y los tests lo comprueban en sus clases.
+- **Estáticos, no solo transparentes:** un título fijo y sin fondo dejaría pasar el contenido por debajo, y la vista del chat no tiene barra bajo la que quedarse (A4).
+- **El orden en el CSS:** Tailwind pone las clases de una variante propia después de las de base y de las variantes de serie (`hover:`, `data-*`, `[&_code]:`), así que ganan con la misma especificidad. `[&_pre_code]:bg-transparent` sigue ganando dentro de un bloque porque es más específica. Lo comprobé en el CSS construido.
+
+### Pendientes
+
+- En el chat, la vista «Cambios» de Aceptación dice «Esta fuente no da diffs»: la fuente del chat no los da. Habría que darlos u ocultar esa vista.
+- La matriz de trazabilidad muestra su barra de desplazamiento horizontal en el chat cuando no cabe a lo ancho.
+- El activador del desplegable aún toma el fondo opaco del chat bajo el puntero.
