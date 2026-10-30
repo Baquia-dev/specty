@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-sesiones-y-cambios-huerfanos",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-sesiones-y-cambios-huerfanos",
   "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
   "revision": 1,
@@ -59,6 +59,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T10:13:11.223Z"
+  "lockedTests": {
+    "packages/cli/test/activity.test.ts": "sha256:2525702974180f92c893b49e418e72e57fdd25f8404d9e10bf1278e1fde6db30",
+    "packages/core/test/cards/status-holder.test.ts": "sha256:89ac11cd3ac17eec4664172db2ce53839a06822b9023df74106eb717f1a5d26a",
+    "packages/core/test/schema/memory.test.ts": "sha256:2e0880e57bf4d04b3dc1fdf702b3b0e3ada82560d667c7b9747a540f0bcff565"
+  }
 }
