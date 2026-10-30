@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-en-el-chat-progreso-y-aceptacion-toman-los",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-en-el-chat-progreso-y-aceptacion-toman-los",
   "baseCommit": "d3c17f59d9b00f4e3b07196f703d8fa980d8a44d",
   "revision": 2,
@@ -59,12 +59,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "521c65e18759180996b743c8c75b6efed7b1e14e",
+      "attempts": 1,
       "startedAt": "2026-10-30T07:54:46.299Z",
       "doneAt": "2026-10-30T07:55:10.534Z",
-      "summary": "La barra del diff (data-bar) es estática y sin fondo en el chat (embedded:static embedded:bg-transparent); fuera del chat sigue fija sobre el fondo."
+      "summary": "La barra del diff (data-bar) es estática y sin fondo en el chat (embedded:static embedded:bg-transparent); fuera del chat sigue fija sobre el fondo.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "14357c93ea9c414a1b70aa3a7a98b2f17a9ec780",
+      "startedAt": "2026-10-30T07:55:10.874Z",
+      "doneAt": "2026-10-30T07:58:33.345Z",
+      "summary": "En el chat, la lista del desplegable es opaca (embedded:bg-bg) y sus opciones se marcan con bg-text/6. docs/ui.md cuenta el aspecto de Progreso y Aceptación. Capturas en anfitrión simulado (VS Code y Claude claro/oscuro): sin franjas y lista opaca."
     }
   },
   "pending": {

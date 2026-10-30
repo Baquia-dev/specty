@@ -69,7 +69,7 @@ En la vista del chat (MCP Apps), Progreso y Aceptación siguen con su forma de h
   - files: packages/ui/src/components/diff-viewer.test.ts, packages/ui/src/components/diff-viewer.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/diff-viewer.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
-- [ ] T3: En el chat, la lista del desplegable es opaca
+- [x] T3: En el chat, la lista del desplegable es opaca
   - files: packages/ui/src/components/select.test.ts, packages/ui/src/components/select.ts, docs/ui.md
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/select.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
