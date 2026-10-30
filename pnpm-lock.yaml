@@ -235,6 +235,9 @@ importers:
       '@clack/prompts':
         specifier: 1.8.1
         version: 1.8.1
+      '@repomix/tree-sitter-wasms':
+        specifier: 0.1.17
+        version: 0.1.17
       commander:
         specifier: 15.0.0
         version: 15.0.0
@@ -244,6 +247,9 @@ importers:
       jsonc-parser:
         specifier: 3.3.1
         version: 3.3.1
+      web-tree-sitter:
+        specifier: 0.27.1
+        version: 0.27.1
       yaml:
         specifier: 2.9.1
         version: 2.9.1

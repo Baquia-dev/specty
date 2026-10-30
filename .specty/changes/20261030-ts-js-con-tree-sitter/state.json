@@ -61,12 +61,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9a1aff68dfe31e7e359b59e1d612f0a744d62253",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:16:17.869Z",
       "doneAt": "2026-10-30T10:18:39.620Z",
-      "summary": "treeFunctions mide en el core las funciones de TypeScript y JavaScript sobre el árbol de tree-sitter, con la tabla de cada lenguaje en tree-languages.ts; solo cuentan los nodos con nombre, porque el token `function` tiene el mismo tipo que un nodo."
+      "summary": "treeFunctions mide en el core las funciones de TypeScript y JavaScript sobre el árbol de tree-sitter, con la tabla de cada lenguaje en tree-languages.ts; solo cuentan los nodos con nombre, porque el token `function` tiene el mismo tipo que un nodo.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "59f2288cbaac4d55446d76b83d999bf5e53297ec",
+      "startedAt": "2026-10-30T10:18:39.967Z",
+      "doneAt": "2026-10-30T10:23:45.065Z",
+      "summary": "specty check mide TypeScript y JavaScript con tree-sitter (check/syntax.ts) y cae en la estimación si una versión no parsea o la gramática no carga; cada gramática espera al runtime, y las dos verificaciones comparten la medida de la ejecución."
     }
   },
   "pending": {

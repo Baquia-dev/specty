@@ -83,7 +83,7 @@ allowedDependencies:
   - files: packages/core/src/checks/functions-tree.ts, packages/core/src/checks/tree-languages.ts, packages/core/src/index.ts, packages/core/package.json, packages/core/test/checks/functions-tree.test.ts, pnpm-lock.yaml
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: specty check mide TypeScript y JavaScript con tree-sitter y cae en la estimación
+- [x] T2: specty check mide TypeScript y JavaScript con tree-sitter y cae en la estimación
   - files: packages/cli/src/check/syntax.ts, packages/cli/src/check/functions.ts, packages/cli/package.json, packages/cli/test/check-functions-tree.test.ts, packages/cli/test/check-functions.test.ts, pnpm-lock.yaml
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-tree.test.ts test/check-functions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
