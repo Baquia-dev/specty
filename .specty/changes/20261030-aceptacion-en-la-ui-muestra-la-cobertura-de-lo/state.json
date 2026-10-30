@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "id": "20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
+  "baseCommit": "4d47f9cd6a16ef9b88a1a12778cafc358ad10c1e",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1d650bd5e6d9654b374e9a0c924944b28797fc4960c5c0daa71aa65ec3d1c734",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:207634b57ec040a154ec43bb32c94059c713e6756b8342f3f862c3bc1c2ccc78",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:e96693d4c995d0d36a0d8e25ff41947c6265772615325f4ff23f0430a02266fb",
+    "at": "2026-10-30T09:02:13.323Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
