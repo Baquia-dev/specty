@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-elixir-en-specty-check",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-elixir-en-specty-check",
   "baseCommit": "ee895c8ad9d0b0d0c2a09e87cea291ed1eff6cdf",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ead240fabe2e1d6bd773845b78c06fa63588c578",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:36:40.813Z",
       "doneAt": "2026-10-30T11:37:11.297Z",
-      "summary": "El build comprime la gramática de Elixir desde su paquete y añade su licencia Apache-2.0 a grammars/LICENSES."
+      "summary": "El build comprime la gramática de Elixir desde su paquete y añade su licencia Apache-2.0 a grammars/LICENSES.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "29bea115e257031d5ff51abd76a819600340642f",
+      "startedAt": "2026-10-30T11:37:11.657Z",
+      "doneAt": "2026-10-30T11:37:49.012Z",
+      "summary": "formats, checks (es y en) y ARCHITECTURE dejan de exceptuar Elixir y describen su medida; el ADR 0016 nombra sus fuentes, el peer opcional y el tamaño final (1,8 MB)."
     }
   },
   "pending": {

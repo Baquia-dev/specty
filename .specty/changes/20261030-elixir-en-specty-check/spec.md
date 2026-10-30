@@ -67,7 +67,7 @@ Elixir era el único stack sin `function-lines` ni `complexity`. El cambio previ
   - files: packages/cli/build.mjs, packages/cli/test/bundle-grammars-elixir.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars-elixir.test.ts test/bundle-grammars.test.ts && pnpm lint
-- [ ] T3: La documentación de la medida de Elixir
+- [x] T3: La documentación de la medida de Elixir
   - files: docs/formats.md, docs/checks.md, docs/checks.en.md, docs/ARCHITECTURE.md, docs/decisions/0016-tree-sitter-para-medir-las-funciones.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
