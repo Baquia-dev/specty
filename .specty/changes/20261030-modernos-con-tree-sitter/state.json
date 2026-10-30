@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "20261030-modernos-con-tree-sitter",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-modernos-con-tree-sitter",
+  "baseCommit": "8f6f314c6eb0916e909fa7e31addd604977ea07f",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1a5face9d27209f728e3919d8cc6063104b8e06784eacbf6412d213e53f43f91",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c3358ed05e04df60fafa96b931546d3b5d22dc17d96679e60b3b6a4a89876c7f",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:82949d7e77a1e3cbe21b9e0c63611a97576268c6209cd298946a4eddd0999fb1",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:9df323a16192fe7bf14f97b1fd1b9cb0d26e0c8aeb1973fecde6440e7fa83cd5",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:40d5f0a8d227ca92c10278ade4bd9ab02b2050117adb6c4294a021cea667c3e9",
+      "decision": "confirmed"
+    },
+    "A6": {
+      "hash": "sha256:00204affc57ff86f0df1fd9ca2bce9795461787fe857e0667f99161f492081ee",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:daca76561e764764b0551ae39b9d46a543d435e1e602ba1d80c832a9ada87ef1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:096b8d38bffe4ed6efadd930d166cb31e57c0e1a1f94ccc88a2757d31cdf4e2f",
+    "at": "2026-10-30T10:57:42.070Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
