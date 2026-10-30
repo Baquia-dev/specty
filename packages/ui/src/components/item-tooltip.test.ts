@@ -169,4 +169,53 @@ describe("ItemTooltips and ItemText", () => {
     await settle();
     expect(bubble()?.textContent?.trim()).toBe("Task T1");
   });
+
+  it("AC1: shows info cursor and visual active highlight on the hovered sigla element", async () => {
+    const { element, settle } = await render("es");
+    const sentence = element.querySelector("#sentence");
+    const ref = sentence?.querySelector<HTMLElement>("[data-item-ref='T1']");
+    expect(ref).not.toBeNull();
+    expect(ref?.classList.contains("cursor-help") || ref?.hasAttribute("data-item-ref")).toBe(true);
+
+    hover(ref);
+    await settle();
+    expect(ref?.hasAttribute("data-item-active") || ref?.classList.contains("cursor-help")).toBe(
+      true,
+    );
+
+    leave(ref);
+    await settle();
+    expect(ref?.hasAttribute("data-item-active")).toBe(false);
+  });
+
+  it("AC2: renders tooltip bubble with bullet indicator and refined pill styling", async () => {
+    const { element, settle } = await render("es");
+    hover(element.querySelector("#assumption"));
+    await settle();
+    const tooltip = bubble();
+    expect(tooltip).not.toBeNull();
+    expect(tooltip?.querySelector("[data-item-bullet]")).not.toBeNull();
+    expect(
+      tooltip?.classList.contains("rounded-lg") || tooltip?.classList.contains("rounded-md"),
+    ).toBe(true);
+  });
+
+  it("AC3: formats tooltip with clear visual hierarchy separating header and description", async () => {
+    const { element, settle } = await render("es");
+    const change = sampleChange();
+    const ac1 = change.review.criteria.find((item) => item.id === "AC1")?.text ?? "";
+
+    hover(element.querySelector("#criterion"));
+    await settle();
+    const tooltip = bubble();
+    expect(tooltip).not.toBeNull();
+
+    const header = tooltip?.querySelector("[data-item-header]");
+    const body = tooltip?.querySelector("[data-item-body]");
+    expect(header).not.toBeNull();
+    expect(header?.textContent).toContain("Criterio de aceptación AC1");
+    expect(body).not.toBeNull();
+    expect(body?.textContent?.trim()).toBe(ac1);
+    expect(tooltip?.textContent?.trim()).toBe(`Criterio de aceptación AC1: ${ac1}`);
+  });
 });

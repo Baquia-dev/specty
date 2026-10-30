@@ -6,6 +6,13 @@
   "branch": "specty/20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:092f50a42a8c503d93c7fefbc2d198fa7e923fee3bc52378d92469e2c12a8516",
+    "at": "2026-10-30T05:36:36.014Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -34,12 +41,6 @@
     "AC": 3,
     "T": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:092f50a42a8c503d93c7fefbc2d198fa7e923fee3bc52378d92469e2c12a8516",
-    "at": "2026-10-30T05:36:36.014Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T05:37:22.659Z"
 }
