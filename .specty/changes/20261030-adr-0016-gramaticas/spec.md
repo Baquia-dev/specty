@@ -16,7 +16,7 @@ Las consecuencias del ADR 0016 dicen que el paquete ocupa 1,8 MB «con los dieci
 
 ## Tareas
 
-- [ ] T1: El ADR 0016 cuenta dieciséis gramáticas y el runtime
+- [x] T1: El ADR 0016 cuenta dieciséis gramáticas y el runtime
   - files: docs/decisions/0016-tree-sitter-para-medir-las-funciones.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts

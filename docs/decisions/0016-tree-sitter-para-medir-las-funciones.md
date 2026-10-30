@@ -28,7 +28,7 @@ La decisión de antes miraba el tamaño desempaquetado de las gramáticas (22–
 
 ## Consecuencias
 
-- El paquete de npm crece: 336 KB con TypeScript, TSX y JavaScript, 1,5 MB con todos los lenguajes de llaves y 1,8 MB con los diecisiete de la épica y el runtime.
+- El paquete de npm crece: 336 KB con TypeScript, TSX y JavaScript, 1,5 MB con todos los lenguajes de llaves y 1,8 MB con las dieciséis gramáticas de la épica y el runtime.
 - Medir todo Specty (450 archivos) tarda 0,5 s, frente a 0,04 s de la estimación. Con `--changed`, solo se parsean los archivos del cambio.
 - Aparecen funciones por encima de los límites que antes no se veían. Solo fallan si el cambio las crea o las agranda; la deuda vieja sale con `--all`.
 - Los escáneres de imports del aviso de impacto y de las capas siguen sin parser: lo difícil es resolver cada import, no leerlo.
