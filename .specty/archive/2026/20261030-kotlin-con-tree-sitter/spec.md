@@ -86,3 +86,26 @@ allowedDependencies:
 
 - R1: pnpm se niega a instalar un paquete con un script que no está en `allowBuilds`. Mitigación: se declara con `false`, como los demás que traen binarios que Specty no usa.
 - R2: Los tests de ejemplos de Kotlin (`check-examples-jvm`) fijan resultados de la estimación. Mitigación: se ejecutan en la aceptación; si alguno cambia por la medida nueva, se ajusta con su motivo.
+
+## Cierre
+
+### Resumen
+
+`function-lines` y `complexity` miden sobre el árbol de tree-sitter también Kotlin (`.kt` y `.kts`), y con ello cierra el corte C2: todos los lenguajes de llaves se miden con el árbol.
+- La gramática sale de `@tree-sitter-grammars/tree-sitter-kotlin` 1.1.0, con su binding nativo apagado en `allowBuilds`.
+- El build la comprime desde su paquete y copia su licencia a `grammars/LICENSES`.
+- Un getter, una lambda o una función anónima toman el nombre de la propiedad que los recibe.
+- `dist/grammars/` ocupa 1,5 MB con las catorce gramáticas y el runtime.
+
+### Desviaciones
+
+- El corte C2 se repartió en tres cambios porque no cabía en uno: C, C++, Java, C# y PHP (8f6f314); Go, Rust, Swift y Dart (e0a25fe); y este, Kotlin, con la dependencia nueva.
+
+### Decisiones
+
+- `grammarFile` resuelve Kotlin desde su paquete con un literal, para que knip vea la dependencia usada; las demás gramáticas siguen saliendo de `@repomix/tree-sitter-wasms`.
+
+### Pendientes
+
+- C3: Python y Ruby (sin dependencias nuevas), y después Elixir, que hoy no se mide (`tree-sitter-elixir`, Apache-2.0, con un `tree-sitter` nativo como peer obligatorio que pnpm instalará y habrá que apagar en `allowBuilds`).
+- Reconstruir el dist de main tras incorporar.

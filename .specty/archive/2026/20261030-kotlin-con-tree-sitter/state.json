@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-kotlin-con-tree-sitter",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-kotlin-con-tree-sitter",
   "baseCommit": "e0a25fee7de4042b9ff4417b640ed3eb185a9167",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:95fd262b0c3750100f60d2a35f48d36270b52dac8bc0ac6b5781bb805e5595e4",
@@ -76,12 +76,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b7941341c5e22b79601b671b00e60f268573f90a",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:09:04.641Z",
       "doneAt": "2026-10-30T11:09:30.083Z",
-      "summary": "formats, checks (es y en) y ARCHITECTURE suman Kotlin; el ADR 0016 nombra su paquete y el tamaño con todos los lenguajes de llaves (1,5 MB)."
+      "summary": "formats, checks (es y en) y ARCHITECTURE suman Kotlin; el ADR 0016 nombra su paquete y el tamaño con todos los lenguajes de llaves (1,5 MB).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -94,6 +94,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-30T11:13:36.972Z",
   "lockedTests": {
     "packages/cli/test/bundle-grammars-kotlin.test.ts": "sha256:bd7ec9db3360f5f67ac57c64884ddcbc4f0261f927ce2323db8fab5e8a3578aa",
     "packages/cli/test/check-functions-kotlin.test.ts": "sha256:322be869213cebae468ba1cfef22c9f16948fc93e835be8fe84b65899f3de306",
