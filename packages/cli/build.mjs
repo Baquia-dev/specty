@@ -64,8 +64,10 @@ const GRAMMARS = [
 ];
 const runtime = require.resolve("web-tree-sitter/web-tree-sitter.wasm");
 const compiled = join(dirname(require.resolve("@repomix/tree-sitter-wasms/package.json")), "out");
-// Kotlin is not in `@repomix/tree-sitter-wasms`: its own package carries it, with its license.
+// Kotlin and Elixir are not in `@repomix/tree-sitter-wasms`: their own packages carry them, with
+// their licenses.
 const kotlin = require.resolve("@tree-sitter-grammars/tree-sitter-kotlin/tree-sitter-kotlin.wasm");
+const elixir = require.resolve("tree-sitter-elixir/tree-sitter-elixir.wasm");
 const grammars = join(outdir, "grammars");
 await rm(grammars, { recursive: true, force: true });
 await mkdir(grammars);
@@ -74,6 +76,7 @@ const packed = [
   ["web-tree-sitter", runtime],
   ...GRAMMARS.map((name) => [`tree-sitter-${name}`, join(compiled, `tree-sitter-${name}.wasm`)]),
   ["tree-sitter-kotlin", kotlin],
+  ["tree-sitter-elixir", elixir],
 ];
 await Promise.all(
   packed.map(async ([name, file]) => {
@@ -84,14 +87,16 @@ await Promise.all(
     );
   }),
 );
-// Their licenses: the runtime's and Kotlin's from their packages; the others', which their package
-// does not carry, from `grammar-licenses.txt`.
+// Their licenses: the runtime's, Kotlin's and Elixir's from their packages; the others', which
+// their package does not carry, from `grammar-licenses.txt`.
 const licenses = [
   "== web-tree-sitter: web-tree-sitter.wasm.br ==\n",
   await readFile(join(dirname(runtime), "LICENSE"), "utf8"),
   await readFile("grammar-licenses.txt", "utf8"),
   "== tree-sitter-kotlin: tree-sitter-kotlin.wasm.br ==\n",
   await readFile(join(dirname(kotlin), "LICENSE"), "utf8"),
+  "== tree-sitter-elixir: tree-sitter-elixir.wasm.br ==\n",
+  await readFile(join(dirname(elixir), "LICENSE"), "utf8"),
 ];
 await writeFile(join(grammars, "LICENSES"), licenses.join("\n"));
 

@@ -63,7 +63,7 @@ Elixir era el único stack sin `function-lines` ni `complexity`. El cambio previ
   - files: packages/cli/src/check/syntax.ts, packages/cli/src/check/functions.ts, packages/cli/package.json, packages/cli/test/check-functions-elixir.test.ts, packages/cli/test/check-functions.test.ts, pnpm-lock.yaml
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-elixir.test.ts test/check-functions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T2: El bundle lleva la gramática de Elixir y su licencia
+- [x] T2: El bundle lleva la gramática de Elixir y su licencia
   - files: packages/cli/build.mjs, packages/cli/test/bundle-grammars-elixir.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars-elixir.test.ts test/bundle-grammars.test.ts && pnpm lint
