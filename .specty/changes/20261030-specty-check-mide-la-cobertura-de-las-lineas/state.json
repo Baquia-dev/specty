@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261030-specty-check-mide-la-cobertura-de-las-lineas",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-specty-check-mide-la-cobertura-de-las-lineas",
+  "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7d5df773b1944e8cbc378d3dfa32338f16c8f31011cd016d82177320bcaeaebc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9f05db9100736c4a7d3bf9e309ba78d47bc0290e395626e9b4dc00acbbe9eaa6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cd9bed78ce15480c1196dfead2d707334c96bfc2993d8ba1f37aeb7e2afde1e6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:21b787abef073be8881ec81f0ab38f3c06a83036ee55608564d091c38b3dd71f",
+    "at": "2026-10-30T06:58:56.578Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
