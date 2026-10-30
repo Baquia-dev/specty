@@ -187,6 +187,7 @@ async function ended(
   const ran = await end.tree;
   await recordFullVerification(there, change, {
     command,
+    started: end.started,
     code: end.code,
     ms: Date.now() - end.started,
     output,

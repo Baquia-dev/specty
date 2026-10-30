@@ -188,7 +188,7 @@ async function failedVerification(
     // In the audit, so that `accept` does not run it again on this code; a closed change's audit
     // is already archived.
     if (change.state.phase !== "done") {
-      const run = { command, code: 0, ms: Date.now() - started, output: tail(result) };
+      const run = { command, started, code: 0, ms: Date.now() - started, output: tail(result) };
       const tree = await codeTree(session);
       await recordFullVerification(session, change, tree === undefined ? run : { ...run, tree });
     }

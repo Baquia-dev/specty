@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "20261030-los-tests-de-exporters-y-vscode-dejan-lcov",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261030-los-tests-de-exporters-y-vscode-dejan-lcov",
+  "baseCommit": "aa43c9586237cf7498c8b996703819a50e170d66",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4e85170faba9359342518b52ad345a13e36e04a7ff6e0b31ed56636e1986c278",
+    "at": "2026-10-30T09:19:17.393Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "d083b33a0a6840b0d4870073c7e5d4d5c7ecbaac",
+      "attempts": 1,
+      "startedAt": "2026-10-30T09:19:17.885Z",
+      "doneAt": "2026-10-30T09:19:28.805Z",
+      "summary": "lcovonly junto a text-summary en los vitest.config.ts de exporters y vscode: cada uno deja coverage/lcov.info, sin HTML",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}

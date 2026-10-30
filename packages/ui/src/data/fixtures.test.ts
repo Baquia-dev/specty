@@ -82,7 +82,10 @@ describe("FixtureData actions", () => {
     await settle();
     await fixtures.editComment(REVIEW, "c2", "Texto editado");
     await settle();
-    const comment = store.all().find((c) => c.id === REVIEW)?.review.comments.find((c) => c.id === "c2");
+    const comment = store
+      .all()
+      .find((c) => c.id === REVIEW)
+      ?.review.comments.find((c) => c.id === "c2");
     expect(comment?.body).toBe("Texto editado");
   });
 
@@ -91,7 +94,10 @@ describe("FixtureData actions", () => {
     await settle();
     await fixtures.deleteComment(REVIEW, "c2");
     await settle();
-    const comment = store.all().find((c) => c.id === REVIEW)?.review.comments.find((c) => c.id === "c2");
+    const comment = store
+      .all()
+      .find((c) => c.id === REVIEW)
+      ?.review.comments.find((c) => c.id === "c2");
     expect(comment).toBeUndefined();
   });
 

@@ -2,8 +2,8 @@
 import { describe, expect, it } from "vitest";
 import { resolveActive } from "../../../src/flow/active";
 import { readComments } from "../../../src/store/comments";
-import { person } from "../../support";
 import { call, path, serving, sessionAt } from "../../server/support";
+import { person } from "../../support";
 
 describe("comments and approval actions in server", () => {
   it("AC2: edits comment via action in server", async () => {

@@ -28,21 +28,25 @@ const LCOV = [
   "",
 ].join("\n");
 
-/** A test script that writes `report` to `coverage/lcov.info`, or nothing without one. */
-const testScript = (report?: string) =>
+/** A test script that writes `report` to `path`, or nothing without one. */
+const testScript = (report?: string, path = "coverage/lcov.info") =>
   report === undefined
     ? "process.exit(0);\n"
     : [
         'const fs = require("node:fs");',
-        'fs.mkdirSync("coverage", { recursive: true });',
-        `fs.writeFileSync("coverage/lcov.info", ${JSON.stringify(report)});`,
+        `fs.mkdirSync(${JSON.stringify(path.slice(0, path.lastIndexOf("/")))}, { recursive: true });`,
+        `fs.writeFileSync(${JSON.stringify(path)}, ${JSON.stringify(report)});`,
         "",
       ].join("\n");
 
-async function repo(report: string | undefined, config = CHECKS): Promise<string> {
+async function repo(
+  report: string | undefined,
+  config = CHECKS,
+  path = "coverage/lcov.info",
+): Promise<string> {
   const root = await tempRepo({
     "package.json": `${JSON.stringify({ name: "app", scripts: { test: "node tools/test.js" } })}\n`,
-    "tools/test.js": testScript(report),
+    "tools/test.js": testScript(report, path),
     "src/app.ts": "export const a = 1;\n",
     ".specty/config.yaml": `${CONFIG()}${config}`,
   });
@@ -72,6 +76,20 @@ describe("the coverage of the lines a change adds", () => {
     expect(coverage?.findings.filter((finding) => finding.path !== undefined)).toEqual([
       expect.objectContaining({ path: "src/app.ts", line: 4 }),
     ]);
+  });
+
+  it("AC4: finds the report a tool leaves in coverage/<project>/lcov.info, at the root or one or two folders down", async () => {
+    for (const path of [
+      "coverage/app/lcov.info",
+      "web/coverage/app/lcov.info",
+      "packages/web/coverage/app/lcov.info",
+    ]) {
+      const root = await repo(LCOV, CHECKS, path);
+      const coverage = (await checks(root)).find((check) => check.id === "diff-coverage");
+      expect(coverage?.findings.filter((finding) => finding.path !== undefined)).toEqual([
+        expect.objectContaining({ path: "src/app.ts", line: 4 }),
+      ]);
+    }
   });
 
   it("AC3: warns below checks.coverage.warn, fails below checks.coverage.error, passes above", async () => {

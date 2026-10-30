@@ -186,14 +186,10 @@ export class ReviewComments {
   protected saveEdit(id: string): void {
     const text = this.editBody().trim();
     if (!text) return;
-    this.source
-      .editComment(this.change(), id, text)
-      .then(() => this.cancelEdit(), this.failed);
+    this.source.editComment(this.change(), id, text).then(() => this.cancelEdit(), this.failed);
   }
 
   protected remove(id: string): void {
-    this.source
-      .deleteComment(this.change(), id)
-      .catch(this.failed);
+    this.source.deleteComment(this.change(), id).catch(this.failed);
   }
 }

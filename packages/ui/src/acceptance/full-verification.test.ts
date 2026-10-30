@@ -14,6 +14,7 @@ import {
 import { VERIFY_FULL } from "../data/sample-records";
 import { STEP_MS } from "../data/sample-run";
 import { deriveViews } from "../data/views";
+import { Preferences } from "../theme/preferences";
 import { AcceptanceTab } from "./acceptance-tab";
 
 const ASISTENCIA = "20261018-asistencia-curso";
@@ -202,5 +203,91 @@ describe("Full verification", () => {
     if (view === undefined) throw new Error("no view");
     await remount({ ...view, progress: { tasks: view.progress.tasks } });
     expect(section()).toBeNull();
+  });
+
+  describe("the coverage of what the change adds", () => {
+    const COVERAGE = {
+      measured: 130,
+      covered: 120,
+      gaps: [
+        { path: "lib/a.dart", from: 10, to: 14 },
+        { path: "lib/b.dart", from: 7, to: 7 },
+      ],
+      stretches: 4,
+    };
+
+    /** The section with a last full verification of its own: passed or not, with or without coverage. */
+    async function withLast(passed: boolean, coverage?: typeof COVERAGE) {
+      const rendered = await render();
+      const view = rendered.store.all().find((item) => item.id === ASISTENCIA);
+      if (view === undefined) throw new Error("no view");
+      const last = {
+        at: new Date().toISOString(),
+        command: VERIFY_FULL,
+        passed,
+        ms: 41_000,
+        output: passed ? [] : ["00:09 +37 -1: Some tests failed."],
+        ...(coverage === undefined ? {} : { coverage }),
+      };
+      await rendered.remount({
+        ...view,
+        progress: { ...view.progress, full: { command: VERIFY_FULL, last } },
+      });
+      const part = (selector: string) => rendered.section()?.querySelector(selector) ?? null;
+      const gaps = () =>
+        [...(rendered.section()?.querySelectorAll("[data-coverage-gap]") ?? [])].map((gap) =>
+          text(gap),
+        );
+      return { ...rendered, part, gaps };
+    }
+
+    it("AC1: says what part of the lines the change adds the tests ran, in the chosen language", async () => {
+      const { part, settle } = await withLast(true, { ...COVERAGE, gaps: [], stretches: 0 });
+      expect(text(part("[data-coverage-summary]"))).toBe(
+        "Los tests ejecutan el 92 % de las líneas que añade el cambio (120 de 130).",
+      );
+      expect(part("[data-coverage-gaps]")).toBeNull();
+      TestBed.inject(Preferences).lang.set("en");
+      await settle();
+      expect(text(part("[data-coverage-summary]"))).toBe(
+        "The tests run 92% of the lines the change adds (120 of 130).",
+      );
+    });
+
+    it("AC2: lists the stretches no test ran, and how many more there are", async () => {
+      const { part, gaps, settle, remount, store } = await withLast(true, COVERAGE);
+      expect(text(part("[data-coverage-gaps]"))).toContain("Sin ejecutar:");
+      expect(gaps()).toEqual(["lib/a.dart:10-14", "lib/b.dart:7"]);
+      expect(text(part("[data-coverage-more]"))).toBe("y 2 tramos más");
+      TestBed.inject(Preferences).lang.set("en");
+      await settle();
+      expect(text(part("[data-coverage-gaps]"))).toContain("Not run:");
+      expect(text(part("[data-coverage-more]"))).toBe("and 2 more stretches");
+      const view = store.all().find((item) => item.id === ASISTENCIA);
+      if (view === undefined) throw new Error("no view");
+      const last = {
+        at: new Date().toISOString(),
+        command: VERIFY_FULL,
+        passed: true,
+        ms: 41_000,
+        output: [],
+        coverage: { ...COVERAGE, stretches: 3 },
+      };
+      await remount({
+        ...view,
+        progress: { ...view.progress, full: { command: VERIFY_FULL, last } },
+      });
+      expect(text(part("[data-coverage-more]"))).toBe("and 1 more stretch");
+      TestBed.inject(Preferences).lang.set("es");
+      await settle();
+      expect(text(part("[data-coverage-more]"))).toBe("y 1 tramo más");
+    });
+
+    it("AC3: shows no coverage when the last run failed or kept none", async () => {
+      const failed = await withLast(false, COVERAGE);
+      expect(failed.part("[data-coverage]")).toBeNull();
+      const without = await withLast(true);
+      expect(without.part("[data-coverage]")).toBeNull();
+    });
   });
 });

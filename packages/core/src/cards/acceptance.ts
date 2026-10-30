@@ -2,6 +2,7 @@
 import { counted, type Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
 import { riskLabel } from "../scope/risk";
+import { coverageLines } from "./coverage";
 import { criteriaTestLines, criteriaWarnings } from "./criteria";
 import { sliceLines } from "./epic";
 import { longFileWarnings, splitAdvice } from "./lines";
@@ -55,6 +56,10 @@ export function acceptanceCard(change: ChangeView, ctx: CardContext): Output {
         (change.unlockedTests ?? []).map(
           ({ path, request, task }) => `${path} (${request}, ${task})`,
         ),
+      ),
+      ...section(
+        t("COBERTURA", "COVERAGE"),
+        change.coverage === undefined ? [] : coverageLines(change.coverage, ctx.lang),
       ),
       ...section(t("AVISOS", "WARNINGS"), acceptanceWarnings(change, ctx)),
     ],

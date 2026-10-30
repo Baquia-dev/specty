@@ -4,6 +4,7 @@ import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { type Audit, dataOf } from "./carried";
 import { criteriaTests } from "./criteria-tests";
+import { coverageOnThisCode } from "./verified";
 
 /**
  * What the view of a change in acceptance adds: a review recommended first, each criterion with
@@ -18,14 +19,17 @@ export async function acceptanceFacts(
     readonly audit: Audit;
     readonly commits: ReadonlyMap<string, string>;
   },
-): Promise<Pick<ChangeView, "recommendReview" | "criteriaTests" | "unlockedTests">> {
+): Promise<Pick<ChangeView, "recommendReview" | "criteriaTests" | "unlockedTests" | "coverage">> {
   const { tasks, audit, commits } = read;
+  const coverage = await coverageOnThisCode(session, audit);
+  const { warn } = session.config.checks.coverage;
   return {
     ...(resultReview(session, change, tasks, audit) ? { recommendReview: true } : {}),
     ...(change.state.kind !== "epic"
       ? { criteriaTests: await criteriaTests(session, spec, commits, change.state.id) }
       : {}),
     ...unlockedTests(audit),
+    ...(coverage === undefined ? {} : { coverage: { ...coverage, warn } }),
   };
 }
 

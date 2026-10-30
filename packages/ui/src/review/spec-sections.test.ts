@@ -234,7 +234,9 @@ describe("AssumptionRow", () => {
       },
     ]);
     await fixture.whenStable();
-    const buttons = element.querySelectorAll<HTMLButtonElement>("sp-assumption-row sp-button button");
+    const buttons = element.querySelectorAll<HTMLButtonElement>(
+      "sp-assumption-row sp-button button",
+    );
     expect(buttons[0]?.disabled).toBe(true);
     expect(buttons[1]?.disabled).toBe(true);
   });

@@ -7,7 +7,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**"],
-      reporter: ["text-summary"],
+      reporter: ["text-summary", "lcovonly"],
       // Like the CLI's: code that talks to processes and to VS Code.
       thresholds: { lines: 80, statements: 80, functions: 80, branches: 70 },
     },

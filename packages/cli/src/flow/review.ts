@@ -14,12 +14,14 @@ import {
   reloadNext,
   runNext,
   transition,
-  translator,
 } from "@baquia-dev/specty-core";
+import type { Lang } from "@baquia-dev/specty-core/light";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { type CommentAnchor, readComments, writeComments } from "../store/comments";
 import { commitState } from "./active";
+
+const tr = (lang: Lang, es: string, en: string): string => (lang === "es" ? es : en);
 
 const ASSUMPTION = /^A[1-9]\d*$/;
 
@@ -110,10 +112,9 @@ export async function editComment(
   const comments = await readComments(change.files);
   const target = comments.find((comment) => comment.id === id);
   if (target === undefined) {
-    const t = translator(session.lang);
     return blockedCard(
       header,
-      t("El comentario no existe.", "The comment does not exist."),
+      tr(session.lang, "El comentario no existe.", "The comment does not exist."),
       runNext(session.cards),
     );
   }
@@ -137,10 +138,9 @@ export async function deleteComment(
   const comments = await readComments(change.files);
   const target = comments.find((comment) => comment.id === id);
   if (target === undefined) {
-    const t = translator(session.lang);
     return blockedCard(
       header,
-      t("El comentario no existe.", "The comment does not exist."),
+      tr(session.lang, "El comentario no existe.", "The comment does not exist."),
       runNext(session.cards),
     );
   }
@@ -150,7 +150,7 @@ export async function deleteComment(
   );
   return decisionCard(
     header,
-    [translator(session.lang)(`Comentario ${id} eliminado.`, `Comment ${id} deleted.`)],
+    [tr(session.lang, `Comentario ${id} eliminado.`, `Comment ${id} deleted.`)],
     session.cards,
   );
 }

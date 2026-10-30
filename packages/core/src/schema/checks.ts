@@ -98,6 +98,10 @@ export const DEFAULT_CHECKS: ChecksConfig = {
       "coverage/lcov.info",
       "*/coverage/lcov.info",
       "*/*/coverage/lcov.info",
+      // A folder per project, as Angular's test builder writes.
+      "coverage/*/lcov.info",
+      "*/coverage/*/lcov.info",
+      "*/*/coverage/*/lcov.info",
       "lcov.info",
       "coverage.xml",
       "coverage/cobertura-coverage.xml",

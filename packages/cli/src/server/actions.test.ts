@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
+import { call, path, serving, sessionAt } from "../../test/server/support";
+import { person } from "../../test/support";
 import { resolveActive } from "../flow/active";
 import { readComments } from "../store/comments";
-import { person } from "../../test/support";
-import { call, path, serving, sessionAt } from "../../test/server/support";
 
 describe("comments and approval actions in server", () => {
   it("AC2: edits comment via action in server", async () => {

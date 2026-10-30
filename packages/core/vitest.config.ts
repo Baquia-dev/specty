@@ -7,7 +7,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**"],
-      reporter: ["text-summary"],
+      reporter: ["text-summary", "lcovonly"],
       // ARCHITECTURE §16: the core keeps at least 90 % coverage.
       thresholds: { lines: 90, statements: 90, functions: 90, branches: 85 },
     },

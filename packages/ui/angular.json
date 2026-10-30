@@ -54,7 +54,7 @@
             "include": ["src/**/*.test.ts"],
             "coverageInclude": ["src/**/*.ts"],
             "coverageExclude": ["src/**/*.test.ts", "src/main.ts"],
-            "coverageReporters": ["text-summary"],
+            "coverageReporters": ["text-summary", "lcovonly"],
             "coverageThresholds": { "lines": 80, "statements": 80, "functions": 80, "branches": 75 }
           }
         }

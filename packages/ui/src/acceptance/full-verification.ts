@@ -70,6 +70,22 @@ const TICK_MS = 30_000;
               </sp-button>
             }
           </div>
+          @if (coverage(); as coverage) {
+            <div class="flex flex-col gap-1 text-sm" data-coverage>
+              <span data-coverage-summary>{{ coverageSummary() }}</span>
+              @if (coverage.gaps.length > 0) {
+                <span class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-text-muted" data-coverage-gaps>
+                  {{ t()('Sin ejecutar:', 'Not run:') }}
+                  @for (gap of gapLabels(); track $index) {
+                    <code class="font-mono text-xs text-text" data-coverage-gap>{{ gap }}</code>
+                  }
+                  @if (moreGaps(); as more) {
+                    <span data-coverage-more>{{ more }}</span>
+                  }
+                </span>
+              }
+            </div>
+          }
           @if (open() && output().length > 0) {
             <!-- Inside <pre> every space of the template shows: the lines go on one template line. -->
             <pre class="m-0 rounded-lg border border-border bg-text/5 px-3 py-2.5 font-mono text-xs leading-relaxed whitespace-pre-wrap" data-output>@for (line of output(); track $index) {<span class="block">@for (part of line; track $index) {<span [class]="tones[part.tone]" [attr.data-tone]="part.tone">{{ part.text }}</span>}</span>}</pre>
@@ -109,6 +125,37 @@ export class FullVerification {
   protected readonly output = computed(() =>
     (this.full().last?.output ?? []).map((line) => outputSegments(line)),
   );
+
+  /** The coverage of what the change adds, only from a run that passed. */
+  protected readonly coverage = computed(() => {
+    const last = this.full().last;
+    return last?.passed === true ? last.coverage : undefined;
+  });
+  /** Rounded down, as the terminal says it. */
+  protected readonly coverageSummary = computed(() => {
+    const coverage = this.coverage();
+    if (coverage === undefined || coverage.measured === 0) return "";
+    const { measured, covered } = coverage;
+    const percent = Math.floor((covered / measured) * 100);
+    return this.t()(
+      `Los tests ejecutan el ${percent} % de las líneas que añade el cambio (${covered} de ${measured}).`,
+      `The tests run ${percent}% of the lines the change adds (${covered} of ${measured}).`,
+    );
+  });
+  protected readonly gapLabels = computed(() =>
+    (this.coverage()?.gaps ?? []).map(({ path, from, to }) =>
+      from === to ? `${path}:${from}` : `${path}:${from}-${to}`,
+    ),
+  );
+  /** «y 2 tramos más», when the audit kept fewer stretches than there are. */
+  protected readonly moreGaps = computed(() => {
+    const coverage = this.coverage();
+    const more = coverage === undefined ? 0 : coverage.stretches - coverage.gaps.length;
+    if (more <= 0) return "";
+    return more === 1
+      ? this.t()("y 1 tramo más", "and 1 more stretch")
+      : this.t()(`y ${more} tramos más`, `and ${more} more stretches`);
+  });
 
   /** «Correcta · 41 s · hace 2 min» or «Falló · 9 s · hace 2 min». */
   protected readonly verdict = computed(() => {

@@ -6,9 +6,9 @@ import {
   noActiveChangeCard,
   type Output,
   parseSpec,
-  translator,
   uiApprovalRefusalCard,
 } from "@baquia-dev/specty-core";
+import type { Lang } from "@baquia-dev/specty-core/light";
 import { accept } from "../commands/accept";
 import { adjust } from "../commands/adjust";
 import { approve } from "../commands/approve";
@@ -29,6 +29,8 @@ import { type Session, sessionFrom, type Terminal } from "../session";
 import { readSpec } from "../store/changes";
 import { type CommentAnchor, isAnchor, readComments } from "../store/comments";
 import { readDelegation } from "../store/local";
+
+const tr = (lang: Lang, es: string, en: string): string => (lang === "es" ? es : en);
 
 /** A decision the person takes in the UI, as its route and its body say it. */
 export type Action =
@@ -282,13 +284,16 @@ async function approveRevision(session: Session, revision: number): Promise<Outp
       (comment) => comment.resolvedInRevision === undefined,
     ).length;
     if (openComments > 0) {
-      const t = translator(session.lang);
       return blockedCard(
         header,
         openComments === 1
-          ? t("Hay 1 comentario sin resolver.", "There is 1 unresolved comment.")
-          : t(`Hay ${openComments} comentarios sin resolver.`, `There are ${openComments} unresolved comments.`),
-        t("pide cambios o resuélvelos.", "request changes or resolve them."),
+          ? tr(session.lang, "Hay 1 comentario sin resolver.", "There is 1 unresolved comment.")
+          : tr(
+              session.lang,
+              `Hay ${openComments} comentarios sin resolver.`,
+              `There are ${openComments} unresolved comments.`,
+            ),
+        tr(session.lang, "pide cambios o resuélvelos.", "request changes or resolve them."),
       );
     }
     const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;

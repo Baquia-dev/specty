@@ -167,7 +167,9 @@ export class AssumptionRow {
       (c) =>
         !c.resolved &&
         (("item" in c.anchor && c.anchor.item === id) ||
-          ("quote" in c.anchor && c.anchor.section === "assumptions" && text.includes(c.anchor.quote))),
+          ("quote" in c.anchor &&
+            c.anchor.section === "assumptions" &&
+            text.includes(c.anchor.quote))),
     );
     return hasOpen
       ? this.t()(

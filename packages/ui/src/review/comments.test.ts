@@ -177,7 +177,9 @@ describe("ReviewComments", () => {
     input.value = " ¿No satura la vista? ";
     input.dispatchEvent(new Event("input"));
     await fixture.whenStable();
-    element.querySelector<HTMLButtonElement>("[data-comment=c2] form sp-button[data-action=save] button")?.click();
+    element
+      .querySelector<HTMLButtonElement>("[data-comment=c2] form sp-button[data-action=save] button")
+      ?.click();
     await settle();
     expect(source.calls).toContainEqual([
       "editComment",
@@ -192,11 +194,7 @@ describe("ReviewComments", () => {
     const open = element.querySelector("[data-comment=c2]");
     open?.querySelector<HTMLButtonElement>("[data-action=delete] button")?.click();
     await settle();
-    expect(source.calls).toContainEqual([
-      "deleteComment",
-      "20261020-evolucion-trimestre",
-      "c2",
-    ]);
+    expect(source.calls).toContainEqual(["deleteComment", "20261020-evolucion-trimestre", "c2"]);
   });
 });
 

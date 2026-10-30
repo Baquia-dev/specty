@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
+  "baseCommit": "4d47f9cd6a16ef9b88a1a12778cafc358ad10c1e",
+  "revision": 4,
+  "approved": {
+    "revision": 3,
+    "hash": "sha256:9c036e7be5df48dfbe1ae74042ff9fd3485c1b52a847067a85893be681376a1e",
+    "at": "2026-10-30T09:09:46.087Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1d650bd5e6d9654b374e9a0c924944b28797fc4960c5c0daa71aa65ec3d1c734",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:207634b57ec040a154ec43bb32c94059c713e6756b8342f3f862c3bc1c2ccc78",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "9443038ad8a0425fe8e2ccd9f2d0fda08c3dcc83",
+      "attempts": 1,
+      "startedAt": "2026-10-30T09:04:25.890Z",
+      "doneAt": "2026-10-30T09:04:47.575Z",
+      "summary": "Las rutas por defecto de checks.coverage.reports incluyen coverage/*/lcov.info en la raíz y una o dos carpetas abajo (una carpeta por proyecto, como Angular)",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "8ae66462739d80bd836342e57a56a71e0a1b1064",
+      "attempts": 1,
+      "startedAt": "2026-10-30T09:04:47.902Z",
+      "doneAt": "2026-10-30T09:06:23.641Z",
+      "summary": "La sección Verificación completa muestra, si el último resultado pasó, el porcentaje (cubiertas de medidas) y los tramos sin ejecutar con cuántos más; progressOf lee coverage con cuidado y el prototipo simula una",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "8255415cf1c56780ae5f4d25be38ece2550cf6fd",
+      "attempts": 1,
+      "startedAt": "2026-10-30T09:06:24.003Z",
+      "doneAt": "2026-10-30T09:07:33.726Z",
+      "summary": "lcovonly en coverageReporters de angular.json: los tests de la UI dejan packages/ui/coverage/specty-ui/lcov.info, sin HTML",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "6052849698f804a780347742e35930eb1b1b1e45",
+      "attempts": 1,
+      "startedAt": "2026-10-30T09:07:34.103Z",
+      "doneAt": "2026-10-30T09:08:34.304Z",
+      "summary": "ui.md (Aceptación) cuenta la línea de cobertura y sus tramos; formats.md, las rutas por defecto con coverage/<proyecto>/lcov.info",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "cf51df81cc94a2a470788ea68385c91a6c87155a",
+      "attempts": 1,
+      "startedAt": "2026-10-30T09:09:46.487Z",
+      "doneAt": "2026-10-30T09:10:01.569Z",
+      "summary": "CoverageGapView y RunCoverageView dejan de exportarse: solo los usa VerificationView, y knip queda en verde",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 5,
+    "T": 5,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-30T09:18:33.816Z",
+  "lockedTests": {
+    "packages/cli/test/check-coverage.test.ts": "sha256:c1e315e62225df171abb86f51302594b9cb1b3bf0b05cc15ab0547d13235a0fd",
+    "packages/ui/src/acceptance/full-verification.test.ts": "sha256:e3b4d445342ffcbcf0e05670deecd62118c2f015cae658d34a157f0a794ed8fa",
+    "packages/ui/src/data/progress.test.ts": "sha256:6a006e377df87f0b8a38f51dbfb5f182e1c2003c46861abcf4899ac1ecdacc65"
+  }
+}
