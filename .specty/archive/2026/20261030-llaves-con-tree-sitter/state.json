@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-llaves-con-tree-sitter",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-llaves-con-tree-sitter",
   "baseCommit": "f197a3575d19bca8233207d690d8ea471aea68bc",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:753f8aa94036ee026deeb30602d1b036f34d8c3c601a680fb7d57a7f1f2b90c0",
@@ -87,12 +87,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "459b6a577a3f3ebca6ed38aff476421e228f96fc",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:51:09.643Z",
       "doneAt": "2026-10-30T10:51:37.434Z",
-      "summary": "formats, checks (es y en) y ARCHITECTURE describen la medida sobre el árbol de Java, C#, PHP, C y C++ y el emparejamiento por orden de las funciones sin nombre."
+      "summary": "formats, checks (es y en) y ARCHITECTURE describen la medida sobre el árbol de Java, C#, PHP, C y C++ y el emparejamiento por orden de las funciones sin nombre.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -105,6 +105,7 @@
     "T": 4,
     "R": 3
   },
+  "closingSubmittedAt": "2026-10-30T10:55:43.431Z",
   "lockedTests": {
     "packages/cli/test/bundle-grammars-c.test.ts": "sha256:df9c216d473e79bd9329ed99d7d83144238c1541ef422e5093c3541a1a81c7b9",
     "packages/cli/test/check-functions-c.test.ts": "sha256:d47bb0f80cbfb8006c7afbc1cec99f11866f75f3792653a8f53df9cc36968e81",

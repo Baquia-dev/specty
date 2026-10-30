@@ -87,3 +87,30 @@ epic: 20261030-tree-sitter-mide-las-funciones
 - R1: Una gramática da nombres de nodo distintos de los que se probaron, o los cambia en otra versión. Mitigación: versiones exactas y un test por lenguaje en el core (AC2).
 - R2: Los tests de ejemplos por stack (`check-examples-*`) fijan resultados de la estimación. Mitigación: se ejecutan en la aceptación; si alguno cambia por la medida nueva, se ajusta con su motivo.
 - R3: Emparejar por orden las funciones sin nombre puede emparejar mal si el cambio añade una delante de otra. Mitigación: es el mismo criterio que ya siguen las de un mismo nombre; el cierre lo anota.
+
+## Cierre
+
+### Resumen
+
+`function-lines` y `complexity` miden sobre el árbol de tree-sitter también Java, C#, PHP, C y C++.
+- El core generaliza la medida de C1: salta los comentarios con sus hijos, empieza la función en su primer token fuera de anotaciones y atributos, busca el nombre por campos y declaradores, cuenta un `case` por su primer token y cada operador lógico por su token.
+- Las tablas de la familia C viven en `tree-languages-c.ts`.
+- Las funciones sin nombre se emparejan por orden, así que tocar un callback largo sin agrandarlo ya no falla.
+- `dist/grammars/` ocupa 932 KB con las ocho gramáticas.
+
+### Desviaciones
+
+- El corte C2 no cabía en un cambio (XL). Este es su cambio previo, en la épica sin `slice`, y el corte C2 queda para Go, Rust, Kotlin, Swift y Dart.
+- `treeFunctions` se dividió en `walk` y `visit`: el `specty` de main, que ya mide con el árbol desde C1, le dio complejidad 11.
+- Los tablas usan `Map` en lugar de objetos para `cases` y `receivers`, para que un tipo de nodo como `constructor` no encuentre nada del prototipo de `Object`.
+
+### Decisiones
+
+- Los operadores lógicos se cuentan como tokens cuyo padre es un nodo lógico, y no por el campo `operator`. Así sirven también las gramáticas que los anidan en nodos propios (Dart, Swift).
+- Los accesores de C# no tienen nombre: su `name` es la palabra `get` o `set`.
+- Un `.h` se lee como C; si es C++ y no parsea, mide la estimación.
+
+### Pendientes
+
+- El corte C2: Go, Rust, Kotlin, Swift y Dart. Prototipo probado en el scratchpad: en Dart, la función es la firma más el `function_body` hermano; el literal `func` de Go queda sin nombre, porque su padre es la lista de la derecha y no la declaración.
+- Reconstruir el dist de main tras incorporar.
