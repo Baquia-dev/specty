@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-specty-check-aplica-las-reglas-del-proyecto-con",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-specty-check-aplica-las-reglas-del-proyecto-con",
   "baseCommit": "ce35fb1d06dad482c00eff14476fcd9ce39e7d71",
   "revision": 1,
@@ -55,12 +55,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f2e51e24e36388f1b30148fe61361e92a2acd97c",
+      "attempts": 1,
       "startedAt": "2026-10-30T21:15:06.681Z",
       "doneAt": "2026-10-30T21:15:19.228Z",
-      "summary": "Las guías en español e inglés documentan code-rules y que los ejemplos no lo muestran; formats.md lo describe en la lista de §6 y ARCHITECTURE.md lo nombra en specty check"
+      "summary": "Las guías en español e inglés documentan code-rules y que los ejemplos no lo muestran; formats.md lo describe en la lista de §6 y ARCHITECTURE.md lo nombra en specty check",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b148aaf899b630377ef9053d4cc0b3212e16e887",
+      "startedAt": "2026-10-30T21:15:19.577Z",
+      "doneAt": "2026-10-30T21:15:34.863Z",
+      "summary": "El test de las guías cuenta code-rules entre los checks que su ejemplo no muestra, porque solo aparece con reglas en la raíz"
     }
   },
   "pending": {

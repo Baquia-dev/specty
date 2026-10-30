@@ -70,7 +70,7 @@ Sigue el mismo patrón que `secrets` y `vulnerabilities` (ADR 0012): una herrami
   - ac: —
   - verify: pnpm lint
   - type: docs
-- [ ] T3: El test de las guías cuenta con code-rules
+- [x] T3: El test de las guías cuenta con code-rules
   - files: packages/cli/test/check-docs.test.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts && pnpm lint
