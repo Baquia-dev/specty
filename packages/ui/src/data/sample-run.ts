@@ -152,9 +152,20 @@ function script(target: RunTarget): readonly string[] {
   ];
 }
 
+/** What a passing full verification of the samples measured of the lines the change adds. */
+const SAMPLE_COVERAGE = {
+  measured: 64,
+  covered: 58,
+  gaps: [
+    { path: "lib/attendance/attendance_repository.dart", from: 41, to: 44 },
+    { path: "lib/attendance/attendance_repository.dart", from: 72, to: 72 },
+  ],
+  stretches: 2,
+};
+
 /**
  * What a finished run leaves: a task's, one more attempt and its `task.verified` event; the full
- * verification, its `change.verified` event.
+ * verification, its `change.verified` event, with the coverage when it passed.
  */
 export function verifiedIn(
   record: ChangeRecord,
@@ -172,7 +183,8 @@ export function verifiedIn(
   const ts = new Date(now).toISOString();
   const audit = record.audit ?? [];
   if (run.task === undefined) {
-    const event: AuditRecord = { ts, actor: "specty", event: "change.verified", data: result };
+    const data = passed ? { ...result, coverage: SAMPLE_COVERAGE } : result;
+    const event: AuditRecord = { ts, actor: "specty", event: "change.verified", data };
     return { ...record, audit: [...audit, event] };
   }
   const task = state.tasks[run.task];

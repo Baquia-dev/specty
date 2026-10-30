@@ -60,7 +60,7 @@ La verificación completa ya anota en `change.verified` qué parte de las línea
   - files: packages/cli/test/check-coverage.test.ts, packages/core/src/schema/checks.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-coverage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: Aceptación muestra la cobertura de la verificación completa
+- [x] T2: Aceptación muestra la cobertura de la verificación completa
   - files: packages/ui/src/acceptance/full-verification.test.ts, packages/ui/src/data/progress.test.ts, packages/ui/src/data/progress.ts, packages/ui/src/acceptance/full-verification.ts, packages/ui/src/data/sample-run.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/acceptance/full-verification.test.ts --include src/data/progress.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint

@@ -3,6 +3,7 @@
 // state and their verifications. Only types come from core, so screens may import the helpers.
 import type { ChangeState, Lang, Spec, Task } from "@baquia-dev/specty-core";
 import { unlocksOf } from "./locks";
+import { isObject } from "./server-answers";
 
 /** A line of `audit.jsonl` (formats.md §4), as the data source gives it. */
 export interface AuditRecord {
@@ -20,6 +21,23 @@ export interface AuditRecord {
 
 export type TaskStatus = "pending" | "active" | "done";
 
+/** A stretch of lines the change adds that no test ran. */
+export interface CoverageGapView {
+  readonly path: string;
+  readonly from: number;
+  readonly to: number;
+}
+
+/** What part of the lines the change adds the tests of a full verification ran (formats.md §4). */
+export interface RunCoverageView {
+  readonly measured: number;
+  readonly covered: number;
+  /** The first stretches no test ran. */
+  readonly gaps: readonly CoverageGapView[];
+  /** How many stretches no test ran, those in `gaps` included. */
+  readonly stretches: number;
+}
+
 /** One run of a task's verification command (`task.verified`). */
 export interface VerificationView {
   readonly at: string;
@@ -28,6 +46,8 @@ export interface VerificationView {
   readonly ms: number;
   /** Only a failed verification keeps its last lines. */
   readonly output: readonly string[];
+  /** Only a full verification whose tests left a coverage report keeps it. */
+  readonly coverage?: RunCoverageView;
 }
 
 /**
@@ -90,13 +110,32 @@ function runOf(record: AuditRecord): VerificationView | undefined {
   const output = Array.isArray(outputTail)
     ? outputTail.filter((line): line is string => typeof line === "string")
     : [];
+  const coverage = coverageOf(record.data.coverage);
   return {
     at: record.ts,
     command: cmd,
     passed: exit === 0,
     ms: typeof ms === "number" ? ms : 0,
     output,
+    ...(coverage === undefined ? {} : { coverage }),
   };
+}
+
+/** A `coverage` with the shape formats.md §4 gives it; a malformed stretch is dropped. */
+function coverageOf(value: unknown): RunCoverageView | undefined {
+  if (!isObject(value)) return undefined;
+  const { measured, covered, gaps, stretches } = value;
+  if (typeof measured !== "number" || typeof covered !== "number") return undefined;
+  if (typeof stretches !== "number" || !Array.isArray(gaps)) return undefined;
+  const read = gaps.flatMap((gap: unknown): CoverageGapView[] =>
+    isObject(gap) &&
+    typeof gap.path === "string" &&
+    typeof gap.from === "number" &&
+    typeof gap.to === "number"
+      ? [{ path: gap.path, from: gap.from, to: gap.to }]
+      : [],
+  );
+  return { measured, covered, gaps: read, stretches };
 }
 
 /** A `task.verified` event, with the task it checked. */
