@@ -46,7 +46,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "928fcf02189399acfab1afc729c58824d0eac407",
+      "startedAt": "2026-10-30T11:07:06.184Z",
+      "doneAt": "2026-10-30T11:08:03.715Z",
+      "summary": "El core mide Kotlin sobre el árbol con su tabla en tree-languages-modern.ts; su gramática oficial es devDependency del core, con su node-gyp-build apagado en allowBuilds."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

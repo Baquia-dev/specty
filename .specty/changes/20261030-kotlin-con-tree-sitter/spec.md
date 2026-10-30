@@ -64,7 +64,7 @@ allowedDependencies:
 
 ## Tareas
 
-- [ ] T1: El core mide Kotlin sobre el árbol
+- [x] T1: El core mide Kotlin sobre el árbol
   - files: packages/core/src/checks/tree-languages-modern.ts, packages/core/src/checks/tree-languages.ts, packages/core/package.json, packages/core/test/checks/functions-tree-kotlin.test.ts, pnpm-workspace.yaml, pnpm-lock.yaml
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree-kotlin.test.ts test/checks/functions-tree-modern.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

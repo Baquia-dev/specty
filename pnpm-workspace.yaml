@@ -6,7 +6,9 @@ packages:
 # esbuild, @parcel/watcher, lmdb and msgpackr-extract ship prebuilt binaries
 # (platform packages or prebuilds); their install scripts are not needed. vsce's
 # @vscode/vsce-sign signs extensions for the Marketplace, which `pnpm package` does not do.
+# The Kotlin grammar builds a native binding; Specty loads its WebAssembly build instead.
 allowBuilds:
+  "@tree-sitter-grammars/tree-sitter-kotlin": false
   esbuild: false
   "@parcel/watcher": false
   lmdb: false

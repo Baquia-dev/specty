@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { C, CPP, CSHARP, JAVA, PHP } from "./tree-languages-c";
-import { DART, GO, RUST, SWIFT } from "./tree-languages-modern";
+import { DART, GO, KOTLIN, RUST, SWIFT } from "./tree-languages-modern";
 
 /**
  * What `treeFunctions` needs to know of each language's tree-sitter grammar: which nodes are a
@@ -19,7 +19,8 @@ export type TreeLanguage =
   | "go"
   | "rust"
   | "swift"
-  | "dart";
+  | "dart"
+  | "kotlin";
 
 export interface TreeGrammar {
   /** The named nodes that are a function. */
@@ -99,4 +100,5 @@ export const TREE_GRAMMARS: Readonly<Record<TreeLanguage, TreeGrammar>> = {
   rust: RUST,
   swift: SWIFT,
   dart: DART,
+  kotlin: KOTLIN,
 };
