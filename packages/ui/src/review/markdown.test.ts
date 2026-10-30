@@ -25,4 +25,14 @@ describe("Markdown", () => {
     expect(markdown?.querySelector("img")?.getAttribute("onerror")).toBeNull();
     expect((window as unknown as { hacked?: boolean }).hacked).toBeUndefined();
   });
+
+  it("AC3: in the chat, tints its code with the text color instead of the page's ground", async () => {
+    const fixture = TestBed.createComponent(Host);
+    await fixture.whenStable();
+    const classes = (fixture.nativeElement as HTMLElement).querySelector("sp-markdown")?.classList;
+    expect(classes?.contains("embedded:[&_code]:bg-text/5")).toBe(true);
+    expect(classes?.contains("embedded:[&_pre]:bg-text/5")).toBe(true);
+    // The code inside a block keeps no ground of its own.
+    expect(classes?.contains("[&_pre_code]:bg-transparent")).toBe(true);
+  });
 });

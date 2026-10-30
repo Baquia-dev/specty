@@ -26,14 +26,15 @@ export const LIST = "m-0 flex list-none flex-col gap-0.5 p-0 pl-6";
 
 /**
  * Opens a section: its title in small capitals, a hairline, and a count or progress. The next
- * divider closes it, so lists under it need no line of their own.
+ * divider closes it, so lists under it need no line of their own. In the chat it stays in place
+ * and paints no ground, so it does not cross the translucent panel as a band.
  */
 @Component({
   selector: "sp-section-divider",
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      "sticky top-[var(--sp-sticky-top,0px)] z-5 -my-2 flex items-center gap-3 bg-bg py-2 font-mono text-[11px] text-text-muted",
+      "sticky top-[var(--sp-sticky-top,0px)] z-5 -my-2 flex items-center gap-3 bg-bg py-2 font-mono text-[11px] text-text-muted embedded:static embedded:bg-transparent",
   },
   template: `
     @if (level() === 2) {

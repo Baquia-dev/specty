@@ -225,6 +225,13 @@
   font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
 }
 
+/*
+ * `embedded:` applies a class only in the chat's view, so each component says there, beside its
+ * other classes, how it sits on the translucent panel: what lies on it paints no band of the page's
+ * ground, and what floats over it stays opaque.
+ */
+@custom-variant embedded (&:where([data-embedded] *));
+
 @layer base {
   body {
     margin: 0;

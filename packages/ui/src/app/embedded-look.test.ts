@@ -86,4 +86,18 @@ describe("the look of the embedded view in the chat", () => {
       expect(body.classList.contains("text-sm")).toBe(true);
     }
   });
+
+  it("AC1: in Progress and Acceptance, section titles neither stick nor paint a band in the chat", async () => {
+    for (const id of ["20261019-boletines-pdf", "20261018-asistencia-curso"]) {
+      const element = await embedded(id);
+      const dividers = [...element.querySelectorAll("sp-section-divider")];
+      expect(dividers.length, id).toBeGreaterThan(0);
+      for (const divider of dividers) {
+        // Outside the chat they still stick over the page's ground.
+        expect(divider.classList.contains("sticky"), id).toBe(true);
+        expect(divider.classList.contains("embedded:static"), id).toBe(true);
+        expect(divider.classList.contains("embedded:bg-transparent"), id).toBe(true);
+      }
+    }
+  });
 });

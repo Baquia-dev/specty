@@ -38,9 +38,10 @@ const WIDE = "(min-width: 640px)";
       Fixed under the change's compact bar (--sp-sticky-top) until the diff ends: the title, the
       bar and the mode, on the page's ground so the code passing under it does not show. Its
       padding reaches into the gaps around it, so it only adds room once fixed; with nothing in
-      it, it takes none.
+      it, it takes none. In the chat it stays in place and paints no ground: there is no bar to
+      stay under, and a band would cross the translucent panel.
     -->
-    <div class="sticky top-[var(--sp-sticky-top,0px)] z-10 -my-3 flex flex-col gap-3 bg-bg py-3 [&:not(:has(>:not(:empty)))]:hidden" data-bar>
+    <div class="sticky top-[var(--sp-sticky-top,0px)] z-10 -my-3 flex flex-col gap-3 bg-bg py-3 [&:not(:has(>:not(:empty)))]:hidden embedded:static embedded:bg-transparent" data-bar>
       <ng-content select="[diffHeading]" />
       <div class="flex flex-wrap items-center justify-between gap-3 empty:hidden">
         <ng-content />

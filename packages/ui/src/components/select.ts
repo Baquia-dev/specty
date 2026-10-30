@@ -31,9 +31,12 @@ const TRIGGER =
 const CHEVRON =
   "shrink-0 text-text-muted transition-transform duration-150 motion-reduce:transition-none";
 
-/** As the menu's items: the active one lights up and the chosen one carries a mark. */
+/**
+ * As the menu's items: the active one lights up and the chosen one carries a mark. In the chat the
+ * list's ground is already the page's, so they light up with a tint of the text.
+ */
 const OPTION =
-  "flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-[13px] whitespace-nowrap text-text hover:bg-bg data-[active=true]:bg-bg aria-selected:font-medium";
+  "flex cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-[13px] whitespace-nowrap text-text hover:bg-bg data-[active=true]:bg-bg aria-selected:font-medium embedded:hover:bg-text/6 embedded:data-[active=true]:bg-text/6";
 
 /**
  * A select drawn in the style of the UI, not the system's dropdown. Angular Aria gives it the
@@ -83,12 +86,15 @@ const OPTION =
       [cdkConnectedOverlayViewportMargin]="8"
     >
       <ng-template ngComboboxPopup [combobox]="combobox">
-        <!-- Pressing an option keeps the focus on the trigger, so the list is not closed under the click. -->
+        <!--
+          Pressing an option keeps the focus on the trigger, so the list is not closed under the click.
+          In the chat the surface is translucent, so the list takes the chat's opaque ground instead.
+        -->
         <div
           ngComboboxWidget
           ngListbox
           #listbox="ngListbox"
-          class="flex max-h-72 flex-col gap-0.5 overflow-y-auto rounded-xl border border-border bg-surface p-1 shadow-md"
+          class="flex max-h-72 flex-col gap-0.5 overflow-y-auto rounded-xl border border-border bg-surface p-1 shadow-md embedded:bg-bg"
           selectionMode="explicit"
           focusMode="activedescendant"
           [hidden]="!expanded()"

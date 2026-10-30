@@ -4,14 +4,15 @@ import { marked } from "marked";
 
 /**
  * Markdown written by the agent or the person. Angular sanitizes what `[innerHTML]` receives,
- * so scripts, event handlers and unsafe URLs never reach the page.
+ * so scripts, event handlers and unsafe URLs never reach the page. In the chat its code takes a
+ * tint of the text, as the paths of a task do, instead of the chat's opaque ground.
  */
 @Component({
   selector: "sp-markdown",
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class:
-      "block max-w-[72ch] text-base [&_a]:underline [&_code]:rounded-sm [&_code]:bg-bg [&_code]:px-1 [&_code]:font-mono [&_code]:text-sm [&_li]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-2 [&_pre]:my-3 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-border [&_pre]:bg-bg [&_pre]:p-3 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:pl-5",
+      "block max-w-[72ch] text-base [&_a]:underline [&_code]:rounded-sm [&_code]:bg-bg [&_code]:px-1 [&_code]:font-mono [&_code]:text-sm [&_li]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-2 [&_pre]:my-3 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-border [&_pre]:bg-bg [&_pre]:p-3 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:font-semibold [&_ul]:list-disc [&_ul]:pl-5 embedded:[&_code]:bg-text/5 embedded:[&_pre]:bg-text/5",
   },
   template: `<div [innerHTML]="html()"></div>`,
 })
