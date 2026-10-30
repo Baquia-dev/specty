@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-python-ruby-con-tree-sitter",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-python-ruby-con-tree-sitter",
   "baseCommit": "f45510422cc1f0e0aef44830fcc8fe66fba988b7",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "366b4856f292f8a37454c4568e000bc73e1eff3c",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:19:58.860Z",
       "doneAt": "2026-10-30T11:20:27.373Z",
-      "summary": "El build comprime en dist/grammars las gramáticas de Python y Ruby, y grammar-licenses.txt lleva sus licencias MIT."
+      "summary": "El build comprime en dist/grammars las gramáticas de Python y Ruby, y grammar-licenses.txt lleva sus licencias MIT.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02b3621d78538a7cd818ec7a297f82a89cadb0ff",
+      "startedAt": "2026-10-30T11:20:27.701Z",
+      "doneAt": "2026-10-30T11:20:52.988Z",
+      "summary": "formats, checks (es y en) y ARCHITECTURE suman Python y Ruby a la medida sobre el árbol, con la definición de sus estimaciones."
     }
   },
   "pending": {

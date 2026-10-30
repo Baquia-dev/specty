@@ -73,7 +73,7 @@ follows:
   - files: packages/cli/build.mjs, packages/cli/grammar-licenses.txt, packages/cli/test/bundle-grammars-scripting.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars-scripting.test.ts test/bundle-grammars.test.ts && pnpm lint
-- [ ] T4: La documentación de la medida de Python y Ruby
+- [x] T4: La documentación de la medida de Python y Ruby
   - files: docs/formats.md, docs/checks.md, docs/checks.en.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
