@@ -73,7 +73,7 @@ follows:
   - files: packages/cli/src/check/syntax.ts, packages/cli/test/check-functions-modern.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-modern.test.ts test/check-functions-c.test.ts test/check-functions-tree.test.ts test/check-functions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T3: El bundle lleva las cuatro gramáticas y sus licencias
+- [x] T3: El bundle lleva las cuatro gramáticas y sus licencias
   - files: packages/cli/build.mjs, packages/cli/grammar-licenses.txt, packages/cli/test/bundle-grammars-modern.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars-modern.test.ts test/bundle-grammars-c.test.ts test/bundle-grammars.test.ts && pnpm lint

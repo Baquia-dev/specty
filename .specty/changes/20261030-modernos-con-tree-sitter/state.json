@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a84eac9b060b8eb6d260a744a45861a4252d6fae",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:59:56.453Z",
       "doneAt": "2026-10-30T11:00:15.642Z",
-      "summary": "specty check elige la gramática de Go, Rust, Swift y Dart por la extensión, así que ve los getters de Dart y las funciones con un parámetro record."
+      "summary": "specty check elige la gramática de Go, Rust, Swift y Dart por la extensión, así que ve los getters de Dart y las funciones con un parámetro record.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "14372c9c04dc826c4fb9d41c5d02f198920e2b93",
+      "startedAt": "2026-10-30T11:00:15.964Z",
+      "doneAt": "2026-10-30T11:00:36.093Z",
+      "summary": "El build comprime en dist/grammars las gramáticas de Go, Rust, Swift y Dart, y grammar-licenses.txt lleva sus licencias MIT."
     }
   },
   "pending": {

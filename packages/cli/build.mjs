@@ -57,7 +57,10 @@ for (const name of ["LICENSE", "NOTICE"]) await cp(join("..", "..", name), join(
 // The tree-sitter runtime and the grammars that `src/check/syntax.ts` loads (ADR 0016), compressed
 // with brotli at quality 9: 11 would save a tenth of the size and take eighty times as long.
 const require = createRequire(import.meta.url);
-const GRAMMARS = ["typescript", "tsx", "javascript", "java", "c_sharp", "php", "c", "cpp"];
+const GRAMMARS = [
+  ...["typescript", "tsx", "javascript", "java", "c_sharp", "php", "c", "cpp"],
+  ...["go", "rust", "swift", "dart"],
+];
 const runtime = require.resolve("web-tree-sitter/web-tree-sitter.wasm");
 const compiled = join(dirname(require.resolve("@repomix/tree-sitter-wasms/package.json")), "out");
 const grammars = join(outdir, "grammars");
