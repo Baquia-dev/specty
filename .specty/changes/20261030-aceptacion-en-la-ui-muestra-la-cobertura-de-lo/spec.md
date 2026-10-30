@@ -69,7 +69,7 @@ La verificación completa ya anota en `change.verified` qué parte de las línea
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui test && test -f packages/ui/coverage/specty-ui/lcov.info && test ! -d packages/ui/coverage/specty-ui/lcov-report
   - type: chore
-- [ ] T4: La documentación cuenta la cobertura en Aceptación
+- [x] T4: La documentación cuenta la cobertura en Aceptación
   - files: docs/ui.md, docs/formats.md
   - ac: —
   - verify: pnpm lint

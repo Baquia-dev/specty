@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "baseCommit": "4d47f9cd6a16ef9b88a1a12778cafc358ad10c1e",
   "revision": 2,
@@ -54,12 +54,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8255415cf1c56780ae5f4d25be38ece2550cf6fd",
+      "attempts": 1,
       "startedAt": "2026-10-30T09:06:24.003Z",
       "doneAt": "2026-10-30T09:07:33.726Z",
-      "summary": "lcovonly en coverageReporters de angular.json: los tests de la UI dejan packages/ui/coverage/specty-ui/lcov.info, sin HTML"
+      "summary": "lcovonly en coverageReporters de angular.json: los tests de la UI dejan packages/ui/coverage/specty-ui/lcov.info, sin HTML",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6052849698f804a780347742e35930eb1b1b1e45",
+      "startedAt": "2026-10-30T09:07:34.103Z",
+      "doneAt": "2026-10-30T09:08:34.304Z",
+      "summary": "ui.md (Aceptación) cuenta la línea de cobertura y sus tramos; formats.md, las rutas por defecto con coverage/<proyecto>/lcov.info"
     }
   },
   "pending": {

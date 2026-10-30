@@ -362,7 +362,7 @@ checks:                           # specty check (ADR 0012)
   commands:                       # opcional: los comandos del proyecto, por encima de los detectados
     tests: "pnpm test --run"      # format | lint | typecheck | tests
   coverage:                       # la verificación diff-coverage
-    reports: ["coverage/lcov.info", "*/coverage/lcov.info"]  # dónde dejan los tests su informe, con * dentro de un tramo; por defecto, también lcov.info, coverage.xml, coverage/cobertura-coverage.xml, los de JaCoCo de Maven y Gradle y coverage.out
+    reports: ["coverage/lcov.info", "*/coverage/lcov.info"]  # dónde dejan los tests su informe, con * dentro de un tramo; por defecto, también */*/coverage/lcov.info, coverage/<proyecto>/lcov.info (como el de Angular) en la raíz o una o dos carpetas abajo, lcov.info, coverage.xml, coverage/cobertura-coverage.xml, los de JaCoCo de Maven y Gradle y coverage.out
     warn: 80                      # avisa si los tests ejecutan menos de este % de las líneas que añade el cambio
     error: 60                     # opcional: falla por debajo de este %
 policy:
