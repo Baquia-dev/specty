@@ -218,4 +218,55 @@ describe("ItemTooltips and ItemText", () => {
     expect(body?.textContent?.trim()).toBe(ac1);
     expect(tooltip?.textContent?.trim()).toBe(`Criterio de aceptación AC1: ${ac1}`);
   });
+
+  it("AC1: pins tooltip on click and displays close button 'x' in the top right corner", async () => {
+    const { element, settle } = await render("es");
+    const target = element.querySelector<HTMLElement>("#criterion");
+    target?.click();
+    await settle();
+    const tooltip = bubble();
+    expect(tooltip).not.toBeNull();
+    const closeBtn = tooltip?.querySelector<HTMLButtonElement>("[data-item-close]");
+    expect(closeBtn).not.toBeNull();
+    expect(closeBtn?.getAttribute("aria-label")).toBeTruthy();
+
+    leave(target);
+    await settle();
+    expect(bubble()).not.toBeNull();
+  });
+
+  it("AC2: unpins and hides the tooltip when clicking the close button or pressing Escape", async () => {
+    const { element, settle } = await render("es");
+    const target = element.querySelector<HTMLElement>("#task");
+    target?.click();
+    await settle();
+    expect(bubble()).not.toBeNull();
+
+    const closeBtn = bubble()?.querySelector<HTMLButtonElement>("[data-item-close]");
+    closeBtn?.click();
+    await settle();
+    expect(bubble()).toBeNull();
+
+    target?.click();
+    await settle();
+    expect(bubble()).not.toBeNull();
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    await settle();
+    expect(bubble()).toBeNull();
+  });
+
+  it("AC3: does not display close button when only opened via hover and closes on leave", async () => {
+    const { element, settle } = await render("es");
+    const target = element.querySelector<HTMLElement>("#assumption");
+    hover(target);
+    await settle();
+    const tooltip = bubble();
+    expect(tooltip).not.toBeNull();
+    expect(tooltip?.querySelector("[data-item-close]")).toBeNull();
+
+    leave(target);
+    await new Promise((r) => setTimeout(r, 150));
+    await settle();
+    expect(bubble()).toBeNull();
+  });
 });

@@ -6,6 +6,13 @@
   "branch": "specty/20261030-tooltip-fijado-al-hacer-click-con-boton-de",
   "baseCommit": "af83a9659994353f690f1174de6973f5f1635f9a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:93990a5a456500b065dc692ada598573b01c5c339de5a81806d283ab0d027e31",
+    "at": "2026-10-30T06:05:14.057Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -34,12 +41,6 @@
     "AC": 3,
     "T": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:93990a5a456500b065dc692ada598573b01c5c339de5a81806d283ab0d027e31",
-    "at": "2026-10-30T06:05:14.057Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T06:06:00.815Z"
 }
