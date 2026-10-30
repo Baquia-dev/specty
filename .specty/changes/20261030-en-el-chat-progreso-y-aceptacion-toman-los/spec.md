@@ -61,7 +61,7 @@ En la vista del chat (MCP Apps), Progreso y Aceptación siguen con su forma de h
 
 ## Tareas
 
-- [ ] T1: En el chat, los títulos de sección y el código no pintan franjas opacas
+- [x] T1: En el chat, los títulos de sección y el código no pintan franjas opacas
   - files: packages/ui/src/app/embedded-look.test.ts, packages/ui/src/review/markdown.test.ts, packages/ui/src/styles.css, packages/ui/src/components/document.ts, packages/ui/src/review/markdown.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/embedded-look.test.ts --include src/review/markdown.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint

@@ -47,7 +47,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fdc1bb0d1aed25eb939bd65d0b88c44bdaec7ac3",
+      "startedAt": "2026-10-30T07:52:53.344Z",
+      "doneAt": "2026-10-30T07:54:45.965Z",
+      "summary": "Variante embedded: en styles.css. En el chat, SectionDivider es estático y sin fondo, y el código del markdown usa bg-text/5. En el CSS construido las clases embedded: salen tras sus bases y pre code sigue transparente."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
