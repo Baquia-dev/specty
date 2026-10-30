@@ -53,7 +53,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e5383b411404fa7d6bf715190c32156f3416c10d",
+      "startedAt": "2026-10-30T10:59:01.181Z",
+      "doneAt": "2026-10-30T10:59:56.125Z",
+      "summary": "El core mide Go, Rust, Swift y Dart sobre el árbol (tree-languages-modern.ts); en Dart, una función es la firma más su function_body hermano, y SyntaxNode añade previousNamedSibling."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

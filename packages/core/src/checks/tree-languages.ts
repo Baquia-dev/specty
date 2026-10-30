@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { C, CPP, CSHARP, JAVA, PHP } from "./tree-languages-c";
+import { DART, GO, RUST, SWIFT } from "./tree-languages-modern";
 
 /**
  * What `treeFunctions` needs to know of each language's tree-sitter grammar: which nodes are a
@@ -7,11 +8,28 @@ import { C, CPP, CSHARP, JAVA, PHP } from "./tree-languages-c";
  */
 
 /** The languages measured on their syntax tree. TSX has the node types of TypeScript. */
-export type TreeLanguage = "typescript" | "javascript" | "java" | "csharp" | "php" | "c" | "cpp";
+export type TreeLanguage =
+  | "typescript"
+  | "javascript"
+  | "java"
+  | "csharp"
+  | "php"
+  | "c"
+  | "cpp"
+  | "go"
+  | "rust"
+  | "swift"
+  | "dart";
 
 export interface TreeGrammar {
   /** The named nodes that are a function. */
   readonly functions: ReadonlySet<string>;
+  /**
+   * The bodies that are a function with the signature before them, its sibling (Dart), unless
+   * their parent is already one.
+   */
+  readonly bodies?: ReadonlySet<string>;
+  readonly signatures?: ReadonlySet<string>;
   /** The named nodes that are a branch: a condition, a loop, a catch or a ternary. */
   readonly branches: ReadonlySet<string>;
   /** The named nodes that are a branch when their first token is this one: a `case`, not a `default`. */
@@ -77,4 +95,8 @@ export const TREE_GRAMMARS: Readonly<Record<TreeLanguage, TreeGrammar>> = {
   php: PHP,
   c: C,
   cpp: CPP,
+  go: GO,
+  rust: RUST,
+  swift: SWIFT,
+  dart: DART,
 };

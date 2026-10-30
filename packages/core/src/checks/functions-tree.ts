@@ -19,6 +19,7 @@ export interface SyntaxNode {
   readonly startPosition: { readonly row: number; readonly column: number };
   readonly endPosition: { readonly row: number; readonly column: number };
   readonly parent: SyntaxNode | null;
+  readonly previousNamedSibling: SyntaxNode | null;
   readonly children: readonly SyntaxNode[];
   childForFieldName(name: string): SyntaxNode | null;
 }
@@ -86,8 +87,8 @@ function visit(
   owner: Found | undefined,
   walked: Walked,
 ): Found | undefined {
-  if (node.isNamed && grammar.functions.has(node.type)) {
-    const fn = functionOf(grammar, node);
+  const fn = functionAt(grammar, node);
+  if (fn !== undefined) {
     walked.found.push(fn);
     return fn;
   }
@@ -97,12 +98,38 @@ function visit(
   return owner;
 }
 
-/** A function from its first token past its decorators and comments to its last row. */
-function functionOf(grammar: TreeGrammar, node: SyntaxNode): Found {
-  const header = firstToken(grammar, node) ?? node;
-  const name = nameIn(grammar, node, 0) ?? receivedName(grammar, node);
-  const rows = { start: header.startPosition.row, end: node.endPosition.row };
+/**
+ * The function a node is: one of `functions`, or one of `bodies` with its signature before it.
+ * Each goes from its first token past its decorators and comments to its last row.
+ */
+function functionAt(grammar: TreeGrammar, node: SyntaxNode): Found | undefined {
+  if (!node.isNamed) return undefined;
+  if (grammar.functions.has(node.type)) {
+    const name = nameIn(grammar, node, 0) ?? receivedName(grammar, node);
+    return found(firstToken(grammar, node) ?? node, node, name);
+  }
+  const signature = signatureOf(grammar, node);
+  if (signature === undefined) return undefined;
+  return found(firstToken(grammar, signature) ?? signature, node, nameIn(grammar, signature, 0));
+}
+
+function found(header: SyntaxNode, last: SyntaxNode, name: string | undefined): Found {
+  const rows = { start: header.startPosition.row, end: last.endPosition.row };
   return name === undefined ? rows : { name, ...rows };
+}
+
+/** The signature of a body that is not part of a function already: its named sibling before it. */
+function signatureOf(grammar: TreeGrammar, body: SyntaxNode): SyntaxNode | undefined {
+  if (grammar.bodies?.has(body.type) !== true) return undefined;
+  const parent = body.parent;
+  if (parent !== null && grammar.functions.has(parent.type)) return undefined;
+  let signature = body.previousNamedSibling;
+  while (signature !== null && grammar.comments.has(signature.type)) {
+    signature = signature.previousNamedSibling;
+  }
+  return signature !== null && grammar.signatures?.has(signature.type) === true
+    ? signature
+    : undefined;
 }
 
 function firstToken(grammar: TreeGrammar, node: SyntaxNode): SyntaxNode | undefined {
