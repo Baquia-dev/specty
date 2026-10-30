@@ -48,6 +48,7 @@ export { type Coverage, parseCoverage } from "./checks/coverage-reports";
 export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";
+export { type SyntaxNode, type TreeLanguage, treeFunctions } from "./checks/functions-tree";
 export { csharpImports, csharpNamespaces } from "./checks/imports-csharp";
 export { goImports } from "./checks/imports-go";
 export { jvmImports, jvmPackages } from "./checks/imports-jvm";

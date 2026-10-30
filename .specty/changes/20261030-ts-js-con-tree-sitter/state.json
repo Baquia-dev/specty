@@ -58,7 +58,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9a1aff68dfe31e7e359b59e1d612f0a744d62253",
+      "startedAt": "2026-10-30T10:16:17.869Z",
+      "doneAt": "2026-10-30T10:18:39.620Z",
+      "summary": "treeFunctions mide en el core las funciones de TypeScript y JavaScript sobre el árbol de tree-sitter, con la tabla de cada lenguaje en tree-languages.ts; solo cuentan los nodos con nombre, porque el token `function` tiene el mismo tipo que un nodo."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

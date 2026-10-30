@@ -79,7 +79,7 @@ allowedDependencies:
 
 ## Tareas
 
-- [ ] T1: El core mide las funciones de TypeScript y JavaScript sobre el árbol
+- [x] T1: El core mide las funciones de TypeScript y JavaScript sobre el árbol
   - files: packages/core/src/checks/functions-tree.ts, packages/core/src/checks/tree-languages.ts, packages/core/src/index.ts, packages/core/package.json, packages/core/test/checks/functions-tree.test.ts, pnpm-lock.yaml
   - ac: AC3, AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
