@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-la-verificacion-completa-anota-la-cobertura-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-la-verificacion-completa-anota-la-cobertura-de",
   "baseCommit": "115b28a8160a96c2f75054f6a484bb524d088254",
   "revision": 1,
@@ -48,6 +48,7 @@
     "T": 4,
     "R": 2
   },
-  "testsSubmittedAt": "2026-10-30T08:41:42.145Z",
-  "testCycle": "feature"
+  "lockedTests": {
+    "packages/cli/test/accept-coverage.test.ts": "sha256:fd654f54d06d2ac4d55a451572e0691590ac927d53ef2e20575f3c5707736abf"
+  }
 }
