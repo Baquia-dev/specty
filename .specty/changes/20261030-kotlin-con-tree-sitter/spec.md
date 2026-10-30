@@ -76,7 +76,7 @@ allowedDependencies:
   - files: packages/cli/build.mjs, packages/cli/test/bundle-grammars-kotlin.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars-kotlin.test.ts test/bundle-grammars.test.ts && pnpm lint
-- [ ] T4: La documentación de la medida de Kotlin
+- [x] T4: La documentación de la medida de Kotlin
   - files: docs/formats.md, docs/checks.md, docs/checks.en.md, docs/ARCHITECTURE.md, docs/decisions/0016-tree-sitter-para-medir-las-funciones.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts

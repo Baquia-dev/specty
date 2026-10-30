@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-kotlin-con-tree-sitter",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-kotlin-con-tree-sitter",
   "baseCommit": "e0a25fee7de4042b9ff4417b640ed3eb185a9167",
   "revision": 1,
@@ -67,12 +67,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "af405adc048ed7c2aba326dd1bcb20ae73f3c6ea",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:08:33.341Z",
       "doneAt": "2026-10-30T11:09:04.314Z",
-      "summary": "El build comprime la gramática de Kotlin desde su propio paquete y añade su licencia a grammars/LICENSES."
+      "summary": "El build comprime la gramática de Kotlin desde su propio paquete y añade su licencia a grammars/LICENSES.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b7941341c5e22b79601b671b00e60f268573f90a",
+      "startedAt": "2026-10-30T11:09:04.641Z",
+      "doneAt": "2026-10-30T11:09:30.083Z",
+      "summary": "formats, checks (es y en) y ARCHITECTURE suman Kotlin; el ADR 0016 nombra su paquete y el tamaño con todos los lenguajes de llaves (1,5 MB)."
     }
   },
   "pending": {
