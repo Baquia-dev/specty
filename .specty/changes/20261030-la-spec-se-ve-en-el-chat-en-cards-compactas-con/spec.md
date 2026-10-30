@@ -127,7 +127,7 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
   - files: packages/cli/src/mcp/tools.ts, packages/cli/test/mcp-app.test.ts
   - ac: AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint
-- [ ] T5: La vista es un panel gris translúcido, sin fondo opaco ni barra de desplazamiento, con cards más compactas
+- [x] T5: La vista es un panel gris translúcido, sin fondo opaco ni barra de desplazamiento, con cards más compactas
   - files: packages/ui/src/app/embedded-look.test.ts, packages/ui/src/styles.css, packages/ui/src/app/embedded.ts, packages/ui/src/review/spec-cards.ts, docs/ui.md
   - ac: AC10
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/embedded-look.test.ts --include src/review/spec-cards.test.ts --include src/app/embedded.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

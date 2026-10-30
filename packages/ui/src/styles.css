@@ -177,27 +177,40 @@
 }
 
 /*
- * In the chat of an MCP App (`app/embedded.ts`): the view paints no background, so the chat shows
- * between its cards, and takes the colors of the host's variables (`theme/host-look.ts`), with
- * Specty's when the host gives none. A card is a veil of the text color over whatever lies behind.
- * A host variable that refers to one the host never defined counts as missing, so its fallback holds.
+ * In the chat of an MCP App (`app/embedded.ts`): the page paints no background, so the chat shows
+ * through. The view is a translucent gray panel (`--color-panel`) and its cards a denser gray, so
+ * they take a tone of the chat's own; the borders are the text color, faint. Text and fonts come
+ * from the host's variables (`theme/host-look.ts`), with Specty's when the host gives none. A host
+ * variable that refers to one the host never defined counts as missing, so its fallback holds.
+ * There is no scrollbar: a host that caps the frame's height (VS Code) still scrolls with the wheel.
  */
 [data-embedded] {
   --color-bg: var(--color-background-primary, #fafafa);
   --color-text: var(--color-text-primary, #18181b);
   --color-text-muted: var(--color-text-secondary, #52525b);
-  --color-surface: color-mix(in srgb, var(--color-text) 2.5%, transparent);
-  --color-border: var(
-    --color-border-primary,
-    color-mix(in srgb, var(--color-text) 12%, transparent)
-  );
+  --color-panel: rgb(0 0 0 / 0.025);
+  --color-surface: rgb(255 255 255 / 0.65);
+  --color-border: color-mix(in srgb, var(--color-text) 7%, transparent);
+  scrollbar-width: none;
 }
 
 [data-embedded][data-theme="dark"] {
   --color-bg: var(--color-background-primary, #222222);
   --color-text: var(--color-text-primary, #e8e8e8);
   --color-text-muted: var(--color-text-secondary, #a6a6a6);
-  --color-surface: color-mix(in srgb, var(--color-text) 4%, transparent);
+  --color-panel: rgb(72 72 72 / 0.14);
+  --color-surface: rgb(72 72 72 / 0.3);
+  --color-border: color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+
+/*
+ * VS Code's webview declares no color scheme, and the browser paints an opaque backdrop behind a
+ * frame whose scheme differs from its page's. There the view declares the light one, as VS Code's
+ * own webviews do (`normal` would fall back to the page's `light dark`, and so to the system's);
+ * its colors still follow the theme. Elsewhere it keeps the theme's scheme, as Claude asks.
+ */
+[data-embedded]:has(> body[data-vscode-theme-kind]) {
+  color-scheme: light;
 }
 
 [data-embedded] body {

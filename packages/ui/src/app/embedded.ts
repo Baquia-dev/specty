@@ -52,16 +52,16 @@ const DECIDE: Readonly<Record<DecisionKind, { es: string; en: string; command: s
   imports: [PhaseBadge, SpecCards, ProgressTab, AcceptanceTab, HistoryTab],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <main class="flex flex-col gap-2.5 py-1">
+    <main class="flex flex-col gap-2 rounded-2xl bg-(--color-panel) p-2" data-panel>
       @if (change(); as change) {
-        <header class="flex flex-col gap-2 rounded-xl border border-border bg-surface px-4 py-3.5" data-card="change">
+        <header class="flex flex-col gap-1.5 rounded-xl border border-border bg-surface px-4 py-3" data-card="change">
           <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
             <sp-phase-badge [phase]="change.phase" />
             <span class="min-w-0 truncate font-mono text-xs text-text-muted">{{ change.id }}</span>
           </div>
-          <h1 class="m-0 text-lg leading-tight font-semibold tracking-[-0.01em]">{{ change.title }}</h1>
+          <h1 class="m-0 text-base leading-tight font-semibold tracking-[-0.01em]">{{ change.title }}</h1>
           @if (change.decision; as decision) {
-            <p class="m-0 mt-1 border-t border-border pt-2.5 text-sm text-text-muted" data-decide>
+            <p class="m-0 mt-1 border-t border-border pt-2 text-[13px] text-text-muted" data-decide>
               {{ t()(decide[decision].es, decide[decision].en) }}
               {{ t()('en la terminal con', 'in the terminal with') }}
               <code class="font-mono">{{ decide[decision].command }}</code>

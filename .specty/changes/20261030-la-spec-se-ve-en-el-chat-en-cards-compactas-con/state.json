@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
   "revision": 2,
@@ -105,14 +105,23 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/mcp-app.test.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "38f1ff3118094e363c614d3cd2c776e1d805f028",
+      "attempts": 2,
       "startedAt": "2026-10-30T06:53:12.294Z",
       "doneAt": "2026-10-30T06:55:59.285Z",
-      "summary": "Las herramientas que el modelo llama y enlazan la vista llevan prefersBorder: false en su _meta.ui, de donde lo lee Claude Desktop; specty_view no. S2: el test de AC9 ya no lo exige a specty_view."
+      "summary": "Las herramientas que el modelo llama y enlazan la vista llevan prefersBorder: false en su _meta.ui, de donde lo lee Claude Desktop; specty_view no. S2: el test de AC9 ya no lo exige a specty_view.",
+      "scopeExtra": [
+        "packages/cli/test/mcp-app.test.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0a5b7669b554c7c418dbf10b93871341347f678d",
+      "startedAt": "2026-10-30T06:55:59.629Z",
+      "doneAt": "2026-10-30T06:59:15.624Z",
+      "summary": "La vista es un panel gris translúcido con cards de un gris más denso y bordes suaves; en VS Code declara color-scheme light (sin fondo opaco), sin barra de desplazamiento, cabeceras en una línea y cuerpo a 14 px."
     }
   },
   "pending": {

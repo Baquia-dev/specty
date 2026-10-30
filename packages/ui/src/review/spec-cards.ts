@@ -115,7 +115,7 @@ class CardComments {
     CardComments,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: "flex flex-col gap-2.5" },
+  host: { class: "flex flex-col gap-2" },
   template: `
     @if (change().specReview; as independent) {
       <section data-card="review" [class]="card + ' p-4'">
@@ -125,13 +125,14 @@ class CardComments {
     @for (entry of cards(); track entry.key) {
       <section [class]="card" [attr.data-card]="entry.key">
         <h2 class="m-0 text-base font-normal">
-          <button type="button" class="flex w-full cursor-pointer items-start gap-3 rounded-xl border-0 bg-transparent px-4 py-3 text-left font-sans text-text transition-colors duration-150 hover:bg-text/3 motion-reduce:transition-none" [attr.aria-expanded]="isOpen(entry.key)" [attr.aria-controls]="'spec-card-' + entry.key" (click)="toggle(entry.key)">
-            <span class="w-5 shrink-0 pt-0.5 font-mono text-[11px] text-text-muted">{{ entry.number }}&ngsp;</span>
-            <span class="flex min-w-0 flex-1 flex-col gap-0.5">
-              <span class="text-[15px] leading-snug font-semibold">{{ entry.label }}&ngsp;</span>
-              <span class="text-sm text-text-muted">{{ entry.hint }}</span>
+          <button type="button" class="flex w-full cursor-pointer items-center gap-3 rounded-xl border-0 bg-transparent px-4 py-2.5 text-left font-sans text-text transition-colors duration-150 hover:bg-text/3 motion-reduce:transition-none" [attr.aria-expanded]="isOpen(entry.key)" [attr.aria-controls]="'spec-card-' + entry.key" (click)="toggle(entry.key)">
+            <span class="w-5 shrink-0 font-mono text-[11px] text-text-muted">{{ entry.number }}&ngsp;</span>
+            <!-- One line: the hint, beside the title, is cut short where it does not fit. -->
+            <span class="flex min-w-0 flex-1 items-baseline gap-2.5">
+              <span class="shrink-0 text-sm leading-snug font-semibold" data-title>{{ entry.label }}&ngsp;</span>
+              <span class="min-w-0 truncate text-[13px] text-text-muted" data-hint>{{ entry.hint }}</span>
             </span>
-            <span class="flex shrink-0 flex-wrap items-center justify-end gap-x-2.5 gap-y-1 pt-0.5 font-mono text-[11px] text-text-muted">
+            <span class="flex shrink-0 items-center justify-end gap-x-2.5 font-mono text-[11px] text-text-muted">
               @if (entry.changed) {
                 <span class="flex items-center gap-1 text-text" data-changed><svg [lucideIcon]="changedIcon" size="11" aria-hidden="true"></svg>{{ t()('Cambió', 'Changed') }}</span>
               }
@@ -149,20 +150,20 @@ class CardComments {
                 <span data-summary>{{ entry.summary }}</span>
               }
             </span>
-            <span class="mt-0.5 flex shrink-0 text-text-muted transition-transform duration-150 motion-reduce:transition-none" [class.rotate-180]="isOpen(entry.key)" aria-hidden="true">
+            <span class="flex shrink-0 text-text-muted transition-transform duration-150 motion-reduce:transition-none" [class.rotate-180]="isOpen(entry.key)" aria-hidden="true">
               <svg [lucideIcon]="chevronIcon" size="16"></svg>
             </span>
           </button>
         </h2>
         <div [id]="'spec-card-' + entry.key">
           @if (isOpen(entry.key)) {
-            <div class="flex flex-col gap-3 pr-4 pb-4 pl-12" data-card-body>
+            <div class="flex flex-col gap-3 pr-4 pb-3.5 pl-12 text-sm" data-card-body>
               @switch (entry.key) {
                 @case ('goal') {
-                  <sp-markdown class="text-base leading-relaxed" [text]="review().goal" />
+                  <sp-markdown class="leading-relaxed" [text]="review().goal" />
                   @if (change().request; as asked) { <sp-user-request [text]="asked" /> }
                 }
-                @case ('outOfScope') { <sp-markdown class="text-base leading-relaxed" [text]="review().outOfScope" /> }
+                @case ('outOfScope') { <sp-markdown class="leading-relaxed" [text]="review().outOfScope" /> }
                 @case ('assumptions') {
                   <div role="list" class="m-0 flex list-none flex-col gap-0.5 p-0">
                     @for (assumption of review().assumptions; track assumption.id) {
