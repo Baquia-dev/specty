@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-elixir-en-specty-check",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-elixir-en-specty-check",
   "baseCommit": "ee895c8ad9d0b0d0c2a09e87cea291ed1eff6cdf",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:212cb95c9a0872d57e61bd01648d91136fc2a8fe6e9734defee17cdb1c3298f3",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "29bea115e257031d5ff51abd76a819600340642f",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:37:11.657Z",
       "doneAt": "2026-10-30T11:37:49.012Z",
-      "summary": "formats, checks (es y en) y ARCHITECTURE dejan de exceptuar Elixir y describen su medida; el ADR 0016 nombra sus fuentes, el peer opcional y el tamaño final (1,8 MB)."
+      "summary": "formats, checks (es y en) y ARCHITECTURE dejan de exceptuar Elixir y describen su medida; el ADR 0016 nombra sus fuentes, el peer opcional y el tamaño final (1,8 MB).",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -79,6 +79,7 @@
     "T": 3,
     "R": 1
   },
+  "closingSubmittedAt": "2026-10-30T11:42:41.585Z",
   "lockedTests": {
     "packages/cli/test/check-functions.test.ts": "sha256:b96bf6fb7c5fd6cf1a18f37b68e66f087d0562085be760cfd313cc1e14698001",
     "packages/cli/test/bundle-grammars-elixir.test.ts": "sha256:c316318e2db202aa7fcd5e7116bd77bb3843d95acb6d2f21ba25bd5618e03fdd",

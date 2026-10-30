@@ -76,3 +76,26 @@ Elixir era el único stack sin `function-lines` ni `complexity`. El cambio previ
 ## Riesgos
 
 - R1: Los proyectos Mix que ya usan Specty ven dos verificaciones nuevas. Mitigación: solo fallan las funciones que el cambio crea o agranda; la deuda vieja sale con `--all`.
+
+## Cierre
+
+### Resumen
+
+`specty check` mide las funciones de Elixir (`.ex` y `.exs`) sobre el árbol de tree-sitter, y con ello cierra el corte C3 y la épica: `function-lines` y `complexity` se aplican ya a todos los stacks.
+- La gramática sale de `tree-sitter-elixir` 0.3.5, que el build comprime desde su paquete, con su licencia Apache-2.0.
+- El proveedor de funciones deja de tener stacks sin medida (`UNMEASURED` desaparece).
+- `dist/grammars/` ocupa 1,8 MB con las dieciséis gramáticas y el runtime.
+
+### Desviaciones
+
+- El test que daba Elixir por no medido se separó en uno propio, con AC3, y ahora espera las dos verificaciones (`OK 7/7`).
+- El ADR 0016 decía «diecisiete» gramáticas: son dieciséis más el runtime. Se corrigió en la aceptación (los documentos son rutas libres).
+
+### Decisiones
+
+- Sin su gramática, Elixir no se mide: no hay estimación línea a línea que la sustituya.
+
+### Pendientes
+
+- Cerrar la épica con su resumen y la deuda que la medida nueva destapa en Specty.
+- Reconstruir el dist de main tras incorporar.
