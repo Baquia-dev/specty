@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261030-tooltips-fijados-arrastrables-con-paleta-de",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261030-tooltips-fijados-arrastrables-con-paleta-de",
+  "baseCommit": "ca30efbc48e1bfaf721452b226af74f7bc35ce16",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9a65eabf5ea38c104d9a62a5b4d08c559d7ccbe2cccd1c6180ab196e9a917cd5",
+    "at": "2026-10-30T07:36:20.851Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
