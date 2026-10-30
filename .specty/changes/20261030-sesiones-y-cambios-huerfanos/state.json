@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-sesiones-y-cambios-huerfanos",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-sesiones-y-cambios-huerfanos",
   "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0f8066fdba865dc6cf5444da7235462842eec401",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:14:17.122Z",
       "doneAt": "2026-10-30T10:17:54.139Z",
-      "summary": "El guard anota en .git/common/specty/activity/ el último paso de cada conversación (como mucho una vez por minuto en la misma carpeta, sin lanzar git), y status dice qué agente lleva cada cambio o si está huérfano"
+      "summary": "El guard anota en .git/common/specty/activity/ el último paso de cada conversación (como mucho una vez por minuto en la misma carpeta, sin lanzar git), y status dice qué agente lleva cada cambio o si está huérfano",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ff228e00bfa8092d00cc5cdd886faa28b7e4c538",
+      "startedAt": "2026-10-30T10:17:54.473Z",
+      "doneAt": "2026-10-30T10:19:03.980Z",
+      "summary": "ADR 0016 «La memoria de Specty», ARCHITECTURE §9 enmendado y status/guard con la actividad, formats.md con activity/ y memory, y el glosario con «Cambio huérfano»"
     }
   },
   "pending": {
