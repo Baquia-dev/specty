@@ -76,3 +76,23 @@ Permitir editar y eliminar comentarios en la revisión de la spec, deshabilitar 
   - files: packages/ui/src/review/comments.ts, packages/ui/src/review/comments.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/comments.test.ts
+
+## Cierre
+
+### Resumen
+
+Se implementó la edición y eliminación de comentarios en revisión de specs, tanto en el backend (`editComment` y `deleteComment` en CLI y servidor HTTP) como en el almacén y componentes de la UI (`ReviewComments`, `SpectyData`, `server` y `fixtures`). Además, se bloquea el botón de aprobar revisión ante la existencia de cualquier comentario sin resolver (dejando como única acción válida pedir cambios) y se deshabilitan las acciones de confirmar/rechazar en supuestos que contengan comentarios abiertos asociados.
+
+### Desviaciones
+
+- Se debió desbloquear el scope de `packages/ui/src/review/comments.test.ts` y de `packages/ui/src/review/review-actions.test.ts` para incorporar la comprobación de los criterios AC1-AC5 sin romper las validaciones preexistentes.
+- Se adaptó la prueba preexistente en `packages/ui/src/review/spec-review.test.ts` para que considerara que la presencia de comentarios abiertos bloquea la aprobación de la revisión tras decidir los supuestos de alto impacto.
+
+### Decisiones
+
+- Las cadenas de texto del backend CLI en `packages/cli/src/flow/review.ts` y `packages/cli/src/server/actions.ts` se mantuvieron con un helper bilingüe interno sin importar `translator` de core para evitar dependencias cruzadas y cumplir con el chequeo de fuentes del monorepo dentro del alcance de la spec.
+- Se deshabilitan las acciones de supuestos (`confirm`, `reject`, `reconsider`) cuando existen comentarios no resueltos anclados al ítem específico o a una cita dentro de la sección de supuestos.
+
+### Pendientes
+
+- Añadir indicador de loading visual durante la confirmación de acciones y cambios de estado en la UI (próxima especificación solicitada por el usuario).
