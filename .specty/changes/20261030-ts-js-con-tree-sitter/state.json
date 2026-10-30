@@ -6,6 +6,13 @@
   "branch": "specty/20261030-ts-js-con-tree-sitter",
   "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1220a02beceac7af67251e878b452405cd1e127dd3f23dd12645b51444f18a7a",
+    "at": "2026-10-30T10:12:55.713Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -62,12 +69,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1220a02beceac7af67251e878b452405cd1e127dd3f23dd12645b51444f18a7a",
-    "at": "2026-10-30T10:12:55.713Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T10:16:12.040Z"
 }
