@@ -58,12 +58,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b542fe2393aa93c8e46521fdcafb19b2408732d7",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:08:04.042Z",
       "doneAt": "2026-10-30T11:08:33.017Z",
-      "summary": "specty check mide Kotlin (.kt y .kts) con tree-sitter; la gramática sale de su propio paquete, que el CLI nombra con un literal para knip."
+      "summary": "specty check mide Kotlin (.kt y .kts) con tree-sitter; la gramática sale de su propio paquete, que el CLI nombra con un literal para knip.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "af405adc048ed7c2aba326dd1bcb20ae73f3c6ea",
+      "startedAt": "2026-10-30T11:08:33.341Z",
+      "doneAt": "2026-10-30T11:09:04.314Z",
+      "summary": "El build comprime la gramática de Kotlin desde su propio paquete y añade su licencia a grammars/LICENSES."
     }
   },
   "pending": {

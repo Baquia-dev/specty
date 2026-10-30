@@ -72,7 +72,7 @@ allowedDependencies:
   - files: packages/cli/src/check/syntax.ts, packages/cli/package.json, packages/cli/test/check-functions-kotlin.test.ts, pnpm-lock.yaml
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-kotlin.test.ts test/check-functions-modern.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T3: El bundle lleva la gramática de Kotlin y su licencia
+- [x] T3: El bundle lleva la gramática de Kotlin y su licencia
   - files: packages/cli/build.mjs, packages/cli/test/bundle-grammars-kotlin.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars-kotlin.test.ts test/bundle-grammars.test.ts && pnpm lint
