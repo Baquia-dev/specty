@@ -58,5 +58,5 @@ Permitir que la persona mantenga abiertos múltiples tooltips simultáneamente a
 - [ ] T2: Cerrar tooltip flotante previo al abrir otro tooltip por hover en distinta instancia
   - files: packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC1
-  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts
+  - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts
   - type: fix

@@ -12,3 +12,5 @@
 {"ts":"2026-10-30T06:49:30.860Z","actor":"agent","tool":"antigravity","event":"adjust.requested","data":{"request":"Cerrar tooltip flotante previo al abrir otro tooltip por hover en distinta instancia"}}
 {"ts":"2026-10-30T06:50:19.167Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:38fd6a3964e5f0556d3959bc679af323eafaf09af66a97b7bc29bbffd05c89bf","size":"S","warnings":0}}
 {"ts":"2026-10-30T06:50:27.726Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"spec.approved","data":{"revision":2,"hash":"sha256:38fd6a3964e5f0556d3959bc679af323eafaf09af66a97b7bc29bbffd05c89bf","channel":"delegated","delegated":true}}
+{"ts":"2026-10-30T06:52:29.125Z","actor":"agent","tool":"antigravity","event":"tests.proposed","data":{"count":1,"files":["packages/ui/src/components/item-tooltip.test.ts"],"red":[{"cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts","exit":1}]}}
+{"ts":"2026-10-30T06:52:29.127Z","actor":"specty","event":"tests.locked","data":{"count":1,"files":["packages/ui/src/components/item-tooltip.test.ts"]}}

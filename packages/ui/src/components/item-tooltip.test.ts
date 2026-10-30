@@ -351,4 +351,19 @@ describe("ItemTooltips and ItemText", () => {
     expect(bubbles.length).toBe(0);
     expect(t2?.hasAttribute("data-item-pinned")).toBe(false);
   });
+
+  it("AC1: closes previous transient hover tooltip when hovering a different item across instances", async () => {
+    const { element, settle } = await render("es");
+    const a1 = element.querySelector<HTMLElement>("#assumption");
+    const sentenceRef = element.querySelector<HTMLElement>("#sentence [data-item-ref='T1']");
+    hover(a1);
+    await settle();
+    expect(bubble()?.textContent).toContain("Supuesto A1");
+
+    hover(sentenceRef);
+    await settle();
+    const bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(1);
+    expect(bubbles[0]?.textContent).toContain("Tarea T1");
+  });
 });
