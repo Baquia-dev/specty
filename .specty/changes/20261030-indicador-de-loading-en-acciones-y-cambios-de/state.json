@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-indicador-de-loading-en-acciones-y-cambios-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-indicador-de-loading-en-acciones-y-cambios-de",
   "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
   "revision": 2,
@@ -78,6 +78,17 @@
       "doneAt": "2026-10-30T12:32:21.175Z",
       "summary": "indicadores de carga en creación, edición y borrado de comentarios",
       "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/components/icons.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "31d9b66b4ef214d83b1811892532727d147e0bfc",
+      "startedAt": "2026-10-30T12:39:25.413Z",
+      "doneAt": "2026-10-30T12:43:56.421Z",
+      "summary": "actualizar conteo de iconos a 54 tras añadir LucideLoader2"
     }
   },
   "pending": {
@@ -88,7 +99,7 @@
     "A": 3,
     "AC": 5,
     "T": 5,
-    "S": 3
+    "S": 4
   },
   "lockedTests": {
     "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:f70f5fc5a27dff456527958f9b6ec718073d3a5f4820305d0cc320761e14990d",
@@ -96,6 +107,6 @@
     "packages/ui/src/review/comments.test.ts": "sha256:f805401af99d8cf9f2c8526a8d387857641eaea1214de89ee3a500370cbeee69",
     "packages/ui/src/review/review-actions.test.ts": "sha256:c0a9a7e0d3adbce6280fc3dc0a622e7b10eb666ed1389246e50aa995807492ab",
     "packages/ui/src/review/spec-sections.test.ts": "sha256:1cf6fbd22e0e27d3f523cc1a05bb16dcae445a2e15ad48a6532cf9bcc68c315f",
-    "packages/ui/src/components/icons.test.ts": "sha256:462f832df5282c243e09db2335ba03c4c3e95724d4915161ec1556116e61458a"
+    "packages/ui/src/components/icons.test.ts": "sha256:89bea8fbc040b6e72996f70ae9059f3c0a94a4db08b7f42c2dd50ecc248a563f"
   }
 }

@@ -62,7 +62,7 @@ Proporcionar retroalimentación visual inmediata con indicadores de carga (spinn
   - files: packages/ui/src/review/comments.ts, packages/ui/src/review/comments.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/comments.test.ts
-- [ ] T5: Actualizar conteo de iconos en prueba de regresión
+- [x] T5: Actualizar conteo de iconos en prueba de regresión
   - files: packages/ui/src/components/icons.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/icons.test.ts
