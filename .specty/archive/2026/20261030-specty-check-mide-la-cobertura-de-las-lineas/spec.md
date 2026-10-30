@@ -97,3 +97,25 @@ Lo calcula Specty, sin diff-cover (una herramienta de Python), y vale para cualq
 
 - R1: Un informe viejo que alguien tocó durante la ejecución contaría como nuevo — solo se leen los modificados desde el inicio, y con `--verbose` se ve cuáles.
 - R2: En un monorepo con varios informes, el mismo archivo puede salir en dos — una línea cubierta en cualquiera cuenta como cubierta.
+
+## Cierre
+
+### Resumen
+
+`specty check` tiene el check `diff-coverage`. Corre después de los demás y lee solo los informes de cobertura escritos durante la ejecución: LCOV, Cobertura, JaCoCo o el perfil de Go. Dice qué parte de las líneas ejecutables que añade el cambio ejecutó algún test, con los tramos sin cubrir como `ruta:línea`, y avisa o falla según `checks.coverage.warn` (80) y `checks.coverage.error`.
+
+### Desviaciones
+
+- Las rutas relativas de un informe se anclan a la carpeta más profunda del informe donde existe el archivo, antes de emparejar por el final de la ruta: Vitest escribe `src/…` relativo a cada paquete, y sin el ancla un `src/index.ts` de un paquete se confundía con el de otro.
+- R1 decía que `--verbose` muestra qué informes se leyeron; no lo hace.
+- T4, un ajuste aprobado por el usuario: `check-docs.test.ts` añade a mano `diff-coverage` a los checks que su ejemplo no muestra, como ya hacía con `secrets` y `tests-locked`.
+
+### Decisiones
+
+- Sin informe nuevo, sin los tests en la ejecución o sin líneas medidas, el check no aparece (`inapplicable`) en lugar de salir como no ejecutado, para no añadir ruido a los proyectos sin cobertura.
+- El porcentaje se redondea hacia abajo, para no mostrar 80 % con 79,6 %.
+
+### Pendientes
+
+- La aceptación todavía no muestra la cobertura, y este repositorio no genera LCOV: es el cambio siguiente.
+- Un fallo de Specty encontrado aquí: `adjust` durante una incorporación pendiente deja el cambio en ajuste con `integration` anotada, y `next` sigue pidiendo `integrate` tras abortar el merge. Hubo que quitar el campo a mano; su arreglo es el cambio «Un merge abortado no deja el cambio esperando a integrate».
