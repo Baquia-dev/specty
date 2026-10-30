@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "id": "20261030-sesiones-y-cambios-huerfanos",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-sesiones-y-cambios-huerfanos",
+  "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d8bd8ab47bffa8c2018fbfb74698897fa1af9c97b5e0fa2f4e34ac7b079a9626",
+    "at": "2026-10-30T10:10:36.975Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fbb5ca13a99ccecd72974503b770205de33bc7d86decf715be31377060ad018a",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:31e08f313b2fedbfe1efd466e663d9fc52f11bdb3e74320c4c0f9e3f53f74e03",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:197decb00bdb5a4becaba2887c6b984004bce671aa2372f65de28d338447feb1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:82aac1df2befd37b24dc33e24e5d4b23b0d42c0b8e4bfdae5387cb2320d0c06c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:714e08c1d6427d2de33cd2e9423269c72cbe9d3eb817550e4be2ef227d2f84aa",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:af1c0e16bd424a1eb9dc0e2b6cabcaaeebc1a346fcd8657c93fe244cc377d0e3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "78efe0c8b927c71e75cf9cd48e6186f254f8439c",
+      "attempts": 1,
+      "startedAt": "2026-10-30T10:13:17.772Z",
+      "doneAt": "2026-10-30T10:14:16.781Z",
+      "summary": "memory.orphanAfterMin en la configuración (60 por defecto) y la línea de status dice quién lleva cada cambio, hace cuánto, o que está huérfano",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "0f8066fdba865dc6cf5444da7235462842eec401",
+      "attempts": 1,
+      "startedAt": "2026-10-30T10:14:17.122Z",
+      "doneAt": "2026-10-30T10:17:54.139Z",
+      "summary": "El guard anota en .git/common/specty/activity/ el último paso de cada conversación (como mucho una vez por minuto en la misma carpeta, sin lanzar git), y status dice qué agente lleva cada cambio o si está huérfano",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "ff228e00bfa8092d00cc5cdd886faa28b7e4c538",
+      "attempts": 1,
+      "startedAt": "2026-10-30T10:17:54.473Z",
+      "doneAt": "2026-10-30T10:19:03.980Z",
+      "summary": "ADR 0016 «La memoria de Specty», ARCHITECTURE §9 enmendado y status/guard con la actividad, formats.md con activity/ y memory, y el glosario con «Cambio huérfano»",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-30T10:23:21.576Z",
+  "lockedTests": {
+    "packages/cli/test/activity.test.ts": "sha256:2525702974180f92c893b49e418e72e57fdd25f8404d9e10bf1278e1fde6db30",
+    "packages/core/test/cards/status-holder.test.ts": "sha256:89ac11cd3ac17eec4664172db2ce53839a06822b9023df74106eb717f1a5d26a",
+    "packages/core/test/schema/memory.test.ts": "sha256:2e0880e57bf4d04b3dc1fdf702b3b0e3ada82560d667c7b9747a540f0bcff565"
+  }
+}

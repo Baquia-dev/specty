@@ -6,9 +6,21 @@ packages:
 # esbuild, @parcel/watcher, lmdb and msgpackr-extract ship prebuilt binaries
 # (platform packages or prebuilds); their install scripts are not needed. vsce's
 # @vscode/vsce-sign signs extensions for the Marketplace, which `pnpm package` does not do.
+# The Kotlin and Elixir grammars build a native binding; Specty loads their WebAssembly builds
+# instead.
 allowBuilds:
+  "@tree-sitter-grammars/tree-sitter-kotlin": false
+  tree-sitter-elixir: false
   esbuild: false
   "@parcel/watcher": false
   lmdb: false
   msgpackr-extract: false
   "@vscode/vsce-sign": false
+
+# The Elixir grammar asks for the native tree-sitter as a peer, which only its binding uses: as
+# for Kotlin's, the peer is optional, so pnpm does not install it.
+packageExtensions:
+  tree-sitter-elixir@0.3.5:
+    peerDependenciesMeta:
+      tree-sitter:
+        optional: true

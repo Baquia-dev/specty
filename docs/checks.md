@@ -186,7 +186,7 @@ Cada capa tiene sus rutas (`paths`), las capas que puede importar (`may`; ella m
 
 ### `function-lines`
 
-**Stack:** todos salvo Elixir. En los lenguajes de llaves, una función va de su cabecera a la llave que la cierra; en Python, de su `def` a la última línea más indentada; en Ruby, de su `def` al `end` que la cierra.
+**Stack:** todos. En TypeScript, JavaScript, Java, C#, PHP, C, C++, Go, Rust, Swift, Dart, Kotlin, Python, Ruby y Elixir, cada función se lee en su árbol de sintaxis de tree-sitter, que va dentro de Specty, y va de la primera línea de su cabecera, sin decoradores, anotaciones ni atributos, a la última de su cuerpo; en Python sin docstrings, en Ruby con sus bloques dentro, y en Elixir un `def`, un `defp`, un `defmacro`, un `defmacrop` o una `fn`. En los demás lenguajes de llaves, y en un archivo con errores de sintaxis, una función va de su cabecera a la llave que la cierra; en Python, de su `def` a la última línea más indentada; en Ruby, de su `def` al `end` que la cierra.
 
 Las líneas de código de cada función, sin blancos ni comentarios. Falla con una función que el cambio toca, que pasa del límite y que es nueva o creció. Una que ya lo pasaba y no creció no cuenta, salvo con `--all`. Los tests no se miden.
 

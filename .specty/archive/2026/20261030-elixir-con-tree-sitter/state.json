@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "20261030-elixir-con-tree-sitter",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-elixir-con-tree-sitter",
+  "baseCommit": "01baf7fa850581a32f5bde2a77cb4773db94513e",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1a8cb36f13a472da7d0a397c29403927363f6b0fc22228f01114dadde18da02c",
+    "at": "2026-10-30T11:27:05.555Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos",
+      "cambia dependencias"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:cac8c52e02c6143007c6dbe3f0e6e7fa0183a0b33dcf1ac3bbefd8842aa8b8a1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9b695099b8f76d7fa3b4456ab4c17f75650f354969a1cbb0f98062165a886a1c",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:8069c48e7913324de8f3948def65d263a6d5199bb3067db651b8f5517b917b3a",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:622a2e3bcad2d93e67c470a160b4996d1a859a56decfec55c9f5e1f508895935",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "25fc8d061f5f2833ed0f68d0047720c02ac862f9",
+      "attempts": 1,
+      "startedAt": "2026-10-30T11:27:42.093Z",
+      "doneAt": "2026-10-30T11:29:53.588Z",
+      "summary": "El core mide Elixir sobre el árbol: la tabla lee las llamadas por su target (def/defp son funciones; if/unless, ramas; cada cláusula de case, cond, receive, with o rescue, una rama), y su gramática se instala sin binding nativo ni el peer tree-sitter.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 2,
+    "T": 1,
+    "R": 1
+  },
+  "closingSubmittedAt": "2026-10-30T11:34:04.788Z",
+  "lockedTests": {
+    "packages/core/test/checks/functions-tree-elixir.test.ts": "sha256:1d26d7b3b96aefacb5feca361c923632424d33c37ef2a22a760c4bc663ffd02b"
+  }
+}

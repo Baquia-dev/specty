@@ -186,7 +186,7 @@ Each layer has its paths (`paths`), the layers it may import (`may`; itself and 
 
 ### `function-lines`
 
-**Stack:** every stack except Elixir. In the languages with braces, a function goes from its header to the brace that closes it; in Python, from its `def` to its last line indented deeper; in Ruby, from its `def` to the `end` that closes it.
+**Stack:** every stack. In TypeScript, JavaScript, Java, C#, PHP, C, C++, Go, Rust, Swift, Dart, Kotlin, Python, Ruby and Elixir, each function is read on its tree-sitter syntax tree, which comes inside Specty, and goes from the first line of its header, without decorators, annotations or attributes, to the last of its body; in Python without docstrings, in Ruby with its blocks inside, and in Elixir a `def`, `defp`, `defmacro`, `defmacrop` or `fn`. In the other languages with braces, and in a file with syntax errors, a function goes from its header to the brace that closes it; in Python, from its `def` to its last line indented deeper; in Ruby, from its `def` to the `end` that closes it.
 
 The lines of code of each function, without blank lines or comments. It fails on a function the change touches that is over the limit and is new or grew. One that was already over and did not grow does not count, except with `--all`. Tests are not measured.
 
