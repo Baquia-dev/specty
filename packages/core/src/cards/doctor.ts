@@ -76,6 +76,8 @@ export type DoctorLine =
   | { readonly code: "unfilled-sections"; readonly sections: readonly string[] }
   /** The glossary exists and defines no term yet: only its hints. */
   | { readonly code: "empty-glossary"; readonly path: string }
+  /** Closing would not find ccusage to measure each change; `command` installs it. */
+  | { readonly code: "no-ccusage"; readonly command: string }
   | { readonly code: "delegated"; readonly since: string; readonly by: string }
   /** Specty's MCP server in an agent's project configuration (`cards/mcp.ts`). */
   | {
@@ -168,6 +170,11 @@ const WRITERS: {
     t(
       `El glosario (\`${line.path}\`) no define ningún término: añade una línea por término con la forma «- **Término** (\`NombreEnElCódigo\`): definición.», y las tarjetas traerán las definiciones de los que usen.`,
       `The glossary (\`${line.path}\`) defines no term: add one line per term shaped "- **Term** (\`CodeName\`): definition.", and the cards will bring the definitions of the ones they use.`,
+    ),
+  "no-ccusage": (line, t) =>
+    t(
+      `Falta ccusage, así que al cerrar cada cambio Specty no dice lo que consumió. Para instalarlo: \`${line.command}\`.`,
+      `ccusage is missing, so closing a change does not say what it consumed. To install it: \`${line.command}\`.`,
     ),
   delegated: (line, t, command) =>
     t(

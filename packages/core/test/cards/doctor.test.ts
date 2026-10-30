@@ -115,6 +115,10 @@ describe("the lines of `doctor`", () => {
         { code: "delegated", since: "2026-10-23", by: "Ana" },
         "Modo delegado activo desde el 2026-10-23 (Ana): tu agente toma tus decisiones. Para desactivarlo: `specty delegate off`.",
       ],
+      [
+        { code: "no-ccusage", command: "pnpm add -D ccusage@20.0.45" },
+        "Falta ccusage, así que al cerrar cada cambio Specty no dice lo que consumió. Para instalarlo: `pnpm add -D ccusage@20.0.45`.",
+      ],
     ];
     for (const [line, text] of cases) expect(doctorLine(line, ES)).toBe(text);
   });
@@ -129,6 +133,9 @@ describe("the lines of `doctor`", () => {
     );
     expect(unfilled).toMatch(/^AGENTS\.md has "Map" and "Conventions" not filled in:/);
     expect(unfilled).toMatch(/rules `specty check` does not verify\)\.$/);
+    expect(doctorLine({ code: "no-ccusage", command: "npm i -g ccusage@20.0.45" }, EN)).toBe(
+      "ccusage is missing, so closing a change does not say what it consumed. To install it: `npm i -g ccusage@20.0.45`.",
+    );
   });
 });
 

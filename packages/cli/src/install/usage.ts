@@ -2,14 +2,17 @@
 // What init does so that closing can measure each change's consumption (ARCHITECTURE §13): ccusage,
 // which Specty does not carry (a native binary per platform) and never fetches on its own. The
 // first time, in a Node project, it asks the person to add it as a development dependency;
-// otherwise, or to an agent, it says how to install it.
+// otherwise, or to an agent, it says how to install it. Later, `doctor` warns while closing would
+// not find it.
 import { join } from "node:path";
 import {
   ccusageAddedLine,
   ccusageFailedWarning,
   ccusageHint,
   ccusageQuestion,
+  type DoctorLine,
 } from "@baquia-dev/specty-core";
+import { detectStacks, type Stack } from "../detect/stack";
 import { execute } from "../io/exec";
 import { exists, isRecord, parseJson, readText } from "../io/files";
 import type { InitSetup } from "./install";
@@ -46,7 +49,7 @@ const NOTHING: UsageStep = { done: [], written: [], warnings: [] };
 export async function usageTool(setup: InitSetup): Promise<UsageStep> {
   const { environment, root, lang } = setup;
   if (!setup.created || setup.options.dryRun === true || (await hasCcusage(root))) return NOTHING;
-  const add = await addCommand(setup);
+  const add = await addCommand(root, setup.detection.stacks);
   if (add === undefined) return { ...NOTHING, warnings: [ccusageHint(GLOBAL, lang)] };
   const command = [add.tool, ...add.args].join(" ");
   const { terminal } = environment;
@@ -63,11 +66,24 @@ export async function usageTool(setup: InitSetup): Promise<UsageStep> {
   return { done: [ccusageAddedLine(lang)], written: ["package.json", ...lockfiles], warnings: [] };
 }
 
+/**
+ * `doctor`'s warning when closing would not find ccusage (`flow/usage.ts`): neither in
+ * `node_modules/.bin` nor on the PATH. It carries the command init would give.
+ */
+export async function usageDoctor(root: string, env: NodeJS.ProcessEnv): Promise<DoctorLine[]> {
+  if (await exists(join(root, "node_modules", ".bin", "ccusage"))) return [];
+  if ((await execute("sh", ["-c", "command -v ccusage"], { cwd: root, env })).code === 0) return [];
+  const add = await addCommand(root, await detectStacks(root));
+  const command = add === undefined ? GLOBAL : [add.tool, ...add.args].join(" ");
+  return [{ code: "no-ccusage", command }];
+}
+
 /** How the project's Node package manager adds ccusage, with `-w` at a pnpm workspace's root. */
 async function addCommand(
-  setup: InitSetup,
+  root: string,
+  stacks: readonly Stack[],
 ): Promise<{ readonly tool: string; readonly args: readonly string[] } | undefined> {
-  const tool = setup.detection.stacks.find(
+  const tool = stacks.find(
     (stack) =>
       (stack.language === "typescript" || stack.language === "javascript") &&
       stack.tool !== undefined &&
@@ -75,7 +91,7 @@ async function addCommand(
   )?.tool;
   const add = tool === undefined ? undefined : ADD[tool];
   if (tool === undefined || add === undefined) return undefined;
-  const workspace = tool === "pnpm" && (await exists(join(setup.root, "pnpm-workspace.yaml")));
+  const workspace = tool === "pnpm" && (await exists(join(root, "pnpm-workspace.yaml")));
   return { tool, args: [...add, ...(workspace ? ["-w"] : []), CCUSAGE] };
 }
 

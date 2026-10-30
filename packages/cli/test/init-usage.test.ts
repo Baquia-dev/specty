@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
+import { existsSync } from "node:fs";
 import { chmod, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { cli, git, person, tempRepo } from "./support";
+import { cli, git, person, tempRepo, writeFiles } from "./support";
 
 /** A Node project managed by pnpm, as init detects it. */
 const NODE = {
@@ -106,5 +107,47 @@ describe("init's offer of ccusage", () => {
     const planned = await cli(dry, [...INIT, "--dry-run"], { terminal: person(), env: pnpm.env });
     expect(planned.out).not.toContain("ccusage");
     expect(await pnpm.calls()).toBe("");
+  });
+});
+
+/** The PATH without the folders that have a ccusage, as on a machine that never installed it. */
+function pathWithoutCcusage(): string {
+  return (process.env.PATH ?? "")
+    .split(delimiter)
+    .filter((dir) => !existsSync(join(dir, "ccusage")))
+    .join(delimiter);
+}
+
+describe("doctor's warning about ccusage", () => {
+  const WARNING =
+    "Falta ccusage, así que al cerrar cada cambio Specty no dice lo que consumió. Para instalarlo:";
+
+  it("a configured project without ccusage gets how to install it, without turning red", async () => {
+    const env = { PATH: pathWithoutCcusage() };
+    const root = await tempRepo(NODE);
+    await cli(root, INIT, { env });
+    const warned = await cli(root, ["doctor"], { env });
+    expect(warned.out).toContain(`${WARNING} \`pnpm add -D ccusage@20.0.45\`.`);
+    // The ccusage closing runs: the project's, in `node_modules/.bin`.
+    await writeFiles(root, { "node_modules/.bin/ccusage": "#!/bin/sh\n" });
+    const local = await cli(root, ["doctor"], { env });
+    expect(local.out).not.toContain(WARNING);
+    expect(warned.code).toBe(local.code);
+    // Outside Node, the one for the whole system.
+    const flutter = await tempRepo({ "pubspec.yaml": "name: demo\n" });
+    await cli(flutter, INIT, { env });
+    expect((await cli(flutter, ["doctor"], { env })).out).toContain(
+      `${WARNING} \`npm i -g ccusage@20.0.45\`.`,
+    );
+  });
+
+  it("says nothing when ccusage is on the PATH", async () => {
+    const bin = await mkdtemp(join(tmpdir(), "ccusage-bin-"));
+    await writeFile(join(bin, "ccusage"), "#!/bin/sh\n");
+    await chmod(join(bin, "ccusage"), 0o755);
+    const env = { PATH: `${bin}${delimiter}${pathWithoutCcusage()}` };
+    const root = await tempRepo(NODE);
+    await cli(root, INIT, { env });
+    expect((await cli(root, ["doctor"], { env })).out).not.toContain(WARNING);
   });
 });

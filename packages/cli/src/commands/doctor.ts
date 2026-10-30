@@ -15,6 +15,7 @@ import { gentleAiGuidance } from "../detect/gentle-ai";
 import { detectProject } from "../detect/project";
 import { gitHooksInstalled } from "../install/git-hooks";
 import { mcpDoctor } from "../install/mcp";
+import { usageDoctor } from "../install/usage";
 import { execute } from "../io/exec";
 import { exists, readText } from "../io/files";
 import { COMMAND, type Session } from "../session";
@@ -99,8 +100,8 @@ async function reachable(session: Session): Promise<boolean> {
 
 /**
  * Warnings never turn doctor red: what only the person can tell the agent and is still unwritten,
- * the paths AGENTS.md sends it to that are gone (built ones aside), and delegated mode, which is
- * the person's choice rather than a fault.
+ * the paths AGENTS.md sends it to that are gone (built ones aside), the ccusage closing would not
+ * find, and delegated mode, which is the person's choice rather than a fault.
  */
 async function doctorWarnings(session: Session, agents: string | undefined): Promise<DoctorLine[]> {
   const { root, git } = session;
@@ -117,6 +118,7 @@ async function doctorWarnings(session: Session, agents: string | undefined): Pro
     ...(gone.length === 0 ? [] : [{ code: "missing-paths", paths: gone } as const]),
     ...(unfilled.length === 0 ? [] : [{ code: "unfilled-sections", sections: unfilled } as const]),
     ...(emptyGlossary ? [{ code: "empty-glossary", path: session.config.glossary } as const] : []),
+    ...(await usageDoctor(root, session.environment.env)),
     ...(delegation === undefined
       ? []
       : [{ code: "delegated", since: delegation.at.slice(0, 10), by: delegation.by } as const]),

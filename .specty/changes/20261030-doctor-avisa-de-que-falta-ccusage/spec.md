@@ -19,6 +19,6 @@ kind: quick
 
 ## Tareas
 
-- [ ] T1: doctor avisa de que falta ccusage
+- [x] T1: doctor avisa de que falta ccusage
   - files: packages/core/src/cards/doctor.ts, packages/cli/src/install/usage.ts, packages/cli/src/commands/doctor.ts, packages/core/test/cards/doctor.test.ts, packages/cli/test/init-usage.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/init-usage.test.ts && pnpm lint

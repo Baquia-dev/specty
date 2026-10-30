@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261030-doctor-avisa-de-que-falta-ccusage",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-doctor-avisa-de-que-falta-ccusage",
   "baseCommit": "7baa0268e61e9b0710c08df4f3e36edcfe82b5cd",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:48bdfee2f5e80213f6c56c24061d8a8f1e42c49deb325cbdf3119935505f9a49",
+    "at": "2026-10-30T05:24:55.320Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -16,19 +23,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3135e98b752e7d4965ae35c2639552aa8249b853",
+      "startedAt": "2026-10-30T05:24:55.715Z",
+      "doneAt": "2026-10-30T05:28:05.978Z",
+      "summary": "doctor avisa (sin ponerse en rojo) cuando el cierre no encontraría ccusage, ni en node_modules/.bin ni en el PATH, con el comando que daría init: el del gestor de Node (con -w en un workspace de pnpm) o npm i -g fuera de Node. ARCHITECTURE §13 y §14 lo cuentan."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:48bdfee2f5e80213f6c56c24061d8a8f1e42c49deb325cbdf3119935505f9a49",
-    "at": "2026-10-30T05:24:55.320Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }
