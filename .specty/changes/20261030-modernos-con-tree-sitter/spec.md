@@ -69,7 +69,7 @@ follows:
   - files: packages/core/src/checks/functions-tree.ts, packages/core/src/checks/tree-languages.ts, packages/core/src/checks/tree-languages-modern.ts, packages/core/test/checks/functions-tree-modern.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree-modern.test.ts test/checks/functions-tree-c.test.ts test/checks/functions-tree.test.ts test/checks/functions-tree-names.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: specty check mide Go, Rust, Swift y Dart con tree-sitter
+- [x] T2: specty check mide Go, Rust, Swift y Dart con tree-sitter
   - files: packages/cli/src/check/syntax.ts, packages/cli/test/check-functions-modern.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-modern.test.ts test/check-functions-c.test.ts test/check-functions-tree.test.ts test/check-functions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
