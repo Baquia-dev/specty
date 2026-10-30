@@ -60,7 +60,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/app/embedded.test.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "6bc1cb033871653da2ff663f6c54c546e71e7858",
+      "startedAt": "2026-10-30T05:58:58.959Z",
+      "doneAt": "2026-10-30T06:10:58.909Z",
+      "summary": "La spec del chat va en cards (spec-cards.ts): solo Objetivo abierta, resumen y marcas en la cabecera, revisión independiente y comentarios en cards propias de solo lectura. embedded.ts: cabecera en card y data-embedded. S1: text() del test acepta null."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -69,11 +81,12 @@
     "A": 9,
     "AC": 10,
     "T": 3,
-    "R": 3
+    "R": 3,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/mcp-app.test.ts": "sha256:edc46506b015c7741cb544155aa62acbd4e1a1caf072893a6f4e0d07aabec95c",
-    "packages/ui/src/app/embedded.test.ts": "sha256:8303366944acf8be3ad1735619c6a059e83f825cc98ec620794c7179c1bcf5f4",
+    "packages/ui/src/app/embedded.test.ts": "sha256:ee69d4204d4d0d0cd278b2acf98e0cdaa8df377001d5e34778c14b66c61afb51",
     "packages/ui/src/data/mcp-app.test.ts": "sha256:b83074e374582bbbb7a4be0817605536df5535de786f5fbbb5155e34ee26ccb6",
     "packages/ui/src/review/spec-cards.test.ts": "sha256:d3c56193c398ac08d6a8594987c7bbff5a52d3a35c0ff67d96aba0f9b66ea6e6",
     "packages/ui/src/theme/host-look.test.ts": "sha256:6dcedd738697851c5340befa18b6993267c550bae73dc45c9d65391f8d069102"

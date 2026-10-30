@@ -1,28 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  type Provider,
-  signal,
-} from "@angular/core";
+import { DOCUMENT } from "@angular/common";
+import { ChangeDetectionStrategy, Component, computed, inject, type Provider } from "@angular/core";
 import type { Phase } from "@baquia-dev/specty-core/light";
 import { AcceptanceTab } from "../acceptance/acceptance-tab";
 import { PhaseBadge } from "../components/badge";
-import { PAGE } from "../components/document";
 import { ChangesStore, DERIVER, inThread } from "../data/changes-store";
 import { McpAppData } from "../data/mcp-app";
-import {
-  ActionError,
-  type ChangeTab,
-  type DecisionKind,
-  type ReviewSection,
-  SpectyData,
-} from "../data/records";
+import { ActionError, type ChangeTab, type DecisionKind, SpectyData } from "../data/records";
 import { HistoryTab } from "../history/history-tab";
 import { ProgressTab } from "../progress/progress-tab";
-import { SpecReview } from "../review/spec-review";
+import { SpecCards } from "../review/spec-cards";
 import { Preferences } from "../theme/preferences";
 
 /**
@@ -57,24 +44,24 @@ const DECIDE: Readonly<Record<DecisionKind, { es: string; en: string; command: s
 /**
  * The view of an MCP App (ADR 0015): the change a tool worked on, in the chat, with only the tab
  * of its phase. No inbox, no navigation and no actions: where a decision waits, it says where to
- * take it.
+ * take it. It takes the chat's width; its header is a card, as each section of the spec.
  */
 @Component({
   // The page's root element, as the shell's: in an MCP App this view takes its place.
   selector: "sp-root",
-  imports: [PhaseBadge, SpecReview, ProgressTab, AcceptanceTab, HistoryTab],
+  imports: [PhaseBadge, SpecCards, ProgressTab, AcceptanceTab, HistoryTab],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <main [class]="page + ' flex flex-col gap-6 py-6'">
+    <main class="flex flex-col gap-2.5 py-1">
       @if (change(); as change) {
-        <header class="flex flex-col gap-2">
+        <header class="flex flex-col gap-2 rounded-xl border border-border bg-surface px-4 py-3.5" data-card="change">
           <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1">
             <sp-phase-badge [phase]="change.phase" />
             <span class="min-w-0 truncate font-mono text-xs text-text-muted">{{ change.id }}</span>
           </div>
-          <h1 class="m-0 text-xl leading-tight font-semibold tracking-[-0.02em]">{{ change.title }}</h1>
+          <h1 class="m-0 text-lg leading-tight font-semibold tracking-[-0.01em]">{{ change.title }}</h1>
           @if (change.decision; as decision) {
-            <p class="m-0 text-sm text-text-muted" data-decide>
+            <p class="m-0 mt-1 border-t border-border pt-2.5 text-sm text-text-muted" data-decide>
               {{ t()(decide[decision].es, decide[decision].en) }}
               {{ t()('en la terminal con', 'in the terminal with') }}
               <code class="font-mono">{{ decide[decision].command }}</code>
@@ -84,16 +71,16 @@ const DECIDE: Readonly<Record<DecisionKind, { es: string; en: string; command: s
         </header>
         @switch (tab()) {
           @case ("spec") {
-            <sp-spec-review [change]="change" [(reading)]="reading" />
+            <sp-spec-cards [change]="change" />
           }
           @case ("progress") {
-            <sp-progress-tab [change]="change" />
+            <sp-progress-tab class="px-4" [change]="change" />
           }
           @case ("acceptance") {
-            <sp-acceptance-tab [change]="change" />
+            <sp-acceptance-tab class="px-4" [change]="change" />
           }
           @case ("history") {
-            <sp-history-tab [history]="change.history" [change]="change.id" />
+            <sp-history-tab class="px-4" [history]="change.history" [change]="change.id" />
           }
         }
       } @else if (problem(); as problem) {
@@ -108,7 +95,6 @@ export class Embedded {
   private readonly store = inject(ChangesStore);
   private readonly preferences = inject(Preferences);
   protected readonly t = this.preferences.t;
-  protected readonly page = PAGE;
   protected readonly decide = DECIDE;
   /** The one change the host's tool worked on. */
   protected readonly change = computed(() => this.store.all()[0]);
@@ -122,8 +108,11 @@ export class Embedded {
     if (error === undefined) return undefined;
     return error instanceof ActionError ? error.text[this.preferences.lang()] : error.message;
   });
-  /** The spec section being read: the review keeps its index in step. */
-  protected readonly reading = signal<ReviewSection | undefined>(undefined);
+
+  constructor() {
+    // The page's styles know it is in a chat: it paints no background and takes the host's colors.
+    inject(DOCUMENT).documentElement.setAttribute("data-embedded", "");
+  }
 }
 
 /**

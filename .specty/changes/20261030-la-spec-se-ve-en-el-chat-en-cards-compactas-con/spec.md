@@ -99,7 +99,7 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
 
 ## Tareas
 
-- [ ] T1: La spec se ve en cards compactas en la vista del chat
+- [x] T1: La spec se ve en cards compactas en la vista del chat
   - files: packages/ui/src/review/spec-cards.ts, packages/ui/src/review/spec-cards.test.ts, packages/ui/src/app/embedded.ts, packages/ui/src/app/embedded.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-cards.test.ts --include src/app/embedded.test.ts && pnpm lint

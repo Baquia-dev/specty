@@ -76,7 +76,8 @@ async function embeddedOn(source: SpectyData) {
   return fixture.nativeElement as HTMLElement;
 }
 
-const text = (element: Element) => element.textContent?.replace(/\s+/g, " ").trim() ?? "";
+const text = (element: Element | null | undefined) =>
+  element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
 
 describe("the embedded view of an MCP App", () => {
   afterEach(() => {
