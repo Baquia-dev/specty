@@ -22,3 +22,9 @@ kind: quick
 - [x] T1: doctor avisa de que falta ccusage
   - files: packages/core/src/cards/doctor.ts, packages/cli/src/install/usage.ts, packages/cli/src/commands/doctor.ts, packages/core/test/cards/doctor.test.ts, packages/cli/test/init-usage.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/init-usage.test.ts && pnpm lint
+
+## Cierre
+
+### Resumen
+
+doctor avisa (sin ponerse en rojo) cuando el cierre no encontraría ccusage, ni en node_modules/.bin ni en el PATH, con el comando que daría init: el del gestor de Node (con -w en un workspace de pnpm) o npm i -g fuera de Node. ARCHITECTURE §13 y §14 lo cuentan.

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-doctor-avisa-de-que-falta-ccusage",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-doctor-avisa-de-que-falta-ccusage",
   "baseCommit": "7baa0268e61e9b0710c08df4f3e36edcfe82b5cd",
   "revision": 1,
@@ -26,12 +26,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3135e98b752e7d4965ae35c2639552aa8249b853",
+      "attempts": 1,
       "startedAt": "2026-10-30T05:24:55.715Z",
       "doneAt": "2026-10-30T05:28:05.978Z",
-      "summary": "doctor avisa (sin ponerse en rojo) cuando el cierre no encontraría ccusage, ni en node_modules/.bin ni en el PATH, con el comando que daría init: el del gestor de Node (con -w en un workspace de pnpm) o npm i -g fuera de Node. ARCHITECTURE §13 y §14 lo cuentan."
+      "summary": "doctor avisa (sin ponerse en rojo) cuando el cierre no encontraría ccusage, ni en node_modules/.bin ni en el PATH, con el comando que daría init: el del gestor de Node (con -w en un workspace de pnpm) o npm i -g fuera de Node. ARCHITECTURE §13 y §14 lo cuentan.",
+      "scopeExtra": []
     }
   },
   "pending": {
