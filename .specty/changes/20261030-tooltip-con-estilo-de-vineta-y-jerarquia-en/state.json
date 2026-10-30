@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
+  "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:921af1a837fdde7b4dfb87bb9d98bb6e11d86d8810404517124c612ad47afe7b",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c73d5e28324b658f3e22667ef62002d6967dbfccfa5bb66739af0fc21620b115",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:092f50a42a8c503d93c7fefbc2d198fa7e923fee3bc52378d92469e2c12a8516",
+    "at": "2026-10-30T05:36:36.014Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
