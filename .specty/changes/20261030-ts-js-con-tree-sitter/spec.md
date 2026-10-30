@@ -91,7 +91,7 @@ allowedDependencies:
   - files: packages/cli/build.mjs, packages/cli/grammar-licenses.txt, packages/cli/test/bundle-grammars.test.ts
   - ac: AC4, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars.test.ts test/bundle.test.ts && pnpm lint
-- [ ] T4: La decisión y la documentación de la medida nueva
+- [x] T4: La decisión y la documentación de la medida nueva
   - files: docs/decisions/0016-tree-sitter-para-medir-las-funciones.md, docs/formats.md, docs/checks.md, docs/checks.en.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts

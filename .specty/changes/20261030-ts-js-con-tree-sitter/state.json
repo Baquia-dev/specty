@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-ts-js-con-tree-sitter",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-ts-js-con-tree-sitter",
   "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
   "revision": 1,
@@ -79,14 +79,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/check/syntax.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "b078b037e7ba8acb0e670ba5e4d4a26d3bd47507",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:23:45.399Z",
       "doneAt": "2026-10-30T10:27:09.673Z",
-      "summary": "El build deja en dist/grammars el runtime y las gramáticas de TypeScript, TSX y JavaScript comprimidas con brotli (calidad 9) y sus licencias; el bundle lee solo esas copias, porque el NODE_PATH de pnpm le dejaba encontrar otras."
+      "summary": "El build deja en dist/grammars el runtime y las gramáticas de TypeScript, TSX y JavaScript comprimidas con brotli (calidad 9) y sus licencias; el bundle lee solo esas copias, porque el NODE_PATH de pnpm le dejaba encontrar otras.",
+      "scopeExtra": [
+        "packages/cli/src/check/syntax.ts"
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c26e861b9e036c04554874f50614581a1ad3366b",
+      "startedAt": "2026-10-30T10:27:10.000Z",
+      "doneAt": "2026-10-30T10:29:05.072Z",
+      "summary": "ADR 0016 recoge la decisión, el tamaño y la deuda que destapa; formats, checks (es y en) y ARCHITECTURE describen la medida de TypeScript y JavaScript sobre el árbol y el respaldo de la estimación."
     }
   },
   "pending": {
