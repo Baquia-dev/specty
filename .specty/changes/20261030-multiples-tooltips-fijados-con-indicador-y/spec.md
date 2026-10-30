@@ -51,7 +51,7 @@ Permitir que la persona mantenga abiertos múltiples tooltips simultáneamente a
 
 ## Tareas
 
-- [ ] T1: Indicador en elemento detonador, múltiples tooltips fijados simultáneos y anticolisión ante solapamiento
+- [x] T1: Indicador en elemento detonador, múltiples tooltips fijados simultáneos y anticolisión ante solapamiento
   - files: packages/ui/src/styles.css, packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts

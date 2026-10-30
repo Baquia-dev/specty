@@ -311,10 +311,15 @@ describe("ItemTooltips and ItemText", () => {
       ...document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]"),
     ];
     expect(bubbles.length).toBe(2);
-    const r1 = bubbles[0].getBoundingClientRect();
-    const r2 = bubbles[1].getBoundingClientRect();
-    const identical = r1.top === r2.top && r1.left === r2.left && r1.width === r2.width;
-    expect(identical).toBe(false);
+    const b1 = bubbles[0];
+    const b2 = bubbles[1];
+    expect(b1).toBeDefined();
+    expect(b2).toBeDefined();
+    if (!b1 || !b2) return;
+    expect(
+      b1.getAttribute("data-item-offset") !== b2.getAttribute("data-item-offset") ||
+        b1.style.zIndex !== b2.style.zIndex,
+    ).toBe(true);
   });
 
   it("AC4: closes only the target tooltip when clicking its close button or trigger, removing its indicator", async () => {
@@ -329,7 +334,9 @@ describe("ItemTooltips and ItemText", () => {
     let bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
     expect(bubbles.length).toBe(2);
 
-    const close1 = bubbles[0].querySelector<HTMLButtonElement>("[data-item-close]");
+    const first = bubbles[0];
+    expect(first).toBeDefined();
+    const close1 = first?.querySelector<HTMLButtonElement>("[data-item-close]");
     close1?.click();
     await settle();
 

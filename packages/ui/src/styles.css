@@ -229,4 +229,21 @@
   [data-theme="dark"] [data-item-active] {
     background-color: rgb(255 255 255 / 0.12);
   }
+
+  /* Owner element with an active pinned tooltip */
+  [data-item-pinned] {
+    cursor: pointer;
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  [data-theme="dark"] [data-item-pinned] {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
 }

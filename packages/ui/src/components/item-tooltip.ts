@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type ConnectedPosition,
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy,
@@ -230,7 +231,21 @@ function renderBubble(
   return true;
 }
 
-let openTooltip: ItemTooltips | undefined;
+interface PinnedItem {
+  readonly overlay: { ref: OverlayRef; pos: FlexibleConnectedPositionStrategy };
+  readonly bubble: HTMLSpanElement;
+  target: ResolvedTarget;
+  offset: number;
+}
+
+function positionsFor(offset: number): ConnectedPosition[] {
+  if (offset === 0) return [...TOOLTIP_POSITIONS];
+  return TOOLTIP_POSITIONS.map((p) => ({
+    ...p,
+    offsetX: (p.offsetX ?? 0) + (p.originX === "start" ? -offset : offset),
+    offsetY: (p.offsetY ?? 0) + (p.originY === "top" ? -offset : offset),
+  }));
+}
 
 @Directive({
   selector: "[spItemTooltips]",
@@ -240,7 +255,7 @@ let openTooltip: ItemTooltips | undefined;
     "(click)": "onClick($event)",
     "(focusin)": "onEnter($event)",
     "(focusout)": "onFocusOut()",
-    "(document:keydown.escape)": "hide()",
+    "(document:keydown.escape)": "unpinAll()",
   },
 })
 export class ItemTooltips {
@@ -250,10 +265,12 @@ export class ItemTooltips {
   private readonly preferences = inject(Preferences);
   private readonly parent = inject(ItemTooltips, { optional: true, skipSelf: true });
   private readonly fallbackSource = signal<(() => ItemSource | undefined) | undefined>(undefined);
-  private overlay?: { ref: OverlayRef; pos: FlexibleConnectedPositionStrategy };
-  private bubble?: HTMLSpanElement;
-  private activeTarget: ResolvedTarget | undefined;
-  private pinned = false;
+
+  private hoverOverlay?: { ref: OverlayRef; pos: FlexibleConnectedPositionStrategy };
+  private hoverBubble?: HTMLSpanElement;
+  private hoverTarget: ResolvedTarget | undefined;
+
+  private readonly pinned = new Map<HTMLElement, PinnedItem>();
   private leaving?: ReturnType<typeof setTimeout>;
 
   readonly items: Signal<ItemMap> = computed((): ItemMap => {
@@ -268,10 +285,10 @@ export class ItemTooltips {
   });
 
   constructor() {
-    afterRenderEffect(() => this.syncBubble());
+    afterRenderEffect(() => this.syncBubbles());
     inject(DestroyRef).onDestroy(() => {
-      this.hide();
-      this.overlay?.ref.dispose();
+      this.unpinAll();
+      this.hoverOverlay?.ref.dispose();
     });
   }
 
@@ -280,45 +297,105 @@ export class ItemTooltips {
   }
 
   protected onEnter(event: Event): void {
-    if (this.pinned) return;
     const target = this.resolveTarget(event.target);
-    if (!target) return;
+    if (!target || this.pinned.has(target.origin)) return;
     event.stopPropagation();
     const from = event instanceof MouseEvent ? event.relatedTarget : null;
     if (from instanceof Node && target.origin.contains(from)) clearTimeout(this.leaving);
-    else this.showTarget(target, false);
+    else this.showHover(target);
   }
 
   protected onClick(event: Event): void {
     const target = this.resolveTarget(event.target);
     if (!target) return;
     event.stopPropagation();
-    if (this.pinned && this.activeTarget?.origin === target.origin) {
-      this.hide();
+    if (this.pinned.has(target.origin)) {
+      this.unpin(target.origin);
       return;
     }
-    this.showTarget(target, true);
+    this.hideHover();
+    this.pin(target);
   }
 
   protected onLeave(event: MouseEvent): void {
-    if (this.pinned) return;
-    const origin = this.activeTarget?.origin;
+    const origin = this.hoverTarget?.origin;
     if (!origin || (event.relatedTarget instanceof Node && origin.contains(event.relatedTarget)))
       return;
     origin.removeAttribute("data-item-active");
     clearTimeout(this.leaving);
-    this.leaving = setTimeout(() => this.hide(), GRACE_MS);
+    this.leaving = setTimeout(() => this.hideHover(), GRACE_MS);
   }
 
   protected onFocusOut(): void {
-    if (!this.pinned) this.hide();
+    this.hideHover();
   }
 
-  private syncBubble(): void {
-    const [lang, map, t] = [this.preferences.lang(), this.items(), this.activeTarget];
-    if (!t || !this.bubble) return;
-    const close = this.pinned ? () => this.hide() : undefined;
-    if (!renderBubble(this.bubble, t.id, lang, t.text || map.get(t.id), close)) this.hide();
+  private showHover(target: ResolvedTarget): void {
+    clearTimeout(this.leaving);
+    this.hoverTarget?.origin.removeAttribute("data-item-active");
+    this.hoverTarget = target;
+    target.origin.setAttribute("data-item-active", "");
+    const bubble = this.ensureHoverOverlay(target.origin);
+    const raw = target.text || this.items().get(target.id);
+    if (!renderBubble(bubble, target.id, this.preferences.lang(), raw)) return;
+    this.hoverOverlay?.ref.updatePosition();
+  }
+
+  protected hideHover(): void {
+    clearTimeout(this.leaving);
+    this.hoverTarget?.origin.removeAttribute("data-item-active");
+    this.hoverTarget = undefined;
+    this.hoverOverlay?.ref.detach();
+  }
+
+  private pin(target: ResolvedTarget): void {
+    const offset = this.pinned.size * 12;
+    const pos = createFlexibleConnectedPositionStrategy(this.injector, target.origin)
+      .withPositions(positionsFor(offset))
+      .withViewportMargin(8);
+    const ref = createOverlayRef(this.injector, {
+      positionStrategy: pos,
+      scrollStrategy: createRepositionScrollStrategy(this.injector),
+    });
+    const bubble = this.createBubble(true, offset);
+    ref.attach(new DomPortal(bubble));
+    target.origin.setAttribute("data-item-pinned", "");
+    target.origin.removeAttribute("data-item-active");
+    const raw = target.text || this.items().get(target.id);
+    renderBubble(bubble, target.id, this.preferences.lang(), raw, () => this.unpin(target.origin));
+    ref.updatePosition();
+    this.pinned.set(target.origin, { overlay: { ref, pos }, bubble, target, offset });
+  }
+
+  private unpin(origin: HTMLElement): void {
+    const entry = this.pinned.get(origin);
+    if (!entry) return;
+    origin.removeAttribute("data-item-pinned");
+    entry.overlay.ref.dispose();
+    this.pinned.delete(origin);
+  }
+
+  protected unpinAll(): void {
+    for (const [origin] of [...this.pinned.entries()]) this.unpin(origin);
+    this.hideHover();
+  }
+
+  protected hide(): void {
+    this.unpinAll();
+  }
+
+  private syncBubbles(): void {
+    const [lang, map] = [this.preferences.lang(), this.items()];
+    if (this.hoverTarget && this.hoverBubble) {
+      const raw = this.hoverTarget.text || map.get(this.hoverTarget.id);
+      if (!renderBubble(this.hoverBubble, this.hoverTarget.id, lang, raw)) this.hideHover();
+    }
+    for (const [origin, entry] of this.pinned) {
+      const raw = entry.target.text || map.get(entry.target.id);
+      if (!renderBubble(entry.bubble, entry.target.id, lang, raw, () => this.unpin(origin))) {
+        this.unpin(origin);
+      }
+    }
   }
 
   private resolveSource(src: ItemSource | undefined, lang: Lang): ItemMap {
@@ -342,23 +419,8 @@ export class ItemTooltips {
     return explicitTarget(raw, this.host) ?? inferredTarget(raw, this.host);
   }
 
-  private showTarget(target: ResolvedTarget, pin = false): void {
-    if (openTooltip !== undefined && openTooltip !== this) openTooltip.hide();
-    openTooltip = this;
-    clearTimeout(this.leaving);
-    this.pinned = pin;
-    const raw = target.text || this.items().get(target.id);
-    this.activeTarget?.origin.removeAttribute("data-item-active");
-    this.activeTarget = target;
-    target.origin.setAttribute("data-item-active", "");
-    const bubble = this.ensureOverlay(target.origin);
-    const close = pin ? () => this.hide() : undefined;
-    if (!renderBubble(bubble, target.id, this.preferences.lang(), raw, close)) return;
-    this.overlay?.ref.updatePosition();
-  }
-
-  private ensureOverlay(origin: HTMLElement): HTMLSpanElement {
-    if (!this.overlay) {
+  private ensureHoverOverlay(origin: HTMLElement): HTMLSpanElement {
+    if (!this.hoverOverlay) {
       const pos = createFlexibleConnectedPositionStrategy(this.injector, origin)
         .withPositions([...TOOLTIP_POSITIONS])
         .withViewportMargin(8);
@@ -366,34 +428,31 @@ export class ItemTooltips {
         positionStrategy: pos,
         scrollStrategy: createRepositionScrollStrategy(this.injector),
       });
-      this.overlay = { ref, pos };
-    } else this.overlay.pos.setOrigin(origin);
-    if (!this.bubble) {
-      const b = node(this.host.ownerDocument, "span", {
-        role: "tooltip",
-        "data-tooltip": "",
-        class:
-          "max-w-80 rounded-lg bg-text p-2.5 text-xs text-bg shadow-md border border-border/15 transition-opacity starting:opacity-0 flex flex-col gap-1",
-        style: "transition-duration: var(--duration-fast)",
-      });
-      b.addEventListener("pointerenter", () => clearTimeout(this.leaving));
-      b.addEventListener("pointerleave", () => {
-        if (!this.pinned) this.hide();
-      });
-      this.host.ownerDocument.createDocumentFragment().appendChild(b);
-      this.bubble = b;
-    }
-    if (!this.overlay.ref.hasAttached()) this.overlay.ref.attach(new DomPortal(this.bubble));
-    return this.bubble;
+      this.hoverOverlay = { ref, pos };
+    } else this.hoverOverlay.pos.setOrigin(origin);
+    if (!this.hoverBubble) this.hoverBubble = this.createBubble(false);
+    if (!this.hoverOverlay.ref.hasAttached())
+      this.hoverOverlay.ref.attach(new DomPortal(this.hoverBubble));
+    return this.hoverBubble;
   }
 
-  protected hide(): void {
-    clearTimeout(this.leaving);
-    this.pinned = false;
-    if (openTooltip === this) openTooltip = undefined;
-    this.activeTarget?.origin.removeAttribute("data-item-active");
-    this.activeTarget = undefined;
-    this.overlay?.ref.detach();
+  private createBubble(pinned: boolean, offset = 0): HTMLSpanElement {
+    const b = node(this.host.ownerDocument, "span", {
+      role: "tooltip",
+      "data-tooltip": "",
+      "data-item-offset": String(offset),
+      class:
+        "max-w-80 rounded-lg bg-text p-2.5 text-xs text-bg shadow-md border border-border/15 transition-opacity starting:opacity-0 flex flex-col gap-1",
+      style: `transition-duration: var(--duration-fast); z-index: ${pinned ? 1000 + offset : 999}`,
+    });
+    b.addEventListener("pointerenter", () => {
+      if (!pinned) clearTimeout(this.leaving);
+    });
+    b.addEventListener("pointerleave", () => {
+      if (!pinned) this.hideHover();
+    });
+    this.host.ownerDocument.createDocumentFragment().appendChild(b);
+    return b;
   }
 }
 
