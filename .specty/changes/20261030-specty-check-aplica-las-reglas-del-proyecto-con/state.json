@@ -6,6 +6,13 @@
   "branch": "specty/20261030-specty-check-aplica-las-reglas-del-proyecto-con",
   "baseCommit": "ce35fb1d06dad482c00eff14476fcd9ce39e7d71",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2f327158979bd2dfab37257f58197c826cbfe8d5d97f01ed30352f9344f1cc6e",
+    "at": "2026-10-30T21:06:29.230Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 4,
@@ -47,12 +54,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2f327158979bd2dfab37257f58197c826cbfe8d5d97f01ed30352f9344f1cc6e",
-    "at": "2026-10-30T21:06:29.230Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T21:14:11.863Z"
 }
