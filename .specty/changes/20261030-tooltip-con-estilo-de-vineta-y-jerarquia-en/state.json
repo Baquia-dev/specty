@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
   "revision": 1,
@@ -41,6 +41,7 @@
     "AC": 3,
     "T": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T05:37:22.659Z"
+  "lockedTests": {
+    "packages/ui/src/components/item-tooltip.test.ts": "sha256:bb24a0bdb012d200821aec9529a36f8487a510b1d0c16702dc36a21455681c6b"
+  }
 }
