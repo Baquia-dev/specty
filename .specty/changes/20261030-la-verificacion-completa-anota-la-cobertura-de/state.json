@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "20261030-la-verificacion-completa-anota-la-cobertura-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-la-verificacion-completa-anota-la-cobertura-de",
+  "baseCommit": "115b28a8160a96c2f75054f6a484bb524d088254",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:e7cbc8b8ed9405068f93108b24c902acc9f36c71a83963de002eeb581fd69c8b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:d2a2f08aea98b0b2888e93d258094528491bc2a8f5c5e7f0841d1a18212022d5",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b3fcbd18f4ecc950a7987bf8a724f7472470185121ca571ca0019527f00b9a44",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6e6258d16419710967d405526ba3f20b21c653958dcff685c19c5331f6dd3cce",
+    "at": "2026-10-30T08:35:59.248Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
