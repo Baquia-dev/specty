@@ -6,6 +6,13 @@
   "branch": "specty/20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:daced9d6055e48b884303e6d85636473433ba3faec043525581e376e4f931738",
+    "at": "2026-10-30T05:53:55.218Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -64,12 +71,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:daced9d6055e48b884303e6d85636473433ba3faec043525581e376e4f931738",
-    "at": "2026-10-30T05:53:55.218Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T05:58:55.781Z"
 }
