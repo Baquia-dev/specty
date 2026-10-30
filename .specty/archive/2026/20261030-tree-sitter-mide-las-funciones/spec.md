@@ -75,3 +75,37 @@ Con esta épica, Specty mide las funciones con el árbol de sintaxis de tree-sit
 - R4: Parsear es más lento que estimar: 0,5 s frente a 71 ms en 108 mil líneas. Mitigación: `--changed` parsea pocos archivos; C1 mide `specty check --all` sobre Specty.
 - R5: Una gramática va por detrás de su lenguaje, y la sintaxis nueva sale como `ERROR`. Mitigación: la estimación mide ese archivo (A7).
 - R6: C1 no cabe en un cambio de tamaño L. Mitigación: lleva un cambio previo (el runtime, las gramáticas y el build), con su test, como en otras épicas.
+
+## Cierre
+
+### Resumen
+
+`function-lines` y `complexity` miden las funciones de todos los stacks de Specty sobre el árbol de sintaxis de tree-sitter, en WebAssembly, con la estimación línea a línea como respaldo (ADR 0016).
+- Lenguajes: TypeScript y JavaScript (C1); C, C++, Java, C#, PHP, Go, Rust, Swift, Dart y Kotlin (C2); Python, Ruby y Elixir (C3). Elixir se mide por primera vez.
+- El core mide sobre una interfaz de nodo propia (`treeFunctions`), con una tabla por lenguaje en `tree-languages*.ts`; el CLI carga el runtime y cada gramática al necesitarla (`check/syntax.ts`).
+- El bundle lleva en `dist/grammars/` las dieciséis gramáticas y el runtime comprimidos con brotli (1,8 MB), con sus licencias.
+- Se ven funciones que la estimación no veía (un parámetro `record`, los getters de Dart, una arrow de expresión, un método de Ruby con `range.end`) y se deja de contar lo que no es una rama (una variable `case` de Python, el `default` de un `switch`).
+
+### Desviaciones
+
+- Los tres cortes se hicieron en siete cambios, porque C2 y C3 no cabían en uno (XL): C1; C, C++, Java, C# y PHP; Go, Rust, Swift y Dart; Kotlin (C2); Python y Ruby; el core de Elixir; Elixir en `specty check` (C3). Los cambios previos van en la épica sin `slice`.
+- Las gramáticas salen de `@repomix/tree-sitter-wasms` 0.1.17, más los paquetes oficiales de Kotlin y Elixir, que ese no trae; las de `tree-sitter-wasms` no cargan en web-tree-sitter 0.27.
+- Brotli de calidad 9, no 11 (A3): 1,80 MB en 0,25 s frente a 1,62 MB en 20 s, en cada build.
+- El bundle solo lee sus propias gramáticas: el `NODE_PATH` de pnpm le dejaba encontrar otras en `node_modules`.
+- Las funciones sin nombre (callbacks, accesores) se emparejan por orden, para que tocar una larga sin agrandarla no falle; no estaba en el plan.
+- Los brazos de `match` de Rust y de `when` de Kotlin no cuentan como ramas, para mantener la definición de la estimación.
+- El peer obligatorio `tree-sitter` de la gramática de Elixir se declara opcional con `packageExtensions`, en lugar de instalarlo y apagarlo.
+
+### Decisiones
+
+- La medida mantiene la definición de la estimación en cada lenguaje, para que los límites de `checks.functions` signifiquen lo mismo; Python y Ruby dan los mismos números que sus estimaciones en las formas probadas.
+- Las dos versiones de un archivo se miden igual: si una no parsea, las dos van por la estimación.
+- Los operadores lógicos cuentan como tokens dentro de un nodo lógico, y un `case` por su primer token, para que sirvan todas las gramáticas.
+
+### Pendientes
+
+- Deuda que la medida nueva destapa en Specty con `--all` (solo falla si un cambio agranda la función):
+  - por líneas: `deriveView` (85) en `ui/src/data/views.ts` y `asistenciaSample` (68) en `ui/src/data/sample-acceptance.ts`;
+  - por complejidad, sobre todo por ternarios cuyo `?` abre la línea: `scopeAdd` (11), `guard` (12), `guardContext` (13), `push` en `flow/ci-github.ts` (12), `writeProjectFiles` (11), `newRefusalNext` (11), `leadingOptions` (13), `clausesOf` en `exporters/src/import-openspec.ts` (11) y `changesView` en `vscode/src/view.ts` (13).
+- El ADR 0016 dice «los diecisiete de la épica y el runtime»: son dieciséis gramáticas más el runtime. Corregirlo con un cambio rápido de documentación.
+- Medir todo Specty tarda 0,5 s con el árbol y 0,04 s con la estimación; con `--changed` solo se parsean los archivos del cambio.

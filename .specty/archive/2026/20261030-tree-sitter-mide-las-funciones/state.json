@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261030-tree-sitter-mide-las-funciones",
   "kind": "epic",
-  "phase": "implementing",
+  "phase": "done",
   "branch": "specty/20261030-tree-sitter-mide-las-funciones",
   "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
-  "revision": 1,
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3a5f633bb31874909b05a5bae245aaf8cde3c1b58449854324f069937b07bd0a",
+    "at": "2026-10-30T10:06:14.024Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 0,
@@ -59,11 +66,5 @@
     "C": 3,
     "R": 6
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:3a5f633bb31874909b05a5bae245aaf8cde3c1b58449854324f069937b07bd0a",
-    "at": "2026-10-30T10:06:14.024Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  }
+  "closingSubmittedAt": "2026-10-30T11:44:16.520Z"
 }
