@@ -6,6 +6,13 @@
   "branch": "specty/20261030-specty-check-mide-la-cobertura-de-las-lineas",
   "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:21b787abef073be8881ec81f0ab38f3c06a83036ee55608564d091c38b3dd71f",
+    "at": "2026-10-30T06:58:56.578Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -40,12 +47,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:21b787abef073be8881ec81f0ab38f3c06a83036ee55608564d091c38b3dd71f",
-    "at": "2026-10-30T06:58:56.578Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T07:01:22.566Z"
 }
