@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-multiples-tooltips-fijados-con-indicador-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-multiples-tooltips-fijados-con-indicador-y",
   "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:38fd6a3964e5f0556d3959bc679af323eafaf09af66a97b7bc29bbffd05c89bf",
@@ -49,12 +49,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3408e6a822b3abe0d3686274cd17c3d361c37c00",
+      "attempts": 1,
       "startedAt": "2026-10-30T06:52:29.530Z",
       "doneAt": "2026-10-30T06:55:07.658Z",
-      "summary": "Cerrar tooltip flotante previo al abrir otro tooltip por hover en distinta instancia"
+      "summary": "Cerrar tooltip flotante previo al abrir otro tooltip por hover en distinta instancia",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -67,6 +67,7 @@
     "T": 2,
     "S": 1
   },
+  "closingSubmittedAt": "2026-10-30T07:00:47.375Z",
   "lockedTests": {
     "packages/ui/src/components/item-tooltip.test.ts": "sha256:bdb2594ed1f8d5f40e957ec2ec88ca1c71310fe978c8f1b261b89bdceaa0e24e"
   }

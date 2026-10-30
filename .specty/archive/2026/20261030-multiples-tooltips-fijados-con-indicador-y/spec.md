@@ -60,3 +60,23 @@ Permitir que la persona mantenga abiertos múltiples tooltips simultáneamente a
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+Se implementó el indicador visual distintivo `[data-item-pinned]` en los elementos detonadores de siglas (`A`, `AC`, `T`, `R`, `S`, `C`) cuando su tooltip está fijado. Se refactorizó la directiva `ItemTooltips` para permitir que múltiples tooltips fijados coexistan simultáneamente en pantalla, cada uno con su propio overlay y botón de cierre "✕". Se incorporó un mecanismo de anticolisión y escalonamiento (`positionsFor(offset)` y `data-item-offset`) para evitar que tooltips próximos se solapen destructivamente. Se garantizó el cierre selectivo individual de cada tooltip mediante su botón "✕" o click en su detonador, el cierre global mediante la tecla `Escape`, y la exclusión mutua de tooltips transitorios por hover a nivel global.
+
+### Desviaciones
+
+- Se añadió la tarea de ajuste T2 para coordinar globalmente el cierre del tooltip flotante transitorio previo al disparar un nuevo hover en otra instancia de `ItemTooltips`.
+
+### Decisiones
+
+- D1: Cada tooltip fijado gestiona su propio overlay y botón de cierre en una colección interna (`pinned`), asociando el indicador `[data-item-pinned]` a su elemento detonador.
+- D2: Para evitar solapamientos totales entre tooltips contiguos, se aplica un desplazamiento escalonado (`offset = pinned.size * 12`) y z-index incremental en las posiciones conectadas de CDK Overlay.
+- D3: Los tooltips flotantes transitorios (activados solo por hover) mantienen un coordinador singleton de modo que solo exista un tooltip transitorio abierto a la vez sin interferir con los fijados.
+
+### Pendientes
+
+- Ninguno.

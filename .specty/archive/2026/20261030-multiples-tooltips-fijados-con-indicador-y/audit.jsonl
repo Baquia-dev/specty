@@ -17,3 +17,7 @@
 {"ts":"2026-10-30T06:52:29.530Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T2","baseCommit":"3408e6a822b3abe0d3686274cd17c3d361c37c00"}}
 {"ts":"2026-10-30T06:55:07.571Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts","exit":0,"ms":7123,"tree":"sha256:0e56b9ff677a9eddc08a55c11121294c252b8a07ebc445215a861f99ba14d331"}}
 {"ts":"2026-10-30T06:55:07.659Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T2","summary":"Cerrar tooltip flotante previo al abrir otro tooltip por hover en distinta instancia","longFiles":[{"path":"packages/ui/src/components/item-tooltip.ts","lines":433,"before":425,"limit":300,"severity":"warning"}]}}
+{"ts":"2026-10-30T07:00:08.211Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":275542,"tree":"sha256:0e56b9ff677a9eddc08a55c11121294c252b8a07ebc445215a861f99ba14d331"}}
+{"ts":"2026-10-30T07:00:08.213Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.accepted","data":{"revision":2,"delegated":true}}
+{"ts":"2026-10-30T07:00:47.375Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":3,"hash":"sha256:7e43df2a6350156554c37cc332d37b7dbd8dcd33ab19041f31316207234049e8","size":"S","warnings":0}}
+{"ts":"2026-10-30T07:00:56.284Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.closed","data":{"delegated":true}}
