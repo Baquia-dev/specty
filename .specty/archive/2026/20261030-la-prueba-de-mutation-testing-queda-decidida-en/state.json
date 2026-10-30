@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-la-prueba-de-mutation-testing-queda-decidida-en",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-la-prueba-de-mutation-testing-queda-decidida-en",
   "baseCommit": "029927559fc1f19ae2ef44500156027e40f39912",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9bab2e474030f6cfddf4599ff7f9c8d416ff234f",
+      "attempts": 1,
       "startedAt": "2026-10-30T21:28:07.189Z",
       "doneAt": "2026-10-30T21:28:39.987Z",
-      "summary": "ADR 0017: la medición de Stryker sobre code-rules, vulnerabilities y functions-tree, la clasificación de los mutantes que sobreviven y la decisión de no llevar mutation testing a specty check"
+      "summary": "ADR 0017: la medición de Stryker sobre code-rules, vulnerabilities y functions-tree, la clasificación de los mutantes que sobreviven y la decisión de no llevar mutation testing a specty check",
+      "scopeExtra": []
     }
   },
   "pending": {

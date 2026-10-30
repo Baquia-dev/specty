@@ -19,3 +19,9 @@ Se midió mutation testing con Stryker sobre tres cambios recientes de Specty, c
   - ac: —
   - verify: pnpm lint
   - type: docs
+
+## Cierre
+
+### Resumen
+
+ADR 0017: la medición de Stryker sobre code-rules, vulnerabilities y functions-tree, la clasificación de los mutantes que sobreviven y la decisión de no llevar mutation testing a specty check
