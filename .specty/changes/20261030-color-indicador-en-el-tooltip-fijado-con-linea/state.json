@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261030-color-indicador-en-el-tooltip-fijado-con-linea",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261030-color-indicador-en-el-tooltip-fijado-con-linea",
+  "baseCommit": "bb2d0c9acb319ef6d844523d398e129af6a6b9d0",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f31249b5eeee6d95797417e8213c718fb8fb67cd9405779925bf44d61b1da8ef",
+    "at": "2026-10-30T08:15:25.538Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
