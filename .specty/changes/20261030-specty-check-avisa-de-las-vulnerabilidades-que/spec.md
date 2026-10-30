@@ -63,7 +63,7 @@ Sigue el mismo patrón que `secrets` (ADR 0012): una herramienta externa, opcion
   - files: packages/cli/test/check-vulnerabilities.test.ts, packages/cli/src/check/vulnerabilities.ts, packages/cli/src/check/common.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-vulnerabilities.test.ts test/check-secrets.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T2: Los ejemplos por stack y el test de las guías cuentan con vulnerabilities
+- [x] T2: Los ejemplos por stack y el test de las guías cuentan con vulnerabilities
   - files: packages/cli/test/stack-dialect.ts, packages/cli/test/check-docs.test.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts test/check-examples-native.test.ts && pnpm lint

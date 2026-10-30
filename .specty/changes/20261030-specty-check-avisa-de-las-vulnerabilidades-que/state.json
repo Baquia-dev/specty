@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "944667405c2e35f9961a190a97a2ea43614cb1ad",
+      "attempts": 1,
       "startedAt": "2026-10-30T12:51:28.583Z",
       "doneAt": "2026-10-30T12:52:05.712Z",
-      "summary": "Check vulnerabilities con OSV-Scanner: copia los lockfiles de la ejecución (después y antes) con el osv-scanner.toml de su carpeta, escanea las dos copias en paralelo y reporta solo las claves lockfile|ecosistema|paquete|versión|id nuevas; 127 se desambigua con --version"
+      "summary": "Check vulnerabilities con OSV-Scanner: copia los lockfiles de la ejecución (después y antes) con el osv-scanner.toml de su carpeta, escanea las dos copias en paralelo y reporta solo las claves lockfile|ecosistema|paquete|versión|id nuevas; 127 se desambigua con --version",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c6fad284f5637bcf0782a4efb54bd6e740278197",
+      "startedAt": "2026-10-30T12:52:06.061Z",
+      "doneAt": "2026-10-30T12:53:32.865Z",
+      "summary": "Los ejemplos por stack apagan vulnerabilities (el de Go cambia go.mod y un OSV-Scanner instalado consultaría osv.dev) y el test de las guías lo cuenta entre los checks que su ejemplo no muestra"
     }
   },
   "pending": {

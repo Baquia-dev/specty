@@ -284,6 +284,16 @@ Looks for secrets with Betterleaks or, when it is missing, with gitleaks, on a t
 
 **Disable:** `levels: { secrets: off }`.
 
+### `vulnerabilities`
+
+**Stack:** any with a lockfile OSV-Scanner reads: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `bun.lock`, `pubspec.lock`, `poetry.lock`, `uv.lock`, `pdm.lock`, `Pipfile.lock`, `pylock.toml`, `requirements.txt`, `go.mod`, `Cargo.lock`, `Gemfile.lock`, `gems.locked`, `composer.lock`, `mix.lock`, `packages.lock.json`, `packages.config`, `gradle.lockfile`, `buildscript-gradle.lockfile`, `gradle/verification-metadata.xml`, `conan.lock`, `renv.lock`, `cabal.project.freeze` and `stack.yaml.lock`, in any folder.
+
+When the run touches a lockfile, it hands it to OSV-Scanner and fails with each known vulnerability of a package the change adds or whose version changes: `pnpm-lock.yaml lodash 4.17.20: GHSA-… (severity 7.5)`. The ones the lockfile already had when the run started do not show, because they are not the change's; with `--all` they all do. OSV-Scanner works on a copy of the lockfiles as the mode sees them, and asks osv.dev with the names and versions of the packages. With no lockfile in the run it does not show, and without OSV-Scanner on PATH it does not run and says to install it. `pom.xml` and `build.gradle` do not count: OSV-Scanner would have to resolve them over the network.
+
+**Configuration:** OSV-Scanner's, the `osv-scanner.toml` in each lockfile's folder; for example, `[[IgnoredVulns]]` with the `id` and `reason` of a vulnerability that does not affect you.
+
+**Disable:** `levels: { vulnerabilities: off }`, also if you do not want your package names to go out to osv.dev.
+
 ### `diff-coverage`
 
 **Stack:** any that leaves a coverage report: LCOV (Vitest, Jest, `flutter test --coverage`, cargo-llvm-cov, gcov), Cobertura (coverage.py, coverlet, PHPUnit), JaCoCo (Maven and Gradle) or Go's profile (`go test -coverprofile`).
@@ -443,6 +453,7 @@ What an example does not check:
 - `layers` shows as `NOT RUN` in TypeScript, because the examples have no dependency-cruiser, and does not appear in Ruby or Swift, whose imports Specty does not read.
 - `focused-tests` passes with the change that breaks everything too in Python, Java, Kotlin, C#, Rust and Swift: their test frameworks have no focus marker.
 - `secrets` shows as `NOT RUN` when there is no scanner on PATH.
+- `vulnerabilities` is off: with OSV-Scanner installed, it would ask osv.dev.
 
 ## Adding a provider
 

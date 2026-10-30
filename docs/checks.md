@@ -284,6 +284,16 @@ Busca secretos con Betterleaks o, si no está, con gitleaks, sobre una copia tem
 
 **Desactivar:** `levels: { secrets: off }`.
 
+### `vulnerabilities`
+
+**Stack:** cualquiera con un lockfile que OSV-Scanner lea: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `bun.lock`, `pubspec.lock`, `poetry.lock`, `uv.lock`, `pdm.lock`, `Pipfile.lock`, `pylock.toml`, `requirements.txt`, `go.mod`, `Cargo.lock`, `Gemfile.lock`, `gems.locked`, `composer.lock`, `mix.lock`, `packages.lock.json`, `packages.config`, `gradle.lockfile`, `buildscript-gradle.lockfile`, `gradle/verification-metadata.xml`, `conan.lock`, `renv.lock`, `cabal.project.freeze` y `stack.yaml.lock`, en cualquier carpeta.
+
+Cuando la ejecución toca un lockfile, se lo pasa a OSV-Scanner y falla con cada vulnerabilidad conocida de un paquete que el cambio añade o cuya versión cambia: `pnpm-lock.yaml lodash 4.17.20: GHSA-… (gravedad 7.5)`. Las que el lockfile ya tenía al empezar no salen, porque no son del cambio; con `--all` salen todas. OSV-Scanner trabaja sobre una copia de los lockfiles tal como los ve el modo, y consulta osv.dev con los nombres y las versiones de los paquetes. Sin ningún lockfile en la ejecución no aparece, y sin OSV-Scanner en el PATH no corre y dice que se instale. `pom.xml` y `build.gradle` no cuentan: OSV-Scanner tendría que resolverlos por red.
+
+**Configuración:** la de OSV-Scanner, el `osv-scanner.toml` de la carpeta de cada lockfile; por ejemplo, `[[IgnoredVulns]]` con el `id` y el `reason` de una vulnerabilidad que no te afecta.
+
+**Desactivar:** `levels: { vulnerabilities: off }`, también si no quieres que los nombres de tus paquetes salgan hacia osv.dev.
+
 ### `diff-coverage`
 
 **Stack:** cualquiera que deje un informe de cobertura: LCOV (Vitest, Jest, `flutter test --coverage`, cargo-llvm-cov, gcov), Cobertura (coverage.py, coverlet, PHPUnit), JaCoCo (Maven y Gradle) o el perfil de Go (`go test -coverprofile`).
@@ -443,6 +453,7 @@ Lo que un ejemplo no comprueba:
 - `layers` sale «sin ejecutar» en TypeScript, porque los ejemplos no tienen dependency-cruiser, y no aparece en Ruby ni en Swift, cuyos imports Specty no lee.
 - `focused-tests` pasa también con el cambio que lo rompe todo en Python, Java, Kotlin, C#, Rust y Swift: sus frameworks de test no tienen una marca de foco.
 - `secrets` sale «sin ejecutar» si no hay un escáner en el PATH.
+- `vulnerabilities` está apagado: con OSV-Scanner instalado, consultaría osv.dev.
 
 ## Añadir un proveedor
 
