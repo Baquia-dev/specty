@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  blockedCard,
   delegationWarning,
   headerOf,
   noActiveChangeCard,
   type Output,
   parseSpec,
+  translator,
   uiApprovalRefusalCard,
 } from "@baquia-dev/specty-core";
 import { accept } from "../commands/accept";
@@ -15,11 +17,17 @@ import { close } from "../commands/finish";
 import { type PersonAction, personSession } from "../commands/human";
 import { reject } from "../commands/scope-decision";
 import { resolveActive, withChangeLock } from "../flow/active";
-import { addComment, decideAssumption, requestChanges } from "../flow/review";
+import {
+  addComment,
+  decideAssumption,
+  deleteComment,
+  editComment,
+  requestChanges,
+} from "../flow/review";
 import { isRecord } from "../io/files";
 import { type Session, sessionFrom, type Terminal } from "../session";
 import { readSpec } from "../store/changes";
-import { type CommentAnchor, isAnchor } from "../store/comments";
+import { type CommentAnchor, isAnchor, readComments } from "../store/comments";
 import { readDelegation } from "../store/local";
 
 /** A decision the person takes in the UI, as its route and its body say it. */
@@ -38,6 +46,8 @@ export type Action =
       readonly reason?: string;
     }
   | { readonly kind: "comment"; readonly anchor: CommentAnchor; readonly body: string }
+  | { readonly kind: "editComment"; readonly id: string; readonly body: string }
+  | { readonly kind: "deleteComment"; readonly id: string }
   | { readonly kind: "requestChanges" }
   | { readonly kind: "accept" }
   | { readonly kind: "adjust"; readonly request: string }
@@ -104,10 +114,17 @@ const PARSERS: ReadonlyMap<string, ActionParser> = new Map<string, ActionParser>
   [
     "comments",
     (target, data) => {
+      if (target === undefined) {
+        const body = text(data, "body");
+        return isAnchor(data.anchor) && body !== undefined
+          ? { kind: "comment", anchor: data.anchor, body }
+          : undefined;
+      }
+      if (data.delete === true || data.action === "delete") {
+        return { kind: "deleteComment", id: target };
+      }
       const body = text(data, "body");
-      return target === undefined && isAnchor(data.anchor) && body !== undefined
-        ? { kind: "comment", anchor: data.anchor, body }
-        : undefined;
+      return body !== undefined ? { kind: "editComment", id: target, body } : undefined;
     },
   ],
   ["request-changes", (target) => (target === undefined ? { kind: "requestChanges" } : undefined)],
@@ -136,6 +153,8 @@ const COMMAND: Readonly<Record<Action["kind"], PersonAction>> = {
   approve: "approve",
   assumption: "approve",
   comment: "approve",
+  editComment: "approve",
+  deleteComment: "approve",
   requestChanges: "approve",
   scope: "approve",
   accept: "accept",
@@ -228,11 +247,16 @@ function act(there: Session, action: Action): Promise<Output> {
 /** An action on the spec under review: an assumption's decision, a comment or asking for changes. */
 async function reviewAction(
   session: Session,
-  action: Extract<Action, { kind: "assumption" | "comment" | "requestChanges" }>,
+  action: Extract<
+    Action,
+    { kind: "assumption" | "comment" | "editComment" | "deleteComment" | "requestChanges" }
+  >,
 ): Promise<Output> {
   const change = await resolveActive(session);
   if (change === undefined) return noChange(session);
   if (action.kind === "comment") return addComment(session, change, action.anchor, action.body);
+  if (action.kind === "editComment") return editComment(session, change, action.id, action.body);
+  if (action.kind === "deleteComment") return deleteComment(session, change, action.id);
   if (action.kind === "requestChanges") return requestChanges(session, change);
   return decideAssumption(session, change, action.item, action.decision, action.comment);
 }
@@ -252,6 +276,19 @@ async function approveRevision(session: Session, revision: number): Promise<Outp
         { reason: "stale", current: state.revision, asked: revision },
         header,
         session.cards,
+      );
+    }
+    const openComments = (await readComments(change.files)).filter(
+      (comment) => comment.resolvedInRevision === undefined,
+    ).length;
+    if (openComments > 0) {
+      const t = translator(session.lang);
+      return blockedCard(
+        header,
+        openComments === 1
+          ? t("Hay 1 comentario sin resolver.", "There is 1 unresolved comment.")
+          : t(`Hay ${openComments} comentarios sin resolver.`, `There are ${openComments} unresolved comments.`),
+        t("pide cambios o resuélvelos.", "request changes or resolve them."),
       );
     }
     const spec = parseSpec(await readSpec(change.files), { language: session.lang }).spec;

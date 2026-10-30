@@ -12,7 +12,9 @@ import {
   nothingToRequestCard,
   type Output,
   reloadNext,
+  runNext,
   transition,
+  translator,
 } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
@@ -90,6 +92,67 @@ export async function addComment(
     },
   ]);
   return decisionCard(header, [commentSavedLine(id, session.lang)], session.cards);
+}
+
+/** Updates the body of an existing comment on the spec. */
+export async function editComment(
+  session: Session,
+  change: StoredChange,
+  id: string,
+  body: string,
+): Promise<Output> {
+  const { state } = change;
+  if (state.phase !== "review")
+    return nothingPendingCard(state.id, state.phase, "approve", session.cards);
+  const header = headerOf(state.id, "review");
+  const text = body.trim();
+  if (text === "") return emptyCommentCard(header, session.cards);
+  const comments = await readComments(change.files);
+  const target = comments.find((comment) => comment.id === id);
+  if (target === undefined) {
+    const t = translator(session.lang);
+    return blockedCard(
+      header,
+      t("El comentario no existe.", "The comment does not exist."),
+      runNext(session.cards),
+    );
+  }
+  await writeComments(
+    change.files,
+    comments.map((comment) => (comment.id === id ? { ...comment, body: text } : comment)),
+  );
+  return decisionCard(header, [commentSavedLine(id, session.lang)], session.cards);
+}
+
+/** Deletes a comment from the spec. */
+export async function deleteComment(
+  session: Session,
+  change: StoredChange,
+  id: string,
+): Promise<Output> {
+  const { state } = change;
+  if (state.phase !== "review")
+    return nothingPendingCard(state.id, state.phase, "approve", session.cards);
+  const header = headerOf(state.id, "review");
+  const comments = await readComments(change.files);
+  const target = comments.find((comment) => comment.id === id);
+  if (target === undefined) {
+    const t = translator(session.lang);
+    return blockedCard(
+      header,
+      t("El comentario no existe.", "The comment does not exist."),
+      runNext(session.cards),
+    );
+  }
+  await writeComments(
+    change.files,
+    comments.filter((comment) => comment.id !== id),
+  );
+  return decisionCard(
+    header,
+    [translator(session.lang)(`Comentario ${id} eliminado.`, `Comment ${id} deleted.`)],
+    session.cards,
+  );
 }
 
 /**

@@ -37,7 +37,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/server/actions.test.ts",
+        "packages/cli/test/src/server/actions.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "a86701a28edf4b47fe42943945db1e79316c5570",
+      "startedAt": "2026-10-30T09:01:29.921Z",
+      "doneAt": "2026-10-30T09:08:42.273Z",
+      "summary": "acciones en CLI para editar y eliminar comentarios y bloqueo de aprobación ante comentarios abiertos"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -45,14 +58,15 @@
   "maxIds": {
     "A": 3,
     "AC": 5,
-    "T": 4
+    "T": 4,
+    "S": 2
   },
   "lockedTests": {
     "packages/ui/src/data/fixtures.test.ts": "sha256:1a642e6e2264a62a9c1d8ad1f0357afb7c78f36e4bf5f3ad111d346046de8676",
     "packages/ui/src/review/comments.test.ts": "sha256:8ea85ad0b22b1cc365fbfec0f8d25d2300d2b8cc73663d85535af28d6d6a946d",
     "packages/ui/src/review/review-actions.test.ts": "sha256:136be752006754060599d338b50151743c30a4cbe132477d8e5ee95ed2969d5f",
     "packages/ui/src/review/spec-sections.test.ts": "sha256:4ca8a9f953b0ca0631563cb7fdd267efee23ffe5ae49f5bb851f5a2ee17c6551",
-    "packages/cli/src/server/actions.test.ts": "sha256:7b35ebf5e18a57f5270d4960cd0296b4a263a04e2f7ce38095a0327cb4f81b3c",
-    "packages/cli/test/src/server/actions.test.ts": "sha256:94599282b95d09a5f01f0d50070e745b4550799044110470b31cf03912da6b61"
+    "packages/cli/src/server/actions.test.ts": "sha256:2588245f917c23503143df55c203975f76dd9b06c4cadea334371c57337c5bff",
+    "packages/cli/test/src/server/actions.test.ts": "sha256:94396411d0c203b6d755d5e4ae236b7e6336cc201fdc4799393c4f00f883ea34"
   }
 }

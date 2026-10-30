@@ -60,7 +60,7 @@ Permitir editar y eliminar comentarios en la revisión de la spec, deshabilitar 
 
 ## Tareas
 
-- [ ] T1: Backend CLI: edición, borrado de comentarios y validación de aprobación
+- [x] T1: Backend CLI: edición, borrado de comentarios y validación de aprobación
   - files: packages/cli/src/flow/review.ts, packages/cli/src/server/actions.ts, packages/cli/src/server/actions.test.ts
   - ac: AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/server/actions.test.ts

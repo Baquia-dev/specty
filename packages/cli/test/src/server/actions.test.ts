@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { resolveActive } from "../../../src/flow/active";
 import { readComments } from "../../../src/store/comments";
+import { person } from "../../support";
 import { call, path, serving, sessionAt } from "../../server/support";
 
 describe("comments and approval actions in server", () => {
@@ -19,9 +20,11 @@ describe("comments and approval actions in server", () => {
       });
       expect(edited.status).toBe(200);
 
-      const session = await sessionAt(root, { interactive: false, channel: "cli" } as any);
+      const session = await sessionAt(root, person());
       const active = await resolveActive(session);
-      const comments = await readComments(active!.files);
+      expect(active).toBeDefined();
+      if (active === undefined) throw new Error("no active change");
+      const comments = await readComments(active.files);
       expect(comments.find((c) => c.id === "c1")?.body).toBe("Comentario editado");
     } finally {
       await server.close();
@@ -41,9 +44,11 @@ describe("comments and approval actions in server", () => {
       });
       expect(deleted.status).toBe(200);
 
-      const session = await sessionAt(root, { interactive: false, channel: "cli" } as any);
+      const session = await sessionAt(root, person());
       const active = await resolveActive(session);
-      const comments = await readComments(active!.files);
+      expect(active).toBeDefined();
+      if (active === undefined) throw new Error("no active change");
+      const comments = await readComments(active.files);
       expect(comments.find((c) => c.id === "c1")).toBeUndefined();
     } finally {
       await server.close();
