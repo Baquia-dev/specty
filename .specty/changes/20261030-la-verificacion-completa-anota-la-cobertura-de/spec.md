@@ -82,7 +82,7 @@ kind: standard
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core test && test -f packages/core/coverage/lcov.info && test ! -d packages/core/coverage/lcov-report
   - type: chore
-- [ ] T4: La documentación cuenta la cobertura en la aceptación
+- [x] T4: La documentación cuenta la cobertura en la aceptación
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint

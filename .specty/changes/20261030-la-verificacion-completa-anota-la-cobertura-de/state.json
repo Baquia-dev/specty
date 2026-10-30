@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-la-verificacion-completa-anota-la-cobertura-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-la-verificacion-completa-anota-la-cobertura-de",
   "baseCommit": "115b28a8160a96c2f75054f6a484bb524d088254",
   "revision": 1,
@@ -62,12 +62,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7f1de4f8e876be20b9b971f61d5edd92baf23c21",
+      "attempts": 1,
       "startedAt": "2026-10-30T08:48:26.432Z",
       "doneAt": "2026-10-30T08:48:47.262Z",
-      "summary": "lcovonly junto a text-summary en los vitest.config.ts de core y de la CLI: cada paquete deja coverage/lcov.info, sin informe HTML"
+      "summary": "lcovonly junto a text-summary en los vitest.config.ts de core y de la CLI: cada paquete deja coverage/lcov.info, sin informe HTML",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "37683fac915deae012c5f28fd8938084083cd59a",
+      "startedAt": "2026-10-30T08:48:47.597Z",
+      "doneAt": "2026-10-30T08:49:28.570Z",
+      "summary": "formats.md §4 (coverage en change.verified) y la línea de diff-coverage; ARCHITECTURE cuenta la cobertura en la aceptación, también con el merge de main en curso"
     }
   },
   "pending": {
