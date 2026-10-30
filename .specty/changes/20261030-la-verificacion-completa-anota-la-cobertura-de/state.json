@@ -6,6 +6,13 @@
   "branch": "specty/20261030-la-verificacion-completa-anota-la-cobertura-de",
   "baseCommit": "115b28a8160a96c2f75054f6a484bb524d088254",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:6e6258d16419710967d405526ba3f20b21c653958dcff685c19c5331f6dd3cce",
+    "at": "2026-10-30T08:35:59.248Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -41,12 +48,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:6e6258d16419710967d405526ba3f20b21c653958dcff685c19c5331f6dd3cce",
-    "at": "2026-10-30T08:35:59.248Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T08:39:21.651Z"
 }
