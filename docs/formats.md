@@ -30,6 +30,7 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
 .git/common/specty/            # local, compartido por todas las worktrees, nunca versionado
 ├─ delegated.json              # modo delegado activo (ADR 0010): { "by", "at" }, quién lo activó y cuándo
 ├─ sessions/<conversación>.json # { "folder", "at" }: la worktree en la que trabaja una conversación de agente, desde que entró con `EnterWorktree` (Claude Code) o `specty enter` (las demás); el guard la escribe y la lee
+├─ activity/<agente>-<conversación>.json # { "tool", "folder", "first", "last" }: la carpeta del último paso de una conversación de agente, su primer paso y el último (ADR 0016); el guard la reescribe si cambia de carpeta o si pasó un minuto, y `status` la lee para decir quién lleva cada cambio
 ├─ locks/<id>.json             # { "pid", "command", "folder", "at" }: el comando que está cambiando ese cambio, uno a la vez (ARCHITECTURE §9); se crea en exclusiva y se borra al terminar, y el de un proceso que ya no existe no cuenta; para reemplazarlo, un comando toma antes `locks/<id>.json.claim`, un permiso exclusivo y breve
 └─ backups/<fecha>/            # lo que había antes de que `init` o `uninstall` lo cambiaran (una carpeta por ejecución)
    ├─ repo/<ruta>              # copia de un archivo del repositorio
@@ -383,6 +384,8 @@ team:                             # solo con mode: team
 ui:
   port: auto
   requireUserPresence: false      # WebAuthn (fase 4)
+memory:                           # la memoria de Specty (ADR 0016)
+  orphanAfterMin: 60              # minutos sin pasos ni cambios de estado tras los que un cambio que espera al agente es huérfano
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
