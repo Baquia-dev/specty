@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-tooltip-fijado-al-hacer-click-con-boton-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-tooltip-fijado-al-hacer-click-con-boton-de",
   "baseCommit": "af83a9659994353f690f1174de6973f5f1635f9a",
   "revision": 1,
@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "af75a3d69054266b758fac5f72ff49dc75798928",
+      "startedAt": "2026-10-30T06:06:13.246Z",
+      "doneAt": "2026-10-30T06:09:26.845Z",
+      "summary": "Fijación del tooltip por click y botón de cierre en esquina superior derecha"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

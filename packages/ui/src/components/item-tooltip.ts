@@ -161,31 +161,67 @@ function node(
   return el;
 }
 
-function renderBubble(el: HTMLElement, id: string, lang: Lang, text?: string): boolean {
-  const match = EXACT_ITEM_RE.exec(id.trim());
-  if (!match) return false;
-  const clean = text?.replace(/\s+/g, " ").trim() ?? "";
-  el.replaceChildren();
-  const doc = el.ownerDocument;
-  const label = ITEM_LABELS[match[1] as ItemPrefix][lang];
+function closeButton(doc: Document, lang: Lang, onClose: () => void): HTMLElement {
+  const btn = node(
+    doc,
+    "button",
+    {
+      type: "button",
+      "data-item-close": "",
+      "aria-label": lang === "es" ? "Cerrar" : "Close",
+      class:
+        "cursor-pointer border-0 bg-transparent p-0 text-bg/75 hover:text-bg text-sm leading-none shrink-0",
+    },
+    "✕",
+  );
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    onClose();
+  });
+  return btn;
+}
+
+function bubbleHeader(doc: Document, title: string, lang: Lang, onClose?: () => void): HTMLElement {
   const bullet = node(doc, "span", {
     class: "inline-block size-1.5 rounded-full bg-current opacity-75 shrink-0",
     "data-item-bullet": "",
     "aria-hidden": "true",
   });
-  el.appendChild(
-    node(
-      doc,
-      "span",
-      { class: "flex items-center gap-1.5 font-semibold text-bg", "data-item-header": "" },
-      bullet,
-      clean ? `${label} ${id.trim()}: ` : `${label} ${id.trim()}`,
-    ),
+  const header = node(
+    doc,
+    "span",
+    { class: "flex items-center gap-1.5 font-semibold text-bg flex-1", "data-item-header": "" },
+    bullet,
+    title,
   );
+  if (!onClose) return header;
+  return node(
+    doc,
+    "div",
+    { class: "flex items-start justify-between gap-2" },
+    header,
+    closeButton(doc, lang, onClose),
+  );
+}
+
+function renderBubble(
+  el: HTMLElement,
+  id: string,
+  lang: Lang,
+  text?: string,
+  onClose?: () => void,
+): boolean {
+  const match = EXACT_ITEM_RE.exec(id.trim());
+  if (!match) return false;
+  const clean = text?.replace(/\s+/g, " ").trim() ?? "";
+  el.replaceChildren();
+  const label = ITEM_LABELS[match[1] as ItemPrefix][lang];
+  const title = clean ? `${label} ${id.trim()}: ` : `${label} ${id.trim()}`;
+  el.appendChild(bubbleHeader(el.ownerDocument, title, lang, onClose));
   if (clean)
     el.appendChild(
       node(
-        doc,
+        el.ownerDocument,
         "span",
         { class: "block text-xs opacity-90 leading-relaxed font-normal", "data-item-body": "" },
         clean,
@@ -201,8 +237,9 @@ let openTooltip: ItemTooltips | undefined;
   host: {
     "(pointerover)": "onEnter($event)",
     "(pointerout)": "onLeave($event)",
+    "(click)": "onClick($event)",
     "(focusin)": "onEnter($event)",
-    "(focusout)": "hide()",
+    "(focusout)": "onFocusOut()",
     "(document:keydown.escape)": "hide()",
   },
 })
@@ -216,6 +253,7 @@ export class ItemTooltips {
   private overlay?: { ref: OverlayRef; pos: FlexibleConnectedPositionStrategy };
   private bubble?: HTMLSpanElement;
   private activeTarget: ResolvedTarget | undefined;
+  private pinned = false;
   private leaving?: ReturnType<typeof setTimeout>;
 
   readonly items: Signal<ItemMap> = computed((): ItemMap => {
@@ -242,15 +280,28 @@ export class ItemTooltips {
   }
 
   protected onEnter(event: Event): void {
+    if (this.pinned) return;
     const target = this.resolveTarget(event.target);
     if (!target) return;
     event.stopPropagation();
     const from = event instanceof MouseEvent ? event.relatedTarget : null;
     if (from instanceof Node && target.origin.contains(from)) clearTimeout(this.leaving);
-    else this.showTarget(target);
+    else this.showTarget(target, false);
+  }
+
+  protected onClick(event: Event): void {
+    const target = this.resolveTarget(event.target);
+    if (!target) return;
+    event.stopPropagation();
+    if (this.pinned && this.activeTarget?.origin === target.origin) {
+      this.hide();
+      return;
+    }
+    this.showTarget(target, true);
   }
 
   protected onLeave(event: MouseEvent): void {
+    if (this.pinned) return;
     const origin = this.activeTarget?.origin;
     if (!origin || (event.relatedTarget instanceof Node && origin.contains(event.relatedTarget)))
       return;
@@ -259,10 +310,15 @@ export class ItemTooltips {
     this.leaving = setTimeout(() => this.hide(), GRACE_MS);
   }
 
+  protected onFocusOut(): void {
+    if (!this.pinned) this.hide();
+  }
+
   private syncBubble(): void {
     const [lang, map, t] = [this.preferences.lang(), this.items(), this.activeTarget];
     if (!t || !this.bubble) return;
-    if (!renderBubble(this.bubble, t.id, lang, t.text || map.get(t.id))) this.hide();
+    const close = this.pinned ? () => this.hide() : undefined;
+    if (!renderBubble(this.bubble, t.id, lang, t.text || map.get(t.id), close)) this.hide();
   }
 
   private resolveSource(src: ItemSource | undefined, lang: Lang): ItemMap {
@@ -286,16 +342,18 @@ export class ItemTooltips {
     return explicitTarget(raw, this.host) ?? inferredTarget(raw, this.host);
   }
 
-  private showTarget(target: ResolvedTarget): void {
+  private showTarget(target: ResolvedTarget, pin = false): void {
     if (openTooltip !== undefined && openTooltip !== this) openTooltip.hide();
     openTooltip = this;
     clearTimeout(this.leaving);
+    this.pinned = pin;
     const raw = target.text || this.items().get(target.id);
     this.activeTarget?.origin.removeAttribute("data-item-active");
     this.activeTarget = target;
     target.origin.setAttribute("data-item-active", "");
     const bubble = this.ensureOverlay(target.origin);
-    if (!renderBubble(bubble, target.id, this.preferences.lang(), raw)) return;
+    const close = pin ? () => this.hide() : undefined;
+    if (!renderBubble(bubble, target.id, this.preferences.lang(), raw, close)) return;
     this.overlay?.ref.updatePosition();
   }
 
@@ -319,7 +377,9 @@ export class ItemTooltips {
         style: "transition-duration: var(--duration-fast)",
       });
       b.addEventListener("pointerenter", () => clearTimeout(this.leaving));
-      b.addEventListener("pointerleave", () => this.hide());
+      b.addEventListener("pointerleave", () => {
+        if (!this.pinned) this.hide();
+      });
       this.host.ownerDocument.createDocumentFragment().appendChild(b);
       this.bubble = b;
     }
@@ -329,6 +389,7 @@ export class ItemTooltips {
 
   protected hide(): void {
     clearTimeout(this.leaving);
+    this.pinned = false;
     if (openTooltip === this) openTooltip = undefined;
     this.activeTarget?.origin.removeAttribute("data-item-active");
     this.activeTarget = undefined;

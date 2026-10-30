@@ -41,7 +41,7 @@ Permitir que la persona fije el tooltip contextual de una sigla (`A`, `AC`, `T`,
 
 ## Tareas
 
-- [ ] T1: Fijación del tooltip por click y botón de cierre en esquina superior derecha
+- [x] T1: Fijación del tooltip por click y botón de cierre en esquina superior derecha
   - files: packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts
