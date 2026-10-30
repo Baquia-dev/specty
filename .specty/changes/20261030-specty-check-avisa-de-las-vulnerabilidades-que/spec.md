@@ -59,7 +59,7 @@ Sigue el mismo patrón que `secrets` (ADR 0012): una herramienta externa, opcion
 
 ## Tareas
 
-- [ ] T1: specty check avisa de las vulnerabilidades con OSV-Scanner
+- [x] T1: specty check avisa de las vulnerabilidades con OSV-Scanner
   - files: packages/cli/test/check-vulnerabilities.test.ts, packages/cli/src/check/vulnerabilities.ts, packages/cli/src/check/common.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-vulnerabilities.test.ts test/check-secrets.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
