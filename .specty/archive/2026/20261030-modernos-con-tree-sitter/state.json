@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-modernos-con-tree-sitter",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-modernos-con-tree-sitter",
   "baseCommit": "8f6f314c6eb0916e909fa7e31addd604977ea07f",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:096b8d38bffe4ed6efadd930d166cb31e57c0e1a1f94ccc88a2757d31cdf4e2f",
@@ -83,12 +83,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "14e871189485312eba9037b419a061d09db83583",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:00:36.422Z",
       "doneAt": "2026-10-30T11:00:58.343Z",
-      "summary": "formats, checks (es y en) y ARCHITECTURE describen la medida sobre el árbol de Go, Rust, Swift y Dart, con la firma y el cuerpo de Dart."
+      "summary": "formats, checks (es y en) y ARCHITECTURE describen la medida sobre el árbol de Go, Rust, Swift y Dart, con la firma y el cuerpo de Dart.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -101,6 +101,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-10-30T11:05:01.518Z",
   "lockedTests": {
     "packages/cli/test/bundle-grammars-modern.test.ts": "sha256:ae6a4f66c5a3e2e522d88fc5fa3ec68bfc3aed5c4cb062a769aee507c70481cc",
     "packages/cli/test/check-functions-modern.test.ts": "sha256:415e1cf894bc2b08e214eb9fc2b0821b3639fa1ca0d7b25a0c73689fef2161e2",

@@ -87,3 +87,29 @@ follows:
 
 - R1: La gramática de Dart (`UserNobody14/tree-sitter-dart`, sin versión en npm) cambia los nombres de sus nodos. Mitigación: `@repomix/tree-sitter-wasms` va con versión exacta y AC3 la prueba.
 - R2: Los tests de ejemplos por stack (`check-examples-flutter` y los nativos) fijan resultados de la estimación. Mitigación: se ejecutan en la aceptación; si alguno cambia por la medida nueva, se ajusta con su motivo.
+
+## Cierre
+
+### Resumen
+
+`function-lines` y `complexity` miden sobre el árbol de tree-sitter también Go, Rust, Swift y Dart.
+- Las tablas viven en `tree-languages-modern.ts`.
+- En Dart, una función de clase o de nivel superior es la firma más su `function_body` hermano: la tabla lo dice con `bodies` y `signatures`, y `SyntaxNode` añade `previousNamedSibling`.
+- Los getters de Dart (`get x {` y `get x => [`) y las funciones con un parámetro `record` ya se ven.
+- `dist/grammars/` ocupa 1,3 MB con las doce gramáticas.
+
+### Desviaciones
+
+- El corte C2 tampoco cabía en dos cambios con Kotlin (XL otra vez): este es su segundo cambio previo, sin `slice`, y el corte C2 queda solo para Kotlin, con su dependencia nueva.
+- `bodies` y `signatures` son opcionales en `TreeGrammar`, para no tocar las tablas de la familia C, que no los usan.
+
+### Decisiones
+
+- Rust no cuenta los brazos de `match` ni Go nombra un literal `func`: la estimación tampoco lo hacía.
+- Los atributos y los comentarios de documentación de Rust van fuera de `function_item`, así que la función empieza en `fn` sin más.
+
+### Pendientes
+
+- El corte C2: Kotlin (`@tree-sitter-grammars/tree-sitter-kotlin` 1.1.0, con `allowBuilds: false` para su `node-gyp-build`).
+- C3: Python, Ruby y Elixir.
+- Reconstruir el dist de main tras incorporar.
