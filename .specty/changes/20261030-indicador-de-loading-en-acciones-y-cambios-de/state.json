@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-indicador-de-loading-en-acciones-y-cambios-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-indicador-de-loading-en-acciones-y-cambios-de",
   "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
   "revision": 2,
@@ -95,7 +95,7 @@
     "packages/ui/src/components/button.test.ts": "sha256:f8eee93e474082fdac62468d815a99cd946e2febe50774e941258a246fb4848d",
     "packages/ui/src/review/comments.test.ts": "sha256:f805401af99d8cf9f2c8526a8d387857641eaea1214de89ee3a500370cbeee69",
     "packages/ui/src/review/review-actions.test.ts": "sha256:c0a9a7e0d3adbce6280fc3dc0a622e7b10eb666ed1389246e50aa995807492ab",
-    "packages/ui/src/review/spec-sections.test.ts": "sha256:1cf6fbd22e0e27d3f523cc1a05bb16dcae445a2e15ad48a6532cf9bcc68c315f"
-  },
-  "testCycle": "bug"
+    "packages/ui/src/review/spec-sections.test.ts": "sha256:1cf6fbd22e0e27d3f523cc1a05bb16dcae445a2e15ad48a6532cf9bcc68c315f",
+    "packages/ui/src/components/icons.test.ts": "sha256:462f832df5282c243e09db2335ba03c4c3e95724d4915161ec1556116e61458a"
+  }
 }

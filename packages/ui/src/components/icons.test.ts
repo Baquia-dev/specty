@@ -30,6 +30,11 @@ describe("icons", () => {
     ]);
   });
 
+  it("AC1: exports LucideLoader2 for loading state", () => {
+    expect(icons.LucideLoader2.name).toBe("loader-2");
+    expect(icons.LucideLoader2.node.length).toBeGreaterThan(0);
+  });
+
   it("draws with the one dynamic icon component (AC1)", async () => {
     const fixture = TestBed.createComponent(Host);
     await fixture.whenStable();

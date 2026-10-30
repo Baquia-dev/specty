@@ -25,3 +25,5 @@
 {"ts":"2026-10-30T12:36:51.162Z","actor":"agent","tool":"antigravity","event":"adjust.requested","data":{"request":"actualizar conteo de iconos en icons.test.ts a 54 tras añadir LucideLoader2"}}
 {"ts":"2026-10-30T12:37:40.764Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:23fba660618064cc7e94d092b14a49dbfe0cfbeaf8335a969ceb7812fc2eeb4a","size":"L","warnings":1}}
 {"ts":"2026-10-30T12:37:48.911Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"spec.approved","data":{"revision":2,"hash":"sha256:23fba660618064cc7e94d092b14a49dbfe0cfbeaf8335a969ceb7812fc2eeb4a","channel":"delegated","delegated":true}}
+{"ts":"2026-10-30T12:39:24.993Z","actor":"agent","tool":"antigravity","event":"tests.proposed","data":{"count":1,"files":["packages/ui/src/components/icons.test.ts"],"red":[{"cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/icons.test.ts","exit":1}]}}
+{"ts":"2026-10-30T12:39:24.994Z","actor":"specty","event":"tests.locked","data":{"count":1,"files":["packages/ui/src/components/icons.test.ts"]}}
