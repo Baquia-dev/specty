@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "20261030-en-el-chat-progreso-y-aceptacion-toman-los",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-en-el-chat-progreso-y-aceptacion-toman-los",
+  "baseCommit": "d3c17f59d9b00f4e3b07196f703d8fa980d8a44d",
+  "revision": 2,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:899ad15f73f9d52420524a902788c1ae98349726dc314eb56a7581221c42932e",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:66fde49a54b8dfaec5c0117f97b2c22cc8bbe459034cb602ae9144b973c8dd15",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:d33d583781fdf400598fe19ef6a4c120caeffbc3a721dc7898e6892c8239a51a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:251d64f1de80a7b4dd5aad7a4bfa9b6e5fc82162682ba501a550d50964d82d25",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:ee98a37f719c4fa3619eb7fcabff0e948584d3a6fe203535f06b22bfb84fc707",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:59fc0e852c9c7583125dfb66c63620070cc77eec8ad64a56490bf842366bd088",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 5,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ba3a2606e2515f2709f4d537b256d41e840250b31606958b2e38118e6f6f052c",
+    "at": "2026-10-30T07:50:39.629Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
