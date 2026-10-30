@@ -6,6 +6,13 @@
   "branch": "specty/20261030-indicador-de-loading-en-acciones-y-cambios-de",
   "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:47b0c603a6c7fb040d36058975dbdb94b8a98a022c0777f42c756d84cb449b3b",
+    "at": "2026-10-30T11:59:06.896Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -39,12 +46,6 @@
     "AC": 5,
     "T": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:47b0c603a6c7fb040d36058975dbdb94b8a98a022c0777f42c756d84cb449b3b",
-    "at": "2026-10-30T11:59:06.896Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T12:02:27.510Z"
 }

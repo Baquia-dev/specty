@@ -196,6 +196,28 @@ describe("ReviewComments", () => {
     await settle();
     expect(source.calls).toContainEqual(["deleteComment", "20261020-evolucion-trimestre", "c2"]);
   });
+
+  it("AC5: shows loading state on comment action buttons while requests are running", async () => {
+    let resolveEdit!: () => void;
+    const pendingEdit = new Promise<void>((res) => {
+      resolveEdit = res;
+    });
+    const { element, source, fixture, settle } = await render();
+    source.editComment = () => pendingEdit;
+    const open = element.querySelector("[data-comment=c2]");
+    open?.querySelector<HTMLButtonElement>("[data-action=edit] button")?.click();
+    await fixture.whenStable();
+    const saveBtn = element.querySelector<HTMLButtonElement>(
+      "[data-comment=c2] form sp-button[data-action=save] button",
+    );
+    saveBtn?.click();
+    await fixture.whenStable();
+    expect(saveBtn?.getAttribute("aria-busy")).toBe("true");
+    expect(saveBtn?.disabled).toBe(true);
+    expect(saveBtn?.querySelector(".animate-spin")).not.toBeNull();
+    resolveEdit();
+    await settle();
+  });
 });
 
 describe("selectionAnchor", () => {
