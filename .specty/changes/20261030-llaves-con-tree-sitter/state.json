@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-llaves-con-tree-sitter",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-llaves-con-tree-sitter",
   "baseCommit": "f197a3575d19bca8233207d690d8ea471aea68bc",
   "revision": 1,
@@ -78,12 +78,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b412276d5681ac6d132c88293e6fec6fc92681eb",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:50:21.838Z",
       "doneAt": "2026-10-30T10:51:09.320Z",
-      "summary": "El build comprime en dist/grammars las gramáticas de Java, C#, PHP, C y C++, y grammar-licenses.txt lleva sus licencias MIT."
+      "summary": "El build comprime en dist/grammars las gramáticas de Java, C#, PHP, C y C++, y grammar-licenses.txt lleva sus licencias MIT.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "459b6a577a3f3ebca6ed38aff476421e228f96fc",
+      "startedAt": "2026-10-30T10:51:09.643Z",
+      "doneAt": "2026-10-30T10:51:37.434Z",
+      "summary": "formats, checks (es y en) y ARCHITECTURE describen la medida sobre el árbol de Java, C#, PHP, C y C++ y el emparejamiento por orden de las funciones sin nombre."
     }
   },
   "pending": {
