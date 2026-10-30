@@ -12,6 +12,7 @@ import type { CheckContext } from "./provider";
  * was already there before the change.
  */
 export async function checkContext(session: Session, mode: CheckMode): Promise<CheckContext> {
+  const started = Date.now();
   const base = mode === "changed" ? await baseOf(session) : undefined;
   const [changed, added] = await Promise.all([
     candidates(session, mode, base),
@@ -36,6 +37,7 @@ export async function checkContext(session: Session, mode: CheckMode): Promise<C
     },
     before: async (path) => (start === undefined ? undefined : blob(session, `${start}:${path}`)),
     added: (path) => added?.get(path),
+    started,
   };
 }
 

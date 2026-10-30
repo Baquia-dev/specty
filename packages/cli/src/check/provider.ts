@@ -31,6 +31,8 @@ export interface CheckContext {
   before(path: string): Promise<string | undefined>;
   /** Lines `path` adds, from 1; undefined when every line of it counts (`--all`, a new file). */
   added(path: string): ReadonlySet<number> | undefined;
+  /** When the run started, in ms: what a check finds written after it, the run wrote. */
+  readonly started: number;
 }
 
 /**
@@ -47,6 +49,8 @@ export interface CheckDefinition {
   readonly id: string;
   /** It changes files while it runs, so it runs alone, after the others. */
   readonly exclusive?: boolean;
+  /** It reads what the others leave (a coverage report), so it runs once they are done. */
+  readonly after?: boolean;
   run(context: CheckContext): Promise<CheckOutcome>;
 }
 
@@ -79,14 +83,22 @@ export async function runChecks(
     .flatMap((provider) => provider.checks)
     .filter((check, index, all) => all.findIndex((other) => other.id === check.id) === index);
   const together = await Promise.all(
-    checks.filter((check) => check.exclusive !== true).map((check) => runOne(context, check)),
+    checks
+      .filter((check) => check.exclusive !== true && check.after !== true)
+      .map((check) => runOne(context, check)),
   );
   // One that rewrites files for a while runs alone, once the others are done.
   const alone: CheckResult[][] = [];
   for (const check of checks.filter((candidate) => candidate.exclusive === true)) {
     alone.push(await runOne(context, check));
   }
-  const byId = new Map([...together, ...alone].flat().map((result) => [result.id, result]));
+  // One that reads what the others leave runs last.
+  const last = await Promise.all(
+    checks.filter((check) => check.after === true).map((check) => runOne(context, check)),
+  );
+  const byId = new Map(
+    [...together, ...alone, ...last].flat().map((result) => [result.id, result]),
+  );
   return {
     mode: context.mode,
     results: checks.flatMap((check) => {

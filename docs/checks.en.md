@@ -284,6 +284,16 @@ Looks for secrets with Betterleaks or, when it is missing, with gitleaks, on a t
 
 **Disable:** `levels: { secrets: off }`.
 
+### `diff-coverage`
+
+**Stack:** any that leaves a coverage report: LCOV (Vitest, Jest, `flutter test --coverage`, cargo-llvm-cov, gcov), Cobertura (coverage.py, coverlet, PHPUnit), JaCoCo (Maven and Gradle) or Go's profile (`go test -coverprofile`).
+
+Says what part of the executable lines the change adds some test ran, and names the stretches no test runs as `path:line`. Specty does not run the tests with coverage: it reads the report the project's tests leave in the same `specty check` run. So it runs after the other checks, and reads only the reports modified since the run started. Without the tests (as in `task done` with its own verification), with a report from before, or with no added line the report measures, it does not show. Paths from a monorepo, a Go module or a Java source folder are matched to the repository's file.
+
+**Configuration:** `coverage: { reports: [...], warn: 80, error: 60 }`. `reports` are the paths where the tests leave their report, with `*` inside a segment; the defaults cover the usual tools. Below `warn` it is a warning, and below `error`, when set, a failure. The project's tests have to write the report: in Vitest, for example, `coverage.reporter: ["lcov"]`.
+
+**Disable:** `levels: { diff-coverage: off }`.
+
 ### `spec-approved`
 
 **With:** `--spec`.

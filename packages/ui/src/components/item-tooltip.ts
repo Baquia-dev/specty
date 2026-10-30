@@ -39,9 +39,12 @@ type ItemMap = ReadonlyMap<string, string>;
 type ItemSource = ChangeView | ReviewView | ItemMap | Readonly<Record<string, string>> | string;
 
 const ITEM_LABELS: Record<ItemPrefix, Record<Lang, string>> = {
-  A: { es: "Supuesto", en: "Assumption" }, AC: { es: "Criterio de aceptación", en: "Acceptance criterion" },
-  T: { es: "Tarea", en: "Task" }, R: { es: "Riesgo", en: "Risk" },
-  S: { es: "Solicitud de alcance", en: "Scope request" }, C: { es: "Corte", en: "Slice" },
+  A: { es: "Supuesto", en: "Assumption" },
+  AC: { es: "Criterio de aceptación", en: "Acceptance criterion" },
+  T: { es: "Tarea", en: "Task" },
+  R: { es: "Riesgo", en: "Risk" },
+  S: { es: "Solicitud de alcance", en: "Scope request" },
+  C: { es: "Corte", en: "Slice" },
 };
 
 export function formatItemTooltip(id: string, lang: Lang, text?: string): string {
@@ -159,7 +162,7 @@ function node(
   return el;
 }
 
-export const PINNED_PALETTE = [
+const PINNED_PALETTE = [
   "#4e878c",
   "#c26d5c",
   "#7e6eb0",
@@ -217,7 +220,13 @@ function bubbleHeader(doc: Document, title: string, lang: Lang, onClose?: () => 
     title,
   );
   return onClose
-    ? node(doc, "div", { class: "flex items-start justify-between gap-2" }, header, closeButton(doc, lang, onClose))
+    ? node(
+        doc,
+        "div",
+        { class: "flex items-start justify-between gap-2" },
+        header,
+        closeButton(doc, lang, onClose),
+      )
     : header;
 }
 
@@ -256,34 +265,31 @@ interface PinnedItem {
 }
 
 function makeDraggable(b: HTMLElement): void {
-  let start: { px: number; py: number; ex: number; ey: number } | undefined;
+  let s: { px: number; py: number; ex: number; ey: number } | undefined;
   const onMove = (e: MouseEvent) => {
-    if (!start) return;
+    if (!s) return;
     const pane = b.closest<HTMLElement>(".cdk-overlay-pane") ?? b;
     pane.style.position = "fixed";
-    pane.style.left = `${Math.round(start.ex + e.clientX - start.px)}px`;
-    pane.style.top = `${Math.round(start.ey + e.clientY - start.py)}px`;
-    pane.style.right = pane.style.bottom = "auto";
+    pane.style.left = `${Math.round(s.ex + e.clientX - s.px)}px`;
+    pane.style.top = `${Math.round(s.ey + e.clientY - s.py)}px`;
     pane.style.transform = "none";
     b.setAttribute("data-item-dragged", "true");
   };
   const onUp = () => {
-    if (!start) return;
-    start = undefined;
+    s = undefined;
     b.removeAttribute("data-item-dragging");
     window.removeEventListener("pointermove", onMove);
     window.removeEventListener("pointerup", onUp);
   };
-  const onDown = (e: MouseEvent) => {
+  b.addEventListener("pointerdown", (e) => {
     if (e.target instanceof Element && e.target.closest("[data-item-close], a, button")) return;
     b.setAttribute("data-item-dragging", "");
-    const rect = (b.closest<HTMLElement>(".cdk-overlay-pane") ?? b).getBoundingClientRect();
-    start = { px: e.clientX, py: e.clientY, ex: rect.left, ey: rect.top };
+    const r = (b.closest<HTMLElement>(".cdk-overlay-pane") ?? b).getBoundingClientRect();
+    s = { px: e.clientX, py: e.clientY, ex: r.left, ey: r.top };
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
     e.preventDefault();
-  };
-  b.addEventListener("pointerdown", onDown);
+  });
 }
 
 function positionsFor(offset: number): ConnectedPosition[] {
