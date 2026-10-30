@@ -7,10 +7,12 @@ import { freshProject } from "../install/product";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
+import { pendingIntegration } from "./integrate";
 
 /**
  * `specty next`: what to do now. In `implementing` it activates the next pending task, or moves an
- * epic whose slices are all closed to acceptance.
+ * epic whose slices are all closed to acceptance. An incorporation whose merge someone aborted is
+ * forgotten, as `accept` and `close` do: nothing is left to resolve.
  */
 export async function next(session: Session): Promise<Output> {
   const active = await resolveActive(session);
@@ -20,12 +22,14 @@ export async function next(session: Session): Promise<Output> {
     const fresh = dirty.length === 0 && (await freshProject(session));
     return nextCard({ dirty, ...(fresh ? { fresh } : {}) }, session.cards);
   }
+  const pending = await pendingIntegration(session, active, "close");
+  const current = pending.kind === "go" ? pending.change : active;
   const change =
-    active.state.phase !== "implementing"
-      ? active
-      : active.state.kind === "epic"
-        ? await finishEpic(session, active)
-        : await activateNextTask(session, active);
+    current.state.phase !== "implementing"
+      ? current
+      : current.state.kind === "epic"
+        ? await finishEpic(session, current)
+        : await activateNextTask(session, current);
   return nextCard({ change: await changeView(session, change), dirty: [] }, session.cards);
 }
 

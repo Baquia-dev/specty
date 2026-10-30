@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "20261030-un-merge-abortado-no-deja-el-cambio-esperando-a",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261030-un-merge-abortado-no-deja-el-cambio-esperando-a",
+  "baseCommit": "58f383b240b47be41c189de25d30198cb97cdbb9",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ab36b81e49dba744b0940ade01aa24b7a2bf1c94effaf30d3f4f57893c27831e",
+    "at": "2026-10-30T08:14:47.033Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "3abf86536c80275fe98f01f2bcc6416df968e0a0",
+      "attempts": 1,
+      "startedAt": "2026-10-30T08:18:05.817Z",
+      "doneAt": "2026-10-30T08:22:12.058Z",
+      "summary": "next descarta la incorporación cuyo merge ya no está en curso (reutiliza pendingIntegration, como accept y close); adjust se niega con el merge en curso (nueva negativa merging en core, es/en) y descarta la de un merge abortado antes de anotar el ajuste; ARCHITECTURE §9 lo cuenta",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "lockedTests": {
+    "packages/cli/test/integrate-aborted.test.ts": "sha256:f17d930e18515243595f10cb3eb9637e02fbb7b8a76a5e7f220beb240f6acfb5"
+  }
+}
