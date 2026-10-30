@@ -6,6 +6,13 @@
   "branch": "specty/20261030-kotlin-con-tree-sitter",
   "baseCommit": "e0a25fee7de4042b9ff4417b640ed3eb185a9167",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:95fd262b0c3750100f60d2a35f48d36270b52dac8bc0ac6b5781bb805e5595e4",
+    "at": "2026-10-30T11:06:12.440Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -50,12 +57,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:95fd262b0c3750100f60d2a35f48d36270b52dac8bc0ac6b5781bb805e5595e4",
-    "at": "2026-10-30T11:06:12.440Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T11:07:05.263Z"
 }
