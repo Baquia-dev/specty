@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { C, CPP, CSHARP, JAVA, PHP } from "./tree-languages-c";
 import { DART, GO, KOTLIN, RUST, SWIFT } from "./tree-languages-modern";
-import { PYTHON, RUBY } from "./tree-languages-scripting";
+import { ELIXIR, PYTHON, RUBY } from "./tree-languages-scripting";
 
 /**
  * What `treeFunctions` needs to know of each language's tree-sitter grammar: which nodes are a
@@ -23,7 +23,8 @@ export type TreeLanguage =
   | "dart"
   | "kotlin"
   | "python"
-  | "ruby";
+  | "ruby"
+  | "elixir";
 
 export interface TreeGrammar {
   /** The named nodes that are a function. */
@@ -38,6 +39,8 @@ export interface TreeGrammar {
   readonly docstrings?: ReadonlyMap<string, string>;
   /** The nodes that are code only in their first row: Python's strings, as its estimator. */
   readonly strings?: ReadonlySet<string>;
+  /** In a language whose definitions and branches are calls, as Elixir's `def` and `if`. */
+  readonly calls?: TreeCalls;
   /** The named nodes that are a branch: a condition, a loop, a catch or a ternary. */
   readonly branches: ReadonlySet<string>;
   /** The named nodes that are a branch when their first token is this one: a `case`, not a `default`. */
@@ -57,6 +60,23 @@ export interface TreeGrammar {
   readonly receivers: ReadonlyMap<string, string>;
   /** The nodes that are a name. */
   readonly names: ReadonlySet<string>;
+}
+
+/** Calls told apart by the text of what they call. */
+export interface TreeCalls {
+  /** The node of a call, the field of what it calls and the node of its arguments. */
+  readonly node: string;
+  readonly target: string;
+  readonly arguments: string;
+  /** The calls that define a function, named by the call in their arguments: `def`, `defp`… */
+  readonly functions: ReadonlySet<string>;
+  /** The calls that are a branch: `if`, `unless`. */
+  readonly branches: ReadonlySet<string>;
+  /** The calls whose clauses are each a branch, as the cases of a switch: `case`, `cond`… */
+  readonly clauses: ReadonlySet<string>;
+  /** The node of a clause, and the blocks whose clauses are each a branch: `rescue`, `catch`. */
+  readonly clause: string;
+  readonly blocks: ReadonlySet<string>;
 }
 
 const SCRIPT: TreeGrammar = {
@@ -110,4 +130,5 @@ export const TREE_GRAMMARS: Readonly<Record<TreeLanguage, TreeGrammar>> = {
   kotlin: KOTLIN,
   python: PYTHON,
   ruby: RUBY,
+  elixir: ELIXIR,
 };

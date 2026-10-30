@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-elixir-con-tree-sitter",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-elixir-con-tree-sitter",
   "baseCommit": "01baf7fa850581a32f5bde2a77cb4773db94513e",
   "revision": 1,
@@ -41,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "25fc8d061f5f2833ed0f68d0047720c02ac862f9",
+      "startedAt": "2026-10-30T11:27:42.093Z",
+      "doneAt": "2026-10-30T11:29:53.588Z",
+      "summary": "El core mide Elixir sobre el árbol: la tabla lee las llamadas por su target (def/defp son funciones; if/unless, ramas; cada cláusula de case, cond, receive, with o rescue, una rama), y su gramática se instala sin binding nativo ni el peer tree-sitter."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

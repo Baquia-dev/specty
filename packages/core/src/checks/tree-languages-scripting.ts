@@ -2,9 +2,10 @@
 import type { TreeGrammar } from "./tree-languages";
 
 /**
- * The tree-sitter grammars of the scripting languages without braces: Python and Ruby. Each one
- * measures as its line estimator did (`functions-python.ts`, `functions-ruby.ts`), so that the
- * limits mean the same: in Ruby, the blocks stay inside their method.
+ * The tree-sitter grammars of the scripting languages without braces: Python, Ruby and Elixir.
+ * Python and Ruby measure as their line estimators did (`functions-python.ts`,
+ * `functions-ruby.ts`), so that the limits mean the same: in Ruby, the blocks stay inside their
+ * method. Elixir had no estimator: its definitions and its branches are calls.
  */
 
 export const PYTHON: TreeGrammar = {
@@ -63,4 +64,30 @@ export const RUBY: TreeGrammar = {
   carriers: new Set(),
   receivers: new Map(),
   names: new Set(["identifier", "constant", "setter", "operator"]),
+};
+
+export const ELIXIR: TreeGrammar = {
+  functions: new Set(["anonymous_function"]),
+  branches: new Set(),
+  cases: new Map(),
+  calls: {
+    node: "call",
+    target: "target",
+    arguments: "arguments",
+    functions: new Set(["def", "defp", "defmacro", "defmacrop"]),
+    branches: new Set(["if", "unless"]),
+    clauses: new Set(["case", "cond", "receive", "with"]),
+    clause: "stab_clause",
+    blocks: new Set(["rescue_block", "catch_block"]),
+  },
+  operators: new Set(["and", "or", "&&", "||"]),
+  logical: new Set(["binary_operator"]),
+  prefixes: new Set(),
+  comments: new Set(["comment"]),
+  // `def total(x) when x > 0`: the name is the call in the arguments, maybe left of a guard.
+  nameFields: ["target", "left"],
+  carriers: new Set(["arguments"]),
+  // `twice = fn y -> … end`: a `fn` takes the name of the variable it matches.
+  receivers: new Map([["binary_operator", "left"]]),
+  names: new Set(["identifier"]),
 };

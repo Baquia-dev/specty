@@ -193,6 +193,8 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+packageExtensionsChecksum: sha256-8dk1hOArSRmmS512c3vDI0lHhywWiYqFYBoBYxp8jcE=
+
 importers:
 
   .:
@@ -281,6 +283,9 @@ importers:
       '@types/picomatch':
         specifier: ^4.0.3
         version: 4.0.3
+      tree-sitter-elixir:
+        specifier: 0.3.5
+        version: 0.3.5
       web-tree-sitter:
         specifier: 0.27.1
         version: 0.27.1
@@ -3822,6 +3827,14 @@ packages:
     resolution: {integrity: sha512-BcDSDW+SIGWVOns1Zm6Yg91q9AEj7eaID0QDY9oIqJD1A8dscNwMcl9Sms2DeuWCNov1X0/oXanHGYQBSLwZsg==}
     engines: {node: ^22.14.0 || >=24.0.0}
 
+  tree-sitter-elixir@0.3.5:
+    resolution: {integrity: sha512-xozQMvYK0aSolcQZAx2d84Xe/YMWFuRPYFlLVxO01bM2GITh5jyiIp0TqPCQa8754UzRAI7A83hZmfiYub5TZQ==}
+    peerDependencies:
+      tree-sitter: ^0.21.0
+    peerDependenciesMeta:
+      tree-sitter:
+        optional: true
+
   trim-lines@3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
 
@@ -7060,6 +7073,11 @@ snapshots:
   tr46@7.0.0:
     dependencies:
       punycode: 2.3.1
+
+  tree-sitter-elixir@0.3.5:
+    dependencies:
+      node-addon-api: 7.1.1
+      node-gyp-build: 4.8.4
 
   trim-lines@3.0.1: {}
 

@@ -51,7 +51,7 @@ Elixir es el único stack sin `function-lines` ni `complexity`: no tiene estimac
 
 ## Tareas
 
-- [ ] T1: La tabla lee las llamadas y el core mide Elixir sobre el árbol, con su gramática sin compilar nada
+- [x] T1: La tabla lee las llamadas y el core mide Elixir sobre el árbol, con su gramática sin compilar nada
   - files: packages/core/src/checks/functions-tree.ts, packages/core/src/checks/tree-languages.ts, packages/core/src/checks/tree-languages-scripting.ts, packages/core/test/checks/functions-tree-elixir.test.ts, packages/core/package.json, pnpm-workspace.yaml, pnpm-lock.yaml
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree-elixir.test.ts test/checks/functions-tree-scripting.test.ts test/checks/functions-tree.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip

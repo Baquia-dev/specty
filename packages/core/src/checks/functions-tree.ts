@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { FunctionMetric } from "./function-spans";
-import { TREE_GRAMMARS, type TreeGrammar, type TreeLanguage } from "./tree-languages";
+import {
+  TREE_GRAMMARS,
+  type TreeCalls,
+  type TreeGrammar,
+  type TreeLanguage,
+} from "./tree-languages";
 
 /**
  * The functions of a source measured on its syntax tree, which the CLI gets from tree-sitter, by
@@ -120,9 +125,28 @@ function functionAt(grammar: TreeGrammar, node: SyntaxNode): Found | undefined {
     const name = nameIn(grammar, node, 0) ?? receivedName(grammar, node);
     return found(firstToken(grammar, node) ?? node, node, name);
   }
+  const definition = callDefinition(grammar, node);
+  if (definition !== undefined)
+    return found(firstToken(grammar, node) ?? node, node, definition.name);
   const signature = signatureOf(grammar, node);
   if (signature === undefined) return undefined;
   return found(firstToken(grammar, signature) ?? signature, node, nameIn(grammar, signature, 0));
+}
+
+/** A call that defines a function, as Elixir's `def`, with the name of the call in its arguments. */
+function callDefinition(
+  grammar: TreeGrammar,
+  node: SyntaxNode,
+): { readonly name: string | undefined } | undefined {
+  const calls = grammar.calls;
+  if (calls === undefined || !calls.functions.has(targetOf(calls, node) ?? "")) return undefined;
+  const args = node.children.find((child) => child.type === calls.arguments);
+  return { name: args === undefined ? undefined : nameIn(grammar, args, 0) };
+}
+
+/** What a call calls, by its text: `def`, `if`… */
+function targetOf(calls: TreeCalls, node: SyntaxNode): string | undefined {
+  return node.type === calls.node ? node.childForFieldName(calls.target)?.text : undefined;
 }
 
 function found(header: SyntaxNode, last: SyntaxNode, name: string | undefined): Found {
@@ -188,7 +212,19 @@ function isBranch(grammar: TreeGrammar, node: SyntaxNode): boolean {
   }
   if (grammar.branches.has(node.type)) return true;
   const keyword = grammar.cases.get(node.type);
-  return keyword !== undefined && node.children[0]?.type === keyword;
+  if (keyword !== undefined) return node.children[0]?.type === keyword;
+  return grammar.calls !== undefined && isCallBranch(grammar.calls, node);
+}
+
+/** A call that is a branch, as `if`, or a clause of a `case` or of a `rescue` block. */
+function isCallBranch(calls: TreeCalls, node: SyntaxNode): boolean {
+  if (calls.branches.has(targetOf(calls, node) ?? "")) return true;
+  if (node.type !== calls.clause) return false;
+  const block = node.parent;
+  if (block === null) return false;
+  if (calls.blocks.has(block.type)) return true;
+  const call = block.parent;
+  return call !== null && calls.clauses.has(targetOf(calls, call) ?? "");
 }
 
 /** The rows where a leaf has code: not blank inside a string of many lines. */
