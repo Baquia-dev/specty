@@ -96,6 +96,9 @@
   /* How far a row that scrolls sideways fades where more of it hides (components/edge-fade.ts). */
   --fade-edge: 24px;
   color-scheme: light;
+  --color-tooltip-bg: #222222;
+  --color-tooltip-text: #fafafa;
+  --color-tooltip-border: rgb(255 255 255 / 0.15);
 }
 
 /* The edges of a row that scrolls sideways, where more of it hides. */
@@ -174,7 +177,60 @@
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.35);
+
+  --color-tooltip-bg: #fafafa;
+  --color-tooltip-text: #18181b;
+  --color-tooltip-border: rgb(24 24 27 / 0.15);
 }
+
+/*
+ * In the chat of an MCP App (`app/embedded.ts`): the page paints no background, so the chat shows
+ * through. The view is a translucent gray panel (`--color-panel`) and its cards a denser gray, so
+ * they take a tone of the chat's own; the borders are the text color, faint. Text and fonts come
+ * from the host's variables (`theme/host-look.ts`), with Specty's when the host gives none. A host
+ * variable that refers to one the host never defined counts as missing, so its fallback holds.
+ * There is no scrollbar: a host that caps the frame's height (VS Code) still scrolls with the wheel.
+ */
+[data-embedded] {
+  --color-bg: var(--color-background-primary, #fafafa);
+  --color-text: var(--color-text-primary, #18181b);
+  --color-text-muted: var(--color-text-secondary, #52525b);
+  --color-panel: rgb(0 0 0 / 0.025);
+  --color-surface: rgb(255 255 255 / 0.65);
+  --color-border: color-mix(in srgb, var(--color-text) 7%, transparent);
+  scrollbar-width: none;
+}
+
+[data-embedded][data-theme="dark"] {
+  --color-bg: var(--color-background-primary, #222222);
+  --color-text: var(--color-text-primary, #e8e8e8);
+  --color-text-muted: var(--color-text-secondary, #a6a6a6);
+  --color-panel: rgb(72 72 72 / 0.14);
+  --color-surface: rgb(72 72 72 / 0.3);
+  --color-border: color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+
+/*
+ * VS Code's webview declares no color scheme, and the browser paints an opaque backdrop behind a
+ * frame whose scheme differs from its page's. There the view declares the light one, as VS Code's
+ * own webviews do (`normal` would fall back to the page's `light dark`, and so to the system's);
+ * its colors still follow the theme. Elsewhere it keeps the theme's scheme, as Claude asks.
+ */
+[data-embedded]:has(> body[data-vscode-theme-kind]) {
+  color-scheme: light;
+}
+
+[data-embedded] body {
+  background: transparent;
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+}
+
+/*
+ * `embedded:` applies a class only in the chat's view, so each component says there, beside its
+ * other classes, how it sits on the translucent panel: what lies on it paints no band of the page's
+ * ground, and what floats over it stays opaque.
+ */
+@custom-variant embedded (&:where([data-embedded] *));
 
 @layer base {
   body {
@@ -230,20 +286,52 @@
     background-color: rgb(255 255 255 / 0.12);
   }
 
+  /* Tooltip inverted contrast */
+  [data-tooltip] {
+    background-color: var(--color-tooltip-bg);
+    color: var(--color-tooltip-text);
+    border-color: var(--color-tooltip-border);
+  }
+
+  [data-tooltip] [data-item-bullet] {
+    background-color: var(--item-color, currentColor);
+  }
+
+  /* Pinned draggable tooltip */
+  [data-tooltip][data-item-pinned-bubble] {
+    cursor: grab;
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-left-color: var(--item-color, var(--color-tooltip-border));
+  }
+
+  [data-tooltip][data-item-pinned-bubble] [data-item-header] {
+    user-select: none;
+  }
+
+  [data-tooltip][data-item-pinned-bubble][data-item-dragging] {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  [data-tooltip][data-item-pinned-bubble] [data-item-close] {
+    cursor: pointer;
+  }
+
   /* Owner element with an active pinned tooltip */
   [data-item-pinned] {
     cursor: pointer;
-    background-color: var(--color-accent);
-    color: var(--color-on-accent);
-    outline: 2px solid var(--color-accent);
+    background-color: var(--item-color, var(--color-accent));
+    color: #ffffff;
+    outline: 2px solid var(--item-color, var(--color-accent));
     outline-offset: 1px;
     font-weight: var(--font-weight-semibold);
   }
 
   [data-theme="dark"] [data-item-pinned] {
-    background-color: var(--color-accent);
-    color: var(--color-on-accent);
-    outline: 2px solid var(--color-accent);
+    background-color: var(--item-color, var(--color-accent));
+    color: #ffffff;
+    outline: 2px solid var(--item-color, var(--color-accent));
     outline-offset: 1px;
   }
 }

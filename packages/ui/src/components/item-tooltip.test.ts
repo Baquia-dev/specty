@@ -366,4 +366,98 @@ describe("ItemTooltips and ItemText", () => {
     expect(bubbles.length).toBe(1);
     expect(bubbles[0]?.textContent).toContain("Tarea T1");
   });
+
+  it("AC1: allows dragging a pinned tooltip across the screen using pointer events", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+
+    const b = document.querySelector<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(b).not.toBeNull();
+    if (!b) return;
+
+    expect(b.hasAttribute("data-item-pinned-bubble")).toBe(true);
+
+    b.dispatchEvent(
+      new MouseEvent("pointerdown", { bubbles: true, cancelable: true, clientX: 50, clientY: 50 }),
+    );
+    window.dispatchEvent(
+      new MouseEvent("pointermove", {
+        bubbles: true,
+        cancelable: true,
+        clientX: 180,
+        clientY: 220,
+      }),
+    );
+    window.dispatchEvent(
+      new MouseEvent("pointerup", { bubbles: true, cancelable: true, clientX: 180, clientY: 220 }),
+    );
+    await settle();
+
+    expect(b.getAttribute("data-item-dragged")).toBe("true");
+    const pane = b.closest<HTMLElement>(".cdk-overlay-pane");
+    expect(pane?.style.position).toBe("fixed");
+  });
+
+  it("AC2: assigns distinct non-repeating matte colors to simultaneously pinned tooltips and frees them on close", async () => {
+    const { element, settle } = await render("es");
+    const c1 = element.querySelector<HTMLElement>("#criterion");
+    const t1 = element.querySelector<HTMLElement>("#task");
+    c1?.click();
+    await settle();
+    t1?.click();
+    await settle();
+
+    const color1 = c1?.getAttribute("data-item-color");
+    const color2 = t1?.getAttribute("data-item-color");
+    expect(color1).toBeTruthy();
+    expect(color2).toBeTruthy();
+    expect(color1).not.toBe(color2);
+
+    // Close c1
+    c1?.click();
+    await settle();
+
+    // Open a1, should reuse the freed color1
+    const a1 = element.querySelector<HTMLElement>("#assumption");
+    a1?.click();
+    await settle();
+    const color3 = a1?.getAttribute("data-item-color");
+    expect(color3).toBe(color1);
+  });
+
+  it("AC3: pairs the origin trigger and pinned tooltip with the matching matte color indicator", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+
+    const b = document.querySelector<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(b).not.toBeNull();
+    const originColor = t1?.getAttribute("data-item-color");
+    const bubbleColor = b?.getAttribute("data-item-color");
+    expect(originColor).toBeTruthy();
+    expect(originColor).toBe(bubbleColor);
+    expect(t1?.style.getPropertyValue("--item-color")).toBe(originColor);
+    expect(b?.style.getPropertyValue("--item-color")).toBe(originColor);
+  });
+
+  it("AC4: inverts tooltip contrast based on app theme (light background in dark mode, dark background in light mode)", async () => {
+    await render("es");
+    const { readFileSync } = await import("node:fs");
+    const { resolve } = await import("node:path");
+    const css = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+
+    // Light mode (:root)
+    expect(css).toMatch(/--color-tooltip-bg:\s*#222222/);
+    expect(css).toMatch(/--color-tooltip-text:\s*#fafafa/);
+
+    // Dark mode ([data-theme="dark"])
+    const darkIndex = css.indexOf('[data-theme="dark"]');
+    expect(darkIndex).toBeGreaterThan(0);
+    const darkSection = css.slice(darkIndex);
+    expect(darkSection).toMatch(/--color-tooltip-bg:\s*#fafafa/);
+    expect(darkSection).toMatch(/--color-tooltip-text:\s*#18181b/);
+  });
 });

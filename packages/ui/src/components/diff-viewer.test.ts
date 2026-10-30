@@ -297,4 +297,13 @@ describe("Diff viewer", () => {
       "Side by side",
     ]);
   });
+
+  it("AC2: in the chat, its bar neither sticks nor paints a band", async () => {
+    const { element } = await render(sampleDiff(CHANGE, "T1"));
+    const bar = element.querySelector("[data-bar]");
+    // Outside the chat it still sticks over the page's ground.
+    expect(bar?.classList.contains("sticky")).toBe(true);
+    expect(bar?.classList.contains("embedded:static")).toBe(true);
+    expect(bar?.classList.contains("embedded:bg-transparent")).toBe(true);
+  });
 });

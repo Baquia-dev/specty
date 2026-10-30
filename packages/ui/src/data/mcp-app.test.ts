@@ -386,3 +386,95 @@ describe("the data source of the MCP App, by change", () => {
     expect(await source.changes()).toEqual([record]);
   });
 });
+
+describe("the data source of the MCP App, in the host's chat", () => {
+  const html = document.documentElement;
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+    Reflect.deleteProperty(html, "scrollHeight");
+    html.removeAttribute("style");
+    TestBed.resetTestingModule();
+  });
+
+  it("AC6: takes the theme and the variables the host gives at the greeting and when they change", async () => {
+    vi.useFakeTimers();
+    window.matchMedia = (() => ({
+      matches: false,
+      addEventListener: () => undefined,
+    })) as unknown as typeof window.matchMedia;
+    localStorage.clear();
+    html.removeAttribute("style");
+    const { host } = sourceOn(() => answered({ fingerprint: "a", records: [] }), {
+      theme: "dark",
+      styles: { variables: { "--color-text-primary": "#f5f4ef" } },
+    });
+    await vi.advanceTimersByTimeAsync(10);
+    TestBed.tick();
+    expect(html.dataset.theme).toBe("dark");
+    expect(html.style.getPropertyValue("--color-text-primary")).toBe("#f5f4ef");
+
+    host.emit({
+      jsonrpc: "2.0",
+      method: "ui/notifications/host-context-changed",
+      params: { theme: "light", styles: { variables: { "--font-sans": "Inter, sans-serif" } } },
+    });
+    await vi.advanceTimersByTimeAsync(10);
+    TestBed.tick();
+    expect(html.dataset.theme).toBe("light");
+    expect(html.style.getPropertyValue("--font-sans")).toBe("Inter, sans-serif");
+    expect(html.style.getPropertyValue("--color-text-primary")).toBe("#f5f4ef");
+  });
+
+  it("AC8: tells the height of its content, which shrinks with it, not the height of the frame", async () => {
+    vi.useFakeTimers();
+    let heard: (() => void) | undefined;
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        constructor(callback: () => void) {
+          heard = callback;
+        }
+        observe() {
+          heard?.();
+        }
+        disconnect() {}
+      },
+    );
+    // The frame the host gave the view is 900 px tall; the content, less.
+    const frame = 900;
+    let content = 640;
+    Object.defineProperty(html, "scrollHeight", {
+      configurable: true,
+      get: () => Math.max(content, frame),
+    });
+    vi.spyOn(html, "getBoundingClientRect").mockImplementation(
+      () =>
+        ({
+          x: 0,
+          y: 0,
+          top: 0,
+          left: 0,
+          width: 600,
+          right: 600,
+          height: content,
+          bottom: content,
+          toJSON: () => ({}),
+        }) as DOMRect,
+    );
+    const { host } = sourceOn(() => answered({ fingerprint: "a", records: [] }));
+    await vi.advanceTimersByTimeAsync(10);
+    const heights = () =>
+      host.sent
+        .filter((message) => message.method === "ui/notifications/size-changed")
+        .map((message) => (isMessage(message.params) ? message.params.height : undefined));
+    expect(heights().at(-1)).toBe(640);
+
+    // A card closes: the content shrinks under the frame's height, and the host hears it.
+    content = 280;
+    heard?.();
+    expect(heights().at(-1)).toBe(280);
+  });
+});

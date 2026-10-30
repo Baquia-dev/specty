@@ -76,7 +76,8 @@ async function embeddedOn(source: SpectyData) {
   return fixture.nativeElement as HTMLElement;
 }
 
-const text = (element: Element) => element.textContent?.replace(/\s+/g, " ").trim() ?? "";
+const text = (element: Element | null | undefined) =>
+  element?.textContent?.replace(/\s+/g, " ").trim() ?? "";
 
 describe("the embedded view of an MCP App", () => {
   afterEach(() => {
@@ -88,7 +89,7 @@ describe("the embedded view of an MCP App", () => {
     const record = inPhase("review");
     const element = await embedded(record);
     expect(text(element)).toContain(deriveViews([record])[0]?.title ?? "no title");
-    expect(element.querySelector("sp-spec-review")).not.toBeNull();
+    expect(element.querySelector("sp-spec-cards")).not.toBeNull();
     for (const other of ["sp-progress-tab", "sp-acceptance-tab", "sp-history-tab", "sp-inbox"]) {
       expect(element.querySelector(other), other).toBeNull();
     }
@@ -103,6 +104,29 @@ describe("the embedded view of an MCP App", () => {
     ).toEqual([]);
     expect(text(element)).toContain("specty approve");
     expect(text(element)).toContain("specty ui");
+  });
+
+  it("AC5: puts the change's header in a card, marks the root and shows the spec as cards", async () => {
+    for (const phase of ["review", "draft"]) {
+      const record = inPhase(phase);
+      const element = await embedded(record);
+      const header = element.querySelector('header[data-card="change"]');
+      expect(header, phase).not.toBeNull();
+      expect(header?.querySelector("sp-phase-badge"), phase).not.toBeNull();
+      expect(text(header), phase).toContain(record.state.id);
+      expect(text(header), phase).toContain(deriveViews([record])[0]?.title ?? "no title");
+      expect(document.documentElement.hasAttribute("data-embedded"), phase).toBe(true);
+      expect(element.querySelector("sp-spec-cards"), phase).not.toBeNull();
+      expect(element.querySelector("sp-spec-review"), phase).toBeNull();
+    }
+    // The line of what the change waits for stays in the header's card.
+    const waiting = await embedded(inPhase("review"));
+    expect(text(waiting.querySelector('header[data-card="change"]'))).toContain("specty approve");
+    // The other tabs keep their content, under the same header.
+    const working = await embedded(inPhase("implementing"));
+    expect(working.querySelector('header[data-card="change"]')).not.toBeNull();
+    expect(working.querySelector("sp-progress-tab")).not.toBeNull();
+    expect(working.querySelector("sp-spec-cards")).toBeNull();
   });
 
   it("AC6: says why it cannot read the change instead of waiting for it", async () => {

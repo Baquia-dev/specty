@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "id": "20261030-specty-check-mide-la-cobertura-de-las-lineas",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-specty-check-mide-la-cobertura-de-las-lineas",
+  "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:c7ce61bb02494965ee072bdd05024e9da66de6b1518da18f88e9e45f928e0cdf",
+    "at": "2026-10-30T07:37:03.495Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7d5df773b1944e8cbc378d3dfa32338f16c8f31011cd016d82177320bcaeaebc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:9f05db9100736c4a7d3bf9e309ba78d47bc0290e395626e9b4dc00acbbe9eaa6",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:cd9bed78ce15480c1196dfead2d707334c96bfc2993d8ba1f37aeb7e2afde1e6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "e5af737b4a6729d8bd9e6eb0ef083e5395509c30",
+      "attempts": 3,
+      "startedAt": "2026-10-30T07:01:27.747Z",
+      "doneAt": "2026-10-30T07:03:13.215Z",
+      "summary": "El core lee informes LCOV, Cobertura, JaCoCo y perfiles de Go (parseCoverage, coverage-reports.ts) y calcula la cobertura de las líneas añadidas con tramos sin cubrir y emparejado por el final de la ruta (changedCoverage, coverage.ts); checks.coverage con reports, warn (80) y error en el esquema.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "9dcc444f456be60463a962e900cf7460449c01a5",
+      "attempts": 1,
+      "startedAt": "2026-10-30T07:03:13.502Z",
+      "doneAt": "2026-10-30T07:05:14.338Z",
+      "summary": "Check diff-coverage: corre tras los demás, lee solo los informes escritos desde el inicio de la ejecución, ancla las rutas relativas a la carpeta del informe y avisa o falla con el porcentaje y los tramos sin cubrir según warn/error.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "6f9e8da272db37bf726bcb7f0743cb504c51ea08",
+      "attempts": 1,
+      "startedAt": "2026-10-30T07:05:14.628Z",
+      "doneAt": "2026-10-30T07:06:01.340Z",
+      "summary": "checks.md y checks.en.md tienen la sección de diff-coverage; formats.md, checks.coverage y la verificación en la lista; ARCHITECTURE la nombra en specty check.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "afd8710e2a5a0f68b281b41d92b33f42c3f6c7ef",
+      "attempts": 1,
+      "startedAt": "2026-10-30T07:37:03.905Z",
+      "doneAt": "2026-10-30T07:37:16.572Z",
+      "summary": "check-docs.test.ts añade diff-coverage a los checks que su ejemplo no muestra, junto a secrets y tests-locked.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 4,
+    "T": 4,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-10-30T07:41:51.619Z",
+  "lockedTests": {
+    "packages/cli/test/check-coverage.test.ts": "sha256:9f00cb36d5d5989d3ec2678016c4a72ef1ada02905c555aef2d7423cc108fdce",
+    "packages/core/test/checks/coverage.test.ts": "sha256:ca65bc294c8940f8a1d22877be8f4af392966af23dfba03d0d57263c5a3846cc"
+  }
+}
