@@ -1,0 +1,147 @@
+{
+  "schema": 1,
+  "id": "20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
+  "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:9658fc60924181dc25584b4b006f9bd81f516a638229757fb3cf21cc95e4526d",
+    "at": "2026-10-30T06:51:49.602Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b3917e2d0fe404842bf30f89b8052bfa79d07b6e14b014c43a219b8d70d987a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bcce1b938c6b76fa299d9a812de1ba34a6acc596aef3f1ddf86a76f86d6e3ecf",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b31a4a268d7467768a7e14c38ca862cd4bdc2ed9a3af82373228cde8bb70a345",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:e5b31676cfe14287035fbcf89eedd6d9d787a2b9b1019798549c2eb64c5e064b",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:1b5c8a242c67efc16230a730d43def8e8eb709fb27a07acd13d691f32df6247a",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:97c86d8c7614b3ef7d7dd1d7f758d6ab8fa39e043b08ab016f9aded61103a53a",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:e71d14fba37b19e88753ee67f1b7391d4d4ba07c29b097696b55a9fbf4abcf15",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:3c4276ca3d1fe7c148659a9ff092f7dc17009fb625f2a29587d73c364cff2edf",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:112fda9305e370c8bce0ab7534b30a55cb8cd505b7b9131ae4a8a790873fdde6",
+      "decision": "implicit"
+    },
+    "A10": {
+      "hash": "sha256:82a50787cbb64278c172bea632d03a17b994db3f2c34e9ae90dda3d47507d9fc",
+      "decision": "confirmed"
+    },
+    "A11": {
+      "hash": "sha256:eaf6a0593e5c7a189ea32b085724122c6dce09b6674af2b0080098dc7382aba8",
+      "decision": "confirmed"
+    },
+    "A12": {
+      "hash": "sha256:da8e4c3775c069994f198f9df0f6bce4559765b5630ac2091c36d35921fabb36",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "6bc1cb033871653da2ff663f6c54c546e71e7858",
+      "attempts": 2,
+      "startedAt": "2026-10-30T05:58:58.959Z",
+      "doneAt": "2026-10-30T06:10:58.909Z",
+      "summary": "La spec del chat va en cards (spec-cards.ts): solo Objetivo abierta, resumen y marcas en la cabecera, revisión independiente y comentarios en cards propias de solo lectura. embedded.ts: cabecera en card y data-embedded. S1: text() del test acepta null.",
+      "scopeExtra": [
+        "packages/ui/src/app/embedded.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "482ee59c087b8bf2d4dc0d2ba0567a0d4dc42b98",
+      "attempts": 1,
+      "startedAt": "2026-10-30T06:10:59.346Z",
+      "doneAt": "2026-10-30T06:14:09.171Z",
+      "summary": "HostLook pone el tema del anfitrión y sus variables en la raíz; McpAppData se lo pasa al saludar y en host-context-changed, y mide el alto del contenido a max-content. styles.css: en el chat, sin fondo y con los colores del anfitrión o los de Specty.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "db3290872ceb7da10e67b2cad4d57a5d5c81c283",
+      "attempts": 1,
+      "startedAt": "2026-10-30T06:14:09.549Z",
+      "doneAt": "2026-10-30T06:15:03.297Z",
+      "summary": "resources/read da la vista con _meta.ui.prefersBorder: false (VIEW_META en mcp/app.ts). docs/ui.md cuenta las cards, el aspecto del anfitrión y el alto del contenido.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "baseCommit": "38f1ff3118094e363c614d3cd2c776e1d805f028",
+      "attempts": 2,
+      "startedAt": "2026-10-30T06:53:12.294Z",
+      "doneAt": "2026-10-30T06:55:59.285Z",
+      "summary": "Las herramientas que el modelo llama y enlazan la vista llevan prefersBorder: false en su _meta.ui, de donde lo lee Claude Desktop; specty_view no. S2: el test de AC9 ya no lo exige a specty_view.",
+      "scopeExtra": [
+        "packages/cli/test/mcp-app.test.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "baseCommit": "0a5b7669b554c7c418dbf10b93871341347f678d",
+      "attempts": 1,
+      "startedAt": "2026-10-30T06:55:59.629Z",
+      "doneAt": "2026-10-30T06:59:15.624Z",
+      "summary": "La vista es un panel gris translúcido con cards de un gris más denso y bordes suaves; en VS Code declara color-scheme light (sin fondo opaco), sin barra de desplazamiento, cabeceras en una línea y cuerpo a 14 px.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 12,
+    "AC": 10,
+    "T": 5,
+    "R": 3,
+    "S": 2
+  },
+  "closingSubmittedAt": "2026-10-30T07:27:30.241Z",
+  "lockedTests": {
+    "packages/ui/src/app/embedded.test.ts": "sha256:ee69d4204d4d0d0cd278b2acf98e0cdaa8df377001d5e34778c14b66c61afb51",
+    "packages/ui/src/data/mcp-app.test.ts": "sha256:b83074e374582bbbb7a4be0817605536df5535de786f5fbbb5155e34ee26ccb6",
+    "packages/ui/src/review/spec-cards.test.ts": "sha256:d3c56193c398ac08d6a8594987c7bbff5a52d3a35c0ff67d96aba0f9b66ea6e6",
+    "packages/ui/src/theme/host-look.test.ts": "sha256:6dcedd738697851c5340befa18b6993267c550bae73dc45c9d65391f8d069102",
+    "packages/cli/test/mcp-app.test.ts": "sha256:28a545b352131f2be68b395304c478013a00fc3572662f1928fec96d97122989",
+    "packages/ui/src/app/embedded-look.test.ts": "sha256:a7e21ced2e213bc24693ddb5bfb24a60f45dff7828c73dcfd349fb070ba2a263"
+  }
+}

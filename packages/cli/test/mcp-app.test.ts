@@ -89,12 +89,38 @@ describe("specty mcp as an MCP App", () => {
       expect(named(tools, name)?._meta, name).toMatchObject({ ui: { resourceUri: VIEW } });
     }
     expect(named(tools, "specty_check")?._meta).toBeUndefined();
-    expect(resultOf(read).contents).toEqual([{ uri: VIEW, mimeType: MIME, text: PAGE }]);
+    expect(resultOf(read).contents).toMatchObject([{ uri: VIEW, mimeType: MIME, text: PAGE }]);
     const records = (resultOf(view).structuredContent as { records: { state: { id: string } }[] })
       .records;
     expect(records.map((record) => record.state.id)).toEqual([CHANGE]);
     // The view takes the folder from the call's arguments, not from the result (C2, A5).
     expect(resultOf(next).structuredContent).toBeUndefined();
+  });
+
+  it("AC9: asks the host to show the view without a frame of its own, in the page and in each tool", async () => {
+    const { root, script } = await setUp();
+    const [, read, list] = await serve(root, script, [
+      initialize(1, APPS),
+      request(2, "resources/read", { uri: VIEW }),
+      request(3, "tools/list"),
+    ]);
+    expect(resultOf(read).contents).toEqual([
+      { uri: VIEW, mimeType: MIME, text: PAGE, _meta: { ui: { prefersBorder: false } } },
+    ]);
+    // Claude Desktop reads it from the tool's `_meta.ui`, next to `resourceUri`. Only the tools
+    // the model calls show the view; `specty_view` is the view's own (AC6).
+    const linked = toolsOf(list).filter((tool) => {
+      const ui = (tool._meta as { ui?: { resourceUri?: string } } | undefined)?.ui;
+      return ui?.resourceUri === VIEW && tool.name !== "specty_view";
+    });
+    expect(linked.map((tool) => tool.name)).toEqual(
+      expect.arrayContaining(["specty_new", "specty_propose", "specty_next"]),
+    );
+    for (const tool of linked) {
+      expect(tool._meta, String(tool.name)).toMatchObject({
+        ui: { resourceUri: VIEW, prefersBorder: false },
+      });
+    }
   });
 
   it("AC3: without the extension, or without the page, the tools are today's", async () => {

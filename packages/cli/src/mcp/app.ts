@@ -23,6 +23,11 @@ const EXTENSION = "io.modelcontextprotocol/ui";
 export const VIEW_MIME = "text/html;profile=mcp-app";
 /** The one view: the change a tool worked on. */
 export const VIEW_URI = "ui://specty/change";
+/**
+ * How the view asks to be shown: with no frame of the host's, so the chat shows between its cards.
+ * Hosts' defaults differ, so it says so explicitly.
+ */
+export const VIEW_META = { ui: { prefersBorder: false } } as const;
 
 /** Whether the client declares in `initialize` that it renders MCP Apps' HTML pages. */
 export function rendersApps(params: Readonly<Record<string, unknown>>): boolean {

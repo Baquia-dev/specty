@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import type { Command } from "commander";
 import { spectyVersion } from "../check/ci";
 import { isRecord } from "../io/files";
-import { rendersApps, VIEW_MIME, VIEW_URI, viewData, viewPage } from "../mcp/app";
+import { rendersApps, VIEW_META, VIEW_MIME, VIEW_URI, viewData, viewPage } from "../mcp/app";
 import {
   failure,
   INVALID_PARAMS,
@@ -200,7 +200,9 @@ function answerResource(
       });
     case "resources/read":
       return params.uri === VIEW_URI
-        ? result(id, { contents: [{ uri: VIEW_URI, mimeType: VIEW_MIME, text: page }] })
+        ? result(id, {
+            contents: [{ uri: VIEW_URI, mimeType: VIEW_MIME, text: page, _meta: VIEW_META }],
+          })
         : failure(id, INVALID_PARAMS, `Unknown resource: ${String(params.uri)}`);
     default:
       return failure(id, METHOD_NOT_FOUND, `Method not found: ${method}`);
