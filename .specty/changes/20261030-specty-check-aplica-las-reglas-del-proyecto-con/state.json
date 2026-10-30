@@ -43,7 +43,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f793c4f5c4ffeadd04255cad398ee7c118d651e7",
+      "startedAt": "2026-10-30T21:14:20.922Z",
+      "doneAt": "2026-10-30T21:15:06.339Z",
+      "summary": "Check code-rules: aplica las reglas de la raíz con Opengrep o, sin él, Semgrep con metrics off, sobre una copia de los archivos de la ejecución junto al .semgrepignore; solo cuentan las coincidencias que tocan líneas añadidas; ERROR, CRITICAL y HIGH fallan y el resto avisa"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

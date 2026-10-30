@@ -61,7 +61,7 @@ Sigue el mismo patrón que `secrets` y `vulnerabilities` (ADR 0012): una herrami
 
 ## Tareas
 
-- [ ] T1: specty check aplica las reglas del proyecto con Opengrep o Semgrep
+- [x] T1: specty check aplica las reglas del proyecto con Opengrep o Semgrep
   - files: packages/cli/test/check-code-rules.test.ts, packages/cli/src/check/code-rules.ts, packages/cli/src/check/common.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-code-rules.test.ts test/check-secrets.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
