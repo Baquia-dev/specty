@@ -16,6 +16,6 @@ Permitir arrastrar libremente por la pantalla los tooltips fijados para organiza
 
 ## Tareas
 
-- [ ] T1: Tooltips fijados arrastrables, asociación visual mediante paleta de color mate no repetitiva y contraste invertido por tema
+- [x] T1: Tooltips fijados arrastrables, asociación visual mediante paleta de color mate no repetitiva y contraste invertido por tema
   - files: packages/ui/src/styles.css, packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts

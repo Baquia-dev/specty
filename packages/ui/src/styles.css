@@ -96,6 +96,9 @@
   /* How far a row that scrolls sideways fades where more of it hides (components/edge-fade.ts). */
   --fade-edge: 24px;
   color-scheme: light;
+  --color-tooltip-bg: #222222;
+  --color-tooltip-text: #fafafa;
+  --color-tooltip-border: rgb(255 255 255 / 0.15);
 }
 
 /* The edges of a row that scrolls sideways, where more of it hides. */
@@ -174,6 +177,10 @@
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.35);
+
+  --color-tooltip-bg: #fafafa;
+  --color-tooltip-text: #18181b;
+  --color-tooltip-border: rgb(24 24 27 / 0.15);
 }
 
 /*
@@ -272,20 +279,52 @@
     background-color: rgb(255 255 255 / 0.12);
   }
 
+  /* Tooltip inverted contrast */
+  [data-tooltip] {
+    background-color: var(--color-tooltip-bg);
+    color: var(--color-tooltip-text);
+    border-color: var(--color-tooltip-border);
+  }
+
+  [data-tooltip] [data-item-bullet] {
+    background-color: var(--item-color, currentColor);
+  }
+
+  /* Pinned draggable tooltip */
+  [data-tooltip][data-item-pinned-bubble] {
+    cursor: grab;
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-left-color: var(--item-color, var(--color-tooltip-border));
+  }
+
+  [data-tooltip][data-item-pinned-bubble] [data-item-header] {
+    user-select: none;
+  }
+
+  [data-tooltip][data-item-pinned-bubble][data-item-dragging] {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  [data-tooltip][data-item-pinned-bubble] [data-item-close] {
+    cursor: pointer;
+  }
+
   /* Owner element with an active pinned tooltip */
   [data-item-pinned] {
     cursor: pointer;
-    background-color: var(--color-accent);
-    color: var(--color-on-accent);
-    outline: 2px solid var(--color-accent);
+    background-color: var(--item-color, var(--color-accent));
+    color: #ffffff;
+    outline: 2px solid var(--item-color, var(--color-accent));
     outline-offset: 1px;
     font-weight: var(--font-weight-semibold);
   }
 
   [data-theme="dark"] [data-item-pinned] {
-    background-color: var(--color-accent);
-    color: var(--color-on-accent);
-    outline: 2px solid var(--color-accent);
+    background-color: var(--item-color, var(--color-accent));
+    color: #ffffff;
+    outline: 2px solid var(--item-color, var(--color-accent));
     outline-offset: 1px;
   }
 }

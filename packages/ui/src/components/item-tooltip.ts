@@ -39,12 +39,9 @@ type ItemMap = ReadonlyMap<string, string>;
 type ItemSource = ChangeView | ReviewView | ItemMap | Readonly<Record<string, string>> | string;
 
 const ITEM_LABELS: Record<ItemPrefix, Record<Lang, string>> = {
-  A: { es: "Supuesto", en: "Assumption" },
-  AC: { es: "Criterio de aceptación", en: "Acceptance criterion" },
-  T: { es: "Tarea", en: "Task" },
-  R: { es: "Riesgo", en: "Risk" },
-  S: { es: "Solicitud de alcance", en: "Scope request" },
-  C: { es: "Corte", en: "Slice" },
+  A: { es: "Supuesto", en: "Assumption" }, AC: { es: "Criterio de aceptación", en: "Acceptance criterion" },
+  T: { es: "Tarea", en: "Task" }, R: { es: "Riesgo", en: "Risk" },
+  S: { es: "Solicitud de alcance", en: "Scope request" }, C: { es: "Corte", en: "Slice" },
 };
 
 export function formatItemTooltip(id: string, lang: Lang, text?: string): string {
@@ -162,6 +159,27 @@ function node(
   return el;
 }
 
+export const PINNED_PALETTE = [
+  "#4e878c",
+  "#c26d5c",
+  "#7e6eb0",
+  "#b58338",
+  "#5c7fa3",
+  "#638b64",
+  "#ab6b88",
+  "#767d8a",
+] as const;
+
+function nextPinnedColor(used: ReadonlySet<string>, index: number): string {
+  return (
+    PINNED_PALETTE.find((c) => !used.has(c)) ??
+    PINNED_PALETTE[index % PINNED_PALETTE.length] ??
+    "#4e878c"
+  );
+}
+
+const activePinnedColors = new Set<string>();
+
 function closeButton(doc: Document, lang: Lang, onClose: () => void): HTMLElement {
   const btn = node(
     doc,
@@ -171,7 +189,7 @@ function closeButton(doc: Document, lang: Lang, onClose: () => void): HTMLElemen
       "data-item-close": "",
       "aria-label": lang === "es" ? "Cerrar" : "Close",
       class:
-        "cursor-pointer border-0 bg-transparent p-0 text-bg/75 hover:text-bg text-sm leading-none shrink-0",
+        "cursor-pointer border-0 bg-transparent p-0 text-current opacity-75 hover:opacity-100 text-sm leading-none shrink-0",
     },
     "✕",
   );
@@ -184,25 +202,23 @@ function closeButton(doc: Document, lang: Lang, onClose: () => void): HTMLElemen
 
 function bubbleHeader(doc: Document, title: string, lang: Lang, onClose?: () => void): HTMLElement {
   const bullet = node(doc, "span", {
-    class: "inline-block size-1.5 rounded-full bg-current opacity-75 shrink-0",
+    class: "inline-block size-2 rounded-full bg-current opacity-85 shrink-0",
     "data-item-bullet": "",
     "aria-hidden": "true",
   });
   const header = node(
     doc,
     "span",
-    { class: "flex items-center gap-1.5 font-semibold text-bg flex-1", "data-item-header": "" },
+    {
+      class: "flex items-center gap-1.5 font-semibold text-current flex-1",
+      "data-item-header": "",
+    },
     bullet,
     title,
   );
-  if (!onClose) return header;
-  return node(
-    doc,
-    "div",
-    { class: "flex items-start justify-between gap-2" },
-    header,
-    closeButton(doc, lang, onClose),
-  );
+  return onClose
+    ? node(doc, "div", { class: "flex items-start justify-between gap-2" }, header, closeButton(doc, lang, onClose))
+    : header;
 }
 
 function renderBubble(
@@ -236,6 +252,38 @@ interface PinnedItem {
   readonly bubble: HTMLSpanElement;
   target: ResolvedTarget;
   offset: number;
+  color: string;
+}
+
+function makeDraggable(b: HTMLElement): void {
+  let start: { px: number; py: number; ex: number; ey: number } | undefined;
+  const onMove = (e: MouseEvent) => {
+    if (!start) return;
+    const pane = b.closest<HTMLElement>(".cdk-overlay-pane") ?? b;
+    pane.style.position = "fixed";
+    pane.style.left = `${Math.round(start.ex + e.clientX - start.px)}px`;
+    pane.style.top = `${Math.round(start.ey + e.clientY - start.py)}px`;
+    pane.style.right = pane.style.bottom = "auto";
+    pane.style.transform = "none";
+    b.setAttribute("data-item-dragged", "true");
+  };
+  const onUp = () => {
+    if (!start) return;
+    start = undefined;
+    b.removeAttribute("data-item-dragging");
+    window.removeEventListener("pointermove", onMove);
+    window.removeEventListener("pointerup", onUp);
+  };
+  const onDown = (e: MouseEvent) => {
+    if (e.target instanceof Element && e.target.closest("[data-item-close], a, button")) return;
+    b.setAttribute("data-item-dragging", "");
+    const rect = (b.closest<HTMLElement>(".cdk-overlay-pane") ?? b).getBoundingClientRect();
+    start = { px: e.clientX, py: e.clientY, ex: rect.left, ey: rect.top };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    e.preventDefault();
+  };
+  b.addEventListener("pointerdown", onDown);
 }
 
 function positionsFor(offset: number): ConnectedPosition[] {
@@ -314,10 +362,10 @@ export class ItemTooltips {
     event.stopPropagation();
     if (this.pinned.has(target.origin)) {
       this.unpin(target.origin);
-      return;
+    } else {
+      this.hideHover();
+      this.pin(target);
     }
-    this.hideHover();
-    this.pin(target);
   }
 
   protected onLeave(event: MouseEvent): void {
@@ -334,9 +382,7 @@ export class ItemTooltips {
   }
 
   private showHover(target: ResolvedTarget): void {
-    if (activeHoverTooltip !== undefined && activeHoverTooltip !== this) {
-      activeHoverTooltip.hideHover();
-    }
+    if (activeHoverTooltip && activeHoverTooltip !== this) activeHoverTooltip.hideHover();
     activeHoverTooltip = this;
     clearTimeout(this.leaving);
     this.hoverTarget?.origin.removeAttribute("data-item-active");
@@ -344,8 +390,9 @@ export class ItemTooltips {
     target.origin.setAttribute("data-item-active", "");
     const bubble = this.ensureHoverOverlay(target.origin);
     const raw = target.text || this.items().get(target.id);
-    if (!renderBubble(bubble, target.id, this.preferences.lang(), raw)) return;
-    this.hoverOverlay?.ref.updatePosition();
+    if (renderBubble(bubble, target.id, this.preferences.lang(), raw)) {
+      this.hoverOverlay?.ref.updatePosition();
+    }
   }
 
   protected hideHover(): void {
@@ -368,18 +415,32 @@ export class ItemTooltips {
     });
     const bubble = this.createBubble(true, offset);
     ref.attach(new DomPortal(bubble));
+
+    const color = nextPinnedColor(activePinnedColors, this.pinned.size);
+    activePinnedColors.add(color);
+
     target.origin.setAttribute("data-item-pinned", "");
+    target.origin.setAttribute("data-item-color", color);
+    target.origin.style.setProperty("--item-color", color);
     target.origin.removeAttribute("data-item-active");
+
+    bubble.setAttribute("data-item-pinned-bubble", "");
+    bubble.setAttribute("data-item-color", color);
+    bubble.style.setProperty("--item-color", color);
+
     const raw = target.text || this.items().get(target.id);
     renderBubble(bubble, target.id, this.preferences.lang(), raw, () => this.unpin(target.origin));
     ref.updatePosition();
-    this.pinned.set(target.origin, { overlay: { ref, pos }, bubble, target, offset });
+    this.pinned.set(target.origin, { overlay: { ref, pos }, bubble, target, offset, color });
   }
 
   private unpin(origin: HTMLElement): void {
     const entry = this.pinned.get(origin);
     if (!entry) return;
+    activePinnedColors.delete(entry.color);
     origin.removeAttribute("data-item-pinned");
+    origin.removeAttribute("data-item-color");
+    origin.style.removeProperty("--item-color");
     entry.overlay.ref.dispose();
     this.pinned.delete(origin);
   }
@@ -403,6 +464,8 @@ export class ItemTooltips {
       const raw = entry.target.text || map.get(entry.target.id);
       if (!renderBubble(entry.bubble, entry.target.id, lang, raw, () => this.unpin(origin))) {
         this.unpin(origin);
+      } else if (!entry.bubble.hasAttribute("data-item-dragged")) {
+        entry.overlay.ref.updatePosition();
       }
     }
   }
@@ -451,15 +514,19 @@ export class ItemTooltips {
       "data-tooltip": "",
       "data-item-offset": String(offset),
       class:
-        "max-w-80 rounded-lg bg-text p-2.5 text-xs text-bg shadow-md border border-border/15 transition-opacity starting:opacity-0 flex flex-col gap-1",
+        "max-w-80 rounded-lg p-2.5 text-xs shadow-md border border-border/15 transition-opacity starting:opacity-0 flex flex-col gap-1",
       style: `transition-duration: var(--duration-fast); z-index: ${pinned ? 1000 + offset : 999}`,
     });
-    b.addEventListener("pointerenter", () => {
-      if (!pinned) clearTimeout(this.leaving);
-    });
-    b.addEventListener("pointerleave", () => {
-      if (!pinned) this.hideHover();
-    });
+    if (pinned) {
+      makeDraggable(b);
+    } else {
+      b.addEventListener("pointerenter", () => {
+        clearTimeout(this.leaving);
+      });
+      b.addEventListener("pointerleave", () => {
+        this.hideHover();
+      });
+    }
     this.host.ownerDocument.createDocumentFragment().appendChild(b);
     return b;
   }
