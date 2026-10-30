@@ -85,53 +85,15 @@ function highImpactPending(spec: Spec, state: ChangeState): number {
 }
 
 export function deriveView(record: ChangeRecord): ChangeView {
-  const checked = parseChangeState(record.state);
-  const state = checked.ok ? checked.state : record.state;
-  const parsed = parseSpec(record.spec);
-  const { spec } = parsed;
-  const problems = [
-    ...(checked.ok ? [] : checked.issues.map((issue) => `state.json: ${issue}`)),
-    ...parsed.diagnostics
-      .filter((diagnostic) => diagnostic.severity === "error")
-      .map((diagnostic) => `spec.md: ${diagnostic.message}`),
-  ];
+  const { state, spec, problems } = parseRecord(record);
   const size = computeSize(spec, DEFAULT_CONFIG);
   const level = state.size?.level ?? size.level;
   const tasks = spec.sections.tasks?.items ?? [];
-  const requested = changesRequestedOf(state, record.audit ?? []);
-  const request = requestOf(record.audit ?? []);
-  const warnings = warningsOf(record.audit ?? []);
-  const findings = findingsOf(record.audit ?? []);
-  const tests = testsOf(state, record.audit ?? []);
-  const locked = lockedOf(state, record.audit ?? []);
-  // The last review of each target that answered: the records come oldest first.
-  const last = (target: ReviewRecord["target"]) =>
-    (record.reviews ?? []).findLast((review) => review.target === target);
-  const specReview = last("spec");
-  const resultReview = last("diff");
-  // Once the person asked for changes, the change waits for the agent, not for them.
+  const audit = record.audit ?? [];
+  const requested = changesRequestedOf(state, audit);
   const decision = requested === undefined ? decisionOf(state) : undefined;
   return {
-    id: state.id,
-    title: spec.title || state.id,
-    kind: state.kind,
-    phase: state.phase,
-    revision: state.revision,
-    ...(state.approved === undefined
-      ? {}
-      : {
-          approved: {
-            revision: state.approved.revision,
-            at: state.approved.at,
-            by: state.approved.by,
-            ...(state.approved.channel === "delegated" ? { delegated: true } : {}),
-          },
-        }),
-    ...(state.branch === undefined ? {} : { branch: state.branch }),
-    ...(record.folder === undefined ? {} : { folder: record.folder }),
-    phaseSince: record.phaseSince,
-    goal: spec.sections.goal ?? spec.sections.reason ?? "",
-    ...(request === undefined ? {} : { request }),
+    ...identityOf(record, state, spec),
     size: {
       level,
       reasons: size.reasons.map((reason) => ({
@@ -143,11 +105,11 @@ export function deriveView(record: ChangeRecord): ChangeView {
     ...(decision === undefined ? {} : { decision }),
     ...(requested === undefined ? {} : { changesRequested: requested }),
     highImpactPending: state.phase === "review" ? highImpactPending(spec, state) : 0,
-    scopeRequests: state.pending.scopeRequests.map((request) => ({
-      id: request.id,
-      task: request.task,
-      paths: request.paths,
-      reason: request.reason,
+    scopeRequests: state.pending.scopeRequests.map(({ id, task, paths, reason }) => ({
+      id,
+      task,
+      paths,
+      reason,
     })),
     tasks: {
       done: tasks.filter((task) => state.tasks[task.id]?.status === "done").length,
@@ -159,16 +121,111 @@ export function deriveView(record: ChangeRecord): ChangeView {
       ...deriveReview(spec, state, record.comments ?? []),
       ...deltaOf(record, state, spec),
     },
-    progress: progressOf(spec, state, record.audit ?? [], record.verifyFull),
+    progress: progressOf(spec, state, audit, record.verifyFull),
     ...closingIn(spec),
+    ...auditExtrasOf(record, state, audit),
+    history: historyOf(audit),
+  };
+}
+
+function parseRecord(record: ChangeRecord): {
+  readonly state: ChangeState;
+  readonly spec: Spec;
+  readonly problems: readonly string[];
+} {
+  const checked = parseChangeState(record.state);
+  const state = checked.ok ? checked.state : record.state;
+  const parsed = parseSpec(record.spec);
+  const problems = [
+    ...(checked.ok ? [] : checked.issues.map((issue) => `state.json: ${issue}`)),
+    ...parsed.diagnostics
+      .filter((diagnostic) => diagnostic.severity === "error")
+      .map((diagnostic) => `spec.md: ${diagnostic.message}`),
+  ];
+  return { state, spec: parsed.spec, problems };
+}
+
+function identityOf(
+  record: ChangeRecord,
+  state: ChangeState,
+  spec: Spec,
+): Pick<
+  ChangeView,
+  | "id"
+  | "title"
+  | "kind"
+  | "epic"
+  | "phase"
+  | "revision"
+  | "approved"
+  | "branch"
+  | "folder"
+  | "phaseSince"
+  | "goal"
+> {
+  return {
+    id: state.id,
+    title: spec.title || state.id,
+    kind: state.kind,
+    ...epicIn(spec),
+    phase: state.phase,
+    revision: state.revision,
+    ...approvedIn(state),
+    ...(state.branch === undefined ? {} : { branch: state.branch }),
+    ...(record.folder === undefined ? {} : { folder: record.folder }),
+    phaseSince: record.phaseSince,
+    goal: spec.sections.goal ?? spec.sections.reason ?? "",
+  };
+}
+
+function epicIn(spec: Spec): Pick<ChangeView, "epic"> {
+  const { epic, slice } = spec.frontmatter;
+  if (epic === undefined) return {};
+  return { epic: { id: epic, title: epic, ...(slice === undefined ? {} : { slice }) } };
+}
+
+function approvedIn(state: ChangeState): Pick<ChangeView, "approved"> {
+  const { approved } = state;
+  if (approved === undefined) return {};
+  return {
+    approved: {
+      revision: approved.revision,
+      at: approved.at,
+      by: approved.by,
+      ...(approved.channel === "delegated" ? { delegated: true } : {}),
+    },
+  };
+}
+
+function auditExtrasOf(
+  record: ChangeRecord,
+  state: ChangeState,
+  audit: readonly AuditRecord[],
+): Partial<ChangeView> {
+  const request = requestOf(audit);
+  const warnings = warningsOf(audit);
+  const findings = findingsOf(audit);
+  const tests = testsOf(state, audit);
+  const locked = lockedOf(state, audit);
+  return {
+    ...(request === undefined ? {} : { request }),
     ...(tests === undefined ? {} : { tests }),
     ...(locked.length === 0 ? {} : { lockedTests: locked }),
     ...(record.criteriaTests === undefined ? {} : { criteriaTests: record.criteriaTests }),
     ...(warnings.length === 0 ? {} : { warnings }),
     ...(findings.length === 0 ? {} : { findings }),
+    ...reviewsIn(record),
+  };
+}
+
+function reviewsIn(record: ChangeRecord): Pick<ChangeView, "specReview" | "resultReview"> {
+  const last = (target: ReviewRecord["target"]) =>
+    (record.reviews ?? []).findLast((review) => review.target === target);
+  const specReview = last("spec");
+  const resultReview = last("diff");
+  return {
     ...(specReview === undefined ? {} : { specReview }),
     ...(resultReview === undefined ? {} : { resultReview }),
-    history: historyOf(record.audit ?? []),
   };
 }
 
@@ -189,9 +246,18 @@ function deltaOf(record: ChangeRecord, state: ChangeState, spec: Spec): Partial<
 /** Every change's view, each with the files it shares with the other open changes. */
 export function deriveViews(records: readonly ChangeRecord[]): readonly ChangeView[] {
   const shared = sharedFiles(records);
-  return records.map((record) => {
-    const view = deriveView(record);
+  const views = records.map((record) => deriveView(record));
+  const titles = new Map(views.map((view) => [view.id, view.title]));
+  return views.map((view) => {
     const mine = shared.get(view.id);
-    return mine === undefined ? view : { ...view, shared: mine };
+    const epic =
+      view.epic === undefined
+        ? undefined
+        : { ...view.epic, title: titles.get(view.epic.id) ?? view.epic.title };
+    return {
+      ...view,
+      ...(mine === undefined ? {} : { shared: mine }),
+      ...(epic === undefined ? {} : { epic }),
+    };
   });
 }

@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0e4ab6b7f6b3c592ae46065be998fda33fa57fdb",
+      "startedAt": "2026-10-30T21:55:58.322Z",
+      "doneAt": "2026-10-30T21:58:58.210Z",
+      "summary": "Derivar pertenencia a épica y corte en ChangeView e implementar KindBadge con iconos y etiquetas bilingües"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

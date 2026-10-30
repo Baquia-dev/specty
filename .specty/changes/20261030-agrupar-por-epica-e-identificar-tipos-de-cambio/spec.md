@@ -60,7 +60,7 @@ Identificar visualmente en la UI cada tipo de cambio (`Épica`, `Corte`, `Indivi
 
 ## Tareas
 
-- [ ] T1: Derivar pertenencia a épica en ChangeView y crear componente KindBadge
+- [x] T1: Derivar pertenencia a épica en ChangeView y crear componente KindBadge
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/ui/src/components/badge.ts, packages/ui/src/components/badge.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts --include src/components/badge.test.ts

@@ -255,6 +255,12 @@ export interface ChangeView {
   readonly id: string;
   readonly title: string;
   readonly kind: ChangeKind;
+  /** The epic this change implements a slice of (`frontmatter.epic` and `frontmatter.slice`). */
+  readonly epic?: {
+    readonly id: string;
+    readonly title: string;
+    readonly slice?: string;
+  };
   readonly phase: Phase;
   readonly revision: number;
   /**
