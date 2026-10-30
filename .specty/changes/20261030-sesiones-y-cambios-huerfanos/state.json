@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261030-sesiones-y-cambios-huerfanos",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-sesiones-y-cambios-huerfanos",
+  "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fbb5ca13a99ccecd72974503b770205de33bc7d86decf715be31377060ad018a",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:31e08f313b2fedbfe1efd466e663d9fc52f11bdb3e74320c4c0f9e3f53f74e03",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:197decb00bdb5a4becaba2887c6b984004bce671aa2372f65de28d338447feb1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:82aac1df2befd37b24dc33e24e5d4b23b0d42c0b8e4bfdae5387cb2320d0c06c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:714e08c1d6427d2de33cd2e9423269c72cbe9d3eb817550e4be2ef227d2f84aa",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:af1c0e16bd424a1eb9dc0e2b6cabcaaeebc1a346fcd8657c93fe244cc377d0e3",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d8bd8ab47bffa8c2018fbfb74698897fa1af9c97b5e0fa2f4e34ac7b079a9626",
+    "at": "2026-10-30T10:10:36.975Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
