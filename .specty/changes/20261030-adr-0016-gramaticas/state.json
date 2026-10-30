@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261030-adr-0016-gramaticas",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261030-adr-0016-gramaticas",
+  "baseCommit": "eeeccbe6158bce2f8966e3ee18640a47565cebad",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:95221e4281da68a923314f6f186022cbeb55daab844d3b9d19e867bc54b97363",
+    "at": "2026-10-30T11:45:01.302Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
