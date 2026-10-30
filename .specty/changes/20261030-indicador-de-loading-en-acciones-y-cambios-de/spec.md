@@ -57,7 +57,7 @@ Proporcionar retroalimentación visual inmediata con indicadores de carga (spinn
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts, packages/ui/src/acceptance/closing-actions.ts, packages/ui/src/acceptance/closing-actions.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/review-actions.test.ts --include src/acceptance/closing-actions.test.ts
-- [ ] T4: Indicadores de carga en gestión de comentarios
+- [x] T4: Indicadores de carga en gestión de comentarios
   - files: packages/ui/src/review/comments.ts, packages/ui/src/review/comments.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/comments.test.ts

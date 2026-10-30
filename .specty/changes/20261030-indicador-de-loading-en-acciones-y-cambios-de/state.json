@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-indicador-de-loading-en-acciones-y-cambios-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-indicador-de-loading-en-acciones-y-cambios-de",
   "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
   "revision": 1,
@@ -59,16 +59,25 @@
     },
     "T3": {
       "status": "done",
+      "baseCommit": "277cfc0636c0ad508e4e7bda9ac7823a69bcd412",
+      "attempts": 1,
+      "startedAt": "2026-10-30T12:11:13.062Z",
+      "doneAt": "2026-10-30T12:30:13.928Z",
+      "summary": "indicadores de carga en acciones de revisión y confirmación de cierre",
       "scopeExtra": [
         "packages/ui/src/acceptance/closing-actions.test.ts",
         "packages/ui/src/review/review-actions.test.ts",
         "packages/ui/src/review/comments.test.ts"
-      ],
+      ]
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "277cfc0636c0ad508e4e7bda9ac7823a69bcd412",
-      "startedAt": "2026-10-30T12:11:13.062Z",
-      "doneAt": "2026-10-30T12:30:13.928Z",
-      "summary": "indicadores de carga en acciones de revisión y confirmación de cierre"
+      "baseCommit": "909869807d6d411ab915a904478d1f2b969e736d",
+      "startedAt": "2026-10-30T12:30:14.267Z",
+      "doneAt": "2026-10-30T12:32:21.175Z",
+      "summary": "indicadores de carga en creación, edición y borrado de comentarios"
     }
   },
   "pending": {
