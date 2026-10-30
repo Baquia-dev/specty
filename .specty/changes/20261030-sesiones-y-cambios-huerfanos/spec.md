@@ -79,7 +79,7 @@ Es la mitad en vivo de la memoria de Specty. Trae el ADR 0016, que recoge las de
   - files: packages/core/test/schema/memory.test.ts, packages/core/test/cards/status-holder.test.ts, packages/core/src/schema/memory.ts, packages/core/src/schema/config.ts, packages/core/src/cards/human.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/memory.test.ts test/cards/status-holder.test.ts test/cards.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip
-- [ ] T2: El guard anota la actividad de las sesiones y status dice quién lleva cada cambio
+- [x] T2: El guard anota la actividad de las sesiones y status dice quién lleva cada cambio
   - files: packages/cli/test/activity.test.ts, packages/cli/src/store/activity.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/commands/status.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/activity.test.ts test/status-json.test.ts test/bundle.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

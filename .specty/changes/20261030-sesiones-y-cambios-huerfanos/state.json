@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "78efe0c8b927c71e75cf9cd48e6186f254f8439c",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:13:17.772Z",
       "doneAt": "2026-10-30T10:14:16.781Z",
-      "summary": "memory.orphanAfterMin en la configuración (60 por defecto) y la línea de status dice quién lleva cada cambio, hace cuánto, o que está huérfano"
+      "summary": "memory.orphanAfterMin en la configuración (60 por defecto) y la línea de status dice quién lleva cada cambio, hace cuánto, o que está huérfano",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0f8066fdba865dc6cf5444da7235462842eec401",
+      "startedAt": "2026-10-30T10:14:17.122Z",
+      "doneAt": "2026-10-30T10:17:54.139Z",
+      "summary": "El guard anota en .git/common/specty/activity/ el último paso de cada conversación (como mucho una vez por minuto en la misma carpeta, sin lanzar git), y status dice qué agente lleva cada cambio o si está huérfano"
     }
   },
   "pending": {
