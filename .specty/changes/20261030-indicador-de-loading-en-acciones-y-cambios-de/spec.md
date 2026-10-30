@@ -45,7 +45,7 @@ Proporcionar retroalimentación visual inmediata con indicadores de carga (spinn
 
 ## Tareas
 
-- [ ] T1: Icono y soporte de loading en componentes de botón
+- [x] T1: Icono y soporte de loading en componentes de botón
   - files: packages/ui/src/components/icons.ts, packages/ui/src/components/button.ts, packages/ui/src/components/button.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/button.test.ts

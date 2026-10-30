@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "085c8fc23efc0b3ba9bc766922eed857091838b8",
+      "startedAt": "2026-10-30T12:02:34.461Z",
+      "doneAt": "2026-10-30T12:05:29.941Z",
+      "summary": "icono Loader2 y soporte de loading en Button e IconButton"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
