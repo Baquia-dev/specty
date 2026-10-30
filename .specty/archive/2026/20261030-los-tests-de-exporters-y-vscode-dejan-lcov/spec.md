@@ -19,3 +19,9 @@ Los tests de core, la CLI y la UI ya dejan su informe LCOV, y la verificación c
   - files: packages/exporters/vitest.config.ts, packages/vscode/vitest.config.ts
   - verify: pnpm --filter @baquia-dev/specty-exporters test && pnpm --filter specty-vscode test && test -f packages/exporters/coverage/lcov.info && test -f packages/vscode/coverage/lcov.info && test ! -d packages/exporters/coverage/lcov-report && test ! -d packages/vscode/coverage/lcov-report
   - type: chore
+
+## Cierre
+
+### Resumen
+
+lcovonly junto a text-summary en los vitest.config.ts de exporters y vscode: cada uno deja coverage/lcov.info, sin HTML
