@@ -87,7 +87,7 @@ Lo calcula Specty, sin diff-cover (una herramienta de Python), y vale para cualq
   - ac: —
   - verify: pnpm lint
   - type: docs
-- [ ] T4: El test de las guías cuenta diff-coverage, que su ejemplo no muestra
+- [x] T4: El test de las guías cuenta diff-coverage, que su ejemplo no muestra
   - files: packages/cli/test/check-docs.test.ts
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts && pnpm lint

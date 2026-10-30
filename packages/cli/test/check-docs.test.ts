@@ -30,10 +30,12 @@ async function checkIds(): Promise<string[]> {
   const decided = await cli(root, ["approve"], { terminal: person({ choose: ["confirm"] }) });
   expect(decided.code).toBe(0);
   // `secrets` is off above, so that no scanner on the machine runs; its level puts it back.
-  // `tests-locked` only shows where a change has approved tests (ADR 0014).
+  // `tests-locked` only shows where a change has approved tests (ADR 0014), and `diff-coverage`
+  // only where the tests leave a coverage report.
   const run = await cli(root, ["check", "--spec", "--verbose", "--json"]);
   const report: { checks: { id: string }[] } = JSON.parse(run.out);
-  return [...report.checks.map((check) => check.id), "secrets", "tests-locked"].toSorted();
+  const hidden = ["secrets", "tests-locked", "diff-coverage"];
+  return [...report.checks.map((check) => check.id), ...hidden].toSorted();
 }
 
 /** The checks a guide documents: its headings that are only an id in backticks. */

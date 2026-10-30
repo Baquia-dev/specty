@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-specty-check-mide-la-cobertura-de-las-lineas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-specty-check-mide-la-cobertura-de-las-lineas",
   "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
   "revision": 2,
@@ -64,6 +64,15 @@
       "doneAt": "2026-10-30T07:06:01.340Z",
       "summary": "checks.md y checks.en.md tienen la sección de diff-coverage; formats.md, checks.coverage y la verificación en la lista; ARCHITECTURE la nombra en specty check.",
       "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "afd8710e2a5a0f68b281b41d92b33f42c3f6c7ef",
+      "startedAt": "2026-10-30T07:37:03.905Z",
+      "doneAt": "2026-10-30T07:37:16.572Z",
+      "summary": "check-docs.test.ts añade diff-coverage a los checks que su ejemplo no muestra, junto a secrets y tests-locked."
     }
   },
   "pending": {
