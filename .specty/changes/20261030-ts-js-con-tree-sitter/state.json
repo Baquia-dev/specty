@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-ts-js-con-tree-sitter",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-ts-js-con-tree-sitter",
   "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
   "revision": 1,
@@ -69,6 +69,9 @@
     "T": 4,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T10:16:12.040Z"
+  "lockedTests": {
+    "packages/cli/test/bundle-grammars.test.ts": "sha256:5c0dbef58a3c63386da9c94de94b5ba39647e53cc3d5b8ea96a65df61f8b3765",
+    "packages/cli/test/check-functions-tree.test.ts": "sha256:87fb2d7da857fd120f27220f74d3e39e311c99b7b80ce21837b97988c2a9edb8",
+    "packages/core/test/checks/functions-tree.test.ts": "sha256:deefdd2c3d5d6038e39f3226365b5b22b427d59bb4eb2784207882a23a3ba3b5"
+  }
 }
