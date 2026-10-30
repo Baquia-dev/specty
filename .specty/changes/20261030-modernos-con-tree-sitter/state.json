@@ -6,6 +6,13 @@
   "branch": "specty/20261030-modernos-con-tree-sitter",
   "baseCommit": "8f6f314c6eb0916e909fa7e31addd604977ea07f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:096b8d38bffe4ed6efadd930d166cb31e57c0e1a1f94ccc88a2757d31cdf4e2f",
+    "at": "2026-10-30T10:57:42.070Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -57,12 +64,6 @@
     "T": 4,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:096b8d38bffe4ed6efadd930d166cb31e57c0e1a1f94ccc88a2757d31cdf4e2f",
-    "at": "2026-10-30T10:57:42.070Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T10:59:00.257Z"
 }
