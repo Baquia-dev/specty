@@ -77,7 +77,7 @@ Lo calcula Specty, sin diff-cover (una herramienta de Python), y vale para cualq
   - files: packages/core/test/checks/coverage.test.ts, packages/core/src/checks/coverage-reports.ts, packages/core/src/checks/coverage.ts, packages/core/src/schema/checks.ts, packages/core/src/index.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/coverage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip
-- [ ] T2: specty check mide la cobertura de las líneas que cambian
+- [x] T2: specty check mide la cobertura de las líneas que cambian
   - files: packages/cli/test/check-coverage.test.ts, packages/cli/src/check/coverage.ts, packages/cli/src/check/provider.ts, packages/cli/src/check/files.ts, packages/cli/src/check/common.ts
   - ac: AC1, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-coverage.test.ts test/check-commands.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
