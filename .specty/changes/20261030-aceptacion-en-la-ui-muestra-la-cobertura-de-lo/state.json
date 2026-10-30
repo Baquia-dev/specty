@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-aceptacion-en-la-ui-muestra-la-cobertura-de-lo",
   "baseCommit": "4d47f9cd6a16ef9b88a1a12778cafc358ad10c1e",
   "revision": 2,
@@ -44,6 +44,9 @@
     "T": 4,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T09:04:20.247Z"
+  "lockedTests": {
+    "packages/cli/test/check-coverage.test.ts": "sha256:c1e315e62225df171abb86f51302594b9cb1b3bf0b05cc15ab0547d13235a0fd",
+    "packages/ui/src/acceptance/full-verification.test.ts": "sha256:e3b4d445342ffcbcf0e05670deecd62118c2f015cae658d34a157f0a794ed8fa",
+    "packages/ui/src/data/progress.test.ts": "sha256:6a006e377df87f0b8a38f51dbfb5f182e1c2003c46861abcf4899ac1ecdacc65"
+  }
 }
