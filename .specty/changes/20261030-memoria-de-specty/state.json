@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "id": "20261030-memoria-de-specty",
+  "kind": "epic",
+  "phase": "implementing",
+  "branch": "specty/20261030-memoria-de-specty",
+  "baseCommit": "a8ea8e47cbbc87822e5f56143ff79edbdc23fdb9",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:08c4530f48e91ffb3c6329ece5d53b6512f2a00a4a0eeba29a446a2daa0bb35b",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:4fa129c0e1b08a924eeca821e2a74866b13f9f768790ebc95662943f54e00610",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:2a623208552736237b8d7fc3e511b4b71733d8bd66b69aea42a4a39e016ff9ff",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:8f49c31cb563f7fc9061893fccc8862a087122a3ef740f225623bef386e3e288",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:a17c8e37f57f3564ba7554de77998f4c750116aeb0c5c199d71bb5c92a5f2bd8",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:842d616d99d1e6d3f08aaa3387f581b9da953366d58a92cd1f054e63fd2fc135",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:5fef13dbb9c45cd64c3ae664d77e358c5bc7f37ab0e163155eb862b2364318ed",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:d5cac64fe3fd669b348f9838231418a31d6b21fb4d32ee5db11867b3de7be9a2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 8,
+    "AC": 12,
+    "C": 7,
+    "R": 6
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:fd1db758b4b0c419dde0b5ceb7c0907586e1b14ce16c13b114b10479d80151ea",
+    "at": "2026-10-30T10:06:18.155Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
