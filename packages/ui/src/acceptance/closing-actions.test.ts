@@ -134,4 +134,28 @@ describe("Closing actions", () => {
     expect(dialog()).not.toBeNull();
     expect(view()?.phase).toBe("closing");
   });
+
+  it("AC4: shows loading state on confirmation button while closeChange runs", async () => {
+    let resolveClose!: () => void;
+    const pendingClose = new Promise<void>((res) => {
+      resolveClose = res;
+    });
+    @Injectable()
+    class HangingData extends FixtureData {
+      override confirmClosing(): Promise<void> {
+        return pendingClose;
+      }
+    }
+    const { button, dialogButton, settle } = await render(HangingData);
+    button()?.click();
+    await settle();
+    const confirmBtn = dialogButton("Confirmar y archivar");
+    confirmBtn?.click();
+    await settle();
+    expect(confirmBtn?.getAttribute("aria-busy")).toBe("true");
+    expect(confirmBtn?.disabled).toBe(true);
+    expect(confirmBtn?.querySelector(".animate-spin")).not.toBeNull();
+    resolveClose();
+    await settle();
+  });
 });

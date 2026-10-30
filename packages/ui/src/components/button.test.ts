@@ -131,4 +131,16 @@ describe("Button", () => {
     icon?.click();
     expect(host.count()).toBe(1);
   });
+
+  it("AC1: shows an animated spinner and disables clicking while loading", async () => {
+    const { fixture, button, element } = await render();
+    const btnCmp = element.querySelector("sp-button") as unknown as {
+      loading?: { set?: (v: boolean) => void };
+    };
+    btnCmp?.loading?.set?.(true);
+    await fixture.whenStable();
+    expect(button.getAttribute("aria-busy")).toBe("true");
+    expect(button.disabled).toBe(true);
+    expect(button.querySelector(".animate-spin")).not.toBeNull();
+  });
 });

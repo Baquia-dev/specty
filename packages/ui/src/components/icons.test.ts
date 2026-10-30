@@ -17,7 +17,7 @@ describe("icons", () => {
 
   it("gives every icon the UI uses as data, each with its Lucide name and drawing (AC1)", () => {
     const all = Object.entries(icons);
-    expect(all.length).toBe(53);
+    expect(all.length).toBe(54);
     for (const [exported, data] of all) {
       expect(exported).toMatch(/^Lucide[A-Z]/);
       expect(data.name).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
@@ -28,6 +28,11 @@ describe("icons", () => {
       "file-question-mark",
       "trash",
     ]);
+  });
+
+  it("AC1: exports LucideLoader2 for loading state", () => {
+    expect(icons.LucideLoader2.name).toBe("loader-2");
+    expect(icons.LucideLoader2.node.length).toBeGreaterThan(0);
   });
 
   it("draws with the one dynamic icon component (AC1)", async () => {

@@ -158,4 +158,31 @@ describe("ReviewActions", () => {
     expect(text(actions()?.querySelector("[data-blocked]"))).toContain("comentario");
     expect(buttons()[0]?.disabled).toBe(false);
   });
+
+  it("AC3: shows loading state on approve and request changes buttons while actions run", async () => {
+    const { buttons, fixture, host } = await render();
+    const source = TestBed.inject(SpectyData);
+    let resolveApprove!: () => void;
+    const pendingApprove = new Promise<void>((res) => {
+      resolveApprove = res;
+    });
+    source.approve = () => pendingApprove;
+
+    const base = viewOf(REVIEW);
+    host.change.set({ ...base, highImpactPending: 0, review: { ...base.review, comments: [] } });
+    await fixture.whenStable();
+
+    const approveButton = buttons()[1];
+    approveButton?.click();
+    await fixture.whenStable();
+
+    expect(approveButton?.getAttribute("aria-busy")).toBe("true");
+    expect(approveButton?.disabled).toBe(true);
+    expect(approveButton?.querySelector(".animate-spin")).not.toBeNull();
+
+    resolveApprove();
+    await new Promise((resolve) => setTimeout(resolve));
+    await fixture.whenStable();
+    expect(approveButton?.getAttribute("aria-busy")).toBeNull();
+  });
 });

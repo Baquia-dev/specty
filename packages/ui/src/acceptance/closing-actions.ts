@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DIALOG_DATA, DialogRef } from "@angular/cdk/dialog";
-import { ChangeDetectionStrategy, Component, inject, input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, input, signal } from "@angular/core";
 import { Button } from "../components/button";
 import { DialogFrame, Dialogs } from "../components/dialog";
 import { Toasts } from "../components/toast";
@@ -28,8 +28,8 @@ interface ClosingData {
         {{ t()('El cambio termina y se archiva con su cierre: el resumen, las desviaciones, las decisiones y los pendientes quedan en su historia.', 'The change ends and is archived with its closing: the summary, the deviations, the decisions and the follow-ups stay in its history.') }}
       </p>
       <p class="m-0 text-[13px] text-text-muted" data-after>{{ t()('No se puede deshacer: para seguir con algo pendiente, se abre un cambio nuevo.', 'It cannot be undone: to go on with a follow-up, a new change is opened.') }}</p>
-      <sp-button actions (pressed)="frame.close()">{{ t()('Cancelar', 'Cancel') }}</sp-button>
-      <sp-button actions variant="primary" (pressed)="confirm()">{{ t()('Confirmar y archivar', 'Confirm and archive') }}</sp-button>
+      <sp-button actions [disabledReason]="loading() ? t()('Cerrando…', 'Closing…') : ''" (pressed)="frame.close()">{{ t()('Cancelar', 'Cancel') }}</sp-button>
+      <sp-button actions variant="primary" [loading]="loading()" (pressed)="confirm()">{{ t()('Confirmar y archivar', 'Confirm and archive') }}</sp-button>
     </sp-dialog>
   `,
 })
@@ -42,18 +42,23 @@ class ConfirmClosing {
   private readonly failed = reportFailure(this.toasts, this.preferences);
   protected readonly t = this.preferences.t;
   protected readonly change = this.data.change;
+  protected readonly loading = signal(false);
 
   protected confirm(): void {
-    this.source.confirmClosing(this.change.id).then(() => {
-      this.ref.close();
-      this.toasts.show(
-        this.t()(
-          "Cierre confirmado: el cambio está terminado y archivado.",
-          "Closing confirmed: the change is done and archived.",
-        ),
-        "success",
-      );
-    }, this.failed);
+    this.loading.set(true);
+    this.source
+      .confirmClosing(this.change.id)
+      .then(() => {
+        this.ref.close();
+        this.toasts.show(
+          this.t()(
+            "Cierre confirmado: el cambio está terminado y archivado.",
+            "Closing confirmed: the change is done and archived.",
+          ),
+          "success",
+        );
+      }, this.failed)
+      .finally(() => this.loading.set(false));
   }
 }
 

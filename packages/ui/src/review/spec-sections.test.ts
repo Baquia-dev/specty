@@ -246,6 +246,27 @@ describe("AssumptionRow", () => {
     element.querySelector<HTMLButtonElement>("sp-assumption-row sp-icon-button button")?.click();
     expect(host.anchors).toEqual([{ item: "A1" }]);
   });
+
+  it("AC2: shows loading state on confirm button while decideAssumption is running", async () => {
+    let resolveAction!: () => void;
+    const pendingPromise = new Promise<void>((res) => {
+      resolveAction = res;
+    });
+    const { element, fixture, source } = await render();
+    (source as Recording).decideAssumption = () => pendingPromise;
+    const confirmButton = element.querySelector<HTMLButtonElement>(
+      "sp-assumption-row sp-button[variant=primary] button",
+    );
+    confirmButton?.click();
+    await fixture.whenStable();
+    expect(confirmButton?.getAttribute("aria-busy")).toBe("true");
+    expect(confirmButton?.disabled).toBe(true);
+    expect(confirmButton?.querySelector(".animate-spin")).not.toBeNull();
+    resolveAction();
+    await new Promise((resolve) => setTimeout(resolve));
+    await fixture.whenStable();
+    expect(confirmButton?.getAttribute("aria-busy")).toBeNull();
+  });
 });
 
 describe("ReviewItems", () => {
