@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-agrupar-por-epica-e-identificar-tipos-de-cambio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-agrupar-por-epica-e-identificar-tipos-de-cambio",
   "baseCommit": "ce35fb1d06dad482c00eff14476fcd9ce39e7d71",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2f81d5fdf6e51b1c1fa375bc7aabd83f79e35ff8e27c2353b2ec3cea965a708e",
@@ -52,12 +52,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9b3fad7f8d62c5e07042fc35a8598266c7689f2a",
+      "attempts": 1,
       "startedAt": "2026-10-30T22:02:59.785Z",
       "doneAt": "2026-10-30T22:04:58.701Z",
-      "summary": "Renderizar bloques de épica e insignias de tipo en la Bandeja y en la cabecera del cambio"
+      "summary": "Renderizar bloques de épica e insignias de tipo en la Bandeja y en la cabecera del cambio",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -69,11 +69,48 @@
     "AC": 5,
     "T": 3
   },
+  "closingSubmittedAt": "2026-10-30T22:17:20.954Z",
   "lockedTests": {
     "packages/ui/src/components/badge.test.ts": "sha256:80669e7c2b54185b597b306c9627935fdc1b784d61b7a5eff29a8f7f5de6e1bf",
     "packages/ui/src/data/views.test.ts": "sha256:0cefd95dded53983e29db9601456ecffb10bc59fd7d7e64542afbcafcb1bed14",
     "packages/ui/src/inbox/inbox-toolbar.test.ts": "sha256:f524abf6cf777dfacfb536a4ed43b971562e264656dbdec4d82bad1613afebaf",
     "packages/ui/src/inbox/inbox-view.test.ts": "sha256:c271958ab9d89e5263c414447f32b97298bd1b22cdc158483c81018f72ad4666",
     "packages/ui/src/inbox/inbox.test.ts": "sha256:dbdaac95200ccdc149214046b5a4cf0de144034d6230ea8a52b725156d0cf077"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "9165d972335b41a06caed19453578be1fe8ea7d8",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/checks.en.md",
+      "docs/checks.md",
+      "docs/decisions/0017-mutation-testing-medido-y-fuera-de-specty-check.md",
+      "docs/formats.md",
+      "docs/ui.md",
+      "packages/cli/src/check/code-rules.ts",
+      "packages/cli/src/check/common.ts",
+      "packages/cli/test/check-code-rules.test.ts",
+      "packages/cli/test/check-docs.test.ts",
+      "packages/ui/src/change/change-page.ts",
+      "packages/ui/src/components/badge.test.ts",
+      "packages/ui/src/components/badge.ts",
+      "packages/ui/src/data/records.ts",
+      "packages/ui/src/data/views.test.ts",
+      "packages/ui/src/data/views.ts",
+      "packages/ui/src/inbox/inbox-row.ts",
+      "packages/ui/src/inbox/inbox-toolbar.test.ts",
+      "packages/ui/src/inbox/inbox-toolbar.ts",
+      "packages/ui/src/inbox/inbox-view.test.ts",
+      "packages/ui/src/inbox/inbox-view.ts",
+      "packages/ui/src/inbox/inbox.test.ts",
+      "packages/ui/src/inbox/inbox.ts"
+    ],
+    "at": "2026-10-30T22:05:17.645Z",
+    "resolved": {
+      "commit": "95eda76",
+      "at": "2026-10-30T22:10:56.069Z"
+    }
   }
 }

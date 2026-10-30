@@ -72,3 +72,22 @@ Identificar visualmente en la UI cada tipo de cambio (`Épica`, `Corte`, `Indivi
   - files: packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox.test.ts, packages/ui/src/inbox/inbox-row.ts, packages/ui/src/change/change-page.ts, docs/ui.md
   - ac: AC2, AC3, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox.test.ts --include src/change/change-page.test.ts
+
+## Cierre
+
+### Resumen
+
+Se añadió la derivación de pertenencia a épica (`epic.id`, `epic.title` y `epic.slice`) en `ChangeView`, el componente `sp-kind-badge` para identificar visualmente cada tipo de cambio (`Épica`, `Corte`, `Individual`, `Quick`, `Manual` y `Spike`) con icono y etiqueta bilingüe en las filas de la Bandeja y en la cabecera del cambio, la agrupación contigua en bloques visuales `[data-epic-group]` dentro de cada sección de la Bandeja cuando hay cortes de una épica, y el modo «Épica» en el selector «Agrupar» que organiza secciones por cada épica y por cada tipo de cambio independiente.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado.
+
+### Decisiones
+
+- En el modo de agrupación «Épica», los cambios independientes sin épica se organizan en secciones explícitas por tipo (`Specs individuales`, `Cambios quick`, `Cambios manuales` y `Spikes`) después de las secciones de cada épica.
+- En los modos «Estado», «Fase» y «Sin agrupar», los cortes de una misma épica se agrupan de forma contigua en un bloque `[data-epic-group]`, preservando el orden de recorrido con `j`/`k`.
+
+### Pendientes
+
+- Ninguno.
