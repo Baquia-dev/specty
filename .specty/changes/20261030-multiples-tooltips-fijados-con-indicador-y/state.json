@@ -2,14 +2,14 @@
   "schema": 1,
   "id": "20261030-multiples-tooltips-fijados-con-indicador-y",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "testing",
   "branch": "specty/20261030-multiples-tooltips-fijados-con-indicador-y",
   "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:444d97256f3f339874af5fdb1b5c5754a70b7e24d2608c39c3e7634a503dfd64",
-    "at": "2026-10-30T06:20:47.558Z",
+    "revision": 2,
+    "hash": "sha256:38fd6a3964e5f0556d3959bc679af323eafaf09af66a97b7bc29bbffd05c89bf",
+    "at": "2026-10-30T06:50:27.714Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
@@ -38,14 +38,14 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/components/item-tooltip.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "e6dbfe72fea59315a4f49f2eab9c2565453e447b",
+      "attempts": 1,
       "startedAt": "2026-10-30T06:21:39.729Z",
       "doneAt": "2026-10-30T06:44:21.797Z",
-      "summary": "Indicador en elemento detonador, soporte de múltiples tooltips fijados simultáneos y anticolisión escalonada"
+      "summary": "Indicador en elemento detonador, soporte de múltiples tooltips fijados simultáneos y anticolisión escalonada",
+      "scopeExtra": [
+        "packages/ui/src/components/item-tooltip.test.ts"
+      ]
     }
   },
   "pending": {
@@ -55,10 +55,11 @@
   "maxIds": {
     "A": 3,
     "AC": 4,
-    "T": 1,
+    "T": 2,
     "S": 1
   },
   "lockedTests": {
     "packages/ui/src/components/item-tooltip.test.ts": "sha256:c2b8f88e09aaaebb52423c8beed10df7b35ae984692cc1a0424979c590bbfad0"
-  }
+  },
+  "testCycle": "bug"
 }
