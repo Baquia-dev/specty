@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-multiples-tooltips-fijados-con-indicador-y",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-multiples-tooltips-fijados-con-indicador-y",
   "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
   "revision": 1,
@@ -45,6 +45,7 @@
     "AC": 4,
     "T": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T06:21:34.554Z"
+  "lockedTests": {
+    "packages/ui/src/components/item-tooltip.test.ts": "sha256:fde79e63c43970fbcbd7fa3435976aae2c48e786386038404b2b82344d0495f9"
+  }
 }
