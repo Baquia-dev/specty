@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-un-merge-abortado-no-deja-el-cambio-esperando-a",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-un-merge-abortado-no-deja-el-cambio-esperando-a",
   "baseCommit": "58f383b240b47be41c189de25d30198cb97cdbb9",
   "revision": 1,
@@ -23,7 +23,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3abf86536c80275fe98f01f2bcc6416df968e0a0",
+      "startedAt": "2026-10-30T08:18:05.817Z",
+      "doneAt": "2026-10-30T08:22:12.058Z",
+      "summary": "next descarta la incorporación cuyo merge ya no está en curso (reutiliza pendingIntegration, como accept y close); adjust se niega con el merge en curso (nueva negativa merging en core, es/en) y descarta la de un merge abortado antes de anotar el ajuste; ARCHITECTURE §9 lo cuenta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

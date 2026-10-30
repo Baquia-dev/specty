@@ -10,6 +10,7 @@ import {
 import { commitState, resolveActive } from "../flow/active";
 import { changeView } from "../flow/views";
 import type { Session } from "../session";
+import { pendingIntegration } from "./integrate";
 
 /** `specty adjust`: records the user's literal request and returns the classification protocol. */
 export async function adjust(session: Session, request: string): Promise<Output> {
@@ -28,14 +29,20 @@ export async function adjust(session: Session, request: string): Promise<Output>
     event: { type: "adjust" },
   });
   if (!moved.ok) return adjustRefusalCard({ reason: "not-in-acceptance" }, header, cards);
+  // The merge `accept` left here comes first; one someone aborted is forgotten.
+  const { integration } = state;
+  const pending = await pendingIntegration(session, active, "accept");
+  if (pending.kind === "wait" && integration !== undefined)
+    return adjustRefusalCard({ reason: "merging", target: integration.target }, header, cards);
+  const current = pending.kind === "go" ? pending.change : active;
   const at = session.environment.now().toISOString();
   const updated = await commitState(
     session,
-    active,
+    current,
     {
-      ...state,
+      ...current.state,
       phase: moved.phase,
-      pending: { ...state.pending, adjustment: { request: request.trim(), at } },
+      pending: { ...current.state.pending, adjustment: { request: request.trim(), at } },
     },
     "adjust.requested",
     { request: request.trim() },

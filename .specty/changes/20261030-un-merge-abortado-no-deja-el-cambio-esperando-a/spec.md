@@ -19,7 +19,7 @@ Si `accept` deja a medias el merge de la rama principal y el agente pide un ajus
 
 ## Tareas
 
-- [ ] T1: next descarta un merge abortado y adjust espera al merge en curso
+- [x] T1: next descarta un merge abortado y adjust espera al merge en curso
   - files: packages/core/src/cards/adjust.ts, packages/cli/src/commands/adjust.ts, packages/cli/src/commands/next.ts, packages/core/test/cards/adjust.test.ts, packages/cli/test/integrate-aborted.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/adjust.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/integrate-aborted.test.ts test/integrate.test.ts && pnpm lint
   - type: fix
