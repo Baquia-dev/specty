@@ -186,7 +186,7 @@ Each layer has its paths (`paths`), the layers it may import (`may`; itself and 
 
 ### `function-lines`
 
-**Stack:** every stack except Elixir. In TypeScript, JavaScript, Java, C#, PHP, C and C++, each function is read on its tree-sitter syntax tree, which comes inside Specty, and goes from the first line of its header, without decorators, annotations or attributes, to the last of its body. In the other languages with braces, and in a file with syntax errors, a function goes from its header to the brace that closes it; in Python, from its `def` to its last line indented deeper; in Ruby, from its `def` to the `end` that closes it.
+**Stack:** every stack except Elixir. In TypeScript, JavaScript, Java, C#, PHP, C, C++, Go, Rust, Swift and Dart, each function is read on its tree-sitter syntax tree, which comes inside Specty, and goes from the first line of its header, without decorators, annotations or attributes, to the last of its body. In the other languages with braces, and in a file with syntax errors, a function goes from its header to the brace that closes it; in Python, from its `def` to its last line indented deeper; in Ruby, from its `def` to the `end` that closes it.
 
 The lines of code of each function, without blank lines or comments. It fails on a function the change touches that is over the limit and is new or grew. One that was already over and did not grow does not count, except with `--all`. Tests are not measured.
 

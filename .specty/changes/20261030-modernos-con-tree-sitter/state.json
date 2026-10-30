@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-modernos-con-tree-sitter",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-modernos-con-tree-sitter",
   "baseCommit": "8f6f314c6eb0916e909fa7e31addd604977ea07f",
   "revision": 1,
@@ -74,12 +74,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "14372c9c04dc826c4fb9d41c5d02f198920e2b93",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:00:15.964Z",
       "doneAt": "2026-10-30T11:00:36.093Z",
-      "summary": "El build comprime en dist/grammars las gramáticas de Go, Rust, Swift y Dart, y grammar-licenses.txt lleva sus licencias MIT."
+      "summary": "El build comprime en dist/grammars las gramáticas de Go, Rust, Swift y Dart, y grammar-licenses.txt lleva sus licencias MIT.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "14e871189485312eba9037b419a061d09db83583",
+      "startedAt": "2026-10-30T11:00:36.422Z",
+      "doneAt": "2026-10-30T11:00:58.343Z",
+      "summary": "formats, checks (es y en) y ARCHITECTURE describen la medida sobre el árbol de Go, Rust, Swift y Dart, con la firma y el cuerpo de Dart."
     }
   },
   "pending": {

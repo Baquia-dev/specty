@@ -77,7 +77,7 @@ follows:
   - files: packages/cli/build.mjs, packages/cli/grammar-licenses.txt, packages/cli/test/bundle-grammars-modern.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars-modern.test.ts test/bundle-grammars-c.test.ts test/bundle-grammars.test.ts && pnpm lint
-- [ ] T4: La documentación de la medida de Go, Rust, Swift y Dart
+- [x] T4: La documentación de la medida de Go, Rust, Swift y Dart
   - files: docs/formats.md, docs/checks.md, docs/checks.en.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-docs.test.ts
