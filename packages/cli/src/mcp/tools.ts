@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { CHANGE_KINDS, COMMIT_TYPES } from "@baquia-dev/specty-core";
 import { isRecord } from "../io/files";
-import { VIEW_URI } from "./app";
+import { VIEW_META, VIEW_URI } from "./app";
 
 /**
  * The tools of `specty mcp`: the agent's commands that work in a folder (ARCHITECTURE §6), each
@@ -203,9 +203,11 @@ export const VIEW_TOOL = "specty_view";
 /**
  * What `tools/list` answers: each tool with the JSON schema of its arguments. With `apps` (the
  * client renders MCP Apps and the view exists), a change's tools link to the view, and the view
- * has its own tool, which the model does not see.
+ * has its own tool, which the model does not see. Each link also asks for no frame: Claude Desktop
+ * reads that from the tool, not from the page.
  */
 export function toolList(apps = false): Record<string, unknown>[] {
+  const linked = { ui: { ...VIEW_META.ui, resourceUri: VIEW_URI } };
   const tools = TOOLS.map((tool) => ({
     name: tool.name,
     description: tool.description,
@@ -214,7 +216,7 @@ export function toolList(apps = false): Record<string, unknown>[] {
       properties: { ...tool.properties, folder: FOLDER },
       required: tool.required,
     },
-    ...(apps && tool.view !== false ? { _meta: { ui: { resourceUri: VIEW_URI } } } : {}),
+    ...(apps && tool.view !== false ? { _meta: linked } : {}),
   }));
   if (!apps) return tools;
   const view = {

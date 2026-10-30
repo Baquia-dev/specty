@@ -107,13 +107,14 @@ describe("specty mcp as an MCP App", () => {
     expect(resultOf(read).contents).toEqual([
       { uri: VIEW, mimeType: MIME, text: PAGE, _meta: { ui: { prefersBorder: false } } },
     ]);
-    // Claude Desktop reads it from the tool's `_meta.ui`, next to `resourceUri`.
+    // Claude Desktop reads it from the tool's `_meta.ui`, next to `resourceUri`. Only the tools
+    // the model calls show the view; `specty_view` is the view's own (AC6).
     const linked = toolsOf(list).filter((tool) => {
       const ui = (tool._meta as { ui?: { resourceUri?: string } } | undefined)?.ui;
-      return ui?.resourceUri === VIEW;
+      return ui?.resourceUri === VIEW && tool.name !== "specty_view";
     });
     expect(linked.map((tool) => tool.name)).toEqual(
-      expect.arrayContaining(["specty_new", "specty_propose", "specty_next", "specty_view"]),
+      expect.arrayContaining(["specty_new", "specty_propose", "specty_next"]),
     );
     for (const tool of linked) {
       expect(tool._meta, String(tool.name)).toMatchObject({

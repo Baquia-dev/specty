@@ -123,7 +123,7 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
   - files: packages/cli/src/mcp/app.ts, packages/cli/src/commands/mcp.ts, packages/cli/test/mcp-app.test.ts, docs/ui.md
   - ac: AC9, AC10
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts && pnpm typecheck && pnpm lint && pnpm knip
-- [ ] T4: Claude Desktop no enmarca la vista
+- [x] T4: Claude Desktop no enmarca la vista
   - files: packages/cli/src/mcp/tools.ts, packages/cli/test/mcp-app.test.ts
   - ac: AC9
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint

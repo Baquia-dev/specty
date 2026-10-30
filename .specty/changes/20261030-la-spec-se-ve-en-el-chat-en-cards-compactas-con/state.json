@@ -102,6 +102,17 @@
       "doneAt": "2026-10-30T06:15:03.297Z",
       "summary": "resources/read da la vista con _meta.ui.prefersBorder: false (VIEW_META en mcp/app.ts). docs/ui.md cuenta las cards, el aspecto del anfitrión y el alto del contenido.",
       "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/mcp-app.test.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "38f1ff3118094e363c614d3cd2c776e1d805f028",
+      "startedAt": "2026-10-30T06:53:12.294Z",
+      "doneAt": "2026-10-30T06:55:59.285Z",
+      "summary": "Las herramientas que el modelo llama y enlazan la vista llevan prefersBorder: false en su _meta.ui, de donde lo lee Claude Desktop; specty_view no. S2: el test de AC9 ya no lo exige a specty_view."
     }
   },
   "pending": {
@@ -113,14 +124,14 @@
     "AC": 10,
     "T": 5,
     "R": 3,
-    "S": 1
+    "S": 2
   },
   "lockedTests": {
     "packages/ui/src/app/embedded.test.ts": "sha256:ee69d4204d4d0d0cd278b2acf98e0cdaa8df377001d5e34778c14b66c61afb51",
     "packages/ui/src/data/mcp-app.test.ts": "sha256:b83074e374582bbbb7a4be0817605536df5535de786f5fbbb5155e34ee26ccb6",
     "packages/ui/src/review/spec-cards.test.ts": "sha256:d3c56193c398ac08d6a8594987c7bbff5a52d3a35c0ff67d96aba0f9b66ea6e6",
     "packages/ui/src/theme/host-look.test.ts": "sha256:6dcedd738697851c5340befa18b6993267c550bae73dc45c9d65391f8d069102",
-    "packages/cli/test/mcp-app.test.ts": "sha256:629d1add8f295aea86589e309bab67abf87fe219bcc90414f851123fe5dd00c3",
+    "packages/cli/test/mcp-app.test.ts": "sha256:28a545b352131f2be68b395304c478013a00fc3572662f1928fec96d97122989",
     "packages/ui/src/app/embedded-look.test.ts": "sha256:a7e21ced2e213bc24693ddb5bfb24a60f45dff7828c73dcfd349fb070ba2a263"
   }
 }
