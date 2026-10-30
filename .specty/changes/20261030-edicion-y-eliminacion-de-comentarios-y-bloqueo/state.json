@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261030-edicion-y-eliminacion-de-comentarios-y-bloqueo",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-edicion-y-eliminacion-de-comentarios-y-bloqueo",
+  "baseCommit": "115b28a8160a96c2f75054f6a484bb524d088254",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ea55a710871c53d6e0d5240470191144393363502dca416747f550c613ab4e78",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:21b5be4c00fa8f1a53ec7b64cc283beaef9f6b58544a12c0b76db87663e8a796",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b66bbd364843a47e7d3be0744b8a3df74e1aa591a3fbb72847189a00d2397dbb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1f6bab2674feb451f60bc579700b829302e20b7b99bf8ad869627264c7a30dcf",
+    "at": "2026-10-30T08:48:11.311Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
