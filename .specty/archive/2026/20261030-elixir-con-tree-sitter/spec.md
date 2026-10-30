@@ -59,3 +59,27 @@ Elixir es el único stack sin `function-lines` ni `complexity`: no tiene estimac
 ## Riesgos
 
 - R1: El `tree-sitter` nativo que pnpm instala como peer pesa en la instalación de desarrollo. Mitigación: no se compila (`allowBuilds: false`) y no va en ningún paquete publicado.
+
+## Cierre
+
+### Resumen
+
+El core mide las funciones de Elixir sobre el árbol de tree-sitter.
+- `TreeGrammar` añade `calls`, que distingue las llamadas por el texto de su `target`.
+  - `def`, `defp`, `defmacro` y `defmacrop` son funciones, nombradas por la llamada de sus argumentos (también con guarda).
+  - `if` y `unless` son ramas, y lo es cada cláusula de `case`, `cond`, `receive`, `with`, `rescue` y `catch`.
+- Una `fn` es una función y toma el nombre de su variable.
+- `tree-sitter-elixir` 0.3.5 es devDependency del core, sin su binding nativo.
+
+### Desviaciones
+
+- El corte C3 no cabía en un cambio (XL): este es su cambio previo, solo el core, y el corte conecta la medida con `specty check`, el bundle y la documentación.
+- Su peer `tree-sitter` (el binding nativo, obligatorio) se declara opcional con `packageExtensions` en `pnpm-workspace.yaml`, en lugar de dejar que pnpm lo instale y apagarlo en `allowBuilds`: instalado, dejaba un aviso de peer no satisfecho en la gramática de Kotlin.
+
+### Decisiones
+
+- Las cláusulas de una `fn` no son ramas: una `fn` es una función.
+
+### Pendientes
+
+- El corte C3: `.ex` y `.exs` en el CLI, Elixir fuera de `UNMEASURED`, el test que lo daba por no medido, la gramática en el bundle con su licencia Apache-2.0, y la documentación.
