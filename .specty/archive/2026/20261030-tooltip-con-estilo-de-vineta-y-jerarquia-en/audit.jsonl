@@ -9,3 +9,8 @@
 {"ts":"2026-10-30T05:46:06.707Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T2","baseCommit":"96ea40e8feb2eaf88bc3ddb66e395a423dbf2c6a"}}
 {"ts":"2026-10-30T05:47:10.065Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts","exit":0,"ms":7562,"tree":"sha256:e6af599752dd7d99d3a8a00aa90ab5e21cc66c43eeb0e0414d1190b9cf153d3c"}}
 {"ts":"2026-10-30T05:47:10.155Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T2","summary":"Estilo de viñeta y jerarquía visual en la burbuja del tooltip flotante"}}
+{"ts":"2026-10-30T05:53:21.707Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":360949,"tree":"sha256:e6af599752dd7d99d3a8a00aa90ab5e21cc66c43eeb0e0414d1190b9cf153d3c"}}
+{"ts":"2026-10-30T05:53:21.708Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-30T05:53:57.391Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:4c57ab31586aa67f13de875ac444f864a15f18fe0f3bedd47512a1786bd5ba00","size":"S","warnings":0}}
+{"ts":"2026-10-30T05:57:38.209Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":215105,"tree":"sha256:857baf3245ee269076f5e6b4da5c397d7ece6515e8835aae824cb7b74b6414b0"}}
+{"ts":"2026-10-30T05:57:38.439Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.closed","data":{"delegated":true}}

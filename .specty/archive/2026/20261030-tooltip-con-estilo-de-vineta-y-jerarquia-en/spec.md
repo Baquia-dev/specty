@@ -49,3 +49,22 @@ Mejorar la presentación y usabilidad de los tooltips de siglas (`A`, `AC`, `T`,
   - files: packages/ui/src/components/item-tooltip.ts, packages/ui/src/components/item-tooltip.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/item-tooltip.test.ts
+
+## Cierre
+
+### Resumen
+
+Se mejoraron los tooltips contextuales de siglas (`A`, `AC`, `T`, `R`, `S`, `C`) dotando al contenedor flotante de un estilo de viñeta con viñeta indicadora (`data-item-bullet`), encabezado en seminegrita (`data-item-header`) y cuerpo descriptivo diferenciado (`data-item-body`), y añadiendo el cursor de información (`cursor: help`) y resalte visual interactivo en hover y estado activo (`data-item-active`) para todos los elementos con siglas.
+
+### Desviaciones
+
+- Ninguna respecto al plan original.
+
+### Decisiones
+
+- Se utilizó el cursor estándar `help` en `styles.css` y `ItemText` para denotar ayuda e información contextual al pasar el ratón.
+- La estructura del DOM en la burbuja del tooltip preserva el `textContent` concatenado (`<Tipo> <ID>: <contenido>`), manteniendo compatibilidad total con todas las suites de pruebas existentes.
+
+### Pendientes
+
+- Ninguno.
