@@ -49,16 +49,25 @@
     },
     "T2": {
       "status": "done",
+      "baseCommit": "17183c2699b05185b15587e2e17eb77c19e194fe",
+      "attempts": 1,
+      "startedAt": "2026-10-30T08:42:52.659Z",
+      "doneAt": "2026-10-30T08:48:26.099Z",
+      "summary": "change.verified anota la cobertura de lo que añade el cambio (desde MERGE_HEAD si hay merge en curso; FullRun lleva started), y la aceptación muestra la de la última verificación que pasó sobre el código actual, también en la nota de accept",
       "scopeExtra": [
         "packages/cli/src/check/files.ts",
         "packages/cli/src/flow/integrate.ts",
         "packages/cli/src/server/runs.ts"
-      ],
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "17183c2699b05185b15587e2e17eb77c19e194fe",
-      "startedAt": "2026-10-30T08:42:52.659Z",
-      "doneAt": "2026-10-30T08:48:26.099Z",
-      "summary": "change.verified anota la cobertura de lo que añade el cambio (desde MERGE_HEAD si hay merge en curso; FullRun lleva started), y la aceptación muestra la de la última verificación que pasó sobre el código actual, también en la nota de accept"
+      "baseCommit": "7f1de4f8e876be20b9b971f61d5edd92baf23c21",
+      "startedAt": "2026-10-30T08:48:26.432Z",
+      "doneAt": "2026-10-30T08:48:47.262Z",
+      "summary": "lcovonly junto a text-summary en los vitest.config.ts de core y de la CLI: cada paquete deja coverage/lcov.info, sin informe HTML"
     }
   },
   "pending": {

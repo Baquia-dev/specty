@@ -77,7 +77,7 @@ kind: standard
   - files: packages/cli/test/accept-coverage.test.ts, packages/cli/src/check/coverage.ts, packages/cli/src/flow/verified.ts, packages/cli/src/flow/acceptance.ts, packages/cli/src/commands/accept.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/accept-coverage.test.ts test/check-coverage.test.ts test/integrate.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T3: Los tests de core y de la CLI dejan LCOV
+- [x] T3: Los tests de core y de la CLI dejan LCOV
   - files: packages/core/vitest.config.ts, packages/cli/vitest.config.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core test && test -f packages/core/coverage/lcov.info && test ! -d packages/core/coverage/lcov-report

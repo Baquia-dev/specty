@@ -11,7 +11,7 @@ export default defineConfig({
       provider: "v8",
       include: ["src/**"],
       exclude: ["src/main.ts", "src/terminal.ts"],
-      reporter: ["text-summary"],
+      reporter: ["text-summary", "lcovonly"],
       thresholds: { lines: 80, statements: 80, functions: 80, branches: 70 },
     },
   },
