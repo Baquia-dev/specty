@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "id": "20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
+  "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b3917e2d0fe404842bf30f89b8052bfa79d07b6e14b014c43a219b8d70d987a7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:bcce1b938c6b76fa299d9a812de1ba34a6acc596aef3f1ddf86a76f86d6e3ecf",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ee0d4fd17848d4cc1a648fab81bb73dbb302bf228c08e060f7a85a795301f1d0",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:f4eefa588038b0986392f9896d61fd7a3308be2bfaa3236e0a118f2bf25eea07",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:1b5c8a242c67efc16230a730d43def8e8eb709fb27a07acd13d691f32df6247a",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:97c86d8c7614b3ef7d7dd1d7f758d6ab8fa39e043b08ab016f9aded61103a53a",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:e71d14fba37b19e88753ee67f1b7391d4d4ba07c29b097696b55a9fbf4abcf15",
+      "decision": "implicit"
+    },
+    "A8": {
+      "hash": "sha256:3c4276ca3d1fe7c148659a9ff092f7dc17009fb625f2a29587d73c364cff2edf",
+      "decision": "implicit"
+    },
+    "A9": {
+      "hash": "sha256:112fda9305e370c8bce0ab7534b30a55cb8cd505b7b9131ae4a8a790873fdde6",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 9,
+    "AC": 10,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:daced9d6055e48b884303e6d85636473433ba3faec043525581e376e4f931738",
+    "at": "2026-10-30T05:53:55.218Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
