@@ -102,3 +102,37 @@ allowedDependencies:
 - R1: Las gramáticas de `@repomix/tree-sitter-wasms` van por detrás de TypeScript, y la sintaxis nueva sale como `ERROR`. Mitigación: ese archivo se mide con la estimación (A7).
 - R2: Los tests de `functions` que ya existen fijan números de la estimación. Mitigación: las funciones de esos tests se leen igual con los dos métodos (AC7); si alguno cambia, se ajusta con su motivo.
 - R3: Más tiempo de `specty check --all`. Mitigación: el cierre mide `--all` sobre Specty, con y sin tree-sitter.
+
+## Cierre
+
+### Resumen
+
+`function-lines` y `complexity` miden las funciones de TypeScript y JavaScript sobre su árbol de sintaxis de tree-sitter.
+- El core mide con `treeFunctions` y una tabla por lenguaje (`tree-languages.ts`).
+- El CLI carga web-tree-sitter y la gramática de cada archivo la primera vez que hacen falta (`check/syntax.ts`).
+- El bundle lleva en `dist/grammars/` el runtime y las gramáticas de TypeScript, TSX y JavaScript comprimidas con brotli (336 KB), con sus licencias.
+- Si una versión del archivo no parsea, o la gramática no carga, las dos versiones se miden con la estimación.
+- El ADR 0016 recoge la decisión.
+
+### Desviaciones
+
+- La interfaz `SyntaxNode` lleva también `isNamed`, `parent` y la columna de cada posición. `isNamed` porque el token `function` tiene el mismo tipo que un nodo; la columna, para no contar un punto y coma insertado sin ancho.
+- Brotli de calidad 9, no 11 (A3 de la épica): las 17 gramáticas ocupan 1,80 MB en 0,25 s, frente a 1,62 MB en 20 s, en cada build.
+- El bundle no busca en `node_modules` si le falta una gramática (A2): el `NODE_PATH` que pnpm pone en los tests le dejaba encontrar otra copia. Solo las fuentes leen `node_modules`. `syntax.ts` entró en T3 con `scope add`.
+- Hubo una carrera: una gramática que se cargaba antes de que arrancara el runtime fallaba y quedaba guardada como «sin gramática». Ahora cada gramática espera al runtime.
+- Los tests nuevos van en archivos nuevos (`check-functions-tree.test.ts`, `bundle-grammars.test.ts`), para no bloquear los que ya existían, que pasan sin cambios.
+- Un test más, `functions-tree-names.test.ts`, cubre los nombres por miembro, clave y campo, y las filas de una cadena de varias líneas.
+
+### Decisiones
+
+- Las dos verificaciones de una ejecución comparten la medida (un `WeakMap` por contexto), así que cada archivo se parsea una vez.
+- El paquete de las gramáticas se resuelve con `require.resolve` de un literal, en una función, para que knip lo vea usado sin chocar con el `require` del banner del bundle.
+
+### Pendientes
+
+- Deuda que la medida nueva destapa en Specty con `--all` (solo falla si un cambio agranda la función):
+  - por líneas: `deriveView` (85) en `ui/src/data/views.ts` y `asistenciaSample` (68) en `ui/src/data/sample-acceptance.ts`;
+  - por complejidad, sobre todo por ternarios cuyo `?` abre la línea: `scopeAdd` (11), `guard` (12), `guardContext` (13), `push` en `flow/ci-github.ts` (12), `writeProjectFiles` (11), `newRefusalNext` (11), `leadingOptions` (13), `clausesOf` en `exporters/src/import-openspec.ts` (11) y `changesView` en `vscode/src/view.ts` (13).
+- Medir todo Specty (450 archivos) tarda 0,5 s con el árbol y 0,04 s con la estimación (R3).
+- Los demás lenguajes: C2 y C3 de la épica. En Dart, la firma y el cuerpo de una función son nodos hermanos (`method_signature` + `function_body`), así que la tabla necesita esa forma.
+- Reconstruir el dist de main tras incorporar, para que el `specty` global mida con el árbol.
