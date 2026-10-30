@@ -61,7 +61,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: El core mide Python y Ruby sobre el árbol
+- [x] T1: El core mide Python y Ruby sobre el árbol
   - files: packages/core/src/checks/functions-tree.ts, packages/core/src/checks/tree-languages.ts, packages/core/src/checks/tree-languages-scripting.ts, packages/core/test/checks/functions-tree-scripting.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree-scripting.test.ts test/checks/functions-tree-modern.test.ts test/checks/functions-tree-c.test.ts test/checks/functions-tree.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

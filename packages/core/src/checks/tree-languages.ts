@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { C, CPP, CSHARP, JAVA, PHP } from "./tree-languages-c";
 import { DART, GO, KOTLIN, RUST, SWIFT } from "./tree-languages-modern";
+import { PYTHON, RUBY } from "./tree-languages-scripting";
 
 /**
  * What `treeFunctions` needs to know of each language's tree-sitter grammar: which nodes are a
@@ -20,7 +21,9 @@ export type TreeLanguage =
   | "rust"
   | "swift"
   | "dart"
-  | "kotlin";
+  | "kotlin"
+  | "python"
+  | "ruby";
 
 export interface TreeGrammar {
   /** The named nodes that are a function. */
@@ -31,6 +34,10 @@ export interface TreeGrammar {
    */
   readonly bodies?: ReadonlySet<string>;
   readonly signatures?: ReadonlySet<string>;
+  /** The statements that are no code when their only named child is this node: a docstring. */
+  readonly docstrings?: ReadonlyMap<string, string>;
+  /** The nodes that are code only in their first row: Python's strings, as its estimator. */
+  readonly strings?: ReadonlySet<string>;
   /** The named nodes that are a branch: a condition, a loop, a catch or a ternary. */
   readonly branches: ReadonlySet<string>;
   /** The named nodes that are a branch when their first token is this one: a `case`, not a `default`. */
@@ -101,4 +108,6 @@ export const TREE_GRAMMARS: Readonly<Record<TreeLanguage, TreeGrammar>> = {
   swift: SWIFT,
   dart: DART,
   kotlin: KOTLIN,
+  python: PYTHON,
+  ruby: RUBY,
 };

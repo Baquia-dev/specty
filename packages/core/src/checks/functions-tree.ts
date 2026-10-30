@@ -67,9 +67,12 @@ function walk(grammar: TreeGrammar, root: SyntaxNode): Walked {
   const pending: [SyntaxNode, Found | undefined][] = [[root, undefined]];
   for (let next = pending.pop(); next !== undefined; next = pending.pop()) {
     const [node, owner] = next;
-    // A comment is no code, nor are its children, as the doc comments of Rust have.
-    if (grammar.comments.has(node.type)) continue;
+    if (isNoCode(grammar, node)) continue;
     const inner = visit(grammar, node, owner, walked);
+    if (grammar.strings?.has(node.type) === true) {
+      walked.rows.add(node.startPosition.row);
+      continue;
+    }
     const children = node.children;
     if (children.length === 0) codeRows(node, walked.rows);
     for (let index = children.length - 1; index >= 0; index -= 1) {
@@ -78,6 +81,15 @@ function walk(grammar: TreeGrammar, root: SyntaxNode): Walked {
     }
   }
   return walked;
+}
+
+/** A comment, with its children, as the doc comments of Rust have, or a docstring of Python. */
+function isNoCode(grammar: TreeGrammar, node: SyntaxNode): boolean {
+  if (grammar.comments.has(node.type)) return true;
+  const only = grammar.docstrings?.get(node.type);
+  if (only === undefined) return false;
+  const named = node.children.filter((child) => child.isNamed);
+  return named.length === 1 && named[0]?.type === only;
 }
 
 /** A node as a function, which owns what is inside it, or as a branch of the one that owns it. */

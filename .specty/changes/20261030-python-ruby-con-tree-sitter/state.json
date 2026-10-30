@@ -41,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2021a7725541bf3c28f5be49fbb616a33b1383cc",
+      "startedAt": "2026-10-30T11:18:41.981Z",
+      "doneAt": "2026-10-30T11:19:39.059Z",
+      "summary": "El core mide Python y Ruby sobre el árbol con la misma medida que sus estimaciones (tree-languages-scripting.ts); un docstring no es código, y de una cadena de Python solo cuenta su primera fila."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
