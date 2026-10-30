@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-specty-check-avisa-de-las-vulnerabilidades-que",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-specty-check-avisa-de-las-vulnerabilidades-que",
   "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
   "revision": 1,
@@ -46,6 +46,7 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T12:51:21.908Z"
+  "lockedTests": {
+    "packages/cli/test/check-vulnerabilities.test.ts": "sha256:7489182f4f496dd6488d730556c95782c6d3feb6f2b01c6eacc2dfa9dd4c8b86"
+  }
 }
