@@ -81,3 +81,29 @@ Sigue el mismo patrón que `secrets` y `vulnerabilities` (ADR 0012): una herrami
 - R1: Un escáner lento en un repositorio grande haría esperar a cada `task done` — solo escanea los archivos de la ejecución, con el límite de `verify.timeoutSec`; al agotarse, el check sale como no ejecutado sin bloquear.
 - R2: Una regla ruidosa bloquearía cambios ajenos a ella — solo cuentan las líneas añadidas, las de gravedad baja son avisos, y el check se baja a `warn` o se apaga con `checks.levels`.
 - R3: Los tests que comprueban el resumen exacto de `specty check` en un repositorio con reglas verían un check más — hoy ningún fixture tiene archivos `.semgrep*` ni `.opengrep*`; se corre la suite completa del CLI antes de aceptar.
+
+## Cierre
+
+### Resumen
+
+`specty check` tiene el check `code-rules`. Cuando la raíz del repositorio tiene reglas de Opengrep o Semgrep (`.opengrep.yml`, `.opengrep.yaml`, `.opengrep/`, `.semgrep.yml`, `.semgrep.yaml` o `.semgrep/`), Specty copia los archivos de la ejecución a una carpeta temporal, tal como los ve el modo y sin las propias reglas, junto al `.semgrepignore` de la raíz. Después ejecuta Opengrep en la raíz, con cada fuente de reglas como `--config` relativo; sin Opengrep, usa Semgrep con `--metrics=off`. Los hallazgos son las coincidencias que tocan una línea añadida, con el id de la regla y la primera línea de su mensaje. Las de gravedad `ERROR`, `CRITICAL` o `HIGH` hacen fallar el check y las demás solo avisan. Sin reglas en la raíz, el check no aparece; sin escáner, no corre y dice que se instale.
+
+### Desviaciones
+
+- La lectura del informe quedó en tres funciones pequeñas (`matchOf`, `lineOf` y `textOr`), porque en una sola superaba la complejidad máxima de 10.
+- Un resultado sin `extra` cuenta como coincidencia de gravedad `ERROR` con el mensaje vacío, en vez de descartarse.
+
+### Decisiones
+
+- El escáner corre en la raíz con rutas relativas, y no en la copia, porque Opengrep prefija los ids de las reglas con las carpetas de su archivo relativas a donde corre. Con la ruta absoluta de una copia temporal, los ids saldrían con esa ruta.
+- Una coincidencia de varias líneas cuenta si cualquiera de ellas es añadida, y el hallazgo se ubica en la primera.
+- La copia de los archivos de la ejecución repite unas diez líneas de `secrets`; no se extrajo a un módulo común porque `secrets.ts` quedaba fuera del alcance.
+- No se probó con el binario real de Opengrep, porque descargarlo y ejecutarlo se denegó en esta sesión. Los flags, el JSON, los códigos de salida, el prefijo de los ids y la raíz del proyecto salen del código fuente de la v1.33.1 (`Scan_CLI.ml`, `Exit_code.ml`, `Rule_fetching.ml` y `Project.ml`), y los tests usan escáneres falsos con esa forma.
+
+### Pendientes
+
+- Probar el check con Opengrep instalado (su `install.sh` de GitHub) o con `brew install semgrep`, sobre un repositorio con `.semgrep.yml`.
+- Una clave de configuración para reglas en otras rutas.
+- Un paquete de reglas propio de Specty, con las de `core/src/scope/risk.ts` como reglas de árbol de sintaxis.
+- Avisar de que falta el escáner en `specty check --install`, en `doctor` y en la plantilla de la CI.
+- Extraer la copia de los archivos de la ejecución que comparten `secrets` y `code-rules`.

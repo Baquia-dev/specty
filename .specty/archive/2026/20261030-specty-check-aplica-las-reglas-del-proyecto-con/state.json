@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261030-specty-check-aplica-las-reglas-del-proyecto-con",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261030-specty-check-aplica-las-reglas-del-proyecto-con",
   "baseCommit": "ce35fb1d06dad482c00eff14476fcd9ce39e7d71",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:2f327158979bd2dfab37257f58197c826cbfe8d5d97f01ed30352f9344f1cc6e",
@@ -64,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b148aaf899b630377ef9053d4cc0b3212e16e887",
+      "attempts": 1,
       "startedAt": "2026-10-30T21:15:19.577Z",
       "doneAt": "2026-10-30T21:15:34.863Z",
-      "summary": "El test de las guías cuenta code-rules entre los checks que su ejemplo no muestra, porque solo aparece con reglas en la raíz"
+      "summary": "El test de las guías cuenta code-rules entre los checks que su ejemplo no muestra, porque solo aparece con reglas en la raíz",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -82,6 +82,7 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-10-30T21:20:25.885Z",
   "lockedTests": {
     "packages/cli/test/check-code-rules.test.ts": "sha256:d2c53c6d7891bbcbdae13fe2e98cae7fd32e0d4ba7098a4bec71bdee1c020da2"
   }
