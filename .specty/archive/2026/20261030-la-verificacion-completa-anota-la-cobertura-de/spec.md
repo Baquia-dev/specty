@@ -92,3 +92,27 @@ kind: standard
 
 - R1: Medir la cobertura alarga cada registro de la verificación completa — lee solo los informes nuevos y las líneas del diff, y si falla la verificación se anota igual.
 - R2: Un informe de los tests de otra carpeta modificado durante la verificación contaría como suyo — solo se leen las rutas de `checks.coverage.reports` dentro del repositorio, como en el check.
+
+## Cierre
+
+### Resumen
+
+Cada verificación completa que anota Specty (la de `accept`, la de la UI o la del merge de main) mide la cobertura de las líneas que añade el cambio con los informes que dejó, y la guarda en `change.verified` (`measured`, `covered`, cinco tramos y `stretches`). La nota de la verificación de `accept`, el resumen de la persona y la sección COBERTURA de la tarjeta del agente muestran la de la última verificación que pasó sobre el código actual, con el umbral y los tramos sin ejecutar por debajo de `checks.coverage.warn`. Los tests de core y de la CLI dejan `coverage/lcov.info`.
+
+### Desviaciones
+
+- Otra sesión (specty-02) señaló que, con el merge de main en curso, el diff desde el merge-base contaba como del cambio las líneas que trae main. Antes de aprobar los tests se añadió un test de AC1 con main incorporado, y la medición cuenta desde `MERGE_HEAD`: `checkContext` acepta una base opcional (S1, `check/files.ts`).
+- El diseño deducía el inicio de la verificación de su duración, sin tocar sus llamadas. Falló en el merge, porque `integrate` calcula el árbol antes de registrar: `FullRun` lleva `started` (S2, `flow/integrate.ts` y `server/runs.ts`).
+- Textos: la línea no empieza por «Cobertura:» (la tarjeta ya tiene la sección COBERTURA); los tramos son «Sin ejecutar: ruta:10-14» y el resto, «Otros N tramos sin ejecutar.».
+
+### Decisiones
+
+- Solo cuenta la última `change.verified` que pasó y cuyo `tree` es el código actual; una que falló o sobre otro código no se muestra.
+- Medir nunca impide anotar la verificación: un error deja la entrada sin `coverage`.
+
+### Pendientes
+
+- Cambio siguiente: la UI y el chat (Aceptación) muestran la cobertura, y ui (`coverageReporters` en `angular.json`), exporters y vscode dejan LCOV.
+- Esta aceptación corrió con el `specty` de main, sin este código: comprobar la cobertura real en la próxima aceptación, tras reconstruir el dist de main.
+- `task.verified` no anota cobertura.
+- El cambio duplicado `20261030-la-aceptacion-muestra-la-cobertura` (de otra sesión, en revisión) queda por cancelar.
