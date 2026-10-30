@@ -205,6 +205,44 @@ describe("progressOf", () => {
       "2026-10-22T10:18:00.000Z",
     );
   });
+
+  it("AC3: reads the coverage a full verification kept, and none from a malformed one", () => {
+    const full = "flutter analyze && flutter test";
+    const coverage = {
+      measured: 130,
+      covered: 120,
+      gaps: [{ path: "lib/a.dart", from: 10, to: 14 }],
+      stretches: 1,
+    };
+    const last = (data: Record<string, unknown>) =>
+      progressOf(
+        SPEC,
+        STATE,
+        [
+          ...AUDIT,
+          {
+            ts: "2026-10-22T11:05:00.000Z",
+            actor: "specty",
+            event: "change.verified",
+            data: { cmd: full, exit: 0, ms: 41_000, ...data },
+          },
+        ],
+        full,
+      ).full?.last;
+    expect(last({ coverage })).toMatchObject({ coverage });
+    // A malformed stretch is dropped; the rest stays.
+    const odd = { ...coverage, gaps: [{ path: "lib/a.dart", from: "10" }, ...coverage.gaps] };
+    expect(last({ coverage: odd })).toMatchObject({ coverage: { gaps: coverage.gaps } });
+    for (const bad of [
+      "92 %",
+      { ...coverage, measured: "130" },
+      { ...coverage, gaps: "none" },
+      { measured: 130, covered: 120 },
+    ]) {
+      expect(last({ coverage: bad })).not.toHaveProperty("coverage");
+    }
+    expect(last({})).not.toHaveProperty("coverage");
+  });
 });
 
 describe("outputSegments", () => {
