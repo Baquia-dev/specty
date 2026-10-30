@@ -176,6 +176,35 @@
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.35);
 }
 
+/*
+ * In the chat of an MCP App (`app/embedded.ts`): the view paints no background, so the chat shows
+ * between its cards, and takes the colors of the host's variables (`theme/host-look.ts`), with
+ * Specty's when the host gives none. A card is a veil of the text color over whatever lies behind.
+ * A host variable that refers to one the host never defined counts as missing, so its fallback holds.
+ */
+[data-embedded] {
+  --color-bg: var(--color-background-primary, #fafafa);
+  --color-text: var(--color-text-primary, #18181b);
+  --color-text-muted: var(--color-text-secondary, #52525b);
+  --color-surface: color-mix(in srgb, var(--color-text) 2.5%, transparent);
+  --color-border: var(
+    --color-border-primary,
+    color-mix(in srgb, var(--color-text) 12%, transparent)
+  );
+}
+
+[data-embedded][data-theme="dark"] {
+  --color-bg: var(--color-background-primary, #222222);
+  --color-text: var(--color-text-primary, #e8e8e8);
+  --color-text-muted: var(--color-text-secondary, #a6a6a6);
+  --color-surface: color-mix(in srgb, var(--color-text) 4%, transparent);
+}
+
+[data-embedded] body {
+  background: transparent;
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+}
+
 @layer base {
   body {
     margin: 0;

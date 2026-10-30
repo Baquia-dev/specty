@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DestroyRef, Injectable, InjectionToken, inject } from "@angular/core";
 import type { Phase } from "@baquia-dev/specty-core/light";
+import { HostLook } from "../theme/host-look";
 import type { RunRecord } from "./progress";
 import { ActionError, type Bilingual, type ChangeRecord, SpectyData } from "./records";
 import { isRecords, isRun } from "./server-answers";
@@ -10,7 +11,8 @@ import { isRecords, isRun } from "./server-answers";
  * sandboxed iframe, and speaks JSON-RPC 2.0 with the host over `postMessage`. It greets the host
  * (`ui/initialize`), learns from each tool's arguments the folder the tool runs in, and reads that
  * folder's change with `specty_view`, a tool only the app can call: again every second while the
- * change moves, with the fingerprint of what it has. It only reads: the person decides in the
+ * change moves, with the fingerprint of what it has. It takes the chat's look from the host
+ * (`HostLook`) and tells it the height of its content. It only reads: the person decides in the
  * terminal or in `specty ui`.
  */
 
@@ -85,6 +87,7 @@ type ViewAnswer =
 @Injectable()
 export class McpAppData extends SpectyData {
   private readonly host = inject(MCP_HOST);
+  private readonly look = inject(HostLook);
   private records: readonly ChangeRecord[] = [];
   private run: RunRecord | undefined;
   private problem: Bilingual | undefined;
@@ -126,6 +129,7 @@ export class McpAppData extends SpectyData {
       appCapabilities: { availableDisplayModes: ["inline", "pip"] },
     }).then((answer) => {
       this.modes = modesOf(answer);
+      this.look.take(isMessage(answer) ? answer.hostContext : undefined);
       this.host.post({ jsonrpc: "2.0", method: "ui/notifications/initialized" });
       this.observeSize();
     });
@@ -173,9 +177,15 @@ export class McpAppData extends SpectyData {
     }
   }
 
-  /** What the host tells: the tool's arguments, its result, or that it takes the view down. */
+  /**
+   * What the host tells: the tool's arguments, its result, that its look changed, or that it
+   * takes the view down.
+   */
   private heard(method: string, params: Message): void {
     switch (method) {
+      case "ui/notifications/host-context-changed":
+        this.look.take(params);
+        return;
       case "ui/notifications/tool-input":
         this.folder = folderIn(params.arguments);
         void this.read();
@@ -251,7 +261,7 @@ export class McpAppData extends SpectyData {
   private observeSize(): void {
     if (this.closed || typeof ResizeObserver === "undefined") return;
     this.observer = new ResizeObserver(() => {
-      const { scrollWidth: width, scrollHeight: height } = document.documentElement;
+      const { width, height } = contentSize(document.documentElement);
       this.host.post({
         jsonrpc: "2.0",
         method: "ui/notifications/size-changed",
@@ -275,6 +285,19 @@ export class McpAppData extends SpectyData {
       this.host.post({ jsonrpc: "2.0", id, method, params });
     });
   }
+}
+
+/**
+ * The size of the content, not of the frame: `scrollHeight` never drops under the frame's height,
+ * so a card that closes would leave its space. As the ext-apps SDK does, the root is measured at
+ * `max-content` for a moment.
+ */
+function contentSize(root: HTMLElement): { width: number; height: number } {
+  const before = root.style.height;
+  root.style.height = "max-content";
+  const height = Math.ceil(root.getBoundingClientRect().height);
+  root.style.height = before;
+  return { width: root.scrollWidth, height };
 }
 
 /** The folder in a tool's arguments, or in the structured content of an older server's result. */

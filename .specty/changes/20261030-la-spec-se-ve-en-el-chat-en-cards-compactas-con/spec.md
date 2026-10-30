@@ -103,7 +103,7 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
   - files: packages/ui/src/review/spec-cards.ts, packages/ui/src/review/spec-cards.test.ts, packages/ui/src/app/embedded.ts, packages/ui/src/app/embedded.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-cards.test.ts --include src/app/embedded.test.ts && pnpm lint
-- [ ] T2: La vista toma el tema, los colores y el alto del chat
+- [x] T2: La vista toma el tema, los colores y el alto del chat
   - files: packages/ui/src/theme/host-look.ts, packages/ui/src/theme/host-look.test.ts, packages/ui/src/data/mcp-app.ts, packages/ui/src/data/mcp-app.test.ts, packages/ui/src/styles.css
   - ac: AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme/host-look.test.ts --include src/data/mcp-app.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip

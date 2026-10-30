@@ -63,14 +63,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/app/embedded.test.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "6bc1cb033871653da2ff663f6c54c546e71e7858",
+      "attempts": 2,
       "startedAt": "2026-10-30T05:58:58.959Z",
       "doneAt": "2026-10-30T06:10:58.909Z",
-      "summary": "La spec del chat va en cards (spec-cards.ts): solo Objetivo abierta, resumen y marcas en la cabecera, revisión independiente y comentarios en cards propias de solo lectura. embedded.ts: cabecera en card y data-embedded. S1: text() del test acepta null."
+      "summary": "La spec del chat va en cards (spec-cards.ts): solo Objetivo abierta, resumen y marcas en la cabecera, revisión independiente y comentarios en cards propias de solo lectura. embedded.ts: cabecera en card y data-embedded. S1: text() del test acepta null.",
+      "scopeExtra": [
+        "packages/ui/src/app/embedded.test.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "482ee59c087b8bf2d4dc0d2ba0567a0d4dc42b98",
+      "startedAt": "2026-10-30T06:10:59.346Z",
+      "doneAt": "2026-10-30T06:14:09.171Z",
+      "summary": "HostLook pone el tema del anfitrión y sus variables en la raíz; McpAppData se lo pasa al saludar y en host-context-changed, y mide el alto del contenido a max-content. styles.css: en el chat, sin fondo y con los colores del anfitrión o los de Specty."
     }
   },
   "pending": {
