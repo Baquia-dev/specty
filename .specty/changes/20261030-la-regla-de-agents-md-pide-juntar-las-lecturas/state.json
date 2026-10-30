@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261030-la-regla-de-agents-md-pide-juntar-las-lecturas",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-la-regla-de-agents-md-pide-juntar-las-lecturas",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9fcd9828d6dbe0b4916d2e540f41534b69c1f2753a2218686ad85658f215f426",
+    "at": "2026-10-30T05:46:09.445Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 2,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f63cea66292e05e134256641d6270dbdcd91bbea",
+      "startedAt": "2026-10-30T05:46:09.918Z",
+      "doneAt": "2026-10-30T05:46:58.222Z",
+      "summary": "La regla de localizar el código pide además juntar en la misma respuesta las lecturas y búsquedas que no dependen entre sí (español e inglés), como segunda mitad de esa línea para no pasar de las 15 líneas del bloque que ya exige su test; AGENTS.md y formats.md la reproducen."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9fcd9828d6dbe0b4916d2e540f41534b69c1f2753a2218686ad85658f215f426",
-    "at": "2026-10-30T05:46:09.445Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

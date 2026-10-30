@@ -90,8 +90,8 @@ function ruleLines(t: Translate, command: string): string[] {
       "- Before creating a module, use case, component or screen, look for an equivalent one in the repo and replicate its structure.",
     ),
     t(
-      "- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.",
-      "- Find code with targeted searches by symbol or text and read only the fragments you need, not whole files.",
+      "- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos; pide juntas, en la misma respuesta, las lecturas y búsquedas que no dependen entre sí.",
+      "- Find code with targeted searches by symbol or text and read only the fragments you need, not whole files; request reads and searches that do not depend on each other together, in the same response.",
     ),
     t(
       "- Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.",

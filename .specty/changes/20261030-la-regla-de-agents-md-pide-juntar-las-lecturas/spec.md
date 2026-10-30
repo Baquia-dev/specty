@@ -17,6 +17,6 @@ En las sesiones medidas, el 40 % de las llamadas al modelo hacían una sola lect
 
 ## Tareas
 
-- [ ] T1: Las lecturas independientes se piden juntas
+- [x] T1: Las lecturas independientes se piden juntas
   - files: packages/core/src/agents-md.ts, packages/core/test/cards.test.ts, AGENTS.md, docs/formats.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts && pnpm lint
