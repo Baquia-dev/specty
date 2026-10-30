@@ -107,7 +107,7 @@ Así, aunque es un único iframe, cada card parece suelta en la conversación. E
   - files: packages/ui/src/theme/host-look.ts, packages/ui/src/theme/host-look.test.ts, packages/ui/src/data/mcp-app.ts, packages/ui/src/data/mcp-app.test.ts, packages/ui/src/styles.css
   - ac: AC6, AC7, AC8
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/theme/host-look.test.ts --include src/data/mcp-app.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint && pnpm knip
-- [ ] T3: El servidor pide al anfitrión una vista sin marco
+- [x] T3: El servidor pide al anfitrión una vista sin marco
   - files: packages/cli/src/mcp/app.ts, packages/cli/src/commands/mcp.ts, packages/cli/test/mcp-app.test.ts, docs/ui.md
   - ac: AC9, AC10
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/mcp-app.test.ts && pnpm typecheck && pnpm lint && pnpm knip

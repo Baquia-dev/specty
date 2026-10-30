@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-la-spec-se-ve-en-el-chat-en-cards-compactas-con",
   "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
   "revision": 1,
@@ -74,12 +74,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "482ee59c087b8bf2d4dc0d2ba0567a0d4dc42b98",
+      "attempts": 1,
       "startedAt": "2026-10-30T06:10:59.346Z",
       "doneAt": "2026-10-30T06:14:09.171Z",
-      "summary": "HostLook pone el tema del anfitrión y sus variables en la raíz; McpAppData se lo pasa al saludar y en host-context-changed, y mide el alto del contenido a max-content. styles.css: en el chat, sin fondo y con los colores del anfitrión o los de Specty."
+      "summary": "HostLook pone el tema del anfitrión y sus variables en la raíz; McpAppData se lo pasa al saludar y en host-context-changed, y mide el alto del contenido a max-content. styles.css: en el chat, sin fondo y con los colores del anfitrión o los de Specty.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "db3290872ceb7da10e67b2cad4d57a5d5c81c283",
+      "startedAt": "2026-10-30T06:14:09.549Z",
+      "doneAt": "2026-10-30T06:15:03.297Z",
+      "summary": "resources/read da la vista con _meta.ui.prefersBorder: false (VIEW_META en mcp/app.ts). docs/ui.md cuenta las cards, el aspecto del anfitrión y el alto del contenido."
     }
   },
   "pending": {
