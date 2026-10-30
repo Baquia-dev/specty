@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 3,
+      "baseCommit": "e5af737b4a6729d8bd9e6eb0ef083e5395509c30",
+      "startedAt": "2026-10-30T07:01:27.747Z",
+      "doneAt": "2026-10-30T07:03:13.215Z",
+      "summary": "El core lee informes LCOV, Cobertura, JaCoCo y perfiles de Go (parseCoverage, coverage-reports.ts) y calcula la cobertura de las líneas añadidas con tramos sin cubrir y emparejado por el final de la ruta (changedCoverage, coverage.ts); checks.coverage con reports, warn (80) y error en el esquema."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -73,7 +73,7 @@ Lo calcula Specty, sin diff-cover (una herramienta de Python), y vale para cualq
 
 ## Tareas
 
-- [ ] T1: El core lee los informes de cobertura y calcula la de las líneas que cambian
+- [x] T1: El core lee los informes de cobertura y calcula la de las líneas que cambian
   - files: packages/core/test/checks/coverage.test.ts, packages/core/src/checks/coverage-reports.ts, packages/core/src/checks/coverage.ts, packages/core/src/schema/checks.ts, packages/core/src/index.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/coverage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint && pnpm knip

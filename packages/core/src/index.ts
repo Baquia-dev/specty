@@ -38,6 +38,13 @@ export {
 } from "./capabilities";
 export * from "./cards";
 export { glossaryLine } from "./cards/init";
+export {
+  type ChangedCoverage,
+  type ChangedLines,
+  type CoverageGap,
+  changedCoverage,
+} from "./checks/coverage";
+export { type Coverage, parseCoverage } from "./checks/coverage-reports";
 export { type AnalyzerIgnore, analyzerIgnores, dartImports } from "./checks/dart";
 export { type AddedDependency, addedDependencies, readsDependencies } from "./checks/dependencies";
 export { type FunctionMetric, functionMetrics } from "./checks/functions";

@@ -23,6 +23,17 @@ export interface ChecksConfig {
   readonly preCommit: boolean;
   /** The project's commands for the command checks, over the ones Specty detects. */
   readonly commands: Readonly<Partial<Record<CommandCheck, string>>>;
+  readonly coverage: CoverageConfig;
+}
+
+/**
+ * Where `diff-coverage` looks for the report the tests leave (paths with `*` inside a segment),
+ * and the percentages of added lines run below which it warns and, if set, fails.
+ */
+interface CoverageConfig {
+  readonly reports: readonly string[];
+  readonly warn: number;
+  readonly error?: number;
 }
 
 /** A layer: the files in it, the layers it may import besides itself, and the packages it may not. */
@@ -81,6 +92,22 @@ export const DEFAULT_CHECKS: ChecksConfig = {
   generators: [],
   preCommit: false,
   commands: {},
+  // Where the usual coverage tools write: LCOV, Cobertura, JaCoCo and Go's profile.
+  coverage: {
+    reports: [
+      "coverage/lcov.info",
+      "*/coverage/lcov.info",
+      "*/*/coverage/lcov.info",
+      "lcov.info",
+      "coverage.xml",
+      "coverage/cobertura-coverage.xml",
+      "target/site/jacoco/jacoco.xml",
+      "build/reports/jacoco/test/jacocoTestReport.xml",
+      "*/build/reports/jacoco/test/jacocoTestReport.xml",
+      "coverage.out",
+    ],
+    warn: 80,
+  },
 };
 
 function isRegex(source: string): boolean {
@@ -153,6 +180,13 @@ export const ChecksSchema = z.strictObject({
       tests: z.string().min(1).optional(),
     } satisfies Record<CommandCheck, z.ZodType>)
     .optional(),
+  coverage: z
+    .strictObject({
+      reports: z.array(z.string().min(1)).min(1).optional(),
+      warn: z.number().min(0).max(100).optional(),
+      error: z.number().min(0).max(100).optional(),
+    })
+    .optional(),
 });
 
 export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): ChecksConfig {
@@ -173,6 +207,17 @@ export function resolveChecks(input: z.infer<typeof ChecksSchema> | undefined): 
     generators: generatorsOf(input),
     preCommit: input?.preCommit ?? DEFAULT_CHECKS.preCommit,
     commands: commandsOf(input),
+    coverage: coverageOf(input),
+  };
+}
+
+/** Where to look for the coverage report and its thresholds, with the defaults it leaves out. */
+function coverageOf(input: z.infer<typeof ChecksSchema> | undefined): CoverageConfig {
+  const coverage = input?.coverage;
+  return {
+    reports: coverage?.reports ?? DEFAULT_CHECKS.coverage.reports,
+    warn: coverage?.warn ?? DEFAULT_CHECKS.coverage.warn,
+    ...(coverage?.error === undefined ? {} : { error: coverage.error }),
   };
 }
 
