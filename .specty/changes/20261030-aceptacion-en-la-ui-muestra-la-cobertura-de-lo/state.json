@@ -33,7 +33,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9443038ad8a0425fe8e2ccd9f2d0fda08c3dcc83",
+      "startedAt": "2026-10-30T09:04:25.890Z",
+      "doneAt": "2026-10-30T09:04:47.575Z",
+      "summary": "Las rutas por defecto de checks.coverage.reports incluyen coverage/*/lcov.info en la raíz y una o dos carpetas abajo (una carpeta por proyecto, como Angular)"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

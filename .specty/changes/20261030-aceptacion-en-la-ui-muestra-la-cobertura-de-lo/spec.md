@@ -56,7 +56,7 @@ La verificación completa ya anota en `change.verified` qué parte de las línea
 
 ## Tareas
 
-- [ ] T1: diff-coverage encuentra el informe en una subcarpeta de coverage
+- [x] T1: diff-coverage encuentra el informe en una subcarpeta de coverage
   - files: packages/cli/test/check-coverage.test.ts, packages/core/src/schema/checks.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-coverage.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
