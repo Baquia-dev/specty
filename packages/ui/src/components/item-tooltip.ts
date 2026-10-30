@@ -205,7 +205,7 @@ function closeButton(doc: Document, lang: Lang, onClose: () => void): HTMLElemen
 
 function bubbleHeader(doc: Document, title: string, lang: Lang, onClose?: () => void): HTMLElement {
   const bullet = node(doc, "span", {
-    class: "inline-block size-2 rounded-full bg-current opacity-85 shrink-0",
+    class: "inline-block size-2 rounded-full opacity-90 shrink-0",
     "data-item-bullet": "",
     "aria-hidden": "true",
   });
@@ -433,6 +433,7 @@ export class ItemTooltips {
     bubble.setAttribute("data-item-pinned-bubble", "");
     bubble.setAttribute("data-item-color", color);
     bubble.style.setProperty("--item-color", color);
+    bubble.style.borderLeftColor = color;
 
     const raw = target.text || this.items().get(target.id);
     renderBubble(bubble, target.id, this.preferences.lang(), raw, () => this.unpin(target.origin));

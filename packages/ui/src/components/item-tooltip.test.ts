@@ -460,4 +460,25 @@ describe("ItemTooltips and ItemText", () => {
     expect(darkSection).toMatch(/--color-tooltip-bg:\s*#fafafa/);
     expect(darkSection).toMatch(/--color-tooltip-text:\s*#18181b/);
   });
+
+  it("AC1: ensures bullet indicator and left border line receive the assigned indicator color in pinned tooltip", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+
+    const b = document.querySelector<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(b).not.toBeNull();
+    const bullet = b?.querySelector<HTMLElement>("[data-item-bullet]");
+    expect(bullet).not.toBeNull();
+    // Bullet must not have bg-current so it takes --item-color
+    expect(bullet?.classList.contains("bg-current")).toBe(false);
+
+    const { readFileSync } = await import("node:fs");
+    const { resolve } = await import("node:path");
+    const css = readFileSync(resolve(process.cwd(), "src/styles.css"), "utf8");
+    expect(css).toContain("[data-tooltip][data-item-pinned-bubble]");
+    expect(css).toMatch(/border-left:\s*4px solid/);
+    expect(css).toMatch(/background-color:\s*var\(--item-color/);
+  });
 });

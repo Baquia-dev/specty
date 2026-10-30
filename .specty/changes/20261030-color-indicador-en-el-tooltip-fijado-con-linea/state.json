@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261030-color-indicador-en-el-tooltip-fijado-con-linea",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261030-color-indicador-en-el-tooltip-fijado-con-linea",
   "baseCommit": "bb2d0c9acb319ef6d844523d398e129af6a6b9d0",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f31249b5eeee6d95797417e8213c718fb8fb67cd9405779925bf44d61b1da8ef",
+    "at": "2026-10-30T08:15:25.538Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b4e1efdade9f53e7db8f294268cb044870965536",
+      "startedAt": "2026-10-30T08:15:26.512Z",
+      "doneAt": "2026-10-30T08:22:50.679Z",
+      "summary": "Asociación del color identificador mate en el tooltip fijado mediante línea vertical izquierda y viñeta"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f31249b5eeee6d95797417e8213c718fb8fb67cd9405779925bf44d61b1da8ef",
-    "at": "2026-10-30T08:15:25.538Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

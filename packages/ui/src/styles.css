@@ -293,9 +293,11 @@
   /* Pinned draggable tooltip */
   [data-tooltip][data-item-pinned-bubble] {
     cursor: grab;
-    border-left-width: 4px;
-    border-left-style: solid;
-    border-left-color: var(--item-color, var(--color-tooltip-border));
+    border-left: 4px solid var(--item-color, var(--color-tooltip-border));
+  }
+
+  [data-tooltip][data-item-pinned-bubble] [data-item-bullet] {
+    background-color: var(--item-color, currentColor);
   }
 
   [data-tooltip][data-item-pinned-bubble] [data-item-header] {
