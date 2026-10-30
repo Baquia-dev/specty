@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261030-la-regla-de-agents-md-pide-juntar-las-lecturas",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261030-la-regla-de-agents-md-pide-juntar-las-lecturas",
+  "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9fcd9828d6dbe0b4916d2e540f41534b69c1f2753a2218686ad85658f215f426",
+    "at": "2026-10-30T05:46:09.445Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
