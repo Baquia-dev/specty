@@ -34,6 +34,7 @@ const GRAMMARS: readonly (readonly [RegExp, Grammar])[] = [
   [/\.rs$/, { file: "rust", language: "rust" }],
   [/\.swift$/, { file: "swift", language: "swift" }],
   [/\.dart$/, { file: "dart", language: "dart" }],
+  [/\.kts?$/, { file: "kotlin", language: "kotlin" }],
 ];
 
 // The files in `node_modules`, each package named whole in a `require.resolve`, so that knip sees
@@ -45,6 +46,10 @@ function runtimeFile(): string {
 
 function grammarFile(name: string): string {
   const require = createRequire(import.meta.url);
+  // `@repomix/tree-sitter-wasms` has no Kotlin: the grammar's own package carries it.
+  if (name === "tree-sitter-kotlin") {
+    return require.resolve("@tree-sitter-grammars/tree-sitter-kotlin/tree-sitter-kotlin.wasm");
+  }
   const folder = dirname(require.resolve("@repomix/tree-sitter-wasms/package.json"));
   return join(folder, "out", `${name}.wasm`);
 }

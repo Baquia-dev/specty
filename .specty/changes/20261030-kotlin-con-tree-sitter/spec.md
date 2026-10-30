@@ -68,7 +68,7 @@ allowedDependencies:
   - files: packages/core/src/checks/tree-languages-modern.ts, packages/core/src/checks/tree-languages.ts, packages/core/package.json, packages/core/test/checks/functions-tree-kotlin.test.ts, pnpm-workspace.yaml, pnpm-lock.yaml
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree-kotlin.test.ts test/checks/functions-tree-modern.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: specty check mide Kotlin con tree-sitter
+- [x] T2: specty check mide Kotlin con tree-sitter
   - files: packages/cli/src/check/syntax.ts, packages/cli/package.json, packages/cli/test/check-functions-kotlin.test.ts, pnpm-lock.yaml
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-kotlin.test.ts test/check-functions-modern.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

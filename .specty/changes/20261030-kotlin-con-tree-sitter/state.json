@@ -49,12 +49,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "928fcf02189399acfab1afc729c58824d0eac407",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:07:06.184Z",
       "doneAt": "2026-10-30T11:08:03.715Z",
-      "summary": "El core mide Kotlin sobre el árbol con su tabla en tree-languages-modern.ts; su gramática oficial es devDependency del core, con su node-gyp-build apagado en allowBuilds."
+      "summary": "El core mide Kotlin sobre el árbol con su tabla en tree-languages-modern.ts; su gramática oficial es devDependency del core, con su node-gyp-build apagado en allowBuilds.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b542fe2393aa93c8e46521fdcafb19b2408732d7",
+      "startedAt": "2026-10-30T11:08:04.042Z",
+      "doneAt": "2026-10-30T11:08:33.017Z",
+      "summary": "specty check mide Kotlin (.kt y .kts) con tree-sitter; la gramática sale de su propio paquete, que el CLI nombra con un literal para knip."
     }
   },
   "pending": {
