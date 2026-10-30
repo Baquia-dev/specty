@@ -118,4 +118,32 @@ describe("ReviewActions", () => {
     await fixture.whenStable();
     expect(TestBed.inject(Toasts).items().at(-1)?.text).toBe("Revisión 2 aprobada.");
   });
+
+  it("AC5: disables approve button and allows requesting changes when open comments exist", async () => {
+    const { actions, buttons, fixture, host } = await render();
+    const view = viewOf(REVIEW);
+    host.change.set({
+      ...view,
+      highImpactPending: 0,
+      review: {
+        ...view.review,
+        comments: [
+          {
+            id: "c1",
+            revision: 2,
+            anchor: { item: "A1" },
+            author: "User",
+            body: "Revisar",
+            createdAt: new Date().toISOString(),
+            resolved: false,
+            section: "assumptions",
+          },
+        ],
+      },
+    });
+    await fixture.whenStable();
+    expect(buttons()[1]?.disabled).toBe(true);
+    expect(text(actions()?.querySelector("[data-blocked]"))).toContain("comentario");
+    expect(buttons()[0]?.disabled).toBe(false);
+  });
 });

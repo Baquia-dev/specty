@@ -21,6 +21,14 @@ class Recording extends SpectyData {
     this.calls.push(args);
     return Promise.resolve();
   }
+  editComment(...args: unknown[]): Promise<void> {
+    this.calls.push(["editComment", ...args]);
+    return Promise.resolve();
+  }
+  deleteComment(...args: unknown[]): Promise<void> {
+    this.calls.push(["deleteComment", ...args]);
+    return Promise.resolve();
+  }
 }
 
 const COMMENTS: readonly CommentView[] = [
@@ -147,6 +155,48 @@ describe("ReviewComments", () => {
     await fixture.whenStable();
     expect(element.querySelector("form")).toBeNull();
     expect(element.querySelectorAll("[data-comment]")).toHaveLength(2);
+  });
+
+  it("AC1: shows edit and delete options for unresolved comments, but not resolved ones", async () => {
+    const { element } = await render();
+    const open = element.querySelector("[data-comment=c2]");
+    const done = element.querySelector("[data-comment=c1]");
+    expect(open?.querySelector("[data-action=edit]")).not.toBeNull();
+    expect(open?.querySelector("[data-action=delete]")).not.toBeNull();
+    expect(done?.querySelector("[data-action=edit]")).toBeNull();
+    expect(done?.querySelector("[data-action=delete]")).toBeNull();
+  });
+
+  it("AC2: editing comment text updates it via editComment", async () => {
+    const { element, source, fixture, settle } = await render();
+    const open = element.querySelector("[data-comment=c2]");
+    open?.querySelector<HTMLButtonElement>("[data-action=edit] button")?.click();
+    await fixture.whenStable();
+    const input = element.querySelector<HTMLTextAreaElement>("[data-comment=c2] form textarea");
+    if (input === null) throw new Error("no edit field");
+    input.value = " ¿No satura la vista? ";
+    input.dispatchEvent(new Event("input"));
+    await fixture.whenStable();
+    element.querySelector<HTMLButtonElement>("[data-comment=c2] form sp-button[data-action=save] button")?.click();
+    await settle();
+    expect(source.calls).toContainEqual([
+      "editComment",
+      "20261020-evolucion-trimestre",
+      "c2",
+      "¿No satura la vista?",
+    ]);
+  });
+
+  it("AC3: deleting comment calls deleteComment", async () => {
+    const { element, source, fixture, settle } = await render();
+    const open = element.querySelector("[data-comment=c2]");
+    open?.querySelector<HTMLButtonElement>("[data-action=delete] button")?.click();
+    await settle();
+    expect(source.calls).toContainEqual([
+      "deleteComment",
+      "20261020-evolucion-trimestre",
+      "c2",
+    ]);
   });
 });
 
