@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261030-python-ruby-con-tree-sitter",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-python-ruby-con-tree-sitter",
+  "baseCommit": "f45510422cc1f0e0aef44830fcc8fe66fba988b7",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6b0c7341738f62707152abf1a8ca4e3546dcee5f6a5ca29d295e222b7b903ded",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:a52b8c8e58376a3972730894d39fba2a3fdf634e6ac01ff1ada24abd554162b4",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:0a4c9330cbf941e8a1b45d5b69cc0a1d43cb742ee0120e2914766bc89af36707",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:0cfc4a3faa16b7e0da54e3b7557268b1a61499765713bca241d0191baa032beb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:604b44beed8aaccfbc96b471f54ce744af9a9ac598361e3c2dfd1fa0838d4cf1",
+    "at": "2026-10-30T11:17:28.776Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
