@@ -48,14 +48,27 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/ui/src/review/spec-sections.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "98ada933fe07a11f483f367ed9a3332ef7f744a8",
+      "attempts": 1,
       "startedAt": "2026-10-30T12:05:30.299Z",
       "doneAt": "2026-10-30T12:11:12.693Z",
-      "summary": "indicadores de carga en confirmacion y rechazo de supuestos"
+      "summary": "indicadores de carga en confirmacion y rechazo de supuestos",
+      "scopeExtra": [
+        "packages/ui/src/review/spec-sections.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/ui/src/acceptance/closing-actions.test.ts",
+        "packages/ui/src/review/review-actions.test.ts",
+        "packages/ui/src/review/comments.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "277cfc0636c0ad508e4e7bda9ac7823a69bcd412",
+      "startedAt": "2026-10-30T12:11:13.062Z",
+      "doneAt": "2026-10-30T12:30:13.928Z",
+      "summary": "indicadores de carga en acciones de revisión y confirmación de cierre"
     }
   },
   "pending": {
@@ -66,13 +79,13 @@
     "A": 3,
     "AC": 5,
     "T": 4,
-    "S": 1
+    "S": 3
   },
   "lockedTests": {
-    "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:ddfb1d522aacdb15ef81cd63b58daff611886ae24585544f048f45175461ebd6",
+    "packages/ui/src/acceptance/closing-actions.test.ts": "sha256:f70f5fc5a27dff456527958f9b6ec718073d3a5f4820305d0cc320761e14990d",
     "packages/ui/src/components/button.test.ts": "sha256:f8eee93e474082fdac62468d815a99cd946e2febe50774e941258a246fb4848d",
     "packages/ui/src/review/comments.test.ts": "sha256:f805401af99d8cf9f2c8526a8d387857641eaea1214de89ee3a500370cbeee69",
-    "packages/ui/src/review/review-actions.test.ts": "sha256:d949b99aa0a1ad7e5afe1364a9a7d04881d37ceb0a3092f2d500aef8bfdf8527",
+    "packages/ui/src/review/review-actions.test.ts": "sha256:c0a9a7e0d3adbce6280fc3dc0a622e7b10eb666ed1389246e50aa995807492ab",
     "packages/ui/src/review/spec-sections.test.ts": "sha256:1cf6fbd22e0e27d3f523cc1a05bb16dcae445a2e15ad48a6532cf9bcc68c315f"
   }
 }

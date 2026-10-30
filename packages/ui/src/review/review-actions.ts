@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { ChangeDetectionStrategy, Component, computed, inject, input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from "@angular/core";
 import { LucideDynamicIcon } from "@lucide/angular";
 import { Button } from "../components/button";
 import { LucideHourglass, LucideTriangleAlert } from "../components/icons";
@@ -25,10 +25,21 @@ import { reportFailure } from "./spec-sections";
   },
   template: `
     <div class="flex gap-2">
-      <sp-button [size]="compact() ? 'sm' : 'md'" [disabledReason]="askWhy()" (pressed)="requestChanges()">
+      <sp-button
+        [size]="compact() ? 'sm' : 'md'"
+        [loading]="loadingRequest()"
+        [disabledReason]="loadingApprove() ? t()('Aprobando…', 'Approving…') : askWhy()"
+        (pressed)="requestChanges()"
+      >
         {{ t()('Pedir cambios', 'Request changes') }}
       </sp-button>
-      <sp-button variant="primary" [size]="compact() ? 'sm' : 'md'" [disabledReason]="why()" (pressed)="approve()">
+      <sp-button
+        variant="primary"
+        [size]="compact() ? 'sm' : 'md'"
+        [loading]="loadingApprove()"
+        [disabledReason]="loadingRequest() ? t()('Enviando comentarios…', 'Sending comments…') : why()"
+        (pressed)="approve()"
+      >
         {{ t()('Aprobar revisión ', 'Approve revision ') }}{{ change().revision }}
       </sp-button>
     </div>
@@ -57,6 +68,8 @@ export class ReviewActions {
   protected readonly t = this.preferences.t;
   protected readonly warningIcon = LucideTriangleAlert;
   protected readonly requestedIcon = LucideHourglass;
+  protected readonly loadingApprove = signal(false);
+  protected readonly loadingRequest = signal(false);
 
   protected readonly openComments = computed(
     () => this.change().review.comments.filter((comment) => !comment.resolved).length,
@@ -121,24 +134,32 @@ export class ReviewActions {
   );
 
   protected requestChanges(): void {
-    this.source.requestChanges(this.change().id).then(() => {
-      this.toasts.show(
-        this.t()(
-          "Comentarios enviados: el agente los leerá en specty next.",
-          "Comments sent: the agent will read them in specty next.",
-        ),
-        "success",
-      );
-    }, this.failed);
+    this.loadingRequest.set(true);
+    this.source
+      .requestChanges(this.change().id)
+      .then(() => {
+        this.toasts.show(
+          this.t()(
+            "Comentarios enviados: el agente los leerá en specty next.",
+            "Comments sent: the agent will read them in specty next.",
+          ),
+          "success",
+        );
+      }, this.failed)
+      .finally(() => this.loadingRequest.set(false));
   }
 
   protected approve(): void {
+    this.loadingApprove.set(true);
     const { id, revision } = this.change();
-    this.source.approve(id, revision).then(() => {
-      this.toasts.show(
-        this.t()(`Revisión ${revision} aprobada.`, `Revision ${revision} approved.`),
-        "success",
-      );
-    }, this.failed);
+    this.source
+      .approve(id, revision)
+      .then(() => {
+        this.toasts.show(
+          this.t()(`Revisión ${revision} aprobada.`, `Revision ${revision} approved.`),
+          "success",
+        );
+      }, this.failed)
+      .finally(() => this.loadingApprove.set(false));
   }
 }

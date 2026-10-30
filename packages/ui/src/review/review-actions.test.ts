@@ -181,6 +181,7 @@ describe("ReviewActions", () => {
     expect(approveButton?.querySelector(".animate-spin")).not.toBeNull();
 
     resolveApprove();
+    await new Promise((resolve) => setTimeout(resolve));
     await fixture.whenStable();
     expect(approveButton?.getAttribute("aria-busy")).toBeNull();
   });

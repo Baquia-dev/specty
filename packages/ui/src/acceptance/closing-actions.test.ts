@@ -140,8 +140,9 @@ describe("Closing actions", () => {
     const pendingClose = new Promise<void>((res) => {
       resolveClose = res;
     });
+    @Injectable()
     class HangingData extends FixtureData {
-      override closeChange(): Promise<void> {
+      override confirmClosing(): Promise<void> {
         return pendingClose;
       }
     }

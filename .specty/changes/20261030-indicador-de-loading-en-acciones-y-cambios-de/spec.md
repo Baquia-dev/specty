@@ -53,7 +53,7 @@ Proporcionar retroalimentación visual inmediata con indicadores de carga (spinn
   - files: packages/ui/src/review/assumption-row.ts, packages/ui/src/review/spec-sections.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/spec-sections.test.ts
-- [ ] T3: Indicadores de carga en acciones de revisión y cierre
+- [x] T3: Indicadores de carga en acciones de revisión y cierre
   - files: packages/ui/src/review/review-actions.ts, packages/ui/src/review/review-actions.test.ts, packages/ui/src/acceptance/closing-actions.ts, packages/ui/src/acceptance/closing-actions.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/review/review-actions.test.ts --include src/acceptance/closing-actions.test.ts
