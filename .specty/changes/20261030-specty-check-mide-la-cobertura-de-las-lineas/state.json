@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-specty-check-mide-la-cobertura-de-las-lineas",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-specty-check-mide-la-cobertura-de-las-lineas",
   "baseCommit": "7604b9810ba13535f28ba3f7e4c6b6c0eba63887",
   "revision": 1,
@@ -47,6 +47,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T07:01:22.566Z"
+  "lockedTests": {
+    "packages/cli/test/check-coverage.test.ts": "sha256:9f00cb36d5d5989d3ec2678016c4a72ef1ada02905c555aef2d7423cc108fdce",
+    "packages/core/test/checks/coverage.test.ts": "sha256:ca65bc294c8940f8a1d22877be8f4af392966af23dfba03d0d57263c5a3846cc"
+  }
 }
