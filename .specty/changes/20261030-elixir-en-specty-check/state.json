@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-elixir-en-specty-check",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-elixir-en-specty-check",
   "baseCommit": "ee895c8ad9d0b0d0c2a09e87cea291ed1eff6cdf",
   "revision": 1,
@@ -51,6 +51,9 @@
     "T": 3,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T11:35:50.136Z"
+  "lockedTests": {
+    "packages/cli/test/check-functions.test.ts": "sha256:b96bf6fb7c5fd6cf1a18f37b68e66f087d0562085be760cfd313cc1e14698001",
+    "packages/cli/test/bundle-grammars-elixir.test.ts": "sha256:c316318e2db202aa7fcd5e7116bd77bb3843d95acb6d2f21ba25bd5618e03fdd",
+    "packages/cli/test/check-functions-elixir.test.ts": "sha256:df6069df86b9577027ef7453400f1a8e7c27e24ce7f8cfc735969552acc0f750"
+  }
 }
