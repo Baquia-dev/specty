@@ -6,6 +6,13 @@
   "branch": "specty/20261030-specty-check-avisa-de-las-vulnerabilidades-que",
   "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:83a0328c41d5389cf65b22bd0fb16fbaac5f812319acbd53b8b318773a4ca135",
+    "at": "2026-10-30T12:44:10.406Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -39,12 +46,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:83a0328c41d5389cf65b22bd0fb16fbaac5f812319acbd53b8b318773a4ca135",
-    "at": "2026-10-30T12:44:10.406Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T12:51:21.908Z"
 }
