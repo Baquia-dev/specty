@@ -65,7 +65,7 @@ follows:
   - files: packages/core/src/checks/functions-tree.ts, packages/core/src/checks/tree-languages.ts, packages/core/src/checks/tree-languages-scripting.ts, packages/core/test/checks/functions-tree-scripting.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/checks/functions-tree-scripting.test.ts test/checks/functions-tree-modern.test.ts test/checks/functions-tree-c.test.ts test/checks/functions-tree.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: specty check mide Python y Ruby con tree-sitter
+- [x] T2: specty check mide Python y Ruby con tree-sitter
   - files: packages/cli/src/check/syntax.ts, packages/cli/test/check-functions-scripting.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-scripting.test.ts test/check-functions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip

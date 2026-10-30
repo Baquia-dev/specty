@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2021a7725541bf3c28f5be49fbb616a33b1383cc",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:18:41.981Z",
       "doneAt": "2026-10-30T11:19:39.059Z",
-      "summary": "El core mide Python y Ruby sobre el árbol con la misma medida que sus estimaciones (tree-languages-scripting.ts); un docstring no es código, y de una cadena de Python solo cuenta su primera fila."
+      "summary": "El core mide Python y Ruby sobre el árbol con la misma medida que sus estimaciones (tree-languages-scripting.ts); un docstring no es código, y de una cadena de Python solo cuenta su primera fila.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5301aeee16d2c57388307f9ec572211910afad0c",
+      "startedAt": "2026-10-30T11:19:39.389Z",
+      "doneAt": "2026-10-30T11:19:58.535Z",
+      "summary": "specty check mide Python (.py, .pyi) y Ruby (.rb, .rake) con tree-sitter: un range.end ya no cierra el método y una variable case no es una rama."
     }
   },
   "pending": {

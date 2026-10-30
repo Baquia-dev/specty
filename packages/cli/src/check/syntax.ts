@@ -35,6 +35,8 @@ const GRAMMARS: readonly (readonly [RegExp, Grammar])[] = [
   [/\.swift$/, { file: "swift", language: "swift" }],
   [/\.dart$/, { file: "dart", language: "dart" }],
   [/\.kts?$/, { file: "kotlin", language: "kotlin" }],
+  [/\.pyi?$/, { file: "python", language: "python" }],
+  [/\.(?:rb|rake)$/, { file: "ruby", language: "ruby" }],
 ];
 
 // The files in `node_modules`, each package named whole in a `require.resolve`, so that knip sees
