@@ -5,6 +5,7 @@ import {
   CONFIG,
   cli,
   APP as FILES,
+  git,
   inWorktree,
   person,
   read,
@@ -22,16 +23,16 @@ const NOT_RUN = "SF:src/app.ts\nDA:1,0\nend_of_record\n";
 const ALL_RUN = "Los tests ejecutan el 100 % de la línea que añade el cambio.";
 
 /** SPEC's change in acceptance, whose full verification leaves `lcov` as its report, or none. */
-async function inAcceptance(lcov: string | undefined): Promise<string> {
+async function inAcceptance(lcov: string | undefined): Promise<{ root: string; folder: string }> {
   const full = lcov === undefined ? "echo sin informe" : FULL;
-  const { folder } = await inWorktree({
+  const { root, folder } = await inWorktree({
     ...FILES,
     ".gitignore": "coverage/\n",
     ...(lcov === undefined ? {} : { [FIXTURE]: lcov }),
     ".specty/config.yaml": `${CONFIG()}  full: ${JSON.stringify(full)}\n`,
   });
   await toAcceptance(folder);
-  return folder;
+  return { root, folder };
 }
 
 /** Runs the full verification and stops before accepting: the note it left. */
@@ -57,7 +58,7 @@ async function lastVerified(folder: string): Promise<Record<string, unknown>> {
 
 describe("the full verification of `accept` measures the lines the change adds", () => {
   it("AC1: its note says how much of them the tests ran, and `change.verified` keeps it", async () => {
-    const folder = await inAcceptance(RUN);
+    const { folder } = await inAcceptance(RUN);
     const note = await verifyWithoutAccepting(folder);
     expect(note).toContain(ALL_RUN);
     expect(note).not.toContain("Sin ejecutar");
@@ -70,14 +71,14 @@ describe("the full verification of `accept` measures the lines the change adds",
   });
 
   it("AC1: without a report, the note and the audit carry no coverage", async () => {
-    const folder = await inAcceptance(undefined);
+    const { folder } = await inAcceptance(undefined);
     const note = await verifyWithoutAccepting(folder);
     expect(note).not.toContain("Los tests ejecutan");
     expect(await lastVerified(folder)).not.toHaveProperty("coverage");
   });
 
   it("AC2: below `checks.coverage.warn` the note says so and names the stretch no test ran", async () => {
-    const folder = await inAcceptance(NOT_RUN);
+    const { folder } = await inAcceptance(NOT_RUN);
     const note = await verifyWithoutAccepting(folder);
     expect(note).toContain(
       "Los tests ejecutan el 0 % de la línea que añade el cambio, por debajo del 80 %.\nSin ejecutar: src/app.ts:1",
@@ -89,11 +90,28 @@ describe("the full verification of `accept` measures the lines the change adds",
       stretches: 1,
     });
   });
+
+  it("AC1: with main merged in first, only the change's lines count, not the ones main brings", async () => {
+    const { root, folder } = await inAcceptance(`${RUN}SF:src/other.ts\nDA:1,0\nend_of_record\n`);
+    await writeFiles(root, { "src/other.ts": "export const other = 1;\n" });
+    git(root, "add", "-A");
+    git(root, "commit", "-q", "-m", "otro trabajo en main");
+    // The merge's verification passes on this code, so `accept` shows its coverage and reuses it.
+    const terminal = person({ confirm: [false] });
+    await cli(folder, ["accept"], { terminal });
+    expect((await lastVerified(folder)).coverage).toEqual({
+      measured: 1,
+      covered: 1,
+      gaps: [],
+      stretches: 0,
+    });
+    expect(terminal.notes[0]).toContain(ALL_RUN);
+  });
 });
 
 describe("the acceptance shows the coverage of the last full verification on this code", () => {
   it("AC3: the agent's card and the person's summary show it once a verification kept it", async () => {
-    const folder = await inAcceptance(RUN);
+    const { folder } = await inAcceptance(RUN);
     expect((await cli(folder, ["next"])).out).not.toContain("COBERTURA");
     await verifyWithoutAccepting(folder);
     expect((await cli(folder, ["next"])).out).toContain(`COBERTURA:\n  ${ALL_RUN}`);
@@ -103,7 +121,7 @@ describe("the acceptance shows the coverage of the last full verification on thi
   });
 
   it("AC3: once the code changes, the coverage of that verification no longer shows", async () => {
-    const folder = await inAcceptance(RUN);
+    const { folder } = await inAcceptance(RUN);
     await verifyWithoutAccepting(folder);
     await writeFiles(folder, { "src/app.ts": "3\n" });
     expect((await cli(folder, ["next"])).out).not.toContain("COBERTURA");
