@@ -6,6 +6,13 @@
   "branch": "specty/20261030-elixir-en-specty-check",
   "baseCommit": "ee895c8ad9d0b0d0c2a09e87cea291ed1eff6cdf",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:212cb95c9a0872d57e61bd01648d91136fc2a8fe6e9734defee17cdb1c3298f3",
+    "at": "2026-10-30T11:35:01.381Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -44,12 +51,6 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:212cb95c9a0872d57e61bd01648d91136fc2a8fe6e9734defee17cdb1c3298f3",
-    "at": "2026-10-30T11:35:01.381Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T11:35:50.136Z"
 }
