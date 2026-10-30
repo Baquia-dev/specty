@@ -247,6 +247,8 @@ function positionsFor(offset: number): ConnectedPosition[] {
   }));
 }
 
+let activeHoverTooltip: ItemTooltips | undefined;
+
 @Directive({
   selector: "[spItemTooltips]",
   host: {
@@ -288,6 +290,7 @@ export class ItemTooltips {
     afterRenderEffect(() => this.syncBubbles());
     inject(DestroyRef).onDestroy(() => {
       this.unpinAll();
+      if (activeHoverTooltip === this) activeHoverTooltip = undefined;
       this.hoverOverlay?.ref.dispose();
     });
   }
@@ -331,6 +334,10 @@ export class ItemTooltips {
   }
 
   private showHover(target: ResolvedTarget): void {
+    if (activeHoverTooltip !== undefined && activeHoverTooltip !== this) {
+      activeHoverTooltip.hideHover();
+    }
+    activeHoverTooltip = this;
     clearTimeout(this.leaving);
     this.hoverTarget?.origin.removeAttribute("data-item-active");
     this.hoverTarget = target;
@@ -343,12 +350,14 @@ export class ItemTooltips {
 
   protected hideHover(): void {
     clearTimeout(this.leaving);
+    if (activeHoverTooltip === this) activeHoverTooltip = undefined;
     this.hoverTarget?.origin.removeAttribute("data-item-active");
     this.hoverTarget = undefined;
     this.hoverOverlay?.ref.detach();
   }
 
   private pin(target: ResolvedTarget): void {
+    if (activeHoverTooltip === this) activeHoverTooltip = undefined;
     const offset = this.pinned.size * 12;
     const pos = createFlexibleConnectedPositionStrategy(this.injector, target.origin)
       .withPositions(positionsFor(offset))
