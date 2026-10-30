@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5301aeee16d2c57388307f9ec572211910afad0c",
+      "attempts": 1,
       "startedAt": "2026-10-30T11:19:39.389Z",
       "doneAt": "2026-10-30T11:19:58.535Z",
-      "summary": "specty check mide Python (.py, .pyi) y Ruby (.rb, .rake) con tree-sitter: un range.end ya no cierra el método y una variable case no es una rama."
+      "summary": "specty check mide Python (.py, .pyi) y Ruby (.rb, .rake) con tree-sitter: un range.end ya no cierra el método y una variable case no es una rama.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "366b4856f292f8a37454c4568e000bc73e1eff3c",
+      "startedAt": "2026-10-30T11:19:58.860Z",
+      "doneAt": "2026-10-30T11:20:27.373Z",
+      "summary": "El build comprime en dist/grammars las gramáticas de Python y Ruby, y grammar-licenses.txt lleva sus licencias MIT."
     }
   },
   "pending": {

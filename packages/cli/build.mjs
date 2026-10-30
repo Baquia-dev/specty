@@ -60,6 +60,7 @@ const require = createRequire(import.meta.url);
 const GRAMMARS = [
   ...["typescript", "tsx", "javascript", "java", "c_sharp", "php", "c", "cpp"],
   ...["go", "rust", "swift", "dart"],
+  ...["python", "ruby"],
 ];
 const runtime = require.resolve("web-tree-sitter/web-tree-sitter.wasm");
 const compiled = join(dirname(require.resolve("@repomix/tree-sitter-wasms/package.json")), "out");
