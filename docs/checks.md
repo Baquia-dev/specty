@@ -284,6 +284,16 @@ Busca secretos con Betterleaks o, si no está, con gitleaks, sobre una copia tem
 
 **Desactivar:** `levels: { secrets: off }`.
 
+### `code-rules`
+
+**Stack:** cualquiera con reglas de Opengrep o Semgrep en la raíz: `.opengrep.yml`, `.opengrep.yaml`, `.opengrep/`, `.semgrep.yml`, `.semgrep.yaml` o `.semgrep/`.
+
+Aplica las reglas propias del proyecto con Opengrep o, si no está, con Semgrep, sobre una copia temporal de los archivos de la ejecución, y solo cuentan las coincidencias que tocan una línea añadida. Las reglas de gravedad `ERROR`, `CRITICAL` o `HIGH` hacen fallar la verificación; las demás (`WARNING`, `INFO`, `MEDIUM`, `LOW`…) solo avisan. Nunca usa las reglas del registro (`--config auto`) y a Semgrep le pasa `--metrics=off`, así que nada sale hacia la red. Si no hay ningún escáner instalado, no corre y dice qué instalar. Para un falso positivo valen el comentario `nosemgrep` y el `.semgrepignore` de la raíz.
+
+**Configuración:** las reglas, en esos archivos o carpetas, y el `.semgrepignore` de la raíz. Sin `.semgrepignore`, el escáner aplica sus ignorados por defecto, que saltan, entre otros, `test/` y `tests/`.
+
+**Desactivar:** `levels: { code-rules: off }`.
+
 ### `vulnerabilities`
 
 **Stack:** cualquiera con un lockfile que OSV-Scanner lea: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `bun.lock`, `pubspec.lock`, `poetry.lock`, `uv.lock`, `pdm.lock`, `Pipfile.lock`, `pylock.toml`, `requirements.txt`, `go.mod`, `Cargo.lock`, `Gemfile.lock`, `gems.locked`, `composer.lock`, `mix.lock`, `packages.lock.json`, `packages.config`, `gradle.lockfile`, `buildscript-gradle.lockfile`, `gradle/verification-metadata.xml`, `conan.lock`, `renv.lock`, `cabal.project.freeze` y `stack.yaml.lock`, en cualquier carpeta.
@@ -454,6 +464,7 @@ Lo que un ejemplo no comprueba:
 - `focused-tests` pasa también con el cambio que lo rompe todo en Python, Java, Kotlin, C#, Rust y Swift: sus frameworks de test no tienen una marca de foco.
 - `secrets` sale «sin ejecutar» si no hay un escáner en el PATH.
 - `vulnerabilities` está apagado: con OSV-Scanner instalado, consultaría osv.dev.
+- `code-rules` no aparece: los ejemplos no tienen reglas de Opengrep ni de Semgrep.
 
 ## Añadir un proveedor
 

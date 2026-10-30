@@ -123,9 +123,7 @@ describe("inbox view", () => {
     expect(ids(sections[0]?.changes ?? [])).toEqual(["corte-1", "corte-2", "sola"]);
     const sectionBlocks = (
       inboxViewModule as {
-        sectionBlocks?: (
-          section: InboxSection,
-        ) => readonly {
+        sectionBlocks?: (section: InboxSection) => readonly {
           kind: string;
           epicId?: string;
           title?: string;

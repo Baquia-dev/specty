@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { codeRules } from "./code-rules";
 import { diffCoverage } from "./coverage";
 import { testsLocked } from "./locked";
 import { focusedTests, skippedTests, todo } from "./markers";
@@ -18,6 +19,7 @@ export const commonProvider: Provider = {
     todo,
     testsLocked,
     secrets,
+    codeRules,
     vulnerabilities,
     diffCoverage,
   ],

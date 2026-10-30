@@ -284,6 +284,16 @@ Looks for secrets with Betterleaks or, when it is missing, with gitleaks, on a t
 
 **Disable:** `levels: { secrets: off }`.
 
+### `code-rules`
+
+**Stack:** any with Opengrep or Semgrep rules at the root: `.opengrep.yml`, `.opengrep.yaml`, `.opengrep/`, `.semgrep.yml`, `.semgrep.yaml` or `.semgrep/`.
+
+Applies the project's own rules with Opengrep or, when it is missing, with Semgrep, on a temporary copy of the run's files, and only the matches that touch an added line count. Rules of severity `ERROR`, `CRITICAL` or `HIGH` fail the check; the others (`WARNING`, `INFO`, `MEDIUM`, `LOW`…) only warn. It never uses the registry's rules (`--config auto`) and gives Semgrep `--metrics=off`, so nothing goes out to the network. With no scanner installed, it does not run and says what to install. For a false positive, the `nosemgrep` comment and the root's `.semgrepignore` work.
+
+**Configuration:** the rules, in those files or folders, and the root's `.semgrepignore`. Without a `.semgrepignore`, the scanner applies its default ignores, which skip `test/` and `tests/`, among others.
+
+**Disable:** `levels: { code-rules: off }`.
+
 ### `vulnerabilities`
 
 **Stack:** any with a lockfile OSV-Scanner reads: `pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `bun.lock`, `pubspec.lock`, `poetry.lock`, `uv.lock`, `pdm.lock`, `Pipfile.lock`, `pylock.toml`, `requirements.txt`, `go.mod`, `Cargo.lock`, `Gemfile.lock`, `gems.locked`, `composer.lock`, `mix.lock`, `packages.lock.json`, `packages.config`, `gradle.lockfile`, `buildscript-gradle.lockfile`, `gradle/verification-metadata.xml`, `conan.lock`, `renv.lock`, `cabal.project.freeze` and `stack.yaml.lock`, in any folder.
@@ -454,6 +464,7 @@ What an example does not check:
 - `focused-tests` passes with the change that breaks everything too in Python, Java, Kotlin, C#, Rust and Swift: their test frameworks have no focus marker.
 - `secrets` shows as `NOT RUN` when there is no scanner on PATH.
 - `vulnerabilities` is off: with OSV-Scanner installed, it would ask osv.dev.
+- `code-rules` does not show: the examples have no Opengrep or Semgrep rules.
 
 ## Adding a provider
 
