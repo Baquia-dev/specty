@@ -69,12 +69,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "182f965e8a1b8e02e440d406e42a3434f8b43849",
+      "attempts": 1,
       "startedAt": "2026-10-30T10:49:45.039Z",
       "doneAt": "2026-10-30T10:50:21.502Z",
-      "summary": "specty check mide Java, C#, PHP, C y C++ con su gramática por la extensión (un .h que no parsea como C cae en la estimación) y empareja por orden las funciones sin nombre, así que tocar un callback largo sin agrandarlo no falla."
+      "summary": "specty check mide Java, C#, PHP, C y C++ con su gramática por la extensión (un .h que no parsea como C cae en la estimación) y empareja por orden las funciones sin nombre, así que tocar un callback largo sin agrandarlo no falla.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b412276d5681ac6d132c88293e6fec6fc92681eb",
+      "startedAt": "2026-10-30T10:50:21.838Z",
+      "doneAt": "2026-10-30T10:51:09.320Z",
+      "summary": "El build comprime en dist/grammars las gramáticas de Java, C#, PHP, C y C++, y grammar-licenses.txt lleva sus licencias MIT."
     }
   },
   "pending": {

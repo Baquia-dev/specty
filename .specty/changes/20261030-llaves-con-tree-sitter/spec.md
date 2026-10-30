@@ -72,7 +72,7 @@ epic: 20261030-tree-sitter-mide-las-funciones
   - files: packages/cli/src/check/syntax.ts, packages/cli/src/check/functions.ts, packages/cli/test/check-functions-c.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-functions-c.test.ts test/check-functions-tree.test.ts test/check-functions.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T3: El bundle lleva las cinco gramáticas y sus licencias
+- [x] T3: El bundle lleva las cinco gramáticas y sus licencias
   - files: packages/cli/build.mjs, packages/cli/grammar-licenses.txt, packages/cli/test/bundle-grammars-c.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/bundle-grammars-c.test.ts test/bundle-grammars.test.ts && pnpm lint
