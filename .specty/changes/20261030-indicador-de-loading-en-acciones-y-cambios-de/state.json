@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261030-indicador-de-loading-en-acciones-y-cambios-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261030-indicador-de-loading-en-acciones-y-cambios-de",
+  "baseCommit": "9483e4408563bb2c9d100a0a7d0e5df0f80b4c18",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:50d1f9296d3c09af04f12c0ddd83f65264b0503f3153dc454eae744e76f710c4",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e416fb2181452cdec6852b27866415eb98544184c61ecd41d4b698c2719e3998",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:ccafeea92dc57cbf8c509d710558af4424efc20f1f877720a9014ffd697c168c",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:47b0c603a6c7fb040d36058975dbdb94b8a98a022c0777f42c756d84cb449b3b",
+    "at": "2026-10-30T11:59:06.896Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
