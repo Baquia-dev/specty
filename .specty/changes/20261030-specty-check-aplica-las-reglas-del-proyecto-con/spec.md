@@ -65,7 +65,7 @@ Sigue el mismo patrón que `secrets` y `vulnerabilities` (ADR 0012): una herrami
   - files: packages/cli/test/check-code-rules.test.ts, packages/cli/src/check/code-rules.ts, packages/cli/src/check/common.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-code-rules.test.ts test/check-secrets.test.ts && pnpm --filter @baquia-dev/specty typecheck && pnpm lint && pnpm knip
-- [ ] T2: La documentación cuenta el check
+- [x] T2: La documentación cuenta el check
   - files: docs/checks.md, docs/checks.en.md, docs/formats.md, docs/ARCHITECTURE.md
   - ac: —
   - verify: pnpm lint
