@@ -65,7 +65,7 @@ En la vista del chat (MCP Apps), Progreso y Aceptación siguen con su forma de h
   - files: packages/ui/src/app/embedded-look.test.ts, packages/ui/src/review/markdown.test.ts, packages/ui/src/styles.css, packages/ui/src/components/document.ts, packages/ui/src/review/markdown.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/app/embedded-look.test.ts --include src/review/markdown.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint
-- [ ] T2: En el chat, la barra del diff no se queda fija ni pinta franja
+- [x] T2: En el chat, la barra del diff no se queda fija ni pinta franja
   - files: packages/ui/src/components/diff-viewer.test.ts, packages/ui/src/components/diff-viewer.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/components/diff-viewer.test.ts && pnpm --filter @baquia-dev/specty-ui typecheck && pnpm lint

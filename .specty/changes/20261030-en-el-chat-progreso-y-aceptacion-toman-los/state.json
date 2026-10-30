@@ -50,12 +50,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fdc1bb0d1aed25eb939bd65d0b88c44bdaec7ac3",
+      "attempts": 1,
       "startedAt": "2026-10-30T07:52:53.344Z",
       "doneAt": "2026-10-30T07:54:45.965Z",
-      "summary": "Variante embedded: en styles.css. En el chat, SectionDivider es estático y sin fondo, y el código del markdown usa bg-text/5. En el CSS construido las clases embedded: salen tras sus bases y pre code sigue transparente."
+      "summary": "Variante embedded: en styles.css. En el chat, SectionDivider es estático y sin fondo, y el código del markdown usa bg-text/5. En el CSS construido las clases embedded: salen tras sus bases y pre code sigue transparente.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "521c65e18759180996b743c8c75b6efed7b1e14e",
+      "startedAt": "2026-10-30T07:54:46.299Z",
+      "doneAt": "2026-10-30T07:55:10.534Z",
+      "summary": "La barra del diff (data-bar) es estática y sin fondo en el chat (embedded:static embedded:bg-transparent); fuera del chat sigue fija sobre el fondo."
     }
   },
   "pending": {
