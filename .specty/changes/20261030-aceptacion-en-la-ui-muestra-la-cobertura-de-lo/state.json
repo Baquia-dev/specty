@@ -45,12 +45,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8ae66462739d80bd836342e57a56a71e0a1b1064",
+      "attempts": 1,
       "startedAt": "2026-10-30T09:04:47.902Z",
       "doneAt": "2026-10-30T09:06:23.641Z",
-      "summary": "La sección Verificación completa muestra, si el último resultado pasó, el porcentaje (cubiertas de medidas) y los tramos sin ejecutar con cuántos más; progressOf lee coverage con cuidado y el prototipo simula una"
+      "summary": "La sección Verificación completa muestra, si el último resultado pasó, el porcentaje (cubiertas de medidas) y los tramos sin ejecutar con cuántos más; progressOf lee coverage con cuidado y el prototipo simula una",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8255415cf1c56780ae5f4d25be38ece2550cf6fd",
+      "startedAt": "2026-10-30T09:06:24.003Z",
+      "doneAt": "2026-10-30T09:07:33.726Z",
+      "summary": "lcovonly en coverageReporters de angular.json: los tests de la UI dejan packages/ui/coverage/specty-ui/lcov.info, sin HTML"
     }
   },
   "pending": {
