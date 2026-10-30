@@ -278,7 +278,7 @@ describe("AGENTS.md blocks", () => {
       "## Reglas (Specty)",
       "- `specty task done` ya ejecuta `specty check --changed --spec` y la verificación de la tarea, y no la completa con fallos: no los repitas justo antes; corrige lo que devuelva y no reportes con fallos pendientes.",
       "- Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.",
-      "- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.",
+      "- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos; pide juntas, en la misma respuesta, las lecturas y búsquedas que no dependen entre sí.",
       "- Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.",
       "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
     ]);
@@ -286,7 +286,7 @@ describe("AGENTS.md blocks", () => {
       "## Rules (Specty)",
       "- `specty task done` already runs `specty check --changed --spec` and the task's verification, and does not complete the task with failures: do not repeat them right before; fix whatever it returns and do not report with failures pending.",
       "- Before creating a module, use case, component or screen, look for an equivalent one in the repo and replicate its structure.",
-      "- Find code with targeted searches by symbol or text and read only the fragments you need, not whole files.",
+      "- Find code with targeted searches by symbol or text and read only the fragments you need, not whole files; request reads and searches that do not depend on each other together, in the same response.",
       "- Edit with targeted changes; do not rewrite whole files for small changes.",
       "- Brief final report: what changed, what was verified and what is pending.",
     ]);

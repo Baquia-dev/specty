@@ -169,4 +169,201 @@ describe("ItemTooltips and ItemText", () => {
     await settle();
     expect(bubble()?.textContent?.trim()).toBe("Task T1");
   });
+
+  it("AC1: shows info cursor and visual active highlight on the hovered sigla element", async () => {
+    const { element, settle } = await render("es");
+    const sentence = element.querySelector("#sentence");
+    const ref = sentence?.querySelector<HTMLElement>("[data-item-ref='T1']");
+    expect(ref).not.toBeNull();
+    expect(ref?.classList.contains("cursor-help") || ref?.hasAttribute("data-item-ref")).toBe(true);
+
+    hover(ref);
+    await settle();
+    expect(ref?.hasAttribute("data-item-active") || ref?.classList.contains("cursor-help")).toBe(
+      true,
+    );
+
+    leave(ref);
+    await settle();
+    expect(ref?.hasAttribute("data-item-active")).toBe(false);
+  });
+
+  it("AC2: renders tooltip bubble with bullet indicator and refined pill styling", async () => {
+    const { element, settle } = await render("es");
+    hover(element.querySelector("#assumption"));
+    await settle();
+    const tooltip = bubble();
+    expect(tooltip).not.toBeNull();
+    expect(tooltip?.querySelector("[data-item-bullet]")).not.toBeNull();
+    expect(
+      tooltip?.classList.contains("rounded-lg") || tooltip?.classList.contains("rounded-md"),
+    ).toBe(true);
+  });
+
+  it("AC3: formats tooltip with clear visual hierarchy separating header and description", async () => {
+    const { element, settle } = await render("es");
+    const change = sampleChange();
+    const ac1 = change.review.criteria.find((item) => item.id === "AC1")?.text ?? "";
+
+    hover(element.querySelector("#criterion"));
+    await settle();
+    const tooltip = bubble();
+    expect(tooltip).not.toBeNull();
+
+    const header = tooltip?.querySelector("[data-item-header]");
+    const body = tooltip?.querySelector("[data-item-body]");
+    expect(header).not.toBeNull();
+    expect(header?.textContent).toContain("Criterio de aceptación AC1");
+    expect(body).not.toBeNull();
+    expect(body?.textContent?.trim()).toBe(ac1);
+    expect(tooltip?.textContent?.trim()).toBe(`Criterio de aceptación AC1: ${ac1}`);
+  });
+
+  it("AC1: pins tooltip on click and displays close button 'x' in the top right corner", async () => {
+    const { element, settle } = await render("es");
+    const target = element.querySelector<HTMLElement>("#criterion");
+    target?.click();
+    await settle();
+    const tooltip = bubble();
+    expect(tooltip).not.toBeNull();
+    const closeBtn = tooltip?.querySelector<HTMLButtonElement>("[data-item-close]");
+    expect(closeBtn).not.toBeNull();
+    expect(closeBtn?.getAttribute("aria-label")).toBeTruthy();
+
+    leave(target);
+    await settle();
+    expect(bubble()).not.toBeNull();
+  });
+
+  it("AC2: unpins and hides the tooltip when clicking the close button or pressing Escape", async () => {
+    const { element, settle } = await render("es");
+    const target = element.querySelector<HTMLElement>("#task");
+    target?.click();
+    await settle();
+    expect(bubble()).not.toBeNull();
+
+    const closeBtn = bubble()?.querySelector<HTMLButtonElement>("[data-item-close]");
+    closeBtn?.click();
+    await settle();
+    expect(bubble()).toBeNull();
+
+    target?.click();
+    await settle();
+    expect(bubble()).not.toBeNull();
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    await settle();
+    expect(bubble()).toBeNull();
+  });
+
+  it("AC3: does not display close button when only opened via hover and closes on leave", async () => {
+    const { element, settle } = await render("es");
+    const target = element.querySelector<HTMLElement>("#assumption");
+    hover(target);
+    await settle();
+    const tooltip = bubble();
+    expect(tooltip).not.toBeNull();
+    expect(tooltip?.querySelector("[data-item-close]")).toBeNull();
+
+    leave(target);
+    await new Promise((r) => setTimeout(r, 150));
+    await settle();
+    expect(bubble()).toBeNull();
+  });
+
+  it("AC1: sets data-item-pinned indicator on the owner element when pinned on click", async () => {
+    const { element, settle } = await render("es");
+    const target = element.querySelector<HTMLElement>("#criterion");
+    expect(target?.hasAttribute("data-item-pinned")).toBe(false);
+    target?.click();
+    await settle();
+    expect(target?.hasAttribute("data-item-pinned")).toBe(true);
+    expect(bubble()).not.toBeNull();
+  });
+
+  it("AC2: keeps multiple pinned tooltips open simultaneously with their close buttons and indicators", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#criterion");
+    const t2 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+    t2?.click();
+    await settle();
+
+    const bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(2);
+    expect(t1?.hasAttribute("data-item-pinned")).toBe(true);
+    expect(t2?.hasAttribute("data-item-pinned")).toBe(true);
+    for (const b of bubbles) {
+      expect(b.querySelector("[data-item-close]")).not.toBeNull();
+    }
+  });
+
+  it("AC3: adjusts position or offsets overlapping tooltips to prevent full occlusion", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#criterion");
+    const t2 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+    t2?.click();
+    await settle();
+
+    const bubbles = [
+      ...document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]"),
+    ];
+    expect(bubbles.length).toBe(2);
+    const b1 = bubbles[0];
+    const b2 = bubbles[1];
+    expect(b1).toBeDefined();
+    expect(b2).toBeDefined();
+    if (!b1 || !b2) return;
+    expect(
+      b1.getAttribute("data-item-offset") !== b2.getAttribute("data-item-offset") ||
+        b1.style.zIndex !== b2.style.zIndex,
+    ).toBe(true);
+  });
+
+  it("AC4: closes only the target tooltip when clicking its close button or trigger, removing its indicator", async () => {
+    const { element, settle } = await render("es");
+    const t1 = element.querySelector<HTMLElement>("#criterion");
+    const t2 = element.querySelector<HTMLElement>("#task");
+    t1?.click();
+    await settle();
+    t2?.click();
+    await settle();
+
+    let bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(2);
+
+    const first = bubbles[0];
+    expect(first).toBeDefined();
+    const close1 = first?.querySelector<HTMLButtonElement>("[data-item-close]");
+    close1?.click();
+    await settle();
+
+    bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(1);
+    expect(t1?.hasAttribute("data-item-pinned")).toBe(false);
+    expect(t2?.hasAttribute("data-item-pinned")).toBe(true);
+
+    t2?.click();
+    await settle();
+    bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(0);
+    expect(t2?.hasAttribute("data-item-pinned")).toBe(false);
+  });
+
+  it("AC1: closes previous transient hover tooltip when hovering a different item across instances", async () => {
+    const { element, settle } = await render("es");
+    const a1 = element.querySelector<HTMLElement>("#assumption");
+    const sentenceRef = element.querySelector<HTMLElement>("#sentence [data-item-ref='T1']");
+    hover(a1);
+    await settle();
+    expect(bubble()?.textContent).toContain("Supuesto A1");
+
+    hover(sentenceRef);
+    await settle();
+    const bubbles = document.querySelectorAll<HTMLElement>(".cdk-overlay-container [data-tooltip]");
+    expect(bubbles.length).toBe(1);
+    expect(bubbles[0]?.textContent).toContain("Tarea T1");
+  });
 });

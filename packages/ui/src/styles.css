@@ -251,4 +251,41 @@
     outline-offset: 2px;
     border-radius: var(--radius-sm);
   }
+
+  /* Siglas and items with contextual tooltips: informative cursor and interactive highlight. */
+  [data-item-ref],
+  [data-item-active] {
+    cursor: help;
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--duration-fast),
+      color var(--duration-fast);
+  }
+
+  [data-item-ref]:hover,
+  [data-item-active] {
+    background-color: rgb(24 24 27 / 0.08);
+  }
+
+  [data-theme="dark"] [data-item-ref]:hover,
+  [data-theme="dark"] [data-item-active] {
+    background-color: rgb(255 255 255 / 0.12);
+  }
+
+  /* Owner element with an active pinned tooltip */
+  [data-item-pinned] {
+    cursor: pointer;
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  [data-theme="dark"] [data-item-pinned] {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
 }

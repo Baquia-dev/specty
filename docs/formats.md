@@ -544,7 +544,7 @@ Este repositorio usa Specty. Antes de crear, modificar o borrar código, ejecuta
 ## Reglas (Specty)
 - `specty task done` ya ejecuta `specty check --changed --spec` y la verificación de la tarea, y no la completa con fallos: no los repitas justo antes; corrige lo que devuelva y no reportes con fallos pendientes.
 - Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.
-- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos.
+- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos; pide juntas, en la misma respuesta, las lecturas y búsquedas que no dependen entre sí.
 - Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.
 - Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.
 <!-- specty:end id=flow -->

@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "20261030-tooltip-fijado-al-hacer-click-con-boton-de",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-tooltip-fijado-al-hacer-click-con-boton-de",
+  "baseCommit": "af83a9659994353f690f1174de6973f5f1635f9a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:93990a5a456500b065dc692ada598573b01c5c339de5a81806d283ab0d027e31",
+    "at": "2026-10-30T06:05:14.057Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:01b6eec2d9aa864f3bb361d598fbbfc7afa683e1caf0274c77f186273bf2595b",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:fd9f701a9e27da2fcde06ecf8db0940a5fee471d0dc407935a7b1aa8694d3841",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "af75a3d69054266b758fac5f72ff49dc75798928",
+      "attempts": 1,
+      "startedAt": "2026-10-30T06:06:13.246Z",
+      "doneAt": "2026-10-30T06:09:26.845Z",
+      "summary": "Fijación del tooltip por click y botón de cierre en esquina superior derecha",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 1
+  },
+  "closingSubmittedAt": "2026-10-30T06:14:02.083Z",
+  "lockedTests": {
+    "packages/ui/src/components/item-tooltip.test.ts": "sha256:4eb70ba69eb38533b69f923a3c2c2de60c7a02d4ee7165fd8771d43d5e48e4ca"
+  }
+}

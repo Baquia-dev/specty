@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "id": "20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261030-tooltip-con-estilo-de-vineta-y-jerarquia-en",
+  "baseCommit": "ab91380a05a495e36b1e60092702e35bddb3153a",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:092f50a42a8c503d93c7fefbc2d198fa7e923fee3bc52378d92469e2c12a8516",
+    "at": "2026-10-30T05:36:36.014Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:921af1a837fdde7b4dfb87bb9d98bb6e11d86d8810404517124c612ad47afe7b",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:c73d5e28324b658f3e22667ef62002d6967dbfccfa5bb66739af0fc21620b115",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "48fdc2052e6f64d8c699b61a153545bf5250f99b",
+      "attempts": 1,
+      "startedAt": "2026-10-30T05:37:29.585Z",
+      "doneAt": "2026-10-30T05:46:06.396Z",
+      "summary": "Añadir cursor de ayuda y resalte interactivo en elementos de siglas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "96ea40e8feb2eaf88bc3ddb66e395a423dbf2c6a",
+      "attempts": 1,
+      "startedAt": "2026-10-30T05:46:06.706Z",
+      "doneAt": "2026-10-30T05:47:10.154Z",
+      "summary": "Estilo de viñeta y jerarquía visual en la burbuja del tooltip flotante",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 3,
+    "T": 2
+  },
+  "closingSubmittedAt": "2026-10-30T05:53:57.391Z",
+  "lockedTests": {
+    "packages/ui/src/components/item-tooltip.test.ts": "sha256:bb24a0bdb012d200821aec9529a36f8487a510b1d0c16702dc36a21455681c6b"
+  }
+}
