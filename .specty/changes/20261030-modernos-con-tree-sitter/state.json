@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261030-modernos-con-tree-sitter",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261030-modernos-con-tree-sitter",
   "baseCommit": "8f6f314c6eb0916e909fa7e31addd604977ea07f",
   "revision": 1,
@@ -64,6 +64,9 @@
     "T": 4,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-30T10:59:00.257Z"
+  "lockedTests": {
+    "packages/cli/test/bundle-grammars-modern.test.ts": "sha256:ae6a4f66c5a3e2e522d88fc5fa3ec68bfc3aed5c4cb062a769aee507c70481cc",
+    "packages/cli/test/check-functions-modern.test.ts": "sha256:415e1cf894bc2b08e214eb9fc2b0821b3639fa1ca0d7b25a0c73689fef2161e2",
+    "packages/core/test/checks/functions-tree-modern.test.ts": "sha256:3ff953d0244299b076d24c44c85016aea35f0b9d29626d31525f42a72abd04b9"
+  }
 }
