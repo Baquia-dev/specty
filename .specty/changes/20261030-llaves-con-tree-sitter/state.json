@@ -6,6 +6,13 @@
   "branch": "specty/20261030-llaves-con-tree-sitter",
   "baseCommit": "f197a3575d19bca8233207d690d8ea471aea68bc",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:753f8aa94036ee026deeb30602d1b036f34d8c3c601a680fb7d57a7f1f2b90c0",
+    "at": "2026-10-30T10:41:59.539Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -61,12 +68,6 @@
     "T": 4,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:753f8aa94036ee026deeb30602d1b036f34d8c3c601a680fb7d57a7f1f2b90c0",
-    "at": "2026-10-30T10:41:59.539Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-30T10:44:50.886Z"
 }
