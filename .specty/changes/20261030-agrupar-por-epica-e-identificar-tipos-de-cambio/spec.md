@@ -64,7 +64,7 @@ Identificar visualmente en la UI cada tipo de cambio (`Épica`, `Corte`, `Indivi
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts, packages/ui/src/components/badge.ts, packages/ui/src/components/badge.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts --include src/components/badge.test.ts
-- [ ] T2: Agrupación por épica y bloques de épica en la lógica de vista y opciones de la Bandeja
+- [x] T2: Agrupación por épica y bloques de épica en la lógica de vista y opciones de la Bandeja
   - files: packages/ui/src/inbox/inbox-view.ts, packages/ui/src/inbox/inbox-view.test.ts, packages/ui/src/inbox/inbox-toolbar.ts, packages/ui/src/inbox/inbox-toolbar.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-view.test.ts --include src/inbox/inbox-toolbar.test.ts

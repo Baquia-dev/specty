@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 // What the Inbox shows, from the change views: filtered, grouped and sorted. Pure.
-import type { SizeLevel } from "@baquia-dev/specty-core";
+import type { ChangeKind, SizeLevel } from "@baquia-dev/specty-core";
 import { type Lang, PHASES, type Phase } from "@baquia-dev/specty-core/light";
 import type { Bilingual, ChangeView } from "../data/records";
 import { PHASE_LABELS } from "../theme/tokens";
 
-export type InboxGroup = "state" | "phase" | "none";
+export type InboxGroup = "state" | "phase" | "none" | "epic";
 export type InboxSort = "waiting" | "recent" | "title" | "size";
 export type InboxPhase = Phase | "all";
 
-export const INBOX_GROUPS: readonly InboxGroup[] = ["state", "phase", "none"];
+export const INBOX_GROUPS: readonly InboxGroup[] = ["state", "phase", "none", "epic"];
 export const INBOX_SORTS: readonly InboxSort[] = ["waiting", "recent", "title", "size"];
 
 export interface InboxFilters {
@@ -25,6 +25,16 @@ export interface InboxSection {
   readonly changes: readonly ChangeView[];
 }
 
+export type InboxBlock =
+  | { readonly kind: "row"; readonly key: string; readonly change: ChangeView }
+  | {
+      readonly kind: "epic";
+      readonly key: string;
+      readonly epicId: string;
+      readonly title: string;
+      readonly changes: readonly ChangeView[];
+    };
+
 /** Waiting for the person, in progress, or finished. */
 export type InboxState = "decision" | "active" | "recent";
 
@@ -32,6 +42,13 @@ const STATES: readonly { readonly key: InboxState; readonly label: Bilingual }[]
   { key: "decision", label: { es: "Esperan tu decisión", en: "Waiting for your decision" } },
   { key: "active", label: { es: "En curso", en: "In progress" } },
   { key: "recent", label: { es: "Recientes", en: "Recent" } },
+];
+
+const KIND_SECTIONS: readonly { readonly key: ChangeKind; readonly label: Bilingual }[] = [
+  { key: "standard", label: { es: "Specs individuales", en: "Standalone specs" } },
+  { key: "quick", label: { es: "Cambios quick", en: "Quick changes" } },
+  { key: "retro", label: { es: "Cambios manuales", en: "Manual changes" } },
+  { key: "spike", label: { es: "Spikes", en: "Spikes" } },
 ];
 
 const SIZE: Readonly<Record<SizeLevel, number>> = { S: 1, M: 2, L: 3, XL: 4 };
@@ -49,12 +66,18 @@ function folded(text: string): string {
     .toLowerCase();
 }
 
-/** Whether the title or the id contain the query, ignoring case and accents. */
+/** Whether the title, id or epic metadata contain the query, ignoring case and accents. */
 export function matchesQuery(change: ChangeView, query: string): boolean {
   const wanted = folded(query.trim());
-  return (
-    wanted === "" || folded(change.title).includes(wanted) || folded(change.id).includes(wanted)
-  );
+  if (wanted === "") return true;
+  const fields = [
+    change.title,
+    change.id,
+    change.epic?.title ?? "",
+    change.epic?.id ?? "",
+    change.epic?.slice ?? "",
+  ];
+  return fields.some((field) => folded(field).includes(wanted));
 }
 
 /** The changes the search and the phase filter let through. */
@@ -109,18 +132,92 @@ export function inboxSections(
 ): readonly InboxSection[] {
   const shown = sortChanges(visibleChanges(changes, filters), filters.sort, lang);
   const sections: readonly InboxSection[] =
-    filters.group === "state"
-      ? STATES.map(({ key, label }) => ({
-          key,
-          label,
-          changes: shown.filter((change) => stateOf(change) === key),
-        }))
-      : filters.group === "phase"
-        ? PHASES.map((phase) => ({
-            key: phase,
-            label: PHASE_LABELS[phase],
-            changes: shown.filter((change) => change.phase === phase),
+    filters.group === "epic"
+      ? epicSections(shown, changes)
+      : filters.group === "state"
+        ? STATES.map(({ key, label }) => ({
+            key,
+            label,
+            changes: clusterByEpic(shown.filter((change) => stateOf(change) === key)),
           }))
-        : [{ key: "all", label: { es: "Todos los cambios", en: "All changes" }, changes: shown }];
+        : filters.group === "phase"
+          ? PHASES.map((phase) => ({
+              key: phase,
+              label: PHASE_LABELS[phase],
+              changes: clusterByEpic(shown.filter((change) => change.phase === phase)),
+            }))
+          : [
+              {
+                key: "all",
+                label: { es: "Todos los cambios", en: "All changes" },
+                changes: clusterByEpic(shown),
+              },
+            ];
   return sections.filter((section) => section.changes.length > 0);
+}
+
+/** Visual blocks inside a section: changes of the same epic grouped together, others as rows. */
+export function sectionBlocks(section: InboxSection): readonly InboxBlock[] {
+  const sliceEpics = new Set(section.changes.flatMap((c) => (c.epic ? [c.epic.id] : [])));
+  const seen = new Set<string>();
+  return section.changes.flatMap((change): InboxBlock[] => {
+    const epicId = epicClusterId(change, sliceEpics);
+    if (epicId === undefined) return [{ kind: "row", key: change.id, change }];
+    if (seen.has(epicId)) return [];
+    seen.add(epicId);
+    const group = section.changes.filter((item) => epicClusterId(item, sliceEpics) === epicId);
+    const title =
+      group.find((item) => item.kind === "epic")?.title ??
+      group.find((item) => item.epic !== undefined)?.epic?.title ??
+      epicId;
+    return [{ kind: "epic", key: `epic-${epicId}`, epicId, title, changes: group }];
+  });
+}
+
+function epicClusterId(change: ChangeView, sliceEpics: ReadonlySet<string>): string | undefined {
+  if (change.epic !== undefined) return change.epic.id;
+  return change.kind === "epic" && sliceEpics.has(change.id) ? change.id : undefined;
+}
+
+function clusterByEpic(changes: readonly ChangeView[]): readonly ChangeView[] {
+  const sliceEpics = new Set(changes.flatMap((c) => (c.epic ? [c.epic.id] : [])));
+  const seen = new Set<string>();
+  return changes.flatMap((change) => {
+    const epicId = epicClusterId(change, sliceEpics);
+    if (epicId === undefined) return [change];
+    if (seen.has(epicId)) return [];
+    seen.add(epicId);
+    return changes
+      .filter((item) => epicClusterId(item, sliceEpics) === epicId)
+      .toSorted((a, b) => Number(b.kind === "epic") - Number(a.kind === "epic"));
+  });
+}
+
+function epicSections(
+  shown: readonly ChangeView[],
+  all: readonly ChangeView[],
+): readonly InboxSection[] {
+  const epicOf = (c: ChangeView) => (c.kind === "epic" ? c.id : c.epic?.id);
+  const epicIds = [...new Set(shown.flatMap((c) => (epicOf(c) ? [epicOf(c) ?? ""] : [])))];
+  const byEpic: InboxSection[] = epicIds.map((epicId) => {
+    const group = shown
+      .filter((c) => epicOf(c) === epicId)
+      .toSorted((a, b) => Number(b.kind === "epic") - Number(a.kind === "epic"));
+    const title =
+      all.find((c) => c.id === epicId)?.title ??
+      group.find((c) => c.epic !== undefined)?.epic?.title ??
+      epicId;
+    return {
+      key: `epic:${epicId}`,
+      label: { es: `Épica · ${title}`, en: `Epic · ${title}` },
+      changes: group,
+    };
+  });
+  const rest = shown.filter((c) => epicOf(c) === undefined);
+  const byKind: InboxSection[] = KIND_SECTIONS.map(({ key, label }) => ({
+    key,
+    label,
+    changes: rest.filter((c) => c.kind === key),
+  }));
+  return [...byEpic, ...byKind];
 }
