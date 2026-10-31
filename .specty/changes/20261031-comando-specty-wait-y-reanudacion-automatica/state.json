@@ -43,12 +43,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ae1334670fca3891c406cc03743a2d810712ba85",
+      "attempts": 1,
       "startedAt": "2026-10-31T10:35:57.038Z",
       "doneAt": "2026-10-31T10:37:16.575Z",
-      "summary": "Crear tarjeta y textos de timeout para specty wait"
+      "summary": "Crear tarjeta y textos de timeout para specty wait",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/wait.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "ff704878b17e189a8fdb36ed3bd5dc3edf7d9e7a",
+      "startedAt": "2026-10-31T10:37:16.933Z",
+      "doneAt": "2026-10-31T10:48:23.441Z",
+      "summary": "Implementar comando specty wait con sondeo pasivo y registro en CLI"
     }
   },
   "pending": {
@@ -58,11 +69,12 @@
   "maxIds": {
     "A": 4,
     "AC": 5,
-    "T": 3
+    "T": 3,
+    "S": 1
   },
   "lockedTests": {
     "packages/core/test/agents-md.test.ts": "sha256:c940b87307afb6a0c0721d19ca72cfb9ab06a605dbe4db2eb357ca78652f6a17",
-    "packages/cli/test/wait.test.ts": "sha256:9ad30f35dd276255fe5de6c95ecf4043bf6f87f3896a585b156ca6d764386730",
+    "packages/cli/test/wait.test.ts": "sha256:e9b998427016503c67a7e4c7d69508d75ffe582c37222374e6afd2ab66ae6e76",
     "packages/core/test/cards/wait.test.ts": "sha256:cd2b2f4fc54a73c7e604486c43c33be6c63e6a3eb5b0194f19e3cf2f16943013"
   }
 }

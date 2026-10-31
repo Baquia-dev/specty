@@ -24,6 +24,7 @@ import { retroInto } from "./retro-into";
 import { review } from "./review";
 import { scopeAdd } from "./scope";
 import { taskDone } from "./task";
+import { type WaitOptions, wait } from "./wait";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
 
@@ -42,6 +43,7 @@ export function agentCommands(
   refuse: (output: Output) => void,
 ): void {
   program.command("next").description("what to do now").action(locked(run, "next")(next));
+  waitCommand(program, run);
   program
     .command("enter")
     .description("go on in a change's folder from this conversation")
@@ -83,6 +85,16 @@ export function agentCommands(
           : retroInto(session, options.into, options.reason ?? "", options.minimal === true),
       )(),
     );
+}
+
+/** `specty wait`, which polls until human action completes. */
+function waitCommand(program: Command, run: Run): void {
+  program
+    .command("wait")
+    .description("wait until the change is no longer waiting for the person")
+    .option("--timeout <seconds>", "maximum seconds to wait", "3600")
+    .option("--interval <ms>", "polling interval in milliseconds", "500")
+    .action((options: WaitOptions) => run((session) => wait(session, options))());
 }
 
 /** `specty new`'s options as commander reads them. */
