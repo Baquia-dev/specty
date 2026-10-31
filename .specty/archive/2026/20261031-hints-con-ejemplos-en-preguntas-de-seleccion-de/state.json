@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:262631f871c760f2c07db377b9deeae4c40b449890fe72a7161796c8474b930c",
@@ -82,14 +82,14 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/terminal.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "e9973115d6d20d6060690575d0a1b9333ab38d04",
+      "attempts": 2,
       "startedAt": "2026-10-31T11:22:36.642Z",
       "doneAt": "2026-10-31T11:37:50.471Z",
-      "summary": "Documentar flujos de Git completos y tipos de commit en arquitectura y formatos, y tipado exacto en terminal"
+      "summary": "Documentar flujos de Git completos y tipos de commit en arquitectura y formatos, y tipado exacto en terminal",
+      "scopeExtra": [
+        "packages/cli/src/terminal.ts"
+      ]
     }
   },
   "pending": {
@@ -102,6 +102,7 @@
     "T": 4,
     "S": 5
   },
+  "closingSubmittedAt": "2026-10-31T11:43:49.269Z",
   "lockedTests": {
     "packages/cli/test/init-git-flow.test.ts": "sha256:91b7d104406f8a85340e709f11bf6c067ee78c2c691d8de1c49ec0d97e7420d3",
     "packages/cli/test/terminal.test.ts": "sha256:65af297aa324a06323132471d6c24224642ec04d6e6b11d9f55735ae64e57b06",

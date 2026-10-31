@@ -87,3 +87,23 @@ Las preguntas de selección de `specty init` (idioma, agentes y flujo de Git) de
   - ac: AC8
   - verify: pnpm check
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Se incorporaron hints explicativos con ejemplos en todas las preguntas interactivas de selección en `specty init` (idioma, herramientas/agentes y flujos de Git), tanto en español como en inglés. En los flujos de Git, se implementó el conjunto completo de ramas de Git Flow (`feature/`, `bugfix/`, `hotfix/`, `release/`, `support/` y `spike/`), habilitando los tipos de commit correspondientes (`hotfix`, `release`, `support`) y adaptando `prefixOf`, las cards y el detector de prefijos de ramas de Git Flow en la CLI. Además, se adaptó la interfaz `Terminal` y su implementación sobre `@clack/prompts` para propagar de forma segura los hints respetando `exactOptionalPropertyTypes`, y se documentaron los cambios en `ARCHITECTURE.md` y `formats.md`.
+
+### Desviaciones
+
+- Se modificaron las configuraciones de cobertura de Vitest en `packages/core` y `packages/cli` para que los thresholds globales solo apliquen al ejecutar la suite completa y no al correr tests unitarios individuales.
+- Se amplió el alcance de T4 para incluir `packages/cli/src/terminal.ts` a fin de asignar `hint` condicionalmente y cumplir con la comprobación de `exactOptionalPropertyTypes: true`.
+
+### Decisiones
+
+- Mapear en Git Flow `fix` a `bugfix/`, `hotfix` a `hotfix/`, `release` a `release/`, `support` a `support/`, y los demás tipos cotidianos (`feat`, `refactor`, `perf`, `test`, `docs`, `chore`, `build`, `ci`, `style`) a `feature/`.
+- Propagar `hint` en `Terminal.choose` y `chooseMany` pasando únicamente la propiedad `hint` cuando no sea `undefined`.
+
+### Pendientes
+
+Ninguno. Todos los criterios de aceptación (AC1 a AC8) están cubiertos y verificados con tests automatizados y `pnpm check` en verde.
