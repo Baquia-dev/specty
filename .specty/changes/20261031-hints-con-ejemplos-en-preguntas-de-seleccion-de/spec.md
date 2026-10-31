@@ -78,7 +78,7 @@ Las preguntas de selección de `specty init` (idioma, agentes y flujo de Git) de
   - files: packages/core/src/cards/init.ts, packages/core/test/cards/init.test.ts, packages/core/test/cards/language.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core test test/cards/init.test.ts test/cards/language.test.ts
-- [ ] T3: Soporte de hint en Terminal y passthrough a @clack/prompts, y detección de soporte en CLI
+- [x] T3: Soporte de hint en Terminal y passthrough a @clack/prompts, y detección de soporte en CLI
   - files: packages/cli/src/session.ts, packages/cli/src/terminal.ts, packages/cli/src/install/git-flow.ts, packages/cli/test/terminal.test.ts, packages/cli/test/init-git-flow.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty test test/terminal.test.ts test/init-git-flow.test.ts

@@ -44,7 +44,9 @@ describe("init asks a person for the git flow", () => {
     expect(asked.map((question) => question.message)).toEqual([
       "¿Qué flujo de git sigue este repositorio? El detectado va primero; Specty nombrará así las ramas de los cambios.",
     ]);
-    expect(asked[0]?.labels[0]).toBe("Git Flow: feature/<slug> y bugfix/<slug> (detectado)");
+    expect(asked[0]?.labels[0]).toBe(
+      "Git Flow: feature/<slug>, bugfix/<slug>, hotfix/<slug> y release/<slug> (detectado)",
+    );
     expect(await flowOf(root)).toBe("github");
   });
 

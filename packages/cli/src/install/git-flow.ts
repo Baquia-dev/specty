@@ -13,7 +13,7 @@ import type { Git } from "../io/git";
 import { COMMAND, type Environment } from "../session";
 
 /** Git Flow's own branches, besides `develop`. */
-const GIT_FLOW_PREFIXES = ["feature/", "bugfix/", "release/", "hotfix/"];
+const GIT_FLOW_PREFIXES = ["feature/", "bugfix/", "release/", "hotfix/", "support/"];
 
 /**
  * The flow the repository already follows, by its branches here and in its remotes: Git Flow by

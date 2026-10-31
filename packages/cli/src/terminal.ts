@@ -18,7 +18,11 @@ export function systemTerminal(env: Readonly<Record<string, string | undefined>>
     async choose(message, options) {
       const answer = await select<string>({
         message,
-        options: options.map((option) => ({ value: option.value, label: option.label })),
+        options: options.map((option) => ({
+          value: option.value,
+          label: option.label,
+          hint: option.hint,
+        })),
       });
       return isCancel(answer)
         ? undefined
@@ -28,7 +32,11 @@ export function systemTerminal(env: Readonly<Record<string, string | undefined>>
       // At least one: a confirmed question always has an answer.
       const answer = await multiselect<string>({
         message,
-        options: options.map((option) => ({ value: option.value, label: option.label })),
+        options: options.map((option) => ({
+          value: option.value,
+          label: option.label,
+          hint: option.hint,
+        })),
         initialValues: [...initial],
         required: true,
       });
