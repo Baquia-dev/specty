@@ -20,3 +20,9 @@ Establecer como regla inquebrantable que en proyectos nuevos el andamiaje inicia
 - [x] T1: Incorporar regla de scaffolding con framework y excepción única de alcance
   - files: packages/core/src/agents-md.ts, packages/core/src/templates.ts, packages/core/test/agents-md.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core test
+
+## Cierre
+
+### Resumen
+
+establecer regla de scaffolding con framework y excepcion de alcance en proyectos nuevos

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-scaffolding-con-comandos-del-framework-en",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-scaffolding-con-comandos-del-framework-en",
   "baseCommit": "5b0e96a4704f46d71ddb5957862bdb34e30da2ae",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9cefc556dc88e7cec9ed40e0e56672768bec5f23",
+      "attempts": 1,
       "startedAt": "2026-10-31T14:55:49.832Z",
       "doneAt": "2026-10-31T14:58:58.492Z",
-      "summary": "establecer regla de scaffolding con framework y excepcion de alcance en proyectos nuevos"
+      "summary": "establecer regla de scaffolding con framework y excepcion de alcance en proyectos nuevos",
+      "scopeExtra": []
     }
   },
   "pending": {
