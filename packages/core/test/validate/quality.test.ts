@@ -161,3 +161,14 @@ describe("file reasons", () => {
     );
   });
 });
+
+describe("vertical slices", () => {
+  it("AC2: rejects horizontal technical layers as epic slices", () => {
+    const epic = fixture("epic.en.md");
+    const horizontal = epic.replace(
+      "- C1: API contracts and typed models",
+      "- C1: Database schema and migrations",
+    );
+    expect(check(horizontal)).toContain("slice-horizontal:C1");
+  });
+});

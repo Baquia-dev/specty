@@ -6,6 +6,13 @@
   "branch": "specty/20261031-exigir-cortes-verticales-y-redaccion-previa-de",
   "baseCommit": "78867cbe6434ca906baaf1e455d76ae3cc89199e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:67694e4952aaa83c4ec0ee1249c788a3300d57a29e32d6e8ade9424e9b906fde",
+    "at": "2026-10-31T09:58:01.976Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -47,12 +54,6 @@
     "AC": 5,
     "T": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:67694e4952aaa83c4ec0ee1249c788a3300d57a29e32d6e8ade9424e9b906fde",
-    "at": "2026-10-31T09:58:01.976Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T09:59:24.988Z"
 }

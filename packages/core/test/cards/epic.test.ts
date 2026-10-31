@@ -81,6 +81,13 @@ describe("the epic card", () => {
     );
   });
 
+  it("AC3: recommends drafting specs of ready slices for parallel agent work", () => {
+    const text = card(epic("implementing", [slice("C1", "ready"), slice("C2", "ready")]));
+    expect(text).toContain("paralelo");
+    const english = card(epic("implementing", [slice("C1", "ready"), slice("C2", "ready")]), EN);
+    expect(english).toContain("parallel");
+  });
+
   it("lists the closed slices in the acceptance card (AC2)", () => {
     const text = card(epic("acceptance", [DONE]));
     expect(text).toContain("CORTES:\n  C1 Corte C1 — cerrado (20261024-inicio)");

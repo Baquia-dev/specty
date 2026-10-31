@@ -82,3 +82,14 @@ describe("the flow block with Specty's MCP server", () => {
     }
   });
 });
+
+describe("rules for epics and vertical slices", () => {
+  it("AC4: includes rule requiring vertical slices and drafting specs for parallel agents", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("cortes verticales");
+    expect(es).toContain("paralelo");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("vertical slices");
+    expect(en).toContain("parallel");
+  });
+});
