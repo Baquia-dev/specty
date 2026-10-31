@@ -2,14 +2,14 @@
   "schema": 1,
   "id": "20261031-regla-para-entrar-en-worktree-con-specty-enter",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261031-regla-para-entrar-en-worktree-con-specty-enter",
   "baseCommit": "877fb1480a106de8820cd4a98a5abf588e52dc80",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:50d0d7a6f194a4f0463c61fc797f4830b68e2a41c91597c6adaa8d8a8b679bed",
-    "at": "2026-10-31T13:51:25.144Z",
+    "revision": 2,
+    "hash": "sha256:69faa8dc2cb718dd5439b33877b3fdb8c7301028dc31e61c876a4c792842df80",
+    "at": "2026-10-31T14:04:26.107Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b820c48420a3c14e0bbc853452181189b4bcd35f",
+      "attempts": 1,
       "startedAt": "2026-10-31T13:51:25.585Z",
       "doneAt": "2026-10-31T13:55:46.372Z",
-      "summary": "Regla explícita de specty enter en flowLines y carryOnText imperativo"
+      "summary": "Regla explícita de specty enter en flowLines y carryOnText imperativo",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -38,6 +38,6 @@
     "adjustment": null
   },
   "maxIds": {
-    "T": 1
+    "T": 2
   }
 }
