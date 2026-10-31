@@ -137,6 +137,19 @@ describe("the lines of `doctor`", () => {
       "ccusage is missing, so closing a change does not say what it consumed. To install it: `npm i -g ccusage@20.0.45`.",
     );
   });
+
+  it("AC3: warns when AGENTS.md has too many lines (agents-bloated)", () => {
+    const line = {
+      code: "agents-bloated",
+      lines: 150,
+    } as unknown as Parameters<typeof doctorLine>[0];
+    expect(doctorLine(line, ES)).toBe(
+      "AGENTS.md tiene 150 líneas: el agente lo lee en cada sesión. Mantenlo conciso (< 80 líneas); traslada especificaciones de producto a PRODUCT.md y arquitectura o fases a docs/.",
+    );
+    expect(doctorLine(line, EN)).toBe(
+      "AGENTS.md has 150 lines: the agent reads it every session. Keep it concise (< 80 lines); move product specs to PRODUCT.md and architecture or phases to docs/.",
+    );
+  });
 });
 
 describe("the card of `doctor`", () => {

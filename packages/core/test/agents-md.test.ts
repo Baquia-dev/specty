@@ -100,3 +100,25 @@ describe("rules for epics and vertical slices", () => {
     expect(en).toContain("specty wait");
   });
 });
+
+describe("shielding AGENTS.md", () => {
+  it("AC1: humanSections hints forbid product specs or phases and point to dedicated files", () => {
+    const es = humanSections("es");
+    expect(es).toContain("PRODUCT.md");
+    expect(es).toContain("docs/");
+    expect(es).toContain("< 80 líneas");
+    const en = humanSections("en");
+    expect(en).toContain("PRODUCT.md");
+    expect(en).toContain("docs/");
+    expect(en).toContain("< 80 lines");
+  });
+
+  it("AC2: flowBlock includes rule to keep AGENTS.md minimal and derive specs and plan", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("Mantén AGENTS.md mínimo");
+    expect(es).toContain("PRODUCT.md o docs/");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("Keep AGENTS.md minimal");
+    expect(en).toContain("PRODUCT.md or docs/");
+  });
+});

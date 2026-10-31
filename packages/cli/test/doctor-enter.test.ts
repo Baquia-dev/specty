@@ -181,4 +181,18 @@ describe("doctor and an install from before specty enter", () => {
     await init(root, "cursor");
     expect(await says(root, line)).toBe(false);
   });
+
+  it("AC3: warns when AGENTS.md exceeds 120 lines", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "cursor");
+    await writeFiles(root, {
+      "AGENTS.md": [
+        "<!-- specty:begin id=flow -->\n## Flujo\n<!-- specty:end id=flow -->",
+        ...Array.from({ length: 130 }, (_, i) => `- Línea ${i + 1}`),
+      ].join("\n"),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.out).toContain("AGENTS.md tiene 133 líneas");
+    expect(doctor.out).toContain("Mantenlo conciso (< 80 líneas)");
+  });
 });

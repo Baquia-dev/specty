@@ -6,6 +6,13 @@
   "branch": "specty/20261031-blindar-agents-md-y-anidar-especificaciones",
   "baseCommit": "4e875639b11adbd83aa70ce8e65e1c340f10ec69",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2ef02473dd0b89d2da0b4b6db35733e225c4a7da33dffcb279d2fc65810d4f28",
+    "at": "2026-10-31T12:22:22.116Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -43,12 +50,6 @@
     "AC": 4,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2ef02473dd0b89d2da0b4b6db35733e225c4a7da33dffcb279d2fc65810d4f28",
-    "at": "2026-10-31T12:22:22.116Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T12:25:31.805Z"
 }
