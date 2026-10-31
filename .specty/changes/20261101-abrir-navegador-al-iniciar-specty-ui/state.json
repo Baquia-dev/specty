@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261101-abrir-navegador-al-iniciar-specty-ui",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261101-abrir-navegador-al-iniciar-specty-ui",
   "baseCommit": "38988a3bd37fff302a6ff8c573134a39a7d10ddb",
   "revision": 1,
@@ -41,6 +41,8 @@
     "AC": 4,
     "T": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-31T16:13:39.076Z"
+  "lockedTests": {
+    "packages/cli/test/server.test.ts": "sha256:f59f4330422915715f73273ab1a637666de7e471eea25425b2550cd53d91f50d",
+    "packages/cli/test/browser.test.ts": "sha256:22dc7f68ab5af5d513c9fddfecd0c2e531c2d3230b60cc29f9bbdf6d888e645e"
+  }
 }
