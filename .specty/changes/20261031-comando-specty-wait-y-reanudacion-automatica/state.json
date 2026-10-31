@@ -2,25 +2,25 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
-  "revision": 2,
+  "revision": 3,
   "approved": {
-    "revision": 2,
-    "hash": "sha256:bc5ad0d1801ea2a19e53a5a4a175771718cb26e1a2a3761004c6c8c116f92dd0",
-    "at": "2026-10-31T10:52:13.010Z",
+    "revision": 3,
+    "hash": "sha256:b96bee7f242762781c831560df508b0402c80b36108ecec8996f6230e673c2bc",
+    "at": "2026-10-31T10:58:07.157Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 11,
+    "score": 12,
     "adjust": 0,
     "reasons": [
       "8 archivos",
       "2 módulos",
-      "4 tareas"
+      "5 tareas"
     ]
   },
   "items": {
@@ -73,12 +73,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7790b06c5a5a5c40046db1583e0ff39d41dc2aae",
+      "attempts": 1,
       "startedAt": "2026-10-31T10:52:13.438Z",
       "doneAt": "2026-10-31T10:57:20.586Z",
-      "summary": "Ordenar export de waitTimeoutCard alfabéticamente"
+      "summary": "Ordenar export de waitTimeoutCard alfabéticamente",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,7 +88,7 @@
   "maxIds": {
     "A": 4,
     "AC": 5,
-    "T": 4,
+    "T": 5,
     "S": 1
   },
   "lockedTests": {

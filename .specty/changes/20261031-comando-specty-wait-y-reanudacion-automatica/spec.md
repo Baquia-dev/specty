@@ -72,3 +72,7 @@ Permitir que el agente detecte automáticamente cuando la persona realiza una ap
   - files: packages/core/src/cards/index.ts
   - ac: AC4
   - type: refactor
+- [ ] T5: Formatear wait.ts
+  - files: packages/cli/src/commands/wait.ts
+  - ac: AC1
+  - type: refactor
