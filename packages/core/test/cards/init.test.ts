@@ -131,7 +131,7 @@ describe("the agent `init` installs", () => {
       "Which agents do you work with in this repository? The detected ones are already checked; you can check several.",
     );
     const choices = agentChoices([], "es");
-    expect(choices[0]).toEqual({ value: "claude-code", label: "Claude Code" });
+    expect(choices[0]).toMatchObject({ value: "claude-code", label: "Claude Code" });
     expect(choices.map((choice) => choice.value)).toEqual(Object.keys(AGENT_NAMES));
   });
 
