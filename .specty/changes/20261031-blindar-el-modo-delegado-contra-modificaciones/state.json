@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261031-blindar-el-modo-delegado-contra-modificaciones",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261031-blindar-el-modo-delegado-contra-modificaciones",
+  "baseCommit": "5b0e96a4704f46d71ddb5957862bdb34e30da2ae",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8df5c6d30692eb64501c89e38242d70927b25e55e981bf7d4797f57a8136da55",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:89fa65cf412e6d28f80907a0fc0e6aa7db5f82aa5dad6178aef3ddc2bf22d432",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:67c2bffbb41715ca215ada706cb44af751d27859c4b128fb1d957e403e27a189",
+    "at": "2026-10-31T14:53:53.175Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
