@@ -68,3 +68,27 @@ Mostrar en la Bandeja el tiempo total transcurrido o duración para cada element
   - files: packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox.test.ts, docs/ui.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox.test.ts
+
+## Cierre
+
+### Resumen
+
+Se añadió la visualización de tiempos en la Bandeja:
+- Para cada cambio (especificaciones individuales, cambios quick y cortes de épica) en curso, se muestran dos tiempos bajo o junto a la insignia de fase: el tiempo transcurrido en la fase actual («Fase: <tiempo>») y el tiempo total de ejecución acumulado («Total: <tiempo>»).
+- Para cambios finalizados, se muestra el tiempo total que duró el cambio («Total: <tiempo>»).
+- Para bloques de épica en la Bandeja, la cabecera del bloque muestra el tiempo total acumulado de la épica («Total: <tiempo>») junto al conteo de cambios.
+- Se extendió `ChangeView` con `createdAt` y `closedAt` resueltos desde la auditoría y estado.
+
+### Desviaciones
+
+- Ninguna respecto al plan aprobado.
+
+### Decisiones
+
+- Las duraciones se formatean con la función estándar `formatDuration` en español e inglés («Fase: ...», «Total: ...»).
+- Para elementos en curso se conserva el atributo `data-since` para retrocompatibilidad, añadiendo `data-phase-time` y `data-total-time`.
+- Para elementos finalizados se muestra el tiempo total con `data-total-time`.
+
+### Pendientes
+
+- Ninguno.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
   "baseCommit": "a0ad36e672887e0f6f70809fb50c6b5446f84fb2",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:f8c48aa83c67e0f0cb4b710f92dd19aad2d4383bbd1c817047d5edfe6c18c526",
@@ -60,12 +60,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a9963b869d2162913c81ff23107c91b7f698ab22",
+      "attempts": 1,
       "startedAt": "2026-10-31T11:48:46.527Z",
       "doneAt": "2026-10-31T11:51:07.004Z",
-      "summary": "Mostrar tiempo total de épicas en inbox y actualizar documentación en docs/ui.md"
+      "summary": "Mostrar tiempo total de épicas en inbox y actualizar documentación en docs/ui.md",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -77,6 +77,7 @@
     "AC": 4,
     "T": 3
   },
+  "closingSubmittedAt": "2026-10-31T11:55:58.252Z",
   "lockedTests": {
     "packages/ui/src/data/views.test.ts": "sha256:bacf0e815a665b57ec6e0ea8136b5b017f9878be47fa9f7a0c593ebd4d3ba02d",
     "packages/ui/src/inbox/inbox-row.test.ts": "sha256:2f5bb01bdedffd2787ba12d2cdb1b2415892462e5bf30a19bb4efa7137abd359",
