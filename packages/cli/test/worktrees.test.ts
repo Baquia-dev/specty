@@ -66,7 +66,7 @@ describe("specty new --worktree", () => {
     expect(created.code).toBe(0);
     const folder = join(home(root), CHANGE.replace("saludo-personalizado", "otro-cambio"));
     expect(created.out).toContain(
-      `SIGUIENTE: continúa en ${folder}: Codex entra en ella desde esta misma sesión: ejecuta \`specty enter ${CHANGE.replace("saludo-personalizado", "otro-cambio")}\` y sigue su salida. Si la persona prefiere otra sesión, pídele que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno.`,
+      `SIGUIENTE: continúa en ${folder}: Codex entra en ella desde esta misma sesión: ejecuta \`specty enter ${CHANGE.replace("saludo-personalizado", "otro-cambio")}\` y sigue su salida (la persona puede abrir Codex en esa carpeta (\`codex -C "${folder}"\`) si prefiere otra sesión). Esta carpeta sigue con su propio trabajo.`,
     );
   });
 
