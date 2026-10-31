@@ -2,25 +2,25 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
-  "revision": 4,
+  "revision": 5,
   "approved": {
-    "revision": 4,
-    "hash": "sha256:d97c2d042c3139a5feb78dd551b7e74cdb28b7c565fc5a7f35f1b112c6bdfacf",
-    "at": "2026-10-31T11:03:48.339Z",
+    "revision": 5,
+    "hash": "sha256:d4f799d3b1646d998ca7e094b2a1a109e1a01f6dec8de61fa350b9de7eeee15d",
+    "at": "2026-10-31T11:09:43.765Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 13,
+    "score": 14,
     "adjust": 0,
     "reasons": [
       "8 archivos",
       "2 módulos",
-      "6 tareas"
+      "7 tareas"
     ]
   },
   "items": {
@@ -91,12 +91,12 @@
     },
     "T6": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6837bb68f79cf69490b0a7157b2837d54bd459b5",
+      "attempts": 1,
       "startedAt": "2026-10-31T11:03:48.783Z",
       "doneAt": "2026-10-31T11:08:50.053Z",
-      "summary": "Corregir estrechamiento de tipos en wait.ts"
+      "summary": "Corregir estrechamiento de tipos en wait.ts",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -106,7 +106,7 @@
   "maxIds": {
     "A": 4,
     "AC": 5,
-    "T": 6,
+    "T": 7,
     "S": 1
   },
   "lockedTests": {
