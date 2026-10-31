@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
   "baseCommit": "cc0acf042079e1e8e32ad028a2e11434c324f090",
   "revision": 1,
@@ -46,12 +46,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c06849c6fb401c541d7bc67e47ade6f3c0b5f504",
+      "attempts": 1,
       "startedAt": "2026-10-31T15:22:49.344Z",
       "doneAt": "2026-10-31T15:23:32.106Z",
-      "summary": "Instruir specty wait en tarjetas de cierre, reintento y guard"
+      "summary": "Instruir specty wait en tarjetas de cierre, reintento y guard",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "165ec5ca62b1ca30ff9bbc2c396543e948375f3c",
+      "startedAt": "2026-10-31T15:23:32.460Z",
+      "doneAt": "2026-10-31T15:25:18.102Z",
+      "summary": "Incluir decisión de alcance en regla flowBlock de AGENTS.md, docs y test de CLI"
     }
   },
   "pending": {
