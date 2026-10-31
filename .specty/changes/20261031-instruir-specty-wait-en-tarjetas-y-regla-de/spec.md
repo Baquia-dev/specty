@@ -44,7 +44,7 @@ Instruir explícitamente al agente a ejecutar `specty wait` en la directiva `SIG
 
 ## Tareas
 
-- [ ] T1: Instruir specty wait en tarjetas de flujo, revisión y pruebas
+- [x] T1: Instruir specty wait en tarjetas de flujo, revisión y pruebas
   - files: packages/core/src/cards/flow.ts, packages/core/src/cards/next.ts, packages/core/src/cards/testing.ts, packages/core/test/cards/delegated.test.ts, packages/core/test/cards/testing.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core test test/cards/testing.test.ts test/cards/delegated.test.ts
@@ -52,11 +52,7 @@ Instruir explícitamente al agente a ejecutar `specty wait` en la directiva `SIG
   - files: packages/core/src/cards/work.ts, packages/core/src/cards/integration.ts, packages/core/src/guard/human.ts, packages/core/test/cards/incorporation.test.ts, packages/core/test/guard/decide.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core test test/cards/incorporation.test.ts test/guard/decide.test.ts
-- [ ] T3: Incluir decisión de alcance en regla flowBlock de AGENTS.md
-  - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts
+- [ ] T3: Incluir decisión de alcance en regla flowBlock de AGENTS.md, docs y test de CLI
+  - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts, packages/cli/test/resolve.test.ts, docs/formats.md
   - ac: AC3, AC4
-  - verify: pnpm --filter @baquia-dev/specty-core test test/agents-md.test.ts
-- [ ] T4: Actualizar documentación y prueba de integración de CLI
-  - files: packages/cli/test/resolve.test.ts, docs/formats.md
-  - ac: AC4
-  - verify: pnpm --filter @baquia-dev/specty test test/resolve.test.ts
+  - verify: pnpm --filter @baquia-dev/specty-core test test/agents-md.test.ts && pnpm --filter @baquia-dev/specty test test/resolve.test.ts

@@ -31,7 +31,20 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/work.ts",
+        "packages/core/src/cards/acceptance.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "47a14ca804dccdc6cca0aa6b7513baa33017fda7",
+      "startedAt": "2026-10-31T15:14:26.851Z",
+      "doneAt": "2026-10-31T15:22:49.004Z",
+      "summary": "Instruir specty wait en tarjetas de flujo, revisión y pruebas"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -39,7 +52,8 @@
   "maxIds": {
     "A": 2,
     "AC": 4,
-    "T": 3
+    "T": 3,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/resolve.test.ts": "sha256:046f37936f8c6741d56df18e77dff1a68ed7f1954cf3af6cba78cbf2f3e40224",

@@ -92,8 +92,8 @@ export function testsSubmittedCard(
           `delegated mode: approve the tests yourself with \`${ctx.command} approve\` and follow its output.`,
         )
       : t(
-          `pide al usuario que revise los tests y los apruebe con \`${ctx.command} approve\`, y termina tu turno.`,
-          `ask the user to review the tests and approve them with \`${ctx.command} approve\`, and end your turn.`,
+          `pide al usuario que revise los tests y los apruebe con \`${ctx.command} approve\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+          `ask the user to review the tests and approve them with \`${ctx.command} approve\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
         ),
   };
 }
@@ -217,8 +217,8 @@ export function unlockRefusedCard(header: string, request: string, ctx: CardCont
       ),
     ]),
     next: t(
-      `pide al usuario que lo decida con ${decide} o ${reject} en su terminal, y termina tu turno.`,
-      `ask the user to decide it with ${decide} or ${reject} in their terminal, and end your turn.`,
+      `pide al usuario que lo decida con ${decide} o ${reject} en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+      `ask the user to decide it with ${decide} or ${reject} in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
     ),
   };
 }

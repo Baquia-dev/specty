@@ -256,8 +256,8 @@ function reviewCard(change: ChangeView, ctx: CardContext): Output {
       ),
     ]),
     next: t(
-      `pide al usuario que revise la spec y la apruebe con \`${ctx.command} approve\` en su terminal; luego termina tu turno.`,
-      `ask the user to review the spec and approve it with \`${ctx.command} approve\` in their terminal; then end your turn.`,
+      `pide al usuario que revise la spec y la apruebe con \`${ctx.command} approve\` en su terminal o en la UI, y ejecuta \`${ctx.command} wait\` para esperar su decisión.`,
+      `ask the user to review the spec and approve it with \`${ctx.command} approve\` in their terminal or UI, and run \`${ctx.command} wait\` to wait for their decision.`,
     ),
   };
 }
