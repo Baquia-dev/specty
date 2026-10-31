@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
   "revision": 1,
@@ -51,6 +51,11 @@
     "AC": 8,
     "T": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-31T10:56:34.556Z"
+  "lockedTests": {
+    "packages/cli/test/init-git-flow.test.ts": "sha256:b767327344fdcbfd728ac2c084f0bbc60531943f3d1900cfba3a99e5eb79224a",
+    "packages/cli/test/terminal.test.ts": "sha256:65af297aa324a06323132471d6c24224642ec04d6e6b11d9f55735ae64e57b06",
+    "packages/core/test/branches.test.ts": "sha256:f9bca7e5fddad43d21dce950e21282be7c96eedcc3b1227f11479810d6135940",
+    "packages/core/test/cards/init.test.ts": "sha256:1f76423980246f579df5bcc8a94a5f336de602963c8ea2f5c681403c854599fb",
+    "packages/core/test/cards/language.test.ts": "sha256:7d13efad3a626ae2693af7606f5537da7fc2fabee36752518be34db7a64c1e3b"
+  }
 }
