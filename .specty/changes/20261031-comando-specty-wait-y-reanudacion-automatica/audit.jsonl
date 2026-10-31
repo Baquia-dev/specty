@@ -18,3 +18,6 @@
 {"ts":"2026-10-31T10:50:47.655Z","actor":"agent","tool":"antigravity","event":"adjust.requested","data":{"request":"Ordenar export de waitTimeoutCard alfabéticamente para cumplir el linter"}}
 {"ts":"2026-10-31T10:52:02.203Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:bc5ad0d1801ea2a19e53a5a4a175771718cb26e1a2a3761004c6c8c116f92dd0","size":"L","warnings":0}}
 {"ts":"2026-10-31T10:52:13.023Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"spec.approved","data":{"revision":2,"hash":"sha256:bc5ad0d1801ea2a19e53a5a4a175771718cb26e1a2a3761004c6c8c116f92dd0","channel":"delegated","delegated":true}}
+{"ts":"2026-10-31T10:52:13.439Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T4","baseCommit":"7790b06c5a5a5c40046db1583e0ff39d41dc2aae"}}
+{"ts":"2026-10-31T10:57:20.447Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm test","exit":0,"ms":263090,"tree":"sha256:9cb6d56051248e85100325de9a25f10fdd3ddbc91de40f3eac868dfec85b5b24"}}
+{"ts":"2026-10-31T10:57:20.587Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T4","summary":"Ordenar export de waitTimeoutCard alfabéticamente"}}

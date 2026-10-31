@@ -68,7 +68,7 @@ Permitir que el agente detecte automáticamente cuando la persona realiza una ap
   - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
-- [ ] T4: Ordenar export en cards/index.ts
+- [x] T4: Ordenar export en cards/index.ts
   - files: packages/core/src/cards/index.ts
   - ac: AC4
   - type: refactor

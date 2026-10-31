@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
   "revision": 2,
@@ -70,6 +70,15 @@
       "doneAt": "2026-10-31T10:50:29.044Z",
       "summary": "Añadir uso de specty wait en flowBlock de AGENTS.md y documentar en ARCHITECTURE.md",
       "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7790b06c5a5a5c40046db1583e0ff39d41dc2aae",
+      "startedAt": "2026-10-31T10:52:13.438Z",
+      "doneAt": "2026-10-31T10:57:20.586Z",
+      "summary": "Ordenar export de waitTimeoutCard alfabéticamente"
     }
   },
   "pending": {

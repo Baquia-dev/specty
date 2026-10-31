@@ -337,6 +337,7 @@ export type {
   SliceView,
   TaskView,
 } from "./view";
+export { waitTimeoutCard } from "./wait";
 export {
   type WhyCommit,
   type WhyRefusal,
@@ -345,4 +346,3 @@ export {
   whyRefusalCard,
 } from "./why";
 export { NOTE_MAX } from "./work";
-export { waitTimeoutCard } from "./wait";
