@@ -83,3 +83,22 @@ Hacer cumplir que toda épica (`kind: epic`), tanto en proyectos nuevos como exi
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run
   - type: docs
+
+## Cierre
+
+### Resumen
+
+Se estableció en Specty la obligatoriedad universal de que toda épica (`kind: epic`) defina sus funcionalidades mediante cortes verticales verificables de punta a punta, prohibiendo capas técnicas horizontales puras (como base de datos o endpoints aislados) y exigiendo que cada corte declare al menos un criterio de aceptación en `ac` (`slice-without-criteria` y `slice-horizontal`). Además, se integró en `AGENTS.md` y en las tarjetas de `specty next` (`epicCard`) la orientación explícita para redactar y proponer las specs de todos los cortes listos antes de codificar, habilitando el trabajo concurrente de múltiples agentes en worktrees independientes, y se documentó en `docs/ARCHITECTURE.md` (§11, §14 y carril `epic`) y `docs/dominio.md`.
+
+### Desviaciones
+
+- Ninguna respecto al alcance acordado.
+
+### Decisiones
+
+- La detección de capas horizontales en épicas se implementó como regla semántica en `quality.ts` dentro de `checkSplit`, verificando los títulos de cortes contra patrones técnicos típicos de capas aisladas.
+- La orientación hacia el trabajo paralelo en `AGENTS.md` se ubicó de manera concisa en la regla de flujo que describe el trabajo en worktrees para preservar el límite estricto de 15 líneas del bloque de flujo.
+
+### Pendientes
+
+- Ninguno.

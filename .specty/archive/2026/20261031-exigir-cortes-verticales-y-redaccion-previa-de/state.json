@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261031-exigir-cortes-verticales-y-redaccion-previa-de",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-exigir-cortes-verticales-y-redaccion-previa-de",
   "baseCommit": "78867cbe6434ca906baaf1e455d76ae3cc89199e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:67694e4952aaa83c4ec0ee1249c788a3300d57a29e32d6e8ade9424e9b906fde",
@@ -76,12 +76,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "bfa6d0a1c0a580e8f490d37bcb2e59f139ad5cbe",
+      "attempts": 1,
       "startedAt": "2026-10-31T10:07:39.144Z",
       "doneAt": "2026-10-31T10:09:06.978Z",
-      "summary": "Documentar en ARCHITECTURE.md y dominio.md la obligatoriedad de cortes verticales y redacción previa de specs"
+      "summary": "Documentar en ARCHITECTURE.md y dominio.md la obligatoriedad de cortes verticales y redacción previa de specs",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -94,6 +94,7 @@
     "T": 4,
     "S": 1
   },
+  "closingSubmittedAt": "2026-10-31T10:13:55.017Z",
   "lockedTests": {
     "packages/core/test/agents-md.test.ts": "sha256:b73ab05618072f03c227864fd1da072fdecacf5971bf327127ccac232dca5b27",
     "packages/core/test/cards/epic.test.ts": "sha256:e2d72ed6785cb7bec2b04dca322d6a0f30e085091c357814ed5ee29267348a4d",

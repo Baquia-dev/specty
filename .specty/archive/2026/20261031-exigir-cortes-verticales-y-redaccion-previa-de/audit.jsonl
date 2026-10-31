@@ -17,3 +17,7 @@
 {"ts":"2026-10-31T10:07:39.144Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T4","baseCommit":"bfa6d0a1c0a580e8f490d37bcb2e59f139ad5cbe"}}
 {"ts":"2026-10-31T10:09:06.978Z","actor":"specty","event":"task.verified","data":{"task":"T4","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run","exit":0,"ms":3019,"tree":"sha256:cef1056a0c01c4a7fbce12818f96a2b40df7f090ac93b8612cebca24ec6faa45"}}
 {"ts":"2026-10-31T10:09:06.979Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T4","summary":"Documentar en ARCHITECTURE.md y dominio.md la obligatoriedad de cortes verticales y redacción previa de specs"}}
+{"ts":"2026-10-31T10:13:32.953Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":259176,"tree":"sha256:cef1056a0c01c4a7fbce12818f96a2b40df7f090ac93b8612cebca24ec6faa45","coverage":{"measured":16,"covered":16,"gaps":[],"stretches":0}}}
+{"ts":"2026-10-31T10:13:32.956Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-31T10:13:55.017Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:09defc88146123f23d33644e32f7a5374b709b7617f871967e72baae360b8a2c","size":"L","warnings":0}}
+{"ts":"2026-10-31T10:14:01.300Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.closed","data":{"delegated":true}}
