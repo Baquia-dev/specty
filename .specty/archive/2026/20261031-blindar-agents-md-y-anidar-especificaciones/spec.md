@@ -69,3 +69,22 @@ Blindar `AGENTS.md` para mantenerlo conciso y ligero (< 80 líneas), evitando qu
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts test/cards.test.ts test/cards/language.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+Se blindó `AGENTS.md` para evitar que los agentes vuelquen especificaciones masivas de producto o arquitectura en él, enriqueciendo las pistas en `humanSections` de `agents-md.ts` e implementando el aviso preventivo `agents-bloated` en `specty doctor` cuando `AGENTS.md` supera las 120 líneas. Además, se documentó en `docs/ARCHITECTURE.md` (§14 "Proyecto nuevo") el flujo unificado donde las especificaciones iniciales se guardan en archivos dedicados (`PRODUCT.md`, `docs/ARCHITECTURE.md`, `docs/` temáticos), `AGENTS.md` se mantiene blindado y conciso (< 80 líneas), y a partir de ellas se implementa el esqueleto y se propone la épica del MVP descompuesta en cortes verticales verificables listos para que múltiples agentes trabajen en paralelo en worktrees independientes.
+
+### Desviaciones
+
+- Se ajustó `flowBlock` en T4 para preservar estrictamente el límite canónico de 15 líneas y las 5 reglas fijas que ninguna herramienta puede verificar, concentrando el blindaje de pistas en `humanSections` y la advertencia en `specty doctor`.
+
+### Decisiones
+
+- D1: La advertencia `agents-bloated` se activa a partir de 120 líneas de texto en `AGENTS.md` para alertar oportunamente sobre la degradación de la ventana de contexto sin bloquear ejecuciones.
+- D2: En proyectos nuevos, las especificaciones extensas se dirigen a `PRODUCT.md` y `docs/` temáticos antes de trazar el esqueleto o la épica, garantizando que el agente consulte los detalles bajo demanda (progressive disclosure).
+
+### Pendientes
+
+- Ninguno. Verificación completa en verde y 100 % de cobertura en las líneas añadidas.

@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261031-blindar-agents-md-y-anidar-especificaciones",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-blindar-agents-md-y-anidar-especificaciones",
   "baseCommit": "4e875639b11adbd83aa70ce8e65e1c340f10ec69",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:ef32b23281ea3807e8c40f3af2b2dd5d12a104c10bf04964b2dababf49e8d786",
@@ -71,12 +71,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "9c5e787ad2834c01cb040021b7c31074940bef82",
+      "attempts": 1,
       "startedAt": "2026-10-31T12:34:01.291Z",
       "doneAt": "2026-10-31T12:34:31.453Z",
-      "summary": "Preservar el límite estricto de 15 líneas y 5 reglas en flowBlock"
+      "summary": "Preservar el límite estricto de 15 líneas y 5 reglas en flowBlock",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -88,6 +88,7 @@
     "AC": 4,
     "T": 4
   },
+  "closingSubmittedAt": "2026-10-31T12:39:28.937Z",
   "lockedTests": {
     "packages/core/test/cards/doctor.test.ts": "sha256:022f97e7f80e93f669a3bd7da86975000d2a071185e1f98d20d094de93140ed3",
     "packages/core/test/agents-md.test.ts": "sha256:b86e907792f9e55696b26d5d814ec68df289692daba6b091289969f3e550f14f"
