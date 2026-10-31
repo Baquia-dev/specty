@@ -20,16 +20,18 @@ describe("the branch of a new change", () => {
 
   it("uses Git Flow's full branches: bugfix for fix, hotfix for hotfix, release for release, support for support, feature for the rest (AC4)", () => {
     expect(branchName({ ...change, flow: "gitflow", type: "fix" })).toBe("bugfix/login-con-google");
-    expect(branchName({ ...change, flow: "gitflow", type: "hotfix" as any })).toBe(
+    expect(branchName({ ...change, flow: "gitflow", type: "hotfix" })).toBe(
       "hotfix/login-con-google",
     );
-    expect(branchName({ ...change, flow: "gitflow", type: "release" as any })).toBe(
+    expect(branchName({ ...change, flow: "gitflow", type: "release" })).toBe(
       "release/login-con-google",
     );
-    expect(branchName({ ...change, flow: "gitflow", type: "support" as any })).toBe(
+    expect(branchName({ ...change, flow: "gitflow", type: "support" })).toBe(
       "support/login-con-google",
     );
-    expect(branchName({ ...change, flow: "gitflow", type: "feat" })).toBe("feature/login-con-google");
+    expect(branchName({ ...change, flow: "gitflow", type: "feat" })).toBe(
+      "feature/login-con-google",
+    );
     expect(branchName({ ...change, flow: "gitflow", type: "refactor" })).toBe(
       "feature/login-con-google",
     );
@@ -39,13 +41,13 @@ describe("the branch of a new change", () => {
   });
 
   it("uses the type as branch prefix for hotfix, release, and support under github and trunk (AC5)", () => {
-    expect(branchName({ ...change, flow: "github", type: "hotfix" as any })).toBe(
+    expect(branchName({ ...change, flow: "github", type: "hotfix" })).toBe(
       "hotfix/login-con-google",
     );
-    expect(branchName({ ...change, flow: "github", type: "release" as any })).toBe(
+    expect(branchName({ ...change, flow: "github", type: "release" })).toBe(
       "release/login-con-google",
     );
-    expect(branchName({ ...change, flow: "trunk", type: "support" as any })).toBe(
+    expect(branchName({ ...change, flow: "trunk", type: "support" })).toBe(
       "support/login-con-google",
     );
   });

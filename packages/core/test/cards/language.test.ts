@@ -26,8 +26,8 @@ describe("the language of Specty", () => {
     expect(languageChoices("en").map((choice) => choice.value)).toEqual(["en", "es"]);
     const es = choices.find((choice) => choice.value === "es");
     const en = choices.find((choice) => choice.value === "en");
-    expect((es as any)?.hint).toMatch(/\(ej\./);
-    expect((en as any)?.hint).toMatch(/\(e\.g\./);
+    expect((es as unknown as { readonly hint?: string })?.hint).toMatch(/\(ej\./);
+    expect((en as unknown as { readonly hint?: string })?.hint).toMatch(/\(e\.g\./);
   });
 
   it("says when init changed it (AC3)", () => {

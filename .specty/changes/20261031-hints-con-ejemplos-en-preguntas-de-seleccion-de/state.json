@@ -41,7 +41,22 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/cards/init.test.ts",
+        "packages/core/test/cards/language.test.ts",
+        "packages/core/test/branches.test.ts",
+        "packages/core/vitest.config.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "1828966653714f890207a974a571916d68947902",
+      "startedAt": "2026-10-31T10:56:44.680Z",
+      "doneAt": "2026-10-31T11:07:42.190Z",
+      "summary": "Tipos de commit ampliados con hotfix, release y support, y soporte completo de ramas en prefixOf para Git Flow"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
@@ -49,13 +64,14 @@
   "maxIds": {
     "A": 4,
     "AC": 8,
-    "T": 4
+    "T": 4,
+    "S": 2
   },
   "lockedTests": {
     "packages/cli/test/init-git-flow.test.ts": "sha256:b767327344fdcbfd728ac2c084f0bbc60531943f3d1900cfba3a99e5eb79224a",
     "packages/cli/test/terminal.test.ts": "sha256:65af297aa324a06323132471d6c24224642ec04d6e6b11d9f55735ae64e57b06",
-    "packages/core/test/branches.test.ts": "sha256:f9bca7e5fddad43d21dce950e21282be7c96eedcc3b1227f11479810d6135940",
-    "packages/core/test/cards/init.test.ts": "sha256:1f76423980246f579df5bcc8a94a5f336de602963c8ea2f5c681403c854599fb",
-    "packages/core/test/cards/language.test.ts": "sha256:7d13efad3a626ae2693af7606f5537da7fc2fabee36752518be34db7a64c1e3b"
+    "packages/core/test/branches.test.ts": "sha256:86d8c216bd2d7a2d5a65f38d5f0d15c555f558e9feeb52c1fe33b14ecee7aafe",
+    "packages/core/test/cards/init.test.ts": "sha256:3a95a8e8e7f14a5e4df07632aadd60c97d20f262c0482d58230a1bf78e6ffb4a",
+    "packages/core/test/cards/language.test.ts": "sha256:cb28cffe75481babf92cb02c56fcf16ca83ea80d6a462296c0d2b7c11416383a"
   }
 }

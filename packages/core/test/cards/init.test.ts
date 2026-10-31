@@ -64,16 +64,16 @@ describe("the git flow `init` asks for", () => {
       "Trunk: <tipo>/<slug>, como feat/<slug>",
     ]);
     const gitflowEs = none.find((choice) => choice.value === "gitflow");
-    expect((gitflowEs as any)?.hint).toMatch(/\(ej\./);
+    expect((gitflowEs as unknown as { readonly hint?: string })?.hint).toMatch(/\(ej\./);
     for (const choice of none) {
-      expect((choice as any).hint).toBeDefined();
+      expect((choice as unknown as { readonly hint?: string }).hint).toBeDefined();
     }
     const en = flowChoices(undefined, "en");
     const gitflowEn = en.find((choice) => choice.value === "gitflow");
     expect(gitflowEn?.label).toContain(
       "feature/<slug>, bugfix/<slug>, hotfix/<slug> and release/<slug>",
     );
-    expect((gitflowEn as any)?.hint).toMatch(/\(e\.g\./);
+    expect((gitflowEn as unknown as { readonly hint?: string })?.hint).toMatch(/\(e\.g\./);
   });
 
   it("puts the detected one first, and says so (AC2)", () => {
@@ -141,14 +141,14 @@ describe("the agent `init` installs", () => {
     expect(es.find((choice) => choice.value === "cursor")?.label).toBe("Cursor (detectado)");
     expect(es[0]?.label).toBe("Claude Code");
     for (const choice of es) {
-      expect((choice as any).hint).toBeDefined();
-      expect((choice as any).hint).toMatch(/\(ej\./);
+      expect((choice as unknown as { readonly hint?: string }).hint).toBeDefined();
+      expect((choice as unknown as { readonly hint?: string }).hint).toMatch(/\(ej\./);
     }
     const en = agentChoices(["codex"], "en");
     expect(en.find((choice) => choice.value === "codex")?.label).toBe("Codex (detected)");
     for (const choice of en) {
-      expect((choice as any).hint).toBeDefined();
-      expect((choice as any).hint).toMatch(/\(e\.g\./);
+      expect((choice as unknown as { readonly hint?: string }).hint).toBeDefined();
+      expect((choice as unknown as { readonly hint?: string }).hint).toMatch(/\(e\.g\./);
     }
     expect(agentQuestion(false, "es")).toBe(
       "No se detectó ningún agente. ¿Con cuáles trabajas en este repositorio? Puedes marcar varios.",

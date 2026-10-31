@@ -27,7 +27,9 @@ describe("the cards of a refused `new`", () => {
     expect(renderText(refused({ reason: "unknown-type", type: "bug" }, EN), "en")).toContain(
       "Unknown commit type: bug.",
     );
-    expect(type.next).toBe("--type feat|fix|refactor|perf|test|docs|chore|build|ci|style");
+    expect(type.next).toBe(
+      "--type feat|fix|refactor|perf|test|docs|chore|build|ci|style|hotfix|release|support",
+    );
     const bootstrap = refused({ reason: "bootstrap-quick", title: "Esqueleto" });
     expect(bootstrap.status).toBe("invalid");
     expect(bootstrap.next).toBe(

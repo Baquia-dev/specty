@@ -50,7 +50,10 @@ export type CommitType =
   | "chore"
   | "build"
   | "ci"
-  | "style";
+  | "style"
+  | "hotfix"
+  | "release"
+  | "support";
 
 export const COMMIT_TYPES: readonly CommitType[] = [
   "feat",
@@ -63,6 +66,9 @@ export const COMMIT_TYPES: readonly CommitType[] = [
   "build",
   "ci",
   "style",
+  "hotfix",
+  "release",
+  "support",
 ];
 
 /** Neutral effort levels; the CLI maps them to each tool's settings. */
