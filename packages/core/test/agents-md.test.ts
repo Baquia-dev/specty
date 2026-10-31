@@ -131,6 +131,15 @@ describe("shielding AGENTS.md", () => {
     expect(en.length).toBeLessThanOrEqual(15);
   });
 
+  it("AC4: flowBlock includes rule forbidding modifying .git or bypassing permissions", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toMatch(/\.git|permisos/);
+    const en = flowBlock("en", "specty");
+    expect(en).toMatch(/\.git|permissions/);
+    expect(es.split("\n").length).toBeLessThanOrEqual(15);
+    expect(en.split("\n").length).toBeLessThanOrEqual(15);
+  });
+
   it("AC3: flowBlock rules mandate scaffolding with framework commands in new projects with non-leaking scope exception", () => {
     const es = flowBlock("es", "specty");
     expect(es).toContain("andamiaje con framework");

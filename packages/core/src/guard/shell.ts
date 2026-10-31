@@ -40,6 +40,7 @@ type Directory = string | undefined;
 const WRAPPERS: ReadonlySet<string> = new Set(["sudo", "env", "command", "exec", "time", "nohup"]);
 const RUNNERS: ReadonlySet<string> = new Set(["node", "bun", "deno"]);
 const BYPASS_ENV: Readonly<Record<string, string>> = { HUSKY: "0", LEFTHOOK: "0" };
+const SENSITIVE_SPECTY = /common\/specty\/delegated\.json|\.git\/common\/specty/;
 const SPECTY_PACKAGE = /^@baquia-dev\/specty(?:@[^/]*)?$/;
 const UNSCOPED_PACKAGE = /^specty(?:@.*)?$/;
 const SPECTY_SCRIPT = /(?:^|\/)specty(?:\.[cm]?js)?$/;
@@ -147,12 +148,16 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
   const git = program === "git" ? analyzeGit(args) : { commits: [], bypass: false };
   const files = program === "" ? { writes: [], deletes: [] } : fileEffects(program, args);
   const specty = spectyArgs(program, args);
+  const bypassBySpecty =
+    specty === undefined &&
+    (words.some((word) => SENSITIVE_SPECTY.test(word)) ||
+      redirected.some((path) => SENSITIVE_SPECTY.test(path)));
   return {
     specty: specty === undefined ? [] : [subcommand(specty)].filter((name) => name.length > 0),
     enters: specty === undefined ? [] : entered(specty),
     unscopedNpx: isUnscopedNpx(program, args),
     commits: git.commits,
-    bypass: bypassByEnv || git.bypass,
+    bypass: bypassByEnv || git.bypass || bypassBySpecty,
     writes: [...redirected, ...files.writes],
     deletes: files.deletes,
   };

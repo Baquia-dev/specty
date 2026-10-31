@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "id": "20261031-blindar-el-modo-delegado-contra-modificaciones",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261031-blindar-el-modo-delegado-contra-modificaciones",
+  "baseCommit": "5b0e96a4704f46d71ddb5957862bdb34e30da2ae",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:67c2bffbb41715ca215ada706cb44af751d27859c4b128fb1d957e403e27a189",
+    "at": "2026-10-31T14:53:53.175Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8df5c6d30692eb64501c89e38242d70927b25e55e981bf7d4797f57a8136da55",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:89fa65cf412e6d28f80907a0fc0e6aa7db5f82aa5dad6178aef3ddc2bf22d432",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "caf9ec284e0992151518e3c29b24af683572923e",
+      "attempts": 1,
+      "startedAt": "2026-10-31T14:57:33.670Z",
+      "doneAt": "2026-10-31T14:58:13.218Z",
+      "summary": "Detección estática de bypass en analyzeShell para delegated.json y .git/common/specty",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "103d71effe5b5aca32e24d29b759e4c374c1e03b",
+      "attempts": 1,
+      "startedAt": "2026-10-31T14:58:13.575Z",
+      "doneAt": "2026-10-31T15:03:06.273Z",
+      "summary": "Monitoreo en treeSnapshot y reversión en afterShell de alteraciones no autorizadas a delegated.json, con permisos 0o444 en disco",
+      "scopeExtra": [
+        "packages/cli/src/store/local.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "3fe25e9e9acc95c62909bd81c1d8424dac475711",
+      "attempts": 1,
+      "startedAt": "2026-10-31T15:03:06.639Z",
+      "doneAt": "2026-10-31T15:04:58.257Z",
+      "summary": "Regla explícita en flowBlock, permisos 0o444 en delegated.json y documentación en ARCHITECTURE.md",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "closingSubmittedAt": "2026-10-31T15:18:50.979Z",
+  "lockedTests": {
+    "packages/cli/test/delegate.test.ts": "sha256:ac783fc1abcdf9b3772b3b36f9326ec788dcc51c0ee76be0d2eff958fdd71aa2",
+    "packages/core/test/agents-md.test.ts": "sha256:770ad5ee570c84796d35b6b613ef964cfe59173797ad784be3307700e6936312",
+    "packages/core/test/guard/shell.test.ts": "sha256:03a4a5877bb335b6a964d71779e2b21a5d81e06a5f075e48714a7ac5bed912fe"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "cc0acf042079e1e8e32ad028a2e11434c324f090",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/core/test/agents-md.test.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/enforce/shell-snapshot.ts",
+      "packages/cli/src/store/local.ts",
+      "packages/cli/test/delegate.test.ts",
+      "packages/core/src/agents-md.ts",
+      "packages/core/src/guard/shell.ts",
+      "packages/core/src/templates.ts",
+      "packages/core/test/agents-md.test.ts",
+      "packages/core/test/guard/shell.test.ts"
+    ],
+    "at": "2026-10-31T15:05:51.752Z",
+    "resolved": {
+      "commit": "bb8bbd4",
+      "at": "2026-10-31T15:13:55.755Z"
+    }
+  }
+}
