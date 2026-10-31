@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "id": "20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
+  "baseCommit": "cc0acf042079e1e8e32ad028a2e11434c324f090",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8682f95aa2486c4ee5917d6f610e516b753f787b9355134cbb9c39edd5d6d627",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7b4ea2afef068d53ef363b497f08b24c10ca9b70d646d0e79c863211fbe39dc0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff5133a58ff8d0a6302d6378ff119ff5284e8373eee4e3f04a366d3c59973086",
+    "at": "2026-10-31T15:07:20.077Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
