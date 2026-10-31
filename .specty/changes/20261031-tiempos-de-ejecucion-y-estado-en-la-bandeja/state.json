@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
+  "baseCommit": "a0ad36e672887e0f6f70809fb50c6b5446f84fb2",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:463d5ac90b5014eb93912432f8f27dbe9f0a1b443f48592be9ba7206bff5aca3",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:2f6e3b12f975e1f1bfa900370a63a81f8a73e95ea477f6f1b735be0180746c04",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e7b7a8f04999d9df076618b8e93cee6cf29d35ed8a2bfe46ba37999ee356a2c7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:33cb3b881a55ac2ff230cd23ab3a5b592892f097d6b94537acff37e12434f831",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f8c48aa83c67e0f0cb4b710f92dd19aad2d4383bbd1c817047d5edfe6c18c526",
+    "at": "2026-10-31T11:39:43.471Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
