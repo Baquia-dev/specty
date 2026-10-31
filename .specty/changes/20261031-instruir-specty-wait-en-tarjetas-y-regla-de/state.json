@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
   "baseCommit": "cc0acf042079e1e8e32ad028a2e11434c324f090",
   "revision": 1,
@@ -41,6 +41,12 @@
     "AC": 4,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-31T15:14:12.252Z"
+  "lockedTests": {
+    "packages/cli/test/resolve.test.ts": "sha256:046f37936f8c6741d56df18e77dff1a68ed7f1954cf3af6cba78cbf2f3e40224",
+    "packages/core/test/agents-md.test.ts": "sha256:620545b868f3741e27e0c43370ddf3fd168f25bc762b2db59ec6810ef90fbded",
+    "packages/core/test/cards/delegated.test.ts": "sha256:5195f8c825957e45e904d1e0b899d307567cb98556e2e0f20622d7cd4c5dbb84",
+    "packages/core/test/cards/incorporation.test.ts": "sha256:8defa1cc419cd6a6eab96ac7558ec8f1034696c18f370c0495436d9c35942aee",
+    "packages/core/test/cards/testing.test.ts": "sha256:95186f5a137156800c4a0081f51d05aa11ff67edec518b40958fe1ef31ba1b4c",
+    "packages/core/test/guard/decide.test.ts": "sha256:378c23acdf5ab9ba97c22f63f8a70c07c35bf2b711f7dc980f3f8412a1b3234e"
+  }
 }
