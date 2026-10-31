@@ -93,11 +93,13 @@ describe("rules for epics and vertical slices", () => {
     expect(en).toContain("parallel");
   });
 
-  it("AC5: mentions specty wait in flowBlock for human approvals", () => {
+  it("AC3: mentions specty wait and scope decisions in flowBlock for human approvals", () => {
     const es = flowBlock("es", "specty");
     expect(es).toContain("specty wait");
+    expect(es).toContain("decidir el alcance");
     const en = flowBlock("en", "specty");
     expect(en).toContain("specty wait");
+    expect(en).toContain("deciding scope");
   });
 
   it("AC1: flowBlock explicitly requires entering worktree with specty enter and forbids asking for another session", () => {

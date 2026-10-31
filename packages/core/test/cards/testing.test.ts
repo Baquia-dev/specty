@@ -136,7 +136,7 @@ describe("the tests sent", () => {
       "TESTS ENVIADOS (commit abc1234):\n  src/app.test.ts\n  src/greet.test.ts",
     );
     expect(text).toContain(
-      "SIGUIENTE: pide al usuario que revise los tests y los apruebe con `specty approve`, y termina tu turno.",
+      "SIGUIENTE: pide al usuario que revise los tests y los apruebe con `specty approve` en su terminal o en la UI, y ejecuta `specty wait` para esperar su decisión.",
     );
     const delegated = renderText(
       testsSubmittedCard("20261028-saludo", sent, { ...EN, delegated: true }),
@@ -218,16 +218,16 @@ describe("unlocking an approved test", () => {
       );
       expect(text).toContain("SOLICITUD S1 (desbloquea tests aprobados):\n  src/app.test.ts");
       expect(text).toContain(
-        "SIGUIENTE: desbloquear un test aprobado lo decide solo la persona, también en modo delegado: pídele que lo decida con `specty approve --scope S1` en su terminal y termina tu turno.",
+        "SIGUIENTE: desbloquear un test aprobado lo decide solo la persona, también en modo delegado: pídele que lo decida con `specty approve --scope S1` en su terminal o en la UI, y ejecuta `specty wait` para esperar su decisión.",
       );
     }
   });
 
-  it("AC2: refuses to let the delegated agent decide it", () => {
+  it("AC1: refuses to let the delegated agent decide it", () => {
     const card = unlockRefusedCard(header, "S1", EN);
     expect(card.status).toBe("blocked");
     expect(renderText(card, "en")).toContain(
-      "S1 unlocks an approved test: only the person decides it, in delegated mode too.\nNEXT: ask the user to decide it with `specty approve --scope S1` or `specty reject --scope S1` in their terminal, and end your turn.",
+      "S1 unlocks an approved test: only the person decides it, in delegated mode too.\nNEXT: ask the user to decide it with `specty approve --scope S1` or `specty reject --scope S1` in their terminal or UI, and run `specty wait` to wait for their decision.",
     );
   });
 });

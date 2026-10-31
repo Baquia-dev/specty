@@ -124,12 +124,12 @@ describe("`specty integrate`", () => {
     );
   });
 
-  it("once resolved, sends the closing again", () => {
+  it("AC1, AC4: once resolved, sends the closing again and instructs specty wait", () => {
     expect(integrationResolvedLine("main", "a1b2c3d", "es")).toBe(
       "Incorporación de main resuelta (merge a1b2c3d).",
     );
     expect(runAgainNext("close", ES)).toBe(
-      "pide al usuario que vuelva a ejecutar `specty close` y termina tu turno.",
+      "pide al usuario que vuelva a ejecutar `specty close` y ejecuta `specty wait` para esperar su decisión.",
     );
     expect(runAgainNext("accept", { ...EN, delegated: true })).toBe(
       "delegated mode: run `specty accept` again yourself and follow its output.",

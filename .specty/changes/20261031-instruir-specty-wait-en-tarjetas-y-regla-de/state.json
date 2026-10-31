@@ -6,6 +6,13 @@
   "branch": "specty/20261031-instruir-specty-wait-en-tarjetas-y-regla-de",
   "baseCommit": "cc0acf042079e1e8e32ad028a2e11434c324f090",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ff5133a58ff8d0a6302d6378ff119ff5284e8373eee4e3f04a366d3c59973086",
+    "at": "2026-10-31T15:07:20.077Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -34,12 +41,6 @@
     "AC": 4,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ff5133a58ff8d0a6302d6378ff119ff5284e8373eee4e3f04a366d3c59973086",
-    "at": "2026-10-31T15:07:20.077Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T15:14:12.252Z"
 }

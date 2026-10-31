@@ -168,7 +168,7 @@ describe("decideGuard on shell commands", () => {
     expect(allowed(shell({ bypass: true }), ctx())).toBe(false);
   });
 
-  it("opens the person's commands to the agent only when the person delegated them", () => {
+  it("AC2: opens the person's commands to the agent only when the person delegated them", () => {
     const delegated: GuardContext = { ...ctx(IMPLEMENTING), delegated: true };
     for (const name of ["approve", "accept", "close", "cancel", "reject"]) {
       expect(allowed(shell({ specty: [name] }), delegated)).toBe(true);
@@ -179,7 +179,9 @@ describe("decideGuard on shell commands", () => {
         expect(denied.reason).toBe(
           `\`specty ${name}\` lo ejecuta el usuario en su terminal, no el agente.`,
         );
-        expect(denied.next).toBe("pídele al usuario que lo ejecute y termina tu turno.");
+        expect(denied.next).toBe(
+          "pídele al usuario que lo ejecute y ejecuta `specty wait` para esperar su decisión.",
+        );
       }
     }
   });
