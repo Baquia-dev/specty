@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
+  "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 14,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:50317aecaf7da74dd5039f8bc10c6b38fe81230226efeb9fb069af2cae15eacd",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:95740d19f5877dba2f231279bc4d7feef0a6c92ad49cdb4fe3e3c9e4bbe7928d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:95c881c44b67396ac0258423df8521aec9cefa8ae46bb9885162e16ba717c7bb",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ca7d992b5619995c08f7f39c6a0fa7d6f629bd25b0d1146fb325c8289b873a10",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 8,
+    "T": 4
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:262631f871c760f2c07db377b9deeae4c40b449890fe72a7161796c8474b930c",
+    "at": "2026-10-31T10:52:27.031Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
