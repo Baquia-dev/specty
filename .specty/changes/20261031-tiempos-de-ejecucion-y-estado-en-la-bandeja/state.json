@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
   "baseCommit": "a0ad36e672887e0f6f70809fb50c6b5446f84fb2",
   "revision": 1,
@@ -49,6 +49,9 @@
     "AC": 4,
     "T": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-31T11:41:37.977Z"
+  "lockedTests": {
+    "packages/ui/src/data/views.test.ts": "sha256:bacf0e815a665b57ec6e0ea8136b5b017f9878be47fa9f7a0c593ebd4d3ba02d",
+    "packages/ui/src/inbox/inbox-row.test.ts": "sha256:2f5bb01bdedffd2787ba12d2cdb1b2415892462e5bf30a19bb4efa7137abd359",
+    "packages/ui/src/inbox/inbox.test.ts": "sha256:d3df5b73c34b278f89a2b70850af59fbc2d75fa85cd2508d8ca53ac4f845d35e"
+  }
 }
