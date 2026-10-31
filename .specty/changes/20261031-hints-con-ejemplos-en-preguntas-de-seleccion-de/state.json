@@ -6,6 +6,13 @@
   "branch": "specty/20261031-hints-con-ejemplos-en-preguntas-de-seleccion-de",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:262631f871c760f2c07db377b9deeae4c40b449890fe72a7161796c8474b930c",
+    "at": "2026-10-31T10:52:27.031Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 14,
@@ -44,12 +51,6 @@
     "AC": 8,
     "T": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:262631f871c760f2c07db377b9deeae4c40b449890fe72a7161796c8474b930c",
-    "at": "2026-10-31T10:52:27.031Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T10:56:34.556Z"
 }

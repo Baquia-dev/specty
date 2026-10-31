@@ -97,6 +97,13 @@ describe("init without a person to ask for the git flow", () => {
     expect(await flowOf(existing)).toBeUndefined();
   });
 
+  it("recognizes Git Flow also by support/ branches (AC6)", async () => {
+    const created = await tempRepo(CODE);
+    git(created, "branch", "support/v1");
+    await init(created);
+    expect(await flowOf(created)).toBe("gitflow");
+  });
+
   it("warns a new project with none, and its next step asks the user for it (AC6)", async () => {
     const root = await tempRepo({ "README.md": "# Notas\n" });
     const done = await init(root);
