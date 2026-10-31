@@ -55,7 +55,7 @@ Blindar `AGENTS.md` para mantenerlo conciso y ligero (< 80 líneas), evitando qu
   - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
-- [ ] T2: Aviso preventivo de AGENTS.md sobrecargado en doctor
+- [x] T2: Aviso preventivo de AGENTS.md sobrecargado en doctor
   - files: packages/core/src/cards/doctor.ts, packages/core/test/cards/doctor.test.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/doctor-enter.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/doctor-enter.test.ts

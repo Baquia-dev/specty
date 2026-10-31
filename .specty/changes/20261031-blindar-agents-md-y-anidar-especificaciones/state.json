@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c76bb0ddccf43fac51e81406e8e89be9dbcdd234",
+      "attempts": 1,
       "startedAt": "2026-10-31T12:25:40.093Z",
       "doneAt": "2026-10-31T12:28:00.613Z",
-      "summary": "Pistas en humanSections y regla en flowBlock para blindar AGENTS.md"
+      "summary": "Pistas en humanSections y regla en flowBlock para blindar AGENTS.md",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "988a6912816c4af946da1c2e95e503a2eb90cc95",
+      "startedAt": "2026-10-31T12:28:00.970Z",
+      "doneAt": "2026-10-31T12:30:12.728Z",
+      "summary": "Aviso preventivo agents-bloated en doctor para AGENTS.md sobrecargado"
     }
   },
   "pending": {

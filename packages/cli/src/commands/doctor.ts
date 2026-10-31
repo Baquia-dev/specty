@@ -114,9 +114,12 @@ async function doctorWarnings(session: Session, agents: string | undefined): Pro
   const delegation = await readDelegation(git);
   const glossary = await readText(join(root, session.config.glossary));
   const emptyGlossary = glossary !== undefined && parseGlossary(glossary).length === 0;
+  const lines = agents === undefined ? 0 : agents.split("\n").length;
+  const bloated = lines > 120 ? [{ code: "agents-bloated" as const, lines }] : [];
   return [
     ...(gone.length === 0 ? [] : [{ code: "missing-paths", paths: gone } as const]),
     ...(unfilled.length === 0 ? [] : [{ code: "unfilled-sections", sections: unfilled } as const]),
+    ...bloated,
     ...(emptyGlossary ? [{ code: "empty-glossary", path: session.config.glossary } as const] : []),
     ...(await usageDoctor(root, session.environment.env)),
     ...(delegation === undefined

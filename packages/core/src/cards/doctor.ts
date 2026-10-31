@@ -74,6 +74,8 @@ export type DoctorLine =
   | { readonly code: "missing-paths"; readonly paths: readonly string[] }
   /** Sections of AGENTS.md only the person can fill in, still empty. */
   | { readonly code: "unfilled-sections"; readonly sections: readonly string[] }
+  /** AGENTS.md has too many lines; keep it concise and move details to docs/ or PRODUCT.md. */
+  | { readonly code: "agents-bloated"; readonly lines: number }
   /** The glossary exists and defines no term yet: only its hints. */
   | { readonly code: "empty-glossary"; readonly path: string }
   /** Closing would not find ccusage to measure each change; `command` installs it. */
@@ -166,6 +168,11 @@ const WRITERS: {
       `AGENTS.md has ${listed('"', '"', "and")} not filled in: the agent reads it every session, so write there what the code does not say (directories whose purpose is not obvious, what must not be touched, rules \`specty check\` does not verify).`,
     );
   },
+  "agents-bloated": (line, t) =>
+    t(
+      `AGENTS.md tiene ${line.lines} líneas: el agente lo lee en cada sesión. Mantenlo conciso (< 80 líneas); traslada especificaciones de producto a PRODUCT.md y arquitectura o fases a docs/.`,
+      `AGENTS.md has ${line.lines} lines: the agent reads it every session. Keep it concise (< 80 lines); move product specs to PRODUCT.md and architecture or phases to docs/.`,
+    ),
   "empty-glossary": (line, t) =>
     t(
       `El glosario (\`${line.path}\`) no define ningún término: añade una línea por término con la forma «- **Término** (\`NombreEnElCódigo\`): definición.», y las tarjetas traerán las definiciones de los que usen.`,
