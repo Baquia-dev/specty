@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
   "revision": 4,
@@ -88,6 +88,15 @@
       "doneAt": "2026-10-31T11:02:45.201Z",
       "summary": "Formatear sleep en una sola linea en wait.ts",
       "scopeExtra": []
+    },
+    "T6": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6837bb68f79cf69490b0a7157b2837d54bd459b5",
+      "startedAt": "2026-10-31T11:03:48.783Z",
+      "doneAt": "2026-10-31T11:08:50.053Z",
+      "summary": "Corregir estrechamiento de tipos en wait.ts"
     }
   },
   "pending": {

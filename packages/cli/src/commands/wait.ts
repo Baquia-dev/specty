@@ -40,10 +40,6 @@ export function isWaitingForHuman(change: StoredChange): boolean {
   return phasePermissions(state.phase, submitted, isIntegrating(state)).waitingFor === "human";
 }
 
-function isReady(change: StoredChange | undefined): boolean {
-  return change === undefined || !isWaitingForHuman(change);
-}
-
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
@@ -52,10 +48,11 @@ const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout
  */
 export async function wait(session: Session, options: WaitOptions = {}): Promise<Output> {
   let current = await resolveActive(session);
-  if (isReady(current)) {
+  if (current === undefined || !isWaitingForHuman(current)) {
     return withChangeLock(session, "next", () => next(session));
   }
 
+  const { id } = current.state;
   const started = Date.now();
   const { timeoutSec, intervalMs } = parseWaitLimits(options);
   const timeoutMs = timeoutSec * 1000;
@@ -63,13 +60,13 @@ export async function wait(session: Session, options: WaitOptions = {}): Promise
   while (true) {
     await sleep(intervalMs);
     if (Date.now() - started >= timeoutMs) {
-      return waitTimeoutCard(current.state.id, timeoutSec, session.cards);
+      return waitTimeoutCard(id, timeoutSec, session.cards);
     }
-    if ((await liveHolder(session.git, current.state.id)) !== undefined) {
+    if ((await liveHolder(session.git, id)) !== undefined) {
       continue;
     }
     current = await resolveActive(session);
-    if (isReady(current)) {
+    if (current === undefined || !isWaitingForHuman(current)) {
       return withChangeLock(session, "next", () => next(session));
     }
   }

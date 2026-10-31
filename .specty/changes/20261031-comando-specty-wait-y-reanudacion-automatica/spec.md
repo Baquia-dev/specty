@@ -76,7 +76,7 @@ Permitir que el agente detecte automáticamente cuando la persona realiza una ap
   - files: packages/cli/src/commands/wait.ts
   - ac: AC1
   - type: refactor
-- [ ] T6: Corregir typecheck en wait.ts
+- [x] T6: Corregir typecheck en wait.ts
   - files: packages/cli/src/commands/wait.ts
   - ac: AC1
   - type: refactor
