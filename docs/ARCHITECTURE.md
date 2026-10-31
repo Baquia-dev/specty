@@ -107,7 +107,7 @@ La única excepción es el modo delegado ([ADR 0010](decisions/0010-modo-delegad
 | `standard` | Por defecto | Flujo completo |
 | `spike` | Incertidumbre técnica | Rama `spike/<id>` (`spike/<slug>` con otro `git.flow`) que no se fusiona; termina en una decisión (ADR o spec de seguimiento) |
 | `retro` | Código sin spec, manual o de un agente sin hooks | Documenta cambios ya hechos; la persona confirma; habilita el commit |
-| `epic` | Alcance `XL` | No tiene tareas: define cortes con dependencias, y cada corte es un cambio hijo (`new --epic <id> --slice C1`), con su carpeta. Aprobada, su tarjeta lista los cortes y propone seguir el que está en curso o empezar el primero listo; cuando todos tienen un cambio cerrado, `next` la pasa a aceptación. Se acepta y se incorpora sin verificación completa, porque no tiene código propio |
+| `epic` | Alcance `XL` | No tiene tareas: define cortes verticales de funcionalidad verificable con dependencias (prohíbe capas técnicas horizontales puras), y cada corte es un cambio hijo (`new --epic <id> --slice C1`), con su carpeta. Aprobada, su tarjeta lista los cortes y orienta a redactar previamente las specs de los cortes listos para habilitar múltiples agentes en paralelo en sus worktrees; cuando todos tienen un cambio cerrado, `next` la pasa a aceptación. Se acepta y se incorpora sin verificación completa, porque no tiene código propio |
 
 Specty decide si un cambio cabe en `quick`: si la spec supera los límites, `propose` la rechaza e indica pasar a `standard`. La tarea única es el límite del primer plan: si al aceptarlo falla la verificación completa, un ajuste le añade las tareas de corrección, como a un `standard`. Los límites de archivos y de rutas sensibles siguen en cada revisión.
 
@@ -504,7 +504,7 @@ El modelo que redacta la spec puede subir esas recomendaciones con su motivo, co
 
 **Dividir.** Si el cambio es `XL` o supera los umbrales (por defecto: más de 8 tareas, más de 15 archivos de código o más de 2 módulos), `propose` lo rechaza y propone una épica. Los archivos de código son los escritos a mano que no son tests, con los globs expandidos; los tests no cuentan en el límite, pero sí en la puntuación, y por tanto en el nivel `XL`. El límite de 3 archivos del carril `quick` cuenta igual. El tamaño se decide al aprobar: el cierre no vuelve a exigir ni a aconsejar la división, porque en esa fase *Archivos* ya no se puede tocar, y `propose` conserva en el estado el tamaño aprobado aunque los globs coincidan hoy con más archivos. Al dividir conviene:
 
-- cortes verticales que funcionen de punta a punta;
+- cortes verticales que funcionen de punta a punta: toda épica debe dividirse obligatoriamente en cortes verticales verificables que entreguen valor observable con sus propios tests y criterios de aceptación, quedando prohibidas las capas técnicas horizontales (como base de datos, backend o frontend aislados). Para habilitar el trabajo paralelo de varios agentes, se redactan y proponen previamente las specs de los cortes listos antes de codificar;
 - contratos primero, si los cortes van en paralelo;
 - un `spike`, si el problema es la incertidumbre.
 
@@ -594,6 +594,7 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 
    Deja de ser nuevo en cuanto el esqueleto llega a la rama.
 4. Al cerrarlo, Specty vuelve a detectar el proyecto y completa los comandos. Esto ya funciona para cualquier cambio: antes de incorporarlo, `close` (y el `accept` de un cambio quick) detecta en su carpeta los comandos de verificación, y si `config.yaml` no tiene `verify.default` o `verify.full` y la detección los encuentra, la salida propone `specty init` en la carpeta principal. Con el archivo ya creado, `init` solo añade las claves de `verify` que faltan, insertando sus líneas, y no cambia nada más ([formats.md §6](formats.md#6-configyaml)).
+5. Alcance y épica del MVP: tras el esqueleto (o al definir el MVP a partir de `PRODUCT.md`), el agente revisa el alcance y propone una épica (`new "<MVP>" --kind epic`) descompuesta en cortes verticales verificables. Antes de implementar, redacta y propone las specs de todos sus cortes para que la persona pueda colocar varios agentes a implementarlos en paralelo en sus respectivas worktrees.
 
 **`specty doctor`** comprueba:
 

@@ -2,8 +2,8 @@
 
 Términos de Specty que un agente podría nombrar mal, de los más concretos a los más comunes. Las tarjetas traen la definición de los que usa su texto, como mucho 3 y en este orden ([formats.md §6](formats.md#6-configyaml)).
 
-- **Corte** (`Slice`): una parte de una épica que se entrega como un cambio propio.
-- **Épica**: un cambio sin tareas que avanza por sus cortes.
+- **Corte** (`Slice`): una parte de una épica que se entrega como un cambio propio, estructurado como un corte vertical de funcionalidad verificable de punta a punta.
+- **Épica**: un cambio sin tareas que avanza por sus cortes verticales; exige criterios observables y prohíbe capas técnicas horizontales, priorizando la redacción previa de specs para agentes en paralelo.
 - **Carril** (`ChangeKind`): el tipo de cambio: quick, standard, spike, retro o epic.
 - **Ampliación** (`ScopeRequest`): pedir tocar un archivo fuera del alcance de la tarea.
 - **Incorporación** (`IntegrationState`): traer la rama destino al cambio al cerrarlo.

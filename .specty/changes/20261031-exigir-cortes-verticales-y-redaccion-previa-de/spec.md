@@ -78,7 +78,7 @@ Hacer cumplir que toda épica (`kind: epic`), tanto en proyectos nuevos como exi
   - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts, packages/core/src/cards/epic.ts, packages/core/test/cards/epic.test.ts
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts test/cards/epic.test.ts
-- [ ] T4: Documentación de cortes verticales y redacción anticipada en arquitectura y dominio
+- [x] T4: Documentación de cortes verticales y redacción anticipada en arquitectura y dominio
   - files: docs/ARCHITECTURE.md, docs/dominio.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run

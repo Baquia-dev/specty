@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-exigir-cortes-verticales-y-redaccion-previa-de",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-exigir-cortes-verticales-y-redaccion-previa-de",
   "baseCommit": "78867cbe6434ca906baaf1e455d76ae3cc89199e",
   "revision": 1,
@@ -67,12 +67,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8c61484facaa2ddf241f1169fdf051da277cf4ee",
+      "attempts": 1,
       "startedAt": "2026-10-31T10:04:57.404Z",
       "doneAt": "2026-10-31T10:07:38.779Z",
-      "summary": "Añadir regla de cortes verticales en AGENTS.md y orientación a paralelismo en tarjetas de épica"
+      "summary": "Añadir regla de cortes verticales en AGENTS.md y orientación a paralelismo en tarjetas de épica",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bfa6d0a1c0a580e8f490d37bcb2e59f139ad5cbe",
+      "startedAt": "2026-10-31T10:07:39.144Z",
+      "doneAt": "2026-10-31T10:09:06.978Z",
+      "summary": "Documentar en ARCHITECTURE.md y dominio.md la obligatoriedad de cortes verticales y redacción previa de specs"
     }
   },
   "pending": {
