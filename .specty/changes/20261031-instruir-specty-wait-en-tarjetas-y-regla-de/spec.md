@@ -48,7 +48,7 @@ Instruir explícitamente al agente a ejecutar `specty wait` en la directiva `SIG
   - files: packages/core/src/cards/flow.ts, packages/core/src/cards/next.ts, packages/core/src/cards/testing.ts, packages/core/test/cards/delegated.test.ts, packages/core/test/cards/testing.test.ts
   - ac: AC1, AC4
   - verify: pnpm --filter @baquia-dev/specty-core test test/cards/testing.test.ts test/cards/delegated.test.ts
-- [ ] T2: Instruir specty wait en tarjetas de cierre, reintento y denegación de guard
+- [x] T2: Instruir specty wait en tarjetas de cierre, reintento y denegación de guard
   - files: packages/core/src/cards/work.ts, packages/core/src/cards/integration.ts, packages/core/src/guard/human.ts, packages/core/test/cards/incorporation.test.ts, packages/core/test/guard/decide.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core test test/cards/incorporation.test.ts test/guard/decide.test.ts

@@ -34,15 +34,24 @@
   "tasks": {
     "T1": {
       "status": "done",
+      "baseCommit": "47a14ca804dccdc6cca0aa6b7513baa33017fda7",
+      "attempts": 1,
+      "startedAt": "2026-10-31T15:14:26.851Z",
+      "doneAt": "2026-10-31T15:22:49.004Z",
+      "summary": "Instruir specty wait en tarjetas de flujo, revisión y pruebas",
       "scopeExtra": [
         "packages/core/src/cards/work.ts",
         "packages/core/src/cards/acceptance.ts"
-      ],
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "47a14ca804dccdc6cca0aa6b7513baa33017fda7",
-      "startedAt": "2026-10-31T15:14:26.851Z",
-      "doneAt": "2026-10-31T15:22:49.004Z",
-      "summary": "Instruir specty wait en tarjetas de flujo, revisión y pruebas"
+      "baseCommit": "c06849c6fb401c541d7bc67e47ade6f3c0b5f504",
+      "startedAt": "2026-10-31T15:22:49.344Z",
+      "doneAt": "2026-10-31T15:23:32.106Z",
+      "summary": "Instruir specty wait en tarjetas de cierre, reintento y guard"
     }
   },
   "pending": {
