@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-blindar-agents-md-y-anidar-especificaciones",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261031-blindar-agents-md-y-anidar-especificaciones",
   "baseCommit": "4e875639b11adbd83aa70ce8e65e1c340f10ec69",
   "revision": 2,
@@ -80,8 +80,7 @@
     "T": 4
   },
   "lockedTests": {
-    "packages/core/test/cards/doctor.test.ts": "sha256:022f97e7f80e93f669a3bd7da86975000d2a071185e1f98d20d094de93140ed3"
-  },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-31T12:33:51.319Z"
+    "packages/core/test/cards/doctor.test.ts": "sha256:022f97e7f80e93f669a3bd7da86975000d2a071185e1f98d20d094de93140ed3",
+    "packages/core/test/agents-md.test.ts": "sha256:b86e907792f9e55696b26d5d814ec68df289692daba6b091289969f3e550f14f"
+  }
 }
