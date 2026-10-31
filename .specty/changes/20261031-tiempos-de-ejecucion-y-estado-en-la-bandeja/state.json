@@ -6,6 +6,13 @@
   "branch": "specty/20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
   "baseCommit": "a0ad36e672887e0f6f70809fb50c6b5446f84fb2",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f8c48aa83c67e0f0cb4b710f92dd19aad2d4383bbd1c817047d5edfe6c18c526",
+    "at": "2026-10-31T11:39:43.471Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -42,12 +49,6 @@
     "AC": 4,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f8c48aa83c67e0f0cb4b710f92dd19aad2d4383bbd1c817047d5edfe6c18c526",
-    "at": "2026-10-31T11:39:43.471Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T11:41:37.977Z"
 }

@@ -79,4 +79,36 @@ describe("InboxRow", () => {
     expect(text(element.querySelector("[data-waits]"))).toBe("Tests por aprobar · 2 tests nuevos");
     expect(text(element.querySelector("sp-button"))).toBe("Aprobar tests");
   });
+
+  it("AC2: shows time in current phase and total execution time for in-progress changes", async () => {
+    const { element, fixture, host } = await render();
+    const now = Date.parse("2026-10-21T12:00:00.000Z");
+    const change = {
+      ...viewOf(LOGIN),
+      phase: "implementing" as const,
+      phaseSince: new Date(now - 15 * 60_000).toISOString(),
+      createdAt: new Date(now - 75 * 60_000).toISOString(),
+    };
+    host.change.set(change as unknown as ChangeView);
+    await fixture.whenStable();
+    expect(text(element.querySelector("[data-phase-time]"))).toBe("Fase: 15 min");
+    expect(text(element.querySelector("[data-total-time]"))).toBe("Total: 1 h 15 min");
+  });
+
+  it("AC3: shows total time for finished changes", async () => {
+    const { element, fixture, host } = await render();
+    const created = "2026-10-20T10:00:00.000Z";
+    const closed = "2026-10-20T10:45:00.000Z";
+    const change = {
+      ...viewOf(LOGIN),
+      phase: "done" as const,
+      createdAt: created,
+      closedAt: closed,
+      phaseSince: closed,
+    };
+    host.change.set(change as unknown as ChangeView);
+    await fixture.whenStable();
+    expect(element.querySelector("[data-phase-time]")).toBeNull();
+    expect(text(element.querySelector("[data-total-time]"))).toBe("Total: 45 min");
+  });
 });

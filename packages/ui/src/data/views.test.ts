@@ -386,6 +386,30 @@ Evolución agrupada por trimestre.
   it("AC4: opens the testing phase on the progress tab", () => {
     expect(initialTab("testing")).toBe("progress");
   });
+
+  it("AC1: derives createdAt from audit or phaseSince, and closedAt for finished changes", () => {
+    const createdTs = "2026-10-21T08:00:00.000Z";
+    const closedTs = "2026-10-21T11:00:00.000Z";
+    const inProgress = deriveView({
+      ...record(),
+      audit: [{ ts: createdTs, actor: "agent", event: "change.created", data: {} }],
+    });
+    expect((inProgress as unknown as { createdAt?: string }).createdAt).toBe(createdTs);
+    expect((inProgress as unknown as { closedAt?: string }).closedAt).toBeUndefined();
+
+    const finished = deriveView({
+      ...record({ phase: "done" }),
+      audit: [
+        { ts: createdTs, actor: "agent", event: "change.created", data: {} },
+        { ts: closedTs, actor: "human", event: "change.closed", data: {} },
+      ],
+    });
+    expect((finished as unknown as { createdAt?: string }).createdAt).toBe(createdTs);
+    expect((finished as unknown as { closedAt?: string }).closedAt).toBe(closedTs);
+
+    const fallback = deriveView(record());
+    expect((fallback as unknown as { createdAt?: string }).createdAt).toBe(record().phaseSince);
+  });
 });
 
 describe("derivation worker (AC7, AC10)", () => {

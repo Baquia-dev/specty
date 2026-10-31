@@ -303,6 +303,35 @@ describe("Inbox", () => {
     ]);
     expect(text(groupRows[0]?.querySelector("sp-kind-badge"))).toBe("Corte C1 · Panel académico");
   });
+
+  it("AC4: shows total time of an epic in data-epic-header", async () => {
+    class EpicData extends SpectyData {
+      changes(): Promise<readonly ChangeRecord[]> {
+        return Promise.resolve(sampleRecordsForEpic());
+      }
+      subscribe(): () => void {
+        return () => undefined;
+      }
+    }
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter(APP_ROUTES, withComponentInputBinding()),
+        { provide: SpectyData, useClass: EpicData },
+        IN_THREAD,
+      ],
+    });
+    const fixture = TestBed.createComponent(Shell);
+    await TestBed.inject(Router).navigateByUrl("/");
+    for (let round = 0; round < 40; round++) {
+      await fixture.whenStable();
+      await new Promise((resolve) => setTimeout(resolve));
+    }
+    const element: HTMLElement = fixture.nativeElement;
+    const group = element.querySelector<HTMLElement>('[data-epic-group="20261015-panel"]');
+    expect(group?.querySelector("[data-epic-duration]")).not.toBeNull();
+    expect(text(group?.querySelector("[data-epic-duration]"))).toMatch(/^Total: /);
+  });
 });
 
 function sampleRecordsForEpic(): readonly ChangeRecord[] {
