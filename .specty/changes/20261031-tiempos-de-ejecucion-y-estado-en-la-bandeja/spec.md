@@ -56,7 +56,7 @@ Mostrar en la Bandeja el tiempo total transcurrido o duración para cada element
 
 ## Tareas
 
-- [ ] T1: Derivar createdAt y closedAt en ChangeView
+- [x] T1: Derivar createdAt y closedAt en ChangeView
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts

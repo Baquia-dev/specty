@@ -39,7 +39,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "16971877f1d2ededc6a3d212c35fdf22a1aa4969",
+      "startedAt": "2026-10-31T11:41:45.580Z",
+      "doneAt": "2026-10-31T11:43:43.414Z",
+      "summary": "Derivar createdAt y closedAt en ChangeView a partir de la auditoría y estado"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

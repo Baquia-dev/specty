@@ -93,7 +93,7 @@ export function deriveView(record: ChangeRecord): ChangeView {
   const requested = changesRequestedOf(state, audit);
   const decision = requested === undefined ? decisionOf(state) : undefined;
   return {
-    ...identityOf(record, state, spec),
+    ...identityOf(record, state, spec, audit),
     size: {
       level,
       reasons: size.reasons.map((reason) => ({
@@ -149,6 +149,7 @@ function identityOf(
   record: ChangeRecord,
   state: ChangeState,
   spec: Spec,
+  audit: readonly AuditRecord[],
 ): Pick<
   ChangeView,
   | "id"
@@ -161,6 +162,8 @@ function identityOf(
   | "branch"
   | "folder"
   | "phaseSince"
+  | "createdAt"
+  | "closedAt"
   | "goal"
 > {
   return {
@@ -174,8 +177,34 @@ function identityOf(
     ...(state.branch === undefined ? {} : { branch: state.branch }),
     ...(record.folder === undefined ? {} : { folder: record.folder }),
     phaseSince: record.phaseSince,
+    ...timestampsOf(record, state, audit),
     goal: spec.sections.goal ?? spec.sections.reason ?? "",
   };
+}
+
+const FINISH_EVENTS = [
+  "change.closed",
+  "change.cancelled",
+  "retro.confirmed",
+  "change.accepted",
+] as const;
+
+function timestampsOf(
+  record: ChangeRecord,
+  state: ChangeState,
+  audit: readonly AuditRecord[],
+): Pick<ChangeView, "createdAt"> & Partial<Pick<ChangeView, "closedAt">> {
+  const createdAt =
+    audit.find((entry) => entry.event === "change.created")?.ts ??
+    audit[0]?.ts ??
+    record.phaseSince;
+  if (state.phase !== "done" && state.phase !== "cancelled") {
+    return { createdAt };
+  }
+  const closedAt =
+    audit.findLast((entry) => FINISH_EVENTS.includes(entry.event as (typeof FINISH_EVENTS)[number]))
+      ?.ts ?? record.phaseSince;
+  return { createdAt, closedAt };
 }
 
 function epicIn(spec: Spec): Pick<ChangeView, "epic"> {

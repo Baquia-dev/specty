@@ -279,6 +279,8 @@ export interface ChangeView {
   /** Governed files that other open changes also list. */
   readonly shared?: readonly SharedFile[];
   readonly phaseSince: string;
+  readonly createdAt: string;
+  readonly closedAt?: string;
   readonly goal: string;
   /** What the person asked for, word for word, when the change was created with `--request`. */
   readonly request?: string;
