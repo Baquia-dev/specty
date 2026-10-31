@@ -6,6 +6,13 @@
   "branch": "specty/20261031-blindar-el-modo-delegado-contra-modificaciones",
   "baseCommit": "5b0e96a4704f46d71ddb5957862bdb34e30da2ae",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:67c2bffbb41715ca215ada706cb44af751d27859c4b128fb1d957e403e27a189",
+    "at": "2026-10-31T14:53:53.175Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -35,12 +42,6 @@
     "AC": 4,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:67c2bffbb41715ca215ada706cb44af751d27859c4b128fb1d957e403e27a189",
-    "at": "2026-10-31T14:53:53.175Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T14:57:23.246Z"
 }

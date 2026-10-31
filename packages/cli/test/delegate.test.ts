@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, isAbsolute, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
@@ -89,7 +89,28 @@ describe("specty delegate", () => {
     expect(await exists(switchOf(root))).toBe(false);
     expect((await cli(root, ["delegate", "maybe"], { terminal: person() })).code).toBe(1);
   });
+
+  it("AC3: sets 0o444 permissions on delegated.json and delegate off removes it cleanly", async () => {
+    const root = await delegated();
+    const info = await stat(switchOf(root));
+    expect(info.mode & 0o777).toBe(0o444);
+    const off = await cli(root, ["delegate", "off"], { terminal: person() });
+    expect(off.code).toBe(0);
+    expect(await exists(switchOf(root))).toBe(false);
+  });
 });
+
+/** The hook Claude Code runs around a Bash tool call: before it, and after it ran. */
+const hook = (root: string, event: string, id: string, command = "make") =>
+  cli(root, ["guard", "--tool", "claude-code"], {
+    stdin: JSON.stringify({
+      cwd: root,
+      hook_event_name: event,
+      tool_name: "Bash",
+      tool_input: { command },
+      tool_use_id: id,
+    }),
+  });
 
 /** The guard's answer to a Bash command of the agent: 0 lets it through, 2 blocks it. */
 const bash = async (root: string, command: string) =>
@@ -155,6 +176,23 @@ describe("delegated mode", () => {
         "MODO DELEGADO",
       );
     }
+  });
+
+  it("AC2: blocks and reverts direct modifications to delegated.json in afterShell", async () => {
+    const root = await tempRepo(APP);
+    await cli(root, ["init", "--language", "es", "--tools", "claude-code"]);
+    const switchPath = switchOf(root);
+    expect(await exists(switchPath)).toBe(false);
+
+    await hook(root, "PreToolUse", "c1");
+    await mkdir(dirname(switchPath), { recursive: true });
+    await writeFile(switchPath, JSON.stringify({ by: "Agent", at: "now" }));
+    expect(await exists(switchPath)).toBe(true);
+
+    const after = await hook(root, "PostToolUse", "c1");
+    expect(after.code).toBe(2);
+    expect(after.err).toContain("delegated.json");
+    expect(await exists(switchPath)).toBe(false);
   });
 });
 

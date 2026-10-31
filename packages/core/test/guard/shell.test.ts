@@ -91,6 +91,15 @@ describe("analyzeShell", () => {
     expect(analyzeShell("git status && git log").bypass).toBe(false);
   });
 
+  it("AC1: marks commands referencing delegated.json or internal specty storage as bypass", () => {
+    expect(
+      analyzeShell("node -e 'fs.writeFileSync(\".git/common/specty/delegated.json\", \"{}\")'").bypass,
+    ).toBe(true);
+    expect(analyzeShell("git rev-parse --git-path common/specty/delegated.json").bypass).toBe(true);
+    expect(analyzeShell("cat .git/common/specty/delegated.json").bypass).toBe(true);
+    expect(analyzeShell("specty delegate on").bypass).toBe(false);
+  });
+
   it("lets `git config` read `core.hooksPath` (AC1)", () => {
     for (const command of [
       "git config --get core.hooksPath",
