@@ -2,10 +2,17 @@
   "schema": 1,
   "id": "20261031-scaffolding-con-comandos-del-framework-en",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-scaffolding-con-comandos-del-framework-en",
   "baseCommit": "5b0e96a4704f46d71ddb5957862bdb34e30da2ae",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1c994a2f49a24dc8f7f974230dfc8baba16ad3a7df44c38ef206ed7aed0cd5a6",
+    "at": "2026-10-31T14:55:49.323Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -15,19 +22,22 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9cefc556dc88e7cec9ed40e0e56672768bec5f23",
+      "startedAt": "2026-10-31T14:55:49.832Z",
+      "doneAt": "2026-10-31T14:58:58.492Z",
+      "summary": "establecer regla de scaffolding con framework y excepcion de alcance en proyectos nuevos"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
   },
   "maxIds": {
     "T": 1
-  },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1c994a2f49a24dc8f7f974230dfc8baba16ad3a7df44c38ef206ed7aed0cd5a6",
-    "at": "2026-10-31T14:55:49.323Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
   }
 }

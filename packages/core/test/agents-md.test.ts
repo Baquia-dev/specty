@@ -128,4 +128,13 @@ describe("shielding AGENTS.md", () => {
     const en = flowBlock("en", "specty").split("\n");
     expect(en.length).toBeLessThanOrEqual(15);
   });
+
+  it("AC3: flowBlock rules mandate scaffolding with framework commands in new projects with non-leaking scope exception", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("andamiaje con framework");
+    expect(es).toContain("globs en alcance como única excepción");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("framework scaffolding");
+    expect(en).toContain("globs in scope as sole exception");
+  });
 });
