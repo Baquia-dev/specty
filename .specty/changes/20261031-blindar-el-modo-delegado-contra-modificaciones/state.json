@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-blindar-el-modo-delegado-contra-modificaciones",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-blindar-el-modo-delegado-contra-modificaciones",
   "baseCommit": "5b0e96a4704f46d71ddb5957862bdb34e30da2ae",
   "revision": 1,
@@ -44,14 +44,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/store/local.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "103d71effe5b5aca32e24d29b759e4c374c1e03b",
+      "attempts": 1,
       "startedAt": "2026-10-31T14:58:13.575Z",
       "doneAt": "2026-10-31T15:03:06.273Z",
-      "summary": "Monitoreo en treeSnapshot y reversión en afterShell de alteraciones no autorizadas a delegated.json, con permisos 0o444 en disco"
+      "summary": "Monitoreo en treeSnapshot y reversión en afterShell de alteraciones no autorizadas a delegated.json, con permisos 0o444 en disco",
+      "scopeExtra": [
+        "packages/cli/src/store/local.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "3fe25e9e9acc95c62909bd81c1d8424dac475711",
+      "startedAt": "2026-10-31T15:03:06.639Z",
+      "doneAt": "2026-10-31T15:04:58.257Z",
+      "summary": "Regla explícita en flowBlock, permisos 0o444 en delegated.json y documentación en ARCHITECTURE.md"
     }
   },
   "pending": {
