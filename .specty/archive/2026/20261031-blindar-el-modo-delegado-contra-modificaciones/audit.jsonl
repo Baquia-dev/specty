@@ -14,3 +14,8 @@
 {"ts":"2026-10-31T15:04:58.163Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts","exit":0,"ms":19185,"tree":"sha256:89ee9aa6eea5a6b40f702a8f90382a2aff64c5206960966c0882b7eb31c6d312"}}
 {"ts":"2026-10-31T15:04:58.258Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T3","summary":"Regla explícita en flowBlock, permisos 0o444 en delegated.json y documentación en ARCHITECTURE.md"}}
 {"ts":"2026-10-31T15:05:51.752Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"cc0acf042079e1e8e32ad028a2e11434c324f090","reason":"conflicts","conflicts":["packages/core/test/agents-md.test.ts"]}}
+{"ts":"2026-10-31T15:13:55.755Z","actor":"agent","tool":"antigravity","event":"integration.resolved","data":{"commit":"bb8bbd4"}}
+{"ts":"2026-10-31T15:18:18.488Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":256014,"tree":"sha256:1c94aedebce122313939f2ce57c2e8ec9a94d7ebe7a57c4059d09212ad949d3a","coverage":{"measured":22,"covered":22,"gaps":[],"stretches":0}}}
+{"ts":"2026-10-31T15:18:18.489Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-31T15:18:50.980Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:99f8598c54c5fee392d702618462c707412b51032baee4f3f45e8595eadbbfbc","size":"M","warnings":0}}
+{"ts":"2026-10-31T15:19:01.901Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.closed","data":{"delegated":true}}

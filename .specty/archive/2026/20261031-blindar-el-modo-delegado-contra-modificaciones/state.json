@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261031-blindar-el-modo-delegado-contra-modificaciones",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-blindar-el-modo-delegado-contra-modificaciones",
   "baseCommit": "5b0e96a4704f46d71ddb5957862bdb34e30da2ae",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:67c2bffbb41715ca215ada706cb44af751d27859c4b128fb1d957e403e27a189",
@@ -72,6 +72,7 @@
     "AC": 4,
     "T": 3
   },
+  "closingSubmittedAt": "2026-10-31T15:18:50.979Z",
   "lockedTests": {
     "packages/cli/test/delegate.test.ts": "sha256:ac783fc1abcdf9b3772b3b36f9326ec788dcc51c0ee76be0d2eff958fdd71aa2",
     "packages/core/test/agents-md.test.ts": "sha256:770ad5ee570c84796d35b6b613ef964cfe59173797ad784be3307700e6936312",
@@ -96,6 +97,10 @@
       "packages/core/test/agents-md.test.ts",
       "packages/core/test/guard/shell.test.ts"
     ],
-    "at": "2026-10-31T15:05:51.752Z"
+    "at": "2026-10-31T15:05:51.752Z",
+    "resolved": {
+      "commit": "bb8bbd4",
+      "at": "2026-10-31T15:13:55.755Z"
+    }
   }
 }

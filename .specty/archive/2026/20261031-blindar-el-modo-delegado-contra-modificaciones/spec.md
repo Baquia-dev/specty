@@ -51,3 +51,27 @@ Evitar que un agente de IA pueda auto-otorgarse el modo delegado o modificar el 
   - files: packages/cli/src/store/local.ts, packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts, docs/ARCHITECTURE.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts
+
+## Cierre
+
+### Resumen
+
+Se blindó el modo delegado contra intentos de manipulación o auto-otorgamiento por parte de agentes de IA:
+1. `analyzeShell` detecta comandos que referencian `common/specty/delegated.json` o `.git/common/specty` fuera de las invocaciones oficiales de Specty y los bloquea como `bypass: true`.
+2. `treeSnapshot` incluye la huella del archivo `.git/common/specty/delegated.json`, y `afterShell` detecta cualquier creación, modificación o borrado no autorizado, revirtiendo inmediatamente el archivo y denegando la acción con la regla `protected`.
+3. `writeDelegation` escribe `delegated.json` con permisos de solo lectura (`0o444`), impidiendo la sobreescritura accidental por scripts estándar de filesystem.
+4. `flowBlock` en `AGENTS.md` explicita la regla de no alterar `.git` ni eludir permisos humanos, manteniéndose en el límite de 15 líneas.
+5. Se documentó este comportamiento de seguridad en `docs/ARCHITECTURE.md`.
+
+### Desviaciones
+
+- Ninguna respecto al alcance planificado; la incorporación de `main` se resolvió integrando las reglas y tests actualizados.
+
+### Decisiones
+
+- Mantener la reversión automática en `afterShell` si `delegated.json` es alterado sin snapshot previo, garantizando que el estado quede limpio en disco aunque un comando consiga ejecutarse.
+- Asignar `0o444` en disco a `delegated.json` como capa física de protección ante operaciones de escritura estándar.
+
+### Pendientes
+
+- Ninguno.
