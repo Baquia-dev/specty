@@ -21,7 +21,7 @@ export function systemTerminal(env: Readonly<Record<string, string | undefined>>
         options: options.map((option) => ({
           value: option.value,
           label: option.label,
-          hint: option.hint,
+          ...(option.hint !== undefined ? { hint: option.hint } : {}),
         })),
       });
       return isCancel(answer)
@@ -35,7 +35,7 @@ export function systemTerminal(env: Readonly<Record<string, string | undefined>>
         options: options.map((option) => ({
           value: option.value,
           label: option.label,
-          hint: option.hint,
+          ...(option.hint !== undefined ? { hint: option.hint } : {}),
         })),
         initialValues: [...initial],
         required: true,

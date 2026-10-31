@@ -82,7 +82,7 @@ Las preguntas de selección de `specty init` (idioma, agentes y flujo de Git) de
   - files: packages/cli/src/session.ts, packages/cli/src/terminal.ts, packages/cli/src/install/git-flow.ts, packages/cli/test/terminal.test.ts, packages/cli/test/init-git-flow.test.ts
   - ac: AC6, AC7
   - verify: pnpm --filter @baquia-dev/specty test test/terminal.test.ts test/init-git-flow.test.ts
-- [ ] T4: Documentación actualizada de flujos y tipos de commit en arquitectura y formatos
+- [x] T4: Documentación actualizada de flujos y tipos de commit en arquitectura y formatos
   - files: docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC8
   - verify: pnpm check
