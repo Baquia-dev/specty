@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
   "revision": 3,
@@ -79,6 +79,15 @@
       "doneAt": "2026-10-31T10:57:20.586Z",
       "summary": "Ordenar export de waitTimeoutCard alfabéticamente",
       "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "411d8345e1b7d7dbfa9803481273255f03305012",
+      "startedAt": "2026-10-31T10:58:07.652Z",
+      "doneAt": "2026-10-31T11:02:45.201Z",
+      "summary": "Formatear sleep en una sola linea en wait.ts"
     }
   },
   "pending": {

@@ -44,8 +44,7 @@ function isReady(change: StoredChange | undefined): boolean {
   return change === undefined || !isWaitingForHuman(change);
 }
 
-const sleep = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
  * `specty wait`: passively polls until the active change is no longer waiting for the person,
