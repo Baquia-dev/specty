@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261031-ocultar-carpeta-de-worktrees-con-atributos-de",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261031-ocultar-carpeta-de-worktrees-con-atributos-de",
+  "baseCommit": "411651fcb94eb6e09961fd78e10ae675a3d01583",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b751fd9dfde91f001312748dc0155971c50f9d698e627f495499b95635cc92c9",
+    "at": "2026-10-31T15:48:07.783Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
