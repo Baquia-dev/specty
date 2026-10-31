@@ -84,3 +84,23 @@ Permitir que el agente detecte automáticamente cuando la persona realiza una ap
   - files: packages/cli/src/commands/wait.ts
   - ac: AC1
   - type: refactor
+
+## Cierre
+
+### Resumen
+
+Se implementó el comando `specty wait` para permitir que el agente detecte y se reanude de forma automática y reactiva tras aprobaciones o decisiones humanas tomadas en la terminal o en la UI web, sin requerir que la persona regrese al chat a notificar manualmente. El comando sondea pasivamente el estado del cambio sin bloquear cerrojos ni impedir acciones concurrentes, desbloqueándose únicamente cuando no queda ninguna acción humana pendiente y retornando la tarjeta de `specty next` actualizada (o emitiendo timeout configurable mediante `--timeout`). Además, se actualizaron las reglas para agentes en `AGENTS.md` (`flowBlock`) y la documentación técnica en `docs/ARCHITECTURE.md`.
+
+### Desviaciones
+
+- Se ajustó el orden de exports y el formateo de `wait.ts` y `cards/index.ts` para cumplir estrictamente con Biome y Knip.
+- Se mantuvieron las 15 líneas y las 5 reglas finales en `flowBlock` incorporando la mención a `specty wait` dentro de la línea de aprobaciones humanas.
+
+### Decisiones
+
+- D1: `specty wait` no adquiere el cerrojo de cambio (`withChangeLock`) durante el sondeo pasivo para no impedir las acciones humanas en la terminal ni en la UI, pero al reanudarse invoca `withChangeLock` para ejecutar `next` de manera atómica y segura.
+- D2: Si existen múltiples confirmaciones pendientes (por ejemplo, varias solicitudes de alcance), `specty wait` espera hasta que todas hayan sido resueltas antes de reanudar el flujo del agente.
+
+### Pendientes
+
+- Ninguno. Cobertura del 100 % y verificación completa en verde.

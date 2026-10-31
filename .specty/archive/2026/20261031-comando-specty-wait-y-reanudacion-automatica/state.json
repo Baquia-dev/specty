@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
-  "revision": 5,
+  "revision": 6,
   "approved": {
     "revision": 5,
     "hash": "sha256:d4f799d3b1646d998ca7e094b2a1a109e1a01f6dec8de61fa350b9de7eeee15d",
@@ -100,12 +100,12 @@
     },
     "T7": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7d3a80df75c06f0b8074a373870a7960c7f67ad2",
+      "attempts": 1,
       "startedAt": "2026-10-31T11:09:44.192Z",
       "doneAt": "2026-10-31T11:14:20.857Z",
-      "summary": "Hacer isWaitingForHuman privada para evitar export no utilizado"
+      "summary": "Hacer isWaitingForHuman privada para evitar export no utilizado",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -118,6 +118,7 @@
     "T": 7,
     "S": 1
   },
+  "closingSubmittedAt": "2026-10-31T11:19:01.157Z",
   "lockedTests": {
     "packages/core/test/agents-md.test.ts": "sha256:c940b87307afb6a0c0721d19ca72cfb9ab06a605dbe4db2eb357ca78652f6a17",
     "packages/cli/test/wait.test.ts": "sha256:e9b998427016503c67a7e4c7d69508d75ffe582c37222374e6afd2ab66ae6e76",
