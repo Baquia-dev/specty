@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
   "revision": 5,
@@ -97,6 +97,15 @@
       "doneAt": "2026-10-31T11:08:50.053Z",
       "summary": "Corregir estrechamiento de tipos en wait.ts",
       "scopeExtra": []
+    },
+    "T7": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7d3a80df75c06f0b8074a373870a7960c7f67ad2",
+      "startedAt": "2026-10-31T11:09:44.192Z",
+      "doneAt": "2026-10-31T11:14:20.857Z",
+      "summary": "Hacer isWaitingForHuman privada para evitar export no utilizado"
     }
   },
   "pending": {

@@ -39,3 +39,6 @@
 {"ts":"2026-10-31T11:09:19.460Z","actor":"agent","tool":"antigravity","event":"adjust.requested","data":{"request":"Quitar export no utilizado de isWaitingForHuman para satisfacer knip"}}
 {"ts":"2026-10-31T11:09:38.148Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":5,"hash":"sha256:d4f799d3b1646d998ca7e094b2a1a109e1a01f6dec8de61fa350b9de7eeee15d","size":"L","warnings":1}}
 {"ts":"2026-10-31T11:09:43.778Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"spec.approved","data":{"revision":5,"hash":"sha256:d4f799d3b1646d998ca7e094b2a1a109e1a01f6dec8de61fa350b9de7eeee15d","channel":"delegated","delegated":true}}
+{"ts":"2026-10-31T11:09:44.193Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T7","baseCommit":"7d3a80df75c06f0b8074a373870a7960c7f67ad2"}}
+{"ts":"2026-10-31T11:14:20.683Z","actor":"specty","event":"task.verified","data":{"task":"T7","cmd":"pnpm test","exit":0,"ms":252153,"tree":"sha256:856e1d9ab802d5145a95225cd7179bc6647cedca180ce1f1bf5e8360bb7a74d0"}}
+{"ts":"2026-10-31T11:14:20.859Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T7","summary":"Hacer isWaitingForHuman privada para evitar export no utilizado"}}

@@ -32,7 +32,7 @@ function parseWaitLimits(options: WaitOptions): WaitLimits {
 }
 
 /** Checks whether the active change is waiting for a person's decision or action. */
-export function isWaitingForHuman(change: StoredChange): boolean {
+function isWaitingForHuman(change: StoredChange): boolean {
   const { state } = change;
   if (state.pending.scopeRequests.length > 0) return true;
   const submitted =
