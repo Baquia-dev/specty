@@ -2,24 +2,25 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:791555c528d1fada3125784daf8590227349964c0b7126587cb6fa6ea8f3a498",
-    "at": "2026-10-31T10:34:37.342Z",
+    "revision": 2,
+    "hash": "sha256:bc5ad0d1801ea2a19e53a5a4a175771718cb26e1a2a3761004c6c8c116f92dd0",
+    "at": "2026-10-31T10:52:13.010Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
-    "level": "M",
-    "score": 10,
+    "level": "L",
+    "score": 11,
     "adjust": 0,
     "reasons": [
       "8 archivos",
-      "2 módulos"
+      "2 módulos",
+      "4 tareas"
     ]
   },
   "items": {
@@ -63,12 +64,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cf56168ca64d9c779adbbabf3c9751065060533f",
+      "attempts": 1,
       "startedAt": "2026-10-31T10:48:23.790Z",
       "doneAt": "2026-10-31T10:50:29.044Z",
-      "summary": "Añadir uso de specty wait en flowBlock de AGENTS.md y documentar en ARCHITECTURE.md"
+      "summary": "Añadir uso de specty wait en flowBlock de AGENTS.md y documentar en ARCHITECTURE.md",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -78,7 +79,7 @@
   "maxIds": {
     "A": 4,
     "AC": 5,
-    "T": 3,
+    "T": 4,
     "S": 1
   },
   "lockedTests": {
