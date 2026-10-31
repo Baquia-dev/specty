@@ -2,24 +2,25 @@
   "schema": 1,
   "id": "20261031-blindar-agents-md-y-anidar-especificaciones",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "testing",
   "branch": "specty/20261031-blindar-agents-md-y-anidar-especificaciones",
   "baseCommit": "4e875639b11adbd83aa70ce8e65e1c340f10ec69",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:2ef02473dd0b89d2da0b4b6db35733e225c4a7da33dffcb279d2fc65810d4f28",
-    "at": "2026-10-31T12:22:22.116Z",
+    "revision": 2,
+    "hash": "sha256:ef32b23281ea3807e8c40f3af2b2dd5d12a104c10bf04964b2dababf49e8d786",
+    "at": "2026-10-31T12:33:10.837Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "M",
-    "score": 8,
+    "score": 9,
     "adjust": 0,
     "reasons": [
       "6 archivos",
-      "2 módulos"
+      "2 módulos",
+      "4 tareas"
     ]
   },
   "items": {
@@ -61,12 +62,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f61a92a7367522ab3f8f934ca68e6d4ef04a6a22",
+      "attempts": 1,
       "startedAt": "2026-10-31T12:30:13.073Z",
       "doneAt": "2026-10-31T12:31:03.910Z",
-      "summary": "Documentar en ARCHITECTURE el flujo de especificaciones dedicadas, blindaje de AGENTS.md y épica del MVP"
+      "summary": "Documentar en ARCHITECTURE el flujo de especificaciones dedicadas, blindaje de AGENTS.md y épica del MVP",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -76,11 +77,10 @@
   "maxIds": {
     "A": 4,
     "AC": 4,
-    "T": 3
+    "T": 4
   },
   "lockedTests": {
-    "packages/cli/test/doctor-enter.test.ts": "sha256:69882b97a942b9eba923ab78737b51e3ec49f5ffea2bd4ea2547435b9cea9c9f",
-    "packages/core/test/agents-md.test.ts": "sha256:3f2c047f92701c912d0fac014db6045e8e8c6f3596632b4e7f6cd7e6f1258e55",
     "packages/core/test/cards/doctor.test.ts": "sha256:022f97e7f80e93f669a3bd7da86975000d2a071185e1f98d20d094de93140ed3"
-  }
+  },
+  "testCycle": "feature"
 }

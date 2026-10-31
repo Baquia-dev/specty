@@ -23,7 +23,7 @@ Blindar `AGENTS.md` para mantenerlo conciso y ligero (< 80 líneas), evitando qu
 ## Criterios de aceptación
 
 - AC1: CUANDO `humanSections` genera las secciones iniciales de `AGENTS.md` ENTONCES incluye comentarios que prohíben volcar especificaciones de producto, arquitectura o fases y orientan a usar `PRODUCT.md` y `docs/` manteniendo el archivo conciso (< 80 líneas).
-- AC2: CUANDO `flowBlock` genera las reglas para agentes ENTONCES incluye la regla de mantener `AGENTS.md` mínimo (< 80 líneas), derivando especificaciones a `docs/` y el plan a épicas.
+- AC2: CUANDO `flowBlock` genera el bloque de `AGENTS.md` ENTONCES preserva el límite estricto de 15 líneas y las 5 reglas verificables, concentrando el blindaje de pistas en `humanSections` y la advertencia en `specty doctor`.
 - AC3: CUANDO `specty doctor` analiza un `AGENTS.md` que supera las 120 líneas ENTONCES emite un aviso `agents-bloated` en español e inglés sugiriendo trasladar especificaciones a `PRODUCT.md` y `docs/`.
 - AC4: CUANDO se consulta `docs/ARCHITECTURE.md` (§14 "Proyecto nuevo") ENTONCES describe el flujo anidado de guardar especificaciones en archivos dedicados, blindar `AGENTS.md`, implementar el esqueleto y proponer la épica del MVP con cortes verticales verificables.
 
@@ -31,7 +31,7 @@ Blindar `AGENTS.md` para mantenerlo conciso y ligero (< 80 líneas), evitando qu
 
 - **Plantilla de AGENTS.md y reglas (`packages/core/src/agents-md.ts`)**:
   - En `humanSections`, enriquecer las pistas comentadas de `## Mapa` y `## Convenciones` para especificar que no deben colocarse aquí especificaciones de producto, arquitectura ni fases, orientando a crear archivos bajo `docs/` o `PRODUCT.md` y mantener el documento por debajo de 80 líneas.
-  - En `ruleLines`, añadir una regla explícita para el agente: mantener `AGENTS.md` mínimo (< 80 líneas), guardando especificaciones en `PRODUCT.md` o `docs/` y el plan en épicas.
+  - En `flowBlock`, preservar el límite estricto de 15 líneas y las 5 reglas canónicas que ninguna herramienta puede verificar.
 - **Diagnóstico en specty doctor (`packages/core/src/cards/doctor.ts`, `packages/cli/src/commands/doctor.ts`)**:
   - Añadir al tipo `DoctorLine` el código `agents-bloated` con la propiedad `lines: number`.
   - En `WRITERS` de `cards/doctor.ts`, redactar el mensaje de advertencia bilingüe explicando que `AGENTS.md` se lee en cada sesión y sugiriendo mover especificaciones a `PRODUCT.md` y `docs/`.
@@ -41,7 +41,7 @@ Blindar `AGENTS.md` para mantenerlo conciso y ligero (< 80 líneas), evitando qu
 
 ## Archivos
 
-- modificar packages/core/src/agents-md.ts — pistas de blindaje en humanSections y regla de tamaño mínimo en ruleLines
+- modificar packages/core/src/agents-md.ts — pistas de blindaje en humanSections y preservación del límite de 15 líneas
 - modificar packages/core/test/agents-md.test.ts — pruebas de pistas y reglas de blindaje en AGENTS.md
 - modificar packages/core/src/cards/doctor.ts — aviso agents-bloated en doctor para AGENTS.md excesivo
 - modificar packages/core/test/cards/doctor.test.ts — pruebas de renderizado del aviso agents-bloated
@@ -64,3 +64,8 @@ Blindar `AGENTS.md` para mantenerlo conciso y ligero (< 80 líneas), evitando qu
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
   - type: docs
+- [ ] T4: Preservar límite de 15 líneas en flowBlock restaurando las 5 reglas fijas
+  - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts
+  - ac: AC1, AC2
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts test/cards.test.ts test/cards/language.test.ts
+  - type: fix
