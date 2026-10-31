@@ -11,3 +11,7 @@
 {"ts":"2026-10-31T16:49:54.668Z","actor":"human","by":"Jorge Palacio Barcinilla","event":"scope.decided","data":{"id":"S1","decision":"approved","unlock":["packages/cli/test/browser.test.ts"],"task":"T2"}}
 {"ts":"2026-10-31T16:51:09.499Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty test test/server.test.ts","exit":0,"ms":40713,"tree":"sha256:f52cdf67530630b74403730cdd73d4c3fe9c5674f08aa7e38dcdcfd30cea150e"}}
 {"ts":"2026-10-31T16:51:09.593Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T2","summary":"Integrar apertura automática en comando ui, agregar opción --no-open y actualizar docs"}}
+{"ts":"2026-10-31T16:55:24.936Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":248685,"tree":"sha256:f52cdf67530630b74403730cdd73d4c3fe9c5674f08aa7e38dcdcfd30cea150e","coverage":{"measured":23,"covered":19,"gaps":[{"path":"packages/cli/src/io/browser.ts","from":31,"to":34}],"stretches":1}}}
+{"ts":"2026-10-31T16:55:24.937Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-31T16:55:45.500Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:fb83b3a65574bc76308c5e471c44f786f84c31f4949f86ddd12c655d4c6e210c","size":"M","warnings":0}}
+{"ts":"2026-10-31T16:55:50.593Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.closed","data":{"delegated":true}}

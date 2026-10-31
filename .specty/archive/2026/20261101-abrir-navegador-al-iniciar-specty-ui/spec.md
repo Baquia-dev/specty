@@ -59,3 +59,26 @@ Ofrecer la opción `--no-open` para permitir iniciar el servidor sin abrir el na
   - files: packages/cli/src/commands/ui.ts, packages/cli/src/program.ts, packages/cli/test/server.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty test test/server.test.ts
+
+## Cierre
+
+### Resumen
+
+Se implementó la apertura automática de la UI en el navegador web al ejecutar 'specty ui' en una terminal interactiva:
+1. Módulo packages/cli/src/io/browser.ts: determina de forma portable el comando nativo del sistema operativo ('open' en macOS, 'cmd.exe /c start ""' en Windows y 'xdg-open' en Linux) y lanza el proceso desacoplado, con salvaguarda para no disparar navegadores en entornos de prueba.
+2. Comando ui en packages/cli/src/commands/ui.ts: se introdujo la interfaz UiOptions y la lógica para abrir el navegador si la terminal es interactiva y no se usó --no-open. Se modularizó la lógica auxiliar para respetar el límite estricto de complejidad ciclomática.
+3. CLI en packages/cli/src/program.ts: se añadió la opción --no-open al comando ui.
+4. Pruebas y documentación: cobertura completa de los criterios AC1 a AC4 en browser.test.ts y server.test.ts, y actualización de docs/ARCHITECTURE.md.
+
+### Desviaciones
+
+- Se requirió la solicitud de alcance S1 para desbloquear packages/cli/test/browser.test.ts y corregir un salto de línea exigido por Biome.
+
+### Decisiones
+
+- Abrir el navegador únicamente si la terminal es interactiva (actions / terminal.interactive true), evitando que agentes o extensiones disparen pestañas inesperadas.
+- Proteger openInBrowser con detección de entorno de tests para garantizar inocuidad en ejecuciones locales o CI.
+
+### Pendientes
+
+- Ninguno.
