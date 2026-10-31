@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261031-regla-para-entrar-en-worktree-con-specty-enter",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261031-regla-para-entrar-en-worktree-con-specty-enter",
+  "baseCommit": "877fb1480a106de8820cd4a98a5abf588e52dc80",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 2,
+    "adjust": 0,
+    "reasons": [
+      "2 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:50d0d7a6f194a4f0463c61fc797f4830b68e2a41c91597c6adaa8d8a8b679bed",
+    "at": "2026-10-31T13:51:25.144Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
