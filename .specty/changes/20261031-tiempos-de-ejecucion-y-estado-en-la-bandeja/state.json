@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-tiempos-de-ejecucion-y-estado-en-la-bandeja",
   "baseCommit": "a0ad36e672887e0f6f70809fb50c6b5446f84fb2",
   "revision": 1,
@@ -51,12 +51,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2aab922ba758911d166a06f3037936985b4570bb",
+      "attempts": 1,
       "startedAt": "2026-10-31T11:43:43.789Z",
       "doneAt": "2026-10-31T11:48:46.172Z",
-      "summary": "Mostrar tiempo en fase y tiempo total de ejecución en inbox-row para cambios en curso y finalizados"
+      "summary": "Mostrar tiempo en fase y tiempo total de ejecución en inbox-row para cambios en curso y finalizados",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a9963b869d2162913c81ff23107c91b7f698ab22",
+      "startedAt": "2026-10-31T11:48:46.527Z",
+      "doneAt": "2026-10-31T11:51:07.004Z",
+      "summary": "Mostrar tiempo total de épicas en inbox y actualizar documentación en docs/ui.md"
     }
   },
   "pending": {

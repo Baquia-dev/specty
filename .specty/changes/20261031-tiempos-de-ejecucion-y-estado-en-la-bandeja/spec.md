@@ -64,7 +64,7 @@ Mostrar en la Bandeja el tiempo total transcurrido o duración para cada element
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-row.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts
-- [ ] T3: Mostrar tiempo total de épicas en inbox y actualizar documentación
+- [x] T3: Mostrar tiempo total de épicas en inbox y actualizar documentación
   - files: packages/ui/src/inbox/inbox.ts, packages/ui/src/inbox/inbox.test.ts, docs/ui.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox.test.ts

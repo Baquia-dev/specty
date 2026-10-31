@@ -18,6 +18,7 @@ import { EmptyState } from "../components/empty-state";
 import { LucideInbox, LucideLayers, LucideSearchX, LucideTriangleAlert } from "../components/icons";
 import { Skeleton } from "../components/skeleton";
 import { ChangesStore } from "../data/changes-store";
+import { formatDuration } from "../data/progress";
 import { ActionError, type ChangeView } from "../data/records";
 import { Shortcuts } from "../keyboard/shortcuts";
 import { Preferences } from "../theme/preferences";
@@ -93,7 +94,10 @@ const TICK_MS = 30_000;
                         <svg [lucideIcon]="epicIcon" size="13" aria-hidden="true"></svg>
                         <span>{{ t()('Épica', 'Epic') }}: {{ block.title }}</span>
                       </span>
-                      <span class="font-mono text-[11px]" data-epic-count>{{ epicCount(block.changes.length) }}</span>
+                      <div class="flex items-center gap-3">
+                        <span class="font-mono text-[11px]" data-epic-duration>{{ epicDuration(block.changes) }}</span>
+                        <span class="font-mono text-[11px]" data-epic-count>{{ epicCount(block.changes.length) }}</span>
+                      </div>
                     </div>
                     <div class="flex flex-col gap-0.5 border-l-2 border-border pl-3">
                       @for (change of block.changes; track change.id) {
@@ -223,6 +227,28 @@ export class Inbox {
     return count === 1
       ? this.t()("1 cambio", "1 change")
       : this.t()(`${count} cambios`, `${count} changes`);
+  }
+
+  protected epicDuration(changes: readonly ChangeView[]): string {
+    const epic = changes.find((c) => c.kind === "epic");
+    let elapsed = 0;
+    if (epic !== undefined) {
+      const start = Date.parse(epic.createdAt);
+      const end = epic.closedAt ? Date.parse(epic.closedAt) : this.now();
+      elapsed = Number.isFinite(start) && Number.isFinite(end) ? Math.max(0, end - start) : 0;
+    } else {
+      const starts = changes.map((c) => Date.parse(c.createdAt)).filter(Number.isFinite);
+      const minStart = starts.length > 0 ? Math.min(...starts) : this.now();
+      const inProgress = changes.some((c) => c.phase !== "done" && c.phase !== "cancelled");
+      const ends = changes
+        .map((c) => (c.closedAt ? Date.parse(c.closedAt) : Date.parse(c.phaseSince)))
+        .filter(Number.isFinite);
+      const maxEnd = ends.length > 0 ? Math.max(...ends) : this.now();
+      const end = inProgress ? this.now() : maxEnd;
+      elapsed = Math.max(0, end - minStart);
+    }
+    const formatted = formatDuration(elapsed, this.preferences.lang());
+    return this.t()(`Total: ${formatted}`, `Total: ${formatted}`);
   }
 
   protected message(error: unknown): string {
