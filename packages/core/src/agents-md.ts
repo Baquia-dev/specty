@@ -48,8 +48,8 @@ function flowLines(t: Translate, command: string): string[] {
       `This repository uses Specty. Before creating, modifying or deleting code, run \`${command} next\` and follow its output up to the \`NEXT:\` line. Talk to the user in English.`,
     ),
     t(
-      `- Si el usuario pide un cambio y no hay uno activo, \`${command} next\` te indica cómo crear la spec (en una épica, define cortes verticales y redacta sus specs para trabajar en paralelo).`,
-      `- If the user asks for a change and none is active, \`${command} next\` tells you how to create the spec (in an epic, define vertical slices and draft their specs to work in parallel).`,
+      `- Si el usuario pide un cambio y no hay uno activo, \`${command} next\` te indica cómo crear la spec (en proyectos nuevos, andamiaje con framework y globs en alcance como única excepción; en épicas, cortes verticales en paralelo).`,
+      `- If the user asks for a change and none is active, \`${command} next\` tells you how to create the spec (in new projects, framework scaffolding with globs in scope as sole exception; in epics, parallel vertical slices).`,
     ),
     t(
       `- Cada cambio vive en su propia carpeta (una worktree): tras \`${command} new\`, trabaja en la carpeta que indica, no en la principal. Entra con \`${command} enter <id>\` (en Claude Code con \`EnterWorktree\`) y no pidas abrir otra sesión ni cambiar de rama.`,

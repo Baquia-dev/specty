@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
   analyzeShell,
+  DELETED,
   decideAfterShell,
   decideGuard,
   type GuardAction,
   type GuardChange,
   type GuardContext,
   type GuardDecision,
-  DELETED,
   isIntegrating,
   nativeEnterDenial,
   parseSpec,

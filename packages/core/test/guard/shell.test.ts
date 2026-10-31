@@ -93,7 +93,8 @@ describe("analyzeShell", () => {
 
   it("AC1: marks commands referencing delegated.json or internal specty storage as bypass", () => {
     expect(
-      analyzeShell("node -e 'fs.writeFileSync(\".git/common/specty/delegated.json\", \"{}\")'").bypass,
+      analyzeShell('node -e \'fs.writeFileSync(".git/common/specty/delegated.json", "{}")\'')
+        .bypass,
     ).toBe(true);
     expect(analyzeShell("git rev-parse --git-path common/specty/delegated.json").bypass).toBe(true);
     expect(analyzeShell("cat .git/common/specty/delegated.json").bypass).toBe(true);

@@ -19,7 +19,8 @@ const HINTS: Readonly<Record<Lang, Readonly<Record<SectionKey, string>>>> = {
     criteria:
       'Resultados observables: "- AC1: CUANDO … ENTONCES …". Debajo, "  - test: manual" si ningún test puede comprobarlo.',
     design: "Opcional: decisiones técnicas, componentes y datos. Borra la sección si no aplica.",
-    files: 'Cada ruta que tocarás: "- crear|modificar|borrar ruta — motivo".',
+    files:
+      'Cada ruta que tocarás: "- crear|modificar|borrar ruta — motivo". Rutas explícitas sin globs (la excepción de globs solo rige en el scaffolding inicial).',
     tasks:
       'Pasos pequeños y en orden: "- [ ] T1: título", y debajo "  - files: …", "  - ac: AC1", "  - verify: comando".',
     slices:
@@ -37,7 +38,8 @@ const HINTS: Readonly<Record<Lang, Readonly<Record<SectionKey, string>>>> = {
     criteria:
       'Observable outcomes: "- AC1: WHEN … THEN …". Below it, "  - test: manual" if no test can check it.',
     design: "Optional: technical decisions, components and data. Remove the section if unused.",
-    files: 'Every path you will touch: "- create|modify|delete path — reason".',
+    files:
+      'Every path you will touch: "- create|modify|delete path — reason". Explicit paths without globs (the glob exception only applies to initial scaffolding).',
     tasks:
       'Small, ordered steps: "- [ ] T1: title", then "  - files: …", "  - ac: AC1", "  - verify: command".',
     slices:
@@ -54,18 +56,18 @@ const BOOTSTRAP_HINTS: Readonly<Record<Lang, Readonly<Partial<Record<SectionKey,
     assumptions:
       'El stack, las herramientas y los comandos que eliges (o que pide PRODUCT.md), uno por supuesto: "- A1: …"; con "  - impacto: alto" los que el usuario debe confirmar.',
     files:
-      'Lo que crea el andamiaje: el manifiesto y la configuración, el primer test, y con un glob lo que genere una herramienta: "- crear src/** — …".',
+      'Lo que crea el andamiaje: el manifiesto, la configuración, el primer test, y como excepción exclusiva de esta spec de scaffolding, globs para lo generado por la herramienta: "- crear src/** — …" (esta excepción no se repite en ningún cambio posterior).',
     tasks:
-      'Pasos pequeños: la primera tarea deja el proyecto construyendo y con un test que pasa. Cada tarea con "  - verify: comando", porque aún no hay verify.default.',
+      'La primera tarea genera la mayor parte del código ejecutando comandos de scaffolding del framework seleccionado (para ahorrar tiempo y tokens) y deja el proyecto construyendo y con un test que pasa. Cada tarea con "  - verify: comando", porque aún no hay verify.default.',
   },
   en: {
     goal: "The project's skeleton, from PRODUCT.md: what can be done and checked when this change ends.",
     assumptions:
       'The stack, tools and commands you choose (or PRODUCT.md asks for), one per assumption: "- A1: …"; with "  - impact: high" those the user must confirm.',
     files:
-      'What the scaffolding creates: the manifest and configuration, the first test, and with a glob what a tool generates: "- create src/** — …".',
+      'What the scaffolding creates: manifest, configuration, first test, and as an exclusive exception for this scaffolding spec, globs for tool-generated files: "- create src/** — …" (this exception never repeats in subsequent changes).',
     tasks:
-      'Small steps: the first task leaves the project building with a passing test. Every task with "  - verify: command", since there is no verify.default yet.',
+      'The first task generates most of the code running the chosen framework scaffolding commands (saving time and tokens) and leaves the project building with a passing test. Every task with "  - verify: command", since there is no verify.default yet.',
   },
 };
 
