@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { ui } from "../src/commands/ui";
 import { startServer, type UiServer } from "../src/server/http";
 import { changeRecords } from "../src/server/records";
-import { openSession, type Session } from "../src/session";
+import { openSession, type Session, type Terminal } from "../src/session";
 import {
   AGENT,
   ARCHIVE,
@@ -28,12 +28,13 @@ import {
 async function sessionAt(
   cwd: string,
   out: (text: string) => void = () => undefined,
+  terminal: Terminal = AGENT,
 ): Promise<Session> {
   const opened = await openSession({
     cwd,
     env: testEnv(),
     now: () => NOW,
-    terminal: AGENT,
+    terminal,
     io: { out, err: () => undefined },
     invocation: { command: `node "${DIST}"`, portable: false, script: DIST },
   });
@@ -292,5 +293,30 @@ describe("specty ui", () => {
     const result = await cli(root, ["ui", "--port", "abc"]);
     expect(result.code).toBe(1);
     expect(result.out).toContain("Puerto no válido: abc.");
+  });
+
+  it("AC1: opens the browser immediately when run from an interactive terminal", async () => {
+    const { root } = await twoChanges();
+    const openedUrls: string[] = [];
+    const session = await sessionAt(root, () => undefined, person());
+    await ui(session, { port: "0" }, Promise.resolve(), (url) => openedUrls.push(url));
+    expect(openedUrls).toHaveLength(1);
+    expect(openedUrls[0]).toMatch(/^http:\/\/localhost:\d+\/\?token=\S+$/);
+  });
+
+  it("AC2: does not open the browser when --no-open is specified", async () => {
+    const { root } = await twoChanges();
+    const openedUrls: string[] = [];
+    const session = await sessionAt(root, () => undefined, person());
+    await ui(session, { port: "0", open: false }, Promise.resolve(), (url) => openedUrls.push(url));
+    expect(openedUrls).toHaveLength(0);
+  });
+
+  it("AC3: does not open the browser when run from a non-interactive environment", async () => {
+    const { root } = await twoChanges();
+    const openedUrls: string[] = [];
+    const session = await sessionAt(root, () => undefined, AGENT);
+    await ui(session, { port: "0" }, Promise.resolve(), (url) => openedUrls.push(url));
+    expect(openedUrls).toHaveLength(0);
   });
 });

@@ -6,6 +6,13 @@
   "branch": "specty/20261101-abrir-navegador-al-iniciar-specty-ui",
   "baseCommit": "38988a3bd37fff302a6ff8c573134a39a7d10ddb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1b8f22b3e7ea8aa1145b22dd97ad80aaacd6acbfa983f17514b888a766ef002f",
+    "at": "2026-10-31T16:11:58.627Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 5,
@@ -34,12 +41,6 @@
     "AC": 4,
     "T": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1b8f22b3e7ea8aa1145b22dd97ad80aaacd6acbfa983f17514b888a766ef002f",
-    "at": "2026-10-31T16:11:58.627Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T16:13:39.076Z"
 }
