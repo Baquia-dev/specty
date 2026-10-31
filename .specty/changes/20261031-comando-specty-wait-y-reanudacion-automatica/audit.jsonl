@@ -11,3 +11,6 @@
 {"ts":"2026-10-31T10:47:52.173Z","actor":"human","by":"Jorge Palacio Barcinilla","event":"scope.decided","data":{"id":"S1","decision":"approved","unlock":["packages/cli/test/wait.test.ts"],"task":"T2"}}
 {"ts":"2026-10-31T10:48:23.341Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts","exit":0,"ms":6548,"tree":"sha256:a2ae07ce3fda0ee7f6dbc4b4130d989da05affc00ffddcadbe2d3fc1000031db"}}
 {"ts":"2026-10-31T10:48:23.442Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T2","summary":"Implementar comando specty wait con sondeo pasivo y registro en CLI"}}
+{"ts":"2026-10-31T10:48:23.790Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T3","baseCommit":"cf56168ca64d9c779adbbabf3c9751065060533f"}}
+{"ts":"2026-10-31T10:50:28.805Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts","exit":0,"ms":2147,"tree":"sha256:33b57ace5840008d2b5c31c582726611e3d2778e97ce21ec8f901300ab50967e"}}
+{"ts":"2026-10-31T10:50:29.047Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T3","summary":"Añadir uso de specty wait en flowBlock de AGENTS.md y documentar en ARCHITECTURE.md"}}

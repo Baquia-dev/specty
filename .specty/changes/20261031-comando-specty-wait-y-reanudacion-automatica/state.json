@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
   "revision": 1,
@@ -52,14 +52,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/wait.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "ff704878b17e189a8fdb36ed3bd5dc3edf7d9e7a",
+      "attempts": 1,
       "startedAt": "2026-10-31T10:37:16.933Z",
       "doneAt": "2026-10-31T10:48:23.441Z",
-      "summary": "Implementar comando specty wait con sondeo pasivo y registro en CLI"
+      "summary": "Implementar comando specty wait con sondeo pasivo y registro en CLI",
+      "scopeExtra": [
+        "packages/cli/test/wait.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "cf56168ca64d9c779adbbabf3c9751065060533f",
+      "startedAt": "2026-10-31T10:48:23.790Z",
+      "doneAt": "2026-10-31T10:50:29.044Z",
+      "summary": "Añadir uso de specty wait en flowBlock de AGENTS.md y documentar en ARCHITECTURE.md"
     }
   },
   "pending": {

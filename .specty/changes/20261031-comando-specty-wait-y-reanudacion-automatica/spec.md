@@ -64,7 +64,7 @@ Permitir que el agente detecte automáticamente cuando la persona realiza una ap
   - files: packages/cli/src/commands/wait.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/wait.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/wait.test.ts
-- [ ] T3: Reglas para agentes y documentación
+- [x] T3: Reglas para agentes y documentación
   - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts, docs/ARCHITECTURE.md
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
