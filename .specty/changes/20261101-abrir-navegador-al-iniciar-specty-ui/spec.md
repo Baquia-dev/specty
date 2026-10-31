@@ -51,7 +51,7 @@ Ofrecer la opción `--no-open` para permitir iniciar el servidor sin abrir el na
 
 ## Tareas
 
-- [ ] T1: Módulo de apertura de navegador y sus pruebas unitarias
+- [x] T1: Módulo de apertura de navegador y sus pruebas unitarias
   - files: packages/cli/src/io/browser.ts, packages/cli/test/browser.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty test test/browser.test.ts

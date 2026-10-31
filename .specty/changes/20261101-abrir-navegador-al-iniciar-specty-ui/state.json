@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "411a8d001c98f7a5dbc48bac59547930ef27508a",
+      "startedAt": "2026-10-31T16:13:46.819Z",
+      "doneAt": "2026-10-31T16:14:11.292Z",
+      "summary": "Crear módulo browser.ts con browserCommand y openInBrowser"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
