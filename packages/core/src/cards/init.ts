@@ -55,7 +55,29 @@ const FLOW_BRANCHES: Readonly<Record<GitFlow, readonly [string, string]>> = {
   specty: ["specty/<id>", "specty/<id>"],
   github: ["<tipo>/<slug>, como feat/<slug>", "<type>/<slug>, such as feat/<slug>"],
   trunk: ["<tipo>/<slug>, como feat/<slug>", "<type>/<slug>, such as feat/<slug>"],
-  gitflow: ["feature/<slug> y bugfix/<slug>", "feature/<slug> and bugfix/<slug>"],
+  gitflow: [
+    "feature/<slug>, bugfix/<slug>, hotfix/<slug> y release/<slug>",
+    "feature/<slug>, bugfix/<slug>, hotfix/<slug> and release/<slug>",
+  ],
+};
+
+const FLOW_HINTS: Readonly<Record<GitFlow, readonly [string, string]>> = {
+  specty: [
+    "Ramas aisladas por cambio con fecha e id (ej. specty/20261031-login)",
+    "Isolated change branches with date and id (e.g. specty/20261031-login)",
+  ],
+  github: [
+    "Ramas por tipo hacia main mediante PRs (ej. feat/login, fix/auth)",
+    "Branches by type merged into main via PRs (e.g. feat/login, fix/auth)",
+  ],
+  gitflow: [
+    "Ramas completas del flujo hacia develop y main (ej. feature/login, bugfix/typo, hotfix/seguridad, release/1.0)",
+    "Full flow branches into develop and main (e.g. feature/login, bugfix/typo, hotfix/security, release/1.0)",
+  ],
+  trunk: [
+    "Ramas cortas directas a main (ej. feat/login, fix/auth)",
+    "Short-lived branches merged quickly into main (e.g. feat/login, fix/auth)",
+  ],
 };
 
 /** `init --git-flow` set `git.flow`: how the changes' branches will be named. */
@@ -103,15 +125,17 @@ export function flowQuestion(detected: GitFlow | undefined, lang: Lang): string 
 export function flowChoices(
   detected: GitFlow | undefined,
   lang: Lang,
-): readonly { readonly value: GitFlow; readonly label: string }[] {
+): readonly { readonly value: GitFlow; readonly label: string; readonly hint?: string }[] {
   const t = translator(lang);
   const order = Object.keys(FLOW_TITLES).filter((flow): flow is GitFlow => flow !== detected);
   return (detected === undefined ? order : [detected, ...order]).map((flow) => {
     const [es, en] = FLOW_BRANCHES[flow];
+    const [hintEs, hintEn] = FLOW_HINTS[flow];
     const label = `${FLOW_TITLES[flow]}: ${t(es, en)}`;
     return {
       value: flow,
       label: flow === detected ? `${label} (${t("detectado", "detected")})` : label,
+      hint: t(hintEs, hintEn),
     };
   });
 }
@@ -143,6 +167,41 @@ export function configLine(created: boolean, added: readonly string[], lang: Lan
 /** Every agent tool, in the order of `AGENT_NAMES`: Claude Code first. */
 const AGENT_TOOLS = Object.keys(AGENT_NAMES).filter(isAgentTool);
 
+const AGENT_HINTS: Readonly<Record<AgentTool, readonly [string, string]>> = {
+  "claude-code": [
+    "CLI de Anthropic: hooks y reglas en .claude/ (ej. guard de comandos, enter)",
+    "Anthropic CLI: hooks and rules in .claude/ (e.g. command guard, enter)",
+  ],
+  cursor: [
+    "IDE con IA: reglas y guard en .cursor/rules/ (ej. agentes y permisos en el editor)",
+    "AI IDE: rules and guard in .cursor/rules/ (e.g. agents and editor permissions)",
+  ],
+  codex: [
+    "CLI de OpenAI: hooks en .codex/ (ej. tareas con agentes autónomos)",
+    "OpenAI CLI: hooks in .codex/ (e.g. autonomous agent tasks)",
+  ],
+  opencode: [
+    "Agente terminal de código abierto: configuración en .opencode/ (ej. ejecución de tareas)",
+    "Open-source terminal agent: config in .opencode/ (e.g. task runs)",
+  ],
+  "gemini-cli": [
+    "CLI de Google Gemini: hooks y extensiones en .gemini/ (ej. asistencia de código)",
+    "Google Gemini CLI: hooks and extensions in .gemini/ (e.g. coding assistant)",
+  ],
+  copilot: [
+    "GitHub Copilot: instrucciones en .github/copilot-instructions.md (ej. agentes en el IDE)",
+    "GitHub Copilot: instructions in .github/copilot-instructions.md (e.g. IDE agents)",
+  ],
+  windsurf: [
+    "Devin Desktop / Windsurf: reglas y hooks en .windsurfrules y .devin/ (ej. Devin IDE)",
+    "Devin Desktop / Windsurf: rules and hooks in .windsurfrules and .devin/ (e.g. Devin IDE)",
+  ],
+  antigravity: [
+    "Antigravity de Google DeepMind: reglas en .agents/rules/ (ej. hooks de sesión)",
+    "Google DeepMind Antigravity: rules in .agents/rules/ (e.g. session hooks)",
+  ],
+};
+
 /**
  * `init`'s question to a person, after the language: which agents they work with, several
  * allowed. Whether it `detected` any says if some come already checked.
@@ -164,12 +223,17 @@ export function agentQuestion(detected: boolean, lang: Lang): string {
 export function agentChoices(
   detected: readonly AgentTool[],
   lang: Lang,
-): readonly { readonly value: AgentTool; readonly label: string }[] {
-  const mark = translator(lang)("detectado", "detected");
-  return AGENT_TOOLS.map((tool) => ({
-    value: tool,
-    label: detected.includes(tool) ? `${AGENT_NAMES[tool]} (${mark})` : AGENT_NAMES[tool],
-  }));
+): readonly { readonly value: AgentTool; readonly label: string; readonly hint?: string }[] {
+  const t = translator(lang);
+  const mark = t("detectado", "detected");
+  return AGENT_TOOLS.map((tool) => {
+    const [es, en] = AGENT_HINTS[tool];
+    return {
+      value: tool,
+      label: detected.includes(tool) ? `${AGENT_NAMES[tool]} (${mark})` : AGENT_NAMES[tool],
+      hint: t(es, en),
+    };
+  });
 }
 
 /** No agent was detected and nobody could be asked: Claude Code's guard went in. */
@@ -189,10 +253,18 @@ export function languageQuestion(): string {
 /** The answers to `languageQuestion`, the detected language first. */
 export function languageChoices(
   detected: Lang,
-): readonly { readonly value: Lang; readonly label: string }[] {
+): readonly { readonly value: Lang; readonly label: string; readonly hint?: string }[] {
   const choices = [
-    { value: "es", label: "Español" },
-    { value: "en", label: "English" },
+    {
+      value: "es",
+      label: "Español",
+      hint: "Comandos, tarjetas y especificaciones en español (ej. specty new, tareas)",
+    },
+    {
+      value: "en",
+      label: "English",
+      hint: "Commands, specs, and cards in English (e.g. specty new, tasks)",
+    },
   ] as const;
   return choices.toSorted((a, b) => Number(b.value === detected) - Number(a.value === detected));
 }

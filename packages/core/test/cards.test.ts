@@ -78,11 +78,11 @@ describe("next cards", () => {
         .split("\n")
         .at(-1),
     ).toBe(
-      'SIGUIENTE: ejecuta `specty new "<título>" --type <tipo> --request "<petición literal del usuario>"`, con el tipo de commit que es el cambio, que nombra su rama: feat, fix, refactor, perf, test, docs, chore, build, ci o style (añade `--kind quick` si son hasta 3 archivos de código sin rutas sensibles).',
+      'SIGUIENTE: ejecuta `specty new "<título>" --type <tipo> --request "<petición literal del usuario>"`, con el tipo de commit que es el cambio, que nombra su rama: feat, fix, refactor, perf, test, docs, chore, build, ci, style, hotfix, release o support (añade `--kind quick` si son hasta 3 archivos de código sin rutas sensibles).',
     );
     const en = renderText(nextCard({ dirty: [] }, { ...typed, lang: "en" }), "en");
     expect(en).toContain(
-      'run `specty new "<title>" --type <type> --request "<the user\'s literal request>"`, with the commit type the change is, which names its branch: feat, fix, refactor, perf, test, docs, chore, build, ci or style (add',
+      'run `specty new "<title>" --type <type> --request "<the user\'s literal request>"`, with the commit type the change is, which names its branch: feat, fix, refactor, perf, test, docs, chore, build, ci, style, hotfix, release or support (add',
     );
   });
 
