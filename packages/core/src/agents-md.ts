@@ -98,6 +98,10 @@ function ruleLines(t: Translate, command: string): string[] {
       "- Edit with targeted changes; do not rewrite whole files for small changes.",
     ),
     t(
+      "- Mantén AGENTS.md mínimo (< 80 líneas): guarda especificaciones en PRODUCT.md o docs/ y el plan en épicas, no aquí.",
+      "- Keep AGENTS.md minimal (< 80 lines): keep specs in PRODUCT.md or docs/ and the plan in epics, not here.",
+    ),
+    t(
       "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
       "- Brief final report: what changed, what was verified and what is pending.",
     ),
@@ -134,15 +138,15 @@ export function humanSections(lang: Lang): string {
     t("## Mapa", "## Map"),
     "",
     t(
-      "<!-- Directorios cuyo propósito no es obvio y lo que no se toca (generado, migraciones aplicadas…). -->",
-      "<!-- Directories whose purpose is not obvious, and what must not be touched (generated code, applied migrations…). -->",
+      "<!-- Directorios no obvios, lo que no se toca y enlaces a PRODUCT.md y docs/ (arquitectura, protocolos). No pongas especificaciones de producto, arquitectura ni fases aquí: guárdalas en archivos dedicados. -->",
+      "<!-- Non-obvious directories, what must not be touched and links to PRODUCT.md and docs/ (architecture, protocols). Do not put product specs, architecture or phases here: keep them in dedicated files. -->",
     ),
     "",
     t("## Convenciones", "## Conventions"),
     "",
     t(
-      "<!-- Solo lo que no se deduce del código ni verifica `specty check` (formato, lint, tipos, tests, tamaño, capas…). -->",
-      "<!-- Only what cannot be inferred from the code and `specty check` does not verify (format, lint, types, tests, size, layers…). -->",
+      "<!-- Solo lo que no se deduce del código ni verifica `specty check` (formato, lint, tipos, tests, tamaño, capas…). Mantén este archivo conciso (< 80 líneas). -->",
+      "<!-- Only what cannot be inferred from the code and `specty check` does not verify (format, lint, types, tests, size, layers…). Keep this file concise (< 80 lines). -->",
     ),
   ].join("\n");
 }

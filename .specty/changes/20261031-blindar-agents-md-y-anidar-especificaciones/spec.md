@@ -51,19 +51,15 @@ Blindar `AGENTS.md` para mantenerlo conciso y ligero (< 80 líneas), evitando qu
 
 ## Tareas
 
-- [ ] T1: Pistas y regla de blindaje de AGENTS.md en core
+- [x] T1: Pistas y regla de blindaje de AGENTS.md en core
   - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
-- [ ] T2: Aviso preventivo agents-bloated en cards de doctor
-  - files: packages/core/src/cards/doctor.ts, packages/core/test/cards/doctor.test.ts
+- [ ] T2: Aviso preventivo de AGENTS.md sobrecargado en doctor
+  - files: packages/core/src/cards/doctor.ts, packages/core/test/cards/doctor.test.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/doctor-enter.test.ts
   - ac: AC3
-  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts
-- [ ] T3: Detección de AGENTS.md sobrecargado en comando doctor de CLI
-  - files: packages/cli/src/commands/doctor.ts, packages/cli/test/doctor-enter.test.ts
-  - ac: AC3
-  - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-enter.test.ts
-- [ ] T4: Documentación del flujo de inicio en arquitectura
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/doctor.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/doctor-enter.test.ts
+- [ ] T3: Documentación del flujo de inicio en arquitectura
   - files: docs/ARCHITECTURE.md
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
