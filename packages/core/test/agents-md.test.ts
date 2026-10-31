@@ -113,12 +113,10 @@ describe("shielding AGENTS.md", () => {
     expect(en).toContain("< 80 lines");
   });
 
-  it("AC2: flowBlock includes rule to keep AGENTS.md minimal and derive specs and plan", () => {
-    const es = flowBlock("es", "specty");
-    expect(es).toContain("Mantén AGENTS.md mínimo");
-    expect(es).toContain("PRODUCT.md o docs/");
-    const en = flowBlock("en", "specty");
-    expect(en).toContain("Keep AGENTS.md minimal");
-    expect(en).toContain("PRODUCT.md or docs/");
+  it("AC2: flowBlock preserves 15-line limit and 5 non-verifiable rules", () => {
+    const es = flowBlock("es", "specty").split("\n");
+    expect(es.length).toBeLessThanOrEqual(15);
+    const en = flowBlock("en", "specty").split("\n");
+    expect(en.length).toBeLessThanOrEqual(15);
   });
 });

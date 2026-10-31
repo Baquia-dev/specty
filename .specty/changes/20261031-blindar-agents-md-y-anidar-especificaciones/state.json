@@ -82,5 +82,6 @@
   "lockedTests": {
     "packages/core/test/cards/doctor.test.ts": "sha256:022f97e7f80e93f669a3bd7da86975000d2a071185e1f98d20d094de93140ed3"
   },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T12:33:51.319Z"
 }
