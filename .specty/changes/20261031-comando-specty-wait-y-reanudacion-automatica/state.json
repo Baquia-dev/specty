@@ -6,6 +6,13 @@
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:791555c528d1fada3125784daf8590227349964c0b7126587cb6fa6ea8f3a498",
+    "at": "2026-10-31T10:34:37.342Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -43,12 +50,6 @@
     "AC": 5,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:791555c528d1fada3125784daf8590227349964c0b7126587cb6fa6ea8f3a498",
-    "at": "2026-10-31T10:34:37.342Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-10-31T10:35:48.758Z"
 }

@@ -92,4 +92,11 @@ describe("rules for epics and vertical slices", () => {
     expect(en).toContain("vertical slices");
     expect(en).toContain("parallel");
   });
+
+  it("AC5: mentions specty wait in flowBlock for human approvals", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("specty wait");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("specty wait");
+  });
 });
