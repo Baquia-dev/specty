@@ -56,14 +56,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/test/validate/references.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "dd8443e661c0fb4bc3c3526d4c0684eb9099ce14",
+      "attempts": 1,
       "startedAt": "2026-10-31T10:00:36.562Z",
       "doneAt": "2026-10-31T10:04:57.027Z",
-      "summary": "Validar obligatoriedad de criterios en cortes y rechazar capas horizontales en épicas"
+      "summary": "Validar obligatoriedad de criterios en cortes y rechazar capas horizontales en épicas",
+      "scopeExtra": [
+        "packages/core/test/validate/references.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "8c61484facaa2ddf241f1169fdf051da277cf4ee",
+      "startedAt": "2026-10-31T10:04:57.404Z",
+      "doneAt": "2026-10-31T10:07:38.779Z",
+      "summary": "Añadir regla de cortes verticales en AGENTS.md y orientación a paralelismo en tarjetas de épica"
     }
   },
   "pending": {

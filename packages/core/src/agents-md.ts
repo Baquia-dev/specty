@@ -48,8 +48,8 @@ function flowLines(t: Translate, command: string): string[] {
       `This repository uses Specty. Before creating, modifying or deleting code, run \`${command} next\` and follow its output up to the \`NEXT:\` line. Talk to the user in English.`,
     ),
     t(
-      `- Si el usuario pide un cambio y no hay uno activo, \`${command} next\` te indica cómo crear la spec.`,
-      `- If the user asks for a change and none is active, \`${command} next\` tells you how to create the spec.`,
+      `- Si el usuario pide un cambio y no hay uno activo, \`${command} next\` te indica cómo crear la spec (en una épica, define cortes verticales y redacta sus specs para trabajar en paralelo).`,
+      `- If the user asks for a change and none is active, \`${command} next\` tells you how to create the spec (in an epic, define vertical slices and draft their specs to work in parallel).`,
     ),
     t(
       `- Cada cambio vive en su propia carpeta (una worktree): tras \`${command} new\`, trabaja en la carpeta que indica, no en la principal.`,
