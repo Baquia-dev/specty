@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-regla-para-entrar-en-worktree-con-specty-enter",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-regla-para-entrar-en-worktree-con-specty-enter",
   "baseCommit": "877fb1480a106de8820cd4a98a5abf588e52dc80",
   "revision": 2,
@@ -34,14 +34,14 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/worktrees.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "ae8c6801859a22846edd5e99d848687470da3b24",
+      "attempts": 1,
       "startedAt": "2026-10-31T14:04:26.529Z",
       "doneAt": "2026-10-31T14:09:23.071Z",
-      "summary": "Actualizar expectativa en test de integración worktrees.test.ts"
+      "summary": "Actualizar expectativa en test de integración worktrees.test.ts",
+      "scopeExtra": [
+        "packages/cli/test/worktrees.test.ts"
+      ]
     }
   },
   "pending": {

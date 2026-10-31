@@ -19,6 +19,13 @@ Fijar en el flujo de Specty (`flowBlock`) la regla explícita de que el agente d
 - [x] T1: Regla explícita de specty enter en flowLines y carryOnText imperativo
   - files: packages/core/src/agents-md.ts, packages/core/src/cards/new.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts test/cards/new.test.ts
-- [x] T2: Actualizar expectativa en test de integración worktrees.test.ts
+- [ ] T2: Actualizar expectativa en test de integración worktrees.test.ts
   - files: packages/core/src/cards/new.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees.test.ts
+
+## Cierre
+
+### Resumen
+
+Regla explícita de specty enter en flowLines y carryOnText imperativo
+Actualizar expectativa en test de integración worktrees.test.ts
