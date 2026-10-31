@@ -70,6 +70,10 @@ export const MESSAGES_ES: MessageCatalog = {
   "task-verify-missing": (p) =>
     `${v(p, "id")} no tiene \`verify\` y la configuración no define una verificación por defecto.`,
   "slice-cycle": (p) => `Los cortes tienen dependencias circulares: ${v(p, "cycle")}.`,
+  "slice-without-criteria": (p) =>
+    `El corte ${v(p, "id")} debe declarar al menos un criterio de aceptación en \`ac\`.`,
+  "slice-horizontal": (p) =>
+    `El corte ${v(p, "id")} parece ser una capa técnica horizontal (${v(p, "layer")}); una épica exige cortes verticales verificables de punta a punta.`,
   "quick-limits": (p) =>
     `El cambio no cabe en el carril quick (${v(p, "detail")}); usa \`kind: standard\`.`,
   "split-required": (p) =>

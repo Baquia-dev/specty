@@ -66,7 +66,7 @@ Hacer cumplir que toda épica (`kind: epic`), tanto en proyectos nuevos como exi
 
 ## Tareas
 
-- [ ] T1: Diagnósticos y mensajes para cortes de épica
+- [x] T1: Diagnósticos y mensajes para cortes de épica
   - files: packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/spec/messages.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec/messages.test.ts

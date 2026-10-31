@@ -26,6 +26,7 @@ const PARAMS = {
   target: "section:goal",
   next: "A3",
   terms: "rápido",
+  layer: "base de datos",
   count: 6,
   max: 5,
   policy: "recommended",

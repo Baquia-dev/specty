@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ecfb9b4c6b76666596dffbd4f68259e01f5aaa6a",
+      "startedAt": "2026-10-31T09:59:29.845Z",
+      "doneAt": "2026-10-31T10:00:36.209Z",
+      "summary": "Añadir diagnósticos y mensajes para cortes sin criterios y capas horizontales en épicas"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
