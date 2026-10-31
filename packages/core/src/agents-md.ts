@@ -52,8 +52,8 @@ function flowLines(t: Translate, command: string): string[] {
       `- If the user asks for a change and none is active, \`${command} next\` tells you how to create the spec (in an epic, define vertical slices and draft their specs to work in parallel).`,
     ),
     t(
-      `- Cada cambio vive en su propia carpeta (una worktree): tras \`${command} new\`, trabaja en la carpeta que indica, no en la principal.`,
-      `- Each change lives in its own folder (a worktree): after \`${command} new\`, work in the folder it names, not in the main one.`,
+      `- Cada cambio vive en su propia carpeta (una worktree): tras \`${command} new\`, trabaja en la carpeta que indica, no en la principal. Entra con \`${command} enter <id>\` (en Claude Code con \`EnterWorktree\`) y no pidas abrir otra sesión ni cambiar de rama.`,
+      `- Each change lives in its own folder (a worktree): after \`${command} new\`, work in the folder it names, not in the main one. Enter with \`${command} enter <id>\` (in Claude Code with \`EnterWorktree\`) and do not ask to open another session or switch branches.`,
     ),
     t(
       `- Completa cada tarea con \`${command} task done <id>\`; no ejecutes \`git commit\` tú mismo.`,

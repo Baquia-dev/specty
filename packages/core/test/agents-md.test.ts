@@ -99,6 +99,15 @@ describe("rules for epics and vertical slices", () => {
     const en = flowBlock("en", "specty");
     expect(en).toContain("specty wait");
   });
+
+  it("AC1: flowBlock explicitly requires entering worktree with specty enter and forbids asking for another session", () => {
+    const es = flowBlock("es", "specty");
+    expect(es).toContain("Entra con `specty enter <id>`");
+    expect(es).toContain("no pidas abrir otra sesión ni cambiar de rama");
+    const en = flowBlock("en", "specty");
+    expect(en).toContain("Enter with `specty enter <id>`");
+    expect(en).toContain("do not ask to open another session or switch branches");
+  });
 });
 
 describe("shielding AGENTS.md", () => {

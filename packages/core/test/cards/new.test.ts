@@ -103,7 +103,7 @@ describe("a change created by `new`", () => {
     const next = (agent: WorktreeCreated["agent"]) =>
       worktreeCreatedCard({ ...CREATED, byName: false, agent }, ES).next;
     expect(next("codex")).toBe(
-      `continúa en ${folder}: Codex entra en ella desde esta misma sesión: ejecuta \`specty enter 20261020-saludo\` y sigue su salida. Si la persona prefiere otra sesión, pídele que abra Codex en esa carpeta (\`codex -C "${folder}"\`) y termina tu turno. Esta carpeta sigue con su propio trabajo.`,
+      `continúa en ${folder}: Codex entra en ella desde esta misma sesión: ejecuta \`specty enter 20261020-saludo\` y sigue su salida (la persona puede abrir Codex en esa carpeta (\`codex -C "${folder}"\`) si prefiere otra sesión). Esta carpeta sigue con su propio trabajo.`,
     );
     expect(next("opencode")).toContain(`(\`opencode "${folder}"\`)`);
     expect(next("cursor")).toContain(
@@ -119,7 +119,7 @@ describe("a change created by `new`", () => {
     expect(next("claude-code")).toBe(next(undefined));
     expect(next(undefined)).toContain("o abre allí un agente");
     expect(worktreeCreatedCard({ ...CREATED, agent: "codex" }, EN).next).toContain(
-      `Codex enters it from this same session: run \`specty enter 20261020-saludo\` and follow its output. If the person would rather have another session, ask them to open Codex in that folder (\`codex -C "${folder}"\`) and end your turn.`,
+      `Codex enters it from this same session: run \`specty enter 20261020-saludo\` and follow its output (the person can open Codex in that folder (\`codex -C "${folder}"\`) if they prefer another session).`,
     );
   });
 

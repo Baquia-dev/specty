@@ -279,12 +279,12 @@ function carryOnText(created: WorktreeCreated, ctx: CardContext, t: Translate): 
       open === undefined
         ? ""
         : t(
-            ` Si la persona prefiere otra sesión, pídele que abra ${open} y termina tu turno.`,
-            ` If the person would rather have another session, ask them to open ${open} and end your turn.`,
+            ` (la persona puede abrir ${open} si prefiere otra sesión)`,
+            ` (the person can open ${open} if they prefer another session)`,
           );
     return t(
-      `${AGENT_NAMES[agent]} entra en ella desde esta misma sesión: ejecuta \`${ctx.command} enter ${id}\` y sigue su salida.${other} Esta carpeta sigue con su propio trabajo.`,
-      `${AGENT_NAMES[agent]} enters it from this same session: run \`${ctx.command} enter ${id}\` and follow its output.${other} This folder carries on with its own work.`,
+      `${AGENT_NAMES[agent]} entra en ella desde esta misma sesión: ejecuta \`${ctx.command} enter ${id}\` y sigue su salida${other}. Esta carpeta sigue con su propio trabajo.`,
+      `${AGENT_NAMES[agent]} enters it from this same session: run \`${ctx.command} enter ${id}\` and follow its output${other}. This folder carries on with its own work.`,
     );
   }
   const byName = created.byName
