@@ -2,25 +2,25 @@
   "schema": 1,
   "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "implementing",
   "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
   "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
-  "revision": 3,
+  "revision": 4,
   "approved": {
-    "revision": 3,
-    "hash": "sha256:b96bee7f242762781c831560df508b0402c80b36108ecec8996f6230e673c2bc",
-    "at": "2026-10-31T10:58:07.157Z",
+    "revision": 4,
+    "hash": "sha256:d97c2d042c3139a5feb78dd551b7e74cdb28b7c565fc5a7f35f1b112c6bdfacf",
+    "at": "2026-10-31T11:03:48.339Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 12,
+    "score": 13,
     "adjust": 0,
     "reasons": [
       "8 archivos",
       "2 módulos",
-      "5 tareas"
+      "6 tareas"
     ]
   },
   "items": {
@@ -82,12 +82,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "411d8345e1b7d7dbfa9803481273255f03305012",
+      "attempts": 1,
       "startedAt": "2026-10-31T10:58:07.652Z",
       "doneAt": "2026-10-31T11:02:45.201Z",
-      "summary": "Formatear sleep en una sola linea en wait.ts"
+      "summary": "Formatear sleep en una sola linea en wait.ts",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -97,7 +97,7 @@
   "maxIds": {
     "A": 4,
     "AC": 5,
-    "T": 5,
+    "T": 6,
     "S": 1
   },
   "lockedTests": {
