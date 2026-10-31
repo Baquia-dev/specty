@@ -3,6 +3,8 @@ import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, delimiter, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { hideFolder } from "../src/flow/worktree";
+import { execute } from "../src/io/exec";
 import { exists } from "../src/io/files";
 import {
   CHANGE,
@@ -56,6 +58,24 @@ describe("specty new --worktree", () => {
     expect((await cli(folder, ["next"])).out).toContain(`SPECTY · ${OTHER} · draft`);
     expect(git(root, "branch", "--show-current")).toBe(`specty/${CHANGE}`);
     expect(await read(root, "src/app.ts")).toBe("a medias\n");
+  });
+
+  it("AC1: marks the worktrees container folder as hidden with OS attributes", async () => {
+    const root = await tempRepo(FILES);
+    const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
+    expect(created.code).toBe(0);
+    const worktreesDir = home(root);
+    expect(await exists(worktreesDir)).toBe(true);
+
+    if (process.platform === "darwin") {
+      const listing = await execute("ls", ["-ldO", worktreesDir], { cwd: dirname(worktreesDir) });
+      expect(listing.stdout).toMatch(/\bhidden\b/);
+    } else if (process.platform === "win32") {
+      const attrib = await execute("attrib", [worktreesDir], { cwd: dirname(worktreesDir) });
+      expect(attrib.stdout).toMatch(/H/);
+    }
+
+    await expect(hideFolder(join(root, "non-existent-dir"))).resolves.toBeUndefined();
   });
 
   it("tells Codex's agent to enter the change's folder with specty enter (C6 AC4)", async () => {

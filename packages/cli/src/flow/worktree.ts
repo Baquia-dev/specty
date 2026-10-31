@@ -165,6 +165,20 @@ export async function prepareWorktree(
 }
 
 /**
+ * Applies OS-level hidden attributes to a folder: `attrib +h` on Windows and `chflags hidden`
+ * on macOS. Best effort: failures or unsupported platforms are silently ignored.
+ */
+export async function hideFolder(path: string): Promise<void> {
+  if (!(await exists(path))) return;
+  const parent = dirname(path);
+  if (process.platform === "win32") {
+    await execute("attrib", ["+h", path], { cwd: parent });
+  } else if (process.platform === "darwin") {
+    await execute("chflags", ["hidden", path], { cwd: parent });
+  }
+}
+
+/**
  * Checks `branch` out from `base` in a new worktree, and copies there the agent hook files that
  * git does not track: the versioned ones arrive with the branch. Returns the copied files.
  */
@@ -173,6 +187,7 @@ export async function addWorktree(
   target: { readonly folder: string; readonly branch: string; readonly base: string },
 ): Promise<string[]> {
   await git.output(["worktree", "add", "-q", "-b", target.branch, target.folder, target.base]);
+  await hideFolder(dirname(target.folder));
   const copied: string[] = [];
   for (const file of AGENT_HOOK_FILES) {
     if (!(await exists(join(git.root, file))) || (await git.isTracked(file))) continue;

@@ -16,6 +16,6 @@ Ocultar la carpeta contenedora `<proyecto>.worktrees` en el explorador de archiv
 
 ## Tareas
 
-- [ ] T1: Ocultar la carpeta contenedora de worktrees con atributos de SO en Windows y macOS
+- [x] T1: Ocultar la carpeta contenedora de worktrees con atributos de SO en Windows y macOS
   - files: packages/cli/src/flow/worktree.ts, packages/cli/test/worktrees.test.ts, docs/ARCHITECTURE.md
   - verify: pnpm --filter @baquia-dev/specty test test/worktrees.test.ts

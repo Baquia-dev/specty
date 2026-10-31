@@ -272,7 +272,7 @@ El nombre sale de `branchName`, en el core. Si la rama ya existe en local o en u
 
 **Cambios en paralelo.** Una carpeta tiene una sola rama, así que trabaja un solo cambio. Por eso `specty new "<título>"` crea cada cambio en una worktree nueva, con su rama y su carpeta, y nadie trabaja en la carpeta principal. Con `git.worktrees: false`, `new` crea la rama en la carpeta actual, desde su rama, como antes, y `--worktree` pide la worktree para un cambio. En una worktree nueva:
 
-- **Carpeta:** `<carpeta principal>.worktrees/<id>`, fuera del repositorio, para que las herramientas y los tests de la otra carpeta no la vean.
+- **Carpeta:** `<carpeta principal>.worktrees/<id>`, fuera del repositorio, para que las herramientas y los tests de la otra carpeta no la vean. Al crearse, la carpeta contenedora `<carpeta principal>.worktrees` se marca como oculta mediante atributos de sistema operativo (`attrib +h` en Windows, `chflags hidden` en macOS) para no estorbar en el explorador de archivos.
 - **Base:** `--from <rama>` o, por defecto, la rama destino. Es `git.target` o, sin esa clave, la rama principal: la de `origin/HEAD` y, sin remoto, la primera que exista de `init.defaultBranch`, `main` y `master`. Nunca la rama actual, porque un cambio en paralelo no debe heredar el trabajo sin fusionar de otro. Si `git.target` nombra una rama que no existe, `new` se bloquea.
 - **Lo que no mira:** el cambio en curso y el código sin spec de la carpeta actual, porque no los toca.
 - **Hooks:** copia los archivos de hooks de agente que git no sigue (`.claude/settings.local.json`…). Los versionados llegan con la rama; los hooks de git y `.git/info/exclude` se comparten entre worktrees, y el estado local de `.git/specty/` es de cada una.
