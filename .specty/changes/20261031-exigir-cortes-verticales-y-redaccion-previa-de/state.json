@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-exigir-cortes-verticales-y-redaccion-previa-de",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261031-exigir-cortes-verticales-y-redaccion-previa-de",
   "baseCommit": "78867cbe6434ca906baaf1e455d76ae3cc89199e",
   "revision": 1,
@@ -54,6 +54,10 @@
     "AC": 5,
     "T": 4
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-10-31T09:59:24.988Z"
+  "lockedTests": {
+    "packages/core/test/agents-md.test.ts": "sha256:b73ab05618072f03c227864fd1da072fdecacf5971bf327127ccac232dca5b27",
+    "packages/core/test/cards/epic.test.ts": "sha256:e2d72ed6785cb7bec2b04dca322d6a0f30e085091c357814ed5ee29267348a4d",
+    "packages/core/test/validate/quality.test.ts": "sha256:00c36bd6b36910a5f1aba28c5fc7a1d840e16f026bdf0a9ad436d315729e8d42",
+    "packages/core/test/validate/references.test.ts": "sha256:5167ac42aca9c0446940980e1584a0b178490dd3c45fce96b7a02859fea4c45a"
+  }
 }
