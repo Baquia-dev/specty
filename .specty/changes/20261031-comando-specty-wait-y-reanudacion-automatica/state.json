@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261031-comando-specty-wait-y-reanudacion-automatica",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261031-comando-specty-wait-y-reanudacion-automatica",
+  "baseCommit": "16fb7394794dc01bbb9f05d740ca87a554cbe966",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:bd163c5e045eba4c65825c732f22b1ab424025320ff2b6b43a2f2cb740fbd5d5",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:7c1a06dc11eb1a417e90d863a47b9cf1c68e9cb0a7a8a63186c47db34c10e58e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:b1dd696ce256835f8238f1b201490bdf05425184fff849d898edb8888c384d47",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ab33625ab0dc2a1efd6fd52d8d54fc30c6e4229fe3666fa063f20e38f30abf0e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 5,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:791555c528d1fada3125784daf8590227349964c0b7126587cb6fa6ea8f3a498",
+    "at": "2026-10-31T10:34:37.342Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
