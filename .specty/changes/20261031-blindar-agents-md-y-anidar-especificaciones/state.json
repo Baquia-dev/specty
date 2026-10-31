@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261031-blindar-agents-md-y-anidar-especificaciones",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261031-blindar-agents-md-y-anidar-especificaciones",
+  "baseCommit": "4e875639b11adbd83aa70ce8e65e1c340f10ec69",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:8f353bfefcb033c8ca69883262a9133d7bc63d386e4dfb9d2b5fef5ef5e887c9",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:e25ff578218b47bdc788bd847bb33a709dd0b0cea9a58b1188d5c5882d7433e8",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:152b5c2f601c3071222b5b9803b4cb40dc9b20cb7b1690a3bf008646bb60f59b",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:91b502e00f9697aa09dfd51d50a4bf1fb2fa6725a804ff0855a6d2beff1cbd8f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2ef02473dd0b89d2da0b4b6db35733e225c4a7da33dffcb279d2fc65810d4f28",
+    "at": "2026-10-31T12:22:22.116Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
