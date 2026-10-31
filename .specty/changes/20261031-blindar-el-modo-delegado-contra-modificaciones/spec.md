@@ -43,7 +43,7 @@ Evitar que un agente de IA pueda auto-otorgarse el modo delegado o modificar el 
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
-- [ ] T2: Monitoreo en treeSnapshot y reversión de alteraciones en afterShell
+- [x] T2: Monitoreo en treeSnapshot y reversión de alteraciones en afterShell
   - files: packages/cli/src/enforce/shell-snapshot.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/delegate.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/delegate.test.ts

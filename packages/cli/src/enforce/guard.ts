@@ -7,6 +7,7 @@ import {
   type GuardChange,
   type GuardContext,
   type GuardDecision,
+  DELETED,
   isIntegrating,
   nativeEnterDenial,
   parseSpec,
@@ -18,7 +19,7 @@ import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
 import { sharedFolders, worktreesHome } from "../flow/worktree";
-import { isRecord, parseJson } from "../io/files";
+import { isRecord, parseJson, remove } from "../io/files";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { noteActivity } from "../store/activity";
 import { readSpec } from "../store/changes";
@@ -27,6 +28,7 @@ import { leavePending, type PendingKind, takePending } from "./pending";
 import { redirection, resolveAction } from "./place";
 import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
 import {
+  DELEGATION_KEY,
   pruneSnapshots,
   saveSnapshot,
   takeSnapshot,
@@ -278,7 +280,17 @@ async function afterShell(session: Session, event: Record<string, unknown>): Pro
   await pruneSnapshots(session);
   if (before === undefined) return ALLOW;
   const changes = await withoutSpecty(session, shellChanges(before, await treeSnapshot(session)));
+  if (changes.writes.includes(DELEGATION_KEY) || changes.deletes.includes(DELEGATION_KEY)) {
+    await revertDelegation(session, before[DELEGATION_KEY]);
+  }
   return verdict(decideAfterShell(changes, await guardContext(session)), session);
+}
+
+async function revertDelegation(session: Session, previous: string | undefined): Promise<void> {
+  const switchPath = await session.git.gitPath("common/specty/delegated.json");
+  if (previous === undefined || previous === DELETED) {
+    await remove(switchPath);
+  }
 }
 
 async function guardContext(session: Session) {

@@ -35,12 +35,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "caf9ec284e0992151518e3c29b24af683572923e",
+      "attempts": 1,
       "startedAt": "2026-10-31T14:57:33.670Z",
       "doneAt": "2026-10-31T14:58:13.218Z",
-      "summary": "Detección estática de bypass en analyzeShell para delegated.json y .git/common/specty"
+      "summary": "Detección estática de bypass en analyzeShell para delegated.json y .git/common/specty",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/store/local.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "103d71effe5b5aca32e24d29b759e4c374c1e03b",
+      "startedAt": "2026-10-31T14:58:13.575Z",
+      "doneAt": "2026-10-31T15:03:06.273Z",
+      "summary": "Monitoreo en treeSnapshot y reversión en afterShell de alteraciones no autorizadas a delegated.json, con permisos 0o444 en disco"
     }
   },
   "pending": {
