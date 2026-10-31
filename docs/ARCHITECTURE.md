@@ -583,7 +583,9 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 
 **Proyecto nuevo**:
 
-1. Entrevista breve: qué, para quién, alcance del MVP, fuera de alcance, stack (o "recomiéndame"), despliegue y restricciones.
+1. Entrevista breve o especificación inicial: qué, para quién, alcance del MVP, fuera de alcance, stack (o "recomiéndame"), despliegue y restricciones.
+   - Si la persona entrega una especificación detallada (arquitectura, protocolos, capas o hardware), el agente la distribuye en archivos dedicados: `PRODUCT.md` (visión, glosario, alcance del MVP, fuera de alcance), `docs/ARCHITECTURE.md` (stack, capas, dependencias, contratos) y `docs/` temáticos (`protocol.md`, `platforms.md`, etc.).
+   - `AGENTS.md` se mantiene blindado y conciso (< 80 líneas): solo los bloques gestionados de Specty, enlaces navegables en `## Mapa` hacia los documentos dedicados y convenciones no automatizables en `## Convenciones`. Las especificaciones de producto, arquitectura o planes de fases nunca se vuelcan en `AGENTS.md`.
 2. Genera `PRODUCT.md` y el esqueleto de AGENTS.md.
 
    Así lo hace `init` (`install/product.ts`). Un proyecto es nuevo si la detección no encuentra ningún stack y no hay código gobernado salvo metadatos del repositorio (`.gitignore`, `.gitattributes`, `.editorconfig`, licencias) y los archivos de los agentes (sus marcas de §10 y `.agents/`, que comparten varios), sin mirar ningún lenguaje. Entonces, si no hay `PRODUCT.md`, lo crea y lo incluye en su commit. Con una persona en la terminal (y sin `--dry-run`), hace las siete preguntas y escribe una sección por respuesta, con la pregunta como comentario donde la dejó en blanco; su SIGUIENTE le pide al agente el primer cambio. Si lo ejecuta un agente, deja las preguntas como comentarios, y su SIGUIENTE le pide hacerlas en el chat, completar `PRODUCT.md` y crear el primer cambio.
@@ -595,7 +597,7 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 
    Deja de ser nuevo en cuanto el esqueleto llega a la rama.
 4. Al cerrarlo, Specty vuelve a detectar el proyecto y completa los comandos. Esto ya funciona para cualquier cambio: antes de incorporarlo, `close` (y el `accept` de un cambio quick) detecta en su carpeta los comandos de verificación, y si `config.yaml` no tiene `verify.default` o `verify.full` y la detección los encuentra, la salida propone `specty init` en la carpeta principal. Con el archivo ya creado, `init` solo añade las claves de `verify` que faltan, insertando sus líneas, y no cambia nada más ([formats.md §6](formats.md#6-configyaml)).
-5. Alcance y épica del MVP: tras el esqueleto (o al definir el MVP a partir de `PRODUCT.md`), el agente revisa el alcance y propone una épica (`new "<MVP>" --kind epic`) descompuesta en cortes verticales verificables. Antes de implementar, redacta y propone las specs de todos sus cortes para que la persona pueda colocar varios agentes a implementarlos en paralelo en sus respectivas worktrees.
+5. Alcance y épica del MVP: con las especificaciones asentadas en `PRODUCT.md` y `docs/` y el andamiaje del esqueleto en la rama, el agente revisa el alcance del MVP y propone una épica (`new "<MVP>" --kind epic`) descompuesta en cortes verticales verificables de punta a punta. Antes de implementar, redacta y propone las specs de todos sus cortes para que la persona pueda colocar varios agentes a implementarlos en paralelo en sus respectivas worktrees.
 
 **`specty doctor`** comprueba:
 
@@ -604,6 +606,7 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 - la versión de Node: 22 o posterior, como dice `engines`; una anterior es un problema;
 - que las rutas que AGENTS.md cita como código existen. Es un aviso, no un problema, y cuenta las de dos tramos o más (`docs/formats.md`); no los fragmentos (`theme/`), los comandos, los globs, los marcadores, los paquetes ni las rutas que git ignora, como las de un build (`citedPaths` en `core/src/agents-md.ts`);
 - que el «Mapa» y las «Convenciones» de AGENTS.md no sigan vacíos. Es un aviso, no un problema, y solo mira esas secciones, en español o en inglés, si AGENTS.md las tiene. Una sección está vacía si, hasta el siguiente encabezado de su nivel o de uno superior, solo tiene comentarios, como la pista de `init`, y espacios (`unfilledSections` en `core/src/agents-md.ts`);
+- que AGENTS.md no supere las 120 líneas: es un aviso (`agents-bloated`), porque el agente lo lee en cada sesión y sobrecargarlo degrada la ventana de contexto; pide mantenerlo conciso (< 80 líneas) y mover especificaciones de producto a `PRODUCT.md` y arquitectura o fases a `docs/`;
 - los guards y hooks de cada herramienta, también si son de antes de `specty enter` (§10), y los hooks de git;
 - que los formateadores del proyecto (Biome, Prettier) excluyen los archivos que escribe Specty;
 - que la guía de otra herramienta no pida al agente lo que el guard bloquea: los bloques de flujo de gentle-ai (`agent-routing`, el de su ODD, que pide commits propios por unidad de trabajo, y `orchestrator`, `sdd-orchestrator` y `sdd`, los de su antiguo SDD) en AGENTS.md o CLAUDE.md del repositorio, o en los archivos globales donde gentle-ai los escribe (`~/.claude/CLAUDE.md`, el `AGENTS.md` de Codex y el de OpenCode, y `~/.cursor/rules/gentle-ai.mdc`);
@@ -611,7 +614,7 @@ Es reversible: `specty init --dry-run` lista los archivos que crearía o cambiar
 - que el cierre encuentre ccusage para medir el consumo de cada cambio (§13), en `node_modules/.bin` o en el PATH. Es un aviso, no un problema, y trae el comando que daría `init`: el del gestor de Node del proyecto, con `-w` en la raíz de un workspace de pnpm, o `npm i -g ccusage@20.0.45` fuera de Node (`usageDoctor` en `install/usage.ts`);
 - el modo delegado, si está activo: un aviso, porque es una decisión de la persona.
 
-No ejecuta los comandos que cita AGENTS.md, ni mide su tamaño, ni revisa la configuración de CI.
+No ejecuta los comandos que cita AGENTS.md ni revisa la configuración de CI.
 
 ## 15. Servidor local y UI
 

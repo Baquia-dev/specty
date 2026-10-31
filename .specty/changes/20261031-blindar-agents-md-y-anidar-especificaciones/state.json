@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-blindar-agents-md-y-anidar-especificaciones",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-blindar-agents-md-y-anidar-especificaciones",
   "baseCommit": "4e875639b11adbd83aa70ce8e65e1c340f10ec69",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "988a6912816c4af946da1c2e95e503a2eb90cc95",
+      "attempts": 1,
       "startedAt": "2026-10-31T12:28:00.970Z",
       "doneAt": "2026-10-31T12:30:12.728Z",
-      "summary": "Aviso preventivo agents-bloated en doctor para AGENTS.md sobrecargado"
+      "summary": "Aviso preventivo agents-bloated en doctor para AGENTS.md sobrecargado",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "f61a92a7367522ab3f8f934ca68e6d4ef04a6a22",
+      "startedAt": "2026-10-31T12:30:13.073Z",
+      "doneAt": "2026-10-31T12:31:03.910Z",
+      "summary": "Documentar en ARCHITECTURE el flujo de especificaciones dedicadas, blindaje de AGENTS.md y épica del MVP"
     }
   },
   "pending": {
