@@ -60,7 +60,7 @@ Mostrar en la Bandeja el tiempo total transcurrido o duración para cada element
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/views.ts, packages/ui/src/data/views.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts
-- [ ] T2: Mostrar tiempo en fase y tiempo total de ejecución en inbox-row
+- [x] T2: Mostrar tiempo en fase y tiempo total de ejecución en inbox-row
   - files: packages/ui/src/inbox/inbox-row.ts, packages/ui/src/inbox/inbox-row.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts

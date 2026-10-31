@@ -6,3 +6,6 @@
 {"ts":"2026-10-31T11:41:45.581Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T1","baseCommit":"16971877f1d2ededc6a3d212c35fdf22a1aa4969"}}
 {"ts":"2026-10-31T11:43:43.312Z","actor":"specty","event":"task.verified","data":{"task":"T1","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/data/views.test.ts","exit":0,"ms":2552,"tree":"sha256:688453252a30b7a15fd80c04cc217996449e25eccdf325c850bc2d404936a0f7"}}
 {"ts":"2026-10-31T11:43:43.416Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T1","summary":"Derivar createdAt y closedAt en ChangeView a partir de la auditoría y estado"}}
+{"ts":"2026-10-31T11:43:43.789Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T2","baseCommit":"2aab922ba758911d166a06f3037936985b4570bb"}}
+{"ts":"2026-10-31T11:48:46.081Z","actor":"specty","event":"task.verified","data":{"task":"T2","cmd":"pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/inbox/inbox-row.test.ts","exit":0,"ms":7071,"tree":"sha256:21bb0b8ead2cf42fb71595742d719e58d1a0b121fcbef3cd1d66f946e8ee80cb"}}
+{"ts":"2026-10-31T11:48:46.174Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T2","summary":"Mostrar tiempo en fase y tiempo total de ejecución en inbox-row para cambios en curso y finalizados"}}

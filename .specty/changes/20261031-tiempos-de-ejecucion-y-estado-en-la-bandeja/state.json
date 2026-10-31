@@ -42,12 +42,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "16971877f1d2ededc6a3d212c35fdf22a1aa4969",
+      "attempts": 1,
       "startedAt": "2026-10-31T11:41:45.580Z",
       "doneAt": "2026-10-31T11:43:43.414Z",
-      "summary": "Derivar createdAt y closedAt en ChangeView a partir de la auditoría y estado"
+      "summary": "Derivar createdAt y closedAt en ChangeView a partir de la auditoría y estado",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2aab922ba758911d166a06f3037936985b4570bb",
+      "startedAt": "2026-10-31T11:43:43.789Z",
+      "doneAt": "2026-10-31T11:48:46.172Z",
+      "summary": "Mostrar tiempo en fase y tiempo total de ejecución en inbox-row para cambios en curso y finalizados"
     }
   },
   "pending": {

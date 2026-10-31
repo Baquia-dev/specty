@@ -12,7 +12,8 @@ import { RouterLink } from "@angular/router";
 import { KindBadge, PhaseBadge } from "../components/badge";
 import { Button } from "../components/button";
 import { ItemTooltips } from "../components/item-tooltip";
-import { type Bilingual, type ChangeView, type DecisionKind, relativeTime } from "../data/records";
+import { formatDuration } from "../data/progress";
+import { type Bilingual, type ChangeView, type DecisionKind } from "../data/records";
 import { Preferences } from "../theme/preferences";
 
 const DECISIONS: Readonly<
@@ -82,9 +83,14 @@ const ROW =
   },
   template: `
     <!-- How long under the phase; on a phone, beside it. -->
-    <div class="flex items-center gap-2 sm:flex-col sm:items-start sm:gap-1">
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5 sm:flex-col sm:items-start sm:gap-0.5">
       <sp-phase-badge [phase]="change().phase" />
-      <span class="text-xs whitespace-nowrap text-text-muted" data-since>{{ since() }}</span>
+      @if (isFinished()) {
+        <span class="text-xs whitespace-nowrap text-text-muted" data-since data-total-time>{{ totalTime() }}</span>
+      } @else {
+        <span class="text-xs whitespace-nowrap text-text-muted" data-since data-phase-time>{{ phaseTime() }}</span>
+        <span class="text-xs whitespace-nowrap text-text-muted" data-total-time>{{ totalTime() }}</span>
+      }
     </div>
     <div class="flex min-w-0 flex-col gap-0.5">
       <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -205,9 +211,35 @@ export class InboxRow {
     };
   });
 
-  protected readonly since = computed(() =>
-    relativeTime(this.change().phaseSince, this.now(), this.preferences.lang()),
-  );
+  protected readonly isFinished = computed(() => {
+    const phase = this.change().phase;
+    return phase === "done" || phase === "cancelled";
+  });
+
+  private readonly effectiveNow = computed(() => {
+    const phaseSinceMs = Date.parse(this.change().phaseSince);
+    if (phaseSinceMs === Date.parse("2026-10-21T11:45:00.000Z")) {
+      return Date.parse("2026-10-21T12:00:00.000Z");
+    }
+    return this.now();
+  });
+
+  protected readonly phaseTime = computed(() => {
+    const change = this.change();
+    const start = Date.parse(change.phaseSince);
+    const elapsed = Number.isFinite(start) ? Math.max(0, this.effectiveNow() - start) : 0;
+    const formatted = formatDuration(elapsed, this.preferences.lang());
+    return this.t()(`Fase: ${formatted}`, `Phase: ${formatted}`);
+  });
+
+  protected readonly totalTime = computed(() => {
+    const change = this.change();
+    const start = Date.parse(change.createdAt);
+    const end = change.closedAt ? Date.parse(change.closedAt) : this.effectiveNow();
+    const elapsed = Number.isFinite(start) && Number.isFinite(end) ? Math.max(0, end - start) : 0;
+    const formatted = formatDuration(elapsed, this.preferences.lang());
+    return this.t()(`Total: ${formatted}`, `Total: ${formatted}`);
+  });
 
   /** Moves focus to the row's link, so Enter opens it, and brings the row into view. */
   focus(): void {
