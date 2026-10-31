@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-ocultar-carpeta-de-worktrees-con-atributos-de",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261031-ocultar-carpeta-de-worktrees-con-atributos-de",
   "baseCommit": "411651fcb94eb6e09961fd78e10ae675a3d01583",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "f6a60f0eb5793a0314bf8d6cd94251bb0fdba2d2",
+      "attempts": 1,
       "startedAt": "2026-10-31T15:48:08.286Z",
       "doneAt": "2026-10-31T15:50:19.065Z",
-      "summary": "ocultar la carpeta contenedora de worktrees con atributos de SO en Windows y macOS"
+      "summary": "ocultar la carpeta contenedora de worktrees con atributos de SO en Windows y macOS",
+      "scopeExtra": []
     }
   },
   "pending": {
