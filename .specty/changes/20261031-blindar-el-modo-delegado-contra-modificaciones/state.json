@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "caf9ec284e0992151518e3c29b24af683572923e",
+      "startedAt": "2026-10-31T14:57:33.670Z",
+      "doneAt": "2026-10-31T14:58:13.218Z",
+      "summary": "Detección estática de bypass en analyzeShell para delegated.json y .git/common/specty"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

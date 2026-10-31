@@ -39,7 +39,7 @@ Evitar que un agente de IA pueda auto-otorgarse el modo delegado o modificar el 
 
 ## Tareas
 
-- [ ] T1: Detección estática de bypass en analyzeShell para delegated.json y almacenamiento de Specty
+- [x] T1: Detección estática de bypass en analyzeShell para delegated.json y almacenamiento de Specty
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts
