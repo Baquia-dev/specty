@@ -56,3 +56,26 @@ Instruir explícitamente al agente a ejecutar `specty wait` en la directiva `SIG
   - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts, packages/cli/test/resolve.test.ts, docs/formats.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core test test/agents-md.test.ts && pnpm --filter @baquia-dev/specty test test/resolve.test.ts
+
+## Cierre
+
+### Resumen
+
+Se instruye explícitamente a los agentes de IA a ejecutar 'specty wait' en todas las tarjetas de flujo y en la regla de AGENTS.md cuando se requiere una intervención o decisión humana en lugar de terminar el turno pasivamente:
+1. Las tarjetas de flujo (flow.ts, next.ts, testing.ts, work.ts, integration.ts) indican esperar con 'specty wait' en transiciones que requieren aprobación, aceptación o cierre manual por parte del usuario.
+2. La tarjeta de denegación del guard (human.ts) instruye esperar con 'specty wait' al solicitar aprobación de comandos denegados.
+3. Se actualizó la regla flowBlock en packages/core/src/agents-md.ts para incluir explícitamente la decisión de alcance ('decidir el alcance') y la espera activa ('specty wait'), respetando el límite estricto de 15 líneas y preservando la regla de blindaje de .git.
+4. Se actualizaron los tests unitarios y de integración de tarjetas, guard, agente y CLI (testing.test.ts, delegated.test.ts, incorporation.test.ts, decide.test.ts, agents-md.test.ts, resolve.test.ts) y la documentación en docs/formats.md.
+
+### Desviaciones
+
+- Ninguna respecto al alcance planificado. Durante la incorporación de main se resolvió un conflicto en flowBlock unificando la regla de blindaje de .git y la de decisión de alcance con 'specty wait' sin exceder las 15 líneas permitidas.
+
+### Decisiones
+
+- Instruir 'specty wait' de forma consistente tanto en español como en inglés en todas las tarjetas donde la acción recae en el usuario fuera del modo delegado.
+- Mantener flowBlock conciso para no violar el límite de tamaño fijado por las pruebas de integridad de AGENTS.md.
+
+### Pendientes
+
+- Ninguno.

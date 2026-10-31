@@ -15,3 +15,9 @@
 {"ts":"2026-10-31T15:23:32.460Z","actor":"agent","tool":"antigravity","event":"task.started","data":{"task":"T3","baseCommit":"165ec5ca62b1ca30ff9bbc2c396543e948375f3c"}}
 {"ts":"2026-10-31T15:25:18.010Z","actor":"specty","event":"task.verified","data":{"task":"T3","cmd":"pnpm --filter @baquia-dev/specty-core test test/agents-md.test.ts && pnpm --filter @baquia-dev/specty test test/resolve.test.ts","exit":0,"ms":16157,"tree":"sha256:e74b3c8512c9628a04ef14936b347286f878a8dc4fe2fe2282bb3d14a70b0949"}}
 {"ts":"2026-10-31T15:25:18.103Z","actor":"agent","tool":"antigravity","event":"task.completed","data":{"task":"T3","summary":"Incluir decisión de alcance en regla flowBlock de AGENTS.md, docs y test de CLI"}}
+{"ts":"2026-10-31T15:25:27.799Z","actor":"specty","event":"integration.started","data":{"target":"main","commit":"259f09b5693d240d2af119f2f95b7a4f79da36f0","reason":"conflicts","conflicts":["packages/core/src/agents-md.ts"]}}
+{"ts":"2026-10-31T15:30:40.818Z","actor":"agent","tool":"antigravity","event":"integration.resolved","data":{"commit":"88bab39"}}
+{"ts":"2026-10-31T15:35:08.792Z","actor":"specty","event":"change.verified","data":{"cmd":"pnpm check","exit":0,"ms":239443,"tree":"sha256:24d4a63d20a0f89bf5fdfcd95070cba969e8cb3f1ba14af51da5dd8da5fabd57"}}
+{"ts":"2026-10-31T15:35:08.794Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.accepted","data":{"revision":1,"delegated":true}}
+{"ts":"2026-10-31T15:35:50.705Z","actor":"agent","tool":"antigravity","event":"spec.proposed","data":{"revision":2,"hash":"sha256:e6d99c6234e3286988f2be442b63079e7e914bc21cc50154a6ded9851a6b860b","size":"L","warnings":0}}
+{"ts":"2026-10-31T15:35:55.005Z","actor":"agent","tool":"antigravity","by":"Jorge Palacio Barcinilla","event":"change.closed","data":{"delegated":true}}
