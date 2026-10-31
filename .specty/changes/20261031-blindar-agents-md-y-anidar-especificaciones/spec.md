@@ -64,7 +64,7 @@ Blindar `AGENTS.md` para mantenerlo conciso y ligero (< 80 líneas), evitando qu
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts
   - type: docs
-- [ ] T4: Preservar límite de 15 líneas en flowBlock restaurando las 5 reglas fijas
+- [x] T4: Preservar límite de 15 líneas en flowBlock restaurando las 5 reglas fijas
   - files: packages/core/src/agents-md.ts, packages/core/test/agents-md.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/agents-md.test.ts test/cards.test.ts test/cards/language.test.ts

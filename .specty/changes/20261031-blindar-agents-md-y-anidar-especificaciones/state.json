@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261031-blindar-agents-md-y-anidar-especificaciones",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261031-blindar-agents-md-y-anidar-especificaciones",
   "baseCommit": "4e875639b11adbd83aa70ce8e65e1c340f10ec69",
   "revision": 2,
@@ -68,6 +68,15 @@
       "doneAt": "2026-10-31T12:31:03.910Z",
       "summary": "Documentar en ARCHITECTURE el flujo de especificaciones dedicadas, blindaje de AGENTS.md y épica del MVP",
       "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9c5e787ad2834c01cb040021b7c31074940bef82",
+      "startedAt": "2026-10-31T12:34:01.291Z",
+      "doneAt": "2026-10-31T12:34:31.453Z",
+      "summary": "Preservar el límite estricto de 15 líneas y 5 reglas en flowBlock"
     }
   },
   "pending": {

@@ -98,10 +98,6 @@ function ruleLines(t: Translate, command: string): string[] {
       "- Edit with targeted changes; do not rewrite whole files for small changes.",
     ),
     t(
-      "- Mantén AGENTS.md mínimo (< 80 líneas): guarda especificaciones en PRODUCT.md o docs/ y el plan en épicas, no aquí.",
-      "- Keep AGENTS.md minimal (< 80 lines): keep specs in PRODUCT.md or docs/ and the plan in epics, not here.",
-    ),
-    t(
       "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
       "- Brief final report: what changed, what was verified and what is pending.",
     ),
