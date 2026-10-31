@@ -55,7 +55,7 @@ Ofrecer la opción `--no-open` para permitir iniciar el servidor sin abrir el na
   - files: packages/cli/src/io/browser.ts, packages/cli/test/browser.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty test test/browser.test.ts
-- [ ] T2: Integrar apertura automática y opción --no-open en comando ui y program
+- [x] T2: Integrar apertura automática y opción --no-open en comando ui y program
   - files: packages/cli/src/commands/ui.ts, packages/cli/src/program.ts, packages/cli/test/server.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty test test/server.test.ts

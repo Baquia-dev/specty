@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261101-abrir-navegador-al-iniciar-specty-ui",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261101-abrir-navegador-al-iniciar-specty-ui",
   "baseCommit": "38988a3bd37fff302a6ff8c573134a39a7d10ddb",
   "revision": 1,
@@ -34,12 +34,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "411a8d001c98f7a5dbc48bac59547930ef27508a",
+      "attempts": 1,
       "startedAt": "2026-10-31T16:13:46.819Z",
       "doneAt": "2026-10-31T16:14:11.292Z",
-      "summary": "Crear módulo browser.ts con browserCommand y openInBrowser"
+      "summary": "Crear módulo browser.ts con browserCommand y openInBrowser",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/browser.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "a8e92b33be70a4686d835e21482f3a5be5325f89",
+      "startedAt": "2026-10-31T16:14:11.633Z",
+      "doneAt": "2026-10-31T16:51:09.591Z",
+      "summary": "Integrar apertura automática en comando ui, agregar opción --no-open y actualizar docs"
     }
   },
   "pending": {
@@ -49,10 +60,11 @@
   "maxIds": {
     "A": 2,
     "AC": 4,
-    "T": 2
+    "T": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/server.test.ts": "sha256:f59f4330422915715f73273ab1a637666de7e471eea25425b2550cd53d91f50d",
-    "packages/cli/test/browser.test.ts": "sha256:22dc7f68ab5af5d513c9fddfecd0c2e531c2d3230b60cc29f9bbdf6d888e645e"
+    "packages/cli/test/browser.test.ts": "sha256:76ebf4cf764f724c2fc8e706bab62698251eac2a95b4433227cbde0611c3cf1c"
   }
 }

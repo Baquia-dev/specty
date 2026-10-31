@@ -17,4 +17,3 @@ describe("browser", () => {
     expect(() => openInBrowser("http://localhost:4173", "darwin")).not.toThrow();
   });
 });
-

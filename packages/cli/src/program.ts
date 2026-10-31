@@ -166,5 +166,8 @@ function readingCommands(
     .command("ui")
     .description("serve the changes of every worktree on localhost, until Ctrl+C")
     .option("--port <port>", "the port to try first (default: 4173)")
-    .action((options: { port?: string }) => run((session) => ui(session, options.port))());
+    .option("--no-open", "do not open the browser automatically")
+    .action((options: { port?: string; open?: boolean }) =>
+      run((session) => ui(session, options))(),
+    );
 }
