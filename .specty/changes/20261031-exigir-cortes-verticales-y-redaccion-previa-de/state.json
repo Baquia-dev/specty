@@ -47,12 +47,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ecfb9b4c6b76666596dffbd4f68259e01f5aaa6a",
+      "attempts": 1,
       "startedAt": "2026-10-31T09:59:29.845Z",
       "doneAt": "2026-10-31T10:00:36.209Z",
-      "summary": "Añadir diagnósticos y mensajes para cortes sin criterios y capas horizontales en épicas"
+      "summary": "Añadir diagnósticos y mensajes para cortes sin criterios y capas horizontales en épicas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/test/validate/references.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "dd8443e661c0fb4bc3c3526d4c0684eb9099ce14",
+      "startedAt": "2026-10-31T10:00:36.562Z",
+      "doneAt": "2026-10-31T10:04:57.027Z",
+      "summary": "Validar obligatoriedad de criterios en cortes y rechazar capas horizontales en épicas"
     }
   },
   "pending": {
@@ -62,12 +73,13 @@
   "maxIds": {
     "A": 5,
     "AC": 5,
-    "T": 4
+    "T": 4,
+    "S": 1
   },
   "lockedTests": {
     "packages/core/test/agents-md.test.ts": "sha256:b73ab05618072f03c227864fd1da072fdecacf5971bf327127ccac232dca5b27",
     "packages/core/test/cards/epic.test.ts": "sha256:e2d72ed6785cb7bec2b04dca322d6a0f30e085091c357814ed5ee29267348a4d",
     "packages/core/test/validate/quality.test.ts": "sha256:00c36bd6b36910a5f1aba28c5fc7a1d840e16f026bdf0a9ad436d315729e8d42",
-    "packages/core/test/validate/references.test.ts": "sha256:5167ac42aca9c0446940980e1584a0b178490dd3c45fce96b7a02859fea4c45a"
+    "packages/core/test/validate/references.test.ts": "sha256:88e0965f0ba2894be32247155a91b9fed506e6b8b73222691eb6415d39399121"
   }
 }

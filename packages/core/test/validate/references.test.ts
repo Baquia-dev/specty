@@ -56,7 +56,7 @@ describe("task references", () => {
 
 describe("epic slices", () => {
   it("AC1: requires every slice in an epic to declare acceptance criteria", () => {
-    const withoutAc = EPIC.replace("  - ac: AC1, AC2\n", "");
+    const withoutAc = EPIC.replace("  - ac: AC2\n- C2", "- C2");
     expect(check(withoutAc)).toContain("slice-without-criteria:C1");
   });
 

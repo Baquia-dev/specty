@@ -70,7 +70,7 @@ Hacer cumplir que toda épica (`kind: epic`), tanto en proyectos nuevos como exi
   - files: packages/core/src/spec/diagnostics.ts, packages/core/src/spec/messages.es.ts, packages/core/src/spec/messages.en.ts, packages/core/test/spec/messages.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/spec/messages.test.ts
-- [ ] T2: Validación semántica de criterios y detección de cortes horizontales
+- [x] T2: Validación semántica de criterios y detección de cortes horizontales
   - files: packages/core/src/validate/references.ts, packages/core/src/validate/quality.ts, packages/core/test/validate/references.test.ts, packages/core/test/validate/quality.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/validate/references.test.ts test/validate/quality.test.ts
