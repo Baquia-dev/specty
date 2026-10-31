@@ -345,3 +345,4 @@ export {
   whyRefusalCard,
 } from "./why";
 export { NOTE_MAX } from "./work";
+export { waitTimeoutCard } from "./wait";

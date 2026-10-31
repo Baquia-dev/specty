@@ -56,7 +56,7 @@ Permitir que el agente detecte automáticamente cuando la persona realiza una ap
 
 ## Tareas
 
-- [ ] T1: Tarjetas y textos de espera
+- [x] T1: Tarjetas y textos de espera
   - files: packages/core/src/cards/wait.ts, packages/core/src/cards/index.ts, packages/core/test/cards/wait.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/wait.test.ts
