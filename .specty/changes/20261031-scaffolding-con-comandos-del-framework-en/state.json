@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261031-scaffolding-con-comandos-del-framework-en",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261031-scaffolding-con-comandos-del-framework-en",
+  "baseCommit": "5b0e96a4704f46d71ddb5957862bdb34e30da2ae",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1c994a2f49a24dc8f7f974230dfc8baba16ad3a7df44c38ef206ed7aed0cd5a6",
+    "at": "2026-10-31T14:55:49.323Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
