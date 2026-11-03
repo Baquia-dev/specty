@@ -58,7 +58,7 @@ Los recordatorios de la memoria de Specty ya salen en la tarjeta de inicio del a
   - files: packages/core/src/cards/status.ts, packages/core/src/cards/human.ts, packages/core/src/cards/index.ts, packages/core/src/cards/memory.ts, packages/core/test/cards/status-turn.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/status-turn.test.ts test/cards/status-holder.test.ts test/cards/memory-start.test.ts test/cards/delegated.test.ts test/cards/testing.test.ts test/cards.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: `status` lee la memoria, y la documentación
+- [x] T2: `status` lee la memoria, y la documentación
   - files: packages/cli/src/commands/status.ts, packages/cli/test/memory-status.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-status.test.ts test/status-json.test.ts test/memory-start.test.ts && pnpm typecheck && pnpm lint

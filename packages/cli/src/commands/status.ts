@@ -13,11 +13,15 @@ import { locateChanges } from "../flow/changes";
 import type { Session } from "../session";
 import { type Activity, readActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
+import { readMemory } from "../store/memory";
 import { posixRelative } from "../store/paths";
 
 const MINUTE_MS = 60_000;
 
-/** `specty status`: the open changes of every worktree, their phase and who they wait for. */
+/**
+ * `specty status`: the open changes of every worktree, their phase and who they wait for, and the
+ * memory's open reminders in «TE TOCA» (ADR 0016).
+ */
 export async function status(session: Session): Promise<Output> {
   const located = (await locateChanges(session)).filter(({ change }) => !isFinished(change.state));
   const steps = await stepsByFolder(session);
@@ -48,7 +52,8 @@ export async function status(session: Session): Promise<Output> {
       };
     }),
   );
-  return statusCard(entries, session.cards);
+  const memory = await readMemory(session.git, session.config.memory.branch);
+  return statusCard(entries, session.cards, memory.entries);
 }
 
 /** The last step noted in each folder, by its real path. */

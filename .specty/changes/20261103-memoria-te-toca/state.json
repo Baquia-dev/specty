@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-te-toca",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-te-toca",
   "baseCommit": "2b2dadc43c8dad7cf262a860d661cef3b3c957c5",
   "revision": 1,
@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "25113583e528d7da2d67c45f39d6332bab33f498",
+      "attempts": 1,
       "startedAt": "2026-11-03T06:30:15.130Z",
       "doneAt": "2026-11-03T06:31:57.608Z",
-      "summary": "La tarjeta de status pasa a cards/status.ts sin cambios; statusCard gana la memoria y la sección «TE TOCA» con los recordatorios abiertos, con reminderLines compartida con la tarjeta de inicio"
+      "summary": "La tarjeta de status pasa a cards/status.ts sin cambios; statusCard gana la memoria y la sección «TE TOCA» con los recordatorios abiertos, con reminderLines compartida con la tarjeta de inicio",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "70bb75c56e2a6cd5d931986fbef69b5ceb558288",
+      "startedAt": "2026-11-03T06:31:57.924Z",
+      "doneAt": "2026-11-03T06:32:42.202Z",
+      "summary": "status lee la memoria con readMemory y le pasa sus entradas a statusCard; ARCHITECTURE.md describe «TE TOCA»"
     }
   },
   "pending": {
