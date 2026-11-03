@@ -54,7 +54,7 @@ El 2026-11-03 se midieron, con las versiones reales, los servidores de desarroll
 
 ## Tareas
 
-- [ ] T1: `doctor` avisa de Astro y de los comprobadores de tipos de webpack y Rsbuild
+- [x] T1: `doctor` avisa de Astro y de los comprobadores de tipos de webpack y Rsbuild
   - files: packages/cli/src/detect/worktree-tools.ts, packages/cli/test/doctor-watchers.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-watchers.test.ts

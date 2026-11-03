@@ -7,9 +7,10 @@ import type { FormatterExclusion } from "./formatters";
 /**
  * The changes' worktrees live in `.worktrees/`, inside the project (ADR 0018). A tool at the root
  * that runs or checks every file under it, and reads no `.gitignore`, would see their copies of
- * the project: Vitest and Jest run their tests, and the dev servers react to their files (Vite
- * reloads the page when a change's `tsconfig.json` changes; Metro sends the app an empty update for
- * each file). Each one's exclusion, as `doctor` asks for it.
+ * the project: Vitest and Jest run their tests, and the dev servers react to their files (Vite and
+ * Astro reload the page when a change's `tsconfig.json` changes; Metro sends the app an empty update
+ * for each file; the type checkers of webpack and Rsbuild rebuild when one is created). Each one's
+ * exclusion, as `doctor` asks for it. Measured in ADR 0018, with the tools that don't need one.
  */
 const PATH = ".worktrees/";
 
@@ -19,6 +20,12 @@ const JEST = /^jest\.config\.(?:[cm]?[jt]s|json)$/;
 const ESLINT = /^eslint\.config\.[cm]?[jt]s$/;
 const ESLINT_LEGACY = /^\.eslintrc(?:\.(?:js|cjs|json|ya?ml))?$/;
 const METRO = /^metro\.config\.[cm]?[jt]s$/;
+const ASTRO = /^astro\.config\.[cm]?[jt]s$/;
+const WEBPACK = /^webpack\.config\.[cm]?[jt]s$/;
+const RSBUILD = /^rsbuild\.config\.[cm]?[jt]s$/;
+
+const FORK_TS_CHECKER = "fork-ts-checker-webpack-plugin";
+const RSBUILD_CHECKER = "@rsbuild/plugin-type-check";
 
 const VITEST_ADD = '"**/.worktrees/**"';
 /**
@@ -30,21 +37,38 @@ const VITEST_ADD = '"**/.worktrees/**"';
  */
 const VITE_ADD = `(file) => file.startsWith(\`\${import.meta.dirname.replaceAll("\\\\", "/")}/.worktrees/\`)`;
 const METRO_ADD = `new RegExp(\`^\${__dirname.replace(/[\\\\^$.*+?()[\\]{}|]/g, "\\\\$&")}[/\\\\\\\\]\\\\.worktrees[/\\\\\\\\]\`)`;
+/** Rsbuild's native watcher may hand its function `\` on Windows: the file's path goes to `/` too. */
+const RSBUILD_ADD = `(file) => file.replaceAll("\\\\", "/").startsWith(\`\${import.meta.dirname.replaceAll("\\\\", "/")}/.worktrees/\`)`;
+/**
+ * TypeScript's `exclude` replaces its default one, so `node_modules` stays in the list; each entry is
+ * relative to the tsconfig's folder, so it is anchored with any path.
+ */
+const TSCONFIG_ADD = '"node_modules", ".worktrees"';
 /** Characters that change a glob or a regular expression: a path with them can't go in one as it is. */
 const SPECIAL = /[\\^$*+?()[\]{}|!]/;
 
-/** Vitest, Vite, Jest, ESLint and Metro at the root, once a change lives in `.worktrees/`. */
+type Detector = (
+  root: string,
+  entries: readonly string[],
+) => Promise<FormatterExclusion | undefined>;
+
+/** Each tool with one place for its exclusion, in the order `doctor` lists them. */
+const DETECTORS: readonly Detector[] = [
+  jestConfig,
+  eslintConfig,
+  metroConfig,
+  astroConfig,
+  forkTsChecker,
+  rsbuildChecker,
+];
+
+/** The JavaScript tools at the root that need their exclusion, once a change lives in `.worktrees/`. */
 export async function worktreeExclusions(root: string): Promise<FormatterExclusion[]> {
   if (!(await exists(join(root, PATH)))) return [];
   const entries = await readdir(root).catch(() => [] as string[]);
   const found = await viteConfigs(root, entries);
-  const jest = await jestConfig(root, entries);
-  if (jest !== undefined) found.push(jest);
-  const eslint = await eslintConfig(root, entries);
-  if (eslint !== undefined) found.push(eslint);
-  const metro = await metroConfig(root, entries);
-  if (metro !== undefined) found.push(metro);
-  return found;
+  const others = await Promise.all(DETECTORS.map((detect) => detect(root, entries)));
+  return [...found, ...others.filter((one): one is FormatterExclusion => one !== undefined)];
 }
 
 /**
@@ -90,14 +114,62 @@ async function metroConfig(
     const text = (await readText(join(root, file))) ?? "";
     return anchored("Metro", `${file} (resolver.blockList)`, METRO_ADD, usable(text, root));
   }
-  const manifest = parseJson((await readText(join(root, "package.json"))) ?? "");
-  if (!isRecord(manifest)) return undefined;
-  const native = [manifest.dependencies, manifest.devDependencies].some(
-    (deps) => isRecord(deps) && "react-native" in deps,
-  );
-  return native
+  return (await declares(root, "react-native"))
     ? anchored("Metro", "metro.config.js (resolver.blockList)", METRO_ADD, "")
     : undefined;
+}
+
+/** Astro passes its `vite` key to Vite's watcher, which reloads and restarts it with a change's files. */
+async function astroConfig(
+  root: string,
+  entries: readonly string[],
+): Promise<FormatterExclusion | undefined> {
+  const file = entries.find((entry) => ASTRO.test(entry));
+  if (file === undefined) return undefined;
+  const text = (await readText(join(root, file))) ?? "";
+  const where = `${file} (vite.server.watch.ignored)`;
+  return anchored("Astro", where, VITE_ADD, usable(text, root));
+}
+
+/**
+ * fork-ts-checker watches the folders of the tsconfig's `include` and rebuilds when a file is created
+ * in a change. Its exclusion goes in `tsconfig.json`, or in its own options in webpack's config.
+ */
+async function forkTsChecker(
+  root: string,
+  entries: readonly string[],
+): Promise<FormatterExclusion | undefined> {
+  if (!(await declares(root, FORK_TS_CHECKER))) return undefined;
+  const webpack = entries.filter((entry) => WEBPACK.test(entry));
+  const texts = await Promise.all(
+    ["tsconfig.json", ...webpack].map(async (file) => (await readText(join(root, file))) ?? ""),
+  );
+  return exclusion(FORK_TS_CHECKER, "tsconfig.json (exclude)", TSCONFIG_ADD, texts.join("\n"));
+}
+
+/**
+ * Rsbuild's type checker rebuilds when a file is created in a change. Its `exclude` does not match
+ * with special characters in the path, so the exclusion goes in Rspack's watcher, which takes a
+ * function.
+ */
+async function rsbuildChecker(
+  root: string,
+  entries: readonly string[],
+): Promise<FormatterExclusion | undefined> {
+  if (!(await declares(root, RSBUILD_CHECKER))) return undefined;
+  const file = entries.find((entry) => RSBUILD.test(entry));
+  const text = file === undefined ? "" : ((await readText(join(root, file))) ?? "");
+  const where = `${file ?? "rsbuild.config.ts"} (tools.rspack.watchOptions.ignored)`;
+  return anchored(RSBUILD_CHECKER, where, RSBUILD_ADD, usable(text, root));
+}
+
+/** Whether the root's `package.json` declares `name` among its dependencies. */
+async function declares(root: string, name: string): Promise<boolean> {
+  const manifest = parseJson((await readText(join(root, "package.json"))) ?? "");
+  if (!isRecord(manifest)) return false;
+  return [manifest.dependencies, manifest.devDependencies].some(
+    (deps) => isRecord(deps) && name in deps,
+  );
 }
 
 /** Jest's own file, or its settings in `package.json`. */
