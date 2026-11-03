@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-pendientes-del-cierre",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-pendientes-del-cierre",
   "baseCommit": "462c23752c6f0c1366d4fce8d3119bb8dc49d2c5",
   "revision": 2,
@@ -47,6 +47,8 @@
     "T": 2,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T07:26:39.354Z"
+  "lockedTests": {
+    "packages/cli/test/memory-harvest.test.ts": "sha256:7025db9ea06dd02eafd6fe70b1148141f18122a2b7ac95fb2c0bf13bf5160a3d",
+    "packages/core/test/memory/harvest.test.ts": "sha256:d87cdb158d7630340e841850b7182dd383bb48a7324aefc4a15cb8654c4ecf9a"
+  }
 }
