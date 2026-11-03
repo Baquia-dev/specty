@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261103-deuda-de-check-en-la-memoria",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-deuda-de-check-en-la-memoria",
+  "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fc22457702ebf876411bd5d164762086143257af5fbf0e0b99478d326e22489f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:00f59432adad716ad9032b2c6e06007f337449998939addbe65fad7048990258",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3060e02cce4b802f2f43fdc008d5d8307a48544edba0b80fba9c36b013d53b32",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:f489df091cef0631f67c31629810c4bdc190e7360c2a68618dfd68423493af77",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:86873ba6f77d534161ee3a8b5e494cb956a3e8bf2f59a72d1fee375655cf2eaf",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d42419d1d885fc39b1ecce929451903c109acb422215c47117486ed6fdf4e51d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:f59821b7b89cd79598c1ad46603829dd26a1adc1b3a16726b11c2203613b8360",
+    "at": "2026-11-03T12:34:31.901Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
