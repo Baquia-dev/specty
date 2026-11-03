@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-ui-acciones",
   "baseCommit": "7b015669ead8ecfcb9e10282d30ac9dae20748cc",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4865658454a398139ba9a15de2bbd3f626a0916ca7d46cae6ee466d470bd5362",
+    "at": "2026-11-03T10:14:25.636Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:4865658454a398139ba9a15de2bbd3f626a0916ca7d46cae6ee466d470bd5362",
-    "at": "2026-11-03T10:14:25.636Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T10:16:26.087Z"
 }
