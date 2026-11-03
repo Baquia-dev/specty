@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-sin-permisos-opencode-gemini",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-sin-permisos-opencode-gemini",
   "baseCommit": "28e862bee120fcf4b56249159472b84e3449519c",
   "revision": 1,
@@ -47,6 +47,9 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T08:43:57.953Z"
+  "lockedTests": {
+    "packages/cli/test/doctor-enter.test.ts": "sha256:dd531856f22b94ff231f79922089078a6671e7cf4b66d2ff34245d52a401c0da",
+    "packages/cli/test/gemini-cli.test.ts": "sha256:e197badf679c1eb740652ed5984398def4c653b785f13a978308b195c8ddb4c9",
+    "packages/cli/test/opencode-install.test.ts": "sha256:760eed45c844095d405aabdda3eeb551648680fe0549ec37e90fb2840015f39b"
+  }
 }
