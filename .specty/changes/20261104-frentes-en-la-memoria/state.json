@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "037582016ed91618815ea7ddc8f3488dca0ad464",
+      "attempts": 1,
       "startedAt": "2026-11-03T19:30:46.383Z",
       "doneAt": "2026-11-03T19:32:05.405Z",
-      "summary": "core cards/fronts.ts: frontListCard (cada frente con su texto, rutas y entradas abiertas en orden), frontAddedCard, frontAssignedCard (orden nuevo y de qué frente salen), frontRefusalCard y frontCommitSubject, en español y en inglés"
+      "summary": "core cards/fronts.ts: frontListCard (cada frente con su texto, rutas y entradas abiertas en orden), frontAddedCard, frontAssignedCard (orden nuevo y de qué frente salen), frontRefusalCard y frontCommitSubject, en español y en inglés",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "9d45d98affb72705aa262c784ef0336e9703e73f",
+      "startedAt": "2026-11-03T19:32:05.733Z",
+      "doneAt": "2026-11-03T19:34:11.693Z",
+      "summary": "store/memory.ts lee entries/ y fronts/ y escribe una entrada o unos frentes (rootTree, messageOf con Specty-Memory o Specty-Front); commands/front.ts: specty front, front add y front assign, registrados en program.ts"
     }
   },
   "pending": {

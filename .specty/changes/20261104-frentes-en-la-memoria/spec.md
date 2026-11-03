@@ -65,7 +65,7 @@ Primer cambio de P33 (repartir el trabajo entre sesiones): la memoria de Specty 
   - files: packages/core/src/cards/fronts.ts, packages/core/src/cards/index.ts, packages/core/test/cards/fronts.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/fronts.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: Los comandos `front`, `front add` y `front assign` sobre la rama de la memoria
+- [x] T3: Los comandos `front`, `front add` y `front assign` sobre la rama de la memoria
   - files: packages/cli/src/store/memory.ts, packages/cli/src/commands/front.ts, packages/cli/src/program.ts, packages/cli/test/fronts.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/fronts.test.ts test/memory.test.ts test/memory-settle.test.ts test/memory-on-close.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip

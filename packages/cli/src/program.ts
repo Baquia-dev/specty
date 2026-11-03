@@ -16,6 +16,7 @@ import { checkCommand } from "./commands/check";
 import { ciCommand } from "./commands/ci";
 import { doctor } from "./commands/doctor";
 import { exportCommand } from "./commands/export";
+import { frontCommand } from "./commands/front";
 import { initCommand } from "./commands/init";
 import { mcpCommand } from "./commands/mcp";
 import { memoryCommand } from "./commands/memory";
@@ -66,6 +67,7 @@ export async function runCli(
   auditCommand(program, run);
   exportCommand(program, run);
   memoryCommand(program, run);
+  frontCommand(program, run);
   readingCommands(program, run, environment, emit);
   enforcementCommands(program, environment, (exit) => {
     result.code = exit;
