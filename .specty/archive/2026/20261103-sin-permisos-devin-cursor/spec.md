@@ -58,3 +58,21 @@ kind: standard
 ## Riesgos
 
 - R1: Quitar una entrada que la persona puso a mano con la misma ruta — solo se quita la ruta exacta de la carpeta de antes.
+
+## Cierre
+
+### Resumen
+
+Último de los cambios que quitan los permisos que `init` daba sobre la carpeta de las worktrees de fuera (ADR 0018). `sharedFolders` da ya solo la carpeta común de git, así que Devin recibe solo `Write(<git>/**)` en `.devin/config.local.json` y el sandbox de Cursor solo esa carpeta en `.cursor/sandbox.json`. `init` y `uninstall` quitan lo que daba un `init` anterior, `Write(...)` y `Read(...)` de la carpeta de antes en Devin y su ruta en Cursor, y dejan lo de la persona. Los textos de `init` y de `doctor` de los dos sandbox hablan solo de la carpeta de git, y ARCHITECTURE lo cuenta. Con este cambio, ninguna herramienta recibe ya permisos sobre la carpeta de las worktrees.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- `doctor` sigue pidiendo a Devin y a Cursor la carpeta común de git, que necesitan los commits de Specty desde su sandbox.
+
+### Pendientes
+
+- Mover las worktrees dentro del proyecto (`.worktrees/<id>`) y las exclusiones de las herramientas de JavaScript, en sus cambios.

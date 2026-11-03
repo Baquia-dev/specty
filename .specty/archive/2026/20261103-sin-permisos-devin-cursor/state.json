@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-sin-permisos-devin-cursor",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-sin-permisos-devin-cursor",
   "baseCommit": "b71b5b769ee9df08255344075ebb5b03def80c5e",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:965ddb8e12ea2aa00d2c713012e538d7d9aa7a3e1c938ab8bb8c619e87649807",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "c764aca070c38d9df55894e9e646c7368ec0e82f",
+      "attempts": 1,
       "startedAt": "2026-11-03T09:03:47.103Z",
       "doneAt": "2026-11-03T09:04:57.613Z",
-      "summary": "Cursor: sandbox.json solo con la carpeta común de git; init y uninstall quitan la carpeta de las worktrees de antes; textos de init y doctor y ARCHITECTURE al día"
+      "summary": "Cursor: sandbox.json solo con la carpeta común de git; init y uninstall quitan la carpeta de las worktrees de antes; textos de init y doctor y ARCHITECTURE al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -66,6 +66,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T09:09:22.217Z",
   "lockedTests": {
     "packages/cli/test/cursor.test.ts": "sha256:d38682220c9b730321cd1ef13559f61997956c391bd63a21057da0d03011f86e",
     "packages/cli/test/doctor-enter.test.ts": "sha256:c4464ccaaa03a7295cdb6d31b654a7f1f7971de397ccf69be3857c2aaf774414",
