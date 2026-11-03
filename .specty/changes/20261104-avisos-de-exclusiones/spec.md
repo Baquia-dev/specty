@@ -62,7 +62,7 @@ Hoy solo `specty doctor` dice qué herramientas de la raíz ven lo que escribe S
 
 ## Tareas
 
-- [ ] T1: Las tarjetas de `next` e `init` llevan el bloque de las herramientas, con la línea de `doctor`
+- [x] T1: Las tarjetas de `next` e `init` llevan el bloque de las herramientas, con la línea de `doctor`
   - files: packages/core/src/cards/exclusions.ts, packages/core/src/cards/next.ts, packages/core/src/cards/init.ts, packages/core/src/cards/doctor.ts, packages/core/test/cards/exclusions.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/exclusions.test.ts test/cards/doctor.test.ts
