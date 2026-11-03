@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-instalar-fin-de-turno",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-instalar-fin-de-turno",
   "baseCommit": "a3eda5bdf9597ca1d2ec2128b917c52c79e02a6d",
   "revision": 1,
@@ -51,6 +51,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T08:52:49.127Z"
+  "lockedTests": {
+    "packages/cli/test/codex.test.ts": "sha256:c84c339cc09b1487b40e91bc342dc5807023f9acd32c1898b5c65c2cf90c0f50",
+    "packages/cli/test/memory-stop-install.test.ts": "sha256:d520b3fef61eb2c2ebf09243005aab089ccce9df0363271984fe469ab854666f"
+  }
 }
