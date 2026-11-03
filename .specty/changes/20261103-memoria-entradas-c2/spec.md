@@ -105,7 +105,7 @@ Hoy lo que un agente deja pendiente vive en el chat o en su memoria privada, y s
   - files: packages/cli/src/store/memory.ts, packages/cli/src/commands/memory.ts, packages/cli/src/program.ts, packages/cli/test/memory.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory.test.ts -t "AC1|AC2|AC5|AC6|AC7"
-- [ ] T5: Decisiones con su cita y recordatorios hechos
+- [x] T5: Decisiones con su cita y recordatorios hechos
   - files: packages/cli/src/store/memory.ts, packages/cli/src/commands/memory.ts, packages/cli/test/memory.test.ts, docs/dominio.md
   - ac: AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory.test.ts

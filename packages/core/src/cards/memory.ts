@@ -252,12 +252,14 @@ function firstLine(text: string): string {
   return text.trim().split("\n")[0] ?? "";
 }
 
-/** By date and, on the same date, by number, a pending item before a decision. */
+/** By date and, on the same date, the P ids before the D ones, each by number. */
 function byDate(entries: readonly MemoryEntry[]): readonly MemoryEntry[] {
   const number = (entry: MemoryEntry) => Number(entry.id.slice(1));
   return entries.toSorted(
     (a, b) =>
-      a.created.localeCompare(b.created) || number(a) - number(b) || b.id.localeCompare(a.id),
+      a.created.localeCompare(b.created) ||
+      b.id.charAt(0).localeCompare(a.id.charAt(0)) ||
+      number(a) - number(b),
   );
 }
 

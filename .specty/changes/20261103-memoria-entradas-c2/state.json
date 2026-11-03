@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-entradas-c2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-entradas-c2",
   "baseCommit": "fff62ec97c2f5f7ab37ffc75def65996c6177694",
   "revision": 1,
@@ -83,12 +83,23 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "b30ec43580b99bcc0e769ea14fa600c7a273a15f",
+      "attempts": 1,
       "startedAt": "2026-11-03T03:32:45.708Z",
       "doneAt": "2026-11-03T03:40:15.899Z",
-      "summary": "store/memory.ts lee la rama con ls-tree y un solo cat-file --batch, y la escribe con fontanería de git y update-ref con el valor anterior, reintentando; commands/memory.ts con memory [--all] y memory add (--kind, --quote obligatoria en decisiones, origen y trailers)"
+      "summary": "store/memory.ts lee la rama con ls-tree y un solo cat-file --batch, y la escribe con fontanería de git y update-ref con el valor anterior, reintentando; commands/memory.ts con memory [--all] y memory add (--kind, --quote obligatoria en decisiones, origen y trailers)",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/memory.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "046ce5f372db50efdceea692eccca5b9944f62a0",
+      "startedAt": "2026-11-03T03:40:16.225Z",
+      "doneAt": "2026-11-03T03:41:51.632Z",
+      "summary": "memory done marca hecho un recordatorio abierto (con quién y cuándo) y rechaza pendientes, mejoras, decisiones, ids desconocidos y los ya hechos; la lista desempata por P antes que D y luego por número; el glosario gana Memoria de Specty y Entrada de la memoria"
     }
   },
   "pending": {

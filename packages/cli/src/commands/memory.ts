@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  isOpenEntry,
   MEMORY_KINDS,
   type MemoryEntry,
   type MemoryKind,
+  type MemoryRefusal,
   memoryAddedCard,
+  memoryDoneCard,
   memoryListCard,
   memoryRefusalCard,
   nextEntryId,
   type Output,
+  parseEntryId,
 } from "@baquia-dev/specty-core";
 import { type Command, Option } from "commander";
 import type { ReportOutput } from "../check/provider";
@@ -43,6 +47,11 @@ export function memoryCommand(program: Command, run: Run): void {
     .action((text: string, options: AddOptions) =>
       run((session) => addEntry(session, text, options))(),
     );
+  memory
+    .command("done")
+    .description("mark a reminder done")
+    .argument("<id>")
+    .action((id: string) => run((session) => markDone(session, id))());
 }
 
 /** `specty memory`: the open entries, or every one with `--all`. */
@@ -75,6 +84,40 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
       result: memoryAddedCard(entry, target.branch, session.cards),
     };
   });
+}
+
+/**
+ * `specty memory done`: a reminder, done by whoever marks it. A pending item or an improvement is
+ * done when the change that takes it closes, and a decision is never done.
+ */
+async function markDone(session: Session, raw: string): Promise<Output> {
+  const id = parseEntryId(raw) ?? raw.trim();
+  const target = targetOf(session, await openChange(session));
+  return editMemory(session.git, target, ({ entries }) => {
+    const found = openReminder(entries, id);
+    if ("refusal" in found) return { result: memoryRefusalCard(found.refusal, session.cards) };
+    const done: MemoryEntry = {
+      ...found.reminder,
+      status: "done",
+      closed: { at: session.environment.now().toISOString(), by: authorOf(session) },
+    };
+    return {
+      write: { entry: done, operation: "done" },
+      result: memoryDoneCard(done, session.cards),
+    };
+  });
+}
+
+/** The open reminder `id`, or why it cannot be marked done. */
+function openReminder(
+  entries: readonly MemoryEntry[],
+  id: string,
+): { readonly reminder: MemoryEntry } | { readonly refusal: MemoryRefusal } {
+  const entry = entries.find((known) => known.id === id);
+  if (entry === undefined) return { refusal: { reason: "unknown", id } };
+  if (entry.kind !== "reminder") return { refusal: { reason: "not-reminder", entry } };
+  if (!isOpenEntry(entry)) return { refusal: { reason: "already-done", id } };
+  return { reminder: entry };
 }
 
 /** The open change of this folder, if any. */
