@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-resolves-c3",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-resolves-c3",
   "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:c662c245049b8212d36455e5b0459e2a0547af65ab963f443cad40861327dcf8",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a2ba17b0bb388d54a6e32aa6d80f30058e43d343",
+      "attempts": 1,
       "startedAt": "2026-11-03T06:56:29.612Z",
       "doneAt": "2026-11-03T07:00:14.598Z",
-      "summary": "new --resolves comprueba las entradas antes de crear (claimEntries, con openChanges de status para decir quién lleva el cambio que la tomó) y las toma después (takeEntries, una por commit); change.created anota resolves; formats.md documenta taken y --resolves"
+      "summary": "new --resolves comprueba las entradas antes de crear (claimEntries, con openChanges de status para decir quién lleva el cambio que la tomó) y las toma después (takeEntries, una por commit); change.created anota resolves; formats.md documenta taken y --resolves",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,8 +87,43 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-03T07:12:37.596Z",
   "lockedTests": {
     "packages/cli/test/memory-resolves.test.ts": "sha256:97f2253e7b352591ce66fc30da3f8cfc7009bac92d73ad2db1ea6c081ed469e6",
     "packages/core/test/memory/claims.test.ts": "sha256:b4fa3e8c84423fdfa90a6e3e986363c12621cba000dbffb7680a6b3dcee0bff4"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/antigravity.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/memory.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/commands/status.ts",
+      "packages/cli/src/store/memory.ts",
+      "packages/cli/test/antigravity.test.ts",
+      "packages/cli/test/memory-resolves.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/memory-claims.ts",
+      "packages/core/src/cards/memory.ts",
+      "packages/core/src/cards/status.ts",
+      "packages/core/src/guard/spec.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/memory/entries.ts",
+      "packages/core/test/guard/decide.test.ts",
+      "packages/core/test/memory/claims.test.ts"
+    ],
+    "at": "2026-11-03T07:01:13.841Z",
+    "resolved": {
+      "commit": "8cc54c3",
+      "at": "2026-11-03T07:06:05.723Z"
+    }
   }
 }

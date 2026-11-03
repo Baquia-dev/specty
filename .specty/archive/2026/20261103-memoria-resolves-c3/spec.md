@@ -88,3 +88,31 @@ Hoy un pendiente de la memoria de Specty se toma citando su id en la petición d
 - R1: La escritura en la memoria falla después de crear el cambio y la entrada queda libre — `new` comprobó antes que lo estaba; `memory` la mostrará libre hasta que otro `new --resolves` la tome, y el cambio sigue sirviendo.
 - R2: `new --resolves` lee todos los cambios abiertos para saber quién lleva el que tomó la entrada — solo con `--resolves`, y es lo mismo que ya hace `status`.
 - R3: Un cambio de otro clon toma una entrada que este clon no ve — la rama de la memoria es local hasta que la persona la sube (R5 de la épica).
+
+## Cierre
+
+### Resumen
+
+`specty new --resolves <id>…` toma pendientes y mejoras de la memoria de Specty para el cambio que crea. Cada entrada pasa a `taken`, con el cambio y la fecha en su frontmatter (`taken`), en un commit propio de la memoria («memoria: P4 tomada»). `specty memory` la lista como «tomada por <cambio>» desde cualquier carpeta, y la tarjeta de inicio deja de ofrecerla entre las libres. `change.created` anota las entradas en `resolves`.
+
+Antes de crear nada, `new` comprueba todas las entradas y se niega con su motivo si una no existe, ya está hecha, descartada o propuesta para descartar, es un recordatorio o una decisión, o la tomó otro cambio abierto. En este último caso dice qué cambio, su fase, su carpeta y quién lo lleva, con las mismas palabras que `status`, y propone la primera entrada libre. Una entrada tomada por un cambio que ya no está abierto se puede tomar de nuevo.
+
+Las reglas viven en core (`claimable`, `freeWork`, `takenEntry` en `memory/entries.ts`), la tarjeta en `cards/memory-claims.ts`, y la CLI las aplica desde `commands/memory.ts` con `openChanges`, que ahora exporta `commands/status.ts`.
+
+### Desviaciones
+
+- La siguiente libre que propone la negativa es la primera libre, aunque `new` también la pidiera. El supuesto A5 decía excluir las pedidas, pero el test aprobado espera proponer P2 cuando se pidió P2 junto a una P1 ya tomada: así el agente puede seguir solo con P2, que es lo útil.
+- `specty check` pidió bajar la complejidad de `createNew`; la comprobación de `--resolves` pasó a su propia función, `claimed`.
+- Al aceptar, la verificación completa falló una vez por un test intermitente de la extensión de VS Code, ajeno a este cambio (P10); pasó tres veces seguidas solo y en la verificación siguiente.
+
+### Decisiones
+
+- Las entradas se toman una por commit y se vuelven a comprobar dentro de la edición: si otra sesión cambió una desde la comprobación, se queda como la dejó esa sesión.
+- `new` solo lee los cambios abiertos si alguna entrada de la memoria está tomada, para no pagar ese coste en cada `--resolves`.
+
+### Pendientes
+
+- El cambio que sigue a este, dentro del corte C3: cerrar las entradas al cerrarse su cambio, liberarlas al cancelarlo y mostrarlas en la tarjeta del borrador.
+- Después, en otros cambios del corte C3: los pendientes del cierre convertidos en entradas (AC3 de la épica) y `specty memory drop` con su guard (AC6).
+- P9: `packages/core/src/index.ts` pasó del aviso de tamaño; decidirlo junto con P2.
+- P10: el test intermitente de la extensión de VS Code.
