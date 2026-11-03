@@ -9,10 +9,11 @@ import type { Terminal } from "../src/session";
 
 export const DIST = join(import.meta.dirname, "..", "dist", "specty.mjs");
 /**
- * The commands' clock: today at 10:00 UTC. The git hooks run on the real clock, so a fixed date
- * would let a receipt written by `approve` expire (24 h) and break the hook tests one day later.
+ * The commands' clock: the real time when the tests load, down to the minute. The git hooks and
+ * the files' dates run on the real clock, so a fixed hour would make a fresh `state.json` look
+ * hours old (an orphan change) and could let a receipt written by `approve` expire (24 h).
  */
-export const NOW = new Date(`${new Date().toISOString().slice(0, 10)}T10:00:00Z`);
+export const NOW = new Date(Math.floor(Date.now() / 60_000) * 60_000);
 /** Where `close` archives a change today. */
 export const ARCHIVE = `.specty/archive/${NOW.getUTCFullYear()}`;
 

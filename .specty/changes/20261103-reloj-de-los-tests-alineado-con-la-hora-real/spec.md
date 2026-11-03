@@ -14,6 +14,6 @@ El reloj de los comandos en los tests de la CLI pasa de «hoy a las 10:00 UTC» 
 
 ## Tareas
 
-- [ ] T1: Alinear el reloj de los tests con la hora real
+- [x] T1: Alinear el reloj de los tests con la hora real
   - files: packages/cli/test/support.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/anywhere.test.ts test/activity.test.ts test/enforce.test.ts test/prune.test.ts test/server.test.ts
