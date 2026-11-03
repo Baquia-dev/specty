@@ -6,6 +6,13 @@
   "branch": "specty/20261103-una-verificacion-completa",
   "baseCommit": "9053fd535295a255dfe2b4d0d4c9f41f3fc589c9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7b9fbb85fbe6d94067ba044698cd3349e6e4b10a9de6c7c4810307ab3809b4bb",
+    "at": "2026-11-03T11:12:21.526Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -40,12 +47,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:7b9fbb85fbe6d94067ba044698cd3349e6e4b10a9de6c7c4810307ab3809b4bb",
-    "at": "2026-11-03T11:12:21.526Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T11:13:28.901Z"
 }
