@@ -52,6 +52,16 @@ export async function noteActivity(
   await writeText(path, `${JSON.stringify(noted, null, 2)}\n`);
 }
 
+/** The last step of `conversation` of `tool` the guard noted, if it noted one. */
+export async function conversationStep(
+  git: Git,
+  tool: string,
+  conversation: string,
+): Promise<Activity | undefined> {
+  const path = join(await activityFolder(git), `${tool}-${conversation}.json`);
+  return activityOf(parseJson(await readText(path)));
+}
+
 /** Every conversation's activity, also of those that ended. */
 export async function readActivity(git: Git): Promise<Activity[]> {
   const folder = await activityFolder(git);

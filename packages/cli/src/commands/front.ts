@@ -7,14 +7,17 @@ import {
   frontAddedCard,
   frontAssignedCard,
   frontCommitSubject,
+  frontFreedCard,
   frontListCard,
   frontRefusalCard,
+  frontTakenCard,
   isFrontName,
   type Output,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
 import type { Session } from "../session";
+import { type LiveHold, liveHolds, releaseFront } from "../store/front-owners";
 import { editMemory, readMemory } from "../store/memory";
 import { writerOf } from "./memory";
 
@@ -44,12 +47,56 @@ export function frontCommand(program: Command, run: Run): void {
     .argument("<front>")
     .argument("<ids...>")
     .action((name: string, ids: string[]) => run((session) => assignEntries(session, name, ids))());
+  front
+    .command("take")
+    .description(
+      "take a front: the guard of the agent's tool records its conversation as the owner",
+    )
+    .argument("<front>")
+    .action((name: string) => run((session) => takeFront(session, name))());
+  front
+    .command("free")
+    .description("free a front: it has no owner after this")
+    .argument("<front>")
+    .action((name: string) => run((session) => freeFront(session, name))());
 }
 
-/** `specty front`: every front with its open entries, in order. */
+/** `specty front`: every front with who holds it and its open entries, in order. */
 async function listFronts(session: Session): Promise<Output> {
   const { fronts, entries } = await readMemory(session.git, session.config.memory.branch);
-  return frontListCard(fronts, entries, session.cards);
+  return frontListCard(fronts, entries, session.cards, await ownersOf(session));
+}
+
+/** The live owners of the fronts (`memory.orphanAfterMin`, ADR 0016). */
+function ownersOf(session: Session): Promise<LiveHold[]> {
+  const now = session.environment.now();
+  return liveHolds(session.git, now, session.config.memory.orphanAfterMin);
+}
+
+/**
+ * `specty front take`: the front with who holds it, its entries and the first free one. The guard
+ * of the agent's tool recorded its conversation as the owner before the command ran (ADR 0016).
+ */
+async function takeFront(session: Session, name: string): Promise<Output> {
+  const { fronts, entries } = await readMemory(session.git, session.config.memory.branch);
+  const front = findFront(fronts, name);
+  if (front === undefined) return unknownFront(session, name);
+  const owner = (await ownersOf(session)).find((hold) => hold.front === front.name);
+  return frontTakenCard(front, entries, owner, session.cards);
+}
+
+/** `specty front free`: the front has no owner; the guard does not let one agent free another's. */
+async function freeFront(session: Session, name: string): Promise<Output> {
+  const { fronts } = await readMemory(session.git, session.config.memory.branch);
+  const front = findFront(fronts, name);
+  if (front === undefined) return unknownFront(session, name);
+  const owner = (await ownersOf(session)).find((hold) => hold.front === front.name);
+  await releaseFront(session.git, front.name);
+  return frontFreedCard(front, owner, session.cards);
+}
+
+function unknownFront(session: Session, name: string): Output {
+  return frontRefusalCard({ reason: "unknown-front", name: name.trim() }, session.cards);
 }
 
 /** `specty front add`: a new front, with this folder's open change and who creates it. */
@@ -98,10 +145,7 @@ async function assignEntries(
   const { target } = await writerOf(session);
   return editMemory(session.git, target, ({ fronts, entries }) => {
     const front = findFront(fronts, name);
-    if (front === undefined)
-      return {
-        result: frontRefusalCard({ reason: "unknown-front", name: name.trim() }, session.cards),
-      };
+    if (front === undefined) return { result: unknownFront(session, name) };
     const checked = assignable(ids, entries);
     if ("problem" in checked) return { result: frontRefusalCard(checked.problem, session.cards) };
     const { fronts: changed, moved } = assignToFront(fronts, front.name, checked.ids);

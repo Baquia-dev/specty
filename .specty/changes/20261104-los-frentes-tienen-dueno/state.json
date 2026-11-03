@@ -65,12 +65,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e8e776e0517f2198d84e662107578fb06942d9d3",
+      "attempts": 1,
       "startedAt": "2026-11-03T20:21:48.194Z",
       "doneAt": "2026-11-03T20:23:01.378Z",
-      "summary": "cards/front-owners.ts: frontTakenCard, frontFreedCard y frontHeldDenial (es/en); FrontOwner y frontSection en cards/fronts.ts, con el dueño en la línea del texto de frontListCard; heldBy acepta solo holder/orphan y ago se exporta"
+      "summary": "cards/front-owners.ts: frontTakenCard, frontFreedCard y frontHeldDenial (es/en); FrontOwner y frontSection en cards/fronts.ts, con el dueño en la línea del texto de frontListCard; heldBy acepta solo holder/orphan y ago se exporta",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4e8ee31324e5cb04343a7a556f05e1a1bef82a83",
+      "startedAt": "2026-11-03T20:23:01.717Z",
+      "doneAt": "2026-11-03T20:24:59.816Z",
+      "summary": "store/front-owners.ts: releaseFront y liveHolds (dueños vivos por memory.orphanAfterMin, con el último paso de activity/ vía conversationStep); front take y front free en commands/front.ts, y los dueños vivos en specty front. holdFront llega en T4 con el guard"
     }
   },
   "pending": {
