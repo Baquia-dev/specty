@@ -84,7 +84,7 @@ Tercer cambio de P33 (repartir el trabajo entre sesiones): la tarjeta sin cambio
   - files: packages/cli/src/commands/status.ts, packages/cli/test/front-status.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-status.test.ts test/status-json.test.ts test/memory-status.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T5: La documentación de los frentes en el estado y en el inicio
+- [x] T5: La documentación de los frentes en el estado y en el inicio
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC5, AC6
   - verify: pnpm lint

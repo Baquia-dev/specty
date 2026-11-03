@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-frentes-en-el-estado-y-el-inicio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-frentes-en-el-estado-y-el-inicio",
   "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
   "revision": 2,
@@ -77,12 +77,21 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "085f2a97600d24ecb98fd43a1389a309775c859c",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:09:09.360Z",
       "doneAt": "2026-11-03T22:09:49.423Z",
-      "summary": "status lee los dueños vivos (liveHolds) solo si la memoria tiene frentes y pasa a statusCard los frentes y sus dueños: «FRENTES» en el texto y fronts en --json."
+      "summary": "status lee los dueños vivos (liveHolds) solo si la memoria tiene frentes y pasa a statusCard los frentes y sus dueños: «FRENTES» en el texto y fronts en --json.",
+      "scopeExtra": []
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "02e559a3bb67ae14d19f20ca38590f915a764000",
+      "startedAt": "2026-11-03T22:09:49.765Z",
+      "doneAt": "2026-11-03T22:10:12.771Z",
+      "summary": "formats.md: los frentes en la tarjeta de inicio y en status, y cómo sabe Specty la conversación. ARCHITECTURE: «FRENTES» y fronts en status y su --json, y el frente en la tarjeta de inicio."
     }
   },
   "pending": {
