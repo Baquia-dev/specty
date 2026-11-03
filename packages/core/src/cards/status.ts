@@ -93,7 +93,7 @@ function statusLine(entry: StatusEntry, t: Translate): string {
 }
 
 /** Who holds the change and since when, or that it is an orphan; nothing when neither is known. */
-function heldBy(entry: StatusEntry, t: Translate): string | undefined {
+export function heldBy(entry: StatusEntry, t: Translate): string | undefined {
   const { holder } = entry;
   if (entry.orphan === true) {
     return holder === undefined

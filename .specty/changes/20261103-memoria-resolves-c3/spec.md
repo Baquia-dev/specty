@@ -74,7 +74,7 @@ Hoy un pendiente de la memoria de Specty se toma citando su id en la petición d
   - files: packages/core/src/memory/entries.ts, packages/core/src/index.ts, packages/core/src/cards/memory.ts, packages/core/test/memory/claims.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/claims.test.ts -t "what --resolves can take" && pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/entries.test.ts test/cards/memory-start.test.ts && pnpm lint
-- [ ] T2: La tarjeta de `new --resolves` que no crea nada
+- [x] T2: La tarjeta de `new --resolves` que no crea nada
   - files: packages/core/src/cards/memory-claims.ts, packages/core/src/cards/status.ts, packages/core/src/cards/index.ts, packages/core/test/memory/claims.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/claims.test.ts test/cards/status-holder.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
