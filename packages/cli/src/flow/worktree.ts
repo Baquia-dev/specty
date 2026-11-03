@@ -86,11 +86,11 @@ export async function gitCommonFolder(git: Git): Promise<string> {
 }
 
 /**
- * The folders Specty's commands write in besides the change's own: git's common folder and the
- * worktrees' folder. A sandbox that keeps to the folder an agent works in leaves them out.
+ * The folders Specty's commands write in besides the change's own: git's common folder. The
+ * worktrees' folder no longer goes with it (ADR 0018).
  */
 export async function sharedFolders(git: Git): Promise<string[]> {
-  return [await gitCommonFolder(git), await worktreesHome(git)];
+  return [await gitCommonFolder(git)];
 }
 
 export interface PlacedPaths {

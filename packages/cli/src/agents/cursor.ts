@@ -9,7 +9,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { cwdOf, type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { sharedFolders } from "../flow/worktree";
+import { formerWorktreesHome, sharedFolders } from "../flow/worktree";
 import {
   CURSOR_HOOKS,
   CURSOR_SANDBOX,
@@ -106,7 +106,7 @@ export const cursor: AgentAdapter = {
     await removeFromJson(root, CURSOR_HOOKS, hooks, files);
     // A sandbox file the person keeps in git was never Specty's to change.
     if (await git.isTracked(CURSOR_SANDBOX)) return;
-    const folders = await sharedFolders(git);
+    const folders = [...(await sharedFolders(git)), await formerWorktreesHome(git)];
     const sandbox = (value: Record<string, unknown>) => withFolders(value, folders, false);
     await removeFromJson(root, CURSOR_SANDBOX, sandbox, files);
   },
@@ -165,7 +165,10 @@ async function installSandbox(
       warnings: there ? [] : [cursorSandboxTrackedWarning(CURSOR_SANDBOX, folders, lang)],
     };
   }
-  const update = (value: Record<string, unknown>) => withFolders(value, folders, true);
+  // The worktrees' folder an older `init` gave it, beside the project before ADR 0018, goes.
+  const former = await formerWorktreesHome(git);
+  const update = (value: Record<string, unknown>) =>
+    withFolders(withFolders(value, [former], false), folders, true);
   await rewriteJson(join(root, CURSOR_SANDBOX), update, true, files);
   await excludeLocally(git, CURSOR_SANDBOX, files);
   return { done: [cursorSandboxLine(CURSOR_SANDBOX, lang)], warnings: [] };

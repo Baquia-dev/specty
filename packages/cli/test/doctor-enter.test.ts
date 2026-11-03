@@ -151,7 +151,7 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(false);
   });
 
-  it("names Devin's hooks without the reads, and its local settings without the worktrees (AC1, AC2)", async () => {
+  it("AC1: names Devin's hooks without the reads, and its local settings without git's folder", async () => {
     const root = await tempRepo(PACKAGE);
     await init(root, "windsurf");
     const hooks = ".devin/hooks.v1.json";
@@ -166,8 +166,10 @@ describe("doctor and an install from before specty enter", () => {
     await rewrite(root, local, (value) => {
       const permissions = isObject(value.permissions) ? value.permissions : {};
       const allow = Array.isArray(permissions.allow) ? permissions.allow : [];
-      const writes = allow.filter((rule) => !String(rule).startsWith("Read("));
-      return { ...value, permissions: { ...permissions, allow: writes } };
+      // The worktrees' folder is no longer among Specty's scopes: only git's folder is.
+      expect(allow.some((rule) => String(rule).includes(".worktrees"))).toBe(false);
+      const others = allow.filter((rule) => !String(rule).startsWith("Write("));
+      return { ...value, permissions: { ...permissions, allow: others } };
     });
     expect(await says(root, outdated("Devin (Windsurf)", local, "windsurf"))).toBe(true);
   });

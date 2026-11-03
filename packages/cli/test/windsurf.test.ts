@@ -203,16 +203,13 @@ describe("Devin's permissions", () => {
       "Devin (Windsurf): regla en .devin/config.json para que los comandos de Specty se ejecuten sin preguntar; Specty decide quién ejecuta cada uno.",
     );
     expect(init.out).toContain(
-      "Devin (Windsurf): .devin/config.local.json (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.",
+      "Devin (Windsurf): .devin/config.local.json (local) deja escribir a los comandos de Specty en la carpeta de git cuando activas su sandbox.",
     );
     const allowed = async (file: string) => JSON.parse(await read(root, file)).permissions.allow;
     const shared = ["Exec(npm test)", "Exec(specty)"];
     expect(await allowed(CONFIG_FILE)).toEqual(shared);
-    expect(await allowed(LOCAL_FILE)).toEqual([
-      `Write(${join(root, ".git")}/**)`,
-      `Write(${root}.worktrees/**)`,
-      `Read(${root}.worktrees/**)`,
-    ]);
+    // AC1: git's folder only, not the worktrees'.
+    expect(await allowed(LOCAL_FILE)).toEqual([`Write(${join(root, ".git")}/**)`]);
     expect(await read(root, ".git/info/exclude")).toContain(`/${LOCAL_FILE}`);
     expect(git(root, "status", "--porcelain")).toBe("");
     await cli(root, ["init", "--language", "es", "--tools", "windsurf"]);
@@ -221,6 +218,28 @@ describe("Devin's permissions", () => {
     await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
     expect(JSON.parse(await read(root, CONFIG_FILE))).toEqual(mine);
     expect(existsSync(join(root, LOCAL_FILE))).toBe(false);
+  });
+
+  it("AC2: takes out the worktrees' scopes an older init gave it, and leaves the person's", async () => {
+    const root = await tempRepo(PACKAGE);
+    const home = `${root}.worktrees`;
+    const older = {
+      permissions: {
+        allow: [
+          "Exec(make)",
+          `Write(${join(root, ".git")}/**)`,
+          `Write(${home}/**)`,
+          `Read(${home}/**)`,
+        ],
+      },
+    };
+    await writeFiles(root, { [LOCAL_FILE]: JSON.stringify(older) });
+    await cli(root, ["init", "--language", "es", "--tools", "windsurf"]);
+    const allowed = async () => JSON.parse(await read(root, LOCAL_FILE)).permissions.allow;
+    expect(await allowed()).toEqual(["Exec(make)", `Write(${join(root, ".git")}/**)`]);
+    await writeFiles(root, { [LOCAL_FILE]: JSON.stringify(older) });
+    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(await allowed()).toEqual(["Exec(make)"]);
   });
 });
 

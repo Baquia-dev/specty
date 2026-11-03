@@ -15,7 +15,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type RawAction, sentPaths, shellAction } from "../enforce/actions";
-import { sharedFolders, worktreesHome } from "../flow/worktree";
+import { formerWorktreesHome, sharedFolders } from "../flow/worktree";
 import {
   DEVIN_CONFIG,
   DEVIN_HOOKS,
@@ -105,7 +105,7 @@ export const windsurf: AgentAdapter = {
   remove: async (root, files, git) => {
     await removeFromJson(root, DEVIN_HOOKS, (value) => withDevinHooks(value, undefined), files);
     await removeFromJson(root, DEVIN_CONFIG, (value) => withAllowed(value, [RUN], false), files);
-    const scopes = await writeScopes(git);
+    const scopes = [...(await writeScopes(git)), ...(await formerScopes(git))];
     await removeFromJson(
       root,
       DEVIN_LOCAL_CONFIG,
@@ -177,18 +177,26 @@ async function installPermissions(
       warnings: [devinSandboxTrackedWarning(DEVIN_LOCAL_CONFIG, scopes, lang)],
     };
   }
-  await rewriteJson(join(root, DEVIN_LOCAL_CONFIG), allow(scopes), true, files);
+  const former = await formerScopes(git);
+  const update = (value: Record<string, unknown>) =>
+    withAllowed(withAllowed(value, former, false), scopes, true);
+  await rewriteJson(join(root, DEVIN_LOCAL_CONFIG), update, true, files);
   await excludeLocally(git, DEVIN_LOCAL_CONFIG, files);
   return { done: [commands, devinSandboxLine(DEVIN_LOCAL_CONFIG, lang)], warnings: [] };
 }
 
-/**
- * Specty's folders as Devin's `Write(...)` scopes, which also widen its sandbox, and the
- * worktrees' folder as a `Read(...)` one, for a session that entered a change's folder there.
- */
+/** Specty's folders as Devin's `Write(...)` scopes, which also widen its sandbox. */
 async function writeScopes(git: Git): Promise<string[]> {
-  const writes = (await sharedFolders(git)).map((folder) => `Write(${folder}/**)`);
-  return [...writes, `Read(${await worktreesHome(git)}/**)`];
+  return (await sharedFolders(git)).map((folder) => `Write(${folder}/**)`);
+}
+
+/**
+ * The scopes an older `init` gave Devin over the worktrees' folder beside the project, before
+ * ADR 0018: `init` and `uninstall` take them out.
+ */
+async function formerScopes(git: Git): Promise<string[]> {
+  const home = await formerWorktreesHome(git);
+  return [`Write(${home}/**)`, `Read(${home}/**)`];
 }
 
 /** `rules` in `permissions.allow`, after the person's ones, or taken out of it. */

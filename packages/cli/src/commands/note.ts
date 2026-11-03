@@ -22,7 +22,7 @@ export function noteCommand(program: Command, run: Run): void {
  * `specty note` (ADR 0016): the agent or the person adds a note to the log of this folder's open
  * change, a `change.noted` event of its audit; `next`'s card shows the last ones.
  */
-export async function note(session: Session, text: string): Promise<Output> {
+async function note(session: Session, text: string): Promise<Output> {
   const written = text.trim();
   if (written.length === 0) return noteRefusalCard({ reason: "empty" }, session.cards);
   const active = await resolveActive(session);
