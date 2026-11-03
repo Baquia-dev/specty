@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { readdir, stat } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import { isRecord, parseJson, readText, writeText } from "../io/files";
+import { isRecord, parseJson, readText, remove, writeText } from "../io/files";
 import type { Git } from "../io/git";
 
 /**
@@ -72,6 +72,26 @@ export async function readActivity(git: Git): Promise<Activity[]> {
       .map(async (name) => activityOf(parseJson(await readText(join(folder, name))))),
   );
   return read.flatMap((activity) => (activity === undefined ? [] : [activity]));
+}
+
+/** Removes the records `stale` points at, and says how many it removed. */
+export async function removeActivity(
+  git: Git,
+  stale: (activity: Activity) => Promise<boolean>,
+): Promise<number> {
+  const folder = await activityFolder(git);
+  const names = await readdir(folder).catch((): string[] => []);
+  const judged = await Promise.all(
+    names
+      .filter((name) => name.endsWith(".json"))
+      .map(async (name) => {
+        const activity = activityOf(parseJson(await readText(join(folder, name))));
+        return activity !== undefined && (await stale(activity)) ? [name] : [];
+      }),
+  );
+  const gone = judged.flat();
+  await Promise.all(gone.map((name) => remove(join(folder, name))));
+  return gone.length;
 }
 
 /**

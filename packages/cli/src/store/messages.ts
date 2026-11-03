@@ -2,7 +2,7 @@
 import { mkdir, readdir, rmdir, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { MessageView } from "@baquia-dev/specty-core";
-import { isMissing, isRecord, parseJson, readText } from "../io/files";
+import { isMissing, isRecord, parseJson, readText, remove } from "../io/files";
 import type { Git } from "../io/git";
 
 /**
@@ -37,6 +37,18 @@ export async function leaveMessage(git: Git, id: string, message: MessageView): 
 export async function anyMessages(git: Git): Promise<boolean> {
   const names = await readdir(await git.gitPath(MESSAGES)).catch(() => []);
   return names.length > 0;
+}
+
+/** The changes with a folder of messages. */
+export async function messageChanges(git: Git): Promise<string[]> {
+  const folder = await git.gitPath(MESSAGES);
+  const entries = await readdir(folder, { withFileTypes: true }).catch(() => []);
+  return entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+}
+
+/** The messages for change `id` that nobody took are gone: nobody will take them now. */
+export async function dropMessages(git: Git, id: string): Promise<void> {
+  await remove(join(await git.gitPath(MESSAGES), id));
 }
 
 /**

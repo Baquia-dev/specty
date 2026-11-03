@@ -60,7 +60,7 @@ Resuelve P3 y P37. La mitad viva de la memoria de Specty, en `.git/common/specty
   - files: packages/core/src/cards/parallel.ts, packages/core/test/cards/prune-live.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/prune-live.test.ts test/cards/parallel.test.ts && pnpm lint
-- [ ] T2: `prune` borra la actividad y los mensajes que ya no sirven
+- [x] T2: `prune` borra la actividad y los mensajes que ya no sirven
   - files: packages/cli/src/store/activity.ts, packages/cli/src/store/messages.ts, packages/cli/src/flow/prune.ts, packages/cli/src/commands/prune.ts, packages/cli/test/prune-live.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-live.test.ts test/activity.test.ts test/prune.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip

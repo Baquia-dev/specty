@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
+import { realpath } from "node:fs/promises";
 import {
   type Lang,
   notInTargetBranchLine,
   notInTargetFolderLine,
   workingFolderLine,
 } from "@baquia-dev/specty-core";
+import { exists } from "../io/files";
 import { resolved } from "../io/git";
 import type { Session } from "../session";
+import { removeActivity } from "../store/activity";
 import type { StoredChange } from "../store/changes";
 import { readBindings } from "../store/local";
+import { dropMessages, messageChanges } from "../store/messages";
 import { isFinished } from "./active";
 import { markedBranches } from "./branches";
 import { locateChanges } from "./changes";
@@ -108,4 +112,32 @@ export async function deleteMerged(session: Session): Promise<Cleanup> {
     notInTargetBranchLine(branch, target, session.lang),
   );
   return { removed, kept };
+}
+
+/**
+ * The memory's live half that no longer serves anybody (ADR 0016): the activity of the
+ * conversations that no longer work, and the messages of the changes that are no longer open. A
+ * record goes when its folder is gone, or when its last step is older than
+ * `memory.orphanAfterMin` in a folder with no open change; `status` still reads the others.
+ */
+export async function pruneLive(
+  session: Session,
+): Promise<{ readonly activity: number; readonly messages: readonly string[] }> {
+  const open = (await locateChanges(session)).filter(({ change }) => !isFinished(change.state));
+  const ids = new Set(open.map(({ change }) => change.state.id));
+  const folders = new Set(await Promise.all(open.map(({ session: there }) => real(there.root))));
+  const now = session.environment.now().getTime();
+  const limit = session.config.memory.orphanAfterMin * 60_000;
+  const activity = await removeActivity(session.git, async (record) => {
+    if (!(await exists(record.folder))) return true;
+    return now - Date.parse(record.last) > limit && !folders.has(await real(record.folder));
+  });
+  const messages = (await messageChanges(session.git)).filter((id) => !ids.has(id));
+  await Promise.all(messages.map((id) => dropMessages(session.git, id)));
+  return { activity, messages };
+}
+
+/** The real path of `folder`, or `folder` itself when it no longer exists. */
+async function real(folder: string): Promise<string> {
+  return realpath(folder).catch(() => folder);
 }

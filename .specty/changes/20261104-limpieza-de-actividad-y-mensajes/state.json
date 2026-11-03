@@ -44,12 +44,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5ae54789b888463a40a268df607316f40657026c",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:49:39.044Z",
       "doneAt": "2026-11-03T22:49:56.768Z",
-      "summary": "pruneCard acepta activity y messages, opcionales: secciones ACTIVIDAD BORRADA y MENSAJES BORRADOS, y «nada que limpiar» solo si no borró nada."
+      "summary": "pruneCard acepta activity y messages, opcionales: secciones ACTIVIDAD BORRADA y MENSAJES BORRADOS, y «nada que limpiar» solo si no borró nada.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6cc458887627592e422e482d90b54b679b57ac08",
+      "startedAt": "2026-11-03T22:49:57.098Z",
+      "doneAt": "2026-11-03T22:51:59.963Z",
+      "summary": "pruneLive (flow/prune.ts) borra la actividad cuya carpeta no existe o que pasa de orphanAfterMin fuera de un cambio abierto (removeActivity), y los mensajes de cambios no abiertos (messageChanges, dropMessages); prune lo pasa a la tarjeta."
     }
   },
   "pending": {
