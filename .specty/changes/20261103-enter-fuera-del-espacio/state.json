@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261103-enter-fuera-del-espacio",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-enter-fuera-del-espacio",
+  "baseCommit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7060b9c7e9bb63f3ade3ac97da20b0fcda7f25311a879826fb4b0cb11573eccc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:c36a321ba1c1f58a04e749788b311b401d600a26daf292b335e7a06c88c62f6a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:6e03a26d6cbdfb4d103748209eb96d330f1b36ead7db0500f064c230efafd8f7",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:e62f20245a90cdeba289b9c05c24a1a8fba84d9c26701a8008f5d9f51d1d6eac",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c1b81587f8aca2d16c120722e0c0fc90bce057c5a52cdfa27f55a2c5c07ed970",
+    "at": "2026-11-03T06:58:47.383Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
