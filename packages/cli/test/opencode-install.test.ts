@@ -2,7 +2,7 @@
 import { existsSync } from "node:fs";
 import { mkdtemp, readdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { join } from "node:path";
 import { parse } from "jsonc-parser";
 import { describe, expect, it } from "vitest";
 import { installFiles } from "../src/install/files";
@@ -61,11 +61,7 @@ describe("installing the plugin in OpenCode", () => {
     expect(git(root, "status", "--porcelain")).toBe("");
     const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
     expect(created.out).toContain(`HOOKS DEL AGENTE COPIADOS:\n  ${PLUGIN}`);
-    const folder = join(
-      dirname(root),
-      `${basename(root)}.worktrees`,
-      CHANGE.replace("saludo-personalizado", "otro-cambio"),
-    );
+    const folder = join(root, ".worktrees", CHANGE.replace("saludo-personalizado", "otro-cambio"));
     expect(await read(folder, PLUGIN)).toBe(await read(root, PLUGIN));
   });
 

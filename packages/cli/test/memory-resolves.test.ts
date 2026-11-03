@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename } from "node:path";
 import { describe, expect, it } from "vitest";
 import { APP, CHANGE, cli, folderOf, git, read, tempRepo } from "./support";
 
@@ -54,7 +53,7 @@ describe("specty new --resolves", () => {
     const refused = await resolving(root, "Otro saludo", "P2", "P1");
     expect(refused.code).not.toBe(0);
     expect(refused.out).toContain(
-      `P1 ya la tomó el cambio ${CHANGE} (draft, en ../${basename(root)}.worktrees/${CHANGE}, lo lleva claude-code, ahora mismo).`,
+      `P1 ya la tomó el cambio ${CHANGE} (draft, en .worktrees/${CHANGE}, lo lleva claude-code, ahora mismo).`,
     );
     expect(refused.out).toContain(
       `pregúntale al usuario si sigue con ${CHANGE}; la siguiente libre es P2, «Dos»`,

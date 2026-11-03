@@ -1,6 +1,6 @@
 # 0018 · Las worktrees de los cambios, dentro del repositorio
 
-- Estado: propuesta
+- Estado: aceptada
 - Fecha: 2026-11-03
 
 ## Contexto
@@ -28,8 +28,17 @@ El 2026-11-03 se creó, para cada herramienta, un repositorio con un archivo y s
 | pytest, Ruff y mypy | pytest 8.4.2, Ruff 0.17.3, mypy 1.19.1 | no | carpetas ocultas o `.gitignore` |
 | RSpec | 3.13.2 | no | solo busca en `spec/` |
 | `git clean -fdx` | git 2.50.1 | no: «Would skip repository .worktrees/c1» | solo `-ffdx` la borraría |
+| `go test`, `go vet` y `go build` (`./...`) | Go 1.27.3 | no | ignora las carpetas que empiezan por `.` o `_` |
+| `gofmt -l .` | Go 1.27.3 | sí | Specty no lo ejecuta; `golangci-lint run` usa `./...` |
+| `mvn test` | Maven 3.9.16 | no | solo lee `src/main` y `src/test` |
+| `gradle test` | Gradle 9.8.2 | no | solo lee sus conjuntos de fuentes |
+| `swift build` | Swift 6.2.3 | no | solo lee `Sources/` y `Tests/` |
+| `cargo test`, `cargo fmt --check` y `cargo clippy`, también en un workspace | Cargo 1.99.1 | no | solo lee los miembros y sus fuentes |
+| `flutter analyze` y `flutter test` | Flutter (Dart 3.12.2) | no | el analizador no entra en carpetas ocultas; los tests, solo en `test/` |
 
-Sin medir, por documentación o por cómo se organizan: Go ignora las carpetas que empiezan por `.` o `_`; Maven, Gradle, SwiftPM, Cargo, Mix y `flutter test` solo leen sus carpetas de fuentes y de tests. Tampoco se midieron los observadores de archivos de los servidores de desarrollo (Vite, Metro), que podrían ver los módulos repetidos como Jest, ni la vista de control de código de VS Code, que puede listar cada worktree como un repositorio.
+Dentro de la worktree, cada una de estas herramientas trabaja con la copia del cambio, también Cargo en un workspace y Gradle con su `settings`. La excepción es Go con un `go.work` sin versionar en la carpeta principal: Go lo encuentra al subir de carpeta y falla («directory prefix . does not contain modules listed in go.work»). Con `go.work` versionado, la worktree tiene el suyo, y con `GOWORK=off` también funciona.
+
+Sin medir, por cómo se organizan: Mix solo lee sus carpetas de fuentes y de tests. Tampoco se midieron los observadores de archivos de los servidores de desarrollo (Vite, Metro), que podrían ver los módulos repetidos como Jest, ni la vista de control de código de VS Code, que puede listar cada worktree como un repositorio.
 
 La carpeta tiene que ignorarse en `.gitignore`: Prettier no lee `.git/info/exclude`.
 
@@ -37,11 +46,16 @@ La carpeta tiene que ignorarse en `.gitignore`: Prettier no lee `.git/info/exclu
 
 Fuera del ecosistema de JavaScript, ninguna herramienta medida ve una worktree en una carpeta oculta e ignorada. En JavaScript y TypeScript, Vitest, Jest, ESLint y Biome sin `useIgnoreFile` sí la ven, y Vitest y Jest ejecutan sus tests. Solo ocurre con los comandos que la persona ejecuta en la carpeta principal mientras hay cambios abiertos: la verificación de cada tarea corre en la carpeta de su cambio, y el CI trabaja con un clon limpio.
 
-## Propuesta
+## Decisión
 
-- `specty new` crea la worktree en `.worktrees/<id>`, dentro del repositorio, y `init` añade `.worktrees/` a `.gitignore`. Así cualquier agente o editor que solo trabaje en la carpeta del proyecto alcanza la del cambio, sin que la persona haga nada.
-- En los proyectos de JavaScript y TypeScript, `init` añade la exclusión de `.worktrees/` a la configuración de Vitest, Jest, ESLint y Biome que detecta, y `doctor` avisa donde no pudo.
-- La ubicación de antes sigue disponible con una clave de `git`, y los cambios abiertos se quedan donde están: Specty encuentra cada worktree con `git worktree list`, esté donde esté.
-- Una vez que las worktrees nuevas estén dentro, los permisos que hoy abren la carpeta de fuera (Codex, OpenCode, Gemini CLI, Devin, Antigravity) sobran, y se quitan en un cambio aparte.
+- Para todos los proyectos, sin clave para volver a la ubicación de antes: sin los permisos por agente, las herramientas con sandbox no la alcanzarían.
+- `specty new` crea la worktree en `.worktrees/<id>`, dentro del proyecto, y la ignora en el clon (`.git/info/exclude`); `init` añade además `/.worktrees/` a `.gitignore`, que es lo que lee Prettier. Así cualquier agente o editor que solo trabaje en la carpeta del proyecto alcanza la del cambio, sin que la persona haga nada.
+- En los proyectos de JavaScript y TypeScript, `init` añade la exclusión de `.worktrees/` a la configuración de Vitest, Jest, ESLint y Biome que puede editar, y `doctor` avisa donde no pudo.
+- Los cambios abiertos antes se quedan en `<carpeta>.worktrees/<id>` hasta cerrarse: `specty enter`, `EnterWorktree` por nombre y la protección de `WorktreeRemove` los buscan también allí.
+- Los permisos que abrían la carpeta de fuera a cada herramienta (Codex, OpenCode, Gemini CLI, Devin, Cursor y Antigravity) se quitaron, y `init` y `uninstall` borran los que quedaron de antes. Se mantienen los de la carpeta común de git, donde hacen sus commits los comandos de Specty.
 
-Queda por decidir si la ubicación dentro es la de todos los proyectos o solo la de los que instalan un agente que no sale de su carpeta, como Antigravity.
+## Consecuencias
+
+- Antigravity en Zed, y cualquier editor que hable ACP, entra en un cambio desde la conversación de la carpeta principal.
+- Mientras hay cambios abiertos, las herramientas de JavaScript sin su exclusión ven las copias del proyecto si la persona las ejecuta en la carpeta principal.
+- Un proyecto de Go con `go.work` sin versionar necesita versionarlo o `GOWORK=off` para trabajar dentro de la worktree.

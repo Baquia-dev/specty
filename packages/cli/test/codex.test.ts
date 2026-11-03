@@ -2,7 +2,7 @@
 import { existsSync } from "node:fs";
 import { mkdtemp, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { installFiles } from "../src/install/files";
 import { installHooks } from "../src/install/hooks";
@@ -208,11 +208,7 @@ describe("installing the guard in Codex", () => {
     expect(git(root, "status", "--porcelain")).toBe("");
     const created = await cli(root, ["new", "--worktree", "Otro cambio"]);
     expect(created.out).toContain(`HOOKS DEL AGENTE COPIADOS:\n  ${HOOKS}`);
-    const folder = join(
-      dirname(root),
-      `${basename(root)}.worktrees`,
-      CHANGE.replace("saludo-personalizado", "otro-cambio"),
-    );
+    const folder = join(root, ".worktrees", CHANGE.replace("saludo-personalizado", "otro-cambio"));
     expect(await read(folder, HOOKS)).toBe(await read(root, HOOKS));
   });
 

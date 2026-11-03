@@ -164,7 +164,11 @@ describe("Antigravity and a change's folder out of its reach", () => {
   it("AC1: denies `specty enter`, naming its folders and the change's, and says how to carry on", async () => {
     const root = await tempRepo(APP);
     expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
-    const enter = step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root });
+    // A workspace that does not hold the change's folder, such as one subfolder of the project.
+    const enter = {
+      ...step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root }),
+      workspacePaths: [join(root, "src")],
+    };
     const denied = await answer(antigravity(root, "PreToolUse", enter));
     expect(denied.decision).toBe("deny");
     expect(denied.reason).toContain(
@@ -172,14 +176,19 @@ describe("Antigravity and a change's folder out of its reach", () => {
     );
     expect(denied.reason).toContain(`\`${folderOf(root)}\`, no está en ninguna`);
     expect(denied.reason).toContain("en una conversación nueva que empiece por `specty next`");
-    expect(denied.reason).toContain(`que añada \`${root}.worktrees\` al proyecto de su editor`);
+    expect(denied.reason).toContain(
+      `que añada \`${join(root, ".worktrees")}\` al proyecto de su editor`,
+    );
     expect(denied.reason).toMatch(/^SIGUIENTE: no entres\./m);
   });
 
   it("AC2: leaves the conversation in its own folder after the denial", async () => {
     const root = await tempRepo(APP);
     expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
-    const enter = step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root });
+    const enter = {
+      ...step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root }),
+      workspacePaths: [join(root, "src")],
+    };
     expect((await answer(antigravity(root, "PreToolUse", enter))).decision).toBe("deny");
     // Bound to the change, this read would be sent to the same path in the change's folder.
     const view = step(2, "view_file", { AbsolutePath: join(root, "src/app.ts") });
