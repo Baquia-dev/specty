@@ -89,7 +89,9 @@ export {
   verifyFailedCard,
   withLead,
 } from "./flow";
+export { frontFreedCard, frontHeldDenial, frontTakenCard } from "./front-owners";
 export {
+  type FrontOwner,
   type FrontRefusal,
   frontAddedCard,
   frontAssignedCard,

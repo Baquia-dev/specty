@@ -73,7 +73,7 @@ Segundo cambio de P33 (repartir el trabajo entre sesiones): una sesión de agent
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts && pnpm lint
-- [ ] T2: Las tarjetas del dueño de un frente
+- [x] T2: Las tarjetas del dueño de un frente
   - files: packages/core/src/cards/front-owners.ts, packages/core/src/cards/fronts.ts, packages/core/src/cards/status.ts, packages/core/src/cards/index.ts, packages/core/test/cards/front-owners.test.ts
   - ac: AC1, AC2, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/front-owners.test.ts test/cards/fronts.test.ts test/cards/status-holder.test.ts && pnpm typecheck && pnpm lint

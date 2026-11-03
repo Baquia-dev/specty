@@ -4,6 +4,7 @@ import { isOpenEntry, type MemoryEntry, type MemoryKind } from "../memory/entrie
 import type { AssignProblem, Front, FrontMove } from "../memory/fronts";
 import { headerOf, type Output, section } from "../output";
 import { firstLine, goOn } from "./memory";
+import { heldBy } from "./status";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -32,20 +33,36 @@ const WORK: Readonly<Partial<Record<MemoryKind, readonly [string, string]>>> = {
   improvement: ["mejora", "improvement"],
 };
 
-/** `specty front`: each front with what it covers, its paths and its open entries in order. */
+/**
+ * Who holds a front: the tool of the agent whose conversation took it, and how many minutes ago
+ * that conversation stepped last.
+ */
+export interface FrontOwner {
+  readonly front: string;
+  readonly tool: string;
+  readonly ago: number;
+}
+
+/**
+ * `specty front`: each front with what it covers, its paths, who holds it and its open entries
+ * in order.
+ */
 export function frontListCard(
   fronts: readonly Front[],
   entries: readonly MemoryEntry[],
   ctx: CardContext,
+  owners: readonly FrontOwner[] = [],
 ): Output {
   const t = translator(ctx.lang);
   const blocks =
     fronts.length === 0
       ? section(undefined, [t("No hay frentes.", "There are no fronts.")])
       : fronts.flatMap((front) =>
-          section(
-            `${t("FRENTE", "FRONT")} ${front.name.toUpperCase()}`,
-            frontLines(front, entries, t),
+          frontSection(
+            front,
+            entries,
+            owners.find((owner) => owner.front === front.name),
+            t,
           ),
         );
   return {
@@ -65,17 +82,23 @@ export function frontListCard(
   };
 }
 
-/** What a front covers, with its paths, and its open entries in order. */
-function frontLines(front: Front, entries: readonly MemoryEntry[], t: Translate): string[] {
+/** A front's section: what it covers, with its paths and who holds it, and its open entries in order. */
+export function frontSection(
+  front: Front,
+  entries: readonly MemoryEntry[],
+  owner: FrontOwner | undefined,
+  t: Translate,
+): Output["blocks"] {
   const paths = front.paths === undefined ? "" : ` · ${t("en", "in")} ${front.paths.join(", ")}`;
+  const held = owner === undefined ? "" : ` · ${heldBy({ holder: owner }, t)}`;
   const open = front.items.flatMap((id) => {
     const entry = entries.find((known) => known.id === id);
     return entry !== undefined && isOpenEntry(entry) ? [entryLine(entry, t)] : [];
   });
-  return [
-    `${firstLine(front.text)}${paths}`,
+  return section(`${t("FRENTE", "FRONT")} ${front.name.toUpperCase()}`, [
+    `${firstLine(front.text)}${paths}${held}`,
     ...(open.length > 0 ? open : [t("Sin entradas abiertas.", "No open entries.")]),
-  ];
+  ]);
 }
 
 /** An entry of a front: its id, kind and first line, and the change that took it. */

@@ -97,7 +97,10 @@ function statusLine(entry: StatusEntry, t: Translate): string {
 }
 
 /** Who holds the change and since when, or that it is an orphan; nothing when neither is known. */
-export function heldBy(entry: StatusEntry, t: Translate): string | undefined {
+export function heldBy(
+  entry: Pick<StatusEntry, "holder" | "orphan">,
+  t: Translate,
+): string | undefined {
   const { holder } = entry;
   if (entry.orphan === true) {
     return holder === undefined
@@ -116,7 +119,7 @@ export function heldBy(entry: StatusEntry, t: Translate): string | undefined {
 }
 
 /** How long ago, from minutes: under a minute, minutes, hours up to two days, then days. */
-function ago(minutes: number, t: Translate): string {
+export function ago(minutes: number, t: Translate): string {
   if (minutes < 1) return t("ahora mismo", "just now");
   const [count, unit] =
     minutes < 60

@@ -56,12 +56,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6ffc7771322e6986be4ec9a566017b5c81d1c1c2",
+      "attempts": 1,
       "startedAt": "2026-11-03T20:20:24.647Z",
       "doneAt": "2026-11-03T20:21:47.862Z",
-      "summary": "ShellAnalysis.fronts: cada specty front take|free <frente> de un comando, en orden, como enters; lo que pide un segmento a Specty sale de spectyCalls"
+      "summary": "ShellAnalysis.fronts: cada specty front take|free <frente> de un comando, en orden, como enters; lo que pide un segmento a Specty sale de spectyCalls",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e8e776e0517f2198d84e662107578fb06942d9d3",
+      "startedAt": "2026-11-03T20:21:48.194Z",
+      "doneAt": "2026-11-03T20:23:01.378Z",
+      "summary": "cards/front-owners.ts: frontTakenCard, frontFreedCard y frontHeldDenial (es/en); FrontOwner y frontSection en cards/fronts.ts, con el dueño en la línea del texto de frontListCard; heldBy acepta solo holder/orphan y ago se exporta"
     }
   },
   "pending": {
