@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-recordatorios-con-fecha-o-rutas",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-recordatorios-con-fecha-o-rutas",
   "baseCommit": "8be0473c2cf129572fc860adc432518914be47a3",
   "revision": 1,
@@ -56,6 +56,9 @@
     "T": 4,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T14:03:06.723Z"
+  "lockedTests": {
+    "packages/cli/test/memory-triggers.test.ts": "sha256:0866afd3839c8e0968a06e41a6ca58aefcbe4628aaaea00c2860355eda2677e7",
+    "packages/core/test/cards/reminder-triggers.test.ts": "sha256:a6978aac6efbf132fdb2603d3d8811768a62463ebb223f0c2ca2ac943f5e8d91",
+    "packages/core/test/memory/triggers.test.ts": "sha256:8828d688736b7bebbd3c63c8deca58c97192856e4123ca83ec67be0b654d5eba"
+  }
 }
