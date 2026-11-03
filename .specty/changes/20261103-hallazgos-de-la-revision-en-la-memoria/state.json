@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-hallazgos-de-la-revision-en-la-memoria",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-hallazgos-de-la-revision-en-la-memoria",
   "baseCommit": "540f6bd0eacaf52fe2663ca853b18e5c2adf75ca",
   "revision": 2,
@@ -63,6 +63,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T13:42:55.672Z"
+  "lockedTests": {
+    "packages/cli/test/review-remarks.test.ts": "sha256:fc13bbc096131e3354ce1468c7b24815a693b6da0ffdb7e86d5cc2816ce4c55c",
+    "packages/core/test/cards/review-remarks.test.ts": "sha256:933b1f11495d5b47699519a2727d5fb3ab3dfb3b0e7af48a04d97c389997a289"
+  }
 }
