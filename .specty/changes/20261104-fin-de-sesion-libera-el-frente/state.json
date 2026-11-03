@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-fin-de-sesion-libera-el-frente",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-fin-de-sesion-libera-el-frente",
   "baseCommit": "86f56a1c3aaaa31683eedc3187dc7de692cdf868",
   "revision": 1,
@@ -52,12 +52,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1676318f1dfa7d687526dd03d318a8350674622a",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:38:48.645Z",
       "doneAt": "2026-11-03T22:40:30.657Z",
-      "summary": "SessionEnd: el guard no anota el paso y endConversation libera los frentes de esa conversación (releaseConversation). enterCommand y unreachable pasan a enforce/enter-command.ts; guard.ts baja de 302 a 271 líneas de código."
+      "summary": "SessionEnd: el guard no anota el paso y endConversation libera los frentes de esa conversación (releaseConversation). enterCommand y unreachable pasan a enforce/enter-command.ts; guard.ts baja de 302 a 271 líneas de código.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1524936d55ef347a10b841fa86091f9eea6f2e82",
+      "startedAt": "2026-11-03T22:40:31.001Z",
+      "doneAt": "2026-11-03T22:40:43.531Z",
+      "summary": "formats.md: el fin de una conversación de Claude Code libera sus frentes. ARCHITECTURE: el momento «Al terminar una sesión» con el hook SessionEnd."
     }
   },
   "pending": {

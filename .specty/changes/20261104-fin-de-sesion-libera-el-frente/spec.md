@@ -66,7 +66,7 @@ Resuelve P58: hoy, tras un `/clear` en Claude Code, la conversación nueva es ot
   - files: packages/cli/src/store/front-owners.ts, packages/cli/src/enforce/fronts.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/enter-command.ts, packages/cli/test/session-end.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-end.test.ts test/enter.test.ts test/front-guard.test.ts test/session-start.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación del fin de una sesión
+- [x] T3: La documentación del fin de una sesión
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm lint
