@@ -199,8 +199,8 @@ async function beforeAction(call: Call): Promise<GuardReply> {
 
 /**
  * The reply before an action. What goes through brings the input the agent's module rewrote and,
- * for an agent with `grants`, Specty's folders: with a command, and with each action of a
- * conversation that entered a change's folder, which may also read the worktrees' folder.
+ * for an agent with `grants`, git's common folder: with a command, and with each action of a
+ * conversation that entered a change's folder.
  */
 async function replyBefore(
   { agent, session, input, bound }: Call,
@@ -217,7 +217,6 @@ async function replyBefore(
       ...said,
       ...(input === undefined ? {} : { input }),
       ...(grants ? { folders: await sharedFolders(session.git) } : {}),
-      ...(entered ? { readable: [await worktreesHome(session.git)] } : {}),
     },
     "before",
   );

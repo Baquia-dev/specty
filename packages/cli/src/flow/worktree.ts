@@ -69,12 +69,12 @@ export async function worktreesHome(git: Git): Promise<string> {
 }
 
 /**
- * The folders Specty's commands write in besides the change's own: git's common folder, where
- * every worktree commits (its `config` lives there), and the worktrees' folder. A sandbox that
- * keeps to the folder an agent works in leaves them out.
+ * The folder Specty's commands write in besides the change's own: git's common folder, where
+ * every worktree commits (its `config` lives there). A sandbox that keeps to the folder an agent
+ * works in leaves it out.
  */
 export async function sharedFolders(git: Git): Promise<string[]> {
-  return [dirname(await git.gitPath("config")), await worktreesHome(git)];
+  return [dirname(await git.gitPath("config"))];
 }
 
 export interface PlacedPaths {

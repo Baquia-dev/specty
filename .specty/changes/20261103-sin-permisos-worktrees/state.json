@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7daba62c5483be336a36d5bac92a7bf56d42d0b1",
+      "startedAt": "2026-11-03T08:16:58.683Z",
+      "doneAt": "2026-11-03T08:17:56.123Z",
+      "summary": "sharedFolders solo da la carpeta común de git; el guard ya no pasa la carpeta de las worktrees (fuera Verdict.readable) y Antigravity solo recibe write_file de la carpeta de git"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

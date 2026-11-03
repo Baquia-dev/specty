@@ -52,7 +52,7 @@ Las worktrees de los cambios pasan a vivir dentro del proyecto (ADR 0018, en un 
 
 ## Tareas
 
-- [ ] T1: Antigravity y el guard, solo con la carpeta común de git
+- [x] T1: Antigravity y el guard, solo con la carpeta común de git
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/test/antigravity.test.ts, packages/cli/test/antigravity-turn.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/antigravity-turn.test.ts && pnpm typecheck && pnpm lint

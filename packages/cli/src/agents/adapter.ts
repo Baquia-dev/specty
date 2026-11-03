@@ -51,8 +51,6 @@ export type Verdict =
        * shell command's, and any action of a conversation that entered a change's folder.
        */
       readonly folders?: readonly string[];
-      /** The folders outside its workspace that conversation's tools may read, too. */
-      readonly readable?: readonly string[];
       /** The tool's input as the agent's module rewrote it (`redirect`), to send back. */
       readonly input?: Readonly<Record<string, unknown>>;
     }

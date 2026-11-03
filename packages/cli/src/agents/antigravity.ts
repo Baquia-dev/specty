@@ -81,12 +81,8 @@ export const antigravity: AgentAdapter = {
   reply: (verdict, phase) => {
     if (phase === "after") return json({});
     if (!verdict.allow) return json({ decision: "deny", reason: verdict.text });
-    // Its terminal sandbox and its file tools work only in the workspace; these open Specty's
-    // folders as well.
-    const grants = [
-      ...(verdict.folders ?? []).map((folder) => `write_file(${folder})`),
-      ...(verdict.readable ?? []).map((folder) => `read_file(${folder})`),
-    ];
+    // Its terminal sandbox works only in the workspace; this opens git's common folder as well.
+    const grants = (verdict.folders ?? []).map((folder) => `write_file(${folder})`);
     return json(
       grants.length === 0
         ? { decision: "allow" }
