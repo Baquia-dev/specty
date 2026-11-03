@@ -6,6 +6,13 @@
   "branch": "specty/20261103-doctor-worktrees-astro-tipos-turbo-deno",
   "baseCommit": "e13cf61461797d5e1405043ff6360e194f2ffdd8",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:99cf9e7a949065e273827874f92228348bbd1c8799d43b4a626cf41bd62c1979",
+    "at": "2026-11-03T14:58:46.320Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "S",
     "score": 3,
@@ -39,12 +46,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:99cf9e7a949065e273827874f92228348bbd1c8799d43b4a626cf41bd62c1979",
-    "at": "2026-11-03T14:58:46.320Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T15:01:59.358Z"
 }

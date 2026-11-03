@@ -12,6 +12,10 @@ import { APP, cli, tempRepo, writeFiles } from "./support";
 const VITE = `(file) => file.startsWith(\`\${import.meta.dirname.replaceAll("\\\\", "/")}/.worktrees/\`)`;
 const METRO = `new RegExp(\`^\${__dirname.replace(/[\\\\^$.*+?()[\\]{}|]/g, "\\\\$&")}[/\\\\\\\\]\\\\.worktrees[/\\\\\\\\]\`)`;
 const VITEST = '"**/.worktrees/**"';
+/** Rsbuild's native watcher may hand its function `\` on Windows: the file's path goes to `/` too. */
+const RSBUILD = `(file) => file.replaceAll("\\\\", "/").startsWith(\`\${import.meta.dirname.replaceAll("\\\\", "/")}/.worktrees/\`)`;
+const FORK_TS_CHECKER = "fork-ts-checker-webpack-plugin";
+const RSBUILD_CHECKER = "@rsbuild/plugin-type-check";
 /** The forms asked before, with the folder's path as it is: they only work without special characters. */
 const VITE_BEFORE = `\`\${import.meta.dirname}/.worktrees/**\``;
 const METRO_BEFORE = `new RegExp(\`^\${__dirname}/\\\\.worktrees/\`)`;
@@ -31,12 +35,91 @@ async function doctorWith(files: Readonly<Record<string, string>>, suffix?: stri
   return { root, doctor: await cli(root, ["doctor"]) };
 }
 
+/**
+ * The same, with `files` written once the change exists: a `package.json` with dependencies in the
+ * commit would make `new` install them in the worktree.
+ */
+async function doctorAfter(files: Readonly<Record<string, string>>) {
+  const { root } = await doctorWith({});
+  await writeFiles(root, files);
+  return { root, doctor: await cli(root, ["doctor"]) };
+}
+
 const viteConfig = (ignored: string) =>
   `export default { server: { watch: { ignored: [${ignored}] } } };\n`;
 const metroConfig = (blocked: string) =>
   `module.exports = { resolver: { blockList: [${blocked}] } };\n`;
 
 describe("doctor and the dev servers that would watch the changes' worktrees", () => {
+  it("AC1: asks Astro for Vite's exclusion in its config, and says it excludes it once there", async () => {
+    const { root, doctor } = await doctorWith({
+      "astro.config.mjs": "export default { vite: {} };\n",
+    });
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      seen("Astro", VITE, "astro.config.mjs (vite.server.watch.ignored)"),
+    );
+
+    await writeFiles(root, {
+      "astro.config.mjs": `export default { vite: { server: { watch: { ignored: [${VITE}] } } } };\n`,
+    });
+    const fixed = await cli(root, ["doctor"]);
+    expect(fixed.out).toContain("Astro excluye .worktrees/.");
+    expect(fixed.out).not.toContain("también revisa .worktrees/");
+  });
+
+  it("AC2: asks fork-ts-checker for .worktrees in tsconfig.json's exclude, or takes it from webpack.config", async () => {
+    const { root, doctor } = await doctorAfter({
+      "package.json": `{ "name": "x", "devDependencies": { "${FORK_TS_CHECKER}": "^9.1.0" } }\n`,
+      "tsconfig.json": '{ "compilerOptions": { "strict": true } }\n',
+    });
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      seen(FORK_TS_CHECKER, '"node_modules", ".worktrees"', "tsconfig.json (exclude)"),
+    );
+
+    await writeFiles(root, {
+      "tsconfig.json":
+        '{ "compilerOptions": { "strict": true }, "exclude": ["node_modules", ".worktrees"] }\n',
+    });
+    const fixed = await cli(root, ["doctor"]);
+    expect(fixed.out).toContain(`${FORK_TS_CHECKER} excluye .worktrees/.`);
+    expect(fixed.out).not.toContain("también revisa .worktrees/");
+
+    // Or in the plugin's own options, in webpack's config.
+    await writeFiles(root, {
+      "tsconfig.json": '{ "compilerOptions": { "strict": true } }\n',
+      "webpack.config.mjs":
+        'export default { plugins: [new ForkTsCheckerWebpackPlugin({ typescript: { configOverwrite: { exclude: ["node_modules", ".worktrees"] } } })] };\n',
+    });
+    const plugin = await cli(root, ["doctor"]);
+    expect(plugin.out).toContain(`${FORK_TS_CHECKER} excluye .worktrees/.`);
+  });
+
+  it("AC3: asks Rsbuild's type checker for the function in rsbuild.config's watchOptions", async () => {
+    const { root, doctor } = await doctorAfter({
+      "package.json": `{ "name": "x", "devDependencies": { "@rsbuild/core": "^2.3.1", "${RSBUILD_CHECKER}": "^1.6.1" } }\n`,
+      "rsbuild.config.mjs": "export default { plugins: [pluginTypeCheck()] };\n",
+    });
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      seen(RSBUILD_CHECKER, RSBUILD, "rsbuild.config.mjs (tools.rspack.watchOptions.ignored)"),
+    );
+
+    await writeFiles(root, {
+      "rsbuild.config.mjs": [
+        "export default {",
+        "  plugins: [pluginTypeCheck()],",
+        `  tools: { rspack: { watchOptions: { ignored: ${RSBUILD} } } },`,
+        "};",
+        "",
+      ].join("\n"),
+    });
+    const fixed = await cli(root, ["doctor"]);
+    expect(fixed.out).toContain(`${RSBUILD_CHECKER} excluye .worktrees/.`);
+    expect(fixed.out).not.toContain("también revisa .worktrees/");
+  });
+
   it("AC4: asks Vite for the anchored exclusion, and Vitest configured in vite.config for its own", async () => {
     const { doctor } = await doctorWith({
       "vite.config.ts":

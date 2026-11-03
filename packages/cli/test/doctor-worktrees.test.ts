@@ -74,4 +74,54 @@ describe("doctor and the JavaScript tools that would see the changes' worktrees"
     expect(doctor.out).not.toContain("también revisa .worktrees/");
     expect(doctor.out).not.toContain("excluye .worktrees/");
   });
+
+  it("AC4: asks for !.worktrees/** in pnpm-workspace.yaml when Turborepo reads a pattern starting with **", async () => {
+    const { root } = await doctorWith({});
+    await writeFiles(root, {
+      "turbo.json": '{ "tasks": { "build": {} } }\n',
+      "pnpm-workspace.yaml": 'packages:\n  - "**"\n',
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(
+      seen("Turborepo", '"!.worktrees/**"', "pnpm-workspace.yaml (packages)"),
+    );
+
+    await writeFiles(root, {
+      "pnpm-workspace.yaml": 'packages:\n  - "**"\n  - "!.worktrees/**"\n',
+    });
+    const fixed = await cli(root, ["doctor"]);
+    expect(fixed.out).toContain("Turborepo excluye .worktrees/.");
+    expect(fixed.out).not.toContain("también revisa .worktrees/");
+
+    // Patterns under a folder don't reach the hidden one.
+    await writeFiles(root, { "pnpm-workspace.yaml": "packages:\n  - packages/*\n  - apps/*\n" });
+    const folders = await cli(root, ["doctor"]);
+    expect(folders.out).not.toContain("Turborepo");
+  });
+
+  it("AC5: asks Deno for .worktrees/ in deno.json's exclude, also when only deno.lock is there", async () => {
+    const { root } = await doctorWith({});
+    await writeFiles(root, { "deno.json": '{ "tasks": { "dev": "deno run main.ts" } }\n' });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(seen("Deno", '".worktrees/"', "deno.json (exclude)"));
+
+    await writeFiles(root, { "deno.json": '{ "exclude": [".worktrees/"] }\n' });
+    const fixed = await cli(root, ["doctor"]);
+    expect(fixed.out).toContain("Deno excluye .worktrees/.");
+    expect(fixed.out).not.toContain("también revisa .worktrees/");
+
+    // Its JSONC file, and a project with only its lockfile.
+    const { root: jsonc } = await doctorWith({});
+    await writeFiles(jsonc, { "deno.jsonc": '{\n  // tasks\n  "tasks": {}\n}\n' });
+    const commented = await cli(jsonc, ["doctor"]);
+    expect(commented.out).toContain(seen("Deno", '".worktrees/"', "deno.jsonc (exclude)"));
+
+    const { root: locked } = await doctorWith({});
+    await writeFiles(locked, { "deno.lock": '{ "version": "5" }\n' });
+    const lockOnly = await cli(locked, ["doctor"]);
+    expect(lockOnly.code).toBe(1);
+    expect(lockOnly.out).toContain(seen("Deno", '".worktrees/"', "deno.json (exclude)"));
+  });
 });
