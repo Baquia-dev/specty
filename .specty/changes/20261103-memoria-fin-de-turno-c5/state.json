@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-fin-de-turno-c5",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-fin-de-turno-c5",
   "baseCommit": "7b5a377abe7f0a22f2e50be83049a26076594b59",
   "revision": 1,
@@ -55,6 +55,8 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T08:39:27.978Z"
+  "lockedTests": {
+    "packages/cli/test/memory-stop.test.ts": "sha256:05cb89b87bdfb33ff207d5a353175a37fdc55a1966b88c8fdb1b069a2be5ed35",
+    "packages/core/test/memory/turn-end.test.ts": "sha256:84b88f063d3e586264d630fe1b7160a91d4ecb210aa762695631c5c7c9a6f03a"
+  }
 }
