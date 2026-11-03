@@ -8,7 +8,14 @@ import { openChanges } from "../commands/status";
 import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
 import { readMemory } from "../store/memory";
-import { delegationView, parseAction, runAction, setDelegation } from "./actions";
+import {
+  delegationView,
+  memoryAction,
+  parseAction,
+  parseMemoryAction,
+  runAction,
+  setDelegation,
+} from "./actions";
 import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
 import { changeRecords } from "./records";
@@ -236,6 +243,10 @@ async function act(
     if (typeof on !== "boolean") return bad();
     return done(await context.serial(() => setDelegation(context.session, on)));
   }
+  const memory = parseMemoryAction(pathname, body);
+  if (memory === "bad") return bad();
+  if (memory !== undefined)
+    return done(await context.serial(() => memoryAction(context.session, memory)));
   const verify = /^\/api\/changes\/([^/]+)\/verify$/.exec(pathname)?.[1];
   // Outside the queue: it takes minutes and changes no state, so the other actions go on.
   if (verify !== undefined) return done(await context.runs.start(decodeURIComponent(verify)));

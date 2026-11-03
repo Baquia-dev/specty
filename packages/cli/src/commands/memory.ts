@@ -85,6 +85,24 @@ async function writerOf(session: Session): Promise<MemoryWriter> {
   return { target: targetOf(session, await openChange(session)), author: authorOf(session) };
 }
 
+/** What the person decides on an entry from `specty ui` (ADR 0016). */
+export type MemoryVerb = "drop" | "keep" | "done";
+
+/**
+ * A decision of the person's on entry `id`, as `memory drop`, `memory keep` or `memory done`
+ * would take it: from `specty ui`, the session is the person's on its screen.
+ */
+export async function personMemoryAction(
+  session: Session,
+  id: string,
+  verb: MemoryVerb,
+  reason: string | undefined,
+): Promise<Output> {
+  if (verb === "done") return markDone(session, id);
+  const writer = await writerOf(session);
+  return verb === "drop" ? dropEntry(session, id, reason, writer) : keepEntry(session, id, writer);
+}
+
 /** `specty memory`: the open entries, or every one with `--all`. */
 async function listMemory(session: Session, all: boolean): Promise<Output> {
   const { entries } = await readMemory(session.git, session.config.memory.branch);

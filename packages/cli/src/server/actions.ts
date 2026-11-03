@@ -15,6 +15,7 @@ import { approve } from "../commands/approve";
 import { delegate } from "../commands/delegate";
 import { close } from "../commands/finish";
 import { type PersonAction, personSession } from "../commands/human";
+import { type MemoryVerb, personMemoryAction } from "../commands/memory";
 import { reject } from "../commands/scope-decision";
 import { resolveActive, withChangeLock } from "../flow/active";
 import {
@@ -192,6 +193,38 @@ function onScreen(session: Session, choice?: string): Session {
     session.config,
     session.delegated,
   );
+}
+
+/** A decision on an entry of Specty's memory from the UI: the entry, the verb and its reason. */
+export interface MemoryAction {
+  readonly id: string;
+  readonly verb: MemoryVerb;
+  readonly reason?: string;
+}
+
+const MEMORY_ACTION = /^\/api\/memory\/([^/]+)\/(drop|keep|done)$/;
+
+/**
+ * `POST /api/memory/<id>/drop|keep|done`, with `{ reason }` for `drop`; `bad` for another verb
+ * under `/api/memory/`, and nothing for any other path.
+ */
+export function parseMemoryAction(
+  pathname: string,
+  body: unknown,
+): MemoryAction | "bad" | undefined {
+  if (!pathname.startsWith("/api/memory/")) return undefined;
+  const [, id, verb] = MEMORY_ACTION.exec(pathname) ?? [];
+  if (id === undefined || (verb !== "drop" && verb !== "keep" && verb !== "done")) return "bad";
+  const reason = isRecord(body) && typeof body.reason === "string" ? body.reason : undefined;
+  return { id: decodeURIComponent(id), verb, ...(reason !== undefined ? { reason } : {}) };
+}
+
+/**
+ * The person's decision on an entry from the UI (ADR 0016), with the person on its screen: a
+ * `drop` drops the entry, as from their terminal.
+ */
+export function memoryAction(session: Session, action: MemoryAction): Promise<Output> {
+  return personMemoryAction(onScreen(session), action.id, action.verb, action.reason);
 }
 
 /** Delegated mode as the UI shows it: on or off, who turned it on and when, and the warning. */

@@ -57,7 +57,7 @@ La página «Memoria» de `specty ui` enseña lo que le toca a la persona, pero 
 
 ## Tareas
 
-- [ ] T1: Las acciones de la memoria en el servidor
+- [x] T1: Las acciones de la memoria en el servidor
   - files: packages/cli/src/commands/memory.ts, packages/cli/src/server/actions.ts, packages/cli/src/server/http.ts, packages/cli/test/server/memory-actions.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/memory-actions.test.ts test/server/actions.test.ts test/memory-drop.test.ts && pnpm lint
