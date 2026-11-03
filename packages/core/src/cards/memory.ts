@@ -296,6 +296,12 @@ export function memoryCommitSubject(operation: MemoryOperation, id: string, lang
       return t(`memoria: ${id} tomada`, `memory: ${id} taken`);
     case "free":
       return t(`memoria: ${id} libre de nuevo`, `memory: ${id} free again`);
+    case "drop":
+      return t(`memoria: ${id} descartada`, `memory: ${id} dropped`);
+    case "propose-drop":
+      return t(`memoria: ${id} propuesta para descartar`, `memory: ${id} proposed to drop`);
+    case "keep":
+      return t(`memoria: ${id} se mantiene`, `memory: ${id} kept`);
   }
 }
 

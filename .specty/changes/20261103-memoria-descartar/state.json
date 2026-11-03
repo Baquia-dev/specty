@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e02460947055a8e9adb7eba25a06e9de6a3ca8a3",
+      "startedAt": "2026-11-03T07:39:20.696Z",
+      "doneAt": "2026-11-03T07:40:34.336Z",
+      "summary": "MemoryEntry gana drop; droppedEntry (descartada por la persona o propuesta por un agente) y keptEntry; asuntos de commit de drop, propose-drop y keep; los campos opcionales de parseEntry en su propia función"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

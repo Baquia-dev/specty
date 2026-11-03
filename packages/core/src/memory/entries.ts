@@ -28,6 +28,8 @@ export interface MemoryEntry {
   readonly quote?: string;
   /** The change that took it (`specty new --resolves`), and when. */
   readonly taken?: { readonly change: string; readonly at: string };
+  /** Who asked to drop it, why and when: proposed by an agent, or dropped by the person. */
+  readonly drop?: { readonly reason: string; readonly by: string; readonly at: string };
   /** Who marked it done, or dropped it, and when. */
   readonly closed?: { readonly at: string; readonly by: string };
   /** Written for someone without the conversation's context. */
@@ -45,6 +47,7 @@ const EntrySchema = z
     origin: z.strictObject({ change: Text.optional(), by: Text }),
     quote: Text.optional(),
     taken: z.strictObject({ change: Text, at: Text }).optional(),
+    drop: z.strictObject({ reason: Text, by: Text, at: Text }).optional(),
     closed: z.strictObject({ at: Text, by: Text }).optional(),
   })
   .refine((entry) => entry.kind !== "decision" || entry.quote !== undefined, {
@@ -62,17 +65,30 @@ export function parseEntry(markdown: string): MemoryEntry | undefined {
   const parsed = EntrySchema.safeParse(loadYaml(raw));
   const text = (body ?? "").trim();
   if (!parsed.success || text.length === 0) return undefined;
-  const { id, kind, status, created, origin, quote, taken, closed } = parsed.data;
+  const { id, kind, status, created, origin } = parsed.data;
   return {
     id,
     kind,
     status,
     created,
     origin: { ...(origin.change !== undefined ? { change: origin.change } : {}), by: origin.by },
+    ...optionalFields(parsed.data),
+    text,
+  };
+}
+
+/** The fields an entry may lack, only those its frontmatter has. */
+function optionalFields({
+  quote,
+  taken,
+  drop,
+  closed,
+}: z.infer<typeof EntrySchema>): Pick<MemoryEntry, "quote" | "taken" | "drop" | "closed"> {
+  return {
     ...(quote !== undefined ? { quote } : {}),
     ...(taken !== undefined ? { taken: { change: taken.change, at: taken.at } } : {}),
+    ...(drop !== undefined ? { drop: { reason: drop.reason, by: drop.by, at: drop.at } } : {}),
     ...(closed !== undefined ? { closed: { at: closed.at, by: closed.by } } : {}),
-    text,
   };
 }
 
@@ -104,7 +120,7 @@ export function isOpenEntry(entry: MemoryEntry): boolean {
 }
 
 /** What a commit of the memory's branch does to its entry. */
-export type MemoryOperation = "add" | "done" | "take" | "free";
+export type MemoryOperation = "add" | "done" | "take" | "free" | "drop" | "propose-drop" | "keep";
 
 /** Why `specty new --resolves` cannot take an entry. */
 export type ClaimProblem =
@@ -193,6 +209,26 @@ export function harvestable(
       kept.push(text);
   }
   return kept;
+}
+
+/**
+ * `entry` with a request to drop it: dropped, closed by whoever asked, when the `person` asks;
+ * only proposed to drop when an agent does, since dropping is the person's alone (ADR 0016).
+ */
+export function droppedEntry(
+  entry: MemoryEntry,
+  drop: { readonly reason: string; readonly by: string; readonly at: string },
+  person: boolean,
+): MemoryEntry {
+  return person
+    ? { ...entry, status: "dropped", drop, closed: { at: drop.at, by: drop.by } }
+    : { ...entry, status: "drop-proposed", drop };
+}
+
+/** An entry proposed to drop, open again without the proposal. */
+export function keptEntry(entry: MemoryEntry): MemoryEntry {
+  const { drop: _drop, ...kept } = entry;
+  return { ...kept, status: "open" };
 }
 
 /** By date and, on the same date, the P ids before the D ones, each by number. */

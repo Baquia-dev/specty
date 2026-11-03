@@ -165,9 +165,11 @@ export {
 export {
   type ClaimProblem,
   claimable,
+  droppedEntry,
   freeWork,
   harvestable,
   isOpenEntry,
+  keptEntry,
   MEMORY_KINDS,
   MEMORY_STATUSES,
   type MemoryEntry,
