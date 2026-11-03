@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-frentes-en-la-memoria",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-frentes-en-la-memoria",
   "baseCommit": "042eeefd2788dc9a723896f106ce10ce5563a0e4",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:32b56fe277cd79f5f78d796554f7fca67e52d11a619fa22a48d848dca922bda8",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "08bcf3fee9d395fff41bd19b5ab40bfe5d07c1c1",
+      "attempts": 1,
       "startedAt": "2026-11-03T19:34:12.028Z",
       "doneAt": "2026-11-03T19:34:45.030Z",
-      "summary": "formats.md documenta los archivos de los frentes, specty front, front add, front assign y el trailer Specty-Front; ARCHITECTURE.md, los comandos front; dominio.md, el término «Frente», distinto de carril"
+      "summary": "formats.md documenta los archivos de los frentes, specty front, front add, front assign y el trailer Specty-Front; ARCHITECTURE.md, los comandos front; dominio.md, el término «Frente», distinto de carril",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T19:39:43.926Z",
   "lockedTests": {
     "packages/cli/test/fronts.test.ts": "sha256:9b1c0fc9c222791873eb4bd0484fdf0fc0119ff6d6608a6bfc61151a79f76d02",
     "packages/core/test/cards/fronts.test.ts": "sha256:f9db9f5625a3c8c86baf5e1d59394dcdf4e279db45194177ad0eb42053a908be",

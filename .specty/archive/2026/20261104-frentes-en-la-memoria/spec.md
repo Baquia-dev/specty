@@ -78,3 +78,25 @@ Primer cambio de P33 (repartir el trabajo entre sesiones): la memoria de Specty 
 ## Riesgos
 
 - R1: Una entrada asignada a un frente que luego se hace o se descarta sigue en su lista — `specty front` solo muestra las abiertas, y el siguiente cambio de P33 tampoco las ofrecerá.
+
+## Cierre
+
+### Resumen
+
+La memoria de Specty guarda frentes de trabajo en su rama, uno por archivo `fronts/<nombre>.md`, con lo que abarca, sus rutas y sus pendientes y mejoras en orden. `specty front add <nombre> "<texto>" [--path <ruta>…]` crea uno; `specty front assign <frente> <id>…` pone entradas al final de un frente, en el orden dado, y las saca del frente en que estuvieran; `specty front` lista cada frente con sus entradas abiertas en orden. Un nombre que no vale o repetido, un texto vacío, un frente que no existe o una entrada que no existe, no es trabajo o está cerrada no escriben nada y lo explican. Cada operación es un commit de la rama con el trailer `Specty-Front`, y el almacén de la memoria lee y escribe ahora `entries/` y `fronts/`.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Se llaman «frentes» (`specty front`) y no «carriles», que en Specty ya es el tipo de cambio; lo eligió la persona. El primer borrador, «Carriles en la memoria», se canceló antes de escribir tests ni código, y `docs/dominio.md` gana el término «Frente».
+- El título de cada frente en `specty front` va en mayúsculas, como el de toda sección; los comandos lo encuentran sin distinguirlas.
+- El rechazo de un frente que no existe tiene su propia función de textos, para que la de `front add` no pase de 50 líneas.
+
+### Pendientes
+
+- P33: faltan el dueño de un frente (`specty front take` y `front free`, que registra el guard, y `status` con cada frente y su dueño) y, en el último cambio, la tarjeta de inicio con solo lo del frente de la sesión y los frenos de `new --resolves` y `propose`.
+- `packages/core/src/memory/fronts.ts` repite de `memory/entries.ts` la lectura del frontmatter (`FRONTMATTER`, `loadYaml`), y `cards/fronts.ts` repite de `cards/memory-refusals.ts` la tabla `ONE_OF_KIND`: compartirlas en un módulo propio.
+- P2 y P9: `packages/core/src/cards/index.ts` tiene 389 líneas de código y `packages/core/src/index.ts`, 333.
