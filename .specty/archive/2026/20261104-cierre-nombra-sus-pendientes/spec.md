@@ -70,3 +70,23 @@ Resuelve P43 y P47. Hoy la salida de `specty close` no dice qué pendientes deja
 ## Riesgos
 
 - R1: Mover `harvestEntries` y `settleEntries` puede romper lo que hace archivar un cambio — los tests de la recolección, del reparto de entradas y de los recordatorios siguen en la verificación de T2.
+
+## Cierre
+
+### Resumen
+
+La salida del comando que cierra un cambio (`close`, `accept` de un quick o el retro confirmado) nombra, en «PENDIENTES QUE QUEDAN EN LA MEMORIA», los pendientes que su cierre anotó: las viñetas de «### Pendientes» y las observaciones de la revisión sin citar. Cada uno sale con su id y su primera línea, tras los recordatorios que disparó, con una línea que dice que las sesiones los verán al empezar. Sin pendientes nuevos, la sección no sale. Lo que archivar un cambio hace en la memoria vive ahora en `flow/archive-memory.ts`: `settleEntries`, `harvestEntries` (que devuelve las entradas anotadas), `fireReminders` y `withArchivedMemory`, que sustituye a `withFiredReminders`. `commands/memory.ts` bajó de 319 a 264 líneas de código (P47). Las dos secciones de la tarjeta están en `cards/archived-memory.ts`.
+
+### Desviaciones
+
+- Las tareas del CLI se juntaron en T2 antes de aprobar: mover `harvestEntries` dejaba a `accept.ts` sin su import y sus tests fallaban en ejecución.
+- `flow/review-remarks.ts` entró con `specty scope add` (S1), porque importaba el tipo `Harvest` del sitio viejo. Una segunda solicitud igual (S2), creada por error al repetir el comando, se rechazó.
+
+### Decisiones
+
+- `withArchivedMemory` recibe lo archivado (`fired` y `harvested`), no solo los recordatorios, para que cada salida añada las dos secciones con una sola llamada.
+- `authorOf` se exporta de `commands/memory.ts` para `flow/archive-memory.ts`, en vez de duplicarlo.
+
+### Pendientes
+
+- Ninguno.
