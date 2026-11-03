@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261104-frentes-en-el-estado-y-el-inicio",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-frentes-en-el-estado-y-el-inicio",
+  "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
+  "revision": 2,
+  "size": {
+    "level": "L",
+    "score": 17,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:20be5c4a2754ccceb9647b61519665df4620d26d197138f6d685853006e9a11a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e4c225a740323fbda2d95ea9b3df010600ebab15322a76da73742c5545b34a77",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e2253779ed5e449d620cff1dcdacead3e527fe71d17f71373e813d320f73bd68",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:af2aeed10e63f8d254b830a1a6375d120f7f22a8fde7c1dc2ae7b9008424e654",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f91805e355d7aa5902a96fd53d48faf38d780ed86211128bba459f723d2973f0",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 6,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:422f37c06e20730104707374dba077d23ef0239d6e39cbcd439ae4e1be09562b",
+    "at": "2026-11-03T22:01:47.067Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
