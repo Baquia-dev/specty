@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
   "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
   "revision": 1,
@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5352ba47d7c61f32c8371f8bfd5cc42ccc5e685a",
+      "attempts": 1,
       "startedAt": "2026-11-03T12:43:53.539Z",
       "doneAt": "2026-11-03T12:45:34.196Z",
-      "summary": "new copia go.work y go.work.sum sin versionar de la carpeta principal a la worktree, los ignora en .git/info/exclude si nada los ignoraba (excludeInClone, como /.worktrees/) y la tarjeta los nombra bajo WORKSPACE DE GO COPIADO"
+      "summary": "new copia go.work y go.work.sum sin versionar de la carpeta principal a la worktree, los ignora en .git/info/exclude si nada los ignoraba (excludeInClone, como /.worktrees/) y la tarjeta los nombra bajo WORKSPACE DE GO COPIADO",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c21a462cb98923d1faef5466fcc3952692358530",
+      "startedAt": "2026-11-03T12:45:34.524Z",
+      "doneAt": "2026-11-03T12:49:06.536Z",
+      "summary": "doctor pide a Vite y Metro (también en una app de React Native sin metro.config) su exclusión de .worktrees/ anclada a la carpeta de la configuración, y a Vitest en vite.config la suya; ARCHITECTURE y ADR 0018 recogen las mediciones y la corrección de Go"
     }
   },
   "pending": {
