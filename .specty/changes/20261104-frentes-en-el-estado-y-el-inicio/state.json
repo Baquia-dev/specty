@@ -6,6 +6,13 @@
   "branch": "specty/20261104-frentes-en-el-estado-y-el-inicio",
   "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:422f37c06e20730104707374dba077d23ef0239d6e39cbcd439ae4e1be09562b",
+    "at": "2026-11-03T22:01:47.067Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 17,
@@ -49,12 +56,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:422f37c06e20730104707374dba077d23ef0239d6e39cbcd439ae4e1be09562b",
-    "at": "2026-11-03T22:01:47.067Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T22:04:43.175Z"
 }
