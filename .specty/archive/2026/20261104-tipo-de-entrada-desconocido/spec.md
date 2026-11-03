@@ -20,3 +20,9 @@ Resuelve P1. Hoy commander rechaza un `--kind` desconocido de `specty memory add
   - files: packages/cli/src/commands/memory.ts, packages/core/src/cards/memory-refusals.ts, packages/cli/test/memory-kind.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-kind.test.ts test/memory.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
   - type: fix
+
+## Cierre
+
+### Resumen
+
+memory add valida --kind él mismo (MEMORY_KINDS) y rechaza uno desconocido con la tarjeta unknown-kind de memory-refusals, en español y en inglés, en vez del error en inglés de commander.
