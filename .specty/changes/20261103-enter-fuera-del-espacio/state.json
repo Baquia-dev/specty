@@ -2,23 +2,23 @@
   "schema": 1,
   "id": "20261103-enter-fuera-del-espacio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "testing",
   "branch": "specty/20261103-enter-fuera-del-espacio",
   "baseCommit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
-  "revision": 1,
+  "revision": 2,
   "approved": {
-    "revision": 1,
-    "hash": "sha256:c1b81587f8aca2d16c120722e0c0fc90bce057c5a52cdfa27f55a2c5c07ed970",
-    "at": "2026-11-03T06:58:47.383Z",
+    "revision": 2,
+    "hash": "sha256:6a052c4cc89604c30a74536602b4c49bb468ed34e3e5f1dd25ccf9a51818d037",
+    "at": "2026-11-03T07:05:35.175Z",
     "by": "Jorge Palacio Barcinilla",
     "channel": "delegated"
   },
   "size": {
     "level": "L",
-    "score": 11,
+    "score": 12,
     "adjust": 0,
     "reasons": [
-      "9 archivos",
+      "10 archivos",
       "2 módulos"
     ]
   },
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "fd7576862ed58dd56fb14ba02d229fdc88769260",
+      "attempts": 1,
       "startedAt": "2026-11-03T07:01:35.117Z",
       "doneAt": "2026-11-03T07:03:03.578Z",
-      "summary": "AgentAdapter.workspace (Antigravity: workspacePaths) y outOfReach con rutas reales; enterCommand niega specty enter sin ligar la conversación cuando la carpeta del cambio queda fuera de su espacio de trabajo"
+      "summary": "AgentAdapter.workspace (Antigravity: workspacePaths) y outOfReach con rutas reales; enterCommand niega specty enter sin ligar la conversación cuando la carpeta del cambio queda fuera de su espacio de trabajo",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -67,11 +67,12 @@
   "maxIds": {
     "A": 4,
     "AC": 3,
-    "T": 2,
+    "T": 3,
     "R": 2
   },
   "lockedTests": {
     "packages/cli/test/antigravity.test.ts": "sha256:0ae31274090e757723c7d2ff4d890e8c4270301249660a9e16115079385704fd",
     "packages/core/test/guard/worktrees.test.ts": "sha256:3ff6226da4d3723e3954222b240194247f94b2bf01169ee37e2905b95ad66c90"
-  }
+  },
+  "testCycle": "bug"
 }

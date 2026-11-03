@@ -46,6 +46,7 @@ Antigravity solo deja trabajar a su agente dentro de las carpetas de su espacio 
 - modificar packages/core/src/capabilities.ts — el límite de Antigravity al entrar en un cambio
 - modificar packages/cli/test/antigravity.test.ts — la entrada negada y la permitida, y el ayudante `entered()`
 - crear packages/core/test/guard/worktrees.test.ts — el motivo y el SIGUIENTE de la negativa, en español y en inglés
+- modificar packages/core/test/capabilities.test.ts — la tabla dice el límite de Antigravity al entrar en un cambio
 - modificar docs/ARCHITECTURE.md — «Entrar con `specty enter`» y la herramienta que no alcanza la carpeta
 
 ## Tareas
@@ -58,6 +59,11 @@ Antigravity solo deja trabajar a su agente dentro de las carpetas de su espacio 
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/enforce/place.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/antigravity.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint
+- [ ] T3: La tabla de capacidades de ARCHITECTURE §10 recoge el límite de Antigravity
+  - files: docs/ARCHITECTURE.md, packages/core/test/capabilities.test.ts
+  - ac: AC1
+  - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/capabilities.test.ts && pnpm lint
+  - type: fix
 
 ## Riesgos
 
