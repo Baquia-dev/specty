@@ -60,7 +60,7 @@ follows:
 
 ## Tareas
 
-- [ ] T1: Los ids de `new --resolves` en el análisis de un comando
+- [x] T1: Los ids de `new --resolves` en el análisis de un comando
   - files: packages/core/src/guard/specty-calls.ts, packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts && pnpm lint

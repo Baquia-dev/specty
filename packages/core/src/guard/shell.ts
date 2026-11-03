@@ -2,12 +2,11 @@
 import { lookup } from "../lookup";
 import { basename } from "../paths";
 import { analyzeGit, type GitCommit } from "./git";
+import { type SpectyCalls, spectyCalls, subcommand } from "./specty-calls";
 import { type Token, tokenize } from "./tokens";
 
 /** What a shell command would do, as far as the flow is concerned. */
-export interface ShellAnalysis {
-  /** Specty subcommands it runs (`approve`, `next`…). */
-  readonly specty: readonly string[];
+export interface ShellAnalysis extends SpectyCalls {
   /** `npx specty` and similar: they install an unrelated npm package. */
   readonly unscopedNpx: boolean;
   /**
@@ -27,10 +26,6 @@ export interface ShellAnalysis {
   readonly deletes: readonly string[];
   /** Written or removed paths it cannot place: shell variables, `~`, or after `cd` to an unknown directory. */
   readonly unresolved: readonly string[];
-  /** The change each `specty enter <id>` names. */
-  readonly enters: readonly string[];
-  /** Each front of Specty's memory that `specty front take|free <front>` names, in order. */
-  readonly fronts: readonly { readonly action: "take" | "free"; readonly name: string }[];
   /**
    * Where each simple command but `cd` runs: relative to where the command starts (`""` is
    * there), absolute, or undefined after a `cd` somewhere the analysis cannot name.
@@ -60,6 +55,7 @@ const EMPTY: ShellAnalysis = {
   unresolved: [],
   enters: [],
   fronts: [],
+  resolves: [],
   runsIn: [],
 };
 
@@ -181,36 +177,9 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     unresolved: [...a.unresolved, ...b.unresolved],
     enters: [...a.enters, ...b.enters],
     fronts: [...a.fronts, ...b.fronts],
+    resolves: [...a.resolves, ...b.resolves],
     runsIn: [...a.runsIn, ...b.runsIn],
   };
-}
-
-/** What a segment that runs Specty with `args` asks of it; nothing when it does not run Specty. */
-function spectyCalls(
-  args: readonly string[] | undefined,
-): Pick<ShellAnalysis, "specty" | "enters" | "fronts"> {
-  if (args === undefined) return { specty: [], enters: [], fronts: [] };
-  const name = subcommand(args);
-  return {
-    specty: name.length > 0 ? [name] : [],
-    enters: entered(args),
-    fronts: frontRequests(args),
-  };
-}
-
-/** The change `specty enter <id>` names: the first word after `enter` that is not an option. */
-function entered(args: readonly string[]): string[] {
-  if (subcommand(args) !== "enter") return [];
-  const id = args.slice(args.indexOf("enter") + 1).find((arg) => !arg.startsWith("-"));
-  return id === undefined ? [] : [id];
-}
-
-/** The front `specty front take|free <front>` names: the words after `front` that are not options. */
-function frontRequests(args: readonly string[]): ShellAnalysis["fronts"] {
-  if (subcommand(args) !== "front") return [];
-  const words = args.slice(args.indexOf("front") + 1).filter((arg) => !arg.startsWith("-"));
-  const [action, name] = words;
-  return (action === "take" || action === "free") && name !== undefined ? [{ action, name }] : [];
 }
 
 function splitRedirections(tokens: readonly Token[]): { words: string[]; redirected: string[] } {
@@ -248,10 +217,6 @@ function skipWrappers(words: readonly string[], from: number): number {
 
 function nonFlags(args: readonly string[]): string[] {
   return args.filter((arg) => !arg.startsWith("-"));
-}
-
-function subcommand(args: readonly string[]): string {
-  return args.find((arg) => !arg.startsWith("-")) ?? "";
 }
 
 /** Arguments after the Specty program, for any way of invoking it. */

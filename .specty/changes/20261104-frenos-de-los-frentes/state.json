@@ -45,7 +45,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "566a46241d5ae8d26e0b108a9d6f56e97617e1d5",
+      "startedAt": "2026-11-03T22:25:58.662Z",
+      "doneAt": "2026-11-03T22:26:47.356Z",
+      "summary": "guard/specty-calls.ts: lo que una llamada a Specty pide (subcomando, enter, front take|free) sale de shell.ts, y añade resolves, los ids de specty new --resolves (también --resolves=<id>). ShellAnalysis extiende SpectyCalls; shell.ts baja a 251 líneas."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
