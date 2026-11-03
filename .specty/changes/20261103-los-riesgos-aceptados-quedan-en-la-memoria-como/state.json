@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
   "baseCommit": "386167b88f29023b2774dc35bfd733fe7746a53c",
   "revision": 1,
@@ -47,6 +47,8 @@
     "T": 2,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T12:15:24.925Z"
+  "lockedTests": {
+    "packages/cli/test/risk-lessons.test.ts": "sha256:a07b43c48baf649dddc0fcdbf0e882a60a3c9e09ffb27838de856662109c8944",
+    "packages/core/test/cards/risk-lessons.test.ts": "sha256:ce46aa6fbdf1cc59af3e8a0a5879710f9d6e897e0c0da4f444ca497245cd8723"
+  }
 }
