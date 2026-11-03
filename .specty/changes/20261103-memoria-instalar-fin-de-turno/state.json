@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-instalar-fin-de-turno",
   "baseCommit": "a3eda5bdf9597ca1d2ec2128b917c52c79e02a6d",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b05079ea1416e2010687aec04219109cca3dd968c3e343eb39120a5b8a94c2e9",
+    "at": "2026-11-03T08:51:01.129Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b05079ea1416e2010687aec04219109cca3dd968c3e343eb39120a5b8a94c2e9",
-    "at": "2026-11-03T08:51:01.129Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T08:52:49.127Z"
 }

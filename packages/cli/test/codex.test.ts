@@ -186,7 +186,9 @@ describe("installing the guard in Codex", () => {
       "confía en el proyecto cuando Codex lo pregunte y revisa el hook con `/hooks`",
     );
     const hooks = await hooksOf(root);
-    expect(hooks).toMatchObject({ description: "mine", hooks: { Stop: [stop] } });
+    // The person's Stop stays first; Specty's memory net comes after it.
+    const net = { type: "command", command: expect.stringContaining("hook memory-stop codex") };
+    expect(hooks).toMatchObject({ description: "mine", hooks: { Stop: [stop, { hooks: [net] }] } });
     const guard = { type: "command", command: expect.stringContaining("guard --tool codex") };
     expect(hooks.hooks.PreToolUse).toMatchObject([
       { matcher: "^(Bash|apply_patch)$", hooks: [guard] },
