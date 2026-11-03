@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
   "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
   "revision": 1,
@@ -59,6 +59,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T12:43:44.352Z"
+  "lockedTests": {
+    "packages/cli/test/doctor-watchers.test.ts": "sha256:ea121ec2f9bda905447c65600e3288e5470dac2b1f140be8f020341f061a8e58",
+    "packages/cli/test/worktree-go-work.test.ts": "sha256:e7f5776a0edfa2b15fa247174c69ebcfa447c8edccc192d456e41116ab2e5d43"
+  }
 }
