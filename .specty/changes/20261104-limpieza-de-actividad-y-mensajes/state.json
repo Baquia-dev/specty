@@ -41,7 +41,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5ae54789b888463a40a268df607316f40657026c",
+      "startedAt": "2026-11-03T22:49:39.044Z",
+      "doneAt": "2026-11-03T22:49:56.768Z",
+      "summary": "pruneCard acepta activity y messages, opcionales: secciones ACTIVIDAD BORRADA y MENSAJES BORRADOS, y «nada que limpiar» solo si no borró nada."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
