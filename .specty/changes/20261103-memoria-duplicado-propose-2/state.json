@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-duplicado-propose-2",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-duplicado-propose-2",
   "baseCommit": "2c3a4e3ccc76154abf0aaf3f68ce9cdb62bdfcbc",
   "revision": 1,
@@ -47,6 +47,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T08:23:42.879Z"
+  "lockedTests": {
+    "packages/cli/test/duplicate-files.test.ts": "sha256:5116e56f1ced91a2aefd4ab7a3181e44a34dce4de113ecad4910a0f1ee86bcb8",
+    "packages/core/test/cards/duplicate-files.test.ts": "sha256:7a152e4c2f941a11c06120611a63453444dcc602ab000c1e372bcc1a3f9aa71e"
+  }
 }
