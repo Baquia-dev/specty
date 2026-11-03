@@ -64,3 +64,22 @@ La memoria de Specty vive en su propia rama (`specty-memory`), y solo los comand
 - R1: Un falso positivo bloquea un comando legítimo del agente, como `git push --all` — solo afecta a comandos que suben o tocan todas las ramas, y el mensaje explica que lo haga la persona.
 - R2: El guard se vuelve más lento — es análisis de texto del comando, sin llamadas a git.
 - R3: Un agente escribe la rama con un comando ofuscado — las reglas de shell son de mejor esfuerzo; `specty memory` sigue leyendo solo entradas válidas.
+
+## Cierre
+
+### Resumen
+
+El guard ya no deja a un agente escribir con git la rama de la memoria de Specty (`memory.branch`). `writtenRefs` (`guard/git-refs.ts`) lee qué ramas escribe, borra, sube o saca cada comando de git (`update-ref`, `branch`, `push`, `fetch`, `switch`, `checkout` y `worktree add`), sin `+`, `refs/heads/` ni `heads/`, y con `*` para `update-ref --stdin`, `push --all` y `push --mirror`. La regla `memory` del guard bloquea la rama de la memoria o `*`, dice que solo la escriben los comandos de `specty memory` y que subirla es cosa de la persona. Leerla, o escribir otras ramas, sigue permitido. Con esto se completa el AC6 de la épica y el corte C3.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- Cada comando de git tiene su lector de ramas en una tabla, con sus opciones que llevan valor, en vez de un `switch` largo.
+- Crear otra rama desde la de la memoria (`git branch nueva specty-memory`, `checkout -b nueva specty-memory`) no la escribe, así que se permite.
+
+### Pendientes
+
+- Ninguno.
