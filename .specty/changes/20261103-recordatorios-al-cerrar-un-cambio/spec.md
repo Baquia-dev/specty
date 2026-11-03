@@ -70,7 +70,7 @@ Segundo y último cambio de P32 (recordatorios con disparador): un recordatorio 
   - files: packages/core/src/memory/entries.ts, packages/core/src/memory/triggers.ts, packages/core/src/index.ts, packages/core/test/memory/close-trigger.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/close-trigger.test.ts test/memory/triggers.test.ts test/memory/entries.test.ts && pnpm lint
-- [ ] T3: Las tarjetas muestran el cambio que esperan, los disparados y los rechazos
+- [x] T3: Las tarjetas muestran el cambio que esperan, los disparados y los rechazos
   - files: packages/core/src/cards/memory.ts, packages/core/src/cards/memory-refusals.ts, packages/core/src/cards/index.ts, packages/core/test/cards/close-reminders.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/close-reminders.test.ts test/cards/reminder-triggers.test.ts && pnpm typecheck && pnpm lint

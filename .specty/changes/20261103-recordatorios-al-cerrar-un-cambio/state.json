@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "05de97b4c7c99204d35b68f329d456a4d8296b16",
+      "attempts": 1,
       "startedAt": "2026-11-03T14:31:20.241Z",
       "doneAt": "2026-11-03T14:32:11.177Z",
-      "summary": "MemoryEntry.onClose solo en recordatorios, la operación fire, sessionEntries deja fuera los que esperan a un cambio, y waitingFor y firedEntry en memory/entries.ts (junto a freeWork y settledEntry, sin import circular con triggers.ts)"
+      "summary": "MemoryEntry.onClose solo en recordatorios, la operación fire, sessionEntries deja fuera los que esperan a un cambio, y waitingFor y firedEntry en memory/entries.ts (junto a freeWork y settledEntry, sin import circular con triggers.ts)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "280a5ab2be527918266eb390e23dc169f9e05930",
+      "startedAt": "2026-11-03T14:32:11.534Z",
+      "doneAt": "2026-11-03T14:33:10.332Z",
+      "summary": "La lista muestra «al cerrar <id>», firedRemindersBlocks da la sección RECORDATORIOS QUE ESPERABAN A ESTE CAMBIO, el commit fire es «memoria: P5 disparada», y memory-refusals.ts suma on-close-not-reminder, not-open-change y two-triggers con las dos opciones dadas"
     }
   },
   "pending": {

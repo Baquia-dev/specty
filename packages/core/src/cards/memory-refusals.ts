@@ -22,8 +22,19 @@ type TriggerRefusal =
   | { readonly reason: "bad-date"; readonly value: string }
   /** `--due` on an entry of `kind`, which is not a reminder. */
   | { readonly reason: "due-not-reminder"; readonly kind: MemoryKind }
-  /** `--due` and `--path` together. */
-  | { readonly reason: "two-triggers" };
+  /** Two of `--due`, `--path` and `--on-close` together: without `flags`, `--due` and `--path`. */
+  | { readonly reason: "two-triggers"; readonly flags?: readonly [TriggerFlag, TriggerFlag] }
+  | OnCloseRefusal;
+
+/** The options of `memory add` that give a reminder its trigger. */
+type TriggerFlag = "--due" | "--path" | "--on-close";
+
+/** Why `memory add` writes nothing about the change a reminder waits for. */
+type OnCloseRefusal =
+  /** `--on-close` on an entry of `kind`, which is not a reminder. */
+  | { readonly reason: "on-close-not-reminder"; readonly kind: MemoryKind }
+  /** `--on-close` with `id`, which is not an open change. */
+  | { readonly reason: "not-open-change"; readonly id: string };
 
 /** Why `memory done` changes nothing. */
 type DoneRefusal =
@@ -70,6 +81,9 @@ function addRefusalTexts(refusal: AddRefusal, command: string, t: Translate): Re
     case "due-not-reminder":
     case "two-triggers":
       return triggerRefusalTexts(refusal, command, t);
+    case "on-close-not-reminder":
+    case "not-open-change":
+      return onCloseRefusalTexts(refusal, command, t);
     case "empty":
       return {
         reason: t("El texto de la entrada está vacío.", "The entry's text is empty."),
@@ -103,7 +117,11 @@ function addRefusalTexts(refusal: AddRefusal, command: string, t: Translate): Re
   }
 }
 
-function triggerRefusalTexts(refusal: TriggerRefusal, command: string, t: Translate): RefusalTexts {
+function triggerRefusalTexts(
+  refusal: Exclude<TriggerRefusal, OnCloseRefusal>,
+  command: string,
+  t: Translate,
+): RefusalTexts {
   switch (refusal.reason) {
     case "bad-date":
       return {
@@ -129,15 +147,46 @@ function triggerRefusalTexts(refusal: TriggerRefusal, command: string, t: Transl
         ),
       };
     }
-    case "two-triggers":
+    case "two-triggers": {
+      const [one, other] = refusal.flags ?? ["--due", "--path"];
       return {
         reason: t(
-          "Un recordatorio lleva un solo disparador: `--due` o `--path`, no los dos.",
-          "A reminder carries a single trigger: `--due` or `--path`, not both.",
+          `Un recordatorio lleva un solo disparador: \`${one}\` o \`${other}\`, no los dos.`,
+          `A reminder carries a single trigger: \`${one}\` or \`${other}\`, not both.`,
         ),
         next: t(
           `quédate con uno y vuelve a ejecutar \`${command} memory add\`.`,
           `keep one and run \`${command} memory add\` again.`,
+        ),
+      };
+    }
+  }
+}
+
+function onCloseRefusalTexts(refusal: OnCloseRefusal, command: string, t: Translate): RefusalTexts {
+  switch (refusal.reason) {
+    case "on-close-not-reminder": {
+      const [es, en] = ONE_OF_KIND[refusal.kind];
+      return {
+        reason: t(
+          `Solo un recordatorio espera al cierre de un cambio, y esta entrada sería ${es}.`,
+          `Only a reminder waits for a change to close, and this entry would be ${en}.`,
+        ),
+        next: t(
+          "añade `--kind reminder` o quita `--on-close`.",
+          "add `--kind reminder` or drop `--on-close`.",
+        ),
+      };
+    }
+    case "not-open-change":
+      return {
+        reason: t(
+          `«${refusal.id}» no es un cambio abierto, y un recordatorio solo espera al cierre de uno abierto.`,
+          `«${refusal.id}» is not an open change, and a reminder only waits for an open one to close.`,
+        ),
+        next: t(
+          `\`${command} status\` lista los cambios abiertos; vuelve a ejecutar \`${command} memory add "<texto>" --kind reminder --on-close <id>\` con uno de ellos.`,
+          `\`${command} status\` lists the open changes; run \`${command} memory add "<text>" --kind reminder --on-close <id>\` again with one of them.`,
         ),
       };
   }
