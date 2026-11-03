@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261104-fin-de-sesion-libera-el-frente",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-fin-de-sesion-libera-el-frente",
+  "baseCommit": "86f56a1c3aaaa31683eedc3187dc7de692cdf868",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b0df03f279481c13695a134c0f765b1b997fffdaee6fba302415f39f501317a2",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:3559d497d5ddf63e124bfff38cd00bb795cef7db92c9dbba9c7e33c3c57d0e9b",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:800354d9ec699f4c1095689974030ba62659d69c7ddf2b51e0e9375066e5583d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:085e87727cde64a13c784f3023a29936563a21d40c48252aef4775ad0fc43016",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:90b7c559535b38250f1ebcf3e7087f36920b015ea00541de6c6874bbb56e6e22",
+    "at": "2026-11-03T22:36:24.620Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
