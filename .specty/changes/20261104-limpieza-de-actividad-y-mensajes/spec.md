@@ -64,7 +64,7 @@ Resuelve P3 y P37. La mitad viva de la memoria de Specty, en `.git/common/specty
   - files: packages/cli/src/store/activity.ts, packages/cli/src/store/messages.ts, packages/cli/src/flow/prune.ts, packages/cli/src/commands/prune.ts, packages/cli/test/prune-live.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/prune-live.test.ts test/activity.test.ts test/prune.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: Archivar un cambio borra sus mensajes
+- [x] T3: Archivar un cambio borra sus mensajes
   - files: packages/cli/src/flow/finish.ts, packages/cli/test/messages-archive.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/messages-archive.test.ts test/message-delivery.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip

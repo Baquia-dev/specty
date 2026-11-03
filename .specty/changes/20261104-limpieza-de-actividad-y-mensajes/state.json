@@ -53,12 +53,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6cc458887627592e422e482d90b54b679b57ac08",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:49:57.098Z",
       "doneAt": "2026-11-03T22:51:59.963Z",
-      "summary": "pruneLive (flow/prune.ts) borra la actividad cuya carpeta no existe o que pasa de orphanAfterMin fuera de un cambio abierto (removeActivity), y los mensajes de cambios no abiertos (messageChanges, dropMessages); prune lo pasa a la tarjeta."
+      "summary": "pruneLive (flow/prune.ts) borra la actividad cuya carpeta no existe o que pasa de orphanAfterMin fuera de un cambio abierto (removeActivity), y los mensajes de cambios no abiertos (messageChanges, dropMessages); prune lo pasa a la tarjeta.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "be0c4a07eec6cbeb0acc36c16e771ca20b4de2b1",
+      "startedAt": "2026-11-03T22:52:00.287Z",
+      "doneAt": "2026-11-03T22:52:49.602Z",
+      "summary": "archive (flow/finish.ts) borra los mensajes sin recoger del cambio que archiva, cerrado o cancelado, tras disparar sus recordatorios."
     }
   },
   "pending": {

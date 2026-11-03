@@ -14,6 +14,7 @@ import type { Session } from "../session";
 import { appendAudit, type StoredChange, saveState } from "../store/changes";
 import { addReceipt, writePointer } from "../store/local";
 import { editMemory, readMemory } from "../store/memory";
+import { dropMessages } from "../store/messages";
 import { changeFiles } from "../store/paths";
 import { auditEntry } from "./active";
 import { closingFollowUps } from "./carried";
@@ -45,8 +46,10 @@ export async function archive(
   // a closed change's follow-ups, and the remarks of its last review that its closing does not
   // cite, become pending items.
   await settleEntries(session, state);
-  // The reminders that waited for it fire, closed or cancelled, so that none is lost.
+  // The reminders that waited for it fire, closed or cancelled, so that none is lost; the
+  // messages that waited for its session no longer reach anybody.
   const fired = await fireReminders(session, state.id);
+  await dropMessages(session.git, state.id);
   const files = changeFiles(target);
   if (state.phase === "done")
     await harvestEntries(session, state, [
