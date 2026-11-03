@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-guard-rama",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-guard-rama",
   "baseCommit": "d2162d4783f13176b6898d79bfcd407c810bf47e",
   "revision": 1,
@@ -47,6 +47,8 @@
     "T": 2,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T07:53:32.362Z"
+  "lockedTests": {
+    "packages/cli/test/memory-guard.test.ts": "sha256:6794574c8025967ff59aa3427812ef193e5d4d8359127688928e626cc3c8136a",
+    "packages/core/test/guard/memory-branch.test.ts": "sha256:e443efc84042679fae6d28262d81d2089af3f57bc4e339ff5a9b27f45bfc76c1"
+  }
 }
