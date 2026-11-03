@@ -58,3 +58,22 @@ El 2026-11-03 se midieron, con las versiones reales, las herramientas de otros l
 ## Riesgos
 
 - R1: Una sección que excluye la carpeta de otra forma (por ejemplo, con un patrón más amplio) recibe el aviso igual. El aviso no bloquea nada fuera de `doctor`.
+
+## Cierre
+
+### Resumen
+
+`specty doctor`, una vez que hay cambios en `.worktrees/`, avisa también de las herramientas de Python que revisan la carpeta desde la principal y dice qué añadir y dónde, en el archivo y la sección que cada una lee primero: flake8 (`extend-exclude = .worktrees` en `[flake8]` de `.flake8`, `setup.cfg` o `tox.ini`), Pylint (`ignore` en `pylintrc`, `.pylintrc` o `[tool.pylint.main]`, también si solo figura en los requisitos), isort (`extend_skip` en `.isort.cfg`, `[tool.isort]`, `setup.cfg` o `tox.ini`, también si solo figura en los requisitos) y Black cuando su sección fija un `exclude` propio (`extend-exclude = '^/\.worktrees/'`). Las exclusiones se midieron con las versiones reales desde la carpeta principal y dentro del cambio, también en una carpeta con paréntesis, corchetes y llaves. El ADR 0018 recoge la medición de Python (Django, Flask, Uvicorn, flake8, Black, Pyright, Pylint, isort), .NET, Spring Boot y RuboCop, y las opciones de línea de comandos de Flask y Uvicorn que funcionan en las dos carpetas; ARCHITECTURE, la lista de `doctor`.
+
+### Desviaciones
+
+- Ninguna.
+
+### Decisiones
+
+- Flask y Uvicorn no tienen aviso: su exclusión va en la línea de comandos, que `doctor` no ve, y un aviso sin forma de comprobarlo saldría siempre.
+- `requirement` de `detect/quality.ts` se exporta para reconocer Pylint e isort por los requisitos, en vez de repetir su expresión.
+
+### Pendientes
+
+- Metro con Watchman, las herramientas de PHP y las versiones actuales de RuboCop, sin medir.

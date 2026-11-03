@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-doctor-worktrees-python",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-doctor-worktrees-python",
   "baseCommit": "042eeefd2788dc9a723896f106ce10ce5563a0e4",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:477d57e2799e3bf8e6728fabd1e55bece8b56ae27d77f7be1eb2fdbf88786509",
@@ -34,12 +34,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7787598903af40f809a40365060e60545734930b",
+      "attempts": 1,
       "startedAt": "2026-11-03T19:20:49.655Z",
       "doneAt": "2026-11-03T19:24:01.228Z",
-      "summary": "doctor pide a flake8 extend-exclude, a Pylint ignore, a isort extend_skip y a Black con exclude propio extend-exclude, en el archivo y la sección que leen (worktree-python.ts); ADR 0018 con Python, .NET, Spring y RuboCop, y las opciones de Flask y Uvicorn"
+      "summary": "doctor pide a flake8 extend-exclude, a Pylint ignore, a isort extend_skip y a Black con exclude propio extend-exclude, en el archivo y la sección que leen (worktree-python.ts); ADR 0018 con Python, .NET, Spring y RuboCop, y las opciones de Flask y Uvicorn",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -52,6 +52,7 @@
     "T": 1,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T19:28:48.885Z",
   "lockedTests": {
     "packages/cli/test/doctor-worktrees-python.test.ts": "sha256:15e0195b96237c9084fe223d7484abb8d60c70d22c80fe17f75905052f9e6044"
   }
