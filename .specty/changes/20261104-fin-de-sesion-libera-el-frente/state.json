@@ -6,6 +6,13 @@
   "branch": "specty/20261104-fin-de-sesion-libera-el-frente",
   "baseCommit": "86f56a1c3aaaa31683eedc3187dc7de692cdf868",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:90b7c559535b38250f1ebcf3e7087f36920b015ea00541de6c6874bbb56e6e22",
+    "at": "2026-11-03T22:36:24.620Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 12,
@@ -44,12 +51,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:90b7c559535b38250f1ebcf3e7087f36920b015ea00541de6c6874bbb56e6e22",
-    "at": "2026-11-03T22:36:24.620Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T22:37:34.032Z"
 }
