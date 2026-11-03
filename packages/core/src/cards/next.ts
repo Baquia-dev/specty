@@ -7,6 +7,7 @@ import { acceptanceCard } from "./acceptance";
 import { termsSection } from "./glossary";
 import { integrationCard } from "./integration";
 import { memoryStartBlocks, resolvesLines } from "./memory";
+import { notesBlock } from "./notes";
 import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
 import type { CardContext, CarriedView, ChangeView, CommentView } from "./view";
@@ -32,7 +33,9 @@ export function nextCard(view: NextView, ctx: CardContext): Output {
     return { ...card, blocks: [...card.blocks, ...memoryStartBlocks(view.memory ?? [], ctx)] };
   }
   if (change.integration !== undefined) return integrationCard(change, change.integration, ctx);
-  return PHASE_CARDS[change.phase](change, ctx);
+  const card = PHASE_CARDS[change.phase](change, ctx);
+  // The change's log comes back to the session that resumes it (ADR 0016).
+  return { ...card, blocks: [...card.blocks, ...notesBlock(change.notes ?? [], ctx)] };
 }
 
 /** The card of each phase of a change. */

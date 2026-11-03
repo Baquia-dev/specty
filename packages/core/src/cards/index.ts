@@ -241,6 +241,7 @@ export {
   worktreeCreatedCard,
 } from "./new";
 export { type NextView, nextCard, notInitializedCard, taskCard } from "./next";
+export { type NoteRefusal, notedCard, noteRefusalCard } from "./notes";
 export {
   notInTargetBranchLine,
   notInTargetFolderLine,
@@ -350,6 +351,7 @@ export type {
   CoverageView,
   CriterionView,
   IntegrationView,
+  NoteView,
   RejectedView,
   ScopeRequestView,
   SliceView,

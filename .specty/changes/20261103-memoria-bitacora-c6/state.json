@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ceff03bd396c17f961de9221ab8a9b38c39fa910",
+      "startedAt": "2026-11-03T09:06:55.727Z",
+      "doneAt": "2026-11-03T09:08:30.837Z",
+      "summary": "cards/notes.ts: notedCard, noteRefusalCard y notesBlock («BITÁCORA»); ChangeView.notes con NoteView; nextCard añade la bitácora a la tarjeta de cada fase"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

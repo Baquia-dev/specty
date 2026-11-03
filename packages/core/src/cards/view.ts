@@ -77,6 +77,12 @@ export interface TaskView {
   readonly longFiles?: readonly LongFile[];
 }
 
+/** A note of the change's log (`specty note`): when it was added (ISO 8601, UTC) and its text. */
+export interface NoteView {
+  readonly at: string;
+  readonly text: string;
+}
+
 /** What a change this one follows (`follows`) left for it: its follow-ups and its findings. */
 export interface CarriedView {
   readonly id: string;
@@ -166,6 +172,8 @@ export interface ChangeView {
   readonly carried?: readonly CarriedView[];
   /** While drafting, the entries of Specty's memory it took (`new --resolves`), as they are now. */
   readonly resolves?: readonly MemoryEntry[];
+  /** The last notes of the change's log (`specty note`), oldest first (ADR 0016). */
+  readonly notes?: readonly NoteView[];
   /** In acceptance, an independent review of the result (ADR 0011) should come first. */
   readonly recommendReview?: boolean;
   /** In acceptance, each criterion of the spec with the tests that carry its id. */

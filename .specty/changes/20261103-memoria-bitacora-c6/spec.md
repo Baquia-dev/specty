@@ -56,7 +56,7 @@ Lo que un agente averigua a mitad de un cambio (por qué eligió una ruta, qué 
 
 ## Tareas
 
-- [ ] T1: Las tarjetas de `specty note` y la bitácora en la tarjeta de `next`
+- [x] T1: Las tarjetas de `specty note` y la bitácora en la tarjeta de `next`
   - files: packages/core/src/cards/notes.ts, packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/src/cards/index.ts, packages/core/test/cards/notes.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/notes.test.ts test/cards/findings.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
