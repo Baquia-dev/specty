@@ -25,6 +25,7 @@ import type { ReportOutput } from "../check/provider";
 import { isFinished, resolveActive } from "../flow/active";
 import type { Session } from "../session";
 import { editMemory, type MemoryTarget, readMemory } from "../store/memory";
+import { dropEntry, keepEntry, type MemoryWriter } from "./memory-drop";
 import { openChanges } from "./status";
 
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
@@ -60,6 +61,28 @@ export function memoryCommand(program: Command, run: Run): void {
     .description("mark a reminder done")
     .argument("<id>")
     .action((id: string) => run((session) => markDone(session, id))());
+  memory
+    .command("drop")
+    .description(
+      "drop an entry; from an agent, in delegated mode too, only a proposal to the person",
+    )
+    .argument("<id>")
+    .option("--reason <reason>", "why it is dropped")
+    .action((id: string, options: { reason?: string }) =>
+      run(async (session) => dropEntry(session, id, options.reason, await writerOf(session)))(),
+    );
+  memory
+    .command("keep")
+    .description("keep an entry proposed to drop: it is open again")
+    .argument("<id>")
+    .action((id: string) =>
+      run(async (session) => keepEntry(session, id, await writerOf(session)))(),
+    );
+}
+
+/** Who writes to the memory from this folder: its open change's trailers, and the author. */
+async function writerOf(session: Session): Promise<MemoryWriter> {
+  return { target: targetOf(session, await openChange(session)), author: authorOf(session) };
 }
 
 /** `specty memory`: the open entries, or every one with `--all`. */

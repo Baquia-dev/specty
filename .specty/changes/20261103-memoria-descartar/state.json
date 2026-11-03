@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-descartar",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-descartar",
   "baseCommit": "b9fdc64f6da235b71808239155fd6fda391a0a29",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0838311cb349ea1e9aa4fea00592ecee35cca2bd",
+      "attempts": 1,
       "startedAt": "2026-11-03T07:40:34.699Z",
       "doneAt": "2026-11-03T07:41:48.714Z",
-      "summary": "cards/memory-drop.ts: tarjetas de memory drop (descartada o propuesta), memory keep y sus negativas, y dropProposalLines; «TE TOCA» lleva las propuestas antes que los recordatorios"
+      "summary": "cards/memory-drop.ts: tarjetas de memory drop (descartada o propuesta), memory keep y sus negativas, y dropProposalLines; «TE TOCA» lleva las propuestas antes que los recordatorios",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ce0b0da032fa43fa3bfb35b90f404895b17a937e",
+      "startedAt": "2026-11-03T07:41:49.025Z",
+      "doneAt": "2026-11-03T07:44:05.339Z",
+      "summary": "commands/memory-drop.ts: memory drop (la persona descarta; un agente, también en modo delegado, solo propone) y memory keep, registrados en memoryCommand con un MemoryWriter; formats.md y ARCHITECTURE.md los documentan"
     }
   },
   "pending": {

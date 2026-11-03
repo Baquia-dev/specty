@@ -70,7 +70,7 @@ Hoy ninguna entrada de la memoria de Specty se puede descartar: un pendiente que
   - files: packages/core/src/cards/memory-drop.ts, packages/core/src/cards/status.ts, packages/core/src/cards/index.ts, packages/core/test/memory/drop.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/drop.test.ts test/cards/status-turn.test.ts test/cards/status-holder.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T3: `specty memory drop` y `specty memory keep`, y la documentación
+- [x] T3: `specty memory drop` y `specty memory keep`, y la documentación
   - files: packages/cli/src/commands/memory-drop.ts, packages/cli/src/commands/memory.ts, packages/cli/test/memory-drop.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-drop.test.ts test/memory.test.ts test/memory-status.test.ts && pnpm typecheck && pnpm lint
