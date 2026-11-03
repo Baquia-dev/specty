@@ -66,7 +66,7 @@ La memoria de Specty y quién lleva cada cambio solo se ven en la terminal, con 
   - files: packages/cli/src/server/http.ts, packages/cli/test/server/memory.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/memory.test.ts test/server/actions.test.ts && pnpm lint
-- [ ] T2: La memoria en los datos de la UI y las secciones de la página
+- [x] T2: La memoria en los datos de la UI y las secciones de la página
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/memory/memory-view.ts, packages/ui/src/memory/memory-view.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-view.test.ts && pnpm lint

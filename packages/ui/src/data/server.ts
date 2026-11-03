@@ -8,11 +8,13 @@ import {
   type ChangeRecord,
   type CommentAnchor,
   type Delegation,
+  type MemoryRecord,
   SpectyData,
 } from "./records";
 import {
   answered,
   isDelegation,
+  isMemoryRecord,
   isObject,
   isRecords,
   isRun,
@@ -119,6 +121,14 @@ export class ServerData extends SpectyData {
 
   override setDelegation(on: boolean): Promise<void> {
     return this.post("/api/delegation", { on });
+  }
+
+  override async memory(): Promise<MemoryRecord> {
+    const response = await fetch("/api/memory");
+    if (response.status === 403) throw new ActionError(NO_SESSION);
+    const body: unknown = await response.json().catch(() => undefined);
+    if (!response.ok || !isMemoryRecord(body)) throw new ActionError(UNEXPECTED);
+    return body;
   }
 
   override approve(change: string, revision: number): Promise<void> {

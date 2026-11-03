@@ -6,8 +6,10 @@ import type {
   ChangeState,
   EffortLevel,
   Lang,
+  MemoryEntry,
   Phase,
   SizeLevel,
+  StatusEntry,
 } from "@baquia-dev/specty-core";
 import type { ClosingParts } from "./closing";
 import type { HistoryEntry } from "./history";
@@ -108,6 +110,15 @@ export interface CommentRecord {
 }
 
 export type Bilingual = Readonly<Record<Lang, string>>;
+
+/**
+ * `GET /api/memory` (ADR 0016): every entry of Specty's memory, done and dropped too, and the open
+ * changes of every worktree as `specty status` sees them, with who holds each one.
+ */
+export interface MemoryRecord {
+  readonly entries: readonly MemoryEntry[];
+  readonly changes: readonly StatusEntry[];
+}
 
 /**
  * Delegated mode (ADR 0010): whether the agent takes the person's decisions, since when and who

@@ -2,7 +2,7 @@
 // What the local server answers, as ServerData reads it: the checks of its data and what each
 // refusal means, in both languages. Pure.
 import type { RunRecord } from "./progress";
-import type { Bilingual, ChangeRecord, Delegation } from "./records";
+import type { Bilingual, ChangeRecord, Delegation, MemoryRecord } from "./records";
 
 export const NO_SESSION: Bilingual = {
   es: "Esta pestaña no tiene sesión: abre el enlace que imprime `specty ui`.",
@@ -63,6 +63,23 @@ function outputText(body: unknown): string | undefined {
   const step = next === "" ? [] : [`${next.charAt(0).toUpperCase()}${next.slice(1)}`];
   const text = [...lines, ...step].join(" ");
   return text === "" ? undefined : text;
+}
+
+/**
+ * `GET /api/memory`'s answer: the entries of Specty's memory and the open changes, each with the
+ * fields the memory page reads.
+ */
+export function isMemoryRecord(value: unknown): value is MemoryRecord {
+  if (!isObject(value) || !Array.isArray(value.entries) || !Array.isArray(value.changes))
+    return false;
+  const entry = (item: unknown) =>
+    isObject(item) &&
+    ["id", "kind", "status", "created", "text"].every((key) => isText(item[key])) &&
+    isObject(item.origin);
+  const change = (item: unknown) =>
+    isObject(item) &&
+    ["id", "kind", "phase", "title", "waitingFor"].every((key) => isText(item[key]));
+  return value.entries.every(entry) && value.changes.every(change);
 }
 
 /** `GET /api/delegation`'s answer: on or off, who and when, and the warning in both languages. */

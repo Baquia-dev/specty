@@ -47,12 +47,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ef0d130b48d66b4e75d4ce489a2e1e1f2612d241",
+      "attempts": 1,
       "startedAt": "2026-11-03T09:38:34.286Z",
       "doneAt": "2026-11-03T09:40:41.045Z",
-      "summary": "GET /api/memory en server/http.ts (memoryView: entradas de readMemory y openChanges); las lecturas que solo miran la sesión se sirven desde una tabla"
+      "summary": "GET /api/memory en server/http.ts (memoryView: entradas de readMemory y openChanges); las lecturas que solo miran la sesión se sirven desde una tabla",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "bd0d0acc410ebebe731331da674c61afbe2728d5",
+      "startedAt": "2026-11-03T09:40:41.656Z",
+      "doneAt": "2026-11-03T09:42:36.983Z",
+      "summary": "MemoryRecord en data/records.ts; SpectyData.memory() (sin servidor, nada) y ServerData.memory() con isMemoryRecord; memorySections en memory/memory-view.ts: Te toca, quién lleva cada cambio, pendientes y mejoras por fecha y decisiones, sin repetir entradas"
     }
   },
   "pending": {
