@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-lecciones-tarjetas",
   "baseCommit": "37debdc39a9615ff3ec4d8a389cd758b19eb8143",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:372569e65bc15994a50c0748d110d9fbf557aa23b6488b66b9d797c3a8fbc563",
+    "at": "2026-11-03T10:56:47.147Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -40,12 +47,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:372569e65bc15994a50c0748d110d9fbf557aa23b6488b66b9d797c3a8fbc563",
-    "at": "2026-11-03T10:56:47.147Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T10:58:03.231Z"
 }
