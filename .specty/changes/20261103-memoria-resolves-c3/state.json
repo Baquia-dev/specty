@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-resolves-c3",
   "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c662c245049b8212d36455e5b0459e2a0547af65ab963f443cad40861327dcf8",
+    "at": "2026-11-03T06:50:02.638Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -52,12 +59,6 @@
     "T": 3,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c662c245049b8212d36455e5b0459e2a0547af65ab963f443cad40861327dcf8",
-    "at": "2026-11-03T06:50:02.638Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T06:53:09.478Z"
 }
