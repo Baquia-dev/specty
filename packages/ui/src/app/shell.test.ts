@@ -57,8 +57,8 @@ describe("Shell", () => {
   it("offers the Inbox, the catalog, the palette, theme and language in one header (AC8)", async () => {
     const { element, router } = await open("/catalog/colors");
     const main = [...element.querySelectorAll<HTMLAnchorElement>("header nav a")];
-    expect(main.map((link) => link.getAttribute("href"))).toEqual(["/", "/catalog"]);
-    expect(main[1]?.getAttribute("aria-current")).toBe("page");
+    expect(main.map((link) => link.getAttribute("href"))).toEqual(["/", "/memory", "/catalog"]);
+    expect(main[2]?.getAttribute("aria-current")).toBe("page");
     expect(element.querySelector("header sp-kbd")).not.toBeNull();
     expect(element.querySelectorAll("header input[name=theme]")).toHaveLength(3);
     expect(element.querySelectorAll("header input[name=lang]")).toHaveLength(2);
@@ -69,7 +69,7 @@ describe("Shell", () => {
   it("leaves the catalog out of the build people use: no link, no command, no page", async () => {
     const { element, router } = await open("/catalog/colors", false);
     const main = [...element.querySelectorAll<HTMLAnchorElement>("header nav a")];
-    expect(main.map((link) => link.getAttribute("href"))).toEqual(["/"]);
+    expect(main.map((link) => link.getAttribute("href"))).toEqual(["/", "/memory"]);
     expect(element.querySelector("sp-catalog")).toBeNull();
     expect(router.url).toBe("/");
     const ids = TestBed.inject(Commands)

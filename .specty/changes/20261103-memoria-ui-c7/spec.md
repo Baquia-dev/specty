@@ -70,7 +70,7 @@ La memoria de Specty y quién lleva cada cambio solo se ven en la terminal, con 
   - files: packages/ui/src/data/records.ts, packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/server-answers.ts, packages/ui/src/memory/memory-view.ts, packages/ui/src/memory/memory-view.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-view.test.ts && pnpm lint
-- [ ] T3: La página «Memoria», la memoria de ejemplo y la documentación
+- [x] T3: La página «Memoria», la memoria de ejemplo y la documentación
   - files: packages/ui/src/data/fixtures.ts, packages/ui/src/data/sample-memory.ts, packages/ui/src/memory/memory-page.ts, packages/ui/src/app/routes.ts, packages/ui/src/app/shell.ts, packages/ui/src/memory/memory-page.test.ts, docs/ARCHITECTURE.md
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-page.test.ts --include src/memory/memory-view.test.ts --include src/inbox/inbox.test.ts && pnpm typecheck && pnpm lint

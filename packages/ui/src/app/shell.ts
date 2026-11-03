@@ -95,6 +95,7 @@ export class Shell {
   private readonly devTools = inject(DEV_TOOLS);
   protected readonly links = [
     { path: "/", es: "Bandeja", en: "Inbox", exact: true },
+    { path: "/memory", es: "Memoria", en: "Memory", exact: true },
     ...(this.devTools ? [{ path: "/catalog", es: "Catálogo", en: "Catalog", exact: false }] : []),
   ];
 
