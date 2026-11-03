@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "280a5ab2be527918266eb390e23dc169f9e05930",
+      "attempts": 1,
       "startedAt": "2026-11-03T14:32:11.534Z",
       "doneAt": "2026-11-03T14:33:10.332Z",
-      "summary": "La lista muestra «al cerrar <id>», firedRemindersBlocks da la sección RECORDATORIOS QUE ESPERABAN A ESTE CAMBIO, el commit fire es «memoria: P5 disparada», y memory-refusals.ts suma on-close-not-reminder, not-open-change y two-triggers con las dos opciones dadas"
+      "summary": "La lista muestra «al cerrar <id>», firedRemindersBlocks da la sección RECORDATORIOS QUE ESPERABAN A ESTE CAMBIO, el commit fire es «memoria: P5 disparada», y memory-refusals.ts suma on-close-not-reminder, not-open-change y two-triggers con las dos opciones dadas",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "41f176913ad7a099d3b272b534734a85b9b30109",
+      "startedAt": "2026-11-03T14:33:10.670Z",
+      "doneAt": "2026-11-03T14:35:46.360Z",
+      "summary": "memory add --on-close <id> con sus rechazos (otro tipo, dos disparadores, cambio que no está abierto, leído con locateChanges); archive dispara con fireReminders en flow/finish.ts y devuelve fired; close, cancel, accept de un quick y retro añaden la sección con withFiredReminders"
     }
   },
   "pending": {

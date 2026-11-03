@@ -1,16 +1,29 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import type { ChangeState } from "@baquia-dev/specty-core";
-import { harvestEntries, settleEntries } from "../commands/memory";
+import {
+  type ChangeState,
+  firedEntry,
+  firedRemindersBlocks,
+  type MemoryEntry,
+  type Output,
+  waitingFor,
+} from "@baquia-dev/specty-core";
+import { harvestEntries, settleEntries, targetOf } from "../commands/memory";
 import { exists, move } from "../io/files";
 import type { Session } from "../session";
 import { appendAudit, type StoredChange, saveState } from "../store/changes";
 import { addReceipt, writePointer } from "../store/local";
+import { editMemory, readMemory } from "../store/memory";
 import { changeFiles } from "../store/paths";
 import { auditEntry } from "./active";
 import { closingFollowUps } from "./carried";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 import { remarkHarvest } from "./review-remarks";
+
+/** A change in the archive, with the reminders that waited for it, which it fired. */
+export interface ArchivedChange extends StoredChange {
+  readonly fired: readonly MemoryEntry[];
+}
 
 /**
  * Moves a finished change to `.specty/archive/<year>/<id>` with its final state. Only a person's
@@ -22,7 +35,7 @@ export async function archive(
   state: ChangeState,
   event: string,
   data: Readonly<Record<string, unknown>>,
-): Promise<StoredChange> {
+): Promise<ArchivedChange> {
   await saveState(change.files, state);
   await appendAudit(change.files, await auditEntry(session, "human", event, data));
   const target = session.paths.archivedDir(state.id, session.environment.now().getFullYear());
@@ -32,13 +45,44 @@ export async function archive(
   // a closed change's follow-ups, and the remarks of its last review that its closing does not
   // cite, become pending items.
   await settleEntries(session, state);
+  // The reminders that waited for it fire, closed or cancelled, so that none is lost.
+  const fired = await fireReminders(session, state.id);
   const files = changeFiles(target);
   if (state.phase === "done")
     await harvestEntries(session, state, [
       ...(await closingFollowUps(session, files)).map((text) => ({ text })),
       ...(await remarkHarvest(session, files)),
     ]);
-  return { files, state, archived: true };
+  return { files, state, archived: true, fired };
+}
+
+/**
+ * Fires the open reminders that wait for `change`, one commit each: without `onClose`, every
+ * session sees them from now on. The ones it fired; one another session changed first, it skips.
+ */
+async function fireReminders(session: Session, change: string): Promise<MemoryEntry[]> {
+  const { entries } = await readMemory(session.git, session.config.memory.branch);
+  const target = targetOf(session, change);
+  const fired: MemoryEntry[] = [];
+  for (const { id } of waitingFor(entries, change)) {
+    const entry = await editMemory(session.git, target, (memory) => {
+      const now = waitingFor(memory.entries, change).find((waiting) => waiting.id === id);
+      if (now === undefined) return { result: undefined };
+      const fire = firedEntry(now);
+      return { write: { entry: fire, operation: "fire" }, result: fire };
+    });
+    if (entry !== undefined) fired.push(entry);
+  }
+  return fired;
+}
+
+/** The card of the command that archived a change, with the reminders it fired after what it says. */
+export function withFiredReminders(
+  session: Session,
+  card: Output,
+  fired: readonly MemoryEntry[],
+): Output {
+  return { ...card, blocks: [...card.blocks, ...firedRemindersBlocks(fired, session.cards)] };
 }
 
 /**
@@ -77,7 +121,7 @@ export async function finishRetro(
   session: Session,
   change: StoredChange,
   state: ChangeState,
-): Promise<StoredChange> {
+): Promise<ArchivedChange> {
   const archived = await archive(session, change, { ...state, phase: "done" }, "retro.confirmed", {
     mode: session.config.retro.mode,
   });

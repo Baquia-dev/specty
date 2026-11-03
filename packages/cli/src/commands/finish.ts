@@ -24,7 +24,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
 import { verifyHints, withVerifyHints } from "../flow/detected";
-import { archive, commitArchive } from "../flow/finish";
+import { archive, commitArchive, withFiredReminders } from "../flow/finish";
 import { absorbTarget, integrationOf, isIncorporated } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
 import { measureUsage, withUsage } from "../flow/usage";
@@ -112,7 +112,10 @@ async function closeConfirmed(session: Session, change: StoredChange, spec: Spec
     absorbed?.lines ?? [],
     landed,
   );
-  return withVerifyHints(withUsage(card, usage), hints);
+  return withVerifyHints(
+    withUsage(withFiredReminders(session, card, archived.fired), usage),
+    hints,
+  );
 }
 
 /** A closed change that did not reach the main branch (its landing failed): retries only that. */
@@ -188,10 +191,14 @@ async function cancelConfirmed(
   );
   // `task done` commits each task's code; the state cannot hold that commit's own hash.
   const withCode = Object.values(state.tasks).some((task) => task.status === "done");
-  return cancelledCard(
-    headerOf(state.id, "cancelled"),
-    cancelledLine(commit, session.lang),
-    state.branch === undefined ? undefined : { name: state.branch, withCode },
-    session.cards,
+  return withFiredReminders(
+    session,
+    cancelledCard(
+      headerOf(state.id, "cancelled"),
+      cancelledLine(commit, session.lang),
+      state.branch === undefined ? undefined : { name: state.branch, withCode },
+      session.cards,
+    ),
+    archived.fired,
   );
 }

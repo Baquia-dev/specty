@@ -74,7 +74,7 @@ Segundo y último cambio de P32 (recordatorios con disparador): un recordatorio 
   - files: packages/core/src/cards/memory.ts, packages/core/src/cards/memory-refusals.ts, packages/core/src/cards/index.ts, packages/core/test/cards/close-reminders.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/close-reminders.test.ts test/cards/reminder-triggers.test.ts && pnpm typecheck && pnpm lint
-- [ ] T4: `memory add --on-close`, y el cierre o la cancelación que los disparan
+- [x] T4: `memory add --on-close`, y el cierre o la cancelación que los disparan
   - files: packages/cli/src/commands/memory.ts, packages/cli/src/flow/finish.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/src/commands/retro.ts, packages/cli/test/memory-on-close.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-on-close.test.ts test/memory-triggers.test.ts test/memory-settle.test.ts test/memory-harvest.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip

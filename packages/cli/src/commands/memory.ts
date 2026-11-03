@@ -24,6 +24,7 @@ import {
 import { type Command, Option } from "commander";
 import type { ReportOutput } from "../check/provider";
 import { isFinished, resolveActive } from "../flow/active";
+import { locateChanges } from "../flow/changes";
 import type { Session } from "../session";
 import { editMemory, type MemoryTarget, readMemory } from "../store/memory";
 import { dropEntry, keepEntry, type MemoryWriter } from "./memory-drop";
@@ -36,6 +37,14 @@ interface AddOptions {
   readonly quote?: string;
   readonly path?: readonly string[];
   readonly due?: string;
+  readonly onClose?: string;
+}
+
+/** What gives a reminder its trigger in `memory add`. */
+interface Trigger {
+  readonly due: string | undefined;
+  readonly paths: readonly string[];
+  readonly onClose: string | undefined;
 }
 
 /**
@@ -58,6 +67,7 @@ export function memoryCommand(program: Command, run: Run): void {
     .option("--quote <quote>", "the person's literal words; a decision needs them")
     .option("--path <globs...>", "the paths of the code it is about; a lesson needs them")
     .option("--due <day>", "a reminder: the day (YYYY-MM-DD) it waits for before showing")
+    .option("--on-close <id>", "a reminder: the open change it waits for, until it is archived")
     .action((text: string, options: AddOptions) =>
       run((session) => addEntry(session, text, options))(),
     );
@@ -122,8 +132,11 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
     (path) => path.length > 0,
   );
   const due = options.due?.trim();
+  const onClose = options.onClose?.trim();
   const refusal =
-    addRefusal(written, quote, paths, options.kind) ?? triggerRefusal(due, paths, options.kind);
+    addRefusal(written, quote, paths, options.kind) ??
+    triggerRefusal({ due, paths, onClose }, options.kind) ??
+    (onClose === undefined ? undefined : await closedChangeRefusal(session, onClose));
   if (refusal !== undefined) return memoryRefusalCard(refusal, session.cards);
   const change = await openChange(session);
   const target = targetOf(session, change);
@@ -137,6 +150,7 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
       ...(quote.length > 0 ? { quote } : {}),
       ...(paths.length > 0 ? { paths } : {}),
       ...(due !== undefined ? { due } : {}),
+      ...(onClose !== undefined ? { onClose } : {}),
       text: written,
     };
     return {
@@ -146,17 +160,39 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
   });
 }
 
-/** Why `memory add` writes nothing about a reminder's day: not a day, not a reminder, or with paths. */
-function triggerRefusal(
-  due: string | undefined,
-  paths: readonly string[],
-  kind: MemoryKind,
-): MemoryRefusal | undefined {
-  if (due === undefined) return undefined;
-  if (!isDay(due)) return { reason: "bad-date", value: due };
-  if (kind !== "reminder") return { reason: "due-not-reminder", kind };
-  if (paths.length > 0) return { reason: "two-triggers" };
-  return undefined;
+/**
+ * Why `memory add` writes nothing about a reminder's trigger: `--due` is not a day, `--due` or
+ * `--on-close` go on another kind, or a reminder gets two triggers.
+ */
+function triggerRefusal(trigger: Trigger, kind: MemoryKind): MemoryRefusal | undefined {
+  const { due, onClose } = trigger;
+  if (due !== undefined && !isDay(due)) return { reason: "bad-date", value: due };
+  if (due !== undefined && kind !== "reminder") return { reason: "due-not-reminder", kind };
+  if (onClose !== undefined && kind !== "reminder")
+    return { reason: "on-close-not-reminder", kind };
+  const [one, other] = givenTriggers(trigger);
+  return one === undefined || other === undefined
+    ? undefined
+    : { reason: "two-triggers", flags: [one, other] };
+}
+
+/** The options of `memory add` that give its entry a trigger, in the order the help lists them. */
+function givenTriggers({ due, paths, onClose }: Trigger) {
+  return [
+    ...(due === undefined ? [] : (["--due"] as const)),
+    ...(paths.length === 0 ? [] : (["--path"] as const)),
+    ...(onClose === undefined ? [] : (["--on-close"] as const)),
+  ];
+}
+
+/** Why a reminder cannot wait for change `id`: it is not open, so it would never fire. */
+async function closedChangeRefusal(
+  session: Session,
+  id: string,
+): Promise<MemoryRefusal | undefined> {
+  const located = await locateChanges(session);
+  const open = located.some(({ change }) => change.state.id === id && !isFinished(change.state));
+  return open ? undefined : { reason: "not-open-change", id };
 }
 
 /** Why `memory add` writes nothing: no text, a decision without a quote or a lesson without paths. */
@@ -338,7 +374,7 @@ function authorOf(session: Session): string {
 }
 
 /** The memory's branch, and the trailers of Specty's commits that apply (formats.md §7). */
-function targetOf(session: Session, change: string | undefined): MemoryTarget {
+export function targetOf(session: Session, change: string | undefined): MemoryTarget {
   return {
     branch: session.config.memory.branch,
     lang: session.lang,

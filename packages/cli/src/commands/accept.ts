@@ -28,7 +28,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { commitState } from "../flow/active";
 import { verifyHints, withVerifyHints } from "../flow/detected";
-import { archive, commitArchive } from "../flow/finish";
+import { archive, commitArchive, withFiredReminders } from "../flow/finish";
 import { type Absorbed, absorbTarget, integrationOf, mergeTarget } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
 import { runLive } from "../flow/live-run";
@@ -263,5 +263,8 @@ async function closeQuick(
     [...merged, ...(absorbed?.lines ?? [])],
     landed,
   );
-  return withVerifyHints(withUsage(card, usage), hints);
+  return withVerifyHints(
+    withUsage(withFiredReminders(session, card, archived.fired), usage),
+    hints,
+  );
 }
