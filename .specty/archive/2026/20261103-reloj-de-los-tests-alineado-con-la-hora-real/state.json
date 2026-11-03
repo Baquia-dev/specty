@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261103-reloj-de-los-tests-alineado-con-la-hora-real",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261103-reloj-de-los-tests-alineado-con-la-hora-real",
+  "baseCommit": "fff62ec97c2f5f7ab37ffc75def65996c6177694",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:5c0b7fa6afe3994c865828df9f90be252e577c49889bde02a747becc87791473",
+    "at": "2026-11-03T04:24:52.255Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 1,
+    "adjust": 0,
+    "reasons": [
+      "1 archivo"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "efcdd7710cbda01caf7a4465d3b1a8bc8f90802d",
+      "attempts": 1,
+      "startedAt": "2026-11-03T04:24:52.752Z",
+      "doneAt": "2026-11-03T04:28:18.388Z",
+      "summary": "NOW de los tests de la CLI toma la hora real redondeada al minuto en vez de las 10:00 UTC fijas",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}
