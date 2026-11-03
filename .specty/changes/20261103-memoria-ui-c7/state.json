@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-ui-c7",
   "baseCommit": "daa5fee4ab20ea1f32987e743fffcfe159941ac3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:89935d22bded33d9994803f05009240674ccda9c4a90a3739be6318fb719f2b1",
+    "at": "2026-11-03T09:36:55.829Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 16,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:89935d22bded33d9994803f05009240674ccda9c4a90a3739be6318fb719f2b1",
-    "at": "2026-11-03T09:36:55.829Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T09:38:33.339Z"
 }
