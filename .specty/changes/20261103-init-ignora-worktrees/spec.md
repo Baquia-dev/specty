@@ -46,7 +46,7 @@ Las worktrees de los cambios viven en `.worktrees/` dentro del proyecto (ADR 001
   - files: packages/cli/src/install/project-files.ts, packages/cli/src/install/install.ts, packages/core/src/cards/init.ts, packages/core/src/cards/index.ts, packages/cli/test/init-worktrees.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-worktrees.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: El commit de la instalación lleva `.gitignore`, y la documentación
+- [x] T2: El commit de la instalación lleva `.gitignore`, y la documentación
   - files: packages/cli/test/init-commit.test.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-commit.test.ts && pnpm lint

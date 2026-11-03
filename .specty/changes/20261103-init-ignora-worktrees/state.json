@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-init-ignora-worktrees",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-init-ignora-worktrees",
   "baseCommit": "05c2eac55b46dff0d64d127a0c3e472713fdd2a6",
   "revision": 1,
@@ -35,12 +35,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "65808c50ac56c488bab79b92754785fc89f939ee",
+      "attempts": 1,
       "startedAt": "2026-11-03T09:48:24.251Z",
       "doneAt": "2026-11-03T09:49:43.774Z",
-      "summary": "init añade /.worktrees/ al final de .gitignore (o lo crea) cuando nada lo ignora, lo dice con worktreesIgnoreLine y lo incluye en su commit; writeMissing junta el glosario y esa línea"
+      "summary": "init añade /.worktrees/ al final de .gitignore (o lo crea) cuando nada lo ignora, lo dice con worktreesIgnoreLine y lo incluye en su commit; writeMissing junta el glosario y esa línea",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a88fbf58ca3f5d0b8a7493c5b4f8642c1f0303c4",
+      "startedAt": "2026-11-03T09:49:44.200Z",
+      "doneAt": "2026-11-03T09:50:09.248Z",
+      "summary": "El commit de la instalación lleva .gitignore (test de init-commit) y ARCHITECTURE dice cuándo init lo escribe"
     }
   },
   "pending": {
