@@ -3,6 +3,8 @@ import {
   type Analysis,
   blockedCard,
   type ChangeState,
+  duplicateApproveNext,
+  duplicateFilesBlock,
   type EffortRecommendation,
   formatSizeReason,
   headerOf,
@@ -30,7 +32,7 @@ import { commitState, resolveActive } from "../flow/active";
 import { analyzeChange } from "../flow/analysis";
 import { dataOf, readAudit } from "../flow/carried";
 import { impactBlock, impactedFiles } from "../flow/impact";
-import { listed, sharedBlock, sharedFiles } from "../flow/shared";
+import { duplicatedBy, listed, sharedBlock, sharedFiles } from "../flow/shared";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { readRevision, type StoredChange } from "../store/changes";
@@ -140,11 +142,37 @@ async function proposalCard(
   );
   // Files another open change also lists: seen while planning, not when the merge collides.
   if (phase === "closing") return card;
-  const shared = await sharedFiles(session, state.id, listed(analysis.spec));
-  // Files outside the spec that import what it changes: a scope request foreseen.
+  return withParallel(session, active, analysis, card);
+}
+
+/**
+ * The proposed spec next to the other open changes: the files it shares, the changes it may
+ * duplicate (in delegated mode, the user decides before the approval) and the files outside it
+ * that import what it changes, a scope request foreseen.
+ */
+async function withParallel(
+  session: Session,
+  active: StoredChange,
+  analysis: Analysis,
+  card: Output,
+): Promise<Output> {
+  const paths = listed(analysis.spec);
+  const shared = await sharedFiles(session, active.state.id, paths);
+  const created = dataOf(
+    (await readAudit(active.files)).find((entry) => entry.event === "change.created"),
+  );
+  const apart = Array.isArray(created.distinctFrom) ? created.distinctFrom.map(String) : [];
+  const duplicates = await duplicatedBy(session, paths, shared, new Set(apart));
   const impacts = await impactedFiles(session, analysis.spec);
-  const blocks = [...sharedBlock(session, shared), ...impactBlock(session, impacts)];
-  return { ...card, blocks: [...card.blocks, ...blocks] };
+  const blocks = [
+    ...sharedBlock(session, shared),
+    ...duplicateFilesBlock(duplicates, session.cards),
+    ...impactBlock(session, impacts),
+  ];
+  const ids = duplicates.map(({ change }) => change.id);
+  const next =
+    ids.length > 0 && session.delegated ? duplicateApproveNext(ids, session.cards) : card.next;
+  return { ...card, blocks: [...card.blocks, ...blocks], next };
 }
 
 /**

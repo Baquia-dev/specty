@@ -52,7 +52,7 @@ follows:
   - files: packages/core/src/cards/duplicates.ts, packages/core/src/cards/index.ts, packages/core/test/cards/duplicate-files.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/duplicate-files.test.ts test/flow/duplicates.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: `propose` avisa del posible duplicado, y la documentación
+- [x] T2: `propose` avisa del posible duplicado, y la documentación
   - files: packages/cli/src/flow/shared.ts, packages/cli/src/commands/propose.ts, packages/cli/test/duplicate-files.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/duplicate-files.test.ts test/shared.test.ts && pnpm typecheck && pnpm lint
