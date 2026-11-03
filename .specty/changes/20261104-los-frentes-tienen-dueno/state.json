@@ -6,6 +6,13 @@
   "branch": "specty/20261104-los-frentes-tienen-dueno",
   "baseCommit": "2435a73902d061d02e48bb31d769a851d0c0f258",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f68606a0002df15896d3d2bd3269d049dccacd426489883a8225114e1b7c1cbb",
+    "at": "2026-11-03T20:16:40.755Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -57,12 +64,6 @@
     "T": 5,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:f68606a0002df15896d3d2bd3269d049dccacd426489883a8225114e1b7c1cbb",
-    "at": "2026-11-03T20:16:40.755Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T20:20:02.210Z"
 }

@@ -65,6 +65,29 @@ describe("analyzeShell", () => {
     expect(analyzeShell("specty enter").enters).toEqual([]);
   });
 
+  it("AC1: names each front `specty front take` and `specty front free` ask for, in order", () => {
+    expect(analyzeShell("specty front take B").fronts).toEqual([{ action: "take", name: "B" }]);
+    expect(analyzeShell("specty front free ui").fronts).toEqual([{ action: "free", name: "ui" }]);
+    expect(
+      analyzeShell('specty --json front take b && node "/x/dist/specty.mjs" front free A').fronts,
+    ).toEqual([
+      { action: "take", name: "b" },
+      { action: "free", name: "A" },
+    ]);
+    expect(analyzeShell("npx -y @baquia-dev/specty front take B; ls").fronts).toEqual([
+      { action: "take", name: "B" },
+    ]);
+  });
+
+  it("AC2: names no front for the other `specty front` commands or without a name", () => {
+    expect(analyzeShell("specty front").fronts).toEqual([]);
+    expect(analyzeShell('specty front add B "Guard"').fronts).toEqual([]);
+    expect(analyzeShell("specty front assign B P1 P2").fronts).toEqual([]);
+    expect(analyzeShell("specty front take").fronts).toEqual([]);
+    expect(analyzeShell("specty next").fronts).toEqual([]);
+    expect(analyzeShell("echo specty front take B").fronts).toEqual([]);
+  });
+
   it("says where each command runs, following its `cd`s, but not the `cd`s (AC4)", () => {
     expect(analyzeShell("pnpm test").runsIn).toEqual([""]);
     expect(analyzeShell("cd /w/x && pnpm test; ls").runsIn).toEqual(["/w/x", "/w/x"]);
