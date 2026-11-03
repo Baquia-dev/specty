@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261104-frenos-de-los-frentes",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-frenos-de-los-frentes",
+  "baseCommit": "9ccb9b300c98982c7bdb77bee83b57f6aaf3469d",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:1d2b07e1b9cb3d98d0304bad0651a9e9c7fb00e40e2bd04c325174e381cc2bcc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8361b4454258688e5f69bcb748f67a055b990707caffe7a9d75ba39eb2b3dc4a",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:12288601d0ba33673f6cadb7798ff9937e89799ff5dc97d22a91a6b7ec14f5b1",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:5d018e249c4e713e82d540b253a6d85bdef63c1aa9fd11671f8f25b78f8cbad4",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:6b2c3906bb4c576ce8430beaeed7f3925379063f49d081a4fe3c6ab271a10edd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 5,
+    "T": 4,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:a080cfd5f620a7590606c0dbdc5c652810b0de11a8ac71c311d24b0af9e024a0",
+    "at": "2026-11-03T22:24:37.087Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
