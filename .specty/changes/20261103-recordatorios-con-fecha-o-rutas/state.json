@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261103-recordatorios-con-fecha-o-rutas",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-recordatorios-con-fecha-o-rutas",
+  "baseCommit": "8be0473c2cf129572fc860adc432518914be47a3",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "12 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:4efa236e64453f78dc1f6449b8b81900465238938ac5ba4d72cfbaa1d200d66a",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:656b2dd62810c0a786959b5f2ea1b3cfefbc45ef5c338bd4018c1afc824ddaf0",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:fb1b1d32fa26250c102e90d68fe91c537b6cc4e7dfed7f6b68d133c57069e26a",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1484d5a3a5564fd247d537d7148246a146869575979fd33ddc7bbb03bd39d52a",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:d1c4e16e7a1d30ab8644540776c7710dc61edf826690ecf4757de1a94998139a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d53b1592fbf74d5aeed63db144b8e9a655f901e972f2d5619c7c95e6858010c9",
+    "at": "2026-11-03T14:00:26.444Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
