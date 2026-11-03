@@ -29,6 +29,7 @@ import {
   doctorLines,
   exitFailed,
   exitReply,
+  lastAssistantMessage,
   type Redirect,
   textCard,
 } from "./adapter";
@@ -99,6 +100,7 @@ export const codex: AgentAdapter = {
   failed: exitFailed,
   card: textCard,
   stop: blockingStop([CODEX_HOOKS]),
+  lastMessage: lastAssistantMessage,
   // Codex 0.131 or later reads a linked worktree's project hooks from the main checkout, so the
   // person trusts them once per repository.
   install: async ({ root, git, invocation, files, lang }) => {

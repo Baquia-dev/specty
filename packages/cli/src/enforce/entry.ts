@@ -2,11 +2,12 @@
 import { personAtTerminal } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { CliEnvironment } from "../program";
-import { openSession, type Terminal } from "../session";
+import { openSession, type Session, type Terminal } from "../session";
 import { type GuardTool, isGuardTool } from "./actions";
 import { agentStop } from "./agent-stop";
 import { guard } from "./guard";
 import { preCommit, prepareCommitMsg } from "./hook";
+import { memoryStop } from "./memory-stop";
 
 /** What `main` gives the hooks: the environment, before choosing a terminal or an invocation. */
 export type HookBase = Omit<CliEnvironment, "terminal" | "invocation">;
@@ -27,9 +28,19 @@ export async function guardCommand(
   return reply.code;
 }
 
+/** The hooks of an agent's end of turn, with the event on stdin: what they print, if anything. */
+const STOPS: ReadonlyMap<
+  string,
+  (session: Session, tool: string, input: string) => Promise<string>
+> = new Map([
+  ["agent-stop", agentStop],
+  ["memory-stop", memoryStop],
+]);
+
 /**
  * `specty hook <name> [args…]`, from git's hooks and from the agents' end of turn (`agent-stop
- * <agent>`, with the event on stdin). Outside a Specty repository, git and the agent go on.
+ * <agent>` and `memory-stop <agent>`, with the event on stdin). Outside a Specty repository, git
+ * and the agent go on.
  */
 export async function hookCommand(
   environment: CliEnvironment,
@@ -44,8 +55,9 @@ export async function hookCommand(
     return 0;
   }
   if (name === "pre-commit") return preCommit(opened.session);
-  if (name === "agent-stop") {
-    const reply = await agentStop(opened.session, args[0] ?? "", await environment.stdin());
+  const stop = STOPS.get(name);
+  if (stop !== undefined) {
+    const reply = await stop(opened.session, args[0] ?? "", await environment.stdin());
     if (reply.length > 0) environment.io.out(reply);
     return 0;
   }

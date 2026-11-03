@@ -189,6 +189,7 @@ export {
   settledEntry,
   takenEntry,
 } from "./memory/entries";
+export { pendingInMessage } from "./memory/turn-end";
 export {
   EXIT_CODES,
   headerOf,

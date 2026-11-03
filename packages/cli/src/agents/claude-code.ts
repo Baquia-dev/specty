@@ -28,6 +28,7 @@ import {
   exitFailed,
   exitReply,
   type JsonUpdate,
+  lastAssistantMessage,
   textCard,
 } from "./adapter";
 
@@ -80,6 +81,7 @@ export const claudeCode: AgentAdapter = {
   borrowed: (env) => env.DEVIN_PROJECT_DIR !== undefined,
   card: textCard,
   stop: blockingStop([CLAUDE_SETTINGS, CLAUDE_LOCAL_SETTINGS]),
+  lastMessage: lastAssistantMessage,
   // The guard in each event (matcher + `hooks: [{ type: "command" }]`) and the permissions. A
   // machine-specific command goes to `.claude/settings.local.json`, which is never committed.
   install: async ({ root, git, invocation, files, lang }) => {

@@ -36,7 +36,7 @@ export async function installOpencode(
 }
 
 /** OpenCode's settings in the project's `.opencode/`, which it reads with `opencode.json`. */
-export const OPENCODE_SETTINGS = ".opencode/opencode.jsonc";
+const OPENCODE_SETTINGS = ".opencode/opencode.jsonc";
 
 /**
  * Takes out the rule an older `init` wrote so that OpenCode worked in the worktrees' folder beside

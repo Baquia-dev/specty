@@ -114,6 +114,11 @@ export interface AgentAdapter {
   readonly inject?: (texts: readonly string[]) => GuardReply;
   /** Its end of turn, for an agent whose end of turn can send it back to work (ADR 0012). */
   readonly stop?: AgentStop;
+  /**
+   * The text of the agent's last message in its end-of-turn event, for a tool that gives it: the
+   * memory's safety net reads the pending items it lists (ADR 0016).
+   */
+  readonly lastMessage?: (event: Event) => string | undefined;
   /** Writes its guard and its settings in the repository, never in the user's folder (ADR 0013). */
   readonly install: (context: InstallContext) => Promise<Installed>;
   /** Takes them out again for `uninstall`, and leaves everything else as it was. */
@@ -223,6 +228,12 @@ function commandsIn(value: unknown): string[] {
  * reason }` and marks with `stop_hook_active` a turn it already sent back, which may end now so
  * that it never loops. The hook goes in `Stop`, with no matcher, in `files`.
  */
+/** The last message of Claude Code's and Codex's end of turn: `last_assistant_message`. */
+export function lastAssistantMessage(event: Event): string | undefined {
+  const message = event.last_assistant_message;
+  return typeof message === "string" ? message : undefined;
+}
+
 export function blockingStop(files: readonly string[]): AgentStop {
   return {
     acts: (event) => event.stop_hook_active !== true,
