@@ -66,8 +66,16 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(true);
     await init(root, "gemini-cli");
     expect(await says(root, line)).toBe(false);
-    await rewrite(root, file, ({ context: _, ...rest }) => rest);
-    expect(await says(root, line)).toBe(true);
+  });
+
+  it("AC3: does not take Gemini CLI's or OpenCode's settings without the worktrees' folder for outdated ones", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "gemini-cli");
+    await init(root, "opencode");
+    await rewrite(root, ".gemini/settings.json", ({ context: _, ...rest }) => rest);
+    await rm(join(root, ".opencode/opencode.jsonc"), { force: true });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.out).not.toContain("es de antes de `specty enter`");
   });
 
   it("leaves Gemini CLI's settings kept in git, which init gives no machine path (AC3)", async () => {
@@ -89,9 +97,6 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(true);
     await init(root, "opencode");
     expect(await says(root, line)).toBe(false);
-    const settings = ".opencode/opencode.jsonc";
-    await rm(join(root, settings));
-    expect(await says(root, outdated("OpenCode", settings, "opencode"))).toBe(true);
   });
 
   it("leaves OpenCode's settings kept in git (AC3)", async () => {

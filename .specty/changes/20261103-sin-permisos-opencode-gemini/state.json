@@ -6,6 +6,13 @@
   "branch": "specty/20261103-sin-permisos-opencode-gemini",
   "baseCommit": "28e862bee120fcf4b56249159472b84e3449519c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1cee2d3aaa421d94a23f2c484b4438402dd6853b357d6fadec870a8660a060cb",
+    "at": "2026-11-03T08:42:04.528Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:1cee2d3aaa421d94a23f2c484b4438402dd6853b357d6fadec870a8660a060cb",
-    "at": "2026-11-03T08:42:04.528Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T08:43:57.953Z"
 }

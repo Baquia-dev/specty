@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { existsSync } from "node:fs";
 import { mkdtemp, readdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
@@ -125,42 +126,44 @@ describe("installing the plugin in OpenCode", () => {
 
 const SETTINGS = ".opencode/opencode.jsonc";
 
-describe("OpenCode's permission for the worktrees' folder", () => {
-  it("lets it work there from settings out of git, and uninstall takes it out (AC4)", async () => {
+describe("OpenCode and the worktrees' folder", () => {
+  it("AC1: init gives it no rule for the worktrees' folder", async () => {
     const root = await tempRepo(PACKAGE);
-    const pattern = `${root}.worktrees/**`;
-    await writeFiles(root, { [SETTINGS]: '{\n  // Mías.\n  "permission": { "bash": "ask" }\n}\n' });
+    const mine = '{\n  // Mías.\n  "permission": { "bash": "ask" }\n}\n';
+    await writeFiles(root, { [SETTINGS]: mine });
     const init = await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
-    expect(init.out).toContain(
-      "OpenCode: .opencode/opencode.jsonc (local) le deja trabajar en la carpeta de las worktrees (`permission.external_directory`), para entrar en la de un cambio desde la misma sesión (`specty enter`).",
-    );
-    const settings = async () => parse(await read(root, SETTINGS));
-    expect(await settings()).toEqual({
-      permission: { bash: "ask", external_directory: { [pattern]: "allow" } },
-    });
-    expect(await read(root, SETTINGS)).toContain("// Mías.");
-    expect(await read(root, ".git/info/exclude")).toContain(`/${SETTINGS}`);
-    expect(git(root, "status", "--porcelain")).toBe("");
-    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
-    expect(await settings()).toEqual({ permission: { bash: "ask" } });
+    expect(init.out).not.toContain("external_directory");
+    expect(await read(root, SETTINGS)).toBe(mine);
+    const bare = await tempRepo(PACKAGE);
+    await cli(bare, ["init", "--language", "es", "--tools", "opencode"]);
+    expect(existsSync(join(bare, SETTINGS))).toBe(false);
   });
 
-  it("keeps a rule the person gave every folder, before its own (AC4)", async () => {
+  it("AC2: takes out the rule an older init wrote, and leaves the person's", async () => {
     const root = await tempRepo(PACKAGE);
-    await writeFiles(root, { [SETTINGS]: '{ "permission": { "external_directory": "deny" } }\n' });
+    const older = {
+      permission: {
+        bash: "ask",
+        external_directory: { "*": "deny", [`${root}.worktrees/**`]: "allow" },
+      },
+    };
+    await writeFiles(root, { [SETTINGS]: JSON.stringify(older) });
     await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
-    expect(parse(await read(root, SETTINGS)).permission.external_directory).toEqual({
-      "*": "deny",
-      [`${root}.worktrees/**`]: "allow",
+    expect(parse(await read(root, SETTINGS))).toEqual({
+      permission: { bash: "ask", external_directory: { "*": "deny" } },
+    });
+    await writeFiles(root, { [SETTINGS]: JSON.stringify(older) });
+    await cli(root, ["uninstall"], { terminal: person({ choose: ["yes"] }) });
+    expect(parse(await read(root, SETTINGS))).toEqual({
+      permission: { bash: "ask", external_directory: { "*": "deny" } },
     });
   });
 
-  it("says what to add when the settings go in git (AC4)", async () => {
-    const root = await tempRepo({ ...PACKAGE, [SETTINGS]: "{}\n" });
-    const init = await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
-    expect(init.out).toContain(
-      `OpenCode: .opencode/opencode.jsonc va en git, así que Specty no le añade la carpeta de las worktrees; para trabajar en la de un cambio desde la misma sesión (\`specty enter\`), permite \`${root}.worktrees/**\` en \`permission.external_directory\` de tu configuración de usuario.`,
-    );
-    expect(await read(root, SETTINGS)).toBe("{}\n");
+  it("AC2: leaves a rule the person gave every folder as it was", async () => {
+    const root = await tempRepo(PACKAGE);
+    const mine = '{ "permission": { "external_directory": "deny" } }\n';
+    await writeFiles(root, { [SETTINGS]: mine });
+    await cli(root, ["init", "--language", "es", "--tools", "opencode"]);
+    expect(await read(root, SETTINGS)).toBe(mine);
   });
 });
