@@ -3,6 +3,7 @@ import { AGENT_NAMES, type AgentTool, isAgentTool } from "../agents";
 import { GIT_FLOWS, type GitFlow } from "../branches";
 import type { Lang } from "../i18n";
 import { headerOf, type Output, section } from "../output";
+import { type ExclusionView, exclusionsBlock } from "./exclusions";
 import { blockedCard } from "./flow";
 import { translator } from "./text";
 import type { CardContext } from "./view";
@@ -341,6 +342,8 @@ export interface InitView {
   readonly product?: "interviewed" | "skeleton";
   /** A new project ended with no git flow: its next step chooses one. */
   readonly chooseFlow?: boolean;
+  /** The tools at the root that will see what Specty writes, its changes' folder included. */
+  readonly exclusions?: readonly ExclusionView[];
 }
 
 /** `specty init` done. Next comes AGENTS.md, or in a new project, its first change. */
@@ -353,6 +356,7 @@ export function initCard(view: InitView, ctx: CardContext): Output {
       ...section(t("CONFIGURADO", "CONFIGURED"), view.done),
       ...section(t("DETECTADO", "DETECTED"), view.detected),
       ...section(t("AVISOS", "WARNINGS"), view.warnings),
+      ...exclusionsBlock(view.exclusions ?? [], ctx, "init"),
     ],
     next:
       view.product === undefined

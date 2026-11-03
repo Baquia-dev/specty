@@ -8,6 +8,7 @@ import {
   parseSpec,
   sessionEntries,
 } from "@baquia-dev/specty-core";
+import { toolExclusions } from "../detect/formatters";
 import { commitState, resolveActive } from "../flow/active";
 import { finishEpic } from "../flow/epic";
 import { changeView } from "../flow/views";
@@ -35,7 +36,10 @@ export async function next(session: Session): Promise<Output> {
     const { entries, fronts } = await readMemory(session.git, session.config.memory.branch);
     const memory = sessionEntries(entries, localDay(session.environment.now()));
     const view = fronts.length === 0 ? {} : { fronts: await frontsView(session, fronts) };
-    return nextCard({ dirty, ...(fresh ? { fresh } : {}), memory, ...view }, session.cards);
+    // Specty doesn't edit the tools that see what it writes: the agent tells the user (ADR 0018).
+    const exclusions = (await toolExclusions(session.root)).filter((tool) => !tool.excluded);
+    const start = { memory, exclusions, ...view };
+    return nextCard({ dirty, ...(fresh ? { fresh } : {}), ...start }, session.cards);
   }
   const pending = await pendingIntegration(session, active, "close");
   const current = pending.kind === "go" ? pending.change : active;

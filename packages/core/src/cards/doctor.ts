@@ -2,6 +2,7 @@
 import type { AgentTool } from "../agents";
 import { headerOf, type Output, section } from "../output";
 import { AGENT_WRITERS } from "./doctor-agents";
+import { exclusionLine } from "./exclusions";
 import { MCP_WRITERS } from "./mcp";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
@@ -128,11 +129,7 @@ const WRITERS: {
   },
   "formatter-excludes": (line, t) =>
     t(`${line.name} excluye ${line.path}.`, `${line.name} excludes ${line.path}.`),
-  "formatter-checks": (line, t) =>
-    t(
-      `${line.name} también revisa ${line.path}, que escribe Specty: añade ${line.add} en ${line.file}.`,
-      `${line.name} also checks ${line.path}, which Specty writes: add ${line.add} to ${line.file}.`,
-    ),
+  "formatter-checks": (line, t) => exclusionLine(line, t),
   "specty-reachable": (line, t) =>
     t(
       `Los hooks pueden ejecutar Specty (${line.command}).`,

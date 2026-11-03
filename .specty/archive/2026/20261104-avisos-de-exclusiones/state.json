@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "id": "20261104-avisos-de-exclusiones",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261104-avisos-de-exclusiones",
+  "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:12e8513157ddb527008d391a9368c157d450e9f0daddc28d999e87fea923fa3e",
+    "at": "2026-11-03T22:07:08.405Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "11 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:eb0c58a0e0b8c2ebfd89a73791030c1e260db73312f67a758a8a2f5063781a18",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:b190475540359c566976265b8a7ed7e91a2ec771d8e5c910d7a28d2b8d6c98cd",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:caccd4c99ddae134ad0d5c6b1610ea863155d6da3ff309f6a1da60d78e4ec2bd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "adc19d9f25a0bc0faeb6c63b35db06c9ca78a70a",
+      "attempts": 1,
+      "startedAt": "2026-11-03T22:08:30.297Z",
+      "doneAt": "2026-11-03T22:09:38.468Z",
+      "summary": "Bloque «HERRAMIENTAS QUE VEN LO QUE ESCRIBE SPECTY» en las tarjetas de next e init (cards/exclusions.ts), con la línea que comparte doctor y el cierre de cada tarjeta",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "b2a23c6cc36933f36a194dbbc6ffdf6d02c1c954",
+      "attempts": 1,
+      "startedAt": "2026-11-03T22:09:38.832Z",
+      "doneAt": "2026-11-03T22:12:04.182Z",
+      "summary": "toolExclusions (formateadores y worktrees, con ahead) en doctor, next sin cambio activo e init por adelantado si los cambios van a .worktrees/; ADR 0018 (Specty detecta, el agente corrige) y ARCHITECTURE",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T22:19:41.044Z",
+  "lockedTests": {
+    "packages/cli/test/exclusion-warnings.test.ts": "sha256:4668888bb8bc4d86207420e1061165e06de0e3eef2ea155826e1863b64eecb4f",
+    "packages/core/test/cards/exclusions.test.ts": "sha256:dcaeabe5d8da0090659624eab148413c5fd175a752dd70fcf225ebfcaebb30be"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "9ccb9b300c98982c7bdb77bee83b57f6aaf3469d",
+    "reason": "conflicts",
+    "conflicts": [
+      "packages/cli/src/commands/next.ts",
+      "packages/core/src/cards/next.ts"
+    ],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/decisions/0018-worktrees-dentro-del-repositorio.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/run.ts",
+      "packages/cli/src/commands/doctor.ts",
+      "packages/cli/src/commands/init.ts",
+      "packages/cli/src/commands/next.ts",
+      "packages/cli/src/commands/status.ts",
+      "packages/cli/src/detect/formatters.ts",
+      "packages/cli/src/detect/worktree-tools.ts",
+      "packages/cli/src/enforce/sessions.ts",
+      "packages/cli/src/session.ts",
+      "packages/cli/test/exclusion-warnings.test.ts",
+      "packages/cli/test/front-start.test.ts",
+      "packages/cli/test/front-status.test.ts",
+      "packages/core/src/cards/doctor.ts",
+      "packages/core/src/cards/exclusions.ts",
+      "packages/core/src/cards/fronts.ts",
+      "packages/core/src/cards/init.ts",
+      "packages/core/src/cards/memory.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/status.ts",
+      "packages/core/test/cards/exclusions.test.ts",
+      "packages/core/test/cards/front-start.test.ts",
+      "packages/core/test/cards/status-fronts.test.ts"
+    ],
+    "at": "2026-11-03T22:19:44.344Z",
+    "resolved": {
+      "commit": "8478376",
+      "at": "2026-11-03T22:24:57.565Z"
+    }
+  }
+}
