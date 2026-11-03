@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-te-toca",
   "baseCommit": "2b2dadc43c8dad7cf262a860d661cef3b3c957c5",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b95173dfc66935c0c1f8ed390d6d501ebb186d31e504568351a3500efdab440c",
+    "at": "2026-11-03T06:28:49.074Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -48,12 +55,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b95173dfc66935c0c1f8ed390d6d501ebb186d31e504568351a3500efdab440c",
-    "at": "2026-11-03T06:28:49.074Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T06:30:04.769Z"
 }
