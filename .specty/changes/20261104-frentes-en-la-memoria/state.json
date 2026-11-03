@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4614316385f2664f4b7b846180dea52d8790c365",
+      "attempts": 1,
       "startedAt": "2026-11-03T19:30:13.856Z",
       "doneAt": "2026-11-03T19:30:46.017Z",
-      "summary": "core memory/fronts.ts: Front, parseFront/serializeFront (fronts/<nombre>.md), isFrontName, findFront sin distinguir mayúsculas, assignable (unknown, not-work, closed) y assignToFront con los frentes que cambian y lo que sale de cada uno"
+      "summary": "core memory/fronts.ts: Front, parseFront/serializeFront (fronts/<nombre>.md), isFrontName, findFront sin distinguir mayúsculas, assignable (unknown, not-work, closed) y assignToFront con los frentes que cambian y lo que sale de cada uno",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "037582016ed91618815ea7ddc8f3488dca0ad464",
+      "startedAt": "2026-11-03T19:30:46.383Z",
+      "doneAt": "2026-11-03T19:32:05.405Z",
+      "summary": "core cards/fronts.ts: frontListCard (cada frente con su texto, rutas y entradas abiertas en orden), frontAddedCard, frontAssignedCard (orden nuevo y de qué frente salen), frontRefusalCard y frontCommitSubject, en español y en inglés"
     }
   },
   "pending": {

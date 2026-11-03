@@ -61,7 +61,7 @@ Primer cambio de P33 (repartir el trabajo entre sesiones): la memoria de Specty 
   - files: packages/core/src/memory/fronts.ts, packages/core/src/index.ts, packages/core/test/memory/fronts.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/fronts.test.ts && pnpm lint
-- [ ] T2: Las tarjetas de los frentes
+- [x] T2: Las tarjetas de los frentes
   - files: packages/core/src/cards/fronts.ts, packages/core/src/cards/index.ts, packages/core/test/cards/fronts.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/fronts.test.ts && pnpm typecheck && pnpm lint
