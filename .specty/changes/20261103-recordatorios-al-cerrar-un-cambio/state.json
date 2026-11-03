@@ -6,6 +6,13 @@
   "branch": "specty/20261103-recordatorios-al-cerrar-un-cambio",
   "baseCommit": "4273e17bddca2d90ca009423261545f6a03f4b15",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:25b595f7c21ef55033f92dd247d06b718353669ac5775fc5cd780265cc8fe87e",
+    "at": "2026-11-03T14:28:08.057Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 18,
@@ -49,12 +56,6 @@
     "T": 5,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:25b595f7c21ef55033f92dd247d06b718353669ac5775fc5cd780265cc8fe87e",
-    "at": "2026-11-03T14:28:08.057Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T14:30:34.827Z"
 }
