@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-bitacora-c6",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-bitacora-c6",
+  "baseCommit": "9483005534b070cf93f6982555cb9da2f356708f",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:b7ea820931a100c89ed36491c62db8838405e6960a36cfc6994bd2438ec21034",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:04ad2bb0d9c3b3f0bfe6f7ceebd192e600050651b4bf47ed045f330c8f185564",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:ca1ff974c2f07a4b158ff1dd292c3a8a39fd733bb847fd4c176a7770d19f60ef",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:b44d20853853ab6ae2eb0ca9618de44c5c62766e262af4e991696aa76c76a0b1",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3297ed5b4f2a481b39d4b142494f1926dadc64bc5faaa6980096bd72d4ae999b",
+    "at": "2026-11-03T09:05:55.792Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
