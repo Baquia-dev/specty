@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-duplicado-propose-2",
   "baseCommit": "2c3a4e3ccc76154abf0aaf3f68ce9cdb62bdfcbc",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ef855b387f5bac181a33de037d1af0010fa727859e5099fd7671ef8d6dfd3df3",
+    "at": "2026-11-03T08:22:18.467Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:ef855b387f5bac181a33de037d1af0010fa727859e5099fd7671ef8d6dfd3df3",
-    "at": "2026-11-03T08:22:18.467Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T08:23:42.879Z"
 }
