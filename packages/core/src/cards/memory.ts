@@ -206,18 +206,27 @@ export function memoryStartBlocks(
 ): OutputBlock[] {
   const t = translator(ctx.lang);
   const open = byDate(entries.filter(isOpenEntry));
-  const reminders = open.filter((entry) => entry.kind === "reminder");
-  const done = t(
-    `Cuando se cumpla uno, márcalo hecho con \`${ctx.command} memory done <id>\`.`,
-    `When one is fulfilled, mark it done with \`${ctx.command} memory done <id>\`.`,
-  );
   return [
     ...section(t("MEMORIA DE SPECTY", "SPECTY'S MEMORY"), workLines(open, ctx, t)),
-    ...section(
-      t("RECORDATORIOS", "REMINDERS"),
-      reminders.length === 0
-        ? []
-        : [...reminders.map((entry) => `${entry.id} · ${firstLine(entry.text)}`), done],
+    ...section(t("RECORDATORIOS", "REMINDERS"), reminderLines(entries, ctx)),
+  ];
+}
+
+/**
+ * The open reminders by date, each with its id and first line, and how to mark one done; nothing
+ * when none is open. The start card and «TE TOCA» of `specty status` show them.
+ */
+export function reminderLines(entries: readonly MemoryEntry[], ctx: CardContext): string[] {
+  const t = translator(ctx.lang);
+  const reminders = byDate(entries.filter(isOpenEntry)).filter(
+    (entry) => entry.kind === "reminder",
+  );
+  if (reminders.length === 0) return [];
+  return [
+    ...reminders.map((entry) => `${entry.id} · ${firstLine(entry.text)}`),
+    t(
+      `Cuando se cumpla uno, márcalo hecho con \`${ctx.command} memory done <id>\`.`,
+      `When one is fulfilled, mark it done with \`${ctx.command} memory done <id>\`.`,
     ),
   ];
 }

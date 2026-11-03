@@ -100,8 +100,6 @@ export {
   delegationWarning,
   nothingPendingCard,
   notInteractiveCard,
-  type StatusEntry,
-  statusCard,
 } from "./human";
 export { impactLine, impactTitle } from "./impact";
 export {
@@ -292,6 +290,7 @@ export {
   type UiApprovalRefusal,
   uiApprovalRefusalCard,
 } from "./server";
+export { type StatusEntry, statusCard } from "./status";
 export {
   type AutoApproved,
   autoApprovedLead,
