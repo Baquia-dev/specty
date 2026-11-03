@@ -19,6 +19,8 @@ export interface ShellAnalysis {
   readonly commits: readonly { readonly all: boolean; readonly directory?: string }[];
   /** Skips or disables hooks: `--no-verify`, `core.hooksPath`, `HUSKY=0`… */
   readonly bypass: boolean;
+  /** The branches its git commands write, delete, push or check out; `*` for all or unknown. */
+  readonly refs: readonly string[];
   /** Paths written through redirections, `tee`, `touch`, `cp`, `mv` or `sed -i`. */
   readonly writes: readonly string[];
   /** Paths removed through `rm`, `rmdir` or `mv`. */
@@ -50,6 +52,7 @@ const EMPTY: ShellAnalysis = {
   unscopedNpx: false,
   commits: [],
   bypass: false,
+  refs: [],
   writes: [],
   deletes: [],
   unresolved: [],
@@ -145,7 +148,7 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
   const start = skipWrappers(words, assignments.length);
   const program = basename(words[start] ?? "");
   const args = words.slice(start + 1);
-  const git = program === "git" ? analyzeGit(args) : { commits: [], bypass: false };
+  const git = program === "git" ? analyzeGit(args) : { commits: [], bypass: false, refs: [] };
   const files = program === "" ? { writes: [], deletes: [] } : fileEffects(program, args);
   const specty = spectyArgs(program, args);
   const bypassBySpecty =
@@ -158,6 +161,7 @@ function analyzeSegment(tokens: readonly Token[]): Segment {
     unscopedNpx: isUnscopedNpx(program, args),
     commits: git.commits,
     bypass: bypassByEnv || git.bypass || bypassBySpecty,
+    refs: git.refs,
     writes: [...redirected, ...files.writes],
     deletes: files.deletes,
   };
@@ -169,6 +173,7 @@ function merge(a: ShellAnalysis, b: ShellAnalysis): ShellAnalysis {
     unscopedNpx: a.unscopedNpx || b.unscopedNpx,
     commits: [...a.commits, ...b.commits],
     bypass: a.bypass || b.bypass,
+    refs: [...a.refs, ...b.refs],
     writes: [...a.writes, ...b.writes],
     deletes: [...a.deletes, ...b.deletes],
     unresolved: [...a.unresolved, ...b.unresolved],

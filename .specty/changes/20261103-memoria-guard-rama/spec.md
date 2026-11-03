@@ -50,7 +50,7 @@ La memoria de Specty vive en su propia rama (`specty-memory`), y solo los comand
 
 ## Tareas
 
-- [ ] T1: Qué ramas escribe un comando de git, y la regla del guard
+- [x] T1: Qué ramas escribe un comando de git, y la regla del guard
   - files: packages/core/src/guard/git-refs.ts, packages/core/src/guard/git.ts, packages/core/src/guard/shell.ts, packages/core/src/guard/decide.ts, packages/core/test/guard/memory-branch.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

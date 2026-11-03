@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "22acfb1e701e2463b8c18dfb6076865c779069c0",
+      "startedAt": "2026-11-03T07:53:34.122Z",
+      "doneAt": "2026-11-03T07:55:53.175Z",
+      "summary": "guard/git-refs.ts: writtenRefs da las ramas que escribe, borra, sube o saca cada comando de git; GitEffects y ShellAnalysis llevan refs; la regla memory del guard bloquea la rama de memory.branch o «*»"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -5,6 +5,7 @@ import type { ResolvedConfig } from "../schema/config";
 import { isGoverned } from "../scope/governed";
 import { classifyPath, scopeRulesFrom } from "../scope/scope";
 import type { ChangeKind } from "../spec/model";
+import { EVERY_BRANCH } from "./git-refs";
 import { humanDenial } from "./human";
 import { commitNext, type GuardIntegration, integrationDenial } from "./integration";
 import { type BoundSession, sessionDenial } from "./session";
@@ -49,6 +50,8 @@ export interface ShellFacts {
   readonly specty: readonly string[];
   readonly unscopedNpx: boolean;
   readonly bypass: boolean;
+  /** The branches its git commands write, delete, push or check out; `*` for all or unknown. */
+  readonly refs?: readonly string[];
   /** Governed files that a `git commit` in the command would include. */
   readonly committedGoverned: readonly string[];
   readonly writes: readonly string[];
@@ -95,6 +98,7 @@ export type GuardRule =
   | "human"
   | "package"
   | "bypass"
+  | "memory"
   | "commit"
   | "protected"
   | "spec"
@@ -175,6 +179,8 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
       t(`sigue el flujo: \`${ctx.command} next\`.`, `follow the flow: \`${ctx.command} next\`.`),
     );
   }
+  const memory = memoryDenial(facts.refs ?? [], ctx);
+  if (memory !== undefined) return memory;
   if (facts.committedGoverned.length > 0) {
     return deny(
       "commit",
@@ -186,6 +192,28 @@ function decideShell(facts: ShellFacts, ctx: GuardContext): GuardDecision {
     );
   }
   return decideFiles(facts, ctx);
+}
+
+/**
+ * A git command that writes, deletes, pushes or checks out the branch of Specty's memory: only
+ * the `specty memory` commands write it, and pushing it is the person's call (ADR 0016).
+ */
+function memoryDenial(refs: readonly string[], ctx: GuardContext): GuardDecision | undefined {
+  const { branch } = ctx.config.memory;
+  if (!refs.some((ref) => ref === branch || ref === EVERY_BRANCH)) return undefined;
+  const t = (es: string, en: string) => (ctx.lang === "es" ? es : en);
+  const memory = `\`${ctx.command} memory\``;
+  return deny(
+    "memory",
+    t(
+      `La rama \`${branch}\` es la memoria de Specty: solo la escriben los comandos de ${memory}.`,
+      `The \`${branch}\` branch is Specty's memory: only the ${memory} commands write it.`,
+    ),
+    t(
+      `anota con \`${ctx.command} memory add\`, marca hecho con \`${ctx.command} memory done\` o propón descartar con \`${ctx.command} memory drop\`; subir la rama es cosa de la persona.`,
+      `add with \`${ctx.command} memory add\`, mark done with \`${ctx.command} memory done\` or propose dropping with \`${ctx.command} memory drop\`; pushing the branch is the person's call.`,
+    ),
+  );
 }
 
 /** Each path a command or an edit writes or deletes, after those inside other worktrees. */
