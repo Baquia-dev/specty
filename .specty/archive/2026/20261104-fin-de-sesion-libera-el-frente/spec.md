@@ -76,3 +76,24 @@ Resuelve P58: hoy, tras un `/clear` en Claude Code, la conversación nueva es ot
 
 - R1: Si Claude Code no llama a `SessionEnd` (se cierra a la fuerza), el frente se libera como hasta ahora, a los `memory.orphanAfterMin` minutos — nada empeora.
 - R2: Las instalaciones de antes no tienen el hook hasta que la persona ejecuta `specty init` — `doctor` lo avisa.
+
+## Cierre
+
+### Resumen
+
+`specty init` instala en Claude Code un hook `SessionEnd` sin matcher. Cuando una conversación termina, sea con `/clear`, al salir o por otro motivo, el guard borra los registros de los frentes que llevaba (`endConversation` y `releaseConversation`), no anota un paso y no responde nada. Otra conversación toma el frente enseguida, sin esperar `memory.orphanAfterMin`. `specty doctor` avisa, con su propia línea, cuando faltan los hooks de `SessionEnd`, y pide `specty init`. Lo que juzga `specty enter` dentro de un comando pasó a `enforce/enter-command.ts`, y `guard.ts` bajó de 302 a 271 líneas de código (P56).
+
+### Desviaciones
+
+- T2 y T3 del primer borrador se juntaron antes de aprobar: con `policy.tests: contract` cada tarea necesita sus tests, y las dos tocaban `guard.ts`.
+- Que una conversación que termina no anota un paso se comprueba en `noted`, que recibe el tipo de evento, y no en `guard`: la condición en `guard` lo dejaba con complejidad 13.
+
+### Decisiones
+
+- `EventKind` gana `ended`, y el adaptador de cada agente decide qué evento lo es; hoy solo Claude Code lo da.
+- `enter-command.ts` define su propio tipo de llamada (`agent`, `environment`, `session`, `event`) en vez de exportar la `Call` del guard.
+
+### Pendientes
+
+- P7: los hooks de este repositorio aún no tienen `SessionEnd`; `specty doctor` lo avisará hasta que la persona ejecute `specty init`.
+- P57: el fin de sesión de los demás agentes (Gemini CLI tiene `SessionEnd`; Cursor, Codex y OpenCode, sin comprobar) va con el estudio de lo que da cada uno.

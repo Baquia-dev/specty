@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-fin-de-sesion-libera-el-frente",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-fin-de-sesion-libera-el-frente",
   "baseCommit": "86f56a1c3aaaa31683eedc3187dc7de692cdf868",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:90b7c559535b38250f1ebcf3e7087f36920b015ea00541de6c6874bbb56e6e22",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1524936d55ef347a10b841fa86091f9eea6f2e82",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:40:31.001Z",
       "doneAt": "2026-11-03T22:40:43.531Z",
-      "summary": "formats.md: el fin de una conversación de Claude Code libera sus frentes. ARCHITECTURE: el momento «Al terminar una sesión» con el hook SessionEnd."
+      "summary": "formats.md: el fin de una conversación de Claude Code libera sus frentes. ARCHITECTURE: el momento «Al terminar una sesión» con el hook SessionEnd.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -79,6 +79,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T22:45:43.545Z",
   "lockedTests": {
     "packages/cli/test/session-end-hook.test.ts": "sha256:50b3426519e15c78a214c3b697e54752524d747f7e203fe547b526725048f622",
     "packages/cli/test/session-end.test.ts": "sha256:e491539be08fdf978310785e0c806eb83897cc0a79c43a09e09329edb6202afe"
