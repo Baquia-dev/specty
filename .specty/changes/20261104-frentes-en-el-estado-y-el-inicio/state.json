@@ -48,14 +48,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [
-        "packages/core/src/cards/status.ts"
-      ],
-      "attempts": 2,
       "baseCommit": "943a1c62c75bdf484e35fd7a71acedc0af5fc281",
+      "attempts": 2,
       "startedAt": "2026-11-03T22:04:55.391Z",
       "doneAt": "2026-11-03T22:06:51.188Z",
-      "summary": "memoryStartBlocks recibe FrontsView: al dueño de un frente le muestra sus primeras libres en orden (o que no tiene); a los demás les quita las de frentes con dueño y los nombra. Con la ampliación, statusCard ya añade «FRENTES» y fronts (código de T2)."
+      "summary": "memoryStartBlocks recibe FrontsView: al dueño de un frente le muestra sus primeras libres en orden (o que no tiene); a los demás les quita las de frentes con dueño y los nombra. Con la ampliación, statusCard ya añade «FRENTES» y fronts (código de T2).",
+      "scopeExtra": [
+        "packages/core/src/cards/status.ts"
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "26a00f184e89bd66e71ec2e6c43b526c23657ac7",
+      "startedAt": "2026-11-03T22:06:51.559Z",
+      "doneAt": "2026-11-03T22:07:03.827Z",
+      "summary": "Sin código nuevo: statusCard ya trae «FRENTES» (dueño o libre, y las abiertas en orden) y fronts en su salida desde T1, por la ampliación; su verificación pasa."
     }
   },
   "pending": {

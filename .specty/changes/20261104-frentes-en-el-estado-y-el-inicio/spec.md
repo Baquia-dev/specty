@@ -72,7 +72,7 @@ Tercer cambio de P33 (repartir el trabajo entre sesiones): la tarjeta sin cambio
   - files: packages/core/src/cards/fronts.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/next.ts, packages/core/test/cards/front-start.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/front-start.test.ts test/cards/memory-start.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: Los frentes en la tarjeta de `status`
+- [x] T2: Los frentes en la tarjeta de `status`
   - files: packages/core/src/cards/status.ts, packages/core/test/cards/status-fronts.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/status-fronts.test.ts test/cards/status-holder.test.ts test/cards/status-turn.test.ts && pnpm typecheck && pnpm lint
