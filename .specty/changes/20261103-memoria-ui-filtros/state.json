@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-ui-filtros",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-ui-filtros",
   "baseCommit": "c75cdbce3855cdae88c60f61062fe690112dab04",
   "revision": 1,
@@ -55,6 +55,9 @@
     "T": 3,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T10:00:33.309Z"
+  "lockedTests": {
+    "packages/cli/test/server/memory-events.test.ts": "sha256:ec73f5823de1e773920bd467c1d96fa061f1e37f752ea26792b165dfec13f92b",
+    "packages/ui/src/memory/memory-filter.test.ts": "sha256:128186326b6b1764441b0b4cbb453661e791f6111203a2b2ee26069801d3012b",
+    "packages/ui/src/memory/memory-toolbar.test.ts": "sha256:f9161535b453f074f57ec49997470ce5f47aaefb7a0308d670fa04893e77dcf1"
+  }
 }
