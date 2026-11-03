@@ -60,7 +60,7 @@ Lo que un agente averigua a mitad de un cambio (por qué eligió una ruta, qué 
   - files: packages/core/src/cards/notes.ts, packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/src/cards/index.ts, packages/core/test/cards/notes.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/notes.test.ts test/cards/findings.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: El comando `specty note` y las notas en la vista del cambio, y la documentación
+- [x] T2: El comando `specty note` y las notas en la vista del cambio, y la documentación
   - files: packages/cli/src/commands/note.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/src/flow/views.ts, packages/cli/test/note.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/note.test.ts test/request.test.ts && pnpm typecheck && pnpm lint
