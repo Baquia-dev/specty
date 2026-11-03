@@ -11,11 +11,13 @@ import {
   type CommentAnchor,
   type CommentRecord,
   type Delegation,
+  type MemoryRecord,
   SpectyData,
 } from "./records";
 import { decideResultIn } from "./sample-acceptance";
 import { sampleDelegation } from "./sample-delegation";
 import { sampleDiffOf } from "./sample-diffs";
+import { sampleMemory } from "./sample-memory";
 import { decideScopeIn } from "./sample-progress";
 import { HASH, REVIEWER, requestChangesIn, sampleRecords } from "./sample-records";
 import {
@@ -135,6 +137,11 @@ export class FixtureData extends SpectyData {
 
   override delegation(): Promise<Delegation> {
     return Promise.resolve(this.delegated);
+  }
+
+  /** A memory with an entry of every kind and status, and changes held, waiting and orphaned. */
+  override memory(): Promise<MemoryRecord> {
+    return Promise.resolve(sampleMemory());
   }
 
   override setDelegation(on: boolean): Promise<void> {

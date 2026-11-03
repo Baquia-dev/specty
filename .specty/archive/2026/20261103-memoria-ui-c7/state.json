@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-ui-c7",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-ui-c7",
+  "baseCommit": "daa5fee4ab20ea1f32987e743fffcfe159941ac3",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:89935d22bded33d9994803f05009240674ccda9c4a90a3739be6318fb719f2b1",
+    "at": "2026-11-03T09:36:55.829Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 16,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:a8f118bd0b67606675b74a47e8bf5966cb005fceb5bb844fa32808037ca27da5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:67a0c65c055236b00324d4db7b88015ff00a08b5c719049c77b57138353dcede",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:019b98280ecbedadce131c90de190f39d05f8157534d5a3dfddbb3180bade798",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:3a4d72de1f23db76cd69461479d81379c63bd77b13c2cc8e5375b5cc89189a23",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:f2f367a41a32f2cb9804aaed795eb33fa63c792fd193dc63002452949e409531",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "ef0d130b48d66b4e75d4ce489a2e1e1f2612d241",
+      "attempts": 1,
+      "startedAt": "2026-11-03T09:38:34.286Z",
+      "doneAt": "2026-11-03T09:40:41.045Z",
+      "summary": "GET /api/memory en server/http.ts (memoryView: entradas de readMemory y openChanges); las lecturas que solo miran la sesión se sirven desde una tabla",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "bd0d0acc410ebebe731331da674c61afbe2728d5",
+      "attempts": 1,
+      "startedAt": "2026-11-03T09:40:41.656Z",
+      "doneAt": "2026-11-03T09:42:36.983Z",
+      "summary": "MemoryRecord en data/records.ts; SpectyData.memory() (sin servidor, nada) y ServerData.memory() con isMemoryRecord; memorySections en memory/memory-view.ts: Te toca, quién lleva cada cambio, pendientes y mejoras por fecha y decisiones, sin repetir entradas",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "e345e27760db2b0f4ef9e74745e21eecf7e4682d",
+      "attempts": 1,
+      "startedAt": "2026-11-03T09:42:37.332Z",
+      "doneAt": "2026-11-03T09:49:35.150Z",
+      "summary": "Página «Memoria» con sus secciones, memoria de ejemplo, ruta /memory y enlace en la navegación; shell.test.ts actualizado con autorización del usuario",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "closingSubmittedAt": "2026-11-03T09:56:44.879Z",
+  "lockedTests": {
+    "packages/cli/test/server/memory.test.ts": "sha256:424669f7a0f2b288520e0001d1f5d21a7245a1f7979bc49347fc6783bcc1319c",
+    "packages/ui/src/memory/memory-page.test.ts": "sha256:3d2d7016c39d42b96ba7c6acd5d68003660de962bb6efeb5784c70626da22f20",
+    "packages/ui/src/memory/memory-view.test.ts": "sha256:3b8d873c23f13e61bea857b62e5ea592b38a9f46d080d1597cb854972698bf60"
+  }
+}
