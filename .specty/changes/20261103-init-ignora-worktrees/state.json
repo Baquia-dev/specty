@@ -6,6 +6,13 @@
   "branch": "specty/20261103-init-ignora-worktrees",
   "baseCommit": "05c2eac55b46dff0d64d127a0c3e472713fdd2a6",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:46890e36fc13aa9b649ce096866e1e50f0b3f5677ba498dd126f94f8db4b7d49",
+    "at": "2026-11-03T09:47:40.651Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -36,12 +43,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:46890e36fc13aa9b649ce096866e1e50f0b3f5677ba498dd126f94f8db4b7d49",
-    "at": "2026-11-03T09:47:40.651Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T09:48:23.276Z"
 }
