@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-ui-acciones",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-ui-acciones",
   "baseCommit": "7b015669ead8ecfcb9e10282d30ac9dae20748cc",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:4865658454a398139ba9a15de2bbd3f626a0916ca7d46cae6ee466d470bd5362",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "aa481697a56189b3dc787c080c32d56b7ddbd35d",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:17:47.560Z",
       "doneAt": "2026-11-03T10:21:56.688Z",
-      "summary": "La página Memoria decide: Descartar con el diálogo del motivo (drop-entry.ts), Mantener y Marcar hecho, con SpectyData.memoryAction en el servidor y en el prototipo, y el aviso de solo lectura; ARCHITECTURE.md lo documenta"
+      "summary": "La página Memoria decide: Descartar con el diálogo del motivo (drop-entry.ts), Mantener y Marcar hecho, con SpectyData.memoryAction en el servidor y en el prototipo, y el aviso de solo lectura; ARCHITECTURE.md lo documenta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,6 +70,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T10:26:11.879Z",
   "lockedTests": {
     "packages/cli/test/server/memory-actions.test.ts": "sha256:d5b7700b951b38486b3704e9a9b5cea2c6c17bfb7806d1e50e3630499ed41465",
     "packages/ui/src/memory/memory-actions.test.ts": "sha256:ad0d61670bec8ea87098efc9aeabf02b504b7c73cb316fa481df88cd9f6df6f3"

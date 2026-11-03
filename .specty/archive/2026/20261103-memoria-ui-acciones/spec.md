@@ -70,3 +70,22 @@ La página «Memoria» de `specty ui` enseña lo que le toca a la persona, pero 
 
 - R1: Un clic por error descarta una entrada — «Descartar» pasa por un diálogo con el motivo, y la entrada queda en la rama con su historia (`specty memory --all`).
 - R2: Un agente con el enlace del servidor descarta en nombre de la persona — solo hay acciones si la persona arrancó `specty ui` desde su terminal, como con las demás decisiones.
+
+## Cierre
+
+### Resumen
+
+La persona decide desde la página «Memoria» de `specty ui`, como en la maqueta aprobada. «Descartar» abre un diálogo con el motivo, que trae el de la propuesta si la hay, y descarta la entrada de verdad, como `specty memory drop` desde su terminal. «Mantener» deshace la propuesta de un agente y «Marcar hecho» cierra un recordatorio; cada acción avisa con un mensaje y la página se actualiza. Detrás está `POST /api/memory/<id>/drop|keep|done`, con la seguridad de las demás acciones de la persona y en la cola del servidor, que la CLI ejecuta con la persona en pantalla (`onScreen`) y `personMemoryAction`. En un servidor arrancado por el agente, el servidor rechaza esas acciones, los botones no salen y la página dice cómo arrancarla para decidir. Con esto se completa el corte C7 y el AC12 de la épica.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- El diálogo pide un motivo no vacío, aunque la CLI deje omitirlo en una propuesta: el de la propuesta ya viene escrito en el campo.
+- `FixtureData` aplica cada decisión a su memoria de ejemplo, para probar la página sin servidor.
+
+### Pendientes
+
+- Ninguno.
