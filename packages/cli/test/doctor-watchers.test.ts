@@ -1,24 +1,40 @@
 // SPDX-License-Identifier: Apache-2.0
+import { rename } from "node:fs/promises";
 import { describe, expect, it } from "vitest";
 import { APP, cli, tempRepo, writeFiles } from "./support";
 
 /**
  * What `doctor` asks each one to add. Vite and Metro compare absolute paths, so theirs is anchored
  * to the config's folder: an unanchored pattern would also exclude their own files inside a worktree.
+ * Neither puts the folder's path in a glob or a regular expression as it is: Vite's compares the
+ * start of the path, and Metro's escapes it and takes either separator.
  */
-const VITE = `\`\${import.meta.dirname}/.worktrees/**\``;
-const METRO = `new RegExp(\`^\${__dirname}/\\\\.worktrees/\`)`;
+const VITE = `(file) => file.startsWith(\`\${import.meta.dirname.replaceAll("\\\\", "/")}/.worktrees/\`)`;
+const METRO = `new RegExp(\`^\${__dirname.replace(/[\\\\^$.*+?()[\\]{}|]/g, "\\\\$&")}[/\\\\\\\\]\\\\.worktrees[/\\\\\\\\]\`)`;
 const VITEST = '"**/.worktrees/**"';
+/** The forms asked before, with the folder's path as it is: they only work without special characters. */
+const VITE_BEFORE = `\`\${import.meta.dirname}/.worktrees/**\``;
+const METRO_BEFORE = `new RegExp(\`^\${__dirname}/\\\\.worktrees/\`)`;
 
 const seen = (name: string, add: string, file: string) =>
   `${name} también revisa .worktrees/, que escribe Specty: añade ${add} en ${file}.`;
 
-/** The doctor of a project where `new` already made a change in `.worktrees/`. */
-async function doctorWith(files: Readonly<Record<string, string>>) {
-  const root = await tempRepo({ ...APP, ...files });
+/**
+ * The doctor of a project where `new` already made a change in `.worktrees/`; with `suffix`, the
+ * project's folder gets it added to its name first.
+ */
+async function doctorWith(files: Readonly<Record<string, string>>, suffix?: string) {
+  const made = await tempRepo({ ...APP, ...files });
+  const root = suffix === undefined ? made : `${made} ${suffix}`;
+  if (root !== made) await rename(made, root);
   expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
   return { root, doctor: await cli(root, ["doctor"]) };
 }
+
+const viteConfig = (ignored: string) =>
+  `export default { server: { watch: { ignored: [${ignored}] } } };\n`;
+const metroConfig = (blocked: string) =>
+  `module.exports = { resolver: { blockList: [${blocked}] } };\n`;
 
 describe("doctor and the dev servers that would watch the changes' worktrees", () => {
   it("AC4: asks Vite for the anchored exclusion, and Vitest configured in vite.config for its own", async () => {
@@ -64,17 +80,12 @@ describe("doctor and the dev servers that would watch the changes' worktrees", (
     await writeFiles(root, {
       "vite.config.ts": [
         "export default {",
-        `  server: { watch: { ignored: [\`\${import.meta.dirname}/.worktrees/**\`] } },`,
+        `  server: { watch: { ignored: [${VITE}] } },`,
         '  test: { exclude: ["**/node_modules/**", "**/.worktrees/**"] },',
         "};",
         "",
       ].join("\n"),
-      "metro.config.js": [
-        "module.exports = {",
-        `  resolver: { blockList: [new RegExp(\`^\${__dirname}/\\\\.worktrees/\`)] },`,
-        "};",
-        "",
-      ].join("\n"),
+      "metro.config.js": metroConfig(METRO),
     });
     const doctor = await cli(root, ["doctor"]);
     for (const name of ["Vite", "Vitest", "Metro"]) {
@@ -89,5 +100,35 @@ describe("doctor and the dev servers that would watch the changes' worktrees", (
     });
     const naive = await cli(root, ["doctor"]);
     expect(naive.out).toContain(seen("Vite", VITE, "vite.config.ts (server.watch.ignored)"));
+
+    // Without special characters in the project's path, the forms asked before work too.
+    await writeFiles(root, {
+      "vite.config.ts": viteConfig(VITE_BEFORE),
+      "metro.config.js": metroConfig(METRO_BEFORE),
+    });
+    const before = await cli(root, ["doctor"]);
+    for (const name of ["Vite", "Metro"]) {
+      expect(before.out).toContain(`${name} excluye .worktrees/.`);
+    }
+  });
+
+  it("AC7: in a folder with parentheses and brackets, only takes the forms that don't put its path in a pattern", async () => {
+    const { root, doctor } = await doctorWith(
+      { "vite.config.ts": viteConfig(VITE_BEFORE), "metro.config.js": metroConfig(METRO_BEFORE) },
+      "(copia) [1]",
+    );
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(seen("Vite", VITE, "vite.config.ts (server.watch.ignored)"));
+    expect(doctor.out).toContain(seen("Metro", METRO, "metro.config.js (resolver.blockList)"));
+
+    await writeFiles(root, {
+      "vite.config.ts": viteConfig(VITE),
+      "metro.config.js": metroConfig(METRO),
+    });
+    const fixed = await cli(root, ["doctor"]);
+    for (const name of ["Vite", "Metro"]) {
+      expect(fixed.out).toContain(`${name} excluye .worktrees/.`);
+    }
+    expect(fixed.out).not.toContain("también revisa .worktrees/");
   });
 });
