@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "fad3245c4d52d39537a75cfeed04589c7927a8a2",
+      "attempts": 2,
       "startedAt": "2026-11-03T11:29:48.109Z",
       "doneAt": "2026-11-03T11:30:28.748Z",
-      "summary": "cards/messages.ts: messageLeftCard, messageRefusalCard (vacío, sin cambio abierto) y messagesNote, el texto que recibe la sesión con hora, quién lo dejó y cómo responder; MessageView y exportaciones en cards/index.ts"
+      "summary": "cards/messages.ts: messageLeftCard, messageRefusalCard (vacío, sin cambio abierto) y messagesNote, el texto que recibe la sesión con hora, quién lo dejó y cómo responder; MessageView y exportaciones en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 2,
+      "baseCommit": "6caff5319d7431ceb6c597a3f613387318c8ef0d",
+      "startedAt": "2026-11-03T11:30:29.045Z",
+      "doneAt": "2026-11-03T12:02:21.095Z",
+      "summary": "store/messages.ts guarda los mensajes en orden de llegada y los toma leyéndolos y borrándolos; commands/message.ts: specty message <id> <texto> comprueba que el cambio está abierto y anota quién lo deja (persona o agente, herramienta, cambio y carpeta)"
     }
   },
   "pending": {

@@ -16,6 +16,7 @@ import { adjust } from "./adjust";
 import { enter } from "./enter";
 import { importCommand } from "./import";
 import { integrate } from "./integrate";
+import { messageCommand } from "./message";
 import { type NewOptions, newChange } from "./new";
 import { next } from "./next";
 import { noteCommand } from "./note";
@@ -46,6 +47,7 @@ export function agentCommands(
   program.command("next").description("what to do now").action(locked(run, "next")(next));
   waitCommand(program, run);
   noteCommand(program, run);
+  messageCommand(program, run);
   enterCommand(program, run);
   newCommand(program, run, env, refuse);
   importCommand(program, run);

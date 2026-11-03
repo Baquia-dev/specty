@@ -58,7 +58,7 @@ Que una sesión, de cualquier agente, o la persona desde su terminal, pueda deja
   - files: packages/core/src/cards/messages.ts, packages/core/src/cards/index.ts, packages/core/test/cards/messages.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/messages.test.ts && pnpm lint
-- [ ] T2: `specty message` deja el mensaje
+- [x] T2: `specty message` deja el mensaje
   - files: packages/cli/src/store/messages.ts, packages/cli/src/commands/message.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/message.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/message.test.ts && pnpm typecheck && pnpm lint
