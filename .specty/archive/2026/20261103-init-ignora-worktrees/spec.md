@@ -54,3 +54,21 @@ Las worktrees de los cambios viven en `.worktrees/` dentro del proyecto (ADR 001
 ## Riesgos
 
 - R1: Otros tests comparan la lista exacta de lo que `init` escribe o su salida — la verificación completa al aceptar los destapa.
+
+## Cierre
+
+### Resumen
+
+`init` añade `/.worktrees/` al final de `.gitignore` cuando nada ignora todavía la carpeta de las worktrees (`.worktrees`, con o sin `/` delante o detrás), o crea el archivo con esa línea si falta; lo dice en su salida y lo incluye en el commit de la instalación. Un `.gitignore` que ya la ignora no cambia, y ejecutar `init` otra vez no añade nada. Así Prettier y las demás herramientas que solo leen `.gitignore` dejan en paz las worktrees de los cambios en todos los clones (ADR 0018). ARCHITECTURE lo cuenta entre lo que versiona `init`.
+
+### Desviaciones
+
+- `writeProjectFiles` pasó la complejidad máxima con la línea nueva: el glosario y `.gitignore`, lo que `init` escribe solo donde falta, van ahora en `writeMissing`.
+
+### Decisiones
+
+- `uninstall` no quita la línea: puede haber worktrees abiertas, y no molesta.
+
+### Pendientes
+
+- Las exclusiones de Vitest, Jest, ESLint y Biome, que no leen `.gitignore`, y el aviso de `doctor` donde falten.
