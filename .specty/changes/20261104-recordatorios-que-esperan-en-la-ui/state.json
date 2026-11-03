@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "20261104-recordatorios-que-esperan-en-la-ui",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-recordatorios-que-esperan-en-la-ui",
+  "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 7,
+    "adjust": 0,
+    "reasons": [
+      "5 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c6c921287a3462713b1941604034c36c428c2d2bfbb0a29b0d9ae1bffb45fb37",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8820b7fd84548d186ba5233914e5c0ba52f8e7f69438a9007450df80be54874d",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:38333a9bcb27e32bfd61a9415b1e62b82ef8588c9710262236435130427706bb",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:eb4fcc965151dfbe619fb5d1b4a10dfd995d4353293de7cf1216af84c6f8acdc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2f4f1eee32d3b69ec5b7e36e8fece33517b17a40c970f4888c1209cd729fc29f",
+    "at": "2026-11-03T23:19:20.766Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
