@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "id": "20261104-limpieza-de-actividad-y-mensajes",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-limpieza-de-actividad-y-mensajes",
+  "baseCommit": "51c0e57a3df5ab8e60267df595d7ae71b3ccb19a",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ddd1aa150ce0ba7f8e437c85c8dfd12abefe6252b7388f8e60dd63c2f12f3ed5",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a275469762437b63fbdd7fb0ff968c95dd598d0521f3a03c9b4f7f17db4758f7",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:4d1b933aff61a543f91c697ce8dd4b30141b75f742aee7cd19da1ab4fe2cf894",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:ab1021956535f3c285785f25a61222064a1da55d56e2560959f029d7f1ecea38",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:813f1c047c1b9b9a1b9ac9e5dc8a3e4962ff0e94fbde9997ac689a396dca5988",
+    "at": "2026-11-03T22:48:02.167Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
