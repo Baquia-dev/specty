@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-guard-rama",
   "baseCommit": "d2162d4783f13176b6898d79bfcd407c810bf47e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:da24f1a268593347e14df937a3906aa6a9630fb0ba132c77d813bfa675798acc",
+    "at": "2026-11-03T07:51:52.351Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:da24f1a268593347e14df937a3906aa6a9630fb0ba132c77d813bfa675798acc",
-    "at": "2026-11-03T07:51:52.351Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T07:53:32.362Z"
 }
