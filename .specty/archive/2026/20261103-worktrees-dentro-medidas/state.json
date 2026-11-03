@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "20261103-worktrees-dentro-medidas",
+  "kind": "quick",
+  "phase": "done",
+  "branch": "specty/20261103-worktrees-dentro-medidas",
+  "baseCommit": "d2162d4783f13176b6898d79bfcd407c810bf47e",
+  "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4e63c0c1164933c81ad43446fa264efb14dd5f57fb2e2b6fa35d56a57f6d3b4d",
+    "at": "2026-11-03T07:51:14.219Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "a5d4894ac37b22cda728fe79fbd8e4ff8dd26667",
+      "attempts": 1,
+      "startedAt": "2026-11-03T07:51:14.667Z",
+      "doneAt": "2026-11-03T07:51:17.078Z",
+      "summary": "ADR 0018: medición de las herramientas de cada stack con una worktree en .worktrees/ y la propuesta de crear allí las de los cambios",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  }
+}
