@@ -72,7 +72,7 @@ Segundo corte de P31 (lo aplazado entra solo en la memoria): cuando `specty chec
   - files: packages/cli/src/flow/check-debt.ts, packages/cli/src/commands/check.ts, packages/cli/src/commands/memory.ts, packages/cli/test/check-debt.test.ts, packages/cli/test/support.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-debt.test.ts test/check.test.ts test/memory.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación, y el `check --all` de code-rules que nombra su deuda
+- [x] T3: La documentación, y el `check --all` de code-rules que nombra su deuda
   - files: packages/cli/test/check-code-rules.test.ts, docs/checks.md, docs/checks.en.md, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/check-code-rules.test.ts && pnpm lint

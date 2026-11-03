@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-deuda-de-check-en-la-memoria",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-deuda-de-check-en-la-memoria",
   "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
   "revision": 2,
@@ -60,14 +60,23 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/test/check-debt.test.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "adeb8ebb9800abc6cccc2fcf85ed5298272fcd67",
+      "attempts": 1,
       "startedAt": "2026-11-03T12:39:01.560Z",
       "doneAt": "2026-11-03T12:47:52.977Z",
-      "summary": "cli flow/check-debt.ts: keepCheckDebt anota y marca hecha la deuda fuera de la CI, un commit cada una; check() lo carga con import() solo con --all (el hook de pre-commit no carga commander); writerOf exportado. Test AC1 corregido tras S1: sin terminal el autor es agent."
+      "summary": "cli flow/check-debt.ts: keepCheckDebt anota y marca hecha la deuda fuera de la CI, un commit cada una; check() lo carga con import() solo con --all (el hook de pre-commit no carga commander); writerOf exportado. Test AC1 corregido tras S1: sin terminal el autor es agent.",
+      "scopeExtra": [
+        "packages/cli/test/check-debt.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d6f40e7d7c6e7071cf3e53a7c56708794e1a1127",
+      "startedAt": "2026-11-03T12:47:53.310Z",
+      "doneAt": "2026-11-03T12:48:23.502Z",
+      "summary": "Documentada la deuda de check --all en docs/checks.md, checks.en.md y ARCHITECTURE.md; el test de code-rules ya nombraba la deuda desde la fase de tests."
     }
   },
   "pending": {
