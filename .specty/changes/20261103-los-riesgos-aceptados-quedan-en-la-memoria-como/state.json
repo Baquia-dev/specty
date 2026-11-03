@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "67c87442ae42e2f4ff6bef7f95697f1010bf3602",
+      "startedAt": "2026-11-03T12:15:28.740Z",
+      "doneAt": "2026-11-03T12:15:50.680Z",
+      "summary": "cards/risk-lessons.ts: riskLessons, una lección por archivo y patrón sin la línea, y riskLessonsLine, la línea de accept con los ids; exportadas en cards/index.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

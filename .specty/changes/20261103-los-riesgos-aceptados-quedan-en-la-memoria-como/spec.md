@@ -47,7 +47,7 @@ Primer corte de P31 (lo aplazado entra solo en la memoria): al aceptar un cambio
 
 ## Tareas
 
-- [ ] T1: Las lecciones de los riesgos
+- [x] T1: Las lecciones de los riesgos
   - files: packages/core/src/cards/risk-lessons.ts, packages/core/src/cards/index.ts, packages/core/test/cards/risk-lessons.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/risk-lessons.test.ts && pnpm lint

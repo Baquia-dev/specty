@@ -300,6 +300,7 @@ export {
   noAssumptionCard,
   nothingToRequestCard,
 } from "./review-ui";
+export { type RiskLesson, riskLessons, riskLessonsLine } from "./risk-lessons";
 export {
   notBuiltPage,
   type RunRefusal,
