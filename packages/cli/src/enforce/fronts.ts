@@ -9,7 +9,7 @@ import {
   type GuardDecision,
 } from "@baquia-dev/specty-core";
 import type { Session } from "../session";
-import { holdFront, type LiveHold, liveHolds } from "../store/front-owners";
+import { holdFront, type LiveHold, liveHolds, releaseConversation } from "../store/front-owners";
 import { readMemory } from "../store/memory";
 import { conversationOf, type GuardTool } from "./actions";
 
@@ -88,4 +88,17 @@ function takenDenial(
     }
   }
   return undefined;
+}
+
+/**
+ * The end of the event's conversation (Claude Code's `SessionEnd`, `/clear` included): the fronts
+ * it held are free at once, instead of after `memory.orphanAfterMin` minutes.
+ */
+export async function endConversation(
+  session: Session,
+  tool: GuardTool,
+  event: Record<string, unknown>,
+): Promise<void> {
+  const conversation = conversationOf(event);
+  if (conversation !== undefined) await releaseConversation(session.git, tool, conversation);
 }

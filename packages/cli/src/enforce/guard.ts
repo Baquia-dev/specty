@@ -1,35 +1,32 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  analyzeShell,
   DELETED,
   decideAfterShell,
   decideGuard,
   type GuardAction,
   type GuardChange,
-  type GuardContext,
   type GuardDecision,
   isIntegrating,
-  nativeEnterDenial,
   parseSpec,
   renderText,
   shellChanges,
-  unreachableEnterDenial,
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { waitingMessages } from "../commands/message";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
-import { gitCommonFolder, worktreesHome } from "../flow/worktree";
+import { gitCommonFolder } from "../flow/worktree";
 import { isRecord, parseJson, remove } from "../io/files";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { noteActivity } from "../store/activity";
 import { readSpec } from "../store/changes";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
-import { judgeFronts } from "./fronts";
+import { enterCommand } from "./enter-command";
+import { endConversation, judgeFronts } from "./fronts";
 import { leavePending, type PendingKind, takePending } from "./pending";
-import { outOfReach, redirection, resolveAction } from "./place";
-import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
+import { redirection, resolveAction } from "./place";
+import { bindSession, enterAction, enteredSession } from "./sessions";
 import {
   DELEGATION_KEY,
   pruneSnapshots,
@@ -89,7 +86,7 @@ export async function guard(
     if (opened.kind !== "ok") return agent.reply(ALLOW, kind === "before" ? "before" : "after");
     // A conversation that entered a change's folder is answered in that folder's session.
     const entered = await enteredSession(agent.tool, opened.session, event);
-    await noted(agent.tool, entered.session, event);
+    await noted(kind, agent.tool, entered.session, event);
     const call = { agent, environment, event, cwd, ...entered };
     return await answer(kind, kind === "before" ? await redirected(call, given) : call);
   } catch (error) {
@@ -99,15 +96,17 @@ export async function guard(
 
 /**
  * The conversation's step in the folder it works in, for `status` to tell who holds each change
- * (ADR 0016). Failing to note it changes nothing of the answer.
+ * (ADR 0016). A conversation that ends no longer steps: it frees its front instead. Failing to
+ * note it changes nothing of the answer.
  */
 async function noted(
+  kind: EventKind,
   tool: GuardTool,
   session: Session,
   event: Record<string, unknown>,
 ): Promise<void> {
   const conversation = conversationOf(event);
-  if (conversation === undefined) return;
+  if (conversation === undefined || kind === "ended") return;
   const step = { tool, conversation, folder: session.root, now: session.environment.now() };
   await noteActivity(session.git, step).catch(() => undefined);
 }
@@ -149,6 +148,9 @@ async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
     case "invocation":
     case "turn":
       return await modelCall(kind, call);
+    case "ended":
+      await endConversation(session, agent.tool, event);
+      return agent.reply(ALLOW, "after");
     default:
       return await beforeAction(call);
   }
@@ -237,49 +239,6 @@ async function replyBefore(
     },
     "before",
   );
-}
-
-/**
- * A command with `specty enter <id>`: like `EnterWorktree` by name, the conversation enters that
- * change's folder if it may, and the rest of the command is judged as usual. Claude Code is told
- * to use its own tool. Undefined without one, or for a change without a folder: the command says so.
- */
-async function enterCommand(
-  call: Call,
-  command: string,
-  ctx: GuardContext,
-): Promise<{ readonly decision: GuardDecision; readonly target?: string } | undefined> {
-  const id = analyzeShell(command).enters.at(-1);
-  if (id === undefined) return undefined;
-  if (entersOnItsOwn(call.agent.tool)) {
-    const { reason, next } = nativeEnterDenial(id, ctx.lang);
-    return { decision: { allow: false, rule: "session", reason, next } };
-  }
-  const enter = await enterChange(call.environment, call.session, call.event, id);
-  if (enter === undefined) return undefined;
-  const away = await unreachable(call, id, enter.target, ctx);
-  return away !== undefined
-    ? { decision: away }
-    : { decision: decideGuard(enter, ctx), target: enter.target };
-}
-
-/**
- * The denial for a change's folder outside every folder the tool lets its agent work in: entered,
- * the conversation could do nothing there, so it is not bound. Undefined when it is within reach,
- * or the tool does not say.
- */
-async function unreachable(
-  { agent, event, session }: Call,
-  id: string,
-  folder: string,
-  ctx: GuardContext,
-): Promise<GuardDecision | undefined> {
-  const workspace = agent.workspace?.(event);
-  if (workspace === undefined || !(await outOfReach(folder, workspace))) return undefined;
-  const home = await worktreesHome(session.git);
-  const view = { id, folder, workspace, home, tool: agent.tool };
-  const { reason, next } = unreachableEnterDenial(view, ctx.lang, ctx.command);
-  return { allow: false, rule: "session", reason, next };
 }
 
 /** Before a shell command it lets through, keeps a snapshot of the tree to compare afterwards. */

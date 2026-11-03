@@ -41,6 +41,19 @@ export async function holdFront(git: Git, hold: FrontHold): Promise<void> {
   await writeText(join(folder, `${front}.json`), `${text}\n`);
 }
 
+/** The fronts `conversation` of `tool` holds have no owner from now on: that conversation ended. */
+export async function releaseConversation(
+  git: Git,
+  tool: string,
+  conversation: string,
+): Promise<void> {
+  const folder = await git.gitPath(FRONTS);
+  for (const known of await readHolds(folder)) {
+    if (known.tool === tool && known.conversation === conversation)
+      await remove(join(folder, `${known.front}.json`));
+  }
+}
+
 /** `front` has no owner from now on. */
 export async function releaseFront(git: Git, front: string): Promise<void> {
   await remove(join(await git.gitPath(FRONTS), `${front}.json`));

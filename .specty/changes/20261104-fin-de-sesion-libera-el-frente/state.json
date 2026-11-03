@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "da986315bef40a38ace351e1c756b7408ae15c9c",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:37:39.065Z",
       "doneAt": "2026-11-03T22:38:48.305Z",
-      "summary": "EventKind ended; Claude Code instala SessionEnd sin matcher y lo da como ended; doctor avisa con claude-session-end (texto en es y en en) si falta."
+      "summary": "EventKind ended; Claude Code instala SessionEnd sin matcher y lo da como ended; doctor avisa con claude-session-end (texto en es y en en) si falta.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1676318f1dfa7d687526dd03d318a8350674622a",
+      "startedAt": "2026-11-03T22:38:48.645Z",
+      "doneAt": "2026-11-03T22:40:30.657Z",
+      "summary": "SessionEnd: el guard no anota el paso y endConversation libera los frentes de esa conversación (releaseConversation). enterCommand y unreachable pasan a enforce/enter-command.ts; guard.ts baja de 302 a 271 líneas de código."
     }
   },
   "pending": {

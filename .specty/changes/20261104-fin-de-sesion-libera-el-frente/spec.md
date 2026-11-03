@@ -62,7 +62,7 @@ Resuelve P58: hoy, tras un `/clear` en Claude Code, la conversación nueva es ot
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/cli/test/session-end-hook.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-end-hook.test.ts test/setup.test.ts test/agents.test.ts && pnpm lint
-- [ ] T2: El fin de una conversación libera sus frentes, y `specty enter` en un comando fuera del guard
+- [x] T2: El fin de una conversación libera sus frentes, y `specty enter` en un comando fuera del guard
   - files: packages/cli/src/store/front-owners.ts, packages/cli/src/enforce/fronts.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/enforce/enter-command.ts, packages/cli/test/session-end.test.ts
   - ac: AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-end.test.ts test/enter.test.ts test/front-guard.test.ts test/session-start.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
