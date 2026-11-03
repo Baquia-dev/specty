@@ -21,7 +21,8 @@ import {
   specTemplate,
 } from "@baquia-dev/specty-core";
 import { commitState, isFinished } from "../flow/active";
-import { type ArchivedChange, finishRetro, withFiredReminders } from "../flow/finish";
+import { withArchivedMemory } from "../flow/archive-memory";
+import { type ArchivedChange, finishRetro } from "../flow/finish";
 import { writeText } from "../io/files";
 import type { Session } from "../session";
 import { initialState, loadChange, readSpec, type StoredChange } from "../store/changes";
@@ -126,7 +127,7 @@ async function minimalRetro(session: Session, staged: readonly ChangedFile[]): P
 
 /** The retro is documented: the person repeats their commit. */
 export function retroDone(session: Session, change: ArchivedChange): Output {
-  return withFiredReminders(session, retroDoneCard(change.state.id, session.cards), change.fired);
+  return withArchivedMemory(session, retroDoneCard(change.state.id, session.cards), change);
 }
 
 function entryOf(file: ChangedFile): FileEntry {

@@ -1,22 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import {
-  type ChangeState,
-  firedEntry,
-  firedRemindersBlocks,
-  type MemoryEntry,
-  type Output,
-  waitingFor,
-} from "@baquia-dev/specty-core";
-import { harvestEntries, settleEntries, targetOf } from "../commands/memory";
+import type { ChangeState, MemoryEntry } from "@baquia-dev/specty-core";
 import { exists, move } from "../io/files";
 import type { Session } from "../session";
 import { appendAudit, type StoredChange, saveState } from "../store/changes";
 import { addReceipt, writePointer } from "../store/local";
-import { editMemory, readMemory } from "../store/memory";
 import { dropMessages } from "../store/messages";
 import { changeFiles } from "../store/paths";
 import { auditEntry } from "./active";
+import { fireReminders, harvestEntries, settleEntries } from "./archive-memory";
 import { closingFollowUps } from "./carried";
 import { commitWithReceipt, decisionTrailers } from "./commits";
 import { remarkHarvest } from "./review-remarks";
@@ -24,6 +16,8 @@ import { remarkHarvest } from "./review-remarks";
 /** A change in the archive, with the reminders that waited for it, which it fired. */
 export interface ArchivedChange extends StoredChange {
   readonly fired: readonly MemoryEntry[];
+  /** The pending items its closing left in the memory, in order; none if it was cancelled. */
+  readonly harvested: readonly MemoryEntry[];
 }
 
 /**
@@ -51,41 +45,14 @@ export async function archive(
   const fired = await fireReminders(session, state.id);
   await dropMessages(session.git, state.id);
   const files = changeFiles(target);
-  if (state.phase === "done")
-    await harvestEntries(session, state, [
-      ...(await closingFollowUps(session, files)).map((text) => ({ text })),
-      ...(await remarkHarvest(session, files)),
-    ]);
-  return { files, state, archived: true, fired };
-}
-
-/**
- * Fires the open reminders that wait for `change`, one commit each: without `onClose`, every
- * session sees them from now on. The ones it fired; one another session changed first, it skips.
- */
-async function fireReminders(session: Session, change: string): Promise<MemoryEntry[]> {
-  const { entries } = await readMemory(session.git, session.config.memory.branch);
-  const target = targetOf(session, change);
-  const fired: MemoryEntry[] = [];
-  for (const { id } of waitingFor(entries, change)) {
-    const entry = await editMemory(session.git, target, (memory) => {
-      const now = waitingFor(memory.entries, change).find((waiting) => waiting.id === id);
-      if (now === undefined) return { result: undefined };
-      const fire = firedEntry(now);
-      return { write: { entry: fire, operation: "fire" }, result: fire };
-    });
-    if (entry !== undefined) fired.push(entry);
-  }
-  return fired;
-}
-
-/** The card of the command that archived a change, with the reminders it fired after what it says. */
-export function withFiredReminders(
-  session: Session,
-  card: Output,
-  fired: readonly MemoryEntry[],
-): Output {
-  return { ...card, blocks: [...card.blocks, ...firedRemindersBlocks(fired, session.cards)] };
+  const harvested =
+    state.phase === "done"
+      ? await harvestEntries(session, state, [
+          ...(await closingFollowUps(session, files)).map((text) => ({ text })),
+          ...(await remarkHarvest(session, files)),
+        ])
+      : [];
+  return { files, state, archived: true, fired, harvested };
 }
 
 /**

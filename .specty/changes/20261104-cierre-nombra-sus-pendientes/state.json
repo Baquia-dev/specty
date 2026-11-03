@@ -43,12 +43,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4d7f9fa0239719f8a4193c945b7e18584d979608",
+      "attempts": 1,
       "startedAt": "2026-11-03T23:09:11.094Z",
       "doneAt": "2026-11-03T23:09:54.522Z",
-      "summary": "cards/archived-memory.ts: firedRemindersBlocks, movida de cards/memory.ts, y harvestedBlocks (PENDIENTES QUE QUEDAN EN LA MEMORIA, en es y en), exportadas en cards/index.ts."
+      "summary": "cards/archived-memory.ts: firedRemindersBlocks, movida de cards/memory.ts, y harvestedBlocks (PENDIENTES QUE QUEDAN EN LA MEMORIA, en es y en), exportadas en cards/index.ts.",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/flow/review-remarks.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "f77ea702e6e5bc7c70d02f94d7944d6e0846a3b1",
+      "startedAt": "2026-11-03T23:09:54.838Z",
+      "doneAt": "2026-11-03T23:12:13.235Z",
+      "summary": "flow/archive-memory.ts: Harvest, harvestEntries (devuelve las entradas), settleEntries, fireReminders y withArchivedMemory, que añade los recordatorios disparados y los pendientes del cierre a close, cancel, accept y retro. commands/memory.ts baja de 319 a 264 líneas."
     }
   },
   "pending": {
@@ -59,7 +70,8 @@
     "A": 4,
     "AC": 3,
     "T": 4,
-    "R": 1
+    "R": 1,
+    "S": 2
   },
   "lockedTests": {
     "packages/cli/test/close-harvest.test.ts": "sha256:61cd3ead4561782a175247a9a2f7785d819a027fafc4f2ecc51e419e20fc9a88",

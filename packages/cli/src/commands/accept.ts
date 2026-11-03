@@ -27,8 +27,9 @@ import {
   verificationReusedNote,
 } from "@baquia-dev/specty-core";
 import { commitState } from "../flow/active";
+import { harvestEntries, withArchivedMemory } from "../flow/archive-memory";
 import { verifyHints, withVerifyHints } from "../flow/detected";
-import { archive, commitArchive, withFiredReminders } from "../flow/finish";
+import { archive, commitArchive } from "../flow/finish";
 import { type Absorbed, absorbTarget, integrationOf, mergeTarget } from "../flow/integrate";
 import { landChange, withIntegration } from "../flow/land";
 import { runLive } from "../flow/live-run";
@@ -41,7 +42,6 @@ import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { humanChange, postponed } from "./human";
 import { pendingIntegration } from "./integrate";
-import { harvestEntries } from "./memory";
 import { thenNext } from "./next";
 
 /**
@@ -210,7 +210,7 @@ async function acceptedRisks(
   view: ChangeView,
 ): Promise<string[]> {
   const lessons = riskLessons(view.tasks, session.lang);
-  const ids = await harvestEntries(session, change.state, lessons);
+  const ids = (await harvestEntries(session, change.state, lessons)).map(({ id }) => id);
   const line = riskLessonsLine(ids, session.lang);
   return line === undefined ? [] : [line];
 }
@@ -263,8 +263,5 @@ async function closeQuick(
     [...merged, ...(absorbed?.lines ?? [])],
     landed,
   );
-  return withVerifyHints(
-    withUsage(withFiredReminders(session, card, archived.fired), usage),
-    hints,
-  );
+  return withVerifyHints(withUsage(withArchivedMemory(session, card, archived), usage), hints);
 }

@@ -57,7 +57,7 @@ Resuelve P43 y P47. Hoy la salida de `specty close` no dice qué pendientes deja
   - files: packages/core/src/cards/archived-memory.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/index.ts, packages/core/test/cards/archived-memory.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/archived-memory.test.ts test/cards/memory-start.test.ts && pnpm lint
-- [ ] T2: Lo que archivar un cambio hace en la memoria, en su archivo, y las salidas que lo nombran
+- [x] T2: Lo que archivar un cambio hace en la memoria, en su archivo, y las salidas que lo nombran
   - files: packages/cli/src/flow/archive-memory.ts, packages/cli/src/commands/memory.ts, packages/cli/src/flow/finish.ts, packages/cli/src/commands/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/src/commands/retro.ts, packages/cli/test/close-harvest.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/close-harvest.test.ts test/memory-harvest.test.ts test/memory-on-close.test.ts test/memory-settle.test.ts test/risk-lessons.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip

@@ -10,11 +10,11 @@ import {
   type Spec,
   uncitedRemarks,
 } from "@baquia-dev/specty-core";
-import type { Harvest } from "../commands/memory";
 import { isMissing, readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec } from "../store/changes";
 import type { ChangeFiles } from "../store/paths";
+import type { Harvest } from "./archive-memory";
 
 // The remarks of a change's last independent review of the result (ADR 0011) that its closing
 // does not cite: the closing card shows them, and the closed change leaves them in the memory.

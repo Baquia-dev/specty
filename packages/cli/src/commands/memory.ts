@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
-  type ChangeState,
   claimable,
   freeWork,
-  harvestable,
   isDay,
   isOpenEntry,
   MEMORY_KINDS,
@@ -18,7 +16,6 @@ import {
   type Output,
   parseEntryId,
   resolvesRefusalCard,
-  settledEntry,
   takenEntry,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
@@ -301,71 +298,6 @@ export async function takeEntries(
   }
 }
 
-/** What a change leaves in the memory: a pending item, or with `paths` a lesson of those paths. */
-export interface Harvest {
-  readonly text: string;
-  readonly paths?: readonly string[];
-}
-
-/**
- * What a change leaves in the memory, with that change as its origin, one commit each: the
- * follow-ups of its closing as pending items, and the risks its acceptance takes as lessons.
- * Those already in the memory are left out (`harvestable`). The ids of the entries it added.
- */
-export async function harvestEntries(
-  session: Session,
-  state: ChangeState,
-  items: readonly Harvest[],
-): Promise<string[]> {
-  const target = targetOf(session, state.id);
-  const texts = items.map(({ text }) => text);
-  const added: string[] = [];
-  for (const text of harvestable(texts, await readMemory(session.git, target.branch))) {
-    const paths = items.find((item) => item.text.trim() === text)?.paths;
-    const kind = paths === undefined ? "pending" : "lesson";
-    const id = await editMemory(session.git, target, (memory) => {
-      if (harvestable([text], memory).length === 0) return { result: undefined };
-      const entry: MemoryEntry = {
-        id: nextEntryId(kind, memory.ids),
-        kind,
-        status: "open",
-        created: session.environment.now().toISOString(),
-        origin: { change: state.id, by: authorOf(session) },
-        ...(paths === undefined ? {} : { paths }),
-        text,
-      };
-      return { write: { entry, operation: "add" }, result: entry.id };
-    });
-    if (id !== undefined) added.push(id);
-  }
-  return added;
-}
-
-/**
- * The entries a change took, once it is archived: done if it closed, free again if it was
- * cancelled, one commit each. Only those still taken by it; none, no commit.
- */
-export async function settleEntries(session: Session, state: ChangeState): Promise<void> {
-  const takenHere = (entry: MemoryEntry) =>
-    entry.status === "taken" && entry.taken?.change === state.id;
-  const { entries } = await readMemory(session.git, session.config.memory.branch);
-  const ids = entries.filter(takenHere).map((entry) => entry.id);
-  if (ids.length === 0) return;
-  const target = targetOf(session, state.id);
-  const closed =
-    state.phase === "done"
-      ? { at: session.environment.now().toISOString(), by: authorOf(session) }
-      : undefined;
-  for (const id of ids) {
-    await editMemory(session.git, target, (memory) => {
-      const now = memory.entries.find((entry) => entry.id === id);
-      if (now === undefined || !takenHere(now)) return { result: undefined };
-      const entry = settledEntry(now, closed);
-      return { write: { entry, operation: closed ? "done" : "free" }, result: undefined };
-    });
-  }
-}
-
 /** The open change of this folder, if any. */
 async function openChange(session: Session): Promise<string | undefined> {
   const active = await resolveActive(session);
@@ -373,7 +305,7 @@ async function openChange(session: Session): Promise<string | undefined> {
 }
 
 /** The agent Specty detects, `agent` when it does not know which, or `person`. */
-function authorOf(session: Session): string {
+export function authorOf(session: Session): string {
   return session.actor === "human" ? "person" : (session.tool ?? "agent");
 }
 
