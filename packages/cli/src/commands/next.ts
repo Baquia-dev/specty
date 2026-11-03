@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type Front,
   isGoverned,
   localDay,
   nextCard,
@@ -14,6 +15,7 @@ import { freshProject } from "../install/product";
 import { pathsOf } from "../io/git";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
+import { liveHolds } from "../store/front-owners";
 import { readMemory } from "../store/memory";
 import { pendingIntegration } from "./integrate";
 
@@ -30,9 +32,10 @@ export async function next(session: Session): Promise<Output> {
     const fresh = dirty.length === 0 && (await freshProject(session));
     // The memory goes to every session that starts with no change (ADR 0016), but for the
     // reminders that wait for their day or for the files of their paths.
-    const { entries } = await readMemory(session.git, session.config.memory.branch);
+    const { entries, fronts } = await readMemory(session.git, session.config.memory.branch);
     const memory = sessionEntries(entries, localDay(session.environment.now()));
-    return nextCard({ dirty, ...(fresh ? { fresh } : {}), memory }, session.cards);
+    const view = fronts.length === 0 ? {} : { fronts: await frontsView(session, fronts) };
+    return nextCard({ dirty, ...(fresh ? { fresh } : {}), memory, ...view }, session.cards);
   }
   const pending = await pendingIntegration(session, active, "close");
   const current = pending.kind === "go" ? pending.change : active;
@@ -54,6 +57,18 @@ export async function thenNext(session: Session, decided: Output): Promise<Outpu
   if (session.actor !== "agent" || decided.status !== "ok") return decided;
   const card = await next(session);
   return { ...card, blocks: [...decided.blocks, ...card.blocks] };
+}
+
+/**
+ * The memory's fronts for the card with no active change: who holds each while their conversation
+ * keeps stepping (`memory.orphanAfterMin`), and the one the conversation that asks holds.
+ */
+async function frontsView(session: Session, fronts: readonly Front[]) {
+  const { now } = session.environment;
+  const live = await liveHolds(session.git, now(), session.config.memory.orphanAfterMin);
+  const asker = session.conversation;
+  const own = live.find((hold) => hold.tool === asker?.tool && hold.conversation === asker.id);
+  return { fronts, owners: live, ...(own === undefined ? {} : { own: own.front }) };
 }
 
 /** Marks the first pending task as active, unless one already is. */

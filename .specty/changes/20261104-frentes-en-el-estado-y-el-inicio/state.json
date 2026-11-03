@@ -59,12 +59,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "26a00f184e89bd66e71ec2e6c43b526c23657ac7",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:06:51.559Z",
       "doneAt": "2026-11-03T22:07:03.827Z",
-      "summary": "Sin código nuevo: statusCard ya trae «FRENTES» (dueño o libre, y las abiertas en orden) y fronts en su salida desde T1, por la ampliación; su verificación pasa."
+      "summary": "Sin código nuevo: statusCard ya trae «FRENTES» (dueño o libre, y las abiertas en orden) y fronts en su salida desde T1, por la ampliación; su verificación pasa.",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1b16d8ef68324cc03a141cd8bad90e2ceaa158e5",
+      "startedAt": "2026-11-03T22:07:04.179Z",
+      "doneAt": "2026-11-03T22:09:08.939Z",
+      "summary": "Session.conversation: de agentSession (CLAUDE_CODE_SESSION_ID de Claude Code) al abrir la sesión, o del evento del guard en enteredSession. next sin cambio activo pasa a la tarjeta los frentes, sus dueños vivos y el de esa conversación."
     }
   },
   "pending": {

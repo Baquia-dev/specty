@@ -28,14 +28,23 @@ const MODEL = /"model":"([^"<>]+)"/g;
 export async function agentRun(tool: AgentTool | undefined, env: Env): Promise<AgentRun> {
   if (tool !== "claude-code") return {};
   const effort = env.CLAUDE_EFFORT;
-  const session = env.CLAUDE_CODE_SESSION_ID;
-  const named = session !== undefined && SESSION.test(session) ? session : undefined;
+  const named = agentSession(tool, env);
   const model = named === undefined ? undefined : await claudeModel(named, env);
   return {
     ...(named === undefined ? {} : { session: named }),
     ...(model === undefined ? {} : { model }),
     ...(effort !== undefined && EFFORT.test(effort) ? { effort } : {}),
   };
+}
+
+/**
+ * The id of the agent's session that runs the command, when its tool tells it in the command's
+ * environment and it is a name without separators: today, Claude Code's `CLAUDE_CODE_SESSION_ID`,
+ * the same `session_id` its hooks send the guard.
+ */
+export function agentSession(tool: AgentTool | undefined, env: Env): string | undefined {
+  const session = tool === "claude-code" ? env.CLAUDE_CODE_SESSION_ID : undefined;
+  return session !== undefined && SESSION.test(session) ? session : undefined;
 }
 
 /**

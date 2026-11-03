@@ -79,11 +79,26 @@ export function entersOnItsOwn(tool: GuardTool): boolean {
 }
 
 /**
+ * The session that answers the event, with the event's conversation (`Session.conversation`), so
+ * that the cards it brings, like `next`'s, know who asks.
+ */
+export async function enteredSession(
+  tool: GuardTool,
+  session: Session,
+  event: Record<string, unknown>,
+): Promise<{ readonly session: Session; readonly bound?: string }> {
+  const entered = await enteredFolder(tool, session, event);
+  const id = conversationOf(event);
+  if (id === undefined) return entered;
+  return { ...entered, session: { ...entered.session, conversation: { tool, id } } };
+}
+
+/**
  * The session of the change's folder the event's conversation entered with `specty enter`, and
  * that folder, whatever folder its tool works in; otherwise, `session` as it was. Claude Code
  * moves its whole session there itself, and goes on where it is after `ExitWorktree`.
  */
-export async function enteredSession(
+async function enteredFolder(
   tool: GuardTool,
   session: Session,
   event: Record<string, unknown>,

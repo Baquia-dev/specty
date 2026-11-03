@@ -76,7 +76,7 @@ Tercer cambio de P33 (repartir el trabajo entre sesiones): la tarjeta sin cambio
   - files: packages/core/src/cards/status.ts, packages/core/test/cards/status-fronts.test.ts
   - ac: AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/status-fronts.test.ts test/cards/status-holder.test.ts test/cards/status-turn.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: La conversación que pregunta y su frente en `next`
+- [x] T3: La conversación que pregunta y su frente en `next`
   - files: packages/cli/src/agents/run.ts, packages/cli/src/session.ts, packages/cli/src/enforce/sessions.ts, packages/cli/src/commands/next.ts, packages/cli/test/front-start.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-start.test.ts test/memory-start.test.ts test/session-start.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
