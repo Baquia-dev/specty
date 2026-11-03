@@ -16,7 +16,7 @@ Resuelve P1. Hoy commander rechaza un `--kind` desconocido de `specty memory add
 
 ## Tareas
 
-- [ ] T1: `memory add` rechaza un tipo de entrada desconocido con su propia tarjeta
+- [x] T1: `memory add` rechaza un tipo de entrada desconocido con su propia tarjeta
   - files: packages/cli/src/commands/memory.ts, packages/core/src/cards/memory-refusals.ts, packages/cli/test/memory-kind.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-kind.test.ts test/memory.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
   - type: fix

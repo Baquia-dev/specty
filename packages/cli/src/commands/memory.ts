@@ -21,7 +21,7 @@ import {
   settledEntry,
   takenEntry,
 } from "@baquia-dev/specty-core";
-import { type Command, Option } from "commander";
+import type { Command } from "commander";
 import type { ReportOutput } from "../check/provider";
 import { isFinished, resolveActive } from "../flow/active";
 import { locateChanges } from "../flow/changes";
@@ -33,7 +33,8 @@ import { openChanges } from "./status";
 type Run = (handler: (session: Session) => Promise<Output | ReportOutput>) => () => Promise<void>;
 
 interface AddOptions {
-  readonly kind: MemoryKind;
+  /** Checked by `memory add`, which refuses an unknown kind in the project's language. */
+  readonly kind: string;
   readonly quote?: string;
   readonly path?: readonly string[];
   readonly due?: string;
@@ -63,7 +64,7 @@ export function memoryCommand(program: Command, run: Run): void {
     .command("add")
     .description("add an entry, written for someone without this conversation's context")
     .argument("<text>")
-    .addOption(new Option("--kind <kind>", "what it is").choices(MEMORY_KINDS).default("pending"))
+    .option("--kind <kind>", `what it is: ${MEMORY_KINDS.join(", ")}`, "pending")
     .option("--quote <quote>", "the person's literal words; a decision needs them")
     .option("--path <globs...>", "the paths of the code it is about; a lesson needs them")
     .option("--due <day>", "a reminder: the day (YYYY-MM-DD) it waits for before showing")
@@ -133,17 +134,20 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
   );
   const due = options.due?.trim();
   const onClose = options.onClose?.trim();
+  const kind = MEMORY_KINDS.find((known) => known === options.kind);
+  if (kind === undefined)
+    return memoryRefusalCard({ reason: "unknown-kind", kind: options.kind }, session.cards);
   const refusal =
-    addRefusal(written, quote, paths, options.kind) ??
-    triggerRefusal({ due, paths, onClose }, options.kind) ??
+    addRefusal(written, quote, paths, kind) ??
+    triggerRefusal({ due, paths, onClose }, kind) ??
     (onClose === undefined ? undefined : await closedChangeRefusal(session, onClose));
   if (refusal !== undefined) return memoryRefusalCard(refusal, session.cards);
   const change = await openChange(session);
   const target = targetOf(session, change);
   return editMemory(session.git, target, ({ ids }) => {
     const entry: MemoryEntry = {
-      id: nextEntryId(options.kind, ids),
-      kind: options.kind,
+      id: nextEntryId(kind, ids),
+      kind,
       status: "open",
       created: session.environment.now().toISOString(),
       origin: { ...(change !== undefined ? { change } : {}), by: authorOf(session) },

@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-tipo-de-entrada-desconocido",
   "kind": "quick",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-tipo-de-entrada-desconocido",
   "baseCommit": "15cfdaf27d393c4defbad25e4c61b15c2f658d5b",
   "revision": 1,
@@ -23,7 +23,17 @@
     ]
   },
   "items": {},
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "d18f6131120fd5a33f2adc8babcec1ac6180166b",
+      "startedAt": "2026-11-03T23:00:25.083Z",
+      "doneAt": "2026-11-03T23:01:46.598Z",
+      "summary": "memory add valida --kind él mismo (MEMORY_KINDS) y rechaza uno desconocido con la tarjeta unknown-kind de memory-refusals, en español y en inglés, en vez del error en inglés de commander."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

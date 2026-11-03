@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-import type { MemoryEntry, MemoryKind } from "../memory/entries";
+import { MEMORY_KINDS, type MemoryEntry, type MemoryKind } from "../memory/entries";
 import { headerOf, type Output, section } from "../output";
 import { goOn } from "./memory";
 import { type Translate, translator } from "./text";
@@ -11,6 +11,8 @@ import type { CardContext } from "./view";
 /** Why `memory add` writes nothing. */
 type AddRefusal =
   | { readonly reason: "empty" }
+  /** `--kind` names no kind of entry. */
+  | { readonly reason: "unknown-kind"; readonly kind: string }
   | { readonly reason: "no-quote" }
   /** A lesson without `--path`. */
   | { readonly reason: "no-path" }
@@ -75,6 +77,17 @@ export function memoryRefusalCard(refusal: MemoryRefusal, ctx: CardContext): Out
   };
 }
 
+/** `--kind` names no kind of entry: the one given, and the ones there are. */
+function unknownKindTexts(kind: string, t: Translate): RefusalTexts {
+  return {
+    reason: t(`Tipo de entrada desconocido: ${kind}.`, `Unknown entry kind: ${kind}.`),
+    next: t(
+      `usa \`--kind ${MEMORY_KINDS.join("|")}\`.`,
+      `use \`--kind ${MEMORY_KINDS.join("|")}\`.`,
+    ),
+  };
+}
+
 function addRefusalTexts(refusal: AddRefusal, command: string, t: Translate): RefusalTexts {
   switch (refusal.reason) {
     case "bad-date":
@@ -84,6 +97,8 @@ function addRefusalTexts(refusal: AddRefusal, command: string, t: Translate): Re
     case "on-close-not-reminder":
     case "not-open-change":
       return onCloseRefusalTexts(refusal, command, t);
+    case "unknown-kind":
+      return unknownKindTexts(refusal.kind, t);
     case "empty":
       return {
         reason: t("El texto de la entrada está vacío.", "The entry's text is empty."),
