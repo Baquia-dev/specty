@@ -46,7 +46,7 @@ kind: standard
 
 ## Tareas
 
-- [ ] T1: Devin, solo con la carpeta común de git
+- [x] T1: Devin, solo con la carpeta común de git
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/agents/windsurf.ts, packages/core/src/cards/install.ts, packages/cli/test/windsurf.test.ts, packages/cli/test/doctor-enter.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts test/doctor-enter.test.ts && pnpm typecheck && pnpm lint

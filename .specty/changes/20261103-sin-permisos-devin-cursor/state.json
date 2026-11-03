@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ee2a3d45aa7f15e381f059f8ccaa5d54b9d1dfcc",
+      "startedAt": "2026-11-03T09:02:26.927Z",
+      "doneAt": "2026-11-03T09:03:46.378Z",
+      "summary": "Devin: los scopes de Specty son solo Write de la carpeta común de git (sharedFolders ya no da la de las worktrees); init y uninstall quitan Write/Read de la carpeta de antes; texto de init al día"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

@@ -119,8 +119,8 @@ export function devinCommandsLine(file: string, lang: Lang): string {
 /** Devin's sandbox, opt-in, with Specty's folders as `Write(...)` scopes in its local settings. */
 export function devinSandboxLine(file: string, lang: Lang): string {
   return translator(lang)(
-    `Devin (Windsurf): ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
-    `Devin (Windsurf): ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
+    `Devin (Windsurf): ${file} (local) deja escribir a los comandos de Specty en la carpeta de git cuando activas su sandbox.`,
+    `Devin (Windsurf): ${file} (local) lets Specty's commands write in the git folder when you turn its sandbox on.`,
   );
 }
 
