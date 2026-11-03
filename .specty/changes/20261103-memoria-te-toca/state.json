@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-te-toca",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-te-toca",
   "baseCommit": "2b2dadc43c8dad7cf262a860d661cef3b3c957c5",
   "revision": 1,
@@ -55,6 +55,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T06:30:04.769Z"
+  "lockedTests": {
+    "packages/cli/test/memory-status.test.ts": "sha256:e5b5042387a507354eb85c103c7bd1f216e9c608cfb419ae220c66610405b30a",
+    "packages/core/test/cards/status-turn.test.ts": "sha256:102b984e53e042a6d2f15727c1dbbd19316f1588a852d49b1b997adefa93541b"
+  }
 }
