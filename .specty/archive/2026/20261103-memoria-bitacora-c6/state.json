@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-bitacora-c6",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-bitacora-c6",
   "baseCommit": "9483005534b070cf93f6982555cb9da2f356708f",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:3297ed5b4f2a481b39d4b142494f1926dadc64bc5faaa6980096bd72d4ae999b",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e7b4a191ab0b152a21854cf3c04d154b1efe8d19",
+      "attempts": 1,
       "startedAt": "2026-11-03T09:08:31.470Z",
       "doneAt": "2026-11-03T09:10:33.311Z",
-      "summary": "commands/note.ts: specty note con el lock del cambio, que anota change.noted con el texto; flow/views.ts pasa las tres últimas notas a la vista; enter se registra en su propia función; formats.md y ARCHITECTURE.md lo documentan"
+      "summary": "commands/note.ts: specty note con el lock del cambio, que anota change.noted con el texto; flow/views.ts pasa las tres últimas notas a la vista; enter se registra en su propia función; formats.md y ARCHITECTURE.md lo documentan",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,8 +70,41 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T09:21:00.680Z",
   "lockedTests": {
     "packages/cli/test/note.test.ts": "sha256:2e6ddc9a0c8dac519f472473092b8322bd17370cf66e6e707e9d6b1e847093f4",
     "packages/core/test/cards/notes.test.ts": "sha256:93dd7c07c0321fe352035659636d2381b089e407f0a858b98cd85cb651904125"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "62172a6cae2a5062160d6594db5930843c401c45",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/cursor.ts",
+      "packages/cli/src/agents/windsurf.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/note.ts",
+      "packages/cli/src/flow/views.ts",
+      "packages/cli/src/flow/worktree.ts",
+      "packages/cli/test/cursor.test.ts",
+      "packages/cli/test/doctor-enter.test.ts",
+      "packages/cli/test/note.test.ts",
+      "packages/cli/test/windsurf.test.ts",
+      "packages/core/src/cards/doctor-agents.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/install.ts",
+      "packages/core/src/cards/next.ts",
+      "packages/core/src/cards/notes.ts",
+      "packages/core/src/cards/view.ts",
+      "packages/core/test/cards/notes.test.ts"
+    ],
+    "at": "2026-11-03T09:10:47.986Z",
+    "resolved": {
+      "commit": "7db5b24",
+      "at": "2026-11-03T09:15:51.312Z"
+    }
   }
 }

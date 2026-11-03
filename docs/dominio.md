@@ -12,6 +12,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Cambio huérfano** (`orphan`): uno que espera al agente sin que ninguna sesión trabaje en él.
 - **Entrada de la memoria** (`MemoryEntry`): un pendiente, una mejora, un recordatorio o una decisión, con id `Pn` o `Dn`.
 - **Memoria de Specty** (`specty memory`): las entradas de la rama `specty-memory`, que todas las sesiones y carpetas ven.
+- **Bitácora** (`specty note`): las notas de un cambio en su audit (`change.noted`); la tarjeta de `next` muestra las tres últimas.
 - **Test aprobado** (`lockedTests`): un test que aprobó la persona, o el rojo de un bug; solo cambia con un desbloqueo.
 - **Ciclo de tests** (`TestCycle`): con `contract`, el de una feature (gate 2) o el de un bug (su rojo se bloquea solo).
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.

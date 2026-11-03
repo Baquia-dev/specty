@@ -69,3 +69,23 @@ Lo que un agente averigua a mitad de un cambio (por qué eligió una ruta, qué 
 
 - R1: La tarjeta de `next` se alarga en cada llamada — solo con notas, y como mucho tres, en una línea cada una.
 - R2: Un agente anota demasiado — solo salen las tres últimas; el audit las guarda todas.
+
+## Cierre
+
+### Resumen
+
+`specty note "<texto>"` anota una nota en la bitácora del cambio abierto de la carpeta: un evento `change.noted` de su audit, con el texto y quién la anotó, bajo el lock del cambio. La tarjeta de `specty next` de cualquier fase, que también es la de inicio de una sesión, tras `/clear` o tras compactar, muestra las tres últimas en «BITÁCORA», con su fecha y hora (UTC) y su primera línea. Sin cambio abierto o sin texto, `note` no anota nada y dice por qué. El glosario gana «Bitácora». Es el AC11 de la épica.
+
+### Desviaciones
+
+- Al aceptar, con main incorporado, knip señaló que `note` se exportaba sin necesidad (solo la usa `noteCommand`); se quitó la exportación en la integración.
+- `specty check` pidió acortar `agentCommands`: el registro de `enter` pasó a su propia función.
+
+### Decisiones
+
+- La nota no hace commit: viaja con el siguiente commit de Specty del cambio, como los demás eventos.
+- La bitácora va en la tarjeta de cada fase, no solo al empezar una sesión, porque esa tarjeta es la misma.
+
+### Pendientes
+
+- Ninguno.
