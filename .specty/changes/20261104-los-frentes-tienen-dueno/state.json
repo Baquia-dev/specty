@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-los-frentes-tienen-dueno",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-los-frentes-tienen-dueno",
   "baseCommit": "2435a73902d061d02e48bb31d769a851d0c0f258",
   "revision": 1,
@@ -64,6 +64,10 @@
     "T": 5,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T20:20:02.210Z"
+  "lockedTests": {
+    "packages/core/test/guard/shell.test.ts": "sha256:0adb9e479b94baf5851a63ba75e45f5ed2ccdb8f0e23f02a17ecb3fdb86a0c9c",
+    "packages/cli/test/front-guard.test.ts": "sha256:a71768b06b297cd0a12c00acc7f6f37676f531f6b3f0a2fc883ca0652b47a62a",
+    "packages/cli/test/front-owners.test.ts": "sha256:165706cef966f6ab26ecd30392d10f6fc2aa6af7c8665aca41ad6c36ba1f763a",
+    "packages/core/test/cards/front-owners.test.ts": "sha256:e429cc755ecfc08bd0dfbca731d59fdf3a89da1351cd861300de2420671cbf8a"
+  }
 }
