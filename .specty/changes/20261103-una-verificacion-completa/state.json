@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-una-verificacion-completa",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-una-verificacion-completa",
+  "baseCommit": "9053fd535295a255dfe2b4d0d4c9f41f3fc589c9",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2f3bc3d47da4a4297116fd98e469ada5dea039ae166c3cb825338e704e2fd6cc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2c221e78012d4ab7dc1b20e10ebaf3f8b31956b7fd348bbf0dd6a9e25c657b88",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:a9ea6ed1037af00d7c88190aa5dc6eb6930fb40ea07e7b2537a571d1ca213b11",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:7b9fbb85fbe6d94067ba044698cd3349e6e4b10a9de6c7c4810307ab3809b4bb",
+    "at": "2026-11-03T11:12:21.526Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
