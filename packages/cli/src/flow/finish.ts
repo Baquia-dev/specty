@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
 import type { ChangeState } from "@baquia-dev/specty-core";
+import { settleEntries } from "../commands/memory";
 import { exists, move } from "../io/files";
 import type { Session } from "../session";
 import { appendAudit, type StoredChange, saveState } from "../store/changes";
@@ -25,6 +26,8 @@ export async function archive(
   const target = session.paths.archivedDir(state.id, session.environment.now().getFullYear());
   await move(change.files.dir, target);
   if (!session.config.git.branchPerChange) await writePointer(session.git, "active", undefined);
+  // The memory's entries it took get done if it closed, and free again if it was cancelled.
+  await settleEntries(session, state);
   return { files: changeFiles(target), state, archived: true };
 }
 

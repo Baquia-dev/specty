@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import {
+  type ChangeState,
   claimable,
   freeWork,
   isOpenEntry,
@@ -15,6 +16,7 @@ import {
   type Output,
   parseEntryId,
   resolvesRefusalCard,
+  settledEntry,
   takenEntry,
 } from "@baquia-dev/specty-core";
 import { type Command, Option } from "commander";
@@ -176,6 +178,31 @@ export async function takeEntries(
         write: { entry: takenEntry(now, change, at), operation: "take" },
         result: undefined,
       };
+    });
+  }
+}
+
+/**
+ * The entries a change took, once it is archived: done if it closed, free again if it was
+ * cancelled, one commit each. Only those still taken by it; none, no commit.
+ */
+export async function settleEntries(session: Session, state: ChangeState): Promise<void> {
+  const takenHere = (entry: MemoryEntry) =>
+    entry.status === "taken" && entry.taken?.change === state.id;
+  const { entries } = await readMemory(session.git, session.config.memory.branch);
+  const ids = entries.filter(takenHere).map((entry) => entry.id);
+  if (ids.length === 0) return;
+  const target = targetOf(session, state.id);
+  const closed =
+    state.phase === "done"
+      ? { at: session.environment.now().toISOString(), by: authorOf(session) }
+      : undefined;
+  for (const id of ids) {
+    await editMemory(session.git, target, (memory) => {
+      const now = memory.entries.find((entry) => entry.id === id);
+      if (now === undefined || !takenHere(now)) return { result: undefined };
+      const entry = settledEntry(now, closed);
+      return { write: { entry, operation: closed ? "done" : "free" }, result: undefined };
     });
   }
 }

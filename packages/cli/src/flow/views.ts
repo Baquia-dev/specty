@@ -22,6 +22,7 @@ import { exists, isRecord, readText } from "../io/files";
 import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { readComments } from "../store/comments";
+import { readMemory } from "../store/memory";
 import { acceptanceFacts } from "./acceptance";
 import { type Audit, carriedOf, dataOf, findingsOf, readAudit } from "./carried";
 import { sliceViews } from "./epic";
@@ -163,8 +164,7 @@ async function phaseFacts(
   return {
     requested: state.phase === "review" ? await requested(change, audit) : [],
     ...(state.pending.adjustment !== null ? { adjustment: state.pending.adjustment.request } : {}),
-    ...(state.phase === "draft" ? request(audit) : {}),
-    ...(state.phase === "draft" ? await carriedOf(session, spec.frontmatter.follows) : {}),
+    ...(state.phase === "draft" ? await draftFacts(session, spec, audit) : {}),
     ...(state.phase === "acceptance" ? await acceptanceFacts(session, change, spec, read) : {}),
   };
 }
@@ -194,9 +194,34 @@ async function requested(
 }
 
 /** The user's literal request, from the audit, where `new --request` left it. */
+/** While drafting: the user's request, the entries it resolves and what its follows left. */
+async function draftFacts(
+  session: Session,
+  spec: Spec,
+  audit: Audit,
+): Promise<Pick<ChangeView, "request" | "resolves" | "carried">> {
+  return {
+    ...request(audit),
+    ...(await resolvesOf(session, audit)),
+    ...(await carriedOf(session, spec.frontmatter.follows)),
+  };
+}
+
 function request(audit: Audit): Pick<ChangeView, "request"> {
   const data = dataOf(audit.find((entry) => entry.event === "change.created"));
   return typeof data.request === "string" ? { request: data.request } : {};
+}
+
+/**
+ * The memory's entries the change took (`new --resolves`), as they are now. The memory is read
+ * only for a change created with `--resolves`.
+ */
+async function resolvesOf(session: Session, audit: Audit): Promise<Pick<ChangeView, "resolves">> {
+  const { resolves } = dataOf(audit.find((entry) => entry.event === "change.created"));
+  const ids = Array.isArray(resolves) ? resolves.filter((id) => typeof id === "string") : [];
+  if (ids.length === 0) return {};
+  const { entries } = await readMemory(session.git, session.config.memory.branch);
+  return { resolves: entries.filter((entry) => ids.includes(entry.id)) };
 }
 
 interface TaskFindings {

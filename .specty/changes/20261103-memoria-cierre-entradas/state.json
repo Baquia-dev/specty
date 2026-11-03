@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-cierre-entradas",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-cierre-entradas",
   "baseCommit": "3712df21d6c74b02f886551f5b05e6a3dfc25d27",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e86a7249b0ef720cd1714fe9edfdb4d7417e862a",
+      "attempts": 1,
       "startedAt": "2026-11-03T07:16:22.823Z",
       "doneAt": "2026-11-03T07:17:24.772Z",
-      "summary": "settledEntry y la operación free en memory/entries.ts; resolvesLines y el asunto de free en cards/memory.ts; ChangeView.resolves y la sección «RESUELVE» en la tarjeta del borrador"
+      "summary": "settledEntry y la operación free en memory/entries.ts; resolvesLines y el asunto de free en cards/memory.ts; ChangeView.resolves y la sección «RESUELVE» en la tarjeta del borrador",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "270a6ef6df117d8f800e1e7edf621bc80fe9ad46",
+      "startedAt": "2026-11-03T07:17:25.125Z",
+      "doneAt": "2026-11-03T07:19:10.109Z",
+      "summary": "settleEntries en commands/memory.ts, llamada desde archive: cerrado → done con closed, cancelado → open sin taken, una por commit; el borrador lee las entradas de resolves (draftFacts en flow/views.ts); formats.md lo documenta"
     }
   },
   "pending": {
