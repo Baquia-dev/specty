@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-enter-fuera-del-espacio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-enter-fuera-del-espacio",
   "baseCommit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
   "revision": 2,
@@ -58,6 +58,15 @@
       "doneAt": "2026-11-03T07:03:03.578Z",
       "summary": "AgentAdapter.workspace (Antigravity: workspacePaths) y outOfReach con rutas reales; enterCommand niega specty enter sin ligar la conversación cuando la carpeta del cambio queda fuera de su espacio de trabajo",
       "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4c74fa9534800477b231e8a3ddc314bc7e322aa4",
+      "startedAt": "2026-11-03T07:06:27.574Z",
+      "doneAt": "2026-11-03T07:06:47.567Z",
+      "summary": "La fila de Antigravity en la tabla de capacidades de ARCHITECTURE §10 recoge el límite al entrar en un cambio fuera de su espacio de trabajo"
     }
   },
   "pending": {

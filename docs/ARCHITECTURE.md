@@ -429,7 +429,7 @@ Las capacidades son el guard, que siempre va en el repositorio ([ADR 0013](decis
 - Worktree por nombre (OpenCode): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio, y el plugin de Specty lleva allí las rutas, los parches, las búsquedas y los comandos de sus herramientas.
 - Worktree por nombre (Gemini CLI): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, las búsquedas y los comandos de sus herramientas (`hookSpecificOutput.tool_input`).
 - Worktree por nombre (Devin (Windsurf)): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y lleva allí las rutas, los parches y los comandos de sus herramientas (`updatedInput`).
-- Worktree por nombre (Antigravity): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y bloquea con la ruta buena lo que haría o leería fuera; no reescribe sus acciones, porque su `overwrite` se descarta cuando pide permiso.
+- Worktree por nombre (Antigravity): con `specty enter <id>`: el guard liga la conversación a la carpeta del cambio y bloquea con la ruta buena lo que haría o leería fuera; no reescribe sus acciones, porque su `overwrite` se descarta cuando pide permiso. Su agente solo trabaja en las carpetas de su espacio de trabajo: si la del cambio no está en ellas, el guard no lo deja entrar y pide abrirla en una conversación nueva.
 
 **No posible:**
 
