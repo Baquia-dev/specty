@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-sin-permisos-opencode-gemini",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-sin-permisos-opencode-gemini",
   "baseCommit": "28e862bee120fcf4b56249159472b84e3449519c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:1cee2d3aaa421d94a23f2c484b4438402dd6853b357d6fadec870a8660a060cb",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4158c8b648fc6d7d5d7f960075b0ef42f0b49e11",
+      "attempts": 1,
       "startedAt": "2026-11-03T08:45:50.772Z",
       "doneAt": "2026-11-03T08:47:51.341Z",
-      "summary": "Gemini CLI: sandboxAllowedPaths solo con la carpeta común de git, sin includeDirectories ni crear la carpeta; init y uninstall quitan la de antes de ambas listas; doctor solo mira el matcher; textos y ARCHITECTURE al día"
+      "summary": "Gemini CLI: sandboxAllowedPaths solo con la carpeta común de git, sin includeDirectories ni crear la carpeta; init y uninstall quitan la de antes de ambas listas; doctor solo mira el matcher; textos y ARCHITECTURE al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -66,9 +66,43 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T08:58:15.649Z",
   "lockedTests": {
     "packages/cli/test/doctor-enter.test.ts": "sha256:dd531856f22b94ff231f79922089078a6671e7cf4b66d2ff34245d52a401c0da",
     "packages/cli/test/gemini-cli.test.ts": "sha256:e197badf679c1eb740652ed5984398def4c653b785f13a978308b195c8ddb4c9",
     "packages/cli/test/opencode-install.test.ts": "sha256:760eed45c844095d405aabdda3eeb551648680fe0549ec37e90fb2840015f39b"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "a3eda5bdf9597ca1d2ec2128b917c52c79e02a6d",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "packages/cli/src/agents/adapter.ts",
+      "packages/cli/src/agents/claude-code.ts",
+      "packages/cli/src/agents/codex.ts",
+      "packages/cli/src/agents/gemini-cli.ts",
+      "packages/cli/src/agents/opencode.ts",
+      "packages/cli/src/enforce/entry.ts",
+      "packages/cli/src/enforce/memory-stop.ts",
+      "packages/cli/src/flow/worktree.ts",
+      "packages/cli/src/install/opencode.ts",
+      "packages/cli/test/doctor-enter.test.ts",
+      "packages/cli/test/gemini-cli.test.ts",
+      "packages/cli/test/memory-stop.test.ts",
+      "packages/cli/test/opencode-install.test.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/install.ts",
+      "packages/core/src/cards/memory-turn.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/memory/turn-end.ts",
+      "packages/core/test/memory/turn-end.test.ts"
+    ],
+    "at": "2026-11-03T08:48:05.180Z",
+    "resolved": {
+      "commit": "c25c409",
+      "at": "2026-11-03T08:52:25.589Z"
+    }
   }
 }

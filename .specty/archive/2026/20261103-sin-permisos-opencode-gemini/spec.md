@@ -60,3 +60,22 @@ Segundo de los tres cambios que quitan los permisos que `init` daba a cada herra
 ## Riesgos
 
 - R1: Quitar una entrada que la persona puso a mano con la misma ruta — solo se quita la ruta exacta de la carpeta de antes, que no tiene otro uso.
+
+## Cierre
+
+### Resumen
+
+Segundo de los cambios que quitan los permisos que `init` daba sobre la carpeta de las worktrees de fuera (ADR 0018). OpenCode ya no recibe la regla de `permission.external_directory`: `init` y `uninstall` quitan la que puso un `init` anterior, y solo esa, así que unos ajustes sin ella quedan como estaban, comentarios incluidos. Gemini CLI ya no recibe `context.includeDirectories` ni se le crea la carpeta de las worktrees, y su sandbox solo lleva la carpeta común de git; `init` y `uninstall` quitan la carpeta de antes de las dos listas y dejan lo de la persona. `doctor` deja de dar por anticuados esos ajustes por faltarles la carpeta. `formerWorktreesHome`, en `flow/worktree.ts`, da la carpeta de antes. Fuera de core cuatro textos que ya no se usan, y `geminiSandboxLine` habla solo de la carpeta de git.
+
+### Desviaciones
+
+- `OPENCODE_SETTINGS` dejó de exportarse: knip lo marcó sin uso fuera de `install/opencode.ts` al aceptar.
+
+### Decisiones
+
+- Quitar la regla de OpenCode no reescribe unos ajustes que no la tienen: una regla `"deny"` de la persona para todas las carpetas se queda tal cual, en lugar de pasar a la forma de objeto.
+
+### Pendientes
+
+- Devin y Cursor en el cambio siguiente, que deja `sharedFolders` solo con la carpeta común de git.
+- Mover las worktrees dentro del proyecto y las exclusiones de las herramientas de JavaScript.
