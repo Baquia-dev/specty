@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261102-ids-de-cambio-de-los-tests-sin-depender-de-la",
   "kind": "quick",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261102-ids-de-cambio-de-los-tests-sin-depender-de-la",
   "baseCommit": "9424fbdec745c4a9a5080a8488cf663c84d4ec4e",
   "revision": 1,
@@ -25,12 +25,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "12c5d9fa1d5ee68ae9f42afe9aad0aff6eb6a25e",
+      "attempts": 1,
       "startedAt": "2026-11-03T04:43:21.949Z",
       "doneAt": "2026-11-03T04:49:19.785Z",
-      "summary": "CHANGE y el id de sizing con makeChangeId(NOW, …) y ARCHIVE con el año local de NOW, como el código"
+      "summary": "CHANGE y el id de sizing con makeChangeId(NOW, …) y ARCHIVE con el año local de NOW, como el código",
+      "scopeExtra": []
     }
   },
   "pending": {

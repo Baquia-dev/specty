@@ -18,3 +18,9 @@ Los tests de la CLI construyen el id del cambio y la carpeta del archivo con la 
 - [x] T1: Calcular los ids y el año del archivo como el código
   - files: packages/cli/test/support.ts, packages/cli/test/sizing.test.ts
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/sizing.test.ts test/anywhere.test.ts test/flow.test.ts test/commands.test.ts
+
+## Cierre
+
+### Resumen
+
+CHANGE y el id de sizing con makeChangeId(NOW, …) y ARCHIVE con el año local de NOW, como el código
