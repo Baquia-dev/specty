@@ -6,6 +6,13 @@
   "branch": "specty/20261103-sin-permisos-devin-cursor",
   "baseCommit": "b71b5b769ee9df08255344075ebb5b03def80c5e",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:965ddb8e12ea2aa00d2c713012e538d7d9aa7a3e1c938ab8bb8c619e87649807",
+    "at": "2026-11-03T08:59:17.958Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 10,
@@ -40,12 +47,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:965ddb8e12ea2aa00d2c713012e538d7d9aa7a3e1c938ab8bb8c619e87649807",
-    "at": "2026-11-03T08:59:17.958Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T09:02:25.185Z"
 }
