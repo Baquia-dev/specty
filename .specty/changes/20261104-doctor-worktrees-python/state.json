@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-doctor-worktrees-python",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-doctor-worktrees-python",
   "baseCommit": "042eeefd2788dc9a723896f106ce10ce5563a0e4",
   "revision": 1,
@@ -42,6 +42,7 @@
     "T": 1,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T19:20:48.736Z"
+  "lockedTests": {
+    "packages/cli/test/doctor-worktrees-python.test.ts": "sha256:15e0195b96237c9084fe223d7484abb8d60c70d22c80fe17f75905052f9e6044"
+  }
 }
