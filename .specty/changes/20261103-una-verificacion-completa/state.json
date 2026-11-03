@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-una-verificacion-completa",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-una-verificacion-completa",
   "baseCommit": "9053fd535295a255dfe2b4d0d4c9f41f3fc589c9",
   "revision": 1,
@@ -47,6 +47,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T11:13:28.901Z"
+  "lockedTests": {
+    "packages/cli/src/flow/full-verification.test.ts": "sha256:891809d73a2d92c60f2e275cef7a5501022ef022470359e1be7efbbc4f9b450e",
+    "packages/core/test/cards/full-verification.test.ts": "sha256:596a414f2e2cfa6681e3a6eb32b9948c994ac7915ce5a4bcf0454bdaa4555a47"
+  }
 }
