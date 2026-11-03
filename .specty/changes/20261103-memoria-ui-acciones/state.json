@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-ui-acciones",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-ui-acciones",
+  "baseCommit": "7b015669ead8ecfcb9e10282d30ac9dae20748cc",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 12,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:f2305b214a8f926303f0f94a11d57525435f511b70876a8274ec0a15ba538e31",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ce6824f1012a6b89e7d893642ba8c64c0c20ac7ffc869a9118971e0dc53feafe",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:f3e557edda42de5086e01c7728964140e85e2572d7edebd54da44aa1acacb213",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:8bace3eb48ed80affeaed1549c3be73422fb4a79530fd18b615fa6a62924ba12",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4865658454a398139ba9a15de2bbd3f626a0916ca7d46cae6ee466d470bd5362",
+    "at": "2026-11-03T10:14:25.636Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
