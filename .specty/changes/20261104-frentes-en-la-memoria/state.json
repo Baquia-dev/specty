@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "id": "20261104-frentes-en-la-memoria",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-frentes-en-la-memoria",
+  "baseCommit": "042eeefd2788dc9a723896f106ce10ce5563a0e4",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "10 archivos",
+      "2 módulos",
+      "4 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:2896c39cb103f02a9c54c1578e1bf21c63cc0c3a00d6e2991ca9cd6b578c3ae4",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:45d1921519934d950215fda97f55ae748833e724d6d4499007a07d1fe47af73e",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:dcc8f1748de6dfb2ec7fd5a3f2542bbe269d75aac8e5d904dfabbbaa64e9bd02",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:3668c15d5dd3c2860d3781c72b2a813510387c2d4ff9cf98fb34063604be452e",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:5d5471f8c6877dfc75c45aefbe2a33214b454fac789e9b9e97d77f6a811152fd",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 3,
+    "T": 4,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:32b56fe277cd79f5f78d796554f7fca67e52d11a619fa22a48d848dca922bda8",
+    "at": "2026-11-03T19:27:29.107Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
