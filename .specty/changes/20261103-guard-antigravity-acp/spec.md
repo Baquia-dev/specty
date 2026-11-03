@@ -47,7 +47,7 @@ En Zed (y en cualquier editor que hable ACP), Antigravity lee y escribe con `cli
 
 ## Tareas
 
-- [ ] T1: El guard juzga las herramientas ACP de Antigravity, y `doctor` avisa de su hook anterior
+- [x] T1: El guard juzga las herramientas ACP de Antigravity, y `doctor` avisa de su hook anterior
   - files: packages/cli/src/agents/antigravity.ts, packages/cli/test/antigravity.test.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/antigravity-turn.test.ts test/doctor-enter.test.ts && pnpm typecheck && pnpm lint

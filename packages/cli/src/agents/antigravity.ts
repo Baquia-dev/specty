@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { join } from "node:path";
-import { antigravityTrustWarning, guardLine } from "@baquia-dev/specty-core";
+import { antigravityTrustWarning, type DoctorLine, guardLine } from "@baquia-dev/specty-core";
 import { parse } from "jsonc-parser";
 import { type GuardReply, type RawAction, sentPaths, shellAction } from "../enforce/actions";
 import { ANTIGRAVITY_HOOKS, excludeLocally, guardMatcher, removeFromJson } from "../install/agents";
@@ -14,8 +14,14 @@ const HOOK = "specty";
  * Its tools that change the repository (there is none to delete a file), and the one that types
  * into a task running in the background.
  */
-const TOOLS =
+const BEFORE_ACP =
   "run_command|write_to_file|replace_file_content|multi_replace_file_content|manage_task|view_file|list_dir|grep_search|find_by_name";
+/**
+ * In an editor that speaks ACP (Zed, JetBrains), it reads and writes files with these, which the
+ * editor carries out: the guard sees them as it sees its own.
+ */
+const CLIENT_TOOLS = "client_view_file|client_edit_file|client_create_file";
+const TOOLS = `${BEFORE_ACP}|${CLIENT_TOOLS}`;
 
 /**
  * Its tools that read or search, with the field that names the file or the folder: the guard
@@ -26,6 +32,19 @@ const READS: Readonly<Record<string, string>> = {
   list_dir: "DirectoryPath",
   grep_search: "SearchPath",
   find_by_name: "SearchDirectory",
+  client_view_file: "absolute_path",
+};
+
+/**
+ * Its tools that write a file, with the field that names it; in an ACP editor, the whole content
+ * of a file it creates or replaces.
+ */
+const WRITES: Readonly<Record<string, string>> = {
+  write_to_file: "TargetFile",
+  replace_file_content: "TargetFile",
+  multi_replace_file_content: "TargetFile",
+  client_edit_file: "target_file",
+  client_create_file: "target_file",
 };
 /**
  * The events the guard listens to, with the tools each one covers; `undefined` is an event that
@@ -127,14 +146,21 @@ export const antigravity: AgentAdapter = {
         problems: [{ code: "antigravity-hooks", file, events: missing.join(", ") }],
       };
     }
-    // A hook from before `specty enter` does not see the reads.
-    const outdated = guardMatcher(ours, "PreToolUse", "antigravity") !== TOOLS;
-    return {
-      ok: [{ code: "antigravity-guard", file }],
-      problems: outdated ? [{ code: "enter-outdated", tool: "antigravity", file }] : [],
-    };
+    return { ok: [{ code: "antigravity-guard", file }], problems: outdatedMatcher(ours, file) };
   },
 };
+
+/**
+ * A guard from an older `init`: one from before `specty enter` does not see the reads, and one from
+ * before the ACP editors does not see what it reads and writes there.
+ */
+function outdatedMatcher(ours: Record<string, unknown>, file: string): DoctorLine[] {
+  const matcher = guardMatcher(ours, "PreToolUse", "antigravity");
+  if (matcher === TOOLS) return [];
+  return typeof matcher === "string" && matcher.split("|").includes("view_file")
+    ? [{ code: "antigravity-acp", file }]
+    : [{ code: "enter-outdated", tool: "antigravity", file }];
+}
 
 /** Specty's hook: each event calls the guard with its name. */
 function hookOf(command: string): Record<string, unknown[]> {
@@ -188,16 +214,14 @@ function action(event: Readonly<Record<string, unknown>>): RawAction {
   const input = isRecord(event.tool_input) ? event.tool_input : {};
   const read = READS[String(event.tool_name)];
   if (read !== undefined) return { kind: "read", paths: sentPaths(input[read]) };
+  const write = WRITES[String(event.tool_name)];
+  if (write !== undefined) return { kind: "write", paths: sentPaths(input[write]) };
   switch (event.tool_name) {
     case "run_command":
       return shellAction(input.CommandLine);
     // What it types into a running task, which may be a shell, is judged as a command.
     case "manage_task":
       return input.Action === "send_input" ? shellAction(input.Input) : { kind: "other" };
-    case "write_to_file":
-    case "replace_file_content":
-    case "multi_replace_file_content":
-      return { kind: "write", paths: sentPaths(input.TargetFile) };
     default:
       return { kind: "other" };
   }

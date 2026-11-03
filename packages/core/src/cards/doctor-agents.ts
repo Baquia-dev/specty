@@ -29,6 +29,7 @@ type AgentCode =
   | "antigravity-guard"
   | "no-antigravity-guard"
   | "antigravity-hooks"
+  | "antigravity-acp"
   | "windsurf-guard"
   | "no-windsurf-guard"
   | "windsurf-hooks"
@@ -145,6 +146,11 @@ export const AGENT_WRITERS: {
     t(
       `Antigravity: faltan hooks de Specty en ${line.file} (${line.events}); ejecuta \`${command} init --tools antigravity\`.`,
       `Antigravity: Specty's hooks are missing in ${line.file} (${line.events}); run \`${command} init --tools antigravity\`.`,
+    ),
+  "antigravity-acp": (line, t, command) =>
+    t(
+      `Antigravity: ${line.file} es de antes de sus herramientas en los editores ACP (Zed, JetBrains), así que el guard no ve lo que lee y escribe allí; ejecuta \`${command} init --tools antigravity\`.`,
+      `Antigravity: ${line.file} predates its tools in ACP editors (Zed, JetBrains), so the guard does not see what it reads and writes there; run \`${command} init --tools antigravity\`.`,
     ),
   "windsurf-guard": (line, t) =>
     t(

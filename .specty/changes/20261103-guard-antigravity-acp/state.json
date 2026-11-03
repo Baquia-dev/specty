@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "2b7d1decba9a7e4cdf4742392d779c44066e4e69",
+      "startedAt": "2026-11-03T06:48:48.740Z",
+      "doneAt": "2026-11-03T06:50:23.916Z",
+      "summary": "El guard de Antigravity juzga client_view_file como lectura y client_edit_file/client_create_file como escrituras (tabla WRITES); doctor da antigravity-acp para un hook con lecturas pero sin ellas"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
