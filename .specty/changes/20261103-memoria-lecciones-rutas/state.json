@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-lecciones-rutas",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-lecciones-rutas",
+  "baseCommit": "802764ac2b1e1ea947167afbefebf61a8bbdf3d8",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 13,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "3 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:6e7c7d52289137df1286fabd76f1d01b2b523cbde2a9967d7ea8dac3e54a111c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:0b46c988376a4f99c72a9a308febf6fdafc470092b545ec11ee8b3a2eb2084f5",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:c41f436dedc2738b46222028801450b8cdfd91e902b6238a9409357a51c0bfc8",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:de49f8b2d324105573ca7c345283dfbb3d5e8f92b7ae4b52ecabffea2cb86db7",
+    "at": "2026-11-03T10:44:22.203Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
