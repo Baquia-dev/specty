@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-limpieza-de-actividad-y-mensajes",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-limpieza-de-actividad-y-mensajes",
   "baseCommit": "51c0e57a3df5ab8e60267df595d7ae71b3ccb19a",
   "revision": 1,
@@ -52,6 +52,9 @@
     "T": 4,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T22:49:34.735Z"
+  "lockedTests": {
+    "packages/cli/test/messages-archive.test.ts": "sha256:a1a2a42bb67a213506451a4ee1cbc937de75d184b3b7d76bc74c08cdaffbcb96",
+    "packages/cli/test/prune-live.test.ts": "sha256:6c2fbdc0bbcb8c257a31edee1ff30b5a11786c24166070cd6e41d75c5e5abd64",
+    "packages/core/test/cards/prune-live.test.ts": "sha256:81acf9c395812b311decc3750b5a49348e078177ce563e7190c1668e24867d49"
+  }
 }
