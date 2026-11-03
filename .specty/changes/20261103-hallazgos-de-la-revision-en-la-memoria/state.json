@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-hallazgos-de-la-revision-en-la-memoria",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-hallazgos-de-la-revision-en-la-memoria",
   "baseCommit": "540f6bd0eacaf52fe2663ca853b18e5c2adf75ca",
   "revision": 2,
@@ -64,12 +64,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "db057982cdca55c073f8d9c22ebe5c620f0041a3",
+      "attempts": 1,
       "startedAt": "2026-11-03T13:44:05.669Z",
       "doneAt": "2026-11-03T13:45:09.042Z",
-      "summary": "cli flow/review-remarks.ts: lee el diff-<n>.md más alto de reviews/; closingRemarks da a la vista del cierre las observaciones sin citar y remarkHarvest los pendientes que archive pasa a harvestEntries tras los del cierre"
+      "summary": "cli flow/review-remarks.ts: lee el diff-<n>.md más alto de reviews/; closingRemarks da a la vista del cierre las observaciones sin citar y remarkHarvest los pendientes que archive pasa a harvestEntries tras los del cierre",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6dd433ebb44cd515154ff4b9a7086a816d4e6803",
+      "startedAt": "2026-11-03T13:45:09.375Z",
+      "doneAt": "2026-11-03T13:45:38.010Z",
+      "summary": "formats.md (memoria §1 y revisión en §6) y ARCHITECTURE.md (Observaciones de la revisión, junto a riesgos aceptados y deuda de check --all) documentan qué es una observación, cómo se cita y que las no citadas pasan a la memoria al cerrar"
     }
   },
   "pending": {

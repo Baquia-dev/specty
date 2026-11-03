@@ -73,7 +73,7 @@ follows:
   - files: packages/cli/src/flow/review-remarks.ts, packages/cli/src/flow/views.ts, packages/cli/src/flow/finish.ts, packages/cli/test/review-remarks.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/review-remarks.test.ts test/memory-harvest.test.ts test/review.test.ts test/bundle.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T3: La documentación de las observaciones que pasan a la memoria
+- [x] T3: La documentación de las observaciones que pasan a la memoria
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm lint
