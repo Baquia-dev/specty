@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-doctor-worktrees-astro-tipos-turbo-deno",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-doctor-worktrees-astro-tipos-turbo-deno",
   "baseCommit": "e13cf61461797d5e1405043ff6360e194f2ffdd8",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:99cf9e7a949065e273827874f92228348bbd1c8799d43b4a626cf41bd62c1979",
@@ -47,12 +47,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e7a6b102df3ebb38e736b684397d054858117e8d",
+      "attempts": 1,
       "startedAt": "2026-11-03T15:03:37.338Z",
       "doneAt": "2026-11-03T15:05:37.960Z",
-      "summary": "doctor pide \"!.worktrees/**\" en pnpm-workspace.yaml a Turborepo con un patrón ** y \".worktrees/\" en el exclude de deno.json; ADR 0018 con la medición de las herramientas de JavaScript y ARCHITECTURE con la lista de doctor"
+      "summary": "doctor pide \"!.worktrees/**\" en pnpm-workspace.yaml a Turborepo con un patrón ** y \".worktrees/\" en el exclude de deno.json; ADR 0018 con la medición de las herramientas de JavaScript y ARCHITECTURE con la lista de doctor",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -65,6 +65,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T19:19:01.901Z",
   "lockedTests": {
     "packages/cli/test/doctor-watchers.test.ts": "sha256:e1d77c056b4c797d4f07116a7157a0c36c4ffb8aadca6939296ebd5c7740618b",
     "packages/cli/test/doctor-worktrees.test.ts": "sha256:dea71c9cc8c334c97bd52808a39af3f971dd0511019acfe202bdae46c99018f6"

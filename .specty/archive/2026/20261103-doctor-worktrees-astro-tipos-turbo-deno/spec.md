@@ -67,3 +67,25 @@ El 2026-11-03 se midieron, con las versiones reales, los servidores de desarroll
 
 - R1: `worktree-tools.ts` crece de unas 160 a unas 250 líneas. Si pasa del aviso de 300 líneas de código, se propone dividirlo antes de seguir: herramientas de tests y lint por un lado, servidores y observadores por otro.
 - R2: Una configuración que excluye la carpeta de otra forma recibe el aviso igual. El aviso no bloquea nada fuera de `doctor`.
+
+## Cierre
+
+### Resumen
+
+`specty doctor`, una vez que hay cambios en `.worktrees/`, avisa de cinco herramientas más de la raíz y dice qué añadir y dónde: Astro (la función de Vite en `vite.server.watch.ignored`), fork-ts-checker-webpack-plugin (`"node_modules", ".worktrees"` en el `exclude` de `tsconfig.json`, o en sus opciones dentro de `webpack.config.*`), el comprobador de tipos de Rsbuild (una función en `tools.rspack.watchOptions.ignored`), Turborepo con un patrón `**` en `pnpm-workspace.yaml` (`"!.worktrees/**"`) y Deno (`".worktrees/"` en el `exclude` de `deno.json`, también si solo hay `deno.lock`). Las exclusiones se midieron con las versiones reales desde la carpeta principal y dentro del cambio, también en una carpeta con paréntesis, corchetes y llaves. El ADR 0018 recoge la medición de las herramientas de JavaScript, también las que no reaccionan (Next.js, Angular CLI, Parcel, webpack y Rsbuild sin plugins, Nuxt, nodemon, `node --watch`, `tsx watch`, la CLI de Nest, Nx con la carpeta ignorada y los workspaces de pnpm y npm), y ARCHITECTURE la lista de `doctor`.
+
+### Desviaciones
+
+- Los tests de fork-ts-checker y del comprobador de Rsbuild escriben `package.json` después de `new`: con dependencias en el commit, `new` las instalaba de verdad en la worktree.
+- `worktreeExclusions` pasa a recorrer una lista de detectores, en vez de añadir cada uno a mano; Metro usa el mismo `declares` que los comprobadores de tipos.
+
+### Decisiones
+
+- Para fork-ts-checker se pide la exclusión en `tsconfig.json` y no en `watchOptions.ignored` de webpack: el esquema de webpack no acepta funciones, y fork-ts-checker compara con la ruta nativa mientras watchpack lo hace con `/`.
+- Para el comprobador de Rsbuild se pide la función en el observador de Rspack y no su `exclude`, que no coincide con caracteres especiales en la ruta.
+- Angular con `NG_BUILD_WATCH_ROOT=1` y webpack con un `watchOptions.ignored` propio quedan solo en el ADR.
+
+### Pendientes
+
+- Python (flake8, Pylint, isort, Black con `exclude` propio) y los recargadores de Flask y Uvicorn, medidos en esta sesión: van en el cambio siguiente.
+- Metro con Watchman, sin medir: Watchman no está instalado y descargar su binario no se permitió.
