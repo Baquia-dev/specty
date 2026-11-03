@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "20261104-doctor-worktrees-python",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-doctor-worktrees-python",
+  "baseCommit": "042eeefd2788dc9a723896f106ce10ce5563a0e4",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 4,
+    "adjust": 0,
+    "reasons": [
+      "4 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:459e969d05553c4342cb58c6465b05e471d19ab015e21c280ac23a7577bbc4f5",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:3ed21de4c3fb0c964c6d0da68fc0860715d39c9714f5c79ebca6077bb5184d8f",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 2,
+    "AC": 4,
+    "T": 1,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:477d57e2799e3bf8e6728fabd1e55bece8b56ae27d77f7be1eb2fdbf88786509",
+    "at": "2026-11-03T19:20:12.305Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
