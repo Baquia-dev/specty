@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-lecciones-tarjetas",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-lecciones-tarjetas",
+  "baseCommit": "37debdc39a9615ff3ec4d8a389cd758b19eb8143",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7e6423e3e0a98509d65c7f221089e222136a6ec244a2c4ba9af6d79fe43a6e25",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:41dc699161ea92df3a30bcfbf854c7233b87043c4d01c9d2a5b78baa3becaa9c",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:dd373d1a0bd1255fb3b027dfc29c847c66ebd045e9b7debf565b97d91bdf681b",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 3,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:372569e65bc15994a50c0748d110d9fbf557aa23b6488b66b9d797c3a8fbc563",
+    "at": "2026-11-03T10:56:47.147Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
