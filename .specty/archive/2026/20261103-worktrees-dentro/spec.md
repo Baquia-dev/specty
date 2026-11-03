@@ -71,3 +71,25 @@ kind: standard
 
 - R1: Las herramientas de JavaScript de la carpeta principal (Vitest, Jest, ESLint, Biome sin `.gitignore`) ven las copias del proyecto mientras hay cambios abiertos — medido en ADR 0018; sus exclusiones van en otro cambio.
 - R2: Go con un `go.work` sin versionar en la carpeta principal falla dentro de la worktree — medido en ADR 0018; queda anotado allí.
+
+## Cierre
+
+### Resumen
+
+`specty new` crea ya cada cambio en `<carpeta principal>/.worktrees/<id>`, dentro del proyecto, y la ignora en el clon con `/.worktrees/` en `.git/info/exclude` (una sola vez), así que la carpeta principal queda limpia para git. Antigravity, con la carpeta principal como espacio de trabajo, entra en un cambio sin que la persona haga nada, y el guard sigue dando cada archivo de `.worktrees/<id>` a su cambio aunque git lo ignore. Un cambio abierto antes en `<carpeta>.worktrees/<id>` se sigue encontrando: `namedWorktree` (`specty enter` y `EnterWorktree` por nombre) y la protección de `WorktreeRemove` miran también la carpeta de antes. Este repositorio ignora `.worktrees/` en `.gitignore` y Biome la excluye. ADR 0018 queda aceptada con las mediciones de Go, Maven, Gradle, SwiftPM, Cargo y Flutter, y ARCHITECTURE §9 y formats §6 lo cuentan.
+
+### Desviaciones
+
+- El test del AC4 movía la worktree a una carpeta sin crear antes su carpeta padre, y git se negaba: la persona aprobó desbloquearlo (S1) y el test la crea.
+- Con el test arreglado, el AC4 destapó que `specty enter` y `EnterWorktree` solo buscaban la carpeta de un cambio en la de las worktrees actual, contra el supuesto A2: con la ampliación S2 (`enforce/worktree-hooks.ts`), que aprobé con la autorización explícita de la persona, buscan también en la de antes.
+- Al incorporar main llegó `duplicates.test.ts`, de otro cambio, con la carpeta de antes en su texto esperado: se adaptó a `.worktrees/<id>`. Biome se había llevado la cabecera SPDX de tres tests al quitar un import sin uso; se repuso.
+
+### Decisiones
+
+- La carpeta se ignora en `.git/info/exclude`, que comparten todas las worktrees y no ensucia el repositorio; la línea de `.gitignore`, que es la que lee Prettier, la escribe `init` en el cambio siguiente.
+
+### Pendientes
+
+- `init` añade `/.worktrees/` a `.gitignore`.
+- Las exclusiones de Vitest, Jest, ESLint y Biome en los proyectos de JavaScript, y el aviso de `doctor` donde falten.
+- Go con un `go.work` sin versionar en la carpeta principal falla dentro de la worktree (ADR 0018).
