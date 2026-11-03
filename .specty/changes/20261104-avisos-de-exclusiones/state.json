@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-avisos-de-exclusiones",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-avisos-de-exclusiones",
   "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
   "revision": 2,
@@ -47,6 +47,8 @@
     "T": 2,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T22:08:26.752Z"
+  "lockedTests": {
+    "packages/cli/test/exclusion-warnings.test.ts": "sha256:4668888bb8bc4d86207420e1061165e06de0e3eef2ea155826e1863b64eecb4f",
+    "packages/core/test/cards/exclusions.test.ts": "sha256:dcaeabe5d8da0090659624eab148413c5fd175a752dd70fcf225ebfcaebb30be"
+  }
 }
