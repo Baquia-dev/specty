@@ -18,6 +18,8 @@ import {
   parseSpec,
   quickClosedLine,
   quickClosing,
+  riskLessons,
+  riskLessonsLine,
   runVerificationQuestion,
   serializeSpec,
   transition,
@@ -39,6 +41,7 @@ import type { Session } from "../session";
 import { readSpec, type StoredChange } from "../store/changes";
 import { humanChange, postponed } from "./human";
 import { pendingIntegration } from "./integrate";
+import { harvestEntries } from "./memory";
 import { thenNext } from "./next";
 
 /**
@@ -175,12 +178,13 @@ async function accepted(
   });
   if (!moved.ok)
     return blockedCard(headerOf(state.id, state.phase), moved.code, checkStatus(cards));
+  const lines = [...merged, ...(await acceptedRisks(session, change, view))];
   if (moved.phase === "done")
     return closeQuick(
       session,
       change,
       view.tasks.map((task) => task.summary ?? task.title),
-      merged,
+      lines,
     );
   await commitState(
     session,
@@ -192,8 +196,23 @@ async function accepted(
   );
   return thenNext(
     session,
-    decisionCard(headerOf(state.id, moved.phase), [acceptedLine(session.lang), ...merged], cards),
+    decisionCard(headerOf(state.id, moved.phase), [acceptedLine(session.lang), ...lines], cards),
   );
+}
+
+/**
+ * The risks of the change's tasks, which accepting takes, as lessons of the memory about their
+ * files (ADR 0016), and the line that names them; none, no line.
+ */
+async function acceptedRisks(
+  session: Session,
+  change: StoredChange,
+  view: ChangeView,
+): Promise<string[]> {
+  const lessons = riskLessons(view.tasks, session.lang);
+  const ids = await harvestEntries(session, change.state, lessons);
+  const line = riskLessonsLine(ids, session.lang);
+  return line === undefined ? [] : [line];
 }
 
 /** Quick lane: accepting closes the change, with the task summary as its closing. */

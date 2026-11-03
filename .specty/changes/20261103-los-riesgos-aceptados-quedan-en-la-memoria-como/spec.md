@@ -51,7 +51,7 @@ Primer corte de P31 (lo aplazado entra solo en la memoria): al aceptar un cambio
   - files: packages/core/src/cards/risk-lessons.ts, packages/core/src/cards/index.ts, packages/core/test/cards/risk-lessons.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/risk-lessons.test.ts && pnpm lint
-- [ ] T2: `accept` anota los riesgos en la memoria, y la documentación
+- [x] T2: `accept` anota los riesgos en la memoria, y la documentación
   - files: packages/cli/src/commands/memory.ts, packages/cli/src/flow/finish.ts, packages/cli/src/commands/accept.ts, packages/cli/test/risk-lessons.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/risk-lessons.test.ts test/risk.test.ts test/memory-harvest.test.ts && pnpm typecheck && pnpm lint

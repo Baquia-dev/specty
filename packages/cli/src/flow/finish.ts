@@ -32,7 +32,11 @@ export async function archive(
   await settleEntries(session, state);
   const files = changeFiles(target);
   if (state.phase === "done")
-    await harvestEntries(session, state, await closingFollowUps(session, files));
+    await harvestEntries(
+      session,
+      state,
+      (await closingFollowUps(session, files)).map((text) => ({ text })),
+    );
   return { files, state, archived: true };
 }
 

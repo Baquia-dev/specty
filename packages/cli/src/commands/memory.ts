@@ -242,30 +242,44 @@ export async function takeEntries(
   }
 }
 
+/** What a change leaves in the memory: a pending item, or with `paths` a lesson of those paths. */
+export interface Harvest {
+  readonly text: string;
+  readonly paths?: readonly string[];
+}
+
 /**
- * The follow-ups of a closed change's closing, as pending items of the memory with that change
- * as their origin, one commit each; those already in the memory are left out (`harvestable`).
+ * What a change leaves in the memory, with that change as its origin, one commit each: the
+ * follow-ups of its closing as pending items, and the risks its acceptance takes as lessons.
+ * Those already in the memory are left out (`harvestable`). The ids of the entries it added.
  */
 export async function harvestEntries(
   session: Session,
   state: ChangeState,
-  items: readonly string[],
-): Promise<void> {
+  items: readonly Harvest[],
+): Promise<string[]> {
   const target = targetOf(session, state.id);
-  for (const text of harvestable(items, await readMemory(session.git, target.branch))) {
-    await editMemory(session.git, target, (memory) => {
+  const texts = items.map(({ text }) => text);
+  const added: string[] = [];
+  for (const text of harvestable(texts, await readMemory(session.git, target.branch))) {
+    const paths = items.find((item) => item.text.trim() === text)?.paths;
+    const kind = paths === undefined ? "pending" : "lesson";
+    const id = await editMemory(session.git, target, (memory) => {
       if (harvestable([text], memory).length === 0) return { result: undefined };
       const entry: MemoryEntry = {
-        id: nextEntryId("pending", memory.ids),
-        kind: "pending",
+        id: nextEntryId(kind, memory.ids),
+        kind,
         status: "open",
         created: session.environment.now().toISOString(),
         origin: { change: state.id, by: authorOf(session) },
+        ...(paths === undefined ? {} : { paths }),
         text,
       };
-      return { write: { entry, operation: "add" }, result: undefined };
+      return { write: { entry, operation: "add" }, result: entry.id };
     });
+    if (id !== undefined) added.push(id);
   }
+  return added;
 }
 
 /**

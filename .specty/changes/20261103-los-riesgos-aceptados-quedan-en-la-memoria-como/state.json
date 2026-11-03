@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
   "baseCommit": "386167b88f29023b2774dc35bfd733fe7746a53c",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "67c87442ae42e2f4ff6bef7f95697f1010bf3602",
+      "attempts": 1,
       "startedAt": "2026-11-03T12:15:28.740Z",
       "doneAt": "2026-11-03T12:15:50.680Z",
-      "summary": "cards/risk-lessons.ts: riskLessons, una lección por archivo y patrón sin la línea, y riskLessonsLine, la línea de accept con los ids; exportadas en cards/index.ts"
+      "summary": "cards/risk-lessons.ts: riskLessons, una lección por archivo y patrón sin la línea, y riskLessonsLine, la línea de accept con los ids; exportadas en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "18bb5e4ef17ac26b442f6c5db71a4bfb5ed4b7f9",
+      "startedAt": "2026-11-03T12:15:51.000Z",
+      "doneAt": "2026-11-03T12:17:20.535Z",
+      "summary": "harvestEntries anota pendientes o, con paths, lecciones y devuelve sus ids; accept anota los riesgos de las tareas como lecciones de sus archivos, también en el carril rápido, y lo dice; ARCHITECTURE §7 lo documenta"
     }
   },
   "pending": {
