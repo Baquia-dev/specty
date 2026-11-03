@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-te-toca",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-te-toca",
+  "baseCommit": "2b2dadc43c8dad7cf262a860d661cef3b3c957c5",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:0b985de26ba002db21d685b3a07e5c8b7dfa132fb665746ee2df62f0c53ca33c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2f9cb0474da982f851487b9fc4b22ab0541089c8020feb248f6f84832ac06723",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:30557c49201e4043d4ff158658bdea2e14cb45c715b3c62b589c72f058c81002",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:29553f0bbe19f860d73283094edbe102431e45b28703923f0b93326fad2cb78f",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:e6b051f6aa803bfcd679a0c8bdd94b1df3f91c83acb15ef1e5edc3d5ee0ab039",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 2,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b95173dfc66935c0c1f8ed390d6d501ebb186d31e504568351a3500efdab440c",
+    "at": "2026-11-03T06:28:49.074Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
