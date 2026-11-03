@@ -69,7 +69,7 @@ Segundo cambio de P33 (repartir el trabajo entre sesiones): una sesión de agent
 
 ## Tareas
 
-- [ ] T1: Los frentes que nombra un comando de shell
+- [x] T1: Los frentes que nombra un comando de shell
   - files: packages/core/src/guard/shell.ts, packages/core/test/guard/shell.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/shell.test.ts && pnpm lint

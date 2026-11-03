@@ -53,7 +53,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6ffc7771322e6986be4ec9a566017b5c81d1c1c2",
+      "startedAt": "2026-11-03T20:20:24.647Z",
+      "doneAt": "2026-11-03T20:21:47.862Z",
+      "summary": "ShellAnalysis.fronts: cada specty front take|free <frente> de un comando, en orden, como enters; lo que pide un segmento a Specty sale de spectyCalls"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
