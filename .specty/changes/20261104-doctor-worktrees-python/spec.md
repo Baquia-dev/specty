@@ -50,7 +50,7 @@ El 2026-11-03 se midieron, con las versiones reales, las herramientas de otros l
 
 ## Tareas
 
-- [ ] T1: `doctor` avisa de flake8, Pylint, isort y Black, y la documentación
+- [x] T1: `doctor` avisa de flake8, Pylint, isort y Black, y la documentación
   - files: packages/cli/src/detect/worktree-python.ts, packages/cli/src/detect/worktree-tools.ts, packages/cli/src/detect/quality.ts, packages/cli/test/doctor-worktrees-python.test.ts, docs/decisions/0018-worktrees-dentro-del-repositorio.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-worktrees-python.test.ts

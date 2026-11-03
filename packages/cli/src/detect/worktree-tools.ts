@@ -3,6 +3,7 @@ import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { exists, isRecord, parseJson, readText } from "../io/files";
 import type { FormatterExclusion } from "./formatters";
+import { pythonExclusions } from "./worktree-python";
 
 /**
  * The changes' worktrees live in `.worktrees/`, inside the project (ADR 0018). A tool at the root
@@ -64,13 +65,21 @@ const DETECTORS: readonly Detector[] = [
   denoConfig,
 ];
 
-/** The JavaScript tools at the root that need their exclusion, once a change lives in `.worktrees/`. */
+/**
+ * The tools at the root that need their exclusion, once a change lives in `.worktrees/`: these of
+ * JavaScript, and Python's (`worktree-python.ts`).
+ */
 export async function worktreeExclusions(root: string): Promise<FormatterExclusion[]> {
   if (!(await exists(join(root, PATH)))) return [];
   const entries = await readdir(root).catch(() => [] as string[]);
   const found = await viteConfigs(root, entries);
   const others = await Promise.all(DETECTORS.map((detect) => detect(root, entries)));
-  return [...found, ...others.filter((one): one is FormatterExclusion => one !== undefined)];
+  const python = await pythonExclusions(root);
+  return [
+    ...found,
+    ...others.filter((one): one is FormatterExclusion => one !== undefined),
+    ...python,
+  ];
 }
 
 /**

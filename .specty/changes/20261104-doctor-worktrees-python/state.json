@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-doctor-worktrees-python",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-doctor-worktrees-python",
   "baseCommit": "042eeefd2788dc9a723896f106ce10ce5563a0e4",
   "revision": 1,
@@ -31,7 +31,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "7787598903af40f809a40365060e60545734930b",
+      "startedAt": "2026-11-03T19:20:49.655Z",
+      "doneAt": "2026-11-03T19:24:01.228Z",
+      "summary": "doctor pide a flake8 extend-exclude, a Pylint ignore, a isort extend_skip y a Black con exclude propio extend-exclude, en el archivo y la sección que leen (worktree-python.ts); ADR 0018 con Python, .NET, Spring y RuboCop, y las opciones de Flask y Uvicorn"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
