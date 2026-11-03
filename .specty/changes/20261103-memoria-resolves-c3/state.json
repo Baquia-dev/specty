@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-resolves-c3",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-resolves-c3",
+  "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 15,
+    "adjust": 0,
+    "reasons": [
+      "13 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fc4479dc6191dd944650b4bb833ee9fd188c2ab71498f373ace017f0d13f3aba",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:2d7433840d8b1e6636cd754646111e59d62800d8ff5cdd0c7bea8d9af0649423",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:53ae42439503ed5072efbf723b96e0d0d852a28ebc340f57d8bc84e329d21978",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:38da95beed2cde591c4f68f17256bf7e92a0a1c98968b55cf47170b62492bac4",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:9adc0f271d72d0ec989c1298137fa115f7397f50d63b51e3576a1bc224c6ea69",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:ebd777ba0ff2a3de726cba8c7dc9b0bd90c910761613187dff8cea7f28206dc2",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 3,
+    "T": 3,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c662c245049b8212d36455e5b0459e2a0547af65ab963f443cad40861327dcf8",
+    "at": "2026-11-03T06:50:02.638Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
