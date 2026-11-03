@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-ui-c7",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-ui-c7",
   "baseCommit": "daa5fee4ab20ea1f32987e743fffcfe159941ac3",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:89935d22bded33d9994803f05009240674ccda9c4a90a3739be6318fb719f2b1",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e345e27760db2b0f4ef9e74745e21eecf7e4682d",
+      "attempts": 1,
       "startedAt": "2026-11-03T09:42:37.332Z",
       "doneAt": "2026-11-03T09:49:35.150Z",
-      "summary": "Página «Memoria» con sus secciones, memoria de ejemplo, ruta /memory y enlace en la navegación; shell.test.ts actualizado con autorización del usuario"
+      "summary": "Página «Memoria» con sus secciones, memoria de ejemplo, ruta /memory y enlace en la navegación; shell.test.ts actualizado con autorización del usuario",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T09:56:44.879Z",
   "lockedTests": {
     "packages/cli/test/server/memory.test.ts": "sha256:424669f7a0f2b288520e0001d1f5d21a7245a1f7979bc49347fc6783bcc1319c",
     "packages/ui/src/memory/memory-page.test.ts": "sha256:3d2d7016c39d42b96ba7c6acd5d68003660de962bb6efeb5784c70626da22f20",

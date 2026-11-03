@@ -79,3 +79,25 @@ La memoria de Specty y quién lleva cada cambio solo se ven en la terminal, con 
 
 - R1: Leer la memoria y los cambios abiertos en cada evento hace lenta la página — son los mismos procesos de git que `specty status` y `specty memory`, y solo con la página abierta.
 - R2: La forma de `/api/memory` cambia con el corte y la UI se rompe — `isMemoryRecord` la valida y la página enseña el error, como la Bandeja.
+
+## Cierre
+
+### Resumen
+
+`specty ui` tiene la página «Memoria» (`/memory`, junto a la Bandeja en la navegación), con la maqueta que aprobó la persona. «Te toca» junta las entradas que un agente propuso descartar (con quién y por qué), los cambios que esperan su decisión y los recordatorios. «Quién lleva cada cambio» lista los cambios abiertos con su fase, a quién esperan, quién los lleva o que son huérfanos, y el enlace a cada uno. Debajo van los pendientes y las mejoras abiertos por fecha, con quién los tomó y su origen, y las decisiones con su cita; una entrada no sale dos veces, y sin nada que enseñar la página dice que la memoria está vacía. Los datos llegan de `GET /api/memory` (`{ entries, changes }`, de `readMemory` y `openChanges`), y el prototipo trae una memoria de ejemplo. Es la parte de solo lectura del AC12 de la épica.
+
+### Desviaciones
+
+- Dos tests existentes de `packages/ui/src/app/shell.test.ts` fijaban la lista exacta de enlaces de la navegación; con el enlace «Memoria» se actualizaron para incluir `/memory`, con la autorización del usuario, pedida antes de tocarlos.
+- `specty check` pidió acortar `sampleMemory`: los datos de ejemplo pasaron a constantes.
+- Las lecturas de la API que solo miran la sesión (cambios, modo delegado y memoria) se sirven desde una tabla, para no subir la complejidad de `readApi`.
+
+### Decisiones
+
+- Los recordatorios salen solo en «Te toca», y no en una sección propia, para no repetirlos.
+- El color de cada tipo de entrada toma prestado el de una fase (pendiente, borrador; mejora, implementación; recordatorio, aceptación; decisión, revisión), como en la maqueta.
+
+### Pendientes
+
+- Página «Memoria» de `specty ui`, segundo cambio del corte C7 de la épica «Memoria de Specty»: la barra con búsqueda, filtro por tipo (pendientes, mejoras, recordatorios, decisiones) y la casilla para ver las entradas hechas y descartadas, como en la maqueta aprobada; y que la página se actualice sola al escribir en la memoria, añadiendo la punta de la rama `specty-memory` a la firma de `fingerprint` en `packages/cli/src/server/events.ts`.
+- Página «Memoria» de `specty ui`, tercer cambio del corte C7: las acciones de la persona, solo con `specty ui` arrancado desde su terminal (`context.actions`): «Descartar» con el diálogo del motivo (lleva el de la propuesta si la hay), «Mantener» para una propuesta y «Marcar hecho» para un recordatorio, por `POST` con la cookie y el CSRF como las demás acciones, con `dropEntry` y `keepEntry` de `packages/cli/src/commands/memory-drop.ts` en una sesión de persona (`onScreen`); y el aviso de solo lectura cuando no hay acciones.
