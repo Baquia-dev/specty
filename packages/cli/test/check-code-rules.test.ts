@@ -142,14 +142,15 @@ describe("the code-rules check of specty check", () => {
       ),
     });
     git(root, "add", "-A");
-    expect(await cli(root, ["check", "--all"], { env })).toMatchObject({
+    // Outside CI, `--all` also keeps the check's debt in the memory, and says so.
+    expect(await cli(root, ["check", "--all"], { env: { ...env, CI: "" } })).toMatchObject({
       code: 1,
-      out: failure(
+      out: `${failure(
         "  src/app.ts:1 no-eval: no uses eval",
         "  src/app.ts:3 no-eval: no uses eval",
         "  src/app.ts:6 no-eval: no uses eval",
         "  src/new.ts:1 no-eval: no uses eval",
-      ),
+      )}\nDeuda anotada en la memoria como mejoras: P1.`,
     });
   });
 
