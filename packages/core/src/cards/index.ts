@@ -140,6 +140,7 @@ export {
   noFlowWarning,
   noTestCommandWarning,
   productLine,
+  worktreesIgnoreLine,
 } from "./init";
 export {
   antigravityTrustWarning,

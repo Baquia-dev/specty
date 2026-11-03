@@ -179,6 +179,27 @@ export async function writeGlossary(
   return true;
 }
 
+/** The ways a `.gitignore` line ignores the changes' worktrees, inside the project (ADR 0018). */
+const WORKTREES_LINES = [".worktrees", ".worktrees/", "/.worktrees", "/.worktrees/"];
+
+/**
+ * Adds `/.worktrees/` at the end of `.gitignore` where nothing ignores that folder yet, creating
+ * the file if missing: Prettier, and other tools that read only `.gitignore`, then leave the
+ * changes' worktrees alone. Whether it wrote it.
+ */
+export async function writeWorktreesIgnore(
+  root: string,
+  files: InstallFiles = installFiles(),
+): Promise<boolean> {
+  const path = join(root, ".gitignore");
+  const text = (await files.read(path)) ?? "";
+  const lines = text.split(/\r?\n/).map((line) => line.trim());
+  if (lines.some((line) => WORKTREES_LINES.includes(line))) return false;
+  const separator = text === "" || text.endsWith("\n") ? "" : "\n";
+  await files.write(path, `${text}${separator}/.worktrees/\n`);
+  return true;
+}
+
 /** Takes Specty's blocks out of AGENTS.md; the rest of the file is the person's and stays. */
 export async function removeAgentsBlocks(root: string, files: InstallFiles): Promise<void> {
   const path = join(root, "AGENTS.md");

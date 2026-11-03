@@ -11,6 +11,7 @@ import {
   productLine,
   type ResolvedConfig,
   unfilledSections,
+  worktreesIgnoreLine,
 } from "@baquia-dev/specty-core";
 import { type Detection, verifyCommands } from "../detect/project";
 import type { Git } from "../io/git";
@@ -21,7 +22,7 @@ import { flowToWrite, noFlowWarnings } from "./git-flow";
 import { agentsToInstall, installHooks } from "./hooks";
 import { installMcp, mcpInRepo } from "./mcp";
 import { writeProduct } from "./product";
-import { writeAgentsMd, writeConfig, writeGlossary } from "./project-files";
+import { writeAgentsMd, writeConfig, writeGlossary, writeWorktreesIgnore } from "./project-files";
 import { usageTool } from "./usage";
 
 /** What `specty init` installs, and in which order; the command itself is `commands/init.ts`. */
@@ -176,8 +177,7 @@ async function writeProjectFiles(
     ...(flow !== undefined ? { flow } : {}),
   });
   const agents = await writeAgentsMd(root, lang, detection, files, mcp);
-  const glossary = setup.config?.glossary ?? defaultGlossary(lang);
-  const glossaryCreated = await writeGlossary(root, glossary, lang, files);
+  const missing = await writeMissing(setup, files);
   // A new project starts with what it is for: the interview with a person, or its questions.
   const product = fresh
     ? await writeProduct({
@@ -194,15 +194,35 @@ async function writeProjectFiles(
     done: [
       ...configLines,
       agentsMdLine(agents === "created", lang),
-      ...(glossaryCreated ? [glossaryLine(glossary, lang)] : []),
+      ...missing.done,
       ...(product === undefined ? [] : [productLine(product === "interviewed", lang)]),
     ],
     written: [
       ".specty/config.yaml",
       "AGENTS.md",
-      ...(glossaryCreated ? [glossary] : []),
+      ...missing.written,
       ...(product === undefined ? [] : ["PRODUCT.md"]),
     ],
     unfilled: unfilledSections((await files.read(join(root, "AGENTS.md"))) ?? ""),
+  };
+}
+
+/**
+ * What `init` writes only where it is missing: the glossary of the domain, and the `.gitignore`
+ * line for the changes' worktrees, which live in `.worktrees/` inside the project (ADR 0018).
+ */
+async function writeMissing(
+  { root, lang, config }: InitSetup,
+  files: InstallFiles,
+): Promise<Pick<Installed, "done" | "written">> {
+  const glossary = config?.glossary ?? defaultGlossary(lang);
+  const glossaryCreated = await writeGlossary(root, glossary, lang, files);
+  const ignoring = await writeWorktreesIgnore(root, files);
+  return {
+    done: [
+      ...(glossaryCreated ? [glossaryLine(glossary, lang)] : []),
+      ...(ignoring ? [worktreesIgnoreLine(lang)] : []),
+    ],
+    written: [...(glossaryCreated ? [glossary] : []), ...(ignoring ? [".gitignore"] : [])],
   };
 }
