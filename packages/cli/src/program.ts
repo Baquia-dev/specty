@@ -18,6 +18,7 @@ import { doctor } from "./commands/doctor";
 import { exportCommand } from "./commands/export";
 import { initCommand } from "./commands/init";
 import { mcpCommand } from "./commands/mcp";
+import { memoryCommand } from "./commands/memory";
 import { personCommands } from "./commands/person-commands";
 import { prune } from "./commands/prune";
 import { status } from "./commands/status";
@@ -64,6 +65,7 @@ export async function runCli(
   mcpCommand(program, environment, runCli);
   auditCommand(program, run);
   exportCommand(program, run);
+  memoryCommand(program, run);
   readingCommands(program, run, environment, emit);
   enforcementCommands(program, environment, (exit) => {
     result.code = exit;

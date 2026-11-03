@@ -74,12 +74,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "8ac84e041c8df9ee69ea75427c460b01a1e8d629",
+      "attempts": 1,
       "startedAt": "2026-11-03T03:32:31.867Z",
       "doneAt": "2026-11-03T03:32:45.408Z",
-      "summary": "execute decodifica stdout y stderr como flujo (setEncoding utf8), así un carácter de varios bytes partido entre dos trozos llega entero"
+      "summary": "execute decodifica stdout y stderr como flujo (setEncoding utf8), así un carácter de varios bytes partido entre dos trozos llega entero",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b30ec43580b99bcc0e769ea14fa600c7a273a15f",
+      "startedAt": "2026-11-03T03:32:45.708Z",
+      "doneAt": "2026-11-03T03:40:15.899Z",
+      "summary": "store/memory.ts lee la rama con ls-tree y un solo cat-file --batch, y la escribe con fontanería de git y update-ref con el valor anterior, reintentando; commands/memory.ts con memory [--all] y memory add (--kind, --quote obligatoria en decisiones, origen y trailers)"
     }
   },
   "pending": {

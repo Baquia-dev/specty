@@ -101,7 +101,7 @@ Hoy lo que un agente deja pendiente vive en el chat o en su memoria privada, y s
   - files: packages/cli/src/io/exec.ts, packages/cli/test/exec.test.ts
   - ac: AC8
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/exec.test.ts
-- [ ] T4: Anotar y listar entradas en la rama desde cualquier carpeta
+- [x] T4: Anotar y listar entradas en la rama desde cualquier carpeta
   - files: packages/cli/src/store/memory.ts, packages/cli/src/commands/memory.ts, packages/cli/src/program.ts, packages/cli/test/memory.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC5, AC6
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory.test.ts -t "AC1|AC2|AC5|AC6|AC7"
