@@ -31,6 +31,8 @@ export interface MemoryEntry {
   readonly paths?: readonly string[];
   /** A reminder's day (YYYY-MM-DD, local): it stays out of the sessions until then. */
   readonly due?: string;
+  /** The open change a reminder waits for: it stays out of the sessions until that one is archived. */
+  readonly onClose?: string;
   /** The change that took it (`specty new --resolves`), and when. */
   readonly taken?: { readonly change: string; readonly at: string };
   /** Who asked to drop it, why and when: proposed by an agent, or dropped by the person. */
@@ -53,6 +55,7 @@ const EntrySchema = z
     quote: Text.optional(),
     paths: z.array(Text).min(1).optional(),
     due: z.string().refine(isDay).optional(),
+    onClose: Text.optional(),
     taken: z.strictObject({ change: Text, at: Text }).optional(),
     drop: z.strictObject({ reason: Text, by: Text, at: Text }).optional(),
     closed: z.strictObject({ at: Text, by: Text }).optional(),
@@ -68,6 +71,10 @@ const EntrySchema = z
   .refine((entry) => entry.kind === "reminder" || entry.due === undefined, {
     message: "only a reminder waits for a day",
     path: ["due"],
+  })
+  .refine((entry) => entry.kind === "reminder" || entry.onClose === undefined, {
+    message: "only a reminder waits for a change",
+    path: ["onClose"],
   })
   .refine((entry) => entry.id.startsWith(prefixOf(entry.kind)));
 
@@ -97,17 +104,19 @@ function optionalFields({
   quote,
   paths,
   due,
+  onClose,
   taken,
   drop,
   closed,
 }: z.infer<typeof EntrySchema>): Pick<
   MemoryEntry,
-  "quote" | "paths" | "due" | "taken" | "drop" | "closed"
+  "quote" | "paths" | "due" | "onClose" | "taken" | "drop" | "closed"
 > {
   return {
     ...(quote !== undefined ? { quote } : {}),
     ...(paths !== undefined ? { paths } : {}),
     ...(due !== undefined ? { due } : {}),
+    ...(onClose !== undefined ? { onClose } : {}),
     ...(taken !== undefined ? { taken: { change: taken.change, at: taken.at } } : {}),
     ...(drop !== undefined ? { drop: { reason: drop.reason, by: drop.by, at: drop.at } } : {}),
     ...(closed !== undefined ? { closed: { at: closed.at, by: closed.by } } : {}),
@@ -142,7 +151,16 @@ export function isOpenEntry(entry: MemoryEntry): boolean {
 }
 
 /** What a commit of the memory's branch does to its entry. */
-export type MemoryOperation = "add" | "done" | "take" | "free" | "drop" | "propose-drop" | "keep";
+export type MemoryOperation =
+  | "add"
+  | "done"
+  | "take"
+  | "free"
+  | "drop"
+  | "propose-drop"
+  | "keep"
+  /** A reminder whose change was archived: it loses `onClose`. */
+  | "fire";
 
 /** Why `specty new --resolves` cannot take an entry. */
 export type ClaimProblem =
@@ -251,6 +269,24 @@ export function droppedEntry(
 export function keptEntry(entry: MemoryEntry): MemoryEntry {
   const { drop: _drop, ...kept } = entry;
   return { ...kept, status: "open" };
+}
+
+/** The open reminders that wait for `change` to be archived, by date: they fire when it is. */
+export function waitingFor(
+  entries: readonly MemoryEntry[],
+  change: string,
+): readonly MemoryEntry[] {
+  return byDate(
+    entries.filter(
+      (entry) => entry.kind === "reminder" && isOpenEntry(entry) && entry.onClose === change,
+    ),
+  );
+}
+
+/** A reminder whose change was archived: without `onClose`, every session sees it. */
+export function firedEntry(entry: MemoryEntry): MemoryEntry {
+  const { onClose: _onClose, ...fired } = entry;
+  return fired;
 }
 
 /** By date and, on the same date, the P ids before the D ones, each by number. */

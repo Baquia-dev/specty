@@ -66,7 +66,7 @@ Segundo y último cambio de P32 (recordatorios con disparador): un recordatorio 
   - ac: —
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/reminder-triggers.test.ts test/memory/entries.test.ts test/memory/lessons.test.ts && pnpm lint
   - type: refactor
-- [ ] T2: Qué recordatorios esperan a un cambio, y dispararlos
+- [x] T2: Qué recordatorios esperan a un cambio, y dispararlos
   - files: packages/core/src/memory/entries.ts, packages/core/src/memory/triggers.ts, packages/core/src/index.ts, packages/core/test/memory/close-trigger.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/close-trigger.test.ts test/memory/triggers.test.ts test/memory/entries.test.ts && pnpm lint

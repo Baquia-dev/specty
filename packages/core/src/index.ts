@@ -172,6 +172,7 @@ export {
   type ClaimProblem,
   claimable,
   droppedEntry,
+  firedEntry,
   freeWork,
   harvestable,
   isOpenEntry,
@@ -188,6 +189,7 @@ export {
   serializeEntry,
   settledEntry,
   takenEntry,
+  waitingFor,
 } from "./memory/entries";
 export { entriesForPaths } from "./memory/paths";
 export { isDay, localDay, sessionEntries } from "./memory/triggers";

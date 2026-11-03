@@ -48,12 +48,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "61fc697063261296b4635cd3a10a99da393e89c1",
+      "attempts": 1,
       "startedAt": "2026-11-03T14:30:46.579Z",
       "doneAt": "2026-11-03T14:31:19.897Z",
-      "summary": "Los rechazos de memory add y memory done pasan tal cual a cards/memory-refusals.ts; memory.ts exporta goOn y baja a 224 líneas de código"
+      "summary": "Los rechazos de memory add y memory done pasan tal cual a cards/memory-refusals.ts; memory.ts exporta goOn y baja a 224 líneas de código",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "05de97b4c7c99204d35b68f329d456a4d8296b16",
+      "startedAt": "2026-11-03T14:31:20.241Z",
+      "doneAt": "2026-11-03T14:32:11.177Z",
+      "summary": "MemoryEntry.onClose solo en recordatorios, la operación fire, sessionEntries deja fuera los que esperan a un cambio, y waitingFor y firedEntry en memory/entries.ts (junto a freeWork y settledEntry, sin import circular con triggers.ts)"
     }
   },
   "pending": {
