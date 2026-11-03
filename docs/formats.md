@@ -36,7 +36,33 @@ Referencia para implementar `@baquia-dev/specty-core` y la CLI. Los nombres de c
    ├─ repo/<ruta>              # copia de un archivo del repositorio
    ├─ outside/<ruta absoluta>  # copia de uno de fuera (Codex, OpenCode, .git/info/exclude de una worktree)
    └─ manifest.json            # [{ "path", "created", "removed"?, "copy"? }]: cada archivo creado, cambiado o borrado
+
+specty-memory                  # rama propia de la memoria duradera (ADR 0016; `memory.branch`), compartida por todas las worktrees
+├─ README.md                   # índice de las entradas abiertas por tipo, en el idioma del proyecto; Specty lo rehace en cada commit
+└─ entries/<id>.md             # una entrada: su estado en el frontmatter y, debajo, el texto
 ```
+
+**La memoria de Specty** ([ADR 0016](decisions/0016-la-memoria-de-specty.md)) vive en su propia rama, sin historia común con el código. Nadie la saca a una carpeta: Specty la escribe con la fontanería de git (`hash-object`, `mktree`, `commit-tree` y `update-ref` con el valor anterior), sin pasar por los hooks, y la lee sin tocar ninguna worktree, así que cada carpeta del clon ve una entrada en cuanto se anota. Si otra sesión escribió antes, `update-ref` falla y Specty relee la rama y lo intenta de nuevo, hasta 10 veces. Cada operación es un commit hijo de la punta anterior, con los trailers de §7. Una entrada:
+
+```markdown
+---
+id: P3                         # P para pendientes, mejoras y recordatorios; D para decisiones. El mayor del prefijo más uno, nunca reutilizado
+kind: pending                  # pending | improvement | reminder | decision
+status: open                   # open | taken | done | drop-proposed | dropped
+created: 2026-11-03T10:00:00.000Z
+origin:
+  change: 20261103-saludo      # el cambio abierto de la carpeta en la que se anotó, si lo había
+  by: claude-code              # el agente que la anotó, `agent` si Specty no lo reconoce, o `person`
+quote: la que tú recomiendas   # las palabras literales de la persona; obligatoria en una decisión
+closed:                        # quién la marcó hecha (o la descartó) y cuándo
+  at: 2026-11-04T09:00:00.000Z
+  by: person
+---
+
+El texto, escrito para alguien sin el contexto de la conversación.
+```
+
+`specty memory` lista las entradas abiertas (las que no están `done` ni `dropped`) por fecha, y con `--all` también las demás; `--json` las trae en `entries`. `specty memory add "<texto>" [--kind <tipo>] [--quote "<cita>"]` anota una, y una decisión sin `--quote` no se anota. `specty memory done <id>` marca hecho un recordatorio; los pendientes y las mejoras se hacen al cerrar el cambio que los toma, y una decisión no se marca hecha. Specty solo escribe entradas válidas: una que no puede leer, como una editada a mano, no se lista, pero su id sigue contando.
 
 **El servidor MCP en cada agente** (`specty init --mcp`, ARCHITECTURE §6). La entrada se llama `specty`, ejecuta `specty mcp` y se escribe solo con `specty` en el PATH, en la configuración MCP de proyecto de cada agente que el repositorio usa. Lo demás del archivo no cambia:
 
@@ -386,6 +412,7 @@ ui:
   requireUserPresence: false      # WebAuthn (fase 4)
 memory:                           # la memoria de Specty (ADR 0016)
   orphanAfterMin: 60              # minutos sin pasos ni cambios de estado tras los que un cambio que espera al agente es huérfano
+  branch: specty-memory           # la rama de las entradas (§1): un nombre de rama válido fuera de `specty/`, donde van las de los cambios
 ```
 
 Specty escribe `.specty/` con su propio formato. Si el repositorio usa un formateador, debe excluir esa carpeta: `"!.specty"` en `files.includes` de Biome, o `.specty/` en `.prettierignore`. `specty doctor` avisa cuando falta.
@@ -528,6 +555,7 @@ Specty-Agent: claude-code
 | Retro | `Specty-Change` (del cambio retro o del activo), `Specty-Retro: true` |
 | Spike | Además, `Specty-Kind: spike`; el CI impide fusionarlo a la rama principal |
 | Instalación (`init`) | Solo `Specty-Init: true`: no pertenece a ningún cambio |
+| Memoria (`memoria: anota P3`, `memoria: P3 hecha`), en su rama (§1) | `Specty-Memory: <id>`; además, `Specty-Change` si la carpeta tenía un cambio abierto y `Specty-Agent` si la escribió un agente |
 
 ## 8. Bloque de AGENTS.md
 

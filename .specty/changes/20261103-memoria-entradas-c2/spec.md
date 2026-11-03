@@ -93,7 +93,7 @@ Hoy lo que un agente deja pendiente vive en el chat o en su memoria privada, y s
   - files: packages/core/src/memory/entries.ts, packages/core/src/cards/memory.ts, packages/core/src/index.ts, packages/core/src/cards/index.ts, packages/core/test/memory/entries.test.ts
   - ac: AC1, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/entries.test.ts
-- [ ] T2: La rama de la memoria en la configuración
+- [x] T2: La rama de la memoria en la configuración
   - files: packages/core/src/schema/memory.ts, packages/core/src/branches.ts, packages/core/test/schema/memory.test.ts, docs/formats.md
   - ac: AC7
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/schema/memory.test.ts

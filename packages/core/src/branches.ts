@@ -81,7 +81,7 @@ export function branchPatternIssue(pattern: string): string | undefined {
 }
 
 /** The rules of `git check-ref-format --branch` that a pattern can break. */
-function isBranchName(name: string): boolean {
+export function isBranchName(name: string): boolean {
   if (/^[-/]|[/.]$|\.\.|\/\/|@\{|[~^:?*[\\]/.test(name)) return false;
   if ([...name].some((char) => char.charCodeAt(0) <= 32 || char.charCodeAt(0) === 127)) {
     return false;
