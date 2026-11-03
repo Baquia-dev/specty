@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "20261103-worktrees-dentro-medidas",
+  "kind": "quick",
+  "phase": "implementing",
+  "branch": "specty/20261103-worktrees-dentro-medidas",
+  "baseCommit": "d2162d4783f13176b6898d79bfcd407c810bf47e",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 0,
+    "adjust": 0,
+    "reasons": [
+      "0 archivos"
+    ]
+  },
+  "items": {},
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "T": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:4e63c0c1164933c81ad43446fa264efb14dd5f57fb2e2b6fa35d56a57f6d3b4d",
+    "at": "2026-11-03T07:51:14.219Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  }
+}
