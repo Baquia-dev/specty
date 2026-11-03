@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-duplicados-c4",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-memoria-duplicados-c4",
+  "baseCommit": "84797b049bdb6a68bf8caa500c9e6105227fc997",
+  "revision": 2,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c6b73710b0837f0cec973be7b033150a95cb281a292bc07dc4474b2a9aff038b",
+    "at": "2026-11-03T08:03:58.759Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:788354d5f7db8ab4ec9559d8a2d8a2b725fa7e9921b75b3fd70daa8335c9e0dc",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:a635db743a51df5bc9b5ca60b491e391ee04953813063148fbc21e1c9669f4a8",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:041d194eb89bdd4ae26e75e5ebb7a839ab48d1f00946988f9673148e332d3147",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:c85d98b285eb641f677980eae829b43d473d51da5f0969d7bf645d8ddc45aa24",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:8b0ea4b3ea5ea90549a69e9b8eb3eb6c0a7b6f76cd7a111f23f1e3b92deb41ff",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "01933b3801545dcb664febd42e5a0c3a85aa323e",
+      "attempts": 1,
+      "startedAt": "2026-11-03T08:05:35.366Z",
+      "doneAt": "2026-11-03T08:06:35.493Z",
+      "summary": "core: similarTexts y duplicateReason en flow/duplicates.ts (raíces de cinco letras sin palabras vacías, la mitad del más corto y al menos dos), y duplicateCard en cards/duplicates.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "a1372499559331b869d969b67bff4b63c8a3f281",
+      "attempts": 1,
+      "startedAt": "2026-11-03T08:06:35.824Z",
+      "doneAt": "2026-11-03T08:12:00.579Z",
+      "summary": "flow/duplicates.ts lee los cambios abiertos y da los parecidos con su StatusEntry; new los frena junto a la comprobación de --resolves, salvo --distinct-from, que change.created anota; ARCHITECTURE.md y formats.md lo documentan",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 2,
+    "R": 3
+  },
+  "closingSubmittedAt": "2026-11-03T08:16:30.185Z",
+  "lockedTests": {
+    "packages/cli/test/duplicates.test.ts": "sha256:b00b27a36e9fe3102abde5d7ac7741f17ba48938c74ac1a083fce7d3b2504a77",
+    "packages/core/test/flow/duplicates.test.ts": "sha256:178ab24a7d69cb0533e63f554e7b51c874f5434e5e08f81fec4c603bb775d38e"
+  }
+}

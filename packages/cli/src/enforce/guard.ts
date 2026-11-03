@@ -19,7 +19,7 @@ import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
-import { sharedFolders, worktreesHome } from "../flow/worktree";
+import { gitCommonFolder, worktreesHome } from "../flow/worktree";
 import { isRecord, parseJson, remove } from "../io/files";
 import { COMMAND, type Environment, openSession, type Session } from "../session";
 import { noteActivity } from "../store/activity";
@@ -216,7 +216,7 @@ async function replyBefore(
     {
       ...said,
       ...(input === undefined ? {} : { input }),
-      ...(grants ? { folders: await sharedFolders(session.git) } : {}),
+      ...(grants ? { folders: [await gitCommonFolder(session.git)] } : {}),
     },
     "before",
   );
