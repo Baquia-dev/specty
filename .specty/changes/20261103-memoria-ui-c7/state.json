@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-ui-c7",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-ui-c7",
   "baseCommit": "daa5fee4ab20ea1f32987e743fffcfe159941ac3",
   "revision": 1,
@@ -55,6 +55,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T09:38:33.339Z"
+  "lockedTests": {
+    "packages/cli/test/server/memory.test.ts": "sha256:424669f7a0f2b288520e0001d1f5d21a7245a1f7979bc49347fc6783bcc1319c",
+    "packages/ui/src/memory/memory-page.test.ts": "sha256:3d2d7016c39d42b96ba7c6acd5d68003660de962bb6efeb5784c70626da22f20",
+    "packages/ui/src/memory/memory-view.test.ts": "sha256:3b8d873c23f13e61bea857b62e5ea592b38a9f46d080d1597cb854972698bf60"
+  }
 }
