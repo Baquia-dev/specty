@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "id": "20261103-guard-antigravity-acp",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-guard-antigravity-acp",
+  "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:20a2e481feadd09d80cf99a3369eaff6fca15e1dbd8ada56942230a4fc8ce29c",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:ad52004cb7b802303bcecc068b131e04e72c04ff8509c47746aebd02c0f3f92b",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:5765c8e75357832fd396d057d70a8b2af5b7177401000b927e44c97e4647869d",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:796b0bc6b0855304dacc2104338a28b21613c3348eaa5e8784962c841b196bb7",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 4,
+    "AC": 4,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:305ec90d1e93b2f7ed1f36025f591101bfc8fd3ea1eefaa4d5ef604b0959419f",
+    "at": "2026-11-03T06:46:50.843Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
