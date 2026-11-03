@@ -53,8 +53,21 @@ El 2026-11-03 se creó, para cada herramienta, un repositorio con un archivo y s
 | Turborepo | 2.11.10 | no con `packages/*`; con un patrón `**` en `pnpm-workspace.yaml`, sí: falla porque los paquetes del cambio ya existen | `"!.worktrees/**"` en `packages` de `pnpm-workspace.yaml` |
 | Workspaces de pnpm y npm | pnpm 11.5.2, npm 11.13.0 | no, tampoco pnpm con `**`: sus comodines no entran en carpetas ocultas | — |
 | Deno | 2.7.4 | `deno fmt` y `deno lint`, no: leen `.gitignore`; `deno test` y `deno check`, sí; `deno run --watch`, no | `"exclude": [".worktrees/"]` en `deno.json` |
+| Django, `runserver` | 6.1.2 (Python 3.13) | no: solo observa los módulos que importa | — |
+| Flask, `flask run --debug` | 3.1.3 (Werkzeug 3.1.9) | sí: reinicia el servidor cuando cambia un `.py` de un cambio, con su recargador y con watchdog 6.0.0; con watchdog 7.0.0 su recargador no reacciona a nada, tampoco a la carpeta principal | `--exclude-patterns` con la ruta absoluta (ver abajo) |
+| Uvicorn, `--reload` | 0.54.0 (watchfiles 1.3.0) | sí: reinicia con cada `.py` de un cambio y con una worktree nueva, también sin watchfiles | `--reload-dir` con la carpeta del código (ver abajo) |
+| flake8 | 7.5.0 | sí | `extend-exclude = .worktrees` en `[flake8]` |
+| Black | 26.10.1 | no; sí cuando `[tool.black]` fija su propio `exclude`, porque entonces no lee `.gitignore` | `extend-exclude = '^/\.worktrees/'` en `[tool.black]` |
+| Pyright | 1.1.414 | no: excluye `**/.*` aunque el proyecto fije su `exclude` | — |
+| Pylint, `pylint --recursive=y .` | 4.1.3 | sí | `ignore = ["CVS", ".worktrees"]` en `[tool.pylint.main]` |
+| isort | 9.0.2 | sí | `extend_skip = [".worktrees"]` en `[tool.isort]` |
+| `dotnet watch run`, `dotnet test` y `dotnet format` | .NET 10.0.401 | no: el SDK excluye las carpetas ocultas (`**/.*/**`) | — |
+| Spring Boot con devtools, `mvn spring-boot:run` | 4.1.2 | no: solo observa su classpath | — |
+| RuboCop | 1.50.2 (Ruby 2.6) | no: no entra en carpetas ocultas si no se incluyen | — |
 
 Las exclusiones de la tabla se midieron también en una carpeta `(copia) [1] {x}`: todas funcionan desde la principal y dentro del cambio. Un patrón sin anclar (`"**/.worktrees/**"`) deja sin observar sus propios archivos, dentro del cambio, a webpack y a Rsbuild, como a Vite. Las de webpack en `watchOptions.ignored` no se recomiendan: su esquema no acepta funciones, y fork-ts-checker compara con la ruta nativa y watchpack con `/`.
+
+Flask y Uvicorn se configuran en la línea de comandos. Para Flask, `--exclude-patterns "$PWD/.worktrees/*"` funciona desde la principal y dentro del cambio con su recargador. Werkzeug compara con fnmatch, así que, si la ruta tiene corchetes, hay que escribir `[` como `[[]`; en Windows, fnmatch pasa los dos lados a minúsculas y a `\`, y los corchetes siguen pidiendo ese escape. Con watchdog 6 hace falta un patrón por profundidad (`$PWD/.worktrees/*/*:$PWD/.worktrees/*/*/*`…), porque su `*` no cruza carpetas. Para Uvicorn, la opción que funciona en las dos carpetas es observar solo la carpeta del código (`--reload-dir app`). `--reload-exclude .worktrees` no tiene efecto, porque compara una ruta relativa con las absolutas; con la ruta absoluta, Uvicorn no arranca dentro del cambio («Non-relative patterns are unsupported»); y sin watchfiles, `--reload-exclude` se ignora.
 
 Dentro de la worktree, cada una de estas herramientas trabaja con la copia del cambio, también Cargo en un workspace y Gradle con su `settings`. Vitest 5.1.0, con `"**/.worktrees/**"` en `test.exclude`, ejecuta allí sus tests: compara rutas relativas a su raíz, como Jest, ESLint y Biome con sus exclusiones. Vite y Metro comparan rutas absolutas: con un patrón sin anclar (`"**/.worktrees/**"`, `/\/\.worktrees\/.*/`), dentro de la worktree Vite deja de observar sus propios archivos y Metro responde 404 al bundle; anclado a la carpeta de la configuración, funcionan en las dos carpetas.
 
@@ -62,19 +75,20 @@ El ancla no puede meter la ruta de la carpeta tal cual en un glob o en una expre
 
 La excepción es Go con un `go.work` sin versionar en la carpeta principal. Medido con Go 1.27.3 en un workspace de dos módulos, donde uno importa al otro: dentro del proyecto, Go encuentra al subir de carpeta el `go.work` de la carpeta principal, que no lista los módulos de la worktree, y falla («current directory is contained in a module that is not one of the workspace modules listed in go.work»), igual en `.worktrees/` que en `.claude/worktrees/`, donde crea las suyas Claude Code. En la ubicación de antes, fuera del proyecto, no encuentra ninguno y falla con otro error («no required module provides package»): el problema es que el archivo no llega a la worktree, no dónde está. `GOWORK=off` solo sirve si los módulos no se importan entre sí. Con `go.work` versionado, o copiado a la worktree, compila en las tres ubicaciones.
 
-Sin medir, por cómo se organizan: Mix solo lee sus carpetas de fuentes y de tests. Tampoco se midieron Metro con Watchman (no estaba instalado) ni la vista de control de código de VS Code, que puede listar cada worktree como un repositorio.
+Sin medir, por cómo se organizan: Mix solo lee sus carpetas de fuentes y de tests. Tampoco se midieron Metro con Watchman (no estaba instalado), las herramientas de PHP, las versiones actuales de RuboCop (piden un Ruby más nuevo que el del sistema) ni la vista de control de código de VS Code, que puede listar cada worktree como un repositorio.
 
 La carpeta tiene que ignorarse en `.gitignore`: Prettier no lee `.git/info/exclude`.
 
 ## Resultado
 
-Fuera del ecosistema de JavaScript, ninguna herramienta medida ve una worktree en una carpeta oculta e ignorada. En JavaScript y TypeScript, Vitest, Jest, ESLint y Biome sin `useIgnoreFile` sí la ven, y Vitest y Jest ejecutan sus tests. Solo ocurre con los comandos que la persona ejecuta en la carpeta principal mientras hay cambios abiertos: la verificación de cada tarea corre en la carpeta de su cambio, y el CI trabaja con un clon limpio. Los servidores de desarrollo Vite (también el de Astro y SvelteKit) y Metro que la persona tiene abiertos en la carpeta principal reaccionan a lo que hace el agente en los cambios, y los comprobadores de tipos de webpack y Rsbuild recompilan cuando crea un archivo. Next.js, Angular CLI, Parcel, Nuxt, nodemon y la CLI de Nest no reaccionan.
+Fuera del ecosistema de JavaScript, las herramientas medidas no ven una worktree en una carpeta oculta e ignorada, salvo en Python: flake8, Pylint, isort, Black con un `exclude` propio y los recargadores de Flask y Uvicorn. En JavaScript y TypeScript, Vitest, Jest, ESLint y Biome sin `useIgnoreFile` sí la ven, y Vitest y Jest ejecutan sus tests. Solo ocurre con los comandos que la persona ejecuta en la carpeta principal mientras hay cambios abiertos: la verificación de cada tarea corre en la carpeta de su cambio, y el CI trabaja con un clon limpio. Los servidores de desarrollo Vite (también el de Astro y SvelteKit) y Metro que la persona tiene abiertos en la carpeta principal reaccionan a lo que hace el agente en los cambios, y los comprobadores de tipos de webpack y Rsbuild recompilan cuando crea un archivo. Next.js, Angular CLI, Parcel, Nuxt, nodemon y la CLI de Nest no reaccionan.
 
 ## Decisión
 
 - Para todos los proyectos, sin clave para volver a la ubicación de antes: sin los permisos por agente, las herramientas con sandbox no la alcanzarían.
 - `specty new` crea la worktree en `.worktrees/<id>`, dentro del proyecto, y la ignora en el clon (`.git/info/exclude`); `init` añade además `/.worktrees/` a `.gitignore`, que es lo que lee Prettier. Así cualquier agente o editor que solo trabaje en la carpeta del proyecto alcanza la del cambio, sin que la persona haga nada.
 - En los proyectos de JavaScript y TypeScript, `doctor` dice qué herramienta de la raíz (Vitest, Jest, ESLint, Biome, Vite, Astro, Metro, fork-ts-checker, el comprobador de tipos de Rsbuild, Turborepo con un patrón `**`, Deno) no excluye `.worktrees/`, en qué archivo y qué añadir, como ya pide las exclusiones de `.specty`; para Vite, Astro, Metro y Rsbuild, la exclusión anclada a la carpeta de su configuración. No edita esas configuraciones: son código de la persona, en formatos que Specty no puede reescribir con seguridad.
+- En los de Python, `doctor` hace lo mismo con flake8, Pylint, isort y Black con un `exclude` propio. Las opciones de Flask y Uvicorn quedan en este ADR: van en la línea de comandos, que `doctor` no ve.
 - `specty new` copia a la worktree `go.work` y `go.work.sum` si la carpeta principal los tiene sin versionar y, si nada los ignora, los ignora en el clon (`.git/info/exclude`) para que no entren en el cambio. Es una excepción concreta de Go: entre las herramientas medidas, es la única que necesita un archivo sin versionar que solo está en la carpeta principal.
 - Los cambios abiertos antes se quedan en `<carpeta>.worktrees/<id>` hasta cerrarse: `specty enter`, `EnterWorktree` por nombre y la protección de `WorktreeRemove` los buscan también allí.
 - Los permisos que abrían la carpeta de fuera a cada herramienta (Codex, OpenCode, Gemini CLI, Devin, Cursor y Antigravity) se quitaron, y `init` y `uninstall` borran los que quedaron de antes. Se mantienen los de la carpeta común de git, donde hacen sus commits los comandos de Specty.
@@ -82,6 +96,6 @@ Fuera del ecosistema de JavaScript, ninguna herramienta medida ve una worktree e
 ## Consecuencias
 
 - Antigravity en Zed, y cualquier editor que hable ACP, entra en un cambio desde la conversación de la carpeta principal.
-- Mientras hay cambios abiertos, las herramientas de JavaScript sin su exclusión ven las copias del proyecto si la persona las ejecuta en la carpeta principal.
+- Mientras hay cambios abiertos, las herramientas de JavaScript y de Python sin su exclusión ven las copias del proyecto si la persona las ejecuta en la carpeta principal, y los recargadores de Flask y Uvicorn sin su opción reinician el servidor con lo que hace el agente.
 - Un proyecto de Go con `go.work` sin versionar trabaja dentro de la worktree con la copia que hace `new`. Para versionarlo después hay que quitar su línea de `.git/info/exclude`, si `new` la añadió. Un `go.work` en una subcarpeta, o con rutas `use` fuera del repositorio, sigue sin llegar a la worktree, como en la ubicación de antes.
 - La exclusión anclada de Vite y Metro vale con cualquier ruta del proyecto, también con paréntesis, corchetes o las barras invertidas de Windows, a cambio de ser más larga que un patrón.

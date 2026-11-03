@@ -27,7 +27,7 @@ const either =
     (await Promise.all(checks.map((check) => check(dir)))).some(Boolean);
 
 /** A Python requirement named `name`, in `requirements.txt`, `pyproject.toml` or the Pipfile. */
-function requirement(name: string): Present {
+export function requirement(name: string): Present {
   const pattern = new RegExp(
     String.raw`(?:^|["'\s,[])${name}(?:\[[^\]]*\])?\s*(?:[=<>~!;,"'\]]|$)`,
     "im",
