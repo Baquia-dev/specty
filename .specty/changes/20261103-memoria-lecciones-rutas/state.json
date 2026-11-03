@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "cc6422abdf38d41ba56c04a488f5a1a8ac191175",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:45:50.643Z",
       "doneAt": "2026-11-03T10:47:20.222Z",
-      "summary": "MemoryEntry gana el tipo lesson (con rutas obligatorias) y paths; las tarjetas nombran la lección, listan las rutas y explican la negativa sin --path"
+      "summary": "MemoryEntry gana el tipo lesson (con rutas obligatorias) y paths; las tarjetas nombran la lección, listan las rutas y explican la negativa sin --path",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b8032dba680da46daf55f41273c33fa31e082a5d",
+      "startedAt": "2026-11-03T10:47:20.527Z",
+      "doneAt": "2026-11-03T10:48:37.987Z",
+      "summary": "memory add gana --path (rutas sin repetir en paths) y la negativa de una lección sin rutas; formats.md documenta lesson, paths y --path"
     }
   },
   "pending": {
