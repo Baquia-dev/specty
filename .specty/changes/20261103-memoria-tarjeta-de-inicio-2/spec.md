@@ -80,7 +80,7 @@ Las entradas de la memoria de Specty ya se anotan y se listan, pero nadie las ve
   - files: packages/cli/src/agents/claude-code.ts, packages/cli/src/agents/claude-code.test.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/cli/test/setup.test.ts
   - ac: AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/setup.test.ts src/agents/claude-code.test.ts && pnpm typecheck && pnpm lint
-- [ ] T4: La regla del reporte final pide anotar lo pendiente, y la documentación
+- [x] T4: La regla del reporte final pide anotar lo pendiente, y la documentación
   - files: packages/core/src/agents-md.ts, packages/core/test/cards.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards.test.ts test/agents-md.test.ts && pnpm typecheck && pnpm lint

@@ -98,8 +98,8 @@ function ruleLines(t: Translate, command: string): string[] {
       "- Edit with targeted changes; do not rewrite whole files for small changes.",
     ),
     t(
-      "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
-      "- Brief final report: what changed, what was verified and what is pending.",
+      `- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente; anota cada pendiente con \`${command} memory add "<texto>"\` para que no se quede solo en el chat.`,
+      `- Brief final report: what changed, what was verified and what is pending; note each pending item with \`${command} memory add "<text>"\` so it does not stay only in the chat.`,
     ),
   ];
 }

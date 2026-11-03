@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-tarjeta-de-inicio-2",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-tarjeta-de-inicio-2",
   "baseCommit": "06aa9d7d76d48a8131d6964c705eea607bab4240",
   "revision": 1,
@@ -70,12 +70,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "324254104d844a463807dd82c30a1127cc15f018",
+      "attempts": 1,
       "startedAt": "2026-11-03T05:51:30.109Z",
       "doneAt": "2026-11-03T05:52:34.783Z",
-      "summary": "El SessionStart de Claude Code pasa a startup|clear|compact, así la tarjeta con la memoria llega al empezar; runsAtSessionStart lee el matcher como Claude Code y doctor da claude-startup cuando el hook de Specty no se dispara al empezar"
+      "summary": "El SessionStart de Claude Code pasa a startup|clear|compact, así la tarjeta con la memoria llega al empezar; runsAtSessionStart lee el matcher como Claude Code y doctor da claude-startup cuando el hook de Specty no se dispara al empezar",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "80b2f962e3286dcce336f0e1e31f1f11b47bd81c",
+      "startedAt": "2026-11-03T05:52:35.143Z",
+      "doneAt": "2026-11-03T05:53:04.772Z",
+      "summary": "La regla del reporte final del bloque de flujo pide anotar cada pendiente con specty memory add; formats.md y ARCHITECTURE al día"
     }
   },
   "pending": {
