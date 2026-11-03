@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "da986315bef40a38ace351e1c756b7408ae15c9c",
+      "startedAt": "2026-11-03T22:37:39.065Z",
+      "doneAt": "2026-11-03T22:38:48.305Z",
+      "summary": "EventKind ended; Claude Code instala SessionEnd sin matcher y lo da como ended; doctor avisa con claude-session-end (texto en es y en en) si falta."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

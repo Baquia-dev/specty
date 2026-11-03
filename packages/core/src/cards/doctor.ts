@@ -17,7 +17,11 @@ export type DoctorLine =
   | { readonly code: "claude-guard" | "no-claude-guard" }
   /** Claude Code's guard is there, without the hooks of these events. */
   | {
-      readonly code: "claude-after-bash" | "claude-worktrees" | "claude-compact";
+      readonly code:
+        | "claude-after-bash"
+        | "claude-worktrees"
+        | "claude-compact"
+        | "claude-session-end";
       readonly events: string;
     }
   /** Claude Code's settings lack the permission for the person's commands. */

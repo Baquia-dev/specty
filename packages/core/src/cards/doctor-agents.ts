@@ -10,6 +10,7 @@ type AgentCode =
   | "claude-worktrees"
   | "claude-compact"
   | "claude-startup"
+  | "claude-session-end"
   | "no-claude-permissions"
   | "cursor-guard"
   | "no-cursor-guard"
@@ -67,6 +68,11 @@ export const AGENT_WRITERS: {
     t(
       `Claude Code: falta la tarjeta de Specty tras compactar (${line.events}); ejecuta \`${command} init\`.`,
       `Claude Code: Specty's card after a compaction is missing (${line.events}); run \`${command} init\`.`,
+    ),
+  "claude-session-end": (line, t, command) =>
+    t(
+      `Claude Code: falta liberar el frente de una sesión cuando termina (${line.events}); ejecuta \`${command} init\`.`,
+      `Claude Code: freeing a session's front when it ends is missing (${line.events}); run \`${command} init\`.`,
     ),
   "claude-startup": (_, t, command) =>
     t(

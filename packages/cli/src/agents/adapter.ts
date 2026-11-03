@@ -17,8 +17,8 @@ export type JsonUpdate = (value: Record<string, unknown>) => Record<string, unkn
  * What an event of an agent's hooks is: before an action, after a shell command, a session that
  * starts again after a compaction, a compaction about to happen that cannot take the card (it
  * waits for the conversation's next command), a model call about to happen, the first model call
- * of a turn (which brings the task card, for a tool that cannot say when it compacts), or Claude
- * Code making or removing a worktree.
+ * of a turn (which brings the task card, for a tool that cannot say when it compacts), Claude
+ * Code making or removing a worktree, or a conversation that ends (which frees its front).
  */
 export type EventKind =
   | "before"
@@ -27,7 +27,8 @@ export type EventKind =
   | "compacting"
   | "invocation"
   | "turn"
-  | "worktree";
+  | "worktree"
+  | "ended";
 
 /**
  * Where a conversation's actions go: the folder of the change it entered (`specty enter`), or

@@ -39,7 +39,7 @@ import {
  * command, after each Bash command, whether it succeeded or failed, when Claude Code creates or
  * removes a worktree, which takes no matcher, and when a session starts, which brings Specty's
  * memory, and starts again after a compaction or a `/clear`, which the closing advises when the
- * session grew big.
+ * session grew big; and when a session ends, `/clear` included, which frees its front.
  */
 const EVENTS: Readonly<Record<string, string | undefined>> = {
   PreToolUse: "Edit|MultiEdit|Write|NotebookEdit|Bash|EnterWorktree",
@@ -48,6 +48,7 @@ const EVENTS: Readonly<Record<string, string | undefined>> = {
   WorktreeCreate: undefined,
   WorktreeRemove: undefined,
   SessionStart: "startup|clear|compact",
+  SessionEnd: undefined,
 };
 /** After a Bash command, whether it succeeded or failed. */
 const AFTER: ReadonlySet<unknown> = new Set(["PostToolUse", "PostToolUseFailure"]);
@@ -67,13 +68,15 @@ const OLD_ASK = "ExitWorktree(action:remove)";
 /**
  * Claude Code (ARCHITECTURE §10): `PreToolUse`, `PostToolUse` and `PostToolUseFailure`, the
  * worktree events, `SessionStart` when a session starts and after a compaction or a `/clear`,
- * whose output it adds to the context, and `Stop` at the end of each turn.
+ * whose output it adds to the context, `SessionEnd` when a session ends, and `Stop` at the end
+ * of each turn.
  */
 export const claudeCode: AgentAdapter = {
   tool: "claude-code",
   kind: (event) => {
     if (isWorktreeEvent(event)) return "worktree";
     if (event.hook_event_name === "SessionStart") return "compact";
+    if (event.hook_event_name === "SessionEnd") return "ended";
     return AFTER.has(event.hook_event_name) ? "after" : "before";
   },
   action,
@@ -129,6 +132,7 @@ export const claudeCode: AgentAdapter = {
     const afterBash = lacking(["PostToolUse", "PostToolUseFailure"]);
     const worktrees = lacking(CLAUDE_WORKTREE_EVENTS);
     const compact = lacking(["SessionStart"]);
+    const end = lacking(["SessionEnd"]);
     const ok: DoctorLine[] = [];
     const problems: DoctorLine[] = [];
     if (missing.length === 0) ok.push({ code: "claude-guard" });
@@ -137,6 +141,7 @@ export const claudeCode: AgentAdapter = {
       if (afterBash !== "") problems.push({ code: "claude-after-bash", events: afterBash });
       if (worktrees !== "") problems.push({ code: "claude-worktrees", events: worktrees });
       if (compact !== "") problems.push({ code: "claude-compact", events: compact });
+      if (end !== "") problems.push({ code: "claude-session-end", events: end });
     }
     if (startsBefore(settings)) problems.push({ code: "claude-startup" });
     problems.push(...memoryStopLines(settings, "claude-code"));

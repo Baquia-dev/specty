@@ -58,7 +58,7 @@ Resuelve P58: hoy, tras un `/clear` en Claude Code, la conversación nueva es ot
 
 ## Tareas
 
-- [ ] T1: El hook `SessionEnd` de Claude Code y su aviso de doctor
+- [x] T1: El hook `SessionEnd` de Claude Code y su aviso de doctor
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/claude-code.ts, packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/cli/test/session-end-hook.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/session-end-hook.test.ts test/setup.test.ts test/agents.test.ts && pnpm lint
