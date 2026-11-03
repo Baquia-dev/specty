@@ -68,7 +68,7 @@ Resuelve P3 y P37. La mitad viva de la memoria de Specty, en `.git/common/specty
   - files: packages/cli/src/flow/finish.ts, packages/cli/test/messages-archive.test.ts
   - ac: AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/messages-archive.test.ts test/message-delivery.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T4: La documentación de la limpieza
+- [x] T4: La documentación de la limpieza
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm lint
