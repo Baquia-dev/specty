@@ -67,3 +67,25 @@ Los recordatorios de la memoria de Specty ya salen en la tarjeta de inicio del a
 
 - R1: Leer la memoria frena `status`, que la extensión de VS Code ejecuta con `--json` — son tres procesos de git sea cual sea el número de entradas, los mismos que ya paga `next` sin cambio activo.
 - R2: El traslado rompe una importación de la tarjeta de `status` en otro paquete — la CLI y los tests la importan desde el índice de core, que sigue exportándola.
+
+## Cierre
+
+### Resumen
+
+`specty status` gana la sección «TE TOCA» (en inglés, «YOUR TURN»), entre «CAMBIOS ABIERTOS» y «MODO DELEGADO». Lista los recordatorios abiertos de la memoria de Specty por fecha, con su id y la primera línea de su texto, y dice cómo marcarlos hechos con `specty memory done <id>`. Sin recordatorios abiertos, la tarjeta queda exactamente como antes, y su SIGUIENTE no cambia nunca. `status` lee la memoria con `readMemory`, como `next`, así que funciona desde cualquier carpeta del clon.
+
+La tarjeta de `status` pasa sin cambios de `cards/human.ts` a su propio archivo, `cards/status.ts`. Las líneas de los recordatorios, `reminderLines` en `cards/memory.ts`, las comparten ahora la tarjeta de inicio y «TE TOCA». Con esto se completa la parte del AC7 de la épica que pide los recordatorios en «TE TOCA».
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- «TE TOCA» solo lista recordatorios. Los cambios que esperan a la persona ya los marcan su línea y el SIGUIENTE, y las entradas propuestas para descartar llegan con `memory drop`, en C3.
+- La tarjeta recibe la memoria como tercer argumento opcional de `statusCard`, así que los tests de `status` que ya existían siguen igual.
+
+### Pendientes
+
+- P4 sigue abierta en la memoria aunque este cambio la resuelve: `memory done` solo marca recordatorios, y hasta `new --resolves` (C3) ningún comando cierra un pendiente. C3 debería cerrarla, o dejar que la persona marque hecho un pendiente ya resuelto.
+- Luego, los cortes C3, C4, C5, C6 y C7 de la épica, y las entradas P1–P3 y P5–P7 de la memoria.
