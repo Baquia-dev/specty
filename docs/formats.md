@@ -295,6 +295,7 @@ Una línea JSON por evento: `{ "ts", "actor": "agent" | "human" | "specty", "too
 | Evento | Datos |
 | --- | --- |
 | `change.created` | carril, rama, origen (`follows`; `epic` y `slice` en el corte de una épica), con `new --resolves` las entradas de la memoria que toma (`resolves`), con `new --distinct-from` los cambios abiertos que el usuario dijo que no duplica (`distinctFrom`) y, con `new --request`, la petición literal del usuario (`request`), tal como la escribió; `bootstrap: true` si es el primer cambio de un proyecto nuevo, su esqueleto (ARCHITECTURE §14) |
+| `change.noted` | una nota de la bitácora del cambio (`specty note "<texto>"`), del agente o de la persona, en cualquier fase del cambio abierto: `text`. La tarjeta de `next` muestra las tres últimas en «BITÁCORA» |
 | `spec.proposed` | revisión, hash, tamaño, avisos |
 | `assumption.decided` | ítem, decisión, comentario |
 | `review.changes_requested` | la persona pidió cambios: revisión e ids de los comentarios sin resolver |

@@ -70,6 +70,7 @@ export async function changeView(session: Session, change: StoredChange): Promis
       state.approved !== undefined &&
       specHash(spec) !== state.approved.hash,
     ...integrationView(state),
+    ...notesOf(audit),
     ...(state.kind === "epic" ? { slices: await sliceViews(session, change, spec) } : {}),
     ...(await glossaryView(session)),
   };
@@ -205,6 +206,22 @@ async function draftFacts(
     ...(await resolvesOf(session, audit)),
     ...(await carriedOf(session, spec.frontmatter.follows)),
   };
+}
+
+/** How many notes of the change's log `next`'s card shows. */
+const NOTES_SHOWN = 3;
+
+/** The last notes of the change's log (`change.noted`), oldest first; nothing without notes. */
+function notesOf(audit: Audit): Pick<ChangeView, "notes"> {
+  const notes = audit.flatMap((entry) => {
+    const { text } = dataOf(entry);
+    return entry.event === "change.noted" &&
+      typeof entry.ts === "string" &&
+      typeof text === "string"
+      ? [{ at: entry.ts, text }]
+      : [];
+  });
+  return notes.length === 0 ? {} : { notes: notes.slice(-NOTES_SHOWN) };
 }
 
 function request(audit: Audit): Pick<ChangeView, "request"> {

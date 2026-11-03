@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: Apache-2.0
-import { basename } from "node:path";
 import { describe, expect, it } from "vitest";
 import { APP, CHANGE, cli, folderOf, git, inWorktree, read, tempRepo } from "./support";
 
@@ -15,7 +14,7 @@ describe("specty new before an open change it may duplicate", () => {
     const refused = await another(root, "Personalizar el saludo");
     expect(refused.code).not.toBe(0);
     expect(refused.out).toContain(
-      `Puede duplicar un cambio abierto:\n  ${CHANGE} (draft, en ../${basename(root)}.worktrees/${CHANGE}) — «Saludo personalizado»: título parecido`,
+      `Puede duplicar un cambio abierto:\n  ${CHANGE} (draft, en .worktrees/${CHANGE}) — «Saludo personalizado»: título parecido`,
     );
     expect(refused.out).toContain(
       `pregúntale al usuario si es otro trabajo; si lo es, vuelve a ejecutar \`specty new\` con \`--distinct-from ${CHANGE}\`.`,

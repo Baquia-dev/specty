@@ -18,6 +18,7 @@ import { importCommand } from "./import";
 import { integrate } from "./integrate";
 import { type NewOptions, newChange } from "./new";
 import { next } from "./next";
+import { noteCommand } from "./note";
 import { propose } from "./propose";
 import { retro } from "./retro";
 import { retroInto } from "./retro-into";
@@ -44,11 +45,8 @@ export function agentCommands(
 ): void {
   program.command("next").description("what to do now").action(locked(run, "next")(next));
   waitCommand(program, run);
-  program
-    .command("enter")
-    .description("go on in a change's folder from this conversation")
-    .argument("<id>")
-    .action((id: string) => run((session) => enter(session, id))());
+  noteCommand(program, run);
+  enterCommand(program, run);
   newCommand(program, run, env, refuse);
   importCommand(program, run);
   program
@@ -112,6 +110,15 @@ interface NewFlags {
   readonly request?: string;
   readonly slug?: string;
   readonly branch?: string;
+}
+
+/** `specty enter <id>`: the conversation goes on in a change's folder. */
+function enterCommand(program: Command, run: Run): void {
+  program
+    .command("enter")
+    .description("go on in a change's folder from this conversation")
+    .argument("<id>")
+    .action((id: string) => run((session) => enter(session, id))());
 }
 
 /** `specty new`, which refuses an unknown kind or type before any session opens. */

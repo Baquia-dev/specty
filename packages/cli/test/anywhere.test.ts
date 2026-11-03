@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import type { Terminal } from "../src/session";
