@@ -51,7 +51,7 @@ Lo que un agente aprende de una parte del código («este módulo no se puede im
 
 ## Tareas
 
-- [ ] T1: La lección y las rutas en el modelo y en las tarjetas
+- [x] T1: La lección y las rutas en el modelo y en las tarjetas
   - files: packages/core/src/memory/entries.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/memory-claims.ts, packages/core/test/memory/lessons.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory && pnpm lint

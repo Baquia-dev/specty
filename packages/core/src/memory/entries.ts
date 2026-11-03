@@ -5,7 +5,7 @@ import * as z from "zod";
 // An entry of Specty's memory (formats.md §1, ADR 0016): a markdown file of its own branch,
 // `entries/<id>.md`, with its state in the frontmatter and its text below.
 
-export const MEMORY_KINDS = ["pending", "improvement", "reminder", "decision"] as const;
+export const MEMORY_KINDS = ["pending", "improvement", "reminder", "decision", "lesson"] as const;
 export type MemoryKind = (typeof MEMORY_KINDS)[number];
 
 export const MEMORY_STATUSES = ["open", "taken", "done", "drop-proposed", "dropped"] as const;
@@ -26,6 +26,8 @@ export interface MemoryEntry {
   };
   /** The person's literal words: a decision always has them. */
   readonly quote?: string;
+  /** The paths of the code it is about (globs allowed): a lesson always has them. */
+  readonly paths?: readonly string[];
   /** The change that took it (`specty new --resolves`), and when. */
   readonly taken?: { readonly change: string; readonly at: string };
   /** Who asked to drop it, why and when: proposed by an agent, or dropped by the person. */
@@ -46,6 +48,7 @@ const EntrySchema = z
     created: Text,
     origin: z.strictObject({ change: Text.optional(), by: Text }),
     quote: Text.optional(),
+    paths: z.array(Text).min(1).optional(),
     taken: z.strictObject({ change: Text, at: Text }).optional(),
     drop: z.strictObject({ reason: Text, by: Text, at: Text }).optional(),
     closed: z.strictObject({ at: Text, by: Text }).optional(),
@@ -53,6 +56,10 @@ const EntrySchema = z
   .refine((entry) => entry.kind !== "decision" || entry.quote !== undefined, {
     message: "a decision needs the person's quote",
     path: ["quote"],
+  })
+  .refine((entry) => entry.kind !== "lesson" || entry.paths !== undefined, {
+    message: "a lesson needs the paths it is about",
+    path: ["paths"],
   })
   .refine((entry) => entry.id.startsWith(prefixOf(entry.kind)));
 
@@ -80,12 +87,17 @@ export function parseEntry(markdown: string): MemoryEntry | undefined {
 /** The fields an entry may lack, only those its frontmatter has. */
 function optionalFields({
   quote,
+  paths,
   taken,
   drop,
   closed,
-}: z.infer<typeof EntrySchema>): Pick<MemoryEntry, "quote" | "taken" | "drop" | "closed"> {
+}: z.infer<typeof EntrySchema>): Pick<
+  MemoryEntry,
+  "quote" | "paths" | "taken" | "drop" | "closed"
+> {
   return {
     ...(quote !== undefined ? { quote } : {}),
+    ...(paths !== undefined ? { paths } : {}),
     ...(taken !== undefined ? { taken: { change: taken.change, at: taken.at } } : {}),
     ...(drop !== undefined ? { drop: { reason: drop.reason, by: drop.by, at: drop.at } } : {}),
     ...(closed !== undefined ? { closed: { at: closed.at, by: closed.by } } : {}),

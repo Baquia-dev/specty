@@ -22,7 +22,11 @@ export interface MemoryListOutput extends Output {
 }
 
 /** Why `memory add` writes nothing. */
-type AddRefusal = { readonly reason: "empty" } | { readonly reason: "no-quote" };
+type AddRefusal =
+  | { readonly reason: "empty" }
+  | { readonly reason: "no-quote" }
+  /** A lesson without `--path`. */
+  | { readonly reason: "no-path" };
 
 /** Why `memory done` changes nothing. */
 type DoneRefusal =
@@ -42,6 +46,7 @@ const KINDS: Readonly<Record<MemoryKind, readonly [string, string]>> = {
   improvement: ["mejora", "improvement"],
   reminder: ["recordatorio", "reminder"],
   decision: ["decisión", "decision"],
+  lesson: ["lección", "lesson"],
 };
 
 /** Each kind with its article, as a sentence names one entry. */
@@ -50,6 +55,7 @@ const ONE_OF_KIND: Readonly<Record<MemoryKind, readonly [string, string]>> = {
   improvement: ["una mejora", "an improvement"],
   reminder: ["un recordatorio", "a reminder"],
   decision: ["una decisión", "a decision"],
+  lesson: ["una lección", "a lesson"],
 };
 
 /** The README's heading of each kind. */
@@ -58,6 +64,7 @@ const SECTIONS: Readonly<Record<MemoryKind, readonly [string, string]>> = {
   improvement: ["Mejoras", "Improvements"],
   reminder: ["Recordatorios", "Reminders"],
   decision: ["Decisiones", "Decisions"],
+  lesson: ["Lecciones", "Lessons"],
 };
 
 const STATUSES: Readonly<Record<Exclude<MemoryStatus, "open">, readonly [string, string]>> = {
@@ -127,7 +134,7 @@ export function memoryDoneCard(entry: MemoryEntry, ctx: CardContext): Output {
 export function memoryRefusalCard(refusal: MemoryRefusal, ctx: CardContext): Output {
   const t = translator(ctx.lang);
   const { reason, next } =
-    refusal.reason === "empty" || refusal.reason === "no-quote"
+    refusal.reason === "empty" || refusal.reason === "no-quote" || refusal.reason === "no-path"
       ? addRefusalTexts(refusal, ctx.command, t)
       : doneRefusalTexts(refusal, ctx, t);
   return {
@@ -157,6 +164,17 @@ function addRefusalTexts(refusal: AddRefusal, command: string, t: Translate): Re
         next: t(
           `añade sus palabras tal cual: \`${command} memory add "<texto>" --kind decision --quote "<cita>"\`.`,
           `add their words as they are: \`${command} memory add "<text>" --kind decision --quote "<quote>"\`.`,
+        ),
+      };
+    case "no-path":
+      return {
+        reason: t(
+          "Una lección lleva las rutas a las que se refiere, y falta `--path`.",
+          "A lesson carries the paths it is about, and `--path` is missing.",
+        ),
+        next: t(
+          `vuelve a ejecutar \`${command} memory add "<texto>" --kind lesson --path <ruta>\`.`,
+          `run \`${command} memory add "<text>" --kind lesson --path <path>\` again.`,
         ),
       };
   }
@@ -326,7 +344,8 @@ export function resolvesLines(entries: readonly MemoryEntry[], ctx: CardContext)
 /** One entry in a list: its id, kind, status unless open, text, quote and origin. */
 function entryLine(entry: MemoryEntry, t: Translate): string {
   const kind = t(...KINDS[entry.kind]);
-  return `${entry.id} · ${kind}${statusOf(entry, t)} · ${firstLine(entry.text)}${quoted(entry)} — ${originOf(entry, t)}`;
+  const paths = entry.paths === undefined ? "" : ` · ${t("en", "in")} ${entry.paths.join(", ")}`;
+  return `${entry.id} · ${kind}${statusOf(entry, t)} · ${firstLine(entry.text)}${quoted(entry)} — ${originOf(entry, t)}${paths}`;
 }
 
 /** Its status unless open, with the change that took it when it is taken. */

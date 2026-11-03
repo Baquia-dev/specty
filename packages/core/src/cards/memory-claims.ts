@@ -38,6 +38,7 @@ export function resolvesRefusalCard(refusal: ResolvesRefusal, ctx: CardContext):
 const NOT_WORK = {
   reminder: ["un recordatorio", "a reminder"],
   decision: ["una decisión", "a decision"],
+  lesson: ["una lección", "a lesson"],
 } as const;
 
 /** An entry's status, as «it is already …» says it. */
@@ -66,7 +67,10 @@ function reasonOf(refusal: ResolvesRefusal, t: Translate): string {
     }
     case "not-work": {
       const { entry } = refusal;
-      const kind = entry.kind === "decision" ? NOT_WORK.decision : NOT_WORK.reminder;
+      const kind =
+        entry.kind === "decision" || entry.kind === "lesson"
+          ? NOT_WORK[entry.kind]
+          : NOT_WORK.reminder;
       return t(
         `${entry.id} es ${kind[0]}: \`--resolves\` solo toma pendientes y mejoras.`,
         `${entry.id} is ${kind[1]}: \`--resolves\` only takes pending items and improvements.`,
