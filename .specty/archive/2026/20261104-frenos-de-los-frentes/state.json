@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-frenos-de-los-frentes",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-frenos-de-los-frentes",
   "baseCommit": "9ccb9b300c98982c7bdb77bee83b57f6aaf3469d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:a080cfd5f620a7590606c0dbdc5c652810b0de11a8ac71c311d24b0af9e024a0",
@@ -75,12 +75,12 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "82934aed5822525c7e53160351e2633338a92f1a",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:28:24.067Z",
       "doneAt": "2026-11-03T22:28:41.286Z",
-      "summary": "formats.md: los frenos de los frentes (el rechazo del guard a new --resolves y el aviso de propose). ARCHITECTURE: el freno y el aviso junto a front take y front free."
+      "summary": "formats.md: los frenos de los frentes (el rechazo del guard a new --resolves y el aviso de propose). ARCHITECTURE: el freno y el aviso junto a front take y front free.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -93,6 +93,7 @@
     "T": 4,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T22:33:31.982Z",
   "lockedTests": {
     "packages/core/test/guard/shell.test.ts": "sha256:a9b04a5a9c9f73ba02e5f353236bb858a39cf2a82ffb6b392704dcf10e8d3ec9",
     "packages/cli/test/front-brakes.test.ts": "sha256:6ebcf08fcdd1e72cb530b10346faead0b56a84b3743d75f2abd86ed188145b45",

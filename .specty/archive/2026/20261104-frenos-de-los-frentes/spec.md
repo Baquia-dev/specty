@@ -82,3 +82,23 @@ follows:
 
 - R1: El guard lee la rama de la memoria y los dueños en cada comando con `specty new --resolves` — solo en esos, como con `front take`.
 - R2: Una sesión de un agente que no dice su conversación ve en `propose` el aviso de su propio frente — el aviso lo dice («si no es el tuyo») y no frena nada.
+
+## Cierre
+
+### Resumen
+
+El guard rechaza, con la regla `memory`, que la conversación de un agente ejecute `specty new … --resolves <id>` con una entrada de un frente cuyo dueño vivo es otra conversación. Dice de qué frente es la entrada, quién lo lleva y desde cuándo, y que tome una entrada de su frente o sin frente, o que la persona libere ese frente. Una entrada sin frente, de un frente sin dueño vivo o del propio pasa. `specty propose` de un borrador añade «FRENTES DE OTRAS SESIONES» cuando sus archivos gobernados caen en las rutas de un frente que lleva otra sesión, con quién lo lleva y los archivos, y avisa sin frenar. Lo que una llamada a Specty pide al guard (`enter`, `front take|free` y los ids de `new --resolves`) vive ahora en `guard/specty-calls.ts`, y `shell.ts` bajó de 276 a 251 líneas de código. Con este cambio, P33 queda hecha.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- El rechazo nombra la entrada con el id que guarda el frente («P2»), aunque el comando la escriba en minúsculas («p2»).
+- `foreignFronts` no lee los dueños si ningún frente tiene rutas o la spec no tiene archivos gobernados, para que `propose` no pague nada sin frentes.
+- `ShellAnalysis` extiende `SpectyCalls`, la interfaz de lo que una llamada a Specty pide, en vez de repetir sus campos.
+
+### Pendientes
+
+- P2: `packages/core/src/cards/index.ts` llega a 397 líneas de código con las dos exportaciones nuevas.
