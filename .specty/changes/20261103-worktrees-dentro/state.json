@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-worktrees-dentro",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-worktrees-dentro",
   "baseCommit": "62172a6cae2a5062160d6594db5930843c401c45",
   "revision": 1,
@@ -43,15 +43,24 @@
   "tasks": {
     "T1": {
       "status": "done",
+      "baseCommit": "8c2623cb35ca8f0869a3a4261732c55ae5a459dc",
+      "attempts": 1,
+      "startedAt": "2026-11-03T09:15:27.518Z",
+      "doneAt": "2026-11-03T09:27:17.567Z",
+      "summary": "worktreesHome da <principal>/.worktrees y addWorktree la ignora en .git/info/exclude; namedWorktree y WorktreeRemove miran también la carpeta de antes (formerWorktreesHome) para los cambios ya abiertos",
       "scopeExtra": [
         "packages/cli/test/worktrees-inside.test.ts",
         "packages/cli/src/enforce/worktree-hooks.ts"
-      ],
+      ]
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
       "attempts": 1,
-      "baseCommit": "8c2623cb35ca8f0869a3a4261732c55ae5a459dc",
-      "startedAt": "2026-11-03T09:15:27.518Z",
-      "doneAt": "2026-11-03T09:27:17.567Z",
-      "summary": "worktreesHome da <principal>/.worktrees y addWorktree la ignora en .git/info/exclude; namedWorktree y WorktreeRemove miran también la carpeta de antes (formerWorktreesHome) para los cambios ya abiertos"
+      "baseCommit": "4207d14c44207fa9ef96257cbd1e543225a6c24c",
+      "startedAt": "2026-11-03T09:27:17.907Z",
+      "doneAt": "2026-11-03T09:28:53.130Z",
+      "summary": "Este repo ignora .worktrees/ en .gitignore y Biome la excluye; ARCHITECTURE §9, formats §6 y ADR 0018 (aceptada, con Go, Maven, Gradle, SwiftPM, Cargo y Flutter) al día; tests con la carpeta nueva"
     }
   },
   "pending": {

@@ -62,7 +62,7 @@ kind: standard
   - files: packages/cli/src/flow/worktree.ts, packages/cli/test/worktrees-inside.test.ts, packages/cli/test/support.ts, packages/cli/test/worktrees.test.ts, packages/cli/test/epic.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/worktrees-inside.test.ts test/worktrees.test.ts test/epic.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: Los textos y las carpetas de los demás tests, y la documentación
+- [x] T2: Los textos y las carpetas de los demás tests, y la documentación
   - files: packages/cli/test/status-json.test.ts, packages/cli/test/memory-resolves.test.ts, packages/cli/test/anywhere.test.ts, packages/cli/test/antigravity.test.ts, packages/cli/test/codex.test.ts, packages/cli/test/opencode-install.test.ts, .gitignore, biome.json, docs/ARCHITECTURE.md, docs/formats.md, docs/decisions/0018-worktrees-dentro-del-repositorio.md
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/status-json.test.ts test/memory-resolves.test.ts test/anywhere.test.ts test/antigravity.test.ts test/codex.test.ts test/opencode-install.test.ts && pnpm lint
