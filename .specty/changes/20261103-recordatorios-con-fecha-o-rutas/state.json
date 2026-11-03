@@ -57,12 +57,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "0bf650d96ad27d5cdf7f9372ea84b7d78ad9a0ee",
+      "attempts": 1,
       "startedAt": "2026-11-03T14:03:57.147Z",
       "doneAt": "2026-11-03T14:05:15.562Z",
-      "summary": "cards/memory.ts: el día de un recordatorio en la lista («desde»), los rechazos bad-date, due-not-reminder y two-triggers, y reminderDoneLine compartida; cards/memory-paths.ts: la sección RECORDATORIOS DE ESTOS ARCHIVOS tras las lecciones y decisiones"
+      "summary": "cards/memory.ts: el día de un recordatorio en la lista («desde»), los rechazos bad-date, due-not-reminder y two-triggers, y reminderDoneLine compartida; cards/memory-paths.ts: la sección RECORDATORIOS DE ESTOS ARCHIVOS tras las lecciones y decisiones",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "942731a742262e37b56c7fced1a175fb04494600",
+      "startedAt": "2026-11-03T14:05:16.212Z",
+      "doneAt": "2026-11-03T14:06:40.395Z",
+      "summary": "cli: memory add --due <día> con sus rechazos (triggerRefusal), y next y status pasan a sus tarjetas sessionEntries con el día local, sin los recordatorios que esperan a su día o a sus rutas"
     }
   },
   "pending": {

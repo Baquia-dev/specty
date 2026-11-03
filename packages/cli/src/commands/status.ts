@@ -2,10 +2,12 @@
 import { realpath, stat } from "node:fs/promises";
 import {
   isIntegrating,
+  localDay,
   type Output,
   parseSpec,
   phasePermissions,
   type StatusEntry,
+  sessionEntries,
   statusCard,
 } from "@baquia-dev/specty-core";
 import { isFinished } from "../flow/active";
@@ -25,7 +27,8 @@ const MINUTE_MS = 60_000;
 export async function status(session: Session): Promise<Output> {
   const entries = await openChanges(session);
   const memory = await readMemory(session.git, session.config.memory.branch);
-  return statusCard(entries, session.cards, memory.entries);
+  const today = localDay(session.environment.now());
+  return statusCard(entries, session.cards, sessionEntries(memory.entries, today));
 }
 
 /** The open changes of every worktree as `status` shows them: phase, who they wait for and who holds them. */

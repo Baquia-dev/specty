@@ -4,6 +4,7 @@ import {
   claimable,
   freeWork,
   harvestable,
+  isDay,
   isOpenEntry,
   MEMORY_KINDS,
   type MemoryEntry,
@@ -34,6 +35,7 @@ interface AddOptions {
   readonly kind: MemoryKind;
   readonly quote?: string;
   readonly path?: readonly string[];
+  readonly due?: string;
 }
 
 /**
@@ -55,6 +57,7 @@ export function memoryCommand(program: Command, run: Run): void {
     .addOption(new Option("--kind <kind>", "what it is").choices(MEMORY_KINDS).default("pending"))
     .option("--quote <quote>", "the person's literal words; a decision needs them")
     .option("--path <globs...>", "the paths of the code it is about; a lesson needs them")
+    .option("--due <day>", "a reminder: the day (YYYY-MM-DD) it waits for before showing")
     .action((text: string, options: AddOptions) =>
       run((session) => addEntry(session, text, options))(),
     );
@@ -118,7 +121,9 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
   const paths = [...new Set((options.path ?? []).map((path) => path.trim()))].filter(
     (path) => path.length > 0,
   );
-  const refusal = addRefusal(written, quote, paths, options.kind);
+  const due = options.due?.trim();
+  const refusal =
+    addRefusal(written, quote, paths, options.kind) ?? triggerRefusal(due, paths, options.kind);
   if (refusal !== undefined) return memoryRefusalCard(refusal, session.cards);
   const change = await openChange(session);
   const target = targetOf(session, change);
@@ -131,6 +136,7 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
       origin: { ...(change !== undefined ? { change } : {}), by: authorOf(session) },
       ...(quote.length > 0 ? { quote } : {}),
       ...(paths.length > 0 ? { paths } : {}),
+      ...(due !== undefined ? { due } : {}),
       text: written,
     };
     return {
@@ -138,6 +144,19 @@ async function addEntry(session: Session, text: string, options: AddOptions): Pr
       result: memoryAddedCard(entry, target.branch, session.cards),
     };
   });
+}
+
+/** Why `memory add` writes nothing about a reminder's day: not a day, not a reminder, or with paths. */
+function triggerRefusal(
+  due: string | undefined,
+  paths: readonly string[],
+  kind: MemoryKind,
+): MemoryRefusal | undefined {
+  if (due === undefined) return undefined;
+  if (!isDay(due)) return { reason: "bad-date", value: due };
+  if (kind !== "reminder") return { reason: "due-not-reminder", kind };
+  if (paths.length > 0) return { reason: "two-triggers" };
+  return undefined;
 }
 
 /** Why `memory add` writes nothing: no text, a decision without a quote or a lesson without paths. */

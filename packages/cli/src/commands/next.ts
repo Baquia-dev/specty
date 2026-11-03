@@ -1,5 +1,12 @@
 // SPDX-License-Identifier: Apache-2.0
-import { isGoverned, nextCard, type Output, parseSpec } from "@baquia-dev/specty-core";
+import {
+  isGoverned,
+  localDay,
+  nextCard,
+  type Output,
+  parseSpec,
+  sessionEntries,
+} from "@baquia-dev/specty-core";
 import { commitState, resolveActive } from "../flow/active";
 import { finishEpic } from "../flow/epic";
 import { changeView } from "../flow/views";
@@ -21,9 +28,11 @@ export async function next(session: Session): Promise<Output> {
     const dirty = await dirtyGoverned(session);
     // Without code yet, the first change is the project's skeleton (ARCHITECTURE §14).
     const fresh = dirty.length === 0 && (await freshProject(session));
-    // The memory goes to every session that starts with no change (ADR 0016).
+    // The memory goes to every session that starts with no change (ADR 0016), but for the
+    // reminders that wait for their day or for the files of their paths.
     const { entries } = await readMemory(session.git, session.config.memory.branch);
-    return nextCard({ dirty, ...(fresh ? { fresh } : {}), memory: entries }, session.cards);
+    const memory = sessionEntries(entries, localDay(session.environment.now()));
+    return nextCard({ dirty, ...(fresh ? { fresh } : {}), memory }, session.cards);
   }
   const pending = await pendingIntegration(session, active, "close");
   const current = pending.kind === "go" ? pending.change : active;
