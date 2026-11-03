@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "20261104-los-frentes-tienen-dueno",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261104-los-frentes-tienen-dueno",
+  "baseCommit": "2435a73902d061d02e48bb31d769a851d0c0f258",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 18,
+    "adjust": 0,
+    "reasons": [
+      "14 archivos",
+      "2 módulos",
+      "5 tareas"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:7eaf0d8f072a6de2cffeaf5b46b495ad56b63cdfeddb56428aa1907f85c8f3c7",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:36b79db3d3bc056de83660558fa7699a3aee1b179fd63b8df7abd8362280cd7e",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:b59c6a4968b8c6e77097b0e4b78fc0ed1e0def16960556aa79b8cfd230d94590",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:a26073acc5ab1cc4b23fdfd0be310ee1cb3599d3a904b53e72c1cb8168f7f33c",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:6e0bd65ad147e892b3ad31133f27565eb519ed15cf23e60dcf47698211ede38f",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:16bf079935179d8b84bf4986b6068579ea86ab974e6343cc02c3f30a779addca",
+      "decision": "implicit"
+    },
+    "A7": {
+      "hash": "sha256:ef8d625b67cd211e27ccbec0687f6c7ed864bbaba4faa2bad230a7733e27b2bb",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 7,
+    "AC": 5,
+    "T": 5,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:f68606a0002df15896d3d2bd3269d049dccacd426489883a8225114e1b7c1cbb",
+    "at": "2026-11-03T20:16:40.755Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
