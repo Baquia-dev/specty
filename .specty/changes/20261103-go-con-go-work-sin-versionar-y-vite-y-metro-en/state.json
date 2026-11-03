@@ -6,6 +6,13 @@
   "branch": "specty/20261103-go-con-go-work-sin-versionar-y-vite-y-metro-en",
   "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:70949e5d8726b104fa464ce0152399501fa2f2f94ef5925a47667f044e0c04ff",
+    "at": "2026-11-03T12:39:44.318Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 9,
@@ -52,12 +59,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:70949e5d8726b104fa464ce0152399501fa2f2f94ef5925a47667f044e0c04ff",
-    "at": "2026-11-03T12:39:44.318Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T12:43:44.352Z"
 }
