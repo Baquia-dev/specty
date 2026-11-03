@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "ef0d130b48d66b4e75d4ce489a2e1e1f2612d241",
+      "startedAt": "2026-11-03T09:38:34.286Z",
+      "doneAt": "2026-11-03T09:40:41.045Z",
+      "summary": "GET /api/memory en server/http.ts (memoryView: entradas de readMemory y openChanges); las lecturas que solo miran la sesión se sirven desde una tabla"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

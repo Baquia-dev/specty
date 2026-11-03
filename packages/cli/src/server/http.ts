@@ -4,8 +4,10 @@ import { readFile } from "node:fs/promises";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { extname, join, resolve, sep } from "node:path";
 import { notBuiltPage, type Output } from "@baquia-dev/specty-core";
+import { openChanges } from "../commands/status";
 import { isRecord, parseJson } from "../io/files";
 import type { Session } from "../session";
+import { readMemory } from "../store/memory";
 import { delegationView, parseAction, runAction, setDelegation } from "./actions";
 import { changeDiff, type DiffAnswer } from "./diff";
 import { type ChangeEvents, changeEvents } from "./events";
@@ -159,8 +161,9 @@ async function readApi(
   const foreign = origin !== undefined && !isLocal(origin.replace(/^http:\/\//, ""), context.port);
   if (foreign || !hasSession(request.headers.cookie, context))
     return send(response, 403, JSON_TYPE, '{"error":"forbidden"}');
-  if (url.pathname === "/api/changes")
-    return send(response, 200, JSON_TYPE, JSON.stringify(await changeRecords(context.session)));
+  const view = VIEWS.get(url.pathname);
+  if (view !== undefined)
+    return send(response, 200, JSON_TYPE, JSON.stringify(await view(context.session)));
   if (url.pathname === "/api/events") return context.events.add(response);
   if (url.pathname === "/api/session") {
     const actions = context.actions === true;
@@ -171,11 +174,26 @@ async function readApi(
       JSON.stringify(actions ? { actions, csrf: context.csrf } : { actions }),
     );
   }
-  if (url.pathname === "/api/delegation") {
-    const view = await delegationView(context.session);
-    return send(response, 200, JSON_TYPE, JSON.stringify(view));
-  }
   return readChange(response, context, url);
+}
+
+/** The reads that only look at the session: each path and what it answers, as JSON. */
+const VIEWS: ReadonlyMap<string, (session: Session) => Promise<unknown>> = new Map<
+  string,
+  (session: Session) => Promise<unknown>
+>([
+  ["/api/changes", changeRecords],
+  ["/api/delegation", delegationView],
+  ["/api/memory", memoryView],
+]);
+
+/**
+ * `GET /api/memory` (ADR 0016): every entry of Specty's memory, and the open changes of every
+ * worktree as `specty status` sees them, with who holds each one and whether it is an orphan.
+ */
+async function memoryView(session: Session) {
+  const { entries } = await readMemory(session.git, session.config.memory.branch);
+  return { entries, changes: await openChanges(session) };
 }
 
 /** A change's verification going on, its traceability, or its diff, whole or of one task. */

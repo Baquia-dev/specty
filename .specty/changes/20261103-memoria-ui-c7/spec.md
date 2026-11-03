@@ -62,7 +62,7 @@ La memoria de Specty y quién lleva cada cambio solo se ven en la terminal, con 
 
 ## Tareas
 
-- [ ] T1: `GET /api/memory`
+- [x] T1: `GET /api/memory`
   - files: packages/cli/src/server/http.ts, packages/cli/test/server/memory.test.ts
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/memory.test.ts test/server/actions.test.ts && pnpm lint
