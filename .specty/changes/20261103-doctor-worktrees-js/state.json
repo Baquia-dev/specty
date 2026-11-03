@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-doctor-worktrees-js",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-doctor-worktrees-js",
   "baseCommit": "c4da10f5a97680486d91cba6a454c5c6f728d0f6",
   "revision": 1,
@@ -35,7 +35,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1b1f008e1f76b4ff85b70bb27ecbd8419f775d87",
+      "startedAt": "2026-11-03T10:04:14.572Z",
+      "doneAt": "2026-11-03T10:05:53.784Z",
+      "summary": "doctor avisa de Vitest, Jest, ESLint y Biome de la raíz que no excluyen .worktrees/, con qué añadir; Biome con useIgnoreFile y Prettier cuentan .gitignore; formatterExclusions dividida por herramienta; docs al día"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

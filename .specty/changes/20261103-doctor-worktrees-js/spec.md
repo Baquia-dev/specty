@@ -45,7 +45,7 @@ Con las worktrees de los cambios en `.worktrees/`, dentro del proyecto (ADR 0018
 
 ## Tareas
 
-- [ ] T1: doctor avisa de Vitest, Jest, ESLint y Biome ante `.worktrees/`, y la documentación
+- [x] T1: doctor avisa de Vitest, Jest, ESLint y Biome ante `.worktrees/`, y la documentación
   - files: packages/cli/src/detect/worktree-tools.ts, packages/cli/src/detect/formatters.ts, packages/cli/src/commands/doctor.ts, packages/cli/test/doctor-worktrees.test.ts, docs/ARCHITECTURE.md, docs/decisions/0018-worktrees-dentro-del-repositorio.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-worktrees.test.ts && pnpm typecheck && pnpm lint
