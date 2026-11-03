@@ -58,7 +58,7 @@ El 2026-11-03 se midieron, con las versiones reales, los servidores de desarroll
   - files: packages/cli/src/detect/worktree-tools.ts, packages/cli/test/doctor-watchers.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-watchers.test.ts
-- [ ] T2: `doctor` avisa de Turborepo y Deno, y la documentación
+- [x] T2: `doctor` avisa de Turborepo y Deno, y la documentación
   - files: packages/cli/src/detect/worktree-tools.ts, packages/cli/test/doctor-worktrees.test.ts, docs/decisions/0018-worktrees-dentro-del-repositorio.md, docs/ARCHITECTURE.md
   - ac: AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-worktrees.test.ts

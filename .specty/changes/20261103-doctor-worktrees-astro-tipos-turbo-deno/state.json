@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-doctor-worktrees-astro-tipos-turbo-deno",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-doctor-worktrees-astro-tipos-turbo-deno",
   "baseCommit": "e13cf61461797d5e1405043ff6360e194f2ffdd8",
   "revision": 1,
@@ -38,12 +38,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e4ea70d73b99f7c0f99e0676fc5cc26bf51f87ad",
+      "attempts": 1,
       "startedAt": "2026-11-03T15:02:13.275Z",
       "doneAt": "2026-11-03T15:03:36.993Z",
-      "summary": "doctor pide a Astro la función de Vite en vite.server.watch.ignored, a fork-ts-checker \"node_modules\", \".worktrees\" en el exclude de tsconfig.json y al comprobador de tipos de Rsbuild una función en tools.rspack.watchOptions.ignored"
+      "summary": "doctor pide a Astro la función de Vite en vite.server.watch.ignored, a fork-ts-checker \"node_modules\", \".worktrees\" en el exclude de tsconfig.json y al comprobador de tipos de Rsbuild una función en tools.rspack.watchOptions.ignored",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "e7a6b102df3ebb38e736b684397d054858117e8d",
+      "startedAt": "2026-11-03T15:03:37.338Z",
+      "doneAt": "2026-11-03T15:05:37.960Z",
+      "summary": "doctor pide \"!.worktrees/**\" en pnpm-workspace.yaml a Turborepo con un patrón ** y \".worktrees/\" en el exclude de deno.json; ADR 0018 con la medición de las herramientas de JavaScript y ARCHITECTURE con la lista de doctor"
     }
   },
   "pending": {

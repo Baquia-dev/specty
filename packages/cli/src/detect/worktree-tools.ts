@@ -60,6 +60,8 @@ const DETECTORS: readonly Detector[] = [
   astroConfig,
   forkTsChecker,
   rsbuildChecker,
+  turborepo,
+  denoConfig,
 ];
 
 /** The JavaScript tools at the root that need their exclusion, once a change lives in `.worktrees/`. */
@@ -161,6 +163,36 @@ async function rsbuildChecker(
   const text = file === undefined ? "" : ((await readText(join(root, file))) ?? "");
   const where = `${file ?? "rsbuild.config.ts"} (tools.rspack.watchOptions.ignored)`;
   return anchored(RSBUILD_CHECKER, where, RSBUILD_ADD, usable(text, root));
+}
+
+/**
+ * Turborepo reads pnpm's workspace patterns into hidden folders: one starting with `**` reaches the
+ * changes' packages, and it fails on their repeated names. pnpm itself, and patterns under a folder
+ * such as `packages/*`, don't reach them.
+ */
+async function turborepo(
+  root: string,
+  entries: readonly string[],
+): Promise<FormatterExclusion | undefined> {
+  const turbo = entries.includes("turbo.json") || entries.includes("turbo.jsonc");
+  if (!turbo || !entries.includes("pnpm-workspace.yaml")) return undefined;
+  const text = (await readText(join(root, "pnpm-workspace.yaml"))) ?? "";
+  if (!/(?:^\s*-|[[,])\s*["']?\*\*/m.test(text)) return undefined;
+  return exclusion("Turborepo", "pnpm-workspace.yaml (packages)", '"!.worktrees/**"', text);
+}
+
+/**
+ * `deno test` and `deno check` take every file under the root; `deno fmt` and `deno lint` read
+ * `.gitignore`. A project with only its lockfile gets `deno.json` to create.
+ */
+async function denoConfig(
+  root: string,
+  entries: readonly string[],
+): Promise<FormatterExclusion | undefined> {
+  const file = ["deno.json", "deno.jsonc"].find((name) => entries.includes(name));
+  if (file === undefined && !entries.includes("deno.lock")) return undefined;
+  const text = file === undefined ? "" : ((await readText(join(root, file))) ?? "");
+  return exclusion("Deno", `${file ?? "deno.json"} (exclude)`, '".worktrees/"', text);
 }
 
 /** Whether the root's `package.json` declares `name` among its dependencies. */
