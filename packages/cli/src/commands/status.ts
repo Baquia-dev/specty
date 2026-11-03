@@ -15,20 +15,26 @@ import { locateChanges } from "../flow/changes";
 import type { Session } from "../session";
 import { type Activity, readActivity } from "../store/activity";
 import { readSpec, type StoredChange } from "../store/changes";
+import { liveHolds } from "../store/front-owners";
 import { readMemory } from "../store/memory";
 import { posixRelative } from "../store/paths";
 
 const MINUTE_MS = 60_000;
 
 /**
- * `specty status`: the open changes of every worktree, their phase and who they wait for, and the
- * memory's open reminders in «TE TOCA» (ADR 0016).
+ * `specty status`: the open changes of every worktree, their phase and who they wait for, the
+ * memory's fronts with who holds each in «FRENTES», and its open reminders in «TE TOCA» (ADR 0016).
  */
 export async function status(session: Session): Promise<Output> {
   const entries = await openChanges(session);
   const memory = await readMemory(session.git, session.config.memory.branch);
-  const today = localDay(session.environment.now());
-  return statusCard(entries, session.cards, sessionEntries(memory.entries, today));
+  const now = session.environment.now();
+  const owners =
+    memory.fronts.length === 0
+      ? []
+      : await liveHolds(session.git, now, session.config.memory.orphanAfterMin);
+  const open = sessionEntries(memory.entries, localDay(now));
+  return statusCard(entries, session.cards, open, { fronts: memory.fronts, owners });
 }
 
 /** The open changes of every worktree as `status` shows them: phase, who they wait for and who holds them. */

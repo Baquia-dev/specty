@@ -43,6 +43,15 @@ export interface FrontOwner {
   readonly ago: number;
 }
 
+/** The fronts of the memory, who holds each, and the one of the conversation that asks. */
+export interface FrontsView {
+  readonly fronts: readonly Front[];
+  /** The fronts with a live owner. */
+  readonly owners: readonly FrontOwner[];
+  /** The front the conversation that asks holds, when Specty knows the conversation. */
+  readonly own?: string;
+}
+
 /**
  * `specty front`: each front with what it covers, its paths, who holds it and its open entries
  * in order.

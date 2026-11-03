@@ -8,6 +8,7 @@ import {
   type Lang,
   type ResolvedConfig,
 } from "@baquia-dev/specty-core";
+import { agentSession } from "./agents/run";
 import { createGit, findRoot, type Git } from "./io/git";
 import { loadConfig } from "./store/config";
 import { readDelegation } from "./store/local";
@@ -72,6 +73,12 @@ export interface Session {
   readonly config: ResolvedConfig;
   readonly lang: Lang;
   readonly tool: AgentTool | undefined;
+  /**
+   * The agent's conversation that runs the command, when Specty knows it: its tool tells it in the
+   * command's environment (`agentSession`), or the guard reads it in its hook's event. It only
+   * chooses what a card shows, never a permission.
+   */
+  readonly conversation?: { readonly tool: AgentTool; readonly id: string };
   /** Who runs the command, for the audit log: a person at a TTY or an agent. */
   readonly actor: "agent" | "human";
   /** The person delegated their decisions to the agent: `specty delegate on` (ADR 0010). */
@@ -117,6 +124,7 @@ export function sessionFrom(
   delegated = false,
 ): Session {
   const tool = detectAgentTool(environment.env);
+  const conversation = agentSession(tool, environment.env);
   const lang = config.language;
   const { interactive } = environment.terminal;
   return {
@@ -131,6 +139,9 @@ export function sessionFrom(
     config,
     lang,
     tool,
+    ...(tool !== undefined && conversation !== undefined
+      ? { conversation: { tool, id: conversation } }
+      : {}),
     actor: interactive ? "human" : "agent",
     delegated,
     cards: {

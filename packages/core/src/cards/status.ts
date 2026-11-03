@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Phase, WaitingFor } from "../flow/phases";
-import type { MemoryEntry } from "../memory/entries";
+import { isOpenEntry, type MemoryEntry } from "../memory/entries";
 import { headerOf, type Output, section } from "../output";
 import type { ChangeKind } from "../spec/model";
+import type { FrontsView } from "./fronts";
 import { reminderLines } from "./memory";
 import { dropProposalLines } from "./memory-drop";
 import { type Translate, translator } from "./text";
@@ -26,26 +27,37 @@ export interface StatusEntry {
   readonly orphan?: boolean;
 }
 
+/** A front of the memory in `status`: its open entries in order, and its live owner. */
+interface StatusFront {
+  readonly name: string;
+  readonly open: readonly string[];
+  readonly owner?: { readonly tool: string; readonly ago: number };
+}
+
 /**
- * `specty status`'s card, with the open changes and delegated mode as data too: `--json` prints
- * them, and the VS Code extension reads them.
+ * `specty status`'s card, with the open changes, the fronts and delegated mode as data too:
+ * `--json` prints them, and the VS Code extension reads them.
  */
 interface StatusOutput extends Output {
   readonly changes: readonly StatusEntry[];
+  readonly fronts: readonly StatusFront[];
   readonly delegated: boolean;
 }
 
 /**
- * Open changes of every worktree; a person's decision can be taken from any folder. «TE TOCA»
- * lists the memory's open reminders, and is left out when there are none (ADR 0016).
+ * Open changes of every worktree; a person's decision can be taken from any folder. «FRENTES»
+ * lists the memory's fronts with who holds each, and «TE TOCA» its open reminders; each is left
+ * out when there are none (ADR 0016).
  */
 export function statusCard(
   entries: readonly StatusEntry[],
   ctx: CardContext,
   memory: readonly MemoryEntry[] = [],
+  view: FrontsView = { fronts: [], owners: [] },
 ): StatusOutput {
   const t = translator(ctx.lang);
   const lines = entries.map((entry) => statusLine(entry, t));
+  const fronts = statusFronts(view, memory);
   return {
     status: "ok",
     header: headerOf(t("estado", "status")),
@@ -53,6 +65,10 @@ export function statusCard(
       ...section(
         t("CAMBIOS ABIERTOS", "OPEN CHANGES"),
         lines.length > 0 ? lines : [t("Ninguno.", "None.")],
+      ),
+      ...section(
+        t("FRENTES", "FRONTS"),
+        fronts.map((front) => frontLine(front, t)),
       ),
       ...section(t("TE TOCA", "YOUR TURN"), [
         ...dropProposalLines(memory, ctx),
@@ -72,8 +88,34 @@ export function statusCard(
     ],
     next: statusNext(entries, ctx),
     changes: entries,
+    fronts,
     delegated: ctx.delegated === true,
   };
+}
+
+/** Each front with the ids of its open entries, in the front's order, and its live owner. */
+function statusFronts(view: FrontsView, memory: readonly MemoryEntry[]): StatusFront[] {
+  return view.fronts.map(({ name, items }) => {
+    const owner = view.owners.find((known) => known.front === name);
+    const open = items.filter((id) =>
+      memory.some((entry) => entry.id === id && isOpenEntry(entry)),
+    );
+    return {
+      name,
+      open,
+      ...(owner === undefined ? {} : { owner: { tool: owner.tool, ago: owner.ago } }),
+    };
+  });
+}
+
+/** A front in «FRENTES»: who holds it, or that it is free, and its open entries. */
+function frontLine(front: StatusFront, t: Translate): string {
+  const held = front.owner === undefined ? undefined : heldBy({ holder: front.owner }, t);
+  const open =
+    front.open.length === 0
+      ? t("sin entradas abiertas", "no open entries")
+      : `${t("abiertas", "open")}: ${front.open.join(", ")}`;
+  return `${front.name} · ${held ?? t("libre", "free")} · ${open}`;
 }
 
 /** One open change: the one here marked, who it waits for, its pending scope and its folder. */
