@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-guard-rama",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-guard-rama",
+  "baseCommit": "d2162d4783f13176b6898d79bfcd407c810bf47e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:ac6ea0e24ba032ba28e97aac27094390ce3071120dcd77380ac5c26835e6d488",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:e06e325c988ce5fa145ef03520a06ed511c672a27eaeb149ba0965d77b534139",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:e7a518b0765d685ef4de26c6a65d51c0ce54e70df146c30a321d7b28697572cc",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 3
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:da24f1a268593347e14df937a3906aa6a9630fb0ba132c77d813bfa675798acc",
+    "at": "2026-11-03T07:51:52.351Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
