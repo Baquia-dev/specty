@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-resolves-c3",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-resolves-c3",
   "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
   "revision": 1,
@@ -59,6 +59,8 @@
     "T": 3,
     "R": 3
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T06:53:09.478Z"
+  "lockedTests": {
+    "packages/cli/test/memory-resolves.test.ts": "sha256:97f2253e7b352591ce66fc30da3f8cfc7009bac92d73ad2db1ea6c081ed469e6",
+    "packages/core/test/memory/claims.test.ts": "sha256:b4fa3e8c84423fdfa90a6e3e986363c12621cba000dbffb7680a6b3dcee0bff4"
+  }
 }
