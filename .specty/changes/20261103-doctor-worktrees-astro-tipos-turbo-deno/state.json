@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "20261103-doctor-worktrees-astro-tipos-turbo-deno",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-doctor-worktrees-astro-tipos-turbo-deno",
+  "baseCommit": "e13cf61461797d5e1405043ff6360e194f2ffdd8",
+  "revision": 1,
+  "size": {
+    "level": "S",
+    "score": 3,
+    "adjust": 0,
+    "reasons": [
+      "3 archivos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:d84a17d0b4d561c944f4fbb4075acca3f519f2bac2cf88a24d1431d39ba98afb",
+      "decision": "implicit"
+    },
+    "A2": {
+      "hash": "sha256:ec07c43b591b1a170fcd34b1563271365c6e80ec05f60ec2aa5b46fbc7e5d9de",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:792356b8ae4ac2e83cf5645a2b743674edb31018cc95e1c0ac4d7b8413706b53",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 5,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:99cf9e7a949065e273827874f92228348bbd1c8799d43b4a626cf41bd62c1979",
+    "at": "2026-11-03T14:58:46.320Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
