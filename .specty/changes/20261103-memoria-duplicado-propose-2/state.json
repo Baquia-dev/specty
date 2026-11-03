@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-duplicado-propose-2",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-duplicado-propose-2",
+  "baseCommit": "2c3a4e3ccc76154abf0aaf3f68ce9cdb62bdfcbc",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:67f34099d74550812858c67b339ca9ea010971444e1a9c576101eb83af176966",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:8937fc7929ae3e621a541707fa2a1b425127a92deb3bd5a94a26624a1b723243",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:905455fac579afd43ba7b993c5039c368c96f996228312138b83b722ce47786a",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 2
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:ef855b387f5bac181a33de037d1af0010fa727859e5099fd7671ef8d6dfd3df3",
+    "at": "2026-11-03T08:22:18.467Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
