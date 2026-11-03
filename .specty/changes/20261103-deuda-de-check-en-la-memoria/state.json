@@ -51,12 +51,23 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1fefb0f46af41a64d5870f440c093cc6b5fa9fc8",
+      "attempts": 1,
       "startedAt": "2026-11-03T12:38:16.447Z",
       "doneAt": "2026-11-03T12:39:01.239Z",
-      "summary": "core cards/check-debt.ts: checkDebt (la deuda que anotar, sin repetir una entrada no hecha con su texto en algún idioma, y las mejoras abiertas que marcar hechas) y checkDebtLines; exportadas en cards/index.ts"
+      "summary": "core cards/check-debt.ts: checkDebt (la deuda que anotar, sin repetir una entrada no hecha con su texto en algún idioma, y las mejoras abiertas que marcar hechas) y checkDebtLines; exportadas en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/test/check-debt.test.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "adeb8ebb9800abc6cccc2fcf85ed5298272fcd67",
+      "startedAt": "2026-11-03T12:39:01.560Z",
+      "doneAt": "2026-11-03T12:47:52.977Z",
+      "summary": "cli flow/check-debt.ts: keepCheckDebt anota y marca hecha la deuda fuera de la CI, un commit cada una; check() lo carga con import() solo con --all (el hook de pre-commit no carga commander); writerOf exportado. Test AC1 corregido tras S1: sin terminal el autor es agent."
     }
   },
   "pending": {
@@ -67,11 +78,12 @@
     "A": 6,
     "AC": 4,
     "T": 3,
-    "R": 2
+    "R": 2,
+    "S": 1
   },
   "lockedTests": {
     "packages/cli/test/check-code-rules.test.ts": "sha256:db4524168c27d2257334e80205fc671871ef667d5c158456263690321c2f5b97",
-    "packages/cli/test/check-debt.test.ts": "sha256:ac89a5c411ca9825844345b43c823fa05c3435f379f944652e0bb87121016b33",
+    "packages/cli/test/check-debt.test.ts": "sha256:c6897ade3ae549e23aadcef5d153665f5e4785a3afd7c4b851a31b354a536fb8",
     "packages/core/test/cards/check-debt.test.ts": "sha256:ab1257252a016f85f3ec7e7fb2764a9537bbf63c875265998942c0cd247a6081"
   }
 }

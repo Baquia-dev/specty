@@ -30,7 +30,8 @@ describe("specty check --all keeps its debt in the memory", () => {
     expect(run.out).toContain("  src/big.ts 520 líneas de código (máximo 500)");
     expect(run.out.split("\n").slice(-2)).toEqual(["OK 3/4 · FALLA: max-lines", ADDED]);
     const memory = (await cli(root, ["memory"])).out;
-    expect(memory).toContain(`P1 · mejora · ${DEBT} — la persona, `);
+    // Without a terminal, whoever runs it is an agent, and Specty does not know which one.
+    expect(memory).toContain(`P1 · mejora · ${DEBT} — agent, `);
     expect(memory).not.toContain("P2 ·");
   });
 

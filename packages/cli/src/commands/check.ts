@@ -132,12 +132,17 @@ export async function check(
     checks: provider.checks.filter((definition) => !skip.has(definition.id)),
   }));
   const report = await runChecks(context, providers, stacks);
+  // `--all` keeps its debt in the memory (ADR 0016) and says so after the summary. Loaded only
+  // then: the pre-commit hook also runs `check`, and must not load the memory's commands.
+  const debt =
+    mode === "all" ? await (await import("../flow/check-debt")).keepCheckDebt(session, report) : [];
+  const rendered = renderReport(report, {
+    lang: session.lang,
+    verbose,
+    maxFindings: session.config.checks.maxFindings,
+  });
   return {
-    report: renderReport(report, {
-      lang: session.lang,
-      verbose,
-      maxFindings: session.config.checks.maxFindings,
-    }),
+    report: [rendered, ...debt].join("\n"),
     json: reportJson(report),
     code: reportExitCode(report),
   };

@@ -83,7 +83,7 @@ export function memoryCommand(program: Command, run: Run): void {
 }
 
 /** Who writes to the memory from this folder: its open change's trailers, and the author. */
-async function writerOf(session: Session): Promise<MemoryWriter> {
+export async function writerOf(session: Session): Promise<MemoryWriter> {
   return { target: targetOf(session, await openChange(session)), author: authorOf(session) };
 }
 
