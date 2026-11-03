@@ -64,7 +64,7 @@ Segundo corte de P31 (lo aplazado entra solo en la memoria): cuando `specty chec
 
 ## Tareas
 
-- [ ] T1: Qué deuda anotar y cuál marcar hecha
+- [x] T1: Qué deuda anotar y cuál marcar hecha
   - files: packages/core/src/cards/check-debt.ts, packages/core/src/cards/index.ts, packages/core/test/cards/check-debt.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/check-debt.test.ts && pnpm lint

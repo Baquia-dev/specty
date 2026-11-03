@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "1fefb0f46af41a64d5870f440c093cc6b5fa9fc8",
+      "startedAt": "2026-11-03T12:38:16.447Z",
+      "doneAt": "2026-11-03T12:39:01.239Z",
+      "summary": "core cards/check-debt.ts: checkDebt (la deuda que anotar, sin repetir una entrada no hecha con su texto en algún idioma, y las mejoras abiertas que marcar hechas) y checkDebtLines; exportadas en cards/index.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
