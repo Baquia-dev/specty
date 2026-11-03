@@ -77,3 +77,22 @@ Resuelve P3 y P37. La mitad viva de la memoria de Specty, en `.git/common/specty
 ## Riesgos
 
 - R1: Borrar la actividad de una conversación viva le quitaría a `status` quién lleva un cambio — solo se borra la que pasa de `memory.orphanAfterMin` sin un paso, que `status` ya trata como de nadie, y nunca la de una carpeta con un cambio abierto.
+
+## Cierre
+
+### Resumen
+
+`specty prune` limpia también la mitad viva de la memoria de Specty. Borra los registros de actividad de las conversaciones que ya no trabajan: los de una carpeta que ya no existe, y los que pasan de `memory.orphanAfterMin` minutos sin un paso en una carpeta sin cambio abierto, como `claude-code-bench.json`. También borra los mensajes de los cambios que ya no están abiertos. Su salida lo dice en «ACTIVIDAD BORRADA» (cuántos registros) y «MENSAJES BORRADOS» (de qué cambios), y solo dice que no había nada que limpiar cuando no borró nada. Archivar un cambio, cerrado o cancelado, borra sus mensajes sin recoger. Los registros de una carpeta con un cambio abierto quedan aunque sean viejos, porque `status` los usa con los cambios huérfanos.
+
+### Desviaciones
+
+- Ninguna respecto al plan.
+
+### Decisiones
+
+- `pruneCard` recibe la actividad y los mensajes como campos opcionales, así que quien lo llama como antes ve lo mismo.
+- Las carpetas se comparan por su ruta real (`realpath`), como en `status`, para que un enlace simbólico no haga borrar la actividad de un cambio abierto.
+
+### Pendientes
+
+- Ninguno.
