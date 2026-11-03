@@ -35,7 +35,19 @@ const held = new Set<string>();
  * process no longer exists, or that cannot be read, does not count.
  */
 export async function lockChange(git: Git, id: string, holder: LockHolder): Promise<Lock> {
-  const path = await git.gitPath(lockOf(id));
+  return lockAt(git, lockOf(id), holder);
+}
+
+/**
+ * Takes the turn of the full verification for `holder`: one at a time in the whole clone, with
+ * the same rules as a change's lock (formats.md §1).
+ */
+export async function lockFullVerification(git: Git, holder: LockHolder): Promise<Lock> {
+  return lockAt(git, "common/specty/locks/full-verification.json", holder);
+}
+
+async function lockAt(git: Git, lock: string, holder: LockHolder): Promise<Lock> {
+  const path = await git.gitPath(lock);
   if (held.has(path)) return { kind: "taken", release: async () => undefined };
   await mkdir(dirname(path), { recursive: true });
   if (!(await create(path, holder))) {
