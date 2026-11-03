@@ -151,7 +151,7 @@ describe("specty init", () => {
     expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
     const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
     expect(settings.hooks.SessionStart).toMatchObject([
-      { matcher: "compact|clear", hooks: [{ type: "command" }] },
+      { matcher: "startup|clear|compact", hooks: [{ type: "command" }] },
     ]);
     const hooks = { ...settings.hooks, SessionStart: [] };
     await writeFiles(root, {
@@ -163,6 +163,50 @@ describe("specty init", () => {
       "Claude Code: falta la tarjeta de Specty tras compactar (SessionStart); ejecuta `specty init`.",
     );
     expect(doctor.out).not.toContain("comprobación tras cada comando");
+  });
+
+  it("AC4: brings the card with the memory when a Claude Code session starts", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
+    expect(settings.hooks.SessionStart).toMatchObject([
+      { matcher: "startup|clear|compact", hooks: [{ type: "command" }] },
+    ]);
+    const added = await cli(root, ["memory", "add", "Probar el saludo en Windows"], {
+      env: { CLAUDECODE: "1" },
+    });
+    expect(added.code).toBe(0);
+    const card = await cli(root, ["guard", "--tool", "claude-code"], {
+      stdin: JSON.stringify({
+        session_id: "s1",
+        cwd: root,
+        hook_event_name: "SessionStart",
+        source: "startup",
+      }),
+    });
+    expect(card.code).toBe(0);
+    expect(card.out).toContain("P1 · pendiente · Probar el saludo en Windows");
+    expect(card.out).toBe((await cli(root, ["next"])).out);
+  });
+
+  it("AC4: doctor misses the card at session start in a hook from before, until init", async () => {
+    const root = await tempRepo({ "package.json": '{"name":"x","scripts":{"test":"true"}}\n' });
+    expect((await cli(root, ["init", "--language", "es", "--tools", "claude-code"])).code).toBe(0);
+    const warning =
+      "Claude Code: el hook `SessionStart` de Specty es de antes de la tarjeta al empezar una sesión; ejecuta `specty init`.";
+    expect((await cli(root, ["doctor"])).out).not.toContain(warning);
+    const settings = JSON.parse(await read(root, ".claude/settings.local.json"));
+    const [ours] = settings.hooks.SessionStart;
+    const hooks = { ...settings.hooks, SessionStart: [{ ...ours, matcher: "compact|clear" }] };
+    await writeFiles(root, {
+      ".claude/settings.local.json": JSON.stringify({ ...settings, hooks }),
+    });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.code).toBe(1);
+    expect(doctor.out).toContain(warning);
+    expect(doctor.out).not.toContain("falta la tarjeta de Specty tras compactar");
+    expect((await cli(root, ["init"])).code).toBe(0);
+    expect((await cli(root, ["doctor"])).out).not.toContain(warning);
   });
 
   it("lets the agent use worktrees without a prompt, keeping the permissions people wrote", async () => {

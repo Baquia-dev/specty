@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-tarjeta-de-inicio-2",
   "baseCommit": "06aa9d7d76d48a8131d6964c705eea607bab4240",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cd281e35aa776bbf5295cd48d052f892f6e2731165b7d854f26822e3d7eb9621",
+    "at": "2026-11-03T05:50:22.013Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -53,12 +60,6 @@
     "T": 4,
     "R": 4
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:cd281e35aa776bbf5295cd48d052f892f6e2731165b7d854f26822e3d7eb9621",
-    "at": "2026-11-03T05:50:22.013Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T05:51:00.870Z"
 }

@@ -22,6 +22,11 @@ import {
 } from "../src";
 
 const ES: CardContext = { lang: "es", command: "specty", quickMaxFiles: 3, implicitTests: true };
+/** The last rule of AGENTS.md's flow block: the final report, and the memory for what is left. */
+const FINAL_REPORT_ES =
+  '- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente; anota cada pendiente con `specty memory add "<texto>"` para que no se quede solo en el chat.';
+const FINAL_REPORT_EN =
+  '- Brief final report: what changed, what was verified and what is pending; note each pending item with `specty memory add "<text>"` so it does not stay only in the chat.';
 const task = (id: string, status: TaskView["status"]): TaskView => ({
   id,
   title: `Tarea ${id}`,
@@ -280,7 +285,7 @@ describe("AGENTS.md blocks", () => {
       "- Antes de crear un módulo, caso de uso, componente o pantalla, busca uno equivalente en el repo y replica su estructura.",
       "- Localiza el código con búsquedas dirigidas por símbolo o texto y lee solo los fragmentos necesarios, no archivos completos; pide juntas, en la misma respuesta, las lecturas y búsquedas que no dependen entre sí.",
       "- Edita con cambios puntuales; no reescribas archivos completos para cambios pequeños.",
-      "- Reporte final breve: qué cambió, qué se verificó y qué queda pendiente.",
+      FINAL_REPORT_ES,
     ]);
     expect(flowBlock("en", "specty").split("\n").slice(-6)).toEqual([
       "## Rules (Specty)",
@@ -288,8 +293,22 @@ describe("AGENTS.md blocks", () => {
       "- Before creating a module, use case, component or screen, look for an equivalent one in the repo and replicate its structure.",
       "- Find code with targeted searches by symbol or text and read only the fragments you need, not whole files; request reads and searches that do not depend on each other together, in the same response.",
       "- Edit with targeted changes; do not rewrite whole files for small changes.",
-      "- Brief final report: what changed, what was verified and what is pending.",
+      FINAL_REPORT_EN,
     ]);
+  });
+
+  it("AC5: asks in the final report rule to note each pending item in Specty's memory", () => {
+    expect(flowBlock("es", "specty").split("\n").at(-1)).toBe(FINAL_REPORT_ES);
+    expect(flowBlock("en", "specty").split("\n").at(-1)).toBe(FINAL_REPORT_EN);
+    expect(flowBlock("es", "npx -y @baquia-dev/specty")).toContain(
+      '`npx -y @baquia-dev/specty memory add "<texto>"`',
+    );
+    for (const lang of ["es", "en"] as const) {
+      expect(flowBlock(lang, "specty").split("\n").length).toBeLessThanOrEqual(15);
+      expect(flowBlock(lang, "specty", { mcp: true }).split("\n").at(-1)).toBe(
+        lang === "es" ? FINAL_REPORT_ES : FINAL_REPORT_EN,
+      );
+    }
   });
 
   it("asks people not to write in Conventions what specty check verifies (AC5)", () => {
