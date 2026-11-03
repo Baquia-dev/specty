@@ -6,6 +6,13 @@
   "branch": "specty/20261104-recordatorios-que-esperan-en-la-ui",
   "baseCommit": "0cbfa9d8cdf0fd0272a5af072f2a4f483b9b408a",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:2f4f1eee32d3b69ec5b7e36e8fece33517b17a40c970f4888c1209cd729fc29f",
+    "at": "2026-11-03T23:19:20.766Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 7,
@@ -43,12 +50,6 @@
     "AC": 3,
     "T": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:2f4f1eee32d3b69ec5b7e36e8fece33517b17a40c970f4888c1209cd729fc29f",
-    "at": "2026-11-03T23:19:20.766Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T23:20:10.489Z"
 }
