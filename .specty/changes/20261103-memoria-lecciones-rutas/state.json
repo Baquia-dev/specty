@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-lecciones-rutas",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-memoria-lecciones-rutas",
   "baseCommit": "802764ac2b1e1ea947167afbefebf61a8bbdf3d8",
   "revision": 1,
@@ -47,6 +47,9 @@
     "T": 3,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T10:45:49.781Z"
+  "lockedTests": {
+    "packages/cli/test/memory-lessons.test.ts": "sha256:d98df53be31914e21b7a9efb4d0bef6cd2f5696307b1c1dedc6c75da3153d346",
+    "packages/core/test/memory/lessons.test.ts": "sha256:60c24a083d9b028a9c2183c02babf55dbdc2d36142a0c5dba4ded96cd6ff669e",
+    "packages/ui/src/memory/memory-lessons.test.ts": "sha256:35b227092366381fc737805303315dc446d07badc67a673c8315fd914b129794"
+  }
 }
