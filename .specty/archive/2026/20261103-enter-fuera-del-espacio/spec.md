@@ -69,3 +69,28 @@ Antigravity solo deja trabajar a su agente dentro de las carpetas de su espacio 
 
 - R1: En Antigravity CLI los permisos de Specty sí abrían la carpeta de las worktrees (A1 falso allí), y ahora el agente pide abrir una conversación nueva en vez de entrar — es más lento pero no se bloquea; el registro de sus conversaciones lo diría.
 - R2: Las rutas que manda Antigravity y las de git difieren por enlaces simbólicos (`/var` y `/private/var` en macOS) — se comparan las rutas reales.
+
+## Cierre
+
+### Resumen
+
+Antigravity solo deja trabajar a su agente dentro de las carpetas de su espacio de trabajo, y lo dice en cada evento de sus hooks (`workspacePaths`). Ahora, cuando una conversación de Antigravity ejecuta `specty enter <id>` y la carpeta del cambio no está dentro de ninguna, comparando las rutas reales, el guard deniega el comando sin ligar la conversación. Así no se repite el bloqueo de Frecu, donde Antigravity negaba la carpeta del cambio y el guard todo lo de fuera. El motivo nombra las carpetas de la herramienta y la del cambio, y el SIGUIENTE pide decirle a la persona que abra esa carpeta en su editor (en Zed, con el selector de worktrees) y siga allí en una conversación nueva, o que añada la carpeta de las worktrees al proyecto del editor, y terminar el turno. Si la carpeta del cambio está en su espacio de trabajo, entra como antes.
+
+El contrato de cada agente gana `workspace` (Antigravity lo lee de `workspacePaths`), `enforce/place.ts` decide con `outOfReach` y core da el texto con `unreachableEnterDenial`. La tabla de capacidades y «Entrar con `specty enter`» de ARCHITECTURE dicen el límite.
+
+### Desviaciones
+
+- La verificación completa falló al aceptar: la tabla de capacidades de ARCHITECTURE §10 se genera de `capabilities.ts` y no recogía el texto nuevo de Antigravity. Lo arregló el ajuste T3, con un test que pide el límite en la tabla y en ARCHITECTURE.
+
+### Decisiones
+
+- La negativa usa la regla `session`, como la que pide `EnterWorktree` a Claude Code, y no liga la conversación.
+- Los tests de Antigravity suponían, sin comprobarlo con la herramienta real, que los permisos de Specty le abrían la carpeta de las worktrees; su ayudante `entered()` pasa ahora esa carpeta en `workspacePaths`, como la tendría si el editor se la pasa.
+- Solo Antigravity dice su espacio de trabajo; las demás herramientas entran como hasta ahora.
+
+### Pendientes
+
+- Sin comprobar que Zed le pasa a Antigravity las carpetas que la persona añade al proyecto (`additionalDirectories`): si no lo hace, solo queda abrir la carpeta del cambio en una conversación nueva. Lo dice el registro de la conversación (`~/.gemini/antigravity-acp/conversations/<id>.meta`).
+- En Antigravity CLI se supone el mismo límite (comparten el arnés); si sus permisos sí abrían la carpeta de las worktrees, ahora pide una conversación nueva en vez de entrar.
+- Una conversación que ya quedó ligada a una carpeta que no alcanza no se suelta sola: la persona abre otra.
+- `packages/core/src/index.ts` pasa de 300 líneas de código (302) con la exportación nueva; es una lista de exportaciones, como la de P2 en la memoria.

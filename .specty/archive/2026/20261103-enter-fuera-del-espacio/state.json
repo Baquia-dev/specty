@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-enter-fuera-del-espacio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-enter-fuera-del-espacio",
   "baseCommit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:6a052c4cc89604c30a74536602b4c49bb468ed34e3e5f1dd25ccf9a51818d037",
@@ -61,12 +61,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4c74fa9534800477b231e8a3ddc314bc7e322aa4",
+      "attempts": 1,
       "startedAt": "2026-11-03T07:06:27.574Z",
       "doneAt": "2026-11-03T07:06:47.567Z",
-      "summary": "La fila de Antigravity en la tabla de capacidades de ARCHITECTURE §10 recoge el límite al entrar en un cambio fuera de su espacio de trabajo"
+      "summary": "La fila de Antigravity en la tabla de capacidades de ARCHITECTURE §10 recoge el límite al entrar en un cambio fuera de su espacio de trabajo",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -79,6 +79,7 @@
     "T": 3,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T07:13:23.159Z",
   "lockedTests": {
     "packages/cli/test/antigravity.test.ts": "sha256:0ae31274090e757723c7d2ff4d890e8c4270301249660a9e16115079385704fd",
     "packages/core/test/guard/worktrees.test.ts": "sha256:3ff6226da4d3723e3954222b240194247f94b2bf01169ee37e2905b95ad66c90",
