@@ -20,3 +20,9 @@ kind: quick
   - files: packages/cli/src/detect/worktree-tools.ts, packages/cli/test/doctor-watchers.test.ts, docs/decisions/0018-worktrees-dentro-del-repositorio.md
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/doctor-watchers.test.ts
   - type: fix
+
+## Cierre
+
+### Resumen
+
+doctor pide a Vite una función que compara el principio de la ruta y a Metro la expresión con la carpeta escapada y los dos separadores; la forma de antes no cuenta si la ruta tiene caracteres especiales; ADR 0018 con la medición
