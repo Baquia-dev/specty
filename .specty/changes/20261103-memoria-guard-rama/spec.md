@@ -54,7 +54,7 @@ La memoria de Specty vive en su propia rama (`specty-memory`), y solo los comand
   - files: packages/core/src/guard/git-refs.ts, packages/core/src/guard/git.ts, packages/core/src/guard/shell.ts, packages/core/src/guard/decide.ts, packages/core/test/guard/memory-branch.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: El guard recibe las ramas, y la documentación
+- [x] T2: El guard recibe las ramas, y la documentación
   - files: packages/cli/src/enforce/place.ts, packages/cli/test/memory-guard.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-guard.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint

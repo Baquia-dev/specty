@@ -54,6 +54,7 @@ export async function resolveAction(
       specty: analysis.specty,
       unscopedNpx: analysis.unscopedNpx,
       bypass: analysis.bypass,
+      refs: analysis.refs,
       committedGoverned,
       ...(await placeFiles(place, analysis)),
       ...(bound !== undefined && (await runsOutside(analysis, cwd, bound))
