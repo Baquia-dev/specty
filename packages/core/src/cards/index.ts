@@ -159,8 +159,6 @@ export {
   geminiSandboxLine,
   geminiSandboxVersionedWarning,
   geminiTrustWarning,
-  geminiWorkspaceLine,
-  geminiWorkspaceVersionedWarning,
   gitHooksLine,
   gitHooksManualWarning,
   guardLine,
@@ -169,8 +167,6 @@ export {
   noHooksWarning,
   notOnPathWarning,
   opencodeGuardLine,
-  opencodeWorktreesLine,
-  opencodeWorktreesVersionedWarning,
   yoursUncommittedWarning,
 } from "./install";
 export {
