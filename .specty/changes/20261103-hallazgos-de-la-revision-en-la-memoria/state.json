@@ -6,6 +6,13 @@
   "branch": "specty/20261103-hallazgos-de-la-revision-en-la-memoria",
   "baseCommit": "540f6bd0eacaf52fe2663ca853b18e5c2adf75ca",
   "revision": 2,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:ffba3e1a299c22b06027f5683a6b208164dcb1f2cc7703d6cad85164c99ccebc",
+    "at": "2026-11-03T13:40:59.702Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -56,12 +63,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 2,
-    "hash": "sha256:ffba3e1a299c22b06027f5683a6b208164dcb1f2cc7703d6cad85164c99ccebc",
-    "at": "2026-11-03T13:40:59.702Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T13:42:55.672Z"
 }
