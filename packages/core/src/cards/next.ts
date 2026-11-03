@@ -4,6 +4,7 @@ import type { MemoryEntry } from "../memory/entries";
 import { headerOf, type Output, section } from "../output";
 import { COMMIT_TYPES } from "../spec/model";
 import { acceptanceCard } from "./acceptance";
+import type { FrontsView } from "./fronts";
 import { termsSection } from "./glossary";
 import { integrationCard } from "./integration";
 import { memoryStartBlocks, resolvesLines } from "./memory";
@@ -24,6 +25,8 @@ export interface NextView {
   readonly fresh?: boolean;
   /** Specty's memory, read only when no change is active: its open entries go after the card. */
   readonly memory?: readonly MemoryEntry[];
+  /** The memory's fronts, who holds each and the asker's, read with the memory when it has any. */
+  readonly fronts?: FrontsView;
 }
 
 /** `specty next`: what to do now, for every phase. Never changes anything. */
@@ -31,7 +34,8 @@ export function nextCard(view: NextView, ctx: CardContext): Output {
   const { change } = view;
   if (change === undefined) {
     const card = noChangeCard(view.dirty, ctx, view.fresh === true);
-    return { ...card, blocks: [...card.blocks, ...memoryStartBlocks(view.memory ?? [], ctx)] };
+    const memory = memoryStartBlocks(view.memory ?? [], ctx, view.fronts);
+    return { ...card, blocks: [...card.blocks, ...memory] };
   }
   if (change.integration !== undefined) return integrationCard(change, change.integration, ctx);
   const card = PHASE_CARDS[change.phase](change, ctx);

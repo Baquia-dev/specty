@@ -68,7 +68,7 @@ Tercer cambio de P33 (repartir el trabajo entre sesiones): la tarjeta sin cambio
 
 ## Tareas
 
-- [ ] T1: La tarjeta de inicio con los frentes
+- [x] T1: La tarjeta de inicio con los frentes
   - files: packages/core/src/cards/fronts.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/next.ts, packages/core/test/cards/front-start.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/front-start.test.ts test/cards/memory-start.test.ts && pnpm typecheck && pnpm lint

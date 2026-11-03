@@ -45,7 +45,19 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/core/src/cards/status.ts"
+      ],
+      "attempts": 2,
+      "baseCommit": "943a1c62c75bdf484e35fd7a71acedc0af5fc281",
+      "startedAt": "2026-11-03T22:04:55.391Z",
+      "doneAt": "2026-11-03T22:06:51.188Z",
+      "summary": "memoryStartBlocks recibe FrontsView: al dueño de un frente le muestra sus primeras libres en orden (o que no tiene); a los demás les quita las de frentes con dueño y los nombra. Con la ampliación, statusCard ya añade «FRENTES» y fronts (código de T2)."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
