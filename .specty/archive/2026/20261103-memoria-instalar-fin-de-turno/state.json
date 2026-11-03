@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-instalar-fin-de-turno",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-instalar-fin-de-turno",
   "baseCommit": "a3eda5bdf9597ca1d2ec2128b917c52c79e02a6d",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:b05079ea1416e2010687aec04219109cca3dd968c3e343eb39120a5b8a94c2e9",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "829818c655c5953bb889312003d385b9755f3ee1",
+      "attempts": 1,
       "startedAt": "2026-11-03T08:53:18.952Z",
       "doneAt": "2026-11-03T08:59:42.431Z",
-      "summary": "install/agents.ts: withMemoryStop (añade o quita la red en hooks.Stop), memoryStopLines (aviso de doctor) y la limpieza de uninstall con hook memory-stop; Claude Code y Codex la instalan con su guard y doctor la comprueba; ARCHITECTURE.md lo documenta"
+      "summary": "install/agents.ts: withMemoryStop (añade o quita la red en hooks.Stop), memoryStopLines (aviso de doctor) y la limpieza de uninstall con hook memory-stop; Claude Code y Codex la instalan con su guard y doctor la comprueba; ARCHITECTURE.md lo documenta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,6 +70,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T09:04:20.876Z",
   "lockedTests": {
     "packages/cli/test/codex.test.ts": "sha256:c84c339cc09b1487b40e91bc342dc5807023f9acd32c1898b5c65c2cf90c0f50",
     "packages/cli/test/memory-stop-install.test.ts": "sha256:d520b3fef61eb2c2ebf09243005aab089ccce9df0363271984fe469ab854666f"

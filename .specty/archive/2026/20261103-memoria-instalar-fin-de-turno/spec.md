@@ -65,3 +65,21 @@ El corte C5 dejó listo `specty hook memory-stop <agente>`, que devuelve el turn
 
 - R1: Un repositorio con un `Stop` propio que también lee el último mensaje recibe dos devoluciones del turno — solo si su hook también bloquea; la red lo hace una vez por turno.
 - R2: Las instalaciones anteriores quedan sin red hasta ejecutar `specty init` — `doctor` lo avisa.
+
+## Cierre
+
+### Resumen
+
+`specty init` instala la red de la memoria en el fin de turno: escribe `<specty> hook memory-stop <agente>` en el `Stop` de Claude Code (en el mismo archivo que su guard, portable o local) y de Codex (`.codex/hooks.json`), con el comando del guard, una sola vez y sin tocar los `Stop` de la persona. Al pasar el guard de Claude Code de un archivo al otro, la red se va con él. `specty uninstall` la quita con la misma regla que `hook agent-stop`, y `specty doctor` avisa (`memory-stop`) cuando el guard está y la red no, y pide ejecutar `specty init`. Con esto la red del corte C5 llega a cada repositorio.
+
+### Desviaciones
+
+- Ninguna respecto al plan. El test de Codex que fijaba el `Stop` tras `init` se actualizó en la fase de tests, como decía la spec.
+
+### Decisiones
+
+- `withMemoryStop` no reescribe el archivo si la entrada ya está igual, así que ejecutar `init` de nuevo no lo cambia.
+
+### Pendientes
+
+- P7: este repositorio aún no tiene la red ni la tarjeta al empezar una sesión, hasta que la persona ejecute `specty init`.
