@@ -146,29 +146,13 @@ export function geminiTrustWarning(lang: Lang): string {
 }
 
 /**
- * Gemini CLI's sandbox, off unless the person turns it on, with Specty's folders in its local
- * settings: the ones Specty's commands write in from a change's folder.
+ * Gemini CLI's sandbox, off unless the person turns it on, with git's common folder in its local
+ * settings: Specty's commands commit there from a change's folder.
  */
 export function geminiSandboxLine(file: string, lang: Lang): string {
   return translator(lang)(
-    `Gemini CLI: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees cuando activas su sandbox.`,
-    `Gemini CLI: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder when you turn its sandbox on.`,
-  );
-}
-
-/** Gemini CLI's local settings open the worktrees' folder to its tools (`specty enter`). */
-export function geminiWorkspaceLine(file: string, lang: Lang): string {
-  return translator(lang)(
-    `Gemini CLI: ${file} (local) abre a sus herramientas la carpeta de las worktrees (\`context.includeDirectories\`), para trabajar en la de un cambio desde la misma sesión (\`specty enter\`); Gemini CLI puede preguntar una vez si confías en ella.`,
-    `Gemini CLI: ${file} (local) opens the worktrees' folder to its tools (\`context.includeDirectories\`), to work in a change's from the same session (\`specty enter\`); Gemini CLI may ask once whether you trust it.`,
-  );
-}
-
-/** Gemini CLI settings that go in git: Specty says which folder to open to its tools elsewhere. */
-export function geminiWorkspaceVersionedWarning(file: string, folder: string, lang: Lang): string {
-  return translator(lang)(
-    `Gemini CLI: ${file} va en git, así que Specty no le añade la carpeta de las worktrees; para trabajar en la de un cambio desde la misma sesión (\`specty enter\`), añade \`${folder}\` a \`context.includeDirectories\` en tu configuración de usuario.`,
-    `Gemini CLI: ${file} goes in git, so Specty does not add the worktrees' folder to it; to work in a change's from the same session (\`specty enter\`), add \`${folder}\` to \`context.includeDirectories\` in your user settings.`,
+    `Gemini CLI: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git cuando activas su sandbox.`,
+    `Gemini CLI: ${file} (local) lets Specty's commands write in the git folder when you turn its sandbox on.`,
   );
 }
 

@@ -52,7 +52,7 @@ Segundo de los tres cambios que quitan los permisos que `init` daba a cada herra
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/install/opencode.ts, packages/cli/src/agents/opencode.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/opencode-install.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/opencode-install.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: Gemini CLI sin `includeDirectories`, y la documentación
+- [x] T2: Gemini CLI sin `includeDirectories`, y la documentación
   - files: packages/cli/src/agents/gemini-cli.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/gemini-cli.test.ts, packages/cli/test/doctor-enter.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/gemini-cli.test.ts test/doctor-enter.test.ts && pnpm typecheck && pnpm lint

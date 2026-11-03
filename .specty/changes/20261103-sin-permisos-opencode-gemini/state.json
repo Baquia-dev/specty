@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-sin-permisos-opencode-gemini",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-sin-permisos-opencode-gemini",
   "baseCommit": "28e862bee120fcf4b56249159472b84e3449519c",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "6fda11aeb0e52128abddabca3d4a919e9f4e085b",
+      "attempts": 1,
       "startedAt": "2026-11-03T08:43:58.882Z",
       "doneAt": "2026-11-03T08:45:50.172Z",
-      "summary": "OpenCode: init ya no escribe la regla de external_directory y, con uninstall, quita la de la carpeta de antes (formerWorktreesHome) sin tocar unos ajustes sin ella; doctor solo mira redirects; fuera sus textos de core"
+      "summary": "OpenCode: init ya no escribe la regla de external_directory y, con uninstall, quita la de la carpeta de antes (formerWorktreesHome) sin tocar unos ajustes sin ella; doctor solo mira redirects; fuera sus textos de core",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4158c8b648fc6d7d5d7f960075b0ef42f0b49e11",
+      "startedAt": "2026-11-03T08:45:50.772Z",
+      "doneAt": "2026-11-03T08:47:51.341Z",
+      "summary": "Gemini CLI: sandboxAllowedPaths solo con la carpeta común de git, sin includeDirectories ni crear la carpeta; init y uninstall quitan la de antes de ambas listas; doctor solo mira el matcher; textos y ARCHITECTURE al día"
     }
   },
   "pending": {
