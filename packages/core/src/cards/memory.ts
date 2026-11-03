@@ -141,29 +141,6 @@ export function reminderLines(entries: readonly MemoryEntry[], ctx: CardContext)
   ];
 }
 
-/**
- * The reminders an archived change fired, in the output of the command that archived it: each
- * with its id and first line, and that from now on they show in every session. Nothing without
- * them.
- */
-export function firedRemindersBlocks(
-  entries: readonly MemoryEntry[],
-  ctx: CardContext,
-): OutputBlock[] {
-  const t = translator(ctx.lang);
-  if (entries.length === 0) return [];
-  return section(
-    t("RECORDATORIOS QUE ESPERABAN A ESTE CAMBIO", "REMINDERS THAT WAITED FOR THIS CHANGE"),
-    [
-      ...entries.map((entry) => `${entry.id} · ${firstLine(entry.text)}`),
-      t(
-        `Desde ahora salen en cada sesión hasta que se marquen hechos con \`${ctx.command} memory done <id>\`.`,
-        `From now on they show in every session until marked done with \`${ctx.command} memory done <id>\`.`,
-      ),
-    ],
-  );
-}
-
 /** How to mark a reminder done, under a list of them. */
 export function reminderDoneLine(ctx: CardContext): string {
   return translator(ctx.lang)(

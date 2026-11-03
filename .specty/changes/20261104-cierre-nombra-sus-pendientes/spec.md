@@ -53,7 +53,7 @@ Resuelve P43 y P47. Hoy la salida de `specty close` no dice qué pendientes deja
 
 ## Tareas
 
-- [ ] T1: La sección de los pendientes que deja un cierre
+- [x] T1: La sección de los pendientes que deja un cierre
   - files: packages/core/src/cards/archived-memory.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/index.ts, packages/core/test/cards/archived-memory.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/archived-memory.test.ts test/cards/memory-start.test.ts && pnpm lint

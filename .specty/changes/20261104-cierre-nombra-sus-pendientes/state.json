@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "4d7f9fa0239719f8a4193c945b7e18584d979608",
+      "startedAt": "2026-11-03T23:09:11.094Z",
+      "doneAt": "2026-11-03T23:09:54.522Z",
+      "summary": "cards/archived-memory.ts: firedRemindersBlocks, movida de cards/memory.ts, y harvestedBlocks (PENDIENTES QUE QUEDAN EN LA MEMORIA, en es y en), exportadas en cards/index.ts."
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
