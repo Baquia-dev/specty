@@ -85,7 +85,7 @@ Segundo cambio de P33 (repartir el trabajo entre sesiones): una sesión de agent
   - files: packages/cli/src/enforce/fronts.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/front-guard.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-guard.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T5: La documentación del dueño de un frente
+- [x] T5: La documentación del dueño de un frente
   - files: docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm lint

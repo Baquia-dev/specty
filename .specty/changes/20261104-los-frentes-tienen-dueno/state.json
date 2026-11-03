@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-los-frentes-tienen-dueno",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-los-frentes-tienen-dueno",
   "baseCommit": "2435a73902d061d02e48bb31d769a851d0c0f258",
   "revision": 1,
@@ -83,14 +83,23 @@
     },
     "T4": {
       "status": "done",
-      "scopeExtra": [
-        "packages/cli/src/store/front-owners.ts"
-      ],
-      "attempts": 1,
       "baseCommit": "4af5d079d09bc8c1bf58b1d189878b1fbe42484a",
+      "attempts": 1,
       "startedAt": "2026-11-03T20:25:00.146Z",
       "doneAt": "2026-11-03T20:26:45.694Z",
-      "summary": "enforce/fronts.ts judgeFronts: ante specty front take|free, rechaza (regla memory) el frente con dueño vivo de otra conversación y registra con holdFront el último take, dejando el frente anterior; guard.ts lo llama en beforeAction para los comandos de shell"
+      "summary": "enforce/fronts.ts judgeFronts: ante specty front take|free, rechaza (regla memory) el frente con dueño vivo de otra conversación y registra con holdFront el último take, dejando el frente anterior; guard.ts lo llama en beforeAction para los comandos de shell",
+      "scopeExtra": [
+        "packages/cli/src/store/front-owners.ts"
+      ]
+    },
+    "T5": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "b03d86accc0d585d01331eacb8a1761fd41c2000",
+      "startedAt": "2026-11-03T20:26:46.014Z",
+      "doneAt": "2026-11-03T20:27:19.672Z",
+      "summary": "formats.md §1: el registro fronts/<frente>.json y el párrafo «Dueño de un frente»; ARCHITECTURE: front take y front free, quién registra al dueño y qué rechaza el guard"
     }
   },
   "pending": {
