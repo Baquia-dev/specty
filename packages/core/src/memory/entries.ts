@@ -104,7 +104,7 @@ export function isOpenEntry(entry: MemoryEntry): boolean {
 }
 
 /** What a commit of the memory's branch does to its entry. */
-export type MemoryOperation = "add" | "done" | "take";
+export type MemoryOperation = "add" | "done" | "take" | "free";
 
 /** Why `specty new --resolves` cannot take an entry. */
 export type ClaimProblem =
@@ -156,6 +156,19 @@ export function freeWork(entries: readonly MemoryEntry[]): readonly MemoryEntry[
 /** `entry`, taken by `change` at `at`. */
 export function takenEntry(entry: MemoryEntry, change: string, at: string): MemoryEntry {
   return { ...entry, status: "taken", taken: { change, at } };
+}
+
+/**
+ * `entry` once the change that took it is archived: done, with who closed it and when, if it
+ * closed; open again, without the change, if it was cancelled.
+ */
+export function settledEntry(
+  entry: MemoryEntry,
+  closed?: { readonly at: string; readonly by: string },
+): MemoryEntry {
+  if (closed !== undefined) return { ...entry, status: "done", closed };
+  const { taken: _taken, ...free } = entry;
+  return { ...free, status: "open" };
 }
 
 /** By date and, on the same date, the P ids before the D ones, each by number. */

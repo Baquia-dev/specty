@@ -294,7 +294,27 @@ export function memoryCommitSubject(operation: MemoryOperation, id: string, lang
       return t(`memoria: ${id} hecha`, `memory: ${id} done`);
     case "take":
       return t(`memoria: ${id} tomada`, `memory: ${id} taken`);
+    case "free":
+      return t(`memoria: ${id} libre de nuevo`, `memory: ${id} free again`);
   }
+}
+
+/**
+ * The entries a change resolves (`specty new --resolves`), for its draft: each with its kind and
+ * first line, and what happens to them when it is archived. Nothing without entries.
+ */
+export function resolvesLines(entries: readonly MemoryEntry[], ctx: CardContext): string[] {
+  if (entries.length === 0) return [];
+  const t = translator(ctx.lang);
+  return [
+    ...entries.map(
+      (entry) => `${entry.id} · ${t(...KINDS[entry.kind])} · ${firstLine(entry.text)}`,
+    ),
+    t(
+      "Quedan hechas al cerrarse este cambio, y libres si se cancela.",
+      "They get done when this change closes, and free again if it is cancelled.",
+    ),
+  ];
 }
 
 /** One entry in a list: its id, kind, status unless open, text, quote and origin. */

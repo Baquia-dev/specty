@@ -172,6 +172,7 @@ export {
   parseEntry,
   parseEntryId,
   serializeEntry,
+  settledEntry,
   takenEntry,
 } from "./memory/entries";
 export {

@@ -58,7 +58,7 @@ Desde el corte C3, `specty new --resolves` deja tomadas las entradas de la memor
 
 ## Tareas
 
-- [ ] T1: La entrada hecha o liberada, y la sección del borrador
+- [x] T1: La entrada hecha o liberada, y la sección del borrador
   - files: packages/core/src/memory/entries.ts, packages/core/src/index.ts, packages/core/src/cards/memory.ts, packages/core/src/cards/view.ts, packages/core/src/cards/next.ts, packages/core/test/memory/settle.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory test/cards/findings.test.ts test/cards/memory-start.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

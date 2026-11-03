@@ -4,6 +4,7 @@ import type { CoverageGap } from "../checks/coverage";
 import type { Phase } from "../flow/phases";
 import type { GlossaryEntry } from "../glossary";
 import type { Lang } from "../i18n";
+import type { MemoryEntry } from "../memory/entries";
 import type { AssertionLoss } from "../scope/assertions";
 import type { RiskFinding } from "../scope/risk";
 import type { EffortLevel } from "../sizing/effort";
@@ -163,6 +164,8 @@ export interface ChangeView {
   readonly request?: string;
   /** While drafting, what each change in `follows` left for this one. */
   readonly carried?: readonly CarriedView[];
+  /** While drafting, the entries of Specty's memory it took (`new --resolves`), as they are now. */
+  readonly resolves?: readonly MemoryEntry[];
   /** In acceptance, an independent review of the result (ADR 0011) should come first. */
   readonly recommendReview?: boolean;
   /** In acceptance, each criterion of the spec with the tests that carry its id. */
