@@ -6,6 +6,13 @@
   "branch": "specty/20261103-sin-permisos-worktrees",
   "baseCommit": "84797b049bdb6a68bf8caa500c9e6105227fc997",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:b3a80f951f1c7230db7884b2a0e1df69443312954d8025c2dc241f8ea0fc4d9f",
+    "at": "2026-11-03T08:14:49.250Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:b3a80f951f1c7230db7884b2a0e1df69443312954d8025c2dc241f8ea0fc4d9f",
-    "at": "2026-11-03T08:14:49.250Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T08:16:57.680Z"
 }

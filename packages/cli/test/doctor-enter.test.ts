@@ -101,7 +101,7 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(false);
   });
 
-  it("names Codex's rules without cd, and its missing config.toml (AC1, AC2)", async () => {
+  it("names Codex's rules without cd (AC1, AC2)", async () => {
     const root = await tempRepo(PACKAGE);
     await init(root, "codex");
     const rules = ".codex/rules/specty.rules";
@@ -112,8 +112,15 @@ describe("doctor and an install from before specty enter", () => {
     expect(await says(root, line)).toBe(true);
     await init(root, "codex");
     expect(await says(root, line)).toBe(false);
-    await rm(join(root, ".codex/config.toml"));
-    expect(await says(root, outdated("Codex", ".codex/config.toml", "codex"))).toBe(true);
+  });
+
+  it("AC3: does not take Codex's install without a config.toml for an outdated one", async () => {
+    const root = await tempRepo(PACKAGE);
+    await init(root, "codex");
+    await rm(join(root, ".codex/config.toml"), { force: true });
+    const doctor = await cli(root, ["doctor"]);
+    expect(doctor.out).not.toContain(".codex/config.toml");
+    expect(doctor.out).not.toContain(outdated("Codex", ".codex/rules/specty.rules", "codex"));
   });
 
   it("leaves a config.toml of the person's, which init does not touch (AC3)", async () => {

@@ -230,21 +230,17 @@ describe("Antigravity in the folder of the change its conversation entered", () 
     expect((await answer(antigravity(root, "PreToolUse", inside))).decision).toBe("allow");
   });
 
-  it("lets it read and write in the worktrees' folder with each action it allows (C5 AC3)", async () => {
+  it("AC2: opens only git's common folder with each action it allows, not the worktrees' one", async () => {
     const { root, folder } = await entered();
     const view = step(10, "view_file", { AbsolutePath: join(folder, "src/app.ts") });
     expect(await answer(antigravity(root, "PreToolUse", view))).toEqual({
       decision: "allow",
-      permissionOverrides: [
-        `write_file(${join(root, ".git")})`,
-        `write_file(${root}.worktrees)`,
-        `read_file(${root}.worktrees)`,
-      ],
+      permissionOverrides: [`write_file(${join(root, ".git")})`],
     });
     const write = step(11, "write_to_file", { TargetFile: join(folder, "notas.md") });
-    expect((await answer(antigravity(root, "PreToolUse", write))).permissionOverrides).toContain(
-      `read_file(${root}.worktrees)`,
-    );
+    expect((await answer(antigravity(root, "PreToolUse", write))).permissionOverrides).toEqual([
+      `write_file(${join(root, ".git")})`,
+    ]);
   });
 });
 
