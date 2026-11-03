@@ -6,6 +6,13 @@
   "branch": "specty/20261104-frentes-en-la-memoria",
   "baseCommit": "042eeefd2788dc9a723896f106ce10ce5563a0e4",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:32b56fe277cd79f5f78d796554f7fca67e52d11a619fa22a48d848dca922bda8",
+    "at": "2026-11-03T19:27:29.107Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 13,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:32b56fe277cd79f5f78d796554f7fca67e52d11a619fa22a48d848dca922bda8",
-    "at": "2026-11-03T19:27:29.107Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T19:30:12.851Z"
 }
