@@ -102,6 +102,7 @@ interface NewFlags {
   readonly kind: string;
   readonly type: string;
   readonly follows?: string[];
+  readonly resolves?: string[];
   readonly epic?: string;
   readonly slice?: string;
   readonly timebox?: string;
@@ -130,6 +131,7 @@ function newCommand(
       "feat",
     )
     .option("--follows <ids...>", "changes this one continues")
+    .option("--resolves <ids...>", "pending items or improvements of Specty's memory it takes")
     .option("--epic <id>")
     .option("--slice <id>")
     .option("--timebox <duration>", "spike time limit, for example 2h")
@@ -168,6 +170,7 @@ function newOptions(title: string, given: KindAndType, options: NewFlags): NewOp
     kind: given.kind,
     type: given.type,
     follows: options.follows ?? [],
+    ...(options.resolves !== undefined ? { resolves: options.resolves } : {}),
     ...(options.epic !== undefined ? { epic: options.epic } : {}),
     ...(options.slice !== undefined ? { slice: options.slice } : {}),
     ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),

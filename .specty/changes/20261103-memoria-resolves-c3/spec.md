@@ -78,7 +78,7 @@ Hoy un pendiente de la memoria de Specty se toma citando su id en la petición d
   - files: packages/core/src/cards/memory-claims.ts, packages/core/src/cards/status.ts, packages/core/src/cards/index.ts, packages/core/test/memory/claims.test.ts
   - ac: AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/claims.test.ts test/cards/status-holder.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T3: `new --resolves` toma las entradas, o dice por qué no, y la documentación
+- [x] T3: `new --resolves` toma las entradas, o dice por qué no, y la documentación
   - files: packages/cli/src/store/memory.ts, packages/cli/src/commands/memory.ts, packages/cli/src/commands/new.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/src/commands/status.ts, packages/cli/test/memory-resolves.test.ts, docs/formats.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-resolves.test.ts test/memory.test.ts test/status-json.test.ts test/memory-status.test.ts && pnpm typecheck && pnpm lint

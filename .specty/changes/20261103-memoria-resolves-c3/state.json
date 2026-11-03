@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-resolves-c3",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-resolves-c3",
   "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
   "revision": 1,
@@ -60,12 +60,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e021c1ec38401244ae63a67d6f8c8049ca16625c",
+      "attempts": 1,
       "startedAt": "2026-11-03T06:55:27.292Z",
       "doneAt": "2026-11-03T06:56:29.279Z",
-      "summary": "resolvesRefusalCard en cards/memory-claims.ts, con heldBy de la tarjeta de status para decir quién lleva el cambio"
+      "summary": "resolvesRefusalCard en cards/memory-claims.ts, con heldBy de la tarjeta de status para decir quién lleva el cambio",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "a2ba17b0bb388d54a6e32aa6d80f30058e43d343",
+      "startedAt": "2026-11-03T06:56:29.612Z",
+      "doneAt": "2026-11-03T07:00:14.598Z",
+      "summary": "new --resolves comprueba las entradas antes de crear (claimEntries, con openChanges de status para decir quién lleva el cambio que la tomó) y las toma después (takeEntries, una por commit); change.created anota resolves; formats.md documenta taken y --resolves"
     }
   },
   "pending": {
