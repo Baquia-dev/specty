@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { chmod, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, delimiter, dirname, join } from "node:path";
+import { delimiter, dirname, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { hideFolder } from "../src/flow/worktree";
 import { execute } from "../src/io/exec";
@@ -24,8 +24,8 @@ const FILES = {
   ".specty/config.yaml": CONFIG(),
 };
 const OTHER = CHANGE.replace("saludo-personalizado", "otro-cambio");
-/** Where `new --worktree` puts the worktrees of `root`. */
-const home = (root: string) => join(dirname(root), `${basename(root)}.worktrees`);
+/** Where `new --worktree` puts the worktrees of `root`: inside it (ADR 0018). */
+const home = (root: string) => join(root, ".worktrees");
 /** Claude Code's hook before an agent action, run from `cwd`. */
 const claude = (cwd: string, tool: string, input: Record<string, unknown>) =>
   cli(cwd, ["guard", "--tool", "claude-code"], {

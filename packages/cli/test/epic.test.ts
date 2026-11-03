@@ -8,8 +8,8 @@ const EPIC = CHANGE.replace("saludo-personalizado", "panel-del-estudiante");
 const FIRST = CHANGE.replace("saludo-personalizado", "inicio-de-sesion");
 const SECOND = CHANGE.replace("saludo-personalizado", "panel");
 const EPIC_DIR = `.specty/changes/${EPIC}`;
-/** Where `new --worktree` puts the worktrees of `root`. */
-const home = (root: string) => join(dirname(root), `${basename(root)}.worktrees`);
+/** Where `new --worktree` puts the worktrees of `root`: inside it (ADR 0018). */
+const home = (root: string) => join(root, ".worktrees");
 
 const EPIC_SPEC = `---
 kind: epic

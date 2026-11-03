@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: Apache-2.0
-import { basename } from "node:path";
 import { describe, expect, it } from "vitest";
 import { exists } from "../src/io/files";
 import type { Terminal } from "../src/session";
@@ -61,7 +59,7 @@ describe("status from any folder", () => {
     expect(fromOther).toContain(`SIGUIENTE: te toca decidir en ${CHANGE}: \`specty accept\`.`);
 
     const fromRoot = (await cli(root, ["status"])).out;
-    const home = `../${basename(root)}.worktrees`;
+    const home = ".worktrees";
     expect(fromRoot).toContain(
       `  ${CHANGE} · standard · acceptance · espera a ti — Saludo personalizado · en ${home}/${CHANGE}`,
     );
@@ -83,7 +81,7 @@ describe("a person's decisions from any folder", () => {
     expect(approved.code).toBe(0);
     expect(approved.out).toContain(`SPECTY · ${CHANGE} · implementing`);
     expect(terminal.notes).toContain(
-      `Cambio\n${CHANGE} — Saludo personalizado, en ../${basename(root)}.worktrees/${CHANGE}`,
+      `Cambio\n${CHANGE} — Saludo personalizado, en .worktrees/${CHANGE}`,
     );
     expect(await stateIn(folder)).toMatchObject({ phase: "implementing" });
   });

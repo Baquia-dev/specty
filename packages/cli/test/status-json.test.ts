@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: Apache-2.0
-import { basename } from "node:path";
 import { describe, expect, it } from "vitest";
 import { APP, CHANGE, cli, inWorktree, person, tempRepo } from "./support";
 
@@ -27,7 +25,7 @@ describe("`specty --json status`", () => {
 
     const fromRoot = JSON.parse((await cli(root, ["--json", "status"])).out);
     expect(fromRoot.changes).toMatchObject([
-      { id: CHANGE, current: false, folder: `../${basename(root)}.worktrees/${CHANGE}` },
+      { id: CHANGE, current: false, folder: `.worktrees/${CHANGE}` },
     ]);
   });
 

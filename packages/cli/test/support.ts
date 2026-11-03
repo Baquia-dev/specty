@@ -2,7 +2,7 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, realpath, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { basename, dirname, join } from "node:path";
+import { dirname, join } from "node:path";
 import { makeChangeId } from "@baquia-dev/specty-core";
 import { expect } from "vitest";
 import { runCli } from "../src/program";
@@ -225,9 +225,8 @@ export const APP = {
   ".specty/config.yaml": CONFIG(),
 };
 
-/** Where `new --worktree` puts the change `id` of `root`. */
-export const folderOf = (root: string, id = CHANGE) =>
-  join(dirname(root), `${basename(root)}.worktrees`, id);
+/** Where `new --worktree` puts the change `id` of `root`: inside it (ADR 0018). */
+export const folderOf = (root: string, id = CHANGE) => join(root, ".worktrees", id);
 
 /** A repository whose change lives in a worktree of its own. */
 export async function inWorktree(files: Readonly<Record<string, string>> = APP) {

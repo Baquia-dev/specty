@@ -6,6 +6,13 @@
   "branch": "specty/20261103-worktrees-dentro",
   "baseCommit": "62172a6cae2a5062160d6594db5930843c401c45",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:cd35118ae31f434bdcf4e7a8321e285d784e9e9b9b28295ece2c041329543bb1",
+    "at": "2026-11-03T09:11:56.080Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:cd35118ae31f434bdcf4e7a8321e285d784e9e9b9b28295ece2c041329543bb1",
-    "at": "2026-11-03T09:11:56.080Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T09:15:26.445Z"
 }
