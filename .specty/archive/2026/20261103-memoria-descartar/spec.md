@@ -80,3 +80,24 @@ Hoy ninguna entrada de la memoria de Specty se puede descartar: un pendiente que
 - R1: Un agente propone descartar entradas sin que el usuario lo pida — solo propone: la entrada sigue abierta hasta que la persona decide, y lo ve en «TE TOCA».
 - R2: La persona descarta por error una entrada — queda en la rama con su motivo y su historia; no hay comando para recuperarla, pero `specty memory --all` la sigue mostrando.
 - R3: Un agente ejecuta `memory drop` en una terminal interactiva propia — es la misma frontera que ya protege `approve` y `cancel`.
+
+## Cierre
+
+### Resumen
+
+`specty memory drop <id> --reason "<motivo>"` descarta una entrada de la memoria de Specty solo si lo ejecuta la persona en una terminal interactiva: queda `dropped`, con el motivo, quién y cuándo en `drop` y `closed`. Si lo ejecuta un agente, también en modo delegado, la entrada queda `drop-proposed`, y la tarjeta le pide al agente que se lo diga al usuario. «TE TOCA» de `specty status` muestra las propuestas antes que los recordatorios, con quién lo propuso, el motivo y cómo descartarlas o mantenerlas. La persona descarta una propuesta sin repetir el motivo, y `specty memory keep <id>` la devuelve a `open`. No se descarta una entrada hecha, ya descartada o tomada por un cambio abierto. Así se cumple la parte de CLI del AC6 de la épica.
+
+### Desviaciones
+
+- `commands/memory.ts` no exporta `targetOf` y `authorOf`, como decía el diseño: le pasa a `commands/memory-drop.ts` un `MemoryWriter` (destino y autor), para que los dos archivos no se importen entre sí.
+- `specty check` pidió bajar la complejidad de `parseEntry` y de `droppable` y partir `refusalTexts`; los campos opcionales de la entrada, el motivo del descarte y el motivo y el siguiente paso de cada negativa pasaron a funciones propias.
+
+### Decisiones
+
+- La persona es quien está en una terminal interactiva; el modo delegado no cuenta, porque descartar nunca se delega.
+- `memory keep` lo puede ejecutar también el agente: deshace una propuesta y no descarta nada.
+
+### Pendientes
+
+- Guard de la memoria de Specty (épica «Memoria de Specty», AC6): el guard debe impedir a los agentes escribir con git la rama `specty-memory` (por ejemplo `git update-ref refs/heads/specty-memory`, `git branch -D specty-memory`, `git push` de esa rama o sacarla en una carpeta), para que solo Specty la escriba con sus comandos.
+- P2 y P9: `packages/core/src/cards/index.ts` tiene ya 361 líneas de código.

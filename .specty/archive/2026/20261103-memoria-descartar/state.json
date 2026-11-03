@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-descartar",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-descartar",
   "baseCommit": "b9fdc64f6da235b71808239155fd6fda391a0a29",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:5e77ddeb7669b7fcff8fe12d93b2a7593f22e149fe055094fbfcbd2b45c1a82f",
@@ -69,12 +69,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ce0b0da032fa43fa3bfb35b90f404895b17a937e",
+      "attempts": 1,
       "startedAt": "2026-11-03T07:41:49.025Z",
       "doneAt": "2026-11-03T07:44:05.339Z",
-      "summary": "commands/memory-drop.ts: memory drop (la persona descarta; un agente, también en modo delegado, solo propone) y memory keep, registrados en memoryCommand con un MemoryWriter; formats.md y ARCHITECTURE.md los documentan"
+      "summary": "commands/memory-drop.ts: memory drop (la persona descarta; un agente, también en modo delegado, solo propone) y memory keep, registrados en memoryCommand con un MemoryWriter; formats.md y ARCHITECTURE.md los documentan",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -87,6 +87,7 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-03T07:48:27.654Z",
   "lockedTests": {
     "packages/cli/test/memory-drop.test.ts": "sha256:c9cbff82ae92bfeea97775f0603d0ee952c7e924258bc26550deebf489e88953",
     "packages/core/test/memory/drop.test.ts": "sha256:c1f59f2070e8caeb00e61dd5515ecee60c6b0cd7367250ac4d45f07864bfa3ac"
