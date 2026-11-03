@@ -26,6 +26,7 @@ import { COMMAND, type Environment, openSession, type Session } from "../session
 import { noteActivity } from "../store/activity";
 import { readSpec } from "../store/changes";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
+import { judgeFronts } from "./fronts";
 import { leavePending, type PendingKind, takePending } from "./pending";
 import { outOfReach, redirection, resolveAction } from "./place";
 import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
@@ -200,7 +201,12 @@ async function beforeAction(call: Call): Promise<GuardReply> {
       : await resolveAction(call, raw);
   const ctx = await guardContext(session);
   const entry = raw.kind === "shell" ? await enterCommand(call, raw.command, ctx) : undefined;
-  const decision = entry?.decision.allow === false ? entry.decision : decideGuard(action, ctx);
+  const judged = entry?.decision.allow === false ? entry.decision : decideGuard(action, ctx);
+  // One front per conversation, and none another one holds (ADR 0016).
+  const decision =
+    raw.kind === "shell"
+      ? await judgeFronts({ session, tool: agent.tool, event }, raw.command, judged, ctx)
+      : judged;
   // One change at a time per conversation: the worktree it may enter becomes its own.
   const target = action.kind === "enter" ? action.target : entry?.target;
   if (decision.allow && target !== undefined) await bindSession(session, event, target);

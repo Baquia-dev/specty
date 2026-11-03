@@ -74,12 +74,23 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4e8ee31324e5cb04343a7a556f05e1a1bef82a83",
+      "attempts": 1,
       "startedAt": "2026-11-03T20:23:01.717Z",
       "doneAt": "2026-11-03T20:24:59.816Z",
-      "summary": "store/front-owners.ts: releaseFront y liveHolds (dueños vivos por memory.orphanAfterMin, con el último paso de activity/ vía conversationStep); front take y front free en commands/front.ts, y los dueños vivos en specty front. holdFront llega en T4 con el guard"
+      "summary": "store/front-owners.ts: releaseFront y liveHolds (dueños vivos por memory.orphanAfterMin, con el último paso de activity/ vía conversationStep); front take y front free en commands/front.ts, y los dueños vivos en specty front. holdFront llega en T4 con el guard",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [
+        "packages/cli/src/store/front-owners.ts"
+      ],
+      "attempts": 1,
+      "baseCommit": "4af5d079d09bc8c1bf58b1d189878b1fbe42484a",
+      "startedAt": "2026-11-03T20:25:00.146Z",
+      "doneAt": "2026-11-03T20:26:45.694Z",
+      "summary": "enforce/fronts.ts judgeFronts: ante specty front take|free, rechaza (regla memory) el frente con dueño vivo de otra conversación y registra con holdFront el último take, dejando el frente anterior; guard.ts lo llama en beforeAction para los comandos de shell"
     }
   },
   "pending": {

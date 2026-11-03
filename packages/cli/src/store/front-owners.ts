@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
-import { isRecord, parseJson, readText, remove } from "../io/files";
+import { isRecord, parseJson, readText, remove, writeText } from "../io/files";
 import type { Git } from "../io/git";
 import { conversationStep } from "./activity";
 
@@ -25,6 +25,21 @@ export type LiveHold = FrontHold & { readonly ago: number };
 const FRONTS = "common/specty/fronts";
 
 const MINUTE_MS = 60_000;
+
+/**
+ * `hold.conversation` holds `hold.front` from now on, and no other front: a conversation holds at
+ * most one.
+ */
+export async function holdFront(git: Git, hold: FrontHold): Promise<void> {
+  const folder = await git.gitPath(FRONTS);
+  for (const known of await readHolds(folder)) {
+    const same = known.tool === hold.tool && known.conversation === hold.conversation;
+    if (same && known.front !== hold.front) await remove(join(folder, `${known.front}.json`));
+  }
+  const { front, tool, conversation, at } = hold;
+  const text = JSON.stringify({ front, tool, conversation, at }, null, 2);
+  await writeText(join(folder, `${front}.json`), `${text}\n`);
+}
 
 /** `front` has no owner from now on. */
 export async function releaseFront(git: Git, front: string): Promise<void> {

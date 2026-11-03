@@ -81,7 +81,7 @@ Segundo cambio de P33 (repartir el trabajo entre sesiones): una sesión de agent
   - files: packages/cli/src/store/activity.ts, packages/cli/src/store/front-owners.ts, packages/cli/src/commands/front.ts, packages/cli/test/front-owners.test.ts
   - ac: AC1, AC3, AC4, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-owners.test.ts test/fronts.test.ts test/activity.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
-- [ ] T4: El guard registra al dueño y rechaza el frente de otra conversación
+- [x] T4: El guard registra al dueño y rechaza el frente de otra conversación
   - files: packages/cli/src/enforce/fronts.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/front-guard.test.ts
   - ac: AC1, AC2, AC5
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/front-guard.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint && pnpm exec knip
