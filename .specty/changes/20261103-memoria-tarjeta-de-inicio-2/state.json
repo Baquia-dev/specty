@@ -52,12 +52,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3d2c6a2b90ab06965634a089ba995e11bb7ecb76",
+      "attempts": 1,
       "startedAt": "2026-11-03T05:51:09.524Z",
       "doneAt": "2026-11-03T05:51:18.367Z",
-      "summary": "La tarjeta sin cambio añade «MEMORIA DE SPECTY» (cuenta de pendientes y mejoras abiertas, las tres primeras libres y cómo tomar una) y «RECORDATORIOS», con memoryStartBlocks en cards/memory.ts y NextView.memory"
+      "summary": "La tarjeta sin cambio añade «MEMORIA DE SPECTY» (cuenta de pendientes y mejoras abiertas, las tres primeras libres y cómo tomar una) y «RECORDATORIOS», con memoryStartBlocks en cards/memory.ts y NextView.memory",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "153e4131eb1ea09d78bfc0cbec7183d2bd851932",
+      "startedAt": "2026-11-03T05:51:18.706Z",
+      "doneAt": "2026-11-03T05:51:29.769Z",
+      "summary": "next sin cambio activo lee la memoria con readMemory y se la pasa a la tarjeta"
     }
   },
   "pending": {
