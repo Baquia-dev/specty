@@ -59,3 +59,21 @@ Primer corte de P31 (lo aplazado entra solo en la memoria): al aceptar un cambio
 ## Riesgos
 
 - R1: Lecciones de más con riesgos que son falsos positivos — una sola por archivo y patrón, y la persona puede descartarlas con `specty memory drop`.
+
+## Cierre
+
+### Resumen
+
+Al aceptar un cambio, también en el carril rápido, cada archivo y patrón de riesgo que encontraron sus tareas queda en la memoria como una lección de ese archivo, con el cambio como origen, y la salida de `accept` nombra las entradas que anotó. Una lección abierta con el mismo texto no se repite. `harvestEntries` anota ahora pendientes o lecciones y devuelve los ids que creó.
+
+### Desviaciones
+
+Ninguna.
+
+### Decisiones
+
+- Las lecciones se anotan nada más pasar la transición, antes del commit del estado o del cierre del carril rápido: si el cierre rápido se niega, por ejemplo porque main no entra, la lección ya está, y volver a aceptar no la repite.
+
+### Pendientes
+
+- Quedan los otros dos cortes de P31: la deuda de `specty check --all` y los hallazgos de `specty review`.

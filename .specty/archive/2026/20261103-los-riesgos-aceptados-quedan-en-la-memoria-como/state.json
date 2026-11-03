@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
   "baseCommit": "386167b88f29023b2774dc35bfd733fe7746a53c",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:afc777cc809b5b9d6f1d8ea7e7b9e51c0f1c1e7ab6032ec04c9cf4e3ab0fb0f6",
@@ -48,12 +48,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "18bb5e4ef17ac26b442f6c5db71a4bfb5ed4b7f9",
+      "attempts": 1,
       "startedAt": "2026-11-03T12:15:51.000Z",
       "doneAt": "2026-11-03T12:17:20.535Z",
-      "summary": "harvestEntries anota pendientes o, con paths, lecciones y devuelve sus ids; accept anota los riesgos de las tareas como lecciones de sus archivos, también en el carril rápido, y lo dice; ARCHITECTURE §7 lo documenta"
+      "summary": "harvestEntries anota pendientes o, con paths, lecciones y devuelve sus ids; accept anota los riesgos de las tareas como lecciones de sus archivos, también en el carril rápido, y lo dice; ARCHITECTURE §7 lo documenta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -66,6 +66,7 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T12:21:57.586Z",
   "lockedTests": {
     "packages/cli/test/risk-lessons.test.ts": "sha256:a07b43c48baf649dddc0fcdbf0e882a60a3c9e09ffb27838de856662109c8944",
     "packages/core/test/cards/risk-lessons.test.ts": "sha256:ce46aa6fbdf1cc59af3e8a0a5879710f9d6e897e0c0da4f444ca497245cd8723"
