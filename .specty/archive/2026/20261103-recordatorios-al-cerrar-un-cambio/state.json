@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-recordatorios-al-cerrar-un-cambio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-recordatorios-al-cerrar-un-cambio",
   "baseCommit": "4273e17bddca2d90ca009423261545f6a03f4b15",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:25b595f7c21ef55033f92dd247d06b718353669ac5775fc5cd780265cc8fe87e",
@@ -84,12 +84,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "32c4e21ca90cec79fd0178c719241daba76f51e2",
+      "attempts": 1,
       "startedAt": "2026-11-03T14:35:46.692Z",
       "doneAt": "2026-11-03T14:36:23.913Z",
-      "summary": "formats.md documenta onClose, --on-close y el disparo al archivar; ARCHITECTURE.md, «TE TOCA», memory add --on-close y la sección de la salida de close, cancel, accept de un quick y retro"
+      "summary": "formats.md documenta onClose, --on-close y el disparo al archivar; ARCHITECTURE.md, «TE TOCA», memory add --on-close y la sección de la salida de close, cancel, accept de un quick y retro",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -102,6 +102,7 @@
     "T": 5,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T14:41:28.692Z",
   "lockedTests": {
     "packages/cli/test/memory-on-close.test.ts": "sha256:2f31a86f276d894fad089e39926f33d439566e636c17ba78d3a4b212f3650f1e",
     "packages/core/test/cards/close-reminders.test.ts": "sha256:e4bf6c10d48a6cce7b8d70d72797fee320c8405d5258904aaa59dd0982dfc207",

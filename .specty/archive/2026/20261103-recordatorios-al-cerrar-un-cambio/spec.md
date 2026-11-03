@@ -87,3 +87,27 @@ Segundo y último cambio de P32 (recordatorios con disparador): un recordatorio 
 ## Riesgos
 
 - R1: Un recordatorio cuyo cambio se archiva sin dispararlo, como con una versión anterior de Specty, no vuelve a salir — `specty memory` lo sigue listando con «al cerrar `<id>`», y la persona lo marca hecho o lo descarta.
+
+## Cierre
+
+### Resumen
+
+Un recordatorio de la memoria de Specty puede esperar a que se archive un cambio abierto: `specty memory add --kind reminder --on-close <id>` lo guarda con `onClose`, no sale en la tarjeta de inicio ni en «TE TOCA», y `specty memory` lo lista con «al cerrar `<id>`». Al archivarse ese cambio, se cierre (`close`, `accept` de un quick o un retro confirmado) o se cancele, `archive` dispara cada recordatorio abierto que lo esperaba: pierde `onClose` en su propio commit de la memoria («memoria: P5 disparada»), la salida del comando lo muestra en «RECORDATORIOS QUE ESPERABAN A ESTE CAMBIO» y desde entonces sale en cada sesión hasta que se marca hecho. `--on-close` en otro tipo de entrada, junto a `--due` o `--path`, o con el id de un cambio que no está abierto no anota nada y lo explica. Con P32 queda resuelta también P46: los rechazos de `memory add` y `memory done` viven en `cards/memory-refusals.ts`, y `cards/memory.ts` baja de 372 a unas 240 líneas de código.
+
+### Desviaciones
+
+- `waitingFor` y `firedEntry` están en `memory/entries.ts`, junto a `freeWork` y `settledEntry`, y no en `memory/triggers.ts` como decía el diseño: `entries.ts` ya importa `isDay` de `triggers.ts`, y el camino contrario creaba un import circular.
+
+### Decisiones
+
+- También la cancelación dispara los recordatorios, para que no se pierdan; la persona decide si siguen valiendo.
+- Se disparan los recordatorios abiertos, también los propuestos para descartar; los hechos o descartados conservan `onClose` sin efecto.
+- El rechazo `two-triggers` lleva `flags` opcional con las dos opciones dadas; sin ellas son `--due` y `--path`, así que su texto anterior y su test no cambian.
+- Si el cambio está abierto se comprueba con `locateChanges`, sin leer las specs como `openChanges`, y solo cuando se da `--on-close`.
+- La definición de «Disparador» en `docs/dominio.md` incluye ahora `onClose`.
+
+### Pendientes
+
+- `packages/cli/src/commands/memory.ts` tiene 316 líneas de código (el aviso salta a partir de 300). Propuesta de división por responsabilidad: llevar lo que archivar un cambio hace en la memoria (`settleEntries`, `harvestEntries` con `Harvest`, y `fireReminders` de `flow/finish.ts`) a `flow/archive-memory.ts`.
+- P45: la página «Memoria» de `specty ui` muestra en «Te toca» también los recordatorios que esperan al cierre de un cambio.
+- P2 y P9: `packages/core/src/cards/index.ts` tiene 381 líneas de código y `packages/core/src/index.ts`, 322.
