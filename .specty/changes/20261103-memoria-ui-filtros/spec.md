@@ -54,7 +54,7 @@ La página «Memoria» de `specty ui` ya enseña la memoria de Specty y quién l
   - files: packages/ui/src/memory/memory-view.ts, packages/ui/src/memory/memory-filter.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-filter.test.ts --include src/memory/memory-view.test.ts && pnpm lint
-- [ ] T2: La barra de la página
+- [x] T2: La barra de la página
   - files: packages/ui/src/memory/memory-page.ts, packages/ui/src/memory/memory-toolbar.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-toolbar.test.ts --include src/memory/memory-page.test.ts && pnpm typecheck && pnpm lint

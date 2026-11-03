@@ -7,12 +7,16 @@ import {
   DestroyRef,
   inject,
   resource,
+  signal,
 } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import type { MemoryEntry, StatusEntry } from "@baquia-dev/specty-core";
+import { LucideDynamicIcon } from "@lucide/angular";
 import { PhaseBadge } from "../components/badge";
 import { LIST, PAGE, ROW, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
+import { LucideSearch } from "../components/icons";
+import { Segmented } from "../components/segmented";
 import { Skeleton } from "../components/skeleton";
 import { ActionError, type Bilingual, SpectyData } from "../data/records";
 import { Preferences } from "../theme/preferences";
@@ -28,13 +32,34 @@ const KINDS: Readonly<
   decision: { label: { es: "decisión", en: "decision" }, tone: "review" },
 };
 
+/** The toolbar's choices of kind: every entry, or one kind. */
+const KIND_FILTERS = ["all", "pending", "improvement", "reminder", "decision"] as const;
+
+const ALL_KINDS: Bilingual = { es: "Todas", en: "All" };
+
+const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
+  pending: { es: "Pendientes", en: "Pending" },
+  improvement: { es: "Mejoras", en: "Improvements" },
+  reminder: { es: "Recordatorios", en: "Reminders" },
+  decision: { es: "Decisiones", en: "Decisions" },
+};
+
 /**
  * The memory page of `specty ui` (ADR 0016): what is the person's turn, who holds each open change
- * and Specty's memory, read again with every event the data source hears.
+ * and Specty's memory, with a search, a filter by kind and the done and dropped entries on demand,
+ * read again with every event the data source hears.
  */
 @Component({
   selector: "sp-memory-page",
-  imports: [RouterLink, PhaseBadge, SectionDivider, EmptyState, Skeleton],
+  imports: [
+    RouterLink,
+    LucideDynamicIcon,
+    PhaseBadge,
+    SectionDivider,
+    EmptyState,
+    Skeleton,
+    Segmented,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class]="page + ' flex flex-col gap-8 pt-10 pb-16'">
@@ -50,11 +75,26 @@ const KINDS: Readonly<
         </div>
       } @else if (!read.hasValue()) {
         <sp-skeleton height="4.5rem" />
-      } @else if (sections().length === 0) {
+      } @else if (everything().length === 0) {
         <sp-empty-state [heading]="t()('La memoria de Specty está vacía.', 'Specty\\'s memory is empty.')">
           {{ t()('Los agentes anotan aquí lo pendiente con specty memory add.', 'Agents add what is pending here with specty memory add.') }}
         </sp-empty-state>
       } @else {
+        <div class="flex flex-wrap items-center gap-3" data-toolbar>
+          <label class="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-lg border border-border bg-surface px-3 text-text-muted focus-within:border-focus sm:max-w-md">
+            <svg [lucideIcon]="searchIcon" size="15" aria-hidden="true"></svg>
+            <span class="sr-only">{{ t()('Buscar en la memoria', 'Search the memory') }}</span>
+            <input type="search" class="min-w-0 flex-1 border-0 bg-transparent font-sans text-sm text-text outline-none placeholder:text-text-muted" [placeholder]="t()('Buscar en la memoria', 'Search the memory')" [value]="query()" (input)="type($event)" (keydown.escape)="query.set('')" />
+          </label>
+          <sp-segmented [label]="t()('Tipo de entrada', 'Kind of entry')" [hideLabel]="true" [options]="kindOptions()" [(value)]="kind" />
+          <label class="flex items-center gap-2 text-sm text-text-muted">
+            <input type="checkbox" [checked]="closed()" (change)="closed.set(!closed())" />
+            {{ t()('Ver hechas y descartadas', 'Show done and dropped') }}
+          </label>
+        </div>
+        @if (sections().length === 0) {
+          <p class="m-0 text-sm text-text-muted" role="status" data-no-match>{{ t()('Nada coincide con el filtro.', 'Nothing matches the filter.') }}</p>
+        }
         @for (section of sections(); track section.key) {
           <section [attr.aria-labelledby]="'memory-' + section.key" [attr.data-section]="section.key">
             <sp-section-divider [heading]="t()(section.label.es, section.label.en)" [headingId]="'memory-' + section.key" [meta]="section.items.length" [level]="2" />
@@ -104,10 +144,34 @@ export class MemoryPage {
   protected readonly row = ROW;
   protected readonly kinds = KINDS;
 
+  protected readonly searchIcon = LucideSearch;
+  protected readonly query = signal("");
+  protected readonly kind = signal("all");
+  protected readonly closed = signal(false);
+
+  /** The page's sections without the toolbar's filter: none means the memory is empty. */
+  protected readonly everything = computed(() => memorySections(this.record()));
+
   protected readonly sections = computed(() => {
-    const record = this.read.hasValue() ? this.read.value() : undefined;
-    return memorySections(record ?? { entries: [], changes: [] });
+    const kind = KIND_FILTERS.find((value) => value === this.kind()) ?? "all";
+    return memorySections(this.record(), { query: this.query(), kind, closed: this.closed() });
   });
+
+  protected readonly kindOptions = computed(() =>
+    KIND_FILTERS.map((value) => {
+      const label = value === "all" ? ALL_KINDS : PLURALS[value];
+      return { value, label: this.t()(label.es, label.en) };
+    }),
+  );
+
+  private readonly record = computed(() => {
+    const record = this.read.hasValue() ? this.read.value() : undefined;
+    return record ?? { entries: [], changes: [] };
+  });
+
+  protected type(event: Event): void {
+    if (event.target instanceof HTMLInputElement) this.query.set(event.target.value);
+  }
 
   protected readonly summary = computed(() => {
     const record = this.read.hasValue() ? this.read.value() : undefined;
@@ -151,7 +215,12 @@ export class MemoryPage {
         `Proposed to drop by ${entry.drop.by}: “${entry.drop.reason}”`,
       );
     const by = entry.origin.by === "person" ? t("la persona", "the person") : entry.origin.by;
+    const closed =
+      item.kind !== "closed"
+        ? []
+        : [entry.status === "done" ? t("hecha", "done") : t("descartada", "dropped")];
     return [
+      ...closed,
       ...(entry.taken === undefined
         ? []
         : [t(`tomada por ${entry.taken.change}`, `taken by ${entry.taken.change}`)]),
