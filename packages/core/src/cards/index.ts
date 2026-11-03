@@ -63,7 +63,13 @@ export {
   whichChangeQuestion,
 } from "./decide";
 export { type DoctorLine, doctorCard, doctorLine } from "./doctor";
-export { type DuplicateView, duplicateCard } from "./duplicates";
+export {
+  type DuplicateFilesView,
+  type DuplicateView,
+  duplicateApproveNext,
+  duplicateCard,
+  duplicateFilesBlock,
+} from "./duplicates";
 export { enteredCard, noFolderCard } from "./enter";
 export { epicCard, type SliceRefusal, sliceLines, sliceRefusalCard } from "./epic";
 export { type ExportRefusal, exportedCard, exportRefusalCard } from "./export";

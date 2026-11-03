@@ -36,7 +36,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "381c50385180fcba95c97e8432805e0fe084d45e",
+      "startedAt": "2026-11-03T08:23:44.701Z",
+      "doneAt": "2026-11-03T08:24:03.922Z",
+      "summary": "duplicateFilesBlock («POSIBLE DUPLICADO» con lo que comparte de cada cambio) y duplicateApproveNext (el SIGUIENTE en modo delegado) en cards/duplicates.ts, con factsOf compartida"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
