@@ -61,3 +61,22 @@ follows:
 
 - R1: Un cambio pequeño que toca un archivo muy compartido salta como duplicado — solo avisa; en modo delegado cuesta una pregunta al usuario.
 - R2: `propose` tarda más — solo lee los cambios abiertos (`openChanges`) cuando hay un posible duplicado.
+
+## Cierre
+
+### Resumen
+
+Si la spec que se propone comparte al menos la mitad de sus archivos gobernados con otro cambio abierto, `propose` añade la sección «POSIBLE DUPLICADO»: cuántos archivos comparte de cuántos, con qué cambio, su fase, su carpeta (relativa a donde se ejecuta, como en `status`) y quién lo lleva. Los cambios que `new --distinct-from` dejó anotados en `change.created` no cuentan. En modo delegado, su SIGUIENTE pide preguntar al usuario antes de aprobar: si es otro trabajo, aprobar; si no, cancelar. Con esto se completa el AC9 y el corte C4 de la épica.
+
+### Desviaciones
+
+- El primer intento, `20261103-memoria-duplicado-propose`, se canceló con los tests ya aprobados: un test esperaba la carpeta del otro cambio relativa a la carpeta principal, y otro creaba en el mismo repositorio un cambio abierto que chocaba con la comprobación de `distinctFrom`. Desbloquear tests es solo de la persona, así que este cambio lo rehízo con los tests corregidos y la misma implementación.
+
+### Decisiones
+
+- El aviso no bloquea: sin modo delegado aprueba la persona, que lo ve.
+- Los cambios abiertos se leen (`openChanges`) solo cuando hay un posible duplicado.
+
+### Pendientes
+
+- Ninguno.
