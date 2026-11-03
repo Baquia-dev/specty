@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-fin-de-sesion-libera-el-frente",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-fin-de-sesion-libera-el-frente",
   "baseCommit": "86f56a1c3aaaa31683eedc3187dc7de692cdf868",
   "revision": 1,
@@ -51,6 +51,8 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T22:37:34.032Z"
+  "lockedTests": {
+    "packages/cli/test/session-end-hook.test.ts": "sha256:50b3426519e15c78a214c3b697e54752524d747f7e203fe547b526725048f622",
+    "packages/cli/test/session-end.test.ts": "sha256:e491539be08fdf978310785e0c806eb83897cc0a79c43a09e09329edb6202afe"
+  }
 }
