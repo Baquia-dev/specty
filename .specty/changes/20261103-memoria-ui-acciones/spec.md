@@ -61,7 +61,7 @@ La página «Memoria» de `specty ui` enseña lo que le toca a la persona, pero 
   - files: packages/cli/src/commands/memory.ts, packages/cli/src/server/actions.ts, packages/cli/src/server/http.ts, packages/cli/test/server/memory-actions.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/server/memory-actions.test.ts test/server/actions.test.ts test/memory-drop.test.ts && pnpm lint
-- [ ] T2: Las acciones en la página «Memoria», y la documentación
+- [x] T2: Las acciones en la página «Memoria», y la documentación
   - files: packages/ui/src/data/source.ts, packages/ui/src/data/server.ts, packages/ui/src/data/fixtures.ts, packages/ui/src/memory/drop-entry.ts, packages/ui/src/memory/memory-page.ts, packages/ui/src/memory/memory-actions.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-actions.test.ts --include src/memory/memory-page.test.ts --include src/memory/memory-toolbar.test.ts && pnpm typecheck && pnpm lint

@@ -23,6 +23,9 @@ const NO_TRACE: Bilingual = {
   en: "This source gives no traceability.",
 };
 
+/** What the person decides on an entry of Specty's memory (ADR 0016). */
+export type MemoryVerb = "drop" | "keep" | "done";
+
 /**
  * Any data source the UI can run on: fetch + SSE from the local server, `postMessage` in an
  * editor webview, fixtures in the prototype. Screens depend only on this. Reading is required;
@@ -126,6 +129,11 @@ export abstract class SpectyData {
   /** Specty's memory and who holds each open change (ADR 0016); nothing when it cannot tell. */
   memory(): Promise<MemoryRecord | undefined> {
     return Promise.resolve(undefined);
+  }
+
+  /** The person's decision on entry `id`: drop it (with its reason), keep it, or mark it done. */
+  memoryAction(_id: string, _verb: MemoryVerb, _reason?: string): Promise<void> {
+    return Promise.reject(new ActionError(READ_ONLY));
   }
 
   /** Turns delegated mode on, once the person read the warning, or off. */

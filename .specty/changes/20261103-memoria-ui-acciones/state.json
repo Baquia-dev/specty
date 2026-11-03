@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-memoria-ui-acciones",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-memoria-ui-acciones",
   "baseCommit": "7b015669ead8ecfcb9e10282d30ac9dae20748cc",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "3cd43c127d93ba47368688e0da2ea724aaf14188",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:16:27.126Z",
       "doneAt": "2026-11-03T10:17:47.251Z",
-      "summary": "POST /api/memory/<id>/drop|keep|done: parseMemoryAction y memoryAction en server/actions.ts, con personMemoryAction de commands/memory.ts en la sesión de la persona en pantalla, despachadas en la cola desde act"
+      "summary": "POST /api/memory/<id>/drop|keep|done: parseMemoryAction y memoryAction en server/actions.ts, con personMemoryAction de commands/memory.ts en la sesión de la persona en pantalla, despachadas en la cola desde act",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "aa481697a56189b3dc787c080c32d56b7ddbd35d",
+      "startedAt": "2026-11-03T10:17:47.560Z",
+      "doneAt": "2026-11-03T10:21:56.688Z",
+      "summary": "La página Memoria decide: Descartar con el diálogo del motivo (drop-entry.ts), Mantener y Marcar hecho, con SpectyData.memoryAction en el servidor y en el prototipo, y el aviso de solo lectura; ARCHITECTURE.md lo documenta"
     }
   },
   "pending": {

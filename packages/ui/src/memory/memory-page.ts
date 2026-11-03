@@ -13,13 +13,19 @@ import { RouterLink } from "@angular/router";
 import type { MemoryEntry, StatusEntry } from "@baquia-dev/specty-core";
 import { LucideDynamicIcon } from "@lucide/angular";
 import { PhaseBadge } from "../components/badge";
-import { LIST, PAGE, ROW, SectionDivider } from "../components/document";
+import { Button } from "../components/button";
+import { Dialogs } from "../components/dialog";
+import { LIST, PAGE, REVEAL, ROW, SectionDivider } from "../components/document";
 import { EmptyState } from "../components/empty-state";
 import { LucideSearch } from "../components/icons";
 import { Segmented } from "../components/segmented";
 import { Skeleton } from "../components/skeleton";
+import { Toasts } from "../components/toast";
+import { Decisions } from "../data/decisions";
 import { ActionError, type Bilingual, SpectyData } from "../data/records";
+import { reportFailure } from "../review/spec-sections";
 import { Preferences } from "../theme/preferences";
+import { DropEntry } from "./drop-entry";
 import { type MemoryItem, memorySections } from "./memory-view";
 
 /** Each kind of entry: its name and the phase color it borrows. */
@@ -59,6 +65,7 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
     EmptyState,
     Skeleton,
     Segmented,
+    Button,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -67,6 +74,12 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
         <h1 class="m-0 text-[2rem] leading-tight font-semibold tracking-tight">{{ t()('Memoria de Specty', "Specty's memory") }}</h1>
         @if (summary(); as line) {
           <p class="m-0 text-sm text-text-muted" data-summary>{{ line }}</p>
+        }
+        @if (read.hasValue() && !decisions.allowed()) {
+          <p class="m-0 text-xs text-text-muted" data-read-only>
+            {{ t()('Solo lectura: arranca', 'Read-only: start') }} <code class="font-mono">specty ui</code>
+            {{ t()('desde tu terminal para descartar entradas o marcarlas hechas.', 'from your terminal to drop entries or mark them done.') }}
+          </p>
         }
       </header>
       @if (read.error(); as error) {
@@ -109,7 +122,23 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
                       </span>
                       <span class="text-xs text-text-muted">{{ entryLine(item, entry) }}</span>
                     </div>
-                    <span></span>
+                    <div class="flex items-center gap-1.5">
+                      @if (decisions.allowed()) {
+                        @switch (item.kind) {
+                          @case ('proposal') {
+                            <sp-button size="sm" variant="primary" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button>
+                            <sp-button size="sm" (pressed)="keep(entry)">{{ t()('Mantener', 'Keep') }}</sp-button>
+                          }
+                          @case ('reminder') {
+                            <sp-button size="sm" (pressed)="done(entry)">{{ t()('Marcar hecho', 'Mark done') }}</sp-button>
+                          }
+                          @case ('closed') {}
+                          @default {
+                            <span [class]="reveal"><sp-button size="sm" (pressed)="drop(entry)">{{ t()('Descartar', 'Drop') }}</sp-button></span>
+                          }
+                        }
+                      }
+                    </div>
                   </div>
                 } @else if (changeOf(item); as change) {
                   <div role="listitem" [class]="row" [attr.data-change]="change.id">
@@ -137,12 +166,40 @@ const PLURALS: Readonly<Record<MemoryEntry["kind"], Bilingual>> = {
 })
 export class MemoryPage {
   private readonly data = inject(SpectyData);
-  protected readonly t = inject(Preferences).t;
+  private readonly dialogs = inject(Dialogs);
+  private readonly toasts = inject(Toasts);
+  private readonly preferences = inject(Preferences);
+  private readonly failed = reportFailure(this.toasts, this.preferences);
+  /** Whether the person can decide here: only on a server they started from their terminal. */
+  protected readonly decisions = inject(Decisions);
+  protected readonly t = this.preferences.t;
   protected readonly read = resource({ loader: () => this.data.memory() });
   protected readonly page = PAGE;
   protected readonly list = LIST;
   protected readonly row = ROW;
+  protected readonly reveal = REVEAL;
   protected readonly kinds = KINDS;
+
+  /** «Descartar»: the dialog with the reason, which brings the one of a proposal. */
+  protected drop(entry: MemoryEntry): void {
+    this.dialogs.open(DropEntry, { entry });
+  }
+
+  /** «Mantener»: an entry an agent proposed to drop is open again. */
+  protected keep(entry: MemoryEntry): void {
+    const { id } = entry;
+    this.data.memoryAction(id, "keep").then(() => {
+      this.toasts.show(this.t()(`${id} sigue abierta.`, `${id} stays open.`), "success");
+    }, this.failed);
+  }
+
+  /** «Marcar hecho»: a reminder is done. */
+  protected done(entry: MemoryEntry): void {
+    const { id } = entry;
+    this.data.memoryAction(id, "done").then(() => {
+      this.toasts.show(this.t()(`${id} hecho.`, `${id} done.`), "success");
+    }, this.failed);
+  }
 
   protected readonly searchIcon = LucideSearch;
   protected readonly query = signal("");

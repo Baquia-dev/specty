@@ -26,6 +26,7 @@ import {
   tooLarge,
   UNEXPECTED,
 } from "./server-answers";
+import type { MemoryVerb } from "./source";
 import { isStrings, isTrace, type TraceRecord } from "./trace";
 
 /** The mark `specty ui` puts in the page it serves (ARCHITECTURE §15). */
@@ -121,6 +122,11 @@ export class ServerData extends SpectyData {
 
   override setDelegation(on: boolean): Promise<void> {
     return this.post("/api/delegation", { on });
+  }
+
+  override memoryAction(id: string, verb: MemoryVerb, reason?: string): Promise<void> {
+    const body = reason === undefined ? {} : { reason };
+    return this.post(`/api/memory/${encodeURIComponent(id)}/${verb}`, body);
   }
 
   override async memory(): Promise<MemoryRecord> {
