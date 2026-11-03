@@ -32,7 +32,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "65808c50ac56c488bab79b92754785fc89f939ee",
+      "startedAt": "2026-11-03T09:48:24.251Z",
+      "doneAt": "2026-11-03T09:49:43.774Z",
+      "summary": "init añade /.worktrees/ al final de .gitignore (o lo crea) cuando nada lo ignora, lo dice con worktreesIgnoreLine y lo incluye en su commit; writeMissing junta el glosario y esa línea"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

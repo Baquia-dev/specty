@@ -292,6 +292,14 @@ export function glossaryLine(path: string, lang: Lang): string {
   );
 }
 
+/** `.gitignore` ignores the changes' worktrees, inside the project (ADR 0018). */
+export function worktreesIgnoreLine(lang: Lang): string {
+  return translator(lang)(
+    "`.gitignore` ignora `.worktrees/`, donde viven las carpetas de los cambios (ADR 0018).",
+    "`.gitignore` ignores `.worktrees/`, where the changes' folders live (ADR 0018).",
+  );
+}
+
 /** A new project's PRODUCT.md: from the person's answers, or with the questions to answer. */
 export function productLine(interviewed: boolean, lang: Lang): string {
   const t = translator(lang);

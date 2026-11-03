@@ -42,7 +42,7 @@ Las worktrees de los cambios viven en `.worktrees/` dentro del proyecto (ADR 001
 
 ## Tareas
 
-- [ ] T1: init añade `/.worktrees/` a `.gitignore`
+- [x] T1: init añade `/.worktrees/` a `.gitignore`
   - files: packages/cli/src/install/project-files.ts, packages/cli/src/install/install.ts, packages/core/src/cards/init.ts, packages/core/src/cards/index.ts, packages/cli/test/init-worktrees.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/init-worktrees.test.ts && pnpm typecheck && pnpm lint
