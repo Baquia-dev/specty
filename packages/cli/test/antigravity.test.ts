@@ -145,14 +145,55 @@ describe("the guard in Antigravity", () => {
   });
 });
 
-/** A repository with a change in its own folder, which Antigravity's conversation `c1` entered. */
+/**
+ * A repository with a change in its own folder, which Antigravity's conversation `c1` entered: its
+ * editor gives it the worktrees' folder too, so the change's folder is within its reach.
+ */
 async function entered(): Promise<{ readonly root: string; readonly folder: string }> {
   const root = await tempRepo(APP);
   expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
-  const enter = step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root });
+  const enter = {
+    ...step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root }),
+    workspacePaths: [root, `${root}.worktrees`],
+  };
   expect((await answer(antigravity(root, "PreToolUse", enter))).decision).toBe("allow");
   return { root, folder: folderOf(root) };
 }
+
+describe("Antigravity and a change's folder out of its reach", () => {
+  it("AC1: denies `specty enter`, naming its folders and the change's, and says how to carry on", async () => {
+    const root = await tempRepo(APP);
+    expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+    const enter = step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root });
+    const denied = await answer(antigravity(root, "PreToolUse", enter));
+    expect(denied.decision).toBe("deny");
+    expect(denied.reason).toContain(
+      "Antigravity solo trabaja dentro de las carpetas de su espacio de trabajo",
+    );
+    expect(denied.reason).toContain(`\`${folderOf(root)}\`, no está en ninguna`);
+    expect(denied.reason).toContain("en una conversación nueva que empiece por `specty next`");
+    expect(denied.reason).toContain(`que añada \`${root}.worktrees\` al proyecto de su editor`);
+    expect(denied.reason).toMatch(/^SIGUIENTE: no entres\./m);
+  });
+
+  it("AC2: leaves the conversation in its own folder after the denial", async () => {
+    const root = await tempRepo(APP);
+    expect((await cli(root, ["new", "--worktree", "Saludo personalizado"])).code).toBe(0);
+    const enter = step(1, "run_command", { CommandLine: `specty enter ${CHANGE}`, Cwd: root });
+    expect((await answer(antigravity(root, "PreToolUse", enter))).decision).toBe("deny");
+    // Bound to the change, this read would be sent to the same path in the change's folder.
+    const view = step(2, "view_file", { AbsolutePath: join(root, "src/app.ts") });
+    expect(await answer(antigravity(root, "PreToolUse", view))).toEqual({ decision: "allow" });
+  });
+
+  it("AC3: enters as before when the change's folder is within its workspace", async () => {
+    const { root, folder } = await entered();
+    const outside = step(2, "view_file", { AbsolutePath: join(root, "src/app.ts") });
+    const denied = await answer(antigravity(root, "PreToolUse", outside));
+    expect(denied.decision).toBe("deny");
+    expect(denied.reason).toContain(join(folder, "src/app.ts"));
+  });
+});
 
 describe("Antigravity in the folder of the change its conversation entered", () => {
   it("blocks what it would read outside that folder, with the same path inside (C5 AC2)", async () => {

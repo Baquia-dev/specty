@@ -6,6 +6,13 @@
   "branch": "specty/20261103-enter-fuera-del-espacio",
   "baseCommit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c1b81587f8aca2d16c120722e0c0fc90bce057c5a52cdfa27f55a2c5c07ed970",
+    "at": "2026-11-03T06:58:47.383Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c1b81587f8aca2d16c120722e0c0fc90bce057c5a52cdfa27f55a2c5c07ed970",
-    "at": "2026-11-03T06:58:47.383Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T07:00:15.189Z"
 }
