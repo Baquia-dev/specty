@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-frenos-de-los-frentes",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261104-frenos-de-los-frentes",
   "baseCommit": "9ccb9b300c98982c7bdb77bee83b57f6aaf3469d",
   "revision": 1,
@@ -66,12 +66,21 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "a09ab2b7e1479788f9510f1fc25c24ebe56266a2",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:27:11.998Z",
       "doneAt": "2026-11-03T22:28:23.684Z",
-      "summary": "judgeFronts juzga también los ids de new --resolves (takenDenial): rechaza con la regla memory la entrada de un frente con dueño vivo de otra conversación. foreignFronts (flow/shared.ts) da los frentes de otras sesiones en que caen los archivos, y propose añade su aviso."
+      "summary": "judgeFronts juzga también los ids de new --resolves (takenDenial): rechaza con la regla memory la entrada de un frente con dueño vivo de otra conversación. foreignFronts (flow/shared.ts) da los frentes de otras sesiones en que caen los archivos, y propose añade su aviso.",
+      "scopeExtra": []
+    },
+    "T4": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "82934aed5822525c7e53160351e2633338a92f1a",
+      "startedAt": "2026-11-03T22:28:24.067Z",
+      "doneAt": "2026-11-03T22:28:41.286Z",
+      "summary": "formats.md: los frenos de los frentes (el rechazo del guard a new --resolves y el aviso de propose). ARCHITECTURE: el freno y el aviso junto a front take y front free."
     }
   },
   "pending": {
