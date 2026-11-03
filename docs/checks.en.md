@@ -31,6 +31,8 @@ OK 14/17 · FAIL: layers, max-lines, todo
 
 It exits with 1 when an `error`-level check fails; warnings never fail the run. A check that cannot run, because its tool is missing, shows as `NOT RUN`, and `--verbose` says why.
 
+Outside CI, `--all` leaves its debt in Specty's memory ([ADR 0016](decisions/0016-la-memoria-de-specty.md)). Each check that fails or warns becomes an improvement with a fixed text that only names it: "`specty check --all` debt: the `<id>` check has findings in the repository…". It carries no counts or paths, so the next run recognizes it. It is not added again while an entry not done has that text, in Spanish or in English; a dropped one does not come back either, and a done one does, because the debt came back. When a later `--all` passes that check, it marks its open entry done. One taken by a change is closed by that change, and a check that did not run adds or closes nothing. The output says so after the summary: `Debt added to the memory as improvements: P4.` and `Debt paid, marked done in the memory: P3.`. In CI (the `CI` variable with any value but empty, `false` or `0`) it writes nothing, and the JSON does not change.
+
 ## Common configuration
 
 Everything goes under `checks` in `.specty/config.yaml`:

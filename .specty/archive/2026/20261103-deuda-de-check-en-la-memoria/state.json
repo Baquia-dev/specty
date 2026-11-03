@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "id": "20261103-deuda-de-check-en-la-memoria",
+  "kind": "standard",
+  "phase": "done",
+  "branch": "specty/20261103-deuda-de-check-en-la-memoria",
+  "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
+  "revision": 3,
+  "approved": {
+    "revision": 2,
+    "hash": "sha256:f59821b7b89cd79598c1ad46603829dd26a1adc1b3a16726b11c2203613b8360",
+    "at": "2026-11-03T12:34:31.901Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:fc22457702ebf876411bd5d164762086143257af5fbf0e0b99478d326e22489f",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:00f59432adad716ad9032b2c6e06007f337449998939addbe65fad7048990258",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:3060e02cce4b802f2f43fdc008d5d8307a48544edba0b80fba9c36b013d53b32",
+      "decision": "confirmed"
+    },
+    "A4": {
+      "hash": "sha256:f489df091cef0631f67c31629810c4bdc190e7360c2a68618dfd68423493af77",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:86873ba6f77d534161ee3a8b5e494cb956a3e8bf2f59a72d1fee375655cf2eaf",
+      "decision": "implicit"
+    },
+    "A6": {
+      "hash": "sha256:d42419d1d885fc39b1ecce929451903c109acb422215c47117486ed6fdf4e51d",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "baseCommit": "1fefb0f46af41a64d5870f440c093cc6b5fa9fc8",
+      "attempts": 1,
+      "startedAt": "2026-11-03T12:38:16.447Z",
+      "doneAt": "2026-11-03T12:39:01.239Z",
+      "summary": "core cards/check-debt.ts: checkDebt (la deuda que anotar, sin repetir una entrada no hecha con su texto en algún idioma, y las mejoras abiertas que marcar hechas) y checkDebtLines; exportadas en cards/index.ts",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "baseCommit": "adeb8ebb9800abc6cccc2fcf85ed5298272fcd67",
+      "attempts": 1,
+      "startedAt": "2026-11-03T12:39:01.560Z",
+      "doneAt": "2026-11-03T12:47:52.977Z",
+      "summary": "cli flow/check-debt.ts: keepCheckDebt anota y marca hecha la deuda fuera de la CI, un commit cada una; check() lo carga con import() solo con --all (el hook de pre-commit no carga commander); writerOf exportado. Test AC1 corregido tras S1: sin terminal el autor es agent.",
+      "scopeExtra": [
+        "packages/cli/test/check-debt.test.ts"
+      ]
+    },
+    "T3": {
+      "status": "done",
+      "baseCommit": "d6f40e7d7c6e7071cf3e53a7c56708794e1a1127",
+      "attempts": 1,
+      "startedAt": "2026-11-03T12:47:53.310Z",
+      "doneAt": "2026-11-03T12:48:23.502Z",
+      "summary": "Documentada la deuda de check --all en docs/checks.md, checks.en.md y ARCHITECTURE.md; el test de code-rules ya nombraba la deuda desde la fase de tests.",
+      "scopeExtra": []
+    }
+  },
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 6,
+    "AC": 4,
+    "T": 3,
+    "R": 2,
+    "S": 1
+  },
+  "closingSubmittedAt": "2026-11-03T12:53:07.845Z",
+  "lockedTests": {
+    "packages/cli/test/check-code-rules.test.ts": "sha256:db4524168c27d2257334e80205fc671871ef667d5c158456263690321c2f5b97",
+    "packages/cli/test/check-debt.test.ts": "sha256:c6897ade3ae549e23aadcef5d153665f5e4785a3afd7c4b851a31b354a536fb8",
+    "packages/core/test/cards/check-debt.test.ts": "sha256:ab1257252a016f85f3ec7e7fb2764a9537bbf63c875265998942c0cd247a6081"
+  }
+}

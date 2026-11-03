@@ -31,6 +31,8 @@ OK 14/17 · FALLA: layers, max-lines, todo
 
 Sale con 1 si falla una verificación de nivel `error`; los avisos nunca hacen fallar. Una verificación que no puede ejecutarse, porque falta su herramienta, aparece como `SIN EJECUTAR`, y `--verbose` dice por qué.
 
+Fuera de la CI, `--all` deja su deuda en la memoria de Specty ([ADR 0016](decisions/0016-la-memoria-de-specty.md)). Cada verificación que falla o avisa queda como una mejora con un texto fijo que solo la nombra: «Deuda de `specty check --all`: la verificación `<id>` tiene hallazgos en el repositorio…». No lleva cuentas ni rutas, para que la siguiente ejecución la reconozca. No se repite mientras haya una entrada sin hacer con ese texto, en español o en inglés; una descartada tampoco vuelve, y una hecha sí, porque la deuda volvió. Cuando un `--all` posterior pasa esa verificación, marca hecha su entrada abierta. Una tomada por un cambio la cierra ese cambio, y una que no corrió no anota ni cierra nada. La salida lo dice tras el resumen: `Deuda anotada en la memoria como mejoras: P4.` y `Deuda saldada, marcada hecha en la memoria: P3.`. En la CI (la variable `CI` con un valor que no sea vacío, `false` ni `0`) no escribe nada, y el JSON no cambia.
+
 ## Configuración común
 
 Todo va bajo `checks` en `.specty/config.yaml`:
