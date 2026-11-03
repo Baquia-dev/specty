@@ -181,7 +181,7 @@ async function newInWorktree(
   const id = await uniqueId(session, makeChangeId(session.environment.now(), changeTitle), home);
   const branch = await branchFor(session, options, id);
   const folder = join(home, id);
-  const copied = await addWorktree(git, { folder, branch, base: base.commit });
+  const { hooks, workspace } = await addWorktree(git, { folder, branch, base: base.commit });
   await markBranch(git, branch, id);
   await createChange(session, options, {
     id,
@@ -198,7 +198,8 @@ async function newInWorktree(
       folder,
       from: `${base.name} (${base.commit.slice(0, 7)})`,
       ...(prepared !== undefined ? { prepared } : {}),
-      copied,
+      copied: hooks,
+      ...(workspace !== undefined ? { workspace } : {}),
       removed,
       // With Specty's worktree hooks, entering by name skips the prompt a folder outside `.claude` gets.
       byName: await entersByName(session.root),

@@ -48,7 +48,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5352ba47d7c61f32c8371f8bfd5cc42ccc5e685a",
+      "startedAt": "2026-11-03T12:43:53.539Z",
+      "doneAt": "2026-11-03T12:45:34.196Z",
+      "summary": "new copia go.work y go.work.sum sin versionar de la carpeta principal a la worktree, los ignora en .git/info/exclude si nada los ignoraba (excludeInClone, como /.worktrees/) y la tarjeta los nombra bajo WORKSPACE DE GO COPIADO"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

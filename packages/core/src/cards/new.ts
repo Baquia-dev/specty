@@ -164,6 +164,8 @@ export interface WorktreeCreated {
   };
   /** The agent's hook files copied into the folder. */
   readonly copied: readonly string[];
+  /** Go's unversioned workspace files copied into the folder, and whether Specty ignored them. */
+  readonly workspace?: { readonly files: readonly string[]; readonly excluded: boolean };
   /** Folders of finished changes removed on the way. */
   readonly removed: readonly string[];
   /** With Specty's worktree hooks, Claude Code enters the folder by name, without a prompt. */
@@ -217,6 +219,19 @@ export function worktreeCreatedCard(created: WorktreeCreated, ctx: CardContext):
   };
 }
 
+/** Go's workspace files copied, and how to version them once Specty ignored them in the clone. */
+function workspaceLines(created: WorktreeCreated, t: Translate): readonly string[] {
+  const { files = [], excluded = false } = created.workspace ?? {};
+  if (!excluded) return files;
+  return [
+    ...files,
+    t(
+      "Specty los ignora en el clon (`.git/info/exclude`) para que no entren en el cambio; para versionarlos, quita esas líneas.",
+      "Specty ignores them in the clone (`.git/info/exclude`) so they stay out of the change; to version them, remove those lines.",
+    ),
+  ];
+}
+
 /** The change, its folder and how it was prepared, the hooks copied and the folders removed. */
 function worktreeCreatedBlocks(created: WorktreeCreated, t: Translate): Output["blocks"] {
   const { id, branch, folder, from, prepared } = created;
@@ -238,6 +253,7 @@ function worktreeCreatedBlocks(created: WorktreeCreated, t: Translate): Output["
       ],
     },
     ...section(t("HOOKS DEL AGENTE COPIADOS", "AGENT HOOKS COPIED"), created.copied),
+    ...section(t("WORKSPACE DE GO COPIADO", "GO WORKSPACE COPIED"), workspaceLines(created, t)),
     ...section(
       t("CARPETAS DE CAMBIOS TERMINADOS, BORRADAS", "FOLDERS OF FINISHED CHANGES, REMOVED"),
       created.removed,

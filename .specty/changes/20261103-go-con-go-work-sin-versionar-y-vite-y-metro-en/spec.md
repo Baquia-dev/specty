@@ -57,7 +57,7 @@ Con un `go.work` sin versionar en la carpeta principal, Go no funciona en la wor
 
 ## Tareas
 
-- [ ] T1: `new` copia el workspace de Go sin versionar a la worktree
+- [x] T1: `new` copia el workspace de Go sin versionar a la worktree
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/commands/new.ts, packages/core/src/cards/new.ts, packages/core/test/cards/new.test.ts, packages/cli/test/worktree-go-work.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/cards/new.test.ts && pnpm --filter @baquia-dev/specty exec vitest run test/worktree-go-work.test.ts

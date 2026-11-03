@@ -74,14 +74,10 @@ export async function worktreesHome(git: Git): Promise<string> {
   return join(main, HOME);
 }
 
-/**
- * Ignores the worktrees' folder in the clone (`.git/info/exclude`, shared by every worktree), so
- * the main folder never shows it as untracked; the line goes in once.
- */
-async function ignoreHome(git: Git): Promise<void> {
+/** Adds `line` to the clone's `.git/info/exclude`, shared by every worktree, once. */
+async function excludeInClone(git: Git, line: string): Promise<void> {
   const exclude = await git.gitPath("info/exclude");
   const text = (await exists(exclude)) ? await readFile(exclude, "utf8") : "";
-  const line = `/${HOME}/`;
   if (text.split("\n").includes(line)) return;
   await mkdir(dirname(exclude), { recursive: true });
   const separator = text === "" || text.endsWith("\n") ? "" : "\n";
@@ -215,22 +211,61 @@ export async function hideFolder(path: string): Promise<void> {
 }
 
 /**
- * Checks `branch` out from `base` in a new worktree, and copies there the agent hook files that
- * git does not track: the versioned ones arrive with the branch. Returns the copied files.
+ * Go's workspace files. Go looks for `go.work` going up from the folder it runs in: from a worktree
+ * inside the project it finds the main folder's, which does not list the change's modules, and
+ * from one outside, none. Unversioned, they only live in the main folder, so `new` copies them: a
+ * narrow exception for one stack, like C's `#include` in the rules (ADR 0018).
+ */
+const GO_WORKSPACE: readonly string[] = ["go.work", "go.work.sum"];
+
+/** What `addWorktree` copied into the new worktree. */
+export interface CopiedFiles {
+  /** The agent hook files git does not track. */
+  readonly hooks: readonly string[];
+  /** Go's workspace files git does not track, and whether Specty ignored them in the clone. */
+  readonly workspace?: { readonly files: readonly string[]; readonly excluded: boolean };
+}
+
+/**
+ * Checks `branch` out from `base` in a new worktree, and copies there the agent hook files and Go's
+ * workspace files that git does not track: the versioned ones arrive with the branch.
  */
 export async function addWorktree(
   git: Git,
   target: { readonly folder: string; readonly branch: string; readonly base: string },
-): Promise<string[]> {
-  await ignoreHome(git);
+): Promise<CopiedFiles> {
+  // The main folder never shows the worktrees' folder as untracked.
+  await excludeInClone(git, `/${HOME}/`);
   await git.output(["worktree", "add", "-q", "-b", target.branch, target.folder, target.base]);
   await hideFolder(dirname(target.folder));
-  const copied: string[] = [];
+  const hooks: string[] = [];
   for (const file of AGENT_HOOK_FILES) {
     if (!(await exists(join(git.root, file))) || (await git.isTracked(file))) continue;
     await mkdir(dirname(join(target.folder, file)), { recursive: true });
     await copyFile(join(git.root, file), join(target.folder, file));
-    copied.push(file);
+    hooks.push(file);
   }
-  return copied;
+  const workspace = await copyGoWorkspace(git, target.folder);
+  return { hooks, ...(workspace !== undefined ? { workspace } : {}) };
+}
+
+/**
+ * Copies the main folder's unversioned Go workspace into `folder`, and ignores each copy in the
+ * clone when nothing ignores it there: `task done` refuses an untracked file outside the scope.
+ */
+async function copyGoWorkspace(git: Git, folder: string): Promise<CopiedFiles["workspace"]> {
+  const main = (await git.worktrees())[0]?.folder ?? git.root;
+  const files: string[] = [];
+  let excluded = false;
+  for (const file of GO_WORKSPACE) {
+    if (!(await exists(join(main, file))) || (await exists(join(folder, file)))) continue;
+    if (await git.isTracked(file)) continue;
+    await copyFile(join(main, file), join(folder, file));
+    files.push(file);
+    if ((await git.run(["-C", folder, "check-ignore", "-q", "--", file])).code !== 0) {
+      await excludeInClone(git, `/${file}`);
+      excluded = true;
+    }
+  }
+  return files.length > 0 ? { files, excluded } : undefined;
 }
