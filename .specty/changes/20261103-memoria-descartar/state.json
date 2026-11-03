@@ -51,12 +51,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "e02460947055a8e9adb7eba25a06e9de6a3ca8a3",
+      "attempts": 1,
       "startedAt": "2026-11-03T07:39:20.696Z",
       "doneAt": "2026-11-03T07:40:34.336Z",
-      "summary": "MemoryEntry gana drop; droppedEntry (descartada por la persona o propuesta por un agente) y keptEntry; asuntos de commit de drop, propose-drop y keep; los campos opcionales de parseEntry en su propia función"
+      "summary": "MemoryEntry gana drop; droppedEntry (descartada por la persona o propuesta por un agente) y keptEntry; asuntos de commit de drop, propose-drop y keep; los campos opcionales de parseEntry en su propia función",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0838311cb349ea1e9aa4fea00592ecee35cca2bd",
+      "startedAt": "2026-11-03T07:40:34.699Z",
+      "doneAt": "2026-11-03T07:41:48.714Z",
+      "summary": "cards/memory-drop.ts: tarjetas de memory drop (descartada o propuesta), memory keep y sus negativas, y dropProposalLines; «TE TOCA» lleva las propuestas antes que los recordatorios"
     }
   },
   "pending": {

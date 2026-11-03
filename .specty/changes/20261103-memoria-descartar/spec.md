@@ -66,7 +66,7 @@ Hoy ninguna entrada de la memoria de Specty se puede descartar: un pendiente que
   - files: packages/core/src/memory/entries.ts, packages/core/src/index.ts, packages/core/src/cards/memory.ts, packages/core/test/memory/drop.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/drop.test.ts -t "a dropped, proposed or kept entry" && pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/entries.test.ts test/memory/claims.test.ts && pnpm lint
-- [ ] T2: Las tarjetas de `memory drop` y `memory keep`, y las propuestas en «TE TOCA»
+- [x] T2: Las tarjetas de `memory drop` y `memory keep`, y las propuestas en «TE TOCA»
   - files: packages/core/src/cards/memory-drop.ts, packages/core/src/cards/status.ts, packages/core/src/cards/index.ts, packages/core/test/memory/drop.test.ts
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/drop.test.ts test/cards/status-turn.test.ts test/cards/status-holder.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

@@ -4,6 +4,7 @@ import type { MemoryEntry } from "../memory/entries";
 import { headerOf, type Output, section } from "../output";
 import type { ChangeKind } from "../spec/model";
 import { reminderLines } from "./memory";
+import { dropProposalLines } from "./memory-drop";
 import { type Translate, translator } from "./text";
 import type { CardContext } from "./view";
 
@@ -53,7 +54,10 @@ export function statusCard(
         t("CAMBIOS ABIERTOS", "OPEN CHANGES"),
         lines.length > 0 ? lines : [t("Ninguno.", "None.")],
       ),
-      ...section(t("TE TOCA", "YOUR TURN"), reminderLines(memory, ctx)),
+      ...section(t("TE TOCA", "YOUR TURN"), [
+        ...dropProposalLines(memory, ctx),
+        ...reminderLines(memory, ctx),
+      ]),
       ...section(
         t("MODO DELEGADO", "DELEGATED MODE"),
         ctx.delegated === true
