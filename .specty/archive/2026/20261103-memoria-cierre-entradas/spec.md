@@ -72,3 +72,27 @@ Desde el corte C3, `specty new --resolves` deja tomadas las entradas de la memor
 - R1: Archivar un cambio lee la memoria aunque no tomara nada — son tres procesos de git, una vez por cambio, y solo escribe si alguna entrada es suya.
 - R2: La escritura en la memoria falla al archivar y la entrada queda tomada por un cambio ya archivado — `new --resolves` ya trata como libre una entrada tomada por un cambio que no está abierto.
 - R3: El borrador lee la memoria en cada `next` — solo si el cambio se creó con `--resolves`, y solo en el borrador.
+
+## Cierre
+
+### Resumen
+
+Las entradas de la memoria de Specty que toma un cambio con `--resolves` ya no se quedan tomadas para siempre. Al archivarse el cambio, `archive` llama a `settleEntries`, que trata las que siguen tomadas por él:
+- si se cerró (con `close`, `accept` de un cambio quick o un retro confirmado), quedan hechas, con quien lo cerró en `closed` y el cambio aún en `taken`;
+- si se canceló, vuelven a estar libres, sin `taken`, y la tarjeta de inicio las ofrece de nuevo.
+
+Cada una va en su propio commit de la memoria («memoria: P1 hecha» o «memoria: P1 libre de nuevo»). La tarjeta del borrador muestra en «RESUELVE» las entradas que toma el cambio, con su tipo y su texto, y qué les pasará. Con esto se completa el AC5 de la épica.
+
+### Desviaciones
+
+- Las tres condiciones del borrador de `phaseFacts` pasaron a una sola función, `draftFacts`, para no subir su complejidad.
+
+### Decisiones
+
+- `settledEntry` conserva `taken` en una entrada hecha, para saber qué cambio la resolvió.
+- El borrador solo lee la memoria si `change.created` lleva `resolves`.
+
+### Pendientes
+
+- Los cambios que siguen dentro del corte C3: los pendientes del cierre convertidos en entradas (AC3 de la épica) y `specty memory drop` con su guard (AC6).
+- P9: `packages/core/src/index.ts` ya tiene 303 líneas de código; decidirlo junto con P2.
