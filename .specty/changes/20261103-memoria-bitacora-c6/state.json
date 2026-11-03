@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-bitacora-c6",
   "baseCommit": "9483005534b070cf93f6982555cb9da2f356708f",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:3297ed5b4f2a481b39d4b142494f1926dadc64bc5faaa6980096bd72d4ae999b",
+    "at": "2026-11-03T09:05:55.792Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -44,12 +51,6 @@
     "T": 2,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:3297ed5b4f2a481b39d4b142494f1926dadc64bc5faaa6980096bd72d4ae999b",
-    "at": "2026-11-03T09:05:55.792Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T09:06:53.979Z"
 }
