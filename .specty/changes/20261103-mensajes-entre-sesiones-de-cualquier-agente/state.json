@@ -6,6 +6,13 @@
   "branch": "specty/20261103-mensajes-entre-sesiones-de-cualquier-agente",
   "baseCommit": "e327530a2c576639a892c6b6746d3a01ead5c48c",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:50d94edfaf486ee2cee39e3dbe00245c381fcca42e55a2d4e3fa0a2402c3ac04",
+    "at": "2026-11-03T11:27:16.285Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -40,12 +47,6 @@
     "T": 3,
     "R": 2
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:50d94edfaf486ee2cee39e3dbe00245c381fcca42e55a2d4e3fa0a2402c3ac04",
-    "at": "2026-11-03T11:27:16.285Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T11:29:38.326Z"
 }
