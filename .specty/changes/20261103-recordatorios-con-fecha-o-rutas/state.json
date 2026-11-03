@@ -6,6 +6,13 @@
   "branch": "specty/20261103-recordatorios-con-fecha-o-rutas",
   "baseCommit": "8be0473c2cf129572fc860adc432518914be47a3",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:d53b1592fbf74d5aeed63db144b8e9a655f901e972f2d5619c7c95e6858010c9",
+    "at": "2026-11-03T14:00:26.444Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 15,
@@ -49,12 +56,6 @@
     "T": 4,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:d53b1592fbf74d5aeed63db144b8e9a655f901e972f2d5619c7c95e6858010c9",
-    "at": "2026-11-03T14:00:26.444Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T14:03:06.723Z"
 }
