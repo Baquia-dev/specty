@@ -50,7 +50,7 @@ La página «Memoria» de `specty ui` ya enseña la memoria de Specty y quién l
 
 ## Tareas
 
-- [ ] T1: El filtro de las secciones
+- [x] T1: El filtro de las secciones
   - files: packages/ui/src/memory/memory-view.ts, packages/ui/src/memory/memory-filter.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-ui exec ng test --no-watch --include src/memory/memory-filter.test.ts --include src/memory/memory-view.test.ts && pnpm lint

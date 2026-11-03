@@ -44,7 +44,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "6383d345e3f0ee9a9d7dde911942e861b5b7ac33",
+      "startedAt": "2026-11-03T10:00:35.139Z",
+      "doneAt": "2026-11-03T10:02:36.691Z",
+      "summary": "memorySections acepta un MemoryFilter (búsqueda con fold, tipo y cerradas) y añade la sección «Hechas y descartadas»; sin filtro, igual que antes"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null
