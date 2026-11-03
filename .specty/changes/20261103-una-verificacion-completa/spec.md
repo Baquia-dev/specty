@@ -57,7 +57,7 @@ Con varias sesiones trabajando en el mismo clon, dos `specty accept` o dos incor
   - files: packages/cli/src/store/lock.ts, packages/cli/src/flow/full-verification.ts, packages/cli/src/flow/full-verification.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/flow/full-verification.test.ts test/lock.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: `accept` y la incorporación de main verifican por turno, y la documentación
+- [x] T3: `accept` y la incorporación de main verifican por turno, y la documentación
   - files: packages/cli/src/flow/live-run.ts, packages/cli/src/flow/integrate.ts, packages/cli/src/flow/full-verification.test.ts, docs/formats.md, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run src/flow/full-verification.test.ts test/lock.test.ts test/accept-live.test.ts && pnpm typecheck && pnpm lint

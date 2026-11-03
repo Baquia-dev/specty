@@ -24,6 +24,7 @@ import type { Session } from "../session";
 import type { StoredChange } from "../store/changes";
 import { commitState } from "./active";
 import { commitWithReceipt, decisionTrailers } from "./commits";
+import { oneAtATime } from "./full-verification";
 import { codeTree, recordFullVerification } from "./verified";
 import { targetBranch } from "./worktree";
 
@@ -177,12 +178,16 @@ async function failedVerification(
   const { git, lang } = session;
   const { plan, change, again, byHand } = absorbing;
   session.environment.io.err(verifyingNote(command, lang));
-  const started = Date.now();
-  const result = await execute(command, [], {
-    cwd: session.root,
-    shell: true,
-    env: session.environment.env,
-    timeoutMs: session.config.verify.timeoutSec * 1000,
+  let started = Date.now();
+  // One full verification at a time in the clone: the time counted starts with its turn.
+  const result = await oneAtATime(session, command, () => {
+    started = Date.now();
+    return execute(command, [], {
+      cwd: session.root,
+      shell: true,
+      env: session.environment.env,
+      timeoutMs: session.config.verify.timeoutSec * 1000,
+    });
   });
   if (result.code === 0) {
     // In the audit, so that `accept` does not run it again on this code; a closed change's audit

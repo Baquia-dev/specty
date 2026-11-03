@@ -2,6 +2,7 @@
 import { type ExecResult, execute } from "../io/exec";
 import type { Session } from "../session";
 import { clearRun, writeRun } from "../store/runs";
+import { oneAtATime } from "./full-verification";
 
 /** Lines a live run keeps: its end is what matters. */
 const KEPT = 1000;
@@ -31,8 +32,8 @@ export async function runLive(
     writing = writing.then(() => writeRun(session.git, change, run)).catch(() => undefined);
   };
   write();
-  try {
-    return await execute(command, [], {
+  const go = () =>
+    execute(command, [], {
       cwd: session.root,
       shell: true,
       env: session.environment.env,
@@ -44,6 +45,9 @@ export async function runLive(
         pending ??= setTimeout(write, EVERY);
       },
     });
+  try {
+    // A full verification, with no task, waits for its turn: one at a time in the clone.
+    return await (task === undefined ? oneAtATime(session, command, go) : go());
   } finally {
     clearTimeout(pending);
     await writing;
