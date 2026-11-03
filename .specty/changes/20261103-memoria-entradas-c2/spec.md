@@ -89,7 +89,7 @@ Hoy lo que un agente deja pendiente vive en el chat o en su memoria privada, y s
 
 ## Tareas
 
-- [ ] T1: El modelo de una entrada y sus tarjetas, en core
+- [x] T1: El modelo de una entrada y sus tarjetas, en core
   - files: packages/core/src/memory/entries.ts, packages/core/src/cards/memory.ts, packages/core/src/index.ts, packages/core/src/cards/index.ts, packages/core/test/memory/entries.test.ts
   - ac: AC1, AC3, AC6
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/entries.test.ts

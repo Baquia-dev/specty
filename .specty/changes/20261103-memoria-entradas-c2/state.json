@@ -53,7 +53,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "976a84c36c895f9df11a77e03830b5694b53c4ec",
+      "startedAt": "2026-11-03T03:29:16.471Z",
+      "doneAt": "2026-11-03T03:31:36.223Z",
+      "summary": "Modelo MemoryEntry en core/src/memory/entries.ts (parse/serialize con frontmatter YAML, ids P/D, isOpenEntry) y tarjetas de la memoria en cards/memory.ts (lista, anotada, hecha, negativas de add y de done, README y asunto de commits), exportados en index.ts y cards/index.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

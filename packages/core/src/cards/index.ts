@@ -217,6 +217,16 @@ export { longFileCard, longFileWarnings, splitAdvice } from "./lines";
 export { busyChangeCard, type LockHolderView } from "./lock";
 export { mcpNotOnPathWarning, mcpRegisteredLine, mcpUserFolderWarning } from "./mcp";
 export {
+  type MemoryListOutput,
+  type MemoryRefusal,
+  memoryAddedCard,
+  memoryCommitSubject,
+  memoryDoneCard,
+  memoryListCard,
+  memoryReadme,
+  memoryRefusalCard,
+} from "./memory";
+export {
   changeCreatedLead,
   type NewRefusal,
   newRefusalCard,
