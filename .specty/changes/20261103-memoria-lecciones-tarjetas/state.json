@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "370c62c9ae848df35984b8365674ea289e514bbd",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:58:04.174Z",
       "doneAt": "2026-11-03T10:59:04.747Z",
-      "summary": "entriesForPaths en memory/paths.ts (lecciones y decisiones abiertas cuyas rutas encajan, en los dos sentidos, por fecha), pathEntriesBlock en cards/memory-paths.ts y ChangeView.pathEntries"
+      "summary": "entriesForPaths en memory/paths.ts (lecciones y decisiones abiertas cuyas rutas encajan, en los dos sentidos, por fecha), pathEntriesBlock en cards/memory-paths.ts y ChangeView.pathEntries",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "83bd7eb790ebd15211c3d02e11ea201e659706f8",
+      "startedAt": "2026-11-03T10:59:05.061Z",
+      "doneAt": "2026-11-03T10:59:33.468Z",
+      "summary": "La sección de lecciones y decisiones de los archivos va en la tarjeta de la tarea, tras las convenciones, y en la del borrador, tras lo que resuelve"
     }
   },
   "pending": {

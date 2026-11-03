@@ -56,7 +56,7 @@ La memoria de Specty ya guarda lecciones y decisiones ligadas a rutas del códig
   - files: packages/core/src/memory/paths.ts, packages/core/src/index.ts, packages/core/src/cards/memory-paths.ts, packages/core/src/cards/view.ts, packages/core/test/memory/paths.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/paths.test.ts -t "which lessons and decisions" && pnpm lint
-- [ ] T2: La sección en las tarjetas de la tarea y del borrador
+- [x] T2: La sección en las tarjetas de la tarea y del borrador
   - files: packages/core/src/cards/work.ts, packages/core/src/cards/next.ts, packages/core/test/memory/paths.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/paths.test.ts test/cards/findings.test.ts test/cards/memory-start.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint

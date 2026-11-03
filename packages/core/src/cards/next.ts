@@ -7,6 +7,7 @@ import { acceptanceCard } from "./acceptance";
 import { termsSection } from "./glossary";
 import { integrationCard } from "./integration";
 import { memoryStartBlocks, resolvesLines } from "./memory";
+import { pathEntriesBlock } from "./memory-paths";
 import { notesBlock } from "./notes";
 import { testingCard } from "./testing";
 import { draftingGuide, quoted, translator } from "./text";
@@ -168,6 +169,7 @@ function draftCard(change: ChangeView, ctx: CardContext): Output {
         change.request === undefined ? [] : change.request.split("\n"),
       ),
       ...section(t("RESUELVE", "RESOLVES"), resolvesLines(change.resolves ?? [], ctx)),
+      ...pathEntriesBlock(change.pathEntries ?? [], ctx),
       ...(change.carried ?? []).flatMap((carried) =>
         section(
           t(`DEL CAMBIO ${carried.id}`, `FROM CHANGE ${carried.id}`),

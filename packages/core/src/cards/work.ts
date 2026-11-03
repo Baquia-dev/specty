@@ -3,6 +3,7 @@ import { headerOf, type Output, section } from "../output";
 import { acceptanceCard, doneLine } from "./acceptance";
 import { epicCard } from "./epic";
 import { glossaryClosingLines, termsSection } from "./glossary";
+import { pathEntriesBlock } from "./memory-paths";
 import { effortLabel, progressOf, translator } from "./text";
 import type { CardContext, ChangeView, TaskView } from "./view";
 
@@ -71,6 +72,7 @@ export function taskCard(change: ChangeView, task: TaskView, ctx: CardContext): 
         ctx.lang,
       ),
       ...section(t("CONVENCIONES", "CONVENTIONS"), change.conventions),
+      ...pathEntriesBlock(change.pathEntries ?? [], ctx),
       ...section(t("HECHO", "DONE"), done),
       ...section(t("HALLAZGOS", "FINDINGS"), findingLines(change.tasks)),
       ...section(t("ALCANCE PENDIENTE DE APROBACIÓN", "SCOPE AWAITING APPROVAL"), pending),
