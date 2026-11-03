@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-deuda-de-check-en-la-memoria",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-deuda-de-check-en-la-memoria",
   "baseCommit": "458058f0fea351879714acb35780df4de40743a9",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:f59821b7b89cd79598c1ad46603829dd26a1adc1b3a16726b11c2203613b8360",
@@ -71,12 +71,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "d6f40e7d7c6e7071cf3e53a7c56708794e1a1127",
+      "attempts": 1,
       "startedAt": "2026-11-03T12:47:53.310Z",
       "doneAt": "2026-11-03T12:48:23.502Z",
-      "summary": "Documentada la deuda de check --all en docs/checks.md, checks.en.md y ARCHITECTURE.md; el test de code-rules ya nombraba la deuda desde la fase de tests."
+      "summary": "Documentada la deuda de check --all en docs/checks.md, checks.en.md y ARCHITECTURE.md; el test de code-rules ya nombraba la deuda desde la fase de tests.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -90,6 +90,7 @@
     "R": 2,
     "S": 1
   },
+  "closingSubmittedAt": "2026-11-03T12:53:07.845Z",
   "lockedTests": {
     "packages/cli/test/check-code-rules.test.ts": "sha256:db4524168c27d2257334e80205fc671871ef667d5c158456263690321c2f5b97",
     "packages/cli/test/check-debt.test.ts": "sha256:c6897ade3ae549e23aadcef5d153665f5e4785a3afd7c4b851a31b354a536fb8",

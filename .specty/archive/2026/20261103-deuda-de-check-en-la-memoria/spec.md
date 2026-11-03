@@ -81,3 +81,24 @@ Segundo corte de P31 (lo aplazado entra solo en la memoria): cuando `specty chec
 
 - R1: Entradas de más en un repositorio con mucha deuda — una sola por verificación, no por hallazgo, y la persona puede descartarlas con `specty memory drop` sin que vuelvan.
 - R2: `check --all` algo más lento — una lectura de la memoria y un commit por entrada que cambia, y solo cuando cambia alguna.
+
+## Cierre
+
+### Resumen
+
+Fuera de la CI, `specty check --all` deja su deuda en la memoria de Specty: cada verificación que falla o avisa queda como una mejora con un texto fijo que solo la nombra, que no se repite mientras haya una entrada sin hacer con ese texto, en español o en inglés, y que se marca hecha sola cuando un `--all` posterior pasa esa verificación. La salida nombra las entradas anotadas y las marcadas hechas tras el resumen; en la CI, con `--changed` o con `--staged` no escribe nada, y el JSON no cambia.
+
+### Desviaciones
+
+- `packages/cli/test/support.ts` no cambió: en la fase de tests, `propose` pide que la salida que falla nombre cada test nuevo, y un archivo de apoyo nunca falla. Los tests que dependen de estar fuera de la CI pasan `CI: ""` ellos mismos, también el `check --all` de `check-code-rules.test.ts`.
+- La aserción del origen del test AC1 de `packages/cli/test/check-debt.test.ts` esperaba «la persona», pero un comando sin terminal lo ejecuta un agente («agent»). La persona la desbloqueó (S1) y solo cambió esa línea.
+
+### Decisiones
+
+- `check()` carga `flow/check-debt.ts` con `import()` solo con `--all`: el hook de pre-commit también ejecuta `check`, y un import estático le hacía cargar los comandos de la memoria y commander, como detectó `test/bundle.test.ts`.
+- La comprobación de la CI va dentro de `keepCheckDebt`, que lee la memoria solo si no está en la CI.
+
+### Pendientes
+
+- Queda el último corte de P31: los hallazgos de `specty review` que el cierre no cita pasan a ser pendientes, y con él se resuelve P31.
+- En la fase de tests con `policy.tests: contract`, un archivo de apoyo de los tests (como `packages/cli/test/support.ts`) no se puede enviar, porque `propose` exige que la salida que falla nombre cada archivo nuevo o modificado y un archivo de apoyo nunca falla. Distinguir los archivos de apoyo, por ejemplo los que no contienen tests, y no pedirles que fallen.
