@@ -43,13 +43,14 @@ export function execute(
     let timedOut = false;
     const keep = (text: string) =>
       options.whole === true || text.length <= MAX_OUTPUT ? text : text.slice(-MAX_OUTPUT);
-    child.stdout.on("data", (chunk: Buffer) => {
-      const text = chunk.toString("utf8");
+    // Decoded as a stream, a character whose bytes come in two pieces arrives whole.
+    child.stdout.setEncoding("utf8");
+    child.stderr.setEncoding("utf8");
+    child.stdout.on("data", (text: string) => {
       stdout = keep(stdout + text);
       options.onOutput?.("stdout", text);
     });
-    child.stderr.on("data", (chunk: Buffer) => {
-      const text = chunk.toString("utf8");
+    child.stderr.on("data", (text: string) => {
       stderr = keep(stderr + text);
       options.onOutput?.("stderr", text);
     });
