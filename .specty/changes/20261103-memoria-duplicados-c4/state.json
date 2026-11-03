@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-duplicados-c4",
   "baseCommit": "84797b049bdb6a68bf8caa500c9e6105227fc997",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:c6b73710b0837f0cec973be7b033150a95cb281a292bc07dc4474b2a9aff038b",
+    "at": "2026-11-03T08:03:58.759Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "L",
     "score": 11,
@@ -48,12 +55,6 @@
     "T": 2,
     "R": 3
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:c6b73710b0837f0cec973be7b033150a95cb281a292bc07dc4474b2a9aff038b",
-    "at": "2026-11-03T08:03:58.759Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T08:05:34.424Z"
 }
