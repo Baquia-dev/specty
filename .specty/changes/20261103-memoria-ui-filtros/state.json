@@ -6,6 +6,13 @@
   "branch": "specty/20261103-memoria-ui-filtros",
   "baseCommit": "c75cdbce3855cdae88c60f61062fe690112dab04",
   "revision": 1,
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9552d426e816d20795f00324a710f9ffa03a43e118a2a7487757906ea1189280",
+    "at": "2026-11-03T09:58:40.689Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
   "size": {
     "level": "M",
     "score": 8,
@@ -48,12 +55,6 @@
     "T": 3,
     "R": 1
   },
-  "approved": {
-    "revision": 1,
-    "hash": "sha256:9552d426e816d20795f00324a710f9ffa03a43e118a2a7487757906ea1189280",
-    "at": "2026-11-03T09:58:40.689Z",
-    "by": "Jorge Palacio Barcinilla",
-    "channel": "delegated"
-  },
-  "testCycle": "feature"
+  "testCycle": "feature",
+  "testsSubmittedAt": "2026-11-03T10:00:33.309Z"
 }
