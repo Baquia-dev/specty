@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-sin-permisos-worktrees",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-sin-permisos-worktrees",
   "baseCommit": "84797b049bdb6a68bf8caa500c9e6105227fc997",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:b3a80f951f1c7230db7884b2a0e1df69443312954d8025c2dc241f8ea0fc4d9f",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "5c0c6a40d3e20fba891ca0dce941e1a68c51fb56",
+      "attempts": 1,
       "startedAt": "2026-11-03T08:17:56.452Z",
       "doneAt": "2026-11-03T08:19:59.371Z",
-      "summary": "Codex: init ya no escribe .codex/config.toml ni crea la carpeta de las worktrees, y borra el de Specty; doctor solo mira la regla de cd; fuera sus textos de core; ARCHITECTURE al día"
+      "summary": "Codex: init ya no escribe .codex/config.toml ni crea la carpeta de las worktrees, y borra el de Specty; doctor solo mira la regla de cd; fuera sus textos de core; ARCHITECTURE al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,10 +70,45 @@
     "T": 2,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T08:36:25.482Z",
   "lockedTests": {
     "packages/cli/test/antigravity-turn.test.ts": "sha256:00f86139add4f9ac3493fba9c1badb7bcf317f2ce9043769cc3339f4d7b653ea",
     "packages/cli/test/antigravity.test.ts": "sha256:8d915c0c7b8685d1a86c4496e551923b4f883f46888aaa7cabea42bd2386643d",
     "packages/cli/test/codex.test.ts": "sha256:41f6bd1fdb173d633e580521de2593f68175c006fff0521d8428f185dba4a1e4",
     "packages/cli/test/doctor-enter.test.ts": "sha256:002c4c57e249300da8b3f3b3244cf41497203c7cd070b77d2546f743a7c1bd56"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "2c3a4e3ccc76154abf0aaf3f68ce9cdb62bdfcbc",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/formats.md",
+      "packages/cli/src/agents/adapter.ts",
+      "packages/cli/src/agents/antigravity.ts",
+      "packages/cli/src/agents/codex.ts",
+      "packages/cli/src/commands/agent-commands.ts",
+      "packages/cli/src/commands/new.ts",
+      "packages/cli/src/enforce/guard.ts",
+      "packages/cli/src/flow/duplicates.ts",
+      "packages/cli/src/flow/worktree.ts",
+      "packages/cli/test/antigravity-turn.test.ts",
+      "packages/cli/test/antigravity.test.ts",
+      "packages/cli/test/codex.test.ts",
+      "packages/cli/test/doctor-enter.test.ts",
+      "packages/cli/test/duplicates.test.ts",
+      "packages/core/src/cards/duplicates.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/install.ts",
+      "packages/core/src/flow/duplicates.ts",
+      "packages/core/src/index.ts",
+      "packages/core/test/flow/duplicates.test.ts"
+    ],
+    "at": "2026-11-03T08:23:56.538Z",
+    "resolved": {
+      "commit": "cff2e0e",
+      "at": "2026-11-03T08:32:08.308Z"
+    }
   }
 }

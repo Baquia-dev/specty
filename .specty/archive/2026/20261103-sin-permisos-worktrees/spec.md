@@ -64,3 +64,23 @@ Las worktrees de los cambios pasan a vivir dentro del proyecto (ADR 0018, en un 
 ## Riesgos
 
 - R1: Hasta que las worktrees vivan dentro del proyecto, una herramienta con sandbox no escribe en la carpeta de un cambio desde una sesión de la carpeta principal — los cambios van seguidos; mientras, la sesión abierta en la carpeta del cambio funciona.
+
+## Cierre
+
+### Resumen
+
+Primer paso para quitar los permisos que `init` daba a cada herramienta sobre la carpeta de las worktrees de fuera (ADR 0018). El guard ya solo abre a Antigravity la carpeta común de git (`write_file`), con cada comando que deja pasar y con cada acción de una conversación que entró en un cambio; fuera `Verdict.readable` y el `read_file` de la carpeta de las worktrees. Codex ya no recibe `.codex/config.toml` ni se crea la carpeta de las worktrees: `init` y `uninstall` borran el que escribió Specty antes (por su primer comentario, si no está en git), el de la persona no se toca, y `doctor` ya no da por anticuada una instalación sin él. Fuera de core `codexSandboxLine` y `codexSandboxKeptWarning`. ARCHITECTURE lo cuenta en «Permisos de la herramienta».
+
+### Desviaciones
+
+- `sharedFolders` sigue dando la carpeta de las worktrees: la usan Devin, Cursor y Gemini CLI, que van en los cambios siguientes. El guard toma solo `gitCommonFolder`, una función nueva de `flow/worktree.ts`. Lo destapó la verificación completa al aceptar.
+- `formerWorktreesHome` no se añadió aquí: Codex reconoce su archivo por el comentario y no necesita la ruta. Llega con el primer cambio que la usa.
+
+### Decisiones
+
+- `removeFormerConfig` borra el `.codex/config.toml` de Specty también al instalar, para que no quede una ruta de esta máquina que ya no hace falta.
+
+### Pendientes
+
+- OpenCode y Gemini CLI, y después Devin y Cursor, en los dos cambios siguientes; con el último, `sharedFolders` queda solo con la carpeta común de git.
+- Mover las worktrees dentro del proyecto y las exclusiones de las herramientas de JavaScript, en cambios propios.
