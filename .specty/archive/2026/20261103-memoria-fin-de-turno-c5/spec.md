@@ -77,3 +77,22 @@ La regla del reporte final ya pide anotar cada pendiente con `specty memory add`
 - R1: Un encabezado de pendientes que no lo es devuelve el turno sin motivo — pasa una sola vez por turno, y el agente puede decir que no hace falta anotarlos.
 - R2: Un agente lista pendientes sin encabezado, en prosa — no se detectan; la regla del reporte final sigue pidiendo anotarlos.
 - R3: Leer la memoria en cada fin de turno — solo cuando el mensaje lista pendientes.
+
+## Cierre
+
+### Resumen
+
+`specty hook memory-stop <agente>` es la red de la memoria en el fin de turno. Lee el último mensaje del agente (`AgentAdapter.lastMessage`; en Claude Code y Codex, `last_assistant_message`). Toma las viñetas de primer nivel bajo cada encabezado de pendientes (`pendingInMessage`) y se queda con las que no están en la memoria, con la regla de los pendientes del cierre (`harvestable`). Si queda alguna, le devuelve el turno una vez con esos pendientes, y le pide anotarlos con `specty memory add` y citar su id, o decir que no hace falta. Con `stop_hook_active` deja terminar. Es el AC10 de la épica.
+
+### Desviaciones
+
+- `specty check` pidió bajar la complejidad de `hookCommand` y de `memoryStop`: los hooks de fin de turno se despachan con una tabla, y `memoryStop` se partió en funciones pequeñas.
+
+### Decisiones
+
+- Es un hook aparte de `agent-stop`, porque no ejecuta ninguna verificación y debe llegar a todos.
+- Solo Claude Code y Codex: los demás agentes no dan el último mensaje en su fin de turno.
+
+### Pendientes
+
+- Instalar la red de la memoria en el fin de turno (épica «Memoria de Specty», AC10): que `specty init` escriba el hook `specty hook memory-stop <agente>` en el `Stop` de Claude Code (`.claude/settings.json` o `.claude/settings.local.json`) y de Codex (`.codex/hooks.json`), que `specty uninstall` lo quite y que `specty doctor` avise cuando falta en una instalación anterior. Hoy el hook existe pero nadie lo instala.

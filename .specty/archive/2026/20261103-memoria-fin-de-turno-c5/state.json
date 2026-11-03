@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-fin-de-turno-c5",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-fin-de-turno-c5",
   "baseCommit": "7b5a377abe7f0a22f2e50be83049a26076594b59",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:760e8dc2949917c8e6a296f5ff64f63b14aa6ae4befeedfa36d54693a1f81f68",
@@ -65,12 +65,12 @@
     },
     "T3": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02ca182effafa737b149d57165ad29109d6555b4",
+      "attempts": 1,
       "startedAt": "2026-11-03T08:41:03.272Z",
       "doneAt": "2026-11-03T08:42:44.709Z",
-      "summary": "enforce/memory-stop.ts: con el último mensaje del agente, saca los pendientes, se queda con los que no están en la memoria (harvestable) y devuelve el turno una vez con stop.reply; entry.ts despacha los hooks de fin de turno con una tabla; ARCHITECTURE.md lo documenta"
+      "summary": "enforce/memory-stop.ts: con el último mensaje del agente, saca los pendientes, se queda con los que no están en la memoria (harvestable) y devuelve el turno una vez con stop.reply; entry.ts despacha los hooks de fin de turno con una tabla; ARCHITECTURE.md lo documenta",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -83,6 +83,7 @@
     "T": 3,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-03T08:47:27.316Z",
   "lockedTests": {
     "packages/cli/test/memory-stop.test.ts": "sha256:05cb89b87bdfb33ff207d5a353175a37fdc55a1966b88c8fdb1b069a2be5ed35",
     "packages/core/test/memory/turn-end.test.ts": "sha256:84b88f063d3e586264d630fe1b7160a91d4ecb210aa762695631c5c7c9a6f03a"
