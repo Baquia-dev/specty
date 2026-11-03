@@ -94,3 +94,27 @@ Tercer cambio de P33 (repartir el trabajo entre sesiones): la tarjeta sin cambio
 
 - R1: `next` sin cambio activo y `status` leen ahora los dueños de los frentes (un archivo por frente y el de actividad de cada dueño) — solo cuando la memoria tiene frentes, así que un repositorio sin ellos no paga nada.
 - R2: Un agente que ejecuta `specty next` sin decir su conversación ve las entradas de su propio frente fuera de la lista, como si fuera de otro — la línea que nombra los frentes con dueño lo dice, y la tarjeta de inicio y la de tras compactar, que llegan por el guard, sí saben la conversación.
+
+## Cierre
+
+### Resumen
+
+La tarjeta sin cambio activo, que es también la de inicio de una sesión, tiene en cuenta los frentes con dueño vivo. A la conversación que lleva un frente, «MEMORIA DE SPECTY» le muestra solo las tres primeras entradas libres de ese frente, en su orden, o le dice que no tiene ninguna y que pregunte a la persona qué sigue. A las demás les quita las entradas de los frentes con dueño y nombra esos frentes, con `specty front` para ver quién los lleva. Sin frentes con dueño, la tarjeta es la de antes. La conversación que pregunta va en `Session.conversation`: el guard la pone desde el evento de su hook (`enteredSession`), y el comando la lee del entorno cuando la herramienta la dice (`agentSession`: hoy, `CLAUDE_CODE_SESSION_ID` de Claude Code). `specty status` añade «FRENTES», con cada frente, quién lo lleva y desde cuándo o que está libre, y los ids de sus entradas abiertas en orden. Su `--json` trae `fronts`, cada uno con `name`, `open` y, con dueño vivo, `owner` (`tool`, `ago`).
+
+### Desviaciones
+
+- El código de T2 (`statusCard` con «FRENTES» y `fronts`) entró en T1, con `specty scope add` de `packages/core/src/cards/status.ts`. El `typecheck` de la verificación de T1 compila todos los tests aprobados, y `status-fronts.test.ts` ya usaba el cuarto argumento de `statusCard`. T2 se completó sin código nuevo.
+
+### Decisiones
+
+- `FrontsView` no se exporta desde el índice del core: la CLI deja que TypeScript infiera el tipo de `frontsView` en `commands/next.ts`, así que `cards/index.ts` (P2) no crece.
+- La línea de los frentes con dueño los nombra en el orden de la memoria, no en el de sus dueños, y solo los que siguen existiendo.
+- El `owner` de `status --json` lleva solo la herramienta y los minutos, no el id de la conversación.
+- `next` y `status` solo leen los dueños cuando la memoria tiene frentes (R1).
+- `guard.ts` no cambia: la conversación llega a las tarjetas del guard por la sesión que devuelve `enteredSession`.
+
+### Pendientes
+
+- P33: falta el último cambio, los frenos: que el guard rechace `new --resolves` de una entrada de un frente con dueño vivo de otra conversación, y el aviso de `propose` al tocar las rutas de otro frente.
+- Specty solo sabe la conversación de Claude Code cuando el agente ejecuta `specty next` por su cuenta (`CLAUDE_CODE_SESSION_ID`). Falta comprobar qué variable da cada otro agente y si coincide con el `session_id` de sus hooks; por ejemplo, Codex pone `CODEX_THREAD_ID`. Hasta entonces, en esos agentes, `next` muestra la tarjeta de una conversación sin frente.
+- Tras un `/clear` en Claude Code, la conversación nueva es otra: el frente sigue siendo de la vieja hasta `memory.orphanAfterMin` (60 min por defecto), y el guard le niega a la nueva tomarlo. Una salida sería que el `SessionEnd` con `reason: clear` libere el frente de la conversación que termina.

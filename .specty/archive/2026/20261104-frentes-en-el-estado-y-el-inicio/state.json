@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261104-frentes-en-el-estado-y-el-inicio",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261104-frentes-en-el-estado-y-el-inicio",
   "baseCommit": "41057257a2eb0ac9113242877423e75b81462e57",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:422f37c06e20730104707374dba077d23ef0239d6e39cbcd439ae4e1be09562b",
@@ -86,12 +86,12 @@
     },
     "T5": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "02e559a3bb67ae14d19f20ca38590f915a764000",
+      "attempts": 1,
       "startedAt": "2026-11-03T22:09:49.765Z",
       "doneAt": "2026-11-03T22:10:12.771Z",
-      "summary": "formats.md: los frentes en la tarjeta de inicio y en status, y cómo sabe Specty la conversación. ARCHITECTURE: «FRENTES» y fronts en status y su --json, y el frente en la tarjeta de inicio."
+      "summary": "formats.md: los frentes en la tarjeta de inicio y en status, y cómo sabe Specty la conversación. ARCHITECTURE: «FRENTES» y fronts en status y su --json, y el frente en la tarjeta de inicio.",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -104,6 +104,7 @@
     "T": 5,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T22:15:20.520Z",
   "lockedTests": {
     "packages/cli/test/front-start.test.ts": "sha256:866268775f1b428e57056fc5d36db9142db29a69f8a495d022a877385c812b58",
     "packages/cli/test/front-status.test.ts": "sha256:d4e7261f61c269700b7eacda8ab2a7d2d5e749c0c71128c8797597e9b60a6ec9",
