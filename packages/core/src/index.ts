@@ -96,6 +96,12 @@ export {
 } from "./checks/strict-types";
 export { suppressions } from "./checks/suppressions";
 export {
+  type DuplicateCandidate,
+  type DuplicateReason,
+  duplicateReason,
+  similarTexts,
+} from "./flow/duplicates";
+export {
   type Actor,
   EVENT_RULES,
   type EventRule,

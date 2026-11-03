@@ -58,7 +58,7 @@ El 2026-10-30 dos sesiones empezaron el mismo cambio con minutos de diferencia, 
 
 ## Tareas
 
-- [ ] T1: Cuándo un cambio nuevo parece duplicar otro, y su tarjeta
+- [x] T1: Cuándo un cambio nuevo parece duplicar otro, y su tarjeta
   - files: packages/core/src/flow/duplicates.ts, packages/core/src/cards/duplicates.ts, packages/core/src/index.ts, packages/core/src/cards/index.ts, packages/core/test/flow/duplicates.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/duplicates.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
