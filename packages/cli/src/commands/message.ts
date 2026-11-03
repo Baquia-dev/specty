@@ -3,13 +3,14 @@ import {
   type MessageView,
   messageLeftCard,
   messageRefusalCard,
+  messagesNote,
   type Output,
 } from "@baquia-dev/specty-core";
 import type { Command } from "commander";
 import { isFinished, resolveActive } from "../flow/active";
 import { locateChanges } from "../flow/changes";
 import type { Session } from "../session";
-import { leaveMessage } from "../store/messages";
+import { anyMessages, leaveMessage, takeMessages } from "../store/messages";
 
 type Run = (handler: (session: Session) => Promise<Output>) => () => Promise<void>;
 
@@ -36,6 +37,19 @@ async function message(session: Session, id: string, text: string): Promise<Outp
   const at = session.environment.now().toISOString();
   await leaveMessage(session.git, id, { at, text: written, from: await senderOf(session) });
   return messageLeftCard(id, written, session.cards);
+}
+
+/**
+ * The messages waiting for the session of this folder's open change, taken and in the text the
+ * agent reads after a shell command; undefined without any. With no message anywhere, it only
+ * looks at one folder, so the guard's answer after each command stays fast.
+ */
+export async function waitingMessages(session: Session): Promise<string | undefined> {
+  if (!(await anyMessages(session.git))) return undefined;
+  const own = await resolveActive(session);
+  if (own === undefined || isFinished(own.state)) return undefined;
+  const messages = await takeMessages(session.git, own.state.id);
+  return messages.length === 0 ? undefined : messagesNote(messages, session.cards);
 }
 
 /** Who leaves a message: the person or the agent, its tool, and its folder and open change. */

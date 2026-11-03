@@ -14,6 +14,7 @@ Términos de Specty que un agente podría nombrar mal, de los más concretos a l
 - **Memoria de Specty** (`specty memory`): las entradas de la rama `specty-memory`, que todas las sesiones y carpetas ven.
 - **Lección** (`lesson`): una entrada de la memoria con lo que un agente aprendió de unas rutas del código, que siempre las lleva.
 - **Bitácora** (`specty note`): las notas de un cambio en su audit (`change.noted`); la tarjeta de `next` muestra las tres últimas.
+- **Mensaje** (`MessageView`, `specty message`): lo que una sesión o la persona deja para la sesión de un cambio abierto; le llega una vez, tras su siguiente comando.
 - **Test aprobado** (`lockedTests`): un test que aprobó la persona, o el rojo de un bug; solo cambia con un desbloqueo.
 - **Ciclo de tests** (`TestCycle`): con `contract`, el de una feature (gate 2) o el de un bug (su rojo se bloquea solo).
 - **Modo delegado** (`Delegation`): el agente aprueba, acepta y cierra por la persona.

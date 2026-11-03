@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-mensajes-entre-sesiones-de-cualquier-agente",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-mensajes-entre-sesiones-de-cualquier-agente",
   "baseCommit": "e327530a2c576639a892c6b6746d3a01ead5c48c",
   "revision": 1,
@@ -48,12 +48,21 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 2,
       "baseCommit": "6caff5319d7431ceb6c597a3f613387318c8ef0d",
+      "attempts": 2,
       "startedAt": "2026-11-03T11:30:29.045Z",
       "doneAt": "2026-11-03T12:02:21.095Z",
-      "summary": "store/messages.ts guarda los mensajes en orden de llegada y los toma leyéndolos y borrándolos; commands/message.ts: specty message <id> <texto> comprueba que el cambio está abierto y anota quién lo deja (persona o agente, herramienta, cambio y carpeta)"
+      "summary": "store/messages.ts guarda los mensajes en orden de llegada y los toma leyéndolos y borrándolos; commands/message.ts: specty message <id> <texto> comprueba que el cambio está abierto y anota quién lo deja (persona o agente, herramienta, cambio y carpeta)",
+      "scopeExtra": []
+    },
+    "T3": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "032938e9249249bc1d4bf7aafe61e119638c9cc1",
+      "startedAt": "2026-11-03T12:02:21.421Z",
+      "doneAt": "2026-11-03T12:04:14.191Z",
+      "summary": "El guard une al veredicto tras un comando los mensajes de la sesión del cambio de su carpeta (waitingMessages en commands/message.ts), que llegan como un aviso en cada agente; formats §1, ARCHITECTURE y el glosario los documentan"
     }
   },
   "pending": {

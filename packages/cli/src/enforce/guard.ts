@@ -17,6 +17,7 @@ import {
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
+import { waitingMessages } from "../commands/message";
 import { next } from "../commands/next";
 import { isFinished, resolveActive } from "../flow/active";
 import { gitCommonFolder, worktreesHome } from "../flow/worktree";
@@ -137,7 +138,7 @@ async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
       await leave(session, event, "card", "");
       return agent.reply(ALLOW, "after");
     case "after": {
-      const said = await afterShell(session, event);
+      const said = withMessages(await afterShell(session, event), await waitingMessages(session));
       const card = await pendingCard(session, event);
       if (agent.late === undefined || said.allow) return agent.reply(said, "after", card);
       // A tool whose hook after a command cannot reach the model gets it with its next call.
@@ -150,6 +151,16 @@ async function answer(kind: EventKind, call: Call): Promise<GuardReply> {
     default:
       return await beforeAction(call);
   }
+}
+
+/**
+ * The verdict after a command with the messages for the session (ADR 0016): one that allowed no
+ * longer does, so that they reach the model by the same way as a warning, in each agent's form.
+ */
+function withMessages(said: Verdict, messages: string | undefined): Verdict {
+  if (messages === undefined) return said;
+  if (said.allow) return { allow: false, reason: "messages", text: messages };
+  return { ...said, text: `${said.text}\n\n${messages}` };
 }
 
 /**

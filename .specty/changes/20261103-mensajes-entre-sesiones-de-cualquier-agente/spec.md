@@ -62,7 +62,7 @@ Que una sesión, de cualquier agente, o la persona desde su terminal, pueda deja
   - files: packages/cli/src/store/messages.ts, packages/cli/src/commands/message.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/message.test.ts
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/message.test.ts && pnpm typecheck && pnpm lint
-- [ ] T3: El guard entrega los mensajes tras un comando, y la documentación
+- [x] T3: El guard entrega los mensajes tras un comando, y la documentación
   - files: packages/cli/src/commands/message.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/message-delivery.test.ts, docs/formats.md, docs/ARCHITECTURE.md, docs/dominio.md
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/message-delivery.test.ts test/enforce.test.ts && pnpm typecheck && pnpm lint
