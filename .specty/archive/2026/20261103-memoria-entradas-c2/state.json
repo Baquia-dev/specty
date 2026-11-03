@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-memoria-entradas-c2",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-memoria-entradas-c2",
   "baseCommit": "fff62ec97c2f5f7ab37ffc75def65996c6177694",
-  "revision": 2,
+  "revision": 3,
   "approved": {
     "revision": 2,
     "hash": "sha256:98e5dd5adbc4b416f6d9f4ccf80a117c8ab5eccecb742081efa458bf794a8305",
@@ -112,10 +112,42 @@
     "T": 5,
     "R": 3
   },
+  "closingSubmittedAt": "2026-11-03T04:36:04.642Z",
   "lockedTests": {
     "packages/cli/test/exec.test.ts": "sha256:08970de3093ca2679a13eeabe713724b73b602561d3b5a5389fdc3adf3d6e5fe",
     "packages/core/test/schema/memory.test.ts": "sha256:ae4673409718ddaea81a82bebe718356f6938e520be7a1a27e9a79b7291805a7",
     "packages/cli/test/memory.test.ts": "sha256:2f879cd475a0c3e08d5c3ea453d5e7445339c2279c97b6ab54ae70877452057f",
     "packages/core/test/memory/entries.test.ts": "sha256:b18dd2d4c89e229cdfe50ab4b4e0c194e6c2620aee5672a6fd71d8474100244c"
+  },
+  "integration": {
+    "target": "main",
+    "commit": "9424fbdec745c4a9a5080a8488cf663c84d4ec4e",
+    "reason": "verify",
+    "conflicts": [],
+    "paths": [
+      "docs/ARCHITECTURE.md",
+      "docs/dominio.md",
+      "docs/formats.md",
+      "packages/cli/src/commands/memory.ts",
+      "packages/cli/src/io/exec.ts",
+      "packages/cli/src/program.ts",
+      "packages/cli/src/store/memory.ts",
+      "packages/cli/test/exec.test.ts",
+      "packages/cli/test/memory.test.ts",
+      "packages/cli/test/support.ts",
+      "packages/core/src/branches.ts",
+      "packages/core/src/cards/index.ts",
+      "packages/core/src/cards/memory.ts",
+      "packages/core/src/index.ts",
+      "packages/core/src/memory/entries.ts",
+      "packages/core/src/schema/memory.ts",
+      "packages/core/test/memory/entries.test.ts",
+      "packages/core/test/schema/memory.test.ts"
+    ],
+    "at": "2026-11-03T04:38:36.894Z",
+    "resolved": {
+      "commit": "296fa43",
+      "at": "2026-11-03T05:04:37.159Z"
+    }
   }
 }

@@ -115,3 +115,34 @@ Hoy lo que un agente deja pendiente vive en el chat o en su memoria privada, y s
 - R1: Dos sesiones escriben la rama a la vez — `update-ref` con el valor anterior hace perder a una, que relee y reintenta. AC5 lo prueba con cuatro escrituras simultáneas.
 - R2: Leer muchas entradas cuesta un proceso por entrada — se leen todas con un solo `cat-file --batch`, así que listar cuesta tres procesos de git, haya las que haya.
 - R3: La rama no tiene historia común con el código, y alguien podría sacarla a una carpeta o fusionarla — Specty nunca la saca a una carpeta, y su nombre queda fuera de `specty/`, donde `status` y `prune` buscan cambios.
+
+## Cierre
+
+### Resumen
+
+Nace la memoria duradera de Specty, en la rama propia `specty-memory` (`memory.branch`):
+- `specty memory add` anota pendientes, mejoras, recordatorios y decisiones desde cualquier carpeta del clon. Cada entrada lleva su origen, y una decisión, la cita literal de la persona.
+- `specty memory [--all]` las lista al instante desde cualquier otra carpeta, y `--json` las da en `entries`.
+- `specty memory done` marca hecho un recordatorio.
+
+Core define el modelo (`memory/entries.ts`) y las tarjetas, el README y los asuntos de los commits (`cards/memory.ts`). La CLI lee la rama con un solo `cat-file --batch` y la escribe con la fontanería de git y `update-ref` con el valor anterior, reintentando si otra sesión escribió antes (`store/memory.ts`). `execute` ya no rompe un carácter de varios bytes partido entre dos trozos de la salida.
+
+### Desviaciones
+
+- El corte se partió de otro modo que lo previsto en la épica. Este cambio lleva el almacén y los comandos, y lo que falta del AC4 de la épica va en un cambio que lo sigue: la tarjeta de inicio, `next` sin cambio, los recordatorios en «TE TOCA» y la línea de AGENTS.md. Una sesión ligada a la épica solo entra en sus cortes, y `--epic` exige `--slice`, así que el cambio previo sin corte (`20261103-memoria-entradas`) se canceló y el corte va primero.
+- En T5 se amplió el alcance a `packages/core/src/cards/memory.ts`, para que, con la misma fecha, la lista ponga los ids `P` antes que los `D` y luego ordene por número.
+- La verificación completa falló por un test de C1 que dependía de la hora UTC (`anywhere.test.ts`, AC5): entre las 00:00 y las 09:00 UTC, un cambio recién creado salía huérfano. Arreglarlo aquí llevaba el cambio a XL, así que se deshizo el ajuste (la revisión 2 es igual que la 1), y la persona lo arregló en main en otra sesión (9424fbd).
+
+### Decisiones
+
+- Sin lock propio: `update-ref` con el valor anterior es atómico, y Specty reintenta hasta 10 veces sobre lo que dejó la otra sesión (A1).
+- Las etiquetas de estado van en femenino («hecha», «tomada»), porque hablan de la entrada.
+- `--kind` lo valida commander con sus opciones.
+
+### Pendientes
+
+- El cambio que sigue a este y completa el AC4 de la épica: la tarjeta de inicio de sesión y la de `next` sin cambio (cuántas entradas abiertas hay, las tres primeras libres y los recordatorios), el matcher `startup` en el SessionStart de Claude Code, los recordatorios en «TE TOCA» de `status` y la línea del bloque de flujo de AGENTS.md.
+- C3: el guard que impide a los agentes escribir la rama de la memoria con git.
+- C4: avisar en `memory add` de una entrada parecida.
+- Un `--kind` desconocido lo rechaza commander con su mensaje en inglés, sin tarjeta propia como la de `new`.
+- `packages/core/src/cards/index.ts` tiene 355 líneas: es una lista de exportaciones y no se partió.
