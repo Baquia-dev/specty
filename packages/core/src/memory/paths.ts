@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { matchesAny } from "../glob";
-import { byDate, isOpenEntry, type MemoryEntry } from "./entries";
+import { byDate, isOpenEntry, type MemoryEntry, type MemoryKind } from "./entries";
+
+/** The kinds of entries that the files they are about bring up. */
+const PATH_KINDS: ReadonlySet<MemoryKind> = new Set(["lesson", "decision", "reminder"]);
 
 /**
- * The open lessons and decisions of Specty's memory (ADR 0016) whose paths match one of `files`,
- * either way, as shared files do: `src/api/**` matches `src/api/client.ts`, and a task with
+ * The open lessons, decisions and reminders of Specty's memory (ADR 0016) whose paths match one
+ * of `files`, either way, as shared files do: `src/api/**` matches `src/api/client.ts`, and a task with
  * `src/**` matches an entry about `src/api/client.ts`. By date.
  */
 export function entriesForPaths(
@@ -16,7 +19,7 @@ export function entriesForPaths(
     entries.filter(
       (entry) =>
         isOpenEntry(entry) &&
-        (entry.kind === "lesson" || entry.kind === "decision") &&
+        PATH_KINDS.has(entry.kind) &&
         (entry.paths ?? []).some((path) =>
           files.some((file) => matchesAny(file, [path]) || matchesAny(path, [file])),
         ),

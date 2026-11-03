@@ -190,6 +190,7 @@ export {
   takenEntry,
 } from "./memory/entries";
 export { entriesForPaths } from "./memory/paths";
+export { isDay, localDay, sessionEntries } from "./memory/triggers";
 export { pendingInMessage } from "./memory/turn-end";
 export {
   EXIT_CODES,

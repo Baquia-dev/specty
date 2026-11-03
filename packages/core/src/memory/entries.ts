@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { parse as parseYaml, stringify } from "yaml";
 import * as z from "zod";
+import { isDay } from "./triggers";
 
 // An entry of Specty's memory (formats.md §1, ADR 0016): a markdown file of its own branch,
 // `entries/<id>.md`, with its state in the frontmatter and its text below.
@@ -28,6 +29,8 @@ export interface MemoryEntry {
   readonly quote?: string;
   /** The paths of the code it is about (globs allowed): a lesson always has them. */
   readonly paths?: readonly string[];
+  /** A reminder's day (YYYY-MM-DD, local): it stays out of the sessions until then. */
+  readonly due?: string;
   /** The change that took it (`specty new --resolves`), and when. */
   readonly taken?: { readonly change: string; readonly at: string };
   /** Who asked to drop it, why and when: proposed by an agent, or dropped by the person. */
@@ -49,6 +52,7 @@ const EntrySchema = z
     origin: z.strictObject({ change: Text.optional(), by: Text }),
     quote: Text.optional(),
     paths: z.array(Text).min(1).optional(),
+    due: z.string().refine(isDay).optional(),
     taken: z.strictObject({ change: Text, at: Text }).optional(),
     drop: z.strictObject({ reason: Text, by: Text, at: Text }).optional(),
     closed: z.strictObject({ at: Text, by: Text }).optional(),
@@ -60,6 +64,10 @@ const EntrySchema = z
   .refine((entry) => entry.kind !== "lesson" || entry.paths !== undefined, {
     message: "a lesson needs the paths it is about",
     path: ["paths"],
+  })
+  .refine((entry) => entry.kind === "reminder" || entry.due === undefined, {
+    message: "only a reminder waits for a day",
+    path: ["due"],
   })
   .refine((entry) => entry.id.startsWith(prefixOf(entry.kind)));
 
@@ -88,16 +96,18 @@ export function parseEntry(markdown: string): MemoryEntry | undefined {
 function optionalFields({
   quote,
   paths,
+  due,
   taken,
   drop,
   closed,
 }: z.infer<typeof EntrySchema>): Pick<
   MemoryEntry,
-  "quote" | "paths" | "taken" | "drop" | "closed"
+  "quote" | "paths" | "due" | "taken" | "drop" | "closed"
 > {
   return {
     ...(quote !== undefined ? { quote } : {}),
     ...(paths !== undefined ? { paths } : {}),
+    ...(due !== undefined ? { due } : {}),
     ...(taken !== undefined ? { taken: { change: taken.change, at: taken.at } } : {}),
     ...(drop !== undefined ? { drop: { reason: drop.reason, by: drop.by, at: drop.at } } : {}),
     ...(closed !== undefined ? { closed: { at: closed.at, by: closed.by } } : {}),

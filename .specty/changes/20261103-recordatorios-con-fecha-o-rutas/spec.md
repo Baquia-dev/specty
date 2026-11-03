@@ -58,7 +58,7 @@ Primer cambio de P32 (recordatorios con disparador): un recordatorio de la memor
 
 ## Tareas
 
-- [ ] T1: Qué recordatorios esperan a su día o a sus rutas
+- [x] T1: Qué recordatorios esperan a su día o a sus rutas
   - files: packages/core/src/memory/entries.ts, packages/core/src/memory/triggers.ts, packages/core/src/memory/paths.ts, packages/core/src/index.ts, packages/core/test/memory/triggers.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/memory/triggers.test.ts test/memory/paths.test.ts test/memory/entries.test.ts && pnpm lint
