@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-los-riesgos-aceptados-quedan-en-la-memoria-como",
+  "baseCommit": "386167b88f29023b2774dc35bfd733fe7746a53c",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 9,
+    "adjust": 0,
+    "reasons": [
+      "7 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:c5e79ff41fe9a16a1e11f3c4a429d87dd8e61c0e6b0af9a244223c9be99e3a8d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:671cd0b322c1a0af63edb055ce4d55a7210b2fa912ff8e207d2667e9937a3303",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:6e2aeb07782e5fa14923fdf18c5297f660d3e505f6c36fc0813e0158b6641356",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:afc777cc809b5b9d6f1d8ea7e7b9e51c0f1c1e7ab6032ec04c9cf4e3ab0fb0f6",
+    "at": "2026-11-03T12:14:19.555Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
