@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-sin-permisos-devin-cursor",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-sin-permisos-devin-cursor",
+  "baseCommit": "b71b5b769ee9df08255344075ebb5b03def80c5e",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 10,
+    "adjust": 0,
+    "reasons": [
+      "8 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:19a94f9efa58c114c4caced51275b915ed0d0050a93d50ead21d72412d2ddce1",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:f13b2feca35762b3cb73e421e478a62a617818669bc45fbca36512855cfa75bb",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:7a4181e2a6a4145eb0e721abfbecdd6e29af908e8e7916a4f0bd5551a77c8f8e",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 2,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:965ddb8e12ea2aa00d2c713012e538d7d9aa7a3e1c938ab8bb8c619e87649807",
+    "at": "2026-11-03T08:59:17.958Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
