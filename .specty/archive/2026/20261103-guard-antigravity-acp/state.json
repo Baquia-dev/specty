@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-guard-antigravity-acp",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-guard-antigravity-acp",
   "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:305ec90d1e93b2f7ed1f36025f591101bfc8fd3ea1eefaa4d5ef604b0959419f",
@@ -52,12 +52,12 @@
     },
     "T2": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "050d633b91f47f31b74a1c4e4e582037c8d7455d",
+      "attempts": 1,
       "startedAt": "2026-11-03T06:50:24.226Z",
       "doneAt": "2026-11-03T06:50:57.358Z",
-      "summary": "PROTECTED suma .agents/hooks.json, .gemini/settings.json y .devin/hooks.v1.json; ARCHITECTURE nombra los hooks protegidos y las herramientas ACP de Antigravity"
+      "summary": "PROTECTED suma .agents/hooks.json, .gemini/settings.json y .devin/hooks.v1.json; ARCHITECTURE nombra los hooks protegidos y las herramientas ACP de Antigravity",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -70,6 +70,7 @@
     "T": 2,
     "R": 2
   },
+  "closingSubmittedAt": "2026-11-03T06:55:34.761Z",
   "lockedTests": {
     "packages/cli/test/antigravity.test.ts": "sha256:ed1f420aeeb84cf08e06501441425a492bcbd0c86590b55804dd41417daede3f",
     "packages/core/test/guard/decide.test.ts": "sha256:50cdec7555588163bd53a220f3618ae673c262a1a9052e3804b4286359865c50"

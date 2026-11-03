@@ -60,3 +60,26 @@ En Zed (y en cualquier editor que hable ACP), Antigravity lee y escribe con `cli
 
 - R1: Antigravity no pasa sus herramientas `client_*` por los hooks (A2 falso), y el guard sigue sin verlas — el registro de cada conversación (`~/.gemini/antigravity-acp/conversations/<id>.db`) dice si el hook respondió; si no, el cambio aparte del bloqueo cruzado lo anotará como límite de Antigravity.
 - R2: Un test o un flujo legítimo escribía uno de los tres archivos a través del guard — el check completo de `task done` lo destaparía; `init` y `uninstall` no pasan por él.
+
+## Cierre
+
+### Resumen
+
+En los editores que hablan ACP (Zed, JetBrains), Antigravity lee y escribe con `client_view_file`, `client_edit_file` y `client_create_file`, que el guard no veía: en Frecu el agente reescribió `.specty/config.yaml` con ellas. Ahora el matcher de `.agents/hooks.json` las incluye y el guard las juzga como las propias de Antigravity: `client_view_file` es una lectura de `absolute_path` (también para la conversación que entró en la carpeta de un cambio) y las otras dos, escrituras de `target_file`. `doctor` reconoce el hook de antes de este cambio con la línea nueva `antigravity-acp` y pide `specty init --tools antigravity`; el de antes de `specty enter` conserva su aviso.
+
+Además, el guard protege `.agents/hooks.json`, `.gemini/settings.json` y `.devin/hooks.v1.json`, al escribir y al borrar, como ya protegía los hooks de Claude Code, Cursor, Codex y OpenCode: ningún agente puede quitarse su guard. ARCHITECTURE nombra los hooks protegidos y las herramientas ACP de Antigravity.
+
+### Desviaciones
+
+- `action` de `agents/antigravity.ts` pasó la complejidad máxima con los dos casos nuevos; las escrituras van en una tabla `WRITES`, como las lecturas en `READS`.
+
+### Decisiones
+
+- `doctor` distingue el hook sin las herramientas ACP (`antigravity-acp`) del de antes de `specty enter` (`enter-outdated`) por si su matcher ya tenía `view_file`, para que el aviso diga lo que falta de verdad.
+- Los ajustes de permisos y de sandbox de cada herramienta siguen sin proteger: no apagan el guard.
+
+### Pendientes
+
+- El bloqueo cruzado de Frecu sigue: Antigravity solo trabaja en la carpeta de la sesión y en las que le pasa el editor (`additionalDirectories`), así que tras `specty enter` no alcanza la worktree y el guard le niega todo lo de fuera. Va en el cambio siguiente: no ligar la conversación a una carpeta que la herramienta no alcanza y decir cómo seguir.
+- Que Antigravity pase sus herramientas `client_*` por los hooks (A2) no se pudo probar con la herramienta real; se ve en el registro de cada conversación (`~/.gemini/antigravity-acp/conversations/<id>.db`).
+- Los proyectos con Antigravity instalado antes de este cambio necesitan `specty init --tools antigravity`; `doctor` lo dice.
