@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-guard-antigravity-acp",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-guard-antigravity-acp",
   "baseCommit": "2e52355e2c9dfffd9c6187c41572e38939603811",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "2b7d1decba9a7e4cdf4742392d779c44066e4e69",
+      "attempts": 1,
       "startedAt": "2026-11-03T06:48:48.740Z",
       "doneAt": "2026-11-03T06:50:23.916Z",
-      "summary": "El guard de Antigravity juzga client_view_file como lectura y client_edit_file/client_create_file como escrituras (tabla WRITES); doctor da antigravity-acp para un hook con lecturas pero sin ellas"
+      "summary": "El guard de Antigravity juzga client_view_file como lectura y client_edit_file/client_create_file como escrituras (tabla WRITES); doctor da antigravity-acp para un hook con lecturas pero sin ellas",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "050d633b91f47f31b74a1c4e4e582037c8d7455d",
+      "startedAt": "2026-11-03T06:50:24.226Z",
+      "doneAt": "2026-11-03T06:50:57.358Z",
+      "summary": "PROTECTED suma .agents/hooks.json, .gemini/settings.json y .devin/hooks.v1.json; ARCHITECTURE nombra los hooks protegidos y las herramientas ACP de Antigravity"
     }
   },
   "pending": {
