@@ -2,10 +2,10 @@
   "schema": 1,
   "id": "20261103-doctor-worktrees-js",
   "kind": "standard",
-  "phase": "acceptance",
+  "phase": "done",
   "branch": "specty/20261103-doctor-worktrees-js",
   "baseCommit": "c4da10f5a97680486d91cba6a454c5c6f728d0f6",
-  "revision": 1,
+  "revision": 2,
   "approved": {
     "revision": 1,
     "hash": "sha256:00646ee5d45a0c77927881eb3165848bc6c71eeda1c88cf5b750a7bb3b2e8f0d",
@@ -38,12 +38,12 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "1b1f008e1f76b4ff85b70bb27ecbd8419f775d87",
+      "attempts": 1,
       "startedAt": "2026-11-03T10:04:14.572Z",
       "doneAt": "2026-11-03T10:05:53.784Z",
-      "summary": "doctor avisa de Vitest, Jest, ESLint y Biome de la raíz que no excluyen .worktrees/, con qué añadir; Biome con useIgnoreFile y Prettier cuentan .gitignore; formatterExclusions dividida por herramienta; docs al día"
+      "summary": "doctor avisa de Vitest, Jest, ESLint y Biome de la raíz que no excluyen .worktrees/, con qué añadir; Biome con useIgnoreFile y Prettier cuentan .gitignore; formatterExclusions dividida por herramienta; docs al día",
+      "scopeExtra": []
     }
   },
   "pending": {
@@ -56,6 +56,7 @@
     "T": 1,
     "R": 1
   },
+  "closingSubmittedAt": "2026-11-03T10:12:40.993Z",
   "lockedTests": {
     "packages/cli/test/doctor-worktrees.test.ts": "sha256:f6c1c37924fcfe7f93e25c901af2e2ad2f30f2b1cb695cc88e817bc40f05d7b6"
   }

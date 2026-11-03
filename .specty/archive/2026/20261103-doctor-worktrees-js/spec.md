@@ -53,3 +53,23 @@ Con las worktrees de los cambios en `.worktrees/`, dentro del proyecto (ADR 0018
 ## Riesgos
 
 - R1: Un proyecto que excluye la carpeta de otra forma (un glob distinto, una variable) recibe el aviso igual — el aviso no bloquea nada fuera de `doctor`, y la persona puede añadir el texto que se pide.
+
+## Cierre
+
+### Resumen
+
+Una vez que hay cambios en `.worktrees/` (ADR 0018), `specty doctor` dice qué herramienta de JavaScript de la raíz no excluye esa carpeta, en qué archivo y qué añadir: `"**/.worktrees/**"` en `test.exclude` de Vitest, `"<rootDir>/.worktrees/"` en `testPathIgnorePatterns` y `modulePathIgnorePatterns` de Jest (en su archivo o en `package.json`), `".worktrees/"` en `ignores` de ESLint (o en `.eslintignore` con la configuración antigua) y `"!.worktrees"` en `files.includes` de Biome, y sale con 1 mientras falte. Cuando la excluyen, lo dice; Biome con `vcs.useIgnoreFile` y Prettier la dan por excluida si `.gitignore` la ignora. Sin `.worktrees/`, no dice nada. Usa las líneas de los formateadores que ya existían, así que core no cambia. ARCHITECTURE y ADR 0018 lo cuentan: `doctor` avisa y no edita esas configuraciones.
+
+### Desviaciones
+
+- `formatterExclusions` pasó la complejidad máxima: Biome y Prettier van en funciones propias.
+- El test del AC3 buscaba `.worktrees/` en toda la salida de `doctor`, que incluye la ruta del `specty` que ejecuta, y este cambio vive en `.worktrees/`: busca ahora solo las líneas del aviso.
+- La decisión de ADR 0018 pasó de «`init` añade la exclusión donde pueda» a «`doctor` avisa», como con `.specty`.
+
+### Decisiones
+
+- Solo se miran las configuraciones de la raíz: las de los paquetes de un monorepo tienen su paquete como raíz y no ven `.worktrees/` del repositorio.
+
+### Pendientes
+
+- Los observadores de archivos de los servidores de desarrollo (Vite, Metro) siguen sin medir ni avisar.
