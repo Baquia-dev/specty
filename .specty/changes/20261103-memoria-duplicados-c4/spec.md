@@ -62,7 +62,7 @@ El 2026-10-30 dos sesiones empezaron el mismo cambio con minutos de diferencia, 
   - files: packages/core/src/flow/duplicates.ts, packages/core/src/cards/duplicates.ts, packages/core/src/index.ts, packages/core/src/cards/index.ts, packages/core/test/flow/duplicates.test.ts
   - ac: AC1, AC2, AC4
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/flow/duplicates.test.ts && pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: `new` frena el duplicado, salvo con `--distinct-from`, y la documentación
+- [x] T2: `new` frena el duplicado, salvo con `--distinct-from`, y la documentación
   - files: packages/cli/src/flow/duplicates.ts, packages/cli/src/commands/new.ts, packages/cli/src/commands/agent-commands.ts, packages/cli/test/duplicates.test.ts, docs/ARCHITECTURE.md, docs/formats.md
   - ac: AC1, AC2, AC3, AC4
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/duplicates.test.ts test/memory-resolves.test.ts test/request.test.ts test/worktrees.test.ts && pnpm typecheck && pnpm lint

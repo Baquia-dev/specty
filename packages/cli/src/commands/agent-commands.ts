@@ -103,6 +103,7 @@ interface NewFlags {
   readonly type: string;
   readonly follows?: string[];
   readonly resolves?: string[];
+  readonly distinctFrom?: string[];
   readonly epic?: string;
   readonly slice?: string;
   readonly timebox?: string;
@@ -132,6 +133,7 @@ function newCommand(
     )
     .option("--follows <ids...>", "changes this one continues")
     .option("--resolves <ids...>", "pending items or improvements of Specty's memory it takes")
+    .option("--distinct-from <ids...>", "open changes the user said this one does not duplicate")
     .option("--epic <id>")
     .option("--slice <id>")
     .option("--timebox <duration>", "spike time limit, for example 2h")
@@ -170,15 +172,25 @@ function newOptions(title: string, given: KindAndType, options: NewFlags): NewOp
     kind: given.kind,
     type: given.type,
     follows: options.follows ?? [],
-    ...(options.resolves !== undefined ? { resolves: options.resolves } : {}),
-    ...(options.epic !== undefined ? { epic: options.epic } : {}),
-    ...(options.slice !== undefined ? { slice: options.slice } : {}),
-    ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),
+    ...originOptions(options),
     worktree: options.worktree === true,
     ...(options.from !== undefined ? { from: options.from } : {}),
     ...(options.request !== undefined ? { request: options.request } : {}),
     ...(options.slug !== undefined ? { slug: options.slug } : {}),
     ...(options.branch !== undefined ? { branch: options.branch } : {}),
+  };
+}
+
+/** Where the change comes from: the memory's entries it takes, its epic, and what it is not. */
+function originOptions(
+  options: NewFlags,
+): Pick<NewOptions, "resolves" | "distinctFrom" | "epic" | "slice" | "timebox"> {
+  return {
+    ...(options.resolves !== undefined ? { resolves: options.resolves } : {}),
+    ...(options.distinctFrom !== undefined ? { distinctFrom: options.distinctFrom } : {}),
+    ...(options.epic !== undefined ? { epic: options.epic } : {}),
+    ...(options.slice !== undefined ? { slice: options.slice } : {}),
+    ...(options.timebox !== undefined ? { timebox: options.timebox } : {}),
   };
 }
 
