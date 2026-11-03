@@ -73,6 +73,11 @@ export const antigravity: AgentAdapter = {
     return event.invocationNum === 0 ? "turn" : "invocation";
   },
   action,
+  // Its agent only works inside these: its own checks deny every tool elsewhere.
+  workspace: (event) => {
+    const folders = Array.isArray(event.workspacePaths) ? event.workspacePaths : undefined;
+    return folders?.filter((folder): folder is string => typeof folder === "string");
+  },
   reply: (verdict, phase) => {
     if (phase === "after") return json({});
     if (!verdict.allow) return json({ decision: "deny", reason: verdict.text });

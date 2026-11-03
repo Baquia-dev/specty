@@ -13,6 +13,7 @@ import {
   parseSpec,
   renderText,
   shellChanges,
+  unreachableEnterDenial,
 } from "@baquia-dev/specty-core";
 import { ADAPTERS } from "../agents";
 import type { AgentAdapter, EventKind, Verdict } from "../agents/adapter";
@@ -25,7 +26,7 @@ import { noteActivity } from "../store/activity";
 import { readSpec } from "../store/changes";
 import { conversationOf, cwdOf, type GuardReply, type GuardTool, toolUseId } from "./actions";
 import { leavePending, type PendingKind, takePending } from "./pending";
-import { redirection, resolveAction } from "./place";
+import { outOfReach, redirection, resolveAction } from "./place";
 import { bindSession, enterAction, enterChange, enteredSession, entersOnItsOwn } from "./sessions";
 import {
   DELEGATION_KEY,
@@ -239,9 +240,30 @@ async function enterCommand(
     return { decision: { allow: false, rule: "session", reason, next } };
   }
   const enter = await enterChange(call.environment, call.session, call.event, id);
-  return enter === undefined
-    ? undefined
+  if (enter === undefined) return undefined;
+  const away = await unreachable(call, id, enter.target, ctx);
+  return away !== undefined
+    ? { decision: away }
     : { decision: decideGuard(enter, ctx), target: enter.target };
+}
+
+/**
+ * The denial for a change's folder outside every folder the tool lets its agent work in: entered,
+ * the conversation could do nothing there, so it is not bound. Undefined when it is within reach,
+ * or the tool does not say.
+ */
+async function unreachable(
+  { agent, event, session }: Call,
+  id: string,
+  folder: string,
+  ctx: GuardContext,
+): Promise<GuardDecision | undefined> {
+  const workspace = agent.workspace?.(event);
+  if (workspace === undefined || !(await outOfReach(folder, workspace))) return undefined;
+  const home = await worktreesHome(session.git);
+  const view = { id, folder, workspace, home, tool: agent.tool };
+  const { reason, next } = unreachableEnterDenial(view, ctx.lang, ctx.command);
+  return { allow: false, rule: "session", reason, next };
 }
 
 /** Before a shell command it lets through, keeps a snapshot of the tree to compare afterwards. */

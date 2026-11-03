@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-enter-fuera-del-espacio",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-enter-fuera-del-espacio",
   "baseCommit": "00634cb9368a86c4be99754c10bdcf82656db6fb",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "4fd3f65fbc277e92951b2e2f823a7177f062d537",
+      "attempts": 1,
       "startedAt": "2026-11-03T07:00:21.941Z",
       "doneAt": "2026-11-03T07:01:34.789Z",
-      "summary": "core: unreachableEnterDenial (motivo y SIGUIENTE en es/en), exportada en index.ts; el límite de Antigravity en capabilities.ts y en «Entrar con specty enter» de ARCHITECTURE"
+      "summary": "core: unreachableEnterDenial (motivo y SIGUIENTE en es/en), exportada en index.ts; el límite de Antigravity en capabilities.ts y en «Entrar con specty enter» de ARCHITECTURE",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "fd7576862ed58dd56fb14ba02d229fdc88769260",
+      "startedAt": "2026-11-03T07:01:35.117Z",
+      "doneAt": "2026-11-03T07:03:03.578Z",
+      "summary": "AgentAdapter.workspace (Antigravity: workspacePaths) y outOfReach con rutas reales; enterCommand niega specty enter sin ligar la conversación cuando la carpeta del cambio queda fuera de su espacio de trabajo"
     }
   },
   "pending": {

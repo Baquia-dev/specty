@@ -54,7 +54,7 @@ Antigravity solo deja trabajar a su agente dentro de las carpetas de su espacio 
   - files: packages/core/src/guard/worktrees.ts, packages/core/src/index.ts, packages/core/src/capabilities.ts, packages/core/test/guard/worktrees.test.ts, docs/ARCHITECTURE.md
   - ac: AC1
   - verify: pnpm --filter @baquia-dev/specty-core exec vitest run test/guard/worktrees.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: `specty enter` no lleva a Antigravity a una carpeta que no alcanza
+- [x] T2: `specty enter` no lleva a Antigravity a una carpeta que no alcanza
   - files: packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/src/enforce/place.ts, packages/cli/src/enforce/guard.ts, packages/cli/test/antigravity.test.ts
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/enter.test.ts && pnpm typecheck && pnpm lint
