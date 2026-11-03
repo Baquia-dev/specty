@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261104-cierre-nombra-sus-pendientes",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261104-cierre-nombra-sus-pendientes",
   "baseCommit": "f0cd5509c44a09f82397030462640508196d1589",
   "revision": 2,
@@ -51,6 +51,8 @@
     "T": 4,
     "R": 1
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T23:09:06.794Z"
+  "lockedTests": {
+    "packages/cli/test/close-harvest.test.ts": "sha256:61cd3ead4561782a175247a9a2f7785d819a027fafc4f2ecc51e419e20fc9a88",
+    "packages/core/test/cards/archived-memory.test.ts": "sha256:3270fe04facab6d239829b793213338e354503b64acb9e6be519493632d42390"
+  }
 }
