@@ -90,13 +90,13 @@ export const AGENT_WRITERS: {
     ),
   "cursor-sandbox": (line, t) =>
     t(
-      `Cursor: su sandbox deja escribir a Specty en la carpeta de git y en la de las worktrees (${line.file}).`,
-      `Cursor: its sandbox lets Specty write in the git folder and the worktrees' folder (${line.file}).`,
+      `Cursor: su sandbox deja escribir a Specty en la carpeta de git (${line.file}).`,
+      `Cursor: its sandbox lets Specty write in the git folder (${line.file}).`,
     ),
   "no-cursor-sandbox": (_, t, command) =>
     t(
-      `Cursor: su sandbox no deja escribir a Specty en la carpeta de git de las worktrees, así que fallan sus commits; ejecuta \`${command} init --tools cursor\`.`,
-      `Cursor: its sandbox does not let Specty write in the worktrees' git folder, so its commits fail; run \`${command} init --tools cursor\`.`,
+      `Cursor: su sandbox no deja escribir a Specty en la carpeta de git, así que fallan sus commits; ejecuta \`${command} init --tools cursor\`.`,
+      `Cursor: its sandbox does not let Specty write in the git folder, so its commits fail; run \`${command} init --tools cursor\`.`,
     ),
   "cursor-after-command": (line, t, command) =>
     t(

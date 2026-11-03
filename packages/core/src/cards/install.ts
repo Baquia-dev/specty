@@ -74,8 +74,8 @@ export function codexRulesLine(file: string, lang: Lang): string {
  */
 export function cursorSandboxLine(file: string, lang: Lang): string {
   return translator(lang)(
-    `Cursor: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git y en la de las worktrees, que su sandbox deja fuera.`,
-    `Cursor: ${file} (local) lets Specty's commands write in the git folder and the worktrees' folder, which its sandbox leaves out.`,
+    `Cursor: ${file} (local) deja escribir a los comandos de Specty en la carpeta de git, que su sandbox deja fuera.`,
+    `Cursor: ${file} (local) lets Specty's commands write in the git folder, which its sandbox leaves out.`,
   );
 }
 

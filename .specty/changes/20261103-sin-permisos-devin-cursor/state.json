@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-sin-permisos-devin-cursor",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-sin-permisos-devin-cursor",
   "baseCommit": "b71b5b769ee9df08255344075ebb5b03def80c5e",
   "revision": 1,
@@ -39,12 +39,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "ee2a3d45aa7f15e381f059f8ccaa5d54b9d1dfcc",
+      "attempts": 1,
       "startedAt": "2026-11-03T09:02:26.927Z",
       "doneAt": "2026-11-03T09:03:46.378Z",
-      "summary": "Devin: los scopes de Specty son solo Write de la carpeta común de git (sharedFolders ya no da la de las worktrees); init y uninstall quitan Write/Read de la carpeta de antes; texto de init al día"
+      "summary": "Devin: los scopes de Specty son solo Write de la carpeta común de git (sharedFolders ya no da la de las worktrees); init y uninstall quitan Write/Read de la carpeta de antes; texto de init al día",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "c764aca070c38d9df55894e9e646c7368ec0e82f",
+      "startedAt": "2026-11-03T09:03:47.103Z",
+      "doneAt": "2026-11-03T09:04:57.613Z",
+      "summary": "Cursor: sandbox.json solo con la carpeta común de git; init y uninstall quitan la carpeta de las worktrees de antes; textos de init y doctor y ARCHITECTURE al día"
     }
   },
   "pending": {

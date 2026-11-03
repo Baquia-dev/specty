@@ -50,7 +50,7 @@ kind: standard
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/agents/windsurf.ts, packages/core/src/cards/install.ts, packages/cli/test/windsurf.test.ts, packages/cli/test/doctor-enter.test.ts
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/windsurf.test.ts test/doctor-enter.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: Cursor, solo con la carpeta común de git, y la documentación
+- [x] T2: Cursor, solo con la carpeta común de git, y la documentación
   - files: packages/cli/src/agents/cursor.ts, packages/core/src/cards/install.ts, packages/core/src/cards/doctor-agents.ts, packages/cli/test/cursor.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/cursor.test.ts && pnpm typecheck && pnpm lint
