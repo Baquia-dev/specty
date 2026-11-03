@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-mensajes-entre-sesiones-de-cualquier-agente",
   "kind": "standard",
-  "phase": "testing",
+  "phase": "implementing",
   "branch": "specty/20261103-mensajes-entre-sesiones-de-cualquier-agente",
   "baseCommit": "e327530a2c576639a892c6b6746d3a01ead5c48c",
   "revision": 1,
@@ -47,6 +47,9 @@
     "T": 3,
     "R": 2
   },
-  "testCycle": "feature",
-  "testsSubmittedAt": "2026-11-03T11:29:38.326Z"
+  "lockedTests": {
+    "packages/cli/test/message-delivery.test.ts": "sha256:d3934bf40ca5e364a73f6ab9b356b1f394a3fea33ceb07ff534450927f3069d1",
+    "packages/cli/test/message.test.ts": "sha256:31796625b469833203ec7dd4640451fe71c5a15e7315a04b5ff08f7961174422",
+    "packages/core/test/cards/messages.test.ts": "sha256:57a2373f69d8c639c2c9beb1e766a37471dd9be2614f16e12f0fed4a8eb22ea5"
+  }
 }
