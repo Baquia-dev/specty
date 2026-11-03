@@ -56,7 +56,7 @@ Las worktrees de los cambios pasan a vivir dentro del proyecto (ADR 0018, en un 
   - files: packages/cli/src/flow/worktree.ts, packages/cli/src/enforce/guard.ts, packages/cli/src/agents/adapter.ts, packages/cli/src/agents/antigravity.ts, packages/cli/test/antigravity.test.ts, packages/cli/test/antigravity-turn.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/antigravity.test.ts test/antigravity-turn.test.ts && pnpm typecheck && pnpm lint
-- [ ] T2: Codex sin `.codex/config.toml`, y la documentación
+- [x] T2: Codex sin `.codex/config.toml`, y la documentación
   - files: packages/cli/src/agents/codex.ts, packages/core/src/cards/install.ts, packages/core/src/cards/index.ts, packages/cli/test/codex.test.ts, packages/cli/test/doctor-enter.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/codex.test.ts test/doctor-enter.test.ts && pnpm typecheck && pnpm lint

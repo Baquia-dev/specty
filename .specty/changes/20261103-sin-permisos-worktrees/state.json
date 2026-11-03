@@ -2,7 +2,7 @@
   "schema": 1,
   "id": "20261103-sin-permisos-worktrees",
   "kind": "standard",
-  "phase": "implementing",
+  "phase": "acceptance",
   "branch": "specty/20261103-sin-permisos-worktrees",
   "baseCommit": "84797b049bdb6a68bf8caa500c9e6105227fc997",
   "revision": 1,
@@ -43,12 +43,21 @@
   "tasks": {
     "T1": {
       "status": "done",
-      "scopeExtra": [],
-      "attempts": 1,
       "baseCommit": "7daba62c5483be336a36d5bac92a7bf56d42d0b1",
+      "attempts": 1,
       "startedAt": "2026-11-03T08:16:58.683Z",
       "doneAt": "2026-11-03T08:17:56.123Z",
-      "summary": "sharedFolders solo da la carpeta común de git; el guard ya no pasa la carpeta de las worktrees (fuera Verdict.readable) y Antigravity solo recibe write_file de la carpeta de git"
+      "summary": "sharedFolders solo da la carpeta común de git; el guard ya no pasa la carpeta de las worktrees (fuera Verdict.readable) y Antigravity solo recibe write_file de la carpeta de git",
+      "scopeExtra": []
+    },
+    "T2": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "5c0c6a40d3e20fba891ca0dce941e1a68c51fb56",
+      "startedAt": "2026-11-03T08:17:56.452Z",
+      "doneAt": "2026-11-03T08:19:59.371Z",
+      "summary": "Codex: init ya no escribe .codex/config.toml ni crea la carpeta de las worktrees, y borra el de Specty; doctor solo mira la regla de cd; fuera sus textos de core; ARCHITECTURE al día"
     }
   },
   "pending": {
