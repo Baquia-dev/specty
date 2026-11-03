@@ -40,7 +40,17 @@
       "decision": "implicit"
     }
   },
-  "tasks": {},
+  "tasks": {
+    "T1": {
+      "status": "done",
+      "scopeExtra": [],
+      "attempts": 1,
+      "baseCommit": "0ecad69eb0501d83eb5c35cfec4e9a9dc9331dfe",
+      "startedAt": "2026-11-03T08:52:50.143Z",
+      "doneAt": "2026-11-03T08:53:18.599Z",
+      "summary": "DoctorLine memory-stop (con el agente) y su texto en cards/doctor-agents.ts"
+    }
+  },
   "pending": {
     "scopeRequests": [],
     "adjustment": null

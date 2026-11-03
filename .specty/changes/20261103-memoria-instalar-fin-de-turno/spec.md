@@ -52,7 +52,7 @@ El corte C5 dejó listo `specty hook memory-stop <agente>`, que devuelve el turn
 
 ## Tareas
 
-- [ ] T1: La línea de `doctor` de la red de la memoria
+- [x] T1: La línea de `doctor` de la red de la memoria
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/cli/test/memory-stop-install.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
