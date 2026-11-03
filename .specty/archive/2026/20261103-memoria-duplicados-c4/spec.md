@@ -72,3 +72,23 @@ El 2026-10-30 dos sesiones empezaron el mismo cambio con minutos de diferencia, 
 - R1: Un falso parecido frena un `new` legítimo — cuesta una pregunta al usuario, y `--distinct-from` deja constancia (R4 de la épica).
 - R2: Dos títulos del mismo trabajo con palabras distintas no se frenan — el aviso de archivos compartidos de `propose` lo recoge después.
 - R3: `new` se vuelve más lento al leer todos los cambios abiertos — solo lee sus specs y el inicio de su audit, como `status`.
+
+## Cierre
+
+### Resumen
+
+`specty new` ya no crea un cambio que parece duplicar otro abierto de cualquier worktree: uno que sigue al mismo cambio, o cuyo título o petición se parecen. Dos textos se parecen si comparten al menos la mitad de las palabras significativas del más corto, y al menos dos, comparando raíces de cinco letras sin tildes ni palabras vacías. La tarjeta dice cada cambio parecido, su fase, su carpeta, quién lo lleva y por qué, y pide preguntar al usuario. Si es otro trabajo, `new --distinct-from <id>…` lo crea y `change.created` lo anota en `distinctFrom`. No cuentan la épica del corte ni los cambios que sigue el nuevo. Es el AC8 de la épica.
+
+### Desviaciones
+
+- La tarea de la documentación se unió a T2: con la política `contract`, una tarea sin tests no se admite.
+- `specty check` pidió bajar la complejidad de `newOptions` y de `createChange`; las opciones de origen y los datos de `change.created` pasaron a funciones propias.
+
+### Decisiones
+
+- Seguir al mismo cambio se comprueba antes que el parecido, porque es el caso claro.
+- El freno va junto a la comprobación de `--resolves`, antes de crear nada.
+
+### Pendientes
+
+- Aviso de duplicado en `specty propose` (épica «Memoria de Specty», corte C4, AC9): cuando la spec que se propone comparte al menos la mitad de sus archivos gobernados con otro cambio abierto, `propose` avisa de un posible duplicado y, en modo delegado, su SIGUIENTE pide la decisión a la persona en vez de aprobar. Se apoya en `sharedFiles` de `packages/cli/src/flow/shared.ts`, que ya lista los archivos compartidos.
