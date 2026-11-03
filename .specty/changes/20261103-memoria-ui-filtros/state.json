@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "id": "20261103-memoria-ui-filtros",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-memoria-ui-filtros",
+  "baseCommit": "c75cdbce3855cdae88c60f61062fe690112dab04",
+  "revision": 1,
+  "size": {
+    "level": "M",
+    "score": 8,
+    "adjust": 0,
+    "reasons": [
+      "6 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:48454f1290627798a409436ea0758691c97bb9ed76718ce2aa6cc6d4e9cd3404",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:be80960e455c441dff626a8a416e48f5c325f2c6c89e8082e221796c8f742088",
+      "decision": "confirmed"
+    },
+    "A3": {
+      "hash": "sha256:01dace3836b31965ce4ab02efb96a65f6fc31151717612717d2845edeef25cd8",
+      "decision": "implicit"
+    },
+    "A4": {
+      "hash": "sha256:1f8affa12c452ff8945b316ed0da51b7d304dd0b58b4bad5de8af4ea4b7562e4",
+      "decision": "implicit"
+    },
+    "A5": {
+      "hash": "sha256:cd0bb58ef4c80c9e3fbf001760d74c0eeaa4221e3773aa386593f2718ce90a39",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 5,
+    "AC": 4,
+    "T": 3,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:9552d426e816d20795f00324a710f9ffa03a43e118a2a7487757906ea1189280",
+    "at": "2026-11-03T09:58:40.689Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
