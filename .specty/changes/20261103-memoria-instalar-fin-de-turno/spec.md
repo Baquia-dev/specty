@@ -56,7 +56,7 @@ El corte C5 dejó listo `specty hook memory-stop <agente>`, que devuelve el turn
   - files: packages/core/src/cards/doctor.ts, packages/core/src/cards/doctor-agents.ts, packages/cli/test/memory-stop-install.test.ts
   - ac: AC2
   - verify: pnpm --filter @baquia-dev/specty-core typecheck && pnpm lint
-- [ ] T2: `init`, `doctor` y `uninstall` con la red, y la documentación
+- [x] T2: `init`, `doctor` y `uninstall` con la red, y la documentación
   - files: packages/cli/src/install/agents.ts, packages/cli/src/agents/claude-code.ts, packages/cli/src/agents/codex.ts, packages/cli/test/memory-stop-install.test.ts, packages/cli/test/codex.test.ts, docs/ARCHITECTURE.md
   - ac: AC1, AC2, AC3
   - verify: pnpm --filter @baquia-dev/specty exec vitest run test/memory-stop-install.test.ts test/codex.test.ts test/uninstall.test.ts test/setup.test.ts src/agents/claude-code.test.ts && pnpm typecheck && pnpm lint
