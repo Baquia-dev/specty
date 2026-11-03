@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "20261103-sin-permisos-opencode-gemini",
+  "kind": "standard",
+  "phase": "testing",
+  "branch": "specty/20261103-sin-permisos-opencode-gemini",
+  "baseCommit": "28e862bee120fcf4b56249159472b84e3449519c",
+  "revision": 1,
+  "size": {
+    "level": "L",
+    "score": 11,
+    "adjust": 0,
+    "reasons": [
+      "9 archivos",
+      "2 módulos"
+    ]
+  },
+  "items": {
+    "A1": {
+      "hash": "sha256:51f37dce7a86a7cc77ab63c37490d4040386c495d073c85e6e0599e9c54bdd1d",
+      "decision": "confirmed"
+    },
+    "A2": {
+      "hash": "sha256:6ec73e43b518ad8900c272012ce730c8b2058aba6a32df765683a88b9d156ea4",
+      "decision": "implicit"
+    },
+    "A3": {
+      "hash": "sha256:44e57abade1c426e167e6236ee0c2fcecd7f00bf70fbb14089da7e7884dc2cca",
+      "decision": "implicit"
+    }
+  },
+  "tasks": {},
+  "pending": {
+    "scopeRequests": [],
+    "adjustment": null
+  },
+  "maxIds": {
+    "A": 3,
+    "AC": 3,
+    "T": 2,
+    "R": 1
+  },
+  "approved": {
+    "revision": 1,
+    "hash": "sha256:1cee2d3aaa421d94a23f2c484b4438402dd6853b357d6fadec870a8660a060cb",
+    "at": "2026-11-03T08:42:04.528Z",
+    "by": "Jorge Palacio Barcinilla",
+    "channel": "delegated"
+  },
+  "testCycle": "feature"
+}
